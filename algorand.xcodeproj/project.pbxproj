@@ -17,6 +17,13 @@
 		2B8BE4FF22393963005D8565 /* AdaptiveLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8BE4FE22393963005D8565 /* AdaptiveLayout.swift */; };
 		2B8BE50122393999005D8565 /* AdaptiveLayoutConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8BE50022393999005D8565 /* AdaptiveLayoutConstants.swift */; };
 		2B8BE505223939F9005D8565 /* UIApplication+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8BE504223939F9005D8565 /* UIApplication+Additions.swift */; };
+		2BF34C992239AAD20052CAD3 /* UIViewController+Flow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF34C982239AAD20052CAD3 /* UIViewController+Flow.swift */; };
+		2BF34C9B2239AB130052CAD3 /* Screen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF34C9A2239AB130052CAD3 /* Screen.swift */; };
+		2BF34C9D2239AB530052CAD3 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF34C9C2239AB530052CAD3 /* Router.swift */; };
+		2BF34CA02239ACDC0052CAD3 /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF34C9F2239ACDC0052CAD3 /* AppConfiguration.swift */; };
+		2BF34CA22239ACE60052CAD3 /* ViewControllerConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF34CA12239ACE60052CAD3 /* ViewControllerConfiguration.swift */; };
+		2BF34CA62239AD6D0052CAD3 /* KeyboardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF34CA52239AD6D0052CAD3 /* KeyboardController.swift */; };
+		2BF34CA82239ADAE0052CAD3 /* Notification+Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF34CA72239ADAE0052CAD3 /* Notification+Keyboard.swift */; };
 		654E149E940D74AF3955EEF3 /* Pods_algorand.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01F66EBBAFA146AFC193D69A /* Pods_algorand.framework */; };
 /* End PBXBuildFile section */
 
@@ -35,6 +42,13 @@
 		2B8BE4FE22393963005D8565 /* AdaptiveLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdaptiveLayout.swift; sourceTree = "<group>"; };
 		2B8BE50022393999005D8565 /* AdaptiveLayoutConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdaptiveLayoutConstants.swift; sourceTree = "<group>"; };
 		2B8BE504223939F9005D8565 /* UIApplication+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Additions.swift"; sourceTree = "<group>"; };
+		2BF34C982239AAD20052CAD3 /* UIViewController+Flow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Flow.swift"; sourceTree = "<group>"; };
+		2BF34C9A2239AB130052CAD3 /* Screen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Screen.swift; sourceTree = "<group>"; };
+		2BF34C9C2239AB530052CAD3 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
+		2BF34C9F2239ACDC0052CAD3 /* AppConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfiguration.swift; sourceTree = "<group>"; };
+		2BF34CA12239ACE60052CAD3 /* ViewControllerConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerConfiguration.swift; sourceTree = "<group>"; };
+		2BF34CA52239AD6D0052CAD3 /* KeyboardController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardController.swift; sourceTree = "<group>"; };
+		2BF34CA72239ADAE0052CAD3 /* Notification+Keyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+Keyboard.swift"; sourceTree = "<group>"; };
 		44FD8F3D210C1D99893A91DF /* Pods-algorand.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand.release.xcconfig"; path = "Pods/Target Support Files/Pods-algorand/Pods-algorand.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -73,6 +87,7 @@
 		2B8BE4D022391C38005D8565 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				2BF34C962239AA8C0052CAD3 /* Flow */,
 				2B8BE4FB2239392C005D8565 /* Styling */,
 				2B8BE4F5223936FD005D8565 /* Utility */,
 				2B8BE4F0223935A3005D8565 /* Views */,
@@ -183,6 +198,8 @@
 		2B8BE4F5223936FD005D8565 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				2BF34CA32239AD4A0052CAD3 /* UI */,
+				2BF34C9E2239ACC60052CAD3 /* Configuration */,
 				2B8BE4F62239370F005D8565 /* Extensions */,
 			);
 			path = Utility;
@@ -191,6 +208,7 @@
 		2B8BE4F62239370F005D8565 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				2BF34C972239AAC10052CAD3 /* Flow */,
 				2B8BE502223939DD005D8565 /* UIKit */,
 				2B8BE4F722393715005D8565 /* Foundation */,
 			);
@@ -209,6 +227,7 @@
 			isa = PBXGroup;
 			children = (
 				2B8BE4F922393739005D8565 /* NotificationCenter+Additions.swift */,
+				2BF34CA72239ADAE0052CAD3 /* Notification+Keyboard.swift */,
 			);
 			path = Notification;
 			sourceTree = "<group>";
@@ -252,6 +271,48 @@
 				2B8BE504223939F9005D8565 /* UIApplication+Additions.swift */,
 			);
 			path = Application;
+			sourceTree = "<group>";
+		};
+		2BF34C962239AA8C0052CAD3 /* Flow */ = {
+			isa = PBXGroup;
+			children = (
+				2BF34C9A2239AB130052CAD3 /* Screen.swift */,
+				2BF34C9C2239AB530052CAD3 /* Router.swift */,
+			);
+			path = Flow;
+			sourceTree = "<group>";
+		};
+		2BF34C972239AAC10052CAD3 /* Flow */ = {
+			isa = PBXGroup;
+			children = (
+				2BF34C982239AAD20052CAD3 /* UIViewController+Flow.swift */,
+			);
+			path = Flow;
+			sourceTree = "<group>";
+		};
+		2BF34C9E2239ACC60052CAD3 /* Configuration */ = {
+			isa = PBXGroup;
+			children = (
+				2BF34C9F2239ACDC0052CAD3 /* AppConfiguration.swift */,
+				2BF34CA12239ACE60052CAD3 /* ViewControllerConfiguration.swift */,
+			);
+			path = Configuration;
+			sourceTree = "<group>";
+		};
+		2BF34CA32239AD4A0052CAD3 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				2BF34CA42239AD510052CAD3 /* Keyboard */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		2BF34CA42239AD510052CAD3 /* Keyboard */ = {
+			isa = PBXGroup;
+			children = (
+				2BF34CA52239AD6D0052CAD3 /* KeyboardController.swift */,
+			);
+			path = Keyboard;
 			sourceTree = "<group>";
 		};
 		9F18DC6D0E56430348850CDE /* Frameworks */ = {
@@ -412,13 +473,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2BF34C9D2239AB530052CAD3 /* Router.swift in Sources */,
 				2B8BE4D422391C38005D8565 /* RootViewController.swift in Sources */,
 				2B8BE4D222391C38005D8565 /* AppDelegate.swift in Sources */,
 				2B8BE4EE22393577005D8565 /* BaseViewController.swift in Sources */,
 				2B8BE4FF22393963005D8565 /* AdaptiveLayout.swift in Sources */,
+				2BF34CA82239ADAE0052CAD3 /* Notification+Keyboard.swift in Sources */,
 				2B8BE505223939F9005D8565 /* UIApplication+Additions.swift in Sources */,
+				2BF34CA62239AD6D0052CAD3 /* KeyboardController.swift in Sources */,
+				2BF34CA02239ACDC0052CAD3 /* AppConfiguration.swift in Sources */,
+				2BF34C9B2239AB130052CAD3 /* Screen.swift in Sources */,
+				2BF34C992239AAD20052CAD3 /* UIViewController+Flow.swift in Sources */,
 				2B8BE50122393999005D8565 /* AdaptiveLayoutConstants.swift in Sources */,
 				2B8BE4FA22393739005D8565 /* NotificationCenter+Additions.swift in Sources */,
+				2BF34CA22239ACE60052CAD3 /* ViewControllerConfiguration.swift in Sources */,
 				2B8BE4F4223935DA005D8565 /* BaseView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

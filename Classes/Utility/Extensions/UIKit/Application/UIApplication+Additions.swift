@@ -52,4 +52,16 @@ extension UIApplication {
         
         return appDelegate
     }
+    
+    var appConfiguration: AppConfiguration? {
+        guard let rootViewController = rootViewController() else {
+            return nil
+        }
+        
+        return rootViewController.appConfiguration
+    }
+    
+    func rootViewController() -> RootViewController? {
+        return keyWindow?.rootViewController as? RootViewController
+    }
 }

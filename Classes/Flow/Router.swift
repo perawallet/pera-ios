@@ -74,11 +74,15 @@ class Router {
     }
     
     private func buildViewController<T: UIViewController>(for screen: Screen) -> T? {
+        guard let rootViewController = UIApplication.shared.rootViewController() else {
+            return nil
+        }
+        
         let viewController: UIViewController
         
         switch screen {
         case .introduction:
-            viewController = RootViewController()
+            viewController = rootViewController
         }
         
         return viewController as? T
