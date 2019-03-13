@@ -1,0 +1,55 @@
+//
+//  UIApplication+Additions.swift
+//  algorand
+//
+//  Created by Göktuğ Berk Ulu on 13.03.2019.
+//  Copyright © 2019 hippo. All rights reserved.
+//
+
+import UIKit
+
+extension UIApplication {
+    
+    var isActive: Bool {
+        return applicationState == .active
+    }
+    
+    var isPad: Bool {
+        return UIDevice.current.userInterfaceIdiom == .pad
+    }
+    
+    var isPortrait: Bool {
+        switch statusBarOrientation {
+        case .portrait,
+             .portraitUpsideDown:
+            return true
+        default:
+            return false
+        }
+    }
+    
+    var isLandscape: Bool {
+        switch statusBarOrientation {
+        case .landscapeLeft,
+             .landscapeRight:
+            return true
+        default:
+            return false
+        }
+    }
+    
+    var statusBarView: UIView? {
+        if responds(to: Selector(("statusBar"))) {
+            return value(forKey: "statusBar") as? UIView
+        }
+        return nil
+    }
+    
+    var appDelegate: AppDelegate? {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            return nil
+        }
+        
+        return appDelegate
+    }
+}
