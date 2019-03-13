@@ -11,6 +11,9 @@
 		2B8BE4D422391C38005D8565 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8BE4D322391C38005D8565 /* RootViewController.swift */; };
 		2B8BE4D922391C3B005D8565 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2B8BE4D822391C3B005D8565 /* Assets.xcassets */; };
 		2B8BE4DC22391C3B005D8565 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2B8BE4DA22391C3B005D8565 /* LaunchScreen.storyboard */; };
+		2B8BE4EE22393577005D8565 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8BE4ED22393577005D8565 /* BaseViewController.swift */; };
+		2B8BE4F4223935DA005D8565 /* BaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8BE4F3223935DA005D8565 /* BaseView.swift */; };
+		2B8BE4FA22393739005D8565 /* NotificationCenter+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8BE4F922393739005D8565 /* NotificationCenter+Additions.swift */; };
 		654E149E940D74AF3955EEF3 /* Pods_algorand.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01F66EBBAFA146AFC193D69A /* Pods_algorand.framework */; };
 /* End PBXBuildFile section */
 
@@ -23,6 +26,9 @@
 		2B8BE4D822391C3B005D8565 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2B8BE4DB22391C3B005D8565 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2B8BE4DD22391C3B005D8565 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2B8BE4ED22393577005D8565 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
+		2B8BE4F3223935DA005D8565 /* BaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseView.swift; sourceTree = "<group>"; };
+		2B8BE4F922393739005D8565 /* NotificationCenter+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationCenter+Additions.swift"; sourceTree = "<group>"; };
 		44FD8F3D210C1D99893A91DF /* Pods-algorand.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand.release.xcconfig"; path = "Pods/Target Support Files/Pods-algorand/Pods-algorand.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -61,6 +67,8 @@
 		2B8BE4D022391C38005D8565 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				2B8BE4F5223936FD005D8565 /* Utility */,
+				2B8BE4F0223935A3005D8565 /* Views */,
 				2B8BE4E922392674005D8565 /* Core */,
 				2B8BE4E822392657005D8565 /* ViewControllers */,
 			);
@@ -103,7 +111,7 @@
 		2B8BE4E822392657005D8565 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				2B8BE4D322391C38005D8565 /* RootViewController.swift */,
+				2B8BE4EB22393547005D8565 /* Core */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -122,6 +130,79 @@
 				2B8BE4D122391C38005D8565 /* AppDelegate.swift */,
 			);
 			path = Application;
+			sourceTree = "<group>";
+		};
+		2B8BE4EB22393547005D8565 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				2B8BE4EC2239356A005D8565 /* Base */,
+				2B8BE4D322391C38005D8565 /* RootViewController.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		2B8BE4EC2239356A005D8565 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				2B8BE4ED22393577005D8565 /* BaseViewController.swift */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		2B8BE4F0223935A3005D8565 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2B8BE4F1223935C6005D8565 /* Core */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2B8BE4F1223935C6005D8565 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				2B8BE4F2223935CA005D8565 /* Base */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		2B8BE4F2223935CA005D8565 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				2B8BE4F3223935DA005D8565 /* BaseView.swift */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		2B8BE4F5223936FD005D8565 /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				2B8BE4F62239370F005D8565 /* Extensions */,
+			);
+			path = Utility;
+			sourceTree = "<group>";
+		};
+		2B8BE4F62239370F005D8565 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				2B8BE4F722393715005D8565 /* Foundation */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		2B8BE4F722393715005D8565 /* Foundation */ = {
+			isa = PBXGroup;
+			children = (
+				2B8BE4F822393721005D8565 /* Notification */,
+			);
+			path = Foundation;
+			sourceTree = "<group>";
+		};
+		2B8BE4F822393721005D8565 /* Notification */ = {
+			isa = PBXGroup;
+			children = (
+				2B8BE4F922393739005D8565 /* NotificationCenter+Additions.swift */,
+			);
+			path = Notification;
 			sourceTree = "<group>";
 		};
 		9F18DC6D0E56430348850CDE /* Frameworks */ = {
@@ -284,6 +365,9 @@
 			files = (
 				2B8BE4D422391C38005D8565 /* RootViewController.swift in Sources */,
 				2B8BE4D222391C38005D8565 /* AppDelegate.swift in Sources */,
+				2B8BE4EE22393577005D8565 /* BaseViewController.swift in Sources */,
+				2B8BE4FA22393739005D8565 /* NotificationCenter+Additions.swift in Sources */,
+				2B8BE4F4223935DA005D8565 /* BaseView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
