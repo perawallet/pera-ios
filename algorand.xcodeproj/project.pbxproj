@@ -14,6 +14,9 @@
 		2B8BE4EE22393577005D8565 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8BE4ED22393577005D8565 /* BaseViewController.swift */; };
 		2B8BE4F4223935DA005D8565 /* BaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8BE4F3223935DA005D8565 /* BaseView.swift */; };
 		2B8BE4FA22393739005D8565 /* NotificationCenter+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8BE4F922393739005D8565 /* NotificationCenter+Additions.swift */; };
+		2B8BE4FF22393963005D8565 /* AdaptiveLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8BE4FE22393963005D8565 /* AdaptiveLayout.swift */; };
+		2B8BE50122393999005D8565 /* AdaptiveLayoutConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8BE50022393999005D8565 /* AdaptiveLayoutConstants.swift */; };
+		2B8BE505223939F9005D8565 /* UIApplication+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8BE504223939F9005D8565 /* UIApplication+Additions.swift */; };
 		654E149E940D74AF3955EEF3 /* Pods_algorand.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01F66EBBAFA146AFC193D69A /* Pods_algorand.framework */; };
 /* End PBXBuildFile section */
 
@@ -29,6 +32,9 @@
 		2B8BE4ED22393577005D8565 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		2B8BE4F3223935DA005D8565 /* BaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseView.swift; sourceTree = "<group>"; };
 		2B8BE4F922393739005D8565 /* NotificationCenter+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationCenter+Additions.swift"; sourceTree = "<group>"; };
+		2B8BE4FE22393963005D8565 /* AdaptiveLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdaptiveLayout.swift; sourceTree = "<group>"; };
+		2B8BE50022393999005D8565 /* AdaptiveLayoutConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdaptiveLayoutConstants.swift; sourceTree = "<group>"; };
+		2B8BE504223939F9005D8565 /* UIApplication+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Additions.swift"; sourceTree = "<group>"; };
 		44FD8F3D210C1D99893A91DF /* Pods-algorand.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand.release.xcconfig"; path = "Pods/Target Support Files/Pods-algorand/Pods-algorand.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -67,6 +73,7 @@
 		2B8BE4D022391C38005D8565 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				2B8BE4FB2239392C005D8565 /* Styling */,
 				2B8BE4F5223936FD005D8565 /* Utility */,
 				2B8BE4F0223935A3005D8565 /* Views */,
 				2B8BE4E922392674005D8565 /* Core */,
@@ -184,6 +191,7 @@
 		2B8BE4F62239370F005D8565 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				2B8BE502223939DD005D8565 /* UIKit */,
 				2B8BE4F722393715005D8565 /* Foundation */,
 			);
 			path = Extensions;
@@ -203,6 +211,47 @@
 				2B8BE4F922393739005D8565 /* NotificationCenter+Additions.swift */,
 			);
 			path = Notification;
+			sourceTree = "<group>";
+		};
+		2B8BE4FB2239392C005D8565 /* Styling */ = {
+			isa = PBXGroup;
+			children = (
+				2B8BE4FC22393954005D8565 /* Core */,
+			);
+			path = Styling;
+			sourceTree = "<group>";
+		};
+		2B8BE4FC22393954005D8565 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				2B8BE4FD22393958005D8565 /* Layout */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		2B8BE4FD22393958005D8565 /* Layout */ = {
+			isa = PBXGroup;
+			children = (
+				2B8BE4FE22393963005D8565 /* AdaptiveLayout.swift */,
+				2B8BE50022393999005D8565 /* AdaptiveLayoutConstants.swift */,
+			);
+			path = Layout;
+			sourceTree = "<group>";
+		};
+		2B8BE502223939DD005D8565 /* UIKit */ = {
+			isa = PBXGroup;
+			children = (
+				2B8BE503223939E7005D8565 /* Application */,
+			);
+			path = UIKit;
+			sourceTree = "<group>";
+		};
+		2B8BE503223939E7005D8565 /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				2B8BE504223939F9005D8565 /* UIApplication+Additions.swift */,
+			);
+			path = Application;
 			sourceTree = "<group>";
 		};
 		9F18DC6D0E56430348850CDE /* Frameworks */ = {
@@ -366,6 +415,9 @@
 				2B8BE4D422391C38005D8565 /* RootViewController.swift in Sources */,
 				2B8BE4D222391C38005D8565 /* AppDelegate.swift in Sources */,
 				2B8BE4EE22393577005D8565 /* BaseViewController.swift in Sources */,
+				2B8BE4FF22393963005D8565 /* AdaptiveLayout.swift in Sources */,
+				2B8BE505223939F9005D8565 /* UIApplication+Additions.swift in Sources */,
+				2B8BE50122393999005D8565 /* AdaptiveLayoutConstants.swift in Sources */,
 				2B8BE4FA22393739005D8565 /* NotificationCenter+Additions.swift in Sources */,
 				2B8BE4F4223935DA005D8565 /* BaseView.swift in Sources */,
 			);
