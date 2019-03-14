@@ -30,6 +30,9 @@
 		2BF34CBA223A880C0052CAD3 /* UIView+SafeArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF34CB9223A880C0052CAD3 /* UIView+SafeArea.swift */; };
 		2BF34CBC223A8C460052CAD3 /* BaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF34CBB223A8C460052CAD3 /* BaseCollectionViewCell.swift */; };
 		2BF34CBF223A8E740052CAD3 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF34CBE223A8E740052CAD3 /* NavigationController.swift */; };
+		2BF34CC2223A95A50052CAD3 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF34CC1223A95A50052CAD3 /* API.swift */; };
+		2BF34CC5223A99670052CAD3 /* String+Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF34CC4223A99670052CAD3 /* String+Localization.swift */; };
+		2BF34CC9223AA63D0052CAD3 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2BF34CCB223AA63D0052CAD3 /* Localizable.strings */; };
 		654E149E940D74AF3955EEF3 /* Pods_algorand.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01F66EBBAFA146AFC193D69A /* Pods_algorand.framework */; };
 /* End PBXBuildFile section */
 
@@ -61,6 +64,9 @@
 		2BF34CB9223A880C0052CAD3 /* UIView+SafeArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+SafeArea.swift"; sourceTree = "<group>"; };
 		2BF34CBB223A8C460052CAD3 /* BaseCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCollectionViewCell.swift; sourceTree = "<group>"; };
 		2BF34CBE223A8E740052CAD3 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
+		2BF34CC1223A95A50052CAD3 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
+		2BF34CC4223A99670052CAD3 /* String+Localization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Localization.swift"; sourceTree = "<group>"; };
+		2BF34CCA223AA63D0052CAD3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		44FD8F3D210C1D99893A91DF /* Pods-algorand.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand.release.xcconfig"; path = "Pods/Target Support Files/Pods-algorand/Pods-algorand.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -99,6 +105,7 @@
 		2B8BE4D022391C38005D8565 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				2BF34CC0223A95900052CAD3 /* Networking */,
 				2BF34CB0223A77410052CAD3 /* Configuration */,
 				2BF34C962239AA8C0052CAD3 /* Flow */,
 				2B8BE4FB2239392C005D8565 /* Styling */,
@@ -121,6 +128,7 @@
 		2B8BE4E5223924DB005D8565 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				2BF34CC6223A99850052CAD3 /* Localization */,
 				2B8BE4E72239257B005D8565 /* LaunchScreen */,
 				2B8BE4E6223924EB005D8565 /* Assets */,
 			);
@@ -235,6 +243,7 @@
 		2B8BE4F722393715005D8565 /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
+				2BF34CC3223A995C0052CAD3 /* Text */,
 				2B8BE4F822393721005D8565 /* Notification */,
 			);
 			path = Foundation;
@@ -365,6 +374,30 @@
 			path = Container;
 			sourceTree = "<group>";
 		};
+		2BF34CC0223A95900052CAD3 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				2BF34CC1223A95A50052CAD3 /* API.swift */,
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
+		2BF34CC3223A995C0052CAD3 /* Text */ = {
+			isa = PBXGroup;
+			children = (
+				2BF34CC4223A99670052CAD3 /* String+Localization.swift */,
+			);
+			path = Text;
+			sourceTree = "<group>";
+		};
+		2BF34CC6223A99850052CAD3 /* Localization */ = {
+			isa = PBXGroup;
+			children = (
+				2BF34CCB223AA63D0052CAD3 /* Localizable.strings */,
+			);
+			path = Localization;
+			sourceTree = "<group>";
+		};
 		9F18DC6D0E56430348850CDE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -444,6 +477,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2B8BE4DC22391C3B005D8565 /* LaunchScreen.storyboard in Resources */,
+				2BF34CC9223AA63D0052CAD3 /* Localizable.strings in Resources */,
 				2B8BE4D922391C3B005D8565 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -523,6 +557,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2BF34CC2223A95A50052CAD3 /* API.swift in Sources */,
 				2BF34CB2223A77650052CAD3 /* StatusBarConfigurable.swift in Sources */,
 				2BF34C9D2239AB530052CAD3 /* Router.swift in Sources */,
 				2B8BE4D422391C38005D8565 /* RootViewController.swift in Sources */,
@@ -534,6 +569,7 @@
 				2BF34CA82239ADAE0052CAD3 /* Notification+Keyboard.swift in Sources */,
 				2BF34CB7223A87B70052CAD3 /* Snapkit+SafeArea.swift in Sources */,
 				2B8BE505223939F9005D8565 /* UIApplication+Additions.swift in Sources */,
+				2BF34CC5223A99670052CAD3 /* String+Localization.swift in Sources */,
 				2BF34CA62239AD6D0052CAD3 /* KeyboardController.swift in Sources */,
 				2BF34CA02239ACDC0052CAD3 /* AppConfiguration.swift in Sources */,
 				2BF34C9B2239AB130052CAD3 /* Screen.swift in Sources */,
@@ -556,6 +592,14 @@
 				2B8BE4DB22391C3B005D8565 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		2BF34CCB223AA63D0052CAD3 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2BF34CCA223AA63D0052CAD3 /* en */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
