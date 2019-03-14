@@ -64,4 +64,20 @@ extension UIApplication {
     func rootViewController() -> RootViewController? {
         return keyWindow?.rootViewController as? RootViewController
     }
+    
+    var safeAreaBottom: CGFloat {
+        guard let window = UIApplication.shared.keyWindow else {
+            return 0.0
+        }
+        
+        return window.safeAreaInsets.bottom
+    }
+    
+    var safeAreaTop: CGFloat {
+        guard let window = UIApplication.shared.keyWindow else {
+            return 0.0
+        }
+        
+        return window.safeAreaInsets.top
+    }
 }
