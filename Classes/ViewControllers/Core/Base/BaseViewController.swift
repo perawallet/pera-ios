@@ -10,6 +10,26 @@ import UIKit
 
 class BaseViewController: UIViewController {
     
+    // MARK: Configuration
+    
+    var isStatusBarHidden: Bool = false
+    
+    var hidesStatusBarWhenAppeared: Bool = false
+    
+    var hidesStatusBarWhenPresented: Bool = false
+    
+    override var prefersStatusBarHidden: Bool {
+        return isStatusBarHidden
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .default
+    }
+    
+    override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
+        return isStatusBarHidden ? .fade : .none
+    }
+    
     // MARK: Properties
     
     private(set) var isViewFirstLoaded = true
@@ -72,6 +92,8 @@ class BaseViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        setNeedsStatusBarLayoutUpdateWhenAppearing()
+        
         isViewDisappeared = false
         isViewAppearing = true
     }
@@ -86,6 +108,8 @@ class BaseViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
+        setNeedsStatusBarLayoutUpdateWhenDisappearing()
+        
         isViewFirstLoaded = false
         isViewAppeared = false
         isViewDisappearing = true
@@ -97,4 +121,7 @@ class BaseViewController: UIViewController {
         isViewDisappearing = false
         isViewDisappeared = true
     }
+}
+
+extension BaseViewController: StatusBarConfigurable {
 }

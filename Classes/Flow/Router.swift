@@ -32,17 +32,30 @@ class Router {
         
         switch style {
         case .push:
+            if let currentViewController = self as? StatusBarConfigurable,
+                let nextViewController = viewController as? StatusBarConfigurable {
+                
+                let isStatusBarHidden = currentViewController.isStatusBarHidden
+                
+                nextViewController.hidesStatusBarWhenAppeared = isStatusBarHidden
+                nextViewController.isStatusBarHidden = isStatusBarHidden
+            }
+            
             sourceViewController.navigationController?.pushViewController(viewController, animated: animated)
         case .present,
              .customPresent:
             let navigationController: UINavigationController
             
             if let navController = viewController as? UINavigationController {
-                // TODO: Add status bar options
-                
                 navigationController = navController
             } else {
-                // TODO: Add status bar options
+                if let presentingViewController = self as? StatusBarConfigurable,
+                    let presentedViewController = viewController as? StatusBarConfigurable,
+                    presentingViewController.isStatusBarHidden {
+                    
+                    presentedViewController.hidesStatusBarWhenPresented = true
+                    presentedViewController.isStatusBarHidden = true
+                }
                 
                 navigationController = UINavigationController(rootViewController: viewController)
             }
