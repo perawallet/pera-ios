@@ -38,9 +38,13 @@ class BaseViewController: UIViewController {
     private(set) var isViewDisappearing = false
     private(set) var isViewDisappeared = false
     
+    let configuration: ViewControllerConfiguration
+    
     // MARK: Initialization
     
-    init() {
+    init(configuration: ViewControllerConfiguration) {
+        self.configuration = configuration
+        
         super.init(nibName: nil, bundle: nil)
         
         configureNavigationBarAppearance()
