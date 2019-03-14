@@ -29,6 +29,7 @@
 		2BF34CB7223A87B70052CAD3 /* Snapkit+SafeArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF34CB6223A87B70052CAD3 /* Snapkit+SafeArea.swift */; };
 		2BF34CBA223A880C0052CAD3 /* UIView+SafeArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF34CB9223A880C0052CAD3 /* UIView+SafeArea.swift */; };
 		2BF34CBC223A8C460052CAD3 /* BaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF34CBB223A8C460052CAD3 /* BaseCollectionViewCell.swift */; };
+		2BF34CBF223A8E740052CAD3 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF34CBE223A8E740052CAD3 /* NavigationController.swift */; };
 		654E149E940D74AF3955EEF3 /* Pods_algorand.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01F66EBBAFA146AFC193D69A /* Pods_algorand.framework */; };
 /* End PBXBuildFile section */
 
@@ -59,6 +60,7 @@
 		2BF34CB6223A87B70052CAD3 /* Snapkit+SafeArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Snapkit+SafeArea.swift"; sourceTree = "<group>"; };
 		2BF34CB9223A880C0052CAD3 /* UIView+SafeArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+SafeArea.swift"; sourceTree = "<group>"; };
 		2BF34CBB223A8C460052CAD3 /* BaseCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCollectionViewCell.swift; sourceTree = "<group>"; };
+		2BF34CBE223A8E740052CAD3 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 		44FD8F3D210C1D99893A91DF /* Pods-algorand.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand.release.xcconfig"; path = "Pods/Target Support Files/Pods-algorand/Pods-algorand.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -168,6 +170,7 @@
 		2B8BE4EB22393547005D8565 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				2BF34CBD223A8E5F0052CAD3 /* Container */,
 				2B8BE4EC2239356A005D8565 /* Base */,
 				2B8BE4D322391C38005D8565 /* RootViewController.swift */,
 			);
@@ -354,6 +357,14 @@
 			path = Layout;
 			sourceTree = "<group>";
 		};
+		2BF34CBD223A8E5F0052CAD3 /* Container */ = {
+			isa = PBXGroup;
+			children = (
+				2BF34CBE223A8E740052CAD3 /* NavigationController.swift */,
+			);
+			path = Container;
+			sourceTree = "<group>";
+		};
 		9F18DC6D0E56430348850CDE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -531,6 +542,7 @@
 				2B8BE4FA22393739005D8565 /* NotificationCenter+Additions.swift in Sources */,
 				2BF34CA22239ACE60052CAD3 /* ViewControllerConfiguration.swift in Sources */,
 				2BF34CBA223A880C0052CAD3 /* UIView+SafeArea.swift in Sources */,
+				2BF34CBF223A8E740052CAD3 /* NavigationController.swift in Sources */,
 				2B8BE4F4223935DA005D8565 /* BaseView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
