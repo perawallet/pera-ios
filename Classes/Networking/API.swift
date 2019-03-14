@@ -12,5 +12,4 @@ class API: Magpie<AlamofireNetworking> {
     
     typealias CompletionHandler<ObjectRef> = (Response<ObjectRef>) -> Void where ObjectRef: Mappable
     
-    
 }

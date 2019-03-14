@@ -2,6 +2,32 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>UIAppFonts</key>
+	<array>
+		<string>SF-UI-Display-Black.otf</string>
+		<string>SF-UI-Display-Bold.otf</string>
+		<string>SF-UI-Display-Heavy.otf</string>
+		<string>SF-UI-Display-Light.otf</string>
+		<string>SF-UI-Display-Medium.otf</string>
+		<string>SF-UI-Display-Regular.otf</string>
+		<string>SF-UI-Display-Semibold.otf</string>
+		<string>SF-UI-Display-Thin.otf</string>
+		<string>SF-UI-Display-Ultralight.otf</string>
+		<string>SF-UI-Text-Bold.otf</string>
+		<string>SF-UI-Text-BoldItalic.otf</string>
+		<string>SF-UI-Text-Heavy.otf</string>
+		<string>SF-UI-Text-HeavyItalic.otf</string>
+		<string>SF-UI-Text-Light.otf</string>
+		<string>SF-UI-Text-LightItalic.otf</string>
+		<string>SF-UI-Text-Medium.otf</string>
+		<string>SF-UI-Text-MediumItalic.otf</string>
+		<string>SF-UI-Text-Regular.otf</string>
+		<string>SF-UI-Text-RegularItalic.otf</string>
+		<string>SF-UI-Text-Semibold.otf</string>
+		<string>SF-UI-Text-SemiboldItalic.otf</string>
+		<string>SF-UI-Text-Ultrathin.otf</string>
+		<string>SF-UI-Text-UltrathinItalic.otf</string>
+	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
