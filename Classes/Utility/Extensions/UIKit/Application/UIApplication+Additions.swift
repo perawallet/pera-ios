@@ -52,4 +52,32 @@ extension UIApplication {
         
         return appDelegate
     }
+    
+    var appConfiguration: AppConfiguration? {
+        guard let rootViewController = rootViewController() else {
+            return nil
+        }
+        
+        return rootViewController.appConfiguration
+    }
+    
+    func rootViewController() -> RootViewController? {
+        return keyWindow?.rootViewController as? RootViewController
+    }
+    
+    var safeAreaBottom: CGFloat {
+        guard let window = UIApplication.shared.keyWindow else {
+            return 0.0
+        }
+        
+        return window.safeAreaInsets.bottom
+    }
+    
+    var safeAreaTop: CGFloat {
+        guard let window = UIApplication.shared.keyWindow else {
+            return 0.0
+        }
+        
+        return window.safeAreaInsets.top
+    }
 }
