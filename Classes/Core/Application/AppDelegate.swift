@@ -13,7 +13,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     
-    private var appConfiguration = AppConfiguration()
+    private lazy var session = Session()
+    private lazy var api = API(base: "APIBase", session: session)
+    private lazy var appConfiguration = AppConfiguration(
+        api: api,
+        session: session
+    )
     
     func application(
         _ application: UIApplication,
