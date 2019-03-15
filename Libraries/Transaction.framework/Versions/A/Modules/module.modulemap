@@ -1,0 +1,8 @@
+framework module "Transaction" {
+	header "ref.h"
+    header "Transaction.objc.h"
+    header "Universe.objc.h"
+    header "Transaction.h"
+
+    export *
+}

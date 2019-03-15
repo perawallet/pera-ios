@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		17512616223BDC4F0095AF4F /* Auction.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17512613223BDC4B0095AF4F /* Auction.framework */; };
+		17512617223BDC4F0095AF4F /* Crypto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17512614223BDC4D0095AF4F /* Crypto.framework */; };
+		17512618223BDC4F0095AF4F /* Transaction.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17512615223BDC4F0095AF4F /* Transaction.framework */; };
 		2B8BE4D222391C38005D8565 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8BE4D122391C38005D8565 /* AppDelegate.swift */; };
 		2B8BE4D422391C38005D8565 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8BE4D322391C38005D8565 /* RootViewController.swift */; };
 		2B8BE4D922391C3B005D8565 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2B8BE4D822391C3B005D8565 /* Assets.xcassets */; };
@@ -61,6 +64,9 @@
 
 /* Begin PBXFileReference section */
 		01F66EBBAFA146AFC193D69A /* Pods_algorand.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_algorand.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		17512613223BDC4B0095AF4F /* Auction.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Auction.framework; sourceTree = "<group>"; };
+		17512614223BDC4D0095AF4F /* Crypto.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crypto.framework; sourceTree = "<group>"; };
+		17512615223BDC4F0095AF4F /* Transaction.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Transaction.framework; sourceTree = "<group>"; };
 		2AC10F1C54DF2982BFB4A180 /* Pods-algorand.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand.debug.xcconfig"; path = "Pods/Target Support Files/Pods-algorand/Pods-algorand.debug.xcconfig"; sourceTree = "<group>"; };
 		2B8BE4CE22391C38005D8565 /* algorand.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = algorand.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B8BE4D122391C38005D8565 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -121,16 +127,30 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				17512617223BDC4F0095AF4F /* Crypto.framework in Frameworks */,
+				17512616223BDC4F0095AF4F /* Auction.framework in Frameworks */,
 				654E149E940D74AF3955EEF3 /* Pods_algorand.framework in Frameworks */,
+				17512618223BDC4F0095AF4F /* Transaction.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		17512612223BDC2B0095AF4F /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				17512613223BDC4B0095AF4F /* Auction.framework */,
+				17512614223BDC4D0095AF4F /* Crypto.framework */,
+				17512615223BDC4F0095AF4F /* Transaction.framework */,
+			);
+			path = Libraries;
+			sourceTree = "<group>";
+		};
 		2B8BE4C522391C38005D8565 = {
 			isa = PBXGroup;
 			children = (
+				17512612223BDC2B0095AF4F /* Libraries */,
 				2B8BE4E5223924DB005D8565 /* Resources */,
 				2B8BE4E42239248A005D8565 /* Support */,
 				2B8BE4D022391C38005D8565 /* Classes */,
@@ -828,6 +848,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = W9875NV3WF;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Libraries",
+				);
 				INFOPLIST_FILE = "$(SRCROOT)/Support/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -847,6 +871,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = W9875NV3WF;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Libraries",
+				);
 				INFOPLIST_FILE = "$(SRCROOT)/Support/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

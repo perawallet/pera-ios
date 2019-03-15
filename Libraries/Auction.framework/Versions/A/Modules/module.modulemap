@@ -1,0 +1,8 @@
+framework module "Auction" {
+	header "ref.h"
+    header "Auction.objc.h"
+    header "Universe.objc.h"
+    header "Auction.h"
+
+    export *
+}
