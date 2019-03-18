@@ -161,6 +161,8 @@
 				17512622223BEB9D0095AF4F /* UserDefaults+Additions.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
 		17512612223BDC2B0095AF4F /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
