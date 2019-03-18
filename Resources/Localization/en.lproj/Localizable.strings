@@ -7,3 +7,22 @@
 */
 
 // MARK: Common
+
+"title-yes" = "Yes";
+"title-no" = "No";
+
+// MARK: Introduction
+
+"introduction-recover-title" = "Recover from Seed";
+"introduction-create-title" = "Create Account";
+
+// MARK: Welcome
+
+"welcome-title" = "Welcome!";
+"welcome-subtitle" = "We just need you to set up a few quick things to keep your account safe.";
+"welcome-done-title" = "Let's Go";
+
+// MARK: Local Authentication Preferences
+
+"local-authentication-preference-title" = "Enable touch/face ID";
+"local-authentication-preference-subtitle" = "We recommend this for improved security";
