@@ -1,0 +1,12 @@
+framework module "Crypto" {
+	header "ref.h"
+    header "Crypto.objc.h"
+    header "Auction.objc.h"
+    header "Transaction.objc.h"
+    header "Mnemonic.objc.h"
+    header "Msgpack.objc.h"
+    header "Universe.objc.h"
+    header "Crypto.h"
+
+    export *
+}
