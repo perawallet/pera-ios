@@ -10,6 +10,7 @@
 #include "ref.h"
 #include "Universe.objc.h"
 
+#include "Msgpack.objc.h"
 
 @class CryptoAccount;
 
@@ -28,10 +29,9 @@ Algorand address
 @property (nonatomic) NSData* _Nullable address;
 @end
 
-/**
- * GenerateAccount generates a random Account
- */
-FOUNDATION_EXPORT NSString* _Nonnull CryptoGenerateAccount(NSData* _Nullable pk, NSData* _Nullable sk);
+FOUNDATION_EXPORT NSString* _Nonnull CryptoGenerateAddressFromSK(NSData* _Nullable sk, NSError* _Nullable* error);
+
+FOUNDATION_EXPORT NSData* _Nullable CryptoGenerateSK(void);
 
 /**
  * GetTxID takes an encoded txn and return the txid as string
