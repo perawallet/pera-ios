@@ -10,6 +10,9 @@ import UIKit
 
 enum Screen {
     case introduction
+    case welcome
+    case choosePassword
+    case localAuthenticationPreference
 }
 
 extension Screen {

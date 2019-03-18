@@ -62,7 +62,11 @@ extension UIApplication {
     }
     
     func rootViewController() -> RootViewController? {
-        return keyWindow?.rootViewController as? RootViewController
+        guard let navigationController = keyWindow?.rootViewController as? NavigationController else {
+            return nil
+        }
+        
+        return navigationController.viewControllers.first as? RootViewController
     }
     
     var safeAreaBottom: CGFloat {
@@ -79,5 +83,21 @@ extension UIApplication {
         }
         
         return window.safeAreaInsets.top
+    }
+    
+    @discardableResult
+    func route<T: UIViewController>(
+        to screen: Screen,
+        from viewController: UIViewController,
+        by style: Screen.Transition.Open,
+        animated: Bool = true,
+        then completion: ScreenTransitionCompletion? = nil
+    ) -> T? {
+        
+        guard let rootViewController = rootViewController() else {
+            return nil
+        }
+        
+        return rootViewController.route(to: screen, from: viewController, by: style, animated: animated, then: completion)
     }
 }
