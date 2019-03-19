@@ -40,7 +40,7 @@ class LocalAuthenticationPreferenceViewController: BaseViewController {
 extension LocalAuthenticationPreferenceViewController: LocalAuthenticationPreferenceViewDelegate {
     
     func localAuthenticationPreferenceViewDidTapYesButton(_ localAuthenticationPreferenceView: LocalAuthenticationPreferenceView) {
-        
+        open(.passPhraseBackUp, by: .push)
     }
     
     func localAuthenticationPreferenceViewDidTapNoButton(_ localAuthenticationPreferenceView: LocalAuthenticationPreferenceView) {

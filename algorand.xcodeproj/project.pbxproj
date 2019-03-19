@@ -44,6 +44,8 @@
 		2BD73A1222412B7300B66EEF /* NumpadViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD73A1122412B7300B66EEF /* NumpadViewModel.swift */; };
 		2BD73A1422412D9100B66EEF /* NumpadCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD73A1322412D9100B66EEF /* NumpadCellViewModel.swift */; };
 		2BD73A192241324700B66EEF /* ChoosePasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD73A182241324700B66EEF /* ChoosePasswordViewModel.swift */; };
+		2BD73A1C2241636C00B66EEF /* PassPhraseBackUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD73A1B2241636C00B66EEF /* PassPhraseBackUpView.swift */; };
+		2BD73A1F2241639500B66EEF /* PassPhraseBackUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD73A1E2241639500B66EEF /* PassPhraseBackUpViewController.swift */; };
 		2BF34C992239AAD20052CAD3 /* UIViewController+Flow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF34C982239AAD20052CAD3 /* UIViewController+Flow.swift */; };
 		2BF34C9B2239AB130052CAD3 /* Screen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF34C9A2239AB130052CAD3 /* Screen.swift */; };
 		2BF34C9D2239AB530052CAD3 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF34C9C2239AB530052CAD3 /* Router.swift */; };
@@ -128,6 +130,8 @@
 		2BD73A1122412B7300B66EEF /* NumpadViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumpadViewModel.swift; sourceTree = "<group>"; };
 		2BD73A1322412D9100B66EEF /* NumpadCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumpadCellViewModel.swift; sourceTree = "<group>"; };
 		2BD73A182241324700B66EEF /* ChoosePasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoosePasswordViewModel.swift; sourceTree = "<group>"; };
+		2BD73A1B2241636C00B66EEF /* PassPhraseBackUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassPhraseBackUpView.swift; sourceTree = "<group>"; };
+		2BD73A1E2241639500B66EEF /* PassPhraseBackUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassPhraseBackUpViewController.swift; sourceTree = "<group>"; };
 		2BF34C982239AAD20052CAD3 /* UIViewController+Flow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Flow.swift"; sourceTree = "<group>"; };
 		2BF34C9A2239AB130052CAD3 /* Screen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Screen.swift; sourceTree = "<group>"; };
 		2BF34C9C2239AB530052CAD3 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
@@ -482,6 +486,7 @@
 		2BD739DA223F9E2800B66EEF /* SignUp */ = {
 			isa = PBXGroup;
 			children = (
+				2BD73A1A2241633900B66EEF /* PassPhrase */,
 				2BD739DE223F9EE000B66EEF /* LocalAuthentication */,
 				2BD739DB223F9E8900B66EEF /* Password */,
 			);
@@ -526,6 +531,7 @@
 		2BD739E6223FA08E00B66EEF /* SignUp */ = {
 			isa = PBXGroup;
 			children = (
+				2BD73A1D2241637B00B66EEF /* PassPhrase */,
 				2BD739E8223FA09F00B66EEF /* Password */,
 				2BD739E7223FA09600B66EEF /* LocalAuthentication */,
 			);
@@ -673,6 +679,22 @@
 				2BD73A182241324700B66EEF /* ChoosePasswordViewModel.swift */,
 			);
 			path = Password;
+			sourceTree = "<group>";
+		};
+		2BD73A1A2241633900B66EEF /* PassPhrase */ = {
+			isa = PBXGroup;
+			children = (
+				2BD73A1B2241636C00B66EEF /* PassPhraseBackUpView.swift */,
+			);
+			path = PassPhrase;
+			sourceTree = "<group>";
+		};
+		2BD73A1D2241637B00B66EEF /* PassPhrase */ = {
+			isa = PBXGroup;
+			children = (
+				2BD73A1E2241639500B66EEF /* PassPhraseBackUpViewController.swift */,
+			);
+			path = PassPhrase;
 			sourceTree = "<group>";
 		};
 		2BF34C962239AA8C0052CAD3 /* Flow */ = {
@@ -997,12 +1019,14 @@
 				2BD739FE22411A0100B66EEF /* Reusable.swift in Sources */,
 				2BD73A0622412AC900B66EEF /* NumpadViewDataSource.swift in Sources */,
 				2BD739D1223F97F600B66EEF /* IntroductionView.swift in Sources */,
+				2BD73A1C2241636C00B66EEF /* PassPhraseBackUpView.swift in Sources */,
 				2BD739F1223FE1C700B66EEF /* UIButton+Factory.swift in Sources */,
 				2B8BE4D222391C38005D8565 /* AppDelegate.swift in Sources */,
 				2BD73A192241324700B66EEF /* ChoosePasswordViewModel.swift in Sources */,
 				2BD739E1223F9F3000B66EEF /* LocalAuthenticationPreferenceView.swift in Sources */,
 				2BD73A1222412B7300B66EEF /* NumpadViewModel.swift in Sources */,
 				2BF34CB4223A87440052CAD3 /* BaseScrollViewController.swift in Sources */,
+				2BD73A1F2241639500B66EEF /* PassPhraseBackUpViewController.swift in Sources */,
 				2BD739D9223F987E00B66EEF /* Utils.swift in Sources */,
 				2BF34CBC223A8C460052CAD3 /* BaseCollectionViewCell.swift in Sources */,
 				2BD739F6223FF47900B66EEF /* NumpadNumericButton.swift in Sources */,

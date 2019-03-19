@@ -13,6 +13,7 @@ enum Screen {
     case welcome
     case choosePassword(ChoosePasswordViewController.Mode)
     case localAuthenticationPreference
+    case passPhraseBackUp
 }
 
 extension Screen {

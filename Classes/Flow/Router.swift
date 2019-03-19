@@ -102,6 +102,8 @@ class Router {
             viewController = ChoosePasswordViewController(mode: mode, configuration: rootViewController.appConfiguration.all())
         case .localAuthenticationPreference:
             viewController = LocalAuthenticationPreferenceViewController(configuration: rootViewController.appConfiguration.all())
+        case .passPhraseBackUp:
+            viewController = PassPhraseBackUpViewController(configuration: rootViewController.appConfiguration.all())
         }
         
         return viewController as? T
