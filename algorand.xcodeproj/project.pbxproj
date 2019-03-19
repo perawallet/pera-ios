@@ -12,6 +12,10 @@
 		17512620223BEAE90095AF4F /* Storable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1751261F223BEAE90095AF4F /* Storable.swift */; };
 		17512623223BEB9D0095AF4F /* UserDefaults+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17512622223BEB9D0095AF4F /* UserDefaults+Additions.swift */; };
 		179D3CEC223F805B00AAF269 /* Crypto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 179D3CEB223F805B00AAF269 /* Crypto.framework */; };
+		17B7D8A62240D8F900A6FF9E /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B7D8A52240D8F900A6FF9E /* Account.swift */; };
+		17B7D8A82240DFFC00A6FF9E /* API+Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B7D8A72240DFFC00A6FF9E /* API+Account.swift */; };
+		17B7D8AB2240E19600A6FF9E /* AccountDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B7D8AA2240E19600A6FF9E /* AccountDraft.swift */; };
+		17B7D8AE2240F25000A6FF9E /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B7D8AD2240F25000A6FF9E /* Environment.swift */; };
 		2B8BE4D222391C38005D8565 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8BE4D122391C38005D8565 /* AppDelegate.swift */; };
 		2B8BE4D422391C38005D8565 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8BE4D322391C38005D8565 /* RootViewController.swift */; };
 		2B8BE4D922391C3B005D8565 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2B8BE4D822391C3B005D8565 /* Assets.xcassets */; };
@@ -71,6 +75,10 @@
 		1751261F223BEAE90095AF4F /* Storable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storable.swift; sourceTree = "<group>"; };
 		17512622223BEB9D0095AF4F /* UserDefaults+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Additions.swift"; sourceTree = "<group>"; };
 		179D3CEB223F805B00AAF269 /* Crypto.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crypto.framework; sourceTree = "<group>"; };
+		17B7D8A52240D8F900A6FF9E /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
+		17B7D8A72240DFFC00A6FF9E /* API+Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+Account.swift"; sourceTree = "<group>"; };
+		17B7D8AA2240E19600A6FF9E /* AccountDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDraft.swift; sourceTree = "<group>"; };
+		17B7D8AD2240F25000A6FF9E /* Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
 		2AC10F1C54DF2982BFB4A180 /* Pods-algorand.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand.debug.xcconfig"; path = "Pods/Target Support Files/Pods-algorand/Pods-algorand.debug.xcconfig"; sourceTree = "<group>"; };
 		2B8BE4CE22391C38005D8565 /* algorand.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = algorand.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B8BE4D122391C38005D8565 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -139,6 +147,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		17512612223BDC2B0095AF4F /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				179D3CEB223F805B00AAF269 /* Crypto.framework */,
+			);
+			path = Libraries;
+			sourceTree = "<group>";
+		};
 		1751261B223BEA230095AF4F /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -163,12 +179,28 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		17512612223BDC2B0095AF4F /* Libraries */ = {
+		17B7D8A42240D79200A6FF9E /* Modelst */ = {
 			isa = PBXGroup;
 			children = (
-				179D3CEB223F805B00AAF269 /* Crypto.framework */,
+				17B7D8A52240D8F900A6FF9E /* Account.swift */,
 			);
-			path = Libraries;
+			path = Modelst;
+			sourceTree = "<group>";
+		};
+		17B7D8A92240E18800A6FF9E /* Drafts */ = {
+			isa = PBXGroup;
+			children = (
+				17B7D8AA2240E19600A6FF9E /* AccountDraft.swift */,
+			);
+			path = Drafts;
+			sourceTree = "<group>";
+		};
+		17B7D8AC2240F23D00A6FF9E /* Environment */ = {
+			isa = PBXGroup;
+			children = (
+				17B7D8AD2240F25000A6FF9E /* Environment.swift */,
+			);
+			path = Environment;
 			sourceTree = "<group>";
 		};
 		2B8BE4C522391C38005D8565 = {
@@ -195,6 +227,7 @@
 		2B8BE4D022391C38005D8565 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				17B7D8A42240D79200A6FF9E /* Modelst */,
 				17512621223BEB6D0095AF4F /* Extensions */,
 				2BF34CC0223A95900052CAD3 /* Networking */,
 				2BF34CB0223A77410052CAD3 /* Configuration */,
@@ -254,6 +287,7 @@
 		2B8BE4E922392674005D8565 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				17B7D8AC2240F23D00A6FF9E /* Environment */,
 				2B8BE4EA22392678005D8565 /* Application */,
 			);
 			path = Core;
@@ -469,10 +503,12 @@
 		2BF34CC0223A95900052CAD3 /* Networking */ = {
 			isa = PBXGroup;
 			children = (
+				17B7D8A92240E18800A6FF9E /* Drafts */,
 				1751261E223BEADF0095AF4F /* Protocols */,
 				1751261B223BEA230095AF4F /* Models */,
-				2BF34CC1223A95A50052CAD3 /* API.swift */,
 				17512619223BE5930095AF4F /* AlgorandParamPairKey.swift */,
+				2BF34CC1223A95A50052CAD3 /* API.swift */,
+				17B7D8A72240DFFC00A6FF9E /* API+Account.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -714,13 +750,17 @@
 				2BF34CB4223A87440052CAD3 /* BaseScrollViewController.swift in Sources */,
 				2BF34CBC223A8C460052CAD3 /* BaseCollectionViewCell.swift in Sources */,
 				2B8BE4EE22393577005D8565 /* BaseViewController.swift in Sources */,
+				17B7D8AB2240E19600A6FF9E /* AccountDraft.swift in Sources */,
 				2B8BE4FF22393963005D8565 /* AdaptiveLayout.swift in Sources */,
 				17512623223BEB9D0095AF4F /* UserDefaults+Additions.swift in Sources */,
 				1751261D223BEA320095AF4F /* Session.swift in Sources */,
 				17512620223BEAE90095AF4F /* Storable.swift in Sources */,
+				17B7D8A62240D8F900A6FF9E /* Account.swift in Sources */,
 				2BF34CA82239ADAE0052CAD3 /* Notification+Keyboard.swift in Sources */,
+				17B7D8A82240DFFC00A6FF9E /* API+Account.swift in Sources */,
 				2BF34CB7223A87B70052CAD3 /* Snapkit+SafeArea.swift in Sources */,
 				2B8BE505223939F9005D8565 /* UIApplication+Additions.swift in Sources */,
+				17B7D8AE2240F25000A6FF9E /* Environment.swift in Sources */,
 				2BF34CC5223A99670052CAD3 /* String+Localization.swift in Sources */,
 				2BF34CA62239AD6D0052CAD3 /* KeyboardController.swift in Sources */,
 				2BF34CA02239ACDC0052CAD3 /* AppConfiguration.swift in Sources */,

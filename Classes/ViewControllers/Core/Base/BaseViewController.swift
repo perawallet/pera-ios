@@ -129,3 +129,15 @@ class BaseViewController: UIViewController {
 
 extension BaseViewController: StatusBarConfigurable {
 }
+
+// MARK: - API Variables
+extension BaseViewController {
+    
+    var session: Session? {
+        return configuration.session
+    }
+    
+    var api: API? {
+        return configuration.api
+    }
+}
