@@ -1,4 +1,3 @@
-
 platform :ios, '11.0'
 
 target 'algorand' do
@@ -13,4 +12,8 @@ target 'algorand' do
 
 	#Networking
 	pod 'Magpie', :git => 'https://github.com/Hipo/magpie.git'
+    
+    #Persistance
+    pod 'KeychainAccess'
+    
 end

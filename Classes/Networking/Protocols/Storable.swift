@@ -7,9 +7,15 @@
 //
 
 import Foundation
+import KeychainAccess
+
+enum StorableKeys: String {
+    case storage = "com.algorand.storage"
+}
 
 enum Store {
     case defaults
+    case keychain
 }
 
 protocol Storable {
@@ -32,10 +38,18 @@ extension Storable {
         return UserDefaults.standard
     }
     
+    var keychain: KeychainAccess.Keychain {
+        return KeychainAccess.Keychain(
+            service: StorableKeys.storage.rawValue)
+            .accessibility(.always)
+    }
+    
     func save(_ string: String, for key: String, to store: Store) {
         switch store {
         case .defaults:
             userDefaults.set(string, for: key)
+        case .keychain:
+            keychain.set(string, for: key)
         }
     }
     
@@ -43,6 +57,8 @@ extension Storable {
         switch store {
         case .defaults:
             userDefaults.set(data, for: key)
+        case .keychain:
+            keychain.set(data, for: key)
         }
     }
     
@@ -54,6 +70,8 @@ extension Storable {
         switch store {
         case .defaults:
             return userDefaults.string(forKey: key)
+        case .keychain:
+            return keychain.string(for: key)
         }
     }
     
@@ -61,6 +79,8 @@ extension Storable {
         switch store {
         case .defaults:
             return userDefaults.data(forKey: key)
+        case .keychain:
+            return keychain.data(for: key)
         }
     }
     
@@ -68,6 +88,8 @@ extension Storable {
         switch store {
         case .defaults:
             userDefaults.remove(for: key)
+        case .keychain:
+            keychain.remove(for: key)
         }
     }
     
@@ -75,6 +97,8 @@ extension Storable {
         switch store {
         case .defaults:
             userDefaults.clear()
+        case .keychain:
+            keychain.clear()
         }
     }
 }
