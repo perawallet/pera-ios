@@ -22,6 +22,13 @@
 "welcome-subtitle" = "We just need you to set up a few quick things to keep your account safe.";
 "welcome-done-title" = "Let's Go";
 
+// MARK: Password Setting
+
+"password-set-title" = "First";
+"password-set-subtitle" = "Choose a six digit password";
+"password-verify-title" = "Verify Password";
+"password-verify-subtitle" = "Enter the same six digits";
+
 // MARK: Local Authentication Preferences
 
 "local-authentication-preference-title" = "Enable touch/face ID";

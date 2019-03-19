@@ -25,6 +25,7 @@ class LocalAuthenticationPreferenceView: BaseView {
         let containerViewHorizontalInset: CGFloat = 25.0
         let iconCenterOffset: CGFloat = 87.0
         let yesButtonVerticalInset: CGFloat = -29.0
+        let minimumButtonOffset: CGFloat = 10.0
         let bottomInset: CGFloat = 16.0
     }
     
@@ -101,7 +102,7 @@ class LocalAuthenticationPreferenceView: BaseView {
         addSubview(titleLabel)
         
         titleLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(layout.current.titleLabelTopInset)
+            make.top.lessThanOrEqualToSuperview().inset(layout.current.titleLabelTopInset)
             make.centerX.equalToSuperview()
         }
     }
@@ -160,6 +161,7 @@ class LocalAuthenticationPreferenceView: BaseView {
         yesButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.bottom.equalTo(noButton.snp.top).offset(layout.current.yesButtonVerticalInset)
+            make.top.greaterThanOrEqualTo(iconContainerView.snp.bottom).offset(layout.current.minimumButtonOffset)
         }
     }
     

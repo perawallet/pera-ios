@@ -42,6 +42,6 @@ class WelcomeViewController: BaseViewController {
 extension WelcomeViewController: WelcomeViewDelegate {
     
     func welcomeViewDidTapDoneButton(_ introductionView: WelcomeView) {
-        open(.localAuthenticationPreference, by: .push)
+        open(.choosePassword(.setup), by: .push)
     }
 }

@@ -11,7 +11,7 @@ import UIKit
 enum Screen {
     case introduction
     case welcome
-    case choosePassword
+    case choosePassword(ChoosePasswordViewController.Mode)
     case localAuthenticationPreference
 }
 

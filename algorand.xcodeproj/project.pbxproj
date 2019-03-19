@@ -34,6 +34,16 @@
 		2BD739F4223FF08000B66EEF /* NumpadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD739F3223FF08000B66EEF /* NumpadView.swift */; };
 		2BD739F6223FF47900B66EEF /* NumpadNumericButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD739F5223FF47900B66EEF /* NumpadNumericButton.swift */; };
 		2BD739F8223FF4B600B66EEF /* NumpadDeleteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD739F7223FF4B600B66EEF /* NumpadDeleteButton.swift */; };
+		2BD739FA2240527B00B66EEF /* PasswordInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD739F92240527B00B66EEF /* PasswordInputView.swift */; };
+		2BD739FC2241052600B66EEF /* PasswordInputCircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD739FB2241052500B66EEF /* PasswordInputCircleView.swift */; };
+		2BD739FE22411A0100B66EEF /* Reusable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD739FD22411A0100B66EEF /* Reusable.swift */; };
+		2BD73A002241297700B66EEF /* NumpadDeleteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD739FF2241297700B66EEF /* NumpadDeleteCell.swift */; };
+		2BD73A022241299100B66EEF /* NumpadNumericCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD73A012241299100B66EEF /* NumpadNumericCell.swift */; };
+		2BD73A0622412AC900B66EEF /* NumpadViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD73A0522412AC900B66EEF /* NumpadViewDataSource.swift */; };
+		2BD73A0B22412B0900B66EEF /* NumpadViewLayoutBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD73A0A22412B0900B66EEF /* NumpadViewLayoutBuilder.swift */; };
+		2BD73A1222412B7300B66EEF /* NumpadViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD73A1122412B7300B66EEF /* NumpadViewModel.swift */; };
+		2BD73A1422412D9100B66EEF /* NumpadCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD73A1322412D9100B66EEF /* NumpadCellViewModel.swift */; };
+		2BD73A192241324700B66EEF /* ChoosePasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD73A182241324700B66EEF /* ChoosePasswordViewModel.swift */; };
 		2BF34C992239AAD20052CAD3 /* UIViewController+Flow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF34C982239AAD20052CAD3 /* UIViewController+Flow.swift */; };
 		2BF34C9B2239AB130052CAD3 /* Screen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF34C9A2239AB130052CAD3 /* Screen.swift */; };
 		2BF34C9D2239AB530052CAD3 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF34C9C2239AB530052CAD3 /* Router.swift */; };
@@ -108,6 +118,16 @@
 		2BD739F3223FF08000B66EEF /* NumpadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumpadView.swift; sourceTree = "<group>"; };
 		2BD739F5223FF47900B66EEF /* NumpadNumericButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumpadNumericButton.swift; sourceTree = "<group>"; };
 		2BD739F7223FF4B600B66EEF /* NumpadDeleteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumpadDeleteButton.swift; sourceTree = "<group>"; };
+		2BD739F92240527B00B66EEF /* PasswordInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordInputView.swift; sourceTree = "<group>"; };
+		2BD739FB2241052500B66EEF /* PasswordInputCircleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordInputCircleView.swift; sourceTree = "<group>"; };
+		2BD739FD22411A0100B66EEF /* Reusable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reusable.swift; sourceTree = "<group>"; };
+		2BD739FF2241297700B66EEF /* NumpadDeleteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumpadDeleteCell.swift; sourceTree = "<group>"; };
+		2BD73A012241299100B66EEF /* NumpadNumericCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumpadNumericCell.swift; sourceTree = "<group>"; };
+		2BD73A0522412AC900B66EEF /* NumpadViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumpadViewDataSource.swift; sourceTree = "<group>"; };
+		2BD73A0A22412B0900B66EEF /* NumpadViewLayoutBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumpadViewLayoutBuilder.swift; sourceTree = "<group>"; };
+		2BD73A1122412B7300B66EEF /* NumpadViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumpadViewModel.swift; sourceTree = "<group>"; };
+		2BD73A1322412D9100B66EEF /* NumpadCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumpadCellViewModel.swift; sourceTree = "<group>"; };
+		2BD73A182241324700B66EEF /* ChoosePasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoosePasswordViewModel.swift; sourceTree = "<group>"; };
 		2BF34C982239AAD20052CAD3 /* UIViewController+Flow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Flow.swift"; sourceTree = "<group>"; };
 		2BF34C9A2239AB130052CAD3 /* Screen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Screen.swift; sourceTree = "<group>"; };
 		2BF34C9C2239AB530052CAD3 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
@@ -195,6 +215,9 @@
 		2B8BE4D022391C38005D8565 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				2BD73A0E22412B5900B66EEF /* ViewModels */,
+				2BD73A0722412AF200B66EEF /* LayoutBuilders */,
+				2BD73A0322412AA100B66EEF /* Data */,
 				2BF34CC0223A95900052CAD3 /* Networking */,
 				2BF34CB0223A77410052CAD3 /* Configuration */,
 				2BF34C962239AA8C0052CAD3 /* Flow */,
@@ -469,6 +492,8 @@
 			isa = PBXGroup;
 			children = (
 				2BD739DC223F9E9F00B66EEF /* ChoosePasswordView.swift */,
+				2BD739F92240527B00B66EEF /* PasswordInputView.swift */,
+				2BD739FB2241052500B66EEF /* PasswordInputCircleView.swift */,
 			);
 			path = Password;
 			sourceTree = "<group>";
@@ -538,8 +563,116 @@
 				2BD739F3223FF08000B66EEF /* NumpadView.swift */,
 				2BD739F5223FF47900B66EEF /* NumpadNumericButton.swift */,
 				2BD739F7223FF4B600B66EEF /* NumpadDeleteButton.swift */,
+				2BD739FF2241297700B66EEF /* NumpadDeleteCell.swift */,
+				2BD73A012241299100B66EEF /* NumpadNumericCell.swift */,
 			);
 			path = Numpad;
+			sourceTree = "<group>";
+		};
+		2BD73A0322412AA100B66EEF /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				2BD73A0422412AA400B66EEF /* DataProviders */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		2BD73A0422412AA400B66EEF /* DataProviders */ = {
+			isa = PBXGroup;
+			children = (
+				2BD73A0C22412B3D00B66EEF /* Common */,
+			);
+			path = DataProviders;
+			sourceTree = "<group>";
+		};
+		2BD73A0722412AF200B66EEF /* LayoutBuilders */ = {
+			isa = PBXGroup;
+			children = (
+				2BD73A0822412AF900B66EEF /* Common */,
+			);
+			path = LayoutBuilders;
+			sourceTree = "<group>";
+		};
+		2BD73A0822412AF900B66EEF /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				2BD73A0922412AFD00B66EEF /* Numpad */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		2BD73A0922412AFD00B66EEF /* Numpad */ = {
+			isa = PBXGroup;
+			children = (
+				2BD73A0A22412B0900B66EEF /* NumpadViewLayoutBuilder.swift */,
+			);
+			path = Numpad;
+			sourceTree = "<group>";
+		};
+		2BD73A0C22412B3D00B66EEF /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				2BD73A0D22412B4200B66EEF /* Numpad */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		2BD73A0D22412B4200B66EEF /* Numpad */ = {
+			isa = PBXGroup;
+			children = (
+				2BD73A0522412AC900B66EEF /* NumpadViewDataSource.swift */,
+			);
+			path = Numpad;
+			sourceTree = "<group>";
+		};
+		2BD73A0E22412B5900B66EEF /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				2BD73A152241322D00B66EEF /* Authentication */,
+				2BD73A0F22412B6600B66EEF /* Common */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BD73A0F22412B6600B66EEF /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				2BD73A1022412B6900B66EEF /* Numpad */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		2BD73A1022412B6900B66EEF /* Numpad */ = {
+			isa = PBXGroup;
+			children = (
+				2BD73A1122412B7300B66EEF /* NumpadViewModel.swift */,
+				2BD73A1322412D9100B66EEF /* NumpadCellViewModel.swift */,
+			);
+			path = Numpad;
+			sourceTree = "<group>";
+		};
+		2BD73A152241322D00B66EEF /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				2BD73A162241323400B66EEF /* SignUp */,
+			);
+			path = Authentication;
+			sourceTree = "<group>";
+		};
+		2BD73A162241323400B66EEF /* SignUp */ = {
+			isa = PBXGroup;
+			children = (
+				2BD73A172241323800B66EEF /* Password */,
+			);
+			path = SignUp;
+			sourceTree = "<group>";
+		};
+		2BD73A172241323800B66EEF /* Password */ = {
+			isa = PBXGroup;
+			children = (
+				2BD73A182241324700B66EEF /* ChoosePasswordViewModel.swift */,
+			);
+			path = Password;
 			sourceTree = "<group>";
 		};
 		2BF34C962239AA8C0052CAD3 /* Flow */ = {
@@ -589,6 +722,7 @@
 			isa = PBXGroup;
 			children = (
 				2BF34CB1223A77650052CAD3 /* StatusBarConfigurable.swift */,
+				2BD739FD22411A0100B66EEF /* Reusable.swift */,
 			);
 			path = Configuration;
 			sourceTree = "<group>";
@@ -857,18 +991,25 @@
 				2BF34CB2223A77650052CAD3 /* StatusBarConfigurable.swift in Sources */,
 				2BF34C9D2239AB530052CAD3 /* Router.swift in Sources */,
 				2B8BE4D422391C38005D8565 /* RootViewController.swift in Sources */,
+				2BD73A002241297700B66EEF /* NumpadDeleteCell.swift in Sources */,
 				2BD739F8223FF4B600B66EEF /* NumpadDeleteButton.swift in Sources */,
 				2BD739D2223F97F600B66EEF /* WelcomeView.swift in Sources */,
+				2BD739FE22411A0100B66EEF /* Reusable.swift in Sources */,
+				2BD73A0622412AC900B66EEF /* NumpadViewDataSource.swift in Sources */,
 				2BD739D1223F97F600B66EEF /* IntroductionView.swift in Sources */,
 				2BD739F1223FE1C700B66EEF /* UIButton+Factory.swift in Sources */,
 				2B8BE4D222391C38005D8565 /* AppDelegate.swift in Sources */,
+				2BD73A192241324700B66EEF /* ChoosePasswordViewModel.swift in Sources */,
 				2BD739E1223F9F3000B66EEF /* LocalAuthenticationPreferenceView.swift in Sources */,
+				2BD73A1222412B7300B66EEF /* NumpadViewModel.swift in Sources */,
 				2BF34CB4223A87440052CAD3 /* BaseScrollViewController.swift in Sources */,
 				2BD739D9223F987E00B66EEF /* Utils.swift in Sources */,
 				2BF34CBC223A8C460052CAD3 /* BaseCollectionViewCell.swift in Sources */,
 				2BD739F6223FF47900B66EEF /* NumpadNumericButton.swift in Sources */,
 				2B8BE4EE22393577005D8565 /* BaseViewController.swift in Sources */,
 				2BD739E5223FA07B00B66EEF /* MainButton.swift in Sources */,
+				2BD739FA2240527B00B66EEF /* PasswordInputView.swift in Sources */,
+				2BD73A1422412D9100B66EEF /* NumpadCellViewModel.swift in Sources */,
 				2B8BE4FF22393963005D8565 /* AdaptiveLayout.swift in Sources */,
 				2BD739CB223F97B100B66EEF /* WelcomeViewController.swift in Sources */,
 				2BF34CA82239ADAE0052CAD3 /* Notification+Keyboard.swift in Sources */,
@@ -882,7 +1023,9 @@
 				2BF34C9B2239AB130052CAD3 /* Screen.swift in Sources */,
 				2BF34C992239AAD20052CAD3 /* UIViewController+Flow.swift in Sources */,
 				2B8BE50122393999005D8565 /* AdaptiveLayoutConstants.swift in Sources */,
+				2BD739FC2241052600B66EEF /* PasswordInputCircleView.swift in Sources */,
 				2BD739EC223FA0DC00B66EEF /* LocalAuthenticationPreferenceViewController.swift in Sources */,
+				2BD73A0B22412B0900B66EEF /* NumpadViewLayoutBuilder.swift in Sources */,
 				2B8BE4FA22393739005D8565 /* NotificationCenter+Additions.swift in Sources */,
 				2BF34CA22239ACE60052CAD3 /* ViewControllerConfiguration.swift in Sources */,
 				2BD739CC223F97B100B66EEF /* IntroductionViewController.swift in Sources */,
@@ -891,6 +1034,7 @@
 				2BF34CBF223A8E740052CAD3 /* NavigationController.swift in Sources */,
 				2BD739DD223F9E9F00B66EEF /* ChoosePasswordView.swift in Sources */,
 				2B8BE4F4223935DA005D8565 /* BaseView.swift in Sources */,
+				2BD73A022241299100B66EEF /* NumpadNumericCell.swift in Sources */,
 				2BD739EF223FDE8400B66EEF /* UILabel+Factory.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

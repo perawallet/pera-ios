@@ -98,8 +98,8 @@ class Router {
             viewController = IntroductionViewController(configuration: rootViewController.appConfiguration.all())
         case .welcome:
             viewController = WelcomeViewController(configuration: rootViewController.appConfiguration.all())
-        case .choosePassword:
-            viewController = ChoosePasswordViewController(configuration: rootViewController.appConfiguration.all())
+        case let .choosePassword(mode):
+            viewController = ChoosePasswordViewController(mode: mode, configuration: rootViewController.appConfiguration.all())
         case .localAuthenticationPreference:
             viewController = LocalAuthenticationPreferenceViewController(configuration: rootViewController.appConfiguration.all())
         }
