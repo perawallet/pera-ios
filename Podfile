@@ -12,5 +12,5 @@ target 'algorand' do
 	pod 'SwiftLint'
 
 	#Networking
-	pod 'Magpie', :git => 'https://github.com/Hipo/magpie.git', :branch => 'fetch-request-parsing-json-into-model'
+	pod 'Magpie', :git => 'https://github.com/Hipo/magpie.git'
 end
