@@ -8,7 +8,12 @@
 
 import UIKit
 
-class PassPhraseBackUpViewController: BaseViewController {
+class PassPhraseBackUpViewController: BaseScrollViewController {
+    
+    private let passPhrase = """
+                            quarters unific unlive planned faculty pang neuron grogshop scale overflow moreover clout rainy
+                            rajah bebop coition marplot turncoat outpour fimble calyces serjeant cuprum sailboat
+                            """
 
     // MARK: Components
     
@@ -20,15 +25,22 @@ class PassPhraseBackUpViewController: BaseViewController {
     // MARK: Setup
     
     override func configureAppearance() {
+        super.configureAppearance()
+        
         view.backgroundColor = rgb(0.95, 0.96, 0.96)
+        
+        passPhraseBackUpView.passPhreaseLabel.attributedText = passPhrase.attributed([.lineSpacing(1.5)])
     }
     
     override func prepareLayout() {
-        view.addSubview(passPhraseBackUpView)
+        super.prepareLayout()
+        
+        shouldIgnoreBottomLayoutGuide = false
+        
+        contentView.addSubview(passPhraseBackUpView)
         
         passPhraseBackUpView.snp.makeConstraints { make in
-            make.leading.trailing.top.equalToSuperview()
-            make.bottom.safeEqualToBottom(of: self)
+            make.edges.equalToSuperview()
         }
     }
     
