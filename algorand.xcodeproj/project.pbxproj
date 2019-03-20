@@ -17,6 +17,10 @@
 		17B7D8AB2240E19600A6FF9E /* AccountDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B7D8AA2240E19600A6FF9E /* AccountDraft.swift */; };
 		17B7D8AE2240F25000A6FF9E /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B7D8AD2240F25000A6FF9E /* Environment.swift */; };
 		17B7D8B0224128EC00A6FF9E /* Keychain+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B7D8AF224128EC00A6FF9E /* Keychain+Additions.swift */; };
+		17B7D8B222422B0800A6FF9E /* API+Wallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B7D8B122422B0800A6FF9E /* API+Wallet.swift */; };
+		17B7D8B42242370800A6FF9E /* WalletCreationDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B7D8B32242370800A6FF9E /* WalletCreationDraft.swift */; };
+		17B7D8B62242621100A6FF9E /* Wallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B7D8B52242621100A6FF9E /* Wallet.swift */; };
+		17B7D8B82242830D00A6FF9E /* Params+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B7D8B72242830D00A6FF9E /* Params+Additions.swift */; };
 		2B8BE4D222391C38005D8565 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8BE4D122391C38005D8565 /* AppDelegate.swift */; };
 		2B8BE4D422391C38005D8565 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8BE4D322391C38005D8565 /* RootViewController.swift */; };
 		2B8BE4D922391C3B005D8565 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2B8BE4D822391C3B005D8565 /* Assets.xcassets */; };
@@ -81,6 +85,10 @@
 		17B7D8AA2240E19600A6FF9E /* AccountDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDraft.swift; sourceTree = "<group>"; };
 		17B7D8AD2240F25000A6FF9E /* Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
 		17B7D8AF224128EC00A6FF9E /* Keychain+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Keychain+Additions.swift"; sourceTree = "<group>"; };
+		17B7D8B122422B0800A6FF9E /* API+Wallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+Wallet.swift"; sourceTree = "<group>"; };
+		17B7D8B32242370800A6FF9E /* WalletCreationDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletCreationDraft.swift; sourceTree = "<group>"; };
+		17B7D8B52242621100A6FF9E /* Wallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wallet.swift; sourceTree = "<group>"; };
+		17B7D8B72242830D00A6FF9E /* Params+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Params+Additions.swift"; sourceTree = "<group>"; };
 		2AC10F1C54DF2982BFB4A180 /* Pods-algorand.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand.debug.xcconfig"; path = "Pods/Target Support Files/Pods-algorand/Pods-algorand.debug.xcconfig"; sourceTree = "<group>"; };
 		2B8BE4CE22391C38005D8565 /* algorand.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = algorand.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B8BE4D122391C38005D8565 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -178,6 +186,7 @@
 			children = (
 				17512622223BEB9D0095AF4F /* UserDefaults+Additions.swift */,
 				17B7D8AF224128EC00A6FF9E /* Keychain+Additions.swift */,
+				17B7D8B72242830D00A6FF9E /* Params+Additions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -186,6 +195,7 @@
 			isa = PBXGroup;
 			children = (
 				17B7D8A52240D8F900A6FF9E /* Account.swift */,
+				17B7D8B52242621100A6FF9E /* Wallet.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -194,6 +204,7 @@
 			isa = PBXGroup;
 			children = (
 				17B7D8AA2240E19600A6FF9E /* AccountDraft.swift */,
+				17B7D8B32242370800A6FF9E /* WalletCreationDraft.swift */,
 			);
 			path = Drafts;
 			sourceTree = "<group>";
@@ -512,6 +523,7 @@
 				17512619223BE5930095AF4F /* AlgorandParamPairKey.swift */,
 				2BF34CC1223A95A50052CAD3 /* API.swift */,
 				17B7D8A72240DFFC00A6FF9E /* API+Account.swift */,
+				17B7D8B122422B0800A6FF9E /* API+Wallet.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -761,9 +773,11 @@
 				17512623223BEB9D0095AF4F /* UserDefaults+Additions.swift in Sources */,
 				1751261D223BEA320095AF4F /* Session.swift in Sources */,
 				17512620223BEAE90095AF4F /* Storable.swift in Sources */,
+				17B7D8B62242621100A6FF9E /* Wallet.swift in Sources */,
 				17B7D8A62240D8F900A6FF9E /* Account.swift in Sources */,
 				2BF34CA82239ADAE0052CAD3 /* Notification+Keyboard.swift in Sources */,
 				17B7D8A82240DFFC00A6FF9E /* API+Account.swift in Sources */,
+				17B7D8B82242830D00A6FF9E /* Params+Additions.swift in Sources */,
 				2BF34CB7223A87B70052CAD3 /* Snapkit+SafeArea.swift in Sources */,
 				2B8BE505223939F9005D8565 /* UIApplication+Additions.swift in Sources */,
 				17B7D8AE2240F25000A6FF9E /* Environment.swift in Sources */,
@@ -773,8 +787,10 @@
 				2BF34C9B2239AB130052CAD3 /* Screen.swift in Sources */,
 				2BF34C992239AAD20052CAD3 /* UIViewController+Flow.swift in Sources */,
 				2B8BE50122393999005D8565 /* AdaptiveLayoutConstants.swift in Sources */,
+				17B7D8B42242370800A6FF9E /* WalletCreationDraft.swift in Sources */,
 				2B8BE4FA22393739005D8565 /* NotificationCenter+Additions.swift in Sources */,
 				2BF34CA22239ACE60052CAD3 /* ViewControllerConfiguration.swift in Sources */,
+				17B7D8B222422B0800A6FF9E /* API+Wallet.swift in Sources */,
 				2BF34CBA223A880C0052CAD3 /* UIView+SafeArea.swift in Sources */,
 				2BF34CBF223A8E740052CAD3 /* NavigationController.swift in Sources */,
 				2B8BE4F4223935DA005D8565 /* BaseView.swift in Sources */,
