@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		179D3CEC223F805B00AAF269 /* Crypto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 179D3CEB223F805B00AAF269 /* Crypto.framework */; };
+		2B89549F2242D90000D6D068 /* UIViewController+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B89549E2242D90000D6D068 /* UIViewController+Additions.swift */; };
 		2B8BE4D222391C38005D8565 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8BE4D122391C38005D8565 /* AppDelegate.swift */; };
 		2B8BE4D422391C38005D8565 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8BE4D322391C38005D8565 /* RootViewController.swift */; };
 		2B8BE4D922391C3B005D8565 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2B8BE4D822391C3B005D8565 /* Assets.xcassets */; };
@@ -94,6 +95,7 @@
 		01F66EBBAFA146AFC193D69A /* Pods_algorand.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_algorand.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		179D3CEB223F805B00AAF269 /* Crypto.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crypto.framework; sourceTree = "<group>"; };
 		2AC10F1C54DF2982BFB4A180 /* Pods-algorand.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand.debug.xcconfig"; path = "Pods/Target Support Files/Pods-algorand/Pods-algorand.debug.xcconfig"; sourceTree = "<group>"; };
+		2B89549E2242D90000D6D068 /* UIViewController+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Additions.swift"; sourceTree = "<group>"; };
 		2B8BE4CE22391C38005D8565 /* algorand.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = algorand.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B8BE4D122391C38005D8565 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2B8BE4D322391C38005D8565 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
@@ -714,6 +716,7 @@
 			isa = PBXGroup;
 			children = (
 				2BF34C982239AAD20052CAD3 /* UIViewController+Flow.swift */,
+				2B89549E2242D90000D6D068 /* UIViewController+Additions.swift */,
 			);
 			path = Flow;
 			sourceTree = "<group>";
@@ -1065,6 +1068,7 @@
 				2B8C1278224196DF00E34D37 /* String+Attributes.swift in Sources */,
 				2BD739DD223F9E9F00B66EEF /* ChoosePasswordView.swift in Sources */,
 				2B8BE4F4223935DA005D8565 /* BaseView.swift in Sources */,
+				2B89549F2242D90000D6D068 /* UIViewController+Additions.swift in Sources */,
 				2BD73A022241299100B66EEF /* NumpadNumericCell.swift in Sources */,
 				2BD739EF223FDE8400B66EEF /* UILabel+Factory.swift in Sources */,
 				2B8C127A2241970F00E34D37 /* NSAttributedString+Additions.swift in Sources */,

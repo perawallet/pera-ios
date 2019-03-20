@@ -59,9 +59,12 @@ extension ChoosePasswordViewController: ChoosePasswordViewDelegate {
             }
         case let .verify(previousPassword):
             viewModel.configureSelection(in: choosePasswordView, for: value) { password in
-                if password == previousPassword {
-                    open(.localAuthenticationPreference, by: .push)
+                if password != previousPassword {
+                    displaySimpleAlertWith(title: "password-verify-fail-title".localized, message: "password-verify-fail-message".localized)
+                    return
                 }
+                
+                open(.localAuthenticationPreference, by: .push)
             }
         }
     }

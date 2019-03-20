@@ -10,6 +10,7 @@
 
 "title-yes" = "Yes";
 "title-no" = "No";
+"title-ok" = "OK";
 
 // MARK: Introduction
 
@@ -28,6 +29,9 @@
 "password-set-subtitle" = "Choose a six digit password";
 "password-verify-title" = "Verify Password";
 "password-verify-subtitle" = "Enter the same six digits";
+
+"password-verify-fail-title" = "Wrong Password";
+"password-verify-fail-message" = "Password did not match with previous password.";
 
 // MARK: Local Authentication Preferences
 

@@ -49,7 +49,9 @@ class ChoosePasswordViewModel {
             
             password.append(number)
         case .delete:
-            password.removeLast()
+            if !password.isEmpty {
+                password.removeLast()
+            }
         }
         
         if isPasswordValid {
