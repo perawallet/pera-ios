@@ -26,6 +26,7 @@ class SingleLineInputField: BaseInputView {
     private(set) lazy var inputTextField: UITextField = {
         let textField = UITextField()
         textField.textColor = .black
+        textField.tintColor = .black
         textField.font = UIFont.systemFont(ofSize: 13.0, weight: .semibold)
         return textField
     }()

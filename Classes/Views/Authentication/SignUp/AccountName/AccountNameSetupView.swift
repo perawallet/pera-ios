@@ -11,6 +11,7 @@ import UIKit
 protocol AccountNameSetupViewDelegate: class {
     
     func accountNameSetupViewDidTapNextButton(_ accountNameSetupView: AccountNameSetupView)
+    func accountNameSetupViewDidChangeValue(_ accountNameSetupView: AccountNameSetupView)
 }
 
 class AccountNameSetupView: BaseView {
@@ -25,7 +26,18 @@ class AccountNameSetupView: BaseView {
     
     // MARK: Components
     
-    private(set) lazy var accountNameInputView = SingleLineFieldView()
+    private(set) lazy var accountNameInputView: SingleLineInputField = {
+        let accountNameInputView = SingleLineInputField(separatorStyle: .colored)
+        accountNameInputView.explanationLabel.text = "account-name-setup-explanation".localized
+        accountNameInputView.inputTextField.attributedPlaceholder = NSAttributedString(
+            string: "account-name-setup-placeholder".localized,
+            attributes: [NSAttributedString.Key.foregroundColor: rgb(0.67, 0.67, 0.72),
+                         NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13.0, weight: .semibold)]
+        )
+        accountNameInputView.nextButtonMode = .submit
+        accountNameInputView.inputTextField.autocorrectionType = .no
+        return accountNameInputView
+    }()
     
     private(set) lazy var nextButton: MainButton = {
         let button = MainButton(title: "title-next".localized)
@@ -38,6 +50,10 @@ class AccountNameSetupView: BaseView {
     
     override func configureAppearance() {
         backgroundColor = rgb(0.95, 0.96, 0.96)
+    }
+    
+    override func linkInteractors() {
+        accountNameInputView.delegate = self
     }
     
     override func setListeners() {
@@ -65,7 +81,7 @@ class AccountNameSetupView: BaseView {
         
         nextButton.snp.makeConstraints { make in
             make.top.equalTo(accountNameInputView.snp.bottom).offset(layout.current.buttonTopInset)
-            make.bottom.lessThanOrEqualToSuperview().inset(layout.current.buttonBottomInset)
+            make.bottom.equalToSuperview().inset(layout.current.buttonBottomInset)
             make.centerX.equalToSuperview()
         }
     }
@@ -75,5 +91,12 @@ class AccountNameSetupView: BaseView {
     @objc
     func notifyDelegateToNextButtonTapped() {
         delegate?.accountNameSetupViewDidTapNextButton(self)
+    }
+}
+
+extension AccountNameSetupView: InputViewDelegate {
+    
+    func inputViewDidChangeValue(inputView: BaseInputView) {
+        delegate?.accountNameSetupViewDidChangeValue(self)
     }
 }

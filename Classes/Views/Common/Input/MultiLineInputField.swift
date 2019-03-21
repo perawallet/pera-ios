@@ -34,6 +34,7 @@ class MultiLineInputField: BaseInputView {
         let textView = UITextView()
         textView.font = UIFont.systemFont(ofSize: 16.0, weight: .semibold)
         textView.textColor = rgb(0.04, 0.05, 0.07)
+        textView.tintColor = rgb(0.04, 0.05, 0.07)
         textView.isSelectable = true
         textView.isEditable = true
         return textView

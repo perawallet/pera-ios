@@ -62,6 +62,17 @@ extension AccountNameSetupViewController: AccountNameSetupViewDelegate {
     func accountNameSetupViewDidTapNextButton(_ accountNameSetupView: AccountNameSetupView) {
         
     }
+    
+    func accountNameSetupViewDidChangeValue(_ accountNameSetupView: AccountNameSetupView) {
+        if let text = accountNameSetupView.accountNameInputView.inputTextField.text,
+            !text.isEmpty {
+            
+            accountNameSetupView.accountNameInputView.separatorView.backgroundColor = rgb(0.0, 0.46, 1.0)
+            return
+        }
+        
+        accountNameSetupView.accountNameInputView.separatorView.backgroundColor = rgba(0.67, 0.67, 0.72, 0.31)
+    }
 }
 
 // MARK: KeyboardControllerDataSource

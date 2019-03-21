@@ -52,3 +52,8 @@
 
 "pass-phrase-verify-pop-up-title" = "Pass Phrase Verified";
 "pass-phrase-verify-pop-up-explanation" = "Your passphrase has been verified. Make sure that you have backed it up as you will need it to recover your account.";
+
+// MARK: Account Name Setup
+
+"account-name-setup-explanation" = "Name:";
+"account-name-setup-placeholder" = "Please name your account";
