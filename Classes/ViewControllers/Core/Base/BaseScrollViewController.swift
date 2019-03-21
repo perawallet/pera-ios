@@ -100,6 +100,7 @@ class BaseScrollViewController: BaseViewController {
         contentView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
             make.leading.trailing.equalTo(view)
+            make.height.equalToSuperview().priority(.low)
         }
     }
 }

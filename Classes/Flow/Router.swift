@@ -44,9 +44,9 @@ class Router {
             sourceViewController.navigationController?.pushViewController(viewController, animated: animated)
         case .present,
              .customPresent:
-            let navigationController: UINavigationController
+            let navigationController: NavigationController
             
-            if let navController = viewController as? UINavigationController {
+            if let navController = viewController as? NavigationController {
                 navigationController = navController
             } else {
                 if let presentingViewController = self as? StatusBarConfigurable,
@@ -57,7 +57,7 @@ class Router {
                     presentedViewController.isStatusBarHidden = true
                 }
                 
-                navigationController = UINavigationController(rootViewController: viewController)
+                navigationController = NavigationController(rootViewController: viewController)
             }
             
             if case .customPresent(
@@ -95,7 +95,15 @@ class Router {
         
         switch screen {
         case .introduction:
-            viewController = rootViewController
+            viewController = IntroductionViewController(configuration: rootViewController.appConfiguration.all())
+        case .welcome:
+            viewController = WelcomeViewController(configuration: rootViewController.appConfiguration.all())
+        case let .choosePassword(mode):
+            viewController = ChoosePasswordViewController(mode: mode, configuration: rootViewController.appConfiguration.all())
+        case .localAuthenticationPreference:
+            viewController = LocalAuthenticationPreferenceViewController(configuration: rootViewController.appConfiguration.all())
+        case .passPhraseBackUp:
+            viewController = PassPhraseBackUpViewController(configuration: rootViewController.appConfiguration.all())
         }
         
         return viewController as? T

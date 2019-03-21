@@ -35,5 +35,18 @@ class RootViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = .white
+        
+        open(.introduction, by: .present)
+    }
+
+    func route<T: UIViewController>(
+        to screen: Screen,
+        from viewController: UIViewController,
+        by style: Screen.Transition.Open,
+        animated: Bool = true,
+        then completion: ScreenTransitionCompletion? = nil
+    ) -> T? {
+        
+        return router?.route(to: screen, from: viewController, by: style, animated: animated, then: completion)
     }
 }
