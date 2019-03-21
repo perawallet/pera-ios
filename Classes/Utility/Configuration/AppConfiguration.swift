@@ -25,6 +25,7 @@ class AppConfiguration {
     }
     
     func clearAll() {
-        
+        self.session.clear(.keychain)
+        self.session.clear(.defaults)
     }
 }
