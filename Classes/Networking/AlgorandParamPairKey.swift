@@ -10,10 +10,6 @@ import Magpie
 
 enum AlgorandParamPairKey: String, CodingKey {
     case address = "address"
-    case masterDerivationKey = "master_derivation_key"
-    case walletDriverName = "wallet_driver_name"
-    case walletName = "wallet_name"
-    case walletPassword = "wallet_password"
 }
 
 extension AlgorandParamPairKey: ParamsPairKey {
