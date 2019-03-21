@@ -7,7 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1751261A223BE5930095AF4F /* AlgorandParamPairKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17512619223BE5930095AF4F /* AlgorandParamPairKey.swift */; };
+		1751261D223BEA320095AF4F /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1751261C223BEA320095AF4F /* Session.swift */; };
+		17512620223BEAE90095AF4F /* Storable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1751261F223BEAE90095AF4F /* Storable.swift */; };
+		17512623223BEB9D0095AF4F /* UserDefaults+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17512622223BEB9D0095AF4F /* UserDefaults+Additions.swift */; };
 		179D3CEC223F805B00AAF269 /* Crypto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 179D3CEB223F805B00AAF269 /* Crypto.framework */; };
+		17B7D8A62240D8F900A6FF9E /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B7D8A52240D8F900A6FF9E /* Account.swift */; };
+		17B7D8A82240DFFC00A6FF9E /* API+Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B7D8A72240DFFC00A6FF9E /* API+Account.swift */; };
+		17B7D8AB2240E19600A6FF9E /* AccountDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B7D8AA2240E19600A6FF9E /* AccountDraft.swift */; };
+		17B7D8AE2240F25000A6FF9E /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B7D8AD2240F25000A6FF9E /* Environment.swift */; };
+		17B7D8B0224128EC00A6FF9E /* Keychain+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B7D8AF224128EC00A6FF9E /* Keychain+Additions.swift */; };
+		17B7D8B82242830D00A6FF9E /* Params+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B7D8B72242830D00A6FF9E /* Params+Additions.swift */; };
 		2B89549F2242D90000D6D068 /* UIViewController+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B89549E2242D90000D6D068 /* UIViewController+Additions.swift */; };
 		2B8BE4D222391C38005D8565 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8BE4D122391C38005D8565 /* AppDelegate.swift */; };
 		2B8BE4D422391C38005D8565 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8BE4D322391C38005D8565 /* RootViewController.swift */; };
@@ -93,7 +103,17 @@
 
 /* Begin PBXFileReference section */
 		01F66EBBAFA146AFC193D69A /* Pods_algorand.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_algorand.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		17512619223BE5930095AF4F /* AlgorandParamPairKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorandParamPairKey.swift; sourceTree = "<group>"; };
+		1751261C223BEA320095AF4F /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
+		1751261F223BEAE90095AF4F /* Storable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storable.swift; sourceTree = "<group>"; };
+		17512622223BEB9D0095AF4F /* UserDefaults+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Additions.swift"; sourceTree = "<group>"; };
 		179D3CEB223F805B00AAF269 /* Crypto.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crypto.framework; sourceTree = "<group>"; };
+		17B7D8A52240D8F900A6FF9E /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
+		17B7D8A72240DFFC00A6FF9E /* API+Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+Account.swift"; sourceTree = "<group>"; };
+		17B7D8AA2240E19600A6FF9E /* AccountDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDraft.swift; sourceTree = "<group>"; };
+		17B7D8AD2240F25000A6FF9E /* Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
+		17B7D8AF224128EC00A6FF9E /* Keychain+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Keychain+Additions.swift"; sourceTree = "<group>"; };
+		17B7D8B72242830D00A6FF9E /* Params+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Params+Additions.swift"; sourceTree = "<group>"; };
 		2AC10F1C54DF2982BFB4A180 /* Pods-algorand.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand.debug.xcconfig"; path = "Pods/Target Support Files/Pods-algorand/Pods-algorand.debug.xcconfig"; sourceTree = "<group>"; };
 		2B89549E2242D90000D6D068 /* UIViewController+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Additions.swift"; sourceTree = "<group>"; };
 		2B8BE4CE22391C38005D8565 /* algorand.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = algorand.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -201,6 +221,56 @@
 			path = Libraries;
 			sourceTree = "<group>";
 		};
+		1751261B223BEA230095AF4F /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				1751261C223BEA320095AF4F /* Session.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		1751261E223BEADF0095AF4F /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				1751261F223BEAE90095AF4F /* Storable.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		17512621223BEB6D0095AF4F /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				17512622223BEB9D0095AF4F /* UserDefaults+Additions.swift */,
+				17B7D8AF224128EC00A6FF9E /* Keychain+Additions.swift */,
+				17B7D8B72242830D00A6FF9E /* Params+Additions.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		17B7D8A42240D79200A6FF9E /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				17B7D8A52240D8F900A6FF9E /* Account.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		17B7D8A92240E18800A6FF9E /* Drafts */ = {
+			isa = PBXGroup;
+			children = (
+				17B7D8AA2240E19600A6FF9E /* AccountDraft.swift */,
+			);
+			path = Drafts;
+			sourceTree = "<group>";
+		};
+		17B7D8AC2240F23D00A6FF9E /* Environment */ = {
+			isa = PBXGroup;
+			children = (
+				17B7D8AD2240F25000A6FF9E /* Environment.swift */,
+			);
+			path = Environment;
+			sourceTree = "<group>";
+		};
 		2B8BE4C522391C38005D8565 = {
 			isa = PBXGroup;
 			children = (
@@ -225,6 +295,8 @@
 		2B8BE4D022391C38005D8565 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				17B7D8A42240D79200A6FF9E /* Models */,
+				17512621223BEB6D0095AF4F /* Extensions */,
 				2BD73A0E22412B5900B66EEF /* ViewModels */,
 				2BD73A0722412AF200B66EEF /* LayoutBuilders */,
 				2BD73A0322412AA100B66EEF /* Data */,
@@ -287,6 +359,7 @@
 		2B8BE4E922392674005D8565 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				17B7D8AC2240F23D00A6FF9E /* Environment */,
 				2B8BE4EA22392678005D8565 /* Application */,
 			);
 			path = Core;
@@ -783,7 +856,12 @@
 		2BF34CC0223A95900052CAD3 /* Networking */ = {
 			isa = PBXGroup;
 			children = (
+				17B7D8A92240E18800A6FF9E /* Drafts */,
+				1751261E223BEADF0095AF4F /* Protocols */,
+				1751261B223BEA230095AF4F /* Models */,
+				17512619223BE5930095AF4F /* AlgorandParamPairKey.swift */,
 				2BF34CC1223A95A50052CAD3 /* API.swift */,
+				17B7D8A72240DFFC00A6FF9E /* API+Account.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -995,6 +1073,7 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-algorand/Pods-algorand-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/KeychainAccess/KeychainAccess.framework",
 				"${BUILT_PRODUCTS_DIR}/Magpie/Magpie.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 			);
@@ -1003,6 +1082,7 @@
 			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainAccess.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Magpie.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 			);
@@ -1021,6 +1101,7 @@
 				2BF34CC2223A95A50052CAD3 /* API.swift in Sources */,
 				2BF34CB2223A77650052CAD3 /* StatusBarConfigurable.swift in Sources */,
 				2BF34C9D2239AB530052CAD3 /* Router.swift in Sources */,
+				1751261A223BE5930095AF4F /* AlgorandParamPairKey.swift in Sources */,
 				2B8BE4D422391C38005D8565 /* RootViewController.swift in Sources */,
 				2BD73A002241297700B66EEF /* NumpadDeleteCell.swift in Sources */,
 				2BD739F8223FF4B600B66EEF /* NumpadDeleteButton.swift in Sources */,
@@ -1040,6 +1121,19 @@
 				2BF34CBC223A8C460052CAD3 /* BaseCollectionViewCell.swift in Sources */,
 				2BD739F6223FF47900B66EEF /* NumpadNumericButton.swift in Sources */,
 				2B8BE4EE22393577005D8565 /* BaseViewController.swift in Sources */,
+				17B7D8B0224128EC00A6FF9E /* Keychain+Additions.swift in Sources */,
+				17B7D8AB2240E19600A6FF9E /* AccountDraft.swift in Sources */,
+				2B8BE4FF22393963005D8565 /* AdaptiveLayout.swift in Sources */,
+				17512623223BEB9D0095AF4F /* UserDefaults+Additions.swift in Sources */,
+				1751261D223BEA320095AF4F /* Session.swift in Sources */,
+				17512620223BEAE90095AF4F /* Storable.swift in Sources */,
+				17B7D8A62240D8F900A6FF9E /* Account.swift in Sources */,
+				2BF34CA82239ADAE0052CAD3 /* Notification+Keyboard.swift in Sources */,
+				17B7D8A82240DFFC00A6FF9E /* API+Account.swift in Sources */,
+				17B7D8B82242830D00A6FF9E /* Params+Additions.swift in Sources */,
+				2BF34CB7223A87B70052CAD3 /* Snapkit+SafeArea.swift in Sources */,
+				2B8BE505223939F9005D8565 /* UIApplication+Additions.swift in Sources */,
+				17B7D8AE2240F25000A6FF9E /* Environment.swift in Sources */,
 				2BD739E5223FA07B00B66EEF /* MainButton.swift in Sources */,
 				2BD739FA2240527B00B66EEF /* PasswordInputView.swift in Sources */,
 				2BD73A1422412D9100B66EEF /* NumpadCellViewModel.swift in Sources */,
@@ -1056,6 +1150,8 @@
 				2BF34C9B2239AB130052CAD3 /* Screen.swift in Sources */,
 				2BF34C992239AAD20052CAD3 /* UIViewController+Flow.swift in Sources */,
 				2B8BE50122393999005D8565 /* AdaptiveLayoutConstants.swift in Sources */,
+				2B8BE4FA22393739005D8565 /* NotificationCenter+Additions.swift in Sources */,
+				2BF34CA22239ACE60052CAD3 /* ViewControllerConfiguration.swift in Sources */,
 				2BD739FC2241052600B66EEF /* PasswordInputCircleView.swift in Sources */,
 				2BD739EC223FA0DC00B66EEF /* LocalAuthenticationPreferenceViewController.swift in Sources */,
 				2BD73A0B22412B0900B66EEF /* NumpadViewLayoutBuilder.swift in Sources */,

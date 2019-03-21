@@ -10,6 +10,10 @@ import Foundation
 
 class ViewControllerConfiguration {
 
-    init() {
+    let api: API?
+    var session: Session?
+    
+    init(api: API?) {
+        self.api = api
     }
 }
