@@ -33,6 +33,10 @@
 		2B8954B92243FCFA00D6D068 /* AdaptiveLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8BE4FE22393963005D8565 /* AdaptiveLayout.swift */; };
 		2B8954BA2243FCFA00D6D068 /* Snapkit+SafeArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF34CB6223A87B70052CAD3 /* Snapkit+SafeArea.swift */; };
 		2B8954BB2243FCFA00D6D068 /* UIApplication+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8BE504223939F9005D8565 /* UIApplication+Additions.swift */; };
+		2B8954C02244047D00D6D068 /* BaseInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8954BF2244047D00D6D068 /* BaseInputView.swift */; };
+		2B8954C2224404B700D6D068 /* SingleLineInputField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8954C1224404B700D6D068 /* SingleLineInputField.swift */; };
+		2B8954C4224404C900D6D068 /* MultiLineInputField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8954C3224404C900D6D068 /* MultiLineInputField.swift */; };
+		2B8954C8224420B400D6D068 /* InputViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8954C7224420B400D6D068 /* InputViewDelegate.swift */; };
 		2B8BE4D222391C38005D8565 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8BE4D122391C38005D8565 /* AppDelegate.swift */; };
 		2B8BE4D422391C38005D8565 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8BE4D322391C38005D8565 /* RootViewController.swift */; };
 		2B8BE4D922391C3B005D8565 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2B8BE4D822391C3B005D8565 /* Assets.xcassets */; };
@@ -132,6 +136,10 @@
 		2B8954AF2243D5DA00D6D068 /* DestructiveAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DestructiveAlertView.swift; sourceTree = "<group>"; };
 		2B8954B22243D7AD00D6D068 /* AlertViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertViewModel.swift; sourceTree = "<group>"; };
 		2B8954B42243D7C400D6D068 /* AlertViewConfigurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertViewConfigurator.swift; sourceTree = "<group>"; };
+		2B8954BF2244047D00D6D068 /* BaseInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseInputView.swift; sourceTree = "<group>"; };
+		2B8954C1224404B700D6D068 /* SingleLineInputField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleLineInputField.swift; sourceTree = "<group>"; };
+		2B8954C3224404C900D6D068 /* MultiLineInputField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiLineInputField.swift; sourceTree = "<group>"; };
+		2B8954C7224420B400D6D068 /* InputViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputViewDelegate.swift; sourceTree = "<group>"; };
 		2B8BE4CE22391C38005D8565 /* algorand.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = algorand.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B8BE4D122391C38005D8565 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2B8BE4D322391C38005D8565 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
@@ -355,6 +363,31 @@
 			path = Keys;
 			sourceTree = "<group>";
 		};
+		2B8954BE2244044200D6D068 /* Input */ = {
+			isa = PBXGroup;
+			children = (
+				2B8954C1224404B700D6D068 /* SingleLineInputField.swift */,
+				2B8954C3224404C900D6D068 /* MultiLineInputField.swift */,
+			);
+			path = Input;
+			sourceTree = "<group>";
+		};
+		2B8954C5224420A000D6D068 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				2B8954C6224420A500D6D068 /* Input */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		2B8954C6224420A500D6D068 /* Input */ = {
+			isa = PBXGroup;
+			children = (
+				2B8954C7224420B400D6D068 /* InputViewDelegate.swift */,
+			);
+			path = Input;
+			sourceTree = "<group>";
+		};
 		2B8BE4C522391C38005D8565 = {
 			isa = PBXGroup;
 			children = (
@@ -379,6 +412,7 @@
 		2B8BE4D022391C38005D8565 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				2B8954C5224420A000D6D068 /* Protocols */,
 				17B7D8A42240D79200A6FF9E /* Models */,
 				17512621223BEB6D0095AF4F /* Extensions */,
 				2BD73A0E22412B5900B66EEF /* ViewModels */,
@@ -498,6 +532,7 @@
 		2B8BE4F2223935CA005D8565 /* Base */ = {
 			isa = PBXGroup;
 			children = (
+				2B8954BF2244047D00D6D068 /* BaseInputView.swift */,
 				2B8BE4F3223935DA005D8565 /* BaseView.swift */,
 				2BF34CBB223A8C460052CAD3 /* BaseCollectionViewCell.swift */,
 			);
@@ -679,6 +714,7 @@
 		2BD739E2223F9FDD00B66EEF /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				2B8954BE2244044200D6D068 /* Input */,
 				2B8954A62243853700D6D068 /* Alert */,
 				2BD739F2223FF05C00B66EEF /* Numpad */,
 				2BD739E3223F9FF500B66EEF /* Components */,
@@ -1188,7 +1224,9 @@
 			files = (
 				2B8954B92243FCFA00D6D068 /* AdaptiveLayout.swift in Sources */,
 				2B8954BA2243FCFA00D6D068 /* Snapkit+SafeArea.swift in Sources */,
+				2B8954C4224404C900D6D068 /* MultiLineInputField.swift in Sources */,
 				2B8954BB2243FCFA00D6D068 /* UIApplication+Additions.swift in Sources */,
+				2B8954C8224420B400D6D068 /* InputViewDelegate.swift in Sources */,
 				2B8954B82243FCD800D6D068 /* ViewControllerConfiguration.swift in Sources */,
 				2B8954B72243FCB100D6D068 /* Notification+Keyboard.swift in Sources */,
 				2B8954B62243FBD600D6D068 /* NotificationCenter+Additions.swift in Sources */,
@@ -1208,6 +1246,7 @@
 				2BD739F1223FE1C700B66EEF /* UIButton+Factory.swift in Sources */,
 				2B8BE4D222391C38005D8565 /* AppDelegate.swift in Sources */,
 				2BD73A192241324700B66EEF /* ChoosePasswordViewModel.swift in Sources */,
+				2B8954C02244047D00D6D068 /* BaseInputView.swift in Sources */,
 				2BD739E1223F9F3000B66EEF /* LocalAuthenticationPreferenceView.swift in Sources */,
 				2BD73A1222412B7300B66EEF /* NumpadViewModel.swift in Sources */,
 				2BF34CB4223A87440052CAD3 /* BaseScrollViewController.swift in Sources */,
@@ -1258,6 +1297,7 @@
 				2B8954B32243D7AD00D6D068 /* AlertViewModel.swift in Sources */,
 				2B8C127A2241970F00E34D37 /* NSAttributedString+Additions.swift in Sources */,
 				2B8954AE2243D55200D6D068 /* NormalAlertView.swift in Sources */,
+				2B8954C2224404B700D6D068 /* SingleLineInputField.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

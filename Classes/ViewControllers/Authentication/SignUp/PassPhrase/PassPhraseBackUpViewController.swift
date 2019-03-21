@@ -52,6 +52,6 @@ class PassPhraseBackUpViewController: BaseScrollViewController {
 extension PassPhraseBackUpViewController: PassPhraseBackUpViewDelegate {
     
     func passPhraseBackUpViewDidTapVerifyButton(_ passPhraseBackUpView: PassPhraseBackUpView) {
-        
+        open(.accountNameSetup, by: .push)
     }
 }
