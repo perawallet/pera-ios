@@ -1,0 +1,106 @@
+//
+//  AlertViewController.swift
+//  algorand
+//
+//  Created by Göktuğ Berk Ulu on 21.03.2019.
+//  Copyright © 2019 hippo. All rights reserved.
+//
+
+import UIKit
+
+typealias EmptyHandler = () -> Void
+
+class AlertViewController: BaseViewController {
+    
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let horizontalInset: CGFloat = 20.0
+    }
+    
+    private let layout = Layout<LayoutConstants>()
+    
+    private let alertView: AlertView
+    private let mode: Mode
+    private let alertConfigurator: AlertViewConfigurator
+    
+    private let viewModel = AlertViewModel()
+    
+    // MARK: Initialization
+    
+    init(mode: Mode, alertConfigurator: AlertViewConfigurator, configuration: ViewControllerConfiguration) {
+        self.mode = mode
+        self.alertConfigurator = alertConfigurator
+        
+        if mode == .normal {
+            alertView = NormalAlertView()
+        } else {
+            alertView = DestructiveAlertView()
+        }
+        
+        super.init(configuration: configuration)
+    }
+    
+    // MARK: Setup
+    
+    override func configureAppearance() {
+        view.backgroundColor = rgba(0.04, 0.05, 0.07, 0.6)
+        viewModel.configure(alertView, with: alertConfigurator)
+    }
+    
+    override func setListeners() {
+        if mode == .normal {
+            setNormalAlertViewAction()
+            return
+        }
+        
+        setDestructiveAlertViewAction()
+    }
+    
+    private func setNormalAlertViewAction() {
+        guard let normalAlertView = alertView as? NormalAlertView else {
+            return
+        }
+        
+        normalAlertView.doneButton.addTarget(self, action: #selector(executeHandler), for: .touchUpInside)
+    }
+    
+    private func setDestructiveAlertViewAction() {
+        guard let destructiveAlertView = alertView as? DestructiveAlertView else {
+            return
+        }
+        
+        destructiveAlertView.actionButton.addTarget(self, action: #selector(executeHandler), for: .touchUpInside)
+    }
+    
+    // MARK: Layout
+    
+    override func prepareLayout() {
+        view.addSubview(alertView)
+        
+        alertView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.center.equalToSuperview()
+        }
+    }
+    
+    // MARK: Actions
+    
+    @objc
+    private func executeHandler() {
+        if let handler = alertConfigurator.actionHandler {
+            handler()
+            return
+        }
+        
+        dismissScreen()
+    }
+}
+
+// MARK: AlertViewController.Mode
+
+extension AlertViewController {
+    
+    enum Mode {
+        case destructive
+        case normal
+    }
+}
