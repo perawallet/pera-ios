@@ -12,7 +12,7 @@ class MultiLineInputField: BaseInputView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let placeholderTopOffset: CGFloat = 9.0
-        let placeholderLeftInset: CGFloat = 5.0
+        let placeholderLeftInset: CGFloat = 4.0
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -35,8 +35,11 @@ class MultiLineInputField: BaseInputView {
         textView.font = UIFont.systemFont(ofSize: 16.0, weight: .semibold)
         textView.textColor = rgb(0.04, 0.05, 0.07)
         textView.tintColor = rgb(0.04, 0.05, 0.07)
+        textView.backgroundColor = .clear
         textView.isSelectable = true
         textView.isEditable = true
+        textView.textContainer.heightTracksTextView = true
+        textView.isScrollEnabled = false
         return textView
     }()
     
@@ -46,6 +49,16 @@ class MultiLineInputField: BaseInputView {
             .withLine(.contained)
             .withTextColor(rgb( 0.67, 0.67, 0.72))
     }()
+    
+    // MARK: Helpers
+    
+    var isEditing: Bool {
+        return inputTextView.isFirstResponder
+    }
+    
+    func beginEditing() {
+        _ = inputTextView.becomeFirstResponder()
+    }
     
     // MARK: Setup
     

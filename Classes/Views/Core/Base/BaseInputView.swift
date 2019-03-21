@@ -13,6 +13,8 @@ class BaseInputView: BaseView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let defaultInset: CGFloat = 25.0
         let contentViewTopInset: CGFloat = 7.0
+        let contentViewMaximumTopInset: CGFloat = 18.0
+        let buttonTopInset: CGFloat = 24.0
         let separatorTopInset: CGFloat = 20.0
         let separatorInset: CGFloat = 15.0
         let separatorHeight: CGFloat = 1.0
@@ -27,16 +29,6 @@ class BaseInputView: BaseView {
     private let displaysExplanationText: Bool
     private let displaysRightInputAccessoryButton: Bool
     private let separatorStyle: SeparatorStyle
-    
-    // MARK: Initialization
-    
-    init(displaysExplanationText: Bool = true, displaysRightInputAccessoryButton: Bool = false, separatorStyle: SeparatorStyle = .full) {
-        self.displaysExplanationText = displaysExplanationText
-        self.displaysRightInputAccessoryButton = displaysRightInputAccessoryButton
-        self.separatorStyle = separatorStyle
-        
-        super.init(frame: .zero)
-    }
     
     // MARK: Components
     
@@ -58,6 +50,20 @@ class BaseInputView: BaseView {
     }()
     
     weak var delegate: InputViewDelegate?
+    
+    // MARK: Initialization
+    
+    init(displaysExplanationText: Bool = true, displaysRightInputAccessoryButton: Bool = false, separatorStyle: SeparatorStyle = .full) {
+        self.displaysExplanationText = displaysExplanationText
+        self.displaysRightInputAccessoryButton = displaysRightInputAccessoryButton
+        self.separatorStyle = separatorStyle
+        
+        super.init(frame: .zero)
+    }
+    
+    override func linkInteractors() {
+        rightInputAccessoryButton.addTarget(self, action: #selector(notifyDelegateToAccessoryButtonTapped), for: .touchUpInside)
+    }
     
     // MARK: Layout
     
@@ -91,12 +97,7 @@ class BaseInputView: BaseView {
         
         rightInputAccessoryButton.snp.makeConstraints { make in
             make.trailing.equalToSuperview().inset(layout.current.separatorInset)
-            
-            if displaysExplanationText {
-                make.top.equalTo(explanationLabel.snp.bottom).offset(layout.current.contentViewTopInset)
-            } else {
-                make.top.equalToSuperview()
-            }
+            make.top.equalToSuperview().inset(layout.current.buttonTopInset)
         }
     }
     
@@ -107,7 +108,7 @@ class BaseInputView: BaseView {
             make.leading.equalToSuperview().inset(layout.current.defaultInset)
             
             if displaysRightInputAccessoryButton {
-                make.trailing.equalTo(rightInputAccessoryButton.snp.leading).inset(layout.current.defaultInset)
+                make.trailing.lessThanOrEqualTo(rightInputAccessoryButton.snp.leading).inset(-layout.current.defaultInset)
             } else {
                 make.trailing.equalToSuperview().inset(layout.current.defaultInset)
             }
@@ -115,7 +116,7 @@ class BaseInputView: BaseView {
             if displaysExplanationText {
                 make.top.equalTo(explanationLabel.snp.bottom).offset(layout.current.contentViewTopInset)
             } else {
-                make.top.equalToSuperview()
+                make.top.equalToSuperview().offset(layout.current.contentViewMaximumTopInset)
             }
         }
     }
@@ -138,6 +139,13 @@ class BaseInputView: BaseView {
                 make.leading.trailing.equalToSuperview().inset(layout.current.separatorInset)
             }
         }
+    }
+    
+    // MARK: Actions
+    
+    @objc
+    func notifyDelegateToAccessoryButtonTapped() {
+        delegate?.inputViewDidTapAccessoryButton(inputView: self)
     }
 }
 

@@ -14,6 +14,7 @@ protocol InputViewDelegate: NSObjectProtocol {
     func inputViewDidChangeValue(inputView: BaseInputView)
     func inputViewDidEndEditing(inputView: BaseInputView)
     func inputViewDidReturn(inputView: BaseInputView)
+    func inputViewDidTapAccessoryButton(inputView: BaseInputView)
 }
 
 extension InputViewDelegate {
@@ -28,5 +29,8 @@ extension InputViewDelegate {
     }
     
     func inputViewDidReturn(inputView: BaseInputView) {
+    }
+    
+    func inputViewDidTapAccessoryButton(inputView: BaseInputView) {
     }
 }
