@@ -37,6 +37,8 @@
 		2B8954C2224404B700D6D068 /* SingleLineInputField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8954C1224404B700D6D068 /* SingleLineInputField.swift */; };
 		2B8954C4224404C900D6D068 /* MultiLineInputField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8954C3224404C900D6D068 /* MultiLineInputField.swift */; };
 		2B8954C8224420B400D6D068 /* InputViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8954C7224420B400D6D068 /* InputViewDelegate.swift */; };
+		2B8954CB224430DC00D6D068 /* AccountRecoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8954CA224430DC00D6D068 /* AccountRecoverView.swift */; };
+		2B8954CE2244323700D6D068 /* AccountRecoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8954CD2244323700D6D068 /* AccountRecoverViewController.swift */; };
 		2B8BE4D222391C38005D8565 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8BE4D122391C38005D8565 /* AppDelegate.swift */; };
 		2B8BE4D422391C38005D8565 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8BE4D322391C38005D8565 /* RootViewController.swift */; };
 		2B8BE4D922391C3B005D8565 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2B8BE4D822391C3B005D8565 /* Assets.xcassets */; };
@@ -140,6 +142,8 @@
 		2B8954C1224404B700D6D068 /* SingleLineInputField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleLineInputField.swift; sourceTree = "<group>"; };
 		2B8954C3224404C900D6D068 /* MultiLineInputField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiLineInputField.swift; sourceTree = "<group>"; };
 		2B8954C7224420B400D6D068 /* InputViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputViewDelegate.swift; sourceTree = "<group>"; };
+		2B8954CA224430DC00D6D068 /* AccountRecoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountRecoverView.swift; sourceTree = "<group>"; };
+		2B8954CD2244323700D6D068 /* AccountRecoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountRecoverViewController.swift; sourceTree = "<group>"; };
 		2B8BE4CE22391C38005D8565 /* algorand.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = algorand.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B8BE4D122391C38005D8565 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2B8BE4D322391C38005D8565 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
@@ -388,6 +392,22 @@
 			path = Input;
 			sourceTree = "<group>";
 		};
+		2B8954C922442E2B00D6D068 /* SignIn */ = {
+			isa = PBXGroup;
+			children = (
+				2B8954CA224430DC00D6D068 /* AccountRecoverView.swift */,
+			);
+			path = SignIn;
+			sourceTree = "<group>";
+		};
+		2B8954CC2244321E00D6D068 /* SignIn */ = {
+			isa = PBXGroup;
+			children = (
+				2B8954CD2244323700D6D068 /* AccountRecoverViewController.swift */,
+			);
+			path = SignIn;
+			sourceTree = "<group>";
+		};
 		2B8BE4C522391C38005D8565 = {
 			isa = PBXGroup;
 			children = (
@@ -625,6 +645,7 @@
 		2BD739C7223F978300B66EEF /* Authentication */ = {
 			isa = PBXGroup;
 			children = (
+				2B8954CC2244321E00D6D068 /* SignIn */,
 				2BD739E6223FA08E00B66EEF /* SignUp */,
 				2BD739C8223F979D00B66EEF /* Introduction */,
 			);
@@ -643,6 +664,7 @@
 		2BD739CD223F97DF00B66EEF /* Authentication */ = {
 			isa = PBXGroup;
 			children = (
+				2B8954C922442E2B00D6D068 /* SignIn */,
 				2BD739DA223F9E2800B66EEF /* SignUp */,
 				2BD739CE223F97E600B66EEF /* Introduction */,
 			);
@@ -1233,6 +1255,7 @@
 				2BF34CC2223A95A50052CAD3 /* API.swift in Sources */,
 				2BF34CB2223A77650052CAD3 /* StatusBarConfigurable.swift in Sources */,
 				2BF34C9D2239AB530052CAD3 /* Router.swift in Sources */,
+				2B8954CE2244323700D6D068 /* AccountRecoverViewController.swift in Sources */,
 				2B8954A22242E79C00D6D068 /* AccountNameSetupViewController.swift in Sources */,
 				1751261A223BE5930095AF4F /* AlgorandParamPairKey.swift in Sources */,
 				2B8BE4D422391C38005D8565 /* RootViewController.swift in Sources */,
@@ -1266,6 +1289,7 @@
 				17B7D8A82240DFFC00A6FF9E /* API+Account.swift in Sources */,
 				17B7D8B82242830D00A6FF9E /* Params+Additions.swift in Sources */,
 				17B7D8AE2240F25000A6FF9E /* Environment.swift in Sources */,
+				2B8954CB224430DC00D6D068 /* AccountRecoverView.swift in Sources */,
 				2BD739E5223FA07B00B66EEF /* MainButton.swift in Sources */,
 				2BD739FA2240527B00B66EEF /* PasswordInputView.swift in Sources */,
 				2BD73A1422412D9100B66EEF /* NumpadCellViewModel.swift in Sources */,

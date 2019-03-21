@@ -108,6 +108,8 @@ class Router {
             viewController = PassPhraseBackUpViewController(configuration: configuration)
         case .accountNameSetup:
             viewController = AccountNameSetupViewController(configuration: configuration)
+        case .accountRecover:
+            viewController = AccountRecoverViewController(configuration: configuration)
         }
         
         return viewController as? T

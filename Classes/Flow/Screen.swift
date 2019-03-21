@@ -15,6 +15,7 @@ enum Screen {
     case localAuthenticationPreference
     case passPhraseBackUp
     case accountNameSetup
+    case accountRecover
 }
 
 extension Screen {

@@ -57,3 +57,7 @@
 
 "account-name-setup-explanation" = "Name:";
 "account-name-setup-placeholder" = "Please name your account";
+
+// MARK: Account Name Setup
+
+"pass-pharase-enter-placeholder" = "Enter Pass Phrase or Scan QR";
