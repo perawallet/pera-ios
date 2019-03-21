@@ -21,6 +21,7 @@
 		17B7D8B42242370800A6FF9E /* WalletCreationDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B7D8B32242370800A6FF9E /* WalletCreationDraft.swift */; };
 		17B7D8B62242621100A6FF9E /* Wallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B7D8B52242621100A6FF9E /* Wallet.swift */; };
 		17B7D8B82242830D00A6FF9E /* Params+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B7D8B72242830D00A6FF9E /* Params+Additions.swift */; };
+		2B89549F2242D90000D6D068 /* UIViewController+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B89549E2242D90000D6D068 /* UIViewController+Additions.swift */; };
 		2B8BE4D222391C38005D8565 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8BE4D122391C38005D8565 /* AppDelegate.swift */; };
 		2B8BE4D422391C38005D8565 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8BE4D322391C38005D8565 /* RootViewController.swift */; };
 		2B8BE4D922391C3B005D8565 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2B8BE4D822391C3B005D8565 /* Assets.xcassets */; };
@@ -31,6 +32,36 @@
 		2B8BE4FF22393963005D8565 /* AdaptiveLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8BE4FE22393963005D8565 /* AdaptiveLayout.swift */; };
 		2B8BE50122393999005D8565 /* AdaptiveLayoutConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8BE50022393999005D8565 /* AdaptiveLayoutConstants.swift */; };
 		2B8BE505223939F9005D8565 /* UIApplication+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8BE504223939F9005D8565 /* UIApplication+Additions.swift */; };
+		2B8C1278224196DF00E34D37 /* String+Attributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8C1277224196DF00E34D37 /* String+Attributes.swift */; };
+		2B8C127A2241970F00E34D37 /* NSAttributedString+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8C12792241970F00E34D37 /* NSAttributedString+Additions.swift */; };
+		2BD739CB223F97B100B66EEF /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD739C9223F97B100B66EEF /* WelcomeViewController.swift */; };
+		2BD739CC223F97B100B66EEF /* IntroductionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD739CA223F97B100B66EEF /* IntroductionViewController.swift */; };
+		2BD739D1223F97F600B66EEF /* IntroductionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD739CF223F97F600B66EEF /* IntroductionView.swift */; };
+		2BD739D2223F97F600B66EEF /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD739D0223F97F600B66EEF /* WelcomeView.swift */; };
+		2BD739D6223F985E00B66EEF /* UIColor+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD739D5223F985E00B66EEF /* UIColor+Additions.swift */; };
+		2BD739D9223F987E00B66EEF /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD739D8223F987E00B66EEF /* Utils.swift */; };
+		2BD739DD223F9E9F00B66EEF /* ChoosePasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD739DC223F9E9F00B66EEF /* ChoosePasswordView.swift */; };
+		2BD739E1223F9F3000B66EEF /* LocalAuthenticationPreferenceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD739E0223F9F3000B66EEF /* LocalAuthenticationPreferenceView.swift */; };
+		2BD739E5223FA07B00B66EEF /* MainButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD739E4223FA07B00B66EEF /* MainButton.swift */; };
+		2BD739EA223FA0BD00B66EEF /* ChoosePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD739E9223FA0BD00B66EEF /* ChoosePasswordViewController.swift */; };
+		2BD739EC223FA0DC00B66EEF /* LocalAuthenticationPreferenceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD739EB223FA0DC00B66EEF /* LocalAuthenticationPreferenceViewController.swift */; };
+		2BD739EF223FDE8400B66EEF /* UILabel+Factory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD739EE223FDE8400B66EEF /* UILabel+Factory.swift */; };
+		2BD739F1223FE1C700B66EEF /* UIButton+Factory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD739F0223FE1C700B66EEF /* UIButton+Factory.swift */; };
+		2BD739F4223FF08000B66EEF /* NumpadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD739F3223FF08000B66EEF /* NumpadView.swift */; };
+		2BD739F6223FF47900B66EEF /* NumpadNumericButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD739F5223FF47900B66EEF /* NumpadNumericButton.swift */; };
+		2BD739F8223FF4B600B66EEF /* NumpadDeleteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD739F7223FF4B600B66EEF /* NumpadDeleteButton.swift */; };
+		2BD739FA2240527B00B66EEF /* PasswordInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD739F92240527B00B66EEF /* PasswordInputView.swift */; };
+		2BD739FC2241052600B66EEF /* PasswordInputCircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD739FB2241052500B66EEF /* PasswordInputCircleView.swift */; };
+		2BD739FE22411A0100B66EEF /* Reusable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD739FD22411A0100B66EEF /* Reusable.swift */; };
+		2BD73A002241297700B66EEF /* NumpadDeleteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD739FF2241297700B66EEF /* NumpadDeleteCell.swift */; };
+		2BD73A022241299100B66EEF /* NumpadNumericCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD73A012241299100B66EEF /* NumpadNumericCell.swift */; };
+		2BD73A0622412AC900B66EEF /* NumpadViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD73A0522412AC900B66EEF /* NumpadViewDataSource.swift */; };
+		2BD73A0B22412B0900B66EEF /* NumpadViewLayoutBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD73A0A22412B0900B66EEF /* NumpadViewLayoutBuilder.swift */; };
+		2BD73A1222412B7300B66EEF /* NumpadViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD73A1122412B7300B66EEF /* NumpadViewModel.swift */; };
+		2BD73A1422412D9100B66EEF /* NumpadCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD73A1322412D9100B66EEF /* NumpadCellViewModel.swift */; };
+		2BD73A192241324700B66EEF /* ChoosePasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD73A182241324700B66EEF /* ChoosePasswordViewModel.swift */; };
+		2BD73A1C2241636C00B66EEF /* PassPhraseBackUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD73A1B2241636C00B66EEF /* PassPhraseBackUpView.swift */; };
+		2BD73A1F2241639500B66EEF /* PassPhraseBackUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD73A1E2241639500B66EEF /* PassPhraseBackUpViewController.swift */; };
 		2BF34C992239AAD20052CAD3 /* UIViewController+Flow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF34C982239AAD20052CAD3 /* UIViewController+Flow.swift */; };
 		2BF34C9B2239AB130052CAD3 /* Screen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF34C9A2239AB130052CAD3 /* Screen.swift */; };
 		2BF34C9D2239AB530052CAD3 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF34C9C2239AB530052CAD3 /* Router.swift */; };
@@ -90,6 +121,7 @@
 		17B7D8B52242621100A6FF9E /* Wallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wallet.swift; sourceTree = "<group>"; };
 		17B7D8B72242830D00A6FF9E /* Params+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Params+Additions.swift"; sourceTree = "<group>"; };
 		2AC10F1C54DF2982BFB4A180 /* Pods-algorand.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand.debug.xcconfig"; path = "Pods/Target Support Files/Pods-algorand/Pods-algorand.debug.xcconfig"; sourceTree = "<group>"; };
+		2B89549E2242D90000D6D068 /* UIViewController+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Additions.swift"; sourceTree = "<group>"; };
 		2B8BE4CE22391C38005D8565 /* algorand.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = algorand.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B8BE4D122391C38005D8565 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2B8BE4D322391C38005D8565 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
@@ -102,6 +134,36 @@
 		2B8BE4FE22393963005D8565 /* AdaptiveLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdaptiveLayout.swift; sourceTree = "<group>"; };
 		2B8BE50022393999005D8565 /* AdaptiveLayoutConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdaptiveLayoutConstants.swift; sourceTree = "<group>"; };
 		2B8BE504223939F9005D8565 /* UIApplication+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Additions.swift"; sourceTree = "<group>"; };
+		2B8C1277224196DF00E34D37 /* String+Attributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Attributes.swift"; sourceTree = "<group>"; };
+		2B8C12792241970F00E34D37 /* NSAttributedString+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Additions.swift"; sourceTree = "<group>"; };
+		2BD739C9223F97B100B66EEF /* WelcomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
+		2BD739CA223F97B100B66EEF /* IntroductionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroductionViewController.swift; sourceTree = "<group>"; };
+		2BD739CF223F97F600B66EEF /* IntroductionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroductionView.swift; sourceTree = "<group>"; };
+		2BD739D0223F97F600B66EEF /* WelcomeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
+		2BD739D5223F985E00B66EEF /* UIColor+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Additions.swift"; sourceTree = "<group>"; };
+		2BD739D8223F987E00B66EEF /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		2BD739DC223F9E9F00B66EEF /* ChoosePasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoosePasswordView.swift; sourceTree = "<group>"; };
+		2BD739E0223F9F3000B66EEF /* LocalAuthenticationPreferenceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAuthenticationPreferenceView.swift; sourceTree = "<group>"; };
+		2BD739E4223FA07B00B66EEF /* MainButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainButton.swift; sourceTree = "<group>"; };
+		2BD739E9223FA0BD00B66EEF /* ChoosePasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoosePasswordViewController.swift; sourceTree = "<group>"; };
+		2BD739EB223FA0DC00B66EEF /* LocalAuthenticationPreferenceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAuthenticationPreferenceViewController.swift; sourceTree = "<group>"; };
+		2BD739EE223FDE8400B66EEF /* UILabel+Factory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Factory.swift"; sourceTree = "<group>"; };
+		2BD739F0223FE1C700B66EEF /* UIButton+Factory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Factory.swift"; sourceTree = "<group>"; };
+		2BD739F3223FF08000B66EEF /* NumpadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumpadView.swift; sourceTree = "<group>"; };
+		2BD739F5223FF47900B66EEF /* NumpadNumericButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumpadNumericButton.swift; sourceTree = "<group>"; };
+		2BD739F7223FF4B600B66EEF /* NumpadDeleteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumpadDeleteButton.swift; sourceTree = "<group>"; };
+		2BD739F92240527B00B66EEF /* PasswordInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordInputView.swift; sourceTree = "<group>"; };
+		2BD739FB2241052500B66EEF /* PasswordInputCircleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordInputCircleView.swift; sourceTree = "<group>"; };
+		2BD739FD22411A0100B66EEF /* Reusable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reusable.swift; sourceTree = "<group>"; };
+		2BD739FF2241297700B66EEF /* NumpadDeleteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumpadDeleteCell.swift; sourceTree = "<group>"; };
+		2BD73A012241299100B66EEF /* NumpadNumericCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumpadNumericCell.swift; sourceTree = "<group>"; };
+		2BD73A0522412AC900B66EEF /* NumpadViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumpadViewDataSource.swift; sourceTree = "<group>"; };
+		2BD73A0A22412B0900B66EEF /* NumpadViewLayoutBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumpadViewLayoutBuilder.swift; sourceTree = "<group>"; };
+		2BD73A1122412B7300B66EEF /* NumpadViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumpadViewModel.swift; sourceTree = "<group>"; };
+		2BD73A1322412D9100B66EEF /* NumpadCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumpadCellViewModel.swift; sourceTree = "<group>"; };
+		2BD73A182241324700B66EEF /* ChoosePasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoosePasswordViewModel.swift; sourceTree = "<group>"; };
+		2BD73A1B2241636C00B66EEF /* PassPhraseBackUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassPhraseBackUpView.swift; sourceTree = "<group>"; };
+		2BD73A1E2241639500B66EEF /* PassPhraseBackUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassPhraseBackUpViewController.swift; sourceTree = "<group>"; };
 		2BF34C982239AAD20052CAD3 /* UIViewController+Flow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Flow.swift"; sourceTree = "<group>"; };
 		2BF34C9A2239AB130052CAD3 /* Screen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Screen.swift; sourceTree = "<group>"; };
 		2BF34C9C2239AB530052CAD3 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
@@ -243,6 +305,9 @@
 			children = (
 				17B7D8A42240D79200A6FF9E /* Models */,
 				17512621223BEB6D0095AF4F /* Extensions */,
+				2BD73A0E22412B5900B66EEF /* ViewModels */,
+				2BD73A0722412AF200B66EEF /* LayoutBuilders */,
+				2BD73A0322412AA100B66EEF /* Data */,
 				2BF34CC0223A95900052CAD3 /* Networking */,
 				2BF34CB0223A77410052CAD3 /* Configuration */,
 				2BF34C962239AA8C0052CAD3 /* Flow */,
@@ -293,6 +358,7 @@
 		2B8BE4E822392657005D8565 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				2BD739C7223F978300B66EEF /* Authentication */,
 				2B8BE4EB22393547005D8565 /* Core */,
 			);
 			path = ViewControllers;
@@ -337,6 +403,8 @@
 		2B8BE4F0223935A3005D8565 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				2BD739E2223F9FDD00B66EEF /* Common */,
+				2BD739CD223F97DF00B66EEF /* Authentication */,
 				2B8BE4F1223935C6005D8565 /* Core */,
 			);
 			path = Views;
@@ -372,6 +440,7 @@
 		2B8BE4F62239370F005D8565 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				2BD739D3223F983B00B66EEF /* Style */,
 				2BF34CB5223A87920052CAD3 /* External */,
 				2BF34C972239AAC10052CAD3 /* Flow */,
 				2B8BE502223939DD005D8565 /* UIKit */,
@@ -426,6 +495,7 @@
 		2B8BE502223939DD005D8565 /* UIKit */ = {
 			isa = PBXGroup;
 			children = (
+				2BD739ED223FDE7200B66EEF /* Factory */,
 				2BF34CB8223A88030052CAD3 /* Layout */,
 				2B8BE503223939E7005D8565 /* Application */,
 			);
@@ -438,6 +508,280 @@
 				2B8BE504223939F9005D8565 /* UIApplication+Additions.swift */,
 			);
 			path = Application;
+			sourceTree = "<group>";
+		};
+		2BD739C7223F978300B66EEF /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				2BD739E6223FA08E00B66EEF /* SignUp */,
+				2BD739C8223F979D00B66EEF /* Introduction */,
+			);
+			path = Authentication;
+			sourceTree = "<group>";
+		};
+		2BD739C8223F979D00B66EEF /* Introduction */ = {
+			isa = PBXGroup;
+			children = (
+				2BD739CA223F97B100B66EEF /* IntroductionViewController.swift */,
+				2BD739C9223F97B100B66EEF /* WelcomeViewController.swift */,
+			);
+			path = Introduction;
+			sourceTree = "<group>";
+		};
+		2BD739CD223F97DF00B66EEF /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				2BD739DA223F9E2800B66EEF /* SignUp */,
+				2BD739CE223F97E600B66EEF /* Introduction */,
+			);
+			path = Authentication;
+			sourceTree = "<group>";
+		};
+		2BD739CE223F97E600B66EEF /* Introduction */ = {
+			isa = PBXGroup;
+			children = (
+				2BD739CF223F97F600B66EEF /* IntroductionView.swift */,
+				2BD739D0223F97F600B66EEF /* WelcomeView.swift */,
+			);
+			path = Introduction;
+			sourceTree = "<group>";
+		};
+		2BD739D3223F983B00B66EEF /* Style */ = {
+			isa = PBXGroup;
+			children = (
+				2BD739D4223F984700B66EEF /* Color */,
+			);
+			path = Style;
+			sourceTree = "<group>";
+		};
+		2BD739D4223F984700B66EEF /* Color */ = {
+			isa = PBXGroup;
+			children = (
+				2BD739D5223F985E00B66EEF /* UIColor+Additions.swift */,
+			);
+			path = Color;
+			sourceTree = "<group>";
+		};
+		2BD739D7223F987200B66EEF /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				2BD739D8223F987E00B66EEF /* Utils.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		2BD739DA223F9E2800B66EEF /* SignUp */ = {
+			isa = PBXGroup;
+			children = (
+				2BD73A1A2241633900B66EEF /* PassPhrase */,
+				2BD739DE223F9EE000B66EEF /* LocalAuthentication */,
+				2BD739DB223F9E8900B66EEF /* Password */,
+			);
+			path = SignUp;
+			sourceTree = "<group>";
+		};
+		2BD739DB223F9E8900B66EEF /* Password */ = {
+			isa = PBXGroup;
+			children = (
+				2BD739DC223F9E9F00B66EEF /* ChoosePasswordView.swift */,
+				2BD739F92240527B00B66EEF /* PasswordInputView.swift */,
+				2BD739FB2241052500B66EEF /* PasswordInputCircleView.swift */,
+			);
+			path = Password;
+			sourceTree = "<group>";
+		};
+		2BD739DE223F9EE000B66EEF /* LocalAuthentication */ = {
+			isa = PBXGroup;
+			children = (
+				2BD739E0223F9F3000B66EEF /* LocalAuthenticationPreferenceView.swift */,
+			);
+			path = LocalAuthentication;
+			sourceTree = "<group>";
+		};
+		2BD739E2223F9FDD00B66EEF /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				2BD739F2223FF05C00B66EEF /* Numpad */,
+				2BD739E3223F9FF500B66EEF /* Components */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		2BD739E3223F9FF500B66EEF /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				2BD739E4223FA07B00B66EEF /* MainButton.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		2BD739E6223FA08E00B66EEF /* SignUp */ = {
+			isa = PBXGroup;
+			children = (
+				2BD73A1D2241637B00B66EEF /* PassPhrase */,
+				2BD739E8223FA09F00B66EEF /* Password */,
+				2BD739E7223FA09600B66EEF /* LocalAuthentication */,
+			);
+			path = SignUp;
+			sourceTree = "<group>";
+		};
+		2BD739E7223FA09600B66EEF /* LocalAuthentication */ = {
+			isa = PBXGroup;
+			children = (
+				2BD739EB223FA0DC00B66EEF /* LocalAuthenticationPreferenceViewController.swift */,
+			);
+			path = LocalAuthentication;
+			sourceTree = "<group>";
+		};
+		2BD739E8223FA09F00B66EEF /* Password */ = {
+			isa = PBXGroup;
+			children = (
+				2BD739E9223FA0BD00B66EEF /* ChoosePasswordViewController.swift */,
+			);
+			path = Password;
+			sourceTree = "<group>";
+		};
+		2BD739ED223FDE7200B66EEF /* Factory */ = {
+			isa = PBXGroup;
+			children = (
+				2BD739EE223FDE8400B66EEF /* UILabel+Factory.swift */,
+				2BD739F0223FE1C700B66EEF /* UIButton+Factory.swift */,
+			);
+			path = Factory;
+			sourceTree = "<group>";
+		};
+		2BD739F2223FF05C00B66EEF /* Numpad */ = {
+			isa = PBXGroup;
+			children = (
+				2BD739F3223FF08000B66EEF /* NumpadView.swift */,
+				2BD739F5223FF47900B66EEF /* NumpadNumericButton.swift */,
+				2BD739F7223FF4B600B66EEF /* NumpadDeleteButton.swift */,
+				2BD739FF2241297700B66EEF /* NumpadDeleteCell.swift */,
+				2BD73A012241299100B66EEF /* NumpadNumericCell.swift */,
+			);
+			path = Numpad;
+			sourceTree = "<group>";
+		};
+		2BD73A0322412AA100B66EEF /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				2BD73A0422412AA400B66EEF /* DataProviders */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		2BD73A0422412AA400B66EEF /* DataProviders */ = {
+			isa = PBXGroup;
+			children = (
+				2BD73A0C22412B3D00B66EEF /* Common */,
+			);
+			path = DataProviders;
+			sourceTree = "<group>";
+		};
+		2BD73A0722412AF200B66EEF /* LayoutBuilders */ = {
+			isa = PBXGroup;
+			children = (
+				2BD73A0822412AF900B66EEF /* Common */,
+			);
+			path = LayoutBuilders;
+			sourceTree = "<group>";
+		};
+		2BD73A0822412AF900B66EEF /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				2BD73A0922412AFD00B66EEF /* Numpad */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		2BD73A0922412AFD00B66EEF /* Numpad */ = {
+			isa = PBXGroup;
+			children = (
+				2BD73A0A22412B0900B66EEF /* NumpadViewLayoutBuilder.swift */,
+			);
+			path = Numpad;
+			sourceTree = "<group>";
+		};
+		2BD73A0C22412B3D00B66EEF /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				2BD73A0D22412B4200B66EEF /* Numpad */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		2BD73A0D22412B4200B66EEF /* Numpad */ = {
+			isa = PBXGroup;
+			children = (
+				2BD73A0522412AC900B66EEF /* NumpadViewDataSource.swift */,
+			);
+			path = Numpad;
+			sourceTree = "<group>";
+		};
+		2BD73A0E22412B5900B66EEF /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				2BD73A152241322D00B66EEF /* Authentication */,
+				2BD73A0F22412B6600B66EEF /* Common */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BD73A0F22412B6600B66EEF /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				2BD73A1022412B6900B66EEF /* Numpad */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		2BD73A1022412B6900B66EEF /* Numpad */ = {
+			isa = PBXGroup;
+			children = (
+				2BD73A1122412B7300B66EEF /* NumpadViewModel.swift */,
+				2BD73A1322412D9100B66EEF /* NumpadCellViewModel.swift */,
+			);
+			path = Numpad;
+			sourceTree = "<group>";
+		};
+		2BD73A152241322D00B66EEF /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				2BD73A162241323400B66EEF /* SignUp */,
+			);
+			path = Authentication;
+			sourceTree = "<group>";
+		};
+		2BD73A162241323400B66EEF /* SignUp */ = {
+			isa = PBXGroup;
+			children = (
+				2BD73A172241323800B66EEF /* Password */,
+			);
+			path = SignUp;
+			sourceTree = "<group>";
+		};
+		2BD73A172241323800B66EEF /* Password */ = {
+			isa = PBXGroup;
+			children = (
+				2BD73A182241324700B66EEF /* ChoosePasswordViewModel.swift */,
+			);
+			path = Password;
+			sourceTree = "<group>";
+		};
+		2BD73A1A2241633900B66EEF /* PassPhrase */ = {
+			isa = PBXGroup;
+			children = (
+				2BD73A1B2241636C00B66EEF /* PassPhraseBackUpView.swift */,
+			);
+			path = PassPhrase;
+			sourceTree = "<group>";
+		};
+		2BD73A1D2241637B00B66EEF /* PassPhrase */ = {
+			isa = PBXGroup;
+			children = (
+				2BD73A1E2241639500B66EEF /* PassPhraseBackUpViewController.swift */,
+			);
+			path = PassPhrase;
 			sourceTree = "<group>";
 		};
 		2BF34C962239AA8C0052CAD3 /* Flow */ = {
@@ -453,6 +797,7 @@
 			isa = PBXGroup;
 			children = (
 				2BF34C982239AAD20052CAD3 /* UIViewController+Flow.swift */,
+				2B89549E2242D90000D6D068 /* UIViewController+Additions.swift */,
 			);
 			path = Flow;
 			sourceTree = "<group>";
@@ -469,6 +814,7 @@
 		2BF34CA32239AD4A0052CAD3 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				2BD739D7223F987200B66EEF /* Helpers */,
 				2BF34CA42239AD510052CAD3 /* Keyboard */,
 			);
 			path = UI;
@@ -486,6 +832,7 @@
 			isa = PBXGroup;
 			children = (
 				2BF34CB1223A77650052CAD3 /* StatusBarConfigurable.swift */,
+				2BD739FD22411A0100B66EEF /* Reusable.swift */,
 			);
 			path = Configuration;
 			sourceTree = "<group>";
@@ -532,6 +879,8 @@
 			isa = PBXGroup;
 			children = (
 				2BF34CC4223A99670052CAD3 /* String+Localization.swift */,
+				2B8C1277224196DF00E34D37 /* String+Attributes.swift */,
+				2B8C12792241970F00E34D37 /* NSAttributedString+Additions.swift */,
 			);
 			path = Text;
 			sourceTree = "<group>";
@@ -763,9 +1112,23 @@
 				2BF34C9D2239AB530052CAD3 /* Router.swift in Sources */,
 				1751261A223BE5930095AF4F /* AlgorandParamPairKey.swift in Sources */,
 				2B8BE4D422391C38005D8565 /* RootViewController.swift in Sources */,
+				2BD73A002241297700B66EEF /* NumpadDeleteCell.swift in Sources */,
+				2BD739F8223FF4B600B66EEF /* NumpadDeleteButton.swift in Sources */,
+				2BD739D2223F97F600B66EEF /* WelcomeView.swift in Sources */,
+				2BD739FE22411A0100B66EEF /* Reusable.swift in Sources */,
+				2BD73A0622412AC900B66EEF /* NumpadViewDataSource.swift in Sources */,
+				2BD739D1223F97F600B66EEF /* IntroductionView.swift in Sources */,
+				2BD73A1C2241636C00B66EEF /* PassPhraseBackUpView.swift in Sources */,
+				2BD739F1223FE1C700B66EEF /* UIButton+Factory.swift in Sources */,
 				2B8BE4D222391C38005D8565 /* AppDelegate.swift in Sources */,
+				2BD73A192241324700B66EEF /* ChoosePasswordViewModel.swift in Sources */,
+				2BD739E1223F9F3000B66EEF /* LocalAuthenticationPreferenceView.swift in Sources */,
+				2BD73A1222412B7300B66EEF /* NumpadViewModel.swift in Sources */,
 				2BF34CB4223A87440052CAD3 /* BaseScrollViewController.swift in Sources */,
+				2BD73A1F2241639500B66EEF /* PassPhraseBackUpViewController.swift in Sources */,
+				2BD739D9223F987E00B66EEF /* Utils.swift in Sources */,
 				2BF34CBC223A8C460052CAD3 /* BaseCollectionViewCell.swift in Sources */,
+				2BD739F6223FF47900B66EEF /* NumpadNumericButton.swift in Sources */,
 				2B8BE4EE22393577005D8565 /* BaseViewController.swift in Sources */,
 				17B7D8B0224128EC00A6FF9E /* Keychain+Additions.swift in Sources */,
 				17B7D8AB2240E19600A6FF9E /* AccountDraft.swift in Sources */,
@@ -781,6 +1144,16 @@
 				2BF34CB7223A87B70052CAD3 /* Snapkit+SafeArea.swift in Sources */,
 				2B8BE505223939F9005D8565 /* UIApplication+Additions.swift in Sources */,
 				17B7D8AE2240F25000A6FF9E /* Environment.swift in Sources */,
+				2BD739E5223FA07B00B66EEF /* MainButton.swift in Sources */,
+				2BD739FA2240527B00B66EEF /* PasswordInputView.swift in Sources */,
+				2BD73A1422412D9100B66EEF /* NumpadCellViewModel.swift in Sources */,
+				2B8BE4FF22393963005D8565 /* AdaptiveLayout.swift in Sources */,
+				2BD739CB223F97B100B66EEF /* WelcomeViewController.swift in Sources */,
+				2BF34CA82239ADAE0052CAD3 /* Notification+Keyboard.swift in Sources */,
+				2BD739D6223F985E00B66EEF /* UIColor+Additions.swift in Sources */,
+				2BF34CB7223A87B70052CAD3 /* Snapkit+SafeArea.swift in Sources */,
+				2B8BE505223939F9005D8565 /* UIApplication+Additions.swift in Sources */,
+				2BD739EA223FA0BD00B66EEF /* ChoosePasswordViewController.swift in Sources */,
 				2BF34CC5223A99670052CAD3 /* String+Localization.swift in Sources */,
 				2BF34CA62239AD6D0052CAD3 /* KeyboardController.swift in Sources */,
 				2BF34CA02239ACDC0052CAD3 /* AppConfiguration.swift in Sources */,
@@ -791,9 +1164,22 @@
 				2B8BE4FA22393739005D8565 /* NotificationCenter+Additions.swift in Sources */,
 				2BF34CA22239ACE60052CAD3 /* ViewControllerConfiguration.swift in Sources */,
 				17B7D8B222422B0800A6FF9E /* API+Wallet.swift in Sources */,
+				2BD739FC2241052600B66EEF /* PasswordInputCircleView.swift in Sources */,
+				2BD739EC223FA0DC00B66EEF /* LocalAuthenticationPreferenceViewController.swift in Sources */,
+				2BD73A0B22412B0900B66EEF /* NumpadViewLayoutBuilder.swift in Sources */,
+				2B8BE4FA22393739005D8565 /* NotificationCenter+Additions.swift in Sources */,
+				2BF34CA22239ACE60052CAD3 /* ViewControllerConfiguration.swift in Sources */,
+				2BD739CC223F97B100B66EEF /* IntroductionViewController.swift in Sources */,
+				2BD739F4223FF08000B66EEF /* NumpadView.swift in Sources */,
 				2BF34CBA223A880C0052CAD3 /* UIView+SafeArea.swift in Sources */,
 				2BF34CBF223A8E740052CAD3 /* NavigationController.swift in Sources */,
+				2B8C1278224196DF00E34D37 /* String+Attributes.swift in Sources */,
+				2BD739DD223F9E9F00B66EEF /* ChoosePasswordView.swift in Sources */,
 				2B8BE4F4223935DA005D8565 /* BaseView.swift in Sources */,
+				2B89549F2242D90000D6D068 /* UIViewController+Additions.swift in Sources */,
+				2BD73A022241299100B66EEF /* NumpadNumericCell.swift in Sources */,
+				2BD739EF223FDE8400B66EEF /* UILabel+Factory.swift in Sources */,
+				2B8C127A2241970F00E34D37 /* NSAttributedString+Additions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

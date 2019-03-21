@@ -33,7 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private func setupWindow() {
         window = UIWindow(frame: UIScreen.main.bounds)
         let rootViewController = RootViewController(appConfiguration: appConfiguration)
-        window?.rootViewController = UINavigationController(rootViewController: rootViewController)
+        window?.rootViewController = NavigationController(rootViewController: rootViewController)
         window?.makeKeyAndVisible()
     }
 }

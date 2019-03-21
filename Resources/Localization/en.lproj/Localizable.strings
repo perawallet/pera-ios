@@ -7,3 +7,39 @@
 */
 
 // MARK: Common
+
+"title-yes" = "Yes";
+"title-no" = "No";
+"title-ok" = "OK";
+
+// MARK: Introduction
+
+"introduction-recover-title" = "Recover from Seed";
+"introduction-create-title" = "Create Account";
+
+// MARK: Welcome
+
+"welcome-title" = "Welcome!";
+"welcome-subtitle" = "We just need you to set up a few quick things to keep your account safe.";
+"welcome-done-title" = "Let's Go";
+
+// MARK: Password Setting
+
+"password-set-title" = "First";
+"password-set-subtitle" = "Choose a six digit password";
+"password-verify-title" = "Verify Password";
+"password-verify-subtitle" = "Enter the same six digits";
+
+"password-verify-fail-title" = "Wrong Password";
+"password-verify-fail-message" = "Password did not match with previous password.";
+
+// MARK: Local Authentication Preferences
+
+"local-authentication-preference-title" = "Enable touch/face ID";
+"local-authentication-preference-subtitle" = "We recommend this for improved security";
+
+// MARK: Pass Phrase Back Up
+
+"back-up-phrase-title" = "Back up this Pass Phrase";
+"back-up-phrase-warning" = "In order to access this account if you lose this device copy or print this phrase and keep it someplace safe";
+"back-up-phrase-button-title" = "VERIFY RECOVERY PHRASE";
