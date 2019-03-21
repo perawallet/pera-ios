@@ -21,8 +21,11 @@ FOUNDATION_EXPORT NSString* _Nonnull MnemonicFromKey(NSData* _Nullable key, NSEr
 // skipped function FromMasterDerivationKey with unsupported parameter or return types
 
 
-// skipped function FromPrivateKey with unsupported parameter or return types
-
+/**
+ * FromPrivateKey is a helper that converts an ed25519 private key to a
+human-readable mnemonic
+ */
+FOUNDATION_EXPORT NSString* _Nonnull MnemonicFromPrivateKey(NSData* _Nullable sk, NSError* _Nullable* error);
 
 /**
  * ToKey converts a mnemonic generated using this library into the source
@@ -35,7 +38,10 @@ FOUNDATION_EXPORT NSData* _Nullable MnemonicToKey(NSString* _Nullable mnemonic, 
 // skipped function ToMasterDerivationKey with unsupported parameter or return types
 
 
-// skipped function ToPrivateKey with unsupported parameter or return types
-
+/**
+ * ToPrivateKey is a helper that converts a mnemonic directly to an ed25519
+private key
+ */
+FOUNDATION_EXPORT NSData* _Nullable MnemonicToPrivateKey(NSString* _Nullable mnemonic, NSError* _Nullable* error);
 
 #endif

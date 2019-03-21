@@ -10,14 +10,21 @@ import Foundation
 
 class AppConfiguration {
 
-    init() {
+    let api: API
+    let session: Session
+    
+    init(api: API, session: Session) {
+        self.api = api
+        self.session = session
     }
     
     func all() -> ViewControllerConfiguration {
-        let configuration = ViewControllerConfiguration()
+        let configuration = ViewControllerConfiguration(api: api)
+        configuration.session = session
         return configuration
     }
     
     func clearAll() {
+        
     }
 }
