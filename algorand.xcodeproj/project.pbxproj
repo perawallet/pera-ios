@@ -338,6 +338,23 @@
 			path = Alert;
 			sourceTree = "<group>";
 		};
+		2B8954BC2243FEE200D6D068 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				2BF34CC1223A95A50052CAD3 /* API.swift */,
+				17B7D8A72240DFFC00A6FF9E /* API+Account.swift */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
+		2B8954BD2243FF0100D6D068 /* Keys */ = {
+			isa = PBXGroup;
+			children = (
+				17512619223BE5930095AF4F /* AlgorandParamPairKey.swift */,
+			);
+			path = Keys;
+			sourceTree = "<group>";
+		};
 		2B8BE4C522391C38005D8565 = {
 			isa = PBXGroup;
 			children = (
@@ -928,12 +945,11 @@
 		2BF34CC0223A95900052CAD3 /* Networking */ = {
 			isa = PBXGroup;
 			children = (
+				2B8954BD2243FF0100D6D068 /* Keys */,
+				2B8954BC2243FEE200D6D068 /* API */,
 				17B7D8A92240E18800A6FF9E /* Drafts */,
 				1751261E223BEADF0095AF4F /* Protocols */,
 				1751261B223BEA230095AF4F /* Models */,
-				17512619223BE5930095AF4F /* AlgorandParamPairKey.swift */,
-				2BF34CC1223A95A50052CAD3 /* API.swift */,
-				17B7D8A72240DFFC00A6FF9E /* API+Account.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
