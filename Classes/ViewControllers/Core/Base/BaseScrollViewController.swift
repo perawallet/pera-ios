@@ -51,6 +51,16 @@ class BaseScrollViewController: BaseViewController {
         }
     }
     
+    var hasMinimumContentHeight = true {
+        didSet {
+            if hasMinimumContentHeight == oldValue {
+                return
+            }
+            
+            updateScrollViewLayout()
+        }
+    }
+    
     // MARK: Configuration
     
     override func configureAppearance() {
@@ -100,6 +110,10 @@ class BaseScrollViewController: BaseViewController {
         contentView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
             make.leading.trailing.equalTo(view)
+            
+            if hasMinimumContentHeight {
+                make.height.equalToSuperview().priority(.low)
+            }
         }
     }
 }

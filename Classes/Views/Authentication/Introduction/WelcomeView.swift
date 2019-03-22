@@ -20,7 +20,7 @@ class WelcomeView: BaseView {
         let titleLabelTopInset: CGFloat = 23.0
         let subtitleLabelTopInset: CGFloat = 14.0
         let subtitleLabelHorizontalInset: CGFloat = 50.0
-        let buttonMinimumTopInset: CGFloat = 10.0
+        let buttonMinimumTopInset: CGFloat = 120.0
         let bottomInset: CGFloat = 59.0
     }
     
@@ -85,7 +85,7 @@ class WelcomeView: BaseView {
         addSubview(detailImageView)
         
         detailImageView.snp.makeConstraints { make in
-            make.top.lessThanOrEqualTo(logoImageView.snp.bottom).offset(layout.current.verticalInset)
+            make.top.equalTo(logoImageView.snp.bottom).offset(layout.current.verticalInset)
             make.centerX.equalToSuperview()
         }
     }

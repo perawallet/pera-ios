@@ -20,10 +20,14 @@ class IntroductionView: BaseView {
         let verticalInset: CGFloat = 94.0
         let createButtonTopInset: CGFloat = 42.0
         let bottomInset: CGFloat = 83.0
-        let buttonMinimumTopInset: CGFloat = 10.0
+        let buttonMinimumTopInset: CGFloat = 120.0
     }
     
     private let layout = Layout<LayoutConstants>()
+    
+    private enum Colors {
+        static let recoverButtonColor = rgba(0.04, 0.05, 0.07, 0.57)
+    }
     
     // MARK: Components
     
@@ -38,7 +42,7 @@ class IntroductionView: BaseView {
     
     private lazy var recoverButton: UIButton = {
         UIButton(type: .custom)
-            .withTitleColor(rgba(0.04, 0.05, 0.07, 0.57))
+            .withTitleColor(Colors.recoverButtonColor)
             .withTitle("introduction-recover-title".localized)
             .withAlignment(.center)
             .withFont(UIFont.systemFont(ofSize: 14.0, weight: .semibold))
@@ -47,10 +51,6 @@ class IntroductionView: BaseView {
     weak var delegate: IntroductionViewDelegate?
     
     // MARK: Configuration
-    
-    override func configureAppearance() {
-        backgroundColor = rgb(0.97, 0.97, 0.98)
-    }
     
     override func setListeners() {
         createAccountButton.addTarget(self, action: #selector(notifyDelegateToCreateAccountButtonTapped), for: .touchUpInside)
@@ -79,7 +79,7 @@ class IntroductionView: BaseView {
         addSubview(detailImageView)
         
         detailImageView.snp.makeConstraints { make in
-            make.top.lessThanOrEqualTo(logoImageView.snp.bottom).offset(layout.current.verticalInset)
+            make.top.equalTo(logoImageView.snp.bottom).offset(layout.current.verticalInset)
             make.centerX.equalToSuperview()
         }
     }

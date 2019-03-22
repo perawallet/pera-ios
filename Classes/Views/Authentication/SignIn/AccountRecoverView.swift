@@ -63,7 +63,7 @@ class AccountRecoverView: BaseView {
     }()
     
     private(set) lazy var nextButton: MainButton = {
-        let button = MainButton(title: "title-next".localized)
+        let button = MainButton(title: "title-verify".localized)
         return button
     }()
     
