@@ -41,7 +41,7 @@ class IntroductionView: BaseView {
             .withTitleColor(rgba(0.04, 0.05, 0.07, 0.57))
             .withTitle("introduction-recover-title".localized)
             .withAlignment(.center)
-            .withFont(UIFont.systemFont(ofSize: 14.0, weight: .semibold))
+            .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 14.0)))
     }()
     
     weak var delegate: IntroductionViewDelegate?
