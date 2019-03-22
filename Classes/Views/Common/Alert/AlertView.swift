@@ -24,7 +24,7 @@ class AlertView: BaseView {
     
     private(set) lazy var titleLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.systemFont(ofSize: 22.0, weight: .bold))
+            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 22.0)))
             .withLine(.contained)
             .withAlignment(.center)
             .withTextColor(SharedColors.black)
@@ -36,7 +36,7 @@ class AlertView: BaseView {
     
     private(set) lazy var explanationLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.systemFont(ofSize: 13.0, weight: .semibold))
+            .withFont(UIFont.font(.opensans, withWeight: .semiBold(size: 13.0)))
             .withLine(.contained)
             .withAlignment(.center)
             .withTextColor(SharedColors.black)

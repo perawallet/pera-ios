@@ -35,8 +35,8 @@ class PassPhraseBackUpView: BaseView {
     private lazy var titleLabel: UILabel = {
         UILabel()
             .withAlignment(.center)
-            .withTextColor(SharedColors.blue)
-            .withFont(UIFont.systemFont(ofSize: 22.0, weight: .bold))
+            .withTextColor(SharedColors.black)
+            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 22.0)))
             .withText("back-up-phrase-title".localized)
     }()
     
@@ -52,7 +52,7 @@ class PassPhraseBackUpView: BaseView {
             .withAlignment(.left)
             .withLine(.contained)
             .withTextColor(SharedColors.black)
-            .withFont(UIFont.italicSystemFont(ofSize: 16.0))
+            .withFont(UIFont.font(.opensans, withWeight: .italic(size: 16.0)))
     }()
     
     private lazy var warningContainerView: UIView = {
@@ -69,7 +69,7 @@ class PassPhraseBackUpView: BaseView {
             .withAlignment(.left)
             .withLine(.contained)
             .withTextColor(.white)
-            .withFont(UIFont.systemFont(ofSize: 12.0, weight: .bold))
+            .withFont(UIFont.font(.opensans, withWeight: .bold(size: 12.0)))
             .withText("back-up-phrase-warning".localized)
         
     }()
@@ -160,7 +160,7 @@ class PassPhraseBackUpView: BaseView {
         verifyButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(warningContainerView.snp.bottom).offset(layout.current.buttonMinimumTopInset)
-            make.bottom.equalToSuperview().inset(layout.current.bottomInset)
+            make.bottom.lessThanOrEqualToSuperview().inset(layout.current.bottomInset)
         }
     }
     

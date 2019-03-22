@@ -11,7 +11,7 @@ import UIKit
 class MultiLineInputField: BaseInputView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let placeholderTopOffset: CGFloat = 9.0
+        let placeholderTopOffset: CGFloat = 7.0
         let placeholderLeftInset: CGFloat = 4.0
     }
     
@@ -32,7 +32,7 @@ class MultiLineInputField: BaseInputView {
     
     private(set) lazy var inputTextView: UITextView = {
         let textView = UITextView()
-        textView.font = UIFont.systemFont(ofSize: 16.0, weight: .semibold)
+        textView.font = UIFont.font(.montserrat, withWeight: .semiBold(size: 13.0))
         textView.textColor = SharedColors.black
         textView.tintColor = SharedColors.black
         textView.backgroundColor = .clear
@@ -45,7 +45,7 @@ class MultiLineInputField: BaseInputView {
     
     private(set) lazy var placeholderLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.systemFont(ofSize: 14.0, weight: .semibold))
+            .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 14.0)))
             .withLine(.contained)
             .withTextColor(SharedColors.softGray)
     }()

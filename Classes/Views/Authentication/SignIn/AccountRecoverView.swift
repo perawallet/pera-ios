@@ -18,9 +18,10 @@ class AccountRecoverView: BaseView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let verticalInset: CGFloat = 94.0
-        let createButtonTopInset: CGFloat = 42.0
-        let bottomInset: CGFloat = 83.0
-        let buttonMinimumTopInset: CGFloat = 10.0
+        let separatorHeight: CGFloat = 1.0
+        let inputTopInset: CGFloat = 20.0
+        let nextButtonTopInset: CGFloat = 144.0
+        let bottomInset: CGFloat = 15.0
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -45,7 +46,7 @@ class AccountRecoverView: BaseView {
         accountNameInputView.inputTextField.attributedPlaceholder = NSAttributedString(
             string: "account-name-setup-placeholder".localized,
             attributes: [NSAttributedString.Key.foregroundColor: SharedColors.softGray,
-                         NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13.0, weight: .semibold)]
+                         NSAttributedString.Key.font: UIFont.font(.montserrat, withWeight: .semiBold(size: 13.0))]
         )
         accountNameInputView.nextButtonMode = .next
         accountNameInputView.inputTextField.autocorrectionType = .no
@@ -93,7 +94,7 @@ class AccountRecoverView: BaseView {
         topSeparatorView.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(layout.current.verticalInset)
             make.leading.trailing.equalToSuperview()
-            make.height.equalTo(1.0)
+            make.height.equalTo(layout.current.separatorHeight)
         }
     }
     
@@ -102,7 +103,7 @@ class AccountRecoverView: BaseView {
         
         accountNameInputView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.top.equalTo(topSeparatorView.snp.bottom).offset(20.0)
+            make.top.equalTo(topSeparatorView.snp.bottom).offset(layout.current.inputTopInset)
         }
     }
 
@@ -120,8 +121,8 @@ class AccountRecoverView: BaseView {
         
         nextButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalTo(passPhraseInputView.snp.bottom).offset(144.0)
-            make.bottom.lessThanOrEqualToSuperview().inset(15.0)
+            make.top.equalTo(passPhraseInputView.snp.bottom).offset(layout.current.nextButtonTopInset)
+            make.bottom.lessThanOrEqualToSuperview().inset(layout.current.bottomInset)
         }
     }
     

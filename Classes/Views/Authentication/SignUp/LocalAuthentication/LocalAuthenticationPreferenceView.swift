@@ -36,9 +36,9 @@ class LocalAuthenticationPreferenceView: BaseView {
     private lazy var titleLabel: UILabel = {
         UILabel()
             .withText("local-authentication-preference-title".localized)
-            .withTextColor(SharedColors.blue)
+            .withTextColor(SharedColors.black)
             .withAlignment(.center)
-            .withFont(UIFont.systemFont(ofSize: 22.0, weight: .bold))
+            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 22.0)))
     }()
     
     private lazy var subtitleLabel: UILabel = {
@@ -47,7 +47,7 @@ class LocalAuthenticationPreferenceView: BaseView {
             .withTextColor(SharedColors.black)
             .withAlignment(.center)
             .withLine(.contained)
-            .withFont(UIFont.systemFont(ofSize: 16.0, weight: .regular))
+            .withFont(UIFont.font(.opensans, withWeight: .semiBold(size: 14.0)))
     }()
     
     private lazy var iconContainerView: UIView = {
@@ -71,7 +71,7 @@ class LocalAuthenticationPreferenceView: BaseView {
             .withTitle("title-no".localized)
             .withTitleColor(SharedColors.black)
             .withBackgroundImage(img("bg-dark-gray-button"))
-            .withFont(UIFont.systemFont(ofSize: 14.0, weight: .bold))
+            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 14.0)))
     }()
     
     weak var delegate: LocalAuthenticationPreferenceViewDelegate?

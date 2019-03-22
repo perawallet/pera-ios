@@ -38,7 +38,7 @@ class BaseInputView: BaseView {
     
     private(set) lazy var explanationLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
+        label.font = UIFont.font(.opensans, withWeight: .semiBold(size: 12.0))
         label.textColor = SharedColors.softGray
         return label
     }()

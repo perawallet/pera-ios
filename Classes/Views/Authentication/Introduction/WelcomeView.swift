@@ -20,7 +20,7 @@ class WelcomeView: BaseView {
         let titleLabelTopInset: CGFloat = 23.0
         let subtitleLabelTopInset: CGFloat = 14.0
         let subtitleLabelHorizontalInset: CGFloat = 50.0
-        let buttonMinimumTopInset: CGFloat = 120.0
+        let buttonMinimumTopInset: CGFloat = 78.0
         let bottomInset: CGFloat = 59.0
     }
     
@@ -35,8 +35,8 @@ class WelcomeView: BaseView {
     private lazy var welcomteTitleLabel: UILabel = {
         UILabel()
             .withAlignment(.center)
-            .withTextColor(SharedColors.blue)
-            .withFont(UIFont.systemFont(ofSize: 22.0, weight: .bold))
+            .withTextColor(SharedColors.black)
+            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 22.0)))
             .withText("welcome-title".localized)
     }()
     
@@ -45,7 +45,7 @@ class WelcomeView: BaseView {
             .withAlignment(.center)
             .withLine(.contained)
             .withTextColor(SharedColors.black)
-            .withFont(UIFont.systemFont(ofSize: 16.0, weight: .regular))
+            .withFont(UIFont.font(.opensans, withWeight: .semiBold(size: 14.0)))
             .withText("welcome-subtitle".localized)
     }()
     

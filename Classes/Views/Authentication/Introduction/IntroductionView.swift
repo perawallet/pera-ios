@@ -18,9 +18,9 @@ class IntroductionView: BaseView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let verticalInset: CGFloat = 94.0
-        let createButtonTopInset: CGFloat = 42.0
+        let createButtonTopInset: CGFloat = 28.0
         let bottomInset: CGFloat = 83.0
-        let buttonMinimumTopInset: CGFloat = 120.0
+        let buttonMinimumTopInset: CGFloat = 110.0
     }
     
     private let layout = Layout<LayoutConstants>()

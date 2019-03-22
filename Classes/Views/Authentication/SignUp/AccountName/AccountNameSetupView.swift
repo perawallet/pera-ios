@@ -32,7 +32,7 @@ class AccountNameSetupView: BaseView {
         accountNameInputView.inputTextField.attributedPlaceholder = NSAttributedString(
             string: "account-name-setup-placeholder".localized,
             attributes: [NSAttributedString.Key.foregroundColor: SharedColors.softGray,
-                         NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13.0, weight: .semibold)]
+                         NSAttributedString.Key.font: UIFont.font(.montserrat, withWeight: .semiBold(size: 13.0))]
         )
         accountNameInputView.nextButtonMode = .submit
         accountNameInputView.inputTextField.autocorrectionType = .no
@@ -77,7 +77,7 @@ class AccountNameSetupView: BaseView {
         
         nextButton.snp.makeConstraints { make in
             make.top.equalTo(accountNameInputView.snp.bottom).offset(layout.current.buttonTopInset)
-            make.bottom.equalToSuperview().inset(layout.current.buttonBottomInset)
+            make.bottom.lessThanOrEqualToSuperview().inset(layout.current.buttonBottomInset)
             make.centerX.equalToSuperview()
         }
     }
