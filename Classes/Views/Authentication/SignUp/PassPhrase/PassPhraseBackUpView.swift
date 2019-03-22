@@ -83,10 +83,6 @@ class PassPhraseBackUpView: BaseView {
     
     // MARK: Configuration
     
-    override func configureAppearance() {
-        backgroundColor = rgb(0.97, 0.97, 0.98)
-    }
-    
     override func setListeners() {
         verifyButton.addTarget(self, action: #selector(notifyDelegateToVerifyButtonTapped), for: .touchUpInside)
     }

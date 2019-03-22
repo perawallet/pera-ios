@@ -19,10 +19,6 @@ class LocalAuthenticationPreferenceViewController: BaseViewController {
     
     // MARK: Setup
     
-    override func configureAppearance() {
-        view.backgroundColor = rgb(0.97, 0.97, 0.98)
-    }
-    
     override func prepareLayout() {
         view.addSubview(localAuthenticationPreferenceView)
         

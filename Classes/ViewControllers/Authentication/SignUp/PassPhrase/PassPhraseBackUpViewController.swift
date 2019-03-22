@@ -27,8 +27,6 @@ class PassPhraseBackUpViewController: BaseScrollViewController {
     override func configureAppearance() {
         super.configureAppearance()
         
-        view.backgroundColor = rgb(0.97, 0.97, 0.98)
-        
         passPhraseBackUpView.passPhreaseLabel.attributedText = passPhrase.attributed([.lineSpacing(1.5)])
     }
     

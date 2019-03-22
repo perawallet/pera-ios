@@ -21,12 +21,6 @@ class AccountNameSetupViewController: BaseScrollViewController {
     
     // MARK: Setup
     
-    override func configureAppearance() {
-        super.configureAppearance()
-        
-        view.backgroundColor = rgb(0.97, 0.97, 0.98)
-    }
-    
     override func setListeners() {
         super.setListeners()
         

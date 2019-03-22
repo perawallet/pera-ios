@@ -30,7 +30,7 @@ class ChoosePasswordViewController: BaseViewController {
     // MARK: Setup
     
     override func configureAppearance() {
-        view.backgroundColor = rgb(0.97, 0.97, 0.98)
+        super.configureAppearance()
         
         viewModel.configure(choosePasswordView)
     }

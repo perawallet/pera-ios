@@ -41,7 +41,7 @@ class NavigationController: UINavigationController {
     }
     
     private func configureViewAppearance() {
-        view.backgroundColor = .clear
+        view.backgroundColor = rgb(0.97, 0.97, 0.98)
     }
     
     func linkInteractors() {

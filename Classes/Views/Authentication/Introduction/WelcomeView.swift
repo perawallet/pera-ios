@@ -58,10 +58,6 @@ class WelcomeView: BaseView {
     
     // MARK: Configuration
     
-    override func configureAppearance() {
-        backgroundColor = rgb(0.97, 0.97, 0.98)
-    }
-    
     override func setListeners() {
         doneButton.addTarget(self, action: #selector(notifyDelegateToDoneButtonTapped), for: .touchUpInside)
     }

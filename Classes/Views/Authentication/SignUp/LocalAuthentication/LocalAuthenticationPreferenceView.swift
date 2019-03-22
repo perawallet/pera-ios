@@ -78,10 +78,6 @@ class LocalAuthenticationPreferenceView: BaseView {
     
     // MARK: Configuration
     
-    override func configureAppearance() {
-        backgroundColor = rgb(0.97, 0.97, 0.98)
-    }
-    
     override func setListeners() {
         yesButton.addTarget(self, action: #selector(notifyDelegateToYesButtonTapped), for: .touchUpInside)
         noButton.addTarget(self, action: #selector(notifyDelegateToNoButtonTapped), for: .touchUpInside)
