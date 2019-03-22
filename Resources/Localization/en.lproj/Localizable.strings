@@ -18,13 +18,13 @@
 // MARK: Introduction
 
 "introduction-recover-title" = "Recover from Seed";
-"introduction-create-title" = "Create Account";
+"introduction-create-title" = "CREATE ACCOUNT";
 
 // MARK: Welcome
 
 "welcome-title" = "Welcome!";
 "welcome-subtitle" = "We just need you to set up a few quick things to keep your account safe.";
-"welcome-done-title" = "Let's Go";
+"welcome-done-title" = "LET'S GO";
 
 // MARK: Password Setting
 
@@ -55,7 +55,7 @@
 
 // MARK: Account Name Setup
 
-"account-name-setup-explanation" = "Name:";
+"account-name-setup-explanation" = "Account Name:";
 "account-name-setup-placeholder" = "Please name your account";
 
 // MARK: Account Name Setup
