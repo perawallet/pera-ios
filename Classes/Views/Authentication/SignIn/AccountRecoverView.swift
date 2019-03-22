@@ -91,7 +91,8 @@ class AccountRecoverView: BaseView {
         addSubview(topSeparatorView)
         
         topSeparatorView.snp.makeConstraints { make in
-            make.leading.trailing.top.equalToSuperview()
+            make.top.equalToSuperview().inset(layout.current.verticalInset)
+            make.leading.trailing.equalToSuperview()
             make.height.equalTo(1.0)
         }
     }

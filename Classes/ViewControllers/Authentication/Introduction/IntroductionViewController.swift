@@ -22,8 +22,6 @@ class IntroductionViewController: BaseScrollViewController {
     override func prepareLayout() {
         super.prepareLayout()
         
-        shouldIgnoreBottomLayoutGuide = false
-        
         setupIntroducitionViewLayout()
     }
     

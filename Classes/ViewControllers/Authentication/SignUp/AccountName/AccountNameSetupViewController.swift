@@ -39,8 +39,6 @@ class AccountNameSetupViewController: BaseScrollViewController {
     override func prepareLayout() {
         super.prepareLayout()
         
-        shouldIgnoreBottomLayoutGuide = false
-        
         setupAccountNameSetupViewLayout()
     }
     

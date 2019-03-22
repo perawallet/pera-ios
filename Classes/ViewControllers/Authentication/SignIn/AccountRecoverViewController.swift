@@ -37,9 +37,6 @@ class AccountRecoverViewController: BaseScrollViewController {
     override func prepareLayout() {
         super.prepareLayout()
         
-        shouldIgnoreTopLayoutGuide = false
-        shouldIgnoreBottomLayoutGuide = false
-        
         setupAccountRecoverViewLayout()
     }
     

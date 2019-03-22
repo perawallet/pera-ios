@@ -33,8 +33,6 @@ class PassPhraseBackUpViewController: BaseScrollViewController {
     override func prepareLayout() {
         super.prepareLayout()
         
-        shouldIgnoreBottomLayoutGuide = false
-        
         contentView.addSubview(passPhraseBackUpView)
         
         passPhraseBackUpView.snp.makeConstraints { make in
