@@ -10,7 +10,7 @@ import UIKit
 
 enum Font: String {
     case montserrat = "Montserrat"
-    case lato = "Lato"
+    case opensans = "OpenSans"
 }
 
 enum FontWeight {
