@@ -16,9 +16,7 @@ class Session: Storable {
     private let privateKey = "com.algorand.token.private.key"
     
     private var privateStorage: KeychainAccess.Keychain {
-        return KeychainAccess.Keychain(
-            service: privateStorageKey)
-            .accessibility(.whenUnlocked)
+        return KeychainAccess.Keychain(service: privateStorageKey).accessibility(.whenUnlocked)
     }
     
     init() {

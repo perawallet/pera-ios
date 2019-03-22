@@ -11,6 +11,9 @@
 "title-yes" = "Yes";
 "title-no" = "No";
 "title-ok" = "OK";
+"title-next" = "NEXT";
+"title-cancel" = "CANCEL";
+"title-remove" = "REMOVE";
 
 // MARK: Introduction
 
@@ -43,3 +46,18 @@
 "back-up-phrase-title" = "Back up this Pass Phrase";
 "back-up-phrase-warning" = "In order to access this account if you lose this device copy or print this phrase and keep it someplace safe";
 "back-up-phrase-button-title" = "VERIFY RECOVERY PHRASE";
+
+
+// MARK: Pass Phrase Verify
+
+"pass-phrase-verify-pop-up-title" = "Pass Phrase Verified";
+"pass-phrase-verify-pop-up-explanation" = "Your passphrase has been verified. Make sure that you have backed it up as you will need it to recover your account.";
+
+// MARK: Account Name Setup
+
+"account-name-setup-explanation" = "Name:";
+"account-name-setup-placeholder" = "Please name your account";
+
+// MARK: Account Name Setup
+
+"pass-pharase-enter-placeholder" = "Enter Pass Phrase or Scan QR";

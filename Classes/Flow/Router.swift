@@ -93,17 +93,23 @@ class Router {
         
         let viewController: UIViewController
         
+        let configuration = ViewControllerConfiguration(api: rootViewController.appConfiguration.api)
+        
         switch screen {
         case .introduction:
-            viewController = IntroductionViewController(configuration: rootViewController.appConfiguration.all())
+            viewController = IntroductionViewController(configuration: configuration)
         case .welcome:
-            viewController = WelcomeViewController(configuration: rootViewController.appConfiguration.all())
+            viewController = WelcomeViewController(configuration: configuration)
         case let .choosePassword(mode):
-            viewController = ChoosePasswordViewController(mode: mode, configuration: rootViewController.appConfiguration.all())
+            viewController = ChoosePasswordViewController(mode: mode, configuration: configuration)
         case .localAuthenticationPreference:
-            viewController = LocalAuthenticationPreferenceViewController(configuration: rootViewController.appConfiguration.all())
+            viewController = LocalAuthenticationPreferenceViewController(configuration: configuration)
         case .passPhraseBackUp:
-            viewController = PassPhraseBackUpViewController(configuration: rootViewController.appConfiguration.all())
+            viewController = PassPhraseBackUpViewController(configuration: configuration)
+        case .accountNameSetup:
+            viewController = AccountNameSetupViewController(configuration: configuration)
+        case .accountRecover:
+            viewController = AccountRecoverViewController(configuration: configuration)
         }
         
         return viewController as? T

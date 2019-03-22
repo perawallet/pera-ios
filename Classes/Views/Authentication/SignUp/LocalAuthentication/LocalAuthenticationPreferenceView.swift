@@ -69,6 +69,7 @@ class LocalAuthenticationPreferenceView: BaseView {
     private lazy var noButton: UIButton = {
         UIButton(type: .custom)
             .withTitle("title-no".localized)
+            .withTitleColor(rgb(0.04, 0.05, 0.07))
             .withBackgroundImage(img("bg-dark-gray-button"))
             .withFont(UIFont.systemFont(ofSize: 14.0, weight: .bold))
     }()
@@ -78,7 +79,7 @@ class LocalAuthenticationPreferenceView: BaseView {
     // MARK: Configuration
     
     override func configureAppearance() {
-        backgroundColor = rgb(0.95, 0.96, 0.96)
+        backgroundColor = rgb(0.97, 0.97, 0.98)
     }
     
     override func setListeners() {

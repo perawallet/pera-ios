@@ -13,7 +13,7 @@ extension API {
     func fetchAccount(
         with draft: AccountDraft,
         then completion: CompletionHandler<Account>? = nil
-        ) -> EndpointInteractable? {
+    ) -> EndpointInteractable? {
         
         let address = draft.publicKey
         
