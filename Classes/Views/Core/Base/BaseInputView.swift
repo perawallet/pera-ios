@@ -22,6 +22,10 @@ class BaseInputView: BaseView {
     
     private let layout = Layout<LayoutConstants>()
     
+    private enum Colors {
+        static let separatorColor = rgba(0.67, 0.67, 0.72, 0.31)
+    }
+    
     // MARK: Customization
     
     var nextButtonMode = NextButtonMode.next
@@ -35,7 +39,7 @@ class BaseInputView: BaseView {
     private(set) lazy var explanationLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
-        label.textColor = rgb(0.67, 0.67, 0.72)
+        label.textColor = SharedColors.softGray
         return label
     }()
     
@@ -45,7 +49,7 @@ class BaseInputView: BaseView {
     
     private(set) lazy var separatorView: UIView = {
         let view = UIView()
-        view.backgroundColor = rgba(0.67, 0.67, 0.72, 0.31)
+        view.backgroundColor = Colors.separatorColor
         return view
     }()
     

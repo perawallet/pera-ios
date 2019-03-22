@@ -25,13 +25,17 @@ class AccountRecoverView: BaseView {
     
     private let layout = Layout<LayoutConstants>()
 
+    private enum Colors {
+        static let separatorColor = rgba(0.67, 0.67, 0.72, 0.31)
+    }
+    
     weak var delegate: AccountRecoverViewDelegate?
     
     // MARK: Components
     
     private lazy var topSeparatorView: UIView = {
         let view = UIView()
-        view.backgroundColor = rgba(0.67, 0.67, 0.72, 0.31)
+        view.backgroundColor = Colors.separatorColor
         return view
     }()
     
@@ -40,7 +44,7 @@ class AccountRecoverView: BaseView {
         accountNameInputView.explanationLabel.text = "account-name-setup-explanation".localized
         accountNameInputView.inputTextField.attributedPlaceholder = NSAttributedString(
             string: "account-name-setup-placeholder".localized,
-            attributes: [NSAttributedString.Key.foregroundColor: rgb(0.67, 0.67, 0.72),
+            attributes: [NSAttributedString.Key.foregroundColor: SharedColors.softGray,
                          NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13.0, weight: .semibold)]
         )
         accountNameInputView.nextButtonMode = .next

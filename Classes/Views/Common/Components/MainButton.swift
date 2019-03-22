@@ -40,7 +40,7 @@ class MainButton: UIButton {
     private func configureButton() {
         titleLabel?.textAlignment = .center
         setBackgroundImage(img("bg-main-button"), for: .normal)
-        setTitleColor(rgb(0.04, 0.05, 0.07), for: .normal)
+        setTitleColor(SharedColors.black, for: .normal)
         titleLabel?.font = UIFont.systemFont(ofSize: 14.0, weight: .bold)
     }
 }

@@ -31,7 +31,7 @@ class AccountNameSetupView: BaseView {
         accountNameInputView.explanationLabel.text = "account-name-setup-explanation".localized
         accountNameInputView.inputTextField.attributedPlaceholder = NSAttributedString(
             string: "account-name-setup-placeholder".localized,
-            attributes: [NSAttributedString.Key.foregroundColor: rgb(0.67, 0.67, 0.72),
+            attributes: [NSAttributedString.Key.foregroundColor: SharedColors.softGray,
                          NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13.0, weight: .semibold)]
         )
         accountNameInputView.nextButtonMode = .submit

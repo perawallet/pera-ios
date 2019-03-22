@@ -36,7 +36,7 @@ class LocalAuthenticationPreferenceView: BaseView {
     private lazy var titleLabel: UILabel = {
         UILabel()
             .withText("local-authentication-preference-title".localized)
-            .withTextColor(rgb(0.0, 0.46, 1.0))
+            .withTextColor(SharedColors.blue)
             .withAlignment(.center)
             .withFont(UIFont.systemFont(ofSize: 22.0, weight: .bold))
     }()
@@ -44,7 +44,7 @@ class LocalAuthenticationPreferenceView: BaseView {
     private lazy var subtitleLabel: UILabel = {
         UILabel()
             .withText("local-authentication-preference-subtitle".localized)
-            .withTextColor(rgb(0.04, 0.05, 0.07))
+            .withTextColor(SharedColors.black)
             .withAlignment(.center)
             .withLine(.contained)
             .withFont(UIFont.systemFont(ofSize: 16.0, weight: .regular))
@@ -69,7 +69,7 @@ class LocalAuthenticationPreferenceView: BaseView {
     private lazy var noButton: UIButton = {
         UIButton(type: .custom)
             .withTitle("title-no".localized)
-            .withTitleColor(rgb(0.04, 0.05, 0.07))
+            .withTitleColor(SharedColors.black)
             .withBackgroundImage(img("bg-dark-gray-button"))
             .withFont(UIFont.systemFont(ofSize: 14.0, weight: .bold))
     }()

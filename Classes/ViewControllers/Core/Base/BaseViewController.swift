@@ -75,8 +75,6 @@ class BaseViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .white
-        
         configureAppearance()
         prepareLayout()
         linkInteractors()
@@ -84,7 +82,7 @@ class BaseViewController: UIViewController {
     }
     
     func configureAppearance() {
-        view.backgroundColor = rgb(0.97, 0.97, 0.98)
+        view.backgroundColor = SharedColors.warmWhite
     }
     
     func prepareLayout() {

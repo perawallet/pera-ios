@@ -35,7 +35,7 @@ class PassPhraseBackUpView: BaseView {
     private lazy var titleLabel: UILabel = {
         UILabel()
             .withAlignment(.center)
-            .withTextColor(rgb(0.0, 0.46, 1.0))
+            .withTextColor(SharedColors.blue)
             .withFont(UIFont.systemFont(ofSize: 22.0, weight: .bold))
             .withText("back-up-phrase-title".localized)
     }()
@@ -51,14 +51,14 @@ class PassPhraseBackUpView: BaseView {
         UILabel()
             .withAlignment(.left)
             .withLine(.contained)
-            .withTextColor(rgb(0.04, 0.05, 0.07))
+            .withTextColor(SharedColors.black)
             .withFont(UIFont.italicSystemFont(ofSize: 16.0))
     }()
     
     private lazy var warningContainerView: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 20.0
-        view.backgroundColor = rgb(0.34, 0.34, 0.43)
+        view.backgroundColor = SharedColors.darkGray
         return view
     }()
     

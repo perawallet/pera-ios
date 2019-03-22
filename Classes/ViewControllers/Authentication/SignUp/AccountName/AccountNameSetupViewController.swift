@@ -10,6 +10,10 @@ import UIKit
 
 class AccountNameSetupViewController: BaseScrollViewController {
     
+    private enum Colors {
+        static let separatorColor = rgba(0.67, 0.67, 0.72, 0.31)
+    }
+    
     // MARK: Components
     
     private lazy var accountNameSetupView: AccountNameSetupView = {
@@ -61,11 +65,11 @@ extension AccountNameSetupViewController: AccountNameSetupViewDelegate {
         if let text = accountNameSetupView.accountNameInputView.inputTextField.text,
             !text.isEmpty {
             
-            accountNameSetupView.accountNameInputView.separatorView.backgroundColor = rgb(0.0, 0.46, 1.0)
+            accountNameSetupView.accountNameInputView.separatorView.backgroundColor = SharedColors.blue
             return
         }
         
-        accountNameSetupView.accountNameInputView.separatorView.backgroundColor = rgba(0.67, 0.67, 0.72, 0.31)
+        accountNameSetupView.accountNameInputView.separatorView.backgroundColor = Colors.separatorColor
     }
 }
 

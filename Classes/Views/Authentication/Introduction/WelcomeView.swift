@@ -35,7 +35,7 @@ class WelcomeView: BaseView {
     private lazy var welcomteTitleLabel: UILabel = {
         UILabel()
             .withAlignment(.center)
-            .withTextColor(rgb(0.0, 0.46, 1.0))
+            .withTextColor(SharedColors.blue)
             .withFont(UIFont.systemFont(ofSize: 22.0, weight: .bold))
             .withText("welcome-title".localized)
     }()
@@ -44,7 +44,7 @@ class WelcomeView: BaseView {
         UILabel()
             .withAlignment(.center)
             .withLine(.contained)
-            .withTextColor(rgb(0.04, 0.05, 0.07))
+            .withTextColor(SharedColors.black)
             .withFont(UIFont.systemFont(ofSize: 16.0, weight: .regular))
             .withText("welcome-subtitle".localized)
     }()

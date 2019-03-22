@@ -34,7 +34,7 @@ class RootViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = rgb(0.97, 0.97, 0.98)
+        view.backgroundColor = SharedColors.warmWhite
         
         open(.introduction, by: .present)
     }

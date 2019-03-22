@@ -18,6 +18,10 @@ class NumpadNumericButton: UIButton, NumpadTypeable {
         let size = CGSize(width: 30.0, height: 36.0)
     }
     
+    private enum Colors {
+        static let buttonColor = rgba(0.04, 0.05, 0.07, 0.8)
+    }
+    
     private let layout = Layout<LayoutConstants>()
     
     var value: NumpadValue = .number(nil) {
@@ -47,7 +51,7 @@ class NumpadNumericButton: UIButton, NumpadTypeable {
         
         isEnabled = false
         
-        setTitleColor(.black, for: .normal)
+        setTitleColor(Colors.buttonColor, for: .normal)
         
         setupSeparatorImageViewLayout()
     }

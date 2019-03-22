@@ -27,7 +27,7 @@ class AlertView: BaseView {
             .withFont(UIFont.systemFont(ofSize: 22.0, weight: .bold))
             .withLine(.contained)
             .withAlignment(.center)
-            .withTextColor(rgb(0.04, 0.05, 0.07))
+            .withTextColor(SharedColors.black)
     }()
     
     private lazy var iconBackgroundImageView = UIImageView(image: img("bg-alert-icon"))
@@ -39,13 +39,13 @@ class AlertView: BaseView {
             .withFont(UIFont.systemFont(ofSize: 13.0, weight: .semibold))
             .withLine(.contained)
             .withAlignment(.center)
-            .withTextColor(rgb(0.04, 0.05, 0.07))
+            .withTextColor(SharedColors.black)
     }()
     
     // MARK: Setup
     
     override func configureAppearance() {
-        backgroundColor = rgb(0.97, 0.97, 0.98)
+        backgroundColor = SharedColors.warmWhite
         layer.cornerRadius = 10.0
     }
     

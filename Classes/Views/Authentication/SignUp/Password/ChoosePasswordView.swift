@@ -28,14 +28,14 @@ class ChoosePasswordView: BaseView {
     
     private(set) lazy var titleLabel: UILabel = {
         UILabel()
-            .withTextColor(rgb(0.0, 0.46, 1.0))
+            .withTextColor(SharedColors.blue)
             .withAlignment(.center)
             .withFont(UIFont.systemFont(ofSize: 22.0, weight: .bold))
     }()
     
     private(set) lazy var subtitleLabel: UILabel = {
         UILabel()
-            .withTextColor(rgb(0.04, 0.05, 0.07))
+            .withTextColor(SharedColors.black)
             .withLine(.contained)
             .withAlignment(.center)
             .withFont(UIFont.systemFont(ofSize: 16.0, weight: .regular))

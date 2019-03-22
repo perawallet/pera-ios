@@ -28,7 +28,7 @@ class BaseView: UIView {
     }
     
     func configureAppearance() {
-        backgroundColor = rgb(0.97, 0.97, 0.98)
+        backgroundColor = SharedColors.warmWhite
     }
     
     func prepareLayout() {
