@@ -79,6 +79,6 @@ extension AccountRecoverViewController: KeyboardControllerDataSource {
     }
     
     func bottomInsetWhenKeyboardDismissed(for keyboardController: KeyboardController) -> CGFloat {
-        return 15.0
+        return 0.0
     }
 }

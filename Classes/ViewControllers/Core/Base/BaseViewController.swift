@@ -75,6 +75,9 @@ class BaseViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        UIApplication.shared.statusBarView?.backgroundColor = SharedColors.warmWhite
+        navigationController?.navigationBar.backgroundColor = SharedColors.warmWhite
+        
         configureAppearance()
         prepareLayout()
         linkInteractors()

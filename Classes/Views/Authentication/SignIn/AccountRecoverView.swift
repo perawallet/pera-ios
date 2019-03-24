@@ -17,7 +17,7 @@ protocol AccountRecoverViewDelegate: class {
 class AccountRecoverView: BaseView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let verticalInset: CGFloat = 94.0
+        let verticalInset: CGFloat = 90.0
         let separatorHeight: CGFloat = 1.0
         let inputTopInset: CGFloat = 20.0
         let nextButtonTopInset: CGFloat = 144.0

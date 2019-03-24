@@ -49,10 +49,6 @@ class BaseScrollViewController: BaseViewController {
     private func setupScrollViewLayout() {
         view.addSubview(scrollView)
         
-        updateScrollViewLayout()
-    }
-    
-    private func updateScrollViewLayout() {
         scrollView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.top.equalToSuperview()
@@ -62,11 +58,8 @@ class BaseScrollViewController: BaseViewController {
     
     private func setupContentViewLayout() {
         scrollView.addSubview(contentView)
-        updateContentViewLayout()
-    }
-    
-    private func updateContentViewLayout() {
-        contentView.snp.remakeConstraints { make in
+        
+        contentView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
             make.leading.trailing.equalTo(view)
             make.height.equalToSuperview().priority(.low)
