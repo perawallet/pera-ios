@@ -60,6 +60,7 @@
 		2B8BE50122393999005D8565 /* AdaptiveLayoutConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8BE50022393999005D8565 /* AdaptiveLayoutConstants.swift */; };
 		2B8C1278224196DF00E34D37 /* String+Attributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8C1277224196DF00E34D37 /* String+Attributes.swift */; };
 		2B8C127A2241970F00E34D37 /* NSAttributedString+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8C12792241970F00E34D37 /* NSAttributedString+Additions.swift */; };
+		2BA8736A2248214800511C7C /* AlignedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA873692248214800511C7C /* AlignedButton.swift */; };
 		2BD739CB223F97B100B66EEF /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD739C9223F97B100B66EEF /* WelcomeViewController.swift */; };
 		2BD739CC223F97B100B66EEF /* IntroductionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD739CA223F97B100B66EEF /* IntroductionViewController.swift */; };
 		2BD739D1223F97F600B66EEF /* IntroductionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD739CF223F97F600B66EEF /* IntroductionView.swift */; };
@@ -159,6 +160,7 @@
 		2B8BE504223939F9005D8565 /* UIApplication+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Additions.swift"; sourceTree = "<group>"; };
 		2B8C1277224196DF00E34D37 /* String+Attributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Attributes.swift"; sourceTree = "<group>"; };
 		2B8C12792241970F00E34D37 /* NSAttributedString+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Additions.swift"; sourceTree = "<group>"; };
+		2BA873692248214800511C7C /* AlignedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlignedButton.swift; sourceTree = "<group>"; };
 		2BD739C9223F97B100B66EEF /* WelcomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
 		2BD739CA223F97B100B66EEF /* IntroductionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroductionViewController.swift; sourceTree = "<group>"; };
 		2BD739CF223F97F600B66EEF /* IntroductionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroductionView.swift; sourceTree = "<group>"; };
@@ -241,17 +243,6 @@
 				1751261F223BEAE90095AF4F /* Storable.swift */,
 			);
 			path = Protocols;
-			sourceTree = "<group>";
-		};
-		17512621223BEB6D0095AF4F /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				17512622223BEB9D0095AF4F /* UserDefaults+Additions.swift */,
-				17B7D8AF224128EC00A6FF9E /* Keychain+Additions.swift */,
-				17B7D8B72242830D00A6FF9E /* Params+Additions.swift */,
-				179278942244F8EE00097D32 /* UIFont+Additions.swift */,
-			);
-			path = Extensions;
 			sourceTree = "<group>";
 		};
 		17B7D8A42240D79200A6FF9E /* Models */ = {
@@ -421,7 +412,6 @@
 			children = (
 				2B8954C5224420A000D6D068 /* Protocols */,
 				17B7D8A42240D79200A6FF9E /* Models */,
-				17512621223BEB6D0095AF4F /* Extensions */,
 				2BD73A0E22412B5900B66EEF /* ViewModels */,
 				2BD73A0722412AF200B66EEF /* LayoutBuilders */,
 				2BD73A0322412AA100B66EEF /* Data */,
@@ -559,6 +549,7 @@
 		2B8BE4F62239370F005D8565 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				2BA8736C2248219900511C7C /* Data */,
 				2BD739D3223F983B00B66EEF /* Style */,
 				2BF34CB5223A87920052CAD3 /* External */,
 				2BF34C972239AAC10052CAD3 /* Flow */,
@@ -630,6 +621,31 @@
 			path = Application;
 			sourceTree = "<group>";
 		};
+		2BA873682248212F00511C7C /* Button */ = {
+			isa = PBXGroup;
+			children = (
+				2BA873692248214800511C7C /* AlignedButton.swift */,
+			);
+			path = Button;
+			sourceTree = "<group>";
+		};
+		2BA8736B2248218200511C7C /* Font */ = {
+			isa = PBXGroup;
+			children = (
+				179278942244F8EE00097D32 /* UIFont+Additions.swift */,
+			);
+			path = Font;
+			sourceTree = "<group>";
+		};
+		2BA8736C2248219900511C7C /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				17512622223BEB9D0095AF4F /* UserDefaults+Additions.swift */,
+				17B7D8AF224128EC00A6FF9E /* Keychain+Additions.swift */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
 		2BD739C7223F978300B66EEF /* Authentication */ = {
 			isa = PBXGroup;
 			children = (
@@ -671,6 +687,7 @@
 		2BD739D3223F983B00B66EEF /* Style */ = {
 			isa = PBXGroup;
 			children = (
+				2BA8736B2248218200511C7C /* Font */,
 				2BD739D4223F984700B66EEF /* Color */,
 			);
 			path = Style;
@@ -724,6 +741,7 @@
 		2BD739E2223F9FDD00B66EEF /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				2BA873682248212F00511C7C /* Button */,
 				2B8954BE2244044200D6D068 /* Input */,
 				2B8954A62243853700D6D068 /* Alert */,
 				2BD739F2223FF05C00B66EEF /* Numpad */,
@@ -967,6 +985,7 @@
 		2BF34CB5223A87920052CAD3 /* External */ = {
 			isa = PBXGroup;
 			children = (
+				17B7D8B72242830D00A6FF9E /* Params+Additions.swift */,
 				2BF34CB6223A87B70052CAD3 /* Snapkit+SafeArea.swift */,
 			);
 			path = External;
@@ -1266,6 +1285,7 @@
 				2BF34C9B2239AB130052CAD3 /* Screen.swift in Sources */,
 				2B8954B02243D5DA00D6D068 /* DestructiveAlertView.swift in Sources */,
 				2BF34C992239AAD20052CAD3 /* UIViewController+Flow.swift in Sources */,
+				2BA8736A2248214800511C7C /* AlignedButton.swift in Sources */,
 				2B8BE50122393999005D8565 /* AdaptiveLayoutConstants.swift in Sources */,
 				2BD739FC2241052600B66EEF /* PasswordInputCircleView.swift in Sources */,
 				2BD739EC223FA0DC00B66EEF /* LocalAuthenticationPreferenceViewController.swift in Sources */,
