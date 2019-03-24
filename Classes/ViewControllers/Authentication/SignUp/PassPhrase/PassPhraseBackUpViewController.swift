@@ -47,6 +47,10 @@ class PassPhraseBackUpViewController: BaseScrollViewController {
 
 extension PassPhraseBackUpViewController: PassPhraseBackUpViewDelegate {
     
+    func passPhraseBackUpViewDidTapShareButton(_ passPhraseBackUpView: PassPhraseBackUpView) {
+        
+    }
+    
     func passPhraseBackUpViewDidTapVerifyButton(_ passPhraseBackUpView: PassPhraseBackUpView) {
         open(.accountNameSetup, by: .push)
     }
