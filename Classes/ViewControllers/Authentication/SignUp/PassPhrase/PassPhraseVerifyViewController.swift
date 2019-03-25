@@ -38,8 +38,6 @@ class PassPhraseVerifyViewController: BaseScrollViewController {
     override func prepareLayout() {
         super.prepareLayout()
         
-        shouldIgnoreBottomLayoutGuide = false
-        
         setupLayout()
     }
 }
