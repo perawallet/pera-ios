@@ -10,10 +10,8 @@ import Foundation
 import Magpie
 
 extension Params {
-    mutating func appendIfPresent(
-        _ value: ParamsPairValue?,
-        for key: ParamsPairKey
-        ) {
+    
+    mutating func appendIfPresent(_ value: ParamsPairValue?, for key: ParamsPairKey) {
         guard let v = value else {
             return
         }

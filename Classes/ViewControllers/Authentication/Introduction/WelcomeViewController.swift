@@ -8,7 +8,7 @@
 
 import UIKit
 
-class WelcomeViewController: BaseViewController {
+class WelcomeViewController: BaseScrollViewController {
 
     // MARK: Components
     
@@ -19,16 +19,17 @@ class WelcomeViewController: BaseViewController {
     
     // MARK: Setup
     
-    override func configureAppearance() {
-        view.backgroundColor = rgb(0.97, 0.97, 0.98)
+    override func prepareLayout() {
+        super.prepareLayout()
+        
+        setupWelcomeViewLayout()
     }
     
-    override func prepareLayout() {
-        view.addSubview(welcomeView)
+    private func setupWelcomeViewLayout() {
+        contentView.addSubview(welcomeView)
         
         welcomeView.snp.makeConstraints { make in
-            make.leading.trailing.top.equalToSuperview()
-            make.bottom.safeEqualToBottom(of: self)
+            make.edges.equalToSuperview()
         }
     }
     

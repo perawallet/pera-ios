@@ -17,21 +17,26 @@ protocol AccountRecoverViewDelegate: class {
 class AccountRecoverView: BaseView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let verticalInset: CGFloat = 94.0
-        let createButtonTopInset: CGFloat = 42.0
-        let bottomInset: CGFloat = 83.0
-        let buttonMinimumTopInset: CGFloat = 10.0
+        let verticalInset: CGFloat = 90.0
+        let separatorHeight: CGFloat = 1.0
+        let inputTopInset: CGFloat = 20.0
+        let nextButtonTopInset: CGFloat = 144.0
+        let bottomInset: CGFloat = 15.0
     }
     
     private let layout = Layout<LayoutConstants>()
 
+    private enum Colors {
+        static let separatorColor = rgba(0.67, 0.67, 0.72, 0.31)
+    }
+    
     weak var delegate: AccountRecoverViewDelegate?
     
     // MARK: Components
     
     private lazy var topSeparatorView: UIView = {
         let view = UIView()
-        view.backgroundColor = rgba(0.67, 0.67, 0.72, 0.31)
+        view.backgroundColor = Colors.separatorColor
         return view
     }()
     
@@ -40,8 +45,8 @@ class AccountRecoverView: BaseView {
         accountNameInputView.explanationLabel.text = "account-name-setup-explanation".localized
         accountNameInputView.inputTextField.attributedPlaceholder = NSAttributedString(
             string: "account-name-setup-placeholder".localized,
-            attributes: [NSAttributedString.Key.foregroundColor: rgb(0.67, 0.67, 0.72),
-                         NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13.0, weight: .semibold)]
+            attributes: [NSAttributedString.Key.foregroundColor: SharedColors.softGray,
+                         NSAttributedString.Key.font: UIFont.font(.montserrat, withWeight: .semiBold(size: 13.0))]
         )
         accountNameInputView.nextButtonMode = .next
         accountNameInputView.inputTextField.autocorrectionType = .no
@@ -59,15 +64,11 @@ class AccountRecoverView: BaseView {
     }()
     
     private(set) lazy var nextButton: MainButton = {
-        let button = MainButton(title: "title-next".localized)
+        let button = MainButton(title: "title-verify".localized)
         return button
     }()
     
     // MARK: Configuration
-    
-    override func configureAppearance() {
-        backgroundColor = rgb(0.97, 0.97, 0.98)
-    }
     
     override func linkInteractors() {
         accountNameInputView.delegate = self
@@ -91,8 +92,9 @@ class AccountRecoverView: BaseView {
         addSubview(topSeparatorView)
         
         topSeparatorView.snp.makeConstraints { make in
-            make.leading.trailing.top.equalToSuperview()
-            make.height.equalTo(1.0)
+            make.top.equalToSuperview().inset(layout.current.verticalInset)
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(layout.current.separatorHeight)
         }
     }
     
@@ -101,7 +103,7 @@ class AccountRecoverView: BaseView {
         
         accountNameInputView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.top.equalTo(topSeparatorView.snp.bottom).offset(20.0)
+            make.top.equalTo(topSeparatorView.snp.bottom).offset(layout.current.inputTopInset)
         }
     }
 
@@ -119,8 +121,8 @@ class AccountRecoverView: BaseView {
         
         nextButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalTo(passPhraseInputView.snp.bottom).offset(144.0)
-            make.bottom.lessThanOrEqualToSuperview().inset(15.0)
+            make.top.equalTo(passPhraseInputView.snp.bottom).offset(layout.current.nextButtonTopInset)
+            make.bottom.lessThanOrEqualToSuperview().inset(layout.current.bottomInset)
         }
     }
     

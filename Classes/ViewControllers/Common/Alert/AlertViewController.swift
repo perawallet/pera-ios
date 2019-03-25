@@ -16,6 +16,10 @@ class AlertViewController: BaseViewController {
         let horizontalInset: CGFloat = 20.0
     }
     
+    private enum Colors {
+        static let backgroundColor = rgba(0.04, 0.05, 0.07, 0.6)
+    }
+    
     private let layout = Layout<LayoutConstants>()
     
     private let alertView: AlertView
@@ -42,7 +46,7 @@ class AlertViewController: BaseViewController {
     // MARK: Setup
     
     override func configureAppearance() {
-        view.backgroundColor = rgba(0.04, 0.05, 0.07, 0.6)
+        view.backgroundColor = Colors.backgroundColor
         viewModel.configure(alertView, with: alertConfigurator)
     }
     

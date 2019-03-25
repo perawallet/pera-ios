@@ -20,6 +20,8 @@ class ChoosePasswordView: BaseView {
         let subtitleTopInset: CGFloat = 14.0
         let subtitleHorizontalInset: CGFloat = 60.0
         let inputViewTopInset: CGFloat = 45.0
+        let numpadBottomInset: CGFloat = 32.0
+        let passwordInputViewInset: CGFloat = -10.0
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -28,17 +30,17 @@ class ChoosePasswordView: BaseView {
     
     private(set) lazy var titleLabel: UILabel = {
         UILabel()
-            .withTextColor(rgb(0.0, 0.46, 1.0))
+            .withTextColor(SharedColors.black)
             .withAlignment(.center)
-            .withFont(UIFont.systemFont(ofSize: 22.0, weight: .bold))
+            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 22.0)))
     }()
     
     private(set) lazy var subtitleLabel: UILabel = {
         UILabel()
-            .withTextColor(rgb(0.04, 0.05, 0.07))
+            .withTextColor(SharedColors.black)
             .withLine(.contained)
             .withAlignment(.center)
-            .withFont(UIFont.systemFont(ofSize: 16.0, weight: .regular))
+            .withFont(UIFont.font(.opensans, withWeight: .semiBold(size: 14.0)))
     }()
     
     private(set) lazy var passwordInputView: PasswordInputView = {
@@ -54,10 +56,6 @@ class ChoosePasswordView: BaseView {
     weak var delegate: ChoosePasswordViewDelegate?
     
     // MARK: Setup
-    
-    override func configureAppearance() {
-        backgroundColor = rgb(0.97, 0.97, 0.98)
-    }
     
     override func linkInteractors() {
         numpadView.delegate = self
@@ -77,7 +75,7 @@ class ChoosePasswordView: BaseView {
         
         titleLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalToSuperview().inset(layout.current.titleLabelTopInset)
+            make.top.lessThanOrEqualToSuperview().inset(layout.current.titleLabelTopInset)
         }
     }
     
@@ -95,7 +93,7 @@ class ChoosePasswordView: BaseView {
         addSubview(numpadView)
         
         numpadView.snp.makeConstraints { make in
-            make.bottom.equalToSuperview()
+            make.bottom.equalToSuperview().inset(layout.current.numpadBottomInset)
             make.centerX.equalToSuperview()
             make.leading.trailing.lessThanOrEqualToSuperview()
         }
@@ -107,6 +105,7 @@ class ChoosePasswordView: BaseView {
         passwordInputView.snp.makeConstraints { make in
             make.top.equalTo(subtitleLabel.snp.bottom).offset(layout.current.inputViewTopInset)
             make.centerX.equalToSuperview()
+            make.bottom.lessThanOrEqualTo(numpadView.snp.top).offset(layout.current.passwordInputViewInset)
         }
     }
 }

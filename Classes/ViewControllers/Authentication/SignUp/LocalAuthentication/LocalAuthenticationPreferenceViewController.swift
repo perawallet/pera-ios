@@ -10,6 +10,10 @@ import UIKit
 
 class LocalAuthenticationPreferenceViewController: BaseViewController {
     
+    override var hidesCloseBarButtonItem: Bool {
+        return true
+    }
+    
     // MARK: Components
     
     private lazy var localAuthenticationPreferenceView: LocalAuthenticationPreferenceView = {
@@ -20,7 +24,9 @@ class LocalAuthenticationPreferenceViewController: BaseViewController {
     // MARK: Setup
     
     override func configureAppearance() {
-        view.backgroundColor = rgb(0.97, 0.97, 0.98)
+        super.configureAppearance()
+        
+        title = "choose-password-title".localized
     }
     
     override func prepareLayout() {

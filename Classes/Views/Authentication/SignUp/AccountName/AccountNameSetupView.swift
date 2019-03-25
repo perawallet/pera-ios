@@ -31,8 +31,8 @@ class AccountNameSetupView: BaseView {
         accountNameInputView.explanationLabel.text = "account-name-setup-explanation".localized
         accountNameInputView.inputTextField.attributedPlaceholder = NSAttributedString(
             string: "account-name-setup-placeholder".localized,
-            attributes: [NSAttributedString.Key.foregroundColor: rgb(0.67, 0.67, 0.72),
-                         NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13.0, weight: .semibold)]
+            attributes: [NSAttributedString.Key.foregroundColor: SharedColors.softGray,
+                         NSAttributedString.Key.font: UIFont.font(.montserrat, withWeight: .semiBold(size: 13.0))]
         )
         accountNameInputView.nextButtonMode = .submit
         accountNameInputView.inputTextField.autocorrectionType = .no
@@ -47,10 +47,6 @@ class AccountNameSetupView: BaseView {
     weak var delegate: AccountNameSetupViewDelegate?
     
     // MARK: Configuration
-    
-    override func configureAppearance() {
-        backgroundColor = rgb(0.97, 0.97, 0.98)
-    }
     
     override func linkInteractors() {
         accountNameInputView.delegate = self
@@ -81,7 +77,7 @@ class AccountNameSetupView: BaseView {
         
         nextButton.snp.makeConstraints { make in
             make.top.equalTo(accountNameInputView.snp.bottom).offset(layout.current.buttonTopInset)
-            make.bottom.equalToSuperview().inset(layout.current.buttonBottomInset)
+            make.bottom.lessThanOrEqualToSuperview().inset(layout.current.buttonBottomInset)
             make.centerX.equalToSuperview()
         }
     }
