@@ -30,6 +30,17 @@ class BaseViewController: UIViewController {
         return isStatusBarHidden ? .fade : .none
     }
     
+    var leftBarButtonItems: [BarButtonItemRef] = []
+    var rightBarButtonItems: [BarButtonItemRef] = []
+    
+    var hidesCloseBarButtonItem: Bool {
+        return false
+    }
+    
+    var shouldShowNavigationBar: Bool {
+        return true
+    }
+    
     // MARK: Properties
     
     private(set) var isViewFirstLoaded = true
@@ -75,9 +86,7 @@ class BaseViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        UIApplication.shared.statusBarView?.backgroundColor = SharedColors.warmWhite
-        navigationController?.navigationBar.backgroundColor = SharedColors.warmWhite
-        
+        setNeedsNavigationBarAppearanceUpdate()
         configureAppearance()
         prepareLayout()
         linkInteractors()
@@ -86,6 +95,11 @@ class BaseViewController: UIViewController {
     
     func configureAppearance() {
         view.backgroundColor = SharedColors.warmWhite
+        
+        navigationController?.navigationBar.titleTextAttributes = [
+            NSAttributedString.Key.font: UIFont.font(.montserrat, withWeight: .bold(size: 12.0)),
+            NSAttributedString.Key.foregroundColor: UIColor.black
+        ]
     }
     
     func prepareLayout() {
@@ -101,6 +115,7 @@ class BaseViewController: UIViewController {
         super.viewWillAppear(animated)
         
         setNeedsStatusBarLayoutUpdateWhenAppearing()
+        setNeedsNavigationBarAppearanceUpdateWhenAppearing()
         
         isViewDisappeared = false
         isViewAppearing = true
@@ -129,6 +144,10 @@ class BaseViewController: UIViewController {
         isViewDisappearing = false
         isViewDisappeared = true
     }
+    
+    private func setNeedsNavigationBarAppearanceUpdateWhenAppearing() {
+        navigationController?.setNavigationBarHidden(!shouldShowNavigationBar, animated: false)
+    }
 }
 
 extension BaseViewController: StatusBarConfigurable {
@@ -144,4 +163,9 @@ extension BaseViewController {
     var api: API? {
         return configuration.api
     }
+}
+
+extension BaseViewController: NavigationBarConfigurable {
+    
+    typealias BarButtonItemRef = ALGBarButtonItem
 }

@@ -10,6 +10,10 @@ import UIKit
 
 class IntroductionViewController: BaseScrollViewController {
     
+    override var shouldShowNavigationBar: Bool {
+        return false
+    }
+    
     // MARK: Components
 
     private lazy var introductionView: IntroductionView = {
