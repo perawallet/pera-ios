@@ -53,7 +53,7 @@ class PassPhraseBackUpView: BaseView {
             .withAlignment(.left)
             .withLine(.contained)
             .withTextColor(SharedColors.black)
-            .withFont(UIFont.font(.opensans, withWeight: .italic(size: 16.0)))
+            .withFont(UIFont.font(.opensans, withWeight: .semiBoldItalic(size: 16.0)))
     }()
     
     private(set) lazy var shareButton: AlignedButton = {
