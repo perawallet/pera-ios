@@ -11,8 +11,8 @@ import UIKit
 class MultiLineInputField: BaseInputView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let placeholderTopOffset: CGFloat = 9.0
-        let placeholderLeftInset: CGFloat = 4.0
+        let placeholderTopOffset: CGFloat = 7.0
+        let textViewLeadingInset: CGFloat = -3.0
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -32,9 +32,9 @@ class MultiLineInputField: BaseInputView {
     
     private(set) lazy var inputTextView: UITextView = {
         let textView = UITextView()
-        textView.font = UIFont.systemFont(ofSize: 16.0, weight: .semibold)
-        textView.textColor = rgb(0.04, 0.05, 0.07)
-        textView.tintColor = rgb(0.04, 0.05, 0.07)
+        textView.font = UIFont.font(.montserrat, withWeight: .semiBold(size: 13.0))
+        textView.textColor = SharedColors.black
+        textView.tintColor = SharedColors.black
         textView.backgroundColor = .clear
         textView.isSelectable = true
         textView.isEditable = true
@@ -45,9 +45,9 @@ class MultiLineInputField: BaseInputView {
     
     private(set) lazy var placeholderLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.systemFont(ofSize: 14.0, weight: .semibold))
+            .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 14.0)))
             .withLine(.contained)
-            .withTextColor(rgb( 0.67, 0.67, 0.72))
+            .withTextColor(SharedColors.softGray)
     }()
     
     // MARK: Helpers
@@ -81,7 +81,8 @@ class MultiLineInputField: BaseInputView {
         contentView.addSubview(inputTextView)
         
         inputTextView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.trailing.top.bottom.equalToSuperview()
+            make.leading.equalToSuperview().inset(layout.current.textViewLeadingInset)
         }
     }
     
@@ -90,7 +91,7 @@ class MultiLineInputField: BaseInputView {
         
         placeholderLabel.snp.makeConstraints { make in
             make.top.equalTo(inputTextView.textInputView).offset(layout.current.placeholderTopOffset)
-            make.leading.equalToSuperview().inset(layout.current.placeholderLeftInset)
+            make.leading.equalToSuperview()
             make.trailing.equalToSuperview()
         }
     }

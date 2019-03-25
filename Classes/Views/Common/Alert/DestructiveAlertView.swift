@@ -30,15 +30,15 @@ class DestructiveAlertView: AlertView {
         UIButton(type: .custom)
             .withTitle("title-cancel".localized)
             .withBackgroundImage(img("bg-cancel-button"))
-            .withFont(UIFont.systemFont(ofSize: 14.0, weight: .bold))
-            .withTitleColor(rgb(0.04, 0.05, 0.07))
+            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 14.0)))
+            .withTitleColor(SharedColors.black)
     }()
     
     private(set) lazy var actionButton: UIButton = {
         UIButton(type: .custom)
             .withBackgroundImage(img("bg-remove-button"))
-            .withFont(UIFont.systemFont(ofSize: 14.0, weight: .bold))
-            .withTitleColor(rgb(0.04, 0.05, 0.07))
+            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 14.0)))
+            .withTitleColor(SharedColors.black)
     }()
     
     weak var delegate: DestructiveAlertViewDelegate?

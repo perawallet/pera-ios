@@ -11,6 +11,7 @@ import UIKit
 protocol PassPhraseBackUpViewDelegate: class {
     
     func passPhraseBackUpViewDidTapVerifyButton(_ passPhraseBackUpView: PassPhraseBackUpView)
+    func passPhraseBackUpViewDidTapShareButton(_ passPhraseBackUpView: PassPhraseBackUpView)
 }
 
 class PassPhraseBackUpView: BaseView {
@@ -35,8 +36,8 @@ class PassPhraseBackUpView: BaseView {
     private lazy var titleLabel: UILabel = {
         UILabel()
             .withAlignment(.center)
-            .withTextColor(rgb(0.0, 0.46, 1.0))
-            .withFont(UIFont.systemFont(ofSize: 22.0, weight: .bold))
+            .withTextColor(SharedColors.black)
+            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 22.0)))
             .withText("back-up-phrase-title".localized)
     }()
     
@@ -51,14 +52,25 @@ class PassPhraseBackUpView: BaseView {
         UILabel()
             .withAlignment(.left)
             .withLine(.contained)
-            .withTextColor(rgb(0.04, 0.05, 0.07))
-            .withFont(UIFont.italicSystemFont(ofSize: 16.0))
+            .withTextColor(SharedColors.black)
+            .withFont(UIFont.font(.opensans, withWeight: .italic(size: 16.0)))
+    }()
+    
+    private(set) lazy var shareButton: AlignedButton = {
+        let positions: AlignedButton.StylePositionAdjustment = (image: CGPoint(x: 4.5, y: 0.0), title: CGPoint(x: -4.5, y: 0.0))
+        
+        let button = AlignedButton(style: .imageRight(positions))
+        button.setImage(img("icon-share"), for: .normal)
+        button.setTitle("title-share".localized, for: .normal)
+        button.setTitleColor(SharedColors.blue, for: .normal)
+        button.titleLabel?.font = UIFont.font(.montserrat, withWeight: .semiBold(size: 12.0))
+        return button
     }()
     
     private lazy var warningContainerView: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 20.0
-        view.backgroundColor = rgb(0.34, 0.34, 0.43)
+        view.backgroundColor = SharedColors.darkGray
         return view
     }()
     
@@ -69,7 +81,7 @@ class PassPhraseBackUpView: BaseView {
             .withAlignment(.left)
             .withLine(.contained)
             .withTextColor(.white)
-            .withFont(UIFont.systemFont(ofSize: 12.0, weight: .bold))
+            .withFont(UIFont.font(.opensans, withWeight: .bold(size: 12.0)))
             .withText("back-up-phrase-warning".localized)
         
     }()
@@ -83,11 +95,8 @@ class PassPhraseBackUpView: BaseView {
     
     // MARK: Configuration
     
-    override func configureAppearance() {
-        backgroundColor = rgb(0.97, 0.97, 0.98)
-    }
-    
     override func setListeners() {
+        shareButton.addTarget(self, action: #selector(notifyDelegateToShareButtonTapped), for: .touchUpInside)
         verifyButton.addTarget(self, action: #selector(notifyDelegateToVerifyButtonTapped), for: .touchUpInside)
     }
     
@@ -97,6 +106,7 @@ class PassPhraseBackUpView: BaseView {
         setupTitleLabelLayout()
         setupPassPhraseContainerViewLayout()
         setupPassPhraseLabelLayout()
+        setupShareButtonLayout()
         setupWarningContainerViewLayout()
         setupWarningImageViewLayout()
         setupWarningLabelLayout()
@@ -126,7 +136,16 @@ class PassPhraseBackUpView: BaseView {
         
         passPhreaseLabel.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.top.bottom.equalToSuperview().inset(layout.current.passPhreaseLabelVerticalInset)
+            make.top.equalToSuperview().inset(layout.current.passPhreaseLabelVerticalInset)
+        }
+    }
+    
+    private func setupShareButtonLayout() {
+        passPhraseContainerView.addSubview(shareButton)
+        
+        shareButton.snp.makeConstraints { make in
+            make.top.equalTo(passPhreaseLabel.snp.bottom).offset(layout.current.warningLabelVerticalInset)
+            make.bottom.trailing.equalToSuperview().inset(layout.current.horizontalInset)
         }
     }
     
@@ -164,11 +183,16 @@ class PassPhraseBackUpView: BaseView {
         verifyButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(warningContainerView.snp.bottom).offset(layout.current.buttonMinimumTopInset)
-            make.bottom.equalToSuperview().inset(layout.current.bottomInset)
+            make.bottom.lessThanOrEqualToSuperview().inset(layout.current.bottomInset)
         }
     }
     
     // MARK: Actions
+    
+    @objc
+    func notifyDelegateToShareButtonTapped() {
+        delegate?.passPhraseBackUpViewDidTapShareButton(self)
+    }
     
     @objc
     func notifyDelegateToVerifyButtonTapped() {

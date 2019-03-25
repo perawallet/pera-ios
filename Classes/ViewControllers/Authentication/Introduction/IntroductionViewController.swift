@@ -8,7 +8,11 @@
 
 import UIKit
 
-class IntroductionViewController: BaseViewController {
+class IntroductionViewController: BaseScrollViewController {
+    
+    override var shouldShowNavigationBar: Bool {
+        return false
+    }
     
     // MARK: Components
 
@@ -19,16 +23,17 @@ class IntroductionViewController: BaseViewController {
     
     // MARK: Setup
     
-    override func configureAppearance() {
-        view.backgroundColor = rgb(0.97, 0.97, 0.98)
+    override func prepareLayout() {
+        super.prepareLayout()
+        
+        setupIntroducitionViewLayout()
     }
     
-    override func prepareLayout() {
-        view.addSubview(introductionView)
+    private func setupIntroducitionViewLayout() {
+        contentView.addSubview(introductionView)
         
         introductionView.snp.makeConstraints { make in
-            make.leading.trailing.top.equalToSuperview()
-            make.bottom.safeEqualToBottom(of: self)
+            make.edges.equalToSuperview()
         }
     }
     

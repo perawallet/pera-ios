@@ -27,15 +27,13 @@ class PassPhraseBackUpViewController: BaseScrollViewController {
     override func configureAppearance() {
         super.configureAppearance()
         
-        view.backgroundColor = rgb(0.97, 0.97, 0.98)
-        
         passPhraseBackUpView.passPhreaseLabel.attributedText = passPhrase.attributed([.lineSpacing(1.5)])
+        
+        title = "new-account-title".localized
     }
     
     override func prepareLayout() {
         super.prepareLayout()
-        
-        shouldIgnoreBottomLayoutGuide = false
         
         contentView.addSubview(passPhraseBackUpView)
         
@@ -50,6 +48,14 @@ class PassPhraseBackUpViewController: BaseScrollViewController {
 }
 
 extension PassPhraseBackUpViewController: PassPhraseBackUpViewDelegate {
+    
+    func passPhraseBackUpViewDidTapShareButton(_ passPhraseBackUpView: PassPhraseBackUpView) {
+        let sharedItem = [passPhrase]
+        let activityViewController = UIActivityViewController(activityItems: sharedItem, applicationActivities: nil)
+        activityViewController.excludedActivityTypes = [UIActivity.ActivityType.addToReadingList]
+        
+        navigationController?.present(activityViewController, animated: true, completion: nil)
+    }
     
     func passPhraseBackUpViewDidTapVerifyButton(_ passPhraseBackUpView: PassPhraseBackUpView) {
         open(.accountNameSetup, by: .push)

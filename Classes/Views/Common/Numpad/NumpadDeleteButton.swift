@@ -29,7 +29,7 @@ class NumpadDeleteButton: UIButton, NumpadTypeable {
         
         isEnabled = false
         
-        setImage(img("icon-delete-number"), for: .normal)
+        setImage(img("icon-delete-number"), for: .disabled)
     }
     
     @available(*, unavailable)

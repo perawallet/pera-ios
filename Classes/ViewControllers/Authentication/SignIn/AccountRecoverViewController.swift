@@ -22,7 +22,9 @@ class AccountRecoverViewController: BaseScrollViewController {
     // MARK: Setup
     
     override func configureAppearance() {
-        view.backgroundColor = rgb(0.97, 0.97, 0.98)
+        super.configureAppearance()
+        
+        title = "recover-from-seed-title".localized
     }
     
     override func setListeners() {
@@ -40,9 +42,6 @@ class AccountRecoverViewController: BaseScrollViewController {
     
     override func prepareLayout() {
         super.prepareLayout()
-        
-        shouldIgnoreTopLayoutGuide = false
-        shouldIgnoreBottomLayoutGuide = false
         
         setupAccountRecoverViewLayout()
     }
@@ -86,6 +85,6 @@ extension AccountRecoverViewController: KeyboardControllerDataSource {
     }
     
     func bottomInsetWhenKeyboardDismissed(for keyboardController: KeyboardController) -> CGFloat {
-        return 15.0
+        return 0.0
     }
 }

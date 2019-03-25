@@ -8,26 +8,29 @@
 
 // MARK: Common
 
-"title-yes" = "Yes";
-"title-no" = "No";
+"title-yes" = "YES";
+"title-no" = "NO";
 "title-ok" = "OK";
 "title-next" = "NEXT";
+"title-verify" = "VERIFY";
 "title-cancel" = "CANCEL";
 "title-remove" = "REMOVE";
+"title-share" = "Share";
 
 // MARK: Introduction
 
 "introduction-recover-title" = "Recover from Seed";
-"introduction-create-title" = "Create Account";
+"introduction-create-title" = "CREATE ACCOUNT";
 
 // MARK: Welcome
 
 "welcome-title" = "Welcome!";
 "welcome-subtitle" = "We just need you to set up a few quick things to keep your account safe.";
-"welcome-done-title" = "Let's Go";
+"welcome-done-title" = "LET'S GO";
 
 // MARK: Password Setting
 
+"choose-password-title" = "Choose Password";
 "password-set-title" = "First";
 "password-set-subtitle" = "Choose a six digit password";
 "password-verify-title" = "Verify Password";
@@ -43,6 +46,7 @@
 
 // MARK: Pass Phrase Back Up
 
+"new-account-title" = "New Account";
 "back-up-phrase-title" = "Back up this Pass Phrase";
 "back-up-phrase-warning" = "In order to access this account if you lose this device copy or print this phrase and keep it someplace safe";
 "back-up-phrase-button-title" = "VERIFY RECOVERY PHRASE";
@@ -55,9 +59,10 @@
 
 // MARK: Account Name Setup
 
-"account-name-setup-explanation" = "Name:";
+"account-name-setup-explanation" = "Account Name:";
 "account-name-setup-placeholder" = "Please name your account";
 
-// MARK: Account Name Setup
+// MARK: Recover From Seed
 
+"recover-from-seed-title" = "Recover from Seed";
 "pass-pharase-enter-placeholder" = "Enter Pass Phrase or Scan QR";

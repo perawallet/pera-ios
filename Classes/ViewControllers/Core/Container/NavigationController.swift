@@ -32,8 +32,8 @@ class NavigationController: UINavigationController {
     
     private func configureNavigationBarAppearance() {
         navigationBar.isTranslucent = true
-        navigationBar.barTintColor = .white
-        navigationBar.tintColor = .white
+        navigationBar.barTintColor = .black
+        navigationBar.tintColor = .black
         navigationBar.shadowImage = UIImage()
         navigationBar.layoutMargins = .zero
         
@@ -41,7 +41,7 @@ class NavigationController: UINavigationController {
     }
     
     private func configureViewAppearance() {
-        view.backgroundColor = .clear
+        view.backgroundColor = SharedColors.warmWhite
     }
     
     func linkInteractors() {

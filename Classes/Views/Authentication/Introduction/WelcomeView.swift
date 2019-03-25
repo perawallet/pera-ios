@@ -20,7 +20,7 @@ class WelcomeView: BaseView {
         let titleLabelTopInset: CGFloat = 23.0
         let subtitleLabelTopInset: CGFloat = 14.0
         let subtitleLabelHorizontalInset: CGFloat = 50.0
-        let buttonMinimumTopInset: CGFloat = 10.0
+        let buttonMinimumTopInset: CGFloat = 78.0
         let bottomInset: CGFloat = 59.0
     }
     
@@ -35,8 +35,8 @@ class WelcomeView: BaseView {
     private lazy var welcomteTitleLabel: UILabel = {
         UILabel()
             .withAlignment(.center)
-            .withTextColor(rgb(0.0, 0.46, 1.0))
-            .withFont(UIFont.systemFont(ofSize: 22.0, weight: .bold))
+            .withTextColor(SharedColors.black)
+            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 22.0)))
             .withText("welcome-title".localized)
     }()
     
@@ -44,8 +44,8 @@ class WelcomeView: BaseView {
         UILabel()
             .withAlignment(.center)
             .withLine(.contained)
-            .withTextColor(rgb(0.04, 0.05, 0.07))
-            .withFont(UIFont.systemFont(ofSize: 16.0, weight: .regular))
+            .withTextColor(SharedColors.black)
+            .withFont(UIFont.font(.opensans, withWeight: .semiBold(size: 14.0)))
             .withText("welcome-subtitle".localized)
     }()
     
@@ -57,10 +57,6 @@ class WelcomeView: BaseView {
     weak var delegate: WelcomeViewDelegate?
     
     // MARK: Configuration
-    
-    override func configureAppearance() {
-        backgroundColor = rgb(0.97, 0.97, 0.98)
-    }
     
     override func setListeners() {
         doneButton.addTarget(self, action: #selector(notifyDelegateToDoneButtonTapped), for: .touchUpInside)
@@ -89,7 +85,7 @@ class WelcomeView: BaseView {
         addSubview(detailImageView)
         
         detailImageView.snp.makeConstraints { make in
-            make.top.lessThanOrEqualTo(logoImageView.snp.bottom).offset(layout.current.verticalInset)
+            make.top.equalTo(logoImageView.snp.bottom).offset(layout.current.verticalInset)
             make.centerX.equalToSuperview()
         }
     }

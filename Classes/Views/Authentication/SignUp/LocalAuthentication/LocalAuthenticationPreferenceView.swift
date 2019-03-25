@@ -36,18 +36,18 @@ class LocalAuthenticationPreferenceView: BaseView {
     private lazy var titleLabel: UILabel = {
         UILabel()
             .withText("local-authentication-preference-title".localized)
-            .withTextColor(rgb(0.0, 0.46, 1.0))
+            .withTextColor(SharedColors.black)
             .withAlignment(.center)
-            .withFont(UIFont.systemFont(ofSize: 22.0, weight: .bold))
+            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 22.0)))
     }()
     
     private lazy var subtitleLabel: UILabel = {
         UILabel()
             .withText("local-authentication-preference-subtitle".localized)
-            .withTextColor(rgb(0.04, 0.05, 0.07))
+            .withTextColor(SharedColors.black)
             .withAlignment(.center)
             .withLine(.contained)
-            .withFont(UIFont.systemFont(ofSize: 16.0, weight: .regular))
+            .withFont(UIFont.font(.opensans, withWeight: .semiBold(size: 14.0)))
     }()
     
     private lazy var iconContainerView: UIView = {
@@ -69,18 +69,14 @@ class LocalAuthenticationPreferenceView: BaseView {
     private lazy var noButton: UIButton = {
         UIButton(type: .custom)
             .withTitle("title-no".localized)
-            .withTitleColor(rgb(0.04, 0.05, 0.07))
+            .withTitleColor(SharedColors.black)
             .withBackgroundImage(img("bg-dark-gray-button"))
-            .withFont(UIFont.systemFont(ofSize: 14.0, weight: .bold))
+            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 14.0)))
     }()
     
     weak var delegate: LocalAuthenticationPreferenceViewDelegate?
     
     // MARK: Configuration
-    
-    override func configureAppearance() {
-        backgroundColor = rgb(0.97, 0.97, 0.98)
-    }
     
     override func setListeners() {
         yesButton.addTarget(self, action: #selector(notifyDelegateToYesButtonTapped), for: .touchUpInside)

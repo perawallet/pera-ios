@@ -27,30 +27,6 @@ class BaseScrollViewController: BaseViewController {
         return contentView
     }()
     
-    // MARK: Variables
-    
-    var shouldIgnoreTopLayoutGuide = true {
-        didSet {
-            
-            if shouldIgnoreTopLayoutGuide == oldValue {
-                return
-            }
-            
-            updateScrollViewLayout()
-        }
-    }
-    
-    var shouldIgnoreBottomLayoutGuide = true {
-        didSet {
-            
-            if shouldIgnoreBottomLayoutGuide == oldValue {
-                return
-            }
-            
-            updateScrollViewLayout()
-        }
-    }
-    
     // MARK: Configuration
     
     override func configureAppearance() {
@@ -73,24 +49,10 @@ class BaseScrollViewController: BaseViewController {
     private func setupScrollViewLayout() {
         view.addSubview(scrollView)
         
-        updateScrollViewLayout()
-    }
-    
-    private func updateScrollViewLayout() {
-        scrollView.snp.remakeConstraints { make in
+        scrollView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            
-            if shouldIgnoreTopLayoutGuide {
-                make.top.equalToSuperview()
-            } else {
-                make.top.safeEqualToTop(of: self)
-            }
-            
-            if shouldIgnoreBottomLayoutGuide {
-                make.bottom.equalToSuperview()
-            } else {
-                make.bottom.safeEqualToBottom(of: self)
-            }
+            make.top.equalToSuperview()
+            make.bottom.equalToSuperview()
         }
     }
     
@@ -100,6 +62,7 @@ class BaseScrollViewController: BaseViewController {
         contentView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
             make.leading.trailing.equalTo(view)
+            make.height.equalToSuperview().priority(.low)
         }
     }
 }
