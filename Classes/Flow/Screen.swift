@@ -14,6 +14,7 @@ enum Screen {
     case choosePassword(ChoosePasswordViewController.Mode)
     case localAuthenticationPreference
     case passPhraseBackUp
+    case passPhraseVerify
     case accountNameSetup
     case accountRecover
 }

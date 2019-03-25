@@ -106,6 +106,8 @@ class Router {
             viewController = LocalAuthenticationPreferenceViewController(configuration: configuration)
         case .passPhraseBackUp:
             viewController = PassPhraseBackUpViewController(configuration: configuration)
+        case .passPhraseVerify:
+            viewController = PassPhraseVerifyViewController(configuration: configuration)
         case .accountNameSetup:
             viewController = AccountNameSetupViewController(configuration: configuration)
         case .accountRecover:
