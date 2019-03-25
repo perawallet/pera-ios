@@ -21,6 +21,12 @@ class AccountRecoverViewController: BaseScrollViewController {
 
     // MARK: Setup
     
+    override func configureAppearance() {
+        super.configureAppearance()
+        
+        title = "recover-from-seed-title".localized
+    }
+    
     override func setListeners() {
         super.setListeners()
         

@@ -19,6 +19,12 @@ class LocalAuthenticationPreferenceViewController: BaseViewController {
     
     // MARK: Setup
     
+    override func configureAppearance() {
+        super.configureAppearance()
+        
+        title = "choose-password-title".localized
+    }
+    
     override func prepareLayout() {
         view.addSubview(localAuthenticationPreferenceView)
         

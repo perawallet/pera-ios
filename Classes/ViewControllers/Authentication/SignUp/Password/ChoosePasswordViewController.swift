@@ -33,6 +33,8 @@ class ChoosePasswordViewController: BaseViewController {
         super.configureAppearance()
         
         viewModel.configure(choosePasswordView)
+        
+        title = "choose-password-title".localized
     }
     
     override func prepareLayout() {

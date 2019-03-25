@@ -25,6 +25,12 @@ class AccountNameSetupViewController: BaseScrollViewController {
     
     // MARK: Setup
     
+    override func configureAppearance() {
+        super.configureAppearance()
+        
+        title = "new-account-title".localized
+    }
+    
     override func setListeners() {
         super.setListeners()
         
