@@ -28,6 +28,8 @@ class PassPhraseBackUpViewController: BaseScrollViewController {
         super.configureAppearance()
         
         passPhraseBackUpView.passPhreaseLabel.attributedText = passPhrase.attributed([.lineSpacing(1.5)])
+        
+        title = "new-account-title".localized
     }
     
     override func prepareLayout() {
@@ -48,7 +50,11 @@ class PassPhraseBackUpViewController: BaseScrollViewController {
 extension PassPhraseBackUpViewController: PassPhraseBackUpViewDelegate {
     
     func passPhraseBackUpViewDidTapShareButton(_ passPhraseBackUpView: PassPhraseBackUpView) {
+        let sharedItem = [passPhrase]
+        let activityViewController = UIActivityViewController(activityItems: sharedItem, applicationActivities: nil)
+        activityViewController.excludedActivityTypes = [UIActivity.ActivityType.addToReadingList]
         
+        navigationController?.present(activityViewController, animated: true, completion: nil)
     }
     
     func passPhraseBackUpViewDidTapVerifyButton(_ passPhraseBackUpView: PassPhraseBackUpView) {

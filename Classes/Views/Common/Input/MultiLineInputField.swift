@@ -12,7 +12,7 @@ class MultiLineInputField: BaseInputView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let placeholderTopOffset: CGFloat = 7.0
-        let placeholderLeftInset: CGFloat = 4.0
+        let textViewLeadingInset: CGFloat = -3.0
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -81,7 +81,8 @@ class MultiLineInputField: BaseInputView {
         contentView.addSubview(inputTextView)
         
         inputTextView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.trailing.top.bottom.equalToSuperview()
+            make.leading.equalToSuperview().inset(layout.current.textViewLeadingInset)
         }
     }
     
@@ -90,7 +91,7 @@ class MultiLineInputField: BaseInputView {
         
         placeholderLabel.snp.makeConstraints { make in
             make.top.equalTo(inputTextView.textInputView).offset(layout.current.placeholderTopOffset)
-            make.leading.equalToSuperview().inset(layout.current.placeholderLeftInset)
+            make.leading.equalToSuperview()
             make.trailing.equalToSuperview()
         }
     }
