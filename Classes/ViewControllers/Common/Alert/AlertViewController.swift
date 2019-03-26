@@ -91,6 +91,7 @@ class AlertViewController: BaseViewController {
     @objc
     private func executeHandler() {
         if let handler = alertConfigurator.actionHandler {
+            dismissScreen()
             handler()
             return
         }
