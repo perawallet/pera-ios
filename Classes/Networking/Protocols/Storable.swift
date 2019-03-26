@@ -11,6 +11,7 @@ import KeychainAccess
 
 enum StorableKeys: String {
     case storage = "com.algorand.storage"
+    case localAuthenticationStatus = "com.algorand.local.authentication.status"
 }
 
 enum Store {
