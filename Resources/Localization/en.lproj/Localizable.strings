@@ -16,6 +16,8 @@
 "title-cancel" = "CANCEL";
 "title-remove" = "REMOVE";
 "title-share" = "Share";
+"title-cancel-lowercased" = "Cancel";
+"title-go-to-settings" = "Go To Settings";
 
 // MARK: Introduction
 
@@ -43,6 +45,10 @@
 
 "local-authentication-preference-title" = "Enable touch/face ID";
 "local-authentication-preference-subtitle" = "We recommend this for improved security";
+"local-authentication-reason-face-id-title" = "Use Face ID for login";
+"local-authentication-reason-touch-id-title" = "Use Touch ID for login";
+"local-authentication-go-settings-title" = "Biometric Authentication";
+"local-authentication-go-settings-text" = "You have disabled biometric authentication. Please go to Settings and enable this option.";
 
 // MARK: Pass Phrase Back Up
 
@@ -66,3 +72,8 @@
 
 "recover-from-seed-title" = "Recover from Seed";
 "pass-pharase-enter-placeholder" = "Enter Pass Phrase or Scan QR";
+
+// MARK: QR Scanning
+
+"qr-scan-error-title" = "Camera is not supported";
+"qr-scan-error-message" = "Your device does not support scanning a code from an item.";

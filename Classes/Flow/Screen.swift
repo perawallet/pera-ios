@@ -17,6 +17,7 @@ enum Screen {
     case passPhraseVerify
     case accountNameSetup
     case accountRecover
+    case qrScanner
 }
 
 extension Screen {

@@ -60,11 +60,25 @@ class AccountRecoverViewController: BaseScrollViewController {
 extension AccountRecoverViewController: AccountRecoverViewDelegate {
     
     func accountRecoverViewDidTapQRCodeButton(_ accountRecoverView: AccountRecoverView) {
+        guard let qrScannerViewController = open(.qrScanner, by: .push) as? QRScannerViewController else {
+            return
+        }
         
+        qrScannerViewController.delegate = self
     }
     
     func accountRecoverViewDidTapNextButton(_ accountRecoverView: AccountRecoverView) {
         
+    }
+}
+
+// MARK: QRScannerViewControllerDelegate
+
+extension AccountRecoverViewController: QRScannerViewControllerDelegate {
+    
+    func qRScannerViewController(_ controller: QRScannerViewController, didRead qrCode: String) {
+        
+        accountRecoverView.passPhraseInputView.value = qrCode
     }
 }
 
