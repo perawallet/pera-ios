@@ -8,6 +8,11 @@
 
 import UIKit
 
+typealias ModalPresentableViewController = ModalPresentable & UIViewController
+
+typealias AnimatorObjectType = ModalAnimator & NSObject
+typealias ModalPresenterObjectType = ModalPresenter & NSObject
+
 func img(_ named: String) -> UIImage? {
     return img(named, isTemplate: false)
 }
