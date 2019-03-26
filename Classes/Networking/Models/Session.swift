@@ -34,4 +34,17 @@ class Session: Storable {
         let dataKey = privateKey.appending(".\(account)")
         return privateStorage.data(for: dataKey)
     }
+    
+    // MARK: - App Password
+    
+    func saveApp(password: String) {
+        self.save(password, for: StoreKeys.appPassword.rawValue, to: .defaults)
+    }
+    
+    func checkApp(password: String) -> Bool {
+        if let savedPassword = self.string(with: StoreKeys.appPassword.rawValue, to: .defaults) {
+            return savedPassword == password
+        }
+        return false
+    }
 }

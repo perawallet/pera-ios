@@ -9,6 +9,10 @@
 import Foundation
 import KeychainAccess
 
+enum StoreKeys: String {
+    case appPassword = "com.algorand.app.password"
+}
+
 enum StorableKeys: String {
     case storage = "com.algorand.storage"
     case localAuthenticationStatus = "com.algorand.local.authentication.status"
