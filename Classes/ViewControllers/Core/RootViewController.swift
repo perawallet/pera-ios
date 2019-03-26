@@ -39,6 +39,7 @@ class RootViewController: UIViewController {
         open(.introduction, by: .present)
     }
 
+    @discardableResult
     func route<T: UIViewController>(
         to screen: Screen,
         from viewController: UIViewController,

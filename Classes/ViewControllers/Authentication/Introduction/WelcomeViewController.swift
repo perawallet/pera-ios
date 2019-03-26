@@ -43,6 +43,6 @@ class WelcomeViewController: BaseScrollViewController {
 extension WelcomeViewController: WelcomeViewDelegate {
     
     func welcomeViewDidTapDoneButton(_ introductionView: WelcomeView) {
-        open(.choosePassword(.login), by: .push)
+        open(.choosePassword(.setup), by: .push)
     }
 }

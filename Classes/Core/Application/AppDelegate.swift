@@ -13,12 +13,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     
+    private enum Constants {
+        static let sessionInvalidateTime: Double = 300.0
+    }
+    
     private lazy var session = Session()
     private lazy var api = API(base: Environment.current.serverApi, session: session)
-    private lazy var appConfiguration = AppConfiguration(
-        api: api,
-        session: session
-    )
+    private lazy var appConfiguration = AppConfiguration(api: api, session: session)
+    
+    private var rootViewController: RootViewController?
+    
+    private var timer: PollingOperation?
+    private var shouldInvalidateUserSession: Bool = false
     
     func application(
         _ application: UIApplication,
@@ -32,16 +38,42 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     private func setupWindow() {
         window = UIWindow(frame: UIScreen.main.bounds)
-        let rootViewController = RootViewController(appConfiguration: appConfiguration)
+        
+        rootViewController = RootViewController(appConfiguration: appConfiguration)
+        
+        guard let rootViewController = rootViewController else {
+            return
+        }
+        
         window?.rootViewController = NavigationController(rootViewController: rootViewController)
         window?.makeKeyAndVisible()
     }
     
     func applicationWillEnterForeground(_ application: UIApplication) {
+        timer?.invalidate()
         
+        guard let rootViewController = rootViewController else {
+            return
+        }
+        
+        if shouldInvalidateUserSession {
+            shouldInvalidateUserSession = false
+            
+            guard let topNavigationViewController = window?.rootViewController?.presentedViewController as? NavigationController,
+                let topViewController = topNavigationViewController.viewControllers.last else {
+                    return
+            }
+            
+            rootViewController.route(to: .choosePassword(.login), from: topViewController, by: .present)
+            return
+        }
     }
     
     func applicationDidEnterBackground(_ application: UIApplication) {
+        timer = PollingOperation(interval: Constants.sessionInvalidateTime) { [weak self] in
+            self?.shouldInvalidateUserSession = true
+        }
         
+        timer?.start()
     }
 }
