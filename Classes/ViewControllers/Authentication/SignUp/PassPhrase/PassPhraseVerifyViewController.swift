@@ -7,19 +7,11 @@
 //
 
 import UIKit
+import Crypto
 
 class PassPhraseVerifyViewController: BaseScrollViewController {
     let mnemonics = """
-quarters unific unlive planned faculty pang neuron grogshop scale overflow moreover clout rainy rajah bebop
-coition marplot turncoat outpour fimble calyces serjeant cuprum sailboatquarters unific unlive planned faculty pang neuron grogshop scale overflow moreover clout rainy rajah bebop
-coition marplot turncoat outpour fimble calyces serjeant cuprum sailboatquarters unific unlive planned faculty pang neuron grogshop scale overflow moreover clout rainy rajah bebop
-coition marplot turncoat outpour fimble calyces serjeant cuprum sailboatquarters unific unlive planned faculty pang neuron grogshop scale overflow moreover clout rainy rajah bebop
-coition marplot turncoat outpour fimble calyces serjeant cuprum sailboatquarters unific unlive planned faculty pang neuron grogshop scale overflow moreover clout rainy rajah bebop
-coition marplot turncoat outpour fimble calyces serjeant cuprum sailboatquarters unific unlive planned faculty pang neuron grogshop scale overflow moreover clout rainy rajah bebop
-coition marplot turncoat outpour fimble calyces serjeant cuprum sailboatquarters unific unlive planned faculty pang neuron grogshop scale overflow moreover clout rainy rajah bebop
-coition marplot turncoat outpour fimble calyces serjeant cuprum sailboatquarters unific unlive planned faculty pang neuron grogshop scale overflow moreover clout rainy rajah bebop
-coition marplot turncoat outpour fimble calyces serjeant cuprum sailboatquarters unific unlive planned faculty pang neuron grogshop scale overflow moreover clout rainy rajah bebop
-coition marplot turncoat outpour fimble calyces serjeant cuprum sailboat
+marble protect crawl steak lion clock camera brother find escape matter roast toast critic velvet police old inform arena enemy milk venue cereal abandon cushion
 """
     
     fileprivate private(set) lazy var passPhraseVerifyView: PassPhraseVerifyView = {
@@ -31,6 +23,7 @@ coition marplot turncoat outpour fimble calyces serjeant cuprum sailboat
     
     fileprivate private(set) lazy var collectionView: UICollectionView = {
         let collectionViewLayout = LeftAlignedCollectionViewFlowLayout()
+        collectionViewLayout.delegate = self
         collectionViewLayout.minimumLineSpacing = 8.0
         collectionViewLayout.minimumInteritemSpacing = 8.0
         collectionViewLayout.scrollDirection = .vertical
@@ -72,23 +65,15 @@ extension PassPhraseVerifyViewController {
         collectionView.snp.makeConstraints { maker in
             maker.top.equalTo(passPhraseVerifyView.snp.bottom).offset(15)
             maker.leading.trailing.equalToSuperview().inset(25)
-//            maker.height.equalTo(500)
-            maker.bottom.equalToSuperview().priority(.high)
-            maker.height.equalTo(30000)
+            maker.height.greaterThanOrEqualTo(200)
+            maker.bottom.equalToSuperview().inset(view.safeAreaBottom).priority(.high)
         }
-        
-        guard let collectionLayout = collectionView.collectionViewLayout as? LeftAlignedCollectionViewFlowLayout else {
-            return
-        }
-        
-        print(collectionLayout.collectionViewContentSize.height)
     }
 }
 
 // MARK: - UICollectionViewDelegate, UICollectionViewDataSource
 extension PassPhraseVerifyViewController: UICollectionViewDelegate,
-UICollectionViewDataSource,
-UICollectionViewDelegateFlowLayout {
+UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return mnemonics.components(separatedBy: " ").count
@@ -109,17 +94,6 @@ UICollectionViewDelegateFlowLayout {
         return cell
     }
     
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-        let item = mnemonics.components(separatedBy: " ")[indexPath.item]
-        
-        let width = item.width(usingFont: PassPhraseCollectionViewCell.font) + 50.0
-        
-        return CGSize(width: width, height: 44.0)
-    }
-    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let item = mnemonics.components(separatedBy: " ")[indexPath.item]
         guard let cell = collectionView.cellForItem(at: indexPath) as? PassPhraseCollectionViewCell else {
@@ -128,5 +102,22 @@ UICollectionViewDelegateFlowLayout {
         
         cell.mode = .correct
     }
+}
+
+// MARK: - LeftAlignedCollectionViewFlowLayoutDelegate
+extension PassPhraseVerifyViewController: LeftAlignedCollectionViewFlowLayoutDelegate {
+    func leftAlignedLayout(_ layout: LeftAlignedCollectionViewFlowLayout,
+                           sizeFor indexPath: IndexPath) -> CGSize {
+        let item = mnemonics.components(separatedBy: " ")[indexPath.item]
+        
+        let width = item.width(usingFont: PassPhraseCollectionViewCell.font) + 50.0
+        
+        return CGSize(width: width, height: 44.0)
+    }
     
+    func leftAlignedLayoutDidCalculateHeight(_ height: CGFloat) {
+        self.collectionView.snp.updateConstraints { maker in
+            maker.height.greaterThanOrEqualTo(height)
+        }
+    }
 }

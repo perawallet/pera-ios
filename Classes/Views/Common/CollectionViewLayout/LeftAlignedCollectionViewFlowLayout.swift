@@ -8,24 +8,75 @@
 
 import UIKit
 
+protocol LeftAlignedCollectionViewFlowLayoutDelegate: class {
+    func leftAlignedLayout(_ layout: LeftAlignedCollectionViewFlowLayout,
+                           sizeFor indexPath: IndexPath) -> CGSize
+    func leftAlignedLayoutDidCalculateHeight(_ height: CGFloat)
+}
+
 class LeftAlignedCollectionViewFlowLayout: UICollectionViewFlowLayout {
     
-    override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
-        let attributes = super.layoutAttributesForElements(in: rect)
+    var height: CGFloat = 0.0
+    weak var delegate: LeftAlignedCollectionViewFlowLayoutDelegate?
+    
+    private var cache = [UICollectionViewLayoutAttributes]()
+    
+    override func prepare() {
+        super.prepare()
         
-        var leftMargin = sectionInset.left
-        var maxY: CGFloat = -1.0
-        attributes?.forEach { layoutAttribute in
-            if layoutAttribute.frame.origin.y >= maxY {
-                leftMargin = sectionInset.left
-            }
-            
-            layoutAttribute.frame.origin.x = leftMargin
-            
-            leftMargin += layoutAttribute.frame.width + minimumInteritemSpacing
-            maxY = max(layoutAttribute.frame.maxY, maxY)
+        guard let collectionView = self.collectionView,
+            let delegate = self.delegate else {
+            return
         }
         
-        return attributes
+        var leftMargin = sectionInset.left
+        var topMargin = sectionInset.top
+        let collectionWidth = collectionView.frame.width
+        
+        if cache.isEmpty {
+            for item in 0..<collectionView.numberOfItems(inSection: 0) {
+                let indexPath = IndexPath(item: item, section: 0)
+                let layoutAttribute = UICollectionViewLayoutAttributes(forCellWith: indexPath)
+                let size = delegate.leftAlignedLayout(self, sizeFor: indexPath)
+                
+                let frame = CGRect(x: leftMargin, y: topMargin, width: size.width, height: size.height)
+                
+                if leftMargin == sectionInset.left {
+                    layoutAttribute.frame = frame
+                } else {
+                    if collectionWidth - size.width - leftMargin < 0 {
+                        leftMargin = sectionInset.left
+                        topMargin += size.height + minimumLineSpacing
+                    }
+                    let frame = CGRect(x: leftMargin, y: topMargin, width: size.width, height: size.height)
+                    
+                    layoutAttribute.frame = frame
+                }
+                
+                leftMargin += size.width + minimumInteritemSpacing
+                
+                height = max(height, topMargin)
+                
+                cache.append(layoutAttribute)
+            }
+            
+            delegate.leftAlignedLayoutDidCalculateHeight(height)
+        }
+    }
+    
+    override func invalidateLayout() {
+        cache.removeAll()
+        super.invalidateLayout()
+    }
+    
+    override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+        var layoutAttributes = [UICollectionViewLayoutAttributes]()
+        
+        for attributes in cache {
+            if attributes.frame.intersects(rect) {
+                layoutAttributes.append(attributes)
+            }
+        }
+        return layoutAttributes
     }
 }
