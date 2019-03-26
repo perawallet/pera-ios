@@ -14,7 +14,7 @@
 		17512623223BEB9D0095AF4F /* UserDefaults+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17512622223BEB9D0095AF4F /* UserDefaults+Additions.swift */; };
 		1761B3C82249F88700C6BA47 /* Montserrat-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1761B3C72249F88700C6BA47 /* Montserrat-SemiBoldItalic.ttf */; };
 		1761B3CB224A39D400C6BA47 /* PassPhraseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1761B3CA224A39D400C6BA47 /* PassPhraseViewModel.swift */; };
-		1761B3CD224A47AF00C6BA47 /* Session+Mnemonic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1761B3CC224A47AF00C6BA47 /* Session+Mnemonic.swift */; };
+		1761B3CD224A47AF00C6BA47 /* Session+Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1761B3CC224A47AF00C6BA47 /* Session+Crypto.swift */; };
 		178AFEC222450BE3001E14D5 /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 178AFEBD22450BE3001E14D5 /* OpenSans-Bold.ttf */; };
 		178AFEC322450BE3001E14D5 /* OpenSans-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 178AFEBE22450BE3001E14D5 /* OpenSans-BoldItalic.ttf */; };
 		178AFEC422450BE3001E14D5 /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 178AFEBF22450BE3001E14D5 /* OpenSans-Regular.ttf */; };
@@ -130,7 +130,7 @@
 		17512622223BEB9D0095AF4F /* UserDefaults+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Additions.swift"; sourceTree = "<group>"; };
 		1761B3C72249F88700C6BA47 /* Montserrat-SemiBoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
 		1761B3CA224A39D400C6BA47 /* PassPhraseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassPhraseViewModel.swift; sourceTree = "<group>"; };
-		1761B3CC224A47AF00C6BA47 /* Session+Mnemonic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Session+Mnemonic.swift"; sourceTree = "<group>"; };
+		1761B3CC224A47AF00C6BA47 /* Session+Crypto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Session+Crypto.swift"; sourceTree = "<group>"; };
 		178AFEBD22450BE3001E14D5 /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Bold.ttf"; sourceTree = "<group>"; };
 		178AFEBE22450BE3001E14D5 /* OpenSans-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-BoldItalic.ttf"; sourceTree = "<group>"; };
 		178AFEBF22450BE3001E14D5 /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Regular.ttf"; sourceTree = "<group>"; };
@@ -265,7 +265,7 @@
 			isa = PBXGroup;
 			children = (
 				1751261C223BEA320095AF4F /* Session.swift */,
-				1761B3CC224A47AF00C6BA47 /* Session+Mnemonic.swift */,
+				1761B3CC224A47AF00C6BA47 /* Session+Crypto.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1379,7 +1379,7 @@
 				17512623223BEB9D0095AF4F /* UserDefaults+Additions.swift in Sources */,
 				17BEC4602248C81E00AAF370 /* PassPhraseVerifyView.swift in Sources */,
 				1751261D223BEA320095AF4F /* Session.swift in Sources */,
-				1761B3CD224A47AF00C6BA47 /* Session+Mnemonic.swift in Sources */,
+				1761B3CD224A47AF00C6BA47 /* Session+Crypto.swift in Sources */,
 				2B8AD04A2244F82600939ECE /* SharedColors.swift in Sources */,
 				17512620223BEAE90095AF4F /* Storable.swift in Sources */,
 				2BF5314E22491E7F00A7455F /* QRScannerOverlayView.swift in Sources */,

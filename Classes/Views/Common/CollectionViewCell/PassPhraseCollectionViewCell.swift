@@ -15,6 +15,11 @@ enum PassPhraseMode {
 }
 
 class PassPhraseCollectionViewCell: BaseCollectionViewCell<UIView> {
+    fileprivate enum Color {
+        static let wrongBackground = rgb(0.93, 0.14, 0.14)
+        static let correctBackground = SharedColors.green
+    }
+    
     private(set) var mode: PassPhraseMode = .idle
     
     override func prepareForReuse() {
@@ -75,9 +80,9 @@ extension PassPhraseCollectionViewCell {
             contextView.backgroundColor = UIColor.white
             phraseLabel.textColor = UIColor.black
         case .correct:
-            contextView.backgroundColor = UIColor.PassPhrase.correctBackground
+            contextView.backgroundColor = Color.correctBackground
         case .wrong:
-            contextView.backgroundColor = UIColor.PassPhrase.wrongBackground
+            contextView.backgroundColor = Color.wrongBackground
         }
     }
 }

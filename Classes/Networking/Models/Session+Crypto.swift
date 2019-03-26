@@ -1,5 +1,5 @@
 //
-//  Session+Mnemonic.swift
+//  Session+Crypto.swift
 //  algorand
 //
 //  Created by Omer Emre Aslan on 26.03.2019.
@@ -24,5 +24,21 @@ extension Session {
         }
         
         return mnemonics.components(separatedBy: " ")
+    }
+    
+    func address(forAccount account: String) -> String? {
+        guard let privateKey = privateData(forAccount: account) else {
+            return nil
+        }
+        
+        var error: NSError?
+        
+        let address = CryptoGenerateAddressFromSK(privateKey, &error)
+        
+        guard error == nil else {
+            return nil
+        }
+        
+        return address
     }
 }

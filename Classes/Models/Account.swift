@@ -24,6 +24,12 @@ class Account: Mappable {
     
     var name: String?
     
+    init(address: String) {
+        self.address = address
+        amount = 0
+        status = .offline
+    }
+    
     func update(withAccount account: Account) {
         amount = account.amount
         status = account.status
