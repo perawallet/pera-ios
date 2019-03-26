@@ -77,3 +77,9 @@
 
 "qr-scan-error-title" = "Camera is not supported";
 "qr-scan-error-message" = "Your device does not support scanning a code from an item.";
+
+// MARK: Login
+
+"login-title" = "Login";
+"login-subtitle" = "Enter six digit password";
+"logout-title" = "Logout";
