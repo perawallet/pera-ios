@@ -19,6 +19,7 @@ enum FontWeight {
     case italic(size: CGFloat)
     case regular(size: CGFloat)
     case semiBold(size: CGFloat)
+    case semiBoldItalic(size: CGFloat)
 }
 
 extension UIFont {
@@ -36,6 +37,8 @@ extension UIFont {
             return UIFont(name: fontName, size: size) ?? UIFont.systemFont(ofSize: size)
         case .semiBold(let size):
             return UIFont(name: fontName, size: size) ?? UIFont.systemFont(ofSize: size)
+        case .semiBoldItalic(let size):
+            return UIFont(name: fontName, size: size) ?? UIFont.systemFont(ofSize: size).italic
         }
     }
     
@@ -54,6 +57,8 @@ extension UIFont {
             return fontName.appending("Regular")
         case .semiBold:
             return fontName.appending("SemiBold")
+        case .semiBoldItalic:
+            return fontName.appending("SemiboldItalic")
         }
     }
 }

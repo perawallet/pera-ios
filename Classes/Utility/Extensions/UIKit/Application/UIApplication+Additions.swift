@@ -100,4 +100,12 @@ extension UIApplication {
         
         return rootViewController.route(to: screen, from: viewController, by: style, animated: animated, then: completion)
     }
+    
+    func openAppSettings() {
+        guard let settingsURL = URL(string: UIApplication.openSettingsURLString) else {
+            return
+        }
+        
+        UIApplication.shared.open(settingsURL, options: [:])
+    }
 }

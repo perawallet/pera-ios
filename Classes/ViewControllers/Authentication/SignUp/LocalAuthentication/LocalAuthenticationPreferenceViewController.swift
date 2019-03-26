@@ -21,6 +21,8 @@ class LocalAuthenticationPreferenceViewController: BaseViewController {
         return view
     }()
     
+    private let localAuthenticator = LocalAuthenticator()
+    
     // MARK: Setup
     
     override func configureAppearance() {
@@ -46,10 +48,43 @@ class LocalAuthenticationPreferenceViewController: BaseViewController {
 extension LocalAuthenticationPreferenceViewController: LocalAuthenticationPreferenceViewDelegate {
     
     func localAuthenticationPreferenceViewDidTapYesButton(_ localAuthenticationPreferenceView: LocalAuthenticationPreferenceView) {
-        open(.passPhraseBackUp, by: .push)
+        if localAuthenticator.isLocalAuthenticationAvailable {
+            localAuthenticator.authenticate { error in
+                guard error == nil else {
+                    return
+                }
+                
+                self.localAuthenticator.localAuthenticationStatus = .allowed
+                
+                self.open(.passPhraseBackUp, by: .push)
+            }
+            
+            return
+        }
+        
+        presentDisabledLocalAuthenticationAlert()
+    }
+    
+    private func presentDisabledLocalAuthenticationAlert() {
+        let alertController = UIAlertController(
+            title: "local-authentication-go-settings-title".localized,
+            message: "local-authentication-go-settings-text".localized,
+            preferredStyle: .alert
+        )
+        
+        let settingsAction = UIAlertAction(title: "title-go-to-settings".localized, style: .default) { _ in
+            UIApplication.shared.openAppSettings()
+        }
+        
+        let cancelAction = UIAlertAction(title: "title-cancel-lowercased".localized, style: .cancel, handler: nil)
+        
+        alertController.addAction(settingsAction)
+        alertController.addAction(cancelAction)
+        
+        present(alertController, animated: true, completion: nil)
     }
     
     func localAuthenticationPreferenceViewDidTapNoButton(_ localAuthenticationPreferenceView: LocalAuthenticationPreferenceView) {
-        
+        open(.passPhraseBackUp, by: .push)
     }
 }
