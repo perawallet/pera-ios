@@ -14,8 +14,15 @@ enum AccountStatus: String, Mappable {
     case notParticipating = "NotParticipating"
 }
 
+extension AccountStatus: Codable {
+}
+
 class Account: Mappable {
     let address: String
     let amount: UInt64
     let status: AccountStatus
+    var accountName: String?
+}
+
+extension Account: Encodable {
 }
