@@ -54,6 +54,7 @@ class QRScannerViewController: BaseViewController {
     weak var delegate: QRScannerViewControllerDelegate?
     
     private var captureSession: AVCaptureSession?
+    private let captureSessionQueue = DispatchQueue(label: AVCaptureSession.self.description(), attributes: [], target: nil)
     private var previewLayer: AVCaptureVideoPreviewLayer?
     
     // MARK: Setup
@@ -74,9 +75,7 @@ class QRScannerViewController: BaseViewController {
         super.prepareLayout()
         
         setupCancelButtonLayout()
-        
-        setupCaptureSession()
-        setupPreviewLayer()
+        configureScannerView()
     }
     
     private func setupCancelButtonLayout() {
@@ -85,6 +84,24 @@ class QRScannerViewController: BaseViewController {
         cancelButton.snp.makeConstraints { make in
             make.bottom.equalToSuperview().inset(layout.current.bottomInset)
             make.centerX.equalToSuperview()
+        }
+    }
+    
+    private func configureScannerView() {
+        if AVCaptureDevice.authorizationStatus(for: .video) ==  .authorized {
+            setupCaptureSession()
+            setupPreviewLayer()
+        } else {
+            AVCaptureDevice.requestAccess(for: .video) { granted in
+                if granted {
+                    DispatchQueue.main.async {
+                        self.setupCaptureSession()
+                        self.setupPreviewLayer()
+                    }
+                } else {
+                    self.presentDisabledCameraAlert()
+                }
+            }
         }
     }
     
@@ -124,6 +141,25 @@ class QRScannerViewController: BaseViewController {
         }
     }
     
+    private func presentDisabledCameraAlert() {
+        let alertController = UIAlertController(
+            title: "qr-scan-go-settings-title".localized,
+            message: "qr-scan-go-settings-message".localized,
+            preferredStyle: .alert
+        )
+        
+        let settingsAction = UIAlertAction(title: "title-go-to-settings".localized, style: .default) { _ in
+            UIApplication.shared.openAppSettings()
+        }
+        
+        let cancelAction = UIAlertAction(title: "title-cancel-lowercased".localized, style: .cancel, handler: nil)
+        
+        alertController.addAction(settingsAction)
+        alertController.addAction(cancelAction)
+        
+        present(alertController, animated: true, completion: nil)
+    }
+    
     private func handleFailedState() {
         captureSession = nil
         
@@ -149,7 +185,9 @@ class QRScannerViewController: BaseViewController {
         view.addSubview(overlayView)
         overlayView.frame = previewLayer.frame
         
-        captureSession.startRunning()
+        captureSessionQueue.async {
+            captureSession.startRunning()
+        }
     }
     
     // MARK: View Lifecycle
@@ -158,7 +196,9 @@ class QRScannerViewController: BaseViewController {
         super.viewWillAppear(animated)
         
         if captureSession?.isRunning == false {
-            captureSession?.startRunning()
+            captureSessionQueue.async {
+                self.captureSession?.startRunning()
+            }
         }
     }
     
@@ -166,7 +206,9 @@ class QRScannerViewController: BaseViewController {
         super.viewWillDisappear(animated)
         
         if captureSession?.isRunning == true {
-            captureSession?.stopRunning()
+            captureSessionQueue.async {
+                self.captureSession?.stopRunning()
+            }
         }
     }
     
