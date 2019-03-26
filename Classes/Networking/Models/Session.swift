@@ -35,6 +35,11 @@ class Session: Storable {
         return privateStorage.data(for: dataKey)
     }
     
+    func removePrivateData(for account: String) {
+        let dataKey = privateKey.appending(".\(account)")
+        privateStorage.remove(for: dataKey)
+    }
+    
     // MARK: - App Password
     
     func saveApp(password: String) {

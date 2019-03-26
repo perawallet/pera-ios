@@ -13,6 +13,8 @@
 		17512620223BEAE90095AF4F /* Storable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1751261F223BEAE90095AF4F /* Storable.swift */; };
 		17512623223BEB9D0095AF4F /* UserDefaults+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17512622223BEB9D0095AF4F /* UserDefaults+Additions.swift */; };
 		1761B3C82249F88700C6BA47 /* Montserrat-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1761B3C72249F88700C6BA47 /* Montserrat-SemiBoldItalic.ttf */; };
+		1761B3CB224A39D400C6BA47 /* PassPhraseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1761B3CA224A39D400C6BA47 /* PassPhraseViewModel.swift */; };
+		1761B3CD224A47AF00C6BA47 /* Session+Mnemonic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1761B3CC224A47AF00C6BA47 /* Session+Mnemonic.swift */; };
 		178AFEC222450BE3001E14D5 /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 178AFEBD22450BE3001E14D5 /* OpenSans-Bold.ttf */; };
 		178AFEC322450BE3001E14D5 /* OpenSans-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 178AFEBE22450BE3001E14D5 /* OpenSans-BoldItalic.ttf */; };
 		178AFEC422450BE3001E14D5 /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 178AFEBF22450BE3001E14D5 /* OpenSans-Regular.ttf */; };
@@ -38,9 +40,9 @@
 		2B66870E2248DB8B009F21E7 /* BarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B66870D2248DB8B009F21E7 /* BarButtonItem.swift */; };
 		2B6687102248DBE2009F21E7 /* ALGBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B66870F2248DBE2009F21E7 /* ALGBarButtonItem.swift */; };
 		2B6687122248DC7D009F21E7 /* BarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6687112248DC7D009F21E7 /* BarButton.swift */; };
-		2B66871A22491A5E009F21E7 /* QRScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B66871922491A5E009F21E7 /* QRScannerViewController.swift */; };
 		2B6687152248DF83009F21E7 /* LocalAuthenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6687142248DF83009F21E7 /* LocalAuthenticator.swift */; };
 		2B6687172249058D009F21E7 /* OpenSans-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2B6687162249058D009F21E7 /* OpenSans-SemiBoldItalic.ttf */; };
+		2B66871A22491A5E009F21E7 /* QRScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B66871922491A5E009F21E7 /* QRScannerViewController.swift */; };
 		2B89549F2242D90000D6D068 /* UIViewController+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B89549E2242D90000D6D068 /* UIViewController+Additions.swift */; };
 		2B8954A22242E79C00D6D068 /* AccountNameSetupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8954A12242E79C00D6D068 /* AccountNameSetupViewController.swift */; };
 		2B8954A52242E7D800D6D068 /* AccountNameSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8954A42242E7D800D6D068 /* AccountNameSetupView.swift */; };
@@ -127,6 +129,8 @@
 		1751261F223BEAE90095AF4F /* Storable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storable.swift; sourceTree = "<group>"; };
 		17512622223BEB9D0095AF4F /* UserDefaults+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Additions.swift"; sourceTree = "<group>"; };
 		1761B3C72249F88700C6BA47 /* Montserrat-SemiBoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
+		1761B3CA224A39D400C6BA47 /* PassPhraseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassPhraseViewModel.swift; sourceTree = "<group>"; };
+		1761B3CC224A47AF00C6BA47 /* Session+Mnemonic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Session+Mnemonic.swift"; sourceTree = "<group>"; };
 		178AFEBD22450BE3001E14D5 /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Bold.ttf"; sourceTree = "<group>"; };
 		178AFEBE22450BE3001E14D5 /* OpenSans-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-BoldItalic.ttf"; sourceTree = "<group>"; };
 		178AFEBF22450BE3001E14D5 /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Regular.ttf"; sourceTree = "<group>"; };
@@ -153,9 +157,9 @@
 		2B66870D2248DB8B009F21E7 /* BarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarButtonItem.swift; sourceTree = "<group>"; };
 		2B66870F2248DBE2009F21E7 /* ALGBarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ALGBarButtonItem.swift; sourceTree = "<group>"; };
 		2B6687112248DC7D009F21E7 /* BarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarButton.swift; sourceTree = "<group>"; };
-		2B66871922491A5E009F21E7 /* QRScannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRScannerViewController.swift; sourceTree = "<group>"; };
 		2B6687142248DF83009F21E7 /* LocalAuthenticator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAuthenticator.swift; sourceTree = "<group>"; };
 		2B6687162249058D009F21E7 /* OpenSans-SemiBoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
+		2B66871922491A5E009F21E7 /* QRScannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRScannerViewController.swift; sourceTree = "<group>"; };
 		2B89549E2242D90000D6D068 /* UIViewController+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Additions.swift"; sourceTree = "<group>"; };
 		2B8954A12242E79C00D6D068 /* AccountNameSetupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountNameSetupViewController.swift; sourceTree = "<group>"; };
 		2B8954A42242E7D800D6D068 /* AccountNameSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountNameSetupView.swift; sourceTree = "<group>"; };
@@ -261,6 +265,7 @@
 			isa = PBXGroup;
 			children = (
 				1751261C223BEA320095AF4F /* Session.swift */,
+				1761B3CC224A47AF00C6BA47 /* Session+Mnemonic.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -271,6 +276,14 @@
 				1751261F223BEAE90095AF4F /* Storable.swift */,
 			);
 			path = Protocols;
+			sourceTree = "<group>";
+		};
+		1761B3C9224A39C500C6BA47 /* PassPhrase */ = {
+			isa = PBXGroup;
+			children = (
+				1761B3CA224A39D400C6BA47 /* PassPhraseViewModel.swift */,
+			);
+			path = PassPhrase;
 			sourceTree = "<group>";
 		};
 		17B7D8A42240D79200A6FF9E /* Models */ = {
@@ -324,20 +337,20 @@
 			path = NavigationBar;
 			sourceTree = "<group>";
 		};
-		2B66871822491A46009F21E7 /* QR */ = {
-			isa = PBXGroup;
-			children = (
-				2B66871922491A5E009F21E7 /* QRScannerViewController.swift */,
-			);
-			path = QR;
-			sourceTree = "<group>";
-		};
 		2B6687132248DF57009F21E7 /* LocalAuthentication */ = {
 			isa = PBXGroup;
 			children = (
 				2B6687142248DF83009F21E7 /* LocalAuthenticator.swift */,
 			);
 			path = LocalAuthentication;
+			sourceTree = "<group>";
+		};
+		2B66871822491A46009F21E7 /* QR */ = {
+			isa = PBXGroup;
+			children = (
+				2B66871922491A5E009F21E7 /* QRScannerViewController.swift */,
+			);
+			path = QR;
 			sourceTree = "<group>";
 		};
 		2B8954A02242E77E00D6D068 /* AccountName */ = {
@@ -976,6 +989,7 @@
 		2BD73A162241323400B66EEF /* SignUp */ = {
 			isa = PBXGroup;
 			children = (
+				1761B3C9224A39C500C6BA47 /* PassPhrase */,
 				2BD73A172241323800B66EEF /* Password */,
 			);
 			path = SignUp;
@@ -1327,6 +1341,7 @@
 				2BA8736E2248240A00511C7C /* UIEdgeInsets+Additions.swift in Sources */,
 				2B8954B72243FCB100D6D068 /* Notification+Keyboard.swift in Sources */,
 				2B8954B62243FBD600D6D068 /* NotificationCenter+Additions.swift in Sources */,
+				1761B3CB224A39D400C6BA47 /* PassPhraseViewModel.swift in Sources */,
 				2BF34CC2223A95A50052CAD3 /* API.swift in Sources */,
 				2BF34CB2223A77650052CAD3 /* StatusBarConfigurable.swift in Sources */,
 				2BF34C9D2239AB530052CAD3 /* Router.swift in Sources */,
@@ -1364,6 +1379,7 @@
 				17512623223BEB9D0095AF4F /* UserDefaults+Additions.swift in Sources */,
 				17BEC4602248C81E00AAF370 /* PassPhraseVerifyView.swift in Sources */,
 				1751261D223BEA320095AF4F /* Session.swift in Sources */,
+				1761B3CD224A47AF00C6BA47 /* Session+Mnemonic.swift in Sources */,
 				2B8AD04A2244F82600939ECE /* SharedColors.swift in Sources */,
 				17512620223BEAE90095AF4F /* Storable.swift in Sources */,
 				2BF5314E22491E7F00A7455F /* QRScannerOverlayView.swift in Sources */,
