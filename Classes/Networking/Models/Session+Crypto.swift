@@ -26,11 +26,28 @@ extension Session {
         return mnemonics.components(separatedBy: " ")
     }
     
+    func privateKey(forMnemonics mnemonics: String) -> Data? {
+        var error: NSError?
+        
+        let data = MnemonicToPrivateKey(mnemonics, &error)
+        
+        guard let privateKey = data,
+            error == nil else {
+            return nil
+        }
+        
+        return privateKey
+    }
+    
     func address(forAccount account: String) -> String? {
         guard let privateKey = privateData(forAccount: account) else {
             return nil
         }
         
+        return address(fromPrivateKey: privateKey)
+    }
+    
+    func address(fromPrivateKey privateKey: Data) -> String? {
         var error: NSError?
         
         let address = CryptoGenerateAddressFromSK(privateKey, &error)

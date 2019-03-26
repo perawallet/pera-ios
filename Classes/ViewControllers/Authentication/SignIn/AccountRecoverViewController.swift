@@ -73,7 +73,20 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
     }
     
     func accountRecoverViewDidTapNextButton(_ accountRecoverView: AccountRecoverView) {
+        guard let mnemonics = accountRecoverView.passPhraseInputView.inputTextView.text,
+            let privateKey = session?.privateKey(forMnemonics: mnemonics) else {
+            return
+        }
         
+        if let address = session?.address(fromPrivateKey: privateKey) {
+            let account = Account(address: address)
+            
+            account.name = accountRecoverView.accountNameInputView.inputTextField.text
+            
+            session?.savePrivate(privateKey, forAccount: account.address)
+        } else {
+            //ERROR
+        }
     }
 }
 
