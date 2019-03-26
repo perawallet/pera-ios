@@ -7,14 +7,10 @@
 //
 
 import UIKit
+import Crypto
 
 class PassPhraseBackUpViewController: BaseScrollViewController {
     
-    private let passPhrase = """
-                            quarters unific unlive planned faculty pang neuron grogshop scale overflow moreover clout rainy
-                            rajah bebop coition marplot turncoat outpour fimble calyces serjeant cuprum sailboat
-                            """
-
     // MARK: Components
     
     private lazy var passPhraseBackUpView: PassPhraseBackUpView = {
@@ -27,9 +23,18 @@ class PassPhraseBackUpViewController: BaseScrollViewController {
     override func configureAppearance() {
         super.configureAppearance()
         
-        passPhraseBackUpView.passPhreaseLabel.attributedText = passPhrase.attributed([.lineSpacing(1.5)])
-        
         title = "new-account-title".localized
+        
+        if let privateKey = CryptoGenerateSK() {
+            self.session?.savePrivate(privateKey, forAccount: "temp")
+            
+            let mnemonics = self.session?.mnemonics(forAccount: "temp") ?? []
+            
+            print(mnemonics.joined(separator: " "))
+            
+            passPhraseBackUpView.passPhreaseLabel.attributedText = mnemonics.joined(separator: " ")
+                .attributed([.lineSpacing(1.5)])
+        }
     }
     
     override func prepareLayout() {
@@ -50,7 +55,9 @@ class PassPhraseBackUpViewController: BaseScrollViewController {
 extension PassPhraseBackUpViewController: PassPhraseBackUpViewDelegate {
     
     func passPhraseBackUpViewDidTapShareButton(_ passPhraseBackUpView: PassPhraseBackUpView) {
-        let sharedItem = [passPhrase]
+        let mnemonics = self.session?.mnemonics(forAccount: "temp") ?? []
+        
+        let sharedItem = [mnemonics.joined(separator: " ")]
         let activityViewController = UIActivityViewController(activityItems: sharedItem, applicationActivities: nil)
         activityViewController.excludedActivityTypes = [UIActivity.ActivityType.addToReadingList]
         

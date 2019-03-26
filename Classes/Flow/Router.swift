@@ -95,6 +95,8 @@ class Router {
         
         let configuration = ViewControllerConfiguration(api: rootViewController.appConfiguration.api)
         
+        configuration.session = rootViewController.appConfiguration.session
+        
         switch screen {
         case .introduction:
             viewController = IntroductionViewController(configuration: configuration)

@@ -10,14 +10,17 @@ import UIKit
 import Crypto
 
 class PassPhraseVerifyViewController: BaseScrollViewController {
-    let mnemonics = """
-marble protect crawl steak lion clock camera brother find escape matter roast toast critic velvet police old inform arena enemy milk venue cereal abandon cushion
-"""
+    
+    fileprivate lazy var passPhraseViewModel: PassPhraseViewModel? = {
+        if let privateKey = session?.privateData(forAccount: "temp") {
+            return PassPhraseViewModel(privateKey: privateKey)
+        }
+        
+        return nil
+    }()
     
     fileprivate private(set) lazy var passPhraseVerifyView: PassPhraseVerifyView = {
         let passPhraseVerifyView = PassPhraseVerifyView()
-        passPhraseVerifyView.questionTitleLabel.text = "Question 1 of 3: ".localized
-        passPhraseVerifyView.questionSubtitleLabel.text = "Select the 4th word of your passphrase".localized
         return passPhraseVerifyView
     }()
     
@@ -40,12 +43,38 @@ marble protect crawl steak lion clock camera brother find escape matter roast to
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        updatePassPhraseLabel()
     }
     
     override func prepareLayout() {
         super.prepareLayout()
         
         setupLayout()
+    }
+    
+    private func updatePassPhraseLabel() {
+        let currentIndex = passPhraseViewModel?.currentIndex.advanced(by: 1) ?? 1
+        let currentIndexValue = passPhraseViewModel?.currentIndexValue().advanced(by: 1) ?? 0
+        
+        let currentIndexString: String
+        
+        switch currentIndexValue {
+        case 1:
+            currentIndexString = "\(currentIndexValue)st"
+        case 2:
+            currentIndexString = "\(currentIndexValue)nd"
+        case 3:
+            currentIndexString = "\(currentIndexValue)rd"
+        default:
+            currentIndexString = "\(currentIndexValue)th"
+        }
+        
+        let titleText = "Question \(currentIndex) of \(passPhraseViewModel?.numberOfValidations ?? 0): ".localized
+        let subtitleText = "Select the \(currentIndexString) word of your passphrase".localized
+        
+        passPhraseVerifyView.questionTitleLabel.text = titleText
+        passPhraseVerifyView.questionSubtitleLabel.text = subtitleText
     }
 }
 
@@ -76,31 +105,71 @@ extension PassPhraseVerifyViewController: UICollectionViewDelegate,
 UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return mnemonics.components(separatedBy: " ").count
+        return passPhraseViewModel?.numberOfMnemonic() ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let mnemonic = passPhraseViewModel?.mnemonic(atIndex: indexPath.item) else {
+            fatalError("Index path is out of bounds")
+        }
         
-        let item = mnemonics.components(separatedBy: " ")[indexPath.item]
         guard let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: PassPhraseCollectionViewCell.reusableIdentifier,
             for: indexPath) as? PassPhraseCollectionViewCell else {
             fatalError("Index path is out of bounds")
         }
         
-        cell.phraseLabel.text = item
+        cell.phraseLabel.text = mnemonic
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let item = mnemonics.components(separatedBy: " ")[indexPath.item]
+        guard let viewModel = passPhraseViewModel,
+            let mnemonic = viewModel.mnemonic(atIndex: indexPath.item) else {
+            fatalError("Index path is out of bounds")
+        }
+        
         guard let cell = collectionView.cellForItem(at: indexPath) as? PassPhraseCollectionViewCell else {
             return
         }
         
-        cell.mode = .correct
+        let isCorrect = viewModel.checkMnemonic(mnemonic)
+        
+        if isCorrect {
+            cell.setMode(.correct)
+            
+            if viewModel.currentIndex == viewModel.numberOfValidations - 1 {
+                let configurator = AlertViewConfigurator(
+                    title: "pass-phrase-verify-pop-up-title".localized,
+                    image: img("password-alert-icon"),
+                    explanation: "pass-phrase-verify-pop-up-explanation".localized,
+                    actionTitle: nil) {
+                        
+                        self.open(.accountNameSetup, by: .push)
+                }
+                
+                let viewController = AlertViewController(mode: .normal, alertConfigurator: configurator, configuration: configuration)
+                viewController.modalPresentationStyle = .overCurrentContext
+                viewController.modalTransitionStyle = .crossDissolve
+                
+                present(viewController, animated: true, completion: nil)
+                
+                cell.setMode(.idle)
+                
+                return
+            } else {
+                viewModel.incrementCurrentIndex()
+                updatePassPhraseLabel()
+            }
+        } else {
+            cell.setMode(.wrong)
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            cell.setMode(.idle)
+        }
     }
 }
 
@@ -108,9 +177,11 @@ UICollectionViewDataSource {
 extension PassPhraseVerifyViewController: LeftAlignedCollectionViewFlowLayoutDelegate {
     func leftAlignedLayout(_ layout: LeftAlignedCollectionViewFlowLayout,
                            sizeFor indexPath: IndexPath) -> CGSize {
-        let item = mnemonics.components(separatedBy: " ")[indexPath.item]
+        guard let mnemonic = passPhraseViewModel?.mnemonic(atIndex: indexPath.item) else {
+            fatalError("Index path is out of bounds")
+        }
         
-        let width = item.width(usingFont: PassPhraseCollectionViewCell.font) + 50.0
+        let width = mnemonic.width(usingFont: PassPhraseCollectionViewCell.font) + 50.0
         
         return CGSize(width: width, height: 44.0)
     }

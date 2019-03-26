@@ -9,17 +9,20 @@
 import UIKit
 
 enum PassPhraseMode {
-    case selected
     case correct
     case wrong
     case idle
 }
 
 class PassPhraseCollectionViewCell: BaseCollectionViewCell<UIView> {
-    var mode: PassPhraseMode = .idle {
-        didSet {
-            updateLayout()
-        }
+    private(set) var mode: PassPhraseMode = .idle
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        mode = .idle
+        
+        updateLayout(animated: false)
     }
     
     private(set) lazy var phraseLabel: UILabel = {
@@ -42,22 +45,39 @@ class PassPhraseCollectionViewCell: BaseCollectionViewCell<UIView> {
     }
     
     static var font: UIFont {
-        return UIFont.font(Font.opensans, withWeight: .regular(size: 13.0))
+        return UIFont.font(Font.opensans, withWeight: .semiBold(size: 13.0))
+    }
+    
+    func setMode(_ mode: PassPhraseMode) {
+        self.mode = mode
+        self.updateLayout(animated: true)
     }
 }
 
-// MARK: - API
+// MARK: - Helpers
 extension PassPhraseCollectionViewCell {
-    func updateLayout() {
+    fileprivate func updateLayout(animated: Bool) {
+        if animated {
+            UIView.animate(withDuration: 0.25) {
+                self.updateModeLayout()
+            }
+            return
+        }
+        
+        updateModeLayout()
+    }
+    
+    fileprivate func updateModeLayout() {
+        phraseLabel.textColor = UIColor.white
+        
         switch mode {
         case .idle:
             contextView.backgroundColor = UIColor.white
+            phraseLabel.textColor = UIColor.black
         case .correct:
-            contextView.backgroundColor = UIColor.green
+            contextView.backgroundColor = UIColor.PassPhrase.correctBackground
         case .wrong:
-            contextView.backgroundColor = UIColor.red
-        case .selected:
-            contextView.backgroundColor = UIColor.lightGray
+            contextView.backgroundColor = UIColor.PassPhrase.wrongBackground
         }
     }
 }

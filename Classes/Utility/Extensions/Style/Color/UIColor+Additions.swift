@@ -52,3 +52,12 @@ extension UIColor {
         return String(format: "#%06x", rgb)
     }
 }
+
+// MARK: - Color Extensions
+
+extension UIColor {
+    struct PassPhrase {
+        static let wrongBackground = rgb(0.93, 0.14, 0.14)
+        static let correctBackground = SharedColors.green
+    }
+}
