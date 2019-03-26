@@ -72,3 +72,8 @@
 
 "recover-from-seed-title" = "Recover from Seed";
 "pass-pharase-enter-placeholder" = "Enter Pass Phrase or Scan QR";
+
+// MARK: QR Scanning
+
+"qr-scan-error-title" = "Camera is not supported";
+"qr-scan-error-message" = "Your device does not support scanning a code from an item.";

@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Algorand will use your camero to scan QR.</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Algorand will use Face ID to log in.</string>
 	<key>NSAppTransportSecurity</key>

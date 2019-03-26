@@ -110,6 +110,8 @@ class Router {
             viewController = AccountNameSetupViewController(configuration: configuration)
         case .accountRecover:
             viewController = AccountRecoverViewController(configuration: configuration)
+        case .qrScanner:
+            viewController = QRScannerViewController(configuration: configuration)
         }
         
         return viewController as? T

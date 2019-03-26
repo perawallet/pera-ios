@@ -60,6 +60,17 @@ class MultiLineInputField: BaseInputView {
         _ = inputTextView.becomeFirstResponder()
     }
     
+    var value: String = "" {
+        didSet {
+            if value == oldValue {
+                return
+            }
+            
+            placeholderLabel.isHidden = !value.isEmpty
+            inputTextView.text = value
+        }
+    }
+    
     // MARK: Setup
     
     override func linkInteractors() {
