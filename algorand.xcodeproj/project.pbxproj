@@ -119,6 +119,18 @@
 		2BF34CC5223A99670052CAD3 /* String+Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF34CC4223A99670052CAD3 /* String+Localization.swift */; };
 		2BF34CC9223AA63D0052CAD3 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2BF34CCB223AA63D0052CAD3 /* Localizable.strings */; };
 		2BF5314E22491E7F00A7455F /* QRScannerOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF5314D22491E7F00A7455F /* QRScannerOverlayView.swift */; };
+		2BF53153224A460B00A7455F /* ModalConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF53152224A460B00A7455F /* ModalConfiguration.swift */; };
+		2BF53155224A468400A7455F /* ModalPresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF53154224A468400A7455F /* ModalPresentable.swift */; };
+		2BF53157224A46A400A7455F /* ModalPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF53156224A46A400A7455F /* ModalPresenter.swift */; };
+		2BF53159224A46C500A7455F /* ModalPresenterInteractable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF53158224A46C500A7455F /* ModalPresenterInteractable.swift */; };
+		2BF5315B224A46E400A7455F /* UIVIewController+Presentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF5315A224A46E400A7455F /* UIVIewController+Presentation.swift */; };
+		2BF5315D224A46F800A7455F /* UIViewControllerContextTransitioning+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF5315C224A46F800A7455F /* UIViewControllerContextTransitioning+Additions.swift */; };
+		2BF5315F224A472800A7455F /* ModalAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF5315E224A472800A7455F /* ModalAnimator.swift */; };
+		2BF53161224A476600A7455F /* CardModalPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF53160224A476600A7455F /* CardModalPresenter.swift */; };
+		2BF53163224A478E00A7455F /* CardModalAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF53162224A478E00A7455F /* CardModalAnimator.swift */; };
+		2BF53165224A47E000A7455F /* CardModalPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF53164224A47E000A7455F /* CardModalPresentationController.swift */; };
+		2BF53168224A48DF00A7455F /* CGFloat+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF53167224A48DF00A7455F /* CGFloat+Additions.swift */; };
+		2BF53174224A940E00A7455F /* PollingOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF53173224A940E00A7455F /* PollingOperation.swift */; };
 		654E149E940D74AF3955EEF3 /* Pods_algorand.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01F66EBBAFA146AFC193D69A /* Pods_algorand.framework */; };
 /* End PBXBuildFile section */
 
@@ -239,6 +251,18 @@
 		2BF34CC4223A99670052CAD3 /* String+Localization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Localization.swift"; sourceTree = "<group>"; };
 		2BF34CCA223AA63D0052CAD3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		2BF5314D22491E7F00A7455F /* QRScannerOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRScannerOverlayView.swift; sourceTree = "<group>"; };
+		2BF53152224A460B00A7455F /* ModalConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalConfiguration.swift; sourceTree = "<group>"; };
+		2BF53154224A468400A7455F /* ModalPresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalPresentable.swift; sourceTree = "<group>"; };
+		2BF53156224A46A400A7455F /* ModalPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalPresenter.swift; sourceTree = "<group>"; };
+		2BF53158224A46C500A7455F /* ModalPresenterInteractable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalPresenterInteractable.swift; sourceTree = "<group>"; };
+		2BF5315A224A46E400A7455F /* UIVIewController+Presentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIVIewController+Presentation.swift"; sourceTree = "<group>"; };
+		2BF5315C224A46F800A7455F /* UIViewControllerContextTransitioning+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewControllerContextTransitioning+Additions.swift"; sourceTree = "<group>"; };
+		2BF5315E224A472800A7455F /* ModalAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalAnimator.swift; sourceTree = "<group>"; };
+		2BF53160224A476600A7455F /* CardModalPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardModalPresenter.swift; sourceTree = "<group>"; };
+		2BF53162224A478E00A7455F /* CardModalAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardModalAnimator.swift; sourceTree = "<group>"; };
+		2BF53164224A47E000A7455F /* CardModalPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardModalPresentationController.swift; sourceTree = "<group>"; };
+		2BF53167224A48DF00A7455F /* CGFloat+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGFloat+Additions.swift"; sourceTree = "<group>"; };
+		2BF53173224A940E00A7455F /* PollingOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollingOperation.swift; sourceTree = "<group>"; };
 		44FD8F3D210C1D99893A91DF /* Pods-algorand.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand.release.xcconfig"; path = "Pods/Target Support Files/Pods-algorand/Pods-algorand.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -618,6 +642,7 @@
 		2B8BE4F5223936FD005D8565 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				2BF53172224A93E800A7455F /* Operations */,
 				2B6687132248DF57009F21E7 /* LocalAuthentication */,
 				2BF34CA32239AD4A0052CAD3 /* UI */,
 				2BF34C9E2239ACC60052CAD3 /* Configuration */,
@@ -629,6 +654,7 @@
 		2B8BE4F62239370F005D8565 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				2BF53166224A48C900A7455F /* CoreGraphics */,
 				2BA8736C2248219900511C7C /* Data */,
 				2BD739D3223F983B00B66EEF /* Style */,
 				2BF34CB5223A87920052CAD3 /* External */,
@@ -1019,6 +1045,7 @@
 		2BF34C962239AA8C0052CAD3 /* Flow */ = {
 			isa = PBXGroup;
 			children = (
+				2BF5314F224A45DC00A7455F /* Transition */,
 				2BF34C9A2239AB130052CAD3 /* Screen.swift */,
 				2BF34C9C2239AB530052CAD3 /* Router.swift */,
 			);
@@ -1151,6 +1178,55 @@
 				2BF5314D22491E7F00A7455F /* QRScannerOverlayView.swift */,
 			);
 			path = QR;
+			sourceTree = "<group>";
+		};
+		2BF5314F224A45DC00A7455F /* Transition */ = {
+			isa = PBXGroup;
+			children = (
+				2BF53151224A45EA00A7455F /* BottomCard */,
+				2BF53150224A45E600A7455F /* Core */,
+			);
+			path = Transition;
+			sourceTree = "<group>";
+		};
+		2BF53150224A45E600A7455F /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				2BF53152224A460B00A7455F /* ModalConfiguration.swift */,
+				2BF53154224A468400A7455F /* ModalPresentable.swift */,
+				2BF53156224A46A400A7455F /* ModalPresenter.swift */,
+				2BF53158224A46C500A7455F /* ModalPresenterInteractable.swift */,
+				2BF5315A224A46E400A7455F /* UIVIewController+Presentation.swift */,
+				2BF5315C224A46F800A7455F /* UIViewControllerContextTransitioning+Additions.swift */,
+				2BF5315E224A472800A7455F /* ModalAnimator.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		2BF53151224A45EA00A7455F /* BottomCard */ = {
+			isa = PBXGroup;
+			children = (
+				2BF53160224A476600A7455F /* CardModalPresenter.swift */,
+				2BF53162224A478E00A7455F /* CardModalAnimator.swift */,
+				2BF53164224A47E000A7455F /* CardModalPresentationController.swift */,
+			);
+			path = BottomCard;
+			sourceTree = "<group>";
+		};
+		2BF53166224A48C900A7455F /* CoreGraphics */ = {
+			isa = PBXGroup;
+			children = (
+				2BF53167224A48DF00A7455F /* CGFloat+Additions.swift */,
+			);
+			path = CoreGraphics;
+			sourceTree = "<group>";
+		};
+		2BF53172224A93E800A7455F /* Operations */ = {
+			isa = PBXGroup;
+			children = (
+				2BF53173224A940E00A7455F /* PollingOperation.swift */,
+			);
+			path = Operations;
 			sourceTree = "<group>";
 		};
 		9F18DC6D0E56430348850CDE /* Frameworks */ = {
@@ -1344,8 +1420,10 @@
 				2B8954CE2244323700D6D068 /* AccountRecoverViewController.swift in Sources */,
 				2B8954A22242E79C00D6D068 /* AccountNameSetupViewController.swift in Sources */,
 				1751261A223BE5930095AF4F /* AlgorandParamPairKey.swift in Sources */,
+				2BF53163224A478E00A7455F /* CardModalAnimator.swift in Sources */,
 				2B8BE4D422391C38005D8565 /* RootViewController.swift in Sources */,
 				2BD73A002241297700B66EEF /* NumpadDeleteCell.swift in Sources */,
+				2BF53155224A468400A7455F /* ModalPresentable.swift in Sources */,
 				2BD739F8223FF4B600B66EEF /* NumpadDeleteButton.swift in Sources */,
 				2BD739D2223F97F600B66EEF /* WelcomeView.swift in Sources */,
 				2BD739FE22411A0100B66EEF /* Reusable.swift in Sources */,
@@ -1354,11 +1432,14 @@
 				2BD73A1C2241636C00B66EEF /* PassPhraseBackUpView.swift in Sources */,
 				2BD739F1223FE1C700B66EEF /* UIButton+Factory.swift in Sources */,
 				2B8BE4D222391C38005D8565 /* AppDelegate.swift in Sources */,
+				2BF5315D224A46F800A7455F /* UIViewControllerContextTransitioning+Additions.swift in Sources */,
 				2BD73A192241324700B66EEF /* ChoosePasswordViewModel.swift in Sources */,
 				2B8954C02244047D00D6D068 /* BaseInputView.swift in Sources */,
 				2BD739E1223F9F3000B66EEF /* LocalAuthenticationPreferenceView.swift in Sources */,
 				2B6687102248DBE2009F21E7 /* ALGBarButtonItem.swift in Sources */,
+				2BF53159224A46C500A7455F /* ModalPresenterInteractable.swift in Sources */,
 				2BD73A1222412B7300B66EEF /* NumpadViewModel.swift in Sources */,
+				2BF53161224A476600A7455F /* CardModalPresenter.swift in Sources */,
 				2BF34CB4223A87440052CAD3 /* BaseScrollViewController.swift in Sources */,
 				17BEC45D2248C7D900AAF370 /* PassPhraseVerifyViewController.swift in Sources */,
 				17BEC4632248CD3C00AAF370 /* LeftAlignedCollectionViewFlowLayout.swift in Sources */,
@@ -1366,6 +1447,7 @@
 				2BD739D9223F987E00B66EEF /* Utils.swift in Sources */,
 				2B8954B52243D7C400D6D068 /* AlertViewConfigurator.swift in Sources */,
 				2B8954A82243854400D6D068 /* AlertView.swift in Sources */,
+				2BF53165224A47E000A7455F /* CardModalPresentationController.swift in Sources */,
 				2BF34CBC223A8C460052CAD3 /* BaseCollectionViewCell.swift in Sources */,
 				2B6687122248DC7D009F21E7 /* BarButton.swift in Sources */,
 				2BD739F6223FF47900B66EEF /* NumpadNumericButton.swift in Sources */,
@@ -1383,6 +1465,7 @@
 				17B7D8A82240DFFC00A6FF9E /* API+Account.swift in Sources */,
 				17B7D8B82242830D00A6FF9E /* Params+Additions.swift in Sources */,
 				17B7D8AE2240F25000A6FF9E /* Environment.swift in Sources */,
+				2BF5315F224A472800A7455F /* ModalAnimator.swift in Sources */,
 				2B8954CB224430DC00D6D068 /* AccountRecoverView.swift in Sources */,
 				2BD739E5223FA07B00B66EEF /* MainButton.swift in Sources */,
 				2BD739FA2240527B00B66EEF /* PasswordInputView.swift in Sources */,
@@ -1392,6 +1475,7 @@
 				2BD739EA223FA0BD00B66EEF /* ChoosePasswordViewController.swift in Sources */,
 				2BF34CC5223A99670052CAD3 /* String+Localization.swift in Sources */,
 				2BF34CA62239AD6D0052CAD3 /* KeyboardController.swift in Sources */,
+				2BF5315B224A46E400A7455F /* UIVIewController+Presentation.swift in Sources */,
 				179278952244F8EE00097D32 /* UIFont+Additions.swift in Sources */,
 				2BF34CA02239ACDC0052CAD3 /* AppConfiguration.swift in Sources */,
 				2BF34C9B2239AB130052CAD3 /* Screen.swift in Sources */,
@@ -1402,6 +1486,7 @@
 				2B8BE50122393999005D8565 /* AdaptiveLayoutConstants.swift in Sources */,
 				2BD739FC2241052600B66EEF /* PasswordInputCircleView.swift in Sources */,
 				2BD739EC223FA0DC00B66EEF /* LocalAuthenticationPreferenceViewController.swift in Sources */,
+				2BF53153224A460B00A7455F /* ModalConfiguration.swift in Sources */,
 				2BD73A0B22412B0900B66EEF /* NumpadViewLayoutBuilder.swift in Sources */,
 				2B8954AC22438FBC00D6D068 /* AlertViewController.swift in Sources */,
 				17BEC4662248D39900AAF370 /* PassPhraseCollectionViewCell.swift in Sources */,
@@ -1411,10 +1496,12 @@
 				2BF34CBF223A8E740052CAD3 /* NavigationController.swift in Sources */,
 				2B8C1278224196DF00E34D37 /* String+Attributes.swift in Sources */,
 				2B8954A52242E7D800D6D068 /* AccountNameSetupView.swift in Sources */,
+				2BF53157224A46A400A7455F /* ModalPresenter.swift in Sources */,
 				2BD739DD223F9E9F00B66EEF /* ChoosePasswordView.swift in Sources */,
 				2B8BE4F4223935DA005D8565 /* BaseView.swift in Sources */,
 				2B89549F2242D90000D6D068 /* UIViewController+Additions.swift in Sources */,
 				2BD73A022241299100B66EEF /* NumpadNumericCell.swift in Sources */,
+				2BF53168224A48DF00A7455F /* CGFloat+Additions.swift in Sources */,
 				2B66870E2248DB8B009F21E7 /* BarButtonItem.swift in Sources */,
 				2BD739EF223FDE8400B66EEF /* UILabel+Factory.swift in Sources */,
 				2B8954B32243D7AD00D6D068 /* AlertViewModel.swift in Sources */,
@@ -1422,6 +1509,7 @@
 				2B8C127A2241970F00E34D37 /* NSAttributedString+Additions.swift in Sources */,
 				2B8954AE2243D55200D6D068 /* NormalAlertView.swift in Sources */,
 				2B8954C2224404B700D6D068 /* SingleLineInputField.swift in Sources */,
+				2BF53174224A940E00A7455F /* PollingOperation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
