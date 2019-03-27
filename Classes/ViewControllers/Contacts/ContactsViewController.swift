@@ -10,7 +10,16 @@ import UIKit
 
 class ContactsViewController: BaseViewController {
     
+    override func configureNavigationBarAppearance() {
+        let addBarButtonItem = ALGBarButtonItem(kind: .add) {
+        }
+        
+        rightBarButtonItems = [addBarButtonItem]
+    }
+    
     override func configureAppearance() {
-        view.backgroundColor = .blue
+        super.configureAppearance()
+        
+        title = "contacts-title".localized
     }
 }

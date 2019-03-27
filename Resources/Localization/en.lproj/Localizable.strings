@@ -92,3 +92,20 @@
 "login-title" = "Login";
 "login-subtitle" = "Enter six digit password";
 "logout-title" = "Logout";
+
+// MARK: Account List
+
+"account-list-add" = "ADD NEW ACCOUT";
+
+// MARK: History
+
+"history-title" = "History";
+
+// MARK: Contacts
+
+"contacts-title" = "Contacts";
+
+// MARK: Settings
+
+"settings-title" = "Settings";
+
