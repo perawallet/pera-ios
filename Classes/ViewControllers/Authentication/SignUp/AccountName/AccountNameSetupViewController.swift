@@ -73,6 +73,12 @@ extension AccountNameSetupViewController: AccountNameSetupViewDelegate {
         
         session?.savePrivate(tempPrivateKey, forAccount: account.address)
         session?.removePrivateData(for: "temp")
+        
+        let user = User(accounts: [account])
+        
+        session?.authenticatedUser = user
+        
+        open(.home, by: .present)
     }
     
     func accountNameSetupViewDidChangeValue(_ accountNameSetupView: AccountNameSetupView) {

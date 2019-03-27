@@ -36,8 +36,28 @@ class Session: Storable {
     init() {
         
     }
+}
+
+// MARK: - App Password
+extension Session {
+    func saveApp(password: String) {
+        self.save(password, for: StoreKeys.appPassword.rawValue, to: .defaults)
+    }
     
-    // MARK: - Setting Private Key in Keychain
+    func checkApp(password: String) -> Bool {
+        if let savedPassword = self.string(with: StoreKeys.appPassword.rawValue, to: .defaults) {
+            return savedPassword == password
+        }
+        return false
+    }
+    
+    func hasPassword() -> Bool {
+        return self.string(with: StoreKeys.appPassword.rawValue, to: .defaults) != nil
+    }
+}
+
+// MARK: - Setting Private Key in Keychain
+extension Session {
     func savePrivate(_ data: Data,
                      forAccount account: String) {
         let dataKey = privateKey.appending(".\(account)")
@@ -53,17 +73,15 @@ class Session: Storable {
         let dataKey = privateKey.appending(".\(account)")
         privateStorage.remove(for: dataKey)
     }
-    
-    // MARK: - App Password
-    
-    func saveApp(password: String) {
-        self.save(password, for: StoreKeys.appPassword.rawValue, to: .defaults)
-    }
-    
-    func checkApp(password: String) -> Bool {
-        if let savedPassword = self.string(with: StoreKeys.appPassword.rawValue, to: .defaults) {
-            return savedPassword == password
-        }
-        return false
+}
+
+// MARK: - Common Methods
+extension Session {
+    func reset() {
+        try? privateStorage.removeAll()
+        self.clear(.defaults)
+        self.clear(.keychain)
+        self.authenticatedUser = nil
+        self.isFault = true
     }
 }

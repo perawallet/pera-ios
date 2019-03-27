@@ -38,7 +38,15 @@ class RootViewController: UIViewController {
         
         view.backgroundColor = SharedColors.warmWhite
         
-        open(.home, by: .push, animated: false)
+        if appConfiguration.session.isFault {
+            if appConfiguration.session.hasPassword() {
+                open(.choosePassword(.login), by: .present)
+            } else {
+                open(.introduction, by: .present)
+            }
+        } else {
+            open(.home, by: .push, animated: false)
+        }
     }
 
     @discardableResult

@@ -84,6 +84,12 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
             account.name = accountRecoverView.accountNameInputView.inputTextField.text
             
             session?.savePrivate(privateKey, forAccount: account.address)
+            
+            let user = User(accounts: [account])
+            
+            session?.authenticatedUser = user
+            
+            open(.home, by: .present)
         } else {
             //ERROR
         }
