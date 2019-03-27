@@ -115,6 +115,8 @@ class Router {
             viewController = AccountRecoverViewController(configuration: configuration)
         case .qrScanner:
             viewController = QRScannerViewController(configuration: configuration)
+        case .home:
+            viewController = TabBarController(configuration: configuration)
         }
         
         return viewController as? T
