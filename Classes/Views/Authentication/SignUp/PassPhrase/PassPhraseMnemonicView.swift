@@ -1,8 +1,8 @@
 //
-//  PassPhraseCollectionViewCell.swift
+//  PassPhraseMnemonicView.swift
 //  algorand
 //
-//  Created by Omer Emre Aslan on 25.03.2019.
+//  Created by Omer Emre Aslan on 27.03.2019.
 //  Copyright © 2019 hippo. All rights reserved.
 //
 
@@ -14,7 +14,7 @@ enum PassPhraseMode {
     case idle
 }
 
-class PassPhraseCollectionViewCell: BaseCollectionViewCell<UIView> {
+class PassPhraseMnemonicView: UIView {
     fileprivate enum Color {
         static let wrongBackground = rgb(0.93, 0.14, 0.14)
         static let correctBackground = SharedColors.green
@@ -22,45 +22,49 @@ class PassPhraseCollectionViewCell: BaseCollectionViewCell<UIView> {
     
     private(set) var mode: PassPhraseMode = .idle
     
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        
-        mode = .idle
-        
-        updateLayout(animated: false)
-    }
-    
     private(set) lazy var phraseLabel: UILabel = {
         UILabel(frame: .zero)
-            .withFont(PassPhraseCollectionViewCell.font)
+            .withFont(SharedFonts.phraseLabel)
             .withTextColor(UIColor.black)
             .withAlignment(.center)
     }()
     
-    override func configureAppearance() {
-        super.configureAppearance()
+    // MARK: Initialization
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupLayout()
+    }
+    
+    @available(*, unavailable)
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+// MARK: - Layout
+extension PassPhraseMnemonicView {
+    fileprivate func setupLayout() {
+        backgroundColor = UIColor.white
+        layer.cornerRadius = 10.0
         
-        contextView.backgroundColor = UIColor.white
-        contextView.layer.cornerRadius = 10.0
-        
-        contextView.addSubview(phraseLabel)
+        addSubview(phraseLabel)
         phraseLabel.snp.makeConstraints { maker in
             maker.edges.equalToSuperview()
         }
     }
-    
-    static var font: UIFont {
-        return UIFont.font(Font.opensans, withWeight: .semiBold(size: 13.0))
-    }
-    
-    func setMode(_ mode: PassPhraseMode) {
+}
+
+// MARK: - API
+extension PassPhraseMnemonicView {
+    func setMode(_ mode: PassPhraseMode, animated: Bool = true) {
         self.mode = mode
-        self.updateLayout(animated: true)
+        self.updateLayout(animated: animated)
     }
 }
 
 // MARK: - Helpers
-extension PassPhraseCollectionViewCell {
+extension PassPhraseMnemonicView {
     fileprivate func updateLayout(animated: Bool) {
         if animated {
             UIView.animate(withDuration: 0.25) {
@@ -77,12 +81,12 @@ extension PassPhraseCollectionViewCell {
         
         switch mode {
         case .idle:
-            contextView.backgroundColor = UIColor.white
+            backgroundColor = UIColor.white
             phraseLabel.textColor = UIColor.black
         case .correct:
-            contextView.backgroundColor = Color.correctBackground
+            backgroundColor = Color.correctBackground
         case .wrong:
-            contextView.backgroundColor = Color.wrongBackground
+            backgroundColor = Color.wrongBackground
         }
     }
 }

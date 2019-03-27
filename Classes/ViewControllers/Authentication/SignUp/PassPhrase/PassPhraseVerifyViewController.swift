@@ -120,7 +120,7 @@ UICollectionViewDataSource {
             fatalError("Index path is out of bounds")
         }
         
-        cell.phraseLabel.text = mnemonic
+        cell.contextView.phraseLabel.text = mnemonic
         
         return cell
     }
@@ -138,7 +138,7 @@ UICollectionViewDataSource {
         let isCorrect = viewModel.checkMnemonic(mnemonic)
         
         if isCorrect {
-            cell.setMode(.correct)
+            cell.contextView.setMode(.correct)
             
             if viewModel.currentIndex == viewModel.numberOfValidations - 1 {
                 let configurator = AlertViewConfigurator(
@@ -156,7 +156,7 @@ UICollectionViewDataSource {
                 
                 present(viewController, animated: true, completion: nil)
                 
-                cell.setMode(.idle)
+                cell.contextView.setMode(.idle)
                 
                 return
             } else {
@@ -164,11 +164,11 @@ UICollectionViewDataSource {
                 updatePassPhraseLabel()
             }
         } else {
-            cell.setMode(.wrong)
+            cell.contextView.setMode(.wrong)
         }
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-            cell.setMode(.idle)
+            cell.contextView.setMode(.idle)
         }
     }
 }
@@ -181,7 +181,7 @@ extension PassPhraseVerifyViewController: LeftAlignedCollectionViewFlowLayoutDel
             fatalError("Index path is out of bounds")
         }
         
-        let width = mnemonic.width(usingFont: PassPhraseCollectionViewCell.font) + 50.0
+        let width = mnemonic.width(usingFont: SharedFonts.phraseLabel) + 50.0
         
         return CGSize(width: width, height: 44.0)
     }

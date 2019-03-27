@@ -11,7 +11,7 @@ import UIKit
 class PassPhraseVerifyView: UIView {
     private(set) lazy var questionTitleLabel: UILabel = {
         UILabel(frame: .zero)
-            .withFont(UIFont.font(Font.montserrat,
+            .withFont(UIFont.font(.montserrat,
                                   withWeight: FontWeight.bold(size: 22.0)))
             .withTextColor(UIColor(hex: "#0B0E13"))
             .withAlignment(NSTextAlignment.center)
@@ -19,7 +19,7 @@ class PassPhraseVerifyView: UIView {
     
     private(set) lazy var questionSubtitleLabel: UILabel = {
         UILabel(frame: .zero)
-            .withFont(UIFont.font(Font.opensans,
+            .withFont(UIFont.font(.opensans,
                                   withWeight: FontWeight.regular(size: 14.0)))
             .withTextColor(UIColor(hex: "#0B0E13"))
             .withAlignment(NSTextAlignment.center)
