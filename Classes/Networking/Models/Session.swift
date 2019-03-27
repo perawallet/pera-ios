@@ -12,8 +12,8 @@ import KeychainAccess
 class Session: Storable {
     typealias Object = Any
     
-    private let privateStorageKey = "com.algorand.token.private"
-    private let privateKey = "com.algorand.token.private.key"
+    private let privateStorageKey = "com.algorand.algorand.token.private"
+    private let privateKey = "com.algorand.algorand.token.private.key"
     
     private var privateStorage: KeychainAccess.Keychain {
         return KeychainAccess.Keychain(service: privateStorageKey).accessibility(.whenUnlocked)
@@ -78,6 +78,7 @@ extension Session {
 // MARK: - Common Methods
 extension Session {
     func reset() {
+        self.remove(with: StoreKeys.appPassword.rawValue, from: .defaults)
         try? privateStorage.removeAll()
         self.clear(.defaults)
         self.clear(.keychain)
