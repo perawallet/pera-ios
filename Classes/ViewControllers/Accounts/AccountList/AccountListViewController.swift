@@ -1,0 +1,42 @@
+//
+//  AccountListViewController.swift
+//  algorand
+//
+//  Created by Göktuğ Berk Ulu on 27.03.2019.
+//  Copyright © 2019 hippo. All rights reserved.
+//
+
+import UIKit
+
+class AccountListViewController: BaseViewController {
+    
+    // MARK: Components
+    
+    private lazy var accountListView: AccountListView = {
+        let view = AccountListView()
+        return view
+    }()
+    
+    // MARK: Setup
+    
+    override func configureAppearance() {
+        view.backgroundColor = .white
+    }
+    
+    override func prepareLayout() {
+        view.addSubview(accountListView)
+        
+        accountListView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+    }
+}
+
+// MARK: AccountListViewDelegate
+
+extension AccountListViewController: AccountListViewDelegate {
+    
+    func accountListViewDidTapAddButton(_ accountListView: AccountListView) {
+        
+    }
+}

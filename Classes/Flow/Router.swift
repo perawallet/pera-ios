@@ -117,6 +117,10 @@ class Router {
             viewController = QRScannerViewController(configuration: configuration)
         case .home:
             viewController = TabBarController(configuration: configuration)
+        case .accountList:
+            viewController = AccountListViewController(configuration: configuration)
+        case .options:
+            viewController = OptionsViewController(configuration: configuration)
         }
         
         return viewController as? T
