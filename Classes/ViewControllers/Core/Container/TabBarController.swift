@@ -10,6 +10,8 @@ import UIKit
 
 class TabBarController: UITabBarController {
     
+    // MARK: Variables
+    
     private lazy var accountsNavigationController = NavigationController(
         rootViewController: AccountsViewController(configuration: configuration)
     )
@@ -26,13 +28,26 @@ class TabBarController: UITabBarController {
         rootViewController: SettingsViewController(configuration: configuration)
     )
     
-    lazy var activeNavigationController: NavigationController = accountsNavigationController
-    
     private let configuration: ViewControllerConfiguration
     
     var selectedTab: Tab {
         return Tab(rawValue: selectedIndex) ?? .accounts
     }
+    
+    // MARK: Components
+    
+    private lazy var shadowView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        view.layer.shadowOffset = CGSize(width: 0, height: 0)
+        view.layer.shadowRadius = 10
+        view.layer.shadowColor = rgba(0.67, 0.67, 0.72, 0.35).cgColor
+        view.layer.shadowOpacity = 1.0
+        view.layer.masksToBounds = false
+        return view
+    }()
+    
+    // MARK: Initialization
     
     init(configuration: ViewControllerConfiguration, selectedTab: Tab = .accounts) {
         self.configuration = configuration
@@ -54,12 +69,14 @@ class TabBarController: UITabBarController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func configureAppearance() {
-        tabBar.clipsToBounds = true
-        tabBar.isTranslucent = true
-        tabBar.barTintColor = .white
-        tabBar.tintColor = SharedColors.black
-        tabBar.unselectedItemTintColor = SharedColors.darkGray
+    // MARK: Setup
+    
+    private func setupTabBarController() {
+        delegate = self
+        
+        viewControllers = [
+            accountsNavigationController, historyNavigationController, contactsNavigationController, settingsNavigationController
+        ]
     }
     
     private func configureAccountsTab() {
@@ -106,13 +123,25 @@ class TabBarController: UITabBarController {
         settingsNavigationController.tabBarItem.tag = 3
     }
     
-    private func setupTabBarController() {
-        delegate = self
+    private func configureAppearance() {
+        tabBar.clipsToBounds = true
+        tabBar.barTintColor = .white
+        tabBar.tintColor = SharedColors.black
+        tabBar.unselectedItemTintColor = SharedColors.darkGray
         
-        viewControllers = [
-            accountsNavigationController, historyNavigationController, contactsNavigationController, settingsNavigationController
-        ]
+        setupShadowViewLayout()
     }
+    
+    private func setupShadowViewLayout() {
+        view.insertSubview(shadowView, at: 1)
+        
+        shadowView.snp.makeConstraints { make in
+            make.leading.trailing.bottom.equalToSuperview()
+            make.top.equalTo(tabBar.snp.top)
+        }
+    }
+    
+    // MARK: View Lifecycle
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -121,9 +150,13 @@ class TabBarController: UITabBarController {
     }
 }
 
+// MARK: UITabBarControllerDelegate
+
 extension TabBarController: UITabBarControllerDelegate {
     
 }
+
+// MARK: Tab
 
 extension TabBarController {
     
