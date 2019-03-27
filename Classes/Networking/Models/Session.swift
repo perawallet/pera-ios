@@ -52,7 +52,7 @@ extension Session {
         self.save(password, for: StoreKeys.appPassword.rawValue, to: .defaults)
     }
     
-    func checkApp(password: String) -> Bool {
+    func isPasswordMatching(with password: String) -> Bool {
         if let savedPassword = self.string(with: StoreKeys.appPassword.rawValue, to: .defaults) {
             return savedPassword == password
         }
