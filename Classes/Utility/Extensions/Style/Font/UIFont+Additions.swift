@@ -8,7 +8,7 @@
 
 import UIKit
 
-enum Font: String {
+enum FontType: String {
     case montserrat = "Montserrat"
     case opensans = "OpenSans"
 }
@@ -23,7 +23,7 @@ enum FontWeight {
 }
 
 extension UIFont {
-    static func font(_ font: Font, withWeight weight: FontWeight) -> UIFont {
+    static func font(_ font: FontType, withWeight weight: FontWeight) -> UIFont {
         let fontName = self.fontName(font, withWeight: weight)
         
         switch weight {
@@ -42,7 +42,7 @@ extension UIFont {
         }
     }
     
-    private static func fontName(_ font: Font,
+    private static func fontName(_ font: FontType,
                                  withWeight weight: FontWeight) -> String {
         let fontName = "\(font.rawValue)-"
         

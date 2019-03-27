@@ -62,7 +62,17 @@ class AccountNameSetupViewController: BaseScrollViewController {
 extension AccountNameSetupViewController: AccountNameSetupViewDelegate {
     
     func accountNameSetupViewDidTapNextButton(_ accountNameSetupView: AccountNameSetupView) {
+        guard let tempPrivateKey = session?.privateData(forAccount: "temp"),
+            let address = session?.address(forAccount: "temp") else {
+            return
+        }
         
+        let account = Account(address: address)
+        
+        account.name = accountNameSetupView.accountNameInputView.inputTextField.text
+        
+        session?.savePrivate(tempPrivateKey, forAccount: account.address)
+        session?.removePrivateData(for: "temp")
     }
     
     func accountNameSetupViewDidChangeValue(_ accountNameSetupView: AccountNameSetupView) {

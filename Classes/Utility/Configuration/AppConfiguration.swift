@@ -19,8 +19,7 @@ class AppConfiguration {
     }
     
     func all() -> ViewControllerConfiguration {
-        let configuration = ViewControllerConfiguration(api: api)
-        configuration.session = session
+        let configuration = ViewControllerConfiguration(api: api, session: session)
         return configuration
     }
     
