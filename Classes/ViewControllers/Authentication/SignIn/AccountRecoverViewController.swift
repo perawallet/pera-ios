@@ -60,6 +60,11 @@ class AccountRecoverViewController: BaseScrollViewController {
 extension AccountRecoverViewController: AccountRecoverViewDelegate {
     
     func accountRecoverViewDidTapQRCodeButton(_ accountRecoverView: AccountRecoverView) {
+        if !UIImagePickerController.isSourceTypeAvailable(.camera) {
+            displaySimpleAlertWith(title: "qr-scan-error-title".localized, message: "qr-scan-error-message".localized)
+            return
+        }
+        
         guard let qrScannerViewController = open(.qrScanner, by: .push) as? QRScannerViewController else {
             return
         }
