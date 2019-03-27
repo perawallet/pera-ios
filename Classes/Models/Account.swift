@@ -42,3 +42,10 @@ class Account: Mappable {
 
 extension Account: Encodable {
 }
+
+// MARK: - Equatable
+extension Account: Equatable {
+    static func == (lhs: Account, rhs: Account) -> Bool {
+        return lhs.address == rhs.address
+    }
+}

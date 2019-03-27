@@ -73,6 +73,11 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
     }
     
     func accountRecoverViewDidTapNextButton(_ accountRecoverView: AccountRecoverView) {
+        guard let name = accountRecoverView.accountNameInputView.inputTextField.text, !name.isEmpty else {
+            self.displaySimpleAlertWith(title: "title-error".localized, message: "account-name-setup-empty-error-message".localized)
+            return
+        }
+        
         guard let mnemonics = accountRecoverView.passPhraseInputView.inputTextView.text,
             let privateKey = session?.privateKey(forMnemonics: mnemonics) else {
             return
@@ -81,9 +86,32 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
         if let address = session?.address(fromPrivateKey: privateKey) {
             let account = Account(address: address)
             
-            account.name = accountRecoverView.accountNameInputView.inputTextField.text
+            account.name = name
             
             session?.savePrivate(privateKey, forAccount: account.address)
+            
+            let user = User(accounts: [account])
+            
+            session?.authenticatedUser = user
+            
+            if session?.hasPassword() ?? false {
+                open(.home, by: .present, animated: false)
+            } else {
+                let configurator = AlertViewConfigurator(
+                    title: "recover-from-seed-verify-pop-up-title".localized,
+                    image: img("account-verify-alert-icon"),
+                    explanation: "recover-from-seed-verify-pop-up-explanation".localized,
+                    actionTitle: nil) {
+                        
+                        self.open(.choosePassword(.setup), by: .push)
+                }
+                
+                let viewController = AlertViewController(mode: .normal, alertConfigurator: configurator, configuration: configuration)
+                viewController.modalPresentationStyle = .overCurrentContext
+                viewController.modalTransitionStyle = .crossDissolve
+                
+                present(viewController, animated: true, completion: nil)
+            }
         } else {
             //ERROR
         }

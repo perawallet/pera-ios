@@ -40,8 +40,7 @@ class ChoosePasswordViewController: BaseScrollViewController {
                     guard error == nil else {
                         return
                     }
-                    
-                    // TODO: Will login to the app
+                    self.open(.home, by: .present, animated: false)
                 }
             }
             
@@ -99,13 +98,18 @@ extension ChoosePasswordViewController: ChoosePasswordViewDelegate {
             }
         case .login:
             viewModel.configureSelection(in: choosePasswordView, for: value) { password in
-                // TODO: Will login to the app
+                
+                if session?.isPasswordMatching(with: password) ?? false {
+                    self.open(.home, by: .present, animated: false)
+                }
             }
         }
     }
     
     func choosePasswordViewDidTapLogoutButton(_ choosePasswordView: ChoosePasswordView) {
-        // TODO: Will logout
+        session?.reset()
+        
+        open(.introduction, by: .present, animated: false)
     }
 }
 

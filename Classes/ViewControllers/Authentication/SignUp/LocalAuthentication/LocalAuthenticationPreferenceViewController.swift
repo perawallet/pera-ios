@@ -68,7 +68,7 @@ extension LocalAuthenticationPreferenceViewController: LocalAuthenticationPrefer
                 
                 self.localAuthenticator.localAuthenticationStatus = .allowed
                 
-                self.open(.passPhraseBackUp, by: .push)
+                self.openNextFlow()
             }
             
             return
@@ -97,6 +97,14 @@ extension LocalAuthenticationPreferenceViewController: LocalAuthenticationPrefer
     }
     
     func localAuthenticationPreferenceViewDidTapNoButton(_ localAuthenticationPreferenceView: LocalAuthenticationPreferenceView) {
-        open(.passPhraseBackUp, by: .push)
+        openNextFlow()
+    }
+    
+    fileprivate func openNextFlow() {
+        if session?.authenticatedUser == nil {
+            open(.passPhraseBackUp, by: .push)
+        } else {
+            open(.home, by: .present, animated: false)
+        }
     }
 }
