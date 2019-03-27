@@ -8,20 +8,7 @@
 
 import UIKit
 
-extension UIViewController {
-    
-    func removeFromParentController() {
-        self.willMove(toParent: nil)
-        self.removeFromParent()
-        self.view.removeFromSuperview()
-    }
-}
-
-protocol TabBarControllerDelegate: class {
-    func tabBarController(_ controller: TabBarController, didSelectTabBar item: TabBar.Item)
-}
-
-class TabBarController: BaseViewController {
+class TabBarController: UITabBarController {
     
     private lazy var accountsNavigationController = NavigationController(
         rootViewController: AccountsViewController(configuration: configuration)
@@ -39,110 +26,111 @@ class TabBarController: BaseViewController {
         rootViewController: SettingsViewController(configuration: configuration)
     )
     
-    lazy var tabBar = TabBar()
-    
-    private var activeTabBarItem: TabBar.Item = .accounts
-    
     lazy var activeNavigationController: NavigationController = accountsNavigationController
     
-    weak var delegate: TabBarControllerDelegate?
+    private let configuration: ViewControllerConfiguration
     
-    override func prepareLayout() {
-        super.prepareLayout()
-        
-        setupTabBarLayout()
-        
-        view.backgroundColor = rgba(0.67, 0.67, 0.72, 0.2)
-        
-        updateLayout(with: .accounts)
+    var selectedTab: Tab {
+        return Tab(rawValue: selectedIndex) ?? .accounts
     }
     
-    override func linkInteractors() {
-        super.linkInteractors()
+    init(configuration: ViewControllerConfiguration, selectedTab: Tab = .accounts) {
+        self.configuration = configuration
         
-        tabBar.delegate = self
+        super.init(nibName: nil, bundle: nil)
+        
+        setupTabBarController()
+        
+        configureAccountsTab()
+        configureHistoryTab()
+        configureContactsTab()
+        configureSettingsTab()
+        
+        configureAppearance()
     }
     
-    // MARK: Layout setup
+    @available(*, unavailable)
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
-    func setupTabBarLayout() {
-        let items: [TabBar.Item] = [
-            TabBar.Item.accounts,
-            TabBar.Item.history,
-            TabBar.Item.contacts,
-            TabBar.Item.settings
+    private func configureAppearance() {
+        tabBar.clipsToBounds = true
+        tabBar.isTranslucent = true
+        tabBar.barTintColor = .white
+        tabBar.tintColor = SharedColors.black
+        tabBar.unselectedItemTintColor = SharedColors.darkGray
+    }
+    
+    private func configureAccountsTab() {
+        accountsNavigationController.tabBarItem = UITabBarItem(
+            title: "tabbar-item-accounts".localized,
+            image: img("tabbar-icon-accounts")?.withRenderingMode(.alwaysOriginal),
+            selectedImage: img("tabbar-icon-accounts-selected")?.withRenderingMode(.alwaysOriginal)
+        )
+        
+        accountsNavigationController.tabBarItem.imageInsets = UIEdgeInsets(top: 2.0, left: 0.0, bottom: -2.0, right: 0.0)
+        accountsNavigationController.tabBarItem.tag = 0
+    }
+    
+    private func configureHistoryTab() {
+        historyNavigationController.tabBarItem = UITabBarItem(
+            title: "tabbar-item-history".localized,
+            image: img("tabbar-icon-history")?.withRenderingMode(.alwaysOriginal),
+            selectedImage: img("tabbar-icon-history-selected")?.withRenderingMode(.alwaysOriginal)
+        )
+        
+        historyNavigationController.tabBarItem.imageInsets = UIEdgeInsets(top: 2.0, left: 0.0, bottom: -2.0, right: 0.0)
+        historyNavigationController.tabBarItem.tag = 1
+    }
+    
+    private func configureContactsTab() {
+        contactsNavigationController.tabBarItem = UITabBarItem(
+            title: "tabbar-item-contacts".localized,
+            image: img("tabbar-icon-contacts")?.withRenderingMode(.alwaysOriginal),
+            selectedImage: img("tabbar-icon-contacts-selected")?.withRenderingMode(.alwaysOriginal)
+        )
+        
+        contactsNavigationController.tabBarItem.imageInsets = UIEdgeInsets(top: 1.5, left: 0.0, bottom: -1.5, right: 0.0)
+        contactsNavigationController.tabBarItem.tag = 2
+    }
+    
+    private func configureSettingsTab() {
+        settingsNavigationController.tabBarItem = UITabBarItem(
+            title: "tabbar-item-settings".localized,
+            image: img("tabbar-icon-settings")?.withRenderingMode(.alwaysOriginal),
+            selectedImage: img("tabbar-icon-settings-selected")?.withRenderingMode(.alwaysOriginal)
+        )
+        
+        settingsNavigationController.tabBarItem.imageInsets = UIEdgeInsets(top: 2.0, left: 0.0, bottom: -2.0, right: 0.0)
+        settingsNavigationController.tabBarItem.tag = 3
+    }
+    
+    private func setupTabBarController() {
+        delegate = self
+        
+        viewControllers = [
+            accountsNavigationController, historyNavigationController, contactsNavigationController, settingsNavigationController
         ]
-        
-        tabBar.setupLayout(with: items)
-        
-        view.addSubview(tabBar)
-        
-        tabBar.snp.makeConstraints { make in
-            make.leading.trailing.bottom.equalToSuperview()
-        }
     }
     
-    private func updateLayout(with activeTabBarItem: TabBar.Item) {
-        tabBar.select(activeTabBarItem)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
-        activeNavigationController.removeFromParentController()
-        
-        switch activeTabBarItem {
-        case .accounts:
-            activeNavigationController = accountsNavigationController
-        case .history:
-            activeNavigationController = historyNavigationController
-        case .contacts:
-            activeNavigationController = contactsNavigationController
-        case .settings:
-            activeNavigationController = settingsNavigationController
-        }
-        
-        setupActiveViewControllerLayout()
-    }
-    
-    private func setupActiveViewControllerLayout() {
-        addChild(activeNavigationController)
-        
-        view.insertSubview(activeNavigationController.view, at: 0)
-        
-        activeNavigationController.view.snp.makeConstraints { make in
-            make.top.left.right.equalToSuperview()
-            make.bottom.equalTo(tabBar.snp.top)
-        }
-        
-        activeNavigationController.didMove(toParent: self)
-    }
-    
-    @discardableResult
-    func select(tab item: TabBar.Item) -> UIViewController {
-        tabBar.select(item)
-        
-        if self.activeTabBarItem == item {
-            return activeNavigationController
-        }
-        
-        self.activeTabBarItem = item
-        
-        updateLayout(with: activeTabBarItem)
-        
-        return activeNavigationController
+        navigationController?.setNavigationBarHidden(true, animated: true)
     }
 }
 
-extension TabBarController: TabBarDelegate {
+extension TabBarController: UITabBarControllerDelegate {
     
-    func tabBar(_ view: TabBar, didSelect item: TabBar.Item) {
-        if self.activeTabBarItem == item {
-            return
-        }
-        
-        tabBar.select(item)
-        
-        self.activeTabBarItem = item
-        
-        updateLayout(with: activeTabBarItem)
-        
-        delegate?.tabBarController(self, didSelectTabBar: item)
+}
+
+extension TabBarController {
+    
+    enum Tab: Int {
+        case accounts = 0
+        case history = 1
+        case contacts = 2
+        case settings = 3
     }
 }

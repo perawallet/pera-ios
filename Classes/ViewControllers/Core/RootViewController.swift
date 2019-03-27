@@ -38,7 +38,7 @@ class RootViewController: UIViewController {
         
         view.backgroundColor = SharedColors.warmWhite
         
-        open(.introduction, by: .present)
+        open(.home, by: .push, animated: false)
     }
 
     @discardableResult

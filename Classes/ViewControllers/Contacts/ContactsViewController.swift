@@ -9,4 +9,8 @@
 import UIKit
 
 class ContactsViewController: BaseViewController {
+    
+    override func configureAppearance() {
+        view.backgroundColor = .blue
+    }
 }

@@ -9,4 +9,8 @@
 import UIKit
 
 class AccountsViewController: BaseViewController {
+    
+    override func configureAppearance() {
+        view.backgroundColor = .white
+    }
 }

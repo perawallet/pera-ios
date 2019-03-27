@@ -9,4 +9,8 @@
 import UIKit
 
 class SettingsViewController: BaseViewController {
+        
+    override func configureAppearance() {
+        view.backgroundColor = .red
+    }
 }

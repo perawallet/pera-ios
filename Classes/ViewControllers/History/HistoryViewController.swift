@@ -9,4 +9,8 @@
 import UIKit
 
 class HistoryViewController: BaseViewController {
+    
+    override func configureAppearance() {
+        view.backgroundColor = .green
+    }
 }
