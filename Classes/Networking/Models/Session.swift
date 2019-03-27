@@ -38,11 +38,11 @@ class Session: Storable {
     }
     
     private func awakeAuthenticatedUser() {
-        guard let user = data(with: StorableKeys.authenticatedUser.rawValue, to: .defaults) else {
+        guard let userData = data(with: StorableKeys.authenticatedUser.rawValue, to: .defaults) else {
             return
         }
         
-        self.authenticatedUser = user
+        authenticatedUser = try? JSONDecoder().decode(User.self, from: userData)
     }
 }
 

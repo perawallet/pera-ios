@@ -99,7 +99,7 @@ extension ChoosePasswordViewController: ChoosePasswordViewDelegate {
         case .login:
             viewModel.configureSelection(in: choosePasswordView, for: value) { password in
                 
-                if session?.checkApp(password: password) ?? false {
+                if session?.isPasswordMatching(with: password) ?? false {
                     self.open(.home, by: .present, animated: false)
                 }
             }
