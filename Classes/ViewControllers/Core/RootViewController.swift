@@ -16,6 +16,8 @@ class RootViewController: UIViewController {
     
     private var router: Router?
     
+    private(set) lazy var tabBarViewController = TabBarController(configuration: appConfiguration.all())
+    
     // MARK: Initialization
     
     init(appConfiguration: AppConfiguration) {
@@ -36,7 +38,7 @@ class RootViewController: UIViewController {
         
         view.backgroundColor = SharedColors.warmWhite
         
-        open(.introduction, by: .present)
+        open(.home, by: .push, animated: false)
     }
 
     @discardableResult

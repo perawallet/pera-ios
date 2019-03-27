@@ -19,6 +19,13 @@
 "title-cancel-lowercased" = "Cancel";
 "title-go-to-settings" = "Go To Settings";
 
+// MARK: Tabbar
+
+"tabbar-item-accounts" = "Accounts";
+"tabbar-item-history" = "History";
+"tabbar-item-contacts" = "Contacts";
+"tabbar-item-settings" = "Settings";
+
 // MARK: Introduction
 
 "introduction-recover-title" = "Recover from Seed";
