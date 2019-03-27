@@ -86,3 +86,9 @@
 "qr-scan-error-message" = "Your device does not support scanning a qr code.";
 "qr-scan-go-settings-title" = "Camera Disabled";
 "qr-scan-go-settings-message" = "You have disabled camera. Please go to Settings and enable this option.";
+
+// MARK: Login
+
+"login-title" = "Login";
+"login-subtitle" = "Enter six digit password";
+"logout-title" = "Logout";
