@@ -20,11 +20,15 @@ class PassPhraseMnemonicView: UIView {
         static let correctBackground = SharedColors.green
     }
     
+    enum Font {
+        static let phraseLabel = UIFont.font(.opensans, withWeight: .semiBold(size: 13.0))
+    }
+    
     private(set) var mode: PassPhraseMode = .idle
     
     private(set) lazy var phraseLabel: UILabel = {
         UILabel(frame: .zero)
-            .withFont(SharedFonts.phraseLabel)
+            .withFont(Font.phraseLabel)
             .withTextColor(UIColor.black)
             .withAlignment(.center)
     }()
