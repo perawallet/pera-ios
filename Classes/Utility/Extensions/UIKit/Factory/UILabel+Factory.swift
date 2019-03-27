@@ -10,6 +10,7 @@ import UIKit
 
 extension UILabel {
     
+    @discardableResult
     func withLine(_ line: Line) -> UILabel {
         switch line {
         case .single:
@@ -26,26 +27,31 @@ extension UILabel {
         return self
     }
     
+    @discardableResult
     func withFont(_ font: UIFont) -> UILabel {
         self.font = font
         return self
     }
     
+    @discardableResult
     func withTextColor(_ textColor: UIColor) -> UILabel {
         self.textColor = textColor
         return self
     }
     
+    @discardableResult
     func withText(_ text: String) -> UILabel {
         self.text = text
         return self
     }
     
+    @discardableResult
     func withAttributedText(_ text: NSAttributedString) -> UILabel {
         self.attributedText = text
         return self
     }
     
+    @discardableResult
     func withAlignment(_ alignment: NSTextAlignment) -> UILabel {
         self.textAlignment = alignment
         return self

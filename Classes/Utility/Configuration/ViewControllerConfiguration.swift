@@ -13,7 +13,8 @@ class ViewControllerConfiguration {
     let api: API?
     var session: Session?
     
-    init(api: API?) {
+    init(api: API?, session: Session?) {
         self.api = api
+        self.session = session
     }
 }

@@ -66,6 +66,8 @@ extension ChoosePasswordViewController: ChoosePasswordViewDelegate {
                     return
                 }
                 
+                self.configuration.session?.saveApp(password: password)
+                
                 open(.localAuthenticationPreference, by: .push)
             }
         }

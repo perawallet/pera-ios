@@ -23,6 +23,18 @@ class LocalAuthenticationPreferenceViewController: BaseViewController {
     
     private let localAuthenticator = LocalAuthenticator()
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+        
+        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+    }
+    
     // MARK: Setup
     
     override func configureAppearance() {

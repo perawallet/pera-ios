@@ -14,8 +14,31 @@ enum AccountStatus: String, Mappable {
     case notParticipating = "NotParticipating"
 }
 
+extension AccountStatus: Encodable {
+}
+
 class Account: Mappable {
     let address: String
-    let amount: UInt64
-    let status: AccountStatus
+    var amount: UInt64
+    var status: AccountStatus
+    
+    var name: String?
+    
+    init(address: String) {
+        self.address = address
+        amount = 0
+        status = .offline
+    }
+    
+    func update(withAccount account: Account) {
+        amount = account.amount
+        status = account.status
+    }
+    
+    func mnemonics() -> [String] {
+        return UIApplication.shared.appConfiguration?.session.mnemonics(forAccount: self.address) ?? []
+    }
+}
+
+extension Account: Encodable {
 }

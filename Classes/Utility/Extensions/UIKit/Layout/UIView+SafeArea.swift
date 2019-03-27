@@ -11,10 +11,10 @@ import UIKit
 extension UIView {
     
     var safeAreaBottom: CGFloat {
-        return window?.safeAreaInsets.bottom ?? 0.0
+        return UIApplication.shared.safeAreaBottom
     }
     
     var safeAreaTop: CGFloat {
-        return window?.safeAreaInsets.top ?? 0.0
+        return UIApplication.shared.safeAreaTop
     }
 }

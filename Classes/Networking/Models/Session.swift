@@ -24,11 +24,32 @@ class Session: Storable {
     }
     
     // MARK: - Setting Private Key in Keychain
-    func savePrivate(_ data: Data) {
-        privateStorage.set(data, for: privateKey)
+    func savePrivate(_ data: Data,
+                     forAccount account: String) {
+        let dataKey = privateKey.appending(".\(account)")
+        privateStorage.set(data, for: dataKey)
     }
     
-    func privateData() -> Data? {
-        return privateStorage.data(for: privateKey)
+    func privateData(forAccount account: String) -> Data? {
+        let dataKey = privateKey.appending(".\(account)")
+        return privateStorage.data(for: dataKey)
+    }
+    
+    func removePrivateData(for account: String) {
+        let dataKey = privateKey.appending(".\(account)")
+        privateStorage.remove(for: dataKey)
+    }
+    
+    // MARK: - App Password
+    
+    func saveApp(password: String) {
+        self.save(password, for: StoreKeys.appPassword.rawValue, to: .defaults)
+    }
+    
+    func checkApp(password: String) -> Bool {
+        if let savedPassword = self.string(with: StoreKeys.appPassword.rawValue, to: .defaults) {
+            return savedPassword == password
+        }
+        return false
     }
 }
