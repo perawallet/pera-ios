@@ -12,12 +12,10 @@ extension UserDefaults {
     
     func set(_ object: Any, for key: String) {
         set(object, forKey: key)
-        synchronize()
     }
     
     func remove(for key: String) {
         removeObject(forKey: key)
-        synchronize()
     }
     
     func clear() {

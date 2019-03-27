@@ -62,6 +62,11 @@ class AccountNameSetupViewController: BaseScrollViewController {
 extension AccountNameSetupViewController: AccountNameSetupViewDelegate {
     
     func accountNameSetupViewDidTapNextButton(_ accountNameSetupView: AccountNameSetupView) {
+        guard let name = accountNameSetupView.accountNameInputView.inputTextField.text, !name.isEmpty else {
+            self.displaySimpleAlertWith(title: "error-title".localized, message: "account-name-setup-empty-error-message".localized)
+            return
+        }
+        
         guard let tempPrivateKey = session?.privateData(forAccount: "temp"),
             let address = session?.address(forAccount: "temp") else {
             return
@@ -69,10 +74,16 @@ extension AccountNameSetupViewController: AccountNameSetupViewDelegate {
         
         let account = Account(address: address)
         
-        account.name = accountNameSetupView.accountNameInputView.inputTextField.text
+        account.name = name
         
         session?.savePrivate(tempPrivateKey, forAccount: account.address)
         session?.removePrivateData(for: "temp")
+        
+        let user = User(accounts: [account])
+        
+        session?.authenticatedUser = user
+        
+        open(.home, by: .present, animated: false)
     }
     
     func accountNameSetupViewDidChangeValue(_ accountNameSetupView: AccountNameSetupView) {
