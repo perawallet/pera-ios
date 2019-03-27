@@ -181,7 +181,7 @@ extension PassPhraseVerifyViewController: LeftAlignedCollectionViewFlowLayoutDel
             fatalError("Index path is out of bounds")
         }
         
-        let width = mnemonic.width(usingFont: SharedFonts.phraseLabel) + 50.0
+        let width = mnemonic.width(usingFont: PassPhraseMnemonicView.Font.phraseLabel) + 50.0
         
         return CGSize(width: width, height: 44.0)
     }
