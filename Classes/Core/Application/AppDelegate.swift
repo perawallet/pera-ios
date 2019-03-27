@@ -58,7 +58,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         if shouldInvalidateUserSession {
             shouldInvalidateUserSession = false
-            session.isFault = true
+            session.isExpired = true
             
             guard let topNavigationViewController = window?.rootViewController?.presentedViewController as? NavigationController,
                 let topViewController = topNavigationViewController.viewControllers.last else {

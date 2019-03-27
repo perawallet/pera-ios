@@ -30,8 +30,8 @@ class Session: Storable {
         }
     }
     
-    // isFault is true when login needed. It will fault after 5 mins entering background
-    var isFault = true
+    // isExpired is true when login needed. It will fault after 5 mins entering background
+    var isExpired = true
     
     init() {
         
@@ -83,6 +83,6 @@ extension Session {
         self.clear(.defaults)
         self.clear(.keychain)
         self.authenticatedUser = nil
-        self.isFault = true
+        self.isExpired = true
     }
 }
