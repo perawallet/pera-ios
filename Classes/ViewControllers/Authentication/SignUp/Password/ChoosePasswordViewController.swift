@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ChoosePasswordViewController: BaseViewController {
+class ChoosePasswordViewController: BaseScrollViewController {
     
     private lazy var choosePasswordView: ChoosePasswordView = {
         let view = ChoosePasswordView()
@@ -17,6 +17,8 @@ class ChoosePasswordViewController: BaseViewController {
     
     private let viewModel: ChoosePasswordViewModel
     private let mode: Mode
+    
+    private let localAuthenticator = LocalAuthenticator()
     
     // MARK: Initialization
     
@@ -29,24 +31,49 @@ class ChoosePasswordViewController: BaseViewController {
     
     // MARK: Setup
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        if mode == .login {
+            if localAuthenticator.localAuthenticationStatus == .allowed {
+                localAuthenticator.authenticate { error in
+                    guard error == nil else {
+                        return
+                    }
+                    
+                    // TODO: Will login to the app
+                }
+            }
+            
+            return
+        }
+    }
+    
     override func configureAppearance() {
         super.configureAppearance()
         
         viewModel.configure(choosePasswordView)
         
+        if mode == .login {
+            return
+        }
+        
         title = "choose-password-title".localized
     }
     
     override func prepareLayout() {
-        view.addSubview(choosePasswordView)
+        super.prepareLayout()
+        
+        contentView.addSubview(choosePasswordView)
         
         choosePasswordView.snp.makeConstraints { make in
-            make.leading.trailing.top.equalToSuperview()
-            make.bottom.safeEqualToBottom(of: self)
+            make.edges.equalToSuperview()
         }
     }
     
     override func linkInteractors() {
+        super.linkInteractors()
+        
         choosePasswordView.delegate = self
     }
 }
@@ -70,14 +97,23 @@ extension ChoosePasswordViewController: ChoosePasswordViewDelegate {
                 
                 open(.localAuthenticationPreference, by: .push)
             }
+        case .login:
+            viewModel.configureSelection(in: choosePasswordView, for: value) { password in
+                // TODO: Will login to the app
+            }
         }
+    }
+    
+    func choosePasswordViewDidTapLogoutButton(_ choosePasswordView: ChoosePasswordView) {
+        // TODO: Will logout
     }
 }
 
 extension ChoosePasswordViewController {
     
-    enum Mode {
+    enum Mode: Equatable {
         case setup
         case verify(String)
+        case login
     }
 }

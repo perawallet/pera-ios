@@ -43,6 +43,19 @@ class LocalAuthenticator {
         }
     }
     
+    init() {
+        awakeLocalAuthenticationStatusFromStorage()
+    }
+    
+    private func awakeLocalAuthenticationStatusFromStorage() {
+        guard let status = string(with: StorableKeys.localAuthenticationStatus.rawValue, to: .defaults),
+            let localAuthenticationStatus = Status(rawValue: status) else {
+            return
+        }
+        
+        self.localAuthenticationStatus = localAuthenticationStatus
+    }
+    
     func authenticate(then handler: @escaping (_ error: Error?) -> Void) {
         if !isLocalAuthenticationAvailable {
             return
