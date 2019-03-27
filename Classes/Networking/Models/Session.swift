@@ -19,6 +19,20 @@ class Session: Storable {
         return KeychainAccess.Keychain(service: privateStorageKey).accessibility(.whenUnlocked)
     }
     
+    var authenticatedUser: User? {
+        didSet {
+            guard let user = authenticatedUser,
+                let data = user.encoded() else {
+                return
+            }
+            
+            save(data, for: StorableKeys.authenticatedUser.rawValue, to: .defaults)
+        }
+    }
+    
+    // isFault is true when login needed. It will fault after 5 mins entering background
+    var isFault = true
+    
     init() {
         
     }
