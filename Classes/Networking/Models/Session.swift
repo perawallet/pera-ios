@@ -34,7 +34,15 @@ class Session: Storable {
     var isExpired = true
     
     init() {
+        awakeAuthenticatedUser()
+    }
+    
+    private func awakeAuthenticatedUser() {
+        guard let user = data(with: StorableKeys.authenticatedUser.rawValue, to: .defaults) else {
+            return
+        }
         
+        self.authenticatedUser = user
     }
 }
 
