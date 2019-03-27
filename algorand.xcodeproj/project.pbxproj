@@ -40,6 +40,12 @@
 		2B656E90224BAF200064A49B /* AccountListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B656E8F224BAF200064A49B /* AccountListViewController.swift */; };
 		2B656E93224BAF2E0064A49B /* OptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B656E92224BAF2E0064A49B /* OptionsViewController.swift */; };
 		2B656E97224BB9F80064A49B /* AccountListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B656E96224BB9F80064A49B /* AccountListView.swift */; };
+		2B656E99224BC52D0064A49B /* AccountContextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B656E98224BC52D0064A49B /* AccountContextView.swift */; };
+		2B656E9B224BC5370064A49B /* AccountViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B656E9A224BC5370064A49B /* AccountViewCell.swift */; };
+		2B656E9F224BCB130064A49B /* AccountListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B656E9E224BCB130064A49B /* AccountListViewModel.swift */; };
+		2B656EA2224BCC2C0064A49B /* AccountsTotalDisplayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B656EA1224BCC2C0064A49B /* AccountsTotalDisplayCell.swift */; };
+		2B656EA6224BDC830064A49B /* AccountListLayoutBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B656EA5224BDC830064A49B /* AccountListLayoutBuilder.swift */; };
+		2B656EAA224BDCB80064A49B /* AccountListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B656EA9224BDCB80064A49B /* AccountListDataSource.swift */; };
 		2B66870B2248DB35009F21E7 /* NavigationBarConfigurable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B66870A2248DB35009F21E7 /* NavigationBarConfigurable.swift */; };
 		2B66870E2248DB8B009F21E7 /* BarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B66870D2248DB8B009F21E7 /* BarButtonItem.swift */; };
 		2B6687102248DBE2009F21E7 /* ALGBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B66870F2248DBE2009F21E7 /* ALGBarButtonItem.swift */; };
@@ -178,6 +184,12 @@
 		2B656E8F224BAF200064A49B /* AccountListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountListViewController.swift; sourceTree = "<group>"; };
 		2B656E92224BAF2E0064A49B /* OptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsViewController.swift; sourceTree = "<group>"; };
 		2B656E96224BB9F80064A49B /* AccountListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountListView.swift; sourceTree = "<group>"; };
+		2B656E98224BC52D0064A49B /* AccountContextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountContextView.swift; sourceTree = "<group>"; };
+		2B656E9A224BC5370064A49B /* AccountViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewCell.swift; sourceTree = "<group>"; };
+		2B656E9E224BCB130064A49B /* AccountListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountListViewModel.swift; sourceTree = "<group>"; };
+		2B656EA1224BCC2C0064A49B /* AccountsTotalDisplayCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsTotalDisplayCell.swift; sourceTree = "<group>"; };
+		2B656EA5224BDC830064A49B /* AccountListLayoutBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountListLayoutBuilder.swift; sourceTree = "<group>"; };
+		2B656EA9224BDCB80064A49B /* AccountListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountListDataSource.swift; sourceTree = "<group>"; };
 		2B66870A2248DB35009F21E7 /* NavigationBarConfigurable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBarConfigurable.swift; sourceTree = "<group>"; };
 		2B66870D2248DB8B009F21E7 /* BarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarButtonItem.swift; sourceTree = "<group>"; };
 		2B66870F2248DBE2009F21E7 /* ALGBarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ALGBarButtonItem.swift; sourceTree = "<group>"; };
@@ -387,9 +399,68 @@
 		2B656E95224BB9E40064A49B /* AccountList */ = {
 			isa = PBXGroup;
 			children = (
+				2B656EA0224BCBFE0064A49B /* Cell */,
 				2B656E96224BB9F80064A49B /* AccountListView.swift */,
 			);
 			path = AccountList;
+			sourceTree = "<group>";
+		};
+		2B656E9C224BCAF60064A49B /* Accounts */ = {
+			isa = PBXGroup;
+			children = (
+				2B656E9D224BCB010064A49B /* AccountList */,
+			);
+			path = Accounts;
+			sourceTree = "<group>";
+		};
+		2B656E9D224BCB010064A49B /* AccountList */ = {
+			isa = PBXGroup;
+			children = (
+				2B656E9E224BCB130064A49B /* AccountListViewModel.swift */,
+			);
+			path = AccountList;
+			sourceTree = "<group>";
+		};
+		2B656EA0224BCBFE0064A49B /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				2B656E98224BC52D0064A49B /* AccountContextView.swift */,
+				2B656E9A224BC5370064A49B /* AccountViewCell.swift */,
+				2B656EA1224BCC2C0064A49B /* AccountsTotalDisplayCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		2B656EA3224BDC700064A49B /* Accounts */ = {
+			isa = PBXGroup;
+			children = (
+				2B656EA4224BDC740064A49B /* List */,
+			);
+			path = Accounts;
+			sourceTree = "<group>";
+		};
+		2B656EA4224BDC740064A49B /* List */ = {
+			isa = PBXGroup;
+			children = (
+				2B656EA5224BDC830064A49B /* AccountListLayoutBuilder.swift */,
+			);
+			path = List;
+			sourceTree = "<group>";
+		};
+		2B656EA7224BDCA40064A49B /* Accounts */ = {
+			isa = PBXGroup;
+			children = (
+				2B656EA8224BDCA80064A49B /* List */,
+			);
+			path = Accounts;
+			sourceTree = "<group>";
+		};
+		2B656EA8224BDCA80064A49B /* List */ = {
+			isa = PBXGroup;
+			children = (
+				2B656EA9224BDCB80064A49B /* AccountListDataSource.swift */,
+			);
+			path = List;
 			sourceTree = "<group>";
 		};
 		2B66870C2248DB6A009F21E7 /* NavigationBar */ = {
@@ -978,6 +1049,7 @@
 		2BD73A0422412AA400B66EEF /* DataProviders */ = {
 			isa = PBXGroup;
 			children = (
+				2B656EA7224BDCA40064A49B /* Accounts */,
 				2BD73A0C22412B3D00B66EEF /* Common */,
 			);
 			path = DataProviders;
@@ -986,6 +1058,7 @@
 		2BD73A0722412AF200B66EEF /* LayoutBuilders */ = {
 			isa = PBXGroup;
 			children = (
+				2B656EA3224BDC700064A49B /* Accounts */,
 				2BD73A0822412AF900B66EEF /* Common */,
 			);
 			path = LayoutBuilders;
@@ -1026,6 +1099,7 @@
 		2BD73A0E22412B5900B66EEF /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				2B656E9C224BCAF60064A49B /* Accounts */,
 				2BD73A152241322D00B66EEF /* Authentication */,
 				2BD73A0F22412B6600B66EEF /* Common */,
 			);
@@ -1504,16 +1578,19 @@
 				2B8954B72243FCB100D6D068 /* Notification+Keyboard.swift in Sources */,
 				2B8954B62243FBD600D6D068 /* NotificationCenter+Additions.swift in Sources */,
 				1761B3CB224A39D400C6BA47 /* PassPhraseViewModel.swift in Sources */,
+				2B656E9F224BCB130064A49B /* AccountListViewModel.swift in Sources */,
 				2BF34CC2223A95A50052CAD3 /* API.swift in Sources */,
 				2BF34CB2223A77650052CAD3 /* StatusBarConfigurable.swift in Sources */,
 				2BF34C9D2239AB530052CAD3 /* Router.swift in Sources */,
 				2B8954CE2244323700D6D068 /* AccountRecoverViewController.swift in Sources */,
 				2B8954A22242E79C00D6D068 /* AccountNameSetupViewController.swift in Sources */,
 				1751261A223BE5930095AF4F /* AlgorandParamPairKey.swift in Sources */,
+				2B656E9B224BC5370064A49B /* AccountViewCell.swift in Sources */,
 				2BF53163224A478E00A7455F /* CardModalAnimator.swift in Sources */,
 				2B8BE4D422391C38005D8565 /* RootViewController.swift in Sources */,
 				2BD73A002241297700B66EEF /* NumpadDeleteCell.swift in Sources */,
 				2BF53155224A468400A7455F /* ModalPresentable.swift in Sources */,
+				2B656E99224BC52D0064A49B /* AccountContextView.swift in Sources */,
 				2BD739F8223FF4B600B66EEF /* NumpadDeleteButton.swift in Sources */,
 				2BD739D2223F97F600B66EEF /* WelcomeView.swift in Sources */,
 				2BD739FE22411A0100B66EEF /* Reusable.swift in Sources */,
@@ -1575,9 +1652,11 @@
 				2BF34C9B2239AB130052CAD3 /* Screen.swift in Sources */,
 				2B66871A22491A5E009F21E7 /* QRScannerViewController.swift in Sources */,
 				2B8954B02243D5DA00D6D068 /* DestructiveAlertView.swift in Sources */,
+				2B656EA6224BDC830064A49B /* AccountListLayoutBuilder.swift in Sources */,
 				2BF34C992239AAD20052CAD3 /* UIViewController+Flow.swift in Sources */,
 				2BA8736A2248214800511C7C /* AlignedButton.swift in Sources */,
 				2B8BE50122393999005D8565 /* AdaptiveLayoutConstants.swift in Sources */,
+				2B656EAA224BDCB80064A49B /* AccountListDataSource.swift in Sources */,
 				2BD739FC2241052600B66EEF /* PasswordInputCircleView.swift in Sources */,
 				2BD739EC223FA0DC00B66EEF /* LocalAuthenticationPreferenceViewController.swift in Sources */,
 				2BF53153224A460B00A7455F /* ModalConfiguration.swift in Sources */,
@@ -1602,6 +1681,7 @@
 				2BD739EF223FDE8400B66EEF /* UILabel+Factory.swift in Sources */,
 				2B8954B32243D7AD00D6D068 /* AlertViewModel.swift in Sources */,
 				2B6687152248DF83009F21E7 /* LocalAuthenticator.swift in Sources */,
+				2B656EA2224BCC2C0064A49B /* AccountsTotalDisplayCell.swift in Sources */,
 				2B8C127A2241970F00E34D37 /* NSAttributedString+Additions.swift in Sources */,
 				2B8954AE2243D55200D6D068 /* NormalAlertView.swift in Sources */,
 				2B8954C2224404B700D6D068 /* SingleLineInputField.swift in Sources */,

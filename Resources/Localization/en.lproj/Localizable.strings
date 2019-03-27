@@ -96,6 +96,7 @@
 // MARK: Account List
 
 "account-list-add" = "ADD NEW ACCOUT";
+"account-list-total" = "Total";
 
 // MARK: History
 

@@ -36,6 +36,10 @@ class AccountListViewController: BaseViewController {
 
 extension AccountListViewController: AccountListViewDelegate {
     
+    func accountListView(_ accountListView: AccountListView, didSelect account: Account) {
+        
+    }
+    
     func accountListViewDidTapAddButton(_ accountListView: AccountListView) {
         
     }

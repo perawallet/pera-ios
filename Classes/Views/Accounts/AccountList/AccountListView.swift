@@ -11,6 +11,7 @@ import UIKit
 protocol AccountListViewDelegate: class {
     
     func accountListViewDidTapAddButton(_ accountListView: AccountListView)
+    func accountListView(_ accountListView: AccountListView, didSelect account: Account)
 }
 
 class AccountListView: BaseView {
@@ -29,7 +30,20 @@ class AccountListView: BaseView {
     private lazy var topImageView = UIImageView(image: img("icon-modal-top"))
     
     private(set) lazy var accountsCollectionView: UICollectionView = {
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.scrollDirection = .vertical
+        flowLayout.minimumLineSpacing = 0.0
+        flowLayout.minimumInteritemSpacing = 0.0
+        
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.backgroundColor = .white
+        collectionView.contentInset = .zero
+        
+        collectionView.register(AccountViewCell.self, forCellWithReuseIdentifier: AccountViewCell.reusableIdentifier)
+        collectionView.register(AccountsTotalDisplayCell.self, forCellWithReuseIdentifier: AccountsTotalDisplayCell.reusableIdentifier)
+        
         return collectionView
     }()
     
