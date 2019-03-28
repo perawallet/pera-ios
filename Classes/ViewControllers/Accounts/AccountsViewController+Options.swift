@@ -11,11 +11,13 @@ import UIKit
 extension AccountsViewController: OptionsViewControllerDelegate {
     
     func optionsViewControllerDidShowQR(_ optionsViewController: OptionsViewController) {
-        
+        // TODO: Add show qr action
     }
     
     func optionsViewControllerDidSetDefaultAccount(_ optionsViewController: OptionsViewController) {
+        displaySimpleAlertWith(title: "options-default-account-title".localized, message: "options-default-account-message".localized)
         
+        // TODO: Save as default account
     }
     
     func optionsViewControllerDidViewPassphrase(_ optionsViewController: OptionsViewController) {

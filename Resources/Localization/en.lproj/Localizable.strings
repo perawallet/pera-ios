@@ -111,6 +111,8 @@
 "options-edit-account-name" = "Edit Account Name";
 "options-remove-account" = "Remove Account";
 "options-remove-alert-explanation" = "You are about to remove you main account, are you sure you want to proceed with this choice";
+"options-default-account-title" = "Default Account";
+"options-default-account-message" = "Default acount is set.";
 
 // MARK: History
 
