@@ -9,6 +9,8 @@
 import UIKit
 
 class QRView: UIView {
+    private let outputWidth: CGFloat = 200.0
+    
     private(set) lazy var imageView: UIImageView = {
        UIImageView()
     }()
@@ -58,17 +60,16 @@ extension QRView {
                 return
             }
             
-            let context = CIContext()
-            guard let cgImage = context.createCGImage(ciImage, from: ciImage.extent) else {
+            let ciImageSize = ciImage.extent.size
+            let ratio = outputWidth / ciImageSize.width
+            
+            guard let outputImage = ciImage.nonInterpolatedImage(withScale: Scale(dx: ratio, dy: ratio)) else {
                 return
             }
             
-            let output = UIImage(cgImage: cgImage)
-            
-            imageView.image = output
+            imageView.image = outputImage
         } catch {
             
         }
-        
     }
 }
