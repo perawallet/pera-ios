@@ -104,7 +104,7 @@ extension LocalAuthenticationPreferenceViewController: LocalAuthenticationPrefer
         if session?.authenticatedUser == nil {
             open(.passPhraseBackUp, by: .push)
         } else {
-            UIApplication.shared.launch(from: self)
+            open(.home, by: .launch)
         }
     }
 }

@@ -36,6 +36,7 @@ extension Screen.Transition {
     enum Open: Equatable {
         case push
         case present
+        case launch
         case customPresent(
             presentationStyle: UIModalPresentationStyle?,
             transitionStyle: UIModalTransitionStyle?,
@@ -46,6 +47,8 @@ extension Screen.Transition {
             case (.push, .push):
                 return true
             case (.present, .present):
+                return true
+            case (.launch, .launch):
                 return true
             case (.customPresent, .customPresent):
                 return false
