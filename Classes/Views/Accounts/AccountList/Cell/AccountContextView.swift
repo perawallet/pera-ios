@@ -12,6 +12,7 @@ class AccountContextView: BaseView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let defaultInset: CGFloat = 20.0
+        let separatorHeight: CGFloat = 1.0
         let imageViewRightInset: CGFloat = -5.0
     }
     
@@ -33,6 +34,12 @@ class AccountContextView: BaseView {
         UILabel().withLine(.single).withAlignment(.right).withFont(UIFont.font(.opensans, withWeight: .bold(size: 15.0)))
     }()
     
+    private lazy var separatorView: UIView = {
+        let view = UIView()
+        view.backgroundColor = SharedColors.warmWhite
+        return view
+    }()
+    
     override func configureAppearance() {
         backgroundColor = .white
     }
@@ -41,6 +48,7 @@ class AccountContextView: BaseView {
         setupAmountLabelLayout()
         setupAlgoImageViewLayout()
         setupNameLabelLayout()
+        setupSeparatorViewLayout()
     }
     
     private func setupAmountLabelLayout() {
@@ -67,6 +75,16 @@ class AccountContextView: BaseView {
         nameLabel.snp.makeConstraints { make in
             make.leading.top.bottom.equalToSuperview().inset(layout.current.defaultInset)
             make.trailing.lessThanOrEqualTo(algoImageView.snp.leading)
+        }
+    }
+    
+    private func setupSeparatorViewLayout() {
+        addSubview(separatorView)
+        
+        separatorView.snp.makeConstraints { make in
+            make.bottom.equalToSuperview()
+            make.height.equalTo(layout.current.separatorHeight)
+            make.leading.trailing.equalToSuperview().inset(layout.current.defaultInset)
         }
     }
 }
