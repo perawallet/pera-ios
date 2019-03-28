@@ -40,9 +40,13 @@ class AccountContextView: BaseView {
         return view
     }()
     
+    // MARK: Setup
+    
     override func configureAppearance() {
         backgroundColor = .white
     }
+    
+    // MARK: Layout
     
     override func prepareLayout() {
         setupAmountLabelLayout()

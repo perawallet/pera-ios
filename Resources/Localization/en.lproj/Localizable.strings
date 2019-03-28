@@ -102,6 +102,14 @@
 "account-list-add" = "ADD NEW ACCOUT";
 "account-list-total" = "Total";
 
+// MARK: Options
+
+"options-show-qr" = "Show QR";
+"options-default-account" = "Set as default";
+"options-view-passphrase" = "View Passphrase";
+"options-edit-account-name" = "Edit Account Name";
+"options-remove-account" = "Remove Account";
+
 // MARK: History
 
 "history-title" = "History";

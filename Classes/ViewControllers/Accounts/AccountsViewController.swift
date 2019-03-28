@@ -10,11 +10,25 @@ import UIKit
 
 class AccountsViewController: BaseViewController {
     
-    private lazy var cardModalPresenter = CardModalPresenter(
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let optionsModalHeight: CGFloat = 348.0
+    }
+    
+    private let layout = Layout<LayoutConstants>()
+    
+    private lazy var accountListModalPresenter = CardModalPresenter(
         config: ModalConfiguration(
             animationMode: .normal(duration: 0.25),
             dismissMode: .backgroundTouch
         )
+    )
+    
+    private lazy var optionsModalPresenter = CardModalPresenter(
+        config: ModalConfiguration(
+            animationMode: .normal(duration: 0.25),
+            dismissMode: .backgroundTouch
+        ),
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: layout.current.optionsModalHeight))
     )
     
     // MARK: Setup
@@ -44,10 +58,17 @@ class AccountsViewController: BaseViewController {
     // MARK: Navigation Actions
     
     private func presentAccountList() {
-        open(.accountList, by: .customPresent(presentationStyle: .custom, transitionStyle: nil, transitioningDelegate: cardModalPresenter))
+        open(
+            .accountList,
+            by: .customPresent(
+                presentationStyle: .custom,
+                transitionStyle: nil,
+                transitioningDelegate: accountListModalPresenter
+            )
+        )
     }
     
     private func presentOptions() {
-        open(.options, by: .customPresent(presentationStyle: .custom, transitionStyle: nil, transitioningDelegate: cardModalPresenter))
+        open(.options, by: .customPresent(presentationStyle: .custom, transitionStyle: nil, transitioningDelegate: optionsModalPresenter))
     }
 }
