@@ -89,6 +89,7 @@ extension ChoosePasswordViewController: ChoosePasswordViewDelegate {
             viewModel.configureSelection(in: choosePasswordView, for: value) { password in
                 if password != previousPassword {
                     displaySimpleAlertWith(title: "password-verify-fail-title".localized, message: "password-verify-fail-message".localized)
+                    self.viewModel.reset(choosePasswordView)
                     return
                 }
                 

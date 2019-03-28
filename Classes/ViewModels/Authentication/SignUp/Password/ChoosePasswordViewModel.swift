@@ -85,4 +85,12 @@ class ChoosePasswordViewModel {
             return
         }
     }
+    
+    func reset(_ choosePasswordView: ChoosePasswordView) {
+        password = ""
+        
+        for view in choosePasswordView.passwordInputView.passwordInputCircleViews {
+            view.state = .empty
+        }
+    }
 }
