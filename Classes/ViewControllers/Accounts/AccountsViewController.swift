@@ -32,7 +32,7 @@ class AccountsViewController: BaseViewController {
         initialModalSize: .custom(CGSize(width: view.frame.width, height: layout.current.optionsModalHeight))
     )
     
-    lazy var editAccountModalPresenter = CardModalPresenter(
+    private(set) lazy var editAccountModalPresenter = CardModalPresenter(
         config: ModalConfiguration(
             animationMode: .normal(duration: 0.25),
             dismissMode: .backgroundTouch

@@ -69,7 +69,7 @@
 		2B8954A52242E7D800D6D068 /* AccountNameSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8954A42242E7D800D6D068 /* AccountNameSetupView.swift */; };
 		2B8954A82243854400D6D068 /* AlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8954A72243854400D6D068 /* AlertView.swift */; };
 		2B8954AC22438FBC00D6D068 /* AlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8954AB22438FBC00D6D068 /* AlertViewController.swift */; };
-		2B8954AE2243D55200D6D068 /* NormalAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8954AD2243D55200D6D068 /* NormalAlertView.swift */; };
+		2B8954AE2243D55200D6D068 /* DefaultAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8954AD2243D55200D6D068 /* DefaultAlertView.swift */; };
 		2B8954B02243D5DA00D6D068 /* DestructiveAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8954AF2243D5DA00D6D068 /* DestructiveAlertView.swift */; };
 		2B8954B32243D7AD00D6D068 /* AlertViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8954B22243D7AD00D6D068 /* AlertViewModel.swift */; };
 		2B8954B52243D7C400D6D068 /* AlertViewConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8954B42243D7C400D6D068 /* AlertViewConfigurator.swift */; };
@@ -224,7 +224,7 @@
 		2B8954A42242E7D800D6D068 /* AccountNameSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountNameSetupView.swift; sourceTree = "<group>"; };
 		2B8954A72243854400D6D068 /* AlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertView.swift; sourceTree = "<group>"; };
 		2B8954AB22438FBC00D6D068 /* AlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertViewController.swift; sourceTree = "<group>"; };
-		2B8954AD2243D55200D6D068 /* NormalAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NormalAlertView.swift; sourceTree = "<group>"; };
+		2B8954AD2243D55200D6D068 /* DefaultAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultAlertView.swift; sourceTree = "<group>"; };
 		2B8954AF2243D5DA00D6D068 /* DestructiveAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DestructiveAlertView.swift; sourceTree = "<group>"; };
 		2B8954B22243D7AD00D6D068 /* AlertViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertViewModel.swift; sourceTree = "<group>"; };
 		2B8954B42243D7C400D6D068 /* AlertViewConfigurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertViewConfigurator.swift; sourceTree = "<group>"; };
@@ -572,7 +572,7 @@
 			isa = PBXGroup;
 			children = (
 				2B8954A72243854400D6D068 /* AlertView.swift */,
-				2B8954AD2243D55200D6D068 /* NormalAlertView.swift */,
+				2B8954AD2243D55200D6D068 /* DefaultAlertView.swift */,
 				2B8954AF2243D5DA00D6D068 /* DestructiveAlertView.swift */,
 			);
 			path = Alert;
@@ -1759,7 +1759,7 @@
 				2B6687152248DF83009F21E7 /* LocalAuthenticator.swift in Sources */,
 				2B656EA2224BCC2C0064A49B /* AccountsTotalDisplayCell.swift in Sources */,
 				2B8C127A2241970F00E34D37 /* NSAttributedString+Additions.swift in Sources */,
-				2B8954AE2243D55200D6D068 /* NormalAlertView.swift in Sources */,
+				2B8954AE2243D55200D6D068 /* DefaultAlertView.swift in Sources */,
 				2B8954C2224404B700D6D068 /* SingleLineInputField.swift in Sources */,
 				2BF53174224A940E00A7455F /* PollingOperation.swift in Sources */,
 			);

@@ -34,8 +34,8 @@ class AlertViewController: BaseViewController {
         self.mode = mode
         self.alertConfigurator = alertConfigurator
         
-        if mode == .normal {
-            alertView = NormalAlertView()
+        if mode == .default {
+            alertView = DefaultAlertView()
         } else {
             alertView = DestructiveAlertView()
         }
@@ -51,20 +51,20 @@ class AlertViewController: BaseViewController {
     }
     
     override func setListeners() {
-        if mode == .normal {
-            setNormalAlertViewAction()
+        if mode == .default {
+            setDefaultAlertViewAction()
             return
         }
         
         setDestructiveAlertViewAction()
     }
     
-    private func setNormalAlertViewAction() {
-        guard let normalAlertView = alertView as? NormalAlertView else {
+    private func setDefaultAlertViewAction() {
+        guard let defaultAlertView = alertView as? DefaultAlertView else {
             return
         }
         
-        normalAlertView.delegate = self
+        defaultAlertView.delegate = self
     }
     
     private func setDestructiveAlertViewAction() {
@@ -99,11 +99,11 @@ class AlertViewController: BaseViewController {
     }
 }
 
-// MARK: NormalAlertViewDelegate
+// MARK: DefaultAlertViewDelegate
 
-extension AlertViewController: NormalAlertViewDelegate {
+extension AlertViewController: DefaultAlertViewDelegate {
     
-    func normalAlertViewDidTapDoneButton(_ alertView: NormalAlertView) {
+    func defaultAlertViewDidTapDoneButton(_ alertView: DefaultAlertView) {
         executeHandler()
     }
 }
@@ -126,7 +126,7 @@ extension AlertViewController: DestructiveAlertViewDelegate {
 extension AlertViewController {
     
     enum Mode {
+        case `default`
         case destructive
-        case normal
     }
 }

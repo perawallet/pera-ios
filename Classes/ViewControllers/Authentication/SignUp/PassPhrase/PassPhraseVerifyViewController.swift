@@ -150,7 +150,7 @@ UICollectionViewDataSource {
                         self.open(.accountNameSetup, by: .push)
                 }
                 
-                let viewController = AlertViewController(mode: .normal, alertConfigurator: configurator, configuration: configuration)
+                let viewController = AlertViewController(mode: .default, alertConfigurator: configurator, configuration: configuration)
                 viewController.modalPresentationStyle = .overCurrentContext
                 viewController.modalTransitionStyle = .crossDissolve
                 
