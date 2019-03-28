@@ -69,6 +69,14 @@ class AccountsViewController: BaseViewController {
     }
     
     private func presentOptions() {
-        open(.options, by: .customPresent(presentationStyle: .custom, transitionStyle: nil, transitioningDelegate: optionsModalPresenter))
+        let transitionStyle = Screen.Transition.Open.customPresent(
+            presentationStyle: .custom,
+            transitionStyle: nil,
+            transitioningDelegate: optionsModalPresenter
+        )
+        
+        let optionsViewController = open(.options, by: transitionStyle) as? OptionsViewController
+        
+        optionsViewController?.delegate = self
     }
 }

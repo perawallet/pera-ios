@@ -8,6 +8,15 @@
 
 import UIKit
 
+protocol OptionsViewControllerDelegate: class {
+    
+    func optionsViewControllerDidShowQR(_ optionsViewController: OptionsViewController)
+    func optionsViewControllerDidSetDefaultAccount(_ optionsViewController: OptionsViewController)
+    func optionsViewControllerDidViewPassphrase(_ optionsViewController: OptionsViewController)
+    func optionsViewControllerDidEditAccountName(_ optionsViewController: OptionsViewController)
+    func optionsViewControllerDidRemoveAccount(_ optionsViewController: OptionsViewController)
+}
+
 class OptionsViewController: BaseViewController {
 
     private struct LayoutConstants: AdaptiveLayoutConstants {
@@ -40,6 +49,8 @@ class OptionsViewController: BaseViewController {
     }()
     
     private let viewModel = OptionsViewModel()
+    
+    weak var delegate: OptionsViewControllerDelegate?
     
     // MARK: Setup
     
@@ -117,7 +128,24 @@ extension OptionsViewController: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let selectedOption = Options(rawValue: indexPath.row) else {
+            fatalError("Index path is out of bounds")
+        }
         
+        dismissScreen()
+        
+        switch selectedOption {
+        case .showQR:
+            delegate?.optionsViewControllerDidShowQR(self)
+        case .setDefault:
+            delegate?.optionsViewControllerDidSetDefaultAccount(self)
+        case .passPhrase:
+            delegate?.optionsViewControllerDidViewPassphrase(self)
+        case .edit:
+            delegate?.optionsViewControllerDidEditAccountName(self)
+        case .remove:
+            delegate?.optionsViewControllerDidRemoveAccount(self)
+        }
     }
 }
 

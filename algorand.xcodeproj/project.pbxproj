@@ -41,6 +41,7 @@
 		2B5DA9CC224CB4AA00EE41B4 /* OptionsContextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5DA9CB224CB4AA00EE41B4 /* OptionsContextView.swift */; };
 		2B5DA9CE224CB4B400EE41B4 /* OptionsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5DA9CD224CB4B400EE41B4 /* OptionsCell.swift */; };
 		2B5DA9D1224CCC8400EE41B4 /* OptionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5DA9D0224CCC8400EE41B4 /* OptionsViewModel.swift */; };
+		2B5DA9D3224CD21800EE41B4 /* AccountsViewController+Options.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5DA9D2224CD21800EE41B4 /* AccountsViewController+Options.swift */; };
 		2B656E90224BAF200064A49B /* AccountListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B656E8F224BAF200064A49B /* AccountListViewController.swift */; };
 		2B656E93224BAF2E0064A49B /* OptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B656E92224BAF2E0064A49B /* OptionsViewController.swift */; };
 		2B656E97224BB9F80064A49B /* AccountListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B656E96224BB9F80064A49B /* AccountListView.swift */; };
@@ -189,6 +190,7 @@
 		2B5DA9CB224CB4AA00EE41B4 /* OptionsContextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsContextView.swift; sourceTree = "<group>"; };
 		2B5DA9CD224CB4B400EE41B4 /* OptionsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsCell.swift; sourceTree = "<group>"; };
 		2B5DA9D0224CCC8400EE41B4 /* OptionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsViewModel.swift; sourceTree = "<group>"; };
+		2B5DA9D2224CD21800EE41B4 /* AccountsViewController+Options.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AccountsViewController+Options.swift"; sourceTree = "<group>"; };
 		2B656E8F224BAF200064A49B /* AccountListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountListViewController.swift; sourceTree = "<group>"; };
 		2B656E92224BAF2E0064A49B /* OptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsViewController.swift; sourceTree = "<group>"; };
 		2B656E96224BB9F80064A49B /* AccountListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountListView.swift; sourceTree = "<group>"; };
@@ -1391,6 +1393,7 @@
 				2B656E91224BAF230064A49B /* Options */,
 				2B656E8E224BAF0B0064A49B /* AccountList */,
 				2BF53181224AA8E000A7455F /* AccountsViewController.swift */,
+				2B5DA9D2224CD21800EE41B4 /* AccountsViewController+Options.swift */,
 			);
 			path = Accounts;
 			sourceTree = "<group>";
@@ -1626,6 +1629,7 @@
 				2BD739D2223F97F600B66EEF /* WelcomeView.swift in Sources */,
 				2BD739FE22411A0100B66EEF /* Reusable.swift in Sources */,
 				2BD73A0622412AC900B66EEF /* NumpadViewDataSource.swift in Sources */,
+				2B5DA9D3224CD21800EE41B4 /* AccountsViewController+Options.swift in Sources */,
 				2BF5317C224AA89B00A7455F /* SettingsViewController.swift in Sources */,
 				2BD739D1223F97F600B66EEF /* IntroductionView.swift in Sources */,
 				2BD73A1C2241636C00B66EEF /* PassPhraseBackUpView.swift in Sources */,
