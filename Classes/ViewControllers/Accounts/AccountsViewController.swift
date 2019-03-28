@@ -40,6 +40,8 @@ class AccountsViewController: BaseViewController {
         initialModalSize: .custom(CGSize(width: view.frame.width, height: layout.current.editAccountModalHeight))
     )
     
+    private(set) var localAuthenticator = LocalAuthenticator()
+    
     // MARK: Setup
     
     override func configureNavigationBarAppearance() {

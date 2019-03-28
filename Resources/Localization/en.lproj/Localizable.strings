@@ -117,6 +117,8 @@
 "options-remove-alert-explanation" = "You are about to remove you main account, are you sure you want to proceed with this choice";
 "options-default-account-title" = "Default Account";
 "options-default-account-message" = "Default acount is set.";
+"options-view-passphrase-alert-title" = "Biometric Authentication";
+"options-view-passphrase-alert-message" = "You should provide biometric authentication to display your passphrase.";
 
 // MARK: History
 

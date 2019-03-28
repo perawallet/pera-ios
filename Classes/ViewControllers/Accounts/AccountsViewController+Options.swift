@@ -21,7 +21,32 @@ extension AccountsViewController: OptionsViewControllerDelegate {
     }
     
     func optionsViewControllerDidViewPassphrase(_ optionsViewController: OptionsViewController) {
+        if localAuthenticator.localAuthenticationStatus != .allowed {
+            presentPassphraseView()
+            return
+        }
         
+        displaySimpleAlertWith(
+            title: "options-view-passphrase-alert-title".localized,
+            message: "options-view-passphrase-alert-message".localized
+        ) { _ in
+            
+            self.localAuthenticator.authenticate { error in
+                guard error == nil else {
+                    return
+                }
+                
+                self.presentPassphraseView()
+            }
+        }
+    }
+    
+    private func presentPassphraseView() {
+        let viewController = PassphraseDisplayViewController(configuration: configuration)
+        viewController.modalPresentationStyle = .overCurrentContext
+        viewController.modalTransitionStyle = .crossDissolve
+        
+        tabBarController?.present(viewController, animated: true, completion: nil)
     }
     
     func optionsViewControllerDidEditAccountName(_ optionsViewController: OptionsViewController) {
