@@ -121,6 +121,8 @@ class Router {
             viewController = AccountListViewController(configuration: configuration)
         case .options:
             viewController = OptionsViewController(configuration: configuration)
+        case .editAccount:
+            viewController = EditAccountViewController(configuration: configuration)
         }
         
         return viewController as? T

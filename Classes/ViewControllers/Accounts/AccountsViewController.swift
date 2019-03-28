@@ -10,11 +10,12 @@ import UIKit
 
 class AccountsViewController: BaseViewController {
     
-    private struct LayoutConstants: AdaptiveLayoutConstants {
+    struct LayoutConstants: AdaptiveLayoutConstants {
         let optionsModalHeight: CGFloat = 348.0
+        let editAccountModalHeight: CGFloat = 158.0
     }
     
-    private let layout = Layout<LayoutConstants>()
+    let layout = Layout<LayoutConstants>()
     
     private lazy var accountListModalPresenter = CardModalPresenter(
         config: ModalConfiguration(
@@ -29,6 +30,14 @@ class AccountsViewController: BaseViewController {
             dismissMode: .backgroundTouch
         ),
         initialModalSize: .custom(CGSize(width: view.frame.width, height: layout.current.optionsModalHeight))
+    )
+    
+    lazy var editAccountModalPresenter = CardModalPresenter(
+        config: ModalConfiguration(
+            animationMode: .normal(duration: 0.25),
+            dismissMode: .backgroundTouch
+        ),
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: layout.current.editAccountModalHeight))
     )
     
     // MARK: Setup

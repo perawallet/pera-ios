@@ -23,7 +23,18 @@ extension AccountsViewController: OptionsViewControllerDelegate {
     }
     
     func optionsViewControllerDidEditAccountName(_ optionsViewController: OptionsViewController) {
-        
+        openEditAccountModalView()
+    }
+    
+    private func openEditAccountModalView() {
+        open(
+            .editAccount,
+            by: .customPresent(
+                presentationStyle: .custom,
+                transitionStyle: nil,
+                transitioningDelegate: editAccountModalPresenter
+            )
+        )
     }
     
     func optionsViewControllerDidRemoveAccount(_ optionsViewController: OptionsViewController) {

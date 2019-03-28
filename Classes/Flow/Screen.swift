@@ -21,6 +21,7 @@ enum Screen {
     case home
     case options
     case accountList
+    case editAccount
 }
 
 extension Screen {

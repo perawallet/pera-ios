@@ -19,6 +19,7 @@
 "title-cancel-lowercased" = "Cancel";
 "title-go-to-settings" = "Go To Settings";
 "title-error" = "Error";
+"title-save" = "Save";
 
 // MARK: Tabbar
 
