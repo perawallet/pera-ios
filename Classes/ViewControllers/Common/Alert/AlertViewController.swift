@@ -64,7 +64,7 @@ class AlertViewController: BaseViewController {
             return
         }
         
-        normalAlertView.doneButton.addTarget(self, action: #selector(executeHandler), for: .touchUpInside)
+        normalAlertView.delegate = self
     }
     
     private func setDestructiveAlertViewAction() {
@@ -72,7 +72,7 @@ class AlertViewController: BaseViewController {
             return
         }
         
-        destructiveAlertView.actionButton.addTarget(self, action: #selector(executeHandler), for: .touchUpInside)
+        destructiveAlertView.delegate = self
     }
     
     // MARK: Layout
@@ -88,7 +88,6 @@ class AlertViewController: BaseViewController {
     
     // MARK: Actions
     
-    @objc
     private func executeHandler() {
         if let handler = alertConfigurator.actionHandler {
             dismissScreen()
@@ -97,6 +96,28 @@ class AlertViewController: BaseViewController {
         }
         
         dismissScreen()
+    }
+}
+
+// MARK: NormalAlertViewDelegate
+
+extension AlertViewController: NormalAlertViewDelegate {
+    
+    func normalAlertViewDidTapDoneButton(_ alertView: NormalAlertView) {
+        executeHandler()
+    }
+}
+
+// MARK: DestructiveAlertViewDelegate
+
+extension AlertViewController: DestructiveAlertViewDelegate {
+    
+    func destructiveAlertViewDidTapCancelButton(_ alertView: DestructiveAlertView) {
+        dismissScreen()
+    }
+    
+    func destructiveAlertViewDidTapActionButton(_ alertView: DestructiveAlertView) {
+        executeHandler()
     }
 }
 
