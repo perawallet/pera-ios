@@ -95,7 +95,7 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
             session?.authenticatedUser = user
             
             if session?.hasPassword() ?? false {
-                open(.home, by: .present, animated: false)
+                UIApplication.shared.launch(from: self)
             } else {
                 let configurator = AlertViewConfigurator(
                     title: "recover-from-seed-verify-pop-up-title".localized,

@@ -40,7 +40,7 @@ class ChoosePasswordViewController: BaseScrollViewController {
                     guard error == nil else {
                         return
                     }
-                    self.open(.home, by: .present, animated: false)
+                    UIApplication.shared.launch(from: self)
                 }
             }
             
@@ -101,7 +101,7 @@ extension ChoosePasswordViewController: ChoosePasswordViewDelegate {
             viewModel.configureSelection(in: choosePasswordView, for: value) { password in
                 
                 if session?.isPasswordMatching(with: password) ?? false {
-                    self.open(.home, by: .present, animated: false)
+                    UIApplication.shared.launch(from: self)
                 }
             }
         }

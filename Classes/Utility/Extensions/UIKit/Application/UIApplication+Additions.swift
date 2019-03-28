@@ -108,4 +108,13 @@ extension UIApplication {
         
         UIApplication.shared.open(settingsURL, options: [:])
     }
+    
+    func launch(from viewController: UIViewController) {
+        guard let rootViewController = rootViewController() else {
+            return
+        }
+        
+        viewController.closeScreen(by: .dismiss, animated: false)
+        rootViewController.launch()
+    }
 }
