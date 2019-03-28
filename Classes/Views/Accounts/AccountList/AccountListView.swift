@@ -51,6 +51,16 @@ class AccountListView: BaseView {
     
     weak var delegate: AccountListViewDelegate?
     
+    private var accountListLayoutBuilder: AccountListLayoutBuilder
+    private var accountListDataSource: AccountListDataSource
+    
+    override init(frame: CGRect) {
+        accountListLayoutBuilder = AccountListLayoutBuilder()
+        accountListDataSource = AccountListDataSource()
+        
+        super.init(frame: frame)
+    }
+    
     // MARK: Setup
     
     override func configureAppearance() {
@@ -59,6 +69,11 @@ class AccountListView: BaseView {
     
     override func setListeners() {
         addButton.addTarget(self, action: #selector(notifyDelegateToAddButtonTapped), for: .touchUpInside)
+    }
+    
+    override func linkInteractors() {
+        accountsCollectionView.dataSource = accountListDataSource
+        accountsCollectionView.delegate = accountListLayoutBuilder
     }
     
     // MARK: Layout
@@ -73,7 +88,7 @@ class AccountListView: BaseView {
         addSubview(topImageView)
         
         topImageView.snp.makeConstraints { make in
-            make.center.equalToSuperview()
+            make.centerX.equalToSuperview()
             make.top.equalToSuperview().inset(layout.current.imageViewTopInset)
         }
     }

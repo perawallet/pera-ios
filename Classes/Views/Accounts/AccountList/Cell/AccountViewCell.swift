@@ -9,14 +9,4 @@
 import UIKit
 
 class AccountViewCell: BaseCollectionViewCell<AccountContextView> {
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        
-        contextView.nameLabel.text = ""
-        contextView.amountLabel.text = ""
-        
-        contextView.algoImageView.tintColor = SharedColors.green
-        contextView.amountLabel.textColor = SharedColors.green
-    }
 }

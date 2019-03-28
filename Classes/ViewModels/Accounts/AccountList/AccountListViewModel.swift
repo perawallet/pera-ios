@@ -11,7 +11,8 @@ import UIKit
 class AccountListViewModel {
     
     func configure(_ cell: AccountViewCell, with account: Account) {
-        
+        cell.contextView.nameLabel.text = account.name
+        cell.contextView.amountLabel.text = "\(account.amount)"
     }
     
     func configure(_ cell: AccountsTotalDisplayCell, with totalAmount: String) {

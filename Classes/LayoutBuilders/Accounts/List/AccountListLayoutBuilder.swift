@@ -13,7 +13,7 @@ protocol AccountListLayoutBuilderDelegate: class {
     func accountListLayoutBuilder(_ layoutBuilder: AccountListLayoutBuilder, didSelectAt indexPath: IndexPath)
 }
 
-class AccountListLayoutBuilder {
+class AccountListLayoutBuilder: NSObject, UICollectionViewDelegateFlowLayout {
     
     weak var delegate: AccountListLayoutBuilderDelegate?
     
@@ -25,7 +25,6 @@ class AccountListLayoutBuilder {
         
         return CGSize(width: UIScreen.main.bounds.width, height: 56.0)
     }
-    
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView.cellForItem(at: indexPath) is AccountViewCell {

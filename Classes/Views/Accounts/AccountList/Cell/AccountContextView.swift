@@ -33,6 +33,10 @@ class AccountContextView: BaseView {
         UILabel().withLine(.single).withAlignment(.right).withFont(UIFont.font(.opensans, withWeight: .bold(size: 15.0)))
     }()
     
+    override func configureAppearance() {
+        backgroundColor = .white
+    }
+    
     override func prepareLayout() {
         setupAmountLabelLayout()
         setupAlgoImageViewLayout()
@@ -43,7 +47,7 @@ class AccountContextView: BaseView {
         addSubview(amountLabel)
         
         amountLabel.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview()
             make.trailing.equalToSuperview().inset(layout.current.defaultInset)
         }
     }
@@ -52,7 +56,7 @@ class AccountContextView: BaseView {
         addSubview(algoImageView)
         
         algoImageView.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview()
             make.trailing.equalTo(amountLabel.snp.leading).offset(layout.current.imageViewRightInset)
         }
     }
