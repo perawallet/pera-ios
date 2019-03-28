@@ -12,6 +12,7 @@ protocol PassPhraseBackUpViewDelegate: class {
     
     func passPhraseBackUpViewDidTapVerifyButton(_ passPhraseBackUpView: PassPhraseBackUpView)
     func passPhraseBackUpViewDidTapShareButton(_ passPhraseBackUpView: PassPhraseBackUpView)
+    func passPhraseBackUpViewDidTapQrButton(_ passPhraseBackUpView: PassPhraseBackUpView)
 }
 
 class PassPhraseBackUpView: BaseView {
@@ -67,6 +68,13 @@ class PassPhraseBackUpView: BaseView {
         return button
     }()
     
+    private(set) lazy var qrButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.tintColor = SharedColors.blue
+        button.setImage(img("icon-qr-code-white", isTemplate: true), for: .normal)
+        return button
+    }()
+    
     private lazy var warningContainerView: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 20.0
@@ -97,6 +105,7 @@ class PassPhraseBackUpView: BaseView {
     
     override func setListeners() {
         shareButton.addTarget(self, action: #selector(notifyDelegateToShareButtonTapped), for: .touchUpInside)
+        qrButton.addTarget(self, action: #selector(notifyDelegateToQrButtonTapped), for: .touchUpInside)
         verifyButton.addTarget(self, action: #selector(notifyDelegateToVerifyButtonTapped), for: .touchUpInside)
     }
     
@@ -107,6 +116,7 @@ class PassPhraseBackUpView: BaseView {
         setupPassPhraseContainerViewLayout()
         setupPassPhraseLabelLayout()
         setupShareButtonLayout()
+        setupQrButtonLayout()
         setupWarningContainerViewLayout()
         setupWarningImageViewLayout()
         setupWarningLabelLayout()
@@ -146,6 +156,17 @@ class PassPhraseBackUpView: BaseView {
         shareButton.snp.makeConstraints { make in
             make.top.equalTo(passPhreaseLabel.snp.bottom).offset(layout.current.warningLabelVerticalInset)
             make.bottom.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+        }
+    }
+    
+    private func setupQrButtonLayout() {
+        passPhraseContainerView.addSubview(qrButton)
+        
+        qrButton.snp.makeConstraints { make in
+            make.top.equalTo(passPhreaseLabel.snp.bottom).offset(layout.current.warningLabelVerticalInset)
+            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
+            make.centerY.equalTo(shareButton)
+            make.height.width.equalTo(20)
         }
     }
     
@@ -192,6 +213,11 @@ class PassPhraseBackUpView: BaseView {
     @objc
     func notifyDelegateToShareButtonTapped() {
         delegate?.passPhraseBackUpViewDidTapShareButton(self)
+    }
+    
+    @objc
+    func notifyDelegateToQrButtonTapped() {
+        delegate?.passPhraseBackUpViewDidTapQrButton(self)
     }
     
     @objc

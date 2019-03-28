@@ -67,4 +67,11 @@ extension PassPhraseBackUpViewController: PassPhraseBackUpViewDelegate {
     func passPhraseBackUpViewDidTapVerifyButton(_ passPhraseBackUpView: PassPhraseBackUpView) {
         open(.passPhraseVerify, by: .push)
     }
+    
+    func passPhraseBackUpViewDidTapQrButton(_ passPhraseBackUpView: PassPhraseBackUpView) {
+        let mnemonics = self.session?.mnemonics(forAccount: "temp") ?? []
+        let text = mnemonics.joined(separator: " ")
+
+        open(.qrGenerator(text: text, mode: .mnemonic), by: .present)
+    }
 }

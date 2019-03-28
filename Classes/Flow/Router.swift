@@ -115,6 +115,11 @@ class Router {
             viewController = AccountRecoverViewController(configuration: configuration)
         case .qrScanner:
             viewController = QRScannerViewController(configuration: configuration)
+        case .qrGenerator(let text, let mode):
+            let qrCreationController = QRCreationViewController(configuration: configuration, qrText: text)
+            qrCreationController.mode = mode
+            
+            viewController = qrCreationController
         case .home:
             viewController = TabBarController(configuration: configuration)
         }
