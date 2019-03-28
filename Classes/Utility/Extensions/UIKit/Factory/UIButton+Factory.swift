@@ -39,4 +39,19 @@ extension UIButton {
         titleLabel?.textAlignment = alignment
         return self
     }
+    
+    func withTintColor(_ color: UIColor) -> UIButton {
+        tintColor = color
+        return self
+    }
+    
+    func withImageEdgeInsets(_ edgeInsets: UIEdgeInsets) -> UIButton {
+        imageEdgeInsets = edgeInsets
+        return self
+    }
+    
+    func withTitleEdgeInsets(_ edgeInsets: UIEdgeInsets) -> UIButton {
+        titleEdgeInsets = edgeInsets
+        return self
+    }
 }

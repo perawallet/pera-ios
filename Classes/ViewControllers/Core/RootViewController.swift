@@ -39,7 +39,8 @@ class RootViewController: UIViewController {
         view.backgroundColor = SharedColors.warmWhite
         
         if appConfiguration.session.isExpired {
-            if appConfiguration.session.hasPassword() {
+            if appConfiguration.session.hasPassword() &&
+                appConfiguration.session.authenticatedUser != nil {
                 open(.choosePassword(.login), by: .present)
             } else {
                 open(.introduction, by: .present)
