@@ -18,6 +18,7 @@ enum Screen {
     case accountNameSetup
     case accountRecover
     case qrScanner
+    case qrGenerator(text: String, mode: QRMode)
     case home
 }
 

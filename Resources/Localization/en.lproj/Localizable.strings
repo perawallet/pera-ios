@@ -19,6 +19,7 @@
 "title-cancel-lowercased" = "Cancel";
 "title-go-to-settings" = "Go To Settings";
 "title-error" = "Error";
+"title-close" = "CLOSE";
 
 // MARK: Tabbar
 
@@ -90,6 +91,9 @@
 "qr-scan-error-message" = "Your device does not support scanning a qr code.";
 "qr-scan-go-settings-title" = "Camera Disabled";
 "qr-scan-go-settings-message" = "You have disabled camera. Please go to Settings and enable this option.";
+
+// MARK: QR Creation
+"qr-creation-title" = "Passphrase QR";
 
 // MARK: Login
 

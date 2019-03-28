@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		170AFAFA224C9FF800520EA5 /* QRCreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170AFAF9224C9FF800520EA5 /* QRCreationViewController.swift */; };
+		170AFAFC224CC70A00520EA5 /* QRText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170AFAFB224CC70A00520EA5 /* QRText.swift */; };
+		170AFAFE224CCBF300520EA5 /* QRView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170AFAFD224CCBF300520EA5 /* QRView.swift */; };
 		170D565E2243E7B400813989 /* Crypto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 170D565D2243E7B400813989 /* Crypto.framework */; };
 		1751261A223BE5930095AF4F /* AlgorandParamPairKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17512619223BE5930095AF4F /* AlgorandParamPairKey.swift */; };
 		1751261D223BEA320095AF4F /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1751261C223BEA320095AF4F /* Session.swift */; };
@@ -142,6 +145,9 @@
 
 /* Begin PBXFileReference section */
 		01F66EBBAFA146AFC193D69A /* Pods_algorand.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_algorand.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		170AFAF9224C9FF800520EA5 /* QRCreationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCreationViewController.swift; sourceTree = "<group>"; };
+		170AFAFB224CC70A00520EA5 /* QRText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRText.swift; sourceTree = "<group>"; };
+		170AFAFD224CCBF300520EA5 /* QRView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRView.swift; sourceTree = "<group>"; };
 		170D565D2243E7B400813989 /* Crypto.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crypto.framework; sourceTree = "<group>"; };
 		17512619223BE5930095AF4F /* AlgorandParamPairKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorandParamPairKey.swift; sourceTree = "<group>"; };
 		1751261C223BEA320095AF4F /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
@@ -329,6 +335,7 @@
 			children = (
 				17B7D8A52240D8F900A6FF9E /* Account.swift */,
 				17F6E689224B71A6006DD31F /* User.swift */,
+				170AFAFB224CC70A00520EA5 /* QRText.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -380,6 +387,7 @@
 			isa = PBXGroup;
 			children = (
 				2B66871922491A5E009F21E7 /* QRScannerViewController.swift */,
+				170AFAF9224C9FF800520EA5 /* QRCreationViewController.swift */,
 			);
 			path = QR;
 			sourceTree = "<group>";
@@ -1194,6 +1202,7 @@
 			isa = PBXGroup;
 			children = (
 				2BF5314D22491E7F00A7455F /* QRScannerOverlayView.swift */,
+				170AFAFD224CCBF300520EA5 /* QRView.swift */,
 			);
 			path = QR;
 			sourceTree = "<group>";
@@ -1492,6 +1501,7 @@
 				2B6687102248DBE2009F21E7 /* ALGBarButtonItem.swift in Sources */,
 				2BF53159224A46C500A7455F /* ModalPresenterInteractable.swift in Sources */,
 				2BD73A1222412B7300B66EEF /* NumpadViewModel.swift in Sources */,
+				170AFAFE224CCBF300520EA5 /* QRView.swift in Sources */,
 				2BF53161224A476600A7455F /* CardModalPresenter.swift in Sources */,
 				2BF34CB4223A87440052CAD3 /* BaseScrollViewController.swift in Sources */,
 				17BEC45D2248C7D900AAF370 /* PassPhraseVerifyViewController.swift in Sources */,
@@ -1512,6 +1522,7 @@
 				1751261D223BEA320095AF4F /* Session.swift in Sources */,
 				1761B3CD224A47AF00C6BA47 /* Session+Crypto.swift in Sources */,
 				2B8AD04A2244F82600939ECE /* SharedColors.swift in Sources */,
+				170AFAFA224C9FF800520EA5 /* QRCreationViewController.swift in Sources */,
 				17512620223BEAE90095AF4F /* Storable.swift in Sources */,
 				2BF5314E22491E7F00A7455F /* QRScannerOverlayView.swift in Sources */,
 				17B7D8A62240D8F900A6FF9E /* Account.swift in Sources */,
@@ -1554,6 +1565,7 @@
 				2BF53157224A46A400A7455F /* ModalPresenter.swift in Sources */,
 				2BD739DD223F9E9F00B66EEF /* ChoosePasswordView.swift in Sources */,
 				2B8BE4F4223935DA005D8565 /* BaseView.swift in Sources */,
+				170AFAFC224CC70A00520EA5 /* QRText.swift in Sources */,
 				2B89549F2242D90000D6D068 /* UIViewController+Additions.swift in Sources */,
 				2BD73A022241299100B66EEF /* NumpadNumericCell.swift in Sources */,
 				2BF53182224AA8E000A7455F /* AccountsViewController.swift in Sources */,
