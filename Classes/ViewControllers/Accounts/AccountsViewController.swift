@@ -44,6 +44,11 @@ class AccountsViewController: BaseViewController {
     
     private(set) var localAuthenticator = LocalAuthenticator()
     
+    private let viewModel = AccountsViewModel()
+    
+    // TODO: Will remove mock after real connection
+    private let account = Account(address: "1")
+    
     // MARK: Components
     
     private lazy var accountsView: AccountsView = {
@@ -71,8 +76,15 @@ class AccountsViewController: BaseViewController {
         
         view.backgroundColor = .white
         
-        // TODO: Should be updated with selected or default account
-        title = "Account Name".localized
+        // TODO: Will remove mock after real connection
+        account.amount = 123456789
+        account.name = "Account Name"
+        
+        if let accountName = account.name {
+            title = "\(accountName)".localized
+        }
+        
+        viewModel.configure(accountsView.accountsHeaderView, with: account)
     }
     
     // MARK: Layout

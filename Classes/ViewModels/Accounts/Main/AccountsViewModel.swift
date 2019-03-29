@@ -1,0 +1,16 @@
+//
+//  AccountsViewModel.swift
+//  algorand
+//
+//  Created by Göktuğ Berk Ulu on 29.03.2019.
+//  Copyright © 2019 hippo. All rights reserved.
+//
+
+import UIKit
+
+class AccountsViewModel {
+    
+    func configure(_ view: AccountsHeaderView, with account: Account) {
+        view.algosAmountLabel.text = "\(account.amount)"
+    }
+}
