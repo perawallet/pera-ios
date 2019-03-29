@@ -81,6 +81,12 @@ extension AccountNameSetupViewController: AccountNameSetupViewDelegate {
         
         let user = User(accounts: [account])
         
+        let isAccountDefault = session?.authenticatedUser == nil
+        
+        if isAccountDefault {
+            user.setDefaultAccount(account)
+        }
+        
         session?.authenticatedUser = user
         
         open(.home, by: .launch)

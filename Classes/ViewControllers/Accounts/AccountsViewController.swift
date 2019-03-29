@@ -57,13 +57,16 @@ class AccountsViewController: BaseViewController {
         rightBarButtonItems = [optionsBarButtonItem]
     }
     
+    var selectedAccount: Account?
+    
     override func configureAppearance() {
         super.configureAppearance()
         
         view.backgroundColor = .white
         
-        // TODO: Should be updated with selected or default account
-        title = "Account Name".localized
+        selectedAccount = session?.authenticatedUser?.defaultAccount()
+        
+        self.navigationItem.title = selectedAccount?.name
     }
     
     // MARK: Navigation Actions

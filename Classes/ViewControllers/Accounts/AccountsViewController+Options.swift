@@ -54,8 +54,12 @@ extension AccountsViewController: OptionsViewControllerDelegate {
     }
     
     private func openEditAccountModalView() {
+        guard let selectedAccount = self.selectedAccount else {
+            return
+        }
+        
         open(
-            .editAccount,
+            .editAccount(account: selectedAccount),
             by: .customPresent(
                 presentationStyle: .custom,
                 transitionStyle: nil,

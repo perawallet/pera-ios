@@ -22,7 +22,7 @@ enum Screen {
     case home
     case options
     case accountList
-    case editAccount
+    case editAccount(account: Account)
 }
 
 extension Screen {
