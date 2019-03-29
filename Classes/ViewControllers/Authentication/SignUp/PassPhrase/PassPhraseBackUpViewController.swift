@@ -32,7 +32,7 @@ class PassPhraseBackUpViewController: BaseScrollViewController {
             
             print(mnemonics.joined(separator: " "))
             
-            passPhraseBackUpView.passPhreaseLabel.attributedText = mnemonics.joined(separator: " ")
+            passPhraseBackUpView.passPhraseLabel.attributedText = mnemonics.joined(separator: " ")
                 .attributed([.lineSpacing(1.5)])
         }
     }

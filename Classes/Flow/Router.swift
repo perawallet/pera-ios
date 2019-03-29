@@ -42,6 +42,26 @@ class Router {
             }
             
             sourceViewController.navigationController?.pushViewController(viewController, animated: animated)
+        case .launch:
+            sourceViewController.dismiss(animated: false)
+            
+            let navigationController: NavigationController
+            
+            if let navController = viewController as? NavigationController {
+                navigationController = navController
+            } else {
+                if let presentingViewController = self as? StatusBarConfigurable,
+                    let presentedViewController = viewController as? StatusBarConfigurable,
+                    presentingViewController.isStatusBarHidden {
+                    
+                    presentedViewController.hidesStatusBarWhenPresented = true
+                    presentedViewController.isStatusBarHidden = true
+                }
+                
+                navigationController = NavigationController(rootViewController: viewController)
+            }
+            
+            rootViewController?.present(navigationController, animated: false, completion: completion)
         case .present,
              .customPresent:
             let navigationController: NavigationController
@@ -122,6 +142,12 @@ class Router {
             viewController = qrCreationController
         case .home:
             viewController = TabBarController(configuration: configuration)
+        case .accountList:
+            viewController = AccountListViewController(configuration: configuration)
+        case .options:
+            viewController = OptionsViewController(configuration: configuration)
+        case .editAccount:
+            viewController = EditAccountViewController(configuration: configuration)
         }
         
         return viewController as? T

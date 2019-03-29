@@ -20,8 +20,8 @@ class PassPhraseBackUpView: BaseView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let topInset: CGFloat = 157.0
         let horizontalInset: CGFloat = 25.0
-        let passPhreaseContainerViewTopInset: CGFloat = 30.0
-        let passPhreaseLabelVerticalInset: CGFloat = 37.0
+        let passPhraseContainerViewTopInset: CGFloat = 30.0
+        let passPhraseLabelVerticalInset: CGFloat = 37.0
         let warningContainerViewTopInset: CGFloat = 40.0
         let warningHorizontalInset: CGFloat = 20.0
         let warningImageCenterOffset: CGFloat = 5.0
@@ -49,7 +49,7 @@ class PassPhraseBackUpView: BaseView {
         return view
     }()
     
-    private(set) lazy var passPhreaseLabel: UILabel = {
+    private(set) lazy var passPhraseLabel: UILabel = {
         UILabel()
             .withAlignment(.left)
             .withLine(.contained)
@@ -137,16 +137,16 @@ class PassPhraseBackUpView: BaseView {
         
         passPhraseContainerView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.passPhreaseContainerViewTopInset)
+            make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.passPhraseContainerViewTopInset)
         }
     }
     
     private func setupPassPhraseLabelLayout() {
-        passPhraseContainerView.addSubview(passPhreaseLabel)
+        passPhraseContainerView.addSubview(passPhraseLabel)
         
-        passPhreaseLabel.snp.makeConstraints { make in
+        passPhraseLabel.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.top.equalToSuperview().inset(layout.current.passPhreaseLabelVerticalInset)
+            make.top.equalToSuperview().inset(layout.current.passPhraseLabelVerticalInset)
         }
     }
     
@@ -154,7 +154,7 @@ class PassPhraseBackUpView: BaseView {
         passPhraseContainerView.addSubview(shareButton)
         
         shareButton.snp.makeConstraints { make in
-            make.top.equalTo(passPhreaseLabel.snp.bottom).offset(layout.current.warningLabelVerticalInset)
+            make.top.equalTo(passPhraseLabel.snp.bottom).offset(layout.current.warningLabelVerticalInset)
             make.bottom.trailing.equalToSuperview().inset(layout.current.horizontalInset)
         }
     }
@@ -163,7 +163,7 @@ class PassPhraseBackUpView: BaseView {
         passPhraseContainerView.addSubview(qrButton)
         
         qrButton.snp.makeConstraints { make in
-            make.top.equalTo(passPhreaseLabel.snp.bottom).offset(layout.current.warningLabelVerticalInset)
+            make.top.equalTo(passPhraseLabel.snp.bottom).offset(layout.current.warningLabelVerticalInset)
             make.leading.equalToSuperview().inset(layout.current.horizontalInset)
             make.centerY.equalTo(shareButton)
             make.height.width.equalTo(20)

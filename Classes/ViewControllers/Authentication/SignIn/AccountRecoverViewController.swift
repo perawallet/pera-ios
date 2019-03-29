@@ -95,7 +95,7 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
             session?.authenticatedUser = user
             
             if session?.hasPassword() ?? false {
-                open(.home, by: .present, animated: false)
+                open(.home, by: .launch)
             } else {
                 let configurator = AlertViewConfigurator(
                     title: "recover-from-seed-verify-pop-up-title".localized,
@@ -106,7 +106,7 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
                         self.open(.choosePassword(.setup), by: .push)
                 }
                 
-                let viewController = AlertViewController(mode: .normal, alertConfigurator: configurator, configuration: configuration)
+                let viewController = AlertViewController(mode: .default, alertConfigurator: configurator, configuration: configuration)
                 viewController.modalPresentationStyle = .overCurrentContext
                 viewController.modalTransitionStyle = .crossDissolve
                 

@@ -11,6 +11,8 @@ import UIKit
 class SettingsViewController: BaseViewController {
         
     override func configureAppearance() {
-        view.backgroundColor = .red
+        super.configureAppearance()
+        
+        title = "settings-title".localized
     }
 }

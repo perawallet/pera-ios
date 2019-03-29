@@ -83,7 +83,7 @@ extension AccountNameSetupViewController: AccountNameSetupViewDelegate {
         
         session?.authenticatedUser = user
         
-        open(.home, by: .present, animated: false)
+        open(.home, by: .launch)
     }
     
     func accountNameSetupViewDidChangeValue(_ accountNameSetupView: AccountNameSetupView) {

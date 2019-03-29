@@ -34,8 +34,8 @@ class AlertViewController: BaseViewController {
         self.mode = mode
         self.alertConfigurator = alertConfigurator
         
-        if mode == .normal {
-            alertView = NormalAlertView()
+        if mode == .default {
+            alertView = DefaultAlertView()
         } else {
             alertView = DestructiveAlertView()
         }
@@ -51,20 +51,20 @@ class AlertViewController: BaseViewController {
     }
     
     override func setListeners() {
-        if mode == .normal {
-            setNormalAlertViewAction()
+        if mode == .default {
+            setDefaultAlertViewAction()
             return
         }
         
         setDestructiveAlertViewAction()
     }
     
-    private func setNormalAlertViewAction() {
-        guard let normalAlertView = alertView as? NormalAlertView else {
+    private func setDefaultAlertViewAction() {
+        guard let defaultAlertView = alertView as? DefaultAlertView else {
             return
         }
         
-        normalAlertView.doneButton.addTarget(self, action: #selector(executeHandler), for: .touchUpInside)
+        defaultAlertView.delegate = self
     }
     
     private func setDestructiveAlertViewAction() {
@@ -72,7 +72,7 @@ class AlertViewController: BaseViewController {
             return
         }
         
-        destructiveAlertView.actionButton.addTarget(self, action: #selector(executeHandler), for: .touchUpInside)
+        destructiveAlertView.delegate = self
     }
     
     // MARK: Layout
@@ -88,7 +88,6 @@ class AlertViewController: BaseViewController {
     
     // MARK: Actions
     
-    @objc
     private func executeHandler() {
         if let handler = alertConfigurator.actionHandler {
             dismissScreen()
@@ -100,12 +99,34 @@ class AlertViewController: BaseViewController {
     }
 }
 
+// MARK: DefaultAlertViewDelegate
+
+extension AlertViewController: DefaultAlertViewDelegate {
+    
+    func defaultAlertViewDidTapDoneButton(_ alertView: DefaultAlertView) {
+        executeHandler()
+    }
+}
+
+// MARK: DestructiveAlertViewDelegate
+
+extension AlertViewController: DestructiveAlertViewDelegate {
+    
+    func destructiveAlertViewDidTapCancelButton(_ alertView: DestructiveAlertView) {
+        dismissScreen()
+    }
+    
+    func destructiveAlertViewDidTapActionButton(_ alertView: DestructiveAlertView) {
+        executeHandler()
+    }
+}
+
 // MARK: AlertViewController.Mode
 
 extension AlertViewController {
     
     enum Mode {
+        case `default`
         case destructive
-        case normal
     }
 }

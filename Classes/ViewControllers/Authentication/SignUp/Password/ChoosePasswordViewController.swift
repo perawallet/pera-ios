@@ -40,7 +40,8 @@ class ChoosePasswordViewController: BaseScrollViewController {
                     guard error == nil else {
                         return
                     }
-                    self.open(.home, by: .present, animated: false)
+                    
+                    self.open(.home, by: .launch)
                 }
             }
             
@@ -89,6 +90,7 @@ extension ChoosePasswordViewController: ChoosePasswordViewDelegate {
             viewModel.configureSelection(in: choosePasswordView, for: value) { password in
                 if password != previousPassword {
                     displaySimpleAlertWith(title: "password-verify-fail-title".localized, message: "password-verify-fail-message".localized)
+                    self.viewModel.reset(choosePasswordView)
                     return
                 }
                 
@@ -100,7 +102,7 @@ extension ChoosePasswordViewController: ChoosePasswordViewDelegate {
             viewModel.configureSelection(in: choosePasswordView, for: value) { password in
                 
                 if session?.isPasswordMatching(with: password) ?? false {
-                    self.open(.home, by: .present, animated: false)
+                    open(.home, by: .launch)
                 }
             }
         }

@@ -42,6 +42,23 @@
 		17BEC4662248D39900AAF370 /* PassPhraseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17BEC4652248D39900AAF370 /* PassPhraseCollectionViewCell.swift */; };
 		17F6E685224B3F99006DD31F /* PassPhraseMnemonicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F6E684224B3F99006DD31F /* PassPhraseMnemonicView.swift */; };
 		17F6E68A224B71A6006DD31F /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F6E689224B71A6006DD31F /* User.swift */; };
+		2B5DA9CC224CB4AA00EE41B4 /* OptionsContextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5DA9CB224CB4AA00EE41B4 /* OptionsContextView.swift */; };
+		2B5DA9CE224CB4B400EE41B4 /* OptionsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5DA9CD224CB4B400EE41B4 /* OptionsCell.swift */; };
+		2B5DA9D1224CCC8400EE41B4 /* OptionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5DA9D0224CCC8400EE41B4 /* OptionsViewModel.swift */; };
+		2B5DA9D3224CD21800EE41B4 /* AccountsViewController+Options.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5DA9D2224CD21800EE41B4 /* AccountsViewController+Options.swift */; };
+		2B5DA9D5224CE19700EE41B4 /* EditAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5DA9D4224CE19700EE41B4 /* EditAccountViewController.swift */; };
+		2B5DA9D8224CE1BC00EE41B4 /* EditAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5DA9D7224CE1BC00EE41B4 /* EditAccountView.swift */; };
+		2B5DA9DA224D2F5C00EE41B4 /* PassphraseDisplayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5DA9D9224D2F5C00EE41B4 /* PassphraseDisplayViewController.swift */; };
+		2B5DA9DC224D37A100EE41B4 /* PassphraseDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5DA9DB224D37A100EE41B4 /* PassphraseDisplayView.swift */; };
+		2B656E90224BAF200064A49B /* AccountListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B656E8F224BAF200064A49B /* AccountListViewController.swift */; };
+		2B656E93224BAF2E0064A49B /* OptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B656E92224BAF2E0064A49B /* OptionsViewController.swift */; };
+		2B656E97224BB9F80064A49B /* AccountListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B656E96224BB9F80064A49B /* AccountListView.swift */; };
+		2B656E99224BC52D0064A49B /* AccountContextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B656E98224BC52D0064A49B /* AccountContextView.swift */; };
+		2B656E9B224BC5370064A49B /* AccountViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B656E9A224BC5370064A49B /* AccountViewCell.swift */; };
+		2B656E9F224BCB130064A49B /* AccountListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B656E9E224BCB130064A49B /* AccountListViewModel.swift */; };
+		2B656EA2224BCC2C0064A49B /* AccountsTotalDisplayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B656EA1224BCC2C0064A49B /* AccountsTotalDisplayCell.swift */; };
+		2B656EA6224BDC830064A49B /* AccountListLayoutBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B656EA5224BDC830064A49B /* AccountListLayoutBuilder.swift */; };
+		2B656EAA224BDCB80064A49B /* AccountListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B656EA9224BDCB80064A49B /* AccountListDataSource.swift */; };
 		2B66870B2248DB35009F21E7 /* NavigationBarConfigurable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B66870A2248DB35009F21E7 /* NavigationBarConfigurable.swift */; };
 		2B66870E2248DB8B009F21E7 /* BarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B66870D2248DB8B009F21E7 /* BarButtonItem.swift */; };
 		2B6687102248DBE2009F21E7 /* ALGBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B66870F2248DBE2009F21E7 /* ALGBarButtonItem.swift */; };
@@ -54,7 +71,7 @@
 		2B8954A52242E7D800D6D068 /* AccountNameSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8954A42242E7D800D6D068 /* AccountNameSetupView.swift */; };
 		2B8954A82243854400D6D068 /* AlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8954A72243854400D6D068 /* AlertView.swift */; };
 		2B8954AC22438FBC00D6D068 /* AlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8954AB22438FBC00D6D068 /* AlertViewController.swift */; };
-		2B8954AE2243D55200D6D068 /* NormalAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8954AD2243D55200D6D068 /* NormalAlertView.swift */; };
+		2B8954AE2243D55200D6D068 /* DefaultAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8954AD2243D55200D6D068 /* DefaultAlertView.swift */; };
 		2B8954B02243D5DA00D6D068 /* DestructiveAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8954AF2243D5DA00D6D068 /* DestructiveAlertView.swift */; };
 		2B8954B32243D7AD00D6D068 /* AlertViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8954B22243D7AD00D6D068 /* AlertViewModel.swift */; };
 		2B8954B52243D7C400D6D068 /* AlertViewConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8954B42243D7C400D6D068 /* AlertViewConfigurator.swift */; };
@@ -182,6 +199,23 @@
 		17F6E684224B3F99006DD31F /* PassPhraseMnemonicView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassPhraseMnemonicView.swift; sourceTree = "<group>"; };
 		17F6E689224B71A6006DD31F /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		2AC10F1C54DF2982BFB4A180 /* Pods-algorand.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand.debug.xcconfig"; path = "Pods/Target Support Files/Pods-algorand/Pods-algorand.debug.xcconfig"; sourceTree = "<group>"; };
+		2B5DA9CB224CB4AA00EE41B4 /* OptionsContextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsContextView.swift; sourceTree = "<group>"; };
+		2B5DA9CD224CB4B400EE41B4 /* OptionsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsCell.swift; sourceTree = "<group>"; };
+		2B5DA9D0224CCC8400EE41B4 /* OptionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsViewModel.swift; sourceTree = "<group>"; };
+		2B5DA9D2224CD21800EE41B4 /* AccountsViewController+Options.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AccountsViewController+Options.swift"; sourceTree = "<group>"; };
+		2B5DA9D4224CE19700EE41B4 /* EditAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAccountViewController.swift; sourceTree = "<group>"; };
+		2B5DA9D7224CE1BC00EE41B4 /* EditAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAccountView.swift; sourceTree = "<group>"; };
+		2B5DA9D9224D2F5C00EE41B4 /* PassphraseDisplayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseDisplayViewController.swift; sourceTree = "<group>"; };
+		2B5DA9DB224D37A100EE41B4 /* PassphraseDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseDisplayView.swift; sourceTree = "<group>"; };
+		2B656E8F224BAF200064A49B /* AccountListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountListViewController.swift; sourceTree = "<group>"; };
+		2B656E92224BAF2E0064A49B /* OptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsViewController.swift; sourceTree = "<group>"; };
+		2B656E96224BB9F80064A49B /* AccountListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountListView.swift; sourceTree = "<group>"; };
+		2B656E98224BC52D0064A49B /* AccountContextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountContextView.swift; sourceTree = "<group>"; };
+		2B656E9A224BC5370064A49B /* AccountViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewCell.swift; sourceTree = "<group>"; };
+		2B656E9E224BCB130064A49B /* AccountListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountListViewModel.swift; sourceTree = "<group>"; };
+		2B656EA1224BCC2C0064A49B /* AccountsTotalDisplayCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsTotalDisplayCell.swift; sourceTree = "<group>"; };
+		2B656EA5224BDC830064A49B /* AccountListLayoutBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountListLayoutBuilder.swift; sourceTree = "<group>"; };
+		2B656EA9224BDCB80064A49B /* AccountListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountListDataSource.swift; sourceTree = "<group>"; };
 		2B66870A2248DB35009F21E7 /* NavigationBarConfigurable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBarConfigurable.swift; sourceTree = "<group>"; };
 		2B66870D2248DB8B009F21E7 /* BarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarButtonItem.swift; sourceTree = "<group>"; };
 		2B66870F2248DBE2009F21E7 /* ALGBarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ALGBarButtonItem.swift; sourceTree = "<group>"; };
@@ -194,7 +228,7 @@
 		2B8954A42242E7D800D6D068 /* AccountNameSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountNameSetupView.swift; sourceTree = "<group>"; };
 		2B8954A72243854400D6D068 /* AlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertView.swift; sourceTree = "<group>"; };
 		2B8954AB22438FBC00D6D068 /* AlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertViewController.swift; sourceTree = "<group>"; };
-		2B8954AD2243D55200D6D068 /* NormalAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NormalAlertView.swift; sourceTree = "<group>"; };
+		2B8954AD2243D55200D6D068 /* DefaultAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultAlertView.swift; sourceTree = "<group>"; };
 		2B8954AF2243D5DA00D6D068 /* DestructiveAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DestructiveAlertView.swift; sourceTree = "<group>"; };
 		2B8954B22243D7AD00D6D068 /* AlertViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertViewModel.swift; sourceTree = "<group>"; };
 		2B8954B42243D7C400D6D068 /* AlertViewConfigurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertViewConfigurator.swift; sourceTree = "<group>"; };
@@ -374,6 +408,128 @@
 			path = CollectionViewLayout;
 			sourceTree = "<group>";
 		};
+		2B5DA9CA224CB47A00EE41B4 /* Options */ = {
+			isa = PBXGroup;
+			children = (
+				2B5DA9D6224CE1AA00EE41B4 /* Cell */,
+				2B5DA9D7224CE1BC00EE41B4 /* EditAccountView.swift */,
+				2B5DA9DB224D37A100EE41B4 /* PassphraseDisplayView.swift */,
+			);
+			path = Options;
+			sourceTree = "<group>";
+		};
+		2B5DA9CF224CCC6F00EE41B4 /* Options */ = {
+			isa = PBXGroup;
+			children = (
+				2B5DA9D0224CCC8400EE41B4 /* OptionsViewModel.swift */,
+			);
+			path = Options;
+			sourceTree = "<group>";
+		};
+		2B5DA9D6224CE1AA00EE41B4 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				2B5DA9CB224CB4AA00EE41B4 /* OptionsContextView.swift */,
+				2B5DA9CD224CB4B400EE41B4 /* OptionsCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		2B656E8E224BAF0B0064A49B /* AccountList */ = {
+			isa = PBXGroup;
+			children = (
+				2B656E8F224BAF200064A49B /* AccountListViewController.swift */,
+			);
+			path = AccountList;
+			sourceTree = "<group>";
+		};
+		2B656E91224BAF230064A49B /* Options */ = {
+			isa = PBXGroup;
+			children = (
+				2B656E92224BAF2E0064A49B /* OptionsViewController.swift */,
+				2B5DA9D4224CE19700EE41B4 /* EditAccountViewController.swift */,
+				2B5DA9D9224D2F5C00EE41B4 /* PassphraseDisplayViewController.swift */,
+			);
+			path = Options;
+			sourceTree = "<group>";
+		};
+		2B656E94224BB9D60064A49B /* Accounts */ = {
+			isa = PBXGroup;
+			children = (
+				2B5DA9CA224CB47A00EE41B4 /* Options */,
+				2B656E95224BB9E40064A49B /* AccountList */,
+			);
+			path = Accounts;
+			sourceTree = "<group>";
+		};
+		2B656E95224BB9E40064A49B /* AccountList */ = {
+			isa = PBXGroup;
+			children = (
+				2B656EA0224BCBFE0064A49B /* Cell */,
+				2B656E96224BB9F80064A49B /* AccountListView.swift */,
+			);
+			path = AccountList;
+			sourceTree = "<group>";
+		};
+		2B656E9C224BCAF60064A49B /* Accounts */ = {
+			isa = PBXGroup;
+			children = (
+				2B5DA9CF224CCC6F00EE41B4 /* Options */,
+				2B656E9D224BCB010064A49B /* AccountList */,
+			);
+			path = Accounts;
+			sourceTree = "<group>";
+		};
+		2B656E9D224BCB010064A49B /* AccountList */ = {
+			isa = PBXGroup;
+			children = (
+				2B656E9E224BCB130064A49B /* AccountListViewModel.swift */,
+			);
+			path = AccountList;
+			sourceTree = "<group>";
+		};
+		2B656EA0224BCBFE0064A49B /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				2B656E98224BC52D0064A49B /* AccountContextView.swift */,
+				2B656E9A224BC5370064A49B /* AccountViewCell.swift */,
+				2B656EA1224BCC2C0064A49B /* AccountsTotalDisplayCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		2B656EA3224BDC700064A49B /* Accounts */ = {
+			isa = PBXGroup;
+			children = (
+				2B656EA4224BDC740064A49B /* List */,
+			);
+			path = Accounts;
+			sourceTree = "<group>";
+		};
+		2B656EA4224BDC740064A49B /* List */ = {
+			isa = PBXGroup;
+			children = (
+				2B656EA5224BDC830064A49B /* AccountListLayoutBuilder.swift */,
+			);
+			path = List;
+			sourceTree = "<group>";
+		};
+		2B656EA7224BDCA40064A49B /* Accounts */ = {
+			isa = PBXGroup;
+			children = (
+				2B656EA8224BDCA80064A49B /* List */,
+			);
+			path = Accounts;
+			sourceTree = "<group>";
+		};
+		2B656EA8224BDCA80064A49B /* List */ = {
+			isa = PBXGroup;
+			children = (
+				2B656EA9224BDCB80064A49B /* AccountListDataSource.swift */,
+			);
+			path = List;
+			sourceTree = "<group>";
+		};
 		2B66870C2248DB6A009F21E7 /* NavigationBar */ = {
 			isa = PBXGroup;
 			children = (
@@ -422,7 +578,7 @@
 			isa = PBXGroup;
 			children = (
 				2B8954A72243854400D6D068 /* AlertView.swift */,
-				2B8954AD2243D55200D6D068 /* NormalAlertView.swift */,
+				2B8954AD2243D55200D6D068 /* DefaultAlertView.swift */,
 				2B8954AF2243D5DA00D6D068 /* DestructiveAlertView.swift */,
 			);
 			path = Alert;
@@ -649,6 +805,7 @@
 		2B8BE4F0223935A3005D8565 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				2B656E94224BB9D60064A49B /* Accounts */,
 				2BD739E2223F9FDD00B66EEF /* Common */,
 				2BD739CD223F97DF00B66EEF /* Authentication */,
 				2B8BE4F1223935C6005D8565 /* Core */,
@@ -961,6 +1118,7 @@
 		2BD73A0422412AA400B66EEF /* DataProviders */ = {
 			isa = PBXGroup;
 			children = (
+				2B656EA7224BDCA40064A49B /* Accounts */,
 				2BD73A0C22412B3D00B66EEF /* Common */,
 			);
 			path = DataProviders;
@@ -969,6 +1127,7 @@
 		2BD73A0722412AF200B66EEF /* LayoutBuilders */ = {
 			isa = PBXGroup;
 			children = (
+				2B656EA3224BDC700064A49B /* Accounts */,
 				2BD73A0822412AF900B66EEF /* Common */,
 			);
 			path = LayoutBuilders;
@@ -1009,6 +1168,7 @@
 		2BD73A0E22412B5900B66EEF /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				2B656E9C224BCAF60064A49B /* Accounts */,
 				2BD73A152241322D00B66EEF /* Authentication */,
 				2BD73A0F22412B6600B66EEF /* Common */,
 			);
@@ -1270,7 +1430,10 @@
 		2BF53177224AA86500A7455F /* Accounts */ = {
 			isa = PBXGroup;
 			children = (
+				2B656E91224BAF230064A49B /* Options */,
+				2B656E8E224BAF0B0064A49B /* AccountList */,
 				2BF53181224AA8E000A7455F /* AccountsViewController.swift */,
+				2B5DA9D2224CD21800EE41B4 /* AccountsViewController+Options.swift */,
 			);
 			path = Accounts;
 			sourceTree = "<group>";
@@ -1479,27 +1642,35 @@
 				2B8954C4224404C900D6D068 /* MultiLineInputField.swift in Sources */,
 				2BF53176224AA50F00A7455F /* TabBarController.swift in Sources */,
 				2B8954BB2243FCFA00D6D068 /* UIApplication+Additions.swift in Sources */,
+				2B5DA9D1224CCC8400EE41B4 /* OptionsViewModel.swift in Sources */,
 				2B8954C8224420B400D6D068 /* InputViewDelegate.swift in Sources */,
 				2B8954B82243FCD800D6D068 /* ViewControllerConfiguration.swift in Sources */,
 				2B66870B2248DB35009F21E7 /* NavigationBarConfigurable.swift in Sources */,
 				2BA8736E2248240A00511C7C /* UIEdgeInsets+Additions.swift in Sources */,
+				2B5DA9D5224CE19700EE41B4 /* EditAccountViewController.swift in Sources */,
 				2B8954B72243FCB100D6D068 /* Notification+Keyboard.swift in Sources */,
 				2B8954B62243FBD600D6D068 /* NotificationCenter+Additions.swift in Sources */,
 				1761B3CB224A39D400C6BA47 /* PassPhraseViewModel.swift in Sources */,
+				2B656E9F224BCB130064A49B /* AccountListViewModel.swift in Sources */,
 				2BF34CC2223A95A50052CAD3 /* API.swift in Sources */,
 				2BF34CB2223A77650052CAD3 /* StatusBarConfigurable.swift in Sources */,
 				2BF34C9D2239AB530052CAD3 /* Router.swift in Sources */,
 				2B8954CE2244323700D6D068 /* AccountRecoverViewController.swift in Sources */,
 				2B8954A22242E79C00D6D068 /* AccountNameSetupViewController.swift in Sources */,
+				2B5DA9CE224CB4B400EE41B4 /* OptionsCell.swift in Sources */,
 				1751261A223BE5930095AF4F /* AlgorandParamPairKey.swift in Sources */,
+				2B656E9B224BC5370064A49B /* AccountViewCell.swift in Sources */,
 				2BF53163224A478E00A7455F /* CardModalAnimator.swift in Sources */,
+				2B5DA9CC224CB4AA00EE41B4 /* OptionsContextView.swift in Sources */,
 				2B8BE4D422391C38005D8565 /* RootViewController.swift in Sources */,
 				2BD73A002241297700B66EEF /* NumpadDeleteCell.swift in Sources */,
 				2BF53155224A468400A7455F /* ModalPresentable.swift in Sources */,
+				2B656E99224BC52D0064A49B /* AccountContextView.swift in Sources */,
 				2BD739F8223FF4B600B66EEF /* NumpadDeleteButton.swift in Sources */,
 				2BD739D2223F97F600B66EEF /* WelcomeView.swift in Sources */,
 				2BD739FE22411A0100B66EEF /* Reusable.swift in Sources */,
 				2BD73A0622412AC900B66EEF /* NumpadViewDataSource.swift in Sources */,
+				2B5DA9D3224CD21800EE41B4 /* AccountsViewController+Options.swift in Sources */,
 				2BF5317C224AA89B00A7455F /* SettingsViewController.swift in Sources */,
 				2BD739D1223F97F600B66EEF /* IntroductionView.swift in Sources */,
 				2BD73A1C2241636C00B66EEF /* PassPhraseBackUpView.swift in Sources */,
@@ -1528,6 +1699,7 @@
 				2B8BE4EE22393577005D8565 /* BaseViewController.swift in Sources */,
 				17B7D8B0224128EC00A6FF9E /* Keychain+Additions.swift in Sources */,
 				17B7D8AB2240E19600A6FF9E /* AccountDraft.swift in Sources */,
+				2B5DA9D8224CE1BC00EE41B4 /* EditAccountView.swift in Sources */,
 				17512623223BEB9D0095AF4F /* UserDefaults+Additions.swift in Sources */,
 				17BEC4602248C81E00AAF370 /* PassPhraseVerifyView.swift in Sources */,
 				1751261D223BEA320095AF4F /* Session.swift in Sources */,
@@ -1550,18 +1722,23 @@
 				17F6E68A224B71A6006DD31F /* User.swift in Sources */,
 				2BD739D6223F985E00B66EEF /* UIColor+Additions.swift in Sources */,
 				2BD739EA223FA0BD00B66EEF /* ChoosePasswordViewController.swift in Sources */,
+				2B656E90224BAF200064A49B /* AccountListViewController.swift in Sources */,
 				2BF34CC5223A99670052CAD3 /* String+Localization.swift in Sources */,
 				2BF34CA62239AD6D0052CAD3 /* KeyboardController.swift in Sources */,
 				2BF53180224AA8C500A7455F /* HistoryViewController.swift in Sources */,
+				2B5DA9DA224D2F5C00EE41B4 /* PassphraseDisplayViewController.swift in Sources */,
 				2BF5315B224A46E400A7455F /* UIVIewController+Presentation.swift in Sources */,
 				179278952244F8EE00097D32 /* UIFont+Additions.swift in Sources */,
+				2B656E97224BB9F80064A49B /* AccountListView.swift in Sources */,
 				2BF34CA02239ACDC0052CAD3 /* AppConfiguration.swift in Sources */,
 				2BF34C9B2239AB130052CAD3 /* Screen.swift in Sources */,
 				2B66871A22491A5E009F21E7 /* QRScannerViewController.swift in Sources */,
 				2B8954B02243D5DA00D6D068 /* DestructiveAlertView.swift in Sources */,
+				2B656EA6224BDC830064A49B /* AccountListLayoutBuilder.swift in Sources */,
 				2BF34C992239AAD20052CAD3 /* UIViewController+Flow.swift in Sources */,
 				2BA8736A2248214800511C7C /* AlignedButton.swift in Sources */,
 				2B8BE50122393999005D8565 /* AdaptiveLayoutConstants.swift in Sources */,
+				2B656EAA224BDCB80064A49B /* AccountListDataSource.swift in Sources */,
 				2BD739FC2241052600B66EEF /* PasswordInputCircleView.swift in Sources */,
 				2BD739EC223FA0DC00B66EEF /* LocalAuthenticationPreferenceViewController.swift in Sources */,
 				2BF53153224A460B00A7455F /* ModalConfiguration.swift in Sources */,
@@ -1569,11 +1746,13 @@
 				2B8954AC22438FBC00D6D068 /* AlertViewController.swift in Sources */,
 				17BEC4662248D39900AAF370 /* PassPhraseCollectionViewCell.swift in Sources */,
 				2BD739CC223F97B100B66EEF /* IntroductionViewController.swift in Sources */,
+				2B656E93224BAF2E0064A49B /* OptionsViewController.swift in Sources */,
 				2BD739F4223FF08000B66EEF /* NumpadView.swift in Sources */,
 				2BF34CBA223A880C0052CAD3 /* UIView+SafeArea.swift in Sources */,
 				2BF34CBF223A8E740052CAD3 /* NavigationController.swift in Sources */,
 				2B8C1278224196DF00E34D37 /* String+Attributes.swift in Sources */,
 				2B8954A52242E7D800D6D068 /* AccountNameSetupView.swift in Sources */,
+				2B5DA9DC224D37A100EE41B4 /* PassphraseDisplayView.swift in Sources */,
 				2BF53157224A46A400A7455F /* ModalPresenter.swift in Sources */,
 				2BD739DD223F9E9F00B66EEF /* ChoosePasswordView.swift in Sources */,
 				2B8BE4F4223935DA005D8565 /* BaseView.swift in Sources */,
@@ -1586,8 +1765,9 @@
 				2BD739EF223FDE8400B66EEF /* UILabel+Factory.swift in Sources */,
 				2B8954B32243D7AD00D6D068 /* AlertViewModel.swift in Sources */,
 				2B6687152248DF83009F21E7 /* LocalAuthenticator.swift in Sources */,
+				2B656EA2224BCC2C0064A49B /* AccountsTotalDisplayCell.swift in Sources */,
 				2B8C127A2241970F00E34D37 /* NSAttributedString+Additions.swift in Sources */,
-				2B8954AE2243D55200D6D068 /* NormalAlertView.swift in Sources */,
+				2B8954AE2243D55200D6D068 /* DefaultAlertView.swift in Sources */,
 				2B8954C2224404B700D6D068 /* SingleLineInputField.swift in Sources */,
 				2BF53174224A940E00A7455F /* PollingOperation.swift in Sources */,
 			);

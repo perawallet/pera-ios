@@ -1,5 +1,5 @@
 //
-//  NormalAlertView.swift
+//  DefaultAlertView.swift
 //  algorand
 //
 //  Created by Göktuğ Berk Ulu on 21.03.2019.
@@ -8,12 +8,12 @@
 
 import UIKit
 
-protocol NormalAlertViewDelegate: class {
+protocol DefaultAlertViewDelegate: class {
     
-    func normalAlertViewDidTapDoneButton(_ alertView: NormalAlertView)
+    func defaultAlertViewDidTapDoneButton(_ alertView: DefaultAlertView)
 }
 
-class NormalAlertView: AlertView {
+class DefaultAlertView: AlertView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let verticalInset: CGFloat = 25.0
@@ -28,7 +28,7 @@ class NormalAlertView: AlertView {
         return button
     }()
     
-    weak var delegate: NormalAlertViewDelegate?
+    weak var delegate: DefaultAlertViewDelegate?
     
     // MARK: Listeners
     
@@ -56,6 +56,6 @@ class NormalAlertView: AlertView {
     
     @objc
     private func notifyDelegateToDoneButtonTapped() {
-        delegate?.normalAlertViewDidTapDoneButton(self)
+        delegate?.defaultAlertViewDidTapDoneButton(self)
     }
 }

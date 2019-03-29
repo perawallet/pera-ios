@@ -61,4 +61,8 @@ class RootViewController: UIViewController {
         
         return router?.route(to: screen, from: viewController, by: style, animated: animated, then: completion)
     }
+    
+    func launch() {
+        open(.home, by: .present, animated: false)
+    }
 }

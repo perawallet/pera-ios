@@ -10,6 +10,10 @@ import UIKit
 
 class CardModalPresentationController: UIPresentationController {
     
+    private enum Colors {
+        static let backgroundColor = rgba(0.04, 0.05, 0.07, 0.6)
+    }
+    
     typealias Configuration = ModalConfiguration
     
     private(set) var modalSize: ModalSize
@@ -25,7 +29,7 @@ class CardModalPresentationController: UIPresentationController {
     private lazy var chromeView: UIView = {
         let view = UIView()
         view.isUserInteractionEnabled = true
-        view.backgroundColor = .white
+        view.backgroundColor = Colors.backgroundColor
         return view
     }()
     

@@ -33,6 +33,11 @@ struct ALGBarButtonItem: BarButtonItem {
                 return ImageContent(normal: icon)
             }
             return nil
+        case .add:
+            if let icon = img("icon-add") {
+                return ImageContent(normal: icon)
+            }
+            return nil
         }
     }
     
@@ -51,6 +56,8 @@ struct ALGBarButtonItem: BarButtonItem {
             return .compressed(
                 BarButtonCompressedSizeInsets(contentInsets: UIEdgeInsets(top: 4.0, left: 4.0, bottom: 4.0, right: 4.0))
             )
+        case .add:
+            return .explicit(CGSize(width: 44.0, height: 44.0))
         }
     }
     
@@ -73,6 +80,7 @@ extension ALGBarButtonItem {
         case back
         case menu
         case options
+        case add
     }
 }
 
