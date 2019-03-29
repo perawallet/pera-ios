@@ -103,6 +103,8 @@
 		2BB021DB224E46D60039D78A /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB021DA224E46D60039D78A /* Transaction.swift */; };
 		2BB021DD224E558C0039D78A /* Montserrat-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2BB021DC224E558C0039D78A /* Montserrat-Medium.ttf */; };
 		2BB021E0224E5FD20039D78A /* AccountsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB021DF224E5FD20039D78A /* AccountsViewModel.swift */; };
+		2BB021E3224E7AD20039D78A /* TransactionHistoryDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB021E2224E7AD20039D78A /* TransactionHistoryDataSource.swift */; };
+		2BB021E6224E7BD00039D78A /* TransactionHistoryLayoutBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB021E5224E7BD00039D78A /* TransactionHistoryLayoutBuilder.swift */; };
 		2BD739CB223F97B100B66EEF /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD739C9223F97B100B66EEF /* WelcomeViewController.swift */; };
 		2BD739CC223F97B100B66EEF /* IntroductionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD739CA223F97B100B66EEF /* IntroductionViewController.swift */; };
 		2BD739D1223F97F600B66EEF /* IntroductionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD739CF223F97F600B66EEF /* IntroductionView.swift */; };
@@ -270,6 +272,8 @@
 		2BB021DA224E46D60039D78A /* Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
 		2BB021DC224E558C0039D78A /* Montserrat-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Medium.ttf"; sourceTree = "<group>"; };
 		2BB021DF224E5FD20039D78A /* AccountsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsViewModel.swift; sourceTree = "<group>"; };
+		2BB021E2224E7AD20039D78A /* TransactionHistoryDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryDataSource.swift; sourceTree = "<group>"; };
+		2BB021E5224E7BD00039D78A /* TransactionHistoryLayoutBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryLayoutBuilder.swift; sourceTree = "<group>"; };
 		2BD739C9223F97B100B66EEF /* WelcomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
 		2BD739CA223F97B100B66EEF /* IntroductionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroductionViewController.swift; sourceTree = "<group>"; };
 		2BD739CF223F97F600B66EEF /* IntroductionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroductionView.swift; sourceTree = "<group>"; };
@@ -526,6 +530,7 @@
 		2B656EA3224BDC700064A49B /* Accounts */ = {
 			isa = PBXGroup;
 			children = (
+				2BB021E4224E7BC00039D78A /* Main */,
 				2B656EA4224BDC740064A49B /* List */,
 			);
 			path = Accounts;
@@ -542,6 +547,7 @@
 		2B656EA7224BDCA40064A49B /* Accounts */ = {
 			isa = PBXGroup;
 			children = (
+				2BB021E1224E7AB20039D78A /* Main */,
 				2B656EA8224BDCA80064A49B /* List */,
 			);
 			path = Accounts;
@@ -974,6 +980,22 @@
 			isa = PBXGroup;
 			children = (
 				2BB021DF224E5FD20039D78A /* AccountsViewModel.swift */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		2BB021E1224E7AB20039D78A /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				2BB021E2224E7AD20039D78A /* TransactionHistoryDataSource.swift */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		2BB021E4224E7BC00039D78A /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				2BB021E5224E7BD00039D78A /* TransactionHistoryLayoutBuilder.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -1765,6 +1787,7 @@
 				2BF34CB4223A87440052CAD3 /* BaseScrollViewController.swift in Sources */,
 				17BEC45D2248C7D900AAF370 /* PassPhraseVerifyViewController.swift in Sources */,
 				2BDE9CCD224E1464007EFF30 /* AccountsHeaderView.swift in Sources */,
+				2BB021E6224E7BD00039D78A /* TransactionHistoryLayoutBuilder.swift in Sources */,
 				17BEC4632248CD3C00AAF370 /* LeftAlignedCollectionViewFlowLayout.swift in Sources */,
 				2BD73A1F2241639500B66EEF /* PassPhraseBackUpViewController.swift in Sources */,
 				2BD739D9223F987E00B66EEF /* Utils.swift in Sources */,
@@ -1807,6 +1830,7 @@
 				2BB021E0224E5FD20039D78A /* AccountsViewModel.swift in Sources */,
 				2BF53180224AA8C500A7455F /* HistoryViewController.swift in Sources */,
 				2B5DA9DA224D2F5C00EE41B4 /* PassphraseDisplayViewController.swift in Sources */,
+				2BB021E3224E7AD20039D78A /* TransactionHistoryDataSource.swift in Sources */,
 				2BF5315B224A46E400A7455F /* UIVIewController+Presentation.swift in Sources */,
 				2BB021DB224E46D60039D78A /* Transaction.swift in Sources */,
 				179278952244F8EE00097D32 /* UIFont+Additions.swift in Sources */,

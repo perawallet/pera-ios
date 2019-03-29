@@ -52,6 +52,8 @@ class AccountsView: BaseView {
     
     override func linkInteractors() {
         accountsHeaderView.delegate = self
+        
+        
     }
     
     // MARK: Layout

@@ -46,6 +46,9 @@ class AccountsViewController: BaseViewController {
     
     private let viewModel = AccountsViewModel()
     
+    private var transactionHistoryLayoutBuilder: TransactionHistoryLayoutBuilder
+    private var transactionHistoryDataSource: TransactionHistoryDataSource
+    
     // TODO: Will remove mock after real connection
     private let account = Account(address: "1")
     
@@ -55,6 +58,15 @@ class AccountsViewController: BaseViewController {
         let view = AccountsView()
         return view
     }()
+    
+    // MARK: Initialization
+    
+    override init(configuration: ViewControllerConfiguration) {
+        transactionHistoryLayoutBuilder = TransactionHistoryLayoutBuilder()
+        transactionHistoryDataSource = TransactionHistoryDataSource()
+        
+        super.init(configuration: configuration)
+    }
     
     // MARK: Setup
     
@@ -69,6 +81,11 @@ class AccountsViewController: BaseViewController {
         
         leftBarButtonItems = [accountListBarButtonItem]
         rightBarButtonItems = [optionsBarButtonItem]
+    }
+    
+    override func linkInteractors() {
+        accountsView.transactionHistoryCollectionView.delegate = transactionHistoryLayoutBuilder
+        accountsView.transactionHistoryCollectionView.dataSource = transactionHistoryDataSource
     }
     
     override func configureAppearance() {
