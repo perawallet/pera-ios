@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftDate
 
 class AccountsViewModel {
     
@@ -23,7 +24,9 @@ class AccountsViewModel {
             cell.contextView.transactionAmountView.mode = .negative(-transaction.amount)
         }
         
-        cell.contextView.dateLabel.text = "\(transaction.date.timeIntervalSince1970)"
+        let formattedDate = transaction.date.toFormat("MMMM dd, yyyy")
+        
+        cell.contextView.dateLabel.text = formattedDate
         cell.contextView.accountNamelabel.text = transaction.accountName
     }
 }

@@ -4,12 +4,14 @@ PODS:
   - Magpie (0.1.0):
     - Alamofire
   - SnapKit (4.2.0)
+  - SwiftDate (5.1.0)
   - SwiftLint (0.30.1)
 
 DEPENDENCIES:
   - KeychainAccess
   - Magpie (from `https://github.com/Hipo/magpie.git`)
   - SnapKit
+  - SwiftDate
   - SwiftLint
 
 SPEC REPOS:
@@ -17,6 +19,7 @@ SPEC REPOS:
     - Alamofire
     - KeychainAccess
     - SnapKit
+    - SwiftDate
     - SwiftLint
 
 EXTERNAL SOURCES:
@@ -33,8 +36,9 @@ SPEC CHECKSUMS:
   KeychainAccess: b3816fddcf28aa29d94b10ec305cd52be14c472b
   Magpie: f1235cc99bab71365b8479089458c7b85e299950
   SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
+  SwiftDate: 6329e58969a2de31cea7f1ee1143b247693196e7
   SwiftLint: a54bf1fe12b55c68560eb2a7689dfc81458508f7
 
-PODFILE CHECKSUM: 035f30d3172a242f104b6aabe41594b697e08e58
+PODFILE CHECKSUM: 832b36361bedb018bdf9f6e4abca550107728aa9
 
 COCOAPODS: 1.5.3
