@@ -17,6 +17,8 @@ class AccountsViewController: BaseViewController {
     
     let layout = Layout<LayoutConstants>()
     
+    // MARK: Variables
+    
     private lazy var accountListModalPresenter = CardModalPresenter(
         config: ModalConfiguration(
             animationMode: .normal(duration: 0.25),
@@ -42,6 +44,13 @@ class AccountsViewController: BaseViewController {
     
     private(set) var localAuthenticator = LocalAuthenticator()
     
+    // MARK: Components
+    
+    private lazy var accountsView: AccountsView = {
+        let view = AccountsView()
+        return view
+    }()
+    
     // MARK: Setup
     
     override func configureNavigationBarAppearance() {
@@ -66,7 +75,24 @@ class AccountsViewController: BaseViewController {
         title = "Account Name".localized
     }
     
-    // MARK: Navigation Actions
+    // MARK: Layout
+    
+    override func prepareLayout() {
+        setupAccountsViewLayout()
+    }
+    
+    private func setupAccountsViewLayout() {
+        view.addSubview(accountsView)
+        
+        accountsView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+    }
+}
+
+// MARK: Navigation Actions
+
+extension AccountsViewController {
     
     private func presentAccountList() {
         open(

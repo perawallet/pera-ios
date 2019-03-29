@@ -102,6 +102,10 @@
 "login-subtitle" = "Enter six digit password";
 "logout-title" = "Logout";
 
+// MARK: Accounts
+
+"accounts-tranaction-empty-text" = "No Transactions Yet";
+
 // MARK: Account List
 
 "account-list-add" = "ADD NEW ACCOUT";
