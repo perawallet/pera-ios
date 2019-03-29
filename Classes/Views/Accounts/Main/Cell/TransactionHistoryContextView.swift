@@ -94,6 +94,7 @@ class TransactionHistoryContextView: BaseView {
         transactionAmountView.snp.makeConstraints { make in
             make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
             make.top.equalToSuperview().inset(layout.current.topInset)
+            make.centerY.equalTo(transactionDetailLabel)
             make.leading.greaterThanOrEqualTo(transactionDetailLabel.snp.trailing).offset(layout.current.minimumHorizontalSpacing)
         }
     }
