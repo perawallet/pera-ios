@@ -59,6 +59,8 @@ class AccountsViewController: BaseViewController {
         return view
     }()
     
+    private lazy var emptyStateView = TransactionsEmptyStateView()
+    
     // MARK: Initialization
     
     override init(configuration: ViewControllerConfiguration) {
@@ -84,6 +86,7 @@ class AccountsViewController: BaseViewController {
     }
     
     override func linkInteractors() {
+        transactionHistoryDataSource.delegate = self
         accountsView.transactionHistoryCollectionView.delegate = transactionHistoryLayoutBuilder
         accountsView.transactionHistoryCollectionView.dataSource = transactionHistoryDataSource
     }
@@ -102,6 +105,9 @@ class AccountsViewController: BaseViewController {
         }
         
         viewModel.configure(accountsView.accountsHeaderView, with: account)
+        
+        accountsView.transactionHistoryCollectionView.contentState = .loading
+        transactionHistoryDataSource.setupMockData()
     }
     
     // MARK: Layout
@@ -144,5 +150,19 @@ extension AccountsViewController {
         let optionsViewController = open(.options, by: transitionStyle) as? OptionsViewController
         
         optionsViewController?.delegate = self
+    }
+}
+
+// MARK: TransactionHistoryDataSourceDelegate
+
+extension AccountsViewController: TransactionHistoryDataSourceDelegate {
+    
+    func transactionHistoryDataSource(_ transactionHistoryDataSource: TransactionHistoryDataSource, didFetch transactions: [Transaction]) {
+        if !transactions.isEmpty {
+            accountsView.transactionHistoryCollectionView.contentState = .none
+            return
+        }
+
+        accountsView.transactionHistoryCollectionView.contentState = .empty(emptyStateView)
     }
 }

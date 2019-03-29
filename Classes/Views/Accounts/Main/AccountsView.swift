@@ -46,14 +46,14 @@ class AccountsView: BaseView {
         return collectionView
     }()
     
+    private lazy var contentStateView = ContentStateView()
+    
     weak var delegate: AccountsViewDelegate?
     
     // MARK: Setup
     
     override func linkInteractors() {
         accountsHeaderView.delegate = self
-        
-        
     }
     
     // MARK: Layout
@@ -61,6 +61,7 @@ class AccountsView: BaseView {
     override func prepareLayout() {
         setupAccountsHeaderViewLayout()
         setupTransactionHistoryCollectionViewLayout()
+        setupContentStateView()
     }
     
     private func setupAccountsHeaderViewLayout() {
@@ -79,6 +80,10 @@ class AccountsView: BaseView {
             make.top.equalTo(accountsHeaderView.snp.bottom)
             make.leading.trailing.bottom.equalToSuperview()
         }
+    }
+    
+    private func setupContentStateView() {
+        transactionHistoryCollectionView.backgroundView = contentStateView
     }
 }
 

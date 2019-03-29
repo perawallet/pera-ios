@@ -8,20 +8,28 @@
 
 import UIKit
 
+protocol TransactionHistoryDataSourceDelegate: class {
+    
+    func transactionHistoryDataSource(_ transactionHistoryDataSource: TransactionHistoryDataSource, didFetch transactions: [Transaction])
+}
+
 class TransactionHistoryDataSource: NSObject, UICollectionViewDataSource {
     
-    private(set) var transactions = [Transaction]()
+    weak var delegate: TransactionHistoryDataSourceDelegate?
+    
+    private var transactions = [Transaction]()
     
     private let viewModel = AccountsViewModel()
     
     // TODO: Added transacitons for test. Should be removed after SDK integration.
+    // TODO: Need to configure doubles for amount after "."
     
     private var amounts: [Double] = [12345, 12456, 312, -12312, 3545, -23523, -6475, 4543, -64754, -3453,
                                      234234, 567, -34634, 234, -345345, 324, -4560, 351, -2134, 12340, -140]
     
-    override init() {
-        super.init()
-        
+    // TODO: Might be renamed to load data after sdk integration?
+    
+    func setupMockData() {
         for index in 0...20 {
             let transaction = Transaction(
                 accountName: "Account name \(index)",
@@ -32,6 +40,8 @@ class TransactionHistoryDataSource: NSObject, UICollectionViewDataSource {
             
             transactions.append(transaction)
         }
+        
+        delegate?.transactionHistoryDataSource(self, didFetch: transactions)
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AccountsEmptyStateView: BaseView {
+class TransactionsEmptyStateView: BaseView {
 
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let titleInset: CGFloat = 79.0
@@ -32,6 +32,12 @@ class AccountsEmptyStateView: BaseView {
     private lazy var topImageView = UIImageView(image: img("icon-transaction-empty-green"))
     
     private lazy var bottomImageView = UIImageView(image: img("icon-transaction-empty-blue"))
+    
+    // MARK: Setup
+    
+    override func configureAppearance() {
+        backgroundColor = .white
+    }
     
     // MARK: Layout
     
