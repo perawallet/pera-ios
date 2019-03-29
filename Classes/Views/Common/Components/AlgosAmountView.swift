@@ -10,31 +10,31 @@ import UIKit
 
 class AlgosAmountView: BaseView {
     
-    private struct LayoutConstants: AdaptiveLayoutConstants {
+    var mode: Mode = .normal(0.00) {
+        didSet {
+            
+            updateAmountView()
+        }
     }
-    
-    private let layout = Layout<LayoutConstants>()
     
     // MARK: Components
     
     private(set) lazy var signLabel: UILabel = {
         UILabel()
-            .withAlignment(.center)
-            .withLine(.contained)
-            .withTextColor(SharedColors.softGray)
-            .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 14.0)))
-            .withText("accounts-tranaction-empty-text".localized)
+            .withAlignment(.left)
+            .withLine(.single)
+            .withTextColor(SharedColors.black)
+            .withFont(UIFont.font(.opensans, withWeight: .bold(size: 16.0)))
     }()
     
-    private(set) lazy var algoIconImageView = UIImageView(image: img("icon-transaction-empty-green"))
+    private(set) lazy var algoIconImageView = UIImageView(image: img("icon-algo-small-black"))
     
     private(set) lazy var amountLabel: UILabel = {
         UILabel()
-            .withAlignment(.center)
-            .withLine(.contained)
-            .withTextColor(SharedColors.softGray)
-            .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 14.0)))
-            .withText("accounts-tranaction-empty-text".localized)
+            .withAlignment(.right)
+            .withLine(.single)
+            .withTextColor(SharedColors.black)
+            .withFont(UIFont.font(.opensans, withWeight: .bold(size: 16.0)))
     }()
 
     // MARK: Setup
@@ -55,7 +55,8 @@ class AlgosAmountView: BaseView {
         addSubview(signLabel)
         
         signLabel.snp.makeConstraints { make in
-            
+            make.leading.equalToSuperview()
+            make.centerY.equalToSuperview()
         }
     }
     
@@ -63,7 +64,8 @@ class AlgosAmountView: BaseView {
         addSubview(algoIconImageView)
         
         algoIconImageView.snp.makeConstraints { make in
-            
+            make.leading.equalTo(signLabel.snp.trailing)
+            make.centerY.equalToSuperview()
         }
     }
     
@@ -71,7 +73,52 @@ class AlgosAmountView: BaseView {
         addSubview(amountLabel)
         
         amountLabel.snp.makeConstraints { make in
-            
+            make.leading.equalTo(algoIconImageView.snp.trailing)
+            make.centerY.equalToSuperview()
+            make.trailing.equalToSuperview()
         }
+    }
+    
+    // MARK: Update
+    
+    private func updateAmountView() {
+        switch mode {
+        case let .normal(amount):
+            signLabel.isHidden = true
+            
+            amountLabel.text = "\(amount)"
+            amountLabel.textColor = SharedColors.black
+            
+            algoIconImageView.image = img("icon-algo-small-black")
+        case let .positive(amount):
+            signLabel.isHidden = false
+            signLabel.text = "+"
+            signLabel.textColor = SharedColors.green
+            
+            amountLabel.text = "\(amount)"
+            amountLabel.textColor = SharedColors.green
+            
+            algoIconImageView.image = img("icon-algo-small-green")
+        case let .negative(amount):
+            signLabel.isHidden = false
+            signLabel.text = "-"
+            signLabel.textColor = SharedColors.blue
+            
+            amountLabel.text = "\(amount)"
+            amountLabel.textColor = SharedColors.blue
+            
+            algoIconImageView.image = img("icon-algo-small-blue")
+        }
+    }
+}
+
+// MARK: Mode
+
+extension AlgosAmountView {
+    
+    enum Mode {
+        case normal(Double)
+        case positive(Double)
+        case negative(Double)
     }
 }
