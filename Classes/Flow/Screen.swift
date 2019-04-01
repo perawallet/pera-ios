@@ -23,6 +23,7 @@ enum Screen {
     case options
     case accountList
     case editAccount
+    case addContact
 }
 
 extension Screen {

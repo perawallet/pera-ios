@@ -54,4 +54,9 @@ extension UIButton {
         titleEdgeInsets = edgeInsets
         return self
     }
+    
+    func withBackgroundColor(_ color: UIColor) -> UIButton {
+        backgroundColor = color
+        return self
+    }
 }

@@ -127,6 +127,15 @@
 // MARK: Contacts
 
 "contacts-title" = "Contacts";
+"contacts-search" = "Search Contacts";
+"contacts-add" = "Add Contact";
+"contacts-info" = "Contact Info";
+"contacts-input-name-explanation" = "Name:";
+"contacts-input-name-placeholder" = "Contact Name";
+"contacts-input-address-explanation" = "Algorand Address:";
+"contacts-input-address-placeholder" = "Paste # or Scan QR";
+"contacts-transactions-title" = "Transactions";
+"contacts-add-button" = "ADD CONTACT";
 
 // MARK: Settings
 

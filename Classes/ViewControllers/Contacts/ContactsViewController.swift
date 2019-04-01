@@ -10,8 +10,18 @@ import UIKit
 
 class ContactsViewController: BaseViewController {
     
+    // MARK: Components
+    
+    private lazy var contactsView: ContactsView = {
+        let view = ContactsView()
+        return view
+    }()
+    
+    // MARK: Setup
+    
     override func configureNavigationBarAppearance() {
         let addBarButtonItem = ALGBarButtonItem(kind: .add) {
+            self.open(.addContact, by: .push)
         }
         
         rightBarButtonItems = [addBarButtonItem]
@@ -21,5 +31,15 @@ class ContactsViewController: BaseViewController {
         super.configureAppearance()
         
         title = "contacts-title".localized
+    }
+    
+    // MARK: Layout
+    
+    override func prepareLayout() {
+        view.addSubview(contactsView)
+        
+        contactsView.snp.makeConstraints { make in
+            
+        }
     }
 }

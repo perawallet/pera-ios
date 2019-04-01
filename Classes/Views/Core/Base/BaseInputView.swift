@@ -112,7 +112,7 @@ class BaseInputView: BaseView {
             make.leading.equalToSuperview().inset(layout.current.defaultInset)
             
             if displaysRightInputAccessoryButton {
-                make.trailing.lessThanOrEqualTo(rightInputAccessoryButton.snp.leading).inset(-layout.current.defaultInset)
+                make.trailing.equalTo(rightInputAccessoryButton.snp.leading).inset(-layout.current.defaultInset)
             } else {
                 make.trailing.equalToSuperview().inset(layout.current.defaultInset)
             }
