@@ -11,6 +11,7 @@ import UIKit
 protocol AddContactViewDelegate: class {
     
     func addContactViewDidTapAddContactButton(_ addContactView: AddContactView)
+    func addContactViewDidTapAddImageButton(_ addContactView: AddContactView)
 }
 
 class AddContactView: BaseView {
@@ -41,6 +42,10 @@ class AddContactView: BaseView {
     
     override func setListeners() {
         addContactButton.addTarget(self, action: #selector(notifyDelegateToAddButtonTapped), for: .touchUpInside)
+    }
+    
+    override func linkInteractors() {
+        userInformationView.delegate = self
     }
     
     // MARK: Layout
@@ -74,5 +79,14 @@ class AddContactView: BaseView {
     @objc
     private func notifyDelegateToAddButtonTapped() {
         delegate?.addContactViewDidTapAddContactButton(self)
+    }
+}
+
+// MARK: UserInformationViewDelegate
+
+extension AddContactView: UserInformationViewDelegate {
+    
+    func userInformationViewDidTapAddImageButton(_ userInformationView: UserInformationView) {
+        delegate?.addContactViewDidTapAddImageButton(self)
     }
 }

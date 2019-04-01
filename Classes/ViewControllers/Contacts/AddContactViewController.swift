@@ -17,12 +17,18 @@ class AddContactViewController: BaseViewController {
         return view
     }()
     
+    private lazy var imagePicker = ImagePicker(viewController: self)
+    
     // MARK: Setup
     
     override func configureAppearance() {
         super.configureAppearance()
         
         title = "contacts-add".localized
+    }
+    
+    override func linkInteractors() {
+        addContactView.delegate = self
     }
     
     // MARK: Layout
@@ -33,5 +39,29 @@ class AddContactViewController: BaseViewController {
         addContactView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+    }
+}
+
+// MARK: AddContactViewDelegate
+
+extension AddContactViewController: AddContactViewDelegate {
+    
+    func addContactViewDidTapAddImageButton(_ addContactView: AddContactView) {
+        imagePicker.delegate = self
+        imagePicker.present()
+    }
+    
+    func addContactViewDidTapAddContactButton(_ addContactView: AddContactView) {
+
+    }
+}
+
+// MARK: ImagePickerDelegate
+
+extension AddContactViewController: ImagePickerDelegate {
+    
+    func imagePicker(didPick image: UIImage, withInfo info: [String: Any]) {
+        let resizedImage = image.convert(to: CGSize(width: 108.0, height: 108.0), scale: UIScreen.main.scale)
+        addContactView.userInformationView.userImageView.image = resizedImage
     }
 }

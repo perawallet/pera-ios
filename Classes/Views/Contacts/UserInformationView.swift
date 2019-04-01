@@ -8,6 +8,11 @@
 
 import UIKit
 
+protocol UserInformationViewDelegate: class {
+    
+    func userInformationViewDidTapAddImageButton(_ userInformationView: UserInformationView)
+}
+
 class UserInformationView: BaseView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
@@ -33,7 +38,13 @@ class UserInformationView: BaseView {
         return view
     }()
     
-    private(set) lazy var userImageView = UIImageView(image: img("icon-user-placeholder-big"))
+    private(set) lazy var userImageView: UIImageView = {
+        let imageView = UIImageView(image: img("icon-user-placeholder-big"))
+        imageView.layer.cornerRadius = layout.current.backgroundViewSize / 2
+        imageView.clipsToBounds = true
+        imageView.contentMode = .center
+        return imageView
+    }()
     
     private(set) lazy var addButton: UIButton = {
         let button = UIButton(type: .custom).withBackgroundColor(Colors.addButtonColor).withImage(img("icon-add-white"))
@@ -77,6 +88,8 @@ class UserInformationView: BaseView {
         return algorandAddressInputView
     }()
     
+    weak var delegate: UserInformationViewDelegate?
+    
     private var isEditable: Bool
     
     init(isEditable: Bool = true) {
@@ -89,7 +102,10 @@ class UserInformationView: BaseView {
     
     override func configureAppearance() {
         backgroundColor = .white
-        userImageView.contentMode = .scaleAspectFill
+    }
+    
+    override func setListeners() {
+        addButton.addTarget(self, action: #selector(notifyDelegateToAddButtonTapped), for: .touchUpInside)
     }
     
     // MARK: Layout
@@ -116,8 +132,8 @@ class UserInformationView: BaseView {
         addSubview(userImageView)
         
         userImageView.snp.makeConstraints { make in
-            make.width.height.lessThanOrEqualTo(layout.current.backgroundViewSize)
-            make.center.equalTo(imageBackgroundView)
+            make.edges.lessThanOrEqualTo(imageBackgroundView)
+            make.width.height.equalTo(layout.current.backgroundViewSize)
         }
     }
     
@@ -146,5 +162,12 @@ class UserInformationView: BaseView {
             make.top.equalTo(contactNameInputView.snp.bottom).offset(layout.current.addressInputViewInset)
             make.leading.trailing.bottom.equalToSuperview()
         }
+    }
+    
+    // MARK: Actions
+    
+    @objc
+    private func notifyDelegateToAddButtonTapped() {
+        delegate?.userInformationViewDidTapAddImageButton(self)
     }
 }

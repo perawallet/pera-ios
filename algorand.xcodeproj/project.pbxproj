@@ -59,6 +59,7 @@
 		2B656EA2224BCC2C0064A49B /* AccountsTotalDisplayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B656EA1224BCC2C0064A49B /* AccountsTotalDisplayCell.swift */; };
 		2B656EA6224BDC830064A49B /* AccountListLayoutBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B656EA5224BDC830064A49B /* AccountListLayoutBuilder.swift */; };
 		2B656EAA224BDCB80064A49B /* AccountListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B656EA9224BDCB80064A49B /* AccountListDataSource.swift */; };
+		2B65B1FE225268DA001DB5BE /* UIImage+Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B65B1FD225268DA001DB5BE /* UIImage+Size.swift */; };
 		2B66870B2248DB35009F21E7 /* NavigationBarConfigurable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B66870A2248DB35009F21E7 /* NavigationBarConfigurable.swift */; };
 		2B66870E2248DB8B009F21E7 /* BarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B66870D2248DB8B009F21E7 /* BarButtonItem.swift */; };
 		2B6687102248DBE2009F21E7 /* ALGBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B66870F2248DBE2009F21E7 /* ALGBarButtonItem.swift */; };
@@ -99,6 +100,7 @@
 		2B8C127A2241970F00E34D37 /* NSAttributedString+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8C12792241970F00E34D37 /* NSAttributedString+Additions.swift */; };
 		2BA8736A2248214800511C7C /* AlignedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA873692248214800511C7C /* AlignedButton.swift */; };
 		2BA8736E2248240A00511C7C /* UIEdgeInsets+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA8736D2248240A00511C7C /* UIEdgeInsets+Additions.swift */; };
+		2BC45DEE225253A1000CDCE2 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC45DED225253A1000CDCE2 /* ImagePicker.swift */; };
 		2BD739CB223F97B100B66EEF /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD739C9223F97B100B66EEF /* WelcomeViewController.swift */; };
 		2BD739CC223F97B100B66EEF /* IntroductionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD739CA223F97B100B66EEF /* IntroductionViewController.swift */; };
 		2BD739D1223F97F600B66EEF /* IntroductionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD739CF223F97F600B66EEF /* IntroductionView.swift */; };
@@ -224,6 +226,7 @@
 		2B656EA1224BCC2C0064A49B /* AccountsTotalDisplayCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsTotalDisplayCell.swift; sourceTree = "<group>"; };
 		2B656EA5224BDC830064A49B /* AccountListLayoutBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountListLayoutBuilder.swift; sourceTree = "<group>"; };
 		2B656EA9224BDCB80064A49B /* AccountListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountListDataSource.swift; sourceTree = "<group>"; };
+		2B65B1FD225268DA001DB5BE /* UIImage+Size.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Size.swift"; sourceTree = "<group>"; };
 		2B66870A2248DB35009F21E7 /* NavigationBarConfigurable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBarConfigurable.swift; sourceTree = "<group>"; };
 		2B66870D2248DB8B009F21E7 /* BarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarButtonItem.swift; sourceTree = "<group>"; };
 		2B66870F2248DBE2009F21E7 /* ALGBarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ALGBarButtonItem.swift; sourceTree = "<group>"; };
@@ -263,6 +266,7 @@
 		2B8C12792241970F00E34D37 /* NSAttributedString+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Additions.swift"; sourceTree = "<group>"; };
 		2BA873692248214800511C7C /* AlignedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlignedButton.swift; sourceTree = "<group>"; };
 		2BA8736D2248240A00511C7C /* UIEdgeInsets+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIEdgeInsets+Additions.swift"; sourceTree = "<group>"; };
+		2BC45DED225253A1000CDCE2 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		2BD739C9223F97B100B66EEF /* WelcomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
 		2BD739CA223F97B100B66EEF /* IntroductionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroductionViewController.swift; sourceTree = "<group>"; };
 		2BD739CF223F97F600B66EEF /* IntroductionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroductionView.swift; sourceTree = "<group>"; };
@@ -544,6 +548,14 @@
 				2B656EA9224BDCB80064A49B /* AccountListDataSource.swift */,
 			);
 			path = List;
+			sourceTree = "<group>";
+		};
+		2B65B1FC225268CC001DB5BE /* Image */ = {
+			isa = PBXGroup;
+			children = (
+				2B65B1FD225268DA001DB5BE /* UIImage+Size.swift */,
+			);
+			path = Image;
 			sourceTree = "<group>";
 		};
 		2B66870C2248DB6A009F21E7 /* NavigationBar */ = {
@@ -851,6 +863,7 @@
 		2B8BE4F5223936FD005D8565 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				2BC45DEC2252538D000CDCE2 /* ImagePicker */,
 				2BF53172224A93E800A7455F /* Operations */,
 				2B6687132248DF57009F21E7 /* LocalAuthentication */,
 				2BF34CA32239AD4A0052CAD3 /* UI */,
@@ -922,6 +935,7 @@
 		2B8BE502223939DD005D8565 /* UIKit */ = {
 			isa = PBXGroup;
 			children = (
+				2B65B1FC225268CC001DB5BE /* Image */,
 				2BD739ED223FDE7200B66EEF /* Factory */,
 				2BF34CB8223A88030052CAD3 /* Layout */,
 				2B8BE503223939E7005D8565 /* Application */,
@@ -960,6 +974,14 @@
 				17B7D8AF224128EC00A6FF9E /* Keychain+Additions.swift */,
 			);
 			path = Data;
+			sourceTree = "<group>";
+		};
+		2BC45DEC2252538D000CDCE2 /* ImagePicker */ = {
+			isa = PBXGroup;
+			children = (
+				2BC45DED225253A1000CDCE2 /* ImagePicker.swift */,
+			);
+			path = ImagePicker;
 			sourceTree = "<group>";
 		};
 		2BD739C7223F978300B66EEF /* Authentication */ = {
@@ -1693,6 +1715,7 @@
 				2B5DA9CE224CB4B400EE41B4 /* OptionsCell.swift in Sources */,
 				1751261A223BE5930095AF4F /* AlgorandParamPairKey.swift in Sources */,
 				2B656E9B224BC5370064A49B /* AccountViewCell.swift in Sources */,
+				2B65B1FE225268DA001DB5BE /* UIImage+Size.swift in Sources */,
 				2BF53163224A478E00A7455F /* CardModalAnimator.swift in Sources */,
 				2B5DA9CC224CB4AA00EE41B4 /* OptionsContextView.swift in Sources */,
 				2B8BE4D422391C38005D8565 /* RootViewController.swift in Sources */,
@@ -1760,6 +1783,7 @@
 				2BD739D6223F985E00B66EEF /* UIColor+Additions.swift in Sources */,
 				2BF71916224ED0A6001E8420 /* AddContactViewController.swift in Sources */,
 				2BD739EA223FA0BD00B66EEF /* ChoosePasswordViewController.swift in Sources */,
+				2BC45DEE225253A1000CDCE2 /* ImagePicker.swift in Sources */,
 				2B656E90224BAF200064A49B /* AccountListViewController.swift in Sources */,
 				2BF34CC5223A99670052CAD3 /* String+Localization.swift in Sources */,
 				2BF34CA62239AD6D0052CAD3 /* KeyboardController.swift in Sources */,
