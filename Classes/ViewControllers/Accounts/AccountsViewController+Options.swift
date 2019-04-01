@@ -11,13 +11,24 @@ import UIKit
 extension AccountsViewController: OptionsViewControllerDelegate {
     
     func optionsViewControllerDidShowQR(_ optionsViewController: OptionsViewController) {
-        // TODO: Add show qr action
+        guard let account = selectedAccount else {
+            return
+        }
+        
+        let text = account.address
+        
+        open(.qrGenerator(text: text, mode: .mnemonic), by: .present)
     }
     
     func optionsViewControllerDidSetDefaultAccount(_ optionsViewController: OptionsViewController) {
-        displaySimpleAlertWith(title: "options-default-account-title".localized, message: "options-default-account-message".localized)
+        guard let user = session?.authenticatedUser,
+            let account = selectedAccount else {
+            return
+        }
         
-        // TODO: Save as default account
+        user.setDefaultAccount(account)
+        
+        displaySimpleAlertWith(title: "options-default-account-title".localized, message: "options-default-account-message".localized)
     }
     
     func optionsViewControllerDidViewPassphrase(_ optionsViewController: OptionsViewController) {
@@ -42,7 +53,11 @@ extension AccountsViewController: OptionsViewControllerDelegate {
     }
     
     private func presentPassphraseView() {
-        let viewController = PassphraseDisplayViewController(configuration: configuration)
+        guard let account = self.selectedAccount else {
+            return
+        }
+        
+        let viewController = PassphraseDisplayViewController(account: account, configuration: configuration)
         viewController.modalPresentationStyle = .overCurrentContext
         viewController.modalTransitionStyle = .crossDissolve
         

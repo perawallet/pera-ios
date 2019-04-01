@@ -66,6 +66,7 @@
 "back-up-phrase-title" = "Back up this Pass Phrase";
 "back-up-phrase-warning" = "In order to access this account if you lose this device copy or print this phrase and keep it someplace safe";
 "back-up-phrase-button-title" = "VERIFY RECOVERY PHRASE";
+"view-pass-phrase-title" = "View Passphrase";
 
 
 // MARK: Pass Phrase Verify
