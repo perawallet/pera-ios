@@ -27,6 +27,12 @@ class Session: Storable {
             }
             
             save(data, for: StorableKeys.authenticatedUser.rawValue, to: .defaults)
+            
+            NotificationCenter.default.post(
+                name: Notification.Name.AuthenticatedUserUpdate,
+                object: self,
+                userInfo: nil
+            )
         }
     }
     

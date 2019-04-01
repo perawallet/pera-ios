@@ -70,7 +70,6 @@ extension User {
         UIApplication.shared.appConfiguration?.session.authenticatedUser = self
     }
     
-    
     func setDefaultAccount(_ account: Account) {
         self.defaultAccountAddress = account.address
         syncronize()
@@ -81,6 +80,10 @@ extension User {
             return nil
         }
         
+        return accountFrom(address: address)
+    }
+    
+    func account(address: String) -> Account? {
         return accountFrom(address: address)
     }
 }

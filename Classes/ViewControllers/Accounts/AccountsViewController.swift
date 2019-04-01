@@ -69,6 +69,16 @@ class AccountsViewController: BaseViewController {
         self.navigationItem.title = selectedAccount?.name
     }
     
+    override func setListeners() {
+        super.setListeners()
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didUpdateAuthenticatedUser(notification:)),
+            name: Notification.Name.AuthenticatedUserUpdate,
+            object: nil)
+    }
+    
     // MARK: Navigation Actions
     
     private func presentAccountList() {
@@ -92,5 +102,19 @@ class AccountsViewController: BaseViewController {
         let optionsViewController = open(.options, by: transitionStyle) as? OptionsViewController
         
         optionsViewController?.delegate = self
+    }
+}
+
+// MARK: - Notification
+extension AccountsViewController {
+    @objc
+    fileprivate func didUpdateAuthenticatedUser(notification: Notification) {
+        guard let address = selectedAccount?.address else {
+            return
+        }
+        
+        let account = session?.authenticatedUser?.account(address: address)
+        
+        self.navigationItem.title = account?.name
     }
 }
