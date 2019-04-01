@@ -20,6 +20,7 @@ class AddContactView: BaseView {
         let informationViewHeight: CGFloat = 333.0
         let topInset: CGFloat = 24.0
         let bottomInset: CGFloat = 20.0
+        let minimumInset: CGFloat = 10.0
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -69,6 +70,7 @@ class AddContactView: BaseView {
         addSubview(addContactButton)
         
         addContactButton.snp.makeConstraints { make in
+            make.top.greaterThanOrEqualTo(userInformationView.snp.bottom).offset(layout.current.minimumInset)
             make.centerX.equalToSuperview()
             make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).inset(layout.current.bottomInset)
         }

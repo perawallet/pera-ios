@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AddContactViewController: BaseViewController {
+class AddContactViewController: BaseScrollViewController {
 
     // MARK: Components
     
@@ -19,6 +19,8 @@ class AddContactViewController: BaseViewController {
     
     private lazy var imagePicker = ImagePicker(viewController: self)
     
+    private var keyboardController = KeyboardController()
+    
     // MARK: Setup
     
     override func configureAppearance() {
@@ -27,17 +29,27 @@ class AddContactViewController: BaseViewController {
         title = "contacts-add".localized
     }
     
+    override func setListeners() {
+        super.setListeners()
+        
+        keyboardController.beginTracking()
+    }
+    
     override func linkInteractors() {
+        keyboardController.dataSource = self
         addContactView.delegate = self
     }
     
     // MARK: Layout
     
     override func prepareLayout() {
-        view.addSubview(addContactView)
+        super.prepareLayout()
+        
+        contentView.addSubview(addContactView)
         
         addContactView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.top.equalToSuperview()
+            make.leading.trailing.bottom.equalToSuperview()
         }
     }
 }
@@ -52,7 +64,7 @@ extension AddContactViewController: AddContactViewDelegate {
     }
     
     func addContactViewDidTapAddContactButton(_ addContactView: AddContactView) {
-
+        // TODO: Save contact and reload listing
     }
 }
 
@@ -63,5 +75,26 @@ extension AddContactViewController: ImagePickerDelegate {
     func imagePicker(didPick image: UIImage, withInfo info: [String: Any]) {
         let resizedImage = image.convert(to: CGSize(width: 108.0, height: 108.0), scale: UIScreen.main.scale)
         addContactView.userInformationView.userImageView.image = resizedImage
+    }
+}
+
+// MARK: KeyboardControllerDataSource
+
+extension AddContactViewController: KeyboardControllerDataSource {
+    
+    func bottomInsetWhenKeyboardPresented(for keyboardController: KeyboardController) -> CGFloat {
+        return 15.0
+    }
+    
+    func firstResponder(for keyboardController: KeyboardController) -> UIView? {
+        return addContactView.userInformationView.algorandAddressInputView
+    }
+    
+    func containerView(for keyboardController: KeyboardController) -> UIView {
+        return contentView
+    }
+    
+    func bottomInsetWhenKeyboardDismissed(for keyboardController: KeyboardController) -> CGFloat {
+        return 15.0
     }
 }
