@@ -9,8 +9,13 @@
 import Magpie
 
 class User: Mappable {
+    private var uniqueIdentifier: String?
+    
     private(set) var accounts: [Account] = []
     var defaultAccount: String?
+    var image: Data?
+    
+    private(set) var contacts: [User] = []
     
     init(accounts: [Account]) {
         self.accounts = accounts
@@ -50,8 +55,45 @@ extension User {
         
         return accounts[index]
     }
+    
+    func addContact(_ contact: User) {
+        contacts.append(contact)
+    }
+    
+    func removeContact(_ contact: User) {
+        guard let index = index(of: contact) else {
+            return
+        }
+        
+        contacts.remove(at: index)
+    }
+    
+    func index(of contact: User) -> Int? {
+        guard let index = contacts.firstIndex(of: contact) else {
+            return nil
+        }
+        
+        return index
+    }
+    
+    func contact(at index: Int) -> User? {
+        guard index < contacts.count else {
+            return nil
+        }
+        
+        return contacts[index]
+    }
 }
 
 // MARK: - Codable
 extension User: Encodable {
+}
+
+// MARK: - Equatable
+
+extension User: Equatable {
+    
+    static func == (lhs: User, rhs: User) -> Bool {
+        return lhs.uniqueIdentifier == rhs.uniqueIdentifier
+    }
 }
