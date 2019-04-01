@@ -150,6 +150,8 @@ class Router {
             viewController = EditAccountViewController(configuration: configuration)
         case .addContact:
             viewController = AddContactViewController(configuration: configuration)
+        case let .contactDetail(contact):
+            viewController = ContactInfoViewController(contact: contact, configuration: configuration)
         }
         
         return viewController as? T

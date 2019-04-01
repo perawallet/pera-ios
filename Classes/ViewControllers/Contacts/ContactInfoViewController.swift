@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ContactInfoViewController: BaseViewController {
+class ContactInfoViewController: BaseScrollViewController {
 
     // MARK: Components
     
@@ -16,6 +16,18 @@ class ContactInfoViewController: BaseViewController {
         let view = ContactInfoView()
         return view
     }()
+    
+    private let viewModel = ContactInfoViewModel()
+    
+    private let contact: User
+    
+    // MARK: Initialization
+    
+    init(contact: User, configuration: ViewControllerConfiguration) {
+        self.contact = contact
+        
+        super.init(configuration: configuration)
+    }
     
     // MARK: Setup
     
@@ -30,15 +42,17 @@ class ContactInfoViewController: BaseViewController {
         super.configureAppearance()
         
         title = "contacts-info".localized
+        
+        viewModel.configure(contactInfoView.userInformationView, with: contact)
     }
     
     // MARK: Layout
     
     override func prepareLayout() {
-        view.addSubview(contactInfoView)
+        contentView.addSubview(contactInfoView)
         
         contactInfoView.snp.makeConstraints { make in
-            
+            make.edges.equalToSuperview()
         }
     }
 }

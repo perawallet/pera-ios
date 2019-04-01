@@ -25,10 +25,6 @@ class UserInformationView: BaseView {
     
     private let layout = Layout<LayoutConstants>()
     
-    private enum Colors {
-        static let addButtonColor = rgb(0.34, 0.34, 0.43)
-    }
-    
     // MARK: Components
     
     private lazy var imageBackgroundView: UIView = {
@@ -47,7 +43,7 @@ class UserInformationView: BaseView {
     }()
     
     private(set) lazy var addButton: UIButton = {
-        let button = UIButton(type: .custom).withBackgroundColor(Colors.addButtonColor).withImage(img("icon-add-white"))
+        let button = UIButton(type: .custom).withBackgroundColor(SharedColors.darkGray).withImage(img("icon-add-white"))
         button.layer.cornerRadius = 18.0
         return button
     }()

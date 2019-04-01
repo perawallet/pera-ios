@@ -14,6 +14,7 @@ class User: Mappable {
     private(set) var accounts: [Account] = []
     var defaultAccount: String?
     var image: Data?
+    var name: String?
     
     private(set) var contacts: [User] = []
     
