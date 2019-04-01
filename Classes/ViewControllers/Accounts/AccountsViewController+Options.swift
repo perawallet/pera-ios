@@ -17,7 +17,7 @@ extension AccountsViewController: OptionsViewControllerDelegate {
         
         let text = account.address
         
-        open(.qrGenerator(text: text, mode: .mnemonic), by: .present)
+        open(.qrGenerator(text: text, mode: .address), by: .present)
     }
     
     func optionsViewControllerDidSetDefaultAccount(_ optionsViewController: OptionsViewController) {
