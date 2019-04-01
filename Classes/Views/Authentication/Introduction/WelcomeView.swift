@@ -16,6 +16,7 @@ protocol WelcomeViewDelegate: class {
 class WelcomeView: BaseView {
 
     private struct LayoutConstants: AdaptiveLayoutConstants {
+        let logoInset: CGFloat = 6.0
         let verticalInset: CGFloat = 94.0
         let titleLabelTopInset: CGFloat = 23.0
         let subtitleLabelTopInset: CGFloat = 14.0
@@ -77,7 +78,7 @@ class WelcomeView: BaseView {
         
         logoImageView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalToSuperview().inset(layout.current.verticalInset)
+            make.top.equalToSuperview().inset(layout.current.logoInset)
         }
     }
     

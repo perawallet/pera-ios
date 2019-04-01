@@ -17,7 +17,7 @@ protocol LocalAuthenticationPreferenceViewDelegate: class {
 class LocalAuthenticationPreferenceView: BaseView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let titleLabelTopInset: CGFloat = 157.0
+        let titleLabelTopInset: CGFloat = 69.0
         let subtitleTopInset: CGFloat = 14.0
         let subtitleHorizontalInset: CGFloat = 60.0
         let containerViewHeight: CGFloat = 150.0
