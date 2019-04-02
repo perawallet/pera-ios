@@ -17,7 +17,7 @@ protocol AccountsHeaderViewDelegate: class {
 class AccountsHeaderView: BaseView {
 
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let algosAvailableLabelTopInset: CGFloat = 125.0
+        let algosAvailableLabelTopInset: CGFloat = 54.0
         let algosAvailableLabelLeadingInset: CGFloat = 53.0
         let horizontalInset: CGFloat = 25.0
         let amountLabelTopInset: CGFloat = -12.0
