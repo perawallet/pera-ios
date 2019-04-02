@@ -73,19 +73,19 @@ class ContentStateView: BaseView {
         switch state {
         case .none:
             setLoadingIndicator(visible: false)
-            set(emptyStateView, visible: false)
+            setEmpty(emptyStateView, visible: false)
         case .loading:
             setLoadingIndicator(visible: true)
-            set(emptyStateView, visible: false)
+            setEmpty(emptyStateView, visible: false)
         case let .empty(emptyView):
             setLoadingIndicator(visible: false)
-            set(emptyView, visible: true)
+            setEmpty(emptyView, visible: true)
         case .unexpectedError:
             break
         }
     }
     
-    private func set(_ emptyView: UIView?, visible: Bool) {
+    private func setEmpty(_ emptyView: UIView?, visible: Bool) {
         if visible {
             if emptyStateView == emptyView {
                 return

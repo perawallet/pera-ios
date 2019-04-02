@@ -10,8 +10,6 @@ import UIKit
 
 class TransactionHistoryLayoutBuilder: NSObject, UICollectionViewDelegateFlowLayout {
     
-    weak var delegate: AccountListLayoutBuilderDelegate?
-    
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
