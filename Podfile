@@ -15,4 +15,7 @@ target 'algorand' do
 
     #Persistance
     pod 'KeychainAccess'
+    
+    #Date
+    pod 'SwiftDate'
 end

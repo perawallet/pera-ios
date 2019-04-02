@@ -87,10 +87,10 @@ class BaseViewController: UIViewController {
         super.viewDidLoad()
         
         setNeedsNavigationBarAppearanceUpdate()
-        configureAppearance()
-        prepareLayout()
         linkInteractors()
         setListeners()
+        configureAppearance()
+        prepareLayout()
     }
     
     func configureAppearance() {
