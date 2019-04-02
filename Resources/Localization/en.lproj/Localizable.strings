@@ -75,6 +75,8 @@
 
 "pass-phrase-verify-pop-up-title" = "Pass Phrase Verified";
 "pass-phrase-verify-pop-up-explanation" = "Your passphrase has been verified. Make sure that you have backed it up as you will need it to recover your account.";
+"pass-phrase-verify-invalid-passphrase" = "Your passphrase is invalid. Please make sure that you entered correct one.";
+"pass-phrase-verify-sdk-error" = "There is something wrong. Please try again later.";
 
 // MARK: Account Name Setup
 

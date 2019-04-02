@@ -76,53 +76,66 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
     
     func accountRecoverViewDidTapNextButton(_ accountRecoverView: AccountRecoverView) {
         guard let name = accountRecoverView.accountNameInputView.inputTextField.text, !name.isEmpty else {
-            self.displaySimpleAlertWith(title: "title-error".localized, message: "account-name-setup-empty-error-message".localized)
+            displaySimpleAlertWith(title: "title-error".localized, message: "account-name-setup-empty-error-message".localized)
             return
         }
         
         guard let mnemonics = accountRecoverView.passPhraseInputView.inputTextView.text,
             let privateKey = session?.privateKey(forMnemonics: mnemonics) else {
+                displaySimpleAlertWith(title: "title-error".localized,
+                                       message: "pass-phrase-verify-invalid-passphrase".localized)
+                return
+        }
+        
+        guard let address = session?.address(fromPrivateKey: privateKey) else {
+            displaySimpleAlertWith(title: "title-error".localized,
+                                   message: "pass-phrase-verify-sdk-error".localized)
             return
         }
         
-        if let address = session?.address(fromPrivateKey: privateKey) {
-            let account = Account(address: address)
+        let account = Account(address: address)
+        account.name = name
+        
+        session?.savePrivate(privateKey, forAccount: account.address)
+        
+        let user: User
+        
+        if let authenticatedUser = session?.authenticatedUser {
+            user = authenticatedUser
             
-            account.name = name
-            
-            session?.savePrivate(privateKey, forAccount: account.address)
-            
-            let user = User(accounts: [account])
-            
-            let isAccountDefault = session?.authenticatedUser == nil
-            
-            if isAccountDefault {
-                user.setDefaultAccount(account)
-            }
-            
-            session?.authenticatedUser = user
-            
-            if session?.hasPassword() ?? false {
-                open(.home, by: .launch)
-            } else {
-                let configurator = AlertViewConfigurator(
-                    title: "recover-from-seed-verify-pop-up-title".localized,
-                    image: img("account-verify-alert-icon"),
-                    explanation: "recover-from-seed-verify-pop-up-explanation".localized,
-                    actionTitle: nil) {
-                        
-                        self.open(.choosePassword(.setup), by: .push)
-                }
-                
-                let viewController = AlertViewController(mode: .default, alertConfigurator: configurator, configuration: configuration)
-                viewController.modalPresentationStyle = .overCurrentContext
-                viewController.modalTransitionStyle = .crossDissolve
-                
-                present(viewController, animated: true, completion: nil)
-            }
+            user.addAccount(account)
         } else {
-            //ERROR
+            user = User(accounts: [account])
+            
+            user.setDefaultAccount(account)
         }
+        
+        session?.authenticatedUser = user
+        
+        view.endEditing(true)
+        
+        let configurator = AlertViewConfigurator(
+            title: "recover-from-seed-verify-pop-up-title".localized,
+            image: img("account-verify-alert-icon"),
+            explanation: "recover-from-seed-verify-pop-up-explanation".localized,
+            actionTitle: nil) {
+                if self.session?.hasPassword() ?? false {
+                    switch self.mode {
+                    case .initialize:
+                        self.open(.home, by: .launch)
+                    case .new:
+                        self.dismissScreen()
+                    }
+                } else {
+                    self.open(.choosePassword(.setup), by: .push)
+                }
+        }
+        
+        let viewController = AlertViewController(mode: .default, alertConfigurator: configurator, configuration: configuration)
+        viewController.modalPresentationStyle = .overCurrentContext
+        viewController.modalTransitionStyle = .crossDissolve
+        
+        present(viewController, animated: true, completion: nil)
     }
 }
 
