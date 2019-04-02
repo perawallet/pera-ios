@@ -56,6 +56,7 @@ class ContactsView: BaseView {
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = .white
         collectionView.contentInset = .zero
+        collectionView.keyboardDismissMode = .onDrag
         
         collectionView.register(ContactCell.self, forCellWithReuseIdentifier: ContactCell.reusableIdentifier)
         

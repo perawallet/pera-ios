@@ -119,6 +119,8 @@ extension ContactsViewController: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        view.endEditing(true)
+        
         if indexPath.item < searchResults.count {
             let contact = searchResults[indexPath.row]
             
@@ -127,7 +129,13 @@ extension ContactsViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
+// MARK: InputViewDelegate
+
 extension ContactsViewController: InputViewDelegate {
+    
+    func inputViewDidReturn(inputView: BaseInputView) {
+        view.endEditing(true)
+    }
     
     func inputViewDidChangeValue(inputView: BaseInputView) {
         if contacts.isEmpty {
@@ -163,9 +171,11 @@ extension ContactsViewController: InputViewDelegate {
     }
 }
 
+// MARK: ContactCellDelegate
+
 extension ContactsViewController: ContactCellDelegate {
     
     func contactCellDidTapQRDisplayButton(_ cell: ContactCell) {
-        
+        view.endEditing(true)
     }
 }
