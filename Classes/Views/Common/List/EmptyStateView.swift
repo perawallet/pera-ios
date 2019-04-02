@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TransactionsEmptyStateView: BaseView {
+class EmptyStateView: BaseView {
 
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let titleInset: CGFloat = 79.0
@@ -26,12 +26,26 @@ class TransactionsEmptyStateView: BaseView {
             .withLine(.contained)
             .withTextColor(SharedColors.softGray)
             .withFont(UIFont.font(.montserrat, withWeight: .medium(size: 14.0)))
-            .withText("accounts-tranaction-empty-text".localized)
+            .withText(title)
     }()
     
-    private lazy var topImageView = UIImageView(image: img("icon-transaction-empty-green"))
+    private lazy var topImageView = UIImageView(image: topImage)
     
-    private lazy var bottomImageView = UIImageView(image: img("icon-transaction-empty-blue"))
+    private lazy var bottomImageView = UIImageView(image: bottomImage)
+    
+    // MARK: Initialization
+    
+    private let title: String
+    private let topImage: UIImage?
+    private let bottomImage: UIImage?
+    
+    init(title: String, topImage: UIImage?, bottomImage: UIImage?) {
+        self.title = title
+        self.topImage = topImage
+        self.bottomImage = bottomImage
+        
+        super.init(frame: .zero)
+    }
     
     // MARK: Setup
     

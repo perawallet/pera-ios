@@ -107,6 +107,7 @@
 // MARK: Accounts
 
 "accounts-tranaction-empty-text" = "No Transactions Yet";
+"tranaction-empty-text" = "No Transactions Found";
 "accounts-algos-available-title" = "Algos Available";
 "accounts-transaction-history-title" = "Transaction History";
 
@@ -144,6 +145,7 @@
 "contacts-input-address-placeholder" = "Paste # or Scan QR";
 "contacts-transactions-title" = "Transactions";
 "contacts-add-button" = "ADD CONTACT";
+"contacts-empty-text" = "No Contacts Found";
 
 // MARK: Settings
 

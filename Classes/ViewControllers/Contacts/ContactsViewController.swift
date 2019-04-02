@@ -17,6 +17,12 @@ class ContactsViewController: BaseViewController {
         return view
     }()
     
+    private lazy var emptyStateView = EmptyStateView(
+        title: "contacts-empty-text".localized,
+        topImage: img("icon-contacts-empty"),
+        bottomImage: img("icon-contacts-empty")
+    )
+    
     // MARK: Setup
     
     override func configureNavigationBarAppearance() {
@@ -39,7 +45,7 @@ class ContactsViewController: BaseViewController {
         view.addSubview(contactsView)
         
         contactsView.snp.makeConstraints { make in
-            
+            make.edges.equalToSuperview()
         }
     }
 }
