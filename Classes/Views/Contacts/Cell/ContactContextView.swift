@@ -16,6 +16,7 @@ protocol ContactContextViewDelegate: class {
 class ContactContextView: BaseView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
+        let separatorHeight: CGFloat = 1.0
         let horizontalInset: CGFloat = 15.0
         let imageSize: CGFloat = 50.0
         let labelCenterOffset: CGFloat = 5.0
@@ -25,6 +26,10 @@ class ContactContextView: BaseView {
     }
     
     private let layout = Layout<LayoutConstants>()
+    
+    private enum Colors {
+        static let separatorColor = rgba(0.67, 0.67, 0.72, 0.31)
+    }
     
     // MARK: Components
     
@@ -37,7 +42,7 @@ class ContactContextView: BaseView {
         return imageView
     }()
     
-    private lazy var nameLabel: UILabel = {
+    private(set) lazy var nameLabel: UILabel = {
         UILabel()
             .withTextColor(SharedColors.black)
             .withLine(.single)
@@ -45,7 +50,7 @@ class ContactContextView: BaseView {
             .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 14.0)))
     }()
     
-    private lazy var addressLabel: UILabel = {
+    private(set) lazy var addressLabel: UILabel = {
         UILabel()
             .withTextColor(SharedColors.darkGray)
             .withAlignment(.left)
@@ -55,6 +60,12 @@ class ContactContextView: BaseView {
     
     private(set) lazy var qrDisplayButton: UIButton = {
         UIButton(type: .custom).withImage(img("icon-qr-gray"))
+    }()
+    
+    private lazy var separatorView: UIView = {
+        let view = UIView()
+        view.backgroundColor = Colors.separatorColor
+        return view
     }()
     
     weak var delegate: ContactContextViewDelegate?
@@ -76,6 +87,7 @@ class ContactContextView: BaseView {
         setupNameLabelLayout()
         setupAddressLabelLayout()
         setupQRDisplayButtonLayout()
+        setupSeparatorViewLayout()
     }
     
     private func setupUserImageViewLayout() {
@@ -114,6 +126,16 @@ class ContactContextView: BaseView {
             make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
             make.centerY.equalTo(addressLabel)
             make.leading.equalTo(addressLabel.snp.trailing).offset(layout.current.horizontalInset)
+        }
+    }
+    
+    private func setupSeparatorViewLayout() {
+        addSubview(separatorView)
+        
+        separatorView.snp.makeConstraints { make in
+            make.bottom.equalToSuperview()
+            make.height.equalTo(layout.current.separatorHeight)
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
         }
     }
     
