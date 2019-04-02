@@ -57,8 +57,8 @@
 
 "local-authentication-preference-title" = "Enable touch/face ID";
 "local-authentication-preference-subtitle" = "We recommend this for improved security";
-"local-authentication-reason-face-id-title" = "Use Face ID for login";
-"local-authentication-reason-touch-id-title" = "Use Touch ID for login";
+"local-authentication-reason-face-id-title" = "Use Face ID to unlock";
+"local-authentication-reason-touch-id-title" = "Use Touch ID to unlock";
 "local-authentication-go-settings-title" = "Biometric Authentication";
 "local-authentication-go-settings-text" = "You have disabled biometric authentication. Please go to Settings and enable this option.";
 
@@ -103,9 +103,9 @@
 
 // MARK: Login
 
-"login-title" = "Login";
+"login-title" = "Unlock";
 "login-subtitle" = "Enter six digit password";
-"logout-title" = "Logout";
+"logout-title" = "Lock";
 
 // MARK: Accounts
 
