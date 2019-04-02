@@ -19,11 +19,11 @@ class ContactInfoViewController: BaseScrollViewController {
     
     private let viewModel = ContactInfoViewModel()
     
-    private let contact: User
+    private let contact: Contact
     
     // MARK: Initialization
     
-    init(contact: User, configuration: ViewControllerConfiguration) {
+    init(contact: Contact, configuration: ViewControllerConfiguration) {
         self.contact = contact
         
         super.init(configuration: configuration)

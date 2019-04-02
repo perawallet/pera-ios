@@ -10,8 +10,8 @@ import UIKit
 
 class ContactInfoViewModel {
     
-    func configure(_ userInformationView: UserInformationView, with user: User) {
-        if let imageData = user.image,
+    func configure(_ userInformationView: UserInformationView, with contact: Contact) {
+        if let imageData = contact.image,
             let image = UIImage(data: imageData) {
             
             let resizedImage = image.convert(to: CGSize(width: 108.0, height: 108.0), scale: UIScreen.main.scale)
@@ -19,7 +19,7 @@ class ContactInfoViewModel {
             userInformationView.userImageView.image = resizedImage
         }
         
-        userInformationView.contactNameInputView.inputTextField.text = user.name
+        userInformationView.contactNameInputView.inputTextField.text = contact.name
         
         // TODO: Configure address input text
     }

@@ -24,7 +24,7 @@ enum Screen {
     case accountList
     case editAccount
     case addContact
-    case contactDetail(User)
+    case contactDetail(Contact)
 }
 
 extension Screen {

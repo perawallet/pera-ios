@@ -32,6 +32,7 @@ class TransactionHistoryDataSource: NSObject, UICollectionViewDataSource {
     func setupMockData() {
         for index in 0...20 {
             let transaction = Transaction(
+                identifier: "\(index)",
                 accountName: "Account name \(index)",
                 date: Date(),
                 amount: amounts[index],
