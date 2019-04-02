@@ -17,6 +17,10 @@ class AccountListViewController: BaseViewController {
         return view
     }()
     
+    override var shouldShowNavigationBar: Bool {
+        return false
+    }
+    
     // MARK: Setup
     
     override func configureAppearance() {
