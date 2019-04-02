@@ -92,10 +92,49 @@ extension AccountsViewController: OptionsViewControllerDelegate {
             title: "options-remove-account".localized,
             image: img("remove-account-alert-icon"),
             explanation: "options-remove-alert-explanation".localized,
-            actionTitle: "title-remove".localized
-        )
-        
-        // TODO: Handle remove account action
+            actionTitle: "title-remove".localized) {
+                
+                guard let user = self.session?.authenticatedUser,
+                    let account = self.selectedAccount,
+                    let index = user.index(of: account) else {
+                        return
+                }
+                
+                user.removeAccount(account)
+                
+                guard !user.accounts.isEmpty else {
+                    self.session?.reset()
+                    
+                    self.open(.introduction(mode: .initialize), by: .present, animated: false)
+                    
+                    return
+                }
+                
+                defer {
+                    self.session?.authenticatedUser = user
+                }
+                
+                let newSelectedAccount: Account?
+                if user.accounts.count == 1 {
+                    newSelectedAccount = user.account(at: 0)
+                } else {
+                    if index == user.accounts.count {
+                        newSelectedAccount = user.account(at: index.advanced(by: -1))
+                    } else {
+                        newSelectedAccount = user.account(at: index)
+                    }
+                }
+                
+                guard let newDefaultAccount = newSelectedAccount else {
+                    return
+                }
+                
+                self.selectedAccount = newDefaultAccount
+                
+                if user.isDefaultAccount(newDefaultAccount) {
+                    user.setDefaultAccount(newDefaultAccount)
+                }
+        }
         
         let viewController = AlertViewController(mode: .destructive, alertConfigurator: configurator, configuration: configuration)
         viewController.modalPresentationStyle = .overCurrentContext

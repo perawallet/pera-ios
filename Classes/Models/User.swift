@@ -86,6 +86,10 @@ extension User {
     func account(address: String) -> Account? {
         return accountFrom(address: address)
     }
+    
+    func isDefaultAccount(_ account: Account) -> Bool {
+        return account.address == defaultAccountAddress
+    }
 }
 
 // MARK: - Helpers
