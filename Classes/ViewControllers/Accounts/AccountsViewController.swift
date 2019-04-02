@@ -17,6 +17,8 @@ class AccountsViewController: BaseViewController {
     
     let layout = Layout<LayoutConstants>()
     
+    // MARK: Variables
+    
     private lazy var accountListModalPresenter = CardModalPresenter(
         config: ModalConfiguration(
             animationMode: .normal(duration: 0.25),
@@ -42,6 +44,32 @@ class AccountsViewController: BaseViewController {
     
     private(set) var localAuthenticator = LocalAuthenticator()
     
+    private let viewModel = AccountsViewModel()
+    
+    private var transactionHistoryLayoutBuilder: TransactionHistoryLayoutBuilder
+    private var transactionHistoryDataSource: TransactionHistoryDataSource
+    
+    // TODO: Will remove mock after real connection
+    private let account = Account(address: "1")
+    
+    // MARK: Components
+    
+    private lazy var accountsView: AccountsView = {
+        let view = AccountsView()
+        return view
+    }()
+    
+    private lazy var emptyStateView = TransactionsEmptyStateView()
+    
+    // MARK: Initialization
+    
+    override init(configuration: ViewControllerConfiguration) {
+        transactionHistoryLayoutBuilder = TransactionHistoryLayoutBuilder()
+        transactionHistoryDataSource = TransactionHistoryDataSource()
+        
+        super.init(configuration: configuration)
+    }
+    
     // MARK: Setup
     
     override func configureNavigationBarAppearance() {
@@ -57,16 +85,49 @@ class AccountsViewController: BaseViewController {
         rightBarButtonItems = [optionsBarButtonItem]
     }
     
+    override func linkInteractors() {
+        transactionHistoryDataSource.delegate = self
+        accountsView.transactionHistoryCollectionView.delegate = transactionHistoryLayoutBuilder
+        accountsView.transactionHistoryCollectionView.dataSource = transactionHistoryDataSource
+    }
+    
     override func configureAppearance() {
         super.configureAppearance()
         
         view.backgroundColor = .white
         
-        // TODO: Should be updated with selected or default account
-        title = "Account Name".localized
+        // TODO: Will remove mock after real connection
+        account.amount = 123456789
+        account.name = "Account Name"
+        
+        if let accountName = account.name {
+            title = "\(accountName)".localized
+        }
+        
+        viewModel.configure(accountsView.accountsHeaderView, with: account)
+        
+        accountsView.transactionHistoryCollectionView.contentState = .loading
+        transactionHistoryDataSource.setupMockData()
     }
     
-    // MARK: Navigation Actions
+    // MARK: Layout
+    
+    override func prepareLayout() {
+        setupAccountsViewLayout()
+    }
+    
+    private func setupAccountsViewLayout() {
+        view.addSubview(accountsView)
+        
+        accountsView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+    }
+}
+
+// MARK: Navigation Actions
+
+extension AccountsViewController {
     
     private func presentAccountList() {
         open(
@@ -89,5 +150,19 @@ class AccountsViewController: BaseViewController {
         let optionsViewController = open(.options, by: transitionStyle) as? OptionsViewController
         
         optionsViewController?.delegate = self
+    }
+}
+
+// MARK: TransactionHistoryDataSourceDelegate
+
+extension AccountsViewController: TransactionHistoryDataSourceDelegate {
+    
+    func transactionHistoryDataSource(_ transactionHistoryDataSource: TransactionHistoryDataSource, didFetch transactions: [Transaction]) {
+        if !transactions.isEmpty {
+            accountsView.transactionHistoryCollectionView.contentState = .none
+            return
+        }
+
+        accountsView.transactionHistoryCollectionView.contentState = .empty(emptyStateView)
     }
 }
