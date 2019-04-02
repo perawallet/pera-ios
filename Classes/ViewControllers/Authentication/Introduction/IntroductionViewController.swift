@@ -21,6 +21,8 @@ class IntroductionViewController: BaseScrollViewController {
         return view
     }()
     
+    var mode: AccountSetupMode = .initialize
+    
     // MARK: Setup
     
     override func prepareLayout() {
@@ -47,10 +49,15 @@ class IntroductionViewController: BaseScrollViewController {
 extension IntroductionViewController: IntroductionViewDelegate {
     
     func introductionViewDidTapCreateAccountButton(_ introductionView: IntroductionView) {
-        open(.welcome, by: .push)
+        switch mode {
+        case .initialize:
+            open(.welcome, by: .push)
+        case .new:
+            open(.accountNameSetup(mode: mode), by: .push)
+        }
     }
     
     func introductionViewDidTapRecoverButton(_ introductionView: IntroductionView) {
-        open(.accountRecover, by: .push)
+        open(.accountRecover(mode: mode), by: .push)
     }
 }

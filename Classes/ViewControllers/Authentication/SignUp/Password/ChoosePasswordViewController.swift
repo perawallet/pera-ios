@@ -111,7 +111,7 @@ extension ChoosePasswordViewController: ChoosePasswordViewDelegate {
     func choosePasswordViewDidTapLogoutButton(_ choosePasswordView: ChoosePasswordView) {
         session?.reset()
         
-        open(.introduction, by: .present, animated: false)
+        open(.introduction(mode: .initialize), by: .present, animated: false)
     }
 }
 

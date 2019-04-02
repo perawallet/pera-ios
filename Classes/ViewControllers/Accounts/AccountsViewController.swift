@@ -82,14 +82,16 @@ class AccountsViewController: BaseViewController {
     // MARK: Navigation Actions
     
     private func presentAccountList() {
-        open(
+        let accountListViewController = open(
             .accountList,
             by: .customPresent(
                 presentationStyle: .custom,
                 transitionStyle: nil,
                 transitioningDelegate: accountListModalPresenter
             )
-        )
+        ) as? AccountListViewController
+        
+        accountListViewController?.delegate = self
     }
     
     private func presentOptions() {
@@ -105,10 +107,9 @@ class AccountsViewController: BaseViewController {
     }
 }
 
-// MARK: - Notification
+// MARK: - Helpers
 extension AccountsViewController {
-    @objc
-    fileprivate func didUpdateAuthenticatedUser(notification: Notification) {
+    fileprivate func updateLayout() {
         guard let address = selectedAccount?.address else {
             return
         }
@@ -116,5 +117,27 @@ extension AccountsViewController {
         let account = session?.authenticatedUser?.account(address: address)
         
         self.navigationItem.title = account?.name
+    }
+}
+
+// MARK: - Notification
+extension AccountsViewController {
+    @objc
+    fileprivate func didUpdateAuthenticatedUser(notification: Notification) {
+        updateLayout()
+    }
+}
+
+// MARK: AccountListViewControllerDelegate
+extension AccountsViewController: AccountListViewControllerDelegate {
+    func accountListViewControllerDidTapAddButton(_ viewController: AccountListViewController) {
+        open(.introduction(mode: .new), by: .present)
+    }
+    
+    func accountListViewController(_ viewController: AccountListViewController,
+                                   didSelectAccount account: Account) {
+        selectedAccount = account
+        
+        updateLayout()
     }
 }

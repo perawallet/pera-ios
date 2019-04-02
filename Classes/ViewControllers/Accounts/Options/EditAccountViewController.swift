@@ -103,7 +103,7 @@ class EditAccountViewController: BaseViewController {
             animations: {
                 self.modalPresenter?.changeModalSize(to: self.modalSize, animated: false)
                 self.view.layoutIfNeeded()
-        },
+            },
             completion: nil
         )
     }

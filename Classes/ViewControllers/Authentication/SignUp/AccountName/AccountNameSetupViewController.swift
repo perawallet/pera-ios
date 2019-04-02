@@ -8,6 +8,11 @@
 
 import UIKit
 
+enum AccountSetupMode {
+    case initialize
+    case new
+}
+
 class AccountNameSetupViewController: BaseScrollViewController {
     
     private enum Colors {
@@ -20,6 +25,8 @@ class AccountNameSetupViewController: BaseScrollViewController {
         let view = AccountNameSetupView()
         return view
     }()
+    
+    var mode: AccountSetupMode = .initialize
     
     private var keyboardController = KeyboardController()
     
@@ -63,13 +70,36 @@ extension AccountNameSetupViewController: AccountNameSetupViewDelegate {
     
     func accountNameSetupViewDidTapNextButton(_ accountNameSetupView: AccountNameSetupView) {
         guard let name = accountNameSetupView.accountNameInputView.inputTextField.text, !name.isEmpty else {
-            self.displaySimpleAlertWith(title: "error-title".localized, message: "account-name-setup-empty-error-message".localized)
+            self.displaySimpleAlertWith(title: "title-error".localized, message: "account-name-setup-empty-error-message".localized)
             return
         }
         
+        switch mode {
+        case .initialize:
+            setupInitialAccount(name: name)
+        case .new:
+            setupNewAccount(name: name)
+        }
+    }
+    
+    func accountNameSetupViewDidChangeValue(_ accountNameSetupView: AccountNameSetupView) {
+        if let text = accountNameSetupView.accountNameInputView.inputTextField.text,
+            !text.isEmpty {
+            
+            accountNameSetupView.accountNameInputView.separatorView.backgroundColor = SharedColors.blue
+            return
+        }
+        
+        accountNameSetupView.accountNameInputView.separatorView.backgroundColor = Colors.separatorColor
+    }
+}
+
+// MARK: - Helpers
+extension AccountNameSetupViewController {
+    fileprivate func setupInitialAccount(name: String) {
         guard let tempPrivateKey = session?.privateData(forAccount: "temp"),
             let address = session?.address(forAccount: "temp") else {
-            return
+                return
         }
         
         let account = Account(address: address)
@@ -92,15 +122,23 @@ extension AccountNameSetupViewController: AccountNameSetupViewDelegate {
         open(.home, by: .launch)
     }
     
-    func accountNameSetupViewDidChangeValue(_ accountNameSetupView: AccountNameSetupView) {
-        if let text = accountNameSetupView.accountNameInputView.inputTextField.text,
-            !text.isEmpty {
-            
-            accountNameSetupView.accountNameInputView.separatorView.backgroundColor = SharedColors.blue
+    fileprivate func setupNewAccount(name: String) {
+        guard let generatedData = session?.generatePrivateKey(),
+            let address = session?.address(fromPrivateKey: generatedData) else {
             return
         }
         
-        accountNameSetupView.accountNameInputView.separatorView.backgroundColor = Colors.separatorColor
+        let account = Account(address: address)
+        account.name = name
+        
+        guard let accountData = account.encoded() else {
+            return
+        }
+        
+        session?.savePrivate(generatedData, forAccount: "temp")
+        session?.savePrivate(accountData, forAccount: "tempAccount")
+        
+        open(.passPhraseBackUp(mode: mode), by: .push)
     }
 }
 

@@ -12,7 +12,7 @@ class AccountListDataSource: NSObject, UICollectionViewDataSource {
     
     private let viewModel = AccountListViewModel()
     
-    private var accounts = [Account]()
+    private(set) var accounts = [Account]()
     
     override init() {
         super.init()

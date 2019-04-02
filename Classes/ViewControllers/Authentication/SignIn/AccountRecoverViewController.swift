@@ -18,6 +18,8 @@ class AccountRecoverViewController: BaseScrollViewController {
     }()
     
     private var keyboardController = KeyboardController()
+    
+    var mode: AccountSetupMode = .initialize
 
     // MARK: Setup
     

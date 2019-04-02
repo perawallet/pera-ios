@@ -58,4 +58,8 @@ extension Session {
         
         return address
     }
+    
+    func generatePrivateKey() -> Data? {
+        return CryptoGenerateSK()
+    }
 }

@@ -117,22 +117,37 @@ class Router {
                                                         session: rootViewController.appConfiguration.session)
         
         switch screen {
-        case .introduction:
-            viewController = IntroductionViewController(configuration: configuration)
+        case .introduction(let mode):
+            let introductionViewController = IntroductionViewController(configuration: configuration)
+            introductionViewController.mode = mode
+            
+            viewController = introductionViewController
         case .welcome:
             viewController = WelcomeViewController(configuration: configuration)
         case let .choosePassword(mode):
             viewController = ChoosePasswordViewController(mode: mode, configuration: configuration)
         case .localAuthenticationPreference:
             viewController = LocalAuthenticationPreferenceViewController(configuration: configuration)
-        case .passPhraseBackUp:
-            viewController = PassPhraseBackUpViewController(configuration: configuration)
-        case .passPhraseVerify:
-            viewController = PassPhraseVerifyViewController(configuration: configuration)
-        case .accountNameSetup:
-            viewController = AccountNameSetupViewController(configuration: configuration)
-        case .accountRecover:
-            viewController = AccountRecoverViewController(configuration: configuration)
+        case .passPhraseBackUp(let mode):
+            let backUpViewController = PassPhraseBackUpViewController(configuration: configuration)
+            backUpViewController.mode = mode
+            
+            viewController = backUpViewController
+        case .passPhraseVerify(let mode):
+            let passPhraseVerifyViewController = PassPhraseVerifyViewController(configuration: configuration)
+            passPhraseVerifyViewController.mode = mode
+            
+            viewController = passPhraseVerifyViewController
+        case .accountNameSetup(let mode):
+            let accountSetupViewController = AccountNameSetupViewController(configuration: configuration)
+            accountSetupViewController.mode = mode
+            
+            viewController = accountSetupViewController
+        case .accountRecover(let mode):
+            let accountRecoverViewController = AccountRecoverViewController(configuration: configuration)
+            accountRecoverViewController.mode = mode
+            
+            viewController = accountRecoverViewController
         case .qrScanner:
             viewController = QRScannerViewController(configuration: configuration)
         case .qrGenerator(let text, let mode):
