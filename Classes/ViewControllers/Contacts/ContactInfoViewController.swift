@@ -17,14 +17,21 @@ class ContactInfoViewController: BaseScrollViewController {
         return view
     }()
     
+    private lazy var emptyStateView = TransactionsEmptyStateView()
+    
     private let viewModel = ContactInfoViewModel()
     
     private let contact: Contact
+    
+    private var transactionHistoryLayoutBuilder: TransactionHistoryLayoutBuilder
+    private var transactionHistoryDataSource: TransactionHistoryDataSource
     
     // MARK: Initialization
     
     init(contact: Contact, configuration: ViewControllerConfiguration) {
         self.contact = contact
+        transactionHistoryLayoutBuilder = TransactionHistoryLayoutBuilder()
+        transactionHistoryDataSource = TransactionHistoryDataSource(mode: .contacts)
         
         super.init(configuration: configuration)
     }
@@ -33,6 +40,7 @@ class ContactInfoViewController: BaseScrollViewController {
     
     override func configureNavigationBarAppearance() {
         let addBarButtonItem = ALGBarButtonItem(kind: .share) {
+            // TODO: Share action
         }
         
         rightBarButtonItems = [addBarButtonItem]
@@ -44,15 +52,48 @@ class ContactInfoViewController: BaseScrollViewController {
         title = "contacts-info".localized
         
         viewModel.configure(contactInfoView.userInformationView, with: contact)
+        
+        // TODO: Need to fetch proper transactions and add loading state
+        transactionHistoryDataSource.setupMockData()
+    }
+    
+    override func linkInteractors() {
+        transactionHistoryDataSource.delegate = self
+        contactInfoView.transactionsCollectionView.delegate = transactionHistoryLayoutBuilder
+        contactInfoView.transactionsCollectionView.dataSource = transactionHistoryDataSource
     }
     
     // MARK: Layout
     
     override func prepareLayout() {
+        super.prepareLayout()
+        
         contentView.addSubview(contactInfoView)
         
         contactInfoView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+    }
+}
+
+// MARK: TransactionHistoryDataSourceDelegate
+
+extension ContactInfoViewController: TransactionHistoryDataSourceDelegate {
+    
+    func transactionHistoryDataSource(_ transactionHistoryDataSource: TransactionHistoryDataSource, didFetch transactions: [Transaction]) {
+        
+        if !transactions.isEmpty {
+            contactInfoView.transactionsCollectionView.contentState = .none
+            
+            contactInfoView.transactionsCollectionView.snp.updateConstraints { make in
+                make.height.equalTo(transactions.count * 80)
+            }
+            
+            view.layoutIfNeeded()
+            
+            return
+        }
+        
+        contactInfoView.transactionsCollectionView.contentState = .empty(emptyStateView)
     }
 }

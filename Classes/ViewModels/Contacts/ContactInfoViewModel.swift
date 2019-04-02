@@ -19,6 +19,7 @@ class ContactInfoViewModel {
             userInformationView.userImageView.image = resizedImage
         }
         
+        userInformationView.addButton.isHidden = true
         userInformationView.contactNameInputView.inputTextField.text = contact.name
         
         // TODO: Configure address input text
