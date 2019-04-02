@@ -6,10 +6,10 @@
 	<string>Algorand will use your camero to scan QR.</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Algorand will use Face ID to log in.</string>
-    <key>NSPhotoLibraryAddUsageDescription</key>
-    <string>Algorand will save the image of pass phrases image.</string>
-    <key>LSApplicationCategoryType</key>
-    <string></string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Algorand will save the image of pass phrases image.</string>
+	<key>LSApplicationCategoryType</key>
+	<string></string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
@@ -29,6 +29,7 @@
 		<string>OpenSans-Regular.ttf</string>
 		<string>OpenSans-SemiBold.ttf</string>
 		<string>OpenSans-SemiBoldItalic.ttf</string>
+		<string>Montserrat-Medium.ttf</string>
 	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>

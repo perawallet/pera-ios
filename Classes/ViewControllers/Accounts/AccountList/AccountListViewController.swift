@@ -36,7 +36,8 @@ class AccountListViewController: BaseViewController {
         view.addSubview(accountListView)
         
         accountListView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.leading.trailing.top.equalToSuperview()
+            make.bottom.safeEqualToBottom(of: self)
         }
     }
 }

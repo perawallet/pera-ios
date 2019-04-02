@@ -21,6 +21,8 @@
 "title-error" = "Error";
 "title-save" = "Save";
 "title-close" = "CLOSE";
+"title-send" = "SEND";
+"title-receive" = "RECEIVE";
 
 // MARK: Tabbar
 
@@ -102,6 +104,12 @@
 "login-title" = "Login";
 "login-subtitle" = "Enter six digit password";
 "logout-title" = "Logout";
+
+// MARK: Accounts
+
+"accounts-tranaction-empty-text" = "No Transactions Yet";
+"accounts-algos-available-title" = "Algos Available";
+"accounts-transaction-history-title" = "Transaction History";
 
 // MARK: Account List
 

@@ -17,6 +17,8 @@ class AccountsViewController: BaseViewController {
     
     let layout = Layout<LayoutConstants>()
     
+    // MARK: Variables
+    
     private lazy var accountListModalPresenter = CardModalPresenter(
         config: ModalConfiguration(
             animationMode: .normal(duration: 0.25),
@@ -42,6 +44,31 @@ class AccountsViewController: BaseViewController {
     
     private(set) var localAuthenticator = LocalAuthenticator()
     
+    var selectedAccount: Account?
+    
+    private let viewModel = AccountsViewModel()
+    
+    private var transactionHistoryLayoutBuilder: TransactionHistoryLayoutBuilder
+    private var transactionHistoryDataSource: TransactionHistoryDataSource
+    
+    // MARK: Components
+    
+    private lazy var accountsView: AccountsView = {
+        let view = AccountsView()
+        return view
+    }()
+    
+    private lazy var emptyStateView = TransactionsEmptyStateView()
+    
+    // MARK: Initialization
+    
+    override init(configuration: ViewControllerConfiguration) {
+        transactionHistoryLayoutBuilder = TransactionHistoryLayoutBuilder()
+        transactionHistoryDataSource = TransactionHistoryDataSource()
+        
+        super.init(configuration: configuration)
+    }
+    
     // MARK: Setup
     
     override func configureNavigationBarAppearance() {
@@ -57,7 +84,11 @@ class AccountsViewController: BaseViewController {
         rightBarButtonItems = [optionsBarButtonItem]
     }
     
-    var selectedAccount: Account?
+    override func linkInteractors() {
+        transactionHistoryDataSource.delegate = self
+        accountsView.transactionHistoryCollectionView.delegate = transactionHistoryLayoutBuilder
+        accountsView.transactionHistoryCollectionView.dataSource = transactionHistoryDataSource
+    }
     
     override func configureAppearance() {
         super.configureAppearance()
@@ -66,7 +97,16 @@ class AccountsViewController: BaseViewController {
         
         selectedAccount = session?.authenticatedUser?.defaultAccount()
         
+        guard let account = selectedAccount else {
+            return
+        }
+        
         self.navigationItem.title = selectedAccount?.name
+        
+        viewModel.configure(accountsView.accountsHeaderView, with: account)
+        
+        accountsView.transactionHistoryCollectionView.contentState = .loading
+        transactionHistoryDataSource.setupMockData()
     }
     
     override func setListeners() {
@@ -79,7 +119,24 @@ class AccountsViewController: BaseViewController {
             object: nil)
     }
     
-    // MARK: Navigation Actions
+    // MARK: Layout
+    
+    override func prepareLayout() {
+        setupAccountsViewLayout()
+    }
+    
+    private func setupAccountsViewLayout() {
+        view.addSubview(accountsView)
+        
+        accountsView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+    }
+}
+
+// MARK: Navigation Actions
+
+extension AccountsViewController {
     
     private func presentAccountList() {
         let accountListViewController = open(
@@ -139,5 +196,19 @@ extension AccountsViewController: AccountListViewControllerDelegate {
         selectedAccount = account
         
         updateLayout()
+    }
+}
+
+// MARK: TransactionHistoryDataSourceDelegate
+
+extension AccountsViewController: TransactionHistoryDataSourceDelegate {
+    
+    func transactionHistoryDataSource(_ transactionHistoryDataSource: TransactionHistoryDataSource, didFetch transactions: [Transaction]) {
+        if !transactions.isEmpty {
+            accountsView.transactionHistoryCollectionView.contentState = .none
+            return
+        }
+
+        accountsView.transactionHistoryCollectionView.contentState = .empty(emptyStateView)
     }
 }
