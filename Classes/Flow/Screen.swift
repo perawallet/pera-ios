@@ -39,6 +39,7 @@ extension Screen.Transition {
     enum Open: Equatable {
         case push
         case present
+        case presentWithoutNavigationController
         case launch
         case customPresent(
             presentationStyle: UIModalPresentationStyle?,
