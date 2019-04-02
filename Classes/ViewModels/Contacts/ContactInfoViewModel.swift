@@ -23,5 +23,9 @@ class ContactInfoViewModel {
         userInformationView.contactNameInputView.inputTextField.text = contact.name
         
         // TODO: Configure address input text
+        
+        if let address = contact.address {
+            userInformationView.algorandAddressInputView.value = address
+        }
     }
 }

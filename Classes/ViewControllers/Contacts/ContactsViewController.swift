@@ -52,7 +52,7 @@ class ContactsViewController: BaseViewController {
         setupMockData()
     }
     
-    // TODO: Will be replaced with real contacts
+    // TODO: Will be replaced with real contacts. Need to handle empty and loading states after fetching contacts.
     
     private func setupMockData() {
         for index in 0...20 {
@@ -63,6 +63,8 @@ class ContactsViewController: BaseViewController {
             
             contacts.append(contact)
         }
+        
+        searchResults = contacts
     }
     
     // MARK: Layout
@@ -91,6 +93,8 @@ extension ContactsViewController: UICollectionViewDataSource {
                 fatalError("Index path is out of bounds")
         }
         
+        cell.delegate = self
+        
         if indexPath.item < searchResults.count {
             let contact = searchResults[indexPath.row]
             
@@ -113,14 +117,29 @@ extension ContactsViewController: UICollectionViewDelegateFlowLayout {
         
         return CGSize(width: UIScreen.main.bounds.width, height: 90.0)
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if indexPath.item < searchResults.count {
+            let contact = searchResults[indexPath.row]
+            
+            open(.contactDetail(contact), by: .push)
+        }
+    }
 }
 
 extension ContactsViewController: InputViewDelegate {
     
     func inputViewDidChangeValue(inputView: BaseInputView) {
+        if contacts.isEmpty {
+            contactsView.contactsCollectionView.contentState = .empty(emptyStateView)
+            return
+        }
+        
         guard let query = contactsView.contactNameInputView.inputTextField.text,
             !query.isEmpty else {
+                contactsView.contactsCollectionView.contentState = .none
                 searchResults = contacts
+                contactsView.contactsCollectionView.reloadData()
                 return
         }
         
@@ -134,6 +153,19 @@ extension ContactsViewController: InputViewDelegate {
         
         searchResults = results
         
+        if searchResults.isEmpty {
+            contactsView.contactsCollectionView.contentState = .empty(emptyStateView)
+        } else {
+            contactsView.contactsCollectionView.contentState = .none
+        }
+        
         contactsView.contactsCollectionView.reloadData()
+    }
+}
+
+extension ContactsViewController: ContactCellDelegate {
+    
+    func contactCellDidTapQRDisplayButton(_ cell: ContactCell) {
+        
     }
 }
