@@ -66,6 +66,19 @@ extension AddContactViewController: AddContactViewDelegate {
     func addContactViewDidTapAddContactButton(_ addContactView: AddContactView) {
         // TODO: Save contact and reload listing
     }
+    
+    func addContactViewDidTapQRCodeButton(_ addContactView: AddContactView) {
+        if !UIImagePickerController.isSourceTypeAvailable(.camera) {
+            displaySimpleAlertWith(title: "qr-scan-error-title".localized, message: "qr-scan-error-message".localized)
+            return
+        }
+        
+        guard let qrScannerViewController = open(.qrScanner, by: .push) as? QRScannerViewController else {
+            return
+        }
+        
+        qrScannerViewController.delegate = self
+    }
 }
 
 // MARK: ImagePickerDelegate
@@ -96,5 +109,15 @@ extension AddContactViewController: KeyboardControllerDataSource {
     
     func bottomInsetWhenKeyboardDismissed(for keyboardController: KeyboardController) -> CGFloat {
         return 15.0
+    }
+}
+
+// MARK: QRScannerViewControllerDelegate
+
+extension AddContactViewController: QRScannerViewControllerDelegate {
+    
+    func qRScannerViewController(_ controller: QRScannerViewController, didRead qrCode: String) {
+        
+        addContactView.userInformationView.algorandAddressInputView.value = qrCode
     }
 }

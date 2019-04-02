@@ -152,6 +152,8 @@ class Router {
             viewController = AddContactViewController(configuration: configuration)
         case let .contactDetail(contact):
             viewController = ContactInfoViewController(contact: contact, configuration: configuration)
+        case let .contactQRDisplay(contact):
+            viewController = ContactInfoViewController(contact: contact, configuration: configuration)
         }
         
         return viewController as? T

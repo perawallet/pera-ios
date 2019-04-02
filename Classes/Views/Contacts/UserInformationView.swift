@@ -11,6 +11,7 @@ import UIKit
 protocol UserInformationViewDelegate: class {
     
     func userInformationViewDidTapAddImageButton(_ userInformationView: UserInformationView)
+    func userInformationViewDidTapQRCodeButton(_ userInformationView: UserInformationView)
 }
 
 class UserInformationView: BaseView {
@@ -165,5 +166,22 @@ class UserInformationView: BaseView {
     @objc
     private func notifyDelegateToAddButtonTapped() {
         delegate?.userInformationViewDidTapAddImageButton(self)
+    }
+}
+
+// MARK: InputViewDelegate
+
+extension UserInformationView: InputViewDelegate {
+    
+    func inputViewDidTapAccessoryButton(inputView: BaseInputView) {
+        delegate?.userInformationViewDidTapQRCodeButton(self)
+    }
+    
+    func inputViewDidReturn(inputView: BaseInputView) {
+        if inputView == contactNameInputView {
+            algorandAddressInputView.beginEditing()
+        } else {
+            algorandAddressInputView.inputTextView.resignFirstResponder()
+        }
     }
 }

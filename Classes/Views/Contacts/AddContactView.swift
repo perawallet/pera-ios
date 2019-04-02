@@ -12,6 +12,7 @@ protocol AddContactViewDelegate: class {
     
     func addContactViewDidTapAddContactButton(_ addContactView: AddContactView)
     func addContactViewDidTapAddImageButton(_ addContactView: AddContactView)
+    func addContactViewDidTapQRCodeButton(_ addContactView: AddContactView)
 }
 
 class AddContactView: BaseView {
@@ -90,5 +91,9 @@ extension AddContactView: UserInformationViewDelegate {
     
     func userInformationViewDidTapAddImageButton(_ userInformationView: UserInformationView) {
         delegate?.addContactViewDidTapAddImageButton(self)
+    }
+    
+    func userInformationViewDidTapQRCodeButton(_ userInformationView: UserInformationView) {
+        delegate?.addContactViewDidTapQRCodeButton(self)
     }
 }

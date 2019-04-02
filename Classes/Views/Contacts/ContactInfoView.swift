@@ -8,6 +8,11 @@
 
 import UIKit
 
+protocol ContactInfoViewDelegate: class {
+    
+    func contactInfoViewDidTapQRCodeButton(_ contactInfoView: ContactInfoView)
+}
+
 class ContactInfoView: BaseView {
 
     private struct LayoutConstants: AdaptiveLayoutConstants {
@@ -57,6 +62,14 @@ class ContactInfoView: BaseView {
     
     private lazy var contentStateView = ContentStateView()
     
+    weak var delegate: ContactInfoViewDelegate?
+    
+    // MARK: Setup
+    
+    override func linkInteractors() {
+        userInformationView.delegate = self
+    }
+    
     // MARK: Layout
     
     override func prepareLayout() {
@@ -95,5 +108,15 @@ class ContactInfoView: BaseView {
         }
         
         transactionsCollectionView.backgroundView = contentStateView
+    }
+}
+
+extension ContactInfoView: UserInformationViewDelegate {
+    
+    func userInformationViewDidTapAddImageButton(_ userInformationView: UserInformationView) {
+    }
+    
+    func userInformationViewDidTapQRCodeButton(_ userInformationView: UserInformationView) {
+        delegate?.contactInfoViewDidTapQRCodeButton(self)
     }
 }

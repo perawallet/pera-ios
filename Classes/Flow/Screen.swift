@@ -25,6 +25,7 @@ enum Screen {
     case editAccount
     case addContact
     case contactDetail(Contact)
+    case contactQRDisplay(Contact)
 }
 
 extension Screen {

@@ -65,6 +65,8 @@ class ContactInfoViewController: BaseScrollViewController {
         transactionHistoryDataSource.delegate = self
         contactInfoView.transactionsCollectionView.delegate = transactionHistoryLayoutBuilder
         contactInfoView.transactionsCollectionView.dataSource = transactionHistoryDataSource
+        
+        contactInfoView.delegate = self
     }
     
     // MARK: Layout
@@ -99,5 +101,12 @@ extension ContactInfoViewController: TransactionHistoryDataSourceDelegate {
         }
         
         contactInfoView.transactionsCollectionView.contentState = .empty(emptyStateView)
+    }
+}
+
+extension ContactInfoViewController: ContactInfoViewDelegate {
+    
+    func contactInfoViewDidTapQRCodeButton(_ contactInfoView: ContactInfoView) {
+        
     }
 }
