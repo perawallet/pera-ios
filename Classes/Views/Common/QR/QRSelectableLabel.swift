@@ -102,8 +102,8 @@ extension QRSelectableLabel {
         
         self.copyLabel.text = "qr-creation-copied".localized
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5, execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             self.copyLabel.text = "qr-creation-tap-to-copy".localized
-        })
+        }
     }
 }
