@@ -21,6 +21,12 @@ class AddContactViewController: BaseScrollViewController {
     
     private var keyboardController = KeyboardController()
     
+    override init(configuration: ViewControllerConfiguration) {
+        super.init(configuration: configuration)
+        
+        hidesBottomBarWhenPushed = true
+    }
+    
     // MARK: Setup
     
     override func configureAppearance() {

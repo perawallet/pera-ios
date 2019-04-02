@@ -38,6 +38,8 @@ class ContactInfoViewController: BaseScrollViewController {
         transactionHistoryDataSource = TransactionHistoryDataSource(mode: .contacts)
         
         super.init(configuration: configuration)
+        
+        hidesBottomBarWhenPushed = true
     }
     
     // MARK: Setup
@@ -107,6 +109,6 @@ extension ContactInfoViewController: TransactionHistoryDataSourceDelegate {
 extension ContactInfoViewController: ContactInfoViewDelegate {
     
     func contactInfoViewDidTapQRCodeButton(_ contactInfoView: ContactInfoView) {
-        
+        tabBarController?.open(.contactQRDisplay(contact), by: .presentWithoutNavigationController)
     }
 }

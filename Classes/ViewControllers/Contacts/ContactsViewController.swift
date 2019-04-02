@@ -177,5 +177,15 @@ extension ContactsViewController: ContactCellDelegate {
     
     func contactCellDidTapQRDisplayButton(_ cell: ContactCell) {
         view.endEditing(true)
+        
+        guard let indexPath = contactsView.contactsCollectionView.indexPath(for: cell) else {
+            return
+        }
+        
+        if indexPath.item < searchResults.count {
+            let contact = searchResults[indexPath.row]
+            
+            tabBarController?.open(.contactQRDisplay(contact), by: .presentWithoutNavigationController)
+        }
     }
 }

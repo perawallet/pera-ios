@@ -105,6 +105,10 @@ class UserInformationView: BaseView {
         addButton.addTarget(self, action: #selector(notifyDelegateToAddButtonTapped), for: .touchUpInside)
     }
     
+    override func linkInteractors() {
+        algorandAddressInputView.delegate = self
+    }
+    
     // MARK: Layout
     
     override func prepareLayout() {
