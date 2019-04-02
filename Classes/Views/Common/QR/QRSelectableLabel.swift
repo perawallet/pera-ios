@@ -29,6 +29,17 @@ class QRSelectableLabel: UIView {
         return view
     }()
     
+    private lazy var imageView: UIImageView = {
+        UIImageView(image: img("icon-copy"))
+    }()
+    
+    private lazy var copyLabel: UILabel = {
+        UILabel()
+            .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 10.0)))
+            .withTextColor(UIColor(hex: "#AAAAB8"))
+            .withText("qr-creation-tap-to-copy".localized)
+    }()
+    
     weak var delegate: QRSelectableLabelDelegate?
     
     override init(frame: CGRect) {
@@ -48,13 +59,27 @@ extension QRSelectableLabel {
     fileprivate func setupLayout() {
         addSubview(containerView)
         containerView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.leading.trailing.top.equalToSuperview()
+            make.height.equalTo(80)
         }
         
         containerView.addSubview(label)
         label.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(15)
             make.centerY.equalToSuperview()
+        }
+        
+        addSubview(copyLabel)
+        copyLabel.snp.makeConstraints { make in
+            make.centerX.equalTo(containerView).offset(3)
+            make.top.equalTo(containerView.snp.bottom).offset(6)
+        }
+        
+        addSubview(imageView)
+        
+        imageView.snp.makeConstraints { make in
+            make.centerY.equalTo(copyLabel)
+            make.trailing.equalTo(copyLabel.snp.leading).offset(-5)
         }
     }
     
@@ -74,5 +99,11 @@ extension QRSelectableLabel {
         }
         
         delegate.qrSelectableLabel(self, didTapText: text)
+        
+        self.copyLabel.text = "qr-creation-copied".localized
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5, execute: {
+            self.copyLabel.text = "qr-creation-tap-to-copy".localized
+        })
     }
 }

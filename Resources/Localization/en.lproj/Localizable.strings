@@ -98,6 +98,8 @@
 
 // MARK: QR Creation
 "qr-creation-title" = "Passphrase QR";
+"qr-creation-tap-to-copy" = "Tap to copy";
+"qr-creation-copied" = "Copied";
 
 // MARK: Login
 
