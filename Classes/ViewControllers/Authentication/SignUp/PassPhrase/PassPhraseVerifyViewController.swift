@@ -154,12 +154,14 @@ UICollectionViewDataSource {
                         case .new:
                             guard let session = self.session,
                                 let authenticatedUser = session.authenticatedUser,
+                                let accountPrivateKey = session.privateData(forAccount: "temp"),
                                 let accountData = session.privateData(forAccount: "tempAccount") else {
                                 return
                             }
                             
                             if let account = try? JSONDecoder().decode(Account.self, from: accountData) {
                                 authenticatedUser.addAccount(account)
+                                session.savePrivate(accountPrivateKey, forAccount: account.address)
                             } else {
                                 print("error")
                             }
