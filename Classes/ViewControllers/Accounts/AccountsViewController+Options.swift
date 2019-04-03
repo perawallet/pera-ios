@@ -100,6 +100,8 @@ extension AccountsViewController: OptionsViewControllerDelegate {
                         return
                 }
                 
+                let isAccountDefault = user.isDefaultAccount(account)
+                
                 user.removeAccount(account)
                 
                 guard !user.accounts.isEmpty else {
@@ -131,7 +133,7 @@ extension AccountsViewController: OptionsViewControllerDelegate {
                 
                 self.selectedAccount = newDefaultAccount
                 
-                if user.isDefaultAccount(newDefaultAccount) {
+                if isAccountDefault {
                     user.setDefaultAccount(newDefaultAccount)
                 }
         }
