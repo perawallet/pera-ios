@@ -19,6 +19,13 @@ class PassphraseDisplayViewController: BaseViewController {
     }
     
     private let layout = Layout<LayoutConstants>()
+    
+    private let passPhrase: String
+    
+    init(account: Account, configuration: ViewControllerConfiguration) {
+        self.passPhrase = account.mnemonics().joined(separator: " ")
+        super.init(configuration: configuration)
+    }
 
     // MARK: Components
     
@@ -27,21 +34,12 @@ class PassphraseDisplayViewController: BaseViewController {
         return view
     }()
     
-    // TODO: Remove when passphrase added
-    
-    private let passphrase = """
-                              marble protect crawl steak lion clock camera brother find escape matter roast toast critic\
-                              velvet police old inform arena enemy milk venue cereal abandon cushion
-                             """
-    
     // MARK: Setup
     
     override func configureAppearance() {
         view.backgroundColor = Colors.backgroundColor
         
-        // TODO: Add passphare
-        
-        passphraseDisplayView.passphraseLabel.attributedText = passphrase.attributed([.lineSpacing(1.5)])
+        passphraseDisplayView.passphraseLabel.attributedText = passPhrase.attributed([.lineSpacing(1.5)])
     }
     
     override func setListeners() {
@@ -66,8 +64,7 @@ class PassphraseDisplayViewController: BaseViewController {
 extension PassphraseDisplayViewController: PassphraseDisplayViewDelegate {
     
     func passphraseDisplayViewDidTapShareButton(_ passphraseDisplayView: PassphraseDisplayView) {
-        // TODO: Add passphrase instead of mock
-        let sharedItem = [passphrase]
+        let sharedItem = [passPhrase]
         let activityViewController = UIActivityViewController(activityItems: sharedItem, applicationActivities: nil)
         activityViewController.excludedActivityTypes = [UIActivity.ActivityType.addToReadingList]
         

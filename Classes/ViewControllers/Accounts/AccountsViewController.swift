@@ -44,13 +44,12 @@ class AccountsViewController: BaseViewController {
     
     private(set) var localAuthenticator = LocalAuthenticator()
     
+    var selectedAccount: Account?
+    
     private let viewModel = AccountsViewModel()
     
     private var transactionHistoryLayoutBuilder: TransactionHistoryLayoutBuilder
     private var transactionHistoryDataSource: TransactionHistoryDataSource
-    
-    // TODO: Will remove mock after real connection
-    private let account = Account(address: "1")
     
     // MARK: Components
     
@@ -96,18 +95,28 @@ class AccountsViewController: BaseViewController {
         
         view.backgroundColor = .white
         
-        // TODO: Will remove mock after real connection
-        account.amount = 123456789
-        account.name = "Account Name"
+        selectedAccount = session?.authenticatedUser?.defaultAccount()
         
-        if let accountName = account.name {
-            title = "\(accountName)".localized
+        guard let account = selectedAccount else {
+            return
         }
+        
+        self.navigationItem.title = selectedAccount?.name
         
         viewModel.configure(accountsView.accountsHeaderView, with: account)
         
         accountsView.transactionHistoryCollectionView.contentState = .loading
         transactionHistoryDataSource.setupMockData()
+    }
+    
+    override func setListeners() {
+        super.setListeners()
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didUpdateAuthenticatedUser(notification:)),
+            name: Notification.Name.AuthenticatedUserUpdate,
+            object: nil)
     }
     
     // MARK: Layout
@@ -130,14 +139,16 @@ class AccountsViewController: BaseViewController {
 extension AccountsViewController {
     
     private func presentAccountList() {
-        open(
+        let accountListViewController = open(
             .accountList,
             by: .customPresent(
                 presentationStyle: .custom,
                 transitionStyle: nil,
                 transitioningDelegate: accountListModalPresenter
             )
-        )
+        ) as? AccountListViewController
+        
+        accountListViewController?.delegate = self
     }
     
     private func presentOptions() {
@@ -150,6 +161,41 @@ extension AccountsViewController {
         let optionsViewController = open(.options, by: transitionStyle) as? OptionsViewController
         
         optionsViewController?.delegate = self
+    }
+}
+
+// MARK: - Helpers
+extension AccountsViewController {
+    fileprivate func updateLayout() {
+        guard let address = selectedAccount?.address else {
+            return
+        }
+        
+        let account = session?.authenticatedUser?.account(address: address)
+        
+        self.navigationItem.title = account?.name
+    }
+}
+
+// MARK: - Notification
+extension AccountsViewController {
+    @objc
+    fileprivate func didUpdateAuthenticatedUser(notification: Notification) {
+        updateLayout()
+    }
+}
+
+// MARK: AccountListViewControllerDelegate
+extension AccountsViewController: AccountListViewControllerDelegate {
+    func accountListViewControllerDidTapAddButton(_ viewController: AccountListViewController) {
+        open(.introduction(mode: .new), by: .present)
+    }
+    
+    func accountListViewController(_ viewController: AccountListViewController,
+                                   didSelectAccount account: Account) {
+        selectedAccount = account
+        
+        updateLayout()
     }
 }
 

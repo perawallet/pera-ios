@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Crypto
 
 class PassPhraseVerifyViewController: BaseScrollViewController {
     
@@ -40,6 +39,8 @@ class PassPhraseVerifyViewController: BaseScrollViewController {
         collectionView.isScrollEnabled = false
         return collectionView
     }()
+    
+    var mode: AccountSetupMode = .initialize
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -147,7 +148,25 @@ UICollectionViewDataSource {
                     explanation: "pass-phrase-verify-pop-up-explanation".localized,
                     actionTitle: nil) {
                         
-                        self.open(.accountNameSetup, by: .push)
+                        switch self.mode {
+                        case .initialize:
+                            self.open(.accountNameSetup(mode: .initialize), by: .push)
+                        case .new:
+                            guard let session = self.session,
+                                let authenticatedUser = session.authenticatedUser,
+                                let accountData = session.privateData(forAccount: "tempAccount") else {
+                                return
+                            }
+                            
+                            if let account = try? JSONDecoder().decode(Account.self, from: accountData) {
+                                authenticatedUser.addAccount(account)
+                            } else {
+                                print("error")
+                            }
+                            
+                            session.authenticatedUser = authenticatedUser
+                            self.dismissScreen()
+                        }
                 }
                 
                 let viewController = AlertViewController(mode: .default, alertConfigurator: configurator, configuration: configuration)

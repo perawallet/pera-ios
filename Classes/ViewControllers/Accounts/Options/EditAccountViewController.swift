@@ -30,12 +30,19 @@ class EditAccountViewController: BaseViewController {
     
     private var contentViewBottomConstraint: Constraint?
     
+    fileprivate let account: Account
+    
+    init(account: Account, configuration: ViewControllerConfiguration) {
+        self.account = account
+        super.init(configuration: configuration)
+    }
+    
     // MARK: Setup
     
     override func configureAppearance() {
         view.backgroundColor = Colors.backgroundColor
         
-        // TODO: Need to configure account name input from account
+        editAccountView.accountNameInputView.inputTextField.text = account.name
     }
     
     override func setListeners() {
@@ -96,7 +103,7 @@ class EditAccountViewController: BaseViewController {
             animations: {
                 self.modalPresenter?.changeModalSize(to: self.modalSize, animated: false)
                 self.view.layoutIfNeeded()
-        },
+            },
             completion: nil
         )
     }
@@ -117,8 +124,15 @@ class EditAccountViewController: BaseViewController {
 extension EditAccountViewController: EditAccountViewDelegate {
     
     func editAccountViewDidTapSaveButton(_ editAccountView: EditAccountView) {
+        guard let name = editAccountView.accountNameInputView.inputTextField.text else {
+            displaySimpleAlertWith(title: "title-error".localized, message: "account-name-setup-empty-error-message".localized)
+            return
+        }
         
-        // TODO: Add account name update action
+        account.name = name
+        
+        session?.authenticatedUser?.updateAccount(account)
+        
         dismissScreen()
     }
 }

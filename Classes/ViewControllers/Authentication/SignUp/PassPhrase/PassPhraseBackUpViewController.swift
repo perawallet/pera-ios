@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Crypto
 
 class PassPhraseBackUpViewController: BaseScrollViewController {
     
@@ -18,6 +17,8 @@ class PassPhraseBackUpViewController: BaseScrollViewController {
         return view
     }()
     
+    var mode: AccountSetupMode = .initialize
+    
     // MARK: Setup
     
     override func configureAppearance() {
@@ -25,15 +26,11 @@ class PassPhraseBackUpViewController: BaseScrollViewController {
         
         title = "new-account-title".localized
         
-        if let privateKey = CryptoGenerateSK() {
-            self.session?.savePrivate(privateKey, forAccount: "temp")
-            
-            let mnemonics = self.session?.mnemonics(forAccount: "temp") ?? []
-            
-            print(mnemonics.joined(separator: " "))
-            
-            passPhraseBackUpView.passPhraseLabel.attributedText = mnemonics.joined(separator: " ")
-                .attributed([.lineSpacing(1.5)])
+        switch mode {
+        case .initialize:
+            configureInitialAccountAppearance()
+        case .new:
+            configureNewAccountAppearance()
         }
     }
     
@@ -52,6 +49,38 @@ class PassPhraseBackUpViewController: BaseScrollViewController {
     }
 }
 
+// MARK: - Helpers
+extension PassPhraseBackUpViewController {
+    func configureInitialAccountAppearance() {
+        guard let session = self.session,
+            let privateKey = session.generatePrivateKey() else {
+                return
+        }
+        
+        session.savePrivate(privateKey, forAccount: "temp")
+        
+        let mnemonics = session.mnemonics(forAccount: "temp")
+        
+        print(mnemonics.joined(separator: " "))
+        
+        passPhraseBackUpView.passPhraseLabel.attributedText = mnemonics.joined(separator: " ")
+            .attributed([.lineSpacing(1.5)])
+    }
+    
+    func configureNewAccountAppearance() {
+        guard let session = self.session else {
+            return
+        }
+        
+        let mnemonics = session.mnemonics(forAccount: "temp")
+        
+        print(mnemonics.joined(separator: " "))
+        
+        passPhraseBackUpView.passPhraseLabel.attributedText = mnemonics.joined(separator: " ")
+            .attributed([.lineSpacing(1.5)])
+    }
+}
+
 extension PassPhraseBackUpViewController: PassPhraseBackUpViewDelegate {
     
     func passPhraseBackUpViewDidTapShareButton(_ passPhraseBackUpView: PassPhraseBackUpView) {
@@ -65,7 +94,7 @@ extension PassPhraseBackUpViewController: PassPhraseBackUpViewDelegate {
     }
     
     func passPhraseBackUpViewDidTapVerifyButton(_ passPhraseBackUpView: PassPhraseBackUpView) {
-        open(.passPhraseVerify, by: .push)
+        open(.passPhraseVerify(mode: mode), by: .push)
     }
     
     func passPhraseBackUpViewDidTapQrButton(_ passPhraseBackUpView: PassPhraseBackUpView) {

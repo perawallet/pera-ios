@@ -102,7 +102,7 @@ extension LocalAuthenticationPreferenceViewController: LocalAuthenticationPrefer
     
     fileprivate func openNextFlow() {
         if session?.authenticatedUser == nil {
-            open(.passPhraseBackUp, by: .push)
+            open(.passPhraseBackUp(mode: .initialize), by: .push)
         } else {
             open(.home, by: .launch)
         }

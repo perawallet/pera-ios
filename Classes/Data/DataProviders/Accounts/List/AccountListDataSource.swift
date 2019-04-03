@@ -12,19 +12,16 @@ class AccountListDataSource: NSObject, UICollectionViewDataSource {
     
     private let viewModel = AccountListViewModel()
     
-    private var accounts = [Account]()
+    private(set) var accounts = [Account]()
     
-    // TODO: Added accounts for test. Should be removed after SDK integration.
     override init() {
         super.init()
         
-        for index in 0...10 {
-            let account = Account(address: "\(index)")
-            account.name = "Account \(index)"
-            account.amount = 123456
-            
-            accounts.append(account)
+        guard let user = UIApplication.shared.appConfiguration?.session.authenticatedUser else {
+            return
         }
+        
+        accounts.append(contentsOf: user.accounts)
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -43,8 +40,11 @@ class AccountListDataSource: NSObject, UICollectionViewDataSource {
                     fatalError("Index path is out of bounds")
             }
             
-            // TODO: Add total amount string
-            viewModel.configure(cell, with: "1234567")
+            let totalAmount = accounts.reduce(0) {
+                $0 + $1.amount
+            }
+            
+            viewModel.configure(cell, with: "\(totalAmount)")
             
             return cell
         }

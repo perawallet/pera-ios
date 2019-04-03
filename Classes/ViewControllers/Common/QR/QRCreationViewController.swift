@@ -7,13 +7,14 @@
 //
 
 import UIKit
+import SnapKit
 
 enum QRMode {
     case address
     case mnemonic
 }
 
-class QRCreationViewController: BaseViewController {
+class QRCreationViewController: BaseScrollViewController {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let bottomInset: CGFloat = 20.0
     }
@@ -61,6 +62,12 @@ class QRCreationViewController: BaseViewController {
             .withTitleEdgeInsets(UIEdgeInsets(top: 0, left: 5.0, bottom: 0, right: 0))
     }()
     
+    private lazy var qrSelectableLabel: QRSelectableLabel = {
+        let qrSelectableLabel = QRSelectableLabel()
+        qrSelectableLabel.delegate = self
+        return qrSelectableLabel
+    }()
+    
     private(set) lazy var qrView: QRView = {
         let qrText = QRText(mode: self.mode, text: self.qrText)
         return QRView(qrText: qrText)
@@ -72,6 +79,10 @@ class QRCreationViewController: BaseViewController {
         super.configureAppearance()
         
         title = "qr-creation-title".localized
+        
+        if mode == .address {
+            qrSelectableLabel.label.text = self.qrText
+        }
     }
     
     override func setListeners() {
@@ -84,16 +95,21 @@ class QRCreationViewController: BaseViewController {
     override func prepareLayout() {
         super.prepareLayout()
         
-        setupCancelButtonLayout()
         setupQRView()
         setupShareButtonLayout()
+        
+        if mode == .address {
+            setupQRSelectableLabel()
+        }
+        
+        setupCancelButtonLayout()
     }
 }
 
 // MARK: - Layout
 extension QRCreationViewController {
     fileprivate func setupQRView() {
-        view.addSubview(qrView)
+        contentView.addSubview(qrView)
         
         qrView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(75)
@@ -102,23 +118,43 @@ extension QRCreationViewController {
         }
     }
     
-    fileprivate func setupCancelButtonLayout() {
-        view.addSubview(cancelButton)
-        
-        cancelButton.snp.makeConstraints { make in
-            make.bottom.safeEqualToBottom(of: self).inset(layout.current.bottomInset)
-            make.centerX.equalToSuperview()
-        }
-    }
-    
     fileprivate func setupShareButtonLayout() {
-        view.addSubview(shareButton)
+        contentView.addSubview(shareButton)
         
         shareButton.snp.makeConstraints { make in
             make.top.equalTo(qrView.snp.bottom).offset(35)
             make.height.equalTo(45)
             make.width.equalTo(135)
             make.centerX.equalTo(qrView)
+        }
+    }
+    
+    fileprivate func setupQRSelectableLabel() {
+        contentView.addSubview(qrSelectableLabel)
+        
+        qrSelectableLabel.snp.makeConstraints { make in
+            make.top.equalTo(shareButton.snp.bottom).offset(50)
+            make.height.equalTo(105)
+            make.leading.trailing.equalToSuperview().inset(30)
+        }
+    }
+    
+    fileprivate func setupCancelButtonLayout() {
+        let constraintItem: ConstraintItem
+        
+        if mode == .address {
+            constraintItem = qrSelectableLabel.snp.bottom
+        } else {
+            constraintItem = shareButton.snp.bottom
+        }
+        
+        contentView.addSubview(cancelButton)
+        
+        cancelButton.snp.makeConstraints { make in
+            make.top.equalTo(constraintItem).offset(60).priority(.low)
+            make.height.equalTo(56)
+            make.centerX.equalToSuperview()
+            make.bottom.equalToSuperview().inset(layout.current.bottomInset + view.safeAreaBottom)
         }
     }
 }
@@ -141,5 +177,13 @@ extension QRCreationViewController {
         activityViewController.excludedActivityTypes = [UIActivity.ActivityType.addToReadingList]
         
         navigationController?.present(activityViewController, animated: true, completion: nil)
+    }
+}
+
+// MARK: - QRSelectableLabelDelegate
+extension QRCreationViewController: QRSelectableLabelDelegate {
+    func qrSelectableLabel(_ qrSelectableLabel: QRSelectableLabel,
+                           didTapText text: String) {
+        UIPasteboard.general.string = text
     }
 }
