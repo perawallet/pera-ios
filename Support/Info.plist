@@ -4,6 +4,8 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleDisplayName</key>
+	<string>Algorand</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -28,11 +30,11 @@
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>Algorand will use your camero to scan QR.</string>
+	<string>Algorand will use your camera to scan QR codes.</string>
 	<key>NSFaceIDUsageDescription</key>
-	<string>Algorand will use Face ID to log in.</string>
+	<string>Algorand will use Face ID to log you in securely.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Algorand will save the image of pass phrases image.</string>
+	<string>Algorand will save QR codes to your photo library.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Montserrat-Bold.ttf</string>
