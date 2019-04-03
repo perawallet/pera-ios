@@ -10,7 +10,7 @@ import Magpie
 import CoreData
 
 @objc(Contact)
-final public class Contact: NSManagedObject, Mappable {
+public final class Contact: NSManagedObject, Mappable {
     
     enum CodingKeys: String, CodingKey {
         case identifier = "identifier"
@@ -100,6 +100,7 @@ extension Contact {
     static let entityName = "Contact"
 }
 
+// MARK: DBStorable
+
 extension Contact: DBStorable {
-    
 }
