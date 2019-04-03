@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class ContactsViewController: BaseViewController {
     
@@ -32,7 +33,9 @@ class ContactsViewController: BaseViewController {
     
     override func configureNavigationBarAppearance() {
         let addBarButtonItem = ALGBarButtonItem(kind: .add) {
-            self.open(.addContact, by: .push)
+            let controller = self.open(.addContact, by: .push) as? AddContactViewController
+            
+            controller?.delegate = self
         }
         
         rightBarButtonItems = [addBarButtonItem]
@@ -49,22 +52,36 @@ class ContactsViewController: BaseViewController {
         
         title = "contacts-title".localized
         
-        setupMockData()
+        fetchContacts()
     }
     
-    // TODO: Will be replaced with real contacts. Need to handle empty and loading states after fetching contacts.
-    
-    private func setupMockData() {
-        for index in 0...20 {
-            let contact = Contact()
-            
-            contact.name = "Contact \(index)"
-            contact.address = "123123123123"
-            
-            contacts.append(contact)
+    private func fetchContacts() {
+        guard let appDelegate = UIApplication.shared.appDelegate else {
+            return
         }
         
-        searchResults = contacts
+        let context = appDelegate.persistentContainer.viewContext
+        
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Contact.entityName
+        )
+        fetchRequest.returnsObjectsAsFaults = false
+        
+        do {
+            let response = try context.fetch(fetchRequest)
+            
+            guard let results = response as? [Contact] else {
+                return
+            }
+            
+            contacts.append(contentsOf: results)
+            searchResults = contacts
+            
+            if searchResults.isEmpty {
+                contactsView.contactsCollectionView.contentState = .empty(emptyStateView)
+            }
+        } catch {
+            print("Failed")
+        }
     }
     
     // MARK: Layout
@@ -187,5 +204,28 @@ extension ContactsViewController: ContactCellDelegate {
             
             tabBarController?.open(.contactQRDisplay(contact), by: .presentWithoutNavigationController)
         }
+    }
+}
+
+extension ContactsViewController: AddContactViewControllerDelegate {
+    
+    func addContactViewController(_ addContactViewController: AddContactViewController, didSave contact: Contact) {
+        contacts.append(contact)
+        
+        if let name = contact.name,
+            let currentQuery = contactsView.contactNameInputView.inputTextField.text,
+            !currentQuery.isEmpty {
+            
+            if name.contains(currentQuery) {
+                searchResults.append(contact)
+            }
+            
+            contactsView.contactsCollectionView.reloadData()
+            return
+        }
+        
+        searchResults.append(contact)
+        
+        contactsView.contactsCollectionView.reloadData()
     }
 }

@@ -7,16 +7,50 @@
 //
 
 import Magpie
+import CoreData
 
-class Contact: Mappable {
+@objc(Contact)
+public class Contact: NSManagedObject, Mappable {
     
-    private var identifier: String?
-    
-    var address: String?
-    var image: Data?
-    var name: String?
+    enum CodingKeys: String, CodingKey {
+        case identifier = "identifier"
+        case address = "address"
+        case image = "image"
+        case name = "name"
+    }
     
     private(set) var transactions: [Transaction] = []
+    
+    @NSManaged public var identifier: String?
+    @NSManaged public var address: String?
+    @NSManaged public var image: Data?
+    @NSManaged public var name: String?
+    
+    public required convenience init(from decoder: Decoder) throws {
+        guard let codingUserInfoKeyManagedObjectContext = CodingUserInfoKey.managedObjectContext,
+            let managedObjectContext = decoder.userInfo[codingUserInfoKeyManagedObjectContext] as? NSManagedObjectContext,
+            let entity = NSEntityDescription.entity(forEntityName: "Contact", in: managedObjectContext) else {
+                fatalError("Failed to decode User")
+        }
+        
+        self.init(entity: entity, insertInto: managedObjectContext)
+        
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.identifier = try container.decodeIfPresent(String.self, forKey: .identifier)
+        self.address = try container.decodeIfPresent(String.self, forKey: .address)
+        self.image = try container.decodeIfPresent(Data.self, forKey: .image)
+        self.name = try container.decodeIfPresent(String.self, forKey: .name)
+    }
+    
+    // MARK: - Encodable
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        
+        try container.encode(identifier, forKey: .identifier)
+        try container.encode(address, forKey: .address)
+        try container.encode(image, forKey: .image)
+        try container.encode(name, forKey: .name)
+    }
     
     func encoded() -> Data? {
         return try? JSONEncoder().encode(self)
@@ -61,11 +95,7 @@ extension Contact {
 extension Contact: Encodable {
 }
 
-// MARK: Equatable
-
-extension Contact: Equatable {
+extension Contact {
     
-    static func == (lhs: Contact, rhs: Contact) -> Bool {
-        return lhs.identifier == rhs.identifier
-    }
+    static let entityName = "Contact"
 }

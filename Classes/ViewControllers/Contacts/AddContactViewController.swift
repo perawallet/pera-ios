@@ -7,6 +7,12 @@
 //
 
 import UIKit
+import CoreData
+
+protocol AddContactViewControllerDelegate: class {
+    
+    func addContactViewController(_ addContactViewController: AddContactViewController, didSave contact: Contact)
+}
 
 class AddContactViewController: BaseScrollViewController {
 
@@ -20,6 +26,8 @@ class AddContactViewController: BaseScrollViewController {
     private lazy var imagePicker = ImagePicker(viewController: self)
     
     private var keyboardController = KeyboardController()
+    
+    weak var delegate: AddContactViewControllerDelegate?
     
     override init(configuration: ViewControllerConfiguration) {
         super.init(configuration: configuration)
@@ -70,7 +78,44 @@ extension AddContactViewController: AddContactViewDelegate {
     }
     
     func addContactViewDidTapAddContactButton(_ addContactView: AddContactView) {
-        // TODO: Save contact and reload listing
+        guard let name = addContactView.userInformationView.contactNameInputView.inputTextField.text,
+            let address = addContactView.userInformationView.algorandAddressInputView.inputTextView.text,
+            !address.isEmpty else {
+                return
+        }
+        
+        guard let appDelegate = UIApplication.shared.appDelegate else {
+            return
+        }
+        
+        let context = appDelegate.persistentContainer.viewContext
+        
+        guard let entity = NSEntityDescription.entity(forEntityName: Contact.entityName, in: context) else {
+            return
+        }
+        
+        let contact = NSManagedObject(entity: entity, insertInto: context)
+        
+        if let image = addContactView.userInformationView.userImageView.image?.pngData() {
+            contact.setValue(image, forKey: Contact.CodingKeys.image.rawValue)
+        }
+        
+        contact.setValue(name, forKey: Contact.CodingKeys.name.rawValue)
+        contact.setValue(address, forKey: Contact.CodingKeys.address.rawValue)
+        
+        do {
+            try context.save()
+            
+            guard let contact = contact as? Contact else {
+                return
+            }
+            
+            delegate?.addContactViewController(self, didSave: contact)
+            
+            closeScreen(by: .pop)
+        } catch {
+            print("Failed saving")
+        }
     }
     
     func addContactViewDidTapQRCodeButton(_ addContactView: AddContactView) {
