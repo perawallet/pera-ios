@@ -127,7 +127,7 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
                         self.dismissScreen()
                     }
                 } else {
-                    self.open(.choosePassword(.setup), by: .push)
+                    self.open(.choosePassword(mode: .setup), by: .push)
                 }
         }
         

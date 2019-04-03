@@ -11,7 +11,7 @@ import UIKit
 enum Screen {
     case introduction(mode: AccountSetupMode)
     case welcome
-    case choosePassword(ChoosePasswordViewController.Mode)
+    case choosePassword(mode: ChoosePasswordViewController.Mode)
     case localAuthenticationPreference
     case passPhraseBackUp(mode: AccountSetupMode)
     case passPhraseVerify(mode: AccountSetupMode)
@@ -24,8 +24,8 @@ enum Screen {
     case accountList
     case editAccount(account: Account)
     case addContact
-    case contactDetail(Contact)
-    case contactQRDisplay(Contact)
+    case contactDetail(contact: Contact)
+    case contactQRDisplay(contact: Contact)
 }
 
 extension Screen {

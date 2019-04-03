@@ -109,6 +109,6 @@ extension ContactInfoViewController: TransactionHistoryDataSourceDelegate {
 extension ContactInfoViewController: ContactInfoViewDelegate {
     
     func contactInfoViewDidTapQRCodeButton(_ contactInfoView: ContactInfoView) {
-        tabBarController?.open(.contactQRDisplay(contact), by: .presentWithoutNavigationController)
+        tabBarController?.open(.contactQRDisplay(contact: contact), by: .presentWithoutNavigationController)
     }
 }

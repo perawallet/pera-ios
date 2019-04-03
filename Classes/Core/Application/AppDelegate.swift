@@ -66,7 +66,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     return
             }
             
-            rootViewController.route(to: .choosePassword(.login), from: topViewController, by: .present)
+            rootViewController.route(to: .choosePassword(mode: .login), from: topViewController, by: .present)
             return
         }
     }
