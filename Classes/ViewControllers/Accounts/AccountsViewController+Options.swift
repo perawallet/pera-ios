@@ -105,7 +105,7 @@ extension AccountsViewController: OptionsViewControllerDelegate {
                 guard !user.accounts.isEmpty else {
                     self.session?.reset()
                     
-                    self.open(.introduction(mode: .initialize), by: .present, animated: false)
+                    self.open(.introduction(mode: .initialize), by: .launch, animated: false)
                     
                     return
                 }
