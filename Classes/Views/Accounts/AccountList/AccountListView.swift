@@ -122,7 +122,7 @@ class AccountListView: BaseView {
 }
 
 // MARK: - AccountListLayoutBuilderDelegate
-extension AccountListView: AccountListLayoutBuilderDelegate {
+extension AccountListView: AccountListLayoutBuilderDelegate {
     func accountListLayoutBuilder(_ layoutBuilder: AccountListLayoutBuilder, didSelectAt indexPath: IndexPath) {
         let accounts = accountListDataSource.accounts
         
