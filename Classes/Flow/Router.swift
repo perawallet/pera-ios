@@ -43,7 +43,9 @@ class Router {
             
             sourceViewController.navigationController?.pushViewController(viewController, animated: animated)
         case .launch:
-            sourceViewController.dismiss(animated: false)
+            if !(sourceViewController is RootViewController) {
+                sourceViewController.closeScreen(by: .dismiss, animated: false)
+            }
             
             let navigationController: NavigationController
             
