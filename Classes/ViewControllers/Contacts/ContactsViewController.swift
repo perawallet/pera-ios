@@ -56,31 +56,22 @@ class ContactsViewController: BaseViewController {
     }
     
     private func fetchContacts() {
-        guard let appDelegate = UIApplication.shared.appDelegate else {
-            return
-        }
-        
-        let context = appDelegate.persistentContainer.viewContext
-        
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Contact.entityName
-        )
-        fetchRequest.returnsObjectsAsFaults = false
-        
-        do {
-            let response = try context.fetch(fetchRequest)
-            
-            guard let results = response as? [Contact] else {
-                return
+        Contact.fetchAll(entity: Contact.entityName) { response in
+            switch response {
+            case let .results(objects: objects):
+                guard let results = objects as? [Contact] else {
+                    return
+                }
+                
+                self.contacts.append(contentsOf: results)
+                self.searchResults = self.contacts
+                
+                if self.searchResults.isEmpty {
+                    self.contactsView.contactsCollectionView.contentState = .empty(self.emptyStateView)
+                }
+            default:
+                break
             }
-            
-            contacts.append(contentsOf: results)
-            searchResults = contacts
-            
-            if searchResults.isEmpty {
-                contactsView.contactsCollectionView.contentState = .empty(emptyStateView)
-            }
-        } catch {
-            print("Failed")
         }
     }
     
@@ -141,7 +132,7 @@ extension ContactsViewController: UICollectionViewDelegateFlowLayout {
         if indexPath.item < searchResults.count {
             let contact = searchResults[indexPath.row]
             
-            open(.contactDetail(contact), by: .push)
+            open(.contactDetail(contact: contact), by: .push)
         }
     }
 }
@@ -202,7 +193,7 @@ extension ContactsViewController: ContactCellDelegate {
         if indexPath.item < searchResults.count {
             let contact = searchResults[indexPath.row]
             
-            tabBarController?.open(.contactQRDisplay(contact), by: .presentWithoutNavigationController)
+            tabBarController?.open(.contactQRDisplay(contact: contact), by: .presentWithoutNavigationController)
         }
     }
 }
@@ -210,6 +201,10 @@ extension ContactsViewController: ContactCellDelegate {
 extension ContactsViewController: AddContactViewControllerDelegate {
     
     func addContactViewController(_ addContactViewController: AddContactViewController, didSave contact: Contact) {
+        if contacts.isEmpty {
+            contactsView.contactsCollectionView.contentState = .none
+        }
+        
         contacts.append(contact)
         
         if let name = contact.name,

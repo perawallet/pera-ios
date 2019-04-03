@@ -84,37 +84,28 @@ extension AddContactViewController: AddContactViewDelegate {
                 return
         }
         
-        guard let appDelegate = UIApplication.shared.appDelegate else {
-            return
-        }
-        
-        let context = appDelegate.persistentContainer.viewContext
-        
-        guard let entity = NSEntityDescription.entity(forEntityName: Contact.entityName, in: context) else {
-            return
-        }
-        
-        let contact = NSManagedObject(entity: entity, insertInto: context)
+        var keyedValues: [String: Any] = [
+            Contact.CodingKeys.name.rawValue: name,
+            Contact.CodingKeys.address.rawValue: address
+        ]
         
         if let image = addContactView.userInformationView.userImageView.image?.pngData() {
-            contact.setValue(image, forKey: Contact.CodingKeys.image.rawValue)
+            keyedValues[Contact.CodingKeys.image.rawValue] = image
         }
         
-        contact.setValue(name, forKey: Contact.CodingKeys.name.rawValue)
-        contact.setValue(address, forKey: Contact.CodingKeys.address.rawValue)
-        
-        do {
-            try context.save()
-            
-            guard let contact = contact as? Contact else {
-                return
+        Contact.create(entity: Contact.entityName, with: keyedValues) { result in
+            switch result {
+            case let .result(object: object):
+                guard let contact = object as? Contact else {
+                    return
+                }
+                
+                self.delegate?.addContactViewController(self, didSave: contact)
+                
+                self.closeScreen(by: .pop)
+            default:
+                break
             }
-            
-            delegate?.addContactViewController(self, didSave: contact)
-            
-            closeScreen(by: .pop)
-        } catch {
-            print("Failed saving")
         }
     }
     
