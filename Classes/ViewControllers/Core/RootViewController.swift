@@ -43,7 +43,7 @@ class RootViewController: UIViewController {
                 appConfiguration.session.authenticatedUser != nil {
                 open(.choosePassword(.login), by: .present)
             } else {
-                open(.introduction, by: .present)
+                open(.introduction(mode: .initialize), by: .launch, animated: false)
             }
         } else {
             open(.home, by: .push, animated: false)

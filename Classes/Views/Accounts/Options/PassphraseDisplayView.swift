@@ -37,7 +37,7 @@ class PassphraseDisplayView: BaseView {
             .withAlignment(.center)
             .withTextColor(SharedColors.black)
             .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 22.0)))
-            .withText("back-up-phrase-title".localized)
+            .withText("view-pass-phrase-title".localized)
     }()
     
     private lazy var passphraseContainerView: UIView = {

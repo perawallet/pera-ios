@@ -9,20 +9,20 @@
 import UIKit
 
 enum Screen {
-    case introduction
+    case introduction(mode: AccountSetupMode)
     case welcome
     case choosePassword(ChoosePasswordViewController.Mode)
     case localAuthenticationPreference
-    case passPhraseBackUp
-    case passPhraseVerify
-    case accountNameSetup
-    case accountRecover
+    case passPhraseBackUp(mode: AccountSetupMode)
+    case passPhraseVerify(mode: AccountSetupMode)
+    case accountNameSetup(mode: AccountSetupMode)
+    case accountRecover(mode: AccountSetupMode)
     case qrScanner
     case qrGenerator(text: String, mode: QRMode)
     case home
     case options
     case accountList
-    case editAccount
+    case editAccount(account: Account)
     case addContact
     case contactDetail(Contact)
     case contactQRDisplay(Contact)

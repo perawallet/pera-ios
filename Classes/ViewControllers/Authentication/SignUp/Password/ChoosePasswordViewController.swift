@@ -49,6 +49,10 @@ class ChoosePasswordViewController: BaseScrollViewController {
         }
     }
     
+    deinit {
+        
+    }
+    
     override func configureAppearance() {
         super.configureAppearance()
         
@@ -111,7 +115,7 @@ extension ChoosePasswordViewController: ChoosePasswordViewDelegate {
     func choosePasswordViewDidTapLogoutButton(_ choosePasswordView: ChoosePasswordView) {
         session?.reset()
         
-        open(.introduction, by: .present, animated: false)
+        open(.introduction(mode: .initialize), by: .launch, animated: false)
     }
 }
 

@@ -38,6 +38,10 @@ class Account: Mappable {
     func mnemonics() -> [String] {
         return UIApplication.shared.appConfiguration?.session.mnemonics(forAccount: self.address) ?? []
     }
+    
+    func encoded() -> Data? {
+        return try? JSONEncoder().encode(self)
+    }
 }
 
 extension Account: Encodable {

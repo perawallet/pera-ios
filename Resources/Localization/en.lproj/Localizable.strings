@@ -57,8 +57,8 @@
 
 "local-authentication-preference-title" = "Enable touch/face ID";
 "local-authentication-preference-subtitle" = "We recommend this for improved security";
-"local-authentication-reason-face-id-title" = "Use Face ID for login";
-"local-authentication-reason-touch-id-title" = "Use Touch ID for login";
+"local-authentication-reason-face-id-title" = "Use Face ID to unlock";
+"local-authentication-reason-touch-id-title" = "Use Touch ID to unlock";
 "local-authentication-go-settings-title" = "Biometric Authentication";
 "local-authentication-go-settings-text" = "You have disabled biometric authentication. Please go to Settings and enable this option.";
 
@@ -68,12 +68,15 @@
 "back-up-phrase-title" = "Back up this Pass Phrase";
 "back-up-phrase-warning" = "In order to access this account if you lose this device copy or print this phrase and keep it someplace safe";
 "back-up-phrase-button-title" = "VERIFY RECOVERY PHRASE";
+"view-pass-phrase-title" = "View Passphrase";
 
 
 // MARK: Pass Phrase Verify
 
 "pass-phrase-verify-pop-up-title" = "Pass Phrase Verified";
 "pass-phrase-verify-pop-up-explanation" = "Your passphrase has been verified. Make sure that you have backed it up as you will need it to recover your account.";
+"pass-phrase-verify-invalid-passphrase" = "Your passphrase is invalid. Please make sure that you entered correct one.";
+"pass-phrase-verify-sdk-error" = "There is something wrong. Please try again later.";
 
 // MARK: Account Name Setup
 
@@ -97,12 +100,14 @@
 
 // MARK: QR Creation
 "qr-creation-title" = "Passphrase QR";
+"qr-creation-tap-to-copy" = "Tap to copy";
+"qr-creation-copied" = "Copied";
 
 // MARK: Login
 
-"login-title" = "Login";
+"login-title" = "Unlock";
 "login-subtitle" = "Enter six digit password";
-"logout-title" = "Logout";
+"logout-title" = "Lock";
 
 // MARK: Accounts
 
@@ -113,7 +118,7 @@
 
 // MARK: Account List
 
-"account-list-add" = "ADD NEW ACCOUT";
+"account-list-add" = "ADD NEW ACCOUNT";
 "account-list-total" = "Total";
 
 // MARK: Options

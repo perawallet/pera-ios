@@ -8,18 +8,27 @@
 
 import UIKit
 
+protocol AccountListViewControllerDelegate: class {
+    func accountListViewControllerDidTapAddButton(_ viewController: AccountListViewController)
+    func accountListViewController(_ viewController: AccountListViewController,
+                                   didSelectAccount account: Account)
+}
+
 class AccountListViewController: BaseViewController {
     
     // MARK: Components
     
     private lazy var accountListView: AccountListView = {
         let view = AccountListView()
+        view.delegate = self
         return view
     }()
     
     override var shouldShowNavigationBar: Bool {
         return false
     }
+
+    weak var delegate: AccountListViewControllerDelegate?
     
     // MARK: Setup
     
@@ -42,10 +51,14 @@ class AccountListViewController: BaseViewController {
 extension AccountListViewController: AccountListViewDelegate {
     
     func accountListView(_ accountListView: AccountListView, didSelect account: Account) {
+        dismissScreen()
         
+        delegate?.accountListViewController(self, didSelectAccount: account)
     }
     
     func accountListViewDidTapAddButton(_ accountListView: AccountListView) {
+        dismissScreen()
         
+        delegate?.accountListViewControllerDidTapAddButton(self)
     }
 }

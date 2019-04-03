@@ -72,6 +72,7 @@ class AccountListView: BaseView {
     }
     
     override func linkInteractors() {
+        accountListLayoutBuilder.delegate = self
         accountsCollectionView.dataSource = accountListDataSource
         accountsCollectionView.delegate = accountListLayoutBuilder
     }
@@ -98,7 +99,7 @@ class AccountListView: BaseView {
         
         addButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().inset(layout.current.buttonBottomInset)
+            make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).inset(layout.current.buttonBottomInset)
         }
     }
     
@@ -117,5 +118,20 @@ class AccountListView: BaseView {
     @objc
     func notifyDelegateToAddButtonTapped() {
         delegate?.accountListViewDidTapAddButton(self)
+    }
+}
+
+// MARK: - AccountListLayoutBuilderDelegate
+extension AccountListView: AccountListLayoutBuilderDelegate {
+    func accountListLayoutBuilder(_ layoutBuilder: AccountListLayoutBuilder, didSelectAt indexPath: IndexPath) {
+        let accounts = accountListDataSource.accounts
+        
+        guard indexPath.item < accounts.count else {
+            return
+        }
+        
+        let account = accounts[indexPath.item]
+        
+        delegate?.accountListView(self, didSelect: account)
     }
 }

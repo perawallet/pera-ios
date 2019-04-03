@@ -11,13 +11,24 @@ import UIKit
 extension AccountsViewController: OptionsViewControllerDelegate {
     
     func optionsViewControllerDidShowQR(_ optionsViewController: OptionsViewController) {
-        // TODO: Add show qr action
+        guard let account = selectedAccount else {
+            return
+        }
+        
+        let text = account.address
+        
+        open(.qrGenerator(text: text, mode: .address), by: .present)
     }
     
     func optionsViewControllerDidSetDefaultAccount(_ optionsViewController: OptionsViewController) {
-        displaySimpleAlertWith(title: "options-default-account-title".localized, message: "options-default-account-message".localized)
+        guard let user = session?.authenticatedUser,
+            let account = selectedAccount else {
+            return
+        }
         
-        // TODO: Save as default account
+        user.setDefaultAccount(account)
+        
+        displaySimpleAlertWith(title: "options-default-account-title".localized, message: "options-default-account-message".localized)
     }
     
     func optionsViewControllerDidViewPassphrase(_ optionsViewController: OptionsViewController) {
@@ -42,7 +53,11 @@ extension AccountsViewController: OptionsViewControllerDelegate {
     }
     
     private func presentPassphraseView() {
-        let viewController = PassphraseDisplayViewController(configuration: configuration)
+        guard let account = self.selectedAccount else {
+            return
+        }
+        
+        let viewController = PassphraseDisplayViewController(account: account, configuration: configuration)
         viewController.modalPresentationStyle = .overCurrentContext
         viewController.modalTransitionStyle = .crossDissolve
         
@@ -54,8 +69,12 @@ extension AccountsViewController: OptionsViewControllerDelegate {
     }
     
     private func openEditAccountModalView() {
+        guard let selectedAccount = self.selectedAccount else {
+            return
+        }
+        
         open(
-            .editAccount,
+            .editAccount(account: selectedAccount),
             by: .customPresent(
                 presentationStyle: .custom,
                 transitionStyle: nil,
@@ -73,10 +92,51 @@ extension AccountsViewController: OptionsViewControllerDelegate {
             title: "options-remove-account".localized,
             image: img("remove-account-alert-icon"),
             explanation: "options-remove-alert-explanation".localized,
-            actionTitle: "title-remove".localized
-        )
-        
-        // TODO: Handle remove account action
+            actionTitle: "title-remove".localized) {
+                
+                guard let user = self.session?.authenticatedUser,
+                    let account = self.selectedAccount,
+                    let index = user.index(of: account) else {
+                        return
+                }
+                
+                let isAccountDefault = user.isDefaultAccount(account)
+                
+                user.removeAccount(account)
+                
+                guard !user.accounts.isEmpty else {
+                    self.session?.reset()
+                    
+                    self.tabBarController?.open(.introduction(mode: .initialize), by: .launch, animated: false)
+                    
+                    return
+                }
+                
+                defer {
+                    self.session?.authenticatedUser = user
+                }
+                
+                let newSelectedAccount: Account?
+                if user.accounts.count == 1 {
+                    newSelectedAccount = user.account(at: 0)
+                } else {
+                    if index == user.accounts.count {
+                        newSelectedAccount = user.account(at: index.advanced(by: -1))
+                    } else {
+                        newSelectedAccount = user.account(at: index)
+                    }
+                }
+                
+                guard let newDefaultAccount = newSelectedAccount else {
+                    return
+                }
+                
+                self.selectedAccount = newDefaultAccount
+                
+                if isAccountDefault {
+                    user.setDefaultAccount(newDefaultAccount)
+                }
+        }
         
         let viewController = AlertViewController(mode: .destructive, alertConfigurator: configurator, configuration: configuration)
         viewController.modalPresentationStyle = .overCurrentContext
