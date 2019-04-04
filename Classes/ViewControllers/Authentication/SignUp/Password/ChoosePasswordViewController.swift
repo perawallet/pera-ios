@@ -109,7 +109,6 @@ extension ChoosePasswordViewController: ChoosePasswordViewDelegate {
                     open(.home, by: .launch)
                 } else {
                     AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
-                    displaySimpleAlertWith(title: "password-verify-fail-title".localized, message: "password-verify-fail-message".localized)
                     self.viewModel.displayWrongPasswordState(choosePasswordView)
                 }
             }
