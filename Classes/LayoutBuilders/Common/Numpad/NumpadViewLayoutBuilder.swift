@@ -23,7 +23,7 @@ class NumpadViewLayoutBuilder: NSObject, UICollectionViewDelegateFlowLayout {
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
         
-        return CGSize(width: 30.0, height: 36.0)
+        return CGSize(width: (UIScreen.main.bounds.width - 26.0) / 3, height: 267.0 / 4.0)
     }
     
     func collectionView(
@@ -32,7 +32,7 @@ class NumpadViewLayoutBuilder: NSObject, UICollectionViewDelegateFlowLayout {
         minimumLineSpacingForSectionAt section: Int
     ) -> CGFloat {
         
-        return 36.0
+        return 0.0
     }
     
     func collectionView(
@@ -41,12 +41,18 @@ class NumpadViewLayoutBuilder: NSObject, UICollectionViewDelegateFlowLayout {
         minimumInteritemSpacingForSectionAt section: Int
     ) -> CGFloat {
         
-        return 86.5
+        return 0.0
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if let cell = collectionView.cellForItem(at: indexPath) as? NumpadNumericCell {
             delegate?.numpadViewLayoutBuilder(self, didSelect: cell.contextView.value)
+            
+            cell.contextView.color = SharedColors.green
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                cell.contextView.color = rgba(0.04, 0.05, 0.07, 0.8)
+            }
         }
         
         if let cell = collectionView.cellForItem(at: indexPath) as? NumpadDeleteCell {

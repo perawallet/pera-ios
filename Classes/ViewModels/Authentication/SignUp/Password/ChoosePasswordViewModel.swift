@@ -73,6 +73,12 @@ class ChoosePasswordViewModel {
         case .number:
             let passwordInputCircleView = choosePasswordView.passwordInputView.passwordInputCircleViews[password.count - 1]
             passwordInputCircleView.state = .filled
+            
+            passwordInputCircleView.backgroundColor = rgba(0.46, 0.76, 0.31, 0.2)
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                passwordInputCircleView.backgroundColor = .clear
+            }
         case .delete:
             if isPasswordValid {
                 let passwordInputCircleView = choosePasswordView.passwordInputView.passwordInputCircleViews[password.count - 1]

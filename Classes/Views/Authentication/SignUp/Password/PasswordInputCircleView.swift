@@ -27,6 +27,8 @@ class PasswordInputCircleView: UIImageView {
     init() {
         super.init(image: img("green-button-border"))
         
+        layer.cornerRadius = 20.0
+        
         contentMode = .center
     }
     
