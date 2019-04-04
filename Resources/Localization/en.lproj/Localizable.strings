@@ -151,6 +151,7 @@
 "contacts-transactions-title" = "Transactions";
 "contacts-add-button" = "ADD CONTACT";
 "contacts-empty-text" = "No Contacts Found";
+"contacts-address-validation-error" = "Address is wrong. Please make sure that you entered correct one.";
 
 // MARK: Settings
 

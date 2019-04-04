@@ -79,7 +79,9 @@ extension AddContactViewController: AddContactViewDelegate {
     func addContactViewDidTapAddContactButton(_ addContactView: AddContactView) {
         guard let name = addContactView.userInformationView.contactNameInputView.inputTextField.text,
             let address = addContactView.userInformationView.algorandAddressInputView.inputTextView.text,
-            !address.isEmpty else {
+            !address.isEmpty,
+            address.isValidatedAdress() else {
+                displaySimpleAlertWith(title: "title-error".localized, message: "contacts-address-validation-error".localized)
                 return
         }
         

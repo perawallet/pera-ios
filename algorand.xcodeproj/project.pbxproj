@@ -12,6 +12,7 @@
 		170AFAFE224CCBF300520EA5 /* QRView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170AFAFD224CCBF300520EA5 /* QRView.swift */; };
 		170AFB02224D1CE100520EA5 /* CIImage+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170AFB01224D1CE100520EA5 /* CIImage+Additions.swift */; };
 		170D565E2243E7B400813989 /* Crypto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 170D565D2243E7B400813989 /* Crypto.framework */; };
+		173DA1E72255EBE000378A82 /* String+Address.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173DA1E62255EBE000378A82 /* String+Address.swift */; };
 		1751261A223BE5930095AF4F /* AlgorandParamPairKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17512619223BE5930095AF4F /* AlgorandParamPairKey.swift */; };
 		1751261D223BEA320095AF4F /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1751261C223BEA320095AF4F /* Session.swift */; };
 		17512620223BEAE90095AF4F /* Storable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1751261F223BEAE90095AF4F /* Storable.swift */; };
@@ -202,6 +203,7 @@
 		170AFAFD224CCBF300520EA5 /* QRView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRView.swift; sourceTree = "<group>"; };
 		170AFB01224D1CE100520EA5 /* CIImage+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CIImage+Additions.swift"; sourceTree = "<group>"; };
 		170D565D2243E7B400813989 /* Crypto.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crypto.framework; sourceTree = "<group>"; };
+		173DA1E62255EBE000378A82 /* String+Address.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Address.swift"; sourceTree = "<group>"; };
 		17512619223BE5930095AF4F /* AlgorandParamPairKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorandParamPairKey.swift; sourceTree = "<group>"; };
 		1751261C223BEA320095AF4F /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		1751261F223BEAE90095AF4F /* Storable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storable.swift; sourceTree = "<group>"; };
@@ -1526,6 +1528,7 @@
 				2BF34CC4223A99670052CAD3 /* String+Localization.swift */,
 				2B8C1277224196DF00E34D37 /* String+Attributes.swift */,
 				2B8C12792241970F00E34D37 /* NSAttributedString+Additions.swift */,
+				173DA1E62255EBE000378A82 /* String+Address.swift */,
 			);
 			path = Text;
 			sourceTree = "<group>";
@@ -1961,6 +1964,7 @@
 				2B5DA9DA224D2F5C00EE41B4 /* PassphraseDisplayViewController.swift in Sources */,
 				2BB021E3224E7AD20039D78A /* TransactionHistoryDataSource.swift in Sources */,
 				2BF5315B224A46E400A7455F /* UIVIewController+Presentation.swift in Sources */,
+				173DA1E72255EBE000378A82 /* String+Address.swift in Sources */,
 				2BB021DB224E46D60039D78A /* Transaction.swift in Sources */,
 				179278952244F8EE00097D32 /* UIFont+Additions.swift in Sources */,
 				2B656E97224BB9F80064A49B /* AccountListView.swift in Sources */,
