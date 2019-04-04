@@ -31,7 +31,7 @@ class WelcomeView: BaseView {
     
     private lazy var logoImageView = UIImageView(image: img("logo-small"))
     
-    private lazy var detailImageView = UIImageView(image: img("image-fingerprint"))
+    private lazy var detailImageView = UIImageView(image: img("image-registration"))
     
     private lazy var welcomteTitleLabel: UILabel = {
         UILabel()
