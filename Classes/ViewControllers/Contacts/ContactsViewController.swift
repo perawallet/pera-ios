@@ -32,7 +32,7 @@ class ContactsViewController: BaseViewController {
     
     override func configureNavigationBarAppearance() {
         let addBarButtonItem = ALGBarButtonItem(kind: .add) {
-            let controller = self.open(.addContact, by: .push) as? AddContactViewController
+            let controller = self.open(.addContact(mode: .new), by: .push) as? AddContactViewController
             
             controller?.delegate = self
         }
@@ -131,7 +131,9 @@ extension ContactsViewController: UICollectionViewDelegateFlowLayout {
         if indexPath.item < searchResults.count {
             let contact = searchResults[indexPath.row]
             
-            open(.contactDetail(contact: contact), by: .push)
+            let controller = open(.contactDetail(contact: contact), by: .push) as? ContactInfoViewController
+            
+            controller?.delegate = self
         }
     }
 }
@@ -221,5 +223,22 @@ extension ContactsViewController: AddContactViewControllerDelegate {
         searchResults.append(contact)
         
         contactsView.contactsCollectionView.reloadData()
+    }
+}
+
+extension ContactsViewController: ContactInfoViewControllerDelegate {
+    
+    func contactInfoViewController(_ contactInfoViewController: ContactInfoViewController, didUpdate contact: Contact) {
+        if let updatedContact = contacts.index(of: contact) {
+            contacts[updatedContact] = contact
+        }
+        
+        guard let index = searchResults.index(of: contact) else {
+            return
+        }
+        
+        searchResults[index] = contact
+        
+        contactsView.contactsCollectionView.reloadItems(at: [IndexPath(row: index, section: 0)])
     }
 }

@@ -8,6 +8,11 @@
 
 import UIKit
 
+protocol ContactInfoViewControllerDelegate: class {
+    
+    func contactInfoViewController(_ contactInfoViewController: ContactInfoViewController, didUpdate contact: Contact)
+}
+
 class ContactInfoViewController: BaseScrollViewController {
 
     // MARK: Components
@@ -26,6 +31,8 @@ class ContactInfoViewController: BaseScrollViewController {
     private let viewModel = ContactInfoViewModel()
     
     private let contact: Contact
+    
+    weak var delegate: ContactInfoViewControllerDelegate?
     
     // MARK: Initialization
     
@@ -72,9 +79,28 @@ class ContactInfoViewController: BaseScrollViewController {
     }
 }
 
+// MARK: ContactInfoViewDelegate
+
 extension ContactInfoViewController: ContactInfoViewDelegate {
     
     func contactInfoViewDidTapQRCodeButton(_ contactInfoView: ContactInfoView) {
         tabBarController?.open(.contactQRDisplay(contact: contact), by: .presentWithoutNavigationController)
+    }
+    
+    func contactInfoViewDidEditContactButton(_ contactInfoView: ContactInfoView) {
+        let controller = open(.addContact(mode: .edit(contact: contact)), by: .push) as? AddContactViewController
+        
+        controller?.delegate = self
+    }
+}
+
+// MARK: AddContactViewControllerDelegate
+
+extension ContactInfoViewController: AddContactViewControllerDelegate {
+    
+    func addContactViewController(_ addContactViewController: AddContactViewController, didSave contact: Contact) {
+        viewModel.configure(contactInfoView.userInformationView, with: contact)
+        
+        delegate?.contactInfoViewController(self, didUpdate: contact)
     }
 }

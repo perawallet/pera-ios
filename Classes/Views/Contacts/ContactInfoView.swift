@@ -11,6 +11,7 @@ import UIKit
 protocol ContactInfoViewDelegate: class {
     
     func contactInfoViewDidTapQRCodeButton(_ contactInfoView: ContactInfoView)
+    func contactInfoViewDidEditContactButton(_ contactInfoView: ContactInfoView)
 }
 
 class ContactInfoView: BaseView {
@@ -19,9 +20,7 @@ class ContactInfoView: BaseView {
         let informationViewHeight: CGFloat = 333.0
         let bottomInset: CGFloat = 20.0
         let topInset: CGFloat = 24.0
-        let transactionLabelVerticalInset: CGFloat = 34.0
-        let transactionLabelHorizontalInset: CGFloat = 25.0
-        let minimumHeight: CGFloat = 300.0
+        let minimumInset: CGFloat = 10.0
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -33,7 +32,10 @@ class ContactInfoView: BaseView {
         return view
     }()
     
-    private lazy var contentStateView = ContentStateView()
+    private(set) lazy var editContactButton: MainButton = {
+        let button = MainButton(title: "contacts-edit-button".localized)
+        return button
+    }()
     
     weak var delegate: ContactInfoViewDelegate?
     
@@ -43,10 +45,15 @@ class ContactInfoView: BaseView {
         userInformationView.delegate = self
     }
     
+    override func setListeners() {
+        editContactButton.addTarget(self, action: #selector(notifyDelegateToEditContactButtonTapped), for: .touchUpInside)
+    }
+    
     // MARK: Layout
     
     override func prepareLayout() {
         setupUserInformationViewLayout()
+        setupEditContactButtonLayout()
     }
     
     private func setupUserInformationViewLayout() {
@@ -57,6 +64,23 @@ class ContactInfoView: BaseView {
             make.top.equalTo(safeAreaLayoutGuide.snp.top).offset(layout.current.topInset)
             make.height.equalTo(layout.current.informationViewHeight)
         }
+    }
+    
+    private func setupEditContactButtonLayout() {
+        addSubview(editContactButton)
+        
+        editContactButton.snp.makeConstraints { make in
+            make.top.greaterThanOrEqualTo(userInformationView.snp.bottom).offset(layout.current.minimumInset)
+            make.centerX.equalToSuperview()
+            make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).inset(layout.current.bottomInset)
+        }
+    }
+    
+    // MARK: Actions
+    
+    @objc
+    private func notifyDelegateToEditContactButtonTapped() {
+        delegate?.contactInfoViewDidEditContactButton(self)
     }
 }
 
