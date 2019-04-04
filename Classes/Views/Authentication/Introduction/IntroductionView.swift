@@ -17,10 +17,11 @@ protocol IntroductionViewDelegate: class {
 class IntroductionView: BaseView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let verticalInset: CGFloat = 94.0
-        let createButtonTopInset: CGFloat = 28.0
-        let bottomInset: CGFloat = 83.0
-        let buttonMinimumTopInset: CGFloat = 110.0
+        let verticalInset: CGFloat = 94.0 * verticalScale
+        let createButtonTopInset: CGFloat = 28.0 * verticalScale
+        let bottomInset: CGFloat = 83.0 * verticalScale
+        let buttonMinimumTopInset: CGFloat = 110.0 * verticalScale
+        let imageSize: CGFloat = 250.0 * verticalScale
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -81,6 +82,7 @@ class IntroductionView: BaseView {
         detailImageView.snp.makeConstraints { make in
             make.top.equalTo(logoImageView.snp.bottom).offset(layout.current.verticalInset)
             make.centerX.equalToSuperview()
+            make.width.height.equalTo(layout.current.imageSize)
         }
     }
     

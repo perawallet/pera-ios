@@ -17,15 +17,15 @@ protocol ChoosePasswordViewDelegate: class {
 class ChoosePasswordView: BaseView {
 
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let titleLabelTopInset: CGFloat = 69.0
-        let subtitleTopInset: CGFloat = 14.0
+        let titleLabelTopInset: CGFloat = 69.0 * verticalScale
+        let subtitleTopInset: CGFloat = 14.0 * verticalScale
         let subtitleHorizontalInset: CGFloat = 60.0
-        let inputViewTopInset: CGFloat = 45.0
+        let inputViewTopInset: CGFloat = 45.0 * verticalScale
         let numpadBottomInset: CGFloat = 32.0
-        let numpadTopInset: CGFloat = 45.0
+        let numpadTopInset: CGFloat = 45.0 * verticalScale
         let passwordInputViewInset: CGFloat = -10.0
-        let logoutButtonTopInset: CGFloat = 109.0
-        let logoutButtonHeight: CGFloat = 49.0
+        let logoutButtonTopInset: CGFloat = 109.0 * verticalScale
+        let logoutButtonHeight: CGFloat = 49.0 * verticalScale
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -131,7 +131,7 @@ class ChoosePasswordView: BaseView {
         addSubview(numpadView)
         
         numpadView.snp.makeConstraints { make in
-            make.bottom.equalToSuperview().inset(layout.current.numpadBottomInset)
+            make.bottom.equalToSuperview().inset(layout.current.numpadBottomInset + safeAreaBottom)
             make.centerX.equalToSuperview()
             make.top.equalTo(logoutButton.snp.bottom).offset(layout.current.numpadTopInset)
             make.leading.trailing.lessThanOrEqualToSuperview()

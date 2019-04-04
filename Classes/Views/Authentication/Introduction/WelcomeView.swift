@@ -16,13 +16,14 @@ protocol WelcomeViewDelegate: class {
 class WelcomeView: BaseView {
 
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let logoInset: CGFloat = 6.0
-        let verticalInset: CGFloat = 94.0
-        let titleLabelTopInset: CGFloat = 23.0
-        let subtitleLabelTopInset: CGFloat = 14.0
+        let logoInset: CGFloat = 14.0 * verticalScale
+        let verticalInset: CGFloat = 94.0 * verticalScale
+        let titleLabelTopInset: CGFloat = 23.0 * verticalScale
+        let subtitleLabelTopInset: CGFloat = 14.0 * verticalScale
         let subtitleLabelHorizontalInset: CGFloat = 50.0
-        let buttonMinimumTopInset: CGFloat = 78.0
-        let bottomInset: CGFloat = 59.0
+        let buttonMinimumTopInset: CGFloat = 78.0 * verticalScale
+        let bottomInset: CGFloat = 59.0 * verticalScale
+        let imageSize: CGFloat = 250.0 * verticalScale
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -88,6 +89,7 @@ class WelcomeView: BaseView {
         detailImageView.snp.makeConstraints { make in
             make.top.equalTo(logoImageView.snp.bottom).offset(layout.current.verticalInset)
             make.centerX.equalToSuperview()
+            make.width.height.equalTo(layout.current.imageSize)
         }
     }
     

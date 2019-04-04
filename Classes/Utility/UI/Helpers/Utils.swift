@@ -36,3 +36,6 @@ func rgb(_ red: CGFloat, _ green: CGFloat, _ blue: CGFloat) -> UIColor {
 func rgba(_ red: CGFloat, _ green: CGFloat, _ blue: CGFloat, _ alpha: CGFloat) -> UIColor {
     return UIColor(red: red, green: green, blue: blue, alpha: min(1.0, max(0.0, alpha)))
 }
+
+let verticalScale = UIScreen.main.bounds.height / 812.0
+let horizontalScale = UIScreen.main.bounds.height / 375.0
