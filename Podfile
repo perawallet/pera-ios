@@ -11,7 +11,7 @@ target 'algorand' do
 	pod 'SwiftLint'
 
 	#Networking
-	pod 'Magpie', :git => 'https://github.com/Hipo/magpie.git'
+    pod 'Magpie', :git => 'https://github.com/Hipo/magpie.git', :branch => 'basic-upload-function'
 
     #Persistance
     pod 'KeychainAccess'

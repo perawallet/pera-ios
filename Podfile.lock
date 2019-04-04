@@ -1,5 +1,5 @@
 PODS:
-  - Alamofire (4.8.1)
+  - Alamofire (4.8.2)
   - KeychainAccess (3.1.2)
   - Magpie (0.1.0):
     - Alamofire
@@ -9,7 +9,7 @@ PODS:
 
 DEPENDENCIES:
   - KeychainAccess
-  - Magpie (from `https://github.com/Hipo/magpie.git`)
+  - Magpie (from `https://github.com/Hipo/magpie.git`, branch `basic-upload-function`)
   - SnapKit
   - SwiftDate
   - SwiftLint
@@ -24,21 +24,22 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   Magpie:
+    :branch: basic-upload-function
     :git: https://github.com/Hipo/magpie.git
 
 CHECKOUT OPTIONS:
   Magpie:
-    :commit: ec4baf78ee71ff960996f19a214ef2cd0381a298
+    :commit: fdc4b58e328eeab2b81d8b2ac071ce4f094acd52
     :git: https://github.com/Hipo/magpie.git
 
 SPEC CHECKSUMS:
-  Alamofire: 16ce2c353fb72865124ddae8a57c5942388f4f11
+  Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
   KeychainAccess: b3816fddcf28aa29d94b10ec305cd52be14c472b
   Magpie: f1235cc99bab71365b8479089458c7b85e299950
   SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
   SwiftDate: 6329e58969a2de31cea7f1ee1143b247693196e7
   SwiftLint: a54bf1fe12b55c68560eb2a7689dfc81458508f7
 
-PODFILE CHECKSUM: 832b36361bedb018bdf9f6e4abca550107728aa9
+PODFILE CHECKSUM: f70968a240a7d45a6e619d3dcb57fcb145410e92
 
 COCOAPODS: 1.5.3

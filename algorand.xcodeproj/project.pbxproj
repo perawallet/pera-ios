@@ -13,6 +13,10 @@
 		170AFB02224D1CE100520EA5 /* CIImage+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170AFB01224D1CE100520EA5 /* CIImage+Additions.swift */; };
 		170D565E2243E7B400813989 /* Crypto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 170D565D2243E7B400813989 /* Crypto.framework */; };
 		173DA1E72255EBE000378A82 /* String+Address.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173DA1E62255EBE000378A82 /* String+Address.swift */; };
+		173DA1E92255F7B500378A82 /* API+Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173DA1E82255F7B500378A82 /* API+Transaction.swift */; };
+		173DA1EB2255F7EF00378A82 /* TransactionDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173DA1EA2255F7EF00378A82 /* TransactionDraft.swift */; };
+		173DA1ED2255F96E00378A82 /* TransactionFee.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173DA1EC2255F96E00378A82 /* TransactionFee.swift */; };
+		173DA2102256643A00378A82 /* TransactionID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173DA20F2256643A00378A82 /* TransactionID.swift */; };
 		1751261A223BE5930095AF4F /* AlgorandParamPairKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17512619223BE5930095AF4F /* AlgorandParamPairKey.swift */; };
 		1751261D223BEA320095AF4F /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1751261C223BEA320095AF4F /* Session.swift */; };
 		17512620223BEAE90095AF4F /* Storable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1751261F223BEAE90095AF4F /* Storable.swift */; };
@@ -204,6 +208,10 @@
 		170AFB01224D1CE100520EA5 /* CIImage+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CIImage+Additions.swift"; sourceTree = "<group>"; };
 		170D565D2243E7B400813989 /* Crypto.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crypto.framework; sourceTree = "<group>"; };
 		173DA1E62255EBE000378A82 /* String+Address.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Address.swift"; sourceTree = "<group>"; };
+		173DA1E82255F7B500378A82 /* API+Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+Transaction.swift"; sourceTree = "<group>"; };
+		173DA1EA2255F7EF00378A82 /* TransactionDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDraft.swift; sourceTree = "<group>"; };
+		173DA1EC2255F96E00378A82 /* TransactionFee.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionFee.swift; sourceTree = "<group>"; };
+		173DA20F2256643A00378A82 /* TransactionID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionID.swift; sourceTree = "<group>"; };
 		17512619223BE5930095AF4F /* AlgorandParamPairKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorandParamPairKey.swift; sourceTree = "<group>"; };
 		1751261C223BEA320095AF4F /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		1751261F223BEAE90095AF4F /* Storable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storable.swift; sourceTree = "<group>"; };
@@ -388,6 +396,7 @@
 		2BF71917224ED0C5001E8420 /* ContactInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactInfoViewController.swift; sourceTree = "<group>"; };
 		2BF71919224ED0E8001E8420 /* ContactQRDisplayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactQRDisplayViewController.swift; sourceTree = "<group>"; };
 		44FD8F3D210C1D99893A91DF /* Pods-algorand.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand.release.xcconfig"; path = "Pods/Target Support Files/Pods-algorand/Pods-algorand.release.xcconfig"; sourceTree = "<group>"; };
+		62F66C8DD123A6B4A97D4928 /* Pods-algorand.app store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand.app store.xcconfig"; path = "Pods/Target Support Files/Pods-algorand/Pods-algorand.app store.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -452,6 +461,8 @@
 				170AFAFB224CC70A00520EA5 /* QRText.swift */,
 				2BB021DA224E46D60039D78A /* Transaction.swift */,
 				2B82B1C422535F4300A8909F /* Contact.swift */,
+				173DA1EC2255F96E00378A82 /* TransactionFee.swift */,
+				173DA20F2256643A00378A82 /* TransactionID.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -460,6 +471,7 @@
 			isa = PBXGroup;
 			children = (
 				17B7D8AA2240E19600A6FF9E /* AccountDraft.swift */,
+				173DA1EA2255F7EF00378A82 /* TransactionDraft.swift */,
 			);
 			path = Drafts;
 			sourceTree = "<group>";
@@ -717,6 +729,7 @@
 			children = (
 				2BF34CC1223A95A50052CAD3 /* API.swift */,
 				17B7D8A72240DFFC00A6FF9E /* API+Account.swift */,
+				173DA1E82255F7B500378A82 /* API+Transaction.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -1684,6 +1697,7 @@
 			children = (
 				2AC10F1C54DF2982BFB4A180 /* Pods-algorand.debug.xcconfig */,
 				44FD8F3D210C1D99893A91DF /* Pods-algorand.release.xcconfig */,
+				62F66C8DD123A6B4A97D4928 /* Pods-algorand.app store.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -1848,6 +1862,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2B8954B92243FCFA00D6D068 /* AdaptiveLayout.swift in Sources */,
+				173DA1EB2255F7EF00378A82 /* TransactionDraft.swift in Sources */,
 				2BF5317E224AA8B700A7455F /* ContactsViewController.swift in Sources */,
 				2B8954BA2243FCFA00D6D068 /* Snapkit+SafeArea.swift in Sources */,
 				17F6E685224B3F99006DD31F /* PassPhraseMnemonicView.swift in Sources */,
@@ -1895,6 +1910,7 @@
 				2BF7190C224ECF30001E8420 /* AddContactView.swift in Sources */,
 				2BD739F1223FE1C700B66EEF /* UIButton+Factory.swift in Sources */,
 				2B8BE4D222391C38005D8565 /* AppDelegate.swift in Sources */,
+				173DA1ED2255F96E00378A82 /* TransactionFee.swift in Sources */,
 				2BF5315D224A46F800A7455F /* UIViewControllerContextTransitioning+Additions.swift in Sources */,
 				2BD73A192241324700B66EEF /* ChoosePasswordViewModel.swift in Sources */,
 				2B8954C02244047D00D6D068 /* BaseInputView.swift in Sources */,
@@ -1944,6 +1960,7 @@
 				17B7D8AE2240F25000A6FF9E /* Environment.swift in Sources */,
 				2BF5315F224A472800A7455F /* ModalAnimator.swift in Sources */,
 				2B8954CB224430DC00D6D068 /* AccountRecoverView.swift in Sources */,
+				173DA1E92255F7B500378A82 /* API+Transaction.swift in Sources */,
 				2BD739E5223FA07B00B66EEF /* MainButton.swift in Sources */,
 				2BD739FA2240527B00B66EEF /* PasswordInputView.swift in Sources */,
 				2BD73A1422412D9100B66EEF /* NumpadCellViewModel.swift in Sources */,
@@ -1976,6 +1993,7 @@
 				17E2E3C5225210390065957A /* Notification.Name+Additions.swift in Sources */,
 				2BF34C992239AAD20052CAD3 /* UIViewController+Flow.swift in Sources */,
 				2BA8736A2248214800511C7C /* AlignedButton.swift in Sources */,
+				173DA2102256643A00378A82 /* TransactionID.swift in Sources */,
 				2B8BE50122393999005D8565 /* AdaptiveLayoutConstants.swift in Sources */,
 				2B656EAA224BDCB80064A49B /* AccountListDataSource.swift in Sources */,
 				2BDE9CCB224E1458007EFF30 /* AccountsView.swift in Sources */,
@@ -2265,7 +2283,7 @@
 		};
 		EC6B733522541CA8006D146B /* App Store */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 44FD8F3D210C1D99893A91DF /* Pods-algorand.release.xcconfig */;
+			baseConfigurationReference = 62F66C8DD123A6B4A97D4928 /* Pods-algorand.app store.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
