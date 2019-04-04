@@ -21,7 +21,6 @@ class ContactInfoView: BaseView {
         let topInset: CGFloat = 24.0
         let transactionLabelVerticalInset: CGFloat = 34.0
         let transactionLabelHorizontalInset: CGFloat = 25.0
-        let transactionsCollectionViewVerticalInset: CGFloat = 7.0
         let minimumHeight: CGFloat = 300.0
     }
     
@@ -32,32 +31,6 @@ class ContactInfoView: BaseView {
     private(set) lazy var userInformationView: UserInformationView = {
         let view = UserInformationView(isEditable: false)
         return view
-    }()
-    
-    private lazy var transactionTitleLabel: UILabel = {
-        UILabel()
-            .withText("contacts-transactions-title".localized)
-            .withTextColor(SharedColors.darkGray)
-            .withAlignment(.left)
-            .withFont(UIFont.font(.opensans, withWeight: .semiBold(size: 12.0)))
-    }()
-    
-    private(set) lazy var transactionsCollectionView: UICollectionView = {
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.scrollDirection = .vertical
-        flowLayout.minimumLineSpacing = 0.0
-        flowLayout.minimumInteritemSpacing = 0.0
-        
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
-        collectionView.showsVerticalScrollIndicator = false
-        collectionView.showsHorizontalScrollIndicator = false
-        collectionView.isScrollEnabled = false
-        collectionView.backgroundColor = .white
-        collectionView.contentInset = .zero
-        
-        collectionView.register(TransactionHistoryCell.self, forCellWithReuseIdentifier: TransactionHistoryCell.reusableIdentifier)
-        
-        return collectionView
     }()
     
     private lazy var contentStateView = ContentStateView()
@@ -74,8 +47,6 @@ class ContactInfoView: BaseView {
     
     override func prepareLayout() {
         setupUserInformationViewLayout()
-        setupTransactionsLabelLayout()
-        setupTransactionsCollectionViewLayout()
     }
     
     private func setupUserInformationViewLayout() {
@@ -86,28 +57,6 @@ class ContactInfoView: BaseView {
             make.top.equalTo(safeAreaLayoutGuide.snp.top).offset(layout.current.topInset)
             make.height.equalTo(layout.current.informationViewHeight)
         }
-    }
-    
-    private func setupTransactionsLabelLayout() {
-        addSubview(transactionTitleLabel)
-        
-        transactionTitleLabel.snp.makeConstraints { make in
-            make.top.equalTo(userInformationView.snp.bottom).offset(layout.current.transactionLabelVerticalInset)
-            make.leading.equalToSuperview().inset(layout.current.transactionLabelHorizontalInset)
-        }
-    }
-    
-    private func setupTransactionsCollectionViewLayout() {
-        addSubview(transactionsCollectionView)
-        
-        transactionsCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(transactionTitleLabel.snp.bottom).offset(layout.current.transactionsCollectionViewVerticalInset)
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(layout.current.minimumHeight)
-            make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).inset(layout.current.bottomInset)
-        }
-        
-        transactionsCollectionView.backgroundView = contentStateView
     }
 }
 
