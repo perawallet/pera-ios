@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 class ChoosePasswordViewController: BaseScrollViewController {
     
@@ -104,9 +105,12 @@ extension ChoosePasswordViewController: ChoosePasswordViewDelegate {
             }
         case .login:
             viewModel.configureSelection(in: choosePasswordView, for: value) { password in
-                
                 if session?.isPasswordMatching(with: password) ?? false {
                     open(.home, by: .launch)
+                } else {
+                    AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
+                    displaySimpleAlertWith(title: "password-verify-fail-title".localized, message: "password-verify-fail-message".localized)
+                    self.viewModel.displayWrongPasswordState(choosePasswordView)
                 }
             }
         }

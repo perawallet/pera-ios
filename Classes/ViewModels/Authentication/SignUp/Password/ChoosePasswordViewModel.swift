@@ -72,6 +72,13 @@ class ChoosePasswordViewModel {
         switch value {
         case .number:
             let passwordInputCircleView = choosePasswordView.passwordInputView.passwordInputCircleViews[password.count - 1]
+            
+            if passwordInputCircleView.state == .error {
+                for view in choosePasswordView.passwordInputView.passwordInputCircleViews {
+                    view.state = .empty
+                }
+            }
+            
             passwordInputCircleView.state = .filled
             
             passwordInputCircleView.backgroundColor = rgba(0.46, 0.76, 0.31, 0.2)
@@ -87,6 +94,11 @@ class ChoosePasswordViewModel {
             }
             
             let passwordInputCircleView = choosePasswordView.passwordInputView.passwordInputCircleViews[password.count]
+            
+            if passwordInputCircleView.state == .error {
+                return
+            }
+            
             passwordInputCircleView.state = .empty
             return
         }
@@ -97,6 +109,14 @@ class ChoosePasswordViewModel {
         
         for view in choosePasswordView.passwordInputView.passwordInputCircleViews {
             view.state = .empty
+        }
+    }
+    
+    func displayWrongPasswordState(_ choosePasswordView: ChoosePasswordView) {
+        password = ""
+        
+        for view in choosePasswordView.passwordInputView.passwordInputCircleViews {
+            view.state = .error
         }
     }
 }
