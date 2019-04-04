@@ -22,13 +22,15 @@ class AddContactViewController: BaseScrollViewController {
         return view
     }()
     
-    private lazy var imagePicker = ImagePicker(viewController: self)
+    private var imagePicker: ImagePicker
     
     private var keyboardController = KeyboardController()
     
     weak var delegate: AddContactViewControllerDelegate?
     
     override init(configuration: ViewControllerConfiguration) {
+        imagePicker = ImagePicker()
+        
         super.init(configuration: configuration)
         
         hidesBottomBarWhenPushed = true
@@ -73,7 +75,7 @@ extension AddContactViewController: AddContactViewDelegate {
     
     func addContactViewDidTapAddImageButton(_ addContactView: AddContactView) {
         imagePicker.delegate = self
-        imagePicker.present()
+        imagePicker.present(from: self)
     }
     
     func addContactViewDidTapAddContactButton(_ addContactView: AddContactView) {
