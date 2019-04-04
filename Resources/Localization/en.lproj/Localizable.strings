@@ -112,6 +112,7 @@
 // MARK: Accounts
 
 "accounts-tranaction-empty-text" = "No Transactions Yet";
+"tranaction-empty-text" = "No Transactions Found";
 "accounts-algos-available-title" = "Algos Available";
 "accounts-transaction-history-title" = "Transaction History";
 
@@ -140,6 +141,17 @@
 // MARK: Contacts
 
 "contacts-title" = "Contacts";
+"contacts-search" = "Search Contacts";
+"contacts-add" = "Add Contact";
+"contacts-info" = "Contact Info";
+"contacts-input-name-explanation" = "Name:";
+"contacts-input-name-placeholder" = "Contact Name";
+"contacts-input-address-explanation" = "Algorand Address:";
+"contacts-input-address-placeholder" = "Paste # or Scan QR";
+"contacts-transactions-title" = "Transactions";
+"contacts-add-button" = "ADD CONTACT";
+"contacts-empty-text" = "No Contacts Found";
+"contacts-address-validation-error" = "Address is wrong. Please make sure that you entered correct one.";
 
 // MARK: Settings
 

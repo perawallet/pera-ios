@@ -88,7 +88,7 @@ extension ChoosePasswordViewController: ChoosePasswordViewDelegate {
         switch mode {
         case .setup:
             viewModel.configureSelection(in: choosePasswordView, for: value) { password in
-                open(.choosePassword(.verify(password)), by: .push)
+                open(.choosePassword(mode: .verify(password)), by: .push)
             }
         case let .verify(previousPassword):
             viewModel.configureSelection(in: choosePasswordView, for: value) { password in

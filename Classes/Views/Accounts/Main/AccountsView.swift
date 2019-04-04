@@ -17,7 +17,7 @@ protocol AccountsViewDelegate: class {
 class AccountsView: BaseView {
 
     struct LayoutConstants: AdaptiveLayoutConstants {
-        static let headerHeight: CGFloat = 347.0
+        static let headerHeight: CGFloat = 276.0
     }
     
     private let layout = Layout<LayoutConstants>()

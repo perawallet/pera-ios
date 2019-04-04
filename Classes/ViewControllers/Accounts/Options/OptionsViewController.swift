@@ -50,6 +50,10 @@ class OptionsViewController: BaseViewController {
     
     private let viewModel = OptionsViewModel()
     
+    override var shouldShowNavigationBar: Bool {
+        return false
+    }
+    
     weak var delegate: OptionsViewControllerDelegate?
     
     // MARK: Setup

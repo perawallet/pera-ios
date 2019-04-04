@@ -98,6 +98,16 @@ class Router {
             }
             
             sourceViewController.present(navigationController, animated: animated, completion: completion)
+        case .presentWithoutNavigationController:
+            if let presentingViewController = self as? StatusBarConfigurable,
+                let presentedViewController = viewController as? StatusBarConfigurable,
+                presentingViewController.isStatusBarHidden {
+                
+                presentedViewController.hidesStatusBarWhenPresented = true
+                presentedViewController.isStatusBarHidden = true
+            }
+            
+            sourceViewController.present(viewController, animated: animated, completion: completion)
         }
         
         guard let navigationController = viewController as? UINavigationController,
@@ -165,6 +175,12 @@ class Router {
             viewController = OptionsViewController(configuration: configuration)
         case .editAccount(let account):
             viewController = EditAccountViewController(account: account, configuration: configuration)
+        case .addContact:
+            viewController = AddContactViewController(configuration: configuration)
+        case let .contactDetail(contact):
+            viewController = ContactInfoViewController(contact: contact, configuration: configuration)
+        case let .contactQRDisplay(contact):
+            viewController = ContactQRDisplayViewController(contact: contact, configuration: configuration)
         }
         
         return viewController as? T

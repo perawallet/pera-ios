@@ -31,9 +31,9 @@ class NavigationController: UINavigationController {
     }
     
     private func configureNavigationBarAppearance() {
-        navigationBar.isTranslucent = true
-        navigationBar.barTintColor = .black
-        navigationBar.tintColor = .black
+        navigationBar.isTranslucent = false
+        navigationBar.barTintColor = SharedColors.warmWhite
+        navigationBar.tintColor = SharedColors.warmWhite
         navigationBar.shadowImage = UIImage()
         navigationBar.layoutMargins = .zero
         

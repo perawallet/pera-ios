@@ -58,7 +58,11 @@ class AccountsViewController: BaseViewController {
         return view
     }()
     
-    private lazy var emptyStateView = TransactionsEmptyStateView()
+    private lazy var emptyStateView = EmptyStateView(
+        title: "accounts-tranaction-empty-text".localized,
+        topImage: img("icon-transaction-empty-green"),
+        bottomImage: img("icon-transaction-empty-blue")
+    )
     
     // MARK: Initialization
     

@@ -11,7 +11,7 @@ import UIKit
 enum Screen {
     case introduction(mode: AccountSetupMode)
     case welcome
-    case choosePassword(ChoosePasswordViewController.Mode)
+    case choosePassword(mode: ChoosePasswordViewController.Mode)
     case localAuthenticationPreference
     case passPhraseBackUp(mode: AccountSetupMode)
     case passPhraseVerify(mode: AccountSetupMode)
@@ -23,6 +23,9 @@ enum Screen {
     case options
     case accountList
     case editAccount(account: Account)
+    case addContact
+    case contactDetail(contact: Contact)
+    case contactQRDisplay(contact: Contact)
 }
 
 extension Screen {
@@ -36,6 +39,7 @@ extension Screen.Transition {
     enum Open: Equatable {
         case push
         case present
+        case presentWithoutNavigationController
         case launch
         case customPresent(
             presentationStyle: UIModalPresentationStyle?,

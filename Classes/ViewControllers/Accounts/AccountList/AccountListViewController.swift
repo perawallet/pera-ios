@@ -24,6 +24,10 @@ class AccountListViewController: BaseViewController {
         return view
     }()
     
+    override var shouldShowNavigationBar: Bool {
+        return false
+    }
+
     weak var delegate: AccountListViewControllerDelegate?
     
     // MARK: Setup

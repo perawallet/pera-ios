@@ -41,7 +41,7 @@ class RootViewController: UIViewController {
         if appConfiguration.session.isExpired {
             if appConfiguration.session.hasPassword() &&
                 appConfiguration.session.authenticatedUser != nil {
-                open(.choosePassword(.login), by: .present)
+                open(.choosePassword(mode: .login), by: .present)
             } else {
                 open(.introduction(mode: .initialize), by: .launch, animated: false)
             }
