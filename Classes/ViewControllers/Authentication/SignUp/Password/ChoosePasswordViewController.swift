@@ -9,7 +9,7 @@
 import UIKit
 import AVFoundation
 
-class ChoosePasswordViewController: BaseScrollViewController {
+class ChoosePasswordViewController: BaseViewController {
     
     private lazy var choosePasswordView: ChoosePasswordView = {
         let view = ChoosePasswordView()
@@ -69,7 +69,7 @@ class ChoosePasswordViewController: BaseScrollViewController {
     override func prepareLayout() {
         super.prepareLayout()
         
-        contentView.addSubview(choosePasswordView)
+        view.addSubview(choosePasswordView)
         
         choosePasswordView.snp.makeConstraints { make in
             make.edges.equalToSuperview()

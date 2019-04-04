@@ -23,7 +23,7 @@ class NumpadViewLayoutBuilder: NSObject, UICollectionViewDelegateFlowLayout {
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
         
-        return CGSize(width: (UIScreen.main.bounds.width - 26.0) / 3, height: 267.0 / 4.0)
+        return CGSize(width: (UIScreen.main.bounds.width - 26.0) / 3, height: 267.0 * verticalScale / 4.0)
     }
     
     func collectionView(
@@ -50,7 +50,7 @@ class NumpadViewLayoutBuilder: NSObject, UICollectionViewDelegateFlowLayout {
             
             cell.contextView.color = SharedColors.green
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                 cell.contextView.color = rgba(0.04, 0.05, 0.07, 0.8)
             }
         }

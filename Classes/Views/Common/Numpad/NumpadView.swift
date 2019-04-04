@@ -31,7 +31,7 @@ class NumpadView: BaseView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let width: CGFloat = UIScreen.main.bounds.width - 26.0
-        let height: CGFloat = 267.0
+        let height: CGFloat = 267.0 * verticalScale
         let horizontalInset: CGFloat = 13.0
         let bottomInset: CGFloat = 4.0
     }
