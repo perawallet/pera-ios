@@ -17,6 +17,7 @@ protocol IntroductionViewDelegate: class {
 class IntroductionView: BaseView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
+        let logoInset: CGFloat = 80.0 * verticalScale
         let verticalInset: CGFloat = 94.0 * verticalScale
         let createButtonTopInset: CGFloat = 28.0 * verticalScale
         let bottomInset: CGFloat = 83.0 * verticalScale
@@ -72,7 +73,7 @@ class IntroductionView: BaseView {
         
         logoImageView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalToSuperview().inset(layout.current.verticalInset)
+            make.top.equalToSuperview().inset(layout.current.logoInset)
         }
     }
     
