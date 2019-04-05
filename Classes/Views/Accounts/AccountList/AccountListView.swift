@@ -54,11 +54,15 @@ class AccountListView: BaseView {
     private var accountListLayoutBuilder: AccountListLayoutBuilder
     private var accountListDataSource: AccountListDataSource
     
-    override init(frame: CGRect) {
-        accountListLayoutBuilder = AccountListLayoutBuilder()
-        accountListDataSource = AccountListDataSource()
+    private let mode: AccountListMode
+    
+    init(mode: AccountListMode) {
+        self.mode = mode
         
-        super.init(frame: frame)
+        accountListLayoutBuilder = AccountListLayoutBuilder()
+        accountListDataSource = AccountListDataSource(mode: mode)
+        
+        super.init(frame: .zero)
     }
     
     // MARK: Setup
@@ -81,7 +85,11 @@ class AccountListView: BaseView {
     
     override func prepareLayout() {
         setupTopImageViewLayout()
-        setupAddButtonLayout()
+        
+        if mode == .addable {
+            setupAddButtonLayout()
+        }
+        
         setupAccountCollectionViewLayout()
     }
 
@@ -109,7 +117,12 @@ class AccountListView: BaseView {
         accountsCollectionView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(topImageView.snp.bottom).offset(layout.current.accountListTopInset)
-            make.bottom.equalTo(addButton.snp.top).offset(layout.current.accountListBottomInset)
+            
+            if mode == .addable {
+                make.bottom.equalTo(addButton.snp.top).offset(layout.current.accountListBottomInset)
+            } else {
+                make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).inset(layout.current.buttonBottomInset)
+            }
         }
     }
     

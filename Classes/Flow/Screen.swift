@@ -21,7 +21,7 @@ enum Screen {
     case qrGenerator(text: String, mode: QRMode)
     case home
     case options
-    case accountList
+    case accountList(mode: AccountListMode)
     case editAccount(account: Account)
     case addContact(mode: AddContactViewController.Mode)
     case contactDetail(contact: Contact)

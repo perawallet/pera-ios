@@ -144,7 +144,7 @@ extension AccountsViewController {
     
     private func presentAccountList() {
         let accountListViewController = open(
-            .accountList,
+            .accountList(mode: .addable),
             by: .customPresent(
                 presentationStyle: .custom,
                 transitionStyle: nil,
