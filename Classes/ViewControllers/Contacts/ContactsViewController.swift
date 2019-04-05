@@ -8,6 +8,11 @@
 
 import UIKit
 
+protocol ContactsViewControllerDelegate: class {
+    
+    func contactsViewController(_ contactsViewController: ContactsViewController, didSelect contact: Contact)
+}
+
 class ContactsViewController: BaseViewController {
     
     // MARK: Components
@@ -27,6 +32,8 @@ class ContactsViewController: BaseViewController {
     private var searchResults = [Contact]()
     
     private let viewModel = ContactsViewModel()
+    
+    weak var delegate: ContactsViewControllerDelegate?
     
     // MARK: Setup
     
@@ -131,9 +138,14 @@ extension ContactsViewController: UICollectionViewDelegateFlowLayout {
         if indexPath.item < searchResults.count {
             let contact = searchResults[indexPath.row]
             
-            let controller = open(.contactDetail(contact: contact), by: .push) as? ContactInfoViewController
+            guard let delegate = delegate else {
+                let controller = open(.contactDetail(contact: contact), by: .push) as? ContactInfoViewController
+                controller?.delegate = self
+                
+                return
+            }
             
-            controller?.delegate = self
+            delegate.contactsViewController(self, didSelect: contact)
         }
     }
 }
