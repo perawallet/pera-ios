@@ -17,7 +17,7 @@ protocol IntroductionViewDelegate: class {
 class IntroductionView: BaseView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let logoInset: CGFloat = 80.0 * verticalScale
+        let logoInset: CGFloat = 14.0 * verticalScale
         let verticalInset: CGFloat = 94.0 * verticalScale
         let createButtonTopInset: CGFloat = 28.0 * verticalScale
         let bottomInset: CGFloat = 83.0 * verticalScale

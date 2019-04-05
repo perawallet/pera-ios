@@ -31,7 +31,7 @@ class ImagePicker: NSObject {
     private func configureImagePicker() {
         imagePickerViewController.navigationBar.isTranslucent = false
         imagePickerViewController.delegate = self
-        imagePickerViewController.allowsEditing = false
+        imagePickerViewController.allowsEditing = true
         imagePickerViewController.sourceType = .photoLibrary
     }
     
@@ -51,9 +51,17 @@ extension ImagePicker: UIImagePickerControllerDelegate, UINavigationControllerDe
         
         let info = Dictionary(uniqueKeysWithValues: info.map { key, value in (key.rawValue, value) })
         
-        guard let pickedImage = info[UIImagePickerController.InfoKey.originalImage.rawValue] as? UIImage,
+        var image: UIImage?
+        
+        if let editedImage = info[UIImagePickerController.InfoKey.editedImage.rawValue] as? UIImage {
+            image = editedImage
+        } else if let originalImage = info[UIImagePickerController.InfoKey.originalImage.rawValue] as? UIImage {
+            image = originalImage
+        }
+        
+        guard let pickedImage = image,
             let delegate = self.delegate else {
-                return
+            return
         }
         
         picker.dismiss(animated: true) {

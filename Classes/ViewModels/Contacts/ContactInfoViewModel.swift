@@ -14,7 +14,7 @@ class ContactInfoViewModel {
         if let imageData = contact.image,
             let image = UIImage(data: imageData) {
             
-            let resizedImage = image.convert(to: CGSize(width: 108.0, height: 108.0), scale: UIScreen.main.scale)
+            let resizedImage = image.convert(to: CGSize(width: 108.0, height: 108.0))
             
             userInformationView.userImageView.image = resizedImage
         }

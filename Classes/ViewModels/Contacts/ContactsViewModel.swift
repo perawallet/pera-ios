@@ -14,7 +14,7 @@ class ContactsViewModel {
         if let imageData = contact.image,
             let image = UIImage(data: imageData) {
             
-            let resizedImage = image.convert(to: CGSize(width: 50.0, height: 50.0), scale: UIScreen.main.scale)
+            let resizedImage = image.convert(to: CGSize(width: 50.0, height: 50.0))
             
             cell.contextView.userImageView.image = resizedImage
         }

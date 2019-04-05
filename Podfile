@@ -18,4 +18,9 @@ target 'algorand' do
     
     #Date
     pod 'SwiftDate'
+    
+    #Analytics
+    pod 'Firebase/Core'
+    pod 'Fabric'
+    pod 'Crashlytics'
 end
