@@ -18,4 +18,7 @@ target 'algorand' do
     
     #Date
     pod 'SwiftDate'
+    
+    #UI
+    pod 'SVProgressHUD'
 end

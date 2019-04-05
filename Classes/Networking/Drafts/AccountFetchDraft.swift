@@ -1,5 +1,5 @@
 //
-//  AccountDraft.swift
+//  AccountFetchDraft.swift
 //  algorand
 //
 //  Created by Omer Emre Aslan on 19.03.2019.
@@ -8,6 +8,6 @@
 
 import Foundation
 
-struct AccountDraft {
+struct AccountFetchDraft {
     let publicKey: String
 }

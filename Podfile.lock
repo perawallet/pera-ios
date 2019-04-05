@@ -4,6 +4,7 @@ PODS:
   - Magpie (0.1.0):
     - Alamofire
   - SnapKit (4.2.0)
+  - SVProgressHUD (2.2.5)
   - SwiftDate (5.1.0)
   - SwiftLint (0.30.1)
 
@@ -11,6 +12,7 @@ DEPENDENCIES:
   - KeychainAccess
   - Magpie (from `https://github.com/Hipo/magpie.git`, branch `basic-upload-function`)
   - SnapKit
+  - SVProgressHUD
   - SwiftDate
   - SwiftLint
 
@@ -19,6 +21,7 @@ SPEC REPOS:
     - Alamofire
     - KeychainAccess
     - SnapKit
+    - SVProgressHUD
     - SwiftDate
     - SwiftLint
 
@@ -37,9 +40,10 @@ SPEC CHECKSUMS:
   KeychainAccess: b3816fddcf28aa29d94b10ec305cd52be14c472b
   Magpie: f1235cc99bab71365b8479089458c7b85e299950
   SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
+  SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   SwiftDate: 6329e58969a2de31cea7f1ee1143b247693196e7
   SwiftLint: a54bf1fe12b55c68560eb2a7689dfc81458508f7
 
-PODFILE CHECKSUM: f70968a240a7d45a6e619d3dcb57fcb145410e92
+PODFILE CHECKSUM: 2f4aef88625238bd8c5e5afd9a3c2e27faf6a948
 
 COCOAPODS: 1.5.3

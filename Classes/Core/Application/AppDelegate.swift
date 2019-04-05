@@ -24,6 +24,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     private var rootViewController: RootViewController?
     
+    private lazy var accountManager: AccountManager = AccountManager(api: api)
+    
     private var timer: PollingOperation?
     private var shouldInvalidateUserSession: Bool = false
     
@@ -70,6 +72,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
             rootViewController.route(to: .choosePassword(mode: .login), from: topViewController, by: .present)
             return
+        }
+        
+        if let user = session.authenticatedUser {
+            accountManager.user = user
+            
+            accountManager.fetchAllAccounts(completion: nil)
         }
     }
     

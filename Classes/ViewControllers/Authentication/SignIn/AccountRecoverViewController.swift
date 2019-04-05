@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SVProgressHUD
 
 class AccountRecoverViewController: BaseScrollViewController {
     
@@ -18,6 +19,17 @@ class AccountRecoverViewController: BaseScrollViewController {
     }()
     
     private var keyboardController = KeyboardController()
+    
+    private lazy var accountManager: AccountManager? = {
+        guard let api = self.api,
+            let user = session?.authenticatedUser  else {
+                return nil
+        }
+        
+        let manager = AccountManager(api: api)
+        manager.user = user
+        return manager
+    }()
     
     var mode: AccountSetupMode = .initialize
 
@@ -119,16 +131,24 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
             image: img("account-verify-alert-icon"),
             explanation: "recover-from-seed-verify-pop-up-explanation".localized,
             actionTitle: nil) {
-                if self.session?.hasPassword() ?? false {
-                    switch self.mode {
-                    case .initialize:
-                        self.open(.home, by: .launch)
-                    case .new:
-                        self.dismissScreen()
-                    }
-                } else {
-                    self.open(.choosePassword(mode: .setup), by: .push)
-                }
+                SVProgressHUD.show(withStatus: "Loading")
+                
+                self.accountManager?.fetchAllAccounts(completion: {
+                    SVProgressHUD.showSuccess(withStatus: "Done")
+                    
+                    SVProgressHUD.dismiss(withDelay: 2.0, completion: {
+                        if self.session?.hasPassword() ?? false {
+                            switch self.mode {
+                            case .initialize:
+                                self.open(.home, by: .launch)
+                            case .new:
+                                self.dismissScreen()
+                            }
+                        } else {
+                            self.open(.choosePassword(mode: .setup), by: .push)
+                        }
+                    })
+                })
         }
         
         let viewController = AlertViewController(mode: .default, alertConfigurator: configurator, configuration: configuration)
