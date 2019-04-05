@@ -85,7 +85,7 @@ extension QRSelectableLabel {
     
     fileprivate func setupGesture() {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tap(gesture:)))
-        containerView.addGestureRecognizer(tapGestureRecognizer)
+        self.addGestureRecognizer(tapGestureRecognizer)
     }
 }
 

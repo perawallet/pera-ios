@@ -93,6 +93,7 @@
 
 // MARK: QR Scanning
 
+"qr-scan-title" = "Scan QR";
 "qr-scan-error-title" = "Camera is not available";
 "qr-scan-error-message" = "Your device does not support scanning a qr code.";
 "qr-scan-go-settings-title" = "Camera Disabled";

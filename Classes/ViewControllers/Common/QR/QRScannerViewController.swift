@@ -42,7 +42,7 @@ class QRScannerViewController: BaseViewController {
         UIButton(type: .custom)
             .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 14.0)))
             .withBackgroundImage(img("bg-dark-gray-button-big"))
-            .withTitle("title-cancel".localized)
+            .withTitle("title-close".localized)
             .withTitleColor(SharedColors.black)
     }()
     
@@ -57,12 +57,18 @@ class QRScannerViewController: BaseViewController {
     private let captureSessionQueue = DispatchQueue(label: AVCaptureSession.self.description(), attributes: [], target: nil)
     private var previewLayer: AVCaptureVideoPreviewLayer?
     
+    override init(configuration: ViewControllerConfiguration) {
+        super.init(configuration: configuration)
+        
+        hidesBottomBarWhenPushed = true
+    }
+    
     // MARK: Setup
     
     override func configureAppearance() {
         super.configureAppearance()
         
-        title = "recover-from-seed-title".localized
+        title = "qr-scan-title".localized
     }
     
     override func setListeners() {
@@ -82,7 +88,7 @@ class QRScannerViewController: BaseViewController {
         view.addSubview(cancelButton)
         
         cancelButton.snp.makeConstraints { make in
-            make.bottom.equalToSuperview().inset(layout.current.bottomInset)
+            make.bottom.equalToSuperview().inset(layout.current.bottomInset + view.safeAreaBottom)
             make.centerX.equalToSuperview()
         }
     }
@@ -177,7 +183,12 @@ class QRScannerViewController: BaseViewController {
             return
         }
         
-        previewLayer.frame = CGRect(x: 0, y: 3 * view.frame.height / 16, width: view.frame.width, height: 5 * view.frame.height / 8)
+        previewLayer.frame = CGRect(
+            x: 0,
+            y: 80.0,
+            width: view.frame.width,
+            height: 5 * (view.frame.height - view.safeAreaTop - view.safeAreaBottom) / 8
+        )
         previewLayer.videoGravity = .resizeAspectFill
         
         view.layer.addSublayer(previewLayer)
