@@ -158,7 +158,7 @@ extension AccountRecoverViewController: KeyboardControllerDataSource {
     }
     
     func firstResponder(for keyboardController: KeyboardController) -> UIView? {
-        return accountRecoverView.nextButton
+        return accountRecoverView.accountNameInputView
     }
     
     func containerView(for keyboardController: KeyboardController) -> UIView {

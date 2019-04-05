@@ -175,8 +175,8 @@ class Router {
             viewController = OptionsViewController(configuration: configuration)
         case .editAccount(let account):
             viewController = EditAccountViewController(account: account, configuration: configuration)
-        case .addContact:
-            viewController = AddContactViewController(configuration: configuration)
+        case let .addContact(mode):
+            viewController = AddContactViewController(mode: mode, configuration: configuration)
         case let .contactDetail(contact):
             viewController = ContactInfoViewController(contact: contact, configuration: configuration)
         case let .contactQRDisplay(contact):

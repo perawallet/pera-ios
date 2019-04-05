@@ -16,16 +16,25 @@ class PasswordInputCircleView: UIImageView {
     
     var state: State = .empty {
         didSet {
-            if state == .empty {
-                image = img("green-button-border")
-            } else {
+            switch state {
+            case .empty:
+                image = img("green-button-border", isTemplate: true)
+                tintColor = SharedColors.green
+            case .error:
+                image = img("green-button-border", isTemplate: true)
+                tintColor = UIColor.red
+            case .filled:
                 image = img("green-button-filled")
             }
         }
     }
     
     init() {
-        super.init(image: img("green-button-border"))
+        super.init(image: img("green-button-border", isTemplate: true))
+        
+        tintColor = SharedColors.green
+        
+        layer.cornerRadius = 20.0
         
         contentMode = .center
     }
@@ -41,5 +50,6 @@ extension PasswordInputCircleView {
     enum State {
         case empty
         case filled
+        case error
     }
 }

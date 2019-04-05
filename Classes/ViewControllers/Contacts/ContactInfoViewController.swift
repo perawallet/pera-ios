@@ -8,6 +8,11 @@
 
 import UIKit
 
+protocol ContactInfoViewControllerDelegate: class {
+    
+    func contactInfoViewController(_ contactInfoViewController: ContactInfoViewController, didUpdate contact: Contact)
+}
+
 class ContactInfoViewController: BaseScrollViewController {
 
     // MARK: Components
@@ -27,15 +32,12 @@ class ContactInfoViewController: BaseScrollViewController {
     
     private let contact: Contact
     
-    private var transactionHistoryLayoutBuilder: TransactionHistoryLayoutBuilder
-    private var transactionHistoryDataSource: TransactionHistoryDataSource
+    weak var delegate: ContactInfoViewControllerDelegate?
     
     // MARK: Initialization
     
     init(contact: Contact, configuration: ViewControllerConfiguration) {
         self.contact = contact
-        transactionHistoryLayoutBuilder = TransactionHistoryLayoutBuilder()
-        transactionHistoryDataSource = TransactionHistoryDataSource(mode: .contacts)
         
         super.init(configuration: configuration)
         
@@ -58,16 +60,9 @@ class ContactInfoViewController: BaseScrollViewController {
         title = "contacts-info".localized
         
         viewModel.configure(contactInfoView.userInformationView, with: contact)
-        
-        // TODO: Need to fetch proper transactions and add loading state
-        transactionHistoryDataSource.setupMockData()
     }
     
     override func linkInteractors() {
-        transactionHistoryDataSource.delegate = self
-        contactInfoView.transactionsCollectionView.delegate = transactionHistoryLayoutBuilder
-        contactInfoView.transactionsCollectionView.dataSource = transactionHistoryDataSource
-        
         contactInfoView.delegate = self
     }
     
@@ -84,31 +79,28 @@ class ContactInfoViewController: BaseScrollViewController {
     }
 }
 
-// MARK: TransactionHistoryDataSourceDelegate
-
-extension ContactInfoViewController: TransactionHistoryDataSourceDelegate {
-    
-    func transactionHistoryDataSource(_ transactionHistoryDataSource: TransactionHistoryDataSource, didFetch transactions: [Transaction]) {
-        
-        if !transactions.isEmpty {
-            contactInfoView.transactionsCollectionView.contentState = .none
-            
-            contactInfoView.transactionsCollectionView.snp.updateConstraints { make in
-                make.height.equalTo(transactions.count * 80)
-            }
-            
-            view.layoutIfNeeded()
-            
-            return
-        }
-        
-        contactInfoView.transactionsCollectionView.contentState = .empty(emptyStateView)
-    }
-}
+// MARK: ContactInfoViewDelegate
 
 extension ContactInfoViewController: ContactInfoViewDelegate {
     
     func contactInfoViewDidTapQRCodeButton(_ contactInfoView: ContactInfoView) {
         tabBarController?.open(.contactQRDisplay(contact: contact), by: .presentWithoutNavigationController)
+    }
+    
+    func contactInfoViewDidEditContactButton(_ contactInfoView: ContactInfoView) {
+        let controller = open(.addContact(mode: .edit(contact: contact)), by: .push) as? AddContactViewController
+        
+        controller?.delegate = self
+    }
+}
+
+// MARK: AddContactViewControllerDelegate
+
+extension ContactInfoViewController: AddContactViewControllerDelegate {
+    
+    func addContactViewController(_ addContactViewController: AddContactViewController, didSave contact: Contact) {
+        viewModel.configure(contactInfoView.userInformationView, with: contact)
+        
+        delegate?.contactInfoViewController(self, didUpdate: contact)
     }
 }

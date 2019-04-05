@@ -21,14 +21,6 @@ class TransactionHistoryDataSource: NSObject, UICollectionViewDataSource {
     
     private let viewModel = AccountsViewModel()
     
-    private let mode: TransactionDisplayMode
-    
-    init(mode: TransactionDisplayMode = .accounts) {
-        self.mode = mode
-        
-        super.init()
-    }
-    
     // TODO: Added transacitons for test. Should be removed after SDK integration.
     // TODO: Need to configure doubles for amount after "."
     
@@ -71,7 +63,7 @@ class TransactionHistoryDataSource: NSObject, UICollectionViewDataSource {
         if indexPath.item < transactions.count {
             let transaction = transactions[indexPath.row]
             
-            viewModel.configure(cell, with: transaction, for: mode)
+            viewModel.configure(cell, with: transaction)
         }
         
         return cell

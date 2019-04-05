@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import AVFoundation
 
-class ChoosePasswordViewController: BaseScrollViewController {
+class ChoosePasswordViewController: BaseViewController {
     
     private lazy var choosePasswordView: ChoosePasswordView = {
         let view = ChoosePasswordView()
@@ -68,7 +69,7 @@ class ChoosePasswordViewController: BaseScrollViewController {
     override func prepareLayout() {
         super.prepareLayout()
         
-        contentView.addSubview(choosePasswordView)
+        view.addSubview(choosePasswordView)
         
         choosePasswordView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
@@ -104,9 +105,11 @@ extension ChoosePasswordViewController: ChoosePasswordViewDelegate {
             }
         case .login:
             viewModel.configureSelection(in: choosePasswordView, for: value) { password in
-                
                 if session?.isPasswordMatching(with: password) ?? false {
                     open(.home, by: .launch)
+                } else {
+                    AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
+                    self.viewModel.displayWrongPasswordState(choosePasswordView)
                 }
             }
         }
