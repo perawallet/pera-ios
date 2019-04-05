@@ -28,6 +28,8 @@ protocol DBStorable: AnyObject {
     
     static func create(entity: String, with keyedValues: [String: Any], then handler: DBOperationHandler?)
     static func fetchAll(entity: String, with predicate: NSPredicate?, then handler: DBOperationHandler?)
+    
+    func update(entity: String, with keyedValues: [String: Any], then handler: DBOperationHandler?)
 }
 
 extension DBStorable where Self: NSManagedObject {
@@ -75,6 +77,30 @@ extension DBStorable where Self: NSManagedObject {
             let response = try context.fetch(fetchRequest)
             
             handler?(.results(objects: response))
+        } catch {
+            handler?(.error(error: .readFailed))
+        }
+    }
+    
+    func update(entity: String, with keyedValues: [String: Any], then handler: DBOperationHandler? = nil) {
+        guard let appDelegate = UIApplication.shared.appDelegate else {
+            return
+        }
+        
+        let context = appDelegate.persistentContainer.viewContext
+        
+        do {
+            let object = try context.existingObject(with: objectID)
+            
+            object.setValuesForKeys(keyedValues)
+            
+            do {
+                try context.save()
+                
+                handler?(.result(object: object))
+            } catch {
+                handler?(.error(error: .writeFailed))
+            }
         } catch {
             handler?(.error(error: .readFailed))
         }

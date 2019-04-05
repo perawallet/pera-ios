@@ -52,6 +52,7 @@
 		2B59F1392254BABF005203DD /* algorand.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2B59F1372254BABF005203DD /* algorand.xcdatamodeld */; };
 		2B59F15C22550778005203DD /* Codable+CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B59F15B22550778005203DD /* Codable+CoreData.swift */; };
 		2B59F15E22552845005203DD /* DBStorable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B59F15D22552845005203DD /* DBStorable.swift */; };
+		2B59F16122563F89005203DD /* TabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B59F16022563F89005203DD /* TabBar.swift */; };
 		2B5DA9CC224CB4AA00EE41B4 /* OptionsContextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5DA9CB224CB4AA00EE41B4 /* OptionsContextView.swift */; };
 		2B5DA9CE224CB4B400EE41B4 /* OptionsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5DA9CD224CB4B400EE41B4 /* OptionsCell.swift */; };
 		2B5DA9D1224CCC8400EE41B4 /* OptionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5DA9D0224CCC8400EE41B4 /* OptionsViewModel.swift */; };
@@ -248,6 +249,7 @@
 		2B59F1382254BABF005203DD /* Contact.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Contact.xcdatamodel; sourceTree = "<group>"; };
 		2B59F15B22550778005203DD /* Codable+CoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Codable+CoreData.swift"; sourceTree = "<group>"; };
 		2B59F15D22552845005203DD /* DBStorable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBStorable.swift; sourceTree = "<group>"; };
+		2B59F16022563F89005203DD /* TabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBar.swift; sourceTree = "<group>"; };
 		2B5DA9CB224CB4AA00EE41B4 /* OptionsContextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsContextView.swift; sourceTree = "<group>"; };
 		2B5DA9CD224CB4B400EE41B4 /* OptionsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsCell.swift; sourceTree = "<group>"; };
 		2B5DA9D0224CCC8400EE41B4 /* OptionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsViewModel.swift; sourceTree = "<group>"; };
@@ -490,6 +492,14 @@
 				17BEC4622248CD3C00AAF370 /* LeftAlignedCollectionViewFlowLayout.swift */,
 			);
 			path = CollectionViewLayout;
+			sourceTree = "<group>";
+		};
+		2B59F15F22563F78005203DD /* Container */ = {
+			isa = PBXGroup;
+			children = (
+				2B59F16022563F89005203DD /* TabBar.swift */,
+			);
+			path = Container;
 			sourceTree = "<group>";
 		};
 		2B5DA9CA224CB47A00EE41B4 /* Options */ = {
@@ -932,6 +942,7 @@
 		2B8BE4F1223935C6005D8565 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				2B59F15F22563F78005203DD /* Container */,
 				2B8BE4F2223935CA005D8565 /* Base */,
 			);
 			path = Core;
@@ -1973,6 +1984,7 @@
 				2BD739EA223FA0BD00B66EEF /* ChoosePasswordViewController.swift in Sources */,
 				2BC45DEE225253A1000CDCE2 /* ImagePicker.swift in Sources */,
 				2B656E90224BAF200064A49B /* AccountListViewController.swift in Sources */,
+				2B59F16122563F89005203DD /* TabBar.swift in Sources */,
 				2BF34CC5223A99670052CAD3 /* String+Localization.swift in Sources */,
 				2BF34CA62239AD6D0052CAD3 /* KeyboardController.swift in Sources */,
 				2BB021E0224E5FD20039D78A /* AccountsViewModel.swift in Sources */,

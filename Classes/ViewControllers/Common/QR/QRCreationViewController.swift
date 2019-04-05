@@ -114,7 +114,7 @@ extension QRCreationViewController {
         qrView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(75)
             make.height.equalTo(qrView.snp.width)
-            make.centerY.equalToSuperview().inset(-80)
+            make.top.equalToSuperview().inset(69.0 * verticalScale)
         }
     }
     
@@ -122,7 +122,7 @@ extension QRCreationViewController {
         contentView.addSubview(shareButton)
         
         shareButton.snp.makeConstraints { make in
-            make.top.equalTo(qrView.snp.bottom).offset(35)
+            make.top.equalTo(qrView.snp.bottom).offset(35 * verticalScale)
             make.height.equalTo(45)
             make.width.equalTo(135)
             make.centerX.equalTo(qrView)
@@ -133,7 +133,7 @@ extension QRCreationViewController {
         contentView.addSubview(qrSelectableLabel)
         
         qrSelectableLabel.snp.makeConstraints { make in
-            make.top.equalTo(shareButton.snp.bottom).offset(50)
+            make.top.equalTo(shareButton.snp.bottom).offset(50 * verticalScale)
             make.height.equalTo(105)
             make.leading.trailing.equalToSuperview().inset(30)
         }
@@ -151,7 +151,7 @@ extension QRCreationViewController {
         contentView.addSubview(cancelButton)
         
         cancelButton.snp.makeConstraints { make in
-            make.top.equalTo(constraintItem).offset(60).priority(.low)
+            make.top.equalTo(constraintItem).offset(60 * verticalScale)
             make.height.equalTo(56)
             make.centerX.equalToSuperview()
             make.bottom.equalToSuperview().inset(layout.current.bottomInset + view.safeAreaBottom)

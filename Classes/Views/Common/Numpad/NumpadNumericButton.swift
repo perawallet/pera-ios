@@ -16,6 +16,7 @@ class NumpadNumericButton: UIButton, NumpadTypeable {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let size = CGSize(width: 30.0, height: 36.0)
+        let separatorWidth: CGFloat = 30.0
     }
     
     private enum Colors {
@@ -40,9 +41,16 @@ class NumpadNumericButton: UIButton, NumpadTypeable {
         }
     }
     
+    var color: UIColor = Colors.buttonColor {
+        didSet {
+            setTitleColor(color, for: .normal)
+            separatorImageView.tintColor = color
+        }
+    }
+    
     // MARK: Components
     
-    private lazy var separatorImageView = UIImageView(image: img("icon-numberpad-separator"))
+    private lazy var separatorImageView = UIImageView(image: img("icon-numberpad-separator", isTemplate: true))
     
     // MARK: Initialization
     
@@ -51,7 +59,8 @@ class NumpadNumericButton: UIButton, NumpadTypeable {
         
         isEnabled = false
         
-        setTitleColor(Colors.buttonColor, for: .normal)
+        setTitleColor(color, for: .normal)
+        separatorImageView.tintColor = color
         
         setupSeparatorImageViewLayout()
     }
@@ -67,7 +76,9 @@ class NumpadNumericButton: UIButton, NumpadTypeable {
         addSubview(separatorImageView)
         
         separatorImageView.snp.makeConstraints { make in
-            make.leading.trailing.bottom.equalToSuperview()
+            make.bottom.equalToSuperview()
+            make.centerX.equalToSuperview()
+            make.width.equalTo(layout.current.separatorWidth)
         }
     }
 }

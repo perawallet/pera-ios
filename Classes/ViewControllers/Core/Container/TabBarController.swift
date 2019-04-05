@@ -36,6 +36,12 @@ class TabBarController: UITabBarController {
     
     // MARK: Components
     
+    private lazy var customTabBar: TabBar = {
+        let tabBar = TabBar()
+        tabBar.delegate = self
+        return tabBar
+    }()
+    
     private lazy var shadowView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
@@ -128,25 +134,45 @@ class TabBarController: UITabBarController {
         tabBar.barTintColor = .white
         tabBar.tintColor = SharedColors.black
         tabBar.unselectedItemTintColor = SharedColors.darkGray
-        
-        setupShadowViewLayout()
     }
     
-    private func setupShadowViewLayout() {
+    // MARK: View Lifecycle
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
         view.insertSubview(shadowView, at: 1)
         
         shadowView.snp.makeConstraints { make in
             make.leading.trailing.bottom.equalToSuperview()
-            make.top.equalTo(tabBar.snp.top)
+            make.height.equalTo(49.0 + view.safeAreaBottom)
         }
+        
+        setValue(customTabBar, forKey: "tabBar")
     }
-    
-    // MARK: View Lifecycle
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         navigationController?.setNavigationBarHidden(true, animated: true)
+    }
+    
+    // MARK: Shadow
+    
+    func setShadowView(hidden: Bool) {
+        if hidden {
+            shadowView.snp.updateConstraints { make in
+                make.height.equalTo(0.0)
+            }
+        } else {
+            if shadowView.frame.height == 0 {
+                shadowView.snp.updateConstraints { make in
+                    make.height.equalTo(tabBar.frame.height)
+                }
+            }
+        }
+        
+        view.layoutIfNeeded()
     }
 }
 

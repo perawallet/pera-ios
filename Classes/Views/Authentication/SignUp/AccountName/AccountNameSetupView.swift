@@ -17,9 +17,9 @@ protocol AccountNameSetupViewDelegate: class {
 class AccountNameSetupView: BaseView {
 
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let topInset: CGFloat = 220.0
+        let topInset: CGFloat = 145.0 * verticalScale
         let buttonBottomInset: CGFloat = 15.0
-        let buttonTopInset: CGFloat = 120.0
+        let buttonTopInset: CGFloat = 120.0 * verticalScale
     }
     
     private let layout = Layout<LayoutConstants>()

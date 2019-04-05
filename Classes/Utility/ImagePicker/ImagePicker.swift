@@ -16,27 +16,26 @@ protocol ImagePickerDelegate: class {
 
 class ImagePicker: NSObject {
     
-    weak var viewController: UIViewController?
     weak var delegate: ImagePickerDelegate?
     
-    init(viewController: UIViewController) {
-        self.viewController = viewController
-        
+    private let imagePickerViewController: UIImagePickerController
+    
+    override init() {
+        self.imagePickerViewController = UIImagePickerController()
+
         super.init()
+        
+        configureImagePicker()
     }
     
-    func present() {
-        guard let viewController = self.viewController else {
-            return
-        }
-        
-        let imagePickerViewController = UIImagePickerController()
+    private func configureImagePicker() {
         imagePickerViewController.navigationBar.isTranslucent = false
-        
         imagePickerViewController.delegate = self
         imagePickerViewController.allowsEditing = false
         imagePickerViewController.sourceType = .photoLibrary
-        
+    }
+    
+    func present(from viewController: UIViewController) {
         viewController.present(imagePickerViewController, animated: true, completion: nil)
     }
 }

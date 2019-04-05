@@ -119,6 +119,14 @@ class BaseViewController: UIViewController {
         
         isViewDisappeared = false
         isViewAppearing = true
+        
+        if hidesBottomBarWhenPushed {
+            guard let tabBarController = tabBarController as? TabBarController else {
+                return
+            }
+            
+            tabBarController.setShadowView(hidden: true)
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -126,6 +134,14 @@ class BaseViewController: UIViewController {
         
         isViewAppearing = false
         isViewAppeared = true
+        
+        if !hidesBottomBarWhenPushed {
+            guard let tabBarController = tabBarController as? TabBarController else {
+                return
+            }
+            
+            tabBarController.setShadowView(hidden: false)
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {

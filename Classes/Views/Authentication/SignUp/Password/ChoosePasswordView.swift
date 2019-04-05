@@ -17,15 +17,16 @@ protocol ChoosePasswordViewDelegate: class {
 class ChoosePasswordView: BaseView {
 
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let titleLabelTopInset: CGFloat = 69.0
-        let subtitleTopInset: CGFloat = 14.0
+        let titleLabelTopInset: CGFloat = 69.0 * verticalScale
+        let subtitleTopInset: CGFloat = 14.0 * verticalScale
         let subtitleHorizontalInset: CGFloat = 60.0
-        let inputViewTopInset: CGFloat = 45.0
+        let inputViewTopInset: CGFloat = 45.0 * verticalScale
         let numpadBottomInset: CGFloat = 32.0
-        let numpadTopInset: CGFloat = 45.0
+        let numpadTopInset: CGFloat = 10.0 * verticalScale
         let passwordInputViewInset: CGFloat = -10.0
-        let logoutButtonTopInset: CGFloat = 109.0
-        let logoutButtonHeight: CGFloat = 49.0
+        let logoutButtonTopInset: CGFloat = 40.0 * verticalScale
+        let logoutButtonHeight: CGFloat = 45.0 * verticalScale
+        let logoutButtonWidth: CGFloat = 115.0 * horizontalScale
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -124,6 +125,7 @@ class ChoosePasswordView: BaseView {
             make.centerX.equalToSuperview()
             make.top.greaterThanOrEqualTo(passwordInputView.snp.bottom).offset(layout.current.logoutButtonTopInset)
             make.height.equalTo(layout.current.logoutButtonHeight)
+            make.width.equalTo(layout.current.logoutButtonWidth)
         }
     }
     
@@ -131,9 +133,9 @@ class ChoosePasswordView: BaseView {
         addSubview(numpadView)
         
         numpadView.snp.makeConstraints { make in
-            make.bottom.equalToSuperview().inset(layout.current.numpadBottomInset)
+            make.bottom.equalToSuperview().inset(layout.current.numpadBottomInset + safeAreaBottom)
             make.centerX.equalToSuperview()
-            make.top.equalTo(logoutButton.snp.bottom).offset(layout.current.numpadTopInset)
+            make.top.greaterThanOrEqualTo(logoutButton.snp.bottom).offset(layout.current.numpadTopInset)
             make.leading.trailing.lessThanOrEqualToSuperview()
         }
     }

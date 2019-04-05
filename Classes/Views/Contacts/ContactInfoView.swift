@@ -11,6 +11,7 @@ import UIKit
 protocol ContactInfoViewDelegate: class {
     
     func contactInfoViewDidTapQRCodeButton(_ contactInfoView: ContactInfoView)
+    func contactInfoViewDidEditContactButton(_ contactInfoView: ContactInfoView)
 }
 
 class ContactInfoView: BaseView {
@@ -19,10 +20,7 @@ class ContactInfoView: BaseView {
         let informationViewHeight: CGFloat = 333.0
         let bottomInset: CGFloat = 20.0
         let topInset: CGFloat = 24.0
-        let transactionLabelVerticalInset: CGFloat = 34.0
-        let transactionLabelHorizontalInset: CGFloat = 25.0
-        let transactionsCollectionViewVerticalInset: CGFloat = 7.0
-        let minimumHeight: CGFloat = 300.0
+        let minimumInset: CGFloat = 10.0
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -34,33 +32,10 @@ class ContactInfoView: BaseView {
         return view
     }()
     
-    private lazy var transactionTitleLabel: UILabel = {
-        UILabel()
-            .withText("contacts-transactions-title".localized)
-            .withTextColor(SharedColors.darkGray)
-            .withAlignment(.left)
-            .withFont(UIFont.font(.opensans, withWeight: .semiBold(size: 12.0)))
+    private(set) lazy var editContactButton: MainButton = {
+        let button = MainButton(title: "contacts-edit-button".localized)
+        return button
     }()
-    
-    private(set) lazy var transactionsCollectionView: UICollectionView = {
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.scrollDirection = .vertical
-        flowLayout.minimumLineSpacing = 0.0
-        flowLayout.minimumInteritemSpacing = 0.0
-        
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
-        collectionView.showsVerticalScrollIndicator = false
-        collectionView.showsHorizontalScrollIndicator = false
-        collectionView.isScrollEnabled = false
-        collectionView.backgroundColor = .white
-        collectionView.contentInset = .zero
-        
-        collectionView.register(TransactionHistoryCell.self, forCellWithReuseIdentifier: TransactionHistoryCell.reusableIdentifier)
-        
-        return collectionView
-    }()
-    
-    private lazy var contentStateView = ContentStateView()
     
     weak var delegate: ContactInfoViewDelegate?
     
@@ -70,12 +45,15 @@ class ContactInfoView: BaseView {
         userInformationView.delegate = self
     }
     
+    override func setListeners() {
+        editContactButton.addTarget(self, action: #selector(notifyDelegateToEditContactButtonTapped), for: .touchUpInside)
+    }
+    
     // MARK: Layout
     
     override func prepareLayout() {
         setupUserInformationViewLayout()
-        setupTransactionsLabelLayout()
-        setupTransactionsCollectionViewLayout()
+        setupEditContactButtonLayout()
     }
     
     private func setupUserInformationViewLayout() {
@@ -88,26 +66,21 @@ class ContactInfoView: BaseView {
         }
     }
     
-    private func setupTransactionsLabelLayout() {
-        addSubview(transactionTitleLabel)
+    private func setupEditContactButtonLayout() {
+        addSubview(editContactButton)
         
-        transactionTitleLabel.snp.makeConstraints { make in
-            make.top.equalTo(userInformationView.snp.bottom).offset(layout.current.transactionLabelVerticalInset)
-            make.leading.equalToSuperview().inset(layout.current.transactionLabelHorizontalInset)
+        editContactButton.snp.makeConstraints { make in
+            make.top.greaterThanOrEqualTo(userInformationView.snp.bottom).offset(layout.current.minimumInset)
+            make.centerX.equalToSuperview()
+            make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).inset(layout.current.bottomInset)
         }
     }
     
-    private func setupTransactionsCollectionViewLayout() {
-        addSubview(transactionsCollectionView)
-        
-        transactionsCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(transactionTitleLabel.snp.bottom).offset(layout.current.transactionsCollectionViewVerticalInset)
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(layout.current.minimumHeight)
-            make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).inset(layout.current.bottomInset)
-        }
-        
-        transactionsCollectionView.backgroundView = contentStateView
+    // MARK: Actions
+    
+    @objc
+    private func notifyDelegateToEditContactButtonTapped() {
+        delegate?.contactInfoViewDidEditContactButton(self)
     }
 }
 

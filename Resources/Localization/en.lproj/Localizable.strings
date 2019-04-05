@@ -62,18 +62,18 @@
 "local-authentication-go-settings-title" = "Biometric Authentication";
 "local-authentication-go-settings-text" = "You have disabled biometric authentication. Please go to Settings and enable this option.";
 
-// MARK: Pass Phrase Back Up
+// MARK: Passphrase Back Up
 
 "new-account-title" = "New Account";
-"back-up-phrase-title" = "Back up this Pass Phrase";
+"back-up-phrase-title" = "Back up this Passphrase";
 "back-up-phrase-warning" = "In order to access this account if you lose this device copy or print this phrase and keep it someplace safe";
 "back-up-phrase-button-title" = "VERIFY RECOVERY PHRASE";
 "view-pass-phrase-title" = "View Passphrase";
 
 
-// MARK: Pass Phrase Verify
+// MARK: Passphrase Verify
 
-"pass-phrase-verify-pop-up-title" = "Pass Phrase Verified";
+"pass-phrase-verify-pop-up-title" = "Passphrase Verified";
 "pass-phrase-verify-pop-up-explanation" = "Your passphrase has been verified. Make sure that you have backed it up as you will need it to recover your account.";
 "pass-phrase-verify-invalid-passphrase" = "Your passphrase is invalid. Please make sure that you entered correct one.";
 "pass-phrase-verify-sdk-error" = "There is something wrong. Please try again later.";
@@ -143,6 +143,7 @@
 "contacts-title" = "Contacts";
 "contacts-search" = "Search Contacts";
 "contacts-add" = "Add Contact";
+"contacts-edit" = "Edit Contact";
 "contacts-info" = "Contact Info";
 "contacts-input-name-explanation" = "Name:";
 "contacts-input-name-placeholder" = "Contact Name";
@@ -150,6 +151,7 @@
 "contacts-input-address-placeholder" = "Paste # or Scan QR";
 "contacts-transactions-title" = "Transactions";
 "contacts-add-button" = "ADD CONTACT";
+"contacts-edit-button" = "EDIT CONTACT";
 "contacts-empty-text" = "No Contacts Found";
 "contacts-address-validation-error" = "Address is wrong. Please make sure that you entered correct one.";
 

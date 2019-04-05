@@ -23,7 +23,7 @@ enum Screen {
     case options
     case accountList
     case editAccount(account: Account)
-    case addContact
+    case addContact(mode: AddContactViewController.Mode)
     case contactDetail(contact: Contact)
     case contactQRDisplay(contact: Contact)
 }

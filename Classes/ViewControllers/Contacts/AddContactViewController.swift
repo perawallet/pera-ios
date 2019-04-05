@@ -22,13 +22,19 @@ class AddContactViewController: BaseScrollViewController {
         return view
     }()
     
-    private lazy var imagePicker = ImagePicker(viewController: self)
+    private var imagePicker: ImagePicker
     
     private var keyboardController = KeyboardController()
     
     weak var delegate: AddContactViewControllerDelegate?
     
-    override init(configuration: ViewControllerConfiguration) {
+    private let mode: Mode
+    
+    init(mode: Mode, configuration: ViewControllerConfiguration) {
+        self.mode = mode
+        
+        imagePicker = ImagePicker()
+        
         super.init(configuration: configuration)
         
         hidesBottomBarWhenPushed = true
@@ -39,7 +45,25 @@ class AddContactViewController: BaseScrollViewController {
     override func configureAppearance() {
         super.configureAppearance()
         
-        title = "contacts-add".localized
+        switch mode {
+        case .new:
+            title = "contacts-add".localized
+            return
+        case let .edit(contact):
+            title = "contacts-edit".localized
+            
+            addContactView.addContactButton.setTitle("contacts-edit-button".localized, for: .normal)
+            
+            addContactView.userInformationView.contactNameInputView.inputTextField.text = contact.name
+            
+            if let address = contact.address {
+                addContactView.userInformationView.algorandAddressInputView.value = address
+            }
+            
+            if let imageData = contact.image {
+                addContactView.userInformationView.userImageView.image = UIImage(data: imageData)
+            }
+        }
     }
     
     override func setListeners() {
@@ -73,7 +97,7 @@ extension AddContactViewController: AddContactViewDelegate {
     
     func addContactViewDidTapAddImageButton(_ addContactView: AddContactView) {
         imagePicker.delegate = self
-        imagePicker.present()
+        imagePicker.present(from: self)
     }
     
     func addContactViewDidTapAddContactButton(_ addContactView: AddContactView) {
@@ -94,7 +118,33 @@ extension AddContactViewController: AddContactViewDelegate {
             keyedValues[Contact.CodingKeys.image.rawValue] = image
         }
         
-        Contact.create(entity: Contact.entityName, with: keyedValues) { result in
+        switch mode {
+        case .new:
+            addContact(with: keyedValues)
+        case let .edit(contact):
+            edit(contact, with: keyedValues)
+        }
+    }
+    
+    private func addContact(with values: [String: Any]) {
+        Contact.create(entity: Contact.entityName, with: values) { result in
+            switch result {
+            case let .result(object: object):
+                guard let contact = object as? Contact else {
+                    return
+                }
+                
+                self.delegate?.addContactViewController(self, didSave: contact)
+                
+                self.closeScreen(by: .pop)
+            default:
+                break
+            }
+        }
+    }
+    
+    private func edit(_ contact: Contact, with values: [String: Any]) {
+        contact.update(entity: Contact.entityName, with: values) { result in
             switch result {
             case let .result(object: object):
                 guard let contact = object as? Contact else {
@@ -162,5 +212,15 @@ extension AddContactViewController: QRScannerViewControllerDelegate {
     func qRScannerViewController(_ controller: QRScannerViewController, didRead qrCode: String) {
         
         addContactView.userInformationView.algorandAddressInputView.value = qrCode
+    }
+}
+
+// MARK: Mode
+
+extension AddContactViewController {
+    
+    enum Mode {
+        case new
+        case edit(contact: Contact)
     }
 }

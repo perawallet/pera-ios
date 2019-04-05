@@ -18,6 +18,7 @@ class BaseInputView: BaseView {
         let separatorTopInset: CGFloat = 20.0
         let separatorInset: CGFloat = 15.0
         let separatorHeight: CGFloat = 1.0
+        let buttonWidth: CGFloat = 20.0
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -102,6 +103,7 @@ class BaseInputView: BaseView {
         rightInputAccessoryButton.snp.makeConstraints { make in
             make.trailing.equalToSuperview().inset(layout.current.separatorInset)
             make.top.equalToSuperview().inset(layout.current.buttonTopInset)
+            make.width.equalTo(layout.current.buttonWidth)
         }
     }
     

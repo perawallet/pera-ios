@@ -41,13 +41,13 @@ extension PassPhraseVerifyView {
     fileprivate func setupLayout() {
         addSubview(questionTitleLabel)
         questionTitleLabel.snp.makeConstraints { maker in
-            maker.top.equalToSuperview().inset(80)
+            maker.top.equalToSuperview().inset(69 * verticalScale)
             maker.leading.trailing.equalToSuperview().inset(15)
         }
         
         addSubview(questionSubtitleLabel)
         questionSubtitleLabel.snp.makeConstraints { maker in
-            maker.top.equalTo(questionTitleLabel.snp.bottom).offset(16)
+            maker.top.equalTo(questionTitleLabel.snp.bottom).offset(16 * verticalScale)
             maker.leading.trailing.equalToSuperview().inset(15)
         }
     }

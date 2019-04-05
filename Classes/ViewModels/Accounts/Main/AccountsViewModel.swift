@@ -9,18 +9,13 @@
 import UIKit
 import SwiftDate
 
-enum TransactionDisplayMode {
-    case accounts
-    case contacts
-}
-
 class AccountsViewModel {
     
     func configure(_ view: AccountsHeaderView, with account: Account) {
         view.algosAmountLabel.text = "\(account.amount)"
     }
     
-    func configure(_ cell: TransactionHistoryCell, with transaction: Transaction, for mode: TransactionDisplayMode) {
+    func configure(_ cell: TransactionHistoryCell, with transaction: Transaction) {
         cell.contextView.transactionDetailLabel.text = transaction.title
         
         if transaction.amount > 0 {
@@ -33,10 +28,6 @@ class AccountsViewModel {
         
         cell.contextView.dateLabel.text = formattedDate
         
-        if mode == .accounts {
-            cell.contextView.accountNamelabel.text = transaction.accountName
-        } else {
-            cell.contextView.accountNamelabel.isHidden = true
-        }
+        cell.contextView.accountNamelabel.text = transaction.accountName
     }
 }

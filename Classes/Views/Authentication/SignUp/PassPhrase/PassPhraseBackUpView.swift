@@ -18,7 +18,7 @@ protocol PassPhraseBackUpViewDelegate: class {
 class PassPhraseBackUpView: BaseView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let topInset: CGFloat = 69.0
+        let topInset: CGFloat = 69.0 * verticalScale
         let horizontalInset: CGFloat = 25.0
         let passPhraseContainerViewTopInset: CGFloat = 30.0
         let passPhraseLabelVerticalInset: CGFloat = 37.0
