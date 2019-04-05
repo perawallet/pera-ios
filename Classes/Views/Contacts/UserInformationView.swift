@@ -133,7 +133,8 @@ class UserInformationView: BaseView {
         addSubview(userImageView)
         
         userImageView.snp.makeConstraints { make in
-            make.edges.lessThanOrEqualTo(imageBackgroundView)
+            make.centerX.equalToSuperview()
+            make.top.equalToSuperview().inset(layout.current.imageInset)
             make.width.height.equalTo(layout.current.backgroundViewSize)
         }
     }

@@ -31,25 +31,12 @@ class IntroductionViewController: BaseScrollViewController {
         contentView.addSubview(introductionView)
         
         introductionView.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(view.safeAreaTop)
-            make.leading.trailing.bottom.equalToSuperview()
+            make.edges.equalToSuperview()
         }
     }
     
     override func linkInteractors() {
         introductionView.delegate = self
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        navigationController?.navigationBar.isTranslucent = true
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        navigationController?.navigationBar.isTranslucent = false
     }
 }
 

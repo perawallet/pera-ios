@@ -21,4 +21,9 @@ target 'algorand' do
     
     #UI
     pod 'SVProgressHUD'
+
+    #Analytics
+    pod 'Firebase/Core'
+    pod 'Fabric'
+    pod 'Crashlytics'
 end

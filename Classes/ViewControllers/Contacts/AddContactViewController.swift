@@ -114,8 +114,12 @@ extension AddContactViewController: AddContactViewDelegate {
             Contact.CodingKeys.address.rawValue: address
         ]
         
-        if let image = addContactView.userInformationView.userImageView.image?.pngData() {
-            keyedValues[Contact.CodingKeys.image.rawValue] = image
+        if let placeholderImage = img("icon-user-placeholder-big"),
+            let image = addContactView.userInformationView.userImageView.image,
+            let imageData = image.pngData(),
+            image != placeholderImage {
+            
+            keyedValues[Contact.CodingKeys.image.rawValue] = imageData
         }
         
         switch mode {
@@ -179,7 +183,7 @@ extension AddContactViewController: AddContactViewDelegate {
 extension AddContactViewController: ImagePickerDelegate {
     
     func imagePicker(didPick image: UIImage, withInfo info: [String: Any]) {
-        let resizedImage = image.convert(to: CGSize(width: 108.0, height: 108.0), scale: UIScreen.main.scale)
+        let resizedImage = image.convert(to: CGSize(width: 108.0, height: 108.0))
         addContactView.userInformationView.userImageView.image = resizedImage
     }
 }
