@@ -88,7 +88,7 @@
 
 "recover-from-seed-title" = "Recover from Seed";
 "pass-pharase-enter-placeholder" = "Enter Pass Phrase or Scan QR";
-"recover-from-seed-verify-pop-up-explanation" = "Your account has been verified some other messaging about starting to use the app and welcome to Algorand";
+"recover-from-seed-verify-pop-up-explanation" = "Welcome to Algorand! Your account is ready to use.";
 "recover-from-seed-verify-pop-up-title" = "Account Verified";
 
 // MARK: QR Scanning
