@@ -12,6 +12,7 @@ protocol IntroductionViewDelegate: class {
     
     func introductionViewDidTapCreateAccountButton(_ introductionView: IntroductionView)
     func introductionViewDidTapRecoverButton(_ introductionView: IntroductionView)
+    func introductionViewDidTapCloseButton(_ introductionView: IntroductionView)
 }
 
 class IntroductionView: BaseView {
@@ -20,9 +21,10 @@ class IntroductionView: BaseView {
         let logoInset: CGFloat = 14.0 * verticalScale
         let verticalInset: CGFloat = 94.0 * verticalScale
         let createButtonTopInset: CGFloat = 28.0 * verticalScale
-        let bottomInset: CGFloat = 83.0 * verticalScale
+        let bottomInset: CGFloat = 20.0 * verticalScale
         let buttonMinimumTopInset: CGFloat = 110.0 * verticalScale
         let imageSize: CGFloat = 250.0 * verticalScale
+        let closeButtonMinimumTopInset: CGFloat = 35.0 * verticalScale
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -50,13 +52,29 @@ class IntroductionView: BaseView {
             .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 14.0)))
     }()
     
+    private(set) lazy var closeButton: UIButton = {
+        UIButton(type: .custom)
+            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 14.0)))
+            .withBackgroundImage(img("bg-dark-gray-button-big"))
+            .withTitle("title-close".localized)
+            .withTitleColor(SharedColors.black)
+    }()
+    
     weak var delegate: IntroductionViewDelegate?
+    
+    private let mode: AccountSetupMode
+    
+    init(mode: AccountSetupMode) {
+        self.mode = mode
+        super.init(frame: .zero)
+    }
     
     // MARK: Configuration
     
     override func setListeners() {
         createAccountButton.addTarget(self, action: #selector(notifyDelegateToCreateAccountButtonTapped), for: .touchUpInside)
         recoverButton.addTarget(self, action: #selector(notifyDelegateToRecoverButtonTapped), for: .touchUpInside)
+        closeButton.addTarget(self, action: #selector(notifyDelegateToCloseButtonTapped), for: .touchUpInside)
     }
     
     // MARK: Layout
@@ -66,6 +84,10 @@ class IntroductionView: BaseView {
         setupDetailImageViewLayout()
         setupCreateAccountButtonLayout()
         setupRecoverButtonLayout()
+        
+        if mode == .new {
+            setupCloseButtonLayout()
+        }
     }
     
     private func setupLogoImageViewLayout() {
@@ -100,9 +122,18 @@ class IntroductionView: BaseView {
         addSubview(recoverButton)
         
         recoverButton.snp.makeConstraints { make in
-            make.top.greaterThanOrEqualTo(createAccountButton.snp.bottom).offset(layout.current.buttonMinimumTopInset)
-            make.bottom.equalToSuperview().inset(layout.current.bottomInset)
+            make.top.equalTo(createAccountButton.snp.bottom).offset(layout.current.buttonMinimumTopInset)
             make.centerX.equalToSuperview()
+        }
+    }
+    
+    private func setupCloseButtonLayout() {
+        addSubview(closeButton)
+        
+        closeButton.snp.makeConstraints { make in
+            make.top.greaterThanOrEqualTo(recoverButton.snp.bottom).offset(layout.current.closeButtonMinimumTopInset)
+            make.centerX.equalToSuperview()
+            make.bottom.equalToSuperview().inset(layout.current.bottomInset + safeAreaBottom)
         }
     }
     
@@ -116,5 +147,10 @@ class IntroductionView: BaseView {
     @objc
     func notifyDelegateToRecoverButtonTapped() {
         delegate?.introductionViewDidTapRecoverButton(self)
+    }
+    
+    @objc
+    func notifyDelegateToCloseButtonTapped() {
+        delegate?.introductionViewDidTapCloseButton(self)
     }
 }
