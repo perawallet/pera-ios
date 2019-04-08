@@ -12,7 +12,7 @@ extension API {
     @discardableResult
     func fetchAccount(
         with draft: AccountFetchDraft,
-        then completion: CompletionHandler<Account>? = nil
+        then completion: APICompletionHandler<Account>? = nil
     ) -> EndpointInteractable? {
         
         let address = draft.publicKey

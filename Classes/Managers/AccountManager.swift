@@ -8,8 +8,6 @@
 
 import Foundation
 
-typealias Completion = () -> Void
-
 class AccountManager {
     var user: User?
     let api: API
@@ -26,7 +24,7 @@ class AccountManager {
 
 // MARK: - API
 extension AccountManager {
-    func fetchAllAccounts(completion: Completion?) {
+    func fetchAllAccounts(completion: EmptyHandler?) {
         let completionOperation = BlockOperation {
             completion?()
         }
@@ -48,7 +46,7 @@ extension AccountManager {
     }
     
     func fetchAccount(_ account: Account,
-                      then completion: Completion?) {
+                      then completion: EmptyHandler?) {
         let completionOperation = BlockOperation {
             completion?()
         }

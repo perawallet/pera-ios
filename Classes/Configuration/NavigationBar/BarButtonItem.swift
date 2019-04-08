@@ -13,13 +13,12 @@ protocol BarButtonItem {
     typealias TitleContent = BarButtonItemTitleContent
     typealias ImageContent = BarButtonItemImageContent
     typealias Size = BarButtonSize
-    typealias InteractionHandler = () -> Void
     
     var theme: Theme { get }
     var title: TitleContent? { get }
     var image: ImageContent? { get }
     var size: Size { get }
-    var handler: InteractionHandler? { get set }
+    var handler: EmptyHandler? { get set }
     
     /// Returns nil if the bar button item cannot be configured as a back/dismiss.
     static func back() -> Self?

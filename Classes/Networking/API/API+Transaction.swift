@@ -13,7 +13,7 @@ extension API {
     @discardableResult
     func sendTransaction(
         with draft: TransactionDraft,
-        then completion: CompletionHandler<TransactionID>? = nil
+        then completion: APICompletionHandler<TransactionID>? = nil
         ) -> EndpointInteractable? {
         
         var transactionError: NSError?
@@ -36,7 +36,7 @@ extension API {
         
         var signedTransactionError: NSError?
         
-        guard let privateData = UIApplication.shared.appConfiguration?.session.privateData(forAccount: draft.from.address),
+        guard let privateData = session?.privateData(forAccount: draft.from.address),
             let signedTransactionData = CryptoSignTransaction(privateData, transaction, &signedTransactionError) else {
                 return nil
         }
@@ -57,7 +57,7 @@ extension API {
     }
     
     @discardableResult
-    func getTransactionParams(completion: CompletionHandler<TransactionParams>? = nil) -> EndpointInteractable? {
+    func getTransactionParams(completion: APICompletionHandler<TransactionParams>? = nil) -> EndpointInteractable? {
         return send(
             Endpoint<TransactionParams>(Path("/v1/transactions/params"))
                 .httpMethod(.get)

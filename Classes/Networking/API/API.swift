@@ -10,7 +10,7 @@ import Magpie
 
 class API: Magpie<AlamofireNetworking> {
     
-    typealias CompletionHandler<ObjectRef> = (Response<ObjectRef>) -> Void where ObjectRef: Mappable
+    typealias APICompletionHandler<ObjectRef> = (Response<ObjectRef>) -> Void where ObjectRef: Mappable
     
     override var commonHttpHeaders: HTTPHeaders {
         
@@ -20,7 +20,7 @@ class API: Magpie<AlamofireNetworking> {
         return httpHeaders
     }
     
-    private var session: Session?
+    private(set) var session: Session?
     
     required init(base: String, session: Session?) {
         super.init(base: base)

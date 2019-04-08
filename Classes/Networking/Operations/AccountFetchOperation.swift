@@ -9,16 +9,15 @@
 import Foundation
 import UIKit
 
-typealias StartClosure = () -> Void
-typealias CompletionClosure = (Account?, Error?) -> Void
+typealias AccountFetchHandler = (Account?, Error?) -> Void
 
 class AccountFetchOperation: AsyncOperation {
     
     let address: String
     let api: API
     
-    var onStarted: StartClosure?
-    var onCompleted: CompletionClosure?
+    var onStarted: EmptyHandler?
+    var onCompleted: AccountFetchHandler?
     
     // MARK: Initialization
     init(address: String, api: API) {

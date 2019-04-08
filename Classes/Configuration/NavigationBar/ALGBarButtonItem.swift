@@ -10,7 +10,7 @@ import UIKit
 
 struct ALGBarButtonItem: BarButtonItem {
     
-    var handler: InteractionHandler?
+    var handler: EmptyHandler?
     
     var title: TitleContent? {
         return nil
@@ -70,7 +70,7 @@ struct ALGBarButtonItem: BarButtonItem {
     
     let kind: Kind
     
-    init(kind: Kind, handler: InteractionHandler? = nil) {
+    init(kind: Kind, handler: EmptyHandler? = nil) {
         
         self.kind = kind
         self.handler = handler
