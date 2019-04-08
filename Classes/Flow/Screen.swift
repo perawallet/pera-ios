@@ -26,6 +26,8 @@ enum Screen {
     case addContact(mode: AddContactViewController.Mode)
     case contactDetail(contact: Contact)
     case contactQRDisplay(contact: Contact)
+    case sendAlgos
+    case receiveAlgos
 }
 
 extension Screen {

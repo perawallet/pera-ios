@@ -89,6 +89,7 @@ class AccountsViewController: BaseViewController {
     }
     
     override func linkInteractors() {
+        accountsView.delegate = self
         transactionHistoryDataSource.delegate = self
         accountsView.transactionHistoryCollectionView.delegate = transactionHistoryLayoutBuilder
         accountsView.transactionHistoryCollectionView.dataSource = transactionHistoryDataSource
@@ -214,5 +215,18 @@ extension AccountsViewController: TransactionHistoryDataSourceDelegate {
         }
 
         accountsView.transactionHistoryCollectionView.contentState = .empty(emptyStateView)
+    }
+}
+
+// MARK: AccountsViewDelegate
+
+extension AccountsViewController: AccountsViewDelegate {
+    
+    func accountsViewDidTapSendButton(_ accountsView: AccountsView) {
+        open(.sendAlgos, by: .push)
+    }
+    
+    func accountsViewDidTapReceiveButton(_ accountsView: AccountsView) {
+        open(.receiveAlgos, by: .push)
     }
 }

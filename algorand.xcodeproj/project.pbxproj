@@ -46,6 +46,8 @@
 		17F6E685224B3F99006DD31F /* PassPhraseMnemonicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F6E684224B3F99006DD31F /* PassPhraseMnemonicView.swift */; };
 		17F6E68A224B71A6006DD31F /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F6E689224B71A6006DD31F /* User.swift */; };
 		2B09603822578C990005BE27 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2B09603722578C990005BE27 /* GoogleService-Info.plist */; };
+		2B56F7D6225B3C1D00E58737 /* SendAlgosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B56F7D5225B3C1D00E58737 /* SendAlgosViewController.swift */; };
+		2B56F7D8225B3C4200E58737 /* ReceiveAlgosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B56F7D7225B3C4200E58737 /* ReceiveAlgosViewController.swift */; };
 		2B59F1392254BABF005203DD /* algorand.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2B59F1372254BABF005203DD /* algorand.xcdatamodeld */; };
 		2B59F15C22550778005203DD /* Codable+CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B59F15B22550778005203DD /* Codable+CoreData.swift */; };
 		2B59F15E22552845005203DD /* DBStorable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B59F15D22552845005203DD /* DBStorable.swift */; };
@@ -240,6 +242,8 @@
 		17F6E689224B71A6006DD31F /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		2AC10F1C54DF2982BFB4A180 /* Pods-algorand.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand.debug.xcconfig"; path = "Pods/Target Support Files/Pods-algorand/Pods-algorand.debug.xcconfig"; sourceTree = "<group>"; };
 		2B09603722578C990005BE27 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		2B56F7D5225B3C1D00E58737 /* SendAlgosViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendAlgosViewController.swift; sourceTree = "<group>"; };
+		2B56F7D7225B3C4200E58737 /* ReceiveAlgosViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveAlgosViewController.swift; sourceTree = "<group>"; };
 		2B59F1382254BABF005203DD /* Contact.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Contact.xcdatamodel; sourceTree = "<group>"; };
 		2B59F15B22550778005203DD /* Codable+CoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Codable+CoreData.swift"; sourceTree = "<group>"; };
 		2B59F15D22552845005203DD /* DBStorable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBStorable.swift; sourceTree = "<group>"; };
@@ -485,6 +489,63 @@
 			path = CollectionViewLayout;
 			sourceTree = "<group>";
 		};
+		2B56F7CE225B3AD700E58737 /* Transactions */ = {
+			isa = PBXGroup;
+			children = (
+				2B56F7D0225B3AE400E58737 /* Receive */,
+				2B56F7CF225B3ADF00E58737 /* Send */,
+			);
+			path = Transactions;
+			sourceTree = "<group>";
+		};
+		2B56F7CF225B3ADF00E58737 /* Send */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Send;
+			sourceTree = "<group>";
+		};
+		2B56F7D0225B3AE400E58737 /* Receive */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Receive;
+			sourceTree = "<group>";
+		};
+		2B56F7D1225B3AFB00E58737 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				2BF53181224AA8E000A7455F /* AccountsViewController.swift */,
+				2B5DA9D2224CD21800EE41B4 /* AccountsViewController+Options.swift */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		2B56F7D2225B3B0500E58737 /* Transactions */ = {
+			isa = PBXGroup;
+			children = (
+				2B56F7D4225B3B1000E58737 /* Send */,
+				2B56F7D3225B3B0C00E58737 /* Receive */,
+			);
+			path = Transactions;
+			sourceTree = "<group>";
+		};
+		2B56F7D3225B3B0C00E58737 /* Receive */ = {
+			isa = PBXGroup;
+			children = (
+				2B56F7D7225B3C4200E58737 /* ReceiveAlgosViewController.swift */,
+			);
+			path = Receive;
+			sourceTree = "<group>";
+		};
+		2B56F7D4225B3B1000E58737 /* Send */ = {
+			isa = PBXGroup;
+			children = (
+				2B56F7D5225B3C1D00E58737 /* SendAlgosViewController.swift */,
+			);
+			path = Send;
+			sourceTree = "<group>";
+		};
 		2B59F15F22563F78005203DD /* Container */ = {
 			isa = PBXGroup;
 			children = (
@@ -541,6 +602,7 @@
 		2B656E94224BB9D60064A49B /* Accounts */ = {
 			isa = PBXGroup;
 			children = (
+				2B56F7CE225B3AD700E58737 /* Transactions */,
 				2BDE9CCE224E172B007EFF30 /* Main */,
 				2B5DA9CA224CB47A00EE41B4 /* Options */,
 				2B656E95224BB9E40064A49B /* AccountList */,
@@ -1638,10 +1700,10 @@
 		2BF53177224AA86500A7455F /* Accounts */ = {
 			isa = PBXGroup;
 			children = (
+				2B56F7D2225B3B0500E58737 /* Transactions */,
+				2B56F7D1225B3AFB00E58737 /* Main */,
 				2B656E91224BAF230064A49B /* Options */,
 				2B656E8E224BAF0B0064A49B /* AccountList */,
-				2BF53181224AA8E000A7455F /* AccountsViewController.swift */,
-				2B5DA9D2224CD21800EE41B4 /* AccountsViewController+Options.swift */,
 			);
 			path = Accounts;
 			sourceTree = "<group>";
@@ -1903,6 +1965,7 @@
 				2B5DA9D5224CE19700EE41B4 /* EditAccountViewController.swift in Sources */,
 				2B8954B72243FCB100D6D068 /* Notification+Keyboard.swift in Sources */,
 				2B8954B62243FBD600D6D068 /* NotificationCenter+Additions.swift in Sources */,
+				2B56F7D6225B3C1D00E58737 /* SendAlgosViewController.swift in Sources */,
 				1761B3CB224A39D400C6BA47 /* PassPhraseViewModel.swift in Sources */,
 				2BF71910224ECFAF001E8420 /* UserInformationView.swift in Sources */,
 				2B656E9F224BCB130064A49B /* AccountListViewModel.swift in Sources */,
@@ -1972,6 +2035,7 @@
 				17BEC4602248C81E00AAF370 /* PassPhraseVerifyView.swift in Sources */,
 				2BB021E9224E828E0039D78A /* UICollectionView+Additions.swift in Sources */,
 				1751261D223BEA320095AF4F /* Session.swift in Sources */,
+				2B56F7D8225B3C4200E58737 /* ReceiveAlgosViewController.swift in Sources */,
 				1761B3CD224A47AF00C6BA47 /* Session+Crypto.swift in Sources */,
 				2B8AD04A2244F82600939ECE /* SharedColors.swift in Sources */,
 				170AFAFA224C9FF800520EA5 /* QRCreationViewController.swift in Sources */,

@@ -117,6 +117,14 @@
 "accounts-algos-available-title" = "Algos Available";
 "accounts-transaction-history-title" = "Transaction History";
 
+// MARK: Algos Send
+
+"send-algos-title" = "Send Algos";
+
+// MARK: Algos Receive
+
+"receive-algos-title" = "Receive Algos";
+
 // MARK: Account List
 
 "account-list-add" = "ADD NEW ACCOUNT";
