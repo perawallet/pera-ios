@@ -126,7 +126,7 @@ extension User {
 // MARK: - Helpers
 extension User {
     fileprivate func accountFrom(address: String) -> Account? {
-        return accounts.filter{ return $0.address == address }.first
+        return accounts.first { $0.address == address }
     }
 }
 

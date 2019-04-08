@@ -133,10 +133,10 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
             actionTitle: nil) {
                 SVProgressHUD.show(withStatus: "Loading")
                 
-                self.accountManager?.fetchAllAccounts(completion: {
+                self.accountManager?.fetchAllAccounts {
                     SVProgressHUD.showSuccess(withStatus: "Done")
                     
-                    SVProgressHUD.dismiss(withDelay: 2.0, completion: {
+                    SVProgressHUD.dismiss(withDelay: 2.0) {
                         if self.session?.hasPassword() ?? false {
                             switch self.mode {
                             case .initialize:
@@ -147,8 +147,8 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
                         } else {
                             self.open(.choosePassword(mode: .setup), by: .push)
                         }
-                    })
-                })
+                    }
+                }
         }
         
         let viewController = AlertViewController(mode: .default, alertConfigurator: configurator, configuration: configuration)

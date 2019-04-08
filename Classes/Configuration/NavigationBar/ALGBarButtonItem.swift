@@ -93,9 +93,8 @@ extension ALGBarButtonItem {
 }
 
 extension ALGBarButtonItem: Hashable {
-    
-    var hashValue: Int {
-        return kind.hashValue
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(kind.hashValue)
     }
     
     static func == (lhs: ALGBarButtonItem, rhs: ALGBarButtonItem) -> Bool {

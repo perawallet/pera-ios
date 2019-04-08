@@ -137,14 +137,14 @@ extension ChoosePasswordViewController: ChoosePasswordViewDelegate {
     fileprivate func launchHome() {
         SVProgressHUD.show(withStatus: "Loading")
         
-        accountManager?.fetchAllAccounts(completion: {
+        accountManager?.fetchAllAccounts {
             
             SVProgressHUD.showSuccess(withStatus: "Done")
             
-            SVProgressHUD.dismiss(withDelay: 2.0, completion: {
+            SVProgressHUD.dismiss(withDelay: 2.0) {
                 self.open(.home, by: .launch)
-            })
-        })
+            }
+        }
     }
 }
 

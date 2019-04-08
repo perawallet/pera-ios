@@ -231,7 +231,7 @@ extension AccountsViewController: AccountsViewDelegate {
         
         let toAccount = Account(address: "CRTN7UBJ6LI66HOTKF7CQH5TA24UYK44RPBRBUNMGONVBWZ7OQ2E5WK2NU")
         
-        api?.getTransactionParams(completion: { paramsResponse in
+        api?.getTransactionParams { paramsResponse in
             switch paramsResponse {
             case .success(let transactionParams):
                 let transactionDraft = TransactionDraft(
@@ -251,6 +251,6 @@ extension AccountsViewController: AccountsViewDelegate {
             case .failure(let error):
                 print(error)
             }
-        })
+        }
     }
 }
