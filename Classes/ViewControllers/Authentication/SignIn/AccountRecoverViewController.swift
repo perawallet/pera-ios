@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SVProgressHUD
 
 class AccountRecoverViewController: BaseScrollViewController {
     
@@ -18,6 +19,17 @@ class AccountRecoverViewController: BaseScrollViewController {
     }()
     
     private var keyboardController = KeyboardController()
+    
+    private lazy var accountManager: AccountManager? = {
+        guard let api = self.api,
+            let user = session?.authenticatedUser  else {
+                return nil
+        }
+        
+        let manager = AccountManager(api: api)
+        manager.user = user
+        return manager
+    }()
     
     var mode: AccountSetupMode = .initialize
 
@@ -119,15 +131,23 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
             image: img("account-verify-alert-icon"),
             explanation: "recover-from-seed-verify-pop-up-explanation".localized,
             actionTitle: nil) {
-                if self.session?.hasPassword() ?? false {
-                    switch self.mode {
-                    case .initialize:
-                        self.open(.home, by: .launch)
-                    case .new:
-                        self.dismissScreen()
+                SVProgressHUD.show(withStatus: "Loading")
+                
+                self.accountManager?.fetchAllAccounts {
+                    SVProgressHUD.showSuccess(withStatus: "Done")
+                    
+                    SVProgressHUD.dismiss(withDelay: 2.0) {
+                        if self.session?.hasPassword() ?? false {
+                            switch self.mode {
+                            case .initialize:
+                                self.open(.home, by: .launch)
+                            case .new:
+                                self.dismissScreen()
+                            }
+                        } else {
+                            self.open(.choosePassword(mode: .setup), by: .push)
+                        }
                     }
-                } else {
-                    self.open(.choosePassword(mode: .setup), by: .push)
                 }
         }
         
@@ -143,9 +163,22 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
 
 extension AccountRecoverViewController: QRScannerViewControllerDelegate {
     
-    func qRScannerViewController(_ controller: QRScannerViewController, didRead qrCode: String) {
+    func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText) {
         
-        accountRecoverView.passPhraseInputView.value = qrCode
+        guard qrText.mode == .mnemonic else {
+            displayError(withMessage: "qr-scan-should-scan-mnemonics-message".localized)
+            return
+        }
+        
+        accountRecoverView.passPhraseInputView.value = qrText.text
+    }
+    
+    func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError) {
+        displayError(withMessage: "qr-scan-should-scan-valid-qr".localized)
+    }
+    
+    private func displayError(withMessage message: String) {
+        displaySimpleAlertWith(title: "title-error".localized, message: message)
     }
 }
 

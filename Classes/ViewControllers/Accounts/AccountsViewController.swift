@@ -92,6 +92,7 @@ class AccountsViewController: BaseViewController {
         transactionHistoryDataSource.delegate = self
         accountsView.transactionHistoryCollectionView.delegate = transactionHistoryLayoutBuilder
         accountsView.transactionHistoryCollectionView.dataSource = transactionHistoryDataSource
+        accountsView.delegate = self
     }
     
     override func configureAppearance() {
@@ -214,5 +215,42 @@ extension AccountsViewController: TransactionHistoryDataSourceDelegate {
         }
 
         accountsView.transactionHistoryCollectionView.contentState = .empty(emptyStateView)
+    }
+}
+
+// MARK: - AccountsViewDelegate
+extension AccountsViewController: AccountsViewDelegate {
+    func accountsViewDidTapSendButton(_ accountsView: AccountsView) {
+        
+    }
+    
+    func accountsViewDidTapReceiveButton(_ accountsView: AccountsView) {
+//        guard let fromAccount = selectedAccount else {
+//            return
+//        }
+//
+//        let toAccount = Account(address: "CRTN7UBJ6LI66HOTKF7CQH5TA24UYK44RPBRBUNMGONVBWZ7OQ2E5WK2NU")
+//
+//        api?.getTransactionParams { paramsResponse in
+//            switch paramsResponse {
+//            case .success(let transactionParams):
+//                let transactionDraft = TransactionDraft(
+//                    from: fromAccount,
+//                    to: toAccount,
+//                    amount: Int64(5000),
+//                    transactionParams: transactionParams)
+//
+//                self.api?.sendTransaction(with: transactionDraft, then: { transactionResponse in
+//                    switch transactionResponse {
+//                    case .success(let transaction):
+//                        print(transaction.identifier)
+//                    case .failure(let error):
+//                        print(error)
+//                    }
+//                })
+//            case .failure(let error):
+//                print(error)
+//            }
+//        }
     }
 }

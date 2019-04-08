@@ -13,7 +13,7 @@ class IntroductionViewController: BaseScrollViewController {
     // MARK: Components
 
     private lazy var introductionView: IntroductionView = {
-        let view = IntroductionView()
+        let view = IntroductionView(mode: self.mode)
         return view
     }()
     
@@ -43,6 +43,9 @@ class IntroductionViewController: BaseScrollViewController {
 // MARK: IntroductionViewDelegate
 
 extension IntroductionViewController: IntroductionViewDelegate {
+    func introductionViewDidTapCloseButton(_ introductionView: IntroductionView) {
+        dismissScreen()
+    }
     
     func introductionViewDidTapCreateAccountButton(_ introductionView: IntroductionView) {
         switch mode {

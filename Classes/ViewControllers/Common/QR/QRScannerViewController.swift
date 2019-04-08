@@ -9,9 +9,15 @@
 import UIKit
 import AVFoundation
 
+enum QRScannerError: Error {
+    case jsonSerialization
+    case invalidData
+}
+
 protocol QRScannerViewControllerDelegate: class {
     
-    func qRScannerViewController(_ controller: QRScannerViewController, didRead qrCode: String)
+    func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText)
+    func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError)
 }
 
 class QRScannerViewController: BaseViewController {
@@ -244,13 +250,20 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
         
         if let metadataObject = metadataObjects.first {
             guard let readableObject = metadataObject as? AVMetadataMachineReadableCodeObject,
-                let qrStringValue = readableObject.stringValue else {
+                let qrStringData = readableObject.stringValue?.data(using: .utf8) else {
+                    delegate?.qrScannerViewController(self, didFail: .invalidData)
                     return
             }
             
             AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
             
-            delegate?.qRScannerViewController(self, didRead: qrStringValue)
+            guard let qrText = try? JSONDecoder().decode(QRText.self, from: qrStringData) else {
+                delegate?.qrScannerViewController(self, didFail: .jsonSerialization)
+                return
+            }
+            
+            
+            delegate?.qrScannerViewController(self, didRead: qrText)
             closeScreen(by: .pop)
         }
     }

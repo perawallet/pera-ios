@@ -1,5 +1,5 @@
 PODS:
-  - Alamofire (4.8.1)
+  - Alamofire (4.8.2)
   - Crashlytics (3.12.0):
     - Fabric (~> 1.9.0)
   - Fabric (1.9.0)
@@ -57,6 +57,7 @@ PODS:
   - nanopb/decode (0.3.901)
   - nanopb/encode (0.3.901)
   - SnapKit (4.2.0)
+  - SVProgressHUD (2.2.5)
   - SwiftDate (5.1.0)
   - SwiftLint (0.30.1)
 
@@ -65,8 +66,9 @@ DEPENDENCIES:
   - Fabric
   - Firebase/Core
   - KeychainAccess
-  - Magpie (from `https://github.com/Hipo/magpie.git`)
+  - Magpie (from `https://github.com/Hipo/magpie.git`, branch `basic-upload-function`)
   - SnapKit
+  - SVProgressHUD
   - SwiftDate
   - SwiftLint
 
@@ -84,20 +86,22 @@ SPEC REPOS:
     - KeychainAccess
     - nanopb
     - SnapKit
+    - SVProgressHUD
     - SwiftDate
     - SwiftLint
 
 EXTERNAL SOURCES:
   Magpie:
+    :branch: basic-upload-function
     :git: https://github.com/Hipo/magpie.git
 
 CHECKOUT OPTIONS:
   Magpie:
-    :commit: ec4baf78ee71ff960996f19a214ef2cd0381a298
+    :commit: fdc4b58e328eeab2b81d8b2ac071ce4f094acd52
     :git: https://github.com/Hipo/magpie.git
 
 SPEC CHECKSUMS:
-  Alamofire: 16ce2c353fb72865124ddae8a57c5942388f4f11
+  Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
   Crashlytics: 07fb167b1694128c1c9a5a5cc319b0e9c3ca0933
   Fabric: f988e33c97f08930a413e08123064d2e5f68d655
   Firebase: 2f5235e62f141cb86181c3af0dfe4509706351ac
@@ -110,9 +114,10 @@ SPEC CHECKSUMS:
   Magpie: f1235cc99bab71365b8479089458c7b85e299950
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
+  SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   SwiftDate: 6329e58969a2de31cea7f1ee1143b247693196e7
   SwiftLint: a54bf1fe12b55c68560eb2a7689dfc81458508f7
 
-PODFILE CHECKSUM: 0f27f392a404f475b629797c8c8f9ff869bbb4f9
+PODFILE CHECKSUM: 99a31c690b41d386ef3c48b8cbdab4dfda9543aa
 
 COCOAPODS: 1.5.3
