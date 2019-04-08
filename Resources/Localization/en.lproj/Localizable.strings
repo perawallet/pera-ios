@@ -98,6 +98,9 @@
 "qr-scan-error-message" = "Your device does not support scanning a qr code.";
 "qr-scan-go-settings-title" = "Camera Disabled";
 "qr-scan-go-settings-message" = "You have disabled camera. Please go to Settings and enable this option.";
+"qr-scan-should-scan-address-message" = "You should scan valid account address";
+"qr-scan-should-scan-mnemonics-message" = "You should scan valid pass phrases";
+"qr-scan-should-scan-valid-qr" = "QR is not valid.";
 
 // MARK: QR Creation
 "qr-creation-title" = "Passphrase QR";
