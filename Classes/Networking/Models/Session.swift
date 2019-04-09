@@ -20,13 +20,25 @@ class Session: Storable {
     }
     
     var authenticatedUser: User? {
-        didSet {
-            guard let user = authenticatedUser,
-                let data = user.encoded() else {
+        get {
+            return applicationConfiguration?.authenticatedUser()
+        }
+        
+        set {
+            guard let userData = newValue?.encoded() else {
                 return
             }
             
-            save(data, for: StorableKeys.authenticatedUser.rawValue, to: .defaults)
+            if let config = applicationConfiguration {
+                config.update(entity: ApplicationConfiguration.entityName,
+                              with: [ApplicationConfiguration.DBKeys.userData.rawValue: userData])
+            } else {
+                ApplicationConfiguration.create(entity: ApplicationConfiguration.entityName,
+                                                with: [ApplicationConfiguration.DBKeys.userData.rawValue: userData])
+            }
+            
+            Cache.configuration = nil
+            Cache.configuration = applicationConfiguration
             
             NotificationCenter.default.post(
                 name: Notification.Name.AuthenticatedUserUpdate,
@@ -36,37 +48,86 @@ class Session: Storable {
         }
     }
     
-    // isExpired is true when login needed. It will fault after 5 mins entering background
-    var isExpired = true
-    
-    init() {
-        awakeAuthenticatedUser()
+    struct Cache {
+        static var configuration: ApplicationConfiguration?
     }
     
-    private func awakeAuthenticatedUser() {
-        guard let userData = data(with: StorableKeys.authenticatedUser.rawValue, to: .defaults) else {
-            return
+    var applicationConfiguration: ApplicationConfiguration? {
+        get {
+            if Cache.configuration == nil {
+                let entityName = ApplicationConfiguration.entityName
+                guard ApplicationConfiguration.hasResult(entity: entityName) else {
+                    return nil
+                }
+                
+                let result = ApplicationConfiguration.fetchAllSyncronous(entity: entityName)
+                
+                switch result {
+                case .result(let object):
+                    guard let configuration = object as? ApplicationConfiguration else {
+                        return nil
+                    }
+                    
+                    Cache.configuration = configuration
+                    
+                    return Cache.configuration
+                    
+                case .results(let objects):
+                    guard let configuration = objects.first(where: { appConfig -> Bool in
+                        if appConfig is ApplicationConfiguration {
+                            return true
+                        }
+                        return false
+                    }) as? ApplicationConfiguration else {
+                        return nil
+                    }
+                    
+                    Cache.configuration = configuration
+                    
+                    return Cache.configuration
+                case .error:
+                    return nil
+                }
+            }
+            
+            return Cache.configuration
         }
         
-        authenticatedUser = try? JSONDecoder().decode(User.self, from: userData)
+        set {
+            Cache.configuration = newValue
+        }
     }
+    
+    // isExpired is true when login needed. It will fault after 5 mins entering background
+    var isExpired = true
 }
 
 // MARK: - App Password
 extension Session {
     func saveApp(password: String) {
-        self.save(password, for: StoreKeys.appPassword.rawValue, to: .defaults)
+        if let config = applicationConfiguration {
+            config.update(entity: ApplicationConfiguration.entityName,
+                          with: [ApplicationConfiguration.DBKeys.password.rawValue: password])
+        } else {
+            ApplicationConfiguration.create(entity: ApplicationConfiguration.entityName,
+                                            with: [ApplicationConfiguration.DBKeys.password.rawValue: password])
+        }
     }
     
     func isPasswordMatching(with password: String) -> Bool {
-        if let savedPassword = self.string(with: StoreKeys.appPassword.rawValue, to: .defaults) {
-            return savedPassword == password
+        guard let config = applicationConfiguration else {
+            return false
         }
-        return false
+
+        return config.password == password
     }
     
     func hasPassword() -> Bool {
-        return self.string(with: StoreKeys.appPassword.rawValue, to: .defaults) != nil
+        guard let config = applicationConfiguration else {
+            return false
+        }
+        
+        return config.password != nil
     }
 }
 
@@ -92,11 +153,11 @@ extension Session {
 // MARK: - Common Methods
 extension Session {
     func reset() {
-        self.remove(with: StoreKeys.appPassword.rawValue, from: .defaults)
+        ApplicationConfiguration.clear(entity: ApplicationConfiguration.entityName)
+        Contact.clear(entity: Contact.entityName)
         try? privateStorage.removeAll()
         self.clear(.defaults)
         self.clear(.keychain)
-        self.authenticatedUser = nil
         self.isExpired = true
     }
 }

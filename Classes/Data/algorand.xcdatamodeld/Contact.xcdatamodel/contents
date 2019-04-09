@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14490.98" systemVersion="18E226" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14490.98" systemVersion="18D109" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="ApplicationConfiguration" representedClassName="ApplicationConfiguration" syncable="YES">
+        <attribute name="authenticatedUserData" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="password" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <entity name="Contact" representedClassName="Contact" syncable="YES">
         <attribute name="address" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
@@ -7,6 +11,7 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Contact" positionX="-63" positionY="-18" width="128" height="105"/>
+        <element name="ApplicationConfiguration" positionX="-54" positionY="45" width="128" height="73"/>
+        <element name="Contact" positionX="-63" positionY="-18" width="128" height="43"/>
     </elements>
 </model>
