@@ -12,6 +12,7 @@
 		170AFAFE224CCBF300520EA5 /* QRView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170AFAFD224CCBF300520EA5 /* QRView.swift */; };
 		170AFB02224D1CE100520EA5 /* CIImage+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170AFB01224D1CE100520EA5 /* CIImage+Additions.swift */; };
 		170D565E2243E7B400813989 /* Crypto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 170D565D2243E7B400813989 /* Crypto.framework */; };
+		17100B2C225CEC3600D13548 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17100B2B225CEC3600D13548 /* SettingsView.swift */; };
 		173DA1E72255EBE000378A82 /* String+Address.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173DA1E62255EBE000378A82 /* String+Address.swift */; };
 		173DA1E92255F7B500378A82 /* API+Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173DA1E82255F7B500378A82 /* API+Transaction.swift */; };
 		173DA1EB2255F7EF00378A82 /* TransactionDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173DA1EA2255F7EF00378A82 /* TransactionDraft.swift */; };
@@ -213,6 +214,7 @@
 		170AFAFD224CCBF300520EA5 /* QRView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRView.swift; sourceTree = "<group>"; };
 		170AFB01224D1CE100520EA5 /* CIImage+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CIImage+Additions.swift"; sourceTree = "<group>"; };
 		170D565D2243E7B400813989 /* Crypto.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crypto.framework; sourceTree = "<group>"; };
+		17100B2B225CEC3600D13548 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		173DA1E62255EBE000378A82 /* String+Address.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Address.swift"; sourceTree = "<group>"; };
 		173DA1E82255F7B500378A82 /* API+Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+Transaction.swift"; sourceTree = "<group>"; };
 		173DA1EA2255F7EF00378A82 /* TransactionDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDraft.swift; sourceTree = "<group>"; };
@@ -430,6 +432,14 @@
 				170AFB01224D1CE100520EA5 /* CIImage+Additions.swift */,
 			);
 			path = CoreImage;
+			sourceTree = "<group>";
+		};
+		17100B2A225CEC2900D13548 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				17100B2B225CEC3600D13548 /* SettingsView.swift */,
+			);
+			path = Settings;
 			sourceTree = "<group>";
 		};
 		1746715B225B6BE600B78641 /* TypeAliases */ = {
@@ -967,6 +977,7 @@
 		2B8BE4F0223935A3005D8565 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				17100B2A225CEC2900D13548 /* Settings */,
 				2BF7190A224ECF12001E8420 /* Contacts */,
 				2B656E94224BB9D60064A49B /* Accounts */,
 				2BD739E2223F9FDD00B66EEF /* Common */,
@@ -2103,6 +2114,7 @@
 				2BD73A022241299100B66EEF /* NumpadNumericCell.swift in Sources */,
 				2BF53182224AA8E000A7455F /* AccountsViewController.swift in Sources */,
 				2BF53168224A48DF00A7455F /* CGFloat+Additions.swift in Sources */,
+				17100B2C225CEC3600D13548 /* SettingsView.swift in Sources */,
 				2BDE9CD0224E1A60007EFF30 /* EmptyStateView.swift in Sources */,
 				2B66870E2248DB8B009F21E7 /* BarButtonItem.swift in Sources */,
 				2BB021D9224E2A7E0039D78A /* AlgosAmountView.swift in Sources */,

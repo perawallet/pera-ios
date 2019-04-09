@@ -9,10 +9,19 @@
 import UIKit
 
 class SettingsViewController: BaseViewController {
+    
+    private lazy var settingsView: SettingsView = {
+        SettingsView()
+    }()
         
     override func configureAppearance() {
         super.configureAppearance()
         
         title = "settings-title".localized
+        
+        view.addSubview(settingsView)
+        settingsView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
     }
 }
