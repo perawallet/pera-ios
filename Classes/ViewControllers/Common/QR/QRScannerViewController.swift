@@ -262,7 +262,6 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
                 return
             }
             
-            
             delegate?.qrScannerViewController(self, didRead: qrText)
             closeScreen(by: .pop)
         }

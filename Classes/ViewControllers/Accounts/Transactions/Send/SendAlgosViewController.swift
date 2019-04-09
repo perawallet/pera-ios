@@ -141,7 +141,11 @@ extension SendAlgosViewController: ContactsViewControllerDelegate {
 
 extension SendAlgosViewController: QRScannerViewControllerDelegate {
     
-    func qRScannerViewController(_ controller: QRScannerViewController, didRead qrCode: String) {
+    func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText) {
+        
+    }
+    
+    func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError) {
         
     }
 }
