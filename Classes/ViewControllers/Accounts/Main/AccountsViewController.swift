@@ -93,6 +93,7 @@ class AccountsViewController: BaseViewController {
         transactionHistoryDataSource.delegate = self
         accountsView.transactionHistoryCollectionView.delegate = transactionHistoryLayoutBuilder
         accountsView.transactionHistoryCollectionView.dataSource = transactionHistoryDataSource
+        accountsView.delegate = self
     }
     
     override func configureAppearance() {

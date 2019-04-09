@@ -11,8 +11,8 @@ import Magpie
 extension API {
     @discardableResult
     func fetchAccount(
-        with draft: AccountDraft,
-        then completion: CompletionHandler<Account>? = nil
+        with draft: AccountFetchDraft,
+        then completion: APICompletionHandler<Account>? = nil
     ) -> EndpointInteractable? {
         
         let address = draft.publicKey

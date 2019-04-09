@@ -28,6 +28,7 @@ protocol DBStorable: AnyObject {
     
     static func create(entity: String, with keyedValues: [String: Any], then handler: DBOperationHandler?)
     static func fetchAll(entity: String, with predicate: NSPredicate?, then handler: DBOperationHandler?)
+    static func clear(entity: String)
     
     func update(entity: String, with keyedValues: [String: Any], then handler: DBOperationHandler?)
 }
@@ -82,6 +83,47 @@ extension DBStorable where Self: NSManagedObject {
         }
     }
     
+    static func fetchAllSyncronous(entity: String, with predicate: NSPredicate? = nil) -> DBOperationResult<Self> {
+        guard let appDelegate = UIApplication.shared.appDelegate else {
+            return .error(error: .noContext)
+        }
+        
+        let context = appDelegate.persistentContainer.viewContext
+        
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
+        fetchRequest.returnsObjectsAsFaults = false
+        
+        if let predicate = predicate {
+            fetchRequest.predicate = predicate
+        }
+        
+        do {
+            let response = try context.fetch(fetchRequest)
+            
+            return .results(objects: response)
+        } catch {
+            return .error(error: .readFailed)
+        }
+    }
+    
+    static func clear(entity: String) {
+        guard let appDelegate = UIApplication.shared.appDelegate else {
+            return
+        }
+        
+        let context = appDelegate.persistentContainer.viewContext
+        
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
+        
+        let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+        
+        do {
+            try context.execute(batchDeleteRequest)
+        } catch {
+        }
+
+    }
+    
     func update(entity: String, with keyedValues: [String: Any], then handler: DBOperationHandler? = nil) {
         guard let appDelegate = UIApplication.shared.appDelegate else {
             return
@@ -103,6 +145,25 @@ extension DBStorable where Self: NSManagedObject {
             }
         } catch {
             handler?(.error(error: .readFailed))
+        }
+    }
+    
+    static func hasResult(entity: String) -> Bool {
+        guard let appDelegate = UIApplication.shared.appDelegate else {
+            return false
+        }
+        
+        let context = appDelegate.persistentContainer.viewContext
+        
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
+        fetchRequest.returnsObjectsAsFaults = false
+        
+        do {
+            let response = try context.fetch(fetchRequest)
+            
+            return !response.isEmpty
+        } catch {
+            return false
         }
     }
 }

@@ -34,13 +34,11 @@ extension ModalConfiguration {
 
 extension ModalConfiguration.AnimationMode {
     
-    typealias BeforeAnimationHandler = () -> Void
-    typealias AnimationHandler = () -> Void
     typealias AfterAnimationHandler = (Bool) -> Void
     
     func animate(
-        _ animations: @escaping AnimationHandler,
-        before beforeAnimationsHandler: BeforeAnimationHandler? = nil,
+        _ animations: @escaping EmptyHandler,
+        before beforeAnimationsHandler: EmptyHandler? = nil,
         after afterAnimationsHandler: AfterAnimationHandler? = nil
     ) {
         beforeAnimationsHandler?()

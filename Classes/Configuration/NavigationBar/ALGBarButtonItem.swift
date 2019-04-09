@@ -10,7 +10,7 @@ import UIKit
 
 struct ALGBarButtonItem: BarButtonItem {
     
-    var handler: InteractionHandler?
+    var handler: EmptyHandler?
     
     var title: TitleContent? {
         return nil
@@ -70,7 +70,7 @@ struct ALGBarButtonItem: BarButtonItem {
     
     let kind: Kind
     
-    init(kind: Kind, handler: InteractionHandler? = nil) {
+    init(kind: Kind, handler: EmptyHandler? = nil) {
         
         self.kind = kind
         self.handler = handler
@@ -93,9 +93,8 @@ extension ALGBarButtonItem {
 }
 
 extension ALGBarButtonItem: Hashable {
-    
-    var hashValue: Int {
-        return kind.hashValue
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(kind.hashValue)
     }
     
     static func == (lhs: ALGBarButtonItem, rhs: ALGBarButtonItem) -> Bool {

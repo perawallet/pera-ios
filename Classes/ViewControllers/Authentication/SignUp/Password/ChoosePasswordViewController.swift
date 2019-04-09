@@ -8,6 +8,7 @@
 
 import UIKit
 import AVFoundation
+import SVProgressHUD
 
 class ChoosePasswordViewController: BaseViewController {
     
@@ -20,6 +21,18 @@ class ChoosePasswordViewController: BaseViewController {
     private let mode: Mode
     
     private let localAuthenticator = LocalAuthenticator()
+    
+    private lazy var accountManager: AccountManager? = {
+        guard let api = self.api,
+            let user = session?.authenticatedUser,
+            mode == .login else {
+            return nil
+        }
+        
+        let manager = AccountManager(api: api)
+        manager.user = user
+        return manager
+    }()
     
     // MARK: Initialization
     
@@ -42,7 +55,7 @@ class ChoosePasswordViewController: BaseViewController {
                         return
                     }
                     
-                    self.open(.home, by: .launch)
+                    self.launchHome()
                 }
             }
             
@@ -106,7 +119,7 @@ extension ChoosePasswordViewController: ChoosePasswordViewDelegate {
         case .login:
             viewModel.configureSelection(in: choosePasswordView, for: value) { password in
                 if session?.isPasswordMatching(with: password) ?? false {
-                    open(.home, by: .launch)
+                    self.launchHome()
                 } else {
                     AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
                     self.viewModel.displayWrongPasswordState(choosePasswordView)
@@ -119,6 +132,19 @@ extension ChoosePasswordViewController: ChoosePasswordViewDelegate {
         session?.reset()
         
         open(.introduction(mode: .initialize), by: .launch, animated: false)
+    }
+    
+    fileprivate func launchHome() {
+        SVProgressHUD.show(withStatus: "Loading")
+        
+        accountManager?.fetchAllAccounts {
+            
+            SVProgressHUD.showSuccess(withStatus: "Done")
+            
+            SVProgressHUD.dismiss(withDelay: 2.0) {
+                self.open(.home, by: .launch)
+            }
+        }
     }
 }
 

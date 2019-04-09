@@ -33,7 +33,7 @@ class Environment {
     lazy var serverHost: String = {
         switch target {
         case .staging, .prod:
-            return "localhost:8080"
+            return "r2.algorand.network:4181"
         }
     }()
     

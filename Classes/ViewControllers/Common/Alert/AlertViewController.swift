@@ -8,8 +8,6 @@
 
 import UIKit
 
-typealias EmptyHandler = () -> Void
-
 class AlertViewController: BaseViewController {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {

@@ -13,8 +13,6 @@ class User: Mappable {
     private(set) var accounts: [Account] = []
     fileprivate var defaultAccountAddress: String?
     
-    private(set) var contacts: [Contact] = []
-    
     init(accounts: [Account]) {
         self.accounts = accounts
     }
@@ -92,34 +90,6 @@ extension User {
     
     func isDefaultAccount(_ account: Account) -> Bool {
         return account.address == defaultAccountAddress
-    }
-    
-    func addContact(_ contact: Contact) {
-        contacts.append(contact)
-    }
-    
-    func removeContact(_ contact: Contact) {
-        guard let index = index(of: contact) else {
-            return
-        }
-        
-        contacts.remove(at: index)
-    }
-    
-    func index(of contact: Contact) -> Int? {
-        guard let index = contacts.firstIndex(of: contact) else {
-            return nil
-        }
-        
-        return index
-    }
-    
-    func contact(at index: Int) -> Contact? {
-        guard index < contacts.count else {
-            return nil
-        }
-        
-        return contacts[index]
     }
 }
 
