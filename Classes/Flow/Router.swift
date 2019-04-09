@@ -175,6 +175,8 @@ class Router {
             viewController = OptionsViewController(configuration: configuration)
         case .editAccount(let account):
             viewController = EditAccountViewController(account: account, configuration: configuration)
+        case .contacts:
+            viewController = ContactsViewController(configuration: configuration)
         case let .addContact(mode):
             viewController = AddContactViewController(mode: mode, configuration: configuration)
         case let .contactDetail(contact):
@@ -183,6 +185,10 @@ class Router {
             viewController = ContactQRDisplayViewController(contact: contact, configuration: configuration)
         case .sendAlgos:
             viewController = SendAlgosViewController(configuration: configuration)
+        case .sendAlgosPreview:
+            viewController = SendAlgosPreviewViewController(configuration: configuration)
+        case .sendAlgosSuccess:
+            viewController = SendAlgosSuccessViewController(configuration: configuration)
         case .receiveAlgos:
             viewController = ReceiveAlgosViewController(configuration: configuration)
         }

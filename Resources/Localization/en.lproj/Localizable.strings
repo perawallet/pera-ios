@@ -23,6 +23,8 @@
 "title-close" = "CLOSE";
 "title-send" = "SEND";
 "title-receive" = "RECEIVE";
+"title-preview" = "PREVIEW";
+"title-done" = "DONE";
 
 // MARK: Tabbar
 
@@ -120,6 +122,13 @@
 // MARK: Algos Send
 
 "send-algos-title" = "Send Algos";
+"send-algos-from" = "From";
+"send-algos-select" = "Select Account";
+"send-algos-to" = "To";
+"send-algos-fee" = "Fee";
+"send-algos-amount" = "Amount";
+"send-algos-transaction-id" = "Transaction ID:";
+"send-algos-more" = "SEND MORE";
 
 // MARK: Algos Receive
 

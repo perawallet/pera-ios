@@ -10,6 +10,16 @@ import UIKit
 
 class ReceiveAlgosViewController: BaseViewController {
 
+    // MARK: Initialization
+    
+    override init(configuration: ViewControllerConfiguration) {
+        super.init(configuration: configuration)
+        
+        hidesBottomBarWhenPushed = true
+    }
+    
+    // MARK: Setup
+    
     override func configureAppearance() {
         super.configureAppearance()
         

@@ -48,6 +48,8 @@
 		2B09603822578C990005BE27 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2B09603722578C990005BE27 /* GoogleService-Info.plist */; };
 		2B56F7D6225B3C1D00E58737 /* SendAlgosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B56F7D5225B3C1D00E58737 /* SendAlgosViewController.swift */; };
 		2B56F7D8225B3C4200E58737 /* ReceiveAlgosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B56F7D7225B3C4200E58737 /* ReceiveAlgosViewController.swift */; };
+		2B56F7DA225B45B300E58737 /* SendAlgosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B56F7D9225B45B300E58737 /* SendAlgosView.swift */; };
+		2B56F7DC225B51C100E58737 /* AlgosInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B56F7DB225B51C100E58737 /* AlgosInputView.swift */; };
 		2B59F1392254BABF005203DD /* algorand.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2B59F1372254BABF005203DD /* algorand.xcdatamodeld */; };
 		2B59F15C22550778005203DD /* Codable+CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B59F15B22550778005203DD /* Codable+CoreData.swift */; };
 		2B59F15E22552845005203DD /* DBStorable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B59F15D22552845005203DD /* DBStorable.swift */; };
@@ -78,6 +80,11 @@
 		2B6687152248DF83009F21E7 /* LocalAuthenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6687142248DF83009F21E7 /* LocalAuthenticator.swift */; };
 		2B6687172249058D009F21E7 /* OpenSans-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2B6687162249058D009F21E7 /* OpenSans-SemiBoldItalic.ttf */; };
 		2B66871A22491A5E009F21E7 /* QRScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B66871922491A5E009F21E7 /* QRScannerViewController.swift */; };
+		2B7572A6225CA1E3009E0253 /* SendAlgosPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7572A5225CA1E3009E0253 /* SendAlgosPreviewView.swift */; };
+		2B7572A8225CA211009E0253 /* SendAlgosPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7572A7225CA211009E0253 /* SendAlgosPreviewViewController.swift */; };
+		2B7572AA225CC391009E0253 /* SendAlgosSuccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7572A9225CC391009E0253 /* SendAlgosSuccessViewController.swift */; };
+		2B7572AC225CC3A8009E0253 /* SendAlgosSuccessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7572AB225CC3A8009E0253 /* SendAlgosSuccessView.swift */; };
+		2B7572AE225CCB62009E0253 /* TransactionReceiverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7572AD225CCB62009E0253 /* TransactionReceiverView.swift */; };
 		2B82B1C522535F4300A8909F /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B82B1C422535F4300A8909F /* Contact.swift */; };
 		2B82B1C82253A4F000A8909F /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B82B1C72253A4F000A8909F /* ContactCell.swift */; };
 		2B82B1CA2253A50100A8909F /* ContactContextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B82B1C92253A50100A8909F /* ContactContextView.swift */; };
@@ -244,6 +251,8 @@
 		2B09603722578C990005BE27 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2B56F7D5225B3C1D00E58737 /* SendAlgosViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendAlgosViewController.swift; sourceTree = "<group>"; };
 		2B56F7D7225B3C4200E58737 /* ReceiveAlgosViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveAlgosViewController.swift; sourceTree = "<group>"; };
+		2B56F7D9225B45B300E58737 /* SendAlgosView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendAlgosView.swift; sourceTree = "<group>"; };
+		2B56F7DB225B51C100E58737 /* AlgosInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgosInputView.swift; sourceTree = "<group>"; };
 		2B59F1382254BABF005203DD /* Contact.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Contact.xcdatamodel; sourceTree = "<group>"; };
 		2B59F15B22550778005203DD /* Codable+CoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Codable+CoreData.swift"; sourceTree = "<group>"; };
 		2B59F15D22552845005203DD /* DBStorable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBStorable.swift; sourceTree = "<group>"; };
@@ -274,6 +283,11 @@
 		2B6687142248DF83009F21E7 /* LocalAuthenticator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAuthenticator.swift; sourceTree = "<group>"; };
 		2B6687162249058D009F21E7 /* OpenSans-SemiBoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
 		2B66871922491A5E009F21E7 /* QRScannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRScannerViewController.swift; sourceTree = "<group>"; };
+		2B7572A5225CA1E3009E0253 /* SendAlgosPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendAlgosPreviewView.swift; sourceTree = "<group>"; };
+		2B7572A7225CA211009E0253 /* SendAlgosPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendAlgosPreviewViewController.swift; sourceTree = "<group>"; };
+		2B7572A9225CC391009E0253 /* SendAlgosSuccessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendAlgosSuccessViewController.swift; sourceTree = "<group>"; };
+		2B7572AB225CC3A8009E0253 /* SendAlgosSuccessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendAlgosSuccessView.swift; sourceTree = "<group>"; };
+		2B7572AD225CCB62009E0253 /* TransactionReceiverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionReceiverView.swift; sourceTree = "<group>"; };
 		2B82B1C422535F4300A8909F /* Contact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
 		2B82B1C72253A4F000A8909F /* ContactCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
 		2B82B1C92253A50100A8909F /* ContactContextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactContextView.swift; sourceTree = "<group>"; };
@@ -501,6 +515,10 @@
 		2B56F7CF225B3ADF00E58737 /* Send */ = {
 			isa = PBXGroup;
 			children = (
+				2B56F7D9225B45B300E58737 /* SendAlgosView.swift */,
+				2B7572A5225CA1E3009E0253 /* SendAlgosPreviewView.swift */,
+				2B7572AB225CC3A8009E0253 /* SendAlgosSuccessView.swift */,
+				2B7572AD225CCB62009E0253 /* TransactionReceiverView.swift */,
 			);
 			path = Send;
 			sourceTree = "<group>";
@@ -542,6 +560,8 @@
 			isa = PBXGroup;
 			children = (
 				2B56F7D5225B3C1D00E58737 /* SendAlgosViewController.swift */,
+				2B7572A7225CA211009E0253 /* SendAlgosPreviewViewController.swift */,
+				2B7572A9225CC391009E0253 /* SendAlgosSuccessViewController.swift */,
 			);
 			path = Send;
 			sourceTree = "<group>";
@@ -809,6 +829,7 @@
 			children = (
 				2B8954C1224404B700D6D068 /* SingleLineInputField.swift */,
 				2B8954C3224404C900D6D068 /* MultiLineInputField.swift */,
+				2B56F7DB225B51C100E58737 /* AlgosInputView.swift */,
 			);
 			path = Input;
 			sourceTree = "<group>";
@@ -1985,6 +2006,7 @@
 				2B8BE4D422391C38005D8565 /* RootViewController.swift in Sources */,
 				2BD73A002241297700B66EEF /* NumpadDeleteCell.swift in Sources */,
 				2BF53155224A468400A7455F /* ModalPresentable.swift in Sources */,
+				2B7572AA225CC391009E0253 /* SendAlgosSuccessViewController.swift in Sources */,
 				2BDE9CD4224E1E91007EFF30 /* LoadingIndicator.swift in Sources */,
 				2B656E99224BC52D0064A49B /* AccountContextView.swift in Sources */,
 				2BD739F8223FF4B600B66EEF /* NumpadDeleteButton.swift in Sources */,
@@ -2001,6 +2023,8 @@
 				2BF5315D224A46F800A7455F /* UIViewControllerContextTransitioning+Additions.swift in Sources */,
 				2BD73A192241324700B66EEF /* ChoosePasswordViewModel.swift in Sources */,
 				2B8954C02244047D00D6D068 /* BaseInputView.swift in Sources */,
+				2B56F7DC225B51C100E58737 /* AlgosInputView.swift in Sources */,
+				2B56F7DA225B45B300E58737 /* SendAlgosView.swift in Sources */,
 				2BD739E1223F9F3000B66EEF /* LocalAuthenticationPreferenceView.swift in Sources */,
 				2B6687102248DBE2009F21E7 /* ALGBarButtonItem.swift in Sources */,
 				2BDE9CDA224E2336007EFF30 /* TransactionHistoryCell.swift in Sources */,
@@ -2049,6 +2073,7 @@
 				2BF5315F224A472800A7455F /* ModalAnimator.swift in Sources */,
 				2B8954CB224430DC00D6D068 /* AccountRecoverView.swift in Sources */,
 				2BD739E5223FA07B00B66EEF /* MainButton.swift in Sources */,
+				2B7572AE225CCB62009E0253 /* TransactionReceiverView.swift in Sources */,
 				2BD739FA2240527B00B66EEF /* PasswordInputView.swift in Sources */,
 				2BD73A1422412D9100B66EEF /* NumpadCellViewModel.swift in Sources */,
 				2BDE9CD7224E2082007EFF30 /* ContentStateView.swift in Sources */,
@@ -2065,6 +2090,7 @@
 				2BF34CA62239AD6D0052CAD3 /* KeyboardController.swift in Sources */,
 				2BB021E0224E5FD20039D78A /* AccountsViewModel.swift in Sources */,
 				2B82B1CC2253DE2500A8909F /* ContactsViewModel.swift in Sources */,
+				2B7572AC225CC3A8009E0253 /* SendAlgosSuccessView.swift in Sources */,
 				2BF53180224AA8C500A7455F /* HistoryViewController.swift in Sources */,
 				2B5DA9DA224D2F5C00EE41B4 /* PassphraseDisplayViewController.swift in Sources */,
 				2BB021E3224E7AD20039D78A /* TransactionHistoryDataSource.swift in Sources */,
@@ -2090,6 +2116,7 @@
 				2BD73A0B22412B0900B66EEF /* NumpadViewLayoutBuilder.swift in Sources */,
 				2B8954AC22438FBC00D6D068 /* AlertViewController.swift in Sources */,
 				17BEC4662248D39900AAF370 /* PassPhraseCollectionViewCell.swift in Sources */,
+				2B7572A6225CA1E3009E0253 /* SendAlgosPreviewView.swift in Sources */,
 				2BD739CC223F97B100B66EEF /* IntroductionViewController.swift in Sources */,
 				2B656E93224BAF2E0064A49B /* OptionsViewController.swift in Sources */,
 				2B59F1392254BABF005203DD /* algorand.xcdatamodeld in Sources */,
@@ -2106,6 +2133,7 @@
 				170AFAFC224CC70A00520EA5 /* QRText.swift in Sources */,
 				2BF71912224ECFEC001E8420 /* ContactsView.swift in Sources */,
 				2B89549F2242D90000D6D068 /* UIViewController+Additions.swift in Sources */,
+				2B7572A8225CA211009E0253 /* SendAlgosPreviewViewController.swift in Sources */,
 				17E2E3C722524E4C0065957A /* QRSelectableLabel.swift in Sources */,
 				2BD73A022241299100B66EEF /* NumpadNumericCell.swift in Sources */,
 				2BF53182224AA8E000A7455F /* AccountsViewController.swift in Sources */,
