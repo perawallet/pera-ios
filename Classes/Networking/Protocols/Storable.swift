@@ -16,7 +16,6 @@ enum StoreKeys: String {
 enum StorableKeys: String {
     case storage = "com.algorand.algorand.storage"
     case localAuthenticationStatus = "com.algorand.algorand.local.authentication.status"
-    case authenticatedUser = "com.algorand.algorand.storage.user.authenticated"
 }
 
 enum Store {
