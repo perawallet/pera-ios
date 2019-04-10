@@ -175,6 +175,8 @@ class SendAlgosViewController: BaseScrollViewController {
         return false
     }
     
+    // MARK: Keyboard
+    
     @objc
     fileprivate func didReceive(keyboardWillShow notification: Notification) {
         if !UIApplication.shared.isActive {
