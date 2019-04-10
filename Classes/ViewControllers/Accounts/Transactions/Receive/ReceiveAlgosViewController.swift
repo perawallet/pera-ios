@@ -102,6 +102,45 @@ class ReceiveAlgosViewController: BaseViewController {
         accountListViewController?.delegate = self
     }
     
+    private func displayPreview() {
+        if let algosAmountText = receiveAlgosView.algosInputView.inputTextField.text,
+            let doubleValue = Double(algosAmountText) {
+            amount = doubleValue
+        }
+        
+        if !isTransactionValid() {
+            displaySimpleAlertWith(title: "send-algos-alert-title".localized, message: "send-algos-alert-message".localized)
+        }
+        
+        guard let selectedAccountName = selectedAccount?.name else {
+            return
+        }
+        
+        view.endEditing(true)
+        
+        // TODO: Set transaction object properly.
+        
+        let transaction = Transaction(
+            identifier: "123123",
+            accountName: selectedAccountName,
+            date: Date(),
+            amount: amount,
+            title: "Title"
+        )
+        
+        open(.receiveAlgosPreview(transaction: transaction), by: .push)
+    }
+    
+    private func isTransactionValid() -> Bool {
+        if selectedAccount != nil,
+            amount > 0.0 {
+            
+            return true
+        }
+        
+        return false
+    }
+    
     // MARK: Keyboard
     
     @objc
@@ -117,12 +156,6 @@ class ReceiveAlgosViewController: BaseViewController {
         let duration = notification.keyboardAnimationDuration
         let curve = notification.keyboardAnimationCurve
         let curveAnimationOption = UIView.AnimationOptions(rawValue: UInt(curve.rawValue >> 16))
-        
-        if receiveAlgosView.accountSelectionView.frame.maxY + 71 > UIScreen.main.bounds.height - kbHeight {
-            contentViewBottomConstraint?.update(inset: kbHeight - 50.0)
-        } else {
-            contentViewBottomConstraint?.update(inset: kbHeight)
-        }
         
         contentViewBottomConstraint?.update(inset: kbHeight)
         
@@ -170,7 +203,7 @@ extension ReceiveAlgosViewController: ReceiveAlgosViewDelegate {
     }
     
     func receiveAlgosViewDidTapPreviewButton(_ receiveAlgosView: ReceiveAlgosView) {
-        open(.receiveAlgosPreview, by: .push)
+        displayPreview()
     }
 }
 
