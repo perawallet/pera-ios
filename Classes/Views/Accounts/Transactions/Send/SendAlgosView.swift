@@ -100,6 +100,7 @@ class SendAlgosView: BaseView {
         
         transactionReceiverView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
+            //make.height.equalTo(66.0)
             make.top.equalTo(accountSelectionView.snp.bottom)
         }
     }
@@ -109,6 +110,7 @@ class SendAlgosView: BaseView {
         
         previewButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
+          //  make.top.lessThanOrEqualTo(transactionReceiverView.snp.bottom).offset(354.0)
             make.top.greaterThanOrEqualTo(transactionReceiverView.snp.bottom).offset(layout.current.buttonMinimumInset)
             make.bottom.equalToSuperview().inset(layout.current.bottomInset)
         }

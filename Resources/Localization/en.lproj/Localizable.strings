@@ -132,6 +132,7 @@
 "send-algos-amount" = "Amount";
 "send-algos-transaction-id" = "Transaction ID:";
 "send-algos-more" = "SEND MORE";
+"send-algos-sent-title" = "Algos Sent!";
 
 // MARK: Algos Receive
 

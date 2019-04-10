@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SendAlgosSuccessViewController: BaseViewController {
+class SendAlgosSuccessViewController: BaseScrollViewController {
 
     // MARK: Components
     
@@ -38,11 +38,10 @@ class SendAlgosSuccessViewController: BaseViewController {
     }
     
     private func setupSendAlgosSuccessViewLayout() {
-        view.addSubview(sendAlgosSuccessView)
+        contentView.addSubview(sendAlgosSuccessView)
         
         sendAlgosSuccessView.snp.makeConstraints { make in
-            make.leading.trailing.top.equalToSuperview()
-            make.bottom.safeEqualToBottom(of: self)
+            make.edges.equalToSuperview()
         }
     }
 }

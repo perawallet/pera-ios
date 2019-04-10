@@ -51,7 +51,12 @@ class SendAlgosPreviewView: SendAlgosView {
     }
     
     private func setupFeeInformationViewLayout() {
+        addSubview(feeInformationView)
         
+        feeInformationView.snp.makeConstraints { make in
+            make.top.equalTo(transactionReceiverView.snp.bottom).offset(layout.current.topInset)
+            make.leading.trailing.equalToSuperview()
+        }
     }
     
     private func setupSendButtonLayout() {
