@@ -162,4 +162,8 @@
 // MARK: Settings
 
 "settings-title" = "Settings";
-
+"settings-server-node-settings" = "Server/Node Settings";
+"settings-change-password" = "Set/Change Password";
+"settings-local-authentication" = "Enable FaceID/Touch ID";
+"settings-language" = "Language";
+"settings-language-english" = "English";

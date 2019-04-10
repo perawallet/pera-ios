@@ -13,6 +13,11 @@
 		170AFB02224D1CE100520EA5 /* CIImage+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170AFB01224D1CE100520EA5 /* CIImage+Additions.swift */; };
 		170D565E2243E7B400813989 /* Crypto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 170D565D2243E7B400813989 /* Crypto.framework */; };
 		17100B2C225CEC3600D13548 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17100B2B225CEC3600D13548 /* SettingsView.swift */; };
+		171111A9225DD1A200DAF55C /* SettingsDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171111A8225DD1A200DAF55C /* SettingsDetailCell.swift */; };
+		171111AB225DD1DD00DAF55C /* SettingsDetailContextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171111AA225DD1DD00DAF55C /* SettingsDetailContextView.swift */; };
+		171111AE225DDA6100DAF55C /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171111AD225DDA6100DAF55C /* SettingsViewModel.swift */; };
+		171111B0225DF91400DAF55C /* SettingsInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171111AF225DF91400DAF55C /* SettingsInfoCell.swift */; };
+		171111B2225DF92300DAF55C /* SettingsInfoContextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171111B1225DF92300DAF55C /* SettingsInfoContextView.swift */; };
 		173DA1E72255EBE000378A82 /* String+Address.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173DA1E62255EBE000378A82 /* String+Address.swift */; };
 		173DA1E92255F7B500378A82 /* API+Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173DA1E82255F7B500378A82 /* API+Transaction.swift */; };
 		173DA1EB2255F7EF00378A82 /* TransactionDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173DA1EA2255F7EF00378A82 /* TransactionDraft.swift */; };
@@ -216,6 +221,11 @@
 		170AFB01224D1CE100520EA5 /* CIImage+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CIImage+Additions.swift"; sourceTree = "<group>"; };
 		170D565D2243E7B400813989 /* Crypto.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crypto.framework; sourceTree = "<group>"; };
 		17100B2B225CEC3600D13548 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		171111A8225DD1A200DAF55C /* SettingsDetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDetailCell.swift; sourceTree = "<group>"; };
+		171111AA225DD1DD00DAF55C /* SettingsDetailContextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDetailContextView.swift; sourceTree = "<group>"; };
+		171111AD225DDA6100DAF55C /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
+		171111AF225DF91400DAF55C /* SettingsInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsInfoCell.swift; sourceTree = "<group>"; };
+		171111B1225DF92300DAF55C /* SettingsInfoContextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsInfoContextView.swift; sourceTree = "<group>"; };
 		173DA1E62255EBE000378A82 /* String+Address.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Address.swift"; sourceTree = "<group>"; };
 		173DA1E82255F7B500378A82 /* API+Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+Transaction.swift"; sourceTree = "<group>"; };
 		173DA1EA2255F7EF00378A82 /* TransactionDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDraft.swift; sourceTree = "<group>"; };
@@ -440,6 +450,18 @@
 			isa = PBXGroup;
 			children = (
 				17100B2B225CEC3600D13548 /* SettingsView.swift */,
+				171111A8225DD1A200DAF55C /* SettingsDetailCell.swift */,
+				171111AA225DD1DD00DAF55C /* SettingsDetailContextView.swift */,
+				171111AF225DF91400DAF55C /* SettingsInfoCell.swift */,
+				171111B1225DF92300DAF55C /* SettingsInfoContextView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		171111AC225DDA5600DAF55C /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				171111AD225DDA6100DAF55C /* SettingsViewModel.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -1397,6 +1419,7 @@
 		2BD73A0E22412B5900B66EEF /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				171111AC225DDA5600DAF55C /* Settings */,
 				2B65B1FF22527B89001DB5BE /* Contacts */,
 				2B656E9C224BCAF60064A49B /* Accounts */,
 				2BD73A152241322D00B66EEF /* Authentication */,
@@ -1963,6 +1986,7 @@
 				2B8954C8224420B400D6D068 /* InputViewDelegate.swift in Sources */,
 				2B59F15C22550778005203DD /* Codable+CoreData.swift in Sources */,
 				2B8954B82243FCD800D6D068 /* ViewControllerConfiguration.swift in Sources */,
+				171111A9225DD1A200DAF55C /* SettingsDetailCell.swift in Sources */,
 				2B66870B2248DB35009F21E7 /* NavigationBarConfigurable.swift in Sources */,
 				2BA8736E2248240A00511C7C /* UIEdgeInsets+Additions.swift in Sources */,
 				2B5DA9D5224CE19700EE41B4 /* EditAccountViewController.swift in Sources */,
@@ -1988,6 +2012,8 @@
 				2BD73A002241297700B66EEF /* NumpadDeleteCell.swift in Sources */,
 				2BF53155224A468400A7455F /* ModalPresentable.swift in Sources */,
 				2BDE9CD4224E1E91007EFF30 /* LoadingIndicator.swift in Sources */,
+				171111B0225DF91400DAF55C /* SettingsInfoCell.swift in Sources */,
+				171111AE225DDA6100DAF55C /* SettingsViewModel.swift in Sources */,
 				2B656E99224BC52D0064A49B /* AccountContextView.swift in Sources */,
 				2BD739F8223FF4B600B66EEF /* NumpadDeleteButton.swift in Sources */,
 				2BD739D2223F97F600B66EEF /* WelcomeView.swift in Sources */,
@@ -2028,6 +2054,7 @@
 				2B8954A82243854400D6D068 /* AlertView.swift in Sources */,
 				2BF53165224A47E000A7455F /* CardModalPresentationController.swift in Sources */,
 				2BF34CBC223A8C460052CAD3 /* BaseCollectionViewCell.swift in Sources */,
+				171111B2225DF92300DAF55C /* SettingsInfoContextView.swift in Sources */,
 				2B6687122248DC7D009F21E7 /* BarButton.swift in Sources */,
 				2BD739F6223FF47900B66EEF /* NumpadNumericButton.swift in Sources */,
 				2B8BE4EE22393577005D8565 /* BaseViewController.swift in Sources */,
@@ -2102,6 +2129,7 @@
 				2B656E93224BAF2E0064A49B /* OptionsViewController.swift in Sources */,
 				2B59F1392254BABF005203DD /* algorand.xcdatamodeld in Sources */,
 				2BD739F4223FF08000B66EEF /* NumpadView.swift in Sources */,
+				171111AB225DD1DD00DAF55C /* SettingsDetailContextView.swift in Sources */,
 				2BF34CBA223A880C0052CAD3 /* UIView+SafeArea.swift in Sources */,
 				2BF34CBF223A8E740052CAD3 /* NavigationController.swift in Sources */,
 				2B8C1278224196DF00E34D37 /* String+Attributes.swift in Sources */,

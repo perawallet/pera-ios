@@ -12,7 +12,7 @@ class SettingsView: BaseView {
     
     // MARK: Components
     
-    private(set) lazy var contactsCollectionView: UICollectionView = {
+    private(set) lazy var collectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .vertical
         flowLayout.minimumLineSpacing = 0.0
@@ -25,7 +25,8 @@ class SettingsView: BaseView {
         collectionView.contentInset = .zero
         collectionView.keyboardDismissMode = .onDrag
         
-        collectionView.register(ContactCell.self, forCellWithReuseIdentifier: ContactCell.reusableIdentifier)
+        collectionView.register(SettingsDetailCell.self, forCellWithReuseIdentifier: SettingsDetailCell.reusableIdentifier)
+        collectionView.register(SettingsInfoCell.self, forCellWithReuseIdentifier: SettingsInfoCell.reusableIdentifier)
         
         return collectionView
     }()
@@ -38,17 +39,15 @@ class SettingsView: BaseView {
         setupCollectionViewLayout()
     }
     
-    
     private func setupCollectionViewLayout() {
-        addSubview(contactsCollectionView)
+        addSubview(collectionView)
         
-        contactsCollectionView.snp.makeConstraints { make in
+        collectionView.snp.makeConstraints { make in
             make.top.equalTo(safeAreaLayoutGuide.snp.top)
             make.leading.trailing.equalToSuperview()
             make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom)
         }
         
-        contactsCollectionView.backgroundView = contentStateView
+        collectionView.backgroundView = contentStateView
     }
 }
-
