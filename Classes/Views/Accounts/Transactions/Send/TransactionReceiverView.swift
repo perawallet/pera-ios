@@ -147,7 +147,7 @@ class TransactionReceiverView: BaseView {
         receiverContainerView.addSubview(qrButton)
         
         qrButton.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(60.0)
+            make.trailing.equalToSuperview().inset(65.0)
             make.top.equalTo(passphraseInputView.snp.top)
             make.width.height.equalTo(20.0)
         }
@@ -157,7 +157,7 @@ class TransactionReceiverView: BaseView {
         receiverContainerView.addSubview(contactsButton)
         
         contactsButton.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(20.0)
+            make.trailing.equalToSuperview().inset(25.0)
             make.top.equalTo(passphraseInputView.snp.top)
             make.width.height.equalTo(20.0)
         }

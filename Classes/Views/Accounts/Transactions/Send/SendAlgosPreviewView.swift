@@ -17,6 +17,7 @@ class SendAlgosPreviewView: SendAlgosView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let topInset: CGFloat = 20.0
+        let trailingInset: CGFloat = 25.0
         let bottomInset: CGFloat = 18.0
     }
     
@@ -24,17 +25,21 @@ class SendAlgosPreviewView: SendAlgosView {
     
     weak var previewViewDelegate: SendAlgosPreviewViewDelegate?
     
+    // MARK: Components
+    
+    private(set) lazy var feeInformationView: DetailedInformationView = {
+        let feeInformationView = DetailedInformationView(displaysRightInputAccessoryButton: true)
+        feeInformationView.explanationLabel.text = "send-algos-fee".localized
+        feeInformationView.detailLabel.text = "1.24"
+        feeInformationView.rightInputAccessoryButton.setImage(img("icon-info"), for: .normal)
+        feeInformationView.rightInputAccessoryButton.imageEdgeInsets = .zero
+        feeInformationView.rightInputAccessoryButton.contentMode = .right
+        return feeInformationView
+    }()
+    
     private(set) lazy var sendButton = MainButton(title: "title-send".localized)
     
-    private(set) lazy var feeInformationView: SingleLineInputField = {
-        let selectAccountView = SingleLineInputField(displaysRightInputAccessoryButton: true)
-        selectAccountView.explanationLabel.text = "send-algos-fee".localized
-        selectAccountView.rightInputAccessoryButton.setImage(img("icon-info"), for: .normal)
-        selectAccountView.inputTextField.isEnabled = false
-        selectAccountView.inputTextField.textColor = SharedColors.black
-        selectAccountView.inputTextField.tintColor = SharedColors.black
-        return selectAccountView
-    }()
+    // MARK: Setup
     
     override func configureAppearance() {
         super.configureAppearance()
@@ -43,18 +48,31 @@ class SendAlgosPreviewView: SendAlgosView {
         accountSelectionView.isUserInteractionEnabled = false
     }
     
+    override func setListeners() {
+        sendButton.addTarget(self, action: #selector(notifyDelegateToSendButtonTapped), for: .touchUpInside)
+    }
+    
+    // MARK: Layout
+    
     override func prepareLayout() {
         super.prepareLayout()
         
+        updateAccountSelectionViewLayout()
         setupFeeInformationViewLayout()
         setupSendButtonLayout()
+    }
+    
+    private func updateAccountSelectionViewLayout() {
+        accountSelectionView.rightInputAccessoryButton.snp.updateConstraints { make in
+            make.trailing.equalToSuperview().inset(layout.current.trailingInset)
+        }
     }
     
     private func setupFeeInformationViewLayout() {
         addSubview(feeInformationView)
         
         feeInformationView.snp.makeConstraints { make in
-            make.top.equalTo(transactionReceiverView.snp.bottom).offset(layout.current.topInset)
+            make.top.equalTo(transactionReceiverView.snp.bottom)
             make.leading.trailing.equalToSuperview()
         }
     }
@@ -68,5 +86,12 @@ class SendAlgosPreviewView: SendAlgosView {
             make.centerX.equalToSuperview()
             make.bottom.equalToSuperview().inset(layout.current.bottomInset)
         }
+    }
+    
+    // MARK: Actions
+    
+    @objc
+    private func notifyDelegateToSendButtonTapped() {
+        previewViewDelegate?.sendAlgosPreviewViewDidTapSendButton(self)
     }
 }
