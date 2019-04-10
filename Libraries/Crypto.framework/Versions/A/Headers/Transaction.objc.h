@@ -10,6 +10,7 @@
 #include "ref.h"
 #include "Universe.objc.h"
 
+#include "Crypto.objc.h"
 #include "Msgpack.objc.h"
 
 /**
