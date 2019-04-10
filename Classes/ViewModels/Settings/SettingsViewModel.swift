@@ -8,14 +8,22 @@
 
 import UIKit
 
+protocol SettingsViewModelDelegate: class {
+    func settingsViewModel(_ viewModel: SettingsViewModel, didToggleValue value: Bool, atIndexPath indexPath: IndexPath)
+}
+
 class SettingsViewModel {
     
     enum SettingsCellMode: Int {
-        case serverSettings
-        case password
-        case localAuthentication
-        case language
+        case serverSettings = 0
+        case password = 1
+        case localAuthentication = 2
+        case language = 3
     }
+    
+    var indexPath: IndexPath?
+    
+    weak var delegate: SettingsViewModelDelegate?
     
     func configureDetail(_ cell: SettingsDetailCell, with mode: SettingsCellMode) {
         let name = nameOfMode(mode)
@@ -30,6 +38,14 @@ class SettingsViewModel {
         cell.contextView.detailLabel.text = "settings-language-english".localized
     }
     
+    func configureToggle(_ cell: SettingsToggleCell, with mode: SettingsCellMode, for indexPath: IndexPath) {
+        self.indexPath = indexPath
+        
+        let name = nameOfMode(mode)
+        
+        cell.contextView.nameLabel.text = name
+        cell.contextView.delegate = self
+    }
     
     fileprivate func nameOfMode(_ mode: SettingsCellMode) -> String {
         switch mode {
@@ -42,5 +58,16 @@ class SettingsViewModel {
         case .language:
             return "settings-language".localized
         }
+    }
+}
+
+// MARK: - SettingsToggleContextViewDelegate
+extension SettingsViewModel: SettingsToggleContextViewDelegate {
+    func settingsToggle(_ toggle: Toggle, didChangeValue value: Bool) {
+        guard let indexPath = self.indexPath else {
+            return
+        }
+        
+        delegate?.settingsViewModel(self, didToggleValue: value, atIndexPath: indexPath)
     }
 }

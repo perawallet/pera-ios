@@ -31,6 +31,7 @@ class SettingsViewController: BaseViewController {
     override func linkInteractors() {
         settingsView.collectionView.delegate = self
         settingsView.collectionView.dataSource = self
+        viewModel.delegate = self
     }
 }
 
@@ -62,12 +63,12 @@ extension SettingsViewController: UICollectionViewDataSource {
             
         case .localAuthentication:
             guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: SettingsDetailCell.reusableIdentifier,
-                for: indexPath) as? SettingsDetailCell else {
+                withReuseIdentifier: SettingsToggleCell.reusableIdentifier,
+                for: indexPath) as? SettingsToggleCell else {
                     fatalError("Index path is out of bounds")
             }
             
-            viewModel.configureDetail(cell, with: mode)
+            viewModel.configureToggle(cell, with: mode, for: indexPath)
             
             return cell
         case .language:
@@ -99,5 +100,17 @@ extension SettingsViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         view.endEditing(true)
+    }
+}
+
+// MARK: - SettingsViewModelDelegate
+extension SettingsViewController: SettingsViewModelDelegate {
+    func settingsViewModel(_ viewModel: SettingsViewModel,
+                           didToggleValue value: Bool,
+                           atIndexPath indexPath: IndexPath) {
+        guard let mode = SettingsViewModel.SettingsCellMode(rawValue: indexPath.item),
+            mode == .localAuthentication else {
+            return
+        }
     }
 }

@@ -1,5 +1,5 @@
 //
-//  SettingsInfoContextView.swift
+//  SettingsToggleContextView.swift
 //  algorand
 //
 //  Created by Omer Emre Aslan on 10.04.2019.
@@ -8,7 +8,11 @@
 
 import UIKit
 
-class SettingsInfoContextView: BaseView {
+protocol SettingsToggleContextViewDelegate: class {
+    func settingsToggle(_ toggle: Toggle, didChangeValue value: Bool)
+}
+
+class SettingsToggleContextView: BaseView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let separatorHeight: CGFloat = 1.0
@@ -21,6 +25,8 @@ class SettingsInfoContextView: BaseView {
         static let separatorColor = rgba(0.67, 0.67, 0.72, 0.31)
     }
     
+    weak var delegate: SettingsToggleContextViewDelegate?
+    
     // MARK: Components
     
     private(set) lazy var nameLabel: UILabel = {
@@ -31,12 +37,8 @@ class SettingsInfoContextView: BaseView {
             .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 13.0)))
     }()
     
-    private(set) lazy var detailLabel: UILabel = {
-        UILabel()
-            .withTextColor(SharedColors.darkGray)
-            .withLine(.single)
-            .withAlignment(.right)
-            .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 13.0)))
+    private(set) lazy var toggle: Toggle = {
+        Toggle()
     }()
     
     private lazy var separatorView: UIView = {
@@ -48,6 +50,7 @@ class SettingsInfoContextView: BaseView {
     // MARK: Setup
     
     override func setListeners() {
+        toggle.addTarget(self, action: #selector(didChangeToggle(_:)), for: .touchUpInside)
     }
     
     override func configureAppearance() {
@@ -58,7 +61,7 @@ class SettingsInfoContextView: BaseView {
     
     override func prepareLayout() {
         setupNameLabelLayout()
-        setupDetailLabelLayout()
+        setupToggleLayout()
         setupSeparatorViewLayout()
     }
     
@@ -71,10 +74,10 @@ class SettingsInfoContextView: BaseView {
         }
     }
     
-    private func setupDetailLabelLayout() {
-        addSubview(detailLabel)
+    private func setupToggleLayout() {
+        addSubview(toggle)
         
-        detailLabel.snp.makeConstraints { make in
+        toggle.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
         }
@@ -88,5 +91,13 @@ class SettingsInfoContextView: BaseView {
             make.height.equalTo(layout.current.separatorHeight)
             make.leading.trailing.equalToSuperview()
         }
+    }
+}
+
+// MARK: - Actions
+extension SettingsToggleContextView {
+    @objc
+    fileprivate func didChangeToggle(_ toggle: Toggle) {
+        delegate?.settingsToggle(toggle, didChangeValue: toggle.isOn)
     }
 }
