@@ -10,7 +10,7 @@ import UIKit
 
 protocol SendAlgosViewDelegate: class {
     
-    func sendAlgosViewDidTapAccoutSelectionView(_ sendAlgosView: SendAlgosView)
+    func sendAlgosViewDidTapAccountSelectionView(_ sendAlgosView: SendAlgosView)
     func sendAlgosViewDidTapPreviewButton(_ sendAlgosView: SendAlgosView)
     func sendAlgosViewDidTapContactsButton(_ sendAlgosView: SendAlgosView)
     func sendAlgosViewDidTapQRButton(_ sendAlgosView: SendAlgosView)
@@ -19,16 +19,16 @@ protocol SendAlgosViewDelegate: class {
 class SendAlgosView: BaseView {
 
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let topInset: CGFloat = 20.0
+        let topInset: CGFloat = 15.0 * verticalScale
+        let horizontalInset: CGFloat = 25.0
+        let accountsViewInset: CGFloat = 20.0
         let bottomInset: CGFloat = 18.0
-        let buttonMinimumInset: CGFloat = 18.0
+        let buttonMinimumInset: CGFloat = 18.0 * verticalScale
     }
     
     private let layout = Layout<LayoutConstants>()
     
     weak var delegate: SendAlgosViewDelegate?
-    
-    private let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(notifyDelegateToAccountSelectionViewTapped))
     
     // MARK: Components
     
@@ -62,6 +62,11 @@ class SendAlgosView: BaseView {
     
     override func setListeners() {
         transactionReceiverView.delegate = self
+        
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(notifyDelegateToAccountSelectionViewTapped))
+        
+        accountSelectionView.isUserInteractionEnabled = true
+        accountSelectionView.addGestureRecognizer(tapGestureRecognizer)
     }
     
     override func linkInteractors() {
@@ -82,6 +87,7 @@ class SendAlgosView: BaseView {
         
         algosInputView.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(layout.current.topInset)
+            make.height.equalTo(88.0)
             make.leading.trailing.equalToSuperview()
         }
     }
@@ -90,8 +96,13 @@ class SendAlgosView: BaseView {
         addSubview(accountSelectionView)
         
         accountSelectionView.snp.makeConstraints { make in
-            make.top.equalTo(algosInputView.snp.bottom).offset(layout.current.topInset)
+            make.top.equalTo(algosInputView.snp.bottom).offset(layout.current.accountsViewInset)
+            make.height.equalTo(68.0)
             make.leading.trailing.equalToSuperview()
+        }
+        
+        accountSelectionView.rightInputAccessoryButton.snp.updateConstraints { make in
+            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
         }
     }
     
@@ -100,7 +111,6 @@ class SendAlgosView: BaseView {
         
         transactionReceiverView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            //make.height.equalTo(66.0)
             make.top.equalTo(accountSelectionView.snp.bottom)
         }
     }
@@ -110,7 +120,6 @@ class SendAlgosView: BaseView {
         
         previewButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-          //  make.top.lessThanOrEqualTo(transactionReceiverView.snp.bottom).offset(354.0)
             make.top.greaterThanOrEqualTo(transactionReceiverView.snp.bottom).offset(layout.current.buttonMinimumInset)
             make.bottom.equalToSuperview().inset(layout.current.bottomInset)
         }
@@ -125,7 +134,7 @@ class SendAlgosView: BaseView {
     
     @objc
     private func notifyDelegateToAccountSelectionViewTapped() {
-        delegate?.sendAlgosViewDidTapAccoutSelectionView(self)
+        delegate?.sendAlgosViewDidTapAccountSelectionView(self)
     }
 }
 

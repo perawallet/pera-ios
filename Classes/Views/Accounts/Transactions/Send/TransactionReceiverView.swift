@@ -8,10 +8,10 @@
 
 import UIKit
 
-enum AlgosReceiverState {
+enum AlgosReceiverState: Equatable {
     case initial
-    case contact
-    case address
+    case contact(Contact)
+    case address(String)
 }
 
 protocol TransactionReceiverViewDelegate: class {
@@ -23,10 +23,14 @@ protocol TransactionReceiverViewDelegate: class {
 class TransactionReceiverView: BaseView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let topInset: CGFloat = 20.0
+        let horizontalInset: CGFloat = 25.0
         let separatorHeight: CGFloat = 1.0
-        let bottomInset: CGFloat = 20.0
-        let buttonMinimumInset: CGFloat = 18.0
+        let containerTopInset: CGFloat = 7.0
+        let qrButtonInset: CGFloat = 65.0
+        let inputViewInset: CGFloat = 85.0
+        let verticalInset: CGFloat = 20.0
+        let inputViewHeight: CGFloat = 40.0
+        let buttonSize: CGFloat = 20.0
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -43,12 +47,49 @@ class TransactionReceiverView: BaseView {
                 return
             }
             
-            if state == .contact {
+            switch state {
+            case .initial:
+                if receiverContactView.superview != nil {
+                    receiverContactView.removeFromSuperview()
+                }
                 
-            } else {
+            case let .address(address):
+                if passphraseInputView.isHidden {
+                    passphraseInputView.isHidden = false
+                    receiverContactView.removeFromSuperview()
+                }
                 
+                configurePassphraseInputView(with: address)
+            case let .contact(contact):
+                if receiverContactView.superview == nil {
+                    setupReceiverContactViewLayout()
+                }
+                
+                configureReceiverContactView(with: contact)
             }
         }
+    }
+    
+    private func configurePassphraseInputView(with address: String) {
+        contactsButton.isHidden = true
+        
+        qrButton.snp.updateConstraints { make in
+            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+        }
+        
+        passphraseInputView.value = address
+    }
+    
+    private func configureReceiverContactView(with contact: Contact) {
+        if let imageData = contact.image {
+            receiverContactView.userImageView.image = UIImage(data: imageData)
+        }
+        
+        receiverContactView.userImageView.backgroundColor = .white
+        receiverContactView.qrDisplayButton.setImage(img("icon-contacts"), for: .normal)
+        receiverContactView.separatorView.isHidden = true
+        receiverContactView.nameLabel.text = contact.name
+        receiverContactView.addressLabel.text = contact.address
     }
     
     // MARK: Components
@@ -69,6 +110,8 @@ class TransactionReceiverView: BaseView {
         passphraseInputView.nextButtonMode = .submit
         passphraseInputView.inputTextView.autocorrectionType = .no
         passphraseInputView.inputTextView.autocapitalizationType = .none
+        passphraseInputView.inputTextView.textContainer.heightTracksTextView = false
+        passphraseInputView.inputTextView.isScrollEnabled = true
         return passphraseInputView
     }()
     
@@ -84,7 +127,11 @@ class TransactionReceiverView: BaseView {
         return button
     }()
     
-    private(set) lazy var receiverContactView = ContactContextView()
+    private(set) lazy var receiverContactView: ContactContextView = {
+        let view = ContactContextView()
+        view.backgroundColor = SharedColors.warmWhite
+        return view
+    }()
     
     private(set) lazy var separatorView: UIView = {
         let view = UIView()
@@ -97,6 +144,8 @@ class TransactionReceiverView: BaseView {
     override func setListeners() {
         qrButton.addTarget(self, action: #selector(notifyDelegateToQRButtonTapped), for: .touchUpInside)
         contactsButton.addTarget(self, action: #selector(notifyDelegateToContactsButtonTapped), for: .touchUpInside)
+        
+        receiverContactView.qrDisplayButton.addTarget(self, action: #selector(notifyDelegateToContactsButtonTapped), for: .touchUpInside)
     }
     
     // MARK: Layout
@@ -114,8 +163,8 @@ class TransactionReceiverView: BaseView {
         addSubview(titleLabel)
         
         titleLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(20.0)
-            make.leading.equalToSuperview().inset(25.0)
+            make.top.equalToSuperview().inset(layout.current.verticalInset)
+            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
         }
     }
     
@@ -123,7 +172,7 @@ class TransactionReceiverView: BaseView {
         addSubview(receiverContainerView)
         
         receiverContainerView.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(7.0)
+            make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.containerTopInset)
             make.leading.trailing.equalToSuperview()
         }
     }
@@ -135,10 +184,14 @@ class TransactionReceiverView: BaseView {
             make.top.equalToSuperview()
         }
         
+        passphraseInputView.inputTextView.snp.makeConstraints { make in
+            make.height.equalTo(layout.current.inputViewHeight)
+        }
+        
         passphraseInputView.snp.makeConstraints { make in
             make.leading.top.equalToSuperview()
-            make.trailing.equalToSuperview().inset(85.0)
-            make.height.greaterThanOrEqualTo(40.0)
+            make.trailing.equalToSuperview().inset(layout.current.inputViewInset)
+            make.height.equalTo(layout.current.inputViewHeight).priority(.low)
             make.bottom.equalToSuperview()
         }
     }
@@ -147,9 +200,9 @@ class TransactionReceiverView: BaseView {
         receiverContainerView.addSubview(qrButton)
         
         qrButton.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(65.0)
+            make.trailing.equalToSuperview().inset(layout.current.qrButtonInset)
             make.top.equalTo(passphraseInputView.snp.top)
-            make.width.height.equalTo(20.0)
+            make.width.height.equalTo(layout.current.buttonSize)
         }
     }
     
@@ -157,9 +210,31 @@ class TransactionReceiverView: BaseView {
         receiverContainerView.addSubview(contactsButton)
         
         contactsButton.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(25.0)
+            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
             make.top.equalTo(passphraseInputView.snp.top)
-            make.width.height.equalTo(20.0)
+            make.width.height.equalTo(layout.current.buttonSize)
+        }
+    }
+    
+    private func setupReceiverContactViewLayout() {
+        passphraseInputView.isHidden = true
+        
+        receiverContainerView.addSubview(receiverContactView)
+        
+        receiverContactView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        
+        receiverContactView.userImageView.snp.updateConstraints { make in
+            make.top.equalToSuperview().inset(0.0)
+        }
+        
+        receiverContactView.qrDisplayButton.snp.updateConstraints { make in
+            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+        }
+        
+        separatorView.snp.updateConstraints { make in
+            make.top.equalTo(receiverContainerView.snp.bottom).offset(0.0)
         }
     }
     
@@ -169,7 +244,7 @@ class TransactionReceiverView: BaseView {
         separatorView.snp.makeConstraints { make in
             make.bottom.equalToSuperview()
             make.height.equalTo(layout.current.separatorHeight)
-            make.top.equalTo(receiverContainerView.snp.bottom).offset(layout.current.bottomInset)
+            make.top.equalTo(receiverContainerView.snp.bottom).offset(layout.current.verticalInset)
             make.leading.trailing.equalToSuperview()
         }
     }

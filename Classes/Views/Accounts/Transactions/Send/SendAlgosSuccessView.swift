@@ -12,6 +12,7 @@ protocol SendAlgosSuccessViewDelegate: class {
     
     func sendAlgosSuccessViewDidTapDoneButton(_ sendAlgosSuccessView: SendAlgosSuccessView)
     func sendAlgosSuccessViewDidTapSendMoreButton(_ sendAlgosSuccessView: SendAlgosSuccessView)
+    func sendAlgosSuccessViewDidTapAddContactButton(_ sendAlgosSuccessView: SendAlgosSuccessView)
 }
 
 class SendAlgosSuccessView: BaseView {
@@ -96,7 +97,12 @@ class SendAlgosSuccessView: BaseView {
         return accountView
     }()
 
-    private(set) lazy var transactionReceiverView = TransactionReceiverView()
+    private(set) lazy var transactionReceiverView: TransactionReceiverView = {
+        let view = TransactionReceiverView()
+        view.receiverContactView.qrDisplayButton.isHidden = true
+        view.qrButton.setImage(img("icon-contact-add"), for: .normal)
+        return view
+    }()
     
     private(set) lazy var transactionIdView: DetailedInformationView = {
         let transactionIdView = DetailedInformationView()
@@ -110,6 +116,8 @@ class SendAlgosSuccessView: BaseView {
     override func setListeners() {
         doneButton.addTarget(self, action: #selector(notifyDelegateToDoneButtonTapped), for: .touchUpInside)
         sendMoreButton.addTarget(self, action: #selector(notifyDelegateToSendMoreButtonTapped), for: .touchUpInside)
+        
+        transactionReceiverView.qrButton.addTarget(self, action: #selector(notifyDelegateToAddContactButtonTapped), for: .touchUpInside)
     }
     
     // MARK: Layout
@@ -210,7 +218,7 @@ class SendAlgosSuccessView: BaseView {
         addSubview(transactionReceiverView)
         
         transactionReceiverView.snp.makeConstraints { make in
-            make.top.equalTo(accountView.snp.bottom).offset(layout.current.verticalInset)
+            make.top.equalTo(accountView.snp.bottom)
             make.leading.trailing.equalToSuperview()
         }
     }
@@ -235,5 +243,10 @@ class SendAlgosSuccessView: BaseView {
     @objc
     private func notifyDelegateToSendMoreButtonTapped() {
         delegate?.sendAlgosSuccessViewDidTapSendMoreButton(self)
+    }
+    
+    @objc
+    private func notifyDelegateToAddContactButtonTapped() {
+        delegate?.sendAlgosSuccessViewDidTapAddContactButton(self)
     }
 }

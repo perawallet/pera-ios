@@ -145,6 +145,7 @@ extension ContactsViewController: UICollectionViewDelegateFlowLayout {
                 return
             }
             
+            popScreen()
             delegate.contactsViewController(self, didSelect: contact)
         }
     }

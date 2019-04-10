@@ -27,9 +27,9 @@ enum Screen {
     case addContact(mode: AddContactViewController.Mode)
     case contactDetail(contact: Contact)
     case contactQRDisplay(contact: Contact)
-    case sendAlgos
-    case sendAlgosPreview
-    case sendAlgosSuccess
+    case sendAlgos(receiver: AlgosReceiverState)
+    case sendAlgosPreview(transaction: Transaction, receiver: AlgosReceiverState)
+    case sendAlgosSuccess(transaction: Transaction, receiver: AlgosReceiverState)
     case receiveAlgos
 }
 

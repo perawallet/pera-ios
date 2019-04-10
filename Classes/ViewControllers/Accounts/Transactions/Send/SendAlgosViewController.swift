@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import SnapKit
 
-class SendAlgosViewController: BaseViewController {
+class SendAlgosViewController: BaseScrollViewController {
     
     // MARK: Variables
     
@@ -26,9 +27,20 @@ class SendAlgosViewController: BaseViewController {
         return view
     }()
     
+    private var keyboard = Keyboard()
+    
+    private var contentViewBottomConstraint: Constraint?
+    
+    private var amount: Double = 0.00
+    private var selectedAccount: Account?
+    
+    private var receiver: AlgosReceiverState
+    
     // MARK: Initialization
     
-    override init(configuration: ViewControllerConfiguration) {
+    init(receiver: AlgosReceiverState, configuration: ViewControllerConfiguration) {
+        self.receiver = receiver
+        
         super.init(configuration: configuration)
         
         hidesBottomBarWhenPushed = true
@@ -40,9 +52,37 @@ class SendAlgosViewController: BaseViewController {
         super.configureAppearance()
         
         title = "send-algos-title".localized
+        
+        if receiver == .initial {
+            amount = 0.00
+            selectedAccount = nil
+            sendAlgosView.transactionReceiverView.state = receiver
+            
+            sendAlgosView.accountSelectionView.inputTextField.text = "send-algos-select".localized
+        }
+    }
+    
+    override func setListeners() {
+        super.setListeners()
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didReceive(keyboardWillShow:)),
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil
+        )
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didReceive(keyboardWillHide:)),
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil
+        )
     }
     
     override func linkInteractors() {
+        super.linkInteractors()
+        
         sendAlgosView.delegate = self
     }
     
@@ -53,11 +93,11 @@ class SendAlgosViewController: BaseViewController {
     }
     
     private func setupSendAlgosViewLayout() {
-        view.addSubview(sendAlgosView)
+        contentView.addSubview(sendAlgosView)
         
         sendAlgosView.snp.makeConstraints { make in
             make.leading.trailing.top.equalToSuperview()
-            make.bottom.safeEqualToBottom(of: self)
+            contentViewBottomConstraint = make.bottom.equalToSuperview().inset(view.safeAreaBottom).constraint
         }
     }
     
@@ -89,9 +129,106 @@ class SendAlgosViewController: BaseViewController {
     }
     
     private func displayTransactionPreview() {
-        // TODO: Handle fee amount.
+        if !sendAlgosView.transactionReceiverView.passphraseInputView.inputTextView.text.isEmpty {
+            receiver = .address(sendAlgosView.transactionReceiverView.passphraseInputView.inputTextView.text)
+        }
         
-        open(.sendAlgosPreview, by: .push)
+        if let algosAmountText = sendAlgosView.algosInputView.inputTextField.text,
+            let doubleValue = Double(algosAmountText) {
+            amount = doubleValue
+        }
+        
+        if !isTransactionValid() {
+            displaySimpleAlertWith(title: "send-algos-alert-title".localized, message: "send-algos-alert-message".localized)
+        }
+        
+        guard let selectedAccountName = selectedAccount?.name else {
+            return
+        }
+        
+        // TODO: Set transaction object properly.
+        
+        let transaction = Transaction(
+            identifier: "123123",
+            accountName: selectedAccountName,
+            date: Date(),
+            amount: amount,
+            title: "Title"
+        )
+        
+        let sendAlgosPreviewViewController = open(
+            .sendAlgosPreview(transaction: transaction, receiver: receiver),
+            by: .push
+        ) as? SendAlgosPreviewViewController
+        
+        sendAlgosPreviewViewController?.delegate = self
+    }
+    
+    private func isTransactionValid() -> Bool {
+        if receiver != .initial,
+            selectedAccount != nil,
+            amount > 0.0 {
+            
+            return true
+        }
+        
+        return false
+    }
+    
+    @objc
+    fileprivate func didReceive(keyboardWillShow notification: Notification) {
+        if !UIApplication.shared.isActive {
+            return
+        }
+        
+        let kbHeight = notification.keyboardHeight ?? view.safeAreaBottom
+        
+        keyboard.height = kbHeight
+        
+        let duration = notification.keyboardAnimationDuration
+        let curve = notification.keyboardAnimationCurve
+        let curveAnimationOption = UIView.AnimationOptions(rawValue: UInt(curve.rawValue >> 16))
+        
+        if sendAlgosView.transactionReceiverView.frame.maxY > UIScreen.main.bounds.height - kbHeight - 71.0 {
+            scrollView.contentInset.bottom = kbHeight
+        } else {
+            contentViewBottomConstraint?.update(inset: kbHeight)
+        }
+        
+        UIView.animate(
+            withDuration: duration,
+            delay: 0.0,
+            options: [curveAnimationOption],
+            animations: {
+                self.view.layoutIfNeeded()
+            },
+            completion: nil
+        )
+    }
+    
+    @objc
+    fileprivate func didReceive(keyboardWillHide notification: Notification) {
+        if !UIApplication.shared.isActive {
+            return
+        }
+        
+        let duration = notification.keyboardAnimationDuration
+        let curve = notification.keyboardAnimationCurve
+        let curveAnimationOption = UIView.AnimationOptions(rawValue: UInt(curve.rawValue >> 16))
+        
+        scrollView.contentInset.bottom = 0.0
+        
+        contentViewBottomConstraint?.update(inset: view.safeAreaBottom)
+        
+        UIView.animate(
+            withDuration: duration,
+            delay: 0.0,
+            options: [curveAnimationOption],
+            animations: {
+                self.view.layoutIfNeeded()
+            },
+            completion: nil
+        )
     }
 }
 
@@ -99,7 +236,7 @@ class SendAlgosViewController: BaseViewController {
 
 extension SendAlgosViewController: SendAlgosViewDelegate {
     
-    func sendAlgosViewDidTapAccoutSelectionView(_ sendAlgosView: SendAlgosView) {
+    func sendAlgosViewDidTapAccountSelectionView(_ sendAlgosView: SendAlgosView) {
         presentAccountList()
     }
     
@@ -124,7 +261,9 @@ extension SendAlgosViewController: AccountListViewControllerDelegate {
     }
     
     func accountListViewController(_ viewController: AccountListViewController, didSelectAccount account: Account) {
+        sendAlgosView.accountSelectionView.inputTextField.text = account.name
         
+        selectedAccount = account
     }
 }
 
@@ -133,7 +272,9 @@ extension SendAlgosViewController: AccountListViewControllerDelegate {
 extension SendAlgosViewController: ContactsViewControllerDelegate {
     
     func contactsViewController(_ contactsViewController: ContactsViewController, didSelect contact: Contact) {
-        
+        sendAlgosView.transactionReceiverView.state = .contact(contact)
+
+        receiver = .contact(contact)
     }
 }
 
@@ -142,10 +283,32 @@ extension SendAlgosViewController: ContactsViewControllerDelegate {
 extension SendAlgosViewController: QRScannerViewControllerDelegate {
     
     func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText) {
+        sendAlgosView.transactionReceiverView.state = .address(qrText.text)
         
+        receiver = .address(qrText.text)
     }
     
     func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError) {
-        
+        // TODO: Fail state
+    }
+}
+
+// MARK: SendAlgosPreviewViewControllerDelegate
+
+extension SendAlgosViewController: SendAlgosPreviewViewControllerDelegate {
+    
+    func sendAlgosPreviewViewControllerDidTapSendMoreButton(_ sendAlgosPreviewViewController: SendAlgosPreviewViewController) {
+        resetViewForInitialState()
+    }
+    
+    private func resetViewForInitialState() {
+        amount = 0.00
+        selectedAccount = nil
+        receiver = .initial
+        sendAlgosView.transactionReceiverView.state = .initial
+        sendAlgosView.algosInputView.inputTextField.text = nil
+        sendAlgosView.transactionReceiverView.passphraseInputView.placeholderLabel.isHidden = false
+        sendAlgosView.transactionReceiverView.passphraseInputView.inputTextView.text = ""
+        sendAlgosView.accountSelectionView.inputTextField.text = "send-algos-select".localized
     }
 }

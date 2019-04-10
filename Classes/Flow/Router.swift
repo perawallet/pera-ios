@@ -183,12 +183,12 @@ class Router {
             viewController = ContactInfoViewController(contact: contact, configuration: configuration)
         case let .contactQRDisplay(contact):
             viewController = ContactQRDisplayViewController(contact: contact, configuration: configuration)
-        case .sendAlgos:
-            viewController = SendAlgosViewController(configuration: configuration)
-        case .sendAlgosPreview:
-            viewController = SendAlgosPreviewViewController(configuration: configuration)
-        case .sendAlgosSuccess:
-            viewController = SendAlgosSuccessViewController(configuration: configuration)
+        case let .sendAlgos(receiver):
+            viewController = SendAlgosViewController(receiver: receiver, configuration: configuration)
+        case let .sendAlgosPreview(transaction, receiver):
+            viewController = SendAlgosPreviewViewController(transaction: transaction, receiver: receiver, configuration: configuration)
+        case let .sendAlgosSuccess(transaction, receiver):
+            viewController = SendAlgosSuccessViewController(transaction: transaction, receiver: receiver, configuration: configuration)
         case .receiveAlgos:
             viewController = ReceiveAlgosViewController(configuration: configuration)
         }

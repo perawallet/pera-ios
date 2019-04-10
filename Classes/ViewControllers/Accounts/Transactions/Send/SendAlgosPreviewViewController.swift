@@ -8,6 +8,11 @@
 
 import UIKit
 
+protocol SendAlgosPreviewViewControllerDelegate: class {
+    
+    func sendAlgosPreviewViewControllerDidTapSendMoreButton(_ sendAlgosPreviewViewController: SendAlgosPreviewViewController)
+}
+
 class SendAlgosPreviewViewController: BaseViewController {
     
     // MARK: Components
@@ -17,9 +22,18 @@ class SendAlgosPreviewViewController: BaseViewController {
         return view
     }()
     
+    private let transaction: Transaction
+    
+    private let receiver: AlgosReceiverState
+    
+    weak var delegate: SendAlgosPreviewViewControllerDelegate?
+    
     // MARK: Initialization
     
-    override init(configuration: ViewControllerConfiguration) {
+    init(transaction: Transaction, receiver: AlgosReceiverState, configuration: ViewControllerConfiguration) {
+        self.transaction = transaction
+        self.receiver = receiver
+        
         super.init(configuration: configuration)
         
         hidesBottomBarWhenPushed = true
@@ -31,6 +45,13 @@ class SendAlgosPreviewViewController: BaseViewController {
         super.configureAppearance()
         
         title = "send-algos-title".localized
+        
+        sendAlgosPreviewView.algosInputView.inputTextField.text = "\(transaction.amount)"
+        sendAlgosPreviewView.accountSelectionView.inputTextField.text = transaction.accountName
+        sendAlgosPreviewView.transactionReceiverView.state = receiver
+        
+        // TODO: Display proper fee
+        sendAlgosPreviewView.feeInformationView.detailLabel.text = "1.24"
     }
     
     override func linkInteractors() {
@@ -60,6 +81,26 @@ extension SendAlgosPreviewViewController: SendAlgosPreviewViewDelegate {
     func sendAlgosPreviewViewDidTapSendButton(_ sendAlgosView: SendAlgosView) {
         // TODO: Complete transctions
         
-        open(.sendAlgosSuccess, by: .present)
+        let sendAlgosSuccessViewController = open(
+            .sendAlgosSuccess(transaction: transaction, receiver: receiver),
+            by: .present
+        ) as? SendAlgosSuccessViewController
+        
+        sendAlgosSuccessViewController?.delegate = self
+    }
+}
+
+// MARK: SendAlgosSuccessViewControllerDelegate
+
+extension SendAlgosPreviewViewController: SendAlgosSuccessViewControllerDelegate {
+    
+    func sendAlgosSuccessViewControllerDidTapDoneButton(_ sendAlgosSuccessViewController: SendAlgosSuccessViewController) {
+        navigationController?.popToRootViewController(animated: false)
+    }
+    
+    func sendAlgosSuccessViewControllerDidTapSendMoreButton(_ sendAlgosSuccessViewController: SendAlgosSuccessViewController) {
+        closeScreen(by: .pop, animated: false)
+        
+        delegate?.sendAlgosPreviewViewControllerDidTapSendMoreButton(self)
     }
 }

@@ -224,7 +224,7 @@ extension AccountsViewController: TransactionHistoryDataSourceDelegate {
 extension AccountsViewController: AccountsViewDelegate {
     
     func accountsViewDidTapSendButton(_ accountsView: AccountsView) {
-        open(.sendAlgos, by: .push)
+        open(.sendAlgos(receiver: .initial), by: .push)
     }
     
     func accountsViewDidTapReceiveButton(_ accountsView: AccountsView) {
