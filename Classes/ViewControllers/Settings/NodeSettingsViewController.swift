@@ -35,8 +35,6 @@ class NodeSettingsViewController: BaseViewController {
         super.configureAppearance()
         
         title = "contacts-title".localized
-        
-        fetchContacts()
     }
     
     // MARK: Layout
