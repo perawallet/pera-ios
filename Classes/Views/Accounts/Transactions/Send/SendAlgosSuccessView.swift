@@ -17,7 +17,14 @@ protocol SendAlgosSuccessViewDelegate: class {
 class SendAlgosSuccessView: BaseView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        
+        let imageViewInset: CGFloat = 30.0
+        let imageViewSize: CGFloat = 150.0
+        let titleLabelInset: CGFloat = 15.0
+        let verticalInset: CGFloat = 20.0
+        let buttonCenterOffset: CGFloat = 7.5
+        let buttonMinimumInset: CGFloat = 10.0
+        let separatorHeight: CGFloat = 1.0
+        let bottomInset: CGFloat = 10.0
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -33,7 +40,7 @@ class SendAlgosSuccessView: BaseView {
     private lazy var successImageView: UIImageView = {
         let imageView = UIImageView(image: img("icon-transaction-success"))
         imageView.backgroundColor = .white
-        imageView.layer.cornerRadius = 75.0
+        imageView.layer.cornerRadius = layout.current.imageViewSize / 2
         imageView.contentMode = .center
         return imageView
     }()
@@ -70,54 +77,31 @@ class SendAlgosSuccessView: BaseView {
         return view
     }()
     
-    private(set) lazy var amountView: SingleLineInputField = {
-        let amountView = SingleLineInputField()
+    private(set) lazy var amountView: DetailedInformationView = {
+        let amountView = DetailedInformationView(mode: .algos)
         amountView.explanationLabel.text = "send-algos-amount".localized
-        amountView.inputTextField.text = "send-algos-select".localized
-        amountView.inputTextField.isEnabled = false
-        amountView.inputTextField.textColor = SharedColors.black
-        amountView.inputTextField.tintColor = SharedColors.black
         return amountView
     }()
     
-    private(set) lazy var feeView: SingleLineInputField = {
-        let feeView = SingleLineInputField()
+    private(set) lazy var feeView: DetailedInformationView = {
+        let feeView = DetailedInformationView(mode: .algos)
         feeView.explanationLabel.text = "send-algos-fee".localized
-        feeView.inputTextField.text = "send-algos-select".localized
-        feeView.inputTextField.isEnabled = false
-        feeView.inputTextField.textColor = SharedColors.black
-        feeView.inputTextField.tintColor = SharedColors.black
         return feeView
     }()
     
-    private(set) lazy var accountView: SingleLineInputField = {
-        let accountView = SingleLineInputField()
+    private(set) lazy var accountView: DetailedInformationView = {
+        let accountView = DetailedInformationView()
         accountView.explanationLabel.text = "send-algos-from".localized
-        accountView.inputTextField.text = "send-algos-select".localized
-        accountView.inputTextField.isEnabled = false
-        accountView.inputTextField.textColor = SharedColors.black
-        accountView.inputTextField.tintColor = SharedColors.black
+        accountView.detailLabel.text = "send-algos-select".localized
         return accountView
     }()
+
+    private(set) lazy var transactionReceiverView = TransactionReceiverView()
     
-    private(set) lazy var receiverAccountView: SingleLineInputField = {
-        let receiverAccountView = SingleLineInputField(displaysRightInputAccessoryButton: true)
-        receiverAccountView.explanationLabel.text = "send-algos-to".localized
-        receiverAccountView.inputTextField.text = "send-algos-select".localized
-        receiverAccountView.rightInputAccessoryButton.setImage(img("icon-contacts"), for: .normal)
-        receiverAccountView.inputTextField.isEnabled = false
-        receiverAccountView.inputTextField.textColor = SharedColors.black
-        receiverAccountView.inputTextField.tintColor = SharedColors.black
-        return receiverAccountView
-    }()
-    
-    private(set) lazy var transactionIdView: SingleLineInputField = {
-        let transactionIdView = SingleLineInputField()
+    private(set) lazy var transactionIdView: DetailedInformationView = {
+        let transactionIdView = DetailedInformationView()
         transactionIdView.explanationLabel.text = "send-algos-transaction-id".localized
-        transactionIdView.inputTextField.text = "send-algos-select".localized
-        transactionIdView.inputTextField.isEnabled = false
-        transactionIdView.inputTextField.textColor = SharedColors.black
-        transactionIdView.inputTextField.tintColor = SharedColors.black
+        transactionIdView.detailLabel.text = "send-algos-select".localized
         return transactionIdView
     }()
     
@@ -139,7 +123,7 @@ class SendAlgosSuccessView: BaseView {
         setupAmountViewLayout()
         setupFeeViewLayout()
         setupAccountViewLayout()
-        setupReceiverAccountViewLayout()
+        setupTransactionReceiverViewLayout()
         setupTransactionIdViewLayout()
     }
     
@@ -147,7 +131,9 @@ class SendAlgosSuccessView: BaseView {
         addSubview(successImageView)
         
         successImageView.snp.makeConstraints { make in
-            
+            make.centerX.equalToSuperview()
+            make.top.equalToSuperview().inset(layout.current.imageViewInset)
+            make.width.height.equalTo(layout.current.imageViewSize)
         }
     }
     
@@ -155,7 +141,8 @@ class SendAlgosSuccessView: BaseView {
         addSubview(titleLabel)
         
         titleLabel.snp.makeConstraints { make in
-            
+            make.top.equalTo(successImageView.snp.bottom).offset(layout.current.titleLabelInset)
+            make.centerX.equalToSuperview()
         }
     }
     
@@ -163,7 +150,9 @@ class SendAlgosSuccessView: BaseView {
         addSubview(doneButton)
         
         doneButton.snp.makeConstraints { make in
-            
+            make.trailing.equalTo(snp.centerX).inset(-layout.current.buttonCenterOffset)
+            make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.verticalInset)
+            make.leading.greaterThanOrEqualToSuperview().inset(layout.current.buttonMinimumInset)
         }
     }
     
@@ -171,7 +160,10 @@ class SendAlgosSuccessView: BaseView {
         addSubview(sendMoreButton)
         
         sendMoreButton.snp.makeConstraints { make in
-            
+            make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.verticalInset)
+            make.leading.equalTo(snp.centerX).offset(layout.current.buttonCenterOffset)
+            make.trailing.lessThanOrEqualToSuperview().inset(layout.current.buttonMinimumInset)
+            make.width.equalTo(doneButton)
         }
     }
     
@@ -179,7 +171,9 @@ class SendAlgosSuccessView: BaseView {
         addSubview(separatorView)
         
         separatorView.snp.makeConstraints { make in
-            
+            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(doneButton.snp.bottom).offset(layout.current.verticalInset)
+            make.height.equalTo(layout.current.separatorHeight)
         }
     }
     
@@ -187,7 +181,9 @@ class SendAlgosSuccessView: BaseView {
         addSubview(amountView)
         
         amountView.snp.makeConstraints { make in
-            
+            make.leading.equalToSuperview()
+            make.top.equalTo(separatorView.snp.bottom)
+            make.width.equalTo(UIScreen.main.bounds.width / 2)
         }
     }
     
@@ -195,7 +191,9 @@ class SendAlgosSuccessView: BaseView {
         addSubview(feeView)
         
         feeView.snp.makeConstraints { make in
-            
+            make.trailing.equalToSuperview()
+            make.top.equalTo(separatorView.snp.bottom)
+            make.width.equalTo(UIScreen.main.bounds.width / 2)
         }
     }
     
@@ -203,15 +201,17 @@ class SendAlgosSuccessView: BaseView {
         addSubview(accountView)
         
         accountView.snp.makeConstraints { make in
-            
+            make.top.equalTo(amountView.snp.bottom)
+            make.leading.trailing.equalToSuperview()
         }
     }
     
-    private func setupReceiverAccountViewLayout() {
-        addSubview(receiverAccountView)
+    private func setupTransactionReceiverViewLayout() {
+        addSubview(transactionReceiverView)
         
-        receiverAccountView.snp.makeConstraints { make in
-            
+        transactionReceiverView.snp.makeConstraints { make in
+            make.top.equalTo(accountView.snp.bottom).offset(layout.current.verticalInset)
+            make.leading.trailing.equalToSuperview()
         }
     }
     
@@ -219,7 +219,9 @@ class SendAlgosSuccessView: BaseView {
         addSubview(transactionIdView)
         
         transactionIdView.snp.makeConstraints { make in
-            
+            make.top.equalTo(transactionReceiverView.snp.bottom)
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalToSuperview().inset(layout.current.bottomInset)
         }
     }
     

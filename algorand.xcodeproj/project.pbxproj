@@ -55,6 +55,7 @@
 		17F9E924225789E7004CDF24 /* AccountFetchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F9E923225789E7004CDF24 /* AccountFetchOperation.swift */; };
 		17F9E927225796DA004CDF24 /* AccountManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F9E926225796DA004CDF24 /* AccountManager.swift */; };
 		2B09603822578C990005BE27 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2B09603722578C990005BE27 /* GoogleService-Info.plist */; };
+		2B25BB47225E03610092C972 /* DetailedInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B25BB46225E03610092C972 /* DetailedInformationView.swift */; };
 		2B56F7D6225B3C1D00E58737 /* SendAlgosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B56F7D5225B3C1D00E58737 /* SendAlgosViewController.swift */; };
 		2B56F7D8225B3C4200E58737 /* ReceiveAlgosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B56F7D7225B3C4200E58737 /* ReceiveAlgosViewController.swift */; };
 		2B56F7DA225B45B300E58737 /* SendAlgosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B56F7D9225B45B300E58737 /* SendAlgosView.swift */; };
@@ -267,6 +268,7 @@
 		17F9E926225796DA004CDF24 /* AccountManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountManager.swift; sourceTree = "<group>"; };
 		2AC10F1C54DF2982BFB4A180 /* Pods-algorand.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand.debug.xcconfig"; path = "Pods/Target Support Files/Pods-algorand/Pods-algorand.debug.xcconfig"; sourceTree = "<group>"; };
 		2B09603722578C990005BE27 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		2B25BB46225E03610092C972 /* DetailedInformationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailedInformationView.swift; sourceTree = "<group>"; };
 		2B56F7D5225B3C1D00E58737 /* SendAlgosViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendAlgosViewController.swift; sourceTree = "<group>"; };
 		2B56F7D7225B3C4200E58737 /* ReceiveAlgosViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveAlgosViewController.swift; sourceTree = "<group>"; };
 		2B56F7D9225B45B300E58737 /* SendAlgosView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendAlgosView.swift; sourceTree = "<group>"; };
@@ -533,6 +535,23 @@
 			path = CollectionViewLayout;
 			sourceTree = "<group>";
 		};
+		17F9E9202257894B004CDF24 /* Operations */ = {
+			isa = PBXGroup;
+			children = (
+				17F9E9212257895A004CDF24 /* AsyncOperation.swift */,
+				17F9E923225789E7004CDF24 /* AccountFetchOperation.swift */,
+			);
+			path = Operations;
+			sourceTree = "<group>";
+		};
+		17F9E925225796CF004CDF24 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				17F9E926225796DA004CDF24 /* AccountManager.swift */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
 		2B56F7CE225B3AD700E58737 /* Transactions */ = {
 			isa = PBXGroup;
 			children = (
@@ -549,6 +568,7 @@
 				2B7572A5225CA1E3009E0253 /* SendAlgosPreviewView.swift */,
 				2B7572AB225CC3A8009E0253 /* SendAlgosSuccessView.swift */,
 				2B7572AD225CCB62009E0253 /* TransactionReceiverView.swift */,
+				2B25BB46225E03610092C972 /* DetailedInformationView.swift */,
 			);
 			path = Send;
 			sourceTree = "<group>";
@@ -594,23 +614,6 @@
 				2B7572A9225CC391009E0253 /* SendAlgosSuccessViewController.swift */,
 			);
 			path = Send;
-			sourceTree = "<group>";
-		};
-		17F9E9202257894B004CDF24 /* Operations */ = {
-			isa = PBXGroup;
-			children = (
-				17F9E9212257895A004CDF24 /* AsyncOperation.swift */,
-				17F9E923225789E7004CDF24 /* AccountFetchOperation.swift */,
-			);
-			path = Operations;
-			sourceTree = "<group>";
-		};
-		17F9E925225796CF004CDF24 /* Managers */ = {
-			isa = PBXGroup;
-			children = (
-				17F9E926225796DA004CDF24 /* AccountManager.swift */,
-			);
-			path = Managers;
 			sourceTree = "<group>";
 		};
 		2B59F15F22563F78005203DD /* Container */ = {
@@ -2181,6 +2184,7 @@
 				2BD739CC223F97B100B66EEF /* IntroductionViewController.swift in Sources */,
 				2B656E93224BAF2E0064A49B /* OptionsViewController.swift in Sources */,
 				2B59F1392254BABF005203DD /* algorand.xcdatamodeld in Sources */,
+				2B25BB47225E03610092C972 /* DetailedInformationView.swift in Sources */,
 				2BD739F4223FF08000B66EEF /* NumpadView.swift in Sources */,
 				2BF34CBA223A880C0052CAD3 /* UIView+SafeArea.swift in Sources */,
 				2BF34CBF223A8E740052CAD3 /* NavigationController.swift in Sources */,

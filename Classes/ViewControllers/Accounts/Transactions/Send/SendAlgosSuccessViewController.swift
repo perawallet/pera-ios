@@ -52,6 +52,8 @@ extension SendAlgosSuccessViewController: SendAlgosSuccessViewDelegate {
     
     func sendAlgosSuccessViewDidTapDoneButton(_ sendAlgosSuccessView: SendAlgosSuccessView) {
         // TODO: Dismiss and go back to accounts tab with updated transaction history
+        
+        dismissScreen()
     }
     
     func sendAlgosSuccessViewDidTapSendMoreButton(_ sendAlgosSuccessView: SendAlgosSuccessView) {

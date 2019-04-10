@@ -10,6 +10,12 @@ import UIKit
 
 class AlgosAmountView: BaseView {
     
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let labelInset: CGFloat = 3.0
+    }
+    
+    private let layout = Layout<LayoutConstants>()
+    
     var mode: Mode = .normal(0.00) {
         didSet {
             
@@ -73,7 +79,7 @@ class AlgosAmountView: BaseView {
         addSubview(amountLabel)
         
         amountLabel.snp.makeConstraints { make in
-            make.leading.equalTo(algoIconImageView.snp.trailing)
+            make.leading.equalTo(algoIconImageView.snp.trailing).offset(layout.current.labelInset)
             make.centerY.equalToSuperview()
             make.trailing.equalToSuperview()
         }
