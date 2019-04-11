@@ -177,6 +177,7 @@ class Router {
             viewController = EditAccountViewController(account: account, configuration: configuration)
         case .contacts:
             viewController = ContactsViewController(configuration: configuration)
+            viewController.hidesBottomBarWhenPushed = true
         case let .addContact(mode):
             viewController = AddContactViewController(mode: mode, configuration: configuration)
         case let .contactDetail(contact):
@@ -191,8 +192,8 @@ class Router {
             viewController = SendAlgosSuccessViewController(transaction: transaction, receiver: receiver, configuration: configuration)
         case .receiveAlgos:
             viewController = ReceiveAlgosViewController(configuration: configuration)
-        case let .receiveAlgosPreview(transaction):
-            viewController = ReceiveAlgosPreviewViewController(transaction: transaction, configuration: configuration)
+        case let .receiveAlgosPreview(transaction, account):
+            viewController = ReceiveAlgosPreviewViewController(transaction: transaction, account: account, configuration: configuration)
         }
         
         return viewController as? T

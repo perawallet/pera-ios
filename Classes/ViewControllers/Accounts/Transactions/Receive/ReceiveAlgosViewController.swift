@@ -112,7 +112,8 @@ class ReceiveAlgosViewController: BaseViewController {
             displaySimpleAlertWith(title: "send-algos-alert-title".localized, message: "send-algos-alert-message".localized)
         }
         
-        guard let selectedAccountName = selectedAccount?.name else {
+        guard let selectedAccount = selectedAccount,
+            let accountName = selectedAccount.name else {
             return
         }
         
@@ -122,13 +123,13 @@ class ReceiveAlgosViewController: BaseViewController {
         
         let transaction = Transaction(
             identifier: "123123",
-            accountName: selectedAccountName,
+            accountName: accountName,
             date: Date(),
             amount: amount,
             title: "Title"
         )
         
-        open(.receiveAlgosPreview(transaction: transaction), by: .push)
+        open(.receiveAlgosPreview(transaction: transaction, account: selectedAccount), by: .push)
     }
     
     private func isTransactionValid() -> Bool {

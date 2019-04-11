@@ -13,16 +13,18 @@ class ReceiveAlgosPreviewViewController: BaseScrollViewController {
     // MARK: Components
     
     private lazy var receiveAlgosPreviewView: ReceiveAlgosPreviewView = {
-        let view = ReceiveAlgosPreviewView()
+        let view = ReceiveAlgosPreviewView(address: account.address)
         return view
     }()
     
     private let transaction: Transaction
+    private let account: Account
     
     // MARK: Initialization
     
-    init(transaction: Transaction, configuration: ViewControllerConfiguration) {
+    init(transaction: Transaction, account: Account, configuration: ViewControllerConfiguration) {
         self.transaction = transaction
+        self.account = account
         
         super.init(configuration: configuration)
         
@@ -65,6 +67,14 @@ class ReceiveAlgosPreviewViewController: BaseScrollViewController {
 extension ReceiveAlgosPreviewViewController: ReceiveAlgosPreviewViewDelegate {
     
     func receiveAlgosPreviewViewDidTapShareButton(_ receiveAlgosPreviewView: ReceiveAlgosPreviewView) {
-        // TODO: Share action
+        guard let qrImage = receiveAlgosPreviewView.qrView.imageView.image else {
+            return
+        }
+        
+        let sharedItem = [qrImage]
+        let activityViewController = UIActivityViewController(activityItems: sharedItem, applicationActivities: nil)
+        activityViewController.excludedActivityTypes = [UIActivity.ActivityType.addToReadingList]
+        
+        navigationController?.present(activityViewController, animated: true, completion: nil)
     }
 }

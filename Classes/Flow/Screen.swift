@@ -31,7 +31,7 @@ enum Screen {
     case sendAlgosPreview(transaction: Transaction, receiver: AlgosReceiverState)
     case sendAlgosSuccess(transaction: Transaction, receiver: AlgosReceiverState)
     case receiveAlgos
-    case receiveAlgosPreview(transaction: Transaction)
+    case receiveAlgosPreview(transaction: Transaction, account: Account)
 }
 
 extension Screen {

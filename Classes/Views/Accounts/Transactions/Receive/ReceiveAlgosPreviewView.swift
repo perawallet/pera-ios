@@ -27,13 +27,20 @@ class ReceiveAlgosPreviewView: ReceiveAlgosView {
     
     // MARK: Components
     
-    // TODO: Handle qr view creation with address?
+    private let address: String
+    
     private(set) lazy var qrView: QRView = {
-        let qrText = QRText(mode: .address, text: "1231231232312123")
+        let qrText = QRText(mode: .algosReceive, text: address)
         return QRView(qrText: qrText)
     }()
     
     private(set) lazy var shareButton = MainButton(title: "title-share-big".localized)
+    
+    init(address: String) {
+        self.address = address
+        
+        super.init(frame: .zero)
+    }
     
     // MARK: Setup
     
