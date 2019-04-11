@@ -53,7 +53,7 @@ class AccountListDataSource: NSObject, UICollectionViewDataSource {
                     $0 + $1.amount
                 }
                 
-                viewModel.configure(cell, with: "\(totalAmount)")
+                viewModel.configure(cell, with: "\(totalAmount.toAlgos)")
                 
                 return cell
             }

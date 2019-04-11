@@ -25,7 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     private var rootViewController: RootViewController?
     
-    private lazy var accountManager: AccountManager = AccountManager(api: api)
+    private(set) lazy var accountManager: AccountManager = AccountManager(api: api)
     
     private var timer: PollingOperation?
     private var shouldInvalidateUserSession: Bool = false

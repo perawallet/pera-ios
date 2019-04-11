@@ -8,22 +8,9 @@
 
 import Foundation
 
-// TODO: Created transaction struct for mocking accounts home view. Should be replaced with codable model.
-
 struct Transaction: Codable {
-    
-    let identifier: String
-    let accountName: String
-    let date: Date
+    let fromAccount: Account
     let amount: Double
-    let title: String
-}
-
-// MARK: Equatable
-
-extension Transaction: Equatable {
-    
-    static func == (lhs: Transaction, rhs: Transaction) -> Bool {
-        return lhs.identifier == rhs.identifier
-    }
+    var identifier: String?
+    var fee: Int64?
 }

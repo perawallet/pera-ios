@@ -30,7 +30,7 @@ class SendAlgosPreviewView: SendAlgosView {
     private(set) lazy var feeInformationView: DetailedInformationView = {
         let feeInformationView = DetailedInformationView(displaysRightInputAccessoryButton: true)
         feeInformationView.explanationLabel.text = "send-algos-fee".localized
-        feeInformationView.detailLabel.text = "1.24"
+        feeInformationView.detailLabel.text = "0.0001"
         feeInformationView.rightInputAccessoryButton.setImage(img("icon-info"), for: .normal)
         feeInformationView.rightInputAccessoryButton.imageEdgeInsets = .zero
         feeInformationView.rightInputAccessoryButton.contentMode = .right

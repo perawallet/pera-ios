@@ -46,12 +46,15 @@ extension API {
             toEndpoint: Endpoint<TransactionID>(Path("/v1/transactions"))
                 .httpMethod(.post)
                 .handler { uploadResponse in
+                    
                     switch uploadResponse {
                     case .success(let transaction):
-                        print(transaction.identifier)
+                        break
                     case .failure(let error):
-                        print(error)
+                        break
                     }
+                    
+                    completion?(uploadResponse)
                 }
         )
     }
