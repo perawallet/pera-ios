@@ -13,7 +13,7 @@ class ReceiveAlgosPreviewViewController: BaseScrollViewController {
     // MARK: Components
     
     private lazy var receiveAlgosPreviewView: ReceiveAlgosPreviewView = {
-        let view = ReceiveAlgosPreviewView()
+        let view = ReceiveAlgosPreviewView(address: transaction.fromAccount.address, amount: transaction.amount.toMicroAlgos)
         return view
     }()
     
@@ -37,7 +37,7 @@ class ReceiveAlgosPreviewViewController: BaseScrollViewController {
         title = "receive-algos-title".localized
         
         receiveAlgosPreviewView.algosInputView.inputTextField.text = "\(transaction.amount)"
-        receiveAlgosPreviewView.accountSelectionView.inputTextField.text = ""
+        receiveAlgosPreviewView.accountSelectionView.inputTextField.text = transaction.fromAccount.name
     }
     
     override func linkInteractors() {
@@ -65,6 +65,14 @@ class ReceiveAlgosPreviewViewController: BaseScrollViewController {
 extension ReceiveAlgosPreviewViewController: ReceiveAlgosPreviewViewDelegate {
     
     func receiveAlgosPreviewViewDidTapShareButton(_ receiveAlgosPreviewView: ReceiveAlgosPreviewView) {
-        // TODO: Share action
+        guard let qrImage = receiveAlgosPreviewView.qrView.imageView.image else {
+            return
+        }
+        
+        let sharedItem = [qrImage]
+        let activityViewController = UIActivityViewController(activityItems: sharedItem, applicationActivities: nil)
+        activityViewController.excludedActivityTypes = [UIActivity.ActivityType.addToReadingList]
+        
+        navigationController?.present(activityViewController, animated: true, completion: nil)
     }
 }
