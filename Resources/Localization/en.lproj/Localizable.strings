@@ -162,6 +162,10 @@
 // MARK: History
 
 "history-title" = "History";
+"history-start-date" = "Start Date:";
+"history-end-date" = "End Date:";
+"history-select-date" = "Select Date";
+"title-view-results" = "VIEW RESULTS";
 
 // MARK: Contacts
 
