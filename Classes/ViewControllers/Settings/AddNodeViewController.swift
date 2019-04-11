@@ -43,6 +43,12 @@ class AddNodeViewController: BaseViewController {
         title = "node-settings-title".localized
     }
     
+    override func linkInteractors() {
+        super.linkInteractors()
+        
+        addNodeView.testButton.addTarget(self, action: #selector(tap(test:)), for: .touchUpInside)
+    }
+    
     // MARK: Layout
     
     override func prepareLayout() {
@@ -104,5 +110,10 @@ class AddNodeViewController: BaseViewController {
         },
             completion: nil
         )
+    }
+    
+    @objc
+    fileprivate func tap(test button: MainButton) {
+        api?.checkHealth(with: NodeTestDraft(address: "", token: ""))
     }
 }
