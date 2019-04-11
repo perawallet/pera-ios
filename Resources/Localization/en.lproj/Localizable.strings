@@ -56,6 +56,8 @@
 "password-verify-fail-title" = "Wrong Password";
 "password-verify-fail-message" = "Password did not match with previous password.";
 
+"password-change-title" = "Change Password";
+
 // MARK: Local Authentication Preferences
 
 "local-authentication-preference-title" = "Enable touch/face ID";

@@ -99,7 +99,18 @@ extension SettingsViewController: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        view.endEditing(true)
+        guard let mode = SettingsViewModel.SettingsCellMode(rawValue: indexPath.item) else {
+            fatalError("Index path is out of bounds")
+        }
+        
+        switch mode {
+        case .serverSettings:
+            open(.nodeSettings, by: .push)
+        case .password:
+            open(.choosePassword(mode: ChoosePasswordViewController.Mode.resetPassword), by: .present)
+        default:
+            break
+        }
     }
 }
 
