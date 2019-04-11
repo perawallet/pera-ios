@@ -9,6 +9,7 @@
 import UIKit
 
 protocol NodeSettingsViewDelegate: class {
+    
 }
 
 class NodeSettingsView: BaseView {

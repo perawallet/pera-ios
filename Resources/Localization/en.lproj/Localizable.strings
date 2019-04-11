@@ -190,3 +190,7 @@
 "settings-local-authentication" = "Enable FaceID/Touch ID";
 "settings-language" = "Language";
 "settings-language-english" = "English";
+
+// MARK: NodeSettings
+"node-settings-title" = "Server/Node Settings";
+"node-settings-subtitle" = "Slide to connect to the server/node you’d like.";

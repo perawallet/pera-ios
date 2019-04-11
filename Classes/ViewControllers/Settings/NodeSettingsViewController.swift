@@ -18,6 +18,8 @@ class NodeSettingsViewController: BaseViewController {
         bottomImage: img("icon-contacts-empty")
     )
     
+    private lazy var nodeSettingsView = NodeSettingsView()
+    
     // MARK: Setup
     
     override func configureNavigationBarAppearance() {
@@ -34,12 +36,19 @@ class NodeSettingsViewController: BaseViewController {
     override func configureAppearance() {
         super.configureAppearance()
         
-        title = "contacts-title".localized
+        title = "node-settings-title".localized
     }
     
     // MARK: Layout
     
     override func prepareLayout() {
+        view.addSubview(nodeSettingsView)
+        
+        nodeSettingsView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        
+        nodeSettingsView.collectionView.contentState = .empty(self.emptyStateView)
         
     }
 }
