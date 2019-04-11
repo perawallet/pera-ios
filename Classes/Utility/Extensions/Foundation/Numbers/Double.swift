@@ -10,6 +10,6 @@ import Foundation
 
 extension Double {
     var toMicroAlgos: Int64 {
-        return Int64(algosInMicroAlgos) * Int64(self)
+        return Int64(Double(algosInMicroAlgos) * self)
     }
 }

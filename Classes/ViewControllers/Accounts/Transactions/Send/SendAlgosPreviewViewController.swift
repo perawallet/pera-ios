@@ -139,7 +139,7 @@ extension SendAlgosPreviewViewController: SendAlgosPreviewViewDelegate {
         let transactionDraft = TransactionDraft(
             from: self.transaction.fromAccount,
             to: toAccount,
-            amount: Int64(self.transaction.amount),
+            amount: Int64(self.transaction.amount.toMicroAlgos),
             transactionParams: params)
         
         self.api?.sendTransaction(with: transactionDraft, then: { transactionIdResponse in
