@@ -13,7 +13,7 @@ class ReceiveAlgosPreviewViewController: BaseScrollViewController {
     // MARK: Components
     
     private lazy var receiveAlgosPreviewView: ReceiveAlgosPreviewView = {
-        let view = ReceiveAlgosPreviewView(address: account.address)
+        let view = ReceiveAlgosPreviewView(address: account.address, amount: Int64(transaction.amount))
         return view
     }()
     

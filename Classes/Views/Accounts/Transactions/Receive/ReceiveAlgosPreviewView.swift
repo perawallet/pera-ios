@@ -28,16 +28,19 @@ class ReceiveAlgosPreviewView: ReceiveAlgosView {
     // MARK: Components
     
     private let address: String
+    private let amount: Int64
     
     private(set) lazy var qrView: QRView = {
-        let qrText = QRText(mode: .algosReceive, text: address)
+        let qrText = QRText(mode: .algosReceive, text: address, amount: amount)
+        
         return QRView(qrText: qrText)
     }()
     
     private(set) lazy var shareButton = MainButton(title: "title-share-big".localized)
     
-    init(address: String) {
+    init(address: String, amount: Int64) {
         self.address = address
+        self.amount = amount
         
         super.init(frame: .zero)
     }
