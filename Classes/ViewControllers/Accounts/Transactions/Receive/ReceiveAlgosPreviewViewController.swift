@@ -39,7 +39,7 @@ class ReceiveAlgosPreviewViewController: BaseScrollViewController {
         title = "receive-algos-title".localized
         
         receiveAlgosPreviewView.algosInputView.inputTextField.text = "\(transaction.amount)"
-        receiveAlgosPreviewView.accountSelectionView.inputTextField.text = transaction.accountName
+        receiveAlgosPreviewView.accountSelectionView.inputTextField.text = ""
     }
     
     override func linkInteractors() {

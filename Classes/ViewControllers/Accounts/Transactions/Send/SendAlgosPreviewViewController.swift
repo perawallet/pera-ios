@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SVProgressHUD
 
 protocol SendAlgosPreviewViewControllerDelegate: class {
     
@@ -22,11 +23,13 @@ class SendAlgosPreviewViewController: BaseViewController {
         return view
     }()
     
-    private let transaction: Transaction
+    private var transaction: Transaction
     
     private let receiver: AlgosReceiverState
     
     weak var delegate: SendAlgosPreviewViewControllerDelegate?
+    
+    var transactionParams: TransactionParams?
     
     // MARK: Initialization
     
@@ -47,11 +50,26 @@ class SendAlgosPreviewViewController: BaseViewController {
         title = "send-algos-title".localized
         
         sendAlgosPreviewView.algosInputView.inputTextField.text = "\(transaction.amount)"
-        sendAlgosPreviewView.accountSelectionView.inputTextField.text = transaction.accountName
+        sendAlgosPreviewView.accountSelectionView.inputTextField.text = transaction.fromAccount.name
         sendAlgosPreviewView.transactionReceiverView.state = receiver
         
-        // TODO: Display proper fee
-        sendAlgosPreviewView.feeInformationView.detailLabel.text = "1.24"
+        self.updateFeeLayout()
+        
+        SVProgressHUD.show(withStatus: "title-loading".localized)
+        api?.getTransactionParams(completion: { response in
+            switch response {
+            case let .failure(error):
+                print(error)
+                
+            case let .success(params):
+                self.transactionParams = params
+                self.transaction.fee = params.fee
+                
+                self.updateFeeLayout()
+            }
+            
+            SVProgressHUD.dismiss()
+        })
     }
     
     override func linkInteractors() {
@@ -72,6 +90,12 @@ class SendAlgosPreviewViewController: BaseViewController {
             make.bottom.safeEqualToBottom(of: self)
         }
     }
+    
+    fileprivate func updateFeeLayout() {
+        if let fee = transaction.fee {
+            sendAlgosPreviewView.feeInformationView.detailLabel.text = "\(fee.toAlgos)"
+        }
+    }
 }
 
 // MARK: SendAlgosPreviewViewDelegate
@@ -79,14 +103,62 @@ class SendAlgosPreviewViewController: BaseViewController {
 extension SendAlgosPreviewViewController: SendAlgosPreviewViewDelegate {
     
     func sendAlgosPreviewViewDidTapSendButton(_ sendAlgosView: SendAlgosView) {
-        // TODO: Complete transctions
+        if let params = self.transactionParams {
+            sendTransaction(with: params)
+        } else {
+            api?.getTransactionParams { response in
+                switch response {
+                case let .failure(error):
+                    print(error)
+                    
+                case let .success(params):
+                    self.transaction.fee = params.fee
+                    self.sendTransaction(with: params)
+                }
+            }
+        }
+    }
+    
+    fileprivate func sendTransaction(with params: TransactionParams) {
+        let toAccount: Account
         
-        let sendAlgosSuccessViewController = open(
-            .sendAlgosSuccess(transaction: transaction, receiver: receiver),
-            by: .present
-        ) as? SendAlgosSuccessViewController
+        switch receiver {
+        case let .address(address):
+            toAccount = Account(address: address)
+            
+        case let .contact(contact):
+            guard let address = contact.address else {
+                return
+            }
+            
+            toAccount = Account(address: address)
+        case .initial:
+            return
+        }
         
-        sendAlgosSuccessViewController?.delegate = self
+        let transactionDraft = TransactionDraft(
+            from: self.transaction.fromAccount,
+            to: toAccount,
+            amount: Int64(self.transaction.amount.toMicroAlgos),
+            transactionParams: params)
+        
+        self.api?.sendTransaction(with: transactionDraft, then: { transactionIdResponse in
+            switch transactionIdResponse {
+            case let .success(transactionId):
+                
+                self.transaction.identifier = transactionId.identifier
+                
+                let sendAlgosSuccessViewController = self.open(
+                    .sendAlgosSuccess(transaction: self.transaction, receiver: self.receiver),
+                    by: .present
+                    ) as? SendAlgosSuccessViewController
+                
+                sendAlgosSuccessViewController?.delegate = self
+                
+            case let .failure(error):
+                print(error)
+            }
+        })
     }
 }
 

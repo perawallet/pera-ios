@@ -119,17 +119,14 @@ class ReceiveAlgosViewController: BaseViewController {
         
         view.endEditing(true)
         
-        // TODO: Set transaction object properly.
-        
         let transaction = Transaction(
-            identifier: "123123",
-            accountName: accountName,
-            date: Date(),
+            fromAccount: Account(address: selectedAccount.address),
             amount: amount,
-            title: "Title"
+            identifier: nil,
+            fee: nil
         )
         
-        open(.receiveAlgosPreview(transaction: transaction, account: selectedAccount), by: .push)
+        open(.receiveAlgosPreview(transaction: transaction), by: .push)
     }
     
     private func isTransactionValid() -> Bool {

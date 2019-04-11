@@ -26,6 +26,7 @@
 "title-receive" = "RECEIVE";
 "title-preview" = "PREVIEW";
 "title-done" = "DONE";
+"title-loading" = "Loading";
 
 // MARK: Tabbar
 
@@ -183,4 +184,3 @@
 // MARK: Settings
 
 "settings-title" = "Settings";
-
