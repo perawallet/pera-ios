@@ -32,7 +32,7 @@ class AlgosInputView: BaseView {
         let textField = UITextField()
         textField.textColor = SharedColors.black
         textField.tintColor = SharedColors.darkGray
-        textField.keyboardType = .numberPad
+        textField.keyboardType = .decimalPad
         textField.font = UIFont.font(.opensans, withWeight: .bold(size: 40.0))
         textField.attributedPlaceholder = NSAttributedString(
             string: "0.00",
