@@ -12,12 +12,6 @@ class NodeSettingsViewController: BaseViewController {
     
     // MARK: Components
     
-    private lazy var emptyStateView = EmptyStateView(
-        title: "contacts-empty-text".localized,
-        topImage: img("icon-contacts-empty"),
-        bottomImage: img("icon-contacts-empty")
-    )
-    
     private lazy var nodeSettingsView = NodeSettingsView()
     
     // MARK: Setup
@@ -47,8 +41,5 @@ class NodeSettingsViewController: BaseViewController {
         nodeSettingsView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-        
-        nodeSettingsView.collectionView.contentState = .empty(self.emptyStateView)
-        
     }
 }

@@ -44,8 +44,6 @@ class NodeSettingsView: BaseView {
         return collectionView
     }()
     
-    private lazy var contentStateView = ContentStateView()
-    
     weak var delegate: NodeSettingsViewDelegate?
     
     // MARK: Setup
@@ -58,7 +56,6 @@ class NodeSettingsView: BaseView {
     override func prepareLayout() {
         setupHeaderViewLayout()
         setupCollectionViewLayout()
-        setupContentStateView()
     }
     
     private func setupHeaderViewLayout() {
@@ -79,9 +76,5 @@ class NodeSettingsView: BaseView {
             make.leading.trailing.equalToSuperview()
             make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom)
         }
-    }
-    
-    private func setupContentStateView() {
-        collectionView.backgroundView = contentStateView
     }
 }
