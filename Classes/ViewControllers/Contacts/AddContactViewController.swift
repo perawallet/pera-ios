@@ -17,7 +17,7 @@ class AddContactViewController: BaseScrollViewController {
 
     // MARK: Components
     
-    private lazy var addContactView: AddContactView = {
+    private(set) lazy var addContactView: AddContactView = {
         let view = AddContactView()
         return view
     }()

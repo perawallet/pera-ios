@@ -48,7 +48,7 @@ class Session: Storable {
         }
     }
     
-    struct Cache {
+    enum Cache {
         static var configuration: ApplicationConfiguration?
     }
     

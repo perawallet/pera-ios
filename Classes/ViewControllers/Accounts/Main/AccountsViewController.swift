@@ -89,6 +89,7 @@ class AccountsViewController: BaseViewController {
     }
     
     override func linkInteractors() {
+        accountsView.delegate = self
         transactionHistoryDataSource.delegate = self
         accountsView.transactionHistoryCollectionView.delegate = transactionHistoryLayoutBuilder
         accountsView.transactionHistoryCollectionView.dataSource = transactionHistoryDataSource
@@ -145,7 +146,7 @@ extension AccountsViewController {
     
     private func presentAccountList() {
         let accountListViewController = open(
-            .accountList,
+            .accountList(mode: .addable),
             by: .customPresent(
                 presentationStyle: .custom,
                 transitionStyle: nil,
@@ -218,39 +219,15 @@ extension AccountsViewController: TransactionHistoryDataSourceDelegate {
     }
 }
 
-// MARK: - AccountsViewDelegate
+// MARK: AccountsViewDelegate
+
 extension AccountsViewController: AccountsViewDelegate {
+    
     func accountsViewDidTapSendButton(_ accountsView: AccountsView) {
-        
+        open(.sendAlgos(receiver: .initial), by: .push)
     }
     
     func accountsViewDidTapReceiveButton(_ accountsView: AccountsView) {
-//        guard let fromAccount = selectedAccount else {
-//            return
-//        }
-//
-//        let toAccount = Account(address: "CRTN7UBJ6LI66HOTKF7CQH5TA24UYK44RPBRBUNMGONVBWZ7OQ2E5WK2NU")
-//
-//        api?.getTransactionParams { paramsResponse in
-//            switch paramsResponse {
-//            case .success(let transactionParams):
-//                let transactionDraft = TransactionDraft(
-//                    from: fromAccount,
-//                    to: toAccount,
-//                    amount: Int64(5000),
-//                    transactionParams: transactionParams)
-//
-//                self.api?.sendTransaction(with: transactionDraft, then: { transactionResponse in
-//                    switch transactionResponse {
-//                    case .success(let transaction):
-//                        print(transaction.identifier)
-//                    case .failure(let error):
-//                        print(error)
-//                    }
-//                })
-//            case .failure(let error):
-//                print(error)
-//            }
-//        }
+        open(.receiveAlgos, by: .push)
     }
 }

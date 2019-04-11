@@ -21,11 +21,17 @@ enum Screen {
     case qrGenerator(text: String, mode: QRMode)
     case home
     case options
-    case accountList
+    case accountList(mode: AccountListMode)
     case editAccount(account: Account)
+    case contacts
     case addContact(mode: AddContactViewController.Mode)
     case contactDetail(contact: Contact)
     case contactQRDisplay(contact: Contact)
+    case sendAlgos(receiver: AlgosReceiverState)
+    case sendAlgosPreview(transaction: Transaction, receiver: AlgosReceiverState)
+    case sendAlgosSuccess(transaction: Transaction, receiver: AlgosReceiverState)
+    case receiveAlgos
+    case receiveAlgosPreview(transaction: Transaction)
 }
 
 extension Screen {
