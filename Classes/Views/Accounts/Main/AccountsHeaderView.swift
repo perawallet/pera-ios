@@ -47,7 +47,7 @@ class AccountsHeaderView: BaseView {
         UILabel()
             .withAlignment(.center)
             .withTextColor(SharedColors.black)
-            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 40.0)))
+            .withFont(UIFont.font(.opensans, withWeight: .bold(size: 40.0)))
             .withText("0.00")
     }()
     

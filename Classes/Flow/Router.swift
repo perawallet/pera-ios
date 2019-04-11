@@ -169,18 +169,30 @@ class Router {
             viewController = qrCreationController
         case .home:
             viewController = TabBarController(configuration: configuration)
-        case .accountList:
-            viewController = AccountListViewController(configuration: configuration)
+        case let .accountList(mode):
+            viewController = AccountListViewController(mode: mode, configuration: configuration)
         case .options:
             viewController = OptionsViewController(configuration: configuration)
         case .editAccount(let account):
             viewController = EditAccountViewController(account: account, configuration: configuration)
+        case .contacts:
+            viewController = ContactsViewController(configuration: configuration)
         case let .addContact(mode):
             viewController = AddContactViewController(mode: mode, configuration: configuration)
         case let .contactDetail(contact):
             viewController = ContactInfoViewController(contact: contact, configuration: configuration)
         case let .contactQRDisplay(contact):
             viewController = ContactQRDisplayViewController(contact: contact, configuration: configuration)
+        case let .sendAlgos(receiver):
+            viewController = SendAlgosViewController(receiver: receiver, configuration: configuration)
+        case let .sendAlgosPreview(transaction, receiver):
+            viewController = SendAlgosPreviewViewController(transaction: transaction, receiver: receiver, configuration: configuration)
+        case let .sendAlgosSuccess(transaction, receiver):
+            viewController = SendAlgosSuccessViewController(transaction: transaction, receiver: receiver, configuration: configuration)
+        case .receiveAlgos:
+            viewController = ReceiveAlgosViewController(configuration: configuration)
+        case let .receiveAlgosPreview(transaction):
+            viewController = ReceiveAlgosPreviewViewController(transaction: transaction, configuration: configuration)
         }
         
         return viewController as? T

@@ -62,7 +62,7 @@ class ContactContextView: BaseView {
         UIButton(type: .custom).withImage(img("icon-qr-gray"))
     }()
     
-    private lazy var separatorView: UIView = {
+    private(set) lazy var separatorView: UIView = {
         let view = UIView()
         view.backgroundColor = Colors.separatorColor
         return view

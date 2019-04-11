@@ -16,6 +16,7 @@
 "title-cancel" = "CANCEL";
 "title-remove" = "REMOVE";
 "title-share" = "Share";
+"title-share-big" = "SHARE";
 "title-cancel-lowercased" = "Cancel";
 "title-go-to-settings" = "Go To Settings";
 "title-error" = "Error";
@@ -23,6 +24,8 @@
 "title-close" = "CLOSE";
 "title-send" = "SEND";
 "title-receive" = "RECEIVE";
+"title-preview" = "PREVIEW";
+"title-done" = "DONE";
 
 // MARK: Tabbar
 
@@ -119,6 +122,24 @@
 "tranaction-empty-text" = "No Transactions Found";
 "accounts-algos-available-title" = "Algos Available";
 "accounts-transaction-history-title" = "Transaction History";
+
+// MARK: Algos Send
+
+"send-algos-title" = "Send Algos";
+"send-algos-from" = "From:";
+"send-algos-select" = "Select Account";
+"send-algos-to" = "To:";
+"send-algos-fee" = "Fee:";
+"send-algos-amount" = "Amount:";
+"send-algos-transaction-id" = "Transaction ID:";
+"send-algos-more" = "SEND MORE";
+"send-algos-sent-title" = "Algos Sent!";
+"send-algos-alert-title" = "Wrong Transaction";
+"send-algos-alert-message" = "Please fill the fields.";
+
+// MARK: Algos Receive
+
+"receive-algos-title" = "Receive Algos";
 
 // MARK: Account List
 

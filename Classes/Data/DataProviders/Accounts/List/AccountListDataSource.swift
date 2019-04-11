@@ -14,7 +14,11 @@ class AccountListDataSource: NSObject, UICollectionViewDataSource {
     
     private(set) var accounts = [Account]()
     
-    override init() {
+    private let mode: AccountListMode
+    
+    init(mode: AccountListMode) {
+        self.mode = mode
+        
         super.init()
         
         guard let user = UIApplication.shared.appConfiguration?.session.authenticatedUser else {
@@ -29,24 +33,30 @@ class AccountListDataSource: NSObject, UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return accounts.count + 1
+        if mode == .addable {
+            return accounts.count + 1
+        }
+        
+        return accounts.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if indexPath.row == accounts.count {
-            guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: AccountsTotalDisplayCell.reusableIdentifier,
-                for: indexPath) as? AccountsTotalDisplayCell else {
-                    fatalError("Index path is out of bounds")
+        if mode == .addable {
+            if indexPath.row == accounts.count {
+                guard let cell = collectionView.dequeueReusableCell(
+                    withReuseIdentifier: AccountsTotalDisplayCell.reusableIdentifier,
+                    for: indexPath) as? AccountsTotalDisplayCell else {
+                        fatalError("Index path is out of bounds")
+                }
+                
+                let totalAmount = accounts.reduce(0) {
+                    $0 + $1.amount
+                }
+                
+                viewModel.configure(cell, with: "\(totalAmount)")
+                
+                return cell
             }
-            
-            let totalAmount = accounts.reduce(0) {
-                $0 + $1.amount
-            }
-            
-            viewModel.configure(cell, with: "\(totalAmount)")
-            
-            return cell
         }
         
         guard let cell = collectionView.dequeueReusableCell(
