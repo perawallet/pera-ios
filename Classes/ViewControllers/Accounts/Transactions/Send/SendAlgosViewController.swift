@@ -279,6 +279,12 @@ extension SendAlgosViewController: QRScannerViewControllerDelegate {
     func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText) {
         sendAlgosView.transactionReceiverView.state = .address(qrText.text)
         
+        if let receivedAmount = qrText.amount?.toAlgos {
+            amount = receivedAmount
+            
+            sendAlgosView.algosInputView.inputTextField.text = "\(amount)"
+        }
+        
         receiver = .address(qrText.text)
     }
     
