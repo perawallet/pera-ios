@@ -13,18 +13,16 @@ class ReceiveAlgosPreviewViewController: BaseScrollViewController {
     // MARK: Components
     
     private lazy var receiveAlgosPreviewView: ReceiveAlgosPreviewView = {
-        let view = ReceiveAlgosPreviewView(address: account.address, amount: Int64(transaction.amount))
+        let view = ReceiveAlgosPreviewView(address: transaction.fromAccount.address, amount: Int64(transaction.amount))
         return view
     }()
     
     private let transaction: Transaction
-    private let account: Account
     
     // MARK: Initialization
     
-    init(transaction: Transaction, account: Account, configuration: ViewControllerConfiguration) {
+    init(transaction: Transaction, configuration: ViewControllerConfiguration) {
         self.transaction = transaction
-        self.account = account
         
         super.init(configuration: configuration)
         
@@ -39,7 +37,7 @@ class ReceiveAlgosPreviewViewController: BaseScrollViewController {
         title = "receive-algos-title".localized
         
         receiveAlgosPreviewView.algosInputView.inputTextField.text = "\(transaction.amount)"
-        receiveAlgosPreviewView.accountSelectionView.inputTextField.text = ""
+        receiveAlgosPreviewView.accountSelectionView.inputTextField.text = transaction.fromAccount.name
     }
     
     override func linkInteractors() {

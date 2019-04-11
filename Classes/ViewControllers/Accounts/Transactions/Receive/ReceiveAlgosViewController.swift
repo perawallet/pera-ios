@@ -112,15 +112,14 @@ class ReceiveAlgosViewController: BaseViewController {
             displaySimpleAlertWith(title: "send-algos-alert-title".localized, message: "send-algos-alert-message".localized)
         }
         
-        guard let selectedAccount = selectedAccount,
-            let accountName = selectedAccount.name else {
+        guard let selectedAccount = selectedAccount else {
             return
         }
         
         view.endEditing(true)
         
         let transaction = Transaction(
-            fromAccount: Account(address: selectedAccount.address),
+            fromAccount: selectedAccount,
             amount: amount,
             identifier: nil,
             fee: nil
