@@ -18,7 +18,7 @@ class NodeSettingsViewController: BaseViewController {
     
     override func configureNavigationBarAppearance() {
         let addBarButtonItem = ALGBarButtonItem(kind: .add) {
-            
+            self.open(.addNode, by: .push)
         }
         
         rightBarButtonItems = [addBarButtonItem]

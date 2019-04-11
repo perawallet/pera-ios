@@ -194,3 +194,8 @@
 // MARK: NodeSettings
 "node-settings-title" = "Server/Node Settings";
 "node-settings-subtitle" = "Slide to connect to the server/node you’d like.";
+"node-settings-enter-node-address" = "Enter node’s adress: ";
+"node-settings-api-key" = "API Key: ";
+"node-settings-placeholder-address" = "Address";
+"node-settings-placeholder-api-key" = "key";
+"node-settings-test-button-title" = "TEST";

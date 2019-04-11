@@ -59,6 +59,8 @@
 		17BEC4602248C81E00AAF370 /* PassPhraseVerifyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17BEC45F2248C81E00AAF370 /* PassPhraseVerifyView.swift */; };
 		17BEC4632248CD3C00AAF370 /* LeftAlignedCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17BEC4622248CD3C00AAF370 /* LeftAlignedCollectionViewFlowLayout.swift */; };
 		17BEC4662248D39900AAF370 /* PassPhraseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17BEC4652248D39900AAF370 /* PassPhraseCollectionViewCell.swift */; };
+		17D04F46225F64B60051BC43 /* AddNodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D04F45225F64B60051BC43 /* AddNodeViewController.swift */; };
+		17D04F48225F697E0051BC43 /* AddNodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D04F47225F697E0051BC43 /* AddNodeView.swift */; };
 		17D50AA1225C755E00CA9C6E /* ApplicationConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D50AA0225C755E00CA9C6E /* ApplicationConfiguration.swift */; };
 		17E2E3C5225210390065957A /* Notification.Name+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E2E3C4225210390065957A /* Notification.Name+Additions.swift */; };
 		17E2E3C722524E4C0065957A /* QRSelectableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E2E3C622524E4C0065957A /* QRSelectableLabel.swift */; };
@@ -287,6 +289,8 @@
 		17BEC45F2248C81E00AAF370 /* PassPhraseVerifyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassPhraseVerifyView.swift; sourceTree = "<group>"; };
 		17BEC4622248CD3C00AAF370 /* LeftAlignedCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftAlignedCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
 		17BEC4652248D39900AAF370 /* PassPhraseCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassPhraseCollectionViewCell.swift; sourceTree = "<group>"; };
+		17D04F45225F64B60051BC43 /* AddNodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNodeViewController.swift; sourceTree = "<group>"; };
+		17D04F47225F697E0051BC43 /* AddNodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNodeView.swift; sourceTree = "<group>"; };
 		17D50AA0225C755E00CA9C6E /* ApplicationConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationConfiguration.swift; sourceTree = "<group>"; };
 		17E2E3C4225210390065957A /* Notification.Name+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification.Name+Additions.swift"; sourceTree = "<group>"; };
 		17E2E3C622524E4C0065957A /* QRSelectableLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRSelectableLabel.swift; sourceTree = "<group>"; };
@@ -498,6 +502,7 @@
 				171111B5225E093400DAF55C /* SettingsToggleContextView.swift */,
 				179B93D7225E454100DD03E9 /* NodeSettingsView.swift */,
 				179B93D9225E460500DD03E9 /* NodeSettingsHeaderView.swift */,
+				17D04F47225F697E0051BC43 /* AddNodeView.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -1870,6 +1875,7 @@
 			children = (
 				2BF5317B224AA89B00A7455F /* SettingsViewController.swift */,
 				171111B9225E34E400DAF55C /* NodeSettingsViewController.swift */,
+				17D04F45225F64B60051BC43 /* AddNodeViewController.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -2090,6 +2096,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				17D04F46225F64B60051BC43 /* AddNodeViewController.swift in Sources */,
 				2B8954B92243FCFA00D6D068 /* AdaptiveLayout.swift in Sources */,
 				173DA1EB2255F7EF00378A82 /* TransactionDraft.swift in Sources */,
 				2BF5317E224AA8B700A7455F /* ContactsViewController.swift in Sources */,
@@ -2109,6 +2116,7 @@
 				2B8954B72243FCB100D6D068 /* Notification+Keyboard.swift in Sources */,
 				2B8954B62243FBD600D6D068 /* NotificationCenter+Additions.swift in Sources */,
 				171111B4225E091A00DAF55C /* SettingsToggleCell.swift in Sources */,
+				17D04F48225F697E0051BC43 /* AddNodeView.swift in Sources */,
 				2B56F7D6225B3C1D00E58737 /* SendAlgosViewController.swift in Sources */,
 				2B25BB4B225EAD600092C972 /* ReceiveAlgosPreviewViewController.swift in Sources */,
 				1761B3CB224A39D400C6BA47 /* PassPhraseViewModel.swift in Sources */,

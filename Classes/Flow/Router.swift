@@ -195,6 +195,8 @@ class Router {
             viewController = ReceiveAlgosPreviewViewController(transaction: transaction, configuration: configuration)
         case .nodeSettings:
             viewController = NodeSettingsViewController(configuration: configuration)
+        case .addNode:
+            viewController = AddNodeViewController(configuration: configuration)
         }
         
         return viewController as? T
