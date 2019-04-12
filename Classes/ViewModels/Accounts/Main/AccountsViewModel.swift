@@ -16,18 +16,21 @@ class AccountsViewModel {
     }
     
     func configure(_ cell: TransactionHistoryCell, with transaction: Transaction) {
-        cell.contextView.transactionDetailLabel.text = transaction.identifier
-        
-        if transaction.amount > 0 {
-            cell.contextView.transactionAmountView.mode = .positive(transaction.amount)
-        } else {
-            cell.contextView.transactionAmountView.mode = .negative(-transaction.amount)
-        }
+        cell.contextView.transactionDetailLabel.text = transaction.id.identifier
         
         let formattedDate = Date().toFormat("MMMM dd, yyyy")
         
         cell.contextView.dateLabel.text = formattedDate
-        
         cell.contextView.accountNamelabel.text = ""
+        
+        guard let payment = transaction.payment else {
+            return
+        }
+        
+        if payment.amount > 0 {
+            cell.contextView.transactionAmountView.mode = .positive(payment.amount)
+        } else {
+            cell.contextView.transactionAmountView.mode = .negative(-payment.amount)
+        }
     }
 }
