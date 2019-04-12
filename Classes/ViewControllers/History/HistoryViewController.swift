@@ -112,6 +112,17 @@ extension HistoryViewController: AccountListViewControllerDelegate {
     func accountListViewController(_ viewController: AccountListViewController, didSelectAccount account: Account) {
         historyView.accountSelectionView.detailLabel.text = account.name
         
+        historyView.accountSelectionView.rightInputAccessoryButton.isHidden = true
+        historyView.accountAmountView.isHidden = false
+        
+        if account.amount > 0 {
+            historyView.accountAmountView.mode = .positive(account.amount.toAlgos)
+        } else if account.amount == 0 {
+            historyView.accountAmountView.mode = .normal(0.0)
+        } else {
+            historyView.accountAmountView.mode = .negative(-account.amount.toAlgos)
+        }
+        
         selectedAccount = account
     }
 }
