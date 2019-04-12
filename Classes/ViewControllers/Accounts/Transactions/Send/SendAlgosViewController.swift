@@ -142,19 +142,11 @@ class SendAlgosViewController: BaseScrollViewController {
             displaySimpleAlertWith(title: "send-algos-alert-title".localized, message: "send-algos-alert-message".localized)
         }
         
-        guard let selectedAccountName = selectedAccount?.name else {
+        guard let fromAccount = selectedAccount else {
             return
         }
         
-        // TODO: Set transaction object properly.
-        
-        let transaction = Transaction(
-            identifier: "123123",
-            accountName: selectedAccountName,
-            date: Date(),
-            amount: amount,
-            title: "Title"
-        )
+        let transaction = Transaction(fromAccount: fromAccount, amount: amount, identifier: nil, fee: nil)
         
         let sendAlgosPreviewViewController = open(
             .sendAlgosPreview(transaction: transaction, receiver: receiver),
@@ -287,11 +279,17 @@ extension SendAlgosViewController: QRScannerViewControllerDelegate {
     func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText) {
         sendAlgosView.transactionReceiverView.state = .address(qrText.text)
         
+        if let receivedAmount = qrText.amount?.toAlgos {
+            amount = receivedAmount
+            
+            sendAlgosView.algosInputView.inputTextField.text = "\(amount)"
+        }
+        
         receiver = .address(qrText.text)
     }
     
     func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError) {
-        // TODO: Fail state
+        displaySimpleAlertWith(title: "title-error".localized, message: "qr-scan-should-scan-valid-qr".localized)
     }
 }
 

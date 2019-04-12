@@ -19,8 +19,6 @@ public final class Contact: NSManagedObject, Mappable {
         case name = "name"
     }
     
-    private(set) var transactions: [Transaction] = []
-    
     @NSManaged public var identifier: String?
     @NSManaged public var address: String?
     @NSManaged public var image: Data?
@@ -54,39 +52,6 @@ public final class Contact: NSManagedObject, Mappable {
     
     func encoded() -> Data? {
         return try? JSONEncoder().encode(self)
-    }
-}
-
-// MARK: API
-
-extension Contact {
-    
-    func addTransaction(_ transaction: Transaction) {
-        transactions.append(transaction)
-    }
-    
-    func removeTransaction(_ transaction: Transaction) {
-        guard let index = index(of: transaction) else {
-            return
-        }
-        
-        transactions.remove(at: index)
-    }
-    
-    func index(of transaction: Transaction) -> Int? {
-        guard let index = transactions.firstIndex(of: transaction) else {
-            return nil
-        }
-        
-        return index
-    }
-    
-    func transaction(at index: Int) -> Transaction? {
-        guard index < transactions.count else {
-            return nil
-        }
-        
-        return transactions[index]
     }
 }
 

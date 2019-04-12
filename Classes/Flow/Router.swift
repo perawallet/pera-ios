@@ -177,6 +177,7 @@ class Router {
             viewController = EditAccountViewController(account: account, configuration: configuration)
         case .contacts:
             viewController = ContactsViewController(configuration: configuration)
+            viewController.hidesBottomBarWhenPushed = true
         case let .addContact(mode):
             viewController = AddContactViewController(mode: mode, configuration: configuration)
         case let .contactDetail(contact):

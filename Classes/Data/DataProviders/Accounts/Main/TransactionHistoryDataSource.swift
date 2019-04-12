@@ -30,18 +30,6 @@ class TransactionHistoryDataSource: NSObject, UICollectionViewDataSource {
     // TODO: Might be renamed to load data after sdk integration?
     
     func setupMockData() {
-        for index in 0...20 {
-            let transaction = Transaction(
-                identifier: "\(index)",
-                accountName: "Account name \(index)",
-                date: Date(),
-                amount: amounts[index],
-                title: "This is title \(index)"
-            )
-            
-            transactions.append(transaction)
-        }
-        
         delegate?.transactionHistoryDataSource(self, didFetch: transactions)
     }
     
