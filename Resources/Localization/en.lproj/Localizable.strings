@@ -197,7 +197,7 @@
 "node-settings-title" = "Server/Node Settings";
 "node-settings-subtitle" = "Slide to connect to the server/node you’d like.";
 "node-settings-enter-node-name" = "Enter node's name: ";
-"node-settings-enter-node-address" = "Enter node's adress: ";
+"node-settings-enter-node-address" = "Enter node's address: ";
 "node-settings-api-key" = "API Key: ";
 "node-settings-placeholder-name" = "Name";
 "node-settings-placeholder-address" = "Address";
