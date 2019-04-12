@@ -124,7 +124,7 @@ class HistoryResultsView: BaseView {
         accountAmountView.snp.makeConstraints { make in
             make.leading.greaterThanOrEqualTo(accountNameLabel.snp.trailing).offset(layout.current.labelMinimumInset)
             make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.top.equalToSuperview().inset(layout.current.topInset)
+            make.centerY.equalTo(accountNameLabel)
         }
     }
     
@@ -184,5 +184,7 @@ class HistoryResultsView: BaseView {
             make.leading.trailing.bottom.equalToSuperview()
             make.top.equalTo(bottomSeparatorView.snp.bottom).offset(layout.current.collectionViewTopInset)
         }
+        
+        transactionHistoryCollectionView.backgroundView = contentStateView
     }
 }

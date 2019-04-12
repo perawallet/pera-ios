@@ -99,6 +99,7 @@
 		2B6ED959225F760F00787984 /* HistoryResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6ED958225F760F00787984 /* HistoryResultsView.swift */; };
 		2B6ED95B225F762800787984 /* HistoryResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6ED95A225F762800787984 /* HistoryResultsViewController.swift */; };
 		2B6ED95D22608FE700787984 /* HistoryDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6ED95C22608FE700787984 /* HistoryDraft.swift */; };
+		2B6ED9602260EE2100787984 /* HistoryResultsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6ED95F2260EE2100787984 /* HistoryResultsViewModel.swift */; };
 		2B7572A6225CA1E3009E0253 /* SendAlgosPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7572A5225CA1E3009E0253 /* SendAlgosPreviewView.swift */; };
 		2B7572A8225CA211009E0253 /* SendAlgosPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7572A7225CA211009E0253 /* SendAlgosPreviewViewController.swift */; };
 		2B7572AA225CC391009E0253 /* SendAlgosSuccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7572A9225CC391009E0253 /* SendAlgosSuccessViewController.swift */; };
@@ -321,6 +322,7 @@
 		2B6ED958225F760F00787984 /* HistoryResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryResultsView.swift; sourceTree = "<group>"; };
 		2B6ED95A225F762800787984 /* HistoryResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryResultsViewController.swift; sourceTree = "<group>"; };
 		2B6ED95C22608FE700787984 /* HistoryDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryDraft.swift; sourceTree = "<group>"; };
+		2B6ED95F2260EE2100787984 /* HistoryResultsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryResultsViewModel.swift; sourceTree = "<group>"; };
 		2B7572A5225CA1E3009E0253 /* SendAlgosPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendAlgosPreviewView.swift; sourceTree = "<group>"; };
 		2B7572A7225CA211009E0253 /* SendAlgosPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendAlgosPreviewViewController.swift; sourceTree = "<group>"; };
 		2B7572A9225CC391009E0253 /* SendAlgosSuccessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendAlgosSuccessViewController.swift; sourceTree = "<group>"; };
@@ -832,6 +834,14 @@
 			children = (
 				2B6ED956225F759400787984 /* HistoryView.swift */,
 				2B6ED958225F760F00787984 /* HistoryResultsView.swift */,
+			);
+			path = History;
+			sourceTree = "<group>";
+		};
+		2B6ED95E2260EE0F00787984 /* History */ = {
+			isa = PBXGroup;
+			children = (
+				2B6ED95F2260EE2100787984 /* HistoryResultsViewModel.swift */,
 			);
 			path = History;
 			sourceTree = "<group>";
@@ -1514,6 +1524,7 @@
 		2BD73A0E22412B5900B66EEF /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				2B6ED95E2260EE0F00787984 /* History */,
 				2B65B1FF22527B89001DB5BE /* Contacts */,
 				2B656E9C224BCAF60064A49B /* Accounts */,
 				2BD73A152241322D00B66EEF /* Authentication */,
@@ -2156,6 +2167,7 @@
 				2B8954B52243D7C400D6D068 /* AlertViewConfigurator.swift in Sources */,
 				2B8954A82243854400D6D068 /* AlertView.swift in Sources */,
 				2BF53165224A47E000A7455F /* CardModalPresentationController.swift in Sources */,
+				2B6ED9602260EE2100787984 /* HistoryResultsViewModel.swift in Sources */,
 				2BF34CBC223A8C460052CAD3 /* BaseCollectionViewCell.swift in Sources */,
 				2B6687122248DC7D009F21E7 /* BarButton.swift in Sources */,
 				2BD739F6223FF47900B66EEF /* NumpadNumericButton.swift in Sources */,

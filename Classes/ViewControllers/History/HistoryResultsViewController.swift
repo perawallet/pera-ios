@@ -26,6 +26,8 @@ class HistoryResultsViewController: BaseViewController {
         bottomImage: img("icon-transaction-empty-blue")
     )
     
+    private let viewModel = HistoryResultsViewModel()
+    
     private let draft: HistoryDraft
     
     // MARK: Initialization
@@ -47,9 +49,10 @@ class HistoryResultsViewController: BaseViewController {
         
         title = "history-title".localized
         
-        historyResultsView.accountNameLabel.text = draft.account.name
-        historyResultsView.startDateLabel.text = draft.startDate.toFormat("dd MMMM yyyy")
-        historyResultsView.endDateLabel.text = draft.endDate.toFormat("dd MMMM yyyy")
+        viewModel.configure(historyResultsView, with: draft)
+        
+        // TODO: Fetch transactions between dates for account. Remove below after fetched.
+        historyResultsView.transactionHistoryCollectionView.contentState = .empty(emptyStateView)
     }
     
     override func linkInteractors() {
