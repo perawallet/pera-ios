@@ -10,21 +10,74 @@ import UIKit
 
 class HistoryResultsViewController: BaseViewController {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+    private var transactionHistoryLayoutBuilder: TransactionHistoryLayoutBuilder
+    private var transactionHistoryDataSource: TransactionHistoryDataSource
+    
+    // MARK: Components
+    
+    private lazy var historyResultsView: HistoryResultsView = {
+        let view = HistoryResultsView()
+        return view
+    }()
+    
+    private lazy var emptyStateView = EmptyStateView(
+        title: "tranaction-empty-text".localized,
+        topImage: img("icon-transaction-empty-green"),
+        bottomImage: img("icon-transaction-empty-blue")
+    )
+    
+    private let draft: HistoryDraft
+    
+    // MARK: Initialization
+    
+    init(draft: HistoryDraft, configuration: ViewControllerConfiguration) {
+        self.draft = draft
+        transactionHistoryLayoutBuilder = TransactionHistoryLayoutBuilder()
+        transactionHistoryDataSource = TransactionHistoryDataSource()
+        
+        super.init(configuration: configuration)
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    // MARK: Setup
+    
+    override func configureAppearance() {
+        super.configureAppearance()
+        
+        title = "history-title".localized
     }
-    */
+    
+    override func linkInteractors() {
+        transactionHistoryDataSource.delegate = self
+        historyResultsView.transactionHistoryCollectionView.delegate = transactionHistoryLayoutBuilder
+        historyResultsView.transactionHistoryCollectionView.dataSource = transactionHistoryDataSource
+    }
+    
+    // MARK: Layout
+    
+    override func prepareLayout() {
+        setupHistoryResultsViewLayout()
+    }
+    
+    private func setupHistoryResultsViewLayout() {
+        view.addSubview(historyResultsView)
+        
+        historyResultsView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+    }
+}
 
+// MARK: TransactionHistoryDataSourceDelegate
+
+extension HistoryResultsViewController: TransactionHistoryDataSourceDelegate {
+    
+    func transactionHistoryDataSource(_ transactionHistoryDataSource: TransactionHistoryDataSource, didFetch transactions: [Transaction]) {
+        
+        if !transactions.isEmpty {
+            historyResultsView.transactionHistoryCollectionView.contentState = .none
+            return
+        }
+        
+        historyResultsView.transactionHistoryCollectionView.contentState = .empty(emptyStateView)
+    }
 }
