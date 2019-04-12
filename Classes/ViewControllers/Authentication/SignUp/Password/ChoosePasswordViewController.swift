@@ -67,6 +67,16 @@ class ChoosePasswordViewController: BaseViewController {
         
     }
     
+    override func configureNavigationBarAppearance() {
+        if mode == .resetPassword {
+            let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
+                self.dismissScreen()
+            }
+            
+            leftBarButtonItems = [closeBarButtonItem]
+        }
+    }
+    
     override func configureAppearance() {
         super.configureAppearance()
         
