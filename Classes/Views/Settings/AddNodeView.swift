@@ -80,6 +80,13 @@ class AddNodeView: BaseView {
     override func prepareLayout() {
         super.prepareLayout()
         
+        setupNameInputViewLayout()
+        setupAddressInputViewLayout()
+        setupTokenInputViewLayout()
+        setupTestButtonLayout()
+    }
+    
+    private func setupNameInputViewLayout() {
         addSubview(nameInputView)
         
         nameInputView.snp.makeConstraints { make in
@@ -91,7 +98,9 @@ class AddNodeView: BaseView {
         nameInputView.explanationLabel.snp.updateConstraints { make in
             make.top.equalToSuperview().inset(layout.current.labelTopInset)
         }
-        
+    }
+    
+    private func setupAddressInputViewLayout() {
         addSubview(addressInputView)
         
         addressInputView.snp.makeConstraints { make in
@@ -103,7 +112,9 @@ class AddNodeView: BaseView {
         addressInputView.explanationLabel.snp.updateConstraints { make in
             make.top.equalToSuperview().inset(layout.current.labelTopInset)
         }
-        
+    }
+    
+    private func setupTokenInputViewLayout() {
         addSubview(tokenInputView)
         
         tokenInputView.snp.makeConstraints { make in
@@ -115,13 +126,15 @@ class AddNodeView: BaseView {
         tokenInputView.explanationLabel.snp.updateConstraints { make in
             make.top.equalToSuperview().inset(layout.current.labelTopInset)
         }
-        
+    }
+    
+    private func setupTestButtonLayout() {
         addSubview(testButton)
         
         testButton.snp.makeConstraints { make in
+            make.top.greaterThanOrEqualTo(tokenInputView.snp.bottom).offset(layout.current.verticalOffset)
             make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).offset(-layout.current.verticalOffset)
             make.centerX.equalToSuperview()
         }
-        
     }
 }

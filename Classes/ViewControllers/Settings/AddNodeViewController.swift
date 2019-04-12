@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import SVProgressHUD
 
-class AddNodeViewController: BaseViewController {
+class AddNodeViewController: BaseScrollViewController {
     
     // MARK: Components
     
@@ -53,7 +53,9 @@ class AddNodeViewController: BaseViewController {
     // MARK: Layout
     
     override func prepareLayout() {
-        view.addSubview(addNodeView)
+        super.prepareLayout()
+        
+        contentView.addSubview(addNodeView)
         
         addNodeView.snp.makeConstraints { make in
             make.leading.trailing.top.equalToSuperview()
@@ -77,6 +79,12 @@ class AddNodeViewController: BaseViewController {
         let curve = notification.keyboardAnimationCurve
         let curveAnimationOption = UIView.AnimationOptions(rawValue: UInt(curve.rawValue >> 16))
         
+        if addNodeView.tokenInputView.frame.maxY > UIScreen.main.bounds.height - kbHeight - 76.0 {
+            scrollView.contentInset.bottom = kbHeight
+        } else {
+            contentViewBottomConstraint?.update(inset: kbHeight)
+        }
+        
         contentViewBottomConstraint?.update(inset: kbHeight)
         
         UIView.animate(
@@ -85,7 +93,7 @@ class AddNodeViewController: BaseViewController {
             options: [curveAnimationOption],
             animations: {
                 self.view.layoutIfNeeded()
-        },
+            },
             completion: nil
         )
     }
@@ -100,6 +108,8 @@ class AddNodeViewController: BaseViewController {
         let curve = notification.keyboardAnimationCurve
         let curveAnimationOption = UIView.AnimationOptions(rawValue: UInt(curve.rawValue >> 16))
         
+        scrollView.contentInset.bottom = 0.0
+        
         contentViewBottomConstraint?.update(inset: view.safeAreaBottom)
         
         UIView.animate(
@@ -108,7 +118,7 @@ class AddNodeViewController: BaseViewController {
             options: [curveAnimationOption],
             animations: {
                 self.view.layoutIfNeeded()
-        },
+            },
             completion: nil
         )
     }
