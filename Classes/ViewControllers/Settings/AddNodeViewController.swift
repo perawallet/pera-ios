@@ -137,7 +137,7 @@ class AddNodeViewController: BaseScrollViewController {
         
         let testDraft = NodeTestDraft(address: address, token: token)
         
-        let predicate = NSPredicate(format: "name = %@ AND address = %@ AND token = %@", name, address, token)
+        let predicate = NSPredicate(format: "address = %@", name, address, token)
         
         if Node.hasResult(entity: Node.entityName, with: predicate) {
             displaySimpleAlertWith(title: "title-error".localized, message: "node-settings-has-same-result".localized)

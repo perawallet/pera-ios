@@ -12,6 +12,7 @@ class User: Mappable {
     
     private(set) var accounts: [Account] = []
     fileprivate var defaultAccountAddress: String?
+    fileprivate(set) var defaultNode: String?
     
     init(accounts: [Account]) {
         self.accounts = accounts
@@ -74,6 +75,19 @@ extension User {
     func setDefaultAccount(_ account: Account) {
         self.defaultAccountAddress = account.address
         syncronize()
+    }
+    
+    func setDefaultNode(_ node: Node?) {
+        defer {
+            syncronize()
+        }
+        
+        guard let selectedNode = node else {
+            self.defaultNode = nil
+            return
+        }
+        
+        self.defaultNode = selectedNode.address
     }
     
     func defaultAccount() -> Account? {
