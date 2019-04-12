@@ -98,6 +98,7 @@
 		2B6ED957225F759400787984 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6ED956225F759400787984 /* HistoryView.swift */; };
 		2B6ED959225F760F00787984 /* HistoryResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6ED958225F760F00787984 /* HistoryResultsView.swift */; };
 		2B6ED95B225F762800787984 /* HistoryResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6ED95A225F762800787984 /* HistoryResultsViewController.swift */; };
+		2B6ED95D22608FE700787984 /* HistoryDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6ED95C22608FE700787984 /* HistoryDraft.swift */; };
 		2B7572A6225CA1E3009E0253 /* SendAlgosPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7572A5225CA1E3009E0253 /* SendAlgosPreviewView.swift */; };
 		2B7572A8225CA211009E0253 /* SendAlgosPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7572A7225CA211009E0253 /* SendAlgosPreviewViewController.swift */; };
 		2B7572AA225CC391009E0253 /* SendAlgosSuccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7572A9225CC391009E0253 /* SendAlgosSuccessViewController.swift */; };
@@ -319,6 +320,7 @@
 		2B6ED956225F759400787984 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
 		2B6ED958225F760F00787984 /* HistoryResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryResultsView.swift; sourceTree = "<group>"; };
 		2B6ED95A225F762800787984 /* HistoryResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryResultsViewController.swift; sourceTree = "<group>"; };
+		2B6ED95C22608FE700787984 /* HistoryDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryDraft.swift; sourceTree = "<group>"; };
 		2B7572A5225CA1E3009E0253 /* SendAlgosPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendAlgosPreviewView.swift; sourceTree = "<group>"; };
 		2B7572A7225CA211009E0253 /* SendAlgosPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendAlgosPreviewViewController.swift; sourceTree = "<group>"; };
 		2B7572A9225CC391009E0253 /* SendAlgosSuccessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendAlgosSuccessViewController.swift; sourceTree = "<group>"; };
@@ -531,6 +533,7 @@
 			children = (
 				17B7D8AA2240E19600A6FF9E /* AccountFetchDraft.swift */,
 				173DA1EA2255F7EF00378A82 /* TransactionDraft.swift */,
+				2B6ED95C22608FE700787984 /* HistoryDraft.swift */,
 			);
 			path = Drafts;
 			sourceTree = "<group>";
@@ -2240,6 +2243,7 @@
 				2BF71918224ED0C5001E8420 /* ContactInfoViewController.swift in Sources */,
 				2B8954A52242E7D800D6D068 /* AccountNameSetupView.swift in Sources */,
 				2B5DA9DC224D37A100EE41B4 /* PassphraseDisplayView.swift in Sources */,
+				2B6ED95D22608FE700787984 /* HistoryDraft.swift in Sources */,
 				2BF53157224A46A400A7455F /* ModalPresenter.swift in Sources */,
 				2BD739DD223F9E9F00B66EEF /* ChoosePasswordView.swift in Sources */,
 				2B8BE4F4223935DA005D8565 /* BaseView.swift in Sources */,

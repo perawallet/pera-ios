@@ -11,37 +11,45 @@ import UIKit
 protocol HistoryViewDelegate: class {
     
     func historyViewDidTapViewResultsButton(_ historyView: HistoryView)
-    func historyView(_ historyView: HistoryView, didSelectStartDate date: Date)
-    func historyView(_ historyView: HistoryView, didSelectEndDate date: Date)
+    func historyViewDidTapAccountSelectionView(_ historyView: HistoryView)
 }
 
 class HistoryView: BaseView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let topInset: CGFloat = 15.0 * verticalScale
-        let horizontalInset: CGFloat = 25.0
-        let accountsViewInset: CGFloat = 20.0
-        let bottomInset: CGFloat = 25.0
-        let buttonMinimumInset: CGFloat = 18.0 * verticalScale
+        let topInset: CGFloat = 5.0
+        let horizontalInset: CGFloat = 20.0
+        let bottomInset: CGFloat = 75.0
+        let buttonMinimumInset: CGFloat = 60.0
     }
     
     private let layout = Layout<LayoutConstants>()
     
     weak var delegate: HistoryViewDelegate?
+    
+    var startDate: Date?
+    var endDate: Date?
+    
+    // MARK: Components
 
     private(set) lazy var accountSelectionView: DetailedInformationView = {
-        let accountView = DetailedInformationView()
-        accountView.backgroundColor = .white
-        accountView.explanationLabel.text = "send-algos-from".localized
-        accountView.detailLabel.text = "send-algos-select".localized
-        return accountView
+        let accountSelectionView = DetailedInformationView()
+        accountSelectionView.isUserInteractionEnabled = true
+        accountSelectionView.backgroundColor = .white
+        accountSelectionView.rightInputAccessoryButton.setImage(img("icon-arrow"), for: .normal)
+        accountSelectionView.explanationLabel.text = "history-account".localized
+        accountSelectionView.detailLabel.text = "send-algos-select".localized
+        accountSelectionView.detailLabel.font = UIFont.font(.montserrat, withWeight: .semiBold(size: 12.0))
+        return accountSelectionView
     }()
     
     private(set) lazy var startDateDisplayView: DetailedInformationView = {
         let startDateDisplayView = DetailedInformationView()
         startDateDisplayView.backgroundColor = .white
-        startDateDisplayView.explanationLabel.text = "send-algos-from".localized
-        startDateDisplayView.detailLabel.text = "send-algos-select".localized
+        startDateDisplayView.explanationLabel.text = "history-start-date".localized
+        startDateDisplayView.detailLabel.text = "history-select-date".localized
+        startDateDisplayView.isUserInteractionEnabled = true
+        startDateDisplayView.detailLabel.font = UIFont.font(.montserrat, withWeight: .semiBold(size: 12.0))
         return startDateDisplayView
     }()
     
@@ -55,8 +63,10 @@ class HistoryView: BaseView {
     private(set) lazy var endDateDisplayView: DetailedInformationView = {
         let endDateDisplayView = DetailedInformationView()
         endDateDisplayView.backgroundColor = .white
-        endDateDisplayView.explanationLabel.text = "send-algos-from".localized
-        endDateDisplayView.detailLabel.text = "send-algos-select".localized
+        endDateDisplayView.explanationLabel.text = "history-end-date".localized
+        endDateDisplayView.detailLabel.text = "history-select-date".localized
+        endDateDisplayView.isUserInteractionEnabled = true
+        endDateDisplayView.detailLabel.font = UIFont.font(.montserrat, withWeight: .semiBold(size: 12.0))
         return endDateDisplayView
     }()
     
@@ -70,6 +80,11 @@ class HistoryView: BaseView {
     private(set) lazy var viewResultsButton = MainButton(title: "title-view-results".localized)
     
     // MARK: Gestures
+
+    private lazy var accountSelectionGestureRecognizer = UITapGestureRecognizer(
+        target: self,
+        action: #selector(notifyDelegateToAccountSelectionViewTapped)
+    )
     
     private lazy var startDateTapGestureRecognizer = UITapGestureRecognizer(
         target: self,
@@ -89,10 +104,12 @@ class HistoryView: BaseView {
     
     override func linkInteractors() {
         viewResultsButton.addTarget(self, action: #selector(notifyDelegateToViewResultsButtonTapped), for: .touchUpInside)
-    
-//        datePickerView.addTarget(self,
-//                                 action: #selector(didChange(datePicker:)),
-//                                 for: .valueChanged)
+        accountSelectionView.addGestureRecognizer(accountSelectionGestureRecognizer)
+        startDateDisplayView.addGestureRecognizer(startDateTapGestureRecognizer)
+        endDateDisplayView.addGestureRecognizer(endDateTapGestureRecognizer)
+        
+        startDatePickerView.addTarget(self, action: #selector(didChangeStartDate(picker:)), for: .valueChanged)
+        endDatePickerView.addTarget(self, action: #selector(didChangeEndDate(picker:)), for: .valueChanged)
     }
     
     // MARK: Layout
@@ -110,8 +127,12 @@ class HistoryView: BaseView {
         addSubview(accountSelectionView)
         
         accountSelectionView.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(5.0)
+            make.top.equalToSuperview().inset(layout.current.topInset)
             make.leading.trailing.equalToSuperview()
+        }
+        
+        accountSelectionView.separatorView.snp.updateConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
         }
     }
     
@@ -121,6 +142,10 @@ class HistoryView: BaseView {
         startDateDisplayView.snp.makeConstraints { make in
             make.top.equalTo(accountSelectionView.snp.bottom)
             make.leading.trailing.equalToSuperview()
+        }
+        
+        startDateDisplayView.separatorView.snp.updateConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
         }
     }
 
@@ -141,6 +166,10 @@ class HistoryView: BaseView {
             make.top.equalTo(startDatePickerView.snp.bottom)
             make.leading.trailing.equalToSuperview()
         }
+        
+        endDateDisplayView.separatorView.snp.updateConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+        }
     }
     
     private func setupEndDatePickerViewLayout() {
@@ -157,9 +186,9 @@ class HistoryView: BaseView {
         addSubview(viewResultsButton)
         
         viewResultsButton.snp.makeConstraints { make in
-            make.top.greaterThanOrEqualTo(endDatePickerView.snp.bottom).offset(60.0)
+            make.top.greaterThanOrEqualTo(endDatePickerView.snp.bottom).offset(layout.current.buttonMinimumInset)
             make.centerX.equalToSuperview()
-            make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).inset(layout.current.bottomInset)
+            make.bottom.equalToSuperview().inset(safeAreaBottom + layout.current.bottomInset)
         }
     }
     
@@ -170,11 +199,125 @@ class HistoryView: BaseView {
         delegate?.historyViewDidTapViewResultsButton(self)
     }
     
-    @objc func didTriggerStartDate(tapGestureRecognizer: UITapGestureRecognizer) {
-        delegate?.historyView(self, didSelectStartDate: startDatePickerView.date)
+    @objc
+    private func notifyDelegateToAccountSelectionViewTapped() {
+        delegate?.historyViewDidTapAccountSelectionView(self)
     }
     
-    @objc func didTriggerEndDate(tapGestureRecognizer: UITapGestureRecognizer) {
-        delegate?.historyView(self, didSelectEndDate: endDatePickerView.date)
+    @objc
+    private func didChangeStartDate(picker: UIDatePicker) {
+        startDate = picker.date
+        endDatePickerView.minimumDate = startDate
+        
+        startDateDisplayView.detailLabel.text = startDate?.toFormat("dd MMMM yyyy")
+    }
+    
+    @objc
+    private func didChangeEndDate(picker: UIDatePicker) {
+        endDate = picker.date
+        startDatePickerView.maximumDate = endDate
+        
+        endDateDisplayView.detailLabel.text = endDate?.toFormat("dd MMMM yyyy")
+    }
+    
+    @objc
+    private func didTriggerStartDate(tapGestureRecognizer: UITapGestureRecognizer) {
+        if startDatePickerView.isHidden {
+            setStartDatePicker(visible: true)
+        } else {
+            setStartDatePicker(visible: false)
+        }
+    }
+    
+    @objc
+    private func didTriggerEndDate(tapGestureRecognizer: UITapGestureRecognizer) {
+        if endDatePickerView.isHidden {
+            setEndDatePicker(visible: true)
+        } else {
+            setEndDatePicker(visible: false)
+        }
+    }
+    
+    // MARK: API
+    
+    private func setStartDatePicker(visible: Bool) {
+        if visible {
+            if !endDatePickerView.isHidden {
+                endDateDisplayView.separatorView.isHidden = false
+                endDatePickerView.isHidden = true
+                
+                endDatePickerView.snp.updateConstraints { make in
+                    make.height.equalTo(0.0)
+                }
+                
+                UIView.animate(withDuration: 0.3) {
+                    self.layoutIfNeeded()
+                }
+            }
+            
+            startDateDisplayView.separatorView.isHidden = true
+            startDatePickerView.isHidden = false
+            
+            startDatePickerView.snp.updateConstraints { make in
+                make.height.equalTo(216.0)
+            }
+            
+            UIView.animate(withDuration: 0.3) {
+                self.layoutIfNeeded()
+            }
+        } else {
+            startDatePickerView.snp.updateConstraints { make in
+                make.height.equalTo(0.0)
+            }
+            
+            startDateDisplayView.separatorView.isHidden = false
+            
+            UIView.animate(withDuration: 0.3) {
+                self.startDatePickerView.isHidden = true
+                
+                self.layoutIfNeeded()
+            }
+        }
+    }
+    
+    private func setEndDatePicker(visible: Bool) {
+        if visible {
+            if !startDatePickerView.isHidden {
+                startDateDisplayView.separatorView.isHidden = false
+                startDatePickerView.isHidden = true
+                
+                startDatePickerView.snp.updateConstraints { make in
+                    make.height.equalTo(0.0)
+                }
+                
+                UIView.animate(withDuration: 0.3) {
+                    self.layoutIfNeeded()
+                }
+            }
+            
+            endDateDisplayView.separatorView.isHidden = true
+            endDatePickerView.isHidden = false
+            
+            endDatePickerView.snp.updateConstraints { make in
+                make.height.equalTo(216.0)
+            }
+            
+            UIView.animate(withDuration: 0.3) {
+                
+                self.layoutIfNeeded()
+            }
+        } else {
+            endDatePickerView.snp.updateConstraints { make in
+                make.height.equalTo(0.0)
+            }
+            
+            endDateDisplayView.separatorView.isHidden = false
+            
+            UIView.animate(withDuration: 0.3) {
+                self.endDatePickerView.isHidden = true
+                
+                self.layoutIfNeeded()
+            }
+        }
     }
 }

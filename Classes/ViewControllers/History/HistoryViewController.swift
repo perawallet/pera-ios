@@ -10,6 +10,12 @@ import UIKit
 
 class HistoryViewController: BaseScrollViewController {
     
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let topInset: CGFloat = 10.0
+    }
+    
+    private let layout = Layout<LayoutConstants>()
+    
     // MARK: Variables
     
     private lazy var accountListModalPresenter = CardModalPresenter(
@@ -27,8 +33,6 @@ class HistoryViewController: BaseScrollViewController {
     }()
     
     private var selectedAccount: Account?
-    private var startDate: Date?
-    private var endDate: Date?
     
     // MARK: Setup
     
@@ -55,7 +59,7 @@ class HistoryViewController: BaseScrollViewController {
         
         historyView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.top.equalToSuperview().inset(10.0)
+            make.top.equalToSuperview().inset(layout.current.topInset)
             make.bottom.equalToSuperview()
         }
     }
@@ -81,19 +85,20 @@ class HistoryViewController: BaseScrollViewController {
 extension HistoryViewController: HistoryViewDelegate {
     
     func historyViewDidTapViewResultsButton(_ historyView: HistoryView) {
-        guard let startDate = startDate,
-            let endDate = endDate,
+        guard let startDate = historyView.startDate,
+            let endDate = historyView.endDate,
             let account = selectedAccount else {
+                displaySimpleAlertWith(title: "history-alert-title".localized, message: "history-alert-message".localized)
                 return
         }
+        
+        let historyDraft = HistoryDraft(account: account, startDate: startDate, endDate: endDate)
+        
+        open(.historyResults(draft: historyDraft), by: .push)
     }
     
-    func historyView(_ historyView: HistoryView, didSelectStartDate date: Date) {
-        startDate = date
-    }
-    
-    func historyView(_ historyView: HistoryView, didSelectEndDate date: Date) {
-        endDate = date
+    func historyViewDidTapAccountSelectionView(_ historyView: HistoryView) {
+        presentAccountList()
     }
 }
 
