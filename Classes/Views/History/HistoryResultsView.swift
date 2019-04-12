@@ -11,7 +11,13 @@ import UIKit
 class HistoryResultsView: BaseView {
     
     struct LayoutConstants: AdaptiveLayoutConstants {
-        static let headerHeight: CGFloat = 276.0
+        let topInset: CGFloat = 35.0
+        let horizontalInset: CGFloat = 25.0
+        let separatorInset: CGFloat = 20.0
+        let separatorHeight: CGFloat = 1.0
+        let toLabelTopInset: CGFloat = 30.0
+        let labelMinimumInset: CGFloat = 5.0
+        let collectionViewTopInset: CGFloat = 24.0
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -79,6 +85,7 @@ class HistoryResultsView: BaseView {
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = .white
         collectionView.contentInset = .zero
+        collectionView.backgroundColor = .white
         
         collectionView.register(TransactionHistoryCell.self, forCellWithReuseIdentifier: TransactionHistoryCell.reusableIdentifier)
         
@@ -95,8 +102,8 @@ class HistoryResultsView: BaseView {
         setupAccountNameLabelLayout()
         setupAccountAmountViewLayout()
         setupTopSeparatorViewLayout()
-        setupStartDateLabelLayout()
         setupToLabelLayout()
+        setupStartDateLabelLayout()
         setupEndDateLabelLayout()
         setupBottomSeparatorViewLayout()
         setupTransactionHistoryCollectionViewLayout()
@@ -106,7 +113,8 @@ class HistoryResultsView: BaseView {
         addSubview(accountNameLabel)
         
         accountNameLabel.snp.makeConstraints { make in
-            
+            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
+            make.top.equalToSuperview().inset(layout.current.topInset)
         }
     }
     
@@ -114,7 +122,9 @@ class HistoryResultsView: BaseView {
         addSubview(accountAmountView)
         
         accountAmountView.snp.makeConstraints { make in
-            
+            make.leading.greaterThanOrEqualTo(accountNameLabel.snp.trailing).offset(layout.current.labelMinimumInset)
+            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.top.equalToSuperview().inset(layout.current.topInset)
         }
     }
     
@@ -122,15 +132,9 @@ class HistoryResultsView: BaseView {
         addSubview(topSeparatorView)
         
         topSeparatorView.snp.makeConstraints { make in
-            
-        }
-    }
-    
-    private func setupStartDateLabelLayout() {
-        addSubview(startDateLabel)
-        
-        startDateLabel.snp.makeConstraints { make in
-            
+            make.top.equalTo(accountNameLabel.snp.bottom).offset(layout.current.separatorInset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.separatorInset)
+            make.height.equalTo(layout.current.separatorHeight)
         }
     }
     
@@ -138,7 +142,18 @@ class HistoryResultsView: BaseView {
         addSubview(toLabel)
         
         toLabel.snp.makeConstraints { make in
-            
+            make.top.equalTo(topSeparatorView.snp.bottom).offset(layout.current.toLabelTopInset)
+            make.centerX.equalToSuperview()
+        }
+    }
+    
+    private func setupStartDateLabelLayout() {
+        addSubview(startDateLabel)
+        
+        startDateLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
+            make.centerY.equalTo(toLabel)
+            make.trailing.lessThanOrEqualTo(toLabel.snp.leading).inset(-layout.current.labelMinimumInset)
         }
     }
     
@@ -146,7 +161,9 @@ class HistoryResultsView: BaseView {
         addSubview(endDateLabel)
         
         endDateLabel.snp.makeConstraints { make in
-            
+            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.centerY.equalTo(toLabel)
+            make.leading.greaterThanOrEqualTo(toLabel.snp.leading).offset(layout.current.labelMinimumInset)
         }
     }
     
@@ -154,7 +171,9 @@ class HistoryResultsView: BaseView {
         addSubview(bottomSeparatorView)
         
         bottomSeparatorView.snp.makeConstraints { make in
-            
+            make.top.equalTo(toLabel.snp.bottom).offset(layout.current.separatorInset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.separatorInset)
+            make.height.equalTo(layout.current.separatorHeight)
         }
     }
     
@@ -162,7 +181,8 @@ class HistoryResultsView: BaseView {
         addSubview(transactionHistoryCollectionView)
         
         transactionHistoryCollectionView.snp.makeConstraints { make in
-            
+            make.leading.trailing.bottom.equalToSuperview()
+            make.top.equalTo(bottomSeparatorView.snp.bottom).offset(layout.current.collectionViewTopInset)
         }
     }
 }

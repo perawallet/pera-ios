@@ -36,6 +36,8 @@ class HistoryResultsViewController: BaseViewController {
         transactionHistoryDataSource = TransactionHistoryDataSource()
         
         super.init(configuration: configuration)
+        
+        hidesBottomBarWhenPushed = true
     }
     
     // MARK: Setup
@@ -44,6 +46,10 @@ class HistoryResultsViewController: BaseViewController {
         super.configureAppearance()
         
         title = "history-title".localized
+        
+        historyResultsView.accountNameLabel.text = draft.account.name
+        historyResultsView.startDateLabel.text = draft.startDate.toFormat("dd MMMM yyyy")
+        historyResultsView.endDateLabel.text = draft.endDate.toFormat("dd MMMM yyyy")
     }
     
     override func linkInteractors() {

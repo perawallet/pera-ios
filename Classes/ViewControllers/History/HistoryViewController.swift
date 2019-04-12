@@ -111,6 +111,8 @@ extension HistoryViewController: AccountListViewControllerDelegate {
     
     func accountListViewController(_ viewController: AccountListViewController, didSelectAccount account: Account) {
         
+        historyView.accountSelectionView.detailLabel.text = account.name
+        
         selectedAccount = account
     }
 }
