@@ -17,6 +17,8 @@ class SettingsViewController: BaseViewController {
     
     private let viewModel = SettingsViewModel()
     
+    private let localAuthenticator = LocalAuthenticator()
+    
     override func configureAppearance() {
         super.configureAppearance()
         
@@ -68,7 +70,9 @@ extension SettingsViewController: UICollectionViewDataSource {
                     fatalError("Index path is out of bounds")
             }
             
-            viewModel.configureToggle(cell, with: mode, for: indexPath)
+            let localAuthenticationStatus = localAuthenticator.localAuthenticationStatus == .allowed
+            
+            viewModel.configureToggle(cell, enabled: localAuthenticationStatus, with: mode, for: indexPath)
             
             return cell
         case .language:
@@ -93,7 +97,7 @@ extension SettingsViewController: UICollectionViewDelegateFlowLayout {
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
-        ) -> CGSize {
+    ) -> CGSize {
         
         return CGSize(width: UIScreen.main.bounds.width, height: 90.0)
     }
@@ -115,13 +119,57 @@ extension SettingsViewController: UICollectionViewDelegateFlowLayout {
 }
 
 // MARK: - SettingsViewModelDelegate
+
 extension SettingsViewController: SettingsViewModelDelegate {
-    func settingsViewModel(_ viewModel: SettingsViewModel,
-                           didToggleValue value: Bool,
-                           atIndexPath indexPath: IndexPath) {
+    
+    func settingsViewModel(_ viewModel: SettingsViewModel, didToggleValue value: Bool, atIndexPath indexPath: IndexPath) {
+        
         guard let mode = SettingsViewModel.SettingsCellMode(rawValue: indexPath.item),
             mode == .localAuthentication else {
             return
         }
+        
+        guard let cell = settingsView.collectionView.cellForItem(at: indexPath) as? SettingsToggleCell else {
+            return
+        }
+        
+        if !value {
+            localAuthenticator.localAuthenticationStatus = .notAllowed
+            return
+        }
+        
+        if localAuthenticator.isLocalAuthenticationAvailable {
+            localAuthenticator.authenticate { error in
+                guard error == nil else {
+                    cell.contextView.toggle.setOn(false, animated: true)
+                    return
+                }
+                
+                self.localAuthenticator.localAuthenticationStatus = .allowed
+            }
+            
+            return
+        }
+        
+        presentDisabledLocalAuthenticationAlert()
+    }
+    
+    private func presentDisabledLocalAuthenticationAlert() {
+        let alertController = UIAlertController(
+            title: "local-authentication-go-settings-title".localized,
+            message: "local-authentication-go-settings-text".localized,
+            preferredStyle: .alert
+        )
+        
+        let settingsAction = UIAlertAction(title: "title-go-to-settings".localized, style: .default) { _ in
+            UIApplication.shared.openAppSettings()
+        }
+        
+        let cancelAction = UIAlertAction(title: "title-cancel-lowercased".localized, style: .cancel, handler: nil)
+        
+        alertController.addAction(settingsAction)
+        alertController.addAction(cancelAction)
+        
+        present(alertController, animated: true, completion: nil)
     }
 }

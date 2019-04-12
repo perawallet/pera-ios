@@ -38,12 +38,13 @@ class SettingsViewModel {
         cell.contextView.detailLabel.text = "settings-language-english".localized
     }
     
-    func configureToggle(_ cell: SettingsToggleCell, with mode: SettingsCellMode, for indexPath: IndexPath) {
+    func configureToggle(_ cell: SettingsToggleCell, enabled: Bool, with mode: SettingsCellMode, for indexPath: IndexPath) {
         self.indexPath = indexPath
         
         let name = nameOfMode(mode)
         
         cell.contextView.nameLabel.text = name
+        cell.contextView.toggle.setOn(enabled, animated: false)
         cell.contextView.delegate = self
     }
     
