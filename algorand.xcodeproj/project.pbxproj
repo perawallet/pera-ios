@@ -100,6 +100,10 @@
 		2B6ED95B225F762800787984 /* HistoryResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6ED95A225F762800787984 /* HistoryResultsViewController.swift */; };
 		2B6ED95D22608FE700787984 /* HistoryDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6ED95C22608FE700787984 /* HistoryDraft.swift */; };
 		2B6ED9602260EE2100787984 /* HistoryResultsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6ED95F2260EE2100787984 /* HistoryResultsViewModel.swift */; };
+		2B6ED962226105CD00787984 /* TransactionPreviewDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6ED961226105CD00787984 /* TransactionPreviewDraft.swift */; };
+		2B6ED964226105E100787984 /* Payment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6ED963226105E100787984 /* Payment.swift */; };
+		2B6ED9662261063700787984 /* TransactionList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6ED9652261063700787984 /* TransactionList.swift */; };
+		2B6ED9682261069A00787984 /* Int64+API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6ED9672261069A00787984 /* Int64+API.swift */; };
 		2B7572A6225CA1E3009E0253 /* SendAlgosPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7572A5225CA1E3009E0253 /* SendAlgosPreviewView.swift */; };
 		2B7572A8225CA211009E0253 /* SendAlgosPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7572A7225CA211009E0253 /* SendAlgosPreviewViewController.swift */; };
 		2B7572AA225CC391009E0253 /* SendAlgosSuccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7572A9225CC391009E0253 /* SendAlgosSuccessViewController.swift */; };
@@ -323,6 +327,10 @@
 		2B6ED95A225F762800787984 /* HistoryResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryResultsViewController.swift; sourceTree = "<group>"; };
 		2B6ED95C22608FE700787984 /* HistoryDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryDraft.swift; sourceTree = "<group>"; };
 		2B6ED95F2260EE2100787984 /* HistoryResultsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryResultsViewModel.swift; sourceTree = "<group>"; };
+		2B6ED961226105CD00787984 /* TransactionPreviewDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionPreviewDraft.swift; sourceTree = "<group>"; };
+		2B6ED963226105E100787984 /* Payment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Payment.swift; sourceTree = "<group>"; };
+		2B6ED9652261063700787984 /* TransactionList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionList.swift; sourceTree = "<group>"; };
+		2B6ED9672261069A00787984 /* Int64+API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int64+API.swift"; sourceTree = "<group>"; };
 		2B7572A5225CA1E3009E0253 /* SendAlgosPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendAlgosPreviewView.swift; sourceTree = "<group>"; };
 		2B7572A7225CA211009E0253 /* SendAlgosPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendAlgosPreviewViewController.swift; sourceTree = "<group>"; };
 		2B7572A9225CC391009E0253 /* SendAlgosSuccessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendAlgosSuccessViewController.swift; sourceTree = "<group>"; };
@@ -495,6 +503,7 @@
 			children = (
 				1751261C223BEA320095AF4F /* Session.swift */,
 				1761B3CC224A47AF00C6BA47 /* Session+Crypto.swift */,
+				2B6ED9652261063700787984 /* TransactionList.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -526,6 +535,7 @@
 				173DA1EC2255F96E00378A82 /* TransactionFee.swift */,
 				173DA20F2256643A00378A82 /* TransactionID.swift */,
 				17D50AA0225C755E00CA9C6E /* ApplicationConfiguration.swift */,
+				2B6ED963226105E100787984 /* Payment.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -536,6 +546,7 @@
 				17B7D8AA2240E19600A6FF9E /* AccountFetchDraft.swift */,
 				173DA1EA2255F7EF00378A82 /* TransactionDraft.swift */,
 				2B6ED95C22608FE700787984 /* HistoryDraft.swift */,
+				2B6ED961226105CD00787984 /* TransactionPreviewDraft.swift */,
 			);
 			path = Drafts;
 			sourceTree = "<group>";
@@ -561,6 +572,7 @@
 			children = (
 				17D04F4E225FACED0051BC43 /* Int.swift */,
 				17D04F50225FAD920051BC43 /* Double.swift */,
+				2B6ED9672261069A00787984 /* Int64+API.swift */,
 			);
 			path = Numbers;
 			sourceTree = "<group>";
@@ -2102,6 +2114,7 @@
 				2B56F7D6225B3C1D00E58737 /* SendAlgosViewController.swift in Sources */,
 				2B25BB4B225EAD600092C972 /* ReceiveAlgosPreviewViewController.swift in Sources */,
 				1761B3CB224A39D400C6BA47 /* PassPhraseViewModel.swift in Sources */,
+				2B6ED964226105E100787984 /* Payment.swift in Sources */,
 				2BF71910224ECFAF001E8420 /* UserInformationView.swift in Sources */,
 				2B656E9F224BCB130064A49B /* AccountListViewModel.swift in Sources */,
 				2BF34CC2223A95A50052CAD3 /* API.swift in Sources */,
@@ -2145,6 +2158,7 @@
 				2B25BB49225EACB60092C972 /* ReceiveAlgosView.swift in Sources */,
 				2BD739E1223F9F3000B66EEF /* LocalAuthenticationPreferenceView.swift in Sources */,
 				2B6687102248DBE2009F21E7 /* ALGBarButtonItem.swift in Sources */,
+				2B6ED9662261063700787984 /* TransactionList.swift in Sources */,
 				2BDE9CDA224E2336007EFF30 /* TransactionHistoryCell.swift in Sources */,
 				2B82B1C522535F4300A8909F /* Contact.swift in Sources */,
 				2BF53159224A46C500A7455F /* ModalPresenterInteractable.swift in Sources */,
@@ -2196,6 +2210,7 @@
 				173DA1E92255F7B500378A82 /* API+Transaction.swift in Sources */,
 				2BD739E5223FA07B00B66EEF /* MainButton.swift in Sources */,
 				2B7572AE225CCB62009E0253 /* TransactionReceiverView.swift in Sources */,
+				2B6ED9682261069A00787984 /* Int64+API.swift in Sources */,
 				2BD739FA2240527B00B66EEF /* PasswordInputView.swift in Sources */,
 				2BD73A1422412D9100B66EEF /* NumpadCellViewModel.swift in Sources */,
 				2BDE9CD7224E2082007EFF30 /* ContentStateView.swift in Sources */,
@@ -2257,6 +2272,7 @@
 				2B5DA9DC224D37A100EE41B4 /* PassphraseDisplayView.swift in Sources */,
 				2B6ED95D22608FE700787984 /* HistoryDraft.swift in Sources */,
 				2BF53157224A46A400A7455F /* ModalPresenter.swift in Sources */,
+				2B6ED962226105CD00787984 /* TransactionPreviewDraft.swift in Sources */,
 				2BD739DD223F9E9F00B66EEF /* ChoosePasswordView.swift in Sources */,
 				2B8BE4F4223935DA005D8565 /* BaseView.swift in Sources */,
 				170AFAFC224CC70A00520EA5 /* QRText.swift in Sources */,

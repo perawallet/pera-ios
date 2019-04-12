@@ -23,7 +23,7 @@ class SendAlgosPreviewViewController: BaseViewController {
         return view
     }()
     
-    private var transaction: Transaction
+    private var transaction: TransactionPreviewDraft
     
     private let receiver: AlgosReceiverState
     
@@ -33,7 +33,7 @@ class SendAlgosPreviewViewController: BaseViewController {
     
     // MARK: Initialization
     
-    init(transaction: Transaction, receiver: AlgosReceiverState, configuration: ViewControllerConfiguration) {
+    init(transaction: TransactionPreviewDraft, receiver: AlgosReceiverState, configuration: ViewControllerConfiguration) {
         self.transaction = transaction
         self.receiver = receiver
         

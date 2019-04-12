@@ -25,13 +25,13 @@ class SendAlgosSuccessViewController: BaseScrollViewController {
     
     weak var delegate: SendAlgosSuccessViewControllerDelegate?
     
-    private let transaction: Transaction
+    private let transaction: TransactionPreviewDraft
     
     private let receiver: AlgosReceiverState
     
     // MARK: Initialization
     
-    init(transaction: Transaction, receiver: AlgosReceiverState, configuration: ViewControllerConfiguration) {
+    init(transaction: TransactionPreviewDraft, receiver: AlgosReceiverState, configuration: ViewControllerConfiguration) {
         self.transaction = transaction
         self.receiver = receiver
         
