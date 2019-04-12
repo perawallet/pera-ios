@@ -27,6 +27,7 @@
 "title-preview" = "PREVIEW";
 "title-done" = "DONE";
 "title-loading" = "Loading";
+"default-error-message" = "An error occured.";
 
 // MARK: Tabbar
 
