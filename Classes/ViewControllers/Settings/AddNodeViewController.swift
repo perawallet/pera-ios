@@ -117,8 +117,9 @@ class AddNodeViewController: BaseViewController {
     fileprivate func tap(test button: MainButton) {
         view.endEditing(true)
         
-        guard let address = addNodeView.addressInputView.inputTextField.text,
-            !address.isEmpty, let token = addNodeView.tokenInputView.inputTextField.text, !token.isEmpty else {
+        guard let name = addNodeView.nameInputView.inputTextField.text, !name.isEmpty,
+            let address = addNodeView.addressInputView.inputTextField.text, !address.isEmpty,
+            let token = addNodeView.tokenInputView.inputTextField.text, !token.isEmpty else {
                 displaySimpleAlertWith(title: "title-error".localized,
                                        message: "node-settings-text-validation-empty-error".localized)
                 return
@@ -126,7 +127,7 @@ class AddNodeViewController: BaseViewController {
         
         let testDraft = NodeTestDraft(address: address, token: token)
         
-        let predicate = NSPredicate(format: "address = %@ AND token = %@", address, token)
+        let predicate = NSPredicate(format: "name = %@ AND address = %@ AND token = %@", name, address, token)
         
         if Node.hasResult(entity: Node.entityName, with: predicate) {
             displaySimpleAlertWith(title: "title-error".localized, message: "node-settings-has-same-result".localized)
@@ -138,7 +139,8 @@ class AddNodeViewController: BaseViewController {
             SVProgressHUD.dismiss()
             
             if isValidated {
-                Node.create(entity: Node.entityName, with: [Node.DBKeys.address.rawValue: address,
+                Node.create(entity: Node.entityName, with: [Node.DBKeys.name.rawValue: name,
+                                                            Node.DBKeys.address.rawValue: address,
                                                             Node.DBKeys.token.rawValue: token])
                 
                 self.popScreen()

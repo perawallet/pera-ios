@@ -9,6 +9,33 @@
 import UIKit
 
 class AddNodeView: BaseView {
+    
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let labelTopInset: CGFloat = 20.0
+        let inputHeight: CGFloat = 87.0
+        let verticalOffset: CGFloat = 20.0
+    }
+    
+    private let layout = Layout<LayoutConstants>()
+    
+    private(set) lazy var nameInputView: SingleLineInputField = {
+        let inputView = SingleLineInputField(separatorStyle: .full)
+        inputView.explanationLabel.text = "node-settings-enter-node-name".localized
+        inputView.inputTextField.attributedPlaceholder = NSAttributedString(
+            string: "node-settings-placeholder-name".localized,
+            attributes: [NSAttributedString.Key.foregroundColor: SharedColors.softGray,
+                         NSAttributedString.Key.font: UIFont.font(.opensans, withWeight: .semiBold(size: 12.0))]
+        )
+        
+        inputView.inputTextField.textColor = SharedColors.black
+        inputView.inputTextField.tintColor = SharedColors.black
+        inputView.inputTextField.font = UIFont.font(.opensans, withWeight: .semiBold(size: 12.0))
+        inputView.nextButtonMode = .next
+        inputView.inputTextField.autocorrectionType = .no
+        inputView.backgroundColor = .white
+        return inputView
+    }()
+    
     private(set) lazy var addressInputView: SingleLineInputField = {
         let inputView = SingleLineInputField(separatorStyle: .full)
         inputView.explanationLabel.text = "node-settings-enter-node-address".localized
@@ -53,16 +80,28 @@ class AddNodeView: BaseView {
     override func prepareLayout() {
         super.prepareLayout()
         
+        addSubview(nameInputView)
+        
+        nameInputView.snp.makeConstraints { make in
+            make.top.equalTo(safeAreaLayoutGuide.snp.top)
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(layout.current.inputHeight)
+        }
+        
+        nameInputView.explanationLabel.snp.updateConstraints { make in
+            make.top.equalToSuperview().inset(layout.current.labelTopInset)
+        }
+        
         addSubview(addressInputView)
         
         addressInputView.snp.makeConstraints { make in
-            make.top.equalTo(safeAreaLayoutGuide.snp.top)
+            make.top.equalTo(nameInputView.snp.bottom)
             make.leading.trailing.equalToSuperview()
-            make.height.equalTo(87)
+            make.height.equalTo(layout.current.inputHeight)
         }
         
         addressInputView.explanationLabel.snp.updateConstraints { make in
-            make.top.equalToSuperview().inset(20)
+            make.top.equalToSuperview().inset(layout.current.labelTopInset)
         }
         
         addSubview(tokenInputView)
@@ -70,17 +109,17 @@ class AddNodeView: BaseView {
         tokenInputView.snp.makeConstraints { make in
             make.top.equalTo(addressInputView.snp.bottom)
             make.leading.trailing.equalToSuperview()
-            make.height.equalTo(87)
+            make.height.equalTo(layout.current.inputHeight)
         }
         
         tokenInputView.explanationLabel.snp.updateConstraints { make in
-            make.top.equalToSuperview().inset(20)
+            make.top.equalToSuperview().inset(layout.current.labelTopInset)
         }
         
         addSubview(testButton)
         
         testButton.snp.makeConstraints { make in
-            make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).offset(-20)
+            make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).offset(-layout.current.verticalOffset)
             make.centerX.equalToSuperview()
         }
         

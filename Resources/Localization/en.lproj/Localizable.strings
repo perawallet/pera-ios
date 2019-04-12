@@ -196,11 +196,13 @@
 // MARK: NodeSettings
 "node-settings-title" = "Server/Node Settings";
 "node-settings-subtitle" = "Slide to connect to the server/node you’d like.";
-"node-settings-enter-node-address" = "Enter node’s adress: ";
+"node-settings-enter-node-name" = "Enter node's name: ";
+"node-settings-enter-node-address" = "Enter node's adress: ";
 "node-settings-api-key" = "API Key: ";
+"node-settings-placeholder-name" = "Name";
 "node-settings-placeholder-address" = "Address";
 "node-settings-placeholder-api-key" = "key";
 "node-settings-test-button-title" = "TEST";
-"node-settings-text-validation-empty-error" = "Address and token shouldn't be empty";
+"node-settings-text-validation-empty-error" = "Please fill all fields.";
 "node-settings-text-validation-health-error" = "Address and token are not valid. Please make sure you enter correct one";
 "node-settings-has-same-result" = "You cannot create same node twice";

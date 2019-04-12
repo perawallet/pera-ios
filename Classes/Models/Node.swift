@@ -14,10 +14,12 @@ public final class Node: NSManagedObject {
     enum DBKeys: String {
         case address = "address"
         case token = "token"
+        case name = "name"
     }
     
     @NSManaged public var address: String?
     @NSManaged public var token: String?
+    @NSManaged public var name: String?
 }
 
 extension Node {
