@@ -148,7 +148,7 @@ extension DBStorable where Self: NSManagedObject {
         }
     }
     
-    static func hasResult(entity: String) -> Bool {
+    static func hasResult(entity: String, with predicate: NSPredicate? = nil) -> Bool {
         guard let appDelegate = UIApplication.shared.appDelegate else {
             return false
         }
@@ -157,6 +157,10 @@ extension DBStorable where Self: NSManagedObject {
         
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
         fetchRequest.returnsObjectsAsFaults = false
+        
+        if let predicate = predicate {
+            fetchRequest.predicate = predicate
+        }
         
         do {
             let response = try context.fetch(fetchRequest)

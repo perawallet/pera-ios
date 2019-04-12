@@ -21,11 +21,15 @@ extension API {
         var httpHeaders = super.commonHttpHeaders
         httpHeaders.append(.custom(header: "X-Algo-API-Token", value: token))
         
+        guard let url = URL(string: address) else {
+            completion?(false)
+            return nil
+        }
         
-        return send(
+        return sendInvalidated(
             Endpoint<NoObject>(Path("/health"))
                 .httpMethod(.get)
-                .base(address)
+                .base(url.absoluteString)
                 .httpHeaders(httpHeaders)
                 .handler { response in
                     completion?(!response.isFailed)

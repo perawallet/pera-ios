@@ -8,6 +8,7 @@
 
 import UIKit
 import SnapKit
+import SVProgressHUD
 
 class AddNodeViewController: BaseViewController {
     
@@ -114,6 +115,36 @@ class AddNodeViewController: BaseViewController {
     
     @objc
     fileprivate func tap(test button: MainButton) {
-        api?.checkHealth(with: NodeTestDraft(address: "", token: ""))
+        view.endEditing(true)
+        
+        guard let address = addNodeView.addressInputView.inputTextField.text,
+            !address.isEmpty, let token = addNodeView.tokenInputView.inputTextField.text, !token.isEmpty else {
+                displaySimpleAlertWith(title: "title-error".localized,
+                                       message: "node-settings-text-validation-empty-error".localized)
+                return
+        }
+        
+        let testDraft = NodeTestDraft(address: address, token: token)
+        
+        let predicate = NSPredicate(format: "address = %@ AND token = %@", address, token)
+        
+        if Node.hasResult(entity: Node.entityName, with: predicate) {
+            displaySimpleAlertWith(title: "title-error".localized, message: "node-settings-has-same-result".localized)
+            return
+        }
+        
+        SVProgressHUD.show(withStatus: "title-loading".localized)
+        api?.checkHealth(with: testDraft) { isValidated in
+            SVProgressHUD.dismiss()
+            
+            if isValidated {
+                Node.create(entity: Node.entityName, with: [Node.DBKeys.address.rawValue: address,
+                                                            Node.DBKeys.token.rawValue: token])
+                
+                self.popScreen()
+            } else {
+                self.displaySimpleAlertWith(title: "title-error".localized, message: "node-settings-text-validation-health-error".localized)
+            }
+        }
     }
 }
