@@ -56,7 +56,7 @@ class SendAlgosPreviewViewController: BaseViewController {
         self.updateFeeLayout()
         
         SVProgressHUD.show(withStatus: "title-loading".localized)
-        api?.getTransactionParams(completion: { response in
+        api?.getTransactionParams { response in
             switch response {
             case let .failure(error):
                 print(error)
@@ -69,7 +69,7 @@ class SendAlgosPreviewViewController: BaseViewController {
             }
             
             SVProgressHUD.dismiss()
-        })
+        }
     }
     
     override func linkInteractors() {
@@ -142,7 +142,7 @@ extension SendAlgosPreviewViewController: SendAlgosPreviewViewDelegate {
             amount: Int64(self.transaction.amount.toMicroAlgos),
             transactionParams: params)
         
-        self.api?.sendTransaction(with: transactionDraft, then: { transactionIdResponse in
+        self.api?.sendTransaction(with: transactionDraft) { transactionIdResponse in
             switch transactionIdResponse {
             case let .success(transactionId):
                 
@@ -158,7 +158,7 @@ extension SendAlgosPreviewViewController: SendAlgosPreviewViewDelegate {
             case let .failure(error):
                 print(error)
             }
-        })
+        }
     }
 }
 
