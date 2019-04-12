@@ -12,6 +12,7 @@ import SnapKit
 enum QRMode {
     case address
     case mnemonic
+    case algosReceive
 }
 
 class QRCreationViewController: BaseScrollViewController {

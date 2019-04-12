@@ -112,20 +112,17 @@ class ReceiveAlgosViewController: BaseViewController {
             displaySimpleAlertWith(title: "send-algos-alert-title".localized, message: "send-algos-alert-message".localized)
         }
         
-        guard let selectedAccountName = selectedAccount?.name else {
+        guard let selectedAccount = selectedAccount else {
             return
         }
         
         view.endEditing(true)
         
-        // TODO: Set transaction object properly.
-        
         let transaction = Transaction(
-            identifier: "123123",
-            accountName: selectedAccountName,
-            date: Date(),
+            fromAccount: selectedAccount,
             amount: amount,
-            title: "Title"
+            identifier: nil,
+            fee: nil
         )
         
         open(.receiveAlgosPreview(transaction: transaction), by: .push)

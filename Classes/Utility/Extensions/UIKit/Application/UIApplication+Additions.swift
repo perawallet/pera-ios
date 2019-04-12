@@ -61,6 +61,10 @@ extension UIApplication {
         return rootViewController.appConfiguration
     }
     
+    var accountManager: AccountManager? {
+        return appDelegate?.accountManager
+    }
+    
     func rootViewController() -> RootViewController? {
         guard let navigationController = keyWindow?.rootViewController as? NavigationController else {
             return nil

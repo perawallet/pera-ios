@@ -12,11 +12,11 @@ import SwiftDate
 class AccountsViewModel {
     
     func configure(_ view: AccountsHeaderView, with account: Account) {
-        view.algosAmountLabel.text = "\(account.amount)"
+        view.algosAmountLabel.text = "\(account.amount.toAlgos)"
     }
     
     func configure(_ cell: TransactionHistoryCell, with transaction: Transaction) {
-        cell.contextView.transactionDetailLabel.text = transaction.title
+        cell.contextView.transactionDetailLabel.text = transaction.identifier
         
         if transaction.amount > 0 {
             cell.contextView.transactionAmountView.mode = .positive(transaction.amount)
@@ -24,10 +24,10 @@ class AccountsViewModel {
             cell.contextView.transactionAmountView.mode = .negative(-transaction.amount)
         }
         
-        let formattedDate = transaction.date.toFormat("MMMM dd, yyyy")
+        let formattedDate = Date().toFormat("MMMM dd, yyyy")
         
         cell.contextView.dateLabel.text = formattedDate
         
-        cell.contextView.accountNamelabel.text = transaction.accountName
+        cell.contextView.accountNamelabel.text = ""
     }
 }
