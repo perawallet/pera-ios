@@ -32,8 +32,6 @@ class SettingsView: BaseView {
         return collectionView
     }()
     
-    private lazy var contentStateView = ContentStateView()
-    
     // MARK: Layout
     
     override func prepareLayout() {
@@ -48,7 +46,5 @@ class SettingsView: BaseView {
             make.leading.trailing.equalToSuperview()
             make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom)
         }
-        
-        collectionView.backgroundView = contentStateView
     }
 }
