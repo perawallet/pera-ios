@@ -67,6 +67,16 @@ class ChoosePasswordViewController: BaseViewController {
         
     }
     
+    override func configureNavigationBarAppearance() {
+        if mode == .resetPassword {
+            let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
+                self.dismissScreen()
+            }
+            
+            leftBarButtonItems = [closeBarButtonItem]
+        }
+    }
+    
     override func configureAppearance() {
         super.configureAppearance()
         
@@ -125,6 +135,24 @@ extension ChoosePasswordViewController: ChoosePasswordViewDelegate {
                     self.viewModel.displayWrongPasswordState(choosePasswordView)
                 }
             }
+            
+        case .resetPassword:
+            viewModel.configureSelection(in: choosePasswordView, for: value) { password in
+                open(.choosePassword(mode: .resetVerify(password)), by: .push)
+            }
+            
+        case let .resetVerify(previousPassword):
+            viewModel.configureSelection(in: choosePasswordView, for: value) { password in
+                if password != previousPassword {
+                    displaySimpleAlertWith(title: "password-verify-fail-title".localized, message: "password-verify-fail-message".localized)
+                    self.viewModel.reset(choosePasswordView)
+                    return
+                }
+                
+                self.configuration.session?.saveApp(password: password)
+                
+                dismissScreen()
+            }
         }
     }
     
@@ -154,5 +182,7 @@ extension ChoosePasswordViewController {
         case setup
         case verify(String)
         case login
+        case resetPassword
+        case resetVerify(String)
     }
 }

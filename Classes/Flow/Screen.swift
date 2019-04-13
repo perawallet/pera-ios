@@ -33,6 +33,8 @@ enum Screen {
     case receiveAlgos
     case receiveAlgosPreview(transaction: TransactionPreviewDraft)
     case historyResults(draft: HistoryDraft)
+    case nodeSettings
+    case addNode
 }
 
 extension Screen {

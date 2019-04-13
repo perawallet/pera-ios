@@ -8,11 +8,11 @@
 
 import Foundation
 
-private let validatedAdressLength = 58
+private let validatedAddressLength = 58
 
 extension String {
     
-    func isValidatedAdress() -> Bool {
-        return count == validatedAdressLength
+    func isValidatedAddress() -> Bool {
+        return count == validatedAddressLength
     }
 }

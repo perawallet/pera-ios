@@ -27,16 +27,19 @@ class ChoosePasswordViewModel {
         case .setup:
             choosePasswordView.titleLabel.text = "password-set-title".localized
             choosePasswordView.subtitleLabel.text = "password-set-subtitle".localized
-            return
         case .verify:
             choosePasswordView.titleLabel.text = "password-verify-title".localized
             choosePasswordView.subtitleLabel.text = "password-verify-subtitle".localized
-            return
         case .login:
             choosePasswordView.titleLabel.text = "login-title".localized
             choosePasswordView.subtitleLabel.text = "login-subtitle".localized
             choosePasswordView.logoutButton.isHidden = false
-            return
+        case .resetPassword:
+            choosePasswordView.titleLabel.text = "password-change-title".localized
+            choosePasswordView.subtitleLabel.text = "password-set-subtitle".localized
+        case .resetVerify:
+            choosePasswordView.titleLabel.text = "password-verify-title".localized
+            choosePasswordView.subtitleLabel.text = "password-verify-subtitle".localized
         }
     }
     

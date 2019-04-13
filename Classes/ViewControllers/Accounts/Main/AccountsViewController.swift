@@ -173,13 +173,14 @@ extension AccountsViewController {
 // MARK: - Helpers
 extension AccountsViewController {
     fileprivate func updateLayout() {
-        guard let address = selectedAccount?.address else {
+        guard let address = selectedAccount?.address,
+            let account = session?.authenticatedUser?.account(address: address) else {
             return
         }
         
-        let account = session?.authenticatedUser?.account(address: address)
+        self.navigationItem.title = account.name
         
-        self.navigationItem.title = account?.name
+        viewModel.configure(accountsView.accountsHeaderView, with: account)
     }
 }
 

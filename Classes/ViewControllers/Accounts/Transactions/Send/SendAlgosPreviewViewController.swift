@@ -156,7 +156,17 @@ extension SendAlgosPreviewViewController: SendAlgosPreviewViewDelegate {
                 sendAlgosSuccessViewController?.delegate = self
                 
             case let .failure(error):
-                print(error)
+                
+                switch error {
+                case let .badRequest(errorData):
+                    if let data = errorData,
+                        let message = String(data: data, encoding: .utf8) {
+                        self.displaySimpleAlertWith(title: "title-error".localized, message: message)
+                    }
+                    
+                default:
+                    self.displaySimpleAlertWith(title: "title-error".localized, message: "default-error-message".localized)
+                }
             }
         }
     }
