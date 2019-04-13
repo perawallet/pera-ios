@@ -129,7 +129,7 @@ class Router {
                                                         session: rootViewController.appConfiguration.session)
         
         switch screen {
-        case .introduction(let mode):
+        case let .introduction(mode):
             let introductionViewController = IntroductionViewController(configuration: configuration)
             introductionViewController.mode = mode
             
@@ -140,29 +140,29 @@ class Router {
             viewController = ChoosePasswordViewController(mode: mode, configuration: configuration)
         case .localAuthenticationPreference:
             viewController = LocalAuthenticationPreferenceViewController(configuration: configuration)
-        case .passPhraseBackUp(let mode):
+        case let .passPhraseBackUp(mode):
             let backUpViewController = PassPhraseBackUpViewController(configuration: configuration)
             backUpViewController.mode = mode
             
             viewController = backUpViewController
-        case .passPhraseVerify(let mode):
+        case let .passPhraseVerify(mode):
             let passPhraseVerifyViewController = PassPhraseVerifyViewController(configuration: configuration)
             passPhraseVerifyViewController.mode = mode
             
             viewController = passPhraseVerifyViewController
-        case .accountNameSetup(let mode):
+        case let .accountNameSetup(mode):
             let accountSetupViewController = AccountNameSetupViewController(configuration: configuration)
             accountSetupViewController.mode = mode
             
             viewController = accountSetupViewController
-        case .accountRecover(let mode):
+        case let .accountRecover(mode):
             let accountRecoverViewController = AccountRecoverViewController(configuration: configuration)
             accountRecoverViewController.mode = mode
             
             viewController = accountRecoverViewController
         case .qrScanner:
             viewController = QRScannerViewController(configuration: configuration)
-        case .qrGenerator(let text, let mode):
+        case let .qrGenerator(text, mode):
             let qrCreationController = QRCreationViewController(configuration: configuration, qrText: text)
             qrCreationController.mode = mode
             
@@ -173,7 +173,7 @@ class Router {
             viewController = AccountListViewController(mode: mode, configuration: configuration)
         case .options:
             viewController = OptionsViewController(configuration: configuration)
-        case .editAccount(let account):
+        case let .editAccount(account):
             viewController = EditAccountViewController(account: account, configuration: configuration)
         case .contacts:
             viewController = ContactsViewController(configuration: configuration)
@@ -194,6 +194,10 @@ class Router {
             viewController = ReceiveAlgosViewController(configuration: configuration)
         case let .receiveAlgosPreview(transaction):
             viewController = ReceiveAlgosPreviewViewController(transaction: transaction, configuration: configuration)
+        case .nodeSettings:
+            viewController = NodeSettingsViewController(configuration: configuration)
+        case .addNode:
+            viewController = AddNodeViewController(configuration: configuration)
         }
         
         return viewController as? T

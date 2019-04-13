@@ -32,6 +32,8 @@ enum Screen {
     case sendAlgosSuccess(transaction: Transaction, receiver: AlgosReceiverState)
     case receiveAlgos
     case receiveAlgosPreview(transaction: Transaction)
+    case nodeSettings
+    case addNode
 }
 
 extension Screen {

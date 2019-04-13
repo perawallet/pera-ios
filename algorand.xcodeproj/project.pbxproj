@@ -11,6 +11,16 @@
 		170AFAFC224CC70A00520EA5 /* QRText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170AFAFB224CC70A00520EA5 /* QRText.swift */; };
 		170AFAFE224CCBF300520EA5 /* QRView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170AFAFD224CCBF300520EA5 /* QRView.swift */; };
 		170AFB02224D1CE100520EA5 /* CIImage+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170AFB01224D1CE100520EA5 /* CIImage+Additions.swift */; };
+		17100B2C225CEC3600D13548 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17100B2B225CEC3600D13548 /* SettingsView.swift */; };
+		171111A9225DD1A200DAF55C /* SettingsDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171111A8225DD1A200DAF55C /* SettingsDetailCell.swift */; };
+		171111AB225DD1DD00DAF55C /* SettingsDetailContextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171111AA225DD1DD00DAF55C /* SettingsDetailContextView.swift */; };
+		171111AE225DDA6100DAF55C /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171111AD225DDA6100DAF55C /* SettingsViewModel.swift */; };
+		171111B0225DF91400DAF55C /* SettingsInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171111AF225DF91400DAF55C /* SettingsInfoCell.swift */; };
+		171111B2225DF92300DAF55C /* SettingsInfoContextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171111B1225DF92300DAF55C /* SettingsInfoContextView.swift */; };
+		171111B4225E091A00DAF55C /* SettingsToggleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171111B3225E091A00DAF55C /* SettingsToggleCell.swift */; };
+		171111B6225E093400DAF55C /* SettingsToggleContextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171111B5225E093400DAF55C /* SettingsToggleContextView.swift */; };
+		171111B8225E0C8400DAF55C /* Toggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171111B7225E0C8400DAF55C /* Toggle.swift */; };
+		171111BA225E34E400DAF55C /* NodeSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171111B9225E34E400DAF55C /* NodeSettingsViewController.swift */; };
 		171111BC225E3FD700DAF55C /* Crypto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 171111BB225E3FD600DAF55C /* Crypto.framework */; };
 		173DA1E72255EBE000378A82 /* String+Address.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173DA1E62255EBE000378A82 /* String+Address.swift */; };
 		173DA1E92255F7B500378A82 /* API+Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173DA1E82255F7B500378A82 /* API+Transaction.swift */; };
@@ -36,6 +46,9 @@
 		179278872244E99A00097D32 /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 179278752244E99800097D32 /* Montserrat-Regular.ttf */; };
 		179278952244F8EE00097D32 /* UIFont+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179278942244F8EE00097D32 /* UIFont+Additions.swift */; };
 		17927897224501BA00097D32 /* Montserrat-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 17927896224501BA00097D32 /* Montserrat-SemiBold.ttf */; };
+		179B93D6225E447400DD03E9 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179B93D5225E447400DD03E9 /* Node.swift */; };
+		179B93D8225E454100DD03E9 /* NodeSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179B93D7225E454100DD03E9 /* NodeSettingsView.swift */; };
+		179B93DA225E460500DD03E9 /* NodeSettingsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179B93D9225E460500DD03E9 /* NodeSettingsHeaderView.swift */; };
 		17B7D8A62240D8F900A6FF9E /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B7D8A52240D8F900A6FF9E /* Account.swift */; };
 		17B7D8A82240DFFC00A6FF9E /* API+Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B7D8A72240DFFC00A6FF9E /* API+Account.swift */; };
 		17B7D8AB2240E19600A6FF9E /* AccountFetchDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B7D8AA2240E19600A6FF9E /* AccountFetchDraft.swift */; };
@@ -46,8 +59,13 @@
 		17BEC4602248C81E00AAF370 /* PassPhraseVerifyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17BEC45F2248C81E00AAF370 /* PassPhraseVerifyView.swift */; };
 		17BEC4632248CD3C00AAF370 /* LeftAlignedCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17BEC4622248CD3C00AAF370 /* LeftAlignedCollectionViewFlowLayout.swift */; };
 		17BEC4662248D39900AAF370 /* PassPhraseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17BEC4652248D39900AAF370 /* PassPhraseCollectionViewCell.swift */; };
+		17D04F46225F64B60051BC43 /* AddNodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D04F45225F64B60051BC43 /* AddNodeViewController.swift */; };
+		17D04F48225F697E0051BC43 /* AddNodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D04F47225F697E0051BC43 /* AddNodeView.swift */; };
+		17D04F4A225F90B00051BC43 /* API+Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D04F49225F90B00051BC43 /* API+Node.swift */; };
+		17D04F4C225F90D70051BC43 /* NodeTestDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D04F4B225F90D70051BC43 /* NodeTestDraft.swift */; };
 		17D04F4F225FACED0051BC43 /* Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D04F4E225FACED0051BC43 /* Int.swift */; };
 		17D04F51225FAD920051BC43 /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D04F50225FAD920051BC43 /* Double.swift */; };
+		17D04F53226107D70051BC43 /* NodeSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D04F52226107D70051BC43 /* NodeSettingsViewModel.swift */; };
 		17D50AA1225C755E00CA9C6E /* ApplicationConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D50AA0225C755E00CA9C6E /* ApplicationConfiguration.swift */; };
 		17E2E3C5225210390065957A /* Notification.Name+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E2E3C4225210390065957A /* Notification.Name+Additions.swift */; };
 		17E2E3C722524E4C0065957A /* QRSelectableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E2E3C622524E4C0065957A /* QRSelectableLabel.swift */; };
@@ -228,6 +246,16 @@
 		170AFAFB224CC70A00520EA5 /* QRText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRText.swift; sourceTree = "<group>"; };
 		170AFAFD224CCBF300520EA5 /* QRView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRView.swift; sourceTree = "<group>"; };
 		170AFB01224D1CE100520EA5 /* CIImage+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CIImage+Additions.swift"; sourceTree = "<group>"; };
+		17100B2B225CEC3600D13548 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		171111A8225DD1A200DAF55C /* SettingsDetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDetailCell.swift; sourceTree = "<group>"; };
+		171111AA225DD1DD00DAF55C /* SettingsDetailContextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDetailContextView.swift; sourceTree = "<group>"; };
+		171111AD225DDA6100DAF55C /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
+		171111AF225DF91400DAF55C /* SettingsInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsInfoCell.swift; sourceTree = "<group>"; };
+		171111B1225DF92300DAF55C /* SettingsInfoContextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsInfoContextView.swift; sourceTree = "<group>"; };
+		171111B3225E091A00DAF55C /* SettingsToggleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsToggleCell.swift; sourceTree = "<group>"; };
+		171111B5225E093400DAF55C /* SettingsToggleContextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsToggleContextView.swift; sourceTree = "<group>"; };
+		171111B7225E0C8400DAF55C /* Toggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toggle.swift; sourceTree = "<group>"; };
+		171111B9225E34E400DAF55C /* NodeSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeSettingsViewController.swift; sourceTree = "<group>"; };
 		171111BB225E3FD600DAF55C /* Crypto.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crypto.framework; sourceTree = "<group>"; };
 		173DA1E62255EBE000378A82 /* String+Address.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Address.swift"; sourceTree = "<group>"; };
 		173DA1E82255F7B500378A82 /* API+Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+Transaction.swift"; sourceTree = "<group>"; };
@@ -253,6 +281,9 @@
 		179278752244E99800097D32 /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Regular.ttf"; sourceTree = "<group>"; };
 		179278942244F8EE00097D32 /* UIFont+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Additions.swift"; sourceTree = "<group>"; };
 		17927896224501BA00097D32 /* Montserrat-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-SemiBold.ttf"; sourceTree = "<group>"; };
+		179B93D5225E447400DD03E9 /* Node.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
+		179B93D7225E454100DD03E9 /* NodeSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeSettingsView.swift; sourceTree = "<group>"; };
+		179B93D9225E460500DD03E9 /* NodeSettingsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeSettingsHeaderView.swift; sourceTree = "<group>"; };
 		17B7D8A52240D8F900A6FF9E /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		17B7D8A72240DFFC00A6FF9E /* API+Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+Account.swift"; sourceTree = "<group>"; };
 		17B7D8AA2240E19600A6FF9E /* AccountFetchDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountFetchDraft.swift; sourceTree = "<group>"; };
@@ -263,8 +294,13 @@
 		17BEC45F2248C81E00AAF370 /* PassPhraseVerifyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassPhraseVerifyView.swift; sourceTree = "<group>"; };
 		17BEC4622248CD3C00AAF370 /* LeftAlignedCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftAlignedCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
 		17BEC4652248D39900AAF370 /* PassPhraseCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassPhraseCollectionViewCell.swift; sourceTree = "<group>"; };
+		17D04F45225F64B60051BC43 /* AddNodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNodeViewController.swift; sourceTree = "<group>"; };
+		17D04F47225F697E0051BC43 /* AddNodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNodeView.swift; sourceTree = "<group>"; };
+		17D04F49225F90B00051BC43 /* API+Node.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+Node.swift"; sourceTree = "<group>"; };
+		17D04F4B225F90D70051BC43 /* NodeTestDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeTestDraft.swift; sourceTree = "<group>"; };
 		17D04F4E225FACED0051BC43 /* Int.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Int.swift; sourceTree = "<group>"; };
 		17D04F50225FAD920051BC43 /* Double.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
+		17D04F52226107D70051BC43 /* NodeSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeSettingsViewModel.swift; sourceTree = "<group>"; };
 		17D50AA0225C755E00CA9C6E /* ApplicationConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationConfiguration.swift; sourceTree = "<group>"; };
 		17E2E3C4225210390065957A /* Notification.Name+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification.Name+Additions.swift"; sourceTree = "<group>"; };
 		17E2E3C622524E4C0065957A /* QRSelectableLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRSelectableLabel.swift; sourceTree = "<group>"; };
@@ -464,6 +500,32 @@
 			path = CoreImage;
 			sourceTree = "<group>";
 		};
+		17100B2A225CEC2900D13548 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				17100B2B225CEC3600D13548 /* SettingsView.swift */,
+				171111A8225DD1A200DAF55C /* SettingsDetailCell.swift */,
+				171111AA225DD1DD00DAF55C /* SettingsDetailContextView.swift */,
+				171111AF225DF91400DAF55C /* SettingsInfoCell.swift */,
+				171111B1225DF92300DAF55C /* SettingsInfoContextView.swift */,
+				171111B3225E091A00DAF55C /* SettingsToggleCell.swift */,
+				171111B5225E093400DAF55C /* SettingsToggleContextView.swift */,
+				179B93D7225E454100DD03E9 /* NodeSettingsView.swift */,
+				179B93D9225E460500DD03E9 /* NodeSettingsHeaderView.swift */,
+				17D04F47225F697E0051BC43 /* AddNodeView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		171111AC225DDA5600DAF55C /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				171111AD225DDA6100DAF55C /* SettingsViewModel.swift */,
+				17D04F52226107D70051BC43 /* NodeSettingsViewModel.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
 		1746715B225B6BE600B78641 /* TypeAliases */ = {
 			isa = PBXGroup;
 			children = (
@@ -516,6 +578,7 @@
 				173DA1EC2255F96E00378A82 /* TransactionFee.swift */,
 				173DA20F2256643A00378A82 /* TransactionID.swift */,
 				17D50AA0225C755E00CA9C6E /* ApplicationConfiguration.swift */,
+				179B93D5225E447400DD03E9 /* Node.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -525,6 +588,7 @@
 			children = (
 				17B7D8AA2240E19600A6FF9E /* AccountFetchDraft.swift */,
 				173DA1EA2255F7EF00378A82 /* TransactionDraft.swift */,
+				17D04F4B225F90D70051BC43 /* NodeTestDraft.swift */,
 			);
 			path = Drafts;
 			sourceTree = "<group>";
@@ -885,6 +949,7 @@
 				2BF34CC1223A95A50052CAD3 /* API.swift */,
 				17B7D8A72240DFFC00A6FF9E /* API+Account.swift */,
 				173DA1E82255F7B500378A82 /* API+Transaction.swift */,
+				17D04F49225F90B00051BC43 /* API+Node.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -1078,6 +1143,7 @@
 		2B8BE4F0223935A3005D8565 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				17100B2A225CEC2900D13548 /* Settings */,
 				2BF7190A224ECF12001E8420 /* Contacts */,
 				2B656E94224BB9D60064A49B /* Accounts */,
 				2BD739E2223F9FDD00B66EEF /* Common */,
@@ -1380,6 +1446,7 @@
 			children = (
 				2BD739E4223FA07B00B66EEF /* MainButton.swift */,
 				2BB021D8224E2A7E0039D78A /* AlgosAmountView.swift */,
+				171111B7225E0C8400DAF55C /* Toggle.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1495,6 +1562,7 @@
 		2BD73A0E22412B5900B66EEF /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				171111AC225DDA5600DAF55C /* Settings */,
 				2B65B1FF22527B89001DB5BE /* Contacts */,
 				2B656E9C224BCAF60064A49B /* Accounts */,
 				2BD73A152241322D00B66EEF /* Authentication */,
@@ -1829,6 +1897,8 @@
 			isa = PBXGroup;
 			children = (
 				2BF5317B224AA89B00A7455F /* SettingsViewController.swift */,
+				171111B9225E34E400DAF55C /* NodeSettingsViewController.swift */,
+				17D04F45225F64B60051BC43 /* AddNodeViewController.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -2049,6 +2119,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				17D04F46225F64B60051BC43 /* AddNodeViewController.swift in Sources */,
 				2B8954B92243FCFA00D6D068 /* AdaptiveLayout.swift in Sources */,
 				173DA1EB2255F7EF00378A82 /* TransactionDraft.swift in Sources */,
 				2BF5317E224AA8B700A7455F /* ContactsViewController.swift in Sources */,
@@ -2061,11 +2132,14 @@
 				2B8954C8224420B400D6D068 /* InputViewDelegate.swift in Sources */,
 				2B59F15C22550778005203DD /* Codable+CoreData.swift in Sources */,
 				2B8954B82243FCD800D6D068 /* ViewControllerConfiguration.swift in Sources */,
+				171111A9225DD1A200DAF55C /* SettingsDetailCell.swift in Sources */,
 				2B66870B2248DB35009F21E7 /* NavigationBarConfigurable.swift in Sources */,
 				2BA8736E2248240A00511C7C /* UIEdgeInsets+Additions.swift in Sources */,
 				2B5DA9D5224CE19700EE41B4 /* EditAccountViewController.swift in Sources */,
 				2B8954B72243FCB100D6D068 /* Notification+Keyboard.swift in Sources */,
 				2B8954B62243FBD600D6D068 /* NotificationCenter+Additions.swift in Sources */,
+				171111B4225E091A00DAF55C /* SettingsToggleCell.swift in Sources */,
+				17D04F48225F697E0051BC43 /* AddNodeView.swift in Sources */,
 				2B56F7D6225B3C1D00E58737 /* SendAlgosViewController.swift in Sources */,
 				2B25BB4B225EAD600092C972 /* ReceiveAlgosPreviewViewController.swift in Sources */,
 				1761B3CB224A39D400C6BA47 /* PassPhraseViewModel.swift in Sources */,
@@ -2090,15 +2164,19 @@
 				2BF53155224A468400A7455F /* ModalPresentable.swift in Sources */,
 				2B7572AA225CC391009E0253 /* SendAlgosSuccessViewController.swift in Sources */,
 				2BDE9CD4224E1E91007EFF30 /* LoadingIndicator.swift in Sources */,
+				171111B0225DF91400DAF55C /* SettingsInfoCell.swift in Sources */,
+				171111AE225DDA6100DAF55C /* SettingsViewModel.swift in Sources */,
 				2B656E99224BC52D0064A49B /* AccountContextView.swift in Sources */,
 				2BD739F8223FF4B600B66EEF /* NumpadDeleteButton.swift in Sources */,
 				2BD739D2223F97F600B66EEF /* WelcomeView.swift in Sources */,
 				2BD739FE22411A0100B66EEF /* Reusable.swift in Sources */,
+				171111B6225E093400DAF55C /* SettingsToggleContextView.swift in Sources */,
 				2BD73A0622412AC900B66EEF /* NumpadViewDataSource.swift in Sources */,
 				2B5DA9D3224CD21800EE41B4 /* AccountsViewController+Options.swift in Sources */,
 				2B25BB4D225EAD700092C972 /* ReceiveAlgosPreviewView.swift in Sources */,
 				2BF5317C224AA89B00A7455F /* SettingsViewController.swift in Sources */,
 				2BD739D1223F97F600B66EEF /* IntroductionView.swift in Sources */,
+				179B93DA225E460500DD03E9 /* NodeSettingsHeaderView.swift in Sources */,
 				2BD73A1C2241636C00B66EEF /* PassPhraseBackUpView.swift in Sources */,
 				2BF7190C224ECF30001E8420 /* AddContactView.swift in Sources */,
 				2BD739F1223FE1C700B66EEF /* UIButton+Factory.swift in Sources */,
@@ -2110,6 +2188,7 @@
 				2B56F7DC225B51C100E58737 /* AlgosInputView.swift in Sources */,
 				2B56F7DA225B45B300E58737 /* SendAlgosView.swift in Sources */,
 				2B25BB49225EACB60092C972 /* ReceiveAlgosView.swift in Sources */,
+				17D04F4A225F90B00051BC43 /* API+Node.swift in Sources */,
 				2BD739E1223F9F3000B66EEF /* LocalAuthenticationPreferenceView.swift in Sources */,
 				2B6687102248DBE2009F21E7 /* ALGBarButtonItem.swift in Sources */,
 				2BDE9CDA224E2336007EFF30 /* TransactionHistoryCell.swift in Sources */,
@@ -2134,6 +2213,7 @@
 				2B8954A82243854400D6D068 /* AlertView.swift in Sources */,
 				2BF53165224A47E000A7455F /* CardModalPresentationController.swift in Sources */,
 				2BF34CBC223A8C460052CAD3 /* BaseCollectionViewCell.swift in Sources */,
+				171111B2225DF92300DAF55C /* SettingsInfoContextView.swift in Sources */,
 				2B6687122248DC7D009F21E7 /* BarButton.swift in Sources */,
 				2BD739F6223FF47900B66EEF /* NumpadNumericButton.swift in Sources */,
 				2B8BE4EE22393577005D8565 /* BaseViewController.swift in Sources */,
@@ -2160,6 +2240,7 @@
 				17D04F51225FAD920051BC43 /* Double.swift in Sources */,
 				173DA1E92255F7B500378A82 /* API+Transaction.swift in Sources */,
 				2BD739E5223FA07B00B66EEF /* MainButton.swift in Sources */,
+				17D04F53226107D70051BC43 /* NodeSettingsViewModel.swift in Sources */,
 				2B7572AE225CCB62009E0253 /* TransactionReceiverView.swift in Sources */,
 				2BD739FA2240527B00B66EEF /* PasswordInputView.swift in Sources */,
 				2BD73A1422412D9100B66EEF /* NumpadCellViewModel.swift in Sources */,
@@ -2175,6 +2256,7 @@
 				1746715D225B6C0400B78641 /* TypeAliases.swift in Sources */,
 				2B59F16122563F89005203DD /* TabBar.swift in Sources */,
 				2BF34CC5223A99670052CAD3 /* String+Localization.swift in Sources */,
+				179B93D6225E447400DD03E9 /* Node.swift in Sources */,
 				2BF34CA62239AD6D0052CAD3 /* KeyboardController.swift in Sources */,
 				2BB021E0224E5FD20039D78A /* AccountsViewModel.swift in Sources */,
 				2B82B1CC2253DE2500A8909F /* ContactsViewModel.swift in Sources */,
@@ -2214,6 +2296,8 @@
 				2B59F1392254BABF005203DD /* algorand.xcdatamodeld in Sources */,
 				2B25BB47225E03610092C972 /* DetailedInformationView.swift in Sources */,
 				2BD739F4223FF08000B66EEF /* NumpadView.swift in Sources */,
+				171111B8225E0C8400DAF55C /* Toggle.swift in Sources */,
+				171111AB225DD1DD00DAF55C /* SettingsDetailContextView.swift in Sources */,
 				2BF34CBA223A880C0052CAD3 /* UIView+SafeArea.swift in Sources */,
 				2BF34CBF223A8E740052CAD3 /* NavigationController.swift in Sources */,
 				2B8C1278224196DF00E34D37 /* String+Attributes.swift in Sources */,
@@ -2226,16 +2310,20 @@
 				170AFAFC224CC70A00520EA5 /* QRText.swift in Sources */,
 				2BF71912224ECFEC001E8420 /* ContactsView.swift in Sources */,
 				2B89549F2242D90000D6D068 /* UIViewController+Additions.swift in Sources */,
+				179B93D8225E454100DD03E9 /* NodeSettingsView.swift in Sources */,
+				17D04F4C225F90D70051BC43 /* NodeTestDraft.swift in Sources */,
 				2B7572A8225CA211009E0253 /* SendAlgosPreviewViewController.swift in Sources */,
 				17E2E3C722524E4C0065957A /* QRSelectableLabel.swift in Sources */,
 				2BD73A022241299100B66EEF /* NumpadNumericCell.swift in Sources */,
 				2BF53182224AA8E000A7455F /* AccountsViewController.swift in Sources */,
 				2BF53168224A48DF00A7455F /* CGFloat+Additions.swift in Sources */,
+				17100B2C225CEC3600D13548 /* SettingsView.swift in Sources */,
 				2BDE9CD0224E1A60007EFF30 /* EmptyStateView.swift in Sources */,
 				2B66870E2248DB8B009F21E7 /* BarButtonItem.swift in Sources */,
 				2BB021D9224E2A7E0039D78A /* AlgosAmountView.swift in Sources */,
 				2BD739EF223FDE8400B66EEF /* UILabel+Factory.swift in Sources */,
 				2B8954B32243D7AD00D6D068 /* AlertViewModel.swift in Sources */,
+				171111BA225E34E400DAF55C /* NodeSettingsViewController.swift in Sources */,
 				2B6687152248DF83009F21E7 /* LocalAuthenticator.swift in Sources */,
 				2B656EA2224BCC2C0064A49B /* AccountsTotalDisplayCell.swift in Sources */,
 				2B8C127A2241970F00E34D37 /* NSAttributedString+Additions.swift in Sources */,

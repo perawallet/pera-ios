@@ -10,8 +10,14 @@
         <attribute name="image" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
+    <entity name="Node" representedClassName="Node" syncable="YES">
+        <attribute name="address" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="token" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <elements>
         <element name="ApplicationConfiguration" positionX="-54" positionY="45" width="128" height="73"/>
         <element name="Contact" positionX="-63" positionY="-18" width="128" height="43"/>
+        <element name="Node" positionX="-54" positionY="27" width="128" height="90"/>
     </elements>
 </model>
