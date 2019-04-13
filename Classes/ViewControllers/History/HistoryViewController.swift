@@ -34,6 +34,8 @@ class HistoryViewController: BaseScrollViewController {
     
     private var selectedAccount: Account?
     
+    private let viewModel = HistoryViewModel()
+    
     // MARK: Setup
     
     override func configureAppearance() {
@@ -110,18 +112,7 @@ extension HistoryViewController: AccountListViewControllerDelegate {
     }
     
     func accountListViewController(_ viewController: AccountListViewController, didSelectAccount account: Account) {
-        historyView.accountSelectionView.detailLabel.text = account.name
-        
-        historyView.accountSelectionView.rightInputAccessoryButton.isHidden = true
-        historyView.accountAmountView.isHidden = false
-        
-        if account.amount > 0 {
-            historyView.accountAmountView.mode = .positive(account.amount.toAlgos)
-        } else if account.amount == 0 {
-            historyView.accountAmountView.mode = .normal(0.0)
-        } else {
-            historyView.accountAmountView.mode = .negative(-account.amount.toAlgos)
-        }
+        viewModel.configure(historyView, with: account)
         
         selectedAccount = account
     }
