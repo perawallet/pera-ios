@@ -27,7 +27,7 @@ extension API {
                 ])
                 .handler { response in
                     completion?(response)
-            }
+                }
         )
     }
     
