@@ -24,5 +24,7 @@ class HistoryViewModel {
         } else {
             view.accountAmountView.mode = .negative(-account.amount.toAlgos)
         }
+        
+        view.accountAmountView.signLabel.isHidden = true
     }
 }

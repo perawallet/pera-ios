@@ -28,9 +28,9 @@ class AccountsViewModel {
         }
         
         if payment.amount > 0 {
-            cell.contextView.transactionAmountView.mode = .positive(payment.amount)
+            cell.contextView.transactionAmountView.mode = .positive(payment.amount.toAlgos)
         } else {
-            cell.contextView.transactionAmountView.mode = .negative(-payment.amount)
+            cell.contextView.transactionAmountView.mode = .negative(-payment.amount.toAlgos)
         }
     }
 }

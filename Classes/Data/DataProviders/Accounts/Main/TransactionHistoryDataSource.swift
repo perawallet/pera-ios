@@ -8,29 +8,28 @@
 
 import UIKit
 
-protocol TransactionHistoryDataSourceDelegate: class {
-    
-    func transactionHistoryDataSource(_ transactionHistoryDataSource: TransactionHistoryDataSource, didFetch transactions: [Transaction])
-}
-
 class TransactionHistoryDataSource: NSObject, UICollectionViewDataSource {
     
-    weak var delegate: TransactionHistoryDataSourceDelegate?
+    enum Constant {
+        static let numberOfSecondsInOneDay = 86400
+        static let numberOfRoundsInOneDay = 17280
+        static let numberOfRoundsInOneHour = 720
+        static let numberOfRoundsInOneMinute = 12
+        static let roundCreationOffset = 5
+    }
     
     private var transactions = [Transaction]()
     
     private let viewModel = AccountsViewModel()
     
-    // TODO: Added transacitons for test. Should be removed after SDK integration.
-    // TODO: Need to configure doubles for amount after "."
+    private let api: API?
     
-    private var amounts: [Double] = [12345, 12456, 312, -12312, 3545, -23523, -6475, 4543, -64754, -3453,
-                                     234234, 567, -34634, 234, -345345, 324, -4560, 351, -2134, 12340, -140]
+    private var transactionParams: TransactionParams?
     
-    // TODO: Might be renamed to load data after sdk integration?
-    
-    func setupMockData() {
-        delegate?.transactionHistoryDataSource(self, didFetch: transactions)
+    init(api: API?) {
+        self.api = api
+        
+        super.init()
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -55,5 +54,115 @@ class TransactionHistoryDataSource: NSObject, UICollectionViewDataSource {
         }
         
         return cell
+    }
+}
+
+// MARK: API
+
+extension TransactionHistoryDataSource {
+    
+    func loadData(for account: Account, between dates: (Date, Date)? = nil, then handler: @escaping ([Transaction]?, Error?) -> Void) {
+        api?.getTransactionParams { response in
+            switch response {
+            case let .failure(error):
+                handler(nil, error)
+            case let .success(params):
+                self.transactionParams = params
+                
+                if let dateRange = dates {
+                    self.fetchTransactions(for: account, between: dateRange, then: handler)
+                    return
+                }
+                
+                self.fetchTransactions(for: account, then: handler)
+            }
+        }
+    }
+    
+    private func fetchTransactions(
+        for account: Account,
+        between dates: (Date, Date),
+        then handler: @escaping ([Transaction]?, Error?) -> Void
+    ) {
+        guard let rounds = calculateRounds(from: dates) else {
+            return
+        }
+        
+        api?.fetchTransactions(between: (rounds.0, rounds.1), for: account) { response in
+            switch response {
+            case let .failure(error):
+                handler(nil, error)
+            case let .success(transactions):
+                self.transactions = transactions.transactions
+                handler(transactions.transactions, nil)
+            }
+        }
+    }
+    
+    private func calculateRounds(from dates: (Date, Date)) -> (Int64, Int64)? {
+        guard let params = transactionParams else {
+            return nil
+        }
+        
+        let startDate = dates.0
+        let endDate = dates.1
+        
+        let startDayDifference = -Int(startDate.timeIntervalSinceNow) / Constant.numberOfSecondsInOneDay
+        let endDayDifference = -Int(endDate.timeIntervalSinceNow) / Constant.numberOfSecondsInOneDay
+        
+        // If selected days are today, start round is begining of the day and end in last round
+        // If selected end day is today, start from selected day round and end in last round
+        // If selected days are equal, start from beginning of the day and end in end of the day.
+        
+        var firstRound: Int64
+        var lastRound: Int64
+        
+        if endDayDifference == 0 && startDayDifference == 0 {
+            firstRound = params.lastRound
+                - Int64(startDate.hour * Constant.numberOfRoundsInOneHour)
+                - Int64(startDate.minute * Constant.numberOfRoundsInOneMinute)
+            lastRound = params.lastRound
+        } else if endDayDifference == 0 {
+            firstRound = params.lastRound - Int64(startDayDifference * Constant.numberOfRoundsInOneDay)
+            lastRound = params.lastRound
+        } else if endDayDifference == startDayDifference {
+            firstRound = params.lastRound
+                - Int64(startDayDifference * Constant.numberOfRoundsInOneDay)
+                - Int64(startDate.hour * Constant.numberOfRoundsInOneHour)
+            lastRound = params.lastRound
+                - Int64(endDayDifference * Constant.numberOfRoundsInOneDay)
+                + Int64((24 - endDate.hour) * Constant.numberOfRoundsInOneHour)
+        } else {
+            firstRound = params.lastRound - Int64(startDayDifference * Constant.numberOfRoundsInOneDay)
+            lastRound = params.lastRound - Int64(endDayDifference * Constant.numberOfRoundsInOneDay)
+        }
+        
+        // Check bounds for rounds
+        
+        if firstRound < 1 {
+            firstRound = 1
+        }
+        
+        if lastRound > params.lastRound {
+            lastRound = params.lastRound
+        }
+        
+        return (firstRound, lastRound)
+    }
+    
+    private func fetchTransactions(for account: Account, then handler: @escaping ([Transaction]?, Error?) -> Void) {
+        guard let params = transactionParams else {
+            return
+        }
+        
+        api?.fetchTransactions(between: (params.firstRound, params.lastRound), for: account) { response in
+            switch response {
+            case let .failure(error):
+                handler(nil, error)
+            case let .success(transactions):
+                self.transactions = transactions.transactions
+                handler(transactions.transactions, nil)
+            }
+        }
     }
 }

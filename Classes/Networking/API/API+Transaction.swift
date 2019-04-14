@@ -13,8 +13,8 @@ extension API {
     
     @discardableResult
     func fetchTransactions(
-        for transactionDraft: TransactionParams,
-        in account: Account,
+        between rounds: (Int64, Int64),
+        for account: Account,
         completion: APICompletionHandler<TransactionList>? = nil
     ) -> EndpointInteractable? {
         
@@ -22,8 +22,8 @@ extension API {
             Endpoint<TransactionList>(Path("/v1/account/\(account.address)/transactions"))
                 .httpMethod(.get)
                 .query([
-                    .custom(key: AlgorandParamPairKey.firstRound, value: transactionDraft.firstRound),
-                    .custom(key: AlgorandParamPairKey.lastRound, value: transactionDraft.lastRound)
+                    .custom(key: AlgorandParamPairKey.firstRound, value: rounds.0),
+                    .custom(key: AlgorandParamPairKey.lastRound, value: rounds.1)
                 ])
                 .handler { response in
                     completion?(response)

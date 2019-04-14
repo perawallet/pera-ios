@@ -35,7 +35,7 @@ class HistoryResultsViewController: BaseViewController {
     init(draft: HistoryDraft, configuration: ViewControllerConfiguration) {
         self.draft = draft
         transactionHistoryLayoutBuilder = TransactionHistoryLayoutBuilder()
-        transactionHistoryDataSource = TransactionHistoryDataSource()
+        transactionHistoryDataSource = TransactionHistoryDataSource(api: configuration.api)
         
         super.init(configuration: configuration)
         
@@ -51,12 +51,10 @@ class HistoryResultsViewController: BaseViewController {
         
         viewModel.configure(historyResultsView, with: draft)
         
-        // TODO: Fetch transactions between dates for account. Remove below after fetched.
-        historyResultsView.transactionHistoryCollectionView.contentState = .empty(emptyStateView)
+        fetchTransactions()
     }
     
     override func linkInteractors() {
-        transactionHistoryDataSource.delegate = self
         historyResultsView.transactionHistoryCollectionView.delegate = transactionHistoryLayoutBuilder
         historyResultsView.transactionHistoryCollectionView.dataSource = transactionHistoryDataSource
     }
@@ -74,19 +72,31 @@ class HistoryResultsViewController: BaseViewController {
             make.edges.equalToSuperview()
         }
     }
-}
-
-// MARK: TransactionHistoryDataSourceDelegate
-
-extension HistoryResultsViewController: TransactionHistoryDataSourceDelegate {
     
-    func transactionHistoryDataSource(_ transactionHistoryDataSource: TransactionHistoryDataSource, didFetch transactions: [Transaction]) {
+    // MARK: Data
+    
+    private func fetchTransactions() {
+        historyResultsView.transactionHistoryCollectionView.contentState = .loading
         
-        if !transactions.isEmpty {
-            historyResultsView.transactionHistoryCollectionView.contentState = .none
-            return
+        transactionHistoryDataSource.loadData(for: draft.account, between: (draft.startDate, draft.endDate)) { transactions, error in
+            if error != nil {
+                self.historyResultsView.transactionHistoryCollectionView.contentState = .empty(self.emptyStateView)
+                self.historyResultsView.transactionHistoryCollectionView.reloadData()
+                return
+            }
+            
+            guard let transactions = transactions else {
+                self.historyResultsView.transactionHistoryCollectionView.contentState = .none
+                return
+            }
+            
+            if transactions.isEmpty {
+                self.historyResultsView.transactionHistoryCollectionView.contentState = .empty(self.emptyStateView)
+                return
+            }
+            
+            self.historyResultsView.transactionHistoryCollectionView.contentState = .none
+            self.historyResultsView.transactionHistoryCollectionView.reloadData()
         }
-        
-        historyResultsView.transactionHistoryCollectionView.contentState = .empty(emptyStateView)
     }
 }

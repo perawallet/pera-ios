@@ -18,6 +18,7 @@ class Transaction: Mappable {
     let from: String
     let payment: Payment?
     let lastRound: Int64
+    let type: String
     
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -33,6 +34,7 @@ class Transaction: Mappable {
         from = try container.decode(String.self, forKey: .from)
         payment = try container.decodeIfPresent(Payment.self, forKey: .payment)
         lastRound = try container.decode(Int64.self, forKey: .lastRound)
+        type = try container.decode(String.self, forKey: .type)
     }
 }
 
@@ -47,5 +49,6 @@ extension Transaction {
         case from = "from"
         case payment = "payment"
         case lastRound = "last-round"
+        case type = "type"
     }
 }

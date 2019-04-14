@@ -10,7 +10,7 @@ import Magpie
 
 class Payment: Mappable {
     
-    let amount: Double
+    let amount: Int64
     let toAddress: String
     
     enum CodingKeys: String, CodingKey {
