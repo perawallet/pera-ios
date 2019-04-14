@@ -243,6 +243,9 @@ class HistoryView: BaseView {
     @objc
     private func didTriggerStartDate(tapGestureRecognizer: UITapGestureRecognizer) {
         if startDatePickerView.isHidden {
+            startDate = startDatePickerView.date
+            startDateDisplayView.detailLabel.text = startDate?.toFormat("dd MMMM yyyy")
+            
             setStartDatePicker(visible: true)
         } else {
             setStartDatePicker(visible: false)
@@ -252,6 +255,9 @@ class HistoryView: BaseView {
     @objc
     private func didTriggerEndDate(tapGestureRecognizer: UITapGestureRecognizer) {
         if endDatePickerView.isHidden {
+            endDate = endDatePickerView.date
+            endDateDisplayView.detailLabel.text = endDate?.toFormat("dd MMMM yyyy")
+            
             setEndDatePicker(visible: true)
         } else {
             setEndDatePicker(visible: false)
