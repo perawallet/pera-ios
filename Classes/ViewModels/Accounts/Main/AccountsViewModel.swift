@@ -11,17 +11,23 @@ import SwiftDate
 
 class AccountsViewModel {
     
+    var lastRound: Int64?
+    
     func configure(_ view: AccountsHeaderView, with account: Account) {
         view.algosAmountLabel.text = "\(account.amount.toAlgos)"
     }
     
-    func configure(_ cell: TransactionHistoryCell, with transaction: Transaction) {
-        cell.contextView.transactionDetailLabel.text = transaction.id.identifier
+    func configure(_ cell: TransactionHistoryCell, with transaction: Transaction, for contact: Contact? = nil) {
+        if let contact = contact {
+            cell.contextView.titleLabel.text = contact.name
+            cell.contextView.subtitleLabel.text = transaction.payment?.toAddress
+        } else {
+            cell.contextView.titleLabel.text = transaction.payment?.toAddress
+            cell.contextView.subtitleLabel.isHidden = true
+        }
         
-        let formattedDate = Date().toFormat("MMMM dd, yyyy")
-        
+        let formattedDate = findDate(from: transaction.lastRound).toFormat("MMMM dd, yyyy")
         cell.contextView.dateLabel.text = formattedDate
-        cell.contextView.accountNamelabel.text = ""
         
         guard let payment = transaction.payment else {
             return
@@ -32,5 +38,20 @@ class AccountsViewModel {
         } else {
             cell.contextView.transactionAmountView.mode = .negative(-payment.amount.toAlgos)
         }
+    }
+    
+    private func findDate(from round: Int64) -> Date {
+        guard let lastRound = lastRound else {
+            return Date()
+        }
+    
+        let roundDifference = lastRound - round
+        let dayDifference = roundDifference / 17280
+        
+        guard let transactionDate = Calendar.current.date(byAdding: .day, value: Int(-dayDifference), to: Date()) else {
+            return Date()
+        }
+        
+        return transactionDate
     }
 }

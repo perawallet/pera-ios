@@ -108,6 +108,8 @@ class AccountsViewController: BaseViewController {
         
         viewModel.configure(accountsView.accountsHeaderView, with: account)
         
+        transactionHistoryDataSource.setupContacts()
+        
         fetchTransactions()
     }
     

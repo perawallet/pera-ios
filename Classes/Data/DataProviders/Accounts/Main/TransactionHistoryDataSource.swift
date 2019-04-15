@@ -22,6 +22,8 @@ class TransactionHistoryDataSource: NSObject, UICollectionViewDataSource {
     
     private var transactions = [Transaction]()
     
+    private var contacts = [Contact]()
+    
     private let viewModel = AccountsViewModel()
     
     private let api: API?
@@ -56,16 +58,43 @@ class TransactionHistoryDataSource: NSObject, UICollectionViewDataSource {
         if indexPath.item < transactions.count {
             let transaction = transactions[indexPath.row]
             
-            viewModel.configure(cell, with: transaction)
+            if let contact = contacts.first(where: { contact -> Bool in
+                contact.address == transaction.from || contact.address == transaction.payment?.toAddress
+            }) {
+                viewModel.configure(cell, with: transaction, for: contact)
+            } else {
+                viewModel.configure(cell, with: transaction)
+            }
         }
         
         return cell
+    }
+    
+    private func fetchContacts() {
+        Contact.fetchAll(entity: Contact.entityName) { response in
+            switch response {
+            case let .results(objects: objects):
+                guard let results = objects as? [Contact] else {
+                    return
+                }
+                
+                self.contacts.append(contentsOf: results)
+            default:
+                break
+            }
+        }
     }
 }
 
 // MARK: API
 
 extension TransactionHistoryDataSource {
+    
+    func setupContacts() {
+        contacts.removeAll()
+        
+        fetchContacts()
+    }
     
     func transactionCount() -> Int {
         return transactions.count
@@ -89,6 +118,8 @@ extension TransactionHistoryDataSource {
                 handler(nil, error)
             case let .success(params):
                 self.transactionParams = params
+                
+                self.viewModel.lastRound = params.lastRound
                 
                 if let dateRange = dates {
                     self.fetchTransactions(for: account, between: dateRange, withRefresh: refresh, then: handler)

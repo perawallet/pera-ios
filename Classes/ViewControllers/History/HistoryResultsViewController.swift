@@ -49,6 +49,8 @@ class HistoryResultsViewController: BaseViewController {
         
         viewModel.configure(historyResultsView, with: draft)
         
+        transactionHistoryDataSource.setupContacts()
+        
         fetchTransactions()
     }
     
