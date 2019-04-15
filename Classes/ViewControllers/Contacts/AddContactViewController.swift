@@ -75,6 +75,7 @@ class AddContactViewController: BaseScrollViewController {
     override func linkInteractors() {
         keyboardController.dataSource = self
         addContactView.delegate = self
+        scrollView.touchDetectingDelegate = self
     }
     
     // MARK: Layout
@@ -239,5 +240,18 @@ extension AddContactViewController {
     enum Mode {
         case new
         case edit(contact: Contact)
+    }
+}
+
+// MARK: TouchDetectingScrollViewDelegate
+
+extension AddContactViewController: TouchDetectingScrollViewDelegate {
+    
+    func scrollViewDidDetectTouchEvent(scrollView: TouchDetectingScrollView, in point: CGPoint) {
+        if addContactView.addContactButton.frame.contains(point) {
+            return
+        }
+        
+        contentView.endEditing(true)
     }
 }

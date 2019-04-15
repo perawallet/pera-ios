@@ -47,6 +47,7 @@ class AddNodeViewController: BaseScrollViewController {
     override func linkInteractors() {
         super.linkInteractors()
         
+        scrollView.touchDetectingDelegate = self
         addNodeView.testButton.addTarget(self, action: #selector(tap(test:)), for: .touchUpInside)
     }
     
@@ -158,5 +159,18 @@ class AddNodeViewController: BaseScrollViewController {
                 self.displaySimpleAlertWith(title: "title-error".localized, message: "node-settings-text-validation-health-error".localized)
             }
         }
+    }
+}
+
+// MARK: TouchDetectingScrollViewDelegate
+
+extension AddNodeViewController: TouchDetectingScrollViewDelegate {
+    
+    func scrollViewDidDetectTouchEvent(scrollView: TouchDetectingScrollView, in point: CGPoint) {
+        if addNodeView.testButton.frame.contains(point) {
+            return
+        }
+        
+        contentView.endEditing(true)
     }
 }

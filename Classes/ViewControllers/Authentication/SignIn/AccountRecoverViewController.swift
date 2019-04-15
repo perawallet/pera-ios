@@ -50,6 +50,7 @@ class AccountRecoverViewController: BaseScrollViewController {
     override func linkInteractors() {
         keyboardController.dataSource = self
         accountRecoverView.delegate = self
+        scrollView.touchDetectingDelegate = self
     }
     
     // MARK: Layout
@@ -206,5 +207,18 @@ extension AccountRecoverViewController: KeyboardControllerDataSource {
     
     func bottomInsetWhenKeyboardDismissed(for keyboardController: KeyboardController) -> CGFloat {
         return 0.0
+    }
+}
+
+// MARK: TouchDetectingScrollViewDelegate
+
+extension AccountRecoverViewController: TouchDetectingScrollViewDelegate {
+    
+    func scrollViewDidDetectTouchEvent(scrollView: TouchDetectingScrollView, in point: CGPoint) {
+        if accountRecoverView.nextButton.frame.contains(point) {
+            return
+        }
+        
+        contentView.endEditing(true)
     }
 }

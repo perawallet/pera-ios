@@ -89,6 +89,7 @@ class SendAlgosViewController: BaseScrollViewController {
     override func linkInteractors() {
         super.linkInteractors()
         
+        scrollView.touchDetectingDelegate = self
         sendAlgosView.delegate = self
     }
     
@@ -318,3 +319,17 @@ extension SendAlgosViewController: SendAlgosPreviewViewControllerDelegate {
         sendAlgosView.accountSelectionView.inputTextField.text = "send-algos-select".localized
     }
 }
+
+// MARK: TouchDetectingScrollViewDelegate
+
+extension SendAlgosViewController: TouchDetectingScrollViewDelegate {
+    
+    func scrollViewDidDetectTouchEvent(scrollView: TouchDetectingScrollView, in point: CGPoint) {
+        if sendAlgosView.previewButton.frame.contains(point) {
+            return
+        }
+        
+        contentView.endEditing(true)
+    }
+}
+

@@ -25,7 +25,7 @@ protocol KeyboardControllerDataSource: class {
      */
     func bottomInsetWhenKeyboardDismissed(for keyboardController: KeyboardController) -> CGFloat
     
-    var scrollView: UIScrollView { get }
+    var scrollView: TouchDetectingScrollView { get }
 }
 
 struct Keyboard {
