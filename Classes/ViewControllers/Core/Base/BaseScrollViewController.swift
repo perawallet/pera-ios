@@ -9,12 +9,27 @@
 import UIKit
 import SnapKit
 
+protocol TouchDetectingScrollViewDelegate: NSObjectProtocol {
+    func scrollViewDidDetectTouchEvent(scrollView: TouchDetectingScrollView, in point: CGPoint)
+}
+
+class TouchDetectingScrollView: UIScrollView {
+    
+    weak var touchDetectingDelegate: TouchDetectingScrollViewDelegate?
+    
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        touchDetectingDelegate?.scrollViewDidDetectTouchEvent(scrollView: self, in: point)
+        
+        return super.hitTest(point, with: event)
+    }
+}
+
 class BaseScrollViewController: BaseViewController {
     
     // MARK: Components
     
-    private(set) lazy var scrollView: UIScrollView = {
-        let scrollView = UIScrollView()
+    private(set) lazy var scrollView: TouchDetectingScrollView = {
+        let scrollView = TouchDetectingScrollView()
         scrollView.alwaysBounceVertical = true
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.showsVerticalScrollIndicator = false

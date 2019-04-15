@@ -75,6 +75,7 @@ class AddContactViewController: BaseScrollViewController {
     override func linkInteractors() {
         keyboardController.dataSource = self
         addContactView.delegate = self
+        scrollView.touchDetectingDelegate = self
     }
     
     // MARK: Layout
@@ -116,7 +117,7 @@ extension AddContactViewController: AddContactViewDelegate {
         
         if let placeholderImage = img("icon-user-placeholder-big"),
             let image = addContactView.userInformationView.userImageView.image,
-            let imageData = image.pngData(),
+            let imageData = image.jpegData(compressionQuality: 1.0) ?? image.pngData(),
             image != placeholderImage {
             
             keyedValues[Contact.CodingKeys.image.rawValue] = imageData
@@ -239,5 +240,18 @@ extension AddContactViewController {
     enum Mode {
         case new
         case edit(contact: Contact)
+    }
+}
+
+// MARK: TouchDetectingScrollViewDelegate
+
+extension AddContactViewController: TouchDetectingScrollViewDelegate {
+    
+    func scrollViewDidDetectTouchEvent(scrollView: TouchDetectingScrollView, in point: CGPoint) {
+        if addContactView.addContactButton.frame.contains(point) {
+            return
+        }
+        
+        contentView.endEditing(true)
     }
 }

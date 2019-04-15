@@ -43,6 +43,7 @@ class AccountNameSetupViewController: BaseScrollViewController {
     }
     
     override func linkInteractors() {
+        scrollView.touchDetectingDelegate = self
         keyboardController.dataSource = self
         accountNameSetupView.delegate = self
     }
@@ -137,5 +138,18 @@ extension AccountNameSetupViewController: KeyboardControllerDataSource {
     
     func bottomInsetWhenKeyboardDismissed(for keyboardController: KeyboardController) -> CGFloat {
         return 15.0
+    }
+}
+
+// MARK: TouchDetectingScrollViewDelegate
+
+extension AccountNameSetupViewController: TouchDetectingScrollViewDelegate {
+    
+    func scrollViewDidDetectTouchEvent(scrollView: TouchDetectingScrollView, in point: CGPoint) {
+        if accountNameSetupView.nextButton.frame.contains(point) {
+            return
+        }
+        
+        contentView.endEditing(true)
     }
 }
