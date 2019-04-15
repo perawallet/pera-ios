@@ -18,7 +18,7 @@ enum Screen {
     case accountNameSetup(mode: AccountSetupMode)
     case accountRecover(mode: AccountSetupMode)
     case qrScanner
-    case qrGenerator(text: String, mode: QRMode)
+    case qrGenerator(title: String?, text: String, mode: QRMode)
     case home
     case options
     case accountList(mode: AccountListMode)

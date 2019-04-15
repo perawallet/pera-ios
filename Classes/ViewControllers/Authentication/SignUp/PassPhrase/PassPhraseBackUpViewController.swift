@@ -101,6 +101,6 @@ extension PassPhraseBackUpViewController: PassPhraseBackUpViewDelegate {
         let mnemonics = self.session?.mnemonics(forAccount: "temp") ?? []
         let text = mnemonics.joined(separator: " ")
 
-        open(.qrGenerator(text: text, mode: .mnemonic), by: .present)
+        open(.qrGenerator(title: nil, text: text, mode: .mnemonic), by: .present)
     }
 }
