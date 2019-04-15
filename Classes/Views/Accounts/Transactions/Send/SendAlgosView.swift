@@ -8,6 +8,44 @@
 
 import UIKit
 
+extension Formatter {
+    static let withSeparator: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.groupingSeparator = ","
+        formatter.numberStyle = .decimal
+        formatter.maximumFractionDigits = 4
+        formatter.minimumFractionDigits = 1
+        return formatter
+    }()
+}
+
+extension String {
+    
+    func currencyInputFormatting() -> String? {
+        var number: NSNumber
+        let formatter = Formatter.withSeparator
+        
+        var amountWithPrefix = self
+
+        let regex = try? NSRegularExpression(pattern: "[^0-9]", options: .caseInsensitive)
+        amountWithPrefix = regex?.stringByReplacingMatches(
+            in: amountWithPrefix,
+            options: NSRegularExpression.MatchingOptions(rawValue: 0),
+            range: NSRange(location: 0, length: count),
+            withTemplate: ""
+        ) ?? self
+        
+        let double = (amountWithPrefix as NSString).doubleValue
+        number = NSNumber(value: (double / 1000))
+        
+        guard number != 0 as NSNumber else {
+            return ""
+        }
+        
+        return formatter.string(from: number)
+    }
+}
+
 protocol SendAlgosViewDelegate: class {
     
     func sendAlgosViewDidTapAccountSelectionView(_ sendAlgosView: SendAlgosView)
