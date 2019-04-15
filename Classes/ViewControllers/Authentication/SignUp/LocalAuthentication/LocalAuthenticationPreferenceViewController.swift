@@ -105,6 +105,10 @@ extension LocalAuthenticationPreferenceViewController: LocalAuthenticationPrefer
             open(.passPhraseBackUp(mode: .initialize), by: .push)
         } else {
             open(.home, by: .launch)
+            
+            DispatchQueue.main.async {
+                UIApplication.shared.appDelegate?.validateAccountManagerFetchPolling()
+            }
         }
     }
 }

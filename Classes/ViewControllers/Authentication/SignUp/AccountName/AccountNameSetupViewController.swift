@@ -120,6 +120,10 @@ extension AccountNameSetupViewController {
         session?.authenticatedUser = user
         
         open(.home, by: .launch)
+        
+        DispatchQueue.main.async {
+            UIApplication.shared.appDelegate?.validateAccountManagerFetchPolling()
+        }
     }
     
     fileprivate func setupNewAccount(name: String) {
