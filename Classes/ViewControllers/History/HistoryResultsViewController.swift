@@ -9,8 +9,7 @@
 import UIKit
 
 class HistoryResultsViewController: BaseViewController {
-
-    private var transactionHistoryLayoutBuilder: TransactionHistoryLayoutBuilder
+    
     private var transactionHistoryDataSource: TransactionHistoryDataSource
     
     // MARK: Components
@@ -34,7 +33,6 @@ class HistoryResultsViewController: BaseViewController {
     
     init(draft: HistoryDraft, configuration: ViewControllerConfiguration) {
         self.draft = draft
-        transactionHistoryLayoutBuilder = TransactionHistoryLayoutBuilder()
         transactionHistoryDataSource = TransactionHistoryDataSource(api: configuration.api)
         
         super.init(configuration: configuration)
@@ -55,7 +53,7 @@ class HistoryResultsViewController: BaseViewController {
     }
     
     override func linkInteractors() {
-        historyResultsView.transactionHistoryCollectionView.delegate = transactionHistoryLayoutBuilder
+        historyResultsView.transactionHistoryCollectionView.delegate = self
         historyResultsView.transactionHistoryCollectionView.dataSource = transactionHistoryDataSource
     }
     
@@ -75,28 +73,53 @@ class HistoryResultsViewController: BaseViewController {
     
     // MARK: Data
     
-    private func fetchTransactions() {
+    private func fetchTransactions(witRefresh refresh: Bool = true) {
         historyResultsView.transactionHistoryCollectionView.contentState = .loading
         
-        transactionHistoryDataSource.loadData(for: draft.account, between: (draft.startDate, draft.endDate)) { transactions, error in
-            if error != nil {
-                self.historyResultsView.transactionHistoryCollectionView.contentState = .empty(self.emptyStateView)
-                self.historyResultsView.transactionHistoryCollectionView.reloadData()
-                return
-            }
+        transactionHistoryDataSource.loadData(
+            for: draft.account,
+            withRefresh: refresh,
+            between: (draft.startDate, draft.endDate)
+        ) { transactions, error in
+                
+                if error != nil {
+                    self.historyResultsView.transactionHistoryCollectionView.contentState = .empty(self.emptyStateView)
+                    self.historyResultsView.transactionHistoryCollectionView.reloadData()
+                    return
+                }
             
-            guard let transactions = transactions else {
+                guard let transactions = transactions else {
+                    self.historyResultsView.transactionHistoryCollectionView.contentState = .none
+                    return
+                }
+            
+                if transactions.isEmpty {
+                    self.historyResultsView.transactionHistoryCollectionView.contentState = .empty(self.emptyStateView)
+                    return
+                }
+            
                 self.historyResultsView.transactionHistoryCollectionView.contentState = .none
-                return
-            }
-            
-            if transactions.isEmpty {
-                self.historyResultsView.transactionHistoryCollectionView.contentState = .empty(self.emptyStateView)
-                return
-            }
-            
-            self.historyResultsView.transactionHistoryCollectionView.contentState = .none
-            self.historyResultsView.transactionHistoryCollectionView.reloadData()
+                self.historyResultsView.transactionHistoryCollectionView.reloadData()
+        }
+    }
+}
+
+// MARK: UICollectionViewDelegateFlowLayout
+
+extension HistoryResultsViewController: UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        sizeForItemAt indexPath: IndexPath
+    ) -> CGSize {
+        
+        return CGSize(width: UIScreen.main.bounds.width, height: 80.0)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if transactionHistoryDataSource.transactionCount() == indexPath.row - 3 {
+            fetchTransactions(witRefresh: false)
         }
     }
 }

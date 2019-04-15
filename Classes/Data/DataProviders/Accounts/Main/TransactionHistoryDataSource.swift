@@ -17,6 +17,7 @@ class TransactionHistoryDataSource: NSObject, UICollectionViewDataSource {
         static let numberOfRoundsInOneHour = 720
         static let numberOfRoundsInOneMinute = 12
         static let roundCreationOffset = 5
+        static let numberOfRoundsInTwoDays: Int64 = 34560
     }
     
     private var transactions = [Transaction]()
@@ -27,7 +28,9 @@ class TransactionHistoryDataSource: NSObject, UICollectionViewDataSource {
     
     private var transactionParams: TransactionParams?
     
-    var fetchRequest: EndpointInteractable?
+    private var fetchRequest: EndpointInteractable?
+    
+    private var currentPaginationOffset: Int64 = 0
     
     init(api: API?) {
         self.api = api
@@ -64,7 +67,22 @@ class TransactionHistoryDataSource: NSObject, UICollectionViewDataSource {
 
 extension TransactionHistoryDataSource {
     
-    func loadData(for account: Account, between dates: (Date, Date)? = nil, then handler: @escaping ([Transaction]?, Error?) -> Void) {
+    func transactionCount() -> Int {
+        return transactions.count
+    }
+    
+    func clear() {
+        currentPaginationOffset = 0
+        fetchRequest?.invalidate()
+        transactions.removeAll()
+    }
+    
+    func loadData(
+        for account: Account,
+        withRefresh refresh: Bool,
+        between dates: (Date, Date)? = nil,
+        then handler: @escaping ([Transaction]?, Error?) -> Void
+    ) {
         api?.getTransactionParams { response in
             switch response {
             case let .failure(error):
@@ -73,11 +91,11 @@ extension TransactionHistoryDataSource {
                 self.transactionParams = params
                 
                 if let dateRange = dates {
-                    self.fetchTransactions(for: account, between: dateRange, then: handler)
+                    self.fetchTransactions(for: account, between: dateRange, withRefresh: refresh, then: handler)
                     return
                 }
                 
-                self.fetchTransactions(for: account, then: handler)
+                self.fetchTransactions(for: account, withRefresh: refresh, then: handler)
             }
         }
     }
@@ -85,13 +103,23 @@ extension TransactionHistoryDataSource {
     private func fetchTransactions(
         for account: Account,
         between dates: (Date, Date),
+        withRefresh refresh: Bool,
         then handler: @escaping ([Transaction]?, Error?) -> Void
     ) {
         guard let rounds = calculateRounds(from: dates) else {
             return
         }
         
-        fetchRequest = api?.fetchTransactions(between: (rounds.0, rounds.1), for: account) { response in
+        if refresh {
+            transactions.removeAll()
+            currentPaginationOffset = Constant.numberOfRoundsInTwoDays
+        } else {
+            currentPaginationOffset += Constant.numberOfRoundsInTwoDays
+        }
+        
+        let firstRound = max(rounds.0, rounds.1 - currentPaginationOffset)
+        
+        fetchRequest = api?.fetchTransactions(between: (firstRound, rounds.1), for: account) { response in
             switch response {
             case let .failure(error):
                 handler(nil, error)
@@ -153,12 +181,23 @@ extension TransactionHistoryDataSource {
         return (firstRound, lastRound)
     }
     
-    private func fetchTransactions(for account: Account, then handler: @escaping ([Transaction]?, Error?) -> Void) {
+    private func fetchTransactions(
+        for account: Account,
+        withRefresh refresh: Bool,
+        then handler: @escaping ([Transaction]?, Error?) -> Void
+    ) {
         guard let params = transactionParams else {
             return
         }
         
-        let firstRound = max(0, params.lastRound - 34560) // 2 days
+        if refresh {
+            transactions.removeAll()
+            currentPaginationOffset = Constant.numberOfRoundsInTwoDays
+        } else {
+            currentPaginationOffset += Constant.numberOfRoundsInTwoDays
+        }
+        
+        let firstRound = max(0, params.lastRound - currentPaginationOffset)
         
         fetchRequest = api?.fetchTransactions(between: (firstRound, params.lastRound), for: account) { response in
             switch response {

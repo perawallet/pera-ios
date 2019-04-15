@@ -48,7 +48,6 @@ class AccountsViewController: BaseViewController {
     
     private let viewModel = AccountsViewModel()
     
-    private var transactionHistoryLayoutBuilder: TransactionHistoryLayoutBuilder
     private var transactionHistoryDataSource: TransactionHistoryDataSource
     
     // MARK: Components
@@ -67,7 +66,6 @@ class AccountsViewController: BaseViewController {
     // MARK: Initialization
     
     override init(configuration: ViewControllerConfiguration) {
-        transactionHistoryLayoutBuilder = TransactionHistoryLayoutBuilder()
         transactionHistoryDataSource = TransactionHistoryDataSource(api: configuration.api)
         
         super.init(configuration: configuration)
@@ -90,7 +88,7 @@ class AccountsViewController: BaseViewController {
     
     override func linkInteractors() {
         accountsView.delegate = self
-        accountsView.transactionHistoryCollectionView.delegate = transactionHistoryLayoutBuilder
+        accountsView.transactionHistoryCollectionView.delegate = self
         accountsView.transactionHistoryCollectionView.dataSource = transactionHistoryDataSource
         accountsView.delegate = self
     }
@@ -137,16 +135,14 @@ class AccountsViewController: BaseViewController {
         }
     }
     
-    private func fetchTransactions() {
+    private func fetchTransactions(witRefresh refresh: Bool = true) {
         guard let account = selectedAccount else {
             return
         }
         
-        transactionHistoryDataSource.fetchRequest?.invalidate()
-        
         accountsView.transactionHistoryCollectionView.contentState = .loading
         
-        transactionHistoryDataSource.loadData(for: account) { transactions, error in
+        transactionHistoryDataSource.loadData(for: account, withRefresh: refresh) { transactions, error in
             if error != nil {
                 self.accountsView.transactionHistoryCollectionView.contentState = .empty(self.emptyStateView)
                 self.accountsView.transactionHistoryCollectionView.reloadData()
@@ -230,6 +226,10 @@ extension AccountsViewController: AccountListViewControllerDelegate {
     func accountListViewController(_ viewController: AccountListViewController, didSelectAccount account: Account) {
         selectedAccount = account
         
+        transactionHistoryDataSource.clear()
+        accountsView.transactionHistoryCollectionView.reloadData()
+        accountsView.transactionHistoryCollectionView.contentState = .loading
+        
         fetchTransactions()
         
         updateLayout()
@@ -246,5 +246,25 @@ extension AccountsViewController: AccountsViewDelegate {
     
     func accountsViewDidTapReceiveButton(_ accountsView: AccountsView) {
         open(.receiveAlgos, by: .push)
+    }
+}
+
+// MARK: UICollectionViewDelegateFlowLayout
+
+extension AccountsViewController: UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        sizeForItemAt indexPath: IndexPath
+    ) -> CGSize {
+        
+        return CGSize(width: UIScreen.main.bounds.width, height: 80.0)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if transactionHistoryDataSource.transactionCount() == indexPath.row - 3 {
+            fetchTransactions(witRefresh: false)
+        }
     }
 }
