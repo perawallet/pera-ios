@@ -124,6 +124,8 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
         
         session?.authenticatedUser = user
         
+        accountManager?.user = user
+        
         view.endEditing(true)
         
         let configurator = AlertViewConfigurator(

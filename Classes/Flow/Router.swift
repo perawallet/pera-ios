@@ -140,21 +140,12 @@ class Router {
             viewController = ChoosePasswordViewController(mode: mode, configuration: configuration)
         case .localAuthenticationPreference:
             viewController = LocalAuthenticationPreferenceViewController(configuration: configuration)
-        case let .passPhraseBackUp(mode):
-            let backUpViewController = PassPhraseBackUpViewController(configuration: configuration)
-            backUpViewController.mode = mode
-            
-            viewController = backUpViewController
-        case let .passPhraseVerify(mode):
-            let passPhraseVerifyViewController = PassPhraseVerifyViewController(configuration: configuration)
-            passPhraseVerifyViewController.mode = mode
-            
-            viewController = passPhraseVerifyViewController
-        case let .accountNameSetup(mode):
-            let accountSetupViewController = AccountNameSetupViewController(configuration: configuration)
-            accountSetupViewController.mode = mode
-            
-            viewController = accountSetupViewController
+        case .passPhraseBackUp:
+            viewController = PassPhraseBackUpViewController(configuration: configuration)
+        case .passPhraseVerify:
+            viewController = PassPhraseVerifyViewController(configuration: configuration)
+        case .accountNameSetup:
+            viewController = AccountNameSetupViewController(configuration: configuration)
         case let .accountRecover(mode):
             let accountRecoverViewController = AccountRecoverViewController(configuration: configuration)
             accountRecoverViewController.mode = mode

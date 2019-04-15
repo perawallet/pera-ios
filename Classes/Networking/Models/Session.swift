@@ -159,5 +159,9 @@ extension Session {
         self.clear(.defaults)
         self.clear(.keychain)
         self.isExpired = true
+        
+        DispatchQueue.main.async {
+            UIApplication.shared.appDelegate?.validateAccountManagerFetchPolling()
+        }
     }
 }

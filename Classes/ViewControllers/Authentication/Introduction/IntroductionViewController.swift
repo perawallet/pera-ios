@@ -52,7 +52,7 @@ extension IntroductionViewController: IntroductionViewDelegate {
         case .initialize:
             open(.welcome, by: .push)
         case .new:
-            open(.accountNameSetup(mode: mode), by: .push)
+            open(.passPhraseBackUp, by: .push)
         }
     }
     

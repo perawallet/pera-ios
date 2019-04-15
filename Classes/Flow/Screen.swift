@@ -13,9 +13,9 @@ enum Screen {
     case welcome
     case choosePassword(mode: ChoosePasswordViewController.Mode)
     case localAuthenticationPreference
-    case passPhraseBackUp(mode: AccountSetupMode)
-    case passPhraseVerify(mode: AccountSetupMode)
-    case accountNameSetup(mode: AccountSetupMode)
+    case passPhraseBackUp
+    case passPhraseVerify
+    case accountNameSetup
     case accountRecover(mode: AccountSetupMode)
     case qrScanner
     case qrGenerator(title: String?, text: String, mode: QRMode)

@@ -40,8 +40,6 @@ class PassPhraseVerifyViewController: BaseScrollViewController {
         return collectionView
     }()
     
-    var mode: AccountSetupMode = .initialize
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -147,28 +145,7 @@ UICollectionViewDataSource {
                     image: img("password-alert-icon"),
                     explanation: "pass-phrase-verify-pop-up-explanation".localized,
                     actionTitle: nil) {
-                        
-                        switch self.mode {
-                        case .initialize:
-                            self.open(.accountNameSetup(mode: .initialize), by: .push)
-                        case .new:
-                            guard let session = self.session,
-                                let authenticatedUser = session.authenticatedUser,
-                                let accountPrivateKey = session.privateData(forAccount: "temp"),
-                                let accountData = session.privateData(forAccount: "tempAccount") else {
-                                return
-                            }
-                            
-                            if let account = try? JSONDecoder().decode(Account.self, from: accountData) {
-                                authenticatedUser.addAccount(account)
-                                session.savePrivate(accountPrivateKey, forAccount: account.address)
-                            } else {
-                                print("error")
-                            }
-                            
-                            session.authenticatedUser = authenticatedUser
-                            self.dismissScreen()
-                        }
+                        self.open(.accountNameSetup, by: .push)
                 }
                 
                 let viewController = AlertViewController(mode: .default, alertConfigurator: configurator, configuration: configuration)

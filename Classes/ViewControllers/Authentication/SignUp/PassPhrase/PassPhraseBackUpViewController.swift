@@ -17,8 +17,6 @@ class PassPhraseBackUpViewController: BaseScrollViewController {
         return view
     }()
     
-    var mode: AccountSetupMode = .initialize
-    
     // MARK: Setup
     
     override func configureAppearance() {
@@ -26,12 +24,7 @@ class PassPhraseBackUpViewController: BaseScrollViewController {
         
         title = "new-account-title".localized
         
-        switch mode {
-        case .initialize:
-            configureInitialAccountAppearance()
-        case .new:
-            configureNewAccountAppearance()
-        }
+        configureAccountAppearance()
     }
     
     override func prepareLayout() {
@@ -51,7 +44,7 @@ class PassPhraseBackUpViewController: BaseScrollViewController {
 
 // MARK: - Helpers
 extension PassPhraseBackUpViewController {
-    func configureInitialAccountAppearance() {
+    func configureAccountAppearance() {
         guard let session = self.session,
             let privateKey = session.generatePrivateKey() else {
                 return
@@ -60,21 +53,6 @@ extension PassPhraseBackUpViewController {
         session.savePrivate(privateKey, forAccount: "temp")
         
         let mnemonics = session.mnemonics(forAccount: "temp")
-        
-        print(mnemonics.joined(separator: " "))
-        
-        passPhraseBackUpView.passPhraseLabel.attributedText = mnemonics.joined(separator: " ")
-            .attributed([.lineSpacing(1.5)])
-    }
-    
-    func configureNewAccountAppearance() {
-        guard let session = self.session else {
-            return
-        }
-        
-        let mnemonics = session.mnemonics(forAccount: "temp")
-        
-        print(mnemonics.joined(separator: " "))
         
         passPhraseBackUpView.passPhraseLabel.attributedText = mnemonics.joined(separator: " ")
             .attributed([.lineSpacing(1.5)])
@@ -94,7 +72,7 @@ extension PassPhraseBackUpViewController: PassPhraseBackUpViewDelegate {
     }
     
     func passPhraseBackUpViewDidTapVerifyButton(_ passPhraseBackUpView: PassPhraseBackUpView) {
-        open(.passPhraseVerify(mode: mode), by: .push)
+        open(.passPhraseVerify, by: .push)
     }
     
     func passPhraseBackUpViewDidTapQrButton(_ passPhraseBackUpView: PassPhraseBackUpView) {
