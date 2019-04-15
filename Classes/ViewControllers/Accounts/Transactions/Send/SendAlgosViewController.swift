@@ -84,8 +84,6 @@ class SendAlgosViewController: BaseScrollViewController {
             name: UIResponder.keyboardWillHideNotification,
             object: nil
         )
-        
-        sendAlgosView.algosInputView.inputTextField.addTarget(self, action: #selector(didChange(algosInputView:)), for: .editingChanged)
     }
     
     override func linkInteractors() {
@@ -231,13 +229,6 @@ class SendAlgosViewController: BaseScrollViewController {
             },
             completion: nil
         )
-    }
-    
-    @objc
-    private func didChange(algosInputView: UITextField) {
-        if let amountString = algosInputView.text {
-            algosInputView.text = amountString.currencyInputFormatting()
-        }
     }
 }
 
