@@ -188,16 +188,16 @@
 // MARK: Settings
 
 "settings-title" = "Settings";
-"settings-server-node-settings" = "Server/Node Settings";
+"settings-server-node-settings" = "Node Settings";
 "settings-change-password" = "Set/Change Password";
 "settings-local-authentication" = "Enable FaceID/Touch ID";
 "settings-language" = "Language";
 "settings-language-english" = "English";
 
 // MARK: NodeSettings
-"node-settings-title" = "Server/Node Settings";
+"node-settings-title" = "Node Settings";
 "add-node-title" = "Add Node";
-"node-settings-subtitle" = "Slide to connect to the server/node you’d like.";
+"node-settings-subtitle" = "Slide to connect to the node you’d like.";
 "node-settings-enter-node-name" = "Enter node's name: ";
 "node-settings-enter-node-address" = "Enter node's address: ";
 "node-settings-api-key" = "API Key: ";
