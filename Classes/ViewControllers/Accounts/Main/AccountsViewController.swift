@@ -265,8 +265,8 @@ extension AccountsViewController: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if transactionHistoryDataSource.transactionCount() == indexPath.row - 3 {
-            fetchTransactions(witRefresh: false)
-        }
+//        if transactionHistoryDataSource.transactionCount() == indexPath.row - 3 {
+//            fetchTransactions(witRefresh: false)
+//        }
     }
 }

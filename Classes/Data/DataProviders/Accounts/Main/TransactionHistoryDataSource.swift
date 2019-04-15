@@ -148,9 +148,9 @@ extension TransactionHistoryDataSource {
             currentPaginationOffset += Constant.numberOfRoundsInTwoDays
         }
         
-        let firstRound = max(rounds.0, rounds.1 - currentPaginationOffset)
+       // let firstRound = max(rounds.0, rounds.1 - currentPaginationOffset)
         
-        fetchRequest = api?.fetchTransactions(between: (firstRound, rounds.1), for: account) { response in
+        fetchRequest = api?.fetchTransactions(between: (rounds.0, rounds.1), for: account) { response in
             switch response {
             case let .failure(error):
                 handler(nil, error)
@@ -228,7 +228,9 @@ extension TransactionHistoryDataSource {
             currentPaginationOffset += Constant.numberOfRoundsInTwoDays
         }
         
-        let firstRound = max(0, params.lastRound - currentPaginationOffset)
+        //let firstRound = max(0, params.lastRound - currentPaginationOffset)
+        
+        let firstRound = max(0, params.lastRound - Constant.numberOfRoundsInTwoDays)
         
         fetchRequest = api?.fetchTransactions(between: (firstRound, params.lastRound), for: account) { response in
             switch response {
