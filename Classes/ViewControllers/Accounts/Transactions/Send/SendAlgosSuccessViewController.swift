@@ -57,7 +57,16 @@ class SendAlgosSuccessViewController: BaseScrollViewController {
         
         sendAlgosSuccessView.accountView.detailLabel.text = transaction.fromAccount.name
         sendAlgosSuccessView.transactionReceiverView.state = receiver
-        sendAlgosSuccessView.transactionIdView.detailLabel.text = transaction.identifier
+        
+        if let identifier = transaction.identifier {
+            var formattedId = identifier
+            
+            if identifier.hasPrefix("tx-") {
+                formattedId = String(formattedId.dropFirst(3))
+            }
+            
+            sendAlgosSuccessView.transactionIdView.detailLabel.text = formattedId
+        }
     }
     
     override func prepareLayout() {
