@@ -39,13 +39,16 @@ extension API {
         
         var transactionError: NSError?
         
+        let firstRound = draft.transactionParams.lastRound
+        let lastRound = firstRound + 1000
+        
         let transactionData = TransactionMakePaymentTxn(
             draft.from.address,
             draft.to.address,
             draft.transactionParams.fee,
             draft.amount,
-            draft.transactionParams.firstRound,
-            draft.transactionParams.lastRound,
+            firstRound, 
+            lastRound,
             nil,
             "",
             "",

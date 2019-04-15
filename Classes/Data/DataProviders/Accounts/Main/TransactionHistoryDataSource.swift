@@ -155,7 +155,9 @@ extension TransactionHistoryDataSource {
             return
         }
         
-        api?.fetchTransactions(between: (params.firstRound, params.lastRound), for: account) { response in
+        let firstRound = max(0, params.lastRound - 34560) // 2 days
+        
+        api?.fetchTransactions(between: (firstRound, params.lastRound), for: account) { response in
             switch response {
             case let .failure(error):
                 handler(nil, error)
