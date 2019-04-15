@@ -48,6 +48,11 @@ class ReceiveAlgosViewController: BaseViewController {
         super.configureAppearance()
         
         title = "receive-algos-title".localized
+        
+        if let account = session?.authenticatedUser?.defaultAccount() {
+            selectedAccount = account
+            receiveAlgosView.accountSelectionView.inputTextField.text = account.name
+        }
     }
     
     override func setListeners() {

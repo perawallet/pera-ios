@@ -41,7 +41,7 @@ class AddNodeViewController: BaseScrollViewController {
     override func configureAppearance() {
         super.configureAppearance()
         
-        title = "node-settings-title".localized
+        title = "add-node-title".localized
     }
     
     override func linkInteractors() {

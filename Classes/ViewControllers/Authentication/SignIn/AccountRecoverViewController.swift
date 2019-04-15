@@ -124,6 +124,8 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
         
         session?.authenticatedUser = user
         
+        accountManager?.user = user
+        
         view.endEditing(true)
         
         let configurator = AlertViewConfigurator(
@@ -141,6 +143,10 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
                             switch self.mode {
                             case .initialize:
                                 self.open(.home, by: .launch)
+                                
+                                DispatchQueue.main.async {
+                                    UIApplication.shared.appDelegate?.validateAccountManagerFetchPolling()
+                                }
                             case .new:
                                 self.dismissScreen()
                             }

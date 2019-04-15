@@ -53,6 +53,7 @@
 "password-set-title" = "First";
 "password-set-subtitle" = "Choose a six digit password";
 "password-verify-title" = "Verify Password";
+"password-change-subtitle" = "Enter six digit password";
 "password-verify-subtitle" = "Enter the same six digits";
 
 "password-verify-fail-title" = "Wrong Password";
@@ -60,7 +61,7 @@
 
 "password-change-title" = "Change Password";
 
-// MARK: Local Authentication Preferences
+// MARK: Local Authentication Preferences9
 
 "local-authentication-preference-title" = "Enable touch/face ID";
 "local-authentication-preference-subtitle" = "We recommend this for improved security";
@@ -94,7 +95,7 @@
 // MARK: Recover From Seed
 
 "recover-from-seed-title" = "Recover from Seed";
-"pass-pharase-enter-placeholder" = "Enter Pass Phrase or Scan QR";
+"pass-pharase-enter-placeholder" = "Enter Passphrase or Scan QR";
 "recover-from-seed-verify-pop-up-explanation" = "Welcome to Algorand! Your account is ready to use.";
 "recover-from-seed-verify-pop-up-title" = "Account Verified";
 
@@ -106,7 +107,7 @@
 "qr-scan-go-settings-title" = "Camera Disabled";
 "qr-scan-go-settings-message" = "You have disabled camera. Please go to Settings and enable this option.";
 "qr-scan-should-scan-address-message" = "You should scan valid account address";
-"qr-scan-should-scan-mnemonics-message" = "You should scan valid pass phrases";
+"qr-scan-should-scan-mnemonics-message" = "You should scan valid passphrases";
 "qr-scan-should-scan-valid-qr" = "QR is not valid.";
 
 // MARK: QR Creation
@@ -187,15 +188,16 @@
 // MARK: Settings
 
 "settings-title" = "Settings";
-"settings-server-node-settings" = "Server/Node Settings";
+"settings-server-node-settings" = "Node Settings";
 "settings-change-password" = "Set/Change Password";
 "settings-local-authentication" = "Enable FaceID/Touch ID";
 "settings-language" = "Language";
 "settings-language-english" = "English";
 
 // MARK: NodeSettings
-"node-settings-title" = "Server/Node Settings";
-"node-settings-subtitle" = "Slide to connect to the server/node you’d like.";
+"node-settings-title" = "Node Settings";
+"add-node-title" = "Add Node";
+"node-settings-subtitle" = "Slide to connect to the node you’d like.";
 "node-settings-enter-node-name" = "Enter node's name: ";
 "node-settings-enter-node-address" = "Enter node's address: ";
 "node-settings-api-key" = "API Key: ";

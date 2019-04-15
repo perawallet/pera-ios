@@ -86,6 +86,16 @@ class ChoosePasswordViewController: BaseViewController {
             return
         }
         
+        switch mode {
+        case .login:
+            return
+        case .resetPassword, .resetVerify:
+            title = "password-change-title".localized
+            return
+        default:
+            break
+        }
+        
         title = "choose-password-title".localized
     }
     
@@ -171,6 +181,10 @@ extension ChoosePasswordViewController: ChoosePasswordViewDelegate {
             
             SVProgressHUD.dismiss(withDelay: 2.0) {
                 self.open(.home, by: .launch)
+                
+                DispatchQueue.main.async {
+                    UIApplication.shared.appDelegate?.validateAccountManagerFetchPolling()
+                }
             }
         }
     }

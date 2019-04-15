@@ -17,6 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     private enum Constants {
         static let sessionInvalidateTime: Double = 300.0
+        static let accountManagerPollintTime: Double = 5.0
     }
     
     private lazy var session = Session()
@@ -28,6 +29,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private(set) lazy var accountManager: AccountManager = AccountManager(api: api)
     
     private var timer: PollingOperation?
+    private var accountFetchTimer: PollingOperation?
+    
     private var shouldInvalidateUserSession: Bool = false
     
     func application(
@@ -77,11 +80,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return
         }
         
-        if let user = session.authenticatedUser {
-            accountManager.user = user
-            
-            accountManager.fetchAllAccounts(completion: nil)
-        }
+        self.validateAccountManagerFetchPolling()
     }
     
     func applicationDidEnterBackground(_ application: UIApplication) {
@@ -90,6 +89,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         timer?.start()
+        
+        self.invalidateAccountManagerFetchPolling()
     }
     
     func applicationWillTerminate(_ application: UIApplication) {
@@ -123,4 +124,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
+    func validateAccountManagerFetchPolling() {
+        if let user = session.authenticatedUser {
+            accountManager.user = user
+            
+            accountFetchTimer = PollingOperation(interval: Constants.accountManagerPollintTime) { [weak self] in
+                self?.accountManager.fetchAllAccounts(completion: nil)
+            }
+            
+            accountFetchTimer?.start()
+        }
+    }
+    
+    func invalidateAccountManagerFetchPolling() {
+        accountFetchTimer?.invalidate()
+    }
 }

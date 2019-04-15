@@ -41,6 +41,12 @@ class NodeSettingsViewController: BaseViewController {
         fetchNodes()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        self.fetchNodes()
+    }
+    
     private func fetchNodes() {
         Node.fetchAll(entity: Node.entityName) { response in
             switch response {

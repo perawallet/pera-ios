@@ -46,7 +46,11 @@ class RootViewController: UIViewController {
                 open(.introduction(mode: .initialize), by: .launch, animated: false)
             }
         } else {
-            open(.home, by: .push, animated: false)
+            open(.home, by: .launch, animated: false)
+            
+            DispatchQueue.main.async {
+                UIApplication.shared.appDelegate?.validateAccountManagerFetchPolling()
+            }
         }
     }
 
@@ -64,5 +68,9 @@ class RootViewController: UIViewController {
     
     func launch() {
         open(.home, by: .present, animated: false)
+        
+        DispatchQueue.main.async {
+            UIApplication.shared.appDelegate?.validateAccountManagerFetchPolling()
+        }
     }
 }

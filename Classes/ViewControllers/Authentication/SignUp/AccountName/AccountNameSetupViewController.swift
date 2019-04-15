@@ -26,8 +26,6 @@ class AccountNameSetupViewController: BaseScrollViewController {
         return view
     }()
     
-    var mode: AccountSetupMode = .initialize
-    
     private var keyboardController = KeyboardController()
     
     // MARK: Setup
@@ -74,12 +72,7 @@ extension AccountNameSetupViewController: AccountNameSetupViewDelegate {
             return
         }
         
-        switch mode {
-        case .initialize:
-            setupInitialAccount(name: name)
-        case .new:
-            setupNewAccount(name: name)
-        }
+        setupAccount(name: name)
     }
     
     func accountNameSetupViewDidChangeValue(_ accountNameSetupView: AccountNameSetupView) {
@@ -96,7 +89,7 @@ extension AccountNameSetupViewController: AccountNameSetupViewDelegate {
 
 // MARK: - Helpers
 extension AccountNameSetupViewController {
-    fileprivate func setupInitialAccount(name: String) {
+    fileprivate func setupAccount(name: String) {
         guard let tempPrivateKey = session?.privateData(forAccount: "temp"),
             let address = session?.address(forAccount: "temp") else {
                 return
@@ -109,36 +102,20 @@ extension AccountNameSetupViewController {
         session?.savePrivate(tempPrivateKey, forAccount: account.address)
         session?.removePrivateData(for: "temp")
         
-        let user = User(accounts: [account])
-        
-        let isAccountDefault = session?.authenticatedUser == nil
-        
-        if isAccountDefault {
+        if let authenticatedUser = session?.authenticatedUser {
+            authenticatedUser.addAccount(account)
+        } else {
+            let user = User(accounts: [account])
             user.setDefaultAccount(account)
+            
+            session?.authenticatedUser = user
         }
-        
-        session?.authenticatedUser = user
         
         open(.home, by: .launch)
-    }
-    
-    fileprivate func setupNewAccount(name: String) {
-        guard let generatedData = session?.generatePrivateKey(),
-            let address = session?.address(fromPrivateKey: generatedData) else {
-            return
+        
+        DispatchQueue.main.async {
+            UIApplication.shared.appDelegate?.validateAccountManagerFetchPolling()
         }
-        
-        let account = Account(address: address)
-        account.name = name
-        
-        guard let accountData = account.encoded() else {
-            return
-        }
-        
-        session?.savePrivate(generatedData, forAccount: "temp")
-        session?.savePrivate(accountData, forAccount: "tempAccount")
-        
-        open(.passPhraseBackUp(mode: mode), by: .push)
     }
 }
 

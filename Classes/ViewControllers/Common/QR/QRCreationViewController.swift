@@ -79,7 +79,9 @@ class QRCreationViewController: BaseScrollViewController {
     override func configureAppearance() {
         super.configureAppearance()
         
-        title = "qr-creation-title".localized
+        if self.title == nil {
+            title = "qr-creation-title".localized
+        }
         
         if mode == .address {
             qrSelectableLabel.label.text = self.qrText

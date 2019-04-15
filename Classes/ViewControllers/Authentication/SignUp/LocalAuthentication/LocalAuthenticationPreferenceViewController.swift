@@ -102,9 +102,13 @@ extension LocalAuthenticationPreferenceViewController: LocalAuthenticationPrefer
     
     fileprivate func openNextFlow() {
         if session?.authenticatedUser == nil {
-            open(.passPhraseBackUp(mode: .initialize), by: .push)
+            open(.passPhraseBackUp, by: .push)
         } else {
             open(.home, by: .launch)
+            
+            DispatchQueue.main.async {
+                UIApplication.shared.appDelegate?.validateAccountManagerFetchPolling()
+            }
         }
     }
 }
