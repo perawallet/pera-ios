@@ -10,6 +10,10 @@ import UIKit
 
 class BaseView: UIView {
     
+    var endsEditingAfterTouches: Bool {
+        return false
+    }
+    
     // MARK: Initialization
 
     override init(frame: CGRect) {
@@ -38,5 +42,13 @@ class BaseView: UIView {
     }
     
     func setListeners() {
+    }
+    
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        if endsEditingAfterTouches {
+            endEditing(true)
+        }
+        
+        return super.hitTest(point, with: event)
     }
 }

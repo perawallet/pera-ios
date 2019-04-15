@@ -22,6 +22,10 @@ class ContactsView: BaseView {
         static let separatorColor = rgba(0.67, 0.67, 0.72, 0.31)
     }
     
+    override var endsEditingAfterTouches: Bool {
+        return true
+    }
+    
     // MARK: Components
     
     private(set) lazy var contactNameInputView: SingleLineInputField = {
