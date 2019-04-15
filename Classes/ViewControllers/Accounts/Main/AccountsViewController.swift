@@ -142,6 +142,8 @@ class AccountsViewController: BaseViewController {
             return
         }
         
+        transactionHistoryDataSource.fetchRequest?.invalidate()
+        
         accountsView.transactionHistoryCollectionView.contentState = .loading
         
         transactionHistoryDataSource.loadData(for: account) { transactions, error in

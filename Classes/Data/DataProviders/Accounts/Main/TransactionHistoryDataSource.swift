@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Magpie
 
 class TransactionHistoryDataSource: NSObject, UICollectionViewDataSource {
     
@@ -25,6 +26,8 @@ class TransactionHistoryDataSource: NSObject, UICollectionViewDataSource {
     private let api: API?
     
     private var transactionParams: TransactionParams?
+    
+    var fetchRequest: EndpointInteractable?
     
     init(api: API?) {
         self.api = api
@@ -88,7 +91,7 @@ extension TransactionHistoryDataSource {
             return
         }
         
-        api?.fetchTransactions(between: (rounds.0, rounds.1), for: account) { response in
+        fetchRequest = api?.fetchTransactions(between: (rounds.0, rounds.1), for: account) { response in
             switch response {
             case let .failure(error):
                 handler(nil, error)
@@ -157,7 +160,7 @@ extension TransactionHistoryDataSource {
         
         let firstRound = max(0, params.lastRound - 34560) // 2 days
         
-        api?.fetchTransactions(between: (firstRound, params.lastRound), for: account) { response in
+        fetchRequest = api?.fetchTransactions(between: (firstRound, params.lastRound), for: account) { response in
             switch response {
             case let .failure(error):
                 handler(nil, error)
