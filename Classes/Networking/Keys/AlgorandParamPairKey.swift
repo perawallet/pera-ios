@@ -10,6 +10,8 @@ import Magpie
 
 enum AlgorandParamPairKey: String, CodingKey {
     case address = "address"
+    case firstRound = "firstRound"
+    case lastRound = "lastRound"
 }
 
 extension AlgorandParamPairKey: ParamsPairKey {

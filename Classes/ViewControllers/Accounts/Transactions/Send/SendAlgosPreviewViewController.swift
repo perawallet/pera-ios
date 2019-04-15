@@ -23,7 +23,7 @@ class SendAlgosPreviewViewController: BaseViewController {
         return view
     }()
     
-    private var transaction: Transaction
+    private var transaction: TransactionPreviewDraft
     
     private let receiver: AlgosReceiverState
     
@@ -33,7 +33,7 @@ class SendAlgosPreviewViewController: BaseViewController {
     
     // MARK: Initialization
     
-    init(transaction: Transaction, receiver: AlgosReceiverState, configuration: ViewControllerConfiguration) {
+    init(transaction: TransactionPreviewDraft, receiver: AlgosReceiverState, configuration: ViewControllerConfiguration) {
         self.transaction = transaction
         self.receiver = receiver
         
@@ -56,7 +56,7 @@ class SendAlgosPreviewViewController: BaseViewController {
         self.updateFeeLayout()
         
         SVProgressHUD.show(withStatus: "title-loading".localized)
-        api?.getTransactionParams(completion: { response in
+        api?.getTransactionParams { response in
             switch response {
             case let .failure(error):
                 print(error)
@@ -69,7 +69,7 @@ class SendAlgosPreviewViewController: BaseViewController {
             }
             
             SVProgressHUD.dismiss()
-        })
+        }
     }
     
     override func linkInteractors() {
@@ -142,7 +142,7 @@ extension SendAlgosPreviewViewController: SendAlgosPreviewViewDelegate {
             amount: Int64(self.transaction.amount.toMicroAlgos),
             transactionParams: params)
         
-        self.api?.sendTransaction(with: transactionDraft, then: { transactionIdResponse in
+        self.api?.sendTransaction(with: transactionDraft) { transactionIdResponse in
             switch transactionIdResponse {
             case let .success(transactionId):
                 
@@ -168,7 +168,7 @@ extension SendAlgosPreviewViewController: SendAlgosPreviewViewDelegate {
                     self.displaySimpleAlertWith(title: "title-error".localized, message: "default-error-message".localized)
                 }
             }
-        })
+        }
     }
 }
 

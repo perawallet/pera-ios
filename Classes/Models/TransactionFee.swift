@@ -9,18 +9,14 @@
 import Magpie
 
 struct TransactionParams: Mappable {
-    private let roundDifference = 1000
-    
     let fee: Int64
-    let firstRound: Int64
     let lastRound: Int64
     
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
         fee = try container.decode(Int64.self, forKey: .fee)
-        firstRound = try container.decode(Int64.self, forKey: .lastRound)
-        lastRound = firstRound + Int64(roundDifference)
+        lastRound = try container.decode(Int64.self, forKey: .lastRound)
     }
     
     private enum CodingKeys: String, CodingKey {

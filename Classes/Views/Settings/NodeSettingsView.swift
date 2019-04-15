@@ -8,10 +8,6 @@
 
 import UIKit
 
-protocol NodeSettingsViewDelegate: class {
-    
-}
-
 class NodeSettingsView: BaseView {
     
     struct LayoutConstants: AdaptiveLayoutConstants {
@@ -43,8 +39,6 @@ class NodeSettingsView: BaseView {
         
         return collectionView
     }()
-    
-    weak var delegate: NodeSettingsViewDelegate?
     
     // MARK: Setup
     

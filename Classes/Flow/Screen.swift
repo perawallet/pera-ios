@@ -28,10 +28,11 @@ enum Screen {
     case contactDetail(contact: Contact)
     case contactQRDisplay(contact: Contact)
     case sendAlgos(receiver: AlgosReceiverState)
-    case sendAlgosPreview(transaction: Transaction, receiver: AlgosReceiverState)
-    case sendAlgosSuccess(transaction: Transaction, receiver: AlgosReceiverState)
+    case sendAlgosPreview(transaction: TransactionPreviewDraft, receiver: AlgosReceiverState)
+    case sendAlgosSuccess(transaction: TransactionPreviewDraft, receiver: AlgosReceiverState)
     case receiveAlgos
-    case receiveAlgosPreview(transaction: Transaction)
+    case receiveAlgosPreview(transaction: TransactionPreviewDraft)
+    case historyResults(draft: HistoryDraft)
     case nodeSettings
     case addNode
 }

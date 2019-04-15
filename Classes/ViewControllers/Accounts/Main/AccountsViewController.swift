@@ -48,7 +48,6 @@ class AccountsViewController: BaseViewController {
     
     private let viewModel = AccountsViewModel()
     
-    private var transactionHistoryLayoutBuilder: TransactionHistoryLayoutBuilder
     private var transactionHistoryDataSource: TransactionHistoryDataSource
     
     // MARK: Components
@@ -67,8 +66,7 @@ class AccountsViewController: BaseViewController {
     // MARK: Initialization
     
     override init(configuration: ViewControllerConfiguration) {
-        transactionHistoryLayoutBuilder = TransactionHistoryLayoutBuilder()
-        transactionHistoryDataSource = TransactionHistoryDataSource()
+        transactionHistoryDataSource = TransactionHistoryDataSource(api: configuration.api)
         
         super.init(configuration: configuration)
     }
@@ -90,8 +88,7 @@ class AccountsViewController: BaseViewController {
     
     override func linkInteractors() {
         accountsView.delegate = self
-        transactionHistoryDataSource.delegate = self
-        accountsView.transactionHistoryCollectionView.delegate = transactionHistoryLayoutBuilder
+        accountsView.transactionHistoryCollectionView.delegate = self
         accountsView.transactionHistoryCollectionView.dataSource = transactionHistoryDataSource
         accountsView.delegate = self
     }
@@ -111,8 +108,9 @@ class AccountsViewController: BaseViewController {
         
         viewModel.configure(accountsView.accountsHeaderView, with: account)
         
-        accountsView.transactionHistoryCollectionView.contentState = .loading
-        transactionHistoryDataSource.setupMockData()
+        transactionHistoryDataSource.setupContacts()
+        
+        fetchTransactions()
     }
     
     override func setListeners() {
@@ -136,6 +134,41 @@ class AccountsViewController: BaseViewController {
         
         accountsView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
+        }
+    }
+    
+    private func fetchTransactions(witRefresh refresh: Bool = true) {
+        guard let account = selectedAccount else {
+            return
+        }
+        
+        accountsView.transactionHistoryCollectionView.contentState = .loading
+        
+        transactionHistoryDataSource.loadData(for: account, withRefresh: refresh) { transactions, error in
+            if let error = error {
+                switch error {
+                case .cancelled:
+                    break
+                default:
+                    self.accountsView.transactionHistoryCollectionView.contentState = .empty(self.emptyStateView)
+                }
+                
+                self.accountsView.transactionHistoryCollectionView.reloadData()
+                return
+            }
+            
+            guard let transactions = transactions else {
+                self.accountsView.transactionHistoryCollectionView.contentState = .none
+                return
+            }
+            
+            if transactions.isEmpty {
+                self.accountsView.transactionHistoryCollectionView.contentState = .empty(self.emptyStateView)
+                return
+            }
+            
+            self.accountsView.transactionHistoryCollectionView.contentState = .none
+            self.accountsView.transactionHistoryCollectionView.reloadData()
         }
     }
 }
@@ -198,25 +231,16 @@ extension AccountsViewController: AccountListViewControllerDelegate {
         open(.introduction(mode: .new), by: .present)
     }
     
-    func accountListViewController(_ viewController: AccountListViewController,
-                                   didSelectAccount account: Account) {
+    func accountListViewController(_ viewController: AccountListViewController, didSelectAccount account: Account) {
         selectedAccount = account
         
+        transactionHistoryDataSource.clear()
+        accountsView.transactionHistoryCollectionView.reloadData()
+        accountsView.transactionHistoryCollectionView.contentState = .loading
+        
+        fetchTransactions()
+        
         updateLayout()
-    }
-}
-
-// MARK: TransactionHistoryDataSourceDelegate
-
-extension AccountsViewController: TransactionHistoryDataSourceDelegate {
-    
-    func transactionHistoryDataSource(_ transactionHistoryDataSource: TransactionHistoryDataSource, didFetch transactions: [Transaction]) {
-        if !transactions.isEmpty {
-            accountsView.transactionHistoryCollectionView.contentState = .none
-            return
-        }
-
-        accountsView.transactionHistoryCollectionView.contentState = .empty(emptyStateView)
     }
 }
 
@@ -230,5 +254,25 @@ extension AccountsViewController: AccountsViewDelegate {
     
     func accountsViewDidTapReceiveButton(_ accountsView: AccountsView) {
         open(.receiveAlgos, by: .push)
+    }
+}
+
+// MARK: UICollectionViewDelegateFlowLayout
+
+extension AccountsViewController: UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        sizeForItemAt indexPath: IndexPath
+    ) -> CGSize {
+        
+        return CGSize(width: UIScreen.main.bounds.width, height: 80.0)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+//        if transactionHistoryDataSource.transactionCount() == indexPath.row - 3 {
+//            fetchTransactions(witRefresh: false)
+//        }
     }
 }

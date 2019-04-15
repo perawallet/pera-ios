@@ -25,13 +25,13 @@ class SendAlgosSuccessViewController: BaseScrollViewController {
     
     weak var delegate: SendAlgosSuccessViewControllerDelegate?
     
-    private let transaction: Transaction
+    private let transaction: TransactionPreviewDraft
     
     private let receiver: AlgosReceiverState
     
     // MARK: Initialization
     
-    init(transaction: Transaction, receiver: AlgosReceiverState, configuration: ViewControllerConfiguration) {
+    init(transaction: TransactionPreviewDraft, receiver: AlgosReceiverState, configuration: ViewControllerConfiguration) {
         self.transaction = transaction
         self.receiver = receiver
         
@@ -57,7 +57,16 @@ class SendAlgosSuccessViewController: BaseScrollViewController {
         
         sendAlgosSuccessView.accountView.detailLabel.text = transaction.fromAccount.name
         sendAlgosSuccessView.transactionReceiverView.state = receiver
-        sendAlgosSuccessView.transactionIdView.detailLabel.text = transaction.identifier
+        
+        if let identifier = transaction.identifier {
+            var formattedId = identifier
+            
+            if identifier.hasPrefix("tx-") {
+                formattedId = String(formattedId.dropFirst(3))
+            }
+            
+            sendAlgosSuccessView.transactionIdView.detailLabel.text = formattedId
+        }
     }
     
     override func prepareLayout() {

@@ -18,6 +18,7 @@ class TransactionHistoryContextView: BaseView {
         let separatorInset: CGFloat = 20.0
         let separatorHeight: CGFloat = 1.0
         let minimumHorizontalSpacing: CGFloat = 3.0
+        let subtitleLabelRightInset: CGFloat = 100.0
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -28,7 +29,7 @@ class TransactionHistoryContextView: BaseView {
     
     // MARK: Components
     
-    private(set) lazy var transactionDetailLabel: UILabel = {
+    private(set) lazy var titleLabel: UILabel = {
         UILabel()
             .withLine(.single)
             .withAlignment(.left)
@@ -41,15 +42,15 @@ class TransactionHistoryContextView: BaseView {
         return view
     }()
     
-    private(set) lazy var dateLabel: UILabel = {
+    private(set) lazy var subtitleLabel: UILabel = {
         UILabel()
             .withLine(.single)
             .withAlignment(.left)
             .withFont(UIFont.font(.opensans, withWeight: .semiBold(size: 12.0)))
-            .withTextColor(SharedColors.softGray)
+            .withTextColor(SharedColors.darkGray)
     }()
     
-    private(set) lazy var accountNamelabel: UILabel = {
+    private(set) lazy var dateLabel: UILabel = {
         UILabel()
             .withLine(.single)
             .withAlignment(.right)
@@ -72,17 +73,17 @@ class TransactionHistoryContextView: BaseView {
     // MARK: Layout
     
     override func prepareLayout() {
-        setupTransactionDetailLabelLayout()
+        setupTitleLabelLayout()
         setupTransactionAmountViewLayout()
+        setupSubtitleLabelLayout()
         setupDateLabelLayout()
-        setupAccountNameLabelLayout()
         setupSeparatorViewLayout()
     }
     
-    private func setupTransactionDetailLabelLayout() {
-        addSubview(transactionDetailLabel)
+    private func setupTitleLabelLayout() {
+        addSubview(titleLabel)
         
-        transactionDetailLabel.snp.makeConstraints { make in
+        titleLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(layout.current.horizontalInset)
             make.top.equalToSuperview().inset(layout.current.topInset)
         }
@@ -94,8 +95,19 @@ class TransactionHistoryContextView: BaseView {
         transactionAmountView.snp.makeConstraints { make in
             make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
             make.top.equalToSuperview().inset(layout.current.topInset)
-            make.centerY.equalTo(transactionDetailLabel)
-            make.leading.greaterThanOrEqualTo(transactionDetailLabel.snp.trailing).offset(layout.current.minimumHorizontalSpacing)
+            make.centerY.equalTo(titleLabel)
+            make.leading.greaterThanOrEqualTo(titleLabel.snp.trailing).offset(layout.current.minimumHorizontalSpacing)
+        }
+    }
+    
+    private func setupSubtitleLabelLayout() {
+        addSubview(subtitleLabel)
+        
+        subtitleLabel.snp.makeConstraints { make in
+            make.leading.equalTo(titleLabel)
+            make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.labelVerticalInset)
+            make.bottom.equalToSuperview().inset(layout.current.bottomInset)
+            make.trailing.lessThanOrEqualToSuperview().inset(layout.current.subtitleLabelRightInset)
         }
     }
     
@@ -103,19 +115,9 @@ class TransactionHistoryContextView: BaseView {
         addSubview(dateLabel)
         
         dateLabel.snp.makeConstraints { make in
-            make.leading.equalTo(transactionDetailLabel)
-            make.top.equalTo(transactionDetailLabel.snp.bottom).offset(layout.current.labelVerticalInset)
-            make.bottom.equalToSuperview().inset(layout.current.bottomInset)
-        }
-    }
-    
-    private func setupAccountNameLabelLayout() {
-        addSubview(accountNamelabel)
-        
-        accountNamelabel.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.centerY.equalTo(dateLabel)
-            make.leading.greaterThanOrEqualTo(dateLabel.snp.trailing).offset(layout.current.minimumHorizontalSpacing)
+            make.trailing.equalToSuperview().inset(layout.current.horizontalInset).priority(.required)
+            make.centerY.equalTo(subtitleLabel)
+            make.leading.equalTo(subtitleLabel.snp.trailing).offset(layout.current.minimumHorizontalSpacing)
         }
     }
     

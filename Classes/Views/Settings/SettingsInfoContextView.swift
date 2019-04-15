@@ -47,9 +47,6 @@ class SettingsInfoContextView: BaseView {
     
     // MARK: Setup
     
-    override func setListeners() {
-    }
-    
     override func configureAppearance() {
         backgroundColor = .white
     }

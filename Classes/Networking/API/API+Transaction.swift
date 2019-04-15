@@ -10,21 +10,45 @@ import Magpie
 import Crypto
 
 extension API {
+    
+    @discardableResult
+    func fetchTransactions(
+        between rounds: (Int64, Int64),
+        for account: Account,
+        completion: APICompletionHandler<TransactionList>? = nil
+    ) -> EndpointInteractable? {
+        
+        return send(
+            Endpoint<TransactionList>(Path("/v1/account/\(account.address)/transactions"))
+                .httpMethod(.get)
+                .query([
+                    .custom(key: AlgorandParamPairKey.firstRound, value: rounds.0),
+                    .custom(key: AlgorandParamPairKey.lastRound, value: rounds.1)
+                ])
+                .handler { response in
+                    completion?(response)
+                }
+        )
+    }
+    
     @discardableResult
     func sendTransaction(
         with draft: TransactionDraft,
         then completion: APICompletionHandler<TransactionID>? = nil
-        ) -> EndpointInteractable? {
+    ) -> EndpointInteractable? {
         
         var transactionError: NSError?
+        
+        let firstRound = draft.transactionParams.lastRound
+        let lastRound = firstRound + 1000
         
         let transactionData = TransactionMakePaymentTxn(
             draft.from.address,
             draft.to.address,
             draft.transactionParams.fee,
             draft.amount,
-            draft.transactionParams.firstRound,
-            draft.transactionParams.lastRound,
+            firstRound, 
+            lastRound,
             nil,
             "",
             "",

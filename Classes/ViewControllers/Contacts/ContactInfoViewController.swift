@@ -48,7 +48,7 @@ class ContactInfoViewController: BaseScrollViewController {
     
     override func configureNavigationBarAppearance() {
         let addBarButtonItem = ALGBarButtonItem(kind: .share) {
-            // TODO: Share action
+            self.shareContact()
         }
         
         rightBarButtonItems = [addBarButtonItem]
@@ -76,6 +76,18 @@ class ContactInfoViewController: BaseScrollViewController {
         contactInfoView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+    }
+    
+    private func shareContact() {
+        guard let address = contact.address else {
+            return
+        }
+        
+        let sharedItem = [address]
+        let activityViewController = UIActivityViewController(activityItems: sharedItem, applicationActivities: nil)
+        activityViewController.excludedActivityTypes = [UIActivity.ActivityType.addToReadingList]
+        
+        navigationController?.present(activityViewController, animated: true, completion: nil)
     }
 }
 

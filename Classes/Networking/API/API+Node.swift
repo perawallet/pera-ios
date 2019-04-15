@@ -33,7 +33,7 @@ extension API {
                 .httpHeaders(httpHeaders)
                 .handler { response in
                     completion?(!response.isFailed)
-            }
+                }
         )
     }
 }

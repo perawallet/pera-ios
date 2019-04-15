@@ -152,7 +152,7 @@ class SendAlgosViewController: BaseScrollViewController {
             return
         }
         
-        let transaction = Transaction(fromAccount: fromAccount, amount: amount, identifier: nil, fee: nil)
+        let transaction = TransactionPreviewDraft(fromAccount: fromAccount, amount: amount, identifier: nil, fee: nil)
         
         let sendAlgosPreviewViewController = open(
             .sendAlgosPreview(transaction: transaction, receiver: receiver),

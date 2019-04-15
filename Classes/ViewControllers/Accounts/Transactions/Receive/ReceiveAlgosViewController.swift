@@ -123,12 +123,7 @@ class ReceiveAlgosViewController: BaseViewController {
         
         view.endEditing(true)
         
-        let transaction = Transaction(
-            fromAccount: selectedAccount,
-            amount: amount,
-            identifier: nil,
-            fee: nil
-        )
+        let transaction = TransactionPreviewDraft(fromAccount: selectedAccount, amount: amount, identifier: nil, fee: nil)
         
         open(.receiveAlgosPreview(transaction: transaction), by: .push)
     }

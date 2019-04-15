@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 import Firebase
+import SwiftDate
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -39,7 +40,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     ) -> Bool {
         
         FirebaseApp.configure()
-        
+        SwiftDate.setupDateRegion()
         setupWindow()
         
         return true

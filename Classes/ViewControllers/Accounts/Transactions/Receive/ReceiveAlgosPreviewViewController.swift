@@ -17,11 +17,11 @@ class ReceiveAlgosPreviewViewController: BaseScrollViewController {
         return view
     }()
     
-    private let transaction: Transaction
+    private let transaction: TransactionPreviewDraft
     
     // MARK: Initialization
     
-    init(transaction: Transaction, configuration: ViewControllerConfiguration) {
+    init(transaction: TransactionPreviewDraft, configuration: ViewControllerConfiguration) {
         self.transaction = transaction
         
         super.init(configuration: configuration)

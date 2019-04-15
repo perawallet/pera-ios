@@ -167,6 +167,14 @@
 // MARK: History
 
 "history-title" = "History";
+"history-account" = "Account:";
+"history-start-date" = "Start Date:";
+"history-end-date" = "End Date:";
+"history-select-date" = "Select Date";
+"title-view-results" = "VIEW RESULTS";
+"history-alert-title" = "Incorrect Fields";
+"history-alert-message" = "Please fill the fields properly.";
+"history-result-to" = "to";
 
 // MARK: Contacts
 
