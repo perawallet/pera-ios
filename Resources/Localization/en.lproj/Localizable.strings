@@ -196,6 +196,7 @@
 
 // MARK: NodeSettings
 "node-settings-title" = "Server/Node Settings";
+"add-node-title" = "Add Node";
 "node-settings-subtitle" = "Slide to connect to the server/node you’d like.";
 "node-settings-enter-node-name" = "Enter node's name: ";
 "node-settings-enter-node-address" = "Enter node's address: ";
