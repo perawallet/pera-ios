@@ -60,7 +60,7 @@
 
 "password-change-title" = "Change Password";
 
-// MARK: Local Authentication Preferences
+// MARK: Local Authentication Preferences9
 
 "local-authentication-preference-title" = "Enable touch/face ID";
 "local-authentication-preference-subtitle" = "We recommend this for improved security";
