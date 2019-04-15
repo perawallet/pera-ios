@@ -145,8 +145,14 @@ class AccountsViewController: BaseViewController {
         accountsView.transactionHistoryCollectionView.contentState = .loading
         
         transactionHistoryDataSource.loadData(for: account, withRefresh: refresh) { transactions, error in
-            if error != nil {
-                self.accountsView.transactionHistoryCollectionView.contentState = .empty(self.emptyStateView)
+            if let error = error {
+                switch error {
+                case .cancelled:
+                    break
+                default:
+                    self.accountsView.transactionHistoryCollectionView.contentState = .empty(self.emptyStateView)
+                }
+                
                 self.accountsView.transactionHistoryCollectionView.reloadData()
                 return
             }
