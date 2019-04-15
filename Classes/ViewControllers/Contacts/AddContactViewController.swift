@@ -116,7 +116,7 @@ extension AddContactViewController: AddContactViewDelegate {
         
         if let placeholderImage = img("icon-user-placeholder-big"),
             let image = addContactView.userInformationView.userImageView.image,
-            let imageData = image.pngData(),
+            let imageData = image.jpegData(compressionQuality: 1.0) ?? image.pngData(),
             image != placeholderImage {
             
             keyedValues[Contact.CodingKeys.image.rawValue] = imageData
