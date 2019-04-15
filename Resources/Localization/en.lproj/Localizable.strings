@@ -95,7 +95,7 @@
 // MARK: Recover From Seed
 
 "recover-from-seed-title" = "Recover from Seed";
-"pass-pharase-enter-placeholder" = "Enter Pass Phrase or Scan QR";
+"pass-pharase-enter-placeholder" = "Enter Passphrase or Scan QR";
 "recover-from-seed-verify-pop-up-explanation" = "Welcome to Algorand! Your account is ready to use.";
 "recover-from-seed-verify-pop-up-title" = "Account Verified";
 
@@ -107,7 +107,7 @@
 "qr-scan-go-settings-title" = "Camera Disabled";
 "qr-scan-go-settings-message" = "You have disabled camera. Please go to Settings and enable this option.";
 "qr-scan-should-scan-address-message" = "You should scan valid account address";
-"qr-scan-should-scan-mnemonics-message" = "You should scan valid pass phrases";
+"qr-scan-should-scan-mnemonics-message" = "You should scan valid passphrases";
 "qr-scan-should-scan-valid-qr" = "QR is not valid.";
 
 // MARK: QR Creation
