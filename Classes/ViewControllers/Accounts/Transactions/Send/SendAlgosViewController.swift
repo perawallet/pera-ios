@@ -55,10 +55,16 @@ class SendAlgosViewController: BaseScrollViewController {
         
         if receiver == .initial {
             amount = 0.00
-            selectedAccount = nil
-            sendAlgosView.transactionReceiverView.state = receiver
             
-            sendAlgosView.accountSelectionView.inputTextField.text = "send-algos-select".localized
+            if let account = session?.authenticatedUser?.defaultAccount() {
+                selectedAccount = account
+                sendAlgosView.accountSelectionView.inputTextField.text = account.name
+            } else {
+                selectedAccount = nil
+                sendAlgosView.accountSelectionView.inputTextField.text = "send-algos-select".localized
+            }
+            
+            sendAlgosView.transactionReceiverView.state = receiver
         }
     }
     
