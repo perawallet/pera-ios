@@ -20,6 +20,12 @@ class ContactCell: BaseCollectionViewCell<ContactContextView> {
     override func linkInteractors() {
         contextView.delegate = self
     }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        contextView.userImageView.image = img("icon-user-placeholder")
+    }
 }
 
 extension ContactCell: ContactContextViewDelegate {

@@ -173,15 +173,18 @@ extension ContactsViewController: InputViewDelegate {
                 return
         }
         
-        let results = contacts.filter { contact -> Bool in
-            guard let name = contact.name else {
-                return false
-            }
-            
-            return name.contains(query)
-        }
+        let predicate = NSPredicate(format: "name contains[c] %@", query)
         
-        searchResults = results
+        Contact.fetchAll(entity: Contact.entityName, with: predicate) { response in
+            switch response {
+            case let .results(objects):
+                if let contactResults = objects as? [Contact] {
+                    self.searchResults = contactResults
+                }
+            default:
+                break
+            }
+        }
         
         if searchResults.isEmpty {
             contactsView.contactsCollectionView.contentState = .empty(emptyStateView)
@@ -225,7 +228,7 @@ extension ContactsViewController: AddContactViewControllerDelegate {
             let currentQuery = contactsView.contactNameInputView.inputTextField.text,
             !currentQuery.isEmpty {
             
-            if name.contains(currentQuery) {
+            if name.lowercased().contains(currentQuery.lowercased()) {
                 searchResults.append(contact)
             }
             
