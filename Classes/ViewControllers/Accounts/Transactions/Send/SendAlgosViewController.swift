@@ -332,4 +332,3 @@ extension SendAlgosViewController: TouchDetectingScrollViewDelegate {
         contentView.endEditing(true)
     }
 }
-
