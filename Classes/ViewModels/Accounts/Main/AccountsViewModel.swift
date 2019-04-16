@@ -17,6 +17,10 @@ class AccountsViewModel {
         view.algosAmountLabel.text = "\(account.amount.toAlgos)"
     }
     
+    func configure(_ view: AccountsSmallHeaderView, with account: Account) {
+        view.algosAmountLabel.text = "\(account.amount.toAlgos)"
+    }
+    
     func configure(_ cell: TransactionHistoryCell, with transaction: Transaction, for contact: Contact? = nil) {
         if let contact = contact {
             cell.contextView.titleLabel.text = contact.name
