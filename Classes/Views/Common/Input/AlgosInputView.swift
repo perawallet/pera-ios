@@ -28,17 +28,19 @@ class AlgosInputView: BaseView {
     
     private lazy var algosImageView = UIImageView(image: img("algo-icon-accounts"))
     
-    private(set) lazy var inputTextField: UITextField = {
-        let textField = UITextField()
+    private(set) lazy var inputTextField: CursorlessTextField = {
+        let textField = CursorlessTextField()
         textField.textColor = SharedColors.black
         textField.tintColor = SharedColors.darkGray
-        textField.keyboardType = .decimalPad
+        textField.keyboardType = .numberPad
         textField.font = UIFont.font(.opensans, withWeight: .bold(size: 40.0))
         textField.attributedPlaceholder = NSAttributedString(
-            string: "0.00",
+            string: "0.000000",
             attributes: [NSAttributedString.Key.foregroundColor: SharedColors.softGray,
                          NSAttributedString.Key.font: UIFont.font(.opensans, withWeight: .semiBold(size: 40.0))]
         )
+        textField.addTarget(self, action: #selector(didChangeText(_:)), for: .editingChanged)
+        textField.delegate = self
         return textField
     }()
     
@@ -95,5 +97,37 @@ class AlgosInputView: BaseView {
             make.leading.equalToSuperview().inset(layout.current.defaultInset)
             make.top.equalTo(inputTextField).offset(layout.current.imageViewTopInset)
         }
+    }
+    
+    // MARK: Helper
+    @objc
+    private func didChangeText(_ textField: UITextField) {
+        if let amountString = textField.text?.currencyInputFormatting() {
+            textField.text = amountString
+        }
+    }
+}
+
+// MARK: - TextFieldDelegate
+extension AlgosInputView: UITextFieldDelegate {
+    func textField(_ textField: UITextField,
+                   shouldChangeCharactersIn range: NSRange,
+                   replacementString string: String) -> Bool {
+        guard let text = textField.text else {
+            return true
+        }
+        
+        if range.location + range.length < text.count {
+            return false
+        } else {
+            return true
+        }
+    }
+}
+
+extension String {
+    func currencyInputFormatting() -> String? {
+        let decimal = self.decimal / pow(10, Formatter.withSeparator.maximumFractionDigits)
+        return Formatter.withSeparator.string(for: decimal)
     }
 }

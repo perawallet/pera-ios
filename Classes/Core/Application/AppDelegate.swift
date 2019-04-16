@@ -68,6 +68,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return
         }
         
+        NotificationCenter.default.post(
+            name: Notification.Name.ApplicationWillEnterForeground,
+            object: self,
+            userInfo: nil
+        )
+        
         if shouldInvalidateUserSession {
             shouldInvalidateUserSession = false
             session.isExpired = true
@@ -80,8 +86,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             rootViewController.route(to: .choosePassword(mode: .login), from: topViewController, by: .present)
             return
         }
-        
-        self.validateAccountManagerFetchPolling()
     }
     
     func applicationDidEnterBackground(_ application: UIApplication) {
@@ -127,6 +131,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func validateAccountManagerFetchPolling() {
         if let user = session.authenticatedUser {
+            
+            invalidateAccountManagerFetchPolling()
+            
             accountManager.user = user
             
             accountFetchTimer = PollingOperation(interval: Constants.accountManagerPollintTime) { [weak self] in
