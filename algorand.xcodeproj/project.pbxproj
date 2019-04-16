@@ -49,6 +49,10 @@
 		179B93D6225E447400DD03E9 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179B93D5225E447400DD03E9 /* Node.swift */; };
 		179B93D8225E454100DD03E9 /* NodeSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179B93D7225E454100DD03E9 /* NodeSettingsView.swift */; };
 		179B93DA225E460500DD03E9 /* NodeSettingsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179B93D9225E460500DD03E9 /* NodeSettingsHeaderView.swift */; };
+		17AA1B0422660E59000B0BB0 /* Formatter+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17AA1B0322660E59000B0BB0 /* Formatter+Additions.swift */; };
+		17AA1B0622662B5B000B0BB0 /* CursorlessTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17AA1B0522662B5B000B0BB0 /* CursorlessTextField.swift */; };
+		17AA1B0822662BAB000B0BB0 /* String+Number.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17AA1B0722662BAB000B0BB0 /* String+Number.swift */; };
+		17AA1B0A22662BD1000B0BB0 /* Decimal+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17AA1B0922662BD1000B0BB0 /* Decimal+Additions.swift */; };
 		17B7D8A62240D8F900A6FF9E /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B7D8A52240D8F900A6FF9E /* Account.swift */; };
 		17B7D8A82240DFFC00A6FF9E /* API+Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B7D8A72240DFFC00A6FF9E /* API+Account.swift */; };
 		17B7D8AB2240E19600A6FF9E /* AccountFetchDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B7D8AA2240E19600A6FF9E /* AccountFetchDraft.swift */; };
@@ -296,6 +300,10 @@
 		179B93D5225E447400DD03E9 /* Node.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
 		179B93D7225E454100DD03E9 /* NodeSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeSettingsView.swift; sourceTree = "<group>"; };
 		179B93D9225E460500DD03E9 /* NodeSettingsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeSettingsHeaderView.swift; sourceTree = "<group>"; };
+		17AA1B0322660E59000B0BB0 /* Formatter+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Formatter+Additions.swift"; sourceTree = "<group>"; };
+		17AA1B0522662B5B000B0BB0 /* CursorlessTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CursorlessTextField.swift; sourceTree = "<group>"; };
+		17AA1B0722662BAB000B0BB0 /* String+Number.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Number.swift"; sourceTree = "<group>"; };
+		17AA1B0922662BD1000B0BB0 /* Decimal+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Decimal+Additions.swift"; sourceTree = "<group>"; };
 		17B7D8A52240D8F900A6FF9E /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		17B7D8A72240DFFC00A6FF9E /* API+Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+Account.swift"; sourceTree = "<group>"; };
 		17B7D8AA2240E19600A6FF9E /* AccountFetchDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountFetchDraft.swift; sourceTree = "<group>"; };
@@ -592,6 +600,14 @@
 			path = PassPhrase;
 			sourceTree = "<group>";
 		};
+		17AA1B0222660E43000B0BB0 /* Formatter */ = {
+			isa = PBXGroup;
+			children = (
+				17AA1B0322660E59000B0BB0 /* Formatter+Additions.swift */,
+			);
+			path = Formatter;
+			sourceTree = "<group>";
+		};
 		17B7D8A42240D79200A6FF9E /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -644,6 +660,7 @@
 				17D04F4E225FACED0051BC43 /* Int.swift */,
 				17D04F50225FAD920051BC43 /* Double.swift */,
 				2B6ED9672261069A00787984 /* Int64+API.swift */,
+				17AA1B0922662BD1000B0BB0 /* Decimal+Additions.swift */,
 			);
 			path = Numbers;
 			sourceTree = "<group>";
@@ -1015,6 +1032,7 @@
 				2B8954C1224404B700D6D068 /* SingleLineInputField.swift */,
 				2B8954C3224404C900D6D068 /* MultiLineInputField.swift */,
 				2B56F7DB225B51C100E58737 /* AlgosInputView.swift */,
+				17AA1B0522662B5B000B0BB0 /* CursorlessTextField.swift */,
 			);
 			path = Input;
 			sourceTree = "<group>";
@@ -1252,6 +1270,7 @@
 		2B8BE4F722393715005D8565 /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
+				17AA1B0222660E43000B0BB0 /* Formatter */,
 				17D04F4D225FACDC0051BC43 /* Numbers */,
 				2BF34CC3223A995C0052CAD3 /* Text */,
 				2B8BE4F822393721005D8565 /* Notification */,
@@ -1815,6 +1834,7 @@
 				2B8C1277224196DF00E34D37 /* String+Attributes.swift */,
 				2B8C12792241970F00E34D37 /* NSAttributedString+Additions.swift */,
 				173DA1E62255EBE000378A82 /* String+Address.swift */,
+				17AA1B0722662BAB000B0BB0 /* String+Number.swift */,
 			);
 			path = Text;
 			sourceTree = "<group>";
@@ -2186,6 +2206,7 @@
 				2B8954B62243FBD600D6D068 /* NotificationCenter+Additions.swift in Sources */,
 				171111B4225E091A00DAF55C /* SettingsToggleCell.swift in Sources */,
 				2BA242382263C0D800E2841F /* SwiftDate+Region.swift in Sources */,
+				17AA1B0422660E59000B0BB0 /* Formatter+Additions.swift in Sources */,
 				17D04F48225F697E0051BC43 /* AddNodeView.swift in Sources */,
 				2B56F7D6225B3C1D00E58737 /* SendAlgosViewController.swift in Sources */,
 				2B25BB4B225EAD600092C972 /* ReceiveAlgosPreviewViewController.swift in Sources */,
@@ -2227,6 +2248,7 @@
 				179B93DA225E460500DD03E9 /* NodeSettingsHeaderView.swift in Sources */,
 				2BCB22C2226231E800513550 /* HistoryViewModel.swift in Sources */,
 				2BD73A1C2241636C00B66EEF /* PassPhraseBackUpView.swift in Sources */,
+				17AA1B0822662BAB000B0BB0 /* String+Number.swift in Sources */,
 				2BF7190C224ECF30001E8420 /* AddContactView.swift in Sources */,
 				2BD739F1223FE1C700B66EEF /* UIButton+Factory.swift in Sources */,
 				2B8BE4D222391C38005D8565 /* AppDelegate.swift in Sources */,
@@ -2266,6 +2288,7 @@
 				2BF34CBC223A8C460052CAD3 /* BaseCollectionViewCell.swift in Sources */,
 				171111B2225DF92300DAF55C /* SettingsInfoContextView.swift in Sources */,
 				2B6687122248DC7D009F21E7 /* BarButton.swift in Sources */,
+				17AA1B0A22662BD1000B0BB0 /* Decimal+Additions.swift in Sources */,
 				2BD739F6223FF47900B66EEF /* NumpadNumericButton.swift in Sources */,
 				2B8BE4EE22393577005D8565 /* BaseViewController.swift in Sources */,
 				17B7D8B0224128EC00A6FF9E /* Keychain+Additions.swift in Sources */,
@@ -2308,6 +2331,7 @@
 				1746715D225B6C0400B78641 /* TypeAliases.swift in Sources */,
 				2B59F16122563F89005203DD /* TabBar.swift in Sources */,
 				2BF34CC5223A99670052CAD3 /* String+Localization.swift in Sources */,
+				17AA1B0622662B5B000B0BB0 /* CursorlessTextField.swift in Sources */,
 				179B93D6225E447400DD03E9 /* Node.swift in Sources */,
 				2BF34CA62239AD6D0052CAD3 /* KeyboardController.swift in Sources */,
 				2BB021E0224E5FD20039D78A /* AccountsViewModel.swift in Sources */,

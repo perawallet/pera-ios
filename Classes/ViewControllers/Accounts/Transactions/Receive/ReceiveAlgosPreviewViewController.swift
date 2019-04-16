@@ -36,7 +36,7 @@ class ReceiveAlgosPreviewViewController: BaseScrollViewController {
         
         title = "receive-algos-title".localized
         
-        receiveAlgosPreviewView.algosInputView.inputTextField.text = "\(transaction.amount)"
+        receiveAlgosPreviewView.algosInputView.inputTextField.text = transaction.amount.toDecimalString
         receiveAlgosPreviewView.accountSelectionView.inputTextField.text = transaction.fromAccount.name
     }
     

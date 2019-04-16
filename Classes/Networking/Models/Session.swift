@@ -161,7 +161,7 @@ extension Session {
         self.isExpired = true
         
         DispatchQueue.main.async {
-            UIApplication.shared.appDelegate?.validateAccountManagerFetchPolling()
+            UIApplication.shared.appDelegate?.invalidateAccountManagerFetchPolling()
         }
     }
 }

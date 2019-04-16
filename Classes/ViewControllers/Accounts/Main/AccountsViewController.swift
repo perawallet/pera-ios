@@ -121,9 +121,32 @@ class AccountsViewController: BaseViewController {
             selector: #selector(didUpdateAuthenticatedUser(notification:)),
             name: Notification.Name.AuthenticatedUserUpdate,
             object: nil)
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didApplicationWillEnterForeground(notification:)),
+            name: Notification.Name.ApplicationWillEnterForeground,
+            object: nil
+        )
     }
     
     // MARK: Layout
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        DispatchQueue.main.async {
+            UIApplication.shared.appDelegate?.validateAccountManagerFetchPolling()
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        DispatchQueue.main.async {
+            UIApplication.shared.appDelegate?.invalidateAccountManagerFetchPolling()
+        }
+    }
     
     override func prepareLayout() {
         setupAccountsViewLayout()
@@ -223,6 +246,13 @@ extension AccountsViewController {
     @objc
     fileprivate func didUpdateAuthenticatedUser(notification: Notification) {
         updateLayout()
+    }
+    
+    @objc
+    fileprivate func didApplicationWillEnterForeground(notification: Notification) {
+        DispatchQueue.main.async {
+            UIApplication.shared.appDelegate?.validateAccountManagerFetchPolling()
+        }
     }
 }
 

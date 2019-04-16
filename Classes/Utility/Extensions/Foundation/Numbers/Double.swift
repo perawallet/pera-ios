@@ -12,4 +12,8 @@ extension Double {
     var toMicroAlgos: Int64 {
         return Int64(Double(algosInMicroAlgos) * self)
     }
+    
+    var toDecimalString: String? {
+        return Formatter.withSeparator.string(from: NSNumber(value: self))
+    }
 }

@@ -49,7 +49,7 @@ class SendAlgosPreviewViewController: BaseViewController {
         
         title = "send-algos-title".localized
         
-        sendAlgosPreviewView.algosInputView.inputTextField.text = "\(transaction.amount)"
+        sendAlgosPreviewView.algosInputView.inputTextField.text = transaction.amount.toDecimalString
         sendAlgosPreviewView.accountSelectionView.inputTextField.text = transaction.fromAccount.name
         sendAlgosPreviewView.transactionReceiverView.state = receiver
         
@@ -92,8 +92,8 @@ class SendAlgosPreviewViewController: BaseViewController {
     }
     
     fileprivate func updateFeeLayout() {
-        if let fee = transaction.fee {
-            sendAlgosPreviewView.feeInformationView.detailLabel.text = "\(fee.toAlgos)"
+        if let fee = transaction.fee?.toAlgos, let algos = Formatter.withSeparator.string(from: NSNumber(value: fee)) {
+            sendAlgosPreviewView.feeInformationView.detailLabel.text = algos
         }
     }
 }

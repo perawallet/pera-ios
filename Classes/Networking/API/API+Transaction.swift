@@ -72,9 +72,9 @@ extension API {
                 .handler { uploadResponse in
                     
                     switch uploadResponse {
-                    case .success(let transaction):
+                    case .success:
                         break
-                    case .failure(let error):
+                    case .failure:
                         break
                     }
                     
