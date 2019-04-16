@@ -17,11 +17,8 @@ class AccountsFlowLayout: UICollectionViewFlowLayout {
     override var collectionViewContentSize: CGSize {
         let size = super.collectionViewContentSize
         
-        if size.height == 0 {
-            return size
-        }
-        
-        guard let view = collectionView?.superview else {
+        guard size.height != 0.0,
+            let view = collectionView?.superview else {
             return size
         }
         

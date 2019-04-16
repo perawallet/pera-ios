@@ -24,7 +24,7 @@ extension UIImage {
         
         let rect = CGRect(x: 0, y: 0, width: editedSize.width, height: editedSize.height)
         
-        UIGraphicsBeginImageContextWithOptions(editedSize, false, 1.0)
+        UIGraphicsBeginImageContextWithOptions(editedSize, false, 0.0)
         draw(in: rect)
         
         let editedImage = UIGraphicsGetImageFromCurrentImageContext()
