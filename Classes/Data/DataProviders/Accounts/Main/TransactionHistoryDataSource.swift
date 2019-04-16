@@ -112,6 +112,8 @@ extension TransactionHistoryDataSource {
         between dates: (Date, Date)? = nil,
         then handler: @escaping ([Transaction]?, Error?) -> Void
     ) {
+        viewModel.currentAccount = account
+        
         api?.getTransactionParams { response in
             switch response {
             case let .failure(error):
@@ -155,7 +157,7 @@ extension TransactionHistoryDataSource {
             case let .failure(error):
                 handler(nil, error)
             case let .success(transactions):
-                self.transactions = transactions.transactions
+                self.transactions = transactions.transactions.reversed()
                 handler(transactions.transactions, nil)
             }
         }
@@ -237,7 +239,7 @@ extension TransactionHistoryDataSource {
             case let .failure(error):
                 handler(nil, error)
             case let .success(transactions):
-                self.transactions = transactions.transactions
+                self.transactions = transactions.transactions.reversed()
                 handler(transactions.transactions, nil)
             }
         }
