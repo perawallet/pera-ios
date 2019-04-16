@@ -61,9 +61,13 @@ class AccountsViewModel {
         }
     
         let roundDifference = lastRound - round
-        let dayDifference = roundDifference / 17280
+        let minuteDifference = roundDifference / 12
         
-        guard let transactionDate = Calendar.current.date(byAdding: .day, value: Int(-dayDifference), to: Date()) else {
+        if roundDifference <= 0 {
+            return Date()
+        }
+        
+        guard let transactionDate = Calendar.current.date(byAdding: .minute, value: Int(-minuteDifference), to: Date()) else {
             return Date()
         }
         
