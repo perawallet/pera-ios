@@ -11,4 +11,8 @@ import Foundation
 extension String {
     var digits: String { return filter(("0"..."9").contains) }
     var decimal: Decimal { return Decimal(string: digits) ?? 0 }
+    
+    var doubleWithSeparator: Double? {
+        return Formatter.withSeparator.number(from: self)?.doubleValue
+    }
 }
