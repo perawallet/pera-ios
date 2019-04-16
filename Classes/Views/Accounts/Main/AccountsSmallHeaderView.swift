@@ -43,7 +43,7 @@ class AccountsSmallHeaderView: BaseView {
             .withAlignment(.center)
             .withTextColor(SharedColors.black)
             .withFont(UIFont.font(.opensans, withWeight: .bold(size: 24.0)))
-            .withText("0.00")
+            .withText("0.000000")
     }()
     
     private(set) lazy var sendButton: UIButton = {
