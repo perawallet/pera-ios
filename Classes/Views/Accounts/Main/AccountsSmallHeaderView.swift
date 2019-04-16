@@ -1,31 +1,34 @@
 //
-//  AccountsHeaderView.swift
+//  AccountsSmallHeaderView.swift
 //  algorand
 //
-//  Created by Göktuğ Berk Ulu on 29.03.2019.
+//  Created by Göktuğ Berk Ulu on 16.04.2019.
 //  Copyright © 2019 hippo. All rights reserved.
 //
 
 import UIKit
 
-protocol AccountsHeaderViewDelegate: class {
+protocol AccountsSmallHeaderViewDelegate: class {
     
-    func accountsHeaderViewDidTapSendButton(_ accountsHeaderView: AccountsHeaderView)
-    func accountsHeaderViewDidTapReceiveButton(_ accountsHeaderView: AccountsHeaderView)
+    func accountsSmallHeaderViewDidTapSendButton(_ accountsHeaderView: AccountsSmallHeaderView)
+    func accountsSmallHeaderViewDidTapReceiveButton(_ accountsHeaderView: AccountsSmallHeaderView)
 }
 
-class AccountsHeaderView: BaseView {
-
+class AccountsSmallHeaderView: BaseView {
+    
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let algosAvailableLabelTopInset: CGFloat = 54.0
-        let algosAvailableLabelLeadingInset: CGFloat = 53.0
+        let topInset: CGFloat = 45.0
         let horizontalInset: CGFloat = 25.0
-        let amountLabelTopInset: CGFloat = -12.0
-        let amountLabelLeadingInset: CGFloat = 8.0
+        let amountLabelLeadingInset: CGFloat = 3.0
+        let amountLabelTrailingInset: CGFloat = 115.0
+        let historyLabelTopInset: CGFloat = 33.0
+        let buttonSize: CGFloat = 38.0
+        let buttonTopInset: CGFloat = 40.0
+        let amountLabelTopInset: CGFloat = -7.0
         let verticalInset: CGFloat = 25.0
         let buttonHorizontalInset: CGFloat = 20.0
-        let buttonInnerSpacing: CGFloat = 15.0
-        let historyLabelTopInset: CGFloat = 36.0
+        let buttonInnerSpacing: CGFloat = -16.0
+        let buttonMinimumInset: CGFloat = 5.0
         let historyLabelBottomInset: CGFloat = 7.0
     }
     
@@ -33,40 +36,30 @@ class AccountsHeaderView: BaseView {
     
     // MARK: Components
     
-    private(set) lazy var algosAvailableLabel: UILabel = {
-        UILabel()
-            .withAlignment(.left)
-            .withTextColor(SharedColors.black)
-            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 12.0)))
-            .withText("accounts-algos-available-title".localized)
-    }()
-    
-    private(set) lazy var algosImageView = UIImageView(image: img("algo-icon-accounts"))
+    private(set) lazy var algosImageView = UIImageView(image: img("algo-icon-account-medium"))
     
     private(set) lazy var algosAmountLabel: UILabel = {
         UILabel()
             .withAlignment(.center)
             .withTextColor(SharedColors.black)
-            .withFont(UIFont.font(.opensans, withWeight: .bold(size: 40.0)))
+            .withFont(UIFont.font(.opensans, withWeight: .bold(size: 24.0)))
             .withText("0.000000")
     }()
     
     private(set) lazy var sendButton: UIButton = {
         UIButton(type: .custom)
-            .withTitleColor(SharedColors.black)
-            .withTitle("title-send".localized)
-            .withBackgroundImage(img("bg-blue-small"))
+            .withBackgroundImage(img("bg-send-small"))
+            .withBackgroundColor(.white)
+            .withImage(img("icon-arrow-up"))
             .withAlignment(.center)
-            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 14.0)))
     }()
     
     private(set) lazy var receiveButton: UIButton = {
         UIButton(type: .custom)
-            .withTitleColor(SharedColors.black)
-            .withTitle("title-receive".localized)
-            .withBackgroundImage(img("bg-green-small"))
+            .withBackgroundImage(img("bg-receive-small"))
+            .withBackgroundColor(.white)
+            .withImage(img("icon-arrow-down"))
             .withAlignment(.center)
-            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 14.0)))
     }()
     
     private lazy var historyLabel: UILabel = {
@@ -77,7 +70,7 @@ class AccountsHeaderView: BaseView {
             .withText("accounts-transaction-history-title".localized)
     }()
     
-    weak var delegate: AccountsHeaderViewDelegate?
+    weak var delegate: AccountsSmallHeaderViewDelegate?
     
     // MARK: Setup
     
@@ -89,28 +82,18 @@ class AccountsHeaderView: BaseView {
     // MARK: Layout
     
     override func prepareLayout() {
-        setupAlgosAvailableLabelLayout()
         setupAlgosImageViewLayout()
         setupAmountLabelLayout()
-        setupSendButtonLayout()
         setupReceiveButtonLayout()
+        setupSendButtonLayout()
         setupHistoryLabelLayout()
-    }
-    
-    private func setupAlgosAvailableLabelLayout() {
-        addSubview(algosAvailableLabel)
-        
-        algosAvailableLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(layout.current.algosAvailableLabelLeadingInset)
-            make.top.lessThanOrEqualToSuperview().inset(layout.current.algosAvailableLabelTopInset)
-        }
     }
     
     private func setupAlgosImageViewLayout() {
         addSubview(algosImageView)
         
         algosImageView.snp.makeConstraints { make in
-            make.top.equalTo(algosAvailableLabel.snp.bottom).offset(layout.current.verticalInset)
+            make.top.equalToSuperview().offset(layout.current.topInset)
             make.leading.equalToSuperview().inset(layout.current.horizontalInset)
         }
     }
@@ -121,27 +104,32 @@ class AccountsHeaderView: BaseView {
         algosAmountLabel.snp.makeConstraints { make in
             make.top.equalTo(algosImageView.snp.top).inset(layout.current.amountLabelTopInset)
             make.leading.equalTo(algosImageView.snp.trailing).offset(layout.current.amountLabelLeadingInset)
-            make.trailing.lessThanOrEqualToSuperview().inset(layout.current.horizontalInset)
-        }
-    }
-    
-    private func setupSendButtonLayout() {
-        addSubview(sendButton)
-        
-        sendButton.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(layout.current.buttonHorizontalInset)
-            make.top.equalTo(algosAmountLabel.snp.bottom).offset(layout.current.verticalInset)
+            make.trailing.lessThanOrEqualToSuperview().inset(layout.current.amountLabelTrailingInset)
         }
     }
     
     private func setupReceiveButtonLayout() {
         addSubview(receiveButton)
         
+        receiveButton.layer.cornerRadius = layout.current.buttonSize / 2
+        
         receiveButton.snp.makeConstraints { make in
-            make.leading.equalTo(sendButton.snp.trailing).offset(layout.current.buttonInnerSpacing)
-            make.width.height.equalTo(sendButton)
             make.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
-            make.top.equalTo(sendButton)
+            make.top.equalToSuperview().inset(layout.current.buttonTopInset)
+            make.width.height.equalTo(layout.current.buttonSize)
+        }
+    }
+    
+    private func setupSendButtonLayout() {
+        addSubview(sendButton)
+        
+        sendButton.layer.cornerRadius = layout.current.buttonSize / 2
+        
+        sendButton.snp.makeConstraints { make in
+            make.width.height.equalTo(receiveButton)
+            make.top.equalTo(receiveButton)
+            make.trailing.equalTo(receiveButton.snp.leading).offset(layout.current.buttonInnerSpacing)
+            make.leading.greaterThanOrEqualTo(algosAmountLabel.snp.trailing).offset(layout.current.buttonMinimumInset)
         }
     }
     
@@ -159,11 +147,11 @@ class AccountsHeaderView: BaseView {
     
     @objc
     private func notifyDelegateToSendButtonTapped() {
-        delegate?.accountsHeaderViewDidTapSendButton(self)
+        delegate?.accountsSmallHeaderViewDidTapSendButton(self)
     }
     
     @objc
     private func notifyDelegateToReceiveButtonTapped() {
-        delegate?.accountsHeaderViewDidTapReceiveButton(self)
+        delegate?.accountsSmallHeaderViewDidTapReceiveButton(self)
     }
 }

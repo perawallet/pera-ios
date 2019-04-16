@@ -237,6 +237,7 @@ extension AccountsViewController {
         self.navigationItem.title = account.name
         
         viewModel.configure(accountsView.accountsHeaderView, with: account)
+        viewModel.configure(accountsView.accountsSmallHeaderView, with: account)
     }
 }
 
@@ -269,6 +270,8 @@ extension AccountsViewController: AccountListViewControllerDelegate {
         accountsView.transactionHistoryCollectionView.contentState = .loading
         
         fetchTransactions()
+        
+        adjustDefaultHeaderViewLayout()
         
         updateLayout()
     }
@@ -304,5 +307,56 @@ extension AccountsViewController: UICollectionViewDelegateFlowLayout {
 //        if transactionHistoryDataSource.transactionCount() == indexPath.row - 3 {
 //            fetchTransactions(witRefresh: false)
 //        }
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let translation = scrollView.panGestureRecognizer.translation(in: view)
+        
+        if translation.y < 0 {
+            let offset = scrollView.contentOffset.y
+            
+            let offsetDifference = AccountsView.LayoutConstants.headerHeight - offset * 3
+
+            if offsetDifference <= AccountsView.LayoutConstants.smallHeaderHeight {
+                adjustSmallHeaderViewLayout()
+            } else {
+                accountsView.accountsHeaderContainerView.snp.updateConstraints { make in
+                    make.height.equalTo(offsetDifference)
+                }
+                
+                let heightDifference = AccountsView.LayoutConstants.headerHeight - AccountsView.LayoutConstants.smallHeaderHeight
+                
+                UIView.animate(withDuration: 0.33) {
+                    self.accountsView.accountsHeaderView.alpha = 1.0 - (heightDifference / offsetDifference)
+                    self.view.layoutIfNeeded()
+                }
+            }
+        } else {
+            adjustDefaultHeaderViewLayout()
+        }
+    }
+    
+    private func adjustSmallHeaderViewLayout() {
+        accountsView.accountsHeaderContainerView.snp.updateConstraints { make in
+            make.height.equalTo(AccountsView.LayoutConstants.smallHeaderHeight)
+        }
+        
+        UIView.animate(withDuration: 0.33) {
+            self.accountsView.accountsHeaderView.alpha = 0.0
+            self.accountsView.accountsSmallHeaderView.alpha = 1.0
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    private func adjustDefaultHeaderViewLayout() {
+        accountsView.accountsHeaderContainerView.snp.updateConstraints { make in
+            make.height.equalTo(AccountsView.LayoutConstants.headerHeight)
+        }
+        
+        UIView.animate(withDuration: 0.33) {
+            self.accountsView.accountsSmallHeaderView.alpha = 0.0
+            self.accountsView.accountsHeaderView.alpha = 1.0
+            self.view.layoutIfNeeded()
+        }
     }
 }

@@ -9,4 +9,13 @@
 import UIKit
 
 class TransactionHistoryCell: BaseCollectionViewCell<TransactionHistoryContextView> {
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        contextView.titleLabel.text = nil
+        contextView.subtitleLabel.text = nil
+        contextView.subtitleLabel.isHidden = false
+        contextView.dateLabel.text = nil
+    }
 }

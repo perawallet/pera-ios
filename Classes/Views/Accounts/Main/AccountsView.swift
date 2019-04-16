@@ -18,19 +18,31 @@ class AccountsView: BaseView {
 
     struct LayoutConstants: AdaptiveLayoutConstants {
         static let headerHeight: CGFloat = 276.0
+        static let smallHeaderHeight: CGFloat = 134.0
     }
     
     private let layout = Layout<LayoutConstants>()
     
     // MARK: Components
     
+    private(set) lazy var accountsHeaderContainerView: UIView = {
+        let view = UIView()
+        return view
+    }()
+    
     private(set) lazy var accountsHeaderView: AccountsHeaderView = {
         let view = AccountsHeaderView()
         return view
     }()
     
+    private(set) lazy var accountsSmallHeaderView: AccountsSmallHeaderView = {
+        let view = AccountsSmallHeaderView()
+        view.alpha = 0.0
+        return view
+    }()
+    
     private(set) lazy var transactionHistoryCollectionView: UICollectionView = {
-        let flowLayout = UICollectionViewFlowLayout()
+        let flowLayout = AccountsFlowLayout()
         flowLayout.scrollDirection = .vertical
         flowLayout.minimumLineSpacing = 0.0
         flowLayout.minimumInteritemSpacing = 0.0
@@ -54,22 +66,41 @@ class AccountsView: BaseView {
     
     override func linkInteractors() {
         accountsHeaderView.delegate = self
+        accountsSmallHeaderView.delegate = self
     }
     
     // MARK: Layout
     
     override func prepareLayout() {
+        setupAccountsHeaderContainerViewLayout()
         setupAccountsHeaderViewLayout()
+        setupAccountsSmallHeaderViewLayout()
         setupTransactionHistoryCollectionViewLayout()
         setupContentStateView()
     }
     
-    private func setupAccountsHeaderViewLayout() {
-        addSubview(accountsHeaderView)
+    private func setupAccountsHeaderContainerViewLayout() {
+        addSubview(accountsHeaderContainerView)
         
-        accountsHeaderView.snp.makeConstraints { make in
+        accountsHeaderContainerView.snp.makeConstraints { make in
             make.leading.trailing.top.equalToSuperview()
             make.height.equalTo(LayoutConstants.headerHeight)
+        }
+    }
+    
+    private func setupAccountsHeaderViewLayout() {
+        accountsHeaderContainerView.addSubview(accountsHeaderView)
+        
+        accountsHeaderView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+    }
+    
+    private func setupAccountsSmallHeaderViewLayout() {
+        accountsHeaderContainerView.addSubview(accountsSmallHeaderView)
+        
+        accountsSmallHeaderView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
         }
     }
     
@@ -96,6 +127,19 @@ extension AccountsView: AccountsHeaderViewDelegate {
     }
     
     func accountsHeaderViewDidTapReceiveButton(_ accountsHeaderView: AccountsHeaderView) {
+        delegate?.accountsViewDidTapReceiveButton(self)
+    }
+}
+
+// MARK: AccountsSmallHeaderViewDelegate
+
+extension AccountsView: AccountsSmallHeaderViewDelegate {
+    
+    func accountsSmallHeaderViewDidTapSendButton(_ accountsHeaderView: AccountsSmallHeaderView) {
+        delegate?.accountsViewDidTapSendButton(self)
+    }
+    
+    func accountsSmallHeaderViewDidTapReceiveButton(_ accountsHeaderView: AccountsSmallHeaderView) {
         delegate?.accountsViewDidTapReceiveButton(self)
     }
 }
