@@ -58,6 +58,22 @@ class OptionsViewController: BaseViewController {
     
     // MARK: Setup
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        DispatchQueue.main.async {
+            UIApplication.shared.appDelegate?.invalidateAccountManagerFetchPolling()
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        DispatchQueue.main.async {
+            UIApplication.shared.appDelegate?.validateAccountManagerFetchPolling()
+        }
+    }
+    
     override func configureAppearance() {
         view.backgroundColor = .white
     }
