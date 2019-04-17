@@ -10,7 +10,6 @@ import UIKit
 
 enum Screen {
     case introduction(mode: AccountSetupMode)
-    case welcome
     case choosePassword(mode: ChoosePasswordViewController.Mode)
     case localAuthenticationPreference
     case passPhraseBackUp
