@@ -295,8 +295,12 @@ extension SendAlgosViewController: QRScannerViewControllerDelegate {
         receiver = .address(qrText.text)
     }
     
-    func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError) {
-        displaySimpleAlertWith(title: "title-error".localized, message: "qr-scan-should-scan-valid-qr".localized)
+    func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError, then handler: EmptyHandler?) {
+        displaySimpleAlertWith(title: "title-error".localized, message: "qr-scan-should-scan-valid-qr".localized) { _ in
+            if let handler = handler {
+                handler()
+            }
+        }
     }
 }
 
