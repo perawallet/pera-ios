@@ -49,6 +49,8 @@ class TransactionReceiverView: BaseView {
             
             switch state {
             case .initial:
+                passphraseInputView.isHidden = false
+                
                 if receiverContactView.superview != nil {
                     receiverContactView.removeFromSuperview()
                 }
