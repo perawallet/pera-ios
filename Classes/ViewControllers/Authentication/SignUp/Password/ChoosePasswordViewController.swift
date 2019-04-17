@@ -167,9 +167,23 @@ extension ChoosePasswordViewController: ChoosePasswordViewDelegate {
     }
     
     func choosePasswordViewDidTapLogoutButton(_ choosePasswordView: ChoosePasswordView) {
-        session?.reset()
+        let alertController = UIAlertController(title: "logout-warning-title".localized,
+                                                message: "logout-warning-message".localized,
+                                                preferredStyle: .alert)
         
-        open(.introduction(mode: .initialize), by: .launch, animated: false)
+        let cancelAction = UIAlertAction(title: "title-cancel-lowercased".localized, style: .cancel, handler: nil)
+        alertController.addAction(cancelAction)
+        
+        let deleteAction = UIAlertAction(
+            title: "logout-action-delete-title".localized,
+            style: .destructive) { _ in
+                self.session?.reset()
+                
+                self.open(.introduction(mode: .initialize), by: .launch, animated: false)
+        }
+        alertController.addAction(deleteAction)
+        
+        present(alertController, animated: true)
     }
     
     fileprivate func launchHome() {

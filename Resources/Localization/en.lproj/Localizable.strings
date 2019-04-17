@@ -120,6 +120,9 @@
 "login-title" = "Unlock";
 "login-subtitle" = "Enter six digit password";
 "logout-title" = "Lock";
+"logout-warning-title" = "Warning";
+"logout-warning-message" = "This action will remove all local accounts and delete your contacts database. Are you sure?";
+"logout-action-delete-title" = "Delete & Lock";
 
 // MARK: Accounts
 
