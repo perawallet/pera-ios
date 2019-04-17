@@ -11,4 +11,5 @@ import Foundation
 extension Notification.Name {
     static let AuthenticatedUserUpdate = Notification.Name("com.algorand.algorand.notification.authenticated.user.update")
     static let ApplicationWillEnterForeground = Notification.Name("com.algorand.algorand.notification.application.WillEnterForeground")
+    static let AccountUpdate = Notification.Name("com.algorand.algorand.notification.account.update")
 }

@@ -128,6 +128,13 @@ class AccountsViewController: BaseViewController {
             name: Notification.Name.ApplicationWillEnterForeground,
             object: nil
         )
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didAccountUpdate(notification:)),
+            name: Notification.Name.AccountUpdate,
+            object: nil
+        )
     }
     
     // MARK: Layout
@@ -252,6 +259,22 @@ extension AccountsViewController {
     fileprivate func didApplicationWillEnterForeground(notification: Notification) {
         DispatchQueue.main.async {
             UIApplication.shared.appDelegate?.validateAccountManagerFetchPolling()
+        }
+    }
+    
+    @objc
+    fileprivate func didAccountUpdate(notification: Notification) {
+        guard let userInfo = notification.userInfo as? [String : Account],
+            let account = userInfo["account"] else {
+            return
+        }
+        
+        if selectedAccount == account {
+            transactionHistoryDataSource.clear()
+            accountsView.transactionHistoryCollectionView.reloadData()
+            accountsView.transactionHistoryCollectionView.contentState = .loading
+            
+            fetchTransactions()
         }
     }
 }

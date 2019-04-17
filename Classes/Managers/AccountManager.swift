@@ -33,8 +33,11 @@ extension AccountManager {
             let accountFetchOperation = AccountFetchOperation(address: account.address, api: api)
             accountFetchOperation.onCompleted = { fetchedAccount, fetchError in
                 if let fetchedAccount = fetchedAccount {
-                    account.update(withAccount: fetchedAccount)
-                    self.user?.updateAccount(account)
+                    if fetchedAccount.amount == account.amount {
+                        return
+                    }
+                    
+                    self.user?.updateAccount(fetchedAccount)
                 }
             }
             
@@ -54,7 +57,10 @@ extension AccountManager {
         let accountFetchOperation = AccountFetchOperation(address: account.address, api: api)
         accountFetchOperation.onCompleted = { fetchedAccount, fetchError in
             if let fetchedAccount = fetchedAccount {
-                account.update(withAccount: fetchedAccount)
+                if fetchedAccount.amount == account.amount {
+                    return
+                }
+                
                 self.user?.updateAccount(account)
             }
         }
