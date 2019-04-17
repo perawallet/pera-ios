@@ -16,7 +16,7 @@ enum QRScannerError: Error {
 
 protocol QRScannerViewControllerDelegate: class {
     
-    func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText)
+    func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, then handler: EmptyHandler?)
     func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError, then handler: EmptyHandler?)
 }
 
@@ -62,6 +62,14 @@ class QRScannerViewController: BaseViewController {
     private var captureSession: AVCaptureSession?
     private let captureSessionQueue = DispatchQueue(label: AVCaptureSession.self.description(), attributes: [], target: nil)
     private var previewLayer: AVCaptureVideoPreviewLayer?
+    
+    private lazy var cameraResetHandler: EmptyHandler = {
+        if self.captureSession?.isRunning == false {
+            self.captureSessionQueue.async {
+                self.captureSession?.startRunning()
+            }
+        }
+    }
     
     override init(configuration: ViewControllerConfiguration) {
         super.init(configuration: configuration)
@@ -251,25 +259,18 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
         if let metadataObject = metadataObjects.first {
             guard let readableObject = metadataObject as? AVMetadataMachineReadableCodeObject,
                 let qrStringData = readableObject.stringValue?.data(using: .utf8) else {
-                    delegate?.qrScannerViewController(self, didFail: .invalidData, then: nil)
+                    delegate?.qrScannerViewController(self, didFail: .invalidData, then: cameraResetHandler)
                     return
             }
             
             AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
             
             guard let qrText = try? JSONDecoder().decode(QRText.self, from: qrStringData) else {
-                delegate?.qrScannerViewController(self, didFail: .jsonSerialization) {
-                    if self.captureSession?.isRunning == false {
-                        self.captureSessionQueue.async {
-                            self.captureSession?.startRunning()
-                        }
-                    }
-                }
-                
+                delegate?.qrScannerViewController(self, didFail: .jsonSerialization, then: cameraResetHandler)
                 return
             }
             
-            delegate?.qrScannerViewController(self, didRead: qrText)
+            delegate?.qrScannerViewController(self, didRead: qrText, then: cameraResetHandler)
             closeScreen(by: .pop)
         }
     }

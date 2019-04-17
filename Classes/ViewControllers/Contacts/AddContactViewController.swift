@@ -217,10 +217,14 @@ extension AddContactViewController: KeyboardControllerDataSource {
 
 extension AddContactViewController: QRScannerViewControllerDelegate {
     
-    func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText) {
+    func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, then handler: EmptyHandler?) {
         
         guard qrText.mode == .address else {
-            displaySimpleAlertWith(title: "title-error".localized, message: "qr-scan-should-scan-address-message".localized)
+            displaySimpleAlertWith(title: "title-error".localized, message: "qr-scan-should-scan-address-message".localized) { _ in
+                if let handler = handler {
+                    handler()
+                }
+            }
             return
         }
         
