@@ -9,6 +9,7 @@
 import Foundation
 
 let algosInMicroAlgos = 1000000
+let maximumMicroAlgos = Int64.max / Int64(algosInMicroAlgos)
 
 extension Int {
     var toAlgos: Double {
