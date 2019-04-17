@@ -33,6 +33,10 @@ class Account: Mappable {
     func update(withAccount account: Account) {
         amount = account.amount
         status = account.status
+        
+        if let updatedName = account.name {
+            name = updatedName
+        }
     }
     
     func mnemonics() -> [String] {
