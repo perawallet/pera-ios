@@ -18,12 +18,14 @@ protocol IntroductionViewDelegate: class {
 class IntroductionView: BaseView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let logoInset: CGFloat = 14.0 * verticalScale
-        let verticalInset: CGFloat = 94.0 * verticalScale
-        let createButtonTopInset: CGFloat = 28.0 * verticalScale
+        let logoInset: CGFloat = 140.0 * verticalScale
+        let verticalInset: CGFloat = 25.0 * verticalScale
+        let createButtonTopInset: CGFloat = 200.0 * verticalScale
         let bottomInset: CGFloat = 20.0 * verticalScale
-        let buttonMinimumTopInset: CGFloat = 110.0 * verticalScale
+        let minimumHorizontalInset: CGFloat = 20.0
+        let buttonMinimumTopInset: CGFloat = 40.0 * verticalScale
         let imageSize: CGFloat = 250.0 * verticalScale
+        let recoverButtonTopInset: CGFloat = 13.0 * verticalScale
         let closeButtonMinimumTopInset: CGFloat = 35.0 * verticalScale
     }
     
@@ -37,24 +39,40 @@ class IntroductionView: BaseView {
     
     private lazy var logoImageView = UIImageView(image: img("logo-small"))
     
-    private lazy var detailImageView = UIImageView(image: img("image-registration"))
+    private lazy var welcomeLabel: UILabel = {
+        UILabel()
+            .withAlignment(.center)
+            .withTextColor(SharedColors.blue)
+            .withLine(.contained)
+            .withFont(UIFont.font(.montserrat, withWeight: .medium(size: 22.0)))
+            .withText("introduction-welcome-title".localized)
+    }()
     
     private lazy var createAccountButton: MainButton = {
         let button = MainButton(title: "introduction-create-title".localized)
         return button
     }()
     
+    private lazy var subtitleLabel: UILabel = {
+        UILabel()
+            .withAlignment(.center)
+            .withLine(.contained)
+            .withTextColor(SharedColors.darkGray)
+            .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 12.0)))
+            .withText("introduction-has-account".localized)
+    }()
+    
     private lazy var recoverButton: UIButton = {
         UIButton(type: .custom)
-            .withTitleColor(Colors.recoverButtonColor)
-            .withTitle("introduction-recover-title".localized)
+            .withTitleColor(SharedColors.black)
+            .withBackgroundImage(img("bg-dark-gray-button-big"))
             .withAlignment(.center)
-            .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 14.0)))
+            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 12.0)))
     }()
     
     private(set) lazy var closeButton: UIButton = {
         UIButton(type: .custom)
-            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 14.0)))
+            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 12.0)))
             .withBackgroundImage(img("bg-dark-gray-button-big"))
             .withTitle("title-close".localized)
             .withTitleColor(SharedColors.black)
@@ -81,8 +99,9 @@ class IntroductionView: BaseView {
     
     override func prepareLayout() {
         setupLogoImageViewLayout()
-        setupDetailImageViewLayout()
+        setupWelcomeLabelLayout()
         setupCreateAccountButtonLayout()
+        setupSubtitleLabelLayout()
         setupRecoverButtonLayout()
         
         if mode == .new {
@@ -99,13 +118,13 @@ class IntroductionView: BaseView {
         }
     }
     
-    private func setupDetailImageViewLayout() {
-        addSubview(detailImageView)
+    private func setupWelcomeLabelLayout() {
+        addSubview(welcomeLabel)
         
-        detailImageView.snp.makeConstraints { make in
+        welcomeLabel.snp.makeConstraints { make in
             make.top.equalTo(logoImageView.snp.bottom).offset(layout.current.verticalInset)
             make.centerX.equalToSuperview()
-            make.width.height.equalTo(layout.current.imageSize)
+            make.leading.trailing.lessThanOrEqualToSuperview().inset(layout.current.minimumHorizontalInset)
         }
     }
     
@@ -113,7 +132,16 @@ class IntroductionView: BaseView {
         addSubview(createAccountButton)
         
         createAccountButton.snp.makeConstraints { make in
-            make.top.equalTo(detailImageView.snp.bottom).offset(layout.current.createButtonTopInset)
+            make.top.equalTo(welcomeLabel.snp.bottom).offset(layout.current.createButtonTopInset)
+            make.centerX.equalToSuperview()
+        }
+    }
+    
+    private func setupSubtitleLabelLayout() {
+        addSubview(subtitleLabel)
+        
+        subtitleLabel.snp.makeConstraints { make in
+            make.top.equalTo(createAccountButton.snp.bottom).offset(layout.current.buttonMinimumTopInset)
             make.centerX.equalToSuperview()
         }
     }
@@ -122,7 +150,7 @@ class IntroductionView: BaseView {
         addSubview(recoverButton)
         
         recoverButton.snp.makeConstraints { make in
-            make.top.equalTo(createAccountButton.snp.bottom).offset(layout.current.buttonMinimumTopInset)
+            make.top.equalTo(subtitleLabel.snp.bottom).offset(layout.current.recoverButtonTopInset)
             make.centerX.equalToSuperview()
         }
     }
