@@ -60,8 +60,14 @@ extension User {
             return
         }
         
-        accounts[index] = account
+        accounts[index].update(withAccount: account)
         syncronize()
+        
+        NotificationCenter.default.post(
+            name: Notification.Name.AccountUpdate,
+            object: self,
+            userInfo: ["account": accounts[index]]
+        )
     }
     
     fileprivate func syncronize() {
