@@ -37,7 +37,7 @@ class IntroductionView: BaseView {
     
     // MARK: Components
     
-    private lazy var logoImageView = UIImageView(image: img("logo-small"))
+    private lazy var logoImageView = UIImageView(image: img("icon-logo"))
     
     private lazy var welcomeLabel: UILabel = {
         UILabel()
@@ -66,6 +66,7 @@ class IntroductionView: BaseView {
         UIButton(type: .custom)
             .withTitleColor(SharedColors.black)
             .withBackgroundImage(img("bg-dark-gray-button-big"))
+            .withTitle("introduction-recover-title".localized)
             .withAlignment(.center)
             .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 12.0)))
     }()
