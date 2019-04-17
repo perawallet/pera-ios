@@ -38,14 +38,10 @@
 
 // MARK: Introduction
 
-"introduction-recover-title" = "Recover from Seed";
+"introduction-recover-title" = "RECOVER FROM PASSPHRASE";
 "introduction-create-title" = "CREATE ACCOUNT";
-
-// MARK: Welcome
-
-"welcome-title" = "Welcome!";
-"welcome-subtitle" = "We just need you to set up a few quick things to keep your account safe.";
-"welcome-done-title" = "LET'S GO";
+"introduction-welcome-title" = "Welcome to the\nBorderless Economy";
+"introduction-has-account" = "Already have an account?";
 
 // MARK: Password Setting
 

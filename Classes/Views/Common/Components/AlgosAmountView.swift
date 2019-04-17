@@ -92,7 +92,7 @@ class AlgosAmountView: BaseView {
         case let .normal(amount):
             signLabel.isHidden = true
             
-            amountLabel.text = "\(amount)"
+            amountLabel.text = amount.toDecimalStringForLabel
             amountLabel.textColor = SharedColors.black
             
             algoIconImageView.image = img("icon-algo-small-black")
@@ -101,7 +101,7 @@ class AlgosAmountView: BaseView {
             signLabel.text = "+"
             signLabel.textColor = SharedColors.green
             
-            amountLabel.text = "\(amount)"
+            amountLabel.text = amount.toDecimalStringForLabel
             amountLabel.textColor = SharedColors.green
             
             algoIconImageView.image = img("icon-algo-small-green")
@@ -110,7 +110,7 @@ class AlgosAmountView: BaseView {
             signLabel.text = "-"
             signLabel.textColor = SharedColors.blue
             
-            amountLabel.text = "\(amount)"
+            amountLabel.text = amount.toDecimalStringForLabel
             amountLabel.textColor = SharedColors.blue
             
             algoIconImageView.image = img("icon-algo-small-blue")

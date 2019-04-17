@@ -17,7 +17,7 @@ enum QRScannerError: Error {
 protocol QRScannerViewControllerDelegate: class {
     
     func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText)
-    func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError)
+    func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError, then handler: EmptyHandler?)
 }
 
 class QRScannerViewController: BaseViewController {
@@ -46,7 +46,7 @@ class QRScannerViewController: BaseViewController {
     
     private(set) lazy var cancelButton: UIButton = {
         UIButton(type: .custom)
-            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 14.0)))
+            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 12.0)))
             .withBackgroundImage(img("bg-dark-gray-button-big"))
             .withTitle("title-close".localized)
             .withTitleColor(SharedColors.black)
@@ -251,14 +251,21 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
         if let metadataObject = metadataObjects.first {
             guard let readableObject = metadataObject as? AVMetadataMachineReadableCodeObject,
                 let qrStringData = readableObject.stringValue?.data(using: .utf8) else {
-                    delegate?.qrScannerViewController(self, didFail: .invalidData)
+                    delegate?.qrScannerViewController(self, didFail: .invalidData, then: nil)
                     return
             }
             
             AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
             
             guard let qrText = try? JSONDecoder().decode(QRText.self, from: qrStringData) else {
-                delegate?.qrScannerViewController(self, didFail: .jsonSerialization)
+                delegate?.qrScannerViewController(self, didFail: .jsonSerialization) {
+                    if self.captureSession?.isRunning == false {
+                        self.captureSessionQueue.async {
+                            self.captureSession?.startRunning()
+                        }
+                    }
+                }
+                
                 return
             }
             

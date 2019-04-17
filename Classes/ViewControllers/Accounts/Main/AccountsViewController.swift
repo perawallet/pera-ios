@@ -264,7 +264,7 @@ extension AccountsViewController {
     
     @objc
     fileprivate func didAccountUpdate(notification: Notification) {
-        guard let userInfo = notification.userInfo as? [String : Account],
+        guard let userInfo = notification.userInfo as? [String: Account],
             let account = userInfo["account"] else {
             return
         }

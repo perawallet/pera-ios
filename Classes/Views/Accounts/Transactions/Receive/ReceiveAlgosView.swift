@@ -47,7 +47,7 @@ class ReceiveAlgosView: BaseView {
     
     private(set) lazy var previewButton: UIButton = {
         UIButton(type: .custom)
-            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 14.0)))
+            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 12.0)))
             .withBackgroundImage(img("bg-dark-gray-button-big"))
             .withTitle("title-preview".localized)
             .withTitleColor(SharedColors.black)

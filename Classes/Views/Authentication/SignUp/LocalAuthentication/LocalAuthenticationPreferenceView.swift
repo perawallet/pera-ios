@@ -71,7 +71,7 @@ class LocalAuthenticationPreferenceView: BaseView {
             .withTitle("title-no".localized)
             .withTitleColor(SharedColors.black)
             .withBackgroundImage(img("bg-dark-gray-button"))
-            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 14.0)))
+            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 12.0)))
     }()
     
     weak var delegate: LocalAuthenticationPreferenceViewDelegate?

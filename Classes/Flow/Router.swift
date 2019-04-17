@@ -134,8 +134,6 @@ class Router {
             introductionViewController.mode = mode
             
             viewController = introductionViewController
-        case .welcome:
-            viewController = WelcomeViewController(configuration: configuration)
         case let .choosePassword(mode):
             viewController = ChoosePasswordViewController(mode: mode, configuration: configuration)
         case .localAuthenticationPreference:

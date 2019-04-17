@@ -49,6 +49,8 @@ class TransactionReceiverView: BaseView {
             
             switch state {
             case .initial:
+                passphraseInputView.isHidden = false
+                
                 if receiverContactView.superview != nil {
                     receiverContactView.removeFromSuperview()
                 }
@@ -81,8 +83,11 @@ class TransactionReceiverView: BaseView {
     }
     
     private func configureReceiverContactView(with contact: Contact) {
-        if let imageData = contact.image {
-            receiverContactView.userImageView.image = UIImage(data: imageData)
+        if let imageData = contact.image,
+            let image = UIImage(data: imageData) {
+            let resizedImage = image.convert(to: CGSize(width: 50.0, height: 50.0))
+            
+            receiverContactView.userImageView.image = resizedImage
         }
         
         receiverContactView.userImageView.backgroundColor = .white

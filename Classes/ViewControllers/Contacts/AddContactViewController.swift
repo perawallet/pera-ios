@@ -60,8 +60,11 @@ class AddContactViewController: BaseScrollViewController {
                 addContactView.userInformationView.algorandAddressInputView.value = address
             }
             
-            if let imageData = contact.image {
-                addContactView.userInformationView.userImageView.image = UIImage(data: imageData)
+            if let imageData = contact.image,
+                let image = UIImage(data: imageData) {
+                let resizedImage = image.convert(to: CGSize(width: 108.0, height: 108.0))
+                
+                addContactView.userInformationView.userImageView.image = resizedImage
             }
         }
     }
@@ -217,19 +220,19 @@ extension AddContactViewController: QRScannerViewControllerDelegate {
     func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText) {
         
         guard qrText.mode == .address else {
-            displayError(withMessage: "qr-scan-should-scan-address-message".localized)
+            displaySimpleAlertWith(title: "title-error".localized, message: "qr-scan-should-scan-address-message".localized)
             return
         }
         
         addContactView.userInformationView.algorandAddressInputView.value = qrText.text
     }
     
-    func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError) {
-        displayError(withMessage: "qr-scan-should-scan-valid-qr".localized)
-    }
-    
-    private func displayError(withMessage message: String) {
-        displaySimpleAlertWith(title: "title-error".localized, message: message)
+    func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError, then handler: EmptyHandler?) {
+        displaySimpleAlertWith(title: "title-error".localized, message: "qr-scan-should-scan-valid-qr".localized) { _ in
+            if let handler = handler {
+                handler()
+            }
+        }
     }
 }
 

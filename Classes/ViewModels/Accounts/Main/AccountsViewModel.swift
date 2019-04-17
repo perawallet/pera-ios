@@ -32,7 +32,7 @@ class AccountsViewModel {
         if payment.toAddress == currentAccount.address {
             if let contact = contact {
                 cell.contextView.titleLabel.text = contact.name
-                cell.contextView.subtitleLabel.text = transaction.from
+                cell.contextView.subtitleLabel.text = contact.address
             } else {
                 cell.contextView.titleLabel.text = transaction.from
                 cell.contextView.subtitleLabel.isHidden = true
@@ -42,7 +42,7 @@ class AccountsViewModel {
         } else {
             if let contact = contact {
                 cell.contextView.titleLabel.text = contact.name
-                cell.contextView.subtitleLabel.text = payment.toAddress
+                cell.contextView.subtitleLabel.text = contact.address
             } else {
                 cell.contextView.titleLabel.text = payment.toAddress
                 cell.contextView.subtitleLabel.isHidden = true
