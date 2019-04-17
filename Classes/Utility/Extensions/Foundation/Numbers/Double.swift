@@ -13,7 +13,11 @@ extension Double {
         return Int64(Double(algosInMicroAlgos) * self)
     }
     
-    var toDecimalString: String? {
-        return Formatter.withSeparator.string(from: NSNumber(value: self))
+    var toDecimalStringForInput: String? {
+        return Formatter.separatorForInput.string(from: NSNumber(value: self))
+    }
+    
+    var toDecimalStringForLabel: String? {
+        return Formatter.separatorForLabel.string(from: NSNumber(value: self))
     }
 }

@@ -109,7 +109,7 @@ class ReceiveAlgosViewController: BaseViewController {
     
     private func displayPreview() {
         if let algosAmountText = receiveAlgosView.algosInputView.inputTextField.text,
-            let doubleValue = algosAmountText.doubleWithSeparator {
+            let doubleValue = algosAmountText.doubleForSendSeparator {
             amount = doubleValue
         }
         

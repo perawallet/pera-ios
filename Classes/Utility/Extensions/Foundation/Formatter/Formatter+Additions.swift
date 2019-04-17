@@ -9,13 +9,25 @@
 import Foundation
 
 extension Formatter {
-    static let withSeparator: NumberFormatter = {
+    static let separatorForInput: NumberFormatter = {
         let formatter = NumberFormatter()
         formatter.groupingSeparator = ","
         formatter.currencySymbol = ""
+        formatter.locale = Locale(identifier: "en_US")
         formatter.numberStyle = .currencyAccounting
-        formatter.maximumFractionDigits = 6
         formatter.minimumFractionDigits = 6
+        formatter.maximumFractionDigits = 6
+        return formatter
+    }()
+    
+    static let separatorForLabel: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.groupingSeparator = ","
+        formatter.currencySymbol = ""
+        formatter.locale = Locale(identifier: "en_US")
+        formatter.numberStyle = .currencyAccounting
+        formatter.minimumFractionDigits = 2
+        formatter.maximumFractionDigits = 6
         return formatter
     }()
 }

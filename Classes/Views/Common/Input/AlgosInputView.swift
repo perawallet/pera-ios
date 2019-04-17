@@ -41,6 +41,8 @@ class AlgosInputView: BaseView {
         )
         textField.addTarget(self, action: #selector(didChangeText(_:)), for: .editingChanged)
         textField.delegate = self
+        textField.adjustsFontSizeToFitWidth = true
+        textField.textAlignment = .left
         return textField
     }()
     
@@ -84,7 +86,7 @@ class AlgosInputView: BaseView {
         
         inputTextField.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(layout.current.contentViewInset)
-            make.trailing.equalToSuperview().inset(layout.current.defaultInset)
+            make.trailing.equalToSuperview().inset(15.0)
             make.bottom.equalToSuperview().inset(layout.current.defaultInset)
             make.top.equalToSuperview()
         }
@@ -102,9 +104,13 @@ class AlgosInputView: BaseView {
     // MARK: Helper
     @objc
     private func didChangeText(_ textField: UITextField) {
-        if let amountString = textField.text?.currencyInputFormatting() {
-            textField.text = amountString
+        guard let doubleValueString = textField.text?.currencyInputFormatting(),
+            let doubleValue = doubleValueString.doubleForSendSeparator,
+            doubleValue <= Double(maximumMicroAlgos) else {
+            return
         }
+        
+        textField.text = doubleValueString
     }
 }
 
@@ -127,7 +133,7 @@ extension AlgosInputView: UITextFieldDelegate {
 
 extension String {
     func currencyInputFormatting() -> String? {
-        let decimal = self.decimal / pow(10, Formatter.withSeparator.maximumFractionDigits)
-        return Formatter.withSeparator.string(for: decimal)
+        let decimal = self.decimal / pow(10, Formatter.separatorForInput.maximumFractionDigits)
+        return Formatter.separatorForInput.string(for: decimal)
     }
 }

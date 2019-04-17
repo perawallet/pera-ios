@@ -141,7 +141,7 @@ class SendAlgosViewController: BaseScrollViewController {
         }
         
         if let algosAmountText = sendAlgosView.algosInputView.inputTextField.text,
-            let doubleValue = algosAmountText.doubleWithSeparator {
+            let doubleValue = algosAmountText.doubleForSendSeparator {
             amount = doubleValue
         }
         
@@ -289,7 +289,7 @@ extension SendAlgosViewController: QRScannerViewControllerDelegate {
         if let receivedAmount = qrText.amount?.toAlgos {
             amount = receivedAmount
             
-            sendAlgosView.algosInputView.inputTextField.text = receivedAmount.toDecimalString
+            sendAlgosView.algosInputView.inputTextField.text = receivedAmount.toDecimalStringForInput
         }
         
         receiver = .address(qrText.text)
