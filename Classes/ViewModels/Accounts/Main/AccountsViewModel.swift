@@ -16,11 +16,11 @@ class AccountsViewModel {
     var currentAccount: Account?
     
     func configure(_ view: AccountsHeaderView, with account: Account) {
-        view.algosAmountLabel.text = account.amount.toAlgos.toDecimalString
+        view.algosAmountLabel.text = account.amount.toAlgos.toDecimalStringForLabel
     }
     
     func configure(_ view: AccountsSmallHeaderView, with account: Account) {
-        view.algosAmountLabel.text = account.amount.toAlgos.toDecimalString
+        view.algosAmountLabel.text = account.amount.toAlgos.toDecimalStringForLabel
     }
     
     func configure(_ cell: TransactionHistoryCell, with transaction: Transaction, for contact: Contact? = nil) {

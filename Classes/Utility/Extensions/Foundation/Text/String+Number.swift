@@ -12,7 +12,11 @@ extension String {
     var digits: String { return filter(("0"..."9").contains) }
     var decimal: Decimal { return Decimal(string: digits) ?? 0 }
     
-    var doubleWithSeparator: Double? {
-        return Formatter.withSeparator.number(from: self)?.doubleValue
+    var doubleForSendSeparator: Double? {
+        return Formatter.separatorForInput.number(from: self)?.doubleValue
+    }
+    
+    var doubleForReadSeparator: Double? {
+        return Formatter.separatorForLabel.number(from: self)?.doubleValue
     }
 }
