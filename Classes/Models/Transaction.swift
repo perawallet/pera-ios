@@ -14,7 +14,7 @@ class Transaction: Mappable {
     let id: TransactionID
     let fee: Int64
     let firstRound: Int64
-    let noteb64: [Int64]?
+    let noteb64: String?
     let from: String
     let payment: Payment?
     let lastRound: Int64
@@ -30,7 +30,7 @@ class Transaction: Mappable {
         
         fee = try container.decode(Int64.self, forKey: .fee)
         firstRound = try container.decode(Int64.self, forKey: .firstRound)
-        noteb64 = try container.decodeIfPresent([Int64].self, forKey: .noteb64)
+        noteb64 = try container.decodeIfPresent(String.self, forKey: .noteb64)
         from = try container.decode(String.self, forKey: .from)
         payment = try container.decodeIfPresent(Payment.self, forKey: .payment)
         lastRound = try container.decode(Int64.self, forKey: .lastRound)
