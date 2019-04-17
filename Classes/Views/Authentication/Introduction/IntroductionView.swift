@@ -18,13 +18,12 @@ protocol IntroductionViewDelegate: class {
 class IntroductionView: BaseView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let logoInset: CGFloat = 140.0 * verticalScale
+        let logoInset: CGFloat = 100.0 * verticalScale
         let verticalInset: CGFloat = 25.0 * verticalScale
         let createButtonTopInset: CGFloat = 200.0 * verticalScale
         let bottomInset: CGFloat = 20.0 * verticalScale
         let minimumHorizontalInset: CGFloat = 20.0
         let buttonMinimumTopInset: CGFloat = 40.0 * verticalScale
-        let imageSize: CGFloat = 250.0 * verticalScale
         let recoverButtonTopInset: CGFloat = 13.0 * verticalScale
         let closeButtonMinimumTopInset: CGFloat = 35.0 * verticalScale
     }
