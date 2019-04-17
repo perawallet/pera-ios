@@ -153,6 +153,7 @@ extension Session {
 // MARK: - Common Methods
 extension Session {
     func reset() {
+        applicationConfiguration = nil
         ApplicationConfiguration.clear(entity: ApplicationConfiguration.entityName)
         Contact.clear(entity: Contact.entityName)
         Node.clear(entity: Node.entityName)
