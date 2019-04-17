@@ -155,6 +155,7 @@ extension Session {
     func reset() {
         ApplicationConfiguration.clear(entity: ApplicationConfiguration.entityName)
         Contact.clear(entity: Contact.entityName)
+        Node.clear(entity: Node.entityName)
         try? privateStorage.removeAll()
         self.clear(.defaults)
         self.clear(.keychain)
