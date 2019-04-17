@@ -21,6 +21,13 @@ class IntroductionViewController: BaseScrollViewController {
     
     // MARK: Setup
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        view.backgroundColor = .white
+        navigationController?.navigationBar.barTintColor = .white
+    }
+    
     override func prepareLayout() {
         super.prepareLayout()
         
@@ -37,6 +44,12 @@ class IntroductionViewController: BaseScrollViewController {
     
     override func linkInteractors() {
         introductionView.delegate = self
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        navigationController?.navigationBar.barTintColor = SharedColors.warmWhite
     }
 }
 
