@@ -104,9 +104,13 @@ class AlgosInputView: BaseView {
     // MARK: Helper
     @objc
     private func didChangeText(_ textField: UITextField) {
-        if let amountString = textField.text?.currencyInputFormatting() {
-            textField.text = amountString
+        guard let doubleValueString = textField.text?.currencyInputFormatting(),
+            let doubleValue = doubleValueString.doubleWithSeparator,
+            doubleValue <= Double(maximumMicroAlgos) else {
+            return
         }
+        
+        textField.text = doubleValueString
     }
 }
 
