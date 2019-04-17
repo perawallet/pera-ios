@@ -54,8 +54,27 @@ extension PassPhraseBackUpViewController {
         
         let mnemonics = session.mnemonics(forAccount: "temp")
         
-        passPhraseBackUpView.passPhraseLabel.attributedText = mnemonics.joined(separator: " ")
-            .attributed([.lineSpacing(1.5)])
+        var mnemonicsWithNumbers = [NSAttributedString]()
+        
+        for (index, mnemonic) in mnemonics.enumerated() {
+            let attributedIndex = "\(index + 1)".attributed(
+                [.textColor(SharedColors.blue),
+                 .font(UIFont.font(.opensans, withWeight: .bold(size: 12.0))),
+                 .lineSpacing(1.5)]
+            )
+            mnemonicsWithNumbers.append(attributedIndex)
+            
+            let attributedMnemonic = mnemonic.attributed(
+                [.textColor(SharedColors.black),
+                 .font(UIFont.font(.opensans, withWeight: .semiBold(size: 17.0))),
+                 .lineSpacing(1.5)]
+            )
+            mnemonicsWithNumbers.append(attributedMnemonic)
+            
+            mnemonicsWithNumbers.append(" ".attributed([.lineSpacing(1.5)]))
+        }
+        
+        passPhraseBackUpView.passPhraseLabel.attributedText = mnemonicsWithNumbers.join(with: "".attributed())
     }
 }
 

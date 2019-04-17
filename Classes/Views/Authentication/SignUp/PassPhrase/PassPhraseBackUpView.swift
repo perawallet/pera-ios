@@ -21,7 +21,7 @@ class PassPhraseBackUpView: BaseView {
         let topInset: CGFloat = 69.0 * verticalScale
         let horizontalInset: CGFloat = 25.0
         let passPhraseContainerViewTopInset: CGFloat = 30.0
-        let passPhraseLabelVerticalInset: CGFloat = 37.0
+        let passPhraseLabelVerticalInset: CGFloat = 29.0
         let warningContainerViewTopInset: CGFloat = 40.0
         let warningHorizontalInset: CGFloat = 20.0
         let warningImageCenterOffset: CGFloat = 5.0
@@ -54,7 +54,7 @@ class PassPhraseBackUpView: BaseView {
             .withAlignment(.left)
             .withLine(.contained)
             .withTextColor(SharedColors.black)
-            .withFont(UIFont.font(.opensans, withWeight: .semiBoldItalic(size: 16.0)))
+            .withFont(UIFont.font(.opensans, withWeight: .semiBold(size: 17.0)))
     }()
     
     private(set) lazy var shareButton: AlignedButton = {
