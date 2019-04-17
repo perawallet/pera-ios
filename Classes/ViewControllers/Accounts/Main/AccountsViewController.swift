@@ -135,6 +135,13 @@ class AccountsViewController: BaseViewController {
             name: Notification.Name.AccountUpdate,
             object: nil
         )
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didContactAdded(notification:)),
+            name: Notification.Name.ContactAddition,
+            object: nil
+        )
     }
     
     // MARK: Layout
@@ -276,6 +283,11 @@ extension AccountsViewController {
             
             fetchTransactions()
         }
+    }
+    
+    @objc
+    fileprivate func didContactAdded(notification: Notification) {
+        transactionHistoryDataSource.setupContacts()
     }
 }
 

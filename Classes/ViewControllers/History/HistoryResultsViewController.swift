@@ -59,6 +59,17 @@ class HistoryResultsViewController: BaseViewController {
         historyResultsView.transactionHistoryCollectionView.dataSource = transactionHistoryDataSource
     }
     
+    override func setListeners() {
+        super.setListeners()
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didContactAdded(notification:)),
+            name: Notification.Name.ContactAddition,
+            object: nil
+        )
+    }
+    
     // MARK: Layout
     
     override func prepareLayout() {
@@ -103,6 +114,11 @@ class HistoryResultsViewController: BaseViewController {
                 self.historyResultsView.transactionHistoryCollectionView.contentState = .none
                 self.historyResultsView.transactionHistoryCollectionView.reloadData()
         }
+    }
+    
+    @objc
+    fileprivate func didContactAdded(notification: Notification) {
+        transactionHistoryDataSource.setupContacts()
     }
 }
 

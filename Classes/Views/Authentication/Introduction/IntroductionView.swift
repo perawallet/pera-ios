@@ -32,9 +32,12 @@ class IntroductionView: BaseView {
     
     private enum Colors {
         static let recoverButtonColor = rgba(0.04, 0.05, 0.07, 0.57)
+        static let gradientColor = rgb(0.9, 0.9, 0.93)
     }
     
     // MARK: Components
+    
+    private lazy var backgroundImageView = UIImageView(image: img("bg-introduction"))
     
     private lazy var logoImageView = UIImageView(image: img("icon-logo"))
     
@@ -98,6 +101,7 @@ class IntroductionView: BaseView {
     // MARK: Layout
     
     override func prepareLayout() {
+        setupBackgroundImageViewLayout()
         setupLogoImageViewLayout()
         setupWelcomeLabelLayout()
         setupCreateAccountButtonLayout()
@@ -106,6 +110,14 @@ class IntroductionView: BaseView {
         
         if mode == .new {
             setupCloseButtonLayout()
+        }
+    }
+    
+    private func setupBackgroundImageViewLayout() {
+        addSubview(backgroundImageView)
+        
+        backgroundImageView.snp.makeConstraints { make in
+            make.center.equalToSuperview()
         }
     }
     
@@ -163,6 +175,23 @@ class IntroductionView: BaseView {
             make.centerX.equalToSuperview()
             make.bottom.equalToSuperview().inset(layout.current.bottomInset + safeAreaBottom)
         }
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        setGradientBackground()
+    }
+    
+    func setGradientBackground() {
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.colors = [Colors.gradientColor.cgColor, UIColor.white.cgColor]
+        gradientLayer.startPoint = CGPoint(x: 0.5, y: 1.0)
+        gradientLayer.endPoint = CGPoint(x: 0.5, y: 0.0)
+        gradientLayer.locations = [0, 1]
+        gradientLayer.frame = bounds
+        
+        layer.insertSublayer(gradientLayer, at: 0)
     }
     
     // MARK: Actions

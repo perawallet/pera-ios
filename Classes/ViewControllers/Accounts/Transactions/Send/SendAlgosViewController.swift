@@ -283,7 +283,7 @@ extension SendAlgosViewController: ContactsViewControllerDelegate {
 
 extension SendAlgosViewController: QRScannerViewControllerDelegate {
     
-    func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText) {
+    func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, then handler: EmptyHandler?) {
         sendAlgosView.transactionReceiverView.state = .address(qrText.text)
         
         if let receivedAmount = qrText.amount?.toAlgos {
