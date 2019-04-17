@@ -41,6 +41,8 @@ class AlgosInputView: BaseView {
         )
         textField.addTarget(self, action: #selector(didChangeText(_:)), for: .editingChanged)
         textField.delegate = self
+        textField.adjustsFontSizeToFitWidth = true
+        textField.textAlignment = .left
         return textField
     }()
     
@@ -84,7 +86,7 @@ class AlgosInputView: BaseView {
         
         inputTextField.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(layout.current.contentViewInset)
-            make.trailing.equalToSuperview().inset(layout.current.defaultInset)
+            make.trailing.equalToSuperview().inset(15.0)
             make.bottom.equalToSuperview().inset(layout.current.defaultInset)
             make.top.equalToSuperview()
         }
