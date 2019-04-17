@@ -57,7 +57,7 @@ class AccountsHeaderView: BaseView {
             .withTitle("title-send".localized)
             .withBackgroundImage(img("bg-blue-small"))
             .withAlignment(.center)
-            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 14.0)))
+            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 12.0)))
     }()
     
     private(set) lazy var receiveButton: UIButton = {
@@ -66,7 +66,7 @@ class AccountsHeaderView: BaseView {
             .withTitle("title-receive".localized)
             .withBackgroundImage(img("bg-green-small"))
             .withAlignment(.center)
-            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 14.0)))
+            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 12.0)))
     }()
     
     private lazy var historyLabel: UILabel = {

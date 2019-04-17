@@ -41,6 +41,6 @@ class MainButton: UIButton {
         titleLabel?.textAlignment = .center
         setBackgroundImage(img("bg-main-button"), for: .normal)
         setTitleColor(SharedColors.black, for: .normal)
-        titleLabel?.font = UIFont.font(.montserrat, withWeight: .bold(size: 14.0))
+        titleLabel?.font = UIFont.font(.montserrat, withWeight: .bold(size: 12.0))
     }
 }
