@@ -92,7 +92,7 @@ class SendAlgosPreviewViewController: BaseViewController {
     }
     
     fileprivate func updateFeeLayout() {
-        if let fee = transaction.fee?.toAlgos, let algos = Formatter.withSeparator.string(from: NSNumber(value: fee)) {
+        if let fee = transaction.fee?.toAlgos, let algos = fee.toDecimalString {
             sendAlgosPreviewView.feeInformationView.detailLabel.text = algos
         }
     }

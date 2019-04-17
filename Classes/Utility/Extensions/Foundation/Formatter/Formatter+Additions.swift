@@ -13,6 +13,7 @@ extension Formatter {
         let formatter = NumberFormatter()
         formatter.groupingSeparator = ","
         formatter.currencySymbol = ""
+        formatter.locale = Locale(identifier: "en_US")
         formatter.numberStyle = .currencyAccounting
         formatter.maximumFractionDigits = 6
         formatter.minimumFractionDigits = 6
