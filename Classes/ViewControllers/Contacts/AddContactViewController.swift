@@ -142,6 +142,12 @@ extension AddContactViewController: AddContactViewDelegate {
                     return
                 }
                 
+                NotificationCenter.default.post(
+                    name: Notification.Name.ContactAddition,
+                    object: self,
+                    userInfo: nil
+                )
+                
                 self.delegate?.addContactViewController(self, didSave: contact)
                 
                 self.closeScreen(by: .pop)
