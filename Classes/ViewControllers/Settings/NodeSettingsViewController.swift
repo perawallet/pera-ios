@@ -48,7 +48,9 @@ class NodeSettingsViewController: BaseViewController {
     }
     
     private func fetchNodes() {
-        Node.fetchAll(entity: Node.entityName) { response in
+        let sortDescriptor = NSSortDescriptor(key: #keyPath(Node.creationDate), ascending: true)
+        
+        Node.fetchAll(entity: Node.entityName, sortDescriptor: sortDescriptor) { response in
             switch response {
             case let .results(objects: objects):
                 guard let results = objects as? [Node] else {
@@ -98,11 +100,9 @@ extension NodeSettingsViewController: UICollectionViewDataSource {
                 
                 return cell
             }
-            let node = nodes[indexPath.row + 1]
+            let node = nodes[indexPath.row - 1]
             
-            let enabled = session?.authenticatedUser?.defaultNode == node.address
-            
-            viewModel.configureToggle(cell, enabled: enabled, with: node, for: indexPath)
+            viewModel.configureToggle(cell, with: node, for: indexPath)
             
             viewModel.delegate = self
         }
@@ -132,12 +132,12 @@ extension NodeSettingsViewController: NodeSettingsViewModelDelegate {
                                didToggleValue value: Bool,
                                atIndexPath indexPath: IndexPath) {
         
-        guard indexPath.item < nodes.count else {
+        guard indexPath.item < nodes.count + 1 else {
             return
         }
         
-        let node = nodes[indexPath.item]
+        let node = nodes[indexPath.item - 1]
         
-        session?.authenticatedUser?.setDefaultNode(value ? node : nil)
+        node.update(entity: Node.entityName, with: ["isActive": NSNumber(value: value)])
     }
 }

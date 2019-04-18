@@ -24,6 +24,8 @@ class NodeManager {
 // MARK: - API
 extension NodeManager {
     func checNodes(completion: BoolHandler?) {
+        let sortDescriptor = NSSortDescriptor(key: #keyPath(Node.creationDate), ascending: true)
+        
         let completionOperation = BlockOperation {
             completion?(false)
         }
@@ -33,7 +35,11 @@ extension NodeManager {
         completionOperation.addDependency(localNodeOperation)
         self.queue.addOperation(localNodeOperation)
         
-        let nodeResult = Node.fetchAllSyncronous(entity: Node.entityName)
+        let nodeResult = Node.fetchAllSyncronous(
+            entity: Node.entityName,
+            with: NSPredicate(format: "isActive == %@", NSNumber(value: true)),
+            sortDescriptor: sortDescriptor
+        )
         
         switch nodeResult {
         case let .results(objects):
@@ -58,8 +64,6 @@ extension NodeManager {
                 completionOperation.addDependency(nodeHealthOperation)
                 self.queue.addOperation(nodeHealthOperation)
             }
-            
-            break
         default:
             break
         }

@@ -63,4 +63,3 @@ class NodeHealthOperation: AsyncOperation {
         state = .finished
     }
 }
-

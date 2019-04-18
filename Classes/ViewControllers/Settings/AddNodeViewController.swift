@@ -152,7 +152,8 @@ class AddNodeViewController: BaseScrollViewController {
             if isValidated {
                 Node.create(entity: Node.entityName, with: [Node.DBKeys.name.rawValue: name,
                                                             Node.DBKeys.address.rawValue: address,
-                                                            Node.DBKeys.token.rawValue: token])
+                                                            Node.DBKeys.token.rawValue: token,
+                                                            Node.DBKeys.creationDate.rawValue: Date()])
                 
                 self.popScreen()
             } else {

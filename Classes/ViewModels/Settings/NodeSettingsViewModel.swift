@@ -20,13 +20,12 @@ class NodeSettingsViewModel {
     weak var delegate: NodeSettingsViewModelDelegate?
     
     func configureToggle(_ cell: SettingsToggleCell,
-                         enabled: Bool,
                          with node: Node,
                          for indexPath: IndexPath) {
         self.indexPath = indexPath
         
         cell.contextView.nameLabel.text = node.name
-        cell.contextView.toggle.setOn(enabled, animated: false)
+        cell.contextView.toggle.setOn(node.isActive, animated: false)
         cell.contextView.delegate = self
     }
     
