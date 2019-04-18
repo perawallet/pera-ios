@@ -80,7 +80,7 @@ class NodeSettingsViewController: BaseViewController {
 extension NodeSettingsViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return nodes.count
+        return nodes.count + 1
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -90,8 +90,15 @@ extension NodeSettingsViewController: UICollectionViewDataSource {
                 fatalError("Index path is out of bounds")
         }
         
-        if indexPath.item < nodes.count {
-            let node = nodes[indexPath.row]
+        if indexPath.item < nodes.count + 1 {
+            if indexPath.item == 0 {
+                let enabled = session?.authenticatedUser?.defaultNode == nil
+                
+                viewModel.configureDefaultNode(cell, enabled: enabled)
+                
+                return cell
+            }
+            let node = nodes[indexPath.row + 1]
             
             let enabled = session?.authenticatedUser?.defaultNode == node.address
             

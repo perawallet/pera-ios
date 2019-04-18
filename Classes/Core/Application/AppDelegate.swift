@@ -22,7 +22,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     private lazy var session = Session()
-    private lazy var api = API(base: Environment.current.serverApi, session: session)
+    private lazy var api: API = {
+        let api = API(base: Environment.current.serverApi, session: session)
+        api.token = Environment.current.serverToken
+        return api
+    }()
     private lazy var appConfiguration = AppConfiguration(api: api, session: session)
     
     private var rootViewController: RootViewController?

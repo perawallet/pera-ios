@@ -29,6 +29,12 @@ class NodeSettingsViewModel {
         cell.contextView.toggle.setOn(enabled, animated: false)
         cell.contextView.delegate = self
     }
+    
+    func configureDefaultNode(_ cell: SettingsToggleCell, enabled: Bool) {
+        cell.contextView.nameLabel.text = "Default Node"
+        cell.contextView.toggle.setOn(enabled, animated: false)
+        cell.contextView.toggle.isEnabled = false
+    }
 }
 
 // MARK: - SettingsToggleContextViewDelegate
