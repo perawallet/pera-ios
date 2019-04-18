@@ -102,6 +102,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.saveContext()
     }
     
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
+        let parser = DeepLinkParser(url: url)
+        
+        guard let screen = parser.expectedScreen,
+            let rootViewController = rootViewController,
+            let navigationController = rootViewController.navigationController,
+            var topViewController = navigationController.viewControllers.last else {
+                return false
+        }
+        
+        if let presentedNavigationController = rootViewController.presentedViewController as? NavigationController,
+            let presentedViewController = presentedNavigationController.viewControllers.last {
+            
+            topViewController = presentedViewController
+        }
+        
+        return rootViewController.route(to: screen, from: topViewController, by: .push) != nil
+    }
+    
     // MARK: Core Data stack
     
     lazy var persistentContainer: NSPersistentContainer = {

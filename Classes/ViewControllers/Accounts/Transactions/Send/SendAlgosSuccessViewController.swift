@@ -102,7 +102,7 @@ extension SendAlgosSuccessViewController: SendAlgosSuccessViewDelegate {
     
     func sendAlgosSuccessViewDidTapAddContactButton(_ sendAlgosSuccessView: SendAlgosSuccessView) {
         switch receiver {
-        case let .address(address):
+        case let .address(address, _):
             let viewController = open(.addContact(mode: .new), by: .push) as? AddContactViewController
             
             viewController?.addContactView.userInformationView.algorandAddressInputView.value = address

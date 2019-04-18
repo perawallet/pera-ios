@@ -53,18 +53,36 @@ class SendAlgosViewController: BaseScrollViewController {
         
         title = "send-algos-title".localized
         
-        if receiver == .initial {
+        switch receiver {
+        case .initial:
             amount = 0.00
             
-            if let account = session?.authenticatedUser?.defaultAccount() {
-                selectedAccount = account
-                sendAlgosView.accountSelectionView.inputTextField.text = account.name
-            } else {
-                selectedAccount = nil
-                sendAlgosView.accountSelectionView.inputTextField.text = "send-algos-select".localized
+            configureInitialAccountState()
+            
+            sendAlgosView.transactionReceiverView.state = receiver
+        case let .address(_, amount):
+            if let sendAmount = amount,
+                let amountValue = Double(sendAmount) {
+                
+                self.amount = amountValue
+                sendAlgosView.algosInputView.inputTextField.text = amount
             }
             
             sendAlgosView.transactionReceiverView.state = receiver
+            
+            configureInitialAccountState()
+        default:
+            break
+        }
+    }
+    
+    private func configureInitialAccountState() {
+        if let account = session?.authenticatedUser?.defaultAccount() {
+            selectedAccount = account
+            sendAlgosView.accountSelectionView.inputTextField.text = account.name
+        } else {
+            selectedAccount = nil
+            sendAlgosView.accountSelectionView.inputTextField.text = "send-algos-select".localized
         }
     }
     
@@ -137,7 +155,7 @@ class SendAlgosViewController: BaseScrollViewController {
     
     private func displayTransactionPreview() {
         if !sendAlgosView.transactionReceiverView.passphraseInputView.inputTextView.text.isEmpty {
-            receiver = .address(sendAlgosView.transactionReceiverView.passphraseInputView.inputTextView.text)
+            receiver = .address(address: sendAlgosView.transactionReceiverView.passphraseInputView.inputTextView.text, amount: nil)
         }
         
         if let algosAmountText = sendAlgosView.algosInputView.inputTextField.text,
@@ -284,7 +302,7 @@ extension SendAlgosViewController: ContactsViewControllerDelegate {
 extension SendAlgosViewController: QRScannerViewControllerDelegate {
     
     func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, then handler: EmptyHandler?) {
-        sendAlgosView.transactionReceiverView.state = .address(qrText.text)
+        sendAlgosView.transactionReceiverView.state = .address(address: qrText.text, amount: nil)
         
         if let receivedAmount = qrText.amount?.toAlgos {
             amount = receivedAmount
@@ -292,7 +310,7 @@ extension SendAlgosViewController: QRScannerViewControllerDelegate {
             sendAlgosView.algosInputView.inputTextField.text = receivedAmount.toDecimalStringForInput
         }
         
-        receiver = .address(qrText.text)
+        receiver = .address(address: qrText.text, amount: nil)
     }
     
     func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError, then handler: EmptyHandler?) {

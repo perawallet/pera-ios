@@ -30,4 +30,15 @@ extension Formatter {
         formatter.maximumFractionDigits = 6
         return formatter
     }()
+    
+    static let numberToStringFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.groupingSeparator = ""
+        formatter.currencySymbol = ""
+        formatter.locale = Locale(identifier: "en_US")
+        formatter.numberStyle = .currencyAccounting
+        formatter.minimumFractionDigits = 2
+        formatter.maximumFractionDigits = 6
+        return formatter
+    }()
 }

@@ -11,7 +11,7 @@ import UIKit
 enum AlgosReceiverState: Equatable {
     case initial
     case contact(Contact)
-    case address(String)
+    case address(address: String, amount: String?)
 }
 
 protocol TransactionReceiverViewDelegate: class {
@@ -55,7 +55,7 @@ class TransactionReceiverView: BaseView {
                     receiverContactView.removeFromSuperview()
                 }
                 
-            case let .address(address):
+            case let .address(address, _):
                 if passphraseInputView.isHidden {
                     passphraseInputView.isHidden = false
                     receiverContactView.removeFromSuperview()
