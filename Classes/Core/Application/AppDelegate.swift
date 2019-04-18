@@ -76,14 +76,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         if shouldInvalidateUserSession {
             shouldInvalidateUserSession = false
-            session.isExpired = true
+            appConfiguration.session.isValid = false
             
             guard let topNavigationViewController = window?.rootViewController?.presentedViewController as? NavigationController,
                 let topViewController = topNavigationViewController.viewControllers.last else {
                     return
             }
             
-            rootViewController.route(to: .choosePassword(mode: .login), from: topViewController, by: .present)
+            rootViewController.route(to: .choosePassword(mode: .login, route: nil), from: topViewController, by: .present)
             return
         }
     }
@@ -106,19 +106,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let parser = DeepLinkParser(url: url)
         
         guard let screen = parser.expectedScreen,
-            let rootViewController = rootViewController,
-            let navigationController = rootViewController.navigationController,
-            var topViewController = navigationController.viewControllers.last else {
+            let rootViewController = rootViewController else {
                 return false
         }
         
-        if let presentedNavigationController = rootViewController.presentedViewController as? NavigationController,
-            let presentedViewController = presentedNavigationController.viewControllers.last {
-            
-            topViewController = presentedViewController
-        }
-        
-        return rootViewController.route(to: screen, from: topViewController, by: .push) != nil
+        return rootViewController.handleDeepLinkRouting(for: screen)
     }
     
     // MARK: Core Data stack

@@ -16,7 +16,7 @@ class RootViewController: UIViewController {
     
     private var router: Router?
     
-    private(set) lazy var tabBarViewController = TabBarController(configuration: appConfiguration.all())
+    private(set) lazy var tabBarViewController = TabBarController(route: nil, configuration: appConfiguration.all())
     
     // MARK: Initialization
     
@@ -38,20 +38,44 @@ class RootViewController: UIViewController {
         
         view.backgroundColor = SharedColors.warmWhite
         
-        if appConfiguration.session.isExpired {
+        if !appConfiguration.session.isValid {
             if appConfiguration.session.hasPassword() &&
                 appConfiguration.session.authenticatedUser != nil {
-                open(.choosePassword(mode: .login), by: .present)
+                open(.choosePassword(mode: .login, route: nil), by: .present)
             } else {
                 open(.introduction(mode: .initialize), by: .launch, animated: false)
             }
         } else {
-            open(.home, by: .launch, animated: false)
+            open(.home(route: nil), by: .launch, animated: false)
             
             DispatchQueue.main.async {
                 UIApplication.shared.appDelegate?.validateAccountManagerFetchPolling()
             }
         }
+    }
+    
+    func handleDeepLinkRouting(for screen: Screen) -> Bool {
+        var shouldHandleDeepLinking = false
+        
+        if !appConfiguration.session.isValid {
+            if appConfiguration.session.hasPassword() && appConfiguration.session.authenticatedUser != nil {
+                shouldHandleDeepLinking = open(.choosePassword(mode: .login, route: screen), by: .present) != nil
+            } else {
+                shouldHandleDeepLinking = open(.introduction(mode: .initialize), by: .launch, animated: false) != nil
+            }
+        } else {
+            guard let topViewController = UIApplication.topViewController() else {
+                return false
+            }
+            
+            shouldHandleDeepLinking = topViewController.open(screen, by: .push, animated: true) != nil
+            
+            DispatchQueue.main.async {
+                UIApplication.shared.appDelegate?.validateAccountManagerFetchPolling()
+            }
+        }
+        
+        return shouldHandleDeepLinking
     }
 
     @discardableResult
@@ -67,7 +91,7 @@ class RootViewController: UIViewController {
     }
     
     func launch() {
-        open(.home, by: .present, animated: false)
+        open(.home(route: nil), by: .present, animated: false)
         
         DispatchQueue.main.async {
             UIApplication.shared.appDelegate?.validateAccountManagerFetchPolling()

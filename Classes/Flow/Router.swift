@@ -134,8 +134,8 @@ class Router {
             introductionViewController.mode = mode
             
             viewController = introductionViewController
-        case let .choosePassword(mode):
-            viewController = ChoosePasswordViewController(mode: mode, configuration: configuration)
+        case let .choosePassword(mode, route):
+            viewController = ChoosePasswordViewController(mode: mode, route: route, configuration: configuration)
         case .localAuthenticationPreference:
             viewController = LocalAuthenticationPreferenceViewController(configuration: configuration)
         case .passPhraseBackUp:
@@ -157,8 +157,8 @@ class Router {
             qrCreationController.title = title
             
             viewController = qrCreationController
-        case .home:
-            viewController = TabBarController(configuration: configuration)
+        case let .home(route):
+            viewController = TabBarController(route: route, configuration: configuration)
         case let .accountList(mode):
             viewController = AccountListViewController(mode: mode, configuration: configuration)
         case .options:

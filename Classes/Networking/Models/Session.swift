@@ -99,7 +99,7 @@ class Session: Storable {
     }
     
     // isExpired is true when login needed. It will fault after 5 mins entering background
-    var isExpired = true
+    var isValid = false
 }
 
 // MARK: - App Password
@@ -160,7 +160,7 @@ extension Session {
         try? privateStorage.removeAll()
         self.clear(.defaults)
         self.clear(.keychain)
-        self.isExpired = true
+        self.isValid = false
         
         DispatchQueue.main.async {
             UIApplication.shared.appDelegate?.invalidateAccountManagerFetchPolling()

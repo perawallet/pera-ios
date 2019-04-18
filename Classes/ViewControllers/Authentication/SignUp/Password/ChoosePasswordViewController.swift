@@ -19,6 +19,7 @@ class ChoosePasswordViewController: BaseViewController {
     
     private let viewModel: ChoosePasswordViewModel
     private let mode: Mode
+    private let route: Screen?
     
     private let localAuthenticator = LocalAuthenticator()
     
@@ -36,8 +37,9 @@ class ChoosePasswordViewController: BaseViewController {
     
     // MARK: Initialization
     
-    init(mode: Mode, configuration: ViewControllerConfiguration) {
+    init(mode: Mode, route: Screen?, configuration: ViewControllerConfiguration) {
         self.mode = mode
+        self.route = route
         self.viewModel = ChoosePasswordViewModel(mode: mode)
         
         super.init(configuration: configuration)
@@ -122,7 +124,7 @@ extension ChoosePasswordViewController: ChoosePasswordViewDelegate {
         switch mode {
         case .setup:
             viewModel.configureSelection(in: choosePasswordView, for: value) { password in
-                open(.choosePassword(mode: .verify(password)), by: .push)
+                open(.choosePassword(mode: .verify(password), route: nil), by: .push)
             }
         case let .verify(previousPassword):
             viewModel.configureSelection(in: choosePasswordView, for: value) { password in
@@ -148,7 +150,7 @@ extension ChoosePasswordViewController: ChoosePasswordViewDelegate {
             
         case .resetPassword:
             viewModel.configureSelection(in: choosePasswordView, for: value) { password in
-                open(.choosePassword(mode: .resetVerify(password)), by: .push)
+                open(.choosePassword(mode: .resetVerify(password), route: nil), by: .push)
             }
             
         case let .resetVerify(previousPassword):
@@ -194,7 +196,7 @@ extension ChoosePasswordViewController: ChoosePasswordViewDelegate {
             SVProgressHUD.showSuccess(withStatus: "Done")
             
             SVProgressHUD.dismiss(withDelay: 2.0) {
-                self.open(.home, by: .launch)
+                self.open(.home(route: self.route), by: .launch)
                 
                 DispatchQueue.main.async {
                     UIApplication.shared.appDelegate?.validateAccountManagerFetchPolling()

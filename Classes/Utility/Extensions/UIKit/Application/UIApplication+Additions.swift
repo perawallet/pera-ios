@@ -112,4 +112,21 @@ extension UIApplication {
         
         UIApplication.shared.open(settingsURL, options: [:])
     }
+    
+    class func topViewController(controller: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> BaseViewController? {
+        if let navigationController = controller as? UINavigationController {
+            return topViewController(controller: navigationController.visibleViewController)
+        }
+        
+        if let tabBarController = controller as? UITabBarController,
+            let selected = tabBarController.selectedViewController {
+            return topViewController(controller: selected)
+        }
+        
+        if let presentedViewController = controller?.presentedViewController {
+            return topViewController(controller: presentedViewController)
+        }
+        
+        return controller as? BaseViewController
+    }
 }

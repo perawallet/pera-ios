@@ -34,6 +34,8 @@ class TabBarController: UITabBarController {
         return Tab(rawValue: selectedIndex) ?? .accounts
     }
     
+    private let route: Screen?
+    
     // MARK: Components
     
     private lazy var customTabBar: TabBar = {
@@ -55,7 +57,8 @@ class TabBarController: UITabBarController {
     
     // MARK: Initialization
     
-    init(configuration: ViewControllerConfiguration, selectedTab: Tab = .accounts) {
+    init(route: Screen?, configuration: ViewControllerConfiguration, selectedTab: Tab = .accounts) {
+        self.route = route
         self.configuration = configuration
         
         super.init(nibName: nil, bundle: nil)
@@ -155,6 +158,18 @@ class TabBarController: UITabBarController {
         super.viewWillAppear(animated)
         
         navigationController?.setNavigationBarHidden(true, animated: true)
+        
+        if let appConfiguration = UIApplication.shared.appConfiguration {
+            appConfiguration.session.isValid = true
+        }
+        
+        if let route = route {
+            guard let accountsViewController = accountsNavigationController.viewControllers.first as? AccountsViewController else {
+                return
+            }
+            
+            accountsViewController.route = route
+        }
     }
     
     // MARK: Shadow

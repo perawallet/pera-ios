@@ -143,7 +143,7 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
                         if self.session?.hasPassword() ?? false {
                             switch self.mode {
                             case .initialize:
-                                self.open(.home, by: .launch)
+                                self.open(.home(route: nil), by: .launch)
                                 
                                 DispatchQueue.main.async {
                                     UIApplication.shared.appDelegate?.validateAccountManagerFetchPolling()
@@ -152,7 +152,7 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
                                 self.dismissScreen()
                             }
                         } else {
-                            self.open(.choosePassword(mode: .setup), by: .push)
+                            self.open(.choosePassword(mode: .setup, route: nil), by: .push)
                         }
                     }
                 }

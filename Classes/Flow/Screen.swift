@@ -8,9 +8,9 @@
 
 import UIKit
 
-enum Screen {
+indirect enum Screen {
     case introduction(mode: AccountSetupMode)
-    case choosePassword(mode: ChoosePasswordViewController.Mode)
+    case choosePassword(mode: ChoosePasswordViewController.Mode, route: Screen?)
     case localAuthenticationPreference
     case passPhraseBackUp
     case passPhraseVerify
@@ -18,7 +18,7 @@ enum Screen {
     case accountRecover(mode: AccountSetupMode)
     case qrScanner
     case qrGenerator(title: String?, text: String, mode: QRMode)
-    case home
+    case home(route: Screen?)
     case options
     case accountList(mode: AccountListMode)
     case editAccount(account: Account)
