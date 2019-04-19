@@ -62,10 +62,10 @@ class SendAlgosViewController: BaseScrollViewController {
             sendAlgosView.transactionReceiverView.state = receiver
         case let .address(_, amount):
             if let sendAmount = amount,
-                let amountValue = Double(sendAmount) {
+                let amountInt = Int(sendAmount) {
                 
-                self.amount = amountValue
-                sendAlgosView.algosInputView.inputTextField.text = amount
+                self.amount = amountInt.toAlgos
+                sendAlgosView.algosInputView.inputTextField.text = self.amount.toDecimalStringForLabel
             }
             
             sendAlgosView.transactionReceiverView.state = receiver
