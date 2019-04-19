@@ -209,6 +209,7 @@
 		2BD73A192241324700B66EEF /* ChoosePasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD73A182241324700B66EEF /* ChoosePasswordViewModel.swift */; };
 		2BD73A1C2241636C00B66EEF /* PassPhraseBackUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD73A1B2241636C00B66EEF /* PassPhraseBackUpView.swift */; };
 		2BD73A1F2241639500B66EEF /* PassPhraseBackUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD73A1E2241639500B66EEF /* PassPhraseBackUpViewController.swift */; };
+		2BDDCA482268A3630081CED2 /* DeepLinkParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDDCA472268A3630081CED2 /* DeepLinkParser.swift */; };
 		2BD78E8E226A0B4900A3D35C /* PassphraseBackUpOrderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD78E8C226A0B4800A3D35C /* PassphraseBackUpOrderView.swift */; };
 		2BD78E8F226A0B4900A3D35C /* PassphraseBackUpCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD78E8D226A0B4800A3D35C /* PassphraseBackUpCell.swift */; };
 		2BDE9CCB224E1458007EFF30 /* AccountsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDE9CCA224E1458007EFF30 /* AccountsView.swift */; };
@@ -464,6 +465,7 @@
 		2BD73A182241324700B66EEF /* ChoosePasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoosePasswordViewModel.swift; sourceTree = "<group>"; };
 		2BD73A1B2241636C00B66EEF /* PassPhraseBackUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassPhraseBackUpView.swift; sourceTree = "<group>"; };
 		2BD73A1E2241639500B66EEF /* PassPhraseBackUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassPhraseBackUpViewController.swift; sourceTree = "<group>"; };
+		2BDDCA472268A3630081CED2 /* DeepLinkParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkParser.swift; sourceTree = "<group>"; };
 		2BD78E8C226A0B4800A3D35C /* PassphraseBackUpOrderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PassphraseBackUpOrderView.swift; sourceTree = "<group>"; };
 		2BD78E8D226A0B4800A3D35C /* PassphraseBackUpCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PassphraseBackUpCell.swift; sourceTree = "<group>"; };
 		2BDE9CCA224E1458007EFF30 /* AccountsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsView.swift; sourceTree = "<group>"; };
@@ -1748,6 +1750,7 @@
 				2BF5314F224A45DC00A7455F /* Transition */,
 				2BF34C9A2239AB130052CAD3 /* Screen.swift */,
 				2BF34C9C2239AB530052CAD3 /* Router.swift */,
+				2BDDCA472268A3630081CED2 /* DeepLinkParser.swift */,
 			);
 			path = Flow;
 			sourceTree = "<group>";
@@ -2219,6 +2222,7 @@
 				171111B4225E091A00DAF55C /* SettingsToggleCell.swift in Sources */,
 				2BA242382263C0D800E2841F /* SwiftDate+Region.swift in Sources */,
 				17AA1B0422660E59000B0BB0 /* Formatter+Additions.swift in Sources */,
+				2BDDCA482268A3630081CED2 /* DeepLinkParser.swift in Sources */,
 				17D04F48225F697E0051BC43 /* AddNodeView.swift in Sources */,
 				2B56F7D6225B3C1D00E58737 /* SendAlgosViewController.swift in Sources */,
 				2B25BB4B225EAD600092C972 /* ReceiveAlgosPreviewViewController.swift in Sources */,

@@ -112,7 +112,7 @@ extension AccountNameSetupViewController {
             session?.authenticatedUser = user
         }
         
-        open(.home, by: .launch)
+        open(.home(route: nil), by: .launch)
         
         DispatchQueue.main.async {
             UIApplication.shared.appDelegate?.validateAccountManagerFetchPolling()
