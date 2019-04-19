@@ -12,7 +12,7 @@ class TabBarController: UITabBarController {
     
     // MARK: Variables
     
-    private lazy var accountsNavigationController = NavigationController(
+    private(set) lazy var accountsNavigationController = NavigationController(
         rootViewController: AccountsViewController(configuration: configuration)
     )
     

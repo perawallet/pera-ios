@@ -141,6 +141,8 @@ extension ChoosePasswordViewController: ChoosePasswordViewDelegate {
         case .login:
             viewModel.configureSelection(in: choosePasswordView, for: value) { password in
                 if session?.isPasswordMatching(with: password) ?? false {
+                    choosePasswordView.numpadView.isUserInteractionEnabled = false
+                    
                     self.launchHome()
                 } else {
                     AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))

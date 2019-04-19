@@ -49,6 +49,7 @@ extension Screen.Transition {
         case present
         case presentWithoutNavigationController
         case launch
+        case set
         case customPresent(
             presentationStyle: UIModalPresentationStyle?,
             transitionStyle: UIModalTransitionStyle?,

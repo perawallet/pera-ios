@@ -108,6 +108,27 @@ class Router {
             }
             
             sourceViewController.present(viewController, animated: animated, completion: completion)
+        case .set:
+            if let currentViewController = self as? StatusBarConfigurable,
+                let nextViewController = viewController as? StatusBarConfigurable {
+                
+                let isStatusBarHidden = currentViewController.isStatusBarHidden
+                
+                nextViewController.hidesStatusBarWhenAppeared = isStatusBarHidden
+                nextViewController.isStatusBarHidden = isStatusBarHidden
+            }
+            
+            guard let navigationController = sourceViewController.navigationController else {
+                return nil
+            }
+            
+            var viewControllers = navigationController.viewControllers
+            
+            let firstViewController = viewControllers[0]
+            
+            viewControllers = [firstViewController, viewController]
+            
+            navigationController.setViewControllers(viewControllers, animated: animated)
         }
         
         guard let navigationController = viewController as? UINavigationController,

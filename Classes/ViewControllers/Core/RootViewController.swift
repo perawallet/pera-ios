@@ -55,27 +55,29 @@ class RootViewController: UIViewController {
     }
     
     func handleDeepLinkRouting(for screen: Screen) -> Bool {
-        var shouldHandleDeepLinking = false
-        
         if !appConfiguration.session.isValid {
             if appConfiguration.session.hasPassword() && appConfiguration.session.authenticatedUser != nil {
-                shouldHandleDeepLinking = open(.choosePassword(mode: .login, route: screen), by: .present) != nil
+                return open(.choosePassword(mode: .login, route: screen), by: .present) != nil
             } else {
-                shouldHandleDeepLinking = open(.introduction(mode: .initialize), by: .launch, animated: false) != nil
+                return open(.introduction(mode: .initialize), by: .launch, animated: false) != nil
             }
         } else {
-            guard let topViewController = UIApplication.topViewController() else {
-                return false
-            }
+            UIApplication.topViewController()?.tabBarController?.selectedIndex = 0
             
-            shouldHandleDeepLinking = topViewController.open(screen, by: .push, animated: true) != nil
-            
-            DispatchQueue.main.async {
-                UIApplication.shared.appDelegate?.validateAccountManagerFetchPolling()
+            if let controller = UIApplication.topViewController(),
+                let navigationController = controller.presentingViewController as? NavigationController,
+                let tabBarController = navigationController.viewControllers.first as? TabBarController,
+                let accountsViewController = tabBarController.accountsNavigationController.viewControllers.first {
+                    
+                controller.dismiss(animated: false) {
+                    accountsViewController.open(screen, by: .set, animated: false)
+                }
+                
+                return true
+            } else {
+                return UIApplication.topViewController()?.open(screen, by: .set, animated: false) != nil
             }
         }
-        
-        return shouldHandleDeepLinking
     }
 
     @discardableResult

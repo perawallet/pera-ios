@@ -159,7 +159,7 @@ class AccountsViewController: BaseViewController {
         if let route = route {
             self.route = nil
             
-            open(route, by: .push)
+            open(route, by: .push, animated: false)
         }
     }
     
