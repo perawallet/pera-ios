@@ -60,7 +60,8 @@ class AccountsViewController: BaseViewController {
     private lazy var emptyStateView = EmptyStateView(
         title: "accounts-tranaction-empty-text".localized,
         topImage: img("icon-transaction-empty-green"),
-        bottomImage: img("icon-transaction-empty-blue")
+        bottomImage: img("icon-transaction-empty-blue"),
+        alignment: .bottom
     )
     
     // MARK: Initialization
@@ -345,19 +346,27 @@ extension AccountsViewController: UICollectionViewDelegateFlowLayout {
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if transactionHistoryDataSource.transactionCount() == 0 {
+            return
+        }
+        
         let translation = scrollView.panGestureRecognizer.translation(in: view)
         
         if translation.y < 0 {
-            let offset = scrollView.contentOffset.y
+            let offset = scrollView.contentOffset.y + AccountsView.LayoutConstants.headerHeight
             
-            let offsetDifference = AccountsView.LayoutConstants.headerHeight - offset * 3
-
+            let offsetDifference = AccountsView.LayoutConstants.headerHeight - offset
+            
             if offsetDifference <= AccountsView.LayoutConstants.smallHeaderHeight {
                 adjustSmallHeaderViewLayout()
+                
+                accountsView.transactionHistoryCollectionView.contentInset.top = AccountsView.LayoutConstants.smallHeaderHeight
             } else {
                 accountsView.accountsHeaderContainerView.snp.updateConstraints { make in
                     make.height.equalTo(offsetDifference)
                 }
+                
+                accountsView.transactionHistoryCollectionView.contentInset.top = offsetDifference
                 
                 let heightDifference = AccountsView.LayoutConstants.headerHeight - AccountsView.LayoutConstants.smallHeaderHeight
                 
@@ -367,7 +376,26 @@ extension AccountsViewController: UICollectionViewDelegateFlowLayout {
                 }
             }
         } else {
-            adjustDefaultHeaderViewLayout()
+            let offset = -scrollView.contentOffset.y
+            
+            let offsetTotal = AccountsView.LayoutConstants.smallHeaderHeight + offset
+            
+            if offsetTotal >= AccountsView.LayoutConstants.headerHeight {
+                adjustDefaultHeaderViewLayout()
+                
+                accountsView.transactionHistoryCollectionView.contentInset.top = AccountsView.LayoutConstants.headerHeight
+            } else {
+                accountsView.accountsHeaderContainerView.snp.updateConstraints { make in
+                    make.height.equalTo(offsetTotal)
+                }
+                
+                accountsView.transactionHistoryCollectionView.contentInset.top = offsetTotal
+                
+                UIView.animate(withDuration: 0.33) {
+                    self.accountsView.accountsHeaderView.alpha = 1.0 - (offsetTotal / AccountsView.LayoutConstants.headerHeight)
+                    self.view.layoutIfNeeded()
+                }
+            }
         }
     }
     

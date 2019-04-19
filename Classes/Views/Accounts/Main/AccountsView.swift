@@ -51,7 +51,7 @@ class AccountsView: BaseView {
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = .white
-        collectionView.contentInset = .zero
+        collectionView.contentInset.top = 276.0
         
         collectionView.register(TransactionHistoryCell.self, forCellWithReuseIdentifier: TransactionHistoryCell.reusableIdentifier)
         
@@ -115,6 +115,10 @@ class AccountsView: BaseView {
     
     private func setupContentStateView() {
         transactionHistoryCollectionView.backgroundView = contentStateView
+        
+        contentStateView.loadingIndicator.snp.updateConstraints { make in
+            make.top.equalToSuperview().inset(326.0)
+        }
     }
 }
 
