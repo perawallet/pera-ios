@@ -213,7 +213,9 @@ extension ChoosePasswordViewController: ChoosePasswordViewDelegate {
                     }
                 }
             } else {
-                // redirect user to add new node
+                let viewController = self.open(.nodeSettings(mode: .checkHealth), by: .present) as? NodeSettingsViewController
+                
+                viewController?.delegate = self
             }
         }
     }
@@ -227,5 +229,12 @@ extension ChoosePasswordViewController {
         case login
         case resetPassword
         case resetVerify(String)
+    }
+}
+
+// MARK: - NodeSettingsViewControllerDelegate
+extension ChoosePasswordViewController: NodeSettingsViewControllerDelegate {
+    func nodeSettingsViewControllerDidUpdateNode(_ nodeSettingsViewController: NodeSettingsViewController) {
+        self.launchHome()
     }
 }

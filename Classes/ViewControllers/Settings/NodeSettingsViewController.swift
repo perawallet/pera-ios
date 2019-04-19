@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol NodeSettingsViewControllerDelegate: class {
+    func nodeSettingsViewControllerDidUpdateNode(_ nodeSettingsViewController: NodeSettingsViewController)
+}
+
 class NodeSettingsViewController: BaseViewController {
     
     // MARK: Components
@@ -18,11 +22,34 @@ class NodeSettingsViewController: BaseViewController {
     
     private let viewModel = NodeSettingsViewModel()
     
+    weak var delegate: NodeSettingsViewControllerDelegate?
+    
+    private let mode: Mode
+    
+    init(mode: Mode, configuration: ViewControllerConfiguration) {
+        self.mode = mode
+        
+        super.init(configuration: configuration)
+    }
+    
     // MARK: Setup
     
     override func configureNavigationBarAppearance() {
         let addBarButtonItem = ALGBarButtonItem(kind: .add) {
             self.open(.addNode, by: .push)
+        }
+        
+        switch mode {
+        case .checkHealth:
+            let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
+                self.closeScreen(by: .dismiss, animated: true) {
+                    self.delegate?.nodeSettingsViewControllerDidUpdateNode(self)
+                }
+            }
+            
+            leftBarButtonItems = [closeBarButtonItem]
+        default:
+            break
         }
         
         rightBarButtonItems = [addBarButtonItem]
@@ -155,5 +182,13 @@ extension NodeSettingsViewController: NodeSettingsViewModelDelegate {
         let node = nodes[indexPath.item - 1]
         
         self.open(.editNode(node: node), by: .push)
+    }
+}
+
+// MARK: Mode
+extension NodeSettingsViewController {
+    enum Mode {
+        case initialize
+        case checkHealth
     }
 }

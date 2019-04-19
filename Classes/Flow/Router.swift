@@ -186,8 +186,8 @@ class Router {
             viewController = ReceiveAlgosPreviewViewController(transaction: transaction, configuration: configuration)
         case let .historyResults(draft):
             viewController = HistoryResultsViewController(draft: draft, configuration: configuration)
-        case .nodeSettings:
-            viewController = NodeSettingsViewController(configuration: configuration)
+        case let .nodeSettings(mode):
+            viewController = NodeSettingsViewController(mode: mode, configuration: configuration)
         case .addNode:
             viewController = AddNodeViewController(mode: .new, configuration: configuration)
         case let .editNode(node):

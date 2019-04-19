@@ -203,6 +203,7 @@
 
 // MARK: NodeSettings
 "node-settings-title" = "Node Settings";
+"node-settings-warning-title" = "Warning";
 "add-node-title" = "Add Node";
 "edit-node-title" = "Edit Node";
 "node-settings-subtitle" = "Slide to connect to the node you’d like.";
@@ -226,3 +227,5 @@
 "node-settings-database-error-description" = "An error occured on system.";
 "node-settings-success-add-description" = "You created the node successfully. Please enable it";
 "node-settings-success-edit-description" = "You edited the node successfully. Please enable it";
+"node-settings-warning-message" = "This action will remove the node. Are you sure?";
+"node-settings-action-delete-title" = "Delete";

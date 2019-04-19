@@ -31,6 +31,7 @@ protocol DBStorable: AnyObject {
     static func clear(entity: String)
     
     func update(entity: String, with keyedValues: [String: Any], then handler: DBOperationHandler?)
+    func remove(entity: String, then handler: DBOperationHandler?)
 }
 
 extension DBStorable where Self: NSManagedObject {
@@ -151,6 +152,30 @@ extension DBStorable where Self: NSManagedObject {
             let object = try context.existingObject(with: objectID)
             
             object.setValuesForKeys(keyedValues)
+            
+            do {
+                try context.save()
+                
+                handler?(.result(object: object))
+            } catch {
+                handler?(.error(error: .writeFailed))
+            }
+        } catch {
+            handler?(.error(error: .readFailed))
+        }
+    }
+    
+    func remove(entity: String, then handler: DBOperationHandler? = nil) {
+        guard let appDelegate = UIApplication.shared.appDelegate else {
+            return
+        }
+        
+        let context = appDelegate.persistentContainer.viewContext
+        
+        do {
+            let object = try context.existingObject(with: objectID)
+            
+            context.delete(object)
             
             do {
                 try context.save()

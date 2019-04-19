@@ -31,6 +31,14 @@ class AccountRecoverViewController: BaseScrollViewController {
         return manager
     }()
     
+    private lazy var nodeManager: NodeManager? = {
+        guard let api = self.api else {
+            return nil
+        }
+        let manager = NodeManager(api: api)
+        return manager
+    }()
+    
     var mode: AccountSetupMode = .initialize
 
     // MARK: Setup
@@ -134,28 +142,7 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
             image: img("account-verify-alert-icon"),
             explanation: "recover-from-seed-verify-pop-up-explanation".localized,
             actionTitle: nil) {
-                SVProgressHUD.show(withStatus: "Loading")
-                
-                self.accountManager?.fetchAllAccounts {
-                    SVProgressHUD.showSuccess(withStatus: "Done")
-                    
-                    SVProgressHUD.dismiss(withDelay: 2.0) {
-                        if self.session?.hasPassword() ?? false {
-                            switch self.mode {
-                            case .initialize:
-                                self.open(.home, by: .launch)
-                                
-                                DispatchQueue.main.async {
-                                    UIApplication.shared.appDelegate?.validateAccountManagerFetchPolling()
-                                }
-                            case .new:
-                                self.dismissScreen()
-                            }
-                        } else {
-                            self.open(.choosePassword(mode: .setup), by: .push)
-                        }
-                    }
-                }
+                self.launchHome()
         }
         
         let viewController = AlertViewController(mode: .default, alertConfigurator: configurator, configuration: configuration)
@@ -163,6 +150,49 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
         viewController.modalTransitionStyle = .crossDissolve
         
         present(viewController, animated: true, completion: nil)
+    }
+    
+    fileprivate func fetchAccounts() {
+        self.accountManager?.fetchAllAccounts {
+            
+            SVProgressHUD.showSuccess(withStatus: "Done")
+            
+            SVProgressHUD.dismiss(withDelay: 2.0) {
+                if self.session?.hasPassword() ?? false {
+                    switch self.mode {
+                    case .initialize:
+                        self.open(.home, by: .launch)
+                        
+                        DispatchQueue.main.async {
+                            UIApplication.shared.appDelegate?.validateAccountManagerFetchPolling()
+                        }
+                    case .new:
+                        self.dismissScreen()
+                    }
+                } else {
+                    self.open(.choosePassword(mode: .setup), by: .push)
+                }
+            }
+        }
+    }
+    
+    fileprivate func launchHome() {
+        SVProgressHUD.show(withStatus: "Loading")
+        
+        switch mode {
+        case .initialize:
+            nodeManager?.checNodes { isFinished in
+                if isFinished {
+                    self.fetchAccounts()
+                } else {
+                    let viewController = self.open(.nodeSettings(mode: .checkHealth), by: .present) as? NodeSettingsViewController
+                    
+                    viewController?.delegate = self
+                }
+            }
+        case .new:
+            self.fetchAccounts()
+        }
     }
 }
 
@@ -225,5 +255,12 @@ extension AccountRecoverViewController: TouchDetectingScrollViewDelegate {
         }
         
         contentView.endEditing(true)
+    }
+}
+
+// MARK: - NodeSettingsViewControllerDelegate
+extension AccountRecoverViewController: NodeSettingsViewControllerDelegate {
+    func nodeSettingsViewControllerDidUpdateNode(_ nodeSettingsViewController: NodeSettingsViewController) {
+        self.launchHome()
     }
 }

@@ -62,6 +62,37 @@ class AddNodeViewController: BaseScrollViewController {
         }
     }
     
+    override func configureNavigationBarAppearance() {
+        super.configureNavigationBarAppearance()
+        
+        switch mode {
+        case .new:
+            return
+        case let .edit(node):
+            let barButtonItem = ALGBarButtonItem(kind: .removeNode) {
+                let alertController = UIAlertController(title: "node-settings-warning-title".localized,
+                                                        message: "node-settings-warning-message".localized,
+                                                        preferredStyle: .alert)
+                
+                let cancelAction = UIAlertAction(title: "title-cancel-lowercased".localized, style: .cancel, handler: nil)
+                alertController.addAction(cancelAction)
+                
+                let deleteAction = UIAlertAction(
+                    title: "node-settings-action-delete-title".localized,
+                    style: .destructive) { _ in
+                        node.remove(entity: Node.entityName)
+                        self.popScreen()
+                        return
+                }
+                alertController.addAction(deleteAction)
+                
+                self.present(alertController, animated: true)
+            }
+            
+            rightBarButtonItems = [barButtonItem]
+        }
+    }
+    
     override func linkInteractors() {
         super.linkInteractors()
         
@@ -280,7 +311,8 @@ class AddNodeViewController: BaseScrollViewController {
         }
         
         let viewController = AlertViewController(mode: mode == .success ? .default : .destructive,
-                                                 alertConfigurator: configurator, configuration: configuration)
+                                                 alertConfigurator: configurator,
+                                                 configuration: configuration)
         viewController.modalPresentationStyle = .overCurrentContext
         viewController.modalTransitionStyle = .crossDissolve
         
