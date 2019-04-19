@@ -20,14 +20,16 @@ class PassPhraseBackUpView: BaseView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let topInset: CGFloat = 69.0 * verticalScale
         let horizontalInset: CGFloat = 25.0
-        let passPhraseContainerViewTopInset: CGFloat = 30.0
-        let passPhraseLabelVerticalInset: CGFloat = 29.0
-        let warningContainerViewTopInset: CGFloat = 40.0
+        let passPhraseContainerViewTopInset: CGFloat = 43.0
+        let passPhraseCollectionViewVerticalInset: CGFloat = 16.5
+        let containerViewHorizontalInset: CGFloat = 25.0 * horizontalScale
+        let collectionViewHorizontalInset: CGFloat = 25.0 * horizontalScale
+        let warningContainerViewTopInset: CGFloat = 24.0
         let warningHorizontalInset: CGFloat = 20.0
         let warningImageCenterOffset: CGFloat = 5.0
         let warningLabelVerticalInset: CGFloat = 20.0
         let bottomInset: CGFloat = 55.0
-        let buttonMinimumTopInset: CGFloat = 30.0
+        let buttonMinimumTopInset: CGFloat = 20.0
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -49,12 +51,22 @@ class PassPhraseBackUpView: BaseView {
         return view
     }()
     
-    private(set) lazy var passPhraseLabel: UILabel = {
-        UILabel()
-            .withAlignment(.left)
-            .withLine(.contained)
-            .withTextColor(SharedColors.black)
-            .withFont(UIFont.font(.opensans, withWeight: .semiBold(size: 17.0)))
+    private(set) lazy var passphraseCollectionView: UICollectionView = {
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.scrollDirection = .vertical
+        flowLayout.sectionInset = .zero
+        flowLayout.minimumLineSpacing = 5.0
+        flowLayout.minimumInteritemSpacing = 0.0
+        
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.contentInset = .zero
+        collectionView.backgroundColor = .white
+        
+        collectionView.register(PassphraseBackUpCell.self, forCellWithReuseIdentifier: PassphraseBackUpCell.reusableIdentifier)
+        
+        return collectionView
     }()
     
     private(set) lazy var shareButton: AlignedButton = {
@@ -114,7 +126,7 @@ class PassPhraseBackUpView: BaseView {
     override func prepareLayout() {
         setupTitleLabelLayout()
         setupPassPhraseContainerViewLayout()
-        setupPassPhraseLabelLayout()
+        setupPassphraseCollectionViewLayout()
         setupShareButtonLayout()
         setupQrButtonLayout()
         setupWarningContainerViewLayout()
@@ -136,17 +148,18 @@ class PassPhraseBackUpView: BaseView {
         addSubview(passPhraseContainerView)
         
         passPhraseContainerView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.containerViewHorizontalInset)
             make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.passPhraseContainerViewTopInset)
         }
     }
     
-    private func setupPassPhraseLabelLayout() {
-        passPhraseContainerView.addSubview(passPhraseLabel)
+    private func setupPassphraseCollectionViewLayout() {
+        passPhraseContainerView.addSubview(passphraseCollectionView)
         
-        passPhraseLabel.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.top.equalToSuperview().inset(layout.current.passPhraseLabelVerticalInset)
+        passphraseCollectionView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(layout.current.collectionViewHorizontalInset)
+            make.top.equalToSuperview().inset(layout.current.passPhraseCollectionViewVerticalInset)
+            make.height.equalTo(238.0)
         }
     }
     
@@ -154,7 +167,7 @@ class PassPhraseBackUpView: BaseView {
         passPhraseContainerView.addSubview(shareButton)
         
         shareButton.snp.makeConstraints { make in
-            make.top.equalTo(passPhraseLabel.snp.bottom).offset(layout.current.warningLabelVerticalInset)
+            make.top.equalTo(passphraseCollectionView.snp.bottom).offset(layout.current.warningLabelVerticalInset)
             make.bottom.trailing.equalToSuperview().inset(layout.current.horizontalInset)
         }
     }
@@ -163,7 +176,7 @@ class PassPhraseBackUpView: BaseView {
         passPhraseContainerView.addSubview(qrButton)
         
         qrButton.snp.makeConstraints { make in
-            make.top.equalTo(passPhraseLabel.snp.bottom).offset(layout.current.warningLabelVerticalInset)
+            make.top.equalTo(passphraseCollectionView.snp.bottom).offset(layout.current.warningLabelVerticalInset)
             make.leading.equalToSuperview().inset(layout.current.horizontalInset)
             make.centerY.equalTo(shareButton)
             make.height.width.equalTo(20)

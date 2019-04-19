@@ -15,10 +15,17 @@ class API: Magpie<AlamofireNetworking> {
     override var commonHttpHeaders: HTTPHeaders {
         
         var httpHeaders = super.commonHttpHeaders
-        httpHeaders.append(.custom(header: "X-Algo-API-Token", value: "af1cf81622d34a9e25c11277b9a591525f0a66611850050f5102030598cce8d7"))
+        
+        guard let token = self.token else {
+            return httpHeaders
+        }
+        
+        httpHeaders.append(.custom(header: "X-Algo-API-Token", value: token))
         
         return httpHeaders
     }
+    
+    var token: String?
     
     private(set) var session: Session?
     

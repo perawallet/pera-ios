@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol NodeSettingsViewControllerDelegate: class {
+    func nodeSettingsViewControllerDidUpdateNode(_ nodeSettingsViewController: NodeSettingsViewController)
+}
+
 class NodeSettingsViewController: BaseViewController {
     
     // MARK: Components
@@ -18,11 +22,34 @@ class NodeSettingsViewController: BaseViewController {
     
     private let viewModel = NodeSettingsViewModel()
     
+    weak var delegate: NodeSettingsViewControllerDelegate?
+    
+    private let mode: Mode
+    
+    init(mode: Mode, configuration: ViewControllerConfiguration) {
+        self.mode = mode
+        
+        super.init(configuration: configuration)
+    }
+    
     // MARK: Setup
     
     override func configureNavigationBarAppearance() {
         let addBarButtonItem = ALGBarButtonItem(kind: .add) {
             self.open(.addNode, by: .push)
+        }
+        
+        switch mode {
+        case .checkHealth:
+            let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
+                self.closeScreen(by: .dismiss, animated: true) {
+                    self.delegate?.nodeSettingsViewControllerDidUpdateNode(self)
+                }
+            }
+            
+            leftBarButtonItems = [closeBarButtonItem]
+        default:
+            break
         }
         
         rightBarButtonItems = [addBarButtonItem]
@@ -48,7 +75,9 @@ class NodeSettingsViewController: BaseViewController {
     }
     
     private func fetchNodes() {
-        Node.fetchAll(entity: Node.entityName) { response in
+        let sortDescriptor = NSSortDescriptor(key: #keyPath(Node.creationDate), ascending: true)
+        
+        Node.fetchAll(entity: Node.entityName, sortDescriptor: sortDescriptor) { response in
             switch response {
             case let .results(objects: objects):
                 guard let results = objects as? [Node] else {
@@ -80,27 +109,37 @@ class NodeSettingsViewController: BaseViewController {
 extension NodeSettingsViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return nodes.count
+        return nodes.count + 1
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: SettingsToggleCell.reusableIdentifier,
-            for: indexPath) as? SettingsToggleCell else {
-                fatalError("Index path is out of bounds")
+        if indexPath.item == 0 {
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: ToggleCell.reusableIdentifier,
+                for: indexPath) as? ToggleCell else {
+                    fatalError("Index path is out of bounds")
+            }
+            
+            viewModel.configureDefaultNode(cell)
+            
+            return cell
+        } else {
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: SettingsToggleCell.reusableIdentifier,
+                for: indexPath) as? SettingsToggleCell else {
+                    fatalError("Index path is out of bounds")
+            }
+            
+            if indexPath.item < nodes.count + 1 {
+                let node = nodes[indexPath.row - 1]
+                
+                viewModel.configureToggle(cell, with: node, for: indexPath)
+                
+                viewModel.delegate = self
+            }
+            
+            return cell
         }
-        
-        if indexPath.item < nodes.count {
-            let node = nodes[indexPath.row]
-            
-            let enabled = session?.authenticatedUser?.defaultNode == node.address
-            
-            viewModel.configureToggle(cell, enabled: enabled, with: node, for: indexPath)
-            
-            viewModel.delegate = self
-        }
-        
-        return cell
     }
 }
 
@@ -125,12 +164,31 @@ extension NodeSettingsViewController: NodeSettingsViewModelDelegate {
                                didToggleValue value: Bool,
                                atIndexPath indexPath: IndexPath) {
         
-        guard indexPath.item < nodes.count else {
+        guard indexPath.item < nodes.count + 1 else {
             return
         }
         
-        let node = nodes[indexPath.item]
+        let node = nodes[indexPath.item - 1]
         
-        session?.authenticatedUser?.setDefaultNode(value ? node : nil)
+        node.update(entity: Node.entityName, with: ["isActive": NSNumber(value: value)])
+    }
+    
+    func nodeSettingsViewModelDidTapEdit(_ viewModel: NodeSettingsViewModel, atIndexPath indexPath: IndexPath) {
+        
+        guard indexPath.item < nodes.count + 1 else {
+            return
+        }
+        
+        let node = nodes[indexPath.item - 1]
+        
+        self.open(.editNode(node: node), by: .push)
+    }
+}
+
+// MARK: Mode
+extension NodeSettingsViewController {
+    enum Mode {
+        case initialize
+        case checkHealth
     }
 }

@@ -65,8 +65,8 @@ extension SettingsViewController: UICollectionViewDataSource {
             
         case .localAuthentication:
             guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: SettingsToggleCell.reusableIdentifier,
-                for: indexPath) as? SettingsToggleCell else {
+                withReuseIdentifier: ToggleCell.reusableIdentifier,
+                for: indexPath) as? ToggleCell else {
                     fatalError("Index path is out of bounds")
             }
             
@@ -109,7 +109,7 @@ extension SettingsViewController: UICollectionViewDelegateFlowLayout {
         
         switch mode {
         case .serverSettings:
-            open(.nodeSettings, by: .push)
+            open(.nodeSettings(mode: .initialize), by: .push)
         case .password:
             open(.choosePassword(mode: ChoosePasswordViewController.Mode.resetPassword, route: nil), by: .present)
         default:
