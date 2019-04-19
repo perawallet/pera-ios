@@ -34,7 +34,7 @@ class ContentStateView: BaseView {
     
     private var emptyStateView: UIView?
     
-    private lazy var loadingIndicator = LoadingIndicator()
+    private(set) lazy var loadingIndicator = LoadingIndicator()
     
     // MARK: Setup
     

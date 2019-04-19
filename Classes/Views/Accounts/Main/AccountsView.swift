@@ -51,7 +51,7 @@ class AccountsView: BaseView {
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = .white
-        collectionView.contentInset = .zero
+        collectionView.contentInset.top = 276.0
         
         collectionView.register(TransactionHistoryCell.self, forCellWithReuseIdentifier: TransactionHistoryCell.reusableIdentifier)
         
@@ -72,11 +72,19 @@ class AccountsView: BaseView {
     // MARK: Layout
     
     override func prepareLayout() {
+        setupTransactionHistoryCollectionViewLayout()
         setupAccountsHeaderContainerViewLayout()
         setupAccountsHeaderViewLayout()
         setupAccountsSmallHeaderViewLayout()
-        setupTransactionHistoryCollectionViewLayout()
         setupContentStateView()
+    }
+    
+    private func setupTransactionHistoryCollectionViewLayout() {
+        addSubview(transactionHistoryCollectionView)
+        
+        transactionHistoryCollectionView.snp.makeConstraints { make in
+            make.top.leading.trailing.bottom.equalToSuperview()
+        }
     }
     
     private func setupAccountsHeaderContainerViewLayout() {
@@ -104,17 +112,12 @@ class AccountsView: BaseView {
         }
     }
     
-    private func setupTransactionHistoryCollectionViewLayout() {
-        addSubview(transactionHistoryCollectionView)
-        
-        transactionHistoryCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(accountsHeaderView.snp.bottom)
-            make.leading.trailing.bottom.equalToSuperview()
-        }
-    }
-    
     private func setupContentStateView() {
         transactionHistoryCollectionView.backgroundView = contentStateView
+        
+        contentStateView.loadingIndicator.snp.updateConstraints { make in
+            make.top.equalToSuperview().inset(326.0)
+        }
     }
 }
 

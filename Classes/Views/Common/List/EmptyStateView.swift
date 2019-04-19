@@ -11,9 +11,10 @@ import UIKit
 class EmptyStateView: BaseView {
 
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let titleInset: CGFloat = 79.0
+        let titleInset: CGFloat = 79.0 * verticalScale
         let topImageViewInset: CGFloat = 13.0
         let bottomImageViewInset: CGFloat = 10.0
+        let bottomInset: CGFloat = 90.0 * verticalScale
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -38,11 +39,13 @@ class EmptyStateView: BaseView {
     private let title: String
     private let topImage: UIImage?
     private let bottomImage: UIImage?
+    private let alignment: Alignment
     
-    init(title: String, topImage: UIImage?, bottomImage: UIImage?) {
+    init(title: String, topImage: UIImage?, bottomImage: UIImage?, alignment: Alignment = .top) {
         self.title = title
         self.topImage = topImage
         self.bottomImage = bottomImage
+        self.alignment = alignment
         
         super.init(frame: .zero)
     }
@@ -56,9 +59,15 @@ class EmptyStateView: BaseView {
     // MARK: Layout
     
     override func prepareLayout() {
-        setupTitleLabelLayout()
-        setupTopImageViewLayout()
-        setupBottomImageViewLayout()
+        if alignment == .top {
+            setupTitleLabelLayout()
+            setupTopImageViewLayout()
+            setupBottomImageViewLayout()
+        } else {
+            setupBottomImageViewLayout()
+            setupTopImageViewLayout()
+            setupTitleLabelLayout()
+        }
     }
     
     private func setupTitleLabelLayout() {
@@ -66,7 +75,12 @@ class EmptyStateView: BaseView {
         
         titleLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalToSuperview().inset(layout.current.titleInset)
+            
+            if alignment == .top {
+                make.top.equalToSuperview().inset(layout.current.titleInset)
+            } else {
+                make.bottom.equalTo(topImageView.snp.top).inset(-layout.current.titleInset)
+            }
         }
     }
     
@@ -75,7 +89,12 @@ class EmptyStateView: BaseView {
         
         topImageView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.topImageViewInset)
+            
+            if alignment == .top {
+                make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.topImageViewInset)
+            } else {
+                make.bottom.equalTo(bottomImageView.snp.top).offset(-layout.current.topImageViewInset)
+            }
         }
     }
     
@@ -84,7 +103,22 @@ class EmptyStateView: BaseView {
         
         bottomImageView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalTo(topImageView.snp.bottom).offset(layout.current.bottomImageViewInset)
+            
+            if alignment == .top {
+                make.top.equalTo(topImageView.snp.bottom).offset(layout.current.bottomImageViewInset)
+            } else {
+                make.bottom.equalToSuperview().inset(layout.current.bottomInset)
+            }
         }
+    }
+}
+
+// MARK: Alignment
+
+extension EmptyStateView {
+    
+    enum Alignment {
+        case top
+        case bottom
     }
 }

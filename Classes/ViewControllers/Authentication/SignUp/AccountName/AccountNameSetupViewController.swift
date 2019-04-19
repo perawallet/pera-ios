@@ -105,14 +105,22 @@ extension AccountNameSetupViewController {
         
         if let authenticatedUser = session?.authenticatedUser {
             authenticatedUser.addAccount(account)
+            
+            closeScreen(by: .dismiss, animated: false) {
+                if let accountsViewController = UIApplication.topViewController() as? AccountsViewController,
+                    self.session?.authenticatedUser != nil {
+                    
+                    accountsViewController.newAccount = account
+                }
+            }
         } else {
             let user = User(accounts: [account])
             user.setDefaultAccount(account)
             
             session?.authenticatedUser = user
+            
+            open(.home(route: nil), by: .launch)
         }
-        
-        open(.home(route: nil), by: .launch)
         
         DispatchQueue.main.async {
             UIApplication.shared.appDelegate?.validateAccountManagerFetchPolling()
