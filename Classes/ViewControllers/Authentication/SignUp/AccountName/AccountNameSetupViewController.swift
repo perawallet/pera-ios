@@ -106,7 +106,7 @@ extension AccountNameSetupViewController {
         if let authenticatedUser = session?.authenticatedUser {
             authenticatedUser.addAccount(account)
             
-            closeScreen(by: .dismiss, animated: true) {
+            closeScreen(by: .dismiss, animated: false) {
                 if let accountsViewController = UIApplication.topViewController() as? AccountsViewController,
                     self.session?.authenticatedUser != nil {
                     
