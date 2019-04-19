@@ -10,16 +10,19 @@ import UIKit
 
 protocol SettingsToggleContextViewDelegate: class {
     func settingsToggle(_ toggle: Toggle, didChangeValue value: Bool)
+    func settingsToggleDidTapEdit()
 }
 
 class SettingsToggleContextView: BaseView {
     
-    private struct LayoutConstants: AdaptiveLayoutConstants {
+    struct LayoutConstants: AdaptiveLayoutConstants {
         let separatorHeight: CGFloat = 1.0
+        let editButtonInset: CGFloat = 15.0
         let horizontalInset: CGFloat = 25.0
+        let horizontalOffset: CGFloat = 10.0
     }
     
-    private let layout = Layout<LayoutConstants>()
+    let layout = Layout<LayoutConstants>()
     
     private enum Colors {
         static let separatorColor = rgba(0.67, 0.67, 0.72, 0.31)
@@ -35,6 +38,13 @@ class SettingsToggleContextView: BaseView {
             .withLine(.single)
             .withAlignment(.left)
             .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 13.0)))
+    }()
+    
+    private(set) lazy var editButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.addTarget(self, action: #selector(didTapEditButton(_:)), for: .touchUpInside)
+        button.setImage(img("icon-server-edit"), for: .normal)
+        return button
     }()
     
     private(set) lazy var toggle: Toggle = {
@@ -60,17 +70,29 @@ class SettingsToggleContextView: BaseView {
     // MARK: Layout
     
     override func prepareLayout() {
+        
+        setupImageViewLayout()
         setupNameLabelLayout()
         setupToggleLayout()
         setupSeparatorViewLayout()
+    }
+    
+    private func setupImageViewLayout() {
+        addSubview(editButton)
+        
+        editButton.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.leading.equalToSuperview().inset(layout.current.editButtonInset)
+            make.width.height.equalTo(44)
+        }
     }
     
     private func setupNameLabelLayout() {
         addSubview(nameLabel)
         
         nameLabel.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
+            make.centerY.equalTo(editButton)
+            make.leading.equalTo(editButton.snp.trailing).offset(layout.current.horizontalOffset)
         }
     }
     
@@ -78,8 +100,9 @@ class SettingsToggleContextView: BaseView {
         addSubview(toggle)
         
         toggle.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
+            make.centerY.equalTo(editButton)
             make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.leading.lessThanOrEqualTo(nameLabel.snp.trailing).offset(15.0)
         }
     }
     
@@ -99,5 +122,10 @@ extension SettingsToggleContextView {
     @objc
     fileprivate func didChangeToggle(_ toggle: Toggle) {
         delegate?.settingsToggle(toggle, didChangeValue: toggle.isOn)
+    }
+    
+    @objc
+    fileprivate func didTapEditButton(_ button: UIButton) {
+        delegate?.settingsToggleDidTapEdit()
     }
 }

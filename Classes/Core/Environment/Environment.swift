@@ -42,6 +42,10 @@ class Environment {
         return api
     }()
     
+    lazy var serverToken: String = {
+       "af1cf81622d34a9e25c11277b9a591525f0a66611850050f5102030598cce8d7"
+    }()
+    
     private let target: AppTarget
     
     // MARK: Initialization

@@ -123,6 +123,12 @@ extension AlgosInputView: UITextFieldDelegate {
             return true
         }
         
+        guard let doubleValueString = text.appending(string).currencyInputFormatting(),
+            let doubleValue = doubleValueString.doubleForSendSeparator,
+            doubleValue <= Double(maximumMicroAlgos) else {
+                return false
+        }
+        
         if range.location + range.length < text.count {
             return false
         } else {

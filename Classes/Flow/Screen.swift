@@ -32,8 +32,9 @@ enum Screen {
     case receiveAlgos
     case receiveAlgosPreview(transaction: TransactionPreviewDraft)
     case historyResults(draft: HistoryDraft)
-    case nodeSettings
+    case nodeSettings(mode: NodeSettingsViewController.Mode)
     case addNode
+    case editNode(node: Node)
 }
 
 extension Screen {

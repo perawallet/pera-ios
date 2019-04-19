@@ -27,10 +27,11 @@ protocol DBStorable: AnyObject {
     typealias DBOperationErrorHandler = (DBOperationError?) -> Void
     
     static func create(entity: String, with keyedValues: [String: Any], then handler: DBOperationHandler?)
-    static func fetchAll(entity: String, with predicate: NSPredicate?, then handler: DBOperationHandler?)
+    static func fetchAll(entity: String, with predicate: NSPredicate?, sortDescriptor: NSSortDescriptor?, then handler: DBOperationHandler?)
     static func clear(entity: String)
     
     func update(entity: String, with keyedValues: [String: Any], then handler: DBOperationHandler?)
+    func remove(entity: String, then handler: DBOperationHandler?)
 }
 
 extension DBStorable where Self: NSManagedObject {
@@ -61,7 +62,10 @@ extension DBStorable where Self: NSManagedObject {
         }
     }
     
-    static func fetchAll(entity: String, with predicate: NSPredicate? = nil, then handler: DBOperationHandler? = nil) {
+    static func fetchAll(entity: String,
+                         with predicate: NSPredicate? = nil,
+                         sortDescriptor: NSSortDescriptor? = nil,
+                         then handler: DBOperationHandler? = nil) {
         guard let appDelegate = UIApplication.shared.appDelegate else {
             return
         }
@@ -75,6 +79,10 @@ extension DBStorable where Self: NSManagedObject {
             fetchRequest.predicate = predicate
         }
         
+        if let sortDescriptor = sortDescriptor {
+            fetchRequest.sortDescriptors = [sortDescriptor]
+        }
+        
         do {
             let response = try context.fetch(fetchRequest)
             
@@ -84,7 +92,10 @@ extension DBStorable where Self: NSManagedObject {
         }
     }
     
-    static func fetchAllSyncronous(entity: String, with predicate: NSPredicate? = nil) -> DBOperationResult<Self> {
+    static func fetchAllSyncronous(entity: String,
+                                   with predicate: NSPredicate? = nil,
+                                   sortDescriptor: NSSortDescriptor? = nil) -> DBOperationResult<Self> {
+        
         guard let appDelegate = UIApplication.shared.appDelegate else {
             return .error(error: .noContext)
         }
@@ -96,6 +107,10 @@ extension DBStorable where Self: NSManagedObject {
         
         if let predicate = predicate {
             fetchRequest.predicate = predicate
+        }
+        
+        if let sortDescriptor = sortDescriptor {
+            fetchRequest.sortDescriptors = [sortDescriptor]
         }
         
         do {
@@ -137,6 +152,30 @@ extension DBStorable where Self: NSManagedObject {
             let object = try context.existingObject(with: objectID)
             
             object.setValuesForKeys(keyedValues)
+            
+            do {
+                try context.save()
+                
+                handler?(.result(object: object))
+            } catch {
+                handler?(.error(error: .writeFailed))
+            }
+        } catch {
+            handler?(.error(error: .readFailed))
+        }
+    }
+    
+    func remove(entity: String, then handler: DBOperationHandler? = nil) {
+        guard let appDelegate = UIApplication.shared.appDelegate else {
+            return
+        }
+        
+        let context = appDelegate.persistentContainer.viewContext
+        
+        do {
+            let object = try context.existingObject(with: objectID)
+            
+            context.delete(object)
             
             do {
                 try context.save()

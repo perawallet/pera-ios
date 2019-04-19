@@ -49,6 +49,12 @@ struct ALGBarButtonItem: BarButtonItem {
                 return ImageContent(normal: icon)
             }
             return nil
+            
+        case .removeNode:
+            if let icon = img("icon-server-remove") {
+                return ImageContent(normal: icon)
+            }
+            return nil
         }
     }
     
@@ -72,6 +78,8 @@ struct ALGBarButtonItem: BarButtonItem {
         case .share:
             return .explicit(CGSize(width: 44.0, height: 44.0))
         case .close:
+            return .explicit(CGSize(width: 44.0, height: 44.0))
+        case .removeNode:
             return .explicit(CGSize(width: 44.0, height: 44.0))
         }
     }
@@ -98,6 +106,7 @@ extension ALGBarButtonItem {
         case add
         case share
         case close
+        case removeNode
     }
 }
 
