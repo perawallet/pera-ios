@@ -104,7 +104,7 @@ extension LocalAuthenticationPreferenceViewController: LocalAuthenticationPrefer
         if session?.authenticatedUser == nil {
             open(.passPhraseBackUp, by: .push)
         } else {
-            open(.home, by: .launch)
+            open(.home(route: nil), by: .launch)
             
             DispatchQueue.main.async {
                 UIApplication.shared.appDelegate?.validateAccountManagerFetchPolling()

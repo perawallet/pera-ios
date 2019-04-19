@@ -50,6 +50,8 @@ class AccountsViewController: BaseViewController {
     
     private var transactionHistoryDataSource: TransactionHistoryDataSource
     
+    var route: Screen?
+    
     // MARK: Components
     
     private lazy var accountsView: AccountsView = {
@@ -108,6 +110,7 @@ class AccountsViewController: BaseViewController {
         self.navigationItem.title = selectedAccount?.name
         
         viewModel.configure(accountsView.accountsHeaderView, with: account)
+        viewModel.configure(accountsView.accountsSmallHeaderView, with: account)
         
         transactionHistoryDataSource.setupContacts()
         
@@ -152,6 +155,12 @@ class AccountsViewController: BaseViewController {
         
         DispatchQueue.main.async {
             UIApplication.shared.appDelegate?.validateAccountManagerFetchPolling()
+        }
+        
+        if let route = route {
+            self.route = nil
+            
+            open(route, by: .push, animated: false)
         }
     }
     

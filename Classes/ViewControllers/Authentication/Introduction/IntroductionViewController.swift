@@ -63,7 +63,7 @@ extension IntroductionViewController: IntroductionViewDelegate {
     func introductionViewDidTapCreateAccountButton(_ introductionView: IntroductionView) {
         switch mode {
         case .initialize:
-            open(.choosePassword(mode: .setup), by: .push)
+            open(.choosePassword(mode: .setup, route: nil), by: .push)
         case .new:
             open(.passPhraseBackUp, by: .push)
         }

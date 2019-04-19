@@ -108,6 +108,27 @@ class Router {
             }
             
             sourceViewController.present(viewController, animated: animated, completion: completion)
+        case .set:
+            if let currentViewController = self as? StatusBarConfigurable,
+                let nextViewController = viewController as? StatusBarConfigurable {
+                
+                let isStatusBarHidden = currentViewController.isStatusBarHidden
+                
+                nextViewController.hidesStatusBarWhenAppeared = isStatusBarHidden
+                nextViewController.isStatusBarHidden = isStatusBarHidden
+            }
+            
+            guard let navigationController = sourceViewController.navigationController else {
+                return nil
+            }
+            
+            var viewControllers = navigationController.viewControllers
+            
+            let firstViewController = viewControllers[0]
+            
+            viewControllers = [firstViewController, viewController]
+            
+            navigationController.setViewControllers(viewControllers, animated: animated)
         }
         
         guard let navigationController = viewController as? UINavigationController,
@@ -134,8 +155,8 @@ class Router {
             introductionViewController.mode = mode
             
             viewController = introductionViewController
-        case let .choosePassword(mode):
-            viewController = ChoosePasswordViewController(mode: mode, configuration: configuration)
+        case let .choosePassword(mode, route):
+            viewController = ChoosePasswordViewController(mode: mode, route: route, configuration: configuration)
         case .localAuthenticationPreference:
             viewController = LocalAuthenticationPreferenceViewController(configuration: configuration)
         case .passPhraseBackUp:
@@ -157,8 +178,8 @@ class Router {
             qrCreationController.title = title
             
             viewController = qrCreationController
-        case .home:
-            viewController = TabBarController(configuration: configuration)
+        case let .home(route):
+            viewController = TabBarController(route: route, configuration: configuration)
         case let .accountList(mode):
             viewController = AccountListViewController(mode: mode, configuration: configuration)
         case .options:

@@ -190,6 +190,7 @@
 "contacts-add-button" = "ADD CONTACT";
 "contacts-edit-button" = "EDIT CONTACT";
 "contacts-empty-text" = "No Contacts Found";
+"contacts-name-validation-error" = "Name is empty.";
 "contacts-address-validation-error" = "Address is wrong. Please make sure that you entered correct one.";
 
 // MARK: Settings

@@ -20,4 +20,8 @@ extension Double {
     var toDecimalStringForLabel: String? {
         return Formatter.separatorForLabel.string(from: NSNumber(value: self))
     }
+    
+    var toDecimalStringForURL: String? {
+        return Formatter.numberToStringFormatter.string(from: NSNumber(value: self))
+    }
 }
