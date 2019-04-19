@@ -46,6 +46,26 @@ class AccountsViewController: BaseViewController {
     
     var selectedAccount: Account?
     
+    var newAccount: Account? {
+        didSet {
+            guard let account = newAccount else {
+                return
+            }
+            
+            selectedAccount = account
+            
+            transactionHistoryDataSource.clear()
+            accountsView.transactionHistoryCollectionView.reloadData()
+            accountsView.transactionHistoryCollectionView.contentState = .loading
+            
+            fetchTransactions()
+            
+            adjustDefaultHeaderViewLayout()
+            
+            updateLayout()
+        }
+    }
+    
     private let viewModel = AccountsViewModel()
     
     private var transactionHistoryDataSource: TransactionHistoryDataSource
@@ -156,6 +176,8 @@ class AccountsViewController: BaseViewController {
         DispatchQueue.main.async {
             UIApplication.shared.appDelegate?.validateAccountManagerFetchPolling()
         }
+    
+        newAccount = nil
         
         if let route = route {
             self.route = nil
