@@ -72,11 +72,19 @@ class AccountsView: BaseView {
     // MARK: Layout
     
     override func prepareLayout() {
+        setupTransactionHistoryCollectionViewLayout()
         setupAccountsHeaderContainerViewLayout()
         setupAccountsHeaderViewLayout()
         setupAccountsSmallHeaderViewLayout()
-        setupTransactionHistoryCollectionViewLayout()
         setupContentStateView()
+    }
+    
+    private func setupTransactionHistoryCollectionViewLayout() {
+        addSubview(transactionHistoryCollectionView)
+        
+        transactionHistoryCollectionView.snp.makeConstraints { make in
+            make.top.leading.trailing.bottom.equalToSuperview()
+        }
     }
     
     private func setupAccountsHeaderContainerViewLayout() {
@@ -101,15 +109,6 @@ class AccountsView: BaseView {
         
         accountsSmallHeaderView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
-        }
-    }
-    
-    private func setupTransactionHistoryCollectionViewLayout() {
-        addSubview(transactionHistoryCollectionView)
-        
-        transactionHistoryCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(accountsHeaderView.snp.bottom)
-            make.leading.trailing.bottom.equalToSuperview()
         }
     }
     

@@ -11,9 +11,10 @@ import UIKit
 class EmptyStateView: BaseView {
 
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let titleInset: CGFloat = 79.0
+        let titleInset: CGFloat = 79.0 * verticalScale
         let topImageViewInset: CGFloat = 13.0
         let bottomImageViewInset: CGFloat = 10.0
+        let bottomInset: CGFloat = 90.0 * verticalScale
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -106,7 +107,7 @@ class EmptyStateView: BaseView {
             if alignment == .top {
                 make.top.equalTo(topImageView.snp.bottom).offset(layout.current.bottomImageViewInset)
             } else {
-                make.bottom.equalToSuperview().offset(layout.current.bottomImageViewInset)
+                make.bottom.equalToSuperview().inset(layout.current.bottomInset)
             }
         }
     }
