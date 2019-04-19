@@ -86,28 +86,33 @@ extension NodeSettingsViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: SettingsToggleCell.reusableIdentifier,
-            for: indexPath) as? SettingsToggleCell else {
-                fatalError("Index path is out of bounds")
-        }
-        
-        if indexPath.item < nodes.count + 1 {
-            if indexPath.item == 0 {
-                let enabled = session?.authenticatedUser?.defaultNode == nil
-                
-                viewModel.configureDefaultNode(cell, enabled: enabled)
-                
-                return cell
+        if indexPath.item == 0 {
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: ToggleCell.reusableIdentifier,
+                for: indexPath) as? ToggleCell else {
+                    fatalError("Index path is out of bounds")
             }
-            let node = nodes[indexPath.row - 1]
             
-            viewModel.configureToggle(cell, with: node, for: indexPath)
+            viewModel.configureDefaultNode(cell)
             
-            viewModel.delegate = self
+            return cell
+        } else {
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: SettingsToggleCell.reusableIdentifier,
+                for: indexPath) as? SettingsToggleCell else {
+                    fatalError("Index path is out of bounds")
+            }
+            
+            if indexPath.item < nodes.count + 1 {
+                let node = nodes[indexPath.row - 1]
+                
+                viewModel.configureToggle(cell, with: node, for: indexPath)
+                
+                viewModel.delegate = self
+            }
+            
+            return cell
         }
-        
-        return cell
     }
 }
 
@@ -139,5 +144,16 @@ extension NodeSettingsViewController: NodeSettingsViewModelDelegate {
         let node = nodes[indexPath.item - 1]
         
         node.update(entity: Node.entityName, with: ["isActive": NSNumber(value: value)])
+    }
+    
+    func nodeSettingsViewModelDidTapEdit(_ viewModel: NodeSettingsViewModel, atIndexPath indexPath: IndexPath) {
+        
+        guard indexPath.item < nodes.count + 1 else {
+            return
+        }
+        
+        let node = nodes[indexPath.item - 1]
+        
+        self.open(.editNode(node: node), by: .push)
     }
 }

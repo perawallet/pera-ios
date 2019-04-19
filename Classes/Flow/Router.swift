@@ -189,7 +189,9 @@ class Router {
         case .nodeSettings:
             viewController = NodeSettingsViewController(configuration: configuration)
         case .addNode:
-            viewController = AddNodeViewController(configuration: configuration)
+            viewController = AddNodeViewController(mode: .new, configuration: configuration)
+        case let .editNode(node):
+            viewController = AddNodeViewController(mode: .edit(node: node), configuration: configuration)
         }
         
         return viewController as? T

@@ -20,6 +20,14 @@ class AddNodeViewController: BaseScrollViewController {
     
     private var keyboard = Keyboard()
     
+    private let mode: Mode
+    
+    init(mode: Mode, configuration: ViewControllerConfiguration) {
+        self.mode = mode
+        
+        super.init(configuration: configuration)
+    }
+    
     override func setListeners() {
         super.setListeners()
         
@@ -41,7 +49,17 @@ class AddNodeViewController: BaseScrollViewController {
     override func configureAppearance() {
         super.configureAppearance()
         
-        title = "add-node-title".localized
+        switch mode {
+        case .new:
+            title = "add-node-title".localized
+            return
+        case let .edit(node):
+            title = "edit-node-title".localized
+            
+            addNodeView.nameInputView.inputTextField.text = node.name
+            addNodeView.addressInputView.inputTextField.text = node.address
+            addNodeView.tokenInputView.inputTextField.text = node.token
+        }
     }
     
     override func linkInteractors() {
@@ -140,9 +158,14 @@ class AddNodeViewController: BaseScrollViewController {
         
         let predicate = NSPredicate(format: "address = %@", address)
         
-        if Node.hasResult(entity: Node.entityName, with: predicate) {
-            displaySimpleAlertWith(title: "title-error".localized, message: "node-settings-has-same-result".localized)
-            return
+        switch self.mode {
+        case .new:
+            if Node.hasResult(entity: Node.entityName, with: predicate) {
+                displaySimpleAlertWith(title: "title-error".localized, message: "node-settings-has-same-result".localized)
+                return
+            }
+        default:
+            break
         }
         
         SVProgressHUD.show(withStatus: "title-loading".localized)
@@ -150,16 +173,134 @@ class AddNodeViewController: BaseScrollViewController {
             SVProgressHUD.dismiss()
             
             if isValidated {
-                Node.create(entity: Node.entityName, with: [Node.DBKeys.name.rawValue: name,
-                                                            Node.DBKeys.address.rawValue: address,
-                                                            Node.DBKeys.token.rawValue: token,
-                                                            Node.DBKeys.creationDate.rawValue: Date()])
+                switch self.mode {
+                case .new:
+                    self.createNode(with: [Node.DBKeys.name.rawValue: name,
+                                           Node.DBKeys.address.rawValue: address,
+                                           Node.DBKeys.token.rawValue: token,
+                                           Node.DBKeys.creationDate.rawValue: Date()])
+                case let .edit(node):
+                    self.edit(node, with: [Node.DBKeys.name.rawValue: name,
+                                           Node.DBKeys.address.rawValue: address,
+                                           Node.DBKeys.token.rawValue: token])
+                }
                 
                 self.popScreen()
             } else {
-                self.displaySimpleAlertWith(title: "title-error".localized, message: "node-settings-text-validation-health-error".localized)
+                self.displayAlert(message: "node-settings-text-validation-health-error".localized,
+                                  mode: .testFail)
             }
         }
+    }
+    
+    private func createNode(with values: [String: Any]) {
+        Node.create(
+            entity: Node.entityName,
+            with: values
+        ) { response in
+            switch response {
+            case .error:
+                self.displayAlert(message: "node-settings-database-error-description".localized,
+                                  mode: .dbFail)
+            case let .result(object):
+                guard object is Node else {
+                    self.displayAlert(message: "node-settings-database-error-description".localized,
+                                      mode: .dbFail)
+                    return
+                }
+                
+                self.displayAlert(message: "node-settings-success-add-description".localized,
+                                  mode: .success)
+                
+            case let .results(objects):
+                guard objects.first is Node else {
+                    self.displayAlert(message: "node-settings-database-error-description".localized,
+                                      mode: .dbFail)
+                    return
+                }
+                
+                self.displayAlert(message: "node-settings-success-add-description".localized,
+                                  mode: .success)
+            }
+        }
+    }
+    
+    private func edit(_ node: Node, with values: [String: Any]) {
+        node.update(entity: Node.entityName, with: values) { result in
+            switch result {
+            case let .result(object):
+                guard object is Node else {
+                    self.displayAlert(message: "node-settings-database-error-description".localized,
+                                      mode: .dbFail)
+                    return
+                }
+                
+                self.displayAlert(message: "node-settings-success-edit-description".localized,
+                                  mode: .success)
+                
+            case .error:
+                self.displayAlert(message: "node-settings-database-error-description".localized,
+                                  mode: .dbFail)
+            default:
+                break
+            }
+        }
+    }
+    
+    private func displayAlert(message: String, mode: AlertMode) {
+        let alertTitle: String
+        let image: UIImage?
+        
+        switch mode {
+        case .dbFail:
+            alertTitle = "node-settings-db-error-title".localized
+            image = img("icon-red-server")
+        case .testFail:
+            alertTitle = "node-settings-test-error-title".localized
+            image = img("icon-red-server")
+        case .success:
+            switch self.mode {
+            case .edit:
+                alertTitle = "node-settings-success-edit-title".localized
+            case .new:
+                alertTitle = "node-settings-success-add-title".localized
+            }
+            
+            image = img("icon-server")
+        }
+        
+        let configurator = AlertViewConfigurator(
+            title: alertTitle,
+            image: image,
+            explanation: message,
+            actionTitle: "title-close".localized) {
+                if mode == .success {
+                    self.popScreen()
+                }
+        }
+        
+        let viewController = AlertViewController(mode: mode == .success ? .default : .destructive,
+                                                 alertConfigurator: configurator, configuration: configuration)
+        viewController.modalPresentationStyle = .overCurrentContext
+        viewController.modalTransitionStyle = .crossDissolve
+        
+        tabBarController?.present(viewController, animated: true, completion: nil)
+    }
+}
+
+// MARK: Mode
+
+extension AddNodeViewController {
+    
+    enum Mode {
+        case new
+        case edit(node: Node)
+    }
+    
+    enum AlertMode {
+        case dbFail
+        case testFail
+        case success
     }
 }
 

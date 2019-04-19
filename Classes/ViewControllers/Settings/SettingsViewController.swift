@@ -65,8 +65,8 @@ extension SettingsViewController: UICollectionViewDataSource {
             
         case .localAuthentication:
             guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: SettingsToggleCell.reusableIdentifier,
-                for: indexPath) as? SettingsToggleCell else {
+                withReuseIdentifier: ToggleCell.reusableIdentifier,
+                for: indexPath) as? ToggleCell else {
                     fatalError("Index path is out of bounds")
             }
             

@@ -38,7 +38,7 @@ class SettingsViewModel {
         cell.contextView.detailLabel.text = "settings-language-english".localized
     }
     
-    func configureToggle(_ cell: SettingsToggleCell, enabled: Bool, with mode: SettingsCellMode, for indexPath: IndexPath) {
+    func configureToggle(_ cell: ToggleCell, enabled: Bool, with mode: SettingsCellMode, for indexPath: IndexPath) {
         self.indexPath = indexPath
         
         let name = nameOfMode(mode)
@@ -64,6 +64,10 @@ class SettingsViewModel {
 
 // MARK: - SettingsToggleContextViewDelegate
 extension SettingsViewModel: SettingsToggleContextViewDelegate {
+    func settingsToggleDidTapEdit() {
+        
+    }
+    
     func settingsToggle(_ toggle: Toggle, didChangeValue value: Bool) {
         guard let indexPath = self.indexPath else {
             return

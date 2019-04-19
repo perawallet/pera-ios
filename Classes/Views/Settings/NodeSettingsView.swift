@@ -36,6 +36,7 @@ class NodeSettingsView: BaseView {
         collectionView.contentInset = .zero
         
         collectionView.register(SettingsToggleCell.self, forCellWithReuseIdentifier: SettingsToggleCell.reusableIdentifier)
+        collectionView.register(ToggleCell.self, forCellWithReuseIdentifier: ToggleCell.reusableIdentifier)
         
         return collectionView
     }()

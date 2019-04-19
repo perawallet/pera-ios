@@ -34,6 +34,7 @@ enum Screen {
     case historyResults(draft: HistoryDraft)
     case nodeSettings
     case addNode
+    case editNode(node: Node)
 }
 
 extension Screen {
