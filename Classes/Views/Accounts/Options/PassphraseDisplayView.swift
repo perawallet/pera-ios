@@ -139,6 +139,7 @@ class PassphraseDisplayView: BaseView {
         okButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(passphraseContainerView.snp.bottom).offset(layout.current.buttonTopInset)
+            make.leading.trailing.lessThanOrEqualToSuperview().inset(layout.current.titleHorizontalInset)
             make.bottom.equalToSuperview().inset(layout.current.buttonBottomInset)
         }
     }
