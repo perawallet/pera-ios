@@ -10,12 +10,24 @@ import UIKit
 
 class PassPhraseBackUpViewController: BaseScrollViewController {
     
+    private var mnemonics: [String]? {
+        guard let session = self.session else {
+            return nil
+        }
+        
+        let mnemonics = session.mnemonics(forAccount: "temp")
+        
+        return mnemonics
+    }
+    
     // MARK: Components
     
     private lazy var passPhraseBackUpView: PassPhraseBackUpView = {
         let view = PassPhraseBackUpView()
         return view
     }()
+    
+    private var maxCellWidth: CGFloat?
     
     // MARK: Setup
     
@@ -39,11 +51,14 @@ class PassPhraseBackUpViewController: BaseScrollViewController {
     
     override func linkInteractors() {
         passPhraseBackUpView.delegate = self
+        passPhraseBackUpView.passphraseCollectionView.delegate = self
+        passPhraseBackUpView.passphraseCollectionView.dataSource = self
     }
 }
 
 // MARK: - Helpers
 extension PassPhraseBackUpViewController {
+    
     func configureAccountAppearance() {
         guard let session = self.session,
             let privateKey = session.generatePrivateKey() else {
@@ -51,32 +66,55 @@ extension PassPhraseBackUpViewController {
         }
         
         session.savePrivate(privateKey, forAccount: "temp")
-        
-        let mnemonics = session.mnemonics(forAccount: "temp")
-        
-        var mnemonicsWithNumbers = [NSAttributedString]()
-        
-        for (index, mnemonic) in mnemonics.enumerated() {
-            let attributedIndex = "\(index + 1)".attributed(
-                [.textColor(SharedColors.blue),
-                 .font(UIFont.font(.opensans, withWeight: .bold(size: 12.0))),
-                 .lineSpacing(1.5)]
-            )
-            mnemonicsWithNumbers.append(attributedIndex)
-            
-            let attributedMnemonic = mnemonic.attributed(
-                [.textColor(SharedColors.black),
-                 .font(UIFont.font(.opensans, withWeight: .semiBold(size: 17.0))),
-                 .lineSpacing(1.5)]
-            )
-            mnemonicsWithNumbers.append(attributedMnemonic)
-            
-            mnemonicsWithNumbers.append(" ".attributed([.lineSpacing(1.5)]))
-        }
-        
-        passPhraseBackUpView.passPhraseLabel.attributedText = mnemonicsWithNumbers.join(with: "".attributed())
     }
 }
+
+// MARK: UICollectionViewDataSource
+
+extension PassPhraseBackUpViewController: UICollectionViewDataSource {
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        guard let mnemonics = mnemonics else {
+            return 0
+        }
+        
+        return mnemonics.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: PassphraseBackUpCell.reusableIdentifier,
+            for: indexPath) as? PassphraseBackUpCell else {
+                fatalError("Index path is out of bounds")
+        }
+        
+        cell.contextView.numberLabel.text = "\(indexPath.row + 1)"
+        
+        guard let mnemonics = mnemonics else {
+            return cell
+        }
+        
+        cell.contextView.phraseLabel.text = mnemonics[indexPath.row]
+        
+        return cell
+    }
+}
+
+// MARK: UICollectionViewDelegateFlowLayout
+
+extension PassPhraseBackUpViewController: UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        sizeForItemAt indexPath: IndexPath
+    ) -> CGSize {
+        
+        return CGSize(width: collectionView.frame.width / 3.0, height: 22.0)
+    }
+}
+
+// MARK: PassPhraseBackUpViewDelegate
 
 extension PassPhraseBackUpViewController: PassPhraseBackUpViewDelegate {
     
