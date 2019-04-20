@@ -65,11 +65,12 @@ class ReceiveAlgosPreviewViewController: BaseScrollViewController {
 extension ReceiveAlgosPreviewViewController: ReceiveAlgosPreviewViewDelegate {
     
     func receiveAlgosPreviewViewDidTapShareButton(_ receiveAlgosPreviewView: ReceiveAlgosPreviewView) {
-        guard let qrImage = receiveAlgosPreviewView.qrView.imageView.image else {
-            return
+        guard let qrImage = receiveAlgosPreviewView.qrView.imageView.image,
+            let shareUrl = URL(string: "algorand://send-algos/\(transaction.fromAccount.address)/\(transaction.amount.toMicroAlgos)") else {
+                return
         }
         
-        let sharedItem = [qrImage]
+        let sharedItem: [Any] = [shareUrl, qrImage]
         let activityViewController = UIActivityViewController(activityItems: sharedItem, applicationActivities: nil)
         activityViewController.excludedActivityTypes = [UIActivity.ActivityType.addToReadingList]
         

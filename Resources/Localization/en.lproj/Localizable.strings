@@ -190,6 +190,7 @@
 "contacts-add-button" = "ADD CONTACT";
 "contacts-edit-button" = "EDIT CONTACT";
 "contacts-empty-text" = "No Contacts Found";
+"contacts-name-validation-error" = "Name is empty.";
 "contacts-address-validation-error" = "Address is wrong. Please make sure that you entered correct one.";
 
 // MARK: Settings
@@ -203,7 +204,9 @@
 
 // MARK: NodeSettings
 "node-settings-title" = "Node Settings";
+"node-settings-warning-title" = "Warning";
 "add-node-title" = "Add Node";
+"edit-node-title" = "Edit Node";
 "node-settings-subtitle" = "Slide to connect to the node you’d like.";
 "node-settings-enter-node-name" = "Enter node's name: ";
 "node-settings-enter-node-address" = "Enter node's address: ";
@@ -215,3 +218,15 @@
 "node-settings-text-validation-empty-error" = "Please fill all fields.";
 "node-settings-text-validation-health-error" = "Address and token are not valid. Please make sure you enter correct one";
 "node-settings-has-same-result" = "You cannot create same node twice";
+
+"node-settings-db-error-title" = "System operation failed";
+"node-settings-test-error-title" = "Node not detected";
+"node-settings-success-edit-title" = "Node edited";
+"node-settings-success-add-title" = "Node created";
+
+"node-settings-test-error-description" = "We couldn’t connet to the node, please recheck your adress and key";
+"node-settings-database-error-description" = "An error occured on system.";
+"node-settings-success-add-description" = "You created the node successfully. Please enable it";
+"node-settings-success-edit-description" = "You edited the node successfully. Please enable it";
+"node-settings-warning-message" = "This action will remove the node. Are you sure?";
+"node-settings-action-delete-title" = "Delete";

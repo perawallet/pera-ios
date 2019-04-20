@@ -36,7 +36,7 @@ class ReceiveAlgosView: BaseView {
     
     private(set) lazy var accountSelectionView: SingleLineInputField = {
         let selectAccountView = SingleLineInputField(displaysRightInputAccessoryButton: true)
-        selectAccountView.explanationLabel.text = "send-algos-from".localized
+        selectAccountView.explanationLabel.text = "send-algos-to".localized
         selectAccountView.inputTextField.text = "send-algos-select".localized
         selectAccountView.rightInputAccessoryButton.setImage(img("icon-arrow"), for: .normal)
         selectAccountView.inputTextField.isEnabled = false

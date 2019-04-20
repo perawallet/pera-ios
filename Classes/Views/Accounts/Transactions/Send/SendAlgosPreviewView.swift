@@ -28,10 +28,9 @@ class SendAlgosPreviewView: SendAlgosView {
     // MARK: Components
     
     private(set) lazy var feeInformationView: DetailedInformationView = {
-        let feeInformationView = DetailedInformationView(displaysRightInputAccessoryButton: true)
+        let feeInformationView = DetailedInformationView()
         feeInformationView.explanationLabel.text = "send-algos-fee".localized
         feeInformationView.detailLabel.text = "0.0001"
-        feeInformationView.rightInputAccessoryButton.setImage(img("icon-info"), for: .normal)
         feeInformationView.rightInputAccessoryButton.imageEdgeInsets = .zero
         feeInformationView.rightInputAccessoryButton.contentMode = .right
         return feeInformationView
@@ -45,6 +44,7 @@ class SendAlgosPreviewView: SendAlgosView {
         super.configureAppearance()
         
         algosInputView.inputTextField.isEnabled = false
+        transactionReceiverView.passphraseInputView.inputTextView.isEditable = false
         accountSelectionView.isUserInteractionEnabled = false
     }
     

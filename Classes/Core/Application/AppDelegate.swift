@@ -22,7 +22,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     private lazy var session = Session()
-    private lazy var api = API(base: Environment.current.serverApi, session: session)
+    private lazy var api: API = {
+        let api = API(base: Environment.current.serverApi, session: session)
+        api.token = Environment.current.serverToken
+        return api
+    }()
     private lazy var appConfiguration = AppConfiguration(api: api, session: session)
     
     private var rootViewController: RootViewController?
@@ -76,14 +80,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         if shouldInvalidateUserSession {
             shouldInvalidateUserSession = false
-            session.isExpired = true
+            appConfiguration.session.isValid = false
             
             guard let topNavigationViewController = window?.rootViewController?.presentedViewController as? NavigationController,
                 let topViewController = topNavigationViewController.viewControllers.last else {
                     return
             }
             
-            rootViewController.route(to: .choosePassword(mode: .login), from: topViewController, by: .present)
+            rootViewController.route(to: .choosePassword(mode: .login, route: nil), from: topViewController, by: .present)
             return
         }
     }
@@ -100,6 +104,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func applicationWillTerminate(_ application: UIApplication) {
         self.saveContext()
+    }
+    
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
+        let parser = DeepLinkParser(url: url)
+        
+        guard let screen = parser.expectedScreen,
+            let rootViewController = rootViewController else {
+                return false
+        }
+        
+        return rootViewController.handleDeepLinkRouting(for: screen)
     }
     
     // MARK: Core Data stack

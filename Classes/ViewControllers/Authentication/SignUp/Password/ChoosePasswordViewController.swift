@@ -19,6 +19,7 @@ class ChoosePasswordViewController: BaseViewController {
     
     private let viewModel: ChoosePasswordViewModel
     private let mode: Mode
+    private let route: Screen?
     
     private let localAuthenticator = LocalAuthenticator()
     
@@ -34,10 +35,20 @@ class ChoosePasswordViewController: BaseViewController {
         return manager
     }()
     
+    private lazy var nodeManager: NodeManager? = {
+        guard let api = self.api,
+            mode == .login else {
+                return nil
+        }
+        let manager = NodeManager(api: api)
+        return manager
+    }()
+    
     // MARK: Initialization
     
-    init(mode: Mode, configuration: ViewControllerConfiguration) {
+    init(mode: Mode, route: Screen?, configuration: ViewControllerConfiguration) {
         self.mode = mode
+        self.route = route
         self.viewModel = ChoosePasswordViewModel(mode: mode)
         
         super.init(configuration: configuration)
@@ -122,7 +133,7 @@ extension ChoosePasswordViewController: ChoosePasswordViewDelegate {
         switch mode {
         case .setup:
             viewModel.configureSelection(in: choosePasswordView, for: value) { password in
-                open(.choosePassword(mode: .verify(password)), by: .push)
+                open(.choosePassword(mode: .verify(password), route: nil), by: .push)
             }
         case let .verify(previousPassword):
             viewModel.configureSelection(in: choosePasswordView, for: value) { password in
@@ -139,6 +150,8 @@ extension ChoosePasswordViewController: ChoosePasswordViewDelegate {
         case .login:
             viewModel.configureSelection(in: choosePasswordView, for: value) { password in
                 if session?.isPasswordMatching(with: password) ?? false {
+                    choosePasswordView.numpadView.isUserInteractionEnabled = false
+                    
                     self.launchHome()
                 } else {
                     AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
@@ -148,7 +161,7 @@ extension ChoosePasswordViewController: ChoosePasswordViewDelegate {
             
         case .resetPassword:
             viewModel.configureSelection(in: choosePasswordView, for: value) { password in
-                open(.choosePassword(mode: .resetVerify(password)), by: .push)
+                open(.choosePassword(mode: .resetVerify(password), route: nil), by: .push)
             }
             
         case let .resetVerify(previousPassword):
@@ -189,16 +202,24 @@ extension ChoosePasswordViewController: ChoosePasswordViewDelegate {
     fileprivate func launchHome() {
         SVProgressHUD.show(withStatus: "Loading")
         
-        accountManager?.fetchAllAccounts {
-            
-            SVProgressHUD.showSuccess(withStatus: "Done")
-            
-            SVProgressHUD.dismiss(withDelay: 2.0) {
-                self.open(.home, by: .launch)
-                
-                DispatchQueue.main.async {
-                    UIApplication.shared.appDelegate?.validateAccountManagerFetchPolling()
+        nodeManager?.checNodes { isFinished in
+            if isFinished {
+                self.accountManager?.fetchAllAccounts {
+                    
+                    SVProgressHUD.showSuccess(withStatus: "Done")
+                    
+                    SVProgressHUD.dismiss(withDelay: 2.0) {
+                        self.open(.home(route: self.route), by: .launch)
+                        
+                        DispatchQueue.main.async {
+                            UIApplication.shared.appDelegate?.validateAccountManagerFetchPolling()
+                        }
+                    }
                 }
+            } else {
+                let viewController = self.open(.nodeSettings(mode: .checkHealth), by: .present) as? NodeSettingsViewController
+                
+                viewController?.delegate = self
             }
         }
     }
@@ -212,5 +233,12 @@ extension ChoosePasswordViewController {
         case login
         case resetPassword
         case resetVerify(String)
+    }
+}
+
+// MARK: - NodeSettingsViewControllerDelegate
+extension ChoosePasswordViewController: NodeSettingsViewControllerDelegate {
+    func nodeSettingsViewControllerDidUpdateNode(_ nodeSettingsViewController: NodeSettingsViewController) {
+        self.launchHome()
     }
 }

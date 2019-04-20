@@ -1,0 +1,65 @@
+//
+//  NodeHealthOperation.swift
+//  algorand
+//
+//  Created by Omer Emre Aslan on 18.04.2019.
+//  Copyright © 2019 hippo. All rights reserved.
+//
+
+import Foundation
+
+class NodeHealthOperation: AsyncOperation {
+    
+    let address: String?
+    let token: String?
+    let api: API
+    
+    var onStarted: EmptyHandler?
+    var onCompleted: BoolHandler?
+    
+    // MARK: Initialization
+    init(node: Node, api: API) {
+        self.address = node.address
+        self.token = node.token
+        
+        self.api = api
+        super.init()
+    }
+    
+    init(address: String?, token: String?, api: API) {
+        self.address = address
+        self.token = token
+        
+        self.api = api
+        super.init()
+    }
+    
+    override func main() {
+        
+        if isCancelled {
+            return
+        }
+        
+        guard let address = self.address,
+            let token = self.token else {
+                self.onCompleted?(false)
+                self.finish()
+            return
+        }
+
+        let nodeTestDraft = NodeTestDraft(address: address, token: token)
+        api.checkHealth(with: nodeTestDraft) { isHealthy in
+            self.onCompleted?(isHealthy)
+            
+            self.finish()
+        }
+        
+        onStarted?()
+    }
+    
+    // MARK: Public
+    
+    func finish(with error: Error? = nil) {
+        state = .finished
+    }
+}

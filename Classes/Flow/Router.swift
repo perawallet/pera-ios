@@ -108,6 +108,27 @@ class Router {
             }
             
             sourceViewController.present(viewController, animated: animated, completion: completion)
+        case .set:
+            if let currentViewController = self as? StatusBarConfigurable,
+                let nextViewController = viewController as? StatusBarConfigurable {
+                
+                let isStatusBarHidden = currentViewController.isStatusBarHidden
+                
+                nextViewController.hidesStatusBarWhenAppeared = isStatusBarHidden
+                nextViewController.isStatusBarHidden = isStatusBarHidden
+            }
+            
+            guard let navigationController = sourceViewController.navigationController else {
+                return nil
+            }
+            
+            var viewControllers = navigationController.viewControllers
+            
+            let firstViewController = viewControllers[0]
+            
+            viewControllers = [firstViewController, viewController]
+            
+            navigationController.setViewControllers(viewControllers, animated: animated)
         }
         
         guard let navigationController = viewController as? UINavigationController,
@@ -134,8 +155,8 @@ class Router {
             introductionViewController.mode = mode
             
             viewController = introductionViewController
-        case let .choosePassword(mode):
-            viewController = ChoosePasswordViewController(mode: mode, configuration: configuration)
+        case let .choosePassword(mode, route):
+            viewController = ChoosePasswordViewController(mode: mode, route: route, configuration: configuration)
         case .localAuthenticationPreference:
             viewController = LocalAuthenticationPreferenceViewController(configuration: configuration)
         case .passPhraseBackUp:
@@ -157,8 +178,8 @@ class Router {
             qrCreationController.title = title
             
             viewController = qrCreationController
-        case .home:
-            viewController = TabBarController(configuration: configuration)
+        case let .home(route):
+            viewController = TabBarController(route: route, configuration: configuration)
         case let .accountList(mode):
             viewController = AccountListViewController(mode: mode, configuration: configuration)
         case .options:
@@ -186,10 +207,12 @@ class Router {
             viewController = ReceiveAlgosPreviewViewController(transaction: transaction, configuration: configuration)
         case let .historyResults(draft):
             viewController = HistoryResultsViewController(draft: draft, configuration: configuration)
-        case .nodeSettings:
-            viewController = NodeSettingsViewController(configuration: configuration)
+        case let .nodeSettings(mode):
+            viewController = NodeSettingsViewController(mode: mode, configuration: configuration)
         case .addNode:
-            viewController = AddNodeViewController(configuration: configuration)
+            viewController = AddNodeViewController(mode: .new, configuration: configuration)
+        case let .editNode(node):
+            viewController = AddNodeViewController(mode: .edit(node: node), configuration: configuration)
         }
         
         return viewController as? T

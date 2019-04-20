@@ -191,6 +191,7 @@ class SendAlgosSuccessView: BaseView {
         amountView.snp.makeConstraints { make in
             make.leading.equalToSuperview()
             make.top.equalTo(separatorView.snp.bottom)
+            make.height.equalTo(88.0)
             make.width.equalTo(UIScreen.main.bounds.width / 2)
         }
     }
@@ -201,6 +202,7 @@ class SendAlgosSuccessView: BaseView {
         feeView.snp.makeConstraints { make in
             make.trailing.equalToSuperview()
             make.top.equalTo(separatorView.snp.bottom)
+            make.height.equalTo(88.0)
             make.width.equalTo(UIScreen.main.bounds.width / 2)
         }
     }
@@ -220,6 +222,7 @@ class SendAlgosSuccessView: BaseView {
         transactionReceiverView.snp.makeConstraints { make in
             make.top.equalTo(accountView.snp.bottom)
             make.leading.trailing.equalToSuperview()
+            make.height.greaterThanOrEqualTo(110.0)
         }
     }
     
@@ -229,7 +232,7 @@ class SendAlgosSuccessView: BaseView {
         transactionIdView.snp.makeConstraints { make in
             make.top.equalTo(transactionReceiverView.snp.bottom)
             make.leading.trailing.equalToSuperview()
-            make.bottom.equalToSuperview().inset(layout.current.bottomInset)
+            make.bottom.lessThanOrEqualToSuperview().inset(layout.current.bottomInset)
         }
     }
     

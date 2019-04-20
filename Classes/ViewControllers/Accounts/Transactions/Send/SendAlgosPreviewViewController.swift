@@ -123,7 +123,7 @@ extension SendAlgosPreviewViewController: SendAlgosPreviewViewDelegate {
         let toAccount: Account
         
         switch receiver {
-        case let .address(address):
+        case let .address(address, _):
             toAccount = Account(address: address)
             
         case let .contact(contact):

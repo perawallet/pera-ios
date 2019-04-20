@@ -37,10 +37,10 @@ class DetailedInformationView: BaseView {
     }()
     
     private(set) lazy var detailLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.font(.montserrat, withWeight: .semiBold(size: 13.0))
-        label.textColor = SharedColors.black
-        return label
+        UILabel()
+            .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 13.0)))
+            .withTextColor(SharedColors.black)
+            .withLine(.contained)
     }()
     
     private(set) lazy var algosAmountView: AlgosAmountView = {
@@ -113,6 +113,7 @@ class DetailedInformationView: BaseView {
         detailLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(layout.current.defaultInset)
             make.top.equalTo(explanationLabel.snp.bottom).offset(layout.current.contentViewTopInset)
+            make.bottom.equalToSuperview().inset(20.0)
             
             if displaysRightInputAccessoryButton {
                 make.trailing.equalTo(rightInputAccessoryButton.snp.leading).inset(-layout.current.defaultInset)
@@ -145,12 +146,6 @@ class DetailedInformationView: BaseView {
             make.bottom.equalToSuperview()
             make.height.equalTo(layout.current.separatorHeight)
             make.leading.trailing.equalToSuperview()
-            
-            if mode == .text {
-                make.top.equalTo(detailLabel.snp.bottom).offset(layout.current.separatorTopInset)
-            } else {
-                make.top.equalTo(algosAmountView.snp.bottom).offset(layout.current.separatorTopInset)
-            }
         }
     }
     
