@@ -332,13 +332,11 @@ extension SendAlgosViewController: SendAlgosPreviewViewControllerDelegate {
     
     private func resetViewForInitialState() {
         amount = 0.00
-        selectedAccount = nil
         receiver = .initial
         sendAlgosView.transactionReceiverView.state = .initial
         sendAlgosView.algosInputView.inputTextField.text = nil
         sendAlgosView.transactionReceiverView.passphraseInputView.placeholderLabel.isHidden = false
         sendAlgosView.transactionReceiverView.passphraseInputView.inputTextView.text = ""
-        sendAlgosView.accountSelectionView.inputTextField.text = "send-algos-select".localized
     }
 }
 
