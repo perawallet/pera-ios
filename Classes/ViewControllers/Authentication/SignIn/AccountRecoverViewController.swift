@@ -31,14 +31,6 @@ class AccountRecoverViewController: BaseScrollViewController {
         return manager
     }()
     
-    private lazy var nodeManager: NodeManager? = {
-        guard let api = self.api else {
-            return nil
-        }
-        let manager = NodeManager(api: api)
-        return manager
-    }()
-    
     var mode: AccountSetupMode = .initialize
 
     // MARK: Setup
@@ -179,20 +171,7 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
     fileprivate func launchHome() {
         SVProgressHUD.show(withStatus: "Loading")
         
-        switch mode {
-        case .initialize:
-            nodeManager?.checNodes { isFinished in
-                if isFinished {
-                    self.fetchAccounts()
-                } else {
-                    let viewController = self.open(.nodeSettings(mode: .checkHealth), by: .present) as? NodeSettingsViewController
-                    
-                    viewController?.delegate = self
-                }
-            }
-        case .new:
-            self.fetchAccounts()
-        }
+        self.fetchAccounts()
     }
 }
 
@@ -255,12 +234,5 @@ extension AccountRecoverViewController: TouchDetectingScrollViewDelegate {
         }
         
         contentView.endEditing(true)
-    }
-}
-
-// MARK: - NodeSettingsViewControllerDelegate
-extension AccountRecoverViewController: NodeSettingsViewControllerDelegate {
-    func nodeSettingsViewControllerDidUpdateNode(_ nodeSettingsViewController: NodeSettingsViewController) {
-        self.launchHome()
     }
 }

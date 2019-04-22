@@ -38,20 +38,7 @@ class RootViewController: UIViewController {
         
         view.backgroundColor = SharedColors.warmWhite
         
-        if !appConfiguration.session.isValid {
-            if appConfiguration.session.hasPassword() &&
-                appConfiguration.session.authenticatedUser != nil {
-                open(.choosePassword(mode: .login, route: nil), by: .present)
-            } else {
-                open(.introduction(mode: .initialize), by: .launch, animated: false)
-            }
-        } else {
-            open(.home(route: nil), by: .launch, animated: false)
-            
-            DispatchQueue.main.async {
-                UIApplication.shared.appDelegate?.validateAccountManagerFetchPolling()
-            }
-        }
+        open(.splash, by: .launch, animated: false)
     }
     
     func handleDeepLinkRouting(for screen: Screen) -> Bool {

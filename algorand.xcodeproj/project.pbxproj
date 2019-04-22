@@ -22,6 +22,7 @@
 		171111B8225E0C8400DAF55C /* Toggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171111B7225E0C8400DAF55C /* Toggle.swift */; };
 		171111BA225E34E400DAF55C /* NodeSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171111B9225E34E400DAF55C /* NodeSettingsViewController.swift */; };
 		171111BC225E3FD700DAF55C /* Crypto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 171111BB225E3FD600DAF55C /* Crypto.framework */; };
+		171650EC226DF90900D8893D /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171650EB226DF90900D8893D /* SplashViewController.swift */; };
 		173DA1E72255EBE000378A82 /* String+Address.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173DA1E62255EBE000378A82 /* String+Address.swift */; };
 		173DA1E92255F7B500378A82 /* API+Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173DA1E82255F7B500378A82 /* API+Transaction.swift */; };
 		173DA1EB2255F7EF00378A82 /* TransactionDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173DA1EA2255F7EF00378A82 /* TransactionDraft.swift */; };
@@ -209,9 +210,9 @@
 		2BD73A192241324700B66EEF /* ChoosePasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD73A182241324700B66EEF /* ChoosePasswordViewModel.swift */; };
 		2BD73A1C2241636C00B66EEF /* PassPhraseBackUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD73A1B2241636C00B66EEF /* PassPhraseBackUpView.swift */; };
 		2BD73A1F2241639500B66EEF /* PassPhraseBackUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD73A1E2241639500B66EEF /* PassPhraseBackUpViewController.swift */; };
-		2BDDCA482268A3630081CED2 /* DeepLinkParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDDCA472268A3630081CED2 /* DeepLinkParser.swift */; };
 		2BD78E8E226A0B4900A3D35C /* PassphraseBackUpOrderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD78E8C226A0B4800A3D35C /* PassphraseBackUpOrderView.swift */; };
 		2BD78E8F226A0B4900A3D35C /* PassphraseBackUpCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD78E8D226A0B4800A3D35C /* PassphraseBackUpCell.swift */; };
+		2BDDCA482268A3630081CED2 /* DeepLinkParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDDCA472268A3630081CED2 /* DeepLinkParser.swift */; };
 		2BDE9CCB224E1458007EFF30 /* AccountsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDE9CCA224E1458007EFF30 /* AccountsView.swift */; };
 		2BDE9CCD224E1464007EFF30 /* AccountsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDE9CCC224E1464007EFF30 /* AccountsHeaderView.swift */; };
 		2BDE9CD0224E1A60007EFF30 /* EmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDE9CCF224E1A60007EFF30 /* EmptyStateView.swift */; };
@@ -278,6 +279,7 @@
 		171111B7225E0C8400DAF55C /* Toggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toggle.swift; sourceTree = "<group>"; };
 		171111B9225E34E400DAF55C /* NodeSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeSettingsViewController.swift; sourceTree = "<group>"; };
 		171111BB225E3FD600DAF55C /* Crypto.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crypto.framework; sourceTree = "<group>"; };
+		171650EB226DF90900D8893D /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		173DA1E62255EBE000378A82 /* String+Address.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Address.swift"; sourceTree = "<group>"; };
 		173DA1E82255F7B500378A82 /* API+Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+Transaction.swift"; sourceTree = "<group>"; };
 		173DA1EA2255F7EF00378A82 /* TransactionDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDraft.swift; sourceTree = "<group>"; };
@@ -465,9 +467,9 @@
 		2BD73A182241324700B66EEF /* ChoosePasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoosePasswordViewModel.swift; sourceTree = "<group>"; };
 		2BD73A1B2241636C00B66EEF /* PassPhraseBackUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassPhraseBackUpView.swift; sourceTree = "<group>"; };
 		2BD73A1E2241639500B66EEF /* PassPhraseBackUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassPhraseBackUpViewController.swift; sourceTree = "<group>"; };
-		2BDDCA472268A3630081CED2 /* DeepLinkParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkParser.swift; sourceTree = "<group>"; };
 		2BD78E8C226A0B4800A3D35C /* PassphraseBackUpOrderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PassphraseBackUpOrderView.swift; sourceTree = "<group>"; };
 		2BD78E8D226A0B4800A3D35C /* PassphraseBackUpCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PassphraseBackUpCell.swift; sourceTree = "<group>"; };
+		2BDDCA472268A3630081CED2 /* DeepLinkParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkParser.swift; sourceTree = "<group>"; };
 		2BDE9CCA224E1458007EFF30 /* AccountsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsView.swift; sourceTree = "<group>"; };
 		2BDE9CCC224E1464007EFF30 /* AccountsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsHeaderView.swift; sourceTree = "<group>"; };
 		2BDE9CCF224E1A60007EFF30 /* EmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateView.swift; sourceTree = "<group>"; };
@@ -1205,6 +1207,7 @@
 				2BF34CBD223A8E5F0052CAD3 /* Container */,
 				2B8BE4EC2239356A005D8565 /* Base */,
 				2B8BE4D322391C38005D8565 /* RootViewController.swift */,
+				171650EB226DF90900D8893D /* SplashViewController.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -2399,6 +2402,7 @@
 				2BD78E8E226A0B4900A3D35C /* PassphraseBackUpOrderView.swift in Sources */,
 				2B8C1278224196DF00E34D37 /* String+Attributes.swift in Sources */,
 				2BF71918224ED0C5001E8420 /* ContactInfoViewController.swift in Sources */,
+				171650EC226DF90900D8893D /* SplashViewController.swift in Sources */,
 				2B8954A52242E7D800D6D068 /* AccountNameSetupView.swift in Sources */,
 				2B5DA9DC224D37A100EE41B4 /* PassphraseDisplayView.swift in Sources */,
 				2B6ED95D22608FE700787984 /* HistoryDraft.swift in Sources */,

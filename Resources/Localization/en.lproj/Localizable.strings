@@ -220,13 +220,10 @@
 "node-settings-has-same-result" = "You cannot create same node twice";
 
 "node-settings-db-error-title" = "System operation failed";
-"node-settings-test-error-title" = "Node not detected";
-"node-settings-success-edit-title" = "Node edited";
-"node-settings-success-add-title" = "Node created";
+"node-settings-test-error-title" = "Connection failed";
+"node-settings-test-success-title" = "Connection successful!";
 
 "node-settings-test-error-description" = "We couldn’t connet to the node, please recheck your adress and key";
 "node-settings-database-error-description" = "An error occured on system.";
-"node-settings-success-add-description" = "You created the node successfully. Please enable it";
-"node-settings-success-edit-description" = "You edited the node successfully. Please enable it";
 "node-settings-warning-message" = "This action will remove the node. Are you sure?";
 "node-settings-action-delete-title" = "Delete";
