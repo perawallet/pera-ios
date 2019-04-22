@@ -17,16 +17,17 @@ protocol AccountsHeaderViewDelegate: class {
 class AccountsHeaderView: BaseView {
 
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let algosAvailableLabelTopInset: CGFloat = 54.0
+        let algosAvailableLabelTopInset: CGFloat = 54.0 * verticalScale
         let algosAvailableLabelLeadingInset: CGFloat = 53.0
         let horizontalInset: CGFloat = 25.0
-        let amountLabelTopInset: CGFloat = -12.0
+        let amountLabelTopInset: CGFloat = -12.0 * verticalScale
         let amountLabelLeadingInset: CGFloat = 8.0
-        let verticalInset: CGFloat = 25.0
+        let verticalInset: CGFloat = 25.0 * verticalScale
         let buttonHorizontalInset: CGFloat = 20.0
         let buttonInnerSpacing: CGFloat = 15.0
-        let historyLabelTopInset: CGFloat = 36.0
-        let historyLabelBottomInset: CGFloat = 7.0
+        let historyLabelTopInset: CGFloat = 36.0 * verticalScale
+        let historyLabelBottomInset: CGFloat = 7.0 * verticalScale
+        let buttonHeight: CGFloat = 56.0 * verticalScale
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -131,6 +132,7 @@ class AccountsHeaderView: BaseView {
         sendButton.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(layout.current.buttonHorizontalInset)
             make.top.equalTo(algosAmountLabel.snp.bottom).offset(layout.current.verticalInset)
+            make.height.equalTo(layout.current.buttonHeight)
         }
     }
     

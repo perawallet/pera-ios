@@ -17,8 +17,8 @@ protocol AccountsViewDelegate: class {
 class AccountsView: BaseView {
 
     struct LayoutConstants: AdaptiveLayoutConstants {
-        static let headerHeight: CGFloat = 276.0
-        static let smallHeaderHeight: CGFloat = 134.0
+        static let headerHeight: CGFloat = 276.0 * verticalScale
+        static let smallHeaderHeight: CGFloat = 134.0 * verticalScale
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -51,7 +51,7 @@ class AccountsView: BaseView {
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = .white
-        collectionView.contentInset.top = 276.0
+        collectionView.contentInset.top = 276.0 * verticalScale
         
         collectionView.register(TransactionHistoryCell.self, forCellWithReuseIdentifier: TransactionHistoryCell.reusableIdentifier)
         
@@ -116,7 +116,7 @@ class AccountsView: BaseView {
         transactionHistoryCollectionView.backgroundView = contentStateView
         
         contentStateView.loadingIndicator.snp.updateConstraints { make in
-            make.top.equalToSuperview().inset(326.0)
+            make.top.equalToSuperview().inset(326.0 * verticalScale)
         }
     }
 }

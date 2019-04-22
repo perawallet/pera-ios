@@ -12,9 +12,9 @@ class EmptyStateView: BaseView {
 
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let titleInset: CGFloat = 79.0 * verticalScale
-        let topImageViewInset: CGFloat = 13.0
-        let bottomImageViewInset: CGFloat = 10.0
-        let bottomInset: CGFloat = 90.0 * verticalScale
+        let topImageViewInset: CGFloat = 13.0 * verticalScale
+        let bottomImageViewInset: CGFloat = 10.0 * verticalScale
+        let bottomInset: CGFloat = 150.0 * verticalScale
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -79,7 +79,7 @@ class EmptyStateView: BaseView {
             if alignment == .top {
                 make.top.equalToSuperview().inset(layout.current.titleInset)
             } else {
-                make.bottom.equalTo(topImageView.snp.top).inset(-layout.current.titleInset)
+                make.bottom.equalTo(topImageView.snp.top).inset(-layout.current.topImageViewInset)
             }
         }
     }
@@ -93,7 +93,7 @@ class EmptyStateView: BaseView {
             if alignment == .top {
                 make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.topImageViewInset)
             } else {
-                make.bottom.equalTo(bottomImageView.snp.top).offset(-layout.current.topImageViewInset)
+                make.bottom.equalTo(bottomImageView.snp.top).offset(-layout.current.bottomImageViewInset)
             }
         }
     }
