@@ -99,6 +99,10 @@ extension ContactInfoViewController: ContactInfoViewDelegate {
         tabBarController?.open(.contactQRDisplay(contact: contact), by: .presentWithoutNavigationController)
     }
     
+    func contactInfoViewDidTapSendButton(_ contactInfoView: ContactInfoView) {
+        open(.sendAlgos(receiver: .contact(contact)), by: .push)
+    }
+    
     func contactInfoViewDidEditContactButton(_ contactInfoView: ContactInfoView) {
         let controller = open(.addContact(mode: .edit(contact: contact)), by: .push) as? AddContactViewController
         
