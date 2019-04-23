@@ -17,42 +17,32 @@ protocol NodeSettingsViewModelDelegate: class {
 }
 
 class NodeSettingsViewModel {
-    var indexPath: IndexPath?
-    
     weak var delegate: NodeSettingsViewModelDelegate?
     
     func configureToggle(_ cell: SettingsToggleCell,
                          with node: Node,
                          for indexPath: IndexPath) {
-        self.indexPath = indexPath
-        
+        cell.contextView.indexPath = indexPath
         cell.contextView.nameLabel.text = node.name
         cell.contextView.toggle.setOn(node.isActive, animated: false)
         cell.contextView.delegate = self
     }
     
-    func configureDefaultNode(_ cell: ToggleCell) {
-        cell.contextView.nameLabel.text = "Default Node"
-        cell.contextView.toggle.setOn(true, animated: false)
-        cell.contextView.toggle.isEnabled = false
+    func configureDefaultNode(_ cell: ToggleCell, enabled: Bool, for indexPath: IndexPath) {
+        cell.contextView.indexPath = indexPath
+        cell.contextView.nameLabel.text = "node-settings-default-node-name".localized
+        cell.contextView.toggle.setOn(enabled, animated: false)
+        cell.contextView.delegate = self
     }
 }
 
 // MARK: - SettingsToggleContextViewDelegate
 extension NodeSettingsViewModel: SettingsToggleContextViewDelegate {
-    func settingsToggleDidTapEdit() {
-        guard let indexPath = self.indexPath else {
-            return
-        }
-        
+    func settingsToggleDidTapEdit(forIndexPath indexPath: IndexPath) {
         delegate?.nodeSettingsViewModelDidTapEdit(self, atIndexPath: indexPath)
     }
     
-    func settingsToggle(_ toggle: Toggle, didChangeValue value: Bool) {
-        guard let indexPath = self.indexPath else {
-            return
-        }
-        
+    func settingsToggle(_ toggle: Toggle, didChangeValue value: Bool, forIndexPath indexPath: IndexPath) {
         delegate?.nodeSettingsViewModel(self, didToggleValue: value, atIndexPath: indexPath)
     }
 }

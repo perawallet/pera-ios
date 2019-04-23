@@ -35,15 +35,6 @@ class ChoosePasswordViewController: BaseViewController {
         return manager
     }()
     
-    private lazy var nodeManager: NodeManager? = {
-        guard let api = self.api,
-            mode == .login else {
-                return nil
-        }
-        let manager = NodeManager(api: api)
-        return manager
-    }()
-    
     // MARK: Initialization
     
     init(mode: Mode, route: Screen?, configuration: ViewControllerConfiguration) {
@@ -200,26 +191,18 @@ extension ChoosePasswordViewController: ChoosePasswordViewDelegate {
     }
     
     fileprivate func launchHome() {
-        SVProgressHUD.show(withStatus: "Loading")
+        SVProgressHUD.show(withStatus: "title-loading".localized)
         
-        nodeManager?.checNodes { isFinished in
-            if isFinished {
-                self.accountManager?.fetchAllAccounts {
-                    
-                    SVProgressHUD.showSuccess(withStatus: "Done")
-                    
-                    SVProgressHUD.dismiss(withDelay: 2.0) {
-                        self.open(.home(route: self.route), by: .launch)
-                        
-                        DispatchQueue.main.async {
-                            UIApplication.shared.appDelegate?.validateAccountManagerFetchPolling()
-                        }
-                    }
-                }
-            } else {
-                let viewController = self.open(.nodeSettings(mode: .checkHealth), by: .present) as? NodeSettingsViewController
+        self.accountManager?.fetchAllAccounts {
+            
+            SVProgressHUD.showSuccess(withStatus: "title-done-lowercased".localized)
+            
+            SVProgressHUD.dismiss(withDelay: 1.0) {
+                self.open(.home(route: self.route), by: .launch)
                 
-                viewController?.delegate = self
+                DispatchQueue.main.async {
+                    UIApplication.shared.appDelegate?.validateAccountManagerFetchPolling()
+                }
             }
         }
     }
@@ -233,12 +216,5 @@ extension ChoosePasswordViewController {
         case login
         case resetPassword
         case resetVerify(String)
-    }
-}
-
-// MARK: - NodeSettingsViewControllerDelegate
-extension ChoosePasswordViewController: NodeSettingsViewControllerDelegate {
-    func nodeSettingsViewControllerDidUpdateNode(_ nodeSettingsViewController: NodeSettingsViewController) {
-        self.launchHome()
     }
 }

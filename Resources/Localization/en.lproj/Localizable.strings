@@ -26,6 +26,7 @@
 "title-receive" = "RECEIVE";
 "title-preview" = "PREVIEW";
 "title-done" = "DONE";
+"title-done-lowercased" = "Done";
 "title-loading" = "Loading";
 "default-error-message" = "An error occured.";
 
@@ -140,6 +141,10 @@
 "send-algos-sent-title" = "Algos Sent!";
 "send-algos-alert-title" = "Wrong Transaction";
 "send-algos-alert-message" = "Please fill the fields.";
+"send-algos-minimum-amount-error-new-account" = "You're trying to send money to a new account. The amount must be at least 0.01 Algos";
+"send-algos-minimum-amount-error" = "This transaction will cause your balance to drop below 0.01 Algos, which is the minimum required.";
+"send-algos-contact-not-found" = "Contact not found";
+"send-algos-address-not-selected" = "Address not selected";
 
 // MARK: Algos Receive
 
@@ -211,25 +216,23 @@
 "node-settings-enter-node-name" = "Enter node's name: ";
 "node-settings-enter-node-address" = "Enter node's address: ";
 "node-settings-api-key" = "API Key: ";
-"node-settings-placeholder-name" = "Name";
-"node-settings-placeholder-address" = "Address";
-"node-settings-placeholder-api-key" = "key";
+"node-settings-placeholder-name" = "Algorand Node";
+"node-settings-placeholder-address" = "http://yournode.com:8000";
+"node-settings-placeholder-api-key" = "65ef12c245b47fcf497b1c7d0faea4d82df470671974eeeed3e29ab4df1ed918";
 "node-settings-test-button-title" = "TEST";
 "node-settings-text-validation-empty-error" = "Please fill all fields.";
-"node-settings-text-validation-health-error" = "Address and token are not valid. Please make sure you enter correct one";
+"node-settings-text-validation-health-error" = "Please verify the address and token and try again.";
 "node-settings-has-same-result" = "You cannot create same node twice";
+"node-settings-none-active-node-error-description" = "None of the active nodes seem to be active. Please make sure you have at least one active node before proceeding.";
 
 "node-settings-db-error-title" = "System operation failed";
-"node-settings-test-error-title" = "Node not detected";
-"node-settings-success-edit-title" = "Node edited";
-"node-settings-success-add-title" = "Node created";
+"node-settings-test-error-title" = "Connection failed";
+"node-settings-test-success-title" = "Connection successful!";
 
-"node-settings-test-error-description" = "We couldn’t connet to the node, please recheck your adress and key";
 "node-settings-database-error-description" = "An error occured on system.";
-"node-settings-success-add-description" = "You created the node successfully. Please enable it";
-"node-settings-success-edit-description" = "You edited the node successfully. Please enable it";
 "node-settings-warning-message" = "This action will remove the node. Are you sure?";
 "node-settings-action-delete-title" = "Delete";
+"node-settings-default-node-name" = "Algorand Node";
 
 // MARK: Transaction Detail
 

@@ -9,8 +9,8 @@
 import UIKit
 
 protocol SettingsToggleContextViewDelegate: class {
-    func settingsToggle(_ toggle: Toggle, didChangeValue value: Bool)
-    func settingsToggleDidTapEdit()
+    func settingsToggle(_ toggle: Toggle, didChangeValue value: Bool, forIndexPath indexPath: IndexPath)
+    func settingsToggleDidTapEdit(forIndexPath indexPath: IndexPath)
 }
 
 class SettingsToggleContextView: BaseView {
@@ -29,6 +29,8 @@ class SettingsToggleContextView: BaseView {
     }
     
     weak var delegate: SettingsToggleContextViewDelegate?
+    
+    var indexPath: IndexPath?
     
     // MARK: Components
     
@@ -121,11 +123,19 @@ class SettingsToggleContextView: BaseView {
 extension SettingsToggleContextView {
     @objc
     fileprivate func didChangeToggle(_ toggle: Toggle) {
-        delegate?.settingsToggle(toggle, didChangeValue: toggle.isOn)
+        guard let indexPath = self.indexPath else {
+            return
+        }
+        
+        delegate?.settingsToggle(toggle, didChangeValue: toggle.isOn, forIndexPath: indexPath)
     }
     
     @objc
     fileprivate func didTapEditButton(_ button: UIButton) {
-        delegate?.settingsToggleDidTapEdit()
+        guard let indexPath = self.indexPath else {
+            return
+        }
+        
+        delegate?.settingsToggleDidTapEdit(forIndexPath: indexPath)
     }
 }

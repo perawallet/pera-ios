@@ -23,17 +23,19 @@ class NodeManager {
 
 // MARK: - API
 extension NodeManager {
-    func checNodes(completion: BoolHandler?) {
+    func checkNodes(completion: BoolHandler?) {
         let sortDescriptor = NSSortDescriptor(key: #keyPath(Node.creationDate), ascending: true)
         
         let completionOperation = BlockOperation {
             completion?(false)
         }
         
-        let localNodeOperation = self.localNodeOperation(completion: completion)
-        
-        completionOperation.addDependency(localNodeOperation)
-        self.queue.addOperation(localNodeOperation)
+        if let session = api.session, session.isDefaultNodeActive() {
+            let localNodeOperation = self.localNodeOperation(completion: completion)
+            
+            completionOperation.addDependency(localNodeOperation)
+            self.queue.addOperation(localNodeOperation)
+        }
         
         let nodeResult = Node.fetchAllSyncronous(
             entity: Node.entityName,

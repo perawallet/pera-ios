@@ -26,6 +26,8 @@ class AddNodeViewController: BaseScrollViewController {
         self.mode = mode
         
         super.init(configuration: configuration)
+        
+        hidesBottomBarWhenPushed = true
     }
     
     override func setListeners() {
@@ -215,8 +217,6 @@ class AddNodeViewController: BaseScrollViewController {
                                            Node.DBKeys.address.rawValue: address,
                                            Node.DBKeys.token.rawValue: token])
                 }
-                
-                self.popScreen()
             } else {
                 self.displayAlert(message: "node-settings-text-validation-health-error".localized,
                                   mode: .testFail)
@@ -240,7 +240,7 @@ class AddNodeViewController: BaseScrollViewController {
                     return
                 }
                 
-                self.displayAlert(message: "node-settings-success-add-description".localized,
+                self.displayAlert(message: nil,
                                   mode: .success)
                 
             case let .results(objects):
@@ -250,7 +250,7 @@ class AddNodeViewController: BaseScrollViewController {
                     return
                 }
                 
-                self.displayAlert(message: "node-settings-success-add-description".localized,
+                self.displayAlert(message: nil,
                                   mode: .success)
             }
         }
@@ -266,7 +266,7 @@ class AddNodeViewController: BaseScrollViewController {
                     return
                 }
                 
-                self.displayAlert(message: "node-settings-success-edit-description".localized,
+                self.displayAlert(message: nil,
                                   mode: .success)
                 
             case .error:
@@ -278,7 +278,7 @@ class AddNodeViewController: BaseScrollViewController {
         }
     }
     
-    private func displayAlert(message: String, mode: AlertMode) {
+    private func displayAlert(message: String?, mode: AlertMode) {
         let alertTitle: String
         let image: UIImage?
         
@@ -290,27 +290,21 @@ class AddNodeViewController: BaseScrollViewController {
             alertTitle = "node-settings-test-error-title".localized
             image = img("icon-red-server")
         case .success:
-            switch self.mode {
-            case .edit:
-                alertTitle = "node-settings-success-edit-title".localized
-            case .new:
-                alertTitle = "node-settings-success-add-title".localized
-            }
-            
-            image = img("icon-server")
+            alertTitle = "node-settings-test-success-title".localized
+            image = img("icon-green-server")
         }
         
         let configurator = AlertViewConfigurator(
             title: alertTitle,
             image: image,
-            explanation: message,
+            explanation: message ?? "",
             actionTitle: "title-close".localized) {
                 if mode == .success {
                     self.popScreen()
                 }
         }
         
-        let viewController = AlertViewController(mode: mode == .success ? .default : .destructive,
+        let viewController = AlertViewController(mode: .default,
                                                  alertConfigurator: configurator,
                                                  configuration: configuration)
         viewController.modalPresentationStyle = .overCurrentContext
