@@ -11,6 +11,7 @@ import UIKit
 protocol ContactCellDelegate: class {
     
     func contactCellDidTapQRDisplayButton(_ cell: ContactCell)
+    func contactCellDidTapSendButton(_ cell: ContactCell)
 }
 
 class ContactCell: BaseCollectionViewCell<ContactContextView> {
@@ -32,5 +33,9 @@ extension ContactCell: ContactContextViewDelegate {
     
     func contactContextViewDidTapQRDisplayButton(_ contactContextView: ContactContextView) {
         delegate?.contactCellDidTapQRDisplayButton(self)
+    }
+    
+    func contactContextViewDidTapSendButton(_ contactContextView: ContactContextView) {
+        delegate?.contactCellDidTapSendButton(self)
     }
 }

@@ -71,8 +71,10 @@ class SendAlgosViewController: BaseScrollViewController {
             sendAlgosView.transactionReceiverView.state = receiver
             
             configureInitialAccountState()
-        default:
-            break
+        case .contact:
+            sendAlgosView.transactionReceiverView.state = receiver
+            
+            configureInitialAccountState()
         }
     }
     

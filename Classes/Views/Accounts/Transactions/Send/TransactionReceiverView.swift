@@ -26,11 +26,12 @@ class TransactionReceiverView: BaseView {
         let horizontalInset: CGFloat = 25.0
         let separatorHeight: CGFloat = 1.0
         let containerTopInset: CGFloat = 7.0
-        let qrButtonInset: CGFloat = 65.0
+        let qrButtonInset: CGFloat = 55.0
         let inputViewInset: CGFloat = 85.0
         let verticalInset: CGFloat = 20.0
         let inputViewHeight: CGFloat = 40.0
-        let buttonSize: CGFloat = 20.0
+        let buttonSize: CGFloat = 38.0
+        let buttonInset: CGFloat = 15.0
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -101,6 +102,7 @@ class TransactionReceiverView: BaseView {
         }
         
         receiverContactView.userImageView.backgroundColor = .white
+        receiverContactView.qrDisplayButton.setBackgroundImage(nil, for: .normal)
         receiverContactView.qrDisplayButton.setImage(img("icon-contacts"), for: .normal)
         receiverContactView.separatorView.isHidden = true
         receiverContactView.nameLabel.text = contact.name
@@ -131,9 +133,7 @@ class TransactionReceiverView: BaseView {
     }()
     
     private(set) lazy var qrButton: UIButton = {
-        let button = UIButton(type: .custom)
-        button.setImage(img("icon-qr"), for: .normal)
-        return button
+        UIButton(type: .custom).withImage(img("icon-qr-gray")).withBackgroundImage(img("button-small-bg-gray"))
     }()
     
     private(set) lazy var contactsButton: UIButton = {
@@ -226,7 +226,7 @@ class TransactionReceiverView: BaseView {
         receiverContainerView.addSubview(contactsButton)
         
         contactsButton.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.trailing.equalToSuperview().inset(layout.current.buttonInset)
             make.top.equalTo(passphraseInputView.snp.top)
             make.width.height.equalTo(layout.current.buttonSize)
         }
@@ -245,8 +245,10 @@ class TransactionReceiverView: BaseView {
             make.top.equalToSuperview().inset(0.0)
         }
         
+        receiverContactView.sendButton.isHidden = true
+        
         receiverContactView.qrDisplayButton.snp.updateConstraints { make in
-            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.trailing.equalTo(receiverContactView.sendButton.snp.leading).offset(38.0)
         }
         
         separatorView.snp.updateConstraints { make in
