@@ -48,14 +48,14 @@ class TransactionDetailView: BaseView {
         return view
     }()
     
-    private(set) lazy var accountView: DetailedInformationView = {
+    private(set) lazy var userAccountView: DetailedInformationView = {
         let accountView = DetailedInformationView()
         accountView.explanationLabel.text = "send-algos-from".localized
         accountView.detailLabel.text = "send-algos-select".localized
         return accountView
     }()
     
-    private(set) lazy var transactionReceiverView: TransactionReceiverView = {
+    private(set) lazy var transactionOpponentView: TransactionReceiverView = {
         let view = TransactionReceiverView()
         view.receiverContactView.qrDisplayButton.isHidden = true
         view.qrButton.setImage(img("icon-contact-add"), for: .normal)
@@ -73,7 +73,7 @@ class TransactionDetailView: BaseView {
     // MARK: Setup
     
     override func setListeners() {
-        transactionReceiverView.qrButton.addTarget(self, action: #selector(notifyDelegateToAddContactButtonTapped), for: .touchUpInside)
+        transactionOpponentView.qrButton.addTarget(self, action: #selector(notifyDelegateToAddContactButtonTapped), for: .touchUpInside)
     }
     
     // MARK: Layout
@@ -81,8 +81,8 @@ class TransactionDetailView: BaseView {
     override func prepareLayout() {
         setupTransactionAmountViewLayout()
         setupSeparatorViewLayout()
-        setupAccountViewLayout()
-        setupTransactionReceiverViewLayout()
+        setupUserAccountViewLayout()
+        setupTransactionOpponentViewLayout()
         setupTransactionIdViewLayout()
     }
     
@@ -105,20 +105,20 @@ class TransactionDetailView: BaseView {
         }
     }
     
-    private func setupAccountViewLayout() {
-        addSubview(accountView)
+    private func setupUserAccountViewLayout() {
+        addSubview(userAccountView)
         
-        accountView.snp.makeConstraints { make in
+        userAccountView.snp.makeConstraints { make in
             make.top.equalTo(separatorView.snp.bottom)
             make.leading.trailing.equalToSuperview()
         }
     }
     
-    private func setupTransactionReceiverViewLayout() {
-        addSubview(transactionReceiverView)
+    private func setupTransactionOpponentViewLayout() {
+        addSubview(transactionOpponentView)
         
-        transactionReceiverView.snp.makeConstraints { make in
-            make.top.equalTo(accountView.snp.bottom)
+        transactionOpponentView.snp.makeConstraints { make in
+            make.top.equalTo(userAccountView.snp.bottom)
             make.leading.trailing.equalToSuperview()
             make.height.greaterThanOrEqualTo(layout.current.receiverViewHeight)
         }
@@ -128,7 +128,7 @@ class TransactionDetailView: BaseView {
         addSubview(transactionIdView)
         
         transactionIdView.snp.makeConstraints { make in
-            make.top.equalTo(transactionReceiverView.snp.bottom)
+            make.top.equalTo(transactionOpponentView.snp.bottom)
             make.leading.trailing.equalToSuperview()
             make.bottom.lessThanOrEqualToSuperview().inset(layout.current.bottomInset)
         }

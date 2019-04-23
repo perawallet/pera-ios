@@ -65,7 +65,7 @@ class TransactionDetailViewController: BaseScrollViewController {
 extension TransactionDetailViewController: TransactionDetailViewDelegate {
     
     func transactionDetailViewDidTapAddContactButton(_ transactionDetailView: TransactionDetailView) {
-        guard let address = transactionDetailView.transactionReceiverView.passphraseInputView.inputTextView.text else {
+        guard let address = transactionDetailView.transactionOpponentView.passphraseInputView.inputTextView.text else {
             return
         }
         
