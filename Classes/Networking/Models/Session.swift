@@ -129,6 +129,21 @@ extension Session {
         
         return config.password != nil
     }
+    
+    func isDefaultNodeActive() -> Bool {
+        guard let config = applicationConfiguration else {
+            return false
+        }
+        
+        return config.isDefaultNodeActive
+    }
+    
+    func setDefaultNodeActive(_ isActive: Bool) {
+        if let config = applicationConfiguration {
+            config.update(entity: ApplicationConfiguration.entityName,
+                          with: [ApplicationConfiguration.DBKeys.isDefaultNodeActive.rawValue: NSNumber(value: isActive)])
+        }
+    }
 }
 
 // MARK: - Setting Private Key in Keychain

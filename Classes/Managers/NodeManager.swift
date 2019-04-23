@@ -30,10 +30,12 @@ extension NodeManager {
             completion?(false)
         }
         
-        let localNodeOperation = self.localNodeOperation(completion: completion)
-        
-        completionOperation.addDependency(localNodeOperation)
-        self.queue.addOperation(localNodeOperation)
+        if let session = api.session, session.isDefaultNodeActive() {
+            let localNodeOperation = self.localNodeOperation(completion: completion)
+            
+            completionOperation.addDependency(localNodeOperation)
+            self.queue.addOperation(localNodeOperation)
+        }
         
         let nodeResult = Node.fetchAllSyncronous(
             entity: Node.entityName,

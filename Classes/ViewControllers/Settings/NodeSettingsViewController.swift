@@ -120,7 +120,9 @@ extension NodeSettingsViewController: UICollectionViewDataSource {
                     fatalError("Index path is out of bounds")
             }
             
-            viewModel.configureDefaultNode(cell)
+            viewModel.configureDefaultNode(cell, enabled: session?.isDefaultNodeActive() ?? false, for: indexPath)
+            
+            cell.contextView.toggle.isEnabled = numberOfActiveNodes() > 0
             
             return cell
         } else {
@@ -129,6 +131,8 @@ extension NodeSettingsViewController: UICollectionViewDataSource {
                 for: indexPath) as? SettingsToggleCell else {
                     fatalError("Index path is out of bounds")
             }
+            
+            cell.contextView.toggle.isEnabled = (session?.isDefaultNodeActive() ?? false) || numberOfActiveNodes() > 0
             
             if indexPath.item < nodes.count + 1 {
                 let node = nodes[indexPath.row - 1]
@@ -168,20 +172,45 @@ extension NodeSettingsViewController: NodeSettingsViewModelDelegate {
             return
         }
         
-        let node = nodes[indexPath.item - 1]
+        if indexPath.item == 0 {
+            session?.setDefaultNodeActive(value)
+        } else {
+            let node = nodes[indexPath.item - 1]
+            
+            node.update(entity: Node.entityName, with: ["isActive": NSNumber(value: value)])
+        }
         
-        node.update(entity: Node.entityName, with: ["isActive": NSNumber(value: value)])
+        updateNodes()
     }
     
     func nodeSettingsViewModelDidTapEdit(_ viewModel: NodeSettingsViewModel, atIndexPath indexPath: IndexPath) {
-        
         guard indexPath.item < nodes.count + 1 else {
+            return
+        }
+        
+        if indexPath.item == 0 {
             return
         }
         
         let node = nodes[indexPath.item - 1]
         
         self.open(.editNode(node: node), by: .push)
+    }
+    
+    fileprivate func updateNodes() {
+        for cell in nodeSettingsView.collectionView.visibleCells {
+            if let defaultNodeCell = cell as? ToggleCell {
+                defaultNodeCell.contextView.toggle.isEnabled = numberOfActiveNodes() > 0
+            } else if let nodeCell = cell as? SettingsToggleCell {
+                nodeCell.contextView.toggle.isEnabled = (session?.isDefaultNodeActive() ?? false) || numberOfActiveNodes() > 1
+            }
+        }
+    }
+    
+    fileprivate func numberOfActiveNodes() -> Int {
+        return nodes.filter { node -> Bool in
+            node.isActive
+        }.count
     }
 }
 

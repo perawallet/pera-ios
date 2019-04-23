@@ -216,14 +216,14 @@
 "node-settings-placeholder-api-key" = "65ef12c245b47fcf497b1c7d0faea4d82df470671974eeeed3e29ab4df1ed918";
 "node-settings-test-button-title" = "TEST";
 "node-settings-text-validation-empty-error" = "Please fill all fields.";
-"node-settings-text-validation-health-error" = "Address and token are not valid. Please make sure you enter correct one";
+"node-settings-text-validation-health-error" = "Please verify the address and token and try again.";
 "node-settings-has-same-result" = "You cannot create same node twice";
 
 "node-settings-db-error-title" = "System operation failed";
 "node-settings-test-error-title" = "Connection failed";
 "node-settings-test-success-title" = "Connection successful!";
 
-"node-settings-test-error-description" = "We couldn’t connet to the node, please recheck your adress and key";
 "node-settings-database-error-description" = "An error occured on system.";
 "node-settings-warning-message" = "This action will remove the node. Are you sure?";
 "node-settings-action-delete-title" = "Delete";
+"node-settings-default-node-name" = "Algorand Node";

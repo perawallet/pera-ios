@@ -14,10 +14,12 @@ public final class ApplicationConfiguration: NSManagedObject {
     enum DBKeys: String {
         case password = "password"
         case userData = "authenticatedUserData"
+        case isDefaultNodeActive = "isDefaultNodeActive"
     }
     
     @NSManaged public var password: String?
     @NSManaged public var authenticatedUserData: Data?
+    @NSManaged public var isDefaultNodeActive: Bool
     
     func authenticatedUser() -> User? {
         guard let data = authenticatedUserData else {

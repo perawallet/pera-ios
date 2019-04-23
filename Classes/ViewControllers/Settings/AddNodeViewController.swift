@@ -302,7 +302,7 @@ class AddNodeViewController: BaseScrollViewController {
                 }
         }
         
-        let viewController = AlertViewController(mode: mode == .success ? .default : .destructive,
+        let viewController = AlertViewController(mode: .default,
                                                  alertConfigurator: configurator,
                                                  configuration: configuration)
         viewController.modalPresentationStyle = .overCurrentContext

@@ -64,15 +64,11 @@ class SettingsViewModel {
 
 // MARK: - SettingsToggleContextViewDelegate
 extension SettingsViewModel: SettingsToggleContextViewDelegate {
-    func settingsToggleDidTapEdit() {
-        
+    func settingsToggleDidTapEdit(forIndexPath indexPath: IndexPath) {
     }
     
-    func settingsToggle(_ toggle: Toggle, didChangeValue value: Bool) {
-        guard let indexPath = self.indexPath else {
-            return
-        }
-        
+    func settingsToggle(_ toggle: Toggle, didChangeValue value: Bool, forIndexPath indexPath: IndexPath) {
         delegate?.settingsViewModel(self, didToggleValue: value, atIndexPath: indexPath)
     }
+    
 }
