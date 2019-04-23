@@ -8,31 +8,69 @@
 
 import UIKit
 
-class TransactionDetailViewController: BaseViewController {
+class TransactionDetailViewController: BaseScrollViewController {
+    
+    // MARK: Components
+    
+    private lazy var transactionDetailView: TransactionDetailView = {
+        let view = TransactionDetailView()
+        return view
+    }()
     
     private let transaction: Transaction
+    
+    private let viewModel = TransactionDetailViewModel()
+    
+    // MARK: Initialization
     
     init(transaction: Transaction, configuration: ViewControllerConfiguration) {
         self.transaction = transaction
         
         super.init(configuration: configuration)
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+        hidesBottomBarWhenPushed = true
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    // MARK: Setup
+    
+    override func linkInteractors() {
+        transactionDetailView.delegate = self
     }
-    */
+    
+    override func configureAppearance() {
+        super.configureAppearance()
+        
+        title = "transaction-detail-title".localized
+        
+        viewModel.configure(transactionDetailView, with: transaction)
+    }
+    
+    override func prepareLayout() {
+        super.prepareLayout()
+        
+        setupTransactionDetailViewLayout()
+    }
+    
+    private func setupTransactionDetailViewLayout() {
+        contentView.addSubview(transactionDetailView)
+        
+        transactionDetailView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+    }
+}
 
+// MARK: TransactionDetailViewDelegate
+
+extension TransactionDetailViewController: TransactionDetailViewDelegate {
+    
+    func transactionDetailViewDidTapAddContactButton(_ transactionDetailView: TransactionDetailView) {
+        guard let address = transactionDetailView.transactionReceiverView.passphraseInputView.inputTextView.text else {
+            return
+        }
+        
+        let viewController = open(.addContact(mode: .new), by: .push) as? AddContactViewController
+        
+        viewController?.addContactView.userInformationView.algorandAddressInputView.value = address
+    }
 }

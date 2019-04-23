@@ -234,6 +234,7 @@
 		2BF34CC9223AA63D0052CAD3 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2BF34CCB223AA63D0052CAD3 /* Localizable.strings */; };
 		2BF3D832226F0F9100716C09 /* TransactionDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF3D831226F0F9100716C09 /* TransactionDetailViewController.swift */; };
 		2BF3D835226F0FAA00716C09 /* TransactionDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF3D834226F0FAA00716C09 /* TransactionDetailView.swift */; };
+		2BF3D838226F43C000716C09 /* TransactionDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF3D837226F43C000716C09 /* TransactionDetailViewModel.swift */; };
 		2BF5314E22491E7F00A7455F /* QRScannerOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF5314D22491E7F00A7455F /* QRScannerOverlayView.swift */; };
 		2BF53153224A460B00A7455F /* ModalConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF53152224A460B00A7455F /* ModalConfiguration.swift */; };
 		2BF53155224A468400A7455F /* ModalPresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF53154224A468400A7455F /* ModalPresentable.swift */; };
@@ -495,6 +496,7 @@
 		2BF34CCA223AA63D0052CAD3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		2BF3D831226F0F9100716C09 /* TransactionDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailViewController.swift; sourceTree = "<group>"; };
 		2BF3D834226F0FAA00716C09 /* TransactionDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailView.swift; sourceTree = "<group>"; };
+		2BF3D837226F43C000716C09 /* TransactionDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailViewModel.swift; sourceTree = "<group>"; };
 		2BF5314D22491E7F00A7455F /* QRScannerOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRScannerOverlayView.swift; sourceTree = "<group>"; };
 		2BF53152224A460B00A7455F /* ModalConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalConfiguration.swift; sourceTree = "<group>"; };
 		2BF53154224A468400A7455F /* ModalPresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalPresentable.swift; sourceTree = "<group>"; };
@@ -844,6 +846,7 @@
 		2B656E9C224BCAF60064A49B /* Accounts */ = {
 			isa = PBXGroup;
 			children = (
+				2BF3D836226F43AC00716C09 /* Transaction */,
 				2BB021DE224E5FBC0039D78A /* Main */,
 				2B5DA9CF224CCC6F00EE41B4 /* Options */,
 				2B656E9D224BCB010064A49B /* AccountList */,
@@ -1904,6 +1907,14 @@
 			path = Detail;
 			sourceTree = "<group>";
 		};
+		2BF3D836226F43AC00716C09 /* Transaction */ = {
+			isa = PBXGroup;
+			children = (
+				2BF3D837226F43C000716C09 /* TransactionDetailViewModel.swift */,
+			);
+			path = Transaction;
+			sourceTree = "<group>";
+		};
 		2BF5314C22491E6A00A7455F /* QR */ = {
 			isa = PBXGroup;
 			children = (
@@ -2380,6 +2391,7 @@
 				2BF53180224AA8C500A7455F /* HistoryViewController.swift in Sources */,
 				17F9E9222257895A004CDF24 /* AsyncOperation.swift in Sources */,
 				2B5DA9DA224D2F5C00EE41B4 /* PassphraseDisplayViewController.swift in Sources */,
+				2BF3D838226F43C000716C09 /* TransactionDetailViewModel.swift in Sources */,
 				2BB021E3224E7AD20039D78A /* TransactionHistoryDataSource.swift in Sources */,
 				2BF5315B224A46E400A7455F /* UIVIewController+Presentation.swift in Sources */,
 				173DA1E72255EBE000378A82 /* String+Address.swift in Sources */,
