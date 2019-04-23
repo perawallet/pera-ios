@@ -100,6 +100,14 @@ extension TransactionHistoryDataSource {
         return transactions.count
     }
     
+    func transaction(at indexPath: IndexPath) -> Transaction? {
+        if indexPath.row >= 0 && indexPath.row < transactions.count {
+            return transactions[indexPath.row]
+        }
+        
+        return nil
+    }
+    
     func clear() {
         currentPaginationOffset = 0
         fetchRequest?.invalidate()

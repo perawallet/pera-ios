@@ -232,6 +232,8 @@
 		2BF34CC2223A95A50052CAD3 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF34CC1223A95A50052CAD3 /* API.swift */; };
 		2BF34CC5223A99670052CAD3 /* String+Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF34CC4223A99670052CAD3 /* String+Localization.swift */; };
 		2BF34CC9223AA63D0052CAD3 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2BF34CCB223AA63D0052CAD3 /* Localizable.strings */; };
+		2BF3D832226F0F9100716C09 /* TransactionDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF3D831226F0F9100716C09 /* TransactionDetailViewController.swift */; };
+		2BF3D835226F0FAA00716C09 /* TransactionDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF3D834226F0FAA00716C09 /* TransactionDetailView.swift */; };
 		2BF5314E22491E7F00A7455F /* QRScannerOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF5314D22491E7F00A7455F /* QRScannerOverlayView.swift */; };
 		2BF53153224A460B00A7455F /* ModalConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF53152224A460B00A7455F /* ModalConfiguration.swift */; };
 		2BF53155224A468400A7455F /* ModalPresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF53154224A468400A7455F /* ModalPresentable.swift */; };
@@ -491,6 +493,8 @@
 		2BF34CC1223A95A50052CAD3 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		2BF34CC4223A99670052CAD3 /* String+Localization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Localization.swift"; sourceTree = "<group>"; };
 		2BF34CCA223AA63D0052CAD3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		2BF3D831226F0F9100716C09 /* TransactionDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailViewController.swift; sourceTree = "<group>"; };
+		2BF3D834226F0FAA00716C09 /* TransactionDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailView.swift; sourceTree = "<group>"; };
 		2BF5314D22491E7F00A7455F /* QRScannerOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRScannerOverlayView.swift; sourceTree = "<group>"; };
 		2BF53152224A460B00A7455F /* ModalConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalConfiguration.swift; sourceTree = "<group>"; };
 		2BF53154224A468400A7455F /* ModalPresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalPresentable.swift; sourceTree = "<group>"; };
@@ -698,6 +702,7 @@
 		2B56F7CE225B3AD700E58737 /* Transactions */ = {
 			isa = PBXGroup;
 			children = (
+				2BF3D833226F0F9A00716C09 /* Detail */,
 				2B56F7D0225B3AE400E58737 /* Receive */,
 				2B56F7CF225B3ADF00E58737 /* Send */,
 			);
@@ -737,6 +742,7 @@
 		2B56F7D2225B3B0500E58737 /* Transactions */ = {
 			isa = PBXGroup;
 			children = (
+				2BF3D830226F0F7900716C09 /* Detail */,
 				2B56F7D4225B3B1000E58737 /* Send */,
 				2B56F7D3225B3B0C00E58737 /* Receive */,
 			);
@@ -1882,6 +1888,22 @@
 			path = Fonts;
 			sourceTree = "<group>";
 		};
+		2BF3D830226F0F7900716C09 /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+				2BF3D831226F0F9100716C09 /* TransactionDetailViewController.swift */,
+			);
+			path = Detail;
+			sourceTree = "<group>";
+		};
+		2BF3D833226F0F9A00716C09 /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+				2BF3D834226F0FAA00716C09 /* TransactionDetailView.swift */,
+			);
+			path = Detail;
+			sourceTree = "<group>";
+		};
 		2BF5314C22491E6A00A7455F /* QR */ = {
 			isa = PBXGroup;
 			children = (
@@ -2220,6 +2242,7 @@
 				2B8954B72243FCB100D6D068 /* Notification+Keyboard.swift in Sources */,
 				2B8954B62243FBD600D6D068 /* NotificationCenter+Additions.swift in Sources */,
 				171111B4225E091A00DAF55C /* SettingsToggleCell.swift in Sources */,
+				2BF3D832226F0F9100716C09 /* TransactionDetailViewController.swift in Sources */,
 				2BA242382263C0D800E2841F /* SwiftDate+Region.swift in Sources */,
 				17AA1B0422660E59000B0BB0 /* Formatter+Additions.swift in Sources */,
 				2BDDCA482268A3630081CED2 /* DeepLinkParser.swift in Sources */,
@@ -2388,6 +2411,7 @@
 				17BEC4662248D39900AAF370 /* PassPhraseCollectionViewCell.swift in Sources */,
 				2B7572A6225CA1E3009E0253 /* SendAlgosPreviewView.swift in Sources */,
 				2BD739CC223F97B100B66EEF /* IntroductionViewController.swift in Sources */,
+				2BF3D835226F0FAA00716C09 /* TransactionDetailView.swift in Sources */,
 				2B656E93224BAF2E0064A49B /* OptionsViewController.swift in Sources */,
 				2B59F1392254BABF005203DD /* algorand.xcdatamodeld in Sources */,
 				2B25BB47225E03610092C972 /* DetailedInformationView.swift in Sources */,
