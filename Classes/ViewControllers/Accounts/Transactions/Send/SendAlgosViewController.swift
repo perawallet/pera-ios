@@ -8,6 +8,7 @@
 
 import UIKit
 import SnapKit
+import SVProgressHUD
 
 class SendAlgosViewController: BaseScrollViewController {
     
@@ -163,22 +164,72 @@ class SendAlgosViewController: BaseScrollViewController {
             amount = doubleValue
         }
         
-        if !isTransactionValid() {
+        guard let fromAccount = selectedAccount, isTransactionValid() else {
             displaySimpleAlertWith(title: "send-algos-alert-title".localized, message: "send-algos-alert-message".localized)
-        }
-        
-        guard let fromAccount = selectedAccount else {
             return
         }
         
-        let transaction = TransactionPreviewDraft(fromAccount: fromAccount, amount: amount, identifier: nil, fee: nil)
+        if fromAccount.amount - UInt64(amount.toMicroAlgos) < minimumTransactionMicroAlgosLimit {
+            self.displaySimpleAlertWith(title: "title-error".localized, message: "send-algos-minimum-amount-error".localized)
+            return
+        }
         
-        let sendAlgosPreviewViewController = open(
-            .sendAlgosPreview(transaction: transaction, receiver: receiver),
-            by: .push
-        ) as? SendAlgosPreviewViewController
-        
-        sendAlgosPreviewViewController?.delegate = self
+        if amount.toMicroAlgos < minimumTransactionMicroAlgosLimit {
+            let receiverAddress: String
+            
+            switch receiver {
+            case let .address(address, _):
+                receiverAddress = address
+                
+            case let .contact(contact):
+                guard let contactAddress = contact.address else {
+                    self.displaySimpleAlertWith(title: "title-error".localized, message: "send-algos-contact-not-found".localized)
+                    return
+                }
+                receiverAddress = contactAddress
+                
+            case .initial:
+                self.displaySimpleAlertWith(title: "title-error".localized, message: "send-algos-address-not-selected".localized)
+                return
+            }
+            
+            let receiverFetchDraft = AccountFetchDraft(publicKey: receiverAddress)
+            
+            SVProgressHUD.show(withStatus: "title-loading".localized)
+            self.api?.fetchAccount(with: receiverFetchDraft) { accountResponse in
+                SVProgressHUD.dismiss()
+                
+                switch accountResponse {
+                case let .failure(error):
+                    self.displaySimpleAlertWith(title: "title-error".localized, message: error.localizedDescription)
+                case let .success(account):
+                    if account.amount == 0 {
+                        self.displaySimpleAlertWith(title: "title-error".localized,
+                                                    message: "send-algos-minimum-amount-error-new-account".localized)
+                    } else {
+                        let transaction = TransactionPreviewDraft(fromAccount: fromAccount, amount: self.amount, identifier: nil, fee: nil)
+                        
+                        let sendAlgosPreviewViewController = self.open(
+                            .sendAlgosPreview(transaction: transaction, receiver: self.receiver),
+                            by: .push
+                            ) as? SendAlgosPreviewViewController
+                        
+                        sendAlgosPreviewViewController?.delegate = self
+                    }
+                }
+            }
+            
+            return
+        } else {
+            let transaction = TransactionPreviewDraft(fromAccount: fromAccount, amount: amount, identifier: nil, fee: nil)
+            
+            let sendAlgosPreviewViewController = open(
+                .sendAlgosPreview(transaction: transaction, receiver: receiver),
+                by: .push
+                ) as? SendAlgosPreviewViewController
+            
+            sendAlgosPreviewViewController?.delegate = self
+        }
     }
     
     private func isTransactionValid() -> Bool {

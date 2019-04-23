@@ -10,6 +10,7 @@ import Foundation
 
 let algosInMicroAlgos = 1000000
 let maximumMicroAlgos = Int64.max / Int64(algosInMicroAlgos)
+let minimumTransactionMicroAlgosLimit = 10000
 
 extension Int {
     var toAlgos: Double {

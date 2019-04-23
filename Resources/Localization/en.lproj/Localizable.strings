@@ -141,6 +141,10 @@
 "send-algos-sent-title" = "Algos Sent!";
 "send-algos-alert-title" = "Wrong Transaction";
 "send-algos-alert-message" = "Please fill the fields.";
+"send-algos-minimum-amount-error-new-account" = "You're trying to send money to a new account. The amount must be at least 0.01 Algos";
+"send-algos-minimum-amount-error" = "This transaction will cause your balance to drop below 0.01 Algos, which is the minimum required.";
+"send-algos-contact-not-found" = "Contact not found";
+"send-algos-address-not-selected" = "Address not selected";
 
 // MARK: Algos Receive
 
