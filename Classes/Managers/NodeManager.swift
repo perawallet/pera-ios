@@ -23,7 +23,7 @@ class NodeManager {
 
 // MARK: - API
 extension NodeManager {
-    func checNodes(completion: BoolHandler?) {
+    func checkNodes(completion: BoolHandler?) {
         let sortDescriptor = NSSortDescriptor(key: #keyPath(Node.creationDate), ascending: true)
         
         let completionOperation = BlockOperation {

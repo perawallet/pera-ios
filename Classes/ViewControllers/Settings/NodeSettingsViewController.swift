@@ -153,14 +153,18 @@ extension NodeSettingsViewController: UICollectionViewDataSource {
                     fatalError("Index path is out of bounds")
             }
             
-            cell.contextView.toggle.isEnabled = (session?.isDefaultNodeActive() ?? false) || numberOfActiveNodes() > 0
-            
             if indexPath.item < nodes.count + 1 {
                 let node = nodes[indexPath.row - 1]
                 
                 viewModel.configureToggle(cell, with: node, for: indexPath)
                 
                 viewModel.delegate = self
+                
+                if node.isActive {
+                    cell.contextView.toggle.isEnabled = (session?.isDefaultNodeActive() ?? false) || numberOfActiveNodes() > 1
+                } else {
+                    cell.contextView.toggle.isEnabled = true
+                }
             }
             
             return cell
@@ -223,7 +227,17 @@ extension NodeSettingsViewController: NodeSettingsViewModelDelegate {
             if let defaultNodeCell = cell as? ToggleCell {
                 defaultNodeCell.contextView.toggle.isEnabled = numberOfActiveNodes() > 0
             } else if let nodeCell = cell as? SettingsToggleCell {
-                nodeCell.contextView.toggle.isEnabled = (session?.isDefaultNodeActive() ?? false) || numberOfActiveNodes() > 1
+                guard let indexPath = nodeCell.contextView.indexPath else {
+                    continue
+                }
+                
+                let node = nodes[indexPath.row - 1]
+                
+                if node.isActive {
+                    nodeCell.contextView.toggle.isEnabled = (session?.isDefaultNodeActive() ?? false) || numberOfActiveNodes() > 1
+                } else {
+                    nodeCell.contextView.toggle.isEnabled = true
+                }
             }
         }
     }
@@ -233,7 +247,7 @@ extension NodeSettingsViewController: NodeSettingsViewModelDelegate {
         self.view.isUserInteractionEnabled = false
         canTapBarButton = false
         
-        nodeManager?.checNodes { isHealthy in
+        nodeManager?.checkNodes { isHealthy in
             
             if isHealthy {
                 SVProgressHUD.showSuccess(withStatus: "title-done-lowercased".localized)
