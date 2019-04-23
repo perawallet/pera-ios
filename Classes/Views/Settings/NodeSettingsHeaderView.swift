@@ -55,7 +55,7 @@ class NodeSettingsHeaderView: BaseView {
             make.height.width.equalTo(50)
         }
         
-        setImage("icon-server", active: false)
+        setImage("icon-server", active: true)
         
         addSubview(titleLabel)
         
