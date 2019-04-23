@@ -11,19 +11,19 @@ target 'algorand' do
 	pod 'SwiftLint'
 
 	#Networking
-    pod 'Magpie', :git => 'https://github.com/Hipo/magpie.git', :branch => 'basic-upload-function'
+  pod 'Magpie', :git => 'https://github.com/Hipo/magpie.git'
 
-    #Persistance
-    pod 'KeychainAccess'
+  #Persistance
+  pod 'KeychainAccess'
     
-    #Date
-    pod 'SwiftDate'
+  #Date
+  pod 'SwiftDate'
     
-    #UI
-    pod 'SVProgressHUD'
+  #UI
+  pod 'SVProgressHUD'
 
-    #Analytics
-    pod 'Firebase/Core'
-    pod 'Fabric'
-    pod 'Crashlytics'
+  #Analytics
+  pod 'Firebase/Core'
+  pod 'Fabric'
+  pod 'Crashlytics'
 end
