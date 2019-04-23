@@ -22,6 +22,7 @@ class SendAlgosView: BaseView {
         let topInset: CGFloat = 15.0 * verticalScale
         let horizontalInset: CGFloat = 25.0
         let accountsViewInset: CGFloat = 20.0
+        let buttonInset: CGFloat = 15.0
         let bottomInset: CGFloat = 18.0
         let buttonMinimumInset: CGFloat = 18.0 * verticalScale
     }
@@ -48,7 +49,12 @@ class SendAlgosView: BaseView {
         return selectAccountView
     }()
     
-    private(set) lazy var transactionReceiverView = TransactionReceiverView()
+    private(set) lazy var transactionReceiverView: TransactionReceiverView = {
+        let view = TransactionReceiverView()
+        view.qrButton.setBackgroundImage(nil, for: .normal)
+        view.qrButton.setImage(img("icon-qr"), for: .normal)
+        return view
+    }()
     
     private(set) lazy var previewButton: UIButton = {
         UIButton(type: .custom)
@@ -102,7 +108,7 @@ class SendAlgosView: BaseView {
         }
         
         accountSelectionView.rightInputAccessoryButton.snp.updateConstraints { make in
-            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.trailing.equalToSuperview().inset(layout.current.buttonInset)
         }
     }
     

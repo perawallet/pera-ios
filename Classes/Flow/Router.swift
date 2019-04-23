@@ -215,6 +215,13 @@ class Router {
             viewController = AddNodeViewController(mode: .edit(node: node), configuration: configuration)
         case .splash:
             viewController = SplashViewController(configuration: configuration)
+        case let .transactionDetail(account, transaction, transactionType):
+            viewController = TransactionDetailViewController(
+                account: account,
+                transaction: transaction,
+                transactionType: transactionType,
+                configuration: configuration
+            )
         }
         
         return viewController as? T

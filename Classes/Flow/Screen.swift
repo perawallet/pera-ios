@@ -36,6 +36,7 @@ indirect enum Screen {
     case addNode
     case editNode(node: Node)
     case splash
+    case transactionDetail(account: Account, transaction: Transaction, transactionType: TransactionType)
 }
 
 extension Screen {

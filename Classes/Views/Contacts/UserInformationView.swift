@@ -76,7 +76,8 @@ class UserInformationView: BaseView {
         algorandAddressInputView.nextButtonMode = .submit
         algorandAddressInputView.inputTextView.autocorrectionType = .no
         algorandAddressInputView.inputTextView.autocapitalizationType = .none
-        algorandAddressInputView.rightInputAccessoryButton.setImage(img("icon-qr"), for: .normal)
+        algorandAddressInputView.rightInputAccessoryButton.setImage(img("icon-qr-gray"), for: .normal)
+        algorandAddressInputView.rightInputAccessoryButton.setBackgroundImage(img("button-small-bg-gray"), for: .normal)
         algorandAddressInputView.inputTextView.textContainer.heightTracksTextView = false
         algorandAddressInputView.inputTextView.isScrollEnabled = true
         algorandAddressInputView.backgroundColor = .white

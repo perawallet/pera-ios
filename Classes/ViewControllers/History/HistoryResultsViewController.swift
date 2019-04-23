@@ -126,6 +126,20 @@ class HistoryResultsViewController: BaseViewController {
 
 extension HistoryResultsViewController: UICollectionViewDelegateFlowLayout {
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let transaction = transactionHistoryDataSource.transaction(at: indexPath) else {
+            return
+        }
+        
+        if let payment = transaction.payment,
+            payment.toAddress == draft.account.address {
+            
+            open(.transactionDetail(account: draft.account, transaction: transaction, transactionType: .received), by: .push)
+        } else {
+            open(.transactionDetail(account: draft.account, transaction: transaction, transactionType: .sent), by: .push)
+        }
+    }
+    
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,

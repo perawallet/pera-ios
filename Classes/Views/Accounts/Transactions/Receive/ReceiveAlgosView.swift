@@ -20,6 +20,7 @@ class ReceiveAlgosView: BaseView {
         let topInset: CGFloat = 20.0
         let horizontalInset: CGFloat = 25.0
         let bottomInset: CGFloat = 18.0
+        let buttonInset: CGFloat = 15.0
         let buttonMinimumInset: CGFloat = 18.0
     }
     
@@ -92,7 +93,7 @@ class ReceiveAlgosView: BaseView {
         }
         
         accountSelectionView.rightInputAccessoryButton.snp.updateConstraints { make in
-            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.trailing.equalToSuperview().inset(layout.current.buttonInset)
         }
     }
     

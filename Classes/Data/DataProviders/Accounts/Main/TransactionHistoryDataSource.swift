@@ -61,6 +61,8 @@ class TransactionHistoryDataSource: NSObject, UICollectionViewDataSource {
             if let contact = contacts.first(where: { contact -> Bool in
                 contact.address == transaction.from || contact.address == transaction.payment?.toAddress
             }) {
+                transaction.contact = contact
+                
                 viewModel.configure(cell, with: transaction, for: contact)
             } else {
                 viewModel.configure(cell, with: transaction)
@@ -98,6 +100,14 @@ extension TransactionHistoryDataSource {
     
     func transactionCount() -> Int {
         return transactions.count
+    }
+    
+    func transaction(at indexPath: IndexPath) -> Transaction? {
+        if indexPath.row >= 0 && indexPath.row < transactions.count {
+            return transactions[indexPath.row]
+        }
+        
+        return nil
     }
     
     func clear() {
