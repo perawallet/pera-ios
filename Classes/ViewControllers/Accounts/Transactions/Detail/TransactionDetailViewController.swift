@@ -8,23 +8,32 @@
 
 import UIKit
 
+enum TransactionType {
+    case sent
+    case received
+}
+
 class TransactionDetailViewController: BaseScrollViewController {
     
     // MARK: Components
     
     private lazy var transactionDetailView: TransactionDetailView = {
-        let view = TransactionDetailView()
+        let view = TransactionDetailView(transactionType: transactionType)
         return view
     }()
     
     private let transaction: Transaction
+    private let account: Account
+    private let transactionType: TransactionType
     
     private let viewModel = TransactionDetailViewModel()
     
     // MARK: Initialization
     
-    init(transaction: Transaction, configuration: ViewControllerConfiguration) {
+    init(account: Account, transaction: Transaction, transactionType: TransactionType, configuration: ViewControllerConfiguration) {
+        self.account = account
         self.transaction = transaction
+        self.transactionType = transactionType
         
         super.init(configuration: configuration)
         
@@ -42,7 +51,11 @@ class TransactionDetailViewController: BaseScrollViewController {
         
         title = "transaction-detail-title".localized
         
-        viewModel.configure(transactionDetailView, with: transaction)
+        if transactionType == .received {
+            viewModel.configureReceivedTransaction(transactionDetailView, with: transaction, for: account)
+        } else {
+            viewModel.configureSentTransaction(transactionDetailView, with: transaction, for: account)
+        }
     }
     
     override func prepareLayout() {

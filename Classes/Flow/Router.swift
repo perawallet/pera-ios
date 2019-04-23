@@ -213,8 +213,13 @@ class Router {
             viewController = AddNodeViewController(mode: .new, configuration: configuration)
         case let .editNode(node):
             viewController = AddNodeViewController(mode: .edit(node: node), configuration: configuration)
-        case let .transactionDetail(transaction):
-            viewController = TransactionDetailViewController(transaction: transaction, configuration: configuration)
+        case let .transactionDetail(account, transaction, transactionType):
+            viewController = TransactionDetailViewController(
+                account: account,
+                transaction: transaction,
+                transactionType: transactionType,
+                configuration: configuration
+            )
         }
         
         return viewController as? T

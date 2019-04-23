@@ -17,11 +17,14 @@ class TransactionDetailView: BaseView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
 
-        let amountViewTopInset: CGFloat = 30.0
+        let amountViewTopInset: CGFloat = 50.0
         let horizontalInset: CGFloat = 25.0
         let amountViewBottomInset: CGFloat = 20.0
         let receiverViewHeight: CGFloat = 90.0
+        let imageSize: CGFloat = 29.0
+        let imageInset: CGFloat = 5.0
         let separatorHeight: CGFloat = 1.0
+        let amountViewHeight: CGFloat = 55.0
         let bottomInset: CGFloat = 10.0
     }
     
@@ -39,6 +42,9 @@ class TransactionDetailView: BaseView {
         let view = AlgosAmountView()
         view.signLabel.font = UIFont.font(.opensans, withWeight: .bold(size: 40.0))
         view.amountLabel.font = UIFont.font(.opensans, withWeight: .bold(size: 40.0))
+        view.amountLabel.textAlignment = .left
+        view.algoIconImageView.image = img("algos-icon-big", isTemplate: true)
+        view.algoIconImageView.contentMode = .scaleToFill
         return view
     }()
     
@@ -70,6 +76,16 @@ class TransactionDetailView: BaseView {
         return transactionIdView
     }()
     
+    // MARK: Components
+    
+    private let transactionType: TransactionType
+    
+    init(transactionType: TransactionType) {
+        self.transactionType = transactionType
+        
+        super.init(frame: .zero)
+    }
+    
     // MARK: Setup
     
     override func setListeners() {
@@ -81,8 +97,15 @@ class TransactionDetailView: BaseView {
     override func prepareLayout() {
         setupTransactionAmountViewLayout()
         setupSeparatorViewLayout()
-        setupUserAccountViewLayout()
-        setupTransactionOpponentViewLayout()
+        
+        if transactionType == .received {
+            setupTransactionOpponentViewLayout()
+            setupUserAccountViewLayout()
+        } else {
+            setupUserAccountViewLayout()
+            setupTransactionOpponentViewLayout()
+        }
+
         setupTransactionIdViewLayout()
     }
     
@@ -92,6 +115,21 @@ class TransactionDetailView: BaseView {
         transactionAmountView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
             make.top.equalToSuperview().inset(layout.current.amountViewTopInset)
+            make.height.equalTo(layout.current.amountViewHeight)
+        }
+        
+        adjustTransactionAmountViewComponentsLayout()
+    }
+    
+    private func adjustTransactionAmountViewComponentsLayout() {
+        transactionAmountView.algoIconImageView.snp.makeConstraints { make in
+            make.width.height.equalTo(layout.current.imageSize)
+        }
+        
+        transactionAmountView.amountLabel.snp.remakeConstraints { make in
+            make.leading.equalTo(transactionAmountView.algoIconImageView.snp.trailing).offset(layout.current.imageInset)
+            make.centerY.equalToSuperview()
+            make.trailing.lessThanOrEqualToSuperview()
         }
     }
     
@@ -109,7 +147,12 @@ class TransactionDetailView: BaseView {
         addSubview(userAccountView)
         
         userAccountView.snp.makeConstraints { make in
-            make.top.equalTo(separatorView.snp.bottom)
+            if transactionType == .received {
+                make.top.equalTo(transactionOpponentView.snp.bottom)
+            } else {
+                make.top.equalTo(separatorView.snp.bottom)
+            }
+            
             make.leading.trailing.equalToSuperview()
         }
     }
@@ -118,7 +161,12 @@ class TransactionDetailView: BaseView {
         addSubview(transactionOpponentView)
         
         transactionOpponentView.snp.makeConstraints { make in
-            make.top.equalTo(userAccountView.snp.bottom)
+            if transactionType == .received {
+                make.top.equalTo(separatorView.snp.bottom)
+            } else {
+                make.top.equalTo(userAccountView.snp.bottom)
+            }
+            
             make.leading.trailing.equalToSuperview()
             make.height.greaterThanOrEqualTo(layout.current.receiverViewHeight)
         }
@@ -128,7 +176,12 @@ class TransactionDetailView: BaseView {
         addSubview(transactionIdView)
         
         transactionIdView.snp.makeConstraints { make in
-            make.top.equalTo(transactionOpponentView.snp.bottom)
+            if transactionType == .received {
+                make.top.equalTo(userAccountView.snp.bottom)
+            } else {
+                make.top.equalTo(transactionOpponentView.snp.bottom)
+            }
+            
             make.leading.trailing.equalToSuperview()
             make.bottom.lessThanOrEqualToSuperview().inset(layout.current.bottomInset)
         }

@@ -35,7 +35,7 @@ indirect enum Screen {
     case nodeSettings(mode: NodeSettingsViewController.Mode)
     case addNode
     case editNode(node: Node)
-    case transactionDetail(transaction: Transaction)
+    case transactionDetail(account: Account, transaction: Transaction, transactionType: TransactionType)
 }
 
 extension Screen {

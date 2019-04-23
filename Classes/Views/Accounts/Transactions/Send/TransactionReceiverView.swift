@@ -111,7 +111,7 @@ class TransactionReceiverView: BaseView {
     
     // MARK: Components
     
-    private lazy var titleLabel: UILabel = {
+    private(set) lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.font(.opensans, withWeight: .semiBold(size: 12.0))
         label.text = "send-algos-to".localized

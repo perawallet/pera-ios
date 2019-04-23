@@ -10,7 +10,41 @@ import UIKit
 
 class TransactionDetailViewModel {
     
-    func configure(_ view: TransactionDetailView, with transaction: Transaction) {
+    func configureReceivedTransaction(_ view: TransactionDetailView, with transaction: Transaction, for account: Account) {
+        guard let payment = transaction.payment else {
+            return
+        }
         
+        view.userAccountView.detailLabel.text = account.name
+        view.transactionOpponentView.titleLabel.text = "send-algos-from".localized
+        view.userAccountView.explanationLabel.text = "send-algos-to".localized
+        view.transactionIdView.detailLabel.text = transaction.id.identifier
+        
+        if let contact = transaction.contact {
+            view.transactionOpponentView.state = .contact(contact)
+        } else {
+            view.transactionOpponentView.state = .address(address: payment.toAddress, amount: nil)
+        }
+        
+        view.transactionAmountView.mode = .positive(payment.amount.toAlgos)
+    }
+    
+    func configureSentTransaction(_ view: TransactionDetailView, with transaction: Transaction, for account: Account) {
+        guard let payment = transaction.payment else {
+            return
+        }
+        
+        view.userAccountView.detailLabel.text = account.name
+        view.userAccountView.explanationLabel.text = "send-algos-from".localized
+        view.transactionOpponentView.titleLabel.text = "send-algos-to".localized
+        view.transactionIdView.detailLabel.text = transaction.id.identifier
+        
+        if let contact = transaction.contact {
+            view.transactionOpponentView.state = .contact(contact)
+        } else {
+            view.transactionOpponentView.state = .address(address: payment.toAddress, amount: nil)
+        }
+        
+        view.transactionAmountView.mode = .negative(payment.amount.toAlgos)
     }
 }

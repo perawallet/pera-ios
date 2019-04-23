@@ -131,7 +131,13 @@ extension HistoryResultsViewController: UICollectionViewDelegateFlowLayout {
             return
         }
         
-        open(.transactionDetail(transaction: transaction), by: .push)
+        if let payment = transaction.payment,
+            payment.toAddress == draft.account.address {
+            
+            open(.transactionDetail(account: draft.account, transaction: transaction, transactionType: .received), by: .push)
+        } else {
+            open(.transactionDetail(account: draft.account, transaction: transaction, transactionType: .sent), by: .push)
+        }
     }
     
     func collectionView(
