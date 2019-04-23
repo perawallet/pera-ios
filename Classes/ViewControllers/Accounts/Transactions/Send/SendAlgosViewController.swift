@@ -306,7 +306,10 @@ extension SendAlgosViewController: QRScannerViewControllerDelegate {
     func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, then handler: EmptyHandler?) {
         sendAlgosView.transactionReceiverView.state = .address(address: qrText.text, amount: nil)
         
-        if let receivedAmount = qrText.amount?.toAlgos {
+        if let amountFromQR = qrText.amount,
+            amountFromQR != 0 {
+            let receivedAmount = amountFromQR.toAlgos
+            
             amount = receivedAmount
             
             sendAlgosView.algosInputView.inputTextField.text = receivedAmount.toDecimalStringForInput
