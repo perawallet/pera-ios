@@ -66,7 +66,7 @@ DEPENDENCIES:
   - Fabric
   - Firebase/Core
   - KeychainAccess
-  - Magpie (from `https://github.com/Hipo/magpie.git`, branch `basic-upload-function`)
+  - Magpie (from `https://github.com/Hipo/magpie.git`)
   - SnapKit
   - SVProgressHUD
   - SwiftDate
@@ -92,12 +92,11 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   Magpie:
-    :branch: basic-upload-function
     :git: https://github.com/Hipo/magpie.git
 
 CHECKOUT OPTIONS:
   Magpie:
-    :commit: 7c4c08b81bd480bc1acc624df00294df92bc88c9
+    :commit: 9b8b16ba46a02e1c721db9095e2f1dcef182399b
     :git: https://github.com/Hipo/magpie.git
 
 SPEC CHECKSUMS:
@@ -118,6 +117,6 @@ SPEC CHECKSUMS:
   SwiftDate: 6329e58969a2de31cea7f1ee1143b247693196e7
   SwiftLint: a54bf1fe12b55c68560eb2a7689dfc81458508f7
 
-PODFILE CHECKSUM: 99a31c690b41d386ef3c48b8cbdab4dfda9543aa
+PODFILE CHECKSUM: 632397e041c42a5de67dd6bbf84f53f4d0393488
 
 COCOAPODS: 1.6.1
