@@ -25,6 +25,8 @@ class NodeSettingsViewController: BaseViewController {
     
     weak var delegate: NodeSettingsViewControllerDelegate?
     
+    private var canTapBarButton = true
+    
     private let mode: Mode
     
     private lazy var nodeManager: NodeManager? = {
@@ -112,6 +114,14 @@ class NodeSettingsViewController: BaseViewController {
         nodeSettingsView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+    }
+    
+    override func didTapBackBarButton() -> Bool {
+        return canTapBarButton
+    }
+    
+    override func didTapDismissBarButton() -> Bool {
+        return canTapBarButton
     }
 }
 
@@ -221,6 +231,7 @@ extension NodeSettingsViewController: NodeSettingsViewModelDelegate {
     fileprivate func checkNodesHealth() {
         SVProgressHUD.show(withStatus: "title-loading".localized)
         self.view.isUserInteractionEnabled = false
+        canTapBarButton = false
         
         nodeManager?.checNodes { isHealthy in
             
@@ -229,7 +240,7 @@ extension NodeSettingsViewController: NodeSettingsViewModelDelegate {
                 
                 SVProgressHUD.dismiss(withDelay: 1.0) {
                     
-                    self.navigationController?.navigationBar.isUserInteractionEnabled = true
+                    self.canTapBarButton = true
                     self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
                     
                     self.view.isUserInteractionEnabled = true
@@ -238,13 +249,16 @@ extension NodeSettingsViewController: NodeSettingsViewModelDelegate {
             } else {
                 SVProgressHUD.dismiss {
                     
-                    self.navigationController?.navigationBar.isUserInteractionEnabled = false
+                    self.canTapBarButton = false
                     self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
                     
                     self.view.isUserInteractionEnabled = true
                     self.updateNodes()
                     
-                    self.displaySimpleAlertWith(title: "title-error".localized, message: "node-settings-none-active-node-error-description".localized)
+                    self.displaySimpleAlertWith(
+                        title: "title-error".localized,
+                        message: "node-settings-none-active-node-error-description".localized
+                    )
                 }
             }
         }

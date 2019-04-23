@@ -164,6 +164,14 @@ class BaseViewController: UIViewController {
     private func setNeedsNavigationBarAppearanceUpdateWhenAppearing() {
         navigationController?.setNavigationBarHidden(!shouldShowNavigationBar, animated: false)
     }
+    
+    func didTapBackBarButton() -> Bool {
+        return true
+    }
+    
+    func didTapDismissBarButton() -> Bool {
+        return true
+    }
 }
 
 extension BaseViewController: StatusBarConfigurable {
