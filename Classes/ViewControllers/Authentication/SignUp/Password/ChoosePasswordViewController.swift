@@ -191,13 +191,13 @@ extension ChoosePasswordViewController: ChoosePasswordViewDelegate {
     }
     
     fileprivate func launchHome() {
-        SVProgressHUD.show(withStatus: "Loading")
+        SVProgressHUD.show(withStatus: "title-loading".localized)
         
         self.accountManager?.fetchAllAccounts {
             
-            SVProgressHUD.showSuccess(withStatus: "Done")
+            SVProgressHUD.showSuccess(withStatus: "title-done-lowercased".localized)
             
-            SVProgressHUD.dismiss(withDelay: 2.0) {
+            SVProgressHUD.dismiss(withDelay: 1.0) {
                 self.open(.home(route: self.route), by: .launch)
                 
                 DispatchQueue.main.async {

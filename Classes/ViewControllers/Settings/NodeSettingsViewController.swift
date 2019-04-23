@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SVProgressHUD
 
 protocol NodeSettingsViewControllerDelegate: class {
     func nodeSettingsViewControllerDidUpdateNode(_ nodeSettingsViewController: NodeSettingsViewController)
@@ -26,10 +27,20 @@ class NodeSettingsViewController: BaseViewController {
     
     private let mode: Mode
     
+    private lazy var nodeManager: NodeManager? = {
+        guard let api = self.api else {
+            return nil
+        }
+        let manager = NodeManager(api: api)
+        return manager
+    }()
+    
     init(mode: Mode, configuration: ViewControllerConfiguration) {
         self.mode = mode
         
         super.init(configuration: configuration)
+        
+        hidesBottomBarWhenPushed = true
     }
     
     // MARK: Setup
@@ -180,7 +191,7 @@ extension NodeSettingsViewController: NodeSettingsViewModelDelegate {
             node.update(entity: Node.entityName, with: ["isActive": NSNumber(value: value)])
         }
         
-        updateNodes()
+        checkNodesHealth()
     }
     
     func nodeSettingsViewModelDidTapEdit(_ viewModel: NodeSettingsViewModel, atIndexPath indexPath: IndexPath) {
@@ -203,6 +214,38 @@ extension NodeSettingsViewController: NodeSettingsViewModelDelegate {
                 defaultNodeCell.contextView.toggle.isEnabled = numberOfActiveNodes() > 0
             } else if let nodeCell = cell as? SettingsToggleCell {
                 nodeCell.contextView.toggle.isEnabled = (session?.isDefaultNodeActive() ?? false) || numberOfActiveNodes() > 1
+            }
+        }
+    }
+    
+    fileprivate func checkNodesHealth() {
+        SVProgressHUD.show(withStatus: "title-loading".localized)
+        self.view.isUserInteractionEnabled = false
+        
+        nodeManager?.checNodes { isHealthy in
+            
+            if isHealthy {
+                SVProgressHUD.showSuccess(withStatus: "title-done-lowercased".localized)
+                
+                SVProgressHUD.dismiss(withDelay: 1.0) {
+                    
+                    self.navigationController?.navigationBar.isUserInteractionEnabled = true
+                    self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+                    
+                    self.view.isUserInteractionEnabled = true
+                    self.updateNodes()
+                }
+            } else {
+                SVProgressHUD.dismiss {
+                    
+                    self.navigationController?.navigationBar.isUserInteractionEnabled = false
+                    self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+                    
+                    self.view.isUserInteractionEnabled = true
+                    self.updateNodes()
+                    
+                    self.displaySimpleAlertWith(title: "title-error".localized, message: "node-settings-none-active-node-error-description".localized)
+                }
             }
         }
     }

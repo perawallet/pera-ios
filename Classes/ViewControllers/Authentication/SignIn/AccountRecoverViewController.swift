@@ -147,9 +147,9 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
     fileprivate func fetchAccounts() {
         self.accountManager?.fetchAllAccounts {
             
-            SVProgressHUD.showSuccess(withStatus: "Done")
+            SVProgressHUD.showSuccess(withStatus: "title-done-lowercased".localized)
             
-            SVProgressHUD.dismiss(withDelay: 2.0) {
+            SVProgressHUD.dismiss(withDelay: 1.0) {
                 if self.session?.hasPassword() ?? false {
                     switch self.mode {
                     case .initialize:
@@ -169,7 +169,7 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
     }
     
     fileprivate func launchHome() {
-        SVProgressHUD.show(withStatus: "Loading")
+        SVProgressHUD.show(withStatus: "title-loading".localized)
         
         self.fetchAccounts()
     }

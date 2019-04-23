@@ -26,6 +26,8 @@ class AddNodeViewController: BaseScrollViewController {
         self.mode = mode
         
         super.init(configuration: configuration)
+        
+        hidesBottomBarWhenPushed = true
     }
     
     override func setListeners() {

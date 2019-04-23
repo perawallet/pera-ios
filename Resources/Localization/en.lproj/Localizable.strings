@@ -26,6 +26,7 @@
 "title-receive" = "RECEIVE";
 "title-preview" = "PREVIEW";
 "title-done" = "DONE";
+"title-done-lowercased" = "Done";
 "title-loading" = "Loading";
 "default-error-message" = "An error occured.";
 
@@ -218,6 +219,7 @@
 "node-settings-text-validation-empty-error" = "Please fill all fields.";
 "node-settings-text-validation-health-error" = "Please verify the address and token and try again.";
 "node-settings-has-same-result" = "You cannot create same node twice";
+"node-settings-none-active-node-error-description" = "None of the active nodes seem to be active. Please make sure you have at least one active node before proceeding.";
 
 "node-settings-db-error-title" = "System operation failed";
 "node-settings-test-error-title" = "Connection failed";

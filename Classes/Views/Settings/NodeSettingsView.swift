@@ -33,7 +33,7 @@ class NodeSettingsView: BaseView {
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = .white
-        collectionView.contentInset = .zero
+        collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: self.safeAreaBottom, right: 0)
         
         collectionView.register(SettingsToggleCell.self, forCellWithReuseIdentifier: SettingsToggleCell.reusableIdentifier)
         collectionView.register(ToggleCell.self, forCellWithReuseIdentifier: ToggleCell.reusableIdentifier)
@@ -68,8 +68,7 @@ class NodeSettingsView: BaseView {
         
         collectionView.snp.makeConstraints { make in
             make.top.equalTo(headerView.snp.bottom)
-            make.leading.trailing.equalToSuperview()
-            make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom)
+            make.leading.bottom.trailing.equalToSuperview()
         }
     }
 }
