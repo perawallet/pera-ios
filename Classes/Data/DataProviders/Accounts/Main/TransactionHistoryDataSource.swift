@@ -61,6 +61,8 @@ class TransactionHistoryDataSource: NSObject, UICollectionViewDataSource {
             if let contact = contacts.first(where: { contact -> Bool in
                 contact.address == transaction.from || contact.address == transaction.payment?.toAddress
             }) {
+                transaction.contact = contact
+                
                 viewModel.configure(cell, with: transaction, for: contact)
             } else {
                 viewModel.configure(cell, with: transaction)
