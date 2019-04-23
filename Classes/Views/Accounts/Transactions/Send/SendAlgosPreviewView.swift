@@ -17,7 +17,7 @@ class SendAlgosPreviewView: SendAlgosView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let topInset: CGFloat = 20.0
-        let trailingInset: CGFloat = 25.0
+        let trailingInset: CGFloat = 15.0
         let bottomInset: CGFloat = 18.0
     }
     
@@ -46,6 +46,9 @@ class SendAlgosPreviewView: SendAlgosView {
         algosInputView.inputTextField.isEnabled = false
         transactionReceiverView.passphraseInputView.inputTextView.isEditable = false
         accountSelectionView.isUserInteractionEnabled = false
+        
+        transactionReceiverView.qrButton.setBackgroundImage(img("button-small-bg-gray"), for: .normal)
+        transactionReceiverView.qrButton.setImage(img("icon-qr-gray"), for: .normal)
     }
     
     override func setListeners() {

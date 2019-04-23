@@ -17,19 +17,19 @@ protocol AccountsSmallHeaderViewDelegate: class {
 class AccountsSmallHeaderView: BaseView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let topInset: CGFloat = 45.0
+        let topInset: CGFloat = 45.0 * verticalScale
         let horizontalInset: CGFloat = 25.0
         let amountLabelLeadingInset: CGFloat = 3.0
         let amountLabelTrailingInset: CGFloat = 115.0
-        let historyLabelTopInset: CGFloat = 33.0
+        let historyLabelTopInset: CGFloat = 33.0 * verticalScale
         let buttonSize: CGFloat = 38.0
-        let buttonTopInset: CGFloat = 40.0
-        let amountLabelTopInset: CGFloat = -7.0
-        let verticalInset: CGFloat = 25.0
+        let buttonTopInset: CGFloat = 40.0 * verticalScale
+        let amountLabelTopInset: CGFloat = -7.0 * verticalScale
+        let verticalInset: CGFloat = 25.0 * verticalScale
         let buttonHorizontalInset: CGFloat = 20.0
         let buttonInnerSpacing: CGFloat = -16.0
         let buttonMinimumInset: CGFloat = 5.0
-        let historyLabelBottomInset: CGFloat = 7.0
+        let historyLabelBottomInset: CGFloat = 7.0 * verticalScale
     }
     
     private let layout = Layout<LayoutConstants>()

@@ -101,6 +101,7 @@ class SendAlgosSuccessView: BaseView {
         let view = TransactionReceiverView()
         view.receiverContactView.qrDisplayButton.isHidden = true
         view.qrButton.setImage(img("icon-contact-add"), for: .normal)
+        view.qrButton.setBackgroundImage(nil, for: .normal)
         return view
     }()
     

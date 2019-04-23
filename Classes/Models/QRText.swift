@@ -15,7 +15,7 @@ struct QRText: Codable {
     
     let amount: Int64?
     
-    init(mode: QRMode, text: String, amount: Int64? = 0) {
+    init(mode: QRMode, text: String, amount: Int64? = nil) {
         self.mode = mode
         self.text = text
         self.amount = amount

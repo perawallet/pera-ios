@@ -32,6 +32,22 @@ extension API {
     }
     
     @discardableResult
+    func fetchTransactionDetail(
+        for account: Account,
+        with id: TransactionID,
+        completion: APICompletionHandler<Transaction>? = nil
+    ) -> EndpointInteractable? {
+        
+        return send(
+            Endpoint<Transaction>(Path("/v1/account/\(account.address)/transaction/\(id.identifier)"))
+                .httpMethod(.get)
+                .handler { response in
+                    completion?(response)
+                }
+        )
+    }
+    
+    @discardableResult
     func sendTransaction(
         with draft: TransactionDraft,
         then completion: APICompletionHandler<TransactionID>? = nil

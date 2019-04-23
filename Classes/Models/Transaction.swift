@@ -20,6 +20,8 @@ class Transaction: Mappable {
     let lastRound: Int64
     let type: String
     
+    var contact: Contact?
+    
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         

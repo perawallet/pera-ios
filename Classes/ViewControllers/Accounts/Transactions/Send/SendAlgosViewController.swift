@@ -71,8 +71,10 @@ class SendAlgosViewController: BaseScrollViewController {
             sendAlgosView.transactionReceiverView.state = receiver
             
             configureInitialAccountState()
-        default:
-            break
+        case .contact:
+            sendAlgosView.transactionReceiverView.state = receiver
+            
+            configureInitialAccountState()
         }
     }
     
@@ -304,7 +306,10 @@ extension SendAlgosViewController: QRScannerViewControllerDelegate {
     func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, then handler: EmptyHandler?) {
         sendAlgosView.transactionReceiverView.state = .address(address: qrText.text, amount: nil)
         
-        if let receivedAmount = qrText.amount?.toAlgos {
+        if let amountFromQR = qrText.amount,
+            amountFromQR != 0 {
+            let receivedAmount = amountFromQR.toAlgos
+            
             amount = receivedAmount
             
             sendAlgosView.algosInputView.inputTextField.text = receivedAmount.toDecimalStringForInput
@@ -332,13 +337,11 @@ extension SendAlgosViewController: SendAlgosPreviewViewControllerDelegate {
     
     private func resetViewForInitialState() {
         amount = 0.00
-        selectedAccount = nil
         receiver = .initial
         sendAlgosView.transactionReceiverView.state = .initial
         sendAlgosView.algosInputView.inputTextField.text = nil
         sendAlgosView.transactionReceiverView.passphraseInputView.placeholderLabel.isHidden = false
         sendAlgosView.transactionReceiverView.passphraseInputView.inputTextView.text = ""
-        sendAlgosView.accountSelectionView.inputTextField.text = "send-algos-select".localized
     }
 }
 

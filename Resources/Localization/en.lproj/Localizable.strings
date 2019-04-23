@@ -230,3 +230,7 @@
 "node-settings-success-edit-description" = "You edited the node successfully. Please enable it";
 "node-settings-warning-message" = "This action will remove the node. Are you sure?";
 "node-settings-action-delete-title" = "Delete";
+
+// MARK: Transaction Detail
+
+"transaction-detail-title" = "Transaction Detail";
