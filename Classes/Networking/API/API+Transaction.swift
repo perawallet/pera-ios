@@ -43,7 +43,7 @@ extension API {
                 .httpMethod(.get)
                 .handler { response in
                     completion?(response)
-            }
+                }
         )
     }
     
