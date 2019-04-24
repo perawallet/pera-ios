@@ -132,7 +132,7 @@ extension Session {
     
     func isDefaultNodeActive() -> Bool {
         guard let config = applicationConfiguration else {
-            return false
+            return true
         }
         
         return config.isDefaultNodeActive
