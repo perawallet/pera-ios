@@ -347,6 +347,8 @@ extension AccountsViewController {
     @objc
     fileprivate func didContactAdded(notification: Notification) {
         transactionHistoryDataSource.setupContacts()
+        
+        accountsView.transactionHistoryCollectionView.reloadData()
     }
     
     @objc
