@@ -106,6 +106,12 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
             return
         }
         
+        guard session?.privateData(forAccount: address) == nil else {
+            displaySimpleAlertWith(title: "title-error".localized,
+                                   message: "recover-from-seed-verify-exist-error".localized)
+            return
+        }
+        
         let account = Account(address: address)
         account.name = name
         
