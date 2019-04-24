@@ -15,6 +15,8 @@ class TransactionDetailViewModel {
             return
         }
         
+        view.transactionOpponentView.passphraseInputView.inputTextView.isEditable = false
+        
         view.userAccountView.detailLabel.text = account.name
         view.transactionOpponentView.titleLabel.text = "send-algos-from".localized
         view.userAccountView.explanationLabel.text = "send-algos-to".localized
@@ -33,6 +35,8 @@ class TransactionDetailViewModel {
         guard let payment = transaction.payment else {
             return
         }
+        
+        view.transactionOpponentView.passphraseInputView.inputTextView.isEditable = false
         
         view.userAccountView.detailLabel.text = account.name
         view.userAccountView.explanationLabel.text = "send-algos-from".localized
