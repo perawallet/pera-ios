@@ -16,10 +16,14 @@ class AlertViewModel {
         alertView.explanationLabel.textAlignment = .center
         alertView.imageView.image = configurator.image
         
-        guard let destructiveAlertView = alertView as? DestructiveAlertView else {
+        if let destructiveAlertView = alertView as? DestructiveAlertView {
+            destructiveAlertView.actionButton.setTitle(configurator.actionTitle, for: .normal)
+            destructiveAlertView.actionButton.setBackgroundImage(configurator.actionImage, for: .normal)
             return
+        } else if configurator.actionTitle != nil {
+            let defaultAlertView = alertView as? DefaultAlertView
+            defaultAlertView?.doneButton.setTitle(configurator.actionTitle, for: .normal)
+            defaultAlertView?.doneButton.setBackgroundImage(configurator.actionImage, for: .normal)
         }
-        
-        destructiveAlertView.actionButton.setTitle(configurator.actionTitle, for: .normal)
     }
 }

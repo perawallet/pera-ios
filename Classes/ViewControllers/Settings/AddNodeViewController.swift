@@ -298,7 +298,8 @@ class AddNodeViewController: BaseScrollViewController {
             title: alertTitle,
             image: image,
             explanation: message ?? "",
-            actionTitle: "title-close".localized) {
+            actionTitle: "title-close".localized,
+            actionImage: img("bg-gray-close")) {
                 if mode == .success {
                     self.popScreen()
                 }
