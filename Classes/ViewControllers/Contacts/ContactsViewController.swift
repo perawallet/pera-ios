@@ -28,6 +28,12 @@ class ContactsViewController: BaseViewController {
         bottomImage: img("icon-contacts-empty")
     )
     
+    private lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(didRefreshList), for: .valueChanged)
+        return refreshControl
+    }()
+    
     private var contacts = [Contact]()
     private var searchResults = [Contact]()
     
@@ -57,12 +63,17 @@ class ContactsViewController: BaseViewController {
         super.configureAppearance()
         
         title = "contacts-title".localized
+        contactsView.contactsCollectionView.refreshControl = refreshControl
         
         fetchContacts()
     }
     
     private func fetchContacts() {
         Contact.fetchAll(entity: Contact.entityName) { response in
+            if self.refreshControl.isRefreshing {
+                self.refreshControl.endRefreshing()
+            }
+            
             switch response {
             case let .results(objects: objects):
                 guard let results = objects as? [Contact] else {
@@ -89,6 +100,12 @@ class ContactsViewController: BaseViewController {
         contactsView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+    }
+    
+    @objc
+    private func didRefreshList() {
+        contacts.removeAll()
+        fetchContacts()
     }
 }
 

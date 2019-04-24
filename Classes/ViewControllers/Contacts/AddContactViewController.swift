@@ -150,7 +150,7 @@ extension AddContactViewController: AddContactViewDelegate {
                 NotificationCenter.default.post(
                     name: Notification.Name.ContactAddition,
                     object: self,
-                    userInfo: nil
+                    userInfo: ["contact": contact]
                 )
                 
                 self.delegate?.addContactViewController(self, didSave: contact)
@@ -169,6 +169,12 @@ extension AddContactViewController: AddContactViewDelegate {
                 guard let contact = object as? Contact else {
                     return
                 }
+                
+                NotificationCenter.default.post(
+                    name: Notification.Name.ContactEdit,
+                    object: self,
+                    userInfo: ["contact": contact]
+                )
                 
                 self.delegate?.addContactViewController(self, didSave: contact)
                 

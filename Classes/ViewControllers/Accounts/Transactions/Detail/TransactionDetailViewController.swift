@@ -46,6 +46,17 @@ class TransactionDetailViewController: BaseScrollViewController {
         transactionDetailView.delegate = self
     }
     
+    override func setListeners() {
+        super.setListeners()
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didContactAdded(notification:)),
+            name: Notification.Name.ContactAddition,
+            object: nil
+        )
+    }
+    
     override func configureAppearance() {
         super.configureAppearance()
         
@@ -70,6 +81,18 @@ class TransactionDetailViewController: BaseScrollViewController {
         transactionDetailView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+    }
+    
+    @objc
+    fileprivate func didContactAdded(notification: Notification) {
+        guard let userInfo = notification.userInfo as? [String: Contact],
+            let contact = userInfo["contact"] else {
+                return
+        }
+        
+        transaction.contact = contact
+        
+        transactionDetailView.transactionOpponentView.state = .contact(contact)
     }
 }
 

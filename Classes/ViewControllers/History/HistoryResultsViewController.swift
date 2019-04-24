@@ -68,6 +68,13 @@ class HistoryResultsViewController: BaseViewController {
             name: Notification.Name.ContactAddition,
             object: nil
         )
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didContactAdded(notification:)),
+            name: Notification.Name.ContactEdit,
+            object: nil
+        )
     }
     
     // MARK: Layout

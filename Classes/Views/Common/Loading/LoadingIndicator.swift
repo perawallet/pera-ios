@@ -33,13 +33,17 @@ class LoadingIndicator: BaseView {
         setupActivityIndicatorLayout()
     }
     
+    override func configureAppearance() {
+        backgroundColor = .clear
+    }
+    
     private func setupActivityIndicatorLayout() {
         addSubview(activityIndicator)
         
         activityIndicator.snp.makeConstraints { make in
             make.width.equalTo(layout.current.width)
             make.height.equalTo(layout.current.height)
-            make.top.bottom.equalToSuperview()
+            make.edges.equalToSuperview()
         }
     }
     
