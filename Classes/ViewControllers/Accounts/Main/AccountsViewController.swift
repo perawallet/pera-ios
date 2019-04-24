@@ -414,10 +414,10 @@ extension AccountsViewController: UICollectionViewDelegateFlowLayout {
                 
                 accountsView.transactionHistoryCollectionView.contentInset.top = offsetDifference
                 
-                let heightDifference = AccountsView.LayoutConstants.headerHeight - AccountsView.LayoutConstants.smallHeaderHeight
+                let progress: CGFloat = offsetDifference / AccountsView.LayoutConstants.headerHeight
                 
-                UIView.animate(withDuration: 0.33) {
-                    self.accountsView.accountsHeaderView.alpha = 1.0 - (heightDifference / offsetDifference)
+                UIView.animate(withDuration: 0.0) {
+                    self.accountsView.accountsHeaderView.alpha = progress
                     self.view.layoutIfNeeded()
                 }
             }
@@ -431,21 +431,55 @@ extension AccountsViewController: UICollectionViewDelegateFlowLayout {
                 
                 accountsView.transactionHistoryCollectionView.contentInset.top = AccountsView.LayoutConstants.headerHeight
             } else {
+                let offset = max(-scrollView.contentOffset.y, AccountsView.LayoutConstants.smallHeaderHeight)
+                
+                let progress: CGFloat = offset / AccountsView.LayoutConstants.headerHeight
+                
                 accountsView.accountsHeaderContainerView.snp.updateConstraints { make in
-                    make.height.equalTo(offsetTotal)
+                    make.height.equalTo(offset)
                 }
                 
-                accountsView.transactionHistoryCollectionView.contentInset.top = offsetTotal
+                accountsView.transactionHistoryCollectionView.contentInset.top = offset
                 
                 UIView.animate(withDuration: 0.33) {
-                    self.accountsView.accountsHeaderView.alpha = 1.0 - (offsetTotal / AccountsView.LayoutConstants.headerHeight)
+                    self.accountsView.accountsHeaderView.alpha = progress
                     self.view.layoutIfNeeded()
                 }
             }
         }
     }
     
-    private func adjustSmallHeaderViewLayout() {
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if transactionHistoryDataSource.transactionCount() == 0 {
+            return
+        }
+        
+        let translation = scrollView.panGestureRecognizer.translation(in: view)
+        
+        if translation.y < 0 {
+            let offset = scrollView.contentOffset.y + AccountsView.LayoutConstants.headerHeight
+            
+            let offsetDifference = AccountsView.LayoutConstants.headerHeight - offset
+            
+            if offsetDifference <= AccountsView.LayoutConstants.smallHeaderHeight {
+                return
+            }
+            
+            adjustSmallHeaderViewLayout(withContentInsetUpdate: true)
+            
+        } else {
+            let offset = scrollView.contentInset.top + scrollView.contentOffset.y + AccountsView.LayoutConstants.smallHeaderHeight
+            
+            if offset > AccountsView.LayoutConstants.headerHeight {
+                return
+            }
+            
+            adjustDefaultHeaderViewLayout(withContentInsetUpdate: true)
+        }
+        
+    }
+    
+    private func adjustSmallHeaderViewLayout(withContentInsetUpdate shouldUpdateContentInset: Bool = false) {
         accountsView.accountsHeaderContainerView.snp.updateConstraints { make in
             make.height.equalTo(AccountsView.LayoutConstants.smallHeaderHeight)
         }
@@ -453,11 +487,17 @@ extension AccountsViewController: UICollectionViewDelegateFlowLayout {
         UIView.animate(withDuration: 0.33) {
             self.accountsView.accountsHeaderView.alpha = 0.0
             self.accountsView.accountsSmallHeaderView.alpha = 1.0
+            
+            if shouldUpdateContentInset {
+                self.accountsView.transactionHistoryCollectionView.contentInset.top = AccountsView.LayoutConstants.smallHeaderHeight
+                self.accountsView.transactionHistoryCollectionView.contentOffset.y = -AccountsView.LayoutConstants.smallHeaderHeight
+            }
+            
             self.view.layoutIfNeeded()
         }
     }
     
-    private func adjustDefaultHeaderViewLayout() {
+    private func adjustDefaultHeaderViewLayout(withContentInsetUpdate shouldUpdateContentInset: Bool = false) {
         accountsView.accountsHeaderContainerView.snp.updateConstraints { make in
             make.height.equalTo(AccountsView.LayoutConstants.headerHeight)
         }
@@ -465,6 +505,12 @@ extension AccountsViewController: UICollectionViewDelegateFlowLayout {
         UIView.animate(withDuration: 0.33) {
             self.accountsView.accountsSmallHeaderView.alpha = 0.0
             self.accountsView.accountsHeaderView.alpha = 1.0
+            
+            if shouldUpdateContentInset {
+                self.accountsView.transactionHistoryCollectionView.contentInset.top = AccountsView.LayoutConstants.headerHeight
+                self.accountsView.transactionHistoryCollectionView.contentOffset.y = -AccountsView.LayoutConstants.headerHeight
+            }
+            
             self.view.layoutIfNeeded()
         }
     }
