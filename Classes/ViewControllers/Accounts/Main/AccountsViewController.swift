@@ -44,6 +44,12 @@ class AccountsViewController: BaseViewController {
     
     private(set) var localAuthenticator = LocalAuthenticator()
     
+    private lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(didRefreshList), for: .valueChanged)
+        return refreshControl
+    }()
+    
     var selectedAccount: Account?
     
     var newAccount: Account? {
@@ -121,6 +127,7 @@ class AccountsViewController: BaseViewController {
         
         view.backgroundColor = .white
         
+        accountsView.transactionHistoryCollectionView.refreshControl = refreshControl
         selectedAccount = session?.authenticatedUser?.defaultAccount()
         
         guard let account = selectedAccount else {
@@ -164,6 +171,13 @@ class AccountsViewController: BaseViewController {
             self,
             selector: #selector(didContactAdded(notification:)),
             name: Notification.Name.ContactAddition,
+            object: nil
+        )
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didContactEdited(notification:)),
+            name: Notification.Name.ContactEdit,
             object: nil
         )
     }
@@ -211,9 +225,15 @@ class AccountsViewController: BaseViewController {
             return
         }
         
-        accountsView.transactionHistoryCollectionView.contentState = .loading
+        if !refreshControl.isRefreshing {
+            accountsView.transactionHistoryCollectionView.contentState = .loading
+        }
         
         transactionHistoryDataSource.loadData(for: account, withRefresh: refresh) { transactions, error in
+            if self.refreshControl.isRefreshing {
+                self.refreshControl.endRefreshing()
+            }
+            
             if let error = error {
                 switch error {
                 case .cancelled:
@@ -239,6 +259,13 @@ class AccountsViewController: BaseViewController {
             self.accountsView.transactionHistoryCollectionView.contentState = .none
             self.accountsView.transactionHistoryCollectionView.reloadData()
         }
+    }
+    
+    @objc
+    private func didRefreshList() {
+        transactionHistoryDataSource.clear()
+        accountsView.transactionHistoryCollectionView.reloadData()
+        fetchTransactions()
     }
 }
 
@@ -320,6 +347,17 @@ extension AccountsViewController {
     @objc
     fileprivate func didContactAdded(notification: Notification) {
         transactionHistoryDataSource.setupContacts()
+    }
+    
+    @objc
+    fileprivate func didContactEdited(notification: Notification) {
+        transactionHistoryDataSource.setupContacts()
+        
+        transactionHistoryDataSource.clear()
+        accountsView.transactionHistoryCollectionView.reloadData()
+        accountsView.transactionHistoryCollectionView.contentState = .loading
+        
+        fetchTransactions()
     }
 }
 
