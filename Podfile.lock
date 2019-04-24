@@ -96,7 +96,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   Magpie:
-    :commit: 8fa7c4c28d55d5a145ed97cb636e8b74e9e37f50
+    :commit: 7b0a9fe0953572fac8160766bbd3f8a50c49c423
     :git: https://github.com/Hipo/magpie.git
 
 SPEC CHECKSUMS:
