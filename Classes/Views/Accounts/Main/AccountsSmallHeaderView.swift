@@ -137,7 +137,7 @@ class AccountsSmallHeaderView: BaseView {
         addSubview(historyLabel)
         
         historyLabel.snp.makeConstraints { make in
-            make.top.equalTo(sendButton.snp.bottom).offset(layout.current.historyLabelTopInset)
+            make.top.lessThanOrEqualTo(sendButton.snp.bottom).offset(layout.current.historyLabelTopInset)
             make.leading.equalToSuperview().inset(layout.current.buttonHorizontalInset)
             make.bottom.equalToSuperview().inset(layout.current.historyLabelBottomInset)
         }
