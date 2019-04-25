@@ -41,7 +41,7 @@ class IntroductionView: BaseView {
     
     private lazy var logoImageView = UIImageView(image: img("icon-logo"))
     
-    private lazy var welcomeLabel: UILabel = {
+    private(set) lazy var welcomeLabel: UILabel = {
         UILabel()
             .withAlignment(.center)
             .withTextColor(SharedColors.blue)

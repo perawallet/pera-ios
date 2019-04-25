@@ -24,6 +24,8 @@ class TransactionDetailView: BaseView {
         let imageSize: CGFloat = 29.0
         let imageInset: CGFloat = 5.0
         let separatorHeight: CGFloat = 1.0
+        let feeViewHeight: CGFloat = 88.0
+        let feeViewOffset: CGFloat = 13.0
         let amountViewHeight: CGFloat = 55.0
         let bottomInset: CGFloat = 10.0
     }
@@ -76,6 +78,19 @@ class TransactionDetailView: BaseView {
         return transactionIdView
     }()
     
+    private(set) lazy var feeView: DetailedInformationView = {
+        let feeView = DetailedInformationView(mode: .algos)
+        feeView.explanationLabel.text = "send-algos-fee".localized
+        feeView.algosAmountView.amountLabel.font = UIFont.font(.montserrat, withWeight: .semiBold(size: 13.0))
+        return feeView
+    }()
+    
+    private(set) lazy var lastRoundView: DetailedInformationView = {
+        let lastRoundView = DetailedInformationView()
+        lastRoundView.explanationLabel.text = "transaction-detail-round".localized
+        return lastRoundView
+    }()
+    
     // MARK: Components
     
     private let transactionType: TransactionType
@@ -107,6 +122,8 @@ class TransactionDetailView: BaseView {
         }
 
         setupTransactionIdViewLayout()
+        setupFeeViewLayout()
+        setupLastRoundViewLayout()
     }
     
     private func setupTransactionAmountViewLayout() {
@@ -184,6 +201,32 @@ class TransactionDetailView: BaseView {
             
             make.leading.trailing.equalToSuperview()
             make.bottom.lessThanOrEqualToSuperview().inset(layout.current.bottomInset)
+        }
+    }
+    
+    private func setupFeeViewLayout() {
+        addSubview(feeView)
+        
+        feeView.snp.makeConstraints { make in
+            make.leading.equalToSuperview()
+            make.top.equalTo(transactionIdView.snp.bottom)
+            make.height.equalTo(layout.current.feeViewHeight)
+            make.width.equalTo(UIScreen.main.bounds.width / 2)
+        }
+        
+        feeView.algosAmountView.snp.updateConstraints { make in
+            make.top.equalTo(feeView.explanationLabel.snp.bottom).offset(layout.current.feeViewOffset)
+        }
+    }
+    
+    private func setupLastRoundViewLayout() {
+        addSubview(lastRoundView)
+        
+        lastRoundView.snp.makeConstraints { make in
+            make.trailing.equalToSuperview()
+            make.top.equalTo(transactionIdView.snp.bottom)
+            make.height.equalTo(layout.current.feeViewHeight)
+            make.width.equalTo(UIScreen.main.bounds.width / 2)
         }
     }
     

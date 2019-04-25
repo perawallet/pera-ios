@@ -21,6 +21,14 @@ class IntroductionViewController: BaseScrollViewController {
     
     // MARK: Setup
     
+    override func configureAppearance() {
+        super.configureAppearance()
+        
+        if mode == .new {
+            introductionView.welcomeLabel.isHidden = true
+        }
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         

@@ -21,6 +21,8 @@ class TransactionDetailViewModel {
         view.transactionOpponentView.titleLabel.text = "send-algos-from".localized
         view.userAccountView.explanationLabel.text = "send-algos-to".localized
         view.transactionIdView.detailLabel.text = transaction.id.identifier
+        view.feeView.algosAmountView.mode = .normal(transaction.fee.toAlgos)
+        view.lastRoundView.detailLabel.text = "\(transaction.lastRound)"
         
         if let contact = transaction.contact {
             view.transactionOpponentView.state = .contact(contact)
@@ -42,6 +44,8 @@ class TransactionDetailViewModel {
         view.userAccountView.explanationLabel.text = "send-algos-from".localized
         view.transactionOpponentView.titleLabel.text = "send-algos-to".localized
         view.transactionIdView.detailLabel.text = transaction.id.identifier
+        view.feeView.algosAmountView.mode = .normal(transaction.fee.toAlgos)
+        view.lastRoundView.detailLabel.text = "\(transaction.lastRound)"
         
         if let contact = transaction.contact {
             view.transactionOpponentView.state = .contact(contact)
