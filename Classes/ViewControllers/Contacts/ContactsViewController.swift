@@ -96,7 +96,11 @@ class ContactsViewController: BaseViewController {
                 
                 if self.searchResults.isEmpty {
                     self.contactsView.contactsCollectionView.contentState = .empty(self.emptyStateView)
+                } else {
+                    self.contactsView.contactsCollectionView.contentState = .none
                 }
+                
+                self.contactsView.contactsCollectionView.reloadData()
             default:
                 break
             }
@@ -117,16 +121,12 @@ class ContactsViewController: BaseViewController {
     private func didRefreshList() {
         contacts.removeAll()
         fetchContacts()
-        
-        contactsView.contactsCollectionView.reloadData()
     }
     
     @objc
     fileprivate func didContactAdded(notification: Notification) {
         if delegate == nil {
             fetchContacts()
-            
-            contactsView.contactsCollectionView.reloadData()
         }
     }
 }
