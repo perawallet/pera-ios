@@ -109,4 +109,12 @@ extension TransactionDetailViewController: TransactionDetailViewDelegate {
         
         viewController?.addContactView.userInformationView.algorandAddressInputView.value = address
     }
+    
+    func transactionDetailViewDidTapShowQRButton(_ transactionDetailView: TransactionDetailView) {
+        guard let contact = transaction.contact else {
+            return
+        }
+        
+        open(.contactQRDisplay(contact: contact), by: .presentWithoutNavigationController)
+    }
 }

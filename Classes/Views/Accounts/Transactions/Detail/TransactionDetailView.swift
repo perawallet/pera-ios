@@ -11,6 +11,7 @@ import UIKit
 protocol TransactionDetailViewDelegate: class {
     
     func transactionDetailViewDidTapAddContactButton(_ transactionDetailView: TransactionDetailView)
+    func transactionDetailViewDidTapShowQRButton(_ transactionDetailView: TransactionDetailView)
 }
 
 class TransactionDetailView: BaseView {
@@ -105,6 +106,12 @@ class TransactionDetailView: BaseView {
     
     override func setListeners() {
         transactionOpponentView.qrButton.addTarget(self, action: #selector(notifyDelegateToAddContactButtonTapped), for: .touchUpInside)
+    }
+    
+    override func linkInteractors() {
+        super.linkInteractors()
+        
+        transactionOpponentView.receiverContactView.delegate = self
     }
     
     // MARK: Layout
@@ -235,5 +242,15 @@ class TransactionDetailView: BaseView {
     @objc
     private func notifyDelegateToAddContactButtonTapped() {
         delegate?.transactionDetailViewDidTapAddContactButton(self)
+    }
+}
+
+extension TransactionDetailView: ContactContextViewDelegate {
+    
+    func contactContextViewDidTapSendButton(_ contactContextView: ContactContextView) {
+    }
+    
+    func contactContextViewDidTapQRDisplayButton(_ contactContextView: ContactContextView) {
+        delegate?.transactionDetailViewDidTapShowQRButton(self)
     }
 }

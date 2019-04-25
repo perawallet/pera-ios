@@ -26,6 +26,8 @@ class TransactionDetailViewModel {
         
         if let contact = transaction.contact {
             view.transactionOpponentView.state = .contact(contact)
+            view.transactionOpponentView.receiverContactView.qrDisplayButton.isHidden = false
+            view.transactionOpponentView.receiverContactView.qrDisplayButton.setImage(img("icon-qr-view"), for: .normal)
         } else {
             view.transactionOpponentView.state = .address(address: payment.toAddress, amount: nil)
         }
@@ -49,6 +51,8 @@ class TransactionDetailViewModel {
         
         if let contact = transaction.contact {
             view.transactionOpponentView.state = .contact(contact)
+            view.transactionOpponentView.receiverContactView.qrDisplayButton.isHidden = false
+            view.transactionOpponentView.receiverContactView.qrDisplayButton.setImage(img("icon-qr-view"), for: .normal)
         } else {
             view.transactionOpponentView.state = .address(address: payment.toAddress, amount: nil)
         }

@@ -158,7 +158,12 @@ class SendAlgosViewController: BaseScrollViewController {
     
     private func displayTransactionPreview() {
         if !sendAlgosView.transactionReceiverView.passphraseInputView.inputTextView.text.isEmpty {
-            receiver = .address(address: sendAlgosView.transactionReceiverView.passphraseInputView.inputTextView.text, amount: nil)
+            switch receiver {
+            case .contact:
+                break
+            default:
+                receiver = .address(address: sendAlgosView.transactionReceiverView.passphraseInputView.inputTextView.text, amount: nil)
+            }
         }
         
         if let algosAmountText = sendAlgosView.algosInputView.inputTextField.text,

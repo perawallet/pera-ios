@@ -61,7 +61,7 @@ class ContactContextView: BaseView {
     }()
     
     private(set) lazy var qrDisplayButton: UIButton = {
-        UIButton(type: .custom).withImage(img("icon-qr-gray")).withBackgroundImage(img("button-small-bg-gray"))
+        UIButton(type: .custom).withImage(img("icon-qr-view"))
     }()
     
     private(set) lazy var sendButton: UIButton = {
@@ -136,7 +136,7 @@ class ContactContextView: BaseView {
         sendButton.snp.makeConstraints { make in
             make.width.height.equalTo(layout.current.buttonSize)
             make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.centerY.equalTo(addressLabel)
+            make.centerY.equalToSuperview()
         }
     }
     
@@ -146,7 +146,7 @@ class ContactContextView: BaseView {
         qrDisplayButton.snp.makeConstraints { make in
             make.width.height.equalTo(layout.current.buttonSize)
             make.trailing.equalTo(sendButton.snp.leading).offset(layout.current.buttonInternalInset)
-            make.centerY.equalTo(addressLabel)
+            make.centerY.equalToSuperview()
             make.leading.equalTo(addressLabel.snp.trailing).offset(layout.current.horizontalInset)
         }
     }

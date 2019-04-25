@@ -52,7 +52,7 @@ class SendAlgosView: BaseView {
     private(set) lazy var transactionReceiverView: TransactionReceiverView = {
         let view = TransactionReceiverView()
         view.qrButton.setBackgroundImage(nil, for: .normal)
-        view.qrButton.setImage(img("icon-qr"), for: .normal)
+        view.qrButton.setImage(img("icon-qr-scan"), for: .normal)
         return view
     }()
     

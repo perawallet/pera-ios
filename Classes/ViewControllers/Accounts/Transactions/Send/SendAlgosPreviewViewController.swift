@@ -53,6 +53,10 @@ class SendAlgosPreviewViewController: BaseViewController {
         sendAlgosPreviewView.accountSelectionView.inputTextField.text = transaction.fromAccount.name
         sendAlgosPreviewView.transactionReceiverView.state = receiver
         
+        sendAlgosPreviewView.transactionReceiverView.qrButton.setImage(nil, for: .normal)
+        sendAlgosPreviewView.transactionReceiverView.receiverContactView.qrDisplayButton.setImage(nil, for: .normal)
+        sendAlgosPreviewView.transactionReceiverView.receiverContactView.sendButton.setImage(nil, for: .normal)
+        
         self.updateFeeLayout()
         
         SVProgressHUD.show(withStatus: "title-loading".localized)
