@@ -52,7 +52,7 @@ class AddContactViewController: BaseScrollViewController {
         case let .edit(contact):
             title = "contacts-edit".localized
             
-            addContactView.addContactButton.setTitle("contacts-edit-button".localized, for: .normal)
+            addContactView.addContactButton.setTitle("contacts-edit-confirm-button".localized, for: .normal)
             
             addContactView.userInformationView.contactNameInputView.inputTextField.text = contact.name
             
