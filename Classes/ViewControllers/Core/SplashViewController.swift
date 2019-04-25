@@ -69,7 +69,9 @@ class SplashViewController: BaseViewController {
         }
         
         nodeManager?.checkNodes { isFinished in
-            self.loadingIndicator.stopAnimating()
+            DispatchQueue.main.async {
+                self.loadingIndicator.stopAnimating()
+            }
             
             if isFinished {
                 if !session.isValid {
