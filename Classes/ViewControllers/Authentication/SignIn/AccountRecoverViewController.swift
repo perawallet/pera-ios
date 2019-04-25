@@ -140,7 +140,7 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
             image: img("account-verify-alert-icon"),
             explanation: "recover-from-seed-verify-pop-up-explanation".localized,
             actionTitle: nil) {
-                self.launchHome()
+                self.launchHome(with: account)
         }
         
         let viewController = AlertViewController(mode: .default, alertConfigurator: configurator, configuration: configuration)
@@ -150,7 +150,9 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
         present(viewController, animated: true, completion: nil)
     }
     
-    fileprivate func fetchAccounts() {
+    fileprivate func launchHome(with account: Account) {
+        SVProgressHUD.show(withStatus: "title-loading".localized)
+        
         self.accountManager?.fetchAllAccounts {
             
             SVProgressHUD.showSuccess(withStatus: "title-done-lowercased".localized)
@@ -165,19 +167,19 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
                             UIApplication.shared.appDelegate?.validateAccountManagerFetchPolling()
                         }
                     case .new:
-                        self.dismissScreen()
+                        self.closeScreen(by: .dismiss, animated: false) {
+                            if let accountsViewController = UIApplication.topViewController() as? AccountsViewController,
+                                self.session?.authenticatedUser != nil {
+                                
+                                accountsViewController.newAccount = account
+                            }
+                        }
                     }
                 } else {
                     self.open(.choosePassword(mode: .setup, route: nil), by: .push)
                 }
             }
         }
-    }
-    
-    fileprivate func launchHome() {
-        SVProgressHUD.show(withStatus: "title-loading".localized)
-        
-        self.fetchAccounts()
     }
 }
 

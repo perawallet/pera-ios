@@ -66,7 +66,7 @@ class AccountsViewController: BaseViewController {
             
             fetchTransactions()
             
-            adjustDefaultHeaderViewLayout()
+            adjustDefaultHeaderViewLayout(withContentInsetUpdate: true)
             
             updateLayout()
         }
@@ -378,7 +378,7 @@ extension AccountsViewController: AccountListViewControllerDelegate {
         
         fetchTransactions()
         
-        adjustDefaultHeaderViewLayout()
+        adjustDefaultHeaderViewLayout(withContentInsetUpdate: true)
         
         updateLayout()
     }

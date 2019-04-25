@@ -13,6 +13,7 @@ class AddNodeView: BaseView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let labelTopInset: CGFloat = 20.0
         let inputHeight: CGFloat = 87.0
+        let tokenHeight: CGFloat = 110.0
         let verticalOffset: CGFloat = 20.0
     }
     
@@ -54,22 +55,26 @@ class AddNodeView: BaseView {
         return inputView
     }()
     
-    private(set) lazy var tokenInputView: SingleLineInputField = {
-        let inputView = SingleLineInputField(separatorStyle: .full)
-        inputView.explanationLabel.text = "node-settings-api-key".localized
-        inputView.inputTextField.attributedPlaceholder = NSAttributedString(
+    private(set) lazy var tokenInputView: MultiLineInputField = {
+        let algorandAddressInputView = MultiLineInputField(separatorStyle: .full)
+        algorandAddressInputView.explanationLabel.text = "node-settings-api-key".localized
+        algorandAddressInputView.placeholderLabel.attributedText = NSAttributedString(
             string: "node-settings-placeholder-api-key".localized,
             attributes: [NSAttributedString.Key.foregroundColor: SharedColors.softGray,
                          NSAttributedString.Key.font: UIFont.font(.opensans, withWeight: .semiBold(size: 12.0))]
         )
+        algorandAddressInputView.nextButtonMode = .submit
+        algorandAddressInputView.inputTextView.autocorrectionType = .no
+        algorandAddressInputView.inputTextView.autocapitalizationType = .none
+        algorandAddressInputView.inputTextView.textContainer.heightTracksTextView = false
+        algorandAddressInputView.inputTextView.textColor = SharedColors.black
+        algorandAddressInputView.inputTextView.tintColor = SharedColors.black
+        algorandAddressInputView.inputTextView.font = UIFont.font(.opensans, withWeight: .semiBold(size: 12.0))
+        algorandAddressInputView.inputTextView.isScrollEnabled = true
+        algorandAddressInputView.backgroundColor = .white
         
-        inputView.inputTextField.textColor = SharedColors.black
-        inputView.inputTextField.tintColor = SharedColors.black
-        inputView.inputTextField.font = UIFont.font(.opensans, withWeight: .semiBold(size: 12.0))
-        inputView.nextButtonMode = .next
-        inputView.inputTextField.autocorrectionType = .no
-        inputView.backgroundColor = .white
-        return inputView
+        algorandAddressInputView.inputTextView.isEditable = true
+        return algorandAddressInputView
     }()
     
     private(set) lazy var testButton: MainButton = {
@@ -120,7 +125,7 @@ class AddNodeView: BaseView {
         tokenInputView.snp.makeConstraints { make in
             make.top.equalTo(addressInputView.snp.bottom)
             make.leading.trailing.equalToSuperview()
-            make.height.equalTo(layout.current.inputHeight)
+            make.height.equalTo(layout.current.tokenHeight)
         }
         
         tokenInputView.explanationLabel.snp.updateConstraints { make in

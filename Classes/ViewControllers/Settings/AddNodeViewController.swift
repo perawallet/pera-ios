@@ -60,7 +60,7 @@ class AddNodeViewController: BaseScrollViewController {
             
             addNodeView.nameInputView.inputTextField.text = node.name
             addNodeView.addressInputView.inputTextField.text = node.address
-            addNodeView.tokenInputView.inputTextField.text = node.token
+            addNodeView.tokenInputView.value = node.token ?? ""
         }
     }
     
@@ -181,7 +181,7 @@ class AddNodeViewController: BaseScrollViewController {
         
         guard let name = addNodeView.nameInputView.inputTextField.text, !name.isEmpty,
             let address = addNodeView.addressInputView.inputTextField.text, !address.isEmpty,
-            let token = addNodeView.tokenInputView.inputTextField.text, !token.isEmpty else {
+            let token = addNodeView.tokenInputView.inputTextView.text, !token.isEmpty else {
                 displaySimpleAlertWith(title: "title-error".localized,
                                        message: "node-settings-text-validation-empty-error".localized)
                 return

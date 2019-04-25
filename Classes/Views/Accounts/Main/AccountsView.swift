@@ -42,7 +42,7 @@ class AccountsView: BaseView {
     }()
     
     private(set) lazy var transactionHistoryCollectionView: UICollectionView = {
-        let flowLayout = AccountsFlowLayout()
+        let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .vertical
         flowLayout.minimumLineSpacing = 0.0
         flowLayout.minimumInteritemSpacing = 0.0

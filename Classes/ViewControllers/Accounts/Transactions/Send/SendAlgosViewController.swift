@@ -171,6 +171,11 @@ class SendAlgosViewController: BaseScrollViewController {
             return
         }
         
+        guard fromAccount.amount > UInt64(amount.toMicroAlgos) else {
+            self.displaySimpleAlertWith(title: "title-error".localized, message: "send-algos-amount-error".localized)
+            return
+        }
+        
         if fromAccount.amount - UInt64(amount.toMicroAlgos) < minimumTransactionMicroAlgosLimit {
             self.displaySimpleAlertWith(title: "title-error".localized, message: "send-algos-minimum-amount-error".localized)
             return
@@ -401,7 +406,7 @@ extension SendAlgosViewController: SendAlgosPreviewViewControllerDelegate {
 extension SendAlgosViewController: TouchDetectingScrollViewDelegate {
     
     func scrollViewDidDetectTouchEvent(scrollView: TouchDetectingScrollView, in point: CGPoint) {
-        if sendAlgosView.previewButton.frame.contains(point) {
+        if sendAlgosView.previewButton.frame.contains(point) || sendAlgosView.transactionReceiverView.frame.contains(point)  {
             return
         }
         
