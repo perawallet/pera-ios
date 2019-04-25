@@ -240,3 +240,4 @@
 // MARK: Transaction Detail
 
 "transaction-detail-title" = "Transaction Detail";
+"transaction-detail-round" = "Round:";
