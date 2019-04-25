@@ -17,13 +17,25 @@ class AlertViewModel {
         alertView.imageView.image = configurator.image
         
         if let destructiveAlertView = alertView as? DestructiveAlertView {
-            destructiveAlertView.actionButton.setTitle(configurator.actionTitle, for: .normal)
-            destructiveAlertView.actionButton.setBackgroundImage(configurator.actionImage, for: .normal)
+            if let actionTitle = configurator.actionTitle {
+                destructiveAlertView.actionButton.setTitle(actionTitle, for: .normal)
+            }
+            
+            if let actionImage = configurator.actionImage {
+                destructiveAlertView.actionButton.setBackgroundImage(actionImage, for: .normal)
+            }
+            
             return
         } else if configurator.actionTitle != nil {
             let defaultAlertView = alertView as? DefaultAlertView
-            defaultAlertView?.doneButton.setTitle(configurator.actionTitle, for: .normal)
-            defaultAlertView?.doneButton.setBackgroundImage(configurator.actionImage, for: .normal)
+            
+            if let actionTitle = configurator.actionTitle {
+                defaultAlertView?.doneButton.setTitle(actionTitle, for: .normal)
+            }
+            
+            if let actionImage = configurator.actionImage {
+                defaultAlertView?.doneButton.setBackgroundImage(actionImage, for: .normal)
+            }
         }
     }
 }

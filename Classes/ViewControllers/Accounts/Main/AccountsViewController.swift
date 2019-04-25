@@ -355,11 +355,7 @@ extension AccountsViewController {
     fileprivate func didContactEdited(notification: Notification) {
         transactionHistoryDataSource.setupContacts()
         
-        transactionHistoryDataSource.clear()
         accountsView.transactionHistoryCollectionView.reloadData()
-        accountsView.transactionHistoryCollectionView.contentState = .loading
-        
-        fetchTransactions()
     }
 }
 

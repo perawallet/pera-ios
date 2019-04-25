@@ -53,6 +53,17 @@ class ContactsViewController: BaseViewController {
         rightBarButtonItems = [addBarButtonItem]
     }
     
+    override func setListeners() {
+        super.setListeners()
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didContactAdded(notification:)),
+            name: Notification.Name.ContactAddition,
+            object: nil
+        )
+    }
+    
     override func linkInteractors() {
         contactsView.contactNameInputView.delegate = self
         contactsView.contactsCollectionView.delegate = self
@@ -106,6 +117,17 @@ class ContactsViewController: BaseViewController {
     private func didRefreshList() {
         contacts.removeAll()
         fetchContacts()
+        
+        contactsView.contactsCollectionView.reloadData()
+    }
+    
+    @objc
+    fileprivate func didContactAdded(notification: Notification) {
+        if delegate == nil {
+            fetchContacts()
+            
+            contactsView.contactsCollectionView.reloadData()
+        }
     }
 }
 
