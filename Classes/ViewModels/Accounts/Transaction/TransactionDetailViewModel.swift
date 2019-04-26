@@ -29,7 +29,7 @@ class TransactionDetailViewModel {
             view.transactionOpponentView.receiverContactView.qrDisplayButton.isHidden = false
             view.transactionOpponentView.receiverContactView.qrDisplayButton.setImage(img("icon-qr-view"), for: .normal)
         } else {
-            view.transactionOpponentView.state = .address(address: payment.toAddress, amount: nil)
+            view.transactionOpponentView.state = .address(address: transaction.from, amount: nil)
         }
         
         view.transactionAmountView.mode = .positive(payment.amount.toAlgos)
