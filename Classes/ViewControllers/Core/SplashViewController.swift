@@ -82,6 +82,8 @@ class SplashViewController: BaseViewController {
                             rootController.open(.choosePassword(mode: .login, route: nil), by: .present)
                         }
                     } else {
+                        session.reset()
+                        
                         self.dismiss(animated: false) {
                             rootController.open(.introduction(mode: .initialize), by: .launch, animated: false)
                         }
