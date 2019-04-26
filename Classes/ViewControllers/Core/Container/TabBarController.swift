@@ -137,6 +137,10 @@ class TabBarController: UITabBarController {
         tabBar.barTintColor = .white
         tabBar.tintColor = SharedColors.black
         tabBar.unselectedItemTintColor = SharedColors.darkGray
+        
+        let fontAttributes = [NSAttributedString.Key.font: UIFont.font(.montserrat, withWeight: .semiBold(size: 10.0))]
+        UITabBarItem.appearance().setTitleTextAttributes(fontAttributes, for: .normal)
+        UITabBarItem.appearance().setTitleTextAttributes(fontAttributes, for: .selected)
     }
     
     // MARK: View Lifecycle
