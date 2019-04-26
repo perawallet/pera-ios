@@ -45,6 +45,11 @@ class ChoosePasswordViewController: BaseViewController {
         super.init(configuration: configuration)
     }
     
+    override func didTapBackBarButton() -> Bool {
+        session?.reset()
+        return true
+    }
+    
     // MARK: Setup
     
     override func viewDidLoad() {
