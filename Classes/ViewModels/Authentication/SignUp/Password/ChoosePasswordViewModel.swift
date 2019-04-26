@@ -25,10 +25,8 @@ class ChoosePasswordViewModel {
     func configure(_ choosePasswordView: ChoosePasswordView) {
         switch mode {
         case .setup:
-            choosePasswordView.titleLabel.text = "password-set-title".localized
             choosePasswordView.subtitleLabel.text = "password-set-subtitle".localized
         case .verify:
-            choosePasswordView.titleLabel.text = "password-verify-title".localized
             choosePasswordView.subtitleLabel.text = "password-verify-subtitle".localized
         case .login:
             choosePasswordView.titleLabel.text = "login-title".localized

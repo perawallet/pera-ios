@@ -84,21 +84,16 @@ class ChoosePasswordViewController: BaseViewController {
         
         viewModel.configure(choosePasswordView)
         
-        if mode == .login {
-            return
-        }
-        
         switch mode {
+        case .setup:
+            title = "choose-password-title".localized
+        case .verify:
+            title = "password-verify-title".localized
         case .login:
             return
         case .resetPassword, .resetVerify:
             title = "password-change-title".localized
-            return
-        default:
-            break
         }
-        
-        title = "choose-password-title".localized
     }
     
     override func prepareLayout() {

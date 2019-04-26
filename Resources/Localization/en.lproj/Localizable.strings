@@ -47,7 +47,6 @@
 // MARK: Password Setting
 
 "choose-password-title" = "Choose Password";
-"password-set-title" = "First";
 "password-set-subtitle" = "Choose a six digit password";
 "password-verify-title" = "Verify Password";
 "password-change-subtitle" = "Enter six digit password";
