@@ -153,8 +153,6 @@ extension AddContactViewController: AddContactViewDelegate {
                     userInfo: ["contact": contact]
                 )
                 
-                self.delegate?.addContactViewController(self, didSave: contact)
-                
                 self.closeScreen(by: .pop)
             default:
                 break

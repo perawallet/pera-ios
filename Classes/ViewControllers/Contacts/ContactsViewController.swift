@@ -96,7 +96,11 @@ class ContactsViewController: BaseViewController {
                 
                 if self.searchResults.isEmpty {
                     self.contactsView.contactsCollectionView.contentState = .empty(self.emptyStateView)
+                } else {
+                    self.contactsView.contactsCollectionView.contentState = .none
                 }
+                
+                self.contactsView.contactsCollectionView.reloadData()
             default:
                 break
             }
@@ -117,17 +121,36 @@ class ContactsViewController: BaseViewController {
     private func didRefreshList() {
         contacts.removeAll()
         fetchContacts()
-        
-        contactsView.contactsCollectionView.reloadData()
     }
     
     @objc
     fileprivate func didContactAdded(notification: Notification) {
-        if delegate == nil {
-            fetchContacts()
+        guard let userInfo = notification.userInfo as? [String: Contact],
+            let contact = userInfo["contact"] else {
+                return
+        }
+        
+        if contacts.isEmpty {
+            contactsView.contactsCollectionView.contentState = .none
+        }
+        
+        contacts.append(contact)
+        
+        if let name = contact.name,
+            let currentQuery = contactsView.contactNameInputView.inputTextField.text,
+            !currentQuery.isEmpty {
+            
+            if name.lowercased().contains(currentQuery.lowercased()) {
+                searchResults.append(contact)
+            }
             
             contactsView.contactsCollectionView.reloadData()
+            return
         }
+        
+        searchResults.append(contact)
+        
+        contactsView.contactsCollectionView.reloadData()
     }
 }
 
