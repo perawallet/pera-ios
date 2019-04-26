@@ -76,8 +76,7 @@ class UserInformationView: BaseView {
         algorandAddressInputView.nextButtonMode = .submit
         algorandAddressInputView.inputTextView.autocorrectionType = .no
         algorandAddressInputView.inputTextView.autocapitalizationType = .none
-        algorandAddressInputView.rightInputAccessoryButton.setImage(img("icon-qr-gray"), for: .normal)
-        algorandAddressInputView.rightInputAccessoryButton.setBackgroundImage(img("button-small-bg-gray"), for: .normal)
+        algorandAddressInputView.rightInputAccessoryButton.setImage(img("icon-qr-view"), for: .normal)
         algorandAddressInputView.inputTextView.textContainer.heightTracksTextView = false
         algorandAddressInputView.inputTextView.isScrollEnabled = true
         algorandAddressInputView.backgroundColor = .white
@@ -164,6 +163,10 @@ class UserInformationView: BaseView {
         algorandAddressInputView.snp.makeConstraints { make in
             make.top.equalTo(contactNameInputView.snp.bottom).offset(layout.current.addressInputViewInset)
             make.leading.trailing.bottom.equalToSuperview()
+        }
+        
+        algorandAddressInputView.rightInputAccessoryButton.snp.updateConstraints { make in
+            make.top.equalToSuperview().inset(24.0)
         }
     }
     

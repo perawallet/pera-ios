@@ -58,14 +58,30 @@ class TransactionHistoryDataSource: NSObject, UICollectionViewDataSource {
         if indexPath.item < transactions.count {
             let transaction = transactions[indexPath.row]
             
-            if let contact = contacts.first(where: { contact -> Bool in
-                contact.address == transaction.from || contact.address == transaction.payment?.toAddress
-            }) {
-                transaction.contact = contact
-                
-                viewModel.configure(cell, with: transaction, for: contact)
+            guard let payment = transaction.payment else {
+                return cell
+            }
+            
+            if payment.toAddress == viewModel.currentAccount?.address {
+                if let contact = contacts.first(where: { contact -> Bool in
+                    contact.address == transaction.from
+                }) {
+                    transaction.contact = contact
+                    
+                    viewModel.configure(cell, with: transaction, for: contact)
+                } else {
+                    viewModel.configure(cell, with: transaction)
+                }
             } else {
-                viewModel.configure(cell, with: transaction)
+                if let contact = contacts.first(where: { contact -> Bool in
+                    contact.address == transaction.payment?.toAddress
+                }) {
+                    transaction.contact = contact
+                    
+                    viewModel.configure(cell, with: transaction, for: contact)
+                } else {
+                    viewModel.configure(cell, with: transaction)
+                }
             }
         }
         

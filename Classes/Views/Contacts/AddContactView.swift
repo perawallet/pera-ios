@@ -30,6 +30,7 @@ class AddContactView: BaseView {
     
     private(set) lazy var userInformationView: UserInformationView = {
         let view = UserInformationView()
+        view.algorandAddressInputView.rightInputAccessoryButton.setImage(img("icon-qr-scan"), for: .normal)
         return view
     }()
     

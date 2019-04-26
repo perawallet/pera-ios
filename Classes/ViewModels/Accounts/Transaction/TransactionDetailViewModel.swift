@@ -26,8 +26,10 @@ class TransactionDetailViewModel {
         
         if let contact = transaction.contact {
             view.transactionOpponentView.state = .contact(contact)
+            view.transactionOpponentView.receiverContactView.qrDisplayButton.isHidden = false
+            view.transactionOpponentView.receiverContactView.qrDisplayButton.setImage(img("icon-qr-view"), for: .normal)
         } else {
-            view.transactionOpponentView.state = .address(address: payment.toAddress, amount: nil)
+            view.transactionOpponentView.state = .address(address: transaction.from, amount: nil)
         }
         
         view.transactionAmountView.mode = .positive(payment.amount.toAlgos)
@@ -49,6 +51,8 @@ class TransactionDetailViewModel {
         
         if let contact = transaction.contact {
             view.transactionOpponentView.state = .contact(contact)
+            view.transactionOpponentView.receiverContactView.qrDisplayButton.isHidden = false
+            view.transactionOpponentView.receiverContactView.qrDisplayButton.setImage(img("icon-qr-view"), for: .normal)
         } else {
             view.transactionOpponentView.state = .address(address: payment.toAddress, amount: nil)
         }

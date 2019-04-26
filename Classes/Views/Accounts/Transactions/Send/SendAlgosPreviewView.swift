@@ -46,9 +46,6 @@ class SendAlgosPreviewView: SendAlgosView {
         algosInputView.inputTextField.isEnabled = false
         transactionReceiverView.passphraseInputView.inputTextView.isEditable = false
         accountSelectionView.isUserInteractionEnabled = false
-        
-        transactionReceiverView.qrButton.setBackgroundImage(img("button-small-bg-gray"), for: .normal)
-        transactionReceiverView.qrButton.setImage(img("icon-qr-gray"), for: .normal)
     }
     
     override func setListeners() {

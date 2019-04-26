@@ -58,7 +58,7 @@ class AccountRecoverView: BaseView {
         passPhraseInputView.nextButtonMode = .submit
         passPhraseInputView.inputTextView.autocorrectionType = .no
         passPhraseInputView.inputTextView.autocapitalizationType = .none
-        passPhraseInputView.rightInputAccessoryButton.setImage(img("icon-qr"), for: .normal)
+        passPhraseInputView.rightInputAccessoryButton.setImage(img("icon-qr-scan"), for: .normal)
         return passPhraseInputView
     }()
     

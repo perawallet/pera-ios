@@ -26,8 +26,8 @@ class TransactionReceiverView: BaseView {
         let horizontalInset: CGFloat = 25.0
         let separatorHeight: CGFloat = 1.0
         let containerTopInset: CGFloat = 7.0
-        let qrButtonInset: CGFloat = 55.0
-        let inputViewInset: CGFloat = 85.0
+        let qrButtonInset: CGFloat = 63.0
+        let inputViewInset: CGFloat = 104.0
         let verticalInset: CGFloat = 20.0
         let inputViewHeight: CGFloat = 40.0
         let buttonSize: CGFloat = 38.0
@@ -103,7 +103,7 @@ class TransactionReceiverView: BaseView {
         
         receiverContactView.userImageView.backgroundColor = .white
         receiverContactView.qrDisplayButton.setBackgroundImage(nil, for: .normal)
-        receiverContactView.qrDisplayButton.setImage(img("icon-contacts"), for: .normal)
+        receiverContactView.qrDisplayButton.setImage(img("icon-contact"), for: .normal)
         receiverContactView.separatorView.isHidden = true
         receiverContactView.nameLabel.text = contact.name
         receiverContactView.addressLabel.text = contact.address
@@ -133,12 +133,12 @@ class TransactionReceiverView: BaseView {
     }()
     
     private(set) lazy var qrButton: UIButton = {
-        UIButton(type: .custom).withImage(img("icon-qr-gray")).withBackgroundImage(img("button-small-bg-gray"))
+        UIButton(type: .custom).withImage(img("icon-qr-view"))
     }()
     
     private(set) lazy var contactsButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.setImage(img("icon-contacts"), for: .normal)
+        button.setImage(img("icon-contact"), for: .normal)
         return button
     }()
     
@@ -243,6 +243,10 @@ class TransactionReceiverView: BaseView {
         
         receiverContactView.userImageView.snp.updateConstraints { make in
             make.top.equalToSuperview().inset(0.0)
+        }
+        
+        receiverContactView.qrDisplayButton.snp.updateConstraints { make in
+            make.centerY.equalToSuperview().inset(-10.0)
         }
         
         receiverContactView.sendButton.isHidden = true
