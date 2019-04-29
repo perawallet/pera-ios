@@ -138,7 +138,7 @@
 "send-algos-amount" = "Amount:";
 "send-algos-transaction-id" = "Transaction ID:";
 "send-algos-more" = "SEND MORE";
-"send-algos-sent-title" = "Algos Sent!";
+"send-algos-sent-title" = "Transaction Sent!";
 "send-algos-alert-title" = "Wrong Transaction";
 "send-algos-alert-message" = "Please fill the fields.";
 "send-algos-minimum-amount-error-new-account" = "You're trying to send money to a new account. The amount must be at least 0.01 Algos";
