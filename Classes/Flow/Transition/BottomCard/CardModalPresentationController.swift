@@ -37,6 +37,10 @@ class CardModalPresentationController: UIPresentationController {
         return containerView?.bounds ?? .zero
     }
     
+    private var panGestureRecognizer = UIPanGestureRecognizer()
+    
+    private var initialFrameOfPresentedView: CGRect?
+    
     private let config: Configuration
     
     init(
@@ -117,6 +121,12 @@ class CardModalPresentationController: UIPresentationController {
         presentedView?.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         presentedView?.layer.cornerRadius = 16.0
         presentedView?.layer.masksToBounds = true
+        
+        if config.dismissMode == .scroll {
+            panGestureRecognizer.addTarget(self, action: #selector(draggedView(_:)))
+            presentedView?.isUserInteractionEnabled = true
+            presentedView?.addGestureRecognizer(panGestureRecognizer)
+        }
     }
     
     private func linkInteractors() {
@@ -132,6 +142,33 @@ class CardModalPresentationController: UIPresentationController {
         }
         presentedView?.endEditing(true)
         presentingViewController.dismiss(animated: true, completion: nil)
+    }
+    
+    @objc
+    private func draggedView(_ sender: UIPanGestureRecognizer) {
+        guard let view = presentedView else {
+            return
+        }
+        
+        let translation = sender.translation(in: view)
+        
+        if initialFrameOfPresentedView == nil {
+           initialFrameOfPresentedView = view.frame
+        }
+        
+        if sender.state == .ended {
+            view.endEditing(true)
+            initialFrameOfPresentedView = nil
+            presentingViewController.dismiss(animated: true, completion: nil)
+        } else {
+            if let initialHeight = initialFrameOfPresentedView?.size.height, view.frame.height - translation.y > initialHeight {
+                return
+            }
+            
+            changeModalSize(to: .custom(CGSize(width: view.frame.width, height: view.frame.height - translation.y)), animated: false)
+        }
+        
+        sender.setTranslation(.zero, in: view)
     }
 }
 

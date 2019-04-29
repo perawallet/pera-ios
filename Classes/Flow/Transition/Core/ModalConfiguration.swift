@@ -29,6 +29,7 @@ extension ModalConfiguration {
     enum DismissMode {
         case none
         case backgroundTouch
+        case scroll
     }
 }
 

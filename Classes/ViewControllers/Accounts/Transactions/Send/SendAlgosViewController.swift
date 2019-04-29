@@ -17,7 +17,7 @@ class SendAlgosViewController: BaseScrollViewController {
     private lazy var accountListModalPresenter = CardModalPresenter(
         config: ModalConfiguration(
             animationMode: .normal(duration: 0.25),
-            dismissMode: .backgroundTouch
+            dismissMode: .scroll
         )
     )
     

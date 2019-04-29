@@ -22,14 +22,14 @@ class AccountsViewController: BaseViewController {
     private lazy var accountListModalPresenter = CardModalPresenter(
         config: ModalConfiguration(
             animationMode: .normal(duration: 0.25),
-            dismissMode: .backgroundTouch
+            dismissMode: .scroll
         )
     )
     
     private lazy var optionsModalPresenter = CardModalPresenter(
         config: ModalConfiguration(
             animationMode: .normal(duration: 0.25),
-            dismissMode: .backgroundTouch
+            dismissMode: .scroll
         ),
         initialModalSize: .custom(CGSize(width: view.frame.width, height: layout.current.optionsModalHeight))
     )

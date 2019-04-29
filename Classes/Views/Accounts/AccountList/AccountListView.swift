@@ -107,7 +107,7 @@ class AccountListView: BaseView {
         
         addButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).inset(layout.current.buttonBottomInset)
+            make.bottom.greaterThanOrEqualToSuperview().inset(layout.current.buttonBottomInset + safeAreaBottom)
         }
     }
     
