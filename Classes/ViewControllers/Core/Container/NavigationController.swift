@@ -55,5 +55,3 @@ extension NavigationController: UINavigationControllerDelegate {
 
 extension NavigationController: UIGestureRecognizerDelegate {
 }
-
-
