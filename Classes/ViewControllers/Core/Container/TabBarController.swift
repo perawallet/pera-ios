@@ -41,18 +41,16 @@ class TabBarController: UITabBarController {
     private lazy var customTabBar: TabBar = {
         let tabBar = TabBar()
         tabBar.delegate = self
+        tabBar.backgroundColor = .white
+        tabBar.barTintColor = .white
+        tabBar.clipsToBounds = true
+        tabBar.tintColor = SharedColors.black
+        tabBar.unselectedItemTintColor = SharedColors.darkGray
+        tabBar.backgroundImage = UIImage()
+        tabBar.shadowImage = UIImage()
+        tabBar.layer.borderColor = rgb(0.9, 0.9, 0.9).cgColor
+        tabBar.layer.borderWidth = 1.0
         return tabBar
-    }()
-    
-    private lazy var shadowView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .white
-        view.layer.shadowOffset = CGSize(width: 0, height: 0)
-        view.layer.shadowRadius = 10
-        view.layer.shadowColor = rgba(0.67, 0.67, 0.72, 0.35).cgColor
-        view.layer.shadowOpacity = 1.0
-        view.layer.masksToBounds = false
-        return view
     }()
     
     // MARK: Initialization
@@ -133,11 +131,6 @@ class TabBarController: UITabBarController {
     }
     
     private func configureAppearance() {
-        tabBar.clipsToBounds = true
-        tabBar.barTintColor = .white
-        tabBar.tintColor = SharedColors.black
-        tabBar.unselectedItemTintColor = SharedColors.darkGray
-        
         let fontAttributes = [NSAttributedString.Key.font: UIFont.font(.montserrat, withWeight: .semiBold(size: 10.0))]
         UITabBarItem.appearance().setTitleTextAttributes(fontAttributes, for: .normal)
         UITabBarItem.appearance().setTitleTextAttributes(fontAttributes, for: .selected)
@@ -148,14 +141,13 @@ class TabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.insertSubview(shadowView, at: 1)
-        
-        shadowView.snp.makeConstraints { make in
-            make.leading.trailing.bottom.equalToSuperview()
-            make.height.equalTo(49.0 + view.safeAreaBottom)
-        }
-        
         setValue(customTabBar, forKey: "tabBar")
+        
+        tabBar.layer.shadowOffset = CGSize(width: 0, height: 0)
+        tabBar.layer.shadowRadius = 10
+        tabBar.layer.shadowColor = rgba(0.67, 0.67, 0.72, 0.35).cgColor
+        tabBar.layer.shadowOpacity = 1.0
+        tabBar.layer.masksToBounds = false
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -174,24 +166,6 @@ class TabBarController: UITabBarController {
             
             accountsViewController.route = route
         }
-    }
-    
-    // MARK: Shadow
-    
-    func setShadowView(hidden: Bool) {
-        if hidden {
-            shadowView.snp.updateConstraints { make in
-                make.height.equalTo(0.0)
-            }
-        } else {
-            if shadowView.frame.height == 0 {
-                shadowView.snp.updateConstraints { make in
-                    make.height.equalTo(tabBar.frame.height)
-                }
-            }
-        }
-        
-        view.layoutIfNeeded()
     }
 }
 

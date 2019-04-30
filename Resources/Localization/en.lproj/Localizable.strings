@@ -214,11 +214,11 @@
 "node-settings-warning-title" = "Warning";
 "add-node-title" = "Add Node";
 "edit-node-title" = "Edit Node";
-"node-settings-subtitle" = "Slide to connect to the node you’d like.";
+"node-settings-subtitle" = "Toggle the nodes you would like to use";
 "node-settings-enter-node-name" = "Name: ";
 "node-settings-enter-node-address" = "Address: ";
 "node-settings-api-key" = "Key: ";
-"node-settings-placeholder-name" = "Algorand Node";
+"node-settings-placeholder-name" = "Node Name";
 "node-settings-placeholder-address" = "http://yournode.com:8000";
 "node-settings-placeholder-api-key" = "65ef12c245b47fcf497b1c7d0faea4d82df470671974eeeed3e29ab4df1ed918";
 "node-settings-test-button-title" = "TEST";

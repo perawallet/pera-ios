@@ -50,6 +50,13 @@ class AccountsViewController: BaseViewController {
         return refreshControl
     }()
     
+    private lazy var fadeTextAnimation: CATransition = {
+        let animation = CATransition()
+        animation.duration = 0.5
+        animation.type = .fade
+        return animation
+    }()
+    
     var selectedAccount: Account?
     
     var newAccount: Account? {
@@ -142,6 +149,10 @@ class AccountsViewController: BaseViewController {
         transactionHistoryDataSource.setupContacts()
         
         fetchTransactions()
+    }
+    
+    private func addTitleFadeAnimation() {
+        navigationController?.navigationBar.layer.add(fadeTextAnimation, forKey: "fadeText")
     }
     
     override func setListeners() {
@@ -375,6 +386,8 @@ extension AccountsViewController: AccountListViewControllerDelegate {
         fetchTransactions()
         
         adjustDefaultHeaderViewLayout(withContentInsetUpdate: true)
+        
+        addTitleFadeAnimation()
         
         updateLayout()
     }

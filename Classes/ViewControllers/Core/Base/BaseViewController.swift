@@ -97,7 +97,7 @@ class BaseViewController: UIViewController {
         view.backgroundColor = SharedColors.warmWhite
         
         navigationController?.navigationBar.titleTextAttributes = [
-            NSAttributedString.Key.font: UIFont.font(.montserrat, withWeight: .bold(size: 12.0)),
+            NSAttributedString.Key.font: UIFont.font(.montserrat, withWeight: .bold(size: 14.0)),
             NSAttributedString.Key.foregroundColor: UIColor.black
         ]
     }
@@ -119,14 +119,6 @@ class BaseViewController: UIViewController {
         
         isViewDisappeared = false
         isViewAppearing = true
-        
-        if hidesBottomBarWhenPushed {
-            guard let tabBarController = tabBarController as? TabBarController else {
-                return
-            }
-            
-            tabBarController.setShadowView(hidden: true)
-        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -134,14 +126,6 @@ class BaseViewController: UIViewController {
         
         isViewAppearing = false
         isViewAppeared = true
-        
-        if !hidesBottomBarWhenPushed {
-            guard let tabBarController = tabBarController as? TabBarController else {
-                return
-            }
-            
-            tabBarController.setShadowView(hidden: false)
-        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
