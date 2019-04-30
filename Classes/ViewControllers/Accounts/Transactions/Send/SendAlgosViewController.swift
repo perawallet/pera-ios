@@ -411,7 +411,10 @@ extension SendAlgosViewController: SendAlgosPreviewViewControllerDelegate {
 extension SendAlgosViewController: TouchDetectingScrollViewDelegate {
     
     func scrollViewDidDetectTouchEvent(scrollView: TouchDetectingScrollView, in point: CGPoint) {
-        if sendAlgosView.previewButton.frame.contains(point) || sendAlgosView.transactionReceiverView.frame.contains(point) {
+        if sendAlgosView.previewButton.frame.contains(point) ||
+            sendAlgosView.algosInputView.frame.contains(point) ||
+            sendAlgosView.transactionReceiverView.frame.contains(point) {
+            
             return
         }
         

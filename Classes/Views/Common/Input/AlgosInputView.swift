@@ -36,8 +36,8 @@ class AlgosInputView: BaseView {
         textField.font = UIFont.font(.opensans, withWeight: .bold(size: 40.0))
         textField.attributedPlaceholder = NSAttributedString(
             string: "0.000000",
-            attributes: [NSAttributedString.Key.foregroundColor: SharedColors.softGray,
-                         NSAttributedString.Key.font: UIFont.font(.opensans, withWeight: .semiBold(size: 40.0))]
+            attributes: [NSAttributedString.Key.foregroundColor: SharedColors.black,
+                         NSAttributedString.Key.font: UIFont.font(.opensans, withWeight: .bold(size: 40.0))]
         )
         textField.addTarget(self, action: #selector(didChangeText(_:)), for: .editingChanged)
         textField.delegate = self
