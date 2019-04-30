@@ -92,6 +92,12 @@ class ReceiveAlgosViewController: BaseViewController {
         }
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        receiveAlgosView.algosInputView.beginEditing()
+    }
+    
     // MARK: Navigation
     
     private func presentAccountList() {

@@ -129,6 +129,12 @@ class SendAlgosViewController: BaseScrollViewController {
         }
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        sendAlgosView.algosInputView.beginEditing()
+    }
+    
     // MARK: Navigation
     
     private func presentAccountList() {
