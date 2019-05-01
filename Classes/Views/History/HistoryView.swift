@@ -231,7 +231,7 @@ class HistoryView: BaseView {
                 return
             }
             
-            topViewController.displaySimpleAlertWith(title: "Error", message: "You cannot select a date in the future")
+            topViewController.displaySimpleAlertWith(title: "title-error".localized, message: "history-future-date-error".localized)
             
             startDatePickerView.date = startDate
             return
@@ -249,7 +249,7 @@ class HistoryView: BaseView {
                 return
             }
             
-            topViewController.displaySimpleAlertWith(title: "Error", message: "You cannot select a date in the future")
+            topViewController.displaySimpleAlertWith(title: "title-error".localized, message: "history-future-date-error".localized)
             
             endDatePickerView.date = endDate
             return
@@ -260,7 +260,7 @@ class HistoryView: BaseView {
                 return
             }
             
-            topViewController.displaySimpleAlertWith(title: "Error", message: "You cannot select a date older than your start date")
+            topViewController.displaySimpleAlertWith(title: "title-error".localized, message: "history-end-date-error".localized)
             
             endDatePickerView.date = endDate
             return
