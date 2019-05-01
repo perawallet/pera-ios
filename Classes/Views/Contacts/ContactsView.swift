@@ -63,6 +63,7 @@ class ContactsView: BaseView {
         collectionView.keyboardDismissMode = .onDrag
         
         collectionView.register(ContactCell.self, forCellWithReuseIdentifier: ContactCell.reusableIdentifier)
+        collectionView.register(ContactSelectionCell.self, forCellWithReuseIdentifier: ContactSelectionCell.reusableIdentifier)
         
         return collectionView
     }()
