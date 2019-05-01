@@ -214,6 +214,9 @@
 		2BDDCA482268A3630081CED2 /* DeepLinkParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDDCA472268A3630081CED2 /* DeepLinkParser.swift */; };
 		2BDE31E122799FF0002E8235 /* ContactSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDE31E022799FF0002E8235 /* ContactSelectionViewController.swift */; };
 		2BDE31E32279A319002E8235 /* ContactSelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDE31E22279A319002E8235 /* ContactSelectionCell.swift */; };
+		2BDE31E62279E1D2002E8235 /* AuctionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDE31E52279E1D2002E8235 /* AuctionsViewController.swift */; };
+		2BDE31E82279EAFC002E8235 /* API+Auction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDE31E72279EAFC002E8235 /* API+Auction.swift */; };
+		2BDE31EA2279EBBD002E8235 /* CointlistUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDE31E92279EBBD002E8235 /* CointlistUser.swift */; };
 		2BDE9CCB224E1458007EFF30 /* AccountsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDE9CCA224E1458007EFF30 /* AccountsView.swift */; };
 		2BDE9CCD224E1464007EFF30 /* AccountsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDE9CCC224E1464007EFF30 /* AccountsHeaderView.swift */; };
 		2BDE9CD0224E1A60007EFF30 /* EmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDE9CCF224E1A60007EFF30 /* EmptyStateView.swift */; };
@@ -475,6 +478,9 @@
 		2BDDCA472268A3630081CED2 /* DeepLinkParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkParser.swift; sourceTree = "<group>"; };
 		2BDE31E022799FF0002E8235 /* ContactSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactSelectionViewController.swift; sourceTree = "<group>"; };
 		2BDE31E22279A319002E8235 /* ContactSelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactSelectionCell.swift; sourceTree = "<group>"; };
+		2BDE31E52279E1D2002E8235 /* AuctionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionsViewController.swift; sourceTree = "<group>"; };
+		2BDE31E72279EAFC002E8235 /* API+Auction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+Auction.swift"; sourceTree = "<group>"; };
+		2BDE31E92279EBBD002E8235 /* CointlistUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CointlistUser.swift; sourceTree = "<group>"; };
 		2BDE9CCA224E1458007EFF30 /* AccountsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsView.swift; sourceTree = "<group>"; };
 		2BDE9CCC224E1464007EFF30 /* AccountsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsHeaderView.swift; sourceTree = "<group>"; };
 		2BDE9CCF224E1A60007EFF30 /* EmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateView.swift; sourceTree = "<group>"; };
@@ -642,6 +648,7 @@
 				17D50AA0225C755E00CA9C6E /* ApplicationConfiguration.swift */,
 				2B6ED963226105E100787984 /* Payment.swift */,
 				179B93D5225E447400DD03E9 /* Node.swift */,
+				2BDE31E92279EBBD002E8235 /* CointlistUser.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1040,6 +1047,7 @@
 				17B7D8A72240DFFC00A6FF9E /* API+Account.swift */,
 				173DA1E82255F7B500378A82 /* API+Transaction.swift */,
 				17D04F49225F90B00051BC43 /* API+Node.swift */,
+				2BDE31E72279EAFC002E8235 /* API+Auction.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -1184,6 +1192,7 @@
 		2B8BE4E822392657005D8565 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				2BDE31E42279E1B5002E8235 /* Auctions */,
 				2BF5317A224AA88600A7455F /* Settings */,
 				2BF53179224AA87300A7455F /* Contacts */,
 				2BF53178224AA86B00A7455F /* History */,
@@ -1719,6 +1728,14 @@
 				17BEC45C2248C7D900AAF370 /* PassPhraseVerifyViewController.swift */,
 			);
 			path = PassPhrase;
+			sourceTree = "<group>";
+		};
+		2BDE31E42279E1B5002E8235 /* Auctions */ = {
+			isa = PBXGroup;
+			children = (
+				2BDE31E52279E1D2002E8235 /* AuctionsViewController.swift */,
+			);
+			path = Auctions;
 			sourceTree = "<group>";
 		};
 		2BDE9CCE224E172B007EFF30 /* Main */ = {
@@ -2289,6 +2306,7 @@
 				2BF53155224A468400A7455F /* ModalPresentable.swift in Sources */,
 				2B7572AA225CC391009E0253 /* SendAlgosSuccessViewController.swift in Sources */,
 				2BDE9CD4224E1E91007EFF30 /* LoadingIndicator.swift in Sources */,
+				2BDE31EA2279EBBD002E8235 /* CointlistUser.swift in Sources */,
 				171111B0225DF91400DAF55C /* SettingsInfoCell.swift in Sources */,
 				171111AE225DDA6100DAF55C /* SettingsViewModel.swift in Sources */,
 				2B656E99224BC52D0064A49B /* AccountContextView.swift in Sources */,
@@ -2437,6 +2455,7 @@
 				2BD739F4223FF08000B66EEF /* NumpadView.swift in Sources */,
 				171111B8225E0C8400DAF55C /* Toggle.swift in Sources */,
 				171111AB225DD1DD00DAF55C /* SettingsDetailContextView.swift in Sources */,
+				2BDE31E82279EAFC002E8235 /* API+Auction.swift in Sources */,
 				2BF34CBA223A880C0052CAD3 /* UIView+SafeArea.swift in Sources */,
 				2BF34CBF223A8E740052CAD3 /* NavigationController.swift in Sources */,
 				2BD78E8E226A0B4900A3D35C /* PassphraseBackUpOrderView.swift in Sources */,
@@ -2450,6 +2469,7 @@
 				2B6ED962226105CD00787984 /* TransactionPreviewDraft.swift in Sources */,
 				2BD739DD223F9E9F00B66EEF /* ChoosePasswordView.swift in Sources */,
 				2B8BE4F4223935DA005D8565 /* BaseView.swift in Sources */,
+				2BDE31E62279E1D2002E8235 /* AuctionsViewController.swift in Sources */,
 				170AFAFC224CC70A00520EA5 /* QRText.swift in Sources */,
 				2BF71912224ECFEC001E8420 /* ContactsView.swift in Sources */,
 				2B89549F2242D90000D6D068 /* UIViewController+Additions.swift in Sources */,
