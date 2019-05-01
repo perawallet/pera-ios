@@ -169,6 +169,12 @@ extension ContactsViewController: UICollectionViewDataSource {
                 fatalError("Index path is out of bounds")
         }
         
+        configure(cell, at: indexPath)
+        
+        return cell
+    }
+    
+    func configure(_ cell: ContactCell, at indexPath: IndexPath) {
         cell.delegate = self
         
         if indexPath.item < searchResults.count {
@@ -176,8 +182,6 @@ extension ContactsViewController: UICollectionViewDataSource {
             
             viewModel.configure(cell, with: contact)
         }
-        
-        return cell
     }
 }
 

@@ -157,7 +157,7 @@ class SendAlgosViewController: BaseScrollViewController {
     }
     
     private func displayContactList() {
-        let contactsViewController = open(.contacts, by: .push) as? ContactsViewController
+        let contactsViewController = open(.contactSelection, by: .push) as? ContactsViewController
         
         contactsViewController?.delegate = self
     }
@@ -329,14 +329,20 @@ extension SendAlgosViewController: SendAlgosViewDelegate {
     }
     
     func sendAlgosViewDidTapPreviewButton(_ sendAlgosView: SendAlgosView) {
+        view.endEditing(true)
+        
         displayTransactionPreview()
     }
     
     func sendAlgosViewDidTapContactsButton(_ sendAlgosView: SendAlgosView) {
+        view.endEditing(true)
+        
         displayContactList()
     }
     
     func sendAlgosViewDidTapQRButton(_ sendAlgosView: SendAlgosView) {
+        view.endEditing(true)
+        
         displayQRScanner()
     }
 }

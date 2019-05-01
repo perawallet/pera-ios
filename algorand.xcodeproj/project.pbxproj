@@ -212,6 +212,8 @@
 		2BD78E8E226A0B4900A3D35C /* PassphraseBackUpOrderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD78E8C226A0B4800A3D35C /* PassphraseBackUpOrderView.swift */; };
 		2BD78E8F226A0B4900A3D35C /* PassphraseBackUpCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD78E8D226A0B4800A3D35C /* PassphraseBackUpCell.swift */; };
 		2BDDCA482268A3630081CED2 /* DeepLinkParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDDCA472268A3630081CED2 /* DeepLinkParser.swift */; };
+		2BDE31E122799FF0002E8235 /* ContactSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDE31E022799FF0002E8235 /* ContactSelectionViewController.swift */; };
+		2BDE31E32279A319002E8235 /* ContactSelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDE31E22279A319002E8235 /* ContactSelectionCell.swift */; };
 		2BDE9CCB224E1458007EFF30 /* AccountsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDE9CCA224E1458007EFF30 /* AccountsView.swift */; };
 		2BDE9CCD224E1464007EFF30 /* AccountsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDE9CCC224E1464007EFF30 /* AccountsHeaderView.swift */; };
 		2BDE9CD0224E1A60007EFF30 /* EmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDE9CCF224E1A60007EFF30 /* EmptyStateView.swift */; };
@@ -471,6 +473,8 @@
 		2BD78E8C226A0B4800A3D35C /* PassphraseBackUpOrderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PassphraseBackUpOrderView.swift; sourceTree = "<group>"; };
 		2BD78E8D226A0B4800A3D35C /* PassphraseBackUpCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PassphraseBackUpCell.swift; sourceTree = "<group>"; };
 		2BDDCA472268A3630081CED2 /* DeepLinkParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkParser.swift; sourceTree = "<group>"; };
+		2BDE31E022799FF0002E8235 /* ContactSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactSelectionViewController.swift; sourceTree = "<group>"; };
+		2BDE31E22279A319002E8235 /* ContactSelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactSelectionCell.swift; sourceTree = "<group>"; };
 		2BDE9CCA224E1458007EFF30 /* AccountsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsView.swift; sourceTree = "<group>"; };
 		2BDE9CCC224E1464007EFF30 /* AccountsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsHeaderView.swift; sourceTree = "<group>"; };
 		2BDE9CCF224E1A60007EFF30 /* EmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateView.swift; sourceTree = "<group>"; };
@@ -972,6 +976,7 @@
 			children = (
 				2B82B1C72253A4F000A8909F /* ContactCell.swift */,
 				2B82B1C92253A50100A8909F /* ContactContextView.swift */,
+				2BDE31E22279A319002E8235 /* ContactSelectionCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -2001,6 +2006,7 @@
 				2BF71915224ED0A6001E8420 /* AddContactViewController.swift */,
 				2BF71917224ED0C5001E8420 /* ContactInfoViewController.swift */,
 				2BF71919224ED0E8001E8420 /* ContactQRDisplayViewController.swift */,
+				2BDE31E022799FF0002E8235 /* ContactSelectionViewController.swift */,
 			);
 			path = Contacts;
 			sourceTree = "<group>";
@@ -2303,6 +2309,7 @@
 				17CFB884226A134A00B3B0A7 /* ToggleCell.swift in Sources */,
 				2B8BE4D222391C38005D8565 /* AppDelegate.swift in Sources */,
 				173DA1ED2255F96E00378A82 /* TransactionFee.swift in Sources */,
+				2BDE31E122799FF0002E8235 /* ContactSelectionViewController.swift in Sources */,
 				2BF5315D224A46F800A7455F /* UIViewControllerContextTransitioning+Additions.swift in Sources */,
 				2BD73A192241324700B66EEF /* ChoosePasswordViewModel.swift in Sources */,
 				2B8954C02244047D00D6D068 /* BaseInputView.swift in Sources */,
@@ -2315,6 +2322,7 @@
 				2B6ED9662261063700787984 /* TransactionList.swift in Sources */,
 				2BDE9CDA224E2336007EFF30 /* TransactionHistoryCell.swift in Sources */,
 				2B82B1C522535F4300A8909F /* Contact.swift in Sources */,
+				2BDE31E32279A319002E8235 /* ContactSelectionCell.swift in Sources */,
 				2BF53159224A46C500A7455F /* ModalPresenterInteractable.swift in Sources */,
 				2BD73A1222412B7300B66EEF /* NumpadViewModel.swift in Sources */,
 				2BDE9CDC224E2379007EFF30 /* TransactionHistoryContextView.swift in Sources */,
