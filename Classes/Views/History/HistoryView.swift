@@ -28,8 +28,8 @@ class HistoryView: BaseView {
     
     weak var delegate: HistoryViewDelegate?
     
-    var startDate: Date?
-    var endDate: Date?
+    var startDate: Date = Date().dateByAdding(-1, .weekOfYear).date
+    var endDate: Date = Date()
     
     // MARK: Components
 
@@ -48,9 +48,9 @@ class HistoryView: BaseView {
         let startDateDisplayView = DetailedInformationView()
         startDateDisplayView.backgroundColor = .white
         startDateDisplayView.explanationLabel.text = "history-start-date".localized
-        startDateDisplayView.detailLabel.text = "history-select-date".localized
         startDateDisplayView.isUserInteractionEnabled = true
         startDateDisplayView.detailLabel.font = UIFont.font(.montserrat, withWeight: .semiBold(size: 12.0))
+        startDateDisplayView.detailLabel.text = startDate.toFormat("dd MMMM yyyy")
         return startDateDisplayView
     }()
     
@@ -65,7 +65,7 @@ class HistoryView: BaseView {
         let datePicker = UIDatePicker()
         datePicker.datePickerMode = .date
         datePicker.isHidden = true
-        datePicker.maximumDate = Date()
+        datePicker.date = startDate
         return datePicker
     }()
     
@@ -73,9 +73,9 @@ class HistoryView: BaseView {
         let endDateDisplayView = DetailedInformationView()
         endDateDisplayView.backgroundColor = .white
         endDateDisplayView.explanationLabel.text = "history-end-date".localized
-        endDateDisplayView.detailLabel.text = "history-select-date".localized
         endDateDisplayView.isUserInteractionEnabled = true
         endDateDisplayView.detailLabel.font = UIFont.font(.montserrat, withWeight: .semiBold(size: 12.0))
+        endDateDisplayView.detailLabel.text = endDate.toFormat("dd MMMM yyyy")
         return endDateDisplayView
     }()
     
@@ -83,7 +83,7 @@ class HistoryView: BaseView {
         let datePicker = UIDatePicker()
         datePicker.datePickerMode = .date
         datePicker.isHidden = true
-        datePicker.maximumDate = Date()
+        datePicker.date = endDate
         return datePicker
     }()
 
@@ -226,25 +226,56 @@ class HistoryView: BaseView {
     
     @objc
     private func didChangeStartDate(picker: UIDatePicker) {
-        startDate = picker.date
-        endDatePickerView.minimumDate = startDate
+        if picker.date > Date() {
+            guard let topViewController = UIApplication.topViewController() else {
+                return
+            }
+            
+            topViewController.displaySimpleAlertWith(title: "Error", message: "You cannot select a date in the future")
+            
+            startDatePickerView.date = startDate
+            return
+        }
         
-        startDateDisplayView.detailLabel.text = startDate?.toFormat("dd MMMM yyyy")
+        startDate = picker.date
+        
+        startDateDisplayView.detailLabel.text = startDate.toFormat("dd MMMM yyyy")
     }
     
     @objc
     private func didChangeEndDate(picker: UIDatePicker) {
-        endDate = picker.date
-        startDatePickerView.maximumDate = endDate
+        if picker.date > Date() {
+            guard let topViewController = UIApplication.topViewController() else {
+                return
+            }
+            
+            topViewController.displaySimpleAlertWith(title: "Error", message: "You cannot select a date in the future")
+            
+            endDatePickerView.date = endDate
+            return
+        }
         
-        endDateDisplayView.detailLabel.text = endDate?.toFormat("dd MMMM yyyy")
+        if startDate > picker.date {
+            guard let topViewController = UIApplication.topViewController() else {
+                return
+            }
+            
+            topViewController.displaySimpleAlertWith(title: "Error", message: "You cannot select a date older than your start date")
+            
+            endDatePickerView.date = endDate
+            return
+        }
+        
+        endDate = picker.date
+        
+        endDateDisplayView.detailLabel.text = endDate.toFormat("dd MMMM yyyy")
     }
     
     @objc
     private func didTriggerStartDate(tapGestureRecognizer: UITapGestureRecognizer) {
         if startDatePickerView.isHidden {
             startDate = startDatePickerView.date
-            startDateDisplayView.detailLabel.text = startDate?.toFormat("dd MMMM yyyy")
+            startDateDisplayView.detailLabel.text = startDate.toFormat("dd MMMM yyyy")
             
             setStartDatePicker(visible: true)
         } else {
@@ -256,7 +287,7 @@ class HistoryView: BaseView {
     private func didTriggerEndDate(tapGestureRecognizer: UITapGestureRecognizer) {
         if endDatePickerView.isHidden {
             endDate = endDatePickerView.date
-            endDateDisplayView.detailLabel.text = endDate?.toFormat("dd MMMM yyyy")
+            endDateDisplayView.detailLabel.text = endDate.toFormat("dd MMMM yyyy")
             
             setEndDatePicker(visible: true)
         } else {
