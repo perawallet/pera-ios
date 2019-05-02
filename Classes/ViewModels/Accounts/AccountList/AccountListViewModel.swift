@@ -27,7 +27,9 @@ class AccountListViewModel {
             cell.contextView.amountLabel.text = "\(account.amount.toAlgos)"
         }
         
-        cell.contextView.amountLabel.text = "\(account.amount.toAlgos)"
+        if let amount = account.amount.toAlgos.toDecimalStringForLabel {
+            cell.contextView.amountLabel.text = amount
+        }
     }
     
     func configure(_ cell: AccountsTotalDisplayCell, with totalAmount: String) {

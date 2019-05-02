@@ -176,6 +176,8 @@
 "history-start-date" = "Start Date:";
 "history-end-date" = "End Date:";
 "history-select-date" = "Select Date";
+"history-future-date-error" = "You cannot select a date in the future";
+"history-end-date-error" = "You cannot select a date older than your start date";
 "title-view-results" = "VIEW RESULTS";
 "history-alert-title" = "Incorrect Fields";
 "history-alert-message" = "Please fill the fields properly.";

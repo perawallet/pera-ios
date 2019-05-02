@@ -87,12 +87,13 @@ class HistoryViewController: BaseScrollViewController {
 extension HistoryViewController: HistoryViewDelegate {
     
     func historyViewDidTapViewResultsButton(_ historyView: HistoryView) {
-        guard let startDate = historyView.startDate,
-            let endDate = historyView.endDate,
-            let account = selectedAccount else {
-                displaySimpleAlertWith(title: "history-alert-title".localized, message: "history-alert-message".localized)
-                return
+        guard let account = selectedAccount else {
+            displaySimpleAlertWith(title: "history-alert-title".localized, message: "history-alert-message".localized)
+            return
         }
+        
+        let startDate = historyView.startDate
+        let endDate = historyView.endDate
         
         let historyDraft = HistoryDraft(account: account, startDate: startDate, endDate: endDate)
         

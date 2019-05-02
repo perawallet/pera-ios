@@ -53,7 +53,9 @@ class AccountListDataSource: NSObject, UICollectionViewDataSource {
                     $0 + $1.amount
                 }
                 
-                viewModel.configure(cell, with: "\(totalAmount.toAlgos)")
+                if let totalFormattedAmount = totalAmount.toAlgos.toDecimalStringForLabel {
+                    viewModel.configure(cell, with: totalFormattedAmount)
+                }
                 
                 return cell
             }
