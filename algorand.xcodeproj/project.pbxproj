@@ -263,6 +263,8 @@
 		2BF71916224ED0A6001E8420 /* AddContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF71915224ED0A6001E8420 /* AddContactViewController.swift */; };
 		2BF71918224ED0C5001E8420 /* ContactInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF71917224ED0C5001E8420 /* ContactInfoViewController.swift */; };
 		2BF7191A224ED0E8001E8420 /* ContactQRDisplayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF71919224ED0E8001E8420 /* ContactQRDisplayViewController.swift */; };
+		2BFBAB72227B349E008BBB31 /* SuccessAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 2BFBAB71227B349E008BBB31 /* SuccessAnimation.json */; };
+		2BFBAB75227B35B7008BBB31 /* images in Resources */ = {isa = PBXBuildFile; fileRef = 2BFBAB74227B35B7008BBB31 /* images */; };
 		654E149E940D74AF3955EEF3 /* Pods_algorand.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01F66EBBAFA146AFC193D69A /* Pods_algorand.framework */; };
 /* End PBXBuildFile section */
 
@@ -527,6 +529,8 @@
 		2BF71915224ED0A6001E8420 /* AddContactViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddContactViewController.swift; sourceTree = "<group>"; };
 		2BF71917224ED0C5001E8420 /* ContactInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactInfoViewController.swift; sourceTree = "<group>"; };
 		2BF71919224ED0E8001E8420 /* ContactQRDisplayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactQRDisplayViewController.swift; sourceTree = "<group>"; };
+		2BFBAB71227B349E008BBB31 /* SuccessAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SuccessAnimation.json; sourceTree = "<group>"; };
+		2BFBAB74227B35B7008BBB31 /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = images; sourceTree = "<group>"; };
 		44FD8F3D210C1D99893A91DF /* Pods-algorand.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand.release.xcconfig"; path = "Pods/Target Support Files/Pods-algorand/Pods-algorand.release.xcconfig"; sourceTree = "<group>"; };
 		8CA10E911394EB35A6B71CEB /* Pods-algorand.app store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand.app store.xcconfig"; path = "Pods/Target Support Files/Pods-algorand/Pods-algorand.app store.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1157,6 +1161,7 @@
 		2B8BE4E5223924DB005D8565 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				2BFBAB73227B35A6008BBB31 /* Animations */,
 				2BF34CCC223AA73B0052CAD3 /* Fonts */,
 				2BF34CC6223A99850052CAD3 /* Localization */,
 				2B8BE4E72239257B005D8565 /* LaunchScreen */,
@@ -2034,6 +2039,23 @@
 			path = Contacts;
 			sourceTree = "<group>";
 		};
+		2BFBAB73227B35A6008BBB31 /* Animations */ = {
+			isa = PBXGroup;
+			children = (
+				2BFBAB76227B35CC008BBB31 /* SuccessAnimation */,
+			);
+			path = Animations;
+			sourceTree = "<group>";
+		};
+		2BFBAB76227B35CC008BBB31 /* SuccessAnimation */ = {
+			isa = PBXGroup;
+			children = (
+				2BFBAB71227B349E008BBB31 /* SuccessAnimation.json */,
+				2BFBAB74227B35B7008BBB31 /* images */,
+			);
+			path = SuccessAnimation;
+			sourceTree = "<group>";
+		};
 		9F18DC6D0E56430348850CDE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -2124,7 +2146,9 @@
 				179278872244E99A00097D32 /* Montserrat-Regular.ttf in Resources */,
 				178AFEC322450BE3001E14D5 /* OpenSans-BoldItalic.ttf in Resources */,
 				17927897224501BA00097D32 /* Montserrat-SemiBold.ttf in Resources */,
+				2BFBAB72227B349E008BBB31 /* SuccessAnimation.json in Resources */,
 				178AFEC222450BE3001E14D5 /* OpenSans-Bold.ttf in Resources */,
+				2BFBAB75227B35B7008BBB31 /* images in Resources */,
 				2B6687172249058D009F21E7 /* OpenSans-SemiBoldItalic.ttf in Resources */,
 				2B09603822578C990005BE27 /* GoogleService-Info.plist in Resources */,
 				2B8BE4DC22391C3B005D8565 /* LaunchScreen.storyboard in Resources */,
@@ -2210,6 +2234,7 @@
 				"${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftDate/SwiftDate.framework",
+				"${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -2223,6 +2248,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftDate.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Lottie.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;

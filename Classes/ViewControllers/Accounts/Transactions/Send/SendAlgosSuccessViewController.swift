@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Lottie
 
 protocol SendAlgosSuccessViewControllerDelegate: class {
     
@@ -81,6 +82,12 @@ class SendAlgosSuccessViewController: BaseScrollViewController {
         sendAlgosSuccessView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        sendAlgosSuccessView.successAnimationView.play(fromProgress: 0, toProgress: 2 / 3, loopMode: .playOnce)
     }
 }
 

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Lottie
 
 protocol SendAlgosSuccessViewDelegate: class {
     
@@ -20,6 +21,7 @@ class SendAlgosSuccessView: BaseView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let imageViewInset: CGFloat = 30.0
         let imageViewSize: CGFloat = 150.0
+        let animationViewSize: CGFloat = 55.0
         let titleLabelInset: CGFloat = 15.0
         let verticalInset: CGFloat = 20.0
         let buttonCenterOffset: CGFloat = 7.5
@@ -38,12 +40,19 @@ class SendAlgosSuccessView: BaseView {
     
     // MARK: Components
     
-    private lazy var successImageView: UIImageView = {
-        let imageView = UIImageView(image: img("icon-transaction-success"))
-        imageView.backgroundColor = .white
-        imageView.layer.cornerRadius = layout.current.imageViewSize / 2
-        imageView.contentMode = .center
-        return imageView
+    private(set) lazy var animationBackgroundView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        view.layer.cornerRadius = layout.current.imageViewSize / 2
+        return view
+    }()
+    
+    private(set) lazy var successAnimationView: AnimationView = {
+        let successAnimationView = AnimationView()
+        successAnimationView.contentMode = .scaleAspectFit
+        let animation = Animation.named("SuccessAnimation")
+        successAnimationView.animation = animation
+        return successAnimationView
     }()
     
     private lazy var titleLabel: UILabel = {
@@ -124,7 +133,8 @@ class SendAlgosSuccessView: BaseView {
     // MARK: Layout
     
     override func prepareLayout() {
-        setupSuccessImageViewLayout()
+        setupAnimationBackgroundViewLayout()
+        setupSuccessAnimationViewLayout()
         setupTitleLabelLayout()
         setupDoneButtonLayout()
         setupSendMoreButtonLayout()
@@ -136,13 +146,22 @@ class SendAlgosSuccessView: BaseView {
         setupTransactionIdViewLayout()
     }
     
-    private func setupSuccessImageViewLayout() {
-        addSubview(successImageView)
+    private func setupAnimationBackgroundViewLayout() {
+        addSubview(animationBackgroundView)
         
-        successImageView.snp.makeConstraints { make in
+        animationBackgroundView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalToSuperview().inset(layout.current.imageViewInset)
             make.width.height.equalTo(layout.current.imageViewSize)
+        }
+    }
+    
+    private func setupSuccessAnimationViewLayout() {
+        animationBackgroundView.addSubview(successAnimationView)
+        
+        successAnimationView.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+            make.width.height.equalTo(layout.current.animationViewSize)
         }
     }
     
@@ -150,7 +169,7 @@ class SendAlgosSuccessView: BaseView {
         addSubview(titleLabel)
         
         titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(successImageView.snp.bottom).offset(layout.current.titleLabelInset)
+            make.top.equalTo(animationBackgroundView.snp.bottom).offset(layout.current.titleLabelInset)
             make.centerX.equalToSuperview()
         }
     }
