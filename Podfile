@@ -21,6 +21,8 @@ target 'algorand' do
     
   #UI
   pod 'SVProgressHUD'
+  pod 'Charts'
+  pod 'SwiftCharts'
 
   #Analytics
   pod 'Firebase/Core'

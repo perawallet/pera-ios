@@ -1,5 +1,8 @@
 PODS:
   - Alamofire (4.8.2)
+  - Charts (3.3.0):
+    - Charts/Core (= 3.3.0)
+  - Charts/Core (3.3.0)
   - Crashlytics (3.12.0):
     - Fabric (~> 1.9.0)
   - Fabric (1.9.0)
@@ -58,10 +61,12 @@ PODS:
   - nanopb/encode (0.3.901)
   - SnapKit (4.2.0)
   - SVProgressHUD (2.2.5)
+  - SwiftCharts (0.6.5)
   - SwiftDate (5.1.0)
   - SwiftLint (0.30.1)
 
 DEPENDENCIES:
+  - Charts
   - Crashlytics
   - Fabric
   - Firebase/Core
@@ -69,12 +74,14 @@ DEPENDENCIES:
   - Magpie (from `https://github.com/Hipo/magpie.git`)
   - SnapKit
   - SVProgressHUD
+  - SwiftCharts
   - SwiftDate
   - SwiftLint
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Alamofire
+    - Charts
     - Crashlytics
     - Fabric
     - Firebase
@@ -87,6 +94,7 @@ SPEC REPOS:
     - nanopb
     - SnapKit
     - SVProgressHUD
+    - SwiftCharts
     - SwiftDate
     - SwiftLint
 
@@ -101,6 +109,7 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
+  Charts: ec1f57f9340054155691e84d4544a1d239d382c5
   Crashlytics: 07fb167b1694128c1c9a5a5cc319b0e9c3ca0933
   Fabric: f988e33c97f08930a413e08123064d2e5f68d655
   Firebase: 2f5235e62f141cb86181c3af0dfe4509706351ac
@@ -114,9 +123,10 @@ SPEC CHECKSUMS:
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
+  SwiftCharts: 2e755ea292f0b87d3e4b2c1eb5afc080a20cdc15
   SwiftDate: 6329e58969a2de31cea7f1ee1143b247693196e7
   SwiftLint: a54bf1fe12b55c68560eb2a7689dfc81458508f7
 
-PODFILE CHECKSUM: b7d5db2aa3a23eff0ba300baa333a4774c46d4ca
+PODFILE CHECKSUM: 6416fbb3c7f759b22cefeb1fb155cea9f1403a43
 
 COCOAPODS: 1.6.1

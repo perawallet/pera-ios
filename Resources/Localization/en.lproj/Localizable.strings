@@ -241,3 +241,7 @@
 
 "transaction-detail-title" = "Transaction Detail";
 "transaction-detail-round" = "Round:";
+
+// MARK: Auction
+
+"auction-title" = "Auction";
