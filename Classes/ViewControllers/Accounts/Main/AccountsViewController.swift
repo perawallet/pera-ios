@@ -66,6 +66,7 @@ class AccountsViewController: BaseViewController {
             }
             
             selectedAccount = account
+            session?.currentAccount = selectedAccount
             
             transactionHistoryDataSource.clear()
             accountsView.transactionHistoryCollectionView.reloadData()
@@ -136,6 +137,8 @@ class AccountsViewController: BaseViewController {
         
         accountsView.transactionHistoryCollectionView.refreshControl = refreshControl
         selectedAccount = session?.authenticatedUser?.defaultAccount()
+        
+        session?.currentAccount = selectedAccount
         
         guard let account = selectedAccount else {
             return
@@ -378,6 +381,7 @@ extension AccountsViewController: AccountListViewControllerDelegate {
     
     func accountListViewController(_ viewController: AccountListViewController, didSelectAccount account: Account) {
         selectedAccount = account
+        session?.currentAccount = selectedAccount
         
         transactionHistoryDataSource.clear()
         accountsView.transactionHistoryCollectionView.reloadData()
@@ -398,11 +402,19 @@ extension AccountsViewController: AccountListViewControllerDelegate {
 extension AccountsViewController: AccountsViewDelegate {
     
     func accountsViewDidTapSendButton(_ accountsView: AccountsView) {
-        open(.sendAlgos(receiver: .initial), by: .push)
+        guard let account = selectedAccount else {
+            return
+        }
+        
+        open(.sendAlgos(account: account, receiver: .initial), by: .push)
     }
     
     func accountsViewDidTapReceiveButton(_ accountsView: AccountsView) {
-        open(.receiveAlgos, by: .push)
+        guard let account = selectedAccount else {
+            return
+        }
+        
+        open(.receiveAlgos(account: account), by: .push)
     }
 }
 

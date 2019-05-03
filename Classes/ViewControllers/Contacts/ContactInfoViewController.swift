@@ -100,7 +100,11 @@ extension ContactInfoViewController: ContactInfoViewDelegate {
     }
     
     func contactInfoViewDidTapSendButton(_ contactInfoView: ContactInfoView) {
-        open(.sendAlgos(receiver: .contact(contact)), by: .push)
+        guard let currentAccount = session?.currentAccount else {
+            return
+        }
+        
+        open(.sendAlgos(account: currentAccount, receiver: .contact(contact)), by: .push)
     }
     
     func contactInfoViewDidEditContactButton(_ contactInfoView: ContactInfoView) {
