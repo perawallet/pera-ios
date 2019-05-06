@@ -158,7 +158,7 @@
 
 // MARK: Options
 
-"options-show-qr" = "Show QR";
+"options-show-qr" = "Show QR and address";
 "options-default-account" = "Set as default";
 "options-view-passphrase" = "View Passphrase";
 "options-edit-account-name" = "Edit Account Name";
