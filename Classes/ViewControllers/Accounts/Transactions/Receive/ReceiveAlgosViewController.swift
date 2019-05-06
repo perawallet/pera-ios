@@ -32,11 +32,13 @@ class ReceiveAlgosViewController: BaseViewController {
     private var contentViewBottomConstraint: Constraint?
     
     private var amount: Double = 0.00
-    private var selectedAccount: Account?
+    private var selectedAccount: Account
 
     // MARK: Initialization
     
-    override init(configuration: ViewControllerConfiguration) {
+    init(account: Account, configuration: ViewControllerConfiguration) {
+        self.selectedAccount = account
+        
         super.init(configuration: configuration)
         
         hidesBottomBarWhenPushed = true
@@ -49,10 +51,7 @@ class ReceiveAlgosViewController: BaseViewController {
         
         title = "receive-algos-title".localized
         
-        if let account = session?.authenticatedUser?.defaultAccount() {
-            selectedAccount = account
-            receiveAlgosView.accountSelectionView.inputTextField.text = account.name
-        }
+        receiveAlgosView.accountSelectionView.inputTextField.text = selectedAccount.name
     }
     
     override func setListeners() {
@@ -123,10 +122,6 @@ class ReceiveAlgosViewController: BaseViewController {
             displaySimpleAlertWith(title: "send-algos-alert-title".localized, message: "send-algos-alert-message".localized)
         }
         
-        guard let selectedAccount = selectedAccount else {
-            return
-        }
-        
         view.endEditing(true)
         
         let transaction = TransactionPreviewDraft(fromAccount: selectedAccount, amount: amount, identifier: nil, fee: nil)
@@ -135,9 +130,7 @@ class ReceiveAlgosViewController: BaseViewController {
     }
     
     private func isTransactionValid() -> Bool {
-        if selectedAccount != nil,
-            amount > 0.0 {
-            
+        if amount > 0.0 {
             return true
         }
         
