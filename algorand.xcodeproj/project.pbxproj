@@ -84,11 +84,11 @@
 		17F9E927225796DA004CDF24 /* AccountManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F9E926225796DA004CDF24 /* AccountManager.swift */; };
 		2B09603822578C990005BE27 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2B09603722578C990005BE27 /* GoogleService-Info.plist */; };
 		2B25BB47225E03610092C972 /* DetailedInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B25BB46225E03610092C972 /* DetailedInformationView.swift */; };
-		2B25BB49225EACB60092C972 /* ReceiveAlgosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B25BB48225EACB60092C972 /* ReceiveAlgosView.swift */; };
-		2B25BB4B225EAD600092C972 /* ReceiveAlgosPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B25BB4A225EAD600092C972 /* ReceiveAlgosPreviewViewController.swift */; };
-		2B25BB4D225EAD700092C972 /* ReceiveAlgosPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B25BB4C225EAD700092C972 /* ReceiveAlgosPreviewView.swift */; };
+		2B25BB49225EACB60092C972 /* RequestAlgosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B25BB48225EACB60092C972 /* RequestAlgosView.swift */; };
+		2B25BB4B225EAD600092C972 /* RequestAlgosPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B25BB4A225EAD600092C972 /* RequestAlgosPreviewViewController.swift */; };
+		2B25BB4D225EAD700092C972 /* RequestAlgosPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B25BB4C225EAD700092C972 /* RequestAlgosPreviewView.swift */; };
 		2B56F7D6225B3C1D00E58737 /* SendAlgosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B56F7D5225B3C1D00E58737 /* SendAlgosViewController.swift */; };
-		2B56F7D8225B3C4200E58737 /* ReceiveAlgosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B56F7D7225B3C4200E58737 /* ReceiveAlgosViewController.swift */; };
+		2B56F7D8225B3C4200E58737 /* RequestAlgosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B56F7D7225B3C4200E58737 /* RequestAlgosViewController.swift */; };
 		2B56F7DA225B45B300E58737 /* SendAlgosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B56F7D9225B45B300E58737 /* SendAlgosView.swift */; };
 		2B56F7DC225B51C100E58737 /* AlgosInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B56F7DB225B51C100E58737 /* AlgosInputView.swift */; };
 		2B59F1392254BABF005203DD /* algorand.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2B59F1372254BABF005203DD /* algorand.xcdatamodeld */; };
@@ -348,11 +348,11 @@
 		2AC10F1C54DF2982BFB4A180 /* Pods-algorand.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand.debug.xcconfig"; path = "Pods/Target Support Files/Pods-algorand/Pods-algorand.debug.xcconfig"; sourceTree = "<group>"; };
 		2B09603722578C990005BE27 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2B25BB46225E03610092C972 /* DetailedInformationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailedInformationView.swift; sourceTree = "<group>"; };
-		2B25BB48225EACB60092C972 /* ReceiveAlgosView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveAlgosView.swift; sourceTree = "<group>"; };
-		2B25BB4A225EAD600092C972 /* ReceiveAlgosPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveAlgosPreviewViewController.swift; sourceTree = "<group>"; };
-		2B25BB4C225EAD700092C972 /* ReceiveAlgosPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveAlgosPreviewView.swift; sourceTree = "<group>"; };
+		2B25BB48225EACB60092C972 /* RequestAlgosView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestAlgosView.swift; sourceTree = "<group>"; };
+		2B25BB4A225EAD600092C972 /* RequestAlgosPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestAlgosPreviewViewController.swift; sourceTree = "<group>"; };
+		2B25BB4C225EAD700092C972 /* RequestAlgosPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestAlgosPreviewView.swift; sourceTree = "<group>"; };
 		2B56F7D5225B3C1D00E58737 /* SendAlgosViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendAlgosViewController.swift; sourceTree = "<group>"; };
-		2B56F7D7225B3C4200E58737 /* ReceiveAlgosViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveAlgosViewController.swift; sourceTree = "<group>"; };
+		2B56F7D7225B3C4200E58737 /* RequestAlgosViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestAlgosViewController.swift; sourceTree = "<group>"; };
 		2B56F7D9225B45B300E58737 /* SendAlgosView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendAlgosView.swift; sourceTree = "<group>"; };
 		2B56F7DB225B51C100E58737 /* AlgosInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgosInputView.swift; sourceTree = "<group>"; };
 		2B59F1382254BABF005203DD /* Contact.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Contact.xcdatamodel; sourceTree = "<group>"; };
@@ -712,7 +712,7 @@
 			isa = PBXGroup;
 			children = (
 				2BF3D833226F0F9A00716C09 /* Detail */,
-				2B56F7D0225B3AE400E58737 /* Receive */,
+				2B56F7D0225B3AE400E58737 /* Request */,
 				2B56F7CF225B3ADF00E58737 /* Send */,
 			);
 			path = Transactions;
@@ -730,13 +730,13 @@
 			path = Send;
 			sourceTree = "<group>";
 		};
-		2B56F7D0225B3AE400E58737 /* Receive */ = {
+		2B56F7D0225B3AE400E58737 /* Request */ = {
 			isa = PBXGroup;
 			children = (
-				2B25BB48225EACB60092C972 /* ReceiveAlgosView.swift */,
-				2B25BB4C225EAD700092C972 /* ReceiveAlgosPreviewView.swift */,
+				2B25BB48225EACB60092C972 /* RequestAlgosView.swift */,
+				2B25BB4C225EAD700092C972 /* RequestAlgosPreviewView.swift */,
 			);
-			path = Receive;
+			path = Request;
 			sourceTree = "<group>";
 		};
 		2B56F7D1225B3AFB00E58737 /* Main */ = {
@@ -753,18 +753,18 @@
 			children = (
 				2BF3D830226F0F7900716C09 /* Detail */,
 				2B56F7D4225B3B1000E58737 /* Send */,
-				2B56F7D3225B3B0C00E58737 /* Receive */,
+				2B56F7D3225B3B0C00E58737 /* Request */,
 			);
 			path = Transactions;
 			sourceTree = "<group>";
 		};
-		2B56F7D3225B3B0C00E58737 /* Receive */ = {
+		2B56F7D3225B3B0C00E58737 /* Request */ = {
 			isa = PBXGroup;
 			children = (
-				2B56F7D7225B3C4200E58737 /* ReceiveAlgosViewController.swift */,
-				2B25BB4A225EAD600092C972 /* ReceiveAlgosPreviewViewController.swift */,
+				2B56F7D7225B3C4200E58737 /* RequestAlgosViewController.swift */,
+				2B25BB4A225EAD600092C972 /* RequestAlgosPreviewViewController.swift */,
 			);
-			path = Receive;
+			path = Request;
 			sourceTree = "<group>";
 		};
 		2B56F7D4225B3B1000E58737 /* Send */ = {
@@ -2291,7 +2291,7 @@
 				2BDDCA482268A3630081CED2 /* DeepLinkParser.swift in Sources */,
 				17D04F48225F697E0051BC43 /* AddNodeView.swift in Sources */,
 				2B56F7D6225B3C1D00E58737 /* SendAlgosViewController.swift in Sources */,
-				2B25BB4B225EAD600092C972 /* ReceiveAlgosPreviewViewController.swift in Sources */,
+				2B25BB4B225EAD600092C972 /* RequestAlgosPreviewViewController.swift in Sources */,
 				1761B3CB224A39D400C6BA47 /* PassPhraseViewModel.swift in Sources */,
 				2B6ED964226105E100787984 /* Payment.swift in Sources */,
 				2BF71910224ECFAF001E8420 /* UserInformationView.swift in Sources */,
@@ -2323,7 +2323,7 @@
 				171111B6225E093400DAF55C /* SettingsToggleContextView.swift in Sources */,
 				2BD73A0622412AC900B66EEF /* NumpadViewDataSource.swift in Sources */,
 				2B5DA9D3224CD21800EE41B4 /* AccountsViewController+Options.swift in Sources */,
-				2B25BB4D225EAD700092C972 /* ReceiveAlgosPreviewView.swift in Sources */,
+				2B25BB4D225EAD700092C972 /* RequestAlgosPreviewView.swift in Sources */,
 				2BF5317C224AA89B00A7455F /* SettingsViewController.swift in Sources */,
 				2BD739D1223F97F600B66EEF /* IntroductionView.swift in Sources */,
 				179B93DA225E460500DD03E9 /* NodeSettingsHeaderView.swift in Sources */,
@@ -2341,7 +2341,7 @@
 				2B8954C02244047D00D6D068 /* BaseInputView.swift in Sources */,
 				2B56F7DC225B51C100E58737 /* AlgosInputView.swift in Sources */,
 				2B56F7DA225B45B300E58737 /* SendAlgosView.swift in Sources */,
-				2B25BB49225EACB60092C972 /* ReceiveAlgosView.swift in Sources */,
+				2B25BB49225EACB60092C972 /* RequestAlgosView.swift in Sources */,
 				17D04F4A225F90B00051BC43 /* API+Node.swift in Sources */,
 				2BD739E1223F9F3000B66EEF /* LocalAuthenticationPreferenceView.swift in Sources */,
 				2B6687102248DBE2009F21E7 /* ALGBarButtonItem.swift in Sources */,
@@ -2382,7 +2382,7 @@
 				17BEC4602248C81E00AAF370 /* PassPhraseVerifyView.swift in Sources */,
 				2BB021E9224E828E0039D78A /* UICollectionView+Additions.swift in Sources */,
 				1751261D223BEA320095AF4F /* Session.swift in Sources */,
-				2B56F7D8225B3C4200E58737 /* ReceiveAlgosViewController.swift in Sources */,
+				2B56F7D8225B3C4200E58737 /* RequestAlgosViewController.swift in Sources */,
 				1761B3CD224A47AF00C6BA47 /* Session+Crypto.swift in Sources */,
 				2B8AD04A2244F82600939ECE /* SharedColors.swift in Sources */,
 				170AFAFA224C9FF800520EA5 /* QRCreationViewController.swift in Sources */,

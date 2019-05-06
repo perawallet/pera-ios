@@ -8,12 +8,12 @@
 
 import UIKit
 
-class ReceiveAlgosPreviewViewController: BaseScrollViewController {
+class RequestAlgosPreviewViewController: BaseScrollViewController {
 
     // MARK: Components
     
-    private lazy var receiveAlgosPreviewView: ReceiveAlgosPreviewView = {
-        let view = ReceiveAlgosPreviewView(address: transaction.fromAccount.address, amount: transaction.amount.toMicroAlgos)
+    private lazy var requestAlgosPreviewView: RequestAlgosPreviewView = {
+        let view = RequestAlgosPreviewView(address: transaction.fromAccount.address, amount: transaction.amount.toMicroAlgos)
         return view
     }()
     
@@ -34,38 +34,38 @@ class ReceiveAlgosPreviewViewController: BaseScrollViewController {
     override func configureAppearance() {
         super.configureAppearance()
         
-        title = "receive-algos-title".localized
+        title = "request-algos-title".localized
         
-        receiveAlgosPreviewView.algosInputView.inputTextField.text = transaction.amount.toDecimalStringForLabel
-        receiveAlgosPreviewView.accountSelectionView.inputTextField.text = transaction.fromAccount.name
+        requestAlgosPreviewView.algosInputView.inputTextField.text = transaction.amount.toDecimalStringForLabel
+        requestAlgosPreviewView.accountSelectionView.inputTextField.text = transaction.fromAccount.name
     }
     
     override func linkInteractors() {
-        receiveAlgosPreviewView.previewViewDelegate = self
+        requestAlgosPreviewView.previewViewDelegate = self
     }
     
     override func prepareLayout() {
         super.prepareLayout()
         
-        setupReceiveAlgosPreviewViewLayout()
+        setupRequestAlgosPreviewViewLayout()
     }
     
-    private func setupReceiveAlgosPreviewViewLayout() {
-        contentView.addSubview(receiveAlgosPreviewView)
+    private func setupRequestAlgosPreviewViewLayout() {
+        contentView.addSubview(requestAlgosPreviewView)
         
-        receiveAlgosPreviewView.snp.makeConstraints { make in
+        requestAlgosPreviewView.snp.makeConstraints { make in
             make.leading.trailing.top.equalToSuperview()
             make.bottom.equalToSuperview().inset(view.safeAreaBottom)
         }
     }
 }
 
-// MARK: ReceiveAlgosPreviewViewDelegate
+// MARK: RequestAlgosPreviewViewDelegate
 
-extension ReceiveAlgosPreviewViewController: ReceiveAlgosPreviewViewDelegate {
+extension RequestAlgosPreviewViewController: RequestAlgosPreviewViewDelegate {
     
-    func receiveAlgosPreviewViewDidTapShareButton(_ receiveAlgosPreviewView: ReceiveAlgosPreviewView) {
-        guard let qrImage = receiveAlgosPreviewView.qrView.imageView.image,
+    func requestAlgosPreviewViewDidTapShareButton(_ requestAlgosPreviewView: RequestAlgosPreviewView) {
+        guard let qrImage = requestAlgosPreviewView.qrView.imageView.image,
             let shareUrl = URL(string: "algorand://send-algos/\(transaction.fromAccount.address)/\(transaction.amount.toMicroAlgos)") else {
                 return
         }

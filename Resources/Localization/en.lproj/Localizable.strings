@@ -23,7 +23,7 @@
 "title-save" = "Save";
 "title-close" = "CLOSE";
 "title-send" = "SEND";
-"title-receive" = "RECEIVE";
+"title-request" = "REQUEST";
 "title-preview" = "PREVIEW";
 "title-done" = "DONE";
 "title-done-lowercased" = "Done";
@@ -147,9 +147,9 @@
 "send-algos-contact-not-found" = "Contact not found";
 "send-algos-address-not-selected" = "Address not selected";
 
-// MARK: Algos Receive
+// MARK: Algos Request
 
-"receive-algos-title" = "Receive Algos";
+"request-algos-title" = "Request Algos";
 
 // MARK: Account List
 

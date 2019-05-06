@@ -8,13 +8,13 @@
 
 import UIKit
 
-protocol ReceiveAlgosViewDelegate: class {
+protocol RequestAlgosViewDelegate: class {
     
-    func receiveAlgosViewDidTapAccountSelectionView(_ receiveAlgosView: ReceiveAlgosView)
-    func receiveAlgosViewDidTapPreviewButton(_ receiveAlgosView: ReceiveAlgosView)
+    func requestAlgosViewDidTapAccountSelectionView(_ requestAlgosView: RequestAlgosView)
+    func requestAlgosViewDidTapPreviewButton(_ requestAlgosView: RequestAlgosView)
 }
 
-class ReceiveAlgosView: BaseView {
+class RequestAlgosView: BaseView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let topInset: CGFloat = 20.0
@@ -26,7 +26,7 @@ class ReceiveAlgosView: BaseView {
     
     private let layout = Layout<LayoutConstants>()
     
-    weak var delegate: ReceiveAlgosViewDelegate?
+    weak var delegate: RequestAlgosViewDelegate?
     
     // MARK: Components
     
@@ -112,11 +112,11 @@ class ReceiveAlgosView: BaseView {
     
     @objc
     private func notifyDelegateToPreviewButtonTapped() {
-        delegate?.receiveAlgosViewDidTapPreviewButton(self)
+        delegate?.requestAlgosViewDidTapPreviewButton(self)
     }
     
     @objc
     private func notifyDelegateToAccountSelectionViewTapped() {
-        delegate?.receiveAlgosViewDidTapAccountSelectionView(self)
+        delegate?.requestAlgosViewDidTapAccountSelectionView(self)
     }
 }

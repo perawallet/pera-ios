@@ -9,7 +9,7 @@
 import UIKit
 import SnapKit
 
-class ReceiveAlgosViewController: BaseViewController {
+class RequestAlgosViewController: BaseViewController {
     
     // MARK: Variables
     
@@ -22,8 +22,8 @@ class ReceiveAlgosViewController: BaseViewController {
     
     // MARK: Components
     
-    private lazy var receiveAlgosView: ReceiveAlgosView = {
-        let view = ReceiveAlgosView()
+    private lazy var requestAlgosView: RequestAlgosView = {
+        let view = RequestAlgosView()
         return view
     }()
     
@@ -49,9 +49,9 @@ class ReceiveAlgosViewController: BaseViewController {
     override func configureAppearance() {
         super.configureAppearance()
         
-        title = "receive-algos-title".localized
+        title = "request-algos-title".localized
         
-        receiveAlgosView.accountSelectionView.inputTextField.text = selectedAccount.name
+        requestAlgosView.accountSelectionView.inputTextField.text = selectedAccount.name
     }
     
     override func setListeners() {
@@ -73,19 +73,19 @@ class ReceiveAlgosViewController: BaseViewController {
     }
     
     override func linkInteractors() {
-        receiveAlgosView.delegate = self
+        requestAlgosView.delegate = self
     }
     
     override func prepareLayout() {
         super.prepareLayout()
         
-        setupReceiveAlgosViewLayout()
+        setupRequestAlgosViewLayout()
     }
     
-    private func setupReceiveAlgosViewLayout() {
-        view.addSubview(receiveAlgosView)
+    private func setupRequestAlgosViewLayout() {
+        view.addSubview(requestAlgosView)
         
-        receiveAlgosView.snp.makeConstraints { make in
+        requestAlgosView.snp.makeConstraints { make in
             make.leading.trailing.top.equalToSuperview()
             contentViewBottomConstraint = make.bottom.equalToSuperview().inset(view.safeAreaBottom).constraint
         }
@@ -94,7 +94,7 @@ class ReceiveAlgosViewController: BaseViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        receiveAlgosView.algosInputView.beginEditing()
+        requestAlgosView.algosInputView.beginEditing()
     }
     
     // MARK: Navigation
@@ -113,7 +113,7 @@ class ReceiveAlgosViewController: BaseViewController {
     }
     
     private func displayPreview() {
-        if let algosAmountText = receiveAlgosView.algosInputView.inputTextField.text,
+        if let algosAmountText = requestAlgosView.algosInputView.inputTextField.text,
             let doubleValue = algosAmountText.doubleForSendSeparator {
             amount = doubleValue
         }
@@ -126,7 +126,7 @@ class ReceiveAlgosViewController: BaseViewController {
         
         let transaction = TransactionPreviewDraft(fromAccount: selectedAccount, amount: amount, identifier: nil, fee: nil)
         
-        open(.receiveAlgosPreview(transaction: transaction), by: .push)
+        open(.requestAlgosPreview(transaction: transaction), by: .push)
     }
     
     private func isTransactionValid() -> Bool {
@@ -190,28 +190,28 @@ class ReceiveAlgosViewController: BaseViewController {
     }
 }
 
-// MARK: SendAlgosViewDelegate
+// MARK: RequestAlgosViewDelegate
 
-extension ReceiveAlgosViewController: ReceiveAlgosViewDelegate {
+extension RequestAlgosViewController: RequestAlgosViewDelegate {
     
-    func receiveAlgosViewDidTapAccountSelectionView(_ receiveAlgosView: ReceiveAlgosView) {
+    func requestAlgosViewDidTapAccountSelectionView(_ requestAlgosView: RequestAlgosView) {
         presentAccountList()
     }
     
-    func receiveAlgosViewDidTapPreviewButton(_ receiveAlgosView: ReceiveAlgosView) {
+    func requestAlgosViewDidTapPreviewButton(_ requestAlgosView: RequestAlgosView) {
         displayPreview()
     }
 }
 
 // MARK: AccountListViewControllerDelegate
 
-extension ReceiveAlgosViewController: AccountListViewControllerDelegate {
+extension RequestAlgosViewController: AccountListViewControllerDelegate {
     
     func accountListViewControllerDidTapAddButton(_ viewController: AccountListViewController) {
     }
     
     func accountListViewController(_ viewController: AccountListViewController, didSelectAccount account: Account) {
-        receiveAlgosView.accountSelectionView.inputTextField.text = account.name
+        requestAlgosView.accountSelectionView.inputTextField.text = account.name
         
         selectedAccount = account
     }

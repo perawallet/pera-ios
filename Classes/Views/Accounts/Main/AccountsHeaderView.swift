@@ -64,7 +64,7 @@ class AccountsHeaderView: BaseView {
     private(set) lazy var receiveButton: UIButton = {
         UIButton(type: .custom)
             .withTitleColor(SharedColors.black)
-            .withTitle("title-receive".localized)
+            .withTitle("title-request".localized)
             .withBackgroundImage(img("bg-green-small"))
             .withAlignment(.center)
             .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 12.0)))

@@ -8,12 +8,12 @@
 
 import UIKit
 
-protocol ReceiveAlgosPreviewViewDelegate: class {
+protocol RequestAlgosPreviewViewDelegate: class {
     
-    func receiveAlgosPreviewViewDidTapShareButton(_ receiveAlgosPreviewView: ReceiveAlgosPreviewView)
+    func requestAlgosPreviewViewDidTapShareButton(_ requestAlgosPreviewView: RequestAlgosPreviewView)
 }
 
-class ReceiveAlgosPreviewView: ReceiveAlgosView {
+class RequestAlgosPreviewView: RequestAlgosView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let topInset: CGFloat = 45.0 * verticalScale
@@ -23,7 +23,7 @@ class ReceiveAlgosPreviewView: ReceiveAlgosView {
     
     private let layout = Layout<LayoutConstants>()
     
-    weak var previewViewDelegate: ReceiveAlgosPreviewViewDelegate?
+    weak var previewViewDelegate: RequestAlgosPreviewViewDelegate?
     
     // MARK: Components
     
@@ -31,7 +31,7 @@ class ReceiveAlgosPreviewView: ReceiveAlgosView {
     private let amount: Int64
     
     private(set) lazy var qrView: QRView = {
-        let qrText = QRText(mode: .algosReceive, text: address, amount: amount)
+        let qrText = QRText(mode: .algosRequest, text: address, amount: amount)
         
         return QRView(qrText: qrText)
     }()
@@ -101,6 +101,6 @@ class ReceiveAlgosPreviewView: ReceiveAlgosView {
     
     @objc
     private func notifyDelegateToShareButtonTapped() {
-        previewViewDelegate?.receiveAlgosPreviewViewDidTapShareButton(self)
+        previewViewDelegate?.requestAlgosPreviewViewDidTapShareButton(self)
     }
 }
