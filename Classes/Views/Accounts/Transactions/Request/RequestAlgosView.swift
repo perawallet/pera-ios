@@ -35,15 +35,10 @@ class RequestAlgosView: BaseView {
         return view
     }()
     
-    private(set) lazy var accountSelectionView: SingleLineInputField = {
-        let selectAccountView = SingleLineInputField(displaysRightInputAccessoryButton: true)
-        selectAccountView.explanationLabel.text = "send-algos-to".localized
-        selectAccountView.inputTextField.text = "send-algos-select".localized
-        selectAccountView.rightInputAccessoryButton.setImage(img("icon-arrow"), for: .normal)
-        selectAccountView.inputTextField.isEnabled = false
-        selectAccountView.inputTextField.textColor = SharedColors.black
-        selectAccountView.inputTextField.tintColor = SharedColors.black
-        return selectAccountView
+    private(set) lazy var accountSelectionView: AccountSelectionView = {
+        let accountSelectionView = AccountSelectionView()
+        accountSelectionView.explanationLabel.text = "send-algos-to".localized
+        return accountSelectionView
     }()
     
     private(set) lazy var previewButton: UIButton = {
@@ -88,12 +83,8 @@ class RequestAlgosView: BaseView {
         addSubview(accountSelectionView)
         
         accountSelectionView.snp.makeConstraints { make in
-            make.top.equalTo(algosInputView.snp.bottom).offset(layout.current.topInset)
+            make.top.equalTo(algosInputView.snp.bottom)
             make.leading.trailing.equalToSuperview()
-        }
-        
-        accountSelectionView.rightInputAccessoryButton.snp.updateConstraints { make in
-            make.trailing.equalToSuperview().inset(layout.current.buttonInset)
         }
     }
     

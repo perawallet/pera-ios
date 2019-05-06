@@ -37,7 +37,8 @@ class RequestAlgosPreviewViewController: BaseScrollViewController {
         title = "request-algos-title".localized
         
         requestAlgosPreviewView.algosInputView.inputTextField.text = transaction.amount.toDecimalStringForLabel
-        requestAlgosPreviewView.accountSelectionView.inputTextField.text = transaction.fromAccount.name
+        requestAlgosPreviewView.accountSelectionView.detailLabel.text = transaction.fromAccount.name
+        requestAlgosPreviewView.accountSelectionView.set(amount: transaction.fromAccount.amount.toAlgos)
     }
     
     override func linkInteractors() {

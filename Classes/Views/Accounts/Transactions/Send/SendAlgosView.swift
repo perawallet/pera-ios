@@ -21,7 +21,6 @@ class SendAlgosView: BaseView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let topInset: CGFloat = 15.0 * verticalScale
         let horizontalInset: CGFloat = 25.0
-        let accountsViewInset: CGFloat = 20.0
         let buttonInset: CGFloat = 15.0
         let bottomInset: CGFloat = 18.0
         let buttonMinimumInset: CGFloat = 18.0 * verticalScale
@@ -38,15 +37,9 @@ class SendAlgosView: BaseView {
         return view
     }()
     
-    private(set) lazy var accountSelectionView: SingleLineInputField = {
-        let selectAccountView = SingleLineInputField(displaysRightInputAccessoryButton: true)
-        selectAccountView.explanationLabel.text = "send-algos-from".localized
-        selectAccountView.inputTextField.text = "send-algos-select".localized
-        selectAccountView.rightInputAccessoryButton.setImage(img("icon-arrow"), for: .normal)
-        selectAccountView.inputTextField.isEnabled = false
-        selectAccountView.inputTextField.textColor = SharedColors.black
-        selectAccountView.inputTextField.tintColor = SharedColors.black
-        return selectAccountView
+    private(set) lazy var accountSelectionView: AccountSelectionView = {
+        let accountSelectionView = AccountSelectionView()
+        return accountSelectionView
     }()
     
     private(set) lazy var transactionReceiverView: TransactionReceiverView = {
@@ -102,13 +95,9 @@ class SendAlgosView: BaseView {
         addSubview(accountSelectionView)
         
         accountSelectionView.snp.makeConstraints { make in
-            make.top.equalTo(algosInputView.snp.bottom).offset(layout.current.accountsViewInset)
-            make.height.equalTo(68.0)
+            make.top.equalTo(algosInputView.snp.bottom)
+            make.height.equalTo(88.0)
             make.leading.trailing.equalToSuperview()
-        }
-        
-        accountSelectionView.rightInputAccessoryButton.snp.updateConstraints { make in
-            make.trailing.equalToSuperview().inset(layout.current.buttonInset)
         }
     }
     

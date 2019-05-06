@@ -83,6 +83,7 @@
 		17F9E924225789E7004CDF24 /* AccountFetchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F9E923225789E7004CDF24 /* AccountFetchOperation.swift */; };
 		17F9E927225796DA004CDF24 /* AccountManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F9E926225796DA004CDF24 /* AccountManager.swift */; };
 		2B09603822578C990005BE27 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2B09603722578C990005BE27 /* GoogleService-Info.plist */; };
+		2B0C2F6822809FDD009206D7 /* AccountSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0C2F6722809FDD009206D7 /* AccountSelectionView.swift */; };
 		2B25BB47225E03610092C972 /* DetailedInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B25BB46225E03610092C972 /* DetailedInformationView.swift */; };
 		2B25BB49225EACB60092C972 /* RequestAlgosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B25BB48225EACB60092C972 /* RequestAlgosView.swift */; };
 		2B25BB4B225EAD600092C972 /* RequestAlgosPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B25BB4A225EAD600092C972 /* RequestAlgosPreviewViewController.swift */; };
@@ -347,6 +348,7 @@
 		17F9E926225796DA004CDF24 /* AccountManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountManager.swift; sourceTree = "<group>"; };
 		2AC10F1C54DF2982BFB4A180 /* Pods-algorand.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand.debug.xcconfig"; path = "Pods/Target Support Files/Pods-algorand/Pods-algorand.debug.xcconfig"; sourceTree = "<group>"; };
 		2B09603722578C990005BE27 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		2B0C2F6722809FDD009206D7 /* AccountSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSelectionView.swift; sourceTree = "<group>"; };
 		2B25BB46225E03610092C972 /* DetailedInformationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailedInformationView.swift; sourceTree = "<group>"; };
 		2B25BB48225EACB60092C972 /* RequestAlgosView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestAlgosView.swift; sourceTree = "<group>"; };
 		2B25BB4A225EAD600092C972 /* RequestAlgosPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestAlgosPreviewViewController.swift; sourceTree = "<group>"; };
@@ -1536,6 +1538,7 @@
 				2BD739E4223FA07B00B66EEF /* MainButton.swift */,
 				2BB021D8224E2A7E0039D78A /* AlgosAmountView.swift */,
 				171111B7225E0C8400DAF55C /* Toggle.swift */,
+				2B0C2F6722809FDD009206D7 /* AccountSelectionView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -2473,6 +2476,7 @@
 				2B5DA9DC224D37A100EE41B4 /* PassphraseDisplayView.swift in Sources */,
 				2B6ED95D22608FE700787984 /* HistoryDraft.swift in Sources */,
 				2BF53157224A46A400A7455F /* ModalPresenter.swift in Sources */,
+				2B0C2F6822809FDD009206D7 /* AccountSelectionView.swift in Sources */,
 				2B6ED962226105CD00787984 /* TransactionPreviewDraft.swift in Sources */,
 				2BD739DD223F9E9F00B66EEF /* ChoosePasswordView.swift in Sources */,
 				2B8BE4F4223935DA005D8565 /* BaseView.swift in Sources */,

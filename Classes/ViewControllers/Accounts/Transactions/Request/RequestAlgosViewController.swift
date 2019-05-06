@@ -51,7 +51,8 @@ class RequestAlgosViewController: BaseViewController {
         
         title = "request-algos-title".localized
         
-        requestAlgosView.accountSelectionView.inputTextField.text = selectedAccount.name
+        requestAlgosView.accountSelectionView.detailLabel.text = selectedAccount.name
+        requestAlgosView.accountSelectionView.set(amount: selectedAccount.amount.toAlgos)
     }
     
     override func setListeners() {
@@ -211,7 +212,8 @@ extension RequestAlgosViewController: AccountListViewControllerDelegate {
     }
     
     func accountListViewController(_ viewController: AccountListViewController, didSelectAccount account: Account) {
-        requestAlgosView.accountSelectionView.inputTextField.text = account.name
+        requestAlgosView.accountSelectionView.detailLabel.text = account.name
+        requestAlgosView.accountSelectionView.set(amount: account.amount.toAlgos)
         
         selectedAccount = account
     }
