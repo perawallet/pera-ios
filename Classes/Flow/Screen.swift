@@ -26,10 +26,10 @@ indirect enum Screen {
     case addContact(mode: AddContactViewController.Mode)
     case contactDetail(contact: Contact)
     case contactQRDisplay(contact: Contact)
-    case sendAlgos(receiver: AlgosReceiverState)
+    case sendAlgos(account: Account, receiver: AlgosReceiverState)
     case sendAlgosPreview(transaction: TransactionPreviewDraft, receiver: AlgosReceiverState)
     case sendAlgosSuccess(transaction: TransactionPreviewDraft, receiver: AlgosReceiverState)
-    case receiveAlgos
+    case receiveAlgos(account: Account)
     case receiveAlgosPreview(transaction: TransactionPreviewDraft)
     case historyResults(draft: HistoryDraft)
     case nodeSettings(mode: NodeSettingsViewController.Mode)

@@ -290,7 +290,11 @@ extension ContactsViewController: ContactCellDelegate {
         if indexPath.item < searchResults.count {
             let contact = searchResults[indexPath.row]
             
-            open(.sendAlgos(receiver: .contact(contact)), by: .push)
+            guard let currentAccount = session?.currentAccount else {
+                return
+            }
+            
+            open(.sendAlgos(account: currentAccount, receiver: .contact(contact)), by: .push)
         }
     }
 }

@@ -23,6 +23,7 @@ target 'algorand' do
   pod 'SVProgressHUD'
   pod 'Charts'
   pod 'SwiftCharts'
+  pod 'lottie-ios'
 
   #Analytics
   pod 'Firebase/Core'

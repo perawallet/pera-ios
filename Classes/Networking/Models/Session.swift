@@ -100,6 +100,8 @@ class Session: Storable {
     
     // isExpired is true when login needed. It will fault after 5 mins entering background
     var isValid = false
+    
+    var currentAccount: Account?
 }
 
 // MARK: - App Password

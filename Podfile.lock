@@ -52,6 +52,7 @@ PODS:
   - GoogleUtilities/UserDefaults (5.5.0):
     - GoogleUtilities/Logger
   - KeychainAccess (3.1.2)
+  - lottie-ios (3.0.4)
   - Magpie (0.1.0):
     - Alamofire
   - nanopb (0.3.901):
@@ -71,6 +72,7 @@ DEPENDENCIES:
   - Fabric
   - Firebase/Core
   - KeychainAccess
+  - lottie-ios
   - Magpie (from `https://github.com/Hipo/magpie.git`)
   - SnapKit
   - SVProgressHUD
@@ -91,6 +93,7 @@ SPEC REPOS:
     - GoogleAppMeasurement
     - GoogleUtilities
     - KeychainAccess
+    - lottie-ios
     - nanopb
     - SnapKit
     - SVProgressHUD
@@ -119,6 +122,7 @@ SPEC CHECKSUMS:
   GoogleAppMeasurement: 1624046ab1bcc5e170061a56ef5679000b079c8e
   GoogleUtilities: 6481e6318c5fcabaaa8513ef8120f329055d7c10
   KeychainAccess: b3816fddcf28aa29d94b10ec305cd52be14c472b
+  lottie-ios: 55a2de40418f8de2b155efaba4d4d1a025a5c570
   Magpie: f1235cc99bab71365b8479089458c7b85e299950
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
@@ -127,6 +131,6 @@ SPEC CHECKSUMS:
   SwiftDate: 6329e58969a2de31cea7f1ee1143b247693196e7
   SwiftLint: a54bf1fe12b55c68560eb2a7689dfc81458508f7
 
-PODFILE CHECKSUM: 6416fbb3c7f759b22cefeb1fb155cea9f1403a43
+PODFILE CHECKSUM: c558d017dcb287fef67be293bdd6d748f40a4eb7
 
 COCOAPODS: 1.6.1

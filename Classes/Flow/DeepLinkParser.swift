@@ -37,7 +37,17 @@ struct DeepLinkParser {
             let address = pathComponents[1]
             let amount = pathComponents[2]
             
-            return .sendAlgos(receiver: .address(address: address, amount: amount))
+            var account: Account
+            
+            if let currentAccount = UIApplication.shared.appConfiguration?.session.currentAccount {
+                account = currentAccount
+            } else if let defaultAccount = UIApplication.shared.appConfiguration?.session.authenticatedUser?.defaultAccount() {
+                account = defaultAccount
+            } else {
+                return nil
+            }
+            
+            return .sendAlgos(account: account, receiver: .address(address: address, amount: amount))
         }
     }
 }

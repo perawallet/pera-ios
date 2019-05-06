@@ -33,13 +33,14 @@ class SendAlgosViewController: BaseScrollViewController {
     private var contentViewBottomConstraint: Constraint?
     
     private var amount: Double = 0.00
-    private var selectedAccount: Account?
+    private var selectedAccount: Account
     
     private var receiver: AlgosReceiverState
     
     // MARK: Initialization
     
-    init(receiver: AlgosReceiverState, configuration: ViewControllerConfiguration) {
+    init(account: Account, receiver: AlgosReceiverState, configuration: ViewControllerConfiguration) {
+        self.selectedAccount = account
         self.receiver = receiver
         
         super.init(configuration: configuration)
@@ -54,11 +55,11 @@ class SendAlgosViewController: BaseScrollViewController {
         
         title = "send-algos-title".localized
         
+        sendAlgosView.accountSelectionView.inputTextField.text = selectedAccount.name
+        
         switch receiver {
         case .initial:
             amount = 0.00
-            
-            configureInitialAccountState()
             
             sendAlgosView.transactionReceiverView.state = receiver
         case let .address(_, amount):
@@ -70,22 +71,8 @@ class SendAlgosViewController: BaseScrollViewController {
             }
             
             sendAlgosView.transactionReceiverView.state = receiver
-            
-            configureInitialAccountState()
         case .contact:
             sendAlgosView.transactionReceiverView.state = receiver
-            
-            configureInitialAccountState()
-        }
-    }
-    
-    private func configureInitialAccountState() {
-        if let account = session?.authenticatedUser?.defaultAccount() {
-            selectedAccount = account
-            sendAlgosView.accountSelectionView.inputTextField.text = account.name
-        } else {
-            selectedAccount = nil
-            sendAlgosView.accountSelectionView.inputTextField.text = "send-algos-select".localized
         }
     }
     
@@ -177,17 +164,17 @@ class SendAlgosViewController: BaseScrollViewController {
             amount = doubleValue
         }
         
-        guard let fromAccount = selectedAccount, isTransactionValid() else {
+        if !isTransactionValid() {
             displaySimpleAlertWith(title: "send-algos-alert-title".localized, message: "send-algos-alert-message".localized)
             return
         }
         
-        guard fromAccount.amount > UInt64(amount.toMicroAlgos) else {
+        guard selectedAccount.amount > UInt64(amount.toMicroAlgos) else {
             self.displaySimpleAlertWith(title: "title-error".localized, message: "send-algos-amount-error".localized)
             return
         }
         
-        if fromAccount.amount - UInt64(amount.toMicroAlgos) < minimumTransactionMicroAlgosLimit {
+        if selectedAccount.amount - UInt64(amount.toMicroAlgos) < minimumTransactionMicroAlgosLimit {
             self.displaySimpleAlertWith(title: "title-error".localized, message: "send-algos-minimum-amount-error".localized)
             return
         }
@@ -225,7 +212,12 @@ class SendAlgosViewController: BaseScrollViewController {
                         self.displaySimpleAlertWith(title: "title-error".localized,
                                                     message: "send-algos-minimum-amount-error-new-account".localized)
                     } else {
-                        let transaction = TransactionPreviewDraft(fromAccount: fromAccount, amount: self.amount, identifier: nil, fee: nil)
+                        let transaction = TransactionPreviewDraft(
+                            fromAccount: self.selectedAccount,
+                            amount: self.amount,
+                            identifier: nil,
+                            fee: nil
+                        )
                         
                         let sendAlgosPreviewViewController = self.open(
                             .sendAlgosPreview(transaction: transaction, receiver: self.receiver),
@@ -239,7 +231,7 @@ class SendAlgosViewController: BaseScrollViewController {
             
             return
         } else {
-            let transaction = TransactionPreviewDraft(fromAccount: fromAccount, amount: amount, identifier: nil, fee: nil)
+            let transaction = TransactionPreviewDraft(fromAccount: selectedAccount, amount: amount, identifier: nil, fee: nil)
             
             let sendAlgosPreviewViewController = open(
                 .sendAlgosPreview(transaction: transaction, receiver: receiver),
@@ -252,7 +244,6 @@ class SendAlgosViewController: BaseScrollViewController {
     
     private func isTransactionValid() -> Bool {
         if receiver != .initial,
-            selectedAccount != nil,
             amount > 0.0 {
             
             return true
