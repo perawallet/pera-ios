@@ -21,6 +21,7 @@ target 'algorand' do
     
   #UI
   pod 'SVProgressHUD'
+  pod 'lottie-ios'
 
   #Analytics
   pod 'Firebase/Core'
