@@ -29,8 +29,8 @@ indirect enum Screen {
     case sendAlgos(account: Account, receiver: AlgosReceiverState)
     case sendAlgosPreview(transaction: TransactionPreviewDraft, receiver: AlgosReceiverState)
     case sendAlgosSuccess(transaction: TransactionPreviewDraft, receiver: AlgosReceiverState)
-    case receiveAlgos(account: Account)
-    case receiveAlgosPreview(transaction: TransactionPreviewDraft)
+    case requestAlgos(account: Account)
+    case requestAlgosPreview(transaction: TransactionPreviewDraft)
     case historyResults(draft: HistoryDraft)
     case nodeSettings(mode: NodeSettingsViewController.Mode)
     case addNode

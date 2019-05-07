@@ -201,10 +201,10 @@ class Router {
             viewController = SendAlgosPreviewViewController(transaction: transaction, receiver: receiver, configuration: configuration)
         case let .sendAlgosSuccess(transaction, receiver):
             viewController = SendAlgosSuccessViewController(transaction: transaction, receiver: receiver, configuration: configuration)
-        case let .receiveAlgos(account):
-            viewController = ReceiveAlgosViewController(account: account, configuration: configuration)
-        case let .receiveAlgosPreview(transaction):
-            viewController = ReceiveAlgosPreviewViewController(transaction: transaction, configuration: configuration)
+        case let .requestAlgos(account):
+            viewController = RequestAlgosViewController(account: account, configuration: configuration)
+        case let .requestAlgosPreview(transaction):
+            viewController = RequestAlgosPreviewViewController(transaction: transaction, configuration: configuration)
         case let .historyResults(draft):
             viewController = HistoryResultsViewController(draft: draft, configuration: configuration)
         case let .nodeSettings(mode):

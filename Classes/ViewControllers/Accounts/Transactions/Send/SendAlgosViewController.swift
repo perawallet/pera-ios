@@ -55,7 +55,8 @@ class SendAlgosViewController: BaseScrollViewController {
         
         title = "send-algos-title".localized
         
-        sendAlgosView.accountSelectionView.inputTextField.text = selectedAccount.name
+        sendAlgosView.accountSelectionView.detailLabel.text = selectedAccount.name
+        sendAlgosView.accountSelectionView.set(amount: selectedAccount.amount.toAlgos)
         
         switch receiver {
         case .initial:
@@ -346,7 +347,8 @@ extension SendAlgosViewController: AccountListViewControllerDelegate {
     }
     
     func accountListViewController(_ viewController: AccountListViewController, didSelectAccount account: Account) {
-        sendAlgosView.accountSelectionView.inputTextField.text = account.name
+        sendAlgosView.accountSelectionView.detailLabel.text = account.name
+        sendAlgosView.accountSelectionView.set(amount: account.amount.toAlgos)
         
         selectedAccount = account
     }
