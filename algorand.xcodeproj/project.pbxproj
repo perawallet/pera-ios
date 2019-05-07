@@ -87,6 +87,7 @@
 		2B25BB49225EACB60092C972 /* ReceiveAlgosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B25BB48225EACB60092C972 /* ReceiveAlgosView.swift */; };
 		2B25BB4B225EAD600092C972 /* ReceiveAlgosPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B25BB4A225EAD600092C972 /* ReceiveAlgosPreviewViewController.swift */; };
 		2B25BB4D225EAD700092C972 /* ReceiveAlgosPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B25BB4C225EAD700092C972 /* ReceiveAlgosPreviewView.swift */; };
+		2B2F9F7822821C440068DBB5 /* AuctionChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2F9F7722821C440068DBB5 /* AuctionChartView.swift */; };
 		2B56F7D6225B3C1D00E58737 /* SendAlgosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B56F7D5225B3C1D00E58737 /* SendAlgosViewController.swift */; };
 		2B56F7D8225B3C4200E58737 /* ReceiveAlgosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B56F7D7225B3C4200E58737 /* ReceiveAlgosViewController.swift */; };
 		2B56F7DA225B45B300E58737 /* SendAlgosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B56F7D9225B45B300E58737 /* SendAlgosView.swift */; };
@@ -354,6 +355,7 @@
 		2B25BB48225EACB60092C972 /* ReceiveAlgosView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveAlgosView.swift; sourceTree = "<group>"; };
 		2B25BB4A225EAD600092C972 /* ReceiveAlgosPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveAlgosPreviewViewController.swift; sourceTree = "<group>"; };
 		2B25BB4C225EAD700092C972 /* ReceiveAlgosPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveAlgosPreviewView.swift; sourceTree = "<group>"; };
+		2B2F9F7722821C440068DBB5 /* AuctionChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionChartView.swift; sourceTree = "<group>"; };
 		2B56F7D5225B3C1D00E58737 /* SendAlgosViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendAlgosViewController.swift; sourceTree = "<group>"; };
 		2B56F7D7225B3C4200E58737 /* ReceiveAlgosViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveAlgosViewController.swift; sourceTree = "<group>"; };
 		2B56F7D9225B45B300E58737 /* SendAlgosView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendAlgosView.swift; sourceTree = "<group>"; };
@@ -713,6 +715,22 @@
 				17695B392268CA7400765D31 /* NodeManager.swift */,
 			);
 			path = Managers;
+			sourceTree = "<group>";
+		};
+		2B2F9F7522821C160068DBB5 /* Auction */ = {
+			isa = PBXGroup;
+			children = (
+				2B2F9F7622821C370068DBB5 /* Chart */,
+			);
+			path = Auction;
+			sourceTree = "<group>";
+		};
+		2B2F9F7622821C370068DBB5 /* Chart */ = {
+			isa = PBXGroup;
+			children = (
+				2B2F9F7722821C440068DBB5 /* AuctionChartView.swift */,
+			);
+			path = Chart;
 			sourceTree = "<group>";
 		};
 		2B56F7CE225B3AD700E58737 /* Transactions */ = {
@@ -1197,7 +1215,7 @@
 		2B8BE4E822392657005D8565 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				2BDE31E42279E1B5002E8235 /* Auctions */,
+				2BDE31E42279E1B5002E8235 /* Auction */,
 				2BF5317A224AA88600A7455F /* Settings */,
 				2BF53179224AA87300A7455F /* Contacts */,
 				2BF53178224AA86B00A7455F /* History */,
@@ -1249,6 +1267,7 @@
 		2B8BE4F0223935A3005D8565 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				2B2F9F7522821C160068DBB5 /* Auction */,
 				2B6ED955225F756E00787984 /* History */,
 				17100B2A225CEC2900D13548 /* Settings */,
 				2BF7190A224ECF12001E8420 /* Contacts */,
@@ -1735,12 +1754,12 @@
 			path = PassPhrase;
 			sourceTree = "<group>";
 		};
-		2BDE31E42279E1B5002E8235 /* Auctions */ = {
+		2BDE31E42279E1B5002E8235 /* Auction */ = {
 			isa = PBXGroup;
 			children = (
 				2BDE31E52279E1D2002E8235 /* AuctionsViewController.swift */,
 			);
-			path = Auctions;
+			path = Auction;
 			sourceTree = "<group>";
 		};
 		2BDE9CCE224E172B007EFF30 /* Main */ = {
@@ -2413,6 +2432,7 @@
 				17695B3C2268D2DE00765D31 /* NodeHealthOperation.swift in Sources */,
 				17B7D8A62240D8F900A6FF9E /* Account.swift in Sources */,
 				17B7D8A82240DFFC00A6FF9E /* API+Account.swift in Sources */,
+				2B2F9F7822821C440068DBB5 /* AuctionChartView.swift in Sources */,
 				2B82B1C82253A4F000A8909F /* ContactCell.swift in Sources */,
 				17B7D8B82242830D00A6FF9E /* Params+Additions.swift in Sources */,
 				17B7D8AE2240F25000A6FF9E /* Environment.swift in Sources */,
