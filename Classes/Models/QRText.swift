@@ -46,7 +46,7 @@ struct QRText: Codable {
             try container.encode(text, forKey: .address)
         case .mnemonic:
             try container.encode(text, forKey: .mnemonic)
-        case .algosReceive:
+        case .algosRequest:
             try container.encode(text, forKey: .address)
         }
         

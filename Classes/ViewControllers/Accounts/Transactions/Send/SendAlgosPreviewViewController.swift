@@ -50,7 +50,8 @@ class SendAlgosPreviewViewController: BaseViewController {
         title = "send-algos-title".localized
         
         sendAlgosPreviewView.algosInputView.inputTextField.text = transaction.amount.toDecimalStringForLabel
-        sendAlgosPreviewView.accountSelectionView.inputTextField.text = transaction.fromAccount.name
+        sendAlgosPreviewView.accountSelectionView.detailLabel.text = transaction.fromAccount.name
+        sendAlgosPreviewView.accountSelectionView.set(amount: transaction.fromAccount.amount.toAlgos)
         sendAlgosPreviewView.transactionReceiverView.state = receiver
         
         sendAlgosPreviewView.transactionReceiverView.qrButton.setImage(nil, for: .normal)

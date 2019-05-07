@@ -8,13 +8,13 @@
 
 import UIKit
 
-protocol ReceiveAlgosViewDelegate: class {
+protocol RequestAlgosViewDelegate: class {
     
-    func receiveAlgosViewDidTapAccountSelectionView(_ receiveAlgosView: ReceiveAlgosView)
-    func receiveAlgosViewDidTapPreviewButton(_ receiveAlgosView: ReceiveAlgosView)
+    func requestAlgosViewDidTapAccountSelectionView(_ requestAlgosView: RequestAlgosView)
+    func requestAlgosViewDidTapPreviewButton(_ requestAlgosView: RequestAlgosView)
 }
 
-class ReceiveAlgosView: BaseView {
+class RequestAlgosView: BaseView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let topInset: CGFloat = 20.0
@@ -26,7 +26,7 @@ class ReceiveAlgosView: BaseView {
     
     private let layout = Layout<LayoutConstants>()
     
-    weak var delegate: ReceiveAlgosViewDelegate?
+    weak var delegate: RequestAlgosViewDelegate?
     
     // MARK: Components
     
@@ -35,15 +35,10 @@ class ReceiveAlgosView: BaseView {
         return view
     }()
     
-    private(set) lazy var accountSelectionView: SingleLineInputField = {
-        let selectAccountView = SingleLineInputField(displaysRightInputAccessoryButton: true)
-        selectAccountView.explanationLabel.text = "send-algos-to".localized
-        selectAccountView.inputTextField.text = "send-algos-select".localized
-        selectAccountView.rightInputAccessoryButton.setImage(img("icon-arrow"), for: .normal)
-        selectAccountView.inputTextField.isEnabled = false
-        selectAccountView.inputTextField.textColor = SharedColors.black
-        selectAccountView.inputTextField.tintColor = SharedColors.black
-        return selectAccountView
+    private(set) lazy var accountSelectionView: AccountSelectionView = {
+        let accountSelectionView = AccountSelectionView()
+        accountSelectionView.explanationLabel.text = "send-algos-to".localized
+        return accountSelectionView
     }()
     
     private(set) lazy var previewButton: UIButton = {
@@ -88,12 +83,8 @@ class ReceiveAlgosView: BaseView {
         addSubview(accountSelectionView)
         
         accountSelectionView.snp.makeConstraints { make in
-            make.top.equalTo(algosInputView.snp.bottom).offset(layout.current.topInset)
+            make.top.equalTo(algosInputView.snp.bottom)
             make.leading.trailing.equalToSuperview()
-        }
-        
-        accountSelectionView.rightInputAccessoryButton.snp.updateConstraints { make in
-            make.trailing.equalToSuperview().inset(layout.current.buttonInset)
         }
     }
     
@@ -112,11 +103,11 @@ class ReceiveAlgosView: BaseView {
     
     @objc
     private func notifyDelegateToPreviewButtonTapped() {
-        delegate?.receiveAlgosViewDidTapPreviewButton(self)
+        delegate?.requestAlgosViewDidTapPreviewButton(self)
     }
     
     @objc
     private func notifyDelegateToAccountSelectionViewTapped() {
-        delegate?.receiveAlgosViewDidTapAccountSelectionView(self)
+        delegate?.requestAlgosViewDidTapAccountSelectionView(self)
     }
 }

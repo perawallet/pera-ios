@@ -414,7 +414,7 @@ extension AccountsViewController: AccountsViewDelegate {
             return
         }
         
-        open(.receiveAlgos(account: account), by: .push)
+        open(.requestAlgos(account: account), by: .push)
     }
 }
 
