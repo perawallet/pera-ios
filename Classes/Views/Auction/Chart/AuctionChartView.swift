@@ -39,7 +39,7 @@ class AuctionChartView: BaseView {
         
         chartView.xAxis.enabled = false
         chartView.xAxis.axisMinimum = 0
-        //chartView.xAxis.axisMaximum = 16
+        chartView.xAxis.axisMaximum = 609
         chartView.xAxis.axisLineColor = .white
         
         chartView.rightAxis.enabled = false
@@ -100,29 +100,41 @@ class AuctionChartView: BaseView {
         pricesDataSet.drawCircleHoleEnabled = false
         pricesDataSet.drawCirclesEnabled = false
         pricesDataSet.lineWidth = 4.0
+        pricesDataSet.mode = .horizontalBezier
         
-        pricesDataSet.setColors(
-            UIColor(red: 0 / 255, green: 117 / 255, blue: 255 / 255, alpha: 1),
-            UIColor(red: 17 / 255, green: 113 / 255, blue: 238 / 255, alpha: 1),
-            UIColor(red: 34 / 255, green: 110 / 255, blue: 221 / 255, alpha: 1),
-            UIColor(red: 51 / 255, green: 106 / 255, blue: 204 / 255, alpha: 1),
-            UIColor(red: 68 / 255, green: 103 / 255, blue: 187 / 255, alpha: 1),
-            UIColor(red: 85 / 255, green: 100 / 255, blue: 170 / 255, alpha: 1),
-            UIColor(red: 102 / 255, green: 96 / 255, blue: 153 / 255, alpha: 1),
-            UIColor(red: 119 / 255, green: 93 / 255, blue: 136 / 255, alpha: 1),
-            UIColor(red: 136 / 255, green: 89 / 255, blue: 119 / 255, alpha: 1),
-            UIColor(red: 153 / 255, green: 86 / 255, blue: 102 / 255, alpha: 1),
-            UIColor(red: 170 / 255, green: 83 / 255, blue: 85 / 255, alpha: 1),
-            UIColor(red: 187 / 255, green: 79 / 255, blue: 68 / 255, alpha: 1),
-            UIColor(red: 204 / 255, green: 76 / 255, blue: 51 / 255, alpha: 1),
-            UIColor(red: 221 / 255, green: 72 / 255, blue: 34 / 255, alpha: 1),
-            UIColor(red: 238 / 255, green: 69 / 255, blue: 17 / 255, alpha: 1),
-            UIColor(red: 255 / 255, green: 66 / 255, blue: 0 / 255, alpha: 1)
-        )
+        let redDiff: CGFloat = 255.0 / 609.0
+        let greenDiff: CGFloat = 51.0 / 609.0
+        let blueDiff: CGFloat = 255.0 / 609.0
+        
+        var previousRed: CGFloat = 0
+        var previousGreen: CGFloat = 117
+        var previousBlue: CGFloat = 255
+        
+        pricesDataSet.setColor(UIColor(
+            red: CGFloat(previousRed / 255),
+            green: CGFloat(previousGreen / 255),
+            blue: CGFloat(previousBlue / 255),
+            alpha: 1
+        ))
+        
+        for _ in 0...609 {
+            let color = UIColor(
+                red: CGFloat(previousRed / 255),
+                green: CGFloat(previousGreen / 255),
+                blue: CGFloat(previousBlue / 255),
+                alpha: 1
+            )
+            
+            pricesDataSet.addColor(color)
+            
+            previousRed += redDiff
+            previousGreen -= greenDiff
+            previousBlue -= blueDiff
+        }
         
         lineChartView.data = LineChartData(dataSet: pricesDataSet)
         
-        lineChartView.setVisibleXRange(minXRange: Double(1), maxXRange: Double(16))
+        lineChartView.setVisibleXRange(minXRange: Double(1), maxXRange: Double(609))
     }
     
     // MARK: Layout
@@ -189,7 +201,7 @@ extension AuctionChartView {
     
     func addData(entry: ChartDataEntry, at index: Int) {
         lineChartView.data?.addEntry(entry, dataSetIndex: 0)
-        lineChartView.setVisibleXRange(minXRange: Double(1), maxXRange: Double(16))
+        lineChartView.setVisibleXRange(minXRange: Double(1), maxXRange: Double(609))
         lineChartView.notifyDataSetChanged()
         lineChartView.moveViewToX(Double(index))
     }
