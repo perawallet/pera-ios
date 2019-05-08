@@ -20,8 +20,8 @@ class TabBarController: UITabBarController {
         rootViewController: HistoryViewController(configuration: configuration)
     )
     
-    private lazy var auctionsNavigationController = NavigationController(
-        rootViewController: AuctionsViewController(configuration: configuration)
+    private lazy var auctionNavigationController = NavigationController(
+        rootViewController: AuctionViewController(configuration: configuration)
     )
     
     private lazy var contactsNavigationController = NavigationController(
@@ -69,7 +69,7 @@ class TabBarController: UITabBarController {
         
         configureAccountsTab()
         configureHistoryTab()
-        configureAuctionsTab()
+        configureAuctionTab()
         configureContactsTab()
         configureSettingsTab()
         
@@ -89,7 +89,7 @@ class TabBarController: UITabBarController {
         viewControllers = [
             accountsNavigationController,
             historyNavigationController,
-            auctionsNavigationController,
+            auctionNavigationController,
             contactsNavigationController,
             settingsNavigationController
         ]
@@ -117,15 +117,15 @@ class TabBarController: UITabBarController {
         historyNavigationController.tabBarItem.tag = 1
     }
     
-    private func configureAuctionsTab() {
-        auctionsNavigationController.tabBarItem = UITabBarItem(
+    private func configureAuctionTab() {
+        auctionNavigationController.tabBarItem = UITabBarItem(
             title: "tabbar-item-auction".localized,
             image: img("tabbar-icon-auction")?.withRenderingMode(.alwaysOriginal),
             selectedImage: img("tabbar-icon-auction-selected")?.withRenderingMode(.alwaysOriginal)
         )
         
-        auctionsNavigationController.tabBarItem.imageInsets = UIEdgeInsets(top: 2.0, left: 0.0, bottom: -2.0, right: 0.0)
-        auctionsNavigationController.tabBarItem.tag = 2
+        auctionNavigationController.tabBarItem.imageInsets = UIEdgeInsets(top: 2.0, left: 0.0, bottom: -2.0, right: 0.0)
+        auctionNavigationController.tabBarItem.tag = 2
     }
     
     private func configureContactsTab() {
@@ -202,7 +202,7 @@ extension TabBarController {
     enum Tab: Int {
         case accounts = 0
         case history = 1
-        case auctions = 2
+        case auction = 2
         case contacts = 3
         case settings = 4
     }

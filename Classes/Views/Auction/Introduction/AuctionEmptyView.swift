@@ -1,0 +1,13 @@
+//
+//  AuctionEmptyView.swift
+//  algorand
+//
+//  Created by Göktuğ Berk Ulu on 8.05.2019.
+//  Copyright © 2019 hippo. All rights reserved.
+//
+
+import UIKit
+
+class AuctionEmptyView: BaseView {
+    
+}

@@ -173,6 +173,8 @@
 		2B8BE50122393999005D8565 /* AdaptiveLayoutConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8BE50022393999005D8565 /* AdaptiveLayoutConstants.swift */; };
 		2B8C1278224196DF00E34D37 /* String+Attributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8C1277224196DF00E34D37 /* String+Attributes.swift */; };
 		2B8C127A2241970F00E34D37 /* NSAttributedString+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8C12792241970F00E34D37 /* NSAttributedString+Additions.swift */; };
+		2B8EE81D2282DAE20001D025 /* AuctionIntroductionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8EE81C2282DAE20001D025 /* AuctionIntroductionView.swift */; };
+		2B8EE81F2282DAF80001D025 /* AuctionEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8EE81E2282DAF80001D025 /* AuctionEmptyView.swift */; };
 		2BA0C39822677E430037AE13 /* Sequence+AttributedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA0C39722677E430037AE13 /* Sequence+AttributedString.swift */; };
 		2BA242382263C0D800E2841F /* SwiftDate+Region.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA242372263C0D800E2841F /* SwiftDate+Region.swift */; };
 		2BA8736A2248214800511C7C /* AlignedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA873692248214800511C7C /* AlignedButton.swift */; };
@@ -216,7 +218,7 @@
 		2BDDCA482268A3630081CED2 /* DeepLinkParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDDCA472268A3630081CED2 /* DeepLinkParser.swift */; };
 		2BDE31E122799FF0002E8235 /* ContactSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDE31E022799FF0002E8235 /* ContactSelectionViewController.swift */; };
 		2BDE31E32279A319002E8235 /* ContactSelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDE31E22279A319002E8235 /* ContactSelectionCell.swift */; };
-		2BDE31E62279E1D2002E8235 /* AuctionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDE31E52279E1D2002E8235 /* AuctionsViewController.swift */; };
+		2BDE31E62279E1D2002E8235 /* AuctionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDE31E52279E1D2002E8235 /* AuctionViewController.swift */; };
 		2BDE31E82279EAFC002E8235 /* API+Auction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDE31E72279EAFC002E8235 /* API+Auction.swift */; };
 		2BDE31EA2279EBBD002E8235 /* CointlistUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDE31E92279EBBD002E8235 /* CointlistUser.swift */; };
 		2BDE9CCB224E1458007EFF30 /* AccountsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDE9CCA224E1458007EFF30 /* AccountsView.swift */; };
@@ -441,6 +443,8 @@
 		2B8BE504223939F9005D8565 /* UIApplication+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Additions.swift"; sourceTree = "<group>"; };
 		2B8C1277224196DF00E34D37 /* String+Attributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Attributes.swift"; sourceTree = "<group>"; };
 		2B8C12792241970F00E34D37 /* NSAttributedString+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Additions.swift"; sourceTree = "<group>"; };
+		2B8EE81C2282DAE20001D025 /* AuctionIntroductionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionIntroductionView.swift; sourceTree = "<group>"; };
+		2B8EE81E2282DAF80001D025 /* AuctionEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionEmptyView.swift; sourceTree = "<group>"; };
 		2BA0C39722677E430037AE13 /* Sequence+AttributedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sequence+AttributedString.swift"; sourceTree = "<group>"; };
 		2BA242372263C0D800E2841F /* SwiftDate+Region.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SwiftDate+Region.swift"; sourceTree = "<group>"; };
 		2BA873692248214800511C7C /* AlignedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlignedButton.swift; sourceTree = "<group>"; };
@@ -484,7 +488,7 @@
 		2BDDCA472268A3630081CED2 /* DeepLinkParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkParser.swift; sourceTree = "<group>"; };
 		2BDE31E022799FF0002E8235 /* ContactSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactSelectionViewController.swift; sourceTree = "<group>"; };
 		2BDE31E22279A319002E8235 /* ContactSelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactSelectionCell.swift; sourceTree = "<group>"; };
-		2BDE31E52279E1D2002E8235 /* AuctionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionsViewController.swift; sourceTree = "<group>"; };
+		2BDE31E52279E1D2002E8235 /* AuctionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionViewController.swift; sourceTree = "<group>"; };
 		2BDE31E72279EAFC002E8235 /* API+Auction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+Auction.swift"; sourceTree = "<group>"; };
 		2BDE31E92279EBBD002E8235 /* CointlistUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CointlistUser.swift; sourceTree = "<group>"; };
 		2BDE9CCA224E1458007EFF30 /* AccountsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsView.swift; sourceTree = "<group>"; };
@@ -722,6 +726,7 @@
 		2B2F9F7522821C160068DBB5 /* Auction */ = {
 			isa = PBXGroup;
 			children = (
+				2B8EE81B2282DACE0001D025 /* Introduction */,
 				2B2F9F7622821C370068DBB5 /* Chart */,
 			);
 			path = Auction;
@@ -1396,6 +1401,15 @@
 			path = Application;
 			sourceTree = "<group>";
 		};
+		2B8EE81B2282DACE0001D025 /* Introduction */ = {
+			isa = PBXGroup;
+			children = (
+				2B8EE81C2282DAE20001D025 /* AuctionIntroductionView.swift */,
+				2B8EE81E2282DAF80001D025 /* AuctionEmptyView.swift */,
+			);
+			path = Introduction;
+			sourceTree = "<group>";
+		};
 		2BA873682248212F00511C7C /* Button */ = {
 			isa = PBXGroup;
 			children = (
@@ -1760,7 +1774,7 @@
 		2BDE31E42279E1B5002E8235 /* Auction */ = {
 			isa = PBXGroup;
 			children = (
-				2BDE31E52279E1D2002E8235 /* AuctionsViewController.swift */,
+				2BDE31E52279E1D2002E8235 /* AuctionViewController.swift */,
 			);
 			path = Auction;
 			sourceTree = "<group>";
@@ -2324,6 +2338,7 @@
 				2BA8736E2248240A00511C7C /* UIEdgeInsets+Additions.swift in Sources */,
 				2B5DA9D5224CE19700EE41B4 /* EditAccountViewController.swift in Sources */,
 				2B8954B72243FCB100D6D068 /* Notification+Keyboard.swift in Sources */,
+				2B8EE81D2282DAE20001D025 /* AuctionIntroductionView.swift in Sources */,
 				2B8954B62243FBD600D6D068 /* NotificationCenter+Additions.swift in Sources */,
 				171111B4225E091A00DAF55C /* SettingsToggleCell.swift in Sources */,
 				2BF3D832226F0F9100716C09 /* TransactionDetailViewController.swift in Sources */,
@@ -2387,6 +2402,7 @@
 				17D04F4A225F90B00051BC43 /* API+Node.swift in Sources */,
 				2BD739E1223F9F3000B66EEF /* LocalAuthenticationPreferenceView.swift in Sources */,
 				2B6687102248DBE2009F21E7 /* ALGBarButtonItem.swift in Sources */,
+				2B8EE81F2282DAF80001D025 /* AuctionEmptyView.swift in Sources */,
 				2B6ED9662261063700787984 /* TransactionList.swift in Sources */,
 				2BDE9CDA224E2336007EFF30 /* TransactionHistoryCell.swift in Sources */,
 				2B82B1C522535F4300A8909F /* Contact.swift in Sources */,
@@ -2521,7 +2537,7 @@
 				2B6ED962226105CD00787984 /* TransactionPreviewDraft.swift in Sources */,
 				2BD739DD223F9E9F00B66EEF /* ChoosePasswordView.swift in Sources */,
 				2B8BE4F4223935DA005D8565 /* BaseView.swift in Sources */,
-				2BDE31E62279E1D2002E8235 /* AuctionsViewController.swift in Sources */,
+				2BDE31E62279E1D2002E8235 /* AuctionViewController.swift in Sources */,
 				170AFAFC224CC70A00520EA5 /* QRText.swift in Sources */,
 				2BF71912224ECFEC001E8420 /* ContactsView.swift in Sources */,
 				2B89549F2242D90000D6D068 /* UIViewController+Additions.swift in Sources */,

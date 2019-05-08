@@ -9,7 +9,7 @@
 import UIKit
 import Charts
 
-class AuctionsViewController: BaseViewController {
+class AuctionViewController: BaseViewController {
     
     private lazy var auctionChartView = AuctionChartView(initialValue: 10)
     
