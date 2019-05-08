@@ -250,6 +250,13 @@
 "auction-title" = "Auction";
 "auction-empty-title" = "No Auctions Scheduled";
 "auction-empty-subtitle" = "We recommend registering early to ensure you can participate in the next auction.";
+"auction-introduction-title" = "Before you can participate";
+"auction-introduction-prerequest-first" = "Create a Coinlist account";
+"auction-introduction-prerequest-second" = "Complete compliance checks";
+"auction-introduction-prerequest-third" = "Fund your USD wallet";
+"auction-introduction-prerequest-day" = "1-3 days";
+"auction-introduction-bottom-title" = "This process can take up to 6 days";
+"auction-introduction-explanation" = "Register now to ensure you can participate and dont miss out.";
 
 // MARK: Auction Detail
 

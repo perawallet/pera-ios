@@ -47,7 +47,7 @@ class AuctionEmptyView: BaseView {
             .withAlignment(.center)
     }()
     
-    private(set) lazy var getStartedButton: MainButton = {
+    private lazy var getStartedButton: MainButton = {
         let button = MainButton(title: "title-get-started".localized)
         return button
     }()

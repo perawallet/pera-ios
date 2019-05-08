@@ -20,12 +20,12 @@ class AuctionViewController: BaseViewController {
     
     private lazy var auctionIntroductionView: AuctionIntroductionView = {
         let view = AuctionIntroductionView()
-        view.isHidden = true
         return view
     }()
     
     private lazy var auctionEmptyView: AuctionEmptyView = {
         let view = AuctionEmptyView()
+        view.isHidden = true
         return view
     }()
     
@@ -34,6 +34,7 @@ class AuctionViewController: BaseViewController {
     override func linkInteractors() {
         super.linkInteractors()
         
+        auctionIntroductionView.delegate = self
         auctionEmptyView.delegate = self
     }
     
@@ -68,6 +69,16 @@ class AuctionViewController: BaseViewController {
             make.top.equalToSuperview().inset(layout.current.topInset)
             make.leading.trailing.bottom.equalToSuperview()
         }
+    }
+}
+
+// MARK: AuctionEmptyViewDelegate
+
+extension AuctionViewController: AuctionIntroductionViewDelegate {
+    
+    func auctionIntroductionViewDidTapGetStartedButton(_ auctionIntroductionView: AuctionIntroductionView) {
+        auctionIntroductionView.isHidden = true
+        auctionEmptyView.isHidden = false
     }
 }
 

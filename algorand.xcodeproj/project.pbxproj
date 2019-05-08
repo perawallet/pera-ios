@@ -176,6 +176,9 @@
 		2B8EE81D2282DAE20001D025 /* AuctionIntroductionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8EE81C2282DAE20001D025 /* AuctionIntroductionView.swift */; };
 		2B8EE81F2282DAF80001D025 /* AuctionEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8EE81E2282DAF80001D025 /* AuctionEmptyView.swift */; };
 		2B8EE8212282EDDC0001D025 /* AuctionDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8EE8202282EDDC0001D025 /* AuctionDetailViewController.swift */; };
+		2B8EE82322832FF60001D025 /* NumberLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8EE82222832FF60001D025 /* NumberLabel.swift */; };
+		2B8EE826228330710001D025 /* AuctionPrerequirementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8EE825228330710001D025 /* AuctionPrerequirementView.swift */; };
+		2B8EE8282283313F0001D025 /* AuctionPrerequirementElementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8EE8272283313F0001D025 /* AuctionPrerequirementElementView.swift */; };
 		2BA0C39822677E430037AE13 /* Sequence+AttributedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA0C39722677E430037AE13 /* Sequence+AttributedString.swift */; };
 		2BA242382263C0D800E2841F /* SwiftDate+Region.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA242372263C0D800E2841F /* SwiftDate+Region.swift */; };
 		2BA8736A2248214800511C7C /* AlignedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA873692248214800511C7C /* AlignedButton.swift */; };
@@ -447,6 +450,9 @@
 		2B8EE81C2282DAE20001D025 /* AuctionIntroductionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionIntroductionView.swift; sourceTree = "<group>"; };
 		2B8EE81E2282DAF80001D025 /* AuctionEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionEmptyView.swift; sourceTree = "<group>"; };
 		2B8EE8202282EDDC0001D025 /* AuctionDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionDetailViewController.swift; sourceTree = "<group>"; };
+		2B8EE82222832FF60001D025 /* NumberLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberLabel.swift; sourceTree = "<group>"; };
+		2B8EE825228330710001D025 /* AuctionPrerequirementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionPrerequirementView.swift; sourceTree = "<group>"; };
+		2B8EE8272283313F0001D025 /* AuctionPrerequirementElementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionPrerequirementElementView.swift; sourceTree = "<group>"; };
 		2BA0C39722677E430037AE13 /* Sequence+AttributedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sequence+AttributedString.swift"; sourceTree = "<group>"; };
 		2BA242372263C0D800E2841F /* SwiftDate+Region.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SwiftDate+Region.swift"; sourceTree = "<group>"; };
 		2BA873692248214800511C7C /* AlignedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlignedButton.swift; sourceTree = "<group>"; };
@@ -1406,10 +1412,21 @@
 		2B8EE81B2282DACE0001D025 /* Introduction */ = {
 			isa = PBXGroup;
 			children = (
+				2B8EE8242283300C0001D025 /* AuctionPrerequirement */,
 				2B8EE81C2282DAE20001D025 /* AuctionIntroductionView.swift */,
 				2B8EE81E2282DAF80001D025 /* AuctionEmptyView.swift */,
 			);
 			path = Introduction;
+			sourceTree = "<group>";
+		};
+		2B8EE8242283300C0001D025 /* AuctionPrerequirement */ = {
+			isa = PBXGroup;
+			children = (
+				2B8EE82222832FF60001D025 /* NumberLabel.swift */,
+				2B8EE825228330710001D025 /* AuctionPrerequirementView.swift */,
+				2B8EE8272283313F0001D025 /* AuctionPrerequirementElementView.swift */,
+			);
+			path = AuctionPrerequirement;
 			sourceTree = "<group>";
 		};
 		2BA873682248212F00511C7C /* Button */ = {
@@ -2434,6 +2451,7 @@
 				2BF34CBC223A8C460052CAD3 /* BaseCollectionViewCell.swift in Sources */,
 				171111B2225DF92300DAF55C /* SettingsInfoContextView.swift in Sources */,
 				2B6687122248DC7D009F21E7 /* BarButton.swift in Sources */,
+				2B8EE82322832FF60001D025 /* NumberLabel.swift in Sources */,
 				17AA1B0A22662BD1000B0BB0 /* Decimal+Additions.swift in Sources */,
 				2BD739F6223FF47900B66EEF /* NumpadNumericButton.swift in Sources */,
 				2B8BE4EE22393577005D8565 /* BaseViewController.swift in Sources */,
@@ -2451,6 +2469,7 @@
 				17512620223BEAE90095AF4F /* Storable.swift in Sources */,
 				2BF5314E22491E7F00A7455F /* QRScannerOverlayView.swift in Sources */,
 				17695B3C2268D2DE00765D31 /* NodeHealthOperation.swift in Sources */,
+				2B8EE8282283313F0001D025 /* AuctionPrerequirementElementView.swift in Sources */,
 				17B7D8A62240D8F900A6FF9E /* Account.swift in Sources */,
 				17B7D8A82240DFFC00A6FF9E /* API+Account.swift in Sources */,
 				2B2F9F7822821C440068DBB5 /* AuctionChartView.swift in Sources */,
@@ -2512,6 +2531,7 @@
 				2BD739FC2241052600B66EEF /* PasswordInputCircleView.swift in Sources */,
 				2BD739EC223FA0DC00B66EEF /* LocalAuthenticationPreferenceViewController.swift in Sources */,
 				2BF53153224A460B00A7455F /* ModalConfiguration.swift in Sources */,
+				2B8EE826228330710001D025 /* AuctionPrerequirementView.swift in Sources */,
 				2BD73A0B22412B0900B66EEF /* NumpadViewLayoutBuilder.swift in Sources */,
 				2B8954AC22438FBC00D6D068 /* AlertViewController.swift in Sources */,
 				17695B3A2268CA7400765D31 /* NodeManager.swift in Sources */,
