@@ -7,51 +7,75 @@
 //
 
 import UIKit
-import Charts
 
 class AuctionViewController: BaseViewController {
     
-    private lazy var auctionChartView = AuctionChartView(initialValue: 10)
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let topInset: CGFloat = 20.0 * verticalScale
+    }
     
-    private var prices = [10.0, 9.5, 8.7, 7.9, 6.5, 6.0, 5.2, 4.0, 3.7, 3.0, 1.7, 1.6, 1.5, 1.0, 0.4, 0.0]
+    private let layout = Layout<LayoutConstants>()
     
-    private var timer: Timer?
-    private var index = 1
+    // MARK: Components
     
-    override func prepareLayout() {
-        super.prepareLayout()
+    private lazy var auctionIntroductionView: AuctionIntroductionView = {
+        let view = AuctionIntroductionView()
+        view.isHidden = true
+        return view
+    }()
+    
+    private lazy var auctionEmptyView: AuctionEmptyView = {
+        let view = AuctionEmptyView()
+        return view
+    }()
+    
+    // MARK: Setup
+    
+    override func linkInteractors() {
+        super.linkInteractors()
         
-        setupChartViewLayout()
+        auctionEmptyView.delegate = self
     }
     
     override func configureAppearance() {
         super.configureAppearance()
         
         navigationItem.title = "auction-title".localized
-        
-        timer = Timer.scheduledTimer(timeInterval: 3.0, target: self, selector: #selector(updateChart), userInfo: nil, repeats: true)
     }
     
-    private func setupChartViewLayout() {
-        view.addSubview(auctionChartView)
+    // MARK: Layout
+    
+    override func prepareLayout() {
+        super.prepareLayout()
         
-        auctionChartView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.top.equalToSuperview().inset(40.0)
-            make.height.equalTo(100.0)
+        setupAuctionIntroductionViewLayout()
+        setupAuctionEmptyViewLayout()
+    }
+    
+    private func setupAuctionIntroductionViewLayout() {
+        view.addSubview(auctionIntroductionView)
+        
+        auctionIntroductionView.snp.makeConstraints { make in
+            make.top.equalToSuperview().inset(layout.current.topInset)
+            make.leading.trailing.bottom.equalToSuperview()
         }
     }
     
-    @objc
-    private func updateChart() {
-        if index >= prices.count {
-            auctionChartView.configureCompletedState()
-            return
+    private func setupAuctionEmptyViewLayout() {
+        view.addSubview(auctionEmptyView)
+        
+        auctionEmptyView.snp.makeConstraints { make in
+            make.top.equalToSuperview().inset(layout.current.topInset)
+            make.leading.trailing.bottom.equalToSuperview()
         }
-        
-        auctionChartView.currentValueLabel.text = "\(prices[index])"
-        auctionChartView.addData(entry: ChartDataEntry(x: Double(index), y: prices[index]), at: index)
-        
-        index += 1
+    }
+}
+
+// MARK: AuctionEmptyViewDelegate
+
+extension AuctionViewController: AuctionEmptyViewDelegate {
+    
+    func auctionEmptyViewDidTapGetStartedButton(_ auctionEmptyView: AuctionEmptyView) {
+        open(.auctionDetail, by: .push)
     }
 }

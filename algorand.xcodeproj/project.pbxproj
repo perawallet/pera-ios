@@ -175,6 +175,7 @@
 		2B8C127A2241970F00E34D37 /* NSAttributedString+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8C12792241970F00E34D37 /* NSAttributedString+Additions.swift */; };
 		2B8EE81D2282DAE20001D025 /* AuctionIntroductionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8EE81C2282DAE20001D025 /* AuctionIntroductionView.swift */; };
 		2B8EE81F2282DAF80001D025 /* AuctionEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8EE81E2282DAF80001D025 /* AuctionEmptyView.swift */; };
+		2B8EE8212282EDDC0001D025 /* AuctionDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8EE8202282EDDC0001D025 /* AuctionDetailViewController.swift */; };
 		2BA0C39822677E430037AE13 /* Sequence+AttributedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA0C39722677E430037AE13 /* Sequence+AttributedString.swift */; };
 		2BA242382263C0D800E2841F /* SwiftDate+Region.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA242372263C0D800E2841F /* SwiftDate+Region.swift */; };
 		2BA8736A2248214800511C7C /* AlignedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA873692248214800511C7C /* AlignedButton.swift */; };
@@ -445,6 +446,7 @@
 		2B8C12792241970F00E34D37 /* NSAttributedString+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Additions.swift"; sourceTree = "<group>"; };
 		2B8EE81C2282DAE20001D025 /* AuctionIntroductionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionIntroductionView.swift; sourceTree = "<group>"; };
 		2B8EE81E2282DAF80001D025 /* AuctionEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionEmptyView.swift; sourceTree = "<group>"; };
+		2B8EE8202282EDDC0001D025 /* AuctionDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionDetailViewController.swift; sourceTree = "<group>"; };
 		2BA0C39722677E430037AE13 /* Sequence+AttributedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sequence+AttributedString.swift"; sourceTree = "<group>"; };
 		2BA242372263C0D800E2841F /* SwiftDate+Region.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SwiftDate+Region.swift"; sourceTree = "<group>"; };
 		2BA873692248214800511C7C /* AlignedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlignedButton.swift; sourceTree = "<group>"; };
@@ -1775,6 +1777,7 @@
 			isa = PBXGroup;
 			children = (
 				2BDE31E52279E1D2002E8235 /* AuctionViewController.swift */,
+				2B8EE8202282EDDC0001D025 /* AuctionDetailViewController.swift */,
 			);
 			path = Auction;
 			sourceTree = "<group>";
@@ -2343,6 +2346,7 @@
 				171111B4225E091A00DAF55C /* SettingsToggleCell.swift in Sources */,
 				2BF3D832226F0F9100716C09 /* TransactionDetailViewController.swift in Sources */,
 				2BA242382263C0D800E2841F /* SwiftDate+Region.swift in Sources */,
+				2B8EE8212282EDDC0001D025 /* AuctionDetailViewController.swift in Sources */,
 				17AA1B0422660E59000B0BB0 /* Formatter+Additions.swift in Sources */,
 				2BDDCA482268A3630081CED2 /* DeepLinkParser.swift in Sources */,
 				17D04F48225F697E0051BC43 /* AddNodeView.swift in Sources */,

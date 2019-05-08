@@ -222,6 +222,8 @@ class Router {
                 transactionType: transactionType,
                 configuration: configuration
             )
+        case .auctionDetail:
+            viewController = AuctionDetailViewController(configuration: configuration)
         }
         
         return viewController as? T

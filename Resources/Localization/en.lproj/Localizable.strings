@@ -17,6 +17,7 @@
 "title-remove" = "REMOVE";
 "title-share" = "Share";
 "title-share-big" = "SHARE";
+"title-get-started" = "GET STARTED";
 "title-cancel-lowercased" = "Cancel";
 "title-go-to-settings" = "Go To Settings";
 "title-error" = "Error";
@@ -247,5 +248,11 @@
 // MARK: Auction
 
 "auction-title" = "Auction";
+"auction-empty-title" = "No Auctions Scheduled";
+"auction-empty-subtitle" = "We recommend registering early to ensure you can participate in the next auction.";
+
+// MARK: Auction Detail
+
+"auction-detail-title" = "Auction Detail";
 "auction-price-current-title" = "Current Price";
 "auction-price-closing-title" = "Closing Price";
