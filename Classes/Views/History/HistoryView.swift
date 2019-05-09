@@ -19,7 +19,6 @@ class HistoryView: BaseView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let topInset: CGFloat = 5.0
         let horizontalInset: CGFloat = 20.0
-        let algosAmountTopInset: CGFloat = 55.0
         let bottomInset: CGFloat = 75.0
         let buttonMinimumInset: CGFloat = 60.0
     }
@@ -32,15 +31,11 @@ class HistoryView: BaseView {
     var endDate: Date = Date()
     
     // MARK: Components
-
-    private(set) lazy var accountSelectionView: DetailedInformationView = {
-        let accountSelectionView = DetailedInformationView()
-        accountSelectionView.isUserInteractionEnabled = true
+    
+    private(set) lazy var accountSelectionView: AccountSelectionView = {
+        let accountSelectionView = AccountSelectionView()
         accountSelectionView.backgroundColor = .white
-        accountSelectionView.rightInputAccessoryButton.setImage(img("icon-arrow"), for: .normal)
         accountSelectionView.explanationLabel.text = "history-account".localized
-        accountSelectionView.detailLabel.text = "send-algos-select".localized
-        accountSelectionView.detailLabel.font = UIFont.font(.montserrat, withWeight: .semiBold(size: 12.0))
         return accountSelectionView
     }()
     
@@ -52,13 +47,6 @@ class HistoryView: BaseView {
         startDateDisplayView.detailLabel.font = UIFont.font(.montserrat, withWeight: .semiBold(size: 12.0))
         startDateDisplayView.detailLabel.text = startDate.toFormat("dd MMMM yyyy")
         return startDateDisplayView
-    }()
-    
-    private(set) lazy var accountAmountView: AlgosAmountView = {
-        let view = AlgosAmountView()
-        view.isHidden = true
-        view.signLabel.isHidden = true
-        return view
     }()
     
     private(set) lazy var startDatePickerView: UIDatePicker = {
@@ -126,7 +114,6 @@ class HistoryView: BaseView {
     
     override func prepareLayout() {
         setupAccountSelectionViewLayout()
-        setupAccountAmountViewLayout()
         setupStartDateDisplayViewLayout()
         setupStartDatePickerViewLayout()
         setupEndDateDisplayViewLayout()
@@ -140,19 +127,6 @@ class HistoryView: BaseView {
         accountSelectionView.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(layout.current.topInset)
             make.leading.trailing.equalToSuperview()
-        }
-        
-        accountSelectionView.separatorView.snp.updateConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-        }
-    }
-    
-    private func setupAccountAmountViewLayout() {
-        addSubview(accountAmountView)
-        
-        accountAmountView.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.top.equalToSuperview().inset(layout.current.algosAmountTopInset)
         }
     }
     

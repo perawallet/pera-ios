@@ -10,6 +10,9 @@ import UIKit
 
 class ContactSelectionViewController: ContactsViewController {
     
+    override func configureNavigationBarAppearance() {
+    }
+    
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: ContactSelectionCell.reusableIdentifier,

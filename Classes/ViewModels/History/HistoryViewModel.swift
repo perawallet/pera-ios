@@ -11,20 +11,16 @@ import UIKit
 class HistoryViewModel {
     
     func configure(_ view: HistoryView, with account: Account) {
-        
         view.accountSelectionView.detailLabel.text = account.name
         
-        view.accountSelectionView.rightInputAccessoryButton.isHidden = true
-        view.accountAmountView.isHidden = false
-        
-        if account.amount > 0 {
-            view.accountAmountView.mode = .positive(account.amount.toAlgos)
-        } else if account.amount == 0 {
-            view.accountAmountView.mode = .normal(0.0)
+        if account.amount == 0 {
+            view.accountSelectionView.algosAmountView.algoIconImageView.image = img("icon-algo-small-black")
+            view.accountSelectionView.algosAmountView.amountLabel.textColor = SharedColors.black
         } else {
-            view.accountAmountView.mode = .negative(-account.amount.toAlgos)
+            view.accountSelectionView.algosAmountView.algoIconImageView.image = img("icon-algo-small-green")
+            view.accountSelectionView.algosAmountView.amountLabel.textColor = SharedColors.green
         }
         
-        view.accountAmountView.signLabel.isHidden = true
+        view.accountSelectionView.set(amount: account.amount.toAlgos)
     }
 }

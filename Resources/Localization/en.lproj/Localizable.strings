@@ -201,6 +201,9 @@
 "contacts-empty-text" = "No Contacts Found";
 "contacts-name-validation-error" = "Name is empty.";
 "contacts-address-validation-error" = "Address is wrong. Please make sure that you entered correct one.";
+"contacts-delete-contact" = "DELETE CONTACT";
+"contacts-delete-contact-alert-title" = "Delete Contact";
+"contacts-delete-contact-alert-explanation" = "Are you sure you want to delete this contact?";
 
 // MARK: Settings
 

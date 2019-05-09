@@ -8,7 +8,7 @@
 
 import UIKit
 
-class IntroductionViewController: BaseScrollViewController {
+class IntroductionViewController: BaseViewController {
     
     // MARK: Components
 
@@ -43,7 +43,7 @@ class IntroductionViewController: BaseScrollViewController {
     }
     
     private func setupIntroducitionViewLayout() {
-        contentView.addSubview(introductionView)
+        view.addSubview(introductionView)
         
         introductionView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
