@@ -14,4 +14,5 @@ extension Notification.Name {
     static let AccountUpdate = Notification.Name("com.algorand.algorand.notification.account.update")
     static let ContactAddition = Notification.Name("com.algorand.algorand.notification.contact.addition")
     static let ContactEdit = Notification.Name("com.algorand.algorand.notification.contact.edit")
+    static let ContactDeletion = Notification.Name("com.algorand.algorand.notification.contact.deletion")
 }

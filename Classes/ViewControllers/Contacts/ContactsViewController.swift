@@ -62,6 +62,13 @@ class ContactsViewController: BaseViewController {
             name: Notification.Name.ContactAddition,
             object: nil
         )
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didContactDeleted(notification:)),
+            name: Notification.Name.ContactDeletion,
+            object: nil
+        )
     }
     
     override func linkInteractors() {
@@ -151,6 +158,12 @@ class ContactsViewController: BaseViewController {
         searchResults.append(contact)
         
         contactsView.contactsCollectionView.reloadData()
+    }
+    
+    @objc
+    fileprivate func didContactDeleted(notification: Notification) {
+        contacts.removeAll()
+        fetchContacts()
     }
 }
 

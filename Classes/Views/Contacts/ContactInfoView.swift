@@ -13,6 +13,7 @@ protocol ContactInfoViewDelegate: class {
     func contactInfoViewDidTapQRCodeButton(_ contactInfoView: ContactInfoView)
     func contactInfoViewDidTapSendButton(_ contactInfoView: ContactInfoView)
     func contactInfoViewDidEditContactButton(_ contactInfoView: ContactInfoView)
+    func contactInfoViewDidDeleteContactButton(_ contactInfoView: ContactInfoView)
 }
 
 class ContactInfoView: BaseView {
@@ -25,6 +26,7 @@ class ContactInfoView: BaseView {
         let backgroundViewHeight: CGFloat = 113.0
         let buttonWidth: CGFloat = 160.0
         let separatorHeight: CGFloat = 1.0
+        let buttonInset: CGFloat = 15.0
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -66,6 +68,12 @@ class ContactInfoView: BaseView {
         return button
     }()
     
+    private(set) lazy var deleteContactButton: MainButton = {
+        let button = MainButton(title: "contacts-delete-contact".localized)
+        button.setBackgroundImage(img("bg-button-big-red"), for: .normal)
+        return button
+    }()
+    
     weak var delegate: ContactInfoViewDelegate?
     
     // MARK: Setup
@@ -77,6 +85,7 @@ class ContactInfoView: BaseView {
     override func setListeners() {
         sendButton.addTarget(self, action: #selector(notifyDelegateToSendButtonTapped), for: .touchUpInside)
         editContactButton.addTarget(self, action: #selector(notifyDelegateToEditContactButtonTapped), for: .touchUpInside)
+        deleteContactButton.addTarget(self, action: #selector(notifyDelegateToDeleteContactButtonTapped), for: .touchUpInside)
     }
     
     // MARK: Layout
@@ -87,6 +96,7 @@ class ContactInfoView: BaseView {
         setupSendButtonLayout()
         setupSeparatorViewLayout()
         setupEditContactButtonLayout()
+        setupDeleteContactButtonLayout()
     }
     
     private func setupUserInformationViewLayout() {
@@ -133,6 +143,15 @@ class ContactInfoView: BaseView {
         editContactButton.snp.makeConstraints { make in
             make.top.greaterThanOrEqualTo(sendBackgroundView.snp.bottom).offset(layout.current.minimumInset)
             make.centerX.equalToSuperview()
+        }
+    }
+    
+    private func setupDeleteContactButtonLayout() {
+        addSubview(deleteContactButton)
+        
+        deleteContactButton.snp.makeConstraints { make in
+            make.top.equalTo(editContactButton.snp.bottom).offset(layout.current.buttonInset)
+            make.centerX.equalToSuperview()
             make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).inset(layout.current.bottomInset)
         }
     }
@@ -147,6 +166,11 @@ class ContactInfoView: BaseView {
     @objc
     private func notifyDelegateToEditContactButtonTapped() {
         delegate?.contactInfoViewDidEditContactButton(self)
+    }
+    
+    @objc
+    private func notifyDelegateToDeleteContactButtonTapped() {
+        delegate?.contactInfoViewDidDeleteContactButton(self)
     }
 }
 
