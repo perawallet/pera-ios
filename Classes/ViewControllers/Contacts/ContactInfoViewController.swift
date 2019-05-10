@@ -112,6 +112,35 @@ extension ContactInfoViewController: ContactInfoViewDelegate {
         
         controller?.delegate = self
     }
+    
+    func contactInfoViewDidDeleteContactButton(_ contactInfoView: ContactInfoView) {
+        displayRemoveAccountAlert()
+    }
+    
+    private func displayRemoveAccountAlert() {
+        let configurator = AlertViewConfigurator(
+            title: "contacts-delete-contact-alert-title".localized,
+            image: img("icon-delete-contact"),
+            explanation: "contacts-delete-contact-alert-explanation".localized,
+            actionTitle: "title-yes".localized) {
+                self.contact.remove(entity: Contact.entityName)
+                
+                NotificationCenter.default.post(
+                    name: Notification.Name.ContactDeletion,
+                    object: self,
+                    userInfo: ["contact": self.contact]
+                )
+                
+                self.popScreen()
+                return
+        }
+        
+        let viewController = AlertViewController(mode: .destructive, alertConfigurator: configurator, configuration: configuration)
+        viewController.modalPresentationStyle = .overCurrentContext
+        viewController.modalTransitionStyle = .crossDissolve
+        
+        tabBarController?.present(viewController, animated: true, completion: nil)
+    }
 }
 
 // MARK: AddContactViewControllerDelegate

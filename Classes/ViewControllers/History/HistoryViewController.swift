@@ -66,6 +66,18 @@ class HistoryViewController: BaseScrollViewController {
         }
     }
     
+    // MARK: View Lifecycle
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if let account = session?.currentAccount {
+            selectedAccount = account
+            
+            viewModel.configure(historyView, with: account)
+        }
+    }
+    
     // MARK: Navigation
     
     private func presentAccountList() {

@@ -46,7 +46,7 @@ class IntroductionView: BaseView {
             .withAlignment(.center)
             .withTextColor(SharedColors.blue)
             .withLine(.contained)
-            .withFont(UIFont.font(.montserrat, withWeight: .medium(size: 22.0)))
+            .withFont(UIFont.font(.montserrat, withWeight: .medium(size: 22.0 * verticalScale)))
             .withText("introduction-welcome-title".localized)
     }()
     
@@ -60,7 +60,7 @@ class IntroductionView: BaseView {
             .withAlignment(.center)
             .withLine(.contained)
             .withTextColor(SharedColors.darkGray)
-            .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 12.0)))
+            .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 12.0 * verticalScale)))
             .withText("introduction-has-account".localized)
     }()
     
@@ -144,7 +144,7 @@ class IntroductionView: BaseView {
         addSubview(createAccountButton)
         
         createAccountButton.snp.makeConstraints { make in
-            make.top.equalTo(welcomeLabel.snp.bottom).offset(layout.current.createButtonTopInset)
+            make.top.greaterThanOrEqualTo(welcomeLabel.snp.bottom).offset(layout.current.bottomInset)
             make.centerX.equalToSuperview()
         }
     }
@@ -164,6 +164,10 @@ class IntroductionView: BaseView {
         recoverButton.snp.makeConstraints { make in
             make.top.equalTo(subtitleLabel.snp.bottom).offset(layout.current.recoverButtonTopInset)
             make.centerX.equalToSuperview()
+            
+            if mode == .initialize {
+                make.bottom.equalToSuperview().inset(layout.current.bottomInset + safeAreaBottom)
+            }
         }
     }
     
