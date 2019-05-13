@@ -8,6 +8,7 @@
 
 import UIKit
 import SVProgressHUD
+import Crypto
 
 protocol SendAlgosPreviewViewControllerDelegate: class {
     
@@ -29,7 +30,7 @@ class SendAlgosPreviewViewController: BaseViewController {
     
     weak var delegate: SendAlgosPreviewViewControllerDelegate?
     
-    var transactionParams: TransactionParams?
+    var transactionData: Data?
     
     // MARK: Initialization
     
@@ -67,14 +68,70 @@ class SendAlgosPreviewViewController: BaseViewController {
                 print(error)
                 
             case let .success(params):
-                self.transactionParams = params
-                self.transaction.fee = params.fee
-                
+                self.composeTransactionData(with: params)
                 self.updateFeeLayout()
             }
             
             SVProgressHUD.dismiss()
         }
+    }
+    
+    private func composeTransactionData(with params: TransactionParams) {
+        transaction.fee = params.fee
+        
+        guard let account = getAccount() else {
+            return
+        }
+        
+        let firstRound = params.lastRound
+        let lastRound = firstRound + 1000
+        
+        var transactionError: NSError?
+        
+        guard let transactionData = TransactionMakePaymentTxn(
+            transaction.fromAccount.address,
+            account.address,
+            params.fee,
+            Int64(transaction.amount.toMicroAlgos),
+            firstRound,
+            lastRound,
+            nil,
+            "",
+            "",
+            &transactionError
+        ) else {
+            return
+        }
+        
+        var signedTransactionError: NSError?
+        
+        guard let privateData = session?.privateData(forAccount: transaction.fromAccount.address),
+            let signedTransactionData = CryptoSignTransaction(privateData, transactionData, &signedTransactionError) else {
+                return
+        }
+        
+        self.transactionData = signedTransactionData
+        transaction.fee = Int64(signedTransactionData.count) * params.fee
+    }
+    
+    private func getAccount() -> Account? {
+        let account: Account
+        
+        switch receiver {
+        case let .address(address, _):
+            account = Account(address: address)
+            
+        case let .contact(contact):
+            guard let address = contact.address else {
+                return nil
+            }
+            
+            account = Account(address: address)
+        case .initial:
+            return nil
+        }
+        
+        return account
     }
     
     override func linkInteractors() {
@@ -108,8 +165,10 @@ class SendAlgosPreviewViewController: BaseViewController {
 extension SendAlgosPreviewViewController: SendAlgosPreviewViewDelegate {
     
     func sendAlgosPreviewViewDidTapSendButton(_ sendAlgosView: SendAlgosView) {
-        if let params = self.transactionParams {
-            sendTransaction(with: params)
+        SVProgressHUD.show(withStatus: "title-loading".localized)
+        
+        if let transactionData = self.transactionData {
+            sendTransaction(with: transactionData)
         } else {
             api?.getTransactionParams { response in
                 switch response {
@@ -117,39 +176,23 @@ extension SendAlgosPreviewViewController: SendAlgosPreviewViewDelegate {
                     print(error)
                     
                 case let .success(params):
-                    self.transaction.fee = params.fee
-                    self.sendTransaction(with: params)
+                    self.composeTransactionData(with: params)
+                    
+                    guard let transactionData = self.transactionData else {
+                        return
+                    }
+                    
+                    self.sendTransaction(with: transactionData)
                 }
             }
         }
     }
     
-    fileprivate func sendTransaction(with params: TransactionParams) {
-        let toAccount: Account
-        
-        switch receiver {
-        case let .address(address, _):
-            toAccount = Account(address: address)
-            
-        case let .contact(contact):
-            guard let address = contact.address else {
-                return
-            }
-            
-            toAccount = Account(address: address)
-        case .initial:
-            return
-        }
-        
-        let transactionDraft = TransactionDraft(
-            from: self.transaction.fromAccount,
-            to: toAccount,
-            amount: Int64(self.transaction.amount.toMicroAlgos),
-            transactionParams: params)
-        
-        self.api?.sendTransaction(with: transactionDraft) { transactionIdResponse in
+    fileprivate func sendTransaction(with transactionData: Data) {
+        self.api?.sendTransaction(with: transactionData) { transactionIdResponse in
             switch transactionIdResponse {
             case let .success(transactionId):
+                SVProgressHUD.dismiss()
                 
                 self.transaction.identifier = transactionId.identifier
                 
@@ -161,6 +204,7 @@ extension SendAlgosPreviewViewController: SendAlgosPreviewViewDelegate {
                 sendAlgosSuccessViewController?.delegate = self
                 
             case let .failure(error):
+                SVProgressHUD.dismiss()
                 
                 switch error {
                 case let .badRequest(errorData):
