@@ -49,40 +49,12 @@ extension API {
     
     @discardableResult
     func sendTransaction(
-        with draft: TransactionDraft,
+        with transactionData: Data,
         then completion: APICompletionHandler<TransactionID>? = nil
     ) -> EndpointInteractable? {
         
-        var transactionError: NSError?
-        
-        let firstRound = draft.transactionParams.lastRound
-        let lastRound = firstRound + 1000
-        
-        let transactionData = TransactionMakePaymentTxn(
-            draft.from.address,
-            draft.to.address,
-            draft.transactionParams.fee,
-            draft.amount,
-            firstRound, 
-            lastRound,
-            nil,
-            "",
-            "",
-            &transactionError)
-        
-        guard let transaction = transactionData else {
-            return nil
-        }
-        
-        var signedTransactionError: NSError?
-        
-        guard let privateData = session?.privateData(forAccount: draft.from.address),
-            let signedTransactionData = CryptoSignTransaction(privateData, transaction, &signedTransactionError) else {
-                return nil
-        }
-        
         return upload(
-            data: signedTransactionData,
+            data: transactionData,
             toEndpoint: Endpoint<TransactionID>(Path("/v1/transactions"))
                 .httpMethod(.post)
                 .handler { uploadResponse in
