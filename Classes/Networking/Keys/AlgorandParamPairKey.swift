@@ -12,6 +12,8 @@ enum AlgorandParamPairKey: String, CodingKey {
     case address = "address"
     case firstRound = "firstRound"
     case lastRound = "lastRound"
+    case accessToken = "access_token"
+    case top = "top"
 }
 
 extension AlgorandParamPairKey: ParamsPairKey {

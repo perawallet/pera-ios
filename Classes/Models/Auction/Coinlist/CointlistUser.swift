@@ -20,8 +20,8 @@ extension CoinlistUser {
     
     enum CodingKeys: String, CodingKey {
         case username = "username"
-        case address = "address"
-        case availableAmount = "available"
-        case lockedAmount = "locked"
+        case address = "Address"
+        case availableAmount = "Available"
+        case lockedAmount = "Locked"
     }
 }
