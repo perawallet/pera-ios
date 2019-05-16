@@ -32,4 +32,8 @@ extension UICollectionView {
             (backgroundView as? ContentStateView)?.state = newValue
         }
     }
+    
+    func reloadSection(_ section: Int) {
+        reloadSections(IndexSet(integersIn: section...section))
+    }
 }

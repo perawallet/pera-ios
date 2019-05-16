@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SVProgressHUD
 
 class AuctionViewController: BaseViewController {
     
@@ -14,6 +15,7 @@ class AuctionViewController: BaseViewController {
         let topInset: CGFloat = 20.0 * verticalScale
         let activeAuctionSize = CGSize(width: UIScreen.main.bounds.width, height: 338.0)
         let pastAuctionSize = CGSize(width: UIScreen.main.bounds.width, height: 80.0)
+        let pastAuctionEmptySize = CGSize(width: UIScreen.main.bounds.width, height: 295.0)
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -22,12 +24,6 @@ class AuctionViewController: BaseViewController {
     
     private lazy var auctionIntroductionView: AuctionIntroductionView = {
         let view = AuctionIntroductionView()
-        return view
-    }()
-    
-    private lazy var auctionEmptyView: AuctionEmptyView = {
-        let view = AuctionEmptyView()
-        view.isHidden = true
         return view
     }()
     
@@ -45,6 +41,8 @@ class AuctionViewController: BaseViewController {
         
         collectionView.register(ActiveAuctionCell.self, forCellWithReuseIdentifier: ActiveAuctionCell.reusableIdentifier)
         collectionView.register(AuctionCell.self, forCellWithReuseIdentifier: AuctionCell.reusableIdentifier)
+        collectionView.register(ActiveAuctionEmptyCell.self, forCellWithReuseIdentifier: ActiveAuctionEmptyCell.reusableIdentifier)
+        collectionView.register(PastAuctionsEmptyCell.self, forCellWithReuseIdentifier: PastAuctionsEmptyCell.reusableIdentifier)
         
         return collectionView
     }()
@@ -55,13 +53,17 @@ class AuctionViewController: BaseViewController {
     
     private let viewModel = AuctionViewModel()
     
+    private var pollingOperation: PollingOperation?
+    
+    private var canDisplayActiveAuctionEmptyState = false
+    private var canDisplayPastAuctionsEmptyState = false
+    
     // MARK: Setup
     
     override func linkInteractors() {
         super.linkInteractors()
         
         auctionIntroductionView.delegate = self
-        auctionEmptyView.delegate = self
         auctionsCollectionView.dataSource = self
         auctionsCollectionView.delegate = self
     }
@@ -71,10 +73,12 @@ class AuctionViewController: BaseViewController {
         
         navigationItem.title = "auction-title".localized
         
+        SVProgressHUD.show(withStatus: "title-loading".localized)
+        
         fetchActiveAuction()
     }
     
-    private func fetchActiveAuction() {
+    private func fetchActiveAuction(withReload reload: Bool = true) {
         let activeAuctionDraft = AuctionDraft(accessToken: "1dd6e671c4ba97c1772b53bdb31f7a7fd775684251a64f17aa00879721c7a94e")
         
         api?.fetchActiveAuction(with: activeAuctionDraft) { response in
@@ -82,14 +86,27 @@ class AuctionViewController: BaseViewController {
             case let .success(auction):
                 self.activeAuction = auction
                 
-                self.fetchPastAuctions(top: auction.id)
-            case let .failure(error):
-                print(error)
+                self.fetchPastAuctions(top: auction.id, withReload: reload)
+                
+                if reload {
+                    self.auctionsCollectionView.reloadSection(0)
+                } else {
+                    UIView.performWithoutAnimation {
+                        self.auctionsCollectionView.reloadSection(0)
+                    }
+                }
+            case .failure:
+                self.canDisplayActiveAuctionEmptyState = true
+                self.auctionsCollectionView.reloadSection(0)
+                
+                if self.auctions.isEmpty {
+                    self.fetchPastAuctions(top: 50, withReload: reload)
+                }
             }
         }
     }
     
-    private func fetchPastAuctions(top: Int) {
+    private func fetchPastAuctions(top: Int, withReload reload: Bool = true) {
         let pastAuctionsDraft = AuctionDraft(
             accessToken: "1dd6e671c4ba97c1772b53bdb31f7a7fd775684251a64f17aa00879721c7a94e",
             topCount: top
@@ -100,25 +117,45 @@ class AuctionViewController: BaseViewController {
             case let .success(pastAuctions):
                 self.auctions = pastAuctions
                 
-                self.configureAuctionsCollectionView()
-            case let .failure(error):
-                print(error)
+                self.auctionIntroductionView.isHidden = true
+                
+                self.canDisplayPastAuctionsEmptyState = pastAuctions.isEmpty
+                
+                if reload {
+                    self.auctionsCollectionView.reloadSection(1)
+                } else {
+                    UIView.performWithoutAnimation {
+                        self.auctionsCollectionView.reloadSection(0)
+                    }
+                }
+            case .failure:
+                self.canDisplayPastAuctionsEmptyState = true
+                self.auctionsCollectionView.reloadSection(1)
+            }
+            
+            if reload {
+                SVProgressHUD.showSuccess(withStatus: "title-done-lowercased".localized)
+                SVProgressHUD.dismiss()
             }
         }
     }
     
-    private func configureAuctionsCollectionView() {
-        if auctions.isEmpty {
-            auctionIntroductionView.isHidden = true
-            auctionEmptyView.isHidden = false
-            auctionsCollectionView.reloadData()
-            return
+    // View Lifecycl
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        pollingOperation = PollingOperation(interval: 5.0) { [weak self] in
+            self?.fetchActiveAuction(withReload: false)
         }
         
-        auctionIntroductionView.isHidden = true
-        auctionEmptyView.isHidden = true
+        pollingOperation?.start()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
         
-        auctionsCollectionView.reloadData()
+        pollingOperation?.invalidate()
     }
     
     // MARK: Layout
@@ -127,7 +164,6 @@ class AuctionViewController: BaseViewController {
         super.prepareLayout()
         
         setupAuctionIntroductionViewLayout()
-        setupAuctionEmptyViewLayout()
         setupAuctionsCollectionViewLayout()
     }
     
@@ -135,15 +171,6 @@ class AuctionViewController: BaseViewController {
         view.addSubview(auctionIntroductionView)
         
         auctionIntroductionView.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(layout.current.topInset)
-            make.leading.trailing.bottom.equalToSuperview()
-        }
-    }
-    
-    private func setupAuctionEmptyViewLayout() {
-        view.addSubview(auctionEmptyView)
-        
-        auctionEmptyView.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(layout.current.topInset)
             make.leading.trailing.bottom.equalToSuperview()
         }
@@ -159,22 +186,12 @@ class AuctionViewController: BaseViewController {
     }
 }
 
-// MARK: AuctionEmptyViewDelegate
+// MARK: AuctionIntroductionViewDelegate
 
 extension AuctionViewController: AuctionIntroductionViewDelegate {
     
     func auctionIntroductionViewDidTapGetStartedButton(_ auctionIntroductionView: AuctionIntroductionView) {
         auctionIntroductionView.isHidden = true
-        auctionEmptyView.isHidden = false
-    }
-}
-
-// MARK: AuctionEmptyViewDelegate
-
-extension AuctionViewController: AuctionEmptyViewDelegate {
-    
-    func auctionEmptyViewDidTapGetStartedButton(_ auctionEmptyView: AuctionEmptyView) {
-        
     }
 }
 
@@ -191,20 +208,46 @@ extension AuctionViewController: UICollectionViewDataSource {
             return 1
         }
         
+        if auctions.isEmpty {
+            return 1
+        }
+        
         return auctions.count - 1
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.section == 0 {
+            if let activeAuction = activeAuction {
+                guard let cell = collectionView.dequeueReusableCell(
+                    withReuseIdentifier: ActiveAuctionCell.reusableIdentifier,
+                    for: indexPath) as? ActiveAuctionCell else {
+                        fatalError("Index path is out of bounds")
+                }
+                
+                viewModel.configure(cell, with: activeAuction)
+                
+                return cell
+            } else {
+                guard let cell = collectionView.dequeueReusableCell(
+                    withReuseIdentifier: ActiveAuctionEmptyCell.reusableIdentifier,
+                    for: indexPath) as? ActiveAuctionEmptyCell else {
+                        fatalError("Index path is out of bounds")
+                }
+                
+                cell.contextView.isHidden = !canDisplayActiveAuctionEmptyState
+                
+                return cell
+            }
+        }
+        
+        if auctions.isEmpty {
             guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: ActiveAuctionCell.reusableIdentifier,
-                for: indexPath) as? ActiveAuctionCell else {
+                withReuseIdentifier: PastAuctionsEmptyCell.reusableIdentifier,
+                for: indexPath) as? PastAuctionsEmptyCell else {
                     fatalError("Index path is out of bounds")
             }
             
-            if let activeAuction = activeAuction {
-                viewModel.configure(cell, with: activeAuction)
-            }
+            cell.contextView.isHidden = !canDisplayPastAuctionsEmptyState
             
             return cell
         }
@@ -239,6 +282,10 @@ extension AuctionViewController: UICollectionViewDelegateFlowLayout {
         
         if indexPath.section == 0 {
             return layout.current.activeAuctionSize
+        }
+        
+        if auctions.isEmpty {
+            return layout.current.pastAuctionEmptySize
         }
         
         return layout.current.pastAuctionSize
