@@ -251,7 +251,7 @@
 // MARK: Auction
 
 "auction-title" = "Auction";
-"auction-empty-title" = "No Auctions Scheduled";
+"auction-empty-title" = "No Scheduled Auctions";
 "auction-past-empty-title" = "No Past Auctions";
 "auction-empty-subtitle" = "We recommend registering early to ensure you can participate in the next auction.";
 "auction-introduction-title" = "Before you can participate";

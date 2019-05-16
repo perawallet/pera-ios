@@ -16,12 +16,12 @@ protocol AuctionIntroductionViewDelegate: class {
 class AuctionIntroductionView: BaseView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let titleTopInset: CGFloat = 46.0 * verticalScale
+        let titleTopInset: CGFloat = 76.0 * verticalScale
         let groupTopInset: CGFloat = 22.0 * verticalScale
         let groupSize: CGSize = CGSize(width: 300.0 * horizontalScale, height: 240.0 * verticalScale)
         let explanationTopInset: CGFloat = 44.0 * verticalScale
         let explanationHorizontalInset: CGFloat = 71.0
-        let buttonTopInset: CGFloat = 106.0 * verticalScale
+        let buttonTopInset: CGFloat = 76.0 * verticalScale
     }
     
     private let layout = Layout<LayoutConstants>()
