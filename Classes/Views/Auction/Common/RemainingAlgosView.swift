@@ -15,6 +15,7 @@ class RemainingAlgosView: BaseView {
         let verticalInset: CGFloat = 20.0
         let amountTopInset: CGFloat = 10.0
         let amountViewHeight: CGFloat = 18.0
+        let percentageLabelOffset: CGFloat = 2.0
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -43,6 +44,7 @@ class RemainingAlgosView: BaseView {
             .withTextColor(SharedColors.darkGray)
             .withLine(.single)
             .withAlignment(.left)
+            .withText("(100%)")
     }()
     
     // MARK: Setup
@@ -83,7 +85,8 @@ class RemainingAlgosView: BaseView {
         addSubview(percentageLabel)
         
         percentageLabel.snp.makeConstraints { make in
-            make.leading.equalTo(algosAmountView.snp.trailing)
+            make.centerY.equalTo(algosAmountView)
+            make.leading.equalTo(algosAmountView.snp.trailing).offset(layout.current.percentageLabelOffset)
             make.trailing.lessThanOrEqualToSuperview().inset(layout.current.defaultInset)
         }
     }

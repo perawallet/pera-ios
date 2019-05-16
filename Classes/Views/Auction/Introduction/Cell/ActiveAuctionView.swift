@@ -24,6 +24,8 @@ class ActiveAuctionView: BaseView {
         let viewWidth: CGFloat = UIScreen.main.bounds.width / 2
         let separatorHeight: CGFloat = 1.0
         let separatorInset: CGFloat = 20.0
+        let buttonHeight: CGFloat = 56.0
+        let buttonTopInset: CGFloat = 5.0
         let buttonInset: CGFloat = 26.0
     }
     
@@ -69,6 +71,7 @@ class ActiveAuctionView: BaseView {
     private(set) lazy var dateView: DetailedInformationView = {
         let dateView = DetailedInformationView()
         dateView.backgroundColor = .white
+        dateView.separatorView.isHidden = true
         dateView.explanationLabel.text = "auction-date-title".localized
         dateView.detailLabel.font = UIFont.font(.montserrat, withWeight: .semiBold(size: 14.0))
         return dateView
@@ -86,11 +89,12 @@ class ActiveAuctionView: BaseView {
     }()
     
     private(set) lazy var priceView: DetailedInformationView = {
-        let dateView = DetailedInformationView()
-        dateView.backgroundColor = .white
-        dateView.explanationLabel.text = "auction-starting-price".localized
-        dateView.detailLabel.font = UIFont.font(.montserrat, withWeight: .semiBold(size: 14.0))
-        return dateView
+        let priceView = DetailedInformationView()
+        priceView.backgroundColor = .white
+        priceView.separatorView.isHidden = true
+        priceView.explanationLabel.text = "auction-starting-price".localized
+        priceView.detailLabel.font = UIFont.font(.montserrat, withWeight: .semiBold(size: 14.0))
+        return priceView
     }()
     
     private(set) lazy var remainingAlgosView: RemainingAlgosView = {
@@ -102,9 +106,9 @@ class ActiveAuctionView: BaseView {
         UIButton(type: .custom)
             .withTitleColor(SharedColors.blue)
             .withTitle("auction-enter-title".localized)
-            .withBackgroundImage(img("bg-button-auction-enter"))
             .withAlignment(.center)
             .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 12.0)))
+            .withBackgroundImage(img("bg-button-auction-enter"))
     }()
     
     private lazy var pastAuctionsTitleLabel: UILabel = {
@@ -118,10 +122,6 @@ class ActiveAuctionView: BaseView {
     weak var delegate: ActiveAuctionViewDelegate?
     
     // MARK: Setup
-    
-    override func configureAppearance() {
-        backgroundColor = .white
-    }
     
     override func setListeners() {
         enterAuctionButton.addTarget(self, action: #selector(notifyDelegateToEnterAuctionButtonTapped), for: .touchUpInside)
@@ -165,7 +165,6 @@ class ActiveAuctionView: BaseView {
         auctionContainerView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(titleContainerView.snp.bottom)
-            make.height.equalTo(layout.current.auctionContainerHeight)
         }
     }
     
@@ -228,7 +227,8 @@ class ActiveAuctionView: BaseView {
         
         enterAuctionButton.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(layout.current.buttonInset)
-            make.top.equalTo(remainingAlgosView.snp.bottom).offset(layout.current.verticalInset)
+            make.top.equalTo(priceView.snp.bottom).offset(layout.current.buttonTopInset)
+            make.height.equalTo(layout.current.buttonHeight)
             make.bottom.equalToSuperview().inset(layout.current.verticalInset)
         }
     }

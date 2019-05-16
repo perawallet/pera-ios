@@ -11,93 +11,135 @@ import UIKit
 class AuctionCellContextView: BaseView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let viewWidth: CGFloat = UIScreen.main.bounds.width / 2
         let leadingInset: CGFloat = 30.0
+        let topInset: CGFloat = 20.0
         let trailingInset: CGFloat = 25.0
         let separatorInset: CGFloat = 20.0
+        let separatorHeight: CGFloat = 1.0
         let verticalInset: CGFloat = 10.0
+        let imageOffset: CGFloat = -3.0
     }
     
     private let layout = Layout<LayoutConstants>()
-
-    private(set) lazy var dateView: DetailedInformationView = {
-        let dateView = DetailedInformationView()
-        dateView.backgroundColor = .white
-        dateView.explanationLabel.text = "auction-date-title".localized
-        dateView.detailLabel.font = UIFont.font(.montserrat, withWeight: .semiBold(size: 14.0))
-        return dateView
+    
+    private enum Colors {
+        static let separatorColor = rgb(0.95, 0.96, 0.96)
+    }
+    
+    // MARK: Components
+    
+    private lazy var dateTitleLabel: UILabel = {
+        UILabel()
+            .withAlignment(.right)
+            .withLine(.single)
+            .withTextColor(SharedColors.softGray)
+            .withFont(UIFont.font(.opensans, withWeight: .semiBold(size: 12.0)))
+            .withText("auction-date-title".localized)
     }()
     
-    private(set) lazy var soldAlgosView: DetailedInformationView = {
-        let soldAlgosView = DetailedInformationView(mode: .algos)
-        soldAlgosView.backgroundColor = .white
-        soldAlgosView.explanationLabel.text = "auction-algos-sold-title".localized
-        soldAlgosView.algosAmountView.amountLabel.font = UIFont.font(.montserrat, withWeight: .semiBold(size: 14.0))
-        return soldAlgosView
+    private(set) lazy var dateLabel: UILabel = {
+        UILabel()
+            .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 14.0)))
+            .withTextColor(SharedColors.black)
+            .withLine(.contained)
     }()
+    
+    private lazy var algosTitleLabel: UILabel = {
+        UILabel()
+            .withAlignment(.right)
+            .withLine(.single)
+            .withTextColor(SharedColors.softGray)
+            .withFont(UIFont.font(.opensans, withWeight: .semiBold(size: 12.0)))
+            .withText("auction-algos-sold-title".localized)
+    }()
+    
+    private lazy var algoIconImageView = UIImageView(image: img("icon-algo-small-blue"))
+    
+    private(set) lazy var algosAmountLabel: UILabel = {
+        UILabel()
+            .withAlignment(.right)
+            .withLine(.single)
+            .withTextColor(SharedColors.blue)
+            .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 14.0)))
+    }()
+    
+    private lazy var separatorView: UIView = {
+        let view = UIView()
+        view.backgroundColor = Colors.separatorColor
+        return view
+    }()
+    
+    // MARK: Setup
     
     override func configureAppearance() {
         backgroundColor = .white
     }
     
+    // MARK: Layout
+    
     override func prepareLayout() {
         super.prepareLayout()
         
-        setupDateViewLayout()
-        setupSoldAlgosViewLayout()
+        setupDateTitleLabelLayout()
+        setupDateLabelLayout()
+        setupAlgosTitleLabelLayout()
+        setupAlgosAmountLabelLayout()
+        setupAlgoIconImageViewLayout()
+        setupSeparatorViewLayout()
     }
     
-    private func setupDateViewLayout() {
-        addSubview(dateView)
+    private func setupDateTitleLabelLayout() {
+        addSubview(dateTitleLabel)
         
-        dateView.snp.makeConstraints { make in
-            make.leading.equalToSuperview()
-            make.top.bottom.equalToSuperview()
-            make.width.equalTo(layout.current.viewWidth)
-        }
-        
-        adjustDateViewLayout()
-    }
-    
-    private func adjustDateViewLayout() {
-        dateView.explanationLabel.snp.updateConstraints { make in
+        dateTitleLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(layout.current.leadingInset)
+            make.top.equalToSuperview().inset(layout.current.topInset)
         }
+    }
+    
+    private func setupDateLabelLayout() {
+        addSubview(dateLabel)
         
-        dateView.detailLabel.snp.updateConstraints { make in
+        dateLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(layout.current.leadingInset)
-            make.top.equalTo(dateView.explanationLabel.snp.bottom).offset(layout.current.verticalInset)
-        }
-        
-        dateView.separatorView.snp.updateConstraints { make in
-            make.leading.equalToSuperview().inset(layout.current.separatorInset)
+            make.top.equalTo(dateTitleLabel.snp.bottom).offset(layout.current.verticalInset)
         }
     }
     
-    private func setupSoldAlgosViewLayout() {
-        addSubview(soldAlgosView)
+    private func setupAlgosTitleLabelLayout() {
+        addSubview(algosTitleLabel)
         
-        soldAlgosView.snp.makeConstraints { make in
-            make.trailing.equalToSuperview()
-            make.top.bottom.equalToSuperview()
-            make.width.equalTo(layout.current.viewWidth)
+        algosTitleLabel.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().inset(layout.current.trailingInset)
+            make.top.equalToSuperview().inset(layout.current.topInset)
         }
-        
-        adjustSoldAlgosViewLayout()
     }
     
-    private func adjustSoldAlgosViewLayout() {
-        soldAlgosView.explanationLabel.snp.updateConstraints { make in
-            make.leading.equalToSuperview().inset(layout.current.trailingInset)
-        }
+    private func setupAlgosAmountLabelLayout() {
+        addSubview(algosAmountLabel)
         
-        soldAlgosView.algosAmountView.snp.updateConstraints { make in
-            make.leading.equalToSuperview().inset(layout.current.trailingInset)
-            make.top.equalTo(dateView.explanationLabel.snp.bottom).offset(layout.current.verticalInset)
+        algosAmountLabel.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().inset(layout.current.trailingInset)
+            make.top.equalTo(algosTitleLabel.snp.bottom).offset(layout.current.verticalInset)
         }
+    }
+    
+    private func setupAlgoIconImageViewLayout() {
+        addSubview(algoIconImageView)
         
-        soldAlgosView.separatorView.snp.updateConstraints { make in
-            make.trailing.equalToSuperview().inset(layout.current.separatorInset)
+        algoIconImageView.snp.makeConstraints { make in
+            make.trailing.equalTo(algosAmountLabel.snp.leading).offset(layout.current.imageOffset)
+            make.centerY.equalTo(algosAmountLabel)
+        }
+    }
+    
+    private func setupSeparatorViewLayout() {
+        addSubview(separatorView)
+        
+        separatorView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(layout.current.separatorInset)
+            make.height.equalTo(layout.current.separatorHeight)
+            make.bottom.equalToSuperview()
         }
     }
 }

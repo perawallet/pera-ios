@@ -218,7 +218,9 @@ extension AuctionViewController: UICollectionViewDataSource {
         if indexPath.item < auctions.count {
             let auction = auctions[indexPath.row + 1]
             
-            viewModel.configure(cell, with: auction)
+            if let activeAuction = activeAuction {
+                viewModel.configure(cell, with: auction, and: activeAuction)
+            }
         }
         
         return cell

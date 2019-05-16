@@ -20,8 +20,8 @@ class Auction: Mappable {
     let priceChunkRounds: Int
     let chunkCount: Int
     let maximumPriceMultiple: Int
-    let algos: Int
-    let minimumBidAlgos: Int
+    let algos: Int64
+    let minimumBidAlgos: Int?
 }
 
 extension Auction {

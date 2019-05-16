@@ -7,14 +7,72 @@
 //
 
 import UIKit
+import SwiftDate
 
 class AuctionViewModel {
     
     func configure(_ cell: ActiveAuctionCell, with activeAuction: ActiveAuction) {
+        cell.contextView.dateView.detailLabel.text = activeAuction.estimatedAuctionRoundStart?.toFormat("MMMM dd, yyyy")
         
+        if let status = activeAuction.status {
+            switch status {
+            case .announced:
+                break
+            case .running:
+                break
+            case .closed:
+                break
+            }
+            
+            cell.contextView.status = status
+        }
+        
+        cell.contextView.auctionTimerView.time = 1000
+        
+        if let price = activeAuction.currentPrice {
+            cell.contextView.priceView.detailLabel.text = convertToDollars(price)
+        }
+        
+        if let remainingAlgos = activeAuction.remainingAlgos?.toAlgos {
+            cell.contextView.remainingAlgosView.algosAmountView.amountLabel.text = remainingAlgos.toDecimalStringForLabel
+            cell.contextView.remainingAlgosView.algosAmountView.amountLabel.textColor = SharedColors.blue
+            cell.contextView.remainingAlgosView.algosAmountView.algoIconImageView.image = img("icon-algo-small-blue")
+        }
     }
     
-    func configure(_ cell: AuctionCell, with auction: Auction) {
+    func convertToDollars(_ value: Int) -> String {
+        let doubleValue = Double(value / 100)
+        let formatter = NumberFormatter()
+        formatter.currencyCode = "USD"
+        formatter.currencySymbol = "$"
+        formatter.maximumFractionDigits = 2
+        formatter.numberStyle = .currencyAccounting
+        return formatter.string(from: NSNumber(value: doubleValue)) ?? "$\(doubleValue)"
+    }
+    
+    func configure(_ cell: AuctionCell, with auction: Auction, and activeAuction: ActiveAuction) {
+        let formattedDate = findDate(to: auction.firstRound, from: activeAuction.currentRound).toFormat("MMMM dd, yyyy")
+        cell.contextView.dateLabel.text = formattedDate
         
+        cell.contextView.algosAmountLabel.text = auction.algos.toAlgos.toDecimalStringForLabel
+    }
+    
+    private func findDate(to round: Int, from lastRound: Int?) -> Date {
+        guard let lastRound = lastRound else {
+            return Date()
+        }
+        
+        let roundDifference = lastRound - round
+        let minuteDifference = roundDifference / 12
+        
+        if roundDifference <= 0 {
+            return Date()
+        }
+        
+        guard let auctionDate = Calendar.current.date(byAdding: .minute, value: Int(-minuteDifference), to: Date()) else {
+            return Date()
+        }
+        
+        return auctionDate
     }
 }
