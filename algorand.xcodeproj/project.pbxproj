@@ -89,7 +89,6 @@
 		2B25BB4B225EAD600092C972 /* RequestAlgosPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B25BB4A225EAD600092C972 /* RequestAlgosPreviewViewController.swift */; };
 		2B25BB4D225EAD700092C972 /* RequestAlgosPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B25BB4C225EAD700092C972 /* RequestAlgosPreviewView.swift */; };
 		2B2F9F7822821C440068DBB5 /* AuctionChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2F9F7722821C440068DBB5 /* AuctionChartView.swift */; };
-		2B3F38F9228AEFB3008BBE75 /* AuctionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3F38F8228AEFB3008BBE75 /* AuctionView.swift */; };
 		2B3F38FB228AEFF7008BBE75 /* AuctionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3F38FA228AEFF7008BBE75 /* AuctionCell.swift */; };
 		2B3F38FE228AF00C008BBE75 /* AuctionCellContextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3F38FD228AF00C008BBE75 /* AuctionCellContextView.swift */; };
 		2B3F3901228B74D5008BBE75 /* AuctionTimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3F3900228B74D5008BBE75 /* AuctionTimerView.swift */; };
@@ -376,7 +375,6 @@
 		2B25BB4A225EAD600092C972 /* RequestAlgosPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestAlgosPreviewViewController.swift; sourceTree = "<group>"; };
 		2B25BB4C225EAD700092C972 /* RequestAlgosPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestAlgosPreviewView.swift; sourceTree = "<group>"; };
 		2B2F9F7722821C440068DBB5 /* AuctionChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionChartView.swift; sourceTree = "<group>"; };
-		2B3F38F8228AEFB3008BBE75 /* AuctionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionView.swift; sourceTree = "<group>"; };
 		2B3F38FA228AEFF7008BBE75 /* AuctionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionCell.swift; sourceTree = "<group>"; };
 		2B3F38FD228AF00C008BBE75 /* AuctionCellContextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionCellContextView.swift; sourceTree = "<group>"; };
 		2B3F3900228B74D5008BBE75 /* AuctionTimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionTimerView.swift; sourceTree = "<group>"; };
@@ -1489,7 +1487,6 @@
 				2B8EE8242283300C0001D025 /* AuctionPrerequirement */,
 				2B8EE81C2282DAE20001D025 /* AuctionIntroductionView.swift */,
 				2B8EE81E2282DAF80001D025 /* AuctionEmptyView.swift */,
-				2B3F38F8228AEFB3008BBE75 /* AuctionView.swift */,
 			);
 			path = Introduction;
 			sourceTree = "<group>";
@@ -2445,7 +2442,6 @@
 				2B8EE8212282EDDC0001D025 /* AuctionDetailViewController.swift in Sources */,
 				17AA1B0422660E59000B0BB0 /* Formatter+Additions.swift in Sources */,
 				2BDDCA482268A3630081CED2 /* DeepLinkParser.swift in Sources */,
-				2B3F38F9228AEFB3008BBE75 /* AuctionView.swift in Sources */,
 				17D04F48225F697E0051BC43 /* AddNodeView.swift in Sources */,
 				2B56F7D6225B3C1D00E58737 /* SendAlgosViewController.swift in Sources */,
 				2B25BB4B225EAD600092C972 /* RequestAlgosPreviewViewController.swift in Sources */,
