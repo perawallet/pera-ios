@@ -262,7 +262,9 @@ class ActiveAuctionView: BaseView {
             titleLabel.text = "auction-open-title".localized
             priceView.explanationLabel.text = "auction-current-price".localized
         case .closed:
-            break
+            titleContainerView.backgroundColor = SharedColors.red
+            titleLabel.text = "auction-closed-title".localized
+            priceView.explanationLabel.text = "auction-closing-price".localized
         }
     }
 }

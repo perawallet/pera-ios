@@ -32,15 +32,11 @@ class AuctionTimerView: BaseView {
         }
     }
     
-    var time: TimeInterval = 0 {
-        didSet {
-            timeLabel.text = formattedTime()
-        }
-    }
+    var time: TimeInterval = 0
     
     private var isTimerRunning = false
     
-    private var timer: Timer?
+    private var pollingOperation: PollingOperation?
     
     // MARK: Components
     
@@ -65,8 +61,10 @@ class AuctionTimerView: BaseView {
     
     override init(frame: CGRect) {
         super.init(frame: .zero)
-        
-        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
+    }
+    
+    deinit {
+        pollingOperation?.invalidate()
     }
     
     // MARK: Setup
@@ -103,12 +101,50 @@ class AuctionTimerView: BaseView {
         }
     }
     
+    // MARK: API
+    
+    func runTimer() {
+        if isTimerRunning {
+            return
+        }
+        
+        isTimerRunning = true
+        
+        timeLabel.text = formattedTime()
+        
+        pollingOperation = PollingOperation(interval: 1.0) { [weak self] in
+            self?.updateTimer()
+        }
+        
+        pollingOperation?.start()
+    }
+    
+    func stopTimer() {
+        isTimerRunning = false
+        
+        pollingOperation?.invalidate()
+    }
+    
     // MARK: Configuration
     
     @objc
     private func updateTimer() {
+        if time == 0 {
+            if mode == .initial {
+                mode = .active
+            } else if mode == .active {
+                mode = .ended
+            }
+            
+            return
+        }
+        
         time -= 1
-        timeLabel.text = formattedTime()
+        
+        DispatchQueue.main.async {
+            self.timeLabel.text = self.formattedTime()
+        }
+        
     }
     
     private func formattedTime() -> String {
@@ -120,12 +156,21 @@ class AuctionTimerView: BaseView {
     }
     
     private func configureTimerView(for mode: Mode) {
-        if mode == .initial {
+        switch mode {
+        case .initial:
             explanationLabel.text = "auction-time-in".localized
             timeLabel.textColor = Colors.black
-        } else {
+        case .active:
             explanationLabel.text = "auction-time-left".localized
             timeLabel.textColor = SharedColors.red
+        case .ended:
+            explanationLabel.text = "auction-time-left".localized
+            timeLabel.textColor = SharedColors.black
+            
+            time = 0
+            timeLabel.text = formattedTime()
+            
+            stopTimer()
         }
     }
 }
@@ -137,5 +182,6 @@ extension AuctionTimerView {
     enum Mode {
         case initial
         case active
+        case ended
     }
 }

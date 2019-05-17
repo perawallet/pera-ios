@@ -17,17 +17,25 @@ class AuctionViewModel {
         if let status = activeAuction.status {
             switch status {
             case .announced:
-                break
+                cell.contextView.auctionTimerView.mode = .initial
+                
+                if let startTime = activeAuction.estimatedAuctionRoundStart {
+                    cell.contextView.auctionTimerView.time = startTime.timeIntervalSinceNow
+                }
             case .running:
-                break
+                cell.contextView.auctionTimerView.mode = .active
+                
+                if let finishTime = activeAuction.estimatedFinishTime {
+                    cell.contextView.auctionTimerView.time = finishTime.timeIntervalSinceNow
+                }
             case .closed:
-                break
+                cell.contextView.auctionTimerView.mode = .ended
             }
+            
+            cell.contextView.auctionTimerView.runTimer()
             
             cell.contextView.status = status
         }
-        
-        cell.contextView.auctionTimerView.time = 1000
         
         if let price = activeAuction.currentPrice {
             cell.contextView.priceView.detailLabel.text = convertToDollars(price)
@@ -37,6 +45,8 @@ class AuctionViewModel {
             cell.contextView.remainingAlgosView.algosAmountView.amountLabel.text = remainingAlgos.toDecimalStringForLabel
             cell.contextView.remainingAlgosView.algosAmountView.amountLabel.textColor = SharedColors.blue
             cell.contextView.remainingAlgosView.algosAmountView.algoIconImageView.image = img("icon-algo-small-blue")
+            
+            cell.contextView.remainingAlgosView.percentageLabel.text = "(\(Int(remainingAlgos * 100 / remainingAlgos))%)"
         }
     }
     

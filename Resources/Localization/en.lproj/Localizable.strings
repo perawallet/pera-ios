@@ -266,11 +266,13 @@
 "auction-remaining-algos" = "Algos Remaining";
 "auction-starting-price" = "Starting Price";
 "auction-current-price" = "Current Price";
+"auction-closing-price" = "Closing Price";
 "auction-time-in" = "Auction In";
 "auction-time-left" = "Time Left";
 "auction-enter-title" = "ENTER AUCTION";
 "auction-scheduled-title" = "SCHEDULED";
 "auction-open-title" = "OPEN";
+"auction-closed-title" = "CLOSED";
 "auction-past-auctions" = "Past Auctions";
 
 // MARK: Auction Detail
