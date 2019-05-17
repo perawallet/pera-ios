@@ -104,6 +104,7 @@
 		2B3F3918228DCDB3008BBE75 /* PastAuctionsEmptyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3F3917228DCDB3008BBE75 /* PastAuctionsEmptyCell.swift */; };
 		2B3F391A228DCDCA008BBE75 /* ActiveAuctionEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3F3919228DCDCA008BBE75 /* ActiveAuctionEmptyView.swift */; };
 		2B3F391C228DCDE2008BBE75 /* ActiveAuctionEmptyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3F391B228DCDE2008BBE75 /* ActiveAuctionEmptyCell.swift */; };
+		2B3F3922228EB775008BBE75 /* AuctionSliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3F3921228EB775008BBE75 /* AuctionSliderView.swift */; };
 		2B56F7D6225B3C1D00E58737 /* SendAlgosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B56F7D5225B3C1D00E58737 /* SendAlgosViewController.swift */; };
 		2B56F7D8225B3C4200E58737 /* RequestAlgosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B56F7D7225B3C4200E58737 /* RequestAlgosViewController.swift */; };
 		2B56F7DA225B45B300E58737 /* SendAlgosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B56F7D9225B45B300E58737 /* SendAlgosView.swift */; };
@@ -393,6 +394,7 @@
 		2B3F3917228DCDB3008BBE75 /* PastAuctionsEmptyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastAuctionsEmptyCell.swift; sourceTree = "<group>"; };
 		2B3F3919228DCDCA008BBE75 /* ActiveAuctionEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveAuctionEmptyView.swift; sourceTree = "<group>"; };
 		2B3F391B228DCDE2008BBE75 /* ActiveAuctionEmptyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveAuctionEmptyCell.swift; sourceTree = "<group>"; };
+		2B3F3921228EB775008BBE75 /* AuctionSliderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionSliderView.swift; sourceTree = "<group>"; };
 		2B56F7D5225B3C1D00E58737 /* SendAlgosViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendAlgosViewController.swift; sourceTree = "<group>"; };
 		2B56F7D7225B3C4200E58737 /* RequestAlgosViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestAlgosViewController.swift; sourceTree = "<group>"; };
 		2B56F7D9225B45B300E58737 /* SendAlgosView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendAlgosView.swift; sourceTree = "<group>"; };
@@ -763,9 +765,10 @@
 		2B2F9F7522821C160068DBB5 /* Auction */ = {
 			isa = PBXGroup;
 			children = (
+				2B3F391F228EB724008BBE75 /* List */,
+				2B3F391E228EB6D6008BBE75 /* Detail */,
 				2B3F38FF228B74C1008BBE75 /* Common */,
 				2B8EE81B2282DACE0001D025 /* Introduction */,
-				2B2F9F7622821C370068DBB5 /* Chart */,
 			);
 			path = Auction;
 			sourceTree = "<group>";
@@ -835,6 +838,31 @@
 				2B3F391B228DCDE2008BBE75 /* ActiveAuctionEmptyCell.swift */,
 			);
 			path = Empty;
+			sourceTree = "<group>";
+		};
+		2B3F391E228EB6D6008BBE75 /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+				2B3F3920228EB754008BBE75 /* Slider */,
+				2B2F9F7622821C370068DBB5 /* Chart */,
+			);
+			path = Detail;
+			sourceTree = "<group>";
+		};
+		2B3F391F228EB724008BBE75 /* List */ = {
+			isa = PBXGroup;
+			children = (
+				2B3F38FC228AEFFC008BBE75 /* Cell */,
+			);
+			path = List;
+			sourceTree = "<group>";
+		};
+		2B3F3920228EB754008BBE75 /* Slider */ = {
+			isa = PBXGroup;
+			children = (
+				2B3F3921228EB775008BBE75 /* AuctionSliderView.swift */,
+			);
+			path = Slider;
 			sourceTree = "<group>";
 		};
 		2B56F7CE225B3AD700E58737 /* Transactions */ = {
@@ -1501,7 +1529,6 @@
 		2B8EE81B2282DACE0001D025 /* Introduction */ = {
 			isa = PBXGroup;
 			children = (
-				2B3F38FC228AEFFC008BBE75 /* Cell */,
 				2B8EE8242283300C0001D025 /* AuctionPrerequirement */,
 				2B8EE81C2282DAE20001D025 /* AuctionIntroductionView.swift */,
 			);
@@ -2607,6 +2634,7 @@
 				2B5DA9DA224D2F5C00EE41B4 /* PassphraseDisplayViewController.swift in Sources */,
 				2BF3D838226F43C000716C09 /* TransactionDetailViewModel.swift in Sources */,
 				2BB021E3224E7AD20039D78A /* TransactionHistoryDataSource.swift in Sources */,
+				2B3F3922228EB775008BBE75 /* AuctionSliderView.swift in Sources */,
 				2BF5315B224A46E400A7455F /* UIVIewController+Presentation.swift in Sources */,
 				173DA1E72255EBE000378A82 /* String+Address.swift in Sources */,
 				2BB021DB224E46D60039D78A /* Transaction.swift in Sources */,
