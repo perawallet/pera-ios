@@ -120,6 +120,7 @@ extension PassPhraseViewModel {
             randomMnemonics.insert(mnemonic)
         }
         
-        self.shownMnemonics = randomMnemonics.shuffled()
+        let sortedMnemonics = randomMnemonics.sorted { $0 < $1 }
+        self.shownMnemonics = sortedMnemonics
     }
 }
