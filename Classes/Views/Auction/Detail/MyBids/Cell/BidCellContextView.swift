@@ -1,0 +1,13 @@
+//
+//  BidCellContextView.swift
+//  algorand
+//
+//  Created by Göktuğ Berk Ulu on 20.05.2019.
+//  Copyright © 2019 hippo. All rights reserved.
+//
+
+import UIKit
+
+class BidCellContextView: BaseView {
+    
+}

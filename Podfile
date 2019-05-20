@@ -21,6 +21,7 @@ target 'algorand' do
     
   #UI
   pod 'SVProgressHUD'
+  pod 'Charts'
   pod 'lottie-ios'
 
   #Analytics

@@ -18,4 +18,10 @@ extension UIViewController {
         
         present(alertController, animated: true)
     }
+    
+    func removeFromParentController() {
+        self.willMove(toParent: nil)
+        self.removeFromParent()
+        self.view.removeFromSuperview()
+    }
 }

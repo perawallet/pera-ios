@@ -37,8 +37,20 @@ class Environment {
         }
     }()
     
+    lazy var coinlistHost: String = {
+        switch target {
+        case .staging, .prod:
+            return "demo.coinlist.co"
+        }
+    }()
+    
     lazy var serverApi: String = {
         let api = "\(serverSchema)://\(serverHost)"
+        return api
+    }()
+    
+    lazy var cointlistApi: String = {
+        let api = "https://\(coinlistHost)"
         return api
     }()
     

@@ -17,6 +17,7 @@
 "title-remove" = "REMOVE";
 "title-share" = "Share";
 "title-share-big" = "SHARE";
+"title-get-started" = "GET STARTED";
 "title-cancel-lowercased" = "Cancel";
 "title-go-to-settings" = "Go To Settings";
 "title-error" = "Error";
@@ -34,6 +35,7 @@
 
 "tabbar-item-accounts" = "Accounts";
 "tabbar-item-history" = "History";
+"tabbar-item-auction" = "Auction";
 "tabbar-item-contacts" = "Contacts";
 "tabbar-item-settings" = "Settings";
 
@@ -163,7 +165,7 @@
 "options-view-passphrase" = "View Passphrase";
 "options-edit-account-name" = "Edit Account Name";
 "options-remove-account" = "Remove Account";
-"options-remove-alert-explanation" = "You are about to remove you main account, are you sure you want to proceed with this choice";
+"options-remove-alert-explanation" = "You are about to remove an account, are you sure you want to proceed with this choice?";
 "options-default-account-title" = "Default Account";
 "options-default-account-message" = "Default acount is set.";
 "options-view-passphrase-alert-title" = "Biometric Authentication";
@@ -245,3 +247,44 @@
 
 "transaction-detail-title" = "Transaction Detail";
 "transaction-detail-round" = "Round:";
+
+// MARK: Auction
+
+"auction-title" = "Auction";
+"auction-empty-title" = "No Scheduled Auctions";
+"auction-past-empty-title" = "No Past Auctions";
+"auction-empty-subtitle" = "We recommend registering early to ensure you can participate in the next auction.";
+"auction-introduction-title" = "Before you can participate";
+"auction-introduction-prerequest-first" = "Create a Coinlist account";
+"auction-introduction-prerequest-second" = "Complete compliance checks";
+"auction-introduction-prerequest-third" = "Fund your USD wallet";
+"auction-introduction-prerequest-day" = "1-3 days";
+"auction-introduction-bottom-title" = "This process can take up to 6 days";
+"auction-introduction-explanation" = "Register now to ensure you can participate and dont miss out.";
+"auction-date-title" = "Date";
+"auction-algos-sold-title" = "Algos Sold";
+"auction-remaining-algos" = "Algos Remaining";
+"auction-starting-price" = "Starting Price";
+"auction-current-price" = "Current Price";
+"auction-closing-price" = "Closing Price";
+"auction-time-in" = "Auction In";
+"auction-time-left" = "Time Left";
+"auction-enter-title" = "ENTER AUCTION";
+"auction-scheduled-title" = "SCHEDULED";
+"auction-open-title" = "OPEN";
+"auction-closed-title" = "CLOSED";
+"auction-past-auctions" = "Past Auctions";
+
+// MARK: Auction Detail
+
+"auction-detail-title" = "Auction Detail";
+"auction-price-current-title" = "Current Price";
+"auction-price-closing-title" = "Closing Price";
+"auction-detail-potential-min" = "Min Potenial Algos";
+"auction-detail-potential-total" = "Total Potential Algos:";
+"auction-detail-bid-amount" = "Bid Amount";
+"auction-detail-max-price" = "Max Price";
+"auction-detail-place-bid-title" = "Place Bid";
+"auction-detail-my-bids-title" = "My Bids";
+"auction-detail-place-bid-button-title" = "PLACE BID";
+"auction-detail-limit-order-button-title" = "PLACE LIMIT ORDER";

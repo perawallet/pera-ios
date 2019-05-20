@@ -16,4 +16,5 @@ enum SharedColors {
     static let warmWhite = rgb(0.97, 0.97, 0.98)
     static let softGray = rgb(0.67, 0.67, 0.72)
     static let darkGray = rgb(0.34, 0.34, 0.43)
+    static let red = rgb(1.0, 0.26, 0.0)
 }
