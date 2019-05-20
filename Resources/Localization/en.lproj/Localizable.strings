@@ -165,7 +165,7 @@
 "options-view-passphrase" = "View Passphrase";
 "options-edit-account-name" = "Edit Account Name";
 "options-remove-account" = "Remove Account";
-"options-remove-alert-explanation" = "You are about to remove you main account, are you sure you want to proceed with this choice";
+"options-remove-alert-explanation" = "You are about to remove an account, are you sure you want to proceed with this choice?";
 "options-default-account-title" = "Default Account";
 "options-default-account-message" = "Default acount is set.";
 "options-view-passphrase-alert-title" = "Biometric Authentication";
@@ -280,3 +280,11 @@
 "auction-detail-title" = "Auction Detail";
 "auction-price-current-title" = "Current Price";
 "auction-price-closing-title" = "Closing Price";
+"auction-detail-potential-min" = "Min Potenial Algos";
+"auction-detail-potential-total" = "Total Potential Algos:";
+"auction-detail-bid-amount" = "Bid Amount";
+"auction-detail-max-price" = "Max Price";
+"auction-detail-place-bid-title" = "Place Bid";
+"auction-detail-my-bids-title" = "My Bids";
+"auction-detail-place-bid-button-title" = "PLACE BID";
+"auction-detail-limit-order-button-title" = "PLACE LIMIT ORDER";

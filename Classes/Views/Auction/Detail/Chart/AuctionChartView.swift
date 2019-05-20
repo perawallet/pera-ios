@@ -91,7 +91,7 @@ class AuctionChartView: BaseView {
     override func configureAppearance() {
         backgroundColor = .white
         
-        setupData()
+        //setupData()
     }
     
     private func setupData() {

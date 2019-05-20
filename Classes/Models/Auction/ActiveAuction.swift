@@ -21,6 +21,8 @@ class ActiveAuction: Mappable {
     let estimatedAuctionRoundStart: Date?
     let currentRound: Int?
     
+    var totalAlgos: Int64 = 0
+    
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
@@ -65,4 +67,5 @@ enum AuctionStatus: String, Mappable {
     case announced = "Announced"
     case running = "Running"
     case closed = "Closed"
+    case settled = "Settled"
 }

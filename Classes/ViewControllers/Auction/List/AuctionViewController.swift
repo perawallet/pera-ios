@@ -48,7 +48,7 @@ class AuctionViewController: BaseViewController {
     }()
     
     private var auctions = [Auction]()
-    
+    private var totalAlgosAmount: Int64?
     private var activeAuction: ActiveAuction?
     
     private let viewModel = AuctionViewModel()
@@ -86,9 +86,9 @@ class AuctionViewController: BaseViewController {
             case let .success(auction):
                 self.activeAuction = auction
                 
-                self.fetchPastAuctions(top: auction.id, withReload: reload)
-                
                 if reload {
+                    self.fetchPastAuctions(top: auction.id)
+                    
                     self.auctionsCollectionView.reloadSection(0)
                 } else {
                     UIView.performWithoutAnimation {
@@ -100,13 +100,13 @@ class AuctionViewController: BaseViewController {
                 self.auctionsCollectionView.reloadSection(0)
                 
                 if self.auctions.isEmpty {
-                    self.fetchPastAuctions(top: 50, withReload: reload)
+                    self.fetchPastAuctions(top: 50)
                 }
             }
         }
     }
     
-    private func fetchPastAuctions(top: Int, withReload reload: Bool = true) {
+    private func fetchPastAuctions(top: Int) {
         let pastAuctionsDraft = AuctionDraft(
             accessToken: "1dd6e671c4ba97c1772b53bdb31f7a7fd775684251a64f17aa00879721c7a94e",
             topCount: top
@@ -121,22 +121,18 @@ class AuctionViewController: BaseViewController {
                 
                 self.canDisplayPastAuctionsEmptyState = pastAuctions.isEmpty
                 
-                if reload {
-                    self.auctionsCollectionView.reloadSection(1)
-                } else {
-                    UIView.performWithoutAnimation {
-                        self.auctionsCollectionView.reloadSection(0)
-                    }
+                if let recentAuction = pastAuctions.first {
+                    self.totalAlgosAmount = recentAuction.algos
                 }
+                
+                self.auctionsCollectionView.reloadSection(1)
             case .failure:
                 self.canDisplayPastAuctionsEmptyState = true
                 self.auctionsCollectionView.reloadSection(1)
             }
             
-            if reload {
-                SVProgressHUD.showSuccess(withStatus: "title-done-lowercased".localized)
-                SVProgressHUD.dismiss()
-            }
+            SVProgressHUD.showSuccess(withStatus: "title-done-lowercased".localized)
+            SVProgressHUD.dismiss()
         }
     }
     
@@ -224,6 +220,8 @@ extension AuctionViewController: UICollectionViewDataSource {
                         fatalError("Index path is out of bounds")
                 }
                 
+                cell.delegate = self
+                
                 viewModel.configure(cell, with: activeAuction)
                 
                 return cell
@@ -261,9 +259,7 @@ extension AuctionViewController: UICollectionViewDataSource {
         if indexPath.item < auctions.count {
             let auction = auctions[indexPath.row + 1]
             
-            if let activeAuction = activeAuction {
-                viewModel.configure(cell, with: auction, and: activeAuction)
-            }
+            viewModel.configure(cell, with: auction, and: activeAuction)
         }
         
         return cell

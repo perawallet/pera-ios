@@ -28,7 +28,9 @@ class AuctionTimerView: BaseView {
                 return
             }
             
-            configureTimerView(for: mode)
+            DispatchQueue.main.async {
+                self.configureTimerView()
+            }
         }
     }
     
@@ -85,7 +87,7 @@ class AuctionTimerView: BaseView {
         
         explanationLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(layout.current.defaultInset)
-            make.trailing.lessThanOrEqualToSuperview().inset(layout.current.defaultInset)
+            make.trailing.equalToSuperview().inset(layout.current.defaultInset)
             make.top.equalToSuperview().inset(layout.current.verticalInset)
         }
     }
@@ -155,7 +157,7 @@ class AuctionTimerView: BaseView {
         return String(format: "%02i:%02i:%02i", hours, minutes, seconds)
     }
     
-    private func configureTimerView(for mode: Mode) {
+    private func configureTimerView() {
         switch mode {
         case .initial:
             explanationLabel.text = "auction-time-in".localized
