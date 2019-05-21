@@ -367,6 +367,8 @@
 		17BEC4602248C81E00AAF370 /* PassPhraseVerifyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17BEC45F2248C81E00AAF370 /* PassPhraseVerifyView.swift */; };
 		17BEC4632248CD3C00AAF370 /* LeftAlignedCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17BEC4622248CD3C00AAF370 /* LeftAlignedCollectionViewFlowLayout.swift */; };
 		17BEC4662248D39900AAF370 /* PassPhraseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17BEC4652248D39900AAF370 /* PassPhraseCollectionViewCell.swift */; };
+		17CA7CAE2294187E00B552EB /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CA7CAD2294187E00B552EB /* AuthManager.swift */; };
+		17CA7CAF2294187E00B552EB /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CA7CAD2294187E00B552EB /* AuthManager.swift */; };
 		17CFB884226A134A00B3B0A7 /* ToggleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CFB883226A134A00B3B0A7 /* ToggleCell.swift */; };
 		17D04F46225F64B60051BC43 /* AddNodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D04F45225F64B60051BC43 /* AddNodeViewController.swift */; };
 		17D04F48225F697E0051BC43 /* AddNodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D04F47225F697E0051BC43 /* AddNodeView.swift */; };
@@ -674,6 +676,7 @@
 		17BEC45F2248C81E00AAF370 /* PassPhraseVerifyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassPhraseVerifyView.swift; sourceTree = "<group>"; };
 		17BEC4622248CD3C00AAF370 /* LeftAlignedCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftAlignedCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
 		17BEC4652248D39900AAF370 /* PassPhraseCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassPhraseCollectionViewCell.swift; sourceTree = "<group>"; };
+		17CA7CAD2294187E00B552EB /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		17CFB883226A134A00B3B0A7 /* ToggleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleCell.swift; sourceTree = "<group>"; };
 		17D04F45225F64B60051BC43 /* AddNodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNodeViewController.swift; sourceTree = "<group>"; };
 		17D04F47225F697E0051BC43 /* AddNodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNodeView.swift; sourceTree = "<group>"; };
@@ -1105,6 +1108,7 @@
 				17F9E926225796DA004CDF24 /* AccountManager.swift */,
 				17695B392268CA7400765D31 /* NodeManager.swift */,
 				17BD4F27229306700003E49A /* ApplicationTargetManager.swift */,
+				17CA7CAD2294187E00B552EB /* AuthManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -3199,6 +3203,7 @@
 				17BD4E972292F1260003E49A /* NumpadCellViewModel.swift in Sources */,
 				17BD4E982292F1260003E49A /* ContentStateView.swift in Sources */,
 				17BD4E992292F1260003E49A /* CIImage+Additions.swift in Sources */,
+				17CA7CAF2294187E00B552EB /* AuthManager.swift in Sources */,
 				17BD4E9A2292F1260003E49A /* User.swift in Sources */,
 				17BD4F29229306700003E49A /* ApplicationTargetManager.swift in Sources */,
 				17BD4E9B2292F1260003E49A /* UIColor+Additions.swift in Sources */,
@@ -3485,6 +3490,7 @@
 				2BD73A1422412D9100B66EEF /* NumpadCellViewModel.swift in Sources */,
 				2BDE9CD7224E2082007EFF30 /* ContentStateView.swift in Sources */,
 				170AFB02224D1CE100520EA5 /* CIImage+Additions.swift in Sources */,
+				17CA7CAE2294187E00B552EB /* AuthManager.swift in Sources */,
 				17F6E68A224B71A6006DD31F /* User.swift in Sources */,
 				17BD4F28229306700003E49A /* ApplicationTargetManager.swift in Sources */,
 				2BD739D6223F985E00B66EEF /* UIColor+Additions.swift in Sources */,
