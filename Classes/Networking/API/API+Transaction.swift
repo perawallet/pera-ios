@@ -11,20 +11,37 @@ import Crypto
 
 extension API {
     
+    enum Formatter {
+        static let date: DateFormatter = {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "YYYY-MM-dd"
+            return formatter
+        }()
+    }
+    
     @discardableResult
     func fetchTransactions(
-        between rounds: (Int64, Int64),
+        between dates: (Date, Date)?,
         for account: Account,
         completion: APICompletionHandler<TransactionList>? = nil
     ) -> EndpointInteractable? {
         
+        var parameters: Params = []
+        
+        parameters.append(.custom(key: AlgorandParamPairKey.max, value: 100))
+        
+        if let betweenDates = dates {
+            let from = Formatter.date.string(from: betweenDates.0)
+            let to = Formatter.date.string(from: betweenDates.1)
+            
+            parameters.append(.custom(key: AlgorandParamPairKey.from, value: from))
+            parameters.append(.custom(key: AlgorandParamPairKey.to, value: to))
+        }
+        
         return send(
             Endpoint<TransactionList>(Path("/v1/account/\(account.address)/transactions"))
                 .httpMethod(.get)
-                .query([
-                    .custom(key: AlgorandParamPairKey.firstRound, value: rounds.0),
-                    .custom(key: AlgorandParamPairKey.lastRound, value: rounds.1)
-                ])
+                .query(parameters)
                 .handler { response in
                     completion?(response)
                 }
