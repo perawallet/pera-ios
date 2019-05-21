@@ -33,7 +33,7 @@ class Environment {
     lazy var serverHost: String = {
         switch target {
         case .staging, .prod:
-            return "r2.algorand.network:4181"
+            return "indexer.algorand.network:8081"
         }
     }()
     
@@ -55,7 +55,7 @@ class Environment {
     }()
     
     lazy var serverToken: String = {
-       "af1cf81622d34a9e25c11277b9a591525f0a66611850050f5102030598cce8d7"
+       "0f24cac92e5ead6afbcf389e0ade28bb609d24ca6687359f342748c68d6cf9b2"
     }()
     
     private let target: AppTarget
