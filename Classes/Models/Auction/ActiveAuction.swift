@@ -35,7 +35,7 @@ class ActiveAuction: Mappable {
         remainingAlgos = try container.decodeIfPresent(Int64.self, forKey: .remainingAlgos)
         bidCount = try container.decodeIfPresent(Int.self, forKey: .bidCount)
         addressCount = try container.decodeIfPresent(Int.self, forKey: .addressCount)
-        status = try container.decodeIfPresent(AuctionStatus.self, forKey: .status)
+        status = try container.decodeIfPresent(AuctionStatus.self, forKey: .status) ?? AuctionStatus.announced
         
         let estimatedDepositRoundStartString = try container.decodeIfPresent(String.self, forKey: .estimatedDepositRoundStart)
         estimatedDepositRoundStart = estimatedDepositRoundStartString?.toDate()?.date

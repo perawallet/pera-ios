@@ -79,14 +79,20 @@ class AuctionViewModel {
     
     func configure(_ cell: AuctionCell, with auction: Auction, and activeAuction: ActiveAuction?) {
         if let activeAuction = activeAuction {
-            let formattedDate = findDate(to: auction.firstRound, from: activeAuction.currentRound).toFormat("MMMM dd, yyyy")
-            cell.contextView.dateLabel.text = formattedDate
+            if let firstRound = auction.firstRound {
+                let formattedDate = findDate(to: firstRound, from: activeAuction.currentRound).toFormat("MMMM dd, yyyy")
+                cell.contextView.dateLabel.text = formattedDate
+            }
         } else {
-            let formattedDate = findDate(to: auction.firstRound, from: auction.firstRound).toFormat("MMMM dd, yyyy")
-            cell.contextView.dateLabel.text = formattedDate
+            if let firstRound = auction.firstRound {
+                let formattedDate = findDate(to: firstRound, from: auction.firstRound).toFormat("MMMM dd, yyyy")
+                cell.contextView.dateLabel.text = formattedDate
+            }
         }
         
-        cell.contextView.algosAmountLabel.text = auction.algos.toAlgos.toDecimalStringForLabel
+        if let algos = auction.algos {
+            cell.contextView.algosAmountLabel.text = algos.toAlgos.toDecimalStringForLabel
+        }
     }
     
     private func findDate(to round: Int, from lastRound: Int?) -> Date {

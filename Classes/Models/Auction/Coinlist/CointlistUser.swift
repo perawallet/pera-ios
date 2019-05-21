@@ -10,18 +10,7 @@ import Magpie
 
 class CoinlistUser: Mappable {
     
-    let username: String
-    let address: String
-    let availableAmount: Int
-    let lockedAmount: String
-}
-
-extension CoinlistUser {
-    
-    enum CodingKeys: String, CodingKey {
-        case username = "username"
-        case address = "Address"
-        case availableAmount = "Available"
-        case lockedAmount = "Locked"
-    }
+    let id: String
+    let email: String?
+    let name: String?
 }
