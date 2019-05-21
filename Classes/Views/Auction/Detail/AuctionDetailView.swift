@@ -17,6 +17,7 @@ protocol AuctionDetailViewDelegate: class {
 class AuctionDetailView: BaseView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
+        let topInset: CGFloat = 20.0
         let defaultInset: CGFloat = 15.0
         let headerHeight: CGFloat = 185.0
         let minimumButtonInset: CGFloat = 5.0
@@ -68,7 +69,8 @@ class AuctionDetailView: BaseView {
         addSubview(auctionDetailHeaderView)
         
         auctionDetailHeaderView.snp.makeConstraints { make in
-            make.leading.trailing.top.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
+            make.top.equalToSuperview().inset(layout.current.topInset)
             make.height.equalTo(layout.current.headerHeight)
         }
     }

@@ -8,11 +8,6 @@
 
 import UIKit
 
-protocol PotentialAlgosDisplayViewDelegate: class {
-    
-    func potentialAlgosDisplayViewDidTapInfoButton(_ potentialAlgosDisplayView: PotentialAlgosDisplayView)
-}
-
 class PotentialAlgosDisplayView: BaseView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
@@ -33,9 +28,7 @@ class PotentialAlgosDisplayView: BaseView {
     
     // MARK: Components
     
-    private lazy var infoButton: UIButton = {
-        UIButton(type: .custom).withBackgroundImage(img("button-info"))
-    }()
+    private lazy var infoImageView = UIImageView(image: img("button-info"))
     
     private lazy var potentialAlgosTitleLabel: UILabel = {
         UILabel()
@@ -56,8 +49,6 @@ class PotentialAlgosDisplayView: BaseView {
             .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 18.0)))
             .withText("10,000.00")
     }()
-    
-    weak var delegate: PotentialAlgosDisplayViewDelegate?
     
     private var mode: Mode
     
@@ -86,15 +77,11 @@ class PotentialAlgosDisplayView: BaseView {
         }
     }
     
-    override func setListeners() {
-        infoButton.addTarget(self, action: #selector(notifyDelegateToInfoButtonTapped), for: .touchUpInside)
-    }
-    
     // MARK: Layout
     
     override func prepareLayout() {
         if mode == .total {
-            setupInfoButtonLayout()
+            setupInfoImageViewLayout()
         }
         
         setupPotentialAlgosTitleLabelLayout()
@@ -102,10 +89,10 @@ class PotentialAlgosDisplayView: BaseView {
         setupAlgoIconImageViewLayout()
     }
     
-    private func setupInfoButtonLayout() {
-        addSubview(infoButton)
+    private func setupInfoImageViewLayout() {
+        addSubview(infoImageView)
         
-        infoButton.snp.makeConstraints { make in
+        infoImageView.snp.makeConstraints { make in
             make.size.equalTo(layout.current.buttonSize)
             make.leading.equalToSuperview().inset(layout.current.buttonInset)
             make.top.equalToSuperview().inset(layout.current.totalTopInset)
@@ -148,13 +135,6 @@ class PotentialAlgosDisplayView: BaseView {
             make.trailing.equalTo(amountLabel.snp.leading).offset(layout.current.iconTrailingInset)
             make.leading.greaterThanOrEqualTo(potentialAlgosTitleLabel.snp.trailing).offset(layout.current.iconMinimumInset)
         }
-    }
-    
-    // MARK: Actions
-    
-    @objc
-    private func notifyDelegateToInfoButtonTapped() {
-        delegate?.potentialAlgosDisplayViewDidTapInfoButton(self)
     }
 }
 

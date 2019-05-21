@@ -12,8 +12,7 @@ import Charts
 class AuctionDetailViewController: BaseScrollViewController {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let topInset: CGFloat = 20.0 * verticalScale
-        let headerViewHeight: CGFloat = 245.0
+        let headerViewHeight: CGFloat = 265.0
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -28,6 +27,14 @@ class AuctionDetailViewController: BaseScrollViewController {
     private lazy var placeBidViewController = PlaceBidViewController(configuration: configuration)
     
     private lazy var myBidsViewController = MyBidsViewController(configuration: configuration)
+    
+    // MARK: Initialization
+    
+    override init(configuration: ViewControllerConfiguration) {
+        super.init(configuration: configuration)
+        
+        hidesBottomBarWhenPushed = true
+    }
     
     // MARK: Setup
     
@@ -55,8 +62,7 @@ class AuctionDetailViewController: BaseScrollViewController {
         contentView.addSubview(auctionDetailView)
         
         auctionDetailView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.top.equalToSuperview().inset(layout.current.topInset)
+            make.leading.top.trailing.equalToSuperview()
             make.height.equalTo(layout.current.headerViewHeight)
         }
     }
@@ -68,8 +74,7 @@ class AuctionDetailViewController: BaseScrollViewController {
         
         placeBidViewController.view.snp.makeConstraints { make in
             make.top.equalTo(auctionDetailView.snp.bottom)
-            make.leading.trailing.equalToSuperview()
-            make.bottom.lessThanOrEqualToSuperview()
+            make.leading.bottom.trailing.equalToSuperview()
         }
         
         placeBidViewController.didMove(toParent: self)
@@ -82,8 +87,7 @@ class AuctionDetailViewController: BaseScrollViewController {
         
         myBidsViewController.view.snp.makeConstraints { make in
             make.top.equalTo(auctionDetailView.snp.bottom)
-            make.leading.trailing.equalToSuperview()
-            make.bottom.lessThanOrEqualToSuperview()
+            make.leading.bottom.trailing.equalToSuperview()
         }
         
         myBidsViewController.didMove(toParent: self)
