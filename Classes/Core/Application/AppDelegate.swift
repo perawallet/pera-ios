@@ -120,7 +120,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     lazy var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "algorand")
-        container.loadPersistentStores { _, error in
+        container.loadPersistentStores { storeDescription, error in
+            if var url = storeDescription.url {
+                var resourceValues = URLResourceValues()
+                resourceValues.isExcludedFromBackup = true
+                
+                do {
+                    try url.setResourceValues(resourceValues)
+                } catch {
+                }
+            }
+            
             if let error = error as NSError? {
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
