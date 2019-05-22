@@ -16,10 +16,11 @@ protocol AuthManagerDelegate: class {
 
 class AuthManager: NSObject {
     private let callbackUrlScheme = "algorand://coinlist/oauth"
-    private let clientId = "a06e76e5011e6a094739270c8820f6e44a02f9a81d93ab32f5fc584fab31b5f2"
     
     private lazy var oauthUrl: String = {
-        "https://demo.coinlist.co/oauth/authorize?client_id=\(clientId)&redirect_uri=\(callbackUrlScheme)"
+        let host = Environment.current.coinlistHost
+        let clientId = Environment.current.coinlistClientId
+        return "\(host)/oauth/authorize?client_id=\(clientId)&redirect_uri=\(callbackUrlScheme)"
     }()
     
     @available(iOS 12.0, *)
