@@ -46,11 +46,13 @@ class MyBidsViewController: BaseViewController {
             make.edges.equalToSuperview()
         }
         
-        let collectionViewHeight = CGFloat(bids.count) * layout.current.cellSize.height + CGFloat(bids.count) * layout.current.cellSpacing
+        let collectionViewHeight = CGFloat(10) * layout.current.cellSize.height + CGFloat(10) * layout.current.cellSpacing
         
         myBidsView.myBidsCollectionView.snp.updateConstraints { make in
             make.height.equalTo(collectionViewHeight)
         }
+        
+        myBidsView.myBidsCollectionView.reloadData()
     }
 }
 
@@ -59,7 +61,7 @@ class MyBidsViewController: BaseViewController {
 extension MyBidsViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return bids.count
+        return 10
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

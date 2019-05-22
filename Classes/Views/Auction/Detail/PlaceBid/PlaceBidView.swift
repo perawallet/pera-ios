@@ -103,6 +103,7 @@ class PlaceBidView: BaseView {
             make.top.equalTo(minPotentialAlgosView.snp.bottom).offset(layout.current.defaultInset)
             make.height.equalTo(layout.current.buttonHeight)
             make.leading.trailing.equalToSuperview().inset(layout.current.defaultInset)
+            make.bottom.lessThanOrEqualToSuperview().inset(layout.current.defaultInset + safeAreaBottom)
         }
     }
     

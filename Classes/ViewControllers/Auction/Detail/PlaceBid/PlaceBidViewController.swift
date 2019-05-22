@@ -33,7 +33,8 @@ class PlaceBidViewController: BaseViewController {
         view.addSubview(placeBidView)
         
         placeBidView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.leading.trailing.top.equalToSuperview()
+            make.bottom.safeEqualToBottom(of: self)
         }
     }
 }

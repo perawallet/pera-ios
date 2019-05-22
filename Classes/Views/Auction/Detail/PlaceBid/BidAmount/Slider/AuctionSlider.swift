@@ -10,14 +10,28 @@ import UIKit
 
 class AuctionSlider: UISlider {
     
-    var sliderState: SliderState = .initial {
-        didSet {
-            if sliderState == oldValue {
-                return
-            }
-            
-            configureSlider()
+    override func thumbRect(forBounds bounds: CGRect, trackRect rect: CGRect, value: Float) -> CGRect {
+        var customThumbRect = super.thumbRect(forBounds: bounds, trackRect: rect, value: value)
+        
+        if value == 0 {
+            customThumbRect.origin.x -= 10.0
+        } else if value == 25 {
+            customThumbRect.origin.x -= 6.0
+        } else if value == 50 {
+            customThumbRect.origin.x -= 1.5
+        } else if value == 75 {
+            customThumbRect.origin.x += 1.0
+        } else if value == 100 {
+            customThumbRect.origin.x += 8.0
         }
+        
+        return customThumbRect
+    }
+    
+    override func trackRect(forBounds bounds: CGRect) -> CGRect {
+        var customTrackRect = super.trackRect(forBounds: bounds)
+        customTrackRect.size.height = 4.0
+        return customTrackRect
     }
     
     // MARK: Initialization
@@ -28,32 +42,16 @@ class AuctionSlider: UISlider {
         minimumValue = 0
         maximumValue = 100
         
-        minimumTrackTintColor = SharedColors.softGray
-        maximumTrackTintColor = SharedColors.blue
+        minimumTrackTintColor = SharedColors.blue
+        maximumTrackTintColor = SharedColors.softGray
+        
+        setMaximumTrackImage(img("slider-line-icon"), for: .normal)
+        
+        setThumbImage(img("icon-slider-zero"), for: .normal)
     }
     
     @available(*, unavailable)
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    // MARK: Configuration
-    
-    private func configureSlider() {
-        switch sliderState {
-        case .initial:
-            break
-        case .selected:
-            break
-        }
-    }
-    
-}
-
-extension AuctionSlider {
-    
-    enum SliderState {
-        case initial
-        case selected
     }
 }

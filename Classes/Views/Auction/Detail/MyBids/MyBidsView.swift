@@ -64,9 +64,10 @@ class MyBidsView: BaseView {
         addSubview(totalPotentialAlgosDisplayView)
         
         totalPotentialAlgosDisplayView.snp.makeConstraints { make in
-            make.leading.trailing.bottom.equalToSuperview().inset(layout.current.defaultInset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.defaultInset)
             make.top.equalTo(myBidsCollectionView.snp.bottom).offset(layout.current.potentialAlgosViewTopInset)
             make.height.equalTo(layout.current.potentialAlgosViewHeight)
+            make.bottom.equalToSuperview().inset(layout.current.defaultInset + safeAreaBottom)
         }
     }
 }
