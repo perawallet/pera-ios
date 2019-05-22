@@ -84,6 +84,9 @@
 		17F9E927225796DA004CDF24 /* AccountManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F9E926225796DA004CDF24 /* AccountManager.swift */; };
 		2B09603822578C990005BE27 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2B09603722578C990005BE27 /* GoogleService-Info.plist */; };
 		2B0C2F6822809FDD009206D7 /* AccountSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0C2F6722809FDD009206D7 /* AccountSelectionView.swift */; };
+		2B1B77B4229567290021A6CC /* AuctionDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1B77B3229567290021A6CC /* AuctionDetailViewModel.swift */; };
+		2B1B77B6229567360021A6CC /* MyBidsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1B77B5229567360021A6CC /* MyBidsViewModel.swift */; };
+		2B1B77B8229567400021A6CC /* PlaceBidViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1B77B7229567400021A6CC /* PlaceBidViewModel.swift */; };
 		2B25BB47225E03610092C972 /* DetailedInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B25BB46225E03610092C972 /* DetailedInformationView.swift */; };
 		2B25BB49225EACB60092C972 /* RequestAlgosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B25BB48225EACB60092C972 /* RequestAlgosView.swift */; };
 		2B25BB4B225EAD600092C972 /* RequestAlgosPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B25BB4A225EAD600092C972 /* RequestAlgosPreviewViewController.swift */; };
@@ -394,6 +397,9 @@
 		2AC10F1C54DF2982BFB4A180 /* Pods-algorand.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand.debug.xcconfig"; path = "Pods/Target Support Files/Pods-algorand/Pods-algorand.debug.xcconfig"; sourceTree = "<group>"; };
 		2B09603722578C990005BE27 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2B0C2F6722809FDD009206D7 /* AccountSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSelectionView.swift; sourceTree = "<group>"; };
+		2B1B77B3229567290021A6CC /* AuctionDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionDetailViewModel.swift; sourceTree = "<group>"; };
+		2B1B77B5229567360021A6CC /* MyBidsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyBidsViewModel.swift; sourceTree = "<group>"; };
+		2B1B77B7229567400021A6CC /* PlaceBidViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceBidViewModel.swift; sourceTree = "<group>"; };
 		2B25BB46225E03610092C972 /* DetailedInformationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailedInformationView.swift; sourceTree = "<group>"; };
 		2B25BB48225EACB60092C972 /* RequestAlgosView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestAlgosView.swift; sourceTree = "<group>"; };
 		2B25BB4A225EAD600092C972 /* RequestAlgosPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestAlgosPreviewViewController.swift; sourceTree = "<group>"; };
@@ -802,6 +808,16 @@
 			path = Managers;
 			sourceTree = "<group>";
 		};
+		2B1B77B2229567180021A6CC /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+				2B1B77B3229567290021A6CC /* AuctionDetailViewModel.swift */,
+				2B1B77B5229567360021A6CC /* MyBidsViewModel.swift */,
+				2B1B77B7229567400021A6CC /* PlaceBidViewModel.swift */,
+			);
+			path = Detail;
+			sourceTree = "<group>";
+		};
 		2B2F9F7522821C160068DBB5 /* Auction */ = {
 			isa = PBXGroup;
 			children = (
@@ -845,6 +861,7 @@
 		2B3F3908228C3D9B008BBE75 /* Auction */ = {
 			isa = PBXGroup;
 			children = (
+				2B1B77B2229567180021A6CC /* Detail */,
 				2B3F3909228C3DA8008BBE75 /* AuctionViewModel.swift */,
 			);
 			path = Auction;
@@ -2741,10 +2758,12 @@
 				2B8EE8282283313F0001D025 /* AuctionPrerequirementElementView.swift in Sources */,
 				17B7D8A62240D8F900A6FF9E /* Account.swift in Sources */,
 				2B3F38FB228AEFF7008BBE75 /* AuctionCell.swift in Sources */,
+				2B1B77B6229567360021A6CC /* MyBidsViewModel.swift in Sources */,
 				17B7D8A82240DFFC00A6FF9E /* API+Account.swift in Sources */,
 				2B2F9F7822821C440068DBB5 /* AuctionChartView.swift in Sources */,
 				2B82B1C82253A4F000A8909F /* ContactCell.swift in Sources */,
 				17B7D8B82242830D00A6FF9E /* Params+Additions.swift in Sources */,
+				2B1B77B4229567290021A6CC /* AuctionDetailViewModel.swift in Sources */,
 				17B7D8AE2240F25000A6FF9E /* Environment.swift in Sources */,
 				2BF5315F224A472800A7455F /* ModalAnimator.swift in Sources */,
 				2B8954CB224430DC00D6D068 /* AccountRecoverView.swift in Sources */,
@@ -2814,6 +2833,7 @@
 				17F9E924225789E7004CDF24 /* AccountFetchOperation.swift in Sources */,
 				17BEC4662248D39900AAF370 /* PassPhraseCollectionViewCell.swift in Sources */,
 				2B7572A6225CA1E3009E0253 /* SendAlgosPreviewView.swift in Sources */,
+				2B1B77B8229567400021A6CC /* PlaceBidViewModel.swift in Sources */,
 				2BD739CC223F97B100B66EEF /* IntroductionViewController.swift in Sources */,
 				2BF3D835226F0FAA00716C09 /* TransactionDetailView.swift in Sources */,
 				2B656E93224BAF2E0064A49B /* OptionsViewController.swift in Sources */,

@@ -136,7 +136,7 @@ class AuctionViewController: BaseViewController {
         }
     }
     
-    // View Lifecycl
+    // View Lifecycle
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -293,6 +293,11 @@ extension AuctionViewController: UICollectionViewDelegateFlowLayout {
 extension AuctionViewController: ActiveAuctionCellDelegate {
     
     func activeAuctionCellDidTapEnterAuctionButton(_ activeAuctionCell: ActiveAuctionCell) {
-        open(.auctionDetail, by: .push)
+        guard let auction = auctions.first,
+            let activeAuction = activeAuction else {
+                return
+        }
+        
+        open(.auctionDetail(auction: auction, activeAuction: activeAuction), by: .push)
     }
 }

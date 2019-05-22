@@ -7,8 +7,14 @@
 //
 
 import UIKit
+import Crypto
 
 class PlaceBidViewController: BaseViewController {
+    
+    private let viewModel = PlaceBidViewModel()
+    
+    var auction: Auction
+    var activeAuction: ActiveAuction
     
     // MARK: Components
     
@@ -16,6 +22,15 @@ class PlaceBidViewController: BaseViewController {
         let view = PlaceBidView()
         return view
     }()
+    
+    // MARK: Initialization
+    
+    init(auction: Auction, activeAuction: ActiveAuction, configuration: ViewControllerConfiguration) {
+        self.auction = auction
+        self.activeAuction = activeAuction
+        
+        super.init(configuration: configuration)
+    }
     
     // MARK: Setup
     
@@ -44,6 +59,32 @@ class PlaceBidViewController: BaseViewController {
 extension PlaceBidViewController: PlaceBidViewDelegate {
     
     func placeBidViewDidTapPlaceBidButton(_ placeBidView: PlaceBidView) {
+        placeBid()
+    }
+    
+    private func placeBid() {
+        let bidderAddress: String? = nil
+        let bidAmount: Int64 = 0
+        let maxPrice: Int64 = 0
+        let bidId: Int64 = 0
+        let auctionAddress: String? = nil
+        let auctionId = Int64(auction.id)
         
+        var signedBidError: NSError?
+        
+        guard let bidData = AuctionMakeBid(bidderAddress, bidAmount, maxPrice, bidId, auctionAddress, auctionId, &signedBidError) else {
+            return
+        }
+        
+        let bidString = bidData.base64EncodedString()
+        
+        api?.placeBid(with: bidString, for: "\(auction.id)") { response in
+            switch response {
+            case let .success(bidResponse):
+                print(bidResponse)
+            case let .failure(error):
+                print(error)
+            }
+        }
     }
 }

@@ -290,3 +290,4 @@
 "auction-detail-limit-order-button-title" = "PLACE LIMIT ORDER";
 "auction-detail-retract-title" = "Retract";
 "auction-detail-min-potential-algos" = "Min Potential Algos";
+"auction-detail-status-rejected-title" = "Rejected";

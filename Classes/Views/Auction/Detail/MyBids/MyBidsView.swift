@@ -39,7 +39,7 @@ class MyBidsView: BaseView {
         return collectionView
     }()
     
-    private lazy var totalPotentialAlgosDisplayView: PotentialAlgosDisplayView = {
+    private(set) lazy var totalPotentialAlgosDisplayView: PotentialAlgosDisplayView = {
         let view = PotentialAlgosDisplayView(mode: .total)
         return view
     }()

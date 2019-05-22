@@ -29,7 +29,7 @@ class BidCellContextView: BaseView {
     
     // MARK: Components
     
-    private lazy var amountLabel: UILabel = {
+    private(set) lazy var amountLabel: UILabel = {
         UILabel()
             .withAlignment(.left)
             .withLine(.single)

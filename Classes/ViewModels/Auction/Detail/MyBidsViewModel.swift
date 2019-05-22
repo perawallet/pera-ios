@@ -1,0 +1,56 @@
+//
+//  MyBidsViewModel.swift
+//  algorand
+//
+//  Created by Göktuğ Berk Ulu on 22.05.2019.
+//  Copyright © 2019 hippo. All rights reserved.
+//
+
+import UIKit
+
+class MyBidsViewModel {
+    
+    func configure(_ cell: BidCell, with bid: Bid) {
+        if let status = bid.status {
+            switch status {
+            case .accepted,
+                 .successful,
+                 .paid:
+                cell.contextView.bidStatusLabel.textColor = SharedColors.green
+                cell.contextView.bidStatusLabel.text = status.rawValue
+            case .retracted:
+                cell.contextView.bidStatusLabel.textColor = SharedColors.red
+                cell.contextView.bidStatusLabel.text = status.rawValue
+            case .unsuccessful:
+                cell.contextView.bidStatusLabel.textColor = SharedColors.darkGray
+                cell.contextView.bidStatusLabel.text = "auction-detail-status-rejected-title".localized
+            default:
+                cell.contextView.bidStatusLabel.textColor = SharedColors.softGray
+                cell.contextView.bidStatusLabel.text = status.rawValue
+            }
+        }
+        
+        guard let amount = bid.amount,
+            let maxPrice = bid.maxPrice else {
+                return
+        }
+        
+        cell.contextView.amountLabel.text = "\(convertToDollars(amount))"
+        cell.contextView.maxPriceLabel.text = "@ \(convertToDollars(maxPrice))"
+        cell.contextView.algosAmountLabel.text = Int64(((amount / 100) * (maxPrice / 100))).toAlgos.toDecimalStringForLabel
+    }
+    
+    func configure(_ view: MyBidsView, with value: Int) {
+        view.totalPotentialAlgosDisplayView.amountLabel.text = "\(value)"
+    }
+    
+    private func convertToDollars(_ value: Int) -> String {
+        let doubleValue = Double(value / 100)
+        let formatter = NumberFormatter()
+        formatter.currencyCode = "USD"
+        formatter.currencySymbol = "$"
+        formatter.maximumFractionDigits = 2
+        formatter.numberStyle = .currencyAccounting
+        return formatter.string(from: NSNumber(value: doubleValue)) ?? "$\(doubleValue)"
+    }
+}

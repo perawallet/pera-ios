@@ -7,7 +7,6 @@
 //
 
 import Magpie
-import Crypto
 
 extension API {
     
@@ -141,7 +140,7 @@ extension API {
     
     @discardableResult
     func placeBid(
-        with signedBinary: String,
+        with dataString: String,
         for auction: String,
         completion: APICompletionHandler<BidResponse>? = nil
     ) -> EndpointInteractable? {
@@ -153,7 +152,7 @@ extension API {
                 .base(Environment.current.cointlistApi)
                 .httpMethod(.post)
                 .body([
-                    .custom(key: AlgorandParamPairKey.bid, value: signedBinary)
+                    .custom(key: AlgorandParamPairKey.bid, value: dataString)
                 ])
                 .httpHeaders([.custom(header: "Authorization", value: "Bearer \(token)")])
                 .handler { response in

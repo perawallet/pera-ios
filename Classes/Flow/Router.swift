@@ -222,8 +222,8 @@ class Router {
                 transactionType: transactionType,
                 configuration: configuration
             )
-        case .auctionDetail:
-            viewController = AuctionDetailViewController(configuration: configuration)
+        case let .auctionDetail(auction, activeAuction):
+            viewController = AuctionDetailViewController(auction: auction, activeAuction: activeAuction, configuration: configuration)
         }
         
         return viewController as? T

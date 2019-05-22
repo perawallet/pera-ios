@@ -24,13 +24,33 @@ class AuctionDetailViewController: BaseScrollViewController {
         return view
     }()
     
-    private lazy var placeBidViewController = PlaceBidViewController(configuration: configuration)
+    private var auction: Auction
+    private var activeAuction: ActiveAuction
     
-    private lazy var myBidsViewController = MyBidsViewController(configuration: configuration)
+    private var chartValues = [ChartData]()
+    
+    private var pollingOperation: PollingOperation?
+    
+    private let viewModel = AuctionDetailViewModel()
+    
+    private lazy var placeBidViewController = PlaceBidViewController(
+        auction: auction,
+        activeAuction: activeAuction,
+        configuration: configuration
+    )
+    
+    private lazy var myBidsViewController = MyBidsViewController(
+        auction: auction,
+        activeAuction: activeAuction,
+        configuration: configuration
+    )
     
     // MARK: Initialization
     
-    override init(configuration: ViewControllerConfiguration) {
+    init(auction: Auction, activeAuction: ActiveAuction, configuration: ViewControllerConfiguration) {
+        self.auction = auction
+        self.activeAuction = activeAuction
+        
         super.init(configuration: configuration)
         
         hidesBottomBarWhenPushed = true
@@ -42,6 +62,8 @@ class AuctionDetailViewController: BaseScrollViewController {
         super.configureAppearance()
         
         navigationItem.title = "auction-detail-title".localized
+        
+        viewModel.configure(auctionDetailView, with: auction, and: activeAuction)
     }
     
     override func linkInteractors() {
@@ -91,6 +113,56 @@ class AuctionDetailViewController: BaseScrollViewController {
         }
         
         myBidsViewController.didMove(toParent: self)
+    }
+    
+    // View Lifecycle
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        pollingOperation = PollingOperation(interval: 5.0) { [weak self] in
+            guard let strongSelf = self else {
+                return
+            }
+            
+            strongSelf.fetchActiveAuction()
+            strongSelf.fetchAuctionDetails()
+            strongSelf.fetchChartValues()
+            
+            strongSelf.pollMyBidsIfNeeded()
+        }
+        
+        pollingOperation?.start()
+    }
+    
+    private func fetchActiveAuction() {
+        let activeAuctionDraft = AuctionDraft(accessToken: "1dd6e671c4ba97c1772b53bdb31f7a7fd775684251a64f17aa00879721c7a94e")
+        
+        api?.fetchActiveAuction(with: activeAuctionDraft) { _ in
+            
+        }
+    }
+    
+    private func fetchAuctionDetails() {
+        api?.fetchAuctionDetails(with: "") { _ in
+            
+        }
+    }
+    
+    private func fetchChartValues() {
+        api?.fetchChartData(for: "") { _ in
+            
+        }
+    }
+    
+    private func pollMyBidsIfNeeded() {
+        myBidsViewController.fetchMyBids()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        pollingOperation?.invalidate()
     }
 }
 

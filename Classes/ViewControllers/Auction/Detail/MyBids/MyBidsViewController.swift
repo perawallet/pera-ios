@@ -13,11 +13,17 @@ class MyBidsViewController: BaseViewController {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let cellSize = CGSize(width: UIScreen.main.bounds.width - 30.0, height: 122.0)
         let cellSpacing: CGFloat = 10.0
+        let emptyCollectionViewHeight: CGFloat = 155.0
     }
     
     private let layout = Layout<LayoutConstants>()
     
+    private let viewModel = MyBidsViewModel()
+    
     private(set) var bids = [Bid]()
+    
+    var auction: Auction
+    var activeAuction: ActiveAuction
     
     // MARK: Components
     
@@ -25,6 +31,15 @@ class MyBidsViewController: BaseViewController {
         let view = MyBidsView()
         return view
     }()
+    
+    // MARK: Initialization
+    
+    init(auction: Auction, activeAuction: ActiveAuction, configuration: ViewControllerConfiguration) {
+        self.auction = auction
+        self.activeAuction = activeAuction
+        
+        super.init(configuration: configuration)
+    }
     
     // MARK: Setup
     
@@ -46,13 +61,33 @@ class MyBidsViewController: BaseViewController {
             make.edges.equalToSuperview()
         }
         
-        let collectionViewHeight = CGFloat(10) * layout.current.cellSize.height + CGFloat(10) * layout.current.cellSpacing
+        myBidsView.myBidsCollectionView.reloadData()
+    }
+    
+    func fetchMyBids() {
+        api?.fetchBids(in: "", for: "") { response in
+            switch response {
+            case let .success(myBids):
+                self.bids = myBids
+                self.updateCollectionViewLayoutForBids()
+            case let .failure(error):
+                print(error)
+            }
+        }
+    }
+    
+    func updateCollectionViewLayoutForBids() {
+        var collectionViewHeight: CGFloat
+        
+        if bids.isEmpty {
+            collectionViewHeight = layout.current.emptyCollectionViewHeight
+        } else {
+            collectionViewHeight = CGFloat(bids.count) * layout.current.cellSize.height + CGFloat(bids.count) * layout.current.cellSpacing
+        }
         
         myBidsView.myBidsCollectionView.snp.updateConstraints { make in
             make.height.equalTo(collectionViewHeight)
         }
-        
-        myBidsView.myBidsCollectionView.reloadData()
     }
 }
 
@@ -61,7 +96,7 @@ class MyBidsViewController: BaseViewController {
 extension MyBidsViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return bids.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -69,6 +104,11 @@ extension MyBidsViewController: UICollectionViewDataSource {
             withReuseIdentifier: BidCell.reusableIdentifier,
             for: indexPath) as? BidCell else {
                 fatalError("Index path is out of bounds")
+        }
+        
+        if indexPath.item < bids.count {
+            let bid = bids[indexPath.row]
+            viewModel.configure(cell, with: bid)
         }
         
         return cell
