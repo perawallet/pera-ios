@@ -212,6 +212,8 @@
 		2BA09A8E229369D5009DC24D /* LimitOrderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA09A8D229369D5009DC24D /* LimitOrderCell.swift */; };
 		2BA09A9122941329009DC24D /* Bid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA09A9022941329009DC24D /* Bid.swift */; };
 		2BA09A9322946811009DC24D /* AuctionUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA09A9222946811009DC24D /* AuctionUser.swift */; };
+		2BA09A952294BA07009DC24D /* ChartData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA09A942294BA07009DC24D /* ChartData.swift */; };
+		2BA09A972294BA20009DC24D /* BidResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA09A962294BA20009DC24D /* BidResponse.swift */; };
 		2BA0C39822677E430037AE13 /* Sequence+AttributedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA0C39722677E430037AE13 /* Sequence+AttributedString.swift */; };
 		2BA242382263C0D800E2841F /* SwiftDate+Region.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA242372263C0D800E2841F /* SwiftDate+Region.swift */; };
 		2BA8736A2248214800511C7C /* AlignedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA873692248214800511C7C /* AlignedButton.swift */; };
@@ -519,6 +521,8 @@
 		2BA09A8D229369D5009DC24D /* LimitOrderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LimitOrderCell.swift; sourceTree = "<group>"; };
 		2BA09A9022941329009DC24D /* Bid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bid.swift; sourceTree = "<group>"; };
 		2BA09A9222946811009DC24D /* AuctionUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionUser.swift; sourceTree = "<group>"; };
+		2BA09A942294BA07009DC24D /* ChartData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartData.swift; sourceTree = "<group>"; };
+		2BA09A962294BA20009DC24D /* BidResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidResponse.swift; sourceTree = "<group>"; };
 		2BA0C39722677E430037AE13 /* Sequence+AttributedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sequence+AttributedString.swift"; sourceTree = "<group>"; };
 		2BA242372263C0D800E2841F /* SwiftDate+Region.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SwiftDate+Region.swift"; sourceTree = "<group>"; };
 		2BA873692248214800511C7C /* AlignedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlignedButton.swift; sourceTree = "<group>"; };
@@ -854,6 +858,8 @@
 				2B3F3906228C3829008BBE75 /* Auction.swift */,
 				2B3F390B228C4472008BBE75 /* ActiveAuction.swift */,
 				2BA09A9222946811009DC24D /* AuctionUser.swift */,
+				2BA09A942294BA07009DC24D /* ChartData.swift */,
+				2BA09A962294BA20009DC24D /* BidResponse.swift */,
 			);
 			path = Auction;
 			sourceTree = "<group>";
@@ -2731,6 +2737,7 @@
 				2BF5314E22491E7F00A7455F /* QRScannerOverlayView.swift in Sources */,
 				17695B3C2268D2DE00765D31 /* NodeHealthOperation.swift in Sources */,
 				2B65331F228F679400F19FEA /* PlaceBidViewController.swift in Sources */,
+				2BA09A972294BA20009DC24D /* BidResponse.swift in Sources */,
 				2B8EE8282283313F0001D025 /* AuctionPrerequirementElementView.swift in Sources */,
 				17B7D8A62240D8F900A6FF9E /* Account.swift in Sources */,
 				2B3F38FB228AEFF7008BBE75 /* AuctionCell.swift in Sources */,
@@ -2827,6 +2834,7 @@
 				171650EC226DF90900D8893D /* SplashViewController.swift in Sources */,
 				2B8954A52242E7D800D6D068 /* AccountNameSetupView.swift in Sources */,
 				2B5DA9DC224D37A100EE41B4 /* PassphraseDisplayView.swift in Sources */,
+				2BA09A952294BA07009DC24D /* ChartData.swift in Sources */,
 				2B6ED95D22608FE700787984 /* HistoryDraft.swift in Sources */,
 				2BF53157224A46A400A7455F /* ModalPresenter.swift in Sources */,
 				2B0C2F6822809FDD009206D7 /* AccountSelectionView.swift in Sources */,

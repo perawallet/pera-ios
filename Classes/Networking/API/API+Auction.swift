@@ -47,4 +47,138 @@ extension API {
                 }
         )
     }
+    
+    @discardableResult
+    func fetchCoinlistUser(
+        with draft: AuctionDraft,
+        completion: APICompletionHandler<CoinlistUser>? = nil
+    ) -> EndpointInteractable? {
+        
+        return send(
+            Endpoint<CoinlistUser>(Path("/api/v1/me/"))
+                .base(Environment.current.cointlistApi)
+                .query([
+                    .custom(key: AlgorandParamPairKey.accessToken, value: draft.accessToken)
+                ])
+                .handler { response in
+                    completion?(response)
+                }
+        )
+    }
+    
+    @discardableResult
+    func fetchAuctionDetails(
+        with id: String,
+        completion: APICompletionHandler<Auction>? = nil
+    ) -> EndpointInteractable? {
+        
+        let token = ""
+        
+        return send(
+            Endpoint<Auction>(Path("/api/algorand/auctions/\(id)/"))
+                .base(Environment.current.cointlistApi)
+                .httpHeaders([.custom(header: "Authorization", value: "Bearer \(token)")])
+                .handler { response in
+                    completion?(response)
+                }
+        )
+    }
+    
+    @discardableResult
+    func fetchChartData(
+        for auctionId: String,
+        completion: APICompletionHandler<[ChartData]>? = nil
+    ) -> EndpointInteractable? {
+        
+        return send(
+            Endpoint<[ChartData]>(Path("/api/algorand/auctions/\(auctionId)/chart_data/"))
+                .base(Environment.current.cointlistApi)
+                .handler { response in
+                    completion?(response)
+                }
+        )
+    }
+    
+    @discardableResult
+    func fetchAuctionUser(
+        with id: String,
+        completion: APICompletionHandler<AuctionUser>? = nil
+    ) -> EndpointInteractable? {
+        
+        let token = ""
+        
+        return send(
+            Endpoint<AuctionUser>(Path("/api/algorand/users/\(id)/"))
+                .base(Environment.current.cointlistApi)
+                .httpHeaders([.custom(header: "Authorization", value: "Bearer \(token)")])
+                .handler { response in
+                    completion?(response)
+                }
+        )
+    }
+    
+    @discardableResult
+    func fetchBids(
+        in auction: String,
+        for userId: String,
+        completion: APICompletionHandler<[Bid]>? = nil
+    ) -> EndpointInteractable? {
+        
+        let token = ""
+        
+        return send(
+            Endpoint<[Bid]>(Path("/api/algorand/auctions/\(auction)/bids/"))
+                .base(Environment.current.cointlistApi)
+                .httpHeaders([.custom(header: "Authorization", value: "Bearer \(token)")])
+                .query([
+                    .custom(key: AlgorandParamPairKey.username, value: userId)
+                ])
+                .handler { response in
+                    completion?(response)
+                }
+        )
+    }
+    
+    @discardableResult
+    func placeBid(
+        with signedBinary: String,
+        for auction: String,
+        completion: APICompletionHandler<BidResponse>? = nil
+    ) -> EndpointInteractable? {
+        
+        let token = ""
+        
+        return send(
+            Endpoint<BidResponse>(Path("/api/algorand/auctions/\(auction)/bids/"))
+                .base(Environment.current.cointlistApi)
+                .httpMethod(.post)
+                .body([
+                    .custom(key: AlgorandParamPairKey.bid, value: signedBinary)
+                ])
+                .httpHeaders([.custom(header: "Authorization", value: "Bearer \(token)")])
+                .handler { response in
+                    completion?(response)
+                }
+        )
+    }
+    
+    @discardableResult
+    func retractBid(
+        with id: String,
+        from auction: String,
+        completion: APICompletionHandler<NoObject>? = nil
+    ) -> EndpointInteractable? {
+        
+        let token = ""
+        
+        return send(
+            Endpoint<NoObject>(Path("/api/algorand/auctions/\(auction)/bids/\(id)/"))
+                .base(Environment.current.cointlistApi)
+                .httpMethod(.delete)
+                .httpHeaders([.custom(header: "Authorization", value: "Bearer \(token)")])
+                .handler { response in
+                    completion?(response)
+                }
+        )
+    }
 }
