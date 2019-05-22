@@ -23,10 +23,8 @@ class Environment {
     
     lazy var serverSchema: String = {
         switch target {
-        case .staging:
+        case .staging, .prod:
             return "http"
-        case .prod:
-            return "https"
         }
     }()
     

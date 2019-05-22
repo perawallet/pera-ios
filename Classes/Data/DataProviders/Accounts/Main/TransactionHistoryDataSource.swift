@@ -179,7 +179,7 @@ extension TransactionHistoryDataSource {
             case let .failure(error):
                 handler(nil, error)
             case let .success(transactions):
-                self.transactions = transactions.transactions.reversed()
+                self.transactions = transactions.transactions
                 handler(transactions.transactions, nil)
             }
         }
@@ -253,7 +253,7 @@ extension TransactionHistoryDataSource {
             case let .failure(error):
                 handler(nil, error)
             case let .success(transactions):
-                self.transactions = transactions.transactions.reversed()
+                self.transactions = transactions.transactions
                 handler(transactions.transactions, nil)
             }
         }
