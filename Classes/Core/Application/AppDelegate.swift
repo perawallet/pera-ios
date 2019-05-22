@@ -152,7 +152,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             accountManager.user = user
             
             self.accountManager.waitForNextRoundAndFetchAccounts(round: round) { nextRound in
-                print("request: \(nextRound)")
                 self.fetchAccounts(round: nextRound)
             }
         }
