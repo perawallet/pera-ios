@@ -15,6 +15,7 @@ extension API {
         static let date: DateFormatter = {
             let formatter = DateFormatter()
             formatter.dateFormat = "YYYY-MM-dd"
+            formatter.timeZone = TimeZone(abbreviation: "UTC")
             return formatter
         }()
     }
@@ -28,8 +29,6 @@ extension API {
         
         var parameters: Params = []
         
-        parameters.append(.custom(key: AlgorandParamPairKey.max, value: 100))
-        
         if let betweenDates = dates {
             let from = Formatter.date.string(from: betweenDates.0)
             let to = Formatter.date.string(from: betweenDates.1)
@@ -37,6 +36,8 @@ extension API {
             parameters.append(.custom(key: AlgorandParamPairKey.from, value: from))
             parameters.append(.custom(key: AlgorandParamPairKey.to, value: to))
         }
+        
+        parameters.append(.custom(key: AlgorandParamPairKey.max, value: 100))
         
         return send(
             Endpoint<TransactionList>(Path("/v1/account/\(account.address)/transactions"))
