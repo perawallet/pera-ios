@@ -12,6 +12,8 @@ class AccountManager {
     var user: User?
     let api: API
     
+    var currentRound: Int64?
+    
     let queue: OperationQueue
     
     init(api: API) {
@@ -68,5 +70,39 @@ extension AccountManager {
         completionOperation.addDependency(accountFetchOperation)
         self.queue.addOperation(accountFetchOperation)
         self.queue.addOperation(completionOperation)
+    }
+    
+    func waitForNextRoundAndFetchAccounts(round: Int64?, completion: ((Int64?) -> Void)?) {
+        if let nextRound = round {
+            self.api.waitRound(with: WaitRoundDraft(round: nextRound)) { roundDetailResponse in
+                let round = roundDetailResponse.object?.lastRound
+                self.fetchAllAccounts {
+                    completion?(round)
+                }
+            }
+        } else {
+            api.getTransactionParams { response in
+                switch response {
+                case .failure:
+                    if let round = self.currentRound {
+                        self.currentRound = round + 1
+                    }
+                case let .success(params):
+                    self.currentRound = params.lastRound
+                }
+                
+                guard let round = self.currentRound else {
+                    completion?(nil)
+                    return
+                }
+                
+                self.api.waitRound(with: WaitRoundDraft(round: round)) { roundDetailResponse in
+                    let round = roundDetailResponse.object?.lastRound
+                    self.fetchAllAccounts {
+                        completion?(round)
+                    }
+                }
+            }
+        }
     }
 }

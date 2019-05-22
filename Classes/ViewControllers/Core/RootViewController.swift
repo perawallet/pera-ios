@@ -81,9 +81,5 @@ class RootViewController: UIViewController {
     
     func launch() {
         open(.home(route: nil), by: .present, animated: false)
-        
-        DispatchQueue.main.async {
-            UIApplication.shared.appDelegate?.validateAccountManagerFetchPolling()
-        }
     }
 }
