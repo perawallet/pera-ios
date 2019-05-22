@@ -394,6 +394,15 @@
 		2B1B77B4229567290021A6CC /* AuctionDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1B77B3229567290021A6CC /* AuctionDetailViewModel.swift */; };
 		2B1B77B6229567360021A6CC /* MyBidsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1B77B5229567360021A6CC /* MyBidsViewModel.swift */; };
 		2B1B77B8229567400021A6CC /* PlaceBidViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1B77B7229567400021A6CC /* PlaceBidViewModel.swift */; };
+		2B1B77B92295C5A30021A6CC /* Bid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA09A9022941329009DC24D /* Bid.swift */; };
+		2B1B77BA2295C5A30021A6CC /* AuctionUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA09A9222946811009DC24D /* AuctionUser.swift */; };
+		2B1B77BB2295C5A30021A6CC /* ChartData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA09A942294BA07009DC24D /* ChartData.swift */; };
+		2B1B77BC2295C5A30021A6CC /* BidResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA09A962294BA20009DC24D /* BidResponse.swift */; };
+		2B1B77BD2295C5A30021A6CC /* AuctionDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1B77B3229567290021A6CC /* AuctionDetailViewModel.swift */; };
+		2B1B77BE2295C5A30021A6CC /* MyBidsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1B77B5229567360021A6CC /* MyBidsViewModel.swift */; };
+		2B1B77BF2295C5A30021A6CC /* PlaceBidViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1B77B7229567400021A6CC /* PlaceBidViewModel.swift */; };
+		2B1B77C02295C5A30021A6CC /* LimitOrderCellContextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA09A8B229369BD009DC24D /* LimitOrderCellContextView.swift */; };
+		2B1B77C12295C5A30021A6CC /* LimitOrderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA09A8D229369D5009DC24D /* LimitOrderCell.swift */; };
 		2B25BB47225E03610092C972 /* DetailedInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B25BB46225E03610092C972 /* DetailedInformationView.swift */; };
 		2B25BB49225EACB60092C972 /* RequestAlgosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B25BB48225EACB60092C972 /* RequestAlgosView.swift */; };
 		2B25BB4B225EAD600092C972 /* RequestAlgosPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B25BB4A225EAD600092C972 /* RequestAlgosPreviewViewController.swift */; };
@@ -3085,6 +3094,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2B1B77B92295C5A30021A6CC /* Bid.swift in Sources */,
+				2B1B77BA2295C5A30021A6CC /* AuctionUser.swift in Sources */,
+				2B1B77BB2295C5A30021A6CC /* ChartData.swift in Sources */,
+				2B1B77BC2295C5A30021A6CC /* BidResponse.swift in Sources */,
+				2B1B77BD2295C5A30021A6CC /* AuctionDetailViewModel.swift in Sources */,
+				2B1B77BE2295C5A30021A6CC /* MyBidsViewModel.swift in Sources */,
+				2B1B77BF2295C5A30021A6CC /* PlaceBidViewModel.swift in Sources */,
+				2B1B77C02295C5A30021A6CC /* LimitOrderCellContextView.swift in Sources */,
+				2B1B77C12295C5A30021A6CC /* LimitOrderCell.swift in Sources */,
 				17BD4DF12292F1260003E49A /* AddNodeViewController.swift in Sources */,
 				17BD4DF22292F1260003E49A /* AdaptiveLayout.swift in Sources */,
 				17BD4DF32292F1260003E49A /* TransactionDraft.swift in Sources */,
