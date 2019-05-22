@@ -162,10 +162,6 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
                     switch self.mode {
                     case .initialize:
                         self.open(.home(route: nil), by: .launch)
-                        
-                        DispatchQueue.main.async {
-                            UIApplication.shared.appDelegate?.validateAccountManagerFetchPolling()
-                        }
                     case .new:
                         self.closeScreen(by: .dismiss, animated: false) {
                             if let accountsViewController = UIApplication.topViewController() as? AccountsViewController,

@@ -36,4 +36,19 @@ extension API {
                 }
         )
     }
+    
+    @discardableResult
+    func waitRound(
+        with draft: WaitRoundDraft,
+        then completion: APICompletionHandler<RoundDetail>? = nil
+        ) -> EndpointInteractable? {
+        
+        return send(
+            Endpoint<RoundDetail>(Path("/v1/status/wait-for-block-after/\(draft.round)"))
+                .httpMethod(.get)
+                .handler { response in
+                    completion?(response)
+                }
+        )
+    }
 }
