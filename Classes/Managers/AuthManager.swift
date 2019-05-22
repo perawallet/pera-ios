@@ -10,16 +10,21 @@ import UIKit
 import AuthenticationServices
 import SafariServices
 
+protocol AuthManagerDelegate: class {
+    func authManager(_ authManager: AuthManager, didCaptureToken token: String?, withError error: Error?)
+}
+
 class AuthManager: NSObject {
+    private let callbackUrlScheme = "algorand://coinlist/oauth"
+    private let clientId = "a06e76e5011e6a094739270c8820f6e44a02f9a81d93ab32f5fc584fab31b5f2"
     
-    private lazy var url: String = {
-        let clientId = "7fb1221754c8aa17172fdef40d76f4478b1edbba3349f3641928e89349459efe"
-        return "https://coinlist.co/oauth/authorize?client_id=\(clientId)&redirect_uri=https://www.algorand.com"
+    private lazy var oauthUrl: String = {
+        "https://demo.coinlist.co/oauth/authorize?client_id=\(clientId)&redirect_uri=\(callbackUrlScheme)"
     }()
     
     @available(iOS 12.0, *)
     fileprivate lazy var webAuthenticationSession: ASWebAuthenticationSession? = {
-        guard let url = URL(string: self.url) else {
+        guard let authUrl = URL(string: oauthUrl) else {
             return nil
         }
         
@@ -27,33 +32,43 @@ class AuthManager: NSObject {
             self.processAuthentication(url: successUrl, error: error)
         }
         
-        let session = ASWebAuthenticationSession(url: url, callbackURLScheme: nil, completionHandler: handler)
+        let session = ASWebAuthenticationSession(url: authUrl, callbackURLScheme: callbackUrlScheme, completionHandler: handler)
         
         return session
     }()
     
     fileprivate lazy var safariAuthenticationSession: SFAuthenticationSession? = {
-        guard let url = URL(string: self.url) else {
+        guard let authUrl = URL(string: oauthUrl) else {
             return nil
         }
         
-        let authenticationSession = SFAuthenticationSession(url: url, callbackURLScheme: nil) { successUrl, error in
+        let handler: SFAuthenticationSession.CompletionHandler = { successUrl, error in
             self.processAuthentication(url: successUrl, error: error)
         }
         
-        return authenticationSession
+        let session = SFAuthenticationSession(url: authUrl, callbackURLScheme: callbackUrlScheme, completionHandler: handler)
+        
+        return session
     }()
+    
+    weak var delegate: AuthManagerDelegate?
     
     func authorize() {
         if #available(iOS 12.0, *) {
             webAuthenticationSession?.start()
         } else {
-            
             safariAuthenticationSession?.start()
         }
     }
     
     func processAuthentication(url: URL?, error: Error?) {
+        guard error == nil, let successURL = url else {
+            delegate?.authManager(self, didCaptureToken: nil, withError: error)
+            return
+        }
         
+        let oauthToken = NSURLComponents(string: (successURL.absoluteString))?.queryItems?.first { $0.name == "code" }
+        
+        delegate?.authManager(self, didCaptureToken: oauthToken?.value, withError: nil)
     }
 }
