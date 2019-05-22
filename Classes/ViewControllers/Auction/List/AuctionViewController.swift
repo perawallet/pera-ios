@@ -55,6 +55,8 @@ class AuctionViewController: BaseViewController {
     
     private var pollingOperation: PollingOperation?
     
+    private let authManager = AuthManager()
+    
     private var canDisplayActiveAuctionEmptyState = false
     private var canDisplayPastAuctionsEmptyState = false
     
@@ -66,6 +68,7 @@ class AuctionViewController: BaseViewController {
         auctionIntroductionView.delegate = self
         auctionsCollectionView.dataSource = self
         auctionsCollectionView.delegate = self
+        authManager.delegate = self
     }
     
     override func configureAppearance() {
@@ -73,15 +76,16 @@ class AuctionViewController: BaseViewController {
         
         navigationItem.title = "auction-title".localized
         
-        SVProgressHUD.show(withStatus: "title-loading".localized)
+        if session?.coinlistToken == nil {
+            return
+        }
         
+        SVProgressHUD.show(withStatus: "title-loading".localized)
         fetchActiveAuction()
     }
     
     private func fetchActiveAuction(withReload reload: Bool = true) {
-        let activeAuctionDraft = AuctionDraft(accessToken: "1dd6e671c4ba97c1772b53bdb31f7a7fd775684251a64f17aa00879721c7a94e")
-        
-        api?.fetchActiveAuction(with: activeAuctionDraft) { response in
+        api?.fetchActiveAuction { response in
             switch response {
             case let .success(auction):
                 self.activeAuction = auction
@@ -107,12 +111,7 @@ class AuctionViewController: BaseViewController {
     }
     
     private func fetchPastAuctions(top: Int) {
-        let pastAuctionsDraft = AuctionDraft(
-            accessToken: "1dd6e671c4ba97c1772b53bdb31f7a7fd775684251a64f17aa00879721c7a94e",
-            topCount: top
-        )
-        
-        api?.fetchPastAuctions(with: pastAuctionsDraft) { response in
+        api?.fetchPastAuctions(for: top) { response in
             switch response {
             case let .success(pastAuctions):
                 self.auctions = pastAuctions
@@ -141,6 +140,10 @@ class AuctionViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        if session?.coinlistToken == nil {
+            return
+        }
+        
         pollingOperation = PollingOperation(interval: 5.0) { [weak self] in
             self?.fetchActiveAuction(withReload: false)
         }
@@ -159,8 +162,17 @@ class AuctionViewController: BaseViewController {
     override func prepareLayout() {
         super.prepareLayout()
         
-        setupAuctionIntroductionViewLayout()
-        setupAuctionsCollectionViewLayout()
+        prepareLayoutForToken()
+    }
+    
+    private func prepareLayoutForToken() {
+        if session?.coinlistToken == nil {
+            setupAuctionIntroductionViewLayout()
+        } else {
+            auctionIntroductionView.removeFromSuperview()
+            
+            setupAuctionsCollectionViewLayout()
+        }
     }
     
     private func setupAuctionIntroductionViewLayout() {
@@ -187,7 +199,7 @@ class AuctionViewController: BaseViewController {
 extension AuctionViewController: AuctionIntroductionViewDelegate {
     
     func auctionIntroductionViewDidTapGetStartedButton(_ auctionIntroductionView: AuctionIntroductionView) {
-        auctionIntroductionView.isHidden = true
+        authManager.authorize()
     }
 }
 
@@ -299,5 +311,26 @@ extension AuctionViewController: ActiveAuctionCellDelegate {
         }
         
         open(.auctionDetail(auction: auction, activeAuction: activeAuction), by: .push)
+    }
+}
+
+// MARK: AuthManagerDelegate
+
+extension AuctionViewController: AuthManagerDelegate {
+    
+    func authManager(_ authManager: AuthManager, didCaptureToken token: String?, withError error: Error?) {
+        if error != nil {
+            displaySimpleAlertWith(title: "title-error".localized, message: "auction-auth-error-message".localized)
+        }
+        
+        guard let token = token else {
+            return
+        }
+        
+        session?.coinlistToken = token
+        prepareLayoutForToken()
+        
+        SVProgressHUD.show(withStatus: "title-loading".localized)
+        fetchActiveAuction()
     }
 }

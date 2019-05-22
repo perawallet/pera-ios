@@ -40,7 +40,7 @@ class TabBarController: UITabBarController {
     
     private let route: Screen?
     
-    private let isAuctionEnabled = false
+    private let isAuctionEnabled = true
     
     // MARK: Components
     

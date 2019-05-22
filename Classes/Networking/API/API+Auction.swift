@@ -11,13 +11,13 @@ import Magpie
 extension API {
     
     @discardableResult
-    func fetchPastAuctions(
-        with draft: AuctionDraft,
-        completion: APICompletionHandler<[Auction]>? = nil
-    ) -> EndpointInteractable? {
+    func fetchPastAuctions(for top: Int, completion: APICompletionHandler<[Auction]>? = nil) -> EndpointInteractable? {
+        guard let coinlistToken = session?.coinlistToken else {
+            return nil
+        }
         
-        var params: Params = [.custom(key: AlgorandParamPairKey.accessToken, value: draft.accessToken)]
-        params.appendIfPresent(draft.topCount, for: AlgorandParamPairKey.top)
+        var params: Params = [.custom(key: AlgorandParamPairKey.accessToken, value: coinlistToken)]
+        params.appendIfPresent(top, for: AlgorandParamPairKey.top)
         
         return send(
             Endpoint<[Auction]>(Path("/api/algorand/auctions/"))
@@ -30,16 +30,16 @@ extension API {
     }
     
     @discardableResult
-    func fetchActiveAuction(
-        with draft: AuctionDraft,
-        completion: APICompletionHandler<ActiveAuction>? = nil
-    ) -> EndpointInteractable? {
+    func fetchActiveAuction(completion: APICompletionHandler<ActiveAuction>? = nil) -> EndpointInteractable? {
+        guard let coinlistToken = session?.coinlistToken else {
+            return nil
+        }
         
         return send(
             Endpoint<ActiveAuction>(Path("/api/algorand/last-auction-status/"))
                 .base(Environment.current.cointlistApi)
                 .query([
-                    .custom(key: AlgorandParamPairKey.accessToken, value: draft.accessToken)
+                    .custom(key: AlgorandParamPairKey.accessToken, value: coinlistToken)
                 ])
                 .handler { response in
                     completion?(response)
@@ -48,16 +48,16 @@ extension API {
     }
     
     @discardableResult
-    func fetchCoinlistUser(
-        with draft: AuctionDraft,
-        completion: APICompletionHandler<CoinlistUser>? = nil
-    ) -> EndpointInteractable? {
+    func fetchCoinlistUser(completion: APICompletionHandler<CoinlistUser>? = nil) -> EndpointInteractable? {
+        guard let coinlistToken = session?.coinlistToken else {
+            return nil
+        }
         
         return send(
             Endpoint<CoinlistUser>(Path("/api/v1/me/"))
                 .base(Environment.current.cointlistApi)
                 .query([
-                    .custom(key: AlgorandParamPairKey.accessToken, value: draft.accessToken)
+                    .custom(key: AlgorandParamPairKey.accessToken, value: coinlistToken)
                 ])
                 .handler { response in
                     completion?(response)

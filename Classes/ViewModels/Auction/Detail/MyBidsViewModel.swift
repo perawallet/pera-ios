@@ -40,8 +40,18 @@ class MyBidsViewModel {
         cell.contextView.algosAmountLabel.text = Int64(((amount / 100) * (maxPrice / 100))).toAlgos.toDecimalStringForLabel
     }
     
-    func configure(_ view: MyBidsView, with value: Int) {
-        view.totalPotentialAlgosDisplayView.amountLabel.text = "\(value)"
+    func configure(_ view: MyBidsView, with bids: [Bid]) {
+        let totalAmount = bids.reduce(0) {
+            guard let amount = $1.amount,
+                let maxPrice = $1.maxPrice else {
+                    return 0
+            }
+            
+            let total = ((amount / 100) * (maxPrice / 100))
+            return $0 + total
+        }
+        
+        view.totalPotentialAlgosDisplayView.amountLabel.text = Int64(totalAmount).toAlgos.toDecimalStringForLabel
     }
     
     private func convertToDollars(_ value: Int) -> String {

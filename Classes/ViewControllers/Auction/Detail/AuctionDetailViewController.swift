@@ -136,9 +136,7 @@ class AuctionDetailViewController: BaseScrollViewController {
     }
     
     private func fetchActiveAuction() {
-        let activeAuctionDraft = AuctionDraft(accessToken: "1dd6e671c4ba97c1772b53bdb31f7a7fd775684251a64f17aa00879721c7a94e")
-        
-        api?.fetchActiveAuction(with: activeAuctionDraft) { _ in
+        api?.fetchActiveAuction { _ in
             
         }
     }

@@ -20,7 +20,7 @@ class AuthManager: NSObject {
     private lazy var oauthUrl: String = {
         let host = Environment.current.coinlistHost
         let clientId = Environment.current.coinlistClientId
-        return "\(host)/oauth/authorize?client_id=\(clientId)&redirect_uri=\(callbackUrlScheme)"
+        return "https://\(host)/oauth/authorize?client_id=\(clientId)&redirect_uri=\(callbackUrlScheme)"
     }()
     
     @available(iOS 12.0, *)

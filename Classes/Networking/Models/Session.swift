@@ -14,6 +14,7 @@ class Session: Storable {
     
     private let privateStorageKey = "com.algorand.algorand.token.private"
     private let privateKey = "com.algorand.algorand.token.private.key"
+    private let coinlistTokenKey = "com.algorand.algorand.token.coinlist"
     
     private var privateStorage: KeychainAccess.Keychain {
         return KeychainAccess.Keychain(service: privateStorageKey).accessibility(.whenUnlocked)
@@ -95,6 +96,20 @@ class Session: Storable {
         
         set {
             Cache.configuration = newValue
+        }
+    }
+    
+    var coinlistToken: String? {
+        get {
+            return string(with: coinlistTokenKey, to: .keychain)
+        }
+        
+        set {
+            if let token = newValue {
+                save(token, for: coinlistTokenKey, to: .keychain)
+            } else {
+                remove(with: coinlistTokenKey, from: .keychain)
+            }
         }
     }
     

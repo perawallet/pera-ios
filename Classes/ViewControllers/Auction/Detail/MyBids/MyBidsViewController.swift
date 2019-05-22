@@ -43,6 +43,12 @@ class MyBidsViewController: BaseViewController {
     
     // MARK: Setup
     
+    override func configureAppearance() {
+        super.configureAppearance()
+        
+       viewModel.configure(myBidsView, with: bids)
+    }
+    
     override func linkInteractors() {
         myBidsView.myBidsCollectionView.delegate = self
         myBidsView.myBidsCollectionView.dataSource = self
@@ -69,6 +75,8 @@ class MyBidsViewController: BaseViewController {
             switch response {
             case let .success(myBids):
                 self.bids = myBids
+                
+                self.viewModel.configure(self.myBidsView, with: myBids)
                 self.updateCollectionViewLayoutForBids()
             case let .failure(error):
                 print(error)

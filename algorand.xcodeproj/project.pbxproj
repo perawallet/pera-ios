@@ -342,7 +342,6 @@
 		17BD4F012292F1260003E49A /* NSAttributedString+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8C12792241970F00E34D37 /* NSAttributedString+Additions.swift */; };
 		17BD4F022292F1260003E49A /* DefaultAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8954AD2243D55200D6D068 /* DefaultAlertView.swift */; };
 		17BD4F032292F1260003E49A /* SingleLineInputField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8954C1224404B700D6D068 /* SingleLineInputField.swift */; };
-		17BD4F042292F1260003E49A /* AuctionDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3F3911228C73D0008BBE75 /* AuctionDraft.swift */; };
 		17BD4F052292F1260003E49A /* PollingOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF53173224A940E00A7455F /* PollingOperation.swift */; };
 		17BD4F062292F1260003E49A /* AccountManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F9E926225796DA004CDF24 /* AccountManager.swift */; };
 		17BD4F082292F1260003E49A /* Pods_algorand.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01F66EBBAFA146AFC193D69A /* Pods_algorand.framework */; };
@@ -417,7 +416,6 @@
 		2B3F390A228C3DA8008BBE75 /* AuctionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3F3909228C3DA8008BBE75 /* AuctionViewModel.swift */; };
 		2B3F390C228C4472008BBE75 /* ActiveAuction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3F390B228C4472008BBE75 /* ActiveAuction.swift */; };
 		2B3F3910228C4DC0008BBE75 /* CoinlistTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3F390F228C4DC0008BBE75 /* CoinlistTransaction.swift */; };
-		2B3F3912228C73D0008BBE75 /* AuctionDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3F3911228C73D0008BBE75 /* AuctionDraft.swift */; };
 		2B3F3914228C78F9008BBE75 /* ActiveAuctionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3F3913228C78F9008BBE75 /* ActiveAuctionCell.swift */; };
 		2B3F3916228DCD9E008BBE75 /* PastAuctionsEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3F3915228DCD9E008BBE75 /* PastAuctionsEmptyView.swift */; };
 		2B3F3918228DCDB3008BBE75 /* PastAuctionsEmptyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3F3917228DCDB3008BBE75 /* PastAuctionsEmptyCell.swift */; };
@@ -737,7 +735,6 @@
 		2B3F3909228C3DA8008BBE75 /* AuctionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionViewModel.swift; sourceTree = "<group>"; };
 		2B3F390B228C4472008BBE75 /* ActiveAuction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveAuction.swift; sourceTree = "<group>"; };
 		2B3F390F228C4DC0008BBE75 /* CoinlistTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinlistTransaction.swift; sourceTree = "<group>"; };
-		2B3F3911228C73D0008BBE75 /* AuctionDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionDraft.swift; sourceTree = "<group>"; };
 		2B3F3913228C78F9008BBE75 /* ActiveAuctionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveAuctionCell.swift; sourceTree = "<group>"; };
 		2B3F3915228DCD9E008BBE75 /* PastAuctionsEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastAuctionsEmptyView.swift; sourceTree = "<group>"; };
 		2B3F3917228DCDB3008BBE75 /* PastAuctionsEmptyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastAuctionsEmptyCell.swift; sourceTree = "<group>"; };
@@ -1094,7 +1091,6 @@
 				2B6ED95C22608FE700787984 /* HistoryDraft.swift */,
 				2B6ED961226105CD00787984 /* TransactionPreviewDraft.swift */,
 				17D04F4B225F90D70051BC43 /* NodeTestDraft.swift */,
-				2B3F3911228C73D0008BBE75 /* AuctionDraft.swift */,
 				175CE59722955CEE003F7C02 /* WaitRoundDraft.swift */,
 			);
 			path = Drafts;
@@ -3382,7 +3378,6 @@
 				17BD4F012292F1260003E49A /* NSAttributedString+Additions.swift in Sources */,
 				17BD4F022292F1260003E49A /* DefaultAlertView.swift in Sources */,
 				17BD4F032292F1260003E49A /* SingleLineInputField.swift in Sources */,
-				17BD4F042292F1260003E49A /* AuctionDraft.swift in Sources */,
 				17BD4F052292F1260003E49A /* PollingOperation.swift in Sources */,
 				17BD4F062292F1260003E49A /* AccountManager.swift in Sources */,
 			);
@@ -3680,7 +3675,6 @@
 				2B8C127A2241970F00E34D37 /* NSAttributedString+Additions.swift in Sources */,
 				2B8954AE2243D55200D6D068 /* DefaultAlertView.swift in Sources */,
 				2B8954C2224404B700D6D068 /* SingleLineInputField.swift in Sources */,
-				2B3F3912228C73D0008BBE75 /* AuctionDraft.swift in Sources */,
 				2BF53174224A940E00A7455F /* PollingOperation.swift in Sources */,
 				17F9E927225796DA004CDF24 /* AccountManager.swift in Sources */,
 			);

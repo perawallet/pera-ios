@@ -274,6 +274,7 @@
 "auction-open-title" = "OPEN";
 "auction-closed-title" = "CLOSED";
 "auction-past-auctions" = "Past Auctions";
+"auction-auth-error-message" = "Couldn't authenticate your coinlist account.";
 
 // MARK: Auction Detail
 
