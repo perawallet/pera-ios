@@ -92,10 +92,6 @@ class SplashViewController: BaseViewController {
                     self.dismiss(animated: false) {
                         rootController.open(.home(route: nil), by: .launch, animated: false)
                     }
-                    
-                    DispatchQueue.main.async {
-                        UIApplication.shared.appDelegate?.validateAccountManagerFetchPolling()
-                    }
                 }
             } else {
                 let viewController = self.open(.nodeSettings(mode: .checkHealth), by: .present) as? NodeSettingsViewController

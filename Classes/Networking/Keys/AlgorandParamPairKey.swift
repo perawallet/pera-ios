@@ -16,6 +16,9 @@ enum AlgorandParamPairKey: String, CodingKey {
     case top = "top"
     case username = "username"
     case bid = "Bid"
+    case max = "max"
+    case from = "fromDate"
+    case to = "toDate"
 }
 
 extension AlgorandParamPairKey: ParamsPairKey {

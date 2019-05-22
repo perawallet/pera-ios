@@ -18,7 +18,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     private enum Constants {
         static let sessionInvalidateTime: Double = 300.0
-        static let accountManagerPollintTime: Double = 5.0
     }
     
     private lazy var session = Session()
@@ -34,7 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private(set) lazy var accountManager: AccountManager = AccountManager(api: api)
     
     private var timer: PollingOperation?
-    private var accountFetchTimer: PollingOperation?
+    private var shouldInvalidateAccountFetch = false
     
     private var shouldInvalidateUserSession: Bool = false
     
@@ -121,7 +120,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     lazy var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "algorand")
-        container.loadPersistentStores { _, error in
+        container.loadPersistentStores { storeDescription, error in
+            if var url = storeDescription.url {
+                var resourceValues = URLResourceValues()
+                resourceValues.isExcludedFromBackup = true
+                
+                do {
+                    try url.setResourceValues(resourceValues)
+                } catch {
+                }
+            }
+            
             if let error = error as NSError? {
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
@@ -143,23 +152,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
-
-    func validateAccountManagerFetchPolling() {
+    
+    private func fetchAccounts(round: Int64? = nil) {
+        guard !shouldInvalidateAccountFetch else {
+            return
+        }
+        
         if let user = session.authenticatedUser {
-            
-            invalidateAccountManagerFetchPolling()
-            
             accountManager.user = user
             
-            accountFetchTimer = PollingOperation(interval: Constants.accountManagerPollintTime) { [weak self] in
-                self?.accountManager.fetchAllAccounts(completion: nil)
+            self.accountManager.waitForNextRoundAndFetchAccounts(round: round) { nextRound in
+                self.fetchAccounts(round: nextRound)
             }
-            
-            accountFetchTimer?.start()
         }
+    }
+
+    func validateAccountManagerFetchPolling() {
+        shouldInvalidateAccountFetch = false
+        
+        fetchAccounts()
     }
     
     func invalidateAccountManagerFetchPolling() {
-        accountFetchTimer?.invalidate()
+        shouldInvalidateAccountFetch = true
     }
 }

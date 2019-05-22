@@ -199,10 +199,6 @@ extension ChoosePasswordViewController: ChoosePasswordViewDelegate {
             
             SVProgressHUD.dismiss(withDelay: 1.0) {
                 self.open(.home(route: self.route), by: .launch)
-                
-                DispatchQueue.main.async {
-                    UIApplication.shared.appDelegate?.validateAccountManagerFetchPolling()
-                }
             }
         }
     }

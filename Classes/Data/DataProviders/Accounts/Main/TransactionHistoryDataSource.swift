@@ -165,10 +165,6 @@ extension TransactionHistoryDataSource {
         withRefresh refresh: Bool,
         then handler: @escaping ([Transaction]?, Error?) -> Void
     ) {
-        guard let rounds = calculateRounds(from: dates) else {
-            return
-        }
-        
         if refresh {
             transactions.removeAll()
             currentPaginationOffset = Constant.numberOfRoundsInTwoDays
@@ -178,12 +174,12 @@ extension TransactionHistoryDataSource {
         
        // let firstRound = max(rounds.0, rounds.1 - currentPaginationOffset)
         
-        fetchRequest = api?.fetchTransactions(between: (rounds.0, rounds.1), for: account) { response in
+        fetchRequest = api?.fetchTransactions(between: dates, for: account) { response in
             switch response {
             case let .failure(error):
                 handler(nil, error)
             case let .success(transactions):
-                self.transactions = transactions.transactions.reversed()
+                self.transactions = transactions.transactions
                 handler(transactions.transactions, nil)
             }
         }
@@ -245,10 +241,6 @@ extension TransactionHistoryDataSource {
         withRefresh refresh: Bool,
         then handler: @escaping ([Transaction]?, Error?) -> Void
     ) {
-        guard let params = transactionParams else {
-            return
-        }
-        
         if refresh {
             transactions.removeAll()
             currentPaginationOffset = Constant.numberOfRoundsInTwoDays
@@ -256,16 +248,12 @@ extension TransactionHistoryDataSource {
             currentPaginationOffset += Constant.numberOfRoundsInTwoDays
         }
         
-        //let firstRound = max(0, params.lastRound - currentPaginationOffset)
-        
-        let firstRound = max(0, params.lastRound - Constant.numberOfRoundsInTwoDays)
-        
-        fetchRequest = api?.fetchTransactions(between: (firstRound, params.lastRound), for: account) { response in
+        fetchRequest = api?.fetchTransactions(between: nil, for: account) { response in
             switch response {
             case let .failure(error):
                 handler(nil, error)
             case let .success(transactions):
-                self.transactions = transactions.transactions.reversed()
+                self.transactions = transactions.transactions
                 handler(transactions.transactions, nil)
             }
         }

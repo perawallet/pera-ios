@@ -121,10 +121,6 @@ extension AccountNameSetupViewController {
             
             open(.home(route: nil), by: .launch)
         }
-        
-        DispatchQueue.main.async {
-            UIApplication.shared.appDelegate?.validateAccountManagerFetchPolling()
-        }
     }
 }
 

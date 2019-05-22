@@ -40,6 +40,8 @@ class TabBarController: UITabBarController {
     
     private let route: Screen?
     
+    private let isAuctionEnabled = false
+    
     // MARK: Components
     
     private lazy var customTabBar: TabBar = {
@@ -69,7 +71,11 @@ class TabBarController: UITabBarController {
         
         configureAccountsTab()
         configureHistoryTab()
-        configureAuctionTab()
+        
+        if isAuctionEnabled {
+            configureAuctionTab()
+        }
+        
         configureContactsTab()
         configureSettingsTab()
         
@@ -86,13 +92,19 @@ class TabBarController: UITabBarController {
     private func setupTabBarController() {
         delegate = self
         
-        viewControllers = [
-            accountsNavigationController,
-            historyNavigationController,
-            auctionNavigationController,
-            contactsNavigationController,
-            settingsNavigationController
-        ]
+        var controllers = [UIViewController]()
+        
+        controllers.append(accountsNavigationController)
+        controllers.append(historyNavigationController)
+        
+        if isAuctionEnabled {
+            controllers.append(auctionNavigationController)
+        }
+        
+        controllers.append(contactsNavigationController)
+        controllers.append(settingsNavigationController)
+        
+        viewControllers = controllers
     }
     
     private func configureAccountsTab() {
