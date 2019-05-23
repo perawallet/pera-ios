@@ -143,9 +143,8 @@ extension API {
     }
     
     @discardableResult
-    func fetchBids(in auction: String, completion: APICompletionHandler<[Bid]>? = nil) -> EndpointInteractable? {
-        guard let coinlistToken = session?.coinlistToken,
-            let userId = session?.coinlistUserId else {
+    func fetchBids(in auction: String, for userId: String, completion: APICompletionHandler<[Bid]>? = nil) -> EndpointInteractable? {
+        guard let coinlistToken = session?.coinlistToken else {
             return nil
         }
         

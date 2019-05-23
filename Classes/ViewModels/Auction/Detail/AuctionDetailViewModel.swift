@@ -11,6 +11,21 @@ import UIKit
 class AuctionDetailViewModel {
     
     func configure(_ view: AuctionDetailView, with auction: Auction, and activeAuction: ActiveAuction) {
+        view.auctionDetailHeaderView.timerView.mode = .initial
         
+        if let startTime = activeAuction.estimatedAuctionRoundStart {
+            view.auctionDetailHeaderView.timerView.time = startTime.timeIntervalSinceNow
+        }
+        
+        view.auctionDetailHeaderView.timerView.runTimer()
+        
+        if let remainingAlgos = activeAuction.remainingAlgos?.toAlgos,
+            let totalAlgos = auction.algos?.toAlgos {
+            view.auctionDetailHeaderView.remainingAlgosView.algosAmountView.amountLabel.text = remainingAlgos.toDecimalStringForLabel
+            view.auctionDetailHeaderView.remainingAlgosView.algosAmountView.amountLabel.textColor = SharedColors.blue
+            view.auctionDetailHeaderView.remainingAlgosView.algosAmountView.algoIconImageView.image = img("icon-algo-small-blue")
+            
+            view.auctionDetailHeaderView.remainingAlgosView.percentageLabel.text = "(\(Int(remainingAlgos * 100 / totalAlgos))%)"
+        }
     }
 }

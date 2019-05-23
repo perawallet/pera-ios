@@ -28,19 +28,19 @@ class AuctionDetailView: BaseView {
     
     // MARK: Components
 
-    private lazy var auctionDetailHeaderView: AuctionDetailHeaderView = {
+    private(set) lazy var auctionDetailHeaderView: AuctionDetailHeaderView = {
         let view = AuctionDetailHeaderView()
         return view
     }()
     
-    private lazy var placeBidButton: AuctionDetailHeaderButton = {
+    private(set) lazy var placeBidButton: AuctionDetailHeaderButton = {
         let button = AuctionDetailHeaderButton()
         button.isSelected = true
         button.setTitle("auction-detail-place-bid-title".localized, for: .normal)
         return button
     }()
     
-    private lazy var myBidsButton: AuctionDetailHeaderButton = {
+    private(set) lazy var myBidsButton: AuctionDetailHeaderButton = {
         let button = AuctionDetailHeaderButton()
         button.setTitle("auction-detail-my-bids-title".localized, for: .normal)
         return button

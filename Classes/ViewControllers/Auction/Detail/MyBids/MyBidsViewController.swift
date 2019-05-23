@@ -23,6 +23,7 @@ class MyBidsViewController: BaseViewController {
     private(set) var bids = [Bid]()
     
     var auction: Auction
+    var user: AuctionUser
     var activeAuction: ActiveAuction
     
     // MARK: Components
@@ -34,8 +35,9 @@ class MyBidsViewController: BaseViewController {
     
     // MARK: Initialization
     
-    init(auction: Auction, activeAuction: ActiveAuction, configuration: ViewControllerConfiguration) {
+    init(auction: Auction, user: AuctionUser, activeAuction: ActiveAuction, configuration: ViewControllerConfiguration) {
         self.auction = auction
+        self.user = user
         self.activeAuction = activeAuction
         
         super.init(configuration: configuration)
@@ -71,7 +73,11 @@ class MyBidsViewController: BaseViewController {
     }
     
     func fetchMyBids() {
-        api?.fetchBids(in: "\(auction.id)") { response in
+        guard let username = user.username else {
+            return
+        }
+        
+        api?.fetchBids(in: "\(auction.id)", for: username) { response in
             switch response {
             case let .success(myBids):
                 self.bids = myBids

@@ -36,12 +36,14 @@ class AuctionDetailViewController: BaseScrollViewController {
     
     private lazy var placeBidViewController = PlaceBidViewController(
         auction: auction,
+        user: user,
         activeAuction: activeAuction,
         configuration: configuration
     )
     
     private lazy var myBidsViewController = MyBidsViewController(
         auction: auction,
+        user: user,
         activeAuction: activeAuction,
         configuration: configuration
     )
@@ -138,20 +140,36 @@ class AuctionDetailViewController: BaseScrollViewController {
     }
     
     private func fetchActiveAuction() {
-        api?.fetchActiveAuction { _ in
-            
+        api?.fetchActiveAuction { response in
+            switch response {
+            case let .success(activeAuction):
+                self.activeAuction = activeAuction
+                self.viewModel.configure(self.auctionDetailView, with: self.auction, and: self.activeAuction)
+            case let .failure(error):
+                print(error)
+            }
         }
     }
     
     private func fetchAuctionDetails() {
-        api?.fetchAuctionDetails(with: "\(auction.id)") { _ in
-            
+        api?.fetchAuctionDetails(with: "\(auction.id)") { response in
+            switch response {
+            case let .success(auction):
+                self.auction = auction
+            case let .failure(error):
+                print(error)
+            }
         }
     }
     
     private func fetchChartValues() {
-        api?.fetchChartData(for: "\(auction.id)") { _ in
-            
+        api?.fetchChartData(for: "\(auction.id)") { response in
+            switch response {
+            case let .success(values):
+                self.chartValues = values
+            case let .failure(error):
+                print(error)
+            }
         }
     }
     

@@ -14,6 +14,7 @@ class PlaceBidViewController: BaseViewController {
     private let viewModel = PlaceBidViewModel()
     
     var auction: Auction
+    var user: AuctionUser
     var activeAuction: ActiveAuction
     
     // MARK: Components
@@ -25,8 +26,9 @@ class PlaceBidViewController: BaseViewController {
     
     // MARK: Initialization
     
-    init(auction: Auction, activeAuction: ActiveAuction, configuration: ViewControllerConfiguration) {
+    init(auction: Auction, user: AuctionUser, activeAuction: ActiveAuction, configuration: ViewControllerConfiguration) {
         self.auction = auction
+        self.user = user
         self.activeAuction = activeAuction
         
         super.init(configuration: configuration)
@@ -52,6 +54,10 @@ class PlaceBidViewController: BaseViewController {
             make.bottom.safeEqualToBottom(of: self)
         }
     }
+    
+    func configureView(with: Auction) {
+        
+    }
 }
 
 // MARK: PlaceBidViewDelegate
@@ -63,11 +69,11 @@ extension PlaceBidViewController: PlaceBidViewDelegate {
     }
     
     private func placeBid() {
-        let bidderAddress: String? = nil
-        let bidAmount: Int64 = 0
-        let maxPrice: Int64 = 0
-        let bidId: Int64 = 0
-        let auctionAddress: String? = nil
+        let bidderAddress: String? = user.address
+        let bidAmount: Int64 = 10000000
+        let maxPrice: Int64 = 8000
+        let bidId: Int64 = Int64(Date().timeIntervalSince1970)
+        let auctionAddress: String? = auction.auctionAddress
         let auctionId = Int64(auction.id)
         
         var signedBidError: NSError?
@@ -76,7 +82,15 @@ extension PlaceBidViewController: PlaceBidViewDelegate {
             return
         }
         
-        let bidString = bidData.base64EncodedString()
+        var signedBidDataError: NSError?
+        
+        guard let address = session?.currentAccount?.address,
+            let privateData = session?.privateData(forAccount: address),
+            let signedBidData = CryptoSignBid(privateData, bidData, &signedBidDataError) else {
+            return
+        }
+        
+        let bidString = signedBidData.base64EncodedString()
         
         api?.placeBid(with: bidString, for: "\(auction.id)") { response in
             switch response {

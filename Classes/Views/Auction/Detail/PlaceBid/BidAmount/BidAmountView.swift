@@ -55,7 +55,12 @@ class BidAmountView: BaseView {
             .withText("$0.00")
     }()
     
-    private lazy var availableAmountLabel: UILabel = {
+    private(set) lazy var bidAmountTextField: UITextField = {
+        let view = UITextField()
+        return view
+    }()
+    
+    private(set) lazy var availableAmountLabel: UILabel = {
         UILabel()
             .withAlignment(.right)
             .withLine(.single)

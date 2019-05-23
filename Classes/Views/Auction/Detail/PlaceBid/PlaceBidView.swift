@@ -46,7 +46,7 @@ class PlaceBidView: BaseView {
     private(set) lazy var placeBidButton: AuctionBidButton = {
         let button = AuctionBidButton()
         button.setTitle("auction-detail-place-bid-button-title".localized, for: .normal)
-        button.isEnabled = false
+        button.isEnabled = true
         return button
     }()
     

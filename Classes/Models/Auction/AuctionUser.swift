@@ -11,6 +11,7 @@ import Magpie
 class AuctionUser: Mappable {
     
     let username: String?
+    let name: String?
     let address: String?
     let availableAmount: Int?
     let lockedAmount: Int?
@@ -20,6 +21,7 @@ extension AuctionUser {
     
     enum CodingKeys: String, CodingKey {
         case username = "username"
+        case name = "name"
         case address = "Address"
         case availableAmount = "Available"
         case lockedAmount = "Locked"
