@@ -50,6 +50,9 @@ class AuctionViewController: BaseViewController {
     private var auctions = [Auction]()
     private var totalAlgosAmount: Int64?
     private var activeAuction: ActiveAuction?
+    private var auctionUser: AuctionUser?
+    
+    private var isFirstCoinlistSetup = false
     
     private let viewModel = AuctionViewModel()
     
@@ -81,7 +84,23 @@ class AuctionViewController: BaseViewController {
         }
         
         SVProgressHUD.show(withStatus: "title-loading".localized)
+        fetchAuctionUser()
         fetchActiveAuction()
+    }
+    
+    private func fetchAuctionUser() {
+        if session?.coinlistUserId == nil {
+            return
+        }
+        
+        api?.fetchAuctionUser { response in
+            switch response {
+            case let .success(user):
+                self.auctionUser = user
+            case let .failure(error):
+                print(error)
+            }
+        }
     }
     
     private func fetchActiveAuction(withReload reload: Bool = true) {
@@ -144,9 +163,17 @@ class AuctionViewController: BaseViewController {
             return
         }
         
+        if !isFirstCoinlistSetup {
+            startPolling()
+        }
+    }
+    
+    private func startPolling() {
         pollingOperation = PollingOperation(interval: 5.0) { [weak self] in
             self?.fetchActiveAuction(withReload: false)
         }
+        
+        isFirstCoinlistSetup = false
         
         pollingOperation?.start()
     }
@@ -306,11 +333,12 @@ extension AuctionViewController: ActiveAuctionCellDelegate {
     
     func activeAuctionCellDidTapEnterAuctionButton(_ activeAuctionCell: ActiveAuctionCell) {
         guard let auction = auctions.first,
+            let user = auctionUser,
             let activeAuction = activeAuction else {
                 return
         }
         
-        open(.auctionDetail(auction: auction, activeAuction: activeAuction), by: .push)
+        open(.auctionDetail(auction: auction, user: user, activeAuction: activeAuction), by: .push)
     }
 }
 
@@ -323,14 +351,44 @@ extension AuctionViewController: AuthManagerDelegate {
             displaySimpleAlertWith(title: "title-error".localized, message: "auction-auth-error-message".localized)
         }
         
-        guard let token = token else {
+        guard let code = token else {
             return
         }
         
-        session?.coinlistToken = token
-        prepareLayoutForToken()
+        isFirstCoinlistSetup = true
         
         SVProgressHUD.show(withStatus: "title-loading".localized)
-        fetchActiveAuction()
+        
+        let draft = CoinlistAuthenticationDraft(
+            clientId: Environment.current.coinlistClientId,
+            clientSecret: "e5d43226691ee9d3a89b7d65a5cb7cf5de5680cf703e9c17b9b7b87253ca21a7",
+            code: code,
+            grantType: "authorization_code",
+            redirectURI: authManager.callbackUrlScheme
+        )
+        
+        api?.authenticateCoinlist(with: draft) { response in
+            switch response {
+            case let .success(coinlistAuthentication):
+                self.session?.coinlistToken = coinlistAuthentication.accessToken
+                self.prepareLayoutForToken()
+                
+                self.api?.fetchCoinlistUser { response in
+                    switch response {
+                    case let .success(coinlistUser):
+                        self.session?.coinlistUserId = coinlistUser.id
+                        
+                        self.fetchAuctionUser()
+                        self.fetchActiveAuction()
+                        self.startPolling()
+                    case let .failure(error):
+                        print(error)
+                    }
+                }
+            case let .failure(error):
+                print(error)
+            }
+        }
+
     }
 }

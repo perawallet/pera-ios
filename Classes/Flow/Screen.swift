@@ -37,7 +37,7 @@ indirect enum Screen {
     case editNode(node: Node)
     case splash
     case transactionDetail(account: Account, transaction: Transaction, transactionType: TransactionType)
-    case auctionDetail(auction: Auction, activeAuction: ActiveAuction)
+    case auctionDetail(auction: Auction, user: AuctionUser, activeAuction: ActiveAuction)
 }
 
 extension Screen {

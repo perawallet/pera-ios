@@ -25,6 +25,7 @@ class AuctionDetailViewController: BaseScrollViewController {
     }()
     
     private var auction: Auction
+    private var user: AuctionUser
     private var activeAuction: ActiveAuction
     
     private var chartValues = [ChartData]()
@@ -47,8 +48,9 @@ class AuctionDetailViewController: BaseScrollViewController {
     
     // MARK: Initialization
     
-    init(auction: Auction, activeAuction: ActiveAuction, configuration: ViewControllerConfiguration) {
+    init(auction: Auction, user: AuctionUser, activeAuction: ActiveAuction, configuration: ViewControllerConfiguration) {
         self.auction = auction
+        self.user = user
         self.activeAuction = activeAuction
         
         super.init(configuration: configuration)
@@ -142,13 +144,13 @@ class AuctionDetailViewController: BaseScrollViewController {
     }
     
     private func fetchAuctionDetails() {
-        api?.fetchAuctionDetails(with: "") { _ in
+        api?.fetchAuctionDetails(with: "\(auction.id)") { _ in
             
         }
     }
     
     private func fetchChartValues() {
-        api?.fetchChartData(for: "") { _ in
+        api?.fetchChartData(for: "\(auction.id)") { _ in
             
         }
     }

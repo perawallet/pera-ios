@@ -19,6 +19,11 @@ enum AlgorandParamPairKey: String, CodingKey {
     case max = "max"
     case from = "fromDate"
     case to = "toDate"
+    case clientId = "client_id"
+    case clientSecret = "client_secret"
+    case code = "code"
+    case grantType = "grant_type"
+    case redirectUri = "redirect_uri"
 }
 
 extension AlgorandParamPairKey: ParamsPairKey {

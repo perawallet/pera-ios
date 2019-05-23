@@ -15,7 +15,7 @@ protocol AuthManagerDelegate: class {
 }
 
 class AuthManager: NSObject {
-    private let callbackUrlScheme = "algorand://coinlist/oauth"
+    let callbackUrlScheme = "algorand://coinlist/oauth"
     
     private lazy var oauthUrl: String = {
         let host = Environment.current.coinlistHost

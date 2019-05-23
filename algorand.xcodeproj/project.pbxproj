@@ -402,6 +402,10 @@
 		2B1B77BF2295C5A30021A6CC /* PlaceBidViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1B77B7229567400021A6CC /* PlaceBidViewModel.swift */; };
 		2B1B77C02295C5A30021A6CC /* LimitOrderCellContextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA09A8B229369BD009DC24D /* LimitOrderCellContextView.swift */; };
 		2B1B77C12295C5A30021A6CC /* LimitOrderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA09A8D229369D5009DC24D /* LimitOrderCell.swift */; };
+		2B1B77C522963C3E0021A6CC /* CoinlistAuthenticationDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1B77C422963C3E0021A6CC /* CoinlistAuthenticationDraft.swift */; };
+		2B1B77C722963C560021A6CC /* CoinlistAuthentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1B77C622963C560021A6CC /* CoinlistAuthentication.swift */; };
+		2B1B77C822963C820021A6CC /* CoinlistAuthentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1B77C622963C560021A6CC /* CoinlistAuthentication.swift */; };
+		2B1B77C922963C820021A6CC /* CoinlistAuthenticationDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1B77C422963C3E0021A6CC /* CoinlistAuthenticationDraft.swift */; };
 		2B25BB47225E03610092C972 /* DetailedInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B25BB46225E03610092C972 /* DetailedInformationView.swift */; };
 		2B25BB49225EACB60092C972 /* RequestAlgosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B25BB48225EACB60092C972 /* RequestAlgosView.swift */; };
 		2B25BB4B225EAD600092C972 /* RequestAlgosPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B25BB4A225EAD600092C972 /* RequestAlgosPreviewViewController.swift */; };
@@ -721,6 +725,8 @@
 		2B1B77B3229567290021A6CC /* AuctionDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionDetailViewModel.swift; sourceTree = "<group>"; };
 		2B1B77B5229567360021A6CC /* MyBidsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyBidsViewModel.swift; sourceTree = "<group>"; };
 		2B1B77B7229567400021A6CC /* PlaceBidViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceBidViewModel.swift; sourceTree = "<group>"; };
+		2B1B77C422963C3E0021A6CC /* CoinlistAuthenticationDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinlistAuthenticationDraft.swift; sourceTree = "<group>"; };
+		2B1B77C622963C560021A6CC /* CoinlistAuthentication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinlistAuthentication.swift; sourceTree = "<group>"; };
 		2B25BB46225E03610092C972 /* DetailedInformationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailedInformationView.swift; sourceTree = "<group>"; };
 		2B25BB48225EACB60092C972 /* RequestAlgosView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestAlgosView.swift; sourceTree = "<group>"; };
 		2B25BB4A225EAD600092C972 /* RequestAlgosPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestAlgosPreviewViewController.swift; sourceTree = "<group>"; };
@@ -1092,6 +1098,7 @@
 				2B6ED961226105CD00787984 /* TransactionPreviewDraft.swift */,
 				17D04F4B225F90D70051BC43 /* NodeTestDraft.swift */,
 				175CE59722955CEE003F7C02 /* WaitRoundDraft.swift */,
+				2B1B77C422963C3E0021A6CC /* CoinlistAuthenticationDraft.swift */,
 			);
 			path = Drafts;
 			sourceTree = "<group>";
@@ -1222,6 +1229,7 @@
 			children = (
 				2BDE31E92279EBBD002E8235 /* CointlistUser.swift */,
 				2B3F390F228C4DC0008BBE75 /* CoinlistTransaction.swift */,
+				2B1B77C622963C560021A6CC /* CoinlistAuthentication.swift */,
 			);
 			path = Coinlist;
 			sourceTree = "<group>";
@@ -3090,6 +3098,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2B1B77C822963C820021A6CC /* CoinlistAuthentication.swift in Sources */,
+				2B1B77C922963C820021A6CC /* CoinlistAuthenticationDraft.swift in Sources */,
 				2B1B77B92295C5A30021A6CC /* Bid.swift in Sources */,
 				2B1B77BA2295C5A30021A6CC /* AuctionUser.swift in Sources */,
 				2B1B77BB2295C5A30021A6CC /* ChartData.swift in Sources */,
@@ -3543,6 +3553,7 @@
 				17B7D8A62240D8F900A6FF9E /* Account.swift in Sources */,
 				2B3F38FB228AEFF7008BBE75 /* AuctionCell.swift in Sources */,
 				2B1B77B6229567360021A6CC /* MyBidsViewModel.swift in Sources */,
+				2B1B77C522963C3E0021A6CC /* CoinlistAuthenticationDraft.swift in Sources */,
 				17B7D8A82240DFFC00A6FF9E /* API+Account.swift in Sources */,
 				2B2F9F7822821C440068DBB5 /* AuctionChartView.swift in Sources */,
 				2B82B1C82253A4F000A8909F /* ContactCell.swift in Sources */,
@@ -3618,6 +3629,7 @@
 				2B653321228F67AE00F19FEA /* MyBidsViewController.swift in Sources */,
 				17695B3A2268CA7400765D31 /* NodeManager.swift in Sources */,
 				17F9E924225789E7004CDF24 /* AccountFetchOperation.swift in Sources */,
+				2B1B77C722963C560021A6CC /* CoinlistAuthentication.swift in Sources */,
 				17BEC4662248D39900AAF370 /* PassPhraseCollectionViewCell.swift in Sources */,
 				2B7572A6225CA1E3009E0253 /* SendAlgosPreviewView.swift in Sources */,
 				2B1B77B8229567400021A6CC /* PlaceBidViewModel.swift in Sources */,

@@ -48,6 +48,31 @@ extension API {
     }
     
     @discardableResult
+    func authenticateCoinlist(
+        with draft: CoinlistAuthenticationDraft,
+        completion: APICompletionHandler<CoinlistAuthentication>? = nil
+    ) -> EndpointInteractable? {
+        
+        let params: Params = [
+            .custom(key: AlgorandParamPairKey.clientId, value: draft.clientId),
+            .custom(key: AlgorandParamPairKey.clientSecret, value: draft.clientSecret),
+            .custom(key: AlgorandParamPairKey.code, value: draft.code),
+            .custom(key: AlgorandParamPairKey.grantType, value: draft.grantType),
+            .custom(key: AlgorandParamPairKey.redirectUri, value: draft.redirectURI)
+        ]
+        
+        return send(
+            Endpoint<CoinlistAuthentication>(Path("/oauth/token/"))
+                .base(Environment.current.cointlistApi)
+                .httpMethod(.post)
+                .body(params)
+                .handler { response in
+                    completion?(response)
+                }
+        )
+    }
+    
+    @discardableResult
     func fetchCoinlistUser(completion: APICompletionHandler<CoinlistUser>? = nil) -> EndpointInteractable? {
         guard let coinlistToken = session?.coinlistToken else {
             return nil
@@ -71,12 +96,14 @@ extension API {
         completion: APICompletionHandler<Auction>? = nil
     ) -> EndpointInteractable? {
         
-        let token = ""
+        guard let coinlistToken = session?.coinlistToken else {
+            return nil
+        }
         
         return send(
             Endpoint<Auction>(Path("/api/algorand/auctions/\(id)/"))
                 .base(Environment.current.cointlistApi)
-                .httpHeaders([.custom(header: "Authorization", value: "Bearer \(token)")])
+                .httpHeaders([.custom(header: "Authorization", value: "Bearer \(coinlistToken)")])
                 .handler { response in
                     completion?(response)
                 }
@@ -99,17 +126,16 @@ extension API {
     }
     
     @discardableResult
-    func fetchAuctionUser(
-        with id: String,
-        completion: APICompletionHandler<AuctionUser>? = nil
-    ) -> EndpointInteractable? {
-        
-        let token = ""
+    func fetchAuctionUser(completion: APICompletionHandler<AuctionUser>? = nil) -> EndpointInteractable? {
+        guard let coinlistToken = session?.coinlistToken,
+            let userId = session?.coinlistUserId else {
+            return nil
+        }
         
         return send(
-            Endpoint<AuctionUser>(Path("/api/algorand/users/\(id)/"))
+            Endpoint<AuctionUser>(Path("/api/algorand/users/\(userId)/"))
                 .base(Environment.current.cointlistApi)
-                .httpHeaders([.custom(header: "Authorization", value: "Bearer \(token)")])
+                .httpHeaders([.custom(header: "Authorization", value: "Bearer \(coinlistToken)")])
                 .handler { response in
                     completion?(response)
                 }
@@ -117,18 +143,16 @@ extension API {
     }
     
     @discardableResult
-    func fetchBids(
-        in auction: String,
-        for userId: String,
-        completion: APICompletionHandler<[Bid]>? = nil
-    ) -> EndpointInteractable? {
-        
-        let token = ""
+    func fetchBids(in auction: String, completion: APICompletionHandler<[Bid]>? = nil) -> EndpointInteractable? {
+        guard let coinlistToken = session?.coinlistToken,
+            let userId = session?.coinlistUserId else {
+            return nil
+        }
         
         return send(
             Endpoint<[Bid]>(Path("/api/algorand/auctions/\(auction)/bids/"))
                 .base(Environment.current.cointlistApi)
-                .httpHeaders([.custom(header: "Authorization", value: "Bearer \(token)")])
+                .httpHeaders([.custom(header: "Authorization", value: "Bearer \(coinlistToken)")])
                 .query([
                     .custom(key: AlgorandParamPairKey.username, value: userId)
                 ])
@@ -145,7 +169,9 @@ extension API {
         completion: APICompletionHandler<BidResponse>? = nil
     ) -> EndpointInteractable? {
         
-        let token = ""
+        guard let coinlistToken = session?.coinlistToken else {
+            return nil
+        }
         
         return send(
             Endpoint<BidResponse>(Path("/api/algorand/auctions/\(auction)/bids/"))
@@ -154,7 +180,7 @@ extension API {
                 .body([
                     .custom(key: AlgorandParamPairKey.bid, value: dataString)
                 ])
-                .httpHeaders([.custom(header: "Authorization", value: "Bearer \(token)")])
+                .httpHeaders([.custom(header: "Authorization", value: "Bearer \(coinlistToken)")])
                 .handler { response in
                     completion?(response)
                 }
@@ -168,13 +194,15 @@ extension API {
         completion: APICompletionHandler<NoObject>? = nil
     ) -> EndpointInteractable? {
         
-        let token = ""
+        guard let coinlistToken = session?.coinlistToken else {
+            return nil
+        }
         
         return send(
             Endpoint<NoObject>(Path("/api/algorand/auctions/\(auction)/bids/\(id)/"))
                 .base(Environment.current.cointlistApi)
                 .httpMethod(.delete)
-                .httpHeaders([.custom(header: "Authorization", value: "Bearer \(token)")])
+                .httpHeaders([.custom(header: "Authorization", value: "Bearer \(coinlistToken)")])
                 .handler { response in
                     completion?(response)
                 }

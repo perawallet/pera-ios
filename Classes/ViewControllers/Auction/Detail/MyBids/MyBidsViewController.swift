@@ -71,7 +71,7 @@ class MyBidsViewController: BaseViewController {
     }
     
     func fetchMyBids() {
-        api?.fetchBids(in: "", for: "") { response in
+        api?.fetchBids(in: "\(auction.id)") { response in
             switch response {
             case let .success(myBids):
                 self.bids = myBids
