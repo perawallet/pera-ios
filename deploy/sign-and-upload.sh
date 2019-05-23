@@ -46,14 +46,10 @@ fi
 
 RELEASE_MODE=true
 
-if [[ "$GIT_BRANCH" != "$RELEASE_BRANCH" ]]; then
-  RELEASE_MODE=false
-else
-  CURRENT_TAG=`git describe --exact-match --abbrev=0 --tags`
+CURRENT_TAG=`git describe --exact-match --abbrev=0 --tags`
 
-  if [[ $CURRENT_TAG == "" ]]; then
-    RELEASE_MODE=false
-  fi
+if [[ $CURRENT_TAG == "" ]]; then
+  RELEASE_MODE=false
 fi
 
 
