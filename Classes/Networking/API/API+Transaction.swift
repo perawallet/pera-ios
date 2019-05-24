@@ -23,6 +23,7 @@ extension API {
     func fetchTransactions(
         between dates: (Date, Date)?,
         for account: Account,
+        max: Int = 100,
         completion: APICompletionHandler<TransactionList>? = nil
     ) -> EndpointInteractable? {
         
@@ -36,7 +37,7 @@ extension API {
             parameters.append(.custom(key: AlgorandParamPairKey.to, value: to))
         }
         
-        parameters.append(.custom(key: AlgorandParamPairKey.max, value: 100))
+        parameters.append(.custom(key: AlgorandParamPairKey.max, value: max))
         
         return send(
             Endpoint<TransactionList>(Path("/v1/account/\(account.address)/transactions"))
