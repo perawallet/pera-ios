@@ -8,6 +8,11 @@
 
 import UIKit
 
+protocol MaximumPriceViewDelegate: class {
+    
+    func maximumPriceViewDidTypeInput(_ maximumPriceView: MaximumPriceView, in textField: UITextField)
+}
+
 class MaximumPriceView: BaseView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
@@ -43,14 +48,16 @@ class MaximumPriceView: BaseView {
         return view
     }()
     
-    private lazy var priceAmountLabel: UILabel = {
-        UILabel()
-            .withAlignment(.right)
-            .withLine(.single)
-            .withTextColor(SharedColors.blue)
-            .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 12.0)))
-            .withText("$5.00")
+    private(set) lazy var priceAmountTextField: UITextField = {
+        let view = UITextField()
+        view.textAlignment = .right
+        view.textColor = SharedColors.blue
+        view.font = UIFont.font(.montserrat, withWeight: .semiBold(size: 12.0))
+        view.keyboardType = .decimalPad
+        return view
     }()
+    
+    weak var delegate: MaximumPriceViewDelegate?
     
     // MARK: Setup
     
@@ -62,12 +69,20 @@ class MaximumPriceView: BaseView {
         layer.borderColor = Colors.borderColor.cgColor
     }
     
+    override func linkInteractors() {
+        priceAmountTextField.delegate = self
+    }
+    
+    override func setListeners() {
+        priceAmountTextField.addTarget(self, action: #selector(didChangeText(_:)), for: .editingChanged)
+    }
+    
     // MARK: Layout
     
     override func prepareLayout() {
         setupBidAmountTitleLabelLayout()
         setupVerticalSeparatorViewLayout()
-        setupBidAmountLabelLayout()
+        setupPriceAmountTextFieldLayout()
     }
     
     private func setupBidAmountTitleLabelLayout() {
@@ -77,6 +92,9 @@ class MaximumPriceView: BaseView {
             make.leading.equalToSuperview().inset(layout.current.titleHorizontalInset)
             make.top.equalToSuperview().inset(layout.current.titleTopInset)
         }
+        
+        maxPriceTitleLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+        maxPriceTitleLabel.setContentHuggingPriority(.required, for: .horizontal)
     }
     
     private func setupVerticalSeparatorViewLayout() {
@@ -90,12 +108,35 @@ class MaximumPriceView: BaseView {
         }
     }
     
-    private func setupBidAmountLabelLayout() {
-        addSubview(priceAmountLabel)
+    private func setupPriceAmountTextFieldLayout() {
+        addSubview(priceAmountTextField)
         
-        priceAmountLabel.snp.makeConstraints { make in
+        priceAmountTextField.snp.makeConstraints { make in
             make.trailing.equalToSuperview().inset(layout.current.titleHorizontalInset)
             make.top.equalToSuperview().inset(layout.current.titleTopInset)
+            make.leading.equalTo(verticalSeparatorView.snp.trailing).offset(layout.current.verticalSeparatorTopInset)
         }
+    }
+    
+    // MARK: Actions
+    
+    @objc
+    private func didChangeText(_ textField: UITextField) {
+        delegate?.maximumPriceViewDidTypeInput(self, in: textField)
+    }
+}
+
+// MARK: UITextFieldDelegate
+
+extension MaximumPriceView: UITextFieldDelegate {
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if let text = textField.text,
+            text.first != "$" {
+            
+            textField.text = "$" + text
+        }
+        
+        return true
     }
 }

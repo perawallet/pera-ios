@@ -20,7 +20,8 @@ class AuctionDetailViewController: BaseScrollViewController {
     // MARK: Components
     
     private lazy var auctionDetailView: AuctionDetailView = {
-        let view = AuctionDetailView()
+        let maximumIndex = (auction.firstRound ?? 1) + (auction.priceChunkRounds ?? 1) * (auction.chunkCount ?? 1) - 1
+        let view = AuctionDetailView(maximumIndex: Double(maximumIndex))
         return view
     }()
     
@@ -33,6 +34,8 @@ class AuctionDetailViewController: BaseScrollViewController {
     private var pollingOperation: PollingOperation?
     
     private let viewModel = AuctionDetailViewModel()
+    
+    private var keyboardController = KeyboardController()
     
     private lazy var placeBidViewController = PlaceBidViewController(
         auction: auction,
@@ -67,11 +70,20 @@ class AuctionDetailViewController: BaseScrollViewController {
         
         navigationItem.title = "auction-detail-title".localized
         
+        scrollView.keyboardDismissMode = .onDrag
+        
         viewModel.configure(auctionDetailView, with: auction, and: activeAuction)
     }
     
     override func linkInteractors() {
         auctionDetailView.delegate = self
+        keyboardController.dataSource = self
+    }
+    
+    override func setListeners() {
+        super.setListeners()
+        
+        keyboardController.beginTracking()
     }
     
     // MARK: Layout
@@ -79,12 +91,12 @@ class AuctionDetailViewController: BaseScrollViewController {
     override func prepareLayout() {
         super.prepareLayout()
         
-        setupAuctionDetailHeaderViewLayout()
+        setupAuctionDetailViewLayout()
         
         addPlaceBidViewController()
     }
     
-    private func setupAuctionDetailHeaderViewLayout() {
+    private func setupAuctionDetailViewLayout() {
         contentView.addSubview(auctionDetailView)
         
         auctionDetailView.snp.makeConstraints { make in
@@ -144,6 +156,9 @@ class AuctionDetailViewController: BaseScrollViewController {
             switch response {
             case let .success(activeAuction):
                 self.activeAuction = activeAuction
+                self.placeBidViewController.activeAuction = activeAuction
+                self.myBidsViewController.activeAuction = activeAuction
+                
                 self.viewModel.configure(self.auctionDetailView, with: self.auction, and: self.activeAuction)
             case let .failure(error):
                 print(error)
@@ -156,6 +171,9 @@ class AuctionDetailViewController: BaseScrollViewController {
             switch response {
             case let .success(auction):
                 self.auction = auction
+                self.placeBidViewController.auction = auction
+                self.myBidsViewController.auction = auction
+                
             case let .failure(error):
                 print(error)
             }
@@ -198,5 +216,26 @@ extension AuctionDetailViewController: AuctionDetailViewDelegate {
         placeBidViewController.removeFromParentController()
         
         addMyBidsViewController()
+    }
+}
+
+// MARK: KeyboardControllerDataSource
+
+extension AuctionDetailViewController: KeyboardControllerDataSource {
+    
+    func bottomInsetWhenKeyboardPresented(for keyboardController: KeyboardController) -> CGFloat {
+        return 15.0
+    }
+    
+    func firstResponder(for keyboardController: KeyboardController) -> UIView? {
+        return placeBidViewController.placeBidView.maxPriceView
+    }
+    
+    func containerView(for keyboardController: KeyboardController) -> UIView {
+        return contentView
+    }
+    
+    func bottomInsetWhenKeyboardDismissed(for keyboardController: KeyboardController) -> CGFloat {
+        return 15.0
     }
 }

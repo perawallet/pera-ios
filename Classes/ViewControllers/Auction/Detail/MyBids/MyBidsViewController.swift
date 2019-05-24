@@ -48,7 +48,7 @@ class MyBidsViewController: BaseViewController {
     override func configureAppearance() {
         super.configureAppearance()
         
-       viewModel.configure(myBidsView, with: bids)
+        viewModel.configure(myBidsView, with: bids)
     }
     
     override func linkInteractors() {

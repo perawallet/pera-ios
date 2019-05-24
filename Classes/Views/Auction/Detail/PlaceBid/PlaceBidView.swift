@@ -11,6 +11,8 @@ import UIKit
 protocol PlaceBidViewDelegate: class {
     
     func placeBidViewDidTapPlaceBidButton(_ placeBidView: PlaceBidView)
+    func placeBidView(_ placeBidView: PlaceBidView, didChangeSlider value: Float)
+    func placeBidViewDidTypeInput(_ placeBidView: PlaceBidView, in textField: UITextField)
 }
 
 class PlaceBidView: BaseView {
@@ -46,7 +48,7 @@ class PlaceBidView: BaseView {
     private(set) lazy var placeBidButton: AuctionBidButton = {
         let button = AuctionBidButton()
         button.setTitle("auction-detail-place-bid-button-title".localized, for: .normal)
-        button.isEnabled = true
+        button.isEnabled = false
         return button
     }()
     
@@ -56,6 +58,11 @@ class PlaceBidView: BaseView {
     
     override func setListeners() {
         placeBidButton.addTarget(self, action: #selector(notifyDelegateToPlaceBidButtonTapped), for: .touchUpInside)
+    }
+    
+    override func linkInteractors() {
+        bidAmountView.delegate = self
+        maxPriceView.delegate = self
     }
     
     // MARK: Layout
@@ -112,5 +119,27 @@ class PlaceBidView: BaseView {
     @objc
     private func notifyDelegateToPlaceBidButtonTapped() {
         delegate?.placeBidViewDidTapPlaceBidButton(self)
+    }
+}
+
+// MARK: BidAmountViewDelegate
+
+extension PlaceBidView: BidAmountViewDelegate {
+    
+    func bidAmountViewDidTypeInput(_ bidAmountView: BidAmountView, in textField: UITextField) {
+        delegate?.placeBidViewDidTypeInput(self, in: textField)
+    }
+    
+    func bidAmountView(_ bidAmountView: BidAmountView, didChange value: Float) {
+        delegate?.placeBidView(self, didChangeSlider: value)
+    }
+}
+
+// MARK: MaximumPriceViewDelegate
+
+extension PlaceBidView: MaximumPriceViewDelegate {
+
+    func maximumPriceViewDidTypeInput(_ maximumPriceView: MaximumPriceView, in textField: UITextField) {
+        delegate?.placeBidViewDidTypeInput(self, in: textField)
     }
 }

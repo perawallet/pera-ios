@@ -40,6 +40,13 @@ class PlaceBidViewController: BaseViewController {
         placeBidView.delegate = self
     }
     
+    override func configureAppearance() {
+        super.configureAppearance()
+        
+        viewModel.configureBidAmountView(placeBidView.bidAmountView, with: user)
+        viewModel.configureMaxPriceView(placeBidView.maxPriceView, with: auction)
+    }
+    
     // MARK: Layout
     
     override func prepareLayout() {
@@ -54,10 +61,6 @@ class PlaceBidViewController: BaseViewController {
             make.bottom.safeEqualToBottom(of: self)
         }
     }
-    
-    func configureView(with: Auction) {
-        
-    }
 }
 
 // MARK: PlaceBidViewDelegate
@@ -65,29 +68,25 @@ class PlaceBidViewController: BaseViewController {
 extension PlaceBidViewController: PlaceBidViewDelegate {
     
     func placeBidViewDidTapPlaceBidButton(_ placeBidView: PlaceBidView) {
-        placeBid()
-    }
-    
-    private func placeBid() {
-        let bidderAddress: String? = user.address
-        let bidAmount: Int64 = 10000000
-        let maxPrice: Int64 = 8000
-        let bidId: Int64 = Int64(Date().timeIntervalSince1970)
-        let auctionAddress: String? = auction.auctionAddress
+        guard let bidderAddress = session?.currentAccount?.address,
+            let bidAmount = parseBidAmount(),
+            let maxPrice = parseMaxPrice() else {
+                return
+        }
+        
+        let bidId = Int64(Date().timeIntervalSince1970)
+        let auctionAddress = auction.auctionAddress
         let auctionId = Int64(auction.id)
         
         var signedBidError: NSError?
-        
         guard let bidData = AuctionMakeBid(bidderAddress, bidAmount, maxPrice, bidId, auctionAddress, auctionId, &signedBidError) else {
             return
         }
         
         var signedBidDataError: NSError?
-        
-        guard let address = session?.currentAccount?.address,
-            let privateData = session?.privateData(forAccount: address),
+        guard let privateData = session?.privateData(forAccount: bidderAddress),
             let signedBidData = CryptoSignBid(privateData, bidData, &signedBidDataError) else {
-            return
+                return
         }
         
         let bidString = signedBidData.base64EncodedString()
@@ -100,5 +99,99 @@ extension PlaceBidViewController: PlaceBidViewDelegate {
                 print(error)
             }
         }
+    }
+    
+    private func parseBidAmount() -> Int64? {
+        guard var bidAmountText = placeBidView.bidAmountView.bidAmountTextField.text, !bidAmountText.isEmpty else {
+            return nil
+        }
+        
+        if bidAmountText.contains("$") {
+            bidAmountText = String(bidAmountText.dropFirst())
+        }
+        
+        var shouldMultipleForCents = false
+        
+        if !bidAmountText.contains(".") && !bidAmountText.contains(",") {
+            shouldMultipleForCents = true
+        }
+        
+        bidAmountText = bidAmountText.filter { character -> Bool in
+            character != "," && character != "."
+        }
+        
+        guard let bidAmountValue = Int64(bidAmountText) else {
+            return nil
+        }
+        
+        if shouldMultipleForCents {
+            return bidAmountValue * 100
+        }
+        
+        return bidAmountValue
+    }
+    
+    private func parseMaxPrice() -> Int64? {
+        var maxPriceText: String
+        
+        if let text = placeBidView.maxPriceView.priceAmountTextField.text, !text.isEmpty {
+            maxPriceText = text
+        } else if let maximumPriceMultiple = auction.maximumPriceMultiple,
+            let lastPrice = auction.lastPrice {
+            maxPriceText = "\((lastPrice / 100) * maximumPriceMultiple)"
+        } else {
+            return nil
+        }
+        
+        if maxPriceText.contains("$") {
+            maxPriceText = String(maxPriceText.dropFirst())
+        }
+        
+        maxPriceText = maxPriceText.filter { character -> Bool in
+            character != "," && character != "."
+        }
+        
+        guard let maxPriceValue = Int64(maxPriceText) else {
+            return nil
+        }
+        
+        return maxPriceValue * 100
+    }
+    
+    func placeBidView(_ placeBidView: PlaceBidView, didChangeSlider value: Float) {
+        guard let availableAmount = user.availableAmount else {
+            return
+        }
+        
+        let amount = availableAmount * Int(value) / 100
+        
+        placeBidView.bidAmountView.bidAmountTextField.text = "\(amount.convertToDollars())"
+        
+        calculatePotentialAlgos()
+    }
+    
+    func placeBidViewDidTypeInput(_ placeBidView: PlaceBidView, in textField: UITextField) {
+        calculatePotentialAlgos()
+    }
+    
+    private func calculatePotentialAlgos() {
+        guard let bidAmount = parseBidAmount(),
+            let maxPrice = parseMaxPrice(),
+            bidAmount != 0,
+            maxPrice != 0 else {
+                placeBidView.placeBidButton.isEnabled = false
+                return
+        }
+        
+        placeBidView.placeBidButton.isEnabled = true
+        
+        if let currentPrice = activeAuction.currentPrice,
+            currentPrice > maxPrice {
+            placeBidView.placeBidButton.setTitle("auction-detail-limit-order-button-title".localized, for: .normal)
+        } else {
+            placeBidView.placeBidButton.setTitle("auction-detail-place-bid-button-title".localized, for: .normal)
+        }
+        
+        placeBidView.minPotentialAlgosView.amountLabel.text = ((bidAmount) / (maxPrice)).toDecimalStringForLabel
     }
 }

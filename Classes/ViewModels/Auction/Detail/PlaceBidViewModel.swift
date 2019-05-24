@@ -10,7 +10,22 @@ import UIKit
 
 class PlaceBidViewModel {
     
-    func configure(_ view: PlaceBidView, with auction: Auction, and activeAuction: ActiveAuction) {
-        
+    func configureBidAmountView(_ view: BidAmountView, with user: AuctionUser) {
+        if let availableAmount = user.availableAmount {
+            view.availableAmountLabel.text = "/ \(availableAmount.convertToDollars())"
+        }
+    }
+    
+    func configureMaxPriceView(_ view: MaximumPriceView, with auction: Auction) {
+        if let maximumPriceMultiple = auction.maximumPriceMultiple,
+            let lastPrice = auction.lastPrice {
+            let maxPrice = lastPrice * maximumPriceMultiple
+            
+            view.priceAmountTextField.attributedPlaceholder = NSAttributedString(
+                string: "\(maxPrice.convertToDollars())",
+                attributes: [NSAttributedString.Key.foregroundColor: SharedColors.darkGray,
+                             NSAttributedString.Key.font: UIFont.font(.montserrat, withWeight: .semiBold(size: 12.0))]
+            )
+        }
     }
 }

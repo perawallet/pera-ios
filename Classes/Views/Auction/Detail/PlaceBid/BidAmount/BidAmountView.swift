@@ -8,6 +8,12 @@
 
 import UIKit
 
+protocol BidAmountViewDelegate: class {
+    
+    func bidAmountView(_ bidAmountView: BidAmountView, didChange value: Float)
+    func bidAmountViewDidTypeInput(_ bidAmountView: BidAmountView, in textField: UITextField)
+}
+
 class BidAmountView: BaseView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
@@ -46,17 +52,17 @@ class BidAmountView: BaseView {
         return view
     }()
     
-    private lazy var bidAmountLabel: UILabel = {
-        UILabel()
-            .withAlignment(.right)
-            .withLine(.single)
-            .withTextColor(SharedColors.darkGray)
-            .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 12.0)))
-            .withText("$0.00")
-    }()
-    
     private(set) lazy var bidAmountTextField: UITextField = {
         let view = UITextField()
+        view.textAlignment = .right
+        view.textColor = SharedColors.blue
+        view.font = UIFont.font(.montserrat, withWeight: .semiBold(size: 12.0))
+        view.keyboardType = . decimalPad
+        view.attributedPlaceholder = NSAttributedString(
+            string: "$0.00",
+            attributes: [NSAttributedString.Key.foregroundColor: SharedColors.darkGray,
+                         NSAttributedString.Key.font: UIFont.font(.montserrat, withWeight: .semiBold(size: 12.0))]
+        )
         return view
     }()
     
@@ -80,6 +86,8 @@ class BidAmountView: BaseView {
         return view
     }()
     
+    weak var delegate: BidAmountViewDelegate?
+    
     // MARK: Setup
     
     override func configureAppearance() {
@@ -90,12 +98,21 @@ class BidAmountView: BaseView {
         layer.borderColor = Colors.borderColor.cgColor
     }
     
+    override func linkInteractors() {
+        bidAmountTextField.delegate = self
+        auctionSliderView.delegate = self
+    }
+    
+    override func setListeners() {
+        bidAmountTextField.addTarget(self, action: #selector(didChangeText(_:)), for: .editingChanged)
+    }
+    
     // MARK: Layout
     
     override func prepareLayout() {
         setupBidAmountTitleLabelLayout()
         setupVerticalSeparatorViewLayout()
-        setupBidAmountLabelLayout()
+        setupBidAmountTextFieldLayout()
         setupAvailableAmountLabelLayout()
         setupHorizontalSeparatorViewLayout()
         setupAuctionSliderViewLayout()
@@ -108,6 +125,9 @@ class BidAmountView: BaseView {
             make.leading.equalToSuperview().inset(layout.current.titleHorizontalInset)
             make.top.equalToSuperview().inset(layout.current.titleTopInset)
         }
+        
+        bidAmountTitleLabel.setContentHuggingPriority(.required, for: .horizontal)
+        bidAmountTitleLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
     }
     
     private func setupVerticalSeparatorViewLayout() {
@@ -121,11 +141,11 @@ class BidAmountView: BaseView {
         }
     }
     
-    private func setupBidAmountLabelLayout() {
-        addSubview(bidAmountLabel)
+    private func setupBidAmountTextFieldLayout() {
+        addSubview(bidAmountTextField)
         
-        bidAmountLabel.snp.makeConstraints { make in
-            make.leading.greaterThanOrEqualTo(verticalSeparatorView.snp.trailing).offset(layout.current.amountLabelInset)
+        bidAmountTextField.snp.makeConstraints { make in
+            make.leading.equalTo(verticalSeparatorView.snp.trailing).offset(layout.current.amountLabelInset)
             make.top.equalToSuperview().inset(layout.current.titleTopInset)
         }
     }
@@ -135,9 +155,12 @@ class BidAmountView: BaseView {
         
         availableAmountLabel.snp.makeConstraints { make in
             make.trailing.equalToSuperview().inset(layout.current.titleHorizontalInset)
-            make.leading.equalTo(bidAmountLabel.snp.trailing).offset(layout.current.amountLabelInset)
+            make.leading.equalTo(bidAmountTextField.snp.trailing).offset(layout.current.amountLabelInset)
             make.top.equalToSuperview().inset(layout.current.titleTopInset)
         }
+        
+        availableAmountLabel.setContentHuggingPriority(.required, for: .horizontal)
+        availableAmountLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
     }
     
     private func setupHorizontalSeparatorViewLayout() {
@@ -158,5 +181,36 @@ class BidAmountView: BaseView {
             make.height.equalTo(layout.current.sliderHeight)
             make.leading.trailing.bottom.equalToSuperview()
         }
+    }
+    
+    // MARK: Actions
+    
+    @objc
+    private func didChangeText(_ textField: UITextField) {
+        delegate?.bidAmountViewDidTypeInput(self, in: textField)
+    }
+}
+
+// MARK: UITextFieldDelegate
+
+extension BidAmountView: UITextFieldDelegate {
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if let text = textField.text,
+            text.first != "$" {
+            
+            textField.text = "$" + text
+        }
+        
+        return true
+    }
+}
+
+// MARK: AuctionSliderViewDelegate
+
+extension BidAmountView: AuctionSliderViewDelegate {
+
+    func auctionSliderView(_ auctionSliderView: AuctionSliderView, didChange value: Float) {
+        delegate?.bidAmountView(self, didChange: value)
     }
 }

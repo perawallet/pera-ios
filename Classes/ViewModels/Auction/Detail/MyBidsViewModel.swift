@@ -35,8 +35,8 @@ class MyBidsViewModel {
                 return
         }
         
-        cell.contextView.amountLabel.text = "\(convertToDollars(amount))"
-        cell.contextView.maxPriceLabel.text = "@ \(convertToDollars(maxPrice))"
+        cell.contextView.amountLabel.text = "\(amount.convertToDollars())"
+        cell.contextView.maxPriceLabel.text = "@ \(maxPrice.convertToDollars())"
         cell.contextView.algosAmountLabel.text = Int64(((amount / 100) * (maxPrice / 100))).toAlgos.toDecimalStringForLabel
     }
     
@@ -52,15 +52,5 @@ class MyBidsViewModel {
         }
         
         view.totalPotentialAlgosDisplayView.amountLabel.text = Int64(totalAmount).toAlgos.toDecimalStringForLabel
-    }
-    
-    private func convertToDollars(_ value: Int) -> String {
-        let doubleValue = Double(value / 100)
-        let formatter = NumberFormatter()
-        formatter.currencyCode = "USD"
-        formatter.currencySymbol = "$"
-        formatter.maximumFractionDigits = 2
-        formatter.numberStyle = .currencyAccounting
-        return formatter.string(from: NSNumber(value: doubleValue)) ?? "$\(doubleValue)"
     }
 }

@@ -8,6 +8,11 @@
 
 import UIKit
 
+protocol AuctionSliderViewDelegate: class {
+    
+    func auctionSliderView(_ auctionSliderView: AuctionSliderView, didChange value: Float)
+}
+
 class AuctionSliderView: BaseView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
@@ -75,6 +80,8 @@ class AuctionSliderView: BaseView {
             .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 9.0)))
             .withTitle("100%")
     }()
+    
+    weak var delegate: AuctionSliderViewDelegate?
     
     // MARK: Setup
     
@@ -182,6 +189,7 @@ class AuctionSliderView: BaseView {
     private func configureViewForZeroPercentValue(updatesSliderValue: Bool = false) {
         if updatesSliderValue {
             sliderView.value = 0
+            delegate?.auctionSliderView(self, didChange: sliderView.value)
             sliderView.setThumbImage(img("icon-slider-zero"), for: .normal)
         }
         
@@ -195,6 +203,7 @@ class AuctionSliderView: BaseView {
     private func configureViewForTwentyFivePercentValue(updatesSliderValue: Bool = false) {
         if updatesSliderValue {
             sliderView.value = 25
+            delegate?.auctionSliderView(self, didChange: sliderView.value)
             sliderView.setThumbImage(img("icon-slider-selected"), for: .normal)
         }
         
@@ -208,6 +217,7 @@ class AuctionSliderView: BaseView {
     private func configureViewForFiftyPercentValue(updatesSliderValue: Bool = false) {
         if updatesSliderValue {
             sliderView.value = 50
+            delegate?.auctionSliderView(self, didChange: sliderView.value)
             sliderView.setThumbImage(img("icon-slider-selected"), for: .normal)
         }
         
@@ -221,6 +231,7 @@ class AuctionSliderView: BaseView {
     private func configureViewForSeventyFivePercentValue(updatesSliderValue: Bool = false) {
         if updatesSliderValue {
             sliderView.value = 75
+            delegate?.auctionSliderView(self, didChange: sliderView.value)
             sliderView.setThumbImage(img("icon-slider-selected"), for: .normal)
         }
         
@@ -234,6 +245,7 @@ class AuctionSliderView: BaseView {
     private func configureViewForHundredPercentValue(updatesSliderValue: Bool = false) {
         if updatesSliderValue {
             sliderView.value = 100
+            delegate?.auctionSliderView(self, didChange: sliderView.value)
             sliderView.setThumbImage(img("icon-slider-selected"), for: .normal)
         }
         
@@ -246,6 +258,8 @@ class AuctionSliderView: BaseView {
     
     @objc
     private func sliderDidChangeValue(sliderView: AuctionSlider) {
+        delegate?.auctionSliderView(self, didChange: sliderView.value)
+        
         if sliderView.value == 0 {
             sliderView.setThumbImage(img("icon-slider-zero"), for: .normal)
             configureViewForZeroPercentValue()

@@ -40,7 +40,7 @@ class AuctionViewModel {
         }
         
         if let price = activeAuction.currentPrice {
-            cell.contextView.priceView.detailLabel.text = convertToDollars(price)
+            cell.contextView.priceView.detailLabel.text = price.convertToDollars()
         }
         
         if let remainingAlgos = activeAuction.remainingAlgos?.toAlgos {
@@ -59,16 +59,6 @@ class AuctionViewModel {
                     "(\(Int(remainingAlgos * 100 / activeAuction.totalAlgos.toAlgos))%)"
             }
         }
-    }
-    
-    func convertToDollars(_ value: Int) -> String {
-        let doubleValue = Double(value / 100)
-        let formatter = NumberFormatter()
-        formatter.currencyCode = "USD"
-        formatter.currencySymbol = "$"
-        formatter.maximumFractionDigits = 2
-        formatter.numberStyle = .currencyAccounting
-        return formatter.string(from: NSNumber(value: doubleValue)) ?? "$\(doubleValue)"
     }
     
     func configureRemainingAlgosPercentage(in cell: ActiveAuctionCell, with activeAuction: ActiveAuction) {

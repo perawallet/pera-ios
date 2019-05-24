@@ -47,7 +47,7 @@ class PotentialAlgosDisplayView: BaseView {
             .withLine(.single)
             .withTextColor(.white)
             .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 18.0)))
-            .withText("10,000.00")
+            .withText("0.00")
     }()
     
     private var mode: Mode

@@ -11,10 +11,14 @@ import UIKit
 class AuctionDetailViewModel {
     
     func configure(_ view: AuctionDetailView, with auction: Auction, and activeAuction: ActiveAuction) {
+        if let currentPrice = activeAuction.currentPrice {
+            view.auctionDetailHeaderView.auctionChartView.currentValueLabel.text = currentPrice.convertToDollars(withSymbol: false)
+        }
+        
         view.auctionDetailHeaderView.timerView.mode = .initial
         
-        if let startTime = activeAuction.estimatedAuctionRoundStart {
-            view.auctionDetailHeaderView.timerView.time = startTime.timeIntervalSinceNow
+        if let finishTime = activeAuction.estimatedFinishTime {
+            view.auctionDetailHeaderView.timerView.time = finishTime.timeIntervalSinceNow
         }
         
         view.auctionDetailHeaderView.timerView.runTimer()
