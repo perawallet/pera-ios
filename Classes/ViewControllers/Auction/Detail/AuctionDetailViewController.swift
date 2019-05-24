@@ -160,6 +160,7 @@ class AuctionDetailViewController: BaseScrollViewController {
                 self.myBidsViewController.activeAuction = activeAuction
                 
                 self.viewModel.configure(self.auctionDetailView, with: self.auction, and: self.activeAuction)
+                self.placeBidViewController.updateViewForPolling()
             case let .failure(error):
                 print(error)
             }

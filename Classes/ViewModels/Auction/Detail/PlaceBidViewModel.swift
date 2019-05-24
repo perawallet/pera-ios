@@ -16,16 +16,37 @@ class PlaceBidViewModel {
         }
     }
     
-    func configureMaxPriceView(_ view: MaximumPriceView, with auction: Auction) {
-        if let maximumPriceMultiple = auction.maximumPriceMultiple,
-            let lastPrice = auction.lastPrice {
-            let maxPrice = lastPrice * maximumPriceMultiple
-            
+    func configureMaxPriceView(_ view: MaximumPriceView, with activeAuction: ActiveAuction) {
+        guard let typedValue = view.priceAmountTextField.text else {
+            setInitialPrice(for: activeAuction, in: view)
+            return
+        }
+        
+        if typedValue.isEmpty {
+            setInitialPrice(for: activeAuction, in: view)
+        }
+    }
+    
+    private func setInitialPrice(for activeAuction: ActiveAuction, in view: MaximumPriceView) {
+        if let currentPrice = activeAuction.currentPrice {
             view.priceAmountTextField.attributedPlaceholder = NSAttributedString(
-                string: "\(maxPrice.convertToDollars())",
+                string: "\(currentPrice.convertToDollars())",
                 attributes: [NSAttributedString.Key.foregroundColor: SharedColors.darkGray,
                              NSAttributedString.Key.font: UIFont.font(.montserrat, withWeight: .semiBold(size: 12.0))]
             )
         }
+    }
+    
+    func update(_ placeBidView: PlaceBidView, for bidAmount: Int64, and maxPrice: Int64, in activeAuction: ActiveAuction) {
+        placeBidView.placeBidButton.isEnabled = true
+        
+        if let currentPrice = activeAuction.currentPrice,
+            currentPrice > maxPrice {
+            placeBidView.placeBidButton.setTitle("auction-detail-limit-order-button-title".localized, for: .normal)
+        } else {
+            placeBidView.placeBidButton.setTitle("auction-detail-place-bid-button-title".localized, for: .normal)
+        }
+        
+        placeBidView.minPotentialAlgosView.amountLabel.text = ((bidAmount) / (maxPrice)).toDecimalStringForLabel
     }
 }

@@ -44,7 +44,7 @@ class PlaceBidViewController: BaseViewController {
         super.configureAppearance()
         
         viewModel.configureBidAmountView(placeBidView.bidAmountView, with: user)
-        viewModel.configureMaxPriceView(placeBidView.maxPriceView, with: auction)
+        viewModel.configureMaxPriceView(placeBidView.maxPriceView, with: activeAuction)
     }
     
     // MARK: Layout
@@ -60,6 +60,10 @@ class PlaceBidViewController: BaseViewController {
             make.leading.trailing.top.equalToSuperview()
             make.bottom.safeEqualToBottom(of: self)
         }
+    }
+    
+    func updateViewForPolling() {
+        viewModel.configureMaxPriceView(placeBidView.maxPriceView, with: activeAuction)
     }
 }
 
@@ -136,9 +140,8 @@ extension PlaceBidViewController: PlaceBidViewDelegate {
         
         if let text = placeBidView.maxPriceView.priceAmountTextField.text, !text.isEmpty {
             maxPriceText = text
-        } else if let maximumPriceMultiple = auction.maximumPriceMultiple,
-            let lastPrice = auction.lastPrice {
-            maxPriceText = "\((lastPrice / 100) * maximumPriceMultiple)"
+        } else if let currentPrice = activeAuction.currentPrice {
+            maxPriceText = "\(currentPrice / 100)"
         } else {
             return nil
         }
@@ -183,15 +186,6 @@ extension PlaceBidViewController: PlaceBidViewDelegate {
                 return
         }
         
-        placeBidView.placeBidButton.isEnabled = true
-        
-        if let currentPrice = activeAuction.currentPrice,
-            currentPrice > maxPrice {
-            placeBidView.placeBidButton.setTitle("auction-detail-limit-order-button-title".localized, for: .normal)
-        } else {
-            placeBidView.placeBidButton.setTitle("auction-detail-place-bid-button-title".localized, for: .normal)
-        }
-        
-        placeBidView.minPotentialAlgosView.amountLabel.text = ((bidAmount) / (maxPrice)).toDecimalStringForLabel
+        viewModel.update(placeBidView, for: bidAmount, and: maxPrice, in: activeAuction)
     }
 }
