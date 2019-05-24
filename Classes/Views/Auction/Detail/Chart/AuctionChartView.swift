@@ -39,7 +39,7 @@ class AuctionChartView: BaseView {
         
         chartView.xAxis.enabled = false
         chartView.xAxis.axisMinimum = 0
-        chartView.xAxis.axisMaximum = 609
+        chartView.xAxis.axisMaximum = self.maximumIndex
         chartView.xAxis.axisLineColor = .white
         
         chartView.rightAxis.enabled = false
@@ -77,11 +77,13 @@ class AuctionChartView: BaseView {
     private lazy var bottomImageView = UIImageView(image: img("img-chart-color"))
     
     private let initialValue: Double
+    private let maximumIndex: Double
     
     // MARK: Initialization
     
-    init(initialValue: Double) {
+    init(initialValue: Double, maximumIndex: Double) {
         self.initialValue = initialValue
+        self.maximumIndex = maximumIndex
         
         super.init(frame: .zero)
     }
@@ -102,9 +104,9 @@ class AuctionChartView: BaseView {
         pricesDataSet.lineWidth = 4.0
         pricesDataSet.mode = .horizontalBezier
         
-        let redDiff: CGFloat = 255.0 / 609.0
-        let greenDiff: CGFloat = 51.0 / 609.0
-        let blueDiff: CGFloat = 255.0 / 609.0
+        let redDiff: CGFloat = 255.0 / CGFloat(maximumIndex)
+        let greenDiff: CGFloat = 51.0 / CGFloat(maximumIndex)
+        let blueDiff: CGFloat = 255.0 / CGFloat(maximumIndex)
         
         var previousRed: CGFloat = 0
         var previousGreen: CGFloat = 117
@@ -117,7 +119,7 @@ class AuctionChartView: BaseView {
             alpha: 1
         ))
         
-        for _ in 0...609 {
+        for _ in 0...Int(maximumIndex) {
             let color = UIColor(
                 red: CGFloat(previousRed / 255),
                 green: CGFloat(previousGreen / 255),
@@ -134,7 +136,7 @@ class AuctionChartView: BaseView {
         
         lineChartView.data = LineChartData(dataSet: pricesDataSet)
         
-        lineChartView.setVisibleXRange(minXRange: Double(1), maxXRange: Double(609))
+        lineChartView.setVisibleXRange(minXRange: Double(1), maxXRange: maximumIndex)
     }
     
     // MARK: Layout
@@ -201,7 +203,7 @@ extension AuctionChartView {
     
     func addData(entry: ChartDataEntry, at index: Int) {
         lineChartView.data?.addEntry(entry, dataSetIndex: 0)
-        lineChartView.setVisibleXRange(minXRange: Double(1), maxXRange: Double(609))
+        lineChartView.setVisibleXRange(minXRange: Double(1), maxXRange: maximumIndex)
         lineChartView.notifyDataSetChanged()
         lineChartView.moveViewToX(Double(index))
     }

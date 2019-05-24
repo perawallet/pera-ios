@@ -22,7 +22,7 @@ class AuctionDetailHeaderView: BaseView {
     // MARK: Components
     
     private(set) lazy var auctionChartView: AuctionChartView = {
-        let view = AuctionChartView(initialValue: 10)
+        let view = AuctionChartView(initialValue: 10000000, maximumIndex: maximumIndex)
         return view
     }()
     
@@ -39,6 +39,16 @@ class AuctionDetailHeaderView: BaseView {
         view.explanationLabel.text = "auction-time-left".localized
         return view
     }()
+    
+    private let maximumIndex: Double
+    
+    // MARK: Initialization
+    
+    init(maximumIndex: Double) {
+        self.maximumIndex = maximumIndex
+        
+        super.init(frame: .zero)
+    }
     
     // MARK: Setup
     
