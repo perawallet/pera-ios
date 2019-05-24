@@ -70,6 +70,7 @@ if [ ! -z "$XCODE_WORKSPACE_PATH" ] ; then
     -workspace "$XCODE_WORKSPACE_PATH" \
     -scheme "$XCODE_SCHEME" \
     -configuration "$XCODE_CONFIG" \
+    -UseModernBuildSystem=NO \
     -quiet \
     clean || die "Clean failed"
 else
@@ -77,6 +78,7 @@ else
     -project "$XCODE_PROJECT_PATH" \
     -scheme "$XCODE_SCHEME" \
     -configuration "$XCODE_CONFIG" \
+    -UseModernBuildSystem=NO \
     -quiet \
     clean || die "Clean failed"
 fi
@@ -138,6 +140,7 @@ if [ $RELEASE_MODE == false ] ; then
       -workspace "$XCODE_WORKSPACE_PATH" \
       -scheme "$XCODE_SCHEME" \
       -configuration "$XCODE_CONFIG" \
+      -UseModernBuildSystem=NO \
       -sdk iphoneos \
       -quiet \
       CODE_SIGN_IDENTITY="$DEVELOPER_NAME" || die "Compiler failed"
@@ -146,6 +149,7 @@ if [ $RELEASE_MODE == false ] ; then
       -project "$XCODE_PROJECT_PATH" \
       -scheme "$XCODE_SCHEME" \
       -configuration "$XCODE_CONFIG" \
+      -UseModernBuildSystem=NO \
       -sdk iphoneos \
       -quiet \
       CODE_SIGN_IDENTITY="$DEVELOPER_NAME" || die "Compiler failed"
@@ -162,6 +166,7 @@ else
       -workspace "$XCODE_WORKSPACE_PATH" \
       -scheme "$XCODE_SCHEME" \
       -configuration "$XCODE_CONFIG" \
+      -UseModernBuildSystem=NO \
       -sdk iphoneos \
       -quiet \
       ONLY_ACTIVE_ARCH=NO \
@@ -173,6 +178,7 @@ else
       -project "$XCODE_PROJECT_PATH" \
       -scheme "$XCODE_SCHEME" \
       -configuration "$XCODE_CONFIG" \
+      -UseModernBuildSystem=NO \
       -sdk iphoneos \
       -quiet \
       ONLY_ACTIVE_ARCH=NO \
@@ -206,13 +212,6 @@ else
   if [ ! -z "$NOTIFICATIONS_BUNDLE_IDENTIFIER" ] ; then
     rm -f "$NOTIFICATIONS_PROVISION_INSTALL_PATH"
   fi
-
-  # if [ ! -z "$KEYCHAIN_NAME" ] ; then
-  #   HIPO_KEYCHAIN_PATH="/Users/hipo/Library/Keychains/hipo.keychain"
-  #
-  #   /usr/bin/security list-keychains -s "$HIPO_KEYCHAIN_PATH"
-  #   /usr/bin/security default-keychain -s "$HIPO_KEYCHAIN_PATH"
-  # fi
 
 
   echo "***************************"
@@ -267,40 +266,3 @@ else
   
 fi
 
-
-# if [ ! -z "$DEPLOY_TEST_AUTOMATION" ]; then
-#   echo ""
-#   echo "*****************************"
-#   echo "* Generating Simulator App  *"
-#   echo "*****************************"
-#
-#   SIM_OUTPUT_PATH="$PWD/build/Release-iphonesimulator"
-#   SIM_APP_PATH="$SIM_OUTPUT_PATH/$SIM_BINARY_NAME.app"
-#   SIM_ZIP_PATH="$SIM_OUTPUT_PATH/$SIM_BINARY_NAME.zip"
-#
-#   rm -rf "$SIM_OUTPUT_PATH"
-#   mkdir -p "$SIM_OUTPUT_PATH"
-#
-#   if [ ! -z "$XCODE_WORKSPACE_PATH" ] ; then
-#     /usr/bin/xcodebuild \
-#       -workspace "$XCODE_WORKSPACE_PATH" \
-#       -scheme "$XCODE_SCHEME" \
-#       -configuration "$XCODE_CONFIG" \
-#       -sdk iphonesimulator \
-#       CONFIGURATION_BUILD_DIR="$SIM_OUTPUT_PATH"
-#   else
-#     /usr/bin/xcodebuild \
-#       -project "$XCODE_PROJECT_PATH" \
-#       -scheme "$XCODE_SCHEME" \
-#       -configuration "$XCODE_CONFIG" \
-#       -sdk iphonesimulator \
-#       CONFIGURATION_BUILD_DIR="$SIM_OUTPUT_PATH"
-#   fi
-#
-#   cd "$SIM_OUTPUT_PATH" && zip -r "$SIM_ZIP_PATH" "./$SIM_BINARY_NAME.app"
-#
-#   scp -P 21229 "$SIM_ZIP_PATH" hipotest@1.tcp.eu.ngrok.io:~/Desktop/Releases/$SIM_BINARY_NAME.zip
-#
-#   /usr/bin/curl -X POST "http://testrunner.hipolabs.com/job/fieldguide-preprod-ios/build?token=fieldguide-ios" \
-#     --user hipotest:hipohipo
-# fi
