@@ -19,6 +19,10 @@ class AuctionDetailViewModel {
         
         if let finishTime = activeAuction.estimatedFinishTime {
             view.auctionDetailHeaderView.timerView.time = finishTime.timeIntervalSinceNow
+            
+            if finishTime.timeIntervalSinceNow < 0 {
+                view.auctionDetailHeaderView.timerView.stopTimer()
+            }
         }
         
         view.auctionDetailHeaderView.timerView.runTimer()

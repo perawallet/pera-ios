@@ -124,6 +124,9 @@ class AuctionTimerView: BaseView {
     func stopTimer() {
         isTimerRunning = false
         
+        time = 0
+        timeLabel.text = formattedTime()
+        
         pollingOperation?.invalidate()
     }
     
@@ -168,9 +171,6 @@ class AuctionTimerView: BaseView {
         case .ended:
             explanationLabel.text = "auction-time-left".localized
             timeLabel.textColor = SharedColors.black
-            
-            time = 0
-            timeLabel.text = formattedTime()
             
             stopTimer()
         }
