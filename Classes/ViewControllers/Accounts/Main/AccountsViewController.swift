@@ -57,7 +57,11 @@ class AccountsViewController: BaseViewController {
         return animation
     }()
     
-    var selectedAccount: Account?
+    var selectedAccount: Account? {
+        didSet {
+            session?.currentAccount = self.selectedAccount
+        }
+    }
     
     var newAccount: Account? {
         didSet {
@@ -66,7 +70,6 @@ class AccountsViewController: BaseViewController {
             }
             
             selectedAccount = account
-            session?.currentAccount = selectedAccount
             
             transactionHistoryDataSource.clear()
             accountsView.transactionHistoryCollectionView.reloadData()
@@ -137,8 +140,6 @@ class AccountsViewController: BaseViewController {
         
         accountsView.transactionHistoryCollectionView.refreshControl = refreshControl
         selectedAccount = session?.authenticatedUser?.defaultAccount()
-        
-        session?.currentAccount = selectedAccount
         
         guard let account = selectedAccount else {
             return
@@ -350,6 +351,7 @@ extension AccountsViewController {
         }
         
         if selectedAccount == account {
+            self.selectedAccount = account
             transactionHistoryDataSource.clear()
             accountsView.transactionHistoryCollectionView.reloadData()
             accountsView.transactionHistoryCollectionView.contentState = .loading
@@ -381,7 +383,6 @@ extension AccountsViewController: AccountListViewControllerDelegate {
     
     func accountListViewController(_ viewController: AccountListViewController, didSelectAccount account: Account) {
         selectedAccount = account
-        session?.currentAccount = selectedAccount
         
         transactionHistoryDataSource.clear()
         accountsView.transactionHistoryCollectionView.reloadData()
