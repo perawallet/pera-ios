@@ -22,19 +22,20 @@ class AuctionViewModel {
                 if let startTime = activeAuction.estimatedAuctionRoundStart {
                     cell.contextView.auctionTimerView.time = startTime.timeIntervalSinceNow
                 }
+                
+                cell.contextView.auctionTimerView.runTimer()
             case .running:
                 cell.contextView.auctionTimerView.mode = .active
                 
                 if let finishTime = activeAuction.estimatedFinishTime {
                     cell.contextView.auctionTimerView.time = finishTime.timeIntervalSinceNow
                 }
-            case .closed:
+                
+                cell.contextView.auctionTimerView.runTimer()
+            case .closed,
+                 .settled:
                 cell.contextView.auctionTimerView.mode = .ended
-            case .settled:
-                break
             }
-            
-            cell.contextView.auctionTimerView.runTimer()
             
             cell.contextView.status = status
         }

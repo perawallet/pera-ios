@@ -19,10 +19,10 @@ class MyBidsViewModel {
                 cell.contextView.bidStatusLabel.textColor = SharedColors.green
                 cell.contextView.bidStatusLabel.text = status.rawValue
             case .retracted:
-                cell.contextView.bidStatusLabel.textColor = SharedColors.red
+                cell.contextView.bidStatusLabel.textColor = SharedColors.darkGray
                 cell.contextView.bidStatusLabel.text = status.rawValue
             case .unsuccessful:
-                cell.contextView.bidStatusLabel.textColor = SharedColors.darkGray
+                cell.contextView.bidStatusLabel.textColor = SharedColors.red
                 cell.contextView.bidStatusLabel.text = "auction-detail-status-rejected-title".localized
             default:
                 cell.contextView.bidStatusLabel.textColor = SharedColors.softGray

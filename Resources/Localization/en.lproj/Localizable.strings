@@ -273,6 +273,7 @@
 "auction-scheduled-title" = "SCHEDULED";
 "auction-open-title" = "OPEN";
 "auction-closed-title" = "CLOSED";
+"auction-settled-title" = "SETTLED";
 "auction-past-auctions" = "Past Auctions";
 "auction-auth-error-message" = "Couldn't authenticate your coinlist account.";
 

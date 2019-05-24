@@ -15,13 +15,13 @@ class AuctionDetailViewModel {
             view.auctionDetailHeaderView.auctionChartView.currentValueLabel.text = currentPrice.convertToDollars(withSymbol: false)
         }
         
-        view.auctionDetailHeaderView.timerView.mode = .initial
-        
         if let finishTime = activeAuction.estimatedFinishTime {
             view.auctionDetailHeaderView.timerView.time = finishTime.timeIntervalSinceNow
             
-            if finishTime.timeIntervalSinceNow < 0 {
-                view.auctionDetailHeaderView.timerView.stopTimer()
+            if finishTime.timeIntervalSinceNow <= 0 {
+                view.auctionDetailHeaderView.timerView.mode = .ended
+            } else {
+                view.auctionDetailHeaderView.timerView.mode = .initial
             }
         }
         
