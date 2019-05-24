@@ -39,6 +39,8 @@ class MyBidsView: BaseView {
         return collectionView
     }()
     
+    private lazy var contentStateView = ContentStateView()
+    
     private(set) lazy var totalPotentialAlgosDisplayView: PotentialAlgosDisplayView = {
         let view = PotentialAlgosDisplayView(mode: .total)
         return view
@@ -58,6 +60,8 @@ class MyBidsView: BaseView {
             make.leading.top.trailing.equalToSuperview().inset(layout.current.defaultInset)
             make.height.equalTo(0.0)
         }
+        
+        myBidsCollectionView.backgroundView = contentStateView
     }
     
     private func setupTotalPotentialAlgosDisplayViewLayout() {

@@ -33,6 +33,12 @@ class MyBidsViewController: BaseViewController {
         return view
     }()
     
+    private lazy var emptyStateView = EmptyStateView(
+        title: "auction-detail-bids-empty-title".localized,
+        topImage: img("img-bids-empty"),
+        bottomImage: nil
+    )
+    
     // MARK: Initialization
     
     init(auction: Auction, user: AuctionUser, activeAuction: ActiveAuction, configuration: ViewControllerConfiguration) {
@@ -48,7 +54,9 @@ class MyBidsViewController: BaseViewController {
     override func configureAppearance() {
         super.configureAppearance()
         
-        viewModel.configure(myBidsView, with: bids)
+        emptyStateView.backgroundColor = .clear
+        
+        viewModel.configure(myBidsView, with: bids, for: emptyStateView)
     }
     
     override func linkInteractors() {
@@ -69,7 +77,7 @@ class MyBidsViewController: BaseViewController {
             make.edges.equalToSuperview()
         }
         
-        myBidsView.myBidsCollectionView.reloadData()
+        myBidsView.myBidsCollectionView.contentState = .loading
     }
     
     func fetchMyBids() {
@@ -82,8 +90,10 @@ class MyBidsViewController: BaseViewController {
             case let .success(myBids):
                 self.bids = myBids
                 
-                self.viewModel.configure(self.myBidsView, with: myBids)
+                self.viewModel.configure(self.myBidsView, with: myBids, for: self.emptyStateView)
                 self.updateCollectionViewLayoutForBids()
+                
+                self.myBidsView.myBidsCollectionView.reloadData()
             case let .failure(error):
                 print(error)
             }
@@ -95,6 +105,10 @@ class MyBidsViewController: BaseViewController {
         
         if bids.isEmpty {
             collectionViewHeight = layout.current.emptyCollectionViewHeight
+            
+            emptyStateView.titleLabel.snp.updateConstraints { make in
+                make.top.equalToSuperview().inset(layout.current.cellSpacing)
+            }
         } else {
             collectionViewHeight = CGFloat(bids.count) * layout.current.cellSize.height + CGFloat(bids.count) * layout.current.cellSpacing
         }
