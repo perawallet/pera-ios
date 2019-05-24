@@ -248,7 +248,7 @@ extension TransactionHistoryDataSource {
             currentPaginationOffset += Constant.numberOfRoundsInTwoDays
         }
         
-        fetchRequest = api?.fetchTransactions(between: nil, for: account) { response in
+        fetchRequest = api?.fetchTransactions(between: nil, for: account, max: 15) { response in
             switch response {
             case let .failure(error):
                 handler(nil, error)
