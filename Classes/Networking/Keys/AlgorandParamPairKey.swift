@@ -15,7 +15,7 @@ enum AlgorandParamPairKey: String, CodingKey {
     case accessToken = "access_token"
     case top = "top"
     case username = "username"
-    case bid = "Bid"
+    case bid = "SignedBinary"
     case max = "max"
     case from = "fromDate"
     case to = "toDate"
