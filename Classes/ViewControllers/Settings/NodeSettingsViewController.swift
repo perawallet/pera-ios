@@ -85,6 +85,13 @@ class NodeSettingsViewController: BaseViewController {
         super.viewDidAppear(animated)
         
         self.fetchNodes()
+        
+        switch mode {
+        case .checkHealth:
+            self.displaySimpleAlertWith(title: "title-error".localized, message: "node-settings-health-problem-message".localized)
+        default:
+            return
+        }
     }
     
     private func fetchNodes() {
