@@ -3,10 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A661BB3CA3B52A6635AC9C2 /* Pods_algorand.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BEF6555A275CB49FF59C5E2 /* Pods_algorand.framework */; };
 		170AFAFA224C9FF800520EA5 /* QRCreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170AFAF9224C9FF800520EA5 /* QRCreationViewController.swift */; };
 		170AFAFC224CC70A00520EA5 /* QRText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170AFAFB224CC70A00520EA5 /* QRText.swift */; };
 		170AFAFE224CCBF300520EA5 /* QRView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170AFAFD224CCBF300520EA5 /* QRView.swift */; };
@@ -36,8 +37,6 @@
 		175CE59922955CEE003F7C02 /* WaitRoundDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175CE59722955CEE003F7C02 /* WaitRoundDraft.swift */; };
 		175CE59B2295709F003F7C02 /* RoundDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175CE59A2295709F003F7C02 /* RoundDetail.swift */; };
 		175CE59C2295709F003F7C02 /* RoundDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175CE59A2295709F003F7C02 /* RoundDetail.swift */; };
-		1760077422983152000C8047 /* Crypto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1760077322983152000C8047 /* Crypto.framework */; };
-		1760077522983152000C8047 /* Crypto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1760077322983152000C8047 /* Crypto.framework */; };
 		1761B3C82249F88700C6BA47 /* Montserrat-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1761B3C72249F88700C6BA47 /* Montserrat-SemiBoldItalic.ttf */; };
 		1761B3CB224A39D400C6BA47 /* PassPhraseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1761B3CA224A39D400C6BA47 /* PassPhraseViewModel.swift */; };
 		1761B3CD224A47AF00C6BA47 /* Session+Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1761B3CC224A47AF00C6BA47 /* Session+Crypto.swift */; };
@@ -54,6 +53,8 @@
 		179278872244E99A00097D32 /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 179278752244E99800097D32 /* Montserrat-Regular.ttf */; };
 		179278952244F8EE00097D32 /* UIFont+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179278942244F8EE00097D32 /* UIFont+Additions.swift */; };
 		17927897224501BA00097D32 /* Montserrat-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 17927896224501BA00097D32 /* Montserrat-SemiBold.ttf */; };
+		1798C8DB229C32030002F065 /* Crypto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1798C8DA229C32030002F065 /* Crypto.framework */; };
+		1798C8DC229C32030002F065 /* Crypto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1798C8DA229C32030002F065 /* Crypto.framework */; };
 		179B93D6225E447400DD03E9 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179B93D5225E447400DD03E9 /* Node.swift */; };
 		179B93D8225E454100DD03E9 /* NodeSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179B93D7225E454100DD03E9 /* NodeSettingsView.swift */; };
 		179B93DA225E460500DD03E9 /* NodeSettingsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179B93D9225E460500DD03E9 /* NodeSettingsHeaderView.swift */; };
@@ -631,7 +632,7 @@
 		2BF7191A224ED0E8001E8420 /* ContactQRDisplayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF71919224ED0E8001E8420 /* ContactQRDisplayViewController.swift */; };
 		2BFBAB72227B349E008BBB31 /* SuccessAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 2BFBAB71227B349E008BBB31 /* SuccessAnimation.json */; };
 		2BFBAB75227B35B7008BBB31 /* images in Resources */ = {isa = PBXBuildFile; fileRef = 2BFBAB74227B35B7008BBB31 /* images */; };
-		654E149E940D74AF3955EEF3 /* Pods_algorand.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01F66EBBAFA146AFC193D69A /* Pods_algorand.framework */; };
+		654E149E940D74AF3955EEF3 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
 		DCD3EE7678029738F4171F22 /* Pods_algorand_staging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BDB953015FF2F948F5734D7 /* Pods_algorand_staging.framework */; };
 /* End PBXBuildFile section */
 
@@ -664,7 +665,6 @@
 		17512622223BEB9D0095AF4F /* UserDefaults+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Additions.swift"; sourceTree = "<group>"; };
 		175CE59722955CEE003F7C02 /* WaitRoundDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitRoundDraft.swift; sourceTree = "<group>"; };
 		175CE59A2295709F003F7C02 /* RoundDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundDetail.swift; sourceTree = "<group>"; };
-		1760077322983152000C8047 /* Crypto.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crypto.framework; sourceTree = "<group>"; };
 		1761B3C72249F88700C6BA47 /* Montserrat-SemiBoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
 		1761B3CA224A39D400C6BA47 /* PassPhraseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassPhraseViewModel.swift; sourceTree = "<group>"; };
 		1761B3CC224A47AF00C6BA47 /* Session+Crypto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Session+Crypto.swift"; sourceTree = "<group>"; };
@@ -681,6 +681,7 @@
 		179278752244E99800097D32 /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Regular.ttf"; sourceTree = "<group>"; };
 		179278942244F8EE00097D32 /* UIFont+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Additions.swift"; sourceTree = "<group>"; };
 		17927896224501BA00097D32 /* Montserrat-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-SemiBold.ttf"; sourceTree = "<group>"; };
+		1798C8DA229C32030002F065 /* Crypto.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crypto.framework; sourceTree = "<group>"; };
 		179B93D5225E447400DD03E9 /* Node.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
 		179B93D7225E454100DD03E9 /* NodeSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeSettingsView.swift; sourceTree = "<group>"; };
 		179B93D9225E460500DD03E9 /* NodeSettingsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeSettingsHeaderView.swift; sourceTree = "<group>"; };
@@ -954,6 +955,7 @@
 		2BF71919224ED0E8001E8420 /* ContactQRDisplayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactQRDisplayViewController.swift; sourceTree = "<group>"; };
 		2BFBAB71227B349E008BBB31 /* SuccessAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SuccessAnimation.json; sourceTree = "<group>"; };
 		2BFBAB74227B35B7008BBB31 /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = images; sourceTree = "<group>"; };
+		3BEF6555A275CB49FF59C5E2 /* Pods_algorand.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_algorand.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		44FD8F3D210C1D99893A91DF /* Pods-algorand.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand.release.xcconfig"; path = "Pods/Target Support Files/Pods-algorand/Pods-algorand.release.xcconfig"; sourceTree = "<group>"; };
 		60DCA59D3815D648E4728045 /* Pods-algorand-staging.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand-staging.debug.xcconfig"; path = "Pods/Target Support Files/Pods-algorand-staging/Pods-algorand-staging.debug.xcconfig"; sourceTree = "<group>"; };
 		8CA10E911394EB35A6B71CEB /* Pods-algorand.app store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand.app store.xcconfig"; path = "Pods/Target Support Files/Pods-algorand/Pods-algorand.app store.xcconfig"; sourceTree = "<group>"; };
@@ -965,8 +967,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1760077522983152000C8047 /* Crypto.framework in Frameworks */,
 				DCD3EE7678029738F4171F22 /* Pods_algorand_staging.framework in Frameworks */,
+				1798C8DC229C32030002F065 /* Crypto.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -974,8 +976,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				654E149E940D74AF3955EEF3 /* Pods_algorand.framework in Frameworks */,
-				1760077422983152000C8047 /* Crypto.framework in Frameworks */,
+				654E149E940D74AF3955EEF3 /* BuildFile in Frameworks */,
+				1798C8DB229C32030002F065 /* Crypto.framework in Frameworks */,
+				0A661BB3CA3B52A6635AC9C2 /* Pods_algorand.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1028,7 +1031,7 @@
 		17512612223BDC2B0095AF4F /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				1760077322983152000C8047 /* Crypto.framework */,
+				1798C8DA229C32030002F065 /* Crypto.framework */,
 			);
 			path = Libraries;
 			sourceTree = "<group>";
@@ -2741,6 +2744,7 @@
 			isa = PBXGroup;
 			children = (
 				2BDB953015FF2F948F5734D7 /* Pods_algorand_staging.framework */,
+				3BEF6555A275CB49FF59C5E2 /* Pods_algorand.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
