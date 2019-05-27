@@ -80,7 +80,7 @@ class MyBidsViewController: BaseViewController {
         myBidsView.myBidsCollectionView.contentState = .loading
     }
     
-    func fetchMyBids() {
+    func fetchMyBids(then handler: @escaping EmptyHandler) {
         guard let username = user.username else {
             return
         }
@@ -97,6 +97,8 @@ class MyBidsViewController: BaseViewController {
             case let .failure(error):
                 print(error)
             }
+            
+            handler()
         }
     }
     

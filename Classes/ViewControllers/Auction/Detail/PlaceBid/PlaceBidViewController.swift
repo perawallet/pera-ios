@@ -83,7 +83,15 @@ extension PlaceBidViewController: PlaceBidViewDelegate {
         let auctionId = Int64(auction.id)
         
         var signedBidError: NSError?
-        guard let bidData = AuctionMakeBid(bidderAddress, bidAmount, maxPrice, bidId, auctionAddress, auctionId, &signedBidError) else {
+        guard let bidData = AuctionMakeBid(
+            bidderAddress,
+            bidAmount * 1000000,
+            maxPrice,
+            bidId,
+            auctionAddress,
+            auctionId,
+            &signedBidError
+        ) else {
             return
         }
         

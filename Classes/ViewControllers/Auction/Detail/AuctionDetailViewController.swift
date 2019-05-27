@@ -20,7 +20,7 @@ class AuctionDetailViewController: BaseScrollViewController {
     // MARK: Components
     
     private lazy var auctionDetailView: AuctionDetailView = {
-        let maximumIndex = (auction.firstRound ?? 1) + (auction.priceChunkRounds ?? 1) * (auction.chunkCount ?? 1) - 1
+        let maximumIndex = (auction.priceChunkRounds ?? 1) * (auction.chunkCount ?? 1) - 1
         let view = AuctionDetailView(maximumIndex: Double(maximumIndex))
         return view
     }()
@@ -185,7 +185,14 @@ class AuctionDetailViewController: BaseScrollViewController {
         api?.fetchChartData(for: "\(auction.id)") { response in
             switch response {
             case let .success(values):
-                self.chartValues = values
+                if self.chartValues.isEmpty {
+                    self.chartValues = values
+                } else {
+                    let arraySlice = values.suffix(values.count - self.chartValues.count)
+                    let newArray = Array(arraySlice)
+                    
+                    self.chartValues.append(contentsOf: newArray)
+                }
             case let .failure(error):
                 print(error)
             }
@@ -193,7 +200,9 @@ class AuctionDetailViewController: BaseScrollViewController {
     }
     
     private func pollMyBidsIfNeeded() {
-        myBidsViewController.fetchMyBids()
+        myBidsViewController.fetchMyBids {
+            self.viewModel.configureMyBidsHeader(self.auctionDetailView, with: self.myBidsViewController.bids.count)
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {

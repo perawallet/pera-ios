@@ -36,4 +36,9 @@ class AuctionDetailViewModel {
             view.auctionDetailHeaderView.remainingAlgosView.percentageLabel.text = "(\(Int(remainingAlgos * 100 / totalAlgos))%)"
         }
     }
+    
+    func configureMyBidsHeader(_ view: AuctionDetailView, with count: Int) {
+        let title = "auction-detail-my-bids-title".localized + " (\(count))"
+        view.myBidsButton.setTitle(title, for: .normal)
+    }
 }
