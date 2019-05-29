@@ -98,6 +98,7 @@ class SendAlgosPreviewViewController: BaseViewController {
             nil,
             "",
             "",
+            params.genesisHashData,
             &transactionError
         ) else {
             return
