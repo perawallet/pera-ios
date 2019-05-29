@@ -24,14 +24,14 @@ class Environment {
     lazy var serverSchema: String = {
         switch target {
         case .staging, .prod:
-            return "http"
+            return "https"
         }
     }()
     
     lazy var serverHost: String = {
         switch target {
         case .staging, .prod:
-            return "indexer.algorand.network:8081"
+            return "indexer.algorand.network:8443"
         }
     }()
     
