@@ -103,6 +103,8 @@ extension PlaceBidViewController: PlaceBidViewDelegate {
         
         let bidString = signedBidData.base64EncodedString()
         
+        placeBidView.placeBidButton.buttonState = .loading
+        
         api?.placeBid(with: bidString, for: "\(auction.id)") { response in
             switch response {
             case let .success(bidResponse):
@@ -110,6 +112,8 @@ extension PlaceBidViewController: PlaceBidViewDelegate {
             case let .failure(error):
                 print(error)
             }
+            
+            self.placeBidView.placeBidButton.buttonState = .normal
         }
     }
     
