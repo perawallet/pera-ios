@@ -72,7 +72,7 @@ class PlaceBidViewController: BaseViewController {
 extension PlaceBidViewController: PlaceBidViewDelegate {
     
     func placeBidViewDidTapPlaceBidButton(_ placeBidView: PlaceBidView) {
-        guard let bidderAddress = session?.currentAccount?.address,
+        guard let bidderAddress = user.address,
             let bidAmount = parseBidAmount(),
             let maxPrice = parseMaxPrice() else {
                 return
@@ -98,6 +98,7 @@ extension PlaceBidViewController: PlaceBidViewDelegate {
         var signedBidDataError: NSError?
         guard let privateData = session?.privateData(forAccount: bidderAddress),
             let signedBidData = CryptoSignBid(privateData, bidData, &signedBidDataError) else {
+                displaySimpleAlertWith(title: "title-error".localized, message: "auction-bid-coinlist-account-existence-error".localized)
                 return
         }
         

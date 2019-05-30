@@ -277,6 +277,7 @@
 "auction-settled-title" = "SETTLED";
 "auction-past-auctions" = "Past Auctions";
 "auction-auth-error-message" = "Couldn't authenticate your coinlist account.";
+"auction-bid-coinlist-account-existence-error" = "The wallet associated with your current Coinlist account could not be found among your active accounts. Please make sure that you recover the correct account, and then place your bid again.";
 
 // MARK: Auction Detail
 
