@@ -68,7 +68,7 @@ class Environment {
         case .staging:
             return "e5d43226691ee9d3a89b7d65a5cb7cf5de5680cf703e9c17b9b7b87253ca21a7"
         case .prod:
-            return "e5d43226691ee9d3a89b7d65a5cb7cf5de5680cf703e9c17b9b7b87253ca21a7"
+            return "90e9a94ce151224b324541c07b8ef5d3952fc517aec85596f54d01a336812593"
         }
     }()
     
