@@ -296,3 +296,4 @@
 "auction-detail-min-potential-algos" = "Min Potential Algos";
 "auction-detail-status-rejected-title" = "Rejected";
 "auction-detail-bids-empty-title" = "No Current Bids";
+"auction-detail-retract-error" = "Could not retract the bid.";

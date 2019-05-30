@@ -35,7 +35,6 @@ class BidCellContextView: BaseView {
             .withLine(.single)
             .withTextColor(SharedColors.black)
             .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 15.0)))
-            .withText("$100,000.00")
     }()
     
     private(set) lazy var bidStatusLabel: UILabel = {
@@ -44,7 +43,6 @@ class BidCellContextView: BaseView {
             .withLine(.single)
             .withTextColor(SharedColors.green)
             .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 12.0)))
-            .withText("Accepted")
     }()
     
     private(set) lazy var separatorView: UIView = {
@@ -68,7 +66,6 @@ class BidCellContextView: BaseView {
             .withLine(.single)
             .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 15.0)))
             .withTextColor(SharedColors.darkGray)
-            .withText("@ $8.00")
     }()
     
     private lazy var algosTitleLabel: UILabel = {
@@ -88,7 +85,6 @@ class BidCellContextView: BaseView {
             .withLine(.single)
             .withTextColor(SharedColors.blue)
             .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 15.0)))
-            .withText("10,000.00")
     }()
     
     // MARK: Setup

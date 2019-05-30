@@ -111,6 +111,26 @@ extension API {
     }
     
     @discardableResult
+    func fetchAuctionStatus(
+        for id: String,
+        completion: APICompletionHandler<ActiveAuction>? = nil
+    ) -> EndpointInteractable? {
+        
+        guard let coinlistToken = session?.coinlistToken else {
+            return nil
+        }
+        
+        return send(
+            Endpoint<ActiveAuction>(Path("/api/algorand/auctions/\(id)/status/"))
+                .base(Environment.current.cointlistApi)
+                .httpHeaders([.custom(header: "Authorization", value: "Bearer \(coinlistToken)")])
+                .handler { response in
+                    completion?(response)
+                }
+        )
+    }
+    
+    @discardableResult
     func fetchChartData(
         for auctionId: String,
         completion: APICompletionHandler<[ChartData]>? = nil

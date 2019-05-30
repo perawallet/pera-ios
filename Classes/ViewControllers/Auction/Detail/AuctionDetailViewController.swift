@@ -142,7 +142,7 @@ class AuctionDetailViewController: BaseScrollViewController {
                 return
             }
             
-            strongSelf.fetchActiveAuction()
+            strongSelf.fetchAuctionStatus()
             strongSelf.fetchAuctionDetails()
             strongSelf.fetchChartValues()
             
@@ -152,8 +152,8 @@ class AuctionDetailViewController: BaseScrollViewController {
         pollingOperation?.start()
     }
     
-    private func fetchActiveAuction() {
-        api?.fetchActiveAuction { response in
+    private func fetchAuctionStatus() {
+        api?.fetchAuctionStatus(for: "\(auction.id)") { response in
             switch response {
             case let .success(activeAuction):
                 self.activeAuction = activeAuction

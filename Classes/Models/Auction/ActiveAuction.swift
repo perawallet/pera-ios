@@ -63,6 +63,19 @@ extension ActiveAuction {
     }
 }
 
+// MARK: API
+
+extension ActiveAuction {
+
+    func isBiddable() -> Bool {
+        guard let status = self.status else {
+            return false
+        }
+        
+        return status == .running || status == .announced
+    }
+}
+
 enum AuctionStatus: String, Mappable {
     case announced = "Announced"
     case running = "Running"

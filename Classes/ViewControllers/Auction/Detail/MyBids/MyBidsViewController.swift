@@ -130,18 +130,40 @@ extension MyBidsViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: BidCell.reusableIdentifier,
-            for: indexPath) as? BidCell else {
-                fatalError("Index path is out of bounds")
+        guard let currentPrice = activeAuction.currentPrice,
+            indexPath.item < bids.count else {
+            fatalError("Index path is out of bounds")
         }
         
-        if indexPath.item < bids.count {
-            let bid = bids[indexPath.row]
+        let bid = bids[indexPath.row]
+        
+        guard let bidPrice = bid.maxPrice else {
+            fatalError("Index path is out of bounds")
+        }
+        
+        if bidPrice < currentPrice {
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: LimitOrderCell.reusableIdentifier,
+                for: indexPath) as? LimitOrderCell else {
+                    fatalError("Index path is out of bounds")
+            }
+            
+            cell.delegate = self
+            
             viewModel.configure(cell, with: bid)
+            
+            return cell
+        } else {
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: BidCell.reusableIdentifier,
+                for: indexPath) as? BidCell else {
+                    fatalError("Index path is out of bounds")
+            }
+            
+            viewModel.configure(cell, with: bid)
+            
+            return cell
         }
-        
-        return cell
     }
 }
 
@@ -156,5 +178,27 @@ extension MyBidsViewController: UICollectionViewDelegateFlowLayout {
     ) -> CGSize {
         
         return layout.current.cellSize
+    }
+}
+
+// MARK: LimitOrderCellDelegate
+
+extension MyBidsViewController: LimitOrderCellDelegate {
+    
+    func limitOrderCellDidTapRetractButton(_ limitOrderCell: LimitOrderCell) {
+        guard let indexPath = myBidsView.myBidsCollectionView.indexPath(for: limitOrderCell) else {
+            return
+        }
+        
+        let bid = bids[indexPath.row]
+        
+        api?.retractBid(with: "\(bid.id)", from: "\(auction.id)") { response in
+            switch response {
+            case .success:
+                self.myBidsView.myBidsCollectionView.reloadData()
+            case .failure:
+                self.displaySimpleAlertWith(title: "title-error".localized, message: "auction-detail-retract-error".localized)
+            }
+        }
     }
 }

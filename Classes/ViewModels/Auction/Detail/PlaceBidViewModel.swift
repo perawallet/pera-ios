@@ -38,7 +38,9 @@ class PlaceBidViewModel {
     }
     
     func update(_ placeBidView: PlaceBidView, for bidAmount: Int64, and maxPrice: Int64, in activeAuction: ActiveAuction) {
-        placeBidView.placeBidButton.isEnabled = true
+        if activeAuction.isBiddable() {
+            placeBidView.placeBidButton.isEnabled = true
+        }
         
         if let currentPrice = activeAuction.currentPrice,
             currentPrice > maxPrice {

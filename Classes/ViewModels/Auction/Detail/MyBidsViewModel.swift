@@ -10,23 +10,31 @@ import UIKit
 
 class MyBidsViewModel {
     
+    func configure(_ cell: LimitOrderCell, with bid: Bid) {
+        configure(cell.contextView, with: bid)
+    }
+    
     func configure(_ cell: BidCell, with bid: Bid) {
+        configure(cell.contextView, with: bid)
+    }
+    
+    private func configure(_ view: BidCellContextView, with bid: Bid) {
         if let status = bid.status {
             switch status {
             case .accepted,
                  .successful,
                  .paid:
-                cell.contextView.bidStatusLabel.textColor = SharedColors.green
-                cell.contextView.bidStatusLabel.text = status.rawValue
+                view.bidStatusLabel.textColor = SharedColors.green
+                view.bidStatusLabel.text = status.rawValue
             case .retracted:
-                cell.contextView.bidStatusLabel.textColor = SharedColors.darkGray
-                cell.contextView.bidStatusLabel.text = status.rawValue
+                view.bidStatusLabel.textColor = SharedColors.darkGray
+                view.bidStatusLabel.text = status.rawValue
             case .unsuccessful:
-                cell.contextView.bidStatusLabel.textColor = SharedColors.red
-                cell.contextView.bidStatusLabel.text = "auction-detail-status-rejected-title".localized
+                view.bidStatusLabel.textColor = SharedColors.red
+                view.bidStatusLabel.text = "auction-detail-status-rejected-title".localized
             default:
-                cell.contextView.bidStatusLabel.textColor = SharedColors.softGray
-                cell.contextView.bidStatusLabel.text = status.rawValue
+                view.bidStatusLabel.textColor = SharedColors.softGray
+                view.bidStatusLabel.text = status.rawValue
             }
         }
         
@@ -35,9 +43,9 @@ class MyBidsViewModel {
                 return
         }
         
-        cell.contextView.amountLabel.text = "\((amount / 1000000).convertToDollars())"
-        cell.contextView.maxPriceLabel.text = "@ \(maxPrice.convertToDollars())"
-        cell.contextView.algosAmountLabel.text = Int64(((amount / 100) / (maxPrice / 100))).toAlgos.toDecimalStringForLabel
+        view.amountLabel.text = "\((amount / 1000000).convertToDollars())"
+        view.maxPriceLabel.text = "@ \(maxPrice.convertToDollars())"
+        view.algosAmountLabel.text = Int64(((amount / 100) / (maxPrice / 100))).toAlgos.toDecimalStringForLabel
     }
     
     func configure(_ view: MyBidsView, with bids: [Bid], for emptyStateView: EmptyStateView) {
@@ -58,7 +66,7 @@ class MyBidsViewModel {
                     return 0
             }
             
-            let total = ((amount / 100) * (maxPrice / 100))
+            let total = ((amount / 100) / (maxPrice / 100))
             return $0 + total
         }
         

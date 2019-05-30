@@ -72,7 +72,8 @@ class PlaceBidViewController: BaseViewController {
 extension PlaceBidViewController: PlaceBidViewDelegate {
     
     func placeBidViewDidTapPlaceBidButton(_ placeBidView: PlaceBidView) {
-        guard let bidderAddress = user.address,
+        guard activeAuction.isBiddable(),
+            let bidderAddress = user.address,
             let bidAmount = parseBidAmount(),
             let maxPrice = parseMaxPrice() else {
                 return

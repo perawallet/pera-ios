@@ -30,7 +30,7 @@ class LimitOrderCellContextView: BidCellContextView {
     // MARK: Components
     
     private(set) lazy var retractButton: AlignedButton = {
-        let positions: AlignedButton.StylePositionAdjustment = (image: CGPoint(x: 4.5, y: 0.0), title: CGPoint(x: -4.5, y: 0.0))
+        let positions: AlignedButton.StylePositionAdjustment = (image: CGPoint(x: 2.5, y: 0.0), title: CGPoint(x: -2.5, y: 0.0))
         
         let button = AlignedButton(style: .imageRight(positions))
         button.setImage(img("icon-retract"), for: .normal)
