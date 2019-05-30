@@ -52,7 +52,7 @@ FOUNDATION_EXPORT NSData* _Nullable CryptoSignBid(NSData* _Nullable sk, NSData* 
 
 /**
  * SignTransaction accepts a private key and a transaction, and returns the
-bytes of a signed transaction ready to be broadcasted to the network
+bytes of a signed bid in a note.
  */
 FOUNDATION_EXPORT NSData* _Nullable CryptoSignTransaction(NSData* _Nullable sk, NSData* _Nullable encodedTx, NSError* _Nullable* error);
 

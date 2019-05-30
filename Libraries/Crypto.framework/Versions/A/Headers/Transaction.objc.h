@@ -17,6 +17,6 @@
  * MakePaymentTxn constructs a payment transaction using the passed parameters.
 `from` and `to` addresses should be checksummed, human-readable addresses
  */
-FOUNDATION_EXPORT NSData* _Nullable TransactionMakePaymentTxn(NSString* _Nullable from, NSString* _Nullable to, int64_t fee, int64_t amount, int64_t firstRound, int64_t lastRound, NSData* _Nullable note, NSString* _Nullable closeRemainderTo, NSString* _Nullable genesisID, NSError* _Nullable* error);
+FOUNDATION_EXPORT NSData* _Nullable TransactionMakePaymentTxn(NSString* _Nullable from, NSString* _Nullable to, int64_t fee, int64_t amount, int64_t firstRound, int64_t lastRound, NSData* _Nullable note, NSString* _Nullable closeRemainderTo, NSString* _Nullable genesisID, NSData* _Nullable genesisHash, NSError* _Nullable* error);
 
 #endif

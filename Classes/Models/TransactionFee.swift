@@ -11,16 +11,23 @@ import Magpie
 struct TransactionParams: Mappable {
     let fee: Int64
     let lastRound: Int64
+    let genesisHashData: Data?
     
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
         fee = try container.decode(Int64.self, forKey: .fee)
         lastRound = try container.decode(Int64.self, forKey: .lastRound)
+        if let genesisHashBase64String = try container.decodeIfPresent(String.self, forKey: .genesisHash) {
+            genesisHashData = Data(base64Encoded: genesisHashBase64String)
+        } else {
+            genesisHashData = nil
+        }
     }
     
     private enum CodingKeys: String, CodingKey {
         case lastRound = "lastRound"
         case fee = "fee"
+        case genesisHash = "genesishashb64"
     }
 }
