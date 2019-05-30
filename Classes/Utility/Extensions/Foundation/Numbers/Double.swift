@@ -13,15 +13,19 @@ extension Double {
         return Int64(Double(algosInMicroAlgos) * self)
     }
     
-    var toDecimalStringForInput: String? {
-        return Formatter.separatorForInput.string(from: NSNumber(value: self))
+    var toDecimalStringForAlgosInput: String? {
+        return Formatter.separatorForAlgosInput.string(from: NSNumber(value: self))
     }
     
     var toDecimalStringForLabel: String? {
-        return Formatter.separatorForLabel.string(from: NSNumber(value: self))
+        return Formatter.separatorForAlgosLabel.string(from: NSNumber(value: self))
     }
     
     var toDecimalStringForURL: String? {
         return Formatter.numberToStringFormatter.string(from: NSNumber(value: self))
+    }
+    
+    var toDecimalStringForBidInput: String? {
+        return Formatter.separatorForBidInput.string(from: NSNumber(value: self))
     }
 }

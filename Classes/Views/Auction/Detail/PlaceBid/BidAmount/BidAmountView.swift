@@ -52,17 +52,19 @@ class BidAmountView: BaseView {
         return view
     }()
     
-    private(set) lazy var bidAmountTextField: UITextField = {
-        let view = UITextField()
+    private(set) lazy var bidAmountTextField: CursorlessTextField = {
+        let view = CursorlessTextField()
         view.textAlignment = .right
         view.textColor = SharedColors.blue
         view.font = UIFont.font(.montserrat, withWeight: .semiBold(size: 12.0))
-        view.keyboardType = . decimalPad
+        view.keyboardType = .numberPad
         view.attributedPlaceholder = NSAttributedString(
             string: "$0.00",
             attributes: [NSAttributedString.Key.foregroundColor: SharedColors.darkGray,
                          NSAttributedString.Key.font: UIFont.font(.montserrat, withWeight: .semiBold(size: 12.0))]
         )
+        view.delegate = self
+        
         return view
     }()
     
@@ -190,27 +192,34 @@ class BidAmountView: BaseView {
         delegate?.bidAmountViewDidTypeInput(self, in: textField)
     }
 }
-
-// MARK: UITextFieldDelegate
-
-extension BidAmountView: UITextFieldDelegate {
-    
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if let text = textField.text,
-            text.first != "$" {
-            
-            textField.text = "$" + text
-        }
-        
-        return true
-    }
-}
-
 // MARK: AuctionSliderViewDelegate
 
 extension BidAmountView: AuctionSliderViewDelegate {
 
     func auctionSliderView(_ auctionSliderView: AuctionSliderView, didChange value: Float) {
         delegate?.bidAmountView(self, didChange: value)
+    }
+}
+
+// MARK: - TextFieldDelegate
+extension BidAmountView: UITextFieldDelegate {
+    func textField(_ textField: UITextField,
+                   shouldChangeCharactersIn range: NSRange,
+                   replacementString string: String) -> Bool {
+        guard let text = textField.text else {
+            return true
+        }
+        
+        guard let doubleValueString = text.appending(string).currencyBidInputFormatting(),
+            let doubleValue = doubleValueString.doubleForSendSeparator,
+            doubleValue <= Double(maximumMicroAlgos) else {
+                return false
+        }
+        
+        if range.location + range.length < text.count {
+            return false
+        } else {
+            return true
+        }
     }
 }

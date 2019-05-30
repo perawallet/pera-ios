@@ -48,12 +48,13 @@ class MaximumPriceView: BaseView {
         return view
     }()
     
-    private(set) lazy var priceAmountTextField: UITextField = {
-        let view = UITextField()
+    private(set) lazy var priceAmountTextField: CursorlessTextField = {
+        let view = CursorlessTextField()
         view.textAlignment = .right
         view.textColor = SharedColors.blue
         view.font = UIFont.font(.montserrat, withWeight: .semiBold(size: 12.0))
-        view.keyboardType = .decimalPad
+        view.keyboardType = .numberPad
+        view.delegate = self
         return view
     }()
     
@@ -122,21 +123,36 @@ class MaximumPriceView: BaseView {
     
     @objc
     private func didChangeText(_ textField: UITextField) {
+        guard let doubleValueString = textField.text?.currencyAlgosInputFormatting(),
+            let doubleValue = doubleValueString.doubleForSendSeparator,
+            doubleValue <= Double(maximumMicroAlgos) else {
+                return
+        }
+        
+        textField.text = doubleValueString
         delegate?.maximumPriceViewDidTypeInput(self, in: textField)
     }
 }
 
-// MARK: UITextFieldDelegate
-
+// MARK: - TextFieldDelegate
 extension MaximumPriceView: UITextFieldDelegate {
-    
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if let text = textField.text,
-            text.first != "$" {
-            
-            textField.text = "$" + text
+    func textField(_ textField: UITextField,
+                   shouldChangeCharactersIn range: NSRange,
+                   replacementString string: String) -> Bool {
+        guard let text = textField.text else {
+            return true
         }
         
-        return true
+        guard let doubleValueString = text.appending(string).currencyBidInputFormatting(),
+            let doubleValue = doubleValueString.doubleForSendSeparator,
+            doubleValue <= Double(maximumMicroAlgos) else {
+                return false
+        }
+        
+        if range.location + range.length < text.count {
+            return false
+        } else {
+            return true
+        }
     }
 }

@@ -9,7 +9,7 @@
 import Foundation
 
 extension Formatter {
-    static let separatorForInput: NumberFormatter = {
+    static let separatorForAlgosInput: NumberFormatter = {
         let formatter = NumberFormatter()
         formatter.groupingSeparator = ","
         formatter.currencySymbol = ""
@@ -20,7 +20,7 @@ extension Formatter {
         return formatter
     }()
     
-    static let separatorForLabel: NumberFormatter = {
+    static let separatorForAlgosLabel: NumberFormatter = {
         let formatter = NumberFormatter()
         formatter.groupingSeparator = ","
         formatter.currencySymbol = ""
@@ -39,6 +39,17 @@ extension Formatter {
         formatter.numberStyle = .currencyAccounting
         formatter.minimumFractionDigits = 2
         formatter.maximumFractionDigits = 6
+        return formatter
+    }()
+    
+    static let separatorForBidInput: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.groupingSeparator = ","
+        formatter.currencySymbol = "$"
+        formatter.locale = Locale(identifier: "en_US")
+        formatter.numberStyle = .currencyAccounting
+        formatter.minimumFractionDigits = 2
+        formatter.maximumFractionDigits = 2
         return formatter
     }()
 }

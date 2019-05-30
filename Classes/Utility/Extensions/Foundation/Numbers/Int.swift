@@ -39,7 +39,7 @@ extension Int64 {
     }
     
     var toDecimalStringForLabel: String? {
-        return Formatter.separatorForLabel.string(from: NSNumber(value: self))
+        return Formatter.separatorForAlgosLabel.string(from: NSNumber(value: self))
     }
 }
 
