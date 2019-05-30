@@ -57,6 +57,7 @@ class AuctionViewController: BaseViewController {
     private let viewModel = AuctionViewModel()
     
     private var pollingOperation: PollingOperation?
+    private var pollingCount = 0
     
     private let authManager = AuthManager()
     
@@ -170,6 +171,7 @@ class AuctionViewController: BaseViewController {
     
     private func startPolling() {
         pollingOperation = PollingOperation(interval: 5.0) { [weak self] in
+            self?.pollingCount += 1
             self?.fetchActiveAuction(withReload: false)
         }
         
@@ -181,6 +183,7 @@ class AuctionViewController: BaseViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
+        pollingCount = 0
         pollingOperation?.invalidate()
     }
     
@@ -261,7 +264,13 @@ extension AuctionViewController: UICollectionViewDataSource {
                 
                 cell.delegate = self
                 
-                viewModel.configure(cell, with: activeAuction)
+                var shouldUpdateTimer = false
+                
+                if pollingCount == 0 || pollingCount % 12 == 0 {
+                    shouldUpdateTimer = true
+                }
+                
+                viewModel.configure(cell, with: activeAuction, shouldUpdateTimer: shouldUpdateTimer)
                 
                 return cell
             } else {
