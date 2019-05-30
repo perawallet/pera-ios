@@ -369,8 +369,6 @@ extension AuctionViewController: AuthManagerDelegate {
         SVProgressHUD.show(withStatus: "title-loading".localized)
         
         let draft = CoinlistAuthenticationDraft(
-            clientId: Environment.current.coinlistClientId,
-            clientSecret: "e5d43226691ee9d3a89b7d65a5cb7cf5de5680cf703e9c17b9b7b87253ca21a7",
             code: code,
             grantType: "authorization_code",
             redirectURI: authManager.callbackUrlScheme

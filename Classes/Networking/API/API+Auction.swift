@@ -54,8 +54,8 @@ extension API {
     ) -> EndpointInteractable? {
         
         let params: Params = [
-            .custom(key: AlgorandParamPairKey.clientId, value: draft.clientId),
-            .custom(key: AlgorandParamPairKey.clientSecret, value: draft.clientSecret),
+            .custom(key: AlgorandParamPairKey.clientId, value: Environment.current.coinlistClientId),
+            .custom(key: AlgorandParamPairKey.clientSecret, value: Environment.current.coinlistClientSecret),
             .custom(key: AlgorandParamPairKey.code, value: draft.code),
             .custom(key: AlgorandParamPairKey.grantType, value: draft.grantType),
             .custom(key: AlgorandParamPairKey.redirectUri, value: draft.redirectURI)

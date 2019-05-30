@@ -10,8 +10,6 @@ import Foundation
 
 struct CoinlistAuthenticationDraft {
     
-    let clientId: String
-    let clientSecret: String
     let code: String
     let grantType: String
     let redirectURI: String
