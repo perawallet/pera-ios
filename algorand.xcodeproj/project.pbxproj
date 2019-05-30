@@ -632,13 +632,11 @@
 		2BF7191A224ED0E8001E8420 /* ContactQRDisplayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF71919224ED0E8001E8420 /* ContactQRDisplayViewController.swift */; };
 		2BFBAB72227B349E008BBB31 /* SuccessAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 2BFBAB71227B349E008BBB31 /* SuccessAnimation.json */; };
 		2BFBAB75227B35B7008BBB31 /* images in Resources */ = {isa = PBXBuildFile; fileRef = 2BFBAB74227B35B7008BBB31 /* images */; };
-		654E149E940D74AF3955EEF3 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
+		654E149E940D74AF3955EEF3 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		DCD3EE7678029738F4171F22 /* Pods_algorand_staging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BDB953015FF2F948F5734D7 /* Pods_algorand_staging.framework */; };
-		DE8D4028960B13A4FF332A6A /* Pods_algorand.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03422A4DBAB9F8E288B7841B /* Pods_algorand.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		03422A4DBAB9F8E288B7841B /* Pods_algorand.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_algorand.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		04EB0A42AA75229AEB36F88D /* Pods-algorand-staging.app store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand-staging.app store.xcconfig"; path = "Pods/Target Support Files/Pods-algorand-staging/Pods-algorand-staging.app store.xcconfig"; sourceTree = "<group>"; };
 		170AFAF9224C9FF800520EA5 /* QRCreationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCreationViewController.swift; sourceTree = "<group>"; };
 		170AFAFB224CC70A00520EA5 /* QRText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRText.swift; sourceTree = "<group>"; };
@@ -978,7 +976,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				654E149E940D74AF3955EEF3 /* BuildFile in Frameworks */,
+				654E149E940D74AF3955EEF3 /* (null) in Frameworks */,
 				1798C8DB229C32030002F065 /* Crypto.framework in Frameworks */,
 				0A661BB3CA3B52A6635AC9C2 /* Pods_algorand.framework in Frameworks */,
 			);
