@@ -22,7 +22,7 @@ class AuctionDetailHeaderView: BaseView {
     // MARK: Components
     
     private(set) lazy var auctionChartView: AuctionChartView = {
-        let view = AuctionChartView(initialValue: 10000000, maximumIndex: maximumIndex)
+        let view = AuctionChartView(initialValue: initialValue, maximumIndex: maximumIndex)
         return view
     }()
     
@@ -40,11 +40,13 @@ class AuctionDetailHeaderView: BaseView {
         return view
     }()
     
+    private let initialValue: Double
     private let maximumIndex: Double
     
     // MARK: Initialization
     
-    init(maximumIndex: Double) {
+    init(initialValue: Double, maximumIndex: Double) {
+        self.initialValue = initialValue
         self.maximumIndex = maximumIndex
         
         super.init(frame: .zero)

@@ -35,9 +35,9 @@ class MyBidsViewModel {
                 return
         }
         
-        cell.contextView.amountLabel.text = "\(amount.convertToDollars())"
+        cell.contextView.amountLabel.text = "\((amount / 1000000).convertToDollars())"
         cell.contextView.maxPriceLabel.text = "@ \(maxPrice.convertToDollars())"
-        cell.contextView.algosAmountLabel.text = Int64(((amount / 100) * (maxPrice / 100))).toAlgos.toDecimalStringForLabel
+        cell.contextView.algosAmountLabel.text = Int64(((amount / 100) / (maxPrice / 100))).toAlgos.toDecimalStringForLabel
     }
     
     func configure(_ view: MyBidsView, with bids: [Bid], for emptyStateView: EmptyStateView) {
@@ -49,7 +49,7 @@ class MyBidsViewModel {
         }
         
         view.myBidsCollectionView.contentState = .none
-        view.myBidsCollectionView.backgroundColor = .white
+        view.myBidsCollectionView.backgroundColor = .clear
         view.totalPotentialAlgosDisplayView.backgroundColor = SharedColors.blue
         
         let totalAmount = bids.reduce(0) {

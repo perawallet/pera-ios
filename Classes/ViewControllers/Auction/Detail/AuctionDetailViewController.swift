@@ -21,7 +21,8 @@ class AuctionDetailViewController: BaseScrollViewController {
     
     private lazy var auctionDetailView: AuctionDetailView = {
         let maximumIndex = (auction.priceChunkRounds ?? 1) * (auction.chunkCount ?? 1) - 1
-        let view = AuctionDetailView(maximumIndex: Double(maximumIndex))
+        let initialValue = auction.algos?.toAlgos ?? 0
+        let view = AuctionDetailView(initialValue: initialValue, maximumIndex: Double(maximumIndex))
         return view
     }()
     
@@ -187,11 +188,51 @@ class AuctionDetailViewController: BaseScrollViewController {
             case let .success(values):
                 if self.chartValues.isEmpty {
                     self.chartValues = values
+                    
+                    var chartData = [ChartDataEntry]()
+                    
+                    for (index, value) in self.chartValues.enumerated() {
+                        if let waitCount = self.auction.priceChunkRounds {
+                            chartData.append(ChartDataEntry(x: Double(index * waitCount), y: Double(value.remainingAlgos ?? 1)))
+                            
+                            for i in 1..<waitCount {
+                                if index == 0 {
+                                    chartData.append(ChartDataEntry(x: Double(i),
+                                                                    y: Double(value.remainingAlgos ?? 1)))
+                                } else {
+                                    chartData.append(ChartDataEntry(x: Double((index * waitCount) + i),
+                                                                    y: Double(value.remainingAlgos ?? 1)))
+                                }
+                            }
+                        }
+                        
+                    }
+                    
+                    self.auctionDetailView.auctionDetailHeaderView.auctionChartView.setData(entries: chartData)
+                    
                 } else {
                     let arraySlice = values.suffix(values.count - self.chartValues.count)
                     let newArray = Array(arraySlice)
                     
-                    self.chartValues.append(contentsOf: newArray)
+                    var chartData = [ChartDataEntry]()
+                    
+                    for (index, value) in newArray.enumerated() {
+                        if let waitCount = self.auction.priceChunkRounds {
+                            chartData.append(ChartDataEntry(x: Double((self.chartValues.count + index) * waitCount),
+                                                            y: Double(value.remainingAlgos ?? 1)))
+                            for i in 1..<waitCount {
+                                chartData.append(ChartDataEntry(x: Double(((self.chartValues.count + index) * waitCount) + i),
+                                                                y: Double(value.remainingAlgos ?? 1)))
+                            }
+                        }
+                    }
+                    
+                    if !newArray.isEmpty {
+                        self.chartValues.append(contentsOf: newArray)
+                        
+                        self.auctionDetailView.auctionDetailHeaderView.auctionChartView
+                            .addData(entries: chartData, at: self.chartValues.count + chartData.count)
+                    }
                 }
             case let .failure(error):
                 print(error)
