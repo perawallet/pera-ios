@@ -164,12 +164,22 @@ extension PlaceBidViewController: PlaceBidViewDelegate {
             maxPriceText = String(maxPriceText.dropFirst())
         }
         
+        var shouldMultipleForCents = false
+        
+        if !maxPriceText.contains(".") && !maxPriceText.contains(",") {
+            shouldMultipleForCents = true
+        }
+        
         maxPriceText = maxPriceText.filter { character -> Bool in
             character != "," && character != "."
         }
         
         guard let maxPriceValue = Int64(maxPriceText) else {
             return nil
+        }
+        
+        if shouldMultipleForCents {
+            return maxPriceValue * 100
         }
         
         return maxPriceValue * 100
