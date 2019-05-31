@@ -11,31 +11,27 @@ import SwiftDate
 
 class AuctionViewModel {
     
-    func configure(_ cell: ActiveAuctionCell, with activeAuction: ActiveAuction, shouldUpdateTimer: Bool) {
+    func configure(_ cell: ActiveAuctionCell, with activeAuction: ActiveAuction) {
         cell.contextView.dateView.detailLabel.text = activeAuction.estimatedAuctionRoundStart?.toFormat("MMMM dd, yyyy")
         
         if let status = activeAuction.status {
             switch status {
             case .announced:
-                if shouldUpdateTimer {
-                    cell.contextView.auctionTimerView.mode = .initial
-                    
-                    if let startTime = activeAuction.estimatedAuctionRoundStart {
-                        cell.contextView.auctionTimerView.time = startTime.timeIntervalSinceNow
-                    }
-                    
-                    cell.contextView.auctionTimerView.runTimer()
+                cell.contextView.auctionTimerView.mode = .initial
+                
+                if let startTime = activeAuction.estimatedAuctionRoundStart {
+                    cell.contextView.auctionTimerView.time = startTime.timeIntervalSinceNow
                 }
+                
+                cell.contextView.auctionTimerView.runTimer()
             case .running:
-                if shouldUpdateTimer {
-                    cell.contextView.auctionTimerView.mode = .active
-                    
-                    if let finishTime = activeAuction.estimatedFinishTime {
-                        cell.contextView.auctionTimerView.time = finishTime.timeIntervalSinceNow
-                    }
-                    
-                    cell.contextView.auctionTimerView.runTimer()
+                cell.contextView.auctionTimerView.mode = .active
+                
+                if let finishTime = activeAuction.estimatedFinishTime {
+                    cell.contextView.auctionTimerView.time = finishTime.timeIntervalSinceNow
                 }
+                
+                cell.contextView.auctionTimerView.runTimer()
             case .closed,
                  .settled:
                 cell.contextView.auctionTimerView.mode = .ended
