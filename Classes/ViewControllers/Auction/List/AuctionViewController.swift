@@ -59,10 +59,16 @@ class AuctionViewController: BaseViewController {
     private var pollingOperation: PollingOperation?
     private var pollingCount = 0
     
-    private let authManager = AuthManager()
+    private var authManager: AuthManager?
     
     private var canDisplayActiveAuctionEmptyState = false
     private var canDisplayPastAuctionsEmptyState = false
+    
+    override init(configuration: ViewControllerConfiguration) {
+        super.init(configuration: configuration)
+        
+        authManager = AuthManager()
+    }
     
     // MARK: Setup
     
@@ -72,7 +78,7 @@ class AuctionViewController: BaseViewController {
         auctionIntroductionView.delegate = self
         auctionsCollectionView.dataSource = self
         auctionsCollectionView.delegate = self
-        authManager.delegate = self
+        authManager?.delegate = self
     }
     
     override func configureAppearance() {
@@ -229,7 +235,7 @@ class AuctionViewController: BaseViewController {
 extension AuctionViewController: AuctionIntroductionViewDelegate {
     
     func auctionIntroductionViewDidTapGetStartedButton(_ auctionIntroductionView: AuctionIntroductionView) {
-        authManager.authorize()
+        authManager?.authorize()
     }
 }
 
@@ -358,6 +364,10 @@ extension AuctionViewController: AuthManagerDelegate {
     func authManager(_ authManager: AuthManager, didCaptureToken token: String?, withError error: Error?) {
         if error != nil {
             displaySimpleAlertWith(title: "title-error".localized, message: "auction-auth-error-message".localized)
+            self.authManager = AuthManager()
+            self.authManager?.delegate = self
+            
+            return
         }
         
         guard let code = token else {
