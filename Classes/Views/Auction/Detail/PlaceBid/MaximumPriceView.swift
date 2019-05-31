@@ -123,7 +123,7 @@ class MaximumPriceView: BaseView {
     
     @objc
     private func didChangeText(_ textField: UITextField) {
-        guard let doubleValueString = textField.text?.currencyAlgosInputFormatting(),
+        guard let doubleValueString = textField.text?.currencyBidInputFormatting(),
             let doubleValue = doubleValueString.doubleForSendSeparator,
             doubleValue <= Double(maximumMicroAlgos) else {
                 return
