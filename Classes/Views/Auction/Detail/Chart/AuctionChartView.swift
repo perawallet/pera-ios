@@ -94,49 +94,6 @@ class AuctionChartView: BaseView {
         backgroundColor = .white
     }
     
-    private func setupData() {
-        let pricesDataSet = LineChartDataSet(entries: [ChartDataEntry(x: 0.0, y: Double(initialValue))], label: nil)
-        pricesDataSet.drawValuesEnabled = false
-        pricesDataSet.drawCircleHoleEnabled = false
-        pricesDataSet.drawCirclesEnabled = false
-        pricesDataSet.lineWidth = 4.0
-        pricesDataSet.mode = .horizontalBezier
-        
-        let redDiff: CGFloat = 255.0 / CGFloat(maximumIndex)
-        let greenDiff: CGFloat = 51.0 / CGFloat(maximumIndex)
-        let blueDiff: CGFloat = 255.0 / CGFloat(maximumIndex)
-        
-        var previousRed: CGFloat = 0
-        var previousGreen: CGFloat = 117
-        var previousBlue: CGFloat = 255
-        
-        pricesDataSet.setColor(UIColor(
-            red: CGFloat(previousRed / 255),
-            green: CGFloat(previousGreen / 255),
-            blue: CGFloat(previousBlue / 255),
-            alpha: 1
-        ))
-        
-        for _ in 0...Int(maximumIndex) {
-            let color = UIColor(
-                red: CGFloat(previousRed / 255),
-                green: CGFloat(previousGreen / 255),
-                blue: CGFloat(previousBlue / 255),
-                alpha: 1
-            )
-            
-            pricesDataSet.addColor(color)
-            
-            previousRed += redDiff
-            previousGreen -= greenDiff
-            previousBlue -= blueDiff
-        }
-        
-        lineChartView.data = LineChartData(dataSet: pricesDataSet)
-        
-        lineChartView.setVisibleXRange(minXRange: Double(1), maxXRange: maximumIndex)
-    }
-    
     // MARK: Layout
     
     override func prepareLayout() {

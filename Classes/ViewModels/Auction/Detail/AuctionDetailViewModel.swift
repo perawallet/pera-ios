@@ -15,7 +15,7 @@ class AuctionDetailViewModel {
             view.auctionDetailHeaderView.auctionChartView.currentValueLabel.text = currentPrice.convertToDollars(withSymbol: false)
         }
         
-        if let finishTime = activeAuction.estimatedFinishTime {
+        if let finishTime = activeAuction.estimatedFinishTime, activeAuction.isBiddable() {
             view.auctionDetailHeaderView.timerView.time = finishTime.timeIntervalSinceNow
             
             if finishTime.timeIntervalSinceNow <= 0 {
@@ -34,6 +34,12 @@ class AuctionDetailViewModel {
             view.auctionDetailHeaderView.remainingAlgosView.algosAmountView.algoIconImageView.image = img("icon-algo-small-blue")
             
             view.auctionDetailHeaderView.remainingAlgosView.percentageLabel.text = "(\(Int(remainingAlgos * 100 / totalAlgos))%)"
+        }
+        
+        if !activeAuction.isBiddable() {
+            view.auctionDetailHeaderView.timerView.time = 0
+            view.auctionDetailHeaderView.auctionChartView.configureCompletedState()
+            view.auctionDetailHeaderView.timerView.mode = .ended
         }
     }
     
