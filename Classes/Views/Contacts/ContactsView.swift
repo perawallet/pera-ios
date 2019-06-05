@@ -33,7 +33,7 @@ class ContactsView: BaseView {
         contactNameInputView.inputTextField.attributedPlaceholder = NSAttributedString(
             string: "contacts-search".localized,
             attributes: [NSAttributedString.Key.foregroundColor: SharedColors.softGray,
-                         NSAttributedString.Key.font: UIFont.font(.montserrat, withWeight: .semiBold(size: 13.0))]
+                         NSAttributedString.Key.font: UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))]
         )
         
         contactNameInputView.inputTextField.textColor = SharedColors.black

@@ -80,7 +80,7 @@ extension AccountNameSetupViewController: AccountNameSetupViewDelegate {
         if let text = accountNameSetupView.accountNameInputView.inputTextField.text,
             !text.isEmpty {
             
-            accountNameSetupView.accountNameInputView.separatorView.backgroundColor = SharedColors.blue
+            accountNameSetupView.accountNameInputView.separatorView.backgroundColor = SharedColors.purple
             return
         }
         

@@ -33,13 +33,13 @@ class AuctionCellContextView: BaseView {
             .withAlignment(.right)
             .withLine(.single)
             .withTextColor(SharedColors.softGray)
-            .withFont(UIFont.font(.opensans, withWeight: .semiBold(size: 12.0)))
+            .withFont(UIFont.font(.avenir, withWeight: .semiBold(size: 12.0)))
             .withText("auction-date-title".localized)
     }()
     
     private(set) lazy var dateLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 14.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 14.0)))
             .withTextColor(SharedColors.black)
             .withLine(.contained)
     }()
@@ -49,7 +49,7 @@ class AuctionCellContextView: BaseView {
             .withAlignment(.right)
             .withLine(.single)
             .withTextColor(SharedColors.softGray)
-            .withFont(UIFont.font(.opensans, withWeight: .semiBold(size: 12.0)))
+            .withFont(UIFont.font(.avenir, withWeight: .semiBold(size: 12.0)))
             .withText("auction-algos-sold-title".localized)
     }()
     
@@ -59,8 +59,8 @@ class AuctionCellContextView: BaseView {
         UILabel()
             .withAlignment(.right)
             .withLine(.single)
-            .withTextColor(SharedColors.blue)
-            .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 14.0)))
+            .withTextColor(SharedColors.turquois)
+            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 14.0)))
     }()
     
     private lazy var separatorView: UIView = {

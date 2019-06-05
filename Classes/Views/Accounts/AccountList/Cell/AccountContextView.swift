@@ -24,14 +24,14 @@ class AccountContextView: BaseView {
         UILabel()
             .withLine(.single)
             .withAlignment(.left)
-            .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 12.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 14.0)))
             .withTextColor(SharedColors.black)
     }()
     
     private(set) lazy var algoImageView = UIImageView(image: img("algo-icon-small", isTemplate: true))
     
     private(set) lazy var amountLabel: UILabel = {
-        UILabel().withLine(.single).withAlignment(.right).withFont(UIFont.font(.opensans, withWeight: .bold(size: 15.0)))
+        UILabel().withLine(.single).withAlignment(.right).withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 15.0)))
     }()
     
     private lazy var separatorView: UIView = {

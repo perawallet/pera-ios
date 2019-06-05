@@ -32,10 +32,25 @@ class SettingsView: BaseView {
         return collectionView
     }()
     
+    private lazy var versionLabel: UILabel = {
+        UILabel()
+            .withAlignment(.center)
+            .withLine(.single)
+            .withTextColor(SharedColors.softGray)
+            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 14.0)))
+    }()
+    
+    // MARK: Setup
+    
+    override func configureAppearance() {
+        backgroundColor = .white
+    }
+    
     // MARK: Layout
     
     override func prepareLayout() {
         setupCollectionViewLayout()
+        setupVersionLabelLayout()
     }
     
     private func setupCollectionViewLayout() {
@@ -44,7 +59,20 @@ class SettingsView: BaseView {
         collectionView.snp.makeConstraints { make in
             make.top.equalTo(safeAreaLayoutGuide.snp.top)
             make.leading.trailing.equalToSuperview()
-            make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom)
+            make.height.equalTo(320.0)
+        }
+    }
+    
+    private func setupVersionLabelLayout() {
+        addSubview(versionLabel)
+        
+        versionLabel.snp.makeConstraints { make in
+            make.top.equalTo(collectionView.snp.bottom).offset(20.0)
+            make.centerX.equalToSuperview()
+        }
+        
+        if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
+            versionLabel.text = "Version \(version)"
         }
     }
 }

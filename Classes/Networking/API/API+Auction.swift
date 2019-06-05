@@ -31,17 +31,10 @@ extension API {
     }
     
     @discardableResult
-    func fetchActiveAuction(
-        with draft: AuctionDraft,
-        completion: APICompletionHandler<ActiveAuction>? = nil
-    ) -> EndpointInteractable? {
-        
+    func fetchActiveAuction(completion: APICompletionHandler<ActiveAuction>? = nil) -> EndpointInteractable? {
         return send(
             Endpoint<ActiveAuction>(Path("/api/algorand/last-auction-status/"))
                 .base(Environment.current.cointlistApi)
-                .query([
-                    .custom(key: AlgorandParamPairKey.accessToken, value: draft.accessToken)
-                ])
                 .handler { response in
                     completion?(response)
                 }

@@ -45,7 +45,7 @@ class AuctionViewModel {
         
         if let remainingAlgos = activeAuction.remainingAlgos?.toAlgos {
             cell.contextView.remainingAlgosView.algosAmountView.amountLabel.text = remainingAlgos.toDecimalStringForLabel
-            cell.contextView.remainingAlgosView.algosAmountView.amountLabel.textColor = SharedColors.blue
+            cell.contextView.remainingAlgosView.algosAmountView.amountLabel.textColor = SharedColors.turquois
             cell.contextView.remainingAlgosView.algosAmountView.algoIconImageView.image = img("icon-algo-small-blue")
             
             if activeAuction.totalAlgos == 0 {

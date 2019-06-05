@@ -28,7 +28,7 @@ class SettingsInfoContextView: BaseView {
             .withTextColor(SharedColors.black)
             .withLine(.single)
             .withAlignment(.left)
-            .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 13.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 14.0)))
     }()
     
     private(set) lazy var detailLabel: UILabel = {
@@ -36,7 +36,7 @@ class SettingsInfoContextView: BaseView {
             .withTextColor(SharedColors.darkGray)
             .withLine(.single)
             .withAlignment(.right)
-            .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 13.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 14.0)))
     }()
     
     private lazy var separatorView: UIView = {

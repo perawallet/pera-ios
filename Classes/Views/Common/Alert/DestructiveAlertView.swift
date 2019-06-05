@@ -26,18 +26,18 @@ class DestructiveAlertView: AlertView {
     
     // MARK: Components
     
-    private lazy var cancelButton: UIButton = {
+    private(set) lazy var cancelButton: UIButton = {
         UIButton(type: .custom)
             .withTitle("title-cancel".localized)
             .withBackgroundImage(img("bg-cancel-button"))
-            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 12.0)))
+            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 12.0)))
             .withTitleColor(SharedColors.black)
     }()
     
     private(set) lazy var actionButton: UIButton = {
         UIButton(type: .custom)
             .withBackgroundImage(img("bg-remove-button"))
-            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 12.0)))
+            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 12.0)))
             .withTitleColor(SharedColors.black)
     }()
     

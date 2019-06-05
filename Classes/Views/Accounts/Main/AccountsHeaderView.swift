@@ -38,7 +38,7 @@ class AccountsHeaderView: BaseView {
         UILabel()
             .withAlignment(.left)
             .withTextColor(SharedColors.black)
-            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 12.0)))
+            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 14.0)))
             .withText("accounts-algos-available-title".localized)
     }()
     
@@ -48,33 +48,33 @@ class AccountsHeaderView: BaseView {
         UILabel()
             .withAlignment(.center)
             .withTextColor(SharedColors.black)
-            .withFont(UIFont.font(.opensans, withWeight: .bold(size: 40.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .bold(size: 40.0)))
             .withText("0.000000")
     }()
     
     private(set) lazy var sendButton: UIButton = {
         UIButton(type: .custom)
-            .withTitleColor(SharedColors.black)
+            .withTitleColor(SharedColors.orange)
             .withTitle("title-send".localized)
-            .withBackgroundImage(img("bg-blue-small"))
+            .withBackgroundImage(img("bg-orange-small"))
             .withAlignment(.center)
-            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 12.0)))
+            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 12.0)))
     }()
     
     private(set) lazy var receiveButton: UIButton = {
         UIButton(type: .custom)
-            .withTitleColor(SharedColors.black)
+            .withTitleColor(SharedColors.turquois)
             .withTitle("title-request".localized)
-            .withBackgroundImage(img("bg-green-small"))
+            .withBackgroundImage(img("bg-blue-small"))
             .withAlignment(.center)
-            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 12.0)))
+            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 12.0)))
     }()
     
     private lazy var historyLabel: UILabel = {
         UILabel()
-            .withAlignment(.left)
-            .withTextColor(SharedColors.darkGray)
-            .withFont(UIFont.font(.opensans, withWeight: .semiBold(size: 12.0)))
+            .withAlignment(.center)
+            .withTextColor(SharedColors.softGray)
+            .withFont(UIFont.font(.avenir, withWeight: .medium(size: 13.0)))
             .withText("accounts-transaction-history-title".localized)
     }()
     
@@ -152,7 +152,7 @@ class AccountsHeaderView: BaseView {
         
         historyLabel.snp.makeConstraints { make in
             make.top.equalTo(sendButton.snp.bottom).offset(layout.current.historyLabelTopInset)
-            make.leading.equalToSuperview().inset(layout.current.buttonHorizontalInset)
+            make.centerX.equalToSuperview()
             make.bottom.equalToSuperview().inset(layout.current.historyLabelBottomInset)
         }
     }

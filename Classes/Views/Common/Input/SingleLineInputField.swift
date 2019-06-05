@@ -27,7 +27,7 @@ class SingleLineInputField: BaseInputView {
         let textField = UITextField()
         textField.textColor = .black
         textField.tintColor = .black
-        textField.font = UIFont.font(.montserrat, withWeight: .semiBold(size: 13.0))
+        textField.font = UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))
         return textField
     }()
     

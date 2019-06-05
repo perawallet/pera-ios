@@ -52,8 +52,12 @@ class SendAlgosSuccessViewController: BaseScrollViewController {
         
         sendAlgosSuccessView.amountView.algosAmountView.mode = .normal(transaction.amount)
         
-        if let fee = transaction.fee {
-            sendAlgosSuccessView.feeView.algosAmountView.mode = .normal(fee.toAlgos)
+        if var receivedFee = transaction.fee {
+            if receivedFee < Transaction.Constant.minimumFee {
+                receivedFee = Transaction.Constant.minimumFee
+            }
+            
+            sendAlgosSuccessView.feeView.algosAmountView.mode = .normal(receivedFee.toAlgos)
         }
         
         sendAlgosSuccessView.accountView.detailLabel.text = transaction.fromAccount.name

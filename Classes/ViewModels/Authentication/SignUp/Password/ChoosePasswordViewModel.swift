@@ -80,7 +80,7 @@ class ChoosePasswordViewModel {
             
             passwordInputCircleView.state = .filled
             
-            passwordInputCircleView.backgroundColor = rgba(0.46, 0.76, 0.31, 0.2)
+            passwordInputCircleView.backgroundColor = rgba(0.64, 0.03, 0.53, 0.2)
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                 passwordInputCircleView.backgroundColor = .clear

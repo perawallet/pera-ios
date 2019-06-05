@@ -28,7 +28,7 @@ class NumberLabel: UILabel {
         
         textColor = SharedColors.red
         textAlignment = .center
-        font = UIFont.font(.montserrat, withWeight: .medium(size: 12.0 * verticalScale))
+        font = UIFont.font(.overpass, withWeight: .semiBold(size: 12.0 * verticalScale))
         
         layer.cornerRadius = layout.current.cornerRadius
         layer.borderWidth = 1.0

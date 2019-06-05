@@ -49,7 +49,7 @@ class AuctionChartView: BaseView {
     
     private lazy var currencySignLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 15.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .bold(size: 15.0)))
             .withTextColor(SharedColors.black)
             .withLine(.single)
             .withAlignment(.left)
@@ -58,7 +58,7 @@ class AuctionChartView: BaseView {
     
     private(set) lazy var currentValueLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 30.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .bold(size: 30.0)))
             .withTextColor(SharedColors.black)
             .withLine(.single)
             .withAlignment(.left)
@@ -67,7 +67,7 @@ class AuctionChartView: BaseView {
     
     private lazy var titleLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 14.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 14.0)))
             .withTextColor(.black)
             .withLine(.single)
             .withAlignment(.center)

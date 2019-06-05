@@ -2,21 +2,7 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "bg-gray-close.pdf",
-      "resizing" : {
-        "mode" : "9-part",
-        "center" : {
-          "mode" : "tile",
-          "width" : 1,
-          "height" : 1
-        },
-        "cap-insets" : {
-          "bottom" : 28,
-          "top" : 27,
-          "right" : 28,
-          "left" : 28
-        }
-      }
+      "filename" : "bg-gray-close.pdf"
     }
   ],
   "info" : {

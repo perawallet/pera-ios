@@ -26,7 +26,7 @@ class EmptyStateView: BaseView {
             .withAlignment(.center)
             .withLine(.contained)
             .withTextColor(SharedColors.softGray)
-            .withFont(UIFont.font(.montserrat, withWeight: .medium(size: 14.0)))
+            .withFont(UIFont.font(.avenir, withWeight: .medium(size: 13.0)))
             .withText(title)
     }()
     

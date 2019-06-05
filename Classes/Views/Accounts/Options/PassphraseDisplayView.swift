@@ -36,7 +36,7 @@ class PassphraseDisplayView: BaseView {
         UILabel()
             .withAlignment(.center)
             .withTextColor(SharedColors.black)
-            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 22.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .bold(size: 16.0)))
             .withText("view-pass-phrase-title".localized)
     }()
     
@@ -52,7 +52,7 @@ class PassphraseDisplayView: BaseView {
             .withAlignment(.left)
             .withLine(.contained)
             .withTextColor(SharedColors.black)
-            .withFont(UIFont.font(.opensans, withWeight: .semiBold(size: 17.0)))
+            .withFont(UIFont.font(.avenir, withWeight: .medium(size: 17.0)))
     }()
     
     private(set) lazy var shareButton: AlignedButton = {
@@ -61,8 +61,8 @@ class PassphraseDisplayView: BaseView {
         let button = AlignedButton(style: .imageRight(positions))
         button.setImage(img("icon-share"), for: .normal)
         button.setTitle("title-share".localized, for: .normal)
-        button.setTitleColor(SharedColors.blue, for: .normal)
-        button.titleLabel?.font = UIFont.font(.montserrat, withWeight: .semiBold(size: 12.0))
+        button.setTitleColor(SharedColors.purple, for: .normal)
+        button.titleLabel?.font = UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))
         return button
     }()
     

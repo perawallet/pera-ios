@@ -16,9 +16,9 @@ protocol QRSelectableLabelDelegate: class {
 class QRSelectableLabel: UIView {
     private(set) lazy var label: UILabel = {
         UILabel()
-            .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 13.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 13.0)))
             .withAlignment(.center)
-            .withTextColor(UIColor(hex: "#0B0E13"))
+            .withTextColor(SharedColors.black)
             .withLine(.multi(2))
     }()
     
@@ -35,8 +35,8 @@ class QRSelectableLabel: UIView {
     
     private lazy var copyLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 10.0)))
-            .withTextColor(UIColor(hex: "#AAAAB8"))
+            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 12.0)))
+            .withTextColor(SharedColors.softGray)
             .withText("qr-creation-tap-to-copy".localized)
     }()
     

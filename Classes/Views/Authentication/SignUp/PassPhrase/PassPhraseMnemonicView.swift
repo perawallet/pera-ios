@@ -16,12 +16,12 @@ enum PassPhraseMode {
 
 class PassPhraseMnemonicView: UIView {
     fileprivate enum Color {
-        static let wrongBackground = rgb(0.93, 0.14, 0.14)
-        static let correctBackground = SharedColors.green
+        static let wrongBackground = SharedColors.orange
+        static let correctBackground = SharedColors.purple
     }
     
     enum Font {
-        static let phraseLabel = UIFont.font(.opensans, withWeight: .semiBold(size: 13.0))
+        static let phraseLabel = UIFont.font(.overpass, withWeight: .semiBold(size: 13.0))
     }
     
     private(set) var mode: PassPhraseMode = .idle

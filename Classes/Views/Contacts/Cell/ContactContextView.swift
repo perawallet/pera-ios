@@ -49,7 +49,7 @@ class ContactContextView: BaseView {
             .withTextColor(SharedColors.black)
             .withLine(.single)
             .withAlignment(.left)
-            .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 14.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 16.0)))
     }()
     
     private(set) lazy var addressLabel: UILabel = {
@@ -57,7 +57,7 @@ class ContactContextView: BaseView {
             .withTextColor(SharedColors.darkGray)
             .withAlignment(.left)
             .withLine(.single)
-            .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 12.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 13.0)))
     }()
     
     private(set) lazy var qrDisplayButton: UIButton = {

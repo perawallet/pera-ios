@@ -24,7 +24,7 @@ class SettingsDetailContextView: BaseView {
     // MARK: Components
     
     private(set) lazy var detailImageView: UIImageView = {
-        let imageView = UIImageView(image: img("icon-settings-detail"))
+        let imageView = UIImageView(image: img("icon-arrow"))
         return imageView
     }()
     
@@ -33,7 +33,7 @@ class SettingsDetailContextView: BaseView {
             .withTextColor(SharedColors.black)
             .withLine(.single)
             .withAlignment(.left)
-            .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 13.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 14.0)))
     }()
     
     private lazy var separatorView: UIView = {

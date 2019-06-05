@@ -24,8 +24,8 @@ class ContactInfoViewController: BaseScrollViewController {
     
     private lazy var emptyStateView = EmptyStateView(
         title: "tranaction-empty-text".localized,
-        topImage: img("icon-transaction-empty-green"),
-        bottomImage: img("icon-transaction-empty-blue")
+        topImage: img("icon-transaction-empty-blue"),
+        bottomImage: img("icon-transaction-empty-orange")
     )
     
     private let viewModel = ContactInfoViewModel()
@@ -138,6 +138,13 @@ extension ContactInfoViewController: ContactInfoViewDelegate {
         let viewController = AlertViewController(mode: .destructive, alertConfigurator: configurator, configuration: configuration)
         viewController.modalPresentationStyle = .overCurrentContext
         viewController.modalTransitionStyle = .crossDissolve
+        
+        if let alertView = viewController.alertView as? DestructiveAlertView {
+            alertView.cancelButton.setTitleColor(SharedColors.purple, for: .normal)
+            alertView.cancelButton.setBackgroundImage(img("bg-purple-cancel"), for: .normal)
+            alertView.actionButton.setTitleColor(SharedColors.orange, for: .normal)
+            alertView.actionButton.setBackgroundImage(img("bg-orange-action"), for: .normal)
+        }
         
         tabBarController?.present(viewController, animated: true, completion: nil)
     }

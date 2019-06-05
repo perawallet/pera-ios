@@ -14,16 +14,16 @@ class AccountListViewModel {
         cell.contextView.nameLabel.text = account.name
         
         if account.amount > 0 {
-            cell.contextView.algoImageView.tintColor = SharedColors.green
-            cell.contextView.amountLabel.textColor = SharedColors.green
+            cell.contextView.algoImageView.tintColor = SharedColors.turquois
+            cell.contextView.amountLabel.textColor = SharedColors.turquois
             cell.contextView.amountLabel.text = "\(account.amount.toAlgos)"
         } else if account.amount == 0 {
             cell.contextView.algoImageView.tintColor = SharedColors.black
             cell.contextView.amountLabel.textColor = SharedColors.black
             cell.contextView.amountLabel.text = "\(account.amount.toAlgos)"
         } else {
-            cell.contextView.algoImageView.tintColor = SharedColors.blue
-            cell.contextView.amountLabel.textColor = SharedColors.blue
+            cell.contextView.algoImageView.tintColor = SharedColors.orange
+            cell.contextView.amountLabel.textColor = SharedColors.orange
             cell.contextView.amountLabel.text = "\(account.amount.toAlgos)"
         }
         
