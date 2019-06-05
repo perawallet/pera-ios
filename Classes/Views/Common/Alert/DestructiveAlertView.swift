@@ -26,7 +26,7 @@ class DestructiveAlertView: AlertView {
     
     // MARK: Components
     
-    private lazy var cancelButton: UIButton = {
+    private(set) lazy var cancelButton: UIButton = {
         UIButton(type: .custom)
             .withTitle("title-cancel".localized)
             .withBackgroundImage(img("bg-cancel-button"))

@@ -65,7 +65,7 @@ class AccountsSmallHeaderView: BaseView {
     private lazy var historyLabel: UILabel = {
         UILabel()
             .withAlignment(.center)
-            .withTextColor(SharedColors.darkGray)
+            .withTextColor(SharedColors.softGray)
             .withFont(UIFont.font(.avenir, withWeight: .medium(size: 13.0)))
             .withText("accounts-transaction-history-title".localized)
     }()

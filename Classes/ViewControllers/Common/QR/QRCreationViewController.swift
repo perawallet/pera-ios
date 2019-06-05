@@ -46,14 +46,14 @@ class QRCreationViewController: BaseScrollViewController {
     private(set) lazy var cancelButton: UIButton = {
         UIButton(type: .custom)
             .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 12.0)))
-            .withBackgroundImage(img("bg-dark-gray-button-big"))
+            .withBackgroundImage(img("bg-main-button"))
             .withTitle("title-close".localized)
-            .withTitleColor(SharedColors.black)
+            .withTitleColor(SharedColors.purple)
     }()
     
     private(set) lazy var shareButton: UIButton = {
         UIButton(type: .custom)
-            .withBackgroundImage(img("bg-blue-button"))
+            .withBackgroundImage(img("bg-purple-button"))
             .withImage(img("icon-share", isTemplate: true))
             .withTitle("title-share".localized)
             .withTitleColor(UIColor.white)

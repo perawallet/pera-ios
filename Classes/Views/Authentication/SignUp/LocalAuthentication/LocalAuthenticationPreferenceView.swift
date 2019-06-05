@@ -130,7 +130,7 @@ class LocalAuthenticationPreferenceView: BaseView {
         
         faceIdIconImageView.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
-            make.centerX.equalToSuperview().inset(-layout.current.iconCenterOffset)
+            make.centerX.equalToSuperview().offset(-layout.current.iconCenterOffset)
         }
     }
     

@@ -117,8 +117,8 @@
 // MARK: Login
 
 "login-title" = "Unlock";
-"login-subtitle" = "Enter six digit password";
-"logout-title" = "Lock";
+"login-subtitle" = "Enter six digit pin";
+"logout-title" = "LOGOUT";
 "logout-warning-title" = "Warning";
 "logout-warning-message" = "This action will remove all local accounts and delete your contacts database. Are you sure?";
 "logout-action-delete-title" = "Delete & Lock";
@@ -140,7 +140,7 @@
 "send-algos-amount" = "Amount:";
 "send-algos-transaction-id" = "Transaction ID:";
 "send-algos-more" = "SEND MORE";
-"send-algos-sent-title" = "Transaction Sent!";
+"send-algos-sent-title" = "Algos Sent!";
 "send-algos-alert-title" = "Wrong Transaction";
 "send-algos-alert-message" = "Please fill the fields.";
 "send-algos-minimum-amount-error-new-account" = "You're trying to send money to a new account. The amount must be at least 0.01 Algos";

@@ -90,7 +90,7 @@ class PassPhraseBackUpView: BaseView {
     private lazy var warningContainerView: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 20.0
-        view.backgroundColor = SharedColors.darkGray
+        view.backgroundColor = .white
         return view
     }()
     
@@ -100,7 +100,7 @@ class PassPhraseBackUpView: BaseView {
         UILabel()
             .withAlignment(.left)
             .withLine(.contained)
-            .withTextColor(.white)
+            .withTextColor(SharedColors.darkGray)
             .withFont(UIFont.font(.avenir, withWeight: .medium(size: 11.0)))
             .withText("back-up-phrase-warning".localized)
         

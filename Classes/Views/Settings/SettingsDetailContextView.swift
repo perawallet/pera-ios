@@ -24,7 +24,7 @@ class SettingsDetailContextView: BaseView {
     // MARK: Components
     
     private(set) lazy var detailImageView: UIImageView = {
-        let imageView = UIImageView(image: img("icon-settings-detail"))
+        let imageView = UIImageView(image: img("icon-arrow"))
         return imageView
     }()
     

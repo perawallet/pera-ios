@@ -67,7 +67,7 @@ class IntroductionView: BaseView {
     private lazy var recoverButton: UIButton = {
         UIButton(type: .custom)
             .withTitleColor(SharedColors.turquois)
-            .withBackgroundImage(img("bg-dark-gray-button-big"))
+            .withBackgroundImage(img("bg-blue-button-big"))
             .withTitle("introduction-recover-title".localized)
             .withAlignment(.center)
             .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 12.0)))

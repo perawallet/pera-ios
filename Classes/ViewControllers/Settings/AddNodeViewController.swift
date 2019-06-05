@@ -311,6 +311,10 @@ class AddNodeViewController: BaseScrollViewController {
         viewController.modalPresentationStyle = .overCurrentContext
         viewController.modalTransitionStyle = .crossDissolve
         
+        if let alertView = viewController.alertView as? DefaultAlertView {
+            alertView.doneButton.setTitleColor(SharedColors.darkGray, for: .normal)
+        }
+        
         tabBarController?.present(viewController, animated: true, completion: nil)
     }
 }

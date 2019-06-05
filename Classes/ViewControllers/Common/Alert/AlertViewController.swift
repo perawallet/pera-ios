@@ -20,7 +20,7 @@ class AlertViewController: BaseViewController {
     
     private let layout = Layout<LayoutConstants>()
     
-    private let alertView: AlertView
+    private(set) var alertView: AlertView
     private let mode: Mode
     private let alertConfigurator: AlertViewConfigurator
     

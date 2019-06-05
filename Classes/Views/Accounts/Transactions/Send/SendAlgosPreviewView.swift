@@ -28,11 +28,9 @@ class SendAlgosPreviewView: SendAlgosView {
     // MARK: Components
     
     private(set) lazy var feeInformationView: DetailedInformationView = {
-        let feeInformationView = DetailedInformationView()
+        let feeInformationView = DetailedInformationView(mode: .algos)
         feeInformationView.explanationLabel.text = "send-algos-fee".localized
-        feeInformationView.detailLabel.text = "0.0001"
-        feeInformationView.rightInputAccessoryButton.imageEdgeInsets = .zero
-        feeInformationView.rightInputAccessoryButton.contentMode = .right
+        feeInformationView.algosAmountView.amountLabel.font = UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))
         return feeInformationView
     }()
     
@@ -73,6 +71,7 @@ class SendAlgosPreviewView: SendAlgosView {
         
         feeInformationView.snp.makeConstraints { make in
             make.top.equalTo(transactionReceiverView.snp.bottom)
+            make.height.equalTo(88.0)
             make.leading.trailing.equalToSuperview()
         }
     }

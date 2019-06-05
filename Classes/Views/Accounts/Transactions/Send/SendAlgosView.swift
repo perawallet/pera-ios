@@ -52,7 +52,7 @@ class SendAlgosView: BaseView {
     private(set) lazy var previewButton: UIButton = {
         UIButton(type: .custom)
             .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 12.0)))
-            .withBackgroundImage(img("bg-dark-gray-button-big"))
+            .withBackgroundImage(img("bg-main-button"))
             .withTitle("title-preview".localized)
             .withTitleColor(SharedColors.purple)
     }()

@@ -113,7 +113,7 @@ class AlgosAmountView: BaseView {
             amountLabel.text = amount.toDecimalStringForLabel
             amountLabel.textColor = SharedColors.orange
             
-            algoIconImageView.image = img("icon-algo-small-blue")
+            algoIconImageView.image = img("icon-algo-small-orange")
         }
     }
 }
