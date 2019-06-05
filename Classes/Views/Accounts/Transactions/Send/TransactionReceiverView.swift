@@ -77,7 +77,7 @@ class TransactionReceiverView: BaseView {
         contactsButton.isHidden = true
         
         let width = UIScreen.main.bounds.width - 105.0
-        let font = UIFont.font(.montserrat, withWeight: .semiBold(size: 13.0))
+        let font = UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))
         
         let height = address.height(withConstrained: width, font: font) + 6
         
@@ -113,7 +113,7 @@ class TransactionReceiverView: BaseView {
     
     private(set) lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.font(.opensans, withWeight: .semiBold(size: 12.0))
+        label.font = UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))
         label.text = "send-algos-to".localized
         label.textColor = SharedColors.softGray
         return label

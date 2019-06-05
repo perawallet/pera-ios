@@ -30,7 +30,7 @@ class AlgosAmountView: BaseView {
             .withAlignment(.left)
             .withLine(.single)
             .withTextColor(SharedColors.black)
-            .withFont(UIFont.font(.opensans, withWeight: .bold(size: 16.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .bold(size: 15.0)))
     }()
     
     private(set) lazy var algoIconImageView = UIImageView(image: img("icon-algo-small-black"))
@@ -40,7 +40,7 @@ class AlgosAmountView: BaseView {
             .withAlignment(.right)
             .withLine(.single)
             .withTextColor(SharedColors.black)
-            .withFont(UIFont.font(.opensans, withWeight: .bold(size: 16.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .bold(size: 15.0)))
     }()
 
     // MARK: Setup
@@ -99,19 +99,19 @@ class AlgosAmountView: BaseView {
         case let .positive(amount):
             signLabel.isHidden = false
             signLabel.text = "+"
-            signLabel.textColor = SharedColors.green
+            signLabel.textColor = SharedColors.turquois
             
             amountLabel.text = amount.toDecimalStringForLabel
-            amountLabel.textColor = SharedColors.green
+            amountLabel.textColor = SharedColors.turquois
             
             algoIconImageView.image = img("icon-algo-small-green")
         case let .negative(amount):
             signLabel.isHidden = false
             signLabel.text = "-"
-            signLabel.textColor = SharedColors.blue
+            signLabel.textColor = SharedColors.orange
             
             amountLabel.text = amount.toDecimalStringForLabel
-            amountLabel.textColor = SharedColors.blue
+            amountLabel.textColor = SharedColors.orange
             
             algoIconImageView.image = img("icon-algo-small-blue")
         }

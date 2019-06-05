@@ -29,7 +29,7 @@ class AuctionSlider: UISlider {
         maximumValue = 100
         
         minimumTrackTintColor = SharedColors.softGray
-        maximumTrackTintColor = SharedColors.blue
+        maximumTrackTintColor = SharedColors.turquois
     }
     
     @available(*, unavailable)

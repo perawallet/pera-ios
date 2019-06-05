@@ -43,8 +43,8 @@ class TransactionDetailView: BaseView {
     
     private(set) lazy var transactionAmountView: AlgosAmountView = {
         let view = AlgosAmountView()
-        view.signLabel.font = UIFont.font(.opensans, withWeight: .bold(size: 40.0))
-        view.amountLabel.font = UIFont.font(.opensans, withWeight: .bold(size: 40.0))
+        view.signLabel.font = UIFont.font(.overpass, withWeight: .bold(size: 40.0))
+        view.amountLabel.font = UIFont.font(.overpass, withWeight: .bold(size: 40.0))
         view.amountLabel.textAlignment = .left
         view.algoIconImageView.image = img("algos-icon-big", isTemplate: true)
         view.algoIconImageView.contentMode = .scaleToFill
@@ -82,7 +82,7 @@ class TransactionDetailView: BaseView {
     private(set) lazy var feeView: DetailedInformationView = {
         let feeView = DetailedInformationView(mode: .algos)
         feeView.explanationLabel.text = "send-algos-fee".localized
-        feeView.algosAmountView.amountLabel.font = UIFont.font(.montserrat, withWeight: .semiBold(size: 13.0))
+        feeView.algosAmountView.amountLabel.font = UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))
         return feeView
     }()
     

@@ -40,7 +40,7 @@ class PassPhraseBackUpView: BaseView {
         UILabel()
             .withAlignment(.center)
             .withTextColor(SharedColors.black)
-            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 22.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .bold(size: 20.0)))
             .withText("back-up-phrase-title".localized)
     }()
     
@@ -75,14 +75,14 @@ class PassPhraseBackUpView: BaseView {
         let button = AlignedButton(style: .imageRight(positions))
         button.setImage(img("icon-share"), for: .normal)
         button.setTitle("title-share".localized, for: .normal)
-        button.setTitleColor(SharedColors.blue, for: .normal)
-        button.titleLabel?.font = UIFont.font(.montserrat, withWeight: .semiBold(size: 12.0))
+        button.setTitleColor(SharedColors.purple, for: .normal)
+        button.titleLabel?.font = UIFont.font(.overpass, withWeight: .semiBold(size: 13.0))
         return button
     }()
     
     private(set) lazy var qrButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.tintColor = SharedColors.blue
+        button.tintColor = SharedColors.purple
         button.setImage(img("icon-qr-code-white", isTemplate: true), for: .normal)
         return button
     }()
@@ -101,7 +101,7 @@ class PassPhraseBackUpView: BaseView {
             .withAlignment(.left)
             .withLine(.contained)
             .withTextColor(.white)
-            .withFont(UIFont.font(.opensans, withWeight: .bold(size: 12.0)))
+            .withFont(UIFont.font(.avenir, withWeight: .medium(size: 11.0)))
             .withText("back-up-phrase-warning".localized)
         
     }()

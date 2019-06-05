@@ -54,7 +54,7 @@ class ContactInfoView: BaseView {
             .withTitle("title-send".localized)
             .withBackgroundImage(img("bg-blue-small"))
             .withAlignment(.center)
-            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 12.0)))
+            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 12.0)))
     }()
     
     private(set) lazy var separatorView: UIView = {

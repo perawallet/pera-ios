@@ -40,8 +40,6 @@ class TabBarController: UITabBarController {
     
     private let route: Screen?
     
-    private let isAuctionEnabled = false
-    
     // MARK: Components
     
     private lazy var customTabBar: TabBar = {
@@ -71,11 +69,7 @@ class TabBarController: UITabBarController {
         
         configureAccountsTab()
         configureHistoryTab()
-        
-        if isAuctionEnabled {
-            configureAuctionTab()
-        }
-        
+        configureAuctionTab()
         configureContactsTab()
         configureSettingsTab()
         
@@ -96,11 +90,7 @@ class TabBarController: UITabBarController {
         
         controllers.append(accountsNavigationController)
         controllers.append(historyNavigationController)
-        
-        if isAuctionEnabled {
-            controllers.append(auctionNavigationController)
-        }
-        
+        controllers.append(auctionNavigationController)
         controllers.append(contactsNavigationController)
         controllers.append(settingsNavigationController)
         
@@ -163,7 +153,7 @@ class TabBarController: UITabBarController {
     }
     
     private func configureAppearance() {
-        let fontAttributes = [NSAttributedString.Key.font: UIFont.font(.montserrat, withWeight: .semiBold(size: 10.0))]
+        let fontAttributes = [NSAttributedString.Key.font: UIFont.font(.avenir, withWeight: .demiBold(size: 11.0))]
         UITabBarItem.appearance().setTitleTextAttributes(fontAttributes, for: .normal)
         UITabBarItem.appearance().setTitleTextAttributes(fontAttributes, for: .selected)
     }

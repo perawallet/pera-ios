@@ -19,14 +19,14 @@ class PassphraseBackUpOrderView: BaseView {
     
     private(set) lazy var numberLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(.opensans, withWeight: .semiBold(size: 10.0)))
-            .withTextColor(SharedColors.blue)
+            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 9.0)))
+            .withTextColor(SharedColors.purple)
             .withAlignment(.left)
     }()
     
     private(set) lazy var phraseLabel: UILabel = {
         let label = UILabel()
-            .withFont(UIFont.font(.opensans, withWeight: .semiBold(size: 14.0)))
+            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 13.0)))
             .withTextColor(SharedColors.black)
             .withAlignment(.left)
         

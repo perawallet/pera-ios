@@ -18,7 +18,7 @@ class HistoryViewModel {
             view.accountSelectionView.algosAmountView.amountLabel.textColor = SharedColors.black
         } else {
             view.accountSelectionView.algosAmountView.algoIconImageView.image = img("icon-algo-small-green")
-            view.accountSelectionView.algosAmountView.amountLabel.textColor = SharedColors.green
+            view.accountSelectionView.algosAmountView.amountLabel.textColor = SharedColors.turquois
         }
         
         view.accountSelectionView.set(amount: account.amount.toAlgos)

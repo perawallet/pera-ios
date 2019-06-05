@@ -19,7 +19,7 @@ class PasswordInputCircleView: UIImageView {
             switch state {
             case .empty:
                 image = img("green-button-border", isTemplate: true)
-                tintColor = SharedColors.green
+                tintColor = SharedColors.purple
             case .error:
                 image = img("green-button-border", isTemplate: true)
                 tintColor = UIColor.red
@@ -32,7 +32,7 @@ class PasswordInputCircleView: UIImageView {
     init() {
         super.init(image: img("green-button-border", isTemplate: true))
         
-        tintColor = SharedColors.green
+        tintColor = SharedColors.purple
         
         layer.cornerRadius = 20.0
         

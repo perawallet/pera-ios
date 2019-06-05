@@ -40,45 +40,45 @@ class AuctionSliderView: BaseView {
     private lazy var zeroPercentButton: UIButton = {
         UIButton(type: .custom)
             .withBackgroundColor(.white)
-            .withTitleColor(SharedColors.blue)
+            .withTitleColor(SharedColors.turquois)
             .withAlignment(.center)
-            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 9.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .bold(size: 9.0)))
             .withTitle("0%")
     }()
     
     private lazy var twentyFivePercentButton: UIButton = {
         UIButton(type: .custom)
             .withBackgroundColor(.white)
-            .withTitleColor(SharedColors.blue)
+            .withTitleColor(SharedColors.turquois)
             .withAlignment(.center)
-            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 9.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .bold(size: 9.0)))
             .withTitle("25%")
     }()
 
     private lazy var fiftyPercentButton: UIButton = {
         UIButton(type: .custom)
             .withBackgroundColor(.white)
-            .withTitleColor(SharedColors.blue)
+            .withTitleColor(SharedColors.turquois)
             .withAlignment(.center)
-            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 9.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .bold(size: 9.0)))
             .withTitle("50%")
     }()
     
     private lazy var seventyFivePercentButton: UIButton = {
         UIButton(type: .custom)
             .withBackgroundColor(.white)
-            .withTitleColor(SharedColors.blue)
+            .withTitleColor(SharedColors.turquois)
             .withAlignment(.center)
-            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 9.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .bold(size: 9.0)))
             .withTitle("75%")
     }()
     
     private lazy var hundredPercentButton: UIButton = {
         UIButton(type: .custom)
             .withBackgroundColor(.white)
-            .withTitleColor(SharedColors.blue)
+            .withTitleColor(SharedColors.turquois)
             .withAlignment(.center)
-            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 9.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .bold(size: 9.0)))
             .withTitle("100%")
     }()
     

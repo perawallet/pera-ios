@@ -42,7 +42,7 @@ class ContactQRDisplayView: BaseView {
             .withTextColor(SharedColors.black)
             .withLine(.single)
             .withAlignment(.center)
-            .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 14.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 15.0)))
     }()
     
     private(set) lazy var qrView: QRView = {
@@ -55,15 +55,15 @@ class ContactQRDisplayView: BaseView {
             .withTextColor(SharedColors.black)
             .withAlignment(.center)
             .withLine(.contained)
-            .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 13.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 14.0)))
     }()
     
     private(set) lazy var closeButton: UIButton = {
         UIButton(type: .custom)
-            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 12.0)))
+            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 12.0)))
             .withBackgroundImage(img("bg-dark-gray-button-big"))
             .withTitle("title-close".localized)
-            .withTitleColor(SharedColors.black)
+            .withTitleColor(SharedColors.purple)
     }()
     
     weak var delegate: ContactQRDisplayViewDelegate?

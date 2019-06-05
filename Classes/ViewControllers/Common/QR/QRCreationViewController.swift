@@ -45,7 +45,7 @@ class QRCreationViewController: BaseScrollViewController {
     
     private(set) lazy var cancelButton: UIButton = {
         UIButton(type: .custom)
-            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 12.0)))
+            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 12.0)))
             .withBackgroundImage(img("bg-dark-gray-button-big"))
             .withTitle("title-close".localized)
             .withTitleColor(SharedColors.black)
@@ -58,7 +58,7 @@ class QRCreationViewController: BaseScrollViewController {
             .withTitle("title-share".localized)
             .withTitleColor(UIColor.white)
             .withTintColor(UIColor.white)
-            .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 12.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 14.0)))
             .withImageEdgeInsets(UIEdgeInsets(top: 0, left: -10.0, bottom: 0, right: 0))
             .withTitleEdgeInsets(UIEdgeInsets(top: 0, left: 5.0, bottom: 0, right: 0))
     }()

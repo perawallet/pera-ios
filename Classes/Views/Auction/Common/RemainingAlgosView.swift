@@ -24,7 +24,7 @@ class RemainingAlgosView: BaseView {
     
     private lazy var explanationLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(.opensans, withWeight: .semiBold(size: 12.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 12.0)))
             .withTextColor(SharedColors.softGray)
             .withText("auction-remaining-algos".localized)
     }()
@@ -33,14 +33,14 @@ class RemainingAlgosView: BaseView {
         let view = AlgosAmountView()
         view.amountLabel.textAlignment = .left
         view.algoIconImageView.image = img("icon-algo-min")
-        view.amountLabel.font = UIFont.font(.montserrat, withWeight: .semiBold(size: 14.0))
+        view.amountLabel.font = UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))
         view.mode = .normal(0.0)
         return view
     }()
     
     private(set) lazy var percentageLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 14.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 14.0)))
             .withTextColor(SharedColors.darkGray)
             .withLine(.single)
             .withAlignment(.left)

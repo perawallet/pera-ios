@@ -34,7 +34,7 @@ class TransactionHistoryContextView: BaseView {
         UILabel()
             .withLine(.single)
             .withAlignment(.left)
-            .withFont(UIFont.font(.opensans, withWeight: .semiBold(size: 14.0)))
+            .withFont(UIFont.font(.avenir, withWeight: .medium(size: 14.0)))
             .withTextColor(SharedColors.black)
     }()
     
@@ -47,7 +47,7 @@ class TransactionHistoryContextView: BaseView {
         UILabel()
             .withLine(.single)
             .withAlignment(.left)
-            .withFont(UIFont.font(.opensans, withWeight: .semiBold(size: 12.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 13.0)))
             .withTextColor(SharedColors.darkGray)
     }()
     
@@ -55,7 +55,7 @@ class TransactionHistoryContextView: BaseView {
         UILabel()
             .withLine(.single)
             .withAlignment(.right)
-            .withFont(UIFont.font(.opensans, withWeight: .semiBold(size: 12.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 13.0)))
             .withTextColor(SharedColors.softGray)
     }()
     

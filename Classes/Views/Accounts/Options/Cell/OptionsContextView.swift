@@ -27,7 +27,7 @@ class OptionsContextView: BaseView {
         UILabel()
             .withLine(.single)
             .withAlignment(.left)
-            .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 12.0)))
+            .withFont(UIFont.font(.avenir, withWeight: .medium(size: 13.0)))
             .withTextColor(SharedColors.black)
     }()
     

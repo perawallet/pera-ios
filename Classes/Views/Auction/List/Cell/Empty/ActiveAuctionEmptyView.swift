@@ -32,7 +32,7 @@ class ActiveAuctionEmptyView: BaseView {
             .withAlignment(.center)
             .withLine(.contained)
             .withTextColor(SharedColors.softGray)
-            .withFont(UIFont.font(.montserrat, withWeight: .medium(size: 14.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .medium(size: 14.0)))
             .withText("auction-empty-title".localized)
     }()
     
@@ -42,7 +42,7 @@ class ActiveAuctionEmptyView: BaseView {
         UILabel()
             .withAlignment(.left)
             .withTextColor(SharedColors.darkGray)
-            .withFont(UIFont.font(.opensans, withWeight: .semiBold(size: 12.0)))
+            .withFont(UIFont.font(.avenir, withWeight: .semiBold(size: 12.0)))
             .withText("auction-past-auctions".localized)
     }()
     

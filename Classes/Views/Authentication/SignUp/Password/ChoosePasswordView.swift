@@ -37,15 +37,15 @@ class ChoosePasswordView: BaseView {
         UILabel()
             .withTextColor(SharedColors.black)
             .withAlignment(.center)
-            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 22.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 20.0)))
     }()
     
     private(set) lazy var subtitleLabel: UILabel = {
         UILabel()
-            .withTextColor(SharedColors.black)
+            .withTextColor(SharedColors.purple)
             .withLine(.contained)
             .withAlignment(.center)
-            .withFont(UIFont.font(.opensans, withWeight: .semiBold(size: 14.0)))
+            .withFont(UIFont.font(.avenir, withWeight: .medium(size: 16.0)))
     }()
     
     private(set) lazy var passwordInputView: PasswordInputView = {
@@ -60,7 +60,7 @@ class ChoosePasswordView: BaseView {
             .withTitle("logout-title".localized)
             .withAlignment(.center)
             .withBackgroundImage(img("bg-dark-gray-button-small"))
-            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 12.0)))
+            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 12.0)))
     }()
     
     private(set) lazy var numpadView: NumpadView = {

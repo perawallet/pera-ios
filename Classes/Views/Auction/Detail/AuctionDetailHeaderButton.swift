@@ -30,6 +30,6 @@ class AuctionDetailHeaderButton: UIButton {
         setBackgroundImage(img("bg-bid-button"), for: .normal)
         setBackgroundImage(img("bg-bid-button-selected"), for: .selected)
         
-        titleLabel?.font = UIFont.font(.montserrat, withWeight: .semiBold(size: 11.0))
+        titleLabel?.font = UIFont.font(.overpass, withWeight: .semiBold(size: 11.0))
     }
 }

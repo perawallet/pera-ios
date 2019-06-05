@@ -33,7 +33,7 @@ class MaximumPriceView: BaseView {
             .withAlignment(.left)
             .withLine(.single)
             .withTextColor(SharedColors.darkGray)
-            .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 12.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 12.0)))
             .withText("auction-detail-max-price".localized)
     }()
     
@@ -47,8 +47,8 @@ class MaximumPriceView: BaseView {
         UILabel()
             .withAlignment(.right)
             .withLine(.single)
-            .withTextColor(SharedColors.blue)
-            .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 12.0)))
+            .withTextColor(SharedColors.turquois)
+            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 12.0)))
             .withText("$5.00")
     }()
     

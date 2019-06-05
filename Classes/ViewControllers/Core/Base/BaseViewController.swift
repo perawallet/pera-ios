@@ -97,7 +97,7 @@ class BaseViewController: UIViewController {
         view.backgroundColor = SharedColors.warmWhite
         
         navigationController?.navigationBar.titleTextAttributes = [
-            NSAttributedString.Key.font: UIFont.font(.montserrat, withWeight: .bold(size: 14.0)),
+            NSAttributedString.Key.font: UIFont.font(.overpass, withWeight: .semiBold(size: 16.0)),
             NSAttributedString.Key.foregroundColor: UIColor.black
         ]
     }

@@ -9,19 +9,18 @@
 import UIKit
 
 class PassPhraseVerifyView: UIView {
+    
     private(set) lazy var questionTitleLabel: UILabel = {
         UILabel(frame: .zero)
-            .withFont(UIFont.font(.montserrat,
-                                  withWeight: FontWeight.bold(size: 22.0)))
-            .withTextColor(UIColor(hex: "#0B0E13"))
+            .withFont(UIFont.font(.overpass, withWeight: .bold(size: 20.0)))
+            .withTextColor(SharedColors.black)
             .withAlignment(NSTextAlignment.center)
     }()
     
     private(set) lazy var questionSubtitleLabel: UILabel = {
         UILabel(frame: .zero)
-            .withFont(UIFont.font(.opensans,
-                                  withWeight: FontWeight.regular(size: 14.0)))
-            .withTextColor(UIColor(hex: "#0B0E13"))
+            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 14.0)))
+            .withTextColor(SharedColors.purple)
             .withAlignment(NSTextAlignment.center)
     }()
     

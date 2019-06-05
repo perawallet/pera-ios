@@ -33,14 +33,14 @@ class AccountSelectionView: BaseView {
     
     private(set) lazy var explanationLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(.opensans, withWeight: .semiBold(size: 12.0)))
+            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 13.0)))
             .withTextColor(SharedColors.softGray)
             .withText("send-algos-from".localized)
     }()
     
     private(set) lazy var detailLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 13.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 14.0)))
             .withTextColor(SharedColors.black)
             .withText("send-algos-select".localized)
             .withLine(.single)
@@ -49,7 +49,7 @@ class AccountSelectionView: BaseView {
     private(set) lazy var algosAmountView: AlgosAmountView = {
         let view = AlgosAmountView()
         view.algoIconImageView.image = img("icon-algo-small-gray")
-        view.amountLabel.font = UIFont.font(.opensans, withWeight: .bold(size: 15.0))
+        view.amountLabel.font = UIFont.font(.overpass, withWeight: .bold(size: 15.0))
         view.signLabel.isHidden = true
         view.amountLabel.textColor = SharedColors.darkGray
         view.isHidden = true

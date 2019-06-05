@@ -36,7 +36,7 @@ class BidAmountView: BaseView {
             .withAlignment(.left)
             .withLine(.single)
             .withTextColor(SharedColors.darkGray)
-            .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 12.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 12.0)))
             .withText("auction-detail-bid-amount".localized)
     }()
     
@@ -51,7 +51,7 @@ class BidAmountView: BaseView {
             .withAlignment(.right)
             .withLine(.single)
             .withTextColor(SharedColors.darkGray)
-            .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 12.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 12.0)))
             .withText("$0.00")
     }()
     
@@ -60,7 +60,7 @@ class BidAmountView: BaseView {
             .withAlignment(.right)
             .withLine(.single)
             .withTextColor(SharedColors.softGray)
-            .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 12.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 12.0)))
             .withText("/ $200,000.00")
     }()
     

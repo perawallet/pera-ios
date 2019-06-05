@@ -9,6 +9,7 @@
 import UIKit
 
 class NodeSettingsHeaderView: BaseView {
+    
     private lazy var imageViewContainer: UIView = {
         let containerView = UIView()
         containerView.backgroundColor = UIColor.white
@@ -22,7 +23,7 @@ class NodeSettingsHeaderView: BaseView {
     
     private(set) lazy var titleLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(.opensans, withWeight: .semiBold(size: 14.0)))
+            .withFont(UIFont.font(.avenir, withWeight: .medium(size: 14.0)))
             .withTextColor(SharedColors.black)
             .withAlignment(.center)
             .withLine(.multi(2))
@@ -66,7 +67,7 @@ class NodeSettingsHeaderView: BaseView {
     }
     
     func setImage(_ image: String, active: Bool) {
-        imageView.tintColor = active ? SharedColors.blue : SharedColors.softGray
+        imageView.tintColor = active ? SharedColors.purple : SharedColors.softGray
         
         imageView.image = img(image, isTemplate: true)
     }

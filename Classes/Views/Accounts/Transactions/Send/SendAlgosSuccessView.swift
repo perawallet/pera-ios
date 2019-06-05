@@ -59,26 +59,26 @@ class SendAlgosSuccessView: BaseView {
         UILabel()
             .withAlignment(.center)
             .withTextColor(SharedColors.black)
-            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 30.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .extraBold(size: 30.0)))
             .withText("send-algos-sent-title".localized)
     }()
     
     private(set) lazy var doneButton: UIButton = {
         UIButton(type: .custom)
-            .withTitleColor(SharedColors.black)
+            .withTitleColor(SharedColors.purple)
             .withTitle("title-done".localized)
             .withBackgroundImage(img("bg-dark-gray-small"))
             .withAlignment(.center)
-            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 12.0)))
+            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 12.0)))
     }()
     
     private(set) lazy var sendMoreButton: UIButton = {
         UIButton(type: .custom)
-            .withTitleColor(SharedColors.black)
+            .withTitleColor(SharedColors.orange)
             .withTitle("send-algos-more".localized)
             .withBackgroundImage(img("bg-blue-small"))
             .withAlignment(.center)
-            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 12.0)))
+            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 12.0)))
     }()
     
     private lazy var separatorView: UIView = {

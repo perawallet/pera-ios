@@ -15,7 +15,7 @@ class Toggle: UISwitch {
         tintColor = SharedColors.softGray
         backgroundColor = SharedColors.softGray
         layer.cornerRadius = 16
-        onTintColor = SharedColors.blue
+        onTintColor = SharedColors.purple
     }
     
     @available(*, unavailable)

@@ -30,7 +30,7 @@ class AuctionIntroductionView: BaseView {
     
     private lazy var titleLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 14.0 * verticalScale)))
+            .withFont(UIFont.font(.overpass, withWeight: .bold(size: 14.0 * verticalScale)))
             .withTextColor(SharedColors.black)
             .withLine(.single)
             .withAlignment(.center)
@@ -44,7 +44,7 @@ class AuctionIntroductionView: BaseView {
     
     private lazy var explanationLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 14.0 * verticalScale)))
+            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 14.0 * verticalScale)))
             .withTextColor(SharedColors.darkGray)
             .withLine(.contained)
             .withAlignment(.center)
