@@ -8,6 +8,7 @@
 
 import UIKit
 import SVProgressHUD
+import SafariServices
 
 class AuctionViewController: BaseViewController {
     
@@ -24,6 +25,11 @@ class AuctionViewController: BaseViewController {
     
     private lazy var auctionIntroductionView: AuctionIntroductionView = {
         let view = AuctionIntroductionView()
+        return view
+    }()
+    
+    private lazy var auctionTemporaryView: AuctionTemporaryView = {
+        let view = AuctionTemporaryView()
         return view
     }()
     
@@ -66,6 +72,7 @@ class AuctionViewController: BaseViewController {
         auctionIntroductionView.delegate = self
         auctionsCollectionView.dataSource = self
         auctionsCollectionView.delegate = self
+        auctionTemporaryView.delegate = self
     }
     
     override func configureAppearance() {
@@ -79,29 +86,21 @@ class AuctionViewController: BaseViewController {
     }
     
     private func fetchActiveAuction(withReload reload: Bool = true) {
-        let activeAuctionDraft = AuctionDraft(accessToken: "1dd6e671c4ba97c1772b53bdb31f7a7fd775684251a64f17aa00879721c7a94e")
-        
-        api?.fetchActiveAuction(with: activeAuctionDraft) { response in
+        api?.fetchActiveAuction { response in
             switch response {
             case let .success(auction):
                 self.activeAuction = auction
                 
-                if reload {
-                    self.fetchPastAuctions(top: auction.id)
-                    
-                    self.auctionsCollectionView.reloadSection(0)
-                } else {
-                    UIView.performWithoutAnimation {
-                        self.auctionsCollectionView.reloadSection(0)
-                    }
+                if let status = auction.status {
+                    self.auctionTemporaryView.status = status
                 }
             case .failure:
-                self.canDisplayActiveAuctionEmptyState = true
-                self.auctionsCollectionView.reloadSection(0)
-                
-                if self.auctions.isEmpty {
-                    self.fetchPastAuctions(top: 50)
-                }
+                self.auctionTemporaryView.status = .announced
+            }
+            
+            if reload {
+                SVProgressHUD.showSuccess(withStatus: "title-done-lowercased".localized)
+                SVProgressHUD.dismiss()
             }
         }
     }
@@ -159,8 +158,16 @@ class AuctionViewController: BaseViewController {
     override func prepareLayout() {
         super.prepareLayout()
         
-        setupAuctionIntroductionViewLayout()
-        setupAuctionsCollectionViewLayout()
+        setupAuctionTemporaryViewLayout()
+    }
+    
+    private func setupAuctionTemporaryViewLayout() {
+        view.addSubview(auctionTemporaryView)
+        
+        auctionTemporaryView.snp.makeConstraints { make in
+            make.top.equalToSuperview().inset(layout.current.topInset)
+            make.leading.trailing.bottom.equalToSuperview()
+        }
     }
     
     private func setupAuctionIntroductionViewLayout() {
@@ -294,5 +301,19 @@ extension AuctionViewController: ActiveAuctionCellDelegate {
     
     func activeAuctionCellDidTapEnterAuctionButton(_ activeAuctionCell: ActiveAuctionCell) {
         open(.auctionDetail, by: .push)
+    }
+}
+
+// MARK: AuctionTemporaryViewDelegate
+
+extension AuctionViewController: AuctionTemporaryViewDelegate {
+    
+    func auctionTemporaryViewDidTapGoToAuctionButton(_ auctionTemporaryView: AuctionTemporaryView) {
+        guard let auctionUrl = URL(string: "https://auctions.algorand.foundation") else {
+            return
+        }
+        
+        let safariViewController = SFSafariViewController(url: auctionUrl)
+        present(safariViewController, animated: true, completion: nil)
     }
 }
