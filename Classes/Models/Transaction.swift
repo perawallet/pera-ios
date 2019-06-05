@@ -10,6 +10,10 @@ import Magpie
 
 class Transaction: Mappable {
 
+    enum Constant {
+        static let minimumFee: Int64 = 1000
+    }
+    
     let round: Int64?
     let id: TransactionID
     let fee: Int64

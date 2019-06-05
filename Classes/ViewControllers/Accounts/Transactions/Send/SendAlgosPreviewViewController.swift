@@ -155,8 +155,12 @@ class SendAlgosPreviewViewController: BaseViewController {
     }
     
     fileprivate func updateFeeLayout() {
-        if let fee = transaction.fee?.toAlgos {
-            sendAlgosPreviewView.feeInformationView.algosAmountView.mode = .normal(fee)
+        if var receivedFee = transaction.fee {
+            if receivedFee < Transaction.Constant.minimumFee {
+                receivedFee = Transaction.Constant.minimumFee
+            }
+            
+            sendAlgosPreviewView.feeInformationView.algosAmountView.mode = .normal(receivedFee.toAlgos)
         }
     }
 }
