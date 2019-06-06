@@ -31,14 +31,14 @@ class DetailedInformationView: BaseView {
     
     private(set) lazy var explanationLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.font(.opensans, withWeight: .semiBold(size: 12.0))
+        label.font = UIFont.font(.avenir, withWeight: .demiBold(size: 13.0))
         label.textColor = SharedColors.softGray
         return label
     }()
     
     private(set) lazy var detailLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 13.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 14.0)))
             .withTextColor(SharedColors.black)
             .withLine(.contained)
     }()
@@ -47,7 +47,7 @@ class DetailedInformationView: BaseView {
         let view = AlgosAmountView()
         view.amountLabel.textAlignment = .left
         view.algoIconImageView.image = img("icon-algo-min")
-        view.amountLabel.font = UIFont.font(.montserrat, withWeight: .bold(size: 13.0))
+        view.amountLabel.font = UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))
         view.mode = .normal(0.0)
         return view
     }()

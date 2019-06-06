@@ -30,8 +30,12 @@ extension API {
         var parameters: Params = []
         
         if let betweenDates = dates {
+            guard let dayAfter = betweenDates.1.dayAfter else {
+                return nil
+            }
+            
             let from = Formatter.date.string(from: betweenDates.0)
-            let to = Formatter.date.string(from: betweenDates.1)
+            let to = Formatter.date.string(from: dayAfter)
             
             parameters.append(.custom(key: AlgorandParamPairKey.from, value: from))
             parameters.append(.custom(key: AlgorandParamPairKey.to, value: to))

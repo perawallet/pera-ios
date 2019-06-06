@@ -42,8 +42,8 @@ class AuctionSlider: UISlider {
         minimumValue = 0
         maximumValue = 100
         
-        minimumTrackTintColor = SharedColors.blue
-        maximumTrackTintColor = SharedColors.softGray
+        minimumTrackTintColor = SharedColors.softGray
+        maximumTrackTintColor = SharedColors.turquois
         
         setMaximumTrackImage(img("slider-line-icon"), for: .normal)
         

@@ -56,19 +56,14 @@
 	<string>Algorand will save QR codes to your photo library.</string>
 	<key>UIAppFonts</key>
 	<array>
-		<string>Montserrat-Bold.ttf</string>
-		<string>Montserrat-BoldItalic.ttf</string>
-		<string>Montserrat-Italic.ttf</string>
-		<string>Montserrat-Regular.ttf</string>
-		<string>Montserrat-SemiBold.ttf</string>
-		<string>Montserrat-SemiBoldItalic.ttf</string>
-		<string>OpenSans-Bold.ttf</string>
-		<string>OpenSans-BoldItalic.ttf</string>
-		<string>OpenSans-Italic.ttf</string>
-		<string>OpenSans-Regular.ttf</string>
-		<string>OpenSans-SemiBold.ttf</string>
-		<string>OpenSans-SemiBoldItalic.ttf</string>
-		<string>Montserrat-Medium.ttf</string>
+		<string>AvenirNext-Bold.ttf</string>
+		<string>AvenirNext-DemiBold.ttf</string>
+		<string>AvenirNext-Medium.ttf</string>
+		<string>AvenirNext-Regular.ttf</string>
+		<string>Overpass-Bold.otf</string>
+		<string>Overpass-ExtraBold.otf</string>
+		<string>Overpass-Regular.otf</string>
+		<string>Overpass-SemiBold.otf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

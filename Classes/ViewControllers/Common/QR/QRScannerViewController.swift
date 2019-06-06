@@ -46,10 +46,10 @@ class QRScannerViewController: BaseViewController {
     
     private(set) lazy var cancelButton: UIButton = {
         UIButton(type: .custom)
-            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 12.0)))
-            .withBackgroundImage(img("bg-dark-gray-button-big"))
+            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 12.0)))
+            .withBackgroundImage(img("bg-main-button"))
             .withTitle("title-close".localized)
-            .withTitleColor(SharedColors.black)
+            .withTitleColor(SharedColors.purple)
     }()
     
     private(set) lazy var overlayView: QRScannerOverlayView = {

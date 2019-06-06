@@ -117,8 +117,8 @@
 // MARK: Login
 
 "login-title" = "Unlock";
-"login-subtitle" = "Enter six digit password";
-"logout-title" = "Lock";
+"login-subtitle" = "Enter six digit pin";
+"logout-title" = "LOGOUT";
 "logout-warning-title" = "Warning";
 "logout-warning-message" = "This action will remove all local accounts and delete your contacts database. Are you sure?";
 "logout-action-delete-title" = "Delete & Lock";
@@ -140,7 +140,7 @@
 "send-algos-amount" = "Amount:";
 "send-algos-transaction-id" = "Transaction ID:";
 "send-algos-more" = "SEND MORE";
-"send-algos-sent-title" = "Transaction Sent!";
+"send-algos-sent-title" = "Algos Sent!";
 "send-algos-alert-title" = "Wrong Transaction";
 "send-algos-alert-message" = "Please fill the fields.";
 "send-algos-minimum-amount-error-new-account" = "You're trying to send money to a new account. The amount must be at least 0.01 Algos";
@@ -165,7 +165,7 @@
 "options-view-passphrase" = "View Passphrase";
 "options-edit-account-name" = "Edit Account Name";
 "options-remove-account" = "Remove Account";
-"options-remove-alert-explanation" = "You are about to remove an account, are you sure you want to proceed with this choice?";
+"options-remove-alert-explanation" = "You are about to remove an account. Are you sure you want to proceed with this choice?";
 "options-default-account-title" = "Default Account";
 "options-default-account-message" = "Default acount is set.";
 "options-view-passphrase-alert-title" = "Biometric Authentication";
@@ -273,11 +273,14 @@
 "auction-enter-title" = "ENTER AUCTION";
 "auction-scheduled-title" = "SCHEDULED";
 "auction-open-title" = "OPEN";
+"auction-live-title" = "LIVE";
 "auction-closed-title" = "CLOSED";
 "auction-settled-title" = "SETTLED";
 "auction-past-auctions" = "Past Auctions";
 "auction-auth-error-message" = "Couldn't authenticate your coinlist account.";
 "auction-bid-coinlist-account-existence-error" = "The wallet associated with your current Coinlist account could not be found among your active accounts. Please make sure that you recover the correct account, and then place your bid again.";
+"auction-go-auctions" = "GO TO AUCTION";
+"auction-temp-title" = "Unfortunately, the only way to participate at our auction is through our web portal.";
 
 // MARK: Auction Detail
 

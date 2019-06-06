@@ -35,7 +35,7 @@ class PotentialAlgosDisplayView: BaseView {
             .withAlignment(.left)
             .withLine(.single)
             .withTextColor(.white)
-            .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 12.0)))
+            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 12.0)))
             .withText("auction-detail-potential-min".localized)
     }()
     
@@ -46,7 +46,7 @@ class PotentialAlgosDisplayView: BaseView {
             .withAlignment(.right)
             .withLine(.single)
             .withTextColor(.white)
-            .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 18.0)))
+            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 18.0)))
             .withText("0.00")
     }()
     
@@ -63,16 +63,16 @@ class PotentialAlgosDisplayView: BaseView {
     // MARK: Setup
     
     override func configureAppearance() {
-        backgroundColor = SharedColors.blue
+        backgroundColor = SharedColors.turquois
         layer.cornerRadius = 5.0
         
         if mode == .minimum {
             potentialAlgosTitleLabel.text = "auction-detail-potential-min".localized
-            amountLabel.font = UIFont.font(.montserrat, withWeight: .semiBold(size: 18.0))
+            amountLabel.font = UIFont.font(.avenir, withWeight: .demiBold(size: 18.0))
             algoIconImageView.image = img("icon-algo-white")
         } else {
             potentialAlgosTitleLabel.text = "auction-detail-potential-total".localized
-            amountLabel.font = UIFont.font(.montserrat, withWeight: .semiBold(size: 15.0))
+            amountLabel.font = UIFont.font(.avenir, withWeight: .demiBold(size: 15.0))
             algoIconImageView.image = img("icon-algo-small-white")
         }
     }

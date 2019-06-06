@@ -55,7 +55,7 @@ class AuctionPrerequirementView: BaseView {
     
     private(set) lazy var bottomTitleLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(.montserrat, withWeight: .medium(size: 12.0 * verticalScale)))
+            .withFont(UIFont.font(.overpass, withWeight: .medium(size: 12.0 * verticalScale)))
             .withTextColor(.white)
             .withLine(.single)
             .withAlignment(.center)

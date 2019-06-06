@@ -26,7 +26,7 @@ class EditAccountView: BaseView {
     private let layout = Layout<LayoutConstants>()
     
     private enum Colors {
-        static let backgroundColor = rgb(0.95, 0.96, 0.96)
+        static let backgroundColor = rgb(0.97, 0.97, 0.97)
         static let separatorColor = rgba(0.67, 0.67, 0.72, 0.31)
     }
     
@@ -37,16 +37,16 @@ class EditAccountView: BaseView {
             .withAlignment(.left)
             .withLine(.single)
             .withTextColor(SharedColors.darkGray)
-            .withFont(UIFont.font(.opensans, withWeight: .semiBold(size: 13.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 13.0)))
             .withText("options-edit-account-name".localized)
     }()
     
     private lazy var saveButton: UIButton = {
         UIButton(type: .custom)
-            .withTitleColor(SharedColors.green)
+            .withTitleColor(SharedColors.turquois)
             .withTitle("title-save".localized)
             .withAlignment(.right)
-            .withFont(UIFont.font(.opensans, withWeight: .semiBold(size: 13.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 13.0)))
     }()
     
     private lazy var separatorView: UIView = {
@@ -61,7 +61,7 @@ class EditAccountView: BaseView {
         accountNameInputView.inputTextField.attributedPlaceholder = NSAttributedString(
             string: "account-name-setup-placeholder".localized,
             attributes: [NSAttributedString.Key.foregroundColor: SharedColors.softGray,
-                         NSAttributedString.Key.font: UIFont.font(.montserrat, withWeight: .semiBold(size: 13.0))]
+                         NSAttributedString.Key.font: UIFont.font(.overpass, withWeight: .semiBold(size: 15.0))]
         )
         accountNameInputView.nextButtonMode = .submit
         accountNameInputView.inputTextField.autocorrectionType = .no

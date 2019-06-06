@@ -41,7 +41,7 @@ class AuctionSliderView: BaseView {
             .withBackgroundColor(.white)
             .withTitleColor(SharedColors.softGray)
             .withAlignment(.center)
-            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 9.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .bold(size: 9.0)))
             .withTitle("0%")
     }()
     
@@ -50,7 +50,7 @@ class AuctionSliderView: BaseView {
             .withBackgroundColor(.white)
             .withTitleColor(SharedColors.softGray)
             .withAlignment(.center)
-            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 9.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .bold(size: 9.0)))
             .withTitle("25%")
     }()
 
@@ -59,7 +59,7 @@ class AuctionSliderView: BaseView {
             .withBackgroundColor(.white)
             .withTitleColor(SharedColors.softGray)
             .withAlignment(.center)
-            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 9.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .bold(size: 9.0)))
             .withTitle("50%")
     }()
     
@@ -68,7 +68,7 @@ class AuctionSliderView: BaseView {
             .withBackgroundColor(.white)
             .withTitleColor(SharedColors.softGray)
             .withAlignment(.center)
-            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 9.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .bold(size: 9.0)))
             .withTitle("75%")
     }()
     
@@ -77,7 +77,7 @@ class AuctionSliderView: BaseView {
             .withBackgroundColor(.white)
             .withTitleColor(SharedColors.softGray)
             .withAlignment(.center)
-            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 9.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .bold(size: 9.0)))
             .withTitle("100%")
     }()
     
@@ -207,8 +207,8 @@ class AuctionSliderView: BaseView {
             sliderView.setThumbImage(img("icon-slider-selected"), for: .normal)
         }
         
-        zeroPercentButton.setTitleColor(SharedColors.blue, for: .normal)
-        twentyFivePercentButton.setTitleColor(SharedColors.blue, for: .normal)
+        zeroPercentButton.setTitleColor(SharedColors.turquois, for: .normal)
+        twentyFivePercentButton.setTitleColor(SharedColors.turquois, for: .normal)
         fiftyPercentButton.setTitleColor(SharedColors.softGray, for: .normal)
         seventyFivePercentButton.setTitleColor(SharedColors.softGray, for: .normal)
         hundredPercentButton.setTitleColor(SharedColors.softGray, for: .normal)
@@ -221,9 +221,9 @@ class AuctionSliderView: BaseView {
             sliderView.setThumbImage(img("icon-slider-selected"), for: .normal)
         }
         
-        zeroPercentButton.setTitleColor(SharedColors.blue, for: .normal)
-        twentyFivePercentButton.setTitleColor(SharedColors.blue, for: .normal)
-        fiftyPercentButton.setTitleColor(SharedColors.blue, for: .normal)
+        zeroPercentButton.setTitleColor(SharedColors.turquois, for: .normal)
+        twentyFivePercentButton.setTitleColor(SharedColors.turquois, for: .normal)
+        fiftyPercentButton.setTitleColor(SharedColors.turquois, for: .normal)
         seventyFivePercentButton.setTitleColor(SharedColors.softGray, for: .normal)
         hundredPercentButton.setTitleColor(SharedColors.softGray, for: .normal)
     }
@@ -235,10 +235,10 @@ class AuctionSliderView: BaseView {
             sliderView.setThumbImage(img("icon-slider-selected"), for: .normal)
         }
         
-        zeroPercentButton.setTitleColor(SharedColors.blue, for: .normal)
-        twentyFivePercentButton.setTitleColor(SharedColors.blue, for: .normal)
-        fiftyPercentButton.setTitleColor(SharedColors.blue, for: .normal)
-        seventyFivePercentButton.setTitleColor(SharedColors.blue, for: .normal)
+        zeroPercentButton.setTitleColor(SharedColors.turquois, for: .normal)
+        twentyFivePercentButton.setTitleColor(SharedColors.turquois, for: .normal)
+        fiftyPercentButton.setTitleColor(SharedColors.turquois, for: .normal)
+        seventyFivePercentButton.setTitleColor(SharedColors.turquois, for: .normal)
         hundredPercentButton.setTitleColor(SharedColors.softGray, for: .normal)
     }
     
@@ -249,11 +249,11 @@ class AuctionSliderView: BaseView {
             sliderView.setThumbImage(img("icon-slider-selected"), for: .normal)
         }
         
-        zeroPercentButton.setTitleColor(SharedColors.blue, for: .normal)
-        twentyFivePercentButton.setTitleColor(SharedColors.blue, for: .normal)
-        fiftyPercentButton.setTitleColor(SharedColors.blue, for: .normal)
-        seventyFivePercentButton.setTitleColor(SharedColors.blue, for: .normal)
-        hundredPercentButton.setTitleColor(SharedColors.blue, for: .normal)
+        zeroPercentButton.setTitleColor(SharedColors.turquois, for: .normal)
+        twentyFivePercentButton.setTitleColor(SharedColors.turquois, for: .normal)
+        fiftyPercentButton.setTitleColor(SharedColors.turquois, for: .normal)
+        seventyFivePercentButton.setTitleColor(SharedColors.turquois, for: .normal)
+        hundredPercentButton.setTitleColor(SharedColors.turquois, for: .normal)
     }
     
     @objc
@@ -295,7 +295,7 @@ class AuctionSliderView: BaseView {
     }
     
     private func configureViewForMoreThanZeroValue() {
-        zeroPercentButton.setTitleColor(SharedColors.blue, for: .normal)
+        zeroPercentButton.setTitleColor(SharedColors.turquois, for: .normal)
         twentyFivePercentButton.setTitleColor(SharedColors.softGray, for: .normal)
         fiftyPercentButton.setTitleColor(SharedColors.softGray, for: .normal)
         seventyFivePercentButton.setTitleColor(SharedColors.softGray, for: .normal)

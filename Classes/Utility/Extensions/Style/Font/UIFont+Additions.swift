@@ -9,83 +9,57 @@
 import UIKit
 
 enum FontType: String {
-    case montserrat = "Montserrat"
-    case opensans = "OpenSans"
+    case avenir = "AvenirNext"
+    case overpass = "Overpass"
 }
 
 enum FontWeight {
-    case bold(size: CGFloat)
-    case boldItalic(size: CGFloat)
-    case italic(size: CGFloat)
     case regular(size: CGFloat)
-    case semiBold(size: CGFloat)
-    case semiBoldItalic(size: CGFloat)
     case medium(size: CGFloat)
+    case demiBold(size: CGFloat)
+    case semiBold(size: CGFloat)
+    case bold(size: CGFloat)
+    case extraBold(size: CGFloat)
 }
 
 extension UIFont {
+    
     static func font(_ font: FontType, withWeight weight: FontWeight) -> UIFont {
         let fontName = self.fontName(font, withWeight: weight)
         
         switch weight {
-        case .bold(let size):
-            return UIFont(name: fontName, size: size) ?? UIFont.boldSystemFont(ofSize: size)
-        case .boldItalic(let size):
-            return UIFont(name: fontName, size: size) ?? UIFont.systemFont(ofSize: size).boldItalic
-        case .italic(let size):
-            return UIFont(name: fontName, size: size) ?? UIFont.italicSystemFont(ofSize: size)
         case .regular(let size):
             return UIFont(name: fontName, size: size) ?? UIFont.systemFont(ofSize: size)
-        case .semiBold(let size):
-            return UIFont(name: fontName, size: size) ?? UIFont.systemFont(ofSize: size)
-        case .semiBoldItalic(let size):
-            return UIFont(name: fontName, size: size) ?? UIFont.systemFont(ofSize: size).italic
         case .medium(size: let size):
             return UIFont(name: fontName, size: size) ?? UIFont.systemFont(ofSize: size, weight: .medium)
+        case .demiBold(let size):
+            return UIFont(name: fontName, size: size) ?? UIFont.systemFont(ofSize: size, weight: .semibold)
+        case .semiBold(let size):
+            return UIFont(name: fontName, size: size) ?? UIFont.systemFont(ofSize: size, weight: .semibold)
+        case .bold(let size):
+            return UIFont(name: fontName, size: size) ?? UIFont.boldSystemFont(ofSize: size)
+        case .extraBold(let size):
+            return UIFont(name: fontName, size: size) ?? UIFont.systemFont(ofSize: size, weight: .heavy)
+
         }
     }
     
-    private static func fontName(_ font: FontType,
-                                 withWeight weight: FontWeight) -> String {
+    private static func fontName(_ font: FontType, withWeight weight: FontWeight) -> String {
         let fontName = "\(font.rawValue)-"
         
         switch weight {
-        case .bold:
-            return fontName.appending("Bold")
-        case .boldItalic:
-            return fontName.appending("BoldItalic")
-        case .italic:
-            return fontName.appending("Italic")
         case .regular:
             return fontName.appending("Regular")
-        case .semiBold:
-            return fontName.appending("SemiBold")
-        case .semiBoldItalic:
-            return fontName.appending("SemiboldItalic")
         case .medium:
             return fontName.appending("Medium")
+        case .demiBold:
+            return fontName.appending("DemiBold")
+        case .semiBold:
+            return fontName.appending("SemiBold")
+        case .bold:
+            return fontName.appending("Bold")
+        case .extraBold:
+            return fontName.appending("ExtraBold")
         }
-    }
-}
-
-extension UIFont {
-    var bold: UIFont {
-        return font(withTraits: .traitBold)
-    }
-    
-    var italic: UIFont {
-        return font(withTraits: .traitItalic)
-    }
-    
-    var boldItalic: UIFont {
-        return font(withTraits: [.traitBold, .traitItalic])
-    }
-    
-    func font(withTraits traits: UIFontDescriptor.SymbolicTraits) -> UIFont {
-        guard let descriptor = self.fontDescriptor.withSymbolicTraits(traits) else {
-            return self
-        }
-        
-        return UIFont(descriptor: descriptor, size: 0)
     }
 }

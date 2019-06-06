@@ -42,7 +42,7 @@ class AccountsSmallHeaderView: BaseView {
         UILabel()
             .withAlignment(.center)
             .withTextColor(SharedColors.black)
-            .withFont(UIFont.font(.opensans, withWeight: .bold(size: 24.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .bold(size: 24.0)))
             .withText("0.000000")
     }()
     
@@ -64,9 +64,9 @@ class AccountsSmallHeaderView: BaseView {
     
     private lazy var historyLabel: UILabel = {
         UILabel()
-            .withAlignment(.left)
-            .withTextColor(SharedColors.darkGray)
-            .withFont(UIFont.font(.opensans, withWeight: .semiBold(size: 12.0)))
+            .withAlignment(.center)
+            .withTextColor(SharedColors.softGray)
+            .withFont(UIFont.font(.avenir, withWeight: .medium(size: 13.0)))
             .withText("accounts-transaction-history-title".localized)
     }()
     
@@ -138,7 +138,7 @@ class AccountsSmallHeaderView: BaseView {
         
         historyLabel.snp.makeConstraints { make in
             make.top.lessThanOrEqualTo(sendButton.snp.bottom).offset(layout.current.historyLabelTopInset)
-            make.leading.equalToSuperview().inset(layout.current.buttonHorizontalInset)
+            make.centerX.equalToSuperview()
             make.bottom.equalToSuperview().inset(layout.current.historyLabelBottomInset)
         }
     }

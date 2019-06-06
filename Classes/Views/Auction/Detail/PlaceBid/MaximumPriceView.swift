@@ -38,7 +38,7 @@ class MaximumPriceView: BaseView {
             .withAlignment(.left)
             .withLine(.single)
             .withTextColor(SharedColors.darkGray)
-            .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 12.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 12.0)))
             .withText("auction-detail-max-price".localized)
     }()
     
@@ -51,8 +51,8 @@ class MaximumPriceView: BaseView {
     private(set) lazy var priceAmountTextField: CursorlessTextField = {
         let view = CursorlessTextField()
         view.textAlignment = .right
-        view.textColor = SharedColors.blue
-        view.font = UIFont.font(.montserrat, withWeight: .semiBold(size: 12.0))
+        view.textColor = SharedColors.turquois
+        view.font = UIFont.font(.overpass, withWeight: .semiBold(size: 12.0))
         view.keyboardType = .numberPad
         view.delegate = self
         return view

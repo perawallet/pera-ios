@@ -42,7 +42,7 @@ class BidAmountView: BaseView {
             .withAlignment(.left)
             .withLine(.single)
             .withTextColor(SharedColors.darkGray)
-            .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 12.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 12.0)))
             .withText("auction-detail-bid-amount".localized)
     }()
     
@@ -55,13 +55,13 @@ class BidAmountView: BaseView {
     private(set) lazy var bidAmountTextField: CursorlessTextField = {
         let view = CursorlessTextField()
         view.textAlignment = .right
-        view.textColor = SharedColors.blue
-        view.font = UIFont.font(.montserrat, withWeight: .semiBold(size: 12.0))
+        view.textColor = SharedColors.turquois
+        view.font = UIFont.font(.overpass, withWeight: .semiBold(size: 12.0))
         view.keyboardType = .numberPad
         view.attributedPlaceholder = NSAttributedString(
             string: "$0.00",
             attributes: [NSAttributedString.Key.foregroundColor: SharedColors.darkGray,
-                         NSAttributedString.Key.font: UIFont.font(.montserrat, withWeight: .semiBold(size: 12.0))]
+                         NSAttributedString.Key.font: UIFont.font(.overpass, withWeight: .semiBold(size: 12.0))]
         )
         view.delegate = self
         
@@ -73,7 +73,7 @@ class BidAmountView: BaseView {
             .withAlignment(.right)
             .withLine(.single)
             .withTextColor(SharedColors.softGray)
-            .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 12.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 12.0)))
             .withText("/ $200,000.00")
     }()
     

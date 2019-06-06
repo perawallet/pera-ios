@@ -44,7 +44,7 @@ class HistoryView: BaseView {
         startDateDisplayView.backgroundColor = .white
         startDateDisplayView.explanationLabel.text = "history-start-date".localized
         startDateDisplayView.isUserInteractionEnabled = true
-        startDateDisplayView.detailLabel.font = UIFont.font(.montserrat, withWeight: .semiBold(size: 12.0))
+        startDateDisplayView.detailLabel.font = UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))
         startDateDisplayView.detailLabel.text = startDate.toFormat("dd MMMM yyyy")
         return startDateDisplayView
     }()
@@ -62,7 +62,7 @@ class HistoryView: BaseView {
         endDateDisplayView.backgroundColor = .white
         endDateDisplayView.explanationLabel.text = "history-end-date".localized
         endDateDisplayView.isUserInteractionEnabled = true
-        endDateDisplayView.detailLabel.font = UIFont.font(.montserrat, withWeight: .semiBold(size: 12.0))
+        endDateDisplayView.detailLabel.font = UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))
         endDateDisplayView.detailLabel.text = endDate.toFormat("dd MMMM yyyy")
         return endDateDisplayView
     }()

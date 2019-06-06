@@ -50,11 +50,11 @@ class ContactInfoView: BaseView {
     
     private(set) lazy var sendButton: UIButton = {
         UIButton(type: .custom)
-            .withTitleColor(SharedColors.black)
+            .withTitleColor(SharedColors.purple)
             .withTitle("title-send".localized)
-            .withBackgroundImage(img("bg-blue-small"))
+            .withBackgroundImage(img("bg-purple-small"))
             .withAlignment(.center)
-            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 12.0)))
+            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 12.0)))
     }()
     
     private(set) lazy var separatorView: UIView = {
@@ -71,6 +71,7 @@ class ContactInfoView: BaseView {
     private(set) lazy var deleteContactButton: MainButton = {
         let button = MainButton(title: "contacts-delete-contact".localized)
         button.setBackgroundImage(img("bg-button-big-red"), for: .normal)
+        button.setTitleColor(SharedColors.orange, for: .normal)
         return button
     }()
     

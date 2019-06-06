@@ -55,12 +55,12 @@ class UserInformationView: BaseView {
         contactNameInputView.inputTextField.attributedPlaceholder = NSAttributedString(
             string: "contacts-input-name-placeholder".localized,
             attributes: [NSAttributedString.Key.foregroundColor: SharedColors.softGray,
-                         NSAttributedString.Key.font: UIFont.font(.montserrat, withWeight: .semiBold(size: 16.0))]
+                         NSAttributedString.Key.font: UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))]
         )
         
         contactNameInputView.inputTextField.textColor = SharedColors.black
         contactNameInputView.inputTextField.tintColor = SharedColors.black
-        contactNameInputView.inputTextField.font = UIFont.font(.montserrat, withWeight: .semiBold(size: 16.0))
+        contactNameInputView.inputTextField.font = UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))
         contactNameInputView.nextButtonMode = .next
         contactNameInputView.inputTextField.autocorrectionType = .no
         contactNameInputView.backgroundColor = .white

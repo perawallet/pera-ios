@@ -44,9 +44,9 @@ class IntroductionView: BaseView {
     private(set) lazy var welcomeLabel: UILabel = {
         UILabel()
             .withAlignment(.center)
-            .withTextColor(SharedColors.blue)
+            .withTextColor(SharedColors.purple)
             .withLine(.contained)
-            .withFont(UIFont.font(.montserrat, withWeight: .medium(size: 22.0 * verticalScale)))
+            .withFont(UIFont.font(.overpass, withWeight: .regular(size: 22.0 * verticalScale)))
             .withText("introduction-welcome-title".localized)
     }()
     
@@ -59,23 +59,23 @@ class IntroductionView: BaseView {
         UILabel()
             .withAlignment(.center)
             .withLine(.contained)
-            .withTextColor(SharedColors.darkGray)
-            .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 12.0 * verticalScale)))
+            .withTextColor(SharedColors.softGray)
+            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 13.0 * verticalScale)))
             .withText("introduction-has-account".localized)
     }()
     
     private lazy var recoverButton: UIButton = {
         UIButton(type: .custom)
-            .withTitleColor(SharedColors.black)
-            .withBackgroundImage(img("bg-dark-gray-button-big"))
+            .withTitleColor(SharedColors.turquois)
+            .withBackgroundImage(img("bg-blue-button-big"))
             .withTitle("introduction-recover-title".localized)
             .withAlignment(.center)
-            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 12.0)))
+            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 12.0)))
     }()
     
     private(set) lazy var closeButton: UIButton = {
         UIButton(type: .custom)
-            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 12.0)))
+            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 12.0)))
             .withBackgroundImage(img("bg-dark-gray-button-big"))
             .withTitle("title-close".localized)
             .withTitleColor(SharedColors.black)

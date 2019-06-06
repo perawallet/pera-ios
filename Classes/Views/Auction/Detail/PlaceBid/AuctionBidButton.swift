@@ -43,13 +43,13 @@ class AuctionBidButton: UIButton {
     }
     
     private func configureButton() {
-        setTitleColor(SharedColors.blue, for: .normal)
+        setTitleColor(SharedColors.purple, for: .normal)
         setTitleColor(SharedColors.darkGray, for: .disabled)
         
         setBackgroundImage(img("bg-place-bid-button"), for: .normal)
         setBackgroundImage(img("bg-place-bid-button-disabled"), for: .disabled)
         
-        titleLabel?.font = UIFont.font(.montserrat, withWeight: .bold(size: 12.0))
+        titleLabel?.font = UIFont.font(.overpass, withWeight: .bold(size: 12.0))
     }
     
     private func setupLayout() {

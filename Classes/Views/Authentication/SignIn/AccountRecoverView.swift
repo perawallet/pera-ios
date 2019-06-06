@@ -45,7 +45,7 @@ class AccountRecoverView: BaseView {
         accountNameInputView.inputTextField.attributedPlaceholder = NSAttributedString(
             string: "account-name-setup-placeholder".localized,
             attributes: [NSAttributedString.Key.foregroundColor: SharedColors.softGray,
-                         NSAttributedString.Key.font: UIFont.font(.montserrat, withWeight: .semiBold(size: 13.0))]
+                         NSAttributedString.Key.font: UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))]
         )
         accountNameInputView.nextButtonMode = .next
         accountNameInputView.inputTextField.autocorrectionType = .no

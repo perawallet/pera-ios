@@ -48,7 +48,7 @@ class NumpadViewLayoutBuilder: NSObject, UICollectionViewDelegateFlowLayout {
         if let cell = collectionView.cellForItem(at: indexPath) as? NumpadNumericCell {
             delegate?.numpadViewLayoutBuilder(self, didSelect: cell.contextView.value)
             
-            cell.contextView.color = SharedColors.green
+            cell.contextView.color = SharedColors.purple
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                 cell.contextView.color = rgba(0.04, 0.05, 0.07, 0.8)

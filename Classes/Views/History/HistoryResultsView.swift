@@ -26,7 +26,7 @@ class HistoryResultsView: BaseView {
     
     private(set) lazy var accountNameLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 12.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 14.0)))
             .withLine(.single)
             .withAlignment(.left)
             .withTextColor(SharedColors.black)
@@ -45,7 +45,7 @@ class HistoryResultsView: BaseView {
     
     private(set) lazy var startDateLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 12.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 14.0)))
             .withLine(.single)
             .withAlignment(.left)
             .withTextColor(SharedColors.black)
@@ -53,7 +53,7 @@ class HistoryResultsView: BaseView {
     
     private lazy var toLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 12.0)))
+            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 12.0)))
             .withLine(.single)
             .withAlignment(.center)
             .withTextColor(SharedColors.softGray)
@@ -62,7 +62,7 @@ class HistoryResultsView: BaseView {
     
     private(set) lazy var endDateLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 12.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 14.0)))
             .withLine(.single)
             .withAlignment(.right)
             .withTextColor(SharedColors.black)

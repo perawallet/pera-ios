@@ -33,11 +33,11 @@ class AlgosInputView: BaseView {
         textField.textColor = SharedColors.black
         textField.tintColor = SharedColors.darkGray
         textField.keyboardType = .numberPad
-        textField.font = UIFont.font(.opensans, withWeight: .bold(size: 40.0))
+        textField.font = UIFont.font(.overpass, withWeight: .bold(size: 40.0))
         textField.attributedPlaceholder = NSAttributedString(
             string: "0.000000",
             attributes: [NSAttributedString.Key.foregroundColor: SharedColors.black,
-                         NSAttributedString.Key.font: UIFont.font(.opensans, withWeight: .bold(size: 40.0))]
+                         NSAttributedString.Key.font: UIFont.font(.overpass, withWeight: .bold(size: 40.0))]
         )
         textField.addTarget(self, action: #selector(didChangeText(_:)), for: .editingChanged)
         textField.delegate = self

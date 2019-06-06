@@ -58,7 +58,7 @@ class ActiveAuctionView: BaseView {
             .withTextColor(.white)
             .withLine(.single)
             .withAlignment(.center)
-            .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 12.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 12.0)))
             .withText("auction-scheduled-title".localized)
     }()
     
@@ -73,7 +73,7 @@ class ActiveAuctionView: BaseView {
         dateView.backgroundColor = .white
         dateView.separatorView.isHidden = true
         dateView.explanationLabel.text = "auction-date-title".localized
-        dateView.detailLabel.font = UIFont.font(.montserrat, withWeight: .semiBold(size: 14.0))
+        dateView.detailLabel.font = UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))
         return dateView
     }()
     
@@ -93,7 +93,7 @@ class ActiveAuctionView: BaseView {
         priceView.backgroundColor = .white
         priceView.separatorView.isHidden = true
         priceView.explanationLabel.text = "auction-starting-price".localized
-        priceView.detailLabel.font = UIFont.font(.montserrat, withWeight: .semiBold(size: 14.0))
+        priceView.detailLabel.font = UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))
         return priceView
     }()
     
@@ -104,10 +104,10 @@ class ActiveAuctionView: BaseView {
     
     private(set) lazy var enterAuctionButton: UIButton = {
         UIButton(type: .custom)
-            .withTitleColor(SharedColors.blue)
+            .withTitleColor(SharedColors.black)
             .withTitle("auction-enter-title".localized)
             .withAlignment(.center)
-            .withFont(UIFont.font(.montserrat, withWeight: .bold(size: 12.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .bold(size: 12.0)))
             .withBackgroundImage(img("bg-button-auction-enter"))
     }()
     
@@ -115,7 +115,7 @@ class ActiveAuctionView: BaseView {
         UILabel()
             .withAlignment(.left)
             .withTextColor(SharedColors.darkGray)
-            .withFont(UIFont.font(.opensans, withWeight: .semiBold(size: 12.0)))
+            .withFont(UIFont.font(.avenir, withWeight: .semiBold(size: 12.0)))
             .withText("auction-past-auctions".localized)
     }()
     
@@ -254,11 +254,11 @@ class ActiveAuctionView: BaseView {
     private func configureView(for status: AuctionStatus) {
         switch status {
         case .announced:
-            titleContainerView.backgroundColor = SharedColors.darkGray
+            titleContainerView.backgroundColor = SharedColors.purple
             titleLabel.text = "auction-scheduled-title".localized
             priceView.explanationLabel.text = "auction-starting-price".localized
         case .running:
-            titleContainerView.backgroundColor = SharedColors.green
+            titleContainerView.backgroundColor = SharedColors.turquois
             titleLabel.text = "auction-open-title".localized
             priceView.explanationLabel.text = "auction-current-price".localized
         case .closed:

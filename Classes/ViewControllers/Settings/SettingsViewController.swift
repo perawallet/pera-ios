@@ -26,7 +26,8 @@ class SettingsViewController: BaseViewController {
         
         view.addSubview(settingsView)
         settingsView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.top.equalToSuperview().inset(10.0)
+            make.leading.trailing.bottom.equalToSuperview()
         }
     }
     
@@ -99,7 +100,7 @@ extension SettingsViewController: UICollectionViewDelegateFlowLayout {
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
         
-        return CGSize(width: UIScreen.main.bounds.width, height: 90.0)
+        return CGSize(width: UIScreen.main.bounds.width, height: 80.0)
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

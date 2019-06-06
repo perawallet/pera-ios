@@ -44,7 +44,7 @@ class AuctionTimerView: BaseView {
     
     private(set) lazy var explanationLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(.opensans, withWeight: .semiBold(size: 12.0)))
+            .withFont(UIFont.font(.avenir, withWeight: .semiBold(size: 12.0)))
             .withTextColor(SharedColors.softGray)
             .withAlignment(.left)
             .withText("auction-time-in".localized)
@@ -52,7 +52,7 @@ class AuctionTimerView: BaseView {
     
     private(set) lazy var timeLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 14.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 14.0)))
             .withTextColor(Colors.black)
             .withLine(.single)
             .withAlignment(.left)

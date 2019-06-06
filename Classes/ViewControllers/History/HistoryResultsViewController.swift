@@ -21,8 +21,8 @@ class HistoryResultsViewController: BaseViewController {
     
     private lazy var emptyStateView = EmptyStateView(
         title: "tranaction-empty-text".localized,
-        topImage: img("icon-transaction-empty-green"),
-        bottomImage: img("icon-transaction-empty-blue")
+        topImage: img("icon-transaction-empty-blue"),
+        bottomImage: img("icon-transaction-empty-orange")
     )
     
     private let viewModel = HistoryResultsViewModel()

@@ -24,7 +24,7 @@ class AuctionPrerequirementElementView: BaseView {
     
     private(set) lazy var titleLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(.opensans, withWeight: .semiBold(size: 14.0 * verticalScale)))
+            .withFont(UIFont.font(.avenir, withWeight: .semiBold(size: 14.0 * verticalScale)))
             .withTextColor(SharedColors.black)
             .withLine(.single)
             .withAlignment(.left)
@@ -32,7 +32,7 @@ class AuctionPrerequirementElementView: BaseView {
     
     private(set) lazy var subtitleLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(.opensans, withWeight: .semiBold(size: 12.0 * verticalScale)))
+            .withFont(UIFont.font(.avenir, withWeight: .semiBold(size: 12.0 * verticalScale)))
             .withTextColor(SharedColors.softGray)
             .withLine(.single)
             .withAlignment(.left)
