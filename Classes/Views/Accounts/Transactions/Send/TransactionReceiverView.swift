@@ -76,8 +76,12 @@ class TransactionReceiverView: BaseView {
     private func configurePassphraseInputView(with address: String) {
         contactsButton.isHidden = true
         
+        passphraseInputView.snp.updateConstraints { make in
+            make.trailing.equalToSuperview().inset(65.0)
+        }
+        
         let width = UIScreen.main.bounds.width - 105.0
-        let font = UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))
+        let font = UIFont.font(.overpass, withWeight: .semiBold(size: 15.0))
         
         let height = address.height(withConstrained: width, font: font) + 6
         
