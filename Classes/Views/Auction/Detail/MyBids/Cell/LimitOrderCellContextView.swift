@@ -36,7 +36,7 @@ class LimitOrderCellContextView: BidCellContextView {
         button.setImage(img("icon-retract"), for: .normal)
         button.setTitle("auction-detail-retract-title".localized, for: .normal)
         button.setTitleColor(SharedColors.red, for: .normal)
-        button.titleLabel?.font = UIFont.font(.montserrat, withWeight: .semiBold(size: 12.0))
+        button.titleLabel?.font = UIFont.font(.overpass, withWeight: .semiBold(size: 12.0))
         return button
     }()
     

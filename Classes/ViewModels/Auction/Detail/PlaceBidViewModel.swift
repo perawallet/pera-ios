@@ -32,7 +32,7 @@ class PlaceBidViewModel {
             view.priceAmountTextField.attributedPlaceholder = NSAttributedString(
                 string: "\(currentPrice.convertToDollars())",
                 attributes: [NSAttributedString.Key.foregroundColor: SharedColors.darkGray,
-                             NSAttributedString.Key.font: UIFont.font(.montserrat, withWeight: .semiBold(size: 12.0))]
+                             NSAttributedString.Key.font: UIFont.font(.overpass, withWeight: .semiBold(size: 12.0))]
             )
         }
     }

@@ -24,7 +24,7 @@ class MyBidsViewModel {
             case .accepted,
                  .successful,
                  .paid:
-                view.bidStatusLabel.textColor = SharedColors.green
+                view.bidStatusLabel.textColor = SharedColors.purple
                 view.bidStatusLabel.text = status.rawValue
             case .retracted:
                 view.bidStatusLabel.textColor = SharedColors.darkGray
@@ -58,7 +58,7 @@ class MyBidsViewModel {
         
         view.myBidsCollectionView.contentState = .none
         view.myBidsCollectionView.backgroundColor = .clear
-        view.totalPotentialAlgosDisplayView.backgroundColor = SharedColors.blue
+        view.totalPotentialAlgosDisplayView.backgroundColor = SharedColors.turquois
         
         let totalAmount = bids.reduce(0) {
             guard let amount = $1.amount,

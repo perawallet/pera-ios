@@ -34,15 +34,15 @@ class BidCellContextView: BaseView {
             .withAlignment(.left)
             .withLine(.single)
             .withTextColor(SharedColors.black)
-            .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 15.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 15.0)))
     }()
     
     private(set) lazy var bidStatusLabel: UILabel = {
         UILabel()
             .withAlignment(.right)
             .withLine(.single)
-            .withTextColor(SharedColors.green)
-            .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 12.0)))
+            .withTextColor(SharedColors.purple)
+            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 12.0)))
     }()
     
     private(set) lazy var separatorView: UIView = {
@@ -56,7 +56,7 @@ class BidCellContextView: BaseView {
             .withAlignment(.left)
             .withLine(.single)
             .withTextColor(SharedColors.softGray)
-            .withFont(UIFont.font(.opensans, withWeight: .semiBold(size: 12.0)))
+            .withFont(UIFont.font(.avenir, withWeight: .semiBold(size: 12.0)))
             .withText("auction-detail-max-price".localized)
     }()
     
@@ -64,7 +64,7 @@ class BidCellContextView: BaseView {
         UILabel()
             .withAlignment(.left)
             .withLine(.single)
-            .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 15.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 15.0)))
             .withTextColor(SharedColors.darkGray)
     }()
     
@@ -73,7 +73,7 @@ class BidCellContextView: BaseView {
             .withAlignment(.right)
             .withLine(.single)
             .withTextColor(SharedColors.softGray)
-            .withFont(UIFont.font(.opensans, withWeight: .semiBold(size: 12.0)))
+            .withFont(UIFont.font(.avenir, withWeight: .semiBold(size: 12.0)))
             .withText("auction-detail-min-potential-algos".localized)
     }()
     
@@ -83,8 +83,8 @@ class BidCellContextView: BaseView {
         UILabel()
             .withAlignment(.right)
             .withLine(.single)
-            .withTextColor(SharedColors.blue)
-            .withFont(UIFont.font(.montserrat, withWeight: .semiBold(size: 15.0)))
+            .withTextColor(SharedColors.turquois)
+            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 15.0)))
     }()
     
     // MARK: Setup

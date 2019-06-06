@@ -30,7 +30,7 @@ class AuctionDetailViewModel {
         if let remainingAlgos = activeAuction.remainingAlgos?.toAlgos,
             let totalAlgos = auction.algos?.toAlgos {
             view.auctionDetailHeaderView.remainingAlgosView.algosAmountView.amountLabel.text = remainingAlgos.toDecimalStringForLabel
-            view.auctionDetailHeaderView.remainingAlgosView.algosAmountView.amountLabel.textColor = SharedColors.blue
+            view.auctionDetailHeaderView.remainingAlgosView.algosAmountView.amountLabel.textColor = SharedColors.turquois
             view.auctionDetailHeaderView.remainingAlgosView.algosAmountView.algoIconImageView.image = img("icon-algo-small-blue")
             
             view.auctionDetailHeaderView.remainingAlgosView.percentageLabel.text = "(\(Int(remainingAlgos * 100 / totalAlgos))%)"
