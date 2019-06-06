@@ -53,6 +53,8 @@ class AuctionViewController: BaseViewController {
         return collectionView
     }()
     
+    private let isAuctionsEnabled = true
+    
     private var auctions = [Auction]()
     private var totalAlgosAmount: Int64?
     private var activeAuction: ActiveAuction?
@@ -97,8 +99,13 @@ class AuctionViewController: BaseViewController {
         }
         
         SVProgressHUD.show(withStatus: "title-loading".localized)
-        fetchAuctionUser()
-        fetchActiveAuction()
+        
+        if isAuctionsEnabled {
+            fetchAuctionUser()
+            fetchActiveAuction()
+        } else {
+            fetchAuctionStatusForDisabledAuctions()
+        }
     }
     
     private func fetchAuctionUser() {
@@ -117,6 +124,32 @@ class AuctionViewController: BaseViewController {
     }
     
     private func fetchActiveAuction(withReload reload: Bool = true) {
+        api?.fetchActiveAuction { response in
+            switch response {
+            case let .success(auction):
+                self.activeAuction = auction
+                
+                if reload {
+                    self.fetchPastAuctions(top: auction.id)
+                    
+                    self.auctionsCollectionView.reloadSection(0)
+                } else {
+                    UIView.performWithoutAnimation {
+                        self.auctionsCollectionView.reloadSection(0)
+                    }
+                }
+            case .failure:
+                self.canDisplayActiveAuctionEmptyState = true
+                self.auctionsCollectionView.reloadSection(0)
+                
+                if self.auctions.isEmpty {
+                    self.fetchPastAuctions(top: 50)
+                }
+            }
+        }
+    }
+    
+    private func fetchAuctionStatusForDisabledAuctions(withReload reload: Bool = true) {
         api?.fetchActiveAuction { response in
             switch response {
             case let .success(auction):
@@ -166,12 +199,20 @@ class AuctionViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        if session?.coinlistToken == nil {
-            return
-        }
-        
-        if !isFirstCoinlistSetup {
-            startPolling()
+        if isAuctionsEnabled {
+            if session?.coinlistToken == nil {
+                return
+            }
+            
+            if !isFirstCoinlistSetup {
+                startPolling()
+            }
+        } else {
+            pollingOperation = PollingOperation(interval: 5.0) { [weak self] in
+                self?.fetchAuctionStatusForDisabledAuctions(withReload: false)
+            }
+            
+            pollingOperation?.start()
         }
     }
     
@@ -196,7 +237,11 @@ class AuctionViewController: BaseViewController {
     override func prepareLayout() {
         super.prepareLayout()
         
-        prepareLayoutForToken()
+        if isAuctionsEnabled {
+            prepareLayoutForToken()
+        } else {
+            setupAuctionTemporaryViewLayout()
+        }
     }
     
     private func prepareLayoutForToken() {
@@ -222,6 +267,15 @@ class AuctionViewController: BaseViewController {
         view.addSubview(auctionsCollectionView)
         
         auctionsCollectionView.snp.makeConstraints { make in
+            make.top.equalToSuperview().inset(layout.current.topInset)
+            make.leading.trailing.bottom.equalToSuperview()
+        }
+    }
+    
+    private func setupAuctionTemporaryViewLayout() {
+        view.addSubview(auctionTemporaryView)
+        
+        auctionTemporaryView.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(layout.current.topInset)
             make.leading.trailing.bottom.equalToSuperview()
         }

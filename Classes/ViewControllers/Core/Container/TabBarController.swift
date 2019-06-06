@@ -86,7 +86,7 @@ class TabBarController: UITabBarController {
     private func setupTabBarController() {
         delegate = self
         
-        var controllers = [
+        let controllers = [
             accountsNavigationController,
             historyNavigationController,
             auctionNavigationController,
