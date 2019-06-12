@@ -215,6 +215,9 @@
 "settings-local-authentication" = "Enable FaceID/Touch ID";
 "settings-language" = "Language";
 "settings-language-english" = "English";
+"settings-coinlist" = "Coinbase";
+"settings-coinlist-connect" = "Connect Account";
+"settings-coinlist-disconnect" = "Disconnect Account";
 
 // MARK: NodeSettings
 "node-settings-title" = "Node Settings";
@@ -300,3 +303,5 @@
 "auction-detail-status-rejected-title" = "Rejected";
 "auction-detail-bids-empty-title" = "No Current Bids";
 "auction-detail-retract-error" = "Could not retract the bid.";
+"auction-detail-total-algos-title" = "Total Algos";
+"auction-detail-committed-title" = "Total USD Commited";
