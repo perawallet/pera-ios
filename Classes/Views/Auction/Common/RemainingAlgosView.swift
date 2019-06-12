@@ -22,9 +22,9 @@ class RemainingAlgosView: BaseView {
     
     // MARK: Components
     
-    private lazy var explanationLabel: UILabel = {
+    private(set) lazy var explanationLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 12.0)))
+            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 13.0)))
             .withTextColor(SharedColors.softGray)
             .withText("auction-remaining-algos".localized)
     }()
@@ -32,19 +32,18 @@ class RemainingAlgosView: BaseView {
     private(set) lazy var algosAmountView: AlgosAmountView = {
         let view = AlgosAmountView()
         view.amountLabel.textAlignment = .left
-        view.algoIconImageView.image = img("icon-algo-min")
-        view.amountLabel.font = UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))
+        view.amountLabel.font = UIFont.font(.overpass, withWeight: .bold(size: 15.0))
         view.mode = .normal(0.0)
+        view.algoIconImageView.image = img("icon-remaining-algo")
         return view
     }()
     
     private(set) lazy var percentageLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 14.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .bold(size: 15.0)))
             .withTextColor(SharedColors.darkGray)
             .withLine(.single)
             .withAlignment(.left)
-            .withText("(100%)")
     }()
     
     // MARK: Setup
@@ -87,7 +86,7 @@ class RemainingAlgosView: BaseView {
         percentageLabel.snp.makeConstraints { make in
             make.centerY.equalTo(algosAmountView)
             make.leading.equalTo(algosAmountView.snp.trailing).offset(layout.current.percentageLabelOffset)
-            make.trailing.lessThanOrEqualToSuperview().inset(layout.current.defaultInset)
+            make.trailing.equalToSuperview()
         }
     }
 }

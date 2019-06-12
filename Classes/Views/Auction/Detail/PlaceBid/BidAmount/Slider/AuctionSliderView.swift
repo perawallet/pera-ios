@@ -186,7 +186,7 @@ class AuctionSliderView: BaseView {
         }
     }
     
-    private func configureViewForZeroPercentValue(updatesSliderValue: Bool = false) {
+    func configureViewForZeroPercentValue(updatesSliderValue: Bool = false) {
         if updatesSliderValue {
             sliderView.value = 0
             delegate?.auctionSliderView(self, didChange: sliderView.value)
@@ -200,7 +200,7 @@ class AuctionSliderView: BaseView {
         hundredPercentButton.setTitleColor(SharedColors.softGray, for: .normal)
     }
     
-    private func configureViewForTwentyFivePercentValue(updatesSliderValue: Bool = false) {
+    func configureViewForTwentyFivePercentValue(updatesSliderValue: Bool = false) {
         if updatesSliderValue {
             sliderView.value = 25
             delegate?.auctionSliderView(self, didChange: sliderView.value)
@@ -214,7 +214,7 @@ class AuctionSliderView: BaseView {
         hundredPercentButton.setTitleColor(SharedColors.softGray, for: .normal)
     }
     
-    private func configureViewForFiftyPercentValue(updatesSliderValue: Bool = false) {
+    func configureViewForFiftyPercentValue(updatesSliderValue: Bool = false) {
         if updatesSliderValue {
             sliderView.value = 50
             delegate?.auctionSliderView(self, didChange: sliderView.value)
@@ -228,7 +228,7 @@ class AuctionSliderView: BaseView {
         hundredPercentButton.setTitleColor(SharedColors.softGray, for: .normal)
     }
     
-    private func configureViewForSeventyFivePercentValue(updatesSliderValue: Bool = false) {
+    func configureViewForSeventyFivePercentValue(updatesSliderValue: Bool = false) {
         if updatesSliderValue {
             sliderView.value = 75
             delegate?.auctionSliderView(self, didChange: sliderView.value)
@@ -242,7 +242,7 @@ class AuctionSliderView: BaseView {
         hundredPercentButton.setTitleColor(SharedColors.softGray, for: .normal)
     }
     
-    private func configureViewForHundredPercentValue(updatesSliderValue: Bool = false) {
+    func configureViewForHundredPercentValue(updatesSliderValue: Bool = false) {
         if updatesSliderValue {
             sliderView.value = 100
             delegate?.auctionSliderView(self, didChange: sliderView.value)

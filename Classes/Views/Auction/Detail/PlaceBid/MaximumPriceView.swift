@@ -38,7 +38,7 @@ class MaximumPriceView: BaseView {
             .withAlignment(.left)
             .withLine(.single)
             .withTextColor(SharedColors.darkGray)
-            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 12.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 13.0)))
             .withText("auction-detail-max-price".localized)
     }()
     
@@ -52,11 +52,13 @@ class MaximumPriceView: BaseView {
         let view = CursorlessTextField()
         view.textAlignment = .right
         view.textColor = SharedColors.turquois
-        view.font = UIFont.font(.overpass, withWeight: .semiBold(size: 12.0))
+        view.font = UIFont.font(.overpass, withWeight: .bold(size: 13.0))
         view.keyboardType = .numberPad
         view.delegate = self
         return view
     }()
+    
+    var currentPrice: Int?
     
     weak var delegate: MaximumPriceViewDelegate?
     
@@ -136,23 +138,19 @@ class MaximumPriceView: BaseView {
 
 // MARK: - TextFieldDelegate
 extension MaximumPriceView: UITextFieldDelegate {
-    func textField(_ textField: UITextField,
-                   shouldChangeCharactersIn range: NSRange,
-                   replacementString string: String) -> Bool {
+   
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         guard let text = textField.text else {
             return true
         }
         
         guard let doubleValueString = text.appending(string).currencyBidInputFormatting(),
             let doubleValue = doubleValueString.doubleForSendSeparator,
-            doubleValue <= Double(maximumMicroAlgos) else {
+            let currentPrice = currentPrice,
+            doubleValue <= Double(currentPrice) / 100 else {
                 return false
         }
         
-        if range.location + range.length < text.count {
-            return false
-        } else {
-            return true
-        }
+        return true
     }
 }

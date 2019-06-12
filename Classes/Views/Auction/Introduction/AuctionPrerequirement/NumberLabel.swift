@@ -26,13 +26,13 @@ class NumberLabel: UILabel {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        textColor = SharedColors.red
+        textColor = SharedColors.orange
         textAlignment = .center
-        font = UIFont.font(.overpass, withWeight: .semiBold(size: 12.0 * verticalScale))
+        font = UIFont.font(.overpass, withWeight: .bold(size: 12.0 * verticalScale))
         
         layer.cornerRadius = layout.current.cornerRadius
         layer.borderWidth = 1.0
-        layer.borderColor = SharedColors.red.cgColor
+        layer.borderColor = SharedColors.orange.cgColor
     }
     
     @available(*, unavailable)

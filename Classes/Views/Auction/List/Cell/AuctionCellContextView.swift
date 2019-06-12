@@ -30,10 +30,10 @@ class AuctionCellContextView: BaseView {
     
     private lazy var dateTitleLabel: UILabel = {
         UILabel()
-            .withAlignment(.right)
+            .withAlignment(.left)
             .withLine(.single)
             .withTextColor(SharedColors.softGray)
-            .withFont(UIFont.font(.avenir, withWeight: .semiBold(size: 12.0)))
+            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 13.0)))
             .withText("auction-date-title".localized)
     }()
     
@@ -49,18 +49,18 @@ class AuctionCellContextView: BaseView {
             .withAlignment(.right)
             .withLine(.single)
             .withTextColor(SharedColors.softGray)
-            .withFont(UIFont.font(.avenir, withWeight: .semiBold(size: 12.0)))
+            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 13.0)))
             .withText("auction-algos-sold-title".localized)
     }()
     
-    private lazy var algoIconImageView = UIImageView(image: img("icon-algo-small-blue"))
+    private lazy var algoIconImageView = UIImageView(image: img("icon-algo-small-blue", isTemplate: true))
     
     private(set) lazy var algosAmountLabel: UILabel = {
         UILabel()
             .withAlignment(.right)
             .withLine(.single)
             .withTextColor(SharedColors.turquois)
-            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 14.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .bold(size: 15.0)))
     }()
     
     private lazy var separatorView: UIView = {
@@ -73,6 +73,8 @@ class AuctionCellContextView: BaseView {
     
     override func configureAppearance() {
         backgroundColor = .white
+        
+        algoIconImageView.tintColor = SharedColors.turquois
     }
     
     // MARK: Layout

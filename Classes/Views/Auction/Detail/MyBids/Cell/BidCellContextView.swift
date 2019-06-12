@@ -41,7 +41,7 @@ class BidCellContextView: BaseView {
         UILabel()
             .withAlignment(.right)
             .withLine(.single)
-            .withTextColor(SharedColors.purple)
+            .withTextColor(SharedColors.turquois)
             .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 12.0)))
     }()
     
@@ -56,7 +56,7 @@ class BidCellContextView: BaseView {
             .withAlignment(.left)
             .withLine(.single)
             .withTextColor(SharedColors.softGray)
-            .withFont(UIFont.font(.avenir, withWeight: .semiBold(size: 12.0)))
+            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 13.0)))
             .withText("auction-detail-max-price".localized)
     }()
     
@@ -64,7 +64,7 @@ class BidCellContextView: BaseView {
         UILabel()
             .withAlignment(.left)
             .withLine(.single)
-            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 15.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .bold(size: 15.0)))
             .withTextColor(SharedColors.darkGray)
     }()
     
@@ -73,24 +73,26 @@ class BidCellContextView: BaseView {
             .withAlignment(.right)
             .withLine(.single)
             .withTextColor(SharedColors.softGray)
-            .withFont(UIFont.font(.avenir, withWeight: .semiBold(size: 12.0)))
+            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 13.0)))
             .withText("auction-detail-min-potential-algos".localized)
     }()
     
-    private lazy var algoIconImageView = UIImageView(image: img("icon-algo-small-blue"))
+    private(set) lazy var algoIconImageView = UIImageView(image: img("icon-algo-small-blue", isTemplate: true))
     
     private(set) lazy var algosAmountLabel: UILabel = {
         UILabel()
             .withAlignment(.right)
             .withLine(.single)
             .withTextColor(SharedColors.turquois)
-            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 15.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .bold(size: 15.0)))
     }()
     
     // MARK: Setup
     
     override func configureAppearance() {
         backgroundColor = .white
+        
+        algoIconImageView.tintColor = SharedColors.turquois
         
         layer.cornerRadius = 5.0
         layer.borderWidth = 1.0

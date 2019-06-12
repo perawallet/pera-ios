@@ -22,16 +22,12 @@ class AuctionViewModel {
                 if let startTime = activeAuction.estimatedAuctionRoundStart {
                     cell.contextView.auctionTimerView.time = startTime.timeIntervalSinceNow
                 }
-                
-                cell.contextView.auctionTimerView.runTimer()
             case .running:
                 cell.contextView.auctionTimerView.mode = .active
                 
                 if let finishTime = activeAuction.estimatedFinishTime {
                     cell.contextView.auctionTimerView.time = finishTime.timeIntervalSinceNow
                 }
-                
-                cell.contextView.auctionTimerView.runTimer()
             case .closed,
                  .settled:
                 cell.contextView.auctionTimerView.mode = .ended
@@ -47,7 +43,7 @@ class AuctionViewModel {
         if let remainingAlgos = activeAuction.remainingAlgos?.toAlgos {
             cell.contextView.remainingAlgosView.algosAmountView.amountLabel.text = remainingAlgos.toDecimalStringForLabel
             cell.contextView.remainingAlgosView.algosAmountView.amountLabel.textColor = SharedColors.turquois
-            cell.contextView.remainingAlgosView.algosAmountView.algoIconImageView.image = img("icon-algo-small-blue")
+            cell.contextView.remainingAlgosView.algosAmountView.algoIconImageView.image = img("icon-remaining-algo")
             
             if activeAuction.totalAlgos == 0 {
                 if remainingAlgos == 0 {

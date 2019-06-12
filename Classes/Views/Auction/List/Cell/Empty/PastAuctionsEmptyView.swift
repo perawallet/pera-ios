@@ -25,7 +25,7 @@ class PastAuctionsEmptyView: BaseView {
             .withAlignment(.center)
             .withLine(.contained)
             .withTextColor(SharedColors.softGray)
-            .withFont(UIFont.font(.overpass, withWeight: .medium(size: 14.0)))
+            .withFont(UIFont.font(.avenir, withWeight: .medium(size: 13.0)))
             .withText("auction-past-empty-title".localized)
     }()
     

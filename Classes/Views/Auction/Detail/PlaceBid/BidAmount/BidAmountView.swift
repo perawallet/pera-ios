@@ -42,7 +42,7 @@ class BidAmountView: BaseView {
             .withAlignment(.left)
             .withLine(.single)
             .withTextColor(SharedColors.darkGray)
-            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 12.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 13.0)))
             .withText("auction-detail-bid-amount".localized)
     }()
     
@@ -56,12 +56,12 @@ class BidAmountView: BaseView {
         let view = CursorlessTextField()
         view.textAlignment = .right
         view.textColor = SharedColors.turquois
-        view.font = UIFont.font(.overpass, withWeight: .semiBold(size: 12.0))
+        view.font = UIFont.font(.overpass, withWeight: .bold(size: 13.0))
         view.keyboardType = .numberPad
         view.attributedPlaceholder = NSAttributedString(
             string: "$0.00",
             attributes: [NSAttributedString.Key.foregroundColor: SharedColors.darkGray,
-                         NSAttributedString.Key.font: UIFont.font(.overpass, withWeight: .semiBold(size: 12.0))]
+                         NSAttributedString.Key.font: UIFont.font(.overpass, withWeight: .bold(size: 13.0))]
         )
         view.delegate = self
         
@@ -73,8 +73,7 @@ class BidAmountView: BaseView {
             .withAlignment(.right)
             .withLine(.single)
             .withTextColor(SharedColors.softGray)
-            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 12.0)))
-            .withText("/ $200,000.00")
+            .withFont(UIFont.font(.overpass, withWeight: .bold(size: 13.0)))
     }()
     
     private lazy var horizontalSeparatorView: UIView = {
@@ -210,23 +209,20 @@ extension BidAmountView: AuctionSliderViewDelegate {
 
 // MARK: - TextFieldDelegate
 extension BidAmountView: UITextFieldDelegate {
-    func textField(_ textField: UITextField,
-                   shouldChangeCharactersIn range: NSRange,
-                   replacementString string: String) -> Bool {
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         guard let text = textField.text else {
             return true
         }
         
         guard let doubleValueString = text.appending(string).currencyBidInputFormatting(),
             let doubleValue = doubleValueString.doubleForSendSeparator,
-            doubleValue <= Double(maximumMicroAlgos) else {
+            let availableAmountString = availableAmountLabel.text?.currencyBidInputFormatting(),
+            let availableAmount = availableAmountString.doubleForSendSeparator,
+            doubleValue <= availableAmount else {
                 return false
         }
         
-        if range.location + range.length < text.count {
-            return false
-        } else {
-            return true
-        }
+        return true
     }
 }
