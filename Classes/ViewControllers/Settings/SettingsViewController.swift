@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SVProgressHUD
 
 class SettingsViewController: BaseViewController {
     
@@ -18,6 +19,18 @@ class SettingsViewController: BaseViewController {
     private let viewModel = SettingsViewModel()
     
     private let localAuthenticator = LocalAuthenticator()
+    
+    private var authManager: AuthManager?
+    
+    // MARK: Initialization
+    
+    override init(configuration: ViewControllerConfiguration) {
+        super.init(configuration: configuration)
+        
+        authManager = AuthManager()
+    }
+    
+    // MARK: Setup
     
     override func configureAppearance() {
         super.configureAppearance()
@@ -35,6 +48,7 @@ class SettingsViewController: BaseViewController {
         settingsView.collectionView.delegate = self
         settingsView.collectionView.dataSource = self
         viewModel.delegate = self
+        authManager?.delegate = self
     }
 }
 
@@ -43,7 +57,7 @@ class SettingsViewController: BaseViewController {
 extension SettingsViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 4
+        return 5
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -84,6 +98,18 @@ extension SettingsViewController: UICollectionViewDataSource {
             }
             
             viewModel.configureInfo(cell, with: mode)
+            
+            return cell
+        case .coinlist:
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: CoinlistCell.reusableIdentifier,
+                for: indexPath) as? CoinlistCell else {
+                    fatalError("Index path is out of bounds")
+            }
+            
+            if let session = session {
+                viewModel.configureCoinlist(cell, for: session)
+            }
             
             return cell
         }
@@ -172,5 +198,42 @@ extension SettingsViewController: SettingsViewModelDelegate {
         alertController.addAction(cancelAction)
         
         present(alertController, animated: true, completion: nil)
+    }
+    
+    func settingsViewModel(_ viewModel: SettingsViewModel, didTapCoinlistActionIn cell: CoinlistCell) {
+        if cell.contextView.actionMode == .connect {
+            authManager?.authorize()
+        } else {
+            session?.coinlistToken = nil
+            session?.coinlistUserId = nil
+            cell.contextView.actionMode = .connect
+            
+            NotificationCenter.default.post(name: Notification.Name.CoinlistDisconnected, object: self)
+        }
+    }
+}
+
+// MARK: AuthManagerDelegate
+
+extension SettingsViewController: AuthManagerDelegate {
+    
+    func authManager(_ authManager: AuthManager, didCaptureToken token: String?, withError error: Error?) {
+        if error != nil {
+            displaySimpleAlertWith(title: "title-error".localized, message: "auction-auth-error-message".localized)
+            self.authManager = AuthManager()
+            self.authManager?.delegate = self
+            
+            return
+        }
+        
+        guard let code = token else {
+            return
+        }
+        
+        settingsView.collectionView.reloadData()
+        
+        NotificationCenter.default.post(name: Notification.Name.CoinlistConnected, object: self, userInfo: ["code": code])
+        
+        tabBarController?.selectedIndex = 2
     }
 }

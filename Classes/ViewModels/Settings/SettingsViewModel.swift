@@ -10,6 +10,7 @@ import UIKit
 
 protocol SettingsViewModelDelegate: class {
     func settingsViewModel(_ viewModel: SettingsViewModel, didToggleValue value: Bool, atIndexPath indexPath: IndexPath)
+    func settingsViewModel(_ viewModel: SettingsViewModel, didTapCoinlistActionIn cell: CoinlistCell)
 }
 
 class SettingsViewModel {
@@ -19,6 +20,7 @@ class SettingsViewModel {
         case password = 1
         case localAuthentication = 2
         case language = 3
+        case coinlist = 4
     }
     
     var indexPath: IndexPath?
@@ -48,6 +50,23 @@ class SettingsViewModel {
         cell.contextView.delegate = self
     }
     
+    func configureCoinlist(_ cell: CoinlistCell, for session: Session?) {
+        let name = nameOfMode(.coinlist)
+        
+        cell.contextView.nameLabel.text = name
+        cell.delegate = self
+        
+        guard let session = session else {
+            return
+        }
+        
+        if session.coinlistToken == nil {
+            cell.contextView.actionMode = .connect
+        } else {
+            cell.contextView.actionMode = .disconnect
+        }
+    }
+    
     fileprivate func nameOfMode(_ mode: SettingsCellMode) -> String {
         switch mode {
         case .serverSettings:
@@ -58,12 +77,16 @@ class SettingsViewModel {
             return "settings-local-authentication".localized
         case .language:
             return "settings-language".localized
+        case .coinlist:
+            return "settings-coinlist".localized
         }
     }
 }
 
 // MARK: - SettingsToggleContextViewDelegate
+
 extension SettingsViewModel: SettingsToggleContextViewDelegate {
+    
     func settingsToggleDidTapEdit(forIndexPath indexPath: IndexPath) {
     }
     
@@ -71,4 +94,13 @@ extension SettingsViewModel: SettingsToggleContextViewDelegate {
         delegate?.settingsViewModel(self, didToggleValue: value, atIndexPath: indexPath)
     }
     
+}
+
+// MARK: - CoinlistCellDelegate
+
+extension SettingsViewModel: CoinlistCellDelegate {
+    
+    func coinlistCellDidTapActionButton(_ coinlistCell: CoinlistCell) {
+        delegate?.settingsViewModel(self, didTapCoinlistActionIn: coinlistCell)
+    }
 }
