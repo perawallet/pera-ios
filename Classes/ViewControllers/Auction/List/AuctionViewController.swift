@@ -79,6 +79,24 @@ class AuctionViewController: BaseViewController {
     
     // MARK: Setup
     
+    override func setListeners() {
+        super.setListeners()
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didCoinlistConnected(notification:)),
+            name: Notification.Name.CoinlistConnected,
+            object: nil
+        )
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didCoinlistDisconnected(notification:)),
+            name: Notification.Name.CoinlistDisconnected,
+            object: nil
+        )
+    }
+    
     override func linkInteractors() {
         super.linkInteractors()
         
@@ -177,7 +195,13 @@ class AuctionViewController: BaseViewController {
                 
                 self.auctionIntroductionView.isHidden = true
                 
-                self.canDisplayPastAuctionsEmptyState = pastAuctions.isEmpty
+                if pastAuctions.count <= 1 {
+                    self.canDisplayPastAuctionsEmptyState = true
+                    self.auctionsCollectionView.reloadSection(1)
+                } else {
+                    self.canDisplayPastAuctionsEmptyState = false
+                    self.auctionsCollectionView.reloadSection(1)
+                }
                 
                 if let recentAuction = pastAuctions.first {
                     self.totalAlgosAmount = recentAuction.algos
@@ -280,6 +304,25 @@ class AuctionViewController: BaseViewController {
             make.leading.trailing.bottom.equalToSuperview()
         }
     }
+    
+    // MARK: Actions
+    
+    @objc
+    fileprivate func didCoinlistConnected(notification: Notification) {
+        guard let userInfo = notification.userInfo as? [String: String],
+            let code = userInfo["code"] else {
+                return
+        }
+        
+        if let authManager = authManager {
+            setupCoinlistAccount(with: code, and: authManager)
+        }
+    }
+    
+    @objc
+    fileprivate func didCoinlistDisconnected(notification: Notification) {
+        prepareLayoutForToken()
+    }
 }
 
 // MARK: AuctionIntroductionViewDelegate
@@ -304,7 +347,7 @@ extension AuctionViewController: UICollectionViewDataSource {
             return 1
         }
         
-        if auctions.isEmpty {
+        if auctions.count <= 1 {
             return 1
         }
         
@@ -338,7 +381,7 @@ extension AuctionViewController: UICollectionViewDataSource {
             }
         }
         
-        if auctions.isEmpty {
+        if auctions.count <= 1 {
             guard let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: PastAuctionsEmptyCell.reusableIdentifier,
                 for: indexPath) as? PastAuctionsEmptyCell else {
@@ -356,7 +399,8 @@ extension AuctionViewController: UICollectionViewDataSource {
                 fatalError("Index path is out of bounds")
         }
         
-        if indexPath.item < auctions.count {
+        // Receive index + 1 item since the first auction is not listed
+        if indexPath.row + 1 < auctions.count {
             let auction = auctions[indexPath.row + 1]
             
             viewModel.configure(cell, with: auction, and: activeAuction)
@@ -369,6 +413,20 @@ extension AuctionViewController: UICollectionViewDataSource {
 // MARK: UICollectionViewDelegateFlowLayout
 
 extension AuctionViewController: UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let user = auctionUser,
+            let activeAuction = activeAuction else {
+                return
+        }
+        
+        // Receive index + 1 item since the first auction is not listed
+        if indexPath.row + 1 < auctions.count {
+            let auction = auctions[indexPath.row + 1]
+            
+            open(.pastAuctionDetail(auction: auction, user: user, activeAuction: activeAuction), by: .push)
+        }
+    }
     
     func collectionView(
         _ collectionView: UICollectionView,
@@ -420,6 +478,10 @@ extension AuctionViewController: AuthManagerDelegate {
             return
         }
         
+        setupCoinlistAccount(with: code, and: authManager)
+    }
+    
+    private func setupCoinlistAccount(with code: String, and authManager: AuthManager) {
         isFirstCoinlistSetup = true
         
         SVProgressHUD.show(withStatus: "title-loading".localized)
@@ -452,7 +514,6 @@ extension AuctionViewController: AuthManagerDelegate {
                 print(error)
             }
         }
-
     }
 }
 

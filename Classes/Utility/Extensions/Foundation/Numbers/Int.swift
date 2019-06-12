@@ -18,7 +18,7 @@ extension Int {
     }
     
     func convertToDollars(withSymbol: Bool = true) -> String {
-        let doubleValue = Double(self / 100)
+        let doubleValue = Double(self) / 100
         let formatter = NumberFormatter()
         
         if withSymbol {
@@ -29,7 +29,7 @@ extension Int {
         
         formatter.minimumFractionDigits = 2
         formatter.maximumFractionDigits = 2
-        return formatter.string(from: NSNumber(value: doubleValue)) ?? "$\(doubleValue)"
+        return formatter.string(from: NSDecimalNumber(value: doubleValue)) ?? "$\(doubleValue)"
     }
 }
 

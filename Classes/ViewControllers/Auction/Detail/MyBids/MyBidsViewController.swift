@@ -24,7 +24,7 @@ class MyBidsViewController: BaseViewController {
     
     var auction: Auction
     var user: AuctionUser
-    var activeAuction: ActiveAuction
+    var auctionStatus: ActiveAuction
     
     // MARK: Components
     
@@ -41,10 +41,10 @@ class MyBidsViewController: BaseViewController {
     
     // MARK: Initialization
     
-    init(auction: Auction, user: AuctionUser, activeAuction: ActiveAuction, configuration: ViewControllerConfiguration) {
+    init(auction: Auction, user: AuctionUser, auctionStatus: ActiveAuction, configuration: ViewControllerConfiguration) {
         self.auction = auction
         self.user = user
-        self.activeAuction = activeAuction
+        self.auctionStatus = auctionStatus
         
         super.init(configuration: configuration)
     }
@@ -94,8 +94,9 @@ class MyBidsViewController: BaseViewController {
                 self.updateCollectionViewLayoutForBids()
                 
                 self.myBidsView.myBidsCollectionView.reloadData()
-            case let .failure(error):
-                print(error)
+            case .failure:
+                self.myBidsView.myBidsCollectionView.contentState = .empty(self.emptyStateView)
+                self.myBidsView.myBidsCollectionView.backgroundColor = .clear
             }
             
             handler()
@@ -130,18 +131,13 @@ extension MyBidsViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let currentPrice = activeAuction.currentPrice,
-            indexPath.item < bids.count else {
+        guard indexPath.item < bids.count else {
             fatalError("Index path is out of bounds")
         }
         
         let bid = bids[indexPath.row]
         
-        guard let bidPrice = bid.maxPrice else {
-            fatalError("Index path is out of bounds")
-        }
-        
-        if bidPrice < currentPrice {
+        if bid.status == .queued {
             guard let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: LimitOrderCell.reusableIdentifier,
                 for: indexPath) as? LimitOrderCell else {

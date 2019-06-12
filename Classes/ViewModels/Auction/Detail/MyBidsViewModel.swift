@@ -24,17 +24,25 @@ class MyBidsViewModel {
             case .accepted,
                  .successful,
                  .paid:
-                view.bidStatusLabel.textColor = SharedColors.purple
+                view.bidStatusLabel.textColor = SharedColors.turquois
                 view.bidStatusLabel.text = status.rawValue
+                view.algoIconImageView.tintColor = SharedColors.turquois
+                view.algosAmountLabel.textColor = SharedColors.turquois
             case .retracted:
-                view.bidStatusLabel.textColor = SharedColors.darkGray
+                view.bidStatusLabel.textColor = SharedColors.orange
                 view.bidStatusLabel.text = status.rawValue
+                view.algoIconImageView.tintColor = SharedColors.orange
+                view.algosAmountLabel.textColor = SharedColors.orange
             case .unsuccessful:
-                view.bidStatusLabel.textColor = SharedColors.red
+                view.bidStatusLabel.textColor = SharedColors.darkGray
                 view.bidStatusLabel.text = "auction-detail-status-rejected-title".localized
+                view.algoIconImageView.tintColor = SharedColors.darkGray
+                view.algosAmountLabel.textColor = SharedColors.darkGray
             default:
-                view.bidStatusLabel.textColor = SharedColors.softGray
+                view.bidStatusLabel.textColor = SharedColors.black
                 view.bidStatusLabel.text = status.rawValue
+                view.algoIconImageView.tintColor = SharedColors.black
+                view.algosAmountLabel.textColor = SharedColors.black
             }
         }
         
@@ -45,7 +53,7 @@ class MyBidsViewModel {
         
         view.amountLabel.text = "\((amount / 1000000).convertToDollars())"
         view.maxPriceLabel.text = "@ \(maxPrice.convertToDollars())"
-        view.algosAmountLabel.text = Int64(((amount / 100) / (maxPrice / 100))).toAlgos.toDecimalStringForLabel
+        view.algosAmountLabel.text = Int64((Double(amount) / Double(maxPrice))).toAlgos.toDecimalStringForLabel
     }
     
     func configure(_ view: MyBidsView, with bids: [Bid], for emptyStateView: EmptyStateView) {
@@ -58,15 +66,20 @@ class MyBidsViewModel {
         
         view.myBidsCollectionView.contentState = .none
         view.myBidsCollectionView.backgroundColor = .clear
-        view.totalPotentialAlgosDisplayView.backgroundColor = SharedColors.turquois
+        view.totalPotentialAlgosDisplayView.backgroundColor = SharedColors.purple
         
-        let totalAmount = bids.reduce(0) {
+        let totalAmount = bids.reduce(0.0) {
             guard let amount = $1.amount,
                 let maxPrice = $1.maxPrice else {
                     return 0
             }
             
-            let total = ((amount / 100) / (maxPrice / 100))
+            var total: Double = 0
+            
+            if $1.status != .retracted {
+                total = (Double(amount) / Double(maxPrice))
+            }
+            
             return $0 + total
         }
         

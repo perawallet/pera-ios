@@ -38,6 +38,6 @@ extension Bid {
         case id = "ID"
         case auctionAddress = "AuctionAddress"
         case auctionID = "AuctionID"
-        case status = "status"
+        case status = "Status"
     }
 }

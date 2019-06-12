@@ -28,36 +28,40 @@ class AuctionDetailViewController: BaseScrollViewController {
     
     private var auction: Auction
     private var user: AuctionUser
-    private var activeAuction: ActiveAuction
+    private var auctionStatus: ActiveAuction
     
     private var chartValues = [ChartData]()
     
     private var pollingOperation: PollingOperation?
     
-    private let viewModel = AuctionDetailViewModel()
+    private var viewModel = AuctionDetailViewModel()
     
     private var keyboardController = KeyboardController()
+    
+    var isPollingEnabled: Bool {
+        return true
+    }
     
     private lazy var placeBidViewController = PlaceBidViewController(
         auction: auction,
         user: user,
-        activeAuction: activeAuction,
+        auctionStatus: auctionStatus,
         configuration: configuration
     )
     
     private lazy var myBidsViewController = MyBidsViewController(
         auction: auction,
         user: user,
-        activeAuction: activeAuction,
+        auctionStatus: auctionStatus,
         configuration: configuration
     )
     
     // MARK: Initialization
     
-    init(auction: Auction, user: AuctionUser, activeAuction: ActiveAuction, configuration: ViewControllerConfiguration) {
+    init(auction: Auction, user: AuctionUser, auctionStatus: ActiveAuction, configuration: ViewControllerConfiguration) {
         self.auction = auction
         self.user = user
-        self.activeAuction = activeAuction
+        self.auctionStatus = auctionStatus
         
         super.init(configuration: configuration)
         
@@ -73,11 +77,16 @@ class AuctionDetailViewController: BaseScrollViewController {
         
         scrollView.keyboardDismissMode = .onDrag
         
-        viewModel.configure(auctionDetailView, with: auction, and: activeAuction)
+        if isPollingEnabled {
+            viewModel.configure(auctionDetailView, with: auction, and: auctionStatus)
+        } else {
+            fetchAuctionDetail()
+        }
     }
     
     override func linkInteractors() {
         auctionDetailView.delegate = self
+        placeBidViewController.delegate = self
         keyboardController.dataSource = self
     }
     
@@ -137,31 +146,38 @@ class AuctionDetailViewController: BaseScrollViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        pollingOperation = PollingOperation(interval: 5.0) { [weak self] in
-            guard let strongSelf = self else {
-                return
+        if isPollingEnabled {
+            pollingOperation = PollingOperation(interval: 5.0) { [weak self] in
+                guard let strongSelf = self else {
+                    return
+                }
+                
+                strongSelf.fetchAuctionDetail()
             }
             
-            strongSelf.fetchAuctionStatus()
-            strongSelf.fetchAuctionDetails()
-            strongSelf.fetchChartValues()
-            
-            strongSelf.pollMyBidsIfNeeded()
+            pollingOperation?.start()
         }
-        
-        pollingOperation?.start()
+    }
+    
+    private func fetchAuctionDetail() {
+        fetchAuctionStatus()
+        fetchAuctionDetails()
+        fetchChartValues()
+        fetchAuctionUser()
+        fetchMyBids()
     }
     
     private func fetchAuctionStatus() {
         api?.fetchAuctionStatus(for: "\(auction.id)") { response in
             switch response {
-            case let .success(activeAuction):
-                self.activeAuction = activeAuction
-                self.placeBidViewController.activeAuction = activeAuction
-                self.myBidsViewController.activeAuction = activeAuction
+            case let .success(auctionStatus):
+                self.auctionStatus = auctionStatus
+                self.placeBidViewController.auctionStatus = auctionStatus
+                self.myBidsViewController.auctionStatus = auctionStatus
                 
-                self.viewModel.configure(self.auctionDetailView, with: self.auction, and: self.activeAuction)
-                self.placeBidViewController.updateViewForPolling()
+                self.viewModel.configure(self.auctionDetailView, with: self.auction, and: auctionStatus)
+                
+                self.placeBidViewController.updateMaxPriceViewForPolling()
             case let .failure(error):
                 print(error)
             }
@@ -208,7 +224,10 @@ class AuctionDetailViewController: BaseScrollViewController {
                         
                     }
                     
-                    self.auctionDetailView.auctionDetailHeaderView.auctionChartView.setData(entries: chartData)
+                    self.auctionDetailView.auctionDetailHeaderView.auctionChartView.setData(
+                        entries: chartData,
+                        isCompleted: !self.isPollingEnabled
+                    )
                     
                 } else {
                     let arraySlice = values.suffix(values.count - self.chartValues.count)
@@ -240,9 +259,25 @@ class AuctionDetailViewController: BaseScrollViewController {
         }
     }
     
-    private func pollMyBidsIfNeeded() {
+    private func fetchAuctionUser() {
+        api?.fetchAuctionUser { response in
+            switch response {
+            case let .success(user):
+                self.user = user
+                self.placeBidViewController.user = user
+                self.myBidsViewController.user = user
+                
+                self.placeBidViewController.updateBidAmountViewForPolling()
+            case let .failure(error):
+                print(error)
+            }
+        }
+    }
+    
+    private func fetchMyBids() {
         myBidsViewController.fetchMyBids {
             self.viewModel.configureMyBidsHeader(self.auctionDetailView, with: self.myBidsViewController.bids.count)
+            self.viewModel.configureClosedState(self.auctionDetailView, with: self.myBidsViewController.bids, and: self.auctionStatus)
         }
     }
     
@@ -288,5 +323,19 @@ extension AuctionDetailViewController: KeyboardControllerDataSource {
     
     func bottomInsetWhenKeyboardDismissed(for keyboardController: KeyboardController) -> CGFloat {
         return 15.0
+    }
+}
+
+extension AuctionDetailViewController: PlaceBidViewControllerDelegate {
+    
+    func placeBidViewControllerDidPlacedBid(_ placeBidViewController: PlaceBidViewController) {
+        
+    }
+}
+
+class PastAuctionDetailViewController: AuctionDetailViewController {
+    
+    override var isPollingEnabled: Bool {
+        return false
     }
 }

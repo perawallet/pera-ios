@@ -9,13 +9,20 @@
 import UIKit
 import Crypto
 
+protocol PlaceBidViewControllerDelegate: class {
+    
+    func placeBidViewControllerDidPlacedBid(_ placeBidViewController: PlaceBidViewController)
+}
+
 class PlaceBidViewController: BaseViewController {
     
     private let viewModel = PlaceBidViewModel()
     
     var auction: Auction
     var user: AuctionUser
-    var activeAuction: ActiveAuction
+    var auctionStatus: ActiveAuction
+    
+    weak var delegate: PlaceBidViewControllerDelegate?
     
     // MARK: Components
     
@@ -26,10 +33,10 @@ class PlaceBidViewController: BaseViewController {
     
     // MARK: Initialization
     
-    init(auction: Auction, user: AuctionUser, activeAuction: ActiveAuction, configuration: ViewControllerConfiguration) {
+    init(auction: Auction, user: AuctionUser, auctionStatus: ActiveAuction, configuration: ViewControllerConfiguration) {
         self.auction = auction
         self.user = user
-        self.activeAuction = activeAuction
+        self.auctionStatus = auctionStatus
         
         super.init(configuration: configuration)
     }
@@ -43,8 +50,8 @@ class PlaceBidViewController: BaseViewController {
     override func configureAppearance() {
         super.configureAppearance()
         
-        viewModel.configureBidAmountView(placeBidView.bidAmountView, with: user)
-        viewModel.configureMaxPriceView(placeBidView.maxPriceView, with: activeAuction)
+        viewModel.configureBidAmountView(placeBidView.bidAmountView, with: user, shouldUpdateValue: true)
+        viewModel.configureMaxPriceView(placeBidView.maxPriceView, with: auctionStatus)
     }
     
     // MARK: Layout
@@ -62,8 +69,12 @@ class PlaceBidViewController: BaseViewController {
         }
     }
     
-    func updateViewForPolling() {
-        viewModel.configureMaxPriceView(placeBidView.maxPriceView, with: activeAuction)
+    func updateBidAmountViewForPolling() {
+        viewModel.configureBidAmountView(placeBidView.bidAmountView, with: user)
+    }
+    
+    func updateMaxPriceViewForPolling() {
+        viewModel.configureMaxPriceView(placeBidView.maxPriceView, with: auctionStatus)
     }
 }
 
@@ -72,9 +83,9 @@ class PlaceBidViewController: BaseViewController {
 extension PlaceBidViewController: PlaceBidViewDelegate {
     
     func placeBidViewDidTapPlaceBidButton(_ placeBidView: PlaceBidView) {
-        guard activeAuction.isBiddable(),
+        guard auctionStatus.isBiddable(),
             let bidderAddress = user.address,
-            let bidAmount = parseBidAmount(),
+            var bidAmount = parseBidAmount(),
             let maxPrice = parseMaxPrice() else {
                 return
         }
@@ -83,11 +94,22 @@ extension PlaceBidViewController: PlaceBidViewDelegate {
         let auctionAddress = auction.auctionAddress
         let auctionId = Int64(auction.id)
         
+        if let remainingAlgos = auctionStatus.remainingAlgos {
+            let calculatedAlgos = bidAmount / maxPrice
+            
+            if remainingAlgos.toAlgos < calculatedAlgos {
+                bidAmount = remainingAlgos.toAlgos * maxPrice
+            }
+        }
+        
+        let bidAmountIntValue = Int64(bidAmount * 1000000 * 100)
+        let maxPriceIntValue = Int64(maxPrice * 100)
+        
         var signedBidError: NSError?
         guard let bidData = AuctionMakeBid(
             bidderAddress,
-            bidAmount * 1000000,
-            maxPrice,
+            bidAmountIntValue,
+            maxPriceIntValue,
             bidId,
             auctionAddress,
             auctionId,
@@ -109,80 +131,52 @@ extension PlaceBidViewController: PlaceBidViewDelegate {
         
         api?.placeBid(with: bidString, for: "\(auction.id)") { response in
             switch response {
-            case let .success(bidResponse):
-                print(bidResponse)
+            case .success:
+                self.delegate?.placeBidViewControllerDidPlacedBid(self)
+                
+                let bidderUser = self.user
+                
+                if let availableAmount = bidderUser.availableAmount {
+                    bidderUser.availableAmount = availableAmount - Int(bidAmountIntValue)
+                    self.viewModel.configureBidAmountView(placeBidView.bidAmountView, with: bidderUser)
+                }
+                
+                self.placeBidView.placeBidButton.buttonState = .normal
             case let .failure(error):
-                print(error)
+                self.displaySimpleAlertWith(title: "title-error".localized, message: error.localizedDescription)
+                self.placeBidView.placeBidButton.buttonState = .normal
             }
-            
-            self.placeBidView.placeBidButton.buttonState = .normal
         }
     }
     
-    private func parseBidAmount() -> Int64? {
-        guard var bidAmountText = placeBidView.bidAmountView.bidAmountTextField.text, !bidAmountText.isEmpty else {
+    private func parseBidAmount() -> Double? {
+        guard let bidAmountText = placeBidView.bidAmountView.bidAmountTextField.text, !bidAmountText.isEmpty else {
             return nil
         }
         
-        if bidAmountText.contains("$") {
-            bidAmountText = String(bidAmountText.dropFirst())
-        }
-        
-        var shouldMultipleForCents = false
-        
-        if !bidAmountText.contains(".") && !bidAmountText.contains(",") {
-            shouldMultipleForCents = true
-        }
-        
-        bidAmountText = bidAmountText.filter { character -> Bool in
-            character != "," && character != "."
-        }
-        
-        guard let bidAmountValue = Int64(bidAmountText) else {
+        guard let doubleValue = bidAmountText.doubleForSendSeparator else {
             return nil
         }
         
-        if shouldMultipleForCents {
-            return bidAmountValue * 100
-        }
-        
-        return bidAmountValue
+        return doubleValue
     }
     
-    private func parseMaxPrice() -> Int64? {
+    private func parseMaxPrice() -> Double? {
         var maxPriceText: String
         
         if let text = placeBidView.maxPriceView.priceAmountTextField.text, !text.isEmpty {
             maxPriceText = text
-        } else if let currentPrice = activeAuction.currentPrice {
-            maxPriceText = "\(currentPrice / 100)"
+        } else if let currentPrice = auctionStatus.currentPrice {
+            maxPriceText = "\(Double(currentPrice) / 100)"
         } else {
             return nil
         }
         
-        if maxPriceText.contains("$") {
-            maxPriceText = String(maxPriceText.dropFirst())
-        }
-        
-        var shouldMultipleForCents = false
-        
-        if !maxPriceText.contains(".") && !maxPriceText.contains(",") {
-            shouldMultipleForCents = true
-        }
-        
-        maxPriceText = maxPriceText.filter { character -> Bool in
-            character != "," && character != "."
-        }
-        
-        guard let maxPriceValue = Int64(maxPriceText) else {
+        guard let doubleValue = maxPriceText.doubleForSendSeparator else {
             return nil
         }
         
-        if shouldMultipleForCents {
-            return maxPriceValue * 100
-        }
-        
-        return maxPriceValue * 100
+        return doubleValue
     }
     
     func placeBidView(_ placeBidView: PlaceBidView, didChangeSlider value: Float) {
@@ -210,6 +204,6 @@ extension PlaceBidViewController: PlaceBidViewDelegate {
                 return
         }
         
-        viewModel.update(placeBidView, for: bidAmount, and: maxPrice, in: activeAuction)
+        viewModel.update(placeBidView, for: bidAmount, and: maxPrice, in: auctionStatus)
     }
 }

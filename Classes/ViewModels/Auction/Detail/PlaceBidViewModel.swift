@@ -10,45 +10,64 @@ import UIKit
 
 class PlaceBidViewModel {
     
-    func configureBidAmountView(_ view: BidAmountView, with user: AuctionUser) {
+    func configureBidAmountView(_ view: BidAmountView, with user: AuctionUser, shouldUpdateValue: Bool = false) {
         if let availableAmount = user.availableAmount {
-            view.availableAmountLabel.text = "/ \(availableAmount.convertToDollars())"
+            if shouldUpdateValue {
+                view.bidAmountTextField.text = "\(String(describing: availableAmount.convertToDollars().currencyBidInputFormatting()) )"
+                view.auctionSliderView.configureViewForHundredPercentValue(updatesSliderValue: true)
+            }
+            
+            if let availableAmount = availableAmount.convertToDollars().currencyBidInputFormatting() {
+                view.availableAmountLabel.text = "/ \(availableAmount)"
+            }
         }
     }
     
-    func configureMaxPriceView(_ view: MaximumPriceView, with activeAuction: ActiveAuction) {
-        guard let typedValue = view.priceAmountTextField.text else {
-            setInitialPrice(for: activeAuction, in: view)
+    func configureMaxPriceView(_ view: MaximumPriceView, with auctionStatus: ActiveAuction) {
+        guard let typedString = view.priceAmountTextField.text,
+            let typedValue = typedString.doubleForSendSeparator,
+            !typedString.isEmpty else {
+                if let currentPrice = auctionStatus.currentPrice {
+                    view.currentPrice = currentPrice
+                    view.priceAmountTextField.attributedPlaceholder = NSAttributedString(
+                        string: "\(currentPrice.convertToDollars())",
+                        attributes: [NSAttributedString.Key.foregroundColor: SharedColors.darkGray,
+                                     NSAttributedString.Key.font: UIFont.font(.overpass, withWeight: .bold(size: 13.0))]
+                    )
+                }
             return
         }
         
-        if typedValue.isEmpty {
-            setInitialPrice(for: activeAuction, in: view)
+        if let currentPrice = auctionStatus.currentPrice {
+            let typedPrice = Int(typedValue * 100)
+            
+            if currentPrice < typedPrice {
+                view.currentPrice = currentPrice
+                view.priceAmountTextField.text = currentPrice.convertToDollars()
+            }
         }
     }
     
-    private func setInitialPrice(for activeAuction: ActiveAuction, in view: MaximumPriceView) {
-        if let currentPrice = activeAuction.currentPrice {
-            view.priceAmountTextField.attributedPlaceholder = NSAttributedString(
-                string: "\(currentPrice.convertToDollars())",
-                attributes: [NSAttributedString.Key.foregroundColor: SharedColors.darkGray,
-                             NSAttributedString.Key.font: UIFont.font(.overpass, withWeight: .semiBold(size: 12.0))]
-            )
-        }
-    }
-    
-    func update(_ placeBidView: PlaceBidView, for bidAmount: Int64, and maxPrice: Int64, in activeAuction: ActiveAuction) {
-        if activeAuction.isBiddable() {
+    func update(_ placeBidView: PlaceBidView, for bidAmount: Double, and maxPrice: Double, in auctionStatus: ActiveAuction) {
+        if auctionStatus.isBiddable() {
             placeBidView.placeBidButton.isEnabled = true
         }
         
-        if let currentPrice = activeAuction.currentPrice,
-            currentPrice > maxPrice {
+        if let currentPrice = auctionStatus.currentPrice,
+            Double(currentPrice) > (maxPrice * 100).rounded() {
             placeBidView.placeBidButton.setTitle("auction-detail-limit-order-button-title".localized, for: .normal)
         } else {
             placeBidView.placeBidButton.setTitle("auction-detail-place-bid-button-title".localized, for: .normal)
         }
         
-        placeBidView.minPotentialAlgosView.amountLabel.text = ((bidAmount) / (maxPrice)).toDecimalStringForLabel
+        if let remainingAlgos = auctionStatus.remainingAlgos {
+            let calculatedAlgos = bidAmount / maxPrice
+            
+            if remainingAlgos.toAlgos < calculatedAlgos {
+                placeBidView.minPotentialAlgosView.amountLabel.text = remainingAlgos.toAlgos.toDecimalStringForLabel
+            } else {
+                placeBidView.minPotentialAlgosView.amountLabel.text = ((bidAmount) / (maxPrice)).toDecimalStringForLabel
+            }
+        }
     }
 }
