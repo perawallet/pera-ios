@@ -226,7 +226,7 @@ class AuctionDetailViewController: BaseScrollViewController {
                     
                     self.auctionDetailView.auctionDetailHeaderView.auctionChartView.setData(
                         entries: chartData,
-                        isCompleted: !self.isPollingEnabled
+                        isCompleted: !self.auctionStatus.isBiddable()
                     )
                     
                 } else {

@@ -90,8 +90,6 @@ class AuctionDetailViewModel {
             return $0 + doubleValue
         }
         
-        view.auctionDetailHeaderView.auctionChartView.configureCompletedState()
-        
         if let bidAmountValue = bidAmount.toDecimalStringForLabel {
             view.auctionDetailHeaderView.committedAmountView.detailLabel.text = "$\(bidAmountValue)"
         }
