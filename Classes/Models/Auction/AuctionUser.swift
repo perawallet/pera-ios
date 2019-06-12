@@ -13,7 +13,7 @@ class AuctionUser: Mappable {
     let username: String?
     let name: String?
     let address: String?
-    let availableAmount: Int?
+    var availableAmount: Int?
     let lockedAmount: Int?
 }
 

@@ -18,6 +18,19 @@ class AuctionDetailHeaderView: BaseView {
     }
     
     private let layout = Layout<LayoutConstants>()
+    
+    var isBiddable = true {
+        didSet {
+            if isBiddable == oldValue {
+                return
+            }
+            
+            if !isBiddable {
+                timerView.isHidden = true
+                setupCommittedAmountViewLayout()
+            }
+        }
+    }
 
     // MARK: Components
     
@@ -38,6 +51,15 @@ class AuctionDetailHeaderView: BaseView {
         view.timeLabel.textAlignment = .right
         view.explanationLabel.text = "auction-time-left".localized
         return view
+    }()
+    
+    private(set) lazy var committedAmountView: DetailedInformationView = {
+        let committedAmountView = DetailedInformationView()
+        committedAmountView.backgroundColor = .white
+        committedAmountView.separatorView.isHidden = true
+        committedAmountView.explanationLabel.text = "auction-detail-committed-title".localized
+        committedAmountView.detailLabel.font = UIFont.font(.overpass, withWeight: .bold(size: 15.0))
+        return committedAmountView
     }()
     
     private let initialValue: Double
@@ -89,6 +111,16 @@ class AuctionDetailHeaderView: BaseView {
         addSubview(timerView)
         
         timerView.snp.makeConstraints { make in
+            make.top.equalTo(auctionChartView.snp.bottom)
+            make.trailing.bottom.equalToSuperview()
+            make.width.equalTo(layout.current.viewWidth)
+        }
+    }
+    
+    private func setupCommittedAmountViewLayout() {
+        addSubview(committedAmountView)
+        
+        committedAmountView.snp.makeConstraints { make in
             make.top.equalTo(auctionChartView.snp.bottom)
             make.trailing.bottom.equalToSuperview()
             make.width.equalTo(layout.current.viewWidth)

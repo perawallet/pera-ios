@@ -28,6 +28,7 @@ class AuctionChartView: BaseView {
         let chartView = LineChartView()
         chartView.backgroundColor = .white
         chartView.drawGridBackgroundEnabled = false
+        chartView.noDataText = ""
         
         chartView.legend.enabled = false
         
@@ -49,7 +50,7 @@ class AuctionChartView: BaseView {
     
     private lazy var currencySignLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(.overpass, withWeight: .bold(size: 15.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .extraBold(size: 15.0)))
             .withTextColor(SharedColors.black)
             .withLine(.single)
             .withAlignment(.left)
@@ -58,16 +59,15 @@ class AuctionChartView: BaseView {
     
     private(set) lazy var currentValueLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(.overpass, withWeight: .bold(size: 30.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .extraBold(size: 30.0)))
             .withTextColor(SharedColors.black)
             .withLine(.single)
             .withAlignment(.left)
-            .withText("\(initialValue)")
     }()
     
     private lazy var titleLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 14.0)))
+            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 14.0)))
             .withTextColor(.black)
             .withLine(.single)
             .withAlignment(.center)
@@ -110,7 +110,8 @@ class AuctionChartView: BaseView {
         addSubview(lineChartView)
         
         lineChartView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.leading.trailing.bottom.equalToSuperview()
+            make.top.equalToSuperview().inset(5.0)
         }
     }
     
@@ -156,7 +157,7 @@ class AuctionChartView: BaseView {
 
 extension AuctionChartView {
     
-    func setData(entries: [ChartDataEntry]) {
+    func setData(entries: [ChartDataEntry], isCompleted: Bool) {
         let pricesDataSet = LineChartDataSet(entries: entries, label: nil)
         pricesDataSet.drawValuesEnabled = false
         pricesDataSet.drawCircleHoleEnabled = false
@@ -164,34 +165,10 @@ extension AuctionChartView {
         pricesDataSet.lineWidth = 4.0
         pricesDataSet.mode = .horizontalBezier
         
-        let redDiff: CGFloat = 255.0 / CGFloat(maximumIndex)
-        let greenDiff: CGFloat = 51.0 / CGFloat(maximumIndex)
-        let blueDiff: CGFloat = 255.0 / CGFloat(maximumIndex)
-        
-        var previousRed: CGFloat = 0
-        var previousGreen: CGFloat = 117
-        var previousBlue: CGFloat = 255
-        
-        pricesDataSet.setColor(UIColor(
-            red: CGFloat(previousRed / 255),
-            green: CGFloat(previousGreen / 255),
-            blue: CGFloat(previousBlue / 255),
-            alpha: 1
-        ))
-        
-        for _ in 0...Int(maximumIndex) {
-            let color = UIColor(
-                red: CGFloat(previousRed / 255),
-                green: CGFloat(previousGreen / 255),
-                blue: CGFloat(previousBlue / 255),
-                alpha: 1
-            )
-            
-            pricesDataSet.addColor(color)
-            
-            previousRed += redDiff
-            previousGreen -= greenDiff
-            previousBlue -= blueDiff
+        if isCompleted {
+            pricesDataSet.setColor(rgb(0.67, 0.67, 0.72))
+        } else {
+            pricesDataSet.setColor(SharedColors.turquois)
         }
         
         lineChartView.data = LineChartData(dataSet: pricesDataSet)
@@ -211,6 +188,8 @@ extension AuctionChartView {
     
     func configureCompletedState() {
         titleLabel.text = "auction-price-closing-title".localized
+        let dataset = lineChartView.data?.getDataSetByIndex(0)
+        dataset?.setColor(rgb(0.67, 0.67, 0.72))
         bottomImageView.image = img("img-chart-dark")
     }
 }
