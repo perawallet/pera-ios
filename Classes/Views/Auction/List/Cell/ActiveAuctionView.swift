@@ -49,7 +49,7 @@ class ActiveAuctionView: BaseView {
     
     private lazy var titleContainerView: UIView = {
         let view = UIView()
-        view.backgroundColor = SharedColors.darkGray
+        view.backgroundColor = SharedColors.purple
         return view
     }()
     
