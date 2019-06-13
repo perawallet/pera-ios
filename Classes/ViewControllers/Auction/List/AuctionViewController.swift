@@ -316,12 +316,25 @@ class AuctionViewController: BaseViewController {
         
         if let authManager = authManager {
             setupCoinlistAccount(with: code, and: authManager)
+        } else {
+            authManager = AuthManager()
+            authManager?.delegate = self
+            
+            guard let authManager = authManager else {
+                return
+            }
+            
+            setupCoinlistAccount(with: code, and: authManager)
         }
     }
     
     @objc
     fileprivate func didCoinlistDisconnected(notification: Notification) {
-        prepareLayoutForToken()
+        auctionIntroductionView = AuctionIntroductionView()
+        auctionIntroductionView.delegate = self
+        
+        auctionsCollectionView.removeFromSuperview()
+        setupAuctionIntroductionViewLayout()
     }
 }
 

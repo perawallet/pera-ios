@@ -230,7 +230,11 @@ extension SettingsViewController: AuthManagerDelegate {
             return
         }
         
-        settingsView.collectionView.reloadData()
+        guard let cell = settingsView.collectionView.cellForItem(at: IndexPath(item: 4, section: 0)) as? CoinlistCell else {
+            return
+        }
+        
+        cell.contextView.actionMode = .disconnect
         
         NotificationCenter.default.post(name: Notification.Name.CoinlistConnected, object: self, userInfo: ["code": code])
         
