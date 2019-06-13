@@ -12,7 +12,8 @@ class AuctionDetailHeaderView: BaseView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let horizontalInset: CGFloat = 25.0
-        let chartHeight: CGFloat = 100.0
+        let chartHeight: CGFloat = 114.0
+        let explanationTopInset: CGFloat = 10.0
         let topInset: CGFloat = 18.0
         let viewWidth: CGFloat = UIScreen.main.bounds.width / 2
     }
@@ -105,6 +106,10 @@ class AuctionDetailHeaderView: BaseView {
             make.leading.bottom.equalToSuperview()
             make.width.equalTo(layout.current.viewWidth)
         }
+        
+        remainingAlgosView.explanationLabel.snp.updateConstraints { make in
+            make.top.equalToSuperview().inset(layout.current.explanationTopInset)
+        }
     }
 
     private func setupAuctionTimerViewLayout() {
@@ -115,6 +120,10 @@ class AuctionDetailHeaderView: BaseView {
             make.trailing.bottom.equalToSuperview()
             make.width.equalTo(layout.current.viewWidth)
         }
+        
+        timerView.explanationLabel.snp.updateConstraints { make in
+            make.top.equalToSuperview().inset(layout.current.explanationTopInset)
+        }
     }
     
     private func setupCommittedAmountViewLayout() {
@@ -124,6 +133,10 @@ class AuctionDetailHeaderView: BaseView {
             make.top.equalTo(auctionChartView.snp.bottom)
             make.trailing.bottom.equalToSuperview()
             make.width.equalTo(layout.current.viewWidth)
+        }
+        
+        committedAmountView.explanationLabel.snp.updateConstraints { make in
+            make.top.equalToSuperview().inset(layout.current.explanationTopInset)
         }
     }
 }

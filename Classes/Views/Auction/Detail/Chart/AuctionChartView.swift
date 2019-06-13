@@ -13,6 +13,9 @@ class AuctionChartView: BaseView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let topInset: CGFloat = 20.0
+        let chartTopInset: CGFloat = 5.0
+        let chartHorizontalInset: CGFloat = 20.0
+        let separatorHeight: CGFloat = 1.0
         let horizontalInset: CGFloat = 25.0
         let imageHeight: CGFloat = 4.0
         let bottomInset: CGFloat = 8.0
@@ -21,6 +24,10 @@ class AuctionChartView: BaseView {
     }
     
     private let layout = Layout<LayoutConstants>()
+    
+    private enum Colors {
+        static let lineColor = rgba(0.67, 0.67, 0.72, 0.2)
+    }
     
     // MARK: Components
 
@@ -32,11 +39,10 @@ class AuctionChartView: BaseView {
         
         chartView.legend.enabled = false
         
+        chartView.leftAxis.enabled = false
         chartView.leftAxis.axisMinimum = 0
         chartView.leftAxis.axisMaximum = Double(initialValue)
-        chartView.leftAxis.labelTextColor = .white
         chartView.leftAxis.axisLineColor = .white
-        chartView.leftAxis.gridColor = rgba(0.67, 0.67, 0.72, 0.2)
         
         chartView.xAxis.enabled = false
         chartView.xAxis.axisMinimum = 0
@@ -74,6 +80,30 @@ class AuctionChartView: BaseView {
             .withText("auction-price-current-title".localized)
     }()
     
+    private lazy var firstLineView: UIView = {
+        let view = UIView()
+        view.backgroundColor = Colors.lineColor
+        return view
+    }()
+    
+    private lazy var secondLineView: UIView = {
+        let view = UIView()
+        view.backgroundColor = Colors.lineColor
+        return view
+    }()
+    
+    private lazy var thirdLineView: UIView = {
+        let view = UIView()
+        view.backgroundColor = Colors.lineColor
+        return view
+    }()
+    
+    private lazy var forthLineView: UIView = {
+        let view = UIView()
+        view.backgroundColor = Colors.lineColor
+        return view
+    }()
+    
     private lazy var bottomImageView = UIImageView(image: img("img-chart-color"))
     
     private let initialValue: Double
@@ -100,6 +130,10 @@ class AuctionChartView: BaseView {
         super.prepareLayout()
         
         setupLineChartViewLayout()
+        setupFirstLineViewLayout()
+        setupSecondLineViewLayout()
+        setupThirdLineViewLayout()
+        setupForthLineViewLayout()
         setupCurrentValueLabelLayout()
         setupCurrencySignLabelLayout()
         setupTitleLabelLayout()
@@ -110,8 +144,49 @@ class AuctionChartView: BaseView {
         addSubview(lineChartView)
         
         lineChartView.snp.makeConstraints { make in
-            make.leading.trailing.bottom.equalToSuperview()
-            make.top.equalToSuperview().inset(5.0)
+            make.bottom.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(layout.current.chartHorizontalInset)
+            make.top.equalToSuperview().inset(layout.current.chartTopInset)
+        }
+    }
+    
+    private func setupFirstLineViewLayout() {
+        addSubview(firstLineView)
+        
+        firstLineView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.top.equalToSuperview().inset(layout.current.topInset)
+            make.height.equalTo(layout.current.separatorHeight)
+        }
+    }
+    
+    private func setupSecondLineViewLayout() {
+        addSubview(secondLineView)
+        
+        secondLineView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.top.equalTo(firstLineView.snp.bottom).offset(layout.current.topInset)
+            make.height.equalTo(layout.current.separatorHeight)
+        }
+    }
+    
+    private func setupThirdLineViewLayout() {
+        addSubview(thirdLineView)
+        
+        thirdLineView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.top.equalTo(secondLineView.snp.bottom).offset(layout.current.topInset)
+            make.height.equalTo(layout.current.separatorHeight)
+        }
+    }
+    
+    private func setupForthLineViewLayout() {
+        addSubview(forthLineView)
+        
+        forthLineView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.top.equalTo(thirdLineView.snp.bottom).offset(layout.current.topInset)
+            make.height.equalTo(layout.current.separatorHeight)
         }
     }
     
@@ -184,6 +259,33 @@ extension AuctionChartView {
         
         lineChartView.setVisibleXRange(minXRange: Double(1), maxXRange: maximumIndex)
         lineChartView.moveViewToX(Double(index))
+    }
+    
+    func setLastData(entry: ChartDataEntry, isCompleted: Bool) {
+        let pricesDataSet = LineChartDataSet(entries: [entry], label: nil)
+        pricesDataSet.drawValuesEnabled = false
+        
+        pricesDataSet.drawCircleHoleEnabled = true
+        pricesDataSet.drawCirclesEnabled = true
+        pricesDataSet.circleHoleRadius = 4.0
+        pricesDataSet.circleRadius = 10.0
+        
+        pricesDataSet.lineWidth = 4.0
+        pricesDataSet.mode = .horizontalBezier
+        
+        if isCompleted {
+            pricesDataSet.setColor(rgb(0.67, 0.67, 0.72))
+            pricesDataSet.circleColors = [rgb(0.67, 0.67, 0.72).withAlphaComponent(0.1)]
+            pricesDataSet.circleHoleColor = rgb(0.67, 0.67, 0.72)
+        } else {
+            pricesDataSet.setColor(SharedColors.turquois)
+            pricesDataSet.circleColors = [SharedColors.turquois.withAlphaComponent(0.1)]
+            pricesDataSet.circleHoleColor = SharedColors.turquois
+        }
+        
+        lineChartView.data?.removeDataSetByIndex(1)
+        
+        lineChartView.data?.addDataSet(pricesDataSet)
     }
     
     func configureCompletedState() {

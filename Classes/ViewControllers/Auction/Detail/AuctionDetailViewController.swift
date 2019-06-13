@@ -208,20 +208,25 @@ class AuctionDetailViewController: BaseScrollViewController {
                     var chartData = [ChartDataEntry]()
                     
                     for (index, value) in self.chartValues.enumerated() {
-                        if let waitCount = self.auction.priceChunkRounds {
-                            chartData.append(ChartDataEntry(x: Double(index * waitCount), y: Double(value.remainingAlgos ?? 1)))
+                        if let currentRound = value.round,
+                            index != self.chartValues.count - 1,
+                            let nextRound = self.chartValues[index + 1].round {
+                            let waitCount = nextRound - currentRound
                             
-                            for i in 1..<waitCount {
-                                if index == 0 {
-                                    chartData.append(ChartDataEntry(x: Double(i),
-                                                                    y: Double(value.remainingAlgos ?? 1)))
-                                } else {
-                                    chartData.append(ChartDataEntry(x: Double((index * waitCount) + i),
-                                                                    y: Double(value.remainingAlgos ?? 1)))
-                                }
+                            if waitCount <= 0 {
+                                continue
+                            }
+                            
+                            chartData.append(ChartDataEntry(x: Double(chartData.count), y: Double(value.remainingAlgos ?? 1)))
+                            
+                            for _ in 1..<waitCount {
+                                chartData.append(ChartDataEntry(x: Double(chartData.count), y: Double(value.remainingAlgos ?? 1)))
                             }
                         }
                         
+                        if index == self.chartValues.count - 1 {
+                            chartData.append(ChartDataEntry(x: Double(chartData.count), y: Double(value.remainingAlgos ?? 1)))
+                        }
                     }
                     
                     self.auctionDetailView.auctionDetailHeaderView.auctionChartView.setData(
@@ -229,6 +234,12 @@ class AuctionDetailViewController: BaseScrollViewController {
                         isCompleted: !self.auctionStatus.isBiddable()
                     )
                     
+                    if let lastData = chartData.last {
+                        self.auctionDetailView.auctionDetailHeaderView.auctionChartView.setLastData(
+                            entry: lastData,
+                            isCompleted: !self.auctionStatus.isBiddable()
+                        )
+                    }
                 } else {
                     let arraySlice = values.suffix(values.count - self.chartValues.count)
                     let newArray = Array(arraySlice)
@@ -236,13 +247,24 @@ class AuctionDetailViewController: BaseScrollViewController {
                     var chartData = [ChartDataEntry]()
                     
                     for (index, value) in newArray.enumerated() {
-                        if let waitCount = self.auction.priceChunkRounds {
-                            chartData.append(ChartDataEntry(x: Double((self.chartValues.count + index) * waitCount),
-                                                            y: Double(value.remainingAlgos ?? 1)))
-                            for i in 1..<waitCount {
-                                chartData.append(ChartDataEntry(x: Double(((self.chartValues.count + index) * waitCount) + i),
-                                                                y: Double(value.remainingAlgos ?? 1)))
+                        if let currentRound = value.round,
+                            index != self.chartValues.count - 1,
+                            let nextRound = self.chartValues[index + 1].round {
+                            let waitCount = nextRound - currentRound
+                            
+                            if waitCount <= 0 {
+                                continue
                             }
+                            
+                            chartData.append(ChartDataEntry(x: Double(chartData.count), y: Double(value.remainingAlgos ?? 1)))
+                            
+                            for _ in 1..<waitCount {
+                                chartData.append(ChartDataEntry(x: Double(chartData.count), y: Double(value.remainingAlgos ?? 1)))
+                            }
+                        }
+                        
+                        if index == self.chartValues.count - 1 {
+                            chartData.append(ChartDataEntry(x: Double(chartData.count), y: Double(value.remainingAlgos ?? 1)))
                         }
                     }
                     
@@ -251,6 +273,13 @@ class AuctionDetailViewController: BaseScrollViewController {
                         
                         self.auctionDetailView.auctionDetailHeaderView.auctionChartView
                             .addData(entries: chartData, at: self.chartValues.count + chartData.count)
+                        
+                        if let lastData = chartData.last {
+                            self.auctionDetailView.auctionDetailHeaderView.auctionChartView.setLastData(
+                                entry: lastData,
+                                isCompleted: !self.auctionStatus.isBiddable()
+                            )
+                        }
                     }
                 }
             case let .failure(error):
