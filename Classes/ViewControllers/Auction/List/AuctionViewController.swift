@@ -429,7 +429,8 @@ extension AuctionViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let user = auctionUser,
-            let activeAuction = activeAuction else {
+            let activeAuction = activeAuction,
+            indexPath.section != 0 else {
                 return
         }
         

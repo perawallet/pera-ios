@@ -203,15 +203,15 @@ class AuctionDetailViewController: BaseScrollViewController {
             switch response {
             case let .success(values):
                 if self.chartValues.isEmpty {
-                    self.chartValues = values
-                    
                     var chartData = [ChartDataEntry]()
                     
-                    for (index, value) in self.chartValues.enumerated() {
+                    for (index, value) in values.enumerated() {
                         if let currentRound = value.round,
-                            index != self.chartValues.count - 1,
-                            let nextRound = self.chartValues[index + 1].round {
+                            index != values.count - 1,
+                            let nextRound = values[index + 1].round {
                             let waitCount = nextRound - currentRound
+                            
+                            self.chartValues.append(value)
                             
                             if waitCount <= 0 {
                                 continue
@@ -220,6 +220,10 @@ class AuctionDetailViewController: BaseScrollViewController {
                             chartData.append(ChartDataEntry(x: Double(chartData.count), y: Double(value.remainingAlgos ?? 1)))
                             
                             for _ in 1..<waitCount {
+                                if let lastValue = self.chartValues.last {
+                                    self.chartValues.append(lastValue)
+                                }
+                                
                                 chartData.append(ChartDataEntry(x: Double(chartData.count), y: Double(value.remainingAlgos ?? 1)))
                             }
                         }
@@ -241,16 +245,46 @@ class AuctionDetailViewController: BaseScrollViewController {
                         )
                     }
                 } else {
-                    let arraySlice = values.suffix(values.count - self.chartValues.count)
-                    let newArray = Array(arraySlice)
+                    guard let lastValue = self.chartValues.last,
+                        let lastReceivedValue = values.last else {
+                        return
+                    }
+                    
+                    if lastValue.round == lastReceivedValue.round {
+                        self.chartValues.append(lastReceivedValue)
+                        
+                        let entry = ChartDataEntry(x: Double(self.chartValues.count),
+                                                   y: Double(lastReceivedValue.remainingAlgos ?? 1))
+                        
+                        self.auctionDetailView.auctionDetailHeaderView.auctionChartView
+                            .addData(entries: [entry], at: self.chartValues.count + 1)
+                        
+                        self.auctionDetailView.auctionDetailHeaderView.auctionChartView.setLastData(
+                            entry: entry,
+                            isCompleted: !self.auctionStatus.isBiddable()
+                        )
+                        
+                        return
+                    }
+                    
+                    let filteredValues = values.filter { data -> Bool in
+                        if let dataRound = data.round,
+                            let lastReceivedRound = lastValue.round {
+                            return dataRound > lastReceivedRound
+                        }
+                        
+                        return false
+                    }
                     
                     var chartData = [ChartDataEntry]()
                     
-                    for (index, value) in newArray.enumerated() {
+                    for (index, value) in filteredValues.enumerated() {
                         if let currentRound = value.round,
                             index != self.chartValues.count - 1,
                             let nextRound = self.chartValues[index + 1].round {
                             let waitCount = nextRound - currentRound
+                            
+                            self.chartValues.append(value)
                             
                             if waitCount <= 0 {
                                 continue
@@ -259,6 +293,7 @@ class AuctionDetailViewController: BaseScrollViewController {
                             chartData.append(ChartDataEntry(x: Double(chartData.count), y: Double(value.remainingAlgos ?? 1)))
                             
                             for _ in 1..<waitCount {
+                                self.chartValues.append(value)
                                 chartData.append(ChartDataEntry(x: Double(chartData.count), y: Double(value.remainingAlgos ?? 1)))
                             }
                         }
@@ -268,9 +303,7 @@ class AuctionDetailViewController: BaseScrollViewController {
                         }
                     }
                     
-                    if !newArray.isEmpty {
-                        self.chartValues.append(contentsOf: newArray)
-                        
+                    if !filteredValues.isEmpty {
                         self.auctionDetailView.auctionDetailHeaderView.auctionChartView
                             .addData(entries: chartData, at: self.chartValues.count + chartData.count)
                         
