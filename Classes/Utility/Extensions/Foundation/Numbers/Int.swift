@@ -27,6 +27,8 @@ extension Int {
             formatter.numberStyle = .currencyAccounting
         }
         
+        formatter.locale = Locale(identifier: "en_US")
+        formatter.groupingSeparator = ","
         formatter.minimumFractionDigits = 2
         formatter.maximumFractionDigits = 2
         return formatter.string(from: NSDecimalNumber(value: doubleValue)) ?? "$\(doubleValue)"

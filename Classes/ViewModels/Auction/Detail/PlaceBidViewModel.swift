@@ -13,8 +13,10 @@ class PlaceBidViewModel {
     func configureBidAmountView(_ view: BidAmountView, with user: AuctionUser, shouldUpdateValue: Bool = false) {
         if let availableAmount = user.availableAmount {
             if shouldUpdateValue {
-                view.bidAmountTextField.text = "\(String(describing: availableAmount.convertToDollars().currencyBidInputFormatting()) )"
-                view.auctionSliderView.configureViewForHundredPercentValue(updatesSliderValue: true)
+                if let amount = availableAmount.convertToDollars().currencyBidInputFormatting() {
+                    view.bidAmountTextField.text = "\(amount) )"
+                    view.auctionSliderView.configureViewForHundredPercentValue(updatesSliderValue: true)
+                }
             }
             
             if let availableAmount = availableAmount.convertToDollars().currencyBidInputFormatting() {

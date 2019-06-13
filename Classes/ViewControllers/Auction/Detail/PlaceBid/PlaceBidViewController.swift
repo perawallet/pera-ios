@@ -154,7 +154,7 @@ extension PlaceBidViewController: PlaceBidViewDelegate {
             return nil
         }
         
-        guard let doubleValue = bidAmountText.doubleForSendSeparator else {
+        guard let doubleValue = bidAmountText.doubleForReadSeparator else {
             return nil
         }
         
