@@ -77,6 +77,14 @@ class AuctionViewController: BaseViewController {
         authManager = AuthManager()
     }
     
+    override func configureNavigationBarAppearance() {
+        let balancearButtonItem = ALGBarButtonItem(kind: .balance) {
+            self.open(.balance, by: .push)
+        }
+        
+        leftBarButtonItems = [balancearButtonItem]
+    }
+    
     // MARK: Setup
     
     override func setListeners() {

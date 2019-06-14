@@ -55,6 +55,11 @@ struct ALGBarButtonItem: BarButtonItem {
                 return ImageContent(normal: icon)
             }
             return nil
+        case .balance:
+            if let icon = img("icon-balance") {
+                return ImageContent(normal: icon)
+            }
+            return nil
         }
     }
     
@@ -80,6 +85,8 @@ struct ALGBarButtonItem: BarButtonItem {
         case .close:
             return .explicit(CGSize(width: 44.0, height: 44.0))
         case .removeNode:
+            return .explicit(CGSize(width: 44.0, height: 44.0))
+        case .balance:
             return .explicit(CGSize(width: 44.0, height: 44.0))
         }
     }
@@ -107,6 +114,7 @@ extension ALGBarButtonItem {
         case share
         case close
         case removeNode
+        case balance
     }
 }
 

@@ -305,3 +305,15 @@
 "auction-detail-retract-error" = "Could not retract the bid.";
 "auction-detail-total-algos-title" = "Total Algos";
 "auction-detail-committed-title" = "Total USD Commited";
+
+// MARK: Balance
+
+"balance-title" = "Balance";
+
+// MARK: Deposit
+
+"deposit-title" = "Deposit";
+
+// MARK: Withdraw
+
+"withdraw-title" = "Withdraw";

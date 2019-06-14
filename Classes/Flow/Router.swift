@@ -236,6 +236,12 @@ class Router {
                 auctionStatus: auctionStatus,
                 configuration: configuration
             )
+        case .balance:
+            viewController = BalanceViewController(configuration: configuration)
+        case .deposit:
+            viewController = DepositViewController(configuration: configuration)
+        case .withdraw:
+            viewController = WithdrawViewController(configuration: configuration)
         }
         
         return viewController as? T
