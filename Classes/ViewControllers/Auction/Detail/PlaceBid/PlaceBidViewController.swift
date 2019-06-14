@@ -73,6 +73,10 @@ class PlaceBidViewController: BaseViewController {
         viewModel.configureBidAmountView(placeBidView.bidAmountView, with: user)
     }
     
+    func updateBidButtonForPolling() {
+        viewModel.configureBidButton(placeBidView.placeBidButton, for: auctionStatus)
+    }
+    
     func updateMaxPriceViewForPolling() {
         viewModel.configureMaxPriceView(placeBidView.maxPriceView, with: auctionStatus)
     }

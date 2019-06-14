@@ -80,7 +80,7 @@ class AuctionDetailViewController: BaseScrollViewController {
         if isPollingEnabled {
             viewModel.configure(auctionDetailView, with: auction, and: auctionStatus)
         } else {
-            fetchAuctionDetail()
+            fetchAuctionStatus()
         }
     }
     
@@ -160,7 +160,10 @@ class AuctionDetailViewController: BaseScrollViewController {
     }
     
     private func fetchAuctionDetail() {
-        fetchAuctionStatus()
+        if isPollingEnabled {
+            fetchAuctionStatus()
+        }
+        
         fetchAuctionDetails()
         fetchChartValues()
         fetchAuctionUser()
@@ -178,6 +181,11 @@ class AuctionDetailViewController: BaseScrollViewController {
                 self.viewModel.configure(self.auctionDetailView, with: self.auction, and: auctionStatus)
                 
                 self.placeBidViewController.updateMaxPriceViewForPolling()
+                self.placeBidViewController.updateBidButtonForPolling()
+                
+                if !self.isPollingEnabled {
+                    self.fetchAuctionDetail()
+                }
             case let .failure(error):
                 print(error)
             }

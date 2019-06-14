@@ -25,6 +25,10 @@ class PlaceBidViewModel {
         }
     }
     
+    func configureBidButton(_ button: UIButton, for auctionStatus: ActiveAuction) {
+        button.isEnabled = auctionStatus.isBiddable()
+    }
+    
     func configureMaxPriceView(_ view: MaximumPriceView, with auctionStatus: ActiveAuction) {
         guard let typedString = view.priceAmountTextField.text,
             let typedValue = typedString.doubleForSendSeparator,
@@ -51,17 +55,21 @@ class PlaceBidViewModel {
     }
     
     func update(_ placeBidView: PlaceBidView, for bidAmount: Double, and maxPrice: Double, in auctionStatus: ActiveAuction) {
-        if auctionStatus.isBiddable() {
-            placeBidView.placeBidButton.isEnabled = true
-        } else {
-            placeBidView.placeBidButton.isEnabled = false
-        }
-        
         if let currentPrice = auctionStatus.currentPrice,
             Double(currentPrice) > (maxPrice * 100).rounded() {
             placeBidView.placeBidButton.setTitle("auction-detail-limit-order-button-title".localized, for: .normal)
         } else {
             placeBidView.placeBidButton.setTitle("auction-detail-place-bid-button-title".localized, for: .normal)
+        }
+        
+        if auctionStatus.isBiddable() {
+            placeBidView.placeBidButton.isEnabled = true
+        } else {
+            placeBidView.placeBidButton.isEnabled = false
+            if let zeroValue = (0.0).toDecimalStringForLabel {
+                placeBidView.minPotentialAlgosView.amountLabel.text = "\(zeroValue)"
+            }
+            return
         }
         
         if let remainingAlgos = auctionStatus.remainingAlgos {
