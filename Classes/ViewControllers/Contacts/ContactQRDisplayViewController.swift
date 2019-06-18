@@ -46,7 +46,7 @@ class ContactQRDisplayViewController: BaseViewController {
         view.backgroundColor = Colors.backgroundColor
         
         contactQRDisplayView.nameLabel.text = contact.name
-        contactQRDisplayView.addressLabel.text = contact.address
+        contactQRDisplayView.qrSelectableLabel.label.text = contact.address
         
         if let imageData = contact.image,
             let image = UIImage(data: imageData) {
@@ -76,6 +76,18 @@ class ContactQRDisplayViewController: BaseViewController {
 // MARK: ContactQRDisplayViewDelegate
 
 extension ContactQRDisplayViewController: ContactQRDisplayViewDelegate {
+    
+    func contactQRDisplayViewDidTapShareButton(_ contactQRDisplayView: ContactQRDisplayView) {
+        guard let qrImage = contactQRDisplayView.qrView.imageView.image else {
+            return
+        }
+        
+        let sharedItem = [qrImage]
+        let activityViewController = UIActivityViewController(activityItems: sharedItem, applicationActivities: nil)
+        activityViewController.excludedActivityTypes = [UIActivity.ActivityType.addToReadingList]
+        
+        present(activityViewController, animated: true, completion: nil)
+    }
     
     func contactQRDisplayViewDidTapCloseButton(_ contactQRDisplayView: ContactQRDisplayView) {
         dismissScreen()
