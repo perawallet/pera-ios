@@ -33,7 +33,8 @@ extension AccountsViewController: OptionsViewControllerDelegate {
     
     func optionsViewControllerDidViewPassphrase(_ optionsViewController: OptionsViewController) {
         if localAuthenticator.localAuthenticationStatus != .allowed {
-            presentPassphraseView()
+            let controller = open(.choosePassword(mode: .confirm, route: nil), by: .present) as? ChoosePasswordViewController
+            controller?.delegate = self
             return
         }
         
@@ -150,5 +151,19 @@ extension AccountsViewController: OptionsViewControllerDelegate {
         }
         
         tabBarController?.present(viewController, animated: true, completion: nil)
+    }
+}
+
+extension AccountsViewController: ChoosePasswordViewControllerDelegate {
+    
+    func choosePasswordViewController(_ choosePasswordViewController: ChoosePasswordViewController, didConfirmPassword isConfirmed: Bool) {
+        if isConfirmed {
+            presentPassphraseView()
+        } else {
+            displaySimpleAlertWith(
+                title: "password-verify-fail-title".localized,
+                message: "options-view-passphrase-password-alert-message".localized
+            )
+        }
     }
 }
