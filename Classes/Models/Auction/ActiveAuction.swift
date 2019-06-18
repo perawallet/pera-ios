@@ -21,7 +21,7 @@ class ActiveAuction: Mappable {
     let estimatedAuctionRoundStart: Date?
     let currentRound: Int?
     
-    var totalAlgos: Int64 = 0
+    var totalAlgos: Int64?
     
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)

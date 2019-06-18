@@ -41,26 +41,29 @@ class AuctionViewModel {
         }
         
         if let remainingAlgos = activeAuction.remainingAlgos?.toAlgos {
-            cell.contextView.remainingAlgosView.algosAmountView.amountLabel.text = remainingAlgos.toDecimalStringForLabel
+            cell.contextView.remainingAlgosView.algosAmountView.amountLabel.text = remainingAlgos.formatToShort()
             cell.contextView.remainingAlgosView.algosAmountView.amountLabel.textColor = SharedColors.turquois
             cell.contextView.remainingAlgosView.algosAmountView.algoIconImageView.image = img("icon-remaining-algo")
             
-            if activeAuction.totalAlgos == 0 {
-                if remainingAlgos == 0 {
-                    cell.contextView.remainingAlgosView.percentageLabel.text = "(0%)"
-                } else {
-                    cell.contextView.remainingAlgosView.percentageLabel.text = "(\(Int(remainingAlgos * 100 / remainingAlgos))%)"
+            if let totalAlgos = activeAuction.totalAlgos {
+                cell.contextView.remainingAlgosView.percentageLabel.isHidden = false
+                if let percentage = (remainingAlgos * 100.0 / totalAlgos.toAlgos).toDecimalStringForBidInput {
+                    cell.contextView.remainingAlgosView.percentageLabel.text = "(\(percentage)%)"
                 }
             } else {
-                cell.contextView.remainingAlgosView.percentageLabel.text =
-                    "(\(Int(remainingAlgos * 100 / activeAuction.totalAlgos.toAlgos))%)"
+                cell.contextView.remainingAlgosView.percentageLabel.isHidden = true
             }
         }
     }
     
     func configureRemainingAlgosPercentage(in cell: ActiveAuctionCell, with activeAuction: ActiveAuction) {
-        if let remainingAlgos = activeAuction.remainingAlgos?.toAlgos {
-            cell.contextView.remainingAlgosView.percentageLabel.text = "(\(Int(remainingAlgos * 100 / activeAuction.totalAlgos.toAlgos))%)"
+        if let remainingAlgos = activeAuction.remainingAlgos?.toAlgos,
+            let totalAlgos = activeAuction.totalAlgos,
+            let percentage = (remainingAlgos * 100.0 / totalAlgos.toAlgos).toDecimalStringForBidInput {
+            cell.contextView.remainingAlgosView.percentageLabel.isHidden = false
+            cell.contextView.remainingAlgosView.percentageLabel.text = "(\(percentage)%)"
+        } else {
+            cell.contextView.remainingAlgosView.percentageLabel.isHidden = true
         }
     }
     

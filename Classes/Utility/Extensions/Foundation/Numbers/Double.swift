@@ -28,4 +28,39 @@ extension Double {
     var toDecimalStringForBidInput: String? {
         return Formatter.separatorForBidInput.string(from: NSNumber(value: self))
     }
+    
+    func truncate(places: Int) -> Double {
+        return Double(floor(pow(10.0, Double(places)) * self) / pow(10.0, Double(places)))
+    }
+    
+    func formatToShort() -> String {
+        let sign = (self < 0) ? "-" : ""
+        
+        switch self {
+        case 1000000000...:
+            var formatted = self / 1000000000.0
+            formatted = formatted.truncate(places: 1)
+            return "\(sign)\(formatted)B"
+        case 1000000...:
+            var formatted = self / 1000000.0
+            formatted = formatted.truncate(places: 1)
+            return "\(sign)\(formatted)M"
+        case 1000...:
+            var formatted = self / 1000.0
+            formatted = formatted.truncate(places: 1)
+            return "\(sign)\(formatted)K"
+        case 0...:
+            if let formatted = toDecimalStringForBidInput {
+                return "\(formatted)"
+            } else {
+                return "\(self)"
+            }
+        default:
+            if let formatted = toDecimalStringForBidInput {
+                return "\(sign)\(formatted)"
+            } else {
+                return "\(sign)\(self)"
+            }
+        }
+    }
 }

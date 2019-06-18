@@ -378,6 +378,8 @@ extension AuctionViewController: UICollectionViewDataSource {
                 
                 cell.delegate = self
                 
+                activeAuction.totalAlgos = totalAlgosAmount
+                
                 viewModel.configure(cell, with: activeAuction)
                 
                 return cell
