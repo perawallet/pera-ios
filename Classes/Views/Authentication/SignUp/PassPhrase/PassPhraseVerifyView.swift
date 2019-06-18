@@ -48,6 +48,7 @@ extension PassPhraseVerifyView {
         questionSubtitleLabel.snp.makeConstraints { maker in
             maker.top.equalTo(questionTitleLabel.snp.bottom).offset(16 * verticalScale)
             maker.leading.trailing.equalToSuperview().inset(15)
+            maker.bottom.equalToSuperview().inset(20.0 * verticalScale)
         }
     }
 }

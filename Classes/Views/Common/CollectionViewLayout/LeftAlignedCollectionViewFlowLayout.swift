@@ -57,6 +57,10 @@ class LeftAlignedCollectionViewFlowLayout: UICollectionViewFlowLayout {
                 
                 height = max(height, topMargin)
                 
+                if item == collectionView.numberOfItems(inSection: 0) - 1 {
+                    height += minimumLineSpacing + size.height
+                }
+                
                 cache.append(layoutAttribute)
             }
             
