@@ -23,7 +23,7 @@ class AuctionDetailViewModel {
             view.auctionDetailHeaderView.remainingAlgosView.algosAmountView.amountLabel.textColor = SharedColors.turquois
             view.auctionDetailHeaderView.remainingAlgosView.algosAmountView.algoIconImageView.image = img("icon-remaining-algo")
             
-            if let percentage = (remainingAlgos * 100 / totalAlgos).toDecimalStringForBidInput {
+            if let percentage = (remainingAlgos * 100 / totalAlgos).toStringForTwoDecimal {
                 view.auctionDetailHeaderView.remainingAlgosView.percentageLabel.text = "(\(percentage)%)"
             }
         }

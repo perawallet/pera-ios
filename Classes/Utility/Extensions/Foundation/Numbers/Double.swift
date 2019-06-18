@@ -29,6 +29,10 @@ extension Double {
         return Formatter.separatorForBidInput.string(from: NSNumber(value: self))
     }
     
+    var toStringForTwoDecimal: String? {
+        return Formatter.twoDecimalFormatter.string(from: NSNumber(value: self))
+    }
+    
     func truncate(places: Int) -> Double {
         return Double(floor(pow(10.0, Double(places)) * self) / pow(10.0, Double(places)))
     }
@@ -40,23 +44,35 @@ extension Double {
         case 1000000000...:
             var formatted = self / 1000000000.0
             formatted = formatted.truncate(places: 1)
-            return "\(sign)\(formatted)B"
+            if let formattedString = formatted.toStringForTwoDecimal {
+                return "\(sign)\(formattedString)B"
+            } else {
+                return "\(sign)\(formatted)B"
+            }
         case 1000000...:
             var formatted = self / 1000000.0
             formatted = formatted.truncate(places: 1)
-            return "\(sign)\(formatted)M"
+            if let formattedString = formatted.toStringForTwoDecimal {
+                return "\(sign)\(formattedString)M"
+            } else {
+                return "\(sign)\(formatted)M"
+            }
         case 1000...:
             var formatted = self / 1000.0
             formatted = formatted.truncate(places: 1)
-            return "\(sign)\(formatted)K"
+            if let formattedString = formatted.toStringForTwoDecimal {
+                return "\(sign)\(formattedString)K"
+            } else {
+                return "\(sign)\(formatted)K"
+            }
         case 0...:
-            if let formatted = toDecimalStringForBidInput {
+            if let formatted = toStringForTwoDecimal {
                 return "\(formatted)"
             } else {
                 return "\(self)"
             }
         default:
-            if let formatted = toDecimalStringForBidInput {
+            if let formatted = toStringForTwoDecimal {
                 return "\(sign)\(formatted)"
             } else {
                 return "\(sign)\(self)"
