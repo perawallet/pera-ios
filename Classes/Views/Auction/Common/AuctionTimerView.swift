@@ -65,7 +65,7 @@ class AuctionTimerView: BaseView {
     private(set) lazy var timeLabel: UILabel = {
         UILabel()
             .withFont(UIFont.font(.overpass, withWeight: .bold(size: 15.0)))
-            .withTextColor(SharedColors.turquois)
+            .withTextColor(SharedColors.orange)
             .withLine(.single)
             .withAlignment(.left)
             .withText(formattedTime())
@@ -182,7 +182,7 @@ class AuctionTimerView: BaseView {
             timeLabel.textColor = SharedColors.orange
         case .ended:
             explanationLabel.text = "auction-time-left".localized
-            timeLabel.textColor = SharedColors.black
+            timeLabel.textColor = SharedColors.turquois
             
             stopTimer()
         }
