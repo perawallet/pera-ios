@@ -12,8 +12,11 @@ class AuctionDetailViewModel {
     
     func configure(_ view: AuctionDetailView, with auction: Auction, and auctionStatus: ActiveAuction) {
         if let currentPrice = auctionStatus.currentPrice {
-            view.auctionDetailHeaderView.auctionChartView.currentValueLabel.text =
-                currentPrice.convertToDollars(withSymbol: false).currencyBidInputFormatting()
+            let doubleValue = Double(currentPrice) / 100.0
+            
+            if let currentPriceString = doubleValue.toStringForTwoDecimal {
+                view.auctionDetailHeaderView.auctionChartView.currentValueLabel.text = currentPriceString
+            }
         }
         
         if let remainingAlgos = auctionStatus.remainingAlgos?.toAlgos,

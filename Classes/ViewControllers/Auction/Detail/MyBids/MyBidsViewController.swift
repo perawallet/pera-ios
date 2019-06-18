@@ -77,7 +77,11 @@ class MyBidsViewController: BaseViewController {
             make.edges.equalToSuperview()
         }
         
-        myBidsView.myBidsCollectionView.contentState = .loading
+        if bids.isEmpty && !auctionStatus.isBiddable() {
+            myBidsView.myBidsCollectionView.contentState = .empty(self.emptyStateView)
+        } else {
+            myBidsView.myBidsCollectionView.contentState = .loading
+        }
     }
     
     func fetchMyBids(then handler: @escaping EmptyHandler) {

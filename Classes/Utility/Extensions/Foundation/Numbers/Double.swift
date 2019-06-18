@@ -30,7 +30,7 @@ extension Double {
     }
     
     var toStringForTwoDecimal: String? {
-        return Formatter.twoDecimalFormatter.string(from: NSNumber(value: self))
+        return Formatter.twoDecimalFormatter.string(from: NSDecimalNumber(value: self))
     }
     
     func truncate(places: Int) -> Double {

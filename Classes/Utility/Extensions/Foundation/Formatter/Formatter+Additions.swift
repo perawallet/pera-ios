@@ -57,6 +57,7 @@ extension Formatter {
         let formatter = NumberFormatter()
         formatter.groupingSeparator = ","
         formatter.locale = Locale(identifier: "en_US")
+        formatter.minimumIntegerDigits = 1
         formatter.minimumFractionDigits = 2
         formatter.maximumFractionDigits = 2
         return formatter
