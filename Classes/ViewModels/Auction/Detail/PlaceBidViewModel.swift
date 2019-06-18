@@ -25,10 +25,6 @@ class PlaceBidViewModel {
         }
     }
     
-    func configureBidButton(_ button: UIButton, for auctionStatus: ActiveAuction) {
-        button.isEnabled = auctionStatus.isBiddable()
-    }
-    
     func configureMaxPriceView(_ view: MaximumPriceView, with auctionStatus: ActiveAuction) {
         guard let typedString = view.priceAmountTextField.text,
             let typedValue = typedString.doubleForSendSeparator,

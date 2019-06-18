@@ -68,7 +68,12 @@ extension ActiveAuction {
 extension ActiveAuction {
 
     func isBiddable() -> Bool {
-        guard let status = self.status else {
+        guard let status = self.status,
+            let remainingAlgos = self.remainingAlgos else {
+            return false
+        }
+        
+        if remainingAlgos == 0 {
             return false
         }
         

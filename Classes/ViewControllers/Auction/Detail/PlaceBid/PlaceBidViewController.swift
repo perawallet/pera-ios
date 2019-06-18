@@ -74,7 +74,12 @@ class PlaceBidViewController: BaseViewController {
     }
     
     func updateBidButtonForPolling() {
-        viewModel.configureBidButton(placeBidView.placeBidButton, for: auctionStatus)
+        if parseBidAmount() == 0 || parseMaxPrice() == 0 {
+            placeBidView.placeBidButton.isEnabled = false
+            return
+        }
+    
+        placeBidView.placeBidButton.isEnabled = auctionStatus.isBiddable()
     }
     
     func updateMaxPriceViewForPolling() {
@@ -92,6 +97,23 @@ extension PlaceBidViewController: PlaceBidViewDelegate {
             var bidAmount = parseBidAmount(),
             let maxPrice = parseMaxPrice() else {
                 return
+        }
+        
+        if maxPrice == 0 {
+            displaySimpleAlertWith(title: "title-error".localized, message: "auction-bid-zero-max-price-error".localized)
+            return
+        }
+        
+        if bidAmount == 0 {
+            displaySimpleAlertWith(title: "title-error".localized, message: "auction-bid-zero-bid-amount-error".localized)
+            return
+        }
+        
+        if let lastPrice = auction.lastPrice {
+            if maxPrice * 100 < Double(lastPrice) {
+                displaySimpleAlertWith(title: "title-error".localized, message: "auction-bid-min-max-price-error".localized)
+                return
+            }
         }
         
         let bidId = Int64(Date().timeIntervalSince1970)
