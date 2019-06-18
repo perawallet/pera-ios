@@ -21,7 +21,6 @@ class ContactQRDisplayView: BaseView {
         let verticalInset: CGFloat = 38.0 * verticalScale
         let shareButtonTopInset: CGFloat = 10.0 * verticalScale
         let shareButtonSize = CGSize(width: 135.0, height: 44.0)
-        let selectableLabelHeight: CGFloat = 105.0
         let selectableLabelTopInset: CGFloat = 16.0 * verticalScale
         let selectableLabelHorizontalInset: CGFloat = 10.0
         let horizontalInset: CGFloat = 25.0
@@ -71,7 +70,6 @@ class ContactQRDisplayView: BaseView {
     private(set) lazy var qrSelectableLabel: QRSelectableLabel = {
         let qrSelectableLabel = QRSelectableLabel()
         qrSelectableLabel.delegate = self
-        qrSelectableLabel.label.numberOfLines = 0
         qrSelectableLabel.label.font = UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))
         return qrSelectableLabel
     }()
@@ -164,7 +162,6 @@ class ContactQRDisplayView: BaseView {
         
         qrSelectableLabel.snp.makeConstraints { make in
             make.top.equalTo(shareButton.snp.bottom).offset(layout.current.selectableLabelTopInset)
-            make.height.equalTo(layout.current.selectableLabelHeight)
             make.leading.trailing.equalToSuperview().inset(layout.current.selectableLabelHorizontalInset)
         }
     }
