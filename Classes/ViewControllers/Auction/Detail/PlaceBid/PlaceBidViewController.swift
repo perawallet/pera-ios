@@ -208,7 +208,7 @@ extension PlaceBidViewController: PlaceBidViewDelegate {
     private func parseMaxPrice() -> Double? {
         var maxPriceText: String
         
-        if let text = placeBidView.maxPriceView.priceAmountTextField.text, !text.isEmpty {
+        if let text = placeBidView.maxPriceView.priceAmountTextField.text {
             maxPriceText = text
         } else if let currentPrice = auctionStatus.currentPrice {
             maxPriceText = "\(Double(currentPrice) / 100)"

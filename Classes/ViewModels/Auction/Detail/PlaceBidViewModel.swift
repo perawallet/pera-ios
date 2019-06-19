@@ -27,15 +27,11 @@ class PlaceBidViewModel {
     
     func configureMaxPriceView(_ view: MaximumPriceView, with auctionStatus: ActiveAuction) {
         guard let typedString = view.priceAmountTextField.text,
-            let typedValue = typedString.doubleForSendSeparator,
-            !typedString.isEmpty else {
+            let typedValue = typedString.doubleForSendSeparator else {
                 if let currentPrice = auctionStatus.currentPrice {
                     view.currentPrice = currentPrice
-                    view.priceAmountTextField.attributedPlaceholder = NSAttributedString(
-                        string: "\(currentPrice.convertToDollars())",
-                        attributes: [NSAttributedString.Key.foregroundColor: SharedColors.darkGray,
-                                     NSAttributedString.Key.font: UIFont.font(.overpass, withWeight: .bold(size: 13.0))]
-                    )
+                    view.priceAmountTextField.text = currentPrice.convertToDollars()
+                    view.priceAmountTextField.textColor = SharedColors.darkGray
                 }
             return
         }
@@ -46,6 +42,7 @@ class PlaceBidViewModel {
             if currentPrice < typedPrice {
                 view.currentPrice = currentPrice
                 view.priceAmountTextField.text = currentPrice.convertToDollars()
+                view.priceAmountTextField.textColor = SharedColors.darkGray
             }
         }
     }

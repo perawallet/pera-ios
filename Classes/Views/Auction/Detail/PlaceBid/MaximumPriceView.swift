@@ -51,7 +51,7 @@ class MaximumPriceView: BaseView {
     private(set) lazy var priceAmountTextField: CursorlessTextField = {
         let view = CursorlessTextField()
         view.textAlignment = .right
-        view.textColor = SharedColors.turquois
+        view.textColor = SharedColors.darkGray
         view.font = UIFont.font(.overpass, withWeight: .bold(size: 13.0))
         view.keyboardType = .numberPad
         view.delegate = self
@@ -151,6 +151,8 @@ class MaximumPriceView: BaseView {
             doubleValue <= Double(maximumMicroAlgos) else {
                 return
         }
+        
+        textField.textColor = SharedColors.turquois
         
         textField.text = doubleValueString
         delegate?.maximumPriceViewDidTypeInput(self, in: textField)
