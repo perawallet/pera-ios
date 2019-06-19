@@ -40,6 +40,7 @@ class SettingsViewModel {
     
     func configureToggle(_ cell: ToggleCell, enabled: Bool, with mode: SettingsCellMode, for indexPath: IndexPath) {
         self.indexPath = indexPath
+        cell.contextView.indexPath = indexPath
         
         let name = nameOfMode(mode)
         
