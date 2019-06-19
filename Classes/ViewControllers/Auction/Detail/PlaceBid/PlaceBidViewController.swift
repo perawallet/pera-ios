@@ -24,6 +24,8 @@ class PlaceBidViewController: BaseViewController {
     
     weak var delegate: PlaceBidViewControllerDelegate?
     
+    private let localAuthenticator = LocalAuthenticator()
+    
     // MARK: Components
     
     private(set) lazy var placeBidView: PlaceBidView = {
@@ -208,7 +210,7 @@ extension PlaceBidViewController: PlaceBidViewDelegate {
     private func parseMaxPrice() -> Double? {
         var maxPriceText: String
         
-        if let text = placeBidView.maxPriceView.priceAmountTextField.text {
+        if let text = placeBidView.maxPriceView.priceAmountTextField.text, !text.isEmpty {
             maxPriceText = text
         } else if let currentPrice = auctionStatus.currentPrice {
             maxPriceText = "\(Double(currentPrice) / 100)"
