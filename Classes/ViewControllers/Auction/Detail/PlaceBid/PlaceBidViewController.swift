@@ -111,7 +111,25 @@ extension PlaceBidViewController: PlaceBidViewDelegate {
         
         if let lastPrice = auction.lastPrice {
             if maxPrice * 100 < Double(lastPrice) {
-                displaySimpleAlertWith(title: "title-error".localized, message: "auction-bid-min-max-price-error".localized)
+                let localizedString = "auction-bid-min-max-price-error".localized
+                let formattedPrice = lastPrice.convertToDollars()
+                let message = String(format: localizedString, "\(formattedPrice)")
+                displaySimpleAlertWith(title: "title-error".localized, message: message)
+                return
+            }
+        }
+        
+        let potentialAlgos = bidAmount / maxPrice
+        
+        if let minimumAlgos = auction.minimumBidAlgos {
+            if potentialAlgos < minimumAlgos.toAlgos {
+                let localizedString = "auction-bid-potential-algo-error".localized
+                
+                if let formattedAlgos = minimumAlgos.toAlgos.toStringForTwoDecimal {
+                    let message = String(format: localizedString, "\(formattedAlgos)")
+                    displaySimpleAlertWith(title: "title-error".localized, message: message)
+                }
+                
                 return
             }
         }

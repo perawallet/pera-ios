@@ -284,7 +284,8 @@
 "auction-bid-coinlist-account-existence-error" = "The wallet associated with your current Coinlist account could not be found among your active accounts. Please make sure that you recover the correct account, and then place your bid again.";
 "auction-bid-zero-max-price-error" = "Max price cannot be equal to zero.";
 "auction-bid-zero-bid-amount-error" = "Bid amount cannot be equal to zero.";
-"auction-bid-min-max-price-error" = "Max price cannot be lower than minimum bid price.";
+"auction-bid-min-max-price-error" = "Max price cannot be lower than %@.";
+"auction-bid-potential-algo-error" = "Potential algo value cannot be smaller than %@ algo.";
 "auction-go-auctions" = "GO TO AUCTION";
 "auction-temp-title" = "Unfortunately, the only way to participate at our auction is through our web portal.";
 
