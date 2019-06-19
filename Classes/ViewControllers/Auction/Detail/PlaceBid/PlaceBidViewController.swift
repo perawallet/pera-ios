@@ -78,7 +78,12 @@ class PlaceBidViewController: BaseViewController {
     func updateBidButtonForPolling() {
         if parseBidAmount() == 0 || parseMaxPrice() == 0 {
             placeBidView.placeBidButton.isEnabled = false
+            placeBidView.minPotentialAlgosView.configureViewForZeroValue()
             return
+        }
+        
+        if !auctionStatus.isBiddable() {
+            placeBidView.minPotentialAlgosView.configureViewForZeroValue()
         }
     
         placeBidView.placeBidButton.isEnabled = auctionStatus.isBiddable()
@@ -285,6 +290,7 @@ extension PlaceBidViewController: PlaceBidViewDelegate {
             bidAmount != 0,
             maxPrice != 0 else {
                 placeBidView.placeBidButton.isEnabled = false
+                placeBidView.minPotentialAlgosView.configureViewForZeroValue()
                 return
         }
         

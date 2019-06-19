@@ -52,14 +52,14 @@ class PlaceBidViewModel {
             placeBidView.placeBidButton.isEnabled = true
         } else {
             placeBidView.placeBidButton.isEnabled = false
-            if let zeroValue = (0.0).toDecimalStringForLabel {
-                placeBidView.minPotentialAlgosView.amountLabel.text = "\(zeroValue)"
-            }
+            placeBidView.minPotentialAlgosView.configureViewForZeroValue()
             return
         }
         
         if let remainingAlgos = auctionStatus.remainingAlgos {
             let calculatedAlgos = bidAmount / maxPrice
+            
+            placeBidView.minPotentialAlgosView.backgroundColor = SharedColors.purple
             
             if remainingAlgos.toAlgos < calculatedAlgos {
                 placeBidView.minPotentialAlgosView.amountLabel.text = remainingAlgos.toAlgos.toDecimalStringForLabel
