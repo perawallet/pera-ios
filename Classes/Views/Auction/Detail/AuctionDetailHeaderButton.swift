@@ -10,10 +10,37 @@ import UIKit
 
 class AuctionDetailHeaderButton: UIButton {
     
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let labelSize = CGSize(width: 26.0, height: 26.0)
+        let labelTopInset: CGFloat = -6.0
+        let labelTrailingOffset: CGFloat = 6.0
+    }
+    
+    private let layout = Layout<LayoutConstants>()
+    
+    // MARK: Components
+    
+    private(set) lazy var cornerLabel: UILabel = {
+        let label = UILabel()
+            .withAlignment(.center)
+            .withLine(.single)
+            .withTextColor(.white)
+            .withFont(UIFont.font(.overpass, withWeight: .bold(size: 12.0)))
+        label.backgroundColor = SharedColors.purple
+        label.isHidden = true
+        label.layer.masksToBounds = true
+        label.layer.cornerRadius = 13.0
+        return label
+    }()
+    
+    private var hasCornerLabel: Bool
+    
     // MARK: Initialization
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(hasCornerLabel: Bool = false) {
+        self.hasCornerLabel = hasCornerLabel
+        
+        super.init(frame: .zero)
         
         configureButton()
     }
@@ -31,5 +58,19 @@ class AuctionDetailHeaderButton: UIButton {
         setBackgroundImage(img("bg-bid-button-selected"), for: .selected)
         
         titleLabel?.font = UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))
+        
+        if hasCornerLabel {
+            setupCornerLabelLayout()
+        }
+    }
+    
+    private func setupCornerLabelLayout() {
+        addSubview(cornerLabel)
+        
+        cornerLabel.snp.makeConstraints { make in
+            make.size.equalTo(layout.current.labelSize)
+            make.top.equalToSuperview().inset(layout.current.labelTopInset)
+            make.trailing.equalToSuperview().offset(layout.current.labelTrailingOffset)
+        }
     }
 }

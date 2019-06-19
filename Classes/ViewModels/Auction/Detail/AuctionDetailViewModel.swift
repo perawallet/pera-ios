@@ -49,9 +49,13 @@ class AuctionDetailViewModel {
         }
     }
     
-    func configureMyBidsHeader(_ view: AuctionDetailView, with count: Int) {
-        let title = "auction-detail-my-bids-title".localized + " (\(count))"
-        view.myBidsButton.setTitle(title, for: .normal)
+    func configureMyBidsHeader(_ view: AuctionDetailView, with bidCount: Int) {
+        if bidCount > 0 {
+            view.myBidsButton.cornerLabel.isHidden = false
+            view.myBidsButton.cornerLabel.text = "\(bidCount)"
+        } else {
+            view.myBidsButton.cornerLabel.isHidden = true
+        }
     }
     
     func configureClosedState(_ view: AuctionDetailView, with bids: [Bid], and auctionStatus: ActiveAuction) {
