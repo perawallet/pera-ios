@@ -10,6 +10,11 @@ import UIKit
 
 class PassPhraseVerifyViewController: BaseScrollViewController {
     
+    private enum Colors {
+        static let backgroundColor = rgb(0.97, 0.97, 0.98)
+        static let tryAgainLabelColor = rgb(0.67, 0.67, 0.72)
+    }
+    
     fileprivate lazy var passPhraseViewModel: PassPhraseViewModel? = {
         if let privateKey = session?.privateData(forAccount: "temp") {
             return PassPhraseViewModel(privateKey: privateKey)
@@ -40,8 +45,20 @@ class PassPhraseVerifyViewController: BaseScrollViewController {
         return collectionView
     }()
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    private lazy var tryAgainLabel: UILabel = {
+        let label = UILabel()
+            .withText("pass-phrase-verify-try-again".localized)
+            .withTextColor(Colors.tryAgainLabelColor)
+            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 13.0)))
+            .withAlignment(.center)
+        label.isHidden = true
+        return label
+    }()
+    
+    override func configureAppearance() {
+        super.configureAppearance()
+        
+        view.backgroundColor = Colors.backgroundColor
         
         updatePassPhraseLabel()
     }
@@ -79,22 +96,39 @@ class PassPhraseVerifyViewController: BaseScrollViewController {
 
 // MARK: - Layout
 extension PassPhraseVerifyViewController {
+    
     fileprivate func setupLayout() {
-        view.backgroundColor = rgb(0.97, 0.97, 0.98)
-        
+        setupPassphraseViewLayout()
+        setupCollectionViewLayout()
+        setupTryAgainLabelLayout()
+    }
+    
+    private func setupPassphraseViewLayout() {
         contentView.addSubview(passPhraseVerifyView)
-        passPhraseVerifyView.snp.makeConstraints { maker in
-            maker.leading.trailing.equalToSuperview()
-            maker.top.equalToSuperview()
-            maker.height.equalTo(200)
-        }
         
+        passPhraseVerifyView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalToSuperview()
+        }
+    }
+    
+    private func setupCollectionViewLayout() {
         contentView.addSubview(collectionView)
-        collectionView.snp.makeConstraints { maker in
-            maker.top.equalTo(passPhraseVerifyView.snp.bottom).offset(15)
-            maker.leading.trailing.equalToSuperview().inset(25)
-            maker.height.greaterThanOrEqualTo(200)
-            maker.bottom.equalToSuperview().inset(view.safeAreaBottom).priority(.high)
+        
+        collectionView.snp.makeConstraints { make in
+            make.top.equalTo(passPhraseVerifyView.snp.bottom).offset(60)
+            make.leading.trailing.equalToSuperview().inset(25)
+            make.height.greaterThanOrEqualTo(200)
+        }
+    }
+    
+    private func setupTryAgainLabelLayout() {
+        contentView.addSubview(tryAgainLabel)
+        
+        tryAgainLabel.snp.makeConstraints { make in
+            make.top.equalTo(collectionView.snp.bottom)
+            make.centerX.equalToSuperview()
+            make.bottom.equalToSuperview().inset(20.0 + view.safeAreaBottom)
         }
     }
 }
@@ -116,7 +150,7 @@ UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: PassPhraseCollectionViewCell.reusableIdentifier,
             for: indexPath) as? PassPhraseCollectionViewCell else {
-            fatalError("Index path is out of bounds")
+                fatalError("Index path is out of bounds")
         }
         
         cell.contextView.phraseLabel.text = mnemonic
@@ -127,7 +161,7 @@ UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let viewModel = passPhraseViewModel,
             let mnemonic = viewModel.mnemonic(atIndex: indexPath.item) else {
-            fatalError("Index path is out of bounds")
+                fatalError("Index path is out of bounds")
         }
         
         guard let cell = collectionView.cellForItem(at: indexPath) as? PassPhraseCollectionViewCell else {
@@ -137,6 +171,7 @@ UICollectionViewDataSource {
         let isCorrect = viewModel.checkMnemonic(mnemonic)
         
         if isCorrect {
+            tryAgainLabel.isHidden = true
             cell.contextView.setMode(.correct)
             
             if viewModel.currentIndex == viewModel.numberOfValidations - 1 {
@@ -162,6 +197,7 @@ UICollectionViewDataSource {
                 updatePassPhraseLabel()
             }
         } else {
+            tryAgainLabel.isHidden = false
             cell.contextView.setMode(.wrong)
         }
         
