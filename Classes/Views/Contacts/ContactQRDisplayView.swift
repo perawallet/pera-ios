@@ -10,17 +10,22 @@ import UIKit
 
 protocol ContactQRDisplayViewDelegate: class {
     
+    func contactQRDisplayViewDidTapShareButton(_ contactQRDisplayView: ContactQRDisplayView)
     func contactQRDisplayViewDidTapCloseButton(_ contactQRDisplayView: ContactQRDisplayView)
 }
 
 class ContactQRDisplayView: BaseView {
 
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let imageViewSize: CGFloat = 50.0
-        let verticalInset: CGFloat = 38.0
+        let imageViewSize: CGFloat = 50.0 * verticalScale
+        let verticalInset: CGFloat = 38.0 * verticalScale
+        let shareButtonTopInset: CGFloat = 10.0 * verticalScale
+        let shareButtonSize = CGSize(width: 135.0, height: 44.0)
+        let selectableLabelTopInset: CGFloat = 16.0 * verticalScale
+        let selectableLabelHorizontalInset: CGFloat = 10.0
         let horizontalInset: CGFloat = 25.0
-        let nameLabelInset: CGFloat = 13.0
-        let qrViewTopInset: CGFloat = 25.0
+        let nameLabelInset: CGFloat = 13.0 * verticalScale
+        let qrViewTopInset: CGFloat = 25.0 * verticalScale
         let addressLabelInset: CGFloat = 30.0
     }
     
@@ -50,12 +55,23 @@ class ContactQRDisplayView: BaseView {
         return QRView(qrText: qrText)
     }()
     
-    private(set) lazy var addressLabel: UILabel = {
-        UILabel()
-            .withTextColor(SharedColors.black)
-            .withAlignment(.center)
-            .withLine(.contained)
+    private(set) lazy var shareButton: UIButton = {
+        UIButton(type: .custom)
+            .withBackgroundImage(img("bg-purple-button"))
+            .withImage(img("icon-share", isTemplate: true))
+            .withTitle("title-share".localized)
+            .withTitleColor(UIColor.white)
+            .withTintColor(UIColor.white)
             .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 14.0)))
+            .withImageEdgeInsets(UIEdgeInsets(top: 0, left: -10.0, bottom: 0, right: 0))
+            .withTitleEdgeInsets(UIEdgeInsets(top: 0, left: 5.0, bottom: 0, right: 0))
+    }()
+    
+    private(set) lazy var qrSelectableLabel: QRSelectableLabel = {
+        let qrSelectableLabel = QRSelectableLabel()
+        qrSelectableLabel.delegate = self
+        qrSelectableLabel.label.font = UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))
+        return qrSelectableLabel
     }()
     
     private(set) lazy var closeButton: UIButton = {
@@ -86,6 +102,7 @@ class ContactQRDisplayView: BaseView {
     }
     
     override func setListeners() {
+        shareButton.addTarget(self, action: #selector(notifyDelegateToShareButtonTapped), for: .touchUpInside)
         closeButton.addTarget(self, action: #selector(notifyDelegateToCloseButtonTapped), for: .touchUpInside)
     }
     
@@ -95,7 +112,8 @@ class ContactQRDisplayView: BaseView {
         setupUserImageViewLayout()
         setupUserNameLabelLayout()
         setupQRDisplayViewLayout()
-        setupAddressLabelLayout()
+        setupShareButtonLayout()
+        setupQrSelectableLabelLayout()
         setupCloseButtonLayout()
     }
 
@@ -129,13 +147,22 @@ class ContactQRDisplayView: BaseView {
         }
     }
     
-    private func setupAddressLabelLayout() {
-        addSubview(addressLabel)
+    private func setupShareButtonLayout() {
+        addSubview(shareButton)
         
-        addressLabel.snp.makeConstraints { make in
-            make.top.equalTo(qrView.snp.bottom).offset(layout.current.addressLabelInset)
-            make.centerX.equalToSuperview()
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+        shareButton.snp.makeConstraints { make in
+            make.top.equalTo(qrView.snp.bottom).offset(layout.current.shareButtonTopInset)
+            make.size.equalTo(layout.current.shareButtonSize)
+            make.centerX.equalTo(qrView)
+        }
+    }
+    
+    private func setupQrSelectableLabelLayout() {
+        addSubview(qrSelectableLabel)
+        
+        qrSelectableLabel.snp.makeConstraints { make in
+            make.top.equalTo(shareButton.snp.bottom).offset(layout.current.selectableLabelTopInset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.selectableLabelHorizontalInset)
         }
     }
     
@@ -143,7 +170,7 @@ class ContactQRDisplayView: BaseView {
         addSubview(closeButton)
         
         closeButton.snp.makeConstraints { make in
-            make.top.equalTo(addressLabel.snp.bottom).offset(layout.current.addressLabelInset)
+            make.top.equalTo(qrSelectableLabel.snp.bottom).offset(layout.current.addressLabelInset)
             make.centerX.equalToSuperview()
             make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
             make.bottom.equalToSuperview().inset(layout.current.verticalInset)
@@ -155,5 +182,19 @@ class ContactQRDisplayView: BaseView {
     @objc
     private func notifyDelegateToCloseButtonTapped() {
         delegate?.contactQRDisplayViewDidTapCloseButton(self)
+    }
+    
+    @objc
+    private func notifyDelegateToShareButtonTapped() {
+        delegate?.contactQRDisplayViewDidTapShareButton(self)
+    }
+}
+
+// MARK: - QRSelectableLabelDelegate
+
+extension ContactQRDisplayView: QRSelectableLabelDelegate {
+    
+    func qrSelectableLabel(_ qrSelectableLabel: QRSelectableLabel, didTapText text: String) {
+        UIPasteboard.general.string = text
     }
 }

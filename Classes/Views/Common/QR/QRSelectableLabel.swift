@@ -19,7 +19,7 @@ class QRSelectableLabel: UIView {
             .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 13.0)))
             .withAlignment(.center)
             .withTextColor(SharedColors.black)
-            .withLine(.multi(2))
+            .withLine(.contained)
     }()
     
     private lazy var containerView: UIView = {
@@ -60,19 +60,19 @@ extension QRSelectableLabel {
         addSubview(containerView)
         containerView.snp.makeConstraints { make in
             make.leading.trailing.top.equalToSuperview()
-            make.height.equalTo(80)
         }
         
         containerView.addSubview(label)
         label.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(15)
-            make.centerY.equalToSuperview()
+            make.top.bottom.equalToSuperview().inset(20.0)
         }
         
         addSubview(copyLabel)
         copyLabel.snp.makeConstraints { make in
             make.centerX.equalTo(containerView).offset(3)
             make.top.equalTo(containerView.snp.bottom).offset(6)
+            make.bottom.equalToSuperview().inset(4.0)
         }
         
         addSubview(imageView)

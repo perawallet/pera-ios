@@ -170,6 +170,7 @@
 "options-default-account-message" = "Default acount is set.";
 "options-view-passphrase-alert-title" = "Biometric Authentication";
 "options-view-passphrase-alert-message" = "You should provide biometric authentication to display your passphrase.";
+"options-view-passphrase-password-alert-message" = "You should enter your correct password to display your passphrase.";
 
 // MARK: History
 
@@ -244,7 +245,7 @@
 "node-settings-database-error-description" = "An error occured on system.";
 "node-settings-warning-message" = "This action will remove the node. Are you sure?";
 "node-settings-action-delete-title" = "Delete";
-"node-settings-default-node-name" = "Algorand Node";
+"node-settings-default-node-name" = "Algorand MainNet Node";
 "node-settings-health-problem-message" = "None of your active nodes are online. Please add or select another node";
 
 // MARK: Transaction Detail
@@ -287,7 +288,7 @@
 "auction-bid-min-max-price-error" = "Max price cannot be lower than %@.";
 "auction-bid-potential-algo-error" = "Potential algo value cannot be smaller than %@ algo.";
 "auction-go-auctions" = "GO TO AUCTION";
-"auction-temp-title" = "Unfortunately, the only way to participate at our auction is through our web portal.";
+"auction-temp-title" = "To participate in Algorand auctions, please navigate to our online auction site.";
 
 // MARK: Auction Detail
 
