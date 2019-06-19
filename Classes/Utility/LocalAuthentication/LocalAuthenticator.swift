@@ -18,13 +18,18 @@ class LocalAuthenticator {
         return context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &authenticationError)
     }
     
-    var localAuthenticationStatus: Status = .none {
-        didSet {
-            if localAuthenticationStatus == oldValue {
-                return
+    var localAuthenticationStatus: Status {
+        get {
+            guard let status = string(with: StorableKeys.localAuthenticationStatus.rawValue, to: .defaults),
+                let localAuthenticationStatus = Status(rawValue: status) else {
+                    return .none
             }
             
-            self.save(localAuthenticationStatus.rawValue, for: StorableKeys.localAuthenticationStatus.rawValue, to: .defaults)
+            return localAuthenticationStatus
+        }
+        
+        set {
+            self.save(newValue.rawValue, for: StorableKeys.localAuthenticationStatus.rawValue, to: .defaults)
         }
     }
     
