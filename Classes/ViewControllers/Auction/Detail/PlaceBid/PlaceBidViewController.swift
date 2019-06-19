@@ -96,7 +96,7 @@ extension PlaceBidViewController: PlaceBidViewDelegate {
     func placeBidViewDidTapPlaceBidButton(_ placeBidView: PlaceBidView) {
         guard auctionStatus.isBiddable(),
             let bidderAddress = user.address,
-            var bidAmount = parseBidAmount(),
+            let bidAmount = parseBidAmount(),
             let maxPrice = parseMaxPrice() else {
                 return
         }
@@ -136,62 +136,18 @@ extension PlaceBidViewController: PlaceBidViewDelegate {
             }
         }
         
-        let bidId = Int64(Date().timeIntervalSince1970)
-        let auctionAddress = auction.auctionAddress
-        let auctionId = Int64(auction.id)
-        
-        if let remainingAlgos = auctionStatus.remainingAlgos {
-            let calculatedAlgos = bidAmount / maxPrice
-            
-            if remainingAlgos.toAlgos < calculatedAlgos {
-                bidAmount = remainingAlgos.toAlgos * maxPrice
-            }
-        }
-        
-        let bidAmountIntValue = Int64(bidAmount * 1000000 * 100)
-        let maxPriceIntValue = Int64(maxPrice * 100)
-        
-        var signedBidError: NSError?
-        guard let bidData = AuctionMakeBid(
-            bidderAddress,
-            bidAmountIntValue,
-            maxPriceIntValue,
-            bidId,
-            auctionAddress,
-            auctionId,
-            &signedBidError
-        ) else {
+        if localAuthenticator.localAuthenticationStatus != .allowed {
+            askForAppPassword()
             return
         }
         
-        var signedBidDataError: NSError?
-        guard let privateData = session?.privateData(forAccount: bidderAddress),
-            let signedBidData = CryptoSignBid(privateData, bidData, &signedBidDataError) else {
-                displaySimpleAlertWith(title: "title-error".localized, message: "auction-bid-coinlist-account-existence-error".localized)
+        self.localAuthenticator.authenticate { error in
+            guard error == nil else {
+                self.askForAppPassword()
                 return
-        }
-        
-        let bidString = signedBidData.base64EncodedString()
-        
-        placeBidView.placeBidButton.buttonState = .loading
-        
-        api?.placeBid(with: bidString, for: "\(auction.id)") { response in
-            switch response {
-            case .success:
-                self.delegate?.placeBidViewControllerDidPlacedBid(self)
-                
-                let bidderUser = self.user
-                
-                if let availableAmount = bidderUser.availableAmount {
-                    bidderUser.availableAmount = availableAmount - Int(bidAmountIntValue)
-                    self.viewModel.configureBidAmountView(placeBidView.bidAmountView, with: bidderUser)
-                }
-                
-                self.placeBidView.placeBidButton.buttonState = .normal
-            case let .failure(error):
-                self.displaySimpleAlertWith(title: "title-error".localized, message: error.localizedDescription)
-                self.placeBidView.placeBidButton.buttonState = .normal
             }
+            
+            self.placeBid(for: bidderAddress, with: bidAmount, and: maxPrice)
         }
     }
     
@@ -225,6 +181,88 @@ extension PlaceBidViewController: PlaceBidViewDelegate {
         return doubleValue
     }
     
+    private func askForAppPassword() {
+        let controller = open(
+            .choosePassword(
+                mode: .confirm("auction-detail-bid-confirm-title".localized),
+                route: nil),
+            by: .present
+        ) as? ChoosePasswordViewController
+        
+        controller?.delegate = self
+    }
+    
+    private func placeBid(for bidderAddress: String, with amount: Double, and maxPrice: Double) {
+        var bidAmount = amount
+        let bidId = Int64(Date().timeIntervalSince1970)
+        let auctionAddress = auction.auctionAddress
+        let auctionId = Int64(auction.id)
+        
+        if let remainingAlgos = auctionStatus.remainingAlgos {
+            let calculatedAlgos = bidAmount / maxPrice
+            
+            if remainingAlgos.toAlgos < calculatedAlgos {
+                bidAmount = remainingAlgos.toAlgos * maxPrice
+            }
+        }
+        
+        let bidAmountIntValue = Int64(bidAmount * 1000000 * 100)
+        let maxPriceIntValue = Int64(maxPrice * 100)
+        
+        var signedBidError: NSError?
+        guard let bidData = AuctionMakeBid(
+            bidderAddress,
+            bidAmountIntValue,
+            maxPriceIntValue,
+            bidId,
+            auctionAddress,
+            auctionId,
+            &signedBidError
+        ) else {
+                return
+        }
+        
+        guard let bidString = composeSignedBidString(from: bidData, for: bidderAddress) else {
+            return
+        }
+        
+        sendPlaceBidRequest(with: bidString, for: bidAmountIntValue)
+    }
+    
+    private func composeSignedBidString(from bidData: Data, for bidderAddress: String) -> String? {
+        var signedBidDataError: NSError?
+        guard let privateData = session?.privateData(forAccount: bidderAddress),
+            let signedBidData = CryptoSignBid(privateData, bidData, &signedBidDataError) else {
+                displaySimpleAlertWith(title: "title-error".localized, message: "auction-bid-coinlist-account-existence-error".localized)
+                return nil
+        }
+        
+        return signedBidData.base64EncodedString()
+    }
+    
+    private func sendPlaceBidRequest(with bidString: String, for bidAmountIntValue: Int64) {
+        placeBidView.placeBidButton.buttonState = .loading
+        
+        api?.placeBid(with: bidString, for: "\(auction.id)") { response in
+            switch response {
+            case .success:
+                self.delegate?.placeBidViewControllerDidPlacedBid(self)
+                
+                let bidderUser = self.user
+                
+                if let availableAmount = bidderUser.availableAmount {
+                    bidderUser.availableAmount = availableAmount - Int(bidAmountIntValue)
+                    self.viewModel.configureBidAmountView(self.placeBidView.bidAmountView, with: bidderUser)
+                }
+                
+                self.placeBidView.placeBidButton.buttonState = .normal
+            case let .failure(error):
+                self.displaySimpleAlertWith(title: "title-error".localized, message: error.localizedDescription)
+                self.placeBidView.placeBidButton.buttonState = .normal
+            }
+        }
+    }
+    
     func placeBidView(_ placeBidView: PlaceBidView, didChangeSlider value: Float) {
         guard let availableAmount = user.availableAmount else {
             return
@@ -251,5 +289,28 @@ extension PlaceBidViewController: PlaceBidViewDelegate {
         }
         
         viewModel.update(placeBidView, for: bidAmount, and: maxPrice, in: auctionStatus)
+    }
+}
+
+// MARK: ChoosePasswordViewControllerDelegate
+
+extension PlaceBidViewController: ChoosePasswordViewControllerDelegate {
+    
+    func choosePasswordViewController(_ choosePasswordViewController: ChoosePasswordViewController, didConfirmPassword isConfirmed: Bool) {
+        if isConfirmed {
+            guard auctionStatus.isBiddable(),
+                let bidderAddress = user.address,
+                let bidAmount = parseBidAmount(),
+                let maxPrice = parseMaxPrice() else {
+                    return
+            }
+            
+            placeBid(for: bidderAddress, with: bidAmount, and: maxPrice)
+        } else {
+            displaySimpleAlertWith(
+                title: "password-verify-fail-title".localized,
+                message: "options-view-passphrase-password-alert-message".localized
+            )
+        }
     }
 }

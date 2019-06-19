@@ -309,3 +309,4 @@
 "auction-detail-retract-error" = "Could not retract the bid.";
 "auction-detail-total-algos-title" = "Total Algos";
 "auction-detail-committed-title" = "Total USD Commited";
+"auction-detail-bid-confirm-title" = "Confirm Transaction";

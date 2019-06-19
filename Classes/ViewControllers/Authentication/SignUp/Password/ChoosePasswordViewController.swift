@@ -103,6 +103,8 @@ class ChoosePasswordViewController: BaseViewController {
             title = "password-verify-title".localized
         case .resetPassword, .resetVerify:
             title = "password-change-title".localized
+        case let .confirm(viewTitle):
+            title = viewTitle
         default:
             return
         }
@@ -229,6 +231,6 @@ extension ChoosePasswordViewController {
         case login
         case resetPassword
         case resetVerify(String)
-        case confirm
+        case confirm(String)
     }
 }
