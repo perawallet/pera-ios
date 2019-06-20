@@ -41,7 +41,6 @@ indirect enum Screen {
     case pastAuctionDetail(auction: Auction, user: AuctionUser, activeAuction: ActiveAuction)
     case balance
     case deposit
-    case withdraw
 }
 
 extension Screen {

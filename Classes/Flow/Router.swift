@@ -240,8 +240,6 @@ class Router {
             viewController = BalanceViewController(configuration: configuration)
         case .deposit:
             viewController = DepositViewController(configuration: configuration)
-        case .withdraw:
-            viewController = WithdrawViewController(configuration: configuration)
         }
         
         return viewController as? T
