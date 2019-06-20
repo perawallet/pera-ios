@@ -13,7 +13,16 @@ struct ALGBarButtonItem: BarButtonItem {
     var handler: EmptyHandler?
     
     var title: TitleContent? {
-        return nil
+        switch kind {
+        case .balance:
+            return BarButtonItemTitleContent(
+                text: "Balance",
+                textColor: .black,
+                font: UIFont.font(.overpass, withWeight: .bold(size: 12.0))
+            )
+        default:
+            return nil
+        }
     }
     
     var image: ImageContent? {
@@ -87,7 +96,13 @@ struct ALGBarButtonItem: BarButtonItem {
         case .removeNode:
             return .explicit(CGSize(width: 44.0, height: 44.0))
         case .balance:
-            return .explicit(CGSize(width: 44.0, height: 44.0))
+            return .expanded(
+                width: .dynamicWidth(BarButtonExpandedSizeHorizontalInsets(
+                    contentInsets: (left: 0.0, right: 0.0),
+                    titleInsets: (left: 4.0, right: -4.0))
+                ),
+                height: .equal(44.0)
+            )
         }
     }
     
