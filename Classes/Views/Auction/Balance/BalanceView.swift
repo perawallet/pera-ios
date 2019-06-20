@@ -17,39 +17,49 @@ protocol BalanceViewDelegate: class {
 class BalanceView: BaseView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let horizontalInset: CGFloat = 25.0
-        let chartHeight: CGFloat = 114.0
-        let explanationTopInset: CGFloat = 10.0
-        let topInset: CGFloat = 18.0
-        let viewWidth: CGFloat = UIScreen.main.bounds.width / 2
+        let balanceHeaderHeight: CGFloat = 100.0
+        let horizontalInset: CGFloat = 20.0
+        let buttonSpacing: CGFloat = 15.0
+        let buttonContainerViewHeight: CGFloat = 78.0
     }
     
     private let layout = Layout<LayoutConstants>()
+    
+    private enum Colors {
+        static let buttonColor = rgb(0.19, 0.0, 0.7)
+    }
     
     weak var delegate: BalanceViewDelegate?
     
     // MARK: Components
     
-    // amouunt label
+    private(set) lazy var balanceHeaderView: BalanceHeaderView = {
+        let view = BalanceHeaderView()
+        return view
+    }()
     
-    // available title label
+    private lazy var buttonContainerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        return view
+    }()
     
     private(set) lazy var withdrawButton: UIButton = {
         UIButton(type: .custom)
-            .withTitleColor(SharedColors.purple)
-            .withTitle("auction-enter-title".localized)
+            .withTitleColor(SharedColors.darkGray)
+            .withTitle("balance-button-title-withdraw".localized)
             .withAlignment(.center)
             .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 12.0)))
-            .withBackgroundImage(img("bg-button-auction-enter"))
+            .withBackgroundImage(img("button-bg-gray-small"))
     }()
     
     private(set) lazy var depositButton: UIButton = {
         UIButton(type: .custom)
-            .withTitleColor(SharedColors.purple)
-            .withTitle("auction-enter-title".localized)
+            .withTitleColor(Colors.buttonColor)
+            .withTitle("balance-button-title-deposit".localized)
             .withAlignment(.center)
             .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 12.0)))
-            .withBackgroundImage(img("bg-button-auction-enter"))
+            .withBackgroundImage(img("button-bg-navy-small"))
     }()
     
     private(set) lazy var transactionsCollectionView: UICollectionView = {
@@ -90,7 +100,59 @@ class BalanceView: BaseView {
     // MARK: Layout
     
     override func prepareLayout() {
+        setupBalanceHeaderViewLayout()
+        setupButtonContainerViewLayout()
+        setupWithdrawButtonLayout()
+        setupDepositButtonLayout()
+        setupTransactionsCollectionViewLayout()
+    }
+    
+    private func setupBalanceHeaderViewLayout() {
+        addSubview(balanceHeaderView)
         
+        balanceHeaderView.snp.makeConstraints { make in
+            make.leading.trailing.top.equalToSuperview()
+            make.height.equalTo(layout.current.balanceHeaderHeight)
+        }
+    }
+    
+    private func setupButtonContainerViewLayout() {
+        addSubview(buttonContainerView)
+        
+        buttonContainerView.snp.makeConstraints { make in
+            make.top.equalTo(balanceHeaderView.snp.bottom)
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(layout.current.buttonContainerViewHeight)
+        }
+    }
+    
+    private func setupWithdrawButtonLayout() {
+        buttonContainerView.addSubview(withdrawButton)
+        
+        withdrawButton.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
+        }
+    }
+    
+    private func setupDepositButtonLayout() {
+        buttonContainerView.addSubview(depositButton)
+        
+        depositButton.snp.makeConstraints { make in
+            make.top.equalTo(withdrawButton)
+            make.width.height.equalTo(withdrawButton)
+            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.leading.equalTo(withdrawButton.snp.trailing).offset(layout.current.buttonSpacing)
+        }
+    }
+    
+    private func setupTransactionsCollectionViewLayout() {
+        addSubview(transactionsCollectionView)
+        
+        transactionsCollectionView.snp.makeConstraints { make in
+            make.top.equalTo(buttonContainerView.snp.bottom)
+            make.leading.trailing.bottom.equalToSuperview()
+        }
     }
     
     // MARK: Actions

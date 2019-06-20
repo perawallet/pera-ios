@@ -236,8 +236,8 @@ class Router {
                 auctionStatus: auctionStatus,
                 configuration: configuration
             )
-        case .balance:
-            viewController = BalanceViewController(configuration: configuration)
+        case let .balance(user):
+            viewController = BalanceViewController(user: user, configuration: configuration)
         case .deposit:
             viewController = DepositViewController(configuration: configuration)
         }

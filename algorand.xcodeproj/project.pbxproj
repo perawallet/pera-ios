@@ -499,6 +499,12 @@
 		2B891EFB22BB71A2003205F5 /* DepositInstructionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B891EF922BB71A2003205F5 /* DepositInstructionHeaderView.swift */; };
 		2B891EFD22BB71BC003205F5 /* DepositTransactionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B891EFC22BB71BC003205F5 /* DepositTransactionHeaderView.swift */; };
 		2B891EFE22BB71BC003205F5 /* DepositTransactionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B891EFC22BB71BC003205F5 /* DepositTransactionHeaderView.swift */; };
+		2B891F0022BBA3CD003205F5 /* BalanceHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B891EFF22BBA3CD003205F5 /* BalanceHeaderView.swift */; };
+		2B891F0122BBA3CD003205F5 /* BalanceHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B891EFF22BBA3CD003205F5 /* BalanceHeaderView.swift */; };
+		2B891F0322BBA746003205F5 /* DepositAmountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B891F0222BBA746003205F5 /* DepositAmountView.swift */; };
+		2B891F0422BBA746003205F5 /* DepositAmountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B891F0222BBA746003205F5 /* DepositAmountView.swift */; };
+		2B891F0622BBA768003205F5 /* DepositFundSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B891F0522BBA768003205F5 /* DepositFundSelectionView.swift */; };
+		2B891F0722BBA768003205F5 /* DepositFundSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B891F0522BBA768003205F5 /* DepositFundSelectionView.swift */; };
 		2B89549F2242D90000D6D068 /* UIViewController+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B89549E2242D90000D6D068 /* UIViewController+Additions.swift */; };
 		2B8954A22242E79C00D6D068 /* AccountNameSetupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8954A12242E79C00D6D068 /* AccountNameSetupViewController.swift */; };
 		2B8954A52242E7D800D6D068 /* AccountNameSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8954A42242E7D800D6D068 /* AccountNameSetupView.swift */; };
@@ -843,6 +849,9 @@
 		2B891EF622BB709D003205F5 /* BlockchainDepositInstructionContextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockchainDepositInstructionContextView.swift; sourceTree = "<group>"; };
 		2B891EF922BB71A2003205F5 /* DepositInstructionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DepositInstructionHeaderView.swift; sourceTree = "<group>"; };
 		2B891EFC22BB71BC003205F5 /* DepositTransactionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DepositTransactionHeaderView.swift; sourceTree = "<group>"; };
+		2B891EFF22BBA3CD003205F5 /* BalanceHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceHeaderView.swift; sourceTree = "<group>"; };
+		2B891F0222BBA746003205F5 /* DepositAmountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DepositAmountView.swift; sourceTree = "<group>"; };
+		2B891F0522BBA768003205F5 /* DepositFundSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DepositFundSelectionView.swift; sourceTree = "<group>"; };
 		2B89549E2242D90000D6D068 /* UIViewController+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Additions.swift"; sourceTree = "<group>"; };
 		2B8954A12242E79C00D6D068 /* AccountNameSetupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountNameSetupViewController.swift; sourceTree = "<group>"; };
 		2B8954A42242E7D800D6D068 /* AccountNameSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountNameSetupView.swift; sourceTree = "<group>"; };
@@ -2212,6 +2221,7 @@
 				2BCB5C9422B77C6A0038DA6B /* Cell */,
 				2BCB5C7A22B38F8A0038DA6B /* Deposit */,
 				2BCB5C7C22B38FA60038DA6B /* BalanceView.swift */,
+				2B891EFF22BBA3CD003205F5 /* BalanceHeaderView.swift */,
 			);
 			path = Balance;
 			sourceTree = "<group>";
@@ -2220,6 +2230,8 @@
 			isa = PBXGroup;
 			children = (
 				2BCB5C7F22B38FBC0038DA6B /* DepositView.swift */,
+				2B891F0222BBA746003205F5 /* DepositAmountView.swift */,
+				2B891F0522BBA768003205F5 /* DepositFundSelectionView.swift */,
 			);
 			path = Deposit;
 			sourceTree = "<group>";
@@ -3183,6 +3195,7 @@
 				2B1B77BC2295C5A30021A6CC /* BidResponse.swift in Sources */,
 				2B1B77BD2295C5A30021A6CC /* AuctionDetailViewModel.swift in Sources */,
 				2B1B77BE2295C5A30021A6CC /* MyBidsViewModel.swift in Sources */,
+				2B891F0722BBA768003205F5 /* DepositFundSelectionView.swift in Sources */,
 				2B1B77BF2295C5A30021A6CC /* PlaceBidViewModel.swift in Sources */,
 				2B1B77C02295C5A30021A6CC /* LimitOrderCellContextView.swift in Sources */,
 				2B1B77C12295C5A30021A6CC /* LimitOrderCell.swift in Sources */,
@@ -3255,6 +3268,7 @@
 				17BD4E2E2292F1260003E49A /* SendAlgosSuccessViewController.swift in Sources */,
 				17BD4E2F2292F1260003E49A /* LoadingIndicator.swift in Sources */,
 				17BD4E302292F1260003E49A /* CointlistUser.swift in Sources */,
+				2B891F0422BBA746003205F5 /* DepositAmountView.swift in Sources */,
 				17BD4E312292F1260003E49A /* SettingsInfoCell.swift in Sources */,
 				17BD4E322292F1260003E49A /* Auction.swift in Sources */,
 				17BD4E332292F1260003E49A /* SettingsViewModel.swift in Sources */,
@@ -3465,6 +3479,7 @@
 				17BD4EF02292F1260003E49A /* NodeTestDraft.swift in Sources */,
 				17BD4EF12292F1260003E49A /* SendAlgosPreviewViewController.swift in Sources */,
 				17BD4EF22292F1260003E49A /* AccountsSmallHeaderView.swift in Sources */,
+				2B891F0122BBA3CD003205F5 /* BalanceHeaderView.swift in Sources */,
 				17BD4EF32292F1260003E49A /* QRSelectableLabel.swift in Sources */,
 				17BD4EF42292F1260003E49A /* ActiveAuctionEmptyCell.swift in Sources */,
 				17BD4EF52292F1260003E49A /* NumpadNumericCell.swift in Sources */,
@@ -3500,6 +3515,7 @@
 				2B3F390A228C3DA8008BBE75 /* AuctionViewModel.swift in Sources */,
 				2B6ED959225F760F00787984 /* HistoryResultsView.swift in Sources */,
 				2BF5317E224AA8B700A7455F /* ContactsViewController.swift in Sources */,
+				2B891F0622BBA768003205F5 /* DepositFundSelectionView.swift in Sources */,
 				2B8954BA2243FCFA00D6D068 /* Snapkit+SafeArea.swift in Sources */,
 				17F6E685224B3F99006DD31F /* PassPhraseMnemonicView.swift in Sources */,
 				2B8954C4224404C900D6D068 /* MultiLineInputField.swift in Sources */,
@@ -3572,6 +3588,7 @@
 				2BD73A0622412AC900B66EEF /* NumpadViewDataSource.swift in Sources */,
 				2B5DA9D3224CD21800EE41B4 /* AccountsViewController+Options.swift in Sources */,
 				2B25BB4D225EAD700092C972 /* RequestAlgosPreviewView.swift in Sources */,
+				2B891F0322BBA746003205F5 /* DepositAmountView.swift in Sources */,
 				2BF5317C224AA89B00A7455F /* SettingsViewController.swift in Sources */,
 				2BD739D1223F97F600B66EEF /* IntroductionView.swift in Sources */,
 				179B93DA225E460500DD03E9 /* NodeSettingsHeaderView.swift in Sources */,
@@ -3782,6 +3799,7 @@
 				17D04F4C225F90D70051BC43 /* NodeTestDraft.swift in Sources */,
 				2B7572A8225CA211009E0253 /* SendAlgosPreviewViewController.swift in Sources */,
 				2B8512572265E3E2000F8CB8 /* AccountsSmallHeaderView.swift in Sources */,
+				2B891F0022BBA3CD003205F5 /* BalanceHeaderView.swift in Sources */,
 				17E2E3C722524E4C0065957A /* QRSelectableLabel.swift in Sources */,
 				2B3F391C228DCDE2008BBE75 /* ActiveAuctionEmptyCell.swift in Sources */,
 				2BD73A022241299100B66EEF /* NumpadNumericCell.swift in Sources */,

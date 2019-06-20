@@ -309,10 +309,14 @@
 // MARK: Balance
 
 "balance-title" = "Balance";
+"balance-available-title" = "Available Balance";
+"balance-button-title-deposit" = "DEPOSIT";
+"balance-button-title-withdraw" = "WITHDRAW";
 
 // MARK: Deposit
 
 "deposit-title" = "Deposit";
+"deposit-bottom-title" = "Deposit instructions will be displayed on the next screen.";
 
 // MARK: Withdraw
 

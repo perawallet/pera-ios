@@ -51,7 +51,11 @@ extension API {
     }
     
     @discardableResult
-    func getWithdrawalInformations(for type: DepositType, completion: APICompletionHandler<[CoinlistTransaction]>? = nil) -> EndpointInteractable? {
+    func getWithdrawalInformations(
+        for type: DepositType,
+        completion: APICompletionHandler<[CoinlistTransaction]>? = nil
+    ) -> EndpointInteractable? {
+    
         guard let coinlistToken = session?.coinlistToken,
             let userId = session?.coinlistUserId else {
                 return nil
