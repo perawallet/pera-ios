@@ -16,12 +16,22 @@ class BalanceViewController: BaseViewController {
     
     private let layout = Layout<LayoutConstants>()
     
+    private var user: AuctionUser
+    
     // MARK: Components
     
     private lazy var balanceView: BalanceView = {
         let view = BalanceView()
         return view
     }()
+    
+    // MARK: Initialization
+    
+    init(user: AuctionUser, configuration: ViewControllerConfiguration) {
+        self.user = user
+        
+        super.init(configuration: configuration)
+    }
     
     // MARK: Setup
 
@@ -51,6 +61,69 @@ class BalanceViewController: BaseViewController {
         balanceView.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(layout.current.topInset)
             make.leading.trailing.bottom.equalToSuperview()
+        }
+    }
+    
+    // MARK: API
+    
+    private func fetchAuctionUser() {
+        api?.fetchAuctionUser { response in
+            switch response {
+            case let .success(receivedUser):
+                self.user = receivedUser
+            case .failure:
+                break
+            }
+        }
+    }
+    
+    private func fetchPastTransactions() {
+        api?.fetchCoinlistTransactions { response in
+            switch response {
+            case let .success(receivedTransactions):
+                print(receivedTransactions)
+            case .failure:
+                break
+            }
+        }
+    }
+    
+    private func fetchUserInstructions() {
+        fetchUSDWireInstructions()
+        fetchBTCDepositInstructions()
+        fetchETHDepositInstructions()
+    }
+    
+    private func fetchUSDWireInstructions() {
+        api?.fetchDepositInformation(for: .usd) { response in
+            switch response {
+            case let .success(receivedInstruction):
+                print(receivedInstruction)
+            case .failure:
+                break
+            }
+        }
+    }
+    
+    private func fetchBTCDepositInstructions() {
+        api?.fetchDepositInformation(for: .btc) { response in
+            switch response {
+            case let .success(receivedInstruction):
+                print(receivedInstruction)
+            case .failure:
+                break
+            }
+        }
+    }
+    
+    private func fetchETHDepositInstructions() {
+        api?.fetchDepositInformation(for: .eth) { response in
+            switch response {
+            case let .success(receivedInstruction):
+                print(receivedInstruction)
+            case .failure:
+                break
+            }
         }
     }
 }
