@@ -17,19 +17,40 @@ enum DepositType: String {
 extension API {
     
     @discardableResult
-    func fetchDepositInformation(for type: DepositType, completion: APICompletionHandler<AuctionUser>? = nil) -> EndpointInteractable? {
+    func fetchBlockchainDepositInformation(
+        for type: DepositType,
+        completion: APICompletionHandler<BlockchainInstruction>? = nil
+    ) -> EndpointInteractable? {
+        
         guard let coinlistToken = session?.coinlistToken,
             let userId = session?.coinlistUserId else {
                 return nil
         }
         
         return send(
-            Endpoint<AuctionUser>(Path("/api/algorand/users/\(userId)/deposit/\(type.rawValue)/"))
+            Endpoint<BlockchainInstruction>(Path("/api/algorand/users/\(userId)/deposit/\(type.rawValue)/"))
                 .base(Environment.current.cointlistApi)
                 .httpHeaders([.custom(header: "Authorization", value: "Bearer \(coinlistToken)")])
                 .handler { response in
                     completion?(response)
                 }
+        )
+    }
+    
+    @discardableResult
+    func fetchUSDDepositInformation(completion: APICompletionHandler<USDWireInstruction>? = nil) -> EndpointInteractable? {
+        guard let coinlistToken = session?.coinlistToken,
+            let userId = session?.coinlistUserId else {
+                return nil
+        }
+        
+        return send(
+            Endpoint<USDWireInstruction>(Path("/api/algorand/users/\(userId)/deposit/usd/"))
+                .base(Environment.current.cointlistApi)
+                .httpHeaders([.custom(header: "Authorization", value: "Bearer \(coinlistToken)")])
+                .handler { response in
+                    completion?(response)
+            }
         )
     }
     
@@ -43,45 +64,6 @@ extension API {
         return send(
             Endpoint<[CoinlistTransaction]>(Path("/api/algorand/users/\(userId)/transactions/"))
                 .base(Environment.current.cointlistApi)
-                .httpHeaders([.custom(header: "Authorization", value: "Bearer \(coinlistToken)")])
-                .handler { response in
-                    completion?(response)
-                }
-        )
-    }
-    
-    @discardableResult
-    func getWithdrawalInformations(
-        for type: DepositType,
-        completion: APICompletionHandler<[CoinlistTransaction]>? = nil
-    ) -> EndpointInteractable? {
-    
-        guard let coinlistToken = session?.coinlistToken,
-            let userId = session?.coinlistUserId else {
-                return nil
-        }
-        
-        return send(
-            Endpoint<[CoinlistTransaction]>(Path("/api/algorand/users/\(userId)/withdraw/\(type.rawValue)/"))
-                .base(Environment.current.cointlistApi)
-                .httpHeaders([.custom(header: "Authorization", value: "Bearer \(coinlistToken)")])
-                .handler { response in
-                    completion?(response)
-                }
-        )
-    }
-    
-    @discardableResult
-    func withdrawUSD(for type: DepositType, completion: APICompletionHandler<AuctionUser>? = nil) -> EndpointInteractable? {
-        guard let coinlistToken = session?.coinlistToken,
-            let userId = session?.coinlistUserId else {
-                return nil
-        }
-        
-        return send(
-            Endpoint<AuctionUser>(Path("/api/algorand/users/\(userId)/withdraw/\(type.rawValue)/"))
-                .base(Environment.current.cointlistApi)
-                .httpMethod(.post)
                 .httpHeaders([.custom(header: "Authorization", value: "Bearer \(coinlistToken)")])
                 .handler { response in
                     completion?(response)

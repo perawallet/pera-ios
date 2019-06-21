@@ -8,22 +8,34 @@
 
 import Magpie
 
+enum DepositActionType: String, Mappable {
+    case deposit = "deposit"
+    case withdrawal = "withdrawal"
+}
+
+enum DepositStatus: String, Mappable {
+    case pending = "pending"
+    case completed = "completed"
+}
+
 class CoinlistTransaction: Mappable {
     
-    let type: String?
+    let type: DepositActionType?
     let amount: String?
     let time: String?
     let username: String?
     let description: String?
+    let status: DepositStatus?
 }
 
 extension CoinlistTransaction {
     
     enum CodingKeys: String, CodingKey {
-        case type = "Type"
-        case amount = "Amount"
+        case type = "type"
+        case amount = "amount"
         case time = "time"
         case username = "username"
-        case description = "Description"
+        case description = "description"
+        case status = "status"
     }
 }
