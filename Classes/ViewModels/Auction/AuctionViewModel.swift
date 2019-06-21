@@ -28,65 +28,61 @@ class AuctionViewModel {
                 if let finishTime = activeAuction.estimatedFinishTime {
                     cell.contextView.auctionTimerView.time = finishTime.timeIntervalSinceNow
                 }
-            case .closed:
+            case .closed,
+                 .settled:
                 cell.contextView.auctionTimerView.mode = .ended
-            case .settled:
-                break
             }
-            
-            cell.contextView.auctionTimerView.runTimer()
             
             cell.contextView.status = status
         }
         
         if let price = activeAuction.currentPrice {
-            cell.contextView.priceView.detailLabel.text = convertToDollars(price)
+            cell.contextView.priceView.detailLabel.text = price.convertToDollars()
         }
         
         if let remainingAlgos = activeAuction.remainingAlgos?.toAlgos {
-            cell.contextView.remainingAlgosView.algosAmountView.amountLabel.text = remainingAlgos.toDecimalStringForLabel
+            cell.contextView.remainingAlgosView.algosAmountView.amountLabel.text = remainingAlgos.formatToShort()
             cell.contextView.remainingAlgosView.algosAmountView.amountLabel.textColor = SharedColors.turquois
-            cell.contextView.remainingAlgosView.algosAmountView.algoIconImageView.image = img("icon-algo-small-blue")
+            cell.contextView.remainingAlgosView.algosAmountView.algoIconImageView.image = img("icon-remaining-algo")
             
-            if activeAuction.totalAlgos == 0 {
-                if remainingAlgos == 0 {
-                    cell.contextView.remainingAlgosView.percentageLabel.text = "(0%)"
-                } else {
-                    cell.contextView.remainingAlgosView.percentageLabel.text = "(\(Int(remainingAlgos * 100 / remainingAlgos))%)"
+            if let totalAlgos = activeAuction.totalAlgos {
+                cell.contextView.remainingAlgosView.percentageLabel.isHidden = false
+                if let percentage = (remainingAlgos * 100.0 / totalAlgos.toAlgos).toStringForTwoDecimal {
+                    cell.contextView.remainingAlgosView.percentageLabel.text = "(\(percentage)%)"
                 }
             } else {
-                cell.contextView.remainingAlgosView.percentageLabel.text =
-                    "(\(Int(remainingAlgos * 100 / activeAuction.totalAlgos.toAlgos))%)"
+                cell.contextView.remainingAlgosView.percentageLabel.isHidden = true
             }
         }
     }
     
-    func convertToDollars(_ value: Int) -> String {
-        let doubleValue = Double(value / 100)
-        let formatter = NumberFormatter()
-        formatter.currencyCode = "USD"
-        formatter.currencySymbol = "$"
-        formatter.maximumFractionDigits = 2
-        formatter.numberStyle = .currencyAccounting
-        return formatter.string(from: NSNumber(value: doubleValue)) ?? "$\(doubleValue)"
-    }
-    
     func configureRemainingAlgosPercentage(in cell: ActiveAuctionCell, with activeAuction: ActiveAuction) {
-        if let remainingAlgos = activeAuction.remainingAlgos?.toAlgos {
-            cell.contextView.remainingAlgosView.percentageLabel.text = "(\(Int(remainingAlgos * 100 / activeAuction.totalAlgos.toAlgos))%)"
+        if let remainingAlgos = activeAuction.remainingAlgos?.toAlgos,
+            let totalAlgos = activeAuction.totalAlgos,
+            let percentage = (remainingAlgos * 100.0 / totalAlgos.toAlgos).toStringForTwoDecimal {
+            cell.contextView.remainingAlgosView.percentageLabel.isHidden = false
+            cell.contextView.remainingAlgosView.percentageLabel.text = "(\(percentage)%)"
+        } else {
+            cell.contextView.remainingAlgosView.percentageLabel.isHidden = true
         }
     }
     
     func configure(_ cell: AuctionCell, with auction: Auction, and activeAuction: ActiveAuction?) {
         if let activeAuction = activeAuction {
-            let formattedDate = findDate(to: auction.firstRound, from: activeAuction.currentRound).toFormat("MMMM dd, yyyy")
-            cell.contextView.dateLabel.text = formattedDate
+            if let firstRound = auction.firstRound {
+                let formattedDate = findDate(to: firstRound, from: activeAuction.currentRound).toFormat("MMMM dd, yyyy")
+                cell.contextView.dateLabel.text = formattedDate
+            }
         } else {
-            let formattedDate = findDate(to: auction.firstRound, from: auction.firstRound).toFormat("MMMM dd, yyyy")
-            cell.contextView.dateLabel.text = formattedDate
+            if let firstRound = auction.firstRound {
+                let formattedDate = findDate(to: firstRound, from: auction.firstRound).toFormat("MMMM dd, yyyy")
+                cell.contextView.dateLabel.text = formattedDate
+            }
         }
         
-        cell.contextView.algosAmountLabel.text = auction.algos.toAlgos.toDecimalStringForLabel
+        if let algos = auction.algos {
+            cell.contextView.algosAmountLabel.text = algos.toAlgos.toDecimalStringForLabel
+        }
     }
     
     private func findDate(to round: Int, from lastRound: Int?) -> Date {

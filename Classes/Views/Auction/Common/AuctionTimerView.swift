@@ -34,7 +34,19 @@ class AuctionTimerView: BaseView {
         }
     }
     
-    var time: TimeInterval = 0
+    var time: TimeInterval = 0 {
+        didSet {
+            if time + 7.5 < oldValue {
+                DispatchQueue.main.async {
+                    self.timeLabel.text = self.formattedTime()
+                }
+            }
+            
+            if !isTimerRunning {
+                runTimer()
+            }
+        }
+    }
     
     private var isTimerRunning = false
     
@@ -44,7 +56,7 @@ class AuctionTimerView: BaseView {
     
     private(set) lazy var explanationLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(.avenir, withWeight: .semiBold(size: 12.0)))
+            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 13.0)))
             .withTextColor(SharedColors.softGray)
             .withAlignment(.left)
             .withText("auction-time-in".localized)
@@ -52,8 +64,8 @@ class AuctionTimerView: BaseView {
     
     private(set) lazy var timeLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 14.0)))
-            .withTextColor(Colors.black)
+            .withFont(UIFont.font(.overpass, withWeight: .bold(size: 15.0)))
+            .withTextColor(SharedColors.orange)
             .withLine(.single)
             .withAlignment(.left)
             .withText(formattedTime())
@@ -105,7 +117,7 @@ class AuctionTimerView: BaseView {
     
     // MARK: API
     
-    func runTimer() {
+    private func runTimer() {
         if isTimerRunning {
             return
         }
@@ -121,8 +133,11 @@ class AuctionTimerView: BaseView {
         pollingOperation?.start()
     }
     
-    func stopTimer() {
+    private func stopTimer() {
         isTimerRunning = false
+        
+        time = 0
+        timeLabel.text = formattedTime()
         
         pollingOperation?.invalidate()
     }
@@ -161,16 +176,13 @@ class AuctionTimerView: BaseView {
         switch mode {
         case .initial:
             explanationLabel.text = "auction-time-in".localized
-            timeLabel.textColor = Colors.black
+            timeLabel.textColor = SharedColors.orange
         case .active:
             explanationLabel.text = "auction-time-left".localized
-            timeLabel.textColor = SharedColors.red
+            timeLabel.textColor = SharedColors.orange
         case .ended:
             explanationLabel.text = "auction-time-left".localized
-            timeLabel.textColor = SharedColors.black
-            
-            time = 0
-            timeLabel.text = formattedTime()
+            timeLabel.textColor = SharedColors.turquois
             
             stopTimer()
         }

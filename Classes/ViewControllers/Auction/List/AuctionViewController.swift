@@ -53,18 +53,49 @@ class AuctionViewController: BaseViewController {
         return collectionView
     }()
     
+    private let isAuctionsEnabled = true
+    
     private var auctions = [Auction]()
     private var totalAlgosAmount: Int64?
     private var activeAuction: ActiveAuction?
+    private var auctionUser: AuctionUser?
+    
+    private var isFirstCoinlistSetup = false
     
     private let viewModel = AuctionViewModel()
     
     private var pollingOperation: PollingOperation?
     
+    private var authManager: AuthManager?
+    
     private var canDisplayActiveAuctionEmptyState = false
     private var canDisplayPastAuctionsEmptyState = false
     
+    override init(configuration: ViewControllerConfiguration) {
+        super.init(configuration: configuration)
+        
+        authManager = AuthManager()
+    }
+    
     // MARK: Setup
+    
+    override func setListeners() {
+        super.setListeners()
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didCoinlistConnected(notification:)),
+            name: Notification.Name.CoinlistConnected,
+            object: nil
+        )
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didCoinlistDisconnected(notification:)),
+            name: Notification.Name.CoinlistDisconnected,
+            object: nil
+        )
+    }
     
     override func linkInteractors() {
         super.linkInteractors()
@@ -72,6 +103,7 @@ class AuctionViewController: BaseViewController {
         auctionIntroductionView.delegate = self
         auctionsCollectionView.dataSource = self
         auctionsCollectionView.delegate = self
+        authManager?.delegate = self
         auctionTemporaryView.delegate = self
     }
     
@@ -80,12 +112,67 @@ class AuctionViewController: BaseViewController {
         
         navigationItem.title = "auction-title".localized
         
+        if session?.coinlistToken == nil {
+            return
+        }
+        
         SVProgressHUD.show(withStatus: "title-loading".localized)
         
-        fetchActiveAuction()
+        if isAuctionsEnabled {
+            fetchAuctionUser()
+            fetchActiveAuction()
+        } else {
+            fetchAuctionStatusForDisabledAuctions()
+        }
+    }
+    
+    private func fetchAuctionUser() {
+        if session?.coinlistUserId == nil {
+            return
+        }
+        
+        api?.fetchAuctionUser { response in
+            switch response {
+            case let .success(user):
+                self.auctionUser = user
+            case let .failure(error):
+                print(error)
+            }
+        }
     }
     
     private func fetchActiveAuction(withReload reload: Bool = true) {
+        api?.fetchActiveAuction { response in
+            switch response {
+            case let .success(auction):
+                let lastAuctionStatus = self.activeAuction
+                self.activeAuction = auction
+                
+                if reload {
+                    self.fetchPastAuctions(top: auction.id)
+                    
+                    self.auctionsCollectionView.reloadSection(0)
+                } else {
+                    if lastAuctionStatus?.id != auction.id {
+                        self.fetchPastAuctions(top: auction.id)
+                    }
+                    
+                    UIView.performWithoutAnimation {
+                        self.auctionsCollectionView.reloadSection(0)
+                    }
+                }
+            case .failure:
+                self.canDisplayActiveAuctionEmptyState = true
+                self.auctionsCollectionView.reloadSection(0)
+                
+                if self.auctions.isEmpty {
+                    self.fetchPastAuctions(top: 50)
+                }
+            }
+        }
+    }
+    
+    private func fetchAuctionStatusForDisabledAuctions(withReload reload: Bool = true) {
         api?.fetchActiveAuction { response in
             switch response {
             case let .success(auction):
@@ -106,19 +193,20 @@ class AuctionViewController: BaseViewController {
     }
     
     private func fetchPastAuctions(top: Int) {
-        let pastAuctionsDraft = AuctionDraft(
-            accessToken: "1dd6e671c4ba97c1772b53bdb31f7a7fd775684251a64f17aa00879721c7a94e",
-            topCount: top
-        )
-        
-        api?.fetchPastAuctions(with: pastAuctionsDraft) { response in
+        api?.fetchPastAuctions(for: top) { response in
             switch response {
             case let .success(pastAuctions):
                 self.auctions = pastAuctions
                 
                 self.auctionIntroductionView.isHidden = true
                 
-                self.canDisplayPastAuctionsEmptyState = pastAuctions.isEmpty
+                if pastAuctions.count <= 1 {
+                    self.canDisplayPastAuctionsEmptyState = true
+                    self.auctionsCollectionView.reloadSection(1)
+                } else {
+                    self.canDisplayPastAuctionsEmptyState = false
+                    self.auctionsCollectionView.reloadSection(1)
+                }
                 
                 if let recentAuction = pastAuctions.first {
                     self.totalAlgosAmount = recentAuction.algos
@@ -135,14 +223,34 @@ class AuctionViewController: BaseViewController {
         }
     }
     
-    // View Lifecycl
+    // View Lifecycle
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        if isAuctionsEnabled {
+            if session?.coinlistToken == nil {
+                return
+            }
+            
+            if !isFirstCoinlistSetup {
+                startPolling()
+            }
+        } else {
+            pollingOperation = PollingOperation(interval: 5.0) { [weak self] in
+                self?.fetchAuctionStatusForDisabledAuctions(withReload: false)
+            }
+            
+            pollingOperation?.start()
+        }
+    }
+    
+    private func startPolling() {
         pollingOperation = PollingOperation(interval: 5.0) { [weak self] in
             self?.fetchActiveAuction(withReload: false)
         }
+        
+        isFirstCoinlistSetup = false
         
         pollingOperation?.start()
     }
@@ -158,15 +266,20 @@ class AuctionViewController: BaseViewController {
     override func prepareLayout() {
         super.prepareLayout()
         
-        setupAuctionTemporaryViewLayout()
+        if isAuctionsEnabled {
+            prepareLayoutForToken()
+        } else {
+            setupAuctionTemporaryViewLayout()
+        }
     }
     
-    private func setupAuctionTemporaryViewLayout() {
-        view.addSubview(auctionTemporaryView)
-        
-        auctionTemporaryView.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(layout.current.topInset)
-            make.leading.trailing.bottom.equalToSuperview()
+    private func prepareLayoutForToken() {
+        if session?.coinlistToken == nil {
+            setupAuctionIntroductionViewLayout()
+        } else {
+            auctionIntroductionView.removeFromSuperview()
+            
+            setupAuctionsCollectionViewLayout()
         }
     }
     
@@ -187,6 +300,50 @@ class AuctionViewController: BaseViewController {
             make.leading.trailing.bottom.equalToSuperview()
         }
     }
+    
+    private func setupAuctionTemporaryViewLayout() {
+        view.addSubview(auctionTemporaryView)
+        
+        auctionTemporaryView.snp.makeConstraints { make in
+            make.top.equalToSuperview().inset(layout.current.topInset)
+            make.leading.trailing.bottom.equalToSuperview()
+        }
+    }
+    
+    // MARK: Actions
+    
+    @objc
+    fileprivate func didCoinlistConnected(notification: Notification) {
+        guard let userInfo = notification.userInfo as? [String: String],
+            let code = userInfo["code"] else {
+                return
+        }
+        
+        if let authManager = authManager {
+            setupCoinlistAccount(with: code, and: authManager)
+        } else {
+            authManager = AuthManager()
+            authManager?.delegate = self
+            
+            guard let authManager = authManager else {
+                return
+            }
+            
+            setupCoinlistAccount(with: code, and: authManager)
+        }
+    }
+    
+    @objc
+    fileprivate func didCoinlistDisconnected(notification: Notification) {
+        auctionIntroductionView = AuctionIntroductionView()
+        auctionIntroductionView.delegate = self
+        
+        authManager = AuthManager()
+        self.authManager?.delegate = self
+        
+        auctionsCollectionView.removeFromSuperview()
+        setupAuctionIntroductionViewLayout()
+    }
 }
 
 // MARK: AuctionIntroductionViewDelegate
@@ -194,7 +351,7 @@ class AuctionViewController: BaseViewController {
 extension AuctionViewController: AuctionIntroductionViewDelegate {
     
     func auctionIntroductionViewDidTapGetStartedButton(_ auctionIntroductionView: AuctionIntroductionView) {
-        auctionIntroductionView.isHidden = true
+        authManager?.authorize()
     }
 }
 
@@ -211,7 +368,7 @@ extension AuctionViewController: UICollectionViewDataSource {
             return 1
         }
         
-        if auctions.isEmpty {
+        if auctions.count <= 1 {
             return 1
         }
         
@@ -229,6 +386,8 @@ extension AuctionViewController: UICollectionViewDataSource {
                 
                 cell.delegate = self
                 
+                activeAuction.totalAlgos = totalAlgosAmount
+                
                 viewModel.configure(cell, with: activeAuction)
                 
                 return cell
@@ -245,7 +404,7 @@ extension AuctionViewController: UICollectionViewDataSource {
             }
         }
         
-        if auctions.isEmpty {
+        if auctions.count <= 1 {
             guard let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: PastAuctionsEmptyCell.reusableIdentifier,
                 for: indexPath) as? PastAuctionsEmptyCell else {
@@ -263,7 +422,8 @@ extension AuctionViewController: UICollectionViewDataSource {
                 fatalError("Index path is out of bounds")
         }
         
-        if indexPath.item < auctions.count {
+        // Receive index + 1 item since the first auction is not listed
+        if indexPath.row + 1 < auctions.count {
             let auction = auctions[indexPath.row + 1]
             
             viewModel.configure(cell, with: auction, and: activeAuction)
@@ -276,6 +436,21 @@ extension AuctionViewController: UICollectionViewDataSource {
 // MARK: UICollectionViewDelegateFlowLayout
 
 extension AuctionViewController: UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let user = auctionUser,
+            let activeAuction = activeAuction,
+            indexPath.section != 0 else {
+                return
+        }
+        
+        // Receive index + 1 item since the first auction is not listed
+        if indexPath.row + 1 < auctions.count {
+            let auction = auctions[indexPath.row + 1]
+            
+            open(.pastAuctionDetail(auction: auction, user: user, activeAuction: activeAuction), by: .push)
+        }
+    }
     
     func collectionView(
         _ collectionView: UICollectionView,
@@ -300,7 +475,69 @@ extension AuctionViewController: UICollectionViewDelegateFlowLayout {
 extension AuctionViewController: ActiveAuctionCellDelegate {
     
     func activeAuctionCellDidTapEnterAuctionButton(_ activeAuctionCell: ActiveAuctionCell) {
-        open(.auctionDetail, by: .push)
+        guard let auction = auctions.first,
+            let user = auctionUser,
+            let activeAuction = activeAuction else {
+                return
+        }
+        
+        open(.auctionDetail(auction: auction, user: user, activeAuction: activeAuction), by: .push)
+    }
+}
+
+// MARK: AuthManagerDelegate
+
+extension AuctionViewController: AuthManagerDelegate {
+    
+    func authManager(_ authManager: AuthManager, didCaptureToken token: String?, withError error: Error?) {
+        if error != nil {
+            displaySimpleAlertWith(title: "title-error".localized, message: "auction-auth-error-message".localized)
+            self.authManager = AuthManager()
+            self.authManager?.delegate = self
+            
+            return
+        }
+        
+        guard let code = token else {
+            return
+        }
+        
+        setupCoinlistAccount(with: code, and: authManager)
+    }
+    
+    private func setupCoinlistAccount(with code: String, and authManager: AuthManager) {
+        isFirstCoinlistSetup = true
+        
+        SVProgressHUD.show(withStatus: "title-loading".localized)
+        
+        let draft = CoinlistAuthenticationDraft(
+            code: code,
+            grantType: "authorization_code",
+            redirectURI: authManager.callbackUrlScheme
+        )
+        
+        api?.authenticateCoinlist(with: draft) { response in
+            switch response {
+            case let .success(coinlistAuthentication):
+                self.session?.coinlistToken = coinlistAuthentication.accessToken
+                self.prepareLayoutForToken()
+                
+                self.api?.fetchCoinlistUser { response in
+                    switch response {
+                    case let .success(coinlistUser):
+                        self.session?.coinlistUserId = coinlistUser.id
+                        
+                        self.fetchAuctionUser()
+                        self.fetchActiveAuction()
+                        self.startPolling()
+                    case let .failure(error):
+                        print(error)
+                    }
+                }
+            case let .failure(error):
+                print(error)
+            }
+        }
     }
 }
 

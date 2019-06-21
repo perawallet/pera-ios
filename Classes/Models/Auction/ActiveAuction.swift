@@ -21,7 +21,7 @@ class ActiveAuction: Mappable {
     let estimatedAuctionRoundStart: Date?
     let currentRound: Int?
     
-    var totalAlgos: Int64 = 0
+    var totalAlgos: Int64?
     
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -35,7 +35,7 @@ class ActiveAuction: Mappable {
         remainingAlgos = try container.decodeIfPresent(Int64.self, forKey: .remainingAlgos)
         bidCount = try container.decodeIfPresent(Int.self, forKey: .bidCount)
         addressCount = try container.decodeIfPresent(Int.self, forKey: .addressCount)
-        status = try container.decodeIfPresent(AuctionStatus.self, forKey: .status)
+        status = try container.decodeIfPresent(AuctionStatus.self, forKey: .status) ?? AuctionStatus.announced
         
         let estimatedDepositRoundStartString = try container.decodeIfPresent(String.self, forKey: .estimatedDepositRoundStart)
         estimatedDepositRoundStart = estimatedDepositRoundStartString?.toDate()?.date
@@ -60,6 +60,24 @@ extension ActiveAuction {
         case estimatedDepositRoundStart = "EstimatedDepositRoundStart"
         case estimatedAuctionRoundStart = "EstimatedAuctionRoundStart"
         case currentRound = "CurrentRound"
+    }
+}
+
+// MARK: API
+
+extension ActiveAuction {
+
+    func isBiddable() -> Bool {
+        guard let status = self.status,
+            let remainingAlgos = self.remainingAlgos else {
+            return false
+        }
+        
+        if remainingAlgos == 0 {
+            return false
+        }
+        
+        return status == .running || status == .announced
     }
 }
 

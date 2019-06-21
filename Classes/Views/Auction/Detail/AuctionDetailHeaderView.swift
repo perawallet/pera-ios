@@ -12,17 +12,31 @@ class AuctionDetailHeaderView: BaseView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let horizontalInset: CGFloat = 25.0
-        let chartHeight: CGFloat = 100.0
+        let chartHeight: CGFloat = 114.0
+        let explanationTopInset: CGFloat = 10.0
         let topInset: CGFloat = 18.0
         let viewWidth: CGFloat = UIScreen.main.bounds.width / 2
     }
     
     private let layout = Layout<LayoutConstants>()
+    
+    var isBiddable = true {
+        didSet {
+            if isBiddable == oldValue {
+                return
+            }
+            
+            if !isBiddable {
+                timerView.isHidden = true
+                setupCommittedAmountViewLayout()
+            }
+        }
+    }
 
     // MARK: Components
     
     private(set) lazy var auctionChartView: AuctionChartView = {
-        let view = AuctionChartView(initialValue: 10)
+        let view = AuctionChartView(initialValue: initialValue, maximumIndex: maximumIndex)
         return view
     }()
     
@@ -39,6 +53,27 @@ class AuctionDetailHeaderView: BaseView {
         view.explanationLabel.text = "auction-time-left".localized
         return view
     }()
+    
+    private(set) lazy var committedAmountView: DetailedInformationView = {
+        let committedAmountView = DetailedInformationView()
+        committedAmountView.backgroundColor = .white
+        committedAmountView.separatorView.isHidden = true
+        committedAmountView.explanationLabel.text = "auction-detail-committed-title".localized
+        committedAmountView.detailLabel.font = UIFont.font(.overpass, withWeight: .bold(size: 15.0))
+        return committedAmountView
+    }()
+    
+    private let initialValue: Double
+    private let maximumIndex: Double
+    
+    // MARK: Initialization
+    
+    init(initialValue: Double, maximumIndex: Double) {
+        self.initialValue = initialValue
+        self.maximumIndex = maximumIndex
+        
+        super.init(frame: .zero)
+    }
     
     // MARK: Setup
     
@@ -71,6 +106,10 @@ class AuctionDetailHeaderView: BaseView {
             make.leading.bottom.equalToSuperview()
             make.width.equalTo(layout.current.viewWidth)
         }
+        
+        remainingAlgosView.explanationLabel.snp.updateConstraints { make in
+            make.top.equalToSuperview().inset(layout.current.explanationTopInset)
+        }
     }
 
     private func setupAuctionTimerViewLayout() {
@@ -80,6 +119,24 @@ class AuctionDetailHeaderView: BaseView {
             make.top.equalTo(auctionChartView.snp.bottom)
             make.trailing.bottom.equalToSuperview()
             make.width.equalTo(layout.current.viewWidth)
+        }
+        
+        timerView.explanationLabel.snp.updateConstraints { make in
+            make.top.equalToSuperview().inset(layout.current.explanationTopInset)
+        }
+    }
+    
+    private func setupCommittedAmountViewLayout() {
+        addSubview(committedAmountView)
+        
+        committedAmountView.snp.makeConstraints { make in
+            make.top.equalTo(auctionChartView.snp.bottom)
+            make.trailing.bottom.equalToSuperview()
+            make.width.equalTo(layout.current.viewWidth)
+        }
+        
+        committedAmountView.explanationLabel.snp.updateConstraints { make in
+            make.top.equalToSuperview().inset(layout.current.explanationTopInset)
         }
     }
 }

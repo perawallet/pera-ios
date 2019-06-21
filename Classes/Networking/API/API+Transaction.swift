@@ -7,7 +7,6 @@
 //
 
 import Magpie
-import Crypto
 
 extension API {
     

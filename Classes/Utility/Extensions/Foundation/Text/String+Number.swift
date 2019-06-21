@@ -13,10 +13,20 @@ extension String {
     var decimal: Decimal { return Decimal(string: digits) ?? 0 }
     
     var doubleForSendSeparator: Double? {
-        return Formatter.separatorForInput.number(from: self)?.doubleValue
+        return Formatter.separatorForAlgosInput.number(from: self)?.doubleValue
     }
     
     var doubleForReadSeparator: Double? {
-        return Formatter.separatorForLabel.number(from: self)?.doubleValue
+        return Formatter.separatorForAlgosLabel.number(from: self)?.doubleValue
+    }
+    
+    func currencyAlgosInputFormatting() -> String? {
+        let decimal = self.decimal / pow(10, Formatter.separatorForAlgosInput.maximumFractionDigits)
+        return Formatter.separatorForAlgosInput.string(for: decimal)
+    }
+    
+    func currencyBidInputFormatting() -> String? {
+        let decimal = self.decimal / pow(10, Formatter.separatorForBidInput.maximumFractionDigits)
+        return Formatter.separatorForBidInput.string(for: decimal)
     }
 }

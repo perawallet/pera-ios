@@ -14,9 +14,16 @@ enum AlgorandParamPairKey: String, CodingKey {
     case lastRound = "lastRound"
     case accessToken = "access_token"
     case top = "top"
+    case username = "username"
+    case bid = "SignedBinary"
     case max = "max"
     case from = "fromDate"
     case to = "toDate"
+    case clientId = "client_id"
+    case clientSecret = "client_secret"
+    case code = "code"
+    case grantType = "grant_type"
+    case redirectUri = "redirect_uri"
 }
 
 extension AlgorandParamPairKey: ParamsPairKey {

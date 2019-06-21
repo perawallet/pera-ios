@@ -86,13 +86,13 @@ class TabBarController: UITabBarController {
     private func setupTabBarController() {
         delegate = self
         
-        var controllers = [UIViewController]()
-        
-        controllers.append(accountsNavigationController)
-        controllers.append(historyNavigationController)
-        controllers.append(auctionNavigationController)
-        controllers.append(contactsNavigationController)
-        controllers.append(settingsNavigationController)
+        let controllers = [
+            accountsNavigationController,
+            historyNavigationController,
+            auctionNavigationController,
+            contactsNavigationController,
+            settingsNavigationController
+        ]
         
         viewControllers = controllers
     }

@@ -378,7 +378,7 @@ extension SendAlgosViewController: QRScannerViewControllerDelegate {
             
             amount = receivedAmount
             
-            sendAlgosView.algosInputView.inputTextField.text = receivedAmount.toDecimalStringForInput
+            sendAlgosView.algosInputView.inputTextField.text = receivedAmount.toDecimalStringForAlgosInput
         }
         
         receiver = .address(address: qrText.text, amount: nil)

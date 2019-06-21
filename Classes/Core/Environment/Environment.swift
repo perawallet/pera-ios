@@ -63,6 +63,15 @@ class Environment {
         }
     }()
     
+    lazy var coinlistClientSecret: String = {
+        switch target {
+        case .staging:
+            return "e5d43226691ee9d3a89b7d65a5cb7cf5de5680cf703e9c17b9b7b87253ca21a7"
+        case .prod:
+            return "90e9a94ce151224b324541c07b8ef5d3952fc517aec85596f54d01a336812593"
+        }
+    }()
+    
     lazy var serverToken: String = {
        "0f24cac92e5ead6afbcf389e0ade28bb609d24ca6687359f342748c68d6cf9b2"
     }()

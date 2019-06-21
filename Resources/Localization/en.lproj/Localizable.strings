@@ -217,6 +217,9 @@
 "settings-local-authentication" = "Enable FaceID/Touch ID";
 "settings-language" = "Language";
 "settings-language-english" = "English";
+"settings-coinlist" = "Coinbase";
+"settings-coinlist-connect" = "Connect Account";
+"settings-coinlist-disconnect" = "Disconnect Account";
 
 // MARK: NodeSettings
 "node-settings-title" = "Node Settings";
@@ -279,6 +282,12 @@
 "auction-closed-title" = "CLOSED";
 "auction-settled-title" = "SETTLED";
 "auction-past-auctions" = "Past Auctions";
+"auction-auth-error-message" = "Couldn't authenticate your coinlist account.";
+"auction-bid-coinlist-account-existence-error" = "The wallet associated with your current Coinlist account could not be found among your active accounts. Please make sure that you recover the correct account, and then place your bid again.";
+"auction-bid-zero-max-price-error" = "Max price cannot be equal to zero.";
+"auction-bid-zero-bid-amount-error" = "Bid amount cannot be equal to zero.";
+"auction-bid-min-max-price-error" = "Max price cannot be lower than %@.";
+"auction-bid-potential-algo-error" = "Potential algo value cannot be smaller than %@ algo.";
 "auction-go-auctions" = "GO TO AUCTION";
 "auction-temp-title" = "To participate in Algorand auctions, please navigate to our online auction site.";
 
@@ -287,11 +296,18 @@
 "auction-detail-title" = "Auction Detail";
 "auction-price-current-title" = "Current Price";
 "auction-price-closing-title" = "Closing Price";
-"auction-detail-potential-min" = "Min Potenial Algos";
+"auction-detail-potential-min" = "Min Potential Algos";
 "auction-detail-potential-total" = "Total Potential Algos:";
 "auction-detail-bid-amount" = "Bid Amount";
 "auction-detail-max-price" = "Max Price";
 "auction-detail-place-bid-title" = "Place Bid";
 "auction-detail-my-bids-title" = "My Bids";
 "auction-detail-place-bid-button-title" = "PLACE BID";
-"auction-detail-limit-order-button-title" = "PLACE LIMIT ORDER";
+"auction-detail-retract-title" = "Retract";
+"auction-detail-min-potential-algos" = "Min Potential Algos";
+"auction-detail-status-rejected-title" = "Rejected";
+"auction-detail-bids-empty-title" = "No Current Bids";
+"auction-detail-retract-error" = "Could not retract the bid.";
+"auction-detail-total-algos-title" = "Total Algos";
+"auction-detail-committed-title" = "Total USD Commited";
+"auction-detail-bid-confirm-title" = "Confirm Transaction";

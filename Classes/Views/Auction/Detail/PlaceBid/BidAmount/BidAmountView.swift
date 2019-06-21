@@ -8,6 +8,12 @@
 
 import UIKit
 
+protocol BidAmountViewDelegate: class {
+    
+    func bidAmountView(_ bidAmountView: BidAmountView, didChange value: Float)
+    func bidAmountViewDidTypeInput(_ bidAmountView: BidAmountView, in textField: UITextField)
+}
+
 class BidAmountView: BaseView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
@@ -36,7 +42,7 @@ class BidAmountView: BaseView {
             .withAlignment(.left)
             .withLine(.single)
             .withTextColor(SharedColors.darkGray)
-            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 12.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 13.0)))
             .withText("auction-detail-bid-amount".localized)
     }()
     
@@ -46,22 +52,28 @@ class BidAmountView: BaseView {
         return view
     }()
     
-    private lazy var bidAmountLabel: UILabel = {
-        UILabel()
-            .withAlignment(.right)
-            .withLine(.single)
-            .withTextColor(SharedColors.darkGray)
-            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 12.0)))
-            .withText("$0.00")
+    private(set) lazy var bidAmountTextField: CursorlessTextField = {
+        let view = CursorlessTextField()
+        view.textAlignment = .right
+        view.textColor = SharedColors.turquois
+        view.font = UIFont.font(.overpass, withWeight: .bold(size: 13.0))
+        view.keyboardType = .numberPad
+        view.attributedPlaceholder = NSAttributedString(
+            string: "$0.00",
+            attributes: [NSAttributedString.Key.foregroundColor: SharedColors.darkGray,
+                         NSAttributedString.Key.font: UIFont.font(.overpass, withWeight: .bold(size: 13.0))]
+        )
+        view.delegate = self
+        
+        return view
     }()
     
-    private lazy var availableAmountLabel: UILabel = {
+    private(set) lazy var availableAmountLabel: UILabel = {
         UILabel()
             .withAlignment(.right)
             .withLine(.single)
             .withTextColor(SharedColors.softGray)
-            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 12.0)))
-            .withText("/ $200,000.00")
+            .withFont(UIFont.font(.overpass, withWeight: .bold(size: 13.0)))
     }()
     
     private lazy var horizontalSeparatorView: UIView = {
@@ -75,6 +87,8 @@ class BidAmountView: BaseView {
         return view
     }()
     
+    weak var delegate: BidAmountViewDelegate?
+    
     // MARK: Setup
     
     override func configureAppearance() {
@@ -85,15 +99,26 @@ class BidAmountView: BaseView {
         layer.borderColor = Colors.borderColor.cgColor
     }
     
+    override func linkInteractors() {
+        bidAmountTextField.delegate = self
+        auctionSliderView.delegate = self
+    }
+    
+    override func setListeners() {
+        bidAmountTextField.addTarget(self, action: #selector(didChangeText(_:)), for: .editingChanged)
+    }
+    
     // MARK: Layout
     
     override func prepareLayout() {
         setupBidAmountTitleLabelLayout()
         setupVerticalSeparatorViewLayout()
-        setupBidAmountLabelLayout()
+        setupBidAmountTextFieldLayout()
         setupAvailableAmountLabelLayout()
         setupHorizontalSeparatorViewLayout()
         setupAuctionSliderViewLayout()
+        
+        addDoneButtonOnKeyboard()
     }
     
     private func setupBidAmountTitleLabelLayout() {
@@ -103,6 +128,9 @@ class BidAmountView: BaseView {
             make.leading.equalToSuperview().inset(layout.current.titleHorizontalInset)
             make.top.equalToSuperview().inset(layout.current.titleTopInset)
         }
+        
+        bidAmountTitleLabel.setContentHuggingPriority(.required, for: .horizontal)
+        bidAmountTitleLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
     }
     
     private func setupVerticalSeparatorViewLayout() {
@@ -116,11 +144,11 @@ class BidAmountView: BaseView {
         }
     }
     
-    private func setupBidAmountLabelLayout() {
-        addSubview(bidAmountLabel)
+    private func setupBidAmountTextFieldLayout() {
+        addSubview(bidAmountTextField)
         
-        bidAmountLabel.snp.makeConstraints { make in
-            make.leading.greaterThanOrEqualTo(verticalSeparatorView.snp.trailing).offset(layout.current.amountLabelInset)
+        bidAmountTextField.snp.makeConstraints { make in
+            make.leading.equalTo(verticalSeparatorView.snp.trailing).offset(layout.current.amountLabelInset)
             make.top.equalToSuperview().inset(layout.current.titleTopInset)
         }
     }
@@ -130,9 +158,12 @@ class BidAmountView: BaseView {
         
         availableAmountLabel.snp.makeConstraints { make in
             make.trailing.equalToSuperview().inset(layout.current.titleHorizontalInset)
-            make.leading.equalTo(bidAmountLabel.snp.trailing).offset(layout.current.amountLabelInset)
+            make.leading.equalTo(bidAmountTextField.snp.trailing).offset(layout.current.amountLabelInset)
             make.top.equalToSuperview().inset(layout.current.titleTopInset)
         }
+        
+        availableAmountLabel.setContentHuggingPriority(.required, for: .horizontal)
+        availableAmountLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
     }
     
     private func setupHorizontalSeparatorViewLayout() {
@@ -153,5 +184,71 @@ class BidAmountView: BaseView {
             make.height.equalTo(layout.current.sliderHeight)
             make.leading.trailing.bottom.equalToSuperview()
         }
+    }
+    
+    private func addDoneButtonOnKeyboard() {
+        let doneToolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 50))
+        doneToolbar.barStyle = .default
+        
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let done: UIBarButtonItem = UIBarButtonItem(
+            title: "title-done-lowercased".localized,
+            style: .done,
+            target: self,
+            action: #selector(doneButtonAction)
+        )
+        
+        let items = [flexSpace, done]
+        doneToolbar.items = items
+        doneToolbar.sizeToFit()
+        
+        bidAmountTextField.inputAccessoryView = doneToolbar
+    }
+    
+    // MARK: Actions
+    
+    @objc
+    private func didChangeText(_ textField: UITextField) {
+        guard let doubleValueString = textField.text?.currencyBidInputFormatting(),
+            let doubleValue = doubleValueString.doubleForSendSeparator,
+            doubleValue <= Double(maximumMicroAlgos) else {
+                return
+        }
+        
+        textField.text = doubleValueString
+        delegate?.bidAmountViewDidTypeInput(self, in: textField)
+    }
+    
+    @objc
+    private func doneButtonAction() {
+        bidAmountTextField.resignFirstResponder()
+    }
+}
+// MARK: AuctionSliderViewDelegate
+
+extension BidAmountView: AuctionSliderViewDelegate {
+
+    func auctionSliderView(_ auctionSliderView: AuctionSliderView, didChange value: Float) {
+        delegate?.bidAmountView(self, didChange: value)
+    }
+}
+
+// MARK: - TextFieldDelegate
+extension BidAmountView: UITextFieldDelegate {
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        guard let text = textField.text else {
+            return true
+        }
+        
+        guard let doubleValueString = text.appending(string).currencyBidInputFormatting(),
+            let doubleValue = doubleValueString.doubleForSendSeparator,
+            let availableAmountString = availableAmountLabel.text?.currencyBidInputFormatting(),
+            let availableAmount = availableAmountString.doubleForSendSeparator,
+            doubleValue <= availableAmount else {
+                return false
+        }
+        
+        return true
     }
 }

@@ -19,7 +19,7 @@ class LoadingIndicator: BaseView {
     
     // MARK: Components
     
-    private lazy var activityIndicator: UIActivityIndicatorView = {
+    private(set) lazy var activityIndicator: UIActivityIndicatorView = {
         let indicator = UIActivityIndicatorView()
         indicator.style = .gray
         indicator.hidesWhenStopped = true

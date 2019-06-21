@@ -32,7 +32,7 @@ class ActiveAuctionEmptyView: BaseView {
             .withAlignment(.center)
             .withLine(.contained)
             .withTextColor(SharedColors.softGray)
-            .withFont(UIFont.font(.overpass, withWeight: .medium(size: 14.0)))
+            .withFont(UIFont.font(.avenir, withWeight: .medium(size: 13.0)))
             .withText("auction-empty-title".localized)
     }()
     
@@ -40,9 +40,9 @@ class ActiveAuctionEmptyView: BaseView {
     
     private lazy var pastAuctionsTitleLabel: UILabel = {
         UILabel()
-            .withAlignment(.left)
-            .withTextColor(SharedColors.darkGray)
-            .withFont(UIFont.font(.avenir, withWeight: .semiBold(size: 12.0)))
+            .withAlignment(.center)
+            .withTextColor(SharedColors.softGray)
+            .withFont(UIFont.font(.avenir, withWeight: .medium(size: 13.0)))
             .withText("auction-past-auctions".localized)
     }()
     
@@ -89,7 +89,7 @@ class ActiveAuctionEmptyView: BaseView {
         addSubview(pastAuctionsTitleLabel)
         
         pastAuctionsTitleLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(layout.current.defaultInset)
+            make.centerX.equalToSuperview()
             make.top.equalTo(containerView.snp.bottom).offset(layout.current.defaultInset)
         }
     }

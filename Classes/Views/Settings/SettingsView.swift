@@ -28,6 +28,7 @@ class SettingsView: BaseView {
         collectionView.register(SettingsDetailCell.self, forCellWithReuseIdentifier: SettingsDetailCell.reusableIdentifier)
         collectionView.register(SettingsInfoCell.self, forCellWithReuseIdentifier: SettingsInfoCell.reusableIdentifier)
         collectionView.register(ToggleCell.self, forCellWithReuseIdentifier: ToggleCell.reusableIdentifier)
+        collectionView.register(CoinlistCell.self, forCellWithReuseIdentifier: CoinlistCell.reusableIdentifier)
         
         return collectionView
     }()
@@ -59,7 +60,7 @@ class SettingsView: BaseView {
         collectionView.snp.makeConstraints { make in
             make.top.equalTo(safeAreaLayoutGuide.snp.top)
             make.leading.trailing.equalToSuperview()
-            make.height.equalTo(320.0)
+            make.height.equalTo(400.0)
         }
     }
     

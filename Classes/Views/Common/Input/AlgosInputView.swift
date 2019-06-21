@@ -104,7 +104,7 @@ class AlgosInputView: BaseView {
     // MARK: Helper
     @objc
     private func didChangeText(_ textField: UITextField) {
-        guard let doubleValueString = textField.text?.currencyInputFormatting(),
+        guard let doubleValueString = textField.text?.currencyAlgosInputFormatting(),
             let doubleValue = doubleValueString.doubleForSendSeparator,
             doubleValue <= Double(maximumMicroAlgos) else {
             return
@@ -123,7 +123,7 @@ extension AlgosInputView: UITextFieldDelegate {
             return true
         }
         
-        guard let doubleValueString = text.appending(string).currencyInputFormatting(),
+        guard let doubleValueString = text.appending(string).currencyAlgosInputFormatting(),
             let doubleValue = doubleValueString.doubleForSendSeparator,
             doubleValue <= Double(maximumMicroAlgos) else {
                 return false
@@ -134,12 +134,5 @@ extension AlgosInputView: UITextFieldDelegate {
         } else {
             return true
         }
-    }
-}
-
-extension String {
-    func currencyInputFormatting() -> String? {
-        let decimal = self.decimal / pow(10, Formatter.separatorForInput.maximumFractionDigits)
-        return Formatter.separatorForInput.string(for: decimal)
     }
 }

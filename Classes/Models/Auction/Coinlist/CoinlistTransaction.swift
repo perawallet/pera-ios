@@ -10,11 +10,11 @@ import Magpie
 
 class CoinlistTransaction: Mappable {
     
-    let type: String
-    let amount: String
-    let time: String
-    let username: String
-    let description: String
+    let type: String?
+    let amount: String?
+    let time: String?
+    let username: String?
+    let description: String?
 }
 
 extension CoinlistTransaction {

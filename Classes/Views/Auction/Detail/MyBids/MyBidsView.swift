@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class MyBidsView: BaseView {
     
@@ -20,7 +21,27 @@ class MyBidsView: BaseView {
     
     // MARK: Components
     
-    private lazy var totalPotentialAlgosDisplayView: PotentialAlgosDisplayView = {
+    private(set) lazy var myBidsCollectionView: UICollectionView = {
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.scrollDirection = .vertical
+        flowLayout.minimumLineSpacing = 10.0
+        flowLayout.minimumInteritemSpacing = 0.0
+        
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.contentInset = .zero
+        collectionView.backgroundColor = .clear
+        
+        collectionView.register(BidCell.self, forCellWithReuseIdentifier: BidCell.reusableIdentifier)
+        collectionView.register(LimitOrderCell.self, forCellWithReuseIdentifier: LimitOrderCell.reusableIdentifier)
+        
+        return collectionView
+    }()
+    
+    private lazy var contentStateView = ContentStateView()
+    
+    private(set) lazy var totalPotentialAlgosDisplayView: PotentialAlgosDisplayView = {
         let view = PotentialAlgosDisplayView(mode: .total)
         return view
     }()
@@ -28,15 +49,29 @@ class MyBidsView: BaseView {
     // MARK: Layout
     
     override func prepareLayout() {
+        setupMyBidsCollectionViewLayout()
         setupTotalPotentialAlgosDisplayViewLayout()
+    }
+    
+    private func setupMyBidsCollectionViewLayout() {
+        addSubview(myBidsCollectionView)
+        
+        myBidsCollectionView.snp.makeConstraints { make in
+            make.leading.top.trailing.equalToSuperview().inset(layout.current.defaultInset)
+            make.height.equalTo(0.0)
+        }
+        
+        myBidsCollectionView.backgroundView = contentStateView
     }
     
     private func setupTotalPotentialAlgosDisplayViewLayout() {
         addSubview(totalPotentialAlgosDisplayView)
         
         totalPotentialAlgosDisplayView.snp.makeConstraints { make in
-            make.leading.top.trailing.equalToSuperview().inset(layout.current.defaultInset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.defaultInset)
+            make.top.equalTo(myBidsCollectionView.snp.bottom).offset(layout.current.potentialAlgosViewTopInset)
             make.height.equalTo(layout.current.potentialAlgosViewHeight)
+            make.bottom.equalToSuperview().inset(layout.current.defaultInset + safeAreaBottom)
         }
     }
 }

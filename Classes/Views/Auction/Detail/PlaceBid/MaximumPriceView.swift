@@ -8,6 +8,11 @@
 
 import UIKit
 
+protocol MaximumPriceViewDelegate: class {
+    
+    func maximumPriceViewDidTypeInput(_ maximumPriceView: MaximumPriceView, in textField: UITextField)
+}
+
 class MaximumPriceView: BaseView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
@@ -33,7 +38,7 @@ class MaximumPriceView: BaseView {
             .withAlignment(.left)
             .withLine(.single)
             .withTextColor(SharedColors.darkGray)
-            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 12.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 13.0)))
             .withText("auction-detail-max-price".localized)
     }()
     
@@ -43,14 +48,19 @@ class MaximumPriceView: BaseView {
         return view
     }()
     
-    private lazy var priceAmountLabel: UILabel = {
-        UILabel()
-            .withAlignment(.right)
-            .withLine(.single)
-            .withTextColor(SharedColors.turquois)
-            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 12.0)))
-            .withText("$5.00")
+    private(set) lazy var priceAmountTextField: CursorlessTextField = {
+        let view = CursorlessTextField()
+        view.textAlignment = .right
+        view.textColor = SharedColors.darkGray
+        view.font = UIFont.font(.overpass, withWeight: .bold(size: 13.0))
+        view.keyboardType = .numberPad
+        view.delegate = self
+        return view
     }()
+    
+    var currentPrice: Int?
+    
+    weak var delegate: MaximumPriceViewDelegate?
     
     // MARK: Setup
     
@@ -62,12 +72,22 @@ class MaximumPriceView: BaseView {
         layer.borderColor = Colors.borderColor.cgColor
     }
     
+    override func linkInteractors() {
+        priceAmountTextField.delegate = self
+    }
+    
+    override func setListeners() {
+        priceAmountTextField.addTarget(self, action: #selector(didChangeText(_:)), for: .editingChanged)
+    }
+    
     // MARK: Layout
     
     override func prepareLayout() {
         setupBidAmountTitleLabelLayout()
         setupVerticalSeparatorViewLayout()
-        setupBidAmountLabelLayout()
+        setupPriceAmountTextFieldLayout()
+        
+        addDoneButtonOnKeyboard()
     }
     
     private func setupBidAmountTitleLabelLayout() {
@@ -77,6 +97,9 @@ class MaximumPriceView: BaseView {
             make.leading.equalToSuperview().inset(layout.current.titleHorizontalInset)
             make.top.equalToSuperview().inset(layout.current.titleTopInset)
         }
+        
+        maxPriceTitleLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+        maxPriceTitleLabel.setContentHuggingPriority(.required, for: .horizontal)
     }
     
     private func setupVerticalSeparatorViewLayout() {
@@ -90,12 +113,72 @@ class MaximumPriceView: BaseView {
         }
     }
     
-    private func setupBidAmountLabelLayout() {
-        addSubview(priceAmountLabel)
+    private func setupPriceAmountTextFieldLayout() {
+        addSubview(priceAmountTextField)
         
-        priceAmountLabel.snp.makeConstraints { make in
+        priceAmountTextField.snp.makeConstraints { make in
             make.trailing.equalToSuperview().inset(layout.current.titleHorizontalInset)
             make.top.equalToSuperview().inset(layout.current.titleTopInset)
+            make.leading.equalTo(verticalSeparatorView.snp.trailing).offset(layout.current.verticalSeparatorTopInset)
         }
+    }
+    
+    private func addDoneButtonOnKeyboard() {
+        let doneToolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 50))
+        doneToolbar.barStyle = .default
+        
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let done: UIBarButtonItem = UIBarButtonItem(
+            title: "title-done-lowercased".localized,
+            style: .done,
+            target: self,
+            action: #selector(doneButtonAction)
+        )
+        
+        let items = [flexSpace, done]
+        doneToolbar.items = items
+        doneToolbar.sizeToFit()
+        
+        priceAmountTextField.inputAccessoryView = doneToolbar
+    }
+    
+    // MARK: Actions
+    
+    @objc
+    private func didChangeText(_ textField: UITextField) {
+        guard let doubleValueString = textField.text?.currencyBidInputFormatting(),
+            let doubleValue = doubleValueString.doubleForSendSeparator,
+            doubleValue <= Double(maximumMicroAlgos) else {
+                return
+        }
+        
+        textField.textColor = SharedColors.turquois
+        
+        textField.text = doubleValueString
+        delegate?.maximumPriceViewDidTypeInput(self, in: textField)
+    }
+    
+    @objc
+    private func doneButtonAction() {
+        priceAmountTextField.resignFirstResponder()
+    }
+}
+
+// MARK: - TextFieldDelegate
+extension MaximumPriceView: UITextFieldDelegate {
+   
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        guard let text = textField.text else {
+            return true
+        }
+        
+        guard let doubleValueString = text.appending(string).currencyBidInputFormatting(),
+            let doubleValue = doubleValueString.doubleForSendSeparator,
+            let currentPrice = currentPrice,
+            doubleValue <= Double(currentPrice) / 100 else {
+                return false
+        }
+        
+        return true
     }
 }

@@ -21,7 +21,7 @@ class EmptyStateView: BaseView {
     
     // MARK: Components
     
-    private lazy var titleLabel: UILabel = {
+    private(set) lazy var titleLabel: UILabel = {
         UILabel()
             .withAlignment(.center)
             .withLine(.contained)
@@ -30,9 +30,9 @@ class EmptyStateView: BaseView {
             .withText(title)
     }()
     
-    private lazy var topImageView = UIImageView(image: topImage)
+    private(set) lazy var topImageView = UIImageView(image: topImage)
     
-    private lazy var bottomImageView = UIImageView(image: bottomImage)
+    private(set) lazy var bottomImageView = UIImageView(image: bottomImage)
     
     // MARK: Initialization
     

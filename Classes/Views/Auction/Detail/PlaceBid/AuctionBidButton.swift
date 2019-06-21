@@ -10,12 +10,31 @@ import UIKit
 
 class AuctionBidButton: UIButton {
     
+    var buttonState: ButtonState = .normal {
+        didSet {
+            if buttonState == .loading {
+                loadingIndicator.show()
+            } else {
+                loadingIndicator.dismiss()
+            }
+        }
+    }
+    
+    // MARK: Components
+    
+    private lazy var loadingIndicator: LoadingIndicator = {
+        let loadingIndicator = LoadingIndicator()
+        loadingIndicator.activityIndicator.color = .black
+        return loadingIndicator
+    }()
+    
     // MARK: Initialization
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         configureButton()
+        setupLayout()
     }
     
     @available(*, unavailable)
@@ -32,4 +51,17 @@ class AuctionBidButton: UIButton {
         
         titleLabel?.font = UIFont.font(.overpass, withWeight: .bold(size: 12.0))
     }
+    
+    private func setupLayout() {
+        addSubview(loadingIndicator)
+        
+        loadingIndicator.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
+    }
+}
+
+enum ButtonState {
+    case normal
+    case loading
 }

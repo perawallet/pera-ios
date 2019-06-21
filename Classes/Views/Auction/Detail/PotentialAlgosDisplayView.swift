@@ -8,11 +8,6 @@
 
 import UIKit
 
-protocol PotentialAlgosDisplayViewDelegate: class {
-    
-    func potentialAlgosDisplayViewDidTapInfoButton(_ potentialAlgosDisplayView: PotentialAlgosDisplayView)
-}
-
 class PotentialAlgosDisplayView: BaseView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
@@ -33,16 +28,14 @@ class PotentialAlgosDisplayView: BaseView {
     
     // MARK: Components
     
-    private lazy var infoButton: UIButton = {
-        UIButton(type: .custom).withBackgroundImage(img("button-info"))
-    }()
+    private lazy var infoImageView = UIImageView(image: img("button-info"))
     
     private lazy var potentialAlgosTitleLabel: UILabel = {
         UILabel()
             .withAlignment(.left)
             .withLine(.single)
             .withTextColor(.white)
-            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 12.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 13.0)))
             .withText("auction-detail-potential-min".localized)
     }()
     
@@ -53,11 +46,9 @@ class PotentialAlgosDisplayView: BaseView {
             .withAlignment(.right)
             .withLine(.single)
             .withTextColor(.white)
-            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 18.0)))
-            .withText("10,000.00")
+            .withFont(UIFont.font(.overpass, withWeight: .bold(size: 16.0)))
+            .withText("0.00")
     }()
-    
-    weak var delegate: PotentialAlgosDisplayViewDelegate?
     
     private var mode: Mode
     
@@ -72,29 +63,25 @@ class PotentialAlgosDisplayView: BaseView {
     // MARK: Setup
     
     override func configureAppearance() {
-        backgroundColor = SharedColors.turquois
+        backgroundColor = SharedColors.purple
         layer.cornerRadius = 5.0
         
         if mode == .minimum {
             potentialAlgosTitleLabel.text = "auction-detail-potential-min".localized
-            amountLabel.font = UIFont.font(.avenir, withWeight: .demiBold(size: 18.0))
+            amountLabel.font = UIFont.font(.overpass, withWeight: .bold(size: 16.0))
             algoIconImageView.image = img("icon-algo-white")
         } else {
             potentialAlgosTitleLabel.text = "auction-detail-potential-total".localized
-            amountLabel.font = UIFont.font(.avenir, withWeight: .demiBold(size: 15.0))
+            amountLabel.font = UIFont.font(.overpass, withWeight: .bold(size: 16.0))
             algoIconImageView.image = img("icon-algo-small-white")
         }
-    }
-    
-    override func setListeners() {
-        infoButton.addTarget(self, action: #selector(notifyDelegateToInfoButtonTapped), for: .touchUpInside)
     }
     
     // MARK: Layout
     
     override func prepareLayout() {
         if mode == .total {
-            setupInfoButtonLayout()
+            setupInfoImageViewLayout()
         }
         
         setupPotentialAlgosTitleLabelLayout()
@@ -102,10 +89,10 @@ class PotentialAlgosDisplayView: BaseView {
         setupAlgoIconImageViewLayout()
     }
     
-    private func setupInfoButtonLayout() {
-        addSubview(infoButton)
+    private func setupInfoImageViewLayout() {
+        addSubview(infoImageView)
         
-        infoButton.snp.makeConstraints { make in
+        infoImageView.snp.makeConstraints { make in
             make.size.equalTo(layout.current.buttonSize)
             make.leading.equalToSuperview().inset(layout.current.buttonInset)
             make.top.equalToSuperview().inset(layout.current.totalTopInset)
@@ -150,11 +137,11 @@ class PotentialAlgosDisplayView: BaseView {
         }
     }
     
-    // MARK: Actions
-    
-    @objc
-    private func notifyDelegateToInfoButtonTapped() {
-        delegate?.potentialAlgosDisplayViewDidTapInfoButton(self)
+    func configureViewForZeroValue() {
+        if let zeroValue = (0.0).toDecimalStringForLabel {
+            amountLabel.text = "\(zeroValue)"
+            backgroundColor = SharedColors.softGray.withAlphaComponent(0.8)
+        }
     }
 }
 

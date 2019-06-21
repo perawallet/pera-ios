@@ -7,21 +7,21 @@
 //
 
 import UIKit
+import AVFoundation
+
+protocol AuctionSliderViewDelegate: class {
+    
+    func auctionSliderView(_ auctionSliderView: AuctionSliderView, didChange value: Float)
+}
 
 class AuctionSliderView: BaseView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let verticalInset: CGFloat = 25.0
-        let horizontalInset: CGFloat = 5.0
-        let titleContainerHeight: CGFloat = 37.0
-        let auctionContainerHeight: CGFloat = 175.0
-        let viewHeight: CGFloat = 85.0
-        let viewWidth: CGFloat = UIScreen.main.bounds.width / 2
-        let separatorHeight: CGFloat = 1.0
-        let separatorInset: CGFloat = 20.0
-        let buttonHeight: CGFloat = 56.0
+        let sliderHorizontalInset: CGFloat = 20.0
+        let sliderTopInset: CGFloat = 28.0
         let buttonTopInset: CGFloat = 5.0
-        let buttonInset: CGFloat = 26.0
+        let buttonLeadingInset: CGFloat = 14.0
+        let buttonOffset: CGFloat = (UIScreen.main.bounds.width - 210.0) / 4
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -29,6 +29,8 @@ class AuctionSliderView: BaseView {
     private enum Colors {
         static let separatorColor = rgb(0.95, 0.96, 0.96)
     }
+    
+    private let vibrationGenerator = UIImpactFeedbackGenerator(style: .light)
     
     // MARK: Components
     
@@ -40,7 +42,7 @@ class AuctionSliderView: BaseView {
     private lazy var zeroPercentButton: UIButton = {
         UIButton(type: .custom)
             .withBackgroundColor(.white)
-            .withTitleColor(SharedColors.turquois)
+            .withTitleColor(SharedColors.softGray)
             .withAlignment(.center)
             .withFont(UIFont.font(.overpass, withWeight: .bold(size: 9.0)))
             .withTitle("0%")
@@ -49,7 +51,7 @@ class AuctionSliderView: BaseView {
     private lazy var twentyFivePercentButton: UIButton = {
         UIButton(type: .custom)
             .withBackgroundColor(.white)
-            .withTitleColor(SharedColors.turquois)
+            .withTitleColor(SharedColors.softGray)
             .withAlignment(.center)
             .withFont(UIFont.font(.overpass, withWeight: .bold(size: 9.0)))
             .withTitle("25%")
@@ -58,7 +60,7 @@ class AuctionSliderView: BaseView {
     private lazy var fiftyPercentButton: UIButton = {
         UIButton(type: .custom)
             .withBackgroundColor(.white)
-            .withTitleColor(SharedColors.turquois)
+            .withTitleColor(SharedColors.softGray)
             .withAlignment(.center)
             .withFont(UIFont.font(.overpass, withWeight: .bold(size: 9.0)))
             .withTitle("50%")
@@ -67,7 +69,7 @@ class AuctionSliderView: BaseView {
     private lazy var seventyFivePercentButton: UIButton = {
         UIButton(type: .custom)
             .withBackgroundColor(.white)
-            .withTitleColor(SharedColors.turquois)
+            .withTitleColor(SharedColors.softGray)
             .withAlignment(.center)
             .withFont(UIFont.font(.overpass, withWeight: .bold(size: 9.0)))
             .withTitle("75%")
@@ -76,11 +78,13 @@ class AuctionSliderView: BaseView {
     private lazy var hundredPercentButton: UIButton = {
         UIButton(type: .custom)
             .withBackgroundColor(.white)
-            .withTitleColor(SharedColors.turquois)
+            .withTitleColor(SharedColors.softGray)
             .withAlignment(.center)
             .withFont(UIFont.font(.overpass, withWeight: .bold(size: 9.0)))
             .withTitle("100%")
     }()
+    
+    weak var delegate: AuctionSliderViewDelegate?
     
     // MARK: Setup
     
@@ -115,7 +119,8 @@ class AuctionSliderView: BaseView {
         addSubview(sliderView)
         
         sliderView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
+            make.top.equalToSuperview().inset(layout.current.sliderTopInset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.sliderHorizontalInset)
         }
     }
     
@@ -123,7 +128,8 @@ class AuctionSliderView: BaseView {
         addSubview(zeroPercentButton)
         
         zeroPercentButton.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(sliderView.snp.bottom).offset(layout.current.buttonTopInset)
+            make.leading.equalToSuperview().inset(layout.current.buttonLeadingInset)
         }
     }
     
@@ -131,7 +137,8 @@ class AuctionSliderView: BaseView {
         addSubview(twentyFivePercentButton)
         
         twentyFivePercentButton.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(zeroPercentButton)
+            make.leading.equalTo(zeroPercentButton.snp.trailing).offset(layout.current.buttonOffset)
         }
     }
     
@@ -139,7 +146,8 @@ class AuctionSliderView: BaseView {
         addSubview(fiftyPercentButton)
         
         fiftyPercentButton.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(zeroPercentButton)
+            make.leading.equalTo(twentyFivePercentButton.snp.trailing).offset(layout.current.buttonOffset)
         }
     }
     
@@ -147,7 +155,8 @@ class AuctionSliderView: BaseView {
         addSubview(seventyFivePercentButton)
         
         seventyFivePercentButton.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(zeroPercentButton)
+            make.leading.equalTo(fiftyPercentButton.snp.trailing).offset(layout.current.buttonOffset)
         }
     }
     
@@ -155,7 +164,8 @@ class AuctionSliderView: BaseView {
         addSubview(hundredPercentButton)
         
         hundredPercentButton.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(zeroPercentButton)
+            make.leading.equalTo(seventyFivePercentButton.snp.trailing).offset(layout.current.buttonOffset)
         }
     }
     
@@ -163,24 +173,155 @@ class AuctionSliderView: BaseView {
     
     @objc
     private func percentageButtonDidTap(button: UIButton) {
+        vibrationGenerator.impactOccurred()
+        
         switch button {
         case zeroPercentButton:
-            break
+            configureViewForZeroPercentValue(updatesSliderValue: true)
         case twentyFivePercentButton:
-            break
+            configureViewForTwentyFivePercentValue(updatesSliderValue: true)
         case fiftyPercentButton:
-            break
+            configureViewForFiftyPercentValue(updatesSliderValue: true)
         case seventyFivePercentButton:
-            break
+            configureViewForSeventyFivePercentValue(updatesSliderValue: true)
         case hundredPercentButton:
-            break
+            configureViewForHundredPercentValue(updatesSliderValue: true)
         default:
             break
         }
     }
     
+    func configureViewForZeroPercentValue(updatesSliderValue: Bool = false) {
+        if updatesSliderValue {
+            sliderView.value = 0
+            delegate?.auctionSliderView(self, didChange: sliderView.value)
+            sliderView.setThumbImage(img("icon-slider-zero"), for: .normal)
+        }
+        
+        zeroPercentButton.setTitleColor(SharedColors.softGray, for: .normal)
+        twentyFivePercentButton.setTitleColor(SharedColors.softGray, for: .normal)
+        fiftyPercentButton.setTitleColor(SharedColors.softGray, for: .normal)
+        seventyFivePercentButton.setTitleColor(SharedColors.softGray, for: .normal)
+        hundredPercentButton.setTitleColor(SharedColors.softGray, for: .normal)
+    }
+    
+    func configureViewForTwentyFivePercentValue(updatesSliderValue: Bool = false) {
+        if updatesSliderValue {
+            sliderView.value = 25
+            delegate?.auctionSliderView(self, didChange: sliderView.value)
+            sliderView.setThumbImage(img("icon-slider-selected"), for: .normal)
+        }
+        
+        zeroPercentButton.setTitleColor(SharedColors.turquois, for: .normal)
+        twentyFivePercentButton.setTitleColor(SharedColors.turquois, for: .normal)
+        fiftyPercentButton.setTitleColor(SharedColors.softGray, for: .normal)
+        seventyFivePercentButton.setTitleColor(SharedColors.softGray, for: .normal)
+        hundredPercentButton.setTitleColor(SharedColors.softGray, for: .normal)
+    }
+    
+    func configureViewForFiftyPercentValue(updatesSliderValue: Bool = false) {
+        if updatesSliderValue {
+            sliderView.value = 50
+            delegate?.auctionSliderView(self, didChange: sliderView.value)
+            sliderView.setThumbImage(img("icon-slider-selected"), for: .normal)
+        }
+        
+        zeroPercentButton.setTitleColor(SharedColors.turquois, for: .normal)
+        twentyFivePercentButton.setTitleColor(SharedColors.turquois, for: .normal)
+        fiftyPercentButton.setTitleColor(SharedColors.turquois, for: .normal)
+        seventyFivePercentButton.setTitleColor(SharedColors.softGray, for: .normal)
+        hundredPercentButton.setTitleColor(SharedColors.softGray, for: .normal)
+    }
+    
+    func configureViewForSeventyFivePercentValue(updatesSliderValue: Bool = false) {
+        if updatesSliderValue {
+            sliderView.value = 75
+            delegate?.auctionSliderView(self, didChange: sliderView.value)
+            sliderView.setThumbImage(img("icon-slider-selected"), for: .normal)
+        }
+        
+        zeroPercentButton.setTitleColor(SharedColors.turquois, for: .normal)
+        twentyFivePercentButton.setTitleColor(SharedColors.turquois, for: .normal)
+        fiftyPercentButton.setTitleColor(SharedColors.turquois, for: .normal)
+        seventyFivePercentButton.setTitleColor(SharedColors.turquois, for: .normal)
+        hundredPercentButton.setTitleColor(SharedColors.softGray, for: .normal)
+    }
+    
+    func configureViewForHundredPercentValue(updatesSliderValue: Bool = false) {
+        if updatesSliderValue {
+            sliderView.value = 100
+            delegate?.auctionSliderView(self, didChange: sliderView.value)
+            sliderView.setThumbImage(img("icon-slider-selected"), for: .normal)
+        }
+        
+        zeroPercentButton.setTitleColor(SharedColors.turquois, for: .normal)
+        twentyFivePercentButton.setTitleColor(SharedColors.turquois, for: .normal)
+        fiftyPercentButton.setTitleColor(SharedColors.turquois, for: .normal)
+        seventyFivePercentButton.setTitleColor(SharedColors.turquois, for: .normal)
+        hundredPercentButton.setTitleColor(SharedColors.turquois, for: .normal)
+    }
+    
     @objc
     private func sliderDidChangeValue(sliderView: AuctionSlider) {
+        delegate?.auctionSliderView(self, didChange: sliderView.value)
         
+        if sliderView.value == 0 {
+            sliderView.setThumbImage(img("icon-slider-zero"), for: .normal)
+            configureViewForZeroPercentValue()
+            return
+        }
+        
+        sliderView.setThumbImage(img("icon-slider-selected"), for: .normal)
+        
+        if sliderView.value == 100 {
+            vibrationGenerator.impactOccurred()
+            configureViewForHundredPercentValue()
+            return
+        }
+        
+        if sliderView.value >= 75 {
+            if sliderView.value > 72 && sliderView.value < 78 {
+                vibrationGenerator.impactOccurred()
+            }
+            
+            configureViewForSeventyFivePercentValue()
+            return
+        }
+        
+        if sliderView.value >= 50 {
+            if sliderView.value > 47 && sliderView.value < 53 {
+                vibrationGenerator.impactOccurred()
+            }
+            
+            configureViewForFiftyPercentValue()
+            return
+        }
+        
+        if sliderView.value >= 25 {
+            if sliderView.value > 22 && sliderView.value < 28 {
+                vibrationGenerator.impactOccurred()
+            }
+            
+            configureViewForTwentyFivePercentValue()
+            return
+        }
+        
+        if sliderView.value >= 1 {
+            configureViewForMoreThanZeroValue()
+            return
+        }
+        
+        if sliderView.value == 0 {
+            vibrationGenerator.impactOccurred()
+            return
+        }
+    }
+    
+    private func configureViewForMoreThanZeroValue() {
+        zeroPercentButton.setTitleColor(SharedColors.turquois, for: .normal)
+        twentyFivePercentButton.setTitleColor(SharedColors.softGray, for: .normal)
+        fiftyPercentButton.setTitleColor(SharedColors.softGray, for: .normal)
+        seventyFivePercentButton.setTitleColor(SharedColors.softGray, for: .normal)
+        hundredPercentButton.setTitleColor(SharedColors.softGray, for: .normal)
     }
 }

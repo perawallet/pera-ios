@@ -82,12 +82,16 @@ class ChoosePasswordViewController: BaseViewController {
     }
     
     override func configureNavigationBarAppearance() {
-        if mode == .resetPassword {
+        switch mode {
+        case .confirm,
+             .resetPassword:
             let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
                 self.dismissScreen()
             }
             
             leftBarButtonItems = [closeBarButtonItem]
+        default:
+            break
         }
     }
     
@@ -103,6 +107,8 @@ class ChoosePasswordViewController: BaseViewController {
             title = "password-verify-title".localized
         case .resetPassword, .resetVerify:
             title = "password-change-title".localized
+        case let .confirm(viewTitle):
+            title = viewTitle
         default:
             return
         }
@@ -229,6 +235,6 @@ extension ChoosePasswordViewController {
         case login
         case resetPassword
         case resetVerify(String)
-        case confirm
+        case confirm(String)
     }
 }

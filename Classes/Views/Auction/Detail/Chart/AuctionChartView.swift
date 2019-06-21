@@ -13,6 +13,9 @@ class AuctionChartView: BaseView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let topInset: CGFloat = 20.0
+        let chartTopInset: CGFloat = 5.0
+        let chartHorizontalInset: CGFloat = 20.0
+        let separatorHeight: CGFloat = 1.0
         let horizontalInset: CGFloat = 25.0
         let imageHeight: CGFloat = 4.0
         let bottomInset: CGFloat = 8.0
@@ -22,24 +25,28 @@ class AuctionChartView: BaseView {
     
     private let layout = Layout<LayoutConstants>()
     
+    private enum Colors {
+        static let lineColor = rgba(0.67, 0.67, 0.72, 0.2)
+    }
+    
     // MARK: Components
 
     private(set) lazy var lineChartView: LineChartView = {
         let chartView = LineChartView()
         chartView.backgroundColor = .white
         chartView.drawGridBackgroundEnabled = false
+        chartView.noDataText = ""
         
         chartView.legend.enabled = false
         
+        chartView.leftAxis.enabled = false
         chartView.leftAxis.axisMinimum = 0
-        chartView.leftAxis.axisMaximum = initialValue
-        chartView.leftAxis.labelTextColor = .white
+        chartView.leftAxis.axisMaximum = Double(initialValue)
         chartView.leftAxis.axisLineColor = .white
-        chartView.leftAxis.gridColor = rgba(0.67, 0.67, 0.72, 0.2)
         
         chartView.xAxis.enabled = false
         chartView.xAxis.axisMinimum = 0
-        chartView.xAxis.axisMaximum = 609
+        chartView.xAxis.axisMaximum = self.maximumIndex
         chartView.xAxis.axisLineColor = .white
         
         chartView.rightAxis.enabled = false
@@ -49,7 +56,7 @@ class AuctionChartView: BaseView {
     
     private lazy var currencySignLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(.overpass, withWeight: .bold(size: 15.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .extraBold(size: 15.0)))
             .withTextColor(SharedColors.black)
             .withLine(.single)
             .withAlignment(.left)
@@ -58,30 +65,55 @@ class AuctionChartView: BaseView {
     
     private(set) lazy var currentValueLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(.overpass, withWeight: .bold(size: 30.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .extraBold(size: 30.0)))
             .withTextColor(SharedColors.black)
             .withLine(.single)
             .withAlignment(.left)
-            .withText("\(initialValue)")
     }()
     
     private lazy var titleLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 14.0)))
+            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 14.0)))
             .withTextColor(.black)
             .withLine(.single)
             .withAlignment(.center)
             .withText("auction-price-current-title".localized)
     }()
     
+    private lazy var firstLineView: UIView = {
+        let view = UIView()
+        view.backgroundColor = Colors.lineColor
+        return view
+    }()
+    
+    private lazy var secondLineView: UIView = {
+        let view = UIView()
+        view.backgroundColor = Colors.lineColor
+        return view
+    }()
+    
+    private lazy var thirdLineView: UIView = {
+        let view = UIView()
+        view.backgroundColor = Colors.lineColor
+        return view
+    }()
+    
+    private lazy var forthLineView: UIView = {
+        let view = UIView()
+        view.backgroundColor = Colors.lineColor
+        return view
+    }()
+    
     private lazy var bottomImageView = UIImageView(image: img("img-chart-color"))
     
     private let initialValue: Double
+    private let maximumIndex: Double
     
     // MARK: Initialization
     
-    init(initialValue: Double) {
+    init(initialValue: Double, maximumIndex: Double) {
         self.initialValue = initialValue
+        self.maximumIndex = maximumIndex
         
         super.init(frame: .zero)
     }
@@ -90,51 +122,6 @@ class AuctionChartView: BaseView {
     
     override func configureAppearance() {
         backgroundColor = .white
-        
-        //setupData()
-    }
-    
-    private func setupData() {
-        let pricesDataSet = LineChartDataSet(entries: [ChartDataEntry(x: 0.0, y: initialValue)], label: nil)
-        pricesDataSet.drawValuesEnabled = false
-        pricesDataSet.drawCircleHoleEnabled = false
-        pricesDataSet.drawCirclesEnabled = false
-        pricesDataSet.lineWidth = 4.0
-        pricesDataSet.mode = .horizontalBezier
-        
-        let redDiff: CGFloat = 255.0 / 609.0
-        let greenDiff: CGFloat = 51.0 / 609.0
-        let blueDiff: CGFloat = 255.0 / 609.0
-        
-        var previousRed: CGFloat = 0
-        var previousGreen: CGFloat = 117
-        var previousBlue: CGFloat = 255
-        
-        pricesDataSet.setColor(UIColor(
-            red: CGFloat(previousRed / 255),
-            green: CGFloat(previousGreen / 255),
-            blue: CGFloat(previousBlue / 255),
-            alpha: 1
-        ))
-        
-        for _ in 0...609 {
-            let color = UIColor(
-                red: CGFloat(previousRed / 255),
-                green: CGFloat(previousGreen / 255),
-                blue: CGFloat(previousBlue / 255),
-                alpha: 1
-            )
-            
-            pricesDataSet.addColor(color)
-            
-            previousRed += redDiff
-            previousGreen -= greenDiff
-            previousBlue -= blueDiff
-        }
-        
-        lineChartView.data = LineChartData(dataSet: pricesDataSet)
-        
-        lineChartView.setVisibleXRange(minXRange: Double(1), maxXRange: Double(609))
     }
     
     // MARK: Layout
@@ -143,6 +130,10 @@ class AuctionChartView: BaseView {
         super.prepareLayout()
         
         setupLineChartViewLayout()
+        setupFirstLineViewLayout()
+        setupSecondLineViewLayout()
+        setupThirdLineViewLayout()
+        setupForthLineViewLayout()
         setupCurrentValueLabelLayout()
         setupCurrencySignLabelLayout()
         setupTitleLabelLayout()
@@ -153,7 +144,49 @@ class AuctionChartView: BaseView {
         addSubview(lineChartView)
         
         lineChartView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.bottom.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(layout.current.chartHorizontalInset)
+            make.top.equalToSuperview().inset(layout.current.chartTopInset)
+        }
+    }
+    
+    private func setupFirstLineViewLayout() {
+        addSubview(firstLineView)
+        
+        firstLineView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.top.equalToSuperview().inset(layout.current.topInset)
+            make.height.equalTo(layout.current.separatorHeight)
+        }
+    }
+    
+    private func setupSecondLineViewLayout() {
+        addSubview(secondLineView)
+        
+        secondLineView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.top.equalTo(firstLineView.snp.bottom).offset(layout.current.topInset)
+            make.height.equalTo(layout.current.separatorHeight)
+        }
+    }
+    
+    private func setupThirdLineViewLayout() {
+        addSubview(thirdLineView)
+        
+        thirdLineView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.top.equalTo(secondLineView.snp.bottom).offset(layout.current.topInset)
+            make.height.equalTo(layout.current.separatorHeight)
+        }
+    }
+    
+    private func setupForthLineViewLayout() {
+        addSubview(forthLineView)
+        
+        forthLineView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.top.equalTo(thirdLineView.snp.bottom).offset(layout.current.topInset)
+            make.height.equalTo(layout.current.separatorHeight)
         }
     }
     
@@ -199,15 +232,66 @@ class AuctionChartView: BaseView {
 
 extension AuctionChartView {
     
-    func addData(entry: ChartDataEntry, at index: Int) {
-        lineChartView.data?.addEntry(entry, dataSetIndex: 0)
-        lineChartView.setVisibleXRange(minXRange: Double(1), maxXRange: Double(609))
-        lineChartView.notifyDataSetChanged()
+    func setData(entries: [ChartDataEntry], isCompleted: Bool) {
+        let pricesDataSet = LineChartDataSet(entries: entries, label: nil)
+        pricesDataSet.drawValuesEnabled = false
+        pricesDataSet.drawCircleHoleEnabled = false
+        pricesDataSet.drawCirclesEnabled = false
+        pricesDataSet.lineWidth = 4.0
+        pricesDataSet.mode = .horizontalBezier
+        
+        if isCompleted {
+            pricesDataSet.setColor(rgb(0.67, 0.67, 0.72))
+        } else {
+            pricesDataSet.setColor(SharedColors.turquois)
+        }
+        
+        lineChartView.data = LineChartData(dataSet: pricesDataSet)
+        
+        lineChartView.setVisibleXRange(minXRange: Double(1), maxXRange: maximumIndex)
+    }
+    
+    func addData(entries: [ChartDataEntry], at index: Int) {
+        for entry in entries {
+            lineChartView.data?.addEntry(entry, dataSetIndex: 0)
+            lineChartView.notifyDataSetChanged()
+        }
+        
+        lineChartView.setVisibleXRange(minXRange: Double(1), maxXRange: maximumIndex)
         lineChartView.moveViewToX(Double(index))
+    }
+    
+    func setLastData(entry: ChartDataEntry, isCompleted: Bool) {
+        let pricesDataSet = LineChartDataSet(entries: [entry], label: nil)
+        pricesDataSet.drawValuesEnabled = false
+        
+        pricesDataSet.drawCircleHoleEnabled = true
+        pricesDataSet.drawCirclesEnabled = true
+        pricesDataSet.circleHoleRadius = 4.0
+        pricesDataSet.circleRadius = 10.0
+        
+        pricesDataSet.lineWidth = 4.0
+        pricesDataSet.mode = .horizontalBezier
+        
+        if isCompleted {
+            pricesDataSet.setColor(rgb(0.67, 0.67, 0.72))
+            pricesDataSet.circleColors = [rgb(0.67, 0.67, 0.72).withAlphaComponent(0.1)]
+            pricesDataSet.circleHoleColor = rgb(0.67, 0.67, 0.72)
+        } else {
+            pricesDataSet.setColor(SharedColors.turquois)
+            pricesDataSet.circleColors = [SharedColors.turquois.withAlphaComponent(0.1)]
+            pricesDataSet.circleHoleColor = SharedColors.turquois
+        }
+        
+        lineChartView.data?.removeDataSetByIndex(1)
+        
+        lineChartView.data?.addDataSet(pricesDataSet)
     }
     
     func configureCompletedState() {
         titleLabel.text = "auction-price-closing-title".localized
+        let dataset = lineChartView.data?.getDataSetByIndex(0)
+        dataset?.setColor(rgb(0.67, 0.67, 0.72))
         bottomImageView.image = img("img-chart-dark")
     }
 }

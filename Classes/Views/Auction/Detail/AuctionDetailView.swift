@@ -17,6 +17,7 @@ protocol AuctionDetailViewDelegate: class {
 class AuctionDetailView: BaseView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
+        let topInset: CGFloat = 20.0
         let defaultInset: CGFloat = 15.0
         let headerHeight: CGFloat = 185.0
         let minimumButtonInset: CGFloat = 5.0
@@ -27,25 +28,37 @@ class AuctionDetailView: BaseView {
     
     // MARK: Components
 
-    private lazy var auctionDetailHeaderView: AuctionDetailHeaderView = {
-        let view = AuctionDetailHeaderView()
+    private(set) lazy var auctionDetailHeaderView: AuctionDetailHeaderView = {
+        let view = AuctionDetailHeaderView(initialValue: initialValue, maximumIndex: maximumIndex)
         return view
     }()
     
-    private lazy var placeBidButton: AuctionDetailHeaderButton = {
+    private(set) lazy var placeBidButton: AuctionDetailHeaderButton = {
         let button = AuctionDetailHeaderButton()
         button.isSelected = true
         button.setTitle("auction-detail-place-bid-title".localized, for: .normal)
         return button
     }()
     
-    private lazy var myBidsButton: AuctionDetailHeaderButton = {
-        let button = AuctionDetailHeaderButton()
+    private(set) lazy var myBidsButton: AuctionDetailHeaderButton = {
+        let button = AuctionDetailHeaderButton(hasCornerLabel: true)
         button.setTitle("auction-detail-my-bids-title".localized, for: .normal)
         return button
     }()
     
     weak var delegate: AuctionDetailViewDelegate?
+    
+    private let initialValue: Double
+    private let maximumIndex: Double
+    
+    // MARK: Initialization
+    
+    init(initialValue: Double, maximumIndex: Double) {
+        self.initialValue = initialValue
+        self.maximumIndex = maximumIndex
+        
+        super.init(frame: .zero)
+    }
     
     // MARK: Setup
     
@@ -68,7 +81,8 @@ class AuctionDetailView: BaseView {
         addSubview(auctionDetailHeaderView)
         
         auctionDetailHeaderView.snp.makeConstraints { make in
-            make.leading.trailing.top.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
+            make.top.equalToSuperview().inset(layout.current.topInset)
             make.height.equalTo(layout.current.headerHeight)
         }
     }

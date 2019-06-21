@@ -12,15 +12,15 @@ class Auction: Mappable {
     
     let auctionAddress: String
     let id: Int
-    let bankAddress: String
-    let dispensingAddress: String
-    let lastPrice: Int
-    let depositRound: Int
-    let firstRound: Int
-    let priceChunkRounds: Int
-    let chunkCount: Int
-    let maximumPriceMultiple: Int
-    let algos: Int64
+    let bankAddress: String?
+    let dispensingAddress: String?
+    let lastPrice: Int?
+    let depositRound: Int?
+    let firstRound: Int?
+    let priceChunkRounds: Int?
+    let chunkCount: Int?
+    let maximumPriceMultiple: Int?
+    let algos: Int64?
     let minimumBidAlgos: Int?
 }
 
