@@ -238,8 +238,8 @@ class Router {
             )
         case let .balance(user):
             viewController = BalanceViewController(user: user, configuration: configuration)
-        case .deposit:
-            viewController = DepositViewController(configuration: configuration)
+        case let .deposit(user):
+            viewController = DepositViewController(user: user, configuration: configuration)
         }
         
         return viewController as? T

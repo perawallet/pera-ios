@@ -9,9 +9,9 @@
 import Magpie
 
 enum DepositType: String {
-    case usd = "USD"
-    case btc = "ETH"
-    case eth = "BTC"
+    case usd = "usd"
+    case btc = "eth"
+    case eth = "btc"
 }
 
 extension API {

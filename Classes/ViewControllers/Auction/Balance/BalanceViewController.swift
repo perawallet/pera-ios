@@ -31,6 +31,8 @@ class BalanceViewController: BaseViewController {
         self.user = user
         
         super.init(configuration: configuration)
+        
+        hidesBottomBarWhenPushed = true
     }
     
     // MARK: Setup
@@ -164,6 +166,6 @@ extension BalanceViewController: BalanceViewDelegate {
     }
     
     func balanceViewDidTapDepositButton(_ balanceView: BalanceView) {
-        open(.deposit, by: .push)
+        open(.deposit(user: user), by: .push)
     }
 }
