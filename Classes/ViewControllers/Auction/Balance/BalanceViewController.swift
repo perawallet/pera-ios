@@ -18,6 +18,8 @@ class BalanceViewController: BaseViewController {
     
     private var user: AuctionUser
     
+    private let viewModel = BalanceViewModel()
+    
     // MARK: Components
     
     private lazy var balanceView: BalanceView = {
@@ -97,7 +99,7 @@ class BalanceViewController: BaseViewController {
     }
     
     private func fetchUSDWireInstructions() {
-        api?.fetchDepositInformation(for: .usd) { response in
+        api?.fetchUSDDepositInformation { response in
             switch response {
             case let .success(receivedInstruction):
                 print(receivedInstruction)
@@ -108,7 +110,7 @@ class BalanceViewController: BaseViewController {
     }
     
     private func fetchBTCDepositInstructions() {
-        api?.fetchDepositInformation(for: .btc) { response in
+        api?.fetchBlockchainDepositInformation(for: .btc) { response in
             switch response {
             case let .success(receivedInstruction):
                 print(receivedInstruction)
@@ -119,7 +121,7 @@ class BalanceViewController: BaseViewController {
     }
     
     private func fetchETHDepositInstructions() {
-        api?.fetchDepositInformation(for: .eth) { response in
+        api?.fetchBlockchainDepositInformation(for: .eth) { response in
             switch response {
             case let .success(receivedInstruction):
                 print(receivedInstruction)

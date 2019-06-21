@@ -12,6 +12,7 @@ protocol DepositViewDelegate: class {
     
     func depositViewDidTapDepositButton(_ depositView: DepositView)
     func depositViewDidTapCancelButton(_ depositView: DepositView)
+    func depositView(_ depositView: DepositView, didSelect depositType: DepositType)
 }
 
 class DepositView: BaseView {
@@ -25,10 +26,6 @@ class DepositView: BaseView {
     }
     
     private let layout = Layout<LayoutConstants>()
-    
-    private enum Colors {
-        static let buttonColor = rgb(0.19, 0.0, 0.7)
-    }
     
     weak var delegate: DepositViewDelegate?
     
@@ -60,7 +57,7 @@ class DepositView: BaseView {
     
     private(set) lazy var depositButton: UIButton = {
         UIButton(type: .custom)
-            .withTitleColor(Colors.buttonColor)
+            .withTitleColor(SharedColors.blue)
             .withTitle("balance-button-title-deposit".localized)
             .withAlignment(.center)
             .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 12.0)))
@@ -79,6 +76,10 @@ class DepositView: BaseView {
     }()
     
     // MARK: Setup
+    
+    override func linkInteractors() {
+        depositFundSelectionView.delegate = self
+    }
     
     override func setListeners() {
         cancelButton.addTarget(self, action: #selector(notifyDelegateToCancelButtonTapped), for: .touchUpInside)
@@ -164,5 +165,14 @@ class DepositView: BaseView {
     @objc
     private func notifyDelegateToCancelButtonTapped() {
         delegate?.depositViewDidTapCancelButton(self)
+    }
+}
+
+// MARK: DepositFundSelectionViewDelegate
+
+extension DepositView: DepositFundSelectionViewDelegate {
+    
+    func depositFundSelectionView(_ depositFundSelectionView: DepositFundSelectionView, didSelect depositType: DepositType) {
+        delegate?.depositView(self, didSelect: depositType)
     }
 }

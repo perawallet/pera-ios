@@ -25,10 +25,6 @@ class BalanceView: BaseView {
     
     private let layout = Layout<LayoutConstants>()
     
-    private enum Colors {
-        static let buttonColor = rgb(0.19, 0.0, 0.7)
-    }
-    
     weak var delegate: BalanceViewDelegate?
     
     // MARK: Components
@@ -55,7 +51,7 @@ class BalanceView: BaseView {
     
     private(set) lazy var depositButton: UIButton = {
         UIButton(type: .custom)
-            .withTitleColor(Colors.buttonColor)
+            .withTitleColor(SharedColors.blue)
             .withTitle("balance-button-title-deposit".localized)
             .withAlignment(.center)
             .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 12.0)))

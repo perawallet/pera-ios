@@ -10,7 +10,23 @@ import UIKit
 
 class PendingCoinlistTransactionCell: BaseCollectionViewCell<CoinlistTransactionCellContextView> {
     
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let horizontalInset: CGFloat = 20.0
+    }
+    
+    private let layout = Layout<LayoutConstants>()
+    
     override func configureAppearance() {
+        contextView.balanceLabel.isHidden = true
+        contextView.transactionAmountLabel.textColor = SharedColors.blue
+    }
+    
+    override func prepareLayout() {
+        super.prepareLayout()
         
+        contextView.transactionAmountLabel.snp.remakeConstraints { make in
+            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.centerY.equalToSuperview()
+        }
     }
 }

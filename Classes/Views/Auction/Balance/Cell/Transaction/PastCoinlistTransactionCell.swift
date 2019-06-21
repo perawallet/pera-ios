@@ -10,7 +10,4 @@ import UIKit
 
 class PastCoinlistTransactionCell: BaseCollectionViewCell<CoinlistTransactionCellContextView> {
     
-    override func configureAppearance() {
-        
-    }
 }

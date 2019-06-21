@@ -312,11 +312,21 @@
 "balance-available-title" = "Available Balance";
 "balance-button-title-deposit" = "DEPOSIT";
 "balance-button-title-withdraw" = "WITHDRAW";
+"balance-remove-title" = "Remove";
+"balance-send-title" = "Send";
+"balance-to-title" = "To";
+"balance-bank-title" = "Bank";
+"balance-credit-to-title" = "Credit To";
+"balance-routing-number-title" = "Routing Number";
+"balance-account-number-title" = "Account Number";
+"balance-swift-title" = "Swift";
+"balance-reference-title" = "Reference";
+"balance-reference-number-warning" = "To avoid loss of funds, you must include this reference code in the wire information.";
 
 // MARK: Deposit
 
 "deposit-title" = "Deposit";
-"deposit-bottom-title" = "Deposit instructions will be displayed on the next screen.";
+"deposit-bottom-title" = "Deposit instructions will be displayed on the balance screen.";
 
 // MARK: Withdraw
 
