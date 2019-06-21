@@ -27,6 +27,10 @@ class DepositView: BaseView {
     
     private let layout = Layout<LayoutConstants>()
     
+    private enum Colors {
+        static let gray = rgb(0.58, 0.58, 0.58)
+    }
+    
     weak var delegate: DepositViewDelegate?
     
     // MARK: Components
@@ -65,14 +69,12 @@ class DepositView: BaseView {
     }()
     
     private lazy var bottomExplanationLabel: UILabel = {
-        let label = UILabel()
-            .withAlignment(.left)
+        UILabel()
+            .withAlignment(.center)
             .withLine(.contained)
-            .withTextColor(SharedColors.softGray)
+            .withTextColor(Colors.gray)
             .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 12.0)))
             .withText("deposit-bottom-title".localized)
-        label.isHidden = true
-        return label
     }()
     
     // MARK: Setup

@@ -245,7 +245,6 @@ class USDWireInstructionContextView: BaseView {
         }
     }
     
-    
     private func setupReferenceTitleLabelLayout() {
         referenceContainerView.addSubview(referenceTitleLabel)
         
@@ -254,7 +253,6 @@ class USDWireInstructionContextView: BaseView {
             make.top.equalToSuperview().inset(layout.current.referenceTitleTopInset)
         }
     }
-    
     
     private func setupReferenceLabelLayout() {
         referenceContainerView.addSubview(referenceLabel)

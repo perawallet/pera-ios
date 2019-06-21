@@ -50,7 +50,7 @@ extension API {
                 .httpHeaders([.custom(header: "Authorization", value: "Bearer \(coinlistToken)")])
                 .handler { response in
                     completion?(response)
-            }
+                }
         )
     }
     

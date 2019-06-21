@@ -24,7 +24,7 @@ class DepositTransactionHeaderView: UICollectionReusableView {
     
     // MARK: Components
     
-    private lazy var titleLabel: UILabel = {
+    private(set) lazy var titleLabel: UILabel = {
         UILabel()
             .withAlignment(.center)
             .withLine(.single)

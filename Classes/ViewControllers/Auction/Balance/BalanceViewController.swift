@@ -20,6 +20,8 @@ class BalanceViewController: BaseViewController {
     
     private let viewModel = BalanceViewModel()
     
+    private var pollingOperation: PollingOperation?
+    
     // MARK: Components
     
     private lazy var balanceView: BalanceView = {
@@ -66,6 +68,28 @@ class BalanceViewController: BaseViewController {
             make.top.equalToSuperview().inset(layout.current.topInset)
             make.leading.trailing.bottom.equalToSuperview()
         }
+    }
+    
+    // MARK: View Lifecycle
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        startPolling()
+    }
+    
+    private func startPolling() {
+        pollingOperation = PollingOperation(interval: 5.0) { [weak self] in
+            
+        }
+        
+        pollingOperation?.start()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        pollingOperation?.invalidate()
     }
     
     // MARK: API

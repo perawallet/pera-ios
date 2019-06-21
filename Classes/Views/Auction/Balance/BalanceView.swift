@@ -78,6 +78,24 @@ class BalanceView: BaseView {
             PastCoinlistTransactionCell.self,
             forCellWithReuseIdentifier: PastCoinlistTransactionCell.reusableIdentifier
         )
+        collectionView.register(
+            BlockchainDepositInstructionCell.self,
+            forCellWithReuseIdentifier: BlockchainDepositInstructionCell.reusableIdentifier
+        )
+        collectionView.register(
+            USDWireInstructionCell.self,
+            forCellWithReuseIdentifier: USDWireInstructionCell.reusableIdentifier
+        )
+        collectionView.register(
+            DepositInstructionHeaderView.self,
+            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+            withReuseIdentifier: DepositInstructionHeaderView.reusableIdentifier
+        )
+        collectionView.register(
+            DepositTransactionHeaderView.self,
+            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+            withReuseIdentifier: DepositTransactionHeaderView.reusableIdentifier
+        )
         
         return collectionView
     }()

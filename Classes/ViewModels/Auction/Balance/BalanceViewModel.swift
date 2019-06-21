@@ -1,0 +1,13 @@
+//
+//  BalanceViewModel.swift
+//  algorand
+//
+//  Created by Göktuğ Berk Ulu on 21.06.2019.
+//  Copyright © 2019 hippo. All rights reserved.
+//
+
+import UIKit
+
+class BalanceViewModel {
+    
+}

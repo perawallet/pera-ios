@@ -322,11 +322,23 @@
 "balance-swift-title" = "Swift";
 "balance-reference-title" = "Reference";
 "balance-reference-number-warning" = "To avoid loss of funds, you must include this reference code in the wire information.";
+"balance-pending-transactions-title" = "Pending Transactions";
+"balance-past-transactions-title" = "Past Transactions";
+"balance-btc-deposit-title" = "BTC Deposit Instructions";
+"balance-eth-deposit-title" = "ETH Deposit Instructions";
+"balance-usd-deposit-title" = "USD Wire Instructions";
 
 // MARK: Deposit
 
 "deposit-title" = "Deposit";
 "deposit-bottom-title" = "Deposit instructions will be displayed on the balance screen.";
+"deposit-usd" = "USD";
+"deposit-eth" = "ETH";
+"deposit-btc" = "BTC";
+"deposit-fund-convert-title" = "BTC and ETH will be immediately converted into USD. *Based on rates from %@ at %@.";
+"deposit-amount-title" = "Deposit Amount (USD)";
+"deposit-amount-view-title" = "How much do you want to deposit?";
+"deposit-fund-view-title" = "How will you fund you deposit?";
 
 // MARK: Withdraw
 

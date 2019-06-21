@@ -42,6 +42,8 @@ class DepositViewController: BaseScrollViewController {
     }
     
     override func linkInteractors() {
+        super.linkInteractors()
+        
         depositView.delegate = self
     }
     
