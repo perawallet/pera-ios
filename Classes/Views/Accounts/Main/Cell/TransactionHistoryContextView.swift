@@ -19,7 +19,7 @@ class TransactionHistoryContextView: BaseView {
         let separatorHeight: CGFloat = 1.0
         let minimumHorizontalSpacing: CGFloat = 3.0
         let titleLabelRightInset: CGFloat = 125.0
-        let subtitleLabelRightInset: CGFloat = 105.0
+        let subtitleLabelRightInset: CGFloat = 112.0
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -109,7 +109,7 @@ class TransactionHistoryContextView: BaseView {
             make.leading.equalTo(titleLabel)
             make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.labelVerticalInset)
             make.bottom.equalToSuperview().inset(layout.current.bottomInset)
-            make.trailing.lessThanOrEqualToSuperview().inset(layout.current.subtitleLabelRightInset)
+            make.trailing.equalToSuperview().inset(layout.current.subtitleLabelRightInset)
         }
     }
     

@@ -136,6 +136,13 @@ class PotentialAlgosDisplayView: BaseView {
             make.leading.greaterThanOrEqualTo(potentialAlgosTitleLabel.snp.trailing).offset(layout.current.iconMinimumInset)
         }
     }
+    
+    func configureViewForZeroValue() {
+        if let zeroValue = (0.0).toDecimalStringForLabel {
+            amountLabel.text = "\(zeroValue)"
+            backgroundColor = SharedColors.softGray.withAlphaComponent(0.8)
+        }
+    }
 }
 
 // MARK: Mode

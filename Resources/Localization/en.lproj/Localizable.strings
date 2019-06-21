@@ -80,6 +80,7 @@
 // MARK: Passphrase Verify
 
 "pass-phrase-verify-pop-up-title" = "Passphrase Verified";
+"pass-phrase-verify-try-again" = "Please try again";
 "pass-phrase-verify-pop-up-explanation" = "Your passphrase has been verified. Make sure that you have backed it up as you will need it to recover your account.";
 "pass-phrase-verify-invalid-passphrase" = "Your passphrase is invalid. Please make sure that you entered correct one.";
 "pass-phrase-verify-sdk-error" = "There is something wrong. Please try again later.";
@@ -170,6 +171,7 @@
 "options-default-account-message" = "Default acount is set.";
 "options-view-passphrase-alert-title" = "Biometric Authentication";
 "options-view-passphrase-alert-message" = "You should provide biometric authentication to display your passphrase.";
+"options-view-passphrase-password-alert-message" = "You should enter your correct password to display your passphrase.";
 
 // MARK: History
 
@@ -244,7 +246,7 @@
 "node-settings-database-error-description" = "An error occured on system.";
 "node-settings-warning-message" = "This action will remove the node. Are you sure?";
 "node-settings-action-delete-title" = "Delete";
-"node-settings-default-node-name" = "Algorand Node";
+"node-settings-default-node-name" = "Algorand MainNet Node";
 "node-settings-health-problem-message" = "None of your active nodes are online. Please add or select another node";
 
 // MARK: Transaction Detail
@@ -282,22 +284,25 @@
 "auction-past-auctions" = "Past Auctions";
 "auction-auth-error-message" = "Couldn't authenticate your coinlist account.";
 "auction-bid-coinlist-account-existence-error" = "The wallet associated with your current Coinlist account could not be found among your active accounts. Please make sure that you recover the correct account, and then place your bid again.";
+"auction-bid-zero-max-price-error" = "Max price cannot be equal to zero.";
+"auction-bid-zero-bid-amount-error" = "Bid amount cannot be equal to zero.";
+"auction-bid-min-max-price-error" = "Max price cannot be lower than %@.";
+"auction-bid-potential-algo-error" = "Potential algo value cannot be smaller than %@ algo.";
 "auction-go-auctions" = "GO TO AUCTION";
-"auction-temp-title" = "Unfortunately, the only way to participate at our auction is through our web portal.";
+"auction-temp-title" = "To participate in Algorand auctions, please navigate to our online auction site.";
 
 // MARK: Auction Detail
 
 "auction-detail-title" = "Auction Detail";
 "auction-price-current-title" = "Current Price";
 "auction-price-closing-title" = "Closing Price";
-"auction-detail-potential-min" = "Min Potenial Algos";
+"auction-detail-potential-min" = "Min Potential Algos";
 "auction-detail-potential-total" = "Total Potential Algos:";
 "auction-detail-bid-amount" = "Bid Amount";
 "auction-detail-max-price" = "Max Price";
 "auction-detail-place-bid-title" = "Place Bid";
 "auction-detail-my-bids-title" = "My Bids";
 "auction-detail-place-bid-button-title" = "PLACE BID";
-"auction-detail-limit-order-button-title" = "PLACE LIMIT ORDER";
 "auction-detail-retract-title" = "Retract";
 "auction-detail-min-potential-algos" = "Min Potential Algos";
 "auction-detail-status-rejected-title" = "Rejected";
@@ -305,6 +310,7 @@
 "auction-detail-retract-error" = "Could not retract the bid.";
 "auction-detail-total-algos-title" = "Total Algos";
 "auction-detail-committed-title" = "Total USD Commited";
+"auction-detail-bid-confirm-title" = "Confirm Transaction";
 
 // MARK: Balance
 

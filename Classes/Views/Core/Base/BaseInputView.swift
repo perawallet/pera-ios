@@ -15,7 +15,7 @@ class BaseInputView: BaseView {
         let contentViewTopInset: CGFloat = 7.0
         let contentViewMaximumTopInset: CGFloat = 18.0
         let buttonTopInset: CGFloat = 18.0
-        let separatorTopInset: CGFloat = 20.0
+        let separatorTopInset: CGFloat = 15.0
         let separatorInset: CGFloat = 15.0
         let separatorHeight: CGFloat = 1.0
         let buttonWidth: CGFloat = 38.0

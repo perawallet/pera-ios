@@ -14,6 +14,8 @@
     <dict>
         <key>com.algorandllc.algorand</key>
         <string>{com.algorandllc.algorand}</string>
+        <key>com.algorandllc.algoranddemo</key>
+        <string>{com.algorandllc.algoranddemo}</string>
     </dict>
 </dict>
 </plist>

@@ -17,21 +17,16 @@ class LimitOrderCellContextView: BidCellContextView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let topInset: CGFloat = 17.0
-        let trailingInset: CGFloat = 10.0
+        let trailingInset: CGFloat = 12.0
     }
     
     private let layout = Layout<LayoutConstants>()
     
     // MARK: Components
     
-    private(set) lazy var retractButton: AlignedButton = {
-        let positions: AlignedButton.StylePositionAdjustment = (image: CGPoint(x: 2.5, y: 0.0), title: CGPoint(x: -2.5, y: 0.0))
-        
-        let button = AlignedButton(style: .imageRight(positions))
+    private(set) lazy var retractButton: UIButton = {
+        let button = UIButton(type: .custom)
         button.setImage(img("icon-retract"), for: .normal)
-        button.setTitle("auction-detail-retract-title".localized, for: .normal)
-        button.setTitleColor(SharedColors.orange, for: .normal)
-        button.titleLabel?.font = UIFont.font(.overpass, withWeight: .semiBold(size: 13.0))
         return button
     }()
     

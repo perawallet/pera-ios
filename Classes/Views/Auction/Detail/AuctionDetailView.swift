@@ -41,7 +41,7 @@ class AuctionDetailView: BaseView {
     }()
     
     private(set) lazy var myBidsButton: AuctionDetailHeaderButton = {
-        let button = AuctionDetailHeaderButton()
+        let button = AuctionDetailHeaderButton(hasCornerLabel: true)
         button.setTitle("auction-detail-my-bids-title".localized, for: .normal)
         return button
     }()

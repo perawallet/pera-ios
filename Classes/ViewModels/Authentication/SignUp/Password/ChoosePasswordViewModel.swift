@@ -36,6 +36,8 @@ class ChoosePasswordViewModel {
             choosePasswordView.subtitleLabel.text = "password-change-subtitle".localized
         case .resetVerify:
             choosePasswordView.subtitleLabel.text = "password-verify-subtitle".localized
+        case .confirm:
+            choosePasswordView.subtitleLabel.text = "login-subtitle".localized
         }
     }
     

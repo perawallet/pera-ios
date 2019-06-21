@@ -10,6 +10,11 @@ import UIKit
 import AVFoundation
 import SVProgressHUD
 
+protocol ChoosePasswordViewControllerDelegate: class {
+    
+    func choosePasswordViewController(_ choosePasswordViewController: ChoosePasswordViewController, didConfirmPassword isConfirmed: Bool)
+}
+
 class ChoosePasswordViewController: BaseViewController {
     
     private lazy var choosePasswordView: ChoosePasswordView = {
@@ -34,6 +39,8 @@ class ChoosePasswordViewController: BaseViewController {
         manager.user = user
         return manager
     }()
+    
+    weak var delegate: ChoosePasswordViewControllerDelegate?
     
     // MARK: Initialization
     
@@ -75,12 +82,16 @@ class ChoosePasswordViewController: BaseViewController {
     }
     
     override func configureNavigationBarAppearance() {
-        if mode == .resetPassword {
+        switch mode {
+        case .confirm,
+             .resetPassword:
             let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
                 self.dismissScreen()
             }
             
             leftBarButtonItems = [closeBarButtonItem]
+        default:
+            break
         }
     }
     
@@ -94,10 +105,12 @@ class ChoosePasswordViewController: BaseViewController {
             title = "choose-password-title".localized
         case .verify:
             title = "password-verify-title".localized
-        case .login:
-            return
         case .resetPassword, .resetVerify:
             title = "password-change-title".localized
+        case let .confirm(viewTitle):
+            title = viewTitle
+        default:
+            return
         }
     }
     
@@ -167,6 +180,16 @@ extension ChoosePasswordViewController: ChoosePasswordViewDelegate {
                 
                 dismissScreen()
             }
+        case .confirm:
+            viewModel.configureSelection(in: choosePasswordView, for: value) { password in
+                dismissScreen()
+                
+                if session?.isPasswordMatching(with: password) ?? false {
+                    delegate?.choosePasswordViewController(self, didConfirmPassword: true)
+                } else {
+                    delegate?.choosePasswordViewController(self, didConfirmPassword: false)
+                }
+            }
         }
     }
     
@@ -212,5 +235,6 @@ extension ChoosePasswordViewController {
         case login
         case resetPassword
         case resetVerify(String)
+        case confirm(String)
     }
 }

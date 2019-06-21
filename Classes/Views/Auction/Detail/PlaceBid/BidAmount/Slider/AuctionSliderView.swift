@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 protocol AuctionSliderViewDelegate: class {
     
@@ -28,6 +29,8 @@ class AuctionSliderView: BaseView {
     private enum Colors {
         static let separatorColor = rgb(0.95, 0.96, 0.96)
     }
+    
+    private let vibrationGenerator = UIImpactFeedbackGenerator(style: .light)
     
     // MARK: Components
     
@@ -170,6 +173,8 @@ class AuctionSliderView: BaseView {
     
     @objc
     private func percentageButtonDidTap(button: UIButton) {
+        vibrationGenerator.impactOccurred()
+        
         switch button {
         case zeroPercentButton:
             configureViewForZeroPercentValue(updatesSliderValue: true)
@@ -269,27 +274,45 @@ class AuctionSliderView: BaseView {
         sliderView.setThumbImage(img("icon-slider-selected"), for: .normal)
         
         if sliderView.value == 100 {
+            vibrationGenerator.impactOccurred()
             configureViewForHundredPercentValue()
             return
         }
         
         if sliderView.value >= 75 {
+            if sliderView.value > 72 && sliderView.value < 78 {
+                vibrationGenerator.impactOccurred()
+            }
+            
             configureViewForSeventyFivePercentValue()
             return
         }
         
         if sliderView.value >= 50 {
+            if sliderView.value > 47 && sliderView.value < 53 {
+                vibrationGenerator.impactOccurred()
+            }
+            
             configureViewForFiftyPercentValue()
             return
         }
         
         if sliderView.value >= 25 {
+            if sliderView.value > 22 && sliderView.value < 28 {
+                vibrationGenerator.impactOccurred()
+            }
+            
             configureViewForTwentyFivePercentValue()
             return
         }
         
         if sliderView.value >= 1 {
             configureViewForMoreThanZeroValue()
+            return
+        }
+        
+        if sliderView.value == 0 {
+            vibrationGenerator.impactOccurred()
             return
         }
     }

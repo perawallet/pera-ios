@@ -12,7 +12,11 @@ class AuctionDetailViewModel {
     
     func configure(_ view: AuctionDetailView, with auction: Auction, and auctionStatus: ActiveAuction) {
         if let currentPrice = auctionStatus.currentPrice {
-            view.auctionDetailHeaderView.auctionChartView.currentValueLabel.text = currentPrice.convertToDollars(withSymbol: false)
+            let doubleValue = Double(currentPrice) / 100.0
+            
+            if let currentPriceString = doubleValue.toStringForTwoDecimal {
+                view.auctionDetailHeaderView.auctionChartView.currentValueLabel.text = currentPriceString
+            }
         }
         
         if let remainingAlgos = auctionStatus.remainingAlgos?.toAlgos,
@@ -22,7 +26,9 @@ class AuctionDetailViewModel {
             view.auctionDetailHeaderView.remainingAlgosView.algosAmountView.amountLabel.textColor = SharedColors.turquois
             view.auctionDetailHeaderView.remainingAlgosView.algosAmountView.algoIconImageView.image = img("icon-remaining-algo")
             
-            view.auctionDetailHeaderView.remainingAlgosView.percentageLabel.text = "(\(Int(remainingAlgos * 100 / totalAlgos))%)"
+            if let percentage = (remainingAlgos * 100 / totalAlgos).toStringForTwoDecimal {
+                view.auctionDetailHeaderView.remainingAlgosView.percentageLabel.text = "(\(percentage)%)"
+            }
         }
         
         if let finishTime = auctionStatus.estimatedFinishTime, auctionStatus.isBiddable() {
@@ -43,9 +49,13 @@ class AuctionDetailViewModel {
         }
     }
     
-    func configureMyBidsHeader(_ view: AuctionDetailView, with count: Int) {
-        let title = "auction-detail-my-bids-title".localized + " (\(count))"
-        view.myBidsButton.setTitle(title, for: .normal)
+    func configureMyBidsHeader(_ view: AuctionDetailView, with bidCount: Int) {
+        if bidCount > 0 {
+            view.myBidsButton.cornerLabel.isHidden = false
+            view.myBidsButton.cornerLabel.text = "\(bidCount)"
+        } else {
+            view.myBidsButton.cornerLabel.isHidden = true
+        }
     }
     
     func configureClosedState(_ view: AuctionDetailView, with bids: [Bid], and auctionStatus: ActiveAuction) {

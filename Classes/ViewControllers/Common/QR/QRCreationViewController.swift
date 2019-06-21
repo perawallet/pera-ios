@@ -137,7 +137,6 @@ extension QRCreationViewController {
         
         qrSelectableLabel.snp.makeConstraints { make in
             make.top.equalTo(shareButton.snp.bottom).offset(50 * verticalScale)
-            make.height.equalTo(105)
             make.leading.trailing.equalToSuperview().inset(30)
         }
     }

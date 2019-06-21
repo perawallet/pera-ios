@@ -157,6 +157,7 @@ class AuctionViewController: BaseViewController {
         api?.fetchActiveAuction { response in
             switch response {
             case let .success(auction):
+                let lastAuctionStatus = self.activeAuction
                 self.activeAuction = auction
                 
                 if reload {
@@ -164,6 +165,10 @@ class AuctionViewController: BaseViewController {
                     
                     self.auctionsCollectionView.reloadSection(0)
                 } else {
+                    if lastAuctionStatus?.id != auction.id {
+                        self.fetchPastAuctions(top: auction.id)
+                    }
+                    
                     UIView.performWithoutAnimation {
                         self.auctionsCollectionView.reloadSection(0)
                     }
@@ -345,6 +350,9 @@ class AuctionViewController: BaseViewController {
         auctionIntroductionView = AuctionIntroductionView()
         auctionIntroductionView.delegate = self
         
+        authManager = AuthManager()
+        self.authManager?.delegate = self
+        
         auctionsCollectionView.removeFromSuperview()
         setupAuctionIntroductionViewLayout()
     }
@@ -389,6 +397,8 @@ extension AuctionViewController: UICollectionViewDataSource {
                 }
                 
                 cell.delegate = self
+                
+                activeAuction.totalAlgos = totalAlgosAmount
                 
                 viewModel.configure(cell, with: activeAuction)
                 

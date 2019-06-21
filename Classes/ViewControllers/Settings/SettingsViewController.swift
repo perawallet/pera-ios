@@ -50,6 +50,12 @@ class SettingsViewController: BaseViewController {
         viewModel.delegate = self
         authManager?.delegate = self
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        settingsView.collectionView.reloadItems(at: [IndexPath(row: 4, section: 0)])
+    }
 }
 
 // MARK: UICollectionViewDataSource

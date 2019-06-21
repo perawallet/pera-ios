@@ -41,12 +41,17 @@ class LeftAlignedCollectionViewFlowLayout: UICollectionViewFlowLayout {
                 
                 let frame = CGRect(x: leftMargin, y: topMargin, width: size.width, height: size.height)
                 
+                if item == 0 {
+                    height = size.height
+                }
+                
                 if leftMargin == sectionInset.left {
                     layoutAttribute.frame = frame
                 } else {
                     if collectionWidth - size.width - leftMargin < 0 {
                         leftMargin = sectionInset.left
                         topMargin += size.height + minimumLineSpacing
+                        height += size.height + minimumLineSpacing
                     }
                     let frame = CGRect(x: leftMargin, y: topMargin, width: size.width, height: size.height)
                     
@@ -55,10 +60,10 @@ class LeftAlignedCollectionViewFlowLayout: UICollectionViewFlowLayout {
                 
                 leftMargin += size.width + minimumInteritemSpacing
                 
-                height = max(height, topMargin)
-                
                 cache.append(layoutAttribute)
             }
+            
+            height += sectionInset.bottom + minimumLineSpacing
             
             delegate.leftAlignedLayoutDidCalculateHeight(height)
         }
