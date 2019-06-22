@@ -217,7 +217,7 @@
 "settings-local-authentication" = "Enable FaceID/Touch ID";
 "settings-language" = "Language";
 "settings-language-english" = "English";
-"settings-coinlist" = "Coinbase";
+"settings-coinlist" = "Coinlist";
 "settings-coinlist-connect" = "Connect Account";
 "settings-coinlist-disconnect" = "Disconnect Account";
 
