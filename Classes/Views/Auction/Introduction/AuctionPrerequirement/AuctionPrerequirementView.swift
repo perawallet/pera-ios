@@ -24,7 +24,7 @@ class AuctionPrerequirementView: BaseView {
         let view = AuctionPrerequirementElementView()
         view.numberLabel.text = "1"
         view.titleLabel.text = "auction-introduction-prerequest-first".localized
-        view.subtitleLabel.isHidden = true
+        view.subtitleLabel.text = " "
         return view
     }()
     

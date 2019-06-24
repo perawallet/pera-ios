@@ -19,7 +19,7 @@ class DepositTypeSelectionView: BaseView {
         let horizontalInset: CGFloat = 20.0
         let verticalInset: CGFloat = 25.0
         let typeViewInset: CGFloat = 10.0
-        let depositTypeViewSize = CGSize(width: (UIScreen.main.bounds.width - 60.0) / 3, height: 110.0 * verticalScale)
+        let depositTypeViewSize = CGSize(width: (UIScreen.main.bounds.width - 60.0) / 3, height: 110.0)
     }
     
     private let layout = Layout<LayoutConstants>()

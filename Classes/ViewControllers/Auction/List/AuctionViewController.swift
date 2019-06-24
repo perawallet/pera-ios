@@ -78,7 +78,7 @@ class AuctionViewController: BaseViewController {
     }
     
     override func configureNavigationBarAppearance() {
-        let balancearButtonItem = ALGBarButtonItem(kind: .balance) {
+        let balanceBarButtonItem = ALGBarButtonItem(kind: .balance) {
             guard let user = self.auctionUser else {
                 return
             }
@@ -86,7 +86,11 @@ class AuctionViewController: BaseViewController {
             self.open(.balance(user: user), by: .push)
         }
         
-        leftBarButtonItems = [balancearButtonItem]
+        if session?.coinlistToken != nil {
+            leftBarButtonItems = [balanceBarButtonItem]
+        } else {
+            leftBarButtonItems = []
+        }
     }
     
     // MARK: Setup
@@ -147,6 +151,11 @@ class AuctionViewController: BaseViewController {
             switch response {
             case let .success(user):
                 self.auctionUser = user
+                
+                if self.leftBarButtonItems.isEmpty {
+                    self.configureNavigationBarAppearance()
+                    self.setNeedsNavigationBarAppearanceUpdate()
+                }
             case let .failure(error):
                 print(error)
             }
@@ -355,6 +364,9 @@ class AuctionViewController: BaseViewController {
         
         auctionsCollectionView.removeFromSuperview()
         setupAuctionIntroductionViewLayout()
+        
+        configureNavigationBarAppearance()
+        setNeedsNavigationBarAppearanceUpdate()
     }
 }
 
