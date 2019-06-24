@@ -336,6 +336,7 @@
 "balance-usd-deposit-title" = "USD Wire Instructions";
 "balance-withdraw-website-explanation" = "Withdrawals are not yet available from the mobile app. Please visit our website to do so.";
 "balance-withdraw-website-title" = "WEBSITE";
+"balance-past-transactions-empty-title" = "No Past Transactions";
 
 // MARK: Deposit
 

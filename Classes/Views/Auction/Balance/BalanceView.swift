@@ -88,6 +88,10 @@ class BalanceView: BaseView {
             forCellWithReuseIdentifier: USDWireInstructionCell.reusableIdentifier
         )
         collectionView.register(
+            PastAuctionsEmptyCell.self,
+            forCellWithReuseIdentifier: PastAuctionsEmptyCell.reusableIdentifier
+        )
+        collectionView.register(
             DepositInstructionHeaderView.self,
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
             withReuseIdentifier: DepositInstructionHeaderView.reusableIdentifier

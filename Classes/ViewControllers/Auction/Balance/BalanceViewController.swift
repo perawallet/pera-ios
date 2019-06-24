@@ -187,9 +187,7 @@ class BalanceViewController: BaseViewController {
                         self.sections.append(.pending)
                     }
                     
-                    if !self.pastTransactions.isEmpty {
-                        self.sections.append(.past)
-                    }
+                    self.sections.append(.past)
                 }
                 
                 var reversedTransactions: [CoinlistTransaction] = self.pastTransactions.reversed()
@@ -311,6 +309,10 @@ extension BalanceViewController: UICollectionViewDataSource {
             case .pending:
                 return pendingTransactions.count
             case .past:
+                if pastTransactions.isEmpty {
+                    return 1
+                }
+                
                 return pastTransactions.count
             default:
                 return 1
@@ -341,6 +343,19 @@ extension BalanceViewController: UICollectionViewDataSource {
                 
                 return cell
             case .past:
+                if pastTransactions.isEmpty {
+                    guard let cell = collectionView.dequeueReusableCell(
+                        withReuseIdentifier: PastAuctionsEmptyCell.reusableIdentifier,
+                        for: indexPath) as? PastAuctionsEmptyCell else {
+                            fatalError("Index path is out of bounds")
+                    }
+                    
+                    cell.contextView.titleLabel.text = "balance-past-transactions-empty-title".localized
+                    cell.contextView.imageView.image = img("img-past-coinlist-transactions-empty")
+                    
+                    return cell
+                }
+                
                 guard let cell = collectionView.dequeueReusableCell(
                     withReuseIdentifier: PastCoinlistTransactionCell.reusableIdentifier,
                     for: indexPath) as? PastCoinlistTransactionCell else {
@@ -471,8 +486,13 @@ extension BalanceViewController: UICollectionViewDelegateFlowLayout {
             let section = sections[section]
             
             switch section {
-            case .pending,
-                 .past:
+            case .pending:
+                return CGSize(width: UIScreen.main.bounds.width, height: 80.0)
+            case .past:
+                if pastTransactions.isEmpty {
+                    return CGSize(width: UIScreen.main.bounds.width, height: 300.0)
+                }
+                
                 return CGSize(width: UIScreen.main.bounds.width, height: 80.0)
             case .btc,
                  .eth:
