@@ -175,7 +175,7 @@ class SendAlgosViewController: BaseScrollViewController {
             return
         }
         
-        if selectedAccount.amount - UInt64(amount.toMicroAlgos) < minimumTransactionMicroAlgosLimit {
+        if selectedAccount.amount - UInt64(amount.toMicroAlgos) - minimumFee < minimumTransactionMicroAlgosLimit {
             self.displaySimpleAlertWith(title: "title-error".localized, message: "send-algos-minimum-amount-error".localized)
             return
         }

@@ -144,8 +144,8 @@
 "send-algos-sent-title" = "Algos Sent!";
 "send-algos-alert-title" = "Wrong Transaction";
 "send-algos-alert-message" = "Please fill the fields.";
-"send-algos-minimum-amount-error-new-account" = "You're trying to send money to a new account. The amount must be at least 0.01 Algos";
-"send-algos-minimum-amount-error" = "This transaction will cause your balance to drop below 0.01 Algos, which is the minimum required.";
+"send-algos-minimum-amount-error-new-account" = "You're trying to send money to a new account. The amount must be at least 0.1 algos.";
+"send-algos-minimum-amount-error" = "Transaction amount results in a balance below the minimum account balance of 0.1 algos.";
 "send-algos-amount-error" = "Transaction amount cannot be more than your available algos";
 "send-algos-contact-not-found" = "Contact not found";
 "send-algos-address-not-selected" = "Address not selected";
@@ -247,6 +247,7 @@
 "node-settings-warning-message" = "This action will remove the node. Are you sure?";
 "node-settings-action-delete-title" = "Delete";
 "node-settings-default-node-name" = "Algorand MainNet Node";
+"node-settings-default-test-node-name" = "TestNet";
 "node-settings-health-problem-message" = "None of your active nodes are online. Please add or select another node";
 
 // MARK: Transaction Detail
@@ -341,7 +342,7 @@
 "deposit-usd" = "USD";
 "deposit-eth" = "ETH";
 "deposit-btc" = "BTC";
-"deposit-fund-convert-title" = "BTC and ETH will be immediately converted into USD. *Based on rates from %@ at %@.";
+"deposit-fund-convert-title" = "BTC and ETH will be immediately converted into USD. *Based on rates from Wyre at %@.";
 "deposit-amount-title" = "Deposit Amount (USD)";
 "deposit-amount-view-title" = "How much do you want to deposit?";
 "deposit-fund-view-title" = "How will you fund you deposit?";
