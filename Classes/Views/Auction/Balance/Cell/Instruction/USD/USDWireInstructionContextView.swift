@@ -14,6 +14,7 @@ class USDWireInstructionContextView: BaseView {
         let informationViewWidth: CGFloat = UIScreen.main.bounds.width / 2
         let horizontalInset: CGFloat = 20.0
         let separatorHeight: CGFloat = 1.0
+        let sendViewHeight: CGFloat = 74.0
         let referenceContainerTopInset: CGFloat = 7.0
         let referenceContainerTrailingInset: CGFloat = 25.0
         let referenceContainerSize = CGSize(width: 150.0, height: 60.0)
@@ -150,6 +151,7 @@ class USDWireInstructionContextView: BaseView {
         
         sendInformationView.snp.makeConstraints { make in
             make.leading.top.trailing.equalToSuperview()
+            make.height.equalTo(layout.current.sendViewHeight)
         }
     }
     

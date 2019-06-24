@@ -334,6 +334,8 @@
 "balance-btc-deposit-title" = "BTC Deposit Instructions";
 "balance-eth-deposit-title" = "ETH Deposit Instructions";
 "balance-usd-deposit-title" = "USD Wire Instructions";
+"balance-withdraw-website-explanation" = "Withdrawals are not yet available from the mobile app. Please visit our website to do so.";
+"balance-withdraw-website-title" = "WEBSITE";
 
 // MARK: Deposit
 
@@ -342,7 +344,7 @@
 "deposit-usd" = "USD";
 "deposit-eth" = "ETH";
 "deposit-btc" = "BTC";
-"deposit-fund-convert-title" = "BTC and ETH will be immediately converted into USD. *Based on rates from Wyre at %@.";
+"deposit-fund-convert-title" = "BTC and ETH will be immediately converted into USD.\n*Based on rates from Wyre at %@.";
 "deposit-amount-title" = "Deposit Amount (USD)";
 "deposit-amount-view-title" = "How much do you want to deposit?";
 "deposit-fund-view-title" = "How will you fund you deposit?";

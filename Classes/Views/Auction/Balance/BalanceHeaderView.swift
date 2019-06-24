@@ -18,7 +18,7 @@ class BalanceHeaderView: BaseView {
     
     // MARK: Components
     
-    private lazy var amountLabel: UILabel = {
+    private(set) lazy var amountLabel: UILabel = {
         UILabel()
             .withAlignment(.center)
             .withLine(.single)

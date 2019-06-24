@@ -48,13 +48,12 @@ class DepositFundSelectionView: BaseView {
         return view
     }()
     
-    private lazy var bottomExplanationLabel: UILabel = {
+    private(set) lazy var bottomExplanationLabel: UILabel = {
         UILabel()
             .withAlignment(.center)
             .withLine(.contained)
             .withTextColor(Colors.gray)
             .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 12.0)))
-            .withText("deposit-fund-convert-title".localized)
     }()
     
     // MARK: Setup

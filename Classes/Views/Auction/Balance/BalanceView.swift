@@ -63,6 +63,7 @@ class BalanceView: BaseView {
         flowLayout.scrollDirection = .vertical
         flowLayout.minimumLineSpacing = 0.0
         flowLayout.minimumInteritemSpacing = 0.0
+        flowLayout.sectionHeadersPinToVisibleBounds = true
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
@@ -99,6 +100,8 @@ class BalanceView: BaseView {
         
         return collectionView
     }()
+    
+    private lazy var contentStateView = ContentStateView()
     
     // MARK: Setup
     
@@ -167,6 +170,8 @@ class BalanceView: BaseView {
             make.top.equalTo(buttonContainerView.snp.bottom)
             make.leading.trailing.bottom.equalToSuperview()
         }
+        
+        transactionsCollectionView.backgroundView = contentStateView
     }
     
     // MARK: Actions

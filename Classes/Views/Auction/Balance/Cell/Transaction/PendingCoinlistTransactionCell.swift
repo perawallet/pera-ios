@@ -12,19 +12,21 @@ class PendingCoinlistTransactionCell: BaseCollectionViewCell<CoinlistTransaction
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let horizontalInset: CGFloat = 20.0
+        let minimumInset: CGFloat = 5.0
     }
     
     private let layout = Layout<LayoutConstants>()
     
     override func configureAppearance() {
         contextView.balanceLabel.isHidden = true
-        contextView.transactionAmountLabel.textColor = SharedColors.blue
+        contextView.transactionAmountLabel.font = UIFont.font(.overpass, withWeight: .bold(size: 15.0))
     }
     
     override func prepareLayout() {
         super.prepareLayout()
         
         contextView.transactionAmountLabel.snp.remakeConstraints { make in
+            make.leading.greaterThanOrEqualTo(contextView.titleLabel.snp.trailing).offset(layout.current.minimumInset)
             make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
             make.centerY.equalToSuperview()
         }

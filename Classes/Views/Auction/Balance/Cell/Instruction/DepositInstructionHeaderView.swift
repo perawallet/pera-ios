@@ -103,7 +103,6 @@ class DepositInstructionHeaderView: UICollectionReusableView {
         titleLabel.snp.makeConstraints { make in
             make.centerY.equalTo(imageView)
             make.leading.equalTo(imageView.snp.trailing).offset(layout.current.labelOffset)
-            make.trailing.equalTo(removeButton.snp.leading).offset(-layout.current.labelOffset)
         }
     }
     

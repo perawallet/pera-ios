@@ -29,7 +29,7 @@ class BlockchainDepositInstructionContextView: BaseView {
         return view
     }()
     
-    private(set) lazy var separatorView: UIView = {
+    private lazy var separatorView: UIView = {
         let view = UIView()
         view.backgroundColor = Colors.separatorColor
         return view

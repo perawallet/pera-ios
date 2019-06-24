@@ -97,6 +97,8 @@ class DepositAmountView: BaseView {
         setupFieldContainerViewLayout()
         setupDollarLabelLayout()
         setupAmountTextFieldLayout()
+        
+        addDoneButtonOnKeyboard()
     }
     
     private func setupTitleLabelViewLayout() {
@@ -159,20 +161,42 @@ class DepositAmountView: BaseView {
         }
     }
     
+    private func addDoneButtonOnKeyboard() {
+        let doneToolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 50))
+        doneToolbar.barStyle = .default
+        
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let done: UIBarButtonItem = UIBarButtonItem(
+            title: "title-done-lowercased".localized,
+            style: .done,
+            target: self,
+            action: #selector(doneButtonAction)
+        )
+        
+        let items = [flexSpace, done]
+        doneToolbar.items = items
+        doneToolbar.sizeToFit()
+        
+        amountTextField.inputAccessoryView = doneToolbar
+    }
+    
     // MARK: Actions
     
     @objc
     private func didChangeText(_ textField: UITextField) {
-        guard let doubleValueString = textField.text?.currencyBidInputFormatting(),
-            let doubleValue = doubleValueString.doubleForSendSeparator,
-            doubleValue <= Double(maximumMicroAlgos) else {
-                fieldContainerView.layer.borderColor = SharedColors.softGray.cgColor
-                return
+        guard let doubleValueString = textField.text?.depositAmountFormatter() else {
+            fieldContainerView.layer.borderColor = SharedColors.softGray.cgColor
+            return
         }
         
         fieldContainerView.layer.borderColor = SharedColors.blue.cgColor
         
         textField.text = doubleValueString
+    }
+    
+    @objc
+    private func doneButtonAction() {
+        amountTextField.resignFirstResponder()
     }
 }
 

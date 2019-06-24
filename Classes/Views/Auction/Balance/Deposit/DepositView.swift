@@ -153,7 +153,7 @@ class DepositView: BaseView {
             make.top.equalTo(cancelButton.snp.bottom).offset(layout.current.defaultInset)
             make.centerX.equalToSuperview()
             make.leading.trailing.equalToSuperview().inset(layout.current.defaultInset)
-            make.bottom.equalToSuperview().inset(layout.current.labelBottomInset)
+            make.bottom.lessThanOrEqualToSuperview().inset(layout.current.labelBottomInset)
         }
     }
     
