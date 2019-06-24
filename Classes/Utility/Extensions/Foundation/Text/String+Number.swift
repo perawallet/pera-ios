@@ -29,4 +29,9 @@ extension String {
         let decimal = self.decimal / pow(10, Formatter.separatorForBidInput.maximumFractionDigits)
         return Formatter.separatorForBidInput.string(for: decimal)
     }
+    
+    func depositAmountFormatter() -> String? {
+        let decimal = self.decimal / pow(10, Formatter.depositAmountFormatter.maximumFractionDigits)
+        return Formatter.depositAmountFormatter.string(for: decimal)
+    }
 }

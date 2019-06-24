@@ -8,10 +8,10 @@
 
 import Magpie
 
-enum DepositType: String {
+enum DepositType: String, Mappable, Encodable {
     case usd = "usd"
-    case btc = "eth"
-    case eth = "btc"
+    case btc = "btc"
+    case eth = "eth"
 }
 
 extension API {

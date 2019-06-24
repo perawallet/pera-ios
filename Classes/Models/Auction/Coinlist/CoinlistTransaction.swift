@@ -21,11 +21,13 @@ enum DepositStatus: String, Mappable {
 class CoinlistTransaction: Mappable {
     
     let type: DepositActionType?
-    let amount: String?
+    let amount: Int?
     let time: String?
     let username: String?
     let description: String?
     let status: DepositStatus?
+    
+    var balanceAfterTransaction: Int?
 }
 
 extension CoinlistTransaction {

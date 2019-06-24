@@ -574,6 +574,8 @@
 		2BB3F30E22B1B6A800109C47 /* CoinlistCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB3F30C22B1B6A800109C47 /* CoinlistCell.swift */; };
 		2BB3F31022B1B6C000109C47 /* CoinlistCellContextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB3F30F22B1B6C000109C47 /* CoinlistCellContextView.swift */; };
 		2BB3F31122B1B6C000109C47 /* CoinlistCellContextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB3F30F22B1B6C000109C47 /* CoinlistCellContextView.swift */; };
+		2BC1BA8822BFC5A900E94316 /* DepositInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC1BA8722BFC5A900E94316 /* DepositInstruction.swift */; };
+		2BC1BA8922BFC5A900E94316 /* DepositInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC1BA8722BFC5A900E94316 /* DepositInstruction.swift */; };
 		2BC45DEE225253A1000CDCE2 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC45DED225253A1000CDCE2 /* ImagePicker.swift */; };
 		2BCB22C2226231E800513550 /* HistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCB22C1226231E800513550 /* HistoryViewModel.swift */; };
 		2BCB5C7722B386700038DA6B /* BalanceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCB5C7622B386700038DA6B /* BalanceViewController.swift */; };
@@ -925,6 +927,7 @@
 		2BB021E8224E828E0039D78A /* UICollectionView+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+Additions.swift"; sourceTree = "<group>"; };
 		2BB3F30C22B1B6A800109C47 /* CoinlistCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinlistCell.swift; sourceTree = "<group>"; };
 		2BB3F30F22B1B6C000109C47 /* CoinlistCellContextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinlistCellContextView.swift; sourceTree = "<group>"; };
+		2BC1BA8722BFC5A900E94316 /* DepositInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DepositInstruction.swift; sourceTree = "<group>"; };
 		2BC45DED225253A1000CDCE2 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		2BCB22C1226231E800513550 /* HistoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewModel.swift; sourceTree = "<group>"; };
 		2BCB5C7622B386700038DA6B /* BalanceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceViewController.swift; sourceTree = "<group>"; };
@@ -1306,6 +1309,7 @@
 				2B1B77C622963C560021A6CC /* CoinlistAuthentication.swift */,
 				2B891F1922BD395F003205F5 /* BlockchainInsturction.swift */,
 				2B891F1C22BD3982003205F5 /* USDWireInstruction.swift */,
+				2BC1BA8722BFC5A900E94316 /* DepositInstruction.swift */,
 			);
 			path = Coinlist;
 			sourceTree = "<group>";
@@ -3337,6 +3341,7 @@
 				17BD4E412292F1260003E49A /* AddContactView.swift in Sources */,
 				17BD4E422292F1260003E49A /* PotentialAlgosDisplayView.swift in Sources */,
 				17BD4E432292F1260003E49A /* UIButton+Factory.swift in Sources */,
+				2BC1BA8922BFC5A900E94316 /* DepositInstruction.swift in Sources */,
 				17BD4E442292F1260003E49A /* ToggleCell.swift in Sources */,
 				17BD4E452292F1260003E49A /* AppDelegate.swift in Sources */,
 				17BD4E462292F1260003E49A /* TransactionFee.swift in Sources */,
@@ -3664,6 +3669,7 @@
 				2BD73A192241324700B66EEF /* ChoosePasswordViewModel.swift in Sources */,
 				2B8954C02244047D00D6D068 /* BaseInputView.swift in Sources */,
 				2B56F7DC225B51C100E58737 /* AlgosInputView.swift in Sources */,
+				2BC1BA8822BFC5A900E94316 /* DepositInstruction.swift in Sources */,
 				2B56F7DA225B45B300E58737 /* SendAlgosView.swift in Sources */,
 				2B25BB49225EACB60092C972 /* RequestAlgosView.swift in Sources */,
 				17D04F4A225F90B00051BC43 /* API+Node.swift in Sources */,
