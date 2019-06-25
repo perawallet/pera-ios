@@ -13,6 +13,12 @@ class BalanceViewController: BaseViewController {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let topInset: CGFloat = 20.0 * verticalScale
+        let transactionHeaderSize = CGSize(width: UIScreen.main.bounds.width, height: 51.0)
+        let instructionHeaderSize = CGSize(width: UIScreen.main.bounds.width, height: 65.0)
+        let emptyTransactionSize = CGSize(width: UIScreen.main.bounds.width, height: 300.0)
+        let transactionSize = CGSize(width: UIScreen.main.bounds.width, height: 80.0)
+        let blockchainInstructionSize = CGSize(width: UIScreen.main.bounds.width, height: 147.0)
+        let wireInstructionSize = CGSize(width: UIScreen.main.bounds.width, height: 443.0)
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -487,18 +493,18 @@ extension BalanceViewController: UICollectionViewDelegateFlowLayout {
             
             switch section {
             case .pending:
-                return CGSize(width: UIScreen.main.bounds.width, height: 80.0)
+                return layout.current.transactionSize
             case .past:
                 if pastTransactions.isEmpty {
-                    return CGSize(width: UIScreen.main.bounds.width, height: 300.0)
+                    return layout.current.emptyTransactionSize
                 }
                 
-                return CGSize(width: UIScreen.main.bounds.width, height: 80.0)
+                return layout.current.transactionSize
             case .btc,
                  .eth:
-                return CGSize(width: UIScreen.main.bounds.width, height: 147.0)
+                return layout.current.blockchainInstructionSize
             case .usd:
-                return CGSize(width: UIScreen.main.bounds.width, height: 443.0)
+                return layout.current.wireInstructionSize
             }
         }
         
@@ -517,11 +523,11 @@ extension BalanceViewController: UICollectionViewDelegateFlowLayout {
             switch section {
             case .pending,
                  .past:
-                return CGSize(width: UIScreen.main.bounds.width, height: 51.0)
+                return layout.current.transactionHeaderSize
             case .btc,
                  .eth,
                  .usd:
-                return CGSize(width: UIScreen.main.bounds.width, height: 65.0)
+                return layout.current.instructionHeaderSize
             }
         }
         
