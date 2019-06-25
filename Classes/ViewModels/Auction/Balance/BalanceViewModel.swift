@@ -73,8 +73,18 @@ class BalanceViewModel {
         }
         
         view.accountInformationView.detailLabel.text = information.accountNumber
-        view.bankInformationView.detailLabel.text = information.bankAddress
-        view.creditInformationView.detailLabel.text = information.creditTo
+        
+        if let bankAddress = information.bankAddress,
+            let bankName = information.bankName,
+            let phone = information.bankPhone {
+            view.bankInformationView.detailLabel.text = "\(bankName)\n\(bankAddress)\n\(phone)"
+        }
+        
+        if let creditTo = information.creditTo,
+            let beneficiaryAddress = information.beneficiaryAddress {
+            view.creditInformationView.detailLabel.text = "\(creditTo)\n\(beneficiaryAddress)"
+        }
+        
         view.routingInformationView.detailLabel.text = information.routingNumber
         view.swiftInformationView.detailLabel.text = information.swift
         view.referenceLabel.text = information.reference
@@ -99,7 +109,7 @@ class BalanceViewModel {
     ) {
         if let rate = information.rate,
             let amount = (deposit.amount * 100 / Double(rate)).toDecimalStringForLabel,
-            let dollarAmount = deposit.amount.toDecimalStringForLabel {
+            let dollarAmount = deposit.amount.toCryptoCurrencyStringForLabel {
             
             let mainAttributedText = deposit.type == .eth ? NSAttributedString(string: "\(amount) ETH")
                 : NSAttributedString(string: "\(amount) BTC")

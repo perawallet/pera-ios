@@ -65,7 +65,6 @@ class DepositViewController: BaseScrollViewController {
         SVProgressHUD.show(withStatus: "title-loading".localized)
         
         fetchBTCDepositInstructions()
-        fetchETHDepositInstructions()
     }
     
     override func linkInteractors() {
