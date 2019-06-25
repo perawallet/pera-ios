@@ -21,6 +21,10 @@ extension Double {
         return Formatter.separatorForAlgosLabel.string(from: NSNumber(value: self))
     }
     
+    var toCryptoCurrencyStringForLabel: String? {
+        return Formatter.cryptoCurrencyFormatter.string(from: NSNumber(value: self))
+    }
+    
     var toDecimalStringForURL: String? {
         return Formatter.numberToStringFormatter.string(from: NSNumber(value: self))
     }

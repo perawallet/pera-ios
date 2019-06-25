@@ -23,14 +23,18 @@ class Environment {
     
     lazy var serverSchema: String = {
         switch target {
-        case .staging, .prod:
+        case .staging:
+            return "http"
+        case .prod:
             return "https"
         }
     }()
     
     lazy var serverHost: String = {
         switch target {
-        case .staging, .prod:
+        case .staging:
+            return "3.15.4.163:8080"
+        case .prod:
             return "indexer.algorand.network:8443"
         }
     }()
@@ -73,7 +77,21 @@ class Environment {
     }()
     
     lazy var serverToken: String = {
-       "0f24cac92e5ead6afbcf389e0ade28bb609d24ca6687359f342748c68d6cf9b2"
+        switch target {
+        case .staging:
+            return "14a6e674fa8acbf71f3c3fbbf6cc52ff34901e72f7c6d5608d2e03644f6e657f"
+        case .prod:
+            return "0f24cac92e5ead6afbcf389e0ade28bb609d24ca6687359f342748c68d6cf9b2"
+        }
+    }()
+    
+    lazy var algorandNodeName: String = {
+        switch target {
+        case .staging:
+            return "node-settings-default-test-node-name".localized
+        case .prod:
+            return "node-settings-default-node-name".localized
+        }
     }()
     
     private let target: AppTarget

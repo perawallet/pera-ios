@@ -20,7 +20,7 @@ class PastAuctionsEmptyView: BaseView {
     
     // MARK: Components
     
-    private lazy var titleLabel: UILabel = {
+    private(set) lazy var titleLabel: UILabel = {
         UILabel()
             .withAlignment(.center)
             .withLine(.contained)
@@ -29,7 +29,7 @@ class PastAuctionsEmptyView: BaseView {
             .withText("auction-past-empty-title".localized)
     }()
     
-    private lazy var imageView = UIImageView(image: img("img-past-auctions-empty"))
+    private(set) lazy var imageView = UIImageView(image: img("img-past-auctions-empty"))
     
     // MARK: Setup
     

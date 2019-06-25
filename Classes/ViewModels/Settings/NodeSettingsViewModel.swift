@@ -30,7 +30,7 @@ class NodeSettingsViewModel {
     
     func configureDefaultNode(_ cell: ToggleCell, enabled: Bool, for indexPath: IndexPath) {
         cell.contextView.indexPath = indexPath
-        cell.contextView.nameLabel.text = "node-settings-default-node-name".localized
+        cell.contextView.nameLabel.text = Environment.current.algorandNodeName
         cell.contextView.toggle.setOn(enabled, animated: false)
         cell.contextView.delegate = self
     }

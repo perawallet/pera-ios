@@ -144,8 +144,8 @@
 "send-algos-sent-title" = "Algos Sent!";
 "send-algos-alert-title" = "Wrong Transaction";
 "send-algos-alert-message" = "Please fill the fields.";
-"send-algos-minimum-amount-error-new-account" = "You're trying to send money to a new account. The amount must be at least 0.01 Algos";
-"send-algos-minimum-amount-error" = "This transaction will cause your balance to drop below 0.01 Algos, which is the minimum required.";
+"send-algos-minimum-amount-error-new-account" = "You're trying to send money to a new account. The amount must be at least 0.1 algos.";
+"send-algos-minimum-amount-error" = "Transaction amount results in a balance below the minimum account balance of 0.1 algos.";
 "send-algos-amount-error" = "Transaction amount cannot be more than your available algos";
 "send-algos-contact-not-found" = "Contact not found";
 "send-algos-address-not-selected" = "Address not selected";
@@ -247,6 +247,7 @@
 "node-settings-warning-message" = "This action will remove the node. Are you sure?";
 "node-settings-action-delete-title" = "Delete";
 "node-settings-default-node-name" = "Algorand MainNet Node";
+"node-settings-default-test-node-name" = "TestNet";
 "node-settings-health-problem-message" = "None of your active nodes are online. Please add or select another node";
 
 // MARK: Transaction Detail
@@ -311,3 +312,44 @@
 "auction-detail-total-algos-title" = "Total Algos";
 "auction-detail-committed-title" = "Total USD Commited";
 "auction-detail-bid-confirm-title" = "Confirm Transaction";
+
+// MARK: Balance
+
+"balance-title" = "Balance";
+"balance-available-title" = "Available Balance";
+"balance-button-title-deposit" = "DEPOSIT";
+"balance-button-title-withdraw" = "WITHDRAW";
+"balance-remove-title" = "Remove";
+"balance-send-title" = "Send";
+"balance-to-title" = "To";
+"balance-bank-title" = "Bank";
+"balance-credit-to-title" = "Credit To";
+"balance-routing-number-title" = "Routing Number";
+"balance-account-number-title" = "Account Number";
+"balance-swift-title" = "Swift";
+"balance-reference-title" = "Reference";
+"balance-reference-number-warning" = "To avoid loss of funds, you must include this reference code in the wire information.";
+"balance-pending-transactions-title" = "Pending Transactions";
+"balance-past-transactions-title" = "Past Transactions";
+"balance-btc-deposit-title" = "BTC Deposit Instructions";
+"balance-eth-deposit-title" = "ETH Deposit Instructions";
+"balance-usd-deposit-title" = "USD Wire Instructions";
+"balance-withdraw-website-explanation" = "Withdrawals are not yet available from the mobile app. Please visit our website to do so.";
+"balance-withdraw-website-title" = "WEBSITE";
+"balance-past-transactions-empty-title" = "No Past Transactions";
+
+// MARK: Deposit
+
+"deposit-title" = "Deposit";
+"deposit-bottom-title" = "Deposit instructions will be displayed on the balance screen.";
+"deposit-usd" = "USD";
+"deposit-eth" = "ETH";
+"deposit-btc" = "BTC";
+"deposit-fund-convert-title" = "BTC and ETH will be immediately converted into USD.\n*Based on rates from Wyre at %@.";
+"deposit-amount-title" = "Deposit Amount (USD)";
+"deposit-amount-view-title" = "How much do you want to deposit?";
+"deposit-fund-view-title" = "How will you fund you deposit?";
+
+// MARK: Withdraw
+
+"withdraw-title" = "Withdraw";
