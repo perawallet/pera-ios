@@ -88,8 +88,9 @@ class AlertViewController: BaseViewController {
     
     private func executeHandler() {
         if let handler = alertConfigurator.actionHandler {
-            dismissScreen()
-            handler()
+            dismiss(animated: true) {
+                handler()
+            }
             return
         }
         
