@@ -17,3 +17,18 @@ class CursorlessTextField: UITextField {
         return []
     }
 }
+
+extension UITextField {
+    
+    func setLeftPadding(amount point: CGFloat) {
+        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: point, height: frame.size.height))
+        self.leftView = paddingView
+        self.leftViewMode = .always
+    }
+    
+    func setRightPadding(amount point: CGFloat) {
+        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: point, height: frame.size.height))
+        self.rightView = paddingView
+        self.rightViewMode = .always
+    }
+}

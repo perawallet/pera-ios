@@ -140,6 +140,8 @@ class BidAmountView: BaseView {
             make.top.equalToSuperview().inset(layout.current.fieldHorizontalInset)
             make.height.equalTo(layout.current.fieldHeight)
         }
+        
+        bidAmountTextField.setRightPadding(amount: 5.0)
     }
     
     private func setupAvailableAmountLabelLayout() {
