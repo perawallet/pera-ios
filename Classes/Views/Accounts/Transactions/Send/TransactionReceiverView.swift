@@ -179,8 +179,10 @@ class TransactionReceiverView: BaseView {
     }
     
     private func configurePassphraseInputView(with address: String) {
-        passphraseInputView.snp.updateConstraints { make in
-            make.trailing.equalToSuperview().inset(65.0)
+        if actionMode != .none {
+            passphraseInputView.snp.updateConstraints { make in
+                make.trailing.equalToSuperview().inset(65.0)
+            }
         }
         
         let width = UIScreen.main.bounds.width - 105.0

@@ -433,6 +433,7 @@ extension SendAlgosViewController: SendAlgosPreviewViewControllerDelegate {
     
     private func resetView(for state: AlgosReceiverState) {
         amount = 0.00
+        sendAlgosView.algosInputView.inputTextField.text = nil
         receiver = state
         sendAlgosView.transactionReceiverView.state = state
     }

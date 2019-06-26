@@ -43,6 +43,7 @@ class SendAlgosPreviewView: SendAlgosView {
         
         algosInputView.inputTextField.isEnabled = false
         transactionReceiverView.passphraseInputView.inputTextView.isEditable = false
+        transactionReceiverView.actionMode = .none
         accountSelectionView.isUserInteractionEnabled = false
     }
     
