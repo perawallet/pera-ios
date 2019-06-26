@@ -149,6 +149,10 @@
 "send-algos-amount-error" = "Transaction amount cannot be more than your available algos";
 "send-algos-contact-not-found" = "Contact not found";
 "send-algos-address-not-selected" = "Address not selected";
+"send-algos-address" = "Address";
+"send-algos-my-accounts" = "My Accounts";
+"send-algos-contacts" = "Contacts";
+"send-algos-scan" = "Scan QR";
 
 // MARK: Algos Request
 
@@ -197,7 +201,7 @@
 "contacts-input-name-explanation" = "Name:";
 "contacts-input-name-placeholder" = "Contact Name";
 "contacts-input-address-explanation" = "Address:";
-"contacts-input-address-placeholder" = "Paste # or Scan QR";
+"contacts-input-address-placeholder" = "Enter Address";
 "contacts-transactions-title" = "Transactions";
 "contacts-add-button" = "ADD CONTACT";
 "contacts-edit-button" = "EDIT CONTACT";

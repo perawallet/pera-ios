@@ -18,7 +18,7 @@ class AuctionSliderView: BaseView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let sliderHorizontalInset: CGFloat = 20.0
-        let sliderTopInset: CGFloat = 28.0
+        let sliderTopInset: CGFloat = 24.0
         let buttonTopInset: CGFloat = 5.0
         let buttonLeadingInset: CGFloat = 14.0
         let buttonOffset: CGFloat = (UIScreen.main.bounds.width - 210.0) / 4

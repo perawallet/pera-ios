@@ -93,6 +93,7 @@ class TransactionDetailViewController: BaseScrollViewController {
         transaction.contact = contact
         
         transactionDetailView.transactionOpponentView.state = .contact(contact)
+        transactionDetailView.transactionOpponentView.actionMode = .qrView
     }
 }
 

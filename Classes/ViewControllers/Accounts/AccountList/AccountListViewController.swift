@@ -10,8 +10,7 @@ import UIKit
 
 protocol AccountListViewControllerDelegate: class {
     func accountListViewControllerDidTapAddButton(_ viewController: AccountListViewController)
-    func accountListViewController(_ viewController: AccountListViewController,
-                                   didSelectAccount account: Account)
+    func accountListViewController(_ viewController: AccountListViewController, didSelectAccount account: Account)
 }
 
 enum AccountListMode {

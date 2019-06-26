@@ -108,9 +108,6 @@ class SendAlgosSuccessView: BaseView {
 
     private(set) lazy var transactionReceiverView: TransactionReceiverView = {
         let view = TransactionReceiverView()
-        view.receiverContactView.qrDisplayButton.isHidden = true
-        view.qrButton.setImage(img("icon-contact-add"), for: .normal)
-        view.qrButton.setBackgroundImage(nil, for: .normal)
         return view
     }()
     
@@ -123,11 +120,15 @@ class SendAlgosSuccessView: BaseView {
     
     // MARK: Setup
     
+    override func linkInteractors() {
+        super.linkInteractors()
+        
+        transactionReceiverView.delegate = self
+    }
+    
     override func setListeners() {
         doneButton.addTarget(self, action: #selector(notifyDelegateToDoneButtonTapped), for: .touchUpInside)
         sendMoreButton.addTarget(self, action: #selector(notifyDelegateToSendMoreButtonTapped), for: .touchUpInside)
-        
-        transactionReceiverView.qrButton.addTarget(self, action: #selector(notifyDelegateToAddContactButtonTapped), for: .touchUpInside)
     }
     
     // MARK: Layout
@@ -267,9 +268,19 @@ class SendAlgosSuccessView: BaseView {
     private func notifyDelegateToSendMoreButtonTapped() {
         delegate?.sendAlgosSuccessViewDidTapSendMoreButton(self)
     }
+}
+
+extension SendAlgosSuccessView: TransactionReceiverViewDelegate {
     
-    @objc
-    private func notifyDelegateToAddContactButtonTapped() {
-        delegate?.sendAlgosSuccessViewDidTapAddContactButton(self)
+    func transactionReceiverViewDidTapActionButton(
+        _ transactionReceiverView: TransactionReceiverView,
+        with mode: TransactionReceiverView.ActionMode
+    ) {
+        switch mode {
+        case .contactAddition:
+            delegate?.sendAlgosSuccessViewDidTapAddContactButton(self)
+        default:
+            break
+        }
     }
 }

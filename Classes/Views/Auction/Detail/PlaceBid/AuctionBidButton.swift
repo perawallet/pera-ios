@@ -10,6 +10,13 @@ import UIKit
 
 class AuctionBidButton: UIButton {
     
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let indicatorTrailingInset: CGFloat = 20.0
+        let indicatorTopInset: CGFloat = 18.0
+    }
+    
+    private let layout = Layout<LayoutConstants>()
+    
     var buttonState: ButtonState = .normal {
         didSet {
             if buttonState == .loading {
@@ -22,9 +29,9 @@ class AuctionBidButton: UIButton {
     
     // MARK: Components
     
-    private lazy var loadingIndicator: LoadingIndicator = {
+    private(set) lazy var loadingIndicator: LoadingIndicator = {
         let loadingIndicator = LoadingIndicator()
-        loadingIndicator.activityIndicator.color = .black
+        loadingIndicator.activityIndicator.color = SharedColors.purple
         return loadingIndicator
     }()
     
@@ -56,7 +63,8 @@ class AuctionBidButton: UIButton {
         addSubview(loadingIndicator)
         
         loadingIndicator.snp.makeConstraints { make in
-            make.center.equalToSuperview()
+            make.top.equalToSuperview().inset(layout.current.indicatorTopInset)
+            make.trailing.equalToSuperview().inset(layout.current.indicatorTrailingInset)
         }
     }
 }

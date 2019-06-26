@@ -12,7 +12,10 @@ import Lottie
 protocol SendAlgosSuccessViewControllerDelegate: class {
     
     func sendAlgosSuccessViewControllerDidTapDoneButton(_ sendAlgosSuccessViewController: SendAlgosSuccessViewController)
-    func sendAlgosSuccessViewControllerDidTapSendMoreButton(_ sendAlgosSuccessViewController: SendAlgosSuccessViewController)
+    func sendAlgosSuccessViewControllerDidTapSendMoreButton(
+        _ sendAlgosSuccessViewController: SendAlgosSuccessViewController,
+        withReceiver state: AlgosReceiverState
+    )
 }
 
 class SendAlgosSuccessViewController: BaseScrollViewController {
@@ -63,6 +66,13 @@ class SendAlgosSuccessViewController: BaseScrollViewController {
         sendAlgosSuccessView.accountView.detailLabel.text = transaction.fromAccount.name
         sendAlgosSuccessView.transactionReceiverView.state = receiver
         
+        switch receiver {
+        case .contact:
+            sendAlgosSuccessView.transactionReceiverView.actionMode = .none
+        default:
+            sendAlgosSuccessView.transactionReceiverView.actionMode = .contactAddition
+        }
+        
         if let identifier = transaction.identifier {
             var formattedId = identifier
             
@@ -108,7 +118,7 @@ extension SendAlgosSuccessViewController: SendAlgosSuccessViewDelegate {
     func sendAlgosSuccessViewDidTapSendMoreButton(_ sendAlgosSuccessView: SendAlgosSuccessView) {
         dismissScreen()
         
-        delegate?.sendAlgosSuccessViewControllerDidTapSendMoreButton(self)
+        delegate?.sendAlgosSuccessViewControllerDidTapSendMoreButton(self, withReceiver: receiver)
     }
     
     func sendAlgosSuccessViewDidTapAddContactButton(_ sendAlgosSuccessView: SendAlgosSuccessView) {
