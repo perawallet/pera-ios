@@ -19,13 +19,14 @@ class BidAmountView: BaseView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let titleHorizontalInset: CGFloat = 17.0
         let titleTopInset: CGFloat = 18.0
+        let fieldHorizontalInset: CGFloat = 11.0
+        let fieldHeight: CGFloat = 31.0
         let amountLabelInset: CGFloat = 3.0
         let separatorInset: CGFloat = 12.0
         let separatorHeight: CGFloat = 1.0
-        let verticalSeparatorTopInset: CGFloat = 10.0
-        let verticalSeparatorHeight: CGFloat = 30.0
         let sliderTopInset: CGFloat = 5.0
         let sliderHeight: CGFloat = 100.0
+        let separatorTopInset: CGFloat = 8.0
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -46,12 +47,6 @@ class BidAmountView: BaseView {
             .withText("auction-detail-bid-amount".localized)
     }()
     
-    private lazy var verticalSeparatorView: UIView = {
-        let view = UIView()
-        view.backgroundColor = Colors.borderColor
-        return view
-    }()
-    
     private(set) lazy var bidAmountTextField: CursorlessTextField = {
         let view = CursorlessTextField()
         view.textAlignment = .right
@@ -64,6 +59,11 @@ class BidAmountView: BaseView {
                          NSAttributedString.Key.font: UIFont.font(.overpass, withWeight: .bold(size: 13.0))]
         )
         view.delegate = self
+        
+        view.layer.cornerRadius = 5.0
+        view.layer.borderWidth = 1.0
+        view.layer.borderColor = Colors.borderColor.cgColor
+        view.backgroundColor = SharedColors.warmWhite
         
         return view
     }()
@@ -112,7 +112,6 @@ class BidAmountView: BaseView {
     
     override func prepareLayout() {
         setupBidAmountTitleLabelLayout()
-        setupVerticalSeparatorViewLayout()
         setupBidAmountTextFieldLayout()
         setupAvailableAmountLabelLayout()
         setupHorizontalSeparatorViewLayout()
@@ -133,23 +132,13 @@ class BidAmountView: BaseView {
         bidAmountTitleLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
     }
     
-    private func setupVerticalSeparatorViewLayout() {
-        addSubview(verticalSeparatorView)
-        
-        verticalSeparatorView.snp.makeConstraints { make in
-            make.leading.equalTo(bidAmountTitleLabel.snp.trailing).offset(layout.current.titleHorizontalInset)
-            make.width.equalTo(layout.current.separatorHeight)
-            make.height.equalTo(layout.current.verticalSeparatorHeight)
-            make.top.equalToSuperview().inset(layout.current.verticalSeparatorTopInset)
-        }
-    }
-    
     private func setupBidAmountTextFieldLayout() {
         addSubview(bidAmountTextField)
         
         bidAmountTextField.snp.makeConstraints { make in
-            make.leading.equalTo(verticalSeparatorView.snp.trailing).offset(layout.current.amountLabelInset)
-            make.top.equalToSuperview().inset(layout.current.titleTopInset)
+            make.leading.equalTo(bidAmountTitleLabel.snp.trailing).offset(layout.current.titleHorizontalInset)
+            make.top.equalToSuperview().inset(layout.current.fieldHorizontalInset)
+            make.height.equalTo(layout.current.fieldHeight)
         }
     }
     
@@ -170,7 +159,7 @@ class BidAmountView: BaseView {
         addSubview(horizontalSeparatorView)
         
         horizontalSeparatorView.snp.makeConstraints { make in
-            make.top.equalTo(bidAmountTitleLabel.snp.bottom).offset(layout.current.titleHorizontalInset)
+            make.top.equalTo(bidAmountTextField.snp.bottom).offset(layout.current.separatorTopInset)
             make.leading.trailing.equalToSuperview().inset(layout.current.separatorInset)
             make.height.equalTo(layout.current.separatorHeight)
         }
@@ -180,7 +169,7 @@ class BidAmountView: BaseView {
         addSubview(auctionSliderView)
         
         auctionSliderView.snp.makeConstraints { make in
-            make.top.equalTo(horizontalSeparatorView.snp.bottom).offset(layout.current.sliderTopInset)
+            make.top.equalTo(horizontalSeparatorView.snp.bottom)
             make.height.equalTo(layout.current.sliderHeight)
             make.leading.trailing.bottom.equalToSuperview()
         }
