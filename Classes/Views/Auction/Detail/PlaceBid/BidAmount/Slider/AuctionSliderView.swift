@@ -34,7 +34,7 @@ class AuctionSliderView: BaseView {
     
     // MARK: Components
     
-    private lazy var sliderView: AuctionSlider = {
+    private(set) lazy var sliderView: AuctionSlider = {
         let slider = AuctionSlider()
         return slider
     }()
@@ -317,11 +317,40 @@ class AuctionSliderView: BaseView {
         }
     }
     
-    private func configureViewForMoreThanZeroValue() {
+    func configureViewForMoreThanZeroValue() {
         zeroPercentButton.setTitleColor(SharedColors.turquois, for: .normal)
         twentyFivePercentButton.setTitleColor(SharedColors.softGray, for: .normal)
         fiftyPercentButton.setTitleColor(SharedColors.softGray, for: .normal)
         seventyFivePercentButton.setTitleColor(SharedColors.softGray, for: .normal)
         hundredPercentButton.setTitleColor(SharedColors.softGray, for: .normal)
+    }
+    
+    func configureViewFor(percentage: Float) {
+        sliderView.setThumbImage(img("icon-slider-selected"), for: .normal)
+        
+        if percentage == 100 {
+            configureViewForHundredPercentValue()
+            return
+        }
+        
+        if percentage >= 75 {
+            configureViewForSeventyFivePercentValue()
+            return
+        }
+        
+        if percentage >= 50 {
+            configureViewForFiftyPercentValue()
+            return
+        }
+        
+        if percentage >= 25 {
+            configureViewForTwentyFivePercentValue()
+            return
+        }
+        
+        if percentage >= 1 {
+            configureViewForMoreThanZeroValue()
+            return
+        }
     }
 }
