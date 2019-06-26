@@ -281,11 +281,33 @@ extension PlaceBidViewController: PlaceBidViewDelegate {
     }
     
     func placeBidViewDidTypeInput(_ placeBidView: PlaceBidView, in textField: UITextField) {
+        if let amount = parseBidAmount(),
+            var availableAmount = user.availableAmount {
+            availableAmount /= 100
+            let sliderPercentage = Float(amount / Double(availableAmount)) * 100
+            
+            if amount == 0 {
+                placeBidView.bidAmountView.auctionSliderView.sliderView.value = 0
+                placeBidView.bidAmountView.auctionSliderView.sliderView.setThumbImage(img("icon-slider-zero"), for: .normal)
+                placeBidView.bidAmountView.auctionSliderView.configureViewForZeroPercentValue()
+            } else if sliderPercentage < 1 {
+                placeBidView.bidAmountView.auctionSliderView.sliderView.value = 1
+                placeBidView.bidAmountView.auctionSliderView.configureViewForMoreThanZeroValue()
+                placeBidView.bidAmountView.auctionSliderView.sliderView.setThumbImage(img("icon-slider-selected"), for: .normal)
+            } else {
+                placeBidView.bidAmountView.auctionSliderView.sliderView.value = sliderPercentage
+                placeBidView.bidAmountView.auctionSliderView.configureViewFor(percentage: sliderPercentage)
+            }
+            
+            calculatePotentialAlgos(withBid: amount)
+            return
+        }
+        
         calculatePotentialAlgos()
     }
     
-    private func calculatePotentialAlgos() {
-        guard let bidAmount = parseBidAmount(),
+    private func calculatePotentialAlgos(withBid amount: Double? = nil) {
+        guard let bidAmount = amount ?? parseBidAmount(),
             let maxPrice = parseMaxPrice(),
             bidAmount != 0,
             maxPrice != 0 else {
