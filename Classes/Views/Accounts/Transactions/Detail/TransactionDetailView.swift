@@ -66,9 +66,7 @@ class TransactionDetailView: BaseView {
     
     private(set) lazy var transactionOpponentView: TransactionReceiverView = {
         let view = TransactionReceiverView()
-        view.receiverContactView.qrDisplayButton.isHidden = true
-        view.qrButton.setImage(img("icon-contact-add"), for: .normal)
-        view.qrButton.setBackgroundImage(nil, for: .normal)
+        view.actionMode = .contactAddition
         return view
     }()
     
@@ -104,14 +102,10 @@ class TransactionDetailView: BaseView {
     
     // MARK: Setup
     
-    override func setListeners() {
-        transactionOpponentView.qrButton.addTarget(self, action: #selector(notifyDelegateToAddContactButtonTapped), for: .touchUpInside)
-    }
-    
     override func linkInteractors() {
         super.linkInteractors()
         
-        transactionOpponentView.receiverContactView.delegate = self
+        transactionOpponentView.delegate = self
     }
     
     // MARK: Layout
@@ -236,21 +230,21 @@ class TransactionDetailView: BaseView {
             make.width.equalTo(UIScreen.main.bounds.width / 2)
         }
     }
-    
-    // MARK: Actions
-    
-    @objc
-    private func notifyDelegateToAddContactButtonTapped() {
-        delegate?.transactionDetailViewDidTapAddContactButton(self)
-    }
 }
 
-extension TransactionDetailView: ContactContextViewDelegate {
+extension TransactionDetailView: TransactionReceiverViewDelegate {
     
-    func contactContextViewDidTapSendButton(_ contactContextView: ContactContextView) {
-    }
-    
-    func contactContextViewDidTapQRDisplayButton(_ contactContextView: ContactContextView) {
-        delegate?.transactionDetailViewDidTapShowQRButton(self)
+    func transactionReceiverViewDidTapActionButton(
+        _ transactionReceiverView: TransactionReceiverView,
+        with mode: TransactionReceiverView.ActionMode
+    ) {
+        switch mode {
+        case .qrView:
+            delegate?.transactionDetailViewDidTapShowQRButton(self)
+        case .contactAddition:
+            delegate?.transactionDetailViewDidTapAddContactButton(self)
+        default:
+            break
+        }
     }
 }

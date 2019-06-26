@@ -12,7 +12,10 @@ import Crypto
 
 protocol SendAlgosPreviewViewControllerDelegate: class {
     
-    func sendAlgosPreviewViewControllerDidTapSendMoreButton(_ sendAlgosPreviewViewController: SendAlgosPreviewViewController)
+    func sendAlgosPreviewViewControllerDidTapSendMoreButton(
+        _ sendAlgosPreviewViewController: SendAlgosPreviewViewController,
+        withReceiver state: AlgosReceiverState
+    )
 }
 
 class SendAlgosPreviewViewController: BaseViewController {
@@ -55,9 +58,7 @@ class SendAlgosPreviewViewController: BaseViewController {
         sendAlgosPreviewView.accountSelectionView.set(amount: transaction.fromAccount.amount.toAlgos)
         sendAlgosPreviewView.transactionReceiverView.state = receiver
         
-        sendAlgosPreviewView.transactionReceiverView.qrButton.setImage(nil, for: .normal)
-        sendAlgosPreviewView.transactionReceiverView.receiverContactView.qrDisplayButton.setImage(nil, for: .normal)
-        sendAlgosPreviewView.transactionReceiverView.receiverContactView.sendButton.setImage(nil, for: .normal)
+        sendAlgosPreviewView.transactionReceiverView.actionMode = .none
         
         self.updateFeeLayout()
         
@@ -128,6 +129,8 @@ class SendAlgosPreviewViewController: BaseViewController {
             }
             
             account = Account(address: address)
+        case let .myAccount(myAccount):
+            account = myAccount
         case .initial:
             return nil
         }
@@ -234,9 +237,12 @@ extension SendAlgosPreviewViewController: SendAlgosSuccessViewControllerDelegate
         navigationController?.popToRootViewController(animated: false)
     }
     
-    func sendAlgosSuccessViewControllerDidTapSendMoreButton(_ sendAlgosSuccessViewController: SendAlgosSuccessViewController) {
+    func sendAlgosSuccessViewControllerDidTapSendMoreButton(
+        _ sendAlgosSuccessViewController: SendAlgosSuccessViewController,
+        withReceiver state: AlgosReceiverState
+    ) {
         closeScreen(by: .pop, animated: false)
         
-        delegate?.sendAlgosPreviewViewControllerDidTapSendMoreButton(self)
+        delegate?.sendAlgosPreviewViewControllerDidTapSendMoreButton(self, withReceiver: state)
     }
 }

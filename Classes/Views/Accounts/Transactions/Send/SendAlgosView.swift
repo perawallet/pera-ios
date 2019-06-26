@@ -12,8 +12,10 @@ protocol SendAlgosViewDelegate: class {
     
     func sendAlgosViewDidTapAccountSelectionView(_ sendAlgosView: SendAlgosView)
     func sendAlgosViewDidTapPreviewButton(_ sendAlgosView: SendAlgosView)
+    func sendAlgosViewDidTapAddressButton(_ sendAlgosView: SendAlgosView)
+    func sendAlgosViewDidTapMyAccountsButton(_ sendAlgosView: SendAlgosView)
     func sendAlgosViewDidTapContactsButton(_ sendAlgosView: SendAlgosView)
-    func sendAlgosViewDidTapQRButton(_ sendAlgosView: SendAlgosView)
+    func sendAlgosViewDidTapScanQRButton(_ sendAlgosView: SendAlgosView)
 }
 
 class SendAlgosView: BaseView {
@@ -44,8 +46,6 @@ class SendAlgosView: BaseView {
     
     private(set) lazy var transactionReceiverView: TransactionReceiverView = {
         let view = TransactionReceiverView()
-        view.qrButton.setBackgroundImage(nil, for: .normal)
-        view.qrButton.setImage(img("icon-qr-scan"), for: .normal)
         return view
     }()
     
@@ -137,11 +137,19 @@ class SendAlgosView: BaseView {
 
 extension SendAlgosView: TransactionReceiverViewDelegate {
     
+    func transactionReceiverViewDidTapAddressButton(_ transactionReceiverView: TransactionReceiverView) {
+        delegate?.sendAlgosViewDidTapAddressButton(self)
+    }
+    
+    func transactionReceiverViewDidTapMyAccountsButton(_ transactionReceiverView: TransactionReceiverView) {
+        delegate?.sendAlgosViewDidTapMyAccountsButton(self)
+    }
+    
     func transactionReceiverViewDidTapContactsButton(_ transactionReceiverView: TransactionReceiverView) {
         delegate?.sendAlgosViewDidTapContactsButton(self)
     }
     
-    func transactionReceiverViewDidTapQRButton(_ transactionReceiverView: TransactionReceiverView) {
-        delegate?.sendAlgosViewDidTapQRButton(self)
+    func transactionReceiverViewDidTapScanQRButton(_ transactionReceiverView: TransactionReceiverView) {
+        delegate?.sendAlgosViewDidTapScanQRButton(self)
     }
 }

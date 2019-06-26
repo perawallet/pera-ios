@@ -201,7 +201,7 @@
 "contacts-input-name-explanation" = "Name:";
 "contacts-input-name-placeholder" = "Contact Name";
 "contacts-input-address-explanation" = "Address:";
-"contacts-input-address-placeholder" = "Paste #";
+"contacts-input-address-placeholder" = "Enter Address";
 "contacts-transactions-title" = "Transactions";
 "contacts-add-button" = "ADD CONTACT";
 "contacts-edit-button" = "EDIT CONTACT";

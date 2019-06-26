@@ -37,6 +37,9 @@ class SendAlgosViewController: BaseScrollViewController {
     
     private var receiver: AlgosReceiverState
     
+    private var shouldUpdateSenderForSelectedAccount = false
+    private var shouldUpdateReceiverForSelectedAccount = false
+    
     // MARK: Initialization
     
     init(account: Account, receiver: AlgosReceiverState, configuration: ViewControllerConfiguration) {
@@ -71,6 +74,8 @@ class SendAlgosViewController: BaseScrollViewController {
                 sendAlgosView.algosInputView.inputTextField.text = self.amount.toDecimalStringForLabel
             }
             
+            sendAlgosView.transactionReceiverView.state = receiver
+        case .myAccount:
             sendAlgosView.transactionReceiverView.state = receiver
         case .contact:
             sendAlgosView.transactionReceiverView.state = receiver
@@ -193,7 +198,9 @@ class SendAlgosViewController: BaseScrollViewController {
                     return
                 }
                 receiverAddress = contactAddress
+            case let .myAccount(myAccount):
                 
+                receiverAddress = myAccount.address
             case .initial:
                 self.displaySimpleAlertWith(title: "title-error".localized, message: "send-algos-address-not-selected".localized)
                 return
@@ -317,6 +324,7 @@ class SendAlgosViewController: BaseScrollViewController {
 extension SendAlgosViewController: SendAlgosViewDelegate {
     
     func sendAlgosViewDidTapAccountSelectionView(_ sendAlgosView: SendAlgosView) {
+        shouldUpdateSenderForSelectedAccount = true
         presentAccountList()
     }
     
@@ -326,13 +334,22 @@ extension SendAlgosViewController: SendAlgosViewDelegate {
         displayTransactionPreview()
     }
     
+    func sendAlgosViewDidTapAddressButton(_ sendAlgosView: SendAlgosView) {
+        
+    }
+    
+    func sendAlgosViewDidTapMyAccountsButton(_ sendAlgosView: SendAlgosView) {
+        shouldUpdateReceiverForSelectedAccount = true
+        presentAccountList()
+    }
+    
     func sendAlgosViewDidTapContactsButton(_ sendAlgosView: SendAlgosView) {
         view.endEditing(true)
         
         displayContactList()
     }
     
-    func sendAlgosViewDidTapQRButton(_ sendAlgosView: SendAlgosView) {
+    func sendAlgosViewDidTapScanQRButton(_ sendAlgosView: SendAlgosView) {
         view.endEditing(true)
         
         displayQRScanner()
@@ -347,10 +364,20 @@ extension SendAlgosViewController: AccountListViewControllerDelegate {
     }
     
     func accountListViewController(_ viewController: AccountListViewController, didSelectAccount account: Account) {
-        sendAlgosView.accountSelectionView.detailLabel.text = account.name
-        sendAlgosView.accountSelectionView.set(amount: account.amount.toAlgos)
+        if shouldUpdateReceiverForSelectedAccount {
+            shouldUpdateReceiverForSelectedAccount = false
+            receiver = .myAccount(account)
+            sendAlgosView.transactionReceiverView.state = .address(address: account.address, amount: nil)
+            return
+        }
         
-        selectedAccount = account
+        if shouldUpdateSenderForSelectedAccount {
+            shouldUpdateSenderForSelectedAccount = false
+            sendAlgosView.accountSelectionView.detailLabel.text = account.name
+            sendAlgosView.accountSelectionView.set(amount: account.amount.toAlgos)
+            
+            selectedAccount = account
+        }
     }
 }
 
@@ -397,17 +424,17 @@ extension SendAlgosViewController: QRScannerViewControllerDelegate {
 
 extension SendAlgosViewController: SendAlgosPreviewViewControllerDelegate {
     
-    func sendAlgosPreviewViewControllerDidTapSendMoreButton(_ sendAlgosPreviewViewController: SendAlgosPreviewViewController) {
-        resetViewForInitialState()
+    func sendAlgosPreviewViewControllerDidTapSendMoreButton(
+        _ sendAlgosPreviewViewController: SendAlgosPreviewViewController,
+        withReceiver state: AlgosReceiverState
+    ) {
+        resetView(for: state)
     }
     
-    private func resetViewForInitialState() {
+    private func resetView(for state: AlgosReceiverState) {
         amount = 0.00
-        receiver = .initial
-        sendAlgosView.transactionReceiverView.state = .initial
-        sendAlgosView.algosInputView.inputTextField.text = nil
-        sendAlgosView.transactionReceiverView.passphraseInputView.placeholderLabel.isHidden = false
-        sendAlgosView.transactionReceiverView.passphraseInputView.inputTextView.text = ""
+        receiver = state
+        sendAlgosView.transactionReceiverView.state = state
     }
 }
 
