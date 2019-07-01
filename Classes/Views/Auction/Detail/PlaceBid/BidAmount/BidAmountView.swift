@@ -53,13 +53,6 @@ class BidAmountView: BaseView {
         view.textColor = SharedColors.turquois
         view.font = UIFont.font(.overpass, withWeight: .bold(size: 13.0))
         view.keyboardType = .numberPad
-        view.attributedPlaceholder = NSAttributedString(
-            string: "$0.00",
-            attributes: [NSAttributedString.Key.foregroundColor: SharedColors.darkGray,
-                         NSAttributedString.Key.font: UIFont.font(.overpass, withWeight: .bold(size: 13.0))]
-        )
-        view.delegate = self
-        
         view.layer.cornerRadius = 5.0
         view.layer.borderWidth = 1.0
         view.layer.borderColor = Colors.borderColor.cgColor
@@ -101,6 +94,7 @@ class BidAmountView: BaseView {
     
     override func linkInteractors() {
         bidAmountTextField.delegate = self
+        bidAmountTextField.cursorlessTextFieldDelegate = self
         auctionSliderView.delegate = self
     }
     
@@ -225,6 +219,7 @@ extension BidAmountView: AuctionSliderViewDelegate {
 }
 
 // MARK: - TextFieldDelegate
+
 extension BidAmountView: UITextFieldDelegate {
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
@@ -241,5 +236,33 @@ extension BidAmountView: UITextFieldDelegate {
         }
         
         return true
+    }
+}
+
+// MARK: - CursorlessTextFieldDelegate
+
+extension BidAmountView: CursorlessTextFieldDelegate {
+    
+    func cursorlessTextFieldDidDeleteBackward(_ cursorlessTextField: CursorlessTextField) {
+        if let text = cursorlessTextField.text {
+            if !text.isEmpty {
+                return
+            }
+            setPlaceholderStringAsText(to: cursorlessTextField)
+        } else {
+            setPlaceholderStringAsText(to: cursorlessTextField)
+        }
+    }
+    
+    private func setPlaceholderStringAsText(to textField: CursorlessTextField) {
+        guard let placeholderString = textField.attributedPlaceholder?.string else {
+            return
+        }
+        
+        if !placeholderString.isEmpty {
+            if let formattedValue = String(placeholderString.dropLast(1)).currencyBidInputFormatting() {
+                textField.text = formattedValue
+            }
+        }
     }
 }

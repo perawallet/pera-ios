@@ -157,7 +157,13 @@ extension PlaceBidViewController: PlaceBidViewDelegate {
     }
     
     private func parseBidAmount() -> Double? {
-        guard let bidAmountText = placeBidView.bidAmountView.bidAmountTextField.text, !bidAmountText.isEmpty else {
+        var bidAmountText: String
+        
+        if let text = placeBidView.bidAmountView.bidAmountTextField.text, !text.isEmpty {
+            bidAmountText = text
+        } else if let availableAmount = user.availableAmount {
+            bidAmountText = "\(Double(availableAmount) / 100)"
+        } else {
             return nil
         }
         
@@ -170,7 +176,7 @@ extension PlaceBidViewController: PlaceBidViewDelegate {
     
     private func parseMaxPrice() -> Double? {
         var maxPriceText: String
-        
+    
         if let text = placeBidView.maxPriceView.priceAmountTextField.text, !text.isEmpty {
             maxPriceText = text
         } else if let currentPrice = auctionStatus.currentPrice {
@@ -275,7 +281,16 @@ extension PlaceBidViewController: PlaceBidViewDelegate {
         
         let amount = availableAmount * Int(value) / 100
         
-        placeBidView.bidAmountView.bidAmountTextField.text = "\(amount.convertToDollars())"
+        if let text = placeBidView.bidAmountView.bidAmountTextField.text,
+            !text.isEmpty {
+            placeBidView.bidAmountView.bidAmountTextField.text = "\(amount.convertToDollars())"
+        } else {
+            placeBidView.bidAmountView.bidAmountTextField.attributedPlaceholder = NSAttributedString(
+                string: "\(amount.convertToDollars())",
+                attributes: [NSAttributedString.Key.foregroundColor: SharedColors.turquois,
+                             NSAttributedString.Key.font: UIFont.font(.overpass, withWeight: .bold(size: 13.0))]
+            )
+        }
         
         calculatePotentialAlgos()
     }

@@ -51,10 +51,9 @@ class MaximumPriceView: BaseView {
     private(set) lazy var priceAmountTextField: CursorlessTextField = {
         let view = CursorlessTextField()
         view.textAlignment = .right
-        view.textColor = SharedColors.darkGray
+        view.textColor = SharedColors.turquois
         view.font = UIFont.font(.overpass, withWeight: .bold(size: 13.0))
         view.keyboardType = .numberPad
-        view.delegate = self
         return view
     }()
     
@@ -74,6 +73,7 @@ class MaximumPriceView: BaseView {
     
     override func linkInteractors() {
         priceAmountTextField.delegate = self
+        priceAmountTextField.cursorlessTextFieldDelegate = self
     }
     
     override func setListeners() {
@@ -152,8 +152,6 @@ class MaximumPriceView: BaseView {
                 return
         }
         
-        textField.textColor = SharedColors.turquois
-        
         textField.text = doubleValueString
         delegate?.maximumPriceViewDidTypeInput(self, in: textField)
     }
@@ -165,6 +163,7 @@ class MaximumPriceView: BaseView {
 }
 
 // MARK: - TextFieldDelegate
+
 extension MaximumPriceView: UITextFieldDelegate {
    
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
@@ -180,5 +179,33 @@ extension MaximumPriceView: UITextFieldDelegate {
         }
         
         return true
+    }
+}
+
+// MARK: - CursorlessTextFieldDelegate
+
+extension MaximumPriceView: CursorlessTextFieldDelegate {
+    
+    func cursorlessTextFieldDidDeleteBackward(_ cursorlessTextField: CursorlessTextField) {
+        if let text = cursorlessTextField.text {
+            if !text.isEmpty {
+                return
+            }
+            setPlaceholderStringAsText(to: cursorlessTextField)
+        } else {
+            setPlaceholderStringAsText(to: cursorlessTextField)
+        }
+    }
+    
+    private func setPlaceholderStringAsText(to textField: CursorlessTextField) {
+        guard let placeholderString = textField.attributedPlaceholder?.string else {
+            return
+        }
+        
+        if !placeholderString.isEmpty {
+            if let formattedValue = String(placeholderString.dropLast(1)).currencyBidInputFormatting() {
+                textField.text = formattedValue
+            }
+        }
     }
 }
