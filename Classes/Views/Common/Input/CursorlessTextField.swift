@@ -8,13 +8,27 @@
 
 import UIKit
 
+protocol CursorlessTextFieldDelegate: class {
+    
+    func cursorlessTextFieldDidDeleteBackward(_ cursorlessTextField: CursorlessTextField)
+}
+
 class CursorlessTextField: UITextField {
+    
+    weak var cursorlessTextFieldDelegate: CursorlessTextFieldDelegate?
+    
     override func caretRect(for position: UITextPosition) -> CGRect {
         return .zero
     }
     
     override func selectionRects(for range: UITextRange) -> [UITextSelectionRect] {
         return []
+    }
+    
+    override func deleteBackward() {
+        super.deleteBackward()
+        
+        cursorlessTextFieldDelegate?.cursorlessTextFieldDidDeleteBackward(self)
     }
 }
 

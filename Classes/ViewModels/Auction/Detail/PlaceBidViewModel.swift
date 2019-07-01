@@ -14,7 +14,12 @@ class PlaceBidViewModel {
         if let availableAmount = user.availableAmount {
             if shouldUpdateValue {
                 if let amount = availableAmount.convertToDollars().currencyBidInputFormatting() {
-                    view.bidAmountTextField.text = "\(amount) )"
+                    view.bidAmountTextField.attributedPlaceholder = NSAttributedString(
+                        string: "\(amount)",
+                        attributes: [NSAttributedString.Key.foregroundColor: SharedColors.turquois,
+                                     NSAttributedString.Key.font: UIFont.font(.overpass, withWeight: .bold(size: 13.0))]
+                    )
+                    
                     view.auctionSliderView.configureViewForHundredPercentValue(updatesSliderValue: true)
                 }
             }
@@ -27,11 +32,15 @@ class PlaceBidViewModel {
     
     func configureMaxPriceView(_ view: MaximumPriceView, with auctionStatus: ActiveAuction) {
         guard let typedString = view.priceAmountTextField.text,
-            let typedValue = typedString.doubleForSendSeparator else {
+            let typedValue = typedString.doubleForSendSeparator,
+            !typedString.isEmpty else {
                 if let currentPrice = auctionStatus.currentPrice {
                     view.currentPrice = currentPrice
-                    view.priceAmountTextField.text = currentPrice.convertToDollars()
-                    view.priceAmountTextField.textColor = SharedColors.darkGray
+                    view.priceAmountTextField.attributedPlaceholder = NSAttributedString(
+                        string: "\(currentPrice.convertToDollars())",
+                        attributes: [NSAttributedString.Key.foregroundColor: SharedColors.turquois,
+                                     NSAttributedString.Key.font: UIFont.font(.overpass, withWeight: .bold(size: 13.0))]
+                    )
                 }
             return
         }
@@ -42,7 +51,6 @@ class PlaceBidViewModel {
             if currentPrice < typedPrice {
                 view.currentPrice = currentPrice
                 view.priceAmountTextField.text = currentPrice.convertToDollars()
-                view.priceAmountTextField.textColor = SharedColors.darkGray
             }
         }
     }
