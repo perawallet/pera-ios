@@ -53,7 +53,7 @@ class AuctionViewController: BaseViewController {
         return collectionView
     }()
     
-    private let isAuctionsEnabled = true
+    private let isAuctionsEnabled = false
     
     private var auctions = [Auction]()
     private var totalAlgosAmount: Int64?
@@ -335,6 +335,10 @@ class AuctionViewController: BaseViewController {
     
     @objc
     fileprivate func didCoinlistConnected(notification: Notification) {
+        if !isAuctionsEnabled {
+            return
+        }
+        
         guard let userInfo = notification.userInfo as? [String: String],
             let code = userInfo["code"] else {
                 return
@@ -356,6 +360,10 @@ class AuctionViewController: BaseViewController {
     
     @objc
     fileprivate func didCoinlistDisconnected(notification: Notification) {
+        if !isAuctionsEnabled {
+            return
+        }
+        
         auctionIntroductionView = AuctionIntroductionView()
         auctionIntroductionView.delegate = self
         
