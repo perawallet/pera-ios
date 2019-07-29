@@ -571,7 +571,7 @@ extension AuctionViewController: AuthManagerDelegate {
                     }
                 }
             case let .failure(error):
-                SVProgressHUD.showSuccess(withStatus: "title-done-lowercased".localized)
+                SVProgressHUD.showSuccess(withStatus: error.localizedDescription)
                 SVProgressHUD.dismiss()
             }
         }
