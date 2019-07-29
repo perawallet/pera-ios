@@ -127,8 +127,8 @@ class AuctionViewController: BaseViewController {
         super.configureAppearance()
         
         navigationItem.title = "auction-title".localized
-        
-        if session?.coinlistToken == nil {
+      
+        if session?.coinlistToken == nil && isAuctionsEnabled {
             return
         }
         
@@ -335,10 +335,6 @@ class AuctionViewController: BaseViewController {
     
     @objc
     fileprivate func didCoinlistConnected(notification: Notification) {
-        if !isAuctionsEnabled {
-            return
-        }
-        
         guard let userInfo = notification.userInfo as? [String: String],
             let code = userInfo["code"] else {
                 return
@@ -552,22 +548,31 @@ extension AuctionViewController: AuthManagerDelegate {
             switch response {
             case let .success(coinlistAuthentication):
                 self.session?.coinlistToken = coinlistAuthentication.accessToken
-                self.prepareLayoutForToken()
+                if self.isAuctionsEnabled {
+                    self.prepareLayoutForToken()
+                }
                 
                 self.api?.fetchCoinlistUser { response in
                     switch response {
                     case let .success(coinlistUser):
                         self.session?.coinlistUserId = coinlistUser.id
                         
-                        self.fetchAuctionUser()
-                        self.fetchActiveAuction()
-                        self.startPolling()
+                        if self.isAuctionsEnabled {
+                            self.fetchAuctionUser()
+                            self.fetchActiveAuction()
+                            self.startPolling()
+                        } else {
+                            SVProgressHUD.showSuccess(withStatus: "title-done-lowercased".localized)
+                            SVProgressHUD.dismiss()
+                            return
+                        }
                     case let .failure(error):
                         print(error)
                     }
                 }
             case let .failure(error):
-                print(error)
+                SVProgressHUD.showSuccess(withStatus: "title-done-lowercased".localized)
+                SVProgressHUD.dismiss()
             }
         }
     }
