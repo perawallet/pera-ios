@@ -22,6 +22,10 @@ class SettingsViewController: BaseViewController {
     
     private var authManager: AuthManager?
     
+    private var isAuctionsEnabled: Bool {
+        return Environment.current.isAuctionsEnabled
+    }
+    
     // MARK: Initialization
     
     override init(configuration: ViewControllerConfiguration) {
@@ -54,7 +58,9 @@ class SettingsViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        settingsView.collectionView.reloadItems(at: [IndexPath(row: 4, section: 0)])
+        if isAuctionsEnabled {
+            settingsView.collectionView.reloadItems(at: [IndexPath(row: 4, section: 0)])
+        }
     }
 }
 
@@ -63,7 +69,7 @@ class SettingsViewController: BaseViewController {
 extension SettingsViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
+        return isAuctionsEnabled ? 5 : 4
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

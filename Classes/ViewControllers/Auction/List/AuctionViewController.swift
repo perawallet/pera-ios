@@ -53,7 +53,9 @@ class AuctionViewController: BaseViewController {
         return collectionView
     }()
     
-    private let isAuctionsEnabled = false
+    private var isAuctionsEnabled: Bool {
+        return Environment.current.isAuctionsEnabled
+    }
     
     private var auctions = [Auction]()
     private var totalAlgosAmount: Int64?

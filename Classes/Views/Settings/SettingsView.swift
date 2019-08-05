@@ -10,6 +10,13 @@ import UIKit
 
 class SettingsView: BaseView {
     
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let collectionViewHeight: CGFloat = Environment.current.isAuctionsEnabled ? 400.0 : 320.0
+        let versionLabelOffset: CGFloat = 20.0
+    }
+    
+    private let layout = Layout<LayoutConstants>()
+    
     // MARK: Components
     
     private(set) lazy var collectionView: UICollectionView = {
@@ -60,7 +67,7 @@ class SettingsView: BaseView {
         collectionView.snp.makeConstraints { make in
             make.top.equalTo(safeAreaLayoutGuide.snp.top)
             make.leading.trailing.equalToSuperview()
-            make.height.equalTo(400.0)
+            make.height.equalTo(layout.current.collectionViewHeight)
         }
     }
     
@@ -68,7 +75,7 @@ class SettingsView: BaseView {
         addSubview(versionLabel)
         
         versionLabel.snp.makeConstraints { make in
-            make.top.equalTo(collectionView.snp.bottom).offset(20.0)
+            make.top.equalTo(collectionView.snp.bottom).offset(layout.current.versionLabelOffset)
             make.centerX.equalToSuperview()
         }
         

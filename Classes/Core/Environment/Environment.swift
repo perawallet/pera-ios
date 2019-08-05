@@ -94,6 +94,8 @@ class Environment {
         }
     }()
     
+    var isAuctionsEnabled = false
+    
     private let target: AppTarget
     
     // MARK: Initialization
