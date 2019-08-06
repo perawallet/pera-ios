@@ -251,9 +251,7 @@ class SendAlgosViewController: BaseScrollViewController {
     }
     
     private func isTransactionValid() -> Bool {
-        if receiver != .initial,
-            amount > 0.0 {
-            
+        if receiver != .initial {
             return true
         }
         
