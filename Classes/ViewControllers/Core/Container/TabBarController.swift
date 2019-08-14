@@ -153,7 +153,7 @@ class TabBarController: UITabBarController {
     }
     
     private func configureAppearance() {
-        let fontAttributes = [NSAttributedString.Key.font: UIFont.font(.avenir, withWeight: .demiBold(size: 11.0))]
+        let fontAttributes = [NSAttributedString.Key.font: UIFont.font(.avenir, withWeight: .demiBold(size: 10.0))]
         UITabBarItem.appearance().setTitleTextAttributes(fontAttributes, for: .normal)
         UITabBarItem.appearance().setTitleTextAttributes(fontAttributes, for: .selected)
     }
