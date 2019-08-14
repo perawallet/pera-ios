@@ -12,7 +12,7 @@ class AlertViewModel {
     
     func configure(_ alertView: AlertView, with configurator: AlertViewConfigurator) {
         alertView.titleLabel.text = configurator.title
-        alertView.explanationLabel.attributedText = configurator.explanation.attributed([.lineSpacing(1.5)])
+        alertView.explanationLabel.attributedText = configurator.explanation.attributed([.lineSpacing(1.2)])
         alertView.explanationLabel.textAlignment = .center
         alertView.imageView.image = configurator.image
         

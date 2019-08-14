@@ -25,7 +25,7 @@ class ChoosePasswordView: BaseView {
         let numpadTopInset: CGFloat = 10.0 * verticalScale
         let passwordInputViewInset: CGFloat = -10.0
         let logoutButtonTopInset: CGFloat = 40.0 * verticalScale
-        let logoutButtonHeight: CGFloat = 45.0 * verticalScale
+        let logoutButtonHeight: CGFloat = 50.0
         let logoutButtonWidth: CGFloat = 115.0 * horizontalScale
     }
     
@@ -56,11 +56,11 @@ class ChoosePasswordView: BaseView {
     private(set) lazy var logoutButton: UIButton = {
         let button = UIButton(type: .custom)
         button.isHidden = true
-        return button.withTitleColor(SharedColors.darkGray)
-            .withTitle("logout-title".localized)
+        return button
             .withAlignment(.center)
-            .withBackgroundImage(img("bg-dark-gray-button-small"))
+            .withBackgroundImage(img("bg-black-button-big"))
             .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 12.0)))
+            .withAttributedTitle("logout-title".localized.attributed([.letterSpacing(1.20), .textColor(.white)]))
     }()
     
     private(set) lazy var numpadView: NumpadView = {
@@ -78,6 +78,10 @@ class ChoosePasswordView: BaseView {
     
     override func setListeners() {
         logoutButton.addTarget(self, action: #selector(notifyDelegateToLogoutButtonTapped), for: .touchUpInside)
+    }
+    
+    override func configureAppearance() {
+        backgroundColor = .white
     }
     
     // MARK: Layout
@@ -125,7 +129,6 @@ class ChoosePasswordView: BaseView {
             make.centerX.equalToSuperview()
             make.top.greaterThanOrEqualTo(passwordInputView.snp.bottom).offset(layout.current.logoutButtonTopInset)
             make.height.equalTo(layout.current.logoutButtonHeight)
-            make.width.equalTo(layout.current.logoutButtonWidth)
         }
     }
     

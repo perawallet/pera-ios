@@ -43,12 +43,8 @@ class QRCreationViewController: BaseScrollViewController {
     
     // MARK: Components
     
-    private(set) lazy var cancelButton: UIButton = {
-        UIButton(type: .custom)
-            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 12.0)))
-            .withBackgroundImage(img("bg-main-button"))
-            .withTitle("title-close".localized)
-            .withTitleColor(SharedColors.purple)
+    private(set) lazy var cancelButton: MainButton = {
+        MainButton(title: "title-close".localized)
     }()
     
     private(set) lazy var shareButton: UIButton = {
@@ -85,6 +81,8 @@ class QRCreationViewController: BaseScrollViewController {
         
         if mode == .address {
             qrSelectableLabel.label.text = self.qrText
+        } else if mode == .mnemonic {
+            view.backgroundColor = .white
         }
     }
     
@@ -106,6 +104,20 @@ class QRCreationViewController: BaseScrollViewController {
         }
         
         setupCancelButtonLayout()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if mode == .mnemonic {
+            navigationController?.navigationBar.barTintColor = .white
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        if mode == .mnemonic {
+            navigationController?.navigationBar.barTintColor = SharedColors.warmWhite
+        }
     }
 }
 
@@ -154,7 +166,6 @@ extension QRCreationViewController {
         
         cancelButton.snp.makeConstraints { make in
             make.top.equalTo(constraintItem).offset(60 * verticalScale)
-            make.height.equalTo(56)
             make.centerX.equalToSuperview()
             make.bottom.equalToSuperview().inset(layout.current.bottomInset + view.safeAreaBottom)
         }

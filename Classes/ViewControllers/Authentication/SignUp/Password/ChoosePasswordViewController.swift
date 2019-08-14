@@ -77,10 +77,6 @@ class ChoosePasswordViewController: BaseViewController {
         }
     }
     
-    deinit {
-        
-    }
-    
     override func configureNavigationBarAppearance() {
         switch mode {
         case .confirm,
@@ -97,7 +93,7 @@ class ChoosePasswordViewController: BaseViewController {
     
     override func configureAppearance() {
         super.configureAppearance()
-        
+        view.backgroundColor = .white
         viewModel.configure(choosePasswordView)
         
         switch mode {
@@ -128,6 +124,16 @@ class ChoosePasswordViewController: BaseViewController {
         super.linkInteractors()
         
         choosePasswordView.delegate = self
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.barTintColor = .white
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.navigationBar.barTintColor = SharedColors.warmWhite
     }
 }
 

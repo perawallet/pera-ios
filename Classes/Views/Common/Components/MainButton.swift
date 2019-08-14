@@ -11,7 +11,7 @@ import UIKit
 class MainButton: UIButton {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let size = CGSize(width: 285.0, height: 56.0)
+        let size = CGSize(width: 285.0, height: 50.0)
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -26,8 +26,7 @@ class MainButton: UIButton {
         super.init(frame: .zero)
         
         configureButton()
-        
-        setTitle(title, for: .normal)
+        setAttributedTitle(title?.attributed([.letterSpacing(1.20), .textColor(.white)]), for: .normal)
     }
     
     @available(*, unavailable)
@@ -40,7 +39,6 @@ class MainButton: UIButton {
     private func configureButton() {
         titleLabel?.textAlignment = .center
         setBackgroundImage(img("bg-main-button"), for: .normal)
-        setTitleColor(SharedColors.purple, for: .normal)
         titleLabel?.font = UIFont.font(.avenir, withWeight: .demiBold(size: 12.0))
     }
 }

@@ -20,6 +20,7 @@ class PassPhraseBackUpView: BaseView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let topInset: CGFloat = 69.0 * verticalScale
         let horizontalInset: CGFloat = 25.0
+        let titleHorizontalInset: CGFloat = 17.0
         let passPhraseContainerViewTopInset: CGFloat = 43.0
         let passPhraseCollectionViewVerticalInset: CGFloat = 16.5
         let containerViewHorizontalInset: CGFloat = 25.0 * horizontalScale
@@ -29,10 +30,14 @@ class PassPhraseBackUpView: BaseView {
         let warningImageCenterOffset: CGFloat = 5.0
         let warningLabelVerticalInset: CGFloat = 20.0
         let bottomInset: CGFloat = 55.0
-        let buttonMinimumTopInset: CGFloat = 20.0
+        let buttonMinimumTopInset: CGFloat = 60.0
     }
     
     private let layout = Layout<LayoutConstants>()
+    
+    private enum Colors {
+        static let borderColor = rgb(0.94, 0.94, 0.94)
+    }
     
     // MARK: Components
     
@@ -47,6 +52,8 @@ class PassPhraseBackUpView: BaseView {
     private lazy var passPhraseContainerView: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 20.0
+        view.layer.borderColor = Colors.borderColor.cgColor
+        view.layer.borderWidth = 1.0
         view.backgroundColor = .white
         return view
     }()
@@ -89,21 +96,18 @@ class PassPhraseBackUpView: BaseView {
     
     private lazy var warningContainerView: UIView = {
         let view = UIView()
-        view.layer.cornerRadius = 20.0
-        view.backgroundColor = .white
+        view.layer.cornerRadius = 10.0
+        view.backgroundColor = SharedColors.purple
         return view
     }()
     
-    private lazy var warningImageView = UIImageView(image: img("icon-warning"))
-    
     private lazy var warningLabel: UILabel = {
         UILabel()
-            .withAlignment(.left)
             .withLine(.contained)
-            .withTextColor(SharedColors.darkGray)
-            .withFont(UIFont.font(.avenir, withWeight: .medium(size: 11.0)))
+            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 11.0)))
             .withText("back-up-phrase-warning".localized)
-        
+            .withAttributedText("back-up-phrase-warning".localized.attributed([.lineSpacing(1.5), .textColor(.white)]))
+            .withAlignment(.center)
     }()
     
     private lazy var verifyButton: MainButton = {
@@ -130,7 +134,6 @@ class PassPhraseBackUpView: BaseView {
         setupShareButtonLayout()
         setupQrButtonLayout()
         setupWarningContainerViewLayout()
-        setupWarningImageViewLayout()
         setupWarningLabelLayout()
         setupVerifyButtonLayout()
     }
@@ -192,21 +195,11 @@ class PassPhraseBackUpView: BaseView {
         }
     }
     
-    private func setupWarningImageViewLayout() {
-        warningContainerView.addSubview(warningImageView)
-        
-        warningImageView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(layout.current.warningHorizontalInset)
-            make.centerY.equalToSuperview().offset(layout.current.warningImageCenterOffset)
-        }
-    }
-    
     private func setupWarningLabelLayout() {
         warningContainerView.addSubview(warningLabel)
         
         warningLabel.snp.makeConstraints { make in
-            make.leading.equalTo(warningImageView.snp.trailing).offset(layout.current.warningHorizontalInset)
-            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.titleHorizontalInset)
             make.top.bottom.equalToSuperview().inset(layout.current.warningLabelVerticalInset)
         }
     }

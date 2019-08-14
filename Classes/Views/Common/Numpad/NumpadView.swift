@@ -69,9 +69,9 @@ class NumpadView: BaseView {
     // MARK: Configuration
     
     override func configureAppearance() {
-        backgroundColor = SharedColors.warmWhite
+        backgroundColor = .white
         
-        collectionView.backgroundColor = SharedColors.warmWhite
+        collectionView.backgroundColor = .white
         collectionView.contentInset = UIEdgeInsets(
             top: 0.0,
             left: layout.current.horizontalInset,

@@ -16,7 +16,7 @@ enum PassPhraseMode {
 
 class PassPhraseMnemonicView: UIView {
     fileprivate enum Color {
-        static let wrongBackground = SharedColors.orange
+        static let wrongBackground = SharedColors.darkGray
         static let correctBackground = SharedColors.purple
     }
     

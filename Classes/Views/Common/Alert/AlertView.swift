@@ -13,8 +13,7 @@ class AlertView: BaseView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let defaultInset: CGFloat = 31.0
         let titleHorizontalInset: CGFloat = 25.0
-        let backgroundImageTopInset: CGFloat = 49.0
-        let backgroundImageSize = CGSize(width: 100.0, height: 100.0)
+        let imageVerticalInset: CGFloat = 70.0
         let explanationLabelInset: CGFloat = 42.0
     }
     
@@ -29,8 +28,6 @@ class AlertView: BaseView {
             .withAlignment(.center)
             .withTextColor(SharedColors.black)
     }()
-    
-    private lazy var iconBackgroundImageView = UIImageView(image: img("bg-alert-icon"))
     
     private(set) lazy var imageView = UIImageView()
     
@@ -53,7 +50,6 @@ class AlertView: BaseView {
     
     override func prepareLayout() {
         setupTitleLabelLayout()
-        setupIconBackgroundImageViewLayout()
         setupImageViewLayout()
         setupExplanationLabelLayout()
     }
@@ -68,21 +64,12 @@ class AlertView: BaseView {
         }
     }
     
-    private func setupIconBackgroundImageViewLayout() {
-        addSubview(iconBackgroundImageView)
-        
-        iconBackgroundImageView.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.backgroundImageTopInset)
-            make.size.equalTo(layout.current.backgroundImageSize)
-            make.centerX.equalToSuperview()
-        }
-    }
-    
     private func setupImageViewLayout() {
-        iconBackgroundImageView.addSubview(imageView)
+        addSubview(imageView)
         
         imageView.snp.makeConstraints { make in
-            make.center.equalToSuperview()
+            make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.imageVerticalInset)
+            make.centerX.equalToSuperview()
         }
     }
     
@@ -90,7 +77,7 @@ class AlertView: BaseView {
         addSubview(explanationLabel)
         
         explanationLabel.snp.makeConstraints { make in
-            make.top.equalTo(iconBackgroundImageView.snp.bottom).offset(layout.current.defaultInset)
+            make.top.equalTo(imageView.snp.bottom).offset(layout.current.imageVerticalInset)
             make.centerX.equalToSuperview()
             make.leading.trailing.equalToSuperview().inset(layout.current.explanationLabelInset)
         }

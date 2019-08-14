@@ -68,10 +68,10 @@ class LocalAuthenticationPreferenceView: BaseView {
     
     private lazy var noButton: UIButton = {
         UIButton(type: .custom)
-            .withTitle("title-no".localized)
-            .withTitleColor(SharedColors.black)
-            .withBackgroundImage(img("bg-dark-gray-button"))
+            .withBackgroundImage(img("bg-soft-gray-button"))
             .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 12.0)))
+            .withAttributedTitle("title-no".localized.attributed([.letterSpacing(1.20), .textColor(SharedColors.black)]))
+            .withAlignment(.center)
     }()
     
     weak var delegate: LocalAuthenticationPreferenceViewDelegate?

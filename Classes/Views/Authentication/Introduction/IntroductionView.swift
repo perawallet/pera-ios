@@ -37,17 +37,14 @@ class IntroductionView: BaseView {
     
     // MARK: Components
     
-    private lazy var backgroundImageView = UIImageView(image: img("bg-introduction"))
-    
-    private lazy var logoImageView = UIImageView(image: img("icon-logo"))
+    private lazy var logoImageView = UIImageView(image: img("icon-logo-small"))
     
     private(set) lazy var welcomeLabel: UILabel = {
         UILabel()
-            .withAlignment(.center)
-            .withTextColor(SharedColors.purple)
             .withLine(.contained)
             .withFont(UIFont.font(.overpass, withWeight: .regular(size: 22.0 * verticalScale)))
-            .withText("introduction-welcome-title".localized)
+            .withAttributedText("introduction-welcome-title".localized.attributed([.lineSpacing(1.5), .textColor(SharedColors.purple)]))
+            .withAlignment(.center)
     }()
     
     private lazy var createAccountButton: MainButton = {
@@ -66,9 +63,8 @@ class IntroductionView: BaseView {
     
     private lazy var recoverButton: UIButton = {
         UIButton(type: .custom)
-            .withTitleColor(SharedColors.turquois)
             .withBackgroundImage(img("bg-blue-button-big"))
-            .withTitle("introduction-recover-title".localized)
+            .withAttributedTitle("introduction-recover-title".localized.attributed([.letterSpacing(1.20), .textColor(.white)]))
             .withAlignment(.center)
             .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 12.0)))
     }()
@@ -76,9 +72,8 @@ class IntroductionView: BaseView {
     private(set) lazy var closeButton: UIButton = {
         UIButton(type: .custom)
             .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 12.0)))
-            .withBackgroundImage(img("bg-dark-gray-button-big"))
-            .withTitle("title-close".localized)
-            .withTitleColor(SharedColors.black)
+            .withBackgroundImage(img("bg-black-button-big"))
+            .withAttributedTitle("title-close".localized.attributed([.letterSpacing(1.20), .textColor(.white)]))
     }()
     
     weak var delegate: IntroductionViewDelegate?
@@ -100,8 +95,11 @@ class IntroductionView: BaseView {
     
     // MARK: Layout
     
+    override func configureAppearance() {
+        backgroundColor = .white
+    }
+    
     override func prepareLayout() {
-        setupBackgroundImageViewLayout()
         setupLogoImageViewLayout()
         setupWelcomeLabelLayout()
         setupCreateAccountButtonLayout()
@@ -110,14 +108,6 @@ class IntroductionView: BaseView {
         
         if mode == .new {
             setupCloseButtonLayout()
-        }
-    }
-    
-    private func setupBackgroundImageViewLayout() {
-        addSubview(backgroundImageView)
-        
-        backgroundImageView.snp.makeConstraints { make in
-            make.center.equalToSuperview()
         }
     }
     
@@ -179,23 +169,6 @@ class IntroductionView: BaseView {
             make.centerX.equalToSuperview()
             make.bottom.equalToSuperview().inset(layout.current.bottomInset + safeAreaBottom)
         }
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        setGradientBackground()
-    }
-    
-    func setGradientBackground() {
-        let gradientLayer = CAGradientLayer()
-        gradientLayer.colors = [Colors.gradientColor.cgColor, UIColor.white.cgColor]
-        gradientLayer.startPoint = CGPoint(x: 0.5, y: 1.0)
-        gradientLayer.endPoint = CGPoint(x: 0.5, y: 0.0)
-        gradientLayer.locations = [0, 1]
-        gradientLayer.frame = bounds
-        
-        layer.insertSublayer(gradientLayer, at: 0)
     }
     
     // MARK: Actions
