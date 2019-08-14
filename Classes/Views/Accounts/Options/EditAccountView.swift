@@ -56,7 +56,7 @@ class EditAccountView: BaseView {
     }()
     
     private(set) lazy var accountNameInputView: SingleLineInputField = {
-        let accountNameInputView = SingleLineInputField(separatorStyle: .none)
+        let accountNameInputView = SingleLineInputField()
         accountNameInputView.explanationLabel.text = "account-name-setup-explanation".localized
         accountNameInputView.inputTextField.attributedPlaceholder = NSAttributedString(
             string: "account-name-setup-placeholder".localized,

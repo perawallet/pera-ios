@@ -10,6 +10,15 @@ import UIKit
 
 class SingleLineInputField: BaseInputView {
     
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let topInset: CGFloat = 20.0
+        let bottomInset: CGFloat = 13.0
+        let horizontalInset: CGFloat = 15.0
+        let minimumHorizontalInset: CGFloat = -3.0
+    }
+    
+    private let layout = Layout<LayoutConstants>()
+    
     override var nextButtonMode: NextButtonMode {
         didSet {
             switch nextButtonMode {
@@ -25,9 +34,9 @@ class SingleLineInputField: BaseInputView {
 
     private(set) lazy var inputTextField: UITextField = {
         let textField = UITextField()
-        textField.textColor = .black
-        textField.tintColor = .black
-        textField.font = UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))
+        textField.textColor = SharedColors.black
+        textField.tintColor = SharedColors.black
+        textField.font = UIFont.font(.overpass, withWeight: .semiBold(size: 13.0))
         return textField
     }()
     
@@ -67,7 +76,15 @@ class SingleLineInputField: BaseInputView {
         contentView.addSubview(inputTextField)
         
         inputTextField.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
+            make.top.equalToSuperview().inset(layout.current.topInset)
+            make.bottom.equalToSuperview().inset(layout.current.bottomInset)
+            
+            if displaysRightInputAccessoryButton {
+                make.trailing.equalTo(rightInputAccessoryButton.snp.leading).offset(layout.current.minimumHorizontalInset)
+            } else {
+                make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            }
         }
     }
     

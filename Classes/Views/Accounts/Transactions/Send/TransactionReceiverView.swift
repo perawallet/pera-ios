@@ -226,7 +226,7 @@ class TransactionReceiverView: BaseView {
     private lazy var receiverContainerView = UIView()
     
     private(set) lazy var passphraseInputView: MultiLineInputField = {
-        let passphraseInputView = MultiLineInputField(displaysExplanationText: false, separatorStyle: .none)
+        let passphraseInputView = MultiLineInputField(displaysExplanationText: false)
         passphraseInputView.placeholderLabel.text = "contacts-input-address-placeholder".localized
         passphraseInputView.nextButtonMode = .submit
         passphraseInputView.inputTextView.autocorrectionType = .no

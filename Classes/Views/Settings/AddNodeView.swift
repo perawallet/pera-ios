@@ -20,7 +20,7 @@ class AddNodeView: BaseView {
     private let layout = Layout<LayoutConstants>()
     
     private(set) lazy var nameInputView: SingleLineInputField = {
-        let inputView = SingleLineInputField(separatorStyle: .full)
+        let inputView = SingleLineInputField()
         inputView.explanationLabel.text = "node-settings-enter-node-name".localized
         inputView.inputTextField.attributedPlaceholder = NSAttributedString(
             string: "node-settings-placeholder-name".localized,
@@ -38,7 +38,7 @@ class AddNodeView: BaseView {
     }()
     
     private(set) lazy var addressInputView: SingleLineInputField = {
-        let inputView = SingleLineInputField(separatorStyle: .full)
+        let inputView = SingleLineInputField()
         inputView.explanationLabel.text = "node-settings-enter-node-address".localized
         inputView.inputTextField.attributedPlaceholder = NSAttributedString(
             string: "node-settings-placeholder-address".localized,
@@ -56,7 +56,7 @@ class AddNodeView: BaseView {
     }()
     
     private(set) lazy var tokenInputView: MultiLineInputField = {
-        let algorandAddressInputView = MultiLineInputField(separatorStyle: .full)
+        let algorandAddressInputView = MultiLineInputField()
         algorandAddressInputView.explanationLabel.text = "node-settings-api-key".localized
         algorandAddressInputView.placeholderLabel.attributedText = NSAttributedString(
             string: "node-settings-placeholder-api-key".localized,

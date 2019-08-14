@@ -11,8 +11,11 @@ import UIKit
 class MultiLineInputField: BaseInputView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let placeholderTopOffset: CGFloat = 7.0
-        let textViewLeadingInset: CGFloat = -3.0
+        let placeholderTopOffset: CGFloat = 7.5
+        let topInset: CGFloat = 10.0
+        let bottomInset: CGFloat = 11.0
+        let horizontalInset: CGFloat = 15.0
+        let minimumHorizontalInset: CGFloat = -3.0
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -32,20 +35,20 @@ class MultiLineInputField: BaseInputView {
     
     private(set) lazy var inputTextView: UITextView = {
         let textView = UITextView()
-        textView.font = UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))
+        textView.font = UIFont.font(.overpass, withWeight: .semiBold(size: 13.0))
         textView.textColor = SharedColors.black
         textView.tintColor = SharedColors.black
         textView.backgroundColor = .clear
         textView.isSelectable = true
         textView.isEditable = true
-        textView.textContainer.heightTracksTextView = true
-        textView.isScrollEnabled = false
+        textView.textContainer.heightTracksTextView = false
+        textView.isScrollEnabled = true
         return textView
     }()
     
     private(set) lazy var placeholderLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 14.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 13.0)))
             .withLine(.contained)
             .withTextColor(SharedColors.softGray)
     }()
@@ -92,8 +95,15 @@ class MultiLineInputField: BaseInputView {
         contentView.addSubview(inputTextView)
         
         inputTextView.snp.makeConstraints { make in
-            make.trailing.top.bottom.equalToSuperview()
-            make.leading.equalToSuperview().inset(layout.current.textViewLeadingInset)
+            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
+            make.top.equalToSuperview().inset(layout.current.topInset)
+            make.bottom.equalToSuperview().inset(layout.current.bottomInset)
+            
+            if displaysRightInputAccessoryButton {
+                make.trailing.equalTo(rightInputAccessoryButton.snp.leading).offset(layout.current.minimumHorizontalInset)
+            } else {
+                make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            }
         }
     }
     
@@ -102,8 +112,7 @@ class MultiLineInputField: BaseInputView {
         
         placeholderLabel.snp.makeConstraints { make in
             make.top.equalTo(inputTextView.textInputView).offset(layout.current.placeholderTopOffset)
-            make.leading.equalToSuperview()
-            make.trailing.equalToSuperview()
+            make.leading.trailing.equalTo(inputTextView.textInputView).offset(3.0)
         }
     }
 }

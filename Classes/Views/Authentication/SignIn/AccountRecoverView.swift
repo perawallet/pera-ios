@@ -17,9 +17,9 @@ protocol AccountRecoverViewDelegate: class {
 class AccountRecoverView: BaseView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let separatorHeight: CGFloat = 1.0
-        let inputTopInset: CGFloat = 20.0
-        let nextButtonTopInset: CGFloat = 144.0
+        let fieldTopInset: CGFloat = 30.0
+        let nextButtonTopInset: CGFloat = 52.0
+        let multiFieldHeight: CGFloat = 160.0
         let bottomInset: CGFloat = 15.0
     }
     
@@ -32,12 +32,6 @@ class AccountRecoverView: BaseView {
     weak var delegate: AccountRecoverViewDelegate?
     
     // MARK: Components
-    
-    private lazy var topSeparatorView: UIView = {
-        let view = UIView()
-        view.backgroundColor = Colors.separatorColor
-        return view
-    }()
     
     private(set) lazy var accountNameInputView: SingleLineInputField = {
         let accountNameInputView = SingleLineInputField()
@@ -81,19 +75,9 @@ class AccountRecoverView: BaseView {
     // MARK: Layout
     
     override func prepareLayout() {
-        setupTopSeparatorViewLayout()
         setupAccountNameInputViewLayout()
         setupPassPhraseInputViewLayout()
         setupNextButtonLayout()
-    }
-    
-    private func setupTopSeparatorViewLayout() {
-        addSubview(topSeparatorView)
-        
-        topSeparatorView.snp.makeConstraints { make in
-            make.top.leading.trailing.equalToSuperview()
-            make.height.equalTo(layout.current.separatorHeight)
-        }
     }
     
     private func setupAccountNameInputViewLayout() {
@@ -101,7 +85,7 @@ class AccountRecoverView: BaseView {
         
         accountNameInputView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.top.equalTo(topSeparatorView.snp.bottom).offset(layout.current.inputTopInset)
+            make.top.equalToSuperview().inset(layout.current.fieldTopInset)
         }
     }
 
@@ -111,6 +95,7 @@ class AccountRecoverView: BaseView {
         passPhraseInputView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(accountNameInputView.snp.bottom)
+            make.height.equalTo(layout.current.multiFieldHeight)
         }
     }
     

@@ -50,7 +50,7 @@ class UserInformationView: BaseView {
     }()
     
     private(set) lazy var contactNameInputView: SingleLineInputField = {
-        let contactNameInputView = SingleLineInputField(separatorStyle: .colored)
+        let contactNameInputView = SingleLineInputField()
         contactNameInputView.explanationLabel.text = "contacts-input-name-explanation".localized
         contactNameInputView.inputTextField.attributedPlaceholder = NSAttributedString(
             string: "contacts-input-name-placeholder".localized,

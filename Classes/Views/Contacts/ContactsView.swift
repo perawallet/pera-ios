@@ -29,7 +29,7 @@ class ContactsView: BaseView {
     // MARK: Components
     
     private(set) lazy var contactNameInputView: SingleLineInputField = {
-        let contactNameInputView = SingleLineInputField(displaysExplanationText: false, separatorStyle: .none)
+        let contactNameInputView = SingleLineInputField(displaysExplanationText: false)
         contactNameInputView.inputTextField.attributedPlaceholder = NSAttributedString(
             string: "contacts-search".localized,
             attributes: [NSAttributedString.Key.foregroundColor: SharedColors.softGray,
