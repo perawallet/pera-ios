@@ -11,18 +11,10 @@ import UIKit
 class HistoryResultsViewModel {
     
     func configure(_ view: HistoryResultsView, with draft: HistoryDraft) {
+        view.accountSelectionView.detailLabel.text = draft.account.name
+        view.accountSelectionView.set(amount: draft.account.amount.toAlgos)
         
-        view.accountNameLabel.text = draft.account.name
-        
-        if draft.account.amount > 0 {
-            view.accountAmountView.mode = .positive(draft.account.amount.toAlgos)
-        } else if draft.account.amount == 0 {
-            view.accountAmountView.mode = .normal(0.0)
-        } else {
-            view.accountAmountView.mode = .negative(-draft.account.amount.toAlgos)
-        }
-        
-        view.startDateLabel.text = draft.startDate.toFormat("dd MMMM yyyy")
-        view.endDateLabel.text = draft.endDate.toFormat("dd MMMM yyyy")
+        view.startDateDisplayView.detailLabel.text = draft.startDate.toFormat("dd MMMM yyyy")
+        view.endDateDisplayView.detailLabel.text = draft.endDate.toFormat("dd MMMM yyyy")
     }
 }

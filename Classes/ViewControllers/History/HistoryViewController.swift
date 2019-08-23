@@ -10,12 +10,6 @@ import UIKit
 
 class HistoryViewController: BaseScrollViewController {
     
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let topInset: CGFloat = 10.0
-    }
-    
-    private let layout = Layout<LayoutConstants>()
-    
     // MARK: Variables
     
     private lazy var accountListModalPresenter = CardModalPresenter(
@@ -60,9 +54,7 @@ class HistoryViewController: BaseScrollViewController {
         contentView.addSubview(historyView)
         
         historyView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.top.equalToSuperview().inset(layout.current.topInset)
-            make.bottom.equalToSuperview()
+            make.edges.equalToSuperview()
         }
     }
     
