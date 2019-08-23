@@ -58,7 +58,7 @@ class ChoosePasswordView: BaseView {
         button.isHidden = true
         return button
             .withAlignment(.center)
-            .withBackgroundImage(img("bg-black-button-big"))
+            .withBackgroundImage(img("bg-black-button"))
             .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 12.0)))
             .withAttributedTitle("logout-title".localized.attributed([.letterSpacing(1.20), .textColor(.white)]))
     }()

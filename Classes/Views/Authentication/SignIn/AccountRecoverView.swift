@@ -21,6 +21,7 @@ class AccountRecoverView: BaseView {
         let nextButtonTopInset: CGFloat = 52.0
         let multiFieldHeight: CGFloat = 160.0
         let bottomInset: CGFloat = 15.0
+        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -105,6 +106,7 @@ class AccountRecoverView: BaseView {
         nextButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(passPhraseInputView.snp.bottom).offset(layout.current.nextButtonTopInset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
             make.bottom.lessThanOrEqualToSuperview().inset(layout.current.bottomInset)
         }
     }

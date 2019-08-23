@@ -22,10 +22,10 @@ class QRSelectableLabel: UIView {
             .withLine(.contained)
     }()
     
-    private lazy var containerView: UIView = {
+    private(set) lazy var containerView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.white
-        view.layer.cornerRadius = 10
+        view.layer.cornerRadius = 6
         return view
     }()
     

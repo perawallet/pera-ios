@@ -26,6 +26,7 @@ class IntroductionView: BaseView {
         let buttonMinimumTopInset: CGFloat = 40.0 * verticalScale
         let recoverButtonTopInset: CGFloat = 13.0 * verticalScale
         let closeButtonMinimumTopInset: CGFloat = 35.0 * verticalScale
+        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -135,6 +136,7 @@ class IntroductionView: BaseView {
         
         createAccountButton.snp.makeConstraints { make in
             make.top.greaterThanOrEqualTo(welcomeLabel.snp.bottom).offset(layout.current.bottomInset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
             make.centerX.equalToSuperview()
         }
     }

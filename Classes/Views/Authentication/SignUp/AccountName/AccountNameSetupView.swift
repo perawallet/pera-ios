@@ -19,6 +19,7 @@ class AccountNameSetupView: BaseView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let topInset: CGFloat = 167.0 * verticalScale
         let buttonBottomInset: CGFloat = 15.0
+        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -77,6 +78,7 @@ class AccountNameSetupView: BaseView {
         nextButton.snp.makeConstraints { make in
             make.top.equalTo(accountNameInputView.snp.bottom).offset(layout.current.topInset)
             make.bottom.lessThanOrEqualToSuperview().inset(layout.current.buttonBottomInset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
             make.centerX.equalToSuperview()
         }
     }

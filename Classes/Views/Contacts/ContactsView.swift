@@ -11,15 +11,14 @@ import UIKit
 class ContactsView: BaseView {
 
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let inputViewHeight: CGFloat = 50.0
+        let inputViewHeight: CGFloat = 60.0
         let separatorInset: CGFloat = 15.0
-        let separatorHeight: CGFloat = 1.0
     }
     
     private let layout = Layout<LayoutConstants>()
     
     private enum Colors {
-        static let separatorColor = rgba(0.67, 0.67, 0.72, 0.31)
+        static let placeholderColor = rgba(0.67, 0.67, 0.72, 0.3)
     }
     
     override var endsEditingAfterTouches: Bool {
@@ -32,8 +31,8 @@ class ContactsView: BaseView {
         let contactNameInputView = SingleLineInputField(displaysExplanationText: false)
         contactNameInputView.inputTextField.attributedPlaceholder = NSAttributedString(
             string: "contacts-search".localized,
-            attributes: [NSAttributedString.Key.foregroundColor: SharedColors.softGray,
-                         NSAttributedString.Key.font: UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))]
+            attributes: [NSAttributedString.Key.foregroundColor: Colors.placeholderColor,
+                         NSAttributedString.Key.font: UIFont.font(.overpass, withWeight: .semiBold(size: 13.0))]
         )
         
         contactNameInputView.inputTextField.textColor = SharedColors.black
@@ -41,12 +40,6 @@ class ContactsView: BaseView {
         contactNameInputView.nextButtonMode = .next
         contactNameInputView.inputTextField.autocorrectionType = .no
         return contactNameInputView
-    }()
-    
-    private lazy var separatorView: UIView = {
-        let view = UIView()
-        view.backgroundColor = Colors.separatorColor
-        return view
     }()
     
     private(set) lazy var contactsCollectionView: UICollectionView = {
@@ -74,7 +67,6 @@ class ContactsView: BaseView {
     
     override func prepareLayout() {
         setupContactNameInputViewLayout()
-        setupSeparatorViewLayout()
         setupContactsCollectionViewLayout()
     }
     
@@ -88,21 +80,11 @@ class ContactsView: BaseView {
         }
     }
 
-    private func setupSeparatorViewLayout() {
-        addSubview(separatorView)
-        
-        separatorView.snp.makeConstraints { make in
-            make.height.equalTo(layout.current.separatorHeight)
-            make.leading.trailing.equalToSuperview().inset(layout.current.separatorInset)
-            make.top.equalTo(contactNameInputView.snp.bottom)
-        }
-    }
-
     private func setupContactsCollectionViewLayout() {
         addSubview(contactsCollectionView)
         
         contactsCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(separatorView.snp.bottom).offset(layout.current.separatorInset)
+            make.top.equalTo(contactNameInputView.snp.bottom).offset(layout.current.separatorInset)
             make.leading.trailing.bottom.equalToSuperview()
         }
         

@@ -23,7 +23,7 @@ class AlertView: BaseView {
     
     private(set) lazy var titleLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(.overpass, withWeight: .bold(size: 20.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .bold(size: 16.0)))
             .withLine(.contained)
             .withAlignment(.center)
             .withTextColor(SharedColors.black)

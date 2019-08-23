@@ -18,19 +18,21 @@ class ContactContextView: BaseView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let separatorHeight: CGFloat = 1.0
+        let imageInset: CGFloat = 30.0
+        let separatorInset: CGFloat = 25.0
         let horizontalInset: CGFloat = 15.0
-        let imageSize: CGFloat = 50.0
+        let imageSize: CGFloat = 40.0
         let labelCenterOffset: CGFloat = 5.0
-        let labelLeftInset: CGFloat = 14.0
-        let verticalInset: CGFloat = 20.0
-        let buttonInternalInset: CGFloat = -12.0
+        let labelLeftInset: CGFloat = 8.0
+        let verticalInset: CGFloat = 23.0
+        let buttonInternalInset: CGFloat = -20.0
         let buttonSize: CGFloat = 38.0
     }
     
     private let layout = Layout<LayoutConstants>()
     
     private enum Colors {
-        static let separatorColor = rgba(0.67, 0.67, 0.72, 0.31)
+        static let separatorColor = rgb(0.94, 0.94, 0.94)
     }
     
     // MARK: Components
@@ -49,15 +51,15 @@ class ContactContextView: BaseView {
             .withTextColor(SharedColors.black)
             .withLine(.single)
             .withAlignment(.left)
-            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 16.0)))
+            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 13.0)))
     }()
     
     private(set) lazy var addressLabel: UILabel = {
         UILabel()
-            .withTextColor(SharedColors.darkGray)
+            .withTextColor(SharedColors.softGray)
             .withAlignment(.left)
             .withLine(.single)
-            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 13.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 12.0)))
     }()
     
     private(set) lazy var qrDisplayButton: UIButton = {
@@ -106,7 +108,7 @@ class ContactContextView: BaseView {
         addSubview(userImageView)
         
         userImageView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
+            make.leading.equalToSuperview().inset(layout.current.imageInset)
             make.width.height.equalTo(layout.current.imageSize)
             make.top.bottom.equalToSuperview().inset(layout.current.verticalInset)
         }
@@ -147,7 +149,7 @@ class ContactContextView: BaseView {
             make.width.height.equalTo(layout.current.buttonSize)
             make.trailing.equalTo(sendButton.snp.leading).offset(layout.current.buttonInternalInset)
             make.centerY.equalToSuperview()
-            make.leading.equalTo(addressLabel.snp.trailing).offset(layout.current.horizontalInset)
+            make.leading.equalTo(addressLabel.snp.trailing).offset(layout.current.labelCenterOffset)
         }
     }
     
@@ -157,7 +159,7 @@ class ContactContextView: BaseView {
         separatorView.snp.makeConstraints { make in
             make.bottom.equalToSuperview()
             make.height.equalTo(layout.current.separatorHeight)
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.separatorInset)
         }
     }
     

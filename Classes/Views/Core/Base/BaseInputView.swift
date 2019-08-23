@@ -94,7 +94,6 @@ class BaseInputView: BaseView {
         
         contentView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(layout.current.defaultInset)
-            make.trailing.equalToSuperview().inset(layout.current.defaultInset)
             make.bottom.equalToSuperview()
             
             if displaysExplanationText {

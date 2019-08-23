@@ -18,9 +18,8 @@ class UserInformationView: BaseView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let backgroundViewSize: CGFloat = 108.0
-        let imageInset: CGFloat = 30.0
-        let nameInputViewInset: CGFloat = 27.0
-        let addressInputViewInset: CGFloat = 20.0
+        let imageInset: CGFloat = 28.0
+        let verticalInset: CGFloat = 15.0
         let buttonSize: CGFloat = 36.0
     }
     
@@ -30,7 +29,7 @@ class UserInformationView: BaseView {
     
     private lazy var imageBackgroundView: UIView = {
         let view = UIView()
-        view.backgroundColor = SharedColors.warmWhite
+        view.backgroundColor = .white
         view.layer.cornerRadius = layout.current.backgroundViewSize / 2
         return view
     }()
@@ -63,7 +62,7 @@ class UserInformationView: BaseView {
         contactNameInputView.inputTextField.font = UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))
         contactNameInputView.nextButtonMode = .next
         contactNameInputView.inputTextField.autocorrectionType = .no
-        contactNameInputView.backgroundColor = .white
+        contactNameInputView.backgroundColor = .clear
         
         contactNameInputView.inputTextField.isEnabled = isEditable
         return contactNameInputView
@@ -79,7 +78,7 @@ class UserInformationView: BaseView {
         algorandAddressInputView.rightInputAccessoryButton.setImage(img("icon-qr-view"), for: .normal)
         algorandAddressInputView.inputTextView.textContainer.heightTracksTextView = false
         algorandAddressInputView.inputTextView.isScrollEnabled = true
-        algorandAddressInputView.backgroundColor = .white
+        algorandAddressInputView.backgroundColor = .clear
         
         algorandAddressInputView.inputTextView.isEditable = isEditable
         return algorandAddressInputView
@@ -96,10 +95,6 @@ class UserInformationView: BaseView {
     }
     
     // MARK: Setup
-    
-    override func configureAppearance() {
-        backgroundColor = .white
-    }
     
     override func setListeners() {
         addButton.addTarget(self, action: #selector(notifyDelegateToAddButtonTapped), for: .touchUpInside)
@@ -153,7 +148,7 @@ class UserInformationView: BaseView {
         
         contactNameInputView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.top.equalTo(imageBackgroundView.snp.bottom).offset(layout.current.nameInputViewInset)
+            make.top.equalTo(imageBackgroundView.snp.bottom).offset(layout.current.verticalInset)
         }
     }
     
@@ -161,12 +156,8 @@ class UserInformationView: BaseView {
         addSubview(algorandAddressInputView)
         
         algorandAddressInputView.snp.makeConstraints { make in
-            make.top.equalTo(contactNameInputView.snp.bottom).offset(layout.current.addressInputViewInset)
+            make.top.equalTo(contactNameInputView.snp.bottom).offset(layout.current.verticalInset)
             make.leading.trailing.bottom.equalToSuperview()
-        }
-        
-        algorandAddressInputView.rightInputAccessoryButton.snp.updateConstraints { make in
-            make.top.equalToSuperview().inset(24.0)
         }
     }
     

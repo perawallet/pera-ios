@@ -31,6 +31,7 @@ class PassPhraseBackUpView: BaseView {
         let warningLabelVerticalInset: CGFloat = 20.0
         let bottomInset: CGFloat = 55.0
         let buttonMinimumTopInset: CGFloat = 60.0
+        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -211,6 +212,7 @@ class PassPhraseBackUpView: BaseView {
             make.centerX.equalToSuperview()
             make.top.equalTo(warningContainerView.snp.bottom).offset(layout.current.buttonMinimumTopInset)
             make.bottom.lessThanOrEqualToSuperview().inset(layout.current.bottomInset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
         }
     }
     

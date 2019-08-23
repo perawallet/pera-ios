@@ -11,8 +11,7 @@ import UIKit
 class SingleLineInputField: BaseInputView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let topInset: CGFloat = 20.0
-        let bottomInset: CGFloat = 13.0
+        let verticalInset: CGFloat = 16.0
         let horizontalInset: CGFloat = 15.0
         let minimumHorizontalInset: CGFloat = -3.0
     }
@@ -77,8 +76,7 @@ class SingleLineInputField: BaseInputView {
         
         inputTextField.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(layout.current.horizontalInset)
-            make.top.equalToSuperview().inset(layout.current.topInset)
-            make.bottom.equalToSuperview().inset(layout.current.bottomInset)
+            make.top.bottom.equalToSuperview().inset(layout.current.verticalInset)
             
             if displaysRightInputAccessoryButton {
                 make.trailing.equalTo(rightInputAccessoryButton.snp.leading).offset(layout.current.minimumHorizontalInset)

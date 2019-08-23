@@ -10,14 +10,8 @@ import UIKit
 
 class MainButton: UIButton {
     
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let size = CGSize(width: 285.0, height: 50.0)
-    }
-    
-    private let layout = Layout<LayoutConstants>()
-    
-    override var intrinsicContentSize: CGSize {
-        return layout.current.size
+    enum Constants {
+        static let horizontalInset: CGFloat = 24.0
     }
     
     // MARK: Initialization
