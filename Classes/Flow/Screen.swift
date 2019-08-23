@@ -41,6 +41,7 @@ indirect enum Screen {
     case pastAuctionDetail(auction: Auction, user: AuctionUser, activeAuction: ActiveAuction)
     case balance(user: AuctionUser)
     case deposit(user: AuctionUser)
+    case feedback
 }
 
 extension Screen {

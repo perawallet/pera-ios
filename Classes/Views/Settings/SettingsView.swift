@@ -8,14 +8,21 @@
 
 import UIKit
 
+protocol SettingsViewDelegate: class {
+    func settingsViewDidTapFeedbackView(_ settingsView: SettingsView)
+}
+
 class SettingsView: BaseView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let collectionViewHeight: CGFloat = Environment.current.isAuctionsEnabled ? 400.0 : 320.0
         let versionLabelOffset: CGFloat = 20.0
+        let feedbackHeight: CGFloat = 80.0
     }
     
     private let layout = Layout<LayoutConstants>()
+    
+    weak var delegate: SettingsViewDelegate?
     
     // MARK: Components
     
@@ -48,10 +55,19 @@ class SettingsView: BaseView {
             .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 14.0)))
     }()
     
+    private(set) lazy var feedbackSelectionView: FeedbackSelectionView = {
+        let view = FeedbackSelectionView()
+        return view
+    }()
+    
     // MARK: Setup
     
     override func configureAppearance() {
         backgroundColor = .white
+    }
+    
+    override func linkInteractors() {
+        feedbackSelectionView.delegate = self
     }
     
     // MARK: Layout
@@ -59,6 +75,7 @@ class SettingsView: BaseView {
     override func prepareLayout() {
         setupCollectionViewLayout()
         setupVersionLabelLayout()
+        setupFeedbackSelectionViewLayout()
     }
     
     private func setupCollectionViewLayout() {
@@ -82,5 +99,22 @@ class SettingsView: BaseView {
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
             versionLabel.text = "Version \(version)"
         }
+    }
+    
+    private func setupFeedbackSelectionViewLayout() {
+        addSubview(feedbackSelectionView)
+        
+        feedbackSelectionView.snp.makeConstraints { make in
+            make.leading.trailing.bottom.equalToSuperview()
+            make.height.equalTo(layout.current.feedbackHeight)
+        }
+    }
+}
+
+// MARK: FeedbackSelectionViewDelegate
+
+extension SettingsView: FeedbackSelectionViewDelegate {
+    func feedbackSelectionViewDidSelected(_ feedbackSelectionView: FeedbackSelectionView) {
+        delegate?.settingsViewDidTapFeedbackView(self)
     }
 }

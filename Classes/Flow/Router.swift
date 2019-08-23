@@ -240,6 +240,8 @@ class Router {
             viewController = BalanceViewController(user: user, configuration: configuration)
         case let .deposit(user):
             viewController = DepositViewController(user: user, configuration: configuration)
+        case .feedback:
+            viewController = FeedbackViewController(configuration: configuration)
         }
         
         return viewController as? T
