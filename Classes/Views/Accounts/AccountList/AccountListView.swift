@@ -20,6 +20,7 @@ class AccountListView: BaseView {
         let imageViewTopInset: CGFloat = 10.0
         let accountListTopInset: CGFloat = 20.0
         let accountListBottomInset: CGFloat = -20.0
+        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
         let buttonBottomInset: CGFloat = 6.0
     }
     
@@ -107,6 +108,7 @@ class AccountListView: BaseView {
         
         addButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
             make.bottom.greaterThanOrEqualToSuperview().inset(layout.current.buttonBottomInset + safeAreaBottom)
         }
     }

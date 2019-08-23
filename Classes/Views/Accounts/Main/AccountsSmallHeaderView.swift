@@ -49,7 +49,6 @@ class AccountsSmallHeaderView: BaseView {
     private(set) lazy var sendButton: UIButton = {
         UIButton(type: .custom)
             .withBackgroundImage(img("bg-send-small"))
-            .withBackgroundColor(.white)
             .withImage(img("icon-arrow-up"))
             .withAlignment(.center)
     }()
@@ -57,7 +56,6 @@ class AccountsSmallHeaderView: BaseView {
     private(set) lazy var receiveButton: UIButton = {
         UIButton(type: .custom)
             .withBackgroundImage(img("bg-receive-small"))
-            .withBackgroundColor(.white)
             .withImage(img("icon-arrow-down"))
             .withAlignment(.center)
     }()

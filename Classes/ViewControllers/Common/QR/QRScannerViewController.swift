@@ -24,6 +24,7 @@ class QRScannerViewController: BaseViewController {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let bottomInset: CGFloat = 20.0
+        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -100,6 +101,7 @@ class QRScannerViewController: BaseViewController {
         
         cancelButton.snp.makeConstraints { make in
             make.bottom.equalToSuperview().inset(layout.current.bottomInset + view.safeAreaBottom)
+            make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
             make.centerX.equalToSuperview()
         }
     }
