@@ -13,7 +13,7 @@ class OptionsViewModel {
     func configure(_ cell: OptionsCell, with option: OptionsViewController.Options) {
         switch option {
         case .showQR:
-            cell.contextView.iconImageView.image = img("icon-qr-code")
+            cell.contextView.iconImageView.image = img("icon-qr-code-purple")
             cell.contextView.optionLabel.text = "options-show-qr".localized
         case .setDefault:
             cell.contextView.iconImageView.image = img("icon-default-account")

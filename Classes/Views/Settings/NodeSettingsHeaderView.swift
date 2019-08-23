@@ -10,12 +10,18 @@ import UIKit
 
 class NodeSettingsHeaderView: BaseView {
     
-    private lazy var imageViewContainer: UIView = {
-        let containerView = UIView()
-        containerView.backgroundColor = UIColor.white
-        containerView.layer.cornerRadius = layout.current.containerHeight / 2
-        return containerView
-    }()
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let imageTopInset: CGFloat = 70.0
+        let topInset: CGFloat = 26.0
+        let separatorHeight: CGFloat = 1.0
+        let verticalInset: CGFloat = 60.0
+    }
+    
+    private let layout = Layout<LayoutConstants>()
+    
+    private enum Colors {
+        static let separatorColor = rgb(0.94, 0.94, 0.94)
+    }
     
     private lazy var imageView: UIImageView = {
         UIImageView()
@@ -30,29 +36,23 @@ class NodeSettingsHeaderView: BaseView {
             .withText("node-settings-subtitle".localized)
     }()
     
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let containerHeight: CGFloat = 150.0
-        let topInset: CGFloat = 20.0
-        let verticalInset: CGFloat = 60.0
-    }
+    private lazy var separatorView: UIView = {
+        let view = UIView()
+        view.backgroundColor = Colors.separatorColor
+        return view
+    }()
     
-    private let layout = Layout<LayoutConstants>()
+    override func configureAppearance() {
+        backgroundColor = .white
+    }
     
     override func prepareLayout() {
         super.prepareLayout()
         
-        addSubview(imageViewContainer)
+        addSubview(imageView)
         
-        imageViewContainer.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(layout.current.topInset)
+        imageView.snp.makeConstraints { make in            make.top.equalToSuperview().inset(layout.current.imageTopInset)
             make.centerX.equalToSuperview()
-            make.height.width.equalTo(layout.current.containerHeight)
-        }
-        
-        imageViewContainer.addSubview(imageView)
-        
-        imageView.snp.makeConstraints { make in
-            make.center.equalToSuperview()
             make.height.width.equalTo(50)
         }
         
@@ -61,8 +61,15 @@ class NodeSettingsHeaderView: BaseView {
         addSubview(titleLabel)
         
         titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(imageViewContainer.snp.bottom).offset(layout.current.topInset)
+            make.top.equalTo(imageView.snp.bottom).offset(layout.current.topInset)
             make.leading.trailing.equalToSuperview().inset(layout.current.verticalInset)
+        }
+        
+        addSubview(separatorView)
+        
+        separatorView.snp.makeConstraints { make in
+            make.leading.trailing.bottom.equalToSuperview()
+            make.height.equalTo(layout.current.separatorHeight)
         }
     }
     

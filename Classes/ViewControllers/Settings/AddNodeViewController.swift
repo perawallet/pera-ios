@@ -285,10 +285,10 @@ class AddNodeViewController: BaseScrollViewController {
         switch mode {
         case .dbFail:
             alertTitle = "node-settings-db-error-title".localized
-            image = img("icon-red-server")
+            image = img("icon-black-server")
         case .testFail:
             alertTitle = "node-settings-test-error-title".localized
-            image = img("icon-red-server")
+            image = img("icon-black-server")
         case .success:
             alertTitle = "node-settings-test-success-title".localized
             image = img("icon-green-server")
@@ -299,7 +299,7 @@ class AddNodeViewController: BaseScrollViewController {
             image: image,
             explanation: message ?? "",
             actionTitle: "title-close".localized,
-            actionImage: img("bg-gray-close")) {
+            actionImage: img("bg-main-button")) {
                 if mode == .success {
                     self.popScreen()
                 }

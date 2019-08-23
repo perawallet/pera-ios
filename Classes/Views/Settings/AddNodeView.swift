@@ -13,8 +13,9 @@ class AddNodeView: BaseView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let labelTopInset: CGFloat = 20.0
         let inputHeight: CGFloat = 87.0
-        let tokenHeight: CGFloat = 110.0
+        let tokenHeight: CGFloat = 119.0
         let verticalOffset: CGFloat = 20.0
+        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -33,7 +34,7 @@ class AddNodeView: BaseView {
         inputView.inputTextField.font = UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))
         inputView.nextButtonMode = .next
         inputView.inputTextField.autocorrectionType = .no
-        inputView.backgroundColor = .white
+        inputView.backgroundColor = .clear
         return inputView
     }()
     
@@ -51,7 +52,7 @@ class AddNodeView: BaseView {
         inputView.inputTextField.font = UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))
         inputView.nextButtonMode = .next
         inputView.inputTextField.autocorrectionType = .no
-        inputView.backgroundColor = .white
+        inputView.backgroundColor = .clear
         return inputView
     }()
     
@@ -71,7 +72,7 @@ class AddNodeView: BaseView {
         algorandAddressInputView.inputTextView.tintColor = SharedColors.black
         algorandAddressInputView.inputTextView.font = UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))
         algorandAddressInputView.inputTextView.isScrollEnabled = true
-        algorandAddressInputView.backgroundColor = .white
+        algorandAddressInputView.backgroundColor = .clear
         
         algorandAddressInputView.inputTextView.isEditable = true
         return algorandAddressInputView
@@ -140,6 +141,7 @@ class AddNodeView: BaseView {
             make.top.greaterThanOrEqualTo(tokenInputView.snp.bottom).offset(layout.current.verticalOffset)
             make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).offset(-layout.current.verticalOffset)
             make.centerX.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
         }
     }
 }

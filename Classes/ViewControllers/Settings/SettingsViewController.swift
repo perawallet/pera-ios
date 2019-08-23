@@ -44,11 +44,13 @@ class SettingsViewController: BaseViewController {
         view.addSubview(settingsView)
         settingsView.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(10.0)
-            make.leading.trailing.bottom.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
+            make.bottom.safeEqualToBottom(of: self)
         }
     }
     
     override func linkInteractors() {
+        settingsView.delegate = self
         settingsView.collectionView.delegate = self
         settingsView.collectionView.dataSource = self
         viewModel.delegate = self
@@ -251,5 +253,13 @@ extension SettingsViewController: AuthManagerDelegate {
         NotificationCenter.default.post(name: Notification.Name.CoinlistConnected, object: self, userInfo: ["code": code])
         
         tabBarController?.selectedIndex = 2
+    }
+}
+
+// MARK: SettingsViewDelegate
+
+extension SettingsViewController: SettingsViewDelegate {
+    func settingsViewDidTapFeedbackView(_ settingsView: SettingsView) {
+        open(.feedback, by: .push)
     }
 }
