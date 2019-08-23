@@ -25,6 +25,7 @@
 "title-close" = "CLOSE";
 "title-send" = "SEND";
 "title-request" = "REQUEST";
+"title-select" = "SELECT RECIPIENT";
 "title-preview" = "PREVIEW";
 "title-done" = "DONE";
 "title-done-lowercased" = "Done";
@@ -357,3 +358,13 @@
 // MARK: Withdraw
 
 "withdraw-title" = "Withdraw";
+
+// MARK: Feedback
+
+"feedback-title" = "Send Feedback";
+"feedback-title-category" = "Category";
+"feedback-subtitle-category" = "Type of feedback";
+"feedback-title-note" = "Note";
+"feedback-subtitle-note" = "What’s on your mind";
+"feedback-title-email" = "Email (Optional):";
+"feedback-subtitle-email" = "Email";
