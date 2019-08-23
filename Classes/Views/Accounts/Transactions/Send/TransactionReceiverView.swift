@@ -16,7 +16,6 @@ enum AlgosReceiverState: Equatable {
 }
 
 protocol TransactionReceiverViewDelegate: class {
-    
     func transactionReceiverViewDidTapAddressButton(_ transactionReceiverView: TransactionReceiverView)
     func transactionReceiverViewDidTapMyAccountsButton(_ transactionReceiverView: TransactionReceiverView)
     func transactionReceiverViewDidTapContactsButton(_ transactionReceiverView: TransactionReceiverView)
@@ -28,7 +27,6 @@ protocol TransactionReceiverViewDelegate: class {
 }
 
 extension TransactionReceiverViewDelegate {
-    
     func transactionReceiverViewDidTapAddressButton(_ transactionReceiverView: TransactionReceiverView) {
         
     }
@@ -56,8 +54,7 @@ extension TransactionReceiverViewDelegate {
 class TransactionReceiverView: BaseView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let horizontalInset: CGFloat = 25.0
-        let separatorHeight: CGFloat = 1.0
+        let horizontalInset: CGFloat = 30.0
         let containerTopInset: CGFloat = 7.0
         let qrButtonInset: CGFloat = 63.0
         let inputViewInset: CGFloat = 50.0
@@ -70,8 +67,8 @@ class TransactionReceiverView: BaseView {
     private let layout = Layout<LayoutConstants>()
     
     private enum Colors {
-        static let separatorColor = rgba(0.67, 0.67, 0.72, 0.31)
         static let buttonColor = rgb(0.34, 0.34, 0.43)
+        static let borderColor = rgb(0.94, 0.94, 0.94)
     }
     
     enum ActionMode: Equatable {
@@ -104,14 +101,6 @@ class TransactionReceiverView: BaseView {
                 if buttonsContainerView.isHidden {
                     buttonsContainerView.isHidden = false
                 }
-                
-                separatorView.snp.remakeConstraints { make in
-                    make.bottom.equalToSuperview()
-                    make.height.equalTo(layout.current.separatorHeight)
-                    make.top.equalTo(buttonsContainerView.snp.bottom).offset(14.0)
-                    make.leading.trailing.equalToSuperview()
-                }
-                
             case let .address(address, _):
                 actionButton.isHidden = false
                 buttonsContainerView.isHidden = true
@@ -249,53 +238,63 @@ class TransactionReceiverView: BaseView {
     private lazy var buttonsContainerView = UIView()
     
     private lazy var addressButton: AlignedButton = {
-        let positions: AlignedButton.StylePositionAdjustment = (image: CGPoint(x: 0.0, y: 6.0), title: CGPoint(x: 0.0, y: -6.0))
+        let positions: AlignedButton.StylePositionAdjustment = (image: CGPoint(x: 0.0, y: 18.0), title: CGPoint(x: 0.0, y: -12.0))
         
         let button = AlignedButton(style: .imageTop(positions))
         button.setImage(img("icon-address"), for: .normal)
         button.setTitle("send-algos-address".localized, for: .normal)
         button.setTitleColor(Colors.buttonColor, for: .normal)
-        button.titleLabel?.font = UIFont.font(.overpass, withWeight: .semiBold(size: 12.0))
+        button.titleLabel?.font = UIFont.font(.overpass, withWeight: .semiBold(size: 11.0))
+        button.backgroundColor = .white
+        button.layer.cornerRadius = 4.0
+        button.layer.borderColor = Colors.borderColor.cgColor
+        button.layer.borderWidth = 1.0
         return button
     }()
     
     private lazy var myAccountsButton: UIButton = {
-        let positions: AlignedButton.StylePositionAdjustment = (image: CGPoint(x: 0.0, y: 6.0), title: CGPoint(x: 0.0, y: -6.0))
+        let positions: AlignedButton.StylePositionAdjustment = (image: CGPoint(x: 0.0, y: 22.0), title: CGPoint(x: 0.0, y: -12.0))
         
         let button = AlignedButton(style: .imageTop(positions))
         button.setImage(img("icon-my-accounts"), for: .normal)
         button.setTitle("send-algos-my-accounts".localized, for: .normal)
         button.setTitleColor(Colors.buttonColor, for: .normal)
-        button.titleLabel?.font = UIFont.font(.overpass, withWeight: .semiBold(size: 12.0))
+        button.titleLabel?.font = UIFont.font(.overpass, withWeight: .semiBold(size: 11.0))
+        button.backgroundColor = .white
+        button.layer.cornerRadius = 4.0
+        button.layer.borderColor = Colors.borderColor.cgColor
+        button.layer.borderWidth = 1.0
         return button
     }()
     
     private lazy var contactsButton: UIButton = {
-        let positions: AlignedButton.StylePositionAdjustment = (image: CGPoint(x: 0.0, y: 6.0), title: CGPoint(x: 0.0, y: -6.0))
+        let positions: AlignedButton.StylePositionAdjustment = (image: CGPoint(x: 0.0, y: 22.0), title: CGPoint(x: 0.0, y: -12.0))
         
         let button = AlignedButton(style: .imageTop(positions))
         button.setImage(img("icon-contact"), for: .normal)
         button.setTitle("send-algos-contacts".localized, for: .normal)
         button.setTitleColor(Colors.buttonColor, for: .normal)
-        button.titleLabel?.font = UIFont.font(.overpass, withWeight: .semiBold(size: 12.0))
+        button.titleLabel?.font = UIFont.font(.overpass, withWeight: .semiBold(size: 11.0))
+        button.backgroundColor = .white
+        button.layer.cornerRadius = 4.0
+        button.layer.borderColor = Colors.borderColor.cgColor
+        button.layer.borderWidth = 1.0
         return button
     }()
     
     private lazy var scanQRButton: UIButton = {
-        let positions: AlignedButton.StylePositionAdjustment = (image: CGPoint(x: 0.0, y: 6.0), title: CGPoint(x: 0.0, y: -6.0))
+        let positions: AlignedButton.StylePositionAdjustment = (image: CGPoint(x: 0.0, y: 20.0), title: CGPoint(x: 0.0, y: -12.0))
         
         let button = AlignedButton(style: .imageTop(positions))
-        button.setImage(img("icon-qr-scan"), for: .normal)
+        button.setImage(img("icon-qr-scan-send"), for: .normal)
         button.setTitle("send-algos-scan".localized, for: .normal)
         button.setTitleColor(Colors.buttonColor, for: .normal)
-        button.titleLabel?.font = UIFont.font(.overpass, withWeight: .semiBold(size: 12.0))
+        button.titleLabel?.font = UIFont.font(.overpass, withWeight: .semiBold(size: 11.0))
+        button.backgroundColor = .white
+        button.layer.cornerRadius = 4.0
+        button.layer.borderColor = Colors.borderColor.cgColor
+        button.layer.borderWidth = 1.0
         return button
-    }()
-    
-    private lazy var separatorView: UIView = {
-        let view = UIView()
-        view.backgroundColor = Colors.separatorColor
-        return view
     }()
     
     // MARK: Setup
@@ -319,7 +318,6 @@ class TransactionReceiverView: BaseView {
         setupMyAccountsButtonLayout()
         setupContactsButtonLayout()
         setupScanQRButtonLayout()
-        setupSeparatorViewLayout()
     }
     
     private func setupTitleLabelLayout() {
@@ -356,12 +354,6 @@ class TransactionReceiverView: BaseView {
             make.trailing.equalToSuperview().inset(layout.current.inputViewInset)
             make.height.equalTo(55).priority(.low)
         }
-        
-        separatorView.snp.remakeConstraints { make in
-            make.leading.bottom.trailing.equalToSuperview()
-            make.height.equalTo(layout.current.separatorHeight)
-            make.top.equalTo(receiverContainerView.snp.bottom)
-        }
     }
     
     private func setupReceiverContactViewLayout() {
@@ -387,12 +379,6 @@ class TransactionReceiverView: BaseView {
         }
         
         receiverContactView.qrDisplayButton.removeFromSuperview()
-        
-        separatorView.snp.remakeConstraints { make in
-            make.leading.trailing.bottom.equalToSuperview()
-            make.height.equalTo(layout.current.separatorHeight)
-            make.top.equalTo(receiverContainerView.snp.bottom)
-        }
     }
     
     private func setupActionButtonLayout() {
@@ -410,9 +396,9 @@ class TransactionReceiverView: BaseView {
         addSubview(buttonsContainerView)
         
         buttonsContainerView.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(20.0)
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(76.0)
+            make.top.equalTo(titleLabel.snp.bottom).offset(7.0)
+            make.leading.trailing.equalToSuperview().inset(15.0)
+            make.height.equalTo(75.0)
         }
     }
     
@@ -421,7 +407,7 @@ class TransactionReceiverView: BaseView {
         
         addressButton.snp.makeConstraints { make in
             make.leading.top.bottom.equalToSuperview()
-            make.width.equalTo(UIScreen.main.bounds.width / 4)
+            make.width.equalTo((UIScreen.main.bounds.width - 75.0) / 4)
         }
     }
     
@@ -430,7 +416,7 @@ class TransactionReceiverView: BaseView {
         
         myAccountsButton.snp.makeConstraints { make in
             make.width.height.equalTo(addressButton)
-            make.leading.equalTo(addressButton.snp.trailing)
+            make.leading.equalTo(addressButton.snp.trailing).offset(15.0)
             make.top.bottom.equalTo(addressButton)
         }
     }
@@ -440,7 +426,7 @@ class TransactionReceiverView: BaseView {
         
         contactsButton.snp.makeConstraints { make in
             make.width.height.equalTo(addressButton)
-            make.leading.equalTo(myAccountsButton.snp.trailing)
+            make.leading.equalTo(myAccountsButton.snp.trailing).offset(15.0)
             make.top.bottom.equalTo(addressButton)
         }
     }
@@ -450,20 +436,9 @@ class TransactionReceiverView: BaseView {
         
         scanQRButton.snp.makeConstraints { make in
             make.width.height.equalTo(addressButton)
-            make.leading.equalTo(contactsButton.snp.trailing)
+            make.leading.equalTo(contactsButton.snp.trailing).offset(15.0)
             make.top.bottom.equalTo(addressButton)
             make.trailing.equalToSuperview()
-        }
-    }
-    
-    private func setupSeparatorViewLayout() {
-        addSubview(separatorView)
-        
-        separatorView.snp.makeConstraints { make in
-            make.bottom.equalToSuperview()
-            make.height.equalTo(layout.current.separatorHeight)
-            make.top.equalTo(buttonsContainerView.snp.bottom).offset(14.0)
-            make.leading.trailing.equalToSuperview()
         }
     }
     

@@ -19,6 +19,7 @@ class RequestAlgosPreviewView: RequestAlgosView {
         let topInset: CGFloat = 45.0 * verticalScale
         let verticalInset: CGFloat = 20.0 * verticalScale
         let algosInputViewInset: CGFloat = 30.0 * verticalScale
+        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -36,7 +37,7 @@ class RequestAlgosPreviewView: RequestAlgosView {
         return QRView(qrText: qrText)
     }()
     
-    private(set) lazy var shareButton = MainButton(title: "title-share-big".localized)
+    private(set) lazy var shareButton = MainButton(title: "title-select".localized)
     
     init(address: String, amount: Int64) {
         self.address = address
@@ -94,6 +95,7 @@ class RequestAlgosPreviewView: RequestAlgosView {
             make.top.greaterThanOrEqualTo(algosInputView.snp.bottom).offset(layout.current.verticalInset)
             make.centerX.equalToSuperview()
             make.bottom.equalToSuperview().inset(layout.current.verticalInset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
         }
     }
     

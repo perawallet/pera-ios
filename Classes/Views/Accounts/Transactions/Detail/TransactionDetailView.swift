@@ -216,7 +216,7 @@ class TransactionDetailView: BaseView {
         }
         
         feeView.algosAmountView.snp.updateConstraints { make in
-            make.top.equalTo(feeView.explanationLabel.snp.bottom).offset(layout.current.feeViewOffset)
+            make.top.equalToSuperview().inset(layout.current.feeViewOffset)
         }
     }
     

@@ -352,6 +352,10 @@ extension SendAlgosViewController: SendAlgosViewDelegate {
         
         displayQRScanner()
     }
+    
+    func sendAlgosViewDidTapMaxButton(_ sendAlgosView: SendAlgosView) {
+        
+    }
 }
 
 // MARK: AccountListViewControllerDelegate

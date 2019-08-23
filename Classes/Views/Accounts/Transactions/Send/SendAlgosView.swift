@@ -9,23 +9,26 @@
 import UIKit
 
 protocol SendAlgosViewDelegate: class {
-    
     func sendAlgosViewDidTapAccountSelectionView(_ sendAlgosView: SendAlgosView)
     func sendAlgosViewDidTapPreviewButton(_ sendAlgosView: SendAlgosView)
     func sendAlgosViewDidTapAddressButton(_ sendAlgosView: SendAlgosView)
     func sendAlgosViewDidTapMyAccountsButton(_ sendAlgosView: SendAlgosView)
     func sendAlgosViewDidTapContactsButton(_ sendAlgosView: SendAlgosView)
     func sendAlgosViewDidTapScanQRButton(_ sendAlgosView: SendAlgosView)
+    func sendAlgosViewDidTapMaxButton(_ sendAlgosView: SendAlgosView)
 }
 
 class SendAlgosView: BaseView {
 
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let topInset: CGFloat = 15.0 * verticalScale
+        let topInset: CGFloat = 20.0 * verticalScale
         let horizontalInset: CGFloat = 25.0
         let buttonInset: CGFloat = 15.0
         let bottomInset: CGFloat = 18.0
+        let accountSelectionHeight: CGFloat = 88.0
+        let receiverViewHeight: CGFloat = 115.0
         let buttonMinimumInset: CGFloat = 18.0 * verticalScale
+        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -49,12 +52,8 @@ class SendAlgosView: BaseView {
         return view
     }()
     
-    private(set) lazy var previewButton: UIButton = {
-        UIButton(type: .custom)
-            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 12.0)))
-            .withBackgroundImage(img("bg-main-button"))
-            .withTitle("title-preview".localized)
-            .withTitleColor(SharedColors.purple)
+    private(set) lazy var previewButton: MainButton = {
+        MainButton(title: "title-preview".localized)
     }()
     
     // MARK: Setup
@@ -69,6 +68,7 @@ class SendAlgosView: BaseView {
     }
     
     override func linkInteractors() {
+        algosInputView.delegate = self
         previewButton.addTarget(self, action: #selector(notifyDelegateToPreviewButtonTapped), for: .touchUpInside)
     }
     
@@ -86,7 +86,6 @@ class SendAlgosView: BaseView {
         
         algosInputView.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(layout.current.topInset)
-            make.height.equalTo(88.0)
             make.leading.trailing.equalToSuperview()
         }
     }
@@ -96,7 +95,7 @@ class SendAlgosView: BaseView {
         
         accountSelectionView.snp.makeConstraints { make in
             make.top.equalTo(algosInputView.snp.bottom)
-            make.height.equalTo(88.0)
+            make.height.equalTo(layout.current.accountSelectionHeight)
             make.leading.trailing.equalToSuperview()
         }
     }
@@ -106,6 +105,7 @@ class SendAlgosView: BaseView {
         
         transactionReceiverView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
+            make.height.equalTo(layout.current.receiverViewHeight)
             make.top.equalTo(accountSelectionView.snp.bottom)
         }
     }
@@ -114,7 +114,7 @@ class SendAlgosView: BaseView {
         addSubview(previewButton)
         
         previewButton.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
             make.top.greaterThanOrEqualTo(transactionReceiverView.snp.bottom).offset(layout.current.buttonMinimumInset)
             make.bottom.equalToSuperview().inset(layout.current.bottomInset)
         }
@@ -151,5 +151,13 @@ extension SendAlgosView: TransactionReceiverViewDelegate {
     
     func transactionReceiverViewDidTapScanQRButton(_ transactionReceiverView: TransactionReceiverView) {
         delegate?.sendAlgosViewDidTapScanQRButton(self)
+    }
+}
+
+// MARK: AlgosInputViewDelegate
+
+extension SendAlgosView: AlgosInputViewDelegate {
+    func algosInputViewDidTapMaxButton(_ algosInputView: AlgosInputView) {
+        delegate?.sendAlgosViewDidTapMaxButton(self)
     }
 }
