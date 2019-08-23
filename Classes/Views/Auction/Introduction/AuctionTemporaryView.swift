@@ -25,6 +25,7 @@ class AuctionTemporaryView: BaseView {
         let bottomContainerTopInset: CGFloat = 34.0 * verticalScale
         let bottomContainerHeight: CGFloat = 41.0 * verticalScale
         let buttonBottomInset: CGFloat = 30.0
+        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -161,6 +162,7 @@ class AuctionTemporaryView: BaseView {
         goToAuctionButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.bottom.equalToSuperview().inset(layout.current.buttonBottomInset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
         }
     }
     

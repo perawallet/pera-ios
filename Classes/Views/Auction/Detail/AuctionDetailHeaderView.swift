@@ -57,7 +57,6 @@ class AuctionDetailHeaderView: BaseView {
     private(set) lazy var committedAmountView: DetailedInformationView = {
         let committedAmountView = DetailedInformationView()
         committedAmountView.backgroundColor = .white
-        committedAmountView.separatorView.isHidden = true
         committedAmountView.explanationLabel.text = "auction-detail-committed-title".localized
         committedAmountView.detailLabel.font = UIFont.font(.overpass, withWeight: .bold(size: 15.0))
         return committedAmountView

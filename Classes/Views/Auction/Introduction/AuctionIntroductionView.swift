@@ -22,6 +22,7 @@ class AuctionIntroductionView: BaseView {
         let explanationTopInset: CGFloat = 44.0 * verticalScale
         let explanationHorizontalInset: CGFloat = 71.0
         let buttonTopInset: CGFloat = 76.0 * verticalScale
+        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -116,6 +117,7 @@ class AuctionIntroductionView: BaseView {
         getStartedButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(explanationLabel.snp.bottom).offset(layout.current.buttonTopInset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
         }
     }
     
