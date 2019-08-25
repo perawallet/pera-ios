@@ -18,19 +18,19 @@ class AccountsSmallHeaderView: BaseView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let containerViewInset: CGFloat = 10.0
-        let availableTitleInset: CGFloat = 15.0 * verticalScale
-        let containerViewHeight: CGFloat = 64.0 * verticalScale
-        let topInset: CGFloat = 24.0 * verticalScale
+        let availableTitleInset: CGFloat = 15.0
+        let containerViewHeight: CGFloat = 64.0
+        let topInset: CGFloat = 24.0
         let horizontalInset: CGFloat = 15.0
         let amountLabelLeadingInset: CGFloat = 6.0
         let amountLabelTrailingInset: CGFloat = 110.0
-        let historyLabelTopInset: CGFloat = 20.0 * verticalScale
+        let historyLabelTopInset: CGFloat = 20.0
         let buttonSize: CGFloat = 38.0
-        let buttonTopInset: CGFloat = 12.0 * verticalScale
-        let amountLabelTopInset: CGFloat = -6.0 * verticalScale
-        let verticalInset: CGFloat = 25.0 * verticalScale
+        let buttonTopInset: CGFloat = 13.0
+        let amountLabelTopInset: CGFloat = -6.0
+        let verticalInset: CGFloat = 25.0
         let buttonMinimumInset: CGFloat = 3.0
-        let historyLabelBottomInset: CGFloat = 10.0 * verticalScale
+        let historyLabelBottomInset: CGFloat = 10.0
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -150,7 +150,7 @@ class AccountsSmallHeaderView: BaseView {
         
         sendButton.snp.makeConstraints { make in
             make.width.height.equalTo(receiveButton)
-            make.top.equalTo(receiveButton)
+            make.top.bottom.equalTo(receiveButton)
             make.trailing.equalTo(receiveButton.snp.leading).offset(-layout.current.horizontalInset)
             make.leading.greaterThanOrEqualTo(algosAmountLabel.snp.trailing).offset(layout.current.buttonMinimumInset)
         }

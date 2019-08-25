@@ -18,17 +18,17 @@ class AccountsHeaderView: BaseView {
 
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let containerViewInset: CGFloat = 10.0
-        let availableTitleInset: CGFloat = 15.0 * verticalScale
-        let containerViewHeight: CGFloat = 166.0 * verticalScale
+        let availableTitleInset: CGFloat = 15.0
+        let containerViewHeight: CGFloat = 166.0
         let dollarValueSize = CGSize(width: 40.0, height: 40.0)
         let dollarValueInset: CGFloat = 5.0
         let horizontalInset: CGFloat = 15.0
-        let verticalInset: CGFloat = 20.0 * verticalScale
-        let buttonHeight: CGFloat = 46.0 * verticalScale
-        let historyLabelBottomInset: CGFloat = 10.0 * verticalScale
-        let amountLabelTopInset: CGFloat = -10.0 * verticalScale
+        let verticalInset: CGFloat = 20.0
+        let buttonHeight: CGFloat = 46.0
+        let historyLabelBottomInset: CGFloat = 10.0
+        let amountLabelTopInset: CGFloat = -10.0
         let amountLabelLeadingInset: CGFloat = 6.0
-        let buttonTopInset: CGFloat = 35.0 * verticalScale
+        let buttonTopInset: CGFloat = 35.0
     }
     
     private let layout = Layout<LayoutConstants>()
