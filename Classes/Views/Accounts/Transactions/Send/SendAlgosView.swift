@@ -26,6 +26,7 @@ class SendAlgosView: BaseView {
         let buttonInset: CGFloat = 15.0
         let bottomInset: CGFloat = 18.0
         let accountSelectionHeight: CGFloat = 88.0
+        let accountSelectionTopInset: CGFloat = 5.0
         let receiverViewHeight: CGFloat = 115.0
         let buttonMinimumInset: CGFloat = 18.0 * verticalScale
         let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
@@ -94,7 +95,7 @@ class SendAlgosView: BaseView {
         addSubview(accountSelectionView)
         
         accountSelectionView.snp.makeConstraints { make in
-            make.top.equalTo(algosInputView.snp.bottom)
+            make.top.equalTo(algosInputView.snp.bottom).offset(layout.current.accountSelectionTopInset)
             make.height.equalTo(layout.current.accountSelectionHeight)
             make.leading.trailing.equalToSuperview()
         }

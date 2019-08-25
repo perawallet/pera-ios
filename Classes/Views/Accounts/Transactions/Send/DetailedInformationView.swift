@@ -53,7 +53,6 @@ class DetailedInformationView: BaseView {
     private(set) lazy var algosAmountView: AlgosAmountView = {
         let view = AlgosAmountView()
         view.amountLabel.textAlignment = .left
-        view.algoIconImageView.image = img("icon-algo-min")
         view.amountLabel.font = UIFont.font(.overpass, withWeight: .bold(size: 15.0))
         view.mode = .normal(0.0)
         return view

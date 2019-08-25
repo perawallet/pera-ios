@@ -81,7 +81,9 @@ class ContactQRDisplayView: BaseView {
     }()
     
     private(set) lazy var closeButton: MainButton = {
-        MainButton(title: "title-close".localized)
+        let button = MainButton(title: "title-close".localized)
+        button.setBackgroundImage(img("bg-black-button-big"), for: .normal)
+        return button
     }()
     
     weak var delegate: ContactQRDisplayViewDelegate?

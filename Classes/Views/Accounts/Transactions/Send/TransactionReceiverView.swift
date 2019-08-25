@@ -58,8 +58,8 @@ class TransactionReceiverView: BaseView {
         let containerTopInset: CGFloat = 7.0
         let qrButtonInset: CGFloat = 63.0
         let inputViewInset: CGFloat = 50.0
-        let verticalInset: CGFloat = 20.0
-        let inputViewHeight: CGFloat = 45.0
+        let verticalInset: CGFloat = 15.0
+        let inputViewHeight: CGFloat = 44.0
         let buttonSize: CGFloat = 38.0
         let buttonInset: CGFloat = 15.0
     }
@@ -174,16 +174,6 @@ class TransactionReceiverView: BaseView {
             }
         }
         
-        let width = UIScreen.main.bounds.width - 105.0
-        let font = UIFont.font(.overpass, withWeight: .semiBold(size: 15.0))
-        
-        let height = address.height(withConstrained: width, font: font) + 6
-        
-        passphraseInputView.inputTextView.snp.updateConstraints { make in
-            make.height.equalTo(height)
-            make.top.equalToSuperview().inset(-5.0)
-        }
-        
         passphraseInputView.value = address
     }
     
@@ -195,7 +185,6 @@ class TransactionReceiverView: BaseView {
             receiverContactView.userImageView.image = resizedImage
         }
         
-        receiverContactView.userImageView.backgroundColor = .white
         receiverContactView.qrDisplayButton.isHidden = true
         receiverContactView.separatorView.isHidden = true
         receiverContactView.nameLabel.text = contact.name
@@ -212,12 +201,21 @@ class TransactionReceiverView: BaseView {
         return label
     }()
     
-    private lazy var receiverContainerView = UIView()
+    private lazy var receiverContainerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        view.layer.cornerRadius = 4.0
+        view.layer.borderColor = Colors.borderColor.cgColor
+        view.layer.borderWidth = 1.0
+        return view
+    }()
     
     private(set) lazy var passphraseInputView: MultiLineInputField = {
         let passphraseInputView = MultiLineInputField(displaysExplanationText: false)
         passphraseInputView.placeholderLabel.text = "contacts-input-address-placeholder".localized
         passphraseInputView.nextButtonMode = .submit
+        passphraseInputView.backgroundColor = .clear
+        passphraseInputView.contentView.layer.borderWidth = 0.0
         passphraseInputView.inputTextView.autocorrectionType = .no
         passphraseInputView.inputTextView.autocapitalizationType = .none
         passphraseInputView.inputTextView.textContainer.heightTracksTextView = false
@@ -227,7 +225,7 @@ class TransactionReceiverView: BaseView {
     
     private(set) lazy var receiverContactView: ContactContextView = {
         let view = ContactContextView()
-        view.backgroundColor = SharedColors.warmWhite
+        view.backgroundColor = .clear
         return view
     }()
     
@@ -334,7 +332,7 @@ class TransactionReceiverView: BaseView {
         
         receiverContainerView.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.containerTopInset)
-            make.leading.trailing.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(15.0)
         }
     }
     
@@ -342,7 +340,7 @@ class TransactionReceiverView: BaseView {
         receiverContainerView.addSubview(passphraseInputView)
         
         passphraseInputView.contentView.snp.updateConstraints { make in
-            make.top.trailing.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
         }
         
         passphraseInputView.inputTextView.snp.makeConstraints { make in
@@ -352,7 +350,6 @@ class TransactionReceiverView: BaseView {
         passphraseInputView.snp.makeConstraints { make in
             make.leading.top.bottom.equalToSuperview()
             make.trailing.equalToSuperview().inset(layout.current.inputViewInset)
-            make.height.equalTo(55).priority(.low)
         }
     }
     
@@ -366,16 +363,16 @@ class TransactionReceiverView: BaseView {
             make.trailing.equalTo(actionButton.snp.leading).offset(-5.0)
         }
         
+        receiverContactView.userImageView.snp.updateConstraints { make in
+            make.top.bottom.leading.equalToSuperview().inset(15.0)
+        }
+        
         receiverContactView.nameLabel.snp.makeConstraints { make in
             make.trailing.equalToSuperview()
         }
         
         receiverContactView.addressLabel.snp.makeConstraints { make in
             make.trailing.equalToSuperview()
-        }
-        
-        receiverContactView.userImageView.snp.updateConstraints { make in
-            make.top.equalToSuperview().inset(0.0)
         }
         
         receiverContactView.qrDisplayButton.removeFromSuperview()

@@ -17,17 +17,15 @@ protocol TransactionDetailViewDelegate: class {
 class TransactionDetailView: BaseView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
-
-        let amountViewTopInset: CGFloat = 50.0
+        let amountViewTopInset: CGFloat = 20.0
+        let amountViewHeight: CGFloat = 85.0
         let horizontalInset: CGFloat = 25.0
         let amountViewBottomInset: CGFloat = 20.0
-        let receiverViewHeight: CGFloat = 90.0
+        let receiverViewHeight: CGFloat = 115.0
         let imageSize: CGFloat = 29.0
         let imageInset: CGFloat = 5.0
-        let separatorHeight: CGFloat = 1.0
         let feeViewHeight: CGFloat = 88.0
         let feeViewOffset: CGFloat = 13.0
-        let amountViewHeight: CGFloat = 55.0
         let bottomInset: CGFloat = 10.0
     }
     
@@ -41,19 +39,9 @@ class TransactionDetailView: BaseView {
     
     // MARK: Components
     
-    private(set) lazy var transactionAmountView: AlgosAmountView = {
-        let view = AlgosAmountView()
-        view.signLabel.font = UIFont.font(.overpass, withWeight: .bold(size: 40.0))
-        view.amountLabel.font = UIFont.font(.overpass, withWeight: .bold(size: 40.0))
-        view.amountLabel.textAlignment = .left
-        view.algoIconImageView.image = img("algos-icon-big", isTemplate: true)
-        view.algoIconImageView.contentMode = .scaleToFill
-        return view
-    }()
-    
-    private(set) lazy var separatorView: UIView = {
-        let view = UIView()
-        view.backgroundColor = Colors.separatorColor
+    private(set) lazy var transactionAmountView: DetailedInformationView = {
+        let view = DetailedInformationView(mode: .algos)
+        view.explanationLabel.text = "transaction-detail-amount".localized
         return view
     }()
     
@@ -112,7 +100,6 @@ class TransactionDetailView: BaseView {
     
     override func prepareLayout() {
         setupTransactionAmountViewLayout()
-        setupSeparatorViewLayout()
         
         if transactionType == .received {
             setupTransactionOpponentViewLayout()
@@ -131,33 +118,9 @@ class TransactionDetailView: BaseView {
         addSubview(transactionAmountView)
         
         transactionAmountView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.top.equalToSuperview().inset(layout.current.amountViewTopInset)
-            make.height.equalTo(layout.current.amountViewHeight)
-        }
-        
-        adjustTransactionAmountViewComponentsLayout()
-    }
-    
-    private func adjustTransactionAmountViewComponentsLayout() {
-        transactionAmountView.algoIconImageView.snp.makeConstraints { make in
-            make.width.height.equalTo(layout.current.imageSize)
-        }
-        
-        transactionAmountView.amountLabel.snp.remakeConstraints { make in
-            make.leading.equalTo(transactionAmountView.algoIconImageView.snp.trailing).offset(layout.current.imageInset)
-            make.centerY.equalToSuperview()
-            make.trailing.lessThanOrEqualToSuperview()
-        }
-    }
-    
-    private func setupSeparatorViewLayout() {
-        addSubview(separatorView)
-        
-        separatorView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.top.equalTo(transactionAmountView.snp.bottom).offset(layout.current.amountViewBottomInset)
-            make.height.equalTo(layout.current.separatorHeight)
+            make.height.equalTo(layout.current.amountViewHeight)
+            make.top.equalToSuperview().inset(layout.current.amountViewTopInset)
         }
     }
     
@@ -168,7 +131,7 @@ class TransactionDetailView: BaseView {
             if transactionType == .received {
                 make.top.equalTo(transactionOpponentView.snp.bottom)
             } else {
-                make.top.equalTo(separatorView.snp.bottom)
+                make.top.equalTo(transactionAmountView.snp.bottom)
             }
             
             make.leading.trailing.equalToSuperview()
@@ -180,13 +143,13 @@ class TransactionDetailView: BaseView {
         
         transactionOpponentView.snp.makeConstraints { make in
             if transactionType == .received {
-                make.top.equalTo(separatorView.snp.bottom)
+                make.top.equalTo(transactionAmountView.snp.bottom)
             } else {
                 make.top.equalTo(userAccountView.snp.bottom)
             }
             
             make.leading.trailing.equalToSuperview()
-            make.height.greaterThanOrEqualTo(layout.current.receiverViewHeight)
+            make.height.equalTo(layout.current.receiverViewHeight)
         }
     }
     

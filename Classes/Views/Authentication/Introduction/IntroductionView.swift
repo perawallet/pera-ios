@@ -155,7 +155,7 @@ class IntroductionView: BaseView {
         
         recoverButton.snp.makeConstraints { make in
             make.top.equalTo(subtitleLabel.snp.bottom).offset(layout.current.recoverButtonTopInset)
-            make.centerX.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
             
             if mode == .initialize {
                 make.bottom.equalToSuperview().inset(layout.current.bottomInset + safeAreaBottom)
@@ -168,7 +168,7 @@ class IntroductionView: BaseView {
         
         closeButton.snp.makeConstraints { make in
             make.top.greaterThanOrEqualTo(recoverButton.snp.bottom).offset(layout.current.closeButtonMinimumTopInset)
-            make.centerX.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
             make.bottom.equalToSuperview().inset(layout.current.bottomInset + safeAreaBottom)
         }
     }
