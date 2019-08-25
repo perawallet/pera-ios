@@ -12,9 +12,9 @@ class TransactionHistoryContextView: BaseView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let horizontalInset: CGFloat = 25.0
-        let topInset: CGFloat = 20.0
-        let bottomInset: CGFloat = 18.0
-        let labelVerticalInset: CGFloat = 5.0
+        let topInset: CGFloat = 22.0
+        let bottomInset: CGFloat = 22.0
+        let labelVerticalInset: CGFloat = 3.0
         let separatorInset: CGFloat = 20.0
         let separatorHeight: CGFloat = 1.0
         let minimumHorizontalSpacing: CGFloat = 3.0
@@ -34,7 +34,7 @@ class TransactionHistoryContextView: BaseView {
         UILabel()
             .withLine(.single)
             .withAlignment(.left)
-            .withFont(UIFont.font(.avenir, withWeight: .medium(size: 14.0)))
+            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 13.0)))
             .withTextColor(SharedColors.black)
     }()
     
@@ -47,16 +47,16 @@ class TransactionHistoryContextView: BaseView {
         UILabel()
             .withLine(.single)
             .withAlignment(.left)
-            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 13.0)))
-            .withTextColor(SharedColors.darkGray)
+            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 12.0)))
+            .withTextColor(SharedColors.softGray)
     }()
     
     private(set) lazy var dateLabel: UILabel = {
         UILabel()
             .withLine(.single)
             .withAlignment(.right)
-            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 13.0)))
-            .withTextColor(SharedColors.softGray)
+            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 12.0)))
+            .withTextColor(SharedColors.darkGray)
     }()
     
     private lazy var separatorView: UIView = {

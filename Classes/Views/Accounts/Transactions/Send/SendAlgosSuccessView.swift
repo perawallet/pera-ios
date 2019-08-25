@@ -66,7 +66,7 @@ class SendAlgosSuccessView: BaseView {
     
     private(set) lazy var doneButton: UIButton = {
         UIButton(type: .custom)
-            .withTitleColor(SharedColors.purple)
+            .withTitleColor(.white)
             .withTitle("title-done".localized)
             .withBackgroundImage(img("bg-purple-small"))
             .withAlignment(.center)
@@ -75,7 +75,7 @@ class SendAlgosSuccessView: BaseView {
     
     private(set) lazy var sendMoreButton: UIButton = {
         UIButton(type: .custom)
-            .withTitleColor(SharedColors.orange)
+            .withTitleColor(.white)
             .withTitle("send-algos-more".localized)
             .withBackgroundImage(img("bg-orange-small"))
             .withAlignment(.center)

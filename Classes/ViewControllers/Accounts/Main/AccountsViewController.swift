@@ -433,6 +433,21 @@ extension AccountsViewController: AccountsViewDelegate {
         
         open(.requestAlgos(account: account), by: .push)
     }
+    
+    func accountsView(_ accountsView: AccountsView, didTrigger dollarValueGestureRecognizer: UILongPressGestureRecognizer) {
+        guard let currentDollarAmount = currentDollarConversion,
+            let selectedAccount = selectedAccount else {
+                return
+        }
+        
+        let dollarAmountForAccount = selectedAccount.amount.toAlgos * currentDollarAmount
+        
+        if dollarValueGestureRecognizer.state != .ended {
+            viewModel.setDollarValue(visible: true, in: accountsView.accountsHeaderView, for: dollarAmountForAccount)
+        } else {
+            viewModel.setDollarValue(visible: false, in: accountsView.accountsHeaderView, for: dollarAmountForAccount)
+        }
+    }
 }
 
 // MARK: UICollectionViewDelegateFlowLayout

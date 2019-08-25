@@ -17,32 +17,46 @@ protocol AccountsSmallHeaderViewDelegate: class {
 class AccountsSmallHeaderView: BaseView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let topInset: CGFloat = 45.0 * verticalScale
-        let horizontalInset: CGFloat = 25.0
-        let amountLabelLeadingInset: CGFloat = 3.0
-        let amountLabelTrailingInset: CGFloat = 115.0
-        let historyLabelTopInset: CGFloat = 33.0 * verticalScale
+        let containerViewInset: CGFloat = 10.0
+        let availableTitleInset: CGFloat = 15.0 * verticalScale
+        let containerViewHeight: CGFloat = 64.0 * verticalScale
+        let topInset: CGFloat = 24.0 * verticalScale
+        let horizontalInset: CGFloat = 15.0
+        let amountLabelLeadingInset: CGFloat = 6.0
+        let amountLabelTrailingInset: CGFloat = 110.0
+        let historyLabelTopInset: CGFloat = 20.0 * verticalScale
         let buttonSize: CGFloat = 38.0
-        let buttonTopInset: CGFloat = 40.0 * verticalScale
-        let amountLabelTopInset: CGFloat = -7.0 * verticalScale
+        let buttonTopInset: CGFloat = 12.0 * verticalScale
+        let amountLabelTopInset: CGFloat = -6.0 * verticalScale
         let verticalInset: CGFloat = 25.0 * verticalScale
-        let buttonHorizontalInset: CGFloat = 20.0
-        let buttonInnerSpacing: CGFloat = -16.0
-        let buttonMinimumInset: CGFloat = 5.0
-        let historyLabelBottomInset: CGFloat = 7.0 * verticalScale
+        let buttonMinimumInset: CGFloat = 3.0
+        let historyLabelBottomInset: CGFloat = 10.0 * verticalScale
     }
     
     private let layout = Layout<LayoutConstants>()
     
+    private enum Colors {
+        static let borderColor = rgb(0.94, 0.94, 0.94)
+    }
+    
     // MARK: Components
     
-    private(set) lazy var algosImageView = UIImageView(image: img("algo-icon-account-medium"))
+    private lazy var containerView: UIView = {
+        let view = UIView()
+        view.layer.borderWidth = 1.0
+        view.layer.borderColor = Colors.borderColor.cgColor
+        view.layer.cornerRadius = 4.0
+        view.backgroundColor = .white
+        return view
+    }()
+    
+    private(set) lazy var algosImageView = UIImageView(image: img("icon-algo-black"))
     
     private(set) lazy var algosAmountLabel: UILabel = {
         UILabel()
             .withAlignment(.center)
             .withTextColor(SharedColors.black)
-            .withFont(UIFont.font(.overpass, withWeight: .bold(size: 24.0)))
+            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 22.0)))
             .withText("0.000000")
     }()
     
@@ -64,7 +78,7 @@ class AccountsSmallHeaderView: BaseView {
         UILabel()
             .withAlignment(.center)
             .withTextColor(SharedColors.softGray)
-            .withFont(UIFont.font(.avenir, withWeight: .medium(size: 13.0)))
+            .withFont(UIFont.font(.avenir, withWeight: .medium(size: 12.0)))
             .withText("accounts-transaction-history-title".localized)
     }()
     
@@ -80,6 +94,7 @@ class AccountsSmallHeaderView: BaseView {
     // MARK: Layout
     
     override func prepareLayout() {
+        setupContainerViewLayout()
         setupAlgosImageViewLayout()
         setupAmountLabelLayout()
         setupReceiveButtonLayout()
@@ -87,8 +102,18 @@ class AccountsSmallHeaderView: BaseView {
         setupHistoryLabelLayout()
     }
     
+    private func setupContainerViewLayout() {
+        addSubview(containerView)
+        
+        containerView.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(layout.current.containerViewInset)
+            make.height.equalTo(layout.current.containerViewHeight)
+        }
+    }
+    
     private func setupAlgosImageViewLayout() {
-        addSubview(algosImageView)
+        containerView.addSubview(algosImageView)
         
         algosImageView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(layout.current.topInset)
@@ -97,7 +122,7 @@ class AccountsSmallHeaderView: BaseView {
     }
     
     private func setupAmountLabelLayout() {
-        addSubview(algosAmountLabel)
+        containerView.addSubview(algosAmountLabel)
         
         algosAmountLabel.snp.makeConstraints { make in
             make.top.equalTo(algosImageView.snp.top).inset(layout.current.amountLabelTopInset)
@@ -107,37 +132,36 @@ class AccountsSmallHeaderView: BaseView {
     }
     
     private func setupReceiveButtonLayout() {
-        addSubview(receiveButton)
+        containerView.addSubview(receiveButton)
         
         receiveButton.layer.cornerRadius = layout.current.buttonSize / 2
         
         receiveButton.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
-            make.top.equalToSuperview().inset(layout.current.buttonTopInset)
+            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.top.bottom.equalToSuperview().inset(layout.current.buttonTopInset)
             make.width.height.equalTo(layout.current.buttonSize)
         }
     }
     
     private func setupSendButtonLayout() {
-        addSubview(sendButton)
+        containerView.addSubview(sendButton)
         
         sendButton.layer.cornerRadius = layout.current.buttonSize / 2
         
         sendButton.snp.makeConstraints { make in
             make.width.height.equalTo(receiveButton)
             make.top.equalTo(receiveButton)
-            make.trailing.equalTo(receiveButton.snp.leading).offset(layout.current.buttonInnerSpacing)
+            make.trailing.equalTo(receiveButton.snp.leading).offset(-layout.current.horizontalInset)
             make.leading.greaterThanOrEqualTo(algosAmountLabel.snp.trailing).offset(layout.current.buttonMinimumInset)
         }
     }
     
     private func setupHistoryLabelLayout() {
         addSubview(historyLabel)
-        
+
         historyLabel.snp.makeConstraints { make in
-            make.top.lessThanOrEqualTo(sendButton.snp.bottom).offset(layout.current.historyLabelTopInset)
+            make.top.equalTo(containerView.snp.bottom).offset(layout.current.historyLabelTopInset)
             make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().inset(layout.current.historyLabelBottomInset)
         }
     }
     

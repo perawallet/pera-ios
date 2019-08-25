@@ -130,7 +130,9 @@
 "accounts-tranaction-empty-text" = "No Transactions Yet";
 "tranaction-empty-text" = "No Transactions Found";
 "accounts-algos-available-title" = "Algos Available";
+"accounts-dollar-value-title" = "Dollar Value";
 "accounts-transaction-history-title" = "Transaction History";
+"accounts-add-account" = "+ ADD ACCOUNT";
 
 // MARK: Algos Send
 
@@ -213,6 +215,8 @@
 "contacts-delete-contact" = "DELETE CONTACT";
 "contacts-delete-contact-alert-title" = "Delete Contact";
 "contacts-delete-contact-alert-explanation" = "Are you sure you want to delete this contact?";
+"contacts-close-warning-title" = "Are you sure?";
+"contacts-close-warning-subtitle" = "Your unsaved progress will be lost. Are you sure?";
 
 // MARK: Settings
 
@@ -259,6 +263,7 @@
 
 "transaction-detail-title" = "Transaction Detail";
 "transaction-detail-round" = "Round:";
+"transaction-detail-amount" = "Amount:";
 
 // MARK: Auction
 
