@@ -9,5 +9,11 @@
 import UIKit
 
 class AccountNameCell: BaseCollectionViewCell<AccountNameView> {
-
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        contextView.titleLabel.textColor = SharedColors.darkGray
+        contextView.bottomLineView.isHidden = true
+    }
 }

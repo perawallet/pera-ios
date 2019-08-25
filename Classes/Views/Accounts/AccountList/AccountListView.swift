@@ -48,20 +48,14 @@ class AccountListView: BaseView {
         return collectionView
     }()
     
-    private lazy var addButton = MainButton(title: "account-list-add".localized)
-    
     weak var delegate: AccountListViewDelegate?
     
     private var accountListLayoutBuilder: AccountListLayoutBuilder
     private var accountListDataSource: AccountListDataSource
     
-    private let mode: AccountListMode
-    
-    init(mode: AccountListMode) {
-        self.mode = mode
-        
+    init() {
         accountListLayoutBuilder = AccountListLayoutBuilder()
-        accountListDataSource = AccountListDataSource(mode: mode)
+        accountListDataSource = AccountListDataSource()
         
         super.init(frame: .zero)
     }
@@ -70,10 +64,6 @@ class AccountListView: BaseView {
     
     override func configureAppearance() {
         backgroundColor = .white
-    }
-    
-    override func setListeners() {
-        addButton.addTarget(self, action: #selector(notifyDelegateToAddButtonTapped), for: .touchUpInside)
     }
     
     override func linkInteractors() {
@@ -86,11 +76,6 @@ class AccountListView: BaseView {
     
     override func prepareLayout() {
         setupTopImageViewLayout()
-        
-        if mode == .addable {
-            setupAddButtonLayout()
-        }
-        
         setupAccountCollectionViewLayout()
     }
 
@@ -103,28 +88,13 @@ class AccountListView: BaseView {
         }
     }
     
-    private func setupAddButtonLayout() {
-        addSubview(addButton)
-        
-        addButton.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
-            make.bottom.greaterThanOrEqualToSuperview().inset(layout.current.buttonBottomInset + safeAreaBottom)
-        }
-    }
-    
     private func setupAccountCollectionViewLayout() {
         addSubview(accountsCollectionView)
         
         accountsCollectionView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(topImageView.snp.bottom).offset(layout.current.accountListTopInset)
-            
-            if mode == .addable {
-                make.bottom.equalTo(addButton.snp.top).offset(layout.current.accountListBottomInset)
-            } else {
-                make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).inset(layout.current.buttonBottomInset)
-            }
+            make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).inset(layout.current.buttonBottomInset)
         }
     }
     

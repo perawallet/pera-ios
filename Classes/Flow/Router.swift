@@ -180,8 +180,8 @@ class Router {
             viewController = qrCreationController
         case let .home(route):
             viewController = TabBarController(route: route, configuration: configuration)
-        case let .accountList(mode):
-            viewController = AccountListViewController(mode: mode, configuration: configuration)
+        case .accountList:
+            viewController = AccountListViewController(configuration: configuration)
         case .options:
             viewController = OptionsViewController(configuration: configuration)
         case let .editAccount(account):

@@ -13,17 +13,12 @@ protocol AccountListViewControllerDelegate: class {
     func accountListViewController(_ viewController: AccountListViewController, didSelectAccount account: Account)
 }
 
-enum AccountListMode {
-    case onlyList
-    case addable
-}
-
 class AccountListViewController: BaseViewController {
     
     // MARK: Components
     
     private lazy var accountListView: AccountListView = {
-        let view = AccountListView(mode: mode)
+        let view = AccountListView()
         view.delegate = self
         return view
     }()
@@ -33,16 +28,6 @@ class AccountListViewController: BaseViewController {
     }
 
     weak var delegate: AccountListViewControllerDelegate?
-    
-    private let mode: AccountListMode
-    
-    // MARK: Initialization
-    
-    init(mode: AccountListMode, configuration: ViewControllerConfiguration) {
-        self.mode = mode
-        
-        super.init(configuration: configuration)
-    }
     
     // MARK: Setup
     

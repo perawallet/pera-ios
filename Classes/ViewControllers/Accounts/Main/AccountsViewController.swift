@@ -19,13 +19,6 @@ class AccountsViewController: BaseViewController {
     
     // MARK: Variables
     
-    private lazy var accountListModalPresenter = CardModalPresenter(
-        config: ModalConfiguration(
-            animationMode: .normal(duration: 0.25),
-            dismissMode: .scroll
-        )
-    )
-    
     private lazy var optionsModalPresenter = CardModalPresenter(
         config: ModalConfiguration(
             animationMode: .normal(duration: 0.25),
@@ -41,6 +34,8 @@ class AccountsViewController: BaseViewController {
         ),
         initialModalSize: .custom(CGSize(width: view.frame.width, height: layout.current.editAccountModalHeight))
     )
+    
+    private lazy var accountSelectionViewController = AccountSelectionViewController(configuration: configuration)
     
     private(set) var localAuthenticator = LocalAuthenticator()
     
@@ -59,6 +54,9 @@ class AccountsViewController: BaseViewController {
     
     var selectedAccount: Account? {
         didSet {
+            if let account = selectedAccount {
+                accountSelectionViewController.configure(selected: account)
+            }
             session?.currentAccount = self.selectedAccount
         }
     }
@@ -69,6 +67,8 @@ class AccountsViewController: BaseViewController {
                 return
             }
             
+            accountSelectionViewController.selectedAccount = account
+            accountSelectionViewController.accountsCollectionView.reloadData()
             selectedAccount = account
             
             transactionHistoryDataSource.clear()
@@ -83,6 +83,7 @@ class AccountsViewController: BaseViewController {
         }
     }
     
+    private var currentDollarConversion: Double?
     private let viewModel = AccountsViewModel()
     
     private var transactionHistoryDataSource: TransactionHistoryDataSource
@@ -114,15 +115,10 @@ class AccountsViewController: BaseViewController {
     // MARK: Setup
     
     override func configureNavigationBarAppearance() {
-        let accountListBarButtonItem = ALGBarButtonItem(kind: .menu) { [unowned self] in
-            self.presentAccountList()
-        }
-        
         let optionsBarButtonItem = ALGBarButtonItem(kind: .options) { [unowned self] in
             self.presentOptions()
         }
         
-        leftBarButtonItems = [accountListBarButtonItem]
         rightBarButtonItems = [optionsBarButtonItem]
     }
     
@@ -131,6 +127,7 @@ class AccountsViewController: BaseViewController {
         accountsView.transactionHistoryCollectionView.delegate = self
         accountsView.transactionHistoryCollectionView.dataSource = transactionHistoryDataSource
         accountsView.delegate = self
+        accountSelectionViewController.delegate = self
     }
     
     override func configureAppearance() {
@@ -202,6 +199,8 @@ class AccountsViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        fetchDollarConversion()
+        
         DispatchQueue.main.async {
             UIApplication.shared.appDelegate?.validateAccountManagerFetchPolling()
         }
@@ -215,6 +214,20 @@ class AccountsViewController: BaseViewController {
         }
     }
     
+    private func fetchDollarConversion() {
+        api?.fetchDollarValue { response in
+            switch response {
+            case let .success(result):
+                if let price = result.price,
+                    let doubleValue = Double(price) {
+                    self.currentDollarConversion = doubleValue
+                }
+            case .failure:
+                break
+            }
+        }
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
@@ -224,6 +237,15 @@ class AccountsViewController: BaseViewController {
     }
     
     override func prepareLayout() {
+        addChild(accountSelectionViewController)
+        view.addSubview(accountSelectionViewController.view)
+        
+        accountSelectionViewController.view.snp.makeConstraints { make in
+            make.top.leading.trailing.equalToSuperview()
+        }
+        
+        accountSelectionViewController.didMove(toParent: self)
+        
         setupAccountsViewLayout()
     }
     
@@ -231,7 +253,8 @@ class AccountsViewController: BaseViewController {
         view.addSubview(accountsView)
         
         accountsView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.top.equalTo(accountSelectionViewController.view.snp.bottom)
+            make.leading.trailing.bottom.equalToSuperview()
         }
     }
     
@@ -287,19 +310,6 @@ class AccountsViewController: BaseViewController {
 // MARK: Navigation Actions
 
 extension AccountsViewController {
-    
-    private func presentAccountList() {
-        let accountListViewController = open(
-            .accountList(mode: .addable),
-            by: .customPresent(
-                presentationStyle: .custom,
-                transitionStyle: nil,
-                transitioningDelegate: accountListModalPresenter
-            )
-        ) as? AccountListViewController
-        
-        accountListViewController?.delegate = self
-    }
     
     private func presentOptions() {
         let transitionStyle = Screen.Transition.Open.customPresent(
@@ -375,13 +385,11 @@ extension AccountsViewController {
     }
 }
 
-// MARK: AccountListViewControllerDelegate
-extension AccountsViewController: AccountListViewControllerDelegate {
-    func accountListViewControllerDidTapAddButton(_ viewController: AccountListViewController) {
-        open(.introduction(mode: .new), by: .present)
-    }
+// MARK: AccountSelectionViewControllerDelegate
+
+extension AccountsViewController: AccountSelectionViewControllerDelegate {
     
-    func accountListViewController(_ viewController: AccountListViewController, didSelectAccount account: Account) {
+    func accountSelectionViewController(_ accountSelectionViewController: AccountSelectionViewController, didSelect account: Account) {
         selectedAccount = account
         
         transactionHistoryDataSource.clear()
@@ -395,6 +403,14 @@ extension AccountsViewController: AccountListViewControllerDelegate {
         addTitleFadeAnimation()
         
         updateLayout()
+    }
+    
+    func accountSelectionViewControllerDidTapAddAccount(_ accountSelectionViewController: AccountSelectionViewController) {
+        if let account = selectedAccount {
+            accountSelectionViewController.configure(selected: account)
+        }
+        
+        open(.introduction(mode: .new), by: .present)
     }
 }
 

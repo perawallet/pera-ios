@@ -132,7 +132,7 @@ class SendAlgosViewController: BaseScrollViewController {
     
     private func presentAccountList() {
         let accountListViewController = open(
-            .accountList(mode: .onlyList),
+            .accountList,
             by: .customPresent(
                 presentationStyle: .custom,
                 transitionStyle: nil,
