@@ -108,7 +108,7 @@ extension ContactInfoViewController: ContactInfoViewDelegate {
     }
     
     func contactInfoViewDidEditContactButton(_ contactInfoView: ContactInfoView) {
-        let controller = open(.addContact(mode: .edit(contact: contact)), by: .push) as? AddContactViewController
+        let controller = open(.addContact(mode: .edit(contact: contact)), by: .present) as? AddContactViewController
         
         controller?.delegate = self
     }

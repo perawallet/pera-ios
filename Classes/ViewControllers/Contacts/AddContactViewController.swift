@@ -22,6 +22,8 @@ class AddContactViewController: BaseScrollViewController {
         return view
     }()
     
+    private var isUserEdited = false
+    
     private var imagePicker: ImagePicker
     
     private var keyboardController = KeyboardController()
@@ -40,6 +42,70 @@ class AddContactViewController: BaseScrollViewController {
         hidesBottomBarWhenPushed = true
     }
     
+    override func configureNavigationBarAppearance() {
+        switch mode {
+        case .new:
+            super.configureNavigationBarAppearance()
+        case let .edit(contact):
+            self.setupEditModeBarButtons(for: contact)
+        }
+    }
+    
+    private func setupEditModeBarButtons(for contact: Contact) {
+        let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
+            self.checkFieldsHaveChanges()
+            
+            if self.isUserEdited {
+                self.presentDisabledLocalAuthenticationAlert()
+            } else {
+                self.closeScreen(by: .dismiss, animated: true)
+            }
+        }
+        
+        let saveBarButtonItem = ALGBarButtonItem(kind: .save) {
+            if let keyedValues = self.parseFieldsForContact() {
+                self.edit(contact, with: keyedValues)
+            }
+        }
+        
+        leftBarButtonItems = [closeBarButtonItem]
+        rightBarButtonItems = [saveBarButtonItem]
+    }
+    
+    private func checkFieldsHaveChanges() {
+        switch mode {
+        case let .edit(contact):
+            guard let name = addContactView.userInformationView.contactNameInputView.inputTextField.text,
+                let address = addContactView.userInformationView.algorandAddressInputView.inputTextView.text else {
+                    return
+            }
+            
+            if contact.name != name || contact.address != address {
+                isUserEdited = true
+            }
+        default:
+            break
+        }
+    }
+    
+    private func presentDisabledLocalAuthenticationAlert() {
+        let alertController = UIAlertController(
+            title: "contacts-close-warning-subtitle".localized,
+            message: "contacts-close-warning-subtitle".localized,
+            preferredStyle: .alert
+        )
+        
+        let cancelAction = UIAlertAction(title: "title-cancel-lowercased".localized, style: .cancel, handler: nil)
+        let doneAction = UIAlertAction(title: "title-done-lowercased".localized, style: .default) { _ in
+            self.closeScreen(by: .dismiss, animated: true)
+        }
+        
+        alertController.addAction(cancelAction)
+        alertController.addAction(doneAction)
+        
+        present(alertController, animated: true, completion: nil)
+    }
+    
     // MARK: Setup
     
     override func configureAppearance() {
@@ -52,7 +118,7 @@ class AddContactViewController: BaseScrollViewController {
         case let .edit(contact):
             title = "contacts-edit".localized
             
-            addContactView.addContactButton.setTitle("contacts-edit-confirm-button".localized, for: .normal)
+            addContactView.addContactButton.isHidden = true
             
             addContactView.userInformationView.contactNameInputView.inputTextField.text = contact.name
             
@@ -105,17 +171,25 @@ extension AddContactViewController: AddContactViewDelegate {
     }
     
     func addContactViewDidTapAddContactButton(_ addContactView: AddContactView) {
+        guard let keyedValues = parseFieldsForContact() else {
+            return
+        }
+        
+        addContact(with: keyedValues)
+    }
+    
+    private func parseFieldsForContact() -> [String: Any]? {
         guard let name = addContactView.userInformationView.contactNameInputView.inputTextField.text,
             !name.isEmpty else {
                 displaySimpleAlertWith(title: "title-error".localized, message: "contacts-name-validation-error".localized)
-                return
+                return nil
         }
         
         guard let address = addContactView.userInformationView.algorandAddressInputView.inputTextView.text,
             !address.isEmpty,
             address.isValidatedAddress() else {
                 displaySimpleAlertWith(title: "title-error".localized, message: "contacts-address-validation-error".localized)
-                return
+                return nil
         }
         
         var keyedValues: [String: Any] = [
@@ -131,12 +205,7 @@ extension AddContactViewController: AddContactViewDelegate {
             keyedValues[Contact.CodingKeys.image.rawValue] = imageData
         }
         
-        switch mode {
-        case .new:
-            addContact(with: keyedValues)
-        case let .edit(contact):
-            edit(contact, with: keyedValues)
-        }
+        return keyedValues
     }
     
     private func addContact(with values: [String: Any]) {
@@ -202,6 +271,7 @@ extension AddContactViewController: AddContactViewDelegate {
 extension AddContactViewController: ImagePickerDelegate {
     
     func imagePicker(didPick image: UIImage, withInfo info: [String: Any]) {
+        isUserEdited = true
         let resizedImage = image.convert(to: CGSize(width: 108.0, height: 108.0))
         addContactView.userInformationView.userImageView.image = resizedImage
     }
@@ -233,7 +303,6 @@ extension AddContactViewController: KeyboardControllerDataSource {
 extension AddContactViewController: QRScannerViewControllerDelegate {
     
     func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, then handler: EmptyHandler?) {
-        
         guard qrText.mode == .address else {
             displaySimpleAlertWith(title: "title-error".localized, message: "qr-scan-should-scan-address-message".localized) { _ in
                 if let handler = handler {

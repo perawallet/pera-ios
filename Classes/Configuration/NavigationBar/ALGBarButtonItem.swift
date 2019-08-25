@@ -20,6 +20,12 @@ struct ALGBarButtonItem: BarButtonItem {
                 textColor: .black,
                 font: UIFont.font(.overpass, withWeight: .bold(size: 12.0))
             )
+        case .save:
+            return BarButtonItemTitleContent(
+                text: "Save",
+                textColor: .black,
+                font: UIFont.font(.overpass, withWeight: .bold(size: 12.0))
+            )
         default:
             return nil
         }
@@ -69,6 +75,8 @@ struct ALGBarButtonItem: BarButtonItem {
                 return ImageContent(normal: icon)
             }
             return nil
+        case .save:
+            return nil
         }
     }
     
@@ -103,6 +111,14 @@ struct ALGBarButtonItem: BarButtonItem {
                 ),
                 height: .equal(44.0)
             )
+        case .save:
+            return .expanded(
+                width: .dynamicWidth(BarButtonExpandedSizeHorizontalInsets(
+                    contentInsets: (left: 0.0, right: 0.0),
+                    titleInsets: (left: 4.0, right: -4.0))
+                ),
+                height: .equal(44.0)
+            )
         }
     }
     
@@ -130,6 +146,7 @@ extension ALGBarButtonItem {
         case close
         case removeNode
         case balance
+        case save
     }
 }
 
