@@ -24,6 +24,7 @@ enum AlgorandParamPairKey: String, CodingKey {
     case code = "code"
     case grantType = "grant_type"
     case redirectUri = "redirect_uri"
+    case algoDollarConversion = "symbol"
 }
 
 extension AlgorandParamPairKey: ParamsPairKey {
