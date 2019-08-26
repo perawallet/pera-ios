@@ -12,7 +12,7 @@ indirect enum Screen {
     case introduction(mode: AccountSetupMode)
     case choosePassword(mode: ChoosePasswordViewController.Mode, route: Screen?)
     case localAuthenticationPreference
-    case passPhraseBackUp
+    case passphraseView(address: String)
     case passPhraseVerify
     case accountNameSetup
     case accountRecover(mode: AccountSetupMode)

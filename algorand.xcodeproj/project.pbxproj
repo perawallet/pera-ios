@@ -134,7 +134,7 @@
 		17BD4E3C2292F1260003E49A /* IntroductionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD739CF223F97F600B66EEF /* IntroductionView.swift */; };
 		17BD4E3D2292F1260003E49A /* NodeSettingsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179B93D9225E460500DD03E9 /* NodeSettingsHeaderView.swift */; };
 		17BD4E3E2292F1260003E49A /* HistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCB22C1226231E800513550 /* HistoryViewModel.swift */; };
-		17BD4E3F2292F1260003E49A /* PassPhraseBackUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD73A1B2241636C00B66EEF /* PassPhraseBackUpView.swift */; };
+		17BD4E3F2292F1260003E49A /* PassphraseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD73A1B2241636C00B66EEF /* PassphraseView.swift */; };
 		17BD4E402292F1260003E49A /* String+Number.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17AA1B0722662BAB000B0BB0 /* String+Number.swift */; };
 		17BD4E412292F1260003E49A /* AddContactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF7190B224ECF30001E8420 /* AddContactView.swift */; };
 		17BD4E422292F1260003E49A /* PotentialAlgosDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B65330F228F65FE00F19FEA /* PotentialAlgosDisplayView.swift */; };
@@ -297,7 +297,6 @@
 		17BD4EDF2292F1260003E49A /* ContactInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF71917224ED0C5001E8420 /* ContactInfoViewController.swift */; };
 		17BD4EE02292F1260003E49A /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171650EB226DF90900D8893D /* SplashViewController.swift */; };
 		17BD4EE12292F1260003E49A /* AccountNameSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8954A42242E7D800D6D068 /* AccountNameSetupView.swift */; };
-		17BD4EE22292F1260003E49A /* PassphraseDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5DA9DB224D37A100EE41B4 /* PassphraseDisplayView.swift */; };
 		17BD4EE32292F1260003E49A /* HistoryDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6ED95C22608FE700787984 /* HistoryDraft.swift */; };
 		17BD4EE42292F1260003E49A /* ModalPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF53156224A46A400A7455F /* ModalPresenter.swift */; };
 		17BD4EE52292F1260003E49A /* AccountSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0C2F6722809FDD009206D7 /* AccountSelectionView.swift */; };
@@ -436,7 +435,6 @@
 		2B5DA9D5224CE19700EE41B4 /* EditAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5DA9D4224CE19700EE41B4 /* EditAccountViewController.swift */; };
 		2B5DA9D8224CE1BC00EE41B4 /* EditAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5DA9D7224CE1BC00EE41B4 /* EditAccountView.swift */; };
 		2B5DA9DA224D2F5C00EE41B4 /* PassphraseDisplayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5DA9D9224D2F5C00EE41B4 /* PassphraseDisplayViewController.swift */; };
-		2B5DA9DC224D37A100EE41B4 /* PassphraseDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5DA9DB224D37A100EE41B4 /* PassphraseDisplayView.swift */; };
 		2B653308228F656500F19FEA /* MyBidsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B653307228F656500F19FEA /* MyBidsView.swift */; };
 		2B65330A228F658100F19FEA /* PlaceBidView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B653309228F658100F19FEA /* PlaceBidView.swift */; };
 		2B65330E228F65D700F19FEA /* AuctionBidButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B65330D228F65D700F19FEA /* AuctionBidButton.swift */; };
@@ -498,6 +496,8 @@
 		2B79A137231098A400766021 /* AccountSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B79A135231098A400766021 /* AccountSelectionViewModel.swift */; };
 		2B79A139231330D900766021 /* AlgoToDollarConversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B79A138231330D900766021 /* AlgoToDollarConversion.swift */; };
 		2B79A13A231330D900766021 /* AlgoToDollarConversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B79A138231330D900766021 /* AlgoToDollarConversion.swift */; };
+		2B79A13D23147A4900766021 /* PassphraseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B79A13C23147A4900766021 /* PassphraseViewController.swift */; };
+		2B79A13E23147A4900766021 /* PassphraseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B79A13C23147A4900766021 /* PassphraseViewController.swift */; };
 		2B82B1C522535F4300A8909F /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B82B1C422535F4300A8909F /* Contact.swift */; };
 		2B82B1C82253A4F000A8909F /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B82B1C72253A4F000A8909F /* ContactCell.swift */; };
 		2B82B1CA2253A50100A8909F /* ContactContextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B82B1C92253A50100A8909F /* ContactContextView.swift */; };
@@ -634,7 +634,7 @@
 		2BD73A1222412B7300B66EEF /* NumpadViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD73A1122412B7300B66EEF /* NumpadViewModel.swift */; };
 		2BD73A1422412D9100B66EEF /* NumpadCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD73A1322412D9100B66EEF /* NumpadCellViewModel.swift */; };
 		2BD73A192241324700B66EEF /* ChoosePasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD73A182241324700B66EEF /* ChoosePasswordViewModel.swift */; };
-		2BD73A1C2241636C00B66EEF /* PassPhraseBackUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD73A1B2241636C00B66EEF /* PassPhraseBackUpView.swift */; };
+		2BD73A1C2241636C00B66EEF /* PassphraseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD73A1B2241636C00B66EEF /* PassphraseView.swift */; };
 		2BD73A1F2241639500B66EEF /* PassPhraseBackUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD73A1E2241639500B66EEF /* PassPhraseBackUpViewController.swift */; };
 		2BD78E8E226A0B4900A3D35C /* PassphraseBackUpOrderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD78E8C226A0B4800A3D35C /* PassphraseBackUpOrderView.swift */; };
 		2BD78E8F226A0B4900A3D35C /* PassphraseBackUpCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD78E8D226A0B4800A3D35C /* PassphraseBackUpCell.swift */; };
@@ -824,7 +824,6 @@
 		2B5DA9D4224CE19700EE41B4 /* EditAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAccountViewController.swift; sourceTree = "<group>"; };
 		2B5DA9D7224CE1BC00EE41B4 /* EditAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAccountView.swift; sourceTree = "<group>"; };
 		2B5DA9D9224D2F5C00EE41B4 /* PassphraseDisplayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseDisplayViewController.swift; sourceTree = "<group>"; };
-		2B5DA9DB224D37A100EE41B4 /* PassphraseDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseDisplayView.swift; sourceTree = "<group>"; };
 		2B653307228F656500F19FEA /* MyBidsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyBidsView.swift; sourceTree = "<group>"; };
 		2B653309228F658100F19FEA /* PlaceBidView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceBidView.swift; sourceTree = "<group>"; };
 		2B65330D228F65D700F19FEA /* AuctionBidButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionBidButton.swift; sourceTree = "<group>"; };
@@ -878,6 +877,7 @@
 		2B79A132230EBE4D00766021 /* FeedbackViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackViewController.swift; sourceTree = "<group>"; };
 		2B79A135231098A400766021 /* AccountSelectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSelectionViewModel.swift; sourceTree = "<group>"; };
 		2B79A138231330D900766021 /* AlgoToDollarConversion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgoToDollarConversion.swift; sourceTree = "<group>"; };
+		2B79A13C23147A4900766021 /* PassphraseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseViewController.swift; sourceTree = "<group>"; };
 		2B82B1C422535F4300A8909F /* Contact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
 		2B82B1C72253A4F000A8909F /* ContactCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
 		2B82B1C92253A50100A8909F /* ContactContextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactContextView.swift; sourceTree = "<group>"; };
@@ -986,7 +986,7 @@
 		2BD73A1122412B7300B66EEF /* NumpadViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumpadViewModel.swift; sourceTree = "<group>"; };
 		2BD73A1322412D9100B66EEF /* NumpadCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumpadCellViewModel.swift; sourceTree = "<group>"; };
 		2BD73A182241324700B66EEF /* ChoosePasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoosePasswordViewModel.swift; sourceTree = "<group>"; };
-		2BD73A1B2241636C00B66EEF /* PassPhraseBackUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassPhraseBackUpView.swift; sourceTree = "<group>"; };
+		2BD73A1B2241636C00B66EEF /* PassphraseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseView.swift; sourceTree = "<group>"; };
 		2BD73A1E2241639500B66EEF /* PassPhraseBackUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassPhraseBackUpViewController.swift; sourceTree = "<group>"; };
 		2BD78E8C226A0B4800A3D35C /* PassphraseBackUpOrderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PassphraseBackUpOrderView.swift; sourceTree = "<group>"; };
 		2BD78E8D226A0B4800A3D35C /* PassphraseBackUpCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PassphraseBackUpCell.swift; sourceTree = "<group>"; };
@@ -1473,7 +1473,6 @@
 			children = (
 				2B5DA9D6224CE1AA00EE41B4 /* Cell */,
 				2B5DA9D7224CE1BC00EE41B4 /* EditAccountView.swift */,
-				2B5DA9DB224D37A100EE41B4 /* PassphraseDisplayView.swift */,
 			);
 			path = Options;
 			sourceTree = "<group>";
@@ -1741,6 +1740,14 @@
 			path = Feedback;
 			sourceTree = "<group>";
 		};
+		2B79A13B23147A3400766021 /* Passphrase */ = {
+			isa = PBXGroup;
+			children = (
+				2B79A13C23147A4900766021 /* PassphraseViewController.swift */,
+			);
+			path = Passphrase;
+			sourceTree = "<group>";
+		};
 		2B82B1C62253A4DA00A8909F /* Cell */ = {
 			isa = PBXGroup;
 			children = (
@@ -1838,6 +1845,7 @@
 		2B8954A922438FA400D6D068 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				2B79A13B23147A3400766021 /* Passphrase */,
 				2B66871822491A46009F21E7 /* QR */,
 				2B8954AA22438FA900D6D068 /* Alert */,
 			);
@@ -2620,7 +2628,7 @@
 				2BD78E8D226A0B4800A3D35C /* PassphraseBackUpCell.swift */,
 				2BD78E8C226A0B4800A3D35C /* PassphraseBackUpOrderView.swift */,
 				17BEC45F2248C81E00AAF370 /* PassPhraseVerifyView.swift */,
-				2BD73A1B2241636C00B66EEF /* PassPhraseBackUpView.swift */,
+				2BD73A1B2241636C00B66EEF /* PassphraseView.swift */,
 				17BEC4652248D39900AAF370 /* PassPhraseCollectionViewCell.swift */,
 				17F6E684224B3F99006DD31F /* PassPhraseMnemonicView.swift */,
 			);
@@ -3288,6 +3296,7 @@
 				2B1B77BE2295C5A30021A6CC /* MyBidsViewModel.swift in Sources */,
 				2B891F0722BBA768003205F5 /* DepositFundSelectionView.swift in Sources */,
 				2B1B77BF2295C5A30021A6CC /* PlaceBidViewModel.swift in Sources */,
+				2B79A13E23147A4900766021 /* PassphraseViewController.swift in Sources */,
 				2B1B77C02295C5A30021A6CC /* LimitOrderCellContextView.swift in Sources */,
 				2B1B77C12295C5A30021A6CC /* LimitOrderCell.swift in Sources */,
 				2B891EF822BB709D003205F5 /* BlockchainDepositInstructionContextView.swift in Sources */,
@@ -3379,7 +3388,7 @@
 				17BD4E3C2292F1260003E49A /* IntroductionView.swift in Sources */,
 				17BD4E3D2292F1260003E49A /* NodeSettingsHeaderView.swift in Sources */,
 				17BD4E3E2292F1260003E49A /* HistoryViewModel.swift in Sources */,
-				17BD4E3F2292F1260003E49A /* PassPhraseBackUpView.swift in Sources */,
+				17BD4E3F2292F1260003E49A /* PassphraseView.swift in Sources */,
 				17BD4E402292F1260003E49A /* String+Number.swift in Sources */,
 				17BD4E412292F1260003E49A /* AddContactView.swift in Sources */,
 				17BD4E422292F1260003E49A /* PotentialAlgosDisplayView.swift in Sources */,
@@ -3566,7 +3575,6 @@
 				17BD4EE02292F1260003E49A /* SplashViewController.swift in Sources */,
 				2B891F1E22BD3982003205F5 /* USDWireInstruction.swift in Sources */,
 				17BD4EE12292F1260003E49A /* AccountNameSetupView.swift in Sources */,
-				17BD4EE22292F1260003E49A /* PassphraseDisplayView.swift in Sources */,
 				17BD4EE32292F1260003E49A /* HistoryDraft.swift in Sources */,
 				17BD4EE42292F1260003E49A /* ModalPresenter.swift in Sources */,
 				2BCB5C9722B77C820038DA6B /* CoinlistTransactionCellContextView.swift in Sources */,
@@ -3624,6 +3632,7 @@
 				2BF5317E224AA8B700A7455F /* ContactsViewController.swift in Sources */,
 				2B891F0622BBA768003205F5 /* DepositFundSelectionView.swift in Sources */,
 				2B8954BA2243FCFA00D6D068 /* Snapkit+SafeArea.swift in Sources */,
+				2B79A13D23147A4900766021 /* PassphraseViewController.swift in Sources */,
 				17F6E685224B3F99006DD31F /* PassPhraseMnemonicView.swift in Sources */,
 				2B8954C4224404C900D6D068 /* MultiLineInputField.swift in Sources */,
 				2B891EF722BB709D003205F5 /* BlockchainDepositInstructionContextView.swift in Sources */,
@@ -3704,7 +3713,7 @@
 				2BD739D1223F97F600B66EEF /* IntroductionView.swift in Sources */,
 				179B93DA225E460500DD03E9 /* NodeSettingsHeaderView.swift in Sources */,
 				2BCB22C2226231E800513550 /* HistoryViewModel.swift in Sources */,
-				2BD73A1C2241636C00B66EEF /* PassPhraseBackUpView.swift in Sources */,
+				2BD73A1C2241636C00B66EEF /* PassphraseView.swift in Sources */,
 				17AA1B0822662BAB000B0BB0 /* String+Number.swift in Sources */,
 				2BF7190C224ECF30001E8420 /* AddContactView.swift in Sources */,
 				2B653310228F65FE00F19FEA /* PotentialAlgosDisplayView.swift in Sources */,
@@ -3901,7 +3910,6 @@
 				171650EC226DF90900D8893D /* SplashViewController.swift in Sources */,
 				2B8954A52242E7D800D6D068 /* AccountNameSetupView.swift in Sources */,
 				2B891F1D22BD3982003205F5 /* USDWireInstruction.swift in Sources */,
-				2B5DA9DC224D37A100EE41B4 /* PassphraseDisplayView.swift in Sources */,
 				2BA09A952294BA07009DC24D /* ChartData.swift in Sources */,
 				2B6ED95D22608FE700787984 /* HistoryDraft.swift in Sources */,
 				2BF53157224A46A400A7455F /* ModalPresenter.swift in Sources */,

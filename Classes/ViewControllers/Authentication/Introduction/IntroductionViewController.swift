@@ -73,7 +73,7 @@ extension IntroductionViewController: IntroductionViewDelegate {
         case .initialize:
             open(.choosePassword(mode: .setup, route: nil), by: .push)
         case .new:
-            open(.passPhraseBackUp, by: .push)
+            open(.passphraseView(address: "temp"), by: .push)
         }
     }
     
