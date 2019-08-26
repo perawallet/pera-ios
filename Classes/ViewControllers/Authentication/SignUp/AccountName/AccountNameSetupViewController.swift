@@ -77,14 +77,6 @@ extension AccountNameSetupViewController: AccountNameSetupViewDelegate {
     }
     
     func accountNameSetupViewDidChangeValue(_ accountNameSetupView: AccountNameSetupView) {
-        if let text = accountNameSetupView.accountNameInputView.inputTextField.text,
-            !text.isEmpty {
-            
-            accountNameSetupView.accountNameInputView.separatorView.backgroundColor = SharedColors.purple
-            return
-        }
-        
-        accountNameSetupView.accountNameInputView.separatorView.backgroundColor = Colors.separatorColor
     }
 }
 

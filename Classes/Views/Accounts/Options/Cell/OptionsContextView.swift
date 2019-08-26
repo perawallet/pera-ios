@@ -19,6 +19,10 @@ class OptionsContextView: BaseView {
     
     private let layout = Layout<LayoutConstants>()
     
+    private enum Colors {
+        static let separatorColor = rgb(0.95, 0.96, 0.96)
+    }
+    
     // MARK: Components
     
     private(set) lazy var iconImageView = UIImageView()
@@ -33,7 +37,7 @@ class OptionsContextView: BaseView {
     
     private lazy var separatorView: UIView = {
         let view = UIView()
-        view.backgroundColor = SharedColors.warmWhite
+        view.backgroundColor = Colors.separatorColor
         return view
     }()
     

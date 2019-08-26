@@ -28,6 +28,10 @@ class PasswordInputView: BaseView {
     
     // MARK: Setup
     
+    override func configureAppearance() {
+        backgroundColor = .white
+    }
+    
     override func prepareLayout() {
         setupStackViewLayout()
         configureStackView()

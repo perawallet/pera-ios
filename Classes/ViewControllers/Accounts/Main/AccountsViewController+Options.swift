@@ -144,9 +144,9 @@ extension AccountsViewController: OptionsViewControllerDelegate {
         viewController.modalTransitionStyle = .crossDissolve
         
         if let alertView = viewController.alertView as? DestructiveAlertView {
-            alertView.cancelButton.setTitleColor(SharedColors.purple, for: .normal)
-            alertView.cancelButton.setBackgroundImage(img("bg-purple-cancel"), for: .normal)
-            alertView.actionButton.setTitleColor(SharedColors.orange, for: .normal)
+            alertView.cancelButton.setTitleColor(.white, for: .normal)
+            alertView.cancelButton.setBackgroundImage(img("bg-black-cancel"), for: .normal)
+            alertView.actionButton.setTitleColor(.white, for: .normal)
             alertView.actionButton.setBackgroundImage(img("bg-orange-action"), for: .normal)
         }
         

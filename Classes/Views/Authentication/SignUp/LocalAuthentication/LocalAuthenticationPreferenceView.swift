@@ -27,6 +27,7 @@ class LocalAuthenticationPreferenceView: BaseView {
         let yesButtonVerticalInset: CGFloat = -29.0
         let minimumButtonOffset: CGFloat = 10.0
         let bottomInset: CGFloat = 16.0
+        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -68,10 +69,10 @@ class LocalAuthenticationPreferenceView: BaseView {
     
     private lazy var noButton: UIButton = {
         UIButton(type: .custom)
-            .withTitle("title-no".localized)
-            .withTitleColor(SharedColors.black)
-            .withBackgroundImage(img("bg-dark-gray-button"))
+            .withBackgroundImage(img("bg-soft-gray-button"))
             .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 12.0)))
+            .withAttributedTitle("title-no".localized.attributed([.letterSpacing(1.20), .textColor(SharedColors.black)]))
+            .withAlignment(.center)
     }()
     
     weak var delegate: LocalAuthenticationPreferenceViewDelegate?
@@ -158,6 +159,7 @@ class LocalAuthenticationPreferenceView: BaseView {
         yesButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.bottom.equalTo(noButton.snp.top).offset(layout.current.yesButtonVerticalInset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
             make.top.greaterThanOrEqualTo(iconContainerView.snp.bottom).offset(layout.current.minimumButtonOffset)
         }
     }

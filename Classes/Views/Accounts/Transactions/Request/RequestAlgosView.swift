@@ -22,6 +22,7 @@ class RequestAlgosView: BaseView {
         let bottomInset: CGFloat = 18.0
         let buttonInset: CGFloat = 15.0
         let buttonMinimumInset: CGFloat = 18.0
+        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -41,13 +42,7 @@ class RequestAlgosView: BaseView {
         return accountSelectionView
     }()
     
-    private(set) lazy var previewButton: UIButton = {
-        UIButton(type: .custom)
-            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 12.0)))
-            .withBackgroundImage(img("bg-main-button"))
-            .withTitle("title-preview".localized)
-            .withTitleColor(SharedColors.purple)
-    }()
+    private(set) lazy var previewButton = MainButton(title: "title-preview".localized)
     
     // MARK: Setup
     
@@ -92,8 +87,7 @@ class RequestAlgosView: BaseView {
         addSubview(previewButton)
         
         previewButton.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.height.equalTo(56.0)
+            make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
             make.top.greaterThanOrEqualTo(accountSelectionView.snp.bottom).offset(layout.current.buttonMinimumInset)
             make.bottom.equalToSuperview().inset(layout.current.bottomInset)
         }

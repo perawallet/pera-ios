@@ -20,7 +20,7 @@ indirect enum Screen {
     case qrGenerator(title: String?, text: String, mode: QRMode)
     case home(route: Screen?)
     case options
-    case accountList(mode: AccountListMode)
+    case accountList
     case editAccount(account: Account)
     case contactSelection
     case addContact(mode: AddContactViewController.Mode)
@@ -41,6 +41,7 @@ indirect enum Screen {
     case pastAuctionDetail(auction: Auction, user: AuctionUser, activeAuction: ActiveAuction)
     case balance(user: AuctionUser)
     case deposit(user: AuctionUser)
+    case feedback
 }
 
 extension Screen {

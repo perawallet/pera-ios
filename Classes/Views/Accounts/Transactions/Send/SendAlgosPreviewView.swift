@@ -18,6 +18,8 @@ class SendAlgosPreviewView: SendAlgosView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let topInset: CGFloat = 20.0
         let trailingInset: CGFloat = 15.0
+        let feeViewHeight: CGFloat = 90.0
+        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
         let bottomInset: CGFloat = 18.0
     }
     
@@ -42,6 +44,7 @@ class SendAlgosPreviewView: SendAlgosView {
         super.configureAppearance()
         
         algosInputView.inputTextField.isEnabled = false
+        algosInputView.maxButton.isHidden = true
         transactionReceiverView.passphraseInputView.inputTextView.isEditable = false
         transactionReceiverView.actionMode = .none
         accountSelectionView.isUserInteractionEnabled = false
@@ -72,7 +75,7 @@ class SendAlgosPreviewView: SendAlgosView {
         
         feeInformationView.snp.makeConstraints { make in
             make.top.equalTo(transactionReceiverView.snp.bottom)
-            make.height.equalTo(88.0)
+            make.height.equalTo(layout.current.feeViewHeight)
             make.leading.trailing.equalToSuperview()
         }
     }
@@ -85,6 +88,7 @@ class SendAlgosPreviewView: SendAlgosView {
         sendButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.bottom.equalToSuperview().inset(layout.current.bottomInset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
         }
     }
     

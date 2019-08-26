@@ -24,6 +24,7 @@ class QRScannerViewController: BaseViewController {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let bottomInset: CGFloat = 20.0
+        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -44,12 +45,9 @@ class QRScannerViewController: BaseViewController {
     
     // MARK: Components
     
-    private(set) lazy var cancelButton: UIButton = {
-        UIButton(type: .custom)
-            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 12.0)))
-            .withBackgroundImage(img("bg-main-button"))
-            .withTitle("title-close".localized)
-            .withTitleColor(SharedColors.purple)
+    private(set) lazy var cancelButton: MainButton = {
+        let button = MainButton(title: "title-close".localized)
+        return button
     }()
     
     private(set) lazy var overlayView: QRScannerOverlayView = {
@@ -103,6 +101,7 @@ class QRScannerViewController: BaseViewController {
         
         cancelButton.snp.makeConstraints { make in
             make.bottom.equalToSuperview().inset(layout.current.bottomInset + view.safeAreaBottom)
+            make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
             make.centerX.equalToSuperview()
         }
     }

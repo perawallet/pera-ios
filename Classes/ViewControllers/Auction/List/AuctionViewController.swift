@@ -329,7 +329,8 @@ class AuctionViewController: BaseViewController {
         
         auctionTemporaryView.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(layout.current.topInset)
-            make.leading.trailing.bottom.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
+            make.bottom.safeEqualToBottom(of: self)
         }
     }
     

@@ -26,6 +26,7 @@ class PassphraseDisplayView: BaseView {
         let shareButtonHorizontalInset: CGFloat = 18.0
         let buttonTopInset: CGFloat = 34.0
         let buttonBottomInset: CGFloat = 20.0
+        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -139,7 +140,7 @@ class PassphraseDisplayView: BaseView {
         okButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(passphraseContainerView.snp.bottom).offset(layout.current.buttonTopInset)
-            make.leading.trailing.lessThanOrEqualToSuperview().inset(layout.current.titleHorizontalInset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
             make.bottom.equalToSuperview().inset(layout.current.buttonBottomInset)
         }
     }

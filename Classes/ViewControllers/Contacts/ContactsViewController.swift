@@ -208,7 +208,7 @@ extension ContactsViewController: UICollectionViewDelegateFlowLayout {
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
         
-        return CGSize(width: UIScreen.main.bounds.width, height: 90.0)
+        return CGSize(width: UIScreen.main.bounds.width, height: 86.0)
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

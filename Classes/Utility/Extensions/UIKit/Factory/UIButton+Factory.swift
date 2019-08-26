@@ -35,6 +35,11 @@ extension UIButton {
         return self
     }
     
+    func withAttributedTitle(_ text: NSAttributedString?) -> UIButton {
+        setAttributedTitle(text, for: .normal)
+        return self
+    }
+    
     func withAlignment(_ alignment: NSTextAlignment) -> UIButton {
         titleLabel?.textAlignment = alignment
         return self

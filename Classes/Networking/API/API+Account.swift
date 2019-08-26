@@ -25,4 +25,19 @@ extension API {
                 }
         )
     }
+    
+    @discardableResult
+    func fetchDollarValue(then completion: APICompletionHandler<AlgoToDollarConversion>? = nil) -> EndpointInteractable? {
+        return send(
+            Endpoint<AlgoToDollarConversion>(Path("/api/v3/avgPrice"))
+                .base(Environment.current.binanceApi)
+                .httpMethod(.get)
+                .query([
+                    .custom(key: AlgorandParamPairKey.algoDollarConversion, value: "ALGOUSDT")
+                ])
+                .handler { response in
+                    completion?(response)
+                }
+        )
+    }
 }

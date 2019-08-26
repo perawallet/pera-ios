@@ -20,7 +20,7 @@ protocol OptionsViewControllerDelegate: class {
 class OptionsViewController: BaseViewController {
 
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let imageViewTopInset: CGFloat = 10.0
+        let imageViewTopInset: CGFloat = 20.0
         let collectionViewTopInset: CGFloat = 22.0
         let cellHeight: CGFloat = 56.0
     }

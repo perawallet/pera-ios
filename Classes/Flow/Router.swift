@@ -180,8 +180,8 @@ class Router {
             viewController = qrCreationController
         case let .home(route):
             viewController = TabBarController(route: route, configuration: configuration)
-        case let .accountList(mode):
-            viewController = AccountListViewController(mode: mode, configuration: configuration)
+        case .accountList:
+            viewController = AccountListViewController(configuration: configuration)
         case .options:
             viewController = OptionsViewController(configuration: configuration)
         case let .editAccount(account):
@@ -240,6 +240,8 @@ class Router {
             viewController = BalanceViewController(user: user, configuration: configuration)
         case let .deposit(user):
             viewController = DepositViewController(user: user, configuration: configuration)
+        case .feedback:
+            viewController = FeedbackViewController(configuration: configuration)
         }
         
         return viewController as? T

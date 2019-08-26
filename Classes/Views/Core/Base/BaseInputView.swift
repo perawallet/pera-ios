@@ -11,20 +11,19 @@ import UIKit
 class BaseInputView: BaseView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let defaultInset: CGFloat = 25.0
+        let defaultInset: CGFloat = 15.0
+        let labelInset: CGFloat = 30.0
         let contentViewTopInset: CGFloat = 7.0
-        let contentViewMaximumTopInset: CGFloat = 18.0
-        let buttonTopInset: CGFloat = 18.0
-        let separatorTopInset: CGFloat = 15.0
-        let separatorInset: CGFloat = 15.0
-        let separatorHeight: CGFloat = 1.0
-        let buttonWidth: CGFloat = 38.0
+        let contentViewMaximumTopInset: CGFloat = 10.0
+        let buttonTopInset: CGFloat = 11.0
+        let buttonTrailingInset: CGFloat = 13.0
+        let buttonWidth: CGFloat = 36.0
     }
     
     private let layout = Layout<LayoutConstants>()
     
     private enum Colors {
-        static let separatorColor = rgba(0.67, 0.67, 0.72, 0.31)
+        static let borderColor = rgb(0.94, 0.94, 0.94)
     }
     
     // MARK: Customization
@@ -32,37 +31,35 @@ class BaseInputView: BaseView {
     var nextButtonMode = NextButtonMode.next
     
     private let displaysExplanationText: Bool
-    private let displaysRightInputAccessoryButton: Bool
-    private let separatorStyle: SeparatorStyle
+    let displaysRightInputAccessoryButton: Bool
     
     // MARK: Components
     
     private(set) lazy var explanationLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.font(.avenir, withWeight: .demiBold(size: 13.0))
-        label.textColor = SharedColors.softGray
+        label.font = UIFont.font(.avenir, withWeight: .medium(size: 13.0))
+        label.textColor = SharedColors.gray
         return label
     }()
     
-    private(set) lazy var contentView = UIView()
-    
-    private(set) lazy var rightInputAccessoryButton = UIButton(type: .custom)
-    
-    private(set) lazy var separatorView: UIView = {
+    private(set) lazy var contentView: UIView = {
         let view = UIView()
-        view.backgroundColor = Colors.separatorColor
+        view.layer.borderWidth = 1.0
+        view.layer.borderColor = Colors.borderColor.cgColor
+        view.layer.cornerRadius = 4.0
+        view.backgroundColor = .white
         return view
     }()
+    
+    private(set) lazy var rightInputAccessoryButton = UIButton(type: .custom)
     
     weak var delegate: InputViewDelegate?
     
     // MARK: Initialization
     
-    init(displaysExplanationText: Bool = true, displaysRightInputAccessoryButton: Bool = false, separatorStyle: SeparatorStyle = .full) {
+    init(displaysExplanationText: Bool = true, displaysRightInputAccessoryButton: Bool = false) {
         self.displaysExplanationText = displaysExplanationText
         self.displaysRightInputAccessoryButton = displaysRightInputAccessoryButton
-        self.separatorStyle = separatorStyle
-        
         super.init(frame: .zero)
     }
     
@@ -74,9 +71,8 @@ class BaseInputView: BaseView {
     
     override func prepareLayout() {
         setupExplanationLabelLayout()
-        setupRightInputAccessoryButtonLayout()
         setupContentViewLayout()
-        setupSeparatorViewLayout()
+        setupRightInputAccessoryButtonLayout()
     }
     
     private func setupExplanationLabelLayout() {
@@ -87,23 +83,9 @@ class BaseInputView: BaseView {
         addSubview(explanationLabel)
         
         explanationLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(layout.current.defaultInset)
-            make.trailing.lessThanOrEqualToSuperview().inset(layout.current.defaultInset)
+            make.leading.equalToSuperview().inset(layout.current.labelInset)
+            make.trailing.lessThanOrEqualToSuperview().inset(layout.current.labelInset)
             make.top.equalToSuperview()
-        }
-    }
-    
-    private func setupRightInputAccessoryButtonLayout() {
-        if !displaysRightInputAccessoryButton {
-            return
-        }
-        
-        addSubview(rightInputAccessoryButton)
-        
-        rightInputAccessoryButton.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(layout.current.separatorInset)
-            make.top.equalToSuperview().inset(layout.current.buttonTopInset)
-            make.width.height.equalTo(layout.current.buttonWidth)
         }
     }
     
@@ -111,13 +93,8 @@ class BaseInputView: BaseView {
         addSubview(contentView)
         
         contentView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(layout.current.defaultInset)
-            
-            if displaysRightInputAccessoryButton {
-                make.trailing.equalTo(rightInputAccessoryButton.snp.leading).inset(-layout.current.defaultInset)
-            } else {
-                make.trailing.equalToSuperview().inset(layout.current.defaultInset)
-            }
+            make.leading.trailing.equalToSuperview().inset(layout.current.defaultInset)
+            make.bottom.equalToSuperview()
             
             if displaysExplanationText {
                 make.top.equalTo(explanationLabel.snp.bottom).offset(layout.current.contentViewTopInset)
@@ -127,23 +104,17 @@ class BaseInputView: BaseView {
         }
     }
     
-    private func setupSeparatorViewLayout() {
-        if separatorStyle == .none {
+    private func setupRightInputAccessoryButtonLayout() {
+        if !displaysRightInputAccessoryButton {
             return
         }
         
-        addSubview(separatorView)
+        contentView.addSubview(rightInputAccessoryButton)
         
-        separatorView.snp.makeConstraints { make in
-            make.bottom.equalToSuperview()
-            make.height.equalTo(layout.current.separatorHeight)
-            make.top.equalTo(contentView.snp.bottom).offset(layout.current.separatorTopInset)
-            
-            if separatorStyle == .full {
-                make.leading.trailing.equalToSuperview()
-            } else {
-                make.leading.trailing.equalToSuperview().inset(layout.current.separatorInset)
-            }
+        rightInputAccessoryButton.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().inset(layout.current.buttonTrailingInset)
+            make.top.equalToSuperview().inset(layout.current.buttonTopInset)
+            make.width.height.equalTo(layout.current.buttonWidth)
         }
     }
     
@@ -158,20 +129,8 @@ class BaseInputView: BaseView {
 // MARK: NextButtonMode
 
 extension BaseInputView {
-    
     enum NextButtonMode {
         case next
         case submit
-    }
-}
-
-// MARK: SeparatorStyle
-
-extension BaseInputView {
-    
-    enum SeparatorStyle {
-        case none
-        case colored
-        case full
     }
 }

@@ -11,7 +11,7 @@ import UIKit
 class NodeSettingsView: BaseView {
     
     struct LayoutConstants: AdaptiveLayoutConstants {
-        static let headerHeight: CGFloat = 270.0
+        static let headerHeight: CGFloat = 240.0
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -43,7 +43,8 @@ class NodeSettingsView: BaseView {
     
     // MARK: Setup
     
-    override func linkInteractors() {
+    override func configureAppearance() {
+        backgroundColor = .white
     }
     
     // MARK: Layout

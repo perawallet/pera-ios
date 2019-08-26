@@ -25,6 +25,7 @@
 "title-close" = "CLOSE";
 "title-send" = "SEND";
 "title-request" = "REQUEST";
+"title-select" = "SELECT RECIPIENT";
 "title-preview" = "PREVIEW";
 "title-done" = "DONE";
 "title-done-lowercased" = "Done";
@@ -72,7 +73,7 @@
 
 "new-account-title" = "New Account";
 "back-up-phrase-title" = "Back up this Passphrase";
-"back-up-phrase-warning" = "In order to access this account if you lose this device copy or print this phrase and keep it someplace safe";
+"back-up-phrase-warning" = "In order to access this account if you lose this device copy or print this phrase and keep it someplace safe.";
 "back-up-phrase-button-title" = "VERIFY RECOVERY PHRASE";
 "view-pass-phrase-title" = "View Passphrase";
 
@@ -129,7 +130,9 @@
 "accounts-tranaction-empty-text" = "No Transactions Yet";
 "tranaction-empty-text" = "No Transactions Found";
 "accounts-algos-available-title" = "Algos Available";
+"accounts-dollar-value-title" = "Dollar Value";
 "accounts-transaction-history-title" = "Transaction History";
+"accounts-add-account" = "+ ADD ACCOUNT";
 
 // MARK: Algos Send
 
@@ -212,6 +215,8 @@
 "contacts-delete-contact" = "DELETE CONTACT";
 "contacts-delete-contact-alert-title" = "Delete Contact";
 "contacts-delete-contact-alert-explanation" = "Are you sure you want to delete this contact?";
+"contacts-close-warning-title" = "Are you sure?";
+"contacts-close-warning-subtitle" = "Your unsaved progress will be lost. Are you sure?";
 
 // MARK: Settings
 
@@ -258,6 +263,7 @@
 
 "transaction-detail-title" = "Transaction Detail";
 "transaction-detail-round" = "Round:";
+"transaction-detail-amount" = "Amount:";
 
 // MARK: Auction
 
@@ -357,3 +363,13 @@
 // MARK: Withdraw
 
 "withdraw-title" = "Withdraw";
+
+// MARK: Feedback
+
+"feedback-title" = "Send Feedback";
+"feedback-title-category" = "Category";
+"feedback-subtitle-category" = "Type of feedback";
+"feedback-title-note" = "Note";
+"feedback-subtitle-note" = "What’s on your mind";
+"feedback-title-email" = "Email (Optional):";
+"feedback-subtitle-email" = "Email";

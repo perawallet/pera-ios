@@ -27,15 +27,20 @@ class ContactQRDisplayView: BaseView {
         let nameLabelInset: CGFloat = 13.0 * verticalScale
         let qrViewTopInset: CGFloat = 25.0 * verticalScale
         let addressLabelInset: CGFloat = 30.0
+        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
     }
     
     private let layout = Layout<LayoutConstants>()
+    
+    private enum Colors {
+        static let labelBackgroundColor = rgb(0.94, 0.94, 0.94)
+    }
     
     // MARK: Components
     
     private(set) lazy var userImageView: UIImageView = {
         let imageView = UIImageView(image: img("icon-user-placeholder"))
-        imageView.backgroundColor = .white
+        imageView.backgroundColor = Colors.labelBackgroundColor
         imageView.layer.cornerRadius = layout.current.imageViewSize / 2
         imageView.clipsToBounds = true
         imageView.contentMode = .center
@@ -70,16 +75,15 @@ class ContactQRDisplayView: BaseView {
     private(set) lazy var qrSelectableLabel: QRSelectableLabel = {
         let qrSelectableLabel = QRSelectableLabel()
         qrSelectableLabel.delegate = self
+        qrSelectableLabel.containerView.backgroundColor = Colors.labelBackgroundColor
         qrSelectableLabel.label.font = UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))
         return qrSelectableLabel
     }()
     
-    private(set) lazy var closeButton: UIButton = {
-        UIButton(type: .custom)
-            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 12.0)))
-            .withBackgroundImage(img("bg-main-button"))
-            .withTitle("title-close".localized)
-            .withTitleColor(SharedColors.purple)
+    private(set) lazy var closeButton: MainButton = {
+        let button = MainButton(title: "title-close".localized)
+        button.setBackgroundImage(img("bg-black-button-big"), for: .normal)
+        return button
     }()
     
     weak var delegate: ContactQRDisplayViewDelegate?
@@ -97,7 +101,7 @@ class ContactQRDisplayView: BaseView {
     // MARK: Setup
     
     override func configureAppearance() {
-        backgroundColor = SharedColors.warmWhite
+        backgroundColor = .white
         layer.cornerRadius = 10.0
     }
     
@@ -172,7 +176,7 @@ class ContactQRDisplayView: BaseView {
         closeButton.snp.makeConstraints { make in
             make.top.equalTo(qrSelectableLabel.snp.bottom).offset(layout.current.addressLabelInset)
             make.centerX.equalToSuperview()
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
             make.bottom.equalToSuperview().inset(layout.current.verticalInset)
         }
     }

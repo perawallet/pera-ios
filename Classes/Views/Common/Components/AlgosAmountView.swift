@@ -33,7 +33,7 @@ class AlgosAmountView: BaseView {
             .withFont(UIFont.font(.overpass, withWeight: .bold(size: 15.0)))
     }()
     
-    private(set) lazy var algoIconImageView = UIImageView(image: img("icon-algo-small-black"))
+    private(set) lazy var algoIconImageView = UIImageView(image: img("icon-algo-black", isTemplate: true))
     
     private(set) lazy var amountLabel: UILabel = {
         UILabel()
@@ -95,7 +95,7 @@ class AlgosAmountView: BaseView {
             amountLabel.text = amount.toDecimalStringForLabel
             amountLabel.textColor = SharedColors.black
             
-            algoIconImageView.image = img("icon-algo-small-black")
+            algoIconImageView.tintColor = SharedColors.black
         case let .positive(amount):
             signLabel.isHidden = false
             signLabel.text = "+"
@@ -104,7 +104,7 @@ class AlgosAmountView: BaseView {
             amountLabel.text = amount.toDecimalStringForLabel
             amountLabel.textColor = SharedColors.turquois
             
-            algoIconImageView.image = img("icon-algo-small-green")
+            algoIconImageView.tintColor = SharedColors.turquois
         case let .negative(amount):
             signLabel.isHidden = false
             signLabel.text = "-"
@@ -113,7 +113,7 @@ class AlgosAmountView: BaseView {
             amountLabel.text = amount.toDecimalStringForLabel
             amountLabel.textColor = SharedColors.orange
             
-            algoIconImageView.image = img("icon-algo-small-orange")
+            algoIconImageView.tintColor = SharedColors.orange
         }
     }
 }

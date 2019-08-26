@@ -34,7 +34,7 @@ class TransactionDetailViewModel {
             view.transactionOpponentView.state = .address(address: transaction.from, amount: nil)
         }
         
-        view.transactionAmountView.mode = .positive(payment.amount.toAlgos)
+        view.transactionAmountView.algosAmountView.mode = .positive(payment.amount.toAlgos)
     }
     
     func configureSentTransaction(_ view: TransactionDetailView, with transaction: Transaction, for account: Account) {
@@ -61,6 +61,6 @@ class TransactionDetailViewModel {
             view.transactionOpponentView.state = .address(address: payment.toAddress, amount: nil)
         }
         
-        view.transactionAmountView.mode = .negative(payment.amount.toAlgos)
+        view.transactionAmountView.algosAmountView.mode = .negative(payment.amount.toAlgos)
     }
 }

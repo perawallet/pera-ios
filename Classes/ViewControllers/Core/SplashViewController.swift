@@ -11,7 +11,7 @@ import UIKit
 class SplashViewController: BaseViewController {
     
     private lazy var imageView: UIImageView = {
-        UIImageView(image: img("icon-logo"))
+        UIImageView(image: img("icon-logo-small"))
     }()
     
     private lazy var loadingIndicator: UIActivityIndicatorView = {
@@ -32,7 +32,8 @@ class SplashViewController: BaseViewController {
     
     override func configureAppearance() {
         let safeAreaView = UIView()
-        safeAreaView.backgroundColor = .clear
+        safeAreaView.backgroundColor = .white
+        view.backgroundColor = .white
         
         view.addSubview(safeAreaView)
         safeAreaView.snp.makeConstraints { make in

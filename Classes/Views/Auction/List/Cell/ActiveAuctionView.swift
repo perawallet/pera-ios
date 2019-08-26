@@ -71,7 +71,6 @@ class ActiveAuctionView: BaseView {
     private(set) lazy var dateView: DetailedInformationView = {
         let dateView = DetailedInformationView()
         dateView.backgroundColor = .white
-        dateView.separatorView.isHidden = true
         dateView.explanationLabel.text = "auction-date-title".localized
         dateView.detailLabel.font = UIFont.font(.overpass, withWeight: .bold(size: 15.0))
         return dateView
@@ -91,7 +90,6 @@ class ActiveAuctionView: BaseView {
     private(set) lazy var priceView: DetailedInformationView = {
         let priceView = DetailedInformationView()
         priceView.backgroundColor = .white
-        priceView.separatorView.isHidden = true
         priceView.explanationLabel.text = "auction-starting-price".localized
         priceView.detailLabel.font = UIFont.font(.overpass, withWeight: .bold(size: 15.0))
         return priceView

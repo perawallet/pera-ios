@@ -17,10 +17,10 @@ protocol HistoryViewDelegate: class {
 class HistoryView: BaseView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let topInset: CGFloat = 5.0
         let horizontalInset: CGFloat = 20.0
         let bottomInset: CGFloat = 75.0
         let buttonMinimumInset: CGFloat = 60.0
+        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -34,14 +34,14 @@ class HistoryView: BaseView {
     
     private(set) lazy var accountSelectionView: AccountSelectionView = {
         let accountSelectionView = AccountSelectionView()
-        accountSelectionView.backgroundColor = .white
+        accountSelectionView.backgroundColor = .clear
         accountSelectionView.explanationLabel.text = "history-account".localized
         return accountSelectionView
     }()
     
     private(set) lazy var startDateDisplayView: DetailedInformationView = {
         let startDateDisplayView = DetailedInformationView()
-        startDateDisplayView.backgroundColor = .white
+        startDateDisplayView.backgroundColor = .clear
         startDateDisplayView.explanationLabel.text = "history-start-date".localized
         startDateDisplayView.isUserInteractionEnabled = true
         startDateDisplayView.detailLabel.font = UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))
@@ -59,7 +59,7 @@ class HistoryView: BaseView {
     
     private(set) lazy var endDateDisplayView: DetailedInformationView = {
         let endDateDisplayView = DetailedInformationView()
-        endDateDisplayView.backgroundColor = .white
+        endDateDisplayView.backgroundColor = .clear
         endDateDisplayView.explanationLabel.text = "history-end-date".localized
         endDateDisplayView.isUserInteractionEnabled = true
         endDateDisplayView.detailLabel.font = UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))
@@ -96,10 +96,6 @@ class HistoryView: BaseView {
     
     // MARK: Setup
     
-    override func configureAppearance() {
-        backgroundColor = .white
-    }
-    
     override func linkInteractors() {
         viewResultsButton.addTarget(self, action: #selector(notifyDelegateToViewResultsButtonTapped), for: .touchUpInside)
         accountSelectionView.addGestureRecognizer(accountSelectionGestureRecognizer)
@@ -115,8 +111,8 @@ class HistoryView: BaseView {
     override func prepareLayout() {
         setupAccountSelectionViewLayout()
         setupStartDateDisplayViewLayout()
-        setupStartDatePickerViewLayout()
         setupEndDateDisplayViewLayout()
+        setupStartDatePickerViewLayout()
         setupEndDatePickerViewLayout()
         setupViewResultsButtonLayout()
     }
@@ -125,8 +121,7 @@ class HistoryView: BaseView {
         addSubview(accountSelectionView)
         
         accountSelectionView.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(layout.current.topInset)
-            make.leading.trailing.equalToSuperview()
+            make.leading.top.trailing.equalToSuperview()
         }
     }
     
@@ -135,14 +130,21 @@ class HistoryView: BaseView {
         
         startDateDisplayView.snp.makeConstraints { make in
             make.top.equalTo(accountSelectionView.snp.bottom)
-            make.leading.trailing.equalToSuperview()
-        }
-        
-        startDateDisplayView.separatorView.snp.updateConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.leading.equalToSuperview()
+            make.width.equalTo(UIScreen.main.bounds.width / 2)
         }
     }
 
+    private func setupEndDateDisplayViewLayout() {
+        addSubview(endDateDisplayView)
+        
+        endDateDisplayView.snp.makeConstraints { make in
+            make.top.equalTo(accountSelectionView.snp.bottom)
+            make.trailing.equalToSuperview()
+            make.width.equalTo(UIScreen.main.bounds.width / 2)
+        }
+    }
+    
     private func setupStartDatePickerViewLayout() {
         addSubview(startDatePickerView)
         
@@ -150,19 +152,6 @@ class HistoryView: BaseView {
             make.top.equalTo(startDateDisplayView.snp.bottom)
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(0.0)
-        }
-    }
-    
-    private func setupEndDateDisplayViewLayout() {
-        addSubview(endDateDisplayView)
-        
-        endDateDisplayView.snp.makeConstraints { make in
-            make.top.equalTo(startDatePickerView.snp.bottom)
-            make.leading.trailing.equalToSuperview()
-        }
-        
-        endDateDisplayView.separatorView.snp.updateConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
         }
     }
     
@@ -182,6 +171,7 @@ class HistoryView: BaseView {
         viewResultsButton.snp.makeConstraints { make in
             make.top.greaterThanOrEqualTo(endDatePickerView.snp.bottom).offset(layout.current.buttonMinimumInset)
             make.centerX.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
             make.bottom.equalToSuperview().inset(safeAreaBottom + layout.current.bottomInset)
         }
     }
@@ -274,7 +264,6 @@ class HistoryView: BaseView {
     private func setStartDatePicker(visible: Bool) {
         if visible {
             if !endDatePickerView.isHidden {
-                endDateDisplayView.separatorView.isHidden = false
                 endDatePickerView.isHidden = true
                 
                 endDatePickerView.snp.updateConstraints { make in
@@ -286,7 +275,6 @@ class HistoryView: BaseView {
                 }
             }
             
-            startDateDisplayView.separatorView.isHidden = true
             startDatePickerView.isHidden = false
             
             startDatePickerView.snp.updateConstraints { make in
@@ -301,8 +289,6 @@ class HistoryView: BaseView {
                 make.height.equalTo(0.0)
             }
             
-            startDateDisplayView.separatorView.isHidden = false
-            
             UIView.animate(withDuration: 0.3) {
                 self.startDatePickerView.isHidden = true
                 
@@ -314,7 +300,6 @@ class HistoryView: BaseView {
     private func setEndDatePicker(visible: Bool) {
         if visible {
             if !startDatePickerView.isHidden {
-                startDateDisplayView.separatorView.isHidden = false
                 startDatePickerView.isHidden = true
                 
                 startDatePickerView.snp.updateConstraints { make in
@@ -326,7 +311,6 @@ class HistoryView: BaseView {
                 }
             }
             
-            endDateDisplayView.separatorView.isHidden = true
             endDatePickerView.isHidden = false
             
             endDatePickerView.snp.updateConstraints { make in
@@ -341,8 +325,6 @@ class HistoryView: BaseView {
             endDatePickerView.snp.updateConstraints { make in
                 make.height.equalTo(0.0)
             }
-            
-            endDateDisplayView.separatorView.isHidden = false
             
             UIView.animate(withDuration: 0.3) {
                 self.endDatePickerView.isHidden = true

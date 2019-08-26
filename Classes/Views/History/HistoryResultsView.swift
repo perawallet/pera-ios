@@ -17,61 +17,36 @@ class HistoryResultsView: BaseView {
         let separatorHeight: CGFloat = 1.0
         let toLabelTopInset: CGFloat = 30.0
         let labelMinimumInset: CGFloat = 5.0
-        let collectionViewTopInset: CGFloat = 24.0
+        let collectionViewTopInset: CGFloat = 20.0
     }
     
     private let layout = Layout<LayoutConstants>()
     
     // MARK: Components
     
-    private(set) lazy var accountNameLabel: UILabel = {
-        UILabel()
-            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 14.0)))
-            .withLine(.single)
-            .withAlignment(.left)
-            .withTextColor(SharedColors.black)
+    private(set) lazy var accountSelectionView: AccountSelectionView = {
+        let accountSelectionView = AccountSelectionView()
+        accountSelectionView.backgroundColor = .clear
+        accountSelectionView.explanationLabel.text = "history-account".localized
+        return accountSelectionView
     }()
     
-    private(set) lazy var accountAmountView: AlgosAmountView = {
-        let view = AlgosAmountView()
-        return view
+    private(set) lazy var startDateDisplayView: DetailedInformationView = {
+        let startDateDisplayView = DetailedInformationView()
+        startDateDisplayView.backgroundColor = .clear
+        startDateDisplayView.explanationLabel.text = "history-start-date".localized
+        startDateDisplayView.isUserInteractionEnabled = true
+        startDateDisplayView.detailLabel.font = UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))
+        return startDateDisplayView
     }()
     
-    private lazy var topSeparatorView: UIView = {
-        let view = UIView()
-        view.backgroundColor = SharedColors.softGray
-        return view
-    }()
-    
-    private(set) lazy var startDateLabel: UILabel = {
-        UILabel()
-            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 14.0)))
-            .withLine(.single)
-            .withAlignment(.left)
-            .withTextColor(SharedColors.black)
-    }()
-    
-    private lazy var toLabel: UILabel = {
-        UILabel()
-            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 12.0)))
-            .withLine(.single)
-            .withAlignment(.center)
-            .withTextColor(SharedColors.softGray)
-            .withText("history-result-to".localized)
-    }()
-    
-    private(set) lazy var endDateLabel: UILabel = {
-        UILabel()
-            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 14.0)))
-            .withLine(.single)
-            .withAlignment(.right)
-            .withTextColor(SharedColors.black)
-    }()
-    
-    private lazy var bottomSeparatorView: UIView = {
-        let view = UIView()
-        view.backgroundColor = SharedColors.softGray
-        return view
+    private(set) lazy var endDateDisplayView: DetailedInformationView = {
+        let endDateDisplayView = DetailedInformationView()
+        endDateDisplayView.backgroundColor = .clear
+        endDateDisplayView.explanationLabel.text = "history-end-date".localized
+        endDateDisplayView.isUserInteractionEnabled = true
+        endDateDisplayView.detailLabel.font = UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))
+        return endDateDisplayView
     }()
     
     private(set) lazy var transactionHistoryCollectionView: UICollectionView = {
@@ -93,87 +68,41 @@ class HistoryResultsView: BaseView {
     }()
     
     private lazy var contentStateView = ContentStateView()
-
-    // MARK: Setup
     
     // MARK: Layout
     
     override func prepareLayout() {
-        setupAccountNameLabelLayout()
-        setupAccountAmountViewLayout()
-        setupTopSeparatorViewLayout()
-        setupToLabelLayout()
-        setupStartDateLabelLayout()
-        setupEndDateLabelLayout()
-        setupBottomSeparatorViewLayout()
+        setupAccountSelectionViewLayout()
+        setupStartDateDisplayViewLayout()
+        setupEndDateDisplayViewLayout()
         setupTransactionHistoryCollectionViewLayout()
     }
     
-    private func setupAccountNameLabelLayout() {
-        addSubview(accountNameLabel)
+    private func setupAccountSelectionViewLayout() {
+        addSubview(accountSelectionView)
         
-        accountNameLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
-            make.top.equalToSuperview().inset(layout.current.topInset)
+        accountSelectionView.snp.makeConstraints { make in
+            make.leading.top.trailing.equalToSuperview()
         }
     }
     
-    private func setupAccountAmountViewLayout() {
-        addSubview(accountAmountView)
+    private func setupStartDateDisplayViewLayout() {
+        addSubview(startDateDisplayView)
         
-        accountAmountView.snp.makeConstraints { make in
-            make.leading.greaterThanOrEqualTo(accountNameLabel.snp.trailing).offset(layout.current.labelMinimumInset)
-            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.centerY.equalTo(accountNameLabel)
+        startDateDisplayView.snp.makeConstraints { make in
+            make.top.equalTo(accountSelectionView.snp.bottom)
+            make.leading.equalToSuperview()
+            make.width.equalTo(UIScreen.main.bounds.width / 2)
         }
     }
     
-    private func setupTopSeparatorViewLayout() {
-        addSubview(topSeparatorView)
+    private func setupEndDateDisplayViewLayout() {
+        addSubview(endDateDisplayView)
         
-        topSeparatorView.snp.makeConstraints { make in
-            make.top.equalTo(accountNameLabel.snp.bottom).offset(layout.current.separatorInset)
-            make.leading.trailing.equalToSuperview().inset(layout.current.separatorInset)
-            make.height.equalTo(layout.current.separatorHeight)
-        }
-    }
-    
-    private func setupToLabelLayout() {
-        addSubview(toLabel)
-        
-        toLabel.snp.makeConstraints { make in
-            make.top.equalTo(topSeparatorView.snp.bottom).offset(layout.current.toLabelTopInset)
-            make.centerX.equalToSuperview()
-        }
-    }
-    
-    private func setupStartDateLabelLayout() {
-        addSubview(startDateLabel)
-        
-        startDateLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
-            make.centerY.equalTo(toLabel)
-            make.trailing.lessThanOrEqualTo(toLabel.snp.leading).inset(-layout.current.labelMinimumInset)
-        }
-    }
-    
-    private func setupEndDateLabelLayout() {
-        addSubview(endDateLabel)
-        
-        endDateLabel.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.centerY.equalTo(toLabel)
-            make.leading.greaterThanOrEqualTo(toLabel.snp.leading).offset(layout.current.labelMinimumInset)
-        }
-    }
-    
-    private func setupBottomSeparatorViewLayout() {
-        addSubview(bottomSeparatorView)
-        
-        bottomSeparatorView.snp.makeConstraints { make in
-            make.top.equalTo(toLabel.snp.bottom).offset(layout.current.separatorInset)
-            make.leading.trailing.equalToSuperview().inset(layout.current.separatorInset)
-            make.height.equalTo(layout.current.separatorHeight)
+        endDateDisplayView.snp.makeConstraints { make in
+            make.top.equalTo(accountSelectionView.snp.bottom)
+            make.trailing.equalToSuperview()
+            make.width.equalTo(UIScreen.main.bounds.width / 2)
         }
     }
     
@@ -182,7 +111,7 @@ class HistoryResultsView: BaseView {
         
         transactionHistoryCollectionView.snp.makeConstraints { make in
             make.leading.trailing.bottom.equalToSuperview()
-            make.top.equalTo(bottomSeparatorView.snp.bottom).offset(layout.current.collectionViewTopInset)
+            make.top.equalTo(endDateDisplayView.snp.bottom).offset(layout.current.collectionViewTopInset)
         }
         
         transactionHistoryCollectionView.backgroundView = contentStateView

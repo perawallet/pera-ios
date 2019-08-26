@@ -81,6 +81,12 @@ class NodeSettingsViewController: BaseViewController {
         fetchNodes()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        view.backgroundColor = .white
+        navigationController?.navigationBar.barTintColor = .white
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
@@ -92,6 +98,11 @@ class NodeSettingsViewController: BaseViewController {
         default:
             return
         }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.navigationBar.barTintColor = SharedColors.warmWhite
     }
     
     private func fetchNodes() {

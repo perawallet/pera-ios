@@ -18,7 +18,7 @@ class SettingsInfoContextView: BaseView {
     private let layout = Layout<LayoutConstants>()
     
     private enum Colors {
-        static let separatorColor = rgba(0.67, 0.67, 0.72, 0.31)
+        static let separatorColor = rgb(0.94, 0.94, 0.94)
     }
     
     // MARK: Components

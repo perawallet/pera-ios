@@ -19,9 +19,9 @@ class AddContactView: BaseView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let informationViewHeight: CGFloat = 333.0
-        let topInset: CGFloat = 24.0
-        let bottomInset: CGFloat = 20.0
+        let bottomInset: CGFloat = 15.0
         let minimumInset: CGFloat = 10.0
+        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -63,7 +63,7 @@ class AddContactView: BaseView {
         
         userInformationView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.top.equalTo(safeAreaLayoutGuide.snp.top).offset(layout.current.topInset)
+            make.top.equalTo(safeAreaLayoutGuide.snp.top)
             make.height.equalTo(layout.current.informationViewHeight)
         }
     }
@@ -74,7 +74,8 @@ class AddContactView: BaseView {
         addContactButton.snp.makeConstraints { make in
             make.top.greaterThanOrEqualTo(userInformationView.snp.bottom).offset(layout.current.minimumInset)
             make.centerX.equalToSuperview()
-            make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).inset(layout.current.bottomInset)
+            make.bottom.equalToSuperview().inset(safeAreaBottom + layout.current.bottomInset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
         }
     }
     

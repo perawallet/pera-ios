@@ -17,9 +17,9 @@ protocol AccountNameSetupViewDelegate: class {
 class AccountNameSetupView: BaseView {
 
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let topInset: CGFloat = 145.0 * verticalScale
+        let topInset: CGFloat = 167.0 * verticalScale
         let buttonBottomInset: CGFloat = 15.0
-        let buttonTopInset: CGFloat = 120.0 * verticalScale
+        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -27,12 +27,12 @@ class AccountNameSetupView: BaseView {
     // MARK: Components
     
     private(set) lazy var accountNameInputView: SingleLineInputField = {
-        let accountNameInputView = SingleLineInputField(separatorStyle: .colored)
+        let accountNameInputView = SingleLineInputField()
         accountNameInputView.explanationLabel.text = "account-name-setup-explanation".localized
         accountNameInputView.inputTextField.attributedPlaceholder = NSAttributedString(
             string: "account-name-setup-placeholder".localized,
             attributes: [NSAttributedString.Key.foregroundColor: SharedColors.softGray,
-                         NSAttributedString.Key.font: UIFont.font(.overpass, withWeight: .semiBold(size: 15.0))]
+                         NSAttributedString.Key.font: UIFont.font(.overpass, withWeight: .semiBold(size: 13.0))]
         )
         accountNameInputView.nextButtonMode = .submit
         accountNameInputView.inputTextField.autocorrectionType = .no
@@ -76,8 +76,9 @@ class AccountNameSetupView: BaseView {
         addSubview(nextButton)
         
         nextButton.snp.makeConstraints { make in
-            make.top.equalTo(accountNameInputView.snp.bottom).offset(layout.current.buttonTopInset)
+            make.top.equalTo(accountNameInputView.snp.bottom).offset(layout.current.topInset)
             make.bottom.lessThanOrEqualToSuperview().inset(layout.current.buttonBottomInset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
             make.centerX.equalToSuperview()
         }
     }

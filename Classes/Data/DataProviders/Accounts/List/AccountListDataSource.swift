@@ -14,11 +14,7 @@ class AccountListDataSource: NSObject, UICollectionViewDataSource {
     
     private(set) var accounts = [Account]()
     
-    private let mode: AccountListMode
-    
-    init(mode: AccountListMode) {
-        self.mode = mode
-        
+    override init() {
         super.init()
         
         guard let user = UIApplication.shared.appConfiguration?.session.authenticatedUser else {
@@ -33,34 +29,10 @@ class AccountListDataSource: NSObject, UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if mode == .addable {
-            return accounts.count + 1
-        }
-        
         return accounts.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if mode == .addable {
-            if indexPath.row == accounts.count {
-                guard let cell = collectionView.dequeueReusableCell(
-                    withReuseIdentifier: AccountsTotalDisplayCell.reusableIdentifier,
-                    for: indexPath) as? AccountsTotalDisplayCell else {
-                        fatalError("Index path is out of bounds")
-                }
-                
-                let totalAmount = accounts.reduce(0) {
-                    $0 + $1.amount
-                }
-                
-                if let totalFormattedAmount = totalAmount.toAlgos.toDecimalStringForLabel {
-                    viewModel.configure(cell, with: totalFormattedAmount)
-                }
-                
-                return cell
-            }
-        }
-        
         guard let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: AccountViewCell.reusableIdentifier,
             for: indexPath) as? AccountViewCell else {

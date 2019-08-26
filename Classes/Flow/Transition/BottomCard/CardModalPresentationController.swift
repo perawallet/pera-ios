@@ -11,7 +11,7 @@ import UIKit
 class CardModalPresentationController: UIPresentationController {
     
     private enum Colors {
-        static let backgroundColor = rgba(0.04, 0.05, 0.07, 0.6)
+        static let backgroundColor = rgba(0.29, 0.29, 0.31, 0.6)
     }
     
     typealias Configuration = ModalConfiguration

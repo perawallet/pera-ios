@@ -108,16 +108,16 @@ extension ContactInfoViewController: ContactInfoViewDelegate {
     }
     
     func contactInfoViewDidEditContactButton(_ contactInfoView: ContactInfoView) {
-        let controller = open(.addContact(mode: .edit(contact: contact)), by: .push) as? AddContactViewController
+        let controller = open(.addContact(mode: .edit(contact: contact)), by: .present) as? AddContactViewController
         
         controller?.delegate = self
     }
     
     func contactInfoViewDidDeleteContactButton(_ contactInfoView: ContactInfoView) {
-        displayRemoveAccountAlert()
+        displayDeleteContactAlert()
     }
     
-    private func displayRemoveAccountAlert() {
+    private func displayDeleteContactAlert() {
         let configurator = AlertViewConfigurator(
             title: "contacts-delete-contact-alert-title".localized,
             image: img("icon-delete-contact"),
@@ -140,10 +140,10 @@ extension ContactInfoViewController: ContactInfoViewDelegate {
         viewController.modalTransitionStyle = .crossDissolve
         
         if let alertView = viewController.alertView as? DestructiveAlertView {
-            alertView.cancelButton.setTitleColor(SharedColors.purple, for: .normal)
-            alertView.cancelButton.setBackgroundImage(img("bg-purple-cancel"), for: .normal)
-            alertView.actionButton.setTitleColor(SharedColors.orange, for: .normal)
-            alertView.actionButton.setBackgroundImage(img("bg-orange-action"), for: .normal)
+            alertView.cancelButton.setTitleColor(.white, for: .normal)
+            alertView.cancelButton.setBackgroundImage(img("bg-black-cancel"), for: .normal)
+            alertView.actionButton.setTitleColor(.white, for: .normal)
+            alertView.actionButton.setBackgroundImage(img("bg-purple-action"), for: .normal)
         }
         
         tabBarController?.present(viewController, animated: true, completion: nil)

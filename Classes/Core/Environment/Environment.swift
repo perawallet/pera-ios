@@ -48,6 +48,8 @@ class Environment {
         }
     }()
     
+    lazy var binanceHost = "api.binance.com"
+    
     lazy var serverApi: String = {
         let api = "\(serverSchema)://\(serverHost)"
         return api
@@ -55,6 +57,11 @@ class Environment {
     
     lazy var cointlistApi: String = {
         let api = "https://\(coinlistHost)"
+        return api
+    }()
+    
+    lazy var binanceApi: String = {
+        let api = "https://\(binanceHost)"
         return api
     }()
     

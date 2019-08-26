@@ -17,6 +17,7 @@ class DefaultAlertView: AlertView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let defaultInset: CGFloat = 25.0
+        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -50,7 +51,7 @@ class DefaultAlertView: AlertView {
         doneButton.snp.makeConstraints { make in
             make.top.equalTo(explanationLabel.snp.bottom).offset(layout.current.defaultInset)
             make.centerX.equalToSuperview()
-            make.leading.trailing.lessThanOrEqualToSuperview().inset(layout.current.defaultInset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
             make.bottom.equalToSuperview().inset(layout.current.defaultInset)
         }
     }

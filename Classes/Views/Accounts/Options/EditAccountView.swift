@@ -18,9 +18,10 @@ class EditAccountView: BaseView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let horizontalInset: CGFloat = 25.0
         let verticalInset: CGFloat = 20.0
+        let fieldTopInset: CGFloat = 13.0
         let separatorHeight: CGFloat = 1.0
         let separatorInset: CGFloat = 16.0
-        let fieldHeight: CGFloat = 50.0
+        let fieldHeight: CGFloat = 75.0
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -56,7 +57,7 @@ class EditAccountView: BaseView {
     }()
     
     private(set) lazy var accountNameInputView: SingleLineInputField = {
-        let accountNameInputView = SingleLineInputField(separatorStyle: .none)
+        let accountNameInputView = SingleLineInputField()
         accountNameInputView.explanationLabel.text = "account-name-setup-explanation".localized
         accountNameInputView.inputTextField.attributedPlaceholder = NSAttributedString(
             string: "account-name-setup-placeholder".localized,
@@ -123,7 +124,7 @@ class EditAccountView: BaseView {
         
         accountNameInputView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.top.equalTo(separatorView.snp.bottom).offset(layout.current.verticalInset)
+            make.top.equalTo(separatorView.snp.bottom).offset(layout.current.fieldTopInset)
             make.height.equalTo(layout.current.fieldHeight)
         }
     }

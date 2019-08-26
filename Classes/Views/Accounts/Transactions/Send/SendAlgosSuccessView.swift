@@ -26,8 +26,9 @@ class SendAlgosSuccessView: BaseView {
         let verticalInset: CGFloat = 20.0
         let buttonCenterOffset: CGFloat = 7.5
         let buttonMinimumInset: CGFloat = 10.0
-        let separatorHeight: CGFloat = 1.0
+        let detailViewHeight: CGFloat = 88.0
         let bottomInset: CGFloat = 10.0
+        let receiverViewHeight: CGFloat = 115.0
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -65,7 +66,7 @@ class SendAlgosSuccessView: BaseView {
     
     private(set) lazy var doneButton: UIButton = {
         UIButton(type: .custom)
-            .withTitleColor(SharedColors.purple)
+            .withTitleColor(.white)
             .withTitle("title-done".localized)
             .withBackgroundImage(img("bg-purple-small"))
             .withAlignment(.center)
@@ -74,17 +75,11 @@ class SendAlgosSuccessView: BaseView {
     
     private(set) lazy var sendMoreButton: UIButton = {
         UIButton(type: .custom)
-            .withTitleColor(SharedColors.orange)
+            .withTitleColor(.white)
             .withTitle("send-algos-more".localized)
             .withBackgroundImage(img("bg-orange-small"))
             .withAlignment(.center)
             .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 12.0)))
-    }()
-    
-    private lazy var separatorView: UIView = {
-        let view = UIView()
-        view.backgroundColor = Colors.separatorColor
-        return view
     }()
     
     private(set) lazy var amountView: DetailedInformationView = {
@@ -139,7 +134,6 @@ class SendAlgosSuccessView: BaseView {
         setupTitleLabelLayout()
         setupDoneButtonLayout()
         setupSendMoreButtonLayout()
-        setupSeparatorViewLayout()
         setupAmountViewLayout()
         setupFeeViewLayout()
         setupAccountViewLayout()
@@ -196,23 +190,13 @@ class SendAlgosSuccessView: BaseView {
         }
     }
     
-    private func setupSeparatorViewLayout() {
-        addSubview(separatorView)
-        
-        separatorView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.top.equalTo(doneButton.snp.bottom).offset(layout.current.verticalInset)
-            make.height.equalTo(layout.current.separatorHeight)
-        }
-    }
-    
     private func setupAmountViewLayout() {
         addSubview(amountView)
         
         amountView.snp.makeConstraints { make in
             make.leading.equalToSuperview()
-            make.top.equalTo(separatorView.snp.bottom)
-            make.height.equalTo(88.0)
+            make.top.equalTo(sendMoreButton.snp.bottom).offset(layout.current.verticalInset)
+            make.height.equalTo(layout.current.detailViewHeight)
             make.width.equalTo(UIScreen.main.bounds.width / 2)
         }
     }
@@ -222,8 +206,8 @@ class SendAlgosSuccessView: BaseView {
         
         feeView.snp.makeConstraints { make in
             make.trailing.equalToSuperview()
-            make.top.equalTo(separatorView.snp.bottom)
-            make.height.equalTo(88.0)
+            make.top.equalTo(sendMoreButton.snp.bottom).offset(layout.current.verticalInset)
+            make.height.equalTo(layout.current.detailViewHeight)
             make.width.equalTo(UIScreen.main.bounds.width / 2)
         }
     }
@@ -243,7 +227,7 @@ class SendAlgosSuccessView: BaseView {
         transactionReceiverView.snp.makeConstraints { make in
             make.top.equalTo(accountView.snp.bottom)
             make.leading.trailing.equalToSuperview()
-            make.height.greaterThanOrEqualTo(110.0)
+            make.height.equalTo(layout.current.receiverViewHeight)
         }
     }
     

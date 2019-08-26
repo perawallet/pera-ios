@@ -23,6 +23,26 @@ class AccountsViewModel {
         view.algosAmountLabel.text = account.amount.toAlgos.toDecimalStringForLabel
     }
     
+    func setDollarValue(visible: Bool, in view: AccountsHeaderView, for currentValue: Double) {
+        view.algosImageView.isHidden = visible
+        view.algosAmountLabel.isHidden = visible
+        view.dollarAmountLabel.isHidden = !visible
+        view.dollarImageView.isHidden = !visible
+        
+        if visible {
+            view.algosAvailableLabel.text = "accounts-dollar-value-title".localized
+            view.dollarValueLabel.backgroundColor = SharedColors.darkGray
+            view.dollarValueLabel.textColor = .white
+            view.dollarAmountLabel.text = currentValue.toCryptoCurrencyStringForLabel
+            view.dollarValueLabel.layer.borderWidth = 0.0
+        } else {
+            view.algosAvailableLabel.text = "accounts-algos-available-title".localized
+            view.dollarValueLabel.backgroundColor = .white
+            view.dollarValueLabel.textColor = .black
+            view.dollarValueLabel.layer.borderWidth = 1.0
+        }
+    }
+    
     func configure(_ cell: TransactionHistoryCell, with transaction: Transaction, for contact: Contact? = nil) {
         guard let currentAccount = currentAccount,
             let payment = transaction.payment else {
