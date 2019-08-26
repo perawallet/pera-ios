@@ -52,8 +52,6 @@ class TabBarController: UITabBarController {
         tabBar.unselectedItemTintColor = SharedColors.darkGray
         tabBar.backgroundImage = UIImage()
         tabBar.shadowImage = UIImage()
-        tabBar.layer.borderColor = rgb(0.9, 0.9, 0.9).cgColor
-        tabBar.layer.borderWidth = 1.0
         return tabBar
     }()
     
