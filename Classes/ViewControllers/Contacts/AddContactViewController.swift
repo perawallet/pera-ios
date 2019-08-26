@@ -245,7 +245,7 @@ extension AddContactViewController: AddContactViewDelegate {
                 
                 self.delegate?.addContactViewController(self, didSave: contact)
                 
-                self.closeScreen(by: .pop)
+                self.closeScreen(by: .dismiss)
             default:
                 break
             }

@@ -20,7 +20,7 @@ class AccountsHeaderView: BaseView {
         let containerViewInset: CGFloat = 10.0
         let availableTitleInset: CGFloat = 15.0
         let containerViewHeight: CGFloat = 166.0
-        let dollarValueSize = CGSize(width: 40.0, height: 40.0)
+        let dollarValueSize = CGSize(width: 44.0, height: 44.0)
         let dollarValueInset: CGFloat = 5.0
         let horizontalInset: CGFloat = 15.0
         let verticalInset: CGFloat = 20.0
@@ -37,10 +37,11 @@ class AccountsHeaderView: BaseView {
         static let borderColor = rgb(0.94, 0.94, 0.94)
     }
     
-    private lazy var dollarValueGestureRecognizer = UILongPressGestureRecognizer(
-        target: self,
-        action: #selector(notifyDelegateToDollarValueLabelTapped)
-    )
+    private lazy var dollarValueGestureRecognizer: UILongPressGestureRecognizer = {
+        let recognizer = UILongPressGestureRecognizer(target: self, action: #selector(notifyDelegateToDollarValueLabelTapped))
+        recognizer.minimumPressDuration = 0.0
+        return recognizer
+    }()
     
     // MARK: Components
     
