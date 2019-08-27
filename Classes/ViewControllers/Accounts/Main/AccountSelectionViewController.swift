@@ -121,7 +121,7 @@ extension AccountSelectionViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.item < accounts.count {
-            let account = accounts[indexPath.row]
+            let account = accounts[indexPath.item]
             selectedAccount = account
             delegate?.accountSelectionViewController(self, didSelect: account)
             

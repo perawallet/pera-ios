@@ -191,7 +191,7 @@ extension ContactsViewController: UICollectionViewDataSource {
         cell.delegate = self
         
         if indexPath.item < searchResults.count {
-            let contact = searchResults[indexPath.row]
+            let contact = searchResults[indexPath.item]
             
             viewModel.configure(cell, with: contact)
         }
@@ -215,7 +215,7 @@ extension ContactsViewController: UICollectionViewDelegateFlowLayout {
         view.endEditing(true)
         
         if indexPath.item < searchResults.count {
-            let contact = searchResults[indexPath.row]
+            let contact = searchResults[indexPath.item]
             
             guard let delegate = delegate else {
                 let controller = open(.contactDetail(contact: contact), by: .push) as? ContactInfoViewController
@@ -287,7 +287,7 @@ extension ContactsViewController: ContactCellDelegate {
         }
         
         if indexPath.item < searchResults.count {
-            let contact = searchResults[indexPath.row]
+            let contact = searchResults[indexPath.item]
             
             tabBarController?.open(.contactQRDisplay(contact: contact), by: .presentWithoutNavigationController)
         }
@@ -301,7 +301,7 @@ extension ContactsViewController: ContactCellDelegate {
         }
         
         if indexPath.item < searchResults.count {
-            let contact = searchResults[indexPath.row]
+            let contact = searchResults[indexPath.item]
             
             guard let currentAccount = session?.currentAccount else {
                 return

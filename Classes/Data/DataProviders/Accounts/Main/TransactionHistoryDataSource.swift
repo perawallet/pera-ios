@@ -56,7 +56,7 @@ class TransactionHistoryDataSource: NSObject, UICollectionViewDataSource {
         }
         
         if indexPath.item < transactions.count {
-            let transaction = transactions[indexPath.row]
+            let transaction = transactions[indexPath.item]
             
             guard let payment = transaction.payment else {
                 return cell
@@ -119,8 +119,8 @@ extension TransactionHistoryDataSource {
     }
     
     func transaction(at indexPath: IndexPath) -> Transaction? {
-        if indexPath.row >= 0 && indexPath.row < transactions.count {
-            return transactions[indexPath.row]
+        if indexPath.item >= 0 && indexPath.item < transactions.count {
+            return transactions[indexPath.item]
         }
         
         return nil

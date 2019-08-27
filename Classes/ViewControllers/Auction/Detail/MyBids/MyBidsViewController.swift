@@ -139,7 +139,7 @@ extension MyBidsViewController: UICollectionViewDataSource {
             fatalError("Index path is out of bounds")
         }
         
-        let bid = bids[indexPath.row]
+        let bid = bids[indexPath.item]
         
         if bid.status == .queued {
             guard let cell = collectionView.dequeueReusableCell(
@@ -190,7 +190,7 @@ extension MyBidsViewController: LimitOrderCellDelegate {
             return
         }
         
-        let bid = bids[indexPath.row]
+        let bid = bids[indexPath.item]
         
         api?.retractBid(with: "\(bid.id)", from: "\(auction.id)") { response in
             switch response {

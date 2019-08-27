@@ -124,7 +124,7 @@ extension OptionsViewController: UICollectionViewDataSource {
                 fatalError("Index path is out of bounds")
         }
         
-        guard let option = Options(rawValue: indexPath.row) else {
+        guard let option = Options(rawValue: indexPath.item) else {
             fatalError("Index path is out of bounds")
         }
         
@@ -148,7 +148,7 @@ extension OptionsViewController: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let selectedOption = Options(rawValue: indexPath.row) else {
+        guard let selectedOption = Options(rawValue: indexPath.item) else {
             fatalError("Index path is out of bounds")
         }
         

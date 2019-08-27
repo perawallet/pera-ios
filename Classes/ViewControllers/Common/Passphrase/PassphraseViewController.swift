@@ -63,13 +63,13 @@ extension PassphraseViewController: UICollectionViewDataSource {
                 fatalError("Index path is out of bounds")
         }
         
-        cell.contextView.numberLabel.text = "\(indexPath.row + 1)"
+        cell.contextView.numberLabel.text = "\(indexPath.item + 1)"
         
         guard let mnemonics = mnemonics else {
             return cell
         }
         
-        cell.contextView.phraseLabel.text = mnemonics[indexPath.row]
+        cell.contextView.phraseLabel.text = mnemonics[indexPath.item]
         
         return cell
     }

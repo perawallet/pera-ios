@@ -40,7 +40,7 @@ class AccountListDataSource: NSObject, UICollectionViewDataSource {
         }
         
         if indexPath.item < accounts.count {
-            let account = accounts[indexPath.row]
+            let account = accounts[indexPath.item]
             
             viewModel.configure(cell, with: account)
         }
