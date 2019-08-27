@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Magpie
 import SVProgressHUD
 import Crypto
 
@@ -28,7 +29,7 @@ class SendAlgosPreviewViewController: BaseViewController {
     }()
     
     private var transaction: TransactionPreviewDraft
-    
+    private var transactionManager: TransactionManager
     private let receiver: AlgosReceiverState
     
     weak var delegate: SendAlgosPreviewViewControllerDelegate?
@@ -37,7 +38,13 @@ class SendAlgosPreviewViewController: BaseViewController {
     
     // MARK: Initialization
     
-    init(transaction: TransactionPreviewDraft, receiver: AlgosReceiverState, configuration: ViewControllerConfiguration) {
+    init(
+        transactionManager: TransactionManager,
+        transaction: TransactionPreviewDraft,
+        receiver: AlgosReceiverState,
+        configuration: ViewControllerConfiguration
+    ) {
+        self.transactionManager = transactionManager
         self.transaction = transaction
         self.receiver = receiver
         
@@ -59,61 +66,7 @@ class SendAlgosPreviewViewController: BaseViewController {
         sendAlgosPreviewView.transactionReceiverView.state = receiver
         
         sendAlgosPreviewView.transactionReceiverView.actionMode = .none
-        
-        self.updateFeeLayout()
-        
-        SVProgressHUD.show(withStatus: "title-loading".localized)
-        api?.getTransactionParams { response in
-            switch response {
-            case let .failure(error):
-                print(error)
-                
-            case let .success(params):
-                self.composeTransactionData(with: params)
-                self.updateFeeLayout()
-            }
-            
-            SVProgressHUD.dismiss()
-        }
-    }
-    
-    private func composeTransactionData(with params: TransactionParams) {
-        transaction.fee = params.fee
-        
-        guard let account = getAccount() else {
-            return
-        }
-        
-        let firstRound = params.lastRound
-        let lastRound = firstRound + 1000
-        
-        var transactionError: NSError?
-        
-        guard let transactionData = TransactionMakePaymentTxn(
-            transaction.fromAccount.address,
-            account.address,
-            params.fee,
-            Int64(transaction.amount.toMicroAlgos),
-            firstRound,
-            lastRound,
-            nil,
-            "",
-            "",
-            params.genesisHashData,
-            &transactionError
-        ) else {
-            return
-        }
-        
-        var signedTransactionError: NSError?
-        
-        guard let privateData = session?.privateData(forAccount: transaction.fromAccount.address),
-            let signedTransactionData = CryptoSignTransaction(privateData, transactionData, &signedTransactionError) else {
-                return
-        }
-        
-        self.transactionData = signedTransactionData
-        transaction.fee = Int64(signedTransactionData.count) * params.fee
+        updateFeeLayout()
     }
     
     private func getAccount() -> Account? {
@@ -140,6 +93,7 @@ class SendAlgosPreviewViewController: BaseViewController {
     
     override func linkInteractors() {
         sendAlgosPreviewView.previewViewDelegate = self
+        transactionManager.delegate = self
     }
     
     override func prepareLayout() {
@@ -171,61 +125,9 @@ class SendAlgosPreviewViewController: BaseViewController {
 // MARK: SendAlgosPreviewViewDelegate
 
 extension SendAlgosPreviewViewController: SendAlgosPreviewViewDelegate {
-    
     func sendAlgosPreviewViewDidTapSendButton(_ sendAlgosView: SendAlgosView) {
         SVProgressHUD.show(withStatus: "title-loading".localized)
-        
-        if let transactionData = self.transactionData {
-            sendTransaction(with: transactionData)
-        } else {
-            api?.getTransactionParams { response in
-                switch response {
-                case let .failure(error):
-                    print(error)
-                    
-                case let .success(params):
-                    self.composeTransactionData(with: params)
-                    
-                    guard let transactionData = self.transactionData else {
-                        return
-                    }
-                    
-                    self.sendTransaction(with: transactionData)
-                }
-            }
-        }
-    }
-    
-    fileprivate func sendTransaction(with transactionData: Data) {
-        self.api?.sendTransaction(with: transactionData) { transactionIdResponse in
-            switch transactionIdResponse {
-            case let .success(transactionId):
-                SVProgressHUD.dismiss()
-                
-                self.transaction.identifier = transactionId.identifier
-                
-                let sendAlgosSuccessViewController = self.open(
-                    .sendAlgosSuccess(transaction: self.transaction, receiver: self.receiver),
-                    by: .present
-                    ) as? SendAlgosSuccessViewController
-                
-                sendAlgosSuccessViewController?.delegate = self
-                
-            case let .failure(error):
-                SVProgressHUD.dismiss()
-                
-                switch error {
-                case let .badRequest(errorData):
-                    if let data = errorData,
-                        let message = String(data: data, encoding: .utf8) {
-                        self.displaySimpleAlertWith(title: "title-error".localized, message: message)
-                    }
-                    
-                default:
-                    self.displaySimpleAlertWith(title: "title-error".localized, message: "default-error-message".localized)
-                }
-            }
-        }
+        transactionManager.completeTransaction()
     }
 }
 
@@ -244,5 +146,35 @@ extension SendAlgosPreviewViewController: SendAlgosSuccessViewControllerDelegate
         closeScreen(by: .pop, animated: false)
         
         delegate?.sendAlgosPreviewViewControllerDidTapSendMoreButton(self, withReceiver: state)
+    }
+}
+
+extension SendAlgosPreviewViewController: TransactionManagerDelegate {
+    func transactionManager(_ transactionManager: TransactionManager, didCompletedTransaction id: TransactionID) {
+        SVProgressHUD.dismiss()
+        
+        self.transaction.identifier = id.identifier
+        
+        let sendAlgosSuccessViewController = self.open(
+            .sendAlgosSuccess(transaction: self.transaction, receiver: self.receiver),
+            by: .present
+        ) as? SendAlgosSuccessViewController
+        
+        sendAlgosSuccessViewController?.delegate = self
+    }
+    
+    func transactionManager(_ transactionManager: TransactionManager, didFailedTransaction error: Error) {
+        SVProgressHUD.dismiss()
+        
+        switch error {
+        case let .badRequest(errorData):
+            if let data = errorData,
+                let message = String(data: data, encoding: .utf8) {
+                self.displaySimpleAlertWith(title: "title-error".localized, message: message)
+            }
+            
+        default:
+            self.displaySimpleAlertWith(title: "title-error".localized, message: "default-error-message".localized)
+        }
     }
 }

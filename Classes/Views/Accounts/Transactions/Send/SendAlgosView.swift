@@ -40,6 +40,7 @@ class SendAlgosView: BaseView {
     
     private(set) lazy var algosInputView: AlgosInputView = {
         let view = AlgosInputView()
+        view.maxButton.isHidden = false
         return view
     }()
     

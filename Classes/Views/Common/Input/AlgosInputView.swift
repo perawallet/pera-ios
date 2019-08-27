@@ -35,6 +35,9 @@ class AlgosInputView: BaseView {
     
     weak var delegate: AlgosInputViewDelegate?
     
+    private(set) var isMaxButtonSelected = false
+    var maxAmount: Double = 0.0
+    
     // MARK: Components
     
     private(set) lazy var explanationLabel: UILabel = {
@@ -59,6 +62,12 @@ class AlgosInputView: BaseView {
     private(set) lazy var maxButton: UIButton = {
         let button = UIButton(type: .custom)
         button.isHidden = true
+        button.titleLabel?.font = UIFont.font(.avenir, withWeight: .bold(size: 10.0))
+        button.setAttributedTitle("title-max".localized.attributed([.letterSpacing(1.10), .textColor(SharedColors.gray)]), for: .normal)
+        button.setBackgroundImage(img("bg-max-button"), for: .normal)
+        button.layer.borderWidth = 1.0
+        button.layer.borderColor = Colors.borderColor.cgColor
+        button.layer.cornerRadius = 4.0
         return button
     }()
     
@@ -88,6 +97,10 @@ class AlgosInputView: BaseView {
     
     func beginEditing() {
         _ = inputTextField.becomeFirstResponder()
+    }
+    
+    override func linkInteractors() {
+        maxButton.addTarget(self, action: #selector(notifyDelegateToMaxButtonTapped), for: .touchUpInside)
     }
     
     // MARK: Layout
@@ -160,12 +173,47 @@ class AlgosInputView: BaseView {
             return
         }
         
+        if isMaxButtonSelected && doubleValue < maxAmount {
+            toggleMaxButtonState()
+        }
+        
+        if doubleValue > maxAmount {
+            textField.text = String(maxAmount).currencyAlgosInputFormatting()
+            toggleMaxButtonState(isSelected: true)
+            return
+        }
+        
         textField.text = doubleValueString
     }
     
     @objc
     private func notifyDelegateToMaxButtonTapped() {
+        toggleMaxButtonState()
         delegate?.algosInputViewDidTapMaxButton(self)
+    }
+    
+    private func toggleMaxButtonState(isSelected: Bool? = nil) {
+        if let isSelected = isSelected {
+            isMaxButtonSelected = isSelected
+        } else {
+            isMaxButtonSelected = !isMaxButtonSelected
+        }
+        
+        if isMaxButtonSelected {
+            maxButton.setAttributedTitle("title-max".localized.attributed([.letterSpacing(1.10), .textColor(.white)]), for: .normal)
+            maxButton.setBackgroundImage(img("bg-max-button-selected"), for: .normal)
+            maxButton.layer.borderColor = SharedColors.purple.cgColor
+        } else {
+            maxButton.setAttributedTitle(
+                "title-max".localized.attributed([
+                    .letterSpacing(1.10),
+                    .textColor(SharedColors.gray)
+                ]),
+                for: .normal
+            )
+            maxButton.setBackgroundImage(img("bg-max-button"), for: .normal)
+            maxButton.layer.borderColor = Colors.borderColor.cgColor
+        }
     }
 }
 
