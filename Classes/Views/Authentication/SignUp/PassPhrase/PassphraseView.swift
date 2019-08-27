@@ -10,12 +10,12 @@ import UIKit
 
 protocol PassPhraseBackUpViewDelegate: class {
     
-    func passPhraseBackUpViewDidTapVerifyButton(_ passPhraseBackUpView: PassPhraseBackUpView)
-    func passPhraseBackUpViewDidTapShareButton(_ passPhraseBackUpView: PassPhraseBackUpView)
-    func passPhraseBackUpViewDidTapQrButton(_ passPhraseBackUpView: PassPhraseBackUpView)
+    func passphraseViewDidTapActionButton(_ passphraseView: PassphraseView)
+    func passphraseViewDidTapShareButton(_ passphraseView: PassphraseView)
+    func passphraseViewDidTapQrButton(_ passphraseView: PassphraseView)
 }
 
-class PassPhraseBackUpView: BaseView {
+class PassphraseView: BaseView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let topInset: CGFloat = 69.0 * verticalScale
@@ -26,8 +26,6 @@ class PassPhraseBackUpView: BaseView {
         let containerViewHorizontalInset: CGFloat = 25.0 * horizontalScale
         let collectionViewHorizontalInset: CGFloat = 25.0 * horizontalScale
         let warningContainerViewTopInset: CGFloat = 24.0
-        let warningHorizontalInset: CGFloat = 20.0
-        let warningImageCenterOffset: CGFloat = 5.0
         let warningLabelVerticalInset: CGFloat = 20.0
         let bottomInset: CGFloat = 55.0
         let buttonMinimumTopInset: CGFloat = 60.0
@@ -42,7 +40,7 @@ class PassPhraseBackUpView: BaseView {
     
     // MARK: Components
     
-    private lazy var titleLabel: UILabel = {
+    private(set) lazy var titleLabel: UILabel = {
         UILabel()
             .withAlignment(.center)
             .withTextColor(SharedColors.black)
@@ -50,7 +48,7 @@ class PassPhraseBackUpView: BaseView {
             .withText("back-up-phrase-title".localized)
     }()
     
-    private lazy var passPhraseContainerView: UIView = {
+    private(set) lazy var passphraseContainerView: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 20.0
         view.layer.borderColor = Colors.borderColor.cgColor
@@ -95,14 +93,14 @@ class PassPhraseBackUpView: BaseView {
         return button
     }()
     
-    private lazy var warningContainerView: UIView = {
+    private(set) lazy var warningContainerView: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 10.0
         view.backgroundColor = SharedColors.purple
         return view
     }()
     
-    private lazy var warningLabel: UILabel = {
+    private(set) lazy var warningLabel: UILabel = {
         UILabel()
             .withLine(.contained)
             .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 11.0)))
@@ -111,7 +109,7 @@ class PassPhraseBackUpView: BaseView {
             .withAlignment(.center)
     }()
     
-    private lazy var verifyButton: MainButton = {
+    private(set) lazy var actionButton: MainButton = {
         let button = MainButton(title: "back-up-phrase-button-title".localized)
         return button
     }()
@@ -123,20 +121,20 @@ class PassPhraseBackUpView: BaseView {
     override func setListeners() {
         shareButton.addTarget(self, action: #selector(notifyDelegateToShareButtonTapped), for: .touchUpInside)
         qrButton.addTarget(self, action: #selector(notifyDelegateToQrButtonTapped), for: .touchUpInside)
-        verifyButton.addTarget(self, action: #selector(notifyDelegateToVerifyButtonTapped), for: .touchUpInside)
+        actionButton.addTarget(self, action: #selector(notifyDelegateToActionButtonTapped), for: .touchUpInside)
     }
     
     // MARK: Layout
     
     override func prepareLayout() {
         setupTitleLabelLayout()
-        setupPassPhraseContainerViewLayout()
+        setupPassphraseContainerViewLayout()
         setupPassphraseCollectionViewLayout()
         setupShareButtonLayout()
         setupQrButtonLayout()
         setupWarningContainerViewLayout()
         setupWarningLabelLayout()
-        setupVerifyButtonLayout()
+        setupActionButtonLayout()
     }
     
     private func setupTitleLabelLayout() {
@@ -148,17 +146,17 @@ class PassPhraseBackUpView: BaseView {
         }
     }
     
-    private func setupPassPhraseContainerViewLayout() {
-        addSubview(passPhraseContainerView)
+    private func setupPassphraseContainerViewLayout() {
+        addSubview(passphraseContainerView)
         
-        passPhraseContainerView.snp.makeConstraints { make in
+        passphraseContainerView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(layout.current.containerViewHorizontalInset)
             make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.passPhraseContainerViewTopInset)
         }
     }
     
     private func setupPassphraseCollectionViewLayout() {
-        passPhraseContainerView.addSubview(passphraseCollectionView)
+        passphraseContainerView.addSubview(passphraseCollectionView)
         
         passphraseCollectionView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(layout.current.collectionViewHorizontalInset)
@@ -168,7 +166,7 @@ class PassPhraseBackUpView: BaseView {
     }
     
     private func setupShareButtonLayout() {
-        passPhraseContainerView.addSubview(shareButton)
+        passphraseContainerView.addSubview(shareButton)
         
         shareButton.snp.makeConstraints { make in
             make.top.equalTo(passphraseCollectionView.snp.bottom).offset(layout.current.warningLabelVerticalInset)
@@ -177,7 +175,7 @@ class PassPhraseBackUpView: BaseView {
     }
     
     private func setupQrButtonLayout() {
-        passPhraseContainerView.addSubview(qrButton)
+        passphraseContainerView.addSubview(qrButton)
         
         qrButton.snp.makeConstraints { make in
             make.top.equalTo(passphraseCollectionView.snp.bottom).offset(layout.current.warningLabelVerticalInset)
@@ -192,7 +190,7 @@ class PassPhraseBackUpView: BaseView {
         
         warningContainerView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.top.equalTo(passPhraseContainerView.snp.bottom).offset(layout.current.warningContainerViewTopInset)
+            make.top.equalTo(passphraseContainerView.snp.bottom).offset(layout.current.warningContainerViewTopInset)
         }
     }
     
@@ -205,10 +203,10 @@ class PassPhraseBackUpView: BaseView {
         }
     }
     
-    private func setupVerifyButtonLayout() {
-        addSubview(verifyButton)
+    private func setupActionButtonLayout() {
+        addSubview(actionButton)
         
-        verifyButton.snp.makeConstraints { make in
+        actionButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(warningContainerView.snp.bottom).offset(layout.current.buttonMinimumTopInset)
             make.bottom.lessThanOrEqualToSuperview().inset(layout.current.bottomInset)
@@ -220,16 +218,16 @@ class PassPhraseBackUpView: BaseView {
     
     @objc
     func notifyDelegateToShareButtonTapped() {
-        delegate?.passPhraseBackUpViewDidTapShareButton(self)
+        delegate?.passphraseViewDidTapShareButton(self)
     }
     
     @objc
     func notifyDelegateToQrButtonTapped() {
-        delegate?.passPhraseBackUpViewDidTapQrButton(self)
+        delegate?.passphraseViewDidTapQrButton(self)
     }
     
     @objc
-    func notifyDelegateToVerifyButtonTapped() {
-        delegate?.passPhraseBackUpViewDidTapVerifyButton(self)
+    func notifyDelegateToActionButtonTapped() {
+        delegate?.passphraseViewDidTapActionButton(self)
     }
 }

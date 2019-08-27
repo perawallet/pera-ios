@@ -360,7 +360,10 @@ extension AccountsViewController {
             return
         }
         
+        accountSelectionViewController.accountsCollectionView.reloadData()
+        
         if selectedAccount == account {
+            accountSelectionViewController.selectedAccount = account
             self.selectedAccount = account
             transactionHistoryDataSource.clear()
             accountsView.transactionHistoryCollectionView.reloadData()

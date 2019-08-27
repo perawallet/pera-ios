@@ -14,7 +14,7 @@ class AccountSelectionViewModel {
         if indexPath.item < accounts.count {
             let account = accounts[indexPath.row]
             
-            guard let width = account.name?.width(usingFont: UIFont.font(.avenir, withWeight: .bold(size: 11.0))) else {
+            guard let width = account.name?.uppercased().width(usingFont: UIFont.font(.avenir, withWeight: .bold(size: 11.0))) else {
                 return .zero
             }
             return CGSize(width: width + 10.0, height: 80.0)
@@ -26,7 +26,7 @@ class AccountSelectionViewModel {
     func configure(_ cell: AccountNameCell, for accounts: [Account], at indexPath: IndexPath, with selectedAccount: Account?) {
         if indexPath.item < accounts.count {
             let account = accounts[indexPath.row]
-            cell.contextView.titleLabel.text = account.name
+            cell.contextView.titleLabel.text = account.name?.uppercased()
             
             guard let selectedAccount = selectedAccount else {
                 return

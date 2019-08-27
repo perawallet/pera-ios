@@ -8,10 +8,13 @@
 
 import UIKit
 
-class PassphraseDisplayViewController: BaseViewController {
+class PassphraseDisplayViewController: PassphraseViewController {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let horizontalInset: CGFloat = 20.0
+        let topInset: CGFloat = 30.0
+        let bottomInset: CGFloat = 20.0
+        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
     }
     
     private enum Colors {
@@ -20,58 +23,53 @@ class PassphraseDisplayViewController: BaseViewController {
     
     private let layout = Layout<LayoutConstants>()
     
-    private let passPhrase: String
-    
-    init(account: Account, configuration: ViewControllerConfiguration) {
-        self.passPhrase = account.mnemonics().joined(separator: " ")
-        super.init(configuration: configuration)
-    }
-
-    // MARK: Components
-    
-    private lazy var passphraseDisplayView: PassphraseDisplayView = {
-        let view = PassphraseDisplayView()
-        return view
-    }()
-    
     // MARK: Setup
     
     override func configureAppearance() {
         view.backgroundColor = Colors.backgroundColor
-        
-        passphraseDisplayView.passphraseLabel.attributedText = passPhrase.attributed([.lineSpacing(1.5)])
+        passphraseView.layer.cornerRadius = 10.0
     }
-    
-    override func setListeners() {
-        passphraseDisplayView.delegate = self
-    }
-    
-    // MARK: Layout
-    
+
     override func prepareLayout() {
-        view.addSubview(passphraseDisplayView)
+        super.prepareLayout()
         
-        passphraseDisplayView.snp.makeConstraints { make in
+        setupPassphraseViewLayout()
+        adjustPassphraseViewForDisplayMode()
+    }
+    
+    override func passphraseViewDidTapActionButton(_ passphraseView: PassphraseView) {
+        dismissScreen()
+    }
+}
+
+extension PassphraseDisplayViewController {
+    private func setupPassphraseViewLayout() {
+        view.addSubview(passphraseView)
+        
+        passphraseView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
             make.center.equalToSuperview()
         }
     }
-
-}
-
-// MARK: PassphraseDisplayViewDelegate
-
-extension PassphraseDisplayViewController: PassphraseDisplayViewDelegate {
     
-    func passphraseDisplayViewDidTapShareButton(_ passphraseDisplayView: PassphraseDisplayView) {
-        let sharedItem = [passPhrase]
-        let activityViewController = UIActivityViewController(activityItems: sharedItem, applicationActivities: nil)
-        activityViewController.excludedActivityTypes = [UIActivity.ActivityType.addToReadingList]
+    private func adjustPassphraseViewForDisplayMode() {
+        passphraseView.titleLabel.text = "view-pass-phrase-title".localized
+        passphraseView.actionButton.setAttributedTitle(
+            "title-ok".localized.attributed([.letterSpacing(1.20), .textColor(.white)]),
+            for: .normal
+        )
+        passphraseView.warningContainerView.isHidden = true
+        passphraseView.warningLabel.isHidden = true
         
-        present(activityViewController, animated: true, completion: nil)
-    }
-    
-    func passphraseDisplayViewDidTapDoneButton(_ passphraseDisplayView: PassphraseDisplayView) {
-        dismissScreen()
+        passphraseView.titleLabel.snp.updateConstraints { make in
+            make.top.equalToSuperview().inset(layout.current.topInset)
+        }
+        
+        passphraseView.actionButton.snp.remakeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalTo(passphraseView.passphraseContainerView.snp.bottom).offset(layout.current.topInset)
+            make.bottom.equalToSuperview().inset(layout.current.bottomInset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
+        }
     }
 }

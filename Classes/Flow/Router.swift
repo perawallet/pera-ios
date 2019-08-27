@@ -159,8 +159,8 @@ class Router {
             viewController = ChoosePasswordViewController(mode: mode, route: route, configuration: configuration)
         case .localAuthenticationPreference:
             viewController = LocalAuthenticationPreferenceViewController(configuration: configuration)
-        case .passPhraseBackUp:
-            viewController = PassPhraseBackUpViewController(configuration: configuration)
+        case let .passphraseView(address):
+            viewController = PassPhraseBackUpViewController(address: address, configuration: configuration)
         case .passPhraseVerify:
             viewController = PassPhraseVerifyViewController(configuration: configuration)
         case .accountNameSetup:

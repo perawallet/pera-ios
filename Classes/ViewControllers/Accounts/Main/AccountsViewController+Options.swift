@@ -58,7 +58,7 @@ extension AccountsViewController: OptionsViewControllerDelegate {
             return
         }
         
-        let viewController = PassphraseDisplayViewController(account: account, configuration: configuration)
+        let viewController = PassphraseDisplayViewController(address: account.address, configuration: configuration)
         viewController.modalPresentationStyle = .overCurrentContext
         viewController.modalTransitionStyle = .crossDissolve
         
