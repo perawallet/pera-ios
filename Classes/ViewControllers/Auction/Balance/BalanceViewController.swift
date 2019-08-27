@@ -342,8 +342,8 @@ extension BalanceViewController: UICollectionViewDataSource {
                         fatalError("Index path is out of bounds")
                 }
                 
-                if pendingTransactions.count > indexPath.row {
-                    let pendingTransaction = pendingTransactions[indexPath.row]
+                if pendingTransactions.count > indexPath.item {
+                    let pendingTransaction = pendingTransactions[indexPath.item]
                     viewModel.configure(cell, with: pendingTransaction)
                 }
                 
@@ -368,8 +368,8 @@ extension BalanceViewController: UICollectionViewDataSource {
                         fatalError("Index path is out of bounds")
                 }
                 
-                if pastTransactions.count > indexPath.row {
-                    let pastTransaction = pastTransactions[indexPath.row]
+                if pastTransactions.count > indexPath.item {
+                    let pastTransaction = pastTransactions[indexPath.item]
                     viewModel.configure(cell, with: pastTransaction)
                 }
                 

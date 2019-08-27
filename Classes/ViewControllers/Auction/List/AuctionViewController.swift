@@ -454,8 +454,8 @@ extension AuctionViewController: UICollectionViewDataSource {
         }
         
         // Receive index + 1 item since the first auction is not listed
-        if indexPath.row + 1 < auctions.count {
-            let auction = auctions[indexPath.row + 1]
+        if indexPath.item + 1 < auctions.count {
+            let auction = auctions[indexPath.item + 1]
             
             viewModel.configure(cell, with: auction, and: activeAuction)
         }
@@ -476,8 +476,8 @@ extension AuctionViewController: UICollectionViewDelegateFlowLayout {
         }
         
         // Receive index + 1 item since the first auction is not listed
-        if indexPath.row + 1 < auctions.count {
-            let auction = auctions[indexPath.row + 1]
+        if indexPath.item + 1 < auctions.count {
+            let auction = auctions[indexPath.item + 1]
             
             open(.pastAuctionDetail(auction: auction, user: user, activeAuction: activeAuction), by: .push)
         }

@@ -11,7 +11,7 @@ import UIKit
 class NumpadCellViewModel {
     
     func dequeueCell(in collectionView: UICollectionView, at indexPath: IndexPath) -> UICollectionViewCell {
-        if indexPath.row == 11 {
+        if indexPath.item == 11 {
             guard let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: NumpadDeleteCell.reusableIdentifier,
                 for: indexPath) as? NumpadDeleteCell else {
@@ -31,16 +31,16 @@ class NumpadCellViewModel {
     }
     
     func configure(_ cell: NumpadNumericCell, at indexPath: IndexPath) {
-        if indexPath.row == 9 {
+        if indexPath.item == 9 {
             cell.contextView.value = .number(nil)
             return
         }
         
-        if indexPath.row == 10 {
+        if indexPath.item == 10 {
             cell.contextView.value = .number("0")
             return
         }
         
-        cell.contextView.value = .number("\(indexPath.row + 1)")
+        cell.contextView.value = .number("\(indexPath.item + 1)")
     }
 }

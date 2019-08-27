@@ -172,7 +172,7 @@ extension NodeSettingsViewController: UICollectionViewDataSource {
             }
             
             if indexPath.item < nodes.count + 1 {
-                let node = nodes[indexPath.row - 1]
+                let node = nodes[indexPath.item - 1]
                 
                 viewModel.configureToggle(cell, with: node, for: indexPath)
                 
@@ -249,7 +249,7 @@ extension NodeSettingsViewController: NodeSettingsViewModelDelegate {
                     continue
                 }
                 
-                let node = nodes[indexPath.row - 1]
+                let node = nodes[indexPath.item - 1]
                 
                 if node.isActive {
                     nodeCell.contextView.toggle.isEnabled = (session?.isDefaultNodeActive() ?? false) || numberOfActiveNodes() > 1
