@@ -16,13 +16,13 @@ struct ALGBarButtonItem: BarButtonItem {
         switch kind {
         case .balance:
             return BarButtonItemTitleContent(
-                text: "Balance",
+                text: "balance-title".localized,
                 textColor: .black,
                 font: UIFont.font(.overpass, withWeight: .bold(size: 12.0))
             )
         case .save:
             return BarButtonItemTitleContent(
-                text: "Save",
+                text: "title-save".localized,
                 textColor: .black,
                 font: UIFont.font(.overpass, withWeight: .bold(size: 12.0))
             )
