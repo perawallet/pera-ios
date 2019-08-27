@@ -45,12 +45,18 @@ class ContactInfoView: BaseView {
     private(set) lazy var sendButton: UIButton = {
         UIButton(type: .custom)
             .withTitleColor(.white)
+            .withAttributedTitle(
+                "title-send-algos-uppercase".localized.attributed([
+                    .letterSpacing(1.20),
+                    .textColor(.white)
+                ])
+            )
             .withTitle("title-send".localized)
             .withBackgroundImage(img("bg-button-orange"))
             .withAlignment(.center)
             .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 12.0)))
             .withImage(img("icon-arrow-up"))
-            .withImageEdgeInsets(UIEdgeInsets(top: 0, left: 140.0 - UIScreen.main.bounds.width, bottom: 0.0, right: 0.0))
+            .withImageEdgeInsets(UIEdgeInsets(top: 0, left: 180.0 - UIScreen.main.bounds.width, bottom: 0.0, right: 0.0))
     }()
     
     private(set) lazy var editContactButton: MainButton = {
