@@ -78,6 +78,7 @@ class HistoryView: BaseView {
     
     private lazy var rewardsSwitchView: RewardsSwitchView = {
         let view = RewardsSwitchView()
+        view.isHidden = true
         return view
     }()
 
@@ -120,7 +121,6 @@ class HistoryView: BaseView {
         setupEndDateDisplayViewLayout()
         setupStartDatePickerViewLayout()
         setupEndDatePickerViewLayout()
-        setupRewardsSwitchViewLayout()
         setupViewResultsButtonLayout()
     }
     
@@ -185,7 +185,7 @@ class HistoryView: BaseView {
         addSubview(viewResultsButton)
         
         viewResultsButton.snp.makeConstraints { make in
-            make.top.greaterThanOrEqualTo(rewardsSwitchView.snp.bottom).offset(layout.current.buttonMinimumInset)
+            make.top.greaterThanOrEqualTo(endDatePickerView.snp.bottom).offset(layout.current.buttonMinimumInset)
             make.centerX.equalToSuperview()
             make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
             make.bottom.equalToSuperview().inset(safeAreaBottom + layout.current.bottomInset)
@@ -297,11 +297,6 @@ class HistoryView: BaseView {
                 make.height.equalTo(216.0)
             }
             
-            rewardsSwitchView.snp.remakeConstraints { make in
-                make.leading.trailing.equalToSuperview().inset(layout.current.rewardsViewInset)
-                make.top.equalTo(startDatePickerView.snp.bottom).offset(layout.current.rewardsViewInset)
-            }
-            
             UIView.animate(withDuration: 0.3) {
                 self.layoutIfNeeded()
             }
@@ -336,11 +331,6 @@ class HistoryView: BaseView {
             
             endDatePickerView.snp.updateConstraints { make in
                 make.height.equalTo(216.0)
-            }
-            
-            rewardsSwitchView.snp.remakeConstraints { make in
-                make.leading.trailing.equalToSuperview().inset(layout.current.rewardsViewInset)
-                make.top.equalTo(endDatePickerView.snp.bottom).offset(layout.current.rewardsViewInset)
             }
             
             UIView.animate(withDuration: 0.3) {

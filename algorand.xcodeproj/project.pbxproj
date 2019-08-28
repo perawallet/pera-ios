@@ -498,18 +498,16 @@
 		2B79A13A231330D900766021 /* AlgoToDollarConversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B79A138231330D900766021 /* AlgoToDollarConversion.swift */; };
 		2B79A13D23147A4900766021 /* PassphraseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B79A13C23147A4900766021 /* PassphraseViewController.swift */; };
 		2B79A13E23147A4900766021 /* PassphraseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B79A13C23147A4900766021 /* PassphraseViewController.swift */; };
-		2B79A14423167BEE00766021 /* RewardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B79A14323167BEE00766021 /* RewardView.swift */; };
-		2B79A14523167BEE00766021 /* RewardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B79A14323167BEE00766021 /* RewardView.swift */; };
+		2B79A140231580AC00766021 /* TransactionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B79A13F231580AB00766021 /* TransactionManager.swift */; };
+		2B79A141231580AC00766021 /* TransactionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B79A13F231580AB00766021 /* TransactionManager.swift */; };
+		2B79A14423167BEE00766021 /* RewardTotalAmountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B79A14323167BEE00766021 /* RewardTotalAmountView.swift */; };
+		2B79A14523167BEE00766021 /* RewardTotalAmountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B79A14323167BEE00766021 /* RewardTotalAmountView.swift */; };
 		2B79A14723167BFC00766021 /* RewardDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B79A14623167BFC00766021 /* RewardDetailView.swift */; };
 		2B79A14823167BFC00766021 /* RewardDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B79A14623167BFC00766021 /* RewardDetailView.swift */; };
-		2B79A14A23167C0500766021 /* RewardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B79A14923167C0500766021 /* RewardCell.swift */; };
-		2B79A14B23167C0500766021 /* RewardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B79A14923167C0500766021 /* RewardCell.swift */; };
 		2B79A14D23167CA300766021 /* RewardAmountContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B79A14C23167CA300766021 /* RewardAmountContainerView.swift */; };
 		2B79A14E23167CA300766021 /* RewardAmountContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B79A14C23167CA300766021 /* RewardAmountContainerView.swift */; };
 		2B79A150231683E100766021 /* RewardsSwitchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B79A14F231683E100766021 /* RewardsSwitchView.swift */; };
 		2B79A151231683E100766021 /* RewardsSwitchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B79A14F231683E100766021 /* RewardsSwitchView.swift */; };
-		2B79A140231580AC00766021 /* TransactionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B79A13F231580AB00766021 /* TransactionManager.swift */; };
-		2B79A141231580AC00766021 /* TransactionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B79A13F231580AB00766021 /* TransactionManager.swift */; };
 		2B82B1C522535F4300A8909F /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B82B1C422535F4300A8909F /* Contact.swift */; };
 		2B82B1C82253A4F000A8909F /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B82B1C72253A4F000A8909F /* ContactCell.swift */; };
 		2B82B1CA2253A50100A8909F /* ContactContextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B82B1C92253A50100A8909F /* ContactContextView.swift */; };
@@ -890,12 +888,11 @@
 		2B79A135231098A400766021 /* AccountSelectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSelectionViewModel.swift; sourceTree = "<group>"; };
 		2B79A138231330D900766021 /* AlgoToDollarConversion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgoToDollarConversion.swift; sourceTree = "<group>"; };
 		2B79A13C23147A4900766021 /* PassphraseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseViewController.swift; sourceTree = "<group>"; };
-		2B79A14323167BEE00766021 /* RewardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardView.swift; sourceTree = "<group>"; };
+		2B79A13F231580AB00766021 /* TransactionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionManager.swift; sourceTree = "<group>"; };
+		2B79A14323167BEE00766021 /* RewardTotalAmountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardTotalAmountView.swift; sourceTree = "<group>"; };
 		2B79A14623167BFC00766021 /* RewardDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardDetailView.swift; sourceTree = "<group>"; };
-		2B79A14923167C0500766021 /* RewardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardCell.swift; sourceTree = "<group>"; };
 		2B79A14C23167CA300766021 /* RewardAmountContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardAmountContainerView.swift; sourceTree = "<group>"; };
 		2B79A14F231683E100766021 /* RewardsSwitchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsSwitchView.swift; sourceTree = "<group>"; };
-		2B79A13F231580AB00766021 /* TransactionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionManager.swift; sourceTree = "<group>"; };
 		2B82B1C422535F4300A8909F /* Contact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
 		2B82B1C72253A4F000A8909F /* ContactCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
 		2B82B1C92253A50100A8909F /* ContactContextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactContextView.swift; sourceTree = "<group>"; };
@@ -1770,9 +1767,8 @@
 		2B79A14223167BCE00766021 /* Rewards */ = {
 			isa = PBXGroup;
 			children = (
-				2B79A14323167BEE00766021 /* RewardView.swift */,
+				2B79A14323167BEE00766021 /* RewardTotalAmountView.swift */,
 				2B79A14623167BFC00766021 /* RewardDetailView.swift */,
-				2B79A14923167C0500766021 /* RewardCell.swift */,
 				2B79A14C23167CA300766021 /* RewardAmountContainerView.swift */,
 				2B79A14F231683E100766021 /* RewardsSwitchView.swift */,
 			);
@@ -3433,7 +3429,6 @@
 				17BD4E462292F1260003E49A /* TransactionFee.swift in Sources */,
 				17BD4E472292F1260003E49A /* MyBidsView.swift in Sources */,
 				17BD4E482292F1260003E49A /* ContactSelectionViewController.swift in Sources */,
-				2B79A14B23167C0500766021 /* RewardCell.swift in Sources */,
 				17BD4E492292F1260003E49A /* UIViewControllerContextTransitioning+Additions.swift in Sources */,
 				17BD4E4A2292F1260003E49A /* ChoosePasswordViewModel.swift in Sources */,
 				17BD4E4B2292F1260003E49A /* BaseInputView.swift in Sources */,
@@ -3634,7 +3629,7 @@
 				17BD4EF42292F1260003E49A /* ActiveAuctionEmptyCell.swift in Sources */,
 				17BD4EF52292F1260003E49A /* NumpadNumericCell.swift in Sources */,
 				17BD4EF62292F1260003E49A /* AccountsViewController.swift in Sources */,
-				2B79A14523167BEE00766021 /* RewardView.swift in Sources */,
+				2B79A14523167BEE00766021 /* RewardTotalAmountView.swift in Sources */,
 				2B79A13A231330D900766021 /* AlgoToDollarConversion.swift in Sources */,
 				17BD4EF72292F1260003E49A /* CGFloat+Additions.swift in Sources */,
 				17BD4EF82292F1260003E49A /* SettingsView.swift in Sources */,
@@ -3775,7 +3770,6 @@
 				17D04F4A225F90B00051BC43 /* API+Node.swift in Sources */,
 				2BD739E1223F9F3000B66EEF /* LocalAuthenticationPreferenceView.swift in Sources */,
 				2B6687102248DBE2009F21E7 /* ALGBarButtonItem.swift in Sources */,
-				2B79A14A23167C0500766021 /* RewardCell.swift in Sources */,
 				2B6ED9662261063700787984 /* TransactionList.swift in Sources */,
 				2BDE9CDA224E2336007EFF30 /* TransactionHistoryCell.swift in Sources */,
 				2B82B1C522535F4300A8909F /* Contact.swift in Sources */,
@@ -3976,7 +3970,7 @@
 				2B3F391C228DCDE2008BBE75 /* ActiveAuctionEmptyCell.swift in Sources */,
 				2BD73A022241299100B66EEF /* NumpadNumericCell.swift in Sources */,
 				2BF53182224AA8E000A7455F /* AccountsViewController.swift in Sources */,
-				2B79A14423167BEE00766021 /* RewardView.swift in Sources */,
+				2B79A14423167BEE00766021 /* RewardTotalAmountView.swift in Sources */,
 				2B79A139231330D900766021 /* AlgoToDollarConversion.swift in Sources */,
 				2BF53168224A48DF00A7455F /* CGFloat+Additions.swift in Sources */,
 				17100B2C225CEC3600D13548 /* SettingsView.swift in Sources */,

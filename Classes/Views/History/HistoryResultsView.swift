@@ -52,6 +52,7 @@ class HistoryResultsView: BaseView {
     
     private lazy var rewardsSwitchView: RewardsSwitchView = {
         let view = RewardsSwitchView()
+        view.isHidden = true
         view.toggle.isEnabled = false
         return view
     }()
@@ -82,7 +83,6 @@ class HistoryResultsView: BaseView {
         setupAccountSelectionViewLayout()
         setupStartDateDisplayViewLayout()
         setupEndDateDisplayViewLayout()
-        setupRewardsSwitchViewLayout()
         setupTransactionHistoryCollectionViewLayout()
     }
     
@@ -128,7 +128,7 @@ class HistoryResultsView: BaseView {
         
         transactionHistoryCollectionView.snp.makeConstraints { make in
             make.leading.trailing.bottom.equalToSuperview()
-            make.top.equalTo(rewardsSwitchView.snp.bottom).offset(layout.current.collectionViewTopInset)
+            make.top.equalTo(endDateDisplayView.snp.bottom).offset(layout.current.collectionViewTopInset)
         }
         
         transactionHistoryCollectionView.backgroundView = contentStateView
