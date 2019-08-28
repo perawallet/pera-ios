@@ -6,7 +6,6 @@
 //  Copyright © 2019 hippo. All rights reserved.
 //
 
-import UIKit
 import Magpie
 import Crypto
 
