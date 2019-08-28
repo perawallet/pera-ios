@@ -451,6 +451,10 @@ extension AccountsViewController: AccountsViewDelegate {
             viewModel.setDollarValue(visible: false, in: accountsView.accountsHeaderView, for: dollarAmountForAccount)
         }
     }
+    
+    func accountsViewDidTapRewardView(_ accountsView: AccountsView) {
+        
+    }
 }
 
 // MARK: UICollectionViewDelegateFlowLayout
