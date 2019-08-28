@@ -19,7 +19,6 @@ class AccountsHeaderView: BaseView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let containerViewInset: CGFloat = 10.0
         let availableTitleInset: CGFloat = 15.0
-        let containerViewHeight: CGFloat = 166.0
         let dollarValueSize = CGSize(width: 44.0, height: 44.0)
         let dollarValueInset: CGFloat = 5.0
         let horizontalInset: CGFloat = 15.0
@@ -170,7 +169,6 @@ class AccountsHeaderView: BaseView {
         containerView.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.leading.trailing.equalToSuperview().inset(layout.current.containerViewInset)
-            make.height.equalTo(layout.current.containerViewHeight)
         }
     }
     
@@ -258,6 +256,7 @@ class AccountsHeaderView: BaseView {
 
         historyLabel.snp.makeConstraints { make in
             make.top.equalTo(containerView.snp.bottom).offset(layout.current.verticalInset)
+            make.bottom.equalToSuperview().inset(layout.current.historyLabelBottomInset)
             make.centerX.equalToSuperview()
         }
     }

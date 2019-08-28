@@ -29,7 +29,7 @@ class SendAlgosViewController: BaseScrollViewController {
     }()
     
     private var keyboard = Keyboard()
-    
+    private lazy var transactionManager = TransactionManager(api: api)
     private var contentViewBottomConstraint: Constraint?
     
     private var amount: Double = 0.00
@@ -39,6 +39,10 @@ class SendAlgosViewController: BaseScrollViewController {
     
     private var shouldUpdateSenderForSelectedAccount = false
     private var shouldUpdateReceiverForSelectedAccount = false
+    
+    private var isMaxButtonSelected: Bool {
+        return self.sendAlgosView.algosInputView.isMaxButtonSelected
+    }
     
     // MARK: Initialization
     
@@ -60,6 +64,7 @@ class SendAlgosViewController: BaseScrollViewController {
         
         sendAlgosView.accountSelectionView.detailLabel.text = selectedAccount.name
         sendAlgosView.accountSelectionView.set(amount: selectedAccount.amount.toAlgos)
+        sendAlgosView.algosInputView.maxAmount = selectedAccount.amount.toAlgos
         
         switch receiver {
         case .initial:
@@ -103,6 +108,7 @@ class SendAlgosViewController: BaseScrollViewController {
     override func linkInteractors() {
         super.linkInteractors()
         
+        transactionManager.delegate = self
         scrollView.touchDetectingDelegate = self
         sendAlgosView.delegate = self
     }
@@ -175,14 +181,16 @@ class SendAlgosViewController: BaseScrollViewController {
             return
         }
         
-        guard selectedAccount.amount > UInt64(amount.toMicroAlgos) else {
+        if selectedAccount.amount <= UInt64(amount.toMicroAlgos) && !isMaxButtonSelected {
             self.displaySimpleAlertWith(title: "title-error".localized, message: "send-algos-amount-error".localized)
             return
         }
         
-        if selectedAccount.amount - UInt64(amount.toMicroAlgos) - minimumFee < minimumTransactionMicroAlgosLimit {
-            self.displaySimpleAlertWith(title: "title-error".localized, message: "send-algos-minimum-amount-error".localized)
-            return
+        if !isMaxButtonSelected {
+            if selectedAccount.amount - UInt64(amount.toMicroAlgos) - minimumFee < minimumTransactionMicroAlgosLimit {
+                self.displaySimpleAlertWith(title: "title-error".localized, message: "send-algos-minimum-amount-error".localized)
+                return
+            }
         }
         
         if amount.toMicroAlgos < minimumTransactionMicroAlgosLimit {
@@ -227,12 +235,11 @@ class SendAlgosViewController: BaseScrollViewController {
                             fee: nil
                         )
                         
-                        let sendAlgosPreviewViewController = self.open(
-                            .sendAlgosPreview(transaction: transaction, receiver: self.receiver),
-                            by: .push
-                            ) as? SendAlgosPreviewViewController
-                        
-                        sendAlgosPreviewViewController?.delegate = self
+                        self.transactionManager.transaction = transaction
+                        self.transactionManager.composeTransactionData(
+                            for: self.selectedAccount,
+                            isMaxValue: self.isMaxButtonSelected
+                        )
                     }
                 }
             }
@@ -241,12 +248,11 @@ class SendAlgosViewController: BaseScrollViewController {
         } else {
             let transaction = TransactionPreviewDraft(fromAccount: selectedAccount, amount: amount, identifier: nil, fee: nil)
             
-            let sendAlgosPreviewViewController = open(
-                .sendAlgosPreview(transaction: transaction, receiver: receiver),
-                by: .push
-                ) as? SendAlgosPreviewViewController
-            
-            sendAlgosPreviewViewController?.delegate = self
+            self.transactionManager.transaction = transaction
+            self.transactionManager.composeTransactionData(
+                for: self.selectedAccount,
+                isMaxValue: isMaxButtonSelected
+            )
         }
     }
     
@@ -354,7 +360,7 @@ extension SendAlgosViewController: SendAlgosViewDelegate {
     }
     
     func sendAlgosViewDidTapMaxButton(_ sendAlgosView: SendAlgosView) {
-        
+        sendAlgosView.algosInputView.inputTextField.text = sendAlgosView.accountSelectionView.algosAmountView.amountLabel.text
     }
 }
 
@@ -370,6 +376,10 @@ extension SendAlgosViewController: AccountListViewControllerDelegate {
             shouldUpdateReceiverForSelectedAccount = false
             receiver = .myAccount(account)
             sendAlgosView.transactionReceiverView.state = .address(address: account.address, amount: nil)
+            sendAlgosView.algosInputView.maxAmount = account.amount.toAlgos
+            if isMaxButtonSelected {
+                sendAlgosView.algosInputView.inputTextField.text = sendAlgosView.accountSelectionView.algosAmountView.amountLabel.text
+            }
             return
         }
         
@@ -377,6 +387,11 @@ extension SendAlgosViewController: AccountListViewControllerDelegate {
             shouldUpdateSenderForSelectedAccount = false
             sendAlgosView.accountSelectionView.detailLabel.text = account.name
             sendAlgosView.accountSelectionView.set(amount: account.amount.toAlgos)
+            sendAlgosView.algosInputView.maxAmount = account.amount.toAlgos
+            
+            if isMaxButtonSelected {
+                sendAlgosView.algosInputView.inputTextField.text = sendAlgosView.accountSelectionView.algosAmountView.amountLabel.text
+            }
             
             selectedAccount = account
         }
@@ -438,6 +453,27 @@ extension SendAlgosViewController: SendAlgosPreviewViewControllerDelegate {
         sendAlgosView.algosInputView.inputTextField.text = nil
         receiver = state
         sendAlgosView.transactionReceiverView.state = state
+    }
+}
+
+// MARK: TransactionManagerDelegate
+
+extension SendAlgosViewController: TransactionManagerDelegate {
+    func transactionManagerDidComposedTransactionData(_ transactionManager: TransactionManager) {
+        guard let transaction = transactionManager.transaction else {
+            return
+        }
+        
+        let sendAlgosPreviewViewController = open(
+            .sendAlgosPreview(manager: transactionManager, transaction: transaction, receiver: receiver),
+            by: .push
+        ) as? SendAlgosPreviewViewController
+        
+        sendAlgosPreviewViewController?.delegate = self
+    }
+    
+    func transactionManagerDidFailedComposingTransactionData(_ transactionManager: TransactionManager) {
+        
     }
 }
 
