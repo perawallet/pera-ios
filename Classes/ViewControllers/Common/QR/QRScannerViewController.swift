@@ -47,6 +47,7 @@ class QRScannerViewController: BaseViewController {
     
     private(set) lazy var cancelButton: MainButton = {
         let button = MainButton(title: "title-close".localized)
+        button.setBackgroundImage(img("bg-black-button-big"), for: .normal)
         return button
     }()
     

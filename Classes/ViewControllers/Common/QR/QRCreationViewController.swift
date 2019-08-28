@@ -45,7 +45,9 @@ class QRCreationViewController: BaseScrollViewController {
     // MARK: Components
     
     private(set) lazy var cancelButton: MainButton = {
-        MainButton(title: "title-close".localized)
+        let button = MainButton(title: "title-close".localized)
+        button.setBackgroundImage(img("bg-black-button-big"), for: .normal)
+        return button
     }()
     
     private(set) lazy var shareButton: UIButton = {

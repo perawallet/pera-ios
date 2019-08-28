@@ -31,6 +31,8 @@
 "title-done-lowercased" = "Done";
 "title-loading" = "Loading";
 "default-error-message" = "An error occured.";
+"title-send-algos-uppercase" = "SEND ALGOS";
+"title-max" = "MAX";
 
 // MARK: Tabbar
 
