@@ -373,3 +373,7 @@
 "feedback-subtitle-note" = "What’s on your mind";
 "feedback-title-email" = "Email (Optional):";
 "feedback-subtitle-email" = "Email";
+
+// MARK: Rewards
+
+"rewards-title" = "Rewards";

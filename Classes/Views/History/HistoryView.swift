@@ -21,6 +21,7 @@ class HistoryView: BaseView {
         let bottomInset: CGFloat = 75.0
         let buttonMinimumInset: CGFloat = 60.0
         let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
+        let rewardsViewInset: CGFloat = 15.0
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -74,6 +75,11 @@ class HistoryView: BaseView {
         datePicker.date = endDate
         return datePicker
     }()
+    
+    private lazy var rewardsSwitchView: RewardsSwitchView = {
+        let view = RewardsSwitchView()
+        return view
+    }()
 
     private(set) lazy var viewResultsButton = MainButton(title: "title-view-results".localized)
     
@@ -114,6 +120,7 @@ class HistoryView: BaseView {
         setupEndDateDisplayViewLayout()
         setupStartDatePickerViewLayout()
         setupEndDatePickerViewLayout()
+        setupRewardsSwitchViewLayout()
         setupViewResultsButtonLayout()
     }
     
@@ -165,11 +172,20 @@ class HistoryView: BaseView {
         }
     }
     
+    private func setupRewardsSwitchViewLayout() {
+        addSubview(rewardsSwitchView)
+        
+        rewardsSwitchView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(layout.current.rewardsViewInset)
+            make.top.equalTo(startDatePickerView.snp.bottom).offset(layout.current.rewardsViewInset)
+        }
+    }
+    
     private func setupViewResultsButtonLayout() {
         addSubview(viewResultsButton)
         
         viewResultsButton.snp.makeConstraints { make in
-            make.top.greaterThanOrEqualTo(endDatePickerView.snp.bottom).offset(layout.current.buttonMinimumInset)
+            make.top.greaterThanOrEqualTo(rewardsSwitchView.snp.bottom).offset(layout.current.buttonMinimumInset)
             make.centerX.equalToSuperview()
             make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
             make.bottom.equalToSuperview().inset(safeAreaBottom + layout.current.bottomInset)
@@ -281,6 +297,11 @@ class HistoryView: BaseView {
                 make.height.equalTo(216.0)
             }
             
+            rewardsSwitchView.snp.remakeConstraints { make in
+                make.leading.trailing.equalToSuperview().inset(layout.current.rewardsViewInset)
+                make.top.equalTo(startDatePickerView.snp.bottom).offset(layout.current.rewardsViewInset)
+            }
+            
             UIView.animate(withDuration: 0.3) {
                 self.layoutIfNeeded()
             }
@@ -315,6 +336,11 @@ class HistoryView: BaseView {
             
             endDatePickerView.snp.updateConstraints { make in
                 make.height.equalTo(216.0)
+            }
+            
+            rewardsSwitchView.snp.remakeConstraints { make in
+                make.leading.trailing.equalToSuperview().inset(layout.current.rewardsViewInset)
+                make.top.equalTo(endDatePickerView.snp.bottom).offset(layout.current.rewardsViewInset)
             }
             
             UIView.animate(withDuration: 0.3) {

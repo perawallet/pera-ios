@@ -18,6 +18,7 @@ class HistoryResultsView: BaseView {
         let toLabelTopInset: CGFloat = 30.0
         let labelMinimumInset: CGFloat = 5.0
         let collectionViewTopInset: CGFloat = 20.0
+        let rewardsViewInset: CGFloat = 15.0
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -49,6 +50,12 @@ class HistoryResultsView: BaseView {
         return endDateDisplayView
     }()
     
+    private lazy var rewardsSwitchView: RewardsSwitchView = {
+        let view = RewardsSwitchView()
+        view.toggle.isEnabled = false
+        return view
+    }()
+    
     private(set) lazy var transactionHistoryCollectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .vertical
@@ -75,6 +82,7 @@ class HistoryResultsView: BaseView {
         setupAccountSelectionViewLayout()
         setupStartDateDisplayViewLayout()
         setupEndDateDisplayViewLayout()
+        setupRewardsSwitchViewLayout()
         setupTransactionHistoryCollectionViewLayout()
     }
     
@@ -106,12 +114,21 @@ class HistoryResultsView: BaseView {
         }
     }
     
+    private func setupRewardsSwitchViewLayout() {
+        addSubview(rewardsSwitchView)
+        
+        rewardsSwitchView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(layout.current.rewardsViewInset)
+            make.top.equalTo(endDateDisplayView.snp.bottom).offset(layout.current.rewardsViewInset)
+        }
+    }
+    
     private func setupTransactionHistoryCollectionViewLayout() {
         addSubview(transactionHistoryCollectionView)
         
         transactionHistoryCollectionView.snp.makeConstraints { make in
             make.leading.trailing.bottom.equalToSuperview()
-            make.top.equalTo(endDateDisplayView.snp.bottom).offset(layout.current.collectionViewTopInset)
+            make.top.equalTo(rewardsSwitchView.snp.bottom).offset(layout.current.collectionViewTopInset)
         }
         
         transactionHistoryCollectionView.backgroundView = contentStateView
