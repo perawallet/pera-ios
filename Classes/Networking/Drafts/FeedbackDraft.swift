@@ -11,5 +11,5 @@ import Foundation
 struct FeedbackDraft {
     let note: String
     let category: String
-    let email: String?
+    var email: String?
 }

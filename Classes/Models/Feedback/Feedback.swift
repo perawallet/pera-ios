@@ -11,6 +11,6 @@ import Magpie
 class Feedback: Mappable {
     let id: Int
     let note: String
-    let email: String
+    let email: String?
     let category: String
 }

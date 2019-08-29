@@ -375,3 +375,9 @@
 "feedback-subtitle-note" = "What’s on your mind";
 "feedback-title-email" = "Email (Optional):";
 "feedback-subtitle-email" = "Email";
+"feedback-empty-title" = "Error";
+"feedback-empty-message" = "Please select a category and add your note.";
+"feedback-error-title" = "Error";
+"feedback-error-message" = "Your feedback could not sent!";
+"feedback-success-title" = "Thanks!";
+"feedback-success-message" = "Your feedback is sent!";

@@ -9,6 +9,7 @@
 import UIKit
 
 protocol FeedbackViewDelegate: class {
+    func feedbackViewDidTriggerCategorySelection(_ feedbackView: FeedbackView)
     func feedbackViewDidTapSendButton(_ feedbackView: FeedbackView)
 }
 
@@ -16,7 +17,6 @@ class FeedbackView: BaseView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let pickerInitialHeight: CGFloat = 0.0
-        let pickerOpenedHeight: CGFloat = 90.0
         let topInset: CGFloat = 10.0
         let noteViewHeight: CGFloat = 232.0
         let verticalInset: CGFloat = 15.0
@@ -56,7 +56,7 @@ class FeedbackView: BaseView {
         let passPhraseInputView = MultiLineInputField()
         passPhraseInputView.explanationLabel.text = "feedback-title-note".localized
         passPhraseInputView.placeholderLabel.text = "feedback-subtitle-note".localized
-        passPhraseInputView.nextButtonMode = .submit
+        passPhraseInputView.nextButtonMode = .next
         passPhraseInputView.inputTextView.autocorrectionType = .no
         passPhraseInputView.inputTextView.autocapitalizationType = .none
         return passPhraseInputView
@@ -70,8 +70,10 @@ class FeedbackView: BaseView {
             attributes: [NSAttributedString.Key.foregroundColor: SharedColors.softGray,
                          NSAttributedString.Key.font: UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))]
         )
-        accountNameInputView.nextButtonMode = .next
+        accountNameInputView.nextButtonMode = .submit
         accountNameInputView.inputTextField.autocorrectionType = .no
+        accountNameInputView.inputTextField.autocapitalizationType = .none
+        accountNameInputView.inputTextField.keyboardType = .emailAddress
         return accountNameInputView
     }()
     
@@ -83,6 +85,7 @@ class FeedbackView: BaseView {
     // MARK: Setup
     
     override func setListeners() {
+        sendButton.addTarget(self, action: #selector(notifyDelegateToSendButtonTapped), for: .touchUpInside)
         categorySelectionView.containerView.addGestureRecognizer(categorySelectionGestureRecognizer)
     }
     
@@ -144,14 +147,22 @@ class FeedbackView: BaseView {
         }
     }
     
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        if !categorySelectionView.frame.contains(point) &&
+            !categoryPickerView.frame.contains(point) &&
+            !sendButton.frame.contains(point) &&
+            !categoryPickerView.isHidden {
+            delegate?.feedbackViewDidTriggerCategorySelection(self)
+        }
+        
+        return super.hitTest(point, with: event)
+    }
+    
     // MARK: Actions
     
     @objc
     private func didTriggerCategorySelection(tapGestureRecognizer: UITapGestureRecognizer) {
-        categoryPickerView.isHidden = false
-        categoryPickerView.snp.updateConstraints { make in
-            make.height.equalTo(layout.current.pickerOpenedHeight)
-        }
+        delegate?.feedbackViewDidTriggerCategorySelection(self)
     }
     
     @objc
