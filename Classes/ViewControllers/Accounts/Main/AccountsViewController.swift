@@ -453,7 +453,11 @@ extension AccountsViewController: AccountsViewDelegate {
     }
     
     func accountsViewDidTapRewardView(_ accountsView: AccountsView) {
+        let viewController = RewardDetailViewController(configuration: configuration)
+        viewController.modalPresentationStyle = .overCurrentContext
+        viewController.modalTransitionStyle = .crossDissolve
         
+        tabBarController?.present(viewController, animated: true, completion: nil)
     }
 }
 

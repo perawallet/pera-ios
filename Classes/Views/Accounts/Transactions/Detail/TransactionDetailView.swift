@@ -80,7 +80,7 @@ class TransactionDetailView: BaseView {
     
     private(set) lazy var rewardView: DetailedInformationView = {
         let rewardView = DetailedInformationView(mode: .algos)
-        rewardView.isHidden = false
+        rewardView.isHidden = true
         rewardView.explanationLabel.text = "transaction-detail-reward".localized
         rewardView.algosAmountView.algoIconImageView.tintColor = SharedColors.purple
         rewardView.algosAmountView.amountLabel.textColor = SharedColors.purple
