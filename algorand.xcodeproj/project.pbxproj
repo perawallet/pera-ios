@@ -612,6 +612,14 @@
 		2BCB5C9A22B77C9A0038DA6B /* PendingCoinlistTransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCB5C9822B77C9A0038DA6B /* PendingCoinlistTransactionCell.swift */; };
 		2BCB5C9C22B7943C0038DA6B /* PastCoinlistTransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCB5C9B22B7943C0038DA6B /* PastCoinlistTransactionCell.swift */; };
 		2BCB5C9D22B7943C0038DA6B /* PastCoinlistTransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCB5C9B22B7943C0038DA6B /* PastCoinlistTransactionCell.swift */; };
+		2BD5476D23184286007179FE /* API+Feedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD5476C23184286007179FE /* API+Feedback.swift */; };
+		2BD5476E23184286007179FE /* API+Feedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD5476C23184286007179FE /* API+Feedback.swift */; };
+		2BD5477123184310007179FE /* FeedbackCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD5477023184310007179FE /* FeedbackCategory.swift */; };
+		2BD5477223184310007179FE /* FeedbackCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD5477023184310007179FE /* FeedbackCategory.swift */; };
+		2BD547742318463E007179FE /* Feedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD547732318463E007179FE /* Feedback.swift */; };
+		2BD547752318463E007179FE /* Feedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD547732318463E007179FE /* Feedback.swift */; };
+		2BD5477723184704007179FE /* FeedbackDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD5477623184704007179FE /* FeedbackDraft.swift */; };
+		2BD5477823184704007179FE /* FeedbackDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD5477623184704007179FE /* FeedbackDraft.swift */; };
 		2BD739CC223F97B100B66EEF /* IntroductionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD739CA223F97B100B66EEF /* IntroductionViewController.swift */; };
 		2BD739D1223F97F600B66EEF /* IntroductionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD739CF223F97F600B66EEF /* IntroductionView.swift */; };
 		2BD739D6223F985E00B66EEF /* UIColor+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD739D5223F985E00B66EEF /* UIColor+Additions.swift */; };
@@ -965,6 +973,10 @@
 		2BCB5C9522B77C820038DA6B /* CoinlistTransactionCellContextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinlistTransactionCellContextView.swift; sourceTree = "<group>"; };
 		2BCB5C9822B77C9A0038DA6B /* PendingCoinlistTransactionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingCoinlistTransactionCell.swift; sourceTree = "<group>"; };
 		2BCB5C9B22B7943C0038DA6B /* PastCoinlistTransactionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastCoinlistTransactionCell.swift; sourceTree = "<group>"; };
+		2BD5476C23184286007179FE /* API+Feedback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+Feedback.swift"; sourceTree = "<group>"; };
+		2BD5477023184310007179FE /* FeedbackCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackCategory.swift; sourceTree = "<group>"; };
+		2BD547732318463E007179FE /* Feedback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feedback.swift; sourceTree = "<group>"; };
+		2BD5477623184704007179FE /* FeedbackDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackDraft.swift; sourceTree = "<group>"; };
 		2BD739CA223F97B100B66EEF /* IntroductionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroductionViewController.swift; sourceTree = "<group>"; };
 		2BD739CF223F97F600B66EEF /* IntroductionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroductionView.swift; sourceTree = "<group>"; };
 		2BD739D5223F985E00B66EEF /* UIColor+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Additions.swift"; sourceTree = "<group>"; };
@@ -1176,6 +1188,7 @@
 		17B7D8A42240D79200A6FF9E /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				2BD5476F23184303007179FE /* Feedback */,
 				2B3F390D228C4D98008BBE75 /* Auction */,
 				17B7D8A52240D8F900A6FF9E /* Account.swift */,
 				17F6E689224B71A6006DD31F /* User.swift */,
@@ -1203,6 +1216,7 @@
 				17D04F4B225F90D70051BC43 /* NodeTestDraft.swift */,
 				175CE59722955CEE003F7C02 /* WaitRoundDraft.swift */,
 				2B1B77C422963C3E0021A6CC /* CoinlistAuthenticationDraft.swift */,
+				2BD5477623184704007179FE /* FeedbackDraft.swift */,
 			);
 			path = Drafts;
 			sourceTree = "<group>";
@@ -1882,6 +1896,7 @@
 				17D04F49225F90B00051BC43 /* API+Node.swift */,
 				2BDE31E72279EAFC002E8235 /* API+Auction.swift */,
 				2BCB5C8B22B397900038DA6B /* API+Balance.swift */,
+				2BD5476C23184286007179FE /* API+Feedback.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -2342,6 +2357,15 @@
 				2B891EEC22BB6FF3003205F5 /* Transaction */,
 			);
 			path = Cell;
+			sourceTree = "<group>";
+		};
+		2BD5476F23184303007179FE /* Feedback */ = {
+			isa = PBXGroup;
+			children = (
+				2BD5477023184310007179FE /* FeedbackCategory.swift */,
+				2BD547732318463E007179FE /* Feedback.swift */,
+			);
+			path = Feedback;
 			sourceTree = "<group>";
 		};
 		2BD739C7223F978300B66EEF /* Authentication */ = {
@@ -3336,6 +3360,7 @@
 				2B79A134230EBE4D00766021 /* FeedbackViewController.swift in Sources */,
 				17BD4E0A2292F1260003E49A /* AuctionIntroductionView.swift in Sources */,
 				17BD4E0B2292F1260003E49A /* NotificationCenter+Additions.swift in Sources */,
+				2BD5477223184310007179FE /* FeedbackCategory.swift in Sources */,
 				17BD4E0C2292F1260003E49A /* SettingsToggleCell.swift in Sources */,
 				17BD4E0D2292F1260003E49A /* ActiveAuction.swift in Sources */,
 				17BD4E0E2292F1260003E49A /* TransactionDetailViewController.swift in Sources */,
@@ -3435,6 +3460,7 @@
 				2B79A12E230EBE2500766021 /* FeedbackView.swift in Sources */,
 				17BD4E632292F1260003E49A /* LeftAlignedCollectionViewFlowLayout.swift in Sources */,
 				17BD4E642292F1260003E49A /* PassPhraseBackUpViewController.swift in Sources */,
+				2BD5477823184704007179FE /* FeedbackDraft.swift in Sources */,
 				17BD4E652292F1260003E49A /* Utils.swift in Sources */,
 				17BD4E662292F1260003E49A /* ContactQRDisplayViewController.swift in Sources */,
 				17BD4E672292F1260003E49A /* AlertViewConfigurator.swift in Sources */,
@@ -3442,6 +3468,7 @@
 				17BD4E682292F1260003E49A /* AlertView.swift in Sources */,
 				17BD4E692292F1260003E49A /* CardModalPresentationController.swift in Sources */,
 				17BD4E6A2292F1260003E49A /* HistoryResultsViewModel.swift in Sources */,
+				2BD547752318463E007179FE /* Feedback.swift in Sources */,
 				17BD4E6B2292F1260003E49A /* BaseCollectionViewCell.swift in Sources */,
 				2B891EFB22BB71A2003205F5 /* DepositInstructionHeaderView.swift in Sources */,
 				17BD4E6C2292F1260003E49A /* SettingsInfoContextView.swift in Sources */,
@@ -3461,6 +3488,7 @@
 				17BD4E7A2292F1260003E49A /* Session.swift in Sources */,
 				17BD4E7B2292F1260003E49A /* RequestAlgosViewController.swift in Sources */,
 				17BD4E7C2292F1260003E49A /* Session+Crypto.swift in Sources */,
+				2BD5476E23184286007179FE /* API+Feedback.swift in Sources */,
 				17BD4E7D2292F1260003E49A /* ActiveAuctionCell.swift in Sources */,
 				17BD4E7E2292F1260003E49A /* SharedColors.swift in Sources */,
 				17BD4E7F2292F1260003E49A /* QRCreationViewController.swift in Sources */,
@@ -3673,6 +3701,7 @@
 				2B79A133230EBE4D00766021 /* FeedbackViewController.swift in Sources */,
 				2B56F7D6225B3C1D00E58737 /* SendAlgosViewController.swift in Sources */,
 				2B25BB4B225EAD600092C972 /* RequestAlgosPreviewViewController.swift in Sources */,
+				2BD5477123184310007179FE /* FeedbackCategory.swift in Sources */,
 				1761B3CB224A39D400C6BA47 /* PassPhraseViewModel.swift in Sources */,
 				2B6ED964226105E100787984 /* Payment.swift in Sources */,
 				2B3F38FE228AF00C008BBE75 /* AuctionCellContextView.swift in Sources */,
@@ -3772,6 +3801,7 @@
 				2B79A12D230EBE2500766021 /* FeedbackView.swift in Sources */,
 				2BF34CBC223A8C460052CAD3 /* BaseCollectionViewCell.swift in Sources */,
 				171111B2225DF92300DAF55C /* SettingsInfoContextView.swift in Sources */,
+				2BD5477723184704007179FE /* FeedbackDraft.swift in Sources */,
 				2B6687122248DC7D009F21E7 /* BarButton.swift in Sources */,
 				2B8EE82322832FF60001D025 /* NumberLabel.swift in Sources */,
 				17AA1B0A22662BD1000B0BB0 /* Decimal+Additions.swift in Sources */,
@@ -3779,6 +3809,7 @@
 				2B65332A2292176600F19FEA /* AuctionDetailHeaderView.swift in Sources */,
 				2B8BE4EE22393577005D8565 /* BaseViewController.swift in Sources */,
 				17B7D8B0224128EC00A6FF9E /* Keychain+Additions.swift in Sources */,
+				2BD547742318463E007179FE /* Feedback.swift in Sources */,
 				17B7D8AB2240E19600A6FF9E /* AccountFetchDraft.swift in Sources */,
 				2B891EFA22BB71A2003205F5 /* DepositInstructionHeaderView.swift in Sources */,
 				2B5DA9D8224CE1BC00EE41B4 /* EditAccountView.swift in Sources */,
@@ -3798,6 +3829,7 @@
 				17695B3C2268D2DE00765D31 /* NodeHealthOperation.swift in Sources */,
 				2B65331F228F679400F19FEA /* PlaceBidViewController.swift in Sources */,
 				2BA09A972294BA20009DC24D /* BidResponse.swift in Sources */,
+				2BD5476D23184286007179FE /* API+Feedback.swift in Sources */,
 				2B8EE8282283313F0001D025 /* AuctionPrerequirementElementView.swift in Sources */,
 				17B7D8A62240D8F900A6FF9E /* Account.swift in Sources */,
 				2B3F38FB228AEFF7008BBE75 /* AuctionCell.swift in Sources */,
