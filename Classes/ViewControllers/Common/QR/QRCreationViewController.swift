@@ -168,7 +168,7 @@ extension QRCreationViewController {
         contentView.addSubview(cancelButton)
         
         cancelButton.snp.makeConstraints { make in
-            make.top.equalTo(constraintItem).offset(60 * verticalScale)
+            make.top.greaterThanOrEqualTo(constraintItem).offset(60 * verticalScale)
             make.centerX.equalToSuperview()
             make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
             make.bottom.equalToSuperview().inset(layout.current.bottomInset + view.safeAreaBottom)
