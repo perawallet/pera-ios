@@ -21,6 +21,10 @@ class RewardDetailViewController: BaseViewController {
         static let backgroundColor = rgba(0.04, 0.05, 0.07, 0.6)
     }
     
+    private let account: Account
+    
+    private let viewModel = RewardDetailViewModel()
+    
     // MARK: Components
     
     private lazy var rewardDetailView: RewardDetailView = {
@@ -28,10 +32,19 @@ class RewardDetailViewController: BaseViewController {
         return view
     }()
     
+    // MARK: Initialization
+    
+    init(account: Account, configuration: ViewControllerConfiguration) {
+        self.account = account
+        
+        super.init(configuration: configuration)
+    }
+    
     // MARK: Setup
     
     override func configureAppearance() {
         view.backgroundColor = Colors.backgroundColor
+        viewModel.configure(rewardDetailView, for: account)
     }
     
     override func linkInteractors() {

@@ -453,7 +453,11 @@ extension AccountsViewController: AccountsViewDelegate {
     }
     
     func accountsViewDidTapRewardView(_ accountsView: AccountsView) {
-        let viewController = RewardDetailViewController(configuration: configuration)
+        guard let selectedAccount = selectedAccount else {
+            return
+        }
+        
+        let viewController = RewardDetailViewController(account: selectedAccount, configuration: configuration)
         viewController.modalPresentationStyle = .overCurrentContext
         viewController.modalTransitionStyle = .crossDissolve
         

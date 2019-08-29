@@ -21,6 +21,8 @@ class Account: Mappable {
     let address: String
     var amount: UInt64
     var status: AccountStatus
+    var rewards: UInt64?
+    var pendingRewards: UInt64?
     
     var name: String?
     
@@ -28,11 +30,15 @@ class Account: Mappable {
         self.address = address
         amount = 0
         status = .offline
+        rewards = 0
+        pendingRewards = 0
     }
     
     func update(withAccount account: Account) {
         amount = account.amount
         status = account.status
+        rewards = account.rewards
+        pendingRewards = account.pendingRewards
         
         if let updatedName = account.name {
             name = updatedName
@@ -45,6 +51,17 @@ class Account: Mappable {
     
     func encoded() -> Data? {
         return try? JSONEncoder().encode(self)
+    }
+}
+
+extension Account {
+    enum CodingKeys: String, CodingKey {
+        case address = "address"
+        case amount = "amount"
+        case status = "status"
+        case rewards = "rewards"
+        case pendingRewards = "pendingrewards"
+        case name = "name"
     }
 }
 
