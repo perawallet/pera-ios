@@ -69,28 +69,6 @@ class SendAlgosPreviewViewController: BaseViewController {
         updateFeeLayout()
     }
     
-    private func getAccount() -> Account? {
-        let account: Account
-        
-        switch receiver {
-        case let .address(address, _):
-            account = Account(address: address)
-            
-        case let .contact(contact):
-            guard let address = contact.address else {
-                return nil
-            }
-            
-            account = Account(address: address)
-        case let .myAccount(myAccount):
-            account = myAccount
-        case .initial:
-            return nil
-        }
-        
-        return account
-    }
-    
     override func linkInteractors() {
         sendAlgosPreviewView.previewViewDelegate = self
         transactionManager.delegate = self

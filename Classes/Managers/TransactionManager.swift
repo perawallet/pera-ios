@@ -87,8 +87,8 @@ class TransactionManager {
             firstRound,
             lastRound,
             nil,
-            isMaxValue ? account.address : nil,
-            nil,
+            isMaxValue ? account.address : "",
+            "",
             params.genesisHashData,
             &transactionError
         ) else {
