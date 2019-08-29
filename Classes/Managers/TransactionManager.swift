@@ -79,9 +79,12 @@ class TransactionManager {
             }
         }
         
+        let trimmedFromAddress = transaction.fromAccount.address.trimmingCharacters(in: .whitespacesAndNewlines)
+        let trimmedToAddress = account.address.trimmingCharacters(in: .whitespacesAndNewlines)
+        
         guard let transactionData = TransactionMakePaymentTxn(
-            transaction.fromAccount.address,
-            account.address,
+            trimmedFromAddress,
+            trimmedToAddress,
             params.fee,
             Int64(transactionAmount.toMicroAlgos),
             firstRound,
