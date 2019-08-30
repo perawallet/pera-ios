@@ -50,6 +50,8 @@ class Environment {
     
     lazy var binanceHost = "api.binance.com"
     
+    lazy var mobileHost = "mobile-api.algorand.com"
+    
     lazy var serverApi: String = {
         let api = "\(serverSchema)://\(serverHost)"
         return api
@@ -63,6 +65,15 @@ class Environment {
     lazy var binanceApi: String = {
         let api = "https://\(binanceHost)"
         return api
+    }()
+    
+    lazy var mobileApi: String = {
+        switch target {
+        case .staging:
+            return "https://staging.\(mobileHost)"
+        case .prod:
+            return "https://\(mobileHost)"
+        }
     }()
     
     lazy var coinlistClientId: String = {

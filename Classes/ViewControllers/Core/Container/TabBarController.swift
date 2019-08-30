@@ -32,6 +32,10 @@ class TabBarController: UITabBarController {
         rootViewController: SettingsViewController(configuration: configuration)
     )
     
+    private enum Colors {
+        static let shadowColor = rgba(0.24, 0.27, 0.32, 0.1)
+    }
+    
     private let configuration: ViewControllerConfiguration
     
     var selectedTab: Tab {
@@ -165,7 +169,7 @@ class TabBarController: UITabBarController {
         
         tabBar.layer.shadowOffset = CGSize(width: 0, height: 0)
         tabBar.layer.shadowRadius = 10
-        tabBar.layer.shadowColor = rgba(0.67, 0.67, 0.72, 0.35).cgColor
+        tabBar.layer.shadowColor = Colors.shadowColor.cgColor
         tabBar.layer.shadowOpacity = 1.0
         tabBar.layer.masksToBounds = false
     }

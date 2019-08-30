@@ -376,6 +376,12 @@
 "feedback-subtitle-note" = "What’s on your mind";
 "feedback-title-email" = "Email (Optional):";
 "feedback-subtitle-email" = "Email";
+"feedback-empty-title" = "Error";
+"feedback-empty-category-message" = "Please select a category.";
+"feedback-empty-note-message" = "Please add your note.";
+"feedback-error-title" = "Error";
+"feedback-error-message" = "Your feedback could not sent!";
+"feedback-success-title" = "Thank you, we’ve recived your feedback";
 
 // MARK: Rewards
 
