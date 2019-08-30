@@ -27,10 +27,7 @@ class RewardDetailViewController: BaseViewController {
     
     // MARK: Components
     
-    private lazy var rewardDetailView: RewardDetailView = {
-        let view = RewardDetailView()
-        return view
-    }()
+    private lazy var rewardDetailView = RewardDetailView()
     
     // MARK: Initialization
     
