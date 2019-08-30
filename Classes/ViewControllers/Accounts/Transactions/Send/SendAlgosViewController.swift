@@ -235,9 +235,13 @@ class SendAlgosViewController: BaseScrollViewController {
                             fee: nil
                         )
                         
+                        guard let account = self.getAccount() else {
+                            return
+                        }
+                        
                         self.transactionManager.transaction = transaction
                         self.transactionManager.composeTransactionData(
-                            for: self.selectedAccount,
+                            for: account,
                             isMaxValue: self.isMaxButtonSelected
                         )
                     }
@@ -248,12 +252,38 @@ class SendAlgosViewController: BaseScrollViewController {
         } else {
             let transaction = TransactionPreviewDraft(fromAccount: selectedAccount, amount: amount, identifier: nil, fee: nil)
             
+            guard let account = getAccount() else {
+                return
+            }
+            
             self.transactionManager.transaction = transaction
             self.transactionManager.composeTransactionData(
-                for: self.selectedAccount,
+                for: account,
                 isMaxValue: isMaxButtonSelected
             )
         }
+    }
+    
+    private func getAccount() -> Account? {
+        let account: Account
+        
+        switch receiver {
+        case let .address(address, _):
+            account = Account(address: address)
+            
+        case let .contact(contact):
+            guard let address = contact.address else {
+                return nil
+            }
+            
+            account = Account(address: address)
+        case let .myAccount(myAccount):
+            account = myAccount
+        case .initial:
+            return nil
+        }
+        
+        return account
     }
     
     private func isTransactionValid() -> Bool {

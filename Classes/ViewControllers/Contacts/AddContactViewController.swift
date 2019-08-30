@@ -192,9 +192,11 @@ extension AddContactViewController: AddContactViewDelegate {
                 return nil
         }
         
+        let trimmedAddress = address.trimmingCharacters(in: .whitespacesAndNewlines)
+        
         var keyedValues: [String: Any] = [
             Contact.CodingKeys.name.rawValue: name,
-            Contact.CodingKeys.address.rawValue: address
+            Contact.CodingKeys.address.rawValue: trimmedAddress
         ]
         
         if let placeholderImage = img("icon-user-placeholder-big"),

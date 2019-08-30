@@ -451,6 +451,18 @@ extension AccountsViewController: AccountsViewDelegate {
             viewModel.setDollarValue(visible: false, in: accountsView.accountsHeaderView, for: dollarAmountForAccount)
         }
     }
+    
+    func accountsViewDidTapRewardView(_ accountsView: AccountsView) {
+        guard let selectedAccount = selectedAccount else {
+            return
+        }
+        
+        let viewController = RewardDetailViewController(account: selectedAccount, configuration: configuration)
+        viewController.modalPresentationStyle = .overCurrentContext
+        viewController.modalTransitionStyle = .crossDissolve
+        
+        tabBarController?.present(viewController, animated: true, completion: nil)
+    }
 }
 
 // MARK: UICollectionViewDelegateFlowLayout

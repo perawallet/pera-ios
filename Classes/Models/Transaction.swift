@@ -23,6 +23,7 @@ class Transaction: Mappable {
     let payment: Payment?
     let lastRound: Int64
     let type: String
+    let fromRewards: UInt64?
     
     var contact: Contact?
     
@@ -41,6 +42,7 @@ class Transaction: Mappable {
         payment = try container.decodeIfPresent(Payment.self, forKey: .payment)
         lastRound = try container.decode(Int64.self, forKey: .lastRound)
         type = try container.decode(String.self, forKey: .type)
+        fromRewards = try container.decodeIfPresent(UInt64.self, forKey: .fromRewards)
     }
 }
 
@@ -56,5 +58,6 @@ extension Transaction {
         case payment = "payment"
         case lastRound = "last-round"
         case type = "type"
+        case fromRewards = "fromrewards"
     }
 }

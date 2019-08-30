@@ -57,6 +57,7 @@ class ContactInfoView: BaseView {
             .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 12.0)))
             .withImage(img("icon-arrow-up"))
             .withImageEdgeInsets(UIEdgeInsets(top: 0, left: 180.0 - UIScreen.main.bounds.width, bottom: 0.0, right: 0.0))
+            .withTitleEdgeInsets(UIEdgeInsets(top: 0, left: -21.0, bottom: 0.0, right: 0.0))
     }()
     
     private(set) lazy var editContactButton: MainButton = {

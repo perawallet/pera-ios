@@ -21,6 +21,7 @@ class HistoryView: BaseView {
         let bottomInset: CGFloat = 75.0
         let buttonMinimumInset: CGFloat = 60.0
         let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
+        let rewardsViewInset: CGFloat = 15.0
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -73,6 +74,12 @@ class HistoryView: BaseView {
         datePicker.isHidden = true
         datePicker.date = endDate
         return datePicker
+    }()
+    
+    private lazy var rewardsSwitchView: RewardsSwitchView = {
+        let view = RewardsSwitchView()
+        view.isHidden = true
+        return view
     }()
 
     private(set) lazy var viewResultsButton = MainButton(title: "title-view-results".localized)
@@ -162,6 +169,15 @@ class HistoryView: BaseView {
             make.top.equalTo(endDateDisplayView.snp.bottom)
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(0.0)
+        }
+    }
+    
+    private func setupRewardsSwitchViewLayout() {
+        addSubview(rewardsSwitchView)
+        
+        rewardsSwitchView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(layout.current.rewardsViewInset)
+            make.top.equalTo(startDatePickerView.snp.bottom).offset(layout.current.rewardsViewInset)
         }
     }
     

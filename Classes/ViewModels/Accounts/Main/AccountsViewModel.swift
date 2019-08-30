@@ -17,6 +17,10 @@ class AccountsViewModel {
     
     func configure(_ view: AccountsHeaderView, with account: Account) {
         view.algosAmountLabel.text = account.amount.toAlgos.toDecimalStringForLabel
+        
+        var totalRewards: UInt64 = 0
+        totalRewards += (account.rewards ?? 0) + (account.pendingRewards ?? 0)
+        view.rewardTotalAmountView.algosAmountView.amountLabel.text = totalRewards.toAlgos.toDecimalStringForLabel
     }
     
     func configure(_ view: AccountsSmallHeaderView, with account: Account) {
@@ -31,12 +35,14 @@ class AccountsViewModel {
         
         if visible {
             view.algosAvailableLabel.text = "accounts-dollar-value-title".localized
+            view.algosAvailableLabel.textColor = SharedColors.darkGray
             view.dollarValueLabel.backgroundColor = SharedColors.darkGray
             view.dollarValueLabel.textColor = .white
             view.dollarAmountLabel.text = currentValue.toCryptoCurrencyStringForLabel
             view.dollarValueLabel.layer.borderWidth = 0.0
         } else {
             view.algosAvailableLabel.text = "accounts-algos-available-title".localized
+            view.algosAvailableLabel.textColor = SharedColors.softGray
             view.dollarValueLabel.backgroundColor = .white
             view.dollarValueLabel.textColor = .black
             view.dollarValueLabel.layer.borderWidth = 1.0

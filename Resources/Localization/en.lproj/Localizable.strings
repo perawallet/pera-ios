@@ -266,6 +266,7 @@
 "transaction-detail-title" = "Transaction Detail";
 "transaction-detail-round" = "Round:";
 "transaction-detail-amount" = "Amount:";
+"transaction-detail-reward" = "Reward:";
 
 // MARK: Auction
 
@@ -375,3 +376,13 @@
 "feedback-subtitle-note" = "What’s on your mind";
 "feedback-title-email" = "Email (Optional):";
 "feedback-subtitle-email" = "Email";
+
+// MARK: Rewards
+
+"rewards-title" = "Rewards";
+"rewards-detail-subtitle" = "You earn rewards just by owning Algos! Here’s a summary of your rewards activity.";
+"total-rewards-earned-title" = "TOTAL REWARDS EARNED";
+"total-rewards-pending-title" = "PENDING REWARDS*";
+"total-rewards-pending-subtitle" = "*Pending rewards become confirmed when you send or receive algos.";
+"total-rewards-faq-title" = "For more information on Algorand Rewards, visit our FAQ.";
+"total-rewards-faq" = "FAQ.";
