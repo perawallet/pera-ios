@@ -8,6 +8,7 @@
 
 import UIKit
 import SVProgressHUD
+import Magpie
 
 class FeedbackViewController: BaseScrollViewController {
     
@@ -127,6 +128,12 @@ extension FeedbackViewController: FeedbackViewDelegate {
     func feedbackViewDidTapSendButton(_ feedbackView: FeedbackView) {
         sendFeedback()
     }
+    
+    func feedbackView(_ feedbackView: FeedbackView, inputDidReturn inputView: BaseInputView) {
+        if inputView == feedbackView.emailInputView {
+            sendFeedback()
+        }
+    }
 }
 
 // MARK: UIPickerViewDataSource
@@ -168,10 +175,14 @@ extension FeedbackViewController: UIPickerViewDelegate {
 
 extension FeedbackViewController {
     private func sendFeedback() {
-        guard let selectedCategory = selectedCategory,
-            let feedbackNote = feedbackView.noteInputView.inputTextView.text,
+        guard let selectedCategory = selectedCategory else {
+            displaySimpleAlertWith(title: "feedback-empty-title".localized, message: "feedback-empty-category-message".localized)
+            return
+        }
+        
+        guard let feedbackNote = feedbackView.noteInputView.inputTextView.text,
             !feedbackNote.isEmpty else {
-                displaySimpleAlertWith(title: "feedback-empty-title".localized, message: "feedback-empty-message".localized)
+            displaySimpleAlertWith(title: "feedback-empty-title".localized, message: "feedback-empty-note-message".localized)
             return
         }
         
@@ -190,14 +201,48 @@ extension FeedbackViewController {
                 SVProgressHUD.showSuccess(withStatus: "title-done-lowercased".localized)
                 SVProgressHUD.dismiss()
                 
-                self.displaySimpleAlertWith(title: "feedback-success-title".localized, message: "feedback-success-message".localized) { _ in
-                    self.popScreen()
-                }
-            case .failure:
+                self.displaySuccessAlert()
+            case let .failure(error):
                 SVProgressHUD.dismiss()
-                
-                self.displaySimpleAlertWith(title: "feedback-error-title".localized, message: "feedback-error-message".localized)
+                self.parseAndDisplayErrorAlert(error)
+
             }
+        }
+    }
+    
+    private func displaySuccessAlert() {
+        let configurator = AlertViewConfigurator(
+            title: "feedback-success-title".localized,
+            image: img("feedback-success-icon"),
+            explanation: "",
+            actionTitle: "title-close".localized,
+            actionImage: img("bg-main-button")
+        ) {
+            self.popScreen()
+        }
+        
+        let alertViewController = AlertViewController(mode: .default, alertConfigurator: configurator, configuration: configuration)
+        alertViewController.modalPresentationStyle = .overCurrentContext
+        alertViewController.modalTransitionStyle = .crossDissolve
+        present(alertViewController, animated: true, completion: nil)
+    }
+    
+    private func parseAndDisplayErrorAlert(_ error: Error) {
+        switch error {
+        case let .badRequest(errorData):
+            guard let data = errorData else {
+                self.displaySimpleAlertWith(title: "feedback-error-title".localized, message: "feedback-error-message".localized)
+                return
+            }
+            
+            let decodedError = try? AlgorandError.decoded(from: data)
+            self.displaySimpleAlertWith(
+                title: "feedback-error-title".localized,
+                message: decodedError?.message ?? "feedback-error-message".localized
+            )
+            return
+        default:
+            self.displaySimpleAlertWith(title: "feedback-error-title".localized, message: "feedback-error-message".localized)
         }
     }
 }

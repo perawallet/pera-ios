@@ -11,12 +11,14 @@ import UIKit
 protocol FeedbackViewDelegate: class {
     func feedbackViewDidTriggerCategorySelection(_ feedbackView: FeedbackView)
     func feedbackViewDidTapSendButton(_ feedbackView: FeedbackView)
+    func feedbackView(_ feedbackView: FeedbackView, inputDidReturn inputView: BaseInputView)
 }
 
 class FeedbackView: BaseView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let pickerInitialHeight: CGFloat = 0.0
+        let pickerImageTopInset: CGFloat = 23.0
         let topInset: CGFloat = 10.0
         let noteViewHeight: CGFloat = 232.0
         let verticalInset: CGFloat = 15.0
@@ -56,6 +58,8 @@ class FeedbackView: BaseView {
         let passPhraseInputView = MultiLineInputField()
         passPhraseInputView.explanationLabel.text = "feedback-title-note".localized
         passPhraseInputView.placeholderLabel.text = "feedback-subtitle-note".localized
+        passPhraseInputView.placeholderLabel.font = UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))
+        passPhraseInputView.inputTextView.font = UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))
         passPhraseInputView.nextButtonMode = .next
         passPhraseInputView.inputTextView.autocorrectionType = .no
         passPhraseInputView.inputTextView.autocapitalizationType = .none
@@ -68,7 +72,7 @@ class FeedbackView: BaseView {
         accountNameInputView.inputTextField.attributedPlaceholder = NSAttributedString(
             string: "feedback-subtitle-email".localized,
             attributes: [NSAttributedString.Key.foregroundColor: SharedColors.softGray,
-                         NSAttributedString.Key.font: UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))]
+                         NSAttributedString.Key.font: UIFont.font(.overpass, withWeight: .semiBold(size: 13.0))]
         )
         accountNameInputView.nextButtonMode = .submit
         accountNameInputView.inputTextField.autocorrectionType = .no
@@ -83,6 +87,10 @@ class FeedbackView: BaseView {
     }()
     
     // MARK: Setup
+    
+    override func linkInteractors() {
+        emailInputView.delegate = self
+    }
     
     override func setListeners() {
         sendButton.addTarget(self, action: #selector(notifyDelegateToSendButtonTapped), for: .touchUpInside)
@@ -105,6 +113,10 @@ class FeedbackView: BaseView {
         categorySelectionView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.top.equalToSuperview().inset(layout.current.topInset)
+        }
+        
+        categorySelectionView.rightInputAccessoryButton.snp.updateConstraints { make in
+            make.top.equalTo(categorySelectionView.explanationLabel.snp.bottom).offset(layout.current.pickerImageTopInset)
         }
     }
     
@@ -168,5 +180,13 @@ class FeedbackView: BaseView {
     @objc
     private func notifyDelegateToSendButtonTapped() {
         delegate?.feedbackViewDidTapSendButton(self)
+    }
+}
+
+// MARK: InputViewDelegate
+
+extension FeedbackView: InputViewDelegate {
+    func inputViewDidReturn(inputView: BaseInputView) {
+        delegate?.feedbackView(self, inputDidReturn: inputView)
     }
 }

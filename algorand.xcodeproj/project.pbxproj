@@ -620,6 +620,8 @@
 		2BD547752318463E007179FE /* Feedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD547732318463E007179FE /* Feedback.swift */; };
 		2BD5477723184704007179FE /* FeedbackDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD5477623184704007179FE /* FeedbackDraft.swift */; };
 		2BD5477823184704007179FE /* FeedbackDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD5477623184704007179FE /* FeedbackDraft.swift */; };
+		2BD5477A23192E15007179FE /* AlgorandError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD5477923192E15007179FE /* AlgorandError.swift */; };
+		2BD5477B23192E15007179FE /* AlgorandError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD5477923192E15007179FE /* AlgorandError.swift */; };
 		2BD739CC223F97B100B66EEF /* IntroductionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD739CA223F97B100B66EEF /* IntroductionViewController.swift */; };
 		2BD739D1223F97F600B66EEF /* IntroductionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD739CF223F97F600B66EEF /* IntroductionView.swift */; };
 		2BD739D6223F985E00B66EEF /* UIColor+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD739D5223F985E00B66EEF /* UIColor+Additions.swift */; };
@@ -977,6 +979,7 @@
 		2BD5477023184310007179FE /* FeedbackCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackCategory.swift; sourceTree = "<group>"; };
 		2BD547732318463E007179FE /* Feedback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feedback.swift; sourceTree = "<group>"; };
 		2BD5477623184704007179FE /* FeedbackDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackDraft.swift; sourceTree = "<group>"; };
+		2BD5477923192E15007179FE /* AlgorandError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorandError.swift; sourceTree = "<group>"; };
 		2BD739CA223F97B100B66EEF /* IntroductionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroductionViewController.swift; sourceTree = "<group>"; };
 		2BD739CF223F97F600B66EEF /* IntroductionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroductionView.swift; sourceTree = "<group>"; };
 		2BD739D5223F985E00B66EEF /* UIColor+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Additions.swift"; sourceTree = "<group>"; };
@@ -1202,6 +1205,7 @@
 				179B93D5225E447400DD03E9 /* Node.swift */,
 				175CE59A2295709F003F7C02 /* RoundDetail.swift */,
 				2B79A138231330D900766021 /* AlgoToDollarConversion.swift */,
+				2BD5477923192E15007179FE /* AlgorandError.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -3500,6 +3504,7 @@
 				17BD4E832292F1260003E49A /* NodeHealthOperation.swift in Sources */,
 				17BD4E842292F1260003E49A /* PlaceBidViewController.swift in Sources */,
 				17BD4E852292F1260003E49A /* AuctionPrerequirementElementView.swift in Sources */,
+				2BD5477B23192E15007179FE /* AlgorandError.swift in Sources */,
 				17BD4E862292F1260003E49A /* Account.swift in Sources */,
 				17BD4E872292F1260003E49A /* AuctionCell.swift in Sources */,
 				17BD4E882292F1260003E49A /* API+Account.swift in Sources */,
@@ -3841,6 +3846,7 @@
 				2B2F9F7822821C440068DBB5 /* AuctionChartView.swift in Sources */,
 				2B82B1C82253A4F000A8909F /* ContactCell.swift in Sources */,
 				17B7D8B82242830D00A6FF9E /* Params+Additions.swift in Sources */,
+				2BD5477A23192E15007179FE /* AlgorandError.swift in Sources */,
 				2B1B77B4229567290021A6CC /* AuctionDetailViewModel.swift in Sources */,
 				17B7D8AE2240F25000A6FF9E /* Environment.swift in Sources */,
 				2BF5315F224A472800A7455F /* ModalAnimator.swift in Sources */,
