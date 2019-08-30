@@ -30,7 +30,10 @@ class AlertViewModel {
             let defaultAlertView = alertView as? DefaultAlertView
             
             if let actionTitle = configurator.actionTitle {
-                defaultAlertView?.doneButton.setTitle(actionTitle, for: .normal)
+                defaultAlertView?.doneButton.setAttributedTitle(
+                    actionTitle.attributed([.letterSpacing(1.20), .textColor(.white)]),
+                    for: .normal
+                )
             }
             
             if let actionImage = configurator.actionImage {

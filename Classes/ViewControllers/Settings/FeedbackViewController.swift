@@ -57,12 +57,18 @@ class FeedbackViewController: BaseScrollViewController {
     }
     
     private func fetchFeedbackCategories() {
+        SVProgressHUD.show(withStatus: "title-loading".localized)
+        
         api?.getFeedbackCategories { response in
             switch response {
             case let .success(result):
+                SVProgressHUD.showSuccess(withStatus: "title-done-lowercased".localized)
+                SVProgressHUD.dismiss()
+                
                 self.categories = result
                 self.feedbackView.categoryPickerView.reloadAllComponents()
             case let .failure(error):
+                SVProgressHUD.dismiss()
                 print(error)
             }
         }
@@ -216,7 +222,7 @@ extension FeedbackViewController {
             image: img("feedback-success-icon"),
             explanation: "",
             actionTitle: "title-close".localized,
-            actionImage: img("bg-main-button")
+            actionImage: img("bg-black-button-big")
         ) {
             self.popScreen()
         }
