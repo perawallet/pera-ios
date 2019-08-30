@@ -13,12 +13,13 @@ protocol AccountsViewDelegate: class {
     func accountsViewDidTapSendButton(_ accountsView: AccountsView)
     func accountsViewDidTapReceiveButton(_ accountsView: AccountsView)
     func accountsView(_ accountsView: AccountsView, didTrigger dollarValueGestureRecognizer: UILongPressGestureRecognizer)
+    func accountsViewDidTapRewardView(_ accountsView: AccountsView)
 }
 
 class AccountsView: BaseView {
 
     struct LayoutConstants: AdaptiveLayoutConstants {
-        static let headerHeight: CGFloat = 213.0
+        static let headerHeight: CGFloat = 255.0
         static let smallHeaderHeight: CGFloat = 111.0
     }
     
@@ -52,7 +53,7 @@ class AccountsView: BaseView {
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = .white
-        collectionView.contentInset.top = 213.0
+        collectionView.contentInset.top = 255.0
         
         collectionView.register(TransactionHistoryCell.self, forCellWithReuseIdentifier: TransactionHistoryCell.reusableIdentifier)
         
@@ -125,7 +126,6 @@ class AccountsView: BaseView {
 // MARK: AccountsHeaderViewDelegate
 
 extension AccountsView: AccountsHeaderViewDelegate {
-    
     func accountsHeaderViewDidTapSendButton(_ accountsHeaderView: AccountsHeaderView) {
         delegate?.accountsViewDidTapSendButton(self)
     }
@@ -139,6 +139,10 @@ extension AccountsView: AccountsHeaderViewDelegate {
         didTrigger dollarValueGestureRecognizer: UILongPressGestureRecognizer
     ) {
         delegate?.accountsView(self, didTrigger: dollarValueGestureRecognizer)
+    }
+    
+    func accountsHeaderViewDidTapRewardView(_ accountsHeaderView: AccountsHeaderView) {
+        delegate?.accountsViewDidTapRewardView(self)
     }
 }
 

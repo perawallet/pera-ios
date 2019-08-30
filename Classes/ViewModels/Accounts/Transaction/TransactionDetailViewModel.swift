@@ -35,6 +35,11 @@ class TransactionDetailViewModel {
         }
         
         view.transactionAmountView.algosAmountView.mode = .positive(payment.amount.toAlgos)
+        
+        if let rewards = transaction.payment?.rewards, rewards > 0 {
+            view.rewardView.isHidden = false
+            view.rewardView.algosAmountView.amountLabel.text = "\(rewards.toAlgos)"
+        }
     }
     
     func configureSentTransaction(_ view: TransactionDetailView, with transaction: Transaction, for account: Account) {
@@ -62,5 +67,10 @@ class TransactionDetailViewModel {
         }
         
         view.transactionAmountView.algosAmountView.mode = .negative(payment.amount.toAlgos)
+        
+        if let rewards = transaction.fromRewards, rewards > 0 {
+            view.rewardView.isHidden = false
+            view.rewardView.algosAmountView.amountLabel.text = "\(rewards.toAlgos)"
+        }
     }
 }

@@ -78,6 +78,15 @@ class TransactionDetailView: BaseView {
         return lastRoundView
     }()
     
+    private(set) lazy var rewardView: DetailedInformationView = {
+        let rewardView = DetailedInformationView(mode: .algos)
+        rewardView.isHidden = true
+        rewardView.explanationLabel.text = "transaction-detail-reward".localized
+        rewardView.algosAmountView.algoIconImageView.tintColor = SharedColors.purple
+        rewardView.algosAmountView.amountLabel.textColor = SharedColors.purple
+        return rewardView
+    }()
+    
     // MARK: Components
     
     private let transactionType: TransactionType
@@ -112,6 +121,7 @@ class TransactionDetailView: BaseView {
         setupTransactionIdViewLayout()
         setupFeeViewLayout()
         setupLastRoundViewLayout()
+        setupRewardViewLayout()
     }
     
     private func setupTransactionAmountViewLayout() {
@@ -191,6 +201,16 @@ class TransactionDetailView: BaseView {
             make.top.equalTo(transactionIdView.snp.bottom)
             make.height.equalTo(layout.current.feeViewHeight)
             make.width.equalTo(UIScreen.main.bounds.width / 2)
+        }
+    }
+    
+    private func setupRewardViewLayout() {
+        addSubview(rewardView)
+        
+        rewardView.snp.makeConstraints { make in
+            make.top.equalTo(feeView.snp.bottom)
+            make.height.equalTo(layout.current.feeViewHeight)
+            make.leading.trailing.equalToSuperview()
         }
     }
 }
