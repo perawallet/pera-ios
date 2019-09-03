@@ -342,11 +342,11 @@ extension ContactsViewController: AddContactViewControllerDelegate {
 extension ContactsViewController: ContactInfoViewControllerDelegate {
     
     func contactInfoViewController(_ contactInfoViewController: ContactInfoViewController, didUpdate contact: Contact) {
-        if let updatedContact = contacts.index(of: contact) {
+        if let updatedContact = contacts.firstIndex(of: contact) {
             contacts[updatedContact] = contact
         }
         
-        guard let index = searchResults.index(of: contact) else {
+        guard let index = searchResults.firstIndex(of: contact) else {
             return
         }
         
