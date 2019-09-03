@@ -8,8 +8,7 @@
 
 import Magpie
 
-class Auction: Mappable {
-    
+class Auction: Model {
     let auctionAddress: String
     let id: Int
     let bankAddress: String?
@@ -25,8 +24,7 @@ class Auction: Mappable {
 }
 
 extension Auction {
-    
-    enum CodingKeys: String, CodingKey {
+    private enum CodingKeys: String, CodingKey {
         case auctionAddress = "AuctionAddress"
         case id = "ID"
         case bankAddress = "BankAddress"

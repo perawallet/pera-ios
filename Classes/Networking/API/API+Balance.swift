@@ -8,66 +8,55 @@
 
 import Magpie
 
-enum DepositType: String, Mappable, Encodable {
+enum DepositType: String, Model, Encodable {
     case usd = "usd"
     case btc = "btc"
     case eth = "eth"
 }
 
 extension API {
-    
     @discardableResult
     func fetchBlockchainDepositInformation(
         for type: DepositType,
-        completion: APICompletionHandler<BlockchainInstruction>? = nil
-    ) -> EndpointInteractable? {
-        
-        guard let coinlistToken = session?.coinlistToken,
-            let userId = session?.coinlistUserId else {
-                return nil
+        then handler: @escaping Endpoint.DefaultResultHandler<BlockchainInstruction>
+    ) -> EndpointOperatable? {
+        guard let userId = session.coinlistUserId else {
+            return nil
         }
         
-        return send(
-            Endpoint<BlockchainInstruction>(Path("/api/algorand/users/\(userId)/deposit/\(type.rawValue)/"))
-                .base(Environment.current.cointlistApi)
-                .httpHeaders([.custom(header: "Authorization", value: "Bearer \(coinlistToken)")])
-                .handler { response in
-                    completion?(response)
-                }
-        )
+        return Endpoint(path: Path("/api/algorand/users/\(userId)/deposit/\(type.rawValue)/"))
+            .base(Environment.current.cointlistApi)
+            .httpMethod(.get)
+            .httpHeaders(coinlistTokenHeaders())
+            .resultHandler(handler)
+            .buildAndSend(self)
     }
     
     @discardableResult
-    func fetchUSDDepositInformation(completion: APICompletionHandler<USDWireInstruction>? = nil) -> EndpointInteractable? {
-        guard let coinlistToken = session?.coinlistToken,
-            let userId = session?.coinlistUserId else {
-                return nil
+    func fetchUSDDepositInformation(then handler: @escaping Endpoint.DefaultResultHandler<USDWireInstruction>) -> EndpointOperatable? {
+        guard let userId = session.coinlistUserId else {
+            return nil
         }
         
-        return send(
-            Endpoint<USDWireInstruction>(Path("/api/algorand/users/\(userId)/deposit/usd/"))
-                .base(Environment.current.cointlistApi)
-                .httpHeaders([.custom(header: "Authorization", value: "Bearer \(coinlistToken)")])
-                .handler { response in
-                    completion?(response)
-                }
-        )
+        return Endpoint(path: Path("/api/algorand/users/\(userId)/deposit/usd/"))
+            .base(Environment.current.cointlistApi)
+            .httpMethod(.get)
+            .httpHeaders(coinlistTokenHeaders())
+            .resultHandler(handler)
+            .buildAndSend(self)
     }
     
     @discardableResult
-    func fetchCoinlistTransactions(completion: APICompletionHandler<[CoinlistTransaction]>? = nil) -> EndpointInteractable? {
-        guard let coinlistToken = session?.coinlistToken,
-            let userId = session?.coinlistUserId else {
-                return nil
+    func fetchCoinlistTransactions(then handler: @escaping Endpoint.DefaultResultHandler<[CoinlistTransaction]>) -> EndpointOperatable? {
+        guard let userId = session.coinlistUserId else {
+            return nil
         }
         
-        return send(
-            Endpoint<[CoinlistTransaction]>(Path("/api/algorand/users/\(userId)/transactions/"))
-                .base(Environment.current.cointlistApi)
-                .httpHeaders([.custom(header: "Authorization", value: "Bearer \(coinlistToken)")])
-                .handler { response in
-                    completion?(response)
-                }
-        )
+        return Endpoint(path: Path("/api/algorand/users/\(userId)/transactions/"))
+            .base(Environment.current.cointlistApi)
+            .httpMethod(.get)
+            .httpHeaders(coinlistTokenHeaders())
+            .resultHandler(handler)
+            .buildAndSend(self)
     }
 }

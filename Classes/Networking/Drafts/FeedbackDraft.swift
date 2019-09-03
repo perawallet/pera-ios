@@ -6,10 +6,20 @@
 //  Copyright © 2019 hippo. All rights reserved.
 //
 
-import Foundation
+import Magpie
 
-struct FeedbackDraft {
+struct FeedbackDraft: JSONBody {
+    typealias Key = RequestParameter
+    
     let note: String
     let category: String
     var email: String?
+    
+    func decoded() -> [Pair]? {
+        return [
+            Pair(key: .note, value: note),
+            Pair(key: .category, value: category),
+            Pair(key: .email, value: email)
+        ]
+    }
 }

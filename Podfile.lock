@@ -53,8 +53,10 @@ PODS:
     - GoogleUtilities/Logger
   - KeychainAccess (3.1.2)
   - lottie-ios (3.0.4)
-  - Magpie (0.1.0):
-    - Alamofire
+  - Magpie (1.0.5):
+    - Magpie/Package (= 1.0.5)
+  - Magpie/Package (1.0.5):
+    - Alamofire (~> 4.8)
   - nanopb (0.3.901):
     - nanopb/decode (= 0.3.901)
     - nanopb/encode (= 0.3.901)
@@ -72,7 +74,7 @@ DEPENDENCIES:
   - Firebase/Core
   - KeychainAccess
   - lottie-ios
-  - Magpie (from `https://github.com/Hipo/magpie.git`)
+  - Magpie (from `https://github.com/Hipo/magpie.git`, branch `refactor`)
   - SnapKit
   - SVProgressHUD
   - SwiftDate
@@ -100,11 +102,12 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   Magpie:
+    :branch: refactor
     :git: https://github.com/Hipo/magpie.git
 
 CHECKOUT OPTIONS:
   Magpie:
-    :commit: 7b0a9fe0953572fac8160766bbd3f8a50c49c423
+    :commit: 35cdd89c777584978674230b06048e920aa241ac
     :git: https://github.com/Hipo/magpie.git
 
 SPEC CHECKSUMS:
@@ -120,13 +123,13 @@ SPEC CHECKSUMS:
   GoogleUtilities: 6481e6318c5fcabaaa8513ef8120f329055d7c10
   KeychainAccess: b3816fddcf28aa29d94b10ec305cd52be14c472b
   lottie-ios: 55a2de40418f8de2b155efaba4d4d1a025a5c570
-  Magpie: f1235cc99bab71365b8479089458c7b85e299950
+  Magpie: e6db88a0faf2dcf362ba292a665ef421bcc04dc6
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   SwiftDate: 6329e58969a2de31cea7f1ee1143b247693196e7
   SwiftLint: a54bf1fe12b55c68560eb2a7689dfc81458508f7
 
-PODFILE CHECKSUM: 118202be3ca9686caaf33c51909737e6ea54e2fd
+PODFILE CHECKSUM: 2add01bd2e33e4014a52c627a6556ed95a6ac348
 
 COCOAPODS: 1.7.5

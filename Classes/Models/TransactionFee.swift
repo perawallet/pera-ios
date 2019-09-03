@@ -8,7 +8,7 @@
 
 import Magpie
 
-struct TransactionParams: Mappable {
+struct TransactionParams: Model {
     let fee: Int64
     let lastRound: Int64
     let genesisHashData: Data?
@@ -25,6 +25,15 @@ struct TransactionParams: Mappable {
         }
     }
     
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(fee, forKey: .fee)
+        try container.encode(lastRound, forKey: .lastRound)
+        try container.encodeIfPresent(genesisHashData, forKey: .genesisHash)
+    }
+}
+
+extension TransactionParams {
     private enum CodingKeys: String, CodingKey {
         case lastRound = "lastRound"
         case fee = "fee"

@@ -9,35 +9,25 @@
 import Magpie
 
 extension API {
-    
     @discardableResult
-    func getFeedbackCategories(completion: APICompletionHandler<[FeedbackCategory]>? = nil) -> EndpointInteractable? {
-        return send(
-            Endpoint<[FeedbackCategory]>(Path("/api/feedback/categories/"))
-                .base(Environment.current.mobileApi)
-                .httpMethod(.get)
-                .handler { response in
-                    completion?(response)
-                }
-        )
+    func getFeedbackCategories(then handler: @escaping Endpoint.DefaultResultHandler<[FeedbackCategory]>) -> EndpointOperatable {
+        return Endpoint(path: Path("/api/feedback/categories/"))
+            .base(Environment.current.mobileApi)
+            .httpMethod(.get)
+            .resultHandler(handler)
+            .buildAndSend(self)
     }
     
     @discardableResult
-    func sendFeedback(with draft: FeedbackDraft, completion: APICompletionHandler<Feedback>? = nil) -> EndpointInteractable? {
-        var params: Params = [
-            .custom(key: AlgorandParamPairKey.note, value: draft.note),
-            .custom(key: AlgorandParamPairKey.category, value: draft.category)
-        ]
-        params.appendIfPresent(draft.email, for: AlgorandParamPairKey.email)
-        
-        return send(
-            Endpoint<Feedback>(Path("/api/feedback/"))
-                .base(Environment.current.mobileApi)
-                .httpMethod(.post)
-                .body(params)
-                .handler { response in
-                    completion?(response)
-                }
-        )
+    func sendFeedback(
+        with draft: FeedbackDraft,
+        then handler: @escaping Endpoint.DefaultResultHandler<Feedback>
+    ) -> EndpointOperatable {
+        return Endpoint(path: Path("/api/feedback/"))
+            .base(Environment.current.mobileApi)
+            .httpMethod(.post)
+            .httpBody(draft)
+            .resultHandler(handler)
+            .buildAndSend(self)
     }
 }

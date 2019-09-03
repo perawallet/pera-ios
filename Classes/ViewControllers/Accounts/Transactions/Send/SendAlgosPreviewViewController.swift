@@ -143,16 +143,6 @@ extension SendAlgosPreviewViewController: TransactionManagerDelegate {
     
     func transactionManager(_ transactionManager: TransactionManager, didFailedTransaction error: Error) {
         SVProgressHUD.dismiss()
-        
-        switch error {
-        case let .badRequest(errorData):
-            if let data = errorData,
-                let message = String(data: data, encoding: .utf8) {
-                self.displaySimpleAlertWith(title: "title-error".localized, message: message)
-            }
-            
-        default:
-            self.displaySimpleAlertWith(title: "title-error".localized, message: "default-error-message".localized)
-        }
+        displaySimpleAlertWith(title: "title-error".localized, message: error.localizedDescription)
     }
 }

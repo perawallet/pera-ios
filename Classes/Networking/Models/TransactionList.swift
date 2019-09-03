@@ -8,7 +8,6 @@
 
 import Magpie
 
-class TransactionList: Mappable {
-    
+class TransactionList: Model {
     let transactions: [Transaction]
 }

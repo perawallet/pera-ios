@@ -79,9 +79,14 @@ extension AccountManager {
     func waitForNextRoundAndFetchAccounts(round: Int64?, completion: ((Int64?) -> Void)?) {
         if let nextRound = round {
             self.api.waitRound(with: WaitRoundDraft(round: nextRound)) { roundDetailResponse in
-                let round = roundDetailResponse.object?.lastRound
-                self.fetchAllAccounts {
-                    completion?(round)
+                switch roundDetailResponse {
+                case let .success(result):
+                    let round = result.lastRound
+                    self.fetchAllAccounts {
+                        completion?(round)
+                    }
+                case .failure:
+                    break
                 }
             }
         } else {
@@ -101,9 +106,14 @@ extension AccountManager {
                 }
                 
                 self.api.waitRound(with: WaitRoundDraft(round: round)) { roundDetailResponse in
-                    let round = roundDetailResponse.object?.lastRound
-                    self.fetchAllAccounts {
-                        completion?(round)
+                    switch roundDetailResponse {
+                    case let .success(result):
+                        let round = result.lastRound
+                        self.fetchAllAccounts {
+                            completion?(round)
+                        }
+                    case .failure:
+                        break
                     }
                 }
             }

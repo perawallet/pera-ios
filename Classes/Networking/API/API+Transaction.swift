@@ -9,8 +9,70 @@
 import Magpie
 
 extension API {
+    @discardableResult
+    func fetchTransactions(
+        between dates: (Date, Date)?,
+        for account: Account,
+        max: Int = 100,
+        then handler: @escaping Endpoint.DefaultResultHandler<TransactionList>
+    ) -> EndpointOperatable {
+        var from: String?
+        var to: String?
+        
+        if let betweenDates = dates,
+            let dayAfter = betweenDates.1.dayAfter {
+            from = Formatter.date.string(from: betweenDates.0)
+            to = Formatter.date.string(from: dayAfter)
+        }
+        
+        let query = TransactionsQuery(max: max, from: from, to: to)
+        
+        return Endpoint(path: Path("/v1/account/\(account.address)/transactions"))
+            .httpMethod(.get)
+            .httpHeaders(algorandAuthenticatedHeaders())
+            .query(query)
+            .resultHandler(handler)
+            .buildAndSend(self)
+    }
     
-    enum Formatter {
+    @discardableResult
+    func fetchTransactionDetail(
+        for account: Account,
+        with id: TransactionID,
+        then handler: @escaping Endpoint.DefaultResultHandler<Transaction>
+    ) -> EndpointOperatable {
+        return Endpoint(path: Path("/v1/account/\(account.address)/transaction/\(id.identifier)"))
+            .httpMethod(.get)
+            .httpHeaders(algorandAuthenticatedHeaders())
+            .resultHandler(handler)
+            .buildAndSend(self)
+    }
+    
+    @discardableResult
+    func sendTransaction(
+        with transactionData: Data,
+        then handler: @escaping Endpoint.DefaultResultHandler<TransactionID>
+    ) -> EndpointOperatable {
+        return Endpoint(path: Path("/v1/transactions"))
+            .httpMethod(.post)
+            .httpHeaders(algorandAuthenticatedHeaders())
+            .resultHandler(handler)
+            .context(.upload(.data(transactionData)))
+            .buildAndSend(self)
+    }
+    
+    @discardableResult
+    func getTransactionParams(then handler: @escaping Endpoint.DefaultResultHandler<TransactionParams>) -> EndpointOperatable {
+        return Endpoint(path: Path("/v1/transactions/params"))
+            .httpMethod(.get)
+            .httpHeaders(algorandAuthenticatedHeaders())
+            .resultHandler(handler)
+            .buildAndSend(self)
+    }
+}
+
+extension API {
+    private enum Formatter {
         static let date: DateFormatter = {
             let formatter = DateFormatter()
             formatter.dateFormat = "YYYY-MM-dd"
@@ -18,93 +80,4 @@ extension API {
             return formatter
         }()
     }
-    
-    @discardableResult
-    func fetchTransactions(
-        between dates: (Date, Date)?,
-        for account: Account,
-        max: Int = 100,
-        completion: APICompletionHandler<TransactionList>? = nil
-    ) -> EndpointInteractable? {
-        
-        var parameters: Params = []
-        
-        if let betweenDates = dates {
-            guard let dayAfter = betweenDates.1.dayAfter else {
-                return nil
-            }
-            
-            let from = Formatter.date.string(from: betweenDates.0)
-            let to = Formatter.date.string(from: dayAfter)
-            
-            parameters.append(.custom(key: AlgorandParamPairKey.from, value: from))
-            parameters.append(.custom(key: AlgorandParamPairKey.to, value: to))
-        }
-        
-        parameters.append(.custom(key: AlgorandParamPairKey.max, value: max))
-        
-        return send(
-            Endpoint<TransactionList>(Path("/v1/account/\(account.address)/transactions"))
-                .httpMethod(.get)
-                .query(parameters)
-                .handler { response in
-                    completion?(response)
-                }
-        )
-    }
-    
-    @discardableResult
-    func fetchTransactionDetail(
-        for account: Account,
-        with id: TransactionID,
-        completion: APICompletionHandler<Transaction>? = nil
-    ) -> EndpointInteractable? {
-        
-        return send(
-            Endpoint<Transaction>(Path("/v1/account/\(account.address)/transaction/\(id.identifier)"))
-                .httpMethod(.get)
-                .handler { response in
-                    completion?(response)
-                }
-        )
-    }
-    
-    @discardableResult
-    func sendTransaction(
-        with transactionData: Data,
-        then completion: APICompletionHandler<TransactionID>? = nil
-    ) -> EndpointInteractable? {
-        
-        return upload(
-            data: transactionData,
-            toEndpoint: Endpoint<TransactionID>(Path("/v1/transactions"))
-                .httpMethod(.post)
-                .handler { uploadResponse in
-                    
-                    switch uploadResponse {
-                    case .success:
-                        break
-                    case .failure:
-                        break
-                    }
-                    
-                    completion?(uploadResponse)
-                }
-        )
-    }
-    
-    @discardableResult
-    func getTransactionParams(completion: APICompletionHandler<TransactionParams>? = nil) -> EndpointInteractable? {
-        return send(
-            Endpoint<TransactionParams>(Path("/v1/transactions/params"))
-                .httpMethod(.get)
-                .handler { response in
-                    completion?(response)
-                }
-        )
-    }
-}
-
-extension String: Mappable {
-    
 }

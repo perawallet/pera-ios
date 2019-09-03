@@ -8,7 +8,7 @@
 
 import Magpie
 
-enum AccountStatus: String, Mappable {
+enum AccountStatus: String, Model {
     case offline = "Offline"
     case online = "Online"
     case notParticipating = "NotParticipating"
@@ -17,7 +17,7 @@ enum AccountStatus: String, Mappable {
 extension AccountStatus: Encodable {
 }
 
-class Account: Mappable {
+class Account: Model {
     let address: String
     var amount: UInt64
     var status: AccountStatus

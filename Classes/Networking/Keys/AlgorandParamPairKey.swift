@@ -8,7 +8,7 @@
 
 import Magpie
 
-enum AlgorandParamPairKey: String, CodingKey {
+enum RequestParameter: String, JSONBodyRequestParameter {
     case address = "address"
     case firstRound = "firstRound"
     case lastRound = "lastRound"
@@ -28,18 +28,4 @@ enum AlgorandParamPairKey: String, CodingKey {
     case note = "note"
     case email = "email"
     case category = "category"
-    
-}
-
-extension AlgorandParamPairKey: ParamsPairKey {
-    var description: String {
-        return rawValue
-    }
-    
-    var defaultValue: ParamsPairValue? {
-        switch self {
-        default:
-            return nil
-        }
-    }
 }

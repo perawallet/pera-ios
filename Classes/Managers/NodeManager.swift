@@ -30,7 +30,7 @@ extension NodeManager {
             completion?(false)
         }
         
-        if let session = api.session, session.isDefaultNodeActive() {
+        if api.session.isDefaultNodeActive() {
             let localNodeOperation = self.localNodeOperation(completion: completion)
             
             completionOperation.addDependency(localNodeOperation)

@@ -30,7 +30,7 @@ class TransactionHistoryDataSource: NSObject, UICollectionViewDataSource {
     
     private var transactionParams: TransactionParams?
     
-    private var fetchRequest: EndpointInteractable?
+    private var fetchRequest: EndpointOperatable?
     
     private var currentPaginationOffset: Int64 = 0
     
@@ -128,7 +128,7 @@ extension TransactionHistoryDataSource {
     
     func clear() {
         currentPaginationOffset = 0
-        fetchRequest?.invalidate()
+        fetchRequest?.cancel()
         transactions.removeAll()
     }
     

@@ -8,15 +8,13 @@
 
 import Magpie
 
-class ChartData: Mappable {
-    
+class ChartData: Model {
     let round: Int?
     let remainingAlgos: Int?
 }
 
 extension ChartData {
-    
-    enum CodingKeys: String, CodingKey {
+    private enum CodingKeys: String, CodingKey {
         case round = "round"
         case remainingAlgos = "remaining_algos"
     }

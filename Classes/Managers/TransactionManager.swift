@@ -101,7 +101,7 @@ class TransactionManager {
         
         var signedTransactionError: NSError?
         
-        guard let privateData = api?.session?.privateData(forAccount: transaction.fromAccount.address),
+        guard let privateData = api?.session.privateData(forAccount: transaction.fromAccount.address),
             let signedTransactionData = CryptoSignTransaction(privateData, transactionData, &signedTransactionError) else {
                 delegate?.transactionManagerDidFailedComposingTransactionData(self)
                 return

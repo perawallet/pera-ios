@@ -6,11 +6,22 @@
 //  Copyright © 2019 hippo. All rights reserved.
 //
 
-import Foundation
+import Magpie
 
-struct CoinlistAuthenticationDraft {
+struct CoinlistAuthenticationDraft: JSONBody {
+    typealias Key = RequestParameter
     
     let code: String
     let grantType: String
     let redirectURI: String
+    
+    func decoded() -> [Pair]? {
+        return [
+            Pair(key: .clientId, value: Environment.current.coinlistClientId),
+            Pair(key: .clientSecret, value: Environment.current.coinlistClientSecret),
+            Pair(key: .code, value: code),
+            Pair(key: .grantType, value: grantType),
+            Pair(key: .redirectUri, value: redirectURI)
+        ]
+    }
 }

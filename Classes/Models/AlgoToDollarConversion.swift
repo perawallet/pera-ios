@@ -8,7 +8,7 @@
 
 import Magpie
 
-struct AlgoToDollarConversion: Mappable {
+struct AlgoToDollarConversion: Model {
     let mins: Double?
     let price: String?
 }

@@ -12,32 +12,24 @@ extension API {
     @discardableResult
     func fetchAccount(
         with draft: AccountFetchDraft,
-        then completion: APICompletionHandler<Account>? = nil
-    ) -> EndpointInteractable? {
-        
+        then handler: @escaping Endpoint.DefaultResultHandler<Account>
+    ) -> EndpointOperatable {
         let address = draft.publicKey
         
-        return send(
-            Endpoint<Account>(Path("/v1/account/\(address)"))
-                .httpMethod(.get)
-                .handler { response in
-                    completion?(response)
-                }
-        )
+        return Endpoint(path: Path("/v1/account/\(address)"))
+            .httpMethod(.get)
+            .httpHeaders(algorandAuthenticatedHeaders())
+            .resultHandler(handler)
+            .buildAndSend(self)
     }
     
     @discardableResult
-    func fetchDollarValue(then completion: APICompletionHandler<AlgoToDollarConversion>? = nil) -> EndpointInteractable? {
-        return send(
-            Endpoint<AlgoToDollarConversion>(Path("/api/v3/avgPrice"))
-                .base(Environment.current.binanceApi)
-                .httpMethod(.get)
-                .query([
-                    .custom(key: AlgorandParamPairKey.algoDollarConversion, value: "ALGOUSDT")
-                ])
-                .handler { response in
-                    completion?(response)
-                }
-        )
+    func fetchDollarValue(then handler: @escaping Endpoint.DefaultResultHandler<AlgoToDollarConversion>) -> EndpointOperatable {
+        return Endpoint(path: Path("/api/v3/avgPrice"))
+            .base(Environment.current.binanceApi)
+            .httpMethod(.get)
+            .query(DollarValueQuery())
+            .resultHandler(handler)
+            .buildAndSend(self)
     }
 }

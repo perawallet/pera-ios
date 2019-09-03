@@ -8,35 +8,74 @@
 
 import Magpie
 
-class API: Magpie<AlamofireNetworking> {
+class API: Magpie {
+    var token: String?
+    let session: Session
     
-    typealias APICompletionHandler<ObjectRef> = (Response<ObjectRef>) -> Void where ObjectRef: Mappable
-    
-    override var commonHttpHeaders: HTTPHeaders {
+    init(session: Session) {
+        self.session = session
         
-        var httpHeaders = super.commonHttpHeaders
-        
-        guard let token = self.token else {
-            return httpHeaders
+        if #available(iOS 12, *) {
+            super.init(
+                base: Environment.current.serverApi,
+                networking: AlamofireNetworking(),
+                networkMonitor: NWNetworkMonitor()
+            )
+        } else {
+            super.init(
+                base: Environment.current.serverApi,
+                networking: AlamofireNetworking(),
+                networkMonitor: AlamofireNetworkMonitor()
+            )
         }
         
-        httpHeaders.append(.custom(header: "X-Algo-API-Token", value: token))
+        authorize()
         
-        return httpHeaders
-    }
-    
-    var token: String?
-    
-    private(set) var session: Session?
-    
-    required init(base: String, session: Session?) {
-        super.init(base: base)
+        sharedJsonBodyEncodingStrategy = JSONBodyEncodingStrategy(date: JSONEncoder.DateEncodingStrategy.shared)
+        sharedModelDecodingStrategy = ModelDecodingStrategy(date: JSONDecoder.DateDecodingStrategy.shared)
+        sharedErrorModelDecodingStrategy = ModelDecodingStrategy(date: JSONDecoder.DateDecodingStrategy.shared)
         
-        self.session = session
+        runIfRelease {
+            logFilter = .none()
+        }
     }
     
     @available(*, unavailable)
-    required init(base: String, networking: AlamofireNetworking) {
-        fatalError("init(base:networking:) has not been implemented")
+    required init(base: String, networking: Networking, networkMonitor: NetworkMonitor? = nil) {
+        fatalError("init(base:networking:networkMonitor:) has not been implemented")
+    }
+}
+
+extension API {
+    func authorize() {
+        base = Environment.current.serverApi
+    }
+    
+    func algorandAuthenticatedHeaders() -> Headers {
+        guard let token = token else {
+            return sharedHttpHeaders
+        }
+        
+        var headers = sharedHttpHeaders
+        headers.set(.custom("X-Algo-API-Token", .some(token)))
+        return headers
+    }
+    
+    func nodeHealthHeaders(for nodeToken: String) -> Headers {
+        var headers = sharedHttpHeaders
+        headers.set(.custom("X-Algo-API-Token", .some(nodeToken)))
+        return headers
+    }
+    
+    func coinlistTokenHeaders() -> Headers {
+        guard let coinlistToken = session.coinlistToken,
+            let token = token else {
+            return sharedHttpHeaders
+        }
+        
+        var headers = sharedHttpHeaders
+        headers.set(.authorization(.bearer(coinlistToken)))
+        headers.set(.custom("X-Algo-API-Token", .some(token)))
+        return headers
     }
 }
