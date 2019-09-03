@@ -41,6 +41,7 @@ extension API {
     func waitRound(with draft: WaitRoundDraft, then handler: @escaping Endpoint.DefaultResultHandler<RoundDetail>) -> EndpointOperatable {
         return Endpoint(path: Path("/v1/status/wait-for-block-after/\(draft.round)"))
             .httpMethod(.get)
+            .httpHeaders(algorandAuthenticatedHeaders())
             .resultHandler(handler)
             .buildAndSend(self)
     }
