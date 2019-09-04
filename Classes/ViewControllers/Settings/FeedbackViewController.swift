@@ -208,9 +208,9 @@ extension FeedbackViewController {
                 SVProgressHUD.dismiss()
                 
                 self.displaySuccessAlert()
-            case let .failure(error):
+            case .failure:
                 SVProgressHUD.dismiss()
-                self.parseAndDisplayErrorAlert(error)
+                self.displaySimpleAlertWith(title: "feedback-error-title".localized, message: "feedback-error-message".localized)
 
             }
         }
@@ -231,25 +231,6 @@ extension FeedbackViewController {
         alertViewController.modalPresentationStyle = .overCurrentContext
         alertViewController.modalTransitionStyle = .crossDissolve
         present(alertViewController, animated: true, completion: nil)
-    }
-    
-    private func parseAndDisplayErrorAlert(_ error: Error) {
-        switch error {
-        case let .badRequest(errorData):
-            guard let data = errorData else {
-                self.displaySimpleAlertWith(title: "feedback-error-title".localized, message: "feedback-error-message".localized)
-                return
-            }
-            
-            let decodedError = try? AlgorandError.decoded(from: data)
-            self.displaySimpleAlertWith(
-                title: "feedback-error-title".localized,
-                message: decodedError?.message ?? "feedback-error-message".localized
-            )
-            return
-        default:
-            self.displaySimpleAlertWith(title: "feedback-error-title".localized, message: "feedback-error-message".localized)
-        }
     }
 }
 

@@ -10,15 +10,7 @@ import Magpie
 import CoreData
 
 @objc(Contact)
-public final class Contact: NSManagedObject, Mappable {
-    
-    enum CodingKeys: String, CodingKey {
-        case identifier = "identifier"
-        case address = "address"
-        case image = "image"
-        case name = "name"
-    }
-    
+public final class Contact: NSManagedObject, Model {
     @NSManaged public var identifier: String?
     @NSManaged public var address: String?
     @NSManaged public var image: Data?
@@ -52,6 +44,15 @@ public final class Contact: NSManagedObject, Mappable {
     
     func encoded() -> Data? {
         return try? JSONEncoder().encode(self)
+    }
+}
+
+extension Contact {
+    enum CodingKeys: String, CodingKey {
+        case identifier = "identifier"
+        case address = "address"
+        case image = "image"
+        case name = "name"
     }
 }
 

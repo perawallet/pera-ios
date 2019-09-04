@@ -8,7 +8,7 @@
 
 import Magpie
 
-class User: Mappable {
+class User: Model {
     
     private(set) var accounts: [Account] = []
     fileprivate var defaultAccountAddress: String?

@@ -29,7 +29,13 @@ class SendAlgosViewController: BaseScrollViewController {
     }()
     
     private var keyboard = Keyboard()
-    private lazy var transactionManager = TransactionManager(api: api)
+    private lazy var transactionManager: TransactionManager = {
+        guard let api = self.api else {
+            fatalError("Api must be set for transaction flow.")
+        }
+        return TransactionManager(api: api)
+    }()
+    
     private var contentViewBottomConstraint: Constraint?
     
     private var amount: Double = 0.00

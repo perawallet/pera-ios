@@ -8,7 +8,7 @@
 
 import Magpie
 
-class Transaction: Mappable {
+class Transaction: Model {
 
     enum Constant {
         static let minimumFee: Int64 = 1000
@@ -47,7 +47,6 @@ class Transaction: Mappable {
 }
 
 extension Transaction {
-    
     enum CodingKeys: String, CodingKey {
         case round = "round"
         case id = "tx"

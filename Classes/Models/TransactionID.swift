@@ -8,10 +8,12 @@
 
 import Magpie
 
-struct TransactionID: Mappable {
+struct TransactionID: Model {
     let identifier: String
-    
-    enum CodingKeys: String, CodingKey {
+}
+
+extension TransactionID {
+    private enum CodingKeys: String, CodingKey {
         case identifier = "txId"
     }
 }

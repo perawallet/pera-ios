@@ -8,15 +8,13 @@
 
 import Magpie
 
-class BidResponse: Mappable {
-    
+class BidResponse: Model {
     let id: Int
     let uuid: String?
 }
 
 extension BidResponse {
-    
-    enum CodingKeys: String, CodingKey {
+    private enum CodingKeys: String, CodingKey {
         case id = "bid_id"
         case uuid = "bid_uuid"
     }

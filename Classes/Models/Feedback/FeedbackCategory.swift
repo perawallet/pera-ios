@@ -8,7 +8,7 @@
 
 import Magpie
 
-class FeedbackCategory: Mappable {
+class FeedbackCategory: Model {
     let name: String
     let slug: String
 }

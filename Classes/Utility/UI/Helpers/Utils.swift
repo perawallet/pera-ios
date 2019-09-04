@@ -39,3 +39,15 @@ func rgba(_ red: CGFloat, _ green: CGFloat, _ blue: CGFloat, _ alpha: CGFloat) -
 
 let verticalScale = UIScreen.main.bounds.height / 812.0 > 1.0 ? 1.0 : UIScreen.main.bounds.height / 812.0
 let horizontalScale = UIScreen.main.bounds.width / 375.0 > 1.0 ? 1.0 : UIScreen.main.bounds.width / 375.0 
+
+func runIfDebug(_ closure: () -> Void) {
+    #if DEBUG
+    closure()
+    #endif
+}
+
+func runIfRelease(_ closure: () -> Void) {
+    #if !DEBUG
+    closure()
+    #endif
+}

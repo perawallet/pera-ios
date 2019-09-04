@@ -8,7 +8,7 @@
 
 import Magpie
 
-enum BidStatus: String, Mappable {
+enum BidStatus: String, Model {
     case queued = "Queued"
     case pending = "Pending"
     case accepted = "Accepted"
@@ -18,8 +18,7 @@ enum BidStatus: String, Mappable {
     case paid = "Paid"
 }
 
-class Bid: Mappable {
-    
+class Bid: Model {
     let bidderAddress: String?
     let amount: Int?
     let maxPrice: Int?
@@ -30,8 +29,7 @@ class Bid: Mappable {
 }
 
 extension Bid {
-    
-    enum CodingKeys: String, CodingKey {
+    private enum CodingKeys: String, CodingKey {
         case bidderAddress = "BidderAddress"
         case amount = "Amount"
         case maxPrice = "MaxPrice"

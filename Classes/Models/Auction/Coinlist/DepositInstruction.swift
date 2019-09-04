@@ -8,8 +8,7 @@
 
 import Magpie
 
-struct DepositInstruction: Mappable {
-    
+struct DepositInstruction: Model {
     let type: DepositType
     let amount: Double
     

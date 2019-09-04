@@ -8,12 +8,13 @@
 
 import Magpie
 
-class RoundDetail: Mappable {
-    
+class RoundDetail: Model {
     let lastRound: Int64
     let nextConsensusVersionRound: Int64
-    
-    enum CodingKeys: String, CodingKey {
+}
+
+extension RoundDetail {
+    private enum CodingKeys: String, CodingKey {
         case lastRound = "lastRound"
         case nextConsensusVersionRound = "nextConsensusVersionRound"
     }

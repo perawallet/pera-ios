@@ -8,7 +8,7 @@
 
 import Magpie
 
-class Feedback: Mappable {
+class Feedback: Model {
     let id: Int
     let note: String
     let email: String?

@@ -10,45 +10,39 @@ import Magpie
 
 extension API {
     @discardableResult
-    func checkHealth(
-        with draft: NodeTestDraft,
-        then completion: BoolHandler? = nil
-        ) -> EndpointInteractable? {
+    func checkHealth(with draft: NodeTestDraft, then handler: BoolHandler? = nil) -> EndpointOperatable? {
+        let resultHandler: Endpoint.RawResultHandler = { result in
+            switch result {
+            case .success:
+                handler?(true)
+            case .failure:
+                handler?(false)
+            }
+        }
         
         let address = draft.address
         let token = draft.token
         
-        var httpHeaders = super.commonHttpHeaders
-        httpHeaders.append(.custom(header: "X-Algo-API-Token", value: token))
-        
         guard let url = URL(string: address) else {
-            completion?(false)
+            handler?(false)
             return nil
         }
         
-        return sendInvalidated(
-            Endpoint<NoObject>(Path("/health"))
-                .httpMethod(.get)
-                .base(url.absoluteString)
-                .httpHeaders(httpHeaders)
-                .handler { response in
-                    completion?(!response.isFailed)
-                }
-        )
+        return Endpoint(path: Path("/health"))
+            .httpMethod(.get)
+            .validateResponseFirstWhenReceived(false)
+            .base(url.absoluteString)
+            .httpHeaders(nodeHealthHeaders(for: token))
+            .resultHandler(resultHandler)
+            .buildAndSend(self)
     }
     
     @discardableResult
-    func waitRound(
-        with draft: WaitRoundDraft,
-        then completion: APICompletionHandler<RoundDetail>? = nil
-        ) -> EndpointInteractable? {
-        
-        return send(
-            Endpoint<RoundDetail>(Path("/v1/status/wait-for-block-after/\(draft.round)"))
-                .httpMethod(.get)
-                .handler { response in
-                    completion?(response)
-                }
-        )
+    func waitRound(with draft: WaitRoundDraft, then handler: @escaping Endpoint.DefaultResultHandler<RoundDetail>) -> EndpointOperatable {
+        return Endpoint(path: Path("/v1/status/wait-for-block-after/\(draft.round)"))
+            .httpMethod(.get)
+            .httpHeaders(algorandAuthenticatedHeaders())
+            .resultHandler(handler)
+            .buildAndSend(self)
     }
 }

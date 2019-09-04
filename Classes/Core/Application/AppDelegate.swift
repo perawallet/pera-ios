@@ -22,7 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     private lazy var session = Session()
     private lazy var api: API = {
-        let api = API(base: Environment.current.serverApi, session: session)
+        let api = API(session: session)
         api.token = Environment.current.serverToken
         return api
     }()

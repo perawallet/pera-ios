@@ -8,8 +8,7 @@
 
 import Magpie
 
-class ActiveAuction: Mappable {
-    
+class ActiveAuction: Model {
     let id: Int
     let currentPrice: Int?
     let estimatedFinishTime: Date?
@@ -48,7 +47,6 @@ class ActiveAuction: Mappable {
 }
 
 extension ActiveAuction {
-    
     enum CodingKeys: String, CodingKey {
         case id = "ID"
         case currentPrice = "CurrentPrice"
@@ -81,7 +79,7 @@ extension ActiveAuction {
     }
 }
 
-enum AuctionStatus: String, Mappable {
+enum AuctionStatus: String, Model {
     case announced = "Announced"
     case running = "Running"
     case closed = "Closed"

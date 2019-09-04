@@ -45,6 +45,8 @@ class LocalAuthenticator {
             return .touchID
         case .none:
             return .none
+        @unknown default:
+            return .none
         }
     }
     

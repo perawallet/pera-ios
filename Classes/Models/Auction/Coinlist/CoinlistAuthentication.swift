@@ -8,14 +8,12 @@
 
 import Magpie
 
-class CoinlistAuthentication: Mappable {
-    
+class CoinlistAuthentication: Model {
     let accessToken: String
 }
 
 extension CoinlistAuthentication {
-    
-    enum CodingKeys: String, CodingKey {
+    private enum CodingKeys: String, CodingKey {
         case accessToken = "access_token"
     }
 }

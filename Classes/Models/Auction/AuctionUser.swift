@@ -8,8 +8,7 @@
 
 import Magpie
 
-class AuctionUser: Mappable {
-    
+class AuctionUser: Model {
     let username: String?
     let name: String?
     let address: String?
@@ -18,8 +17,7 @@ class AuctionUser: Mappable {
 }
 
 extension AuctionUser {
-    
-    enum CodingKeys: String, CodingKey {
+    private enum CodingKeys: String, CodingKey {
         case username = "username"
         case name = "name"
         case address = "Address"

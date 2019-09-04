@@ -8,13 +8,14 @@
 
 import Magpie
 
-class Payment: Mappable {
-    
+class Payment: Model {
     let amount: Int64
     let toAddress: String
     let rewards: UInt64?
-    
-    enum CodingKeys: String, CodingKey {
+}
+
+extension Payment {
+    private enum CodingKeys: String, CodingKey {
         case amount = "amount"
         case toAddress = "to"
         case rewards = "torewards"

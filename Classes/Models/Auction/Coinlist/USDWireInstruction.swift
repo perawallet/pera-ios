@@ -8,8 +8,7 @@
 
 import Magpie
 
-class USDWireInstruction: Mappable {
-    
+class USDWireInstruction: Model {
     let bankName: String?
     let bankAddress: String?
     let bankPhone: String?

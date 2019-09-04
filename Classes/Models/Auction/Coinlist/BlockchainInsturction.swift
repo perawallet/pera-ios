@@ -8,16 +8,14 @@
 
 import Magpie
 
-class BlockchainInstruction: Mappable {
-    
+class BlockchainInstruction: Model {
     let address: String?
     let rate: Int?
     let time: Int?
 }
 
 extension BlockchainInstruction {
-    
-    enum CodingKeys: String, CodingKey {
+    private enum CodingKeys: String, CodingKey {
         case address = "address"
         case rate = "rate"
         case time = "time"

@@ -8,8 +8,7 @@
 
 import Magpie
 
-class CoinlistUser: Mappable {
-    
+class CoinlistUser: Model {
     let id: String
     let email: String?
     let name: String?

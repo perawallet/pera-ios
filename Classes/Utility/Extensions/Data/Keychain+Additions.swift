@@ -20,7 +20,7 @@ extension KeychainAccess.Keychain {
     }
     
     func data(for key: String) -> Data? {
-        guard let data = try? self.getData(key) else {
+        guard let data = ((try? self.getData(key)) as Data??) else {
             return nil
         }
         
