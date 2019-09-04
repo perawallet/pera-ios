@@ -38,17 +38,17 @@ class TransactionManager {
     
     weak var delegate: TransactionManagerDelegate?
     
-    private var api: API?
+    private var api: API
     private var params: TransactionParams?
     var transaction: TransactionPreviewDraft?
     var transactionData: Data?
     
-    init(api: API?) {
+    init(api: API) {
         self.api = api
     }
     
     func composeTransactionData(for account: Account, isMaxValue: Bool) {
-        api?.getTransactionParams { response in
+        api.getTransactionParams { response in
             switch response {
             case let .success(params):
                 self.params = params
@@ -101,7 +101,7 @@ class TransactionManager {
         
         var signedTransactionError: NSError?
         
-        guard let privateData = api?.session.privateData(forAccount: transaction.fromAccount.address),
+        guard let privateData = api.session.privateData(forAccount: transaction.fromAccount.address),
             let signedTransactionData = CryptoSignTransaction(privateData, transactionData, &signedTransactionError) else {
                 delegate?.transactionManagerDidFailedComposingTransactionData(self)
                 return
@@ -123,7 +123,7 @@ class TransactionManager {
             return
         }
         
-        api?.sendTransaction(with: transactionData) { transactionIdResponse in
+        api.sendTransaction(with: transactionData) { transactionIdResponse in
             switch transactionIdResponse {
             case let .success(transactionId):
                 self.delegate?.transactionManager(self, didCompletedTransaction: transactionId)
