@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import NotificationBannerSwift
 
 class AccountsViewController: BaseViewController {
     
@@ -34,6 +35,13 @@ class AccountsViewController: BaseViewController {
         ),
         initialModalSize: .custom(CGSize(width: view.frame.width, height: layout.current.editAccountModalHeight))
     )
+    
+    private lazy var pushNotificationController: PushNotificationController = {
+        guard let api = api else {
+            fatalError("Api must be set before accessing this view controller.")
+        }
+        return PushNotificationController(api: api)
+    }()
     
     private lazy var accountSelectionViewController = AccountSelectionViewController(configuration: configuration)
     
@@ -150,6 +158,9 @@ class AccountsViewController: BaseViewController {
         transactionHistoryDataSource.setupContacts()
         
         fetchTransactions()
+        
+        pushNotificationController.requestAuthorization()
+        pushNotificationController.registerDevice()
     }
     
     private func addTitleFadeAnimation() {

@@ -10,6 +10,7 @@ import UIKit
 import CoreData
 import Firebase
 import SwiftDate
+import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -27,6 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return api
     }()
     private lazy var appConfiguration = AppConfiguration(api: api, session: session)
+    private lazy var pushNotificationController = PushNotificationController(api: api)
     
     private var rootViewController: RootViewController?
     
@@ -46,6 +48,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         SwiftDate.setupDateRegion()
         setupWindow()
         
+        UNUserNotificationCenter.current().delegate = self
         return true
     }
     
@@ -62,6 +65,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         window?.rootViewController = NavigationController(rootViewController: rootViewController)
         window?.makeKeyAndVisible()
+    }
+    
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        let pushToken = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
+        pushNotificationController.authorizeDevice(with: pushToken)
+    }
+    
+    func application(
+        _ application: UIApplication,
+        didReceiveRemoteNotification userInfo: [AnyHashable: Any],
+        fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void
+    ) {
+        print("received notification")
     }
     
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -175,5 +191,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func invalidateAccountManagerFetchPolling() {
         shouldInvalidateAccountFetch = true
+    }
+}
+
+extension AppDelegate: UNUserNotificationCenterDelegate {
+    
+    func userNotificationCenter(
+        _ center: UNUserNotificationCenter,
+        willPresent notification: UNNotification,
+        withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
+    ) {
+        let userInfo = notification.request.content.userInfo
+        print(userInfo)
+        pushNotificationController.show(with: "") {
+            
+        }
+        completionHandler([])
+    }
+    
+    func userNotificationCenter(
+        _ center: UNUserNotificationCenter,
+        didReceive response: UNNotificationResponse,
+        withCompletionHandler completionHandler: @escaping () -> Void
+    ) {
+        let userInfo = response.notification.request.content.userInfo
+        print("tap on on forground app", userInfo)
+        completionHandler()
     }
 }
