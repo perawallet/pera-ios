@@ -48,7 +48,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         SwiftDate.setupDateRegion()
         setupWindow()
         
-        UNUserNotificationCenter.current().delegate = self
         return true
     }
     
@@ -77,7 +76,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         didReceiveRemoteNotification userInfo: [AnyHashable: Any],
         fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void
     ) {
-        print("received notification")
+        guard let userInfo = userInfo as? [String: Any],
+            let userInfoDictionary = userInfo["aps"] as? [String: Any],
+            let remoteNotificationData = try? JSONSerialization.data(withJSONObject: userInfoDictionary, options: .prettyPrinted),
+            let algorandNotification = try? JSONDecoder().decode(AlgorandNotification.self, from: remoteNotificationData) else {
+                return
+        }
+        
+        if UIApplication.shared.applicationState == .active {
+            
+        } else {
+            
+        }
     }
     
     func applicationWillEnterForeground(_ application: UIApplication) {

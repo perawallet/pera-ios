@@ -219,9 +219,14 @@ class AccountsViewController: BaseViewController {
         newAccount = nil
         
         if let route = route {
-            self.route = nil
-            
-            open(route, by: .push, animated: false)
+            switch route {
+            case let .accounts(account):
+                self.route = nil
+                self.selectedAccount = account
+            default:
+                self.route = nil
+                open(route, by: .push, animated: false)
+            }
         }
     }
     

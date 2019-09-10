@@ -66,6 +66,34 @@ class RootViewController: UIViewController {
             }
         }
     }
+    
+    func openAccount(with address: String) {
+        guard let account = appConfiguration.session.authenticatedUser?.account(address: address) else {
+            return
+        }
+        
+        if !appConfiguration.session.isValid {
+            if appConfiguration.session.hasPassword() && appConfiguration.session.authenticatedUser != nil {
+                open(.choosePassword(mode: .login, route: .accounts(account: account)), by: .present)
+            } else {
+                open(.introduction(mode: .initialize), by: .launch, animated: false)
+            }
+        } else {
+            UIApplication.topViewController()?.tabBarController?.selectedIndex = 0
+            
+            if let controller = UIApplication.topViewController(),
+                let navigationController = controller.presentingViewController as? NavigationController,
+                let tabBarController = navigationController.viewControllers.first as? TabBarController,
+                let accountsViewController = tabBarController.accountsNavigationController.viewControllers.first {
+                
+                controller.dismiss(animated: false) {
+                    (accountsViewController as? AccountsViewController)?.selectedAccount = account
+                }
+            } else {
+                UIApplication.topViewController()?.open(.home(route: .accounts(account: account)), by: .set, animated: false)
+            }
+        }
+    }
 
     @discardableResult
     func route<T: UIViewController>(

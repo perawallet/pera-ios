@@ -363,6 +363,10 @@
 		2B0C2F6822809FDD009206D7 /* AccountSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0C2F6722809FDD009206D7 /* AccountSelectionView.swift */; };
 		2B191C82232150C900EAB1B8 /* PushNotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B191C81232150C900EAB1B8 /* PushNotificationController.swift */; };
 		2B191C83232150C900EAB1B8 /* PushNotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B191C81232150C900EAB1B8 /* PushNotificationController.swift */; };
+		2B1B536823279CD500D54029 /* AlgorandNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1B536723279CD500D54029 /* AlgorandNotification.swift */; };
+		2B1B536923279CD500D54029 /* AlgorandNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1B536723279CD500D54029 /* AlgorandNotification.swift */; };
+		2B1B536B2328029F00D54029 /* NotificationDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1B536A2328029F00D54029 /* NotificationDetail.swift */; };
+		2B1B536C2328029F00D54029 /* NotificationDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1B536A2328029F00D54029 /* NotificationDetail.swift */; };
 		2B1B77B4229567290021A6CC /* AuctionDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1B77B3229567290021A6CC /* AuctionDetailViewModel.swift */; };
 		2B1B77B6229567360021A6CC /* MyBidsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1B77B5229567360021A6CC /* MyBidsViewModel.swift */; };
 		2B1B77B8229567400021A6CC /* PlaceBidViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1B77B7229567400021A6CC /* PlaceBidViewModel.swift */; };
@@ -816,6 +820,8 @@
 		2B191C81232150C900EAB1B8 /* PushNotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationController.swift; sourceTree = "<group>"; };
 		2B191C882321998100EAB1B8 /* algorand-staging.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "algorand-staging.entitlements"; sourceTree = "<group>"; };
 		2B191C892321998600EAB1B8 /* algorand.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = algorand.entitlements; sourceTree = "<group>"; };
+		2B1B536723279CD500D54029 /* AlgorandNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorandNotification.swift; sourceTree = "<group>"; };
+		2B1B536A2328029F00D54029 /* NotificationDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationDetail.swift; sourceTree = "<group>"; };
 		2B1B77B3229567290021A6CC /* AuctionDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionDetailViewModel.swift; sourceTree = "<group>"; };
 		2B1B77B5229567360021A6CC /* MyBidsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyBidsViewModel.swift; sourceTree = "<group>"; };
 		2B1B77B7229567400021A6CC /* PlaceBidViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceBidViewModel.swift; sourceTree = "<group>"; };
@@ -1235,7 +1241,7 @@
 		17B7D8A42240D79200A6FF9E /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				2BBA198E231FF7C10080A6F6 /* Device */,
+				2BBA198E231FF7C10080A6F6 /* Notification */,
 				2B982336231EC1B2009560CD /* Query */,
 				2BD5476F23184303007179FE /* Feedback */,
 				2B3F390D228C4D98008BBE75 /* Auction */,
@@ -2391,12 +2397,14 @@
 			path = List;
 			sourceTree = "<group>";
 		};
-		2BBA198E231FF7C10080A6F6 /* Device */ = {
+		2BBA198E231FF7C10080A6F6 /* Notification */ = {
 			isa = PBXGroup;
 			children = (
 				2BBA198F231FF7CF0080A6F6 /* Device.swift */,
+				2B1B536723279CD500D54029 /* AlgorandNotification.swift */,
+				2B1B536A2328029F00D54029 /* NotificationDetail.swift */,
 			);
-			path = Device;
+			path = Notification;
 			sourceTree = "<group>";
 		};
 		2BC45DEC2252538D000CDCE2 /* ImagePicker */ = {
@@ -3605,6 +3613,8 @@
 				17BD4E6A2292F1260003E49A /* HistoryResultsViewModel.swift in Sources */,
 				2BD547752318463E007179FE /* Feedback.swift in Sources */,
 				17BD4E6B2292F1260003E49A /* BaseCollectionViewCell.swift in Sources */,
+				2B1B536923279CD500D54029 /* AlgorandNotification.swift in Sources */,
+				2B1B536C2328029F00D54029 /* NotificationDetail.swift in Sources */,
 				2B891EFB22BB71A2003205F5 /* DepositInstructionHeaderView.swift in Sources */,
 				17BD4E6C2292F1260003E49A /* SettingsInfoContextView.swift in Sources */,
 				17BD4E6D2292F1260003E49A /* BarButton.swift in Sources */,
@@ -3961,6 +3971,8 @@
 				17B7D8B0224128EC00A6FF9E /* Keychain+Additions.swift in Sources */,
 				2BD547742318463E007179FE /* Feedback.swift in Sources */,
 				17B7D8AB2240E19600A6FF9E /* AccountFetchDraft.swift in Sources */,
+				2B1B536823279CD500D54029 /* AlgorandNotification.swift in Sources */,
+				2B1B536B2328029F00D54029 /* NotificationDetail.swift in Sources */,
 				2B891EFA22BB71A2003205F5 /* DepositInstructionHeaderView.swift in Sources */,
 				2B5DA9D8224CE1BC00EE41B4 /* EditAccountView.swift in Sources */,
 				17512623223BEB9D0095AF4F /* UserDefaults+Additions.swift in Sources */,
