@@ -21,6 +21,7 @@ def main_pods
   pod 'SVProgressHUD'
   pod 'Charts'
   pod 'lottie-ios'
+  pod 'NotificationBannerSwift'
   
   #Analytics
   pod 'Firebase/Core'

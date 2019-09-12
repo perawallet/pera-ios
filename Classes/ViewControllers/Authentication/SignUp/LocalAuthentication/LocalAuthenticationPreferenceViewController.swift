@@ -98,7 +98,9 @@ extension LocalAuthenticationPreferenceViewController: LocalAuthenticationPrefer
         if session?.authenticatedUser == nil {
             open(.passphraseView(address: "temp"), by: .push)
         } else {
-            open(.home(route: nil), by: .launch)
+            self.dismiss(animated: false) {
+                UIApplication.shared.rootViewController()?.setupTabBarController()
+            }
         }
     }
 }

@@ -19,6 +19,7 @@ indirect enum Screen {
     case qrScanner
     case qrGenerator(title: String?, text: String, mode: QRMode)
     case home(route: Screen?)
+    case accounts(account: Account)
     case options
     case accountList
     case editAccount(account: Account)

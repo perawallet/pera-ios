@@ -42,7 +42,7 @@ class TabBarController: UITabBarController {
         return Tab(rawValue: selectedIndex) ?? .accounts
     }
     
-    private let route: Screen?
+    var route: Screen?
     
     // MARK: Components
     
@@ -61,8 +61,7 @@ class TabBarController: UITabBarController {
     
     // MARK: Initialization
     
-    init(route: Screen?, configuration: ViewControllerConfiguration, selectedTab: Tab = .accounts) {
-        self.route = route
+    init(configuration: ViewControllerConfiguration, selectedTab: Tab = .accounts) {
         self.configuration = configuration
         
         super.init(nibName: nil, bundle: nil)
@@ -189,6 +188,7 @@ class TabBarController: UITabBarController {
             }
             
             accountsViewController.route = route
+            self.route = nil
         }
     }
 }

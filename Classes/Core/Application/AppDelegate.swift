@@ -10,6 +10,7 @@ import UIKit
 import CoreData
 import Firebase
 import SwiftDate
+import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -27,6 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return api
     }()
     private lazy var appConfiguration = AppConfiguration(api: api, session: session)
+    private lazy var pushNotificationController = PushNotificationController(api: api)
     
     private var rootViewController: RootViewController?
     
@@ -62,6 +64,60 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         window?.rootViewController = NavigationController(rootViewController: rootViewController)
         window?.makeKeyAndVisible()
+    }
+    
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        let pushToken = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
+        pushNotificationController.authorizeDevice(with: pushToken)
+    }
+    
+    func application(
+        _ application: UIApplication,
+        didReceiveRemoteNotification userInfo: [AnyHashable: Any],
+        fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void
+    ) {
+        guard let userInfo = userInfo as? [String: Any],
+            let userInfoDictionary = userInfo["aps"] as? [String: Any],
+            let remoteNotificationData = try? JSONSerialization.data(withJSONObject: userInfoDictionary, options: .prettyPrinted),
+            let algorandNotification = try? JSONDecoder().decode(AlgorandNotification.self, from: remoteNotificationData) else {
+                return
+        }
+        
+        guard let accountId = parseAccountId(from: algorandNotification) else {
+            if let message = algorandNotification.alert {
+                pushNotificationController.showMessage(message)
+            }
+            return
+        }
+        
+        handleNotificationActions(for: accountId, with: algorandNotification.details)
+    }
+    
+    private func parseAccountId(from algorandNotification: AlgorandNotification) -> String? {
+        guard let notificationDetails = algorandNotification.details,
+            let notificationType = notificationDetails.notificationType else {
+                return nil
+        }
+        
+        switch notificationType {
+        case .transactionReceived:
+            return notificationDetails.receiverAddress
+        case .transactionSent:
+            return notificationDetails.senderAddress
+        default:
+            return nil
+        }
+    }
+    
+    private func handleNotificationActions(for accountId: String, with notificationDetail: NotificationDetail?) {
+        if UIApplication.shared.applicationState == .active,
+            let notificationDetail = notificationDetail {
+            pushNotificationController.show(with: notificationDetail) {
+                self.rootViewController?.openAccount(with: accountId)
+            }
+        } else {
+            rootViewController?.openAccount(with: accountId)
+        }
     }
     
     func applicationWillEnterForeground(_ application: UIApplication) {

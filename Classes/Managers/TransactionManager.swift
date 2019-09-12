@@ -126,6 +126,7 @@ class TransactionManager {
         api.sendTransaction(with: transactionData) { transactionIdResponse in
             switch transactionIdResponse {
             case let .success(transactionId):
+                self.api.trackTransaction(with: TransactionTrackDraft(transactionId: transactionId.identifier))
                 self.delegate?.transactionManager(self, didCompletedTransaction: transactionId)
             case let .failure(error):
                 self.delegate?.transactionManager(self, didFailedTransaction: error)

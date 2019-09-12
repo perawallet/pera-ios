@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import NotificationBannerSwift
 
 class AccountsViewController: BaseViewController {
     
@@ -35,7 +36,14 @@ class AccountsViewController: BaseViewController {
         initialModalSize: .custom(CGSize(width: view.frame.width, height: layout.current.editAccountModalHeight))
     )
     
-    private lazy var accountSelectionViewController = AccountSelectionViewController(configuration: configuration)
+    private lazy var pushNotificationController: PushNotificationController = {
+        guard let api = api else {
+            fatalError("Api must be set before accessing this view controller.")
+        }
+        return PushNotificationController(api: api)
+    }()
+    
+    private(set) lazy var accountSelectionViewController = AccountSelectionViewController(configuration: configuration)
     
     private(set) var localAuthenticator = LocalAuthenticator()
     
@@ -69,17 +77,7 @@ class AccountsViewController: BaseViewController {
             
             accountSelectionViewController.selectedAccount = account
             accountSelectionViewController.accountsCollectionView.reloadData()
-            selectedAccount = account
-            
-            transactionHistoryDataSource.clear()
-            accountsView.transactionHistoryCollectionView.reloadData()
-            accountsView.transactionHistoryCollectionView.contentState = .loading
-            
-            fetchTransactions()
-            
-            adjustDefaultHeaderViewLayout(withContentInsetUpdate: true)
-            
-            updateLayout()
+            updateSelectedAccount(account)
         }
     }
     
@@ -150,6 +148,9 @@ class AccountsViewController: BaseViewController {
         transactionHistoryDataSource.setupContacts()
         
         fetchTransactions()
+        
+        pushNotificationController.requestAuthorization()
+        pushNotificationController.registerDevice()
     }
     
     private func addTitleFadeAnimation() {
@@ -208,9 +209,16 @@ class AccountsViewController: BaseViewController {
         newAccount = nil
         
         if let route = route {
-            self.route = nil
-            
-            open(route, by: .push, animated: false)
+            switch route {
+            case let .accounts(account):
+                self.route = nil
+                accountSelectionViewController.selectedAccount = account
+                accountSelectionViewController.accountsCollectionView.reloadData()
+                self.updateSelectedAccount(account)
+            default:
+                self.route = nil
+                open(route, by: .push, animated: false)
+            }
         }
     }
     
@@ -393,6 +401,10 @@ extension AccountsViewController {
 extension AccountsViewController: AccountSelectionViewControllerDelegate {
     
     func accountSelectionViewController(_ accountSelectionViewController: AccountSelectionViewController, didSelect account: Account) {
+        updateSelectedAccount(account)
+    }
+    
+    func updateSelectedAccount(_ account: Account) {
         selectedAccount = account
         
         transactionHistoryDataSource.clear()

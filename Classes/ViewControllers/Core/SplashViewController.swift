@@ -91,7 +91,7 @@ class SplashViewController: BaseViewController {
                     }
                 } else {
                     self.dismiss(animated: false) {
-                        rootController.open(.home(route: nil), by: .launch, animated: false)
+                        UIApplication.shared.rootViewController()?.setupTabBarController()
                     }
                 }
             } else {

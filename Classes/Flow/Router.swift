@@ -178,8 +178,8 @@ class Router {
             qrCreationController.title = title
             
             viewController = qrCreationController
-        case let .home(route):
-            viewController = TabBarController(route: route, configuration: configuration)
+        case .home:
+            viewController = TabBarController(configuration: configuration)
         case .accountList:
             viewController = AccountListViewController(configuration: configuration)
         case .options:
@@ -247,6 +247,8 @@ class Router {
             viewController = DepositViewController(user: user, configuration: configuration)
         case .feedback:
             viewController = FeedbackViewController(configuration: configuration)
+        case .accounts:
+            viewController = AccountsViewController(configuration: configuration)
         }
         
         return viewController as? T

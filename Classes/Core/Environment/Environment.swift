@@ -97,7 +97,7 @@ class Environment {
     lazy var serverToken: String = {
         switch target {
         case .staging:
-            return "14a6e674fa8acbf71f3c3fbbf6cc52ff34901e72f7c6d5608d2e03644f6e657f"
+            return "402049a2fde425a3e0e81b41c4c32fd70104544caee916ec86adea955f04c14b"
         case .prod:
             return "0f24cac92e5ead6afbcf389e0ade28bb609d24ca6687359f342748c68d6cf9b2"
         }

@@ -23,7 +23,7 @@ class PassphraseView: BaseView {
         let titleHorizontalInset: CGFloat = 17.0
         let passPhraseContainerViewTopInset: CGFloat = 43.0
         let passPhraseCollectionViewVerticalInset: CGFloat = 16.5
-        let containerViewHorizontalInset: CGFloat = 25.0 * horizontalScale
+        let containerViewHorizontalInset: CGFloat = 15.0 * horizontalScale
         let collectionViewHorizontalInset: CGFloat = 25.0 * horizontalScale
         let warningContainerViewTopInset: CGFloat = 24.0
         let warningLabelVerticalInset: CGFloat = 20.0

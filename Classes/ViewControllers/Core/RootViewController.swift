@@ -16,7 +16,7 @@ class RootViewController: UIViewController {
     
     private var router: Router?
     
-    private(set) lazy var tabBarViewController = TabBarController(route: nil, configuration: appConfiguration.all())
+    private(set) lazy var tabBarViewController = TabBarController(configuration: appConfiguration.all())
     
     // MARK: Initialization
     
@@ -39,6 +39,29 @@ class RootViewController: UIViewController {
         view.backgroundColor = SharedColors.warmWhite
         
         open(.splash, by: .launch, animated: false)
+    }
+    
+    func setupTabBarController(withInitial screen: Screen? = nil) {
+        if tabBarViewController.parent != nil {
+            return
+        }
+        
+        addChild(tabBarViewController)
+        view.addSubview(tabBarViewController.view)
+        
+        tabBarViewController.view.snp.makeConstraints { maker in
+            maker.edges.equalToSuperview()
+        }
+        
+        tabBarViewController.route = screen
+        
+        tabBarViewController.didMove(toParent: self)
+    }
+    
+    func addAccount(_ account: Account) {
+        if let viewController = tabBarViewController.accountsNavigationController.viewControllers.first as? AccountsViewController {
+            viewController.newAccount = account
+        }
     }
     
     func handleDeepLinkRouting(for screen: Screen) -> Bool {
@@ -66,6 +89,40 @@ class RootViewController: UIViewController {
             }
         }
     }
+    
+    func openAccount(with address: String) {
+        guard let account = appConfiguration.session.authenticatedUser?.account(address: address) else {
+            return
+        }
+        
+        if !appConfiguration.session.isValid {
+            if appConfiguration.session.hasPassword() && appConfiguration.session.authenticatedUser != nil {
+                open(.choosePassword(mode: .login, route: .accounts(account: account)), by: .present)
+            } else {
+                open(.introduction(mode: .initialize), by: .launch, animated: false)
+            }
+        } else {
+            tabBarViewController.selectedIndex = 0
+            
+            if let controller = UIApplication.topViewController(),
+                let navigationController = controller.presentingViewController as? NavigationController,
+                let tabBarController = navigationController.viewControllers.first as? TabBarController,
+                let accountsViewController = tabBarController.accountsNavigationController.viewControllers.first {
+                
+                controller.dismiss(animated: false) {
+                    (accountsViewController as? AccountsViewController)?.selectedAccount = account
+                }
+            } else {
+                if let viewController = tabBarViewController.accountsNavigationController.viewControllers.first as? AccountsViewController,
+                    let selectedAccount = viewController.accountSelectionViewController.selectedAccount,
+                        selectedAccount.address != account.address {
+                        viewController.accountSelectionViewController.selectedAccount = account
+                        viewController.accountSelectionViewController.accountsCollectionView.reloadData()
+                        viewController.updateSelectedAccount(account)
+                }
+            }
+        }
+    }
 
     @discardableResult
     func route<T: UIViewController>(
@@ -77,9 +134,5 @@ class RootViewController: UIViewController {
     ) -> T? {
         
         return router?.route(to: screen, from: viewController, by: style, animated: animated, then: completion)
-    }
-    
-    func launch() {
-        open(.home(route: nil), by: .present, animated: false)
     }
 }

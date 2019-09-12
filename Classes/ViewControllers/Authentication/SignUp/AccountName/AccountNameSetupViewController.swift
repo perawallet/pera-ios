@@ -99,10 +99,8 @@ extension AccountNameSetupViewController {
             authenticatedUser.addAccount(account)
             
             closeScreen(by: .dismiss, animated: false) {
-                if let accountsViewController = UIApplication.topViewController() as? AccountsViewController,
-                    self.session?.authenticatedUser != nil {
-                    
-                    accountsViewController.newAccount = account
+                if self.session?.authenticatedUser != nil {
+                    UIApplication.shared.rootViewController()?.addAccount(account)
                 }
             }
         } else {
@@ -111,7 +109,9 @@ extension AccountNameSetupViewController {
             
             session?.authenticatedUser = user
             
-            open(.home(route: nil), by: .launch)
+            self.dismiss(animated: false) {
+                UIApplication.shared.rootViewController()?.setupTabBarController()
+            }
         }
     }
 }

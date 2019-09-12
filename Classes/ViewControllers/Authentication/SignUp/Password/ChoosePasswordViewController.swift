@@ -27,6 +27,12 @@ class ChoosePasswordViewController: BaseViewController {
     private let route: Screen?
     
     private let localAuthenticator = LocalAuthenticator()
+    private lazy var pushNotificationController: PushNotificationController = {
+        guard let api = api else {
+            fatalError("Api must be set before accessing this view controller.")
+        }
+        return PushNotificationController(api: api)
+    }()
     
     private lazy var accountManager: AccountManager? = {
         guard let api = self.api,
@@ -211,6 +217,7 @@ extension ChoosePasswordViewController: ChoosePasswordViewDelegate {
             title: "logout-action-delete-title".localized,
             style: .destructive) { _ in
                 self.session?.reset()
+                self.pushNotificationController.revokeDevice()
                 
                 self.open(.introduction(mode: .initialize), by: .launch, animated: false)
         }
@@ -227,7 +234,9 @@ extension ChoosePasswordViewController: ChoosePasswordViewDelegate {
             SVProgressHUD.showSuccess(withStatus: "title-done-lowercased".localized)
             
             SVProgressHUD.dismiss(withDelay: 1.0) {
-                self.open(.home(route: self.route), by: .launch)
+                self.dismiss(animated: false) {
+                    UIApplication.shared.rootViewController()?.setupTabBarController(withInitial: self.route)
+                }
             }
         }
     }

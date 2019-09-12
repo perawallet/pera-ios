@@ -69,6 +69,15 @@ extension API {
             .resultHandler(handler)
             .buildAndSend(self)
     }
+    
+    @discardableResult
+    func trackTransaction(with draft: TransactionTrackDraft) -> EndpointOperatable {
+        return Endpoint(path: Path("/api/transactions/"))
+            .base(Environment.current.mobileApi)
+            .httpMethod(.post)
+            .httpBody(draft)
+            .buildAndSend(self)
+    }
 }
 
 extension API {
