@@ -387,6 +387,8 @@
 		2B25BB49225EACB60092C972 /* RequestAlgosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B25BB48225EACB60092C972 /* RequestAlgosView.swift */; };
 		2B25BB4B225EAD600092C972 /* RequestAlgosPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B25BB4A225EAD600092C972 /* RequestAlgosPreviewViewController.swift */; };
 		2B25BB4D225EAD700092C972 /* RequestAlgosPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B25BB4C225EAD700092C972 /* RequestAlgosPreviewView.swift */; };
+		2B2A9F41232A403600450DB0 /* TransactionTrackDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2A9F40232A403600450DB0 /* TransactionTrackDraft.swift */; };
+		2B2A9F42232A403600450DB0 /* TransactionTrackDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2A9F40232A403600450DB0 /* TransactionTrackDraft.swift */; };
 		2B2F9F7822821C440068DBB5 /* AuctionChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2F9F7722821C440068DBB5 /* AuctionChartView.swift */; };
 		2B3F38FB228AEFF7008BBE75 /* AuctionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3F38FA228AEFF7008BBE75 /* AuctionCell.swift */; };
 		2B3F38FE228AF00C008BBE75 /* AuctionCellContextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3F38FD228AF00C008BBE75 /* AuctionCellContextView.swift */; };
@@ -831,6 +833,7 @@
 		2B25BB48225EACB60092C972 /* RequestAlgosView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestAlgosView.swift; sourceTree = "<group>"; };
 		2B25BB4A225EAD600092C972 /* RequestAlgosPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestAlgosPreviewViewController.swift; sourceTree = "<group>"; };
 		2B25BB4C225EAD700092C972 /* RequestAlgosPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestAlgosPreviewView.swift; sourceTree = "<group>"; };
+		2B2A9F40232A403600450DB0 /* TransactionTrackDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionTrackDraft.swift; sourceTree = "<group>"; };
 		2B2F9F7722821C440068DBB5 /* AuctionChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionChartView.swift; sourceTree = "<group>"; };
 		2B3F38FA228AEFF7008BBE75 /* AuctionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionCell.swift; sourceTree = "<group>"; };
 		2B3F38FD228AF00C008BBE75 /* AuctionCellContextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionCellContextView.swift; sourceTree = "<group>"; };
@@ -1275,6 +1278,7 @@
 				2BD5477623184704007179FE /* FeedbackDraft.swift */,
 				2B98233D231EC767009560CD /* BidDraft.swift */,
 				2BBA198B231FF7650080A6F6 /* DeviceRegistrationDraft.swift */,
+				2B2A9F40232A403600450DB0 /* TransactionTrackDraft.swift */,
 			);
 			path = Drafts;
 			sourceTree = "<group>";
@@ -3735,6 +3739,7 @@
 				17BD4ECF2292F1260003E49A /* SendAlgosPreviewView.swift in Sources */,
 				17BD4ED02292F1260003E49A /* IntroductionViewController.swift in Sources */,
 				17BD4ED12292F1260003E49A /* TransactionDetailView.swift in Sources */,
+				2B2A9F42232A403600450DB0 /* TransactionTrackDraft.swift in Sources */,
 				17BD4ED22292F1260003E49A /* OptionsViewController.swift in Sources */,
 				17BD4ED32292F1260003E49A /* algorand.xcdatamodeld in Sources */,
 				2B982345231ECC4B009560CD /* CoinlistUserQuery.swift in Sources */,
@@ -4093,6 +4098,7 @@
 				2BF3D835226F0FAA00716C09 /* TransactionDetailView.swift in Sources */,
 				2B656E93224BAF2E0064A49B /* OptionsViewController.swift in Sources */,
 				2B59F1392254BABF005203DD /* algorand.xcdatamodeld in Sources */,
+				2B2A9F41232A403600450DB0 /* TransactionTrackDraft.swift in Sources */,
 				2B25BB47225E03610092C972 /* DetailedInformationView.swift in Sources */,
 				2BD739F4223FF08000B66EEF /* NumpadView.swift in Sources */,
 				2B982344231ECC4B009560CD /* CoinlistUserQuery.swift in Sources */,
