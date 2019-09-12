@@ -83,10 +83,40 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 return
         }
         
-        if UIApplication.shared.applicationState == .active {
-            
+        guard let accountId = parseAccountId(from: algorandNotification) else {
+            if let message = algorandNotification.alert {
+                pushNotificationController.showMessage(message)
+            }
+            return
+        }
+        
+        handleNotificationActions(for: accountId, with: algorandNotification.details)
+    }
+    
+    private func parseAccountId(from algorandNotification: AlgorandNotification) -> String? {
+        guard let notificationDetails = algorandNotification.details,
+            let notificationType = notificationDetails.notificationType else {
+                return nil
+        }
+        
+        switch notificationType {
+        case .transactionReceived:
+            return notificationDetails.receiverAddress
+        case .transactionSent:
+            return notificationDetails.senderAddress
+        default:
+            return nil
+        }
+    }
+    
+    private func handleNotificationActions(for accountId: String, with notificationDetail: NotificationDetail?) {
+        if UIApplication.shared.applicationState == .active,
+            let notificationDetail = notificationDetail {
+            pushNotificationController.show(with: notificationDetail) {
+                self.rootViewController?.openAccount(with: accountId)
+            }
         } else {
-            
+            rootViewController?.openAccount(with: accountId)
         }
     }
     
@@ -201,31 +231,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func invalidateAccountManagerFetchPolling() {
         shouldInvalidateAccountFetch = true
-    }
-}
-
-extension AppDelegate: UNUserNotificationCenterDelegate {
-    
-    func userNotificationCenter(
-        _ center: UNUserNotificationCenter,
-        willPresent notification: UNNotification,
-        withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
-    ) {
-        let userInfo = notification.request.content.userInfo
-        print(userInfo)
-        pushNotificationController.show(with: "") {
-            
-        }
-        completionHandler([])
-    }
-    
-    func userNotificationCenter(
-        _ center: UNUserNotificationCenter,
-        didReceive response: UNNotificationResponse,
-        withCompletionHandler completionHandler: @escaping () -> Void
-    ) {
-        let userInfo = response.notification.request.content.userInfo
-        print("tap on on forground app", userInfo)
-        completionHandler()
     }
 }

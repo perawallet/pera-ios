@@ -234,7 +234,9 @@ extension ChoosePasswordViewController: ChoosePasswordViewDelegate {
             SVProgressHUD.showSuccess(withStatus: "title-done-lowercased".localized)
             
             SVProgressHUD.dismiss(withDelay: 1.0) {
-                self.open(.home(route: self.route), by: .launch)
+                self.dismiss(animated: false) {
+                    UIApplication.shared.rootViewController()?.setupTabBarController(withInitial: self.route)
+                }
             }
         }
     }

@@ -16,7 +16,7 @@ class RootViewController: UIViewController {
     
     private var router: Router?
     
-    private(set) lazy var tabBarViewController = TabBarController(route: nil, configuration: appConfiguration.all())
+    private(set) lazy var tabBarViewController = TabBarController(configuration: appConfiguration.all())
     
     // MARK: Initialization
     
@@ -39,6 +39,19 @@ class RootViewController: UIViewController {
         view.backgroundColor = SharedColors.warmWhite
         
         open(.splash, by: .launch, animated: false)
+    }
+    
+    func setupTabBarController(withInitial screen: Screen?) {
+        addChild(tabBarViewController)
+        view.addSubview(tabBarViewController.view)
+        
+        tabBarViewController.view.snp.makeConstraints { maker in
+            maker.edges.equalToSuperview()
+        }
+        
+        tabBarViewController.route = screen
+        
+        tabBarViewController.didMove(toParent: self)
     }
     
     func handleDeepLinkRouting(for screen: Screen) -> Bool {
@@ -79,7 +92,7 @@ class RootViewController: UIViewController {
                 open(.introduction(mode: .initialize), by: .launch, animated: false)
             }
         } else {
-            UIApplication.topViewController()?.tabBarController?.selectedIndex = 0
+            tabBarViewController.selectedIndex = 0
             
             if let controller = UIApplication.topViewController(),
                 let navigationController = controller.presentingViewController as? NavigationController,
@@ -90,7 +103,13 @@ class RootViewController: UIViewController {
                     (accountsViewController as? AccountsViewController)?.selectedAccount = account
                 }
             } else {
-                UIApplication.topViewController()?.open(.home(route: .accounts(account: account)), by: .set, animated: false)
+                if let viewController = tabBarViewController.accountsNavigationController.viewControllers.first as? AccountsViewController,
+                    let selectedAccount = viewController.accountSelectionViewController.selectedAccount,
+                        selectedAccount.address != account.address {
+                        viewController.accountSelectionViewController.selectedAccount = account
+                        viewController.accountSelectionViewController.accountsCollectionView.reloadData()
+                        viewController.updateSelectedAccount(account)
+                }
             }
         }
     }
@@ -105,9 +124,5 @@ class RootViewController: UIViewController {
     ) -> T? {
         
         return router?.route(to: screen, from: viewController, by: style, animated: animated, then: completion)
-    }
-    
-    func launch() {
-        open(.home(route: nil), by: .present, animated: false)
     }
 }

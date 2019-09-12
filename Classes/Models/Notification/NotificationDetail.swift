@@ -9,14 +9,16 @@
 import Magpie
 
 struct NotificationDetail: Model {
-    let address: String?
-    let amount: Double?
+    let senderAddress: String?
+    let receiverAddress: String?
+    let amount: Int64?
     let notificationType: Type?
 }
 
 extension NotificationDetail {
     enum CodingKeys: String, CodingKey {
-        case address = "public_key"
+        case senderAddress = "sender_public_key"
+        case receiverAddress = "receiver_public_key"
         case amount = "amount"
         case notificationType = "notification_type"
     }

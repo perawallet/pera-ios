@@ -43,7 +43,7 @@ class AccountsViewController: BaseViewController {
         return PushNotificationController(api: api)
     }()
     
-    private lazy var accountSelectionViewController = AccountSelectionViewController(configuration: configuration)
+    private(set) lazy var accountSelectionViewController = AccountSelectionViewController(configuration: configuration)
     
     private(set) var localAuthenticator = LocalAuthenticator()
     
@@ -77,17 +77,7 @@ class AccountsViewController: BaseViewController {
             
             accountSelectionViewController.selectedAccount = account
             accountSelectionViewController.accountsCollectionView.reloadData()
-            selectedAccount = account
-            
-            transactionHistoryDataSource.clear()
-            accountsView.transactionHistoryCollectionView.reloadData()
-            accountsView.transactionHistoryCollectionView.contentState = .loading
-            
-            fetchTransactions()
-            
-            adjustDefaultHeaderViewLayout(withContentInsetUpdate: true)
-            
-            updateLayout()
+            updateSelectedAccount(account)
         }
     }
     
@@ -222,7 +212,9 @@ class AccountsViewController: BaseViewController {
             switch route {
             case let .accounts(account):
                 self.route = nil
-                self.selectedAccount = account
+                accountSelectionViewController.selectedAccount = account
+                accountSelectionViewController.accountsCollectionView.reloadData()
+                self.updateSelectedAccount(account)
             default:
                 self.route = nil
                 open(route, by: .push, animated: false)
@@ -409,6 +401,10 @@ extension AccountsViewController {
 extension AccountsViewController: AccountSelectionViewControllerDelegate {
     
     func accountSelectionViewController(_ accountSelectionViewController: AccountSelectionViewController, didSelect account: Account) {
+        updateSelectedAccount(account)
+    }
+    
+    func updateSelectedAccount(_ account: Account) {
         selectedAccount = account
         
         transactionHistoryDataSource.clear()

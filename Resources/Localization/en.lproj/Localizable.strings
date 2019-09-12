@@ -392,3 +392,8 @@
 "total-rewards-pending-subtitle" = "*Pending rewards become confirmed when you send or receive algos.";
 "total-rewards-faq-title" = "For more information on Algorand Rewards, visit our FAQ.";
 "total-rewards-faq" = "FAQ.";
+
+// MARK: Notifications
+"notification-sent-success" = "Your transaction of %@ Algos from %@ to %@ is complete.";
+"notification-sent-failed" = "Your transaction of %@ Algos from %@ to %@ has failed.";
+"notification-received" = "\%@ Algos were sent to %@ by %@.";

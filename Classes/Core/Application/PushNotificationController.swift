@@ -32,6 +32,10 @@ class PushNotificationController: NSObject {
 
 extension PushNotificationController {
     func requestAuthorization() {
+        if UIApplication.shared.isRegisteredForRemoteNotifications {
+            return
+        }
+        
         UNUserNotificationCenter.current().requestAuthorization(options: [.badge, .sound, .alert]) { isGranted, _ in
             if !isGranted {
                 return
@@ -74,36 +78,124 @@ extension PushNotificationController {
 // MARK: Foreground
 
 extension PushNotificationController {
-    func show(with title: String, then handler: @escaping EmptyHandler) {
+    func show(with notificationDetail: NotificationDetail, then handler: EmptyHandler? = nil) {
+        guard let notificationType = notificationDetail.notificationType else {
+            return
+        }
+        
+        switch notificationType {
+        case .transactionSent:
+            displaySentNotification(with: notificationDetail, then: handler)
+        case .transactionReceived:
+            displayReceivedNotification(with: notificationDetail, then: handler)
+        case .transactionFailed:
+            displaySentNotification(with: notificationDetail, isFailed: true, then: handler
+            )
+        }
+    }
+    
+    private func displaySentNotification(
+        with notificationDetail: NotificationDetail,
+        isFailed: Bool = false,
+        then handler: EmptyHandler? = nil
+    ) {
+        guard let receiverAddress = notificationDetail.receiverAddress,
+            let senderAddress = notificationDetail.senderAddress else {
+                return
+        }
+        
+        if let amount = notificationDetail.amount?.toAlgos {
+            if let senderAccount = api.session.authenticatedUser?.account(address: senderAddress) {
+                Contact.fetchAll(entity: Contact.entityName, with: NSPredicate(format: "address = %@", receiverAddress)) { response in
+                    switch response {
+                    case let .results(objects: objects):
+                        guard let results = objects as? [Contact] else {
+                            return
+                        }
+                        
+                        let message = String(
+                            format: isFailed ? "notification-sent-failed".localized : "notification-sent-success".localized,
+                            "\(amount)",
+                            senderAccount.name ?? senderAddress,
+                            results.first?.name ?? receiverAddress
+                        )
+                        
+                        self.showMessage(message, then: handler)
+                    default:
+                        let message = String(
+                            format: isFailed ? "notification-sent-failed".localized : "notification-sent-success".localized,
+                            "\(amount)",
+                            (senderAccount.name ?? senderAddress),
+                            receiverAddress
+                        )
+                        
+                        self.showMessage(message, then: handler)
+                    }
+                }
+            }
+        }
+    }
+    
+    private func displayReceivedNotification(with notificationDetail: NotificationDetail, then handler: EmptyHandler? = nil) {
+        guard let receiverAddress = notificationDetail.receiverAddress,
+            let senderAddress = notificationDetail.senderAddress else {
+                return
+        }
+        
+        if let amount = notificationDetail.amount?.toAlgos {
+            if let receiverAccount = api.session.authenticatedUser?.account(address: receiverAddress) {
+                Contact.fetchAll(entity: Contact.entityName, with: NSPredicate(format: "address = %@", senderAddress)) { response in
+                    switch response {
+                    case let .results(objects: objects):
+                        guard let results = objects as? [Contact] else {
+                            return
+                        }
+                        
+                        let message = String(
+                            format: "notification-received".localized,
+                            "\(amount)",
+                            receiverAccount.name ?? receiverAddress,
+                            results.first?.name ?? senderAddress
+                        )
+                        
+                        self.showMessage(message, then: handler)
+                    default:
+                        let message = String(
+                            format: "notification-received".localized,
+                            "\(amount)",
+                            (receiverAccount.name ?? receiverAddress),
+                            senderAddress
+                        )
+                        self.showMessage(message, then: handler)
+                    }
+                }
+            }
+        }
+    }
+}
+
+// MARK: NotificationBannerSwift
+
+extension PushNotificationController {
+    func showMessage(_ title: String, then handler: EmptyHandler? = nil) {
         let banner = FloatingNotificationBanner(
             title: title,
-            subtitle: nil,
             titleFont: UIFont.font(.overpass, withWeight: .semiBold(size: 14.0)),
             titleColor: .black,
             titleTextAlign: .left,
-            subtitleFont: nil,
-            subtitleColor: nil,
-            subtitleTextAlign: nil,
-            leftView: nil,
-            rightView: nil,
-            style: .info,
-            colors: CustomBannerColors(),
-            iconPosition: .center
+            colors: CustomBannerColors()
         )
         
+        banner.duration = 3.0
+        
         banner.show(
-            queuePosition: .back,
-            bannerPosition: .top,
-            queue: .default,
-            on: nil,
             edgeInsets: UIEdgeInsets(top: 20.0, left: 10.0, bottom: 0.0, right: 10.0),
             cornerRadius: 10.0,
             shadowColor: rgba(0.0, 0.0, 0.0, 0.1),
             shadowOpacity: 1.0,
             shadowBlurRadius: 6.0,
             shadowCornerRadius: 6.0,
-            shadowOffset: UIOffset(horizontal: 0.0, vertical: 2.0),
-            shadowEdgeInsets: nil
+            shadowOffset: UIOffset(horizontal: 0.0, vertical: 2.0)
         )
         
         banner.onTap = handler
@@ -117,6 +209,8 @@ extension PushNotificationController {
         static let DefaultsDeviceTokenKey = "DefaultsDeviceTokenKey"
     }
 }
+
+// MARK: BannerColorsProtocol
 
 class CustomBannerColors: BannerColorsProtocol {
     internal func color(for style: BannerStyle) -> UIColor {
