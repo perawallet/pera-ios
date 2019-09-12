@@ -41,7 +41,11 @@ class RootViewController: UIViewController {
         open(.splash, by: .launch, animated: false)
     }
     
-    func setupTabBarController(withInitial screen: Screen?) {
+    func setupTabBarController(withInitial screen: Screen? = nil) {
+        if tabBarViewController.parent != nil {
+            return
+        }
+        
         addChild(tabBarViewController)
         view.addSubview(tabBarViewController.view)
         
@@ -52,6 +56,12 @@ class RootViewController: UIViewController {
         tabBarViewController.route = screen
         
         tabBarViewController.didMove(toParent: self)
+    }
+    
+    func addAccount(_ account: Account) {
+        if let viewController = tabBarViewController.accountsNavigationController.viewControllers.first as? AccountsViewController {
+            viewController.newAccount = account
+        }
     }
     
     func handleDeepLinkRouting(for screen: Screen) -> Bool {
