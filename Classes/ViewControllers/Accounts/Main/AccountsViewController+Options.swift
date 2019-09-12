@@ -133,6 +133,8 @@ extension AccountsViewController: OptionsViewControllerDelegate {
                 }
                 
                 self.selectedAccount = newDefaultAccount
+                self.accountSelectionViewController.selectedAccount = account
+                self.accountSelectionViewController.accountsCollectionView.reloadData()
                 
                 if isAccountDefault {
                     user.setDefaultAccount(newDefaultAccount)
