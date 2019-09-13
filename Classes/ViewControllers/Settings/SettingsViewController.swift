@@ -71,7 +71,7 @@ class SettingsViewController: BaseViewController {
 extension SettingsViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return isAuctionsEnabled ? 5 : 4
+        return isAuctionsEnabled ? 6 : 5
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -114,6 +114,16 @@ extension SettingsViewController: UICollectionViewDataSource {
             viewModel.configureInfo(cell, with: mode)
             
             return cell
+        case .rewards:
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: ToggleCell.reusableIdentifier,
+                for: indexPath) as? ToggleCell else {
+                    fatalError("Index path is out of bounds")
+            }
+            
+            let rewardDisplayPreference = session?.rewardDisplayPreference == .allowed
+            viewModel.configureToggle(cell, enabled: rewardDisplayPreference, with: mode, for: indexPath)
+            return cell
         case .coinlist:
             guard let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: CoinlistCell.reusableIdentifier,
@@ -140,7 +150,7 @@ extension SettingsViewController: UICollectionViewDelegateFlowLayout {
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
         
-        return CGSize(width: UIScreen.main.bounds.width, height: 80.0)
+        return CGSize(width: UIScreen.main.bounds.width, height: 80.0 * verticalScale)
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -164,35 +174,37 @@ extension SettingsViewController: UICollectionViewDelegateFlowLayout {
 extension SettingsViewController: SettingsViewModelDelegate {
     
     func settingsViewModel(_ viewModel: SettingsViewModel, didToggleValue value: Bool, atIndexPath indexPath: IndexPath) {
-        
         guard let mode = SettingsViewModel.SettingsCellMode(rawValue: indexPath.item),
-            mode == .localAuthentication else {
+            let cell = settingsView.collectionView.cellForItem(at: indexPath) as? SettingsToggleCell else {
             return
         }
         
-        guard let cell = settingsView.collectionView.cellForItem(at: indexPath) as? SettingsToggleCell else {
-            return
-        }
-        
-        if !value {
-            localAuthenticator.localAuthenticationStatus = .notAllowed
-            return
-        }
-        
-        if localAuthenticator.isLocalAuthenticationAvailable {
-            localAuthenticator.authenticate { error in
-                guard error == nil else {
-                    cell.contextView.toggle.setOn(false, animated: true)
-                    return
-                }
-                
-                self.localAuthenticator.localAuthenticationStatus = .allowed
+        switch mode {
+        case .localAuthentication:
+            if !value {
+                localAuthenticator.localAuthenticationStatus = .notAllowed
+                return
             }
             
+            if localAuthenticator.isLocalAuthenticationAvailable {
+                localAuthenticator.authenticate { error in
+                    guard error == nil else {
+                        cell.contextView.toggle.setOn(false, animated: true)
+                        return
+                    }
+                    
+                    self.localAuthenticator.localAuthenticationStatus = .allowed
+                }
+                
+                return
+            }
+            
+            presentDisabledLocalAuthenticationAlert()
+        case .rewards:
+            session?.rewardDisplayPreference = value ? .allowed : .disabled
+        default:
             return
         }
-        
-        presentDisabledLocalAuthenticationAlert()
     }
     
     private func presentDisabledLocalAuthenticationAlert() {
