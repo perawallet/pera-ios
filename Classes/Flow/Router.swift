@@ -204,8 +204,6 @@ class Router {
                 receiver: receiver,
                 configuration: configuration
             )
-        case let .sendAlgosSuccess(transaction, receiver):
-            viewController = SendAlgosSuccessViewController(transaction: transaction, receiver: receiver, configuration: configuration)
         case let .requestAlgos(account):
             viewController = RequestAlgosViewController(account: account, configuration: configuration)
         case let .requestAlgosPreview(transaction):

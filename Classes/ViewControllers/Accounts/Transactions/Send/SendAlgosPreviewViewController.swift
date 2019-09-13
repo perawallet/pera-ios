@@ -109,36 +109,13 @@ extension SendAlgosPreviewViewController: SendAlgosPreviewViewDelegate {
     }
 }
 
-// MARK: SendAlgosSuccessViewControllerDelegate
-
-extension SendAlgosPreviewViewController: SendAlgosSuccessViewControllerDelegate {
-    
-    func sendAlgosSuccessViewControllerDidTapDoneButton(_ sendAlgosSuccessViewController: SendAlgosSuccessViewController) {
-        navigationController?.popToRootViewController(animated: false)
-    }
-    
-    func sendAlgosSuccessViewControllerDidTapSendMoreButton(
-        _ sendAlgosSuccessViewController: SendAlgosSuccessViewController,
-        withReceiver state: AlgosReceiverState
-    ) {
-        closeScreen(by: .pop, animated: false)
-        
-        delegate?.sendAlgosPreviewViewControllerDidTapSendMoreButton(self, withReceiver: state)
-    }
-}
-
 extension SendAlgosPreviewViewController: TransactionManagerDelegate {
     func transactionManager(_ transactionManager: TransactionManager, didCompletedTransaction id: TransactionID) {
         SVProgressHUD.dismiss()
         
         self.transaction.identifier = id.identifier
         
-        let sendAlgosSuccessViewController = self.open(
-            .sendAlgosSuccess(transaction: self.transaction, receiver: self.receiver),
-            by: .present
-        ) as? SendAlgosSuccessViewController
-        
-        sendAlgosSuccessViewController?.delegate = self
+        navigationController?.popToRootViewController(animated: false)
     }
     
     func transactionManager(_ transactionManager: TransactionManager, didFailedTransaction error: Error) {

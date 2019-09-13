@@ -29,7 +29,6 @@ indirect enum Screen {
     case contactQRDisplay(contact: Contact)
     case sendAlgos(account: Account, receiver: AlgosReceiverState)
     case sendAlgosPreview(manager: TransactionManager, transaction: TransactionPreviewDraft, receiver: AlgosReceiverState)
-    case sendAlgosSuccess(transaction: TransactionPreviewDraft, receiver: AlgosReceiverState)
     case requestAlgos(account: Account)
     case requestAlgosPreview(transaction: TransactionPreviewDraft)
     case historyResults(draft: HistoryDraft)
