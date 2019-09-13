@@ -508,6 +508,8 @@
 		2B79A14E23167CA300766021 /* RewardAmountContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B79A14C23167CA300766021 /* RewardAmountContainerView.swift */; };
 		2B79A150231683E100766021 /* RewardsSwitchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B79A14F231683E100766021 /* RewardsSwitchView.swift */; };
 		2B79A151231683E100766021 /* RewardsSwitchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B79A14F231683E100766021 /* RewardsSwitchView.swift */; };
+		2B7ABF6B232BF58E0050B64B /* PendingTransactions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7ABF6A232BF58E0050B64B /* PendingTransactions.swift */; };
+		2B7ABF6C232BF58E0050B64B /* PendingTransactions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7ABF6A232BF58E0050B64B /* PendingTransactions.swift */; };
 		2B82B1C522535F4300A8909F /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B82B1C422535F4300A8909F /* Contact.swift */; };
 		2B82B1C82253A4F000A8909F /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B82B1C72253A4F000A8909F /* ContactCell.swift */; };
 		2B82B1CA2253A50100A8909F /* ContactContextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B82B1C92253A50100A8909F /* ContactContextView.swift */; };
@@ -927,6 +929,7 @@
 		2B79A14623167BFC00766021 /* RewardDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardDetailView.swift; sourceTree = "<group>"; };
 		2B79A14C23167CA300766021 /* RewardAmountContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardAmountContainerView.swift; sourceTree = "<group>"; };
 		2B79A14F231683E100766021 /* RewardsSwitchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsSwitchView.swift; sourceTree = "<group>"; };
+		2B7ABF6A232BF58E0050B64B /* PendingTransactions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingTransactions.swift; sourceTree = "<group>"; };
 		2B82B1C422535F4300A8909F /* Contact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
 		2B82B1C72253A4F000A8909F /* ContactCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
 		2B82B1C92253A50100A8909F /* ContactContextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactContextView.swift; sourceTree = "<group>"; };
@@ -1255,6 +1258,7 @@
 				175CE59A2295709F003F7C02 /* RoundDetail.swift */,
 				2B79A138231330D900766021 /* AlgoToDollarConversion.swift */,
 				2BD5477923192E15007179FE /* AlgorandError.swift */,
+				2B7ABF6A232BF58E0050B64B /* PendingTransactions.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -3578,6 +3582,7 @@
 				2B891EEB22BB6FEE003205F5 /* USDWireInstructionContextView.swift in Sources */,
 				17BD4E532292F1260003E49A /* TransactionHistoryCell.swift in Sources */,
 				17BD4E542292F1260003E49A /* Contact.swift in Sources */,
+				2B7ABF6C232BF58E0050B64B /* PendingTransactions.swift in Sources */,
 				17BD4E552292F1260003E49A /* ContactSelectionCell.swift in Sources */,
 				17BD4E562292F1260003E49A /* ModalPresenterInteractable.swift in Sources */,
 				2BCB5C7E22B38FA60038DA6B /* BalanceView.swift in Sources */,
@@ -3935,6 +3940,7 @@
 				2B891EEA22BB6FEE003205F5 /* USDWireInstructionContextView.swift in Sources */,
 				2BF34CB4223A87440052CAD3 /* BaseScrollViewController.swift in Sources */,
 				2BF71914224ED082001E8420 /* ContactQRDisplayView.swift in Sources */,
+				2B7ABF6B232BF58E0050B64B /* PendingTransactions.swift in Sources */,
 				2BF7190E224ECF4A001E8420 /* ContactInfoView.swift in Sources */,
 				17BEC45D2248C7D900AAF370 /* PassPhraseVerifyViewController.swift in Sources */,
 				2BCB5C7D22B38FA60038DA6B /* BalanceView.swift in Sources */,

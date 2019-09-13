@@ -24,6 +24,7 @@ class Transaction: Model {
     let lastRound: Int64
     let type: String
     let fromRewards: UInt64?
+    let poolError: String?
     
     var contact: Contact?
     
@@ -43,6 +44,7 @@ class Transaction: Model {
         lastRound = try container.decode(Int64.self, forKey: .lastRound)
         type = try container.decode(String.self, forKey: .type)
         fromRewards = try container.decodeIfPresent(UInt64.self, forKey: .fromRewards)
+        poolError = try container.decodeIfPresent(String.self, forKey: .poolError)
     }
 }
 
@@ -58,5 +60,6 @@ extension Transaction {
         case lastRound = "last-round"
         case type = "type"
         case fromRewards = "fromrewards"
+        case poolError = "poolerror"
     }
 }
