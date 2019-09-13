@@ -20,7 +20,7 @@ class TransactionHistoryDataSource: NSObject, UICollectionViewDataSource {
         static let numberOfRoundsInTwoDays: Int64 = 34560
     }
     
-    private var transactions = [Transaction]()
+    private var transactions = [TransactionItem]()
     
     private var contacts = [Contact]()
     
@@ -49,43 +49,55 @@ class TransactionHistoryDataSource: NSObject, UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: TransactionHistoryCell.reusableIdentifier,
-            for: indexPath) as? TransactionHistoryCell else {
-                fatalError("Index path is out of bounds")
-        }
-        
         if indexPath.item < transactions.count {
-            let transaction = transactions[indexPath.item]
-            
-            guard let payment = transaction.payment else {
+            if let transaction = transactions[indexPath.item] as? Transaction {
+                guard let cell = collectionView.dequeueReusableCell(
+                    withReuseIdentifier: TransactionHistoryCell.reusableIdentifier,
+                    for: indexPath) as? TransactionHistoryCell else {
+                        fatalError("Index path is out of bounds")
+                }
+                
+                guard let payment = transaction.payment else {
+                    return cell
+                }
+                
+                if payment.toAddress == viewModel.currentAccount?.address {
+                    if let contact = contacts.first(where: { contact -> Bool in
+                        contact.address == transaction.from
+                    }) {
+                        transaction.contact = contact
+                        
+                        viewModel.configure(cell, with: transaction, for: contact)
+                    } else {
+                        viewModel.configure(cell, with: transaction)
+                    }
+                } else {
+                    if let contact = contacts.first(where: { contact -> Bool in
+                        contact.address == transaction.payment?.toAddress
+                    }) {
+                        transaction.contact = contact
+                        
+                        viewModel.configure(cell, with: transaction, for: contact)
+                    } else {
+                        viewModel.configure(cell, with: transaction)
+                    }
+                }
+                
+                return cell
+            } else if let reward = transactions[indexPath.item] as? Reward {
+                guard let cell = collectionView.dequeueReusableCell(
+                    withReuseIdentifier: RewardCell.reusableIdentifier,
+                    for: indexPath) as? RewardCell else {
+                        fatalError("Index path is out of bounds")
+                }
+                
+                viewModel.configure(cell, with: reward)
+                
                 return cell
             }
-            
-            if payment.toAddress == viewModel.currentAccount?.address {
-                if let contact = contacts.first(where: { contact -> Bool in
-                    contact.address == transaction.from
-                }) {
-                    transaction.contact = contact
-                    
-                    viewModel.configure(cell, with: transaction, for: contact)
-                } else {
-                    viewModel.configure(cell, with: transaction)
-                }
-            } else {
-                if let contact = contacts.first(where: { contact -> Bool in
-                    contact.address == transaction.payment?.toAddress
-                }) {
-                    transaction.contact = contact
-                    
-                    viewModel.configure(cell, with: transaction, for: contact)
-                } else {
-                    viewModel.configure(cell, with: transaction)
-                }
-            }
         }
         
-        return cell
+        return UICollectionViewCell()
     }
     
     private func fetchContacts() {
@@ -120,7 +132,10 @@ extension TransactionHistoryDataSource {
     
     func transaction(at indexPath: IndexPath) -> Transaction? {
         if indexPath.item >= 0 && indexPath.item < transactions.count {
-            return transactions[indexPath.item]
+            guard let transaction = transactions[indexPath.item] as? Transaction else {
+                return nil
+            }
+            return transaction
         }
         
         return nil
@@ -253,8 +268,32 @@ extension TransactionHistoryDataSource {
             case let .failure(error):
                 handler(nil, error)
             case let .success(transactions):
-                self.transactions = transactions.transactions
+                if let rewardDisplayPreference = self.api?.session.rewardDisplayPreference,
+                    rewardDisplayPreference == .allowed {
+                    self.setRewards(from: transactions, for: account)
+                } else {
+                    self.transactions = transactions.transactions
+                }
+                
                 handler(transactions.transactions, nil)
+            }
+        }
+    }
+    
+    private func setRewards(from transactions: TransactionList, for account: Account) {
+        for transaction in transactions.transactions {
+            self.transactions.append(transaction)
+            if let payment = transaction.payment,
+                payment.toAddress == account.address {
+                if let rewards = transaction.payment?.rewards, rewards > 0 {
+                    let reward = Reward(amount: Int64(rewards))
+                    self.transactions.append(reward)
+                }
+            } else {
+                if let rewards = transaction.fromRewards, rewards > 0 {
+                    let reward = Reward(amount: Int64(rewards))
+                    self.transactions.append(reward)
+                }
             }
         }
     }

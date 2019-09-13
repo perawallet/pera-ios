@@ -15,7 +15,7 @@ class TransactionHistoryContextView: BaseView {
         let topInset: CGFloat = 22.0
         let bottomInset: CGFloat = 22.0
         let labelVerticalInset: CGFloat = 3.0
-        let separatorInset: CGFloat = 20.0
+        let separatorInset: CGFloat = 30.0
         let separatorHeight: CGFloat = 1.0
         let minimumHorizontalSpacing: CGFloat = 3.0
         let titleLabelRightInset: CGFloat = 125.0
