@@ -8,6 +8,7 @@
 
 import UIKit
 import SVProgressHUD
+import UserNotifications
 
 class SettingsViewController: BaseViewController {
     
@@ -71,7 +72,7 @@ class SettingsViewController: BaseViewController {
 extension SettingsViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return isAuctionsEnabled ? 6 : 5
+        return isAuctionsEnabled ? 7 : 6
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -104,15 +105,14 @@ extension SettingsViewController: UICollectionViewDataSource {
             viewModel.configureToggle(cell, enabled: localAuthenticationStatus, with: mode, for: indexPath)
             
             return cell
-        case .language:
+        case .notifications:
             guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: SettingsInfoCell.reusableIdentifier,
-                for: indexPath) as? SettingsInfoCell else {
+                withReuseIdentifier: ToggleCell.reusableIdentifier,
+                for: indexPath) as? ToggleCell else {
                     fatalError("Index path is out of bounds")
             }
             
-            viewModel.configureInfo(cell, with: mode)
-            
+            viewModel.configureToggle(cell, enabled: UIApplication.shared.isRegisteredForRemoteNotifications, with: mode, for: indexPath)
             return cell
         case .rewards:
             guard let cell = collectionView.dequeueReusableCell(
@@ -123,6 +123,16 @@ extension SettingsViewController: UICollectionViewDataSource {
             
             let rewardDisplayPreference = session?.rewardDisplayPreference == .allowed
             viewModel.configureToggle(cell, enabled: rewardDisplayPreference, with: mode, for: indexPath)
+            return cell
+        case .language:
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: SettingsInfoCell.reusableIdentifier,
+                for: indexPath) as? SettingsInfoCell else {
+                    fatalError("Index path is out of bounds")
+            }
+            
+            viewModel.configureInfo(cell, with: mode)
+            
             return cell
         case .coinlist:
             guard let cell = collectionView.dequeueReusableCell(
@@ -200,6 +210,12 @@ extension SettingsViewController: SettingsViewModelDelegate {
             }
             
             presentDisabledLocalAuthenticationAlert()
+        case .notifications:
+            if !value {
+                UIApplication.shared.unregisterForRemoteNotifications()
+            } else {
+                UIApplication.shared.registerForRemoteNotifications()
+            }
         case .rewards:
             session?.rewardDisplayPreference = value ? .allowed : .disabled
         default:
