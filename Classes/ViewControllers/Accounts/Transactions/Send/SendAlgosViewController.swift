@@ -201,7 +201,7 @@ class SendAlgosViewController: BaseScrollViewController {
         }
         
         if amount.toMicroAlgos < minimumTransactionMicroAlgosLimit {
-            let receiverAddress: String
+            var receiverAddress: String
             
             switch receiver {
             case let .address(address, _):
@@ -220,6 +220,8 @@ class SendAlgosViewController: BaseScrollViewController {
                 self.displaySimpleAlertWith(title: "title-error".localized, message: "send-algos-address-not-selected".localized)
                 return
             }
+            
+            receiverAddress = receiverAddress.trimmingCharacters(in: .whitespacesAndNewlines)
             
             let receiverFetchDraft = AccountFetchDraft(publicKey: receiverAddress)
             
