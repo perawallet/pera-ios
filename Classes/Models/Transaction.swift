@@ -25,6 +25,7 @@ class Transaction: Model {
     let type: String
     let fromRewards: UInt64?
     let poolError: String?
+    var status: Status?
     
     var contact: Contact?
     
@@ -61,5 +62,13 @@ extension Transaction {
         case type = "type"
         case fromRewards = "fromrewards"
         case poolError = "poolerror"
+    }
+}
+
+extension Transaction {
+    enum Status: String {
+        case pending = "Pending"
+        case completed = "Confirmed"
+        case failed = "Failed"
     }
 }

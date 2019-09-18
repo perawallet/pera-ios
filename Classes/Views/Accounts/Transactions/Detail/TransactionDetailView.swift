@@ -39,6 +39,13 @@ class TransactionDetailView: BaseView {
     
     // MARK: Components
     
+    private(set) lazy var transactionStatusView: DetailedInformationView = {
+        let transactionStatusView = DetailedInformationView()
+        transactionStatusView.explanationLabel.text = "transaction-detail-status".localized
+        transactionStatusView.detailLabel.textColor = SharedColors.darkGray
+        return transactionStatusView
+    }()
+    
     private(set) lazy var transactionAmountView: DetailedInformationView = {
         let view = DetailedInformationView(mode: .algos)
         view.explanationLabel.text = "transaction-detail-amount".localized
@@ -108,6 +115,7 @@ class TransactionDetailView: BaseView {
     // MARK: Layout
     
     override func prepareLayout() {
+        setupTransactionStatusViewLayout()
         setupTransactionAmountViewLayout()
         
         if transactionType == .received {
@@ -124,13 +132,23 @@ class TransactionDetailView: BaseView {
         setupRewardViewLayout()
     }
     
+    private func setupTransactionStatusViewLayout() {
+        addSubview(transactionStatusView)
+        
+        transactionStatusView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(layout.current.amountViewHeight)
+            make.top.equalToSuperview().inset(layout.current.amountViewTopInset)
+        }
+    }
+    
     private func setupTransactionAmountViewLayout() {
         addSubview(transactionAmountView)
         
         transactionAmountView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(layout.current.amountViewHeight)
-            make.top.equalToSuperview().inset(layout.current.amountViewTopInset)
+            make.top.equalTo(transactionStatusView.snp.bottom)
         }
     }
     

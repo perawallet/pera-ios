@@ -253,8 +253,26 @@ extension TransactionHistoryDataSource {
             case let .failure(error):
                 handler(nil, error)
             case let .success(transactions):
+                transactions.transactions.forEach { transaction in
+                    transaction.status = .completed
+                }
                 self.transactions = transactions.transactions
                 handler(transactions.transactions, nil)
+            }
+        }
+    }
+    
+    func fetchPendingTransactions(for account: Account, then handler: @escaping ([Transaction]?, Error?) -> Void) {
+        api?.fetchPendingTransactions(for: account.address) { response in
+            switch response {
+            case let .success(pendingTransactions):
+                pendingTransactions.transactions.forEach { transaction in
+                    transaction.status = .pending
+                }
+                self.transactions.insert(contentsOf: pendingTransactions.transactions, at: 0)
+                handler(pendingTransactions.transactions, nil)
+            case let .failure(error):
+                handler(nil, error)
             }
         }
     }

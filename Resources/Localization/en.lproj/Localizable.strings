@@ -265,6 +265,7 @@
 // MARK: Transaction Detail
 
 "transaction-detail-title" = "Transaction Detail";
+"transaction-detail-status" = "Status:";
 "transaction-detail-round" = "Round:";
 "transaction-detail-amount" = "Amount:";
 "transaction-detail-reward" = "Reward:";
