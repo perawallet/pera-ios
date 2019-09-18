@@ -9,6 +9,7 @@
 import UIKit
 import SnapKit
 import SVProgressHUD
+import Magpie
 
 class SendAlgosViewController: BaseScrollViewController {
     
@@ -508,8 +509,15 @@ extension SendAlgosViewController: TransactionManagerDelegate {
         sendAlgosPreviewViewController?.delegate = self
     }
     
-    func transactionManagerDidFailedComposingTransactionData(_ transactionManager: TransactionManager) {
+    func transactionManager(_ transactionManager: TransactionManager, didFailedComposing error: Error) {
+        SVProgressHUD.dismiss()
         
+        switch error {
+        case .networkUnavailable:
+            displaySimpleAlertWith(title: "title-error".localized, message: "title-internet-connection".localized)
+        default:
+            displaySimpleAlertWith(title: "title-error".localized, message: error.localizedDescription)
+        }
     }
 }
 

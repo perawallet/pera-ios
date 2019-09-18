@@ -120,6 +120,12 @@ extension SendAlgosPreviewViewController: TransactionManagerDelegate {
     
     func transactionManager(_ transactionManager: TransactionManager, didFailedTransaction error: Error) {
         SVProgressHUD.dismiss()
-        displaySimpleAlertWith(title: "title-error".localized, message: error.localizedDescription)
+        
+        switch error {
+        case .networkUnavailable:
+            displaySimpleAlertWith(title: "title-error".localized, message: "title-internet-connection".localized)
+        default:
+            displaySimpleAlertWith(title: "title-error".localized, message: error.localizedDescription)
+        }
     }
 }

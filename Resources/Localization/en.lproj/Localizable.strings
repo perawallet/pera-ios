@@ -33,6 +33,7 @@
 "default-error-message" = "An error occured.";
 "title-send-algos-uppercase" = "SEND ALGOS";
 "title-max" = "MAX";
+"title-internet-connection" = "The internet connection appears to be offline.";
 
 // MARK: Tabbar
 

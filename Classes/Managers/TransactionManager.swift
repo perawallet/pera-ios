@@ -11,7 +11,7 @@ import Crypto
 
 protocol TransactionManagerDelegate: class {
     func transactionManagerDidComposedTransactionData(_ transactionManager: TransactionManager)
-    func transactionManagerDidFailedComposingTransactionData(_ transactionManager: TransactionManager)
+    func transactionManager(_ transactionManager: TransactionManager, didFailedComposing error: Error)
     func transactionManager(_ transactionManager: TransactionManager, didCompletedTransaction id: TransactionID)
     func transactionManager(_ transactionManager: TransactionManager, didFailedTransaction error: Error)
 }
@@ -21,7 +21,7 @@ extension TransactionManagerDelegate {
         
     }
     
-    func transactionManagerDidFailedComposingTransactionData(_ transactionManager: TransactionManager) {
+    func transactionManager(_ transactionManager: TransactionManager, didFailedComposing error: Error) {
         
     }
     
@@ -53,8 +53,8 @@ class TransactionManager {
             case let .success(params):
                 self.params = params
                 self.generateSignedData(for: account, isMaxValue: isMaxValue)
-            case .failure:
-                self.delegate?.transactionManagerDidFailedComposingTransactionData(self)
+            case let .failure(error):
+                self.delegate?.transactionManager(self, didFailedComposing: error)
             }
         }
     }
@@ -62,7 +62,7 @@ class TransactionManager {
     private func generateSignedData(for account: Account, isMaxValue: Bool, initialFee: Int64 = 274) {
         guard let params = params,
             let transaction = transaction else {
-            delegate?.transactionManagerDidFailedComposingTransactionData(self)
+                delegate?.transactionManager(self, didFailedComposing: .custom(nil))
             return
         }
         
@@ -95,7 +95,7 @@ class TransactionManager {
             params.genesisHashData,
             &transactionError
         ) else {
-            delegate?.transactionManagerDidFailedComposingTransactionData(self)
+            delegate?.transactionManager(self, didFailedComposing: .custom(transactionError))
             return
         }
         
@@ -103,7 +103,7 @@ class TransactionManager {
         
         guard let privateData = api.session.privateData(forAccount: transaction.fromAccount.address),
             let signedTransactionData = CryptoSignTransaction(privateData, transactionData, &signedTransactionError) else {
-                delegate?.transactionManagerDidFailedComposingTransactionData(self)
+                delegate?.transactionManager(self, didFailedComposing: .custom(signedTransactionError))
                 return
         }
         
