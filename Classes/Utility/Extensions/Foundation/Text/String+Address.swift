@@ -8,7 +8,7 @@
 
 import Foundation
 
-private let validatedAddressLength = 58
+let validatedAddressLength = 58
 
 extension String {
     
