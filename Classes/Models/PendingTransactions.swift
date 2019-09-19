@@ -8,14 +8,6 @@
 
 import Magpie
 
-class PendingTransactions: Model {
-    var transactions: [Transaction]
-    var count: Int
-}
-
-extension PendingTransactions {
-    private enum CodingKeys: String, CodingKey {
-        case transactions = "truncatedTxns"
-        case count = "totalTxns"
-    }
+struct PendingTransactions: Model {
+    var transactions: [Transaction]?
 }

@@ -49,43 +49,84 @@ class TransactionHistoryDataSource: NSObject, UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: TransactionHistoryCell.reusableIdentifier,
-            for: indexPath) as? TransactionHistoryCell else {
-                fatalError("Index path is out of bounds")
-        }
-        
         if indexPath.item < transactions.count {
             let transaction = transactions[indexPath.item]
             
-            guard let payment = transaction.payment else {
+            switch transaction.status {
+            case .completed:
+                guard let cell = collectionView.dequeueReusableCell(
+                    withReuseIdentifier: TransactionHistoryCell.reusableIdentifier,
+                    for: indexPath) as? TransactionHistoryCell else {
+                        fatalError("Index path is out of bounds")
+                }
+                
+                guard let payment = transaction.payment else {
+                    return cell
+                }
+                
+                if payment.toAddress == viewModel.currentAccount?.address {
+                    if let contact = contacts.first(where: { contact -> Bool in
+                        contact.address == transaction.from
+                    }) {
+                        transaction.contact = contact
+                        
+                        viewModel.configure(cell.contextView, with: transaction, for: contact)
+                    } else {
+                        viewModel.configure(cell.contextView, with: transaction)
+                    }
+                } else {
+                    if let contact = contacts.first(where: { contact -> Bool in
+                        contact.address == transaction.payment?.toAddress
+                    }) {
+                        transaction.contact = contact
+                        
+                        viewModel.configure(cell.contextView, with: transaction, for: contact)
+                    } else {
+                        viewModel.configure(cell.contextView, with: transaction)
+                    }
+                }
+                
                 return cell
-            }
-            
-            if payment.toAddress == viewModel.currentAccount?.address {
-                if let contact = contacts.first(where: { contact -> Bool in
-                    contact.address == transaction.from
-                }) {
-                    transaction.contact = contact
-                    
-                    viewModel.configure(cell, with: transaction, for: contact)
-                } else {
-                    viewModel.configure(cell, with: transaction)
+            case .pending:
+                guard let cell = collectionView.dequeueReusableCell(
+                    withReuseIdentifier: PendingTransactionCell.reusableIdentifier,
+                    for: indexPath) as? PendingTransactionCell else {
+                        fatalError("Index path is out of bounds")
                 }
-            } else {
-                if let contact = contacts.first(where: { contact -> Bool in
-                    contact.address == transaction.payment?.toAddress
-                }) {
-                    transaction.contact = contact
-                    
-                    viewModel.configure(cell, with: transaction, for: contact)
-                } else {
-                    viewModel.configure(cell, with: transaction)
+                
+                guard let payment = transaction.payment else {
+                    return cell
                 }
+                
+                if payment.toAddress == viewModel.currentAccount?.address {
+                    if let contact = contacts.first(where: { contact -> Bool in
+                        contact.address == transaction.from
+                    }) {
+                        transaction.contact = contact
+                        
+                        viewModel.configure(cell.contextView, with: transaction, for: contact)
+                    } else {
+                        viewModel.configure(cell.contextView, with: transaction)
+                    }
+                } else {
+                    if let contact = contacts.first(where: { contact -> Bool in
+                        contact.address == transaction.payment?.toAddress
+                    }) {
+                        transaction.contact = contact
+                        
+                        viewModel.configure(cell.contextView, with: transaction, for: contact)
+                    } else {
+                        viewModel.configure(cell.contextView, with: transaction)
+                    }
+                }
+                
+                return cell
+            case .failed:
+                fatalError("Index path is out of bounds")
             }
         }
         
-        return cell
+        fatalError("Index path is out of bounds")
     }
     
     private func fetchContacts() {
@@ -265,12 +306,15 @@ extension TransactionHistoryDataSource {
     func fetchPendingTransactions(for account: Account, then handler: @escaping ([Transaction]?, Error?) -> Void) {
         api?.fetchPendingTransactions(for: account.address) { response in
             switch response {
-            case let .success(pendingTransactions):
-                pendingTransactions.transactions.forEach { transaction in
+            case let .success(pendingTransactionList):
+                guard let pendingTransactions = pendingTransactionList.pendingTransactions.transactions else {
+                    return
+                }
+                pendingTransactions.forEach { transaction in
                     transaction.status = .pending
                 }
-                self.transactions.insert(contentsOf: pendingTransactions.transactions, at: 0)
-                handler(pendingTransactions.transactions, nil)
+                self.transactions.insert(contentsOf: pendingTransactions, at: 0)
+                handler(pendingTransactionList.pendingTransactions.transactions, nil)
             case let .failure(error):
                 handler(nil, error)
             }

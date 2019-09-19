@@ -327,7 +327,7 @@
 		17BD4F032292F1260003E49A /* SingleLineInputField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8954C1224404B700D6D068 /* SingleLineInputField.swift */; };
 		17BD4F052292F1260003E49A /* PollingOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF53173224A940E00A7455F /* PollingOperation.swift */; };
 		17BD4F062292F1260003E49A /* AccountManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F9E926225796DA004CDF24 /* AccountManager.swift */; };
-		17BD4F152292F1260003E49A /* SuccessAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 2BFBAB71227B349E008BBB31 /* SuccessAnimation.json */; };
+		17BD4F152292F1260003E49A /* LoadingAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 2BFBAB71227B349E008BBB31 /* LoadingAnimation.json */; };
 		17BD4F172292F1260003E49A /* images in Resources */ = {isa = PBXBuildFile; fileRef = 2BFBAB74227B35B7008BBB31 /* images */; };
 		17BD4F192292F1260003E49A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2B09603722578C990005BE27 /* GoogleService-Info.plist */; };
 		17BD4F1A2292F1260003E49A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2B8BE4DA22391C3B005D8565 /* LaunchScreen.storyboard */; };
@@ -510,6 +510,14 @@
 		2B79A151231683E100766021 /* RewardsSwitchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B79A14F231683E100766021 /* RewardsSwitchView.swift */; };
 		2B7ABF6B232BF58E0050B64B /* PendingTransactions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7ABF6A232BF58E0050B64B /* PendingTransactions.swift */; };
 		2B7ABF6C232BF58E0050B64B /* PendingTransactions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7ABF6A232BF58E0050B64B /* PendingTransactions.swift */; };
+		2B7ABF6E2332DCDB0050B64B /* PendingTransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7ABF6D2332DCDB0050B64B /* PendingTransactionCell.swift */; };
+		2B7ABF6F2332DCDB0050B64B /* PendingTransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7ABF6D2332DCDB0050B64B /* PendingTransactionCell.swift */; };
+		2B7ABF712332DCF50050B64B /* PendingTransactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7ABF702332DCF50050B64B /* PendingTransactionView.swift */; };
+		2B7ABF722332DCF50050B64B /* PendingTransactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7ABF702332DCF50050B64B /* PendingTransactionView.swift */; };
+		2B7ABF74233386B60050B64B /* LoadingSpinnerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7ABF73233386B60050B64B /* LoadingSpinnerView.swift */; };
+		2B7ABF75233386B60050B64B /* LoadingSpinnerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7ABF73233386B60050B64B /* LoadingSpinnerView.swift */; };
+		2B7ABF77233388570050B64B /* PendingTransactionList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7ABF76233388570050B64B /* PendingTransactionList.swift */; };
+		2B7ABF78233388570050B64B /* PendingTransactionList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7ABF76233388570050B64B /* PendingTransactionList.swift */; };
 		2B82B1C522535F4300A8909F /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B82B1C422535F4300A8909F /* Contact.swift */; };
 		2B82B1C82253A4F000A8909F /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B82B1C72253A4F000A8909F /* ContactCell.swift */; };
 		2B82B1CA2253A50100A8909F /* ContactContextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B82B1C92253A50100A8909F /* ContactContextView.swift */; };
@@ -737,7 +745,7 @@
 		2BF71916224ED0A6001E8420 /* AddContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF71915224ED0A6001E8420 /* AddContactViewController.swift */; };
 		2BF71918224ED0C5001E8420 /* ContactInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF71917224ED0C5001E8420 /* ContactInfoViewController.swift */; };
 		2BF7191A224ED0E8001E8420 /* ContactQRDisplayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF71919224ED0E8001E8420 /* ContactQRDisplayViewController.swift */; };
-		2BFBAB72227B349E008BBB31 /* SuccessAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 2BFBAB71227B349E008BBB31 /* SuccessAnimation.json */; };
+		2BFBAB72227B349E008BBB31 /* LoadingAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 2BFBAB71227B349E008BBB31 /* LoadingAnimation.json */; };
 		2BFBAB75227B35B7008BBB31 /* images in Resources */ = {isa = PBXBuildFile; fileRef = 2BFBAB74227B35B7008BBB31 /* images */; };
 		654E149E940D74AF3955EEF3 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		DCD3EE7678029738F4171F22 /* Pods_algorand_staging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BDB953015FF2F948F5734D7 /* Pods_algorand_staging.framework */; };
@@ -930,6 +938,10 @@
 		2B79A14C23167CA300766021 /* RewardAmountContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardAmountContainerView.swift; sourceTree = "<group>"; };
 		2B79A14F231683E100766021 /* RewardsSwitchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsSwitchView.swift; sourceTree = "<group>"; };
 		2B7ABF6A232BF58E0050B64B /* PendingTransactions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingTransactions.swift; sourceTree = "<group>"; };
+		2B7ABF6D2332DCDB0050B64B /* PendingTransactionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingTransactionCell.swift; sourceTree = "<group>"; };
+		2B7ABF702332DCF50050B64B /* PendingTransactionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingTransactionView.swift; sourceTree = "<group>"; };
+		2B7ABF73233386B60050B64B /* LoadingSpinnerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingSpinnerView.swift; sourceTree = "<group>"; };
+		2B7ABF76233388570050B64B /* PendingTransactionList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingTransactionList.swift; sourceTree = "<group>"; };
 		2B82B1C422535F4300A8909F /* Contact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
 		2B82B1C72253A4F000A8909F /* ContactCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
 		2B82B1C92253A50100A8909F /* ContactContextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactContextView.swift; sourceTree = "<group>"; };
@@ -1117,7 +1129,7 @@
 		2BF71915224ED0A6001E8420 /* AddContactViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddContactViewController.swift; sourceTree = "<group>"; };
 		2BF71917224ED0C5001E8420 /* ContactInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactInfoViewController.swift; sourceTree = "<group>"; };
 		2BF71919224ED0E8001E8420 /* ContactQRDisplayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactQRDisplayViewController.swift; sourceTree = "<group>"; };
-		2BFBAB71227B349E008BBB31 /* SuccessAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SuccessAnimation.json; sourceTree = "<group>"; };
+		2BFBAB71227B349E008BBB31 /* LoadingAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LoadingAnimation.json; sourceTree = "<group>"; };
 		2BFBAB74227B35B7008BBB31 /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = images; sourceTree = "<group>"; };
 		3BEF6555A275CB49FF59C5E2 /* Pods_algorand.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_algorand.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		44FD8F3D210C1D99893A91DF /* Pods-algorand.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand.release.xcconfig"; path = "Pods/Target Support Files/Pods-algorand/Pods-algorand.release.xcconfig"; sourceTree = "<group>"; };
@@ -1259,6 +1271,7 @@
 				2B79A138231330D900766021 /* AlgoToDollarConversion.swift */,
 				2BD5477923192E15007179FE /* AlgorandError.swift */,
 				2B7ABF6A232BF58E0050B64B /* PendingTransactions.swift */,
+				2B7ABF76233388570050B64B /* PendingTransactionList.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -2817,6 +2830,7 @@
 			isa = PBXGroup;
 			children = (
 				2BDE9CD3224E1E91007EFF30 /* LoadingIndicator.swift */,
+				2B7ABF73233386B60050B64B /* LoadingSpinnerView.swift */,
 			);
 			path = Loading;
 			sourceTree = "<group>";
@@ -2837,6 +2851,8 @@
 				2BDE9CDB224E2379007EFF30 /* TransactionHistoryContextView.swift */,
 				2B79A125230DD31E00766021 /* AccountNameView.swift */,
 				2B79A128230DD32B00766021 /* AccountNameCell.swift */,
+				2B7ABF6D2332DCDB0050B64B /* PendingTransactionCell.swift */,
+				2B7ABF702332DCF50050B64B /* PendingTransactionView.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -3116,18 +3132,18 @@
 		2BFBAB73227B35A6008BBB31 /* Animations */ = {
 			isa = PBXGroup;
 			children = (
-				2BFBAB76227B35CC008BBB31 /* SuccessAnimation */,
+				2BFBAB76227B35CC008BBB31 /* LoadingAnimation */,
 			);
 			path = Animations;
 			sourceTree = "<group>";
 		};
-		2BFBAB76227B35CC008BBB31 /* SuccessAnimation */ = {
+		2BFBAB76227B35CC008BBB31 /* LoadingAnimation */ = {
 			isa = PBXGroup;
 			children = (
-				2BFBAB71227B349E008BBB31 /* SuccessAnimation.json */,
+				2BFBAB71227B349E008BBB31 /* LoadingAnimation.json */,
 				2BFBAB74227B35B7008BBB31 /* images */,
 			);
-			path = SuccessAnimation;
+			path = LoadingAnimation;
 			sourceTree = "<group>";
 		};
 		9F18DC6D0E56430348850CDE /* Frameworks */ = {
@@ -3250,7 +3266,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2B43B83522A73A3800CEA8F3 /* Overpass-SemiBold.otf in Resources */,
-				17BD4F152292F1260003E49A /* SuccessAnimation.json in Resources */,
+				17BD4F152292F1260003E49A /* LoadingAnimation.json in Resources */,
 				2B43B82B22A73A3800CEA8F3 /* AvenirNext-Bold.ttf in Resources */,
 				17BD4F172292F1260003E49A /* images in Resources */,
 				2B43B83722A73A3800CEA8F3 /* AvenirNext-DemiBold.ttf in Resources */,
@@ -3271,7 +3287,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2B43B83422A73A3800CEA8F3 /* Overpass-SemiBold.otf in Resources */,
-				2BFBAB72227B349E008BBB31 /* SuccessAnimation.json in Resources */,
+				2BFBAB72227B349E008BBB31 /* LoadingAnimation.json in Resources */,
 				2B43B82A22A73A3800CEA8F3 /* AvenirNext-Bold.ttf in Resources */,
 				2BFBAB75227B35B7008BBB31 /* images in Resources */,
 				2B43B83622A73A3800CEA8F3 /* AvenirNext-DemiBold.ttf in Resources */,
@@ -3576,6 +3592,7 @@
 				2BBA198D231FF7650080A6F6 /* DeviceRegistrationDraft.swift in Sources */,
 				17BD4E4F2292F1260003E49A /* API+Node.swift in Sources */,
 				2BBA198A231FEB080080A6F6 /* API+Notification.swift in Sources */,
+				2B7ABF722332DCF50050B64B /* PendingTransactionView.swift in Sources */,
 				17BD4E502292F1260003E49A /* LocalAuthenticationPreferenceView.swift in Sources */,
 				17BD4E512292F1260003E49A /* ALGBarButtonItem.swift in Sources */,
 				17BD4E522292F1260003E49A /* TransactionList.swift in Sources */,
@@ -3639,6 +3656,7 @@
 				17BD4E7F2292F1260003E49A /* QRCreationViewController.swift in Sources */,
 				2B891F0A22BC1BC3003205F5 /* DepositTypeSelectionView.swift in Sources */,
 				17BD4E802292F1260003E49A /* PastAuctionsEmptyView.swift in Sources */,
+				2B7ABF6F2332DCDB0050B64B /* PendingTransactionCell.swift in Sources */,
 				17BD4E812292F1260003E49A /* Storable.swift in Sources */,
 				17BD4E822292F1260003E49A /* QRScannerOverlayView.swift in Sources */,
 				2B891EFE22BB71BC003205F5 /* DepositTransactionHeaderView.swift in Sources */,
@@ -3694,6 +3712,7 @@
 				17BD4EAF2292F1260003E49A /* AuctionSliderView.swift in Sources */,
 				17BD4EB02292F1260003E49A /* UIVIewController+Presentation.swift in Sources */,
 				17BD4EB12292F1260003E49A /* String+Address.swift in Sources */,
+				2B7ABF78233388570050B64B /* PendingTransactionList.swift in Sources */,
 				17BD4EB22292F1260003E49A /* Transaction.swift in Sources */,
 				17BD4EB32292F1260003E49A /* UIFont+Additions.swift in Sources */,
 				17BD4EB42292F1260003E49A /* AccountListView.swift in Sources */,
@@ -3764,6 +3783,7 @@
 				17BD4EE92292F1260003E49A /* BaseView.swift in Sources */,
 				17BD4EEA2292F1260003E49A /* AuctionViewController.swift in Sources */,
 				17BD4EEB2292F1260003E49A /* QRText.swift in Sources */,
+				2B7ABF75233386B60050B64B /* LoadingSpinnerView.swift in Sources */,
 				17BD4EEC2292F1260003E49A /* AuctionDetailHeaderButton.swift in Sources */,
 				17BD4EED2292F1260003E49A /* ContactsView.swift in Sources */,
 				17BD4EEE2292F1260003E49A /* UIViewController+Additions.swift in Sources */,
@@ -3934,6 +3954,7 @@
 				2BBA198C231FF7650080A6F6 /* DeviceRegistrationDraft.swift in Sources */,
 				2BDE9CDC224E2379007EFF30 /* TransactionHistoryContextView.swift in Sources */,
 				2BBA1989231FEB080080A6F6 /* API+Notification.swift in Sources */,
+				2B7ABF712332DCF50050B64B /* PendingTransactionView.swift in Sources */,
 				170AFAFE224CCBF300520EA5 /* QRView.swift in Sources */,
 				2B3F3903228B7505008BBE75 /* RemainingAlgosView.swift in Sources */,
 				2BF53161224A476600A7455F /* CardModalPresenter.swift in Sources */,
@@ -3997,6 +4018,7 @@
 				2B3F38FB228AEFF7008BBE75 /* AuctionCell.swift in Sources */,
 				2B891F0922BC1BC3003205F5 /* DepositTypeSelectionView.swift in Sources */,
 				2B1B77B6229567360021A6CC /* MyBidsViewModel.swift in Sources */,
+				2B7ABF6E2332DCDB0050B64B /* PendingTransactionCell.swift in Sources */,
 				2B1B77C522963C3E0021A6CC /* CoinlistAuthenticationDraft.swift in Sources */,
 				17B7D8A82240DFFC00A6FF9E /* API+Account.swift in Sources */,
 				2B891EFD22BB71BC003205F5 /* DepositTransactionHeaderView.swift in Sources */,
@@ -4052,6 +4074,7 @@
 				2BA09A8C229369BD009DC24D /* LimitOrderCellContextView.swift in Sources */,
 				2B656E97224BB9F80064A49B /* AccountListView.swift in Sources */,
 				2B3F3918228DCDB3008BBE75 /* PastAuctionsEmptyCell.swift in Sources */,
+				2B7ABF77233388570050B64B /* PendingTransactionList.swift in Sources */,
 				2BF34CA02239ACDC0052CAD3 /* AppConfiguration.swift in Sources */,
 				17D50AA1225C755E00CA9C6E /* ApplicationConfiguration.swift in Sources */,
 				2B3F3910228C4DC0008BBE75 /* CoinlistTransaction.swift in Sources */,
@@ -4122,6 +4145,7 @@
 				2B8BE4F4223935DA005D8565 /* BaseView.swift in Sources */,
 				2BDE31E62279E1D2002E8235 /* AuctionViewController.swift in Sources */,
 				170AFAFC224CC70A00520EA5 /* QRText.swift in Sources */,
+				2B7ABF74233386B60050B64B /* LoadingSpinnerView.swift in Sources */,
 				2B653314228F66BC00F19FEA /* AuctionDetailHeaderButton.swift in Sources */,
 				2BF71912224ECFEC001E8420 /* ContactsView.swift in Sources */,
 				2B89549F2242D90000D6D068 /* UIViewController+Additions.swift in Sources */,

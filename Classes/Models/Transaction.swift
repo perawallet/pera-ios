@@ -25,7 +25,7 @@ class Transaction: Model {
     let type: String
     let fromRewards: UInt64?
     let poolError: String?
-    var status: Status?
+    var status: Status
     
     var contact: Contact?
     
@@ -46,6 +46,7 @@ class Transaction: Model {
         type = try container.decode(String.self, forKey: .type)
         fromRewards = try container.decodeIfPresent(UInt64.self, forKey: .fromRewards)
         poolError = try container.decodeIfPresent(String.self, forKey: .poolError)
+        status = .pending
     }
 }
 

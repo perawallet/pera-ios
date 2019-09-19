@@ -79,15 +79,13 @@ class TransactionDetailViewModel {
     }
     
     private func configureTransactionStatus(for transaction: Transaction, in view: TransactionDetailView) {
-        if let status = transaction.status {
-            view.transactionStatusView.detailLabel.text = status.rawValue
-            view.transactionStatusView.detailLabel.font = UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))
-            switch status {
-            case .completed:
-                view.transactionStatusView.detailLabel.textColor = SharedColors.purple
-            default:
-                view.lastRoundView.isHidden = true
-            }
+        view.transactionStatusView.detailLabel.text = transaction.status.rawValue
+        view.transactionStatusView.detailLabel.font = UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))
+        switch transaction.status {
+        case .completed:
+            view.transactionStatusView.detailLabel.textColor = SharedColors.purple
+        default:
+            view.lastRoundView.isHidden = true
         }
     }
 }
