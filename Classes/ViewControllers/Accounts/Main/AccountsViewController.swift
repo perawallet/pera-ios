@@ -45,6 +45,8 @@ class AccountsViewController: BaseViewController {
         return PushNotificationController(api: api)
     }()
     
+    private var pollingOperation: PollingOperation?
+    
     private(set) lazy var accountSelectionViewController = AccountSelectionViewController(configuration: configuration)
     
     private(set) var localAuthenticator = LocalAuthenticator()
@@ -110,6 +112,10 @@ class AccountsViewController: BaseViewController {
         transactionHistoryDataSource = TransactionHistoryDataSource(api: configuration.api)
         
         super.init(configuration: configuration)
+    }
+    
+    deinit {
+        pollingOperation?.invalidate()
     }
     
     // MARK: Setup
@@ -207,6 +213,8 @@ class AccountsViewController: BaseViewController {
         DispatchQueue.main.async {
             UIApplication.shared.appDelegate?.validateAccountManagerFetchPolling()
         }
+        
+        startPendingTransactionPolling()
     
         newAccount = nil
         
@@ -222,6 +230,29 @@ class AccountsViewController: BaseViewController {
                 open(route, by: .push, animated: false)
             }
         }
+    }
+    
+    private func startPendingTransactionPolling() {
+        pollingOperation = PollingOperation(interval: 0.8) { [weak self] in
+            guard let strongSelf = self,
+                let account = strongSelf.selectedAccount else {
+                return
+            }
+            
+            strongSelf.transactionHistoryDataSource.fetchPendingTransactions(for: account) { pendingTransactions, error in
+                if error != nil {
+                    return
+                }
+                
+                guard let pendingTransactions = pendingTransactions, !pendingTransactions.isEmpty else {
+                    return
+                }
+                
+                strongSelf.accountsView.transactionHistoryCollectionView.reloadData()
+            }
+        }
+        
+        pollingOperation?.start()
     }
     
     private func fetchDollarConversion() {
@@ -244,6 +275,8 @@ class AccountsViewController: BaseViewController {
         DispatchQueue.main.async {
             UIApplication.shared.appDelegate?.invalidateAccountManagerFetchPolling()
         }
+        
+        pollingOperation?.invalidate()
     }
     
     override func prepareLayout() {

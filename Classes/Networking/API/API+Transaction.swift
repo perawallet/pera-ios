@@ -78,6 +78,18 @@ extension API {
             .httpBody(draft)
             .buildAndSend(self)
     }
+    
+    @discardableResult
+    func fetchPendingTransactions(
+        for address: String,
+        then handler: @escaping Endpoint.DefaultResultHandler<PendingTransactionList>
+    ) -> EndpointOperatable {
+        return Endpoint(path: Path("/v1/account/\(address)/transactions/pending"))
+            .httpMethod(.get)
+            .httpHeaders(algorandAuthenticatedHeaders())
+            .resultHandler(handler)
+            .buildAndSend(self)
+    }
 }
 
 extension API {

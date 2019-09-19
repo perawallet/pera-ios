@@ -11,14 +11,6 @@ import Magpie
 import SVProgressHUD
 import Crypto
 
-protocol SendAlgosPreviewViewControllerDelegate: class {
-    
-    func sendAlgosPreviewViewControllerDidTapSendMoreButton(
-        _ sendAlgosPreviewViewController: SendAlgosPreviewViewController,
-        withReceiver state: AlgosReceiverState
-    )
-}
-
 class SendAlgosPreviewViewController: BaseViewController {
     
     // MARK: Components
@@ -31,8 +23,6 @@ class SendAlgosPreviewViewController: BaseViewController {
     private var transaction: TransactionPreviewDraft
     private var transactionManager: TransactionManager
     private let receiver: AlgosReceiverState
-    
-    weak var delegate: SendAlgosPreviewViewControllerDelegate?
     
     var transactionData: Data?
     
@@ -109,40 +99,23 @@ extension SendAlgosPreviewViewController: SendAlgosPreviewViewDelegate {
     }
 }
 
-// MARK: SendAlgosSuccessViewControllerDelegate
-
-extension SendAlgosPreviewViewController: SendAlgosSuccessViewControllerDelegate {
-    
-    func sendAlgosSuccessViewControllerDidTapDoneButton(_ sendAlgosSuccessViewController: SendAlgosSuccessViewController) {
-        navigationController?.popToRootViewController(animated: false)
-    }
-    
-    func sendAlgosSuccessViewControllerDidTapSendMoreButton(
-        _ sendAlgosSuccessViewController: SendAlgosSuccessViewController,
-        withReceiver state: AlgosReceiverState
-    ) {
-        closeScreen(by: .pop, animated: false)
-        
-        delegate?.sendAlgosPreviewViewControllerDidTapSendMoreButton(self, withReceiver: state)
-    }
-}
-
 extension SendAlgosPreviewViewController: TransactionManagerDelegate {
     func transactionManager(_ transactionManager: TransactionManager, didCompletedTransaction id: TransactionID) {
         SVProgressHUD.dismiss()
         
         self.transaction.identifier = id.identifier
         
-        let sendAlgosSuccessViewController = self.open(
-            .sendAlgosSuccess(transaction: self.transaction, receiver: self.receiver),
-            by: .present
-        ) as? SendAlgosSuccessViewController
-        
-        sendAlgosSuccessViewController?.delegate = self
+        navigationController?.popToRootViewController(animated: false)
     }
     
     func transactionManager(_ transactionManager: TransactionManager, didFailedTransaction error: Error) {
         SVProgressHUD.dismiss()
-        displaySimpleAlertWith(title: "title-error".localized, message: error.localizedDescription)
+        
+        switch error {
+        case .networkUnavailable:
+            displaySimpleAlertWith(title: "title-error".localized, message: "title-internet-connection".localized)
+        default:
+            displaySimpleAlertWith(title: "title-error".localized, message: error.localizedDescription)
+        }
     }
 }

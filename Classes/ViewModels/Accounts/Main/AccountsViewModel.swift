@@ -49,7 +49,7 @@ class AccountsViewModel {
         }
     }
     
-    func configure(_ cell: TransactionHistoryCell, with transaction: Transaction, for contact: Contact? = nil) {
+    func configure(_ view: TransactionHistoryContextView, with transaction: Transaction, for contact: Contact? = nil) {
         guard let currentAccount = currentAccount,
             let payment = transaction.payment else {
                 return
@@ -57,28 +57,28 @@ class AccountsViewModel {
         
         if payment.toAddress == currentAccount.address {
             if let contact = contact {
-                cell.contextView.titleLabel.text = contact.name
-                cell.contextView.subtitleLabel.text = contact.address
+                view.titleLabel.text = contact.name
+                view.subtitleLabel.text = contact.address
             } else {
-                cell.contextView.titleLabel.text = transaction.from
-                cell.contextView.subtitleLabel.isHidden = true
+                view.titleLabel.text = transaction.from
+                view.subtitleLabel.isHidden = true
             }
             
-            cell.contextView.transactionAmountView.mode = .positive(payment.amount.toAlgos)
+            view.transactionAmountView.mode = .positive(payment.amount.toAlgos)
         } else {
             if let contact = contact {
-                cell.contextView.titleLabel.text = contact.name
-                cell.contextView.subtitleLabel.text = contact.address
+                view.titleLabel.text = contact.name
+                view.subtitleLabel.text = contact.address
             } else {
-                cell.contextView.titleLabel.text = payment.toAddress
-                cell.contextView.subtitleLabel.isHidden = true
+                view.titleLabel.text = payment.toAddress
+                view.subtitleLabel.isHidden = true
             }
             
-            cell.contextView.transactionAmountView.mode = .negative(payment.amount.toAlgos)
+            view.transactionAmountView.mode = .negative(payment.amount.toAlgos)
         }
         
         let formattedDate = findDate(from: transaction.lastRound).toFormat("MMMM dd, yyyy")
-        cell.contextView.dateLabel.text = formattedDate
+        view.dateLabel.text = formattedDate
     }
     
     private func findDate(from round: Int64) -> Date {

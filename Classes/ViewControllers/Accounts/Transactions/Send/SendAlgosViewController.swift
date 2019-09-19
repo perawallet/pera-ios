@@ -9,6 +9,7 @@
 import UIKit
 import SnapKit
 import SVProgressHUD
+import Magpie
 
 class SendAlgosViewController: BaseScrollViewController {
     
@@ -200,7 +201,7 @@ class SendAlgosViewController: BaseScrollViewController {
         }
         
         if amount.toMicroAlgos < minimumTransactionMicroAlgosLimit {
-            let receiverAddress: String
+            var receiverAddress: String
             
             switch receiver {
             case let .address(address, _):
@@ -219,6 +220,8 @@ class SendAlgosViewController: BaseScrollViewController {
                 self.displaySimpleAlertWith(title: "title-error".localized, message: "send-algos-address-not-selected".localized)
                 return
             }
+            
+            receiverAddress = receiverAddress.trimmingCharacters(in: .whitespacesAndNewlines)
             
             let receiverFetchDraft = AccountFetchDraft(publicKey: receiverAddress)
             
@@ -473,25 +476,6 @@ extension SendAlgosViewController: QRScannerViewControllerDelegate {
     }
 }
 
-// MARK: SendAlgosPreviewViewControllerDelegate
-
-extension SendAlgosViewController: SendAlgosPreviewViewControllerDelegate {
-    
-    func sendAlgosPreviewViewControllerDidTapSendMoreButton(
-        _ sendAlgosPreviewViewController: SendAlgosPreviewViewController,
-        withReceiver state: AlgosReceiverState
-    ) {
-        resetView(for: state)
-    }
-    
-    private func resetView(for state: AlgosReceiverState) {
-        amount = 0.00
-        sendAlgosView.algosInputView.inputTextField.text = nil
-        receiver = state
-        sendAlgosView.transactionReceiverView.state = state
-    }
-}
-
 // MARK: TransactionManagerDelegate
 
 extension SendAlgosViewController: TransactionManagerDelegate {
@@ -500,16 +484,21 @@ extension SendAlgosViewController: TransactionManagerDelegate {
             return
         }
         
-        let sendAlgosPreviewViewController = open(
+        open(
             .sendAlgosPreview(manager: transactionManager, transaction: transaction, receiver: receiver),
             by: .push
-        ) as? SendAlgosPreviewViewController
-        
-        sendAlgosPreviewViewController?.delegate = self
+        )
     }
     
-    func transactionManagerDidFailedComposingTransactionData(_ transactionManager: TransactionManager) {
+    func transactionManager(_ transactionManager: TransactionManager, didFailedComposing error: Error) {
+        SVProgressHUD.dismiss()
         
+        switch error {
+        case .networkUnavailable:
+            displaySimpleAlertWith(title: "title-error".localized, message: "title-internet-connection".localized)
+        default:
+            displaySimpleAlertWith(title: "title-error".localized, message: error.localizedDescription)
+        }
     }
 }
 

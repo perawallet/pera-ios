@@ -15,6 +15,8 @@ class TransactionDetailViewModel {
             return
         }
         
+        configureTransactionStatus(for: transaction, in: view)
+        
         view.transactionOpponentView.passphraseInputView.inputTextView.isEditable = false
         
         view.userAccountView.detailLabel.text = account.name
@@ -47,6 +49,8 @@ class TransactionDetailViewModel {
             return
         }
         
+        configureTransactionStatus(for: transaction, in: view)
+        
         view.transactionOpponentView.passphraseInputView.inputTextView.isEditable = false
         
         view.userAccountView.detailLabel.text = account.name
@@ -71,6 +75,17 @@ class TransactionDetailViewModel {
         if let rewards = transaction.fromRewards, rewards > 0 {
             view.rewardView.isHidden = false
             view.rewardView.algosAmountView.amountLabel.text = "\(rewards.toAlgos)"
+        }
+    }
+    
+    private func configureTransactionStatus(for transaction: Transaction, in view: TransactionDetailView) {
+        view.transactionStatusView.detailLabel.text = transaction.status.rawValue
+        view.transactionStatusView.detailLabel.font = UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))
+        switch transaction.status {
+        case .completed:
+            view.transactionStatusView.detailLabel.textColor = SharedColors.purple
+        default:
+            view.lastRoundView.isHidden = true
         }
     }
 }

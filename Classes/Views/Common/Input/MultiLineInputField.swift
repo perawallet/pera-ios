@@ -134,4 +134,12 @@ extension MultiLineInputField: UITextViewDelegate {
         
         delegate?.inputViewDidChangeValue(inputView: self)
     }
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        guard let delegate = delegate else {
+            return true
+        }
+        
+        return delegate.inputViewShouldChangeText(inputView: self, with: text)
+    }
 }

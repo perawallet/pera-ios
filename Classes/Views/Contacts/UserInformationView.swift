@@ -172,6 +172,9 @@ class UserInformationView: BaseView {
 // MARK: InputViewDelegate
 
 extension UserInformationView: InputViewDelegate {
+    func inputViewShouldChangeText(inputView: BaseInputView, with text: String) -> Bool {
+        return (algorandAddressInputView.inputTextView.text + text).count <= validatedAddressLength
+    }
     
     func inputViewDidTapAccessoryButton(inputView: BaseInputView) {
         delegate?.userInformationViewDidTapQRCodeButton(self)
