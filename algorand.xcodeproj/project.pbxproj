@@ -512,6 +512,8 @@
 		2B79A14E23167CA300766021 /* RewardAmountContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B79A14C23167CA300766021 /* RewardAmountContainerView.swift */; };
 		2B79A150231683E100766021 /* RewardsSwitchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B79A14F231683E100766021 /* RewardsSwitchView.swift */; };
 		2B79A151231683E100766021 /* RewardsSwitchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B79A14F231683E100766021 /* RewardsSwitchView.swift */; };
+		2B7ABF68232BDE1C0050B64B /* Reward.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7ABF67232BDE1C0050B64B /* Reward.swift */; };
+		2B7ABF69232BDE1C0050B64B /* Reward.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7ABF67232BDE1C0050B64B /* Reward.swift */; };
 		2B7ABF6B232BF58E0050B64B /* PendingTransactions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7ABF6A232BF58E0050B64B /* PendingTransactions.swift */; };
 		2B7ABF6C232BF58E0050B64B /* PendingTransactions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7ABF6A232BF58E0050B64B /* PendingTransactions.swift */; };
 		2B7ABF6E2332DCDB0050B64B /* PendingTransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7ABF6D2332DCDB0050B64B /* PendingTransactionCell.swift */; };
@@ -522,8 +524,6 @@
 		2B7ABF75233386B60050B64B /* LoadingSpinnerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7ABF73233386B60050B64B /* LoadingSpinnerView.swift */; };
 		2B7ABF77233388570050B64B /* PendingTransactionList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7ABF76233388570050B64B /* PendingTransactionList.swift */; };
 		2B7ABF78233388570050B64B /* PendingTransactionList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7ABF76233388570050B64B /* PendingTransactionList.swift */; };
-		2B7ABF68232BDE1C0050B64B /* Reward.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7ABF67232BDE1C0050B64B /* Reward.swift */; };
-		2B7ABF69232BDE1C0050B64B /* Reward.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7ABF67232BDE1C0050B64B /* Reward.swift */; };
 		2B82B1C522535F4300A8909F /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B82B1C422535F4300A8909F /* Contact.swift */; };
 		2B82B1C82253A4F000A8909F /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B82B1C72253A4F000A8909F /* ContactCell.swift */; };
 		2B82B1CA2253A50100A8909F /* ContactContextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B82B1C92253A50100A8909F /* ContactContextView.swift */; };
@@ -945,12 +945,12 @@
 		2B79A14623167BFC00766021 /* RewardDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardDetailView.swift; sourceTree = "<group>"; };
 		2B79A14C23167CA300766021 /* RewardAmountContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardAmountContainerView.swift; sourceTree = "<group>"; };
 		2B79A14F231683E100766021 /* RewardsSwitchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsSwitchView.swift; sourceTree = "<group>"; };
+		2B7ABF67232BDE1C0050B64B /* Reward.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reward.swift; sourceTree = "<group>"; };
 		2B7ABF6A232BF58E0050B64B /* PendingTransactions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingTransactions.swift; sourceTree = "<group>"; };
 		2B7ABF6D2332DCDB0050B64B /* PendingTransactionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingTransactionCell.swift; sourceTree = "<group>"; };
 		2B7ABF702332DCF50050B64B /* PendingTransactionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingTransactionView.swift; sourceTree = "<group>"; };
 		2B7ABF73233386B60050B64B /* LoadingSpinnerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingSpinnerView.swift; sourceTree = "<group>"; };
 		2B7ABF76233388570050B64B /* PendingTransactionList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingTransactionList.swift; sourceTree = "<group>"; };
-		2B7ABF67232BDE1C0050B64B /* Reward.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reward.swift; sourceTree = "<group>"; };
 		2B82B1C422535F4300A8909F /* Contact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
 		2B82B1C72253A4F000A8909F /* ContactCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
 		2B82B1C92253A50100A8909F /* ContactContextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactContextView.swift; sourceTree = "<group>"; };
