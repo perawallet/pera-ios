@@ -19,8 +19,10 @@ class SettingsViewModel {
         case serverSettings = 0
         case password = 1
         case localAuthentication = 2
-        case language = 3
-        case coinlist = 4
+        case notifications = 3
+        case rewards = 4
+        case language = 5
+        case coinlist = 6
     }
     
     var indexPath: IndexPath?
@@ -76,6 +78,10 @@ class SettingsViewModel {
             return "settings-change-password".localized
         case .localAuthentication:
             return "settings-local-authentication".localized
+        case .notifications:
+            return "notifications-title".localized
+        case .rewards:
+            return "rewards-show-title".localized
         case .language:
             return "settings-language".localized
         case .coinlist:

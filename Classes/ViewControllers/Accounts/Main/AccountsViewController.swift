@@ -13,6 +13,8 @@ class AccountsViewController: BaseViewController {
     
     struct LayoutConstants: AdaptiveLayoutConstants {
         let optionsModalHeight: CGFloat = 348.0
+        let transactionCellSize = CGSize(width: UIScreen.main.bounds.width, height: 72.0)
+        let rewardCellSize = CGSize(width: UIScreen.main.bounds.width, height: 50.0)
         let editAccountModalHeight: CGFloat = 158.0
     }
     
@@ -501,8 +503,11 @@ extension AccountsViewController: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
+        if transactionHistoryDataSource.transaction(at: indexPath) == nil {
+            return layout.current.rewardCellSize
+        }
         
-        return CGSize(width: UIScreen.main.bounds.width, height: 80.0)
+        return layout.current.transactionCellSize
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {

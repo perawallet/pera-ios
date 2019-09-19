@@ -16,6 +16,7 @@ class Session: Storable {
     private let privateKey = "com.algorand.algorand.token.private.key"
     private let coinlistTokenKey = "com.algorand.algorand.token.coinlist"
     private let coinlistIdKey = "com.algorand.algorand.id.coinlist"
+    private let rewardsPrefenceKey = "com.algorand.algorand.rewards.preference"
     
     private var privateStorage: KeychainAccess.Keychain {
         return KeychainAccess.Keychain(service: privateStorageKey).accessibility(.whenUnlocked)
@@ -128,10 +129,32 @@ class Session: Storable {
         }
     }
     
+    var rewardDisplayPreference: RewardPreference {
+        get {
+            guard let rewardPreference = string(with: rewardsPrefenceKey, to: .defaults),
+                let rewardDisplayPreference = RewardPreference(rawValue: rewardPreference) else {
+                    return .allowed
+            }
+            
+            return rewardDisplayPreference
+        }
+        
+        set {
+            self.save(newValue.rawValue, for: rewardsPrefenceKey, to: .defaults)
+        }
+    }
+    
     // isExpired is true when login needed. It will fault after 5 mins entering background
     var isValid = false
     
     var currentAccount: Account?
+}
+
+extension Session {
+    enum RewardPreference: String {
+        case allowed = "allowed"
+        case disabled = "disabled"
+    }
 }
 
 // MARK: - App Password
