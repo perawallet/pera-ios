@@ -20,7 +20,7 @@ class TransactionHistoryDataSource: NSObject, UICollectionViewDataSource {
         static let numberOfRoundsInTwoDays: Int64 = 34560
     }
     
-    private var transactions = [Transaction]()
+    private var transactions = [TransactionItem]()
     
     private var contacts = [Contact]()
     
@@ -50,82 +50,91 @@ class TransactionHistoryDataSource: NSObject, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.item < transactions.count {
-            let transaction = transactions[indexPath.item]
-            
-            switch transaction.status {
-            case .completed:
+            if let reward = transactions[indexPath.item] as? Reward {
                 guard let cell = collectionView.dequeueReusableCell(
-                    withReuseIdentifier: TransactionHistoryCell.reusableIdentifier,
-                    for: indexPath) as? TransactionHistoryCell else {
+                    withReuseIdentifier: RewardCell.reusableIdentifier,
+                    for: indexPath) as? RewardCell else {
                         fatalError("Index path is out of bounds")
                 }
                 
-                guard let payment = transaction.payment else {
-                    return cell
-                }
-                
-                if payment.toAddress == viewModel.currentAccount?.address {
-                    if let contact = contacts.first(where: { contact -> Bool in
-                        contact.address == transaction.from
-                    }) {
-                        transaction.contact = contact
-                        
-                        viewModel.configure(cell.contextView, with: transaction, for: contact)
-                    } else {
-                        viewModel.configure(cell.contextView, with: transaction)
-                    }
-                } else {
-                    if let contact = contacts.first(where: { contact -> Bool in
-                        contact.address == transaction.payment?.toAddress
-                    }) {
-                        transaction.contact = contact
-                        
-                        viewModel.configure(cell.contextView, with: transaction, for: contact)
-                    } else {
-                        viewModel.configure(cell.contextView, with: transaction)
-                    }
-                }
+                viewModel.configure(cell, with: reward)
                 
                 return cell
-            case .pending:
-                guard let cell = collectionView.dequeueReusableCell(
-                    withReuseIdentifier: PendingTransactionCell.reusableIdentifier,
-                    for: indexPath) as? PendingTransactionCell else {
-                        fatalError("Index path is out of bounds")
-                }
-                
-                guard let payment = transaction.payment else {
+            } else if let transaction = transactions[indexPath.item] as? Transaction {
+                switch transaction.status {
+                case .completed:
+                    guard let cell = collectionView.dequeueReusableCell(
+                        withReuseIdentifier: TransactionHistoryCell.reusableIdentifier,
+                        for: indexPath) as? TransactionHistoryCell else {
+                            fatalError("Index path is out of bounds")
+                            
+                    }
+                    
+                    guard let payment = transaction.payment else {
+                        return cell
+                    }
+                    
+                    if payment.toAddress == viewModel.currentAccount?.address {
+                        if let contact = contacts.first(where: { contact -> Bool in
+                            contact.address == transaction.from
+                        }) {
+                            transaction.contact = contact
+                            
+                            viewModel.configure(cell.contextView, with: transaction, for: contact)
+                        } else {
+                            viewModel.configure(cell.contextView, with: transaction)
+                        }
+                    } else {
+                        if let contact = contacts.first(where: { contact -> Bool in
+                            contact.address == transaction.payment?.toAddress
+                        }) {
+                            transaction.contact = contact
+                            
+                            viewModel.configure(cell.contextView, with: transaction, for: contact)
+                        } else {
+                            viewModel.configure(cell.contextView, with: transaction)
+                        }
+                    }
+                    
                     return cell
-                }
-                
-                if payment.toAddress == viewModel.currentAccount?.address {
-                    if let contact = contacts.first(where: { contact -> Bool in
-                        contact.address == transaction.from
-                    }) {
-                        transaction.contact = contact
-                        
-                        viewModel.configure(cell.contextView, with: transaction, for: contact)
-                    } else {
-                        viewModel.configure(cell.contextView, with: transaction)
+                case .pending:
+                    guard let cell = collectionView.dequeueReusableCell(
+                        withReuseIdentifier: PendingTransactionCell.reusableIdentifier,
+                        for: indexPath) as? PendingTransactionCell else {
+                            fatalError("Index path is out of bounds")
                     }
-                } else {
-                    if let contact = contacts.first(where: { contact -> Bool in
-                        contact.address == transaction.payment?.toAddress
-                    }) {
-                        transaction.contact = contact
-                        
-                        viewModel.configure(cell.contextView, with: transaction, for: contact)
-                    } else {
-                        viewModel.configure(cell.contextView, with: transaction)
+                    
+                    guard let payment = transaction.payment else {
+                        return cell
                     }
+                    
+                    if payment.toAddress == viewModel.currentAccount?.address {
+                        if let contact = contacts.first(where: { contact -> Bool in
+                            contact.address == transaction.from
+                        }) {
+                            transaction.contact = contact
+                            
+                            viewModel.configure(cell.contextView, with: transaction, for: contact)
+                        } else {
+                            viewModel.configure(cell.contextView, with: transaction)
+                        }
+                    } else {
+                        if let contact = contacts.first(where: { contact -> Bool in
+                            contact.address == transaction.payment?.toAddress
+                        }) {
+                            transaction.contact = contact
+                            viewModel.configure(cell.contextView, with: transaction, for: contact)
+                        } else {
+                            viewModel.configure(cell.contextView, with: transaction)
+                        }
+                    }
+                    
+                    return cell
+                case .failed:
+                    fatalError("Index path is out of bounds")
                 }
-                
-                return cell
-            case .failed:
-                fatalError("Index path is out of bounds")
             }
         }
-        
         fatalError("Index path is out of bounds")
     }
     
@@ -161,7 +170,10 @@ extension TransactionHistoryDataSource {
     
     func transaction(at indexPath: IndexPath) -> Transaction? {
         if indexPath.item >= 0 && indexPath.item < transactions.count {
-            return transactions[indexPath.item]
+            guard let transaction = transactions[indexPath.item] as? Transaction else {
+                return nil
+            }
+            return transaction
         }
         
         return nil
@@ -297,7 +309,14 @@ extension TransactionHistoryDataSource {
                 transactions.transactions.forEach { transaction in
                     transaction.status = .completed
                 }
-                self.transactions = transactions.transactions
+                
+                if let rewardDisplayPreference = self.api?.session.rewardDisplayPreference,
+                    rewardDisplayPreference == .allowed {
+                    self.setRewards(from: transactions, for: account)
+                } else {
+                    self.transactions = transactions.transactions
+                }
+                
                 handler(transactions.transactions, nil)
             }
         }
@@ -317,6 +336,24 @@ extension TransactionHistoryDataSource {
                 handler(pendingTransactionList.pendingTransactions.transactions, nil)
             case let .failure(error):
                 handler(nil, error)
+            }
+        }
+    }
+    
+    private func setRewards(from transactions: TransactionList, for account: Account) {
+        for transaction in transactions.transactions {
+            self.transactions.append(transaction)
+            if let payment = transaction.payment,
+                payment.toAddress == account.address {
+                if let rewards = transaction.payment?.rewards, rewards > 0 {
+                    let reward = Reward(amount: Int64(rewards))
+                    self.transactions.append(reward)
+                }
+            } else {
+                if let rewards = transaction.fromRewards, rewards > 0 {
+                    let reward = Reward(amount: Int64(rewards))
+                    self.transactions.append(reward)
+                }
             }
         }
     }

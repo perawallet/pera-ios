@@ -8,7 +8,9 @@
 
 import Magpie
 
-class Transaction: Model {
+protocol TransactionItem {}
+
+class Transaction: Model, TransactionItem {
 
     enum Constant {
         static let minimumFee: Int64 = 1000

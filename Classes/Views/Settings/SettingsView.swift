@@ -15,9 +15,9 @@ protocol SettingsViewDelegate: class {
 class SettingsView: BaseView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let collectionViewHeight: CGFloat = Environment.current.isAuctionsEnabled ? 400.0 : 320.0
+        let collectionViewHeight: CGFloat = Environment.current.isAuctionsEnabled ? 480.0 * verticalScale : 400.0 * verticalScale
         let versionLabelOffset: CGFloat = 20.0
-        let feedbackHeight: CGFloat = 80.0
+        let feedbackHeight: CGFloat = 80.0 * verticalScale
     }
     
     private let layout = Layout<LayoutConstants>()

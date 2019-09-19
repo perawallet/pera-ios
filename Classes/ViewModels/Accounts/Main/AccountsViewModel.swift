@@ -99,4 +99,8 @@ class AccountsViewModel {
         
         return transactionDate
     }
+    
+    func configure(_ cell: RewardCell, with reward: Reward) {
+        cell.contextView.transactionAmountView.amountLabel.text = reward.amount.toAlgos.toDecimalStringForLabel
+    }
 }
