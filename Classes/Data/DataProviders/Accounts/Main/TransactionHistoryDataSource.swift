@@ -329,14 +329,33 @@ extension TransactionHistoryDataSource {
                 guard let pendingTransactions = pendingTransactionList.pendingTransactions.transactions else {
                     return
                 }
-                pendingTransactions.forEach { transaction in
-                    transaction.status = .pending
-                }
-                self.transactions.insert(contentsOf: pendingTransactions, at: 0)
+                
+                self.filter(pendingTransactions)
                 handler(pendingTransactionList.pendingTransactions.transactions, nil)
             case let .failure(error):
                 handler(nil, error)
             }
+        }
+    }
+    
+    private func filter(_ pendingTransactions: [Transaction]) {
+        if !self.transactions.contains(where: { item -> Bool in
+            guard let transactionItem = item as? Transaction else {
+                return true
+            }
+            
+            var containsPendingTransaction = false
+            
+            pendingTransactions.forEach { pendingTransaction in
+                containsPendingTransaction = transactionItem.id.identifier == pendingTransaction.id.identifier
+            }
+            
+            return containsPendingTransaction
+        }) {
+            pendingTransactions.forEach { transaction in
+                transaction.status = .pending
+            }
+            self.transactions.insert(contentsOf: pendingTransactions, at: 0)
         }
     }
     

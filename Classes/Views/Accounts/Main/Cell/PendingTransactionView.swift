@@ -12,6 +12,7 @@ class PendingTransactionView: TransactionHistoryContextView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let horizontalInset: CGFloat = 25.0
+        let spinnerSize = CGSize(width: 22.0, height: 22.0)
         let titleLabelInset: CGFloat = 65.0
     }
     
@@ -26,6 +27,8 @@ class PendingTransactionView: TransactionHistoryContextView {
         
         adjustTitleLabelLayout()
         setupPendingSpinnerViewLayout()
+        
+        pendingSpinnerView.show()
     }
     
     private func adjustTitleLabelLayout() {
@@ -40,6 +43,7 @@ class PendingTransactionView: TransactionHistoryContextView {
         pendingSpinnerView.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.leading.equalToSuperview().inset(layout.current.horizontalInset)
+            make.size.equalTo(layout.current.spinnerSize)
         }
     }
 }

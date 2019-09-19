@@ -239,10 +239,16 @@ class AccountsViewController: BaseViewController {
                 return
             }
             
-            strongSelf.transactionHistoryDataSource.fetchPendingTransactions(for: account) { _, error in
+            strongSelf.transactionHistoryDataSource.fetchPendingTransactions(for: account) { pendingTransactions, error in
                 if error != nil {
                     return
                 }
+                
+                guard let pendingTransactions = pendingTransactions, !pendingTransactions.isEmpty else {
+                    return
+                }
+                
+                strongSelf.accountsView.transactionHistoryCollectionView.reloadData()
             }
         }
         
