@@ -11,14 +11,6 @@ import Magpie
 import SVProgressHUD
 import Crypto
 
-protocol SendAlgosPreviewViewControllerDelegate: class {
-    
-    func sendAlgosPreviewViewControllerDidTapSendMoreButton(
-        _ sendAlgosPreviewViewController: SendAlgosPreviewViewController,
-        withReceiver state: AlgosReceiverState
-    )
-}
-
 class SendAlgosPreviewViewController: BaseViewController {
     
     // MARK: Components
@@ -31,8 +23,6 @@ class SendAlgosPreviewViewController: BaseViewController {
     private var transaction: TransactionPreviewDraft
     private var transactionManager: TransactionManager
     private let receiver: AlgosReceiverState
-    
-    weak var delegate: SendAlgosPreviewViewControllerDelegate?
     
     var transactionData: Data?
     

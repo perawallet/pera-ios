@@ -476,25 +476,6 @@ extension SendAlgosViewController: QRScannerViewControllerDelegate {
     }
 }
 
-// MARK: SendAlgosPreviewViewControllerDelegate
-
-extension SendAlgosViewController: SendAlgosPreviewViewControllerDelegate {
-    
-    func sendAlgosPreviewViewControllerDidTapSendMoreButton(
-        _ sendAlgosPreviewViewController: SendAlgosPreviewViewController,
-        withReceiver state: AlgosReceiverState
-    ) {
-        resetView(for: state)
-    }
-    
-    private func resetView(for state: AlgosReceiverState) {
-        amount = 0.00
-        sendAlgosView.algosInputView.inputTextField.text = nil
-        receiver = state
-        sendAlgosView.transactionReceiverView.state = state
-    }
-}
-
 // MARK: TransactionManagerDelegate
 
 extension SendAlgosViewController: TransactionManagerDelegate {
@@ -503,12 +484,10 @@ extension SendAlgosViewController: TransactionManagerDelegate {
             return
         }
         
-        let sendAlgosPreviewViewController = open(
+        open(
             .sendAlgosPreview(manager: transactionManager, transaction: transaction, receiver: receiver),
             by: .push
-        ) as? SendAlgosPreviewViewController
-        
-        sendAlgosPreviewViewController?.delegate = self
+        )
     }
     
     func transactionManager(_ transactionManager: TransactionManager, didFailedComposing error: Error) {
