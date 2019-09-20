@@ -29,6 +29,12 @@ class LoadingSpinnerView: BaseView {
         return loadingAnimationView
     }()
     
+    // MARK: Setup
+    
+    override func configureAppearance() {
+        backgroundColor = .clear
+    }
+    
     override func prepareLayout() {
         addSubview(loadingAnimationView)
         

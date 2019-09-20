@@ -22,13 +22,17 @@ class PendingTransactionView: TransactionHistoryContextView {
     
     private(set) lazy var pendingSpinnerView = LoadingSpinnerView()
     
+    // MARK: Setup
+    
+    override func configureAppearance() {
+        backgroundColor = .clear
+    }
+    
     override func prepareLayout() {
         super.prepareLayout()
         
         adjustTitleLabelLayout()
         setupPendingSpinnerViewLayout()
-        
-        pendingSpinnerView.show()
     }
     
     private func adjustTitleLabelLayout() {

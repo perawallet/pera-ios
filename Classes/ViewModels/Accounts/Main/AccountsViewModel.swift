@@ -55,6 +55,11 @@ class AccountsViewModel {
                 return
         }
         
+        if let pendingTransactionView = view as? PendingTransactionView,
+            transaction.status == .pending {
+            pendingTransactionView.pendingSpinnerView.show()
+        }
+        
         if payment.toAddress == currentAccount.address {
             if let contact = contact {
                 view.titleLabel.text = contact.name

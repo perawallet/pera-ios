@@ -40,7 +40,7 @@ class TransactionDetailView: BaseView {
     // MARK: Components
     
     private(set) lazy var transactionStatusView: DetailedInformationView = {
-        let transactionStatusView = DetailedInformationView()
+        let transactionStatusView = DetailedInformationView(mode: .loader)
         transactionStatusView.explanationLabel.text = "transaction-detail-status".localized
         transactionStatusView.detailLabel.textColor = SharedColors.darkGray
         return transactionStatusView
