@@ -122,7 +122,9 @@ class TransactionHistoryContextView: BaseView {
         dateLabel.snp.makeConstraints { make in
             make.trailing.equalToSuperview().inset(layout.current.horizontalInset).priority(.required)
             make.centerY.equalTo(subtitleLabel)
-            make.leading.equalTo(subtitleLabel.snp.trailing).offset(layout.current.minimumHorizontalSpacing)
+            make.leading.greaterThanOrEqualTo(subtitleLabel.snp.trailing)
+                .offset(layout.current.minimumHorizontalSpacing)
+                .priority(.required)
         }
     }
     

@@ -17,6 +17,7 @@ class DetailedInformationView: BaseView {
         let containerViewTopInset: CGFloat = 7.0
         let verticalInset: CGFloat = 16.0
         let amountViewHeight: CGFloat = 22.0
+        let spinnerSize = CGSize(width: 22.0, height: 22.0)
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -58,6 +59,8 @@ class DetailedInformationView: BaseView {
         return view
     }()
     
+    private(set) lazy var pendingSpinnerView = LoadingSpinnerView()
+    
     private let mode: Mode
     
     // MARK: Initialization
@@ -79,8 +82,11 @@ class DetailedInformationView: BaseView {
         setupContainerViewLayout()
         if mode == .text {
             setupDetailLabelLayout()
-        } else {
+        } else if mode == .algos {
             setupAlgosAmountViewLayout()
+        } else {
+            setupDetailLabelLayout()
+            setupPendingSpinnerViewLayout()
         }
     }
     
@@ -124,6 +130,16 @@ class DetailedInformationView: BaseView {
             make.bottom.equalToSuperview().inset(layout.current.verticalInset)
         }
     }
+    
+    private func setupPendingSpinnerViewLayout() {
+        containerView.addSubview(pendingSpinnerView)
+        
+        pendingSpinnerView.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.size.equalTo(layout.current.spinnerSize)
+        }
+    }
 }
 
 // MARK: Mode
@@ -132,5 +148,6 @@ extension DetailedInformationView {
     enum Mode {
         case text
         case algos
+        case loader
     }
 }

@@ -10,6 +10,7 @@ import UIKit
 import SnapKit
 import SVProgressHUD
 import Magpie
+import Alamofire
 
 class SendAlgosViewController: BaseScrollViewController {
     
@@ -46,6 +47,7 @@ class SendAlgosViewController: BaseScrollViewController {
     
     private var shouldUpdateSenderForSelectedAccount = false
     private var shouldUpdateReceiverForSelectedAccount = false
+    private var isConnectedToInternet = true
     
     private var isMaxButtonSelected: Bool {
         return self.sendAlgosView.algosInputView.isMaxButtonSelected
@@ -110,6 +112,8 @@ class SendAlgosViewController: BaseScrollViewController {
             name: UIResponder.keyboardWillHideNotification,
             object: nil
         )
+        
+        api?.addDelegate(self)
     }
     
     override func linkInteractors() {
@@ -194,7 +198,7 @@ class SendAlgosViewController: BaseScrollViewController {
         }
         
         if !isMaxButtonSelected {
-            if selectedAccount.amount - UInt64(amount.toMicroAlgos) - minimumFee < minimumTransactionMicroAlgosLimit {
+            if Int(selectedAccount.amount) - Int(amount.toMicroAlgos) - Int(minimumFee) < minimumTransactionMicroAlgosLimit {
                 self.displaySimpleAlertWith(title: "title-error".localized, message: "send-algos-minimum-amount-error".localized)
                 return
             }
@@ -231,6 +235,10 @@ class SendAlgosViewController: BaseScrollViewController {
                 
                 switch accountResponse {
                 case let .failure(error):
+                    if !self.isConnectedToInternet {
+                        self.displaySimpleAlertWith(title: "title-error".localized, message: "title-internet-connection".localized)
+                        return
+                    }
                     self.displaySimpleAlertWith(title: "title-error".localized, message: error.localizedDescription)
                 case let .success(account):
                     if account.amount == 0 {
@@ -484,10 +492,7 @@ extension SendAlgosViewController: TransactionManagerDelegate {
             return
         }
         
-        open(
-            .sendAlgosPreview(manager: transactionManager, transaction: transaction, receiver: receiver),
-            by: .push
-        )
+        open(.sendAlgosPreview(manager: transactionManager, transaction: transaction, receiver: receiver), by: .push)
     }
     
     func transactionManager(_ transactionManager: TransactionManager, didFailedComposing error: Error) {
@@ -515,5 +520,20 @@ extension SendAlgosViewController: TouchDetectingScrollViewDelegate {
         }
         
         contentView.endEditing(true)
+    }
+}
+
+extension SendAlgosViewController: MagpieDelegate {
+    func magpie(
+        _ magpie: Magpie,
+        networkMonitor: NetworkMonitor,
+        didConnectVia connection: NetworkConnection,
+        from oldConnection: NetworkConnection
+    ) {
+        isConnectedToInternet = true
+    }
+    
+    func magpie(_ magpie: Magpie, networkMonitor: NetworkMonitor, didDisconnectFrom oldConnection: NetworkConnection) {
+        isConnectedToInternet = false
     }
 }
