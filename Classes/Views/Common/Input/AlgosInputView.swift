@@ -35,6 +35,7 @@ class AlgosInputView: BaseView {
     
     weak var delegate: AlgosInputViewDelegate?
     
+    private var shouldHandleMaxButtonStates: Bool
     private(set) var isMaxButtonSelected = false
     var maxAmount: Double = 0.0
     
@@ -97,6 +98,11 @@ class AlgosInputView: BaseView {
     
     func beginEditing() {
         _ = inputTextField.becomeFirstResponder()
+    }
+
+    init(shouldHandleMaxButtonStates: Bool = false) {
+        self.shouldHandleMaxButtonStates = shouldHandleMaxButtonStates
+        super.init(frame: .zero)
     }
     
     override func linkInteractors() {
@@ -173,11 +179,11 @@ class AlgosInputView: BaseView {
             return
         }
         
-        if isMaxButtonSelected && doubleValue < maxAmount {
-            toggleMaxButtonState()
+        if isMaxButtonSelected && shouldHandleMaxButtonStates && doubleValue != maxAmount {
+            toggleMaxButtonState(isSelected: false)
         }
         
-        if doubleValue > maxAmount {
+        if doubleValue == maxAmount && shouldHandleMaxButtonStates {
             textField.text = String(maxAmount).currencyAlgosInputFormatting()
             toggleMaxButtonState(isSelected: true)
             return
@@ -193,6 +199,10 @@ class AlgosInputView: BaseView {
     }
     
     private func toggleMaxButtonState(isSelected: Bool? = nil) {
+        if !shouldHandleMaxButtonStates {
+            return
+        }
+        
         if let isSelected = isSelected {
             isMaxButtonSelected = isSelected
         } else {
