@@ -196,7 +196,7 @@ class BalanceViewController: BaseViewController {
                     self.sections.append(.past)
                 }
                 
-                var reversedTransactions: [CoinlistTransaction] = self.pastTransactions.reversed()
+                let reversedTransactions: [CoinlistTransaction] = self.pastTransactions.reversed()
                 
                 for (index, transaction) in reversedTransactions.enumerated() {
                     if index == 0 {
