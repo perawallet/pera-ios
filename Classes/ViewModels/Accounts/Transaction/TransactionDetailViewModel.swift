@@ -79,9 +79,13 @@ class TransactionDetailViewModel {
     }
     
     private func configureTransactionStatus(for transaction: Transaction, in view: TransactionDetailView) {
-        view.transactionStatusView.detailLabel.text = transaction.status.rawValue
+        guard let status = transaction.status else {
+            return
+        }
+        
+        view.transactionStatusView.detailLabel.text = status.rawValue
         view.transactionStatusView.detailLabel.font = UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))
-        switch transaction.status {
+        switch status {
         case .completed:
             view.transactionStatusView.detailLabel.textColor = SharedColors.purple
         case .pending:

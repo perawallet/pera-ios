@@ -61,81 +61,92 @@ class TransactionHistoryDataSource: NSObject, UICollectionViewDataSource {
                 
                 return cell
             } else if let transaction = transactions[indexPath.item] as? Transaction {
-                switch transaction.status {
-                case .completed:
-                    guard let cell = collectionView.dequeueReusableCell(
-                        withReuseIdentifier: TransactionHistoryCell.reusableIdentifier,
-                        for: indexPath) as? TransactionHistoryCell else {
-                            fatalError("Index path is out of bounds")
-                            
-                    }
-                    
-                    guard let payment = transaction.payment else {
+                if let transactionStatus = transaction.status {
+                    switch transactionStatus {
+                    case .completed:
+                        return dequeueHistoryCell(in: collectionView, with: transaction, at: indexPath)
+                    case .pending:
+                        guard let cell = collectionView.dequeueReusableCell(
+                            withReuseIdentifier: PendingTransactionCell.reusableIdentifier,
+                            for: indexPath) as? PendingTransactionCell else {
+                                fatalError("Index path is out of bounds")
+                        }
+                        
+                        guard let payment = transaction.payment else {
+                            return cell
+                        }
+                        
+                        if payment.toAddress == viewModel.currentAccount?.address {
+                            if let contact = contacts.first(where: { contact -> Bool in
+                                contact.address == transaction.from
+                            }) {
+                                transaction.contact = contact
+                                
+                                viewModel.configure(cell.contextView, with: transaction, for: contact)
+                            } else {
+                                viewModel.configure(cell.contextView, with: transaction)
+                            }
+                        } else {
+                            if let contact = contacts.first(where: { contact -> Bool in
+                                contact.address == transaction.payment?.toAddress
+                            }) {
+                                transaction.contact = contact
+                                viewModel.configure(cell.contextView, with: transaction, for: contact)
+                            } else {
+                                viewModel.configure(cell.contextView, with: transaction)
+                            }
+                        }
+                        
                         return cell
+                    case .failed:
+                        fatalError("Index path is out of bounds")
                     }
-                    
-                    if payment.toAddress == viewModel.currentAccount?.address {
-                        if let contact = contacts.first(where: { contact -> Bool in
-                            contact.address == transaction.from
-                        }) {
-                            transaction.contact = contact
-                            
-                            viewModel.configure(cell.contextView, with: transaction, for: contact)
-                        } else {
-                            viewModel.configure(cell.contextView, with: transaction)
-                        }
-                    } else {
-                        if let contact = contacts.first(where: { contact -> Bool in
-                            contact.address == transaction.payment?.toAddress
-                        }) {
-                            transaction.contact = contact
-                            
-                            viewModel.configure(cell.contextView, with: transaction, for: contact)
-                        } else {
-                            viewModel.configure(cell.contextView, with: transaction)
-                        }
-                    }
-                    
-                    return cell
-                case .pending:
-                    guard let cell = collectionView.dequeueReusableCell(
-                        withReuseIdentifier: PendingTransactionCell.reusableIdentifier,
-                        for: indexPath) as? PendingTransactionCell else {
-                            fatalError("Index path is out of bounds")
-                    }
-                    
-                    guard let payment = transaction.payment else {
-                        return cell
-                    }
-                    
-                    if payment.toAddress == viewModel.currentAccount?.address {
-                        if let contact = contacts.first(where: { contact -> Bool in
-                            contact.address == transaction.from
-                        }) {
-                            transaction.contact = contact
-                            
-                            viewModel.configure(cell.contextView, with: transaction, for: contact)
-                        } else {
-                            viewModel.configure(cell.contextView, with: transaction)
-                        }
-                    } else {
-                        if let contact = contacts.first(where: { contact -> Bool in
-                            contact.address == transaction.payment?.toAddress
-                        }) {
-                            transaction.contact = contact
-                            viewModel.configure(cell.contextView, with: transaction, for: contact)
-                        } else {
-                            viewModel.configure(cell.contextView, with: transaction)
-                        }
-                    }
-                    
-                    return cell
-                case .failed:
-                    fatalError("Index path is out of bounds")
+                } else {
+                    return dequeueHistoryCell(in: collectionView, with: transaction, at: indexPath)
                 }
             }
         }
         fatalError("Index path is out of bounds")
+    }
+    
+    func dequeueHistoryCell(
+        in collectionView: UICollectionView,
+        with transaction: Transaction,
+        at indexPath: IndexPath
+    ) -> TransactionHistoryCell {
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: TransactionHistoryCell.reusableIdentifier,
+            for: indexPath) as? TransactionHistoryCell else {
+                fatalError("Index path is out of bounds")
+        }
+        
+        guard let payment = transaction.payment else {
+            return cell
+        }
+        
+        if payment.toAddress == viewModel.currentAccount?.address {
+            if let contact = contacts.first(where: { contact -> Bool in
+                contact.address == transaction.from
+            }) {
+                transaction.contact = contact
+                
+                viewModel.configure(cell.contextView, with: transaction, for: contact)
+            } else {
+                viewModel.configure(cell.contextView, with: transaction)
+            }
+        } else {
+            if let contact = contacts.first(where: { contact -> Bool in
+                contact.address == transaction.payment?.toAddress
+            }) {
+                transaction.contact = contact
+                
+                viewModel.configure(cell.contextView, with: transaction, for: contact)
+            } else {
+                viewModel.configure(cell.contextView, with: transaction)
+            }
+        }
+        
+        return cell
     }
     
     private func fetchContacts() {

@@ -70,7 +70,6 @@ class ContactInfoView: BaseView {
         let button = MainButton(title: "contacts-delete-contact".localized)
         button.setBackgroundImage(img("bg-black-button-big"), for: .normal)
         button.setTitleColor(.white, for: .normal)
-//        button.image
         return button
     }()
     

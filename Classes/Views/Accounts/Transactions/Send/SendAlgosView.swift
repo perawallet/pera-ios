@@ -39,7 +39,7 @@ class SendAlgosView: BaseView {
     // MARK: Components
     
     private(set) lazy var algosInputView: AlgosInputView = {
-        let view = AlgosInputView()
+        let view = AlgosInputView(shouldHandleMaxButtonStates: true)
         view.maxButton.isHidden = false
         return view
     }()
