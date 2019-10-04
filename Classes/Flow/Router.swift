@@ -63,6 +63,8 @@ class Router {
                 navigationController = NavigationController(rootViewController: viewController)
             }
             
+            navigationController.modalPresentationStyle = .fullScreen
+            
             rootViewController?.present(navigationController, animated: false, completion: completion)
         case .present,
              .customPresent:
