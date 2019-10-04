@@ -56,10 +56,6 @@ class ChoosePasswordViewController: BaseViewController {
         self.viewModel = ChoosePasswordViewModel(mode: mode)
         
         super.init(configuration: configuration)
-        
-        if #available(iOS 13, *) {
-            isModalInPresentation = mode == .login
-        }
     }
     
     override func didTapBackBarButton() -> Bool {

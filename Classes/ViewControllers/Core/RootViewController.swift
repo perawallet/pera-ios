@@ -67,7 +67,10 @@ class RootViewController: UIViewController {
     func handleDeepLinkRouting(for screen: Screen) -> Bool {
         if !appConfiguration.session.isValid {
             if appConfiguration.session.hasPassword() && appConfiguration.session.authenticatedUser != nil {
-                return open(.choosePassword(mode: .login, route: screen), by: .present) != nil
+                return open(
+                    .choosePassword(mode: .login, route: screen),
+                    by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
+                ) != nil
             } else {
                 return open(.introduction(mode: .initialize), by: .launch, animated: false) != nil
             }
@@ -97,7 +100,10 @@ class RootViewController: UIViewController {
         
         if !appConfiguration.session.isValid {
             if appConfiguration.session.hasPassword() && appConfiguration.session.authenticatedUser != nil {
-                open(.choosePassword(mode: .login, route: .accounts(account: account)), by: .present)
+                open(.choosePassword(
+                    mode: .login, route: .accounts(account: account)),
+                     by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
+                )
             } else {
                 open(.introduction(mode: .initialize), by: .launch, animated: false)
             }

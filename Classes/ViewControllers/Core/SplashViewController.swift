@@ -80,7 +80,10 @@ class SplashViewController: BaseViewController {
                         session.authenticatedUser != nil {
                         
                         self.dismiss(animated: false) {
-                            rootController.open(.choosePassword(mode: .login, route: nil), by: .present)
+                            rootController.open(
+                                .choosePassword(mode: .login, route: nil),
+                                by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
+                            )
                         }
                     } else {
                         session.reset()

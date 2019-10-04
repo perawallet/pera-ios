@@ -19,14 +19,6 @@ class IntroductionViewController: BaseViewController {
     
     var mode: AccountSetupMode = .initialize
     
-    override init(configuration: ViewControllerConfiguration) {
-        super.init(configuration: configuration)
-        
-        if #available(iOS 13, *) {
-            isModalInPresentation = mode == .initialize
-        }
-    }
-    
     // MARK: Setup
     
     override func configureAppearance() {
