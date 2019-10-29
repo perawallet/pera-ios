@@ -1,5 +1,5 @@
 PODS:
-  - Alamofire (5.0.0-rc.1)
+  - Alamofire (5.0.0-rc.2)
   - Charts (3.3.0):
     - Charts/Core (= 3.3.0)
   - Charts/Core (3.3.0)
@@ -68,7 +68,7 @@ PODS:
   - Magpie (2.0.0):
     - Magpie/Package (= 2.0.0)
   - Magpie/Package (2.0.0):
-    - Alamofire (~> 5.0.0-beta.5)
+    - Alamofire (~> 5.0.0-rc.2)
   - MarqueeLabel (4.0.0)
   - nanopb (0.3.901):
     - nanopb/decode (= 0.3.901)
@@ -90,7 +90,7 @@ DEPENDENCIES:
   - Firebase/Core
   - KeychainAccess
   - lottie-ios
-  - Magpie (from `https://github.com/Hipo/magpie.git`, branch `swift-5`)
+  - Magpie (from `https://github.com/Hipo/magpie.git`)
   - NotificationBannerSwift
   - SnapKit
   - SVProgressHUD
@@ -98,8 +98,7 @@ DEPENDENCIES:
   - SwiftLint
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
-    - Alamofire
+  https://github.com/CocoaPods/Specs.git:
     - Charts
     - Crashlytics
     - Fabric
@@ -122,19 +121,20 @@ SPEC REPOS:
     - SVProgressHUD
     - SwiftDate
     - SwiftLint
+  trunk:
+    - Alamofire
 
 EXTERNAL SOURCES:
   Magpie:
-    :branch: swift-5
     :git: https://github.com/Hipo/magpie.git
 
 CHECKOUT OPTIONS:
   Magpie:
-    :commit: a1291e2a0408ab1e550356f27cbf6f816e6c9536
+    :commit: 9dcb778c98b173b8ece932dc535115b96d7e30eb
     :git: https://github.com/Hipo/magpie.git
 
 SPEC CHECKSUMS:
-  Alamofire: b752289c6040d77e9738610c9080276f18276842
+  Alamofire: f9450d3c7f6bea2ad62e7a541c3e9b186c7991d6
   Charts: e0dd4cd8f257bccf98407b58183ddca8e8d5b578
   Crashlytics: 2dfd686bcb918dc10ee0e76f7f853fe42c7bd552
   Fabric: 706c8b8098fff96c33c0db69cbf81f9c551d0d74
@@ -150,7 +150,7 @@ SPEC CHECKSUMS:
   GoogleUtilities: e7dc37039b19df7fe543479d3e4a02ac8d11bb69
   KeychainAccess: 3b1bf8a77eb4c6ea1ce9404c292e48f948954c6b
   lottie-ios: 49cd85b1f24f61a7708ad7ec76a523ab2d0e3100
-  Magpie: 8b21880f3fe89efafe70732802eedf152169f1dd
+  Magpie: 431d36955e9aaf15e179f82c17e700a6d53a195f
   MarqueeLabel: b55b26e690b6ad41faedd95cbf5eae6f1d1735b4
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   NotificationBannerSwift: e55dd801b0d78f1a7bacb10d722a935ec95f94a3
@@ -159,6 +159,6 @@ SPEC CHECKSUMS:
   SwiftDate: 8d4f14bf1ef68e95094511504856547bf9e3e1a6
   SwiftLint: 5553187048b900c91aa03552807681bb6b027846
 
-PODFILE CHECKSUM: 8876f25ff420455c2eafed549c33ec03dcf5abe3
+PODFILE CHECKSUM: b73d8df3c823cb1fc81525eca8ac7c7166d550c1
 
-COCOAPODS: 1.7.5
+COCOAPODS: 1.8.1

@@ -9,7 +9,7 @@ def main_pods
   pod 'SwiftLint'
   
   #Networking
-  pod 'Magpie', :git => 'https://github.com/Hipo/magpie.git', :branch => 'swift-5'
+  pod 'Magpie', :git => 'https://github.com/Hipo/magpie.git'
   
   #Persistance
   pod 'KeychainAccess'
