@@ -22,9 +22,10 @@ class TransactionDetailViewController: BaseScrollViewController {
         return view
     }()
     
-    private let transaction: Transaction
+    private var transaction: Transaction
     private let account: Account
     private let transactionType: TransactionType
+    private var pollingOperation: PollingOperation?
     
     private let viewModel = TransactionDetailViewModel()
     
@@ -38,6 +39,48 @@ class TransactionDetailViewController: BaseScrollViewController {
         super.init(configuration: configuration)
         
         hidesBottomBarWhenPushed = true
+    }
+    
+    // MARK: View Lifecycle
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        startPolling()
+    }
+    
+    private func startPolling() {
+        pollingOperation = PollingOperation(interval: 1.0) { [weak self] in
+            guard let strongSelf = self else {
+                return
+            }
+            
+            strongSelf.fetchTransactionDetail()
+        }
+        
+        if transaction.isPending() {
+            pollingOperation?.start()
+        }
+    }
+    
+    private func fetchTransactionDetail() {
+        api?.fetchTransactionDetail(for: account, with: transaction.id) { response in
+            switch response {
+            case let .success(transaction):
+                if !transaction.isPending() {
+                    self.transaction.status = .completed
+                    self.configureTransactionDetail()
+                }
+            case .failure:
+                break
+            }
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        pollingOperation?.invalidate()
     }
     
     // MARK: Setup
@@ -61,11 +104,14 @@ class TransactionDetailViewController: BaseScrollViewController {
         super.configureAppearance()
         
         title = "transaction-detail-title".localized
-        
-        if transactionType == .received {
-            viewModel.configureReceivedTransaction(transactionDetailView, with: transaction, for: account)
-        } else {
+        configureTransactionDetail()
+    }
+    
+    private func configureTransactionDetail() {
+        if transactionType == .sent {
             viewModel.configureSentTransaction(transactionDetailView, with: transaction, for: account)
+        } else {
+            viewModel.configureReceivedTransaction(transactionDetailView, with: transaction, for: account)
         }
     }
     

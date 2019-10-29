@@ -52,6 +52,15 @@ class Transaction: Model, TransactionItem {
 }
 
 extension Transaction {
+    func isPending() -> Bool {
+        if let status = status {
+            return status == .pending
+        }
+        return round == nil || round == 0
+    }
+}
+
+extension Transaction {
     enum CodingKeys: String, CodingKey {
         case round = "round"
         case id = "tx"
