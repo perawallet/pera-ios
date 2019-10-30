@@ -350,7 +350,10 @@ extension TransactionHistoryDataSource {
     }
     
     private func filter(_ pendingTransactions: [Transaction]) {
-        if !self.transactions.contains(where: { item -> Bool in
+        pendingTransactions.forEach { transaction in
+            transaction.status = .pending
+        }
+        self.transactions = self.transactions.filter { item -> Bool in
             guard let transactionItem = item as? Transaction else {
                 return true
             }
@@ -361,13 +364,9 @@ extension TransactionHistoryDataSource {
                 containsPendingTransaction = transactionItem.id.identifier == pendingTransaction.id.identifier
             }
             
-            return containsPendingTransaction
-        }) {
-            pendingTransactions.forEach { transaction in
-                transaction.status = .pending
-            }
-            self.transactions.insert(contentsOf: pendingTransactions, at: 0)
+            return !containsPendingTransaction
         }
+        self.transactions.insert(contentsOf: pendingTransactions, at: 0)
     }
     
     private func setRewards(from transactions: TransactionList, for account: Account) {

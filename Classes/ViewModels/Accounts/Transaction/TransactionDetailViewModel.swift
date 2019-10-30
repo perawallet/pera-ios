@@ -88,6 +88,7 @@ class TransactionDetailViewModel {
         switch status {
         case .completed:
             view.transactionStatusView.detailLabel.textColor = SharedColors.purple
+            view.transactionStatusView.pendingSpinnerView.stop()
         case .pending:
             view.transactionStatusView.pendingSpinnerView.show()
             view.lastRoundView.isHidden = true
