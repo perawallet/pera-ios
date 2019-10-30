@@ -9,6 +9,7 @@
 import Foundation
 
 let validatedAddressLength = 58
+let defaultParticipationKey = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
 
 extension String {
     
