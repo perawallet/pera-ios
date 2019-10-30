@@ -64,12 +64,17 @@ class TransactionDetailViewController: BaseScrollViewController {
     }
     
     private func fetchTransactionDetail() {
+        if !transaction.isPending() {
+            return
+        }
+        
         api?.fetchTransactionDetail(for: account, with: transaction.id) { response in
             switch response {
             case let .success(transaction):
                 if !transaction.isPending() {
                     self.transaction.status = .completed
                     self.configureTransactionDetail()
+                    self.pollingOperation?.invalidate()
                 }
             case .failure:
                 break
