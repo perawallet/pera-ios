@@ -12,6 +12,15 @@ class Payment: Model {
     let amount: Int64
     let toAddress: String
     let rewards: UInt64?
+    let closeAmount: Int64?
+    
+    func amountForTransaction() -> Int64 {
+        if let closeAmount = closeAmount,
+            closeAmount != 0 {
+            return closeAmount
+        }
+        return amount
+    }
 }
 
 extension Payment {
@@ -19,5 +28,6 @@ extension Payment {
         case amount = "amount"
         case toAddress = "to"
         case rewards = "torewards"
+        case closeAmount = "closeamount"
     }
 }

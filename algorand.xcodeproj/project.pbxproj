@@ -442,6 +442,8 @@
 		2B5DA9D5224CE19700EE41B4 /* EditAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5DA9D4224CE19700EE41B4 /* EditAccountViewController.swift */; };
 		2B5DA9D8224CE1BC00EE41B4 /* EditAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5DA9D7224CE1BC00EE41B4 /* EditAccountView.swift */; };
 		2B5DA9DA224D2F5C00EE41B4 /* PassphraseDisplayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5DA9D9224D2F5C00EE41B4 /* PassphraseDisplayViewController.swift */; };
+		2B64DACC2369B9E400C09582 /* Participation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B64DACB2369B9E400C09582 /* Participation.swift */; };
+		2B64DACD2369B9E400C09582 /* Participation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B64DACB2369B9E400C09582 /* Participation.swift */; };
 		2B653308228F656500F19FEA /* MyBidsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B653307228F656500F19FEA /* MyBidsView.swift */; };
 		2B65330A228F658100F19FEA /* PlaceBidView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B653309228F658100F19FEA /* PlaceBidView.swift */; };
 		2B65330E228F65D700F19FEA /* AuctionBidButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B65330D228F65D700F19FEA /* AuctionBidButton.swift */; };
@@ -889,6 +891,7 @@
 		2B5DA9D4224CE19700EE41B4 /* EditAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAccountViewController.swift; sourceTree = "<group>"; };
 		2B5DA9D7224CE1BC00EE41B4 /* EditAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAccountView.swift; sourceTree = "<group>"; };
 		2B5DA9D9224D2F5C00EE41B4 /* PassphraseDisplayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseDisplayViewController.swift; sourceTree = "<group>"; };
+		2B64DACB2369B9E400C09582 /* Participation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Participation.swift; sourceTree = "<group>"; };
 		2B653307228F656500F19FEA /* MyBidsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyBidsView.swift; sourceTree = "<group>"; };
 		2B653309228F658100F19FEA /* PlaceBidView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceBidView.swift; sourceTree = "<group>"; };
 		2B65330D228F65D700F19FEA /* AuctionBidButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionBidButton.swift; sourceTree = "<group>"; };
@@ -1282,6 +1285,7 @@
 				2B7ABF6A232BF58E0050B64B /* PendingTransactions.swift */,
 				2B7ABF76233388570050B64B /* PendingTransactionList.swift */,
 				2B7ABF67232BDE1C0050B64B /* Reward.swift */,
+				2B64DACB2369B9E400C09582 /* Participation.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -3633,6 +3637,7 @@
 				17BD4E622292F1260003E49A /* ContactContextView.swift in Sources */,
 				2B79A12E230EBE2500766021 /* FeedbackView.swift in Sources */,
 				17BD4E632292F1260003E49A /* LeftAlignedCollectionViewFlowLayout.swift in Sources */,
+				2B64DACD2369B9E400C09582 /* Participation.swift in Sources */,
 				2B982334231D396D009560CD /* Codable+JSON.swift in Sources */,
 				17BD4E642292F1260003E49A /* PassPhraseBackUpViewController.swift in Sources */,
 				2BD5477823184704007179FE /* FeedbackDraft.swift in Sources */,
@@ -3998,6 +4003,7 @@
 				2B6ED9602260EE2100787984 /* HistoryResultsViewModel.swift in Sources */,
 				2B79A12D230EBE2500766021 /* FeedbackView.swift in Sources */,
 				2BF34CBC223A8C460052CAD3 /* BaseCollectionViewCell.swift in Sources */,
+				2B64DACC2369B9E400C09582 /* Participation.swift in Sources */,
 				2B982333231D396D009560CD /* Codable+JSON.swift in Sources */,
 				171111B2225DF92300DAF55C /* SettingsInfoContextView.swift in Sources */,
 				2BD5477723184704007179FE /* FeedbackDraft.swift in Sources */,

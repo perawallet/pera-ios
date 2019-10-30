@@ -204,81 +204,17 @@ class SendAlgosViewController: BaseScrollViewController {
             }
         }
         
-        if amount.toMicroAlgos < minimumTransactionMicroAlgosLimit {
-            var receiverAddress: String
-            
-            switch receiver {
-            case let .address(address, _):
-                receiverAddress = address
-                
-            case let .contact(contact):
-                guard let contactAddress = contact.address else {
-                    self.displaySimpleAlertWith(title: "title-error".localized, message: "send-algos-contact-not-found".localized)
-                    return
-                }
-                receiverAddress = contactAddress
-            case let .myAccount(myAccount):
-                
-                receiverAddress = myAccount.address
-            case .initial:
-                self.displaySimpleAlertWith(title: "title-error".localized, message: "send-algos-address-not-selected".localized)
+        if isMaxButtonSelected {
+            if selectedAccount.doesAccountHasParticipationKey() {
+                presentAccountRemoveWarning()
+                return
+            } else if selectedAccount.isThereAnyDifferentAsset() {
+                displaySimpleAlertWith(title: "send-algos-account-delete-asset-title".localized, message: "")
                 return
             }
-            
-            receiverAddress = receiverAddress.trimmingCharacters(in: .whitespacesAndNewlines)
-            
-            let receiverFetchDraft = AccountFetchDraft(publicKey: receiverAddress)
-            
-            SVProgressHUD.show(withStatus: "title-loading".localized)
-            self.api?.fetchAccount(with: receiverFetchDraft) { accountResponse in
-                SVProgressHUD.dismiss()
-                
-                switch accountResponse {
-                case let .failure(error):
-                    if !self.isConnectedToInternet {
-                        self.displaySimpleAlertWith(title: "title-error".localized, message: "title-internet-connection".localized)
-                        return
-                    }
-                    self.displaySimpleAlertWith(title: "title-error".localized, message: error.localizedDescription)
-                case let .success(account):
-                    if account.amount == 0 {
-                        self.displaySimpleAlertWith(title: "title-error".localized,
-                                                    message: "send-algos-minimum-amount-error-new-account".localized)
-                    } else {
-                        let transaction = TransactionPreviewDraft(
-                            fromAccount: self.selectedAccount,
-                            amount: self.amount,
-                            identifier: nil,
-                            fee: nil
-                        )
-                        
-                        guard let account = self.getAccount() else {
-                            return
-                        }
-                        
-                        self.transactionManager.transaction = transaction
-                        self.transactionManager.composeTransactionData(
-                            for: account,
-                            isMaxValue: self.isMaxButtonSelected
-                        )
-                    }
-                }
-            }
-            
-            return
-        } else {
-            let transaction = TransactionPreviewDraft(fromAccount: selectedAccount, amount: amount, identifier: nil, fee: nil)
-            
-            guard let account = getAccount() else {
-                return
-            }
-            
-            self.transactionManager.transaction = transaction
-            self.transactionManager.composeTransactionData(
-                for: account,
-                isMaxValue: isMaxButtonSelected
-            )
         }
+        
+        composeTransactionData()
     }
     
     private func getAccount() -> Account? {
@@ -309,6 +245,106 @@ class SendAlgosViewController: BaseScrollViewController {
         }
         
         return false
+    }
+    
+    private func presentAccountRemoveWarning() {
+        let alertController = UIAlertController(
+            title: "send-algos-account-delete-title".localized,
+            message: "send-algos-account-delete-body".localized,
+            preferredStyle: .alert
+        )
+        
+        let cancelAction = UIAlertAction(title: "title-cancel-lowercased".localized, style: .cancel)
+        
+        let proceedAction = UIAlertAction(title: "title-proceed-lowercased".localized, style: .destructive) { _ in
+            self.composeTransactionData()
+        }
+        
+        alertController.addAction(cancelAction)
+        alertController.addAction(proceedAction)
+        
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    private func composeTransactionData() {
+        if amount.toMicroAlgos < minimumTransactionMicroAlgosLimit {
+            var receiverAddress: String
+                   
+            switch receiver {
+            case let .address(address, _):
+                receiverAddress = address
+            case let .contact(contact):
+                guard let contactAddress = contact.address else {
+                    self.displaySimpleAlertWith(title: "title-error".localized, message: "send-algos-contact-not-found".localized)
+                    return
+                }
+                receiverAddress = contactAddress
+            case let .myAccount(myAccount):
+                receiverAddress = myAccount.address
+            case .initial:
+                self.displaySimpleAlertWith(title: "title-error".localized, message: "send-algos-address-not-selected".localized)
+                return
+            }
+                   
+            receiverAddress = receiverAddress.trimmingCharacters(in: .whitespacesAndNewlines)
+            let receiverFetchDraft = AccountFetchDraft(publicKey: receiverAddress)
+                   
+            SVProgressHUD.show(withStatus: "title-loading".localized)
+            self.api?.fetchAccount(with: receiverFetchDraft) { accountResponse in
+                SVProgressHUD.dismiss()
+                       
+                switch accountResponse {
+                case let .failure(error):
+                    if !self.isConnectedToInternet {
+                        self.displaySimpleAlertWith(title: "title-error".localized, message: "title-internet-connection".localized)
+                        return
+                    }
+                    self.displaySimpleAlertWith(title: "title-error".localized, message: error.localizedDescription)
+                case let .success(account):
+                    if account.amount == 0 {
+                        self.displaySimpleAlertWith(title: "title-error".localized,
+                                                    message: "send-algos-minimum-amount-error-new-account".localized)
+                    } else {
+                        let transaction = TransactionPreviewDraft(
+                            fromAccount: self.selectedAccount,
+                            amount: self.amount,
+                            identifier: nil,
+                            fee: nil,
+                            isMaxTransaction: self.isMaxButtonSelected
+                        )
+                        
+                        guard let account = self.getAccount() else {
+                            return
+                        }
+                               
+                        self.transactionManager.transaction = transaction
+                        self.transactionManager.composeTransactionData(
+                            for: account,
+                            isMaxValue: self.isMaxButtonSelected
+                        )
+                    }
+                }
+            }
+            return
+        } else {
+            let transaction = TransactionPreviewDraft(
+                fromAccount: selectedAccount,
+                amount: amount,
+                identifier: nil,
+                fee: nil,
+                isMaxTransaction: isMaxButtonSelected
+            )
+                   
+            guard let account = getAccount() else {
+                return
+            }
+                   
+            self.transactionManager.transaction = transaction
+            self.transactionManager.composeTransactionData(
+                for: account,
+                isMaxValue: isMaxButtonSelected
+            )
+        }
     }
     
     // MARK: Keyboard

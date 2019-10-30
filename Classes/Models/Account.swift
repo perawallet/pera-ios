@@ -23,8 +23,49 @@ class Account: Model {
     var status: AccountStatus
     var rewards: UInt64?
     var pendingRewards: UInt64?
+    var participation: Participation?
+    var hasAssetTotal = false
+    var hasAssets = false
     
     var name: String?
+    
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        address = try container.decode(String.self, forKey: .address)
+        amount = try container.decode(UInt64.self, forKey: .amount)
+        status = try container.decode(AccountStatus.self, forKey: .status)
+        rewards = try container.decodeIfPresent(UInt64.self, forKey: .rewards)
+        pendingRewards = try container.decodeIfPresent(UInt64.self, forKey: .pendingRewards)
+        participation = try container.decodeIfPresent(Participation.self, forKey: .participation)
+        name = try container.decodeIfPresent(String.self, forKey: .name)
+        
+        for key in container.allKeys {
+            if key == .hasAssetTotal {
+               hasAssetTotal = true
+                break
+            }
+
+            if key == .hasAssets {
+                hasAssets = true
+                break
+            }
+        }
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        
+        try container.encode(address, forKey: .address)
+        try container.encode(amount, forKey: .amount)
+        try container.encode(status, forKey: .status)
+        try container.encode(rewards, forKey: .rewards)
+        try container.encode(pendingRewards, forKey: .pendingRewards)
+        try container.encode(participation, forKey: .participation)
+        try container.encode(hasAssetTotal, forKey: .hasAssetTotal)
+        try container.encode(hasAssets, forKey: .hasAssets)
+        try container.encode(name, forKey: .name)
+    }
     
     init(address: String) {
         self.address = address
@@ -32,6 +73,9 @@ class Account: Model {
         status = .offline
         rewards = 0
         pendingRewards = 0
+        participation = nil
+        hasAssetTotal = false
+        hasAssets = false
     }
     
     func update(withAccount account: Account) {
@@ -39,6 +83,9 @@ class Account: Model {
         status = account.status
         rewards = account.rewards
         pendingRewards = account.pendingRewards
+        participation = account.participation
+        hasAssetTotal = account.hasAssetTotal
+        hasAssets = account.hasAssets
         
         if let updatedName = account.name {
             name = updatedName
@@ -52,6 +99,14 @@ class Account: Model {
     func encoded() -> Data? {
         return try? JSONEncoder().encode(self)
     }
+    
+    func doesAccountHasParticipationKey() -> Bool {
+        return !(participation == nil || participation?.partpkb64 == defaultParticipationKey)
+    }
+
+    func isThereAnyDifferentAsset() -> Bool {
+        return hasAssetTotal || hasAssets
+    }
 }
 
 extension Account {
@@ -62,6 +117,9 @@ extension Account {
         case rewards = "rewards"
         case pendingRewards = "pendingrewards"
         case name = "name"
+        case participation = "participation"
+        case hasAssetTotal = "thisassettotal"
+        case hasAssets = "assets"
     }
 }
 

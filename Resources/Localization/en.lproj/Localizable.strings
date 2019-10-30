@@ -19,6 +19,7 @@
 "title-share-big" = "SHARE";
 "title-get-started" = "GET STARTED";
 "title-cancel-lowercased" = "Cancel";
+"title-proceed-lowercased" = "Proceed";
 "title-go-to-settings" = "Go To Settings";
 "title-error" = "Error";
 "title-save" = "Save";
@@ -159,6 +160,9 @@
 "send-algos-my-accounts" = "My Accounts";
 "send-algos-contacts" = "Contacts";
 "send-algos-scan" = "Scan QR";
+"send-algos-account-delete-title" = "Your account is about to be deleted, are you sure you want to proceed?";
+"send-algos-account-delete-body" = "To keep an account open, the account must have at least 0.01 ALGO. If you send the max amount, the account will be deleted and your active participation keys will be deleted as well.";
+"send-algos-account-delete-asset-title" = "In order to delete an account, you must empty any asset account balance and destroy any asset you've created, if any.";
 
 // MARK: Algos Request
 

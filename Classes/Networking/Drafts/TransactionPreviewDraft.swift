@@ -13,4 +13,5 @@ struct TransactionPreviewDraft: Codable {
     let amount: Double
     var identifier: String?
     var fee: Int64?
+    var isMaxTransaction = false
 }
