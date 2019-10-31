@@ -24,8 +24,8 @@ class Account: Model {
     var rewards: UInt64?
     var pendingRewards: UInt64?
     var participation: Participation?
-    var hasAssetTotal = false
-    var hasAssets = false
+    var assetTotal: AnyCodable?
+    var assets: AnyCodable?
     
     var name: String?
     
@@ -39,32 +39,8 @@ class Account: Model {
         pendingRewards = try container.decodeIfPresent(UInt64.self, forKey: .pendingRewards)
         participation = try container.decodeIfPresent(Participation.self, forKey: .participation)
         name = try container.decodeIfPresent(String.self, forKey: .name)
-        
-        for key in container.allKeys {
-            if key == .hasAssetTotal {
-               hasAssetTotal = true
-                break
-            }
-
-            if key == .hasAssets {
-                hasAssets = true
-                break
-            }
-        }
-    }
-    
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        
-        try container.encode(address, forKey: .address)
-        try container.encode(amount, forKey: .amount)
-        try container.encode(status, forKey: .status)
-        try container.encode(rewards, forKey: .rewards)
-        try container.encode(pendingRewards, forKey: .pendingRewards)
-        try container.encode(participation, forKey: .participation)
-        try container.encode(hasAssetTotal, forKey: .hasAssetTotal)
-        try container.encode(hasAssets, forKey: .hasAssets)
-        try container.encode(name, forKey: .name)
+        assetTotal = try? container.decodeIfPresent(AnyCodable.self, forKey: .assetTotal) ?? nil
+        assets = try? container.decodeIfPresent(AnyCodable.self, forKey: .assets) ?? nil
     }
     
     init(address: String) {
@@ -74,8 +50,8 @@ class Account: Model {
         rewards = 0
         pendingRewards = 0
         participation = nil
-        hasAssetTotal = false
-        hasAssets = false
+        assetTotal = nil
+        assets = nil
     }
     
     func update(withAccount account: Account) {
@@ -84,8 +60,8 @@ class Account: Model {
         rewards = account.rewards
         pendingRewards = account.pendingRewards
         participation = account.participation
-        hasAssetTotal = account.hasAssetTotal
-        hasAssets = account.hasAssets
+        assetTotal = account.assetTotal
+        assets = account.assets
         
         if let updatedName = account.name {
             name = updatedName
@@ -105,7 +81,7 @@ class Account: Model {
     }
 
     func isThereAnyDifferentAsset() -> Bool {
-        return hasAssetTotal || hasAssets
+        return assetTotal != nil || assets != nil
     }
 }
 
@@ -118,8 +94,8 @@ extension Account {
         case pendingRewards = "pendingrewards"
         case name = "name"
         case participation = "participation"
-        case hasAssetTotal = "thisassettotal"
-        case hasAssets = "assets"
+        case assetTotal = "thisassettotal"
+        case assets = "assets"
     }
 }
 

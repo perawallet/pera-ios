@@ -656,6 +656,8 @@
 		2BCB5C9A22B77C9A0038DA6B /* PendingCoinlistTransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCB5C9822B77C9A0038DA6B /* PendingCoinlistTransactionCell.swift */; };
 		2BCB5C9C22B7943C0038DA6B /* PastCoinlistTransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCB5C9B22B7943C0038DA6B /* PastCoinlistTransactionCell.swift */; };
 		2BCB5C9D22B7943C0038DA6B /* PastCoinlistTransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCB5C9B22B7943C0038DA6B /* PastCoinlistTransactionCell.swift */; };
+		2BCF10A7236B1B98000CE19E /* Codable+Any.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCF10A6236B1B98000CE19E /* Codable+Any.swift */; };
+		2BCF10A8236B1B98000CE19E /* Codable+Any.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCF10A6236B1B98000CE19E /* Codable+Any.swift */; };
 		2BD54766231714A9007179FE /* RewardDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD54765231714A9007179FE /* RewardDetailViewController.swift */; };
 		2BD54767231714A9007179FE /* RewardDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD54765231714A9007179FE /* RewardDetailViewController.swift */; };
 		2BD5476A23182636007179FE /* RewardDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD5476923182636007179FE /* RewardDetailViewModel.swift */; };
@@ -1047,6 +1049,7 @@
 		2BCB5C9522B77C820038DA6B /* CoinlistTransactionCellContextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinlistTransactionCellContextView.swift; sourceTree = "<group>"; };
 		2BCB5C9822B77C9A0038DA6B /* PendingCoinlistTransactionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingCoinlistTransactionCell.swift; sourceTree = "<group>"; };
 		2BCB5C9B22B7943C0038DA6B /* PastCoinlistTransactionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastCoinlistTransactionCell.swift; sourceTree = "<group>"; };
+		2BCF10A6236B1B98000CE19E /* Codable+Any.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Codable+Any.swift"; sourceTree = "<group>"; };
 		2BD54765231714A9007179FE /* RewardDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardDetailViewController.swift; sourceTree = "<group>"; };
 		2BD5476923182636007179FE /* RewardDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardDetailViewModel.swift; sourceTree = "<group>"; };
 		2BD5476C23184286007179FE /* API+Feedback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+Feedback.swift"; sourceTree = "<group>"; };
@@ -2352,6 +2355,7 @@
 			isa = PBXGroup;
 			children = (
 				2B982332231D396D009560CD /* Codable+JSON.swift */,
+				2BCF10A6236B1B98000CE19E /* Codable+Any.swift */,
 			);
 			path = Codable;
 			sourceTree = "<group>";
@@ -3646,6 +3650,7 @@
 				17BD4E672292F1260003E49A /* AlertViewConfigurator.swift in Sources */,
 				175CE59C2295709F003F7C02 /* RoundDetail.swift in Sources */,
 				17BD4E682292F1260003E49A /* AlertView.swift in Sources */,
+				2BCF10A8236B1B98000CE19E /* Codable+Any.swift in Sources */,
 				17BD4E692292F1260003E49A /* CardModalPresentationController.swift in Sources */,
 				17BD4E6A2292F1260003E49A /* HistoryResultsViewModel.swift in Sources */,
 				2BD547752318463E007179FE /* Feedback.swift in Sources */,
@@ -4012,6 +4017,7 @@
 				17AA1B0A22662BD1000B0BB0 /* Decimal+Additions.swift in Sources */,
 				2BD739F6223FF47900B66EEF /* NumpadNumericButton.swift in Sources */,
 				2B65332A2292176600F19FEA /* AuctionDetailHeaderView.swift in Sources */,
+				2BCF10A7236B1B98000CE19E /* Codable+Any.swift in Sources */,
 				2B8BE4EE22393577005D8565 /* BaseViewController.swift in Sources */,
 				17B7D8B0224128EC00A6FF9E /* Keychain+Additions.swift in Sources */,
 				2BD547742318463E007179FE /* Feedback.swift in Sources */,
