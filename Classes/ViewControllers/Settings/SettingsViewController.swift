@@ -172,7 +172,11 @@ extension SettingsViewController: UICollectionViewDelegateFlowLayout {
         case .serverSettings:
             open(.nodeSettings(mode: .initialize), by: .push)
         case .password:
-            open(.choosePassword(mode: ChoosePasswordViewController.Mode.resetPassword, route: nil), by: .present)
+            open(
+                .choosePassword(
+                    mode: ChoosePasswordViewController.Mode.resetPassword, route: nil),
+                    by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
+            )
         default:
             break
         }

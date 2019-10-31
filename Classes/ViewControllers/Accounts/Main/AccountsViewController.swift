@@ -479,7 +479,10 @@ extension AccountsViewController: AccountSelectionViewControllerDelegate {
             accountSelectionViewController.configure(selected: account)
         }
         
-        open(.introduction(mode: .new), by: .present)
+        open(
+            .introduction(mode: .new),
+            by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
+        )
     }
 }
 
