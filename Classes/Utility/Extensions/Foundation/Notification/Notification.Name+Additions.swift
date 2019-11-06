@@ -12,7 +12,6 @@ extension Notification.Name {
     static let AuthenticatedUserUpdate = Notification.Name("com.algorand.algorand.notification.authenticated.user.update")
     static let ApplicationWillEnterForeground = Notification.Name("com.algorand.algorand.notification.application.WillEnterForeground")
     static let AccountUpdate = Notification.Name("com.algorand.algorand.notification.account.update")
-    static let AccountRemoved = Notification.Name("com.algorand.algorand.notification.account.removed")
     static let ContactAddition = Notification.Name("com.algorand.algorand.notification.contact.addition")
     static let ContactEdit = Notification.Name("com.algorand.algorand.notification.contact.edit")
     static let ContactDeletion = Notification.Name("com.algorand.algorand.notification.contact.deletion")

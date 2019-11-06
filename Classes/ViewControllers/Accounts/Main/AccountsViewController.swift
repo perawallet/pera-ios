@@ -190,13 +190,6 @@ class AccountsViewController: BaseViewController {
         
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(didAccountRemoved(notification:)),
-            name: Notification.Name.AccountRemoved,
-            object: nil
-        )
-        
-        NotificationCenter.default.addObserver(
-            self,
             selector: #selector(didContactAdded(notification:)),
             name: Notification.Name.ContactAddition,
             object: nil
@@ -421,18 +414,6 @@ extension AccountsViewController {
             
             fetchTransactions()
         }
-    }
-    
-    @objc
-    fileprivate func didAccountRemoved(notification: Notification) {
-        guard let userInfo = notification.userInfo as? [String: Account],
-            let account = userInfo["account"] else {
-            return
-        }
-        
-        selectedAccount = account
-        accountSelectionViewController.selectedAccount = account
-        accountSelectionViewController.accountsCollectionView.reloadData()
     }
     
     @objc
