@@ -103,60 +103,9 @@ extension SendAlgosPreviewViewController: TransactionManagerDelegate {
     func transactionManager(_ transactionManager: TransactionManager, didCompletedTransaction id: TransactionID) {
         SVProgressHUD.dismiss()
         
-        if transaction.isMaxTransaction {
-            removeAccount()
-        }
-        
         self.transaction.identifier = id.identifier
         
         navigationController?.popToRootViewController(animated: false)
-    }
-    
-    private func removeAccount() {
-        let account = transaction.fromAccount
-        guard let user = session?.authenticatedUser,
-            let index = user.index(of: account) else {
-            return
-        }
-        
-        let isAccountDefault = user.isDefaultAccount(account)
-        
-        user.removeAccount(account)
-        
-        guard !user.accounts.isEmpty else {
-            self.session?.reset()
-            self.tabBarController?.open(.introduction(mode: .initialize), by: .launch, animated: false)
-            return
-        }
-        
-        defer {
-            self.session?.authenticatedUser = user
-        }
-        
-        let newSelectedAccount: Account?
-        if user.accounts.count == 1 {
-            newSelectedAccount = user.account(at: 0)
-        } else {
-            if index == user.accounts.count {
-                newSelectedAccount = user.account(at: index.advanced(by: -1))
-            } else {
-                newSelectedAccount = user.account(at: index)
-            }
-        }
-        
-        guard let newDefaultAccount = newSelectedAccount else {
-            return
-        }
-        
-        if isAccountDefault {
-            user.setDefaultAccount(newDefaultAccount)
-        }
-        
-        NotificationCenter.default.post(
-            name: Notification.Name.AccountRemoved,
-            object: self,
-            userInfo: ["account": newDefaultAccount]
-        )
     }
     
     func transactionManager(_ transactionManager: TransactionManager, didFailedTransaction error: Error) {
