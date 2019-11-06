@@ -20,10 +20,6 @@ class TabBarController: UITabBarController {
         rootViewController: HistoryViewController(configuration: configuration)
     )
     
-    private lazy var auctionNavigationController = NavigationController(
-        rootViewController: AuctionViewController(configuration: configuration)
-    )
-    
     private lazy var contactsNavigationController = NavigationController(
         rootViewController: ContactsViewController(configuration: configuration)
     )
@@ -70,7 +66,6 @@ class TabBarController: UITabBarController {
         
         configureAccountsTab()
         configureHistoryTab()
-        configureAuctionTab()
         configureContactsTab()
         configureSettingsTab()
         
@@ -90,7 +85,6 @@ class TabBarController: UITabBarController {
         let controllers = [
             accountsNavigationController,
             historyNavigationController,
-            auctionNavigationController,
             contactsNavigationController,
             settingsNavigationController
         ]
@@ -120,17 +114,6 @@ class TabBarController: UITabBarController {
         historyNavigationController.tabBarItem.tag = 1
     }
     
-    private func configureAuctionTab() {
-        auctionNavigationController.tabBarItem = UITabBarItem(
-            title: "tabbar-item-auction".localized,
-            image: img("tabbar-icon-auction")?.withRenderingMode(.alwaysOriginal),
-            selectedImage: img("tabbar-icon-auction-selected")?.withRenderingMode(.alwaysOriginal)
-        )
-        
-        auctionNavigationController.tabBarItem.imageInsets = UIEdgeInsets(top: 2.0, left: 0.0, bottom: -2.0, right: 0.0)
-        auctionNavigationController.tabBarItem.tag = 2
-    }
-    
     private func configureContactsTab() {
         contactsNavigationController.tabBarItem = UITabBarItem(
             title: "tabbar-item-contacts".localized,
@@ -139,7 +122,7 @@ class TabBarController: UITabBarController {
         )
         
         contactsNavigationController.tabBarItem.imageInsets = UIEdgeInsets(top: 1.5, left: 0.0, bottom: -1.5, right: 0.0)
-        contactsNavigationController.tabBarItem.tag = 3
+        contactsNavigationController.tabBarItem.tag = 2
     }
     
     private func configureSettingsTab() {
@@ -150,7 +133,7 @@ class TabBarController: UITabBarController {
         )
         
         settingsNavigationController.tabBarItem.imageInsets = UIEdgeInsets(top: 2.0, left: 0.0, bottom: -2.0, right: 0.0)
-        settingsNavigationController.tabBarItem.tag = 4
+        settingsNavigationController.tabBarItem.tag = 3
     }
     
     private func configureAppearance() {
@@ -206,8 +189,7 @@ extension TabBarController {
     enum Tab: Int {
         case accounts = 0
         case history = 1
-        case auction = 2
-        case contacts = 3
-        case settings = 4
+        case contacts = 2
+        case settings = 3
     }
 }
