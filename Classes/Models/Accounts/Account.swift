@@ -24,8 +24,8 @@ class Account: Model {
     var rewards: UInt64?
     var pendingRewards: UInt64?
     var participation: Participation?
-    var assetTotal: AnyCodable?
-    var assets: AnyCodable?
+    var totalAssets: [String: AssetDetail]?
+    var assets: [String: Asset]?
     
     var name: String?
     
@@ -39,8 +39,8 @@ class Account: Model {
         pendingRewards = try container.decodeIfPresent(UInt64.self, forKey: .pendingRewards)
         participation = try container.decodeIfPresent(Participation.self, forKey: .participation)
         name = try container.decodeIfPresent(String.self, forKey: .name)
-        assetTotal = try? container.decodeIfPresent(AnyCodable.self, forKey: .assetTotal) ?? nil
-        assets = try? container.decodeIfPresent(AnyCodable.self, forKey: .assets) ?? nil
+        totalAssets = try? container.decodeIfPresent([String: AssetDetail].self, forKey: .totalAssets) ?? nil
+        assets = try? container.decodeIfPresent([String: Asset].self, forKey: .assets) ?? nil
     }
     
     init(address: String) {
@@ -50,7 +50,7 @@ class Account: Model {
         rewards = 0
         pendingRewards = 0
         participation = nil
-        assetTotal = nil
+        totalAssets = nil
         assets = nil
     }
     
@@ -60,7 +60,7 @@ class Account: Model {
         rewards = account.rewards
         pendingRewards = account.pendingRewards
         participation = account.participation
-        assetTotal = account.assetTotal
+        totalAssets = account.totalAssets
         assets = account.assets
         
         if let updatedName = account.name {
@@ -81,7 +81,7 @@ class Account: Model {
     }
 
     func isThereAnyDifferentAsset() -> Bool {
-        return assetTotal != nil || assets != nil
+        return totalAssets != nil || assets != nil
     }
 }
 
@@ -94,7 +94,7 @@ extension Account {
         case pendingRewards = "pendingrewards"
         case name = "name"
         case participation = "participation"
-        case assetTotal = "thisassettotal"
+        case totalAssets = "thisassettotal"
         case assets = "assets"
     }
 }
