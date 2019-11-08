@@ -427,6 +427,10 @@
 		2B43B83922A73A3800CEA8F3 /* Overpass-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2B43B82922A73A3800CEA8F3 /* Overpass-Regular.otf */; };
 		2B43B83C22A8394F00CEA8F3 /* Date+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B43B83B22A8394F00CEA8F3 /* Date+Additions.swift */; };
 		2B43B83D22A8394F00CEA8F3 /* Date+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B43B83B22A8394F00CEA8F3 /* Date+Additions.swift */; };
+		2B46262A23758CC9000AE73C /* Asset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B46262923758CC9000AE73C /* Asset.swift */; };
+		2B46262B23758CC9000AE73C /* Asset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B46262923758CC9000AE73C /* Asset.swift */; };
+		2B46262D23758CF4000AE73C /* AssetDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B46262C23758CF4000AE73C /* AssetDetail.swift */; };
+		2B46262E23758CF4000AE73C /* AssetDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B46262C23758CF4000AE73C /* AssetDetail.swift */; };
 		2B56F7D6225B3C1D00E58737 /* SendAlgosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B56F7D5225B3C1D00E58737 /* SendAlgosViewController.swift */; };
 		2B56F7D8225B3C4200E58737 /* RequestAlgosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B56F7D7225B3C4200E58737 /* RequestAlgosViewController.swift */; };
 		2B56F7DA225B45B300E58737 /* SendAlgosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B56F7D9225B45B300E58737 /* SendAlgosView.swift */; };
@@ -878,6 +882,8 @@
 		2B43B82822A73A3800CEA8F3 /* AvenirNext-DemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AvenirNext-DemiBold.ttf"; sourceTree = "<group>"; };
 		2B43B82922A73A3800CEA8F3 /* Overpass-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Overpass-Regular.otf"; sourceTree = "<group>"; };
 		2B43B83B22A8394F00CEA8F3 /* Date+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Additions.swift"; sourceTree = "<group>"; };
+		2B46262923758CC9000AE73C /* Asset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Asset.swift; sourceTree = "<group>"; };
+		2B46262C23758CF4000AE73C /* AssetDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetDetail.swift; sourceTree = "<group>"; };
 		2B56F7D5225B3C1D00E58737 /* SendAlgosViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendAlgosViewController.swift; sourceTree = "<group>"; };
 		2B56F7D7225B3C4200E58737 /* RequestAlgosViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestAlgosViewController.swift; sourceTree = "<group>"; };
 		2B56F7D9225B45B300E58737 /* SendAlgosView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendAlgosView.swift; sourceTree = "<group>"; };
@@ -1188,20 +1194,14 @@
 		17100B2A225CEC2900D13548 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				2B4DF414236C6A6900FF9551 /* Coinlist */,
+				2B4DF413236C6A6400FF9551 /* Common */,
+				2B4DF416236C6A8900FF9551 /* Detail */,
 				2B79A12B230EBE1800766021 /* Feedback */,
+				2B4DF417236C6A8E00FF9551 /* Info */,
+				2B4DF412236C6A5800FF9551 /* Node */,
+				2B4DF415236C6A8500FF9551 /* Toggle */,
 				17100B2B225CEC3600D13548 /* SettingsView.swift */,
-				171111A8225DD1A200DAF55C /* SettingsDetailCell.swift */,
-				171111AA225DD1DD00DAF55C /* SettingsDetailContextView.swift */,
-				171111AF225DF91400DAF55C /* SettingsInfoCell.swift */,
-				171111B1225DF92300DAF55C /* SettingsInfoContextView.swift */,
-				171111B3225E091A00DAF55C /* SettingsToggleCell.swift */,
-				171111B5225E093400DAF55C /* SettingsToggleContextView.swift */,
-				179B93D7225E454100DD03E9 /* NodeSettingsView.swift */,
-				179B93D9225E460500DD03E9 /* NodeSettingsHeaderView.swift */,
-				17D04F47225F697E0051BC43 /* AddNodeView.swift */,
-				17CFB883226A134A00B3B0A7 /* ToggleCell.swift */,
-				2BB3F30C22B1B6A800109C47 /* CoinlistCell.swift */,
-				2BB3F30F22B1B6C000109C47 /* CoinlistCellContextView.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -1231,24 +1231,6 @@
 			path = Libraries;
 			sourceTree = "<group>";
 		};
-		1751261B223BEA230095AF4F /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				1751261C223BEA320095AF4F /* Session.swift */,
-				1761B3CC224A47AF00C6BA47 /* Session+Crypto.swift */,
-				2B6ED9652261063700787984 /* TransactionList.swift */,
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
-		1751261E223BEADF0095AF4F /* Protocols */ = {
-			isa = PBXGroup;
-			children = (
-				1751261F223BEAE90095AF4F /* Storable.swift */,
-			);
-			path = Protocols;
-			sourceTree = "<group>";
-		};
 		1761B3C9224A39C500C6BA47 /* PassPhrase */ = {
 			isa = PBXGroup;
 			children = (
@@ -1268,27 +1250,14 @@
 		17B7D8A42240D79200A6FF9E /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				2BBA198E231FF7C10080A6F6 /* Notification */,
-				2B982336231EC1B2009560CD /* Query */,
-				2BD5476F23184303007179FE /* Feedback */,
+				2B4DF439236C787600FF9551 /* Accounts */,
+				2B4DF444236C7D5500FF9551 /* Application */,
 				2B3F390D228C4D98008BBE75 /* Auction */,
-				17B7D8A52240D8F900A6FF9E /* Account.swift */,
-				17F6E689224B71A6006DD31F /* User.swift */,
-				170AFAFB224CC70A00520EA5 /* QRText.swift */,
-				2BB021DA224E46D60039D78A /* Transaction.swift */,
-				2B82B1C422535F4300A8909F /* Contact.swift */,
-				173DA1EC2255F96E00378A82 /* TransactionFee.swift */,
-				173DA20F2256643A00378A82 /* TransactionID.swift */,
-				17D50AA0225C755E00CA9C6E /* ApplicationConfiguration.swift */,
-				2B6ED963226105E100787984 /* Payment.swift */,
-				179B93D5225E447400DD03E9 /* Node.swift */,
-				175CE59A2295709F003F7C02 /* RoundDetail.swift */,
-				2B79A138231330D900766021 /* AlgoToDollarConversion.swift */,
-				2BD5477923192E15007179FE /* AlgorandError.swift */,
-				2B7ABF6A232BF58E0050B64B /* PendingTransactions.swift */,
-				2B7ABF76233388570050B64B /* PendingTransactionList.swift */,
-				2B7ABF67232BDE1C0050B64B /* Reward.swift */,
-				2B64DACB2369B9E400C09582 /* Participation.swift */,
+				2B4DF446236C7D6200FF9551 /* Contacts */,
+				2B4DF447236C7D7900FF9551 /* Error */,
+				2BD5476F23184303007179FE /* Feedback */,
+				2B4DF442236C7B7100FF9551 /* Node */,
+				2BBA198E231FF7C10080A6F6 /* Notification */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1296,17 +1265,11 @@
 		17B7D8A92240E18800A6FF9E /* Drafts */ = {
 			isa = PBXGroup;
 			children = (
-				17B7D8AA2240E19600A6FF9E /* AccountFetchDraft.swift */,
-				173DA1EA2255F7EF00378A82 /* TransactionDraft.swift */,
-				2B6ED95C22608FE700787984 /* HistoryDraft.swift */,
-				2B6ED961226105CD00787984 /* TransactionPreviewDraft.swift */,
-				17D04F4B225F90D70051BC43 /* NodeTestDraft.swift */,
-				175CE59722955CEE003F7C02 /* WaitRoundDraft.swift */,
-				2B1B77C422963C3E0021A6CC /* CoinlistAuthenticationDraft.swift */,
-				2BD5477623184704007179FE /* FeedbackDraft.swift */,
-				2B98233D231EC767009560CD /* BidDraft.swift */,
-				2BBA198B231FF7650080A6F6 /* DeviceRegistrationDraft.swift */,
-				2B2A9F40232A403600450DB0 /* TransactionTrackDraft.swift */,
+				2B4DF42C236C772300FF9551 /* Account */,
+				2B4DF42D236C772800FF9551 /* Auction */,
+				2B4DF435236C77B200FF9551 /* Device */,
+				2B4DF433236C777000FF9551 /* History */,
+				2B4DF42F236C773500FF9551 /* Settings */,
 			);
 			path = Drafts;
 			sourceTree = "<group>";
@@ -1340,9 +1303,9 @@
 		17F9E9202257894B004CDF24 /* Operations */ = {
 			isa = PBXGroup;
 			children = (
+				2B4DF42B236C771300FF9551 /* Account */,
+				2B4DF42A236C771000FF9551 /* Node */,
 				17F9E9212257895A004CDF24 /* AsyncOperation.swift */,
-				17F9E923225789E7004CDF24 /* AccountFetchOperation.swift */,
-				17695B3B2268D2DE00765D31 /* NodeHealthOperation.swift */,
 			);
 			path = Operations;
 			sourceTree = "<group>";
@@ -1373,10 +1336,10 @@
 			isa = PBXGroup;
 			children = (
 				2BCB5C7922B38F810038DA6B /* Balance */,
-				2B3F391F228EB724008BBE75 /* List */,
-				2B3F391E228EB6D6008BBE75 /* Detail */,
 				2B3F38FF228B74C1008BBE75 /* Common */,
+				2B3F391E228EB6D6008BBE75 /* Detail */,
 				2B8EE81B2282DACE0001D025 /* Introduction */,
+				2B3F391F228EB724008BBE75 /* List */,
 			);
 			path = Auction;
 			sourceTree = "<group>";
@@ -1424,12 +1387,11 @@
 			isa = PBXGroup;
 			children = (
 				2BA09A8F2294131B009DC24D /* Bid */,
+				2B4DF43C236C78AD00FF9551 /* Chart */,
 				2B3F390E228C4DAB008BBE75 /* Coinlist */,
+				2B4DF43B236C78A800FF9551 /* User */,
 				2B3F3906228C3829008BBE75 /* Auction.swift */,
 				2B3F390B228C4472008BBE75 /* ActiveAuction.swift */,
-				2BA09A9222946811009DC24D /* AuctionUser.swift */,
-				2BA09A942294BA07009DC24D /* ChartData.swift */,
-				2BA09A962294BA20009DC24D /* BidResponse.swift */,
 			);
 			path = Auction;
 			sourceTree = "<group>";
@@ -1437,12 +1399,9 @@
 		2B3F390E228C4DAB008BBE75 /* Coinlist */ = {
 			isa = PBXGroup;
 			children = (
-				2BDE31E92279EBBD002E8235 /* CointlistUser.swift */,
-				2B3F390F228C4DC0008BBE75 /* CoinlistTransaction.swift */,
-				2B1B77C622963C560021A6CC /* CoinlistAuthentication.swift */,
-				2B891F1922BD395F003205F5 /* BlockchainInsturction.swift */,
-				2B891F1C22BD3982003205F5 /* USDWireInstruction.swift */,
-				2BC1BA8722BFC5A900E94316 /* DepositInstruction.swift */,
+				2B4DF43E236C78D900FF9551 /* Authentication */,
+				2B4DF43D236C78C500FF9551 /* Instruction */,
+				2B4DF440236C78ED00FF9551 /* Transaction */,
 			);
 			path = Coinlist;
 			sourceTree = "<group>";
@@ -1461,12 +1420,11 @@
 		2B3F391E228EB6D6008BBE75 /* Detail */ = {
 			isa = PBXGroup;
 			children = (
-				2B65330C228F65A200F19FEA /* PlaceBid */,
-				2B65330B228F659A00F19FEA /* MyBids */,
 				2B2F9F7622821C370068DBB5 /* Chart */,
+				2B4DF411236C699900FF9551 /* Header */,
+				2B65330B228F659A00F19FEA /* MyBids */,
+				2B65330C228F65A200F19FEA /* PlaceBid */,
 				2B65330F228F65FE00F19FEA /* PotentialAlgosDisplayView.swift */,
-				2B653313228F66BC00F19FEA /* AuctionDetailHeaderButton.swift */,
-				2B6533292292176600F19FEA /* AuctionDetailHeaderView.swift */,
 				2B65332B22921DE000F19FEA /* AuctionDetailView.swift */,
 			);
 			path = Detail;
@@ -1495,6 +1453,640 @@
 				2B43B83B22A8394F00CEA8F3 /* Date+Additions.swift */,
 			);
 			path = Date;
+			sourceTree = "<group>";
+		};
+		2B46262823758CBB000AE73C /* Asset */ = {
+			isa = PBXGroup;
+			children = (
+				2B46262923758CC9000AE73C /* Asset.swift */,
+				2B46262C23758CF4000AE73C /* AssetDetail.swift */,
+			);
+			path = Asset;
+			sourceTree = "<group>";
+		};
+		2B4DF405236C5E7500FF9551 /* StatusBar */ = {
+			isa = PBXGroup;
+			children = (
+				2BF34CB1223A77650052CAD3 /* StatusBarConfigurable.swift */,
+			);
+			path = StatusBar;
+			sourceTree = "<group>";
+		};
+		2B4DF406236C5E7F00FF9551 /* Reusable */ = {
+			isa = PBXGroup;
+			children = (
+				2BD739FD22411A0100B66EEF /* Reusable.swift */,
+			);
+			path = Reusable;
+			sourceTree = "<group>";
+		};
+		2B4DF407236C5EEB00FF9551 /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				2B191C81232150C900EAB1B8 /* PushNotificationController.swift */,
+			);
+			path = Notifications;
+			sourceTree = "<group>";
+		};
+		2B4DF408236C5F1900FF9551 /* Storable */ = {
+			isa = PBXGroup;
+			children = (
+				2B59F15D22552845005203DD /* DBStorable.swift */,
+			);
+			path = Storable;
+			sourceTree = "<group>";
+		};
+		2B4DF409236C5F4F00FF9551 /* Routing */ = {
+			isa = PBXGroup;
+			children = (
+				2B4DF40A236C5F5800FF9551 /* DeepLink */,
+				2BF34C9A2239AB130052CAD3 /* Screen.swift */,
+				2BF34C9C2239AB530052CAD3 /* Router.swift */,
+			);
+			path = Routing;
+			sourceTree = "<group>";
+		};
+		2B4DF40A236C5F5800FF9551 /* DeepLink */ = {
+			isa = PBXGroup;
+			children = (
+				2BDDCA472268A3630081CED2 /* DeepLinkParser.swift */,
+			);
+			path = DeepLink;
+			sourceTree = "<group>";
+		};
+		2B4DF40B236C686D00FF9551 /* List */ = {
+			isa = PBXGroup;
+			children = (
+				2BF71911224ECFEC001E8420 /* ContactsView.swift */,
+			);
+			path = List;
+			sourceTree = "<group>";
+		};
+		2B4DF40C236C687300FF9551 /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+				2BF7190D224ECF4A001E8420 /* ContactInfoView.swift */,
+				2BF7190F224ECFAF001E8420 /* UserInformationView.swift */,
+				2BF71913224ED081001E8420 /* ContactQRDisplayView.swift */,
+			);
+			path = Detail;
+			sourceTree = "<group>";
+		};
+		2B4DF40D236C688300FF9551 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				2BF7190B224ECF30001E8420 /* AddContactView.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		2B4DF40E236C695800FF9551 /* Bid */ = {
+			isa = PBXGroup;
+			children = (
+				2B6533232292158900F19FEA /* BidCellContextView.swift */,
+				2B6533252292159A00F19FEA /* BidCell.swift */,
+			);
+			path = Bid;
+			sourceTree = "<group>";
+		};
+		2B4DF40F236C695C00FF9551 /* LimitOrder */ = {
+			isa = PBXGroup;
+			children = (
+				2BA09A8B229369BD009DC24D /* LimitOrderCellContextView.swift */,
+				2BA09A8D229369D5009DC24D /* LimitOrderCell.swift */,
+			);
+			path = LimitOrder;
+			sourceTree = "<group>";
+		};
+		2B4DF410236C697A00FF9551 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				2B653311228F669D00F19FEA /* MaximumPriceView.swift */,
+				2B65330D228F65D700F19FEA /* AuctionBidButton.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		2B4DF411236C699900FF9551 /* Header */ = {
+			isa = PBXGroup;
+			children = (
+				2B653313228F66BC00F19FEA /* AuctionDetailHeaderButton.swift */,
+				2B6533292292176600F19FEA /* AuctionDetailHeaderView.swift */,
+			);
+			path = Header;
+			sourceTree = "<group>";
+		};
+		2B4DF412236C6A5800FF9551 /* Node */ = {
+			isa = PBXGroup;
+			children = (
+				17D04F47225F697E0051BC43 /* AddNodeView.swift */,
+				179B93D7225E454100DD03E9 /* NodeSettingsView.swift */,
+				179B93D9225E460500DD03E9 /* NodeSettingsHeaderView.swift */,
+			);
+			path = Node;
+			sourceTree = "<group>";
+		};
+		2B4DF413236C6A6400FF9551 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				17CFB883226A134A00B3B0A7 /* ToggleCell.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		2B4DF414236C6A6900FF9551 /* Coinlist */ = {
+			isa = PBXGroup;
+			children = (
+				2BB3F30C22B1B6A800109C47 /* CoinlistCell.swift */,
+				2BB3F30F22B1B6C000109C47 /* CoinlistCellContextView.swift */,
+			);
+			path = Coinlist;
+			sourceTree = "<group>";
+		};
+		2B4DF415236C6A8500FF9551 /* Toggle */ = {
+			isa = PBXGroup;
+			children = (
+				171111B3225E091A00DAF55C /* SettingsToggleCell.swift */,
+				171111B5225E093400DAF55C /* SettingsToggleContextView.swift */,
+			);
+			path = Toggle;
+			sourceTree = "<group>";
+		};
+		2B4DF416236C6A8900FF9551 /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+				171111A8225DD1A200DAF55C /* SettingsDetailCell.swift */,
+				171111AA225DD1DD00DAF55C /* SettingsDetailContextView.swift */,
+			);
+			path = Detail;
+			sourceTree = "<group>";
+		};
+		2B4DF417236C6A8E00FF9551 /* Info */ = {
+			isa = PBXGroup;
+			children = (
+				171111AF225DF91400DAF55C /* SettingsInfoCell.swift */,
+				171111B1225DF92300DAF55C /* SettingsInfoContextView.swift */,
+			);
+			path = Info;
+			sourceTree = "<group>";
+		};
+		2B4DF418236C6ACD00FF9551 /* Pending */ = {
+			isa = PBXGroup;
+			children = (
+				2B7ABF6D2332DCDB0050B64B /* PendingTransactionCell.swift */,
+				2B7ABF702332DCF50050B64B /* PendingTransactionView.swift */,
+			);
+			path = Pending;
+			sourceTree = "<group>";
+		};
+		2B4DF419236C6AD100FF9551 /* Name */ = {
+			isa = PBXGroup;
+			children = (
+				2B79A125230DD31E00766021 /* AccountNameView.swift */,
+				2B79A128230DD32B00766021 /* AccountNameCell.swift */,
+			);
+			path = Name;
+			sourceTree = "<group>";
+		};
+		2B4DF41A236C6AD700FF9551 /* History */ = {
+			isa = PBXGroup;
+			children = (
+				2BDE9CD9224E2336007EFF30 /* TransactionHistoryCell.swift */,
+				2BDE9CDB224E2379007EFF30 /* TransactionHistoryContextView.swift */,
+			);
+			path = History;
+			sourceTree = "<group>";
+		};
+		2B4DF41B236C6AF900FF9551 /* Header */ = {
+			isa = PBXGroup;
+			children = (
+				2BDE9CCC224E1464007EFF30 /* AccountsHeaderView.swift */,
+				2B8512562265E3E2000F8CB8 /* AccountsSmallHeaderView.swift */,
+			);
+			path = Header;
+			sourceTree = "<group>";
+		};
+		2B4DF41C236C6B2B00FF9551 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				2B2A9F43232AE20A00450DB0 /* RewardView.swift */,
+				2B2A9F46232AE23F00450DB0 /* RewardCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		2B4DF41D236C6B5800FF9551 /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+				2B79A14623167BFC00766021 /* RewardDetailView.swift */,
+				2B79A14C23167CA300766021 /* RewardAmountContainerView.swift */,
+			);
+			path = Detail;
+			sourceTree = "<group>";
+		};
+		2B4DF41E236C6B6400FF9551 /* Total */ = {
+			isa = PBXGroup;
+			children = (
+				2B79A14323167BEE00766021 /* RewardTotalAmountView.swift */,
+			);
+			path = Total;
+			sourceTree = "<group>";
+		};
+		2B4DF41F236C6B6900FF9551 /* History */ = {
+			isa = PBXGroup;
+			children = (
+				2B79A14F231683E100766021 /* RewardsSwitchView.swift */,
+			);
+			path = History;
+			sourceTree = "<group>";
+		};
+		2B4DF420236C756000FF9551 /* Selection */ = {
+			isa = PBXGroup;
+			children = (
+				2B79A122230DCD1E00766021 /* AccountSelectionViewController.swift */,
+			);
+			path = Selection;
+			sourceTree = "<group>";
+		};
+		2B4DF421236C756F00FF9551 /* Edit */ = {
+			isa = PBXGroup;
+			children = (
+				2B5DA9D4224CE19700EE41B4 /* EditAccountViewController.swift */,
+			);
+			path = Edit;
+			sourceTree = "<group>";
+		};
+		2B4DF422236C757300FF9551 /* Passphrase */ = {
+			isa = PBXGroup;
+			children = (
+				2B5DA9D9224D2F5C00EE41B4 /* PassphraseDisplayViewController.swift */,
+			);
+			path = Passphrase;
+			sourceTree = "<group>";
+		};
+		2B4DF423236C75F800FF9551 /* Node */ = {
+			isa = PBXGroup;
+			children = (
+				171111B9225E34E400DAF55C /* NodeSettingsViewController.swift */,
+				17D04F45225F64B60051BC43 /* AddNodeViewController.swift */,
+			);
+			path = Node;
+			sourceTree = "<group>";
+		};
+		2B4DF424236C75FC00FF9551 /* Feedback */ = {
+			isa = PBXGroup;
+			children = (
+				2B79A132230EBE4D00766021 /* FeedbackViewController.swift */,
+			);
+			path = Feedback;
+			sourceTree = "<group>";
+		};
+		2B4DF425236C766200FF9551 /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+				2BF71917224ED0C5001E8420 /* ContactInfoViewController.swift */,
+				2BF71919224ED0E8001E8420 /* ContactQRDisplayViewController.swift */,
+			);
+			path = Detail;
+			sourceTree = "<group>";
+		};
+		2B4DF426236C766700FF9551 /* List */ = {
+			isa = PBXGroup;
+			children = (
+				2BF5317D224AA8B700A7455F /* ContactsViewController.swift */,
+				2BDE31E022799FF0002E8235 /* ContactSelectionViewController.swift */,
+			);
+			path = List;
+			sourceTree = "<group>";
+		};
+		2B4DF427236C767500FF9551 /* Add */ = {
+			isa = PBXGroup;
+			children = (
+				2BF71915224ED0A6001E8420 /* AddContactViewController.swift */,
+			);
+			path = Add;
+			sourceTree = "<group>";
+		};
+		2B4DF428236C76A500FF9551 /* Storable */ = {
+			isa = PBXGroup;
+			children = (
+				1751261F223BEAE90095AF4F /* Storable.swift */,
+			);
+			path = Storable;
+			sourceTree = "<group>";
+		};
+		2B4DF429236C76CD00FF9551 /* Session */ = {
+			isa = PBXGroup;
+			children = (
+				1751261C223BEA320095AF4F /* Session.swift */,
+				1761B3CC224A47AF00C6BA47 /* Session+Crypto.swift */,
+			);
+			path = Session;
+			sourceTree = "<group>";
+		};
+		2B4DF42A236C771000FF9551 /* Node */ = {
+			isa = PBXGroup;
+			children = (
+				17695B3B2268D2DE00765D31 /* NodeHealthOperation.swift */,
+			);
+			path = Node;
+			sourceTree = "<group>";
+		};
+		2B4DF42B236C771300FF9551 /* Account */ = {
+			isa = PBXGroup;
+			children = (
+				17F9E923225789E7004CDF24 /* AccountFetchOperation.swift */,
+			);
+			path = Account;
+			sourceTree = "<group>";
+		};
+		2B4DF42C236C772300FF9551 /* Account */ = {
+			isa = PBXGroup;
+			children = (
+				2B4DF434236C778500FF9551 /* Round */,
+				2B4DF432236C776200FF9551 /* Transaction */,
+				17B7D8AA2240E19600A6FF9E /* AccountFetchDraft.swift */,
+			);
+			path = Account;
+			sourceTree = "<group>";
+		};
+		2B4DF42D236C772800FF9551 /* Auction */ = {
+			isa = PBXGroup;
+			children = (
+				2B1B77C422963C3E0021A6CC /* CoinlistAuthenticationDraft.swift */,
+				2B98233D231EC767009560CD /* BidDraft.swift */,
+			);
+			path = Auction;
+			sourceTree = "<group>";
+		};
+		2B4DF42F236C773500FF9551 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				2B4DF430236C774100FF9551 /* Feedback */,
+				2B4DF431236C774600FF9551 /* Node */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		2B4DF430236C774100FF9551 /* Feedback */ = {
+			isa = PBXGroup;
+			children = (
+				2BD5477623184704007179FE /* FeedbackDraft.swift */,
+			);
+			path = Feedback;
+			sourceTree = "<group>";
+		};
+		2B4DF431236C774600FF9551 /* Node */ = {
+			isa = PBXGroup;
+			children = (
+				17D04F4B225F90D70051BC43 /* NodeTestDraft.swift */,
+			);
+			path = Node;
+			sourceTree = "<group>";
+		};
+		2B4DF432236C776200FF9551 /* Transaction */ = {
+			isa = PBXGroup;
+			children = (
+				173DA1EA2255F7EF00378A82 /* TransactionDraft.swift */,
+				2B6ED961226105CD00787984 /* TransactionPreviewDraft.swift */,
+				2B2A9F40232A403600450DB0 /* TransactionTrackDraft.swift */,
+			);
+			path = Transaction;
+			sourceTree = "<group>";
+		};
+		2B4DF433236C777000FF9551 /* History */ = {
+			isa = PBXGroup;
+			children = (
+				2B6ED95C22608FE700787984 /* HistoryDraft.swift */,
+			);
+			path = History;
+			sourceTree = "<group>";
+		};
+		2B4DF434236C778500FF9551 /* Round */ = {
+			isa = PBXGroup;
+			children = (
+				175CE59722955CEE003F7C02 /* WaitRoundDraft.swift */,
+			);
+			path = Round;
+			sourceTree = "<group>";
+		};
+		2B4DF435236C77B200FF9551 /* Device */ = {
+			isa = PBXGroup;
+			children = (
+				2BBA198B231FF7650080A6F6 /* DeviceRegistrationDraft.swift */,
+			);
+			path = Device;
+			sourceTree = "<group>";
+		};
+		2B4DF436236C77E200FF9551 /* Auction */ = {
+			isa = PBXGroup;
+			children = (
+				2B982340231ECC37009560CD /* CoinlistTokenQuery.swift */,
+				2B982343231ECC4B009560CD /* CoinlistUserQuery.swift */,
+			);
+			path = Auction;
+			sourceTree = "<group>";
+		};
+		2B4DF437236C77EB00FF9551 /* Accounts */ = {
+			isa = PBXGroup;
+			children = (
+				2B4DF438236C77F300FF9551 /* Transaction */,
+				2B982337231EC1C1009560CD /* DollarValueQuery.swift */,
+			);
+			path = Accounts;
+			sourceTree = "<group>";
+		};
+		2B4DF438236C77F300FF9551 /* Transaction */ = {
+			isa = PBXGroup;
+			children = (
+				2B98233A231EC207009560CD /* TransactionsQuery.swift */,
+			);
+			path = Transaction;
+			sourceTree = "<group>";
+		};
+		2B4DF439236C787600FF9551 /* Accounts */ = {
+			isa = PBXGroup;
+			children = (
+				2B46262823758CBB000AE73C /* Asset */,
+				2B4DF44D236C7E4B00FF9551 /* Conversion */,
+				2B4DF44E236C7E5200FF9551 /* Details */,
+				2B4DF448236C7D9E00FF9551 /* Reward */,
+				2B4DF441236C7B6000FF9551 /* Transaction */,
+				17B7D8A52240D8F900A6FF9E /* Account.swift */,
+			);
+			path = Accounts;
+			sourceTree = "<group>";
+		};
+		2B4DF43B236C78A800FF9551 /* User */ = {
+			isa = PBXGroup;
+			children = (
+				2BA09A9222946811009DC24D /* AuctionUser.swift */,
+			);
+			path = User;
+			sourceTree = "<group>";
+		};
+		2B4DF43C236C78AD00FF9551 /* Chart */ = {
+			isa = PBXGroup;
+			children = (
+				2BA09A942294BA07009DC24D /* ChartData.swift */,
+			);
+			path = Chart;
+			sourceTree = "<group>";
+		};
+		2B4DF43D236C78C500FF9551 /* Instruction */ = {
+			isa = PBXGroup;
+			children = (
+				2B891F1922BD395F003205F5 /* BlockchainInsturction.swift */,
+				2B891F1C22BD3982003205F5 /* USDWireInstruction.swift */,
+				2BC1BA8722BFC5A900E94316 /* DepositInstruction.swift */,
+			);
+			path = Instruction;
+			sourceTree = "<group>";
+		};
+		2B4DF43E236C78D900FF9551 /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				2B4DF43F236C78E400FF9551 /* User */,
+				2B1B77C622963C560021A6CC /* CoinlistAuthentication.swift */,
+			);
+			path = Authentication;
+			sourceTree = "<group>";
+		};
+		2B4DF43F236C78E400FF9551 /* User */ = {
+			isa = PBXGroup;
+			children = (
+				2BDE31E92279EBBD002E8235 /* CointlistUser.swift */,
+			);
+			path = User;
+			sourceTree = "<group>";
+		};
+		2B4DF440236C78ED00FF9551 /* Transaction */ = {
+			isa = PBXGroup;
+			children = (
+				2B3F390F228C4DC0008BBE75 /* CoinlistTransaction.swift */,
+			);
+			path = Transaction;
+			sourceTree = "<group>";
+		};
+		2B4DF441236C7B6000FF9551 /* Transaction */ = {
+			isa = PBXGroup;
+			children = (
+				2B4DF44B236C7DF800FF9551 /* Details */,
+				2B4DF44C236C7E1A00FF9551 /* List */,
+				2B4DF443236C7B8B00FF9551 /* Pending */,
+				2B4DF44A236C7DF300FF9551 /* Round */,
+				2BB021DA224E46D60039D78A /* Transaction.swift */,
+			);
+			path = Transaction;
+			sourceTree = "<group>";
+		};
+		2B4DF442236C7B7100FF9551 /* Node */ = {
+			isa = PBXGroup;
+			children = (
+				179B93D5225E447400DD03E9 /* Node.swift */,
+			);
+			path = Node;
+			sourceTree = "<group>";
+		};
+		2B4DF443236C7B8B00FF9551 /* Pending */ = {
+			isa = PBXGroup;
+			children = (
+				2B7ABF6A232BF58E0050B64B /* PendingTransactions.swift */,
+				2B7ABF76233388570050B64B /* PendingTransactionList.swift */,
+			);
+			path = Pending;
+			sourceTree = "<group>";
+		};
+		2B4DF444236C7D5500FF9551 /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				2B4DF445236C7D5B00FF9551 /* User */,
+				17D50AA0225C755E00CA9C6E /* ApplicationConfiguration.swift */,
+			);
+			path = Application;
+			sourceTree = "<group>";
+		};
+		2B4DF445236C7D5B00FF9551 /* User */ = {
+			isa = PBXGroup;
+			children = (
+				17F6E689224B71A6006DD31F /* User.swift */,
+			);
+			path = User;
+			sourceTree = "<group>";
+		};
+		2B4DF446236C7D6200FF9551 /* Contacts */ = {
+			isa = PBXGroup;
+			children = (
+				2B4DF449236C7DD700FF9551 /* QR */,
+				2B82B1C422535F4300A8909F /* Contact.swift */,
+			);
+			path = Contacts;
+			sourceTree = "<group>";
+		};
+		2B4DF447236C7D7900FF9551 /* Error */ = {
+			isa = PBXGroup;
+			children = (
+				2BD5477923192E15007179FE /* AlgorandError.swift */,
+			);
+			path = Error;
+			sourceTree = "<group>";
+		};
+		2B4DF448236C7D9E00FF9551 /* Reward */ = {
+			isa = PBXGroup;
+			children = (
+				2B7ABF67232BDE1C0050B64B /* Reward.swift */,
+			);
+			path = Reward;
+			sourceTree = "<group>";
+		};
+		2B4DF449236C7DD700FF9551 /* QR */ = {
+			isa = PBXGroup;
+			children = (
+				170AFAFB224CC70A00520EA5 /* QRText.swift */,
+			);
+			path = QR;
+			sourceTree = "<group>";
+		};
+		2B4DF44A236C7DF300FF9551 /* Round */ = {
+			isa = PBXGroup;
+			children = (
+				175CE59A2295709F003F7C02 /* RoundDetail.swift */,
+			);
+			path = Round;
+			sourceTree = "<group>";
+		};
+		2B4DF44B236C7DF800FF9551 /* Details */ = {
+			isa = PBXGroup;
+			children = (
+				173DA1EC2255F96E00378A82 /* TransactionFee.swift */,
+				2B6ED963226105E100787984 /* Payment.swift */,
+				173DA20F2256643A00378A82 /* TransactionID.swift */,
+			);
+			path = Details;
+			sourceTree = "<group>";
+		};
+		2B4DF44C236C7E1A00FF9551 /* List */ = {
+			isa = PBXGroup;
+			children = (
+				2B6ED9652261063700787984 /* TransactionList.swift */,
+			);
+			path = List;
+			sourceTree = "<group>";
+		};
+		2B4DF44D236C7E4B00FF9551 /* Conversion */ = {
+			isa = PBXGroup;
+			children = (
+				2B79A138231330D900766021 /* AlgoToDollarConversion.swift */,
+			);
+			path = Conversion;
+			sourceTree = "<group>";
+		};
+		2B4DF44E236C7E5200FF9551 /* Details */ = {
+			isa = PBXGroup;
+			children = (
+				2B64DACB2369B9E400C09582 /* Participation.swift */,
+			);
+			path = Details;
 			sourceTree = "<group>";
 		};
 		2B56F7CE225B3AD700E58737 /* Transactions */ = {
@@ -1530,7 +2122,7 @@
 		2B56F7D1225B3AFB00E58737 /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				2B79A122230DCD1E00766021 /* AccountSelectionViewController.swift */,
+				2B4DF420236C756000FF9551 /* Selection */,
 				2BF53181224AA8E000A7455F /* AccountsViewController.swift */,
 				2B5DA9D2224CD21800EE41B4 /* AccountsViewController+Options.swift */,
 			);
@@ -1541,8 +2133,8 @@
 			isa = PBXGroup;
 			children = (
 				2BF3D830226F0F7900716C09 /* Detail */,
-				2B56F7D4225B3B1000E58737 /* Send */,
 				2B56F7D3225B3B0C00E58737 /* Request */,
+				2B56F7D4225B3B1000E58737 /* Send */,
 			);
 			path = Transactions;
 			sourceTree = "<group>";
@@ -1611,10 +2203,9 @@
 		2B65330C228F65A200F19FEA /* PlaceBid */ = {
 			isa = PBXGroup;
 			children = (
-				2B653309228F658100F19FEA /* PlaceBidView.swift */,
 				2B3F3920228EB754008BBE75 /* BidAmount */,
-				2B653311228F669D00F19FEA /* MaximumPriceView.swift */,
-				2B65330D228F65D700F19FEA /* AuctionBidButton.swift */,
+				2B4DF410236C697A00FF9551 /* Common */,
+				2B653309228F658100F19FEA /* PlaceBidView.swift */,
 			);
 			path = PlaceBid;
 			sourceTree = "<group>";
@@ -1665,10 +2256,8 @@
 		2B6533222292157800F19FEA /* Cell */ = {
 			isa = PBXGroup;
 			children = (
-				2B6533232292158900F19FEA /* BidCellContextView.swift */,
-				2B6533252292159A00F19FEA /* BidCell.swift */,
-				2BA09A8B229369BD009DC24D /* LimitOrderCellContextView.swift */,
-				2BA09A8D229369D5009DC24D /* LimitOrderCell.swift */,
+				2B4DF40E236C695800FF9551 /* Bid */,
+				2B4DF40F236C695C00FF9551 /* LimitOrder */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -1684,9 +2273,9 @@
 		2B656E91224BAF230064A49B /* Options */ = {
 			isa = PBXGroup;
 			children = (
+				2B4DF421236C756F00FF9551 /* Edit */,
+				2B4DF422236C757300FF9551 /* Passphrase */,
 				2B656E92224BAF2E0064A49B /* OptionsViewController.swift */,
-				2B5DA9D4224CE19700EE41B4 /* EditAccountViewController.swift */,
-				2B5DA9D9224D2F5C00EE41B4 /* PassphraseDisplayViewController.swift */,
 			);
 			path = Options;
 			sourceTree = "<group>";
@@ -1694,10 +2283,10 @@
 		2B656E94224BB9D60064A49B /* Accounts */ = {
 			isa = PBXGroup;
 			children = (
-				2B56F7CE225B3AD700E58737 /* Transactions */,
+				2B656E95224BB9E40064A49B /* AccountList */,
 				2BDE9CCE224E172B007EFF30 /* Main */,
 				2B5DA9CA224CB47A00EE41B4 /* Options */,
-				2B656E95224BB9E40064A49B /* AccountList */,
+				2B56F7CE225B3AD700E58737 /* Transactions */,
 			);
 			path = Accounts;
 			sourceTree = "<group>";
@@ -1760,8 +2349,8 @@
 		2B656EA7224BDCA40064A49B /* Accounts */ = {
 			isa = PBXGroup;
 			children = (
-				2BB021E1224E7AB20039D78A /* Main */,
 				2B656EA8224BDCA80064A49B /* List */,
+				2BB021E1224E7AB20039D78A /* Main */,
 			);
 			path = Accounts;
 			sourceTree = "<group>";
@@ -1857,12 +2446,10 @@
 		2B79A14223167BCE00766021 /* Rewards */ = {
 			isa = PBXGroup;
 			children = (
-				2B79A14323167BEE00766021 /* RewardTotalAmountView.swift */,
-				2B79A14623167BFC00766021 /* RewardDetailView.swift */,
-				2B79A14C23167CA300766021 /* RewardAmountContainerView.swift */,
-				2B79A14F231683E100766021 /* RewardsSwitchView.swift */,
-				2B2A9F43232AE20A00450DB0 /* RewardView.swift */,
-				2B2A9F46232AE23F00450DB0 /* RewardCell.swift */,
+				2B4DF41C236C6B2B00FF9551 /* Cell */,
+				2B4DF41D236C6B5800FF9551 /* Detail */,
+				2B4DF41F236C6B6900FF9551 /* History */,
+				2B4DF41E236C6B6400FF9551 /* Total */,
 			);
 			path = Rewards;
 			sourceTree = "<group>";
@@ -1964,9 +2551,9 @@
 		2B8954A922438FA400D6D068 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				2B8954AA22438FA900D6D068 /* Alert */,
 				2B79A13B23147A3400766021 /* Passphrase */,
 				2B66871822491A46009F21E7 /* QR */,
-				2B8954AA22438FA900D6D068 /* Alert */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -2022,14 +2609,6 @@
 			path = Input;
 			sourceTree = "<group>";
 		};
-		2B8954C5224420A000D6D068 /* Protocols */ = {
-			isa = PBXGroup;
-			children = (
-				2B8954C6224420A500D6D068 /* Input */,
-			);
-			path = Protocols;
-			sourceTree = "<group>";
-		};
 		2B8954C6224420A500D6D068 /* Input */ = {
 			isa = PBXGroup;
 			children = (
@@ -2067,13 +2646,13 @@
 			children = (
 				2B191C892321998600EAB1B8 /* algorand.entitlements */,
 				2B191C882321998100EAB1B8 /* algorand-staging.entitlements */,
+				2B8BE4D022391C38005D8565 /* Classes */,
+				9F18DC6D0E56430348850CDE /* Frameworks */,
 				17512612223BDC2B0095AF4F /* Libraries */,
+				F8E302499974D39CA3FD5950 /* Pods */,
+				2B8BE4CF22391C38005D8565 /* Products */,
 				2B8BE4E5223924DB005D8565 /* Resources */,
 				2B8BE4E42239248A005D8565 /* Support */,
-				2B8BE4D022391C38005D8565 /* Classes */,
-				2B8BE4CF22391C38005D8565 /* Products */,
-				F8E302499974D39CA3FD5950 /* Pods */,
-				9F18DC6D0E56430348850CDE /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -2089,20 +2668,19 @@
 		2B8BE4D022391C38005D8565 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				17F9E925225796CF004CDF24 /* Managers */,
-				2B8954C5224420A000D6D068 /* Protocols */,
-				17B7D8A42240D79200A6FF9E /* Models */,
-				2BD73A0E22412B5900B66EEF /* ViewModels */,
-				2BD73A0722412AF200B66EEF /* LayoutBuilders */,
-				2BD73A0322412AA100B66EEF /* Data */,
-				2BF34CC0223A95900052CAD3 /* Networking */,
 				2BF34CB0223A77410052CAD3 /* Configuration */,
+				2B8BE4E922392674005D8565 /* Core */,
+				2BD73A0322412AA100B66EEF /* Data */,
 				2BF34C962239AA8C0052CAD3 /* Flow */,
+				2BD73A0722412AF200B66EEF /* LayoutBuilders */,
+				17F9E925225796CF004CDF24 /* Managers */,
+				17B7D8A42240D79200A6FF9E /* Models */,
+				2BF34CC0223A95900052CAD3 /* Networking */,
 				2B8BE4FB2239392C005D8565 /* Styling */,
 				2B8BE4F5223936FD005D8565 /* Utility */,
-				2B8BE4F0223935A3005D8565 /* Views */,
-				2B8BE4E922392674005D8565 /* Core */,
 				2B8BE4E822392657005D8565 /* ViewControllers */,
+				2BD73A0E22412B5900B66EEF /* ViewModels */,
+				2B8BE4F0223935A3005D8565 /* Views */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -2121,10 +2699,10 @@
 			isa = PBXGroup;
 			children = (
 				2BFBAB73227B35A6008BBB31 /* Animations */,
-				2BF34CCC223AA73B0052CAD3 /* Fonts */,
-				2BF34CC6223A99850052CAD3 /* Localization */,
-				2B8BE4E72239257B005D8565 /* LaunchScreen */,
 				2B8BE4E6223924EB005D8565 /* Assets */,
+				2BF34CCC223AA73B0052CAD3 /* Fonts */,
+				2B8BE4E72239257B005D8565 /* LaunchScreen */,
+				2BF34CC6223A99850052CAD3 /* Localization */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -2148,14 +2726,14 @@
 		2B8BE4E822392657005D8565 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				2BDE31E42279E1B5002E8235 /* Auction */,
-				2BF5317A224AA88600A7455F /* Settings */,
-				2BF53179224AA87300A7455F /* Contacts */,
-				2BF53178224AA86B00A7455F /* History */,
 				2BF53177224AA86500A7455F /* Accounts */,
-				2B8954A922438FA400D6D068 /* Common */,
+				2BDE31E42279E1B5002E8235 /* Auction */,
 				2BD739C7223F978300B66EEF /* Authentication */,
+				2B8954A922438FA400D6D068 /* Common */,
+				2BF53179224AA87300A7455F /* Contacts */,
 				2B8BE4EB22393547005D8565 /* Core */,
+				2BF53178224AA86B00A7455F /* History */,
+				2BF5317A224AA88600A7455F /* Settings */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -2163,8 +2741,9 @@
 		2B8BE4E922392674005D8565 /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				17B7D8AC2240F23D00A6FF9E /* Environment */,
 				2B8BE4EA22392678005D8565 /* Application */,
+				17B7D8AC2240F23D00A6FF9E /* Environment */,
+				2B4DF407236C5EEB00FF9551 /* Notifications */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -2173,7 +2752,6 @@
 			isa = PBXGroup;
 			children = (
 				2B8BE4D122391C38005D8565 /* AppDelegate.swift */,
-				2B191C81232150C900EAB1B8 /* PushNotificationController.swift */,
 			);
 			path = Application;
 			sourceTree = "<group>";
@@ -2181,8 +2759,8 @@
 		2B8BE4EB22393547005D8565 /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				2BF34CBD223A8E5F0052CAD3 /* Container */,
 				2B8BE4EC2239356A005D8565 /* Base */,
+				2BF34CBD223A8E5F0052CAD3 /* Container */,
 				2B8BE4D322391C38005D8565 /* RootViewController.swift */,
 				171650EB226DF90900D8893D /* SplashViewController.swift */,
 			);
@@ -2201,15 +2779,15 @@
 		2B8BE4F0223935A3005D8565 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				2B79A14223167BCE00766021 /* Rewards */,
-				2B2F9F7522821C160068DBB5 /* Auction */,
-				2B6ED955225F756E00787984 /* History */,
-				17100B2A225CEC2900D13548 /* Settings */,
-				2BF7190A224ECF12001E8420 /* Contacts */,
 				2B656E94224BB9D60064A49B /* Accounts */,
-				2BD739E2223F9FDD00B66EEF /* Common */,
+				2B2F9F7522821C160068DBB5 /* Auction */,
 				2BD739CD223F97DF00B66EEF /* Authentication */,
+				2BD739E2223F9FDD00B66EEF /* Common */,
+				2BF7190A224ECF12001E8420 /* Contacts */,
 				2B8BE4F1223935C6005D8565 /* Core */,
+				2B6ED955225F756E00787984 /* History */,
+				2B79A14223167BCE00766021 /* Rewards */,
+				17100B2A225CEC2900D13548 /* Settings */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2217,8 +2795,8 @@
 		2B8BE4F1223935C6005D8565 /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				2B59F15F22563F78005203DD /* Container */,
 				2B8BE4F2223935CA005D8565 /* Base */,
+				2B59F15F22563F78005203DD /* Container */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -2236,13 +2814,13 @@
 		2B8BE4F5223936FD005D8565 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
-				1746715B225B6BE600B78641 /* TypeAliases */,
-				2BC45DEC2252538D000CDCE2 /* ImagePicker */,
-				2BF53172224A93E800A7455F /* Operations */,
-				2B6687132248DF57009F21E7 /* LocalAuthentication */,
-				2BF34CA32239AD4A0052CAD3 /* UI */,
 				2BF34C9E2239ACC60052CAD3 /* Configuration */,
 				2B8BE4F62239370F005D8565 /* Extensions */,
+				2BC45DEC2252538D000CDCE2 /* ImagePicker */,
+				2B6687132248DF57009F21E7 /* LocalAuthentication */,
+				2BF53172224A93E800A7455F /* Operations */,
+				1746715B225B6BE600B78641 /* TypeAliases */,
+				2BF34CA32239AD4A0052CAD3 /* UI */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -2250,8 +2828,8 @@
 		2B8BE4F62239370F005D8565 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				170AFB00224D1CD100520EA5 /* CoreImage */,
 				2BF53166224A48C900A7455F /* CoreGraphics */,
+				170AFB00224D1CD100520EA5 /* CoreImage */,
 				2BA8736C2248219900511C7C /* Data */,
 				2BD739D3223F983B00B66EEF /* Style */,
 				2BF34CB5223A87920052CAD3 /* External */,
@@ -2268,9 +2846,9 @@
 				2B982331231D3958009560CD /* Codable */,
 				2B43B83A22A8394000CEA8F3 /* Date */,
 				17AA1B0222660E43000B0BB0 /* Formatter */,
+				2B8BE4F822393721005D8565 /* Notification */,
 				17D04F4D225FACDC0051BC43 /* Numbers */,
 				2BF34CC3223A995C0052CAD3 /* Text */,
-				2B8BE4F822393721005D8565 /* Notification */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -2314,11 +2892,11 @@
 		2B8BE502223939DD005D8565 /* UIKit */ = {
 			isa = PBXGroup;
 			children = (
-				2B65B1FC225268CC001DB5BE /* Image */,
-				2BB021E7224E827B0039D78A /* List */,
-				2BD739ED223FDE7200B66EEF /* Factory */,
-				2BF34CB8223A88030052CAD3 /* Layout */,
 				2B8BE503223939E7005D8565 /* Application */,
+				2BD739ED223FDE7200B66EEF /* Factory */,
+				2B65B1FC225268CC001DB5BE /* Image */,
+				2BF34CB8223A88030052CAD3 /* Layout */,
+				2BB021E7224E827B0039D78A /* List */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -2363,10 +2941,8 @@
 		2B982336231EC1B2009560CD /* Query */ = {
 			isa = PBXGroup;
 			children = (
-				2B982337231EC1C1009560CD /* DollarValueQuery.swift */,
-				2B98233A231EC207009560CD /* TransactionsQuery.swift */,
-				2B982340231ECC37009560CD /* CoinlistTokenQuery.swift */,
-				2B982343231ECC4B009560CD /* CoinlistUserQuery.swift */,
+				2B4DF437236C77EB00FF9551 /* Accounts */,
+				2B4DF436236C77E200FF9551 /* Auction */,
 			);
 			path = Query;
 			sourceTree = "<group>";
@@ -2374,6 +2950,7 @@
 		2BA09A8F2294131B009DC24D /* Bid */ = {
 			isa = PBXGroup;
 			children = (
+				2BA09A962294BA20009DC24D /* BidResponse.swift */,
 				2BA09A9022941329009DC24D /* Bid.swift */,
 			);
 			path = Bid;
@@ -2524,9 +3101,9 @@
 		2BD739C7223F978300B66EEF /* Authentication */ = {
 			isa = PBXGroup;
 			children = (
+				2BD739C8223F979D00B66EEF /* Introduction */,
 				2B8954CC2244321E00D6D068 /* SignIn */,
 				2BD739E6223FA08E00B66EEF /* SignUp */,
-				2BD739C8223F979D00B66EEF /* Introduction */,
 			);
 			path = Authentication;
 			sourceTree = "<group>";
@@ -2542,9 +3119,9 @@
 		2BD739CD223F97DF00B66EEF /* Authentication */ = {
 			isa = PBXGroup;
 			children = (
+				2BD739CE223F97E600B66EEF /* Introduction */,
 				2B8954C922442E2B00D6D068 /* SignIn */,
 				2BD739DA223F9E2800B66EEF /* SignUp */,
-				2BD739CE223F97E600B66EEF /* Introduction */,
 			);
 			path = Authentication;
 			sourceTree = "<group>";
@@ -2560,8 +3137,8 @@
 		2BD739D3223F983B00B66EEF /* Style */ = {
 			isa = PBXGroup;
 			children = (
-				2BA8736B2248218200511C7C /* Font */,
 				2BD739D4223F984700B66EEF /* Color */,
+				2BA8736B2248218200511C7C /* Font */,
 			);
 			path = Style;
 			sourceTree = "<group>";
@@ -2586,8 +3163,8 @@
 			isa = PBXGroup;
 			children = (
 				2B8954A02242E77E00D6D068 /* AccountName */,
-				2BD73A1A2241633900B66EEF /* PassPhrase */,
 				2BD739DE223F9EE000B66EEF /* LocalAuthentication */,
+				2BD73A1A2241633900B66EEF /* PassPhrase */,
 				2BD739DB223F9E8900B66EEF /* Password */,
 			);
 			path = SignUp;
@@ -2614,15 +3191,15 @@
 		2BD739E2223F9FDD00B66EEF /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				2B8954A62243853700D6D068 /* Alert */,
+				2BA873682248212F00511C7C /* Button */,
+				17BEC4612248CD2300AAF370 /* CollectionViewLayout */,
+				2BD739E3223F9FF500B66EEF /* Components */,
+				2B8954BE2244044200D6D068 /* Input */,
 				2BDE9CD5224E2077007EFF30 /* List */,
 				2BDE9CD2224E1E81007EFF30 /* Loading */,
-				17BEC4612248CD2300AAF370 /* CollectionViewLayout */,
-				2BF5314C22491E6A00A7455F /* QR */,
-				2BA873682248212F00511C7C /* Button */,
-				2B8954BE2244044200D6D068 /* Input */,
-				2B8954A62243853700D6D068 /* Alert */,
 				2BD739F2223FF05C00B66EEF /* Numpad */,
-				2BD739E3223F9FF500B66EEF /* Components */,
+				2BF5314C22491E6A00A7455F /* QR */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -2642,9 +3219,9 @@
 			isa = PBXGroup;
 			children = (
 				2B8954A32242E7BE00D6D068 /* AccountName */,
-				2BD73A1D2241637B00B66EEF /* PassPhrase */,
-				2BD739E8223FA09F00B66EEF /* Password */,
 				2BD739E7223FA09600B66EEF /* LocalAuthentication */,
+				2BD73A1D2241637B00B66EEF /* Passphrase */,
+				2BD739E8223FA09F00B66EEF /* Password */,
 			);
 			path = SignUp;
 			sourceTree = "<group>";
@@ -2690,8 +3267,8 @@
 			isa = PBXGroup;
 			children = (
 				2BD73A0422412AA400B66EEF /* DataProviders */,
+				2B4DF408236C5F1900FF9551 /* Storable */,
 				2B59F1372254BABF005203DD /* algorand.xcdatamodeld */,
-				2B59F15D22552845005203DD /* DBStorable.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -2749,13 +3326,13 @@
 		2BD73A0E22412B5900B66EEF /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				2B3F3908228C3D9B008BBE75 /* Auction */,
-				2B6ED95E2260EE0F00787984 /* History */,
-				171111AC225DDA5600DAF55C /* Settings */,
-				2B65B1FF22527B89001DB5BE /* Contacts */,
 				2B656E9C224BCAF60064A49B /* Accounts */,
+				2B3F3908228C3D9B008BBE75 /* Auction */,
 				2BD73A152241322D00B66EEF /* Authentication */,
 				2BD73A0F22412B6600B66EEF /* Common */,
+				2B65B1FF22527B89001DB5BE /* Contacts */,
+				2B6ED95E2260EE0F00787984 /* History */,
+				171111AC225DDA5600DAF55C /* Settings */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -2816,21 +3393,21 @@
 			path = PassPhrase;
 			sourceTree = "<group>";
 		};
-		2BD73A1D2241637B00B66EEF /* PassPhrase */ = {
+		2BD73A1D2241637B00B66EEF /* Passphrase */ = {
 			isa = PBXGroup;
 			children = (
 				2BD73A1E2241639500B66EEF /* PassPhraseBackUpViewController.swift */,
 				17BEC45C2248C7D900AAF370 /* PassPhraseVerifyViewController.swift */,
 			);
-			path = PassPhrase;
+			path = Passphrase;
 			sourceTree = "<group>";
 		};
 		2BDE31E42279E1B5002E8235 /* Auction */ = {
 			isa = PBXGroup;
 			children = (
 				2BCB5C7322B3864B0038DA6B /* Balance */,
-				2B65331A228F674D00F19FEA /* List */,
 				2B65331B228F675700F19FEA /* Detail */,
+				2B65331A228F674D00F19FEA /* List */,
 			);
 			path = Auction;
 			sourceTree = "<group>";
@@ -2839,9 +3416,8 @@
 			isa = PBXGroup;
 			children = (
 				2BDE9CD8224E2300007EFF30 /* Cell */,
+				2B4DF41B236C6AF900FF9551 /* Header */,
 				2BDE9CCA224E1458007EFF30 /* AccountsView.swift */,
-				2BDE9CCC224E1464007EFF30 /* AccountsHeaderView.swift */,
-				2B8512562265E3E2000F8CB8 /* AccountsSmallHeaderView.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -2867,12 +3443,9 @@
 		2BDE9CD8224E2300007EFF30 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
-				2BDE9CD9224E2336007EFF30 /* TransactionHistoryCell.swift */,
-				2BDE9CDB224E2379007EFF30 /* TransactionHistoryContextView.swift */,
-				2B79A125230DD31E00766021 /* AccountNameView.swift */,
-				2B79A128230DD32B00766021 /* AccountNameCell.swift */,
-				2B7ABF6D2332DCDB0050B64B /* PendingTransactionCell.swift */,
-				2B7ABF702332DCF50050B64B /* PendingTransactionView.swift */,
+				2B4DF41A236C6AD700FF9551 /* History */,
+				2B4DF419236C6AD100FF9551 /* Name */,
+				2B4DF418236C6ACD00FF9551 /* Pending */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -2880,10 +3453,8 @@
 		2BF34C962239AA8C0052CAD3 /* Flow */ = {
 			isa = PBXGroup;
 			children = (
+				2B4DF409236C5F4F00FF9551 /* Routing */,
 				2BF5314F224A45DC00A7455F /* Transition */,
-				2BF34C9A2239AB130052CAD3 /* Screen.swift */,
-				2BF34C9C2239AB530052CAD3 /* Router.swift */,
-				2BDDCA472268A3630081CED2 /* DeepLinkParser.swift */,
 			);
 			path = Flow;
 			sourceTree = "<group>";
@@ -2926,9 +3497,12 @@
 		2BF34CB0223A77410052CAD3 /* Configuration */ = {
 			isa = PBXGroup;
 			children = (
+				2B8954C6224420A500D6D068 /* Input */,
 				2B66870C2248DB6A009F21E7 /* NavigationBar */,
-				2BF34CB1223A77650052CAD3 /* StatusBarConfigurable.swift */,
-				2BD739FD22411A0100B66EEF /* Reusable.swift */,
+				2B4DF406236C5E7F00FF9551 /* Reusable */,
+				2B4DF429236C76CD00FF9551 /* Session */,
+				2B4DF405236C5E7500FF9551 /* StatusBar */,
+				2B4DF428236C76A500FF9551 /* Storable */,
 			);
 			path = Configuration;
 			sourceTree = "<group>";
@@ -2963,12 +3537,11 @@
 		2BF34CC0223A95900052CAD3 /* Networking */ = {
 			isa = PBXGroup;
 			children = (
-				17F9E9202257894B004CDF24 /* Operations */,
-				2B8954BD2243FF0100D6D068 /* Keys */,
 				2B8954BC2243FEE200D6D068 /* API */,
 				17B7D8A92240E18800A6FF9E /* Drafts */,
-				1751261E223BEADF0095AF4F /* Protocols */,
-				1751261B223BEA230095AF4F /* Models */,
+				2B8954BD2243FF0100D6D068 /* Keys */,
+				17F9E9202257894B004CDF24 /* Operations */,
+				2B982336231EC1B2009560CD /* Query */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -3116,11 +3689,9 @@
 		2BF53179224AA87300A7455F /* Contacts */ = {
 			isa = PBXGroup;
 			children = (
-				2BF5317D224AA8B700A7455F /* ContactsViewController.swift */,
-				2BF71915224ED0A6001E8420 /* AddContactViewController.swift */,
-				2BF71917224ED0C5001E8420 /* ContactInfoViewController.swift */,
-				2BF71919224ED0E8001E8420 /* ContactQRDisplayViewController.swift */,
-				2BDE31E022799FF0002E8235 /* ContactSelectionViewController.swift */,
+				2B4DF427236C767500FF9551 /* Add */,
+				2B4DF425236C766200FF9551 /* Detail */,
+				2B4DF426236C766700FF9551 /* List */,
 			);
 			path = Contacts;
 			sourceTree = "<group>";
@@ -3128,10 +3699,9 @@
 		2BF5317A224AA88600A7455F /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				2B4DF424236C75FC00FF9551 /* Feedback */,
+				2B4DF423236C75F800FF9551 /* Node */,
 				2BF5317B224AA89B00A7455F /* SettingsViewController.swift */,
-				171111B9225E34E400DAF55C /* NodeSettingsViewController.swift */,
-				17D04F45225F64B60051BC43 /* AddNodeViewController.swift */,
-				2B79A132230EBE4D00766021 /* FeedbackViewController.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -3140,11 +3710,9 @@
 			isa = PBXGroup;
 			children = (
 				2B82B1C62253A4DA00A8909F /* Cell */,
-				2BF7190B224ECF30001E8420 /* AddContactView.swift */,
-				2BF7190D224ECF4A001E8420 /* ContactInfoView.swift */,
-				2BF7190F224ECFAF001E8420 /* UserInformationView.swift */,
-				2BF71911224ECFEC001E8420 /* ContactsView.swift */,
-				2BF71913224ED081001E8420 /* ContactQRDisplayView.swift */,
+				2B4DF40D236C688300FF9551 /* Common */,
+				2B4DF40C236C687300FF9551 /* Detail */,
+				2B4DF40B236C686D00FF9551 /* List */,
 			);
 			path = Contacts;
 			sourceTree = "<group>";
@@ -3483,6 +4051,7 @@
 			files = (
 				2B1B77C822963C820021A6CC /* CoinlistAuthentication.swift in Sources */,
 				2B1B77C922963C820021A6CC /* CoinlistAuthenticationDraft.swift in Sources */,
+				2B46262B23758CC9000AE73C /* Asset.swift in Sources */,
 				2B891EF022BB7026003205F5 /* USDWireInstructionCell.swift in Sources */,
 				2B1B77B92295C5A30021A6CC /* Bid.swift in Sources */,
 				2B1B77BA2295C5A30021A6CC /* AuctionUser.swift in Sources */,
@@ -3552,6 +4121,7 @@
 				17BD4E192292F1260003E49A /* UserInformationView.swift in Sources */,
 				2BB3F31122B1B6C000109C47 /* CoinlistCellContextView.swift in Sources */,
 				17BD4E1A2292F1260003E49A /* AccountListViewModel.swift in Sources */,
+				2B46262E23758CF4000AE73C /* AssetDetail.swift in Sources */,
 				2B43B83D22A8394F00CEA8F3 /* Date+Additions.swift in Sources */,
 				17BD4E1B2292F1260003E49A /* API.swift in Sources */,
 				17BD4E1C2292F1260003E49A /* StatusBarConfigurable.swift in Sources */,
@@ -3850,6 +4420,7 @@
 			files = (
 				17D04F46225F64B60051BC43 /* AddNodeViewController.swift in Sources */,
 				2B8954B92243FCFA00D6D068 /* AdaptiveLayout.swift in Sources */,
+				2B46262A23758CC9000AE73C /* Asset.swift in Sources */,
 				2B891EEF22BB7026003205F5 /* USDWireInstructionCell.swift in Sources */,
 				173DA1EB2255F7EF00378A82 /* TransactionDraft.swift in Sources */,
 				2B6533262292159A00F19FEA /* BidCell.swift in Sources */,
@@ -3919,6 +4490,7 @@
 				2B65B20122527B99001DB5BE /* ContactInfoViewModel.swift in Sources */,
 				2BB3F31022B1B6C000109C47 /* CoinlistCellContextView.swift in Sources */,
 				2B5DA9CE224CB4B400EE41B4 /* OptionsCell.swift in Sources */,
+				2B46262D23758CF4000AE73C /* AssetDetail.swift in Sources */,
 				1751261A223BE5930095AF4F /* RequestParameter.swift in Sources */,
 				2B656E9B224BC5370064A49B /* AccountViewCell.swift in Sources */,
 				2B65B1FE225268DA001DB5BE /* UIImage+Size.swift in Sources */,
