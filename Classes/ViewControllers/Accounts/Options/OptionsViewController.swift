@@ -11,7 +11,7 @@ import UIKit
 protocol OptionsViewControllerDelegate: class {
     
     func optionsViewControllerDidShowQR(_ optionsViewController: OptionsViewController)
-    func optionsViewControllerDidSetDefaultAccount(_ optionsViewController: OptionsViewController)
+    func optionsViewControllerDidRemoveAsset(_ optionsViewController: OptionsViewController)
     func optionsViewControllerDidViewPassphrase(_ optionsViewController: OptionsViewController)
     func optionsViewControllerDidEditAccountName(_ optionsViewController: OptionsViewController)
     func optionsViewControllerDidRemoveAccount(_ optionsViewController: OptionsViewController)
@@ -157,13 +157,13 @@ extension OptionsViewController: UICollectionViewDelegateFlowLayout {
         switch selectedOption {
         case .showQR:
             delegate?.optionsViewControllerDidShowQR(self)
-        case .setDefault:
-            delegate?.optionsViewControllerDidSetDefaultAccount(self)
+        case .removeAsset:
+            delegate?.optionsViewControllerDidRemoveAsset(self)
         case .passPhrase:
             delegate?.optionsViewControllerDidViewPassphrase(self)
         case .edit:
             delegate?.optionsViewControllerDidEditAccountName(self)
-        case .remove:
+        case .removeAccount:
             delegate?.optionsViewControllerDidRemoveAccount(self)
         }
     }
@@ -175,9 +175,9 @@ extension OptionsViewController {
     
     enum Options: Int, CaseIterable {
         case showQR = 0
-        case setDefault = 1
+        case removeAsset = 1
         case passPhrase = 2
         case edit = 3
-        case remove = 4
+        case removeAccount = 4
     }
 }

@@ -2,33 +2,23 @@
 //  AccountsViewController+Options.swift
 //  algorand
 //
-//  Created by Göktuğ Berk Ulu on 28.03.2019.
+//  Created by Göktuğ Berk Ulu on 12.11.2019.
 //  Copyright © 2019 hippo. All rights reserved.
 //
 
 import UIKit
 
 extension AccountsViewController: OptionsViewControllerDelegate {
-    
     func optionsViewControllerDidShowQR(_ optionsViewController: OptionsViewController) {
         guard let account = selectedAccount else {
             return
         }
         
-        let text = account.address
-        
-        open(.qrGenerator(title: account.name, text: text, mode: .address), by: .present)
+        open(.qrGenerator(title: account.name, text: account.address, mode: .address), by: .present)
     }
     
-    func optionsViewControllerDidSetDefaultAccount(_ optionsViewController: OptionsViewController) {
-        guard let user = session?.authenticatedUser,
-            let account = selectedAccount else {
-            return
-        }
+    func optionsViewControllerDidRemoveAsset(_ optionsViewController: OptionsViewController) {
         
-        user.setDefaultAccount(account)
-        
-        displaySimpleAlertWith(title: "options-default-account-title".localized, message: "options-default-account-message".localized)
     }
     
     func optionsViewControllerDidViewPassphrase(_ optionsViewController: OptionsViewController) {
@@ -37,17 +27,17 @@ extension AccountsViewController: OptionsViewControllerDelegate {
             controller?.delegate = self
             return
         }
-        
+
         displaySimpleAlertWith(
             title: "options-view-passphrase-alert-title".localized,
             message: "options-view-passphrase-alert-message".localized
         ) { _ in
-            
+
             self.localAuthenticator.authenticate { error in
                 guard error == nil else {
                     return
                 }
-                
+
                 self.presentPassphraseView()
             }
         }
@@ -57,11 +47,11 @@ extension AccountsViewController: OptionsViewControllerDelegate {
         guard let account = self.selectedAccount else {
             return
         }
-        
+
         let viewController = PassphraseDisplayViewController(address: account.address, configuration: configuration)
         viewController.modalPresentationStyle = .overCurrentContext
         viewController.modalTransitionStyle = .crossDissolve
-        
+
         tabBarController?.present(viewController, animated: true, completion: nil)
     }
     
@@ -73,7 +63,7 @@ extension AccountsViewController: OptionsViewControllerDelegate {
         guard let selectedAccount = self.selectedAccount else {
             return
         }
-        
+
         open(
             .editAccount(account: selectedAccount),
             by: .customPresent(
@@ -94,29 +84,27 @@ extension AccountsViewController: OptionsViewControllerDelegate {
             image: img("remove-account-alert-icon"),
             explanation: "options-remove-alert-explanation".localized,
             actionTitle: "title-remove".localized) {
-                
+
                 guard let user = self.session?.authenticatedUser,
                     let account = self.selectedAccount,
                     let index = user.index(of: account) else {
                         return
                 }
-                
-                let isAccountDefault = user.isDefaultAccount(account)
-                
+
                 user.removeAccount(account)
-                
+
                 guard !user.accounts.isEmpty else {
                     self.session?.reset()
-                    
+
                     self.tabBarController?.open(.introduction(mode: .initialize), by: .launch, animated: false)
-                    
+
                     return
                 }
-                
+
                 defer {
                     self.session?.authenticatedUser = user
                 }
-                
+
                 let newSelectedAccount: Account?
                 if user.accounts.count == 1 {
                     newSelectedAccount = user.account(at: 0)
@@ -128,38 +116,25 @@ extension AccountsViewController: OptionsViewControllerDelegate {
                     }
                 }
                 
-                guard let newDefaultAccount = newSelectedAccount else {
-                    return
-                }
-                
-                self.selectedAccount = newDefaultAccount
-                self.accountSelectionViewController.selectedAccount = account
-                self.accountSelectionViewController.accountsCollectionView.reloadData()
-                
-                if isAccountDefault {
-                    user.setDefaultAccount(newDefaultAccount)
-                }
+                //self.selectedAccount = newSelectedAccount
         }
-        
+
         let viewController = AlertViewController(mode: .destructive, alertConfigurator: configurator, configuration: configuration)
         viewController.modalPresentationStyle = .overCurrentContext
         viewController.modalTransitionStyle = .crossDissolve
-        
+
         if let alertView = viewController.alertView as? DestructiveAlertView {
             alertView.cancelButton.setTitleColor(.white, for: .normal)
             alertView.cancelButton.setBackgroundImage(img("bg-black-cancel"), for: .normal)
             alertView.actionButton.setTitleColor(.white, for: .normal)
             alertView.actionButton.setBackgroundImage(img("bg-orange-action"), for: .normal)
         }
-        
+
         tabBarController?.present(viewController, animated: true, completion: nil)
     }
 }
 
-// MARK: ChoosePasswordViewControllerDelegate
-
 extension AccountsViewController: ChoosePasswordViewControllerDelegate {
-    
     func choosePasswordViewController(_ choosePasswordViewController: ChoosePasswordViewController, didConfirmPassword isConfirmed: Bool) {
         if isConfirmed {
             presentPassphraseView()
