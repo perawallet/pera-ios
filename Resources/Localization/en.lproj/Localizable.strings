@@ -176,10 +176,10 @@
 // MARK: Options
 
 "options-show-qr" = "Show QR and address";
-"options-default-account" = "Set as default";
+"options-remove-assets" = "Remove Assets";
 "options-view-passphrase" = "View Passphrase";
 "options-edit-account-name" = "Edit Account Name";
-"options-remove-account" = "Remove Account";
+"options-remove-account" = "Remove Account from Device";
 "options-remove-alert-explanation" = "You are about to remove an account. Are you sure you want to proceed with this choice?";
 "options-default-account-title" = "Default Account";
 "options-default-account-message" = "Default acount is set.";
@@ -264,6 +264,7 @@
 "node-settings-action-delete-title" = "Delete";
 "node-settings-default-node-name" = "Algorand MainNet Node";
 "node-settings-default-test-node-name" = "TestNet";
+"node-settings-default-beta-node-name" = "BetaNet";
 "node-settings-health-problem-message" = "None of your active nodes are online. Please add or select another node";
 
 // MARK: Transaction Detail
