@@ -108,3 +108,9 @@ extension Account: Equatable {
         return lhs.address == rhs.address
     }
 }
+
+extension Account: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(address.hashValue)
+    }
+}
