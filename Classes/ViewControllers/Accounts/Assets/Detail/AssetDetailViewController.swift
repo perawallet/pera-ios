@@ -1,5 +1,5 @@
 //
-//  AccountsViewController.swift
+//  AccountDetailViewController.swift
 //  algorand
 //
 //  Created by Göktuğ Berk Ulu on 26.03.2019.
@@ -9,7 +9,7 @@
 import UIKit
 import NotificationBannerSwift
 
-class AccountsViewController: BaseViewController {
+class AssetDetailViewController: BaseViewController {
     
     struct LayoutConstants: AdaptiveLayoutConstants {
         let optionsModalHeight: CGFloat = 348.0
@@ -20,24 +20,6 @@ class AccountsViewController: BaseViewController {
     
     let layout = Layout<LayoutConstants>()
     
-    // MARK: Variables
-    
-    private lazy var optionsModalPresenter = CardModalPresenter(
-        config: ModalConfiguration(
-            animationMode: .normal(duration: 0.25),
-            dismissMode: .scroll
-        ),
-        initialModalSize: .custom(CGSize(width: view.frame.width, height: layout.current.optionsModalHeight))
-    )
-    
-    private(set) lazy var editAccountModalPresenter = CardModalPresenter(
-        config: ModalConfiguration(
-            animationMode: .normal(duration: 0.25),
-            dismissMode: .backgroundTouch
-        ),
-        initialModalSize: .custom(CGSize(width: view.frame.width, height: layout.current.editAccountModalHeight))
-    )
-    
     private lazy var pushNotificationController: PushNotificationController = {
         guard let api = api else {
             fatalError("Api must be set before accessing this view controller.")
@@ -46,10 +28,6 @@ class AccountsViewController: BaseViewController {
     }()
     
     private var pollingOperation: PollingOperation?
-    
-    private(set) lazy var accountSelectionViewController = AccountSelectionViewController(configuration: configuration)
-    
-    private(set) var localAuthenticator = LocalAuthenticator()
     
     private lazy var refreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
@@ -66,9 +44,6 @@ class AccountsViewController: BaseViewController {
     
     var selectedAccount: Account? {
         didSet {
-            if let account = selectedAccount {
-                accountSelectionViewController.configure(selected: account)
-            }
             session?.currentAccount = self.selectedAccount
         }
     }
@@ -79,14 +54,12 @@ class AccountsViewController: BaseViewController {
                 return
             }
             
-            accountSelectionViewController.selectedAccount = account
-            accountSelectionViewController.accountsCollectionView.reloadData()
             updateSelectedAccount(account)
         }
     }
     
     private var currentDollarConversion: Double?
-    private let viewModel = AccountsViewModel()
+    private let viewModel = AssetDetailViewModel()
     
     private var transactionHistoryDataSource: TransactionHistoryDataSource
     
@@ -94,8 +67,8 @@ class AccountsViewController: BaseViewController {
     
     // MARK: Components
     
-    private lazy var accountsView: AccountsView = {
-        let view = AccountsView()
+    private lazy var assetDetailView: AssetDetailView = {
+        let view = AssetDetailView()
         return view
     }()
     
@@ -118,22 +91,11 @@ class AccountsViewController: BaseViewController {
         pollingOperation?.invalidate()
     }
     
-    // MARK: Setup
-    
-    override func configureNavigationBarAppearance() {
-        let optionsBarButtonItem = ALGBarButtonItem(kind: .options) { [unowned self] in
-            self.presentOptions()
-        }
-        
-        rightBarButtonItems = [optionsBarButtonItem]
-    }
-    
     override func linkInteractors() {
-        accountsView.delegate = self
-        accountsView.transactionHistoryCollectionView.delegate = self
-        accountsView.transactionHistoryCollectionView.dataSource = transactionHistoryDataSource
-        accountsView.delegate = self
-        accountSelectionViewController.delegate = self
+        assetDetailView.delegate = self
+        assetDetailView.transactionHistoryCollectionView.delegate = self
+        assetDetailView.transactionHistoryCollectionView.dataSource = transactionHistoryDataSource
+        assetDetailView.delegate = self
     }
     
     override func configureAppearance() {
@@ -141,8 +103,7 @@ class AccountsViewController: BaseViewController {
         
         view.backgroundColor = .white
         
-        accountsView.transactionHistoryCollectionView.refreshControl = refreshControl
-        selectedAccount = session?.authenticatedUser?.defaultAccount()
+        assetDetailView.transactionHistoryCollectionView.refreshControl = refreshControl
         
         guard let account = selectedAccount else {
             return
@@ -150,8 +111,8 @@ class AccountsViewController: BaseViewController {
         
         self.navigationItem.title = selectedAccount?.name
         
-        viewModel.configure(accountsView.accountsHeaderView, with: account)
-        viewModel.configure(accountsView.accountsSmallHeaderView, with: account)
+        viewModel.configure(assetDetailView.headerView, with: account)
+        viewModel.configure(assetDetailView.smallHeaderView, with: account)
         
         transactionHistoryDataSource.setupContacts()
         
@@ -220,10 +181,8 @@ class AccountsViewController: BaseViewController {
         
         if let route = route {
             switch route {
-            case let .accounts(account):
+            case let .assetDetail(account):
                 self.route = nil
-                accountSelectionViewController.selectedAccount = account
-                accountSelectionViewController.accountsCollectionView.reloadData()
                 self.updateSelectedAccount(account)
             default:
                 self.route = nil
@@ -281,24 +240,14 @@ class AccountsViewController: BaseViewController {
     }
     
     override func prepareLayout() {
-        addChild(accountSelectionViewController)
-        view.addSubview(accountSelectionViewController.view)
-        
-        accountSelectionViewController.view.snp.makeConstraints { make in
-            make.top.leading.trailing.equalToSuperview()
-        }
-        
-        accountSelectionViewController.didMove(toParent: self)
-        
-        setupAccountsViewLayout()
+        setupAssetDetaiViewLayout()
     }
     
-    private func setupAccountsViewLayout() {
-        view.addSubview(accountsView)
+    private func setupAssetDetaiViewLayout() {
+        view.addSubview(assetDetailView)
         
-        accountsView.snp.makeConstraints { make in
-            make.top.equalTo(accountSelectionViewController.view.snp.bottom)
-            make.leading.trailing.bottom.equalToSuperview()
+        assetDetailView.snp.makeConstraints { make in
+            make.top.leading.trailing.bottom.equalToSuperview()
         }
     }
     
@@ -308,7 +257,7 @@ class AccountsViewController: BaseViewController {
         }
         
         if !refreshControl.isRefreshing {
-            accountsView.transactionHistoryCollectionView.contentState = .loading
+            assetDetailView.transactionHistoryCollectionView.contentState = .loading
         }
         
         transactionHistoryDataSource.loadData(for: account, withRefresh: refresh) { transactions, error in
@@ -321,55 +270,38 @@ class AccountsViewController: BaseViewController {
                 case .cancelled:
                     break
                 default:
-                    self.accountsView.transactionHistoryCollectionView.contentState = .empty(self.emptyStateView)
+                    self.assetDetailView.transactionHistoryCollectionView.contentState = .empty(self.emptyStateView)
                 }
                 
-                self.accountsView.transactionHistoryCollectionView.reloadData()
+                self.assetDetailView.transactionHistoryCollectionView.reloadData()
                 return
             }
             
             guard let transactions = transactions else {
-                self.accountsView.transactionHistoryCollectionView.contentState = .none
+                self.assetDetailView.transactionHistoryCollectionView.contentState = .none
                 return
             }
             
             if transactions.isEmpty {
-                self.accountsView.transactionHistoryCollectionView.contentState = .empty(self.emptyStateView)
+                self.assetDetailView.transactionHistoryCollectionView.contentState = .empty(self.emptyStateView)
                 return
             }
             
-            self.accountsView.transactionHistoryCollectionView.contentState = .none
-            self.accountsView.transactionHistoryCollectionView.reloadData()
+            self.assetDetailView.transactionHistoryCollectionView.contentState = .none
+            self.assetDetailView.transactionHistoryCollectionView.reloadData()
         }
     }
     
     @objc
     private func didRefreshList() {
         transactionHistoryDataSource.clear()
-        accountsView.transactionHistoryCollectionView.reloadData()
+        assetDetailView.transactionHistoryCollectionView.reloadData()
         fetchTransactions()
     }
 }
 
-// MARK: Navigation Actions
-
-extension AccountsViewController {
-    
-    private func presentOptions() {
-        let transitionStyle = Screen.Transition.Open.customPresent(
-            presentationStyle: .custom,
-            transitionStyle: nil,
-            transitioningDelegate: optionsModalPresenter
-        )
-        
-        let optionsViewController = open(.options, by: transitionStyle) as? OptionsViewController
-        
-        optionsViewController?.delegate = self
-    }
-}
-
 // MARK: - Helpers
-extension AccountsViewController {
+extension AssetDetailViewController {
     fileprivate func updateLayout() {
         guard let address = selectedAccount?.address,
             let account = session?.authenticatedUser?.account(address: address) else {
@@ -378,13 +310,13 @@ extension AccountsViewController {
         
         self.navigationItem.title = account.name
         
-        viewModel.configure(accountsView.accountsHeaderView, with: account)
-        viewModel.configure(accountsView.accountsSmallHeaderView, with: account)
+        viewModel.configure(assetDetailView.headerView, with: account)
+        viewModel.configure(assetDetailView.smallHeaderView, with: account)
     }
 }
 
 // MARK: - Notification
-extension AccountsViewController {
+extension AssetDetailViewController {
     @objc
     fileprivate func didUpdateAuthenticatedUser(notification: Notification) {
         updateLayout()
@@ -404,14 +336,11 @@ extension AccountsViewController {
             return
         }
         
-        accountSelectionViewController.accountsCollectionView.reloadData()
-        
         if selectedAccount == account {
-            accountSelectionViewController.selectedAccount = account
             self.selectedAccount = account
             transactionHistoryDataSource.clear()
-            accountsView.transactionHistoryCollectionView.reloadData()
-            accountsView.transactionHistoryCollectionView.contentState = .loading
+            assetDetailView.transactionHistoryCollectionView.reloadData()
+            assetDetailView.transactionHistoryCollectionView.contentState = .loading
             
             fetchTransactions()
         }
@@ -421,20 +350,20 @@ extension AccountsViewController {
     fileprivate func didContactAdded(notification: Notification) {
         transactionHistoryDataSource.setupContacts()
         
-        accountsView.transactionHistoryCollectionView.reloadData()
+        assetDetailView.transactionHistoryCollectionView.reloadData()
     }
     
     @objc
     fileprivate func didContactEdited(notification: Notification) {
         transactionHistoryDataSource.setupContacts()
         
-        accountsView.transactionHistoryCollectionView.reloadData()
+        assetDetailView.transactionHistoryCollectionView.reloadData()
     }
 }
 
 // MARK: AccountSelectionViewControllerDelegate
 
-extension AccountsViewController: AccountSelectionViewControllerDelegate {
+extension AssetDetailViewController: AccountSelectionViewControllerDelegate {
     
     func accountSelectionViewController(_ accountSelectionViewController: AccountSelectionViewController, didSelect account: Account) {
         updateSelectedAccount(account)
@@ -444,8 +373,8 @@ extension AccountsViewController: AccountSelectionViewControllerDelegate {
         selectedAccount = account
         
         transactionHistoryDataSource.clear()
-        accountsView.transactionHistoryCollectionView.reloadData()
-        accountsView.transactionHistoryCollectionView.contentState = .loading
+        assetDetailView.transactionHistoryCollectionView.reloadData()
+        assetDetailView.transactionHistoryCollectionView.contentState = .loading
         
         fetchTransactions()
         
@@ -468,11 +397,10 @@ extension AccountsViewController: AccountSelectionViewControllerDelegate {
     }
 }
 
-// MARK: AccountsViewDelegate
+// MARK: AssetDetailViewDelegate
 
-extension AccountsViewController: AccountsViewDelegate {
-    
-    func accountsViewDidTapSendButton(_ accountsView: AccountsView) {
+extension AssetDetailViewController: AssetDetailViewDelegate {
+    func assetDetailViewDidTapSendButton(_ assetDetailView: AssetDetailView) {
         guard let account = selectedAccount else {
             return
         }
@@ -480,7 +408,7 @@ extension AccountsViewController: AccountsViewDelegate {
         open(.sendAlgos(account: account, receiver: .initial), by: .push)
     }
     
-    func accountsViewDidTapReceiveButton(_ accountsView: AccountsView) {
+    func assetDetailViewDidTapReceiveButton(_ assetDetailView: AssetDetailView) {
         guard let account = selectedAccount else {
             return
         }
@@ -488,7 +416,7 @@ extension AccountsViewController: AccountsViewDelegate {
         open(.requestAlgos(account: account), by: .push)
     }
     
-    func accountsView(_ accountsView: AccountsView, didTrigger dollarValueGestureRecognizer: UILongPressGestureRecognizer) {
+    func assetDetailView(_ assetDetailView: AssetDetailView, didTrigger dollarValueGestureRecognizer: UILongPressGestureRecognizer) {
         guard let currentDollarAmount = currentDollarConversion,
             let selectedAccount = selectedAccount else {
                 return
@@ -497,13 +425,13 @@ extension AccountsViewController: AccountsViewDelegate {
         let dollarAmountForAccount = selectedAccount.amount.toAlgos * currentDollarAmount
         
         if dollarValueGestureRecognizer.state != .ended {
-            viewModel.setDollarValue(visible: true, in: accountsView.accountsHeaderView, for: dollarAmountForAccount)
+            viewModel.setDollarValue(visible: true, in: assetDetailView.headerView, for: dollarAmountForAccount)
         } else {
-            viewModel.setDollarValue(visible: false, in: accountsView.accountsHeaderView, for: dollarAmountForAccount)
+            viewModel.setDollarValue(visible: false, in: assetDetailView.headerView, for: dollarAmountForAccount)
         }
     }
     
-    func accountsViewDidTapRewardView(_ accountsView: AccountsView) {
+    func assetDetailViewDidTapRewardView(_ assetDetailView: AssetDetailView) {
         guard let selectedAccount = selectedAccount else {
             return
         }
@@ -518,7 +446,7 @@ extension AccountsViewController: AccountsViewDelegate {
 
 // MARK: UICollectionViewDelegateFlowLayout
 
-extension AccountsViewController: UICollectionViewDelegateFlowLayout {
+extension AssetDetailViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let transaction = transactionHistoryDataSource.transaction(at: indexPath),
@@ -547,12 +475,6 @@ extension AccountsViewController: UICollectionViewDelegateFlowLayout {
         return layout.current.transactionCellSize
     }
     
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-//        if transactionHistoryDataSource.transactionCount() == indexPath.row - 3 {
-//            fetchTransactions(witRefresh: false)
-//        }
-    }
-    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if transactionHistoryDataSource.transactionCount() == 0 {
             return
@@ -561,50 +483,50 @@ extension AccountsViewController: UICollectionViewDelegateFlowLayout {
         let translation = scrollView.panGestureRecognizer.translation(in: view)
         
         if translation.y < 0 {
-            let offset = scrollView.contentOffset.y + AccountsView.LayoutConstants.headerHeight
+            let offset = scrollView.contentOffset.y + AssetDetailView.LayoutConstants.headerHeight
             
-            let offsetDifference = AccountsView.LayoutConstants.headerHeight - offset
+            let offsetDifference = AssetDetailView.LayoutConstants.headerHeight - offset
             
-            if offsetDifference <= AccountsView.LayoutConstants.smallHeaderHeight {
+            if offsetDifference <= AssetDetailView.LayoutConstants.smallHeaderHeight {
                 adjustSmallHeaderViewLayout()
                 
-                accountsView.transactionHistoryCollectionView.contentInset.top = AccountsView.LayoutConstants.smallHeaderHeight
+                assetDetailView.transactionHistoryCollectionView.contentInset.top = AssetDetailView.LayoutConstants.smallHeaderHeight
             } else {
-                accountsView.accountsHeaderContainerView.snp.updateConstraints { make in
+                assetDetailView.accountsHeaderContainerView.snp.updateConstraints { make in
                     make.height.equalTo(offsetDifference)
                 }
                 
-                accountsView.transactionHistoryCollectionView.contentInset.top = offsetDifference
+                assetDetailView.transactionHistoryCollectionView.contentInset.top = offsetDifference
                 
-                let progress: CGFloat = offsetDifference / AccountsView.LayoutConstants.headerHeight
+                let progress: CGFloat = offsetDifference / AssetDetailView.LayoutConstants.headerHeight
                 
                 UIView.animate(withDuration: 0.0) {
-                    self.accountsView.accountsHeaderView.alpha = progress
+                    self.assetDetailView.headerView.alpha = progress
                     self.view.layoutIfNeeded()
                 }
             }
         } else {
             let offset = -scrollView.contentOffset.y
             
-            let offsetTotal = AccountsView.LayoutConstants.smallHeaderHeight + offset
+            let offsetTotal = AssetDetailView.LayoutConstants.smallHeaderHeight + offset
             
-            if offsetTotal >= AccountsView.LayoutConstants.headerHeight {
+            if offsetTotal >= AssetDetailView.LayoutConstants.headerHeight {
                 adjustDefaultHeaderViewLayout()
                 
-                accountsView.transactionHistoryCollectionView.contentInset.top = AccountsView.LayoutConstants.headerHeight
+                assetDetailView.transactionHistoryCollectionView.contentInset.top = AssetDetailView.LayoutConstants.headerHeight
             } else {
-                let offset = max(-scrollView.contentOffset.y, AccountsView.LayoutConstants.smallHeaderHeight)
+                let offset = max(-scrollView.contentOffset.y, AssetDetailView.LayoutConstants.smallHeaderHeight)
                 
-                let progress: CGFloat = offset / AccountsView.LayoutConstants.headerHeight
+                let progress: CGFloat = offset / AssetDetailView.LayoutConstants.headerHeight
                 
-                accountsView.accountsHeaderContainerView.snp.updateConstraints { make in
+                assetDetailView.accountsHeaderContainerView.snp.updateConstraints { make in
                     make.height.equalTo(offset)
                 }
                 
-                accountsView.transactionHistoryCollectionView.contentInset.top = offset
+                assetDetailView.transactionHistoryCollectionView.contentInset.top = offset
                 
                 UIView.animate(withDuration: 0.33) {
-                    self.accountsView.accountsHeaderView.alpha = progress
+                    self.assetDetailView.headerView.alpha = progress
                     self.view.layoutIfNeeded()
                 }
             }
@@ -619,20 +541,20 @@ extension AccountsViewController: UICollectionViewDelegateFlowLayout {
         let translation = scrollView.panGestureRecognizer.translation(in: view)
         
         if translation.y < 0 {
-            let offset = scrollView.contentOffset.y + AccountsView.LayoutConstants.headerHeight
+            let offset = scrollView.contentOffset.y + AssetDetailView.LayoutConstants.headerHeight
             
-            let offsetDifference = AccountsView.LayoutConstants.headerHeight - offset
+            let offsetDifference = AssetDetailView.LayoutConstants.headerHeight - offset
             
-            if offsetDifference <= AccountsView.LayoutConstants.smallHeaderHeight {
+            if offsetDifference <= AssetDetailView.LayoutConstants.smallHeaderHeight {
                 return
             }
             
             adjustSmallHeaderViewLayout(withContentInsetUpdate: true)
             
         } else {
-            let offset = scrollView.contentInset.top + scrollView.contentOffset.y + AccountsView.LayoutConstants.smallHeaderHeight
+            let offset = scrollView.contentInset.top + scrollView.contentOffset.y + AssetDetailView.LayoutConstants.smallHeaderHeight
             
-            if offset > AccountsView.LayoutConstants.headerHeight {
+            if offset > AssetDetailView.LayoutConstants.headerHeight {
                 return
             }
             
@@ -642,17 +564,17 @@ extension AccountsViewController: UICollectionViewDelegateFlowLayout {
     }
     
     private func adjustSmallHeaderViewLayout(withContentInsetUpdate shouldUpdateContentInset: Bool = false) {
-        accountsView.accountsHeaderContainerView.snp.updateConstraints { make in
-            make.height.equalTo(AccountsView.LayoutConstants.smallHeaderHeight)
+        assetDetailView.accountsHeaderContainerView.snp.updateConstraints { make in
+            make.height.equalTo(AssetDetailView.LayoutConstants.smallHeaderHeight)
         }
         
         UIView.animate(withDuration: 0.33) {
-            self.accountsView.accountsHeaderView.alpha = 0.0
-            self.accountsView.accountsSmallHeaderView.alpha = 1.0
+            self.assetDetailView.headerView.alpha = 0.0
+            self.assetDetailView.smallHeaderView.alpha = 1.0
             
             if shouldUpdateContentInset {
-                self.accountsView.transactionHistoryCollectionView.contentInset.top = AccountsView.LayoutConstants.smallHeaderHeight
-                self.accountsView.transactionHistoryCollectionView.contentOffset.y = -AccountsView.LayoutConstants.smallHeaderHeight
+                self.assetDetailView.transactionHistoryCollectionView.contentInset.top = AssetDetailView.LayoutConstants.smallHeaderHeight
+                self.assetDetailView.transactionHistoryCollectionView.contentOffset.y = -AssetDetailView.LayoutConstants.smallHeaderHeight
             }
             
             self.view.layoutIfNeeded()
@@ -660,17 +582,17 @@ extension AccountsViewController: UICollectionViewDelegateFlowLayout {
     }
     
     private func adjustDefaultHeaderViewLayout(withContentInsetUpdate shouldUpdateContentInset: Bool = false) {
-        accountsView.accountsHeaderContainerView.snp.updateConstraints { make in
-            make.height.equalTo(AccountsView.LayoutConstants.headerHeight)
+        assetDetailView.accountsHeaderContainerView.snp.updateConstraints { make in
+            make.height.equalTo(AssetDetailView.LayoutConstants.headerHeight)
         }
         
         UIView.animate(withDuration: 0.33) {
-            self.accountsView.accountsSmallHeaderView.alpha = 0.0
-            self.accountsView.accountsHeaderView.alpha = 1.0
+            self.assetDetailView.smallHeaderView.alpha = 0.0
+            self.assetDetailView.headerView.alpha = 1.0
             
             if shouldUpdateContentInset {
-                self.accountsView.transactionHistoryCollectionView.contentInset.top = AccountsView.LayoutConstants.headerHeight
-                self.accountsView.transactionHistoryCollectionView.contentOffset.y = -AccountsView.LayoutConstants.headerHeight
+                self.assetDetailView.transactionHistoryCollectionView.contentInset.top = AssetDetailView.LayoutConstants.headerHeight
+                self.assetDetailView.transactionHistoryCollectionView.contentOffset.y = -AssetDetailView.LayoutConstants.headerHeight
             }
             
             self.view.layoutIfNeeded()

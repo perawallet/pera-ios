@@ -13,7 +13,7 @@ class TabBarController: UITabBarController {
     // MARK: Variables
     
     private(set) lazy var accountsNavigationController = NavigationController(
-        rootViewController: AccountsViewController(configuration: configuration)
+        rootViewController: AssetDetailViewController(configuration: configuration)
     )
     
     private lazy var historyNavigationController = NavigationController(
@@ -166,7 +166,7 @@ class TabBarController: UITabBarController {
         }
         
         if let route = route {
-            guard let accountsViewController = accountsNavigationController.viewControllers.first as? AccountsViewController else {
+            guard let accountsViewController = accountsNavigationController.viewControllers.first as? AssetDetailViewController else {
                 return
             }
             

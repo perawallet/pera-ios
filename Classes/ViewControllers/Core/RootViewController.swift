@@ -59,7 +59,7 @@ class RootViewController: UIViewController {
     }
     
     func addAccount(_ account: Account) {
-        if let viewController = tabBarViewController.accountsNavigationController.viewControllers.first as? AccountsViewController {
+        if let viewController = tabBarViewController.accountsNavigationController.viewControllers.first as? AssetDetailViewController {
             viewController.newAccount = account
         }
     }
@@ -101,7 +101,7 @@ class RootViewController: UIViewController {
         if !appConfiguration.session.isValid {
             if appConfiguration.session.hasPassword() && appConfiguration.session.authenticatedUser != nil {
                 open(.choosePassword(
-                    mode: .login, route: .accounts(account: account)),
+                    mode: .login, route: .assetDetail(account: account)),
                      by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
                 )
             } else {
@@ -116,16 +116,16 @@ class RootViewController: UIViewController {
                 let accountsViewController = tabBarController.accountsNavigationController.viewControllers.first {
                 
                 controller.dismiss(animated: false) {
-                    (accountsViewController as? AccountsViewController)?.selectedAccount = account
+                    (accountsViewController as? AssetDetailViewController)?.selectedAccount = account
                 }
             } else {
-                if let viewController = tabBarViewController.accountsNavigationController.viewControllers.first as? AccountsViewController,
-                    let selectedAccount = viewController.accountSelectionViewController.selectedAccount,
-                        selectedAccount.address != account.address {
-                        viewController.accountSelectionViewController.selectedAccount = account
-                        viewController.accountSelectionViewController.accountsCollectionView.reloadData()
-                        viewController.updateSelectedAccount(account)
-                }
+//                if let viewController = tabBarViewController.accountsNavigationController.viewControllers.first
+//                    as? AssetDetailViewController,
+//                    let selectedAccount = viewController.accountSelectionViewController.selectedAccount,
+//                        selectedAccount.address != account.address {
+//                        viewController.accountSelectionViewController.selectedAccount = account
+//                        viewController.updateSelectedAccount(account)
+//                }
             }
         }
     }

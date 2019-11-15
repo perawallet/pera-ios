@@ -125,8 +125,6 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
             user.addAccount(account)
         } else {
             user = User(accounts: [account])
-            
-            user.setDefaultAccount(account)
         }
         
         session?.authenticatedUser = user

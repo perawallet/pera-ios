@@ -8,13 +8,12 @@
 
 import UIKit
 
-protocol AccountsSmallHeaderViewDelegate: class {
-    
-    func accountsSmallHeaderViewDidTapSendButton(_ accountsHeaderView: AccountsSmallHeaderView)
-    func accountsSmallHeaderViewDidTapReceiveButton(_ accountsHeaderView: AccountsSmallHeaderView)
+protocol AssetDetailSmallHeaderViewDelegate: class {
+    func assetDetailSmallHeaderViewDidTapSendButton(_ assetDetailHeaderView: AssetDetailSmallHeaderView)
+    func assetDetailSmallHeaderViewDidTapReceiveButton(_ assetDetailHeaderView: AssetDetailSmallHeaderView)
 }
 
-class AccountsSmallHeaderView: BaseView {
+class AssetDetailSmallHeaderView: BaseView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let containerViewInset: CGFloat = 10.0
@@ -81,7 +80,7 @@ class AccountsSmallHeaderView: BaseView {
             .withText("accounts-transaction-history-title".localized)
     }()
     
-    weak var delegate: AccountsSmallHeaderViewDelegate?
+    weak var delegate: AssetDetailSmallHeaderViewDelegate?
     
     // MARK: Setup
     
@@ -168,11 +167,11 @@ class AccountsSmallHeaderView: BaseView {
     
     @objc
     private func notifyDelegateToSendButtonTapped() {
-        delegate?.accountsSmallHeaderViewDidTapSendButton(self)
+        delegate?.assetDetailSmallHeaderViewDidTapSendButton(self)
     }
     
     @objc
     private func notifyDelegateToReceiveButtonTapped() {
-        delegate?.accountsSmallHeaderViewDidTapReceiveButton(self)
+        delegate?.assetDetailSmallHeaderViewDidTapReceiveButton(self)
     }
 }

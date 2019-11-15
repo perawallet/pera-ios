@@ -41,8 +41,6 @@ struct DeepLinkParser {
             
             if let currentAccount = UIApplication.shared.appConfiguration?.session.currentAccount {
                 account = currentAccount
-            } else if let defaultAccount = UIApplication.shared.appConfiguration?.session.authenticatedUser?.defaultAccount() {
-                account = defaultAccount
             } else {
                 return nil
             }

@@ -8,15 +8,14 @@
 
 import UIKit
 
-protocol AccountsViewDelegate: class {
-    
-    func accountsViewDidTapSendButton(_ accountsView: AccountsView)
-    func accountsViewDidTapReceiveButton(_ accountsView: AccountsView)
-    func accountsView(_ accountsView: AccountsView, didTrigger dollarValueGestureRecognizer: UILongPressGestureRecognizer)
-    func accountsViewDidTapRewardView(_ accountsView: AccountsView)
+protocol AssetDetailViewDelegate: class {
+    func assetDetailViewDidTapSendButton(_ assetDetailView: AssetDetailView)
+    func assetDetailViewDidTapReceiveButton(_ assetDetailView: AssetDetailView)
+    func assetDetailView(_ assetDetailView: AssetDetailView, didTrigger dollarValueGestureRecognizer: UILongPressGestureRecognizer)
+    func assetDetailViewDidTapRewardView(_ assetDetailView: AssetDetailView)
 }
 
-class AccountsView: BaseView {
+class AssetDetailView: BaseView {
 
     struct LayoutConstants: AdaptiveLayoutConstants {
         static let headerHeight: CGFloat = 255.0
@@ -32,13 +31,13 @@ class AccountsView: BaseView {
         return view
     }()
     
-    private(set) lazy var accountsHeaderView: AccountsHeaderView = {
-        let view = AccountsHeaderView()
+    private(set) lazy var headerView: AssetDetailHeaderView = {
+        let view = AssetDetailHeaderView()
         return view
     }()
     
-    private(set) lazy var accountsSmallHeaderView: AccountsSmallHeaderView = {
-        let view = AccountsSmallHeaderView()
+    private(set) lazy var smallHeaderView: AssetDetailSmallHeaderView = {
+        let view = AssetDetailSmallHeaderView()
         view.alpha = 0.0
         return view
     }()
@@ -64,13 +63,13 @@ class AccountsView: BaseView {
     
     private lazy var contentStateView = ContentStateView()
     
-    weak var delegate: AccountsViewDelegate?
+    weak var delegate: AssetDetailViewDelegate?
     
     // MARK: Setup
     
     override func linkInteractors() {
-        accountsHeaderView.delegate = self
-        accountsSmallHeaderView.delegate = self
+        headerView.delegate = self
+        smallHeaderView.delegate = self
     }
     
     // MARK: Layout
@@ -78,8 +77,8 @@ class AccountsView: BaseView {
     override func prepareLayout() {
         setupTransactionHistoryCollectionViewLayout()
         setupAccountsHeaderContainerViewLayout()
-        setupAccountsHeaderViewLayout()
-        setupAccountsSmallHeaderViewLayout()
+        setupHeaderViewLayout()
+        setupSmallHeaderViewLayout()
         setupContentStateView()
     }
     
@@ -100,18 +99,18 @@ class AccountsView: BaseView {
         }
     }
     
-    private func setupAccountsHeaderViewLayout() {
-        accountsHeaderContainerView.addSubview(accountsHeaderView)
+    private func setupHeaderViewLayout() {
+        accountsHeaderContainerView.addSubview(headerView)
         
-        accountsHeaderView.snp.makeConstraints { make in
+        headerView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
     }
     
-    private func setupAccountsSmallHeaderViewLayout() {
-        accountsHeaderContainerView.addSubview(accountsSmallHeaderView)
+    private func setupSmallHeaderViewLayout() {
+        accountsHeaderContainerView.addSubview(smallHeaderView)
         
-        accountsSmallHeaderView.snp.makeConstraints { make in
+        smallHeaderView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
     }
@@ -125,38 +124,37 @@ class AccountsView: BaseView {
     }
 }
 
-// MARK: AccountsHeaderViewDelegate
+// MARK: AssetDetailHeaderViewDelegate
 
-extension AccountsView: AccountsHeaderViewDelegate {
-    func accountsHeaderViewDidTapSendButton(_ accountsHeaderView: AccountsHeaderView) {
-        delegate?.accountsViewDidTapSendButton(self)
+extension AssetDetailView: AssetDetailHeaderViewDelegate {
+    func assetDetailHeaderViewDidTapSendButton(_ assetDetailHeaderView: AssetDetailHeaderView) {
+        delegate?.assetDetailViewDidTapSendButton(self)
     }
     
-    func accountsHeaderViewDidTapReceiveButton(_ accountsHeaderView: AccountsHeaderView) {
-        delegate?.accountsViewDidTapReceiveButton(self)
+    func assetDetailHeaderViewDidTapReceiveButton(_ assetDetailHeaderView: AssetDetailHeaderView) {
+        delegate?.assetDetailViewDidTapReceiveButton(self)
     }
     
-    func accountsHeaderView(
-        _ accountsHeaderView: AccountsHeaderView,
+    func assetDetailHeaderView(
+        _ assetDetailHeaderView: AssetDetailHeaderView,
         didTrigger dollarValueGestureRecognizer: UILongPressGestureRecognizer
     ) {
-        delegate?.accountsView(self, didTrigger: dollarValueGestureRecognizer)
+        delegate?.assetDetailView(self, didTrigger: dollarValueGestureRecognizer)
     }
     
-    func accountsHeaderViewDidTapRewardView(_ accountsHeaderView: AccountsHeaderView) {
-        delegate?.accountsViewDidTapRewardView(self)
+    func assetDetailHeaderViewDidTapRewardView(_ assetDetailHeaderView: AssetDetailHeaderView) {
+        delegate?.assetDetailViewDidTapRewardView(self)
     }
 }
 
-// MARK: AccountsSmallHeaderViewDelegate
+// MARK: AssetDetailSmallHeaderViewDelegate
 
-extension AccountsView: AccountsSmallHeaderViewDelegate {
-    
-    func accountsSmallHeaderViewDidTapSendButton(_ accountsHeaderView: AccountsSmallHeaderView) {
-        delegate?.accountsViewDidTapSendButton(self)
+extension AssetDetailView: AssetDetailSmallHeaderViewDelegate {
+    func assetDetailSmallHeaderViewDidTapSendButton(_ assetDetailHeaderView: AssetDetailSmallHeaderView) {
+        delegate?.assetDetailViewDidTapSendButton(self)
     }
     
-    func accountsSmallHeaderViewDidTapReceiveButton(_ accountsHeaderView: AccountsSmallHeaderView) {
-        delegate?.accountsViewDidTapReceiveButton(self)
+    func assetDetailSmallHeaderViewDidTapReceiveButton(_ assetDetailHeaderView: AssetDetailSmallHeaderView) {
+        delegate?.assetDetailViewDidTapReceiveButton(self)
     }
 }

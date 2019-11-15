@@ -1,5 +1,5 @@
 //
-//  AccountsViewModel.swift
+//  AssetDetailViewModel.swift
 //  algorand
 //
 //  Created by Göktuğ Berk Ulu on 29.03.2019.
@@ -9,13 +9,13 @@
 import UIKit
 import SwiftDate
 
-class AccountsViewModel {
+class AssetDetailViewModel {
     
     var lastRound: Int64?
     
     var currentAccount: Account?
     
-    func configure(_ view: AccountsHeaderView, with account: Account) {
+    func configure(_ view: AssetDetailHeaderView, with account: Account) {
         view.algosAmountLabel.text = account.amount.toAlgos.toDecimalStringForLabel
         
         var totalRewards: UInt64 = 0
@@ -23,11 +23,11 @@ class AccountsViewModel {
         view.rewardTotalAmountView.algosAmountView.amountLabel.text = totalRewards.toAlgos.toDecimalStringForLabel
     }
     
-    func configure(_ view: AccountsSmallHeaderView, with account: Account) {
+    func configure(_ view: AssetDetailSmallHeaderView, with account: Account) {
         view.algosAmountLabel.text = account.amount.toAlgos.toDecimalStringForLabel
     }
     
-    func setDollarValue(visible: Bool, in view: AccountsHeaderView, for currentValue: Double) {
+    func setDollarValue(visible: Bool, in view: AssetDetailHeaderView, for currentValue: Double) {
         view.algosImageView.isHidden = visible
         view.algosAmountLabel.isHidden = visible
         view.dollarAmountLabel.isHidden = !visible

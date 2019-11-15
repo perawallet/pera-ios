@@ -247,8 +247,10 @@ class Router {
             viewController = DepositViewController(user: user, configuration: configuration)
         case .feedback:
             viewController = FeedbackViewController(configuration: configuration)
-        case .accounts:
-            viewController = AccountsViewController(configuration: configuration)
+        case .assetDetail:
+            viewController = AssetDetailViewController(configuration: configuration)
+        case .addAsset:
+            viewController = AssetAdditionViewController(configuration: configuration)
         }
         
         return viewController as? T

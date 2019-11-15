@@ -105,7 +105,6 @@ extension AccountNameSetupViewController {
             }
         } else {
             let user = User(accounts: [account])
-            user.setDefaultAccount(account)
             
             session?.authenticatedUser = user
             

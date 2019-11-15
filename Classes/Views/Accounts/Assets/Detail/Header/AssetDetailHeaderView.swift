@@ -8,14 +8,17 @@
 
 import UIKit
 
-protocol AccountsHeaderViewDelegate: class {
-    func accountsHeaderViewDidTapSendButton(_ accountsHeaderView: AccountsHeaderView)
-    func accountsHeaderViewDidTapReceiveButton(_ accountsHeaderView: AccountsHeaderView)
-    func accountsHeaderView(_ accountsHeaderView: AccountsHeaderView, didTrigger dollarValueGestureRecognizer: UILongPressGestureRecognizer)
-    func accountsHeaderViewDidTapRewardView(_ accountsHeaderView: AccountsHeaderView)
+protocol AssetDetailHeaderViewDelegate: class {
+    func assetDetailHeaderViewDidTapSendButton(_ assetDetailHeaderView: AssetDetailHeaderView)
+    func assetDetailHeaderViewDidTapReceiveButton(_ assetDetailHeaderView: AssetDetailHeaderView)
+    func assetDetailHeaderView(
+        _ assetDetailHeaderView: AssetDetailHeaderView,
+        didTrigger dollarValueGestureRecognizer: UILongPressGestureRecognizer
+    )
+    func assetDetailHeaderViewDidTapRewardView(_ assetDetailHeaderView: AssetDetailHeaderView)
 }
 
-class AccountsHeaderView: BaseView {
+class AssetDetailHeaderView: BaseView {
 
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let containerViewInset: CGFloat = 10.0
@@ -144,7 +147,7 @@ class AccountsHeaderView: BaseView {
             .withText("accounts-transaction-history-title".localized)
     }()
     
-    weak var delegate: AccountsHeaderViewDelegate?
+    weak var delegate: AssetDetailHeaderViewDelegate?
     
     // MARK: Setup
     
@@ -287,21 +290,21 @@ class AccountsHeaderView: BaseView {
     
     @objc
     private func notifyDelegateToSendButtonTapped() {
-        delegate?.accountsHeaderViewDidTapSendButton(self)
+        delegate?.assetDetailHeaderViewDidTapSendButton(self)
     }
     
     @objc
     private func notifyDelegateToReceiveButtonTapped() {
-        delegate?.accountsHeaderViewDidTapReceiveButton(self)
+        delegate?.assetDetailHeaderViewDidTapReceiveButton(self)
     }
     
     @objc
     private func notifyDelegateToDollarValueLabelTapped(dollarValueGestureRecognizer: UILongPressGestureRecognizer) {
-        delegate?.accountsHeaderView(self, didTrigger: dollarValueGestureRecognizer)
+        delegate?.assetDetailHeaderView(self, didTrigger: dollarValueGestureRecognizer)
     }
     
     @objc
     private func notifyDelegateToRewardsViewTapped() {
-        delegate?.accountsHeaderViewDidTapRewardView(self)
+        delegate?.assetDetailHeaderViewDidTapRewardView(self)
     }
 }

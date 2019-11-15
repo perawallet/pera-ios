@@ -24,7 +24,7 @@ class TransactionHistoryDataSource: NSObject, UICollectionViewDataSource {
     
     private var contacts = [Contact]()
     
-    private let viewModel = AccountsViewModel()
+    private let viewModel = AssetDetailViewModel()
     
     private let api: API?
     
