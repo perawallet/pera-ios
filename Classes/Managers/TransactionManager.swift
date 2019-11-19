@@ -59,7 +59,7 @@ class TransactionManager {
         }
     }
     
-    private func generateSignedData(for account: Account, isMaxValue: Bool, initialFee: Int64 = 274) {
+    private func generateSignedData(for account: Account, isMaxValue: Bool, initialFee: Int64 = Transaction.Constant.minimumFee) {
         guard let params = params,
             let transaction = transaction else {
                 delegate?.transactionManager(self, didFailedComposing: .custom(nil))
@@ -68,15 +68,16 @@ class TransactionManager {
         
         let firstRound = params.lastRound
         let lastRound = firstRound + 1000
+        var isMaxValue = isMaxValue
         
         var transactionError: NSError?
-        var transactionAmount = transaction.amount
+        var transactionAmount = transaction.amount.toMicroAlgos
         
         if isMaxValue {
-            transactionAmount = transaction.amount - Double(initialFee)
-            if transactionAmount < 0 {
-                transactionAmount = 0
+            if transaction.amount.toMicroAlgos != transaction.fromAccount.amount {
+                isMaxValue = false
             }
+            transactionAmount -= initialFee * params.fee
         }
         
         let trimmedFromAddress = transaction.fromAccount.address.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -86,7 +87,7 @@ class TransactionManager {
             trimmedFromAddress,
             trimmedToAddress,
             params.fee,
-            Int64(transactionAmount.toMicroAlgos),
+            transactionAmount,
             firstRound,
             lastRound,
             nil,
@@ -112,7 +113,7 @@ class TransactionManager {
         self.transaction?.fee = calculatedFee
         
         if initialFee < calculatedFee && isMaxValue {
-            generateSignedData(for: account, isMaxValue: true, initialFee: calculatedFee)
+            generateSignedData(for: account, isMaxValue: true, initialFee: Int64(signedTransactionData.count))
         } else {
             delegate?.transactionManagerDidComposedTransactionData(self)
         }
