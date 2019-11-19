@@ -36,7 +36,7 @@ class TransactionDetailViewModel {
             view.transactionOpponentView.state = .address(address: transaction.from, amount: nil)
         }
         
-        view.transactionAmountView.algosAmountView.mode = .positive(payment.amount.toAlgos)
+        view.transactionAmountView.algosAmountView.mode = .positive(payment.amountForTransaction().toAlgos)
         
         if let rewards = transaction.payment?.rewards, rewards > 0 {
             view.rewardView.isHidden = false
@@ -70,7 +70,7 @@ class TransactionDetailViewModel {
             view.transactionOpponentView.state = .address(address: payment.toAddress, amount: nil)
         }
         
-        view.transactionAmountView.algosAmountView.mode = .negative(payment.amount.toAlgos)
+        view.transactionAmountView.algosAmountView.mode = .negative(payment.amountForTransaction().toAlgos)
         
         if let rewards = transaction.fromRewards, rewards > 0 {
             view.rewardView.isHidden = false

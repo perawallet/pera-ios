@@ -267,6 +267,7 @@ class SendAlgosViewController: BaseScrollViewController {
     }
     
     private func composeTransactionData() {
+        transactionManager.delegate = self
         if amount.toMicroAlgos < minimumTransactionMicroAlgosLimit {
             var receiverAddress: String
                    
@@ -459,10 +460,6 @@ extension SendAlgosViewController: AccountListViewControllerDelegate {
             shouldUpdateReceiverForSelectedAccount = false
             receiver = .myAccount(account)
             sendAlgosView.transactionReceiverView.state = .address(address: account.address, amount: nil)
-            sendAlgosView.algosInputView.maxAmount = account.amount.toAlgos
-            if isMaxButtonSelected {
-                sendAlgosView.algosInputView.inputTextField.text = sendAlgosView.accountSelectionView.algosAmountView.amountLabel.text
-            }
             return
         }
         

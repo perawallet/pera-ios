@@ -19,7 +19,7 @@ class AccountsViewModel {
         view.algosAmountLabel.text = account.amount.toAlgos.toDecimalStringForLabel
         
         var totalRewards: UInt64 = 0
-        totalRewards += (account.rewards ?? 0) + (account.pendingRewards ?? 0)
+        totalRewards += (account.rewards ?? 0) - (account.pendingRewards ?? 0)
         view.rewardTotalAmountView.algosAmountView.amountLabel.text = totalRewards.toAlgos.toDecimalStringForLabel
     }
     
@@ -69,7 +69,7 @@ class AccountsViewModel {
                 view.subtitleLabel.isHidden = true
             }
             
-            view.transactionAmountView.mode = .positive(payment.amount.toAlgos)
+            view.transactionAmountView.mode = .positive(payment.amountForTransaction().toAlgos)
         } else {
             if let contact = contact {
                 view.titleLabel.text = contact.name
@@ -79,7 +79,7 @@ class AccountsViewModel {
                 view.subtitleLabel.isHidden = true
             }
             
-            view.transactionAmountView.mode = .negative(payment.amount.toAlgos)
+            view.transactionAmountView.mode = .negative(payment.amountForTransaction().toAlgos)
         }
         
         let formattedDate = findDate(from: transaction.lastRound).toFormat("MMMM dd, yyyy")
