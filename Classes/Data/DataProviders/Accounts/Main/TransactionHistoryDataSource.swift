@@ -350,11 +350,17 @@ extension TransactionHistoryDataSource {
     }
     
     private func filter(_ pendingTransactions: [Transaction]) {
+        let filteredTransactions = transactions.filter { ($0 as? Transaction)?.status == .pending }
+        if filteredTransactions.count == pendingTransactions.count {
+            return
+        }
+        
         pendingTransactions.forEach { transaction in
             transaction.status = .pending
         }
         self.transactions = self.transactions.filter { item -> Bool in
-            guard let transactionItem = item as? Transaction else {
+            guard let transactionItem = item as? Transaction,
+                transactionItem.status == .pending else {
                 return true
             }
             

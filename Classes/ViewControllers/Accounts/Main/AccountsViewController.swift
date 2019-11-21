@@ -248,6 +248,7 @@ class AccountsViewController: BaseViewController {
                     return
                 }
                 
+                strongSelf.accountsView.transactionHistoryCollectionView.contentState = .none
                 strongSelf.accountsView.transactionHistoryCollectionView.reloadData()
             }
         }
