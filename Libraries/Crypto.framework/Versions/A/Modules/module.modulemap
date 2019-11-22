@@ -4,7 +4,6 @@ framework module "Crypto" {
     header "Auction.objc.h"
     header "Transaction.objc.h"
     header "Mnemonic.objc.h"
-    header "Msgpack.objc.h"
     header "Universe.objc.h"
     header "Crypto.h"
 

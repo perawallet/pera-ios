@@ -10,12 +10,11 @@
 #include "ref.h"
 #include "Universe.objc.h"
 
-#include "Msgpack.objc.h"
 
 /**
  * MakeBid constructs a bid using the passed parameters. `bidderAddress` and
 `auctionAddress` should be checksummed, human-readable addresses
  */
-FOUNDATION_EXPORT NSData* _Nullable AuctionMakeBid(NSString* _Nullable bidderAddress, int64_t bidAmount, int64_t maxPrice, int64_t bidID, NSString* _Nullable auctionAddress, int64_t auctionID, NSError* _Nullable* error);
+FOUNDATION_EXPORT NSData* _Nullable AuctionMakeBid(NSString* _Nullable bidderAddress, int64_t bidAmount, int64_t maxPrice, int64_t bidID, NSString* _Nullable auctionAddress, int64_t auctionID, NSError* _Nullable* _Nullable error);
 
 #endif
