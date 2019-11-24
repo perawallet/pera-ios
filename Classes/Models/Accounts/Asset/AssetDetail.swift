@@ -19,6 +19,8 @@ class AssetDetail: Model {
     let reserveAddress: String?
     let freezeAddress: String?
     let clawBackAddress: String?
+    
+    var index: String?
 }
 
 extension AssetDetail {
@@ -33,5 +35,6 @@ extension AssetDetail {
         case reserveAddress = "reserveaddr"
         case freezeAddress = "freezeaddr"
         case clawBackAddress = "clawbackaddr"
+        case index = "index"
     }
 }

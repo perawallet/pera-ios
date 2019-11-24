@@ -45,7 +45,7 @@ class DepositInstructionHeaderView: UICollectionReusableView {
     private(set) lazy var removeButton: UIButton = {
         UIButton(type: .custom)
             .withTitleColor(SharedColors.darkGray)
-            .withTitle("balance-remove-title".localized)
+            .withTitle("title-remove-lowercased".localized)
             .withAlignment(.right)
             .withFont(UIFont.font(.avenir, withWeight: .medium(size: 13.0)))
     }()

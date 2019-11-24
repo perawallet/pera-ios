@@ -42,7 +42,10 @@ indirect enum Screen {
     case balance(user: AuctionUser)
     case deposit(user: AuctionUser)
     case feedback
-    case addAsset
+    case addAsset(account: Account)
+    case removeAsset(account: Account)
+    case assetActionConfirmation(assetDetail: AssetDetail)
+    case assetSupportAlert
 }
 
 extension Screen {
@@ -63,6 +66,10 @@ extension Screen.Transition {
             presentationStyle: UIModalPresentationStyle?,
             transitionStyle: UIModalTransitionStyle?,
             transitioningDelegate: UIViewControllerTransitioningDelegate?)
+        case customPresentWithoutNavigationController(
+            presentationStyle: UIModalPresentationStyle?,
+            transitionStyle: UIModalTransitionStyle?,
+            transitioningDelegate: UIViewControllerTransitioningDelegate?)
         
         static func == (lhs: Open, rhs: Open) -> Bool {
             switch (lhs, rhs) {
@@ -73,6 +80,8 @@ extension Screen.Transition {
             case (.launch, .launch):
                 return true
             case (.customPresent, .customPresent):
+                return false
+            case (.customPresentWithoutNavigationController, .customPresentWithoutNavigationController):
                 return false
             default:
                 return false

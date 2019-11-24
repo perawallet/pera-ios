@@ -52,6 +52,8 @@ class AccountsViewController: BaseViewController {
     override func setListeners() {
         accountsLayoutBuilder.delegate = self
         accountsDataSource.delegate = self
+        accountsView.accountsCollectionView.delegate = accountsLayoutBuilder
+        accountsView.accountsCollectionView.dataSource = accountsDataSource
     }
     
     override func prepareLayout() {
@@ -81,7 +83,7 @@ extension AccountsViewController: AccountsDataSourceDelegate {
     }
     
     func accountsDataSource(_ accountsDataSource: AccountsDataSource, didTapAddAssetButtonFor account: Account) {
-        
+        open(.addAsset(account: account), by: .push)
     }
 }
 

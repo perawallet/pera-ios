@@ -9,21 +9,30 @@
 import UIKit
 
 class AccounsViewModel {
-
-}
-
-extension AccounsViewModel {
-    func configure(_ assetCell: AssetCell, with asset: Asset) {
+    func configure(_ cell: AssetCell, with asset: AssetDetail) {
+        guard let assetName = asset.assetName,
+            let code = asset.unitName else {
+                return
+        }
         
+        cell.contextView.assetNameView.setName(assetName)
+        cell.contextView.assetNameView.setCode(code)
+        cell.contextView.amountLabel.text = asset.total.toAlgos.toDecimalStringForLabel
     }
     
-    func configure(_ algoAssetCell: AlgoAssetCell, with account: Account) {
-        
+    func configure(_ cell: AlgoAssetCell, with account: Account) {
+        cell.contextView.amountLabel.text = account.amount.toAlgos.toDecimalStringForLabel
     }
 }
 
 extension AccounsViewModel {
-    func configure(_ headerView: AccountHeaderView, with account: Account) {
+    func configure(_ header: AccountHeaderSupplementaryView, with account: Account) {
+        header.contextView.setOptionsButton(hidden: true)
         
+        guard let accountName = account.name else {
+            return
+        }
+        
+        header.contextView.setAccountName(accountName)
     }
 }

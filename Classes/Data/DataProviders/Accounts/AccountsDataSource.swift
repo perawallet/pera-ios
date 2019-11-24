@@ -80,11 +80,12 @@ extension AccountsDataSource {
         
         if indexPath.section < accounts.count {
             let account = accounts[indexPath.section]
-            guard let assets = account.assets else {
+            guard let assets = account.assetDetails else {
                 return cell
             }
             
-          //  viewModel.configure(cell, with: assets)
+            let asset = assets[indexPath.row]
+            viewModel.configure(cell, with: asset)
         }
         
         return cell
@@ -105,6 +106,9 @@ extension AccountsDataSource {
             ) as? AccountHeaderSupplementaryView else {
                 fatalError("Unexpected element kind")
             }
+            
+            let account = accounts[indexPath.section]
+            viewModel.configure(headerView, with: account)
             
             return headerView
         } else {

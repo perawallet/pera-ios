@@ -27,6 +27,7 @@ class Account: Model {
     var totalAssets: [String: AssetDetail]?
     var assets: [String: Asset]?
     
+    var assetDetails: [AssetDetail]?
     var name: String?
     
     required init(from decoder: Decoder) throws {
@@ -39,7 +40,13 @@ class Account: Model {
         pendingRewards = try container.decodeIfPresent(UInt64.self, forKey: .pendingRewards)
         participation = try container.decodeIfPresent(Participation.self, forKey: .participation)
         name = try container.decodeIfPresent(String.self, forKey: .name)
-        totalAssets = try? container.decodeIfPresent([String: AssetDetail].self, forKey: .totalAssets) ?? nil
+        if let totalAssets = try? container.decodeIfPresent([String: AssetDetail].self, forKey: .totalAssets) {
+            self.totalAssets = totalAssets
+            assetDetails = totalAssets.map { key, value -> AssetDetail in
+                value.index = key
+                return value
+            }
+        }
         assets = try? container.decodeIfPresent([String: Asset].self, forKey: .assets) ?? nil
     }
     
@@ -96,6 +103,7 @@ extension Account {
         case participation = "participation"
         case totalAssets = "thisassettotal"
         case assets = "assets"
+        case assetDetails = "assetDetails"
     }
 }
 

@@ -18,7 +18,12 @@ extension AccountsViewController: OptionsViewControllerDelegate {
     }
     
     func optionsViewControllerDidRemoveAsset(_ optionsViewController: OptionsViewController) {
+        guard let account = selectedAccount else {
+            return
+        }
         
+        let controller = open(.removeAsset(account: account), by: .present) as? AssetRemovalViewController
+        controller?.delegate = self
     }
     
     func optionsViewControllerDidViewPassphrase(_ optionsViewController: OptionsViewController) {
@@ -144,5 +149,11 @@ extension AccountsViewController: ChoosePasswordViewControllerDelegate {
                 message: "options-view-passphrase-password-alert-message".localized
             )
         }
+    }
+}
+
+extension AccountsViewController: AssetRemovalViewControllerDelegate {
+    func assetRemovalViewController(_ assetRemovalViewController: AssetRemovalViewController, didRemove asset: AssetDetail) {
+        
     }
 }

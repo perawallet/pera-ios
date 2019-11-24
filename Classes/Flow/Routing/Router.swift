@@ -110,6 +110,26 @@ class Router {
             }
             
             sourceViewController.present(viewController, animated: animated, completion: completion)
+            
+        case let .customPresentWithoutNavigationController(presentationStyle, transitionStyle, transitioningDelegate):
+            if let presentingViewController = self as? StatusBarConfigurable,
+                let presentedViewController = viewController as? StatusBarConfigurable,
+                presentingViewController.isStatusBarHidden {
+                
+                presentedViewController.hidesStatusBarWhenPresented = true
+                presentedViewController.isStatusBarHidden = true
+            }
+            
+            if let aPresentationStyle = presentationStyle {
+                viewController.modalPresentationStyle = aPresentationStyle
+            }
+            if let aTransitionStyle = transitionStyle {
+                viewController.modalTransitionStyle = aTransitionStyle
+            }
+            viewController.modalPresentationCapturesStatusBarAppearance = true
+            viewController.transitioningDelegate = transitioningDelegate
+            
+            sourceViewController.present(viewController, animated: animated, completion: completion)
         case .set:
             if let currentViewController = self as? StatusBarConfigurable,
                 let nextViewController = viewController as? StatusBarConfigurable {
@@ -141,6 +161,7 @@ class Router {
         return firstViewController
     }
     
+    // swiftlint:disable function_body_length
     private func buildViewController<T: UIViewController>(for screen: Screen) -> T? {
         guard let rootViewController = UIApplication.shared.rootViewController() else {
             return nil
@@ -249,10 +270,17 @@ class Router {
             viewController = FeedbackViewController(configuration: configuration)
         case .assetDetail:
             viewController = AssetDetailViewController(configuration: configuration)
-        case .addAsset:
-            viewController = AssetAdditionViewController(configuration: configuration)
+        case let .addAsset(account):
+            viewController = AssetAdditionViewController(account: account, configuration: configuration)
+        case let .removeAsset(account):
+            viewController = AssetRemovalViewController(account: account, configuration: configuration)
+        case let .assetActionConfirmation(assetDetail):
+            viewController = AssetActionConfirmationViewController(assetDetail: assetDetail, configuration: configuration)
+        case .assetSupportAlert:
+            viewController = AssetSupportAlertViewController(configuration: configuration)
         }
         
         return viewController as? T
     }
+    // swiftlint:enable function_body_length
 }

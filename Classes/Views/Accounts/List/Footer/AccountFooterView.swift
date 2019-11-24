@@ -18,8 +18,16 @@ class AccountFooterView: BaseView {
     
     weak var delegate: AccountFooterViewDelegate?
     
-    private lazy var addAssetButton: UIButton = {
-        UIButton(type: .custom)
+    private lazy var addAssetButton: AlignedButton = {
+        let positions: AlignedButton.StylePositionAdjustment = (image: CGPoint(x: 5.0, y: 0.0), title: CGPoint(x: -5.0, y: 0.0))
+        let button = AlignedButton(style: .imageLeftTitleCentered(positions))
+        button.setImage(img("icon-plus-purple"), for: .normal)
+        button.setBackgroundImage(img("bg-purple-bordered"), for: .normal)
+        button.setTitle("asset-title".localized, for: .normal)
+        button.setTitleColor(SharedColors.purple, for: .normal)
+        button.titleLabel?.font = UIFont.font(.overpass, withWeight: .bold(size: 13.0))
+        button.titleLabel?.textAlignment = .center
+        return button
     }()
     
     override func prepareLayout() {
@@ -42,14 +50,15 @@ extension AccountFooterView {
     private func setupAddAssetButtonLayout() {
         addSubview(addAssetButton)
         
-        addAssetButton.snp.makeConstraints { _ in
-            
+        addAssetButton.snp.makeConstraints { make in
+            make.leading.trailing.bottom.equalToSuperview()
+            make.top.equalToSuperview().inset(layout.current.topInset)
         }
     }
 }
 
 extension AccountFooterView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        
+        let topInset: CGFloat = 5.0
     }
 }

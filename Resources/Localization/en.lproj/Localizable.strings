@@ -35,6 +35,7 @@
 "title-send-algos-uppercase" = "SEND ALGOS";
 "title-max" = "MAX";
 "title-internet-connection" = "The internet connection appears to be offline.";
+"title-remove-lowercased" = "Remove";
 
 // MARK: Tabbar
 
@@ -138,6 +139,14 @@
 "accounts-transaction-history-title" = "Transaction History";
 "accounts-add-account" = "+ ADD ACCOUNT";
 
+// MARK: Asset
+
+"asset-title" = "Asset";
+"asset-algos-title" = "Algos";
+"asset-remove-title" = "REMOVING AN ASSET";
+"asset-remove-subtitle" = "To remove an asset you need to transfer all your balance to another another account.";
+"asset-search-placeholder" = "Search Assets ID";
+
 // MARK: Algos Send
 
 "send-algos-title" = "Send Algos";
@@ -175,6 +184,7 @@
 
 // MARK: Options
 
+"options-title" = "ACCOUNT SETTINGS";
 "options-show-qr" = "Show QR and address";
 "options-remove-assets" = "Remove Assets";
 "options-view-passphrase" = "View Passphrase";
@@ -339,7 +349,6 @@
 "balance-available-title" = "Available Balance";
 "balance-button-title-deposit" = "DEPOSIT";
 "balance-button-title-withdraw" = "WITHDRAW";
-"balance-remove-title" = "Remove";
 "balance-send-title" = "Send";
 "balance-to-title" = "To";
 "balance-bank-title" = "Bank";

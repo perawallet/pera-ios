@@ -10,4 +10,20 @@ import UIKit
 
 class AlgoAssetCell: BaseCollectionViewCell<AlgoAssetView> {
     
+    override func configureAppearance() {
+        super.configureAppearance()
+        configureBorders()
+    }
+    
+    private func configureBorders() {
+        layer.cornerRadius = 4.0
+        layer.borderColor = Colors.borderColor.cgColor
+        layer.borderWidth = 1.0
+    }
+}
+
+extension AlgoAssetCell {
+    private enum Colors {
+        static let borderColor = rgb(0.91, 0.91, 0.92)
+    }
 }

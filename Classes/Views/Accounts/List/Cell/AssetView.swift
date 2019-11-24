@@ -12,55 +12,70 @@ class AssetView: BaseView {
     
     private let layout = Layout<LayoutConstants>()
     
-    private lazy var assetNameLabel: UILabel = {
+    private(set) lazy var assetNameView = AssetNameView()
+    
+    private(set) lazy var amountLabel: UILabel = {
         UILabel()
+            .withFont(UIFont.font(.overpass, withWeight: .bold(size: 14.0)))
+            .withTextColor(SharedColors.darkGray)
+            .withLine(.single)
+            .withAlignment(.right)
     }()
     
-    private lazy var amountLabel: UILabel = {
-        UILabel()
-    }()
-    
-    private lazy var arrowImageView = UIImageView(image: img("icon-logo-small"))
+    private lazy var arrowImageView = UIImageView(image: img("icon-arrow-gray"))
     
     override func configureAppearance() {
         backgroundColor = .white
     }
     
     override func prepareLayout() {
-        setupAssetNameLabelLayout()
+        setupAssetNameViewLayout()
         setupArrowImageViewLayout()
         setupAmountLabelLayout()
     }
 }
 
 extension AssetView {
-    private func setupAssetNameLabelLayout() {
-        addSubview(assetNameLabel)
+    private func setupAssetNameViewLayout() {
+        addSubview(assetNameView)
         
-        assetNameLabel.snp.makeConstraints { _ in
-            
+        assetNameView.setContentCompressionResistancePriority(.required, for: .horizontal)
+        assetNameView.setContentHuggingPriority(.required, for: .horizontal)
+        
+        assetNameView.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
+            make.centerY.equalToSuperview()
         }
     }
     
     private func setupArrowImageViewLayout() {
         addSubview(arrowImageView)
         
-        arrowImageView.snp.makeConstraints { _ in
-            
+        arrowImageView.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().inset(layout.current.imageInset)
+            make.size.equalTo(layout.current.arrowImageSize)
+            make.centerY.equalToSuperview()
         }
     }
     
     private func setupAmountLabelLayout() {
         addSubview(amountLabel)
         
-        amountLabel.snp.makeConstraints { _ in
-            
+        amountLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+        amountLabel.setContentHuggingPriority(.required, for: .horizontal)
+        
+        amountLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(arrowImageView)
+            make.trailing.equalTo(arrowImageView.snp.leading).offset(-layout.current.imageInset)
+            make.leading.greaterThanOrEqualTo(assetNameView.snp.trailing).offset(layout.current.imageInset)
         }
     }
 }
 
 extension AssetView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        
+        let horizontalInset: CGFloat = 15.0
+        let imageInset: CGFloat = 10.0
+        let arrowImageSize = CGSize(width: 20.0, height: 20.0)
     }
 }
