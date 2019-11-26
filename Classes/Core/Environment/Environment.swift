@@ -33,7 +33,7 @@ class Environment {
     lazy var serverHost: String = {
         switch target {
         case .staging:
-            return "18.216.102.213:8080"
+            return "3.15.4.163:8080"
         case .prod:
             return "indexer.algorand.network:8443"
         }
@@ -97,7 +97,7 @@ class Environment {
     lazy var serverToken: String = {
         switch target {
         case .staging:
-            return "13a14e6d5a16ec3e62166f597fec6a0fac58ef653acc9b28c0a4de47dfc8652b"
+            return "402049a2fde425a3e0e81b41c4c32fd70104544caee916ec86adea955f04c14b"
         case .prod:
             return "0f24cac92e5ead6afbcf389e0ade28bb609d24ca6687359f342748c68d6cf9b2"
         }
@@ -106,7 +106,7 @@ class Environment {
     lazy var algorandNodeName: String = {
         switch target {
         case .staging:
-            return "node-settings-default-beta-node-name".localized
+            return "node-settings-default-test-node-name".localized
         case .prod:
             return "node-settings-default-node-name".localized
         }
