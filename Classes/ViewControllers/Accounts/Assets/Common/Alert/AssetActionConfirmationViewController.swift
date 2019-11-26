@@ -23,11 +23,18 @@ class AssetActionConfirmationViewController: BaseViewController {
     
     private lazy var assetActionConfirmationView = AssetActionConfirmationView()
     
-    private var assetDetail: AssetDetail
+    private let viewModel = AssetActionConfirmationViewModel()
     
-    init(assetDetail: AssetDetail, configuration: ViewControllerConfiguration) {
-        self.assetDetail = assetDetail
+    private var assetAlertDraft: AssetAlertDraft
+    
+    init(assetAlertDraft: AssetAlertDraft, configuration: ViewControllerConfiguration) {
+        self.assetAlertDraft = assetAlertDraft
         super.init(configuration: configuration)
+    }
+    
+    override func configureAppearance() {
+        view.backgroundColor = Colors.backgroundColor
+        viewModel.configure(assetActionConfirmationView, with: assetAlertDraft)
     }
     
     override func setListeners() {
@@ -44,14 +51,15 @@ extension AssetActionConfirmationViewController {
         view.addSubview(assetActionConfirmationView)
         
         assetActionConfirmationView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.centerX.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
         }
     }
 }
 
 extension AssetActionConfirmationViewController: AssetActionConfirmationViewDelegate {
     func assetActionConfirmationViewDidTapActionButton(_ assetActionConfirmationView: AssetActionConfirmationView) {
-        delegate?.assetActionConfirmationViewController(self, didConfirmedActionFor: assetDetail)
+        delegate?.assetActionConfirmationViewController(self, didConfirmedActionFor: assetAlertDraft.assetDetail)
         dismissScreen()
     }
     
@@ -62,5 +70,12 @@ extension AssetActionConfirmationViewController: AssetActionConfirmationViewDele
 
 extension AssetActionConfirmationViewController {
     struct LayoutConstants: AdaptiveLayoutConstants {
+        let horizontalInset: CGFloat = 20.0
+    }
+}
+
+extension AssetActionConfirmationViewController {
+    private enum Colors {
+        static let backgroundColor = rgba(0.29, 0.29, 0.31, 0.6)
     }
 }

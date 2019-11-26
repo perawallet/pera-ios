@@ -1,29 +1,30 @@
 //
-//  AssetSupportAlertView.swift
+//  AssetCancellableSupportAlertView.swift
 //  algorand
 //
-//  Created by Göktuğ Berk Ulu on 24.11.2019.
+//  Created by Göktuğ Berk Ulu on 25.11.2019.
 //  Copyright © 2019 hippo. All rights reserved.
 //
 
 import UIKit
 
-protocol AssetSupportAlertViewDelegate: class {
-    func assetSupportAlertViewDidTapOKButton(_ assetSupportAlertView: AssetSupportAlertView)
+protocol AssetCancellableSupportAlertViewDelegate: class {
+    func assetCancellableSupportAlertViewDidTapOKButton(_ assetCancellableSupportAlertView: AssetCancellableSupportAlertView)
+    func assetCancellableSupportAlertViewDidTapCancelButton(_ assetCancellableSupportAlertView: AssetCancellableSupportAlertView)
 }
 
-class AssetSupportAlertView: BaseView {
+class AssetCancellableSupportAlertView: BaseView {
     
     private let layout = Layout<LayoutConstants>()
     
-    weak var delegate: AssetSupportAlertViewDelegate?
+    weak var delegate: AssetCancellableSupportAlertViewDelegate?
     
     private lazy var titleLabel: UILabel = {
         UILabel()
             .withLine(.single)
             .withAlignment(.center)
             .withFont(UIFont.font(.overpass, withWeight: .bold(size: 16.0)))
-            .withText("asset-support-title".localized)
+            .withText("asset-support-qr-title".localized)
     }()
     
     private(set) lazy var assetDisplayView = AssetDisplayView()
@@ -33,7 +34,7 @@ class AssetSupportAlertView: BaseView {
             .withLine(.contained)
             .withAlignment(.center)
             .withFont(UIFont.font(.avenir, withWeight: .medium(size: 14.0)))
-            .withText("asset-support-error".localized)
+            .withText("asset-support-qr-error".localized)
     }()
     
     private lazy var okButton: UIButton = {
@@ -41,8 +42,16 @@ class AssetSupportAlertView: BaseView {
             .withBackgroundImage(img("bg-black-button"))
             .withTitle("title-ok".localized)
             .withAlignment(.center)
-            .withTitleColor(UIColor.white)
             .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 12.0)))
+            .withTitleColor(UIColor.white)
+    }()
+    
+    private lazy var cancelButton: UIButton = {
+        UIButton(type: .custom)
+            .withTitle("title-cancel".localized)
+            .withAlignment(.center)
+            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 12.0)))
+            .withTitleColor(SharedColors.darkGray)
     }()
     
     override func configureAppearance() {
@@ -55,21 +64,28 @@ class AssetSupportAlertView: BaseView {
         setupAssetDisplayViewLayout()
         setupDetailLabelLayout()
         setupOKButtonLayout()
+        setupCancelButtonLayout()
     }
     
     override func setListeners() {
         okButton.addTarget(self, action: #selector(notifyDelegateToOKButtonTapped), for: .touchUpInside)
+        cancelButton.addTarget(self, action: #selector(notifyDelegateToCancelButtonTapped), for: .touchUpInside)
     }
 }
 
-extension AssetSupportAlertView {
+extension AssetCancellableSupportAlertView {
     @objc
     private func notifyDelegateToOKButtonTapped() {
-        delegate?.assetSupportAlertViewDidTapOKButton(self)
+        delegate?.assetCancellableSupportAlertViewDidTapOKButton(self)
+    }
+    
+    @objc
+    private func notifyDelegateToCancelButtonTapped() {
+        delegate?.assetCancellableSupportAlertViewDidTapCancelButton(self)
     }
 }
 
-extension AssetSupportAlertView {
+extension AssetCancellableSupportAlertView {
     private func setupTitleLabelLayout() {
         addSubview(titleLabel)
         
@@ -103,16 +119,26 @@ extension AssetSupportAlertView {
         okButton.snp.makeConstraints { make in
             make.top.equalTo(detailLabel.snp.bottom).offset(layout.current.verticalInset)
             make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.bottom.equalToSuperview().inset(layout.current.verticalInset)
+        }
+    }
+
+    private func setupCancelButtonLayout() {
+        addSubview(cancelButton)
+        
+        cancelButton.snp.makeConstraints { make in
+            make.top.equalTo(okButton.snp.bottom).offset(layout.current.buttonOffset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.bottom.equalToSuperview().inset(layout.current.horizontalInset)
         }
     }
 }
 
-extension AssetSupportAlertView {
+extension AssetCancellableSupportAlertView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let verticalInset: CGFloat = 35.0
         let titleLabelTopInset: CGFloat = 30.0
         let displayViewTopInset: CGFloat = 24.0
         let horizontalInset: CGFloat = 25.0
+        let buttonOffset: CGFloat = 10.0
     }
 }

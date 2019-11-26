@@ -44,8 +44,9 @@ indirect enum Screen {
     case feedback
     case addAsset(account: Account)
     case removeAsset(account: Account)
-    case assetActionConfirmation(assetDetail: AssetDetail)
-    case assetSupportAlert
+    case assetActionConfirmation(assetAlertDraft: AssetAlertDraft)
+    case assetSupportAlert(assetAlertDraft: AssetAlertDraft)
+    case assetCancellableSupportAlert(assetAlertDraft: AssetAlertDraft)
 }
 
 extension Screen {

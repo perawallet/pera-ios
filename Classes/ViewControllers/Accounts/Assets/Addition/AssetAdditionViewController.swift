@@ -72,9 +72,10 @@ extension AssetAdditionViewController: UICollectionViewDataSource {
 extension AssetAdditionViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let assetDetail = assetResults[indexPath.item]
+        let assetAlertDraft = AssetAlertDraft(account: account, assetDetail: assetDetail)
         
         let controller = open(
-            .assetActionConfirmation(assetDetail: assetDetail),
+            .assetActionConfirmation(assetAlertDraft: assetAlertDraft),
             by: .customPresentWithoutNavigationController(
                 presentationStyle: .overCurrentContext,
                 transitionStyle: .crossDissolve,

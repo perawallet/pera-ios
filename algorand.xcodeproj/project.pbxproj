@@ -489,6 +489,16 @@
 		2B4BD9FE238AD7F400491149 /* API+Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4BD9FC238AD7F400491149 /* API+Assets.swift */; };
 		2B4BDA01238AE66E00491149 /* AssetAdditionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4BDA00238AE66E00491149 /* AssetAdditionViewModel.swift */; };
 		2B4BDA02238AE66E00491149 /* AssetAdditionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4BDA00238AE66E00491149 /* AssetAdditionViewModel.swift */; };
+		2B4BDA04238C520F00491149 /* AssetCancellableSupportAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4BDA03238C520F00491149 /* AssetCancellableSupportAlertView.swift */; };
+		2B4BDA05238C520F00491149 /* AssetCancellableSupportAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4BDA03238C520F00491149 /* AssetCancellableSupportAlertView.swift */; };
+		2B4BDA07238C940F00491149 /* AssetCancellableSupportAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4BDA06238C940F00491149 /* AssetCancellableSupportAlertViewController.swift */; };
+		2B4BDA08238C940F00491149 /* AssetCancellableSupportAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4BDA06238C940F00491149 /* AssetCancellableSupportAlertViewController.swift */; };
+		2B4BDA0B238C9EDF00491149 /* AssetAlertDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4BDA0A238C9EDF00491149 /* AssetAlertDraft.swift */; };
+		2B4BDA0C238C9EDF00491149 /* AssetAlertDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4BDA0A238C9EDF00491149 /* AssetAlertDraft.swift */; };
+		2B4BDA10238CA1BD00491149 /* AssetDisplayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4BDA0F238CA1BD00491149 /* AssetDisplayViewModel.swift */; };
+		2B4BDA11238CA1BD00491149 /* AssetDisplayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4BDA0F238CA1BD00491149 /* AssetDisplayViewModel.swift */; };
+		2B4BDA13238CA1E500491149 /* AssetActionConfirmationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4BDA12238CA1E500491149 /* AssetActionConfirmationViewModel.swift */; };
+		2B4BDA14238CA1E500491149 /* AssetActionConfirmationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4BDA12238CA1E500491149 /* AssetActionConfirmationViewModel.swift */; };
 		2B56F7D6225B3C1D00E58737 /* SendAlgosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B56F7D5225B3C1D00E58737 /* SendAlgosViewController.swift */; };
 		2B56F7D8225B3C4200E58737 /* RequestAlgosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B56F7D7225B3C4200E58737 /* RequestAlgosViewController.swift */; };
 		2B56F7DA225B45B300E58737 /* SendAlgosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B56F7D9225B45B300E58737 /* SendAlgosView.swift */; };
@@ -976,6 +986,11 @@
 		2B4BD9F92389F5F900491149 /* AssetRemovalViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetRemovalViewModel.swift; sourceTree = "<group>"; };
 		2B4BD9FC238AD7F400491149 /* API+Assets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+Assets.swift"; sourceTree = "<group>"; };
 		2B4BDA00238AE66E00491149 /* AssetAdditionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetAdditionViewModel.swift; sourceTree = "<group>"; };
+		2B4BDA03238C520F00491149 /* AssetCancellableSupportAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetCancellableSupportAlertView.swift; sourceTree = "<group>"; };
+		2B4BDA06238C940F00491149 /* AssetCancellableSupportAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetCancellableSupportAlertViewController.swift; sourceTree = "<group>"; };
+		2B4BDA0A238C9EDF00491149 /* AssetAlertDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetAlertDraft.swift; sourceTree = "<group>"; };
+		2B4BDA0F238CA1BD00491149 /* AssetDisplayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetDisplayViewModel.swift; sourceTree = "<group>"; };
+		2B4BDA12238CA1E500491149 /* AssetActionConfirmationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetActionConfirmationViewModel.swift; sourceTree = "<group>"; };
 		2B56F7D5225B3C1D00E58737 /* SendAlgosViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendAlgosViewController.swift; sourceTree = "<group>"; };
 		2B56F7D7225B3C4200E58737 /* RequestAlgosViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestAlgosViewController.swift; sourceTree = "<group>"; };
 		2B56F7D9225B45B300E58737 /* SendAlgosView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendAlgosView.swift; sourceTree = "<group>"; };
@@ -1639,6 +1654,7 @@
 			children = (
 				2B4487162379635900C19FDE /* AssetActionConfirmationView.swift */,
 				2B4BD9EF2389F13F00491149 /* AssetSupportAlertView.swift */,
+				2B4BDA03238C520F00491149 /* AssetCancellableSupportAlertView.swift */,
 			);
 			path = Alert;
 			sourceTree = "<group>";
@@ -1672,6 +1688,7 @@
 			children = (
 				2B4487272379653700C19FDE /* AssetActionConfirmationViewController.swift */,
 				2B4BD9F22389F17400491149 /* AssetSupportAlertViewController.swift */,
+				2B4BDA06238C940F00491149 /* AssetCancellableSupportAlertViewController.swift */,
 			);
 			path = Alert;
 			sourceTree = "<group>";
@@ -1718,6 +1735,7 @@
 			isa = PBXGroup;
 			children = (
 				2B4BD9FF238AE65F00491149 /* Addition */,
+				2B4BDA0D238CA19700491149 /* Common */,
 				2B44873223799D8600C19FDE /* Detail */,
 				2B4BD9F82389F5EE00491149 /* Removal */,
 			);
@@ -1743,6 +1761,7 @@
 		2B46262823758CBB000AE73C /* Asset */ = {
 			isa = PBXGroup;
 			children = (
+				2B4BDA09238C9EB600491149 /* Draft */,
 				2B46262923758CC9000AE73C /* Asset.swift */,
 				2B46262C23758CF4000AE73C /* AssetDetail.swift */,
 			);
@@ -1772,6 +1791,31 @@
 				2B4BDA00238AE66E00491149 /* AssetAdditionViewModel.swift */,
 			);
 			path = Addition;
+			sourceTree = "<group>";
+		};
+		2B4BDA09238C9EB600491149 /* Draft */ = {
+			isa = PBXGroup;
+			children = (
+				2B4BDA0A238C9EDF00491149 /* AssetAlertDraft.swift */,
+			);
+			path = Draft;
+			sourceTree = "<group>";
+		};
+		2B4BDA0D238CA19700491149 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				2B4BDA0E238CA1A300491149 /* Alert */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		2B4BDA0E238CA1A300491149 /* Alert */ = {
+			isa = PBXGroup;
+			children = (
+				2B4BDA0F238CA1BD00491149 /* AssetDisplayViewModel.swift */,
+				2B4BDA12238CA1E500491149 /* AssetActionConfirmationViewModel.swift */,
+			);
+			path = Alert;
 			sourceTree = "<group>";
 		};
 		2B4DF405236C5E7500FF9551 /* StatusBar */ = {
@@ -4378,6 +4422,7 @@
 				2B1B77BE2295C5A30021A6CC /* MyBidsViewModel.swift in Sources */,
 				2B891F0722BBA768003205F5 /* DepositFundSelectionView.swift in Sources */,
 				2B982339231EC1C1009560CD /* DollarValueQuery.swift in Sources */,
+				2B4BDA0C238C9EDF00491149 /* AssetAlertDraft.swift in Sources */,
 				2B1B77BF2295C5A30021A6CC /* PlaceBidViewModel.swift in Sources */,
 				2B79A13E23147A4900766021 /* PassphraseViewController.swift in Sources */,
 				2B1B77C02295C5A30021A6CC /* LimitOrderCellContextView.swift in Sources */,
@@ -4460,6 +4505,7 @@
 				17BD4E262292F1260003E49A /* UIImage+Size.swift in Sources */,
 				17BD4E272292F1260003E49A /* DBStorable.swift in Sources */,
 				2BB3F30E22B1B6A800109C47 /* CoinlistCell.swift in Sources */,
+				2B4BDA11238CA1BD00491149 /* AssetDisplayViewModel.swift in Sources */,
 				17BD4E282292F1260003E49A /* CardModalAnimator.swift in Sources */,
 				17BD4E292292F1260003E49A /* OptionsContextView.swift in Sources */,
 				17BD4E2A2292F1260003E49A /* RootViewController.swift in Sources */,
@@ -4483,6 +4529,7 @@
 				2B7ABF69232BDE1C0050B64B /* Reward.swift in Sources */,
 				17BD4E3B2292F1260003E49A /* SettingsViewController.swift in Sources */,
 				17BD4E3C2292F1260003E49A /* IntroductionView.swift in Sources */,
+				2B4BDA14238CA1E500491149 /* AssetActionConfirmationViewModel.swift in Sources */,
 				17BD4E3D2292F1260003E49A /* NodeSettingsHeaderView.swift in Sources */,
 				17BD4E3E2292F1260003E49A /* HistoryViewModel.swift in Sources */,
 				17BD4E3F2292F1260003E49A /* PassphraseView.swift in Sources */,
@@ -4526,6 +4573,7 @@
 				2B4487292379653700C19FDE /* AssetActionConfirmationViewController.swift in Sources */,
 				17BD4E592292F1260003E49A /* QRView.swift in Sources */,
 				2B4487182379635900C19FDE /* AssetActionConfirmationView.swift in Sources */,
+				2B4BDA05238C520F00491149 /* AssetCancellableSupportAlertView.swift in Sources */,
 				17BD4E5A2292F1260003E49A /* RemainingAlgosView.swift in Sources */,
 				17BD4E5B2292F1260003E49A /* CardModalPresenter.swift in Sources */,
 				17BD4E5C2292F1260003E49A /* BaseScrollViewController.swift in Sources */,
@@ -4736,6 +4784,7 @@
 				2B891F0122BBA3CD003205F5 /* BalanceHeaderView.swift in Sources */,
 				17BD4EF32292F1260003E49A /* QRSelectableLabel.swift in Sources */,
 				17BD4EF42292F1260003E49A /* ActiveAuctionEmptyCell.swift in Sources */,
+				2B4BDA08238C940F00491149 /* AssetCancellableSupportAlertViewController.swift in Sources */,
 				2B98233F231EC767009560CD /* BidDraft.swift in Sources */,
 				17BD4EF52292F1260003E49A /* NumpadNumericCell.swift in Sources */,
 				17BD4EF62292F1260003E49A /* AssetDetailViewController.swift in Sources */,
@@ -4778,6 +4827,7 @@
 				2BF5317E224AA8B700A7455F /* ContactsViewController.swift in Sources */,
 				2B891F0622BBA768003205F5 /* DepositFundSelectionView.swift in Sources */,
 				2B982338231EC1C1009560CD /* DollarValueQuery.swift in Sources */,
+				2B4BDA0B238C9EDF00491149 /* AssetAlertDraft.swift in Sources */,
 				2B8954BA2243FCFA00D6D068 /* Snapkit+SafeArea.swift in Sources */,
 				2B79A13D23147A4900766021 /* PassphraseViewController.swift in Sources */,
 				17F6E685224B3F99006DD31F /* PassPhraseMnemonicView.swift in Sources */,
@@ -4860,6 +4910,7 @@
 				171111B0225DF91400DAF55C /* SettingsInfoCell.swift in Sources */,
 				2BB3F30D22B1B6A800109C47 /* CoinlistCell.swift in Sources */,
 				2B3F3907228C3829008BBE75 /* Auction.swift in Sources */,
+				2B4BDA10238CA1BD00491149 /* AssetDisplayViewModel.swift in Sources */,
 				171111AE225DDA6100DAF55C /* SettingsViewModel.swift in Sources */,
 				2B656E99224BC52D0064A49B /* AccountContextView.swift in Sources */,
 				2BD739F8223FF4B600B66EEF /* NumpadDeleteButton.swift in Sources */,
@@ -4883,6 +4934,7 @@
 				2B7ABF68232BDE1C0050B64B /* Reward.swift in Sources */,
 				17CFB884226A134A00B3B0A7 /* ToggleCell.swift in Sources */,
 				2B8BE4D222391C38005D8565 /* AppDelegate.swift in Sources */,
+				2B4BDA13238CA1E500491149 /* AssetActionConfirmationViewModel.swift in Sources */,
 				173DA1ED2255F96E00378A82 /* TransactionFee.swift in Sources */,
 				2B653308228F656500F19FEA /* MyBidsView.swift in Sources */,
 				2BDE31E122799FF0002E8235 /* ContactSelectionViewController.swift in Sources */,
@@ -4926,6 +4978,7 @@
 				2B4487282379653700C19FDE /* AssetActionConfirmationViewController.swift in Sources */,
 				2B82B1CA2253A50100A8909F /* ContactContextView.swift in Sources */,
 				2B4487172379635900C19FDE /* AssetActionConfirmationView.swift in Sources */,
+				2B4BDA04238C520F00491149 /* AssetCancellableSupportAlertView.swift in Sources */,
 				17BEC4632248CD3C00AAF370 /* LeftAlignedCollectionViewFlowLayout.swift in Sources */,
 				2BD73A1F2241639500B66EEF /* PassPhraseBackUpViewController.swift in Sources */,
 				2BD739D9223F987E00B66EEF /* Utils.swift in Sources */,
@@ -5136,6 +5189,7 @@
 				2B891F0022BBA3CD003205F5 /* BalanceHeaderView.swift in Sources */,
 				17E2E3C722524E4C0065957A /* QRSelectableLabel.swift in Sources */,
 				2B3F391C228DCDE2008BBE75 /* ActiveAuctionEmptyCell.swift in Sources */,
+				2B4BDA07238C940F00491149 /* AssetCancellableSupportAlertViewController.swift in Sources */,
 				2B98233E231EC767009560CD /* BidDraft.swift in Sources */,
 				2BD73A022241299100B66EEF /* NumpadNumericCell.swift in Sources */,
 				2BF53182224AA8E000A7455F /* AssetDetailViewController.swift in Sources */,

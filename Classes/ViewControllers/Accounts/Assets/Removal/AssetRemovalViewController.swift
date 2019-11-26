@@ -109,9 +109,10 @@ extension AssetRemovalViewController: AssetActionableCellDelegate {
         }
         
         let assetDetail = assetDetails[index.item]
+        let assetAlertDraft = AssetAlertDraft(account: account, assetDetail: assetDetail)
         
         let controller = open(
-            .assetActionConfirmation(assetDetail: assetDetail),
+            .assetActionConfirmation(assetAlertDraft: assetAlertDraft),
             by: .customPresentWithoutNavigationController(
                 presentationStyle: .overCurrentContext,
                 transitionStyle: .crossDissolve,

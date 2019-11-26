@@ -26,7 +26,7 @@ class AssetRemovalView: BaseView {
             .withLine(.single)
             .withAlignment(.left)
             .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 11.0)))
-            .withAttributedText("asset-remove-title" .localized.attributed([.letterSpacing(1.10), .textColor(SharedColors.orange)]))
+            .withAttributedText("asset-remove-title".localized.attributed([.letterSpacing(1.10), .textColor(SharedColors.orange)]))
     }()
     
     private lazy var subtitleLabel: UILabel = {

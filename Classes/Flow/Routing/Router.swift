@@ -274,10 +274,12 @@ class Router {
             viewController = AssetAdditionViewController(account: account, configuration: configuration)
         case let .removeAsset(account):
             viewController = AssetRemovalViewController(account: account, configuration: configuration)
-        case let .assetActionConfirmation(assetDetail):
-            viewController = AssetActionConfirmationViewController(assetDetail: assetDetail, configuration: configuration)
-        case .assetSupportAlert:
-            viewController = AssetSupportAlertViewController(configuration: configuration)
+        case let .assetActionConfirmation(assetAlertDraft):
+            viewController = AssetActionConfirmationViewController(assetAlertDraft: assetAlertDraft, configuration: configuration)
+        case let .assetSupportAlert(assetAlertDraft):
+            viewController = AssetSupportAlertViewController(assetAlertDraft: assetAlertDraft, configuration: configuration)
+        case let .assetCancellableSupportAlert(assetAlertDraft):
+            viewController = AssetCancellableSupportAlertViewController(assetAlertDraft: assetAlertDraft, configuration: configuration)
         }
         
         return viewController as? T
