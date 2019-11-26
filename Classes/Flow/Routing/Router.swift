@@ -205,8 +205,8 @@ class Router {
             viewController = TabBarController(configuration: configuration)
         case .accountList:
             viewController = AccountListViewController(configuration: configuration)
-        case .options:
-            viewController = OptionsViewController(configuration: configuration)
+        case let .options(account):
+            viewController = OptionsViewController(account: account, configuration: configuration)
         case let .editAccount(account):
             viewController = EditAccountViewController(account: account, configuration: configuration)
         case .contactSelection:

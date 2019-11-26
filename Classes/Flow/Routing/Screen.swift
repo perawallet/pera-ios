@@ -20,7 +20,7 @@ indirect enum Screen {
     case qrGenerator(title: String?, text: String, mode: QRMode)
     case home(route: Screen?)
     case assetDetail(account: Account)
-    case options
+    case options(account: Account)
     case accountList
     case editAccount(account: Account)
     case contactSelection

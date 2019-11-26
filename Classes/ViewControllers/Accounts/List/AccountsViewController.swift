@@ -79,7 +79,7 @@ extension AccountsViewController: AccountsLayoutBuilderDelegate {
 
 extension AccountsViewController: AccountsDataSourceDelegate {
     func accountsDataSource(_ accountsDataSource: AccountsDataSource, didTapOptionsButtonFor account: Account) {
-        presentOptions()
+        presentOptions(for: account)
     }
     
     func accountsDataSource(_ accountsDataSource: AccountsDataSource, didTapAddAssetButtonFor account: Account) {
@@ -88,14 +88,14 @@ extension AccountsViewController: AccountsDataSourceDelegate {
 }
 
 extension AccountsViewController {
-    private func presentOptions() {
+    private func presentOptions(for account: Account) {
         let transitionStyle = Screen.Transition.Open.customPresent(
             presentationStyle: .custom,
             transitionStyle: nil,
             transitioningDelegate: optionsModalPresenter
         )
         
-        let optionsViewController = open(.options, by: transitionStyle) as? OptionsViewController
+        let optionsViewController = open(.options(account: account), by: transitionStyle) as? OptionsViewController
         
         optionsViewController?.delegate = self
     }
