@@ -51,7 +51,7 @@ extension AccountHeaderView {
         addSubview(imageView)
         
         imageView.snp.makeConstraints { make in
-            make.leading.equalToSuperview()
+            make.leading.equalToSuperview().inset(layout.current.leftInset)
             make.top.bottom.equalToSuperview().inset(layout.current.verticalInset)
         }
     }
@@ -61,7 +61,7 @@ extension AccountHeaderView {
         
         optionsButton.snp.makeConstraints { make in
             make.centerY.equalTo(imageView)
-            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.trailing.equalToSuperview().inset(layout.current.rightInset)
             make.size.equalTo(layout.current.buttonSize)
         }
     }
@@ -72,7 +72,7 @@ extension AccountHeaderView {
         titleLabel.snp.makeConstraints { make in
             make.leading.equalTo(imageView.snp.trailing).offset(layout.current.labelInset)
             make.centerY.equalTo(imageView)
-            make.trailing.equalTo(optionsButton.snp.leading).offset(-layout.current.labelInset)
+            make.trailing.lessThanOrEqualTo(optionsButton.snp.leading).offset(-layout.current.labelInset)
         }
     }
 }
@@ -90,6 +90,8 @@ extension AccountHeaderView {
 extension AccountHeaderView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let horizontalInset: CGFloat = 8.0
+        let leftInset: CGFloat = 18.0
+        let rightInset: CGFloat = 14.0
         let labelInset: CGFloat = 10.0
         let buttonSize = CGSize(width: 40.0, height: 40.0)
         let verticalInset: CGFloat = 17.0

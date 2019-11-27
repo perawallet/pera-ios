@@ -49,6 +49,19 @@ class AccountsViewController: BaseViewController {
         rightBarButtonItems = [addAccountBarButtonItem]
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        DispatchQueue.main.async {
+            UIApplication.shared.appDelegate?.validateAccountManagerFetchPolling()
+        }
+    }
+    
+    override func configureAppearance() {
+        super.configureAppearance()
+        self.navigationItem.title = "tabbar-item-accounts".localized
+    }
+    
     override func setListeners() {
         accountsLayoutBuilder.delegate = self
         accountsDataSource.delegate = self
@@ -73,16 +86,18 @@ extension AccountsViewController {
 
 extension AccountsViewController: AccountsLayoutBuilderDelegate {
     func accountsLayoutBuilder(_ layoutBuilder: AccountsLayoutBuilder, didSelectAt indexPath: IndexPath) {
-        
+       // open(.assetDetail(account: <#T##Account#>), by: .push)
     }
 }
 
 extension AccountsViewController: AccountsDataSourceDelegate {
     func accountsDataSource(_ accountsDataSource: AccountsDataSource, didTapOptionsButtonFor account: Account) {
+        selectedAccount = account
         presentOptions(for: account)
     }
     
     func accountsDataSource(_ accountsDataSource: AccountsDataSource, didTapAddAssetButtonFor account: Account) {
+        selectedAccount = account
         open(.addAsset(account: account), by: .push)
     }
 }
@@ -103,7 +118,7 @@ extension AccountsViewController {
 
 extension AccountsViewController {
     struct LayoutConstants: AdaptiveLayoutConstants {
-        let optionsModalHeight: CGFloat = 348.0
+        let optionsModalHeight: CGFloat = 384.0
         let transactionCellSize = CGSize(width: UIScreen.main.bounds.width, height: 72.0)
         let rewardCellSize = CGSize(width: UIScreen.main.bounds.width, height: 50.0)
         let editAccountModalHeight: CGFloat = 158.0

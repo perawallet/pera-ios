@@ -29,17 +29,6 @@ extension AccountsLayoutBuilder {
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
-        insetForSectionAt section: Int
-    ) -> UIEdgeInsets {
-        if section == 0 {
-            return layout.current.firstSectionInsets
-        }
-        return layout.current.defaultSectionInsets
-    }
-
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
         minimumLineSpacingForSectionAt section: Int
     ) -> CGFloat {
         return layout.current.cellSpacing
@@ -52,7 +41,10 @@ extension AccountsLayoutBuilder {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        return CGSize(width: UIScreen.main.bounds.width, height: layout.current.cellHeight)
+        return CGSize(
+            width: UIScreen.main.bounds.width - layout.current.defaultSectionInsets.left - layout.current.defaultSectionInsets.right,
+            height: layout.current.cellHeight
+        )
     }
     
     func collectionView(
@@ -74,8 +66,8 @@ extension AccountsLayoutBuilder {
 
 extension AccountsLayoutBuilder {
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let firstSectionInsets = UIEdgeInsets(top: 27.0, left: 10.0, bottom: 0.0, right: 10.0)
-        let defaultSectionInsets = UIEdgeInsets(top: 22.0, left: 10.0, bottom: 0.0, right: 10.0)
+        let firstSectionInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: 0.0)
+        let defaultSectionInsets = UIEdgeInsets(top: 0.0, left: 10.0, bottom: 0.0, right: 10.0)
         let cellSpacing: CGFloat = 5.0
         let cellHeight: CGFloat = 50.0
         let footerHeight: CGFloat = 39.0

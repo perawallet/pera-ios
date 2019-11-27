@@ -17,11 +17,10 @@ class AccountsView: BaseView {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = .white
-        collectionView.contentInset = .zero
+        collectionView.backgroundColor = SharedColors.warmWhite
         
-        collectionView.register(AlgoAssetCell.self, forCellWithReuseIdentifier: OptionsCell.reusableIdentifier)
-        collectionView.register(AssetCell.self, forCellWithReuseIdentifier: OptionsCell.reusableIdentifier)
+        collectionView.register(AlgoAssetCell.self, forCellWithReuseIdentifier: AlgoAssetCell.reusableIdentifier)
+        collectionView.register(AssetCell.self, forCellWithReuseIdentifier: AssetCell.reusableIdentifier)
         collectionView.register(
             AccountHeaderSupplementaryView.self,
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,

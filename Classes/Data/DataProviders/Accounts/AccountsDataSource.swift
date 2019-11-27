@@ -39,12 +39,11 @@ extension AccountsDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         let account = accounts[section]
-        guard let assets = account.assets,
-            !assets.isEmpty else {
+        if account.assetDetails.isEmpty {
             return 1
         }
         
-        return assets.count + 1
+        return account.assetDetails.count + 1
     }
 }
 
@@ -80,11 +79,7 @@ extension AccountsDataSource {
         
         if indexPath.section < accounts.count {
             let account = accounts[indexPath.section]
-            guard let assets = account.assetDetails else {
-                return cell
-            }
-            
-            let asset = assets[indexPath.row]
+            let asset = account.assetDetails[indexPath.row]
             viewModel.configure(cell, with: asset)
         }
         
@@ -110,6 +105,8 @@ extension AccountsDataSource {
             let account = accounts[indexPath.section]
             viewModel.configure(headerView, with: account)
             
+            headerView.delegate = self
+            
             return headerView
         } else {
             guard let footerView = collectionView.dequeueReusableSupplementaryView(
@@ -120,7 +117,24 @@ extension AccountsDataSource {
                 fatalError("Unexpected element kind")
             }
             
+            footerView.delegate = self
+            
             return footerView
         }
+    }
+}
+
+extension AccountsDataSource: AccountHeaderSupplementaryViewDelegate {
+    func accountHeaderSupplementaryViewDidTapOptionsButton(_ accountHeaderSupplementaryView: AccountHeaderSupplementaryView) {
+        
+//        guard let index = 
+//        let account = accounts[indexPath.section]
+//        delegate?.accountsDataSource(self, didTapOptionsButtonFor: account)
+    }
+}
+
+extension AccountsDataSource: AccountFooterSupplementaryViewDelegate {
+    func accountFooterSupplementaryViewDidTapAddAssetButton(_ accountFooterSupplementaryView: AccountFooterSupplementaryView) {
+        
     }
 }

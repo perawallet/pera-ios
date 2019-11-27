@@ -27,12 +27,12 @@ class AccounsViewModel {
 
 extension AccounsViewModel {
     func configure(_ header: AccountHeaderSupplementaryView, with account: Account) {
-        header.contextView.setOptionsButton(hidden: true)
+        header.contextView.setOptionsButton(hidden: false)
         
         guard let accountName = account.name else {
             return
         }
         
-        header.contextView.setAccountName(accountName)
+        header.contextView.setAccountName(accountName.uppercased())
     }
 }
