@@ -19,7 +19,7 @@ indirect enum Screen {
     case qrScanner
     case qrGenerator(title: String?, text: String, mode: QRMode)
     case home(route: Screen?)
-    case assetDetail(account: Account)
+    case assetDetail(account: Account, assetDetail: AssetDetail?)
     case options(account: Account)
     case accountList
     case editAccount(account: Account)
@@ -47,6 +47,7 @@ indirect enum Screen {
     case assetActionConfirmation(assetAlertDraft: AssetAlertDraft)
     case assetSupportAlert(assetAlertDraft: AssetAlertDraft)
     case assetCancellableSupportAlert(assetAlertDraft: AssetAlertDraft)
+    case rewardDetail(account: Account)
 }
 
 extension Screen {

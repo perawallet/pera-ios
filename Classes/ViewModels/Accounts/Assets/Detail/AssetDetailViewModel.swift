@@ -15,12 +15,16 @@ class AssetDetailViewModel {
     
     var currentAccount: Account?
     
-    func configure(_ view: AssetDetailHeaderView, with account: Account) {
+    func configure(_ view: AssetDetailHeaderView, with account: Account, and assetDetail: AssetDetail?) {
         view.algosAmountLabel.text = account.amount.toAlgos.toDecimalStringForLabel
         
         var totalRewards: UInt64 = 0
         totalRewards += (account.rewards ?? 0) - (account.pendingRewards ?? 0)
         view.rewardTotalAmountView.algosAmountView.amountLabel.text = totalRewards.toAlgos.toDecimalStringForLabel
+        
+        if assetDetail != nil {
+            view.dollarValueLabel.isHidden = true
+        }
     }
     
     func configure(_ view: AssetDetailSmallHeaderView, with account: Account) {

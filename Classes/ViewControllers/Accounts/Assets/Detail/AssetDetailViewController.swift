@@ -11,21 +11,7 @@ import NotificationBannerSwift
 
 class AssetDetailViewController: BaseViewController {
     
-    struct LayoutConstants: AdaptiveLayoutConstants {
-        let optionsModalHeight: CGFloat = 348.0
-        let transactionCellSize = CGSize(width: UIScreen.main.bounds.width, height: 72.0)
-        let rewardCellSize = CGSize(width: UIScreen.main.bounds.width, height: 50.0)
-        let editAccountModalHeight: CGFloat = 158.0
-    }
-    
     let layout = Layout<LayoutConstants>()
-    
-    private lazy var pushNotificationController: PushNotificationController = {
-        guard let api = api else {
-            fatalError("Api must be set before accessing this view controller.")
-        }
-        return PushNotificationController(api: api)
-    }()
     
     private var pollingOperation: PollingOperation?
     
@@ -35,28 +21,8 @@ class AssetDetailViewController: BaseViewController {
         return refreshControl
     }()
     
-    private lazy var fadeTextAnimation: CATransition = {
-        let animation = CATransition()
-        animation.duration = 0.5
-        animation.type = .fade
-        return animation
-    }()
-    
-    var selectedAccount: Account? {
-        didSet {
-            session?.currentAccount = self.selectedAccount
-        }
-    }
-    
-    var newAccount: Account? {
-        didSet {
-            guard let account = newAccount else {
-                return
-            }
-            
-            updateSelectedAccount(account)
-        }
-    }
+    private var account: Account
+    private var assetDetail: AssetDetail?
     
     private var currentDollarConversion: Double?
     private let viewModel = AssetDetailViewModel()
@@ -64,8 +30,6 @@ class AssetDetailViewController: BaseViewController {
     private var transactionHistoryDataSource: TransactionHistoryDataSource
     
     var route: Screen?
-    
-    // MARK: Components
     
     private lazy var assetDetailView: AssetDetailView = {
         let view = AssetDetailView()
@@ -79,9 +43,9 @@ class AssetDetailViewController: BaseViewController {
         alignment: .bottom
     )
     
-    // MARK: Initialization
-    
-    override init(configuration: ViewControllerConfiguration) {
+    init(account: Account, configuration: ViewControllerConfiguration, assetDetail: AssetDetail? = nil) {
+        self.account = account
+        self.assetDetail = assetDetail
         transactionHistoryDataSource = TransactionHistoryDataSource(api: configuration.api)
         
         super.init(configuration: configuration)
@@ -95,35 +59,19 @@ class AssetDetailViewController: BaseViewController {
         assetDetailView.delegate = self
         assetDetailView.transactionHistoryCollectionView.delegate = self
         assetDetailView.transactionHistoryCollectionView.dataSource = transactionHistoryDataSource
-        assetDetailView.delegate = self
     }
     
     override func configureAppearance() {
         super.configureAppearance()
         
-        view.backgroundColor = .white
-        
+        navigationItem.title = account.name
         assetDetailView.transactionHistoryCollectionView.refreshControl = refreshControl
         
-        guard let account = selectedAccount else {
-            return
-        }
-        
-        self.navigationItem.title = selectedAccount?.name
-        
-        viewModel.configure(assetDetailView.headerView, with: account)
+        viewModel.configure(assetDetailView.headerView, with: account, and: assetDetail)
         viewModel.configure(assetDetailView.smallHeaderView, with: account)
         
         transactionHistoryDataSource.setupContacts()
-        
         fetchTransactions()
-        
-        pushNotificationController.requestAuthorization()
-        pushNotificationController.registerDevice()
-    }
-    
-    private func addTitleFadeAnimation() {
-        navigationController?.navigationBar.layer.add(fadeTextAnimation, forKey: "fadeText")
     }
     
     override func setListeners() {
@@ -157,22 +105,21 @@ class AssetDetailViewController: BaseViewController {
         )
     }
     
-    // MARK: Layout
+    override func prepareLayout() {
+        setupAssetDetaiViewLayout()
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         fetchDollarConversion()
-        
         startPendingTransactionPolling()
-    
-        newAccount = nil
         
         if let route = route {
             switch route {
-            case let .assetDetail(account):
+            case .assetDetail:
                 self.route = nil
-                self.updateSelectedAccount(account)
+                updateAccount()
             default:
                 self.route = nil
                 open(route, by: .push, animated: false)
@@ -180,14 +127,27 @@ class AssetDetailViewController: BaseViewController {
         }
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        pollingOperation?.invalidate()
+    }
+    
+    @objc
+    private func didRefreshList() {
+        transactionHistoryDataSource.clear()
+        assetDetailView.transactionHistoryCollectionView.reloadData()
+        fetchTransactions()
+    }
+}
+
+extension AssetDetailViewController {
     private func startPendingTransactionPolling() {
         pollingOperation = PollingOperation(interval: 0.8) { [weak self] in
-            guard let strongSelf = self,
-                let account = strongSelf.selectedAccount else {
+            guard let strongSelf = self else {
                 return
             }
             
-            strongSelf.transactionHistoryDataSource.fetchPendingTransactions(for: account) { pendingTransactions, error in
+            strongSelf.transactionHistoryDataSource.fetchPendingTransactions(for: strongSelf.account) { pendingTransactions, error in
                 if error != nil {
                     return
                 }
@@ -204,43 +164,7 @@ class AssetDetailViewController: BaseViewController {
         pollingOperation?.start()
     }
     
-    private func fetchDollarConversion() {
-        api?.fetchDollarValue { response in
-            switch response {
-            case let .success(result):
-                if let price = result.price,
-                    let doubleValue = Double(price) {
-                    self.currentDollarConversion = doubleValue
-                }
-            case .failure:
-                break
-            }
-        }
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        pollingOperation?.invalidate()
-    }
-    
-    override func prepareLayout() {
-        setupAssetDetaiViewLayout()
-    }
-    
-    private func setupAssetDetaiViewLayout() {
-        view.addSubview(assetDetailView)
-        
-        assetDetailView.snp.makeConstraints { make in
-            make.top.leading.trailing.bottom.equalToSuperview()
-        }
-    }
-    
     private func fetchTransactions(witRefresh refresh: Bool = true) {
-        guard let account = selectedAccount else {
-            return
-        }
-        
         if !refreshControl.isRefreshing {
             assetDetailView.transactionHistoryCollectionView.contentState = .loading
         }
@@ -277,30 +201,44 @@ class AssetDetailViewController: BaseViewController {
         }
     }
     
-    @objc
-    private func didRefreshList() {
-        transactionHistoryDataSource.clear()
-        assetDetailView.transactionHistoryCollectionView.reloadData()
-        fetchTransactions()
+    private func fetchDollarConversion() {
+        api?.fetchDollarValue { response in
+            switch response {
+            case let .success(result):
+                if let price = result.price,
+                    let doubleValue = Double(price) {
+                    self.currentDollarConversion = doubleValue
+                }
+            case .failure:
+                break
+            }
+        }
     }
 }
 
-// MARK: - Helpers
 extension AssetDetailViewController {
     fileprivate func updateLayout() {
-        guard let address = selectedAccount?.address,
-            let account = session?.authenticatedUser?.account(address: address) else {
+        guard let account = session?.authenticatedUser?.account(address: account.address) else {
             return
         }
         
-        self.navigationItem.title = account.name
-        
-        viewModel.configure(assetDetailView.headerView, with: account)
+        viewModel.configure(assetDetailView.headerView, with: account, and: assetDetail)
         viewModel.configure(assetDetailView.smallHeaderView, with: account)
+    }
+    
+    private func updateAccount() {
+        transactionHistoryDataSource.clear()
+        assetDetailView.transactionHistoryCollectionView.reloadData()
+        assetDetailView.transactionHistoryCollectionView.contentState = .loading
+        
+        fetchTransactions()
+        
+        adjustDefaultHeaderViewLayout(withContentInsetUpdate: true)
+        
+        updateLayout()
     }
 }
 
-// MARK: - Notification
 extension AssetDetailViewController {
     @objc
     fileprivate func didUpdateAuthenticatedUser(notification: Notification) {
@@ -310,16 +248,15 @@ extension AssetDetailViewController {
     @objc
     fileprivate func didAccountUpdate(notification: Notification) {
         guard let userInfo = notification.userInfo as? [String: Account],
-            let account = userInfo["account"] else {
+            let updatedAccount = userInfo["account"] else {
             return
         }
         
-        if selectedAccount == account {
-            self.selectedAccount = account
+        if account == updatedAccount {
+            account = updatedAccount
             transactionHistoryDataSource.clear()
             assetDetailView.transactionHistoryCollectionView.reloadData()
             assetDetailView.transactionHistoryCollectionView.contentState = .loading
-            
             fetchTransactions()
         }
     }
@@ -327,80 +264,31 @@ extension AssetDetailViewController {
     @objc
     fileprivate func didContactAdded(notification: Notification) {
         transactionHistoryDataSource.setupContacts()
-        
         assetDetailView.transactionHistoryCollectionView.reloadData()
     }
     
     @objc
     fileprivate func didContactEdited(notification: Notification) {
         transactionHistoryDataSource.setupContacts()
-        
         assetDetailView.transactionHistoryCollectionView.reloadData()
     }
 }
-
-// MARK: AccountSelectionViewControllerDelegate
-
-extension AssetDetailViewController: AccountSelectionViewControllerDelegate {
-    
-    func accountSelectionViewController(_ accountSelectionViewController: AccountSelectionViewController, didSelect account: Account) {
-        updateSelectedAccount(account)
-    }
-    
-    func updateSelectedAccount(_ account: Account) {
-        selectedAccount = account
-        
-        transactionHistoryDataSource.clear()
-        assetDetailView.transactionHistoryCollectionView.reloadData()
-        assetDetailView.transactionHistoryCollectionView.contentState = .loading
-        
-        fetchTransactions()
-        
-        adjustDefaultHeaderViewLayout(withContentInsetUpdate: true)
-        
-        addTitleFadeAnimation()
-        
-        updateLayout()
-    }
-    
-    func accountSelectionViewControllerDidTapAddAccount(_ accountSelectionViewController: AccountSelectionViewController) {
-        if let account = selectedAccount {
-            accountSelectionViewController.configure(selected: account)
-        }
-        
-        open(
-            .introduction(mode: .new),
-            by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
-        )
-    }
-}
-
-// MARK: AssetDetailViewDelegate
 
 extension AssetDetailViewController: AssetDetailViewDelegate {
     func assetDetailViewDidTapSendButton(_ assetDetailView: AssetDetailView) {
-        guard let account = selectedAccount else {
-            return
-        }
-        
         open(.sendAlgos(account: account, receiver: .initial), by: .push)
     }
     
     func assetDetailViewDidTapReceiveButton(_ assetDetailView: AssetDetailView) {
-        guard let account = selectedAccount else {
-            return
-        }
-        
         open(.requestAlgos(account: account), by: .push)
     }
     
     func assetDetailView(_ assetDetailView: AssetDetailView, didTrigger dollarValueGestureRecognizer: UILongPressGestureRecognizer) {
-        guard let currentDollarAmount = currentDollarConversion,
-            let selectedAccount = selectedAccount else {
-                return
+        guard let currentDollarAmount = currentDollarConversion else {
+            return
         }
         
-        let dollarAmountForAccount = selectedAccount.amount.toAlgos * currentDollarAmount
+        let dollarAmountForAccount = account.amount.toAlgos * currentDollarAmount
         
         if dollarValueGestureRecognizer.state != .ended {
             viewModel.setDollarValue(visible: true, in: assetDetailView.headerView, for: dollarAmountForAccount)
@@ -410,31 +298,25 @@ extension AssetDetailViewController: AssetDetailViewDelegate {
     }
     
     func assetDetailViewDidTapRewardView(_ assetDetailView: AssetDetailView) {
-        guard let selectedAccount = selectedAccount else {
-            return
-        }
-        
-        let viewController = RewardDetailViewController(account: selectedAccount, configuration: configuration)
-        viewController.modalPresentationStyle = .overCurrentContext
-        viewController.modalTransitionStyle = .crossDissolve
-        
-        tabBarController?.present(viewController, animated: true, completion: nil)
+        tabBarController?.open(
+            .rewardDetail(account: account),
+            by: .customPresentWithoutNavigationController(
+                presentationStyle: .overCurrentContext,
+                transitionStyle: .crossDissolve,
+                transitioningDelegate: nil
+            )
+        )
     }
 }
 
-// MARK: UICollectionViewDelegateFlowLayout
-
 extension AssetDetailViewController: UICollectionViewDelegateFlowLayout {
-    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let transaction = transactionHistoryDataSource.transaction(at: indexPath),
-            let account = selectedAccount else {
+        guard let transaction = transactionHistoryDataSource.transaction(at: indexPath) else {
                 return
         }
         
         if let payment = transaction.payment,
             payment.toAddress == account.address {
-            
             open(.transactionDetail(account: account, transaction: transaction, transactionType: .received), by: .push)
         } else {
             open(.transactionDetail(account: account, transaction: transaction, transactionType: .sent), by: .push)
@@ -452,7 +334,9 @@ extension AssetDetailViewController: UICollectionViewDelegateFlowLayout {
         
         return layout.current.transactionCellSize
     }
-    
+}
+
+extension AssetDetailViewController {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if transactionHistoryDataSource.transactionCount() == 0 {
             return
@@ -575,5 +459,26 @@ extension AssetDetailViewController: UICollectionViewDelegateFlowLayout {
             
             self.view.layoutIfNeeded()
         }
+    }
+}
+
+extension AssetDetailViewController {
+    private func setupAssetDetaiViewLayout() {
+        view.addSubview(assetDetailView)
+        
+        assetDetailView.snp.makeConstraints { make in
+            make.top.equalToSuperview().inset(layout.current.topInset)
+            make.leading.trailing.bottom.equalToSuperview()
+        }
+    }
+}
+
+extension AssetDetailViewController {
+    struct LayoutConstants: AdaptiveLayoutConstants {
+        let optionsModalHeight: CGFloat = 348.0
+        let topInset: CGFloat = 20.0
+        let transactionCellSize = CGSize(width: UIScreen.main.bounds.width, height: 72.0)
+        let rewardCellSize = CGSize(width: UIScreen.main.bounds.width, height: 50.0)
+        let editAccountModalHeight: CGFloat = 158.0
     }
 }

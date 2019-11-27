@@ -53,7 +53,7 @@ extension AccountFooterView {
         addAssetButton.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
             make.top.equalToSuperview().inset(layout.current.topInset)
-            make.bottom.equalToSuperview()
+            make.height.equalTo(layout.current.buttonHeight)
         }
     }
 }
@@ -62,5 +62,6 @@ extension AccountFooterView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let topInset: CGFloat = 5.0
         let horizontalInset: CGFloat = 10.0
+        let buttonHeight: CGFloat = 34.0
     }
 }

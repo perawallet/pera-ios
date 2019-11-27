@@ -101,7 +101,7 @@ class RootViewController: UIViewController {
         if !appConfiguration.session.isValid {
             if appConfiguration.session.hasPassword() && appConfiguration.session.authenticatedUser != nil {
                 open(.choosePassword(
-                    mode: .login, route: .assetDetail(account: account)),
+                    mode: .login, route: .assetDetail(account: account, assetDetail: nil)),
                      by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
                 )
             } else {

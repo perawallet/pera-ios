@@ -268,8 +268,8 @@ class Router {
             viewController = DepositViewController(user: user, configuration: configuration)
         case .feedback:
             viewController = FeedbackViewController(configuration: configuration)
-        case .assetDetail:
-            viewController = AssetDetailViewController(configuration: configuration)
+        case let .assetDetail(account, assetDetail):
+            viewController = AssetDetailViewController(account: account, configuration: configuration, assetDetail: assetDetail)
         case let .addAsset(account):
             viewController = AssetAdditionViewController(account: account, configuration: configuration)
         case let .removeAsset(account):
@@ -280,6 +280,8 @@ class Router {
             viewController = AssetSupportAlertViewController(assetAlertDraft: assetAlertDraft, configuration: configuration)
         case let .assetCancellableSupportAlert(assetAlertDraft):
             viewController = AssetCancellableSupportAlertViewController(assetAlertDraft: assetAlertDraft, configuration: configuration)
+        case let .rewardDetail(account):
+            viewController = RewardDetailViewController(account: account, configuration: configuration)
         }
         
         return viewController as? T

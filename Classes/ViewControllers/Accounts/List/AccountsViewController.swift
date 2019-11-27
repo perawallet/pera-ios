@@ -28,6 +28,13 @@ class AccountsViewController: BaseViewController {
         initialModalSize: .custom(CGSize(width: view.frame.width, height: layout.current.editAccountModalHeight))
     )
     
+    private lazy var pushNotificationController: PushNotificationController = {
+        guard let api = api else {
+            fatalError("Api must be set before accessing this view controller.")
+        }
+        return PushNotificationController(api: api)
+    }()
+    
     private lazy var accountsView = AccountsView()
     
     private(set) var selectedAccount: Account?
@@ -44,6 +51,10 @@ class AccountsViewController: BaseViewController {
     
     override func configureNavigationBarAppearance() {
         let addAccountBarButtonItem = ALGBarButtonItem(kind: .add) { [unowned self] in
+            self.open(
+                .introduction(mode: .new),
+                by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
+            )
         }
         
         rightBarButtonItems = [addAccountBarButtonItem]
@@ -55,6 +66,9 @@ class AccountsViewController: BaseViewController {
         DispatchQueue.main.async {
             UIApplication.shared.appDelegate?.validateAccountManagerFetchPolling()
         }
+        
+        pushNotificationController.requestAuthorization()
+        pushNotificationController.registerDevice()
     }
     
     override func configureAppearance() {
@@ -86,7 +100,17 @@ extension AccountsViewController {
 
 extension AccountsViewController: AccountsLayoutBuilderDelegate {
     func accountsLayoutBuilder(_ layoutBuilder: AccountsLayoutBuilder, didSelectAt indexPath: IndexPath) {
-       // open(.assetDetail(account: <#T##Account#>), by: .push)
+       selectedAccount = accountsDataSource.accounts[indexPath.section]
+       guard let account = selectedAccount else {
+           return
+       }
+        
+        if indexPath.item == 0 {
+            open(.assetDetail(account: account, assetDetail: nil), by: .push)
+        } else {
+            let assetDetail = account.assetDetails[indexPath.item]
+            open(.assetDetail(account: account, assetDetail: assetDetail), by: .push)
+        }
     }
 }
 

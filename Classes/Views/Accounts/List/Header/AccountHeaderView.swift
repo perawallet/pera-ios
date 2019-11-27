@@ -21,7 +21,7 @@ class AccountHeaderView: BaseView {
     private lazy var imageView = UIImageView(image: img("icon-account-purple"))
     
     private lazy var titleLabel: UILabel = {
-        UILabel().withAlignment(.left).withFont(UIFont.font(.avenir, withWeight: .bold(size: 11.0)))
+        UILabel().withAlignment(.left).withFont(UIFont.font(.avenir, withWeight: .bold(size: 13.0)))
     }()
     
     private lazy var optionsButton: UIButton = {

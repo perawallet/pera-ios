@@ -106,6 +106,7 @@ extension AccountsDataSource {
             viewModel.configure(headerView, with: account)
             
             headerView.delegate = self
+            headerView.tag = indexPath.section
             
             return headerView
         } else {
@@ -118,6 +119,7 @@ extension AccountsDataSource {
             }
             
             footerView.delegate = self
+            footerView.tag = indexPath.section
             
             return footerView
         }
@@ -126,15 +128,18 @@ extension AccountsDataSource {
 
 extension AccountsDataSource: AccountHeaderSupplementaryViewDelegate {
     func accountHeaderSupplementaryViewDidTapOptionsButton(_ accountHeaderSupplementaryView: AccountHeaderSupplementaryView) {
-        
-//        guard let index = 
-//        let account = accounts[indexPath.section]
-//        delegate?.accountsDataSource(self, didTapOptionsButtonFor: account)
+        if accountHeaderSupplementaryView.tag < accounts.count {
+            let account = accounts[accountHeaderSupplementaryView.tag]
+            delegate?.accountsDataSource(self, didTapOptionsButtonFor: account)
+        }
     }
 }
 
 extension AccountsDataSource: AccountFooterSupplementaryViewDelegate {
     func accountFooterSupplementaryViewDidTapAddAssetButton(_ accountFooterSupplementaryView: AccountFooterSupplementaryView) {
-        
+        if accountFooterSupplementaryView.tag < accounts.count {
+            let account = accounts[accountFooterSupplementaryView.tag]
+            delegate?.accountsDataSource(self, didTapAddAssetButtonFor: account)
+        }
     }
 }

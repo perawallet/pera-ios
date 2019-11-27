@@ -70,7 +70,7 @@ extension AccountsLayoutBuilder {
         let defaultSectionInsets = UIEdgeInsets(top: 0.0, left: 10.0, bottom: 0.0, right: 10.0)
         let cellSpacing: CGFloat = 5.0
         let cellHeight: CGFloat = 50.0
-        let footerHeight: CGFloat = 39.0
-        let headerHeight: CGFloat = 45.0
+        let footerHeight: CGFloat = 59.0
+        let headerHeight: CGFloat = 49.0
     }
 }
