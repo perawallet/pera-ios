@@ -37,7 +37,22 @@ class AccountFetchOperation: AsyncOperation {
         api.fetchAccount(with: draft) { response in
             switch response {
             case .success(let account):
-                self.onCompleted?(account, nil)
+                if account.isThereAnyDifferentAsset() {
+                    if let assets = account.assets {
+                        for (index, _) in assets {
+                            self.api.getAssetDetails(with: AssetFetchDraft(assetId: "\(index)")) { assetResponse in
+                                switch assetResponse {
+                                case .success(let assetDetail):
+                                    assetDetail.index = index
+                                    account.assetDetails.append(assetDetail)
+                                    self.onCompleted?(account, nil)
+                                case .failure(let error):
+                                    self.onCompleted?(nil, error)
+                                }
+                            }
+                        }
+                    }
+                }
             case .failure(let error):
                 self.onCompleted?(nil, error)
             }
@@ -47,8 +62,6 @@ class AccountFetchOperation: AsyncOperation {
         
         onStarted?()
     }
-    
-    // MARK: Public
     
     func finish(with error: Error? = nil) {
         state = .finished

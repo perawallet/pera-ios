@@ -59,8 +59,8 @@ class RootViewController: UIViewController {
     }
     
     func addAccount(_ account: Account) {
-        if let viewController = tabBarViewController.accountsNavigationController.viewControllers.first as? AssetDetailViewController {
-            viewController.newAccount = account
+        if let viewController = tabBarViewController.accountsNavigationController.viewControllers.first as? AccountsViewController {
+           // todo viewController.newAccount = account
         }
     }
     
@@ -115,17 +115,7 @@ class RootViewController: UIViewController {
                 let tabBarController = navigationController.viewControllers.first as? TabBarController,
                 let accountsViewController = tabBarController.accountsNavigationController.viewControllers.first {
                 
-                controller.dismiss(animated: false) {
-                    (accountsViewController as? AssetDetailViewController)?.selectedAccount = account
-                }
-            } else {
-//                if let viewController = tabBarViewController.accountsNavigationController.viewControllers.first
-//                    as? AssetDetailViewController,
-//                    let selectedAccount = viewController.accountSelectionViewController.selectedAccount,
-//                        selectedAccount.address != account.address {
-//                        viewController.accountSelectionViewController.selectedAccount = account
-//                        viewController.updateSelectedAccount(account)
-//                }
+                controller.dismiss(animated: false)
             }
         }
     }

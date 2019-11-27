@@ -52,8 +52,7 @@ extension AccountManager {
         self.queue.addOperation(completionOperation)
     }
     
-    func fetchAccount(_ account: Account,
-                      then completion: EmptyHandler?) {
+    func fetchAccount(_ account: Account, then completion: EmptyHandler?) {
         let completionOperation = BlockOperation {
             completion?()
         }

@@ -51,11 +51,11 @@ extension AssetRemovalViewController {
 
 extension AssetRemovalViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let assets = account.assets else {
+        if account.assetDetails.isEmpty {
             return 1
         }
         
-        return assets.count
+        return account.assetDetails.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -65,13 +65,9 @@ extension AssetRemovalViewController: UICollectionViewDataSource {
                 fatalError("Index path is out of bounds")
         }
         
-        guard let assetDetails = account.assetDetails else {
-            return cell
-        }
-        
         cell.delegate = self
         
-        let assetDetail = assetDetails[indexPath.item]
+        let assetDetail = account.assetDetails[indexPath.item]
         viewModel.configure(cell, with: assetDetail)
         
         return cell
@@ -103,12 +99,11 @@ extension AssetRemovalViewController {
 
 extension AssetRemovalViewController: AssetActionableCellDelegate {
     func assetActionableCellDidTapActionButton(_ assetActionableCell: AssetActionableCell) {
-        guard let assetDetails = account.assetDetails,
-            let index = assetRemovalView.assetsCollectionView.indexPath(for: assetActionableCell) else {
+        guard let index = assetRemovalView.assetsCollectionView.indexPath(for: assetActionableCell) else {
             return
         }
         
-        let assetDetail = assetDetails[index.item]
+        let assetDetail = account.assetDetails[index.item]
         let assetAlertDraft = AssetAlertDraft(account: account, assetDetail: assetDetail)
         
         let controller = open(
