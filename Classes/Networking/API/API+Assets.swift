@@ -9,5 +9,28 @@
 import Magpie
 
 extension API {
+    @discardableResult
+    func getAssetDetails(
+        with draft: AssetFetchDraft,
+        then handler: @escaping Endpoint.DefaultResultHandler<AssetDetail>
+    ) -> EndpointOperatable {
+        return Endpoint(path: Path("/v1/asset/\(draft.assetId)"))
+            .httpMethod(.get)
+            .httpHeaders(algorandAuthenticatedHeaders())
+            .resultHandler(handler)
+            .buildAndSend(self)
+    }
     
+    @discardableResult
+    func getAssets(
+        with draft: AssetFetchDraft,
+        then handler: @escaping Endpoint.DefaultResultHandler<AssetList>
+    ) -> EndpointOperatable {
+        return Endpoint(path: Path("/v1/assets"))
+            .httpMethod(.get)
+            .httpHeaders(algorandAuthenticatedHeaders())
+            .query(AssetFetchQuery(assetId: draft.assetId, max: draft.assetId.isEmpty ? 0 : 1))
+            .resultHandler(handler)
+            .buildAndSend(self)
+    }
 }

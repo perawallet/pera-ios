@@ -34,4 +34,5 @@ enum RequestParameter: String, JSONBodyRequestParameter {
     case locale = "locale"
     case accounts = "accounts"
     case transactionId = "transaction_id"
+    case assetId = "assetIdx"
 }

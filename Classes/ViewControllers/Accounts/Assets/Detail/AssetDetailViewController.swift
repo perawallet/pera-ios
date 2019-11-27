@@ -137,13 +137,6 @@ class AssetDetailViewController: BaseViewController {
         
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(didApplicationWillEnterForeground(notification:)),
-            name: Notification.Name.ApplicationWillEnterForeground,
-            object: nil
-        )
-        
-        NotificationCenter.default.addObserver(
-            self,
             selector: #selector(didAccountUpdate(notification:)),
             name: Notification.Name.AccountUpdate,
             object: nil
@@ -170,10 +163,6 @@ class AssetDetailViewController: BaseViewController {
         super.viewWillAppear(animated)
         
         fetchDollarConversion()
-        
-        DispatchQueue.main.async {
-            UIApplication.shared.appDelegate?.validateAccountManagerFetchPolling()
-        }
         
         startPendingTransactionPolling()
     
@@ -231,10 +220,6 @@ class AssetDetailViewController: BaseViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        
-        DispatchQueue.main.async {
-            UIApplication.shared.appDelegate?.invalidateAccountManagerFetchPolling()
-        }
         
         pollingOperation?.invalidate()
     }
@@ -320,13 +305,6 @@ extension AssetDetailViewController {
     @objc
     fileprivate func didUpdateAuthenticatedUser(notification: Notification) {
         updateLayout()
-    }
-    
-    @objc
-    fileprivate func didApplicationWillEnterForeground(notification: Notification) {
-        DispatchQueue.main.async {
-            UIApplication.shared.appDelegate?.validateAccountManagerFetchPolling()
-        }
     }
     
     @objc
