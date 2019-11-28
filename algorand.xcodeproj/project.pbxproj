@@ -387,6 +387,10 @@
 		2B2A9F47232AE23F00450DB0 /* RewardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2A9F46232AE23F00450DB0 /* RewardCell.swift */; };
 		2B2A9F48232AE23F00450DB0 /* RewardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2A9F46232AE23F00450DB0 /* RewardCell.swift */; };
 		2B2F9F7822821C440068DBB5 /* AuctionChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2F9F7722821C440068DBB5 /* AuctionChartView.swift */; };
+		2B3A95E6238FF99C00A3DF44 /* TransactionManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3A95E5238FF99C00A3DF44 /* TransactionManagerDelegate.swift */; };
+		2B3A95E7238FF99C00A3DF44 /* TransactionManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3A95E5238FF99C00A3DF44 /* TransactionManagerDelegate.swift */; };
+		2B3A95E9239011EB00A3DF44 /* AssetTransactionDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3A95E8239011EB00A3DF44 /* AssetTransactionDraft.swift */; };
+		2B3A95EA239011EB00A3DF44 /* AssetTransactionDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3A95E8239011EB00A3DF44 /* AssetTransactionDraft.swift */; };
 		2B3F38FB228AEFF7008BBE75 /* AuctionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3F38FA228AEFF7008BBE75 /* AuctionCell.swift */; };
 		2B3F38FE228AF00C008BBE75 /* AuctionCellContextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3F38FD228AF00C008BBE75 /* AuctionCellContextView.swift */; };
 		2B3F3901228B74D5008BBE75 /* AuctionTimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3F3900228B74D5008BBE75 /* AuctionTimerView.swift */; };
@@ -928,6 +932,8 @@
 		2B2A9F43232AE20A00450DB0 /* RewardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardView.swift; sourceTree = "<group>"; };
 		2B2A9F46232AE23F00450DB0 /* RewardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardCell.swift; sourceTree = "<group>"; };
 		2B2F9F7722821C440068DBB5 /* AuctionChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionChartView.swift; sourceTree = "<group>"; };
+		2B3A95E5238FF99C00A3DF44 /* TransactionManagerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionManagerDelegate.swift; sourceTree = "<group>"; };
+		2B3A95E8239011EB00A3DF44 /* AssetTransactionDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetTransactionDraft.swift; sourceTree = "<group>"; };
 		2B3F38FA228AEFF7008BBE75 /* AuctionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionCell.swift; sourceTree = "<group>"; };
 		2B3F38FD228AF00C008BBE75 /* AuctionCellContextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionCellContextView.swift; sourceTree = "<group>"; };
 		2B3F3900228B74D5008BBE75 /* AuctionTimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionTimerView.swift; sourceTree = "<group>"; };
@@ -1424,10 +1430,10 @@
 		17F9E925225796CF004CDF24 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				2B3A95E4238FF98800A3DF44 /* Transaction */,
 				17F9E926225796DA004CDF24 /* AccountManager.swift */,
 				17695B392268CA7400765D31 /* NodeManager.swift */,
 				17CA7CAD2294187E00B552EB /* AuthManager.swift */,
-				2B79A13F231580AB00766021 /* TransactionManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -1460,6 +1466,15 @@
 				2B2F9F7722821C440068DBB5 /* AuctionChartView.swift */,
 			);
 			path = Chart;
+			sourceTree = "<group>";
+		};
+		2B3A95E4238FF98800A3DF44 /* Transaction */ = {
+			isa = PBXGroup;
+			children = (
+				2B79A13F231580AB00766021 /* TransactionManager.swift */,
+				2B3A95E5238FF99C00A3DF44 /* TransactionManagerDelegate.swift */,
+			);
+			path = Transaction;
 			sourceTree = "<group>";
 		};
 		2B3F38FC228AEFFC008BBE75 /* Cell */ = {
@@ -2217,6 +2232,7 @@
 				173DA1EA2255F7EF00378A82 /* TransactionDraft.swift */,
 				2B6ED961226105CD00787984 /* TransactionPreviewDraft.swift */,
 				2B2A9F40232A403600450DB0 /* TransactionTrackDraft.swift */,
+				2B3A95E8239011EB00A3DF44 /* AssetTransactionDraft.swift */,
 			);
 			path = Transaction;
 			sourceTree = "<group>";
@@ -4458,6 +4474,7 @@
 				2B4BD9FE238AD7F400491149 /* API+Assets.swift in Sources */,
 				2B43B82122A6F55B00CEA8F3 /* AuctionTemporaryView.swift in Sources */,
 				17BD4E012292F1260003E49A /* ActiveAuctionView.swift in Sources */,
+				2B3A95EA239011EB00A3DF44 /* AssetTransactionDraft.swift in Sources */,
 				17BD4E022292F1260003E49A /* Codable+CoreData.swift in Sources */,
 				17BD4E032292F1260003E49A /* HistoryView.swift in Sources */,
 				17BD4E042292F1260003E49A /* ViewControllerConfiguration.swift in Sources */,
@@ -4760,6 +4777,7 @@
 				17BD4EDD2292F1260003E49A /* AuctionBidButton.swift in Sources */,
 				17BD4EDE2292F1260003E49A /* String+Attributes.swift in Sources */,
 				17BD4EDF2292F1260003E49A /* ContactInfoViewController.swift in Sources */,
+				2B3A95E7238FF99C00A3DF44 /* TransactionManagerDelegate.swift in Sources */,
 				17BD4EE02292F1260003E49A /* SplashViewController.swift in Sources */,
 				2B891F1E22BD3982003205F5 /* USDWireInstruction.swift in Sources */,
 				17BD4EE12292F1260003E49A /* AccountNameSetupView.swift in Sources */,
@@ -4863,6 +4881,7 @@
 				2B4BD9FD238AD7F400491149 /* API+Assets.swift in Sources */,
 				2B8954B62243FBD600D6D068 /* NotificationCenter+Additions.swift in Sources */,
 				171111B4225E091A00DAF55C /* SettingsToggleCell.swift in Sources */,
+				2B3A95E9239011EB00A3DF44 /* AssetTransactionDraft.swift in Sources */,
 				2B3F390C228C4472008BBE75 /* ActiveAuction.swift in Sources */,
 				2BF3D832226F0F9100716C09 /* TransactionDetailViewController.swift in Sources */,
 				2BA242382263C0D800E2841F /* SwiftDate+Region.swift in Sources */,
@@ -5165,6 +5184,7 @@
 				2B8C1278224196DF00E34D37 /* String+Attributes.swift in Sources */,
 				2BF71918224ED0C5001E8420 /* ContactInfoViewController.swift in Sources */,
 				171650EC226DF90900D8893D /* SplashViewController.swift in Sources */,
+				2B3A95E6238FF99C00A3DF44 /* TransactionManagerDelegate.swift in Sources */,
 				2B8954A52242E7D800D6D068 /* AccountNameSetupView.swift in Sources */,
 				2B891F1D22BD3982003205F5 /* USDWireInstruction.swift in Sources */,
 				2BA09A952294BA07009DC24D /* ChartData.swift in Sources */,

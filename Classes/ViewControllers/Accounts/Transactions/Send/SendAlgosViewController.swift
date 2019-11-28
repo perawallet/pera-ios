@@ -314,7 +314,7 @@ class SendAlgosViewController: BaseScrollViewController {
                         }
                                
                         transactionManager.setTransactionDraft(transaction)
-                        transactionManager.composeTransactionData(
+                        transactionManager.composeAlgoTransactionData(
                             for: account,
                             isMaxValue: self.isMaxButtonSelected
                         )
@@ -337,7 +337,7 @@ class SendAlgosViewController: BaseScrollViewController {
             }
                    
             transactionManager.setTransactionDraft(transaction)
-            transactionManager.composeTransactionData(
+            transactionManager.composeAlgoTransactionData(
                 for: account,
                 isMaxValue: isMaxButtonSelected
             )
@@ -516,7 +516,7 @@ extension SendAlgosViewController: QRScannerViewControllerDelegate {
 // MARK: TransactionManagerDelegate
 
 extension SendAlgosViewController: TransactionManagerDelegate {
-    func transactionManagerDidComposedTransactionData(
+    func transactionManagerDidComposedAlgoTransactionData(
         _ transactionManager: TransactionManager,
         forTransaction draft: TransactionPreviewDraft?
     ) {
@@ -524,6 +524,13 @@ extension SendAlgosViewController: TransactionManagerDelegate {
             return
         }
         open(.sendAlgosPreview(transaction: transactionDraft, receiver: receiver), by: .push)
+    }
+    
+    func transactionManagerDidComposedAssetTransactionData(
+        _ transactionManager: TransactionManager,
+        forTransaction draft: AssetTransactionDraft?
+    ) {
+        
     }
     
     func transactionManager(_ transactionManager: TransactionManager, didFailedComposing error: Error) {
