@@ -31,12 +31,6 @@ class SendAlgosViewController: BaseScrollViewController {
     }()
     
     private var keyboard = Keyboard()
-    private lazy var transactionManager: TransactionManager = {
-        guard let api = self.api else {
-            fatalError("Api must be set for transaction flow.")
-        }
-        return TransactionManager(api: api)
-    }()
     
     private var contentViewBottomConstraint: Constraint?
     
@@ -119,7 +113,7 @@ class SendAlgosViewController: BaseScrollViewController {
     override func linkInteractors() {
         super.linkInteractors()
         
-        transactionManager.delegate = self
+        transactionManager?.delegate = self
         scrollView.touchDetectingDelegate = self
         sendAlgosView.delegate = self
     }
@@ -267,7 +261,7 @@ class SendAlgosViewController: BaseScrollViewController {
     }
     
     private func composeTransactionData() {
-        transactionManager.delegate = self
+        transactionManager?.delegate = self
         if amount.toMicroAlgos < minimumTransactionMicroAlgosLimit {
             var receiverAddress: String
                    
@@ -314,12 +308,13 @@ class SendAlgosViewController: BaseScrollViewController {
                             isMaxTransaction: self.isMaxButtonSelected
                         )
                         
-                        guard let account = self.getAccount() else {
+                        guard let account = self.getAccount(),
+                            let transactionManager = self.transactionManager else {
                             return
                         }
                                
-                        self.transactionManager.transaction = transaction
-                        self.transactionManager.composeTransactionData(
+                        transactionManager.setTransactionDraft(transaction)
+                        transactionManager.composeTransactionData(
                             for: account,
                             isMaxValue: self.isMaxButtonSelected
                         )
@@ -336,12 +331,13 @@ class SendAlgosViewController: BaseScrollViewController {
                 isMaxTransaction: isMaxButtonSelected
             )
                    
-            guard let account = getAccount() else {
+            guard let account = getAccount(),
+                let transactionManager = transactionManager else {
                 return
             }
                    
-            self.transactionManager.transaction = transaction
-            self.transactionManager.composeTransactionData(
+            transactionManager.setTransactionDraft(transaction)
+            transactionManager.composeTransactionData(
                 for: account,
                 isMaxValue: isMaxButtonSelected
             )
@@ -520,12 +516,14 @@ extension SendAlgosViewController: QRScannerViewControllerDelegate {
 // MARK: TransactionManagerDelegate
 
 extension SendAlgosViewController: TransactionManagerDelegate {
-    func transactionManagerDidComposedTransactionData(_ transactionManager: TransactionManager) {
-        guard let transaction = transactionManager.transaction else {
+    func transactionManagerDidComposedTransactionData(
+        _ transactionManager: TransactionManager,
+        forTransaction draft: TransactionPreviewDraft?
+    ) {
+        guard let transactionDraft = draft else {
             return
         }
-        
-        open(.sendAlgosPreview(manager: transactionManager, transaction: transaction, receiver: receiver), by: .push)
+        open(.sendAlgosPreview(transaction: transactionDraft, receiver: receiver), by: .push)
     }
     
     func transactionManager(_ transactionManager: TransactionManager, didFailedComposing error: Error) {

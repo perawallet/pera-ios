@@ -169,8 +169,10 @@ class Router {
         
         let viewController: UIViewController
         
-        let configuration = ViewControllerConfiguration(api: rootViewController.appConfiguration.api,
-                                                        session: rootViewController.appConfiguration.session)
+        let configuration = ViewControllerConfiguration(
+            api: rootViewController.appConfiguration.api,
+            session: rootViewController.appConfiguration.session
+        )
         
         switch screen {
         case let .introduction(mode):
@@ -219,10 +221,11 @@ class Router {
         case let .contactQRDisplay(contact):
             viewController = ContactQRDisplayViewController(contact: contact, configuration: configuration)
         case let .sendAlgos(account, receiver):
+            configuration.transactionManager = rootViewController.appConfiguration.transactionManager
             viewController = SendAlgosViewController(account: account, receiver: receiver, configuration: configuration)
-        case let .sendAlgosPreview(manager, transaction, receiver):
+        case let .sendAlgosPreview(transaction, receiver):
+            configuration.transactionManager = rootViewController.appConfiguration.transactionManager
             viewController = SendAlgosPreviewViewController(
-                transactionManager: manager,
                 transaction: transaction,
                 receiver: receiver,
                 configuration: configuration
@@ -271,8 +274,10 @@ class Router {
         case let .assetDetail(account, assetDetail):
             viewController = AssetDetailViewController(account: account, configuration: configuration, assetDetail: assetDetail)
         case let .addAsset(account):
+            configuration.transactionManager = rootViewController.appConfiguration.transactionManager
             viewController = AssetAdditionViewController(account: account, configuration: configuration)
         case let .removeAsset(account):
+            configuration.transactionManager = rootViewController.appConfiguration.transactionManager
             viewController = AssetRemovalViewController(account: account, configuration: configuration)
         case let .assetActionConfirmation(assetAlertDraft):
             viewController = AssetActionConfirmationViewController(assetAlertDraft: assetAlertDraft, configuration: configuration)

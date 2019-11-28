@@ -10,14 +10,20 @@ import Magpie
 import Crypto
 
 protocol TransactionManagerDelegate: class {
-    func transactionManagerDidComposedTransactionData(_ transactionManager: TransactionManager)
+    func transactionManagerDidComposedTransactionData(
+        _ transactionManager: TransactionManager,
+        forTransaction draft: TransactionPreviewDraft?
+    )
     func transactionManager(_ transactionManager: TransactionManager, didFailedComposing error: Error)
     func transactionManager(_ transactionManager: TransactionManager, didCompletedTransaction id: TransactionID)
     func transactionManager(_ transactionManager: TransactionManager, didFailedTransaction error: Error)
 }
 
 extension TransactionManagerDelegate {
-    func transactionManagerDidComposedTransactionData(_ transactionManager: TransactionManager) {
+    func transactionManagerDidComposedTransactionData(
+        _ transactionManager: TransactionManager,
+        forTransaction draft: TransactionPreviewDraft?
+    ) {
         
     }
     
@@ -40,8 +46,8 @@ class TransactionManager {
     
     private var api: API
     private var params: TransactionParams?
-    var transaction: TransactionPreviewDraft?
-    var transactionData: Data?
+    private var transactionDraft: TransactionPreviewDraft?
+    private var transactionData: Data?
     
     init(api: API) {
         self.api = api
@@ -61,7 +67,7 @@ class TransactionManager {
     
     private func generateSignedData(for account: Account, isMaxValue: Bool, initialFee: Int64 = Transaction.Constant.minimumFee) {
         guard let params = params,
-            let transaction = transaction else {
+            let transactionDraft = transactionDraft else {
                 delegate?.transactionManager(self, didFailedComposing: .custom(nil))
             return
         }
@@ -71,16 +77,16 @@ class TransactionManager {
         var isMaxValue = isMaxValue
         
         var transactionError: NSError?
-        var transactionAmount = transaction.amount.toMicroAlgos
+        var transactionAmount = transactionDraft.amount.toMicroAlgos
         
         if isMaxValue {
-            if transaction.amount.toMicroAlgos != transaction.fromAccount.amount {
+            if transactionDraft.amount.toMicroAlgos != transactionDraft.fromAccount.amount {
                 isMaxValue = false
             }
             transactionAmount -= initialFee * params.fee
         }
         
-        let trimmedFromAddress = transaction.fromAccount.address.trimmingCharacters(in: .whitespacesAndNewlines)
+        let trimmedFromAddress = transactionDraft.fromAccount.address.trimmingCharacters(in: .whitespacesAndNewlines)
         let trimmedToAddress = account.address.trimmingCharacters(in: .whitespacesAndNewlines)
         
         guard let transactionData = TransactionMakePaymentTxn(
@@ -102,7 +108,7 @@ class TransactionManager {
         
         var signedTransactionError: NSError?
         
-        guard let privateData = api.session.privateData(forAccount: transaction.fromAccount.address),
+        guard let privateData = api.session.privateData(forAccount: transactionDraft.fromAccount.address),
             let signedTransactionData = CryptoSignTransaction(privateData, transactionData, &signedTransactionError) else {
                 delegate?.transactionManager(self, didFailedComposing: .custom(signedTransactionError))
                 return
@@ -110,12 +116,12 @@ class TransactionManager {
         
         self.transactionData = signedTransactionData
         let calculatedFee = Int64(signedTransactionData.count) * params.fee
-        self.transaction?.fee = calculatedFee
+        self.transactionDraft?.fee = calculatedFee
         
         if initialFee < calculatedFee && isMaxValue {
             generateSignedData(for: account, isMaxValue: true, initialFee: Int64(signedTransactionData.count))
         } else {
-            delegate?.transactionManagerDidComposedTransactionData(self)
+            delegate?.transactionManagerDidComposedTransactionData(self, forTransaction: self.transactionDraft)
         }
     }
     
@@ -133,5 +139,11 @@ class TransactionManager {
                 self.delegate?.transactionManager(self, didFailedTransaction: error)
             }
         }
+    }
+}
+
+extension TransactionManager {
+    func setTransactionDraft(_ transactionDraft: TransactionPreviewDraft) {
+        self.transactionDraft = transactionDraft
     }
 }

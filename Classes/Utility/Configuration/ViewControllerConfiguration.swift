@@ -9,9 +9,9 @@
 import Foundation
 
 class ViewControllerConfiguration {
-
     let api: API?
     var session: Session?
+    var transactionManager: TransactionManager?
     
     init(api: API?, session: Session?) {
         self.api = api

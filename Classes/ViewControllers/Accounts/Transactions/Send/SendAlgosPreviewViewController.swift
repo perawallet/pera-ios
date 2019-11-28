@@ -21,7 +21,6 @@ class SendAlgosPreviewViewController: BaseViewController {
     }()
     
     private var transaction: TransactionPreviewDraft
-    private var transactionManager: TransactionManager
     private let receiver: AlgosReceiverState
     
     var transactionData: Data?
@@ -29,16 +28,16 @@ class SendAlgosPreviewViewController: BaseViewController {
     // MARK: Initialization
     
     init(
-        transactionManager: TransactionManager,
         transaction: TransactionPreviewDraft,
         receiver: AlgosReceiverState,
         configuration: ViewControllerConfiguration
     ) {
-        self.transactionManager = transactionManager
         self.transaction = transaction
         self.receiver = receiver
         
         super.init(configuration: configuration)
+        
+        self.transactionManager?.setTransactionDraft(transaction)
         
         hidesBottomBarWhenPushed = true
     }
@@ -61,7 +60,7 @@ class SendAlgosPreviewViewController: BaseViewController {
     
     override func linkInteractors() {
         sendAlgosPreviewView.previewViewDelegate = self
-        transactionManager.delegate = self
+        transactionManager?.delegate = self
     }
     
     override func prepareLayout() {
@@ -95,7 +94,7 @@ class SendAlgosPreviewViewController: BaseViewController {
 extension SendAlgosPreviewViewController: SendAlgosPreviewViewDelegate {
     func sendAlgosPreviewViewDidTapSendButton(_ sendAlgosView: SendAlgosView) {
         SVProgressHUD.show(withStatus: "title-loading".localized)
-        transactionManager.completeTransaction()
+        transactionManager?.completeTransaction()
     }
 }
 
