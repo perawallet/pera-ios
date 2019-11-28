@@ -330,8 +330,6 @@
 		17BD4F1A2292F1260003E49A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2B8BE4DA22391C3B005D8565 /* LaunchScreen.storyboard */; };
 		17BD4F1B2292F1260003E49A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2BF34CCB223AA63D0052CAD3 /* Localizable.strings */; };
 		17BD4F1D2292F1260003E49A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2B8BE4D822391C3B005D8565 /* Assets.xcassets */; };
-		17BD4F28229306700003E49A /* ApplicationTargetManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17BD4F27229306700003E49A /* ApplicationTargetManager.swift */; };
-		17BD4F29229306700003E49A /* ApplicationTargetManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17BD4F27229306700003E49A /* ApplicationTargetManager.swift */; };
 		17BEC45D2248C7D900AAF370 /* PassPhraseVerifyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17BEC45C2248C7D900AAF370 /* PassPhraseVerifyViewController.swift */; };
 		17BEC4602248C81E00AAF370 /* PassPhraseVerifyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17BEC45F2248C81E00AAF370 /* PassPhraseVerifyView.swift */; };
 		17BEC4632248CD3C00AAF370 /* LeftAlignedCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17BEC4622248CD3C00AAF370 /* LeftAlignedCollectionViewFlowLayout.swift */; };
@@ -888,7 +886,6 @@
 		17B7D8AD2240F25000A6FF9E /* Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
 		17B7D8AF224128EC00A6FF9E /* Keychain+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Keychain+Additions.swift"; sourceTree = "<group>"; };
 		17BD4F252292F1260003E49A /* algorand-staging.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "algorand-staging.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		17BD4F27229306700003E49A /* ApplicationTargetManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationTargetManager.swift; sourceTree = "<group>"; };
 		17BEC45C2248C7D900AAF370 /* PassPhraseVerifyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassPhraseVerifyViewController.swift; sourceTree = "<group>"; };
 		17BEC45F2248C81E00AAF370 /* PassPhraseVerifyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassPhraseVerifyView.swift; sourceTree = "<group>"; };
 		17BEC4622248CD3C00AAF370 /* LeftAlignedCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftAlignedCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
@@ -1429,7 +1426,6 @@
 			children = (
 				17F9E926225796DA004CDF24 /* AccountManager.swift */,
 				17695B392268CA7400765D31 /* NodeManager.swift */,
-				17BD4F27229306700003E49A /* ApplicationTargetManager.swift */,
 				17CA7CAD2294187E00B552EB /* AuthManager.swift */,
 				2B79A13F231580AB00766021 /* TransactionManager.swift */,
 			);
@@ -4673,7 +4669,6 @@
 				2BCB5C8122B38FBC0038DA6B /* DepositView.swift in Sources */,
 				17CA7CAF2294187E00B552EB /* AuthManager.swift in Sources */,
 				17BD4E9A2292F1260003E49A /* User.swift in Sources */,
-				17BD4F29229306700003E49A /* ApplicationTargetManager.swift in Sources */,
 				17BD4E9B2292F1260003E49A /* UIColor+Additions.swift in Sources */,
 				17BD4E9C2292F1260003E49A /* AddContactViewController.swift in Sources */,
 				17BD4E9D2292F1260003E49A /* ChoosePasswordViewController.swift in Sources */,
@@ -5072,7 +5067,6 @@
 				170AFB02224D1CE100520EA5 /* CIImage+Additions.swift in Sources */,
 				17CA7CAE2294187E00B552EB /* AuthManager.swift in Sources */,
 				17F6E68A224B71A6006DD31F /* User.swift in Sources */,
-				17BD4F28229306700003E49A /* ApplicationTargetManager.swift in Sources */,
 				2B448741237B0AFB00C19FDE /* AccountsViewController+Options.swift in Sources */,
 				2BD739D6223F985E00B66EEF /* UIColor+Additions.swift in Sources */,
 				2BF71916224ED0A6001E8420 /* AddContactViewController.swift in Sources */,
