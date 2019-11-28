@@ -156,8 +156,8 @@ extension AssetDetailViewController {
                     return
                 }
                 
-                strongSelf.accountsView.transactionHistoryCollectionView.contentState = .none
-                strongSelf.accountsView.transactionHistoryCollectionView.reloadData()
+                strongSelf.assetDetailView.transactionHistoryCollectionView.contentState = .none
+                strongSelf.assetDetailView.transactionHistoryCollectionView.reloadData()
             }
         }
         
