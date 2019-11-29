@@ -12,5 +12,6 @@ class AssetAdditionViewModel {
     func configure(_ cell: AssetSelectionCell, with asset: AssetDetail) {
         cell.contextView.nameLabel.text = asset.assetName
         cell.contextView.codeLabel.text = asset.unitName
+        cell.contextView.indexLabel.text = asset.index
     }
 }
