@@ -116,9 +116,22 @@ extension TransactionManager {
 
 extension TransactionManager {
     func composeAssetTransactionData(for account: Account, isClosingTransaction: Bool = false) {
+        api.getTransactionParams { response in
+            switch response {
+            case let .success(params):
+                self.params = params
+                self.transactAsset(for: account, isClosingTransaction: isClosingTransaction)
+            case let .failure(error):
+                self.delegate?.transactionManager(self, didFailedComposing: error)
+            }
+        }
+    }
+    
+    private func transactAsset(for account: Account, isClosingTransaction: Bool) {
         guard let params = params,
             let transactionDraft = assetTransactionDraft,
-            let assetIndex = transactionDraft.assetIndex else {
+            let assetIndex = transactionDraft.assetIndex,
+            let transactionAmount = transactionDraft.amount else {
                 delegate?.transactionManager(self, didFailedComposing: .custom(nil))
             return
         }
@@ -131,7 +144,7 @@ extension TransactionManager {
             trimmedFromAddress,
             trimmedToAddress,
             isClosingTransaction ? transactionDraft.assetCreator : "", // closing address should be empty
-            Int64(transactionDraft.amount),
+            Int64(transactionAmount),
             params.fee,
             params.lastRound,
             params.lastRound + 1000,
@@ -150,7 +163,19 @@ extension TransactionManager {
 }
 
 extension TransactionManager {
-    func addAsset(to account: Account) {
+    func composeAssetAdditionTransactionData(for account: Account) {
+        api.getTransactionParams { response in
+            switch response {
+            case let .success(params):
+                self.params = params
+                self.addAsset(to: account)
+            case let .failure(error):
+                self.delegate?.transactionManager(self, didFailedComposing: error)
+            }
+        }
+    }
+    
+    private func addAsset(to account: Account) {
         guard let params = params,
             let transactionDraft = assetTransactionDraft,
             let assetIndex = transactionDraft.assetIndex else {
@@ -203,6 +228,8 @@ extension TransactionManager {
         self.transactionData = signedTransactionData
         let calculatedFee = Int64(signedTransactionData.count) * params.fee
         self.assetTransactionDraft?.fee = calculatedFee
+        
+        completeTransaction()
         
         delegate?.transactionManagerDidComposedAssetTransactionData(self, forTransaction: self.assetTransactionDraft)
     }

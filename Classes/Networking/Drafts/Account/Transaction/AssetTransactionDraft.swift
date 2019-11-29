@@ -10,8 +10,8 @@ import Foundation
 
 struct AssetTransactionDraft: Codable {
     let fromAccount: Account
-    let recipient: String
-    let amount: Double
+    let recipient: String?
+    let amount: Double?
     let assetIndex: Int64?
     var assetCreator = ""
     var fee: Int64?
