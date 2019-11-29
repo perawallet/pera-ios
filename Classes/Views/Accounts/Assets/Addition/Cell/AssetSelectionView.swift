@@ -12,21 +12,7 @@ class AssetSelectionView: BaseView {
 
     private let layout = Layout<LayoutConstants>()
     
-    private(set) lazy var codeLabel: UILabel = {
-        UILabel()
-            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 14.0)))
-            .withTextColor(SharedColors.purple)
-            .withLine(.single)
-            .withAlignment(.left)
-    }()
-    
-    private(set) lazy var nameLabel: UILabel = {
-        UILabel()
-            .withFont(UIFont.font(.overpass, withWeight: .bold(size: 13.0)))
-            .withTextColor(SharedColors.darkGray)
-            .withLine(.single)
-            .withAlignment(.left)
-    }()
+    private(set) lazy var assetNameView = AssetNameView()
     
     private(set) lazy var indexLabel: UILabel = {
         UILabel()
@@ -47,34 +33,21 @@ class AssetSelectionView: BaseView {
     }
     
     override func prepareLayout() {
-        setupCodeLabelLayout()
-        setupNameLabelLayout()
+        setupAssetNameViewLayout()
         setupIndexLabelLayout()
         setupSeparatorViewLayout()
     }
 }
 
 extension AssetSelectionView {
-    private func setupCodeLabelLayout() {
-        addSubview(codeLabel)
+    private func setupAssetNameViewLayout() {
+        addSubview(assetNameView)
         
-        codeLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
-        codeLabel.setContentHuggingPriority(.required, for: .horizontal)
+        assetNameView.setContentCompressionResistancePriority(.required, for: .horizontal)
+        assetNameView.setContentHuggingPriority(.required, for: .horizontal)
         
-        codeLabel.snp.makeConstraints { make in
+        assetNameView.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(layout.current.horizontalInset)
-            make.centerY.equalToSuperview()
-        }
-    }
-    
-    private func setupNameLabelLayout() {
-        addSubview(nameLabel)
-        
-        nameLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
-        nameLabel.setContentHuggingPriority(.required, for: .horizontal)
-        
-        nameLabel.snp.makeConstraints { make in
-            make.leading.equalTo(codeLabel.snp.trailing).offset(layout.current.nameLabelInset)
             make.centerY.equalToSuperview()
         }
     }
@@ -105,7 +78,7 @@ extension AssetSelectionView {
 extension AssetSelectionView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let separatorHeight: CGFloat = 1.0
-        let nameLabelInset: CGFloat = 20.0
+        let codeLabelInset: CGFloat = 3.0
         let horizontalInset: CGFloat = 25.0
     }
 }

@@ -10,8 +10,8 @@ import UIKit
 
 class AssetAdditionViewModel {
     func configure(_ cell: AssetSelectionCell, with asset: AssetDetail) {
-        cell.contextView.nameLabel.text = asset.assetName
-        cell.contextView.codeLabel.text = asset.unitName
+        cell.contextView.assetNameView.setName("\(asset.assetName ?? "")")
+        cell.contextView.assetNameView.setCode("\(asset.unitName ?? "")")
         cell.contextView.indexLabel.text = asset.index
     }
 }

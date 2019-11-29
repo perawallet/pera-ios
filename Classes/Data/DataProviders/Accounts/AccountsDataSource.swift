@@ -79,8 +79,12 @@ extension AccountsDataSource {
         
         if indexPath.section < accounts.count {
             let account = accounts[indexPath.section]
-            let asset = account.assetDetails[indexPath.item - 1]
-            viewModel.configure(cell, with: asset)
+            let assetDetail = account.assetDetails[indexPath.item - 1]
+            if let assets = account.assets,
+                let assetIndex = assetDetail.index,
+                let asset = assets[assetIndex] {
+                viewModel.configure(cell, with: assetDetail, and: asset)
+            }
         }
         
         return cell

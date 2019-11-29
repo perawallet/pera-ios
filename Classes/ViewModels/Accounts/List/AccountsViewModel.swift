@@ -9,15 +9,15 @@
 import UIKit
 
 class AccounsViewModel {
-    func configure(_ cell: AssetCell, with asset: AssetDetail) {
-        guard let assetName = asset.assetName,
-            let code = asset.unitName else {
+    func configure(_ cell: AssetCell, with assetDetail: AssetDetail, and asset: Asset) {
+        guard let assetName = assetDetail.assetName,
+            let code = assetDetail.unitName else {
                 return
         }
         
         cell.contextView.assetNameView.setName(assetName)
         cell.contextView.assetNameView.setCode(code)
-        cell.contextView.amountLabel.text = asset.total.toAlgos.toDecimalStringForLabel
+        cell.contextView.amountLabel.text = Double(asset.amount).toDecimalStringForLabel
     }
     
     func configure(_ cell: AlgoAssetCell, with account: Account) {
