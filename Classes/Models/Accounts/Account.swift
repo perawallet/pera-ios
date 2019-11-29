@@ -42,6 +42,7 @@ class Account: Model {
         name = try container.decodeIfPresent(String.self, forKey: .name)
         totalAssets = try? container.decodeIfPresent([String: AssetDetail].self, forKey: .totalAssets)
         assets = try? container.decodeIfPresent([String: Asset].self, forKey: .assets) ?? nil
+        assetDetails = try container.decodeIfPresent([AssetDetail].self, forKey: .assetDetails) ?? []
     }
     
     init(address: String) {
@@ -63,6 +64,7 @@ class Account: Model {
         participation = account.participation
         totalAssets = account.totalAssets
         assets = account.assets
+        assetDetails = account.assetDetails
         
         if let updatedName = account.name {
             name = updatedName

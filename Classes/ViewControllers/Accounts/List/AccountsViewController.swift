@@ -73,7 +73,7 @@ class AccountsViewController: BaseViewController {
     
     override func configureAppearance() {
         super.configureAppearance()
-        self.navigationItem.title = "tabbar-item-accounts".localized
+        navigationItem.title = "tabbar-item-accounts".localized
     }
     
     override func setListeners() {
@@ -108,7 +108,7 @@ extension AccountsViewController: AccountsLayoutBuilderDelegate {
         if indexPath.item == 0 {
             open(.assetDetail(account: account, assetDetail: nil), by: .push)
         } else {
-            let assetDetail = account.assetDetails[indexPath.item]
+            let assetDetail = account.assetDetails[indexPath.item - 1]
             open(.assetDetail(account: account, assetDetail: assetDetail), by: .push)
         }
     }

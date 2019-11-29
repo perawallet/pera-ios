@@ -38,3 +38,6 @@ extension AssetDetail {
         case index = "index"
     }
 }
+
+extension AssetDetail: Encodable {
+}

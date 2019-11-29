@@ -21,3 +21,6 @@ extension Asset {
         case isFrozen = "frozen"
     }
 }
+
+extension Asset: Encodable {
+}
