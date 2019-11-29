@@ -9,5 +9,5 @@
 import Magpie
 
 class AssetList: Model {
-    let assets: String
+    let assets: [AssetQueryItem]
 }

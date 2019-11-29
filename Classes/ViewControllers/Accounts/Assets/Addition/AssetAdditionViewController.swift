@@ -19,8 +19,14 @@ class AssetAdditionViewController: BaseViewController {
     weak var delegate: AssetAdditionViewControllerDelegate?
     
     private var account: Account
-    private var assetResults = [AssetDetail]()
+    private var assetResults = [AssetQueryItem]()
     private lazy var assetAdditionView = AssetAdditionView()
+    
+    private lazy var emptyStateView = EmptyStateView(
+        title: "contacts-empty-text".localized,
+        topImage: img("icon-contacts-empty"),
+        bottomImage: img("icon-contacts-empty")
+    )
     
     private let viewModel = AssetAdditionViewModel()
     
@@ -29,10 +35,21 @@ class AssetAdditionViewController: BaseViewController {
         super.init(configuration: configuration)
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        fetchAssets(with: "")
+    }
+    
+    override func configureAppearance() {
+        super.configureAppearance()
+        navigationItem.title = "title-add-asset".localized
+    }
+    
     override func setListeners() {
         assetAdditionView.assetInputView.delegate = self
         assetAdditionView.assetsCollectionView.delegate = self
         assetAdditionView.assetsCollectionView.dataSource = self
+        transactionManager?.delegate = self
     }
     
     override func prepareLayout() {
@@ -50,6 +67,31 @@ extension AssetAdditionViewController {
     }
 }
 
+extension AssetAdditionViewController {
+    private func fetchAssets(with assetId: String) {
+        let assetFetchDraft = AssetFetchDraft(assetId: assetId)
+        api?.getAssets(with: assetFetchDraft) { [unowned self] response in
+            switch response {
+            case let .success(assetList):
+                self.assetResults = assetList.assets
+                self.assetResults.forEach { result in
+                    result.assetDetail.index = "\(result.index)"
+                }
+                
+                if self.assetResults.isEmpty {
+                    self.assetAdditionView.assetsCollectionView.contentState = .empty(self.emptyStateView)
+                } else {
+                    self.assetAdditionView.assetsCollectionView.contentState = .none
+                }
+                
+                self.assetAdditionView.assetsCollectionView.reloadData()
+            case .failure:
+                break
+            }
+        }
+    }
+}
+
 extension AssetAdditionViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return assetResults.count
@@ -62,8 +104,8 @@ extension AssetAdditionViewController: UICollectionViewDataSource {
                 fatalError("Index path is out of bounds")
         }
         
-        let assetDetail = assetResults[indexPath.item]
-        viewModel.configure(cell, with: assetDetail)
+        let assetResult = assetResults[indexPath.item]
+        viewModel.configure(cell, with: assetResult.assetDetail)
         
         return cell
     }
@@ -71,8 +113,8 @@ extension AssetAdditionViewController: UICollectionViewDataSource {
 
 extension AssetAdditionViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let assetDetail = assetResults[indexPath.item]
-        let assetAlertDraft = AssetAlertDraft(account: account, assetDetail: assetDetail)
+        let assetResult = assetResults[indexPath.item]
+        let assetAlertDraft = AssetAlertDraft(account: account, assetDetail: assetResult.assetDetail)
         
         let controller = open(
             .assetActionConfirmation(assetAlertDraft: assetAlertDraft),
@@ -93,14 +135,6 @@ extension AssetAdditionViewController: UICollectionViewDelegateFlowLayout {
     ) -> CGSize {
         return CGSize(width: UIScreen.main.bounds.width, height: layout.current.cellHeight)
     }
-    
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        insetForSectionAt section: Int
-    ) -> UIEdgeInsets {
-        return UIEdgeInsets(top: layout.current.topInset, left: 0.0, bottom: 0.0, right: 0.0)
-    }
 }
 
 extension AssetAdditionViewController: InputViewDelegate {
@@ -109,7 +143,16 @@ extension AssetAdditionViewController: InputViewDelegate {
     }
     
     func inputViewDidChangeValue(inputView: BaseInputView) {
+        if assetResults.isEmpty {
+            assetAdditionView.assetsCollectionView.contentState = .empty(emptyStateView)
+            return
+        }
         
+        guard let query = assetAdditionView.assetInputView.inputTextField.text else {
+            return
+        }
+        
+        fetchAssets(with: query)
     }
 }
 
@@ -118,13 +161,30 @@ extension AssetAdditionViewController: AssetActionConfirmationViewControllerDele
         _ assetActionConfirmationViewController: AssetActionConfirmationViewController,
         didConfirmedActionFor assetDetail: AssetDetail
     ) {
+        guard let index = assetDetail.index,
+            let indexIntValue = Int64(index) else {
+                return
+        }
+        
+        let assetTransactionDraft = AssetTransactionDraft(fromAccount: account, recipient: nil, amount: nil, assetIndex: indexIntValue)
+        transactionManager?.setAssetTransactionDraft(assetTransactionDraft)
+        transactionManager?.composeAssetAdditionTransactionData(for: account)
+        
         delegate?.assetAdditionViewController(self, didAdd: assetDetail)
+    }
+}
+
+extension AssetAdditionViewController: TransactionManagerDelegate {
+    func transactionManagerDidComposedAssetTransactionData(
+        _ transactionManager: TransactionManager,
+        forTransaction draft: AssetTransactionDraft?
+    ) {
+        //popScreen()
     }
 }
 
 extension AssetAdditionViewController {
     struct LayoutConstants: AdaptiveLayoutConstants {
         let cellHeight: CGFloat = 50.0
-        let topInset: CGFloat = 2.0
     }
 }
