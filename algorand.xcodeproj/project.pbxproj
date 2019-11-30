@@ -707,6 +707,8 @@
 		2BB3F30E22B1B6A800109C47 /* CoinlistCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB3F30C22B1B6A800109C47 /* CoinlistCell.swift */; };
 		2BB3F31022B1B6C000109C47 /* CoinlistCellContextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB3F30F22B1B6C000109C47 /* CoinlistCellContextView.swift */; };
 		2BB3F31122B1B6C000109C47 /* CoinlistCellContextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB3F30F22B1B6C000109C47 /* CoinlistCellContextView.swift */; };
+		2BB6EE512392694800CF7874 /* Array+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB6EE502392694800CF7874 /* Array+Additions.swift */; };
+		2BB6EE522392694800CF7874 /* Array+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB6EE502392694800CF7874 /* Array+Additions.swift */; };
 		2BBA1989231FEB080080A6F6 /* API+Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BBA1988231FEB080080A6F6 /* API+Notification.swift */; };
 		2BBA198A231FEB080080A6F6 /* API+Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BBA1988231FEB080080A6F6 /* API+Notification.swift */; };
 		2BBA198C231FF7650080A6F6 /* DeviceRegistrationDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BBA198B231FF7650080A6F6 /* DeviceRegistrationDraft.swift */; };
@@ -1155,6 +1157,7 @@
 		2BB021E8224E828E0039D78A /* UICollectionView+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+Additions.swift"; sourceTree = "<group>"; };
 		2BB3F30C22B1B6A800109C47 /* CoinlistCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinlistCell.swift; sourceTree = "<group>"; };
 		2BB3F30F22B1B6C000109C47 /* CoinlistCellContextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinlistCellContextView.swift; sourceTree = "<group>"; };
+		2BB6EE502392694800CF7874 /* Array+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Additions.swift"; sourceTree = "<group>"; };
 		2BBA1988231FEB080080A6F6 /* API+Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+Notification.swift"; sourceTree = "<group>"; };
 		2BBA198B231FF7650080A6F6 /* DeviceRegistrationDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceRegistrationDraft.swift; sourceTree = "<group>"; };
 		2BBA198F231FF7CF0080A6F6 /* Device.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
@@ -3220,11 +3223,11 @@
 				2BF53166224A48C900A7455F /* CoreGraphics */,
 				170AFB00224D1CD100520EA5 /* CoreImage */,
 				2BA8736C2248219900511C7C /* Data */,
-				2BD739D3223F983B00B66EEF /* Style */,
 				2BF34CB5223A87920052CAD3 /* External */,
 				2BF34C972239AAC10052CAD3 /* Flow */,
-				2B8BE502223939DD005D8565 /* UIKit */,
 				2B8BE4F722393715005D8565 /* Foundation */,
+				2BD739D3223F983B00B66EEF /* Style */,
+				2B8BE502223939DD005D8565 /* UIKit */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -3232,6 +3235,7 @@
 		2B8BE4F722393715005D8565 /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
+				2BB6EE4F2392693700CF7874 /* Array */,
 				2B982331231D3958009560CD /* Codable */,
 				2B43B83A22A8394000CEA8F3 /* Date */,
 				17AA1B0222660E43000B0BB0 /* Formatter */,
@@ -3385,6 +3389,14 @@
 				2BB021E8224E828E0039D78A /* UICollectionView+Additions.swift */,
 			);
 			path = List;
+			sourceTree = "<group>";
+		};
+		2BB6EE4F2392693700CF7874 /* Array */ = {
+			isa = PBXGroup;
+			children = (
+				2BB6EE502392694800CF7874 /* Array+Additions.swift */,
+			);
+			path = Array;
 			sourceTree = "<group>";
 		};
 		2BBA198E231FF7C10080A6F6 /* Notification */ = {
@@ -4804,6 +4816,7 @@
 				2B191C83232150C900EAB1B8 /* PushNotificationController.swift in Sources */,
 				17BD4EF22292F1260003E49A /* AssetDetailSmallHeaderView.swift in Sources */,
 				2B891F0122BBA3CD003205F5 /* BalanceHeaderView.swift in Sources */,
+				2BB6EE522392694800CF7874 /* Array+Additions.swift in Sources */,
 				17BD4EF32292F1260003E49A /* QRSelectableLabel.swift in Sources */,
 				17BD4EF42292F1260003E49A /* ActiveAuctionEmptyCell.swift in Sources */,
 				2B4BDA08238C940F00491149 /* AssetCancellableSupportAlertViewController.swift in Sources */,
@@ -5211,6 +5224,7 @@
 				2B191C82232150C900EAB1B8 /* PushNotificationController.swift in Sources */,
 				2B8512572265E3E2000F8CB8 /* AssetDetailSmallHeaderView.swift in Sources */,
 				2B891F0022BBA3CD003205F5 /* BalanceHeaderView.swift in Sources */,
+				2BB6EE512392694800CF7874 /* Array+Additions.swift in Sources */,
 				17E2E3C722524E4C0065957A /* QRSelectableLabel.swift in Sources */,
 				2B3F391C228DCDE2008BBE75 /* ActiveAuctionEmptyCell.swift in Sources */,
 				2B4BDA07238C940F00491149 /* AssetCancellableSupportAlertViewController.swift in Sources */,

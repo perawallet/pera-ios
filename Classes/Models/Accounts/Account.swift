@@ -86,6 +86,10 @@ class Account: Model {
     func isThereAnyDifferentAsset() -> Bool {
         return totalAssets != nil || assets != nil
     }
+    
+    func areAssetsDifferent(than account: Account) -> Bool {
+        return assets != account.assets || !assetDetails.containsSameElements(as: account.assetDetails)
+    }
 }
 
 extension Account {

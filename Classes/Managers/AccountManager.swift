@@ -38,7 +38,7 @@ extension AccountManager {
                     if fetchedAccount.amount == account.amount &&
                         fetchedAccount.rewards == account.rewards &&
                         fetchedAccount.pendingRewards == account.pendingRewards &&
-                        fetchedAccount.assetDetails.count == account.assetDetails.count {
+                        !fetchedAccount.areAssetsDifferent(than: account) {
                         return
                     }
                     

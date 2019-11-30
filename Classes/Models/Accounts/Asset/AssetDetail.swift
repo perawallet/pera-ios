@@ -41,3 +41,23 @@ extension AssetDetail {
 
 extension AssetDetail: Encodable {
 }
+
+extension AssetDetail: Comparable {
+    static func == (lhs: AssetDetail, rhs: AssetDetail) -> Bool {
+        guard let lhsIndex = lhs.index,
+            let rhsIndex = rhs.index else {
+                return false
+        }
+        return lhsIndex == rhsIndex
+    }
+    
+    static func < (lhs: AssetDetail, rhs: AssetDetail) -> Bool {
+        guard let lhsIndex = lhs.index,
+            let rhsIndex = rhs.index,
+            let lhsIntValue = Int(lhsIndex),
+            let rhsIntValue = Int(rhsIndex) else {
+                return false
+        }
+        return lhsIntValue < rhsIntValue
+    }
+}

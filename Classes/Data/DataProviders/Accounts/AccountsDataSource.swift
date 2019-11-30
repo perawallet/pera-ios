@@ -19,16 +19,11 @@ class AccountsDataSource: NSObject, UICollectionViewDataSource {
     
     weak var delegate: AccountsDataSourceDelegate?
     
-    private(set) var accounts = [Account]()
-    
-    override init() {
-        super.init()
-        
+    var accounts: [Account] {
         guard let user = UIApplication.shared.appConfiguration?.session.authenticatedUser else {
-            return
+            return []
         }
-        
-        accounts.append(contentsOf: user.accounts)
+        return user.accounts
     }
 }
 

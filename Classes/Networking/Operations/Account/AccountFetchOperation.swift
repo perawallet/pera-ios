@@ -45,7 +45,10 @@ class AccountFetchOperation: AsyncOperation {
                                 case .success(let assetDetail):
                                     assetDetail.index = index
                                     account.assetDetails.append(assetDetail)
-                                    self.onCompleted?(account, nil)
+                                    
+                                    if assets.count == account.assetDetails.count {
+                                        self.onCompleted?(account, nil)
+                                    }
                                 case .failure(let error):
                                     self.onCompleted?(nil, error)
                                 }

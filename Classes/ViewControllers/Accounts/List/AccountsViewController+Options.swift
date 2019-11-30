@@ -22,7 +22,14 @@ extension AccountsViewController: OptionsViewControllerDelegate {
             return
         }
         
-        let controller = open(.removeAsset(account: account), by: .present) as? AssetRemovalViewController
+        let controller = open(
+            .removeAsset(account: account),
+            by: .customPresent(
+                presentationStyle: .fullScreen,
+                transitionStyle: nil,
+                transitioningDelegate: nil
+            )
+        ) as? AssetRemovalViewController
         controller?.delegate = self
     }
     
@@ -153,7 +160,11 @@ extension AccountsViewController: ChoosePasswordViewControllerDelegate {
 }
 
 extension AccountsViewController: AssetRemovalViewControllerDelegate {
-    func assetRemovalViewController(_ assetRemovalViewController: AssetRemovalViewController, didRemove asset: AssetDetail) {
+    func assetRemovalViewController(
+        _ assetRemovalViewController: AssetRemovalViewController,
+        didRemove asset: AssetDetail,
+        from account: Account
+    ) {
         
     }
 }

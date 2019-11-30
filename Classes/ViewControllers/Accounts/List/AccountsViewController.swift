@@ -47,6 +47,13 @@ class AccountsViewController: BaseViewController {
         accountsLayoutBuilder = AccountsLayoutBuilder()
         accountsDataSource = AccountsDataSource()
         super.init(configuration: configuration)
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didUpdateAuthenticatedUser(notification:)),
+            name: Notification.Name.AuthenticatedUserUpdate,
+            object: nil
+        )
     }
     
     override func configureNavigationBarAppearance() {
@@ -100,10 +107,10 @@ extension AccountsViewController {
 
 extension AccountsViewController: AccountsLayoutBuilderDelegate {
     func accountsLayoutBuilder(_ layoutBuilder: AccountsLayoutBuilder, didSelectAt indexPath: IndexPath) {
-       selectedAccount = accountsDataSource.accounts[indexPath.section]
-       guard let account = selectedAccount else {
-           return
-       }
+        selectedAccount = accountsDataSource.accounts[indexPath.section]
+        guard let account = selectedAccount else {
+            return
+        }
         
         if indexPath.item == 0 {
             open(.assetDetail(account: account, assetDetail: nil), by: .push)
@@ -122,7 +129,25 @@ extension AccountsViewController: AccountsDataSourceDelegate {
     
     func accountsDataSource(_ accountsDataSource: AccountsDataSource, didTapAddAssetButtonFor account: Account) {
         selectedAccount = account
-        open(.addAsset(account: account), by: .push)
+        let controller = open(.addAsset(account: account), by: .push)
+        (controller as? AssetAdditionViewController)?.delegate = self
+    }
+}
+
+extension AccountsViewController: AssetAdditionViewControllerDelegate {
+    func assetAdditionViewController(
+        _ assetAdditionViewController: AssetAdditionViewController,
+        didAdd assetDetail: AssetDetail,
+        to account: Account
+    ) {
+        
+    }
+}
+
+extension AccountsViewController {
+    @objc
+    fileprivate func didUpdateAuthenticatedUser(notification: Notification) {
+        accountsView.accountsCollectionView.reloadData()
     }
 }
 

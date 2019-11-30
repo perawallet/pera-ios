@@ -9,7 +9,11 @@
 import UIKit
 
 protocol AssetAdditionViewControllerDelegate: class {
-    func assetAdditionViewController(_ assetAdditionViewController: AssetAdditionViewController, didAdd assetDetail: AssetDetail)
+    func assetAdditionViewController(
+        _ assetAdditionViewController: AssetAdditionViewController,
+        didAdd assetDetail: AssetDetail,
+        to account: Account
+    )
 }
 
 class AssetAdditionViewController: BaseViewController {
@@ -33,6 +37,7 @@ class AssetAdditionViewController: BaseViewController {
     init(account: Account, configuration: ViewControllerConfiguration) {
         self.account = account
         super.init(configuration: configuration)
+        hidesBottomBarWhenPushed = true
     }
     
     override func viewDidLoad() {
@@ -114,7 +119,13 @@ extension AssetAdditionViewController: UICollectionViewDataSource {
 extension AssetAdditionViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let assetResult = assetResults[indexPath.item]
-        let assetAlertDraft = AssetAlertDraft(account: account, assetDetail: assetResult.assetDetail)
+        let assetAlertDraft = AssetAlertDraft(
+            account: account,
+            assetDetail: assetResult.assetDetail,
+            title: "asset-add-confirmation-title".localized,
+            detail: "asset-add-warning".localized,
+            actionTitle: "title-approve".localized
+        )
         
         let controller = open(
             .assetActionConfirmation(assetAlertDraft: assetAlertDraft),
@@ -169,8 +180,6 @@ extension AssetAdditionViewController: AssetActionConfirmationViewControllerDele
         let assetTransactionDraft = AssetTransactionDraft(fromAccount: account, recipient: nil, amount: nil, assetIndex: indexIntValue)
         transactionManager?.setAssetTransactionDraft(assetTransactionDraft)
         transactionManager?.composeAssetAdditionTransactionData(for: account)
-        
-        delegate?.assetAdditionViewController(self, didAdd: assetDetail)
     }
 }
 
@@ -179,7 +188,18 @@ extension AssetAdditionViewController: TransactionManagerDelegate {
         _ transactionManager: TransactionManager,
         forTransaction draft: AssetTransactionDraft?
     ) {
-        //popScreen()
+        guard let assetQueryItem = assetResults.first(where: { item -> Bool in
+            guard let assetIndex = draft?.assetIndex else {
+                return false
+            }
+            return item.index == assetIndex
+        }) else {
+            return
+        }
+        
+        account.assetDetails.append(assetQueryItem.assetDetail)
+        delegate?.assetAdditionViewController(self, didAdd: assetQueryItem.assetDetail, to: account)
+        popScreen()
     }
 }
 
