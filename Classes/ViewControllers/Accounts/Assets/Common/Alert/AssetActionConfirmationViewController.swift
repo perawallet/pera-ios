@@ -51,7 +51,7 @@ extension AssetActionConfirmationViewController {
         view.addSubview(assetActionConfirmationView)
         
         assetActionConfirmationView.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
+            make.center.equalToSuperview()
             make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
         }
     }

@@ -152,7 +152,7 @@
 "asset-transfer-balance" = "TRANSFER BALANCE";
 "title-remove-assets" = "Remove Assets";
 "title-add-asset" = "Add Asset";
-"asset-add-warning" = "Adding an asset requires sending a transaction with a minimum transaction fee of Algos. This will appear on your transaction history.";
+"asset-add-warning" = "Adding an asset requires sending a transaction with a minimum transaction fee of X Algos. This will appear on your transaction history.";
 "asset-support-error" = "Unfortunatly this contact does not support this asset class.";
 "asset-support-title" = "Asset Not Supported";
 "asset-add-confirmation-title" = "Adding Asset";
@@ -160,7 +160,7 @@
 "internet-connection-error-title" = "No Internet Connection";
 "internet-connection-error-detail" = "We couldn’t reach the server, make sure you are connected to the internet";
 "asset-remove-warning" = "To remove %@, the balance must be 0. Please transfer the balance to another account and try again.";
-"asset-remove-transaction-warning" = "You are about to remove %@ from %@. You will not be able to transact with this asset until you re-enable it.";
+"asset-remove-transaction-warning" = "You are about to remove %@ from %@. You will not be able to transact with this asset from this account unless you re-add it.";
 "asset-support-qr-error" = "None of your account support this asset, would you like to add and proceed?";
 "asset-support-qr-title" = "You do not support this Asset";
 
