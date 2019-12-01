@@ -354,8 +354,6 @@ class TransactionReceiverView: BaseView {
     }
     
     private func setupReceiverContactViewLayout() {
-        receiverContactView.sendButton.isHidden = true
-        
         receiverContainerView.addSubview(receiverContactView)
         
         receiverContactView.snp.makeConstraints { make in

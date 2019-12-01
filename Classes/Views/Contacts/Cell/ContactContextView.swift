@@ -9,9 +9,7 @@
 import UIKit
 
 protocol ContactContextViewDelegate: class {
-    
     func contactContextViewDidTapQRDisplayButton(_ contactContextView: ContactContextView)
-    func contactContextViewDidTapSendButton(_ contactContextView: ContactContextView)
 }
 
 class ContactContextView: BaseView {
@@ -25,14 +23,13 @@ class ContactContextView: BaseView {
         let labelCenterOffset: CGFloat = 5.0
         let labelLeftInset: CGFloat = 8.0
         let verticalInset: CGFloat = 23.0
-        let buttonInternalInset: CGFloat = -20.0
         let buttonSize: CGFloat = 38.0
     }
     
     private let layout = Layout<LayoutConstants>()
     
     private enum Colors {
-        static let separatorColor = rgb(0.94, 0.94, 0.94)
+        static let separatorColor = rgb(0.91, 0.91, 0.92)
     }
     
     // MARK: Components
@@ -66,14 +63,6 @@ class ContactContextView: BaseView {
         UIButton(type: .custom).withImage(img("icon-qr-view"))
     }()
     
-    private(set) lazy var sendButton: UIButton = {
-        UIButton(type: .custom)
-            .withBackgroundImage(img("bg-send-small"))
-            .withBackgroundColor(.white)
-            .withImage(img("icon-arrow-up"))
-            .withAlignment(.center)
-    }()
-    
     private(set) lazy var separatorView: UIView = {
         let view = UIView()
         view.backgroundColor = Colors.separatorColor
@@ -82,24 +71,18 @@ class ContactContextView: BaseView {
     
     weak var delegate: ContactContextViewDelegate?
     
-    // MARK: Setup
-    
     override func setListeners() {
         qrDisplayButton.addTarget(self, action: #selector(notifyDelegateToQRDisplayButtonTapped), for: .touchUpInside)
-        sendButton.addTarget(self, action: #selector(notifyDelegateToSendButtonTapped), for: .touchUpInside)
     }
     
     override func configureAppearance() {
         backgroundColor = .white
     }
     
-    // MARK: Layout
-    
     override func prepareLayout() {
         setupUserImageViewLayout()
         setupNameLabelLayout()
         setupAddressLabelLayout()
-        setupSendButtonLayout()
         setupQRDisplayButtonLayout()
         setupSeparatorViewLayout()
     }
@@ -132,22 +115,12 @@ class ContactContextView: BaseView {
         }
     }
     
-    private func setupSendButtonLayout() {
-        addSubview(sendButton)
-        
-        sendButton.snp.makeConstraints { make in
-            make.width.height.equalTo(layout.current.buttonSize)
-            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.centerY.equalToSuperview()
-        }
-    }
-    
     private func setupQRDisplayButtonLayout() {
         addSubview(qrDisplayButton)
         
         qrDisplayButton.snp.makeConstraints { make in
             make.width.height.equalTo(layout.current.buttonSize)
-            make.trailing.equalTo(sendButton.snp.leading).offset(layout.current.buttonInternalInset)
+            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
             make.centerY.equalToSuperview()
             make.leading.equalTo(addressLabel.snp.trailing).offset(layout.current.labelCenterOffset)
         }
@@ -163,15 +136,8 @@ class ContactContextView: BaseView {
         }
     }
     
-    // MARK: Actions
-    
     @objc
     private func notifyDelegateToQRDisplayButtonTapped() {
         delegate?.contactContextViewDidTapQRDisplayButton(self)
-    }
-    
-    @objc
-    private func notifyDelegateToSendButtonTapped() {
-        delegate?.contactContextViewDidTapSendButton(self)
     }
 }
