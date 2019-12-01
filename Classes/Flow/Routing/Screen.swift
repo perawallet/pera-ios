@@ -21,7 +21,7 @@ indirect enum Screen {
     case home(route: Screen?)
     case assetDetail(account: Account, assetDetail: AssetDetail?)
     case options(account: Account)
-    case accountList
+    case accountList(mode: AccountListViewController.Mode)
     case editAccount(account: Account)
     case contactSelection
     case addContact(mode: AddContactViewController.Mode)
@@ -48,6 +48,7 @@ indirect enum Screen {
     case assetSupportAlert(assetAlertDraft: AssetAlertDraft)
     case assetCancellableSupportAlert(assetAlertDraft: AssetAlertDraft)
     case rewardDetail(account: Account)
+    case assetList(account: Account)
 }
 
 extension Screen {

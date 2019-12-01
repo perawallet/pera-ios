@@ -205,8 +205,8 @@ class Router {
             viewController = qrCreationController
         case .home:
             viewController = TabBarController(configuration: configuration)
-        case .accountList:
-            viewController = AccountListViewController(configuration: configuration)
+        case let .accountList(mode):
+            viewController = AccountListViewController(mode: mode, configuration: configuration)
         case let .options(account):
             viewController = OptionsViewController(account: account, configuration: configuration)
         case let .editAccount(account):
@@ -287,6 +287,8 @@ class Router {
             viewController = AssetCancellableSupportAlertViewController(assetAlertDraft: assetAlertDraft, configuration: configuration)
         case let .rewardDetail(account):
             viewController = RewardDetailViewController(account: account, configuration: configuration)
+        case let .assetList(account):
+            viewController = AssetListViewController(account: account, configuration: configuration)
         }
         
         return viewController as? T

@@ -101,16 +101,16 @@ class RequestAlgosViewController: BaseViewController {
     // MARK: Navigation
     
     private func presentAccountList() {
-        let accountListViewController = open(
-            .accountList,
-            by: .customPresent(
-                presentationStyle: .custom,
-                transitionStyle: nil,
-                transitioningDelegate: accountListModalPresenter
-            )
-            ) as? AccountListViewController
-        
-        accountListViewController?.delegate = self
+//        let accountListViewController = open(
+//            .accountList,
+//            by: .customPresent(
+//                presentationStyle: .custom,
+//                transitionStyle: nil,
+//                transitioningDelegate: accountListModalPresenter
+//            )
+//            ) as? AccountListViewController
+//        
+//        accountListViewController?.delegate = self
     }
     
     private func displayPreview() {
@@ -207,10 +207,6 @@ extension RequestAlgosViewController: RequestAlgosViewDelegate {
 // MARK: AccountListViewControllerDelegate
 
 extension RequestAlgosViewController: AccountListViewControllerDelegate {
-    
-    func accountListViewControllerDidTapAddButton(_ viewController: AccountListViewController) {
-    }
-    
     func accountListViewController(_ viewController: AccountListViewController, didSelectAccount account: Account) {
         requestAlgosView.accountSelectionView.detailLabel.text = account.name
         requestAlgosView.accountSelectionView.set(amount: account.amount.toAlgos)

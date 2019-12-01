@@ -251,6 +251,8 @@
 "contacts-delete-contact-alert-explanation" = "Are you sure you want to delete this contact?";
 "contacts-close-warning-title" = "Are you sure?";
 "contacts-close-warning-subtitle" = "Your unsaved progress will be lost. Are you sure?";
+"contacts-title-assets" = "Assets";
+"title-select-asset" = "Select Asset";
 
 // MARK: Settings
 

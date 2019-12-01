@@ -9,30 +9,23 @@
 import UIKit
 
 class AccountListViewModel {
-    
-    func configure(_ cell: AccountViewCell, with account: Account) {
+    func configure(_ cell: AccountViewCell, with account: Account, for mode: AccountListViewController.Mode) {
         cell.contextView.nameLabel.text = account.name
-        
-        if account.amount > 0 {
-            cell.contextView.algoImageView.tintColor = SharedColors.turquois
-            cell.contextView.amountLabel.textColor = SharedColors.turquois
-            cell.contextView.amountLabel.text = "\(account.amount.toAlgos)"
-        } else if account.amount == 0 {
-            cell.contextView.algoImageView.tintColor = SharedColors.black
-            cell.contextView.amountLabel.textColor = SharedColors.black
-            cell.contextView.amountLabel.text = "\(account.amount.toAlgos)"
-        } else {
-            cell.contextView.algoImageView.tintColor = SharedColors.orange
-            cell.contextView.amountLabel.textColor = SharedColors.orange
-            cell.contextView.amountLabel.text = "\(account.amount.toAlgos)"
+        switch mode {
+        case .assetCount:
+            cell.contextView.detailLabel.text = "\(account.assetDetails.count) " + "contacts-title-assets".localized
+        case let .amount(assetDetail):
+            if let assetDetail = assetDetail {
+                guard let assetIndex = assetDetail.index,
+                    let asset = account.assets?[assetIndex] else {
+                        return
+                }
+                
+                let amountText = "\(Double(asset.amount).toDecimalStringForLabel ?? "")".attributed([.textColor(SharedColors.black)])
+                cell.contextView.detailLabel.attributedText = amountText + "(\(assetDetail.unitName ?? ""))".attributed()
+            } else {
+                cell.contextView.detailLabel.text = account.amount.toAlgos.toDecimalStringForLabel
+            }
         }
-        
-        if let amount = account.amount.toAlgos.toDecimalStringForLabel {
-            cell.contextView.amountLabel.text = amount
-        }
-    }
-    
-    func configure(_ cell: AccountsTotalDisplayCell, with totalAmount: String) {
-        cell.contextView.amountLabel.text = totalAmount
     }
 }

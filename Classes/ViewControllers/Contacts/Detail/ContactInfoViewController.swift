@@ -172,8 +172,13 @@ extension ContactInfoViewController: UICollectionViewDelegateFlowLayout {
 
 extension ContactInfoViewController: ContactAssetCellDelegate {
     func contactAssetCellDidTapSendButton(_ contactAssetCell: ContactAssetCell) {
+        guard let itemIndex = contactInfoView.assetsCollectionView.indexPath(for: contactAssetCell),
+            let contactAccount = contactAccount else {
+            return
+        }
+        
         let accountListViewController = open(
-            .accountList(mode: .assetCount),
+            .accountList(mode: .amount(assetDetail: itemIndex.item == 0 ? nil : contactAccount.assetDetails[itemIndex.item - 1])),
             by: .customPresent(
                 presentationStyle: .custom,
                 transitionStyle: nil,

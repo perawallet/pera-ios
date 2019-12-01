@@ -142,16 +142,16 @@ class SendAlgosViewController: BaseScrollViewController {
     // MARK: Navigation
     
     private func presentAccountList() {
-        let accountListViewController = open(
-            .accountList,
-            by: .customPresent(
-                presentationStyle: .custom,
-                transitionStyle: nil,
-                transitioningDelegate: accountListModalPresenter
-            )
-        ) as? AccountListViewController
-        
-        accountListViewController?.delegate = self
+//        let accountListViewController = open(
+//            .accountList,
+//            by: .customPresent(
+//                presentationStyle: .custom,
+//                transitionStyle: nil,
+//                transitioningDelegate: accountListModalPresenter
+//            )
+//        ) as? AccountListViewController
+//        
+//        accountListViewController?.delegate = self
     }
     
     private func displayQRScanner() {
@@ -447,10 +447,6 @@ extension SendAlgosViewController: SendAlgosViewDelegate {
 // MARK: AccountListViewControllerDelegate
 
 extension SendAlgosViewController: AccountListViewControllerDelegate {
-    
-    func accountListViewControllerDidTapAddButton(_ viewController: AccountListViewController) {
-    }
-    
     func accountListViewController(_ viewController: AccountListViewController, didSelectAccount account: Account) {
         if shouldUpdateReceiverForSelectedAccount {
             shouldUpdateReceiverForSelectedAccount = false

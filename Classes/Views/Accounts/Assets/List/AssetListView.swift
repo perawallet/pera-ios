@@ -1,14 +1,14 @@
 //
-//  AccountListView.swift
+//  AssetListView.swift
 //  algorand
 //
-//  Created by Göktuğ Berk Ulu on 27.03.2019.
+//  Created by Göktuğ Berk Ulu on 1.12.2019.
 //  Copyright © 2019 hippo. All rights reserved.
 //
 
 import UIKit
 
-class AccountListView: BaseView {
+class AssetListView: BaseView {
     
     private let layout = Layout<LayoutConstants>()
 
@@ -20,10 +20,10 @@ class AccountListView: BaseView {
             .withTextColor(SharedColors.black)
             .withLine(.single)
             .withAlignment(.center)
-            .withText("send-algos-select".localized)
+            .withText("title-select-asset".localized)
     }()
     
-    private(set) lazy var accountsCollectionView: UICollectionView = {
+    private(set) lazy var assetsCollectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .vertical
         flowLayout.minimumLineSpacing = 0.0
@@ -34,7 +34,7 @@ class AccountListView: BaseView {
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = .white
         collectionView.contentInset = .zero
-        collectionView.register(AccountViewCell.self, forCellWithReuseIdentifier: AccountViewCell.reusableIdentifier)
+        collectionView.register(AssetSelectionCell.self, forCellWithReuseIdentifier: AssetSelectionCell.reusableIdentifier)
         return collectionView
     }()
     
@@ -49,7 +49,7 @@ class AccountListView: BaseView {
     }
 }
 
-extension AccountListView {
+extension AssetListView {
     private func setupTopImageViewLayout() {
         addSubview(topImageView)
         
@@ -69,21 +69,21 @@ extension AccountListView {
     }
     
     private func setupAccountCollectionViewLayout() {
-        addSubview(accountsCollectionView)
+        addSubview(assetsCollectionView)
         
-        accountsCollectionView.snp.makeConstraints { make in
+        assetsCollectionView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.accountListTopInset)
-            make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).offset(layout.current.accountListBottomInset)
+            make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.assetListTopInset)
+            make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).offset(layout.current.assetListBottomInset)
         }
     }
 }
 
-extension AccountListView {
+extension AssetListView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let imageViewTopInset: CGFloat = 10.0
+        let imageViewTopInset: CGFloat = 17.0
         let titleLabelOffset: CGFloat = 15.0
-        let accountListTopInset: CGFloat = 20.0
-        let accountListBottomInset: CGFloat = -20.0
+        let assetListTopInset: CGFloat = 10.0
+        let assetListBottomInset: CGFloat = -10.0
     }
 }
