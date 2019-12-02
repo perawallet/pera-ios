@@ -30,7 +30,7 @@ class AlgosInputView: BaseView {
     private let layout = Layout<LayoutConstants>()
     
     private enum Colors {
-        static let borderColor = rgb(0.94, 0.94, 0.94)
+        static let borderColor = rgb(0.91, 0.91, 0.92)
     }
     
     weak var delegate: AlgosInputViewDelegate?
@@ -58,7 +58,7 @@ class AlgosInputView: BaseView {
         return view
     }()
     
-    private lazy var algosImageView = UIImageView(image: img("icon-algo-black"))
+    private(set) lazy var algosImageView = UIImageView(image: img("icon-algo-black"))
     
     private(set) lazy var maxButton: UIButton = {
         let button = UIButton(type: .custom)
@@ -246,6 +246,18 @@ extension AlgosInputView: UITextFieldDelegate {
             return false
         } else {
             return true
+        }
+    }
+}
+
+extension AlgosInputView {
+    func set(enabled: Bool) {
+        inputTextField.isEnabled = enabled
+        
+        if enabled {
+            containerView.backgroundColor = .white
+        } else {
+            containerView.backgroundColor = Colors.borderColor
         }
     }
 }

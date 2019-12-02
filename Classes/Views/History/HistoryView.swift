@@ -23,15 +23,15 @@ class HistoryView: BaseView {
     var startDate = Date().dateByAdding(-1, .weekOfYear).date
     var endDate = Date()
     
-    private(set) lazy var accountSelectionView: AccountSelectionView = {
-        let accountSelectionView = AccountSelectionView()
+    private(set) lazy var accountSelectionView: SelectionView = {
+        let accountSelectionView = SelectionView()
         accountSelectionView.backgroundColor = .clear
         accountSelectionView.explanationLabel.text = "history-account".localized
         return accountSelectionView
     }()
     
-    private(set) lazy var assetSelectionView: AccountSelectionView = {
-        let assetSelectionView = AccountSelectionView()
+    private(set) lazy var assetSelectionView: SelectionView = {
+        let assetSelectionView = SelectionView()
         assetSelectionView.backgroundColor = .clear
         assetSelectionView.explanationLabel.text = "history-asset".localized
         assetSelectionView.detailLabel.text = "send-select-asset".localized
@@ -135,10 +135,6 @@ extension HistoryView {
         accountSelectionView.snp.makeConstraints { make in
             make.leading.top.trailing.equalToSuperview()
         }
-        
-        accountSelectionView.rightInputAccessoryButton.snp.updateConstraints { make in
-            make.top.equalTo(accountSelectionView.explanationLabel.snp.bottom).offset(layout.current.arrowTopInset)
-        }
     }
     
     private func setupAssetSelectionViewLayout() {
@@ -147,10 +143,6 @@ extension HistoryView {
         assetSelectionView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(accountSelectionView.snp.bottom)
-        }
-        
-        assetSelectionView.rightInputAccessoryButton.snp.updateConstraints { make in
-            make.top.equalTo(assetSelectionView.explanationLabel.snp.bottom).offset(layout.current.arrowTopInset)
         }
     }
     
@@ -381,14 +373,8 @@ extension HistoryView {
 }
 
 extension HistoryView {
-    func setSelectionView(_ selectionView: AccountSelectionView, enabled: Bool) {
-        selectionView.isUserInteractionEnabled = enabled
-        
-        if enabled {
-            selectionView.containerView.backgroundColor = .white
-        } else {
-            selectionView.containerView.backgroundColor = Colors.disabledColor
-        }
+    func setSelectionView(_ selectionView: SelectionView, enabled: Bool) {
+        selectionView.set(enabled: enabled)
     }
 }
 

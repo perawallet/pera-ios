@@ -19,7 +19,6 @@ class RequestTransactionViewController: BaseScrollViewController {
     
     init(transaction: TransactionPreviewDraft, configuration: ViewControllerConfiguration) {
         self.transaction = transaction
-        
         super.init(configuration: configuration)
         
         hidesBottomBarWhenPushed = true
@@ -28,11 +27,11 @@ class RequestTransactionViewController: BaseScrollViewController {
     override func configureAppearance() {
         super.configureAppearance()
         
-        title = "request-algos-title".localized
-        
-        requestTransactionView.algosInputView.inputTextField.text = transaction.amount.toDecimalStringForLabel
-        requestTransactionView.accountSelectionView.detailLabel.text = transaction.fromAccount.name
-        requestTransactionView.accountSelectionView.set(amount: transaction.fromAccount.amount.toAlgos)
+        if transaction.isAlgoTransaction {
+            configureViewForAlgos()
+        } else {
+            configureViewForAssets()
+        }
     }
     
     override func linkInteractors() {
@@ -56,6 +55,36 @@ extension RequestTransactionViewController {
     }
 }
 
+extension RequestTransactionViewController {
+    private func configureViewForAlgos() {
+        title = "request-algos-title".localized
+        requestTransactionView.transactionParticipantView.accountSelectionView.detailLabel.text = transaction.fromAccount.name
+        requestTransactionView.transactionParticipantView.accountSelectionView.amountView.amountLabel.textColor = SharedColors.turquois
+        requestTransactionView.transactionParticipantView.accountSelectionView.amountView.algoIconImageView.tintColor =
+            SharedColors.turquois
+        requestTransactionView.amountInputView.inputTextField.text = transaction.amount.toDecimalStringForLabel
+    }
+    
+    private func configureViewForAssets() {
+        requestTransactionView.transactionParticipantView.accountSelectionView.amountView.amountLabel.textColor = SharedColors.black
+        requestTransactionView.transactionParticipantView.accountSelectionView.amountView.algoIconImageView.isHidden = true
+        requestTransactionView.transactionParticipantView.accountSelectionView.detailLabel.text = transaction.fromAccount.name
+        requestTransactionView.amountInputView.inputTextField.text = transaction.amount.toDecimalStringForLabel
+        requestTransactionView.amountInputView.algosImageView.isHidden = true
+        
+        guard let assetDetail = transaction.assetDetail,
+            let assetName = assetDetail.assetName,
+            let assetCode = assetDetail.unitName else {
+            return
+        }
+        
+        title = "\(assetName) " + "request-title".localized
+        let nameText = assetName.attributed()
+        let codeText = "(\(assetCode))".attributed([.textColor(SharedColors.purple)])
+        requestTransactionView.transactionParticipantView.assetSelectionView.detailLabel.attributedText = nameText + codeText
+    }
+}
+
 extension RequestTransactionViewController: RequestTransactionViewDelegate {
     func requestTransactionViewDidTapShareButton(_ requestTransactionView: RequestTransactionView) {
         guard let qrImage = requestTransactionView.qrView.imageView.image,
@@ -66,7 +95,6 @@ extension RequestTransactionViewController: RequestTransactionViewDelegate {
         let sharedItem: [Any] = [shareUrl, qrImage]
         let activityViewController = UIActivityViewController(activityItems: sharedItem, applicationActivities: nil)
         activityViewController.excludedActivityTypes = [UIActivity.ActivityType.addToReadingList]
-        
         navigationController?.present(activityViewController, animated: true, completion: nil)
     }
 }

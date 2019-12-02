@@ -8,28 +8,9 @@
 
 import UIKit
 
-class AccountSelectionView: BaseView {
-    
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let defaultInset: CGFloat = 15.0
-        let horizontalInset: CGFloat = 30.0
-        let verticalInset: CGFloat = 10.0
-        let containerViewTopInset: CGFloat = 7.0
-        let amountViewHeight: CGFloat = 22.0
-        let detailVerticalInset: CGFloat = 16.0
-        let buttonTrailingInset: CGFloat = 12.0
-        let nameTrailingInset: CGFloat = -5.0
-        let buttonTopInset: CGFloat = 13.0
-        let buttonWidth: CGFloat = 25.0
-    }
+class SelectionView: BaseView {
     
     private let layout = Layout<LayoutConstants>()
-    
-    private enum Colors {
-        static let borderColor = rgb(0.94, 0.94, 0.94)
-    }
-    
-    // MARK: Components
     
     private(set) lazy var explanationLabel: UILabel = {
         UILabel()
@@ -55,34 +36,35 @@ class AccountSelectionView: BaseView {
             .withLine(.single)
     }()
     
-    private(set) lazy var algosAmountView: AlgosAmountView = {
-        let view = AlgosAmountView()
-        view.amountLabel.font = UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))
-        view.signLabel.isHidden = true
-        view.amountLabel.textColor = SharedColors.turquois
-        view.isHidden = true
-        view.algoIconImageView.tintColor = SharedColors.turquois
-        return view
+    private(set) lazy var amountView: AlgosAmountView = {
+        let amountView = AlgosAmountView()
+        amountView.signLabel.isHidden = true
+        amountView.isHidden = true
+        return amountView
     }()
     
     private(set) lazy var rightInputAccessoryButton: UIButton = {
         let button = UIButton(type: .custom)
         button.setImage(img("icon-arrow-right"), for: .normal)
+        button.contentMode = .center
         return button
     }()
-    
-    // MARK: Layout
     
     override func prepareLayout() {
         setupExplanationLabelLayout()
         setupContainerViewLayout()
         setupRightInputAccessoryButtonLayout()
-        setupAlgosAmountViewLayout()
+        setupAmountViewLayout()
         setupDetailLabelLayout()
     }
-    
+}
+
+extension SelectionView {
     private func setupExplanationLabelLayout() {
         addSubview(explanationLabel)
+        
+        explanationLabel.setContentHuggingPriority(.required, for: .horizontal)
+        explanationLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
         
         explanationLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(layout.current.horizontalInset)
@@ -106,34 +88,75 @@ class AccountSelectionView: BaseView {
         
         rightInputAccessoryButton.snp.makeConstraints { make in
             make.trailing.equalToSuperview().inset(layout.current.buttonTrailingInset)
-            make.top.equalTo(explanationLabel.snp.bottom).offset(layout.current.buttonTopInset)
+            make.centerY.equalToSuperview()
             make.width.equalTo(layout.current.buttonWidth)
         }
     }
     
-    private func setupAlgosAmountViewLayout() {
-        containerView.addSubview(algosAmountView)
+    private func setupAmountViewLayout() {
+        containerView.addSubview(amountView)
         
-        algosAmountView.snp.makeConstraints { make in
+        amountView.setContentHuggingPriority(.required, for: .horizontal)
+        amountView.setContentCompressionResistancePriority(.required, for: .horizontal)
+        
+        amountView.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.height.equalTo(layout.current.amountViewHeight)
-            make.trailing.equalToSuperview().inset(layout.current.defaultInset)
+            make.trailing.equalToSuperview().inset(layout.current.amountViewTrailingInset)
         }
     }
     
     private func setupDetailLabelLayout() {
         containerView.addSubview(detailLabel)
         
+        detailLabel.setContentHuggingPriority(.required, for: .horizontal)
+        detailLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+        
         detailLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(layout.current.defaultInset)
             make.top.bottom.equalToSuperview().inset(layout.current.detailVerticalInset)
-            make.trailing.lessThanOrEqualTo(algosAmountView.snp.leading).offset(layout.current.nameTrailingInset)
+            make.trailing.lessThanOrEqualTo(amountView.snp.leading).offset(layout.current.nameTrailingInset)
         }
     }
-    
+}
+
+extension SelectionView {
     func set(amount: Double) {
-        algosAmountView.isHidden = false
+        amountView.isHidden = false
         rightInputAccessoryButton.isHidden = true
-        algosAmountView.amountLabel.text = amount.toDecimalStringForLabel
+        amountView.amountLabel.text = amount.toDecimalStringForLabel
+    }
+    
+    func set(enabled: Bool) {
+        isUserInteractionEnabled = enabled
+        
+        if enabled {
+            containerView.backgroundColor = .white
+        } else {
+            rightInputAccessoryButton.isHidden = true
+            containerView.backgroundColor = Colors.borderColor
+        }
+    }
+}
+
+extension SelectionView {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let defaultInset: CGFloat = 15.0
+        let amountViewTrailingInset: CGFloat = 20.0
+        let horizontalInset: CGFloat = 30.0
+        let verticalInset: CGFloat = 15.0
+        let containerViewTopInset: CGFloat = 7.0
+        let amountViewHeight: CGFloat = 22.0
+        let detailVerticalInset: CGFloat = 16.0
+        let buttonTrailingInset: CGFloat = 12.0
+        let nameTrailingInset: CGFloat = -5.0
+        let buttonTopInset: CGFloat = 13.0
+        let buttonWidth: CGFloat = 25.0
+    }
+}
+
+extension SelectionView {
+    private enum Colors {
+        static let borderColor = rgb(0.91, 0.91, 0.92)
     }
 }

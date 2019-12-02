@@ -18,7 +18,6 @@ class AlgosAmountView: BaseView {
     
     var mode: Mode = .normal(0.00) {
         didSet {
-            
             updateAmountView()
         }
     }

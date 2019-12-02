@@ -11,35 +11,37 @@ import SnapKit
 
 class RequestTransactionPreviewViewController: BaseViewController {
     
-    private lazy var accountListModalPresenter = CardModalPresenter(
-        config: ModalConfiguration(
-            animationMode: .normal(duration: 0.25),
-            dismissMode: .scroll
-        )
-    )
-    
     private lazy var requestTransactionPreviewView = RequestTransactionPreviewView()
     
     private var keyboard = Keyboard()
-    
     private var contentViewBottomConstraint: Constraint?
-    
     private var amount: Double = 0.00
-    private var selectedAccount: Account
+    private let account: Account
+    private var assetDetail: AssetDetail?
+    private let isAlgoTransaction: Bool
     
-    init(account: Account, configuration: ViewControllerConfiguration) {
-        self.selectedAccount = account
-        
+    init(account: Account, assetDetail: AssetDetail?, configuration: ViewControllerConfiguration, isAlgoTransaction: Bool = false) {
+        self.account = account
+        self.assetDetail = assetDetail
+        self.isAlgoTransaction = isAlgoTransaction
         super.init(configuration: configuration)
         
         hidesBottomBarWhenPushed = true
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        requestTransactionPreviewView.amountInputView.beginEditing()
+    }
+    
     override func configureAppearance() {
         super.configureAppearance()
-        title = "request-algos-title".localized
-        requestTransactionPreviewView.accountSelectionView.detailLabel.text = selectedAccount.name
-        requestTransactionPreviewView.accountSelectionView.set(amount: selectedAccount.amount.toAlgos)
+        
+        if isAlgoTransaction {
+            configureViewForAlgos()
+        } else {
+            configureViewForAssets()
+        }
     }
     
     override func setListeners() {
@@ -68,7 +70,9 @@ class RequestTransactionPreviewViewController: BaseViewController {
         super.prepareLayout()
         setupRequestTransactionPreviewViewLayout()
     }
-    
+}
+
+extension RequestTransactionPreviewViewController {
     private func setupRequestTransactionPreviewViewLayout() {
         view.addSubview(requestTransactionPreviewView)
         
@@ -77,27 +81,41 @@ class RequestTransactionPreviewViewController: BaseViewController {
             contentViewBottomConstraint = make.bottom.equalToSuperview().inset(view.safeAreaBottom).constraint
         }
     }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        requestTransactionPreviewView.algosInputView.beginEditing()
+}
+
+extension RequestTransactionPreviewViewController {
+    private func configureViewForAlgos() {
+        title = "request-algos-title".localized
+        requestTransactionPreviewView.transactionParticipantView.accountSelectionView.detailLabel.text = account.name
+        requestTransactionPreviewView.transactionParticipantView.assetSelectionView.detailLabel.text = "asset-algos-title".localized
+        requestTransactionPreviewView.transactionParticipantView.assetSelectionView.amountView.amountLabel.textColor =
+            SharedColors.turquois
+        requestTransactionPreviewView.transactionParticipantView.assetSelectionView.amountView.algoIconImageView.tintColor =
+            SharedColors.turquois
     }
     
-    private func presentAccountList() {
-//        let accountListViewController = open(
-//            .accountList,
-//            by: .customPresent(
-//                presentationStyle: .custom,
-//                transitionStyle: nil,
-//                transitioningDelegate: accountListModalPresenter
-//            )
-//            ) as? AccountListViewController
-//        
-//        accountListViewController?.delegate = self
+    private func configureViewForAssets() {
+        requestTransactionPreviewView.transactionParticipantView.accountSelectionView.amountView.amountLabel.textColor = SharedColors.black
+        requestTransactionPreviewView.transactionParticipantView.accountSelectionView.amountView.algoIconImageView.isHidden = true
+        requestTransactionPreviewView.transactionParticipantView.accountSelectionView.detailLabel.text = account.name
+        requestTransactionPreviewView.amountInputView.algosImageView.isHidden = true
+        title = "request-asset-title".localized
+        
+        guard let assetDetail = assetDetail,
+            let assetName = assetDetail.assetName,
+            let assetCode = assetDetail.unitName else {
+            return
+        }
+        
+        let nameText = assetName.attributed()
+        let codeText = "(\(assetCode))".attributed([.textColor(SharedColors.purple)])
+        requestTransactionPreviewView.transactionParticipantView.assetSelectionView.detailLabel.attributedText = nameText + codeText
     }
-    
+}
+
+extension RequestTransactionPreviewViewController {
     private func displayPreview() {
-        if let algosAmountText = requestTransactionPreviewView.algosInputView.inputTextField.text,
+        if let algosAmountText = requestTransactionPreviewView.amountInputView.inputTextField.text,
             let doubleValue = algosAmountText.doubleForSendSeparator {
             amount = doubleValue
         }
@@ -108,8 +126,14 @@ class RequestTransactionPreviewViewController: BaseViewController {
         
         view.endEditing(true)
         
-        let transaction = TransactionPreviewDraft(fromAccount: selectedAccount, amount: amount, identifier: nil, fee: nil)
-        
+        let transaction = TransactionPreviewDraft(
+            fromAccount: account,
+            amount: amount,
+            identifier: nil,
+            fee: nil,
+            isAlgoTransaction: isAlgoTransaction,
+            assetDetail: assetDetail
+        )
         open(.requestTransaction(transaction: transaction), by: .push)
     }
     
@@ -120,9 +144,9 @@ class RequestTransactionPreviewViewController: BaseViewController {
         
         return false
     }
-    
-    // MARK: Keyboard
-    
+}
+
+extension RequestTransactionPreviewViewController {
     @objc
     fileprivate func didReceive(keyboardWillShow notification: Notification) {
         if !UIApplication.shared.isActive {
@@ -175,20 +199,7 @@ class RequestTransactionPreviewViewController: BaseViewController {
 }
 
 extension RequestTransactionPreviewViewController: RequestTransactionPreviewViewDelegate {
-    func requestTransactionPreviewViewDidTapAccountSelectionView(_ requestTransactionPreviewView: RequestTransactionPreviewView) {
-        presentAccountList()
-    }
-    
     func requestTransactionPreviewViewDidTapPreviewButton(_ requestTransactionPreviewView: RequestTransactionPreviewView) {
         displayPreview()
-    }
-}
-
-extension RequestTransactionPreviewViewController: AccountListViewControllerDelegate {
-    func accountListViewController(_ viewController: AccountListViewController, didSelectAccount account: Account) {
-        requestTransactionPreviewView.accountSelectionView.detailLabel.text = account.name
-        requestTransactionPreviewView.accountSelectionView.set(amount: account.amount.toAlgos)
-        
-        selectedAccount = account
     }
 }

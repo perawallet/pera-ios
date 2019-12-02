@@ -260,6 +260,14 @@ extension ContactInfoViewController: AddContactViewControllerDelegate {
 
 extension ContactInfoViewController: AccountListViewControllerDelegate {
     func accountListViewController(_ viewController: AccountListViewController, didSelectAccount account: Account) {
-        open(.sendTransactionPreview(account: account, receiver: .contact(contact)), by: .push)
+        open(
+            .sendTransactionPreview(
+                account: account,
+                receiver: .contact(contact),
+                assetDetail: nil,
+                isAlgoTransaction: true
+            ),
+            by: .push
+        )
     }
 }

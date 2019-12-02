@@ -194,6 +194,8 @@
 // MARK: Algos Request
 
 "request-algos-title" = "Request Algos";
+"request-title" = "Request";
+"request-asset-title" = "Asset Request";
 
 // MARK: Account List
 
