@@ -220,9 +220,15 @@ class Router {
             viewController = ContactInfoViewController(contact: contact, configuration: configuration)
         case let .contactQRDisplay(contact):
             viewController = ContactQRDisplayViewController(contact: contact, configuration: configuration)
-        case let .sendTransactionPreview(account, receiver):
+        case let .sendTransactionPreview(account, receiver, assetDetail, isAlgoTransaction):
             configuration.transactionManager = rootViewController.appConfiguration.transactionManager
-            viewController = SendTransactionPreviewViewController(account: account, receiver: receiver, configuration: configuration)
+            viewController = SendTransactionPreviewViewController(
+                account: account,
+                receiver: receiver,
+                assetDetail: assetDetail,
+                configuration: configuration,
+                isAlgoTransaction: isAlgoTransaction
+            )
         case let .sendTransaction(transaction, receiver):
             configuration.transactionManager = rootViewController.appConfiguration.transactionManager
             viewController = SendTransactionViewController(
@@ -230,8 +236,13 @@ class Router {
                 receiver: receiver,
                 configuration: configuration
             )
-        case let .requestTransactionPreview(account):
-            viewController = RequestTransactionPreviewViewController(account: account, configuration: configuration)
+        case let .requestTransactionPreview(account, assetDetail, isAlgoTransaction):
+            viewController = RequestTransactionPreviewViewController(
+                account: account,
+                assetDetail: assetDetail,
+                configuration: configuration,
+                isAlgoTransaction: isAlgoTransaction
+            )
         case let .requestTransaction(transaction):
             viewController = RequestTransactionViewController(transaction: transaction, configuration: configuration)
         case let .historyResults(draft):

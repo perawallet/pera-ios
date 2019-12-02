@@ -23,6 +23,7 @@ class AssetDetailViewController: BaseViewController {
     
     private var account: Account
     private var assetDetail: AssetDetail?
+    private var isAlgoDisplay: Bool
     
     private var currentDollarConversion: Double?
     private let viewModel = AssetDetailViewModel()
@@ -31,10 +32,7 @@ class AssetDetailViewController: BaseViewController {
     
     var route: Screen?
     
-    private lazy var assetDetailView: AssetDetailView = {
-        let view = AssetDetailView()
-        return view
-    }()
+    private lazy var assetDetailView = AssetDetailView()
     
     private lazy var emptyStateView = EmptyStateView(
         title: "accounts-tranaction-empty-text".localized,
@@ -46,6 +44,7 @@ class AssetDetailViewController: BaseViewController {
     init(account: Account, configuration: ViewControllerConfiguration, assetDetail: AssetDetail? = nil) {
         self.account = account
         self.assetDetail = assetDetail
+        self.isAlgoDisplay = assetDetail == nil
         transactionHistoryDataSource = TransactionHistoryDataSource(api: configuration.api)
         
         super.init(configuration: configuration)
@@ -276,11 +275,19 @@ extension AssetDetailViewController {
 
 extension AssetDetailViewController: AssetDetailViewDelegate {
     func assetDetailViewDidTapSendButton(_ assetDetailView: AssetDetailView) {
-        open(.sendTransactionPreview(account: account, receiver: .initial), by: .push)
+        open(
+            .sendTransactionPreview(
+                account: account,
+                receiver: .initial,
+                assetDetail: assetDetail,
+                isAlgoTransaction: isAlgoDisplay
+            ),
+            by: .push
+        )
     }
     
     func assetDetailViewDidTapReceiveButton(_ assetDetailView: AssetDetailView) {
-        open(.requestTransactionPreview(account: account), by: .push)
+        open(.requestTransactionPreview(account: account, assetDetail: assetDetail, isAlgoTransaction: isAlgoDisplay), by: .push)
     }
     
     func assetDetailView(_ assetDetailView: AssetDetailView, didTrigger dollarValueGestureRecognizer: UILongPressGestureRecognizer) {
