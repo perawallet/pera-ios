@@ -1,5 +1,5 @@
 //
-//  ReceiveAlgosPreviewView.swift
+//  RequestTransactionViewDelegate.swift
 //  algorand
 //
 //  Created by Göktuğ Berk Ulu on 11.04.2019.
@@ -8,32 +8,21 @@
 
 import UIKit
 
-protocol RequestAlgosPreviewViewDelegate: class {
-    
-    func requestAlgosPreviewViewDidTapShareButton(_ requestAlgosPreviewView: RequestAlgosPreviewView)
+protocol RequestTransactionViewDelegate: class {
+    func requestTransactionViewDidTapShareButton(_ requestTransactionView: RequestTransactionView)
 }
 
-class RequestAlgosPreviewView: RequestAlgosView {
-    
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let topInset: CGFloat = 45.0 * verticalScale
-        let verticalInset: CGFloat = 20.0 * verticalScale
-        let algosInputViewInset: CGFloat = 30.0 * verticalScale
-        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
-    }
+class RequestTransactionView: RequestTransactionPreviewView {
     
     private let layout = Layout<LayoutConstants>()
     
-    weak var previewViewDelegate: RequestAlgosPreviewViewDelegate?
-    
-    // MARK: Components
+    weak var transactionDelegate: RequestTransactionViewDelegate?
     
     private let address: String
     private let amount: Int64
     
     private(set) lazy var qrView: QRView = {
         let qrText = QRText(mode: .algosRequest, text: address, amount: amount)
-        
         return QRView(qrText: qrText)
     }()
     
@@ -46,8 +35,6 @@ class RequestAlgosPreviewView: RequestAlgosView {
         super.init(frame: .zero)
     }
     
-    // MARK: Setup
-    
     override func configureAppearance() {
         super.configureAppearance()
         
@@ -59,16 +46,15 @@ class RequestAlgosPreviewView: RequestAlgosView {
         shareButton.addTarget(self, action: #selector(notifyDelegateToShareButtonTapped), for: .touchUpInside)
     }
     
-    // MARK: Layout
-    
     override func prepareLayout() {
         super.prepareLayout()
-        
         setupQRViewLayout()
         updateAlgosInputViewLayout()
         setupShareButtonLayout()
     }
-    
+}
+
+extension RequestTransactionView {
     private func setupQRViewLayout() {
         addSubview(qrView)
         
@@ -98,11 +84,20 @@ class RequestAlgosPreviewView: RequestAlgosView {
             make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
         }
     }
-    
-    // MARK: Actions
-    
+}
+
+extension RequestTransactionView {
     @objc
     private func notifyDelegateToShareButtonTapped() {
-        previewViewDelegate?.requestAlgosPreviewViewDidTapShareButton(self)
+        transactionDelegate?.requestTransactionViewDidTapShareButton(self)
+    }
+}
+
+extension RequestTransactionView {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let topInset: CGFloat = 45.0 * verticalScale
+        let verticalInset: CGFloat = 20.0 * verticalScale
+        let algosInputViewInset: CGFloat = 30.0 * verticalScale
+        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
     }
 }

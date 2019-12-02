@@ -1,5 +1,5 @@
 //
-//  SendAlgosViewController.swift
+//  SendTransactionPreviewViewController.swift
 //  algorand
 //
 //  Created by Göktuğ Berk Ulu on 8.04.2019.
@@ -12,9 +12,7 @@ import SVProgressHUD
 import Magpie
 import Alamofire
 
-class SendAlgosViewController: BaseScrollViewController {
-    
-    // MARK: Variables
+class SendTransactionPreviewViewController: BaseScrollViewController {
     
     private lazy var accountListModalPresenter = CardModalPresenter(
         config: ModalConfiguration(
@@ -23,12 +21,7 @@ class SendAlgosViewController: BaseScrollViewController {
         )
     )
     
-    // MARK: Components
-    
-    private lazy var sendAlgosView: SendAlgosView = {
-        let view = SendAlgosView()
-        return view
-    }()
+    private lazy var sendTransactionPreviewView = SendTransactionPreviewView()
     
     private var keyboard = Keyboard()
     
@@ -44,10 +37,8 @@ class SendAlgosViewController: BaseScrollViewController {
     private var isConnectedToInternet = true
     
     private var isMaxButtonSelected: Bool {
-        return self.sendAlgosView.algosInputView.isMaxButtonSelected
+        return self.sendTransactionPreviewView.algosInputView.isMaxButtonSelected
     }
-    
-    // MARK: Initialization
     
     init(account: Account, receiver: AlgosReceiverState, configuration: ViewControllerConfiguration) {
         self.selectedAccount = account
@@ -58,35 +49,33 @@ class SendAlgosViewController: BaseScrollViewController {
         hidesBottomBarWhenPushed = true
     }
     
-    // MARK: Setup
-    
     override func configureAppearance() {
         super.configureAppearance()
         
         title = "send-algos-title".localized
         
-        sendAlgosView.accountSelectionView.detailLabel.text = selectedAccount.name
-        sendAlgosView.accountSelectionView.set(amount: selectedAccount.amount.toAlgos)
-        sendAlgosView.algosInputView.maxAmount = selectedAccount.amount.toAlgos
+        sendTransactionPreviewView.accountSelectionView.detailLabel.text = selectedAccount.name
+        sendTransactionPreviewView.accountSelectionView.set(amount: selectedAccount.amount.toAlgos)
+        sendTransactionPreviewView.algosInputView.maxAmount = selectedAccount.amount.toAlgos
         
         switch receiver {
         case .initial:
             amount = 0.00
             
-            sendAlgosView.transactionReceiverView.state = receiver
+            sendTransactionPreviewView.transactionReceiverView.state = receiver
         case let .address(_, amount):
             if let sendAmount = amount,
                 let amountInt = Int(sendAmount) {
                 
                 self.amount = amountInt.toAlgos
-                sendAlgosView.algosInputView.inputTextField.text = self.amount.toDecimalStringForLabel
+                sendTransactionPreviewView.algosInputView.inputTextField.text = self.amount.toDecimalStringForLabel
             }
             
-            sendAlgosView.transactionReceiverView.state = receiver
+            sendTransactionPreviewView.transactionReceiverView.state = receiver
         case .myAccount:
-            sendAlgosView.transactionReceiverView.state = receiver
+            sendTransactionPreviewView.transactionReceiverView.state = receiver
         case .contact:
-            sendAlgosView.transactionReceiverView.state = receiver
+            sendTransactionPreviewView.transactionReceiverView.state = receiver
         }
     }
     
@@ -115,19 +104,18 @@ class SendAlgosViewController: BaseScrollViewController {
         
         transactionManager?.delegate = self
         scrollView.touchDetectingDelegate = self
-        sendAlgosView.delegate = self
+        sendTransactionPreviewView.delegate = self
     }
     
     override func prepareLayout() {
         super.prepareLayout()
-        
-        setupSendAlgosViewLayout()
+        setupSendTransactionPreviewViewLayout()
     }
     
-    private func setupSendAlgosViewLayout() {
-        contentView.addSubview(sendAlgosView)
+    private func setupSendTransactionPreviewViewLayout() {
+        contentView.addSubview(sendTransactionPreviewView)
         
-        sendAlgosView.snp.makeConstraints { make in
+        sendTransactionPreviewView.snp.makeConstraints { make in
             make.leading.trailing.top.equalToSuperview()
             contentViewBottomConstraint = make.bottom.equalToSuperview().inset(view.safeAreaBottom).constraint
         }
@@ -135,11 +123,8 @@ class SendAlgosViewController: BaseScrollViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
-        sendAlgosView.algosInputView.beginEditing()
+        sendTransactionPreviewView.algosInputView.beginEditing()
     }
-    
-    // MARK: Navigation
     
     private func presentAccountList() {
 //        let accountListViewController = open(
@@ -167,16 +152,19 @@ class SendAlgosViewController: BaseScrollViewController {
     }
     
     private func displayTransactionPreview() {
-        if !sendAlgosView.transactionReceiverView.passphraseInputView.inputTextView.text.isEmpty {
+        if !sendTransactionPreviewView.transactionReceiverView.passphraseInputView.inputTextView.text.isEmpty {
             switch receiver {
             case .contact:
                 break
             default:
-                receiver = .address(address: sendAlgosView.transactionReceiverView.passphraseInputView.inputTextView.text, amount: nil)
+                receiver = .address(
+                    address: sendTransactionPreviewView.transactionReceiverView.passphraseInputView.inputTextView.text,
+                    amount: nil
+                )
             }
         }
         
-        if let algosAmountText = sendAlgosView.algosInputView.inputTextField.text,
+        if let algosAmountText = sendTransactionPreviewView.algosInputView.inputTextField.text,
             let doubleValue = algosAmountText.doubleForSendSeparator {
             amount = doubleValue
         }
@@ -360,7 +348,7 @@ class SendAlgosViewController: BaseScrollViewController {
         let curve = notification.keyboardAnimationCurve
         let curveAnimationOption = UIView.AnimationOptions(rawValue: UInt(curve.rawValue >> 16))
         
-        if sendAlgosView.transactionReceiverView.frame.maxY > UIScreen.main.bounds.height - kbHeight - 71.0 {
+        if sendTransactionPreviewView.transactionReceiverView.frame.maxY > UIScreen.main.bounds.height - kbHeight - 71.0 {
             scrollView.contentInset.bottom = kbHeight
         } else {
             contentViewBottomConstraint?.update(inset: kbHeight)
@@ -403,66 +391,60 @@ class SendAlgosViewController: BaseScrollViewController {
     }
 }
 
-// MARK: SendAlgosViewDelegate
-
-extension SendAlgosViewController: SendAlgosViewDelegate {
-    
-    func sendAlgosViewDidTapAccountSelectionView(_ sendAlgosView: SendAlgosView) {
+extension SendTransactionPreviewViewController: SendTransactionPreviewViewDelegate {
+    func sendTransactionPreviewViewDidTapAccountSelectionView(_ sendTransactionPreviewView: SendTransactionPreviewView) {
         shouldUpdateSenderForSelectedAccount = true
         presentAccountList()
     }
     
-    func sendAlgosViewDidTapPreviewButton(_ sendAlgosView: SendAlgosView) {
+    func sendTransactionPreviewViewDidTapPreviewButton(_ sendTransactionPreviewView: SendTransactionPreviewView) {
         view.endEditing(true)
-        
         displayTransactionPreview()
     }
     
-    func sendAlgosViewDidTapAddressButton(_ sendAlgosView: SendAlgosView) {
+    func sendTransactionPreviewViewDidTapAddressButton(_ sendTransactionPreviewView: SendTransactionPreviewView) {
         
     }
     
-    func sendAlgosViewDidTapMyAccountsButton(_ sendAlgosView: SendAlgosView) {
+    func sendTransactionPreviewViewDidTapMyAccountsButton(_ sendTransactionPreviewView: SendTransactionPreviewView) {
         shouldUpdateReceiverForSelectedAccount = true
         presentAccountList()
     }
     
-    func sendAlgosViewDidTapContactsButton(_ sendAlgosView: SendAlgosView) {
+    func sendTransactionPreviewViewDidTapContactsButton(_ sendTransactionPreviewView: SendTransactionPreviewView) {
         view.endEditing(true)
-        
         displayContactList()
     }
     
-    func sendAlgosViewDidTapScanQRButton(_ sendAlgosView: SendAlgosView) {
+    func sendTransactionPreviewViewDidTapScanQRButton(_ sendTransactionPreviewView: SendTransactionPreviewView) {
         view.endEditing(true)
-        
         displayQRScanner()
     }
     
-    func sendAlgosViewDidTapMaxButton(_ sendAlgosView: SendAlgosView) {
-        sendAlgosView.algosInputView.inputTextField.text = sendAlgosView.accountSelectionView.algosAmountView.amountLabel.text
+    func sendTransactionPreviewViewDidTapMaxButton(_ sendTransactionPreviewView: SendTransactionPreviewView) {
+        sendTransactionPreviewView.algosInputView.inputTextField.text =
+            sendTransactionPreviewView.accountSelectionView.algosAmountView.amountLabel.text
     }
 }
 
-// MARK: AccountListViewControllerDelegate
-
-extension SendAlgosViewController: AccountListViewControllerDelegate {
+extension SendTransactionPreviewViewController: AccountListViewControllerDelegate {
     func accountListViewController(_ viewController: AccountListViewController, didSelectAccount account: Account) {
         if shouldUpdateReceiverForSelectedAccount {
             shouldUpdateReceiverForSelectedAccount = false
             receiver = .myAccount(account)
-            sendAlgosView.transactionReceiverView.state = .address(address: account.address, amount: nil)
+            sendTransactionPreviewView.transactionReceiverView.state = .address(address: account.address, amount: nil)
             return
         }
         
         if shouldUpdateSenderForSelectedAccount {
             shouldUpdateSenderForSelectedAccount = false
-            sendAlgosView.accountSelectionView.detailLabel.text = account.name
-            sendAlgosView.accountSelectionView.set(amount: account.amount.toAlgos)
-            sendAlgosView.algosInputView.maxAmount = account.amount.toAlgos
+            sendTransactionPreviewView.accountSelectionView.detailLabel.text = account.name
+            sendTransactionPreviewView.accountSelectionView.set(amount: account.amount.toAlgos)
+            sendTransactionPreviewView.algosInputView.maxAmount = account.amount.toAlgos
             
             if isMaxButtonSelected {
-                sendAlgosView.algosInputView.inputTextField.text = sendAlgosView.accountSelectionView.algosAmountView.amountLabel.text
+                sendTransactionPreviewView.algosInputView.inputTextField.text =
+                    sendTransactionPreviewView.accountSelectionView.algosAmountView.amountLabel.text
             }
             
             selectedAccount = account
@@ -470,23 +452,16 @@ extension SendAlgosViewController: AccountListViewControllerDelegate {
     }
 }
 
-// MARK: AccountListViewControllerDelegate
-
-extension SendAlgosViewController: ContactsViewControllerDelegate {
-    
+extension SendTransactionPreviewViewController: ContactsViewControllerDelegate {
     func contactsViewController(_ contactsViewController: ContactsViewController, didSelect contact: Contact) {
-        sendAlgosView.transactionReceiverView.state = .contact(contact)
-
+        sendTransactionPreviewView.transactionReceiverView.state = .contact(contact)
         receiver = .contact(contact)
     }
 }
 
-// MARK: QRScannerViewControllerDelegate
-
-extension SendAlgosViewController: QRScannerViewControllerDelegate {
-    
+extension SendTransactionPreviewViewController: QRScannerViewControllerDelegate {
     func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, then handler: EmptyHandler?) {
-        sendAlgosView.transactionReceiverView.state = .address(address: qrText.text, amount: nil)
+        sendTransactionPreviewView.transactionReceiverView.state = .address(address: qrText.text, amount: nil)
         
         if let amountFromQR = qrText.amount,
             amountFromQR != 0 {
@@ -494,7 +469,7 @@ extension SendAlgosViewController: QRScannerViewControllerDelegate {
             
             amount = receivedAmount
             
-            sendAlgosView.algosInputView.inputTextField.text = receivedAmount.toDecimalStringForAlgosInput
+            sendTransactionPreviewView.algosInputView.inputTextField.text = receivedAmount.toDecimalStringForAlgosInput
         }
         
         receiver = .address(address: qrText.text, amount: nil)
@@ -509,9 +484,7 @@ extension SendAlgosViewController: QRScannerViewControllerDelegate {
     }
 }
 
-// MARK: TransactionManagerDelegate
-
-extension SendAlgosViewController: TransactionManagerDelegate {
+extension SendTransactionPreviewViewController: TransactionManagerDelegate {
     func transactionManagerDidComposedAlgoTransactionData(
         _ transactionManager: TransactionManager,
         forTransaction draft: TransactionPreviewDraft?
@@ -519,7 +492,7 @@ extension SendAlgosViewController: TransactionManagerDelegate {
         guard let transactionDraft = draft else {
             return
         }
-        open(.sendAlgosPreview(transaction: transactionDraft, receiver: receiver), by: .push)
+        open(.sendTransaction(transaction: transactionDraft, receiver: receiver), by: .push)
     }
     
     func transactionManagerDidComposedAssetTransactionData(
@@ -541,14 +514,11 @@ extension SendAlgosViewController: TransactionManagerDelegate {
     }
 }
 
-// MARK: TouchDetectingScrollViewDelegate
-
-extension SendAlgosViewController: TouchDetectingScrollViewDelegate {
-    
+extension SendTransactionPreviewViewController: TouchDetectingScrollViewDelegate {
     func scrollViewDidDetectTouchEvent(scrollView: TouchDetectingScrollView, in point: CGPoint) {
-        if sendAlgosView.previewButton.frame.contains(point) ||
-            sendAlgosView.algosInputView.frame.contains(point) ||
-            sendAlgosView.transactionReceiverView.frame.contains(point) {
+        if sendTransactionPreviewView.previewButton.frame.contains(point) ||
+            sendTransactionPreviewView.algosInputView.frame.contains(point) ||
+            sendTransactionPreviewView.transactionReceiverView.frame.contains(point) {
             
             return
         }
@@ -557,7 +527,7 @@ extension SendAlgosViewController: TouchDetectingScrollViewDelegate {
     }
 }
 
-extension SendAlgosViewController: MagpieDelegate {
+extension SendTransactionPreviewViewController: MagpieDelegate {
     func magpie(
         _ magpie: Magpie,
         networkMonitor: NetworkMonitor,

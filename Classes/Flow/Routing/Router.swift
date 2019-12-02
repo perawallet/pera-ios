@@ -220,20 +220,20 @@ class Router {
             viewController = ContactInfoViewController(contact: contact, configuration: configuration)
         case let .contactQRDisplay(contact):
             viewController = ContactQRDisplayViewController(contact: contact, configuration: configuration)
-        case let .sendAlgos(account, receiver):
+        case let .sendTransactionPreview(account, receiver):
             configuration.transactionManager = rootViewController.appConfiguration.transactionManager
-            viewController = SendAlgosViewController(account: account, receiver: receiver, configuration: configuration)
-        case let .sendAlgosPreview(transaction, receiver):
+            viewController = SendTransactionPreviewViewController(account: account, receiver: receiver, configuration: configuration)
+        case let .sendTransaction(transaction, receiver):
             configuration.transactionManager = rootViewController.appConfiguration.transactionManager
-            viewController = SendAlgosPreviewViewController(
+            viewController = SendTransactionViewController(
                 transaction: transaction,
                 receiver: receiver,
                 configuration: configuration
             )
-        case let .requestAlgos(account):
-            viewController = RequestAlgosViewController(account: account, configuration: configuration)
-        case let .requestAlgosPreview(transaction):
-            viewController = RequestAlgosPreviewViewController(transaction: transaction, configuration: configuration)
+        case let .requestTransactionPreview(account):
+            viewController = RequestTransactionPreviewViewController(account: account, configuration: configuration)
+        case let .requestTransaction(transaction):
+            viewController = RequestTransactionViewController(transaction: transaction, configuration: configuration)
         case let .historyResults(draft):
             viewController = HistoryResultsViewController(draft: draft, configuration: configuration)
         case let .nodeSettings(mode):

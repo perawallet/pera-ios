@@ -1,5 +1,5 @@
 //
-//  SendAlgosPreviewView.swift
+//  SendTransactionViewb.swift
 //  algorand
 //
 //  Created by Göktuğ Berk Ulu on 9.04.2019.
@@ -8,26 +8,15 @@
 
 import UIKit
 
-protocol SendAlgosPreviewViewDelegate: class {
-    
-    func sendAlgosPreviewViewDidTapSendButton(_ sendAlgosView: SendAlgosView)
+protocol SendTransactionViewDelegate: class {
+    func sendTransactionViewDidTapSendButton(_ sendTransactionView: SendTransactionView)
 }
 
-class SendAlgosPreviewView: SendAlgosView {
-    
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let topInset: CGFloat = 20.0
-        let trailingInset: CGFloat = 15.0
-        let feeViewHeight: CGFloat = 90.0
-        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
-        let bottomInset: CGFloat = 18.0
-    }
+class SendTransactionView: SendTransactionPreviewView {
     
     private let layout = Layout<LayoutConstants>()
     
-    weak var previewViewDelegate: SendAlgosPreviewViewDelegate?
-    
-    // MARK: Components
+    weak var transactionDelegate: SendTransactionViewDelegate?
     
     private(set) lazy var feeInformationView: DetailedInformationView = {
         let feeInformationView = DetailedInformationView(mode: .algos)
@@ -38,11 +27,8 @@ class SendAlgosPreviewView: SendAlgosView {
     
     private(set) lazy var sendButton = MainButton(title: "title-send".localized)
     
-    // MARK: Setup
-    
     override func configureAppearance() {
         super.configureAppearance()
-        
         algosInputView.inputTextField.isEnabled = false
         algosInputView.maxButton.isHidden = true
         transactionReceiverView.passphraseInputView.inputTextView.isEditable = false
@@ -54,16 +40,15 @@ class SendAlgosPreviewView: SendAlgosView {
         sendButton.addTarget(self, action: #selector(notifyDelegateToSendButtonTapped), for: .touchUpInside)
     }
     
-    // MARK: Layout
-    
     override func prepareLayout() {
         super.prepareLayout()
-        
         updateAccountSelectionViewLayout()
         setupFeeInformationViewLayout()
         setupSendButtonLayout()
     }
-    
+}
+
+extension SendTransactionView {
     private func updateAccountSelectionViewLayout() {
         accountSelectionView.rightInputAccessoryButton.snp.updateConstraints { make in
             make.trailing.equalToSuperview().inset(layout.current.trailingInset)
@@ -91,11 +76,21 @@ class SendAlgosPreviewView: SendAlgosView {
             make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
         }
     }
-    
-    // MARK: Actions
-    
+}
+
+extension SendTransactionView {
     @objc
     private func notifyDelegateToSendButtonTapped() {
-        previewViewDelegate?.sendAlgosPreviewViewDidTapSendButton(self)
+        transactionDelegate?.sendTransactionViewDidTapSendButton(self)
+    }
+}
+
+extension SendTransactionView {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let topInset: CGFloat = 20.0
+        let trailingInset: CGFloat = 15.0
+        let feeViewHeight: CGFloat = 90.0
+        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
+        let bottomInset: CGFloat = 18.0
     }
 }

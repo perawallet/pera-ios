@@ -1,5 +1,5 @@
 //
-//  ReceiveAlgosView.swift
+//  RequestTransactionPreviewView.swift
 //  algorand
 //
 //  Created by Göktuğ Berk Ulu on 11.04.2019.
@@ -8,33 +8,18 @@
 
 import UIKit
 
-protocol RequestAlgosViewDelegate: class {
-    
-    func requestAlgosViewDidTapAccountSelectionView(_ requestAlgosView: RequestAlgosView)
-    func requestAlgosViewDidTapPreviewButton(_ requestAlgosView: RequestAlgosView)
+protocol RequestTransactionPreviewViewDelegate: class {
+    func requestTransactionPreviewViewDidTapAccountSelectionView(_ requestTransactionPreviewView: RequestTransactionPreviewView)
+    func requestTransactionPreviewViewDidTapPreviewButton(_ requestTransactionPreviewView: RequestTransactionPreviewView)
 }
 
-class RequestAlgosView: BaseView {
-    
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let topInset: CGFloat = 20.0
-        let horizontalInset: CGFloat = 25.0
-        let bottomInset: CGFloat = 18.0
-        let buttonInset: CGFloat = 15.0
-        let buttonMinimumInset: CGFloat = 18.0
-        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
-    }
+class RequestTransactionPreviewView: BaseView {
     
     private let layout = Layout<LayoutConstants>()
     
-    weak var delegate: RequestAlgosViewDelegate?
+    weak var delegate: RequestTransactionPreviewViewDelegate?
     
-    // MARK: Components
-    
-    private(set) lazy var algosInputView: AlgosInputView = {
-        let view = AlgosInputView()
-        return view
-    }()
+    private(set) lazy var algosInputView = AlgosInputView()
     
     private(set) lazy var accountSelectionView: AccountSelectionView = {
         let accountSelectionView = AccountSelectionView()
@@ -44,11 +29,8 @@ class RequestAlgosView: BaseView {
     
     private(set) lazy var previewButton = MainButton(title: "title-preview".localized)
     
-    // MARK: Setup
-    
     override func setListeners() {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(notifyDelegateToAccountSelectionViewTapped))
-        
         accountSelectionView.isUserInteractionEnabled = true
         accountSelectionView.addGestureRecognizer(tapGestureRecognizer)
     }
@@ -57,14 +39,14 @@ class RequestAlgosView: BaseView {
         previewButton.addTarget(self, action: #selector(notifyDelegateToPreviewButtonTapped), for: .touchUpInside)
     }
     
-    // MARK: Layout
-    
     override func prepareLayout() {
         setupAlgosInputViewLayout()
         setupAccountSelectionViewLayout()
         setupPreviewButtonLayout()
     }
-    
+}
+
+extension RequestTransactionPreviewView {
     private func setupAlgosInputViewLayout() {
         addSubview(algosInputView)
         
@@ -92,16 +74,27 @@ class RequestAlgosView: BaseView {
             make.bottom.equalToSuperview().inset(layout.current.bottomInset)
         }
     }
-    
-    // MARK: Actions
-    
+}
+
+extension RequestTransactionPreviewView {
     @objc
     private func notifyDelegateToPreviewButtonTapped() {
-        delegate?.requestAlgosViewDidTapPreviewButton(self)
+        delegate?.requestTransactionPreviewViewDidTapPreviewButton(self)
     }
     
     @objc
     private func notifyDelegateToAccountSelectionViewTapped() {
-        delegate?.requestAlgosViewDidTapAccountSelectionView(self)
+        delegate?.requestTransactionPreviewViewDidTapAccountSelectionView(self)
+    }
+}
+
+extension RequestTransactionPreviewView {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let topInset: CGFloat = 20.0
+        let horizontalInset: CGFloat = 25.0
+        let bottomInset: CGFloat = 18.0
+        let buttonInset: CGFloat = 15.0
+        let buttonMinimumInset: CGFloat = 18.0
+        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
     }
 }

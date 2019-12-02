@@ -1,5 +1,5 @@
 //
-//  SendAlgosPreviewViewController.swift
+//  SendTransactionViewController.swift
 //  algorand
 //
 //  Created by Göktuğ Berk Ulu on 9.04.2019.
@@ -11,21 +11,14 @@ import Magpie
 import SVProgressHUD
 import Crypto
 
-class SendAlgosPreviewViewController: BaseViewController {
+class SendTransactionViewController: BaseViewController {
     
-    // MARK: Components
-    
-    private lazy var sendAlgosPreviewView: SendAlgosPreviewView = {
-        let view = SendAlgosPreviewView()
-        return view
-    }()
+    private lazy var sendTransactionView = SendTransactionView()
     
     private var transaction: TransactionPreviewDraft
     private let receiver: AlgosReceiverState
     
     var transactionData: Data?
-    
-    // MARK: Initialization
     
     init(
         transaction: TransactionPreviewDraft,
@@ -42,37 +35,36 @@ class SendAlgosPreviewViewController: BaseViewController {
         hidesBottomBarWhenPushed = true
     }
     
-    // MARK: Setup
-    
     override func configureAppearance() {
         super.configureAppearance()
         
         title = "send-algos-title".localized
         
-        sendAlgosPreviewView.algosInputView.inputTextField.text = transaction.amount.toDecimalStringForLabel
-        sendAlgosPreviewView.accountSelectionView.detailLabel.text = transaction.fromAccount.name
-        sendAlgosPreviewView.accountSelectionView.set(amount: transaction.fromAccount.amount.toAlgos)
-        sendAlgosPreviewView.transactionReceiverView.state = receiver
+        sendTransactionView.algosInputView.inputTextField.text = transaction.amount.toDecimalStringForLabel
+        sendTransactionView.accountSelectionView.detailLabel.text = transaction.fromAccount.name
+        sendTransactionView.accountSelectionView.set(amount: transaction.fromAccount.amount.toAlgos)
+        sendTransactionView.transactionReceiverView.state = receiver
         
-        sendAlgosPreviewView.transactionReceiverView.actionMode = .none
+        sendTransactionView.transactionReceiverView.actionMode = .none
         updateFeeLayout()
     }
     
     override func linkInteractors() {
-        sendAlgosPreviewView.previewViewDelegate = self
+        sendTransactionView.transactionDelegate = self
         transactionManager?.delegate = self
     }
     
     override func prepareLayout() {
         super.prepareLayout()
-        
-        setupSendAlgosPreviewViewLayout()
+        setupSendTransactionViewLayout()
     }
-    
-    private func setupSendAlgosPreviewViewLayout() {
-        view.addSubview(sendAlgosPreviewView)
+}
+
+extension SendTransactionViewController {
+    private func setupSendTransactionViewLayout() {
+        view.addSubview(sendTransactionView)
         
-        sendAlgosPreviewView.snp.makeConstraints { make in
+        sendTransactionView.snp.makeConstraints { make in
             make.leading.trailing.top.equalToSuperview()
             make.bottom.safeEqualToBottom(of: self)
         }
@@ -84,26 +76,22 @@ class SendAlgosPreviewViewController: BaseViewController {
                 receivedFee = Transaction.Constant.minimumFee
             }
             
-            sendAlgosPreviewView.feeInformationView.algosAmountView.mode = .normal(receivedFee.toAlgos)
+            sendTransactionView.feeInformationView.algosAmountView.mode = .normal(receivedFee.toAlgos)
         }
     }
 }
 
-// MARK: SendAlgosPreviewViewDelegate
-
-extension SendAlgosPreviewViewController: SendAlgosPreviewViewDelegate {
-    func sendAlgosPreviewViewDidTapSendButton(_ sendAlgosView: SendAlgosView) {
+extension SendTransactionViewController: SendTransactionViewDelegate {
+    func sendTransactionViewDidTapSendButton(_ sendTransactionView: SendTransactionView) {
         SVProgressHUD.show(withStatus: "title-loading".localized)
         transactionManager?.completeTransaction()
     }
 }
 
-extension SendAlgosPreviewViewController: TransactionManagerDelegate {
+extension SendTransactionViewController: TransactionManagerDelegate {
     func transactionManager(_ transactionManager: TransactionManager, didCompletedTransaction id: TransactionID) {
         SVProgressHUD.dismiss()
-        
         self.transaction.identifier = id.identifier
-        
         navigationController?.popToRootViewController(animated: false)
     }
     

@@ -9,9 +9,7 @@
 import UIKit
 import SnapKit
 
-class RequestAlgosViewController: BaseViewController {
-    
-    // MARK: Variables
+class RequestTransactionPreviewViewController: BaseViewController {
     
     private lazy var accountListModalPresenter = CardModalPresenter(
         config: ModalConfiguration(
@@ -20,12 +18,7 @@ class RequestAlgosViewController: BaseViewController {
         )
     )
     
-    // MARK: Components
-    
-    private lazy var requestAlgosView: RequestAlgosView = {
-        let view = RequestAlgosView()
-        return view
-    }()
+    private lazy var requestTransactionPreviewView = RequestTransactionPreviewView()
     
     private var keyboard = Keyboard()
     
@@ -33,8 +26,6 @@ class RequestAlgosViewController: BaseViewController {
     
     private var amount: Double = 0.00
     private var selectedAccount: Account
-
-    // MARK: Initialization
     
     init(account: Account, configuration: ViewControllerConfiguration) {
         self.selectedAccount = account
@@ -44,15 +35,11 @@ class RequestAlgosViewController: BaseViewController {
         hidesBottomBarWhenPushed = true
     }
     
-    // MARK: Setup
-    
     override func configureAppearance() {
         super.configureAppearance()
-        
         title = "request-algos-title".localized
-        
-        requestAlgosView.accountSelectionView.detailLabel.text = selectedAccount.name
-        requestAlgosView.accountSelectionView.set(amount: selectedAccount.amount.toAlgos)
+        requestTransactionPreviewView.accountSelectionView.detailLabel.text = selectedAccount.name
+        requestTransactionPreviewView.accountSelectionView.set(amount: selectedAccount.amount.toAlgos)
     }
     
     override func setListeners() {
@@ -74,19 +61,18 @@ class RequestAlgosViewController: BaseViewController {
     }
     
     override func linkInteractors() {
-        requestAlgosView.delegate = self
+        requestTransactionPreviewView.delegate = self
     }
     
     override func prepareLayout() {
         super.prepareLayout()
-        
-        setupRequestAlgosViewLayout()
+        setupRequestTransactionPreviewViewLayout()
     }
     
-    private func setupRequestAlgosViewLayout() {
-        view.addSubview(requestAlgosView)
+    private func setupRequestTransactionPreviewViewLayout() {
+        view.addSubview(requestTransactionPreviewView)
         
-        requestAlgosView.snp.makeConstraints { make in
+        requestTransactionPreviewView.snp.makeConstraints { make in
             make.leading.trailing.top.equalToSuperview()
             contentViewBottomConstraint = make.bottom.equalToSuperview().inset(view.safeAreaBottom).constraint
         }
@@ -94,11 +80,8 @@ class RequestAlgosViewController: BaseViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
-        requestAlgosView.algosInputView.beginEditing()
+        requestTransactionPreviewView.algosInputView.beginEditing()
     }
-    
-    // MARK: Navigation
     
     private func presentAccountList() {
 //        let accountListViewController = open(
@@ -114,7 +97,7 @@ class RequestAlgosViewController: BaseViewController {
     }
     
     private func displayPreview() {
-        if let algosAmountText = requestAlgosView.algosInputView.inputTextField.text,
+        if let algosAmountText = requestTransactionPreviewView.algosInputView.inputTextField.text,
             let doubleValue = algosAmountText.doubleForSendSeparator {
             amount = doubleValue
         }
@@ -127,7 +110,7 @@ class RequestAlgosViewController: BaseViewController {
         
         let transaction = TransactionPreviewDraft(fromAccount: selectedAccount, amount: amount, identifier: nil, fee: nil)
         
-        open(.requestAlgosPreview(transaction: transaction), by: .push)
+        open(.requestTransaction(transaction: transaction), by: .push)
     }
     
     private func isTransactionValid() -> Bool {
@@ -191,25 +174,20 @@ class RequestAlgosViewController: BaseViewController {
     }
 }
 
-// MARK: RequestAlgosViewDelegate
-
-extension RequestAlgosViewController: RequestAlgosViewDelegate {
-    
-    func requestAlgosViewDidTapAccountSelectionView(_ requestAlgosView: RequestAlgosView) {
+extension RequestTransactionPreviewViewController: RequestTransactionPreviewViewDelegate {
+    func requestTransactionPreviewViewDidTapAccountSelectionView(_ requestTransactionPreviewView: RequestTransactionPreviewView) {
         presentAccountList()
     }
     
-    func requestAlgosViewDidTapPreviewButton(_ requestAlgosView: RequestAlgosView) {
+    func requestTransactionPreviewViewDidTapPreviewButton(_ requestTransactionPreviewView: RequestTransactionPreviewView) {
         displayPreview()
     }
 }
 
-// MARK: AccountListViewControllerDelegate
-
-extension RequestAlgosViewController: AccountListViewControllerDelegate {
+extension RequestTransactionPreviewViewController: AccountListViewControllerDelegate {
     func accountListViewController(_ viewController: AccountListViewController, didSelectAccount account: Account) {
-        requestAlgosView.accountSelectionView.detailLabel.text = account.name
-        requestAlgosView.accountSelectionView.set(amount: account.amount.toAlgos)
+        requestTransactionPreviewView.accountSelectionView.detailLabel.text = account.name
+        requestTransactionPreviewView.accountSelectionView.set(amount: account.amount.toAlgos)
         
         selectedAccount = account
     }

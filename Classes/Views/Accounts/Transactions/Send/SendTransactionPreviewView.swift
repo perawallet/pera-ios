@@ -1,5 +1,5 @@
 //
-//  SendAlgosView.swift
+//  SendTransactionPreviewView.swift
 //  algorand
 //
 //  Created by Göktuğ Berk Ulu on 8.04.2019.
@@ -8,35 +8,21 @@
 
 import UIKit
 
-protocol SendAlgosViewDelegate: class {
-    func sendAlgosViewDidTapAccountSelectionView(_ sendAlgosView: SendAlgosView)
-    func sendAlgosViewDidTapPreviewButton(_ sendAlgosView: SendAlgosView)
-    func sendAlgosViewDidTapAddressButton(_ sendAlgosView: SendAlgosView)
-    func sendAlgosViewDidTapMyAccountsButton(_ sendAlgosView: SendAlgosView)
-    func sendAlgosViewDidTapContactsButton(_ sendAlgosView: SendAlgosView)
-    func sendAlgosViewDidTapScanQRButton(_ sendAlgosView: SendAlgosView)
-    func sendAlgosViewDidTapMaxButton(_ sendAlgosView: SendAlgosView)
+protocol SendTransactionPreviewViewDelegate: class {
+    func sendTransactionPreviewViewDidTapAccountSelectionView(_ sendTransactionPreviewView: SendTransactionPreviewView)
+    func sendTransactionPreviewViewDidTapPreviewButton(_ sendTransactionPreviewView: SendTransactionPreviewView)
+    func sendTransactionPreviewViewDidTapAddressButton(_ sendTransactionPreviewView: SendTransactionPreviewView)
+    func sendTransactionPreviewViewDidTapMyAccountsButton(_ sendTransactionPreviewView: SendTransactionPreviewView)
+    func sendTransactionPreviewViewDidTapContactsButton(_ sendTransactionPreviewView: SendTransactionPreviewView)
+    func sendTransactionPreviewViewDidTapScanQRButton(_ sendTransactionPreviewView: SendTransactionPreviewView)
+    func sendTransactionPreviewViewDidTapMaxButton(_ sendTransactionPreviewView: SendTransactionPreviewView)
 }
 
-class SendAlgosView: BaseView {
-
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let topInset: CGFloat = 20.0 * verticalScale
-        let horizontalInset: CGFloat = 25.0
-        let buttonInset: CGFloat = 15.0
-        let bottomInset: CGFloat = 18.0
-        let accountSelectionHeight: CGFloat = 88.0
-        let accountSelectionTopInset: CGFloat = 5.0
-        let receiverViewHeight: CGFloat = 115.0
-        let buttonMinimumInset: CGFloat = 18.0 * verticalScale
-        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
-    }
+class SendTransactionPreviewView: BaseView {
     
     private let layout = Layout<LayoutConstants>()
     
-    weak var delegate: SendAlgosViewDelegate?
-    
-    // MARK: Components
+    weak var delegate: SendTransactionPreviewViewDelegate?
     
     private(set) lazy var algosInputView: AlgosInputView = {
         let view = AlgosInputView(shouldHandleMaxButtonStates: true)
@@ -44,21 +30,11 @@ class SendAlgosView: BaseView {
         return view
     }()
     
-    private(set) lazy var accountSelectionView: AccountSelectionView = {
-        let accountSelectionView = AccountSelectionView()
-        return accountSelectionView
-    }()
+    private(set) lazy var accountSelectionView = AccountSelectionView()
     
-    private(set) lazy var transactionReceiverView: TransactionReceiverView = {
-        let view = TransactionReceiverView()
-        return view
-    }()
+    private(set) lazy var transactionReceiverView = TransactionReceiverView()
     
-    private(set) lazy var previewButton: MainButton = {
-        MainButton(title: "title-preview".localized)
-    }()
-    
-    // MARK: Setup
+    private(set) lazy var previewButton = MainButton(title: "title-preview".localized)
     
     override func setListeners() {
         transactionReceiverView.delegate = self
@@ -74,15 +50,15 @@ class SendAlgosView: BaseView {
         previewButton.addTarget(self, action: #selector(notifyDelegateToPreviewButtonTapped), for: .touchUpInside)
     }
     
-    // MARK: Layout
-    
     override func prepareLayout() {
         setupAlgosInputViewLayout()
         setupAccountSelectionViewLayout()
         setupTransactionReceiverViewLayout()
         setupPreviewButtonLayout()
     }
-    
+}
+
+extension SendTransactionPreviewView {
     private func setupAlgosInputViewLayout() {
         addSubview(algosInputView)
         
@@ -121,45 +97,55 @@ class SendAlgosView: BaseView {
             make.bottom.equalToSuperview().inset(layout.current.bottomInset)
         }
     }
-    
-    // MARK: Actions
-    
+}
+
+extension SendTransactionPreviewView {
     @objc
     private func notifyDelegateToPreviewButtonTapped() {
-        delegate?.sendAlgosViewDidTapPreviewButton(self)
+        delegate?.sendTransactionPreviewViewDidTapPreviewButton(self)
     }
     
     @objc
     private func notifyDelegateToAccountSelectionViewTapped() {
-        delegate?.sendAlgosViewDidTapAccountSelectionView(self)
+        delegate?.sendTransactionPreviewViewDidTapAccountSelectionView(self)
     }
 }
 
-// MARK: TransactionReceiverViewDelegate
-
-extension SendAlgosView: TransactionReceiverViewDelegate {
+extension SendTransactionPreviewView: TransactionReceiverViewDelegate {
     
     func transactionReceiverViewDidTapAddressButton(_ transactionReceiverView: TransactionReceiverView) {
-        delegate?.sendAlgosViewDidTapAddressButton(self)
+        delegate?.sendTransactionPreviewViewDidTapAddressButton(self)
     }
     
     func transactionReceiverViewDidTapMyAccountsButton(_ transactionReceiverView: TransactionReceiverView) {
-        delegate?.sendAlgosViewDidTapMyAccountsButton(self)
+        delegate?.sendTransactionPreviewViewDidTapMyAccountsButton(self)
     }
     
     func transactionReceiverViewDidTapContactsButton(_ transactionReceiverView: TransactionReceiverView) {
-        delegate?.sendAlgosViewDidTapContactsButton(self)
+        delegate?.sendTransactionPreviewViewDidTapContactsButton(self)
     }
     
     func transactionReceiverViewDidTapScanQRButton(_ transactionReceiverView: TransactionReceiverView) {
-        delegate?.sendAlgosViewDidTapScanQRButton(self)
+        delegate?.sendTransactionPreviewViewDidTapScanQRButton(self)
     }
 }
 
-// MARK: AlgosInputViewDelegate
-
-extension SendAlgosView: AlgosInputViewDelegate {
+extension SendTransactionPreviewView: AlgosInputViewDelegate {
     func algosInputViewDidTapMaxButton(_ algosInputView: AlgosInputView) {
-        delegate?.sendAlgosViewDidTapMaxButton(self)
+        delegate?.sendTransactionPreviewViewDidTapMaxButton(self)
+    }
+}
+
+extension SendTransactionPreviewView {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let topInset: CGFloat = 20.0 * verticalScale
+        let horizontalInset: CGFloat = 25.0
+        let buttonInset: CGFloat = 15.0
+        let bottomInset: CGFloat = 18.0
+        let accountSelectionHeight: CGFloat = 88.0
+        let accountSelectionTopInset: CGFloat = 5.0
+        let receiverViewHeight: CGFloat = 115.0
+        let buttonMinimumInset: CGFloat = 18.0 * verticalScale
+        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
     }
 }

@@ -45,7 +45,7 @@ struct DeepLinkParser {
                 return nil
             }
             
-            return .sendAlgos(account: account, receiver: .address(address: address, amount: amount))
+            return .sendTransactionPreview(account: account, receiver: .address(address: address, amount: amount))
         }
     }
 }

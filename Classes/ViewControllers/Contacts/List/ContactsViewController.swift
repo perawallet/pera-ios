@@ -307,7 +307,7 @@ extension ContactsViewController: ContactCellDelegate {
                 return
             }
             
-            open(.sendAlgos(account: currentAccount, receiver: .contact(contact)), by: .push)
+            open(.sendTransactionPreview(account: currentAccount, receiver: .contact(contact)), by: .push)
         }
     }
 }

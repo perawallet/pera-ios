@@ -1,5 +1,5 @@
 //
-//  ReceiveAlgosPreviewViewController.swift
+//  RequestTransactionViewController.swift
 //  algorand
 //
 //  Created by Göktuğ Berk Ulu on 11.04.2019.
@@ -8,18 +8,14 @@
 
 import UIKit
 
-class RequestAlgosPreviewViewController: BaseScrollViewController {
-
-    // MARK: Components
+class RequestTransactionViewController: BaseScrollViewController {
     
-    private lazy var requestAlgosPreviewView: RequestAlgosPreviewView = {
-        let view = RequestAlgosPreviewView(address: transaction.fromAccount.address, amount: transaction.amount.toMicroAlgos)
+    private lazy var requestTransactionView: RequestTransactionView = {
+        let view = RequestTransactionView(address: transaction.fromAccount.address, amount: transaction.amount.toMicroAlgos)
         return view
     }()
     
     private let transaction: TransactionPreviewDraft
-    
-    // MARK: Initialization
     
     init(transaction: TransactionPreviewDraft, configuration: ViewControllerConfiguration) {
         self.transaction = transaction
@@ -29,44 +25,40 @@ class RequestAlgosPreviewViewController: BaseScrollViewController {
         hidesBottomBarWhenPushed = true
     }
     
-    // MARK: Setup
-    
     override func configureAppearance() {
         super.configureAppearance()
         
         title = "request-algos-title".localized
         
-        requestAlgosPreviewView.algosInputView.inputTextField.text = transaction.amount.toDecimalStringForLabel
-        requestAlgosPreviewView.accountSelectionView.detailLabel.text = transaction.fromAccount.name
-        requestAlgosPreviewView.accountSelectionView.set(amount: transaction.fromAccount.amount.toAlgos)
+        requestTransactionView.algosInputView.inputTextField.text = transaction.amount.toDecimalStringForLabel
+        requestTransactionView.accountSelectionView.detailLabel.text = transaction.fromAccount.name
+        requestTransactionView.accountSelectionView.set(amount: transaction.fromAccount.amount.toAlgos)
     }
     
     override func linkInteractors() {
-        requestAlgosPreviewView.previewViewDelegate = self
+        requestTransactionView.transactionDelegate = self
     }
     
     override func prepareLayout() {
         super.prepareLayout()
-        
-        setupRequestAlgosPreviewViewLayout()
+        setupRequestTransactionViewLayout()
     }
-    
-    private func setupRequestAlgosPreviewViewLayout() {
-        contentView.addSubview(requestAlgosPreviewView)
+}
+
+extension RequestTransactionViewController {
+    private func setupRequestTransactionViewLayout() {
+        contentView.addSubview(requestTransactionView)
         
-        requestAlgosPreviewView.snp.makeConstraints { make in
+        requestTransactionView.snp.makeConstraints { make in
             make.leading.trailing.top.equalToSuperview()
             make.bottom.equalToSuperview().inset(view.safeAreaBottom)
         }
     }
 }
 
-// MARK: RequestAlgosPreviewViewDelegate
-
-extension RequestAlgosPreviewViewController: RequestAlgosPreviewViewDelegate {
-    
-    func requestAlgosPreviewViewDidTapShareButton(_ requestAlgosPreviewView: RequestAlgosPreviewView) {
-        guard let qrImage = requestAlgosPreviewView.qrView.imageView.image,
+extension RequestTransactionViewController: RequestTransactionViewDelegate {
+    func requestTransactionViewDidTapShareButton(_ requestTransactionView: RequestTransactionView) {
+        guard let qrImage = requestTransactionView.qrView.imageView.image,
             let shareUrl = URL(string: "algorand://send-algos/\(transaction.fromAccount.address)/\(transaction.amount.toMicroAlgos)") else {
                 return
         }

@@ -276,11 +276,11 @@ extension AssetDetailViewController {
 
 extension AssetDetailViewController: AssetDetailViewDelegate {
     func assetDetailViewDidTapSendButton(_ assetDetailView: AssetDetailView) {
-        open(.sendAlgos(account: account, receiver: .initial), by: .push)
+        open(.sendTransactionPreview(account: account, receiver: .initial), by: .push)
     }
     
     func assetDetailViewDidTapReceiveButton(_ assetDetailView: AssetDetailView) {
-        open(.requestAlgos(account: account), by: .push)
+        open(.requestTransactionPreview(account: account), by: .push)
     }
     
     func assetDetailView(_ assetDetailView: AssetDetailView, didTrigger dollarValueGestureRecognizer: UILongPressGestureRecognizer) {
