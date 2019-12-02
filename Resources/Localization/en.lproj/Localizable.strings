@@ -169,6 +169,7 @@
 "send-algos-title" = "Send Algos";
 "send-algos-from" = "From:";
 "send-algos-select" = "Select Account";
+"send-select-asset" = "Select Asset";
 "send-algos-to" = "To:";
 "send-algos-fee" = "Fee:";
 "send-algos-amount" = "Amount:";
@@ -218,6 +219,7 @@
 
 "history-title" = "History";
 "history-account" = "Account:";
+"history-asset" = "Asset:";
 "history-start-date" = "Start Date:";
 "history-end-date" = "End Date:";
 "history-select-date" = "Select Date";

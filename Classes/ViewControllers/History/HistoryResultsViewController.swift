@@ -12,12 +12,7 @@ class HistoryResultsViewController: BaseViewController {
     
     private var transactionHistoryDataSource: TransactionHistoryDataSource
     
-    // MARK: Components
-    
-    private lazy var historyResultsView: HistoryResultsView = {
-        let view = HistoryResultsView()
-        return view
-    }()
+    private lazy var historyResultsView = HistoryResultsView()
     
     private lazy var emptyStateView = EmptyStateView(
         title: "tranaction-empty-text".localized,
@@ -26,21 +21,15 @@ class HistoryResultsViewController: BaseViewController {
     )
     
     private let viewModel = HistoryResultsViewModel()
-    
     private let draft: HistoryDraft
-    
-    // MARK: Initialization
     
     init(draft: HistoryDraft, configuration: ViewControllerConfiguration) {
         self.draft = draft
         transactionHistoryDataSource = TransactionHistoryDataSource(api: configuration.api)
         
         super.init(configuration: configuration)
-        
         hidesBottomBarWhenPushed = true
     }
-    
-    // MARK: Setup
     
     override func configureAppearance() {
         super.configureAppearance()
@@ -48,9 +37,7 @@ class HistoryResultsViewController: BaseViewController {
         title = "history-title".localized
         
         viewModel.configure(historyResultsView, with: draft)
-        
         transactionHistoryDataSource.setupContacts()
-        
         fetchTransactions()
     }
     
@@ -77,12 +64,12 @@ class HistoryResultsViewController: BaseViewController {
         )
     }
     
-    // MARK: Layout
-    
     override func prepareLayout() {
         setupHistoryResultsViewLayout()
     }
-    
+}
+
+extension HistoryResultsViewController {
     private func setupHistoryResultsViewLayout() {
         view.addSubview(historyResultsView)
         
@@ -90,9 +77,9 @@ class HistoryResultsViewController: BaseViewController {
             make.edges.equalToSuperview()
         }
     }
-    
-    // MARK: Data
-    
+}
+
+extension HistoryResultsViewController {
     private func fetchTransactions(witRefresh refresh: Bool = true) {
         historyResultsView.transactionHistoryCollectionView.contentState = .loading
         
@@ -122,17 +109,16 @@ class HistoryResultsViewController: BaseViewController {
                 self.historyResultsView.transactionHistoryCollectionView.reloadData()
         }
     }
-    
+}
+
+extension HistoryResultsViewController {
     @objc
     fileprivate func didContactAdded(notification: Notification) {
         transactionHistoryDataSource.setupContacts()
     }
 }
 
-// MARK: UICollectionViewDelegateFlowLayout
-
 extension HistoryResultsViewController: UICollectionViewDelegateFlowLayout {
-    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let transaction = transactionHistoryDataSource.transaction(at: indexPath) else {
             return
@@ -152,13 +138,6 @@ extension HistoryResultsViewController: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        
         return CGSize(width: UIScreen.main.bounds.width, height: 80.0)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-//        if transactionHistoryDataSource.transactionCount() == indexPath.row - 3 {
-//            fetchTransactions(witRefresh: false)
-//        }
     }
 }

@@ -84,11 +84,13 @@ extension AssetListViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.item == 0 {
+            dismissScreen()
             delegate?.assetListViewController(self, didSelectAlgo: account)
             return
         }
         
         let assetDetail = account.assetDetails[indexPath.item - 1]
+        dismissScreen()
         delegate?.assetListViewController(self, didSelectAsset: assetDetail)
     }
 }

@@ -10,26 +10,20 @@ import UIKit
 
 class HistoryResultsView: BaseView {
     
-    struct LayoutConstants: AdaptiveLayoutConstants {
-        let topInset: CGFloat = 35.0
-        let horizontalInset: CGFloat = 25.0
-        let separatorInset: CGFloat = 20.0
-        let separatorHeight: CGFloat = 1.0
-        let toLabelTopInset: CGFloat = 30.0
-        let labelMinimumInset: CGFloat = 5.0
-        let collectionViewTopInset: CGFloat = 20.0
-        let rewardsViewInset: CGFloat = 15.0
-    }
-    
     private let layout = Layout<LayoutConstants>()
-    
-    // MARK: Components
     
     private(set) lazy var accountSelectionView: AccountSelectionView = {
         let accountSelectionView = AccountSelectionView()
-        accountSelectionView.backgroundColor = .clear
+        accountSelectionView.containerView.backgroundColor = Colors.disabledColor
         accountSelectionView.explanationLabel.text = "history-account".localized
         return accountSelectionView
+    }()
+    
+    private(set) lazy var assetSelectionView: AccountSelectionView = {
+        let assetSelectionView = AccountSelectionView()
+        assetSelectionView.containerView.backgroundColor = Colors.disabledColor
+        assetSelectionView.explanationLabel.text = "history-asset".localized
+        return assetSelectionView
     }()
     
     private(set) lazy var startDateDisplayView: DetailedInformationView = {
@@ -77,15 +71,16 @@ class HistoryResultsView: BaseView {
     
     private lazy var contentStateView = ContentStateView()
     
-    // MARK: Layout
-    
     override func prepareLayout() {
         setupAccountSelectionViewLayout()
+        setupAssetSelectionViewLayout()
         setupStartDateDisplayViewLayout()
         setupEndDateDisplayViewLayout()
         setupTransactionHistoryCollectionViewLayout()
     }
-    
+}
+
+extension HistoryResultsView {
     private func setupAccountSelectionViewLayout() {
         addSubview(accountSelectionView)
         
@@ -94,11 +89,20 @@ class HistoryResultsView: BaseView {
         }
     }
     
+    private func setupAssetSelectionViewLayout() {
+        addSubview(assetSelectionView)
+        
+        assetSelectionView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(accountSelectionView.snp.bottom)
+        }
+    }
+    
     private func setupStartDateDisplayViewLayout() {
         addSubview(startDateDisplayView)
         
         startDateDisplayView.snp.makeConstraints { make in
-            make.top.equalTo(accountSelectionView.snp.bottom)
+            make.top.equalTo(assetSelectionView.snp.bottom)
             make.leading.equalToSuperview()
             make.width.equalTo(UIScreen.main.bounds.width / 2)
         }
@@ -108,7 +112,7 @@ class HistoryResultsView: BaseView {
         addSubview(endDateDisplayView)
         
         endDateDisplayView.snp.makeConstraints { make in
-            make.top.equalTo(accountSelectionView.snp.bottom)
+            make.top.equalTo(assetSelectionView.snp.bottom)
             make.trailing.equalToSuperview()
             make.width.equalTo(UIScreen.main.bounds.width / 2)
         }
@@ -132,5 +136,24 @@ class HistoryResultsView: BaseView {
         }
         
         transactionHistoryCollectionView.backgroundView = contentStateView
+    }
+}
+
+extension HistoryResultsView {
+    struct LayoutConstants: AdaptiveLayoutConstants {
+        let topInset: CGFloat = 35.0
+        let horizontalInset: CGFloat = 25.0
+        let separatorInset: CGFloat = 20.0
+        let separatorHeight: CGFloat = 1.0
+        let toLabelTopInset: CGFloat = 30.0
+        let labelMinimumInset: CGFloat = 5.0
+        let collectionViewTopInset: CGFloat = 20.0
+        let rewardsViewInset: CGFloat = 15.0
+    }
+}
+
+extension HistoryResultsView {
+    private enum Colors {
+        static let disabledColor = rgb(0.91, 0.91, 0.92)
     }
 }

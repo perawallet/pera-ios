@@ -9,12 +9,21 @@
 import UIKit
 
 class HistoryResultsViewModel {
-    
     func configure(_ view: HistoryResultsView, with draft: HistoryDraft) {
         view.accountSelectionView.detailLabel.text = draft.account.name
-        view.accountSelectionView.set(amount: draft.account.amount.toAlgos)
-        
         view.startDateDisplayView.detailLabel.text = draft.startDate.toFormat("dd MMMM yyyy")
         view.endDateDisplayView.detailLabel.text = draft.endDate.toFormat("dd MMMM yyyy")
+        
+        if draft.isAlgoSelected {
+            view.assetSelectionView.detailLabel.text = "asset-algos-title".localized
+        } else {
+            guard let assetDetail = draft.assetDetail else {
+                return
+            }
+            
+            let nameText = (assetDetail.assetName ?? "").attributed()
+            let codeText = "(\(assetDetail.unitName ?? ""))".attributed([.textColor(SharedColors.purple)])
+            view.assetSelectionView.detailLabel.attributedText = nameText + codeText
+        }
     }
 }

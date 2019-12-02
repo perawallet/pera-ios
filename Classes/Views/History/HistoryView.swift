@@ -9,35 +9,33 @@
 import UIKit
 
 protocol HistoryViewDelegate: class {
-    
     func historyViewDidTapViewResultsButton(_ historyView: HistoryView)
     func historyViewDidTapAccountSelectionView(_ historyView: HistoryView)
+    func historyViewDidTapAssetSelectionView(_ historyView: HistoryView)
 }
 
 class HistoryView: BaseView {
-    
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let horizontalInset: CGFloat = 20.0
-        let bottomInset: CGFloat = 75.0
-        let buttonMinimumInset: CGFloat = 60.0
-        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
-        let rewardsViewInset: CGFloat = 15.0
-    }
     
     private let layout = Layout<LayoutConstants>()
     
     weak var delegate: HistoryViewDelegate?
     
-    var startDate: Date = Date().dateByAdding(-1, .weekOfYear).date
-    var endDate: Date = Date()
-    
-    // MARK: Components
+    var startDate = Date().dateByAdding(-1, .weekOfYear).date
+    var endDate = Date()
     
     private(set) lazy var accountSelectionView: AccountSelectionView = {
         let accountSelectionView = AccountSelectionView()
         accountSelectionView.backgroundColor = .clear
         accountSelectionView.explanationLabel.text = "history-account".localized
         return accountSelectionView
+    }()
+    
+    private(set) lazy var assetSelectionView: AccountSelectionView = {
+        let assetSelectionView = AccountSelectionView()
+        assetSelectionView.backgroundColor = .clear
+        assetSelectionView.explanationLabel.text = "history-asset".localized
+        assetSelectionView.detailLabel.text = "send-select-asset".localized
+        return assetSelectionView
     }()
     
     private(set) lazy var startDateDisplayView: DetailedInformationView = {
@@ -83,12 +81,15 @@ class HistoryView: BaseView {
     }()
 
     private(set) lazy var viewResultsButton = MainButton(title: "title-view-results".localized)
-    
-    // MARK: Gestures
 
     private lazy var accountSelectionGestureRecognizer = UITapGestureRecognizer(
         target: self,
         action: #selector(notifyDelegateToAccountSelectionViewTapped)
+    )
+    
+    private lazy var assetSelectionGestureRecognizer = UITapGestureRecognizer(
+        target: self,
+        action: #selector(notifyDelegateToAssetSelectionViewTapped)
     )
     
     private lazy var startDateTapGestureRecognizer = UITapGestureRecognizer(
@@ -101,34 +102,55 @@ class HistoryView: BaseView {
         action: #selector(didTriggerEndDate(tapGestureRecognizer:))
     )
     
-    // MARK: Setup
-    
     override func linkInteractors() {
         viewResultsButton.addTarget(self, action: #selector(notifyDelegateToViewResultsButtonTapped), for: .touchUpInside)
         accountSelectionView.addGestureRecognizer(accountSelectionGestureRecognizer)
+        assetSelectionView.addGestureRecognizer(assetSelectionGestureRecognizer)
         startDateDisplayView.addGestureRecognizer(startDateTapGestureRecognizer)
         endDateDisplayView.addGestureRecognizer(endDateTapGestureRecognizer)
-        
         startDatePickerView.addTarget(self, action: #selector(didChangeStartDate(picker:)), for: .valueChanged)
         endDatePickerView.addTarget(self, action: #selector(didChangeEndDate(picker:)), for: .valueChanged)
     }
     
-    // MARK: Layout
+    override func configureAppearance() {
+        super.configureAppearance()
+        setSelectionView(assetSelectionView, enabled: false)
+    }
     
     override func prepareLayout() {
         setupAccountSelectionViewLayout()
+        setupAssetSelectionViewLayout()
         setupStartDateDisplayViewLayout()
         setupEndDateDisplayViewLayout()
         setupStartDatePickerViewLayout()
         setupEndDatePickerViewLayout()
         setupViewResultsButtonLayout()
     }
-    
+}
+
+extension HistoryView {
     private func setupAccountSelectionViewLayout() {
         addSubview(accountSelectionView)
         
         accountSelectionView.snp.makeConstraints { make in
             make.leading.top.trailing.equalToSuperview()
+        }
+        
+        accountSelectionView.rightInputAccessoryButton.snp.updateConstraints { make in
+            make.top.equalTo(accountSelectionView.explanationLabel.snp.bottom).offset(layout.current.arrowTopInset)
+        }
+    }
+    
+    private func setupAssetSelectionViewLayout() {
+        addSubview(assetSelectionView)
+        
+        assetSelectionView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(accountSelectionView.snp.bottom)
+        }
+        
+        assetSelectionView.rightInputAccessoryButton.snp.updateConstraints { make in
+            make.top.equalTo(assetSelectionView.explanationLabel.snp.bottom).offset(layout.current.arrowTopInset)
         }
     }
     
@@ -136,7 +158,7 @@ class HistoryView: BaseView {
         addSubview(startDateDisplayView)
         
         startDateDisplayView.snp.makeConstraints { make in
-            make.top.equalTo(accountSelectionView.snp.bottom)
+            make.top.equalTo(assetSelectionView.snp.bottom)
             make.leading.equalToSuperview()
             make.width.equalTo(UIScreen.main.bounds.width / 2)
         }
@@ -146,7 +168,7 @@ class HistoryView: BaseView {
         addSubview(endDateDisplayView)
         
         endDateDisplayView.snp.makeConstraints { make in
-            make.top.equalTo(accountSelectionView.snp.bottom)
+            make.top.equalTo(assetSelectionView.snp.bottom)
             make.trailing.equalToSuperview()
             make.width.equalTo(UIScreen.main.bounds.width / 2)
         }
@@ -191,9 +213,9 @@ class HistoryView: BaseView {
             make.bottom.equalToSuperview().inset(safeAreaBottom + layout.current.bottomInset)
         }
     }
-    
-    // MARK: Actions
-    
+}
+
+extension HistoryView {
     @objc
     private func notifyDelegateToViewResultsButtonTapped() {
         delegate?.historyViewDidTapViewResultsButton(self)
@@ -204,6 +226,13 @@ class HistoryView: BaseView {
         delegate?.historyViewDidTapAccountSelectionView(self)
     }
     
+    @objc
+    private func notifyDelegateToAssetSelectionViewTapped() {
+        delegate?.historyViewDidTapAssetSelectionView(self)
+    }
+}
+
+extension HistoryView {
     @objc
     private func didChangeStartDate(picker: UIDatePicker) {
         if picker.date > Date() {
@@ -274,9 +303,9 @@ class HistoryView: BaseView {
             setEndDatePicker(visible: false)
         }
     }
-    
-    // MARK: API
-    
+}
+
+extension HistoryView {
     private func setStartDatePicker(visible: Bool) {
         if visible {
             if !endDatePickerView.isHidden {
@@ -348,5 +377,34 @@ class HistoryView: BaseView {
                 self.layoutIfNeeded()
             }
         }
+    }
+}
+
+extension HistoryView {
+    func setSelectionView(_ selectionView: AccountSelectionView, enabled: Bool) {
+        selectionView.isUserInteractionEnabled = enabled
+        
+        if enabled {
+            selectionView.containerView.backgroundColor = .white
+        } else {
+            selectionView.containerView.backgroundColor = Colors.disabledColor
+        }
+    }
+}
+
+extension HistoryView {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let horizontalInset: CGFloat = 20.0
+        let bottomInset: CGFloat = 75.0
+        let buttonMinimumInset: CGFloat = 60.0
+        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
+        let rewardsViewInset: CGFloat = 15.0
+        let arrowTopInset: CGFloat = 19.0
+    }
+}
+
+extension HistoryView {
+    private enum Colors {
+        static let disabledColor = rgb(0.91, 0.91, 0.92)
     }
 }
