@@ -15,22 +15,33 @@ class SendTransactionViewController: BaseViewController {
     
     private lazy var sendTransactionView = SendTransactionView()
     
-    private var transaction: TransactionPreviewDraft
+    private var algosTransaction: TransactionPreviewDraft?
+    private var assetTransaction: AssetTransactionDraft?
     private let receiver: AlgosReceiverState
+    private var fee: Int64?
     
     var transactionData: Data?
     
     init(
-        transaction: TransactionPreviewDraft,
+        algosTransaction: TransactionPreviewDraft?,
+        assetTransaction: AssetTransactionDraft?,
         receiver: AlgosReceiverState,
         configuration: ViewControllerConfiguration
     ) {
-        self.transaction = transaction
+        self.algosTransaction = algosTransaction
+        self.assetTransaction = assetTransaction
         self.receiver = receiver
-        
         super.init(configuration: configuration)
+
+        if let algosTransaction = algosTransaction {
+            fee = algosTransaction.fee
+            self.transactionManager?.setTransactionDraft(algosTransaction)
+        }
         
-        self.transactionManager?.setTransactionDraft(transaction)
+        if let assetTransaction = assetTransaction {
+            fee = assetTransaction.fee
+            self.transactionManager?.setAssetTransactionDraft(assetTransaction)
+        }
         
         hidesBottomBarWhenPushed = true
     }
@@ -38,15 +49,14 @@ class SendTransactionViewController: BaseViewController {
     override func configureAppearance() {
         super.configureAppearance()
         
-        title = "send-algos-title".localized
+        if algosTransaction == nil {
+            configureViewForAsset()
+            configureReceiverView()
+            return
+        }
         
-        sendTransactionView.algosInputView.inputTextField.text = transaction.amount.toDecimalStringForLabel
-        sendTransactionView.accountSelectionView.detailLabel.text = transaction.fromAccount.name
-        sendTransactionView.accountSelectionView.set(amount: transaction.fromAccount.amount.toAlgos)
-        sendTransactionView.transactionReceiverView.state = receiver
-        
-        sendTransactionView.transactionReceiverView.actionMode = .none
-        updateFeeLayout()
+        configureViewForAlgos()
+        configureReceiverView()
     }
     
     override func linkInteractors() {
@@ -71,13 +81,59 @@ extension SendTransactionViewController {
     }
     
     fileprivate func updateFeeLayout() {
-        if var receivedFee = transaction.fee {
+        if var receivedFee = fee {
             if receivedFee < Transaction.Constant.minimumFee {
                 receivedFee = Transaction.Constant.minimumFee
             }
-            
             sendTransactionView.feeInformationView.algosAmountView.mode = .normal(receivedFee.toAlgos)
         }
+    }
+}
+
+extension SendTransactionViewController {
+    func configureReceiverView() {
+        sendTransactionView.transactionReceiverView.state = receiver
+        sendTransactionView.transactionReceiverView.receiverContainerView.backgroundColor = rgb(0.91, 0.91, 0.92)
+        sendTransactionView.transactionReceiverView.actionMode = .none
+        updateFeeLayout()
+    }
+    
+    func configureViewForAlgos() {
+        title = "send-algos-title".localized
+        
+        guard let transaction = algosTransaction else {
+            return
+        }
+        
+        sendTransactionView.transactionParticipantView.accountSelectionView.detailLabel.text = transaction.fromAccount.name
+        sendTransactionView.transactionParticipantView.accountSelectionView.amountView.amountLabel.textColor = SharedColors.turquois
+        sendTransactionView.transactionParticipantView.accountSelectionView.amountView.algoIconImageView.tintColor =
+            SharedColors.turquois
+        sendTransactionView.amountInputView.inputTextField.text = transaction.amount.toDecimalStringForLabel
+    }
+    
+    func configureViewForAsset() {
+        guard let transaction = assetTransaction else {
+            return
+        }
+        
+        sendTransactionView.transactionParticipantView.accountSelectionView.amountView.amountLabel.textColor = SharedColors.black
+        sendTransactionView.transactionParticipantView.accountSelectionView.amountView.algoIconImageView.isHidden = true
+        sendTransactionView.transactionParticipantView.accountSelectionView.detailLabel.text = transaction.fromAccount.name
+        sendTransactionView.amountInputView.inputTextField.text = transaction.amount?.toDecimalStringForLabel
+        sendTransactionView.amountInputView.algosImageView.isHidden = true
+        
+        guard let assetIndex = transaction.assetIndex,
+            let assetDetail = transaction.fromAccount.assetDetails.first(where: { $0.index == "\(assetIndex)" }),
+            let assetName = assetDetail.assetName,
+            let assetCode = assetDetail.unitName else {
+            return
+        }
+        
+        title = "balance-send-title".localized + " \(assetName)"
+        let nameText = assetName.attributed()
+        let codeText = "(\(assetCode))".attributed([.textColor(SharedColors.purple)])
+        sendTransactionView.transactionParticipantView.assetSelectionView.detailLabel.attributedText = nameText + codeText
     }
 }
 
@@ -91,13 +147,13 @@ extension SendTransactionViewController: SendTransactionViewDelegate {
 extension SendTransactionViewController: TransactionManagerDelegate {
     func transactionManager(_ transactionManager: TransactionManager, didCompletedTransaction id: TransactionID) {
         SVProgressHUD.dismiss()
-        self.transaction.identifier = id.identifier
+        algosTransaction?.identifier = id.identifier
+        assetTransaction?.identifier = id.identifier
         navigationController?.popToRootViewController(animated: false)
     }
     
     func transactionManager(_ transactionManager: TransactionManager, didFailedTransaction error: Error) {
         SVProgressHUD.dismiss()
-        
         switch error {
         case .networkUnavailable:
             displaySimpleAlertWith(title: "title-error".localized, message: "title-internet-connection".localized)

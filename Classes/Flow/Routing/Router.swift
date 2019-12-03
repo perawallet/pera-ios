@@ -220,19 +220,26 @@ class Router {
             viewController = ContactInfoViewController(contact: contact, configuration: configuration)
         case let .contactQRDisplay(contact):
             viewController = ContactQRDisplayViewController(contact: contact, configuration: configuration)
-        case let .sendTransactionPreview(account, receiver, assetDetail, isAlgoTransaction):
+        case let .sendAlgosTransactionPreview(account, receiver):
             configuration.transactionManager = rootViewController.appConfiguration.transactionManager
-            viewController = SendTransactionPreviewViewController(
+            viewController = SendAlgosTransactionPreviewViewController(
+                account: account,
+                receiver: receiver,
+                configuration: configuration
+            )
+        case let .sendAssetTransactionPreview(account, receiver, assetDetail):
+            configuration.transactionManager = rootViewController.appConfiguration.transactionManager
+            viewController = SendAssetTransactionPreviewViewController(
                 account: account,
                 receiver: receiver,
                 assetDetail: assetDetail,
-                configuration: configuration,
-                isAlgoTransaction: isAlgoTransaction
+                configuration: configuration
             )
-        case let .sendTransaction(transaction, receiver):
+        case let .sendTransaction(algosTransaction, assetTransaction, receiver):
             configuration.transactionManager = rootViewController.appConfiguration.transactionManager
             viewController = SendTransactionViewController(
-                transaction: transaction,
+                algosTransaction: algosTransaction,
+                assetTransaction: assetTransaction,
                 receiver: receiver,
                 configuration: configuration
             )

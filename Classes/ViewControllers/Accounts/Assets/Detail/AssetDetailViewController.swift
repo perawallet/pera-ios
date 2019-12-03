@@ -275,15 +275,14 @@ extension AssetDetailViewController {
 
 extension AssetDetailViewController: AssetDetailViewDelegate {
     func assetDetailViewDidTapSendButton(_ assetDetailView: AssetDetailView) {
-        open(
-            .sendTransactionPreview(
-                account: account,
-                receiver: .initial,
-                assetDetail: assetDetail,
-                isAlgoTransaction: isAlgoDisplay
-            ),
-            by: .push
-        )
+        if isAlgoDisplay {
+            open(.sendAlgosTransactionPreview(account: account, receiver: .initial), by: .push)
+        } else {
+            guard let assetDetail = assetDetail else {
+                return
+            }
+            open(.sendAssetTransactionPreview(account: account, receiver: .initial, assetDetail: assetDetail), by: .push)
+        }
     }
     
     func assetDetailViewDidTapReceiveButton(_ assetDetailView: AssetDetailView) {
