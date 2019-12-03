@@ -153,8 +153,8 @@
 "title-remove-assets" = "Remove Assets";
 "title-add-asset" = "Add Asset";
 "asset-add-warning" = "Adding an asset requires sending a transaction with a minimum transaction fee of X Algos. This will appear on your transaction history.";
-"asset-support-error" = "Unfortunatly this contact does not support this asset class.";
-"asset-support-title" = "Asset Not Supported";
+"asset-support-error" = "Unfortunately, this account has not added this asset. Please instruct the account owner to add the asset, and then try again.";
+"asset-support-title" = "Account does not accept this asset";
 "asset-add-confirmation-title" = "Adding Asset";
 "asset-not-found" = "Asset not found";
 "internet-connection-error-title" = "No Internet Connection";
@@ -181,6 +181,7 @@
 "send-algos-minimum-amount-error-new-account" = "You're trying to send money to a new account. The amount must be at least 0.1 algos.";
 "send-algos-minimum-amount-error" = "Transaction amount results in a balance below the minimum account balance of 0.1 algos.";
 "send-algos-amount-error" = "Transaction amount cannot be more than your available algos";
+"send-asset-amount-error" = "Transaction amount cannot be more than your available amount.";
 "send-algos-contact-not-found" = "Contact not found";
 "send-algos-address-not-selected" = "Address not selected";
 "send-algos-address" = "Address";

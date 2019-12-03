@@ -35,7 +35,7 @@ class DetailedInformationView: BaseView {
         return label
     }()
     
-    private lazy var containerView: UIView = {
+    private(set) lazy var containerView: UIView = {
         let view = UIView()
         view.layer.borderWidth = 1.0
         view.layer.borderColor = Colors.borderColor.cgColor

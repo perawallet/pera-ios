@@ -201,7 +201,7 @@ class TransactionReceiverView: BaseView {
         return label
     }()
     
-    private lazy var receiverContainerView: UIView = {
+    private(set) lazy var receiverContainerView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
         view.layer.cornerRadius = 4.0
@@ -215,6 +215,7 @@ class TransactionReceiverView: BaseView {
         passphraseInputView.placeholderLabel.text = "contacts-input-address-placeholder".localized
         passphraseInputView.nextButtonMode = .submit
         passphraseInputView.backgroundColor = .clear
+        passphraseInputView.inputTextView.backgroundColor = .clear
         passphraseInputView.contentView.layer.borderWidth = 0.0
         passphraseInputView.inputTextView.autocorrectionType = .no
         passphraseInputView.inputTextView.autocapitalizationType = .none

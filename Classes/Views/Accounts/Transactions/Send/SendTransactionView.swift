@@ -21,7 +21,8 @@ class SendTransactionView: SendTransactionPreviewView {
     private(set) lazy var feeInformationView: DetailedInformationView = {
         let feeInformationView = DetailedInformationView(mode: .algos)
         feeInformationView.explanationLabel.text = "send-algos-fee".localized
-        feeInformationView.algosAmountView.amountLabel.font = UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))
+        feeInformationView.containerView.backgroundColor = rgb(0.91, 0.91, 0.92)
+        feeInformationView.algosAmountView.amountLabel.font = UIFont.font(.overpass, withWeight: .bold(size: 15.0))
         return feeInformationView
     }()
     
@@ -29,11 +30,11 @@ class SendTransactionView: SendTransactionPreviewView {
     
     override func configureAppearance() {
         super.configureAppearance()
-        algosInputView.inputTextField.isEnabled = false
-        algosInputView.maxButton.isHidden = true
         transactionReceiverView.passphraseInputView.inputTextView.isEditable = false
         transactionReceiverView.actionMode = .none
-        accountSelectionView.isUserInteractionEnabled = false
+        transactionReceiverView.passphraseInputView.contentView.backgroundColor = rgb(0.91, 0.91, 0.92)
+        amountInputView.maxButton.isHidden = true
+        amountInputView.set(enabled: false)
     }
     
     override func setListeners() {
@@ -42,19 +43,12 @@ class SendTransactionView: SendTransactionPreviewView {
     
     override func prepareLayout() {
         super.prepareLayout()
-        updateAccountSelectionViewLayout()
         setupFeeInformationViewLayout()
         setupSendButtonLayout()
     }
 }
 
 extension SendTransactionView {
-    private func updateAccountSelectionViewLayout() {
-        accountSelectionView.rightInputAccessoryButton.snp.updateConstraints { make in
-            make.trailing.equalToSuperview().inset(layout.current.trailingInset)
-        }
-    }
-    
     private func setupFeeInformationViewLayout() {
         addSubview(feeInformationView)
         
