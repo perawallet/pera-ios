@@ -14,7 +14,7 @@ class AssetSupportAlertViewController: BaseViewController {
     
     private lazy var assetSupportAlertView = AssetSupportAlertView()
     
-    private let viewModel = AssetDisplayViewModel()
+    private let viewModel = AssetSupportAlertViewModel()
     
     private var assetAlertDraft: AssetAlertDraft
     
@@ -25,7 +25,7 @@ class AssetSupportAlertViewController: BaseViewController {
     
     override func configureAppearance() {
         view.backgroundColor = Colors.backgroundColor
-        viewModel.configure(assetSupportAlertView.assetDisplayView, with: assetAlertDraft)
+        viewModel.configure(assetSupportAlertView, with: assetAlertDraft)
     }
     
     override func setListeners() {

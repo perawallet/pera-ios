@@ -22,7 +22,7 @@ class AssetCancellableSupportAlertViewController: BaseViewController {
     
     private lazy var assetCancellableSupportAlertView = AssetCancellableSupportAlertView()
     
-    private let viewModel = AssetDisplayViewModel()
+    private let viewModel = AssetSupportAlertViewModel()
     
     private var assetAlertDraft: AssetAlertDraft
     
@@ -33,7 +33,7 @@ class AssetCancellableSupportAlertViewController: BaseViewController {
     
     override func configureAppearance() {
         view.backgroundColor = Colors.backgroundColor
-        viewModel.configure(assetCancellableSupportAlertView.assetDisplayView, with: assetAlertDraft)
+        viewModel.configure(assetCancellableSupportAlertView, with: assetAlertDraft)
     }
     
     override func setListeners() {
