@@ -26,11 +26,7 @@ class AssetAdditionViewController: BaseViewController {
     private var assetResults = [AssetQueryItem]()
     private lazy var assetAdditionView = AssetAdditionView()
     
-    private lazy var emptyStateView = EmptyStateView(
-        title: "contacts-empty-text".localized,
-        topImage: img("icon-contacts-empty"),
-        bottomImage: img("icon-contacts-empty")
-    )
+    private lazy var emptyStateView = EmptyStateView(title: "asset-not-found".localized, topImage: nil, bottomImage: nil)
     
     private let viewModel = AssetAdditionViewModel()
     

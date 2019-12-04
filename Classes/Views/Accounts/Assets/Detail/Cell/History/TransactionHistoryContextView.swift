@@ -85,6 +85,9 @@ class TransactionHistoryContextView: BaseView {
     private func setupTitleLabelLayout() {
         addSubview(titleLabel)
         
+        titleLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        titleLabel.setContentHuggingPriority(.required, for: .horizontal)
+        
         titleLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(layout.current.horizontalInset)
             make.top.equalToSuperview().inset(layout.current.topInset)
@@ -94,6 +97,9 @@ class TransactionHistoryContextView: BaseView {
     
     private func setupTransactionAmountViewLayout() {
         addSubview(transactionAmountView)
+        
+        transactionAmountView.setContentCompressionResistancePriority(.required, for: .horizontal)
+        transactionAmountView.setContentHuggingPriority(.required, for: .horizontal)
         
         transactionAmountView.snp.makeConstraints { make in
             make.trailing.equalToSuperview().inset(layout.current.horizontalInset).priority(.required)

@@ -51,36 +51,46 @@ class AlgosAmountView: BaseView {
     // MARK: Layout
     
     override func prepareLayout() {
-        setupSignLabelLayout()
-        setupAlgoIconImageViewLayout()
         setupAmountLabelLayout()
+        setupAlgoIconImageViewLayout()
+        setupSignLabelLayout()
     }
     
-    private func setupSignLabelLayout() {
-        addSubview(signLabel)
+    private func setupAmountLabelLayout() {
+        addSubview(amountLabel)
         
-        signLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview()
+        amountLabel.setContentHuggingPriority(.required, for: .horizontal)
+        amountLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+        
+        amountLabel.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
+            make.trailing.equalToSuperview()
         }
     }
     
     private func setupAlgoIconImageViewLayout() {
         addSubview(algoIconImageView)
         
+        algoIconImageView.setContentHuggingPriority(.required, for: .horizontal)
+        algoIconImageView.setContentCompressionResistancePriority(.required, for: .horizontal)
+        
         algoIconImageView.snp.makeConstraints { make in
-            make.leading.equalTo(signLabel.snp.trailing)
+            make.trailing.equalTo(amountLabel.snp.leading).offset(-layout.current.labelInset)
             make.centerY.equalToSuperview()
         }
     }
     
-    private func setupAmountLabelLayout() {
-        addSubview(amountLabel)
+    private func setupSignLabelLayout() {
+        addSubview(signLabel)
         
-        amountLabel.snp.makeConstraints { make in
-            make.leading.equalTo(algoIconImageView.snp.trailing).offset(layout.current.labelInset)
+        signLabel.setContentHuggingPriority(.required, for: .horizontal)
+        signLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+        
+        signLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview()
             make.centerY.equalToSuperview()
-            make.trailing.equalToSuperview()
+            make.trailing.equalTo(algoIconImageView.snp.leading)
+            make.trailing.equalTo(amountLabel.snp.leading).offset(-layout.current.labelInset).priority(.low)
         }
     }
     

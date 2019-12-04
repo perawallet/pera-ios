@@ -165,7 +165,8 @@ class AlgosInputView: BaseView {
         
         inputTextField.snp.makeConstraints { make in
             make.leading.equalTo(algosImageView.snp.trailing).offset(layout.current.fieldLeadingInset)
-            make.trailing.equalToSuperview().inset(layout.current.fieldTrailingInset)
+            make.leading.equalToSuperview().inset(layout.current.defaultInset).priority(.low)
+            make.trailing.lessThanOrEqualToSuperview().inset(layout.current.fieldTrailingInset)
             make.centerY.equalToSuperview()
         }
     }
