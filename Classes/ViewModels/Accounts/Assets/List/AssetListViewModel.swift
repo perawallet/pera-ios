@@ -18,9 +18,8 @@ class AssetListViewModel {
             cell.contextView.assetNameView.setName(assetDetail.assetName ?? "")
             cell.contextView.assetNameView.setCode(assetDetail.unitName ?? "")
             
-            if let assetIndex = assetDetail.index,
-                let asset = account.assets?[assetIndex] {
-                cell.contextView.detailLabel.text = Double(asset.amount).toDecimalStringForLabel
+            if let assetAmount = account.amount(for: assetDetail) {
+                cell.contextView.detailLabel.text = assetAmount.toDecimalStringForLabel
             }
         }
     }

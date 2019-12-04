@@ -11,7 +11,13 @@ import Magpie
 import SVProgressHUD
 import Crypto
 
+protocol SendTransactionViewControllerDelegate: class {
+    func sendTransactionViewController(_ viewController: SendTransactionViewController, didCompleteTransactionFor asset: Int64?)
+}
+
 class SendTransactionViewController: BaseViewController {
+    
+    weak var delegate: SendTransactionViewControllerDelegate?
     
     private lazy var sendTransactionView = SendTransactionView()
     
@@ -118,22 +124,19 @@ extension SendTransactionViewController {
         }
         
         sendTransactionView.transactionParticipantView.accountSelectionView.amountView.amountLabel.textColor = SharedColors.black
-        sendTransactionView.transactionParticipantView.accountSelectionView.amountView.algoIconImageView.isHidden = true
+        sendTransactionView.transactionParticipantView.accountSelectionView.amountView.algoIconImageView.removeFromSuperview()
         sendTransactionView.transactionParticipantView.accountSelectionView.detailLabel.text = transaction.fromAccount.name
         sendTransactionView.amountInputView.inputTextField.text = transaction.amount?.toDecimalStringForLabel
-        sendTransactionView.amountInputView.algosImageView.isHidden = true
+        sendTransactionView.amountInputView.algosImageView.removeFromSuperview()
         
         guard let assetIndex = transaction.assetIndex,
             let assetDetail = transaction.fromAccount.assetDetails.first(where: { $0.index == "\(assetIndex)" }),
-            let assetName = assetDetail.assetName,
-            let assetCode = assetDetail.unitName else {
+            let assetName = assetDetail.assetName else {
             return
         }
         
         title = "balance-send-title".localized + " \(assetName)"
-        let nameText = assetName.attributed()
-        let codeText = "(\(assetCode))".attributed([.textColor(SharedColors.purple)])
-        sendTransactionView.transactionParticipantView.assetSelectionView.detailLabel.attributedText = nameText + codeText
+        sendTransactionView.transactionParticipantView.assetSelectionView.detailLabel.attributedText = assetDetail.assetDisplayName()
     }
 }
 
@@ -149,7 +152,16 @@ extension SendTransactionViewController: TransactionManagerDelegate {
         SVProgressHUD.dismiss()
         algosTransaction?.identifier = id.identifier
         assetTransaction?.identifier = id.identifier
-        navigationController?.popToRootViewController(animated: false)
+        
+        delegate?.sendTransactionViewController(self, didCompleteTransactionFor: assetTransaction?.assetIndex)
+        
+        guard let navigationController = self.navigationController else {
+            return
+        }
+        
+        var viewControllers = navigationController.viewControllers
+        viewControllers.removeLast(2)
+        self.navigationController?.setViewControllers(viewControllers, animated: false)
     }
     
     func transactionManager(_ transactionManager: TransactionManager, didFailedTransaction error: Error) {

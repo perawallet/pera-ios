@@ -67,21 +67,18 @@ extension RequestTransactionViewController {
     
     private func configureViewForAssets() {
         requestTransactionView.transactionParticipantView.accountSelectionView.amountView.amountLabel.textColor = SharedColors.black
-        requestTransactionView.transactionParticipantView.accountSelectionView.amountView.algoIconImageView.isHidden = true
+        requestTransactionView.transactionParticipantView.accountSelectionView.amountView.algoIconImageView.removeFromSuperview()
         requestTransactionView.transactionParticipantView.accountSelectionView.detailLabel.text = transaction.fromAccount.name
         requestTransactionView.amountInputView.inputTextField.text = transaction.amount.toDecimalStringForLabel
-        requestTransactionView.amountInputView.algosImageView.isHidden = true
+        requestTransactionView.amountInputView.algosImageView.removeFromSuperview()
         
         guard let assetDetail = transaction.assetDetail,
-            let assetName = assetDetail.assetName,
-            let assetCode = assetDetail.unitName else {
+            let assetName = assetDetail.assetName else {
             return
         }
         
         title = "\(assetName) " + "request-title".localized
-        let nameText = assetName.attributed()
-        let codeText = "(\(assetCode))".attributed([.textColor(SharedColors.purple)])
-        requestTransactionView.transactionParticipantView.assetSelectionView.detailLabel.attributedText = nameText + codeText
+        requestTransactionView.transactionParticipantView.assetSelectionView.detailLabel.attributedText = assetDetail.assetDisplayName()
     }
 }
 

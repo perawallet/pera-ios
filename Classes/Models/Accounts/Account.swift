@@ -90,6 +90,14 @@ class Account: Model {
     func areAssetsDifferent(than account: Account) -> Bool {
         return assets != account.assets || !assetDetails.containsSameElements(as: account.assetDetails)
     }
+    
+    func amount(for assetDetail: AssetDetail) -> Double? {
+        guard let assetIndex = assetDetail.index,
+            let asset = assets?[assetIndex] else {
+                return nil
+        }
+        return Double(asset.amount)
+    }
 }
 
 extension Account {

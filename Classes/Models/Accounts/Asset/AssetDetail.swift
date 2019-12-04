@@ -39,6 +39,22 @@ extension AssetDetail {
     }
 }
 
+extension AssetDetail {
+    func assetDisplayName() -> NSAttributedString? {
+        guard let name = assetName,
+            let code = unitName else {
+                return nil
+        }
+        
+        let nameText = name.attributed([.textColor(SharedColors.black), .font(UIFont.font(.overpass, withWeight: .semiBold(size: 13.0)))])
+        let codeText = " (\(code))".attributed([
+            .textColor(SharedColors.purple),
+            .font(UIFont.font(.overpass, withWeight: .semiBold(size: 13.0)))
+        ])
+        return nameText + codeText
+    }
+}
+
 extension AssetDetail: Encodable {
 }
 

@@ -10,17 +10,29 @@ import UIKit
 import SnapKit
 import SVProgressHUD
 
+protocol SendAssetTransactionPreviewViewControllerDelegate: class {
+    func sendAssetTransactionPreviewViewController(
+        _ viewController: SendAssetTransactionPreviewViewController,
+        didCompleteTransactionFor assetDetail: AssetDetail
+    )
+}
+
 class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewController {
     
+    weak var delegate: SendAssetTransactionPreviewViewControllerDelegate?
+    
     private var assetDetail: AssetDetail
+    private var isForcedMaxTransaction = false
     
     init(
         account: Account,
         receiver: AlgosReceiverState,
         assetDetail: AssetDetail,
+        isMaxTransaction: Bool,
         configuration: ViewControllerConfiguration
     ) {
         self.assetDetail = assetDetail
+        self.isForcedMaxTransaction = isMaxTransaction
         super.init(account: account, receiver: receiver, configuration: configuration)
     }
     
@@ -49,7 +61,13 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
         guard let transactionDraft = draft else {
             return
         }
-        open(.sendTransaction(algosTransaction: nil, assetTransaction: transactionDraft, receiver: receiver), by: .push)
+        let controller = open(.sendTransaction(algosTransaction: nil, assetTransaction: transactionDraft, receiver: receiver), by: .push)
+        (controller as? SendTransactionViewController)?.delegate = self
+    }
+    
+    override func sendTransactionPreviewViewDidTapMaxButton(_ sendTransactionPreviewView: SendTransactionPreviewView) {
+        sendTransactionPreviewView.amountInputView.inputTextField.text
+            = selectedAccount.amount(for: assetDetail)?.toDecimalStringForLabel
     }
     
     override func displayTransactionPreview() {
@@ -122,12 +140,11 @@ extension SendAssetTransactionPreviewViewController {
             return
         }
         
-        guard let assetIndex = assetDetail.index,
-            let asset = selectedAccount.assets?[assetIndex] else {
-                return
+        guard let assetAmount = selectedAccount.amount(for: assetDetail) else {
+            return
         }
         
-        if Double(asset.amount) < amount {
+        if assetAmount < amount {
             self.displaySimpleAlertWith(title: "title-error".localized, message: "send-asset-amount-error".localized)
             return
         }
@@ -161,23 +178,28 @@ extension SendAssetTransactionPreviewViewController {
 extension SendAssetTransactionPreviewViewController {
     private func configureViewForAsset() {
         sendTransactionPreviewView.transactionParticipantView.assetSelectionView.amountView.amountLabel.textColor = SharedColors.black
-        sendTransactionPreviewView.transactionParticipantView.assetSelectionView.amountView.algoIconImageView.isHidden = true
-        sendTransactionPreviewView.amountInputView.algosImageView.isHidden = true
+        sendTransactionPreviewView.transactionParticipantView.assetSelectionView.amountView.algoIconImageView.removeFromSuperview()
+        sendTransactionPreviewView.amountInputView.algosImageView.removeFromSuperview()
         
         guard let assetName = assetDetail.assetName,
-            let assetCode = assetDetail.unitName,
-            let assetIndex = assetDetail.index,
-            let asset = selectedAccount.assets?[assetIndex] else {
+            let assetAmount = selectedAccount.amount(for: assetDetail) else {
             return
+        }
+        
+        sendTransactionPreviewView.amountInputView.maxAmount = assetAmount
+        
+        if isForcedMaxTransaction {
+            sendTransactionPreviewView.amountInputView.algosImageView.removeFromSuperview()
+            sendTransactionPreviewView.amountInputView.inputTextField.text
+                = selectedAccount.amount(for: assetDetail)?.toDecimalStringForLabel
+            sendTransactionPreviewView.amountInputView.set(enabled: false)
         }
         
         sendTransactionPreviewView.transactionParticipantView.accountSelectionView.detailLabel.text = selectedAccount.name
         sendTransactionPreviewView.transactionParticipantView.assetSelectionView.amountView.amountLabel.text
-            = Double(asset.amount).toDecimalStringForLabel
+            = assetAmount.toDecimalStringForLabel
         title = "balance-send-title".localized + " \(assetName)"
-        let nameText = assetName.attributed()
-        let codeText = "(\(assetCode))".attributed([.textColor(SharedColors.purple)])
-        sendTransactionPreviewView.transactionParticipantView.assetSelectionView.detailLabel.attributedText = nameText + codeText
+        sendTransactionPreviewView.transactionParticipantView.assetSelectionView.detailLabel.attributedText = assetDetail.assetDisplayName()
         
         switch receiver {
         case .initial:
@@ -196,5 +218,11 @@ extension SendAssetTransactionPreviewViewController {
         case .contact:
             sendTransactionPreviewView.transactionReceiverView.state = receiver
         }
+    }
+}
+
+extension SendAssetTransactionPreviewViewController: SendTransactionViewControllerDelegate {
+    func sendTransactionViewController(_ viewController: SendTransactionViewController, didCompleteTransactionFor asset: Int64?) {
+        delegate?.sendAssetTransactionPreviewViewController(self, didCompleteTransactionFor: assetDetail)
     }
 }
