@@ -164,15 +164,6 @@ class TabBarController: UITabBarController {
         if let appConfiguration = UIApplication.shared.appConfiguration {
             appConfiguration.session.isValid = true
         }
-        
-        if let route = route {
-            guard let accountsViewController = accountsNavigationController.viewControllers.first as? AccountsViewController else {
-                return
-            }
-            
-           // accountsViewController.route = route
-            self.route = nil
-        }
     }
 }
 

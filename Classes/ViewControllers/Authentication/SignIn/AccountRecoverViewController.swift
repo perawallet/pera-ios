@@ -163,11 +163,7 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
                             UIApplication.shared.rootViewController()?.setupTabBarController()
                         }
                     case .new:
-                        self.closeScreen(by: .dismiss, animated: false) {
-                            if self.session?.authenticatedUser != nil {
-                                UIApplication.shared.rootViewController()?.addAccount(account)
-                            }
-                        }
+                        self.closeScreen(by: .dismiss, animated: false)
                     }
                 } else {
                     self.open(.choosePassword(mode: .setup, route: nil), by: .push)

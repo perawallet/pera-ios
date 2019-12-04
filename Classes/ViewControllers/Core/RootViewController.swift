@@ -58,12 +58,6 @@ class RootViewController: UIViewController {
         tabBarViewController.didMove(toParent: self)
     }
     
-    func addAccount(_ account: Account) {
-        if let viewController = tabBarViewController.accountsNavigationController.viewControllers.first as? AccountsViewController {
-           // todo viewController.newAccount = account
-        }
-    }
-    
     func handleDeepLinkRouting(for screen: Screen) -> Bool {
         if !appConfiguration.session.isValid {
             if appConfiguration.session.hasPassword() && appConfiguration.session.authenticatedUser != nil {
@@ -109,14 +103,6 @@ class RootViewController: UIViewController {
             }
         } else {
             tabBarViewController.selectedIndex = 0
-            
-            if let controller = UIApplication.topViewController(),
-                let navigationController = controller.presentingViewController as? NavigationController,
-                let tabBarController = navigationController.viewControllers.first as? TabBarController,
-                let accountsViewController = tabBarController.accountsNavigationController.viewControllers.first {
-                
-                controller.dismiss(animated: false)
-            }
         }
     }
 

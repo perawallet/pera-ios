@@ -98,8 +98,7 @@ extension AccountsViewController: OptionsViewControllerDelegate {
             actionTitle: "title-remove".localized) {
 
                 guard let user = self.session?.authenticatedUser,
-                    let account = self.selectedAccount,
-                    let index = user.index(of: account) else {
+                    let account = self.selectedAccount else {
                         return
                 }
 
@@ -113,22 +112,7 @@ extension AccountsViewController: OptionsViewControllerDelegate {
                     return
                 }
 
-                defer {
-                    self.session?.authenticatedUser = user
-                }
-
-                let newSelectedAccount: Account?
-                if user.accounts.count == 1 {
-                    newSelectedAccount = user.account(at: 0)
-                } else {
-                    if index == user.accounts.count {
-                        newSelectedAccount = user.account(at: index.advanced(by: -1))
-                    } else {
-                        newSelectedAccount = user.account(at: index)
-                    }
-                }
-                
-                //self.selectedAccount = newSelectedAccount
+                self.session?.authenticatedUser = user
         }
 
         let viewController = AlertViewController(mode: .destructive, alertConfigurator: configurator, configuration: configuration)

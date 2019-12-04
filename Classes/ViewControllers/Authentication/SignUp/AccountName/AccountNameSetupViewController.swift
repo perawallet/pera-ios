@@ -98,11 +98,7 @@ extension AccountNameSetupViewController {
         if let authenticatedUser = session?.authenticatedUser {
             authenticatedUser.addAccount(account)
             
-            closeScreen(by: .dismiss, animated: false) {
-                if self.session?.authenticatedUser != nil {
-                    UIApplication.shared.rootViewController()?.addAccount(account)
-                }
-            }
+            closeScreen(by: .dismiss, animated: false)
         } else {
             let user = User(accounts: [account])
             
