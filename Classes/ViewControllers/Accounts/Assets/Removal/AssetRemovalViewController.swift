@@ -125,14 +125,13 @@ extension AssetRemovalViewController: AssetActionableCellDelegate {
         }
         
         let assetDetail = account.assetDetails[index.item]
-        guard let assetIndex = assetDetail.index,
-            let asset = account.assets?[assetIndex] else {
-                return
+        guard let assetAmount = account.amount(for: assetDetail) else {
+            return
         }
         
         let assetAlertDraft: AssetAlertDraft
         
-        if asset.amount == 0 {
+        if assetAmount == 0 {
             assetAlertDraft = AssetAlertDraft(
                 account: account,
                 assetDetail: assetDetail,
@@ -201,6 +200,25 @@ extension AssetRemovalViewController: AssetActionConfirmationViewControllerDeleg
         _ assetActionConfirmationViewController: AssetActionConfirmationViewController,
         didConfirmedActionFor assetDetail: AssetDetail
     ) {
+        if let assetAmount = account.amount(for: assetDetail),
+            assetAmount != 0 {
+            let controller = open(
+                .sendAssetTransactionPreview(
+                    account: account,
+                    receiver: .initial,
+                    assetDetail: assetDetail,
+                    isMaxTransaction: true
+                ),
+                by: .push
+            )
+            (controller as? SendAssetTransactionPreviewViewController)?.delegate = self
+            return
+        }
+        
+        removeAssetFromAccount(assetDetail)
+    }
+    
+    private func removeAssetFromAccount(_ assetDetail: AssetDetail) {
         guard let index = assetDetail.index,
             let indexIntValue = Int64(index) else {
                 return
@@ -255,6 +273,15 @@ extension AssetRemovalViewController: TransactionManagerDelegate {
             
             return assetIndex != removedAssetIndex
         }
+    }
+}
+
+extension AssetRemovalViewController: SendAssetTransactionPreviewViewControllerDelegate {
+    func sendAssetTransactionPreviewViewController(
+        _ viewController: SendAssetTransactionPreviewViewController,
+        didCompleteTransactionFor assetDetail: AssetDetail
+    ) {
+        removeAssetFromAccount(assetDetail)
     }
 }
 
