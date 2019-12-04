@@ -227,12 +227,13 @@ class Router {
                 receiver: receiver,
                 configuration: configuration
             )
-        case let .sendAssetTransactionPreview(account, receiver, assetDetail):
+        case let .sendAssetTransactionPreview(account, receiver, assetDetail, isMaxTransaction):
             configuration.transactionManager = rootViewController.appConfiguration.transactionManager
             viewController = SendAssetTransactionPreviewViewController(
                 account: account,
                 receiver: receiver,
                 assetDetail: assetDetail,
+                isMaxTransaction: isMaxTransaction,
                 configuration: configuration
             )
         case let .sendTransaction(algosTransaction, assetTransaction, receiver):
@@ -262,11 +263,12 @@ class Router {
             viewController = AddNodeViewController(mode: .edit(node: node), configuration: configuration)
         case .splash:
             viewController = SplashViewController(configuration: configuration)
-        case let .transactionDetail(account, transaction, transactionType):
+        case let .transactionDetail(account, transaction, transactionType, assetDetail):
             viewController = TransactionDetailViewController(
                 account: account,
                 transaction: transaction,
                 transactionType: transactionType,
+                assetDetail: assetDetail,
                 configuration: configuration
             )
         case let .auctionDetail(auction, user, auctionStatus):

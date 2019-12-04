@@ -107,6 +107,10 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
     func displayTransactionPreview() {
         
     }
+    
+    func sendTransactionPreviewViewDidTapMaxButton(_ sendTransactionPreviewView: SendTransactionPreviewView) {
+        sendTransactionPreviewView.amountInputView.inputTextField.text = selectedAccount.amount.toAlgos.toDecimalStringForAlgosInput
+    }
 }
 
 extension SendTransactionPreviewViewController {
@@ -238,11 +242,6 @@ extension SendTransactionPreviewViewController: SendTransactionPreviewViewDelega
     func sendTransactionPreviewViewDidTapScanQRButton(_ sendTransactionPreviewView: SendTransactionPreviewView) {
         view.endEditing(true)
         displayQRScanner()
-    }
-    
-    func sendTransactionPreviewViewDidTapMaxButton(_ sendTransactionPreviewView: SendTransactionPreviewView) {
-        sendTransactionPreviewView.amountInputView.inputTextField.text =
-            sendTransactionPreviewView.transactionParticipantView.accountSelectionView.amountView.amountLabel.text
     }
 }
 

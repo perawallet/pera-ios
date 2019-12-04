@@ -157,8 +157,8 @@ extension TransactionManager {
             delegate?.transactionManager(self, didFailedComposing: .custom(transactionError))
             return
         }
-
-        completeAssetTransacion(with: transactionData)
+        
+        completeAssetTransacion(with: transactionData, isClosingTransaction: isClosingTransaction)
     }
 }
 
@@ -201,7 +201,7 @@ extension TransactionManager {
             return
         }
 
-        completeAssetTransacion(with: transactionData)
+        completeAssetTransacion(with: transactionData, isClosingTransaction: true)
     }
 }
 
@@ -218,7 +218,7 @@ extension TransactionManager {
         return signedTransactionData
     }
     
-    private func completeAssetTransacion(with transactionData: Data) {
+    private func completeAssetTransacion(with transactionData: Data, isClosingTransaction: Bool) {
         guard let params = params,
             let transactionDraft = assetTransactionDraft,
             let signedTransactionData = sign(transactionData, for: transactionDraft.fromAccount.address) else {
@@ -229,7 +229,9 @@ extension TransactionManager {
         let calculatedFee = Int64(signedTransactionData.count) * params.fee
         self.assetTransactionDraft?.fee = calculatedFee
         
-        completeTransaction()
+        if isClosingTransaction {
+            completeTransaction()
+        }
         
         delegate?.transactionManagerDidComposedAssetTransactionData(self, forTransaction: self.assetTransactionDraft)
     }

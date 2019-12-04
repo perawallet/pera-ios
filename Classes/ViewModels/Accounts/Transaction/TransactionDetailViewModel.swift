@@ -9,14 +9,13 @@
 import UIKit
 
 class TransactionDetailViewModel {
-    
-    func configureReceivedTransaction(_ view: TransactionDetailView, with transaction: Transaction, for account: Account) {
-        guard let payment = transaction.payment else {
-            return
-        }
-        
+    func configureReceivedTransaction(
+        _ view: TransactionDetailView,
+        with transaction: Transaction,
+        and assetDetail: AssetDetail?,
+        for account: Account
+    ) {
         configureTransactionStatus(for: transaction, in: view)
-        
         view.transactionOpponentView.passphraseInputView.inputTextView.isEditable = false
         
         view.userAccountView.detailLabel.text = account.name
@@ -36,21 +35,27 @@ class TransactionDetailViewModel {
             view.transactionOpponentView.state = .address(address: transaction.from, amount: nil)
         }
         
-        view.transactionAmountView.algosAmountView.mode = .positive(payment.amountForTransaction().toAlgos)
-        
-        if let rewards = transaction.payment?.rewards, rewards > 0 {
-            view.rewardView.isHidden = false
-            view.rewardView.algosAmountView.amountLabel.text = "\(rewards.toAlgos)"
+        if let assetTransaction = transaction.assetTransfer,
+            assetDetail != nil {
+            view.transactionAmountView.algosAmountView.algoIconImageView.removeFromSuperview()
+            view.transactionAmountView.algosAmountView.mode = .positive(Double(assetTransaction.amount))
+        } else if let payment = transaction.payment {
+            view.transactionAmountView.algosAmountView.mode = .positive(payment.amountForTransaction().toAlgos)
+            
+            if let rewards = payment.rewards, rewards > 0 {
+                view.rewardView.isHidden = false
+                view.rewardView.algosAmountView.amountLabel.text = "\(rewards.toAlgos)"
+            }
         }
     }
     
-    func configureSentTransaction(_ view: TransactionDetailView, with transaction: Transaction, for account: Account) {
-        guard let payment = transaction.payment else {
-            return
-        }
-        
+    func configureSentTransaction(
+        _ view: TransactionDetailView,
+        with transaction: Transaction,
+        and assetDetail: AssetDetail?,
+        for account: Account
+    ) {
         configureTransactionStatus(for: transaction, in: view)
-        
         view.transactionOpponentView.passphraseInputView.inputTextView.isEditable = false
         
         view.userAccountView.detailLabel.text = account.name
@@ -63,14 +68,27 @@ class TransactionDetailViewModel {
             view.lastRoundView.detailLabel.text = "\(round)"
         }
         
-        if let contact = transaction.contact {
-            view.transactionOpponentView.state = .contact(contact)
-            view.transactionOpponentView.actionMode = .qrView
-        } else {
-            view.transactionOpponentView.state = .address(address: payment.toAddress, amount: nil)
+        if let assetTransaction = transaction.assetTransfer,
+            assetDetail != nil {
+            if let contact = transaction.contact {
+                view.transactionOpponentView.state = .contact(contact)
+                view.transactionOpponentView.actionMode = .qrView
+            } else {
+                view.transactionOpponentView.state = .address(address: assetTransaction.receiverAddress ?? "", amount: nil)
+            }
+            
+            view.transactionAmountView.algosAmountView.algoIconImageView.removeFromSuperview()
+            view.transactionAmountView.algosAmountView.mode = .negative(Double(assetTransaction.amount))
+        } else if let payment = transaction.payment {
+            if let contact = transaction.contact {
+                view.transactionOpponentView.state = .contact(contact)
+                view.transactionOpponentView.actionMode = .qrView
+            } else {
+                view.transactionOpponentView.state = .address(address: payment.toAddress, amount: nil)
+            }
+            
+            view.transactionAmountView.algosAmountView.mode = .negative(payment.amountForTransaction().toAlgos)
         }
-        
-        view.transactionAmountView.algosAmountView.mode = .negative(payment.amountForTransaction().toAlgos)
         
         if let rewards = transaction.fromRewards, rewards > 0 {
             view.rewardView.isHidden = false

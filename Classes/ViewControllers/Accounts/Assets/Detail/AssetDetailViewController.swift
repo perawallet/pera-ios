@@ -26,7 +26,7 @@ class AssetDetailViewController: BaseViewController {
     private var isAlgoDisplay: Bool
     
     private var currentDollarConversion: Double?
-    private let viewModel = AssetDetailViewModel()
+    private let viewModel: AssetDetailViewModel
     
     private var transactionHistoryDataSource: TransactionHistoryDataSource
     
@@ -45,8 +45,8 @@ class AssetDetailViewController: BaseViewController {
         self.account = account
         self.assetDetail = assetDetail
         self.isAlgoDisplay = assetDetail == nil
-        transactionHistoryDataSource = TransactionHistoryDataSource(api: configuration.api)
-        
+        viewModel = AssetDetailViewModel(account: account, assetDetail: assetDetail)
+        transactionHistoryDataSource = TransactionHistoryDataSource(api: configuration.api, account: account, assetDetail: assetDetail)
         super.init(configuration: configuration)
     }
     
@@ -67,7 +67,7 @@ class AssetDetailViewController: BaseViewController {
         assetDetailView.transactionHistoryCollectionView.refreshControl = refreshControl
         
         viewModel.configure(assetDetailView.headerView, with: account, and: assetDetail)
-        viewModel.configure(assetDetailView.smallHeaderView, with: account)
+        viewModel.configure(assetDetailView.smallHeaderView, with: account, and: assetDetail)
         
         transactionHistoryDataSource.setupContacts()
         fetchTransactions()
@@ -75,12 +75,6 @@ class AssetDetailViewController: BaseViewController {
     
     override func setListeners() {
         super.setListeners()
-        
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(didUpdateAuthenticatedUser(notification:)),
-            name: Notification.Name.AuthenticatedUserUpdate,
-            object: nil)
         
         NotificationCenter.default.addObserver(
             self,
@@ -222,7 +216,7 @@ extension AssetDetailViewController {
         }
         
         viewModel.configure(assetDetailView.headerView, with: account, and: assetDetail)
-        viewModel.configure(assetDetailView.smallHeaderView, with: account)
+        viewModel.configure(assetDetailView.smallHeaderView, with: account, and: assetDetail)
     }
     
     private func updateAccount() {
@@ -240,11 +234,6 @@ extension AssetDetailViewController {
 
 extension AssetDetailViewController {
     @objc
-    fileprivate func didUpdateAuthenticatedUser(notification: Notification) {
-        updateLayout()
-    }
-    
-    @objc
     fileprivate func didAccountUpdate(notification: Notification) {
         guard let userInfo = notification.userInfo as? [String: Account],
             let updatedAccount = userInfo["account"] else {
@@ -253,6 +242,7 @@ extension AssetDetailViewController {
         
         if account == updatedAccount {
             account = updatedAccount
+            updateLayout()
             transactionHistoryDataSource.clear()
             assetDetailView.transactionHistoryCollectionView.reloadData()
             assetDetailView.transactionHistoryCollectionView.contentState = .loading
@@ -323,9 +313,25 @@ extension AssetDetailViewController: UICollectionViewDelegateFlowLayout {
         
         if let payment = transaction.payment,
             payment.toAddress == account.address {
-            open(.transactionDetail(account: account, transaction: transaction, transactionType: .received), by: .push)
+            open(
+                .transactionDetail(
+                    account: account,
+                    transaction: transaction,
+                    transactionType: .received,
+                    assetDetail: assetDetail
+                ),
+                by: .push
+            )
         } else {
-            open(.transactionDetail(account: account, transaction: transaction, transactionType: .sent), by: .push)
+            open(
+                .transactionDetail(
+                    account: account,
+                    transaction: transaction,
+                    transactionType: .sent,
+                    assetDetail: assetDetail
+                ),
+                by: .push
+            )
         }
     }
     
