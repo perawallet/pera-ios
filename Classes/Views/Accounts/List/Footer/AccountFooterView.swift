@@ -20,7 +20,7 @@ class AccountFooterView: BaseView {
     
     private lazy var addAssetButton: AlignedButton = {
         let positions: AlignedButton.StylePositionAdjustment = (
-            image: CGPoint(x: UIScreen.main.bounds.width / 2 - 50.0, y: 0.0),
+            image: CGPoint(x: UIScreen.main.bounds.width / 2 - 42.0, y: 0.0),
             title: CGPoint(x: -5.0, y: 0.0)
         )
         let button = AlignedButton(style: .imageLeftTitleCentered(positions))
