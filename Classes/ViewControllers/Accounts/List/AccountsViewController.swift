@@ -36,6 +36,7 @@ class AccountsViewController: BaseViewController {
     }()
     
     private lazy var accountsView = AccountsView()
+    private lazy var refreshControl = UIRefreshControl()
     
     private(set) var selectedAccount: Account?
     private(set) var localAuthenticator = LocalAuthenticator()
@@ -81,6 +82,7 @@ class AccountsViewController: BaseViewController {
     override func configureAppearance() {
         super.configureAppearance()
         navigationItem.title = "tabbar-item-accounts".localized
+        accountsView.accountsCollectionView.refreshControl = refreshControl
     }
     
     override func setListeners() {
@@ -88,6 +90,10 @@ class AccountsViewController: BaseViewController {
         accountsDataSource.delegate = self
         accountsView.accountsCollectionView.delegate = accountsLayoutBuilder
         accountsView.accountsCollectionView.dataSource = accountsDataSource
+    }
+    
+    override func linkInteractors() {
+        refreshControl.addTarget(self, action: #selector(didRefreshList), for: .valueChanged)
     }
     
     override func prepareLayout() {
@@ -148,6 +154,14 @@ extension AccountsViewController {
     @objc
     fileprivate func didUpdateAuthenticatedUser(notification: Notification) {
         accountsView.accountsCollectionView.reloadData()
+    }
+    
+    @objc
+    private func didRefreshList() {
+        accountsView.accountsCollectionView.reloadData()
+        if refreshControl.isRefreshing {
+            refreshControl.endRefreshing()
+        }
     }
 }
 
