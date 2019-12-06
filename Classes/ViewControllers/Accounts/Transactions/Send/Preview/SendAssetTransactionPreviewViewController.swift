@@ -72,63 +72,70 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
     
     override func displayTransactionPreview() {
         switch receiver {
-        case .initial:
-            displaySimpleAlertWith(title: "send-algos-alert-title".localized, message: "send-algos-alert-message".localized)
         case let .contact(contact):
             if let address = contact.address {
-                api?.fetchAccount(with: AccountFetchDraft(publicKey: address)) { fetchAccountResponse in
-                    switch fetchAccountResponse {
-                    case let .success(contactAccount):
-                        if contactAccount.isThereAnyDifferentAsset() {
-                            if let assets = contactAccount.assets {
-                                guard let assetIndex = self.assetDetail.index else {
-                                    return
-                                }
-                                
-                                if assets.contains(where: { index, _ -> Bool in
-                                    assetIndex == index
-                                }) {
-                                    self.validateTransaction()
-                                } else {
-                                    let assetAlertDraft = AssetAlertDraft(
-                                        account: self.selectedAccount,
-                                        assetDetail: self.assetDetail,
-                                        title: "asset-support-title".localized,
-                                        detail: "asset-support-error".localized,
-                                        actionTitle: "title-ok".localized
-                                    )
-                                    
-                                    self.open(
-                                        .assetSupportAlert(assetAlertDraft: assetAlertDraft),
-                                        by: .customPresentWithoutNavigationController(
-                                            presentationStyle: .overCurrentContext,
-                                            transitionStyle: .crossDissolve,
-                                            transitioningDelegate: nil
-                                        )
-                                    )
-                                }
-                            }
-                        }
-                    case .failure:
-                        break
-                    }
-                }
+                checkIfAddressIsValidForTransaction(address)
             }
+        case .myAccount:
+            validateTransaction()
         default:
-            if !sendTransactionPreviewView.transactionReceiverView.passphraseInputView.inputTextView.text.isEmpty {
-                receiver = .address(
-                    address: sendTransactionPreviewView.transactionReceiverView.passphraseInputView.inputTextView.text,
-                    amount: nil
-                )
-                
-                validateTransaction()
+            if let address = sendTransactionPreviewView.transactionReceiverView.passphraseInputView.inputTextView.text,
+                !address.isEmpty {
+                receiver = .address(address: address, amount: nil)
+                checkIfAddressIsValidForTransaction(address)
                 return
+            } else {
+                displaySimpleAlertWith(title: "send-algos-alert-title".localized, message: "send-algos-alert-message".localized)
             }
         }
     }
 }
 
 extension SendAssetTransactionPreviewViewController {
+    private func checkIfAddressIsValidForTransaction(_ address: String) {
+        SVProgressHUD.show(withStatus: "title-loading".localized)
+        api?.fetchAccount(with: AccountFetchDraft(publicKey: address)) { fetchAccountResponse in
+            switch fetchAccountResponse {
+            case let .success(contactAccount):
+                SVProgressHUD.showSuccess(withStatus: "title-done-lowercased".localized)
+                SVProgressHUD.dismiss()
+                if contactAccount.isThereAnyDifferentAsset() {
+                    if let assets = contactAccount.assets {
+                        guard let assetIndex = self.assetDetail.index else {
+                            return
+                        }
+                        
+                        if assets.contains(where: { index, _ -> Bool in
+                            assetIndex == index
+                        }) {
+                            self.validateTransaction()
+                        } else {
+                            let assetAlertDraft = AssetAlertDraft(
+                                account: self.selectedAccount,
+                                assetDetail: self.assetDetail,
+                                title: "asset-support-title".localized,
+                                detail: "asset-support-error".localized,
+                                actionTitle: "title-ok".localized
+                            )
+                            
+                            self.open(
+                                .assetSupportAlert(assetAlertDraft: assetAlertDraft),
+                                by: .customPresentWithoutNavigationController(
+                                    presentationStyle: .overCurrentContext,
+                                    transitionStyle: .crossDissolve,
+                                    transitioningDelegate: nil
+                                )
+                            )
+                        }
+                    }
+                }
+            case .failure:
+                SVProgressHUD.showError(withStatus: nil)
+                SVProgressHUD.dismiss()
+            }
+        }
+    }
+    
     private func validateTransaction() {
         if let amountText = sendTransactionPreviewView.amountInputView.inputTextField.text,
             let doubleValue = amountText.doubleForSendSeparator {
