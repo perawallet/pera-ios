@@ -11,11 +11,7 @@ import Foundation
 class RewardDetailViewModel {
     
     func configure(_ view: RewardDetailView, for account: Account) {
-        var totalRewards: UInt64 = 0
-        let pendingRewards = account.pendingRewards ?? 0
-        totalRewards += (account.rewards ?? 0) - pendingRewards
-        
+        let totalRewards: UInt64 = (account.rewards ?? 0)
         view.totalRewardAmountContainerView.amountLabel.text = totalRewards.toAlgos.toDecimalStringForLabel
-        view.pendingRewardAmountContainerView.amountLabel.text = pendingRewards.toAlgos.toDecimalStringForLabel
     }
 }

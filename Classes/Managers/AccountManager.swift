@@ -37,7 +37,6 @@ extension AccountManager {
                 if let fetchedAccount = fetchedAccount {
                     if fetchedAccount.amount == account.amount &&
                         fetchedAccount.rewards == account.rewards &&
-                        fetchedAccount.pendingRewards == account.pendingRewards &&
                         !fetchedAccount.areAssetsDifferent(than: account) {
                         return
                     }
@@ -63,7 +62,6 @@ extension AccountManager {
             if let fetchedAccount = fetchedAccount {
                 if fetchedAccount.amount == account.amount &&
                     fetchedAccount.rewards == account.rewards &&
-                    fetchedAccount.pendingRewards == account.pendingRewards &&
                     fetchedAccount.assetDetails.count == account.assetDetails.count {
                     return
                 }
