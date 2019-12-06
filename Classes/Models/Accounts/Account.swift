@@ -84,7 +84,7 @@ class Account: Model {
     }
 
     func isThereAnyDifferentAsset() -> Bool {
-        return totalAssets != nil || assets != nil
+        return assets != nil
     }
     
     func areAssetsDifferent(than account: Account) -> Bool {

@@ -96,44 +96,48 @@ extension SendAssetTransactionPreviewViewController {
         SVProgressHUD.show(withStatus: "title-loading".localized)
         api?.fetchAccount(with: AccountFetchDraft(publicKey: address)) { fetchAccountResponse in
             switch fetchAccountResponse {
-            case let .success(contactAccount):
+            case let .success(receiverAccount):
                 SVProgressHUD.showSuccess(withStatus: "title-done-lowercased".localized)
                 SVProgressHUD.dismiss()
-                if contactAccount.isThereAnyDifferentAsset() {
-                    if let assets = contactAccount.assets {
-                        guard let assetIndex = self.assetDetail.index else {
-                            return
-                        }
-                        
-                        if assets.contains(where: { index, _ -> Bool in
-                            assetIndex == index
-                        }) {
-                            self.validateTransaction()
-                        } else {
-                            let assetAlertDraft = AssetAlertDraft(
-                                account: self.selectedAccount,
-                                assetDetail: self.assetDetail,
-                                title: "asset-support-title".localized,
-                                detail: "asset-support-error".localized,
-                                actionTitle: "title-ok".localized
-                            )
-                            
-                            self.open(
-                                .assetSupportAlert(assetAlertDraft: assetAlertDraft),
-                                by: .customPresentWithoutNavigationController(
-                                    presentationStyle: .overCurrentContext,
-                                    transitionStyle: .crossDissolve,
-                                    transitioningDelegate: nil
-                                )
-                            )
-                        }
+                if let assets = receiverAccount.assets {
+                    guard let assetIndex = self.assetDetail.index else {
+                        return
                     }
+                    
+                    if assets.contains(where: { index, _ -> Bool in
+                        assetIndex == index
+                    }) {
+                        self.validateTransaction()
+                    } else {
+                        self.presentAssetNotSupportedAlert()
+                    }
+                } else {
+                    self.presentAssetNotSupportedAlert()
                 }
             case .failure:
                 SVProgressHUD.showError(withStatus: nil)
                 SVProgressHUD.dismiss()
             }
         }
+    }
+    
+    private func presentAssetNotSupportedAlert() {
+        let assetAlertDraft = AssetAlertDraft(
+            account: self.selectedAccount,
+            assetDetail: self.assetDetail,
+            title: "asset-support-title".localized,
+            detail: "asset-support-error".localized,
+            actionTitle: "title-ok".localized
+        )
+        
+        self.open(
+            .assetSupportAlert(assetAlertDraft: assetAlertDraft),
+            by: .customPresentWithoutNavigationController(
+                presentationStyle: .overCurrentContext,
+                transitionStyle: .crossDissolve,
+                transitioningDelegate: nil
+            )
+        )
     }
     
     private func validateTransaction() {
