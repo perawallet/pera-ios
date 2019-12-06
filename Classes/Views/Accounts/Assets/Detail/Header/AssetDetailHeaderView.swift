@@ -232,7 +232,7 @@ class AssetDetailHeaderView: BaseView {
         containerView.addSubview(dollarAmountLabel)
         
         dollarAmountLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
+            make.leading.equalTo(dollarImageView.snp.trailing).offset(layout.current.dollarValueInset)
             make.top.equalTo(assetNameLabel.snp.bottom).offset(layout.current.amountTopInset)
             make.trailing.lessThanOrEqualToSuperview().inset(layout.current.horizontalInset)
         }

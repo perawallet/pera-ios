@@ -48,6 +48,7 @@ class AssetDetailViewController: BaseViewController {
         viewModel = AssetDetailViewModel(account: account, assetDetail: assetDetail)
         transactionHistoryDataSource = TransactionHistoryDataSource(api: configuration.api, account: account, assetDetail: assetDetail)
         super.init(configuration: configuration)
+        hidesBottomBarWhenPushed = true
     }
     
     deinit {

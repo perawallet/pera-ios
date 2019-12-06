@@ -36,8 +36,7 @@ extension AssetDetailViewModel {
         } else {
             view.algosAmountLabel.text = account.amount.toAlgos.toDecimalStringForLabel
             
-            var totalRewards: UInt64 = 0
-            totalRewards += (account.rewards ?? 0) - (account.pendingRewards ?? 0)
+            let totalRewards: UInt64 = (account.rewards ?? 0)
             view.rewardTotalAmountView.algosAmountView.amountLabel.text = totalRewards.toAlgos.toDecimalStringForLabel
         }
     }
@@ -69,7 +68,7 @@ extension AssetDetailViewModel {
             view.dollarValueLabel.layer.borderWidth = 0.0
         } else {
             view.assetNameLabel.text = "accounts-algos-available-title".localized
-            view.assetNameLabel.textColor = SharedColors.softGray
+            view.assetNameLabel.textColor = SharedColors.black
             view.dollarValueLabel.backgroundColor = .white
             view.dollarValueLabel.textColor = .black
             view.dollarValueLabel.layer.borderWidth = 1.0
@@ -92,7 +91,7 @@ extension AssetDetailViewModel {
             if assetTransaction.receiverAddress == account.address && assetTransaction.amount == 0 && transaction.type == "axfer" {
                 view.titleLabel.text = "asset-creation-fee-title".localized
                 view.subtitleLabel.isHidden = true
-                view.transactionAmountView.mode = .positive(Double(assetTransaction.amount))
+                view.transactionAmountView.mode = .negative(assetTransaction.amount.toAlgos)
             } else if assetTransaction.receiverAddress == account.address {
                 configure(view, with: contact, and: assetTransaction.receiverAddress)
                 view.transactionAmountView.algoIconImageView.removeFromSuperview()
@@ -104,6 +103,12 @@ extension AssetDetailViewModel {
             }
         } else {
             guard let payment = transaction.payment else {
+                if let assetTransaction = transaction.assetTransfer,
+                    assetTransaction.receiverAddress == account.address && assetTransaction.amount == 0 && transaction.type == "axfer" {
+                    view.titleLabel.text = "asset-creation-fee-title".localized
+                    view.subtitleLabel.isHidden = true
+                    view.transactionAmountView.mode = .negative(assetTransaction.amount.toAlgos)
+                }
                 return
             }
             
