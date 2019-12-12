@@ -15,7 +15,7 @@ class SelectionView: BaseView {
     private(set) lazy var explanationLabel: UILabel = {
         UILabel()
             .withFont(UIFont.font(.avenir, withWeight: .medium(size: 13.0)))
-            .withTextColor(SharedColors.softGray)
+            .withTextColor(SharedColors.greenishGray)
             .withText("send-algos-from".localized)
     }()
     

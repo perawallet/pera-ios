@@ -197,7 +197,7 @@ class TransactionReceiverView: BaseView {
         let label = UILabel()
         label.font = UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))
         label.text = "send-algos-to".localized
-        label.textColor = SharedColors.softGray
+        label.textColor = SharedColors.greenishGray
         return label
     }()
     
