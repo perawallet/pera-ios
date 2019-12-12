@@ -158,7 +158,7 @@ extension TransactionManager {
             return
         }
         
-        completeAssetTransacion(with: transactionData, isClosingTransaction: isClosingTransaction)
+        completeAssetTransacion(for: account, with: transactionData, isClosingTransaction: isClosingTransaction)
     }
 }
 
@@ -183,11 +183,6 @@ extension TransactionManager {
             return
         }
         
-        if account.amount < params.fee {
-            delegate?.transactionManager(self, didFailedComposing: .custom(nil))
-            return
-        }
-        
         let trimmedFromAddress = transactionDraft.fromAccount.address.trimmingCharacters(in: .whitespacesAndNewlines)
         var transactionError: NSError?
         
@@ -206,7 +201,7 @@ extension TransactionManager {
             return
         }
 
-        completeAssetTransacion(with: transactionData, isClosingTransaction: true)
+        completeAssetTransacion(for: account, with: transactionData, isClosingTransaction: true)
     }
 }
 
@@ -223,7 +218,7 @@ extension TransactionManager {
         return signedTransactionData
     }
     
-    private func completeAssetTransacion(with transactionData: Data, isClosingTransaction: Bool) {
+    private func completeAssetTransacion(for account: Account, with transactionData: Data, isClosingTransaction: Bool) {
         guard let params = params,
             let transactionDraft = assetTransactionDraft,
             let signedTransactionData = sign(transactionData, for: transactionDraft.fromAccount.address) else {
@@ -232,6 +227,13 @@ extension TransactionManager {
 
         self.transactionData = signedTransactionData
         let calculatedFee = Int64(signedTransactionData.count) * params.fee
+        
+        if Int64(account.amount) - calculatedFee < Int64(minimumTransactionMicroAlgosLimit * (account.assetDetails.count + 1)) {
+            let mininmumAmount = Int64(minimumTransactionMicroAlgosLimit * (account.assetDetails.count + 1)) + calculatedFee
+            delegate?.transactionManager(self, didFailedComposing: .custom(mininmumAmount))
+            return
+        }
+        
         self.assetTransactionDraft?.fee = calculatedFee
         
         if isClosingTransaction {

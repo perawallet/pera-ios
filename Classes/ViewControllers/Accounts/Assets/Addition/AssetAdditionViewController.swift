@@ -189,14 +189,17 @@ extension AssetAdditionViewController: AssetActionConfirmationViewControllerDele
 extension AssetAdditionViewController: TransactionManagerDelegate {
     func transactionManager(_ transactionManager: TransactionManager, didFailedComposing error: Error) {
         switch error {
-        case .custom:
-            guard let api = api else {
+        case let .custom(fee):
+            guard let api = api,
+                let feeValue = fee as? Int64,
+                let feeString = feeValue.toAlgos.toDecimalStringForLabel else {
                 return
             }
+            
             let pushNotificationController = PushNotificationController(api: api)
             pushNotificationController.showFeedbackMessage(
                 "asset-min-transaction-error-title".localized,
-                subtitle: "asset-min-transaction-error-message".localized
+                subtitle: String(format: "asset-min-transaction-error-message".localized, feeString)
             )
         default:
             break

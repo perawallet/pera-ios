@@ -167,7 +167,7 @@
 "asset-support-qr-title" = "You do not support this Asset";
 "asset-creation-fee-title" = "Asset Creation Fee";
 "asset-min-transaction-error-title" = "Min Transaction Error!";
-"asset-min-transaction-error-message" = "You need at least 0.00001 Algos to add this asset";
+"asset-min-transaction-error-message" = "You need at least %@ Algos to add this asset";
 "asset-you-already-own-message" = "You already own this asset";
 
 // MARK: Algos Send
