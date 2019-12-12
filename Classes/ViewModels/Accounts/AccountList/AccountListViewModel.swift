@@ -14,7 +14,8 @@ class AccountListViewModel {
         switch mode {
         case .assetCount:
             cell.contextView.detailLabel.text = "\(account.assetDetails.count) " + "contacts-title-assets".localized
-        case let .amount(assetDetail):
+        case let .amount(assetDetail),
+             let .contact(assetDetail):
             if let assetDetail = assetDetail {
                 guard let assetAmount = account.amount(for: assetDetail)else {
                     return
@@ -24,7 +25,8 @@ class AccountListViewModel {
                     .font(UIFont.font(.overpass, withWeight: .semiBold(size: 15.0))),
                     .textColor(SharedColors.black)
                 ])
-                let codeText = " (\(assetDetail.unitName ?? ""))".attributed([
+                
+                let codeText = assetDetail.getAssetCode().attributed([
                     .font(UIFont.font(.overpass, withWeight: .semiBold(size: 15.0))),
                     .textColor(SharedColors.purple)
                 ])
