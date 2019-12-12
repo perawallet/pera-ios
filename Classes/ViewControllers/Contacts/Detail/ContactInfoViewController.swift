@@ -33,6 +33,7 @@ class ContactInfoViewController: BaseScrollViewController {
     private let viewModel = ContactInfoViewModel()
     private let contact: Contact
     private var contactAccount: Account?
+    private var selectedAsset: AssetDetail?
     
     weak var delegate: ContactInfoViewControllerDelegate?
     
@@ -186,6 +187,10 @@ extension ContactInfoViewController: ContactAssetCellDelegate {
             )
         ) as? AccountListViewController
         
+        if itemIndex.item != 0 {
+            selectedAsset = contactAccount.assetDetails[itemIndex.item - 1]
+        }
+        
         accountListViewController?.delegate = self
     }
 }
@@ -260,6 +265,12 @@ extension ContactInfoViewController: AddContactViewControllerDelegate {
 
 extension ContactInfoViewController: AccountListViewControllerDelegate {
     func accountListViewController(_ viewController: AccountListViewController, didSelectAccount account: Account) {
-        open(.sendAlgosTransactionPreview(account: account, receiver: .contact(contact)), by: .push)
+        if let assetDetail = selectedAsset {
+            selectedAsset = nil
+            open(.sendAssetTransactionPreview(account: account, receiver: .contact(contact), assetDetail: assetDetail), by: .push)
+        } else {
+            open(.sendAlgosTransactionPreview(account: account, receiver: .contact(contact)), by: .push)
+        }
+        
     }
 }

@@ -35,14 +35,14 @@ class AccountsViewController: BaseViewController {
         return PushNotificationController(api: api)
     }()
     
-    private lazy var accountsView = AccountsView()
+    private(set) lazy var accountsView = AccountsView()
     private lazy var refreshControl = UIRefreshControl()
     
     private(set) var selectedAccount: Account?
     private(set) var localAuthenticator = LocalAuthenticator()
     
     private var accountsLayoutBuilder: AccountsLayoutBuilder
-    private var accountsDataSource: AccountsDataSource
+    private(set) var accountsDataSource: AccountsDataSource
     
     override init(configuration: ViewControllerConfiguration) {
         accountsLayoutBuilder = AccountsLayoutBuilder()
@@ -65,7 +65,7 @@ class AccountsViewController: BaseViewController {
             )
         }
         
-        rightBarButtonItems = [addAccountBarButtonItem]
+        leftBarButtonItems = [addAccountBarButtonItem]
     }
     
     override func viewDidLoad() {
@@ -146,18 +146,26 @@ extension AccountsViewController: AssetAdditionViewControllerDelegate {
         didAdd assetDetail: AssetDetail,
         to account: Account
     ) {
+        guard let section = accountsDataSource.section(for: account) else {
+            return
+        }
         
+        let index = accountsView.accountsCollectionView.numberOfItems(inSection: section)
+        accountsDataSource.add(assetDetail: assetDetail, to: account)
+        accountsView.accountsCollectionView.insertItems(at: [IndexPath(item: index, section: section)])
     }
 }
 
 extension AccountsViewController {
     @objc
     fileprivate func didUpdateAuthenticatedUser(notification: Notification) {
+        accountsDataSource.reload()
         accountsView.accountsCollectionView.reloadData()
     }
     
     @objc
     private func didRefreshList() {
+        accountsDataSource.refresh()
         accountsView.accountsCollectionView.reloadData()
         if refreshControl.isRefreshing {
             refreshControl.endRefreshing()

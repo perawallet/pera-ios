@@ -146,9 +146,15 @@ extension AccountsViewController: ChoosePasswordViewControllerDelegate {
 extension AccountsViewController: AssetRemovalViewControllerDelegate {
     func assetRemovalViewController(
         _ assetRemovalViewController: AssetRemovalViewController,
-        didRemove asset: AssetDetail,
+        didRemove assetDetail: AssetDetail,
         from account: Account
     ) {
+        guard let section = accountsDataSource.section(for: account),
+            let index = accountsDataSource.item(for: assetDetail, in: account) else {
+            return
+        }
         
+        accountsDataSource.remove(assetDetail: assetDetail, from: account)
+        accountsView.accountsCollectionView.reloadItems(at: [IndexPath(item: index + 1, section: section)])
     }
 }
