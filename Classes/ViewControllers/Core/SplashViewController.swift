@@ -79,28 +79,35 @@ class SplashViewController: BaseViewController {
                     if session.hasPassword() &&
                         session.authenticatedUser != nil {
                         
-                        self.dismiss(animated: false) {
-                            rootController.open(
-                                .choosePassword(mode: .login, route: nil),
-                                by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
-                            )
+                        DispatchQueue.main.async {
+                            self.dismiss(animated: false) {
+                                rootController.open(
+                                    .choosePassword(mode: .login, route: nil),
+                                    by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
+                                )
+                            }
                         }
                     } else {
                         session.reset()
                         
-                        self.dismiss(animated: false) {
-                            rootController.open(.introduction(mode: .initialize), by: .launch, animated: false)
+                        DispatchQueue.main.async {
+                            self.dismiss(animated: false) {
+                                rootController.open(.introduction(mode: .initialize), by: .launch, animated: false)
+                            }
                         }
                     }
                 } else {
-                    self.dismiss(animated: false) {
-                        UIApplication.shared.rootViewController()?.setupTabBarController()
+                    DispatchQueue.main.async {
+                        self.dismiss(animated: false) {
+                            UIApplication.shared.rootViewController()?.setupTabBarController()
+                        }
                     }
                 }
             } else {
-                let viewController = self.open(.nodeSettings(mode: .checkHealth), by: .present) as? NodeSettingsViewController
-                
-                viewController?.delegate = self
+                DispatchQueue.main.async {
+                    let viewController = self.open(.nodeSettings(mode: .checkHealth), by: .present) as? NodeSettingsViewController
+                    viewController?.delegate = self
+                }
             }
         }
     }
