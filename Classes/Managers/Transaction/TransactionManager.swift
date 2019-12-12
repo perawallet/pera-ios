@@ -179,7 +179,12 @@ extension TransactionManager {
         guard let params = params,
             let transactionDraft = assetTransactionDraft,
             let assetIndex = transactionDraft.assetIndex else {
-                delegate?.transactionManager(self, didFailedComposing: .custom(nil))
+                delegate?.transactionManager(self, didFailedComposing: .custom(assetTransactionDraft))
+            return
+        }
+        
+        if account.amount < params.fee {
+            delegate?.transactionManager(self, didFailedComposing: .custom(nil))
             return
         }
         

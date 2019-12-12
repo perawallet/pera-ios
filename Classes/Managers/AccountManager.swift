@@ -62,7 +62,7 @@ extension AccountManager {
             if let fetchedAccount = fetchedAccount {
                 if fetchedAccount.amount == account.amount &&
                     fetchedAccount.rewards == account.rewards &&
-                    fetchedAccount.assetDetails.count == account.assetDetails.count {
+                    !fetchedAccount.areAssetsDifferent(than: account) {
                     return
                 }
                 

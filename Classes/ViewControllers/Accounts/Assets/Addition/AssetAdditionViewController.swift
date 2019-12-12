@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Magpie
 
 protocol AssetAdditionViewControllerDelegate: class {
     func assetAdditionViewController(
@@ -115,6 +116,12 @@ extension AssetAdditionViewController: UICollectionViewDataSource {
 extension AssetAdditionViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let assetResult = assetResults[indexPath.item]
+        
+        if account.assetDetails.contains(assetResult.assetDetail) {
+            displaySimpleAlertWith(title: "asset-you-already-own-message".localized, message: "")
+            return
+        }
+        
         let assetAlertDraft = AssetAlertDraft(
             account: account,
             assetDetail: assetResult.assetDetail,
@@ -180,6 +187,22 @@ extension AssetAdditionViewController: AssetActionConfirmationViewControllerDele
 }
 
 extension AssetAdditionViewController: TransactionManagerDelegate {
+    func transactionManager(_ transactionManager: TransactionManager, didFailedComposing error: Error) {
+        switch error {
+        case .custom:
+            guard let api = api else {
+                return
+            }
+            let pushNotificationController = PushNotificationController(api: api)
+            pushNotificationController.showFeedbackMessage(
+                "asset-min-transaction-error-title".localized,
+                subtitle: "asset-min-transaction-error-message".localized
+            )
+        default:
+            break
+        }
+    }
+    
     func transactionManagerDidComposedAssetTransactionData(
         _ transactionManager: TransactionManager,
         forTransaction draft: AssetTransactionDraft?
@@ -193,7 +216,6 @@ extension AssetAdditionViewController: TransactionManagerDelegate {
             return
         }
         
-        account.assetDetails.append(assetQueryItem.assetDetail)
         delegate?.assetAdditionViewController(self, didAdd: assetQueryItem.assetDetail, to: account)
         popScreen()
     }

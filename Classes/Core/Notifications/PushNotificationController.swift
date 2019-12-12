@@ -89,8 +89,7 @@ extension PushNotificationController {
         case .transactionReceived:
             displayReceivedNotification(with: notificationDetail, then: handler)
         case .transactionFailed:
-            displaySentNotification(with: notificationDetail, isFailed: true, then: handler
-            )
+            displaySentNotification(with: notificationDetail, isFailed: true, then: handler)
         }
     }
     
@@ -120,7 +119,7 @@ extension PushNotificationController {
                             results.first?.name ?? receiverAddress
                         )
                         
-                        self.showMessage(message, then: handler)
+                        self.showNotificationMessage(message, then: handler)
                     default:
                         let message = String(
                             format: isFailed ? "notification-sent-failed".localized : "notification-sent-success".localized,
@@ -129,7 +128,7 @@ extension PushNotificationController {
                             receiverAddress
                         )
                         
-                        self.showMessage(message, then: handler)
+                        self.showNotificationMessage(message, then: handler)
                     }
                 }
             }
@@ -158,7 +157,7 @@ extension PushNotificationController {
                             results.first?.name ?? senderAddress
                         )
                         
-                        self.showMessage(message, then: handler)
+                        self.showNotificationMessage(message, then: handler)
                     default:
                         let message = String(
                             format: "notification-received".localized,
@@ -166,7 +165,7 @@ extension PushNotificationController {
                             (receiverAccount.name ?? receiverAddress),
                             senderAddress
                         )
-                        self.showMessage(message, then: handler)
+                        self.showNotificationMessage(message, then: handler)
                     }
                 }
             }
@@ -177,7 +176,7 @@ extension PushNotificationController {
 // MARK: NotificationBannerSwift
 
 extension PushNotificationController {
-    func showMessage(_ title: String, then handler: EmptyHandler? = nil) {
+    func showNotificationMessage(_ title: String, then handler: EmptyHandler? = nil) {
         let banner = FloatingNotificationBanner(
             title: title,
             titleFont: UIFont.font(.overpass, withWeight: .semiBold(size: 14.0)),
@@ -200,6 +199,33 @@ extension PushNotificationController {
         
         banner.onTap = handler
     }
+    
+    func showFeedbackMessage(_ title: String, subtitle: String) {
+        let banner = FloatingNotificationBanner(
+            title: title,
+            subtitle: subtitle,
+            titleFont: UIFont.font(.overpass, withWeight: .semiBold(size: 15.0)),
+            titleColor: UIColor.white,
+            titleTextAlign: .center,
+            subtitleFont: UIFont.font(.avenir, withWeight: .demiBold(size: 12.0)),
+            subtitleColor: UIColor.white.withAlphaComponent(0.8),
+            subtitleTextAlign: .center,
+            style: .warning,
+            colors: CustomBannerColors()
+        )
+        
+        banner.duration = 3.0
+        
+        banner.show(
+            edgeInsets: UIEdgeInsets(top: 20.0, left: 15.0, bottom: 0.0, right: 15.0),
+            cornerRadius: 10.0,
+            shadowColor: rgba(0.0, 0.0, 0.0, 0.1),
+            shadowOpacity: 1.0,
+            shadowBlurRadius: 6.0,
+            shadowCornerRadius: 6.0,
+            shadowOffset: UIOffset(horizontal: 0.0, vertical: 2.0)
+        )
+    }
 }
 
 // MARK: Storage
@@ -215,6 +241,8 @@ extension PushNotificationController {
 class CustomBannerColors: BannerColorsProtocol {
     internal func color(for style: BannerStyle) -> UIColor {
         switch style {
+        case .warning:
+            return rgb(0.94, 0.4, 0.4)
         default:
             return .white
         }
