@@ -20,8 +20,16 @@ class AssetSupportAlertViewModel {
     }
     
     private func configure(_ view: AssetDisplayView, with draft: AssetAlertDraft) {
-        view.assetNameLabel.text = draft.assetDetail.assetName
-        view.assetCodeLabel.text = draft.assetDetail.unitName
+        let displayNames = draft.assetDetail.getDisplayNames()
+        
         view.assetIndexLabel.text = draft.assetDetail.index
+        if displayNames.0.isUnknown() {
+            view.assetCodeLabel.font = UIFont.font(.avenir, withWeight: .demiBoldItalic(size: 40.0))
+            view.assetCodeLabel.textColor = SharedColors.orange
+            view.assetCodeLabel.text = displayNames.0
+        } else {
+            view.assetNameLabel.text = displayNames.0
+            view.assetCodeLabel.text = displayNames.1
+        }
     }
 }

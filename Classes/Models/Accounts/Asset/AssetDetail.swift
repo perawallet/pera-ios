@@ -136,10 +136,14 @@ extension AssetDetail: Encodable {
 extension AssetDetail: Comparable {
     static func == (lhs: AssetDetail, rhs: AssetDetail) -> Bool {
         guard let lhsIndex = lhs.index,
-            let rhsIndex = rhs.index else {
+            let rhsIndex = rhs.index,
+            let lhsName = lhs.assetName,
+            let rhsName = rhs.assetName,
+            let lhsCode = lhs.unitName,
+            let rhsCode = lhs.unitName else {
                 return false
         }
-        return lhsIndex == rhsIndex
+        return lhsIndex == rhsIndex && lhsName == rhsName && lhsCode == rhsCode
     }
     
     static func < (lhs: AssetDetail, rhs: AssetDetail) -> Bool {

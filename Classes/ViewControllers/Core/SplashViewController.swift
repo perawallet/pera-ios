@@ -81,10 +81,12 @@ class SplashViewController: BaseViewController {
                         
                         DispatchQueue.main.async {
                             self.dismiss(animated: false) {
-                                rootController.open(
-                                    .choosePassword(mode: .login, route: nil),
-                                    by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
-                                )
+                                DispatchQueue.main.async {
+                                    rootController.open(
+                                        .choosePassword(mode: .login, route: nil),
+                                        by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
+                                    )
+                                }
                             }
                         }
                     } else {
@@ -92,14 +94,18 @@ class SplashViewController: BaseViewController {
                         
                         DispatchQueue.main.async {
                             self.dismiss(animated: false) {
-                                rootController.open(.introduction(mode: .initialize), by: .launch, animated: false)
+                                DispatchQueue.main.async {
+                                    rootController.open(.introduction(mode: .initialize), by: .launch, animated: false)
+                                }
                             }
                         }
                     }
                 } else {
                     DispatchQueue.main.async {
                         self.dismiss(animated: false) {
-                            UIApplication.shared.rootViewController()?.setupTabBarController()
+                            DispatchQueue.main.async {
+                                UIApplication.shared.rootViewController()?.setupTabBarController()
+                            }
                         }
                     }
                 }

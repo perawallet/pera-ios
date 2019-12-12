@@ -12,15 +12,25 @@ class AssetActionConfirmationViewModel {
     func configure(_ view: AssetActionConfirmationView, with draft: AssetAlertDraft) {
         view.titleLabel.text = draft.title
         view.assetDisplayView.assetIndexLabel.text = draft.assetDetail.index
-        view.assetDisplayView.assetNameLabel.text = draft.assetDetail.assetName
-        view.assetDisplayView.assetCodeLabel.text = draft.assetDetail.unitName
         view.actionButton.setTitle(draft.actionTitle, for: .normal)
+        
+        let displayNames = draft.assetDetail.getDisplayNames()
+        
+        if displayNames.0.isUnknown() {
+            view.assetDisplayView.assetCodeLabel.font = UIFont.font(.avenir, withWeight: .demiBoldItalic(size: 40.0))
+            view.assetDisplayView.assetCodeLabel.textColor = SharedColors.orange
+            view.assetDisplayView.assetCodeLabel.text = displayNames.0
+        } else {
+            view.assetDisplayView.assetNameLabel.text = displayNames.0
+            view.assetDisplayView.assetCodeLabel.text = displayNames.1
+        }
+        
         configureAttributedText(in: view, with: draft)
     }
     
     private func configureAttributedText(in view: AssetActionConfirmationView, with draft: AssetAlertDraft) {
-        guard let unitName = draft.assetDetail.unitName,
-            let detailText = draft.detail else {
+        guard  let detailText = draft.detail,
+            let unitName = draft.assetDetail.unitName, !unitName.isEmptyOrBlank else {
             view.detailLabel.text = draft.detail
             return
         }
