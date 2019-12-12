@@ -227,7 +227,9 @@ extension AccountRecoverViewController: KeyboardControllerDataSource {
 extension AccountRecoverViewController: TouchDetectingScrollViewDelegate {
     
     func scrollViewDidDetectTouchEvent(scrollView: TouchDetectingScrollView, in point: CGPoint) {
-        if accountRecoverView.nextButton.frame.contains(point) {
+        if accountRecoverView.nextButton.frame.contains(point) ||
+            accountRecoverView.accountNameInputView.frame.contains(point) ||
+            accountRecoverView.passPhraseInputView.frame.contains(point) {
             return
         }
         

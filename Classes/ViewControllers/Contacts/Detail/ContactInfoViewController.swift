@@ -178,7 +178,7 @@ extension ContactInfoViewController: ContactAssetCellDelegate {
         }
         
         let accountListViewController = open(
-            .accountList(mode: .amount(assetDetail: itemIndex.item == 0 ? nil : contactAccount.assetDetails[itemIndex.item - 1])),
+            .accountList(mode: .contact(assetDetail: itemIndex.item == 0 ? nil : contactAccount.assetDetails[itemIndex.item - 1])),
             by: .customPresent(
                 presentationStyle: .custom,
                 transitionStyle: nil,

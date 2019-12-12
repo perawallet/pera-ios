@@ -341,7 +341,8 @@ extension AddContactViewController {
 extension AddContactViewController: TouchDetectingScrollViewDelegate {
     
     func scrollViewDidDetectTouchEvent(scrollView: TouchDetectingScrollView, in point: CGPoint) {
-        if addContactView.addContactButton.frame.contains(point) {
+        if addContactView.addContactButton.frame.contains(point) ||
+            addContactView.userInformationView.algorandAddressInputView.frame.contains(point) {
             return
         }
         

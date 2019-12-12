@@ -35,6 +35,13 @@ class AccountListViewController: BaseViewController {
     
     override func configureAppearance() {
         view.backgroundColor = .white
+        
+        switch mode {
+        case .contact:
+            accountListView.titleLabel.text = "send-sending-algos-select".localized
+        default:
+            accountListView.titleLabel.text = "send-algos-select".localized
+        }
     }
     
     override func setListeners() {
@@ -75,6 +82,7 @@ extension AccountListViewController: AccountListLayoutBuilderDelegate {
 extension AccountListViewController {
     enum Mode {
         case assetCount
+        case contact(assetDetail: AssetDetail?)
         case amount(assetDetail: AssetDetail?)
     }
 }
