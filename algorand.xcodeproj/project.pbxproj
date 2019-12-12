@@ -710,6 +710,16 @@
 		2BA242382263C0D800E2841F /* SwiftDate+Region.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA242372263C0D800E2841F /* SwiftDate+Region.swift */; };
 		2BA8736A2248214800511C7C /* AlignedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA873692248214800511C7C /* AlignedButton.swift */; };
 		2BA8736E2248240A00511C7C /* UIEdgeInsets+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA8736D2248240A00511C7C /* UIEdgeInsets+Additions.swift */; };
+		2BAD5584239FB0F10037079F /* AvenirNext-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2BAD5582239FB0F10037079F /* AvenirNext-BoldItalic.ttf */; };
+		2BAD5585239FB0F10037079F /* AvenirNext-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2BAD5582239FB0F10037079F /* AvenirNext-BoldItalic.ttf */; };
+		2BAD5586239FB0F10037079F /* AvenirNext-DemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2BAD5583239FB0F10037079F /* AvenirNext-DemiBoldItalic.ttf */; };
+		2BAD5587239FB0F10037079F /* AvenirNext-DemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2BAD5583239FB0F10037079F /* AvenirNext-DemiBoldItalic.ttf */; };
+		2BAD5589239FB11F0037079F /* Overpass-SemiBoldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2BAD5588239FB11F0037079F /* Overpass-SemiBoldItalic.otf */; };
+		2BAD558A239FB11F0037079F /* Overpass-SemiBoldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2BAD5588239FB11F0037079F /* Overpass-SemiBoldItalic.otf */; };
+		2BAD558D239FB1A60037079F /* PendingAssetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BAD558C239FB1A60037079F /* PendingAssetView.swift */; };
+		2BAD558E239FB1A60037079F /* PendingAssetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BAD558C239FB1A60037079F /* PendingAssetView.swift */; };
+		2BAD5590239FB1B10037079F /* PendingAssetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BAD558F239FB1B10037079F /* PendingAssetCell.swift */; };
+		2BAD5591239FB1B10037079F /* PendingAssetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BAD558F239FB1B10037079F /* PendingAssetCell.swift */; };
 		2BB021D9224E2A7E0039D78A /* AlgosAmountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB021D8224E2A7E0039D78A /* AlgosAmountView.swift */; };
 		2BB021DB224E46D60039D78A /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB021DA224E46D60039D78A /* Transaction.swift */; };
 		2BB021E0224E5FD20039D78A /* AssetDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB021DF224E5FD20039D78A /* AssetDetailViewModel.swift */; };
@@ -1178,6 +1188,11 @@
 		2BA242372263C0D800E2841F /* SwiftDate+Region.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SwiftDate+Region.swift"; sourceTree = "<group>"; };
 		2BA873692248214800511C7C /* AlignedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlignedButton.swift; sourceTree = "<group>"; };
 		2BA8736D2248240A00511C7C /* UIEdgeInsets+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIEdgeInsets+Additions.swift"; sourceTree = "<group>"; };
+		2BAD5582239FB0F10037079F /* AvenirNext-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AvenirNext-BoldItalic.ttf"; sourceTree = "<group>"; };
+		2BAD5583239FB0F10037079F /* AvenirNext-DemiBoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AvenirNext-DemiBoldItalic.ttf"; sourceTree = "<group>"; };
+		2BAD5588239FB11F0037079F /* Overpass-SemiBoldItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Overpass-SemiBoldItalic.otf"; sourceTree = "<group>"; };
+		2BAD558C239FB1A60037079F /* PendingAssetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingAssetView.swift; sourceTree = "<group>"; };
+		2BAD558F239FB1B10037079F /* PendingAssetCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingAssetCell.swift; sourceTree = "<group>"; };
 		2BB021D8224E2A7E0039D78A /* AlgosAmountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgosAmountView.swift; sourceTree = "<group>"; };
 		2BB021DA224E46D60039D78A /* Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
 		2BB021DF224E5FD20039D78A /* AssetDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetDetailViewModel.swift; sourceTree = "<group>"; };
@@ -1672,6 +1687,7 @@
 		2B4487022379595100C19FDE /* Cell */ = {
 			isa = PBXGroup;
 			children = (
+				2BAD558B239FB18D0037079F /* Pending */,
 				2B4486F92379590D00C19FDE /* AssetView.swift */,
 				2B4486FF2379592300C19FDE /* AssetCell.swift */,
 				2B448733237AAD1200C19FDE /* AlgoAssetView.swift */,
@@ -3434,6 +3450,15 @@
 			path = Data;
 			sourceTree = "<group>";
 		};
+		2BAD558B239FB18D0037079F /* Pending */ = {
+			isa = PBXGroup;
+			children = (
+				2BAD558C239FB1A60037079F /* PendingAssetView.swift */,
+				2BAD558F239FB1B10037079F /* PendingAssetCell.swift */,
+			);
+			path = Pending;
+			sourceTree = "<group>";
+		};
 		2BB021E1224E7AB20039D78A /* Assets */ = {
 			isa = PBXGroup;
 			children = (
@@ -4046,8 +4071,11 @@
 				2B43B82222A73A3700CEA8F3 /* AvenirNext-Bold.ttf */,
 				2B43B82822A73A3800CEA8F3 /* AvenirNext-DemiBold.ttf */,
 				2B43B82422A73A3700CEA8F3 /* AvenirNext-Medium.ttf */,
+				2BAD5582239FB0F10037079F /* AvenirNext-BoldItalic.ttf */,
+				2BAD5583239FB0F10037079F /* AvenirNext-DemiBoldItalic.ttf */,
 				2B43B82322A73A3700CEA8F3 /* AvenirNext-Regular.ttf */,
 				2B43B82622A73A3800CEA8F3 /* Overpass-Bold.otf */,
+				2BAD5588239FB11F0037079F /* Overpass-SemiBoldItalic.otf */,
 				2B43B82522A73A3800CEA8F3 /* Overpass-ExtraBold.otf */,
 				2B43B82922A73A3800CEA8F3 /* Overpass-Regular.otf */,
 				2B43B82722A73A3800CEA8F3 /* Overpass-SemiBold.otf */,
@@ -4337,6 +4365,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2BAD5587239FB0F10037079F /* AvenirNext-DemiBoldItalic.ttf in Resources */,
 				2B43B83522A73A3800CEA8F3 /* Overpass-SemiBold.otf in Resources */,
 				17BD4F152292F1260003E49A /* LoadingAnimation.json in Resources */,
 				2B43B82B22A73A3800CEA8F3 /* AvenirNext-Bold.ttf in Resources */,
@@ -4350,6 +4379,8 @@
 				17BD4F1B2292F1260003E49A /* Localizable.strings in Resources */,
 				2B43B83322A73A3800CEA8F3 /* Overpass-Bold.otf in Resources */,
 				17BD4F1D2292F1260003E49A /* Assets.xcassets in Resources */,
+				2BAD5585239FB0F10037079F /* AvenirNext-BoldItalic.ttf in Resources */,
+				2BAD558A239FB11F0037079F /* Overpass-SemiBoldItalic.otf in Resources */,
 				2B43B82D22A73A3800CEA8F3 /* AvenirNext-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4358,6 +4389,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2BAD5586239FB0F10037079F /* AvenirNext-DemiBoldItalic.ttf in Resources */,
 				2B43B83422A73A3800CEA8F3 /* Overpass-SemiBold.otf in Resources */,
 				2BFBAB72227B349E008BBB31 /* LoadingAnimation.json in Resources */,
 				2B43B82A22A73A3800CEA8F3 /* AvenirNext-Bold.ttf in Resources */,
@@ -4371,6 +4403,8 @@
 				2BF34CC9223AA63D0052CAD3 /* Localizable.strings in Resources */,
 				2B43B83222A73A3800CEA8F3 /* Overpass-Bold.otf in Resources */,
 				2B8BE4D922391C3B005D8565 /* Assets.xcassets in Resources */,
+				2BAD5584239FB0F10037079F /* AvenirNext-BoldItalic.ttf in Resources */,
+				2BAD5589239FB11F0037079F /* Overpass-SemiBoldItalic.otf in Resources */,
 				2B43B82C22A73A3800CEA8F3 /* AvenirNext-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4812,6 +4846,7 @@
 				17BD4EA92292F1260003E49A /* HistoryViewController.swift in Sources */,
 				17BD4EAA2292F1260003E49A /* AuctionSlider.swift in Sources */,
 				17BD4EAB2292F1260003E49A /* AsyncOperation.swift in Sources */,
+				2BAD558E239FB1A60037079F /* PendingAssetView.swift in Sources */,
 				2B79A131230EBE3200766021 /* FeedbackSelectionView.swift in Sources */,
 				17BD4EAC2292F1260003E49A /* PassphraseDisplayViewController.swift in Sources */,
 				17BD4EAD2292F1260003E49A /* TransactionDetailViewModel.swift in Sources */,
@@ -4932,6 +4967,7 @@
 				17BD4EF82292F1260003E49A /* SettingsView.swift in Sources */,
 				17BD4EF92292F1260003E49A /* EmptyStateView.swift in Sources */,
 				17BD4EFA2292F1260003E49A /* BarButtonItem.swift in Sources */,
+				2BAD5591239FB1B10037079F /* PendingAssetCell.swift in Sources */,
 				17BD4EFB2292F1260003E49A /* AlgosAmountView.swift in Sources */,
 				17BD4EFC2292F1260003E49A /* UILabel+Factory.swift in Sources */,
 				17BD4EFD2292F1260003E49A /* AlertViewModel.swift in Sources */,
@@ -5231,6 +5267,7 @@
 				2BB021E3224E7AD20039D78A /* TransactionHistoryDataSource.swift in Sources */,
 				2B3F3922228EB775008BBE75 /* AuctionSliderView.swift in Sources */,
 				2BF5315B224A46E400A7455F /* UIVIewController+Presentation.swift in Sources */,
+				2BAD558D239FB1A60037079F /* PendingAssetView.swift in Sources */,
 				2B79A130230EBE3200766021 /* FeedbackSelectionView.swift in Sources */,
 				173DA1E72255EBE000378A82 /* String+Address.swift in Sources */,
 				2BB021DB224E46D60039D78A /* Transaction.swift in Sources */,
@@ -5351,6 +5388,7 @@
 				17100B2C225CEC3600D13548 /* SettingsView.swift in Sources */,
 				2BDE9CD0224E1A60007EFF30 /* EmptyStateView.swift in Sources */,
 				2B66870E2248DB8B009F21E7 /* BarButtonItem.swift in Sources */,
+				2BAD5590239FB1B10037079F /* PendingAssetCell.swift in Sources */,
 				2BB021D9224E2A7E0039D78A /* AlgosAmountView.swift in Sources */,
 				2BD739EF223FDE8400B66EEF /* UILabel+Factory.swift in Sources */,
 				2B8954B32243D7AD00D6D068 /* AlertViewModel.swift in Sources */,
