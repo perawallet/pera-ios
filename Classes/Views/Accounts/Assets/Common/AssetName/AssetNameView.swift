@@ -12,7 +12,7 @@ class AssetNameView: BaseView {
 
     private let layout = Layout<LayoutConstants>()
     
-    private lazy var nameLabel: UILabel = {
+    private(set) lazy var nameLabel: UILabel = {
         UILabel()
             .withFont(UIFont.font(.overpass, withWeight: .bold(size: 13.0)))
             .withTextColor(SharedColors.black)
@@ -20,7 +20,7 @@ class AssetNameView: BaseView {
             .withAlignment(.left)
     }()
     
-    private lazy var codeLabel: UILabel = {
+    private(set) lazy var codeLabel: UILabel = {
         UILabel()
             .withFont(UIFont.font(.overpass, withWeight: .bold(size: 13.0)))
             .withTextColor(SharedColors.purple)
@@ -64,12 +64,18 @@ extension AssetNameView {
 }
 
 extension AssetNameView {
-    func setName(_ name: String) {
-        nameLabel.text = name
-    }
-    
-    func setCode(_ code: String) {
-        codeLabel.text = "(\(code))"
+    func setAssetName(for assetDetail: AssetDetail) {
+        let (firstDisplayName, secondDisplayName) = assetDetail.getDisplayNames()
+        
+        if firstDisplayName.isUnknown() && !assetDetail.hasDisplayName() {
+            nameLabel.textColor = SharedColors.orange
+            nameLabel.font = UIFont.font(.overpass, withWeight: .boldItalic(size: 13.0))
+        } else if secondDisplayName.isNilOrEmpty && assetDetail.assetName.isNilOrEmpty {
+            nameLabel.textColor = SharedColors.purple
+        }
+        
+        nameLabel.text = firstDisplayName
+        codeLabel.text = secondDisplayName
     }
 }
 

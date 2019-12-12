@@ -72,12 +72,11 @@ extension RequestTransactionViewController {
         requestTransactionView.amountInputView.inputTextField.text = transaction.amount.toDecimalStringForLabel
         requestTransactionView.amountInputView.algosImageView.removeFromSuperview()
         
-        guard let assetDetail = transaction.assetDetail,
-            let assetName = assetDetail.assetName else {
+        guard let assetDetail = transaction.assetDetail else {
             return
         }
         
-        title = "\(assetName) " + "request-title".localized
+        title = "\(assetDetail.getDisplayNames().0) " + "request-title".localized
         requestTransactionView.transactionParticipantView.assetSelectionView.detailLabel.attributedText = assetDetail.assetDisplayName()
     }
 }

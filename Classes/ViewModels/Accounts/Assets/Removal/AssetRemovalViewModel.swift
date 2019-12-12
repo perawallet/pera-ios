@@ -10,13 +10,7 @@ import UIKit
 
 class AssetRemovalViewModel {    
     func configure(_ cell: AssetActionableCell, with asset: AssetDetail) {
-        guard let assetName = asset.assetName,
-            let code = asset.unitName else {
-                return
-        }
-        
-        cell.contextView.assetNameView.setName(assetName)
-        cell.contextView.assetNameView.setCode(code)
+        cell.contextView.assetNameView.setAssetName(for: asset)
         cell.contextView.actionButton.setTitle("title-remove-lowercased".localized, for: .normal)
     }
     

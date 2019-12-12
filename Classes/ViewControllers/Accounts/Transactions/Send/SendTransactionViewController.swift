@@ -130,12 +130,11 @@ extension SendTransactionViewController {
         sendTransactionView.amountInputView.algosImageView.removeFromSuperview()
         
         guard let assetIndex = transaction.assetIndex,
-            let assetDetail = transaction.fromAccount.assetDetails.first(where: { $0.index == "\(assetIndex)" }),
-            let assetName = assetDetail.assetName else {
+            let assetDetail = transaction.fromAccount.assetDetails.first(where: { $0.index == "\(assetIndex)" }) else {
             return
         }
         
-        title = "balance-send-title".localized + " \(assetName)"
+        title = "balance-send-title".localized + " \(assetDetail.getDisplayNames().0)"
         sendTransactionView.transactionParticipantView.assetSelectionView.detailLabel.attributedText = assetDetail.assetDisplayName()
     }
 }

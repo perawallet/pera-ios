@@ -27,7 +27,10 @@ extension AssetDetailViewModel {
         if let assetDetail = assetDetail {
             view.dollarValueLabel.isHidden = true
             view.rewardTotalAmountView.removeFromSuperview()
-            view.assetNameLabel.attributedText = assetDetail.assetDisplayName()
+            view.assetNameLabel.attributedText = assetDetail.assetDisplayName(
+                with: UIFont.font(.avenir, withWeight: .demiBold(size: 14.0)),
+                isIndexIncluded: true
+            )
             
             guard let amount = account.amount(for: assetDetail) else {
                 return

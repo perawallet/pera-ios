@@ -192,8 +192,7 @@ extension SendAssetTransactionPreviewViewController {
         sendTransactionPreviewView.transactionParticipantView.assetSelectionView.amountView.algoIconImageView.removeFromSuperview()
         sendTransactionPreviewView.amountInputView.algosImageView.removeFromSuperview()
         
-        guard let assetName = assetDetail.assetName,
-            let assetAmount = selectedAccount.amount(for: assetDetail) else {
+        guard let assetAmount = selectedAccount.amount(for: assetDetail) else {
             return
         }
         
@@ -209,7 +208,7 @@ extension SendAssetTransactionPreviewViewController {
         sendTransactionPreviewView.transactionParticipantView.accountSelectionView.detailLabel.text = selectedAccount.name
         sendTransactionPreviewView.transactionParticipantView.assetSelectionView.amountView.amountLabel.text
             = assetAmount.toDecimalStringForLabel
-        title = "balance-send-title".localized + " \(assetName)"
+        title = "balance-send-title".localized + " \(assetDetail.getDisplayNames().0)"
         sendTransactionPreviewView.transactionParticipantView.assetSelectionView.detailLabel.attributedText = assetDetail.assetDisplayName()
         
         switch receiver {
