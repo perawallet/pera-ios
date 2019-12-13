@@ -233,8 +233,8 @@ extension TransactionManager {
             calculatedFee = Transaction.Constant.minimumFee
         }
         
-        if Int64(account.amount) - calculatedFee < Int64(minimumTransactionMicroAlgosLimit * (account.assetDetails.count + 1)) {
-            let mininmumAmount = Int64(minimumTransactionMicroAlgosLimit * (account.assetDetails.count + 1)) + calculatedFee
+        if Int64(account.amount) - calculatedFee < Int64(minimumTransactionMicroAlgosLimit * (account.assetDetails.count + 2)) {
+            let mininmumAmount = Int64(minimumTransactionMicroAlgosLimit * (account.assetDetails.count + 2)) + calculatedFee
             delegate?.transactionManager(self, didFailedComposing: .custom(mininmumAmount))
             return
         }
