@@ -14,7 +14,7 @@ class AssetActionConfirmationViewModel {
         view.assetDisplayView.assetIndexLabel.text = draft.assetDetail.index
         view.actionButton.setTitle(draft.actionTitle, for: .normal)
         
-        let displayNames = draft.assetDetail.getDisplayNames()
+        let displayNames = draft.assetDetail.getDisplayNames(isDisplayingBrackets: false)
         
         if displayNames.0.isUnknown() {
             view.assetDisplayView.assetCodeLabel.font = UIFont.font(.avenir, withWeight: .demiBoldItalic(size: 40.0))

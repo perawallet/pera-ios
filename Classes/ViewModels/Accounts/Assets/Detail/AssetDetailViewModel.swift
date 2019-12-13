@@ -94,7 +94,7 @@ extension AssetDetailViewModel {
             if assetTransaction.receiverAddress == account.address && assetTransaction.amount == 0 && transaction.type == "axfer" {
                 view.titleLabel.text = "asset-creation-fee-title".localized
                 view.subtitleLabel.isHidden = true
-                view.transactionAmountView.mode = .negative(assetTransaction.amount.toAlgos)
+                view.transactionAmountView.mode = .negative(transaction.fee.toAlgos)
             } else if assetTransaction.receiverAddress == account.address {
                 configure(view, with: contact, and: assetTransaction.receiverAddress)
                 view.transactionAmountView.algoIconImageView.removeFromSuperview()
@@ -110,7 +110,7 @@ extension AssetDetailViewModel {
                     assetTransaction.receiverAddress == account.address && assetTransaction.amount == 0 && transaction.type == "axfer" {
                     view.titleLabel.text = "asset-creation-fee-title".localized
                     view.subtitleLabel.isHidden = true
-                    view.transactionAmountView.mode = .negative(assetTransaction.amount.toAlgos)
+                    view.transactionAmountView.mode = .negative(transaction.fee.toAlgos)
                 }
                 return
             }

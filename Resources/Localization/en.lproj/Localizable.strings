@@ -154,7 +154,7 @@
 "asset-transfer-balance" = "TRANSFER BALANCE";
 "title-remove-assets" = "Remove Assets";
 "title-add-asset" = "Add Asset";
-"asset-add-warning" = "Adding an asset requires sending a transaction with a minimum transaction fee of X Algos. This will appear on your transaction history.";
+"asset-add-warning" = "Adding an asset requires sending a transaction with a minimum transaction fee. This will appear on your transaction history.";
 "asset-support-error" = "Unfortunately, this account has not added this asset. Please instruct the account owner to add the asset, and then try again.";
 "asset-support-title" = "Account does not accept this asset";
 "asset-add-confirmation-title" = "Adding Asset";

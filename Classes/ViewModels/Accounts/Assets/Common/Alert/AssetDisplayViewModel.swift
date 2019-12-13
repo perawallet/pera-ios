@@ -20,7 +20,7 @@ class AssetSupportAlertViewModel {
     }
     
     private func configure(_ view: AssetDisplayView, with draft: AssetAlertDraft) {
-        let displayNames = draft.assetDetail.getDisplayNames()
+        let displayNames = draft.assetDetail.getDisplayNames(isDisplayingBrackets: false)
         
         view.assetIndexLabel.text = draft.assetDetail.index
         if displayNames.0.isUnknown() {

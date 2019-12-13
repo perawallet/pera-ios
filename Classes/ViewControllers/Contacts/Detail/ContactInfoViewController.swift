@@ -93,13 +93,13 @@ extension ContactInfoViewController {
         
         SVProgressHUD.show()
         
-        api?.fetchAccount(with: AccountFetchDraft(publicKey: address)) { [unowned self] response in
+        api?.fetchAccount(with: AccountFetchDraft(publicKey: address)) { [weak self] response in
             switch response {
             case let .success(account):
                 if account.isThereAnyDifferentAsset() {
                     if let assets = account.assets {
                         for (index, _) in assets {
-                            self.api?.getAssetDetails(with: AssetFetchDraft(assetId: "\(index)")) { assetResponse in
+                            self?.api?.getAssetDetails(with: AssetFetchDraft(assetId: "\(index)")) { assetResponse in
                                 switch assetResponse {
                                 case let .success(assetDetail):
                                     assetDetail.index = index
@@ -108,15 +108,25 @@ extension ContactInfoViewController {
                                     if assets.count == account.assetDetails.count {
                                         SVProgressHUD.showSuccess(withStatus: "title-done-lowercased".localized)
                                         SVProgressHUD.dismiss()
-                                        self.contactAccount = account
-                                        self.configureViewForContactAssets()
+                                        
+                                        guard let strongSelf = self else {
+                                            return
+                                        }
+                                        strongSelf.contactAccount = account
+                                        strongSelf.configureViewForContactAssets()
                                     }
                                 case .failure:
                                     SVProgressHUD.dismiss()
                                 }
                             }
                         }
+                    } else {
+                        SVProgressHUD.showSuccess(withStatus: "title-done-lowercased".localized)
+                        SVProgressHUD.dismiss()
                     }
+                } else {
+                    SVProgressHUD.showSuccess(withStatus: "title-done-lowercased".localized)
+                    SVProgressHUD.dismiss()
                 }
             case .failure:
                 SVProgressHUD.dismiss()

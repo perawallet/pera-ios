@@ -98,14 +98,20 @@ extension AssetDetail {
         }
     }
     
-    func getDisplayNames() -> (String, String?) {
+    func getDisplayNames(isDisplayingBrackets: Bool = true) -> (String, String?) {
         if let name = assetName, !name.isEmptyOrBlank,
             let code = unitName, !code.isEmptyOrBlank {
-            return (name, "(\(code))")
+            if isDisplayingBrackets {
+                return (name, "(\(code))")
+            }
+            return (name, "\(code)")
         } else if let name = assetName, !name.isEmptyOrBlank {
             return (name, nil)
         } else if let code = unitName, !code.isEmptyOrBlank {
-            return ("(\(code))", nil)
+            if isDisplayingBrackets {
+                return ("(\(code))", nil)
+            }
+            return ("\(code)", nil)
         } else {
             return ("title-unknown".localized, nil)
         }

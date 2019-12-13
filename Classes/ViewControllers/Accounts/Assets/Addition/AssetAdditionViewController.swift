@@ -72,21 +72,24 @@ extension AssetAdditionViewController {
 extension AssetAdditionViewController {
     private func fetchAssets(with assetId: String) {
         let assetFetchDraft = AssetFetchDraft(assetId: assetId)
-        api?.getAssets(with: assetFetchDraft) { [unowned self] response in
+        api?.getAssets(with: assetFetchDraft) { [weak self] response in
             switch response {
             case let .success(assetList):
-                self.assetResults = assetList.assets
-                self.assetResults.forEach { result in
+                guard let strongSelf = self else {
+                    return
+                }
+                strongSelf.assetResults = assetList.assets
+                strongSelf.assetResults.forEach { result in
                     result.assetDetail.index = "\(result.index)"
                 }
                 
-                if self.assetResults.isEmpty {
-                    self.assetAdditionView.assetsCollectionView.contentState = .empty(self.emptyStateView)
+                if strongSelf.assetResults.isEmpty {
+                    strongSelf.assetAdditionView.assetsCollectionView.contentState = .empty(strongSelf.emptyStateView)
                 } else {
-                    self.assetAdditionView.assetsCollectionView.contentState = .none
+                    strongSelf.assetAdditionView.assetsCollectionView.contentState = .none
                 }
                 
-                self.assetAdditionView.assetsCollectionView.reloadData()
+                strongSelf.assetAdditionView.assetsCollectionView.reloadData()
             case .failure:
                 break
             }

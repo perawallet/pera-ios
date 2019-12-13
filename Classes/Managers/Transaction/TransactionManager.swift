@@ -226,7 +226,12 @@ extension TransactionManager {
         }
 
         self.transactionData = signedTransactionData
-        let calculatedFee = Int64(signedTransactionData.count) * params.fee
+        
+        var calculatedFee = Int64(signedTransactionData.count) * params.fee
+        
+        if calculatedFee < Transaction.Constant.minimumFee {
+            calculatedFee = Transaction.Constant.minimumFee
+        }
         
         if Int64(account.amount) - calculatedFee < Int64(minimumTransactionMicroAlgosLimit * (account.assetDetails.count + 1)) {
             let mininmumAmount = Int64(minimumTransactionMicroAlgosLimit * (account.assetDetails.count + 1)) + calculatedFee
