@@ -118,7 +118,7 @@ extension AssetDetail {
     }
     
     func hasDisplayName() -> Bool {
-        return assetName != nil || unitName != nil
+        return !assetName.isNilOrEmpty || !unitName.isNilOrEmpty
     }
     
     func getAssetName() -> String {
