@@ -158,7 +158,7 @@ extension TransactionManager {
             return
         }
         
-        completeAssetTransacion(for: account, with: transactionData, isClosingTransaction: isClosingTransaction)
+        completeAssetTransacion(with: transactionData, isClosingTransaction: isClosingTransaction)
     }
 }
 
@@ -201,7 +201,7 @@ extension TransactionManager {
             return
         }
 
-        completeAssetTransacion(for: account, with: transactionData, isClosingTransaction: true)
+        completeAssetTransacion(with: transactionData, isClosingTransaction: true)
     }
 }
 
@@ -218,7 +218,7 @@ extension TransactionManager {
         return signedTransactionData
     }
     
-    private func completeAssetTransacion(for account: Account, with transactionData: Data, isClosingTransaction: Bool) {
+    private func completeAssetTransacion(with transactionData: Data, isClosingTransaction: Bool) {
         guard let params = params,
             let transactionDraft = assetTransactionDraft,
             let signedTransactionData = sign(transactionData, for: transactionDraft.fromAccount.address) else {
@@ -232,6 +232,8 @@ extension TransactionManager {
         if calculatedFee < Transaction.Constant.minimumFee {
             calculatedFee = Transaction.Constant.minimumFee
         }
+        
+        let account = transactionDraft.fromAccount
         
         if Int64(account.amount) - calculatedFee < Int64(minimumTransactionMicroAlgosLimit * (account.assetDetails.count + 2)) {
             let mininmumAmount = Int64(minimumTransactionMicroAlgosLimit * (account.assetDetails.count + 2)) + calculatedFee
