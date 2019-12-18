@@ -236,7 +236,7 @@ extension AssetRemovalViewController: AssetActionConfirmationViewControllerDeleg
             assetCreator: assetDetail.creator
         )
         transactionManager?.setAssetTransactionDraft(assetTransactionDraft)
-        transactionManager?.composeAssetTransactionData(for: account, isClosingTransaction: true)
+        transactionManager?.composeAssetTransactionData(for: account, transactionType: .assetRemoval)
     }
 }
 
