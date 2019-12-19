@@ -77,6 +77,11 @@ struct ALGBarButtonItem: BarButtonItem {
             return nil
         case .save:
             return nil
+        case .qr:
+            if let icon = img("icon-qr-code-purple") {
+                return ImageContent(normal: icon)
+            }
+            return nil
         }
     }
     
@@ -102,6 +107,8 @@ struct ALGBarButtonItem: BarButtonItem {
         case .close:
             return .explicit(CGSize(width: 44.0, height: 44.0))
         case .removeNode:
+            return .explicit(CGSize(width: 44.0, height: 44.0))
+        case .qr:
             return .explicit(CGSize(width: 44.0, height: 44.0))
         case .balance:
             return .expanded(
@@ -147,6 +154,7 @@ extension ALGBarButtonItem {
         case removeNode
         case balance
         case save
+        case qr
     }
 }
 

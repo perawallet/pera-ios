@@ -58,14 +58,33 @@ class AccountsViewController: BaseViewController {
     }
     
     override func configureNavigationBarAppearance() {
-        let addAccountBarButtonItem = ALGBarButtonItem(kind: .add) { [unowned self] in
-            self.open(
+        setupLeftBarButtonItems()
+    }
+    
+    private func setupLeftBarButtonItems() {
+        let addAccountBarButtonItem = ALGBarButtonItem(kind: .add) { [weak self] in
+            guard let strongSelf = self else {
+                return
+            }
+            strongSelf.open(
                 .introduction(mode: .new),
                 by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
             )
         }
         
         leftBarButtonItems = [addAccountBarButtonItem]
+    }
+    
+    private func setupRightBarButtonItems() {
+        let qrBarButtonItem = ALGBarButtonItem(kind: .qr) { [weak self] in
+            guard let strongSelf = self else {
+                return
+            }
+            let qrScannerViewController = strongSelf.open(.qrScanner, by: .push) as? QRScannerViewController
+            qrScannerViewController?.delegate = strongSelf
+        }
+
+        rightBarButtonItems = [qrBarButtonItem]
     }
     
     override func viewDidLoad() {
@@ -184,6 +203,25 @@ extension AccountsViewController {
         let optionsViewController = open(.options(account: account), by: transitionStyle) as? OptionsViewController
         
         optionsViewController?.delegate = self
+    }
+}
+
+extension AccountsViewController: QRScannerViewControllerDelegate {
+    func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, then handler: EmptyHandler?) {
+        switch qrText.mode {
+        case .address:
+            break
+        case .algosRequest:
+            break
+        case .assetRequest:
+            break
+        case .mnemonic:
+            break
+        }
+    }
+    
+    func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError, then handler: EmptyHandler?) {
+        
     }
 }
 
