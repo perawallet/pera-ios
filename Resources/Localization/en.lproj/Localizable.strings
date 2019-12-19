@@ -169,6 +169,8 @@
 "asset-min-transaction-error-title" = "Min Transaction Error!";
 "asset-min-transaction-error-message" = "You need at least %@ Algos to add this asset";
 "asset-you-already-own-message" = "You already own this asset";
+"asset-support-not-same-error" = "This account has added this asset but this is not the selected asset. Please select the correct asset, and then try again.";
+"asset-support-not-same-title" = "Account does not accept this asset";
 
 // MARK: Algos Send
 
@@ -277,6 +279,9 @@
 "settings-coinlist" = "Coinlist";
 "settings-coinlist-connect" = "Connect Account";
 "settings-coinlist-disconnect" = "Disconnect Account";
+"settings-notification-go-settings-title" = "Notifications";
+"settings-notification-disabled-go-settings-text" = "You have disabled notifications. Please go to Settings and enable this option.";
+"settings-notification-enabled-go-settings-text" = "You have enabled notifications. Please go to Settings and disable this option.";
 
 // MARK: NodeSettings
 "node-settings-title" = "Node Settings";
