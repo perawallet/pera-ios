@@ -125,8 +125,13 @@ extension AssetAdditionViewController: UICollectionViewDelegateFlowLayout {
             return
         }
         
+        guard let assetIndex = assetResult.assetDetail.index else {
+            return
+        }
+        
         let assetAlertDraft = AssetAlertDraft(
             account: account,
+            assetIndex: assetIndex,
             assetDetail: assetResult.assetDetail,
             title: "asset-add-confirmation-title".localized,
             detail: "asset-add-warning".localized,
