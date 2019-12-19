@@ -164,6 +164,21 @@ class TabBarController: UITabBarController {
         if let appConfiguration = UIApplication.shared.appConfiguration {
             appConfiguration.session.isValid = true
         }
+        
+        routeForDeeplink()
+    }
+    
+    func routeForDeeplink() {
+        if let route = route {
+            self.route = nil
+            switch route {
+            case .addContact:
+                selectedIndex = 2
+                topMostController?.open(route, by: .push)
+            default:
+                break
+            }
+        }
     }
 }
 

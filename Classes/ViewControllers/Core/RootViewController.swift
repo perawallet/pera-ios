@@ -69,21 +69,17 @@ class RootViewController: UIViewController {
                 return open(.introduction(mode: .initialize), by: .launch, animated: false) != nil
             }
         } else {
-            UIApplication.topViewController()?.tabBarController?.selectedIndex = 0
-            
-            if let controller = UIApplication.topViewController(),
-                let navigationController = controller.presentingViewController as? NavigationController,
-                let tabBarController = navigationController.viewControllers.first as? TabBarController,
-                let accountsViewController = tabBarController.accountsNavigationController.viewControllers.first {
-                    
-                controller.dismiss(animated: false) {
-                    accountsViewController.open(screen, by: .set, animated: false)
-                }
-                
+            switch screen {
+            case .addContact:
+                tabBarViewController.selectedIndex = 2
+                tabBarViewController.route = screen
+                tabBarViewController.routeForDeeplink()
                 return true
-            } else {
-                return UIApplication.topViewController()?.open(screen, by: .set, animated: false) != nil
+            default:
+                break
             }
+            
+            return false
         }
     }
     

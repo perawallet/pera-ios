@@ -45,7 +45,7 @@ class ContactsViewController: BaseViewController {
     
     override func configureNavigationBarAppearance() {
         let addBarButtonItem = ALGBarButtonItem(kind: .add) {
-            let controller = self.open(.addContact(mode: .new), by: .push) as? AddContactViewController
+            let controller = self.open(.addContact(mode: .new()), by: .push) as? AddContactViewController
             
             controller?.delegate = self
         }
