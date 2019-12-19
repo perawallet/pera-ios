@@ -89,6 +89,49 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
             }
         }
     }
+    
+    override func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, then handler: EmptyHandler?) {
+        guard let qrAddress = qrText.address else {
+            return
+        }
+        sendTransactionPreviewView.transactionReceiverView.state = .address(address: qrAddress, amount: nil)
+        receiver = .address(address: qrAddress, amount: nil)
+        
+        if let qrAsset = qrText.asset {
+            let qrAssetText = "\(qrAsset)"
+            
+            if !isAccountContainsAsset(qrAssetText) {
+                presentAssetNotSupportedAlert(for: qrAssetText)
+                
+                if let handler = handler {
+                    handler()
+                }
+                
+                return
+            }
+            
+            if qrAssetText != assetDetail.index {
+                displaySimpleAlertWith(title: "asset-support-not-same-title".localized, message: "asset-support-not-same-error".localized)
+                
+                if let handler = handler {
+                    handler()
+                }
+                
+                return
+            }
+        }
+    }
+    
+    private func isAccountContainsAsset(_ assetIndex: String) -> Bool {
+        var isAssetAddedToAccount = false
+        
+        for assetDetail in selectedAccount.assetDetails where assetDetail.index == assetIndex {
+            isAssetAddedToAccount = true
+            break
+        }
+        
+        return isAssetAddedToAccount
+    }
 }
 
 extension SendAssetTransactionPreviewViewController {
@@ -121,10 +164,14 @@ extension SendAssetTransactionPreviewViewController {
         }
     }
     
-    private func presentAssetNotSupportedAlert() {
+    private func presentAssetNotSupportedAlert(for assetIndex: String? = nil) {
+        guard let currentAssetDetailIndex = assetDetail.index else {
+            return
+        }
         let assetAlertDraft = AssetAlertDraft(
             account: self.selectedAccount,
-            assetDetail: self.assetDetail,
+            assetIndex: assetIndex ?? currentAssetDetailIndex,
+            assetDetail: assetIndex == nil ? assetDetail : nil,
             title: "asset-support-title".localized,
             detail: "asset-support-error".localized,
             actionTitle: "title-ok".localized

@@ -534,6 +534,8 @@
 		2B59F15C22550778005203DD /* Codable+CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B59F15B22550778005203DD /* Codable+CoreData.swift */; };
 		2B59F15E22552845005203DD /* DBStorable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B59F15D22552845005203DD /* DBStorable.swift */; };
 		2B59F16122563F89005203DD /* TabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B59F16022563F89005203DD /* TabBar.swift */; };
+		2B5C58E123AC364700B907E3 /* URL+Link.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5C58E023AC364700B907E3 /* URL+Link.swift */; };
+		2B5C58E223AC364700B907E3 /* URL+Link.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5C58E023AC364700B907E3 /* URL+Link.swift */; };
 		2B5DA9CC224CB4AA00EE41B4 /* OptionsContextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5DA9CB224CB4AA00EE41B4 /* OptionsContextView.swift */; };
 		2B5DA9CE224CB4B400EE41B4 /* OptionsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5DA9CD224CB4B400EE41B4 /* OptionsCell.swift */; };
 		2B5DA9D1224CCC8400EE41B4 /* OptionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5DA9D0224CCC8400EE41B4 /* OptionsViewModel.swift */; };
@@ -1056,6 +1058,7 @@
 		2B59F15B22550778005203DD /* Codable+CoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Codable+CoreData.swift"; sourceTree = "<group>"; };
 		2B59F15D22552845005203DD /* DBStorable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBStorable.swift; sourceTree = "<group>"; };
 		2B59F16022563F89005203DD /* TabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBar.swift; sourceTree = "<group>"; };
+		2B5C58E023AC364700B907E3 /* URL+Link.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Link.swift"; sourceTree = "<group>"; };
 		2B5DA9CB224CB4AA00EE41B4 /* OptionsContextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsContextView.swift; sourceTree = "<group>"; };
 		2B5DA9CD224CB4B400EE41B4 /* OptionsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsCell.swift; sourceTree = "<group>"; };
 		2B5DA9D0224CCC8400EE41B4 /* OptionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsViewModel.swift; sourceTree = "<group>"; };
@@ -2632,6 +2635,14 @@
 			path = Container;
 			sourceTree = "<group>";
 		};
+		2B5C58DF23AC363400B907E3 /* URL */ = {
+			isa = PBXGroup;
+			children = (
+				2B5C58E023AC364700B907E3 /* URL+Link.swift */,
+			);
+			path = URL;
+			sourceTree = "<group>";
+		};
 		2B5DA9CA224CB47A00EE41B4 /* Options */ = {
 			isa = PBXGroup;
 			children = (
@@ -3324,6 +3335,7 @@
 				17D04F4D225FACDC0051BC43 /* Numbers */,
 				2BAD559223A29C610037079F /* Optional */,
 				2BF34CC3223A995C0052CAD3 /* Text */,
+				2B5C58DF23AC363400B907E3 /* URL */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -4808,6 +4820,7 @@
 				17BD4E7D2292F1260003E49A /* ActiveAuctionCell.swift in Sources */,
 				17BD4E7E2292F1260003E49A /* SharedColors.swift in Sources */,
 				17BD4E7F2292F1260003E49A /* QRCreationViewController.swift in Sources */,
+				2B5C58E223AC364700B907E3 /* URL+Link.swift in Sources */,
 				2B891F0A22BC1BC3003205F5 /* DepositTypeSelectionView.swift in Sources */,
 				17BD4E802292F1260003E49A /* PastAuctionsEmptyView.swift in Sources */,
 				2B7ABF6F2332DCDB0050B64B /* PendingTransactionCell.swift in Sources */,
@@ -5231,6 +5244,7 @@
 				2B8EE8282283313F0001D025 /* AuctionPrerequirementElementView.swift in Sources */,
 				17B7D8A62240D8F900A6FF9E /* Account.swift in Sources */,
 				2B3F38FB228AEFF7008BBE75 /* AuctionCell.swift in Sources */,
+				2B5C58E123AC364700B907E3 /* URL+Link.swift in Sources */,
 				2B891F0922BC1BC3003205F5 /* DepositTypeSelectionView.swift in Sources */,
 				2B1B77B6229567360021A6CC /* MyBidsViewModel.swift in Sources */,
 				2B7ABF6E2332DCDB0050B64B /* PendingTransactionCell.swift in Sources */,

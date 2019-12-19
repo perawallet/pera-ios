@@ -18,41 +18,23 @@ struct DeepLinkParser {
     
     var expectedScreen: Screen? {
         guard let urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: true),
-            let host = urlComponents.host else {
+            let accountAddress = urlComponents.host,
+            accountAddress.isValidatedAddress(),
+            let qrText = url.buildQRText() else {
             return nil
         }
         
-        let pathComponents = url.pathComponents
-        
-        guard let linkPath = DeepLinkParser.Path(rawValue: host) else {
+        switch qrText.mode {
+        case .address:
+            return .addContact(mode: .new(address: accountAddress, name: qrText.label))
+        case .algosRequest:
+            break
+        case .assetRequest:
+            break
+        case .mnemonic:
             return nil
         }
         
-        switch linkPath {
-        case .sendAlgos:
-            if pathComponents.count < 3 {
-                return nil
-            }
-            
-            let address = pathComponents[1]
-            let amount = pathComponents[2]
-            
-            var account: Account
-            
-            if let currentAccount = UIApplication.shared.appConfiguration?.session.currentAccount {
-                account = currentAccount
-            } else {
-                return nil
-            }
-            
-            return .sendAlgosTransactionPreview(account: account, receiver: .address(address: address, amount: amount))
-        }
-    }
-}
-
-extension DeepLinkParser {
-    
-    enum Path: String {
-        case sendAlgos = "send-algos"
+        return nil
     }
 }

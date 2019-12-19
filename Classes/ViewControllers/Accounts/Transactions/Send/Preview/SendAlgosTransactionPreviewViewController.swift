@@ -85,6 +85,25 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
         }
         open(.sendTransaction(algosTransaction: transactionDraft, assetTransaction: nil, receiver: receiver), by: .push)
     }
+    
+    override func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, then handler: EmptyHandler?) {
+        guard let qrAddress = qrText.address else {
+            return
+        }
+        sendTransactionPreviewView.transactionReceiverView.state = .address(address: qrAddress, amount: nil)
+        if let amountFromQR = qrText.amount,
+            amountFromQR != 0 {
+            let receivedAmount = amountFromQR.toAlgos
+            amount = receivedAmount
+            sendTransactionPreviewView.amountInputView.inputTextField.text = receivedAmount.toDecimalStringForAlgosInput
+        }
+        
+        receiver = .address(address: qrAddress, amount: nil)
+        
+        if let handler = handler {
+            handler()
+        }
+    }
 }
 
 extension SendAlgosTransactionPreviewViewController {

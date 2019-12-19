@@ -111,6 +111,10 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
     func sendTransactionPreviewViewDidTapMaxButton(_ sendTransactionPreviewView: SendTransactionPreviewView) {
         sendTransactionPreviewView.amountInputView.inputTextField.text = selectedAccount.amount.toAlgos.toDecimalStringForAlgosInput
     }
+    
+    func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, then handler: EmptyHandler?) {
+        
+    }
 }
 
 extension SendTransactionPreviewViewController {
@@ -260,18 +264,6 @@ extension SendTransactionPreviewViewController: ContactsViewControllerDelegate {
 }
 
 extension SendTransactionPreviewViewController: QRScannerViewControllerDelegate {
-    func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, then handler: EmptyHandler?) {
-        sendTransactionPreviewView.transactionReceiverView.state = .address(address: qrText.text, amount: nil)
-        if let amountFromQR = qrText.amount,
-            amountFromQR != 0 {
-            let receivedAmount = amountFromQR.toAlgos
-            amount = receivedAmount
-            sendTransactionPreviewView.amountInputView.inputTextField.text = receivedAmount.toDecimalStringForAlgosInput
-        }
-        
-        receiver = .address(address: qrText.text, amount: nil)
-    }
-    
     func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError, then handler: EmptyHandler?) {
         displaySimpleAlertWith(title: "title-error".localized, message: "qr-scan-should-scan-valid-qr".localized) { _ in
             if let handler = handler {

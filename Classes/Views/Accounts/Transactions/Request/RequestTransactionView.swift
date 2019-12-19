@@ -20,10 +20,16 @@ class RequestTransactionView: RequestTransactionPreviewView {
     
     private let address: String
     private let amount: Int64
+    private let assetIndex: Int?
     
     private(set) lazy var qrView: QRView = {
-        let qrText = QRText(mode: .algosRequest, text: address, amount: amount)
-        return QRView(qrText: qrText)
+        if let assetIndex = assetIndex {
+            let qrText = QRText(mode: .assetRequest, address: address, amount: amount, asset: assetIndex)
+            return QRView(qrText: qrText)
+        } else {
+            let qrText = QRText(mode: .algosRequest, address: address, amount: amount, asset: assetIndex)
+            return QRView(qrText: qrText)
+        }
     }()
     
     private(set) lazy var shareButton: UIButton = {
@@ -35,9 +41,10 @@ class RequestTransactionView: RequestTransactionPreviewView {
         return button
     }()
     
-    init(address: String, amount: Int64) {
+    init(address: String, amount: Int64, assetIndex: Int? = nil) {
         self.address = address
         self.amount = amount
+        self.assetIndex = assetIndex
         super.init(frame: .zero)
     }
     
