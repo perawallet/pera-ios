@@ -35,7 +35,11 @@ class SendTransactionPreviewView: BaseView {
         return view
     }()
     
-    private(set) lazy var transactionReceiverView = TransactionReceiverView()
+    private(set) lazy var transactionReceiverView: TransactionReceiverView = {
+        let transactionReceiverView = TransactionReceiverView()
+        transactionReceiverView.passphraseInputView.inputTextView.returnKeyType = .done
+        return transactionReceiverView
+    }()
     
     private(set) lazy var previewButton = MainButton(title: "title-preview".localized)
     
