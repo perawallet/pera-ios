@@ -71,6 +71,11 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
     }
     
     override func displayTransactionPreview() {
+        if selectedAccount == nil {
+            displaySimpleAlertWith(title: "send-algos-alert-title".localized, message: "send-algos-alert-message".localized)
+            return
+        }
+        
         switch receiver {
         case let .contact(contact):
             if let address = contact.address {

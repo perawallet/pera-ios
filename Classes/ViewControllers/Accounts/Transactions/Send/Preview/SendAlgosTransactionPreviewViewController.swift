@@ -31,6 +31,7 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
     
     override func displayTransactionPreview() {
         guard let selectedAccount = selectedAccount else {
+            displaySimpleAlertWith(title: "title-error".localized, message: "send-algos-alert-message".localized)
             return
         }
         
