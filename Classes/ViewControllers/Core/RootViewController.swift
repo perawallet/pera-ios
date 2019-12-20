@@ -70,8 +70,10 @@ class RootViewController: UIViewController {
             }
         } else {
             switch screen {
-            case .addContact:
-                tabBarViewController.selectedIndex = 2
+            case .addContact,
+                 .sendAlgosTransactionPreview,
+                 .assetSupportAlert,
+                 .sendAssetTransactionPreview:
                 tabBarViewController.route = screen
                 tabBarViewController.routeForDeeplink()
                 return true

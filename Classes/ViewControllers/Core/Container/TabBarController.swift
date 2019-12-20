@@ -175,6 +175,20 @@ class TabBarController: UITabBarController {
             case .addContact:
                 selectedIndex = 2
                 topMostController?.open(route, by: .push)
+            case .sendAlgosTransactionPreview,
+                 .sendAssetTransactionPreview:
+                selectedIndex = 0
+                topMostController?.open(route, by: .push)
+            case .assetSupportAlert:
+                selectedIndex = 0
+                open(
+                    route,
+                    by: .customPresentWithoutNavigationController(
+                        presentationStyle: .overCurrentContext,
+                        transitionStyle: .crossDissolve,
+                        transitioningDelegate: nil
+                    )
+                )
             default:
                 break
             }

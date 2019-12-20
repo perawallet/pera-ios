@@ -27,8 +27,11 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
     private var contentViewBottomConstraint: Constraint?
     
     var amount: Double = 0.00
-    var selectedAccount: Account
+    var selectedAccount: Account?
     var receiver: AlgosReceiverState
+    
+    var shouldUpdateSenderForSelectedAccount = false
+    var shouldUpdateReceiverForSelectedAccount = false
     
     private(set) var isConnectedToInternet = true
     
@@ -37,7 +40,7 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
     }
     
     init(
-        account: Account,
+        account: Account?,
         receiver: AlgosReceiverState,
         configuration: ViewControllerConfiguration
     ) {
@@ -51,6 +54,11 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         sendTransactionPreviewView.amountInputView.beginEditing()
+    }
+    
+    override func configureAppearance() {
+        super.configureAppearance()
+        sendTransactionPreviewView.transactionParticipantView.accountSelectionView.set(enabled: selectedAccount == nil)
     }
     
     override func setListeners() {
@@ -90,6 +98,10 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
         
     }
     
+    func updateSelectedAccountForSender(_ account: Account) {
+        
+    }
+    
     func transactionManagerDidComposedAlgoTransactionData(
         _ transactionManager: TransactionManager,
         forTransaction draft: TransactionPreviewDraft?
@@ -109,7 +121,7 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
     }
     
     func sendTransactionPreviewViewDidTapMaxButton(_ sendTransactionPreviewView: SendTransactionPreviewView) {
-        sendTransactionPreviewView.amountInputView.inputTextField.text = selectedAccount.amount.toAlgos.toDecimalStringForAlgosInput
+        sendTransactionPreviewView.amountInputView.inputTextField.text = selectedAccount?.amount.toAlgos.toDecimalStringForAlgosInput
     }
     
     func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, then handler: EmptyHandler?) {
@@ -235,6 +247,7 @@ extension SendTransactionPreviewViewController: SendTransactionPreviewViewDelega
     }
     
     func sendTransactionPreviewViewDidTapMyAccountsButton(_ sendTransactionPreviewView: SendTransactionPreviewView) {
+        shouldUpdateReceiverForSelectedAccount = true
         presentAccountList()
     }
     
@@ -247,12 +260,27 @@ extension SendTransactionPreviewViewController: SendTransactionPreviewViewDelega
         view.endEditing(true)
         displayQRScanner()
     }
+    
+    func sendTransactionPreviewViewDidTapAccountSelectionView(_ sendTransactionPreviewView: SendTransactionPreviewView) {
+        shouldUpdateSenderForSelectedAccount = true
+        presentAccountList()
+    }
 }
 
 extension SendTransactionPreviewViewController: AccountListViewControllerDelegate {
     func accountListViewController(_ viewController: AccountListViewController, didSelectAccount account: Account) {
-        receiver = .myAccount(account)
-        sendTransactionPreviewView.transactionReceiverView.state = .address(address: account.address, amount: nil)
+        if shouldUpdateReceiverForSelectedAccount {
+            shouldUpdateReceiverForSelectedAccount = false
+            receiver = .myAccount(account)
+            sendTransactionPreviewView.transactionReceiverView.state = .address(address: account.address, amount: nil)
+            return
+        }
+        
+        if shouldUpdateSenderForSelectedAccount {
+            shouldUpdateSenderForSelectedAccount = false
+            updateSelectedAccountForSender(account)
+            selectedAccount = account
+        }
     }
 }
 

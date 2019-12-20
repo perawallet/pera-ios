@@ -30,6 +30,10 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
     }
     
     override func displayTransactionPreview() {
+        guard let selectedAccount = selectedAccount else {
+            return
+        }
+        
         if !sendTransactionPreviewView.transactionReceiverView.passphraseInputView.inputTextView.text.isEmpty {
             switch receiver {
             case .contact:
@@ -104,19 +108,29 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
             handler()
         }
     }
+    
+    override func updateSelectedAccountForSender(_ account: Account) {
+        sendTransactionPreviewView.transactionParticipantView.accountSelectionView.detailLabel.text = account.name
+        sendTransactionPreviewView.transactionParticipantView.accountSelectionView.set(amount: account.amount.toAlgos)
+        sendTransactionPreviewView.amountInputView.maxAmount = account.amount.toAlgos
+        
+        if isMaxButtonSelected {
+            sendTransactionPreviewView.amountInputView.inputTextField.text =
+                sendTransactionPreviewView.transactionParticipantView.accountSelectionView.amountView.amountLabel.text
+        }
+    }
 }
 
 extension SendAlgosTransactionPreviewViewController {
     private func configureViewForAlgos() {
         title = "request-algos-title".localized
-        sendTransactionPreviewView.transactionParticipantView.accountSelectionView.detailLabel.text = selectedAccount.name
-        sendTransactionPreviewView.transactionParticipantView.assetSelectionView.set(amount: selectedAccount.amount.toAlgos)
+        
         sendTransactionPreviewView.transactionParticipantView.assetSelectionView.detailLabel.text = "asset-algos-title".localized
         sendTransactionPreviewView.transactionParticipantView.assetSelectionView.amountView.amountLabel.textColor =
             SharedColors.turquois
         sendTransactionPreviewView.transactionParticipantView.assetSelectionView.amountView.algoIconImageView.tintColor =
             SharedColors.turquois
-        sendTransactionPreviewView.amountInputView.maxAmount = selectedAccount.amount.toAlgos
+        updateSelectedAccountAppearance()
         
         switch receiver {
         case .initial:
@@ -136,6 +150,17 @@ extension SendAlgosTransactionPreviewViewController {
         case .contact:
             sendTransactionPreviewView.transactionReceiverView.state = receiver
         }
+    }
+    
+    private func updateSelectedAccountAppearance() {
+        guard let selectedAccount = selectedAccount else {
+            return
+        }
+        
+        sendTransactionPreviewView.transactionParticipantView.accountSelectionView.detailLabel.text = selectedAccount.name
+        sendTransactionPreviewView.transactionParticipantView.assetSelectionView.set(amount: selectedAccount.amount.toAlgos)
+
+        sendTransactionPreviewView.amountInputView.maxAmount = selectedAccount.amount.toAlgos
     }
 }
 
@@ -161,6 +186,10 @@ extension SendAlgosTransactionPreviewViewController {
     
     private func composeTransactionData() {
         transactionManager?.delegate = self
+        guard let selectedAccount = selectedAccount else {
+            return
+        }
+        
         if amount.toMicroAlgos < minimumTransactionMicroAlgosLimit {
             var receiverAddress: String
                    
@@ -200,7 +229,7 @@ extension SendAlgosTransactionPreviewViewController {
                                                     message: "send-algos-minimum-amount-error-new-account".localized)
                     } else {
                         let transaction = TransactionPreviewDraft(
-                            fromAccount: self.selectedAccount,
+                            fromAccount: selectedAccount,
                             amount: self.amount,
                             identifier: nil,
                             fee: nil,

@@ -25,7 +25,7 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
     private var isForcedMaxTransaction = false
     
     init(
-        account: Account,
+        account: Account?,
         receiver: AlgosReceiverState,
         assetDetail: AssetDetail,
         isMaxTransaction: Bool,
@@ -67,7 +67,7 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
     
     override func sendTransactionPreviewViewDidTapMaxButton(_ sendTransactionPreviewView: SendTransactionPreviewView) {
         sendTransactionPreviewView.amountInputView.inputTextField.text
-            = selectedAccount.amount(for: assetDetail)?.toDecimalStringForLabel
+            = selectedAccount?.amount(for: assetDetail)?.toDecimalStringForLabel
     }
     
     override func displayTransactionPreview() {
@@ -123,6 +123,10 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
     }
     
     private func isAccountContainsAsset(_ assetIndex: String) -> Bool {
+        guard let selectedAccount = selectedAccount else {
+            return false
+        }
+        
         var isAssetAddedToAccount = false
         
         for assetDetail in selectedAccount.assetDetails where assetDetail.index == assetIndex {
@@ -131,6 +135,15 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
         }
         
         return isAssetAddedToAccount
+    }
+    
+    override func updateSelectedAccountForSender(_ account: Account) {
+        if let assetAmount = account.amount(for: assetDetail) {
+            sendTransactionPreviewView.transactionParticipantView.accountSelectionView.detailLabel.text = account.name
+            sendTransactionPreviewView.amountInputView.maxAmount = assetAmount
+            sendTransactionPreviewView.transactionParticipantView.assetSelectionView.amountView.amountLabel.text
+                = assetAmount.toDecimalStringForLabel
+        }
     }
 }
 
@@ -169,7 +182,7 @@ extension SendAssetTransactionPreviewViewController {
             return
         }
         let assetAlertDraft = AssetAlertDraft(
-            account: self.selectedAccount,
+            account: selectedAccount,
             assetIndex: assetIndex ?? currentAssetDetailIndex,
             assetDetail: assetIndex == nil ? assetDetail : nil,
             title: "asset-support-title".localized,
@@ -198,7 +211,7 @@ extension SendAssetTransactionPreviewViewController {
             return
         }
         
-        guard let assetAmount = selectedAccount.amount(for: assetDetail) else {
+        guard let assetAmount = selectedAccount?.amount(for: assetDetail) else {
             return
         }
         
@@ -211,7 +224,8 @@ extension SendAssetTransactionPreviewViewController {
     }
     
     private func composeTransactionData() {
-        guard let assetIndex = assetDetail.index,
+        guard let selectedAccount = selectedAccount,
+            let assetIndex = assetDetail.index,
             let index = Int64(assetIndex) else {
             return
         }
@@ -239,22 +253,21 @@ extension SendAssetTransactionPreviewViewController {
         sendTransactionPreviewView.transactionParticipantView.assetSelectionView.amountView.algoIconImageView.removeFromSuperview()
         sendTransactionPreviewView.amountInputView.algosImageView.removeFromSuperview()
         
-        guard let assetAmount = selectedAccount.amount(for: assetDetail) else {
-            return
+        if let selectedAccount = selectedAccount,
+            let assetAmount = selectedAccount.amount(for: assetDetail) {
+            sendTransactionPreviewView.transactionParticipantView.accountSelectionView.detailLabel.text = selectedAccount.name
+            sendTransactionPreviewView.amountInputView.maxAmount = assetAmount
+            sendTransactionPreviewView.transactionParticipantView.assetSelectionView.amountView.amountLabel.text
+                = assetAmount.toDecimalStringForLabel
         }
-        
-        sendTransactionPreviewView.amountInputView.maxAmount = assetAmount
         
         if isForcedMaxTransaction {
             sendTransactionPreviewView.amountInputView.algosImageView.removeFromSuperview()
             sendTransactionPreviewView.amountInputView.inputTextField.text
-                = selectedAccount.amount(for: assetDetail)?.toDecimalStringForLabel
+                = selectedAccount?.amount(for: assetDetail)?.toDecimalStringForLabel
             sendTransactionPreviewView.amountInputView.set(enabled: false)
         }
         
-        sendTransactionPreviewView.transactionParticipantView.accountSelectionView.detailLabel.text = selectedAccount.name
-        sendTransactionPreviewView.transactionParticipantView.assetSelectionView.amountView.amountLabel.text
-            = assetAmount.toDecimalStringForLabel
         title = "balance-send-title".localized + " \(assetDetail.getDisplayNames().0)"
         sendTransactionPreviewView.transactionParticipantView.assetSelectionView.detailLabel.attributedText = assetDetail.assetDisplayName()
         

@@ -28,9 +28,46 @@ struct DeepLinkParser {
         case .address:
             return .addContact(mode: .new(address: accountAddress, name: qrText.label))
         case .algosRequest:
-            break
+            if let amount = qrText.amount {
+                return .sendAlgosTransactionPreview(account: nil, receiver: .address(address: accountAddress, amount: "\(amount)"))
+            }
         case .assetRequest:
-            break
+            guard let assetId = qrText.asset,
+                let user = UIApplication.shared.appConfiguration?.session.authenticatedUser else {
+                return nil
+            }
+            
+            var requestedAssetDetail: AssetDetail?
+            
+            for account in user.accounts {
+                for assetDetail in account.assetDetails {
+                    if assetDetail.index == "\(assetId)" {
+                        requestedAssetDetail = assetDetail
+                    }
+                }
+            }
+            
+            guard let assetDetail = requestedAssetDetail else {
+                let assetAlertDraft = AssetAlertDraft(
+                    account: nil,
+                    assetIndex: "\(assetId)",
+                    assetDetail: nil,
+                    title: "asset-support-title".localized,
+                    detail: "asset-support-error".localized,
+                    actionTitle: "title-ok".localized
+                )
+                
+                return .assetSupportAlert(assetAlertDraft: assetAlertDraft)
+            }
+                
+            if let amount = qrText.amount {
+                return .sendAssetTransactionPreview(
+                    account: nil,
+                    receiver: .address(address: accountAddress, amount: "\(amount)"),
+                    assetDetail: assetDetail,
+                    isMaxTransaction: false
+                )
+            }
         case .mnemonic:
             return nil
         }

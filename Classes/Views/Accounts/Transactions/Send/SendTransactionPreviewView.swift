@@ -15,6 +15,7 @@ protocol SendTransactionPreviewViewDelegate: class {
     func sendTransactionPreviewViewDidTapContactsButton(_ sendTransactionPreviewView: SendTransactionPreviewView)
     func sendTransactionPreviewViewDidTapScanQRButton(_ sendTransactionPreviewView: SendTransactionPreviewView)
     func sendTransactionPreviewViewDidTapMaxButton(_ sendTransactionPreviewView: SendTransactionPreviewView)
+    func sendTransactionPreviewViewDidTapAccountSelectionView(_ sendTransactionPreviewView: SendTransactionPreviewView)
 }
 
 class SendTransactionPreviewView: BaseView {
@@ -45,6 +46,9 @@ class SendTransactionPreviewView: BaseView {
     
     override func setListeners() {
         transactionReceiverView.delegate = self
+        
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(notifyDelegateToAccountSelectionViewTapped))
+        transactionParticipantView.accountSelectionView.addGestureRecognizer(tapGestureRecognizer)
     }
     
     override func linkInteractors() {
@@ -104,6 +108,11 @@ extension SendTransactionPreviewView {
     @objc
     private func notifyDelegateToPreviewButtonTapped() {
         delegate?.sendTransactionPreviewViewDidTapPreviewButton(self)
+    }
+    
+    @objc
+    private func notifyDelegateToAccountSelectionViewTapped() {
+        delegate?.sendTransactionPreviewViewDidTapAccountSelectionView(self)
     }
 }
 
