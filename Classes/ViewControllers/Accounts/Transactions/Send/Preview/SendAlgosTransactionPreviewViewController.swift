@@ -111,12 +111,12 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
     
     override func updateSelectedAccountForSender(_ account: Account) {
         sendTransactionPreviewView.transactionParticipantView.accountSelectionView.detailLabel.text = account.name
-        sendTransactionPreviewView.transactionParticipantView.accountSelectionView.set(amount: account.amount.toAlgos)
+        sendTransactionPreviewView.transactionParticipantView.assetSelectionView.set(amount: account.amount.toAlgos)
         sendTransactionPreviewView.amountInputView.maxAmount = account.amount.toAlgos
         
         if isMaxButtonSelected {
             sendTransactionPreviewView.amountInputView.inputTextField.text =
-                sendTransactionPreviewView.transactionParticipantView.accountSelectionView.amountView.amountLabel.text
+                sendTransactionPreviewView.transactionParticipantView.assetSelectionView.amountView.amountLabel.text
         }
     }
 }

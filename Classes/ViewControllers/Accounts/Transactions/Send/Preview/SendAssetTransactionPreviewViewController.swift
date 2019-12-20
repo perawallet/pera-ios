@@ -143,6 +143,10 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
             sendTransactionPreviewView.amountInputView.maxAmount = assetAmount
             sendTransactionPreviewView.transactionParticipantView.assetSelectionView.amountView.amountLabel.text
                 = assetAmount.toDecimalStringForLabel
+            
+            if isMaxButtonSelected {
+                sendTransactionPreviewView.amountInputView.inputTextField.text = assetAmount.toDecimalStringForLabel
+            }
         }
     }
 }
