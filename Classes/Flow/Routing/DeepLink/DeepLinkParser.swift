@@ -40,10 +40,8 @@ struct DeepLinkParser {
             var requestedAssetDetail: AssetDetail?
             
             for account in user.accounts {
-                for assetDetail in account.assetDetails {
-                    if assetDetail.index == "\(assetId)" {
-                        requestedAssetDetail = assetDetail
-                    }
+                for assetDetail in account.assetDetails where assetDetail.index == "\(assetId)" {
+                    requestedAssetDetail = assetDetail
                 }
             }
             
