@@ -267,15 +267,15 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
             AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
             
             if let qrText = try? JSONDecoder().decode(QRText.self, from: qrStringData) {
-                delegate?.qrScannerViewController(self, didRead: qrText, then: cameraResetHandler)
                 closeScreen(by: .pop)
+                delegate?.qrScannerViewController(self, didRead: qrText, then: cameraResetHandler)
             } else if let url = URL(string: qrString) {
                 guard let qrText = url.buildQRText() else {
                     delegate?.qrScannerViewController(self, didFail: .jsonSerialization, then: cameraResetHandler)
                     return
                 }
-                delegate?.qrScannerViewController(self, didRead: qrText, then: cameraResetHandler)
                 closeScreen(by: .pop)
+                delegate?.qrScannerViewController(self, didRead: qrText, then: cameraResetHandler)
             } else {
                 delegate?.qrScannerViewController(self, didFail: .jsonSerialization, then: cameraResetHandler)
                 return

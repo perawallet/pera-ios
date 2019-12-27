@@ -59,6 +59,7 @@ class AccountsViewController: BaseViewController {
     
     override func configureNavigationBarAppearance() {
         setupLeftBarButtonItems()
+        setupRightBarButtonItems()
     }
     
     private func setupLeftBarButtonItems() {
@@ -210,18 +211,70 @@ extension AccountsViewController: QRScannerViewControllerDelegate {
     func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, then handler: EmptyHandler?) {
         switch qrText.mode {
         case .address:
-            break
+            open(.addContact(mode: .new(address: qrText.address, name: qrText.label)), by: .push)
         case .algosRequest:
-            break
+            guard let address = qrText.address,
+                let amount = qrText.amount else {
+                return
+            }
+            open(.sendAlgosTransactionPreview(account: nil, receiver: .address(address: address, amount: "\(amount)")), by: .push)
         case .assetRequest:
-            break
+            guard let address = qrText.address,
+                let amount = qrText.amount,
+                let assetId = qrText.asset else {
+                return
+            }
+            
+            var asset: AssetDetail?
+            
+            for account in accountsDataSource.accounts {
+                for assetDetail in account.assetDetails where assetDetail.index == "\(assetId)" {
+                    asset = assetDetail
+                    break
+                }
+            }
+            
+            guard let assetDetail = asset else {
+                let assetAlertDraft = AssetAlertDraft(
+                    account: nil,
+                    assetIndex: "\(assetId)",
+                    assetDetail: nil,
+                    title: "asset-support-title".localized,
+                    detail: "asset-support-error".localized,
+                    actionTitle: "title-ok".localized
+                )
+                
+                open(
+                    .assetSupportAlert(assetAlertDraft: assetAlertDraft),
+                    by: .customPresentWithoutNavigationController(
+                        presentationStyle: .overCurrentContext,
+                        transitionStyle: .crossDissolve,
+                        transitioningDelegate: nil
+                    )
+                )
+                return
+            }
+            
+            open(
+                .sendAssetTransactionPreview(
+                    account: nil,
+                    receiver: .address(address: address, amount: "\(amount)"),
+                    assetDetail: assetDetail,
+                    isMaxTransaction: false
+                ),
+                by: .push
+            )
         case .mnemonic:
             break
         }
     }
     
     func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError, then handler: EmptyHandler?) {
-        
+        displaySimpleAlertWith(title: "title-error".localized, message: "qr-scan-should-scan-valid-qr".localized) { _ in
+            if let handler = handler {
+                handler()
+            }
+        }
     }
 }
 
