@@ -8,24 +8,11 @@
 
 import UIKit
 
-protocol AlgosInputViewDelegate: class {
-    func algosInputViewDidTapMaxButton(_ algosInputView: AlgosInputView)
+protocol AssetInputViewDelegate: class {
+    func assetInputViewDidTapMaxButton(_ assetInputView: AssetInputView)
 }
 
-class AlgosInputView: BaseView {
-
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let defaultInset: CGFloat = 15.0
-        let horizontalInset: CGFloat = 30.0
-        let contentViewInset: CGFloat = 7.0
-        let topInset: CGFloat = 10.0
-        let imageViewHeight: CGFloat = 10.0
-        let containerHeight: CGFloat = 50.0
-        let fieldLeadingInset: CGFloat = 3.0
-        let fieldTrailingInset: CGFloat = 70.0
-        let buttonSize = CGSize(width: 60.0, height: 34.0)
-        let buttonTrailingInset: CGFloat = 8.0
-    }
+class AssetInputView: BaseView {
     
     private let layout = Layout<LayoutConstants>()
     
@@ -33,11 +20,12 @@ class AlgosInputView: BaseView {
         static let borderColor = rgb(0.91, 0.91, 0.92)
     }
     
-    weak var delegate: AlgosInputViewDelegate?
+    weak var delegate: AssetInputViewDelegate?
     
     private var shouldHandleMaxButtonStates: Bool
     private(set) var isMaxButtonSelected = false
     var maxAmount: Double = 0.0
+    private var inputFieldFraction: Int
     
     // MARK: Components
     
@@ -90,8 +78,6 @@ class AlgosInputView: BaseView {
         return textField
     }()
     
-    // MARK: Helpers
-    
     var isEditing: Bool {
         return inputTextField.isFirstResponder
     }
@@ -100,7 +86,8 @@ class AlgosInputView: BaseView {
         _ = inputTextField.becomeFirstResponder()
     }
 
-    init(shouldHandleMaxButtonStates: Bool = false) {
+    init(inputFieldFraction: Int = algosFraction, shouldHandleMaxButtonStates: Bool = false) {
+        self.inputFieldFraction = inputFieldFraction
         self.shouldHandleMaxButtonStates = shouldHandleMaxButtonStates
         super.init(frame: .zero)
     }
@@ -109,8 +96,6 @@ class AlgosInputView: BaseView {
         maxButton.addTarget(self, action: #selector(notifyDelegateToMaxButtonTapped), for: .touchUpInside)
     }
     
-    // MARK: Layout
-    
     override func prepareLayout() {
         setupExplanationLabelLayout()
         setupContainerViewLayout()
@@ -118,7 +103,9 @@ class AlgosInputView: BaseView {
         setupMaxButtonLayout()
         setupInputTextFieldLayout()
     }
-    
+}
+
+extension AssetInputView {
     private func setupExplanationLabelLayout() {
         addSubview(explanationLabel)
         
@@ -170,12 +157,13 @@ class AlgosInputView: BaseView {
             make.centerY.equalToSuperview()
         }
     }
-    
-    // MARK: Helper
+}
+
+extension AssetInputView {
     @objc
     private func didChangeText(_ textField: UITextField) {
-        guard let doubleValueString = textField.text?.currencyAlgosInputFormatting(),
-            let doubleValue = doubleValueString.doubleForSendSeparator,
+        guard let doubleValueString = textField.text?.currencyInputFormatting(with: inputFieldFraction),
+            let doubleValue = doubleValueString.doubleForSendSeparator(with: inputFieldFraction),
             doubleValue <= Double(maximumMicroAlgos) else {
             return
         }
@@ -185,7 +173,7 @@ class AlgosInputView: BaseView {
         }
         
         if doubleValue == maxAmount && shouldHandleMaxButtonStates {
-            textField.text = String(maxAmount).currencyAlgosInputFormatting()
+            textField.text = String(maxAmount).currencyInputFormatting(with: inputFieldFraction)
             toggleMaxButtonState(isSelected: true)
             return
         }
@@ -196,7 +184,7 @@ class AlgosInputView: BaseView {
     @objc
     private func notifyDelegateToMaxButtonTapped() {
         toggleMaxButtonState()
-        delegate?.algosInputViewDidTapMaxButton(self)
+        delegate?.assetInputViewDidTapMaxButton(self)
     }
     
     private func toggleMaxButtonState(isSelected: Bool? = nil) {
@@ -229,16 +217,14 @@ class AlgosInputView: BaseView {
 }
 
 // MARK: - TextFieldDelegate
-extension AlgosInputView: UITextFieldDelegate {
-    func textField(_ textField: UITextField,
-                   shouldChangeCharactersIn range: NSRange,
-                   replacementString string: String) -> Bool {
+extension AssetInputView: UITextFieldDelegate {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         guard let text = textField.text else {
             return true
         }
         
-        guard let doubleValueString = text.appending(string).currencyAlgosInputFormatting(),
-            let doubleValue = doubleValueString.doubleForSendSeparator,
+        guard let doubleValueString = text.appending(string).currencyInputFormatting(with: inputFieldFraction),
+            let doubleValue = doubleValueString.doubleForSendSeparator(with: inputFieldFraction),
             doubleValue <= Double(maximumMicroAlgos) else {
                 return false
         }
@@ -251,7 +237,7 @@ extension AlgosInputView: UITextFieldDelegate {
     }
 }
 
-extension AlgosInputView {
+extension AssetInputView {
     func set(enabled: Bool) {
         inputTextField.isEnabled = enabled
         
@@ -260,5 +246,20 @@ extension AlgosInputView {
         } else {
             containerView.backgroundColor = Colors.borderColor
         }
+    }
+}
+
+extension AssetInputView {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let defaultInset: CGFloat = 15.0
+        let horizontalInset: CGFloat = 30.0
+        let contentViewInset: CGFloat = 7.0
+        let topInset: CGFloat = 10.0
+        let imageViewHeight: CGFloat = 10.0
+        let containerHeight: CGFloat = 50.0
+        let fieldLeadingInset: CGFloat = 3.0
+        let fieldTrailingInset: CGFloat = 70.0
+        let buttonSize = CGSize(width: 60.0, height: 34.0)
+        let buttonTrailingInset: CGFloat = 8.0
     }
 }
