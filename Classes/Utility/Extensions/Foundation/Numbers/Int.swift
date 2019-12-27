@@ -59,6 +59,10 @@ extension Int64 {
     var toDecimalStringForLabel: String? {
         return Formatter.separatorForAlgosLabel.string(from: NSNumber(value: self))
     }
+    
+    func toFractionStringForLabel(fraction: Int) -> String? {
+        return Formatter.separatorWith(fraction: fraction).string(from: NSNumber(value: self))
+    }
 }
 
 extension UInt64 {

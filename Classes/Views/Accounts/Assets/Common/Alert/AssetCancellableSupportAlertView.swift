@@ -19,7 +19,7 @@ class AssetCancellableSupportAlertView: BaseView {
     
     weak var delegate: AssetCancellableSupportAlertViewDelegate?
     
-    private lazy var titleLabel: UILabel = {
+    private(set) lazy var titleLabel: UILabel = {
         UILabel()
             .withLine(.single)
             .withAlignment(.center)
@@ -29,7 +29,7 @@ class AssetCancellableSupportAlertView: BaseView {
     
     private(set) lazy var assetDisplayView = AssetDisplayView()
     
-    private lazy var detailLabel: UILabel = {
+    private(set) lazy var detailLabel: UILabel = {
         UILabel()
             .withLine(.contained)
             .withAlignment(.center)
