@@ -113,7 +113,7 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
             let qrAssetText = "\(qrAsset)"
             
             if !isAccountContainsAsset(qrAssetText) {
-                presentAssetNotSupportedAlert(for: qrAssetText)
+                presentAssetNotSupportedAlert(receiverAddress: qrText.address, for: qrAssetText)
                 
                 if let handler = handler {
                     handler()
@@ -185,10 +185,10 @@ extension SendAssetTransactionPreviewViewController {
                     }) {
                         self.validateTransaction()
                     } else {
-                        self.presentAssetNotSupportedAlert()
+                        self.presentAssetNotSupportedAlert(receiverAddress: address)
                     }
                 } else {
-                    self.presentAssetNotSupportedAlert()
+                    self.presentAssetNotSupportedAlert(receiverAddress: address)
                 }
             case .failure:
                 SVProgressHUD.showError(withStatus: nil)
@@ -197,7 +197,7 @@ extension SendAssetTransactionPreviewViewController {
         }
     }
     
-    private func presentAssetNotSupportedAlert(for assetIndex: String? = nil) {
+    private func presentAssetNotSupportedAlert(receiverAddress: String?, for assetIndex: String? = nil) {
         guard let currentAssetDetailIndex = assetDetail.index else {
             return
         }
@@ -209,6 +209,16 @@ extension SendAssetTransactionPreviewViewController {
             detail: "asset-support-error".localized,
             actionTitle: "title-ok".localized
         )
+        
+        if let receiverAddress = receiverAddress,
+            let senderAddress = selectedAccount?.address {
+            let draft = AssetSupportDraft(
+                sender: senderAddress,
+                receiver: receiverAddress,
+                assetId: assetIndex ?? currentAssetDetailIndex
+            )
+            api?.sendAssetSupportRequest(with: draft)
+        }
         
         self.open(
             .assetSupportAlert(assetAlertDraft: assetAlertDraft),
