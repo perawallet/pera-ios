@@ -10,6 +10,14 @@ import UIKit
 
 class RootViewController: UIViewController {
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        if #available(iOS 13.0, *) {
+            return .darkContent
+        } else {
+            return .default
+        }
+    }
+    
     // MARK: Properties
 
     let appConfiguration: AppConfiguration
