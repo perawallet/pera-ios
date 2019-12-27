@@ -18,7 +18,7 @@ class AssetListViewModel {
             cell.contextView.assetNameView.setAssetName(for: assetDetail)
             
             if let assetAmount = account.amount(for: assetDetail) {
-                cell.contextView.detailLabel.text = assetAmount.toDecimalStringForLabel
+                cell.contextView.detailLabel.text = assetAmount.toFractionStringForLabel(fraction: assetDetail.fractionDecimals)
             }
         }
     }

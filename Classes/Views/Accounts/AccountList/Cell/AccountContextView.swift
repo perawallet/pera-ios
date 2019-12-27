@@ -20,6 +20,12 @@ class AccountContextView: BaseView {
             .withTextColor(SharedColors.black)
     }()
     
+    private(set) lazy var imageView: UIImageView = {
+        let imageView = UIImageView(image: img("icon-algo-black"))
+        imageView.isHidden = true
+        return imageView
+    }()
+    
     private(set) lazy var detailLabel: UILabel = {
         UILabel()
             .withLine(.single)
@@ -40,6 +46,7 @@ class AccountContextView: BaseView {
     
     override func prepareLayout() {
         setupDetailLabelLayout()
+        setupImageViewLayout()
         setupNameLabelLayout()
         setupSeparatorViewLayout()
     }
@@ -55,13 +62,22 @@ extension AccountContextView {
         }
     }
     
+    private func setupImageViewLayout() {
+        addSubview(imageView)
+        
+        imageView.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.trailing.equalTo(detailLabel.snp.leading).offset(layout.current.imageViewOffset)
+        }
+    }
+    
     private func setupNameLabelLayout() {
         addSubview(nameLabel)
         
         nameLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(layout.current.defaultInset)
             make.centerY.equalToSuperview()
-            make.trailing.lessThanOrEqualTo(detailLabel.snp.leading)
+            make.trailing.lessThanOrEqualTo(imageView.snp.leading)
         }
     }
     
@@ -79,6 +95,7 @@ extension AccountContextView {
 extension AccountContextView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let defaultInset: CGFloat = 25.0
+        let imageViewOffset: CGFloat = -2.0
         let separatorHeight: CGFloat = 1.0
     }
 }

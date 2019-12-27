@@ -21,7 +21,7 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
         )
     )
     
-    private(set) lazy var sendTransactionPreviewView = SendTransactionPreviewView()
+    private(set) lazy var sendTransactionPreviewView = SendTransactionPreviewView(inputFieldFraction: assetFraction)
     
     private var keyboard = Keyboard()
     private var contentViewBottomConstraint: Constraint?
@@ -29,6 +29,7 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
     var amount: Double = 0.00
     var selectedAccount: Account?
     var receiver: AlgosReceiverState
+    var assetFraction = algosFraction
     
     var shouldUpdateSenderForSelectedAccount = false
     var shouldUpdateReceiverForSelectedAccount = false
@@ -94,7 +95,7 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
         setupSendTransactionPreviewViewLayout()
     }
     
-    func presentAccountList() {
+    func presentAccountList(isSender: Bool) {
         
     }
     
@@ -155,10 +156,11 @@ extension SendTransactionPreviewViewController {
         let curve = notification.keyboardAnimationCurve
         let curveAnimationOption = UIView.AnimationOptions(rawValue: UInt(curve.rawValue >> 16))
         
-        if sendTransactionPreviewView.transactionReceiverView.frame.maxY > UIScreen.main.bounds.height - kbHeight - 71.0 {
+        if sendTransactionPreviewView.transactionReceiverView.frame.maxY > UIScreen.main.bounds.height - kbHeight - 58.0 {
             scrollView.contentInset.bottom = kbHeight
         } else {
             contentViewBottomConstraint?.update(inset: kbHeight)
+            scrollView.setContentOffset(CGPoint(x: 0.0, y: view.safeAreaBottom), animated: true)
         }
         
         UIView.animate(
@@ -184,6 +186,7 @@ extension SendTransactionPreviewViewController {
         
         scrollView.contentInset.bottom = 0.0
         
+        scrollView.setContentOffset(CGPoint(x: 0.0, y: 0.0), animated: true)
         contentViewBottomConstraint?.update(inset: view.safeAreaBottom)
         
         UIView.animate(
@@ -248,7 +251,7 @@ extension SendTransactionPreviewViewController: SendTransactionPreviewViewDelega
     
     func sendTransactionPreviewViewDidTapMyAccountsButton(_ sendTransactionPreviewView: SendTransactionPreviewView) {
         shouldUpdateReceiverForSelectedAccount = true
-        presentAccountList()
+        presentAccountList(isSender: false)
     }
     
     func sendTransactionPreviewViewDidTapContactsButton(_ sendTransactionPreviewView: SendTransactionPreviewView) {
@@ -263,7 +266,7 @@ extension SendTransactionPreviewViewController: SendTransactionPreviewViewDelega
     
     func sendTransactionPreviewViewDidTapAccountSelectionView(_ sendTransactionPreviewView: SendTransactionPreviewView) {
         shouldUpdateSenderForSelectedAccount = true
-        presentAccountList()
+        presentAccountList(isSender: true)
     }
 }
 
@@ -308,6 +311,21 @@ extension SendTransactionPreviewViewController: TransactionManagerDelegate {
         switch error {
         case .networkUnavailable:
             displaySimpleAlertWith(title: "title-error".localized, message: "title-internet-connection".localized)
+        case let .custom(address):
+            if address as? String != nil {
+                guard let api = api else {
+                    return
+                }
+                let pushNotificationController = PushNotificationController(api: api)
+                pushNotificationController.showFeedbackMessage(
+                    "title-error".localized,
+                    subtitle: "send-algos-receiver-address-validation".localized
+                )
+                
+                displaySimpleAlertWith(title: "title-error".localized, message: "send-algos-receiver-address-validation".localized)
+                return
+            }
+            displaySimpleAlertWith(title: "title-error".localized, message: error.localizedDescription)
         default:
             displaySimpleAlertWith(title: "title-error".localized, message: error.localizedDescription)
         }

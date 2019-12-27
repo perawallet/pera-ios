@@ -28,6 +28,16 @@ class AssetNameView: BaseView {
             .withAlignment(.left)
     }()
     
+    private(set) lazy var idLabel: UILabel = {
+        let label = UILabel()
+            .withFont(UIFont.font(.overpass, withWeight: .bold(size: 13.0)))
+            .withTextColor(SharedColors.darkGray)
+            .withLine(.single)
+            .withAlignment(.left)
+        label.isHidden = true
+        return label
+    }()
+    
     override func configureAppearance() {
         backgroundColor = .clear
     }
@@ -35,6 +45,7 @@ class AssetNameView: BaseView {
     override func prepareLayout() {
         setupNameLabelLayout()
         setupCodeLabelLayout()
+        setupIdLabelLayout()
     }
 }
 
@@ -58,6 +69,18 @@ extension AssetNameView {
         
         codeLabel.snp.makeConstraints { make in
             make.leading.equalTo(nameLabel.snp.trailing).offset(layout.current.codeLabelOffset)
+            make.top.bottom.equalToSuperview()
+        }
+    }
+    
+    private func setupIdLabelLayout() {
+        addSubview(idLabel)
+        
+        idLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+        idLabel.setContentHuggingPriority(.required, for: .horizontal)
+        
+        idLabel.snp.makeConstraints { make in
+            make.leading.equalTo(codeLabel.snp.trailing).offset(layout.current.codeLabelOffset)
             make.trailing.top.bottom.equalToSuperview()
         }
     }
@@ -76,6 +99,7 @@ extension AssetNameView {
         
         nameLabel.text = firstDisplayName
         codeLabel.text = secondDisplayName
+        idLabel.text = assetDetail.index
     }
 }
 

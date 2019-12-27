@@ -24,14 +24,16 @@ class SendTransactionPreviewView: BaseView {
     
     weak var delegate: SendTransactionPreviewViewDelegate?
     
+    var inputFieldFraction: Int
+    
     private(set) lazy var transactionParticipantView: TransactionParticipantView = {
         let transactionParticipantView = TransactionParticipantView()
         transactionParticipantView.accountSelectionView.explanationLabel.text = "send-algos-from".localized
         return transactionParticipantView
     }()
     
-    private(set) lazy var amountInputView: AlgosInputView = {
-        let view = AlgosInputView(shouldHandleMaxButtonStates: true)
+    private(set) lazy var amountInputView: AssetInputView = {
+        let view = AssetInputView(inputFieldFraction: inputFieldFraction, shouldHandleMaxButtonStates: true)
         view.maxButton.isHidden = false
         return view
     }()
@@ -43,6 +45,11 @@ class SendTransactionPreviewView: BaseView {
     }()
     
     private(set) lazy var previewButton = MainButton(title: "title-preview".localized)
+    
+    init(inputFieldFraction: Int = algosFraction) {
+        self.inputFieldFraction = inputFieldFraction
+        super.init(frame: .zero)
+    }
     
     override func setListeners() {
         transactionReceiverView.delegate = self
@@ -135,8 +142,8 @@ extension SendTransactionPreviewView: TransactionReceiverViewDelegate {
     }
 }
 
-extension SendTransactionPreviewView: AlgosInputViewDelegate {
-    func algosInputViewDidTapMaxButton(_ algosInputView: AlgosInputView) {
+extension SendTransactionPreviewView: AssetInputViewDelegate {
+    func assetInputViewDidTapMaxButton(_ assetInputView: AssetInputView) {
         delegate?.sendTransactionPreviewViewDidTapMaxButton(self)
     }
 }

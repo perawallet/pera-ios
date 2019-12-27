@@ -16,9 +16,9 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
         configureViewForAlgos()
     }
     
-    override func presentAccountList() {
+    override func presentAccountList(isSender: Bool) {
         let accountListViewController = open(
-            .accountList(mode: .amount(assetDetail: nil)),
+            .accountList(mode: isSender ? .transactionSender(assetDetail: nil) : .transactionReceiver(assetDetail: nil)),
             by: .customPresent(
                 presentationStyle: .custom,
                 transitionStyle: nil,
@@ -48,7 +48,7 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
         }
             
         if let algosAmountText = sendTransactionPreviewView.amountInputView.inputTextField.text,
-            let doubleValue = algosAmountText.doubleForSendSeparator {
+            let doubleValue = algosAmountText.doubleForSendSeparator(with: algosFraction) {
             amount = doubleValue
         }
             

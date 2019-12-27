@@ -113,7 +113,7 @@ extension RequestTransactionPreviewViewController {
 extension RequestTransactionPreviewViewController {
     private func displayPreview() {
         if let algosAmountText = requestTransactionPreviewView.amountInputView.inputTextField.text,
-            let doubleValue = algosAmountText.doubleForSendSeparator {
+            let doubleValue = algosAmountText.doubleForSendSeparator(with: assetDetail?.fractionDecimals ?? algosFraction) {
             amount = doubleValue
         }
         

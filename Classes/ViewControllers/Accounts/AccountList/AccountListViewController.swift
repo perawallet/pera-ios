@@ -37,8 +37,11 @@ class AccountListViewController: BaseViewController {
         view.backgroundColor = .white
         
         switch mode {
-        case .contact:
+        case .contact,
+             .transactionSender:
             accountListView.titleLabel.text = "send-sending-algos-select".localized
+        case .transactionReceiver:
+            accountListView.titleLabel.text = "send-receiving-algos-select".localized
         default:
             accountListView.titleLabel.text = "send-algos-select".localized
         }
@@ -83,6 +86,7 @@ extension AccountListViewController {
     enum Mode {
         case assetCount
         case contact(assetDetail: AssetDetail?)
-        case amount(assetDetail: AssetDetail?)
+        case transactionReceiver(assetDetail: AssetDetail?)
+        case transactionSender(assetDetail: AssetDetail?)
     }
 }

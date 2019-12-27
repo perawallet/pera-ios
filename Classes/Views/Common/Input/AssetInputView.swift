@@ -67,7 +67,7 @@ class AssetInputView: BaseView {
         textField.keyboardType = .numberPad
         textField.font = UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))
         textField.attributedPlaceholder = NSAttributedString(
-            string: "0.000000",
+            string: "0".currencyInputFormatting(with: inputFieldFraction) ?? "0.000000",
             attributes: [NSAttributedString.Key.foregroundColor: UIColor.black,
                          NSAttributedString.Key.font: UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))]
         )

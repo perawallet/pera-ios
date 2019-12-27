@@ -15,35 +15,26 @@ protocol AssetDetailHeaderViewDelegate: class {
         _ assetDetailHeaderView: AssetDetailHeaderView,
         didTrigger dollarValueGestureRecognizer: UILongPressGestureRecognizer
     )
+    func assetDetailHeaderView(
+        _ assetDetailHeaderView: AssetDetailHeaderView,
+        didTriggerAssetIdCopyValue gestureRecognizer: UILongPressGestureRecognizer
+    )
     func assetDetailHeaderViewDidTapRewardView(_ assetDetailHeaderView: AssetDetailHeaderView)
 }
 
 class AssetDetailHeaderView: BaseView {
-
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let containerViewInset: CGFloat = 10.0
-        let availableTitleInset: CGFloat = 15.0
-        let dollarValueSize = CGSize(width: 44.0, height: 44.0)
-        let dollarValueInset: CGFloat = 5.0
-        let horizontalInset: CGFloat = 15.0
-        let amountTopInset: CGFloat = 9.0
-        let verticalInset: CGFloat = 20.0
-        let buttonHeight: CGFloat = 46.0
-        let historyLabelBottomInset: CGFloat = 10.0
-        let amountLabelTopInset: CGFloat = -10.0
-        let amountLabelLeadingInset: CGFloat = 6.0
-        let buttonTopInset: CGFloat = 18.0
-    }
     
     private let layout = Layout<LayoutConstants>()
-    
-    private enum Colors {
-        static let borderColor = rgb(0.94, 0.94, 0.94)
-    }
     
     private lazy var dollarValueGestureRecognizer: UILongPressGestureRecognizer = {
         let recognizer = UILongPressGestureRecognizer(target: self, action: #selector(notifyDelegateToDollarValueLabelTapped))
         recognizer.minimumPressDuration = 0.0
+        return recognizer
+    }()
+    
+    private lazy var assetIdCopyValueGestureRecognizer: UILongPressGestureRecognizer = {
+        let recognizer = UILongPressGestureRecognizer(target: self, action: #selector(notifyDelegateToAssetIdLabelTapped))
+        recognizer.minimumPressDuration = 1.0
         return recognizer
     }()
     
@@ -107,6 +98,16 @@ class AssetDetailHeaderView: BaseView {
         return label
     }()
     
+    private(set) lazy var assetIdLabel: UILabel = {
+        let label = UILabel()
+            .withAlignment(.right)
+            .withTextColor(Colors.idLabelColor)
+            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 14.0)))
+        label.isHidden = true
+        label.isUserInteractionEnabled = true
+        return label
+    }()
+    
     private lazy var sendButton: AlignedButton = {
         let positions: AlignedButton.StylePositionAdjustment = (image: CGPoint(x: 10.0, y: 0.0), title: CGPoint(x: -12.0, y: 0.0))
         
@@ -163,10 +164,9 @@ class AssetDetailHeaderView: BaseView {
         sendButton.addTarget(self, action: #selector(notifyDelegateToSendButtonTapped), for: .touchUpInside)
         requestButton.addTarget(self, action: #selector(notifyDelegateToReceiveButtonTapped), for: .touchUpInside)
         dollarValueLabel.addGestureRecognizer(dollarValueGestureRecognizer)
+        assetIdLabel.addGestureRecognizer(assetIdCopyValueGestureRecognizer)
         rewardTotalAmountView.addGestureRecognizer(rewardsTapGestureRecognizer)
     }
-    
-    // MARK: Layout
     
     override func prepareLayout() {
         setupContainerViewLayout()
@@ -175,12 +175,15 @@ class AssetDetailHeaderView: BaseView {
         setupAmountLabelLayout()
         setupDollarImageViewLayout()
         setupDollarAmountLabelLayout()
+        setupAssetIdLabelLayout()
         setupSendButtonLayout()
         setupRequestButtonLayout()
         setupRewardTotalAmountView()
         setupHistoryLabelLayout()
     }
-    
+}
+
+extension AssetDetailHeaderView {
     private func setupContainerViewLayout() {
         addSubview(containerView)
         
@@ -238,6 +241,16 @@ class AssetDetailHeaderView: BaseView {
         }
     }
     
+    private func setupAssetIdLabelLayout() {
+        containerView.addSubview(assetIdLabel)
+        
+        assetIdLabel.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().inset(layout.current.availableTitleInset)
+            make.top.equalTo(assetNameLabel)
+            make.leading.greaterThanOrEqualTo(assetNameLabel.snp.trailing).offset(layout.current.containerViewInset)
+        }
+    }
+    
     private func setupSendButtonLayout() {
         containerView.addSubview(sendButton)
         
@@ -278,9 +291,9 @@ class AssetDetailHeaderView: BaseView {
             make.centerX.equalToSuperview()
         }
     }
-    
-    // MARK: Actions
-    
+}
+
+extension AssetDetailHeaderView {
     @objc
     private func notifyDelegateToSendButtonTapped() {
         delegate?.assetDetailHeaderViewDidTapSendButton(self)
@@ -297,7 +310,36 @@ class AssetDetailHeaderView: BaseView {
     }
     
     @objc
+    private func notifyDelegateToAssetIdLabelTapped(assetIdCopyValueGestureRecognizer: UILongPressGestureRecognizer) {
+        delegate?.assetDetailHeaderView(self, didTriggerAssetIdCopyValue: assetIdCopyValueGestureRecognizer)
+    }
+    
+    @objc
     private func notifyDelegateToRewardsViewTapped() {
         delegate?.assetDetailHeaderViewDidTapRewardView(self)
+    }
+}
+
+extension AssetDetailHeaderView {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let containerViewInset: CGFloat = 10.0
+        let availableTitleInset: CGFloat = 15.0
+        let dollarValueSize = CGSize(width: 44.0, height: 44.0)
+        let dollarValueInset: CGFloat = 5.0
+        let horizontalInset: CGFloat = 15.0
+        let amountTopInset: CGFloat = 9.0
+        let verticalInset: CGFloat = 20.0
+        let buttonHeight: CGFloat = 46.0
+        let historyLabelBottomInset: CGFloat = 10.0
+        let amountLabelTopInset: CGFloat = -10.0
+        let amountLabelLeadingInset: CGFloat = 6.0
+        let buttonTopInset: CGFloat = 18.0
+    }
+}
+
+extension AssetDetailHeaderView {
+    private enum Colors {
+        static let borderColor = rgb(0.91, 0.91, 0.92)
+        static let idLabelColor = rgb(0.53, 0.53, 0.53)
     }
 }
