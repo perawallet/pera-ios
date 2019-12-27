@@ -13,6 +13,7 @@ struct NotificationAsset: Model {
     let name: String?
     let code: String?
     let url: String?
+    let fractionDecimals: Int?
 }
 
 extension NotificationAsset {
@@ -21,5 +22,6 @@ extension NotificationAsset {
         case name = "asset_name"
         case code = "unit_name"
         case url = "url"
+        case fractionDecimals = "fraction_decimals"
     }
 }
