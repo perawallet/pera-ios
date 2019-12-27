@@ -12,6 +12,7 @@ protocol AssetDetailViewDelegate: class {
     func assetDetailViewDidTapSendButton(_ assetDetailView: AssetDetailView)
     func assetDetailViewDidTapReceiveButton(_ assetDetailView: AssetDetailView)
     func assetDetailView(_ assetDetailView: AssetDetailView, didTrigger dollarValueGestureRecognizer: UILongPressGestureRecognizer)
+    func assetDetailView(_ assetDetailView: AssetDetailView, didTriggerAssetIdCopyValue gestureRecognizer: UILongPressGestureRecognizer)
     func assetDetailViewDidTapRewardView(_ assetDetailView: AssetDetailView)
 }
 
@@ -140,6 +141,13 @@ extension AssetDetailView: AssetDetailHeaderViewDelegate {
         didTrigger dollarValueGestureRecognizer: UILongPressGestureRecognizer
     ) {
         delegate?.assetDetailView(self, didTrigger: dollarValueGestureRecognizer)
+    }
+    
+    func assetDetailHeaderView(
+        _ assetDetailHeaderView: AssetDetailHeaderView,
+        didTriggerAssetIdCopyValue gestureRecognizer: UILongPressGestureRecognizer
+    ) {
+        delegate?.assetDetailView(self, didTriggerAssetIdCopyValue: gestureRecognizer)
     }
     
     func assetDetailHeaderViewDidTapRewardView(_ assetDetailHeaderView: AssetDetailHeaderView) {

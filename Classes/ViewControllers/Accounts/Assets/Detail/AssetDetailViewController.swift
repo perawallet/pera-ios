@@ -304,6 +304,12 @@ extension AssetDetailViewController: AssetDetailViewDelegate {
             )
         )
     }
+    
+    func assetDetailView(_ assetDetailView: AssetDetailView, didTriggerAssetIdCopyValue gestureRecognizer: UILongPressGestureRecognizer) {
+        if let id = assetDetail?.index {
+            UIPasteboard.general.string = id
+        }
+    }
 }
 
 extension AssetDetailViewController: UICollectionViewDelegateFlowLayout {
