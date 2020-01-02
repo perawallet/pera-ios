@@ -58,12 +58,18 @@ class SettingsViewController: BaseViewController {
         authManager?.delegate = self
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        if isAuctionsEnabled {
-            settingsView.collectionView.reloadItems(at: [IndexPath(row: 4, section: 0)])
-        }
+    override func setListeners() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didApplicationEnterForeground),
+            name: Notification.Name.ApplicationWillEnterForeground,
+            object: nil
+        )
+    }
+    
+    @objc
+    private func didApplicationEnterForeground() {
+        settingsView.collectionView.reloadData()
     }
 }
 
