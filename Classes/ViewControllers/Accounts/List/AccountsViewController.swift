@@ -258,7 +258,12 @@ extension AccountsViewController: QRScannerViewControllerDelegate {
             open(
                 .sendAssetTransactionPreview(
                     account: nil,
-                    receiver: .address(address: address, amount: "\(amount)"),
+                    receiver: .address(
+                        address: address,
+                        amount: amount
+                            .assetAmount(fromFraction: assetDetail.fractionDecimals)
+                            .toFractionStringForLabel(fraction: assetDetail.fractionDecimals)
+                    ),
                     assetDetail: assetDetail,
                     isMaxTransaction: false
                 ),
