@@ -19,7 +19,8 @@ protocol AssetDetailViewDelegate: class {
 class AssetDetailView: BaseView {
 
     struct LayoutConstants: AdaptiveLayoutConstants {
-        static var headerHeight: CGFloat = 255.0
+        static var algosHeaderHeight: CGFloat = 255.0
+        static var assetHeaderHeight: CGFloat = 213.0
         static let smallHeaderHeight: CGFloat = 111.0
     }
     
@@ -53,7 +54,6 @@ class AssetDetailView: BaseView {
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = .white
-        collectionView.contentInset.top = LayoutConstants.headerHeight
         
         collectionView.register(TransactionHistoryCell.self, forCellWithReuseIdentifier: TransactionHistoryCell.reusableIdentifier)
         collectionView.register(PendingTransactionCell.self, forCellWithReuseIdentifier: PendingTransactionCell.reusableIdentifier)
@@ -96,7 +96,7 @@ class AssetDetailView: BaseView {
         
         accountsHeaderContainerView.snp.makeConstraints { make in
             make.leading.trailing.top.equalToSuperview()
-            make.height.equalTo(LayoutConstants.headerHeight)
+            make.height.equalTo(LayoutConstants.algosHeaderHeight)
         }
     }
     

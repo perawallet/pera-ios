@@ -9,6 +9,7 @@
 import UIKit
 import SnapKit
 import SVProgressHUD
+import Crypto
 
 protocol SendAssetTransactionPreviewViewControllerDelegate: class {
     func sendAssetTransactionPreviewViewController(
@@ -102,8 +103,11 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
         }
         
         if let amount = qrText.amount {
-            sendTransactionPreviewView.transactionReceiverView.state = .address(address: qrAddress, amount: "\(amount)")
-            receiver = .address(address: qrAddress, amount: "\(amount)")
+            sendTransactionPreviewView.transactionReceiverView.state = .address(
+                address: qrAddress,
+                amount: amount.toFractionStringForLabel(fraction: assetDetail.fractionDecimals)
+            )
+            receiver = .address(address: qrAddress, amount: amount.toFractionStringForLabel(fraction: assetDetail.fractionDecimals))
         } else {
             sendTransactionPreviewView.transactionReceiverView.state = .address(address: qrAddress, amount: nil)
             receiver = .address(address: qrAddress, amount: nil)
@@ -169,6 +173,18 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
 
 extension SendAssetTransactionPreviewViewController {
     private func checkIfAddressIsValidForTransaction(_ address: String) {
+        if !UtilsIsValidAddress(address) {
+            guard let api = api else {
+                return
+            }
+            let pushNotificationController = PushNotificationController(api: api)
+            pushNotificationController.showFeedbackMessage(
+                "title-error".localized,
+                subtitle: "send-algos-receiver-address-validation".localized
+            )
+            return
+        }
+        
         SVProgressHUD.show(withStatus: "title-loading".localized)
         api?.fetchAccount(with: AccountFetchDraft(publicKey: address)) { fetchAccountResponse in
             switch fetchAccountResponse {

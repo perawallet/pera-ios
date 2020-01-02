@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Crypto
 import SVProgressHUD
 
 class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewController {
@@ -124,7 +125,7 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
 
 extension SendAlgosTransactionPreviewViewController {
     private func configureViewForAlgos() {
-        title = "request-algos-title".localized
+        title = "send-algos-title".localized
         
         sendTransactionPreviewView.transactionParticipantView.assetSelectionView.detailLabel.text = "asset-algos-title".localized
         sendTransactionPreviewView.transactionParticipantView.assetSelectionView.amountView.amountLabel.textColor =
@@ -211,6 +212,19 @@ extension SendAlgosTransactionPreviewViewController {
             }
                    
             receiverAddress = receiverAddress.trimmingCharacters(in: .whitespacesAndNewlines)
+            
+            if !UtilsIsValidAddress(receiverAddress) {
+                guard let api = api else {
+                    return
+                }
+                let pushNotificationController = PushNotificationController(api: api)
+                pushNotificationController.showFeedbackMessage(
+                    "title-error".localized,
+                    subtitle: "send-algos-receiver-address-validation".localized
+                )
+                return
+            }
+            
             let receiverFetchDraft = AccountFetchDraft(publicKey: receiverAddress)
                    
             SVProgressHUD.show(withStatus: "title-loading".localized)

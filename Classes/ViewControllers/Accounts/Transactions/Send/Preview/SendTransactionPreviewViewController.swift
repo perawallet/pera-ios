@@ -321,8 +321,6 @@ extension SendTransactionPreviewViewController: TransactionManagerDelegate {
                     "title-error".localized,
                     subtitle: "send-algos-receiver-address-validation".localized
                 )
-                
-                displaySimpleAlertWith(title: "title-error".localized, message: "send-algos-receiver-address-validation".localized)
                 return
             }
             displaySimpleAlertWith(title: "title-error".localized, message: error.localizedDescription)

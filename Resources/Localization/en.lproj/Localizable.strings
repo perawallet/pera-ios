@@ -173,7 +173,7 @@
 "asset-support-not-same-title" = "Account does not accept this asset";
 "asset-support-add-title" = "You are about to recieve an asset!";
 "asset-support-add-message" = "You are about to recieve an asset to %@. Would you like to add this asset to this account to recieve it?";
-
+"asset-id-copied-title" = "ID copied to clipboard";
 
 // MARK: Algos Send
 

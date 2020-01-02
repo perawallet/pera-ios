@@ -28,6 +28,14 @@ class AssetDetailViewController: BaseViewController {
     private var currentDollarConversion: Double?
     private let viewModel: AssetDetailViewModel
     
+    private var headerHeight: CGFloat {
+        if isAlgoDisplay {
+            return AssetDetailView.LayoutConstants.algosHeaderHeight
+        }
+        
+        return AssetDetailView.LayoutConstants.assetHeaderHeight
+    }
+    
     private var transactionHistoryDataSource: TransactionHistoryDataSource
     
     var route: Screen?
@@ -307,6 +315,7 @@ extension AssetDetailViewController: AssetDetailViewDelegate {
     
     func assetDetailView(_ assetDetailView: AssetDetailView, didTriggerAssetIdCopyValue gestureRecognizer: UILongPressGestureRecognizer) {
         if let id = assetDetail?.index {
+            displaySimpleAlertWith(title: "asset-id-copied-title".localized, message: "")
             UIPasteboard.general.string = id
         }
     }
@@ -364,9 +373,9 @@ extension AssetDetailViewController {
         let translation = scrollView.panGestureRecognizer.translation(in: view)
         
         if translation.y < 0 {
-            let offset = scrollView.contentOffset.y + AssetDetailView.LayoutConstants.headerHeight
+            let offset = scrollView.contentOffset.y + headerHeight
             
-            let offsetDifference = AssetDetailView.LayoutConstants.headerHeight - offset
+            let offsetDifference = headerHeight - offset
             
             if offsetDifference <= AssetDetailView.LayoutConstants.smallHeaderHeight {
                 adjustSmallHeaderViewLayout()
@@ -379,7 +388,7 @@ extension AssetDetailViewController {
                 
                 assetDetailView.transactionHistoryCollectionView.contentInset.top = offsetDifference
                 
-                let progress: CGFloat = offsetDifference / AssetDetailView.LayoutConstants.headerHeight
+                let progress: CGFloat = offsetDifference / headerHeight
                 
                 UIView.animate(withDuration: 0.0) {
                     self.assetDetailView.headerView.alpha = progress
@@ -391,14 +400,14 @@ extension AssetDetailViewController {
             
             let offsetTotal = AssetDetailView.LayoutConstants.smallHeaderHeight + offset
             
-            if offsetTotal >= AssetDetailView.LayoutConstants.headerHeight {
+            if offsetTotal >= headerHeight {
                 adjustDefaultHeaderViewLayout()
                 
-                assetDetailView.transactionHistoryCollectionView.contentInset.top = AssetDetailView.LayoutConstants.headerHeight
+                assetDetailView.transactionHistoryCollectionView.contentInset.top = headerHeight
             } else {
                 let offset = max(-scrollView.contentOffset.y, AssetDetailView.LayoutConstants.smallHeaderHeight)
                 
-                let progress: CGFloat = offset / AssetDetailView.LayoutConstants.headerHeight
+                let progress: CGFloat = offset / headerHeight
                 
                 assetDetailView.accountsHeaderContainerView.snp.updateConstraints { make in
                     make.height.equalTo(offset)
@@ -422,9 +431,9 @@ extension AssetDetailViewController {
         let translation = scrollView.panGestureRecognizer.translation(in: view)
         
         if translation.y < 0 {
-            let offset = scrollView.contentOffset.y + AssetDetailView.LayoutConstants.headerHeight
+            let offset = scrollView.contentOffset.y + headerHeight
             
-            let offsetDifference = AssetDetailView.LayoutConstants.headerHeight - offset
+            let offsetDifference = headerHeight - offset
             
             if offsetDifference <= AssetDetailView.LayoutConstants.smallHeaderHeight {
                 return
@@ -435,7 +444,7 @@ extension AssetDetailViewController {
         } else {
             let offset = scrollView.contentInset.top + scrollView.contentOffset.y + AssetDetailView.LayoutConstants.smallHeaderHeight
             
-            if offset > AssetDetailView.LayoutConstants.headerHeight {
+            if offset > headerHeight {
                 return
             }
             
@@ -464,7 +473,7 @@ extension AssetDetailViewController {
     
     private func adjustDefaultHeaderViewLayout(withContentInsetUpdate shouldUpdateContentInset: Bool = false) {
         assetDetailView.accountsHeaderContainerView.snp.updateConstraints { make in
-            make.height.equalTo(AssetDetailView.LayoutConstants.headerHeight)
+            make.height.equalTo(headerHeight)
         }
         
         UIView.animate(withDuration: 0.33) {
@@ -472,8 +481,8 @@ extension AssetDetailViewController {
             self.assetDetailView.headerView.alpha = 1.0
             
             if shouldUpdateContentInset {
-                self.assetDetailView.transactionHistoryCollectionView.contentInset.top = AssetDetailView.LayoutConstants.headerHeight
-                self.assetDetailView.transactionHistoryCollectionView.contentOffset.y = -AssetDetailView.LayoutConstants.headerHeight
+                self.assetDetailView.transactionHistoryCollectionView.contentInset.top = self.headerHeight
+                self.assetDetailView.transactionHistoryCollectionView.contentOffset.y = -self.headerHeight
             }
             
             self.view.layoutIfNeeded()
@@ -489,6 +498,12 @@ extension AssetDetailViewController {
             make.top.equalToSuperview().inset(layout.current.topInset)
             make.leading.trailing.bottom.equalToSuperview()
         }
+        
+        assetDetailView.accountsHeaderContainerView.snp.updateConstraints { make in
+            make.height.equalTo(headerHeight)
+        }
+        
+        assetDetailView.transactionHistoryCollectionView.contentInset.top = headerHeight
     }
 }
 
