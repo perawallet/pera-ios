@@ -26,6 +26,7 @@ class AssetInputView: BaseView {
     private(set) var isMaxButtonSelected = false
     var maxAmount: Double = 0.0
     private var inputFieldFraction: Int
+    private let maximumAmount: Int64
     
     // MARK: Components
     
@@ -89,6 +90,7 @@ class AssetInputView: BaseView {
     init(inputFieldFraction: Int = algosFraction, shouldHandleMaxButtonStates: Bool = false) {
         self.inputFieldFraction = inputFieldFraction
         self.shouldHandleMaxButtonStates = shouldHandleMaxButtonStates
+        maximumAmount = Int64.max / (pow(10, inputFieldFraction) as NSDecimalNumber).int64Value
         super.init(frame: .zero)
     }
     
@@ -164,7 +166,7 @@ extension AssetInputView {
     private func didChangeText(_ textField: UITextField) {
         guard let doubleValueString = textField.text?.currencyInputFormatting(with: inputFieldFraction),
             let doubleValue = doubleValueString.doubleForSendSeparator(with: inputFieldFraction),
-            doubleValue <= Double(maximumMicroAlgos) else {
+            doubleValue <= Double(maximumAmount) else {
             return
         }
         
@@ -225,7 +227,7 @@ extension AssetInputView: UITextFieldDelegate {
         
         guard let doubleValueString = text.appending(string).currencyInputFormatting(with: inputFieldFraction),
             let doubleValue = doubleValueString.doubleForSendSeparator(with: inputFieldFraction),
-            doubleValue <= Double(maximumMicroAlgos) else {
+            doubleValue <= Double(maximumAmount) else {
                 return false
         }
         
