@@ -34,7 +34,7 @@ class AssetDetailHeaderView: BaseView {
     
     private lazy var assetIdCopyValueGestureRecognizer: UILongPressGestureRecognizer = {
         let recognizer = UILongPressGestureRecognizer(target: self, action: #selector(notifyDelegateToAssetIdLabelTapped))
-        recognizer.minimumPressDuration = 1.0
+        recognizer.minimumPressDuration = 1.5
         return recognizer
     }()
     
@@ -208,7 +208,7 @@ extension AssetDetailHeaderView {
         
         assetNameLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(layout.current.horizontalInset)
-            make.top.lessThanOrEqualToSuperview().inset(layout.current.availableTitleInset)
+            make.top.equalToSuperview().inset(layout.current.availableTitleInset).priority(.low)
         }
     }
 
