@@ -197,11 +197,11 @@ class TransactionReceiverView: BaseView {
         let label = UILabel()
         label.font = UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))
         label.text = "send-algos-to".localized
-        label.textColor = SharedColors.softGray
+        label.textColor = SharedColors.greenishGray
         return label
     }()
     
-    private lazy var receiverContainerView: UIView = {
+    private(set) lazy var receiverContainerView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
         view.layer.cornerRadius = 4.0
@@ -215,6 +215,7 @@ class TransactionReceiverView: BaseView {
         passphraseInputView.placeholderLabel.text = "contacts-input-address-placeholder".localized
         passphraseInputView.nextButtonMode = .submit
         passphraseInputView.backgroundColor = .clear
+        passphraseInputView.inputTextView.backgroundColor = .clear
         passphraseInputView.contentView.layer.borderWidth = 0.0
         passphraseInputView.inputTextView.autocorrectionType = .no
         passphraseInputView.inputTextView.autocapitalizationType = .none
@@ -354,8 +355,6 @@ class TransactionReceiverView: BaseView {
     }
     
     private func setupReceiverContactViewLayout() {
-        receiverContactView.sendButton.isHidden = true
-        
         receiverContainerView.addSubview(receiverContactView)
         
         receiverContactView.snp.makeConstraints { make in

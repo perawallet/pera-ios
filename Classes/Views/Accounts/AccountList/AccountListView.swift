@@ -8,27 +8,19 @@
 
 import UIKit
 
-protocol AccountListViewDelegate: class {
-    
-    func accountListViewDidTapAddButton(_ accountListView: AccountListView)
-    func accountListView(_ accountListView: AccountListView, didSelect account: Account)
-}
-
 class AccountListView: BaseView {
     
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let imageViewTopInset: CGFloat = 10.0
-        let accountListTopInset: CGFloat = 20.0
-        let accountListBottomInset: CGFloat = -20.0
-        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
-        let buttonBottomInset: CGFloat = 6.0
-    }
-    
     private let layout = Layout<LayoutConstants>()
-    
-    // MARK: Components
 
     private lazy var topImageView = UIImageView(image: img("icon-modal-top"))
+    
+    private(set) lazy var titleLabel: UILabel = {
+        UILabel()
+            .withFont(UIFont.font(.overpass, withWeight: .bold(size: 16.0)))
+            .withTextColor(SharedColors.black)
+            .withLine(.single)
+            .withAlignment(.center)
+    }()
     
     private(set) lazy var accountsCollectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
@@ -41,44 +33,22 @@ class AccountListView: BaseView {
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = .white
         collectionView.contentInset = .zero
-        
         collectionView.register(AccountViewCell.self, forCellWithReuseIdentifier: AccountViewCell.reusableIdentifier)
-        collectionView.register(AccountsTotalDisplayCell.self, forCellWithReuseIdentifier: AccountsTotalDisplayCell.reusableIdentifier)
-        
         return collectionView
     }()
-    
-    weak var delegate: AccountListViewDelegate?
-    
-    private var accountListLayoutBuilder: AccountListLayoutBuilder
-    private var accountListDataSource: AccountListDataSource
-    
-    init() {
-        accountListLayoutBuilder = AccountListLayoutBuilder()
-        accountListDataSource = AccountListDataSource()
-        
-        super.init(frame: .zero)
-    }
-    
-    // MARK: Setup
     
     override func configureAppearance() {
         backgroundColor = .white
     }
     
-    override func linkInteractors() {
-        accountListLayoutBuilder.delegate = self
-        accountsCollectionView.dataSource = accountListDataSource
-        accountsCollectionView.delegate = accountListLayoutBuilder
-    }
-    
-    // MARK: Layout
-    
     override func prepareLayout() {
         setupTopImageViewLayout()
+        setupTitleLabelLayout()
         setupAccountCollectionViewLayout()
     }
+}
 
+extension AccountListView {
     private func setupTopImageViewLayout() {
         addSubview(topImageView)
         
@@ -88,35 +58,31 @@ class AccountListView: BaseView {
         }
     }
     
+    private func setupTitleLabelLayout() {
+        addSubview(titleLabel)
+        
+        titleLabel.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalTo(topImageView.snp.bottom).offset(layout.current.titleLabelOffset)
+        }
+    }
+    
     private func setupAccountCollectionViewLayout() {
         addSubview(accountsCollectionView)
         
         accountsCollectionView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.top.equalTo(topImageView.snp.bottom).offset(layout.current.accountListTopInset)
-            make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).inset(layout.current.buttonBottomInset)
+            make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.accountListTopInset)
+            make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).offset(layout.current.accountListBottomInset)
         }
-    }
-    
-    // MARK: Actions
-    
-    @objc
-    func notifyDelegateToAddButtonTapped() {
-        delegate?.accountListViewDidTapAddButton(self)
     }
 }
 
-// MARK: - AccountListLayoutBuilderDelegate
-extension AccountListView: AccountListLayoutBuilderDelegate {
-    func accountListLayoutBuilder(_ layoutBuilder: AccountListLayoutBuilder, didSelectAt indexPath: IndexPath) {
-        let accounts = accountListDataSource.accounts
-        
-        guard indexPath.item < accounts.count else {
-            return
-        }
-        
-        let account = accounts[indexPath.item]
-        
-        delegate?.accountListView(self, didSelect: account)
+extension AccountListView {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let imageViewTopInset: CGFloat = 10.0
+        let titleLabelOffset: CGFloat = 15.0
+        let accountListTopInset: CGFloat = 20.0
+        let accountListBottomInset: CGFloat = -20.0
     }
 }

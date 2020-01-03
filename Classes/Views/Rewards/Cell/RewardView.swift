@@ -30,15 +30,15 @@ class RewardView: BaseView {
             .withLine(.single)
             .withAlignment(.left)
             .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 13.0)))
-            .withTextColor(SharedColors.navyBlue)
+            .withTextColor(SharedColors.black)
             .withText("reward-list-title".localized)
     }()
     
     private(set) lazy var transactionAmountView: AlgosAmountView = {
         let view = AlgosAmountView()
         view.signLabel.isHidden = true
-        view.algoIconImageView.tintColor = SharedColors.navyBlue
-        view.amountLabel.textColor = SharedColors.navyBlue
+        view.algoIconImageView.tintColor = SharedColors.purple
+        view.amountLabel.textColor = SharedColors.purple
         return view
     }()
     

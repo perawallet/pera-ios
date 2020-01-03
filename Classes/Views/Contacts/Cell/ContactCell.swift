@@ -9,9 +9,7 @@
 import UIKit
 
 protocol ContactCellDelegate: class {
-    
     func contactCellDidTapQRDisplayButton(_ cell: ContactCell)
-    func contactCellDidTapSendButton(_ cell: ContactCell)
 }
 
 class ContactCell: BaseCollectionViewCell<ContactContextView> {
@@ -24,18 +22,12 @@ class ContactCell: BaseCollectionViewCell<ContactContextView> {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        
         contextView.userImageView.image = img("icon-user-placeholder")
     }
 }
 
 extension ContactCell: ContactContextViewDelegate {
-    
     func contactContextViewDidTapQRDisplayButton(_ contactContextView: ContactContextView) {
         delegate?.contactCellDidTapQRDisplayButton(self)
-    }
-    
-    func contactContextViewDidTapSendButton(_ contactContextView: ContactContextView) {
-        delegate?.contactCellDidTapSendButton(self)
     }
 }

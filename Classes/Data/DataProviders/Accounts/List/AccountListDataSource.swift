@@ -13,15 +13,34 @@ class AccountListDataSource: NSObject, UICollectionViewDataSource {
     private let viewModel = AccountListViewModel()
     
     private(set) var accounts = [Account]()
+    private let mode: AccountListViewController.Mode
     
-    override init() {
+    init(mode: AccountListViewController.Mode) {
+        self.mode = mode
         super.init()
         
         guard let user = UIApplication.shared.appConfiguration?.session.authenticatedUser else {
             return
         }
         
-        accounts.append(contentsOf: user.accounts)
+        switch mode {
+        case .assetCount:
+            accounts.append(contentsOf: user.accounts)
+        case let .transactionReceiver(assetDetail),
+             let .transactionSender(assetDetail),
+             let .contact(assetDetail):
+            guard let assetDetail = assetDetail else {
+                accounts.append(contentsOf: user.accounts)
+                return
+            }
+            
+            let filteredAccounts = user.accounts.filter { account -> Bool in
+                account.assetDetails.contains { detail -> Bool in
+                     assetDetail.index == detail.index
+                }
+            }
+            accounts = filteredAccounts
+        }
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -41,8 +60,7 @@ class AccountListDataSource: NSObject, UICollectionViewDataSource {
         
         if indexPath.item < accounts.count {
             let account = accounts[indexPath.item]
-            
-            viewModel.configure(cell, with: account)
+            viewModel.configure(cell, with: account, for: mode)
         }
         
         return cell

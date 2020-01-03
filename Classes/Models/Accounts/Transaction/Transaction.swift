@@ -11,11 +11,6 @@ import Magpie
 protocol TransactionItem {}
 
 class Transaction: Model, TransactionItem {
-
-    enum Constant {
-        static let minimumFee: Int64 = 1000
-    }
-    
     let round: Int64?
     let id: TransactionID
     let fee: Int64
@@ -27,6 +22,10 @@ class Transaction: Model, TransactionItem {
     let type: String
     let fromRewards: UInt64?
     let poolError: String?
+    let transactionEffect: TransactionEffect?
+    let assetFreeze: AssetFreezeTransactionType?
+    let assetConfig: AssetConfigTransactionType?
+    let assetTransfer: AssetTransferTransactionType?
     
     var status: Status?
     var contact: Contact?
@@ -48,6 +47,10 @@ class Transaction: Model, TransactionItem {
         type = try container.decode(String.self, forKey: .type)
         fromRewards = try container.decodeIfPresent(UInt64.self, forKey: .fromRewards)
         poolError = try container.decodeIfPresent(String.self, forKey: .poolError)
+        transactionEffect = try container.decodeIfPresent(TransactionEffect.self, forKey: .transactionEffect)
+        assetFreeze = try container.decodeIfPresent(AssetFreezeTransactionType.self, forKey: .assetFreeze)
+        assetConfig = try container.decodeIfPresent(AssetConfigTransactionType.self, forKey: .assetConfig)
+        assetTransfer = try container.decodeIfPresent(AssetTransferTransactionType.self, forKey: .assetTransfer)
     }
 }
 
@@ -73,6 +76,10 @@ extension Transaction {
         case type = "type"
         case fromRewards = "fromrewards"
         case poolError = "poolerror"
+        case transactionEffect = "txresults"
+        case assetFreeze = "curfrz"
+        case assetConfig = "curcfg"
+        case assetTransfer = "curxfer"
     }
 }
 
@@ -83,3 +90,14 @@ extension Transaction {
         case failed = "Failed"
     }
 }
+
+extension Transaction {
+    enum Constant {
+        static let minimumFee: Int64 = 1000
+    }
+}
+
+// genesishashb64: String
+// genesisID: String
+// group: String
+// keyreg

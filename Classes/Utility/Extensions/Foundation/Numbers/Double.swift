@@ -13,12 +13,24 @@ extension Double {
         return Int64(Double(algosInMicroAlgos) * self)
     }
     
+    func toFraction(of fraction: Int) -> Int64 {
+        if fraction == 0 {
+            return Int64(self)
+        }
+        
+        return Int64(self * (pow(10, fraction) as NSDecimalNumber).doubleValue)
+    }
+    
     var toDecimalStringForAlgosInput: String? {
         return Formatter.separatorForAlgosInput.string(from: NSNumber(value: self))
     }
     
     var toDecimalStringForLabel: String? {
         return Formatter.separatorForAlgosLabel.string(from: NSNumber(value: self))
+    }
+    
+    func toFractionStringForLabel(fraction: Int) -> String? {
+        return Formatter.separatorWith(fraction: fraction).string(from: NSNumber(value: self))
     }
     
     var toCryptoCurrencyStringForLabel: String? {

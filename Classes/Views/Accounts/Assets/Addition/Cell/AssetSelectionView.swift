@@ -14,7 +14,7 @@ class AssetSelectionView: BaseView {
     
     private(set) lazy var assetNameView = AssetNameView()
     
-    private(set) lazy var indexLabel: UILabel = {
+    private(set) lazy var detailLabel: UILabel = {
         UILabel()
             .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 14.0)))
             .withTextColor(SharedColors.darkGray)
@@ -34,7 +34,7 @@ class AssetSelectionView: BaseView {
     
     override func prepareLayout() {
         setupAssetNameViewLayout()
-        setupIndexLabelLayout()
+        setupDetailLabelLayout()
         setupSeparatorViewLayout()
     }
 }
@@ -52,13 +52,13 @@ extension AssetSelectionView {
         }
     }
     
-    private func setupIndexLabelLayout() {
-        addSubview(indexLabel)
+    private func setupDetailLabelLayout() {
+        addSubview(detailLabel)
         
-        indexLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
-        indexLabel.setContentHuggingPriority(.required, for: .horizontal)
+        detailLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+        detailLabel.setContentHuggingPriority(.required, for: .horizontal)
         
-        indexLabel.snp.makeConstraints { make in
+        detailLabel.snp.makeConstraints { make in
             make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
             make.centerY.equalToSuperview()
         }

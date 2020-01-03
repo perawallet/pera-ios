@@ -231,11 +231,17 @@ extension ChoosePasswordViewController: ChoosePasswordViewDelegate {
         
         self.accountManager?.fetchAllAccounts {
             
+            DispatchQueue.main.async {
+                UIApplication.shared.rootViewController()?.tabBarViewController.route = self.route
+            }
+            
             SVProgressHUD.showSuccess(withStatus: "title-done-lowercased".localized)
             
             SVProgressHUD.dismiss(withDelay: 1.0) {
-                self.dismiss(animated: false) {
-                    UIApplication.shared.rootViewController()?.setupTabBarController(withInitial: self.route)
+                DispatchQueue.main.async {
+                    self.dismiss(animated: false) {
+                        UIApplication.shared.rootViewController()?.setupTabBarController(withInitial: self.route)
+                    }
                 }
             }
         }

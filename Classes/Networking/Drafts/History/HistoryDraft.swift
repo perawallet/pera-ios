@@ -12,4 +12,6 @@ struct HistoryDraft {
     let account: Account
     let startDate: Date
     let endDate: Date
+    var assetDetail: AssetDetail?
+    var isAlgoSelected = false
 }

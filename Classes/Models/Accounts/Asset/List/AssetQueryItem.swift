@@ -9,7 +9,7 @@
 import Magpie
 
 class AssetQueryItem: Model {
-    let index: Int
+    let index: Int64
     let assetDetail: AssetDetail
 }
 

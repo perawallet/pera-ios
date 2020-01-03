@@ -18,22 +18,21 @@ class AssetSupportAlertView: BaseView {
     
     weak var delegate: AssetSupportAlertViewDelegate?
     
-    private lazy var titleLabel: UILabel = {
+    private(set) lazy var titleLabel: UILabel = {
         UILabel()
             .withLine(.single)
             .withAlignment(.center)
             .withFont(UIFont.font(.overpass, withWeight: .bold(size: 16.0)))
-            .withText("asset-support-title".localized)
+        
     }()
     
     private(set) lazy var assetDisplayView = AssetDisplayView()
     
-    private lazy var detailLabel: UILabel = {
+    private(set) lazy var detailLabel: UILabel = {
         UILabel()
             .withLine(.contained)
             .withAlignment(.center)
             .withFont(UIFont.font(.avenir, withWeight: .medium(size: 14.0)))
-            .withText("asset-support-error".localized)
     }()
     
     private lazy var okButton: UIButton = {

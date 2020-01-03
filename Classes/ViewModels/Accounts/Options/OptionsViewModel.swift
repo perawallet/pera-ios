@@ -15,7 +15,7 @@ class OptionsViewModel {
             cell.contextView.iconImageView.image = img("icon-qr-code-purple")
             cell.contextView.optionLabel.text = "options-show-qr".localized
         case .removeAsset:
-            cell.contextView.iconImageView.image = img("icon-edit-account")
+            cell.contextView.iconImageView.image = img("icon-remove-assets")
             cell.contextView.optionLabel.text = "options-remove-assets".localized
         case .passPhrase:
             cell.contextView.iconImageView.image = img("icon-show-passphrase")

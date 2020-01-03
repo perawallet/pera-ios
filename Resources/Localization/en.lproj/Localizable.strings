@@ -38,6 +38,7 @@
 "title-max" = "MAX";
 "title-internet-connection" = "The internet connection appears to be offline.";
 "title-remove-lowercased" = "Remove";
+"title-unknown" = "Unknown";
 
 // MARK: Tabbar
 
@@ -136,7 +137,7 @@
 
 "accounts-tranaction-empty-text" = "No Transactions Yet";
 "tranaction-empty-text" = "No Transactions Found";
-"accounts-algos-available-title" = "Algos Available";
+"accounts-algos-available-title" = "Algos";
 "accounts-dollar-value-title" = "Dollar Value";
 "accounts-transaction-history-title" = "Transaction History";
 "accounts-add-account" = "+ ADD ACCOUNT";
@@ -144,6 +145,7 @@
 // MARK: Asset
 
 "asset-title" = "Asset";
+"asset-not-found" = "Asset not found";
 "asset-algos-title" = "Algos";
 "asset-remove-title" = "REMOVING AN ASSET";
 "asset-remove-subtitle" = "To remove an asset you need to transfer all your balance to another another account.";
@@ -152,9 +154,9 @@
 "asset-transfer-balance" = "TRANSFER BALANCE";
 "title-remove-assets" = "Remove Assets";
 "title-add-asset" = "Add Asset";
-"asset-add-warning" = "Adding an asset requires sending a transaction with a minimum transaction fee of X Algos. This will appear on your transaction history.";
-"asset-support-error" = "Unfortunatly this contact does not support this asset class.";
-"asset-support-title" = "Asset Not Supported";
+"asset-add-warning" = "Adding an asset requires sending a transaction with a minimum transaction fee. This will appear on your transaction history.";
+"asset-support-error" = "Unfortunately, this account has not added this asset. Please instruct the account owner to add the asset, and then try again.";
+"asset-support-title" = "Account does not accept this asset";
 "asset-add-confirmation-title" = "Adding Asset";
 "asset-not-found" = "Asset not found";
 "internet-connection-error-title" = "No Internet Connection";
@@ -163,12 +165,24 @@
 "asset-remove-transaction-warning" = "You are about to remove %@ from %@. You will not be able to transact with this asset from this account unless you re-add it.";
 "asset-support-qr-error" = "None of your account support this asset, would you like to add and proceed?";
 "asset-support-qr-title" = "You do not support this Asset";
+"asset-creation-fee-title" = "Asset Creation Fee";
+"asset-min-transaction-error-title" = "Min Transaction Error!";
+"asset-min-transaction-error-message" = "You need at least %@ Algos to add this asset";
+"asset-you-already-own-message" = "You already own this asset";
+"asset-support-not-same-error" = "This account has added this asset but this is not the selected asset. Please select the correct asset, and then try again.";
+"asset-support-not-same-title" = "Account does not accept this asset";
+"asset-support-add-title" = "You are about to recieve an asset!";
+"asset-support-add-message" = "You are about to recieve an asset to %@. Would you like to add this asset to this account to recieve it?";
+"asset-id-copied-title" = "ID copied to clipboard";
 
 // MARK: Algos Send
 
 "send-algos-title" = "Send Algos";
 "send-algos-from" = "From:";
 "send-algos-select" = "Select Account";
+"send-sending-algos-select" = "Select Sending Account";
+"send-receiving-algos-select" = "Select Receiving Account";
+"send-select-asset" = "Select Asset";
 "send-algos-to" = "To:";
 "send-algos-fee" = "Fee:";
 "send-algos-amount" = "Amount:";
@@ -180,6 +194,7 @@
 "send-algos-minimum-amount-error-new-account" = "You're trying to send money to a new account. The amount must be at least 0.1 algos.";
 "send-algos-minimum-amount-error" = "Transaction amount results in a balance below the minimum account balance of 0.1 algos.";
 "send-algos-amount-error" = "Transaction amount cannot be more than your available algos";
+"send-asset-amount-error" = "Transaction amount cannot be more than your available amount.";
 "send-algos-contact-not-found" = "Contact not found";
 "send-algos-address-not-selected" = "Address not selected";
 "send-algos-address" = "Address";
@@ -189,10 +204,13 @@
 "send-algos-account-delete-title" = "Your account is about to be deleted, are you sure you want to proceed?";
 "send-algos-account-delete-body" = "To keep an account open, the account must have at least 0.01 ALGO. If you send the max amount, the account will be deleted and your active participation keys will be deleted as well.";
 "send-algos-account-delete-asset-title" = "In order to delete an account, you must empty any asset account balance and destroy any asset you've created, if any.";
+"send-algos-receiver-address-validation" = "Key not valid, please make sure you have the right key.";
 
 // MARK: Algos Request
 
 "request-algos-title" = "Request Algos";
+"request-title" = "Request";
+"request-asset-title" = "Asset Request";
 
 // MARK: Account List
 
@@ -218,6 +236,7 @@
 
 "history-title" = "History";
 "history-account" = "Account:";
+"history-asset" = "Asset:";
 "history-start-date" = "Start Date:";
 "history-end-date" = "End Date:";
 "history-select-date" = "Select Date";
@@ -251,6 +270,8 @@
 "contacts-delete-contact-alert-explanation" = "Are you sure you want to delete this contact?";
 "contacts-close-warning-title" = "Are you sure?";
 "contacts-close-warning-subtitle" = "Your unsaved progress will be lost. Are you sure?";
+"contacts-title-assets" = "Assets";
+"title-select-asset" = "Select Asset";
 
 // MARK: Settings
 
@@ -263,6 +284,9 @@
 "settings-coinlist" = "Coinlist";
 "settings-coinlist-connect" = "Connect Account";
 "settings-coinlist-disconnect" = "Disconnect Account";
+"settings-notification-go-settings-title" = "Notifications";
+"settings-notification-disabled-go-settings-text" = "You have disabled notifications. Please go to Settings and enable this option.";
+"settings-notification-enabled-go-settings-text" = "You have enabled notifications. Please go to Settings and disable this option.";
 
 // MARK: NodeSettings
 "node-settings-title" = "Node Settings";
@@ -430,6 +454,6 @@
 
 // MARK: Notifications
 "notifications-title" = "Notifications";
-"notification-sent-success" = "Your transaction of %@ Algos from %@ to %@ is complete.";
-"notification-sent-failed" = "Your transaction of %@ Algos from %@ to %@ has failed.";
-"notification-received" = "\%@ Algos were sent to %@ by %@.";
+"notification-sent-success" = "Your transaction of %@ from %@ to %@ is complete.";
+"notification-sent-failed" = "Your transaction of %@ from %@ to %@ has failed.";
+"notification-received" = "\%@ were sent to %@ by %@.";
