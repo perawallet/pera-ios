@@ -26,7 +26,9 @@ class AccountListDataSource: NSObject, UICollectionViewDataSource {
         switch mode {
         case .assetCount:
             accounts.append(contentsOf: user.accounts)
-        case let .amount(assetDetail):
+        case let .transactionReceiver(assetDetail),
+             let .transactionSender(assetDetail),
+             let .contact(assetDetail):
             guard let assetDetail = assetDetail else {
                 accounts.append(contentsOf: user.accounts)
                 return

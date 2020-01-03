@@ -12,15 +12,15 @@ class HistoryResultsView: BaseView {
     
     private let layout = Layout<LayoutConstants>()
     
-    private(set) lazy var accountSelectionView: AccountSelectionView = {
-        let accountSelectionView = AccountSelectionView()
+    private(set) lazy var accountSelectionView: SelectionView = {
+        let accountSelectionView = SelectionView()
         accountSelectionView.containerView.backgroundColor = Colors.disabledColor
         accountSelectionView.explanationLabel.text = "history-account".localized
         return accountSelectionView
     }()
     
-    private(set) lazy var assetSelectionView: AccountSelectionView = {
-        let assetSelectionView = AccountSelectionView()
+    private(set) lazy var assetSelectionView: SelectionView = {
+        let assetSelectionView = SelectionView()
         assetSelectionView.containerView.backgroundColor = Colors.disabledColor
         assetSelectionView.explanationLabel.text = "history-asset".localized
         return assetSelectionView

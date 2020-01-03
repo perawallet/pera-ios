@@ -14,16 +14,27 @@ class AccountListViewModel {
         switch mode {
         case .assetCount:
             cell.contextView.detailLabel.text = "\(account.assetDetails.count) " + "contacts-title-assets".localized
-        case let .amount(assetDetail):
+        case let .transactionSender(assetDetail),
+             let .transactionReceiver(assetDetail),
+             let .contact(assetDetail):
             if let assetDetail = assetDetail {
-                guard let assetIndex = assetDetail.index,
-                    let asset = account.assets?[assetIndex] else {
-                        return
+                guard let assetAmount = account.amount(for: assetDetail)else {
+                    return
                 }
                 
-                let amountText = "\(Double(asset.amount).toDecimalStringForLabel ?? "")".attributed([.textColor(SharedColors.black)])
-                cell.contextView.detailLabel.attributedText = amountText + "(\(assetDetail.unitName ?? ""))".attributed()
+                let amountText = "\(assetAmount.toFractionStringForLabel(fraction: assetDetail.fractionDecimals) ?? "")".attributed([
+                    .font(UIFont.font(.overpass, withWeight: .semiBold(size: 15.0))),
+                    .textColor(SharedColors.black)
+                ])
+                
+                let codeText = " (\(assetDetail.getAssetCode()))".attributed([
+                    .font(UIFont.font(.overpass, withWeight: .semiBold(size: 15.0))),
+                    .textColor(SharedColors.purple)
+                ])
+                cell.contextView.detailLabel.attributedText = amountText + codeText
             } else {
+                cell.contextView.detailLabel.textColor = SharedColors.black
+                cell.contextView.imageView.isHidden = false
                 cell.contextView.detailLabel.text = account.amount.toAlgos.toDecimalStringForLabel
             }
         }

@@ -55,6 +55,8 @@ class AccountFetchOperation: AsyncOperation {
                             }
                         }
                     }
+                } else {
+                    self.onCompleted?(account, nil)
                 }
             case .failure(let error):
                 self.onCompleted?(nil, error)

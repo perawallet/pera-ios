@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Magpie
 
 protocol AssetAdditionViewControllerDelegate: class {
     func assetAdditionViewController(
@@ -26,11 +27,7 @@ class AssetAdditionViewController: BaseViewController {
     private var assetResults = [AssetQueryItem]()
     private lazy var assetAdditionView = AssetAdditionView()
     
-    private lazy var emptyStateView = EmptyStateView(
-        title: "contacts-empty-text".localized,
-        topImage: img("icon-contacts-empty"),
-        bottomImage: img("icon-contacts-empty")
-    )
+    private lazy var emptyStateView = EmptyStateView(title: "asset-not-found".localized, topImage: nil, bottomImage: nil)
     
     private let viewModel = AssetAdditionViewModel()
     
@@ -75,23 +72,39 @@ extension AssetAdditionViewController {
 extension AssetAdditionViewController {
     private func fetchAssets(with assetId: String) {
         let assetFetchDraft = AssetFetchDraft(assetId: assetId)
-        api?.getAssets(with: assetFetchDraft) { [unowned self] response in
+        api?.getAssets(with: assetFetchDraft) { [weak self] response in
             switch response {
             case let .success(assetList):
-                self.assetResults = assetList.assets
-                self.assetResults.forEach { result in
-                    result.assetDetail.index = "\(result.index)"
+                guard let strongSelf = self else {
+                    return
                 }
                 
-                if self.assetResults.isEmpty {
-                    self.assetAdditionView.assetsCollectionView.contentState = .empty(self.emptyStateView)
+                if let firstAssetId = assetList.assets.first?.index, !assetId.isEmpty, assetId != "\(firstAssetId)" {
+                    strongSelf.assetResults = []
+                    strongSelf.assetAdditionView.assetsCollectionView.contentState = .empty(strongSelf.emptyStateView)
+                    strongSelf.assetAdditionView.assetsCollectionView.reloadData()
+                    return
                 } else {
-                    self.assetAdditionView.assetsCollectionView.contentState = .none
+                    strongSelf.assetResults = assetList.assets
+                    strongSelf.assetResults.forEach { result in
+                        result.assetDetail.index = "\(result.index)"
+                    }
                 }
                 
-                self.assetAdditionView.assetsCollectionView.reloadData()
+                if strongSelf.assetResults.isEmpty {
+                    strongSelf.assetAdditionView.assetsCollectionView.contentState = .empty(strongSelf.emptyStateView)
+                } else {
+                    strongSelf.assetAdditionView.assetsCollectionView.contentState = .none
+                }
+                
+                strongSelf.assetAdditionView.assetsCollectionView.reloadData()
             case .failure:
-                break
+                guard let strongSelf = self else {
+                    return
+                }
+                
+                strongSelf.assetAdditionView.assetsCollectionView.contentState = .empty(strongSelf.emptyStateView)
+                strongSelf.assetAdditionView.assetsCollectionView.reloadData()
             }
         }
     }
@@ -119,8 +132,19 @@ extension AssetAdditionViewController: UICollectionViewDataSource {
 extension AssetAdditionViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let assetResult = assetResults[indexPath.item]
+        
+        if account.assetDetails.contains(assetResult.assetDetail) {
+            displaySimpleAlertWith(title: "asset-you-already-own-message".localized, message: "")
+            return
+        }
+        
+        guard let assetIndex = assetResult.assetDetail.index else {
+            return
+        }
+        
         let assetAlertDraft = AssetAlertDraft(
             account: account,
+            assetIndex: assetIndex,
             assetDetail: assetResult.assetDetail,
             title: "asset-add-confirmation-title".localized,
             detail: "asset-add-warning".localized,
@@ -154,11 +178,6 @@ extension AssetAdditionViewController: InputViewDelegate {
     }
     
     func inputViewDidChangeValue(inputView: BaseInputView) {
-        if assetResults.isEmpty {
-            assetAdditionView.assetsCollectionView.contentState = .empty(emptyStateView)
-            return
-        }
-        
         guard let query = assetAdditionView.assetInputView.inputTextField.text else {
             return
         }
@@ -184,6 +203,25 @@ extension AssetAdditionViewController: AssetActionConfirmationViewControllerDele
 }
 
 extension AssetAdditionViewController: TransactionManagerDelegate {
+    func transactionManager(_ transactionManager: TransactionManager, didFailedComposing error: Error) {
+        switch error {
+        case let .custom(fee):
+            guard let api = api,
+                let feeValue = fee as? Int64,
+                let feeString = feeValue.toAlgos.toDecimalStringForLabel else {
+                return
+            }
+            
+            let pushNotificationController = PushNotificationController(api: api)
+            pushNotificationController.showFeedbackMessage(
+                "asset-min-transaction-error-title".localized,
+                subtitle: String(format: "asset-min-transaction-error-message".localized, feeString)
+            )
+        default:
+            break
+        }
+    }
+    
     func transactionManagerDidComposedAssetTransactionData(
         _ transactionManager: TransactionManager,
         forTransaction draft: AssetTransactionDraft?
@@ -197,7 +235,6 @@ extension AssetAdditionViewController: TransactionManagerDelegate {
             return
         }
         
-        account.assetDetails.append(assetQueryItem.assetDetail)
         delegate?.assetAdditionViewController(self, didAdd: assetQueryItem.assetDetail, to: account)
         popScreen()
     }
