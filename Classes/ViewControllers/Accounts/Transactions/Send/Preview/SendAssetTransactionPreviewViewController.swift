@@ -102,16 +102,15 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
             return
         }
         
-        if let amount = qrText.amount {
-            let amountText = amount
-                .assetAmount(fromFraction: assetDetail.fractionDecimals)
-                .toFractionStringForLabel(fraction: assetDetail.fractionDecimals)
+        if let qrAmount = qrText.amount {
+            let amountValue = qrAmount.assetAmount(fromFraction: assetDetail.fractionDecimals)
+            let amountText = amountValue.toFractionStringForLabel(fraction: assetDetail.fractionDecimals)
             
-            sendTransactionPreviewView.transactionReceiverView.state = .address(
-                address: qrAddress,
-                amount: amountText
-            )
+            sendTransactionPreviewView.transactionReceiverView.state = .address(address: qrAddress, amount: amountText)
             receiver = .address(address: qrAddress, amount: amountText)
+            
+            amount = amountValue
+            sendTransactionPreviewView.amountInputView.inputTextField.text = amountText
         } else {
             sendTransactionPreviewView.transactionReceiverView.state = .address(address: qrAddress, amount: nil)
             receiver = .address(address: qrAddress, amount: nil)
