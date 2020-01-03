@@ -252,7 +252,14 @@ extension SettingsViewController: SettingsViewModelDelegate {
             UIApplication.shared.openAppSettings()
         }
         
-        let cancelAction = UIAlertAction(title: "title-cancel-lowercased".localized, style: .cancel, handler: nil)
+        let cancelAction = UIAlertAction(title: "title-cancel-lowercased".localized, style: .cancel) { _ in
+            let indexPath = IndexPath(item: 3, section: 0)
+            guard let cell = self.settingsView.collectionView.cellForItem(at: indexPath) as? ToggleCell else {
+                return
+            }
+            
+            cell.contextView.toggle.setOn(!cell.contextView.toggle.isOn, animated: true)
+        }
         
         alertController.addAction(settingsAction)
         alertController.addAction(cancelAction)
