@@ -112,9 +112,13 @@ class AddContactViewController: BaseScrollViewController {
         super.configureAppearance()
         
         switch mode {
-        case .new:
+        case let .new(address, name):
             title = "contacts-add".localized
-            return
+            
+            if let address = address {                
+                addContactView.userInformationView.algorandAddressInputView.value = address
+            }
+            addContactView.userInformationView.contactNameInputView.inputTextField.text = name
         case let .edit(contact):
             title = "contacts-edit".localized
             
@@ -303,9 +307,9 @@ extension AddContactViewController: KeyboardControllerDataSource {
 // MARK: QRScannerViewControllerDelegate
 
 extension AddContactViewController: QRScannerViewControllerDelegate {
-    
     func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, then handler: EmptyHandler?) {
-        guard qrText.mode == .address else {
+        guard qrText.mode == .address,
+            let qrAddress = qrText.address else {
             displaySimpleAlertWith(title: "title-error".localized, message: "qr-scan-should-scan-address-message".localized) { _ in
                 if let handler = handler {
                     handler()
@@ -314,7 +318,7 @@ extension AddContactViewController: QRScannerViewControllerDelegate {
             return
         }
         
-        addContactView.userInformationView.algorandAddressInputView.value = qrText.text
+        addContactView.userInformationView.algorandAddressInputView.value = qrAddress
     }
     
     func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError, then handler: EmptyHandler?) {
@@ -331,7 +335,7 @@ extension AddContactViewController: QRScannerViewControllerDelegate {
 extension AddContactViewController {
     
     enum Mode {
-        case new
+        case new(address: String? = nil, name: String? = nil)
         case edit(contact: Contact)
     }
 }

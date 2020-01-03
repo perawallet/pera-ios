@@ -125,7 +125,8 @@ extension AssetRemovalViewController: AssetActionableCellDelegate {
         }
         
         let assetDetail = account.assetDetails[index.item]
-        guard let assetAmount = account.amount(for: assetDetail) else {
+        guard let assetAmount = account.amount(for: assetDetail),
+            let assetIndex = assetDetail.index else {
             return
         }
         
@@ -134,6 +135,7 @@ extension AssetRemovalViewController: AssetActionableCellDelegate {
         if assetAmount == 0 {
             assetAlertDraft = AssetAlertDraft(
                 account: account,
+                assetIndex: assetIndex,
                 assetDetail: assetDetail,
                 title: "asset-remove-confirmation-title".localized,
                 detail: String(
@@ -146,6 +148,7 @@ extension AssetRemovalViewController: AssetActionableCellDelegate {
         } else {
             assetAlertDraft = AssetAlertDraft(
                 account: account,
+                assetIndex: assetIndex,
                 assetDetail: assetDetail,
                 title: "asset-remove-confirmation-title".localized,
                 detail: String(

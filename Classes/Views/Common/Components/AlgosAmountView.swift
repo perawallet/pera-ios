@@ -16,7 +16,7 @@ class AlgosAmountView: BaseView {
     
     private let layout = Layout<LayoutConstants>()
     
-    var mode: Mode = .normal(0.00) {
+    var mode: Mode = .normal(amount: 0.00) {
         didSet {
             updateAmountView()
         }
@@ -98,28 +98,43 @@ class AlgosAmountView: BaseView {
     
     private func updateAmountView() {
         switch mode {
-        case let .normal(amount):
+        case let .normal(amount, assetFraction):
             signLabel.isHidden = true
             
-            amountLabel.text = amount.toDecimalStringForLabel
+            if let fraction = assetFraction {
+                amountLabel.text = amount.toFractionStringForLabel(fraction: fraction)
+            } else {
+                amountLabel.text = amount.toDecimalStringForLabel
+            }
+            
             amountLabel.textColor = SharedColors.black
             
             algoIconImageView.tintColor = SharedColors.black
-        case let .positive(amount):
+        case let .positive(amount, assetFraction):
             signLabel.isHidden = false
             signLabel.text = "+"
             signLabel.textColor = SharedColors.turquois
             
-            amountLabel.text = amount.toDecimalStringForLabel
+            if let fraction = assetFraction {
+                amountLabel.text = amount.toFractionStringForLabel(fraction: fraction)
+            } else {
+                amountLabel.text = amount.toDecimalStringForLabel
+            }
+            
             amountLabel.textColor = SharedColors.turquois
             
             algoIconImageView.tintColor = SharedColors.turquois
-        case let .negative(amount):
+        case let .negative(amount, assetFraction):
             signLabel.isHidden = false
             signLabel.text = "-"
             signLabel.textColor = SharedColors.orange
             
-            amountLabel.text = amount.toDecimalStringForLabel
+            if let fraction = assetFraction {
+                amountLabel.text = amount.toFractionStringForLabel(fraction: fraction)
+            } else {
+                amountLabel.text = amount.toDecimalStringForLabel
+            }
+            
             amountLabel.textColor = SharedColors.orange
             
             algoIconImageView.tintColor = SharedColors.orange
@@ -132,8 +147,8 @@ class AlgosAmountView: BaseView {
 extension AlgosAmountView {
     
     enum Mode {
-        case normal(Double)
-        case positive(Double)
-        case negative(Double)
+        case normal(amount: Double, assetFraction: Int? = nil)
+        case positive(amount: Double, assetFraction: Int? = nil)
+        case negative(amount: Double, assetFraction: Int? = nil)
     }
 }

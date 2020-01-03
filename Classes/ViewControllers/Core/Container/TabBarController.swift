@@ -40,6 +40,8 @@ class TabBarController: UITabBarController {
     
     var route: Screen?
     
+    private var assetAlertDraft: AssetAlertDraft?
+    
     // MARK: Components
     
     private lazy var customTabBar: TabBar = {
@@ -164,6 +166,50 @@ class TabBarController: UITabBarController {
         if let appConfiguration = UIApplication.shared.appConfiguration {
             appConfiguration.session.isValid = true
         }
+        
+        routeForDeeplink()
+    }
+    
+    func routeForDeeplink() {
+        if let route = route {
+            self.route = nil
+            switch route {
+            case .addContact:
+                selectedIndex = 2
+                topMostController?.open(route, by: .push)
+            case .sendAlgosTransactionPreview,
+                 .sendAssetTransactionPreview:
+                selectedIndex = 0
+                topMostController?.open(route, by: .push)
+            case .assetSupportAlert:
+                selectedIndex = 0
+                open(
+                    route,
+                    by: .customPresentWithoutNavigationController(
+                        presentationStyle: .overCurrentContext,
+                        transitionStyle: .crossDissolve,
+                        transitioningDelegate: nil
+                    )
+                )
+            case .assetDetail:
+                topMostController?.open(route, by: .push)
+            case let .assetCancellableSupportAlert(draft):
+                let controller = topMostController?.open(
+                    route,
+                    by: .customPresentWithoutNavigationController(
+                        presentationStyle: .overCurrentContext,
+                        transitionStyle: .crossDissolve,
+                        transitioningDelegate: nil
+                    )
+                ) as? AssetCancellableSupportAlertViewController
+                
+                assetAlertDraft = draft
+                
+                controller?.delegate = self
+            default:
+                break
+            }
+        }
     }
 }
 
@@ -173,10 +219,28 @@ extension TabBarController: UITabBarControllerDelegate {
     
 }
 
+extension TabBarController: AssetCancellableSupportAlertViewControllerDelegate {
+    func assetCancellableSupportAlertViewControllerDidTapOKButton(
+        _ assetCancellableSupportAlertViewController: AssetCancellableSupportAlertViewController
+    ) {
+        guard let account = assetAlertDraft?.account,
+            let assetId = assetAlertDraft?.assetIndex,
+            let api = UIApplication.shared.appConfiguration?.api else {
+                return
+        }
+        
+        let transactionManager = TransactionManager(api: api)
+        
+        let assetTransactionDraft = AssetTransactionDraft(fromAccount: account, recipient: nil, amount: nil, assetIndex: Int64(assetId))
+        transactionManager.setAssetTransactionDraft(assetTransactionDraft)
+        transactionManager.composeAssetAdditionTransactionData(for: account)
+        assetAlertDraft = nil
+    }
+}
+
 // MARK: Tab
 
 extension TabBarController {
-    
     enum Tab: Int {
         case accounts = 0
         case history = 1

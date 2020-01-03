@@ -11,10 +11,14 @@ import UIKit
 class AssetActionConfirmationViewModel {
     func configure(_ view: AssetActionConfirmationView, with draft: AssetAlertDraft) {
         view.titleLabel.text = draft.title
-        view.assetDisplayView.assetIndexLabel.text = draft.assetDetail.index
+        view.assetDisplayView.assetIndexLabel.text = draft.assetIndex
         view.actionButton.setTitle(draft.actionTitle, for: .normal)
+ 
+        guard let assetDetail = draft.assetDetail else {
+            return
+        }
         
-        let displayNames = draft.assetDetail.getDisplayNames(isDisplayingBrackets: false)
+        let displayNames = assetDetail.getDisplayNames(isDisplayingBrackets: false)
         
         if displayNames.0.isUnknown() {
             view.assetDisplayView.assetCodeLabel.font = UIFont.font(.avenir, withWeight: .demiBoldItalic(size: 40.0))
@@ -29,8 +33,9 @@ class AssetActionConfirmationViewModel {
     }
     
     private func configureAttributedText(in view: AssetActionConfirmationView, with draft: AssetAlertDraft) {
-        guard  let detailText = draft.detail,
-            let unitName = draft.assetDetail.unitName, !unitName.isEmptyOrBlank else {
+        guard let detailText = draft.detail,
+            let assetDetail = draft.assetDetail,
+            let unitName = assetDetail.unitName, !unitName.isEmptyOrBlank else {
             view.detailLabel.text = draft.detail
             return
         }

@@ -72,7 +72,7 @@ extension TransactionManager {
         var transactionAmount = transactionDraft.amount.toMicroAlgos
         
         if isMaxValue {
-            if transactionDraft.amount.toMicroAlgos != transactionDraft.fromAccount.amount {
+            if transactionAmount != transactionDraft.fromAccount.amount {
                 isMaxValue = false
             }
             transactionAmount -= initialFee * params.fee
@@ -80,6 +80,11 @@ extension TransactionManager {
         
         let trimmedFromAddress = transactionDraft.fromAccount.address.trimmingCharacters(in: .whitespacesAndNewlines)
         let trimmedToAddress = account.address.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        if !UtilsIsValidAddress(trimmedToAddress) {
+            delegate?.transactionManager(self, didFailedComposing: .custom(trimmedToAddress))
+            return
+        }
         
         guard let transactionData = TransactionMakePaymentTxn(
             trimmedFromAddress,
@@ -131,20 +136,31 @@ extension TransactionManager {
         guard let params = params,
             let transactionDraft = assetTransactionDraft,
             let assetIndex = transactionDraft.assetIndex,
-            let transactionAmount = transactionDraft.amount else {
+            let amountDoubleValue = transactionDraft.amount else {
                 delegate?.transactionManager(self, didFailedComposing: .custom(nil))
             return
+        }
+        
+        var transactionAmount = Int64(amountDoubleValue)
+        
+        if transactionType == .assetTransaction {
+            transactionAmount = amountDoubleValue.toFraction(of: transactionDraft.assetDecimalFraction)
         }
         
         let trimmedFromAddress = transactionDraft.fromAccount.address.trimmingCharacters(in: .whitespacesAndNewlines)
         let trimmedToAddress = account.address.trimmingCharacters(in: .whitespacesAndNewlines)
         var transactionError: NSError?
         
+        if !UtilsIsValidAddress(trimmedToAddress) {
+            delegate?.transactionManager(self, didFailedComposing: .custom(trimmedToAddress))
+            return
+        }
+        
         guard let transactionData = TransactionMakeAssetTransferTxn(
             trimmedFromAddress,
             trimmedToAddress,
             transactionType == .assetRemoval ? transactionDraft.assetCreator : "", // closing address should be empty
-            Int64(transactionAmount),
+            transactionAmount,
             params.fee,
             params.lastRound,
             params.lastRound + 1000,

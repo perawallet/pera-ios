@@ -11,7 +11,8 @@ import UIKit
 class AccounsViewModel {
     func configure(_ cell: AssetCell, with assetDetail: AssetDetail, and asset: Asset) {
         cell.contextView.assetNameView.setAssetName(for: assetDetail)
-        cell.contextView.amountLabel.text = Double(asset.amount).toDecimalStringForLabel
+        cell.contextView.amountLabel.text = asset.amount.assetAmount(fromFraction: assetDetail.fractionDecimals)
+            .toFractionStringForLabel(fraction: assetDetail.fractionDecimals)
     }
     
     func configure(_ cell: PendingAssetCell, with assetDetail: AssetDetail, isRemoving: Bool) {

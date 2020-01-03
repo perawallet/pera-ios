@@ -78,9 +78,17 @@ extension AssetAdditionViewController {
                 guard let strongSelf = self else {
                     return
                 }
-                strongSelf.assetResults = assetList.assets
-                strongSelf.assetResults.forEach { result in
-                    result.assetDetail.index = "\(result.index)"
+                
+                if let firstAssetId = assetList.assets.first?.index, !assetId.isEmpty, assetId != "\(firstAssetId)" {
+                    strongSelf.assetResults = []
+                    strongSelf.assetAdditionView.assetsCollectionView.contentState = .empty(strongSelf.emptyStateView)
+                    strongSelf.assetAdditionView.assetsCollectionView.reloadData()
+                    return
+                } else {
+                    strongSelf.assetResults = assetList.assets
+                    strongSelf.assetResults.forEach { result in
+                        result.assetDetail.index = "\(result.index)"
+                    }
                 }
                 
                 if strongSelf.assetResults.isEmpty {
@@ -91,7 +99,12 @@ extension AssetAdditionViewController {
                 
                 strongSelf.assetAdditionView.assetsCollectionView.reloadData()
             case .failure:
-                break
+                guard let strongSelf = self else {
+                    return
+                }
+                
+                strongSelf.assetAdditionView.assetsCollectionView.contentState = .empty(strongSelf.emptyStateView)
+                strongSelf.assetAdditionView.assetsCollectionView.reloadData()
             }
         }
     }
@@ -125,8 +138,13 @@ extension AssetAdditionViewController: UICollectionViewDelegateFlowLayout {
             return
         }
         
+        guard let assetIndex = assetResult.assetDetail.index else {
+            return
+        }
+        
         let assetAlertDraft = AssetAlertDraft(
             account: account,
+            assetIndex: assetIndex,
             assetDetail: assetResult.assetDetail,
             title: "asset-add-confirmation-title".localized,
             detail: "asset-add-warning".localized,
@@ -160,11 +178,6 @@ extension AssetAdditionViewController: InputViewDelegate {
     }
     
     func inputViewDidChangeValue(inputView: BaseInputView) {
-        if assetResults.isEmpty {
-            assetAdditionView.assetsCollectionView.contentState = .empty(emptyStateView)
-            return
-        }
-        
         guard let query = assetAdditionView.assetInputView.inputTextField.text else {
             return
         }

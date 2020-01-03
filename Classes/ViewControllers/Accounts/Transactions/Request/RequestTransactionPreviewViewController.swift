@@ -11,7 +11,9 @@ import SnapKit
 
 class RequestTransactionPreviewViewController: BaseViewController {
     
-    private lazy var requestTransactionPreviewView = RequestTransactionPreviewView()
+    private lazy var requestTransactionPreviewView = RequestTransactionPreviewView(
+        inputFieldFraction: assetDetail?.fractionDecimals ?? algosFraction
+    )
     
     private var keyboard = Keyboard()
     private var contentViewBottomConstraint: Constraint?
@@ -36,6 +38,8 @@ class RequestTransactionPreviewViewController: BaseViewController {
     
     override func configureAppearance() {
         super.configureAppearance()
+        
+        requestTransactionPreviewView.transactionParticipantView.accountSelectionView.set(enabled: false)
         
         if isAlgoTransaction {
             configureViewForAlgos()
@@ -113,7 +117,7 @@ extension RequestTransactionPreviewViewController {
 extension RequestTransactionPreviewViewController {
     private func displayPreview() {
         if let algosAmountText = requestTransactionPreviewView.amountInputView.inputTextField.text,
-            let doubleValue = algosAmountText.doubleForSendSeparator {
+            let doubleValue = algosAmountText.doubleForSendSeparator(with: assetDetail?.fractionDecimals ?? algosFraction) {
             amount = doubleValue
         }
         

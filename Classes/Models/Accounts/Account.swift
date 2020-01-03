@@ -96,7 +96,7 @@ class Account: Model {
             let asset = assets?[assetIndex] else {
                 return nil
         }
-        return Double(asset.amount)
+        return asset.amount.assetAmount(fromFraction: assetDetail.fractionDecimals)
     }
 }
 

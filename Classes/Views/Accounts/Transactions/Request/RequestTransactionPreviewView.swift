@@ -18,15 +18,22 @@ class RequestTransactionPreviewView: BaseView {
     
     weak var delegate: RequestTransactionPreviewViewDelegate?
     
+    private var inputFieldFraction: Int
+    
     private(set) lazy var transactionParticipantView: TransactionParticipantView = {
         let transactionParticipantView = TransactionParticipantView()
         transactionParticipantView.accountSelectionView.explanationLabel.text = "send-algos-to".localized
         return transactionParticipantView
     }()
     
-    private(set) lazy var amountInputView = AlgosInputView()
+    private(set) lazy var amountInputView = AssetInputView(inputFieldFraction: inputFieldFraction)
     
     private(set) lazy var previewButton = MainButton(title: "title-preview".localized)
+    
+    init(inputFieldFraction: Int = algosFraction) {
+        self.inputFieldFraction = inputFieldFraction
+        super.init(frame: .zero)
+    }
     
     override func linkInteractors() {
         previewButton.addTarget(self, action: #selector(notifyDelegateToPreviewButtonTapped), for: .touchUpInside)

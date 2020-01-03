@@ -14,7 +14,7 @@ extension AccountsViewController: OptionsViewControllerDelegate {
             return
         }
         
-        open(.qrGenerator(title: account.name, text: account.address, mode: .address), by: .present)
+        open(.qrGenerator(title: account.name, address: account.address, mode: .address), by: .present)
     }
     
     func optionsViewControllerDidRemoveAsset(_ optionsViewController: OptionsViewController) {

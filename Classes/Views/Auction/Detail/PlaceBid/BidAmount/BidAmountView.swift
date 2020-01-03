@@ -195,7 +195,7 @@ class BidAmountView: BaseView {
     @objc
     private func didChangeText(_ textField: UITextField) {
         guard let doubleValueString = textField.text?.currencyBidInputFormatting(),
-            let doubleValue = doubleValueString.doubleForSendSeparator,
+            let doubleValue = doubleValueString.doubleForSendSeparator(with: 6),
             doubleValue <= Double(maximumMicroAlgos) else {
                 return
         }
@@ -228,9 +228,9 @@ extension BidAmountView: UITextFieldDelegate {
         }
         
         guard let doubleValueString = text.appending(string).currencyBidInputFormatting(),
-            let doubleValue = doubleValueString.doubleForSendSeparator,
+            let doubleValue = doubleValueString.doubleForSendSeparator(with: 6),
             let availableAmountString = availableAmountLabel.text?.currencyBidInputFormatting(),
-            let availableAmount = availableAmountString.doubleForSendSeparator,
+            let availableAmount = availableAmountString.doubleForSendSeparator(with: 6),
             doubleValue <= availableAmount else {
                 return false
         }
