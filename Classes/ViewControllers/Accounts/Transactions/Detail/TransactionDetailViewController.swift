@@ -24,6 +24,7 @@ class TransactionDetailViewController: BaseScrollViewController {
     
     private var transaction: Transaction
     private let account: Account
+    private var assetDetail: AssetDetail?
     private let transactionType: TransactionType
     private var pollingOperation: PollingOperation?
     
@@ -31,11 +32,17 @@ class TransactionDetailViewController: BaseScrollViewController {
     
     // MARK: Initialization
     
-    init(account: Account, transaction: Transaction, transactionType: TransactionType, configuration: ViewControllerConfiguration) {
+    init(
+        account: Account,
+        transaction: Transaction,
+        transactionType: TransactionType,
+        assetDetail: AssetDetail?,
+        configuration: ViewControllerConfiguration
+    ) {
         self.account = account
         self.transaction = transaction
         self.transactionType = transactionType
-        
+        self.assetDetail = assetDetail
         super.init(configuration: configuration)
         
         hidesBottomBarWhenPushed = true
@@ -114,9 +121,9 @@ class TransactionDetailViewController: BaseScrollViewController {
     
     private func configureTransactionDetail() {
         if transactionType == .sent {
-            viewModel.configureSentTransaction(transactionDetailView, with: transaction, for: account)
+            viewModel.configureSentTransaction(transactionDetailView, with: transaction, and: assetDetail, for: account)
         } else {
-            viewModel.configureReceivedTransaction(transactionDetailView, with: transaction, for: account)
+            viewModel.configureReceivedTransaction(transactionDetailView, with: transaction, and: assetDetail, for: account)
         }
     }
     
@@ -157,7 +164,7 @@ extension TransactionDetailViewController: TransactionDetailViewDelegate {
             return
         }
         
-        let viewController = open(.addContact(mode: .new), by: .push) as? AddContactViewController
+        let viewController = open(.addContact(mode: .new()), by: .push) as? AddContactViewController
         
         viewController?.addContactView.userInformationView.algorandAddressInputView.value = address
     }

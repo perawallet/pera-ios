@@ -23,7 +23,7 @@ class ContactQRDisplayViewController: BaseViewController {
     // MARK: Components
     
     private lazy var contactQRDisplayView: ContactQRDisplayView = {
-        let view = ContactQRDisplayView(address: contact.address ?? "")
+        let view = ContactQRDisplayView(address: contact.address ?? "", contactName: contact.name)
         return view
     }()
     

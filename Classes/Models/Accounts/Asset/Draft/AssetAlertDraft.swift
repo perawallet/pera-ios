@@ -9,14 +9,23 @@
 import Foundation
 
 struct AssetAlertDraft {
-    let account: Account
-    let assetDetail: AssetDetail
+    let account: Account?
+    let assetIndex: String
+    var assetDetail: AssetDetail?
     let title: String?
     let detail: String?
     let actionTitle: String?
     
-    init(account: Account, assetDetail: AssetDetail, title: String? = nil, detail: String? = nil, actionTitle: String? = nil) {
+    init(
+        account: Account?,
+        assetIndex: String,
+        assetDetail: AssetDetail?,
+        title: String? = nil,
+        detail: String? = nil,
+        actionTitle: String? = nil
+    ) {
         self.account = account
+        self.assetIndex = assetIndex
         self.assetDetail = assetDetail
         self.title = title
         self.detail = detail

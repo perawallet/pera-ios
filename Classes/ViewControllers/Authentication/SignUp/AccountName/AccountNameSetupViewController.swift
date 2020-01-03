@@ -98,11 +98,7 @@ extension AccountNameSetupViewController {
         if let authenticatedUser = session?.authenticatedUser {
             authenticatedUser.addAccount(account)
             
-            closeScreen(by: .dismiss, animated: false) {
-                if self.session?.authenticatedUser != nil {
-                    UIApplication.shared.rootViewController()?.addAccount(account)
-                }
-            }
+            closeScreen(by: .dismiss, animated: false)
         } else {
             let user = User(accounts: [account])
             
@@ -141,7 +137,8 @@ extension AccountNameSetupViewController: KeyboardControllerDataSource {
 extension AccountNameSetupViewController: TouchDetectingScrollViewDelegate {
     
     func scrollViewDidDetectTouchEvent(scrollView: TouchDetectingScrollView, in point: CGPoint) {
-        if accountNameSetupView.nextButton.frame.contains(point) {
+        if accountNameSetupView.nextButton.frame.contains(point) ||
+            accountNameSetupView.accountNameInputView.frame.contains(point) {
             return
         }
         

@@ -11,7 +11,9 @@ import SnapKit
 
 class RequestTransactionPreviewViewController: BaseViewController {
     
-    private lazy var requestTransactionPreviewView = RequestTransactionPreviewView()
+    private lazy var requestTransactionPreviewView = RequestTransactionPreviewView(
+        inputFieldFraction: assetDetail?.fractionDecimals ?? algosFraction
+    )
     
     private var keyboard = Keyboard()
     private var contentViewBottomConstraint: Constraint?
@@ -36,6 +38,8 @@ class RequestTransactionPreviewViewController: BaseViewController {
     
     override func configureAppearance() {
         super.configureAppearance()
+        
+        requestTransactionPreviewView.transactionParticipantView.accountSelectionView.set(enabled: false)
         
         if isAlgoTransaction {
             configureViewForAlgos()
@@ -98,25 +102,22 @@ extension RequestTransactionPreviewViewController {
         requestTransactionPreviewView.transactionParticipantView.accountSelectionView.amountView.amountLabel.textColor = SharedColors.black
         requestTransactionPreviewView.transactionParticipantView.accountSelectionView.amountView.algoIconImageView.isHidden = true
         requestTransactionPreviewView.transactionParticipantView.accountSelectionView.detailLabel.text = account.name
-        requestTransactionPreviewView.amountInputView.algosImageView.isHidden = true
+        requestTransactionPreviewView.amountInputView.algosImageView.removeFromSuperview()
         title = "request-asset-title".localized
         
-        guard let assetDetail = assetDetail,
-            let assetName = assetDetail.assetName,
-            let assetCode = assetDetail.unitName else {
+        guard let assetDetail = assetDetail else {
             return
         }
         
-        let nameText = assetName.attributed()
-        let codeText = "(\(assetCode))".attributed([.textColor(SharedColors.purple)])
-        requestTransactionPreviewView.transactionParticipantView.assetSelectionView.detailLabel.attributedText = nameText + codeText
+        requestTransactionPreviewView.transactionParticipantView.assetSelectionView.detailLabel.attributedText =
+            assetDetail.assetDisplayName()
     }
 }
 
 extension RequestTransactionPreviewViewController {
     private func displayPreview() {
         if let algosAmountText = requestTransactionPreviewView.amountInputView.inputTextField.text,
-            let doubleValue = algosAmountText.doubleForSendSeparator {
+            let doubleValue = algosAmountText.doubleForSendSeparator(with: assetDetail?.fractionDecimals ?? algosFraction) {
             amount = doubleValue
         }
         

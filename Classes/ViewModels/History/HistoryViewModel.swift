@@ -18,8 +18,6 @@ class HistoryViewModel {
     }
 
     func configure(_ view: HistoryView, with assetDetail: AssetDetail) {
-        let nameText = (assetDetail.assetName ?? "").attributed()
-        let codeText = "(\(assetDetail.unitName ?? ""))".attributed([.textColor(SharedColors.purple)])
-        view.assetSelectionView.detailLabel.attributedText = nameText + codeText
+        view.assetSelectionView.detailLabel.attributedText = assetDetail.assetDisplayName()
     }
 }

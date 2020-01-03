@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SVProgressHUD
 
 protocol AssetCancellableSupportAlertViewControllerDelegate: class {
     func assetCancellableSupportAlertViewControllerDidTapOKButton(
@@ -29,6 +30,26 @@ class AssetCancellableSupportAlertViewController: BaseViewController {
     init(assetAlertDraft: AssetAlertDraft, configuration: ViewControllerConfiguration) {
         self.assetAlertDraft = assetAlertDraft
         super.init(configuration: configuration)
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        if assetAlertDraft.assetDetail == nil {
+            SVProgressHUD.show(withStatus: "title-loading".localized)
+            api?.getAssetDetails(with: AssetFetchDraft(assetId: assetAlertDraft.assetIndex)) { response in
+                switch response {
+                case let .success(assetDetail):
+                    SVProgressHUD.showSuccess(withStatus: "title-done-lowercased".localized)
+                    SVProgressHUD.dismiss()
+                    self.assetAlertDraft.assetDetail = assetDetail
+                    self.viewModel.configure(self.assetCancellableSupportAlertView.assetDisplayView, with: self.assetAlertDraft)
+                case .failure:
+                    SVProgressHUD.showError(withStatus: nil)
+                    SVProgressHUD.dismiss()
+                }
+            }
+        }
     }
     
     override func configureAppearance() {

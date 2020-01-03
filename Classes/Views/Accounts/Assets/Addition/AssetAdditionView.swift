@@ -44,6 +44,8 @@ class AssetAdditionView: BaseView {
         return collectionView
     }()
     
+    private lazy var contentStateView = ContentStateView()
+    
     override func prepareLayout() {
         setupAssetInputViewLayout()
         setupAssetsCollectionViewLayout()
@@ -67,6 +69,8 @@ extension AssetAdditionView {
             make.leading.trailing.bottom.equalToSuperview()
             make.top.equalTo(assetInputView.snp.bottom).offset(layout.current.collectionViewTopInset)
         }
+        
+        assetsCollectionView.backgroundView = contentStateView
     }
 }
 

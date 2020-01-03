@@ -11,7 +11,7 @@ import UIKit
 protocol AssetRemovalViewControllerDelegate: class {
     func assetRemovalViewController(
         _ assetRemovalViewController: AssetRemovalViewController,
-        didRemove asset: AssetDetail,
+        didRemove assetDetail: AssetDetail,
         from account: Account
     )
 }
@@ -125,21 +125,22 @@ extension AssetRemovalViewController: AssetActionableCellDelegate {
         }
         
         let assetDetail = account.assetDetails[index.item]
-        guard let assetIndex = assetDetail.index,
-            let asset = account.assets?[assetIndex] else {
-                return
+        guard let assetAmount = account.amount(for: assetDetail),
+            let assetIndex = assetDetail.index else {
+            return
         }
         
         let assetAlertDraft: AssetAlertDraft
         
-        if asset.amount == 0 {
+        if assetAmount == 0 {
             assetAlertDraft = AssetAlertDraft(
                 account: account,
+                assetIndex: assetIndex,
                 assetDetail: assetDetail,
                 title: "asset-remove-confirmation-title".localized,
                 detail: String(
                     format: "asset-remove-transaction-warning".localized,
-                    "\(assetDetail.unitName ?? "")",
+                    "\(assetDetail.unitName ?? "title-unknown".localized)",
                     "\(account.name ?? "")"
                 ),
                 actionTitle: "title-proceed".localized
@@ -147,9 +148,14 @@ extension AssetRemovalViewController: AssetActionableCellDelegate {
         } else {
             assetAlertDraft = AssetAlertDraft(
                 account: account,
+                assetIndex: assetIndex,
                 assetDetail: assetDetail,
                 title: "asset-remove-confirmation-title".localized,
-                detail: String(format: "asset-remove-warning".localized, "\(assetDetail.unitName ?? "")", "\(account.name ?? "")"),
+                detail: String(
+                    format: "asset-remove-warning".localized,
+                    "\(assetDetail.unitName ?? "title-unknown".localized)",
+                    "\(account.name ?? "")"
+                ),
                 actionTitle: "asset-transfer-balance".localized
             )
         }
@@ -201,6 +207,25 @@ extension AssetRemovalViewController: AssetActionConfirmationViewControllerDeleg
         _ assetActionConfirmationViewController: AssetActionConfirmationViewController,
         didConfirmedActionFor assetDetail: AssetDetail
     ) {
+        if let assetAmount = account.amount(for: assetDetail),
+            assetAmount != 0 {
+            let controller = open(
+                .sendAssetTransactionPreview(
+                    account: account,
+                    receiver: .initial,
+                    assetDetail: assetDetail,
+                    isMaxTransaction: true
+                ),
+                by: .push
+            )
+            (controller as? SendAssetTransactionPreviewViewController)?.delegate = self
+            return
+        }
+        
+        removeAssetFromAccount(assetDetail)
+    }
+    
+    private func removeAssetFromAccount(_ assetDetail: AssetDetail) {
         guard let index = assetDetail.index,
             let indexIntValue = Int64(index) else {
                 return
@@ -214,7 +239,7 @@ extension AssetRemovalViewController: AssetActionConfirmationViewControllerDeleg
             assetCreator: assetDetail.creator
         )
         transactionManager?.setAssetTransactionDraft(assetTransactionDraft)
-        transactionManager?.composeAssetTransactionData(for: account, isClosingTransaction: true)
+        transactionManager?.composeAssetTransactionData(for: account, transactionType: .assetRemoval)
     }
 }
 
@@ -227,7 +252,6 @@ extension AssetRemovalViewController: TransactionManagerDelegate {
             return
         }
         
-        delete(removedAssetDetail)
         delegate?.assetRemovalViewController(self, didRemove: removedAssetDetail, from: account)
         dismissScreen()
     }
@@ -245,16 +269,14 @@ extension AssetRemovalViewController: TransactionManagerDelegate {
         
         return removedAssetDetail
     }
-    
-    private func delete(_ removedAssetDetail: AssetDetail) {
-        account.assetDetails = account.assetDetails.filter { assetDetail -> Bool in
-            guard let assetIndex = assetDetail.index,
-                let removedAssetIndex = removedAssetDetail.index else {
-                    return true
-            }
-            
-            return assetIndex != removedAssetIndex
-        }
+}
+
+extension AssetRemovalViewController: SendAssetTransactionPreviewViewControllerDelegate {
+    func sendAssetTransactionPreviewViewController(
+        _ viewController: SendAssetTransactionPreviewViewController,
+        didCompleteTransactionFor assetDetail: AssetDetail
+    ) {
+        removeAssetFromAccount(assetDetail)
     }
 }
 

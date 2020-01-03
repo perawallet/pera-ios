@@ -33,7 +33,7 @@ class RemainingAlgosView: BaseView {
         let view = AlgosAmountView()
         view.amountLabel.textAlignment = .left
         view.amountLabel.font = UIFont.font(.overpass, withWeight: .bold(size: 15.0))
-        view.mode = .normal(0.0)
+        view.mode = .normal(amount: 0.0)
         view.algoIconImageView.image = img("icon-remaining-algo")
         return view
     }()

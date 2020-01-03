@@ -15,6 +15,7 @@ protocol SendTransactionPreviewViewDelegate: class {
     func sendTransactionPreviewViewDidTapContactsButton(_ sendTransactionPreviewView: SendTransactionPreviewView)
     func sendTransactionPreviewViewDidTapScanQRButton(_ sendTransactionPreviewView: SendTransactionPreviewView)
     func sendTransactionPreviewViewDidTapMaxButton(_ sendTransactionPreviewView: SendTransactionPreviewView)
+    func sendTransactionPreviewViewDidTapAccountSelectionView(_ sendTransactionPreviewView: SendTransactionPreviewView)
 }
 
 class SendTransactionPreviewView: BaseView {
@@ -23,24 +24,38 @@ class SendTransactionPreviewView: BaseView {
     
     weak var delegate: SendTransactionPreviewViewDelegate?
     
+    var inputFieldFraction: Int
+    
     private(set) lazy var transactionParticipantView: TransactionParticipantView = {
         let transactionParticipantView = TransactionParticipantView()
         transactionParticipantView.accountSelectionView.explanationLabel.text = "send-algos-from".localized
         return transactionParticipantView
     }()
     
-    private(set) lazy var amountInputView: AlgosInputView = {
-        let view = AlgosInputView(shouldHandleMaxButtonStates: true)
+    private(set) lazy var amountInputView: AssetInputView = {
+        let view = AssetInputView(inputFieldFraction: inputFieldFraction, shouldHandleMaxButtonStates: true)
         view.maxButton.isHidden = false
         return view
     }()
     
-    private(set) lazy var transactionReceiverView = TransactionReceiverView()
+    private(set) lazy var transactionReceiverView: TransactionReceiverView = {
+        let transactionReceiverView = TransactionReceiverView()
+        transactionReceiverView.passphraseInputView.inputTextView.returnKeyType = .done
+        return transactionReceiverView
+    }()
     
     private(set) lazy var previewButton = MainButton(title: "title-preview".localized)
     
+    init(inputFieldFraction: Int = algosFraction) {
+        self.inputFieldFraction = inputFieldFraction
+        super.init(frame: .zero)
+    }
+    
     override func setListeners() {
         transactionReceiverView.delegate = self
+        
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(notifyDelegateToAccountSelectionViewTapped))
+        transactionParticipantView.accountSelectionView.addGestureRecognizer(tapGestureRecognizer)
     }
     
     override func linkInteractors() {
@@ -101,6 +116,11 @@ extension SendTransactionPreviewView {
     private func notifyDelegateToPreviewButtonTapped() {
         delegate?.sendTransactionPreviewViewDidTapPreviewButton(self)
     }
+    
+    @objc
+    private func notifyDelegateToAccountSelectionViewTapped() {
+        delegate?.sendTransactionPreviewViewDidTapAccountSelectionView(self)
+    }
 }
 
 extension SendTransactionPreviewView: TransactionReceiverViewDelegate {
@@ -122,8 +142,8 @@ extension SendTransactionPreviewView: TransactionReceiverViewDelegate {
     }
 }
 
-extension SendTransactionPreviewView: AlgosInputViewDelegate {
-    func algosInputViewDidTapMaxButton(_ algosInputView: AlgosInputView) {
+extension SendTransactionPreviewView: AssetInputViewDelegate {
+    func assetInputViewDidTapMaxButton(_ assetInputView: AssetInputView) {
         delegate?.sendTransactionPreviewViewDidTapMaxButton(self)
     }
 }

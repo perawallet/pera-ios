@@ -15,7 +15,7 @@ class SelectionView: BaseView {
     private(set) lazy var explanationLabel: UILabel = {
         UILabel()
             .withFont(UIFont.font(.avenir, withWeight: .medium(size: 13.0)))
-            .withTextColor(SharedColors.softGray)
+            .withTextColor(SharedColors.greenishGray)
             .withText("send-algos-from".localized)
     }()
     
@@ -40,6 +40,7 @@ class SelectionView: BaseView {
         let amountView = AlgosAmountView()
         amountView.signLabel.isHidden = true
         amountView.isHidden = true
+        amountView.amountLabel.font = UIFont.font(.overpass, withWeight: .bold(size: 14.0))
         return amountView
     }()
     
@@ -121,10 +122,10 @@ extension SelectionView {
 }
 
 extension SelectionView {
-    func set(amount: Double) {
+    func set(amount: Double, assetFraction: Int? = nil) {
         amountView.isHidden = false
         rightInputAccessoryButton.isHidden = true
-        amountView.amountLabel.text = amount.toDecimalStringForLabel
+        amountView.mode = .normal(amount: amount, assetFraction: assetFraction)
     }
     
     func set(enabled: Bool) {
