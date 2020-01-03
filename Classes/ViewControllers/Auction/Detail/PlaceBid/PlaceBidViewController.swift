@@ -185,7 +185,7 @@ extension PlaceBidViewController: PlaceBidViewDelegate {
             return nil
         }
         
-        guard let doubleValue = maxPriceText.doubleForSendSeparator else {
+        guard let doubleValue = maxPriceText.doubleForSendSeparator(with: 6) else {
             return nil
         }
         

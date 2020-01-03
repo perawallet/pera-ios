@@ -84,7 +84,19 @@ class Account: Model {
     }
 
     func isThereAnyDifferentAsset() -> Bool {
-        return totalAssets != nil || assets != nil
+        return assets != nil
+    }
+    
+    func areAssetsDifferent(than account: Account) -> Bool {
+        return assets != account.assets || !assetDetails.containsSameElements(as: account.assetDetails)
+    }
+    
+    func amount(for assetDetail: AssetDetail) -> Double? {
+        guard let assetIndex = assetDetail.index,
+            let asset = assets?[assetIndex] else {
+                return nil
+        }
+        return asset.amount.assetAmount(fromFraction: assetDetail.fractionDecimals)
     }
 }
 

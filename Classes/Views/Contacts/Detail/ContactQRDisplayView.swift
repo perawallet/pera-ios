@@ -56,7 +56,7 @@ class ContactQRDisplayView: BaseView {
     }()
     
     private(set) lazy var qrView: QRView = {
-        let qrText = QRText(mode: .address, text: address)
+        let qrText = QRText(mode: .address, address: address, label: contactName)
         return QRView(qrText: qrText)
     }()
     
@@ -91,9 +91,11 @@ class ContactQRDisplayView: BaseView {
     // MARK: Initialization
     
     private let address: String
+    private let contactName: String?
     
-    init(address: String) {
+    init(address: String, contactName: String? = nil) {
         self.address = address
+        self.contactName = contactName
         
         super.init(frame: .zero)
     }

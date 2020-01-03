@@ -340,7 +340,10 @@ extension AddNodeViewController {
 extension AddNodeViewController: TouchDetectingScrollViewDelegate {
     
     func scrollViewDidDetectTouchEvent(scrollView: TouchDetectingScrollView, in point: CGPoint) {
-        if addNodeView.testButton.frame.contains(point) {
+        if addNodeView.testButton.frame.contains(point) ||
+            addNodeView.addressInputView.frame.contains(point) ||
+            addNodeView.nameInputView.frame.contains(point) ||
+            addNodeView.tokenInputView.frame.contains(point) {
             return
         }
         

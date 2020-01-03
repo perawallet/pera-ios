@@ -21,6 +21,7 @@ class AccountsView: BaseView {
         
         collectionView.register(AlgoAssetCell.self, forCellWithReuseIdentifier: AlgoAssetCell.reusableIdentifier)
         collectionView.register(AssetCell.self, forCellWithReuseIdentifier: AssetCell.reusableIdentifier)
+        collectionView.register(PendingAssetCell.self, forCellWithReuseIdentifier: PendingAssetCell.reusableIdentifier)
         collectionView.register(
             AccountHeaderSupplementaryView.self,
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,

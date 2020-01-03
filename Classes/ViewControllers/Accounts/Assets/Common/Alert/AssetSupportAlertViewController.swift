@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SVProgressHUD
 
 class AssetSupportAlertViewController: BaseViewController {
     
@@ -14,7 +15,7 @@ class AssetSupportAlertViewController: BaseViewController {
     
     private lazy var assetSupportAlertView = AssetSupportAlertView()
     
-    private let viewModel = AssetDisplayViewModel()
+    private let viewModel = AssetSupportAlertViewModel()
     
     private var assetAlertDraft: AssetAlertDraft
     
@@ -23,9 +24,29 @@ class AssetSupportAlertViewController: BaseViewController {
         super.init(configuration: configuration)
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        if assetAlertDraft.assetDetail == nil {
+            SVProgressHUD.show(withStatus: "title-loading".localized)
+            api?.getAssetDetails(with: AssetFetchDraft(assetId: assetAlertDraft.assetIndex)) { response in
+                switch response {
+                case let .success(assetDetail):
+                    SVProgressHUD.showSuccess(withStatus: "title-done-lowercased".localized)
+                    SVProgressHUD.dismiss()
+                    self.assetAlertDraft.assetDetail = assetDetail
+                    self.viewModel.configure(self.assetSupportAlertView.assetDisplayView, with: self.assetAlertDraft)
+                case .failure:
+                    SVProgressHUD.showError(withStatus: nil)
+                    SVProgressHUD.dismiss()
+                }
+            }
+        }
+    }
+    
     override func configureAppearance() {
         view.backgroundColor = Colors.backgroundColor
-        viewModel.configure(assetSupportAlertView.assetDisplayView, with: assetAlertDraft)
+        viewModel.configure(assetSupportAlertView, with: assetAlertDraft)
     }
     
     override func setListeners() {
@@ -42,7 +63,7 @@ extension AssetSupportAlertViewController {
         view.addSubview(assetSupportAlertView)
         
         assetSupportAlertView.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
+            make.center.equalToSuperview()
             make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
         }
     }

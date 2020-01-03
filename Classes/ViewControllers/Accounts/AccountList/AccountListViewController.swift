@@ -9,33 +9,57 @@
 import UIKit
 
 protocol AccountListViewControllerDelegate: class {
-    func accountListViewControllerDidTapAddButton(_ viewController: AccountListViewController)
     func accountListViewController(_ viewController: AccountListViewController, didSelectAccount account: Account)
 }
 
 class AccountListViewController: BaseViewController {
     
-    // MARK: Components
-    
-    private lazy var accountListView: AccountListView = {
-        let view = AccountListView()
-        view.delegate = self
-        return view
-    }()
-    
     override var shouldShowNavigationBar: Bool {
         return false
     }
+    
+    private lazy var accountListView = AccountListView()
 
     weak var delegate: AccountListViewControllerDelegate?
     
-    // MARK: Setup
+    private var accountListLayoutBuilder: AccountListLayoutBuilder
+    private var accountListDataSource: AccountListDataSource
+    private var mode: Mode
+    
+    init(mode: Mode, configuration: ViewControllerConfiguration) {
+        self.mode = mode
+        accountListLayoutBuilder = AccountListLayoutBuilder()
+        accountListDataSource = AccountListDataSource(mode: mode)
+        super.init(configuration: configuration)
+    }
     
     override func configureAppearance() {
         view.backgroundColor = .white
+        
+        switch mode {
+        case .contact,
+             .transactionSender:
+            accountListView.titleLabel.text = "send-sending-algos-select".localized
+        case .transactionReceiver:
+            accountListView.titleLabel.text = "send-receiving-algos-select".localized
+        default:
+            accountListView.titleLabel.text = "send-algos-select".localized
+        }
+    }
+    
+    override func setListeners() {
+        accountListLayoutBuilder.delegate = self
+        accountListView.accountsCollectionView.dataSource = accountListDataSource
+        accountListView.accountsCollectionView.delegate = accountListLayoutBuilder
     }
     
     override func prepareLayout() {
+        setupAccountListViewLayout()
+    }
+}
+
+extension AccountListViewController {
+    private func setupAccountListViewLayout() {
         view.addSubview(accountListView)
         
         accountListView.snp.makeConstraints { make in
@@ -44,19 +68,25 @@ class AccountListViewController: BaseViewController {
     }
 }
 
-// MARK: AccountListViewDelegate
-
-extension AccountListViewController: AccountListViewDelegate {
-    
-    func accountListView(_ accountListView: AccountListView, didSelect account: Account) {
-        dismissScreen()
+extension AccountListViewController: AccountListLayoutBuilderDelegate {
+    func accountListLayoutBuilder(_ layoutBuilder: AccountListLayoutBuilder, didSelectAt indexPath: IndexPath) {
+        let accounts = accountListDataSource.accounts
         
+        guard indexPath.item < accounts.count else {
+            return
+        }
+        
+        let account = accounts[indexPath.item]
+        dismissScreen()
         delegate?.accountListViewController(self, didSelectAccount: account)
     }
-    
-    func accountListViewDidTapAddButton(_ accountListView: AccountListView) {
-        dismissScreen()
-        
-        delegate?.accountListViewControllerDidTapAddButton(self)
+}
+
+extension AccountListViewController {
+    enum Mode {
+        case assetCount
+        case contact(assetDetail: AssetDetail?)
+        case transactionReceiver(assetDetail: AssetDetail?)
+        case transactionSender(assetDetail: AssetDetail?)
     }
 }

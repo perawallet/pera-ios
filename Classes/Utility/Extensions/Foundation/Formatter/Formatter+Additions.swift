@@ -31,6 +31,28 @@ extension Formatter {
         return formatter
     }()
     
+    static func separatorForInputWith(fraction value: Int) -> NumberFormatter {
+        let formatter = NumberFormatter()
+        formatter.groupingSeparator = ","
+        formatter.currencySymbol = ""
+        formatter.locale = Locale(identifier: "en_US")
+        formatter.numberStyle = .currencyAccounting
+        formatter.minimumFractionDigits = value
+        formatter.maximumFractionDigits = value
+        return formatter
+    }
+    
+    static func separatorWith(fraction value: Int) -> NumberFormatter {
+        let formatter = NumberFormatter()
+        formatter.groupingSeparator = ","
+        formatter.currencySymbol = ""
+        formatter.locale = Locale(identifier: "en_US")
+        formatter.numberStyle = .currencyAccounting
+        formatter.minimumFractionDigits = value == 0 ? 0 : 2
+        formatter.maximumFractionDigits = value
+        return formatter
+    }
+    
     static let numberToStringFormatter: NumberFormatter = {
         let formatter = NumberFormatter()
         formatter.groupingSeparator = ""

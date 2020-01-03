@@ -24,12 +24,14 @@ class AssetAdditionView: BaseView {
         assetInputView.inputTextField.tintColor = SharedColors.black
         assetInputView.nextButtonMode = .submit
         assetInputView.inputTextField.autocorrectionType = .no
+        assetInputView.inputTextField.keyboardType = .numberPad
         return assetInputView
     }()
     
     private(set) lazy var assetsCollectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .vertical
+        flowLayout.minimumLineSpacing = 0.0
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
@@ -41,6 +43,8 @@ class AssetAdditionView: BaseView {
         
         return collectionView
     }()
+    
+    private lazy var contentStateView = ContentStateView()
     
     override func prepareLayout() {
         setupAssetInputViewLayout()
@@ -55,7 +59,6 @@ extension AssetAdditionView {
         assetInputView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
             make.top.equalToSuperview().inset(layout.current.topInset)
-            make.height.equalTo(layout.current.inputViewHeight)
         }
     }
 
@@ -66,6 +69,8 @@ extension AssetAdditionView {
             make.leading.trailing.bottom.equalToSuperview()
             make.top.equalTo(assetInputView.snp.bottom).offset(layout.current.collectionViewTopInset)
         }
+        
+        assetsCollectionView.backgroundView = contentStateView
     }
 }
 

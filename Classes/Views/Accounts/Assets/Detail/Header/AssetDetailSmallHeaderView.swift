@@ -48,8 +48,6 @@ class AssetDetailSmallHeaderView: BaseView {
         return view
     }()
     
-    private(set) lazy var algosImageView = UIImageView(image: img("icon-algo-black"))
-    
     private(set) lazy var algosAmountLabel: UILabel = {
         UILabel()
             .withAlignment(.center)
@@ -93,7 +91,6 @@ class AssetDetailSmallHeaderView: BaseView {
     
     override func prepareLayout() {
         setupContainerViewLayout()
-        setupAlgosImageViewLayout()
         setupAmountLabelLayout()
         setupReceiveButtonLayout()
         setupSendButtonLayout()
@@ -109,22 +106,13 @@ class AssetDetailSmallHeaderView: BaseView {
         }
     }
     
-    private func setupAlgosImageViewLayout() {
-        containerView.addSubview(algosImageView)
-        
-        algosImageView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(layout.current.topInset)
-            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
-        }
-    }
-    
     private func setupAmountLabelLayout() {
         containerView.addSubview(algosAmountLabel)
         
         algosAmountLabel.snp.makeConstraints { make in
-            make.top.equalTo(algosImageView.snp.top).inset(layout.current.amountLabelTopInset)
-            make.leading.equalTo(algosImageView.snp.trailing).offset(layout.current.amountLabelLeadingInset)
             make.trailing.lessThanOrEqualToSuperview().inset(layout.current.amountLabelTrailingInset)
+            make.top.equalToSuperview().offset(layout.current.topInset)
+            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
         }
     }
     

@@ -17,8 +17,11 @@ enum FontWeight {
     case regular(size: CGFloat)
     case medium(size: CGFloat)
     case demiBold(size: CGFloat)
+    case demiBoldItalic(size: CGFloat)
     case semiBold(size: CGFloat)
+    case semiBoldItalic(size: CGFloat)
     case bold(size: CGFloat)
+    case boldItalic(size: CGFloat)
     case extraBold(size: CGFloat)
 }
 
@@ -34,10 +37,16 @@ extension UIFont {
             return UIFont(name: fontName, size: size) ?? UIFont.systemFont(ofSize: size, weight: .medium)
         case .demiBold(let size):
             return UIFont(name: fontName, size: size) ?? UIFont.systemFont(ofSize: size, weight: .semibold)
+        case .demiBoldItalic(let size):
+            return UIFont(name: fontName, size: size) ?? UIFont.italicSystemFont(ofSize: size)
         case .semiBold(let size):
             return UIFont(name: fontName, size: size) ?? UIFont.systemFont(ofSize: size, weight: .semibold)
+        case .semiBoldItalic(let size):
+            return UIFont(name: fontName, size: size) ?? UIFont.italicSystemFont(ofSize: size)
         case .bold(let size):
             return UIFont(name: fontName, size: size) ?? UIFont.boldSystemFont(ofSize: size)
+        case .boldItalic(let size):
+            return UIFont(name: fontName, size: size) ?? UIFont.italicSystemFont(ofSize: size)
         case .extraBold(let size):
             return UIFont(name: fontName, size: size) ?? UIFont.systemFont(ofSize: size, weight: .heavy)
 
@@ -54,10 +63,16 @@ extension UIFont {
             return fontName.appending("Medium")
         case .demiBold:
             return fontName.appending("DemiBold")
+        case .demiBoldItalic:
+            return fontName.appending("DemiBoldItalic")
         case .semiBold:
             return fontName.appending("SemiBold")
+        case .semiBoldItalic:
+            return fontName.appending("SemiBoldItalic")
         case .bold:
             return fontName.appending("Bold")
+        case .boldItalic:
+            return fontName.appending("BoldItalic")
         case .extraBold:
             return fontName.appending("ExtraBold")
         }

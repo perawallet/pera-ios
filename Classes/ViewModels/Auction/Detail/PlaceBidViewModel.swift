@@ -32,7 +32,7 @@ class PlaceBidViewModel {
     
     func configureMaxPriceView(_ view: MaximumPriceView, with auctionStatus: ActiveAuction) {
         guard let typedString = view.priceAmountTextField.text,
-            let typedValue = typedString.doubleForSendSeparator,
+            let typedValue = typedString.doubleForSendSeparator(with: 6),
             !typedString.isEmpty else {
                 if let currentPrice = auctionStatus.currentPrice {
                     view.currentPrice = currentPrice

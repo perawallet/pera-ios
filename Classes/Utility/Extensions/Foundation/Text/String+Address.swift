@@ -12,7 +12,6 @@ let validatedAddressLength = 58
 let defaultParticipationKey = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
 
 extension String {
-    
     func isValidatedAddress() -> Bool {
         return count == validatedAddressLength
     }

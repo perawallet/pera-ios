@@ -15,16 +15,6 @@ protocol RewardDetailViewDelegate: class {
 
 class RewardDetailView: BaseView {
     
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let bottomLabelTopInset: CGFloat = 8.0
-        let bottomLabelHorizontalInset: CGFloat = 50.0
-        let detailLabelHorizontalInset: CGFloat = 28.0
-        let containerHorizontalInset: CGFloat = 25.0
-        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
-        let verticalInset: CGFloat = 20.0
-        let labelTopInset: CGFloat = 30.0
-    }
-    
     private let layout = Layout<LayoutConstants>()
 
     weak var delegate: RewardDetailViewDelegate?
@@ -63,22 +53,6 @@ class RewardDetailView: BaseView {
         return view
     }()
     
-    private(set) lazy var pendingRewardAmountContainerView: RewardAmountContainerView = {
-        let view = RewardAmountContainerView()
-        view.algoIconImageView.tintColor = SharedColors.darkGray
-        view.titleLabel.attributedText = "total-rewards-pending-title".localized.attributed([.letterSpacing(1.10)])
-        return view
-    }()
-    
-    private lazy var bottomLabel: UILabel = {
-        UILabel()
-            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 10.0)))
-            .withTextColor(SharedColors.darkGray.withAlphaComponent(0.5))
-            .withLine(.contained)
-            .withAlignment(.center)
-            .withText("total-rewards-pending-subtitle".localized)
-    }()
-    
     private lazy var faqLabel: UILabel = {
         let label = UILabel()
             .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 14.0)))
@@ -92,7 +66,6 @@ class RewardDetailView: BaseView {
         let attributedText = NSMutableAttributedString(string: totalString)
         attributedText.addAttribute(NSAttributedString.Key.foregroundColor, value: SharedColors.purple, range: range)
         label.attributedText = attributedText
-        
         label.isUserInteractionEnabled = true
         return label
     }()
@@ -111,18 +84,30 @@ class RewardDetailView: BaseView {
         okButton.addTarget(self, action: #selector(notifyDelegateToOKButtonTapped), for: .touchUpInside)
     }
     
-    // MARK: Layout
-    
     override func prepareLayout() {
         setupTitleLabelLayout()
         setupDetailLabelLayout()
         setupTotalRewardAmountContainerViewLayout()
-        setupPendingRewardAmountContainerViewLayout()
-        setupBottomLabelLayout()
         setupFAQLabelLayout()
         setupOKButtonLayout()
     }
+}
+
+// MARK: Actions
+
+extension RewardDetailView {
+    @objc
+    private func notifyDelegateToOKButtonTapped() {
+        delegate?.rewardDetailViewDidTapOKButton(self)
+    }
     
+    @objc
+    private func didTriggerFAQLabel() {
+        delegate?.rewardDetailViewDidTapFAQLabel(self)
+    }
+}
+
+extension RewardDetailView {
     private func setupTitleLabelLayout() {
         addSubview(titleLabel)
         
@@ -150,29 +135,11 @@ class RewardDetailView: BaseView {
         }
     }
     
-    private func setupPendingRewardAmountContainerViewLayout() {
-        addSubview(pendingRewardAmountContainerView)
-        
-        pendingRewardAmountContainerView.snp.makeConstraints { make in
-            make.top.equalTo(totalRewardAmountContainerView.snp.bottom).offset(layout.current.verticalInset)
-            make.leading.trailing.equalToSuperview().inset(layout.current.containerHorizontalInset)
-        }
-    }
-    
-    private func setupBottomLabelLayout() {
-        addSubview(bottomLabel)
-        
-        bottomLabel.snp.makeConstraints { make in
-            make.top.equalTo(pendingRewardAmountContainerView.snp.bottom).offset(layout.current.bottomLabelTopInset)
-            make.leading.trailing.equalToSuperview().inset(layout.current.bottomLabelHorizontalInset)
-        }
-    }
-    
     private func setupFAQLabelLayout() {
         addSubview(faqLabel)
         
         faqLabel.snp.makeConstraints { make in
-            make.top.equalTo(bottomLabel.snp.bottom).offset(layout.current.labelTopInset)
+            make.top.equalTo(totalRewardAmountContainerView.snp.bottom).offset(layout.current.labelTopInset)
             make.leading.trailing.equalToSuperview().inset(layout.current.bottomLabelHorizontalInset)
         }
     }
@@ -189,17 +156,14 @@ class RewardDetailView: BaseView {
     }
 }
 
-// MARK: Actions
-
 extension RewardDetailView {
-    
-    @objc
-    private func notifyDelegateToOKButtonTapped() {
-        delegate?.rewardDetailViewDidTapOKButton(self)
-    }
-    
-    @objc
-    private func didTriggerFAQLabel() {
-        delegate?.rewardDetailViewDidTapFAQLabel(self)
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let bottomLabelTopInset: CGFloat = 8.0
+        let bottomLabelHorizontalInset: CGFloat = 50.0
+        let detailLabelHorizontalInset: CGFloat = 28.0
+        let containerHorizontalInset: CGFloat = 25.0
+        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
+        let verticalInset: CGFloat = 20.0
+        let labelTopInset: CGFloat = 30.0
     }
 }

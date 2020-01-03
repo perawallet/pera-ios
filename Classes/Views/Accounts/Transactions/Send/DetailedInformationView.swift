@@ -35,7 +35,7 @@ class DetailedInformationView: BaseView {
         return label
     }()
     
-    private lazy var containerView: UIView = {
+    private(set) lazy var containerView: UIView = {
         let view = UIView()
         view.layer.borderWidth = 1.0
         view.layer.borderColor = Colors.borderColor.cgColor
@@ -55,7 +55,7 @@ class DetailedInformationView: BaseView {
         let view = AlgosAmountView()
         view.amountLabel.textAlignment = .left
         view.amountLabel.font = UIFont.font(.overpass, withWeight: .bold(size: 15.0))
-        view.mode = .normal(0.0)
+        view.mode = .normal(amount: 0.0)
         return view
     }()
     

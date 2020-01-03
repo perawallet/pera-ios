@@ -11,15 +11,7 @@ import SafariServices
 
 class RewardDetailViewController: BaseViewController {
     
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let horizontalInset: CGFloat = 20.0
-    }
-    
     private let layout = Layout<LayoutConstants>()
-    
-    private enum Colors {
-        static let backgroundColor = rgba(0.04, 0.05, 0.07, 0.6)
-    }
     
     private let account: Account
     
@@ -33,7 +25,6 @@ class RewardDetailViewController: BaseViewController {
     
     init(account: Account, configuration: ViewControllerConfiguration) {
         self.account = account
-        
         super.init(configuration: configuration)
     }
     
@@ -48,9 +39,13 @@ class RewardDetailViewController: BaseViewController {
         rewardDetailView.delegate = self
     }
     
-    // MARK: Layout
-    
     override func prepareLayout() {
+        setupRewardDetailViewLayout()
+    }
+}
+
+extension RewardDetailViewController {
+    private func setupRewardDetailViewLayout() {
         view.addSubview(rewardDetailView)
         
         rewardDetailView.snp.makeConstraints { make in
@@ -74,5 +69,17 @@ extension RewardDetailViewController: RewardDetailViewDelegate {
     
     func rewardDetailViewDidTapOKButton(_ rewardDetailView: RewardDetailView) {
         dismissScreen()
+    }
+}
+
+extension RewardDetailViewController {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let horizontalInset: CGFloat = 20.0
+    }
+}
+
+extension RewardDetailViewController {
+    private enum Colors {
+        static let backgroundColor = rgba(0.04, 0.05, 0.07, 0.6)
     }
 }
