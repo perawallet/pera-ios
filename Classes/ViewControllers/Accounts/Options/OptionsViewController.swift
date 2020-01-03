@@ -107,9 +107,7 @@ extension OptionsViewController: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let selectedOption = Options(rawValue: indexPath.item) else {
-            fatalError("Index path is out of bounds")
-        }
+        let selectedOption = options[indexPath.item]
         
         dismissScreen()
         

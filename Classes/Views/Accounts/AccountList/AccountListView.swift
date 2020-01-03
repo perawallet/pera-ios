@@ -14,13 +14,12 @@ class AccountListView: BaseView {
 
     private lazy var topImageView = UIImageView(image: img("icon-modal-top"))
     
-    private lazy var titleLabel: UILabel = {
+    private(set) lazy var titleLabel: UILabel = {
         UILabel()
             .withFont(UIFont.font(.overpass, withWeight: .bold(size: 16.0)))
             .withTextColor(SharedColors.black)
             .withLine(.single)
             .withAlignment(.center)
-            .withText("send-algos-select".localized)
     }()
     
     private(set) lazy var accountsCollectionView: UICollectionView = {

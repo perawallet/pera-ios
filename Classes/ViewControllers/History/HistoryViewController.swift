@@ -32,16 +32,6 @@ class HistoryViewController: BaseScrollViewController {
     
     private let viewModel = HistoryViewModel()
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        if let account = session?.currentAccount {
-            selectedAccount = account
-            
-            viewModel.configure(historyView, with: account)
-        }
-    }
-    
     override func configureAppearance() {
         super.configureAppearance()
         title = "history-title".localized
@@ -94,6 +84,10 @@ extension HistoryViewController: HistoryViewDelegate {
     
     func historyViewDidTapAssetSelectionView(_ historyView: HistoryView) {
         presentAssetList()
+    }
+    
+    func historyView(_ historyView: HistoryView, hasError message: String) {
+        displaySimpleAlertWith(title: "title-error".localized, message: message)
     }
 }
 

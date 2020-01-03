@@ -14,7 +14,7 @@ extension AccountsViewController: OptionsViewControllerDelegate {
             return
         }
         
-        open(.qrGenerator(title: account.name, text: account.address, mode: .address), by: .present)
+        open(.qrGenerator(title: account.name, address: account.address, mode: .address), by: .present)
     }
     
     func optionsViewControllerDidRemoveAsset(_ optionsViewController: OptionsViewController) {
@@ -98,8 +98,7 @@ extension AccountsViewController: OptionsViewControllerDelegate {
             actionTitle: "title-remove".localized) {
 
                 guard let user = self.session?.authenticatedUser,
-                    let account = self.selectedAccount,
-                    let index = user.index(of: account) else {
+                    let account = self.selectedAccount else {
                         return
                 }
 
@@ -113,22 +112,7 @@ extension AccountsViewController: OptionsViewControllerDelegate {
                     return
                 }
 
-                defer {
-                    self.session?.authenticatedUser = user
-                }
-
-                let newSelectedAccount: Account?
-                if user.accounts.count == 1 {
-                    newSelectedAccount = user.account(at: 0)
-                } else {
-                    if index == user.accounts.count {
-                        newSelectedAccount = user.account(at: index.advanced(by: -1))
-                    } else {
-                        newSelectedAccount = user.account(at: index)
-                    }
-                }
-                
-                //self.selectedAccount = newSelectedAccount
+                self.session?.authenticatedUser = user
         }
 
         let viewController = AlertViewController(mode: .destructive, alertConfigurator: configurator, configuration: configuration)
@@ -162,9 +146,15 @@ extension AccountsViewController: ChoosePasswordViewControllerDelegate {
 extension AccountsViewController: AssetRemovalViewControllerDelegate {
     func assetRemovalViewController(
         _ assetRemovalViewController: AssetRemovalViewController,
-        didRemove asset: AssetDetail,
+        didRemove assetDetail: AssetDetail,
         from account: Account
     ) {
+        guard let section = accountsDataSource.section(for: account),
+            let index = accountsDataSource.item(for: assetDetail, in: account) else {
+            return
+        }
         
+        accountsDataSource.remove(assetDetail: assetDetail, from: account)
+        accountsView.accountsCollectionView.reloadItems(at: [IndexPath(item: index + 1, section: section)])
     }
 }

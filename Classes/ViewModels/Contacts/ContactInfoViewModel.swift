@@ -29,15 +29,14 @@ class ContactInfoViewModel {
     
     func configure(_ cell: ContactAssetCell, at indexPath: IndexPath, with contactAccount: Account?) {
         if indexPath.item == 0 {
-            cell.contextView.assetNameView.setName("asset-algos-title".localized)
+            cell.contextView.assetNameView.nameLabel.text = "asset-algos-title".localized
         } else {
             guard let account = contactAccount else {
                 return
             }
             
             let assetDetail = account.assetDetails[indexPath.item - 1]
-            cell.contextView.assetNameView.setName(assetDetail.assetName ?? "")
-            cell.contextView.assetNameView.setCode(assetDetail.unitName ?? "")
+            cell.contextView.assetNameView.setAssetName(for: assetDetail)
         }
     }
 }

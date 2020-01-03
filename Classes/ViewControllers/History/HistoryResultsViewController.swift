@@ -25,7 +25,11 @@ class HistoryResultsViewController: BaseViewController {
     
     init(draft: HistoryDraft, configuration: ViewControllerConfiguration) {
         self.draft = draft
-        transactionHistoryDataSource = TransactionHistoryDataSource(api: configuration.api)
+        transactionHistoryDataSource = TransactionHistoryDataSource(
+            api: configuration.api,
+            account: draft.account,
+            assetDetail: draft.assetDetail
+        )
         
         super.init(configuration: configuration)
         hidesBottomBarWhenPushed = true
@@ -127,9 +131,25 @@ extension HistoryResultsViewController: UICollectionViewDelegateFlowLayout {
         if let payment = transaction.payment,
             payment.toAddress == draft.account.address {
             
-            open(.transactionDetail(account: draft.account, transaction: transaction, transactionType: .received), by: .push)
+            open(
+                .transactionDetail(
+                    account: draft.account,
+                    transaction: transaction,
+                    transactionType: .received,
+                    assetDetail: draft.assetDetail
+                ),
+                by: .push
+            )
         } else {
-            open(.transactionDetail(account: draft.account, transaction: transaction, transactionType: .sent), by: .push)
+            open(
+                .transactionDetail(
+                    account: draft.account,
+                    transaction: transaction,
+                    transactionType: .sent,
+                    assetDetail: draft.assetDetail
+                ),
+                by: .push
+            )
         }
     }
     

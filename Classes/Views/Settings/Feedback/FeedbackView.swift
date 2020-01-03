@@ -37,8 +37,8 @@ class FeedbackView: BaseView {
     
     // MARK: Components
     
-    private(set) lazy var categorySelectionView: AccountSelectionView = {
-        let categorySelectionView = AccountSelectionView()
+    private(set) lazy var categorySelectionView: SelectionView = {
+        let categorySelectionView = SelectionView()
         categorySelectionView.backgroundColor = .clear
         categorySelectionView.containerView.isUserInteractionEnabled = true
         categorySelectionView.explanationLabel.text = "feedback-title-category".localized
@@ -113,10 +113,6 @@ class FeedbackView: BaseView {
         categorySelectionView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.top.equalToSuperview().inset(layout.current.topInset)
-        }
-        
-        categorySelectionView.rightInputAccessoryButton.snp.updateConstraints { make in
-            make.top.equalTo(categorySelectionView.explanationLabel.snp.bottom).offset(layout.current.pickerImageTopInset)
         }
     }
     

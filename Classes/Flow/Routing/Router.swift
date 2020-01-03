@@ -197,8 +197,8 @@ class Router {
             viewController = accountRecoverViewController
         case .qrScanner:
             viewController = QRScannerViewController(configuration: configuration)
-        case let .qrGenerator(title, text, mode):
-            let qrCreationController = QRCreationViewController(configuration: configuration, qrText: text)
+        case let .qrGenerator(title, address, mnemonic, mode):
+            let qrCreationController = QRCreationViewController(configuration: configuration, address: address, mnemonic: mnemonic)
             qrCreationController.mode = mode
             qrCreationController.title = title
             
@@ -220,18 +220,37 @@ class Router {
             viewController = ContactInfoViewController(contact: contact, configuration: configuration)
         case let .contactQRDisplay(contact):
             viewController = ContactQRDisplayViewController(contact: contact, configuration: configuration)
-        case let .sendTransactionPreview(account, receiver):
+        case let .sendAlgosTransactionPreview(account, receiver):
             configuration.transactionManager = rootViewController.appConfiguration.transactionManager
-            viewController = SendTransactionPreviewViewController(account: account, receiver: receiver, configuration: configuration)
-        case let .sendTransaction(transaction, receiver):
-            configuration.transactionManager = rootViewController.appConfiguration.transactionManager
-            viewController = SendTransactionViewController(
-                transaction: transaction,
+            viewController = SendAlgosTransactionPreviewViewController(
+                account: account,
                 receiver: receiver,
                 configuration: configuration
             )
-        case let .requestTransactionPreview(account):
-            viewController = RequestTransactionPreviewViewController(account: account, configuration: configuration)
+        case let .sendAssetTransactionPreview(account, receiver, assetDetail, isMaxTransaction):
+            configuration.transactionManager = rootViewController.appConfiguration.transactionManager
+            viewController = SendAssetTransactionPreviewViewController(
+                account: account,
+                receiver: receiver,
+                assetDetail: assetDetail,
+                isMaxTransaction: isMaxTransaction,
+                configuration: configuration
+            )
+        case let .sendTransaction(algosTransaction, assetTransaction, receiver):
+            configuration.transactionManager = rootViewController.appConfiguration.transactionManager
+            viewController = SendTransactionViewController(
+                algosTransaction: algosTransaction,
+                assetTransaction: assetTransaction,
+                receiver: receiver,
+                configuration: configuration
+            )
+        case let .requestTransactionPreview(account, assetDetail, isAlgoTransaction):
+            viewController = RequestTransactionPreviewViewController(
+                account: account,
+                assetDetail: assetDetail,
+                configuration: configuration,
+                isAlgoTransaction: isAlgoTransaction
+            )
         case let .requestTransaction(transaction):
             viewController = RequestTransactionViewController(transaction: transaction, configuration: configuration)
         case let .historyResults(draft):
@@ -244,11 +263,12 @@ class Router {
             viewController = AddNodeViewController(mode: .edit(node: node), configuration: configuration)
         case .splash:
             viewController = SplashViewController(configuration: configuration)
-        case let .transactionDetail(account, transaction, transactionType):
+        case let .transactionDetail(account, transaction, transactionType, assetDetail):
             viewController = TransactionDetailViewController(
                 account: account,
                 transaction: transaction,
                 transactionType: transactionType,
+                assetDetail: assetDetail,
                 configuration: configuration
             )
         case let .auctionDetail(auction, user, auctionStatus):

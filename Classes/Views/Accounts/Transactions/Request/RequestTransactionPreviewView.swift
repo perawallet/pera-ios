@@ -9,7 +9,6 @@
 import UIKit
 
 protocol RequestTransactionPreviewViewDelegate: class {
-    func requestTransactionPreviewViewDidTapAccountSelectionView(_ requestTransactionPreviewView: RequestTransactionPreviewView)
     func requestTransactionPreviewViewDidTapPreviewButton(_ requestTransactionPreviewView: RequestTransactionPreviewView)
 }
 
@@ -19,20 +18,21 @@ class RequestTransactionPreviewView: BaseView {
     
     weak var delegate: RequestTransactionPreviewViewDelegate?
     
-    private(set) lazy var algosInputView = AlgosInputView()
+    private var inputFieldFraction: Int
     
-    private(set) lazy var accountSelectionView: AccountSelectionView = {
-        let accountSelectionView = AccountSelectionView()
-        accountSelectionView.explanationLabel.text = "send-algos-to".localized
-        return accountSelectionView
+    private(set) lazy var transactionParticipantView: TransactionParticipantView = {
+        let transactionParticipantView = TransactionParticipantView()
+        transactionParticipantView.accountSelectionView.explanationLabel.text = "send-algos-to".localized
+        return transactionParticipantView
     }()
+    
+    private(set) lazy var amountInputView = AssetInputView(inputFieldFraction: inputFieldFraction)
     
     private(set) lazy var previewButton = MainButton(title: "title-preview".localized)
     
-    override func setListeners() {
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(notifyDelegateToAccountSelectionViewTapped))
-        accountSelectionView.isUserInteractionEnabled = true
-        accountSelectionView.addGestureRecognizer(tapGestureRecognizer)
+    init(inputFieldFraction: Int = algosFraction) {
+        self.inputFieldFraction = inputFieldFraction
+        super.init(frame: .zero)
     }
     
     override func linkInteractors() {
@@ -40,27 +40,27 @@ class RequestTransactionPreviewView: BaseView {
     }
     
     override func prepareLayout() {
-        setupAlgosInputViewLayout()
-        setupAccountSelectionViewLayout()
+        setupTransactionParticipantViewLayout()
+        setupAmountInputViewLayout()
         setupPreviewButtonLayout()
     }
 }
 
 extension RequestTransactionPreviewView {
-    private func setupAlgosInputViewLayout() {
-        addSubview(algosInputView)
+    private func setupTransactionParticipantViewLayout() {
+        addSubview(transactionParticipantView)
         
-        algosInputView.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(layout.current.topInset)
+        transactionParticipantView.snp.makeConstraints { make in
+            make.top.equalToSuperview()
             make.leading.trailing.equalToSuperview()
         }
     }
     
-    private func setupAccountSelectionViewLayout() {
-        addSubview(accountSelectionView)
+    private func setupAmountInputViewLayout() {
+        addSubview(amountInputView)
         
-        accountSelectionView.snp.makeConstraints { make in
-            make.top.equalTo(algosInputView.snp.bottom)
+        amountInputView.snp.makeConstraints { make in
+            make.top.equalTo(transactionParticipantView.snp.bottom).offset(layout.current.topInset)
             make.leading.trailing.equalToSuperview()
         }
     }
@@ -70,7 +70,7 @@ extension RequestTransactionPreviewView {
         
         previewButton.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
-            make.top.greaterThanOrEqualTo(accountSelectionView.snp.bottom).offset(layout.current.buttonMinimumInset)
+            make.top.greaterThanOrEqualTo(amountInputView.snp.bottom).offset(layout.current.buttonMinimumInset)
             make.bottom.equalToSuperview().inset(layout.current.bottomInset)
         }
     }
@@ -81,19 +81,12 @@ extension RequestTransactionPreviewView {
     private func notifyDelegateToPreviewButtonTapped() {
         delegate?.requestTransactionPreviewViewDidTapPreviewButton(self)
     }
-    
-    @objc
-    private func notifyDelegateToAccountSelectionViewTapped() {
-        delegate?.requestTransactionPreviewViewDidTapAccountSelectionView(self)
-    }
 }
 
 extension RequestTransactionPreviewView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let topInset: CGFloat = 20.0
-        let horizontalInset: CGFloat = 25.0
+        let topInset: CGFloat = 10.0
         let bottomInset: CGFloat = 18.0
-        let buttonInset: CGFloat = 15.0
         let buttonMinimumInset: CGFloat = 18.0
         let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
     }

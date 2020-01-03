@@ -11,32 +11,22 @@ import Magpie
 
 class TransactionHistoryDataSource: NSObject, UICollectionViewDataSource {
     
-    enum Constant {
-        static let numberOfSecondsInOneDay = 86400
-        static let numberOfRoundsInOneDay = 17280
-        static let numberOfRoundsInOneHour = 720
-        static let numberOfRoundsInOneMinute = 12
-        static let roundCreationOffset = 5
-        static let numberOfRoundsInTwoDays: Int64 = 34560
-    }
-    
     private var transactions = [TransactionItem]()
-    
+    private var account: Account
+    private var assetDetail: AssetDetail?
     private var contacts = [Contact]()
     
-    private let viewModel = AssetDetailViewModel()
-    
+    private let viewModel: AssetDetailViewModel
     private let api: API?
     
     private var transactionParams: TransactionParams?
-    
     private var fetchRequest: EndpointOperatable?
     
-    private var currentPaginationOffset: Int64 = 0
-    
-    init(api: API?) {
+    init(api: API?, account: Account, assetDetail: AssetDetail?) {
         self.api = api
-        
+        self.account = account
+        self.assetDetail = assetDetail
+        viewModel = AssetDetailViewModel(account: account, assetDetail: assetDetail)
         super.init()
     }
     
@@ -58,7 +48,6 @@ class TransactionHistoryDataSource: NSObject, UICollectionViewDataSource {
                 }
                 
                 viewModel.configure(cell, with: reward)
-                
                 return cell
             } else if let transaction = transactions[indexPath.item] as? Transaction {
                 if let transactionStatus = transaction.status {
@@ -66,38 +55,7 @@ class TransactionHistoryDataSource: NSObject, UICollectionViewDataSource {
                     case .completed:
                         return dequeueHistoryCell(in: collectionView, with: transaction, at: indexPath)
                     case .pending:
-                        guard let cell = collectionView.dequeueReusableCell(
-                            withReuseIdentifier: PendingTransactionCell.reusableIdentifier,
-                            for: indexPath) as? PendingTransactionCell else {
-                                fatalError("Index path is out of bounds")
-                        }
-                        
-                        guard let payment = transaction.payment else {
-                            return cell
-                        }
-                        
-                        if payment.toAddress == viewModel.currentAccount?.address {
-                            if let contact = contacts.first(where: { contact -> Bool in
-                                contact.address == transaction.from
-                            }) {
-                                transaction.contact = contact
-                                
-                                viewModel.configure(cell.contextView, with: transaction, for: contact)
-                            } else {
-                                viewModel.configure(cell.contextView, with: transaction)
-                            }
-                        } else {
-                            if let contact = contacts.first(where: { contact -> Bool in
-                                contact.address == transaction.payment?.toAddress
-                            }) {
-                                transaction.contact = contact
-                                viewModel.configure(cell.contextView, with: transaction, for: contact)
-                            } else {
-                                viewModel.configure(cell.contextView, with: transaction)
-                            }
-                        }
-                        
-                        return cell
+                        return dequeuePendingCell(in: collectionView, with: transaction, at: indexPath)
                     case .failed:
                         fatalError("Index path is out of bounds")
                     }
@@ -108,8 +66,10 @@ class TransactionHistoryDataSource: NSObject, UICollectionViewDataSource {
         }
         fatalError("Index path is out of bounds")
     }
-    
-    func dequeueHistoryCell(
+}
+
+extension TransactionHistoryDataSource {
+    private func dequeueHistoryCell(
         in collectionView: UICollectionView,
         with transaction: Transaction,
         at indexPath: IndexPath
@@ -120,97 +80,87 @@ class TransactionHistoryDataSource: NSObject, UICollectionViewDataSource {
                 fatalError("Index path is out of bounds")
         }
         
-        guard let payment = transaction.payment else {
-            return cell
-        }
-        
-        if payment.toAddress == viewModel.currentAccount?.address {
-            if let contact = contacts.first(where: { contact -> Bool in
-                contact.address == transaction.from
-            }) {
-                transaction.contact = contact
-                
-                viewModel.configure(cell.contextView, with: transaction, for: contact)
+        if let assetTransaction = transaction.assetTransfer {
+            if assetTransaction.receiverAddress == viewModel.account.address {
+                configure(cell, with: transaction, for: transaction.from)
             } else {
-                viewModel.configure(cell.contextView, with: transaction)
+                configure(cell, with: transaction, for: assetTransaction.receiverAddress)
             }
-        } else {
-            if let contact = contacts.first(where: { contact -> Bool in
-                contact.address == transaction.payment?.toAddress
-            }) {
-                transaction.contact = contact
-                
-                viewModel.configure(cell.contextView, with: transaction, for: contact)
+        } else if let payment = transaction.payment {
+            if payment.toAddress == viewModel.account.address {
+                configure(cell, with: transaction, for: transaction.from)
             } else {
-                viewModel.configure(cell.contextView, with: transaction)
+                configure(cell, with: transaction, for: transaction.payment?.toAddress)
             }
         }
         
         return cell
     }
     
-    private func fetchContacts() {
-        Contact.fetchAll(entity: Contact.entityName) { response in
-            switch response {
-            case let .results(objects: objects):
-                guard let results = objects as? [Contact] else {
-                    return
-                }
-                
-                self.contacts.append(contentsOf: results)
-            default:
-                break
+    private func configure(_ cell: TransactionHistoryCell, with transaction: Transaction, for address: String?) {
+        if let contact = contacts.first(where: { contact -> Bool in
+            contact.address == address
+        }) {
+            transaction.contact = contact
+            viewModel.configure(cell.contextView, with: transaction, for: contact)
+        } else {
+            viewModel.configure(cell.contextView, with: transaction)
+        }
+    }
+    
+    private func dequeuePendingCell(
+        in collectionView: UICollectionView,
+        with transaction: Transaction,
+        at indexPath: IndexPath
+    ) -> PendingTransactionCell {
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: PendingTransactionCell.reusableIdentifier,
+            for: indexPath) as? PendingTransactionCell else {
+                fatalError("Index path is out of bounds")
+        }
+        
+        if let payment = transaction.payment {
+            if payment.toAddress == viewModel.account.address {
+                configure(cell, with: transaction, for: transaction.from)
+            } else {
+                configure(cell, with: transaction, for: transaction.payment?.toAddress)
             }
+        } else if let assetTransaction = transaction.assetTransfer {
+            if assetTransaction.receiverAddress == viewModel.account.address {
+                configure(cell, with: transaction, for: transaction.from)
+            } else {
+                configure(cell, with: transaction, for: assetTransaction.receiverAddress)
+            }
+        }
+        
+        return cell
+    }
+    
+    private func configure(_ cell: PendingTransactionCell, with transaction: Transaction, for address: String?) {
+        if let contact = contacts.first(where: { contact -> Bool in
+            contact.address == address
+        }) {
+            transaction.contact = contact
+            viewModel.configure(cell.contextView, with: transaction, for: contact)
+        } else {
+            viewModel.configure(cell.contextView, with: transaction)
         }
     }
 }
 
-// MARK: API
-
 extension TransactionHistoryDataSource {
-    
-    func setupContacts() {
-        contacts.removeAll()
-        
-        fetchContacts()
-    }
-    
-    func transactionCount() -> Int {
-        return transactions.count
-    }
-    
-    func transaction(at indexPath: IndexPath) -> Transaction? {
-        if indexPath.item >= 0 && indexPath.item < transactions.count {
-            guard let transaction = transactions[indexPath.item] as? Transaction else {
-                return nil
-            }
-            return transaction
-        }
-        
-        return nil
-    }
-    
-    func clear() {
-        currentPaginationOffset = 0
-        fetchRequest?.cancel()
-        transactions.removeAll()
-    }
-    
     func loadData(
         for account: Account,
         withRefresh refresh: Bool,
         between dates: (Date, Date)? = nil,
         then handler: @escaping ([Transaction]?, Error?) -> Void
     ) {
-        viewModel.currentAccount = account
-        
         api?.getTransactionParams { response in
             switch response {
             case let .failure(error):
                 handler(nil, error)
             case let .success(params):
                 self.transactionParams = params
-                
                 self.viewModel.lastRound = params.lastRound
                 
                 if let dateRange = dates {
@@ -222,7 +172,9 @@ extension TransactionHistoryDataSource {
             }
         }
     }
-    
+}
+
+extension TransactionHistoryDataSource {
     private func fetchTransactions(
         for account: Account,
         between dates: (Date, Date),
@@ -231,75 +183,46 @@ extension TransactionHistoryDataSource {
     ) {
         if refresh {
             transactions.removeAll()
-            currentPaginationOffset = Constant.numberOfRoundsInTwoDays
-        } else {
-            currentPaginationOffset += Constant.numberOfRoundsInTwoDays
         }
-        
-       // let firstRound = max(rounds.0, rounds.1 - currentPaginationOffset)
         
         fetchRequest = api?.fetchTransactions(between: dates, for: account) { response in
             switch response {
             case let .failure(error):
                 handler(nil, error)
             case let .success(transactions):
-                self.transactions = transactions.transactions
+                transactions.transactions.forEach { transaction in
+                    transaction.status = .completed
+                }
+                
+                if let rewardDisplayPreference = self.api?.session.rewardDisplayPreference,
+                    rewardDisplayPreference == .allowed,
+                    self.assetDetail == nil {
+                    self.setRewards(from: transactions, for: account)
+                } else {
+                    self.transactions = transactions.transactions.filter { transaction -> Bool in
+                        if let assetDetail = self.assetDetail {
+                            guard let assetId = transaction.assetTransfer?.assetId else {
+                                return false
+                            }
+                            return "\(assetId)" == assetDetail.index
+                        } else {
+                            if let assetTransfer = transaction.assetTransfer,
+                                assetTransfer.receiverAddress == account.address,
+                                assetTransfer.amount == 0 {
+                                return true
+                            }
+                            return transaction.payment != nil
+                        }
+                    }
+                }
+                
                 handler(transactions.transactions, nil)
             }
         }
     }
-    
-    private func calculateRounds(from dates: (Date, Date)) -> (Int64, Int64)? {
-        guard let params = transactionParams else {
-            return nil
-        }
-        
-        let startDate = dates.0
-        let endDate = dates.1
-        
-        let startDayDifference = -Int(startDate.timeIntervalSinceNow) / Constant.numberOfSecondsInOneDay
-        let endDayDifference = -Int(endDate.timeIntervalSinceNow) / Constant.numberOfSecondsInOneDay
-        
-        // If selected days are today, start round is begining of the day and end in last round
-        // If selected end day is today, start from selected day round and end in last round
-        // If selected days are equal, start from beginning of the day and end in end of the day.
-        
-        var firstRound: Int64
-        var lastRound: Int64
-        
-        if endDayDifference == 0 && startDayDifference == 0 {
-            firstRound = params.lastRound
-                - Int64(startDate.hour * Constant.numberOfRoundsInOneHour)
-                - Int64(startDate.minute * Constant.numberOfRoundsInOneMinute)
-            lastRound = params.lastRound
-        } else if endDayDifference == 0 {
-            firstRound = params.lastRound - Int64(startDayDifference * Constant.numberOfRoundsInOneDay)
-            lastRound = params.lastRound
-        } else if endDayDifference == startDayDifference {
-            firstRound = params.lastRound
-                - Int64(startDayDifference * Constant.numberOfRoundsInOneDay)
-                - Int64(startDate.hour * Constant.numberOfRoundsInOneHour)
-            lastRound = params.lastRound
-                - Int64(endDayDifference * Constant.numberOfRoundsInOneDay)
-                + Int64((24 - endDate.hour) * Constant.numberOfRoundsInOneHour)
-        } else {
-            firstRound = params.lastRound - Int64(startDayDifference * Constant.numberOfRoundsInOneDay)
-            lastRound = params.lastRound - Int64(endDayDifference * Constant.numberOfRoundsInOneDay)
-        }
-        
-        // Check bounds for rounds
-        
-        if firstRound < 1 {
-            firstRound = 1
-        }
-        
-        if lastRound > params.lastRound {
-            lastRound = params.lastRound
-        }
-        
-        return (firstRound, lastRound)
-    }
-    
+}
+
+extension TransactionHistoryDataSource {
     private func fetchTransactions(
         for account: Account,
         withRefresh refresh: Bool,
@@ -307,9 +230,6 @@ extension TransactionHistoryDataSource {
     ) {
         if refresh {
             transactions.removeAll()
-            currentPaginationOffset = Constant.numberOfRoundsInTwoDays
-        } else {
-            currentPaginationOffset += Constant.numberOfRoundsInTwoDays
         }
         
         fetchRequest = api?.fetchTransactions(between: nil, for: account, max: 15) { response in
@@ -322,10 +242,25 @@ extension TransactionHistoryDataSource {
                 }
                 
                 if let rewardDisplayPreference = self.api?.session.rewardDisplayPreference,
-                    rewardDisplayPreference == .allowed {
+                    rewardDisplayPreference == .allowed,
+                    self.assetDetail == nil {
                     self.setRewards(from: transactions, for: account)
                 } else {
-                    self.transactions = transactions.transactions
+                    self.transactions = transactions.transactions.filter { transaction -> Bool in
+                        if let assetDetail = self.assetDetail {
+                            guard let assetId = transaction.assetTransfer?.assetId else {
+                                return false
+                            }
+                            return "\(assetId)" == assetDetail.index
+                        } else {
+                            if let assetTransfer = transaction.assetTransfer,
+                                assetTransfer.receiverAddress == account.address,
+                                assetTransfer.amount == 0 {
+                                return true
+                            }
+                            return transaction.payment != nil
+                        }
+                    }
                 }
                 
                 handler(transactions.transactions, nil)
@@ -333,6 +268,38 @@ extension TransactionHistoryDataSource {
         }
     }
     
+    private func setRewards(from transactions: TransactionList, for account: Account) {
+        let filteredTransactions = transactions.transactions.filter { transaction -> Bool in
+            if let assetTransfer = transaction.assetTransfer,
+                assetTransfer.receiverAddress == account.address,
+                assetTransfer.amount == 0 {
+                return true
+            }
+            return transaction.payment != nil && assetDetail == nil
+        }
+        
+        for transaction in filteredTransactions {
+            self.transactions.append(transaction)
+            if let payment = transaction.payment,
+                payment.toAddress == account.address,
+                assetDetail == nil {
+                if let rewards = transaction.payment?.rewards, rewards > 0 {
+                    let reward = Reward(amount: Int64(rewards))
+                    self.transactions.append(reward)
+                }
+            } else {
+                if let rewards = transaction.fromRewards,
+                    rewards > 0,
+                    assetDetail == nil {
+                    let reward = Reward(amount: Int64(rewards))
+                    self.transactions.append(reward)
+                }
+            }
+        }
+    }
+}
+
+extension TransactionHistoryDataSource {
     func fetchPendingTransactions(for account: Account, then handler: @escaping ([Transaction]?, Error?) -> Void) {
         api?.fetchPendingTransactions(for: account.address) { response in
             switch response {
@@ -374,22 +341,46 @@ extension TransactionHistoryDataSource {
         }
         self.transactions.insert(contentsOf: pendingTransactions, at: 0)
     }
+}
+
+extension TransactionHistoryDataSource {
+    func setupContacts() {
+        contacts.removeAll()
+        fetchContacts()
+    }
     
-    private func setRewards(from transactions: TransactionList, for account: Account) {
-        for transaction in transactions.transactions {
-            self.transactions.append(transaction)
-            if let payment = transaction.payment,
-                payment.toAddress == account.address {
-                if let rewards = transaction.payment?.rewards, rewards > 0 {
-                    let reward = Reward(amount: Int64(rewards))
-                    self.transactions.append(reward)
+    private func fetchContacts() {
+        Contact.fetchAll(entity: Contact.entityName) { response in
+            switch response {
+            case let .results(objects: objects):
+                guard let results = objects as? [Contact] else {
+                    return
                 }
-            } else {
-                if let rewards = transaction.fromRewards, rewards > 0 {
-                    let reward = Reward(amount: Int64(rewards))
-                    self.transactions.append(reward)
-                }
+                
+                self.contacts.append(contentsOf: results)
+            default:
+                break
             }
         }
+    }
+    
+    func transactionCount() -> Int {
+        return transactions.count
+    }
+    
+    func transaction(at indexPath: IndexPath) -> Transaction? {
+        if indexPath.item >= 0 && indexPath.item < transactions.count {
+            guard let transaction = transactions[indexPath.item] as? Transaction else {
+                return nil
+            }
+            return transaction
+        }
+        
+        return nil
+    }
+    
+    func clear() {
+        fetchRequest?.cancel()
+        transactions.removeAll()
     }
 }

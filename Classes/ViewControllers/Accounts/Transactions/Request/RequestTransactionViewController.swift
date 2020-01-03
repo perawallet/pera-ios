@@ -11,15 +11,27 @@ import UIKit
 class RequestTransactionViewController: BaseScrollViewController {
     
     private lazy var requestTransactionView: RequestTransactionView = {
-        let view = RequestTransactionView(address: transaction.fromAccount.address, amount: transaction.amount.toMicroAlgos)
-        return view
+        if !transaction.isAlgoTransaction,
+            let assetIndex = transaction.assetDetail?.index {
+            return RequestTransactionView(
+                inputFieldFraction: transaction.assetDetail?.fractionDecimals ?? algosFraction,
+                address: transaction.fromAccount.address,
+                amount: transaction.amount.toFraction(of: transaction.assetDetail?.fractionDecimals ?? algosFraction),
+                assetIndex: Int(assetIndex)
+            )
+        } else {
+            return RequestTransactionView(
+                inputFieldFraction: algosFraction,
+                address: transaction.fromAccount.address,
+                amount: transaction.amount.toMicroAlgos
+            )
+        }
     }()
     
     private let transaction: TransactionPreviewDraft
     
     init(transaction: TransactionPreviewDraft, configuration: ViewControllerConfiguration) {
         self.transaction = transaction
-        
         super.init(configuration: configuration)
         
         hidesBottomBarWhenPushed = true
@@ -28,11 +40,11 @@ class RequestTransactionViewController: BaseScrollViewController {
     override func configureAppearance() {
         super.configureAppearance()
         
-        title = "request-algos-title".localized
-        
-        requestTransactionView.algosInputView.inputTextField.text = transaction.amount.toDecimalStringForLabel
-        requestTransactionView.accountSelectionView.detailLabel.text = transaction.fromAccount.name
-        requestTransactionView.accountSelectionView.set(amount: transaction.fromAccount.amount.toAlgos)
+        if transaction.isAlgoTransaction {
+            configureViewForAlgos()
+        } else {
+            configureViewForAssets()
+        }
     }
     
     override func linkInteractors() {
@@ -56,17 +68,45 @@ extension RequestTransactionViewController {
     }
 }
 
+extension RequestTransactionViewController {
+    private func configureViewForAlgos() {
+        title = "request-algos-title".localized
+        requestTransactionView.transactionParticipantView.accountSelectionView.detailLabel.text = transaction.fromAccount.name
+        requestTransactionView.transactionParticipantView.accountSelectionView.amountView.amountLabel.textColor = SharedColors.turquois
+        requestTransactionView.transactionParticipantView.accountSelectionView.amountView.algoIconImageView.tintColor =
+            SharedColors.turquois
+        requestTransactionView.amountInputView.inputTextField.text = transaction.amount.toDecimalStringForLabel
+        requestTransactionView.transactionParticipantView.assetSelectionView.detailLabel.text = "asset-algos-title".localized
+    }
+    
+    private func configureViewForAssets() {
+        requestTransactionView.transactionParticipantView.accountSelectionView.amountView.amountLabel.textColor = SharedColors.black
+        requestTransactionView.transactionParticipantView.accountSelectionView.amountView.algoIconImageView.removeFromSuperview()
+        requestTransactionView.transactionParticipantView.accountSelectionView.detailLabel.text = transaction.fromAccount.name
+        requestTransactionView.amountInputView.algosImageView.removeFromSuperview()
+        
+        guard let assetDetail = transaction.assetDetail else {
+            return
+        }
+        
+        requestTransactionView.amountInputView.inputTextField.text =
+            transaction.amount.toFractionStringForLabel(fraction: assetDetail.fractionDecimals)
+        
+        title = "\(assetDetail.getDisplayNames().0) " + "request-title".localized
+        requestTransactionView.transactionParticipantView.assetSelectionView.detailLabel.attributedText = assetDetail.assetDisplayName()
+    }
+}
+
 extension RequestTransactionViewController: RequestTransactionViewDelegate {
     func requestTransactionViewDidTapShareButton(_ requestTransactionView: RequestTransactionView) {
         guard let qrImage = requestTransactionView.qrView.imageView.image,
-            let shareUrl = URL(string: "algorand://send-algos/\(transaction.fromAccount.address)/\(transaction.amount.toMicroAlgos)") else {
+            let shareUrl = URL(string: requestTransactionView.qrView.qrText.qrText()) else {
                 return
         }
         
         let sharedItem: [Any] = [shareUrl, qrImage]
         let activityViewController = UIActivityViewController(activityItems: sharedItem, applicationActivities: nil)
         activityViewController.excludedActivityTypes = [UIActivity.ActivityType.addToReadingList]
-        
         navigationController?.present(activityViewController, animated: true, completion: nil)
     }
 }
