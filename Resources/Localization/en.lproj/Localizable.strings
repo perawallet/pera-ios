@@ -38,7 +38,7 @@
 "title-max" = "MAX";
 "title-internet-connection" = "The internet connection appears to be offline.";
 "title-remove-lowercased" = "Remove";
-"title-unknown" = "Unknown";
+"title-unknown" = "Unnamed";
 
 // MARK: Tabbar
 

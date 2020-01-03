@@ -220,7 +220,8 @@ extension NodeSettingsViewController: NodeSettingsViewModelDelegate {
             indexPath.item != 0 else {
             return
         }
-        self.open(.editNode(node: nodes[indexPath.item - 1]), by: .push)
+        let controller = open(.editNode(node: nodes[indexPath.item - 1]), by: .push) as? AddNodeViewController
+        controller?.delegate = self
     }
 }
 
@@ -304,6 +305,14 @@ extension NodeSettingsViewController {
             return nil
         }
         return nodes.firstIndex(of: activeNode)
+    }
+}
+
+extension NodeSettingsViewController: AddNodeViewControllerDelegate {
+    func addNodeViewController(_ addNodeViewController: AddNodeViewController, didChangeNodeFor action: AddNodeViewController.ActionType) {
+        if action == .delete {
+            checkNodesHealth()
+        }
     }
 }
 
