@@ -84,7 +84,7 @@ class Account: Model {
     }
 
     func isThereAnyDifferentAsset() -> Bool {
-        return totalAssets != nil || assets != nil
+        return assets != nil
     }
     
     func areAssetsDifferent(than account: Account) -> Bool {
@@ -96,7 +96,7 @@ class Account: Model {
             let asset = assets?[assetIndex] else {
                 return nil
         }
-        return Double(asset.amount)
+        return asset.amount.assetAmount(fromFraction: assetDetail.fractionDecimals)
     }
 }
 

@@ -18,41 +18,58 @@ struct DeepLinkParser {
     
     var expectedScreen: Screen? {
         guard let urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: true),
-            let host = urlComponents.host else {
+            let accountAddress = urlComponents.host,
+            accountAddress.isValidatedAddress(),
+            let qrText = url.buildQRText() else {
             return nil
         }
         
-        let pathComponents = url.pathComponents
-        
-        guard let linkPath = DeepLinkParser.Path(rawValue: host) else {
+        switch qrText.mode {
+        case .address:
+            return .addContact(mode: .new(address: accountAddress, name: qrText.label))
+        case .algosRequest:
+            if let amount = qrText.amount {
+                return .sendAlgosTransactionPreview(account: nil, receiver: .address(address: accountAddress, amount: "\(amount)"))
+            }
+        case .assetRequest:
+            guard let assetId = qrText.asset,
+                let user = UIApplication.shared.appConfiguration?.session.authenticatedUser else {
+                return nil
+            }
+            
+            var requestedAssetDetail: AssetDetail?
+            
+            for account in user.accounts {
+                for assetDetail in account.assetDetails where assetDetail.index == "\(assetId)" {
+                    requestedAssetDetail = assetDetail
+                }
+            }
+            
+            guard let assetDetail = requestedAssetDetail else {
+                let assetAlertDraft = AssetAlertDraft(
+                    account: nil,
+                    assetIndex: "\(assetId)",
+                    assetDetail: nil,
+                    title: "asset-support-title".localized,
+                    detail: "asset-support-error".localized,
+                    actionTitle: "title-ok".localized
+                )
+                
+                return .assetSupportAlert(assetAlertDraft: assetAlertDraft)
+            }
+                
+            if let amount = qrText.amount {
+                return .sendAssetTransactionPreview(
+                    account: nil,
+                    receiver: .address(address: accountAddress, amount: "\(amount)"),
+                    assetDetail: assetDetail,
+                    isMaxTransaction: false
+                )
+            }
+        case .mnemonic:
             return nil
         }
         
-        switch linkPath {
-        case .sendAlgos:
-            if pathComponents.count < 3 {
-                return nil
-            }
-            
-            let address = pathComponents[1]
-            let amount = pathComponents[2]
-            
-            var account: Account
-            
-            if let currentAccount = UIApplication.shared.appConfiguration?.session.currentAccount {
-                account = currentAccount
-            } else {
-                return nil
-            }
-            
-            return .sendAlgosTransactionPreview(account: account, receiver: .address(address: address, amount: amount))
-        }
-    }
-}
-
-extension DeepLinkParser {
-    
-    enum Path: String {
-        case sendAlgos = "send-algos"
+        return nil
     }
 }

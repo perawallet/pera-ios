@@ -79,17 +79,18 @@ extension TransactionHistoryDataSource {
             for: indexPath) as? TransactionHistoryCell else {
                 fatalError("Index path is out of bounds")
         }
-        if let payment = transaction.payment {
-            if payment.toAddress == viewModel.account.address {
-                configure(cell, with: transaction, for: transaction.from)
-            } else {
-                configure(cell, with: transaction, for: transaction.payment?.toAddress)
-            }
-        } else if let assetTransaction = transaction.assetTransfer {
+        
+        if let assetTransaction = transaction.assetTransfer {
             if assetTransaction.receiverAddress == viewModel.account.address {
                 configure(cell, with: transaction, for: transaction.from)
             } else {
                 configure(cell, with: transaction, for: assetTransaction.receiverAddress)
+            }
+        } else if let payment = transaction.payment {
+            if payment.toAddress == viewModel.account.address {
+                configure(cell, with: transaction, for: transaction.from)
+            } else {
+                configure(cell, with: transaction, for: transaction.payment?.toAddress)
             }
         }
         
@@ -205,6 +206,11 @@ extension TransactionHistoryDataSource {
                             }
                             return "\(assetId)" == assetDetail.index
                         } else {
+                            if let assetTransfer = transaction.assetTransfer,
+                                assetTransfer.receiverAddress == account.address,
+                                assetTransfer.amount == 0 {
+                                return true
+                            }
                             return transaction.payment != nil
                         }
                     }
@@ -247,6 +253,11 @@ extension TransactionHistoryDataSource {
                             }
                             return "\(assetId)" == assetDetail.index
                         } else {
+                            if let assetTransfer = transaction.assetTransfer,
+                                assetTransfer.receiverAddress == account.address,
+                                assetTransfer.amount == 0 {
+                                return true
+                            }
                             return transaction.payment != nil
                         }
                     }
@@ -259,7 +270,12 @@ extension TransactionHistoryDataSource {
     
     private func setRewards(from transactions: TransactionList, for account: Account) {
         let filteredTransactions = transactions.transactions.filter { transaction -> Bool in
-            transaction.payment != nil && assetDetail == nil
+            if let assetTransfer = transaction.assetTransfer,
+                assetTransfer.receiverAddress == account.address,
+                assetTransfer.amount == 0 {
+                return true
+            }
+            return transaction.payment != nil && assetDetail == nil
         }
         
         for transaction in filteredTransactions {

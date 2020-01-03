@@ -13,6 +13,7 @@ enum QRMode {
     case address
     case mnemonic
     case algosRequest
+    case assetRequest
 }
 
 class QRCreationViewController: BaseScrollViewController {
@@ -22,17 +23,16 @@ class QRCreationViewController: BaseScrollViewController {
     }
     
     private let layout = Layout<LayoutConstants>()
-    private let qrText: String
+    private let address: String
+    private let mnemonic: String?
     
-    init(configuration: ViewControllerConfiguration,
-         qrText: String) {
-        self.qrText = qrText
+    init(configuration: ViewControllerConfiguration, address: String, mnemonic: String? = nil) {
+        self.address = address
+        self.mnemonic = mnemonic
         super.init(configuration: configuration)
     }
     
     var mode: QRMode = .mnemonic
-    
-    // MARK: Configuration
     
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         return .portrait
@@ -41,8 +41,6 @@ class QRCreationViewController: BaseScrollViewController {
     override var hidesCloseBarButtonItem: Bool {
         return true
     }
-    
-    // MARK: Components
     
     private(set) lazy var cancelButton: MainButton = {
         let button = MainButton(title: "title-close".localized)
@@ -69,11 +67,9 @@ class QRCreationViewController: BaseScrollViewController {
     }()
     
     private(set) lazy var qrView: QRView = {
-        let qrText = QRText(mode: self.mode, text: self.qrText)
+        let qrText = QRText(mode: self.mode, address: self.address, mnemonic: self.mnemonic)
         return QRView(qrText: qrText)
     }()
-    
-    // MARK: Setup
     
     override func configureAppearance() {
         super.configureAppearance()
@@ -83,7 +79,7 @@ class QRCreationViewController: BaseScrollViewController {
         }
         
         if mode == .address {
-            qrSelectableLabel.label.text = self.qrText
+            qrSelectableLabel.label.text = self.address
         } else if mode == .mnemonic {
             view.backgroundColor = .white
         }
@@ -124,9 +120,8 @@ class QRCreationViewController: BaseScrollViewController {
     }
 }
 
-// MARK: - Layout
 extension QRCreationViewController {
-    fileprivate func setupQRView() {
+    private func setupQRView() {
         contentView.addSubview(qrView)
         
         qrView.snp.makeConstraints { make in
@@ -136,7 +131,7 @@ extension QRCreationViewController {
         }
     }
     
-    fileprivate func setupShareButtonLayout() {
+    private func setupShareButtonLayout() {
         contentView.addSubview(shareButton)
         
         shareButton.snp.makeConstraints { make in
@@ -147,7 +142,7 @@ extension QRCreationViewController {
         }
     }
     
-    fileprivate func setupQRSelectableLabel() {
+    private func setupQRSelectableLabel() {
         contentView.addSubview(qrSelectableLabel)
         
         qrSelectableLabel.snp.makeConstraints { make in
@@ -156,7 +151,7 @@ extension QRCreationViewController {
         }
     }
     
-    fileprivate func setupCancelButtonLayout() {
+    private func setupCancelButtonLayout() {
         let constraintItem: ConstraintItem
         
         if mode == .address {
@@ -176,7 +171,6 @@ extension QRCreationViewController {
     }
 }
 
-// MARK: - Actions
 extension QRCreationViewController {
     @objc
     fileprivate func tap(cancel: UIButton) {
@@ -197,10 +191,8 @@ extension QRCreationViewController {
     }
 }
 
-// MARK: - QRSelectableLabelDelegate
 extension QRCreationViewController: QRSelectableLabelDelegate {
-    func qrSelectableLabel(_ qrSelectableLabel: QRSelectableLabel,
-                           didTapText text: String) {
+    func qrSelectableLabel(_ qrSelectableLabel: QRSelectableLabel, didTapText text: String) {
         UIPasteboard.general.string = text
     }
 }

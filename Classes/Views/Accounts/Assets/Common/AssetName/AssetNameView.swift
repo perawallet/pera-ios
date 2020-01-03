@@ -12,7 +12,7 @@ class AssetNameView: BaseView {
 
     private let layout = Layout<LayoutConstants>()
     
-    private lazy var nameLabel: UILabel = {
+    private(set) lazy var nameLabel: UILabel = {
         UILabel()
             .withFont(UIFont.font(.overpass, withWeight: .bold(size: 13.0)))
             .withTextColor(SharedColors.black)
@@ -20,12 +20,22 @@ class AssetNameView: BaseView {
             .withAlignment(.left)
     }()
     
-    private lazy var codeLabel: UILabel = {
+    private(set) lazy var codeLabel: UILabel = {
         UILabel()
             .withFont(UIFont.font(.overpass, withWeight: .bold(size: 13.0)))
             .withTextColor(SharedColors.purple)
             .withLine(.single)
             .withAlignment(.left)
+    }()
+    
+    private(set) lazy var idLabel: UILabel = {
+        let label = UILabel()
+            .withFont(UIFont.font(.overpass, withWeight: .bold(size: 13.0)))
+            .withTextColor(SharedColors.darkGray)
+            .withLine(.single)
+            .withAlignment(.left)
+        label.isHidden = true
+        return label
     }()
     
     override func configureAppearance() {
@@ -35,6 +45,7 @@ class AssetNameView: BaseView {
     override func prepareLayout() {
         setupNameLabelLayout()
         setupCodeLabelLayout()
+        setupIdLabelLayout()
     }
 }
 
@@ -58,18 +69,37 @@ extension AssetNameView {
         
         codeLabel.snp.makeConstraints { make in
             make.leading.equalTo(nameLabel.snp.trailing).offset(layout.current.codeLabelOffset)
+            make.top.bottom.equalToSuperview()
+        }
+    }
+    
+    private func setupIdLabelLayout() {
+        addSubview(idLabel)
+        
+        idLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+        idLabel.setContentHuggingPriority(.required, for: .horizontal)
+        
+        idLabel.snp.makeConstraints { make in
+            make.leading.equalTo(codeLabel.snp.trailing).offset(layout.current.codeLabelOffset)
             make.trailing.top.bottom.equalToSuperview()
         }
     }
 }
 
 extension AssetNameView {
-    func setName(_ name: String) {
-        nameLabel.text = name
-    }
-    
-    func setCode(_ code: String) {
-        codeLabel.text = "(\(code))"
+    func setAssetName(for assetDetail: AssetDetail) {
+        let (firstDisplayName, secondDisplayName) = assetDetail.getDisplayNames()
+        
+        if firstDisplayName.isUnknown() && !assetDetail.hasDisplayName() {
+            nameLabel.textColor = SharedColors.orange
+            nameLabel.font = UIFont.font(.overpass, withWeight: .boldItalic(size: 13.0))
+        } else if secondDisplayName.isNilOrEmpty && assetDetail.assetName.isNilOrEmpty {
+            nameLabel.textColor = SharedColors.purple
+        }
+        
+        nameLabel.text = firstDisplayName
+        codeLabel.text = secondDisplayName
+        idLabel.text = assetDetail.index
     }
 }
 

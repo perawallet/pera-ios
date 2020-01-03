@@ -10,6 +10,14 @@ import UIKit
 
 class RootViewController: UIViewController {
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        if #available(iOS 13.0, *) {
+            return .darkContent
+        } else {
+            return .default
+        }
+    }
+    
     // MARK: Properties
 
     let appConfiguration: AppConfiguration
@@ -69,40 +77,84 @@ class RootViewController: UIViewController {
                 return open(.introduction(mode: .initialize), by: .launch, animated: false) != nil
             }
         } else {
-            UIApplication.topViewController()?.tabBarController?.selectedIndex = 0
-            
-            if let controller = UIApplication.topViewController(),
-                let navigationController = controller.presentingViewController as? NavigationController,
-                let tabBarController = navigationController.viewControllers.first as? TabBarController,
-                let accountsViewController = tabBarController.accountsNavigationController.viewControllers.first {
-                    
-                controller.dismiss(animated: false) {
-                    accountsViewController.open(screen, by: .set, animated: false)
-                }
-                
+            switch screen {
+            case .addContact,
+                 .sendAlgosTransactionPreview,
+                 .assetSupportAlert,
+                 .sendAssetTransactionPreview:
+                tabBarViewController.route = screen
+                tabBarViewController.routeForDeeplink()
                 return true
-            } else {
-                return UIApplication.topViewController()?.open(screen, by: .set, animated: false) != nil
+            default:
+                break
             }
+            
+            return false
         }
     }
     
-    func openAccount(with address: String) {
-        guard let account = appConfiguration.session.authenticatedUser?.account(address: address) else {
+    func openAsset(from notification: NotificationDetail, for account: String) {
+        guard let account = appConfiguration.session.authenticatedUser?.account(address: account) else {
             return
+        }
+        
+        var assetDetail: AssetDetail?
+        
+        if let assetId = notification.asset?.id {
+            assetDetail = account.assetDetails.first { $0.index == "\(assetId)" }
         }
         
         if !appConfiguration.session.isValid {
             if appConfiguration.session.hasPassword() && appConfiguration.session.authenticatedUser != nil {
-                open(.choosePassword(
-                    mode: .login, route: .assetDetail(account: account, assetDetail: nil)),
-                     by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
-                )
+                if let notificationtype = notification.notificationType,
+                    notificationtype == .assetSupportRequest {
+                    guard let assetId = notification.asset?.id else {
+                        return
+                    }
+                    let draft = AssetAlertDraft(
+                        account: account,
+                        assetIndex: "\(assetId)",
+                        assetDetail: nil,
+                        title: "asset-support-add-title".localized,
+                        detail: "asset-support-add-message".localized,
+                        actionTitle: "title-ok".localized
+                    )
+                    open(.choosePassword(
+                        mode: .login, route: .assetCancellableSupportAlert(assetAlertDraft: draft)),
+                         by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
+                    )
+                    return
+                } else {
+                    open(.choosePassword(
+                        mode: .login, route: .assetDetail(account: account, assetDetail: assetDetail)),
+                         by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
+                    )
+                }
             } else {
                 open(.introduction(mode: .initialize), by: .launch, animated: false)
             }
         } else {
-            tabBarViewController.selectedIndex = 0
+            if let notificationtype = notification.notificationType,
+                notificationtype == .assetSupportRequest || notificationtype == .assetSupportSuccess {
+                guard let assetId = notification.asset?.id else {
+                    return
+                }
+                let draft = AssetAlertDraft(
+                    account: account,
+                    assetIndex: "\(assetId)",
+                    assetDetail: nil,
+                    title: "asset-support-add-title".localized,
+                    detail: "asset-support-add-message".localized,
+                    actionTitle: "title-ok".localized
+                )
+                tabBarViewController.route = .assetCancellableSupportAlert(assetAlertDraft: draft)
+                tabBarViewController.routeForDeeplink()
+                return
+            } else {
+                tabBarViewController.selectedIndex = 0
+                tabBarViewController.route = .assetDetail(account: account, assetDetail: assetDetail)
+                tabBarViewController.routeForDeeplink()
+            }
         }
     }
 

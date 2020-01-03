@@ -136,6 +136,10 @@ extension MultiLineInputField: UITextViewDelegate {
     }
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if text == "\n" {
+            textView.resignFirstResponder()
+        }
+        
         guard let delegate = delegate else {
             return true
         }

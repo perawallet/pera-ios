@@ -91,7 +91,7 @@ extension SendTransactionViewController {
             if receivedFee < Transaction.Constant.minimumFee {
                 receivedFee = Transaction.Constant.minimumFee
             }
-            sendTransactionView.feeInformationView.algosAmountView.mode = .normal(receivedFee.toAlgos)
+            sendTransactionView.feeInformationView.algosAmountView.mode = .normal(amount: receivedFee.toAlgos)
         }
     }
 }
@@ -126,16 +126,16 @@ extension SendTransactionViewController {
         sendTransactionView.transactionParticipantView.accountSelectionView.amountView.amountLabel.textColor = SharedColors.black
         sendTransactionView.transactionParticipantView.accountSelectionView.amountView.algoIconImageView.removeFromSuperview()
         sendTransactionView.transactionParticipantView.accountSelectionView.detailLabel.text = transaction.fromAccount.name
-        sendTransactionView.amountInputView.inputTextField.text = transaction.amount?.toDecimalStringForLabel
+        sendTransactionView.amountInputView.inputTextField.text =
+            transaction.amount?.toFractionStringForLabel(fraction: transaction.assetDecimalFraction)
         sendTransactionView.amountInputView.algosImageView.removeFromSuperview()
         
         guard let assetIndex = transaction.assetIndex,
-            let assetDetail = transaction.fromAccount.assetDetails.first(where: { $0.index == "\(assetIndex)" }),
-            let assetName = assetDetail.assetName else {
+            let assetDetail = transaction.fromAccount.assetDetails.first(where: { $0.index == "\(assetIndex)" }) else {
             return
         }
         
-        title = "balance-send-title".localized + " \(assetName)"
+        title = "balance-send-title".localized + " \(assetDetail.getDisplayNames().0)"
         sendTransactionView.transactionParticipantView.assetSelectionView.detailLabel.attributedText = assetDetail.assetDisplayName()
     }
 }

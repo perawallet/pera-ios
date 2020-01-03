@@ -72,7 +72,7 @@ extension TransactionManager {
         var transactionAmount = transactionDraft.amount.toMicroAlgos
         
         if isMaxValue {
-            if transactionDraft.amount.toMicroAlgos != transactionDraft.fromAccount.amount {
+            if transactionAmount != transactionDraft.fromAccount.amount {
                 isMaxValue = false
             }
             transactionAmount -= initialFee * params.fee
@@ -80,6 +80,11 @@ extension TransactionManager {
         
         let trimmedFromAddress = transactionDraft.fromAccount.address.trimmingCharacters(in: .whitespacesAndNewlines)
         let trimmedToAddress = account.address.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        if !UtilsIsValidAddress(trimmedToAddress) {
+            delegate?.transactionManager(self, didFailedComposing: .custom(trimmedToAddress))
+            return
+        }
         
         guard let transactionData = TransactionMakePaymentTxn(
             trimmedFromAddress,
@@ -115,36 +120,47 @@ extension TransactionManager {
 }
 
 extension TransactionManager {
-    func composeAssetTransactionData(for account: Account, isClosingTransaction: Bool = false) {
+    func composeAssetTransactionData(for account: Account, transactionType: TransactionType = .assetTransaction) {
         api.getTransactionParams { response in
             switch response {
             case let .success(params):
                 self.params = params
-                self.transactAsset(for: account, isClosingTransaction: isClosingTransaction)
+                self.transactAsset(for: account, transactionType: transactionType)
             case let .failure(error):
                 self.delegate?.transactionManager(self, didFailedComposing: error)
             }
         }
     }
     
-    private func transactAsset(for account: Account, isClosingTransaction: Bool) {
+    private func transactAsset(for account: Account, transactionType: TransactionType) {
         guard let params = params,
             let transactionDraft = assetTransactionDraft,
             let assetIndex = transactionDraft.assetIndex,
-            let transactionAmount = transactionDraft.amount else {
+            let amountDoubleValue = transactionDraft.amount else {
                 delegate?.transactionManager(self, didFailedComposing: .custom(nil))
             return
+        }
+        
+        var transactionAmount = Int64(amountDoubleValue)
+        
+        if transactionType == .assetTransaction {
+            transactionAmount = amountDoubleValue.toFraction(of: transactionDraft.assetDecimalFraction)
         }
         
         let trimmedFromAddress = transactionDraft.fromAccount.address.trimmingCharacters(in: .whitespacesAndNewlines)
         let trimmedToAddress = account.address.trimmingCharacters(in: .whitespacesAndNewlines)
         var transactionError: NSError?
         
+        if !UtilsIsValidAddress(trimmedToAddress) {
+            delegate?.transactionManager(self, didFailedComposing: .custom(trimmedToAddress))
+            return
+        }
+        
         guard let transactionData = TransactionMakeAssetTransferTxn(
             trimmedFromAddress,
             trimmedToAddress,
-            isClosingTransaction ? transactionDraft.assetCreator : "", // closing address should be empty
-            Int64(transactionAmount),
+            transactionType == .assetRemoval ? transactionDraft.assetCreator : "", // closing address should be empty
+            transactionAmount,
             params.fee,
             params.lastRound,
             params.lastRound + 1000,
@@ -158,7 +174,7 @@ extension TransactionManager {
             return
         }
         
-        completeAssetTransacion(with: transactionData, isClosingTransaction: isClosingTransaction)
+        completeAssetTransacion(with: transactionData, transactionType: transactionType)
     }
 }
 
@@ -179,7 +195,7 @@ extension TransactionManager {
         guard let params = params,
             let transactionDraft = assetTransactionDraft,
             let assetIndex = transactionDraft.assetIndex else {
-                delegate?.transactionManager(self, didFailedComposing: .custom(nil))
+                delegate?.transactionManager(self, didFailedComposing: .custom(assetTransactionDraft))
             return
         }
         
@@ -201,7 +217,7 @@ extension TransactionManager {
             return
         }
 
-        completeAssetTransacion(with: transactionData, isClosingTransaction: true)
+        completeAssetTransacion(with: transactionData, transactionType: .assetAddition)
     }
 }
 
@@ -218,7 +234,7 @@ extension TransactionManager {
         return signedTransactionData
     }
     
-    private func completeAssetTransacion(with transactionData: Data, isClosingTransaction: Bool) {
+    private func completeAssetTransacion(with transactionData: Data, transactionType: TransactionType) {
         guard let params = params,
             let transactionDraft = assetTransactionDraft,
             let signedTransactionData = sign(transactionData, for: transactionDraft.fromAccount.address) else {
@@ -226,10 +242,25 @@ extension TransactionManager {
         }
 
         self.transactionData = signedTransactionData
-        let calculatedFee = Int64(signedTransactionData.count) * params.fee
+        
+        var calculatedFee = Int64(signedTransactionData.count) * params.fee
+        
+        if calculatedFee < Transaction.Constant.minimumFee {
+            calculatedFee = Transaction.Constant.minimumFee
+        }
+        
+        let account = transactionDraft.fromAccount
+        
+        if transactionType == .assetAddition &&
+            Int64(account.amount) - calculatedFee < Int64(minimumTransactionMicroAlgosLimit * (account.assetDetails.count + 2)) {
+            let mininmumAmount = Int64(minimumTransactionMicroAlgosLimit * (account.assetDetails.count + 2)) + calculatedFee
+            delegate?.transactionManager(self, didFailedComposing: .custom(mininmumAmount))
+            return
+        }
+        
         self.assetTransactionDraft?.fee = calculatedFee
         
-        if isClosingTransaction {
+        if transactionType != .assetTransaction {
             completeTransaction()
         }
         
@@ -249,9 +280,8 @@ extension TransactionManager {
 
 extension TransactionManager {
     enum TransactionType {
-        case algoTransaction
         case assetTransaction
         case assetAddition
-        case assetRemoval(asset: Asset)
+        case assetRemoval
     }
 }

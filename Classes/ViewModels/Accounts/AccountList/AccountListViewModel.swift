@@ -14,22 +14,27 @@ class AccountListViewModel {
         switch mode {
         case .assetCount:
             cell.contextView.detailLabel.text = "\(account.assetDetails.count) " + "contacts-title-assets".localized
-        case let .amount(assetDetail):
+        case let .transactionSender(assetDetail),
+             let .transactionReceiver(assetDetail),
+             let .contact(assetDetail):
             if let assetDetail = assetDetail {
                 guard let assetAmount = account.amount(for: assetDetail)else {
                     return
                 }
                 
-                let amountText = "\(assetAmount.toDecimalStringForLabel ?? "")".attributed([
+                let amountText = "\(assetAmount.toFractionStringForLabel(fraction: assetDetail.fractionDecimals) ?? "")".attributed([
                     .font(UIFont.font(.overpass, withWeight: .semiBold(size: 15.0))),
                     .textColor(SharedColors.black)
                 ])
-                let codeText = " (\(assetDetail.unitName ?? ""))".attributed([
+                
+                let codeText = " (\(assetDetail.getAssetCode()))".attributed([
                     .font(UIFont.font(.overpass, withWeight: .semiBold(size: 15.0))),
                     .textColor(SharedColors.purple)
                 ])
                 cell.contextView.detailLabel.attributedText = amountText + codeText
             } else {
+                cell.contextView.detailLabel.textColor = SharedColors.black
+                cell.contextView.imageView.isHidden = false
                 cell.contextView.detailLabel.text = account.amount.toAlgos.toDecimalStringForLabel
             }
         }

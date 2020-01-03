@@ -33,4 +33,13 @@ extension API {
             .resultHandler(handler)
             .buildAndSend(self)
     }
+    
+    @discardableResult
+    func sendAssetSupportRequest(with draft: AssetSupportDraft) -> EndpointOperatable {
+        return Endpoint(path: Path("/api/asset-requests/"))
+            .httpMethod(.post)
+            .base(Environment.current.mobileApi)
+            .httpBody(draft)
+            .buildAndSend(self)
+    }
 }

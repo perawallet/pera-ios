@@ -159,8 +159,10 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
                 if self.session?.hasPassword() ?? false {
                     switch self.mode {
                     case .initialize:
-                        self.dismiss(animated: false) {
-                            UIApplication.shared.rootViewController()?.setupTabBarController()
+                        DispatchQueue.main.async {
+                            self.dismiss(animated: false) {
+                                UIApplication.shared.rootViewController()?.setupTabBarController()
+                            }
                         }
                     case .new:
                         self.closeScreen(by: .dismiss, animated: false)
@@ -178,7 +180,6 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
 extension AccountRecoverViewController: QRScannerViewControllerDelegate {
     
     func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, then handler: EmptyHandler?) {
-        
         guard qrText.mode == .mnemonic else {
             displaySimpleAlertWith(title: "title-error".localized, message: "qr-scan-should-scan-mnemonics-message".localized) { _ in
                 if let handler = handler {
@@ -189,7 +190,7 @@ extension AccountRecoverViewController: QRScannerViewControllerDelegate {
             return
         }
         
-        accountRecoverView.passPhraseInputView.value = qrText.text
+        accountRecoverView.passPhraseInputView.value = qrText.qrText()
     }
     
     func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError, then handler: EmptyHandler?) {
@@ -227,7 +228,9 @@ extension AccountRecoverViewController: KeyboardControllerDataSource {
 extension AccountRecoverViewController: TouchDetectingScrollViewDelegate {
     
     func scrollViewDidDetectTouchEvent(scrollView: TouchDetectingScrollView, in point: CGPoint) {
-        if accountRecoverView.nextButton.frame.contains(point) {
+        if accountRecoverView.nextButton.frame.contains(point) ||
+            accountRecoverView.accountNameInputView.frame.contains(point) ||
+            accountRecoverView.passPhraseInputView.frame.contains(point) {
             return
         }
         

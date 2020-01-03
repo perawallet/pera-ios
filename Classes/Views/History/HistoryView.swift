@@ -12,6 +12,7 @@ protocol HistoryViewDelegate: class {
     func historyViewDidTapViewResultsButton(_ historyView: HistoryView)
     func historyViewDidTapAccountSelectionView(_ historyView: HistoryView)
     func historyViewDidTapAssetSelectionView(_ historyView: HistoryView)
+    func historyView(_ historyView: HistoryView, hasError message: String)
 }
 
 class HistoryView: BaseView {
@@ -228,12 +229,7 @@ extension HistoryView {
     @objc
     private func didChangeStartDate(picker: UIDatePicker) {
         if picker.date > Date() {
-            guard let topViewController = UIApplication.topViewController() else {
-                return
-            }
-            
-            topViewController.displaySimpleAlertWith(title: "title-error".localized, message: "history-future-date-error".localized)
-            
+            delegate?.historyView(self, hasError: "history-future-date-error".localized)
             startDatePickerView.date = startDate
             return
         }
@@ -246,23 +242,13 @@ extension HistoryView {
     @objc
     private func didChangeEndDate(picker: UIDatePicker) {
         if picker.date > Date() {
-            guard let topViewController = UIApplication.topViewController() else {
-                return
-            }
-            
-            topViewController.displaySimpleAlertWith(title: "title-error".localized, message: "history-future-date-error".localized)
-            
+            delegate?.historyView(self, hasError: "history-future-date-error".localized)
             endDatePickerView.date = endDate
             return
         }
         
         if startDate > picker.date {
-            guard let topViewController = UIApplication.topViewController() else {
-                return
-            }
-            
-            topViewController.displaySimpleAlertWith(title: "title-error".localized, message: "history-end-date-error".localized)
-            
+            delegate?.historyView(self, hasError: "history-end-date-error".localized)
             endDatePickerView.date = endDate
             return
         }

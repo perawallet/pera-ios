@@ -20,7 +20,6 @@ class TransactionParticipantView: BaseView {
     
     override func configureAppearance() {
         super.configureAppearance()
-        accountSelectionView.set(enabled: false)
         assetSelectionView.set(enabled: false)
     }
     

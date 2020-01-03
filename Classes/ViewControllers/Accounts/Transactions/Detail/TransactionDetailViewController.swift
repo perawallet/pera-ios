@@ -164,7 +164,7 @@ extension TransactionDetailViewController: TransactionDetailViewDelegate {
             return
         }
         
-        let viewController = open(.addContact(mode: .new), by: .push) as? AddContactViewController
+        let viewController = open(.addContact(mode: .new()), by: .push) as? AddContactViewController
         
         viewController?.addContactView.userInformationView.algorandAddressInputView.value = address
     }

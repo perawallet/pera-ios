@@ -11,15 +11,14 @@ import UIKit
 class AssetListViewModel {
     func configure(_ cell: AssetSelectionCell, at indexPath: IndexPath, with account: Account) {
         if indexPath.item == 0 {
-            cell.contextView.assetNameView.setName("asset-algos-title".localized)
+            cell.contextView.assetNameView.nameLabel.text = "asset-algos-title".localized
             cell.contextView.detailLabel.text = account.amount.toAlgos.toDecimalStringForLabel
         } else {
             let assetDetail = account.assetDetails[indexPath.item - 1]
-            cell.contextView.assetNameView.setName(assetDetail.assetName ?? "")
-            cell.contextView.assetNameView.setCode(assetDetail.unitName ?? "")
+            cell.contextView.assetNameView.setAssetName(for: assetDetail)
             
             if let assetAmount = account.amount(for: assetDetail) {
-                cell.contextView.detailLabel.text = assetAmount.toDecimalStringForLabel
+                cell.contextView.detailLabel.text = assetAmount.toFractionStringForLabel(fraction: assetDetail.fractionDecimals)
             }
         }
     }

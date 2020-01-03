@@ -210,7 +210,7 @@ extension DepositAmountView: UITextFieldDelegate {
         }
         
         guard let doubleValueString = text.appending(string).currencyBidInputFormatting(),
-            doubleValueString.doubleForSendSeparator != nil else {
+            doubleValueString.doubleForSendSeparator(with: 6) != nil else {
                 return false
         }
         

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Crypto
 import SVProgressHUD
 
 class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewController {
@@ -16,9 +17,9 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
         configureViewForAlgos()
     }
     
-    override func presentAccountList() {
+    override func presentAccountList(isSender: Bool) {
         let accountListViewController = open(
-            .accountList(mode: .amount(assetDetail: nil)),
+            .accountList(mode: isSender ? .transactionSender(assetDetail: nil) : .transactionReceiver(assetDetail: nil)),
             by: .customPresent(
                 presentationStyle: .custom,
                 transitionStyle: nil,
@@ -30,6 +31,11 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
     }
     
     override func displayTransactionPreview() {
+        guard let selectedAccount = selectedAccount else {
+            displaySimpleAlertWith(title: "title-error".localized, message: "send-algos-alert-message".localized)
+            return
+        }
+        
         if !sendTransactionPreviewView.transactionReceiverView.passphraseInputView.inputTextView.text.isEmpty {
             switch receiver {
             case .contact:
@@ -43,7 +49,7 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
         }
             
         if let algosAmountText = sendTransactionPreviewView.amountInputView.inputTextField.text,
-            let doubleValue = algosAmountText.doubleForSendSeparator {
+            let doubleValue = algosAmountText.doubleForSendSeparator(with: algosFraction) {
             amount = doubleValue
         }
             
@@ -85,19 +91,48 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
         }
         open(.sendTransaction(algosTransaction: transactionDraft, assetTransaction: nil, receiver: receiver), by: .push)
     }
+    
+    override func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, then handler: EmptyHandler?) {
+        guard let qrAddress = qrText.address else {
+            return
+        }
+        sendTransactionPreviewView.transactionReceiverView.state = .address(address: qrAddress, amount: nil)
+        if let amountFromQR = qrText.amount,
+            amountFromQR != 0 {
+            let receivedAmount = amountFromQR.toAlgos
+            amount = receivedAmount
+            sendTransactionPreviewView.amountInputView.inputTextField.text = receivedAmount.toDecimalStringForAlgosInput
+        }
+        
+        receiver = .address(address: qrAddress, amount: nil)
+        
+        if let handler = handler {
+            handler()
+        }
+    }
+    
+    override func updateSelectedAccountForSender(_ account: Account) {
+        sendTransactionPreviewView.transactionParticipantView.accountSelectionView.detailLabel.text = account.name
+        sendTransactionPreviewView.transactionParticipantView.assetSelectionView.set(amount: account.amount.toAlgos)
+        sendTransactionPreviewView.amountInputView.maxAmount = account.amount.toAlgos
+        
+        if isMaxButtonSelected {
+            sendTransactionPreviewView.amountInputView.inputTextField.text =
+                sendTransactionPreviewView.transactionParticipantView.assetSelectionView.amountView.amountLabel.text
+        }
+    }
 }
 
 extension SendAlgosTransactionPreviewViewController {
     private func configureViewForAlgos() {
-        title = "request-algos-title".localized
-        sendTransactionPreviewView.transactionParticipantView.accountSelectionView.detailLabel.text = selectedAccount.name
-        sendTransactionPreviewView.transactionParticipantView.assetSelectionView.set(amount: selectedAccount.amount.toAlgos)
+        title = "send-algos-title".localized
+        
         sendTransactionPreviewView.transactionParticipantView.assetSelectionView.detailLabel.text = "asset-algos-title".localized
         sendTransactionPreviewView.transactionParticipantView.assetSelectionView.amountView.amountLabel.textColor =
             SharedColors.turquois
         sendTransactionPreviewView.transactionParticipantView.assetSelectionView.amountView.algoIconImageView.tintColor =
             SharedColors.turquois
-        sendTransactionPreviewView.amountInputView.maxAmount = selectedAccount.amount.toAlgos
+        updateSelectedAccountAppearance()
         
         switch receiver {
         case .initial:
@@ -117,6 +152,17 @@ extension SendAlgosTransactionPreviewViewController {
         case .contact:
             sendTransactionPreviewView.transactionReceiverView.state = receiver
         }
+    }
+    
+    private func updateSelectedAccountAppearance() {
+        guard let selectedAccount = selectedAccount else {
+            return
+        }
+        
+        sendTransactionPreviewView.transactionParticipantView.accountSelectionView.detailLabel.text = selectedAccount.name
+        sendTransactionPreviewView.transactionParticipantView.assetSelectionView.set(amount: selectedAccount.amount.toAlgos)
+
+        sendTransactionPreviewView.amountInputView.maxAmount = selectedAccount.amount.toAlgos
     }
 }
 
@@ -142,6 +188,10 @@ extension SendAlgosTransactionPreviewViewController {
     
     private func composeTransactionData() {
         transactionManager?.delegate = self
+        guard let selectedAccount = selectedAccount else {
+            return
+        }
+        
         if amount.toMicroAlgos < minimumTransactionMicroAlgosLimit {
             var receiverAddress: String
                    
@@ -162,6 +212,19 @@ extension SendAlgosTransactionPreviewViewController {
             }
                    
             receiverAddress = receiverAddress.trimmingCharacters(in: .whitespacesAndNewlines)
+            
+            if !UtilsIsValidAddress(receiverAddress) {
+                guard let api = api else {
+                    return
+                }
+                let pushNotificationController = PushNotificationController(api: api)
+                pushNotificationController.showFeedbackMessage(
+                    "title-error".localized,
+                    subtitle: "send-algos-receiver-address-validation".localized
+                )
+                return
+            }
+            
             let receiverFetchDraft = AccountFetchDraft(publicKey: receiverAddress)
                    
             SVProgressHUD.show(withStatus: "title-loading".localized)
@@ -181,7 +244,7 @@ extension SendAlgosTransactionPreviewViewController {
                                                     message: "send-algos-minimum-amount-error-new-account".localized)
                     } else {
                         let transaction = TransactionPreviewDraft(
-                            fromAccount: self.selectedAccount,
+                            fromAccount: selectedAccount,
                             amount: self.amount,
                             identifier: nil,
                             fee: nil,

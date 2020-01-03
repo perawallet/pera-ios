@@ -137,7 +137,8 @@ extension AccountNameSetupViewController: KeyboardControllerDataSource {
 extension AccountNameSetupViewController: TouchDetectingScrollViewDelegate {
     
     func scrollViewDidDetectTouchEvent(scrollView: TouchDetectingScrollView, in point: CGPoint) {
-        if accountNameSetupView.nextButton.frame.contains(point) {
+        if accountNameSetupView.nextButton.frame.contains(point) ||
+            accountNameSetupView.accountNameInputView.frame.contains(point) {
             return
         }
         

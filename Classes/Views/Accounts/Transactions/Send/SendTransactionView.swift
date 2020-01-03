@@ -35,6 +35,7 @@ class SendTransactionView: SendTransactionPreviewView {
         transactionReceiverView.passphraseInputView.contentView.backgroundColor = rgb(0.91, 0.91, 0.92)
         amountInputView.maxButton.isHidden = true
         amountInputView.set(enabled: false)
+        transactionParticipantView.accountSelectionView.set(enabled: false)
     }
     
     override func setListeners() {

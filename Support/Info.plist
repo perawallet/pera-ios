@@ -60,10 +60,13 @@
 		<string>AvenirNext-DemiBold.ttf</string>
 		<string>AvenirNext-Medium.ttf</string>
 		<string>AvenirNext-Regular.ttf</string>
+		<string>AvenirNext-BoldItalic.ttf</string>
+		<string>AvenirNext-DemiBoldItalic.ttf</string>
 		<string>Overpass-Bold.otf</string>
 		<string>Overpass-ExtraBold.otf</string>
 		<string>Overpass-Regular.otf</string>
 		<string>Overpass-SemiBold.otf</string>
+		<string>Overpass-SemiBoldItalic.otf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

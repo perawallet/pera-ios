@@ -33,6 +33,7 @@ class ContactInfoViewController: BaseScrollViewController {
     private let viewModel = ContactInfoViewModel()
     private let contact: Contact
     private var contactAccount: Account?
+    private var selectedAsset: AssetDetail?
     
     weak var delegate: ContactInfoViewControllerDelegate?
     
@@ -92,13 +93,13 @@ extension ContactInfoViewController {
         
         SVProgressHUD.show()
         
-        api?.fetchAccount(with: AccountFetchDraft(publicKey: address)) { [unowned self] response in
+        api?.fetchAccount(with: AccountFetchDraft(publicKey: address)) { [weak self] response in
             switch response {
             case let .success(account):
                 if account.isThereAnyDifferentAsset() {
                     if let assets = account.assets {
                         for (index, _) in assets {
-                            self.api?.getAssetDetails(with: AssetFetchDraft(assetId: "\(index)")) { assetResponse in
+                            self?.api?.getAssetDetails(with: AssetFetchDraft(assetId: "\(index)")) { assetResponse in
                                 switch assetResponse {
                                 case let .success(assetDetail):
                                     assetDetail.index = index
@@ -107,15 +108,25 @@ extension ContactInfoViewController {
                                     if assets.count == account.assetDetails.count {
                                         SVProgressHUD.showSuccess(withStatus: "title-done-lowercased".localized)
                                         SVProgressHUD.dismiss()
-                                        self.contactAccount = account
-                                        self.configureViewForContactAssets()
+                                        
+                                        guard let strongSelf = self else {
+                                            return
+                                        }
+                                        strongSelf.contactAccount = account
+                                        strongSelf.configureViewForContactAssets()
                                     }
                                 case .failure:
                                     SVProgressHUD.dismiss()
                                 }
                             }
                         }
+                    } else {
+                        SVProgressHUD.showSuccess(withStatus: "title-done-lowercased".localized)
+                        SVProgressHUD.dismiss()
                     }
+                } else {
+                    SVProgressHUD.showSuccess(withStatus: "title-done-lowercased".localized)
+                    SVProgressHUD.dismiss()
                 }
             case .failure:
                 SVProgressHUD.dismiss()
@@ -178,13 +189,17 @@ extension ContactInfoViewController: ContactAssetCellDelegate {
         }
         
         let accountListViewController = open(
-            .accountList(mode: .amount(assetDetail: itemIndex.item == 0 ? nil : contactAccount.assetDetails[itemIndex.item - 1])),
+            .accountList(mode: .contact(assetDetail: itemIndex.item == 0 ? nil : contactAccount.assetDetails[itemIndex.item - 1])),
             by: .customPresent(
                 presentationStyle: .custom,
                 transitionStyle: nil,
                 transitioningDelegate: accountListModalPresenter
             )
         ) as? AccountListViewController
+        
+        if itemIndex.item != 0 {
+            selectedAsset = contactAccount.assetDetails[itemIndex.item - 1]
+        }
         
         accountListViewController?.delegate = self
     }
@@ -260,6 +275,12 @@ extension ContactInfoViewController: AddContactViewControllerDelegate {
 
 extension ContactInfoViewController: AccountListViewControllerDelegate {
     func accountListViewController(_ viewController: AccountListViewController, didSelectAccount account: Account) {
-        open(.sendAlgosTransactionPreview(account: account, receiver: .contact(contact)), by: .push)
+        if let assetDetail = selectedAsset {
+            selectedAsset = nil
+            open(.sendAssetTransactionPreview(account: account, receiver: .contact(contact), assetDetail: assetDetail), by: .push)
+        } else {
+            open(.sendAlgosTransactionPreview(account: account, receiver: .contact(contact)), by: .push)
+        }
+        
     }
 }
