@@ -16,11 +16,16 @@ class AssetDisplayView: BaseView {
         return layout.current.size
     }
     
-    private(set) lazy var assetNameLabel: UILabel = {
+    private(set) lazy var assetIndexLabel: UILabel = {
         UILabel()
             .withLine(.single)
             .withAlignment(.center)
             .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 14.0)))
+            .withTextColor(SharedColors.darkGray)
+    }()
+    
+    private lazy var copyButton: UIButton = {
+        UIButton(type: .custom).withImage(img("icon-copy"))
     }()
     
     private lazy var separatorView: UIView = {
@@ -34,6 +39,15 @@ class AssetDisplayView: BaseView {
             .withLine(.single)
             .withAlignment(.center)
             .withFont(UIFont.font(.avenir, withWeight: .bold(size: 40.0)))
+            .withTextColor(SharedColors.purple)
+    }()
+    
+    private(set) lazy var assetNameLabel: UILabel = {
+        UILabel()
+            .withLine(.single)
+            .withAlignment(.center)
+            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 14.0)))
+            .withTextColor(SharedColors.black)
     }()
     
     override func configureAppearance() {
@@ -42,26 +56,54 @@ class AssetDisplayView: BaseView {
         layer.borderWidth = 1.0
         layer.borderColor = Colors.separatorColor.cgColor
     }
+    
+    override func prepareLayout() {
+        setupAssetIndexLabelLayout()
+        setupCopyButtonLayout()
+        setupSeparatorViewLayout()
+        setupAssetCodeLabelLayout()
+        setupAssetNameLabelLayout()
+    }
+    
+    override func setListeners() {
+        copyButton.addTarget(self, action: #selector(didTapCopyButton), for: .touchUpInside)
+    }
 }
 
 extension AssetDisplayView {
-    private func setupAssetNameLabelLayout() {
-        addSubview(assetNameLabel)
+    @objc
+    private func didTapCopyButton() {
+        UIPasteboard.general.string = assetIndexLabel.text
+    }
+}
+
+extension AssetDisplayView {
+    private func setupAssetIndexLabelLayout() {
+        addSubview(assetIndexLabel)
         
-        assetNameLabel.snp.makeConstraints { make in
+        assetIndexLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalToSuperview().inset(layout.current.nameVerticalInset)
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.top.equalToSuperview().inset(layout.current.indexVerticalInset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.indexHorizontalInset)
         }
     }
-
+    
+    private func setupCopyButtonLayout() {
+        addSubview(copyButton)
+        
+        copyButton.snp.makeConstraints { make in
+            make.trailing.top.equalToSuperview()
+            make.size.equalTo(layout.current.copyButtonSize)
+        }
+    }
+    
     private func setupSeparatorViewLayout() {
         addSubview(separatorView)
         
         separatorView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(layout.current.separatorHeight)
-            make.top.equalTo(assetNameLabel.snp.bottom).offset(layout.current.nameVerticalInset)
+            make.top.equalTo(assetIndexLabel.snp.bottom).offset(layout.current.indexVerticalInset)
         }
     }
     
@@ -70,19 +112,33 @@ extension AssetDisplayView {
         
         assetCodeLabel.snp.makeConstraints { make in
             make.top.equalTo(separatorView.snp.bottom).offset(layout.current.codeVerticalInset)
-            make.bottom.equalToSuperview().inset(layout.current.codeVerticalInset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
             make.centerX.equalToSuperview()
+        }
+    }
+
+    private func setupAssetNameLabelLayout() {
+        addSubview(assetNameLabel)
+        
+        assetNameLabel.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalTo(assetCodeLabel.snp.bottom).offset(layout.current.nameTopInset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
         }
     }
 }
 
 extension AssetDisplayView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let size = CGSize(width: 225.0, height: 116.0)
+        let size = CGSize(width: 225.0, height: 136.0)
         let separatorHeight: CGFloat = 1.0
+        let indexHorizontalInset: CGFloat = 30.0
         let horizontalInset: CGFloat = 20.0
-        let nameVerticalInset: CGFloat = 8.0
+        let copyButtonSize = CGSize(width: 30.0, height: 30.0)
+        let indexVerticalInset: CGFloat = 8.0
+        let nameTopInset: CGFloat = 5.0
         let codeVerticalInset: CGFloat = 15.0
+        let bottomInset: CGFloat = 13.0
     }
 }
 

@@ -42,6 +42,7 @@ class Account: Model {
         name = try container.decodeIfPresent(String.self, forKey: .name)
         totalAssets = try? container.decodeIfPresent([String: AssetDetail].self, forKey: .totalAssets)
         assets = try? container.decodeIfPresent([String: Asset].self, forKey: .assets) ?? nil
+        assetDetails = try container.decodeIfPresent([AssetDetail].self, forKey: .assetDetails) ?? []
     }
     
     init(address: String) {
@@ -63,6 +64,7 @@ class Account: Model {
         participation = account.participation
         totalAssets = account.totalAssets
         assets = account.assets
+        assetDetails = account.assetDetails
         
         if let updatedName = account.name {
             name = updatedName
@@ -82,7 +84,19 @@ class Account: Model {
     }
 
     func isThereAnyDifferentAsset() -> Bool {
-        return totalAssets != nil || assets != nil
+        return assets != nil
+    }
+    
+    func areAssetsDifferent(than account: Account) -> Bool {
+        return assets != account.assets || !assetDetails.containsSameElements(as: account.assetDetails)
+    }
+    
+    func amount(for assetDetail: AssetDetail) -> Double? {
+        guard let assetIndex = assetDetail.index,
+            let asset = assets?[assetIndex] else {
+                return nil
+        }
+        return asset.amount.assetAmount(fromFraction: assetDetail.fractionDecimals)
     }
 }
 

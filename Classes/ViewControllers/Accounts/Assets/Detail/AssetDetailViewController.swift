@@ -23,18 +23,24 @@ class AssetDetailViewController: BaseViewController {
     
     private var account: Account
     private var assetDetail: AssetDetail?
+    private var isAlgoDisplay: Bool
     
     private var currentDollarConversion: Double?
-    private let viewModel = AssetDetailViewModel()
+    private let viewModel: AssetDetailViewModel
+    
+    private var headerHeight: CGFloat {
+        if isAlgoDisplay {
+            return AssetDetailView.LayoutConstants.algosHeaderHeight
+        }
+        
+        return AssetDetailView.LayoutConstants.assetHeaderHeight
+    }
     
     private var transactionHistoryDataSource: TransactionHistoryDataSource
     
     var route: Screen?
     
-    private lazy var assetDetailView: AssetDetailView = {
-        let view = AssetDetailView()
-        return view
-    }()
+    private lazy var assetDetailView = AssetDetailView()
     
     private lazy var emptyStateView = EmptyStateView(
         title: "accounts-tranaction-empty-text".localized,
@@ -46,9 +52,11 @@ class AssetDetailViewController: BaseViewController {
     init(account: Account, configuration: ViewControllerConfiguration, assetDetail: AssetDetail? = nil) {
         self.account = account
         self.assetDetail = assetDetail
-        transactionHistoryDataSource = TransactionHistoryDataSource(api: configuration.api)
-        
+        self.isAlgoDisplay = assetDetail == nil
+        viewModel = AssetDetailViewModel(account: account, assetDetail: assetDetail)
+        transactionHistoryDataSource = TransactionHistoryDataSource(api: configuration.api, account: account, assetDetail: assetDetail)
         super.init(configuration: configuration)
+        hidesBottomBarWhenPushed = true
     }
     
     deinit {
@@ -68,7 +76,7 @@ class AssetDetailViewController: BaseViewController {
         assetDetailView.transactionHistoryCollectionView.refreshControl = refreshControl
         
         viewModel.configure(assetDetailView.headerView, with: account, and: assetDetail)
-        viewModel.configure(assetDetailView.smallHeaderView, with: account)
+        viewModel.configure(assetDetailView.smallHeaderView, with: account, and: assetDetail)
         
         transactionHistoryDataSource.setupContacts()
         fetchTransactions()
@@ -76,12 +84,6 @@ class AssetDetailViewController: BaseViewController {
     
     override func setListeners() {
         super.setListeners()
-        
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(didUpdateAuthenticatedUser(notification:)),
-            name: Notification.Name.AuthenticatedUserUpdate,
-            object: nil)
         
         NotificationCenter.default.addObserver(
             self,
@@ -223,7 +225,7 @@ extension AssetDetailViewController {
         }
         
         viewModel.configure(assetDetailView.headerView, with: account, and: assetDetail)
-        viewModel.configure(assetDetailView.smallHeaderView, with: account)
+        viewModel.configure(assetDetailView.smallHeaderView, with: account, and: assetDetail)
     }
     
     private func updateAccount() {
@@ -241,11 +243,6 @@ extension AssetDetailViewController {
 
 extension AssetDetailViewController {
     @objc
-    fileprivate func didUpdateAuthenticatedUser(notification: Notification) {
-        updateLayout()
-    }
-    
-    @objc
     fileprivate func didAccountUpdate(notification: Notification) {
         guard let userInfo = notification.userInfo as? [String: Account],
             let updatedAccount = userInfo["account"] else {
@@ -254,6 +251,7 @@ extension AssetDetailViewController {
         
         if account == updatedAccount {
             account = updatedAccount
+            updateLayout()
             transactionHistoryDataSource.clear()
             assetDetailView.transactionHistoryCollectionView.reloadData()
             assetDetailView.transactionHistoryCollectionView.contentState = .loading
@@ -276,11 +274,18 @@ extension AssetDetailViewController {
 
 extension AssetDetailViewController: AssetDetailViewDelegate {
     func assetDetailViewDidTapSendButton(_ assetDetailView: AssetDetailView) {
-        open(.sendAlgos(account: account, receiver: .initial), by: .push)
+        if isAlgoDisplay {
+            open(.sendAlgosTransactionPreview(account: account, receiver: .initial), by: .push)
+        } else {
+            guard let assetDetail = assetDetail else {
+                return
+            }
+            open(.sendAssetTransactionPreview(account: account, receiver: .initial, assetDetail: assetDetail), by: .push)
+        }
     }
     
     func assetDetailViewDidTapReceiveButton(_ assetDetailView: AssetDetailView) {
-        open(.requestAlgos(account: account), by: .push)
+        open(.requestTransactionPreview(account: account, assetDetail: assetDetail, isAlgoTransaction: isAlgoDisplay), by: .push)
     }
     
     func assetDetailView(_ assetDetailView: AssetDetailView, didTrigger dollarValueGestureRecognizer: UILongPressGestureRecognizer) {
@@ -307,6 +312,13 @@ extension AssetDetailViewController: AssetDetailViewDelegate {
             )
         )
     }
+    
+    func assetDetailView(_ assetDetailView: AssetDetailView, didTriggerAssetIdCopyValue gestureRecognizer: UILongPressGestureRecognizer) {
+        if let id = assetDetail?.index {
+            displaySimpleAlertWith(title: "asset-id-copied-title".localized, message: "")
+            UIPasteboard.general.string = id
+        }
+    }
 }
 
 extension AssetDetailViewController: UICollectionViewDelegateFlowLayout {
@@ -317,9 +329,25 @@ extension AssetDetailViewController: UICollectionViewDelegateFlowLayout {
         
         if let payment = transaction.payment,
             payment.toAddress == account.address {
-            open(.transactionDetail(account: account, transaction: transaction, transactionType: .received), by: .push)
+            open(
+                .transactionDetail(
+                    account: account,
+                    transaction: transaction,
+                    transactionType: .received,
+                    assetDetail: assetDetail
+                ),
+                by: .push
+            )
         } else {
-            open(.transactionDetail(account: account, transaction: transaction, transactionType: .sent), by: .push)
+            open(
+                .transactionDetail(
+                    account: account,
+                    transaction: transaction,
+                    transactionType: .sent,
+                    assetDetail: assetDetail
+                ),
+                by: .push
+            )
         }
     }
     
@@ -345,9 +373,9 @@ extension AssetDetailViewController {
         let translation = scrollView.panGestureRecognizer.translation(in: view)
         
         if translation.y < 0 {
-            let offset = scrollView.contentOffset.y + AssetDetailView.LayoutConstants.headerHeight
+            let offset = scrollView.contentOffset.y + headerHeight
             
-            let offsetDifference = AssetDetailView.LayoutConstants.headerHeight - offset
+            let offsetDifference = headerHeight - offset
             
             if offsetDifference <= AssetDetailView.LayoutConstants.smallHeaderHeight {
                 adjustSmallHeaderViewLayout()
@@ -360,7 +388,7 @@ extension AssetDetailViewController {
                 
                 assetDetailView.transactionHistoryCollectionView.contentInset.top = offsetDifference
                 
-                let progress: CGFloat = offsetDifference / AssetDetailView.LayoutConstants.headerHeight
+                let progress: CGFloat = offsetDifference / headerHeight
                 
                 UIView.animate(withDuration: 0.0) {
                     self.assetDetailView.headerView.alpha = progress
@@ -372,14 +400,14 @@ extension AssetDetailViewController {
             
             let offsetTotal = AssetDetailView.LayoutConstants.smallHeaderHeight + offset
             
-            if offsetTotal >= AssetDetailView.LayoutConstants.headerHeight {
+            if offsetTotal >= headerHeight {
                 adjustDefaultHeaderViewLayout()
                 
-                assetDetailView.transactionHistoryCollectionView.contentInset.top = AssetDetailView.LayoutConstants.headerHeight
+                assetDetailView.transactionHistoryCollectionView.contentInset.top = headerHeight
             } else {
                 let offset = max(-scrollView.contentOffset.y, AssetDetailView.LayoutConstants.smallHeaderHeight)
                 
-                let progress: CGFloat = offset / AssetDetailView.LayoutConstants.headerHeight
+                let progress: CGFloat = offset / headerHeight
                 
                 assetDetailView.accountsHeaderContainerView.snp.updateConstraints { make in
                     make.height.equalTo(offset)
@@ -403,9 +431,9 @@ extension AssetDetailViewController {
         let translation = scrollView.panGestureRecognizer.translation(in: view)
         
         if translation.y < 0 {
-            let offset = scrollView.contentOffset.y + AssetDetailView.LayoutConstants.headerHeight
+            let offset = scrollView.contentOffset.y + headerHeight
             
-            let offsetDifference = AssetDetailView.LayoutConstants.headerHeight - offset
+            let offsetDifference = headerHeight - offset
             
             if offsetDifference <= AssetDetailView.LayoutConstants.smallHeaderHeight {
                 return
@@ -416,7 +444,7 @@ extension AssetDetailViewController {
         } else {
             let offset = scrollView.contentInset.top + scrollView.contentOffset.y + AssetDetailView.LayoutConstants.smallHeaderHeight
             
-            if offset > AssetDetailView.LayoutConstants.headerHeight {
+            if offset > headerHeight {
                 return
             }
             
@@ -445,7 +473,7 @@ extension AssetDetailViewController {
     
     private func adjustDefaultHeaderViewLayout(withContentInsetUpdate shouldUpdateContentInset: Bool = false) {
         assetDetailView.accountsHeaderContainerView.snp.updateConstraints { make in
-            make.height.equalTo(AssetDetailView.LayoutConstants.headerHeight)
+            make.height.equalTo(headerHeight)
         }
         
         UIView.animate(withDuration: 0.33) {
@@ -453,8 +481,8 @@ extension AssetDetailViewController {
             self.assetDetailView.headerView.alpha = 1.0
             
             if shouldUpdateContentInset {
-                self.assetDetailView.transactionHistoryCollectionView.contentInset.top = AssetDetailView.LayoutConstants.headerHeight
-                self.assetDetailView.transactionHistoryCollectionView.contentOffset.y = -AssetDetailView.LayoutConstants.headerHeight
+                self.assetDetailView.transactionHistoryCollectionView.contentInset.top = self.headerHeight
+                self.assetDetailView.transactionHistoryCollectionView.contentOffset.y = -self.headerHeight
             }
             
             self.view.layoutIfNeeded()
@@ -470,6 +498,12 @@ extension AssetDetailViewController {
             make.top.equalToSuperview().inset(layout.current.topInset)
             make.leading.trailing.bottom.equalToSuperview()
         }
+        
+        assetDetailView.accountsHeaderContainerView.snp.updateConstraints { make in
+            make.height.equalTo(headerHeight)
+        }
+        
+        assetDetailView.transactionHistoryCollectionView.contentInset.top = headerHeight
     }
 }
 

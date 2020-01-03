@@ -9,15 +9,20 @@
 import UIKit
 
 class AccounsViewModel {
-    func configure(_ cell: AssetCell, with asset: AssetDetail) {
-        guard let assetName = asset.assetName,
-            let code = asset.unitName else {
-                return
+    func configure(_ cell: AssetCell, with assetDetail: AssetDetail, and asset: Asset) {
+        cell.contextView.assetNameView.setAssetName(for: assetDetail)
+        cell.contextView.amountLabel.text = asset.amount.assetAmount(fromFraction: assetDetail.fractionDecimals)
+            .toFractionStringForLabel(fraction: assetDetail.fractionDecimals)
+    }
+    
+    func configure(_ cell: PendingAssetCell, with assetDetail: AssetDetail, isRemoving: Bool) {
+        cell.contextView.pendingSpinnerView.show()
+        cell.contextView.assetNameView.setAssetName(for: assetDetail)
+        if isRemoving {
+            cell.contextView.detailLabel.text = "asset-remove-confirmation-title".localized
+        } else {
+            cell.contextView.detailLabel.text = "asset-add-confirmation-title".localized
         }
-        
-        cell.contextView.assetNameView.setName(assetName)
-        cell.contextView.assetNameView.setCode(code)
-        cell.contextView.amountLabel.text = asset.total.toAlgos.toDecimalStringForLabel
     }
     
     func configure(_ cell: AlgoAssetCell, with account: Account) {

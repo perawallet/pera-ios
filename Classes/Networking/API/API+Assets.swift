@@ -29,8 +29,17 @@ extension API {
         return Endpoint(path: Path("/v1/assets"))
             .httpMethod(.get)
             .httpHeaders(algorandAuthenticatedHeaders())
-            .query(AssetFetchQuery(assetId: draft.assetId, max: draft.assetId.isEmpty ? 0 : 1))
+            .query(AssetFetchQuery(assetId: draft.assetId.isEmpty ? 0 : Int(draft.assetId) ?? 0, max: draft.assetId.isEmpty ? 100 : 1))
             .resultHandler(handler)
+            .buildAndSend(self)
+    }
+    
+    @discardableResult
+    func sendAssetSupportRequest(with draft: AssetSupportDraft) -> EndpointOperatable {
+        return Endpoint(path: Path("/api/asset-requests/"))
+            .httpMethod(.post)
+            .base(Environment.current.mobileApi)
+            .httpBody(draft)
             .buildAndSend(self)
     }
 }

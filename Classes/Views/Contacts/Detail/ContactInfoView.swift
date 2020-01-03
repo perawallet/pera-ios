@@ -9,62 +9,44 @@
 import UIKit
 
 protocol ContactInfoViewDelegate: class {
-    
     func contactInfoViewDidTapQRCodeButton(_ contactInfoView: ContactInfoView)
-    func contactInfoViewDidTapSendButton(_ contactInfoView: ContactInfoView)
     func contactInfoViewDidEditContactButton(_ contactInfoView: ContactInfoView)
     func contactInfoViewDidDeleteContactButton(_ contactInfoView: ContactInfoView)
 }
 
 class ContactInfoView: BaseView {
-
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let informationViewHeight: CGFloat = 333.0
-        let bottomInset: CGFloat = 15.0
-        let minimumInset: CGFloat = 10.0
-        let backgroundViewHeight: CGFloat = 113.0
-        let buttonInset: CGFloat = 24.0
-        let sendButtonTopInset: CGFloat = 40.0
-        let deleteButtonTopInset: CGFloat = 10.0
-        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
-    }
     
     private let layout = Layout<LayoutConstants>()
     
-    private enum Colors {
-        static let separatorColor = rgba(0.67, 0.67, 0.72, 0.31)
-    }
+    private(set) lazy var userInformationView = UserInformationView(isEditable: false)
     
-    // MARK: Components
-    
-    private(set) lazy var userInformationView: UserInformationView = {
-        let view = UserInformationView(isEditable: false)
-        return view
+    private lazy var assetsTitleLabel: UILabel = {
+        UILabel()
+            .withFont(UIFont.font(.avenir, withWeight: .medium(size: 13.0)))
+            .withTextColor(SharedColors.gray)
+            .withLine(.single)
+            .withAlignment(.left)
+            .withText("contacts-title-assets".localized)
     }()
     
-    private(set) lazy var sendButton: UIButton = {
-        UIButton(type: .custom)
-            .withTitleColor(.white)
-            .withAttributedTitle(
-                "title-send-algos-uppercase".localized.attributed([
-                    .letterSpacing(1.20),
-                    .textColor(.white)
-                ])
-            )
-            .withTitle("title-send".localized)
-            .withBackgroundImage(img("bg-button-orange"))
-            .withAlignment(.center)
-            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 12.0)))
-            .withImage(img("icon-arrow-up"))
-            .withImageEdgeInsets(UIEdgeInsets(top: 0, left: 180.0 - UIScreen.main.bounds.width, bottom: 0.0, right: 0.0))
-            .withTitleEdgeInsets(UIEdgeInsets(top: 0, left: -21.0, bottom: 0.0, right: 0.0))
+    private(set) lazy var assetsCollectionView: UICollectionView = {
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.scrollDirection = .vertical
+        flowLayout.minimumLineSpacing = 5.0
+        flowLayout.minimumInteritemSpacing = 0.0
+        
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.backgroundColor = .clear
+        collectionView.contentInset = .zero
+        collectionView.keyboardDismissMode = .onDrag
+        collectionView.register(ContactAssetCell.self, forCellWithReuseIdentifier: ContactAssetCell.reusableIdentifier)
+        
+        return collectionView
     }()
     
-    private(set) lazy var editContactButton: MainButton = {
-        let button = MainButton(title: "contacts-edit-button".localized)
-        button.setBackgroundImage(img("bg-button-navy"), for: .normal)
-        return button
-    }()
+    private(set) lazy var editContactButton = MainButton(title: "contacts-edit-button".localized)
     
     private(set) lazy var deleteContactButton: MainButton = {
         let button = MainButton(title: "contacts-delete-contact".localized)
@@ -75,27 +57,25 @@ class ContactInfoView: BaseView {
     
     weak var delegate: ContactInfoViewDelegate?
     
-    // MARK: Setup
-    
     override func linkInteractors() {
         userInformationView.delegate = self
     }
     
     override func setListeners() {
-        sendButton.addTarget(self, action: #selector(notifyDelegateToSendButtonTapped), for: .touchUpInside)
         editContactButton.addTarget(self, action: #selector(notifyDelegateToEditContactButtonTapped), for: .touchUpInside)
         deleteContactButton.addTarget(self, action: #selector(notifyDelegateToDeleteContactButtonTapped), for: .touchUpInside)
     }
     
-    // MARK: Layout
-    
     override func prepareLayout() {
         setupUserInformationViewLayout()
-        setupSendButtonLayout()
+        setupAssetsTitleLabelLayout()
+        setupAssetsCollectionViewLayout()
         setupEditContactButtonLayout()
         setupDeleteContactButtonLayout()
     }
-    
+}
+
+extension ContactInfoView {
     private func setupUserInformationViewLayout() {
         addSubview(userInformationView)
         
@@ -106,12 +86,22 @@ class ContactInfoView: BaseView {
         }
     }
     
-    private func setupSendButtonLayout() {
-        addSubview(sendButton)
+    private func setupAssetsTitleLabelLayout() {
+        addSubview(assetsTitleLabel)
         
-        sendButton.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
-            make.top.equalTo(userInformationView.snp.bottom).offset(layout.current.sendButtonTopInset)
+        assetsTitleLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(layout.current.assetsLabelHorizontalInset)
+            make.top.equalTo(userInformationView.snp.bottom).offset(layout.current.verticalInset)
+        }
+    }
+    
+    private func setupAssetsCollectionViewLayout() {
+        addSubview(assetsCollectionView)
+        
+        assetsCollectionView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(assetsTitleLabel.snp.bottom).offset(layout.current.collectionViewTopInset)
+            make.height.equalTo(layout.current.collectionViewHeight)
         }
     }
     
@@ -119,7 +109,7 @@ class ContactInfoView: BaseView {
         addSubview(editContactButton)
         
         editContactButton.snp.makeConstraints { make in
-            make.top.greaterThanOrEqualTo(sendButton.snp.bottom).offset(layout.current.minimumInset)
+            make.top.greaterThanOrEqualTo(assetsCollectionView.snp.bottom).offset(layout.current.assetsLabelHorizontalInset)
             make.centerX.equalToSuperview()
             make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
         }
@@ -129,20 +119,15 @@ class ContactInfoView: BaseView {
         addSubview(deleteContactButton)
         
         deleteContactButton.snp.makeConstraints { make in
-            make.top.equalTo(editContactButton.snp.bottom).offset(layout.current.buttonInset)
+            make.top.equalTo(editContactButton.snp.bottom).offset(layout.current.deleteButtonTopInset)
             make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().inset(layout.current.bottomInset + safeAreaBottom)
+            make.bottom.equalToSuperview().inset(layout.current.verticalInset + safeAreaBottom)
             make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
         }
     }
-    
-    // MARK: Actions
+}
 
-    @objc
-    private func notifyDelegateToSendButtonTapped() {
-        delegate?.contactInfoViewDidTapSendButton(self)
-    }
-    
+extension ContactInfoView {
     @objc
     private func notifyDelegateToEditContactButtonTapped() {
         delegate?.contactInfoViewDidEditContactButton(self)
@@ -155,11 +140,29 @@ class ContactInfoView: BaseView {
 }
 
 extension ContactInfoView: UserInformationViewDelegate {
-    
     func userInformationViewDidTapAddImageButton(_ userInformationView: UserInformationView) {
     }
     
     func userInformationViewDidTapQRCodeButton(_ userInformationView: UserInformationView) {
         delegate?.contactInfoViewDidTapQRCodeButton(self)
+    }
+}
+
+extension ContactInfoView {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let informationViewHeight: CGFloat = 333.0
+        let verticalInset: CGFloat = 15.0
+        let minimumInset: CGFloat = 10.0
+        let assetsLabelHorizontalInset: CGFloat = 30.0
+        let collectionViewHeight: CGFloat = 50.0
+        let collectionViewTopInset: CGFloat = 7.0
+        let deleteButtonTopInset: CGFloat = 10.0
+        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
+    }
+}
+
+extension ContactInfoView {
+    private enum Colors {
+        static let separatorColor = rgba(0.67, 0.67, 0.72, 0.31)
     }
 }

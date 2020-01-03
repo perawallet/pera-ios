@@ -258,20 +258,28 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
         
         if let metadataObject = metadataObjects.first {
             guard let readableObject = metadataObject as? AVMetadataMachineReadableCodeObject,
-                let qrStringData = readableObject.stringValue?.data(using: .utf8) else {
+                let qrString = readableObject.stringValue,
+                let qrStringData = qrString.data(using: .utf8) else {
                     delegate?.qrScannerViewController(self, didFail: .invalidData, then: cameraResetHandler)
                     return
             }
             
             AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
             
-            guard let qrText = try? JSONDecoder().decode(QRText.self, from: qrStringData) else {
+            if let qrText = try? JSONDecoder().decode(QRText.self, from: qrStringData) {
+                closeScreen(by: .pop)
+                delegate?.qrScannerViewController(self, didRead: qrText, then: cameraResetHandler)
+            } else if let url = URL(string: qrString) {
+                guard let qrText = url.buildQRText() else {
+                    delegate?.qrScannerViewController(self, didFail: .jsonSerialization, then: cameraResetHandler)
+                    return
+                }
+                closeScreen(by: .pop)
+                delegate?.qrScannerViewController(self, didRead: qrText, then: cameraResetHandler)
+            } else {
                 delegate?.qrScannerViewController(self, didFail: .jsonSerialization, then: cameraResetHandler)
                 return
             }
-            
-            delegate?.qrScannerViewController(self, didRead: qrText, then: cameraResetHandler)
-            closeScreen(by: .pop)
         }
     }
 }

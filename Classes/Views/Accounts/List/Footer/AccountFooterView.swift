@@ -19,7 +19,10 @@ class AccountFooterView: BaseView {
     weak var delegate: AccountFooterViewDelegate?
     
     private lazy var addAssetButton: AlignedButton = {
-        let positions: AlignedButton.StylePositionAdjustment = (image: CGPoint(x: 5.0, y: 0.0), title: CGPoint(x: -5.0, y: 0.0))
+        let positions: AlignedButton.StylePositionAdjustment = (
+            image: CGPoint(x: UIScreen.main.bounds.width / 2 - 42.0, y: 0.0),
+            title: CGPoint(x: -5.0, y: 0.0)
+        )
         let button = AlignedButton(style: .imageLeftTitleCentered(positions))
         button.setImage(img("icon-plus-purple"), for: .normal)
         button.setBackgroundImage(img("bg-purple-bordered"), for: .normal)

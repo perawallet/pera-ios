@@ -11,7 +11,7 @@ import Magpie
 struct AssetFetchQuery: Query {
     typealias Key = RequestParameter
     
-    let assetId: String
+    let assetId: Int
     let max: Int
     
     func decoded() -> [Pair]? {

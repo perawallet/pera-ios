@@ -23,7 +23,11 @@ class BaseViewController: UIViewController {
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .default
+        if #available(iOS 13.0, *) {
+            return .darkContent
+        } else {
+            return .default
+        }
     }
     
     override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
@@ -163,13 +167,16 @@ extension BaseViewController: StatusBarConfigurable {
 
 // MARK: - API Variables
 extension BaseViewController {
-    
     var session: Session? {
         return configuration.session
     }
     
     var api: API? {
         return configuration.api
+    }
+    
+    var transactionManager: TransactionManager? {
+        return configuration.transactionManager
     }
 }
 

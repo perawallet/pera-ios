@@ -37,7 +37,7 @@ extension AccountManager {
                 if let fetchedAccount = fetchedAccount {
                     if fetchedAccount.amount == account.amount &&
                         fetchedAccount.rewards == account.rewards &&
-                        fetchedAccount.pendingRewards == account.pendingRewards {
+                        !fetchedAccount.areAssetsDifferent(than: account) {
                         return
                     }
                     
@@ -62,7 +62,7 @@ extension AccountManager {
             if let fetchedAccount = fetchedAccount {
                 if fetchedAccount.amount == account.amount &&
                     fetchedAccount.rewards == account.rewards &&
-                    fetchedAccount.pendingRewards == account.pendingRewards {
+                    !fetchedAccount.areAssetsDifferent(than: account) {
                     return
                 }
                 
@@ -85,35 +85,39 @@ extension AccountManager {
                         completion?(round)
                     }
                 case .failure:
-                    break
+                    self.getTransactionParamsAndFetchAccounts(completion: completion)
                 }
             }
         } else {
-            api.getTransactionParams { response in
-                switch response {
+            getTransactionParamsAndFetchAccounts(completion: completion)
+        }
+    }
+    
+    private func getTransactionParamsAndFetchAccounts(completion: ((Int64?) -> Void)?) {
+        api.getTransactionParams { response in
+            switch response {
+            case .failure:
+                if let round = self.currentRound {
+                    self.currentRound = round + 1
+                }
+            case let .success(params):
+                self.currentRound = params.lastRound
+            }
+            
+            guard let round = self.currentRound else {
+                completion?(nil)
+                return
+            }
+            
+            self.api.waitRound(with: WaitRoundDraft(round: round)) { roundDetailResponse in
+                switch roundDetailResponse {
+                case let .success(result):
+                    let round = result.lastRound
+                    self.fetchAllAccounts {
+                        completion?(round)
+                    }
                 case .failure:
-                    if let round = self.currentRound {
-                        self.currentRound = round + 1
-                    }
-                case let .success(params):
-                    self.currentRound = params.lastRound
-                }
-                
-                guard let round = self.currentRound else {
-                    completion?(nil)
-                    return
-                }
-                
-                self.api.waitRound(with: WaitRoundDraft(round: round)) { roundDetailResponse in
-                    switch roundDetailResponse {
-                    case let .success(result):
-                        let round = result.lastRound
-                        self.fetchAllAccounts {
-                            completion?(round)
-                        }
-                    case .failure:
-                        break
-                    }
+                    break
                 }
             }
         }

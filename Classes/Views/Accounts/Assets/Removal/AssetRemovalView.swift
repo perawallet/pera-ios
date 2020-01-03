@@ -25,7 +25,7 @@ class AssetRemovalView: BaseView {
         UILabel()
             .withLine(.single)
             .withAlignment(.left)
-            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 11.0)))
+            .withFont(UIFont.font(.avenir, withWeight: .bold(size: 11.0)))
             .withAttributedText("asset-remove-title".localized.attributed([.letterSpacing(1.10), .textColor(SharedColors.orange)]))
     }()
     
@@ -45,7 +45,7 @@ class AssetRemovalView: BaseView {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = .white
+        collectionView.backgroundColor = SharedColors.warmWhite
         collectionView.contentInset = .zero
         
         collectionView.register(AssetActionableCell.self, forCellWithReuseIdentifier: AssetActionableCell.reusableIdentifier)
@@ -109,11 +109,11 @@ extension AssetRemovalView {
 extension AssetRemovalView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let horizontalInset: CGFloat = 10.0
-        let containerTopInset: CGFloat = 6.0
+        let containerTopInset: CGFloat = 9.0
         let labelHorizontalInset: CGFloat = 15.0
         let subtitleTopInset: CGFloat = 11.0
         let subtitleBottomInset: CGFloat = 17.0
-        let collectionViewTopInset: CGFloat = -12.0
+        let collectionViewTopInset: CGFloat = 10.0
     }
     
     private enum Colors {

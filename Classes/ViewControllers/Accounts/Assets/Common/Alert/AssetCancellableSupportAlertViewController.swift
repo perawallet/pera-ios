@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SVProgressHUD
 
 protocol AssetCancellableSupportAlertViewControllerDelegate: class {
     func assetCancellableSupportAlertViewControllerDidTapOKButton(
@@ -22,7 +23,7 @@ class AssetCancellableSupportAlertViewController: BaseViewController {
     
     private lazy var assetCancellableSupportAlertView = AssetCancellableSupportAlertView()
     
-    private let viewModel = AssetDisplayViewModel()
+    private let viewModel = AssetSupportAlertViewModel()
     
     private var assetAlertDraft: AssetAlertDraft
     
@@ -31,9 +32,29 @@ class AssetCancellableSupportAlertViewController: BaseViewController {
         super.init(configuration: configuration)
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        if assetAlertDraft.assetDetail == nil {
+            SVProgressHUD.show(withStatus: "title-loading".localized)
+            api?.getAssetDetails(with: AssetFetchDraft(assetId: assetAlertDraft.assetIndex)) { response in
+                switch response {
+                case let .success(assetDetail):
+                    SVProgressHUD.showSuccess(withStatus: "title-done-lowercased".localized)
+                    SVProgressHUD.dismiss()
+                    self.assetAlertDraft.assetDetail = assetDetail
+                    self.viewModel.configure(self.assetCancellableSupportAlertView.assetDisplayView, with: self.assetAlertDraft)
+                case .failure:
+                    SVProgressHUD.showError(withStatus: nil)
+                    SVProgressHUD.dismiss()
+                }
+            }
+        }
+    }
+    
     override func configureAppearance() {
         view.backgroundColor = Colors.backgroundColor
-        viewModel.configure(assetCancellableSupportAlertView.assetDisplayView, with: assetAlertDraft)
+        viewModel.configure(assetCancellableSupportAlertView, with: assetAlertDraft)
     }
     
     override func setListeners() {
@@ -50,7 +71,7 @@ extension AssetCancellableSupportAlertViewController {
         view.addSubview(assetCancellableSupportAlertView)
         
         assetCancellableSupportAlertView.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
+            make.center.equalToSuperview()
             make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
         }
     }

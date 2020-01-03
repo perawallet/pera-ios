@@ -58,12 +58,18 @@ class SettingsViewController: BaseViewController {
         authManager?.delegate = self
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        if isAuctionsEnabled {
-            settingsView.collectionView.reloadItems(at: [IndexPath(row: 4, section: 0)])
-        }
+    override func setListeners() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didApplicationEnterForeground),
+            name: Notification.Name.ApplicationWillEnterForeground,
+            object: nil
+        )
+    }
+    
+    @objc
+    private func didApplicationEnterForeground() {
+        settingsView.collectionView.reloadData()
     }
 }
 
@@ -112,7 +118,16 @@ extension SettingsViewController: UICollectionViewDataSource {
                     fatalError("Index path is out of bounds")
             }
             
-            viewModel.configureToggle(cell, enabled: UIApplication.shared.isRegisteredForRemoteNotifications, with: mode, for: indexPath)
+            UNUserNotificationCenter.current().getNotificationSettings { settings in
+                DispatchQueue.main.async {
+                    if settings.authorizationStatus == .authorized {
+                        self.viewModel.configureToggle(cell, enabled: true, with: mode, for: indexPath)
+                    } else {
+                        self.viewModel.configureToggle(cell, enabled: false, with: mode, for: indexPath)
+                    }
+                }
+            }
+            
             return cell
         case .rewards:
             guard let cell = collectionView.dequeueReusableCell(
@@ -215,16 +230,34 @@ extension SettingsViewController: SettingsViewModelDelegate {
             
             presentDisabledLocalAuthenticationAlert()
         case .notifications:
-            if !value {
-                UIApplication.shared.unregisterForRemoteNotifications()
-            } else {
-                UIApplication.shared.registerForRemoteNotifications()
-            }
+            presentNotificationAlert(isEnabled: value)
         case .rewards:
             session?.rewardDisplayPreference = value ? .allowed : .disabled
         default:
             return
         }
+    }
+    
+    private func presentNotificationAlert(isEnabled: Bool) {
+        let alertMessage: String = isEnabled ?
+            "settings-notification-disabled-go-settings-text".localized :
+            "settings-notification-enabled-go-settings-text".localized
+        
+        let alertController = UIAlertController(
+            title: "settings-notification-go-settings-title".localized,
+            message: alertMessage,
+            preferredStyle: .alert
+        )
+        let settingsAction = UIAlertAction(title: "title-go-to-settings".localized, style: .default) { _ in
+            UIApplication.shared.openAppSettings()
+        }
+        
+        let cancelAction = UIAlertAction(title: "title-cancel-lowercased".localized, style: .cancel, handler: nil)
+        
+        alertController.addAction(settingsAction)
+        alertController.addAction(cancelAction)
+        
+        present(alertController, animated: true, completion: nil)
     }
     
     private func presentDisabledLocalAuthenticationAlert() {

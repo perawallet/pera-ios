@@ -9,9 +9,15 @@
 import UIKit
 
 class HistoryViewModel {
-    
     func configure(_ view: HistoryView, with account: Account) {
         view.accountSelectionView.detailLabel.text = account.name
-        view.accountSelectionView.set(amount: account.amount.toAlgos)
+    }
+    
+    func configureForAlgos(_ view: HistoryView) {
+        view.assetSelectionView.detailLabel.text = "asset-algos-title".localized
+    }
+
+    func configure(_ view: HistoryView, with assetDetail: AssetDetail) {
+        view.assetSelectionView.detailLabel.attributedText = assetDetail.assetDisplayName()
     }
 }

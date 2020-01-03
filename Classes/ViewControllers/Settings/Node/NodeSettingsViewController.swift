@@ -15,8 +15,6 @@ protocol NodeSettingsViewControllerDelegate: class {
 
 class NodeSettingsViewController: BaseViewController {
     
-    // MARK: Components
-    
     private lazy var nodeSettingsView = NodeSettingsView()
     
     var nodes: [Node] = []
@@ -39,13 +37,9 @@ class NodeSettingsViewController: BaseViewController {
     
     init(mode: Mode, configuration: ViewControllerConfiguration) {
         self.mode = mode
-        
         super.init(configuration: configuration)
-        
         hidesBottomBarWhenPushed = true
     }
-    
-    // MARK: Setup
     
     override func configureNavigationBarAppearance() {
         let addBarButtonItem = ALGBarButtonItem(kind: .add) {
@@ -75,10 +69,12 @@ class NodeSettingsViewController: BaseViewController {
     
     override func configureAppearance() {
         super.configureAppearance()
-        
         title = "node-settings-title".localized
-        
         fetchNodes()
+    }
+    
+    override func prepareLayout() {
+        setupNodeSettingsViewLayout()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -90,7 +86,7 @@ class NodeSettingsViewController: BaseViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        self.fetchNodes()
+        fetchNodes()
         
         switch mode {
         case .checkHealth:
@@ -105,6 +101,26 @@ class NodeSettingsViewController: BaseViewController {
         navigationController?.navigationBar.barTintColor = SharedColors.warmWhite
     }
     
+    override func didTapBackBarButton() -> Bool {
+        return canTapBarButton
+    }
+    
+    override func didTapDismissBarButton() -> Bool {
+        return canTapBarButton
+    }
+}
+
+extension NodeSettingsViewController {
+    private func setupNodeSettingsViewLayout() {
+        view.addSubview(nodeSettingsView)
+        
+        nodeSettingsView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+    }
+}
+
+extension NodeSettingsViewController {
     private func fetchNodes() {
         let sortDescriptor = NSSortDescriptor(key: #keyPath(Node.creationDate), ascending: true)
         
@@ -123,30 +139,9 @@ class NodeSettingsViewController: BaseViewController {
             self.nodeSettingsView.collectionView.reloadData()
         }
     }
-    
-    // MARK: Layout
-    
-    override func prepareLayout() {
-        view.addSubview(nodeSettingsView)
-        
-        nodeSettingsView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
-    }
-    
-    override func didTapBackBarButton() -> Bool {
-        return canTapBarButton
-    }
-    
-    override func didTapDismissBarButton() -> Bool {
-        return canTapBarButton
-    }
 }
 
-// MARK: UICollectionViewDataSource
-
 extension NodeSettingsViewController: UICollectionViewDataSource {
-    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return nodes.count + 1
     }
@@ -160,9 +155,7 @@ extension NodeSettingsViewController: UICollectionViewDataSource {
             }
             
             viewModel.configureDefaultNode(cell, enabled: session?.isDefaultNodeActive() ?? false, for: indexPath)
-            
             cell.contextView.toggle.isEnabled = numberOfActiveNodes() > 0
-            
             return cell
         } else {
             guard let cell = collectionView.dequeueReusableCell(
@@ -173,9 +166,7 @@ extension NodeSettingsViewController: UICollectionViewDataSource {
             
             if indexPath.item < nodes.count + 1 {
                 let node = nodes[indexPath.item - 1]
-                
                 viewModel.configureToggle(cell, with: node, for: indexPath)
-                
                 viewModel.delegate = self
                 
                 if node.isActive {
@@ -190,88 +181,60 @@ extension NodeSettingsViewController: UICollectionViewDataSource {
     }
 }
 
-// MARK: UICollectionViewDelegateFlowLayout
-
 extension NodeSettingsViewController: UICollectionViewDelegateFlowLayout {
-    
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
-        ) -> CGSize {
-        
-        return CGSize(width: UIScreen.main.bounds.width, height: 90.0)
+    ) -> CGSize {
+        return CGSize(width: UIScreen.main.bounds.width, height: 80.0)
     }
 }
 
-// MARK: NodeSettingsViewModelDelegate
-
 extension NodeSettingsViewController: NodeSettingsViewModelDelegate {
-    func nodeSettingsViewModel(_ viewModel: NodeSettingsViewModel,
-                               didToggleValue value: Bool,
-                               atIndexPath indexPath: IndexPath) {
-        
+    func nodeSettingsViewModel(_ viewModel: NodeSettingsViewModel, didToggleValue value: Bool, atIndexPath indexPath: IndexPath) {
         guard indexPath.item < nodes.count + 1 else {
             return
         }
         
         if indexPath.item == 0 {
             session?.setDefaultNodeActive(value)
+            
+            if value {
+                nodes.forEach { $0.update(entity: Node.entityName, with: ["isActive": NSNumber(value: 0)]) }
+            }
         } else {
             let node = nodes[indexPath.item - 1]
-            
             node.update(entity: Node.entityName, with: ["isActive": NSNumber(value: value)])
+            
+            if value {
+                session?.setDefaultNodeActive(false)
+            }
         }
         
         checkNodesHealth()
     }
     
     func nodeSettingsViewModelDidTapEdit(_ viewModel: NodeSettingsViewModel, atIndexPath indexPath: IndexPath) {
-        guard indexPath.item < nodes.count + 1 else {
+        guard indexPath.item < nodes.count + 1,
+            indexPath.item != 0 else {
             return
         }
-        
-        if indexPath.item == 0 {
-            return
-        }
-        
-        let node = nodes[indexPath.item - 1]
-        
-        self.open(.editNode(node: node), by: .push)
+        self.open(.editNode(node: nodes[indexPath.item - 1]), by: .push)
     }
-    
-    fileprivate func updateNodes() {
-        for cell in nodeSettingsView.collectionView.visibleCells {
-            if let defaultNodeCell = cell as? ToggleCell {
-                defaultNodeCell.contextView.toggle.isEnabled = numberOfActiveNodes() > 0
-            } else if let nodeCell = cell as? SettingsToggleCell {
-                guard let indexPath = nodeCell.contextView.indexPath else {
-                    continue
-                }
-                
-                let node = nodes[indexPath.item - 1]
-                
-                if node.isActive {
-                    nodeCell.contextView.toggle.isEnabled = (session?.isDefaultNodeActive() ?? false) || numberOfActiveNodes() > 1
-                } else {
-                    nodeCell.contextView.toggle.isEnabled = true
-                }
-            }
-        }
-    }
-    
-    fileprivate func checkNodesHealth() {
+}
+
+extension NodeSettingsViewController {
+    private func checkNodesHealth() {
         SVProgressHUD.show(withStatus: "title-loading".localized)
         self.view.isUserInteractionEnabled = false
         canTapBarButton = false
         
         nodeManager?.checkNodes { isHealthy in
-            
             if isHealthy {
                 SVProgressHUD.showSuccess(withStatus: "title-done-lowercased".localized)
                 
                 SVProgressHUD.dismiss(withDelay: 1.0) {
-                    
                     self.canTapBarButton = true
                     self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
                     
@@ -280,7 +243,6 @@ extension NodeSettingsViewController: NodeSettingsViewModelDelegate {
                 }
             } else {
                 SVProgressHUD.dismiss {
-                    
                     self.canTapBarButton = false
                     self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
                     
@@ -296,14 +258,55 @@ extension NodeSettingsViewController: NodeSettingsViewModelDelegate {
         }
     }
     
-    fileprivate func numberOfActiveNodes() -> Int {
+    private func updateNodes() {
+        for cell in nodeSettingsView.collectionView.visibleCells {
+            if let defaultNodeCell = cell as? ToggleCell {
+                guard let indexPath = defaultNodeCell.contextView.indexPath else {
+                    continue
+                }
+                
+                viewModel.configureDefaultNode(defaultNodeCell, enabled: session?.isDefaultNodeActive() ?? false, for: indexPath)
+                defaultNodeCell.contextView.toggle.isEnabled = numberOfActiveNodes() > 0
+            } else if let nodeCell = cell as? SettingsToggleCell {
+                guard let indexPath = nodeCell.contextView.indexPath else {
+                    continue
+                }
+                
+                let node = nodes[indexPath.item - 1]
+                
+                viewModel.configureToggle(nodeCell, with: node, for: indexPath)
+                
+                if node.isActive {
+                    nodeCell.contextView.toggle.isEnabled = (session?.isDefaultNodeActive() ?? false) || numberOfActiveNodes() > 1
+                } else {
+                    nodeCell.contextView.toggle.isEnabled = true
+                }
+            }
+        }
+    }
+}
+
+extension NodeSettingsViewController {
+    private func numberOfActiveNodes() -> Int {
         return nodes.filter { node -> Bool in
             node.isActive
         }.count
     }
+    
+    private func activeNode() -> Node? {
+        return nodes.first { node -> Bool in
+            node.isActive
+        }
+    }
+    
+    private func indexOfActiveNode() -> Int? {
+        guard let activeNode = activeNode() else {
+            return nil
+        }
+        return nodes.firstIndex(of: activeNode)
+    }
 }
 
-// MARK: Mode
 extension NodeSettingsViewController {
     enum Mode {
         case initialize

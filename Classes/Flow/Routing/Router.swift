@@ -169,8 +169,10 @@ class Router {
         
         let viewController: UIViewController
         
-        let configuration = ViewControllerConfiguration(api: rootViewController.appConfiguration.api,
-                                                        session: rootViewController.appConfiguration.session)
+        let configuration = ViewControllerConfiguration(
+            api: rootViewController.appConfiguration.api,
+            session: rootViewController.appConfiguration.session
+        )
         
         switch screen {
         case let .introduction(mode):
@@ -195,16 +197,16 @@ class Router {
             viewController = accountRecoverViewController
         case .qrScanner:
             viewController = QRScannerViewController(configuration: configuration)
-        case let .qrGenerator(title, text, mode):
-            let qrCreationController = QRCreationViewController(configuration: configuration, qrText: text)
+        case let .qrGenerator(title, address, mnemonic, mode):
+            let qrCreationController = QRCreationViewController(configuration: configuration, address: address, mnemonic: mnemonic)
             qrCreationController.mode = mode
             qrCreationController.title = title
             
             viewController = qrCreationController
         case .home:
             viewController = TabBarController(configuration: configuration)
-        case .accountList:
-            viewController = AccountListViewController(configuration: configuration)
+        case let .accountList(mode):
+            viewController = AccountListViewController(mode: mode, configuration: configuration)
         case let .options(account):
             viewController = OptionsViewController(account: account, configuration: configuration)
         case let .editAccount(account):
@@ -218,19 +220,39 @@ class Router {
             viewController = ContactInfoViewController(contact: contact, configuration: configuration)
         case let .contactQRDisplay(contact):
             viewController = ContactQRDisplayViewController(contact: contact, configuration: configuration)
-        case let .sendAlgos(account, receiver):
-            viewController = SendAlgosViewController(account: account, receiver: receiver, configuration: configuration)
-        case let .sendAlgosPreview(manager, transaction, receiver):
-            viewController = SendAlgosPreviewViewController(
-                transactionManager: manager,
-                transaction: transaction,
+        case let .sendAlgosTransactionPreview(account, receiver):
+            configuration.transactionManager = rootViewController.appConfiguration.transactionManager
+            viewController = SendAlgosTransactionPreviewViewController(
+                account: account,
                 receiver: receiver,
                 configuration: configuration
             )
-        case let .requestAlgos(account):
-            viewController = RequestAlgosViewController(account: account, configuration: configuration)
-        case let .requestAlgosPreview(transaction):
-            viewController = RequestAlgosPreviewViewController(transaction: transaction, configuration: configuration)
+        case let .sendAssetTransactionPreview(account, receiver, assetDetail, isMaxTransaction):
+            configuration.transactionManager = rootViewController.appConfiguration.transactionManager
+            viewController = SendAssetTransactionPreviewViewController(
+                account: account,
+                receiver: receiver,
+                assetDetail: assetDetail,
+                isMaxTransaction: isMaxTransaction,
+                configuration: configuration
+            )
+        case let .sendTransaction(algosTransaction, assetTransaction, receiver):
+            configuration.transactionManager = rootViewController.appConfiguration.transactionManager
+            viewController = SendTransactionViewController(
+                algosTransaction: algosTransaction,
+                assetTransaction: assetTransaction,
+                receiver: receiver,
+                configuration: configuration
+            )
+        case let .requestTransactionPreview(account, assetDetail, isAlgoTransaction):
+            viewController = RequestTransactionPreviewViewController(
+                account: account,
+                assetDetail: assetDetail,
+                configuration: configuration,
+                isAlgoTransaction: isAlgoTransaction
+            )
+        case let .requestTransaction(transaction):
+            viewController = RequestTransactionViewController(transaction: transaction, configuration: configuration)
         case let .historyResults(draft):
             viewController = HistoryResultsViewController(draft: draft, configuration: configuration)
         case let .nodeSettings(mode):
@@ -241,11 +263,12 @@ class Router {
             viewController = AddNodeViewController(mode: .edit(node: node), configuration: configuration)
         case .splash:
             viewController = SplashViewController(configuration: configuration)
-        case let .transactionDetail(account, transaction, transactionType):
+        case let .transactionDetail(account, transaction, transactionType, assetDetail):
             viewController = TransactionDetailViewController(
                 account: account,
                 transaction: transaction,
                 transactionType: transactionType,
+                assetDetail: assetDetail,
                 configuration: configuration
             )
         case let .auctionDetail(auction, user, auctionStatus):
@@ -271,8 +294,10 @@ class Router {
         case let .assetDetail(account, assetDetail):
             viewController = AssetDetailViewController(account: account, configuration: configuration, assetDetail: assetDetail)
         case let .addAsset(account):
+            configuration.transactionManager = rootViewController.appConfiguration.transactionManager
             viewController = AssetAdditionViewController(account: account, configuration: configuration)
         case let .removeAsset(account):
+            configuration.transactionManager = rootViewController.appConfiguration.transactionManager
             viewController = AssetRemovalViewController(account: account, configuration: configuration)
         case let .assetActionConfirmation(assetAlertDraft):
             viewController = AssetActionConfirmationViewController(assetAlertDraft: assetAlertDraft, configuration: configuration)
@@ -282,6 +307,8 @@ class Router {
             viewController = AssetCancellableSupportAlertViewController(assetAlertDraft: assetAlertDraft, configuration: configuration)
         case let .rewardDetail(account):
             viewController = RewardDetailViewController(account: account, configuration: configuration)
+        case let .assetList(account):
+            viewController = AssetListViewController(account: account, configuration: configuration)
         }
         
         return viewController as? T

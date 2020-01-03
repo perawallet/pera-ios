@@ -147,7 +147,7 @@ class MaximumPriceView: BaseView {
     @objc
     private func didChangeText(_ textField: UITextField) {
         guard let doubleValueString = textField.text?.currencyBidInputFormatting(),
-            let doubleValue = doubleValueString.doubleForSendSeparator,
+            let doubleValue = doubleValueString.doubleForSendSeparator(with: 6),
             doubleValue <= Double(maximumMicroAlgos) else {
                 return
         }
@@ -172,7 +172,7 @@ extension MaximumPriceView: UITextFieldDelegate {
         }
         
         guard let doubleValueString = text.appending(string).currencyBidInputFormatting(),
-            let doubleValue = doubleValueString.doubleForSendSeparator,
+            let doubleValue = doubleValueString.doubleForSendSeparator(with: 6),
             let currentPrice = currentPrice,
             doubleValue <= Double(currentPrice) / 100 else {
                 return false

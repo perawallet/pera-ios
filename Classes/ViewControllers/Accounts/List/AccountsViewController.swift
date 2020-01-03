@@ -35,29 +35,57 @@ class AccountsViewController: BaseViewController {
         return PushNotificationController(api: api)
     }()
     
-    private lazy var accountsView = AccountsView()
+    private(set) lazy var accountsView = AccountsView()
+    private lazy var refreshControl = UIRefreshControl()
     
     private(set) var selectedAccount: Account?
     private(set) var localAuthenticator = LocalAuthenticator()
     
     private var accountsLayoutBuilder: AccountsLayoutBuilder
-    private var accountsDataSource: AccountsDataSource
+    private(set) var accountsDataSource: AccountsDataSource
     
     override init(configuration: ViewControllerConfiguration) {
         accountsLayoutBuilder = AccountsLayoutBuilder()
         accountsDataSource = AccountsDataSource()
         super.init(configuration: configuration)
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didUpdateAuthenticatedUser(notification:)),
+            name: Notification.Name.AuthenticatedUserUpdate,
+            object: nil
+        )
     }
     
     override func configureNavigationBarAppearance() {
-        let addAccountBarButtonItem = ALGBarButtonItem(kind: .add) { [unowned self] in
-            self.open(
+        setupLeftBarButtonItems()
+        setupRightBarButtonItems()
+    }
+    
+    private func setupLeftBarButtonItems() {
+        let addAccountBarButtonItem = ALGBarButtonItem(kind: .add) { [weak self] in
+            guard let strongSelf = self else {
+                return
+            }
+            strongSelf.open(
                 .introduction(mode: .new),
                 by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
             )
         }
         
-        rightBarButtonItems = [addAccountBarButtonItem]
+        leftBarButtonItems = [addAccountBarButtonItem]
+    }
+    
+    private func setupRightBarButtonItems() {
+        let qrBarButtonItem = ALGBarButtonItem(kind: .qr) { [weak self] in
+            guard let strongSelf = self else {
+                return
+            }
+            let qrScannerViewController = strongSelf.open(.qrScanner, by: .push) as? QRScannerViewController
+            qrScannerViewController?.delegate = strongSelf
+        }
+
+        rightBarButtonItems = [qrBarButtonItem]
     }
     
     override func viewDidLoad() {
@@ -73,7 +101,8 @@ class AccountsViewController: BaseViewController {
     
     override func configureAppearance() {
         super.configureAppearance()
-        self.navigationItem.title = "tabbar-item-accounts".localized
+        navigationItem.title = "tabbar-item-accounts".localized
+        accountsView.accountsCollectionView.refreshControl = refreshControl
     }
     
     override func setListeners() {
@@ -81,6 +110,10 @@ class AccountsViewController: BaseViewController {
         accountsDataSource.delegate = self
         accountsView.accountsCollectionView.delegate = accountsLayoutBuilder
         accountsView.accountsCollectionView.dataSource = accountsDataSource
+    }
+    
+    override func linkInteractors() {
+        refreshControl.addTarget(self, action: #selector(didRefreshList), for: .valueChanged)
     }
     
     override func prepareLayout() {
@@ -100,15 +133,15 @@ extension AccountsViewController {
 
 extension AccountsViewController: AccountsLayoutBuilderDelegate {
     func accountsLayoutBuilder(_ layoutBuilder: AccountsLayoutBuilder, didSelectAt indexPath: IndexPath) {
-       selectedAccount = accountsDataSource.accounts[indexPath.section]
-       guard let account = selectedAccount else {
-           return
-       }
+        selectedAccount = accountsDataSource.accounts[indexPath.section]
+        guard let account = selectedAccount else {
+            return
+        }
         
         if indexPath.item == 0 {
             open(.assetDetail(account: account, assetDetail: nil), by: .push)
         } else {
-            let assetDetail = account.assetDetails[indexPath.item]
+            let assetDetail = account.assetDetails[indexPath.item - 1]
             open(.assetDetail(account: account, assetDetail: assetDetail), by: .push)
         }
     }
@@ -122,7 +155,41 @@ extension AccountsViewController: AccountsDataSourceDelegate {
     
     func accountsDataSource(_ accountsDataSource: AccountsDataSource, didTapAddAssetButtonFor account: Account) {
         selectedAccount = account
-        open(.addAsset(account: account), by: .push)
+        let controller = open(.addAsset(account: account), by: .push)
+        (controller as? AssetAdditionViewController)?.delegate = self
+    }
+}
+
+extension AccountsViewController: AssetAdditionViewControllerDelegate {
+    func assetAdditionViewController(
+        _ assetAdditionViewController: AssetAdditionViewController,
+        didAdd assetDetail: AssetDetail,
+        to account: Account
+    ) {
+        guard let section = accountsDataSource.section(for: account) else {
+            return
+        }
+        
+        let index = accountsView.accountsCollectionView.numberOfItems(inSection: section)
+        accountsDataSource.add(assetDetail: assetDetail, to: account)
+        accountsView.accountsCollectionView.insertItems(at: [IndexPath(item: index, section: section)])
+    }
+}
+
+extension AccountsViewController {
+    @objc
+    fileprivate func didUpdateAuthenticatedUser(notification: Notification) {
+        accountsDataSource.reload()
+        accountsView.accountsCollectionView.reloadData()
+    }
+    
+    @objc
+    private func didRefreshList() {
+        accountsDataSource.refresh()
+        accountsView.accountsCollectionView.reloadData()
+        if refreshControl.isRefreshing {
+            refreshControl.endRefreshing()
+        }
     }
 }
 
@@ -137,6 +204,82 @@ extension AccountsViewController {
         let optionsViewController = open(.options(account: account), by: transitionStyle) as? OptionsViewController
         
         optionsViewController?.delegate = self
+    }
+}
+
+extension AccountsViewController: QRScannerViewControllerDelegate {
+    func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, then handler: EmptyHandler?) {
+        switch qrText.mode {
+        case .address:
+            open(.addContact(mode: .new(address: qrText.address, name: qrText.label)), by: .push)
+        case .algosRequest:
+            guard let address = qrText.address,
+                let amount = qrText.amount else {
+                return
+            }
+            open(.sendAlgosTransactionPreview(account: nil, receiver: .address(address: address, amount: "\(amount)")), by: .push)
+        case .assetRequest:
+            guard let address = qrText.address,
+                let amount = qrText.amount,
+                let assetId = qrText.asset else {
+                return
+            }
+            
+            var asset: AssetDetail?
+            
+            for account in accountsDataSource.accounts {
+                for assetDetail in account.assetDetails where assetDetail.index == "\(assetId)" {
+                    asset = assetDetail
+                    break
+                }
+            }
+            
+            guard let assetDetail = asset else {
+                let assetAlertDraft = AssetAlertDraft(
+                    account: nil,
+                    assetIndex: "\(assetId)",
+                    assetDetail: nil,
+                    title: "asset-support-title".localized,
+                    detail: "asset-support-error".localized,
+                    actionTitle: "title-ok".localized
+                )
+                
+                open(
+                    .assetSupportAlert(assetAlertDraft: assetAlertDraft),
+                    by: .customPresentWithoutNavigationController(
+                        presentationStyle: .overCurrentContext,
+                        transitionStyle: .crossDissolve,
+                        transitioningDelegate: nil
+                    )
+                )
+                return
+            }
+            
+            open(
+                .sendAssetTransactionPreview(
+                    account: nil,
+                    receiver: .address(
+                        address: address,
+                        amount: amount
+                            .assetAmount(fromFraction: assetDetail.fractionDecimals)
+                            .toFractionStringForLabel(fraction: assetDetail.fractionDecimals)
+                    ),
+                    assetDetail: assetDetail,
+                    isMaxTransaction: false
+                ),
+                by: .push
+            )
+        case .mnemonic:
+            break
+        }
+    }
+    
+    func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError, then handler: EmptyHandler?) {
+        displaySimpleAlertWith(title: "title-error".localized, message: "qr-scan-should-scan-valid-qr".localized) { _ in
+            if let handler = handler {
+                handler()
+            }
+        }
     }
 }
 
