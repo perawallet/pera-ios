@@ -9,6 +9,7 @@
 import UIKit
 import SnapKit
 import SVProgressHUD
+import Crypto
 
 protocol SendAssetTransactionPreviewViewControllerDelegate: class {
     func sendAssetTransactionPreviewViewController(
@@ -34,6 +35,7 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
         self.assetDetail = assetDetail
         self.isForcedMaxTransaction = isMaxTransaction
         super.init(account: account, receiver: receiver, configuration: configuration)
+        self.assetFraction = assetDetail.fractionDecimals
     }
     
     override func configureAppearance() {
@@ -41,9 +43,9 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
         configureViewForAsset()
     }
     
-    override func presentAccountList() {
+    override func presentAccountList(isSender: Bool) {
         let accountListViewController = open(
-            .accountList(mode: .amount(assetDetail: assetDetail)),
+            .accountList(mode: isSender ? .transactionSender(assetDetail: assetDetail) : .transactionReceiver(assetDetail: assetDetail)),
             by: .customPresent(
                 presentationStyle: .custom,
                 transitionStyle: nil,
@@ -67,7 +69,7 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
     
     override func sendTransactionPreviewViewDidTapMaxButton(_ sendTransactionPreviewView: SendTransactionPreviewView) {
         sendTransactionPreviewView.amountInputView.inputTextField.text
-            = selectedAccount?.amount(for: assetDetail)?.toDecimalStringForLabel
+            = selectedAccount?.amount(for: assetDetail)?.toFractionStringForLabel(fraction: assetDetail.fractionDecimals)
     }
     
     override func displayTransactionPreview() {
@@ -99,14 +101,27 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
         guard let qrAddress = qrText.address else {
             return
         }
-        sendTransactionPreviewView.transactionReceiverView.state = .address(address: qrAddress, amount: nil)
-        receiver = .address(address: qrAddress, amount: nil)
+        
+        if let amount = qrText.amount {
+            let amountText = amount
+                .assetAmount(fromFraction: assetDetail.fractionDecimals)
+                .toFractionStringForLabel(fraction: assetDetail.fractionDecimals)
+            
+            sendTransactionPreviewView.transactionReceiverView.state = .address(
+                address: qrAddress,
+                amount: amountText
+            )
+            receiver = .address(address: qrAddress, amount: amountText)
+        } else {
+            sendTransactionPreviewView.transactionReceiverView.state = .address(address: qrAddress, amount: nil)
+            receiver = .address(address: qrAddress, amount: nil)
+        }
         
         if let qrAsset = qrText.asset {
             let qrAssetText = "\(qrAsset)"
             
             if !isAccountContainsAsset(qrAssetText) {
-                presentAssetNotSupportedAlert(for: qrAssetText)
+                presentAssetNotSupportedAlert(receiverAddress: qrText.address, for: qrAssetText)
                 
                 if let handler = handler {
                     handler()
@@ -146,11 +161,15 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
         if let assetAmount = account.amount(for: assetDetail) {
             sendTransactionPreviewView.transactionParticipantView.accountSelectionView.detailLabel.text = account.name
             sendTransactionPreviewView.amountInputView.maxAmount = assetAmount
-            sendTransactionPreviewView.transactionParticipantView.assetSelectionView.amountView.amountLabel.text
-                = assetAmount.toDecimalStringForLabel
+            
+            sendTransactionPreviewView.transactionParticipantView.assetSelectionView.set(
+                amount: assetAmount,
+                assetFraction: assetDetail.fractionDecimals
+            )
             
             if isMaxButtonSelected {
-                sendTransactionPreviewView.amountInputView.inputTextField.text = assetAmount.toDecimalStringForLabel
+                sendTransactionPreviewView.amountInputView.inputTextField.text =
+                    assetAmount.toFractionStringForLabel(fraction: assetDetail.fractionDecimals)
             }
         }
     }
@@ -158,6 +177,18 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
 
 extension SendAssetTransactionPreviewViewController {
     private func checkIfAddressIsValidForTransaction(_ address: String) {
+        if !UtilsIsValidAddress(address) {
+            guard let api = api else {
+                return
+            }
+            let pushNotificationController = PushNotificationController(api: api)
+            pushNotificationController.showFeedbackMessage(
+                "title-error".localized,
+                subtitle: "send-algos-receiver-address-validation".localized
+            )
+            return
+        }
+        
         SVProgressHUD.show(withStatus: "title-loading".localized)
         api?.fetchAccount(with: AccountFetchDraft(publicKey: address)) { fetchAccountResponse in
             switch fetchAccountResponse {
@@ -174,10 +205,10 @@ extension SendAssetTransactionPreviewViewController {
                     }) {
                         self.validateTransaction()
                     } else {
-                        self.presentAssetNotSupportedAlert()
+                        self.presentAssetNotSupportedAlert(receiverAddress: address)
                     }
                 } else {
-                    self.presentAssetNotSupportedAlert()
+                    self.presentAssetNotSupportedAlert(receiverAddress: address)
                 }
             case .failure:
                 SVProgressHUD.showError(withStatus: nil)
@@ -186,7 +217,7 @@ extension SendAssetTransactionPreviewViewController {
         }
     }
     
-    private func presentAssetNotSupportedAlert(for assetIndex: String? = nil) {
+    private func presentAssetNotSupportedAlert(receiverAddress: String?, for assetIndex: String? = nil) {
         guard let currentAssetDetailIndex = assetDetail.index else {
             return
         }
@@ -198,6 +229,16 @@ extension SendAssetTransactionPreviewViewController {
             detail: "asset-support-error".localized,
             actionTitle: "title-ok".localized
         )
+        
+        if let receiverAddress = receiverAddress,
+            let senderAddress = selectedAccount?.address {
+            let draft = AssetSupportDraft(
+                sender: senderAddress,
+                receiver: receiverAddress,
+                assetId: assetIndex ?? currentAssetDetailIndex
+            )
+            api?.sendAssetSupportRequest(with: draft)
+        }
         
         self.open(
             .assetSupportAlert(assetAlertDraft: assetAlertDraft),
@@ -211,7 +252,7 @@ extension SendAssetTransactionPreviewViewController {
     
     private func validateTransaction() {
         if let amountText = sendTransactionPreviewView.amountInputView.inputTextField.text,
-            let doubleValue = amountText.doubleForSendSeparator {
+            let doubleValue = amountText.doubleForSendSeparator(with: assetDetail.fractionDecimals) {
             amount = doubleValue
         }
             
@@ -243,7 +284,8 @@ extension SendAssetTransactionPreviewViewController {
         let transaction = AssetTransactionDraft(
             fromAccount: selectedAccount,
             amount: amount,
-            assetIndex: index
+            assetIndex: index,
+            assetDecimalFraction: assetDetail.fractionDecimals
         )
         
         guard let account = getAccount(),
@@ -266,14 +308,17 @@ extension SendAssetTransactionPreviewViewController {
             let assetAmount = selectedAccount.amount(for: assetDetail) {
             sendTransactionPreviewView.transactionParticipantView.accountSelectionView.detailLabel.text = selectedAccount.name
             sendTransactionPreviewView.amountInputView.maxAmount = assetAmount
-            sendTransactionPreviewView.transactionParticipantView.assetSelectionView.amountView.amountLabel.text
-                = assetAmount.toDecimalStringForLabel
+            
+            sendTransactionPreviewView.transactionParticipantView.assetSelectionView.set(
+                amount: assetAmount,
+                assetFraction: assetDetail.fractionDecimals
+            )
         }
         
         if isForcedMaxTransaction {
             sendTransactionPreviewView.amountInputView.algosImageView.removeFromSuperview()
             sendTransactionPreviewView.amountInputView.inputTextField.text
-                = selectedAccount?.amount(for: assetDetail)?.toDecimalStringForLabel
+                = selectedAccount?.amount(for: assetDetail)?.toFractionStringForLabel(fraction: assetDetail.fractionDecimals)
             sendTransactionPreviewView.amountInputView.set(enabled: false)
         }
         
@@ -288,7 +333,8 @@ extension SendAssetTransactionPreviewViewController {
             if let sendAmount = amount,
                 let amountValue = Double(sendAmount) {
                 self.amount = amountValue
-                sendTransactionPreviewView.amountInputView.inputTextField.text = self.amount.toDecimalStringForLabel
+                sendTransactionPreviewView.amountInputView.inputTextField.text
+                    = self.amount.toFractionStringForLabel(fraction: assetDetail.fractionDecimals)
             }
             
             sendTransactionPreviewView.transactionReceiverView.state = receiver

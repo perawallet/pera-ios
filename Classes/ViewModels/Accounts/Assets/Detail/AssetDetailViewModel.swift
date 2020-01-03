@@ -29,13 +29,19 @@ extension AssetDetailViewModel {
             view.rewardTotalAmountView.removeFromSuperview()
             view.assetNameLabel.attributedText = assetDetail.assetDisplayName(
                 with: UIFont.font(.avenir, withWeight: .demiBold(size: 14.0)),
-                isIndexIncluded: true
+                isIndexIncluded: true,
+                shouldDisplayIndexWithName: false
             )
+            
+            view.assetIdLabel.isHidden = false
+            if let id = assetDetail.index {
+                view.assetIdLabel.text = "ID \(id)"
+            }
             
             guard let amount = account.amount(for: assetDetail) else {
                 return
             }
-            view.algosAmountLabel.text = amount.toDecimalStringForLabel
+            view.algosAmountLabel.text = amount.toFractionStringForLabel(fraction: assetDetail.fractionDecimals)
         } else {
             view.algosAmountLabel.text = account.amount.toAlgos.toDecimalStringForLabel
             
@@ -49,7 +55,7 @@ extension AssetDetailViewModel {
             guard let amount = account.amount(for: assetDetail) else {
                 return
             }
-            view.algosAmountLabel.text = amount.toDecimalStringForLabel
+            view.algosAmountLabel.text = amount.toFractionStringForLabel(fraction: assetDetail.fractionDecimals)
         } else {
             view.algosAmountLabel.text = account.amount.toAlgos.toDecimalStringForLabel
         }
@@ -86,7 +92,7 @@ extension AssetDetailViewModel {
             pendingTransactionView.pendingSpinnerView.show()
         }
         
-        if assetDetail != nil {
+        if let assetDetail = assetDetail {
             guard let assetTransaction = transaction.assetTransfer else {
                 return
             }
@@ -94,15 +100,21 @@ extension AssetDetailViewModel {
             if assetTransaction.receiverAddress == account.address && assetTransaction.amount == 0 && transaction.type == "axfer" {
                 view.titleLabel.text = "asset-creation-fee-title".localized
                 view.subtitleLabel.isHidden = true
-                view.transactionAmountView.mode = .negative(transaction.fee.toAlgos)
+                view.transactionAmountView.mode = .negative(amount: transaction.fee.toAlgos)
             } else if assetTransaction.receiverAddress == account.address {
                 configure(view, with: contact, and: assetTransaction.receiverAddress)
                 view.transactionAmountView.algoIconImageView.removeFromSuperview()
-                view.transactionAmountView.mode = .positive(Double(assetTransaction.amount))
+                view.transactionAmountView.mode = .positive(
+                    amount: assetTransaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
+                    assetFraction: assetDetail.fractionDecimals
+                )
             } else {
                 configure(view, with: contact, and: assetTransaction.receiverAddress)
                 view.transactionAmountView.algoIconImageView.removeFromSuperview()
-                view.transactionAmountView.mode = .negative(Double(assetTransaction.amount))
+                view.transactionAmountView.mode = .negative(
+                    amount: assetTransaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
+                    assetFraction: assetDetail.fractionDecimals
+                )
             }
         } else {
             guard let payment = transaction.payment else {
@@ -110,17 +122,17 @@ extension AssetDetailViewModel {
                     assetTransaction.receiverAddress == account.address && assetTransaction.amount == 0 && transaction.type == "axfer" {
                     view.titleLabel.text = "asset-creation-fee-title".localized
                     view.subtitleLabel.isHidden = true
-                    view.transactionAmountView.mode = .negative(transaction.fee.toAlgos)
+                    view.transactionAmountView.mode = .negative(amount: transaction.fee.toAlgos)
                 }
                 return
             }
             
             if payment.toAddress == account.address {
                 configure(view, with: contact, and: transaction.from)
-                view.transactionAmountView.mode = .positive(payment.amountForTransaction().toAlgos)
+                view.transactionAmountView.mode = .positive(amount: payment.amountForTransaction().toAlgos)
             } else {
                 configure(view, with: contact, and: payment.toAddress)
-                view.transactionAmountView.mode = .negative(payment.amountForTransaction().toAlgos)
+                view.transactionAmountView.mode = .negative(amount: payment.amountForTransaction().toAlgos)
             }
         }
         

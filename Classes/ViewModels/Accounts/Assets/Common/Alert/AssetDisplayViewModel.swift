@@ -17,7 +17,10 @@ class AssetSupportAlertViewModel {
     }
     
     func configure(_ view: AssetCancellableSupportAlertView, with draft: AssetAlertDraft) {
+        view.titleLabel.text = draft.title
+        view.assetDisplayView.assetIndexLabel.text = draft.assetIndex
         configure(view.assetDisplayView, with: draft)
+        view.detailLabel.text = draft.detail
     }
     
     func configure(_ view: AssetDisplayView, with draft: AssetAlertDraft) {

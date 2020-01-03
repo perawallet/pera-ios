@@ -19,6 +19,7 @@ class AssetDetail: Model {
     let reserveAddress: String?
     let freezeAddress: String?
     let clawBackAddress: String?
+    let fractionDecimals: Int
     
     var index: String?
     var isRemoved: Bool = false
@@ -37,6 +38,7 @@ class AssetDetail: Model {
         reserveAddress = try? container.decodeIfPresent(String.self, forKey: .reserveAddress)
         freezeAddress = try? container.decodeIfPresent(String.self, forKey: .freezeAddress)
         clawBackAddress = try container.decodeIfPresent(String.self, forKey: .clawBackAddress)
+        fractionDecimals = try container.decodeIfPresent(Int.self, forKey: .fractionDecimals) ?? 0
         
         index = try? container.decodeIfPresent(String.self, forKey: .index)
         isRemoved = try container.decodeIfPresent(Bool.self, forKey: .isRemoved) ?? false
@@ -45,7 +47,7 @@ class AssetDetail: Model {
 }
 
 extension AssetDetail {
-    enum CodingKeys: String, CodingKey {
+    private enum CodingKeys: String, CodingKey {
         case creator = "creator"
         case total = "total"
         case isDefaultFrozen = "defaultfrozen"
@@ -59,22 +61,42 @@ extension AssetDetail {
         case index = "index"
         case isRemoved = "isRemoved"
         case isRecentlyAdded = "isRecentlyAdded"
+        case fractionDecimals = "decimals"
     }
 }
 
 extension AssetDetail {
     func assetDisplayName(
         with font: UIFont = UIFont.font(.overpass, withWeight: .semiBold(size: 13.0)),
-        isIndexIncluded: Bool = false
+        isIndexIncluded: Bool = true,
+        shouldDisplayIndexWithName: Bool = true
     ) -> NSAttributedString? {
+        guard let index = index else {
+            return nil
+        }
+        
         if let name = assetName, !name.isEmptyOrBlank,
             let code = unitName, !code.isEmptyOrBlank {
             let nameText = name.attributed([.textColor(SharedColors.black), .font(font)])
             let codeText = " (\(code))".attributed([.textColor(SharedColors.purple), .font(font)])
+            
+            if shouldDisplayIndexWithName {
+                let indexText = " \(index)".attributed([.textColor(SharedColors.darkGray), .font(font)])
+                return nameText + codeText + indexText
+            }
+            
             return nameText + codeText
         } else if let name = assetName, !name.isEmptyOrBlank {
+            if shouldDisplayIndexWithName {
+                let indexText = " \(index)".attributed([.textColor(SharedColors.darkGray), .font(font)])
+                return name.attributed([.textColor(SharedColors.black), .font(font)]) + indexText
+            }
             return name.attributed([.textColor(SharedColors.black), .font(font)])
         } else if let code = unitName, !code.isEmptyOrBlank {
+            if shouldDisplayIndexWithName {
+                let indexText = " \(index)".attributed([.textColor(SharedColors.darkGray), .font(font)])
+                return "(\(code))".attributed([.textColor(SharedColors.purple), .font(font)]) + indexText
+            }
             return "(\(code))".attributed([.textColor(SharedColors.purple), .font(font)])
         } else {
             let unknownText = "title-unknown".localized.attributed([
@@ -82,10 +104,6 @@ extension AssetDetail {
                  .font(UIFont.font(.avenir, withWeight: .demiBoldItalic(size: 13.0)))
             ])
             if !isIndexIncluded {
-                return unknownText
-            }
-            
-            guard let index = index else {
                 return unknownText
             }
             

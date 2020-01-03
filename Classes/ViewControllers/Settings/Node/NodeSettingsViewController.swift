@@ -155,9 +155,7 @@ extension NodeSettingsViewController: UICollectionViewDataSource {
             }
             
             viewModel.configureDefaultNode(cell, enabled: session?.isDefaultNodeActive() ?? false, for: indexPath)
-            
             cell.contextView.toggle.isEnabled = numberOfActiveNodes() > 0
-            
             return cell
         } else {
             guard let cell = collectionView.dequeueReusableCell(
@@ -168,9 +166,7 @@ extension NodeSettingsViewController: UICollectionViewDataSource {
             
             if indexPath.item < nodes.count + 1 {
                 let node = nodes[indexPath.item - 1]
-                
                 viewModel.configureToggle(cell, with: node, for: indexPath)
-                
                 viewModel.delegate = self
                 
                 if node.isActive {
@@ -201,16 +197,19 @@ extension NodeSettingsViewController: NodeSettingsViewModelDelegate {
             return
         }
         
-        if let activeNode = activeNode() {
-            activeNode.update(entity: Node.entityName, with: ["isActive": NSNumber(value: 0)])
-        }
-        
         if indexPath.item == 0 {
             session?.setDefaultNodeActive(value)
+            
+            if value {
+                nodes.forEach { $0.update(entity: Node.entityName, with: ["isActive": NSNumber(value: 0)]) }
+            }
         } else {
             let node = nodes[indexPath.item - 1]
-            
             node.update(entity: Node.entityName, with: ["isActive": NSNumber(value: value)])
+            
+            if value {
+                session?.setDefaultNodeActive(false)
+            }
         }
         
         checkNodesHealth()
@@ -226,18 +225,16 @@ extension NodeSettingsViewController: NodeSettingsViewModelDelegate {
 }
 
 extension NodeSettingsViewController {
-    fileprivate func checkNodesHealth() {
+    private func checkNodesHealth() {
         SVProgressHUD.show(withStatus: "title-loading".localized)
         self.view.isUserInteractionEnabled = false
         canTapBarButton = false
         
         nodeManager?.checkNodes { isHealthy in
-            
             if isHealthy {
                 SVProgressHUD.showSuccess(withStatus: "title-done-lowercased".localized)
                 
                 SVProgressHUD.dismiss(withDelay: 1.0) {
-                    
                     self.canTapBarButton = true
                     self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
                     
@@ -246,7 +243,6 @@ extension NodeSettingsViewController {
                 }
             } else {
                 SVProgressHUD.dismiss {
-                    
                     self.canTapBarButton = false
                     self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
                     
@@ -262,9 +258,14 @@ extension NodeSettingsViewController {
         }
     }
     
-    fileprivate func updateNodes() {
+    private func updateNodes() {
         for cell in nodeSettingsView.collectionView.visibleCells {
             if let defaultNodeCell = cell as? ToggleCell {
+                guard let indexPath = defaultNodeCell.contextView.indexPath else {
+                    continue
+                }
+                
+                viewModel.configureDefaultNode(defaultNodeCell, enabled: session?.isDefaultNodeActive() ?? false, for: indexPath)
                 defaultNodeCell.contextView.toggle.isEnabled = numberOfActiveNodes() > 0
             } else if let nodeCell = cell as? SettingsToggleCell {
                 guard let indexPath = nodeCell.contextView.indexPath else {
@@ -272,6 +273,8 @@ extension NodeSettingsViewController {
                 }
                 
                 let node = nodes[indexPath.item - 1]
+                
+                viewModel.configureToggle(nodeCell, with: node, for: indexPath)
                 
                 if node.isActive {
                     nodeCell.contextView.toggle.isEnabled = (session?.isDefaultNodeActive() ?? false) || numberOfActiveNodes() > 1

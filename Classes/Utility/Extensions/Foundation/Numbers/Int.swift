@@ -12,10 +12,18 @@ let algosInMicroAlgos = 1000000
 let maximumMicroAlgos = Int64.max / Int64(algosInMicroAlgos)
 let minimumFee: UInt64 = 1000
 let minimumTransactionMicroAlgosLimit = 100000
+let algosFraction = 6
 
 extension Int {
     var toAlgos: Double {
         return Double(self) / Double(algosInMicroAlgos)
+    }
+    
+    func assetAmount(fromFraction decimal: Int) -> Double {
+        if decimal == 0 {
+            return Double(self)
+        }
+        return Double(self) / (pow(10, decimal) as NSDecimalNumber).doubleValue
     }
     
     func convertToDollars(withSymbol: Bool = true) -> String {
@@ -41,13 +49,31 @@ extension Int64 {
         return Double(self) / Double(algosInMicroAlgos)
     }
     
+    func assetAmount(fromFraction decimal: Int) -> Double {
+        if decimal == 0 {
+            return Double(self)
+        }
+        return Double(self) / (pow(10, decimal) as NSDecimalNumber).doubleValue
+    }
+    
     var toDecimalStringForLabel: String? {
         return Formatter.separatorForAlgosLabel.string(from: NSNumber(value: self))
+    }
+    
+    func toFractionStringForLabel(fraction: Int) -> String? {
+        return Formatter.separatorWith(fraction: fraction).string(from: NSNumber(value: self))
     }
 }
 
 extension UInt64 {
     var toAlgos: Double {
         return Double(self) / Double(algosInMicroAlgos)
+    }
+    
+    func assetAmount(fromFraction decimal: Int) -> Double {
+        if decimal == 0 {
+            return Double(self)
+        }
+        return Double(self) / (pow(10, decimal) as NSDecimalNumber).doubleValue
     }
 }

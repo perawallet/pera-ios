@@ -14,12 +14,17 @@ class RequestTransactionViewController: BaseScrollViewController {
         if !transaction.isAlgoTransaction,
             let assetIndex = transaction.assetDetail?.index {
             return RequestTransactionView(
+                inputFieldFraction: transaction.assetDetail?.fractionDecimals ?? algosFraction,
                 address: transaction.fromAccount.address,
-                amount: transaction.amount.toMicroAlgos,
+                amount: transaction.amount.toFraction(of: transaction.assetDetail?.fractionDecimals ?? algosFraction),
                 assetIndex: Int(assetIndex)
             )
         } else {
-            return RequestTransactionView(address: transaction.fromAccount.address, amount: transaction.amount.toMicroAlgos)
+            return RequestTransactionView(
+                inputFieldFraction: algosFraction,
+                address: transaction.fromAccount.address,
+                amount: transaction.amount.toMicroAlgos
+            )
         }
     }()
     
@@ -78,12 +83,14 @@ extension RequestTransactionViewController {
         requestTransactionView.transactionParticipantView.accountSelectionView.amountView.amountLabel.textColor = SharedColors.black
         requestTransactionView.transactionParticipantView.accountSelectionView.amountView.algoIconImageView.removeFromSuperview()
         requestTransactionView.transactionParticipantView.accountSelectionView.detailLabel.text = transaction.fromAccount.name
-        requestTransactionView.amountInputView.inputTextField.text = transaction.amount.toDecimalStringForLabel
         requestTransactionView.amountInputView.algosImageView.removeFromSuperview()
         
         guard let assetDetail = transaction.assetDetail else {
             return
         }
+        
+        requestTransactionView.amountInputView.inputTextField.text =
+            transaction.amount.toFractionStringForLabel(fraction: assetDetail.fractionDecimals)
         
         title = "\(assetDetail.getDisplayNames().0) " + "request-title".localized
         requestTransactionView.transactionParticipantView.assetSelectionView.detailLabel.attributedText = assetDetail.assetDisplayName()

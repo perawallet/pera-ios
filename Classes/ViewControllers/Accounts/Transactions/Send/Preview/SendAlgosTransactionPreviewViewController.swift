@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Crypto
 import SVProgressHUD
 
 class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewController {
@@ -16,9 +17,9 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
         configureViewForAlgos()
     }
     
-    override func presentAccountList() {
+    override func presentAccountList(isSender: Bool) {
         let accountListViewController = open(
-            .accountList(mode: .amount(assetDetail: nil)),
+            .accountList(mode: isSender ? .transactionSender(assetDetail: nil) : .transactionReceiver(assetDetail: nil)),
             by: .customPresent(
                 presentationStyle: .custom,
                 transitionStyle: nil,
@@ -48,7 +49,7 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
         }
             
         if let algosAmountText = sendTransactionPreviewView.amountInputView.inputTextField.text,
-            let doubleValue = algosAmountText.doubleForSendSeparator {
+            let doubleValue = algosAmountText.doubleForSendSeparator(with: algosFraction) {
             amount = doubleValue
         }
             
@@ -124,7 +125,7 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
 
 extension SendAlgosTransactionPreviewViewController {
     private func configureViewForAlgos() {
-        title = "request-algos-title".localized
+        title = "send-algos-title".localized
         
         sendTransactionPreviewView.transactionParticipantView.assetSelectionView.detailLabel.text = "asset-algos-title".localized
         sendTransactionPreviewView.transactionParticipantView.assetSelectionView.amountView.amountLabel.textColor =
@@ -211,6 +212,19 @@ extension SendAlgosTransactionPreviewViewController {
             }
                    
             receiverAddress = receiverAddress.trimmingCharacters(in: .whitespacesAndNewlines)
+            
+            if !UtilsIsValidAddress(receiverAddress) {
+                guard let api = api else {
+                    return
+                }
+                let pushNotificationController = PushNotificationController(api: api)
+                pushNotificationController.showFeedbackMessage(
+                    "title-error".localized,
+                    subtitle: "send-algos-receiver-address-validation".localized
+                )
+                return
+            }
+            
             let receiverFetchDraft = AccountFetchDraft(publicKey: receiverAddress)
                    
             SVProgressHUD.show(withStatus: "title-loading".localized)

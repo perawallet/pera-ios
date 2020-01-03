@@ -17,4 +17,5 @@ struct AssetTransactionDraft: Codable {
     var fee: Int64?
     var closeAssetsTo: String?
     var identifier: String?
+    var assetDecimalFraction = 0
 }

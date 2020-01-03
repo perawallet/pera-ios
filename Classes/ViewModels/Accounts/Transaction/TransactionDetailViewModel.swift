@@ -22,7 +22,7 @@ class TransactionDetailViewModel {
         view.transactionOpponentView.titleLabel.text = "send-algos-from".localized
         view.userAccountView.explanationLabel.text = "send-algos-to".localized
         view.transactionIdView.detailLabel.text = transaction.id.identifier
-        view.feeView.algosAmountView.mode = .normal(transaction.fee.toAlgos)
+        view.feeView.algosAmountView.mode = .normal(amount: transaction.fee.toAlgos)
         
         if let round = transaction.round {
             view.lastRoundView.detailLabel.text = "\(round)"
@@ -36,11 +36,30 @@ class TransactionDetailViewModel {
         }
         
         if let assetTransaction = transaction.assetTransfer,
-            assetDetail != nil {
+            let assetDetail = assetDetail {
             view.transactionAmountView.algosAmountView.algoIconImageView.removeFromSuperview()
-            view.transactionAmountView.algosAmountView.mode = .positive(Double(assetTransaction.amount))
+            
+            let amount = assetTransaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals)
+            
+            if amount == 0 {
+                view.transactionAmountView.algosAmountView.mode = .normal(
+                    amount: amount,
+                    assetFraction: assetDetail.fractionDecimals
+                )
+            } else {
+                view.transactionAmountView.algosAmountView.mode = .positive(
+                    amount: amount,
+                    assetFraction: assetDetail.fractionDecimals
+                )
+            }
         } else if let payment = transaction.payment {
-            view.transactionAmountView.algosAmountView.mode = .positive(payment.amountForTransaction().toAlgos)
+            let amount = payment.amountForTransaction().toAlgos
+            
+            if amount == 0 {
+                view.transactionAmountView.algosAmountView.mode = .normal(amount: payment.amountForTransaction().toAlgos)
+            } else {
+                view.transactionAmountView.algosAmountView.mode = .positive(amount: payment.amountForTransaction().toAlgos)
+            }
             
             if let rewards = payment.rewards, rewards > 0 {
                 view.rewardView.isHidden = false
@@ -62,14 +81,14 @@ class TransactionDetailViewModel {
         view.userAccountView.explanationLabel.text = "send-algos-from".localized
         view.transactionOpponentView.titleLabel.text = "send-algos-to".localized
         view.transactionIdView.detailLabel.text = transaction.id.identifier
-        view.feeView.algosAmountView.mode = .normal(transaction.fee.toAlgos)
+        view.feeView.algosAmountView.mode = .normal(amount: transaction.fee.toAlgos)
         
         if let round = transaction.round {
             view.lastRoundView.detailLabel.text = "\(round)"
         }
         
         if let assetTransaction = transaction.assetTransfer,
-            assetDetail != nil {
+            let assetDetail = assetDetail {
             if let contact = transaction.contact {
                 view.transactionOpponentView.state = .contact(contact)
                 view.transactionOpponentView.actionMode = .qrView
@@ -78,7 +97,20 @@ class TransactionDetailViewModel {
             }
             
             view.transactionAmountView.algosAmountView.algoIconImageView.removeFromSuperview()
-            view.transactionAmountView.algosAmountView.mode = .negative(Double(assetTransaction.amount))
+            
+            let amount = assetTransaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals)
+            
+            if amount == 0 {
+                view.transactionAmountView.algosAmountView.mode = .normal(
+                    amount: amount,
+                    assetFraction: assetDetail.fractionDecimals
+                )
+            } else {
+                view.transactionAmountView.algosAmountView.mode = .negative(
+                    amount: amount,
+                    assetFraction: assetDetail.fractionDecimals
+                )
+            }
         } else if let payment = transaction.payment {
             if let contact = transaction.contact {
                 view.transactionOpponentView.state = .contact(contact)
@@ -87,7 +119,13 @@ class TransactionDetailViewModel {
                 view.transactionOpponentView.state = .address(address: payment.toAddress, amount: nil)
             }
             
-            view.transactionAmountView.algosAmountView.mode = .negative(payment.amountForTransaction().toAlgos)
+            let amount = payment.amountForTransaction().toAlgos
+            
+            if amount == 0 {
+                view.transactionAmountView.algosAmountView.mode = .normal(amount: payment.amountForTransaction().toAlgos)
+            } else {
+                view.transactionAmountView.algosAmountView.mode = .negative(amount: payment.amountForTransaction().toAlgos)
+            }
         }
         
         if let rewards = transaction.fromRewards, rewards > 0 {

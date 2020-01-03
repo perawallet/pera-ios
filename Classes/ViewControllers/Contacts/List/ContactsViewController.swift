@@ -50,7 +50,7 @@ class ContactsViewController: BaseViewController {
             controller?.delegate = self
         }
         
-        rightBarButtonItems = [addBarButtonItem]
+        leftBarButtonItems = [addBarButtonItem]
     }
     
     override func setListeners() {

@@ -41,11 +41,11 @@ class RequestTransactionView: RequestTransactionPreviewView {
         return button
     }()
     
-    init(address: String, amount: Int64, assetIndex: Int? = nil) {
+    init(inputFieldFraction: Int, address: String, amount: Int64, assetIndex: Int? = nil) {
         self.address = address
         self.amount = amount
         self.assetIndex = assetIndex
-        super.init(frame: .zero)
+        super.init(inputFieldFraction: inputFieldFraction)
     }
     
     override func configureAppearance() {
