@@ -130,6 +130,7 @@ extension SendAlgosTransactionPreviewViewController {
         sendTransactionPreviewView.transactionParticipantView.assetSelectionView.detailLabel.text = "asset-algos-title".localized
         sendTransactionPreviewView.transactionParticipantView.assetSelectionView.amountView.amountLabel.textColor =
             SharedColors.turquois
+        sendTransactionPreviewView.transactionParticipantView.assetSelectionView.verifiedImageView.isHidden = false
         sendTransactionPreviewView.transactionParticipantView.assetSelectionView.amountView.algoIconImageView.tintColor =
             SharedColors.turquois
         updateSelectedAccountAppearance()

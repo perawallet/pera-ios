@@ -16,6 +16,7 @@ class PendingAssetView: BaseView {
     
     private(set) lazy var assetNameView: AssetNameView = {
         let view = AssetNameView()
+        view.idLabel.removeFromSuperview()
         view.nameLabel.alpha = 0.4
         view.codeLabel.alpha = 0.4
         return view

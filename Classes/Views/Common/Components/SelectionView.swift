@@ -36,6 +36,12 @@ class SelectionView: BaseView {
             .withLine(.single)
     }()
     
+    private(set) lazy var verifiedImageView: UIImageView = {
+        let imageView = UIImageView(image: img("icon-verified"))
+        imageView.isHidden = true
+        return imageView
+    }()
+    
     private(set) lazy var amountView: AlgosAmountView = {
         let amountView = AlgosAmountView()
         amountView.signLabel.isHidden = true
@@ -57,6 +63,7 @@ class SelectionView: BaseView {
         setupRightInputAccessoryButtonLayout()
         setupAmountViewLayout()
         setupDetailLabelLayout()
+        setupVerifiedImageViewLayout()
     }
 }
 
@@ -116,7 +123,17 @@ extension SelectionView {
         detailLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(layout.current.defaultInset)
             make.top.bottom.equalToSuperview().inset(layout.current.detailVerticalInset)
+        }
+    }
+    
+    private func setupVerifiedImageViewLayout() {
+        containerView.addSubview(verifiedImageView)
+        
+        verifiedImageView.snp.makeConstraints { make in
+            make.leading.equalTo(detailLabel.snp.trailing).offset(layout.current.imageViewOffset)
+            make.centerY.equalTo(detailLabel)
             make.trailing.lessThanOrEqualTo(amountView.snp.leading).offset(layout.current.nameTrailingInset)
+            make.size.equalTo(layout.current.imageSize)
         }
     }
 }
@@ -153,6 +170,8 @@ extension SelectionView {
         let nameTrailingInset: CGFloat = -5.0
         let buttonTopInset: CGFloat = 13.0
         let buttonWidth: CGFloat = 25.0
+        let imageSize = CGSize(width: 13.0, height: 13.0)
+        let imageViewOffset: CGFloat = 6.0
     }
 }
 

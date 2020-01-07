@@ -29,13 +29,17 @@ class AssetNameView: BaseView {
     }()
     
     private(set) lazy var idLabel: UILabel = {
-        let label = UILabel()
+        UILabel()
             .withFont(UIFont.font(.overpass, withWeight: .bold(size: 13.0)))
             .withTextColor(SharedColors.darkGray)
             .withLine(.single)
             .withAlignment(.left)
-        label.isHidden = true
-        return label
+    }()
+    
+    private(set) lazy var verifiedImageView: UIImageView = {
+        let imageView = UIImageView(image: img("icon-verified"))
+        imageView.isHidden = true
+        return imageView
     }()
     
     override func configureAppearance() {
@@ -46,6 +50,7 @@ class AssetNameView: BaseView {
         setupNameLabelLayout()
         setupCodeLabelLayout()
         setupIdLabelLayout()
+        setupVerifiedImageViewLayout()
     }
 }
 
@@ -81,7 +86,19 @@ extension AssetNameView {
         
         idLabel.snp.makeConstraints { make in
             make.leading.equalTo(codeLabel.snp.trailing).offset(layout.current.codeLabelOffset)
-            make.trailing.top.bottom.equalToSuperview()
+            make.top.bottom.equalToSuperview()
+        }
+    }
+    
+    private func setupVerifiedImageViewLayout() {
+        addSubview(verifiedImageView)
+        
+        verifiedImageView.snp.makeConstraints { make in
+            make.leading.equalTo(idLabel.snp.trailing).offset(layout.current.imageViewOffset)
+            make.leading.equalTo(codeLabel.snp.trailing).offset(layout.current.imageViewOffset).priority(.low)
+            make.centerY.equalToSuperview()
+            make.trailing.equalToSuperview()
+            make.size.equalTo(layout.current.imageSize)
         }
     }
 }
@@ -100,11 +117,15 @@ extension AssetNameView {
         nameLabel.text = firstDisplayName
         codeLabel.text = secondDisplayName
         idLabel.text = assetDetail.index
+        
+        verifiedImageView.isHidden = !assetDetail.isVerified
     }
 }
 
 extension AssetNameView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let codeLabelOffset: CGFloat = 2.0
+        let imageSize = CGSize(width: 13.0, height: 13.0)
+        let imageViewOffset: CGFloat = 6.0
     }
 }

@@ -18,4 +18,5 @@ struct AssetTransactionDraft: Codable {
     var closeAssetsTo: String?
     var identifier: String?
     var assetDecimalFraction = 0
+    var isVerified = false
 }

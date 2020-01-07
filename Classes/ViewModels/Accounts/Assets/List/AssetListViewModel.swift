@@ -13,6 +13,7 @@ class AssetListViewModel {
         if indexPath.item == 0 {
             cell.contextView.assetNameView.nameLabel.text = "asset-algos-title".localized
             cell.contextView.detailLabel.text = account.amount.toAlgos.toDecimalStringForLabel
+            cell.contextView.assetNameView.verifiedImageView.isHidden = false
         } else {
             let assetDetail = account.assetDetails[indexPath.item - 1]
             cell.contextView.assetNameView.setAssetName(for: assetDetail)

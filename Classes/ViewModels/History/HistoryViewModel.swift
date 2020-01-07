@@ -15,9 +15,11 @@ class HistoryViewModel {
     
     func configureForAlgos(_ view: HistoryView) {
         view.assetSelectionView.detailLabel.text = "asset-algos-title".localized
+        view.assetSelectionView.verifiedImageView.isHidden = false
     }
 
     func configure(_ view: HistoryView, with assetDetail: AssetDetail) {
         view.assetSelectionView.detailLabel.attributedText = assetDetail.assetDisplayName()
+        view.assetSelectionView.verifiedImageView.isHidden = !assetDetail.isVerified
     }
 }

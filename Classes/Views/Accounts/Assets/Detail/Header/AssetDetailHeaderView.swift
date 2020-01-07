@@ -62,6 +62,12 @@ class AssetDetailHeaderView: BaseView {
             .withText("accounts-algos-available-title".localized)
     }()
     
+    private(set) lazy var verifiedImageView: UIImageView = {
+        let imageView = UIImageView(image: img("icon-verified"))
+        imageView.isHidden = true
+        return imageView
+    }()
+    
     private(set) lazy var algosAmountLabel: UILabel = {
         let label = UILabel()
             .withAlignment(.left)
@@ -172,6 +178,7 @@ class AssetDetailHeaderView: BaseView {
         setupContainerViewLayout()
         setupDollarValueLabelLayout()
         setupAssetNameLabelLayout()
+        setupVerifiedImageViewLayout()
         setupAmountLabelLayout()
         setupDollarImageViewLayout()
         setupDollarAmountLabelLayout()
@@ -209,6 +216,16 @@ extension AssetDetailHeaderView {
         assetNameLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(layout.current.horizontalInset)
             make.top.equalToSuperview().inset(layout.current.availableTitleInset).priority(.low)
+        }
+    }
+    
+    private func setupVerifiedImageViewLayout() {
+        addSubview(verifiedImageView)
+        
+        verifiedImageView.snp.makeConstraints { make in
+            make.leading.equalTo(assetNameLabel.snp.trailing).offset(layout.current.imageViewOffset)
+            make.centerY.equalTo(assetNameLabel)
+            make.size.equalTo(layout.current.imageSize)
         }
     }
 
@@ -334,6 +351,8 @@ extension AssetDetailHeaderView {
         let amountLabelTopInset: CGFloat = -10.0
         let amountLabelLeadingInset: CGFloat = 6.0
         let buttonTopInset: CGFloat = 18.0
+        let imageSize = CGSize(width: 13.0, height: 13.0)
+        let imageViewOffset: CGFloat = 6.0
     }
 }
 

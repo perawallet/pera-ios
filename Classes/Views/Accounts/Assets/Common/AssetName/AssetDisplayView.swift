@@ -24,6 +24,12 @@ class AssetDisplayView: BaseView {
             .withTextColor(SharedColors.darkGray)
     }()
     
+    private(set) lazy var verifiedImageView: UIImageView = {
+        let imageView = UIImageView(image: img("icon-verified"))
+        imageView.isHidden = true
+        return imageView
+    }()
+    
     private lazy var copyButton: UIButton = {
         UIButton(type: .custom).withImage(img("icon-copy"))
     }()
@@ -60,6 +66,7 @@ class AssetDisplayView: BaseView {
     override func prepareLayout() {
         setupAssetIndexLabelLayout()
         setupCopyButtonLayout()
+        setupVerifiedImageViewLayout()
         setupSeparatorViewLayout()
         setupAssetCodeLabelLayout()
         setupAssetNameLabelLayout()
@@ -94,6 +101,15 @@ extension AssetDisplayView {
         copyButton.snp.makeConstraints { make in
             make.trailing.top.equalToSuperview()
             make.size.equalTo(layout.current.copyButtonSize)
+        }
+    }
+    
+    private func setupVerifiedImageViewLayout() {
+        addSubview(verifiedImageView)
+        
+        verifiedImageView.snp.makeConstraints { make in
+            make.leading.top.equalToSuperview().inset(layout.current.imageViewOffset)
+            make.size.equalTo(layout.current.imageSize)
         }
     }
     
@@ -139,6 +155,8 @@ extension AssetDisplayView {
         let nameTopInset: CGFloat = 5.0
         let codeVerticalInset: CGFloat = 15.0
         let bottomInset: CGFloat = 13.0
+        let imageSize = CGSize(width: 13.0, height: 13.0)
+        let imageViewOffset: CGFloat = 10.0
     }
 }
 

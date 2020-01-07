@@ -18,11 +18,7 @@ class AssetActionableView: BaseView {
     
     weak var delegate: AssetActionableViewDelegate?
     
-    private(set) lazy var assetNameView: AssetNameView = {
-        let view = AssetNameView()
-        view.idLabel.isHidden = false
-        return view
-    }()
+    private(set) lazy var assetNameView = AssetNameView()
     
     private(set) lazy var actionButton: UIButton = {
         UIButton(type: .custom)

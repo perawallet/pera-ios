@@ -40,6 +40,8 @@ class RequestTransactionViewController: BaseScrollViewController {
     override func configureAppearance() {
         super.configureAppearance()
         
+        requestTransactionView.transactionParticipantView.accountSelectionView.set(enabled: false)
+        
         if transaction.isAlgoTransaction {
             configureViewForAlgos()
         } else {
@@ -77,6 +79,7 @@ extension RequestTransactionViewController {
             SharedColors.turquois
         requestTransactionView.amountInputView.inputTextField.text = transaction.amount.toDecimalStringForLabel
         requestTransactionView.transactionParticipantView.assetSelectionView.detailLabel.text = "asset-algos-title".localized
+        requestTransactionView.transactionParticipantView.assetSelectionView.verifiedImageView.isHidden = false
     }
     
     private func configureViewForAssets() {
@@ -89,6 +92,7 @@ extension RequestTransactionViewController {
             return
         }
         
+        requestTransactionView.transactionParticipantView.assetSelectionView.verifiedImageView.isHidden = !assetDetail.isVerified
         requestTransactionView.amountInputView.inputTextField.text =
             transaction.amount.toFractionStringForLabel(fraction: assetDetail.fractionDecimals)
         
@@ -99,12 +103,11 @@ extension RequestTransactionViewController {
 
 extension RequestTransactionViewController: RequestTransactionViewDelegate {
     func requestTransactionViewDidTapShareButton(_ requestTransactionView: RequestTransactionView) {
-        guard let qrImage = requestTransactionView.qrView.imageView.image,
-            let shareUrl = URL(string: requestTransactionView.qrView.qrText.qrText()) else {
-                return
+        guard let shareUrl = URL(string: requestTransactionView.qrView.qrText.qrText()) else {
+            return
         }
         
-        let sharedItem: [Any] = [shareUrl, qrImage]
+        let sharedItem = [shareUrl]
         let activityViewController = UIActivityViewController(activityItems: sharedItem, applicationActivities: nil)
         activityViewController.excludedActivityTypes = [UIActivity.ActivityType.addToReadingList]
         navigationController?.present(activityViewController, animated: true, completion: nil)

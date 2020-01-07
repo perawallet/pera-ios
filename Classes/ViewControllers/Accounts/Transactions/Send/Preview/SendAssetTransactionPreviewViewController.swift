@@ -284,7 +284,8 @@ extension SendAssetTransactionPreviewViewController {
             fromAccount: selectedAccount,
             amount: amount,
             assetIndex: index,
-            assetDecimalFraction: assetDetail.fractionDecimals
+            assetDecimalFraction: assetDetail.fractionDecimals,
+            isVerified: assetDetail.isVerified
         )
         
         guard let account = getAccount(),
@@ -302,6 +303,7 @@ extension SendAssetTransactionPreviewViewController {
         sendTransactionPreviewView.transactionParticipantView.assetSelectionView.amountView.amountLabel.textColor = SharedColors.black
         sendTransactionPreviewView.transactionParticipantView.assetSelectionView.amountView.algoIconImageView.removeFromSuperview()
         sendTransactionPreviewView.amountInputView.algosImageView.removeFromSuperview()
+        sendTransactionPreviewView.transactionParticipantView.assetSelectionView.verifiedImageView.isHidden = !assetDetail.isVerified
         
         if let selectedAccount = selectedAccount,
             let assetAmount = selectedAccount.amount(for: assetDetail) {
