@@ -42,6 +42,14 @@ class AssetCancellableSupportAlertViewController: BaseViewController {
                 case let .success(assetDetail):
                     SVProgressHUD.showSuccess(withStatus: "title-done-lowercased".localized)
                     SVProgressHUD.dismiss()
+                    
+                    if let verifiedAssets = self.session?.verifiedAssets,
+                        verifiedAssets.contains(where: { verifiedAsset -> Bool in
+                            "\(verifiedAsset.id)" == self.assetAlertDraft.assetIndex
+                        }) {
+                        assetDetail.isVerified = true
+                    }
+                    
                     self.assetAlertDraft.assetDetail = assetDetail
                     self.viewModel.configure(self.assetCancellableSupportAlertView.assetDisplayView, with: self.assetAlertDraft)
                 case .failure:

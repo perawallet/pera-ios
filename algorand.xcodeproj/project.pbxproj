@@ -411,6 +411,12 @@
 		2B3A95E7238FF99C00A3DF44 /* TransactionManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3A95E5238FF99C00A3DF44 /* TransactionManagerDelegate.swift */; };
 		2B3A95E9239011EB00A3DF44 /* AssetTransactionDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3A95E8239011EB00A3DF44 /* AssetTransactionDraft.swift */; };
 		2B3A95EA239011EB00A3DF44 /* AssetTransactionDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3A95E8239011EB00A3DF44 /* AssetTransactionDraft.swift */; };
+		2B3D73B623C3621500597D32 /* VerifiedAssetList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3D73B523C3621500597D32 /* VerifiedAssetList.swift */; };
+		2B3D73B723C3621500597D32 /* VerifiedAssetList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3D73B523C3621500597D32 /* VerifiedAssetList.swift */; };
+		2B3D73B923C3621F00597D32 /* VerifiedAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3D73B823C3621F00597D32 /* VerifiedAsset.swift */; };
+		2B3D73BA23C3621F00597D32 /* VerifiedAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3D73B823C3621F00597D32 /* VerifiedAsset.swift */; };
+		2B3D73BC23C3638900597D32 /* LimitQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3D73BB23C3638900597D32 /* LimitQuery.swift */; };
+		2B3D73BD23C3638A00597D32 /* LimitQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3D73BB23C3638900597D32 /* LimitQuery.swift */; };
 		2B3F38FB228AEFF7008BBE75 /* AuctionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3F38FA228AEFF7008BBE75 /* AuctionCell.swift */; };
 		2B3F38FE228AF00C008BBE75 /* AuctionCellContextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3F38FD228AF00C008BBE75 /* AuctionCellContextView.swift */; };
 		2B3F3901228B74D5008BBE75 /* AuctionTimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3F3900228B74D5008BBE75 /* AuctionTimerView.swift */; };
@@ -989,6 +995,9 @@
 		2B2F9F7722821C440068DBB5 /* AuctionChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionChartView.swift; sourceTree = "<group>"; };
 		2B3A95E5238FF99C00A3DF44 /* TransactionManagerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionManagerDelegate.swift; sourceTree = "<group>"; };
 		2B3A95E8239011EB00A3DF44 /* AssetTransactionDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetTransactionDraft.swift; sourceTree = "<group>"; };
+		2B3D73B523C3621500597D32 /* VerifiedAssetList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifiedAssetList.swift; sourceTree = "<group>"; };
+		2B3D73B823C3621F00597D32 /* VerifiedAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifiedAsset.swift; sourceTree = "<group>"; };
+		2B3D73BB23C3638900597D32 /* LimitQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LimitQuery.swift; sourceTree = "<group>"; };
 		2B3F38FA228AEFF7008BBE75 /* AuctionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionCell.swift; sourceTree = "<group>"; };
 		2B3F38FD228AF00C008BBE75 /* AuctionCellContextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionCellContextView.swift; sourceTree = "<group>"; };
 		2B3F3900228B74D5008BBE75 /* AuctionTimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionTimerView.swift; sourceTree = "<group>"; };
@@ -1563,6 +1572,15 @@
 			path = Transaction;
 			sourceTree = "<group>";
 		};
+		2B3D73B423C361F800597D32 /* Verified */ = {
+			isa = PBXGroup;
+			children = (
+				2B3D73B523C3621500597D32 /* VerifiedAssetList.swift */,
+				2B3D73B823C3621F00597D32 /* VerifiedAsset.swift */,
+			);
+			path = Verified;
+			sourceTree = "<group>";
+		};
 		2B3F38FC228AEFFC008BBE75 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
@@ -1869,8 +1887,9 @@
 		2B46262823758CBB000AE73C /* Asset */ = {
 			isa = PBXGroup;
 			children = (
-				2B4BDA18238D359000491149 /* List */,
 				2B4BDA09238C9EB600491149 /* Draft */,
+				2B4BDA18238D359000491149 /* List */,
+				2B3D73B423C361F800597D32 /* Verified */,
 				2B46262923758CC9000AE73C /* Asset.swift */,
 				2B46262C23758CF4000AE73C /* AssetDetail.swift */,
 			);
@@ -1940,6 +1959,7 @@
 			isa = PBXGroup;
 			children = (
 				2B4BDA20238D3A6800491149 /* AssetFetchQuery.swift */,
+				2B3D73BB23C3638900597D32 /* LimitQuery.swift */,
 			);
 			path = Assets;
 			sourceTree = "<group>";
@@ -4703,6 +4723,7 @@
 				2BB3F30E22B1B6A800109C47 /* CoinlistCell.swift in Sources */,
 				2B4BDA11238CA1BD00491149 /* AssetDisplayViewModel.swift in Sources */,
 				17BD4E282292F1260003E49A /* CardModalAnimator.swift in Sources */,
+				2B3D73B723C3621500597D32 /* VerifiedAssetList.swift in Sources */,
 				17BD4E292292F1260003E49A /* OptionsContextView.swift in Sources */,
 				17BD4E2A2292F1260003E49A /* RootViewController.swift in Sources */,
 				17BD4E2B2292F1260003E49A /* BidCellContextView.swift in Sources */,
@@ -4820,8 +4841,10 @@
 				17BD4E742292F1260003E49A /* AccountFetchDraft.swift in Sources */,
 				17BD4E752292F1260003E49A /* EditAccountView.swift in Sources */,
 				17BD4E762292F1260003E49A /* UserDefaults+Additions.swift in Sources */,
+				2B3D73BA23C3621F00597D32 /* VerifiedAsset.swift in Sources */,
 				17BD4E772292F1260003E49A /* PassPhraseVerifyView.swift in Sources */,
 				17BD4E782292F1260003E49A /* MaximumPriceView.swift in Sources */,
+				2B3D73BD23C3638A00597D32 /* LimitQuery.swift in Sources */,
 				17BD4E792292F1260003E49A /* UICollectionView+Additions.swift in Sources */,
 				17BD4E7A2292F1260003E49A /* Session.swift in Sources */,
 				17BD4E7B2292F1260003E49A /* RequestTransactionPreviewViewController.swift in Sources */,
@@ -5129,6 +5152,7 @@
 				2B3F3907228C3829008BBE75 /* Auction.swift in Sources */,
 				2B4BDA10238CA1BD00491149 /* AssetDisplayViewModel.swift in Sources */,
 				171111AE225DDA6100DAF55C /* SettingsViewModel.swift in Sources */,
+				2B3D73B623C3621500597D32 /* VerifiedAssetList.swift in Sources */,
 				2B656E99224BC52D0064A49B /* AccountContextView.swift in Sources */,
 				2BD739F8223FF4B600B66EEF /* NumpadDeleteButton.swift in Sources */,
 				2BD739FE22411A0100B66EEF /* Reusable.swift in Sources */,
@@ -5246,8 +5270,10 @@
 				2B3F3914228C78F9008BBE75 /* ActiveAuctionCell.swift in Sources */,
 				2B8AD04A2244F82600939ECE /* SharedColors.swift in Sources */,
 				170AFAFA224C9FF800520EA5 /* QRCreationViewController.swift in Sources */,
+				2B3D73B923C3621F00597D32 /* VerifiedAsset.swift in Sources */,
 				2B3F3916228DCD9E008BBE75 /* PastAuctionsEmptyView.swift in Sources */,
 				17512620223BEAE90095AF4F /* Storable.swift in Sources */,
+				2B3D73BC23C3638900597D32 /* LimitQuery.swift in Sources */,
 				2BF5314E22491E7F00A7455F /* QRScannerOverlayView.swift in Sources */,
 				17695B3C2268D2DE00765D31 /* NodeHealthOperation.swift in Sources */,
 				2B65331F228F679400F19FEA /* PlaceBidViewController.swift in Sources */,

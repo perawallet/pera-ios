@@ -151,7 +151,7 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
     fileprivate func launchHome(with account: Account) {
         SVProgressHUD.show(withStatus: "title-loading".localized)
         
-        self.accountManager?.fetchAllAccounts {
+        self.accountManager?.fetchAllAccounts(isVerifiedAssetsIncluded: true) {
             
             SVProgressHUD.showSuccess(withStatus: "title-done-lowercased".localized)
             
