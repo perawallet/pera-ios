@@ -205,6 +205,8 @@
 "send-algos-account-delete-body" = "To keep an account open, the account must have at least 0.01 ALGO. If you send the max amount, the account will be deleted and your active participation keys will be deleted as well.";
 "send-algos-account-delete-asset-title" = "In order to delete an account, you must empty any asset account balance and destroy any asset you've created, if any.";
 "send-algos-receiver-address-validation" = "Key not valid, please make sure you have the right key.";
+"send-qr-scan-alert-title" = "QR Scan";
+"send-qr-scan-alert-message" = "You just scanned a QR code of a transaction request. Please review all transaction fields as they may have changed.";
 
 // MARK: Algos Request
 

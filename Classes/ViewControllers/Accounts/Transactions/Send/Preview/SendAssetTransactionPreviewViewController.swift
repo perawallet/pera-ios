@@ -102,18 +102,10 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
             return
         }
         
+        sendTransactionPreviewView.transactionReceiverView.state = .address(address: qrAddress, amount: nil)
+        receiver = .address(address: qrAddress, amount: nil)
         if let qrAmount = qrText.amount {
-            let amountValue = qrAmount.assetAmount(fromFraction: assetDetail.fractionDecimals)
-            let amountText = amountValue.toFractionStringForLabel(fraction: assetDetail.fractionDecimals)
-            
-            sendTransactionPreviewView.transactionReceiverView.state = .address(address: qrAddress, amount: amountText)
-            receiver = .address(address: qrAddress, amount: amountText)
-            
-            amount = amountValue
-            sendTransactionPreviewView.amountInputView.inputTextField.text = amountText
-        } else {
-            sendTransactionPreviewView.transactionReceiverView.state = .address(address: qrAddress, amount: nil)
-            receiver = .address(address: qrAddress, amount: nil)
+            displayQRAlert(for: qrAmount, to: qrAddress)
         }
         
         if let qrAsset = qrText.asset {
@@ -173,6 +165,33 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
                     assetAmount.toFractionStringForLabel(fraction: assetDetail.fractionDecimals)
             }
         }
+    }
+    
+    private func displayQRAlert(for qrAmount: Int64, to qrAddress: String) {
+        let configurator = AlertViewConfigurator(
+            title: "send-qr-scan-alert-title".localized,
+            image: img("icon-qr-alert"),
+            explanation: "send-qr-scan-alert-message".localized,
+            actionTitle: "title-approve".localized) {
+                let amountValue = qrAmount.assetAmount(fromFraction: self.assetDetail.fractionDecimals)
+                let amountText = amountValue.toFractionStringForLabel(fraction: self.assetDetail.fractionDecimals)
+                
+                self.sendTransactionPreviewView.transactionReceiverView.state = .address(address: qrAddress, amount: amountText)
+                self.receiver = .address(address: qrAddress, amount: amountText)
+                
+                self.amount = amountValue
+                self.sendTransactionPreviewView.amountInputView.inputTextField.text = amountText
+                return
+        }
+        
+        open(
+            .alert(mode: .qr, alertConfigurator: configurator),
+            by: .customPresentWithoutNavigationController(
+                presentationStyle: .overCurrentContext,
+                transitionStyle: .crossDissolve,
+                transitioningDelegate: nil
+            )
+        )
     }
 }
 

@@ -351,6 +351,8 @@
 		17F9E9222257895A004CDF24 /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F9E9212257895A004CDF24 /* AsyncOperation.swift */; };
 		17F9E924225789E7004CDF24 /* AccountFetchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F9E923225789E7004CDF24 /* AccountFetchOperation.swift */; };
 		17F9E927225796DA004CDF24 /* AccountManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F9E926225796DA004CDF24 /* AccountManager.swift */; };
+		2B02536E23C6101A003D5FDD /* QRAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B02536D23C6101A003D5FDD /* QRAlertView.swift */; };
+		2B02536F23C6101A003D5FDD /* QRAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B02536D23C6101A003D5FDD /* QRAlertView.swift */; };
 		2B0823D423B0C42100D52BCF /* Crypto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B0823D323B0C42100D52BCF /* Crypto.framework */; };
 		2B0823D823B0C46A00D52BCF /* Crypto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B0823D723B0C46A00D52BCF /* Crypto.framework */; };
 		2B0823D923B0C46A00D52BCF /* Crypto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B0823D723B0C46A00D52BCF /* Crypto.framework */; };
@@ -962,6 +964,7 @@
 		17F9E923225789E7004CDF24 /* AccountFetchOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountFetchOperation.swift; sourceTree = "<group>"; };
 		17F9E926225796DA004CDF24 /* AccountManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountManager.swift; sourceTree = "<group>"; };
 		2AC10F1C54DF2982BFB4A180 /* Pods-algorand.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand.debug.xcconfig"; path = "Pods/Target Support Files/Pods-algorand/Pods-algorand.debug.xcconfig"; sourceTree = "<group>"; };
+		2B02536D23C6101A003D5FDD /* QRAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRAlertView.swift; sourceTree = "<group>"; };
 		2B0823D323B0C42100D52BCF /* Crypto.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Crypto.framework; path = ../../Crypto.framework; sourceTree = "<group>"; };
 		2B0823D723B0C46A00D52BCF /* Crypto.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crypto.framework; sourceTree = "<group>"; };
 		2B0823DA23B6677A00D52BCF /* AssetSupportDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetSupportDraft.swift; sourceTree = "<group>"; };
@@ -3053,6 +3056,7 @@
 				2B8954A72243854400D6D068 /* AlertView.swift */,
 				2B8954AD2243D55200D6D068 /* DefaultAlertView.swift */,
 				2B8954AF2243D5DA00D6D068 /* DestructiveAlertView.swift */,
+				2B02536D23C6101A003D5FDD /* QRAlertView.swift */,
 			);
 			path = Alert;
 			sourceTree = "<group>";
@@ -4920,6 +4924,7 @@
 				17BD4EB12292F1260003E49A /* String+Address.swift in Sources */,
 				2B7ABF78233388570050B64B /* PendingTransactionList.swift in Sources */,
 				17BD4EB22292F1260003E49A /* Transaction.swift in Sources */,
+				2B02536F23C6101A003D5FDD /* QRAlertView.swift in Sources */,
 				17BD4EB32292F1260003E49A /* UIFont+Additions.swift in Sources */,
 				17BD4EB42292F1260003E49A /* AccountListView.swift in Sources */,
 				17BD4EB52292F1260003E49A /* PastAuctionsEmptyCell.swift in Sources */,
@@ -5349,6 +5354,7 @@
 				2B3F3918228DCDB3008BBE75 /* PastAuctionsEmptyCell.swift in Sources */,
 				2B7ABF77233388570050B64B /* PendingTransactionList.swift in Sources */,
 				2BF34CA02239ACDC0052CAD3 /* AppConfiguration.swift in Sources */,
+				2B02536E23C6101A003D5FDD /* QRAlertView.swift in Sources */,
 				17D50AA1225C755E00CA9C6E /* ApplicationConfiguration.swift in Sources */,
 				2B3F3910228C4DC0008BBE75 /* CoinlistTransaction.swift in Sources */,
 				2BA0C39822677E430037AE13 /* Sequence+AttributedString.swift in Sources */,
