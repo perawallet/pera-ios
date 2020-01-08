@@ -11,14 +11,14 @@ import UIKit
 class AssetActionConfirmationViewModel {
     func configure(_ view: AssetActionConfirmationView, with draft: AssetAlertDraft) {
         view.titleLabel.text = draft.title
-        view.assetDisplayView.assetIndexLabel.text = draft.assetIndex
+        view.assetDisplayView.assetIndexLabel.text = "\(draft.assetIndex)"
         view.actionButton.setTitle(draft.actionTitle, for: .normal)
  
         guard let assetDetail = draft.assetDetail else {
             return
         }
         
-        view.assetDisplayView.verifiedImageView.isHidden = assetDetail.isVerified
+        view.assetDisplayView.verifiedImageView.isHidden = !assetDetail.isVerified
         
         let displayNames = assetDetail.getDisplayNames(isDisplayingBrackets: false)
         

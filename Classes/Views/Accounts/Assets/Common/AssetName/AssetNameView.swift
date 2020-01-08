@@ -116,7 +116,10 @@ extension AssetNameView {
         
         nameLabel.text = firstDisplayName
         codeLabel.text = secondDisplayName
-        idLabel.text = assetDetail.index
+        
+        if let assetId = assetDetail.id {
+            idLabel.text = "\(assetId)"
+        }
         
         verifiedImageView.isHidden = !assetDetail.isVerified
     }

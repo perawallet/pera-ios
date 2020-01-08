@@ -110,7 +110,7 @@ extension AccountManager {
                         completion?(round)
                     }
                 case .failure:
-                    break
+                    completion?(nil)
                 }
             }
         }

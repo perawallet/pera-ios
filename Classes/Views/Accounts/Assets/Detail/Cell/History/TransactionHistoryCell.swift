@@ -17,5 +17,6 @@ class TransactionHistoryCell: BaseCollectionViewCell<TransactionHistoryContextVi
         contextView.subtitleLabel.text = nil
         contextView.subtitleLabel.isHidden = false
         contextView.dateLabel.text = nil
+        contextView.transactionAmountView.amountLabel.text = nil
     }
 }

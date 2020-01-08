@@ -35,7 +35,7 @@ extension AssetDetailViewModel {
             )
             
             view.assetIdLabel.isHidden = false
-            if let id = assetDetail.index {
+            if let id = assetDetail.id {
                 view.assetIdLabel.text = "ID \(id)"
             }
             

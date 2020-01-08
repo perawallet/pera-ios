@@ -120,7 +120,7 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
             let qrAssetText = "\(qrAsset)"
             
             if !isAccountContainsAsset(qrAssetText) {
-                presentAssetNotSupportedAlert(receiverAddress: qrText.address, for: qrAssetText)
+                presentAssetNotSupportedAlert(receiverAddress: qrText.address, for: Int64(qrAssetText))
                 
                 if let handler = handler {
                     handler()
@@ -129,7 +129,8 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
                 return
             }
             
-            if qrAssetText != assetDetail.index {
+            if let assetDetailId = assetDetail.id,
+                qrAssetText != "\(assetDetailId)" {
                 displaySimpleAlertWith(title: "asset-support-not-same-title".localized, message: "asset-support-not-same-error".localized)
                 
                 if let handler = handler {
@@ -142,13 +143,14 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
     }
     
     private func isAccountContainsAsset(_ assetIndex: String) -> Bool {
-        guard let selectedAccount = selectedAccount else {
+        guard let selectedAccount = selectedAccount,
+            let assetId = assetDetail.id else {
             return false
         }
         
         var isAssetAddedToAccount = false
         
-        for assetDetail in selectedAccount.assetDetails where assetDetail.index == assetIndex {
+        for _ in selectedAccount.assetDetails where "\(assetId)" == assetIndex {
             isAssetAddedToAccount = true
             break
         }
@@ -195,12 +197,12 @@ extension SendAssetTransactionPreviewViewController {
                 SVProgressHUD.showSuccess(withStatus: "title-done-lowercased".localized)
                 SVProgressHUD.dismiss()
                 if let assets = receiverAccount.assets {
-                    guard let assetIndex = self.assetDetail.index else {
+                    guard let assetId = self.assetDetail.id else {
                         return
                     }
                     
                     if assets.contains(where: { index, _ -> Bool in
-                        assetIndex == index
+                        "\(assetId)" == index
                     }) {
                         self.validateTransaction()
                     } else {
@@ -216,8 +218,8 @@ extension SendAssetTransactionPreviewViewController {
         }
     }
     
-    private func presentAssetNotSupportedAlert(receiverAddress: String?, for assetIndex: String? = nil) {
-        guard let currentAssetDetailIndex = assetDetail.index else {
+    private func presentAssetNotSupportedAlert(receiverAddress: String?, for assetIndex: Int64? = nil) {
+        guard let currentAssetDetailIndex = assetDetail.id else {
             return
         }
         let assetAlertDraft = AssetAlertDraft(
@@ -274,8 +276,7 @@ extension SendAssetTransactionPreviewViewController {
     
     private func composeTransactionData() {
         guard let selectedAccount = selectedAccount,
-            let assetIndex = assetDetail.index,
-            let index = Int64(assetIndex) else {
+            let assetId = assetDetail.id else {
             return
         }
         
@@ -283,7 +284,7 @@ extension SendAssetTransactionPreviewViewController {
         let transaction = AssetTransactionDraft(
             fromAccount: selectedAccount,
             amount: amount,
-            assetIndex: index,
+            assetIndex: assetId,
             assetDecimalFraction: assetDetail.fractionDecimals,
             isVerified: assetDetail.isVerified
         )

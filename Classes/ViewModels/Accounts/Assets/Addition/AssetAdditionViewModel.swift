@@ -11,6 +11,8 @@ import UIKit
 class AssetAdditionViewModel {
     func configure(_ cell: AssetSelectionCell, with asset: AssetDetail) {
         cell.contextView.assetNameView.setAssetName(for: asset)
-        cell.contextView.detailLabel.text = asset.index
+        if let assetId = asset.id {
+            cell.contextView.detailLabel.text = "\(assetId)"
+        }
     }
 }

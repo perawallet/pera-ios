@@ -11,14 +11,14 @@ import UIKit
 class AssetSupportAlertViewModel {
     func configure(_ view: AssetSupportAlertView, with draft: AssetAlertDraft) {
         view.titleLabel.text = draft.title
-        view.assetDisplayView.assetIndexLabel.text = draft.assetIndex
+        view.assetDisplayView.assetIndexLabel.text = "\(draft.assetIndex)"
         configure(view.assetDisplayView, with: draft)
         view.detailLabel.text = draft.detail
     }
     
     func configure(_ view: AssetCancellableSupportAlertView, with draft: AssetAlertDraft) {
         view.titleLabel.text = draft.title
-        view.assetDisplayView.assetIndexLabel.text = draft.assetIndex
+        view.assetDisplayView.assetIndexLabel.text = "\(draft.assetIndex)"
         configure(view.assetDisplayView, with: draft)
         view.detailLabel.text = draft.detail
     }
@@ -28,7 +28,7 @@ class AssetSupportAlertViewModel {
             return
         }
         
-        view.verifiedImageView.isHidden = assetDetail.isVerified
+        view.verifiedImageView.isHidden = !assetDetail.isVerified
         
         let displayNames = assetDetail.getDisplayNames(isDisplayingBrackets: false)
         

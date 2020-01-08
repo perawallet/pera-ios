@@ -21,7 +21,7 @@ class AssetDetail: Model {
     let clawBackAddress: String?
     let fractionDecimals: Int
     
-    var index: String?
+    var id: Int64?
     var isVerified: Bool = false
     var isRemoved: Bool = false
     var isRecentlyAdded: Bool = false
@@ -41,7 +41,7 @@ class AssetDetail: Model {
         clawBackAddress = try container.decodeIfPresent(String.self, forKey: .clawBackAddress)
         fractionDecimals = try container.decodeIfPresent(Int.self, forKey: .fractionDecimals) ?? 0
         
-        index = try? container.decodeIfPresent(String.self, forKey: .index)
+        id = try? container.decodeIfPresent(Int64.self, forKey: .id)
         isVerified = try container.decodeIfPresent(Bool.self, forKey: .isVerified) ?? false
         isRemoved = try container.decodeIfPresent(Bool.self, forKey: .isRemoved) ?? false
         isRecentlyAdded = try container.decodeIfPresent(Bool.self, forKey: .isRecentlyAdded) ?? false
@@ -60,7 +60,7 @@ extension AssetDetail {
         case reserveAddress = "reserveaddr"
         case freezeAddress = "freezeaddr"
         case clawBackAddress = "clawbackaddr"
-        case index = "index"
+        case id = "index"
         case isRemoved = "isRemoved"
         case isRecentlyAdded = "isRecentlyAdded"
         case isVerified = "is_verified"
@@ -74,7 +74,7 @@ extension AssetDetail {
         isIndexIncluded: Bool = true,
         shouldDisplayIndexWithName: Bool = true
     ) -> NSAttributedString? {
-        guard let index = index else {
+        guard let id = id else {
             return nil
         }
         
@@ -84,20 +84,20 @@ extension AssetDetail {
             let codeText = " (\(code))".attributed([.textColor(SharedColors.purple), .font(font)])
             
             if shouldDisplayIndexWithName {
-                let indexText = " \(index)".attributed([.textColor(SharedColors.darkGray), .font(font)])
+                let indexText = " \(id)".attributed([.textColor(SharedColors.darkGray), .font(font)])
                 return nameText + codeText + indexText
             }
             
             return nameText + codeText
         } else if let name = assetName, !name.isEmptyOrBlank {
             if shouldDisplayIndexWithName {
-                let indexText = " \(index)".attributed([.textColor(SharedColors.darkGray), .font(font)])
+                let indexText = " \(id)".attributed([.textColor(SharedColors.darkGray), .font(font)])
                 return name.attributed([.textColor(SharedColors.black), .font(font)]) + indexText
             }
             return name.attributed([.textColor(SharedColors.black), .font(font)])
         } else if let code = unitName, !code.isEmptyOrBlank {
             if shouldDisplayIndexWithName {
-                let indexText = " \(index)".attributed([.textColor(SharedColors.darkGray), .font(font)])
+                let indexText = " \(id)".attributed([.textColor(SharedColors.darkGray), .font(font)])
                 return "(\(code))".attributed([.textColor(SharedColors.purple), .font(font)]) + indexText
             }
             return "(\(code))".attributed([.textColor(SharedColors.purple), .font(font)])
@@ -110,7 +110,7 @@ extension AssetDetail {
                 return unknownText
             }
             
-            let indexText = index.attributed([
+            let indexText = "\(id)".attributed([
                 .textColor(SharedColors.black),
                 .font(UIFont.font(.avenir, withWeight: .demiBold(size: 13.0)))
             ])
@@ -162,35 +162,33 @@ extension AssetDetail: Encodable {
 
 extension AssetDetail: Comparable {
     static func == (lhs: AssetDetail, rhs: AssetDetail) -> Bool {
-        guard let lhsIndex = lhs.index,
-            let rhsIndex = rhs.index else {
+        guard let lhsId = lhs.id,
+            let rhsId = rhs.id else {
                 return false
         }
         
-        if lhsIndex == rhsIndex && lhs.fractionDecimals != rhs.fractionDecimals {
+        if lhsId == rhsId && lhs.fractionDecimals != rhs.fractionDecimals {
             return false
         }
         
-        if lhsIndex == rhsIndex && lhs.isVerified != rhs.isVerified {
+        if lhsId == rhsId && lhs.isVerified != rhs.isVerified {
             return false
         }
         
-        if lhsIndex == rhsIndex && lhs.assetName != rhs.assetName {
+        if lhsId == rhsId && lhs.assetName != rhs.assetName {
             return false
-        } else if lhsIndex == rhsIndex && lhs.unitName != rhs.unitName {
+        } else if lhsId == rhsId && lhs.unitName != rhs.unitName {
             return false
         } else {
-            return lhsIndex == rhsIndex
+            return lhsId == rhsId
         }
     }
     
     static func < (lhs: AssetDetail, rhs: AssetDetail) -> Bool {
-        guard let lhsIndex = lhs.index,
-            let rhsIndex = rhs.index,
-            let lhsIntValue = Int(lhsIndex),
-            let rhsIntValue = Int(rhsIndex) else {
+        guard let lhsId = lhs.id,
+            let rhsId = rhs.id else {
                 return false
         }
-        return lhsIntValue < rhsIntValue
+        return lhsId < rhsId
     }
 }

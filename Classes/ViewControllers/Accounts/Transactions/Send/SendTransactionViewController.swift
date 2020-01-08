@@ -131,7 +131,7 @@ extension SendTransactionViewController {
         sendTransactionView.transactionParticipantView.assetSelectionView.verifiedImageView.isHidden = !transaction.isVerified
         
         guard let assetIndex = transaction.assetIndex,
-            let assetDetail = transaction.fromAccount.assetDetails.first(where: { $0.index == "\(assetIndex)" }) else {
+            let assetDetail = transaction.fromAccount.assetDetails.first(where: { $0.id == assetIndex }) else {
             return
         }
         

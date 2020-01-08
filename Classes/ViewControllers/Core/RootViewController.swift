@@ -101,7 +101,7 @@ class RootViewController: UIViewController {
         var assetDetail: AssetDetail?
         
         if let assetId = notification.asset?.id {
-            assetDetail = account.assetDetails.first { $0.index == "\(assetId)" }
+            assetDetail = account.assetDetails.first { $0.id == assetId }
         }
         
         if !appConfiguration.session.isValid {
@@ -113,10 +113,13 @@ class RootViewController: UIViewController {
                     }
                     let draft = AssetAlertDraft(
                         account: account,
-                        assetIndex: "\(assetId)",
+                        assetIndex: assetId,
                         assetDetail: nil,
                         title: "asset-support-add-title".localized,
-                        detail: "asset-support-add-message".localized,
+                        detail: String(
+                            format: "asset-support-add-message".localized,
+                            "\(account.name ?? "")"
+                        ),
                         actionTitle: "title-ok".localized
                     )
                     open(.choosePassword(
@@ -141,10 +144,13 @@ class RootViewController: UIViewController {
                 }
                 let draft = AssetAlertDraft(
                     account: account,
-                    assetIndex: "\(assetId)",
+                    assetIndex: assetId,
                     assetDetail: nil,
                     title: "asset-support-add-title".localized,
-                    detail: "asset-support-add-message".localized,
+                    detail: String(
+                        format: "asset-support-add-message".localized,
+                        "\(account.name ?? "")"
+                    ),
                     actionTitle: "title-ok".localized
                 )
                 tabBarViewController.route = .assetCancellableSupportAlert(assetAlertDraft: draft)
