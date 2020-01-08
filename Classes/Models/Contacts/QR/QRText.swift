@@ -15,9 +15,9 @@ struct QRText: Codable {
     var mnemonic: String?
     var amount: Int64?
     var label: String?
-    var asset: Int?
+    var asset: Int64?
     
-    init(mode: QRMode, address: String?, mnemonic: String? = nil, amount: Int64? = nil, label: String? = nil, asset: Int? = nil) {
+    init(mode: QRMode, address: String?, mnemonic: String? = nil, amount: Int64? = nil, label: String? = nil, asset: Int64? = nil) {
         self.mode = mode
         self.address = address
         self.mnemonic = mnemonic
@@ -49,7 +49,7 @@ struct QRText: Codable {
         }
         
         if let assetText = try values.decodeIfPresent(String.self, forKey: .asset) {
-            asset = Int(assetText)
+            asset = Int64(assetText)
         }
     }
     
@@ -104,7 +104,7 @@ extension QRText {
             if let label = label {
                 return "\(base)\(address)?\(CodingKeys.label.rawValue)=\(label)"
             }
-            return "\(base)\(address)"
+            return "\(address)"
         case .algosRequest:
             guard let address = address else {
                 return base

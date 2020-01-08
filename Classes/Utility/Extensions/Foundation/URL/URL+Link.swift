@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Crypto
 
 extension URL {
     public var queryParameters: [String: String]? {
@@ -24,7 +25,7 @@ extension URL {
         }
         
         guard let queryParameters = queryParameters else {
-            if address.isValidatedAddress() {
+            if UtilsIsValidAddress(address) {
                 return QRText(mode: .address, address: address)
             }
             return nil
@@ -32,7 +33,7 @@ extension URL {
         
         if let amount = queryParameters[QRText.CodingKeys.amount.rawValue],
             let asset = queryParameters[QRText.CodingKeys.asset.rawValue] {
-            return QRText(mode: .assetRequest, address: address, amount: Int64(amount), asset: Int(asset))
+            return QRText(mode: .assetRequest, address: address, amount: Int64(amount), asset: Int64(asset))
         }
         
         if let amount = queryParameters[QRText.CodingKeys.amount.rawValue] {
