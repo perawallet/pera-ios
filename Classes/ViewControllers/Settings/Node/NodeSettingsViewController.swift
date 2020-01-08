@@ -27,6 +27,8 @@ class NodeSettingsViewController: BaseViewController {
     
     private let mode: Mode
     
+    private var latestActiveNode: Node?
+    
     private lazy var nodeManager: NodeManager? = {
         guard let api = self.api else {
             return nil
@@ -132,6 +134,7 @@ extension NodeSettingsViewController {
                 }
                 
                 self.nodes = results
+                self.latestActiveNode = self.activeNode()
             default:
                 break
             }
@@ -193,26 +196,7 @@ extension NodeSettingsViewController: UICollectionViewDelegateFlowLayout {
 
 extension NodeSettingsViewController: NodeSettingsViewModelDelegate {
     func nodeSettingsViewModel(_ viewModel: NodeSettingsViewModel, didToggleValue value: Bool, atIndexPath indexPath: IndexPath) {
-        guard indexPath.item < nodes.count + 1 else {
-            return
-        }
-        
-        if indexPath.item == 0 {
-            session?.setDefaultNodeActive(value)
-            
-            if value {
-                nodes.forEach { $0.update(entity: Node.entityName, with: ["isActive": NSNumber(value: 0)]) }
-            }
-        } else {
-            let node = nodes[indexPath.item - 1]
-            node.update(entity: Node.entityName, with: ["isActive": NSNumber(value: value)])
-            
-            if value {
-                session?.setDefaultNodeActive(false)
-            }
-        }
-        
-        checkNodesHealth()
+        checkNodesHealth(shouldUpdateNodeAt: indexPath, with: value)
     }
     
     func nodeSettingsViewModelDidTapEdit(_ viewModel: NodeSettingsViewModel, atIndexPath indexPath: IndexPath) {
@@ -226,23 +210,66 @@ extension NodeSettingsViewController: NodeSettingsViewModelDelegate {
 }
 
 extension NodeSettingsViewController {
-    private func checkNodesHealth() {
+    private func checkNodesHealth(shouldUpdateNodeAt indexPath: IndexPath? = nil, with value: Bool? = nil) {
         SVProgressHUD.show(withStatus: "title-loading".localized)
         self.view.isUserInteractionEnabled = false
         canTapBarButton = false
+        let accountManager = UIApplication.shared.accountManager
+        
+        if let indexPath = indexPath,
+            let value = value {
+            guard indexPath.item < self.nodes.count + 1 else {
+                return
+            }
+            
+            if indexPath.item == 0 {
+                self.session?.setDefaultNodeActive(value)
+                
+                if value {
+                    self.nodes.forEach { $0.update(entity: Node.entityName, with: ["isActive": NSNumber(value: 0)]) }
+                }
+            } else {
+                let node = self.nodes[indexPath.item - 1]
+                node.update(entity: Node.entityName, with: ["isActive": NSNumber(value: value)])
+                
+                if value {
+                    self.session?.setDefaultNodeActive(false)
+                }
+            }
+        }
         
         nodeManager?.checkNodes { isHealthy in
             if isHealthy {
-                SVProgressHUD.showSuccess(withStatus: "title-done-lowercased".localized)
+                self.latestActiveNode = self.activeNode()
                 
-                SVProgressHUD.dismiss(withDelay: 1.0) {
-                    self.canTapBarButton = true
-                    self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+                accountManager?.fetchAllAccounts(isVerifiedAssetsIncluded: true) {
+                    SVProgressHUD.showSuccess(withStatus: "title-done-lowercased".localized)
                     
-                    self.view.isUserInteractionEnabled = true
-                    self.updateNodes()
+                    SVProgressHUD.dismiss(withDelay: 1.0) {
+                        self.canTapBarButton = true
+                        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+                        
+                        self.view.isUserInteractionEnabled = true
+                        self.updateNodes()
+                    }
                 }
             } else {
+                if let indexPath = indexPath {
+                    guard indexPath.item < self.nodes.count + 1 else {
+                        return
+                    }
+                    
+                    if let latestActiveNode = self.latestActiveNode {
+                        self.session?.setDefaultNodeActive(false)
+                        if let nodeIndex = self.nodes.firstIndex(of: latestActiveNode) {
+                            self.nodes[nodeIndex].update(entity: Node.entityName, with: ["isActive": NSNumber(value: 1)])
+                        }
+                    } else {
+                        self.nodes.forEach { $0.update(entity: Node.entityName, with: ["isActive": NSNumber(value: 0)]) }
+                        self.session?.setDefaultNodeActive(true)
+                    }
+                }
+                
                 SVProgressHUD.dismiss {
                     self.canTapBarButton = false
                     self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
