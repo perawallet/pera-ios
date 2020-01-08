@@ -29,7 +29,7 @@ class AssetSupportAlertViewController: BaseViewController {
         
         if assetAlertDraft.assetDetail == nil {
             SVProgressHUD.show(withStatus: "title-loading".localized)
-            api?.getAssetDetails(with: AssetFetchDraft(assetId: assetAlertDraft.assetIndex)) { response in
+            api?.getAssetDetails(with: AssetFetchDraft(assetId: "\(assetAlertDraft.assetIndex)")) { response in
                 switch response {
                 case let .success(assetDetail):
                     SVProgressHUD.showSuccess(withStatus: "title-done-lowercased".localized)
@@ -37,7 +37,7 @@ class AssetSupportAlertViewController: BaseViewController {
                     
                     if let verifiedAssets = self.session?.verifiedAssets,
                         verifiedAssets.contains(where: { verifiedAsset -> Bool in
-                            "\(verifiedAsset.id)" == self.assetAlertDraft.assetIndex
+                            verifiedAsset.id == self.assetAlertDraft.assetIndex
                         }) {
                         assetDetail.isVerified = true
                     }

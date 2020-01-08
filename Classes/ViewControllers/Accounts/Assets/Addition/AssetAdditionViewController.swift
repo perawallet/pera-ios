@@ -79,7 +79,7 @@ extension AssetAdditionViewController {
                     return
                 }
                 
-                if let firstAssetId = assetList.assets.first?.index, !assetId.isEmpty, assetId != "\(firstAssetId)" {
+                if let firstAssetId = assetList.assets.first?.id, !assetId.isEmpty, assetId != "\(firstAssetId)" {
                     strongSelf.assetResults = []
                     strongSelf.assetAdditionView.assetsCollectionView.contentState = .empty(strongSelf.emptyStateView)
                     strongSelf.assetAdditionView.assetsCollectionView.reloadData()
@@ -87,7 +87,7 @@ extension AssetAdditionViewController {
                 } else {
                     strongSelf.assetResults = assetList.assets
                     strongSelf.assetResults.forEach { result in
-                        result.assetDetail.index = "\(result.index)"
+                        result.assetDetail.id = result.id
                     }
                 }
                 
@@ -138,13 +138,13 @@ extension AssetAdditionViewController: UICollectionViewDelegateFlowLayout {
             return
         }
         
-        guard let assetIndex = assetResult.assetDetail.index else {
+        guard let assetId = assetResult.assetDetail.id else {
             return
         }
         
         let assetAlertDraft = AssetAlertDraft(
             account: account,
-            assetIndex: assetIndex,
+            assetIndex: assetId,
             assetDetail: assetResult.assetDetail,
             title: "asset-add-confirmation-title".localized,
             detail: "asset-add-warning".localized,
@@ -191,12 +191,11 @@ extension AssetAdditionViewController: AssetActionConfirmationViewControllerDele
         _ assetActionConfirmationViewController: AssetActionConfirmationViewController,
         didConfirmedActionFor assetDetail: AssetDetail
     ) {
-        guard let index = assetDetail.index,
-            let indexIntValue = Int64(index) else {
-                return
+        guard let id = assetDetail.id else {
+            return
         }
         
-        let assetTransactionDraft = AssetTransactionDraft(fromAccount: account, recipient: nil, amount: nil, assetIndex: indexIntValue)
+        let assetTransactionDraft = AssetTransactionDraft(fromAccount: account, recipient: nil, amount: nil, assetIndex: id)
         transactionManager?.setAssetTransactionDraft(assetTransactionDraft)
         transactionManager?.composeAssetAdditionTransactionData(for: account)
     }
@@ -230,7 +229,7 @@ extension AssetAdditionViewController: TransactionManagerDelegate {
             guard let assetIndex = draft?.assetIndex else {
                 return false
             }
-            return item.index == assetIndex
+            return item.id == assetIndex
         }) else {
             return
         }

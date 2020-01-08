@@ -36,7 +36,7 @@ class AccountListDataSource: NSObject, UICollectionViewDataSource {
             
             let filteredAccounts = user.accounts.filter { account -> Bool in
                 account.assetDetails.contains { detail -> Bool in
-                     assetDetail.index == detail.index
+                     assetDetail.id == detail.id
                 }
             }
             accounts = filteredAccounts

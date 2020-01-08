@@ -20,7 +20,7 @@ class RequestTransactionView: RequestTransactionPreviewView {
     
     private let address: String
     private let amount: Int64
-    private let assetIndex: Int?
+    private let assetIndex: Int64?
     
     private(set) lazy var qrView: QRView = {
         if let assetIndex = assetIndex {
@@ -41,7 +41,7 @@ class RequestTransactionView: RequestTransactionPreviewView {
         return button
     }()
     
-    init(inputFieldFraction: Int, address: String, amount: Int64, assetIndex: Int? = nil) {
+    init(inputFieldFraction: Int, address: String, amount: Int64, assetIndex: Int64? = nil) {
         self.address = address
         self.amount = amount
         self.assetIndex = assetIndex

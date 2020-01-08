@@ -92,11 +92,17 @@ class Account: Model {
     }
     
     func amount(for assetDetail: AssetDetail) -> Double? {
-        guard let assetIndex = assetDetail.index,
-            let asset = assets?[assetIndex] else {
+        guard let assetId = assetDetail.id,
+            let asset = assets?["\(assetId)"] else {
                 return nil
         }
         return asset.amount.assetAmount(fromFraction: assetDetail.fractionDecimals)
+    }
+    
+    func removeAsset(_ id: Int64?) {
+        assetDetails.removeAll { assetDetail -> Bool in
+            assetDetail.id == id
+        }
     }
 }
 

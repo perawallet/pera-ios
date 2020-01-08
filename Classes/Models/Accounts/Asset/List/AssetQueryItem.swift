@@ -9,13 +9,13 @@
 import Magpie
 
 class AssetQueryItem: Model {
-    let index: Int64
+    let id: Int64
     let assetDetail: AssetDetail
 }
 
 extension AssetQueryItem {
     enum CodingKeys: String, CodingKey {
-        case index = "AssetIndex"
+        case id = "AssetIndex"
         case assetDetail = "AssetParams"
     }
 }

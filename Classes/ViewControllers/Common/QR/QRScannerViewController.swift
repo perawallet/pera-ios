@@ -8,6 +8,7 @@
 
 import UIKit
 import AVFoundation
+import Crypto
 
 enum QRScannerError: Error {
     case jsonSerialization
@@ -260,6 +261,7 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
             guard let readableObject = metadataObject as? AVMetadataMachineReadableCodeObject,
                 let qrString = readableObject.stringValue,
                 let qrStringData = qrString.data(using: .utf8) else {
+                    closeScreen(by: .pop)
                     delegate?.qrScannerViewController(self, didFail: .invalidData, then: cameraResetHandler)
                     return
             }
@@ -269,11 +271,16 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
             if let qrText = try? JSONDecoder().decode(QRText.self, from: qrStringData) {
                 closeScreen(by: .pop)
                 delegate?.qrScannerViewController(self, didRead: qrText, then: cameraResetHandler)
-            } else if let url = URL(string: qrString) {
+            } else if let url = URL(string: qrString),
+                qrString.hasPrefix("algorand://") {
                 guard let qrText = url.buildQRText() else {
                     delegate?.qrScannerViewController(self, didFail: .jsonSerialization, then: cameraResetHandler)
                     return
                 }
+                closeScreen(by: .pop)
+                delegate?.qrScannerViewController(self, didRead: qrText, then: cameraResetHandler)
+            } else if UtilsIsValidAddress(qrString) {
+                let qrText = QRText(mode: .address, address: qrString)
                 closeScreen(by: .pop)
                 delegate?.qrScannerViewController(self, didRead: qrText, then: cameraResetHandler)
             } else {

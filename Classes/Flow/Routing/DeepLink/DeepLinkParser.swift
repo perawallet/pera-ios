@@ -40,7 +40,7 @@ struct DeepLinkParser {
             var requestedAssetDetail: AssetDetail?
             
             for account in user.accounts {
-                for assetDetail in account.assetDetails where assetDetail.index == "\(assetId)" {
+                for assetDetail in account.assetDetails where assetDetail.id == assetId {
                     requestedAssetDetail = assetDetail
                 }
             }
@@ -48,7 +48,7 @@ struct DeepLinkParser {
             guard let assetDetail = requestedAssetDetail else {
                 let assetAlertDraft = AssetAlertDraft(
                     account: nil,
-                    assetIndex: "\(assetId)",
+                    assetIndex: assetId,
                     assetDetail: nil,
                     title: "asset-support-title".localized,
                     detail: "asset-support-error".localized,

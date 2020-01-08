@@ -97,13 +97,9 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
             return
         }
         sendTransactionPreviewView.transactionReceiverView.state = .address(address: qrAddress, amount: nil)
-        if let amountFromQR = qrText.amount,
-            amountFromQR != 0 {
-            let receivedAmount = amountFromQR.toAlgos
-            amount = receivedAmount
-            sendTransactionPreviewView.amountInputView.inputTextField.text = receivedAmount.toDecimalStringForAlgosInput
+        if let amountFromQR = qrText.amount {
+            displayQRAlert(for: amountFromQR)
         }
-        
         receiver = .address(address: qrAddress, amount: nil)
         
         if let handler = handler {
@@ -120,6 +116,28 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
             sendTransactionPreviewView.amountInputView.inputTextField.text =
                 sendTransactionPreviewView.transactionParticipantView.assetSelectionView.amountView.amountLabel.text
         }
+    }
+    
+    private func displayQRAlert(for amountFromQR: Int64) {
+        let configurator = AlertViewConfigurator(
+            title: "send-qr-scan-alert-title".localized,
+            image: img("icon-qr-alert"),
+            explanation: "send-qr-scan-alert-message".localized,
+            actionTitle: "title-approve".localized) {
+                let receivedAmount = amountFromQR.toAlgos
+                self.amount = receivedAmount
+                self.sendTransactionPreviewView.amountInputView.inputTextField.text = receivedAmount.toDecimalStringForAlgosInput
+                return
+        }
+        
+        open(
+            .alert(mode: .qr, alertConfigurator: configurator),
+            by: .customPresentWithoutNavigationController(
+                presentationStyle: .overCurrentContext,
+                transitionStyle: .crossDissolve,
+                transitioningDelegate: nil
+            )
+        )
     }
 }
 

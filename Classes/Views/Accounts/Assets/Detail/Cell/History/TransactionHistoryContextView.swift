@@ -91,7 +91,6 @@ class TransactionHistoryContextView: BaseView {
         titleLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(layout.current.horizontalInset)
             make.top.equalToSuperview().inset(layout.current.topInset)
-            make.trailing.lessThanOrEqualToSuperview().inset(layout.current.titleLabelRightInset).priority(.low)
         }
     }
     

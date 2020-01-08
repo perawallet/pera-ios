@@ -314,9 +314,9 @@ extension AssetDetailViewController: AssetDetailViewDelegate {
     }
     
     func assetDetailView(_ assetDetailView: AssetDetailView, didTriggerAssetIdCopyValue gestureRecognizer: UILongPressGestureRecognizer) {
-        if let id = assetDetail?.index {
+        if let id = assetDetail?.id {
             displaySimpleAlertWith(title: "asset-id-copied-title".localized, message: "")
-            UIPasteboard.general.string = id
+            UIPasteboard.general.string = "\(id)"
         }
     }
 }

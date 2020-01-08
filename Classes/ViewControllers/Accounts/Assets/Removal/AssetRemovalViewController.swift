@@ -126,7 +126,7 @@ extension AssetRemovalViewController: AssetActionableCellDelegate {
         
         let assetDetail = account.assetDetails[index.item]
         guard let assetAmount = account.amount(for: assetDetail),
-            let assetIndex = assetDetail.index else {
+            let assetId = assetDetail.id else {
             return
         }
         
@@ -135,7 +135,7 @@ extension AssetRemovalViewController: AssetActionableCellDelegate {
         if assetAmount == 0 {
             assetAlertDraft = AssetAlertDraft(
                 account: account,
-                assetIndex: assetIndex,
+                assetIndex: assetId,
                 assetDetail: assetDetail,
                 title: "asset-remove-confirmation-title".localized,
                 detail: String(
@@ -148,7 +148,7 @@ extension AssetRemovalViewController: AssetActionableCellDelegate {
         } else {
             assetAlertDraft = AssetAlertDraft(
                 account: account,
-                assetIndex: assetIndex,
+                assetIndex: assetId,
                 assetDetail: assetDetail,
                 title: "asset-remove-confirmation-title".localized,
                 detail: String(
@@ -226,16 +226,15 @@ extension AssetRemovalViewController: AssetActionConfirmationViewControllerDeleg
     }
     
     private func removeAssetFromAccount(_ assetDetail: AssetDetail) {
-        guard let index = assetDetail.index,
-            let indexIntValue = Int64(index) else {
-                return
+        guard let assetId = assetDetail.id else {
+            return
         }
         
         let assetTransactionDraft = AssetTransactionDraft(
             fromAccount: account,
             recipient: assetDetail.creator,
             amount: 0,
-            assetIndex: indexIntValue,
+            assetIndex: assetId,
             assetCreator: assetDetail.creator
         )
         transactionManager?.setAssetTransactionDraft(assetTransactionDraft)
@@ -258,11 +257,11 @@ extension AssetRemovalViewController: TransactionManagerDelegate {
     
     private func getRemovedAssetDetail(from draft: AssetTransactionDraft?) -> AssetDetail? {
         guard let removedAssetDetail = account.assetDetails.first(where: { assetDetail -> Bool in
-            guard let index = assetDetail.index,
-                let assetIndex = draft?.assetIndex else {
+            guard let id = assetDetail.id,
+                let assetId = draft?.assetIndex else {
                     return false
             }
-            return index == "\(assetIndex)"
+            return id == assetId
         }) else {
             return nil
         }

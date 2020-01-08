@@ -12,12 +12,12 @@ class RequestTransactionViewController: BaseScrollViewController {
     
     private lazy var requestTransactionView: RequestTransactionView = {
         if !transaction.isAlgoTransaction,
-            let assetIndex = transaction.assetDetail?.index {
+            let assetIndex = transaction.assetDetail?.id {
             return RequestTransactionView(
                 inputFieldFraction: transaction.assetDetail?.fractionDecimals ?? algosFraction,
                 address: transaction.fromAccount.address,
                 amount: transaction.amount.toFraction(of: transaction.assetDetail?.fractionDecimals ?? algosFraction),
-                assetIndex: Int(assetIndex)
+                assetIndex: assetIndex
             )
         } else {
             return RequestTransactionView(

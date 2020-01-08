@@ -13,7 +13,7 @@ struct AssetSupportDraft: JSONBody {
     
     let sender: String
     let receiver: String
-    let assetId: String
+    let assetId: Int64
     
     func decoded() -> [Pair]? {
         return [

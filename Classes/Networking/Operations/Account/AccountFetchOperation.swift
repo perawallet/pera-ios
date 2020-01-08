@@ -27,7 +27,6 @@ class AccountFetchOperation: AsyncOperation {
     }
     
     override func main() {
-        
         if isCancelled {
             return
         }
@@ -45,7 +44,7 @@ class AccountFetchOperation: AsyncOperation {
                             self.api.getAssetDetails(with: AssetFetchDraft(assetId: "\(index)")) { assetResponse in
                                 switch assetResponse {
                                 case .success(let assetDetail):
-                                    assetDetail.index = index
+                                    assetDetail.id = Int64(index)
                                     
                                     if let verifiedAssets = verifiedAssets,
                                         verifiedAssets.contains(where: { verifiedAsset -> Bool in
@@ -60,7 +59,11 @@ class AccountFetchOperation: AsyncOperation {
                                         self.onCompleted?(account, nil)
                                     }
                                 case .failure(let error):
-                                    self.onCompleted?(nil, error)
+                                    account.removeAsset(Int64(index))
+                                    
+                                    if assets.count == account.assetDetails.count {
+                                        self.onCompleted?(nil, error)
+                                    }
                                 }
                             }
                         }

@@ -102,7 +102,7 @@ extension ContactInfoViewController {
                             self?.api?.getAssetDetails(with: AssetFetchDraft(assetId: "\(index)")) { assetResponse in
                                 switch assetResponse {
                                 case let .success(assetDetail):
-                                    assetDetail.index = index
+                                    assetDetail.id = Int64(index)
                                     
                                     if let verifiedAssets = self?.session?.verifiedAssets,
                                         verifiedAssets.contains(where: { verifiedAsset -> Bool in

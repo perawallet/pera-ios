@@ -204,7 +204,7 @@ extension TransactionHistoryDataSource {
                             guard let assetId = transaction.assetTransfer?.assetId else {
                                 return false
                             }
-                            return "\(assetId)" == assetDetail.index
+                            return assetId == assetDetail.id
                         } else {
                             if let assetTransfer = transaction.assetTransfer,
                                 assetTransfer.receiverAddress == account.address,
@@ -251,7 +251,7 @@ extension TransactionHistoryDataSource {
                             guard let assetId = transaction.assetTransfer?.assetId else {
                                 return false
                             }
-                            return "\(assetId)" == assetDetail.index
+                            return assetId == assetDetail.id
                         } else {
                             if let assetTransfer = transaction.assetTransfer,
                                 assetTransfer.receiverAddress == account.address,

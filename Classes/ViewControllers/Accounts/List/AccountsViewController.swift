@@ -228,7 +228,7 @@ extension AccountsViewController: QRScannerViewControllerDelegate {
             var asset: AssetDetail?
             
             for account in accountsDataSource.accounts {
-                for assetDetail in account.assetDetails where assetDetail.index == "\(assetId)" {
+                for assetDetail in account.assetDetails where assetDetail.id == assetId {
                     asset = assetDetail
                     break
                 }
@@ -237,7 +237,7 @@ extension AccountsViewController: QRScannerViewControllerDelegate {
             guard let assetDetail = asset else {
                 let assetAlertDraft = AssetAlertDraft(
                     account: nil,
-                    assetIndex: "\(assetId)",
+                    assetIndex: assetId,
                     assetDetail: nil,
                     title: "asset-support-title".localized,
                     detail: "asset-support-error".localized,
