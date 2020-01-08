@@ -22,6 +22,7 @@ class AssetDetail: Model {
     let fractionDecimals: Int
     
     var index: String?
+    var isVerified: Bool = false
     var isRemoved: Bool = false
     var isRecentlyAdded: Bool = false
     
@@ -41,6 +42,7 @@ class AssetDetail: Model {
         fractionDecimals = try container.decodeIfPresent(Int.self, forKey: .fractionDecimals) ?? 0
         
         index = try? container.decodeIfPresent(String.self, forKey: .index)
+        isVerified = try container.decodeIfPresent(Bool.self, forKey: .isVerified) ?? false
         isRemoved = try container.decodeIfPresent(Bool.self, forKey: .isRemoved) ?? false
         isRecentlyAdded = try container.decodeIfPresent(Bool.self, forKey: .isRecentlyAdded) ?? false
     }
@@ -61,6 +63,7 @@ extension AssetDetail {
         case index = "index"
         case isRemoved = "isRemoved"
         case isRecentlyAdded = "isRecentlyAdded"
+        case isVerified = "is_verified"
         case fractionDecimals = "decimals"
     }
 }
@@ -162,6 +165,14 @@ extension AssetDetail: Comparable {
         guard let lhsIndex = lhs.index,
             let rhsIndex = rhs.index else {
                 return false
+        }
+        
+        if lhsIndex == rhsIndex && lhs.fractionDecimals != rhs.fractionDecimals {
+            return false
+        }
+        
+        if lhsIndex == rhsIndex && lhs.isVerified != rhs.isVerified {
+            return false
         }
         
         if lhsIndex == rhsIndex && lhs.assetName != rhs.assetName {

@@ -18,6 +18,8 @@ class AssetActionConfirmationViewModel {
             return
         }
         
+        view.assetDisplayView.verifiedImageView.isHidden = assetDetail.isVerified
+        
         let displayNames = assetDetail.getDisplayNames(isDisplayingBrackets: false)
         
         if displayNames.0.isUnknown() {

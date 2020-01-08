@@ -18,11 +18,7 @@ class ContactAssetView: BaseView {
     
     weak var delegate: ContactAssetViewDelegate?
     
-    private(set) lazy var assetNameView: AssetNameView = {
-        let view = AssetNameView()
-        view.idLabel.isHidden = false
-        return view
-    }()
+    private(set) lazy var assetNameView = AssetNameView()
     
     private lazy var sendButton: UIButton = {
         UIButton(type: .custom)

@@ -103,6 +103,14 @@ extension ContactInfoViewController {
                                 switch assetResponse {
                                 case let .success(assetDetail):
                                     assetDetail.index = index
+                                    
+                                    if let verifiedAssets = self?.session?.verifiedAssets,
+                                        verifiedAssets.contains(where: { verifiedAsset -> Bool in
+                                            "\(verifiedAsset.id)" == index
+                                        }) {
+                                        assetDetail.isVerified = true
+                                    }
+                                    
                                     account.assetDetails.append(assetDetail)
                                     
                                     if assets.count == account.assetDetails.count {

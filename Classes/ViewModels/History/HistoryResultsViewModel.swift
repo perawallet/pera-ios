@@ -16,11 +16,12 @@ class HistoryResultsViewModel {
         
         if draft.isAlgoSelected {
             view.assetSelectionView.detailLabel.text = "asset-algos-title".localized
+            view.assetSelectionView.verifiedImageView.isHidden = false
         } else {
             guard let assetDetail = draft.assetDetail else {
                 return
             }
-            
+            view.assetSelectionView.verifiedImageView.isHidden = !assetDetail.isVerified
             view.assetSelectionView.detailLabel.attributedText = assetDetail.assetDisplayName()
         }
     }

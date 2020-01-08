@@ -29,6 +29,7 @@ class ContactInfoViewModel {
     
     func configure(_ cell: ContactAssetCell, at indexPath: IndexPath, with contactAccount: Account?) {
         if indexPath.item == 0 {
+            cell.contextView.assetNameView.verifiedImageView.isHidden = false
             cell.contextView.assetNameView.nameLabel.text = "asset-algos-title".localized
         } else {
             guard let account = contactAccount else {

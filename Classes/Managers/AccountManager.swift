@@ -26,7 +26,23 @@ class AccountManager {
 
 // MARK: - API
 extension AccountManager {
-    func fetchAllAccounts(completion: EmptyHandler?) {
+    func fetchAllAccounts(isVerifiedAssetsIncluded: Bool, completion: EmptyHandler?) {
+        if isVerifiedAssetsIncluded {
+            api.getVerifiedAssets { result in
+                switch result {
+                case let .success(list):
+                    self.api.session.verifiedAssets = list.results
+                    self.fetchAccounts(completion: completion)
+                case .failure:
+                    break
+                }
+            }
+        } else {
+            fetchAccounts(completion: completion)
+        }
+    }
+    
+    private func fetchAccounts(completion: EmptyHandler?) {
         let completionOperation = BlockOperation {
             completion?()
         }
@@ -52,36 +68,13 @@ extension AccountManager {
         self.queue.addOperation(completionOperation)
     }
     
-    func fetchAccount(_ account: Account, then completion: EmptyHandler?) {
-        let completionOperation = BlockOperation {
-            completion?()
-        }
-        
-        let accountFetchOperation = AccountFetchOperation(address: account.address, api: api)
-        accountFetchOperation.onCompleted = { fetchedAccount, fetchError in
-            if let fetchedAccount = fetchedAccount {
-                if fetchedAccount.amount == account.amount &&
-                    fetchedAccount.rewards == account.rewards &&
-                    !fetchedAccount.areAssetsDifferent(than: account) {
-                    return
-                }
-                
-                self.user?.updateAccount(account)
-            }
-        }
-        
-        completionOperation.addDependency(accountFetchOperation)
-        self.queue.addOperation(accountFetchOperation)
-        self.queue.addOperation(completionOperation)
-    }
-    
     func waitForNextRoundAndFetchAccounts(round: Int64?, completion: ((Int64?) -> Void)?) {
         if let nextRound = round {
             self.api.waitRound(with: WaitRoundDraft(round: nextRound)) { roundDetailResponse in
                 switch roundDetailResponse {
                 case let .success(result):
                     let round = result.lastRound
-                    self.fetchAllAccounts {
+                    self.fetchAllAccounts(isVerifiedAssetsIncluded: false) {
                         completion?(round)
                     }
                 case .failure:
@@ -113,7 +106,7 @@ extension AccountManager {
                 switch roundDetailResponse {
                 case let .success(result):
                     let round = result.lastRound
-                    self.fetchAllAccounts {
+                    self.fetchAllAccounts(isVerifiedAssetsIncluded: false) {
                         completion?(round)
                     }
                 case .failure:

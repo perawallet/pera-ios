@@ -112,10 +112,9 @@ extension SendTransactionViewController {
         }
         
         sendTransactionView.transactionParticipantView.accountSelectionView.detailLabel.text = transaction.fromAccount.name
-        sendTransactionView.transactionParticipantView.accountSelectionView.amountView.amountLabel.textColor = SharedColors.turquois
-        sendTransactionView.transactionParticipantView.accountSelectionView.amountView.algoIconImageView.tintColor =
-            SharedColors.turquois
         sendTransactionView.amountInputView.inputTextField.text = transaction.amount.toDecimalStringForLabel
+        sendTransactionView.transactionParticipantView.assetSelectionView.verifiedImageView.isHidden = false
+        sendTransactionView.transactionParticipantView.assetSelectionView.detailLabel.text = "asset-algos-title".localized
     }
     
     func configureViewForAsset() {
@@ -129,6 +128,7 @@ extension SendTransactionViewController {
         sendTransactionView.amountInputView.inputTextField.text =
             transaction.amount?.toFractionStringForLabel(fraction: transaction.assetDecimalFraction)
         sendTransactionView.amountInputView.algosImageView.removeFromSuperview()
+        sendTransactionView.transactionParticipantView.assetSelectionView.verifiedImageView.isHidden = !transaction.isVerified
         
         guard let assetIndex = transaction.assetIndex,
             let assetDetail = transaction.fromAccount.assetDetails.first(where: { $0.index == "\(assetIndex)" }) else {

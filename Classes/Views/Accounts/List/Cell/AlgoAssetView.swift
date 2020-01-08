@@ -23,6 +23,8 @@ class AlgoAssetView: BaseView {
             .withText("asset-algos-title".localized)
     }()
     
+    private(set) lazy var verifiedImageView = UIImageView(image: img("icon-verified"))
+    
     private(set) lazy var amountLabel: UILabel = {
         UILabel()
             .withFont(UIFont.font(.overpass, withWeight: .bold(size: 14.0)))
@@ -40,6 +42,7 @@ class AlgoAssetView: BaseView {
     override func prepareLayout() {
         setupAlgoIconImageViewLayout()
         setupAlgosLabelLayout()
+        setupVerifiedImageViewLayout()
         setupArrowImageViewLayout()
         setupAmountLabelLayout()
     }
@@ -67,6 +70,16 @@ extension AlgoAssetView {
         }
     }
     
+    private func setupVerifiedImageViewLayout() {
+        addSubview(verifiedImageView)
+        
+        verifiedImageView.snp.makeConstraints { make in
+            make.leading.equalTo(algosLabel.snp.trailing).offset(layout.current.imageViewOffset)
+            make.centerY.equalToSuperview()
+            make.size.equalTo(layout.current.imageSize)
+        }
+    }
+    
     private func setupArrowImageViewLayout() {
         addSubview(arrowImageView)
         
@@ -86,7 +99,7 @@ extension AlgoAssetView {
         amountLabel.snp.makeConstraints { make in
             make.centerY.equalTo(arrowImageView)
             make.trailing.equalTo(arrowImageView.snp.leading).offset(-layout.current.imageInset)
-            make.leading.greaterThanOrEqualTo(algosLabel.snp.trailing).offset(layout.current.imageInset)
+            make.leading.greaterThanOrEqualTo(verifiedImageView.snp.trailing).offset(layout.current.imageInset)
         }
     }
 }
@@ -97,5 +110,7 @@ extension AlgoAssetView {
         let imageInset: CGFloat = 10.0
         let nameInset: CGFloat = 7.0
         let arrowImageSize = CGSize(width: 20.0, height: 20.0)
+        let imageSize = CGSize(width: 13.0, height: 13.0)
+        let imageViewOffset: CGFloat = 6.0
     }
 }

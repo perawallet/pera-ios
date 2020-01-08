@@ -34,6 +34,8 @@ class AccountFetchOperation: AsyncOperation {
         
         let draft = AccountFetchDraft(publicKey: address)
         
+        let verifiedAssets = api.session.verifiedAssets
+        
         api.fetchAccount(with: draft) { response in
             switch response {
             case .success(let account):
@@ -44,6 +46,14 @@ class AccountFetchOperation: AsyncOperation {
                                 switch assetResponse {
                                 case .success(let assetDetail):
                                     assetDetail.index = index
+                                    
+                                    if let verifiedAssets = verifiedAssets,
+                                        verifiedAssets.contains(where: { verifiedAsset -> Bool in
+                                            "\(verifiedAsset.id)" == index
+                                        }) {
+                                        assetDetail.isVerified = true
+                                    }
+                                    
                                     account.assetDetails.append(assetDetail)
                                     
                                     if assets.count == account.assetDetails.count {

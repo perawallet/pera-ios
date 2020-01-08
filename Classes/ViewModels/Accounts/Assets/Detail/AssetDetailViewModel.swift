@@ -26,6 +26,7 @@ extension AssetDetailViewModel {
     func configure(_ view: AssetDetailHeaderView, with account: Account, and assetDetail: AssetDetail?) {
         if let assetDetail = assetDetail {
             view.dollarValueLabel.isHidden = true
+            view.verifiedImageView.isHidden = !assetDetail.isVerified
             view.rewardTotalAmountView.removeFromSuperview()
             view.assetNameLabel.attributedText = assetDetail.assetDisplayName(
                 with: UIFont.font(.avenir, withWeight: .demiBold(size: 14.0)),
@@ -44,7 +45,7 @@ extension AssetDetailViewModel {
             view.algosAmountLabel.text = amount.toFractionStringForLabel(fraction: assetDetail.fractionDecimals)
         } else {
             view.algosAmountLabel.text = account.amount.toAlgos.toDecimalStringForLabel
-            
+            view.verifiedImageView.isHidden = false
             let totalRewards: UInt64 = (account.rewards ?? 0)
             view.rewardTotalAmountView.algosAmountView.amountLabel.text = totalRewards.toAlgos.toDecimalStringForLabel
         }

@@ -12,7 +12,11 @@ class AssetSelectionView: BaseView {
 
     private let layout = Layout<LayoutConstants>()
     
-    private(set) lazy var assetNameView = AssetNameView()
+    private(set) lazy var assetNameView: AssetNameView = {
+        let view = AssetNameView()
+        view.idLabel.removeFromSuperview()
+        return view
+    }()
     
     private(set) lazy var detailLabel: UILabel = {
         UILabel()

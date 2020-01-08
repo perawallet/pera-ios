@@ -96,6 +96,7 @@ extension RequestTransactionPreviewViewController {
             SharedColors.turquois
         requestTransactionPreviewView.transactionParticipantView.assetSelectionView.amountView.algoIconImageView.tintColor =
             SharedColors.turquois
+        requestTransactionPreviewView.transactionParticipantView.assetSelectionView.verifiedImageView.isHidden = false
     }
     
     private func configureViewForAssets() {
@@ -109,6 +110,7 @@ extension RequestTransactionPreviewViewController {
             return
         }
         
+        requestTransactionPreviewView.transactionParticipantView.assetSelectionView.verifiedImageView.isHidden = !assetDetail.isVerified
         requestTransactionPreviewView.transactionParticipantView.assetSelectionView.detailLabel.attributedText =
             assetDetail.assetDisplayName()
     }

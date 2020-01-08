@@ -229,7 +229,7 @@ extension ChoosePasswordViewController: ChoosePasswordViewDelegate {
     fileprivate func launchHome() {
         SVProgressHUD.show(withStatus: "title-loading".localized)
         
-        self.accountManager?.fetchAllAccounts {
+        self.accountManager?.fetchAllAccounts(isVerifiedAssetsIncluded: true) {
             
             DispatchQueue.main.async {
                 UIApplication.shared.rootViewController()?.tabBarViewController.route = self.route
