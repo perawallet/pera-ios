@@ -34,7 +34,7 @@ extension AccountManager {
                     self.api.session.verifiedAssets = list.results
                     self.fetchAccounts(completion: completion)
                 case .failure:
-                    break
+                    self.fetchAccounts(completion: completion)
                 }
             }
         } else {
