@@ -22,9 +22,8 @@ class AssetAdditionView: BaseView {
         
         assetInputView.inputTextField.textColor = SharedColors.black
         assetInputView.inputTextField.tintColor = SharedColors.black
-        assetInputView.nextButtonMode = .submit
+        assetInputView.inputTextField.returnKeyType = .done
         assetInputView.inputTextField.autocorrectionType = .no
-        assetInputView.inputTextField.keyboardType = .numberPad
         return assetInputView
     }()
     

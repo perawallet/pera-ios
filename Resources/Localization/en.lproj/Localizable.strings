@@ -149,7 +149,7 @@
 "asset-algos-title" = "Algos";
 "asset-remove-title" = "REMOVING AN ASSET";
 "asset-remove-subtitle" = "To remove an asset you need to transfer all your balance to another another account.";
-"asset-search-placeholder" = "Search Assets ID";
+"asset-search-placeholder" = "Search Assets ID or Name";
 "asset-remove-confirmation-title" = "Removing Asset";
 "asset-transfer-balance" = "TRANSFER BALANCE";
 "title-remove-assets" = "Remove Assets";

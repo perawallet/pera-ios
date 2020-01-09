@@ -46,6 +46,24 @@ class AssetDetail: Model {
         isRemoved = try container.decodeIfPresent(Bool.self, forKey: .isRemoved) ?? false
         isRecentlyAdded = try container.decodeIfPresent(Bool.self, forKey: .isRecentlyAdded) ?? false
     }
+    
+    init(searchResult: AssetSearchResult) {
+        self.id = searchResult.id
+        self.assetName = searchResult.name
+        self.unitName = searchResult.unitName
+        self.isVerified = searchResult.isVerified
+        
+        self.fractionDecimals = 0
+        self.total = 0
+        self.creator = ""
+        
+        isDefaultFrozen = nil
+        url = nil
+        managerKey = nil
+        reserveAddress = nil
+        freezeAddress = nil
+        clawBackAddress = nil
+    }
 }
 
 extension AssetDetail {

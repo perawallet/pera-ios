@@ -163,7 +163,7 @@ extension AccountsViewController: AccountsDataSourceDelegate {
 extension AccountsViewController: AssetAdditionViewControllerDelegate {
     func assetAdditionViewController(
         _ assetAdditionViewController: AssetAdditionViewController,
-        didAdd assetDetail: AssetDetail,
+        didAdd assetSearchResult: AssetSearchResult,
         to account: Account
     ) {
         guard let section = accountsDataSource.section(for: account) else {
@@ -171,7 +171,7 @@ extension AccountsViewController: AssetAdditionViewControllerDelegate {
         }
         
         let index = accountsView.accountsCollectionView.numberOfItems(inSection: section)
-        accountsDataSource.add(assetDetail: assetDetail, to: account)
+        accountsDataSource.add(assetDetail: AssetDetail(searchResult: assetSearchResult), to: account)
         accountsView.accountsCollectionView.insertItems(at: [IndexPath(item: index, section: section)])
     }
 }
