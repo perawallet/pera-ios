@@ -40,4 +40,5 @@ enum RequestParameter: String, JSONBodyRequestParameter {
     case asset = "asset_id"
     case limit = "limit"
     case query = "q"
+    case offset = "offset"
 }

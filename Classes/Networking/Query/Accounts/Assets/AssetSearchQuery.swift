@@ -11,9 +11,15 @@ import Magpie
 struct AssetSearchQuery: Query {
     typealias Key = RequestParameter
     
-    let query: String
+    let query: String?
+    let limit: Int
+    let offset: Int
     
     func decoded() -> [Pair]? {
-        return [Pair(key: .query, value: .some(query))]
+        var pairs = [Pair(key: .limit, value: .some(limit)), Pair(key: .offset, value: .some(offset))]
+        if let query = query {
+            pairs.append(Pair(key: .query, value: .some(query)))
+        }
+        return pairs
     }
 }

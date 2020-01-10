@@ -24,7 +24,13 @@ class AssetAdditionViewController: BaseViewController {
     weak var delegate: AssetAdditionViewControllerDelegate?
     
     private var account: Account
+    
     private var assetResults = [AssetSearchResult]()
+    private let searchLimit = 50
+    private var searchOffset = 0
+    private var hasNext = false
+    private let paginationRequestOffset = 3
+    
     private lazy var assetAdditionView = AssetAdditionView()
     
     private lazy var emptyStateView = EmptyStateView(title: "asset-not-found".localized, topImage: nil, bottomImage: nil)
@@ -39,7 +45,7 @@ class AssetAdditionViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        fetchAssets(with: nil)
+        fetchAssets(with: nil, isPaginated: false)
     }
     
     override func configureAppearance() {
@@ -70,15 +76,22 @@ extension AssetAdditionViewController {
 }
 
 extension AssetAdditionViewController {
-    private func fetchAssets(with query: String?) {
-        api?.searchAssets(with: query) { [weak self] response in
+    private func fetchAssets(with query: String?, isPaginated: Bool) {
+        api?.searchAssets(with: AssetSearchQuery(query: query, limit: searchLimit, offset: searchOffset)) { [weak self] response in
             switch response {
             case let .success(searchResults):
                 guard let strongSelf = self else {
                     return
                 }
                 
-                strongSelf.assetResults = searchResults
+                if isPaginated {
+                    strongSelf.assetResults.append(contentsOf: searchResults.results)
+                } else {
+                    strongSelf.assetResults = searchResults.results
+                }
+                
+                strongSelf.searchOffset += searchResults.results.count
+                strongSelf.hasNext = searchResults.next != nil
                 
                 if strongSelf.assetResults.isEmpty {
                     strongSelf.assetAdditionView.assetsCollectionView.contentState = .empty(strongSelf.emptyStateView)
@@ -155,6 +168,15 @@ extension AssetAdditionViewController: UICollectionViewDelegateFlowLayout {
     ) -> CGSize {
         return CGSize(width: UIScreen.main.bounds.width, height: layout.current.cellHeight)
     }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if indexPath.item == assetResults.count - paginationRequestOffset && hasNext {
+            guard let query = assetAdditionView.assetInputView.inputTextField.text else {
+                return
+            }
+            fetchAssets(with: query.isEmpty ? nil : query, isPaginated: true)
+        }
+    }
 }
 
 extension AssetAdditionViewController: InputViewDelegate {
@@ -166,8 +188,9 @@ extension AssetAdditionViewController: InputViewDelegate {
         guard let query = assetAdditionView.assetInputView.inputTextField.text else {
             return
         }
-        
-        fetchAssets(with: query)
+        hasNext = false
+        searchOffset = 0
+        fetchAssets(with: query, isPaginated: false)
     }
 }
 

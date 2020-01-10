@@ -23,20 +23,13 @@ extension API {
     
     @discardableResult
     func searchAssets(
-        with searchQuery: String?,
-        then handler: @escaping Endpoint.DefaultResultHandler<[AssetSearchResult]>
+        with draft: AssetSearchQuery,
+        then handler: @escaping Endpoint.DefaultResultHandler<PaginatedList<AssetSearchResult>>
     ) -> EndpointOperatable {
-        guard let query = searchQuery else {
-            return Endpoint(path: Path("/api/assets/"))
-                .httpMethod(.get)
-                .base(Environment.current.mobileApi)
-                .resultHandler(handler)
-                .buildAndSend(self)
-        }
         return Endpoint(path: Path("/api/assets/"))
             .httpMethod(.get)
             .base(Environment.current.mobileApi)
-            .query(AssetSearchQuery(query: query))
+            .query(draft)
             .resultHandler(handler)
             .buildAndSend(self)
     }

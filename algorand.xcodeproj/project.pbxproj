@@ -376,6 +376,8 @@
 		2B0D84F82395D4F500F0EAA7 /* SendAssetTransactionPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0D84F62395D4F500F0EAA7 /* SendAssetTransactionPreviewViewController.swift */; };
 		2B0D84FA2395D63100F0EAA7 /* SendAlgosTransactionPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0D84F92395D63100F0EAA7 /* SendAlgosTransactionPreviewViewController.swift */; };
 		2B0D84FB2395D63100F0EAA7 /* SendAlgosTransactionPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0D84F92395D63100F0EAA7 /* SendAlgosTransactionPreviewViewController.swift */; };
+		2B0F3D8923C8D1D6006BB01B /* PaginatedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0F3D8823C8D1D6006BB01B /* PaginatedList.swift */; };
+		2B0F3D8A23C8D1D6006BB01B /* PaginatedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0F3D8823C8D1D6006BB01B /* PaginatedList.swift */; };
 		2B191C82232150C900EAB1B8 /* PushNotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B191C81232150C900EAB1B8 /* PushNotificationController.swift */; };
 		2B191C83232150C900EAB1B8 /* PushNotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B191C81232150C900EAB1B8 /* PushNotificationController.swift */; };
 		2B1B536823279CD500D54029 /* AlgorandNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1B536723279CD500D54029 /* AlgorandNotification.swift */; };
@@ -976,6 +978,7 @@
 		2B0D84F32395331000F0EAA7 /* TransactionParticipantView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionParticipantView.swift; sourceTree = "<group>"; };
 		2B0D84F62395D4F500F0EAA7 /* SendAssetTransactionPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendAssetTransactionPreviewViewController.swift; sourceTree = "<group>"; };
 		2B0D84F92395D63100F0EAA7 /* SendAlgosTransactionPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendAlgosTransactionPreviewViewController.swift; sourceTree = "<group>"; };
+		2B0F3D8823C8D1D6006BB01B /* PaginatedList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaginatedList.swift; sourceTree = "<group>"; };
 		2B191C81232150C900EAB1B8 /* PushNotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationController.swift; sourceTree = "<group>"; };
 		2B191C882321998100EAB1B8 /* algorand-staging.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "algorand-staging.entitlements"; sourceTree = "<group>"; };
 		2B191C892321998600EAB1B8 /* algorand.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = algorand.entitlements; sourceTree = "<group>"; };
@@ -1445,6 +1448,7 @@
 				2B4DF439236C787600FF9551 /* Accounts */,
 				2B4DF444236C7D5500FF9551 /* Application */,
 				2B3F390D228C4D98008BBE75 /* Auction */,
+				2B0F3D8723C8D1BE006BB01B /* Common */,
 				2B4DF446236C7D6200FF9551 /* Contacts */,
 				2B4DF447236C7D7900FF9551 /* Error */,
 				2BD5476F23184303007179FE /* Feedback */,
@@ -1531,6 +1535,14 @@
 				2B0D84F92395D63100F0EAA7 /* SendAlgosTransactionPreviewViewController.swift */,
 			);
 			path = Preview;
+			sourceTree = "<group>";
+		};
+		2B0F3D8723C8D1BE006BB01B /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				2B0F3D8823C8D1D6006BB01B /* PaginatedList.swift */,
+			);
+			path = Common;
 			sourceTree = "<group>";
 		};
 		2B1B77B2229567180021A6CC /* Detail */ = {
@@ -4997,6 +5009,7 @@
 				2B44873B237AB67700C19FDE /* AccountsLayoutBuilder.swift in Sources */,
 				2BCB5C9722B77C820038DA6B /* CoinlistTransactionCellContextView.swift in Sources */,
 				17BD4EE52292F1260003E49A /* SelectionView.swift in Sources */,
+				2B0F3D8A23C8D1D6006BB01B /* PaginatedList.swift in Sources */,
 				17BD4EE62292F1260003E49A /* AuctionTimerView.swift in Sources */,
 				17BD4EE72292F1260003E49A /* TransactionPreviewDraft.swift in Sources */,
 				2B4487082379597500C19FDE /* AccountFooterView.swift in Sources */,
@@ -5426,6 +5439,7 @@
 				2B44873A237AB67700C19FDE /* AccountsLayoutBuilder.swift in Sources */,
 				2BCB5C9622B77C820038DA6B /* CoinlistTransactionCellContextView.swift in Sources */,
 				2B0C2F6822809FDD009206D7 /* SelectionView.swift in Sources */,
+				2B0F3D8923C8D1D6006BB01B /* PaginatedList.swift in Sources */,
 				2B3F3901228B74D5008BBE75 /* AuctionTimerView.swift in Sources */,
 				2B6ED962226105CD00787984 /* TransactionPreviewDraft.swift in Sources */,
 				2B4487072379597500C19FDE /* AccountFooterView.swift in Sources */,
