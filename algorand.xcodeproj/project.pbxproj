@@ -376,6 +376,8 @@
 		2B0D84F82395D4F500F0EAA7 /* SendAssetTransactionPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0D84F62395D4F500F0EAA7 /* SendAssetTransactionPreviewViewController.swift */; };
 		2B0D84FA2395D63100F0EAA7 /* SendAlgosTransactionPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0D84F92395D63100F0EAA7 /* SendAlgosTransactionPreviewViewController.swift */; };
 		2B0D84FB2395D63100F0EAA7 /* SendAlgosTransactionPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0D84F92395D63100F0EAA7 /* SendAlgosTransactionPreviewViewController.swift */; };
+		2B0F3D8923C8D1D6006BB01B /* PaginatedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0F3D8823C8D1D6006BB01B /* PaginatedList.swift */; };
+		2B0F3D8A23C8D1D6006BB01B /* PaginatedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0F3D8823C8D1D6006BB01B /* PaginatedList.swift */; };
 		2B191C82232150C900EAB1B8 /* PushNotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B191C81232150C900EAB1B8 /* PushNotificationController.swift */; };
 		2B191C83232150C900EAB1B8 /* PushNotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B191C81232150C900EAB1B8 /* PushNotificationController.swift */; };
 		2B1B536823279CD500D54029 /* AlgorandNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1B536723279CD500D54029 /* AlgorandNotification.swift */; };
@@ -530,12 +532,10 @@
 		2B4BDA14238CA1E500491149 /* AssetActionConfirmationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4BDA12238CA1E500491149 /* AssetActionConfirmationViewModel.swift */; };
 		2B4BDA16238D1BD500491149 /* OptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4BDA15238D1BD500491149 /* OptionsView.swift */; };
 		2B4BDA17238D1BD500491149 /* OptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4BDA15238D1BD500491149 /* OptionsView.swift */; };
-		2B4BDA1A238D35B400491149 /* AssetList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4BDA19238D35B400491149 /* AssetList.swift */; };
-		2B4BDA1B238D35B400491149 /* AssetList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4BDA19238D35B400491149 /* AssetList.swift */; };
-		2B4BDA1D238D36CA00491149 /* AssetQueryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4BDA1C238D36CA00491149 /* AssetQueryItem.swift */; };
-		2B4BDA1E238D36CA00491149 /* AssetQueryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4BDA1C238D36CA00491149 /* AssetQueryItem.swift */; };
-		2B4BDA21238D3A6800491149 /* AssetFetchQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4BDA20238D3A6800491149 /* AssetFetchQuery.swift */; };
-		2B4BDA22238D3A6800491149 /* AssetFetchQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4BDA20238D3A6800491149 /* AssetFetchQuery.swift */; };
+		2B4BDA1D238D36CA00491149 /* AssetSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4BDA1C238D36CA00491149 /* AssetSearchResult.swift */; };
+		2B4BDA1E238D36CA00491149 /* AssetSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4BDA1C238D36CA00491149 /* AssetSearchResult.swift */; };
+		2B4BDA21238D3A6800491149 /* AssetSearchQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4BDA20238D3A6800491149 /* AssetSearchQuery.swift */; };
+		2B4BDA22238D3A6800491149 /* AssetSearchQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4BDA20238D3A6800491149 /* AssetSearchQuery.swift */; };
 		2B4BDA25238D490300491149 /* AssetFetchDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4BDA24238D490300491149 /* AssetFetchDraft.swift */; };
 		2B4BDA26238D490300491149 /* AssetFetchDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4BDA24238D490300491149 /* AssetFetchDraft.swift */; };
 		2B56F7D6225B3C1D00E58737 /* SendTransactionPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B56F7D5225B3C1D00E58737 /* SendTransactionPreviewViewController.swift */; };
@@ -978,6 +978,7 @@
 		2B0D84F32395331000F0EAA7 /* TransactionParticipantView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionParticipantView.swift; sourceTree = "<group>"; };
 		2B0D84F62395D4F500F0EAA7 /* SendAssetTransactionPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendAssetTransactionPreviewViewController.swift; sourceTree = "<group>"; };
 		2B0D84F92395D63100F0EAA7 /* SendAlgosTransactionPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendAlgosTransactionPreviewViewController.swift; sourceTree = "<group>"; };
+		2B0F3D8823C8D1D6006BB01B /* PaginatedList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaginatedList.swift; sourceTree = "<group>"; };
 		2B191C81232150C900EAB1B8 /* PushNotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationController.swift; sourceTree = "<group>"; };
 		2B191C882321998100EAB1B8 /* algorand-staging.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "algorand-staging.entitlements"; sourceTree = "<group>"; };
 		2B191C892321998600EAB1B8 /* algorand.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = algorand.entitlements; sourceTree = "<group>"; };
@@ -1064,9 +1065,8 @@
 		2B4BDA0F238CA1BD00491149 /* AssetDisplayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetDisplayViewModel.swift; sourceTree = "<group>"; };
 		2B4BDA12238CA1E500491149 /* AssetActionConfirmationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetActionConfirmationViewModel.swift; sourceTree = "<group>"; };
 		2B4BDA15238D1BD500491149 /* OptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsView.swift; sourceTree = "<group>"; };
-		2B4BDA19238D35B400491149 /* AssetList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetList.swift; sourceTree = "<group>"; };
-		2B4BDA1C238D36CA00491149 /* AssetQueryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetQueryItem.swift; sourceTree = "<group>"; };
-		2B4BDA20238D3A6800491149 /* AssetFetchQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetFetchQuery.swift; sourceTree = "<group>"; };
+		2B4BDA1C238D36CA00491149 /* AssetSearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetSearchResult.swift; sourceTree = "<group>"; };
+		2B4BDA20238D3A6800491149 /* AssetSearchQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetSearchQuery.swift; sourceTree = "<group>"; };
 		2B4BDA24238D490300491149 /* AssetFetchDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetFetchDraft.swift; sourceTree = "<group>"; };
 		2B56F7D5225B3C1D00E58737 /* SendTransactionPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendTransactionPreviewViewController.swift; sourceTree = "<group>"; };
 		2B56F7D7225B3C4200E58737 /* RequestTransactionPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestTransactionPreviewViewController.swift; sourceTree = "<group>"; };
@@ -1448,6 +1448,7 @@
 				2B4DF439236C787600FF9551 /* Accounts */,
 				2B4DF444236C7D5500FF9551 /* Application */,
 				2B3F390D228C4D98008BBE75 /* Auction */,
+				2B0F3D8723C8D1BE006BB01B /* Common */,
 				2B4DF446236C7D6200FF9551 /* Contacts */,
 				2B4DF447236C7D7900FF9551 /* Error */,
 				2BD5476F23184303007179FE /* Feedback */,
@@ -1534,6 +1535,14 @@
 				2B0D84F92395D63100F0EAA7 /* SendAlgosTransactionPreviewViewController.swift */,
 			);
 			path = Preview;
+			sourceTree = "<group>";
+		};
+		2B0F3D8723C8D1BE006BB01B /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				2B0F3D8823C8D1D6006BB01B /* PaginatedList.swift */,
+			);
+			path = Common;
 			sourceTree = "<group>";
 		};
 		2B1B77B2229567180021A6CC /* Detail */ = {
@@ -1952,8 +1961,7 @@
 		2B4BDA18238D359000491149 /* List */ = {
 			isa = PBXGroup;
 			children = (
-				2B4BDA19238D35B400491149 /* AssetList.swift */,
-				2B4BDA1C238D36CA00491149 /* AssetQueryItem.swift */,
+				2B4BDA1C238D36CA00491149 /* AssetSearchResult.swift */,
 			);
 			path = List;
 			sourceTree = "<group>";
@@ -1961,7 +1969,7 @@
 		2B4BDA1F238D3A5A00491149 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
-				2B4BDA20238D3A6800491149 /* AssetFetchQuery.swift */,
+				2B4BDA20238D3A6800491149 /* AssetSearchQuery.swift */,
 				2B3D73BB23C3638900597D32 /* LimitQuery.swift */,
 			);
 			path = Assets;
@@ -4755,7 +4763,7 @@
 				17BD4E3E2292F1260003E49A /* HistoryViewModel.swift in Sources */,
 				17BD4E3F2292F1260003E49A /* PassphraseView.swift in Sources */,
 				17BD4E402292F1260003E49A /* String+Number.swift in Sources */,
-				2B4BDA1E238D36CA00491149 /* AssetQueryItem.swift in Sources */,
+				2B4BDA1E238D36CA00491149 /* AssetSearchResult.swift in Sources */,
 				17BD4E412292F1260003E49A /* AddContactView.swift in Sources */,
 				17BD4E422292F1260003E49A /* PotentialAlgosDisplayView.swift in Sources */,
 				17BD4E432292F1260003E49A /* UIButton+Factory.swift in Sources */,
@@ -4901,7 +4909,6 @@
 				17BD4E9D2292F1260003E49A /* ChoosePasswordViewController.swift in Sources */,
 				17BD4E9E2292F1260003E49A /* ImagePicker.swift in Sources */,
 				17BD4E9F2292F1260003E49A /* AccountListViewController.swift in Sources */,
-				2B4BDA1B238D35B400491149 /* AssetList.swift in Sources */,
 				17BD4EA02292F1260003E49A /* TypeAliases.swift in Sources */,
 				17BD4EA12292F1260003E49A /* TabBar.swift in Sources */,
 				17BD4EA22292F1260003E49A /* String+Localization.swift in Sources */,
@@ -4961,7 +4968,7 @@
 				17BD4ECA2292F1260003E49A /* AlertViewController.swift in Sources */,
 				17BD4ECB2292F1260003E49A /* MyBidsViewController.swift in Sources */,
 				17BD4ECC2292F1260003E49A /* NodeManager.swift in Sources */,
-				2B4BDA22238D3A6800491149 /* AssetFetchQuery.swift in Sources */,
+				2B4BDA22238D3A6800491149 /* AssetSearchQuery.swift in Sources */,
 				2B891F1822BD22B3003205F5 /* DepositViewModel.swift in Sources */,
 				17BD4ECD2292F1260003E49A /* AccountFetchOperation.swift in Sources */,
 				2B4BD9F42389F17400491149 /* AssetSupportAlertViewController.swift in Sources */,
@@ -5002,6 +5009,7 @@
 				2B44873B237AB67700C19FDE /* AccountsLayoutBuilder.swift in Sources */,
 				2BCB5C9722B77C820038DA6B /* CoinlistTransactionCellContextView.swift in Sources */,
 				17BD4EE52292F1260003E49A /* SelectionView.swift in Sources */,
+				2B0F3D8A23C8D1D6006BB01B /* PaginatedList.swift in Sources */,
 				17BD4EE62292F1260003E49A /* AuctionTimerView.swift in Sources */,
 				17BD4EE72292F1260003E49A /* TransactionPreviewDraft.swift in Sources */,
 				2B4487082379597500C19FDE /* AccountFooterView.swift in Sources */,
@@ -5185,7 +5193,7 @@
 				2B653308228F656500F19FEA /* MyBidsView.swift in Sources */,
 				2BDE31E122799FF0002E8235 /* ContactSelectionViewController.swift in Sources */,
 				2BF5315D224A46F800A7455F /* UIViewControllerContextTransitioning+Additions.swift in Sources */,
-				2B4BDA1D238D36CA00491149 /* AssetQueryItem.swift in Sources */,
+				2B4BDA1D238D36CA00491149 /* AssetSearchResult.swift in Sources */,
 				2BD73A192241324700B66EEF /* ChoosePasswordViewModel.swift in Sources */,
 				2B8954C02244047D00D6D068 /* BaseInputView.swift in Sources */,
 				2B56F7DC225B51C100E58737 /* AssetInputView.swift in Sources */,
@@ -5331,7 +5339,6 @@
 				2BF34CC5223A99670052CAD3 /* String+Localization.swift in Sources */,
 				17AA1B0622662B5B000B0BB0 /* CursorlessTextField.swift in Sources */,
 				179B93D6225E447400DD03E9 /* Node.swift in Sources */,
-				2B4BDA1A238D35B400491149 /* AssetList.swift in Sources */,
 				2BF34CA62239AD6D0052CAD3 /* KeyboardController.swift in Sources */,
 				2BB021E0224E5FD20039D78A /* AssetDetailViewModel.swift in Sources */,
 				2B82B1CC2253DE2500A8909F /* ContactsViewModel.swift in Sources */,
@@ -5391,7 +5398,7 @@
 				2B1B77C722963C560021A6CC /* CoinlistAuthentication.swift in Sources */,
 				17BEC4662248D39900AAF370 /* PassPhraseCollectionViewCell.swift in Sources */,
 				2B7572A6225CA1E3009E0253 /* SendTransactionView.swift in Sources */,
-				2B4BDA21238D3A6800491149 /* AssetFetchQuery.swift in Sources */,
+				2B4BDA21238D3A6800491149 /* AssetSearchQuery.swift in Sources */,
 				2B891F1722BD22B3003205F5 /* DepositViewModel.swift in Sources */,
 				2B1B77B8229567400021A6CC /* PlaceBidViewModel.swift in Sources */,
 				2B4BD9F32389F17400491149 /* AssetSupportAlertViewController.swift in Sources */,
@@ -5432,6 +5439,7 @@
 				2B44873A237AB67700C19FDE /* AccountsLayoutBuilder.swift in Sources */,
 				2BCB5C9622B77C820038DA6B /* CoinlistTransactionCellContextView.swift in Sources */,
 				2B0C2F6822809FDD009206D7 /* SelectionView.swift in Sources */,
+				2B0F3D8923C8D1D6006BB01B /* PaginatedList.swift in Sources */,
 				2B3F3901228B74D5008BBE75 /* AuctionTimerView.swift in Sources */,
 				2B6ED962226105CD00787984 /* TransactionPreviewDraft.swift in Sources */,
 				2B4487072379597500C19FDE /* AccountFooterView.swift in Sources */,

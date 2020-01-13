@@ -22,14 +22,14 @@ extension API {
     }
     
     @discardableResult
-    func getAssets(
-        with draft: AssetFetchDraft,
-        then handler: @escaping Endpoint.DefaultResultHandler<AssetList>
+    func searchAssets(
+        with draft: AssetSearchQuery,
+        then handler: @escaping Endpoint.DefaultResultHandler<PaginatedList<AssetSearchResult>>
     ) -> EndpointOperatable {
-        return Endpoint(path: Path("/v1/assets"))
+        return Endpoint(path: Path("/api/assets/"))
             .httpMethod(.get)
-            .httpHeaders(algorandAuthenticatedHeaders())
-            .query(AssetFetchQuery(assetId: draft.assetId.isEmpty ? 0 : Int(draft.assetId) ?? 0, max: draft.assetId.isEmpty ? 100 : 1))
+            .base(Environment.current.mobileApi)
+            .query(draft)
             .resultHandler(handler)
             .buildAndSend(self)
     }

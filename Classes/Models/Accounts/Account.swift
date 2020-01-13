@@ -104,6 +104,12 @@ class Account: Model {
             assetDetail.id == id
         }
     }
+    
+    func containsAsset(_ id: Int64) -> Bool {
+        return assetDetails.contains { assetDetail -> Bool in
+            assetDetail.id == id
+        }
+    }
 }
 
 extension Account {

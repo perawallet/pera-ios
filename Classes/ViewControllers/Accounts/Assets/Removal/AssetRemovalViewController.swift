@@ -276,6 +276,8 @@ extension AssetRemovalViewController: SendAssetTransactionPreviewViewControllerD
         didCompleteTransactionFor assetDetail: AssetDetail
     ) {
         removeAssetFromAccount(assetDetail)
+        delegate?.assetRemovalViewController(self, didRemove: assetDetail, from: account)
+        closeScreen(by: .dismiss, animated: false)
     }
 }
 

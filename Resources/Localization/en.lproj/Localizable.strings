@@ -149,7 +149,7 @@
 "asset-algos-title" = "Algos";
 "asset-remove-title" = "REMOVING AN ASSET";
 "asset-remove-subtitle" = "To remove an asset you need to transfer all your balance to another another account.";
-"asset-search-placeholder" = "Search Assets ID";
+"asset-search-placeholder" = "Search Assets ID or Name";
 "asset-remove-confirmation-title" = "Removing Asset";
 "asset-transfer-balance" = "TRANSFER BALANCE";
 "title-remove-assets" = "Remove Assets";
@@ -165,7 +165,7 @@
 "asset-remove-transaction-warning" = "You are about to remove %@ from %@. You will not be able to transact with this asset from this account unless you re-add it.";
 "asset-support-qr-error" = "None of your account support this asset, would you like to add and proceed?";
 "asset-support-qr-title" = "You do not support this Asset";
-"asset-creation-fee-title" = "Asset Creation Fee";
+"asset-creation-fee-title" = "Add Asset Fee";
 "asset-min-transaction-error-title" = "Min Transaction Error!";
 "asset-min-transaction-error-message" = "You need at least %@ Algos to add this asset";
 "asset-you-already-own-message" = "You already own this asset";
