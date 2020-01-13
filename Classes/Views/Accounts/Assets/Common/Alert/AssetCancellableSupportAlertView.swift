@@ -25,6 +25,7 @@ class AssetCancellableSupportAlertView: BaseView {
             .withAlignment(.center)
             .withFont(UIFont.font(.overpass, withWeight: .bold(size: 16.0)))
             .withText("asset-support-qr-title".localized)
+            .withTextColor(SharedColors.black)
     }()
     
     private(set) lazy var assetDisplayView = AssetDisplayView()
@@ -35,6 +36,7 @@ class AssetCancellableSupportAlertView: BaseView {
             .withAlignment(.center)
             .withFont(UIFont.font(.avenir, withWeight: .medium(size: 14.0)))
             .withText("asset-support-qr-error".localized)
+            .withTextColor(SharedColors.black)
     }()
     
     private lazy var okButton: UIButton = {

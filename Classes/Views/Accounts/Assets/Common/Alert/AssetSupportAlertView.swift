@@ -23,6 +23,7 @@ class AssetSupportAlertView: BaseView {
             .withLine(.single)
             .withAlignment(.center)
             .withFont(UIFont.font(.overpass, withWeight: .bold(size: 16.0)))
+            .withTextColor(SharedColors.black)
         
     }()
     
@@ -33,6 +34,7 @@ class AssetSupportAlertView: BaseView {
             .withLine(.contained)
             .withAlignment(.center)
             .withFont(UIFont.font(.avenir, withWeight: .medium(size: 14.0)))
+            .withTextColor(SharedColors.black)
     }()
     
     private lazy var okButton: UIButton = {
