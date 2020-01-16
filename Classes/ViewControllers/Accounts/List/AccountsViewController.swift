@@ -99,6 +99,14 @@ class AccountsViewController: BaseViewController {
         pushNotificationController.registerDevice()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if accountsDataSource.hasPendingAssetAction {
+            accountsView.accountsCollectionView.reloadData()
+        }
+    }
+    
     override func configureAppearance() {
         super.configureAppearance()
         navigationItem.title = "tabbar-item-accounts".localized

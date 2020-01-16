@@ -21,8 +21,12 @@ class AccountsDataSource: NSObject, UICollectionViewDataSource {
     
     var accounts: [Account] = UIApplication.shared.appConfiguration?.session.authenticatedUser?.accounts ?? []
     
-    var addedAssetDetails: [Account: [AssetDetail]] = [:]
-    var removedAssetDetails: [Account: [AssetDetail]] = [:]
+    private var addedAssetDetails: [Account: [AssetDetail]] = [:]
+    private var removedAssetDetails: [Account: [AssetDetail]] = [:]
+    
+    var hasPendingAssetAction: Bool {
+        return !addedAssetDetails.isEmpty || !removedAssetDetails.isEmpty
+    }
     
     func reload() {
         guard let user = UIApplication.shared.appConfiguration?.session.authenticatedUser else {
