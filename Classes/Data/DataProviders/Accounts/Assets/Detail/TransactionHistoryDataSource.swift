@@ -153,7 +153,7 @@ extension TransactionHistoryDataSource {
         for account: Account,
         withRefresh refresh: Bool,
         between dates: (Date, Date)? = nil,
-        then handler: @escaping ([Transaction]?, Error?) -> Void
+        then handler: @escaping ([TransactionItem]?, Error?) -> Void
     ) {
         api?.getTransactionParams { response in
             switch response {
@@ -179,7 +179,7 @@ extension TransactionHistoryDataSource {
         for account: Account,
         between dates: (Date, Date),
         withRefresh refresh: Bool,
-        then handler: @escaping ([Transaction]?, Error?) -> Void
+        then handler: @escaping ([TransactionItem]?, Error?) -> Void
     ) {
         if refresh {
             transactions.removeAll()
@@ -216,7 +216,7 @@ extension TransactionHistoryDataSource {
                     }
                 }
                 
-                handler(transactions.transactions, nil)
+                handler(self.transactions, nil)
             }
         }
     }
@@ -226,7 +226,7 @@ extension TransactionHistoryDataSource {
     private func fetchTransactions(
         for account: Account,
         withRefresh refresh: Bool,
-        then handler: @escaping ([Transaction]?, Error?) -> Void
+        then handler: @escaping ([TransactionItem]?, Error?) -> Void
     ) {
         if refresh {
             transactions.removeAll()
@@ -263,7 +263,7 @@ extension TransactionHistoryDataSource {
                     }
                 }
                 
-                handler(transactions.transactions, nil)
+                handler(self.transactions, nil)
             }
         }
     }
