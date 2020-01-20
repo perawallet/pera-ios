@@ -10,7 +10,6 @@ import UIKit
 
 protocol SettingsViewModelDelegate: class {
     func settingsViewModel(_ viewModel: SettingsViewModel, didToggleValue value: Bool, atIndexPath indexPath: IndexPath)
-    func settingsViewModel(_ viewModel: SettingsViewModel, didTapCoinlistActionIn cell: CoinlistCell)
 }
 
 class SettingsViewModel {
@@ -21,7 +20,6 @@ class SettingsViewModel {
         case notifications = 2
         case rewards = 3
         case language = 4
-        case coinlist = 5
     }
     
     var indexPath: IndexPath?
@@ -52,23 +50,6 @@ class SettingsViewModel {
         cell.contextView.delegate = self
     }
     
-    func configureCoinlist(_ cell: CoinlistCell, for session: Session?) {
-        let name = nameOfMode(.coinlist)
-        
-        cell.contextView.nameLabel.text = name
-        cell.delegate = self
-        
-        guard let session = session else {
-            return
-        }
-        
-        if session.coinlistToken == nil {
-            cell.contextView.actionMode = .connect
-        } else {
-            cell.contextView.actionMode = .disconnect
-        }
-    }
-    
     fileprivate func nameOfMode(_ mode: SettingsCellMode) -> String {
         switch mode {
         case .password:
@@ -81,8 +62,6 @@ class SettingsViewModel {
             return "rewards-show-title".localized
         case .language:
             return "settings-language".localized
-        case .coinlist:
-            return "settings-coinlist".localized
         }
     }
 }
@@ -98,13 +77,4 @@ extension SettingsViewModel: SettingsToggleContextViewDelegate {
         delegate?.settingsViewModel(self, didToggleValue: value, atIndexPath: indexPath)
     }
     
-}
-
-// MARK: - CoinlistCellDelegate
-
-extension SettingsViewModel: CoinlistCellDelegate {
-    
-    func coinlistCellDidTapActionButton(_ coinlistCell: CoinlistCell) {
-        delegate?.settingsViewModel(self, didTapCoinlistActionIn: coinlistCell)
-    }
 }

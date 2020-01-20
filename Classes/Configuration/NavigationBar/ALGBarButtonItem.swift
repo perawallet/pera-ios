@@ -14,12 +14,6 @@ struct ALGBarButtonItem: BarButtonItem {
     
     var title: TitleContent? {
         switch kind {
-        case .balance:
-            return BarButtonItemTitleContent(
-                text: "balance-title".localized,
-                textColor: .black,
-                font: UIFont.font(.overpass, withWeight: .bold(size: 12.0))
-            )
         case .save:
             return BarButtonItemTitleContent(
                 text: "title-save".localized,
@@ -70,11 +64,6 @@ struct ALGBarButtonItem: BarButtonItem {
                 return ImageContent(normal: icon)
             }
             return nil
-        case .balance:
-            if let icon = img("icon-balance") {
-                return ImageContent(normal: icon)
-            }
-            return nil
         case .save:
             return nil
         case .qr:
@@ -110,14 +99,6 @@ struct ALGBarButtonItem: BarButtonItem {
             return .explicit(CGSize(width: 44.0, height: 44.0))
         case .qr:
             return .explicit(CGSize(width: 44.0, height: 44.0))
-        case .balance:
-            return .expanded(
-                width: .dynamicWidth(BarButtonExpandedSizeHorizontalInsets(
-                    contentInsets: (left: 0.0, right: 0.0),
-                    titleInsets: (left: 4.0, right: -4.0))
-                ),
-                height: .equal(44.0)
-            )
         case .save:
             return .expanded(
                 width: .dynamicWidth(BarButtonExpandedSizeHorizontalInsets(
@@ -152,7 +133,6 @@ extension ALGBarButtonItem {
         case share
         case close
         case removeNode
-        case balance
         case save
         case qr
     }

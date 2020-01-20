@@ -43,10 +43,6 @@ indirect enum Screen {
     case editNode(node: Node)
     case splash
     case transactionDetail(account: Account, transaction: Transaction, transactionType: TransactionType, assetDetail: AssetDetail?)
-    case auctionDetail(auction: Auction, user: AuctionUser, activeAuction: ActiveAuction)
-    case pastAuctionDetail(auction: Auction, user: AuctionUser, activeAuction: ActiveAuction)
-    case balance(user: AuctionUser)
-    case deposit(user: AuctionUser)
     case feedback
     case addAsset(account: Account)
     case removeAsset(account: Account)

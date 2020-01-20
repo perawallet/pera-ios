@@ -350,7 +350,7 @@ extension SendAssetTransactionPreviewViewController {
             sendTransactionPreviewView.amountInputView.set(enabled: false)
         }
         
-        title = "balance-send-title".localized + " \(assetDetail.getDisplayNames().0)"
+        title = "title-send-lowercased".localized + " \(assetDetail.getDisplayNames().0)"
         sendTransactionPreviewView.transactionParticipantView.assetSelectionView.detailLabel.attributedText = assetDetail.assetDisplayName()
         
         switch receiver {

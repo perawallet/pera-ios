@@ -12,7 +12,6 @@ class User: Model {
     
     private(set) var accounts: [Account] = []
     fileprivate(set) var defaultNode: String?
-    private(set) var depositInstructions: [DepositInstruction]?
     
     init(accounts: [Account]) {
         self.accounts = accounts
@@ -93,37 +92,6 @@ extension User {
     
     func account(address: String) -> Account? {
         return accountFrom(address: address)
-    }
-    
-    func addInstruction(_ instruction: DepositInstruction) {
-        if depositInstructions != nil {
-            depositInstructions?.insert(instruction, at: 0)
-        } else {
-            depositInstructions = [instruction]
-        }
-        
-        syncronize()
-    }
-    
-    func removeInstruction(at index: Int) {
-        if let depositInstructions = depositInstructions {
-            if index < depositInstructions.count {
-                self.depositInstructions?.remove(at: index)
-                syncronize()
-            }
-        }
-    }
-    
-    func depositInstruction(at index: Int) -> DepositInstruction? {
-        guard let depositInstructions = depositInstructions else {
-            return nil
-        }
-
-        guard index < depositInstructions.count else {
-            return nil
-        }
-        
-        return depositInstructions[index]
     }
 }
 

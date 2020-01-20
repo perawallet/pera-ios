@@ -27,6 +27,7 @@
 "title-save" = "Save";
 "title-close" = "CLOSE";
 "title-send" = "SEND";
+"title-send-lowercased" = "Send";
 "title-request" = "REQUEST";
 "title-select" = "SELECT RECIPIENT";
 "title-preview" = "PREVIEW";
@@ -44,7 +45,6 @@
 
 "tabbar-item-accounts" = "Accounts";
 "tabbar-item-history" = "History";
-"tabbar-item-auction" = "Auction";
 "tabbar-item-contacts" = "Contacts";
 "tabbar-item-settings" = "Settings";
 
@@ -287,9 +287,6 @@
 "settings-local-authentication" = "Enable FaceID/Touch ID";
 "settings-language" = "Language";
 "settings-language-english" = "English";
-"settings-coinlist" = "Coinlist";
-"settings-coinlist-connect" = "Connect Account";
-"settings-coinlist-disconnect" = "Disconnect Account";
 "settings-notification-go-settings-title" = "Notifications";
 "settings-notification-disabled-go-settings-text" = "You have disabled notifications. Please go to Settings and enable this option.";
 "settings-notification-enabled-go-settings-text" = "You have enabled notifications. Please go to Settings and disable this option.";
@@ -331,104 +328,6 @@
 "transaction-detail-round" = "Round:";
 "transaction-detail-amount" = "Amount:";
 "transaction-detail-reward" = "Reward:";
-
-// MARK: Auction
-
-"auction-title" = "Auction";
-"auction-empty-title" = "No Scheduled Auctions";
-"auction-past-empty-title" = "No Past Auctions";
-"auction-empty-subtitle" = "We recommend registering early to ensure you can participate in the next auction.";
-"auction-introduction-title" = "Before you can participate";
-"auction-introduction-prerequest-first" = "Create a Coinlist account";
-"auction-introduction-prerequest-second" = "Complete compliance checks";
-"auction-introduction-prerequest-third" = "Fund your USD wallet";
-"auction-introduction-prerequest-day" = "1-3 days";
-"auction-introduction-bottom-title" = "This process can take up to 6 days";
-"auction-introduction-explanation" = "Register now to ensure you can participate and dont miss out.";
-"auction-date-title" = "Date";
-"auction-algos-sold-title" = "Algos Sold";
-"auction-remaining-algos" = "Algos Remaining";
-"auction-starting-price" = "Starting Price";
-"auction-current-price" = "Current Price";
-"auction-closing-price" = "Closing Price";
-"auction-time-in" = "Auction In";
-"auction-time-left" = "Time Left";
-"auction-enter-title" = "ENTER AUCTION";
-"auction-scheduled-title" = "SCHEDULED";
-"auction-open-title" = "OPEN";
-"auction-live-title" = "LIVE";
-"auction-closed-title" = "CLOSED";
-"auction-settled-title" = "SETTLED";
-"auction-past-auctions" = "Past Auctions";
-"auction-auth-error-message" = "Couldn't authenticate your coinlist account.";
-"auction-bid-coinlist-account-existence-error" = "The wallet associated with your current Coinlist account could not be found among your active accounts. Please make sure that you recover the correct account, and then place your bid again.";
-"auction-bid-zero-max-price-error" = "Max price cannot be equal to zero.";
-"auction-bid-zero-bid-amount-error" = "Bid amount cannot be equal to zero.";
-"auction-bid-min-max-price-error" = "Max price cannot be lower than %@.";
-"auction-bid-potential-algo-error" = "Potential algo value cannot be smaller than %@ algo.";
-"auction-go-auctions" = "GO TO AUCTION";
-"auction-temp-title" = "To participate in Algorand auctions, please navigate to our online auction site.";
-
-// MARK: Auction Detail
-
-"auction-detail-title" = "Auction Detail";
-"auction-price-current-title" = "Current Price";
-"auction-price-closing-title" = "Closing Price";
-"auction-detail-potential-min" = "Min Potential Algos";
-"auction-detail-potential-total" = "Total Potential Algos:";
-"auction-detail-bid-amount" = "Bid Amount";
-"auction-detail-max-price" = "Max Price";
-"auction-detail-place-bid-title" = "Place Bid";
-"auction-detail-my-bids-title" = "My Bids";
-"auction-detail-place-bid-button-title" = "PLACE BID";
-"auction-detail-retract-title" = "Retract";
-"auction-detail-min-potential-algos" = "Min Potential Algos";
-"auction-detail-status-rejected-title" = "Rejected";
-"auction-detail-bids-empty-title" = "No Current Bids";
-"auction-detail-retract-error" = "Could not retract the bid.";
-"auction-detail-total-algos-title" = "Total Algos";
-"auction-detail-committed-title" = "Total USD Commited";
-"auction-detail-bid-confirm-title" = "Confirm Transaction";
-
-// MARK: Balance
-
-"balance-title" = "Balance";
-"balance-available-title" = "Available Balance";
-"balance-button-title-deposit" = "DEPOSIT";
-"balance-button-title-withdraw" = "WITHDRAW";
-"balance-send-title" = "Send";
-"balance-to-title" = "To";
-"balance-bank-title" = "Bank";
-"balance-credit-to-title" = "Credit To";
-"balance-routing-number-title" = "Routing Number";
-"balance-account-number-title" = "Account Number";
-"balance-swift-title" = "Swift";
-"balance-reference-title" = "Reference";
-"balance-reference-number-warning" = "To avoid loss of funds, you must include this reference code in the wire information.";
-"balance-pending-transactions-title" = "Pending Transactions";
-"balance-past-transactions-title" = "Past Transactions";
-"balance-btc-deposit-title" = "BTC Deposit Instructions";
-"balance-eth-deposit-title" = "ETH Deposit Instructions";
-"balance-usd-deposit-title" = "USD Wire Instructions";
-"balance-withdraw-website-explanation" = "Withdrawals are not yet available from the mobile app. Please visit our website to do so.";
-"balance-withdraw-website-title" = "WEBSITE";
-"balance-past-transactions-empty-title" = "No Past Transactions";
-
-// MARK: Deposit
-
-"deposit-title" = "Deposit";
-"deposit-bottom-title" = "Deposit instructions will be displayed on the balance screen.";
-"deposit-usd" = "USD";
-"deposit-eth" = "ETH";
-"deposit-btc" = "BTC";
-"deposit-fund-convert-title" = "BTC and ETH will be immediately converted into USD.\n*Based on rates from Wyre at %@.";
-"deposit-amount-title" = "Deposit Amount (USD)";
-"deposit-amount-view-title" = "How much do you want to deposit?";
-"deposit-fund-view-title" = "How will you fund you deposit?";
-
-// MARK: Withdraw
-
-"withdraw-title" = "Withdraw";
 
 // MARK: Feedback
 

@@ -15,6 +15,4 @@ extension Notification.Name {
     static let ContactAddition = Notification.Name("com.algorand.algorand.notification.contact.addition")
     static let ContactEdit = Notification.Name("com.algorand.algorand.notification.contact.edit")
     static let ContactDeletion = Notification.Name("com.algorand.algorand.notification.contact.deletion")
-    static let CoinlistConnected = Notification.Name("com.algorand.algorand.notification.coinlist.connected")
-    static let CoinlistDisconnected = Notification.Name("com.algorand.algorand.notification.coinlist.disconnected")
 }

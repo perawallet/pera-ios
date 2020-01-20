@@ -136,7 +136,7 @@ extension SendTransactionViewController {
             return
         }
         
-        title = "balance-send-title".localized + " \(assetDetail.getDisplayNames().0)"
+        title = "title-send-lowercased".localized + " \(assetDetail.getDisplayNames().0)"
         sendTransactionView.transactionParticipantView.assetSelectionView.detailLabel.attributedText = assetDetail.assetDisplayName()
         
         if let assetAmount = transaction.fromAccount.amount(for: assetDetail) {

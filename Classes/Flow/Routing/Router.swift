@@ -271,24 +271,6 @@ class Router {
                 assetDetail: assetDetail,
                 configuration: configuration
             )
-        case let .auctionDetail(auction, user, auctionStatus):
-            viewController = AuctionDetailViewController(
-                auction: auction,
-                user: user,
-                auctionStatus: auctionStatus,
-                configuration: configuration
-            )
-        case let .pastAuctionDetail(auction, user, auctionStatus):
-            viewController = PastAuctionDetailViewController(
-                auction: auction,
-                user: user,
-                auctionStatus: auctionStatus,
-                configuration: configuration
-            )
-        case let .balance(user):
-            viewController = BalanceViewController(user: user, configuration: configuration)
-        case let .deposit(user):
-            viewController = DepositViewController(user: user, configuration: configuration)
         case .feedback:
             viewController = FeedbackViewController(configuration: configuration)
         case let .assetDetail(account, assetDetail):

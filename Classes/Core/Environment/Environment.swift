@@ -39,26 +39,12 @@ class Environment {
         }
     }()
     
-    lazy var coinlistHost: String = {
-        switch target {
-        case .staging:
-            return "demo.coinlist.co"
-        case .prod:
-            return "coinlist.co"
-        }
-    }()
-    
     lazy var binanceHost = "api.binance.com"
     
     lazy var mobileHost = "mobile-api.algorand.com"
     
     lazy var serverApi: String = {
         let api = "\(serverSchema)://\(serverHost)"
-        return api
-    }()
-    
-    lazy var cointlistApi: String = {
-        let api = "https://\(coinlistHost)"
         return api
     }()
     
@@ -73,24 +59,6 @@ class Environment {
             return "https://staging.\(mobileHost)"
         case .prod:
             return "https://\(mobileHost)"
-        }
-    }()
-    
-    lazy var coinlistClientId: String = {
-        switch target {
-        case .staging:
-            return "a06e76e5011e6a094739270c8820f6e44a02f9a81d93ab32f5fc584fab31b5f2"
-        case .prod:
-            return "7fb1221754c8aa17172fdef40d76f4478b1edbba3349f3641928e89349459efe"
-        }
-    }()
-    
-    lazy var coinlistClientSecret: String = {
-        switch target {
-        case .staging:
-            return "e5d43226691ee9d3a89b7d65a5cb7cf5de5680cf703e9c17b9b7b87253ca21a7"
-        case .prod:
-            return "90e9a94ce151224b324541c07b8ef5d3952fc517aec85596f54d01a336812593"
         }
     }()
     
@@ -111,8 +79,6 @@ class Environment {
             return "node-settings-default-node-name".localized
         }
     }()
-    
-    var isAuctionsEnabled = false
     
     private let target: AppTarget
     
