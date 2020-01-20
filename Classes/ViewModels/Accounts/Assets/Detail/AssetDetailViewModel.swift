@@ -30,7 +30,7 @@ extension AssetDetailViewModel {
             view.rewardTotalAmountView.removeFromSuperview()
             view.assetNameLabel.attributedText = assetDetail.assetDisplayName(
                 with: UIFont.font(.avenir, withWeight: .demiBold(size: 14.0)),
-                isIndexIncluded: true,
+                isIndexIncluded: false,
                 shouldDisplayIndexWithName: false
             )
             
@@ -99,7 +99,7 @@ extension AssetDetailViewModel {
             }
             
             if assetTransaction.receiverAddress == account.address && assetTransaction.amount == 0 && transaction.type == "axfer" {
-                view.titleLabel.text = "asset-creation-fee-title".localized
+                view.setContact("asset-creation-fee-title".localized)
                 view.subtitleLabel.isHidden = true
                 view.transactionAmountView.mode = .negative(amount: transaction.fee.toAlgos)
             } else if assetTransaction.receiverAddress == account.address {
@@ -121,10 +121,12 @@ extension AssetDetailViewModel {
             guard let payment = transaction.payment else {
                 if let assetTransaction = transaction.assetTransfer,
                     assetTransaction.receiverAddress == account.address && assetTransaction.amount == 0 && transaction.type == "axfer" {
-                    view.titleLabel.text = "asset-creation-fee-title".localized
+                    view.setContact("asset-creation-fee-title".localized)
                     view.subtitleLabel.isHidden = true
                     view.transactionAmountView.mode = .negative(amount: transaction.fee.toAlgos)
                 }
+                let formattedDate = findDate(from: transaction.lastRound).toFormat("MMMM dd, yyyy")
+                view.dateLabel.text = formattedDate
                 return
             }
             
@@ -143,10 +145,10 @@ extension AssetDetailViewModel {
     
     private func configure(_ view: TransactionHistoryContextView, with contact: Contact?, and address: String?) {
         if let contact = contact {
-            view.titleLabel.text = contact.name
-            view.subtitleLabel.text = contact.address
+            view.setContact(contact.name)
+            view.subtitleLabel.text = contact.address?.shortAddressDisplay()
         } else {
-            view.titleLabel.text = address
+            view.setAddress(address)
             view.subtitleLabel.isHidden = true
         }
     }

@@ -188,7 +188,7 @@ class TransactionReceiverView: BaseView {
         receiverContactView.qrDisplayButton.isHidden = true
         receiverContactView.separatorView.isHidden = true
         receiverContactView.nameLabel.text = contact.name
-        receiverContactView.addressLabel.text = contact.address
+        receiverContactView.addressLabel.text = contact.address?.shortAddressDisplay()
     }
     
     // MARK: Components
@@ -370,10 +370,6 @@ class TransactionReceiverView: BaseView {
             make.trailing.equalToSuperview()
         }
         
-        receiverContactView.addressLabel.snp.makeConstraints { make in
-            make.trailing.equalToSuperview()
-        }
-        
         receiverContactView.qrDisplayButton.removeFromSuperview()
     }
     
@@ -383,8 +379,9 @@ class TransactionReceiverView: BaseView {
         actionButton.isHidden = true
         
         actionButton.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(20.0)
+            make.trailing.equalToSuperview().inset(20.0).priority(.required)
             make.centerY.equalToSuperview()
+            make.size.equalTo(CGSize(width: 40.0, height: 40.0)).priority(.required)
         }
     }
     

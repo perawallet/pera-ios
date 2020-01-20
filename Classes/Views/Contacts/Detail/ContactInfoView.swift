@@ -22,8 +22,8 @@ class ContactInfoView: BaseView {
     
     private lazy var assetsTitleLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(.avenir, withWeight: .medium(size: 13.0)))
-            .withTextColor(SharedColors.gray)
+            .withFont(UIFont.font(.avenir, withWeight: .medium(size: 14.0)))
+            .withTextColor(SharedColors.greenishGray)
             .withLine(.single)
             .withAlignment(.left)
             .withText("contacts-title-assets".localized)

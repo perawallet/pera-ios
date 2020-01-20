@@ -31,12 +31,25 @@ class TransactionHistoryContextView: BaseView {
     
     // MARK: Components
     
-    private(set) lazy var titleLabel: UILabel = {
-        UILabel()
+    private(set) lazy var contactLabel: UILabel = {
+        let label = UILabel()
             .withLine(.single)
             .withAlignment(.left)
             .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 13.0)))
             .withTextColor(SharedColors.black)
+        label.isHidden = true
+        return label
+    }()
+    
+    private(set) lazy var addressLabel: UILabel = {
+        let label = UILabel()
+            .withLine(.single)
+            .withAlignment(.left)
+            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 13.0)))
+            .withTextColor(SharedColors.black)
+        label.lineBreakMode = .byTruncatingMiddle
+        label.isHidden = true
+        return label
     }()
     
     private(set) lazy var transactionAmountView: AlgosAmountView = {
@@ -45,11 +58,13 @@ class TransactionHistoryContextView: BaseView {
     }()
     
     private(set) lazy var subtitleLabel: UILabel = {
-        UILabel()
+        let label = UILabel()
             .withLine(.single)
             .withAlignment(.left)
             .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 12.0)))
             .withTextColor(SharedColors.softGray)
+        label.lineBreakMode = .byTruncatingMiddle
+        return label
     }()
     
     private(set) lazy var dateLabel: UILabel = {
@@ -75,20 +90,33 @@ class TransactionHistoryContextView: BaseView {
     // MARK: Layout
     
     override func prepareLayout() {
-        setupTitleLabelLayout()
+        setupContactNameLabelLayout()
+        setupAddressLabelLayout()
         setupTransactionAmountViewLayout()
         setupSubtitleLabelLayout()
         setupDateLabelLayout()
         setupSeparatorViewLayout()
     }
     
-    private func setupTitleLabelLayout() {
-        addSubview(titleLabel)
+    private func setupContactNameLabelLayout() {
+        addSubview(contactLabel)
         
-        titleLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-        titleLabel.setContentHuggingPriority(.required, for: .horizontal)
+        contactLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        contactLabel.setContentHuggingPriority(.required, for: .horizontal)
         
-        titleLabel.snp.makeConstraints { make in
+        contactLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
+            make.top.equalToSuperview().inset(layout.current.topInset)
+        }
+    }
+    
+    private func setupAddressLabelLayout() {
+        addSubview(addressLabel)
+        
+        addressLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        addressLabel.setContentHuggingPriority(.required, for: .horizontal)
+        
+        addressLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(layout.current.horizontalInset)
             make.top.equalToSuperview().inset(layout.current.topInset)
         }
@@ -103,9 +131,9 @@ class TransactionHistoryContextView: BaseView {
         transactionAmountView.snp.makeConstraints { make in
             make.trailing.equalToSuperview().inset(layout.current.horizontalInset).priority(.required)
             make.top.equalToSuperview().inset(layout.current.amountTopInset)
-            make.centerY.equalTo(titleLabel)
+            make.centerY.equalTo(contactLabel)
             make.height.equalTo(layout.current.amountViewHeight)
-            make.leading.greaterThanOrEqualTo(titleLabel.snp.trailing).offset(layout.current.minimumHorizontalSpacing).priority(.required)
+            make.leading.greaterThanOrEqualTo(contactLabel.snp.trailing).offset(layout.current.minimumHorizontalSpacing).priority(.required)
         }
     }
     
@@ -113,8 +141,8 @@ class TransactionHistoryContextView: BaseView {
         addSubview(subtitleLabel)
         
         subtitleLabel.snp.makeConstraints { make in
-            make.leading.equalTo(titleLabel)
-            make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.labelVerticalInset)
+            make.leading.equalTo(contactLabel)
+            make.top.equalTo(contactLabel.snp.bottom).offset(layout.current.labelVerticalInset)
             make.bottom.equalToSuperview().inset(layout.current.bottomInset)
         }
     }
@@ -141,5 +169,27 @@ class TransactionHistoryContextView: BaseView {
             make.height.equalTo(layout.current.separatorHeight)
             make.leading.trailing.equalToSuperview().inset(layout.current.separatorInset)
         }
+    }
+}
+
+extension TransactionHistoryContextView {
+    func setAddress(_ address: String?) {
+        contactLabel.isHidden = true
+        addressLabel.isHidden = false
+        
+        addressLabel.text = address.shortAddressDisplay()
+    }
+    
+    func setContact(_ contact: String?) {
+        contactLabel.isHidden = false
+        addressLabel.isHidden = true
+        contactLabel.text = contact
+    }
+    
+    func reset() {
+        contactLabel.text = nil
+        addressLabel.text = nil
+        contactLabel.isHidden = true
+        addressLabel.isHidden = true
     }
 }

@@ -13,7 +13,7 @@ class TransactionHistoryCell: BaseCollectionViewCell<TransactionHistoryContextVi
     override func prepareForReuse() {
         super.prepareForReuse()
         
-        contextView.titleLabel.text = nil
+        contextView.reset()
         contextView.subtitleLabel.text = nil
         contextView.subtitleLabel.isHidden = false
         contextView.dateLabel.text = nil

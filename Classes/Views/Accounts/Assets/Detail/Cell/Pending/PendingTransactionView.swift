@@ -36,7 +36,11 @@ class PendingTransactionView: TransactionHistoryContextView {
     }
     
     private func adjustTitleLabelLayout() {
-        titleLabel.snp.updateConstraints { make in
+        contactLabel.snp.updateConstraints { make in
+            make.leading.equalToSuperview().inset(layout.current.titleLabelInset)
+        }
+        
+        addressLabel.snp.updateConstraints { make in
             make.leading.equalToSuperview().inset(layout.current.titleLabelInset)
         }
     }
