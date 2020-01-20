@@ -41,7 +41,7 @@ class FeedbackView: BaseView {
         let categorySelectionView = SelectionView()
         categorySelectionView.backgroundColor = .clear
         categorySelectionView.containerView.isUserInteractionEnabled = true
-        categorySelectionView.explanationLabel.text = "feedback-title-category".localized
+        categorySelectionView.leftExplanationLabel.text = "feedback-title-category".localized
         categorySelectionView.detailLabel.text = "feedback-subtitle-category".localized
         categorySelectionView.detailLabel.textColor = SharedColors.softGray
         categorySelectionView.rightInputAccessoryButton.setImage(img("icon-picker-selection-down"), for: .normal)

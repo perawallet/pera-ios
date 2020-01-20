@@ -15,14 +15,14 @@ class HistoryResultsView: BaseView {
     private(set) lazy var accountSelectionView: SelectionView = {
         let accountSelectionView = SelectionView()
         accountSelectionView.containerView.backgroundColor = Colors.disabledColor
-        accountSelectionView.explanationLabel.text = "history-account".localized
+        accountSelectionView.leftExplanationLabel.text = "history-account".localized
         return accountSelectionView
     }()
     
     private(set) lazy var assetSelectionView: SelectionView = {
         let assetSelectionView = SelectionView()
         assetSelectionView.containerView.backgroundColor = Colors.disabledColor
-        assetSelectionView.explanationLabel.text = "history-asset".localized
+        assetSelectionView.leftExplanationLabel.text = "history-asset".localized
         return assetSelectionView
     }()
     

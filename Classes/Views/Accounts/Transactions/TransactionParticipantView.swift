@@ -14,7 +14,7 @@ class TransactionParticipantView: BaseView {
     
     private(set) lazy var assetSelectionView: SelectionView = {
         let assetSelectionView = SelectionView()
-        assetSelectionView.explanationLabel.text = "history-asset".localized
+        assetSelectionView.leftExplanationLabel.text = "history-asset".localized
         return assetSelectionView
     }()
     

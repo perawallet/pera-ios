@@ -115,6 +115,7 @@ extension SendTransactionViewController {
         sendTransactionView.amountInputView.inputTextField.text = transaction.amount.toDecimalStringForLabel
         sendTransactionView.transactionParticipantView.assetSelectionView.verifiedImageView.isHidden = false
         sendTransactionView.transactionParticipantView.assetSelectionView.detailLabel.text = "asset-algos-title".localized
+        sendTransactionView.transactionParticipantView.assetSelectionView.set(amount: transaction.fromAccount.amount.toAlgos)
     }
     
     func configureViewForAsset() {
@@ -137,6 +138,14 @@ extension SendTransactionViewController {
         
         title = "balance-send-title".localized + " \(assetDetail.getDisplayNames().0)"
         sendTransactionView.transactionParticipantView.assetSelectionView.detailLabel.attributedText = assetDetail.assetDisplayName()
+        
+        if let assetAmount = transaction.fromAccount.amount(for: assetDetail) {
+            sendTransactionView.transactionParticipantView.assetSelectionView.amountView.algoIconImageView.removeFromSuperview()
+            sendTransactionView.transactionParticipantView.assetSelectionView.set(
+                amount: assetAmount,
+                assetFraction: assetDetail.fractionDecimals
+            )
+        }
     }
 }
 

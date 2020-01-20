@@ -185,6 +185,7 @@
 "send-select-asset" = "Select Asset";
 "send-algos-to" = "To:";
 "send-algos-fee" = "Fee:";
+"send-algos-balance-title" = "Balance:";
 "send-algos-amount" = "Amount:";
 "send-algos-transaction-id" = "Transaction ID:";
 "send-algos-more" = "SEND MORE";
@@ -272,7 +273,8 @@
 "contacts-delete-contact-alert-explanation" = "Are you sure you want to delete this contact?";
 "contacts-close-warning-title" = "Are you sure?";
 "contacts-close-warning-subtitle" = "Your unsaved progress will be lost. Are you sure?";
-"contacts-title-assets" = "Assets";
+"accounts-title-assets" = "Assets";
+"contacts-title-assets" = "Assets:";
 "title-select-asset" = "Select Asset";
 
 // MARK: Settings

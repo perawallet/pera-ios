@@ -13,7 +13,7 @@ class AccountListViewModel {
         cell.contextView.nameLabel.text = account.name
         switch mode {
         case .assetCount:
-            cell.contextView.detailLabel.text = "\(account.assetDetails.count) " + "contacts-title-assets".localized
+            cell.contextView.detailLabel.text = "\(account.assetDetails.count) " + "accounts-title-assets".localized
         case let .transactionSender(assetDetail),
              let .transactionReceiver(assetDetail),
              let .contact(assetDetail):

@@ -22,7 +22,7 @@ class RequestTransactionPreviewView: BaseView {
     
     private(set) lazy var transactionParticipantView: TransactionParticipantView = {
         let transactionParticipantView = TransactionParticipantView()
-        transactionParticipantView.accountSelectionView.explanationLabel.text = "send-algos-to".localized
+        transactionParticipantView.accountSelectionView.leftExplanationLabel.text = "send-algos-to".localized
         return transactionParticipantView
     }()
     

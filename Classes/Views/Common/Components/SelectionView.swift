@@ -12,11 +12,20 @@ class SelectionView: BaseView {
     
     private let layout = Layout<LayoutConstants>()
     
-    private(set) lazy var explanationLabel: UILabel = {
+    private(set) lazy var leftExplanationLabel: UILabel = {
         UILabel()
             .withFont(UIFont.font(.avenir, withWeight: .medium(size: 13.0)))
             .withTextColor(SharedColors.greenishGray)
             .withText("send-algos-from".localized)
+    }()
+    
+    private(set) lazy var rightExplanationLabel: UILabel = {
+        let label = UILabel()
+            .withFont(UIFont.font(.avenir, withWeight: .medium(size: 13.0)))
+            .withTextColor(SharedColors.greenishGray)
+            .withAlignment(.right)
+        label.isHidden = true
+        return label
     }()
     
     private(set) lazy var containerView: UIView = {
@@ -58,7 +67,8 @@ class SelectionView: BaseView {
     }()
     
     override func prepareLayout() {
-        setupExplanationLabelLayout()
+        setupLeftExplanationLabelLayout()
+        setupRightExplanationLabelLayout()
         setupContainerViewLayout()
         setupRightInputAccessoryButtonLayout()
         setupAmountViewLayout()
@@ -68,15 +78,27 @@ class SelectionView: BaseView {
 }
 
 extension SelectionView {
-    private func setupExplanationLabelLayout() {
-        addSubview(explanationLabel)
+    private func setupLeftExplanationLabelLayout() {
+        addSubview(leftExplanationLabel)
         
-        explanationLabel.setContentHuggingPriority(.required, for: .horizontal)
-        explanationLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+        leftExplanationLabel.setContentHuggingPriority(.required, for: .horizontal)
+        leftExplanationLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
         
-        explanationLabel.snp.makeConstraints { make in
+        leftExplanationLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(layout.current.horizontalInset)
-            make.trailing.lessThanOrEqualToSuperview().inset(layout.current.horizontalInset)
+            make.top.equalToSuperview().inset(layout.current.verticalInset)
+        }
+    }
+    
+    private func setupRightExplanationLabelLayout() {
+        addSubview(rightExplanationLabel)
+        
+        rightExplanationLabel.setContentHuggingPriority(.required, for: .horizontal)
+        rightExplanationLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+        
+        rightExplanationLabel.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.leading.greaterThanOrEqualTo(leftExplanationLabel.snp.trailing).offset(layout.current.horizontalInset)
             make.top.equalToSuperview().inset(layout.current.verticalInset)
         }
     }
@@ -87,7 +109,7 @@ extension SelectionView {
         containerView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(layout.current.defaultInset)
             make.bottom.equalToSuperview()
-            make.top.equalTo(explanationLabel.snp.bottom).offset(layout.current.containerViewTopInset)
+            make.top.equalTo(leftExplanationLabel.snp.bottom).offset(layout.current.containerViewTopInset)
         }
     }
     

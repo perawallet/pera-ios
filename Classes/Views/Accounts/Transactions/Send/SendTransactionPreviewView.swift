@@ -28,7 +28,9 @@ class SendTransactionPreviewView: BaseView {
     
     private(set) lazy var transactionParticipantView: TransactionParticipantView = {
         let transactionParticipantView = TransactionParticipantView()
-        transactionParticipantView.accountSelectionView.explanationLabel.text = "send-algos-from".localized
+        transactionParticipantView.accountSelectionView.leftExplanationLabel.text = "send-algos-from".localized
+        transactionParticipantView.assetSelectionView.rightExplanationLabel.isHidden = false
+        transactionParticipantView.assetSelectionView.rightExplanationLabel.text = "send-algos-balance-title".localized
         return transactionParticipantView
     }()
     
