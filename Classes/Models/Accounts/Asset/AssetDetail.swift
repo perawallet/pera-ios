@@ -99,7 +99,7 @@ extension AssetDetail {
         if let name = assetName, !name.isEmptyOrBlank,
             let code = unitName, !code.isEmptyOrBlank {
             let nameText = name.attributed([.textColor(SharedColors.black), .font(font)])
-            let codeText = " (\(code))".attributed([.textColor(SharedColors.purple), .font(font)])
+            let codeText = " (\(code.uppercased()))".attributed([.textColor(SharedColors.purple), .font(font)])
             
             if shouldDisplayIndexWithName {
                 let indexText = " \(id)".attributed([.textColor(SharedColors.darkGray), .font(font)])
@@ -116,9 +116,9 @@ extension AssetDetail {
         } else if let code = unitName, !code.isEmptyOrBlank {
             if shouldDisplayIndexWithName {
                 let indexText = " \(id)".attributed([.textColor(SharedColors.darkGray), .font(font)])
-                return "(\(code))".attributed([.textColor(SharedColors.purple), .font(font)]) + indexText
+                return "(\(code.uppercased()))".attributed([.textColor(SharedColors.purple), .font(font)]) + indexText
             }
-            return "(\(code))".attributed([.textColor(SharedColors.purple), .font(font)])
+            return "(\(code.uppercased()))".attributed([.textColor(SharedColors.purple), .font(font)])
         } else {
             let unknownText = "title-unknown".localized.attributed([
                 .textColor(SharedColors.orange),
@@ -141,16 +141,16 @@ extension AssetDetail {
         if let name = assetName, !name.isEmptyOrBlank,
             let code = unitName, !code.isEmptyOrBlank {
             if isDisplayingBrackets {
-                return (name, "(\(code))")
+                return (name, "(\(code.uppercased()))")
             }
             return (name, "\(code)")
         } else if let name = assetName, !name.isEmptyOrBlank {
             return (name, nil)
         } else if let code = unitName, !code.isEmptyOrBlank {
             if isDisplayingBrackets {
-                return ("(\(code))", nil)
+                return ("(\(code.uppercased()))", nil)
             }
-            return ("\(code)", nil)
+            return ("\(code.uppercased())", nil)
         } else {
             return ("title-unknown".localized, nil)
         }
@@ -169,7 +169,7 @@ extension AssetDetail {
     
     func getAssetCode() -> String {
         if let code = unitName, !code.isEmptyOrBlank {
-            return code
+            return code.uppercased()
         }
         return "title-unknown".localized
     }
