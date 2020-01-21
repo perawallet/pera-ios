@@ -51,6 +51,7 @@ class AssetDetailHeaderView: BaseView {
         view.layer.borderColor = Colors.borderColor.cgColor
         view.layer.cornerRadius = 4.0
         view.backgroundColor = .white
+        view.clipsToBounds = true
         return view
     }()
     
@@ -220,7 +221,7 @@ extension AssetDetailHeaderView {
     }
     
     private func setupVerifiedImageViewLayout() {
-        addSubview(verifiedImageView)
+        containerView.addSubview(verifiedImageView)
         
         verifiedImageView.snp.makeConstraints { make in
             make.leading.equalTo(assetNameLabel.snp.trailing).offset(layout.current.imageViewOffset)

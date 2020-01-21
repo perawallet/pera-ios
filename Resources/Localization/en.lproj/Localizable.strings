@@ -208,6 +208,7 @@
 "send-algos-receiver-address-validation" = "Key not valid, please make sure you have the right key.";
 "send-qr-scan-alert-title" = "QR Scan";
 "send-qr-scan-alert-message" = "You just scanned a QR code of a transaction request. Please review all transaction fields as they may have changed.";
+"send-qr-different-asset-alert" = "The QR contains different asset than selected one. Amount is ignored while decoding.";
 
 // MARK: Algos Request
 

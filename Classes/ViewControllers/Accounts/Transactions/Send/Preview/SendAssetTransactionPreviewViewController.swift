@@ -105,14 +105,14 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
         sendTransactionPreviewView.transactionReceiverView.state = .address(address: qrAddress, amount: nil)
         receiver = .address(address: qrAddress, amount: nil)
         if let qrAmount = qrText.amount {
-            displayQRAlert(for: qrAmount, to: qrAddress)
+            displayQRAlert(for: qrAmount, to: qrAddress, with: qrText.asset)
         }
         
         if let qrAsset = qrText.asset {
             let qrAssetText = "\(qrAsset)"
             
             if !isAccountContainsAsset(qrAssetText) {
-                presentAssetNotSupportedAlert(receiverAddress: qrText.address, for: Int64(qrAssetText))
+                presentAssetNotSupportedAlert(receiverAddress: qrText.address)
                 
                 if let handler = handler {
                     handler()
@@ -167,20 +167,27 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
         }
     }
     
-    private func displayQRAlert(for qrAmount: Int64, to qrAddress: String) {
+    private func displayQRAlert(for qrAmount: Int64, to qrAddress: String, with assetId: Int64?) {
         let configurator = AlertViewConfigurator(
             title: "send-qr-scan-alert-title".localized,
             image: img("icon-qr-alert"),
             explanation: "send-qr-scan-alert-message".localized,
             actionTitle: "title-approve".localized) {
-                let amountValue = qrAmount.assetAmount(fromFraction: self.assetDetail.fractionDecimals)
-                let amountText = amountValue.toFractionStringForLabel(fraction: self.assetDetail.fractionDecimals)
+                if self.assetDetail.id == assetId {
+                    let amountValue = qrAmount.assetAmount(fromFraction: self.assetDetail.fractionDecimals)
+                    let amountText = amountValue.toFractionStringForLabel(fraction: self.assetDetail.fractionDecimals)
+                    
+                    self.sendTransactionPreviewView.transactionReceiverView.state = .address(address: qrAddress, amount: amountText)
+                    self.receiver = .address(address: qrAddress, amount: amountText)
+                    
+                    self.amount = amountValue
+                    self.sendTransactionPreviewView.amountInputView.inputTextField.text = amountText
+                    return
+                }
                 
-                self.sendTransactionPreviewView.transactionReceiverView.state = .address(address: qrAddress, amount: amountText)
-                self.receiver = .address(address: qrAddress, amount: amountText)
-                
-                self.amount = amountValue
-                self.sendTransactionPreviewView.amountInputView.inputTextField.text = amountText
+                self.displaySimpleAlertWith(title: "", message: "send-qr-different-asset-alert".localized)
+                self.sendTransactionPreviewView.transactionReceiverView.state = .address(address: qrAddress, amount: nil)
+                self.receiver = .address(address: qrAddress, amount: nil)
                 return
         }
         
@@ -237,14 +244,14 @@ extension SendAssetTransactionPreviewViewController {
         }
     }
     
-    private func presentAssetNotSupportedAlert(receiverAddress: String?, for assetIndex: Int64? = nil) {
+    private func presentAssetNotSupportedAlert(receiverAddress: String?) {
         guard let currentAssetDetailIndex = assetDetail.id else {
             return
         }
         let assetAlertDraft = AssetAlertDraft(
             account: selectedAccount,
-            assetIndex: assetIndex ?? currentAssetDetailIndex,
-            assetDetail: assetIndex == nil ? assetDetail : nil,
+            assetIndex: currentAssetDetailIndex,
+            assetDetail: assetDetail,
             title: "asset-support-title".localized,
             detail: "asset-support-error".localized,
             actionTitle: "title-ok".localized
@@ -255,7 +262,7 @@ extension SendAssetTransactionPreviewViewController {
             let draft = AssetSupportDraft(
                 sender: senderAddress,
                 receiver: receiverAddress,
-                assetId: assetIndex ?? currentAssetDetailIndex
+                assetId: currentAssetDetailIndex
             )
             api?.sendAssetSupportRequest(with: draft)
         }

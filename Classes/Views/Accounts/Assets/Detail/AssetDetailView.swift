@@ -19,8 +19,8 @@ protocol AssetDetailViewDelegate: class {
 class AssetDetailView: BaseView {
 
     struct LayoutConstants: AdaptiveLayoutConstants {
-        static var algosHeaderHeight: CGFloat = 255.0
-        static var assetHeaderHeight: CGFloat = 213.0
+        static var algosHeaderHeight: CGFloat = 267.0
+        static var assetHeaderHeight: CGFloat = 225.0
         static let smallHeaderHeight: CGFloat = 111.0
     }
     

@@ -60,7 +60,7 @@ class RewardTotalAmountView: BaseView {
     // MARK: Setup
     
     override func configureAppearance() {
-        backgroundColor = .white
+        backgroundColor = UIColor.white.withAlphaComponent(0.5)
     }
     
     // MARK: Layout
