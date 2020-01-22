@@ -17,7 +17,6 @@ enum ModalSize {
 }
 
 extension ModalSize: Equatable {
-    
     static func == (lhs: ModalSize, rhs: ModalSize) -> Bool {
         switch (lhs, rhs) {
         case (.compressed, .compressed),
