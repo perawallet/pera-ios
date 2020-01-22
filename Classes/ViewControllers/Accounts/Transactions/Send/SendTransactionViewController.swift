@@ -9,7 +9,6 @@
 import UIKit
 import Magpie
 import SVProgressHUD
-import Crypto
 
 protocol SendTransactionViewControllerDelegate: class {
     func sendTransactionViewController(_ viewController: SendTransactionViewController, didCompleteTransactionFor asset: Int64?)

@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Crypto
 import SVProgressHUD
 
 class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewController {
@@ -234,7 +233,7 @@ extension SendAlgosTransactionPreviewViewController {
                    
             receiverAddress = receiverAddress.trimmingCharacters(in: .whitespacesAndNewlines)
             
-            if !UtilsIsValidAddress(receiverAddress) {
+            if !AlgorandSDK().isValidAddress(receiverAddress) {
                 guard let api = api else {
                     return
                 }

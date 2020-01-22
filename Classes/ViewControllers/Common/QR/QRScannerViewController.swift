@@ -8,7 +8,6 @@
 
 import UIKit
 import AVFoundation
-import Crypto
 
 enum QRScannerError: Error {
     case jsonSerialization
@@ -281,7 +280,7 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
                 }
                 closeScreen(by: .pop)
                 delegate?.qrScannerViewController(self, didRead: qrText, then: cameraResetHandler)
-            } else if UtilsIsValidAddress(qrString) {
+            } else if AlgorandSDK().isValidAddress(qrString) {
                 let qrText = QRText(mode: .address, address: qrString)
                 closeScreen(by: .pop)
                 delegate?.qrScannerViewController(self, didRead: qrText, then: cameraResetHandler)

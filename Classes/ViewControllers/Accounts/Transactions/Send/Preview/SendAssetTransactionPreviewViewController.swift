@@ -9,7 +9,6 @@
 import UIKit
 import SnapKit
 import SVProgressHUD
-import Crypto
 
 protocol SendAssetTransactionPreviewViewControllerDelegate: class {
     func sendAssetTransactionPreviewViewController(
@@ -204,7 +203,7 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
 
 extension SendAssetTransactionPreviewViewController {
     private func checkIfAddressIsValidForTransaction(_ address: String) {
-        if !UtilsIsValidAddress(address) {
+        if !AlgorandSDK().isValidAddress(address) {
             guard let api = api else {
                 return
             }

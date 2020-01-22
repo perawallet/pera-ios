@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import Crypto
 
 extension Session {
     func mnemonics(forAccount account: String) -> [String] {
@@ -16,8 +15,7 @@ extension Session {
         }
         
         var error: NSError?
-        
-        let mnemonics = MnemonicFromPrivateKey(privateKey, &error)
+        let mnemonics = algorandSDK.mnemonicFrom(privateKey, error: &error)
         
         guard error == nil else {
             return []
@@ -28,8 +26,7 @@ extension Session {
     
     func privateKey(forMnemonics mnemonics: String) -> Data? {
         var error: NSError?
-        
-        let data = MnemonicToPrivateKey(mnemonics, &error)
+        let data = algorandSDK.privateKeyFrom(mnemonics, error: &error)
         
         guard let privateKey = data,
             error == nil else {
@@ -49,8 +46,7 @@ extension Session {
     
     func address(fromPrivateKey privateKey: Data) -> String? {
         var error: NSError?
-        
-        let address = CryptoGenerateAddressFromSK(privateKey, &error)
+        let address = algorandSDK.addressFrom(privateKey, error: &error)
         
         guard error == nil else {
             return nil
@@ -60,6 +56,6 @@ extension Session {
     }
     
     func generatePrivateKey() -> Data? {
-        return CryptoGenerateSK()
+        return algorandSDK.generatePrivateKey()
     }
 }
