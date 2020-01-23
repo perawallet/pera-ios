@@ -40,12 +40,12 @@ class SendTransactionViewController: BaseViewController {
 
         if let algosTransaction = algosTransaction {
             fee = algosTransaction.fee
-            self.transactionManager?.setTransactionDraft(algosTransaction)
+            self.transactionController?.setTransactionDraft(algosTransaction)
         }
         
         if let assetTransaction = assetTransaction {
             fee = assetTransaction.fee
-            self.transactionManager?.setAssetTransactionDraft(assetTransaction)
+            self.transactionController?.setAssetTransactionDraft(assetTransaction)
         }
         
         hidesBottomBarWhenPushed = true
@@ -66,7 +66,7 @@ class SendTransactionViewController: BaseViewController {
     
     override func linkInteractors() {
         sendTransactionView.transactionDelegate = self
-        transactionManager?.delegate = self
+        transactionController?.delegate = self
     }
     
     override func prepareLayout() {
@@ -151,18 +151,21 @@ extension SendTransactionViewController {
 extension SendTransactionViewController: SendTransactionViewDelegate {
     func sendTransactionViewDidTapSendButton(_ sendTransactionView: SendTransactionView) {
         SVProgressHUD.show(withStatus: "title-loading".localized)
-        transactionManager?.completeTransaction()
+        transactionController?.completeTransaction()
     }
 }
 
-extension SendTransactionViewController: TransactionManagerDelegate {
-    func transactionManager(_ transactionManager: TransactionManager, didCompletedTransaction id: TransactionID) {
+extension SendTransactionViewController: TransactionControllerDelegate {
+    func transactionController(_ transactionController: TransactionController, didCompletedTransaction id: TransactionID) {
         SVProgressHUD.dismiss()
         algosTransaction?.identifier = id.identifier
         assetTransaction?.identifier = id.identifier
         
         delegate?.sendTransactionViewController(self, didCompleteTransactionFor: assetTransaction?.assetIndex)
-        
+        navigateBack()
+    }
+    
+    private func navigateBack() {
         guard let navigationController = self.navigationController else {
             return
         }
@@ -172,7 +175,7 @@ extension SendTransactionViewController: TransactionManagerDelegate {
         self.navigationController?.setViewControllers(viewControllers, animated: false)
     }
     
-    func transactionManager(_ transactionManager: TransactionManager, didFailedTransaction error: Error) {
+    func transactionController(_ transactionController: TransactionController, didFailedTransaction error: Error) {
         SVProgressHUD.dismiss()
         switch error {
         case .networkUnavailable:
@@ -181,4 +184,20 @@ extension SendTransactionViewController: TransactionManagerDelegate {
             displaySimpleAlertWith(title: "title-error".localized, message: error.localizedDescription)
         }
     }
+}
+
+class SendAlgosTransactionViewController: SendTransactionViewController {
+    
+}
+
+class SendAlgosTransactionViewModel {
+    
+}
+
+class SendAssetTransactionViewController: SendTransactionViewController {
+    
+}
+
+class SendAssetTransactionViewModel {
+    
 }

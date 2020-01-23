@@ -57,7 +57,7 @@ class AssetAdditionViewController: BaseViewController {
         assetAdditionView.assetInputView.delegate = self
         assetAdditionView.assetsCollectionView.delegate = self
         assetAdditionView.assetsCollectionView.dataSource = self
-        transactionManager?.delegate = self
+        transactionController?.delegate = self
     }
     
     override func prepareLayout() {
@@ -204,13 +204,13 @@ extension AssetAdditionViewController: AssetActionConfirmationViewControllerDele
         }
         
         let assetTransactionDraft = AssetTransactionDraft(fromAccount: account, recipient: nil, amount: nil, assetIndex: id)
-        transactionManager?.setAssetTransactionDraft(assetTransactionDraft)
-        transactionManager?.composeAssetAdditionTransactionData(for: account)
+        transactionController?.setAssetTransactionDraft(assetTransactionDraft)
+        transactionController?.composeAssetAdditionTransactionData(for: account)
     }
 }
 
-extension AssetAdditionViewController: TransactionManagerDelegate {
-    func transactionManager(_ transactionManager: TransactionManager, didFailedComposing error: Error) {
+extension AssetAdditionViewController: TransactionControllerDelegate {
+    func transactionController(_ transactionController: TransactionController, didFailedComposing error: Error) {
         switch error {
         case let .custom(fee):
             guard let api = api,
@@ -229,8 +229,8 @@ extension AssetAdditionViewController: TransactionManagerDelegate {
         }
     }
     
-    func transactionManagerDidComposedAssetTransactionData(
-        _ transactionManager: TransactionManager,
+    func transactionControllerDidComposedAssetTransactionData(
+        _ transactionController: TransactionController,
         forTransaction draft: AssetTransactionDraft?
     ) {
         guard let assetSearchResult = assetResults.first(where: { item -> Bool in

@@ -81,8 +81,8 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
         composeTransactionData()
     }
     
-    override func transactionManagerDidComposedAlgoTransactionData(
-        _ transactionManager: TransactionManager,
+    override func transactionControllerDidComposedAlgoTransactionData(
+        _ transactionController: TransactionController,
         forTransaction draft: TransactionPreviewDraft?
     ) {
         guard let transactionDraft = draft else {
@@ -207,7 +207,7 @@ extension SendAlgosTransactionPreviewViewController {
     }
     
     private func composeTransactionData() {
-        transactionManager?.delegate = self
+        transactionController?.delegate = self
         guard let selectedAccount = selectedAccount else {
             return
         }
@@ -272,12 +272,12 @@ extension SendAlgosTransactionPreviewViewController {
                         )
                         
                         guard let account = self.getAccount(),
-                            let transactionManager = self.transactionManager else {
+                            let transactionController = self.transactionController else {
                             return
                         }
                                
-                        transactionManager.setTransactionDraft(transaction)
-                        transactionManager.composeAlgoTransactionData(
+                        transactionController.setTransactionDraft(transaction)
+                        transactionController.composeAlgoTransactionData(
                             for: account,
                             isMaxValue: self.isMaxButtonSelected
                         )
@@ -295,15 +295,19 @@ extension SendAlgosTransactionPreviewViewController {
             )
                    
             guard let account = getAccount(),
-                let transactionManager = transactionManager else {
+                let transactionController = transactionController else {
                 return
             }
                    
-            transactionManager.setTransactionDraft(transaction)
-            transactionManager.composeAlgoTransactionData(
+            transactionController.setTransactionDraft(transaction)
+            transactionController.composeAlgoTransactionData(
                 for: account,
                 isMaxValue: isMaxButtonSelected
             )
         }
     }
+}
+
+class SendAlgosTransactionPreviewViewModel {
+    
 }

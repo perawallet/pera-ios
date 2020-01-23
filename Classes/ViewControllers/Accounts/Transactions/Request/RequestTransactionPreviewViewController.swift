@@ -206,3 +206,19 @@ extension RequestTransactionPreviewViewController: RequestTransactionPreviewView
         displayPreview()
     }
 }
+
+class RequestAlgosTransactionPreviewViewController: RequestTransactionPreviewViewController {
+    
+}
+
+class RequestAlgosTransactionPreviewViewModel {
+    
+}
+
+class RequestAssetTransactionPreviewViewController: RequestTransactionPreviewViewController {
+    
+}
+
+class RequestAssetTransactionPreviewViewModel {
+    
+}

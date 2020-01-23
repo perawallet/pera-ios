@@ -55,8 +55,8 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
         accountListViewController?.delegate = self
     }
     
-    override func transactionManagerDidComposedAssetTransactionData(
-        _ transactionManager: TransactionManager,
+    override func transactionControllerDidComposedAssetTransactionData(
+        _ transactionController: TransactionController,
         forTransaction draft: AssetTransactionDraft?
     ) {
         guard let transactionDraft = draft else {
@@ -305,7 +305,7 @@ extension SendAssetTransactionPreviewViewController {
             return
         }
         
-        transactionManager?.delegate = self
+        transactionController?.delegate = self
         let transaction = AssetTransactionDraft(
             fromAccount: selectedAccount,
             amount: amount,
@@ -315,12 +315,12 @@ extension SendAssetTransactionPreviewViewController {
         )
         
         guard let account = getAccount(),
-            let transactionManager = transactionManager else {
+            let transactionController = transactionController else {
             return
         }
                
-        transactionManager.setAssetTransactionDraft(transaction)
-        transactionManager.composeAssetTransactionData(for: account)
+        transactionController.setAssetTransactionDraft(transaction)
+        transactionController.composeAssetTransactionData(for: account)
     }
 }
 
@@ -377,4 +377,8 @@ extension SendAssetTransactionPreviewViewController: SendTransactionViewControll
     func sendTransactionViewController(_ viewController: SendTransactionViewController, didCompleteTransactionFor asset: Int64?) {
         delegate?.sendAssetTransactionPreviewViewController(self, didCompleteTransactionFor: assetDetail)
     }
+}
+
+class SendAssetTransactionPreviewViewModel {
+    
 }

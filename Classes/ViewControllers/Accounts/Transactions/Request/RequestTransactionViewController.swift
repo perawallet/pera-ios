@@ -113,3 +113,19 @@ extension RequestTransactionViewController: RequestTransactionViewDelegate {
         navigationController?.present(activityViewController, animated: true, completion: nil)
     }
 }
+
+class RequestAlgosTransactionViewController: RequestTransactionViewController {
+    
+}
+
+class RequestAlgosTransactionViewModel {
+    
+}
+
+class RequestAssetTransactionViewController: RequestTransactionViewController {
+    
+}
+
+class RequestAssetTransactionViewModel {
+    
+}

@@ -85,7 +85,7 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
     override func linkInteractors() {
         super.linkInteractors()
         
-        transactionManager?.delegate = self
+        transactionController?.delegate = self
         scrollView.touchDetectingDelegate = self
         sendTransactionPreviewView.delegate = self
     }
@@ -103,15 +103,15 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
         
     }
     
-    func transactionManagerDidComposedAlgoTransactionData(
-        _ transactionManager: TransactionManager,
+    func transactionControllerDidComposedAlgoTransactionData(
+        _ transactionController: TransactionController,
         forTransaction draft: TransactionPreviewDraft?
     ) {
         
     }
     
-    func transactionManagerDidComposedAssetTransactionData(
-        _ transactionManager: TransactionManager,
+    func transactionControllerDidComposedAssetTransactionData(
+        _ transactionController: TransactionController,
         forTransaction draft: AssetTransactionDraft?
     ) {
         
@@ -304,8 +304,8 @@ extension SendTransactionPreviewViewController: QRScannerViewControllerDelegate 
     }
 }
 
-extension SendTransactionPreviewViewController: TransactionManagerDelegate {
-    func transactionManager(_ transactionManager: TransactionManager, didFailedComposing error: Error) {
+extension SendTransactionPreviewViewController: TransactionControllerDelegate {
+    func transactionController(_ transactionController: TransactionController, didFailedComposing error: Error) {
         SVProgressHUD.dismiss()
         
         switch error {

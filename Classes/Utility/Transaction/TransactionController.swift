@@ -1,5 +1,5 @@
 //
-//  TransactionManager.swift
+//  transactionController.swift
 //  algorand
 //
 //  Created by Göktuğ Berk Ulu on 27.08.2019.
@@ -7,24 +7,24 @@
 //
 
 import Magpie
-import Crypto
 
-class TransactionManager {
+class TransactionController {
     
-    weak var delegate: TransactionManagerDelegate?
+    weak var delegate: TransactionControllerDelegate?
     
     private var api: API
     private var params: TransactionParams?
     private var transactionDraft: TransactionPreviewDraft?
     private var assetTransactionDraft: AssetTransactionDraft?
     private var transactionData: Data?
+    private let algorandSDK = AlgorandSDK()
     
     init(api: API) {
         self.api = api
     }
 }
 
-extension TransactionManager {
+extension TransactionController {
     func composeAlgoTransactionData(for account: Account, isMaxValue: Bool) {
         api.getTransactionParams { response in
             switch response {
@@ -32,7 +32,7 @@ extension TransactionManager {
                 self.params = params
                 self.generateSignedAlgoTransactionData(for: account, isMaxValue: isMaxValue)
             case let .failure(error):
-                self.delegate?.transactionManager(self, didFailedComposing: error)
+                self.delegate?.transactionController(self, didFailedComposing: error)
             }
         }
     }
@@ -46,15 +46,15 @@ extension TransactionManager {
             switch transactionIdResponse {
             case let .success(transactionId):
                 self.api.trackTransaction(with: TransactionTrackDraft(transactionId: transactionId.identifier))
-                self.delegate?.transactionManager(self, didCompletedTransaction: transactionId)
+                self.delegate?.transactionController(self, didCompletedTransaction: transactionId)
             case let .failure(error):
-                self.delegate?.transactionManager(self, didFailedTransaction: error)
+                self.delegate?.transactionController(self, didFailedTransaction: error)
             }
         }
     }
 }
 
-extension TransactionManager {
+extension TransactionController {
     private func generateSignedAlgoTransactionData(
         for account: Account,
         isMaxValue: Bool,
@@ -62,7 +62,7 @@ extension TransactionManager {
     ) {
         guard let params = params,
             let transactionDraft = transactionDraft else {
-                delegate?.transactionManager(self, didFailedComposing: .custom(nil))
+                delegate?.transactionController(self, didFailedComposing: .custom(nil))
             return
         }
         
@@ -81,25 +81,21 @@ extension TransactionManager {
         let trimmedFromAddress = transactionDraft.fromAccount.address.trimmingCharacters(in: .whitespacesAndNewlines)
         let trimmedToAddress = account.address.trimmingCharacters(in: .whitespacesAndNewlines)
         
-        if !UtilsIsValidAddress(trimmedToAddress) {
-            delegate?.transactionManager(self, didFailedComposing: .custom(trimmedToAddress))
+        if !algorandSDK.isValidAddress(trimmedToAddress) {
+            delegate?.transactionController(self, didFailedComposing: .custom(trimmedToAddress))
             return
         }
         
-        guard let transactionData = TransactionMakePaymentTxn(
-            trimmedFromAddress,
-            trimmedToAddress,
-            params.fee,
-            transactionAmount,
-            params.lastRound,
-            params.lastRound + 1000,
-            nil,
-            isMaxValue ? account.address : nil,
-            nil,
-            params.genesisHashData,
-            &transactionError
-        ) else {
-            delegate?.transactionManager(self, didFailedComposing: .custom(transactionError))
+        let draft = AlgoTransactionDraft(
+            from: trimmedFromAddress,
+            to: trimmedToAddress,
+            transactionParams: params,
+            amount: transactionAmount,
+            isMaxTransaction: isMaxValue
+        )
+        
+        guard let transactionData = algorandSDK.sendAlgos(with: draft, error: &transactionError) else {
+            delegate?.transactionController(self, didFailedComposing: .custom(transactionError))
             return
         }
         
@@ -114,12 +110,12 @@ extension TransactionManager {
         if initialFee < calculatedFee && isMaxValue {
             generateSignedAlgoTransactionData(for: account, isMaxValue: true, initialFee: Int64(signedTransactionData.count))
         } else {
-            delegate?.transactionManagerDidComposedAlgoTransactionData(self, forTransaction: self.transactionDraft)
+            delegate?.transactionControllerDidComposedAlgoTransactionData(self, forTransaction: self.transactionDraft)
         }
     }
 }
 
-extension TransactionManager {
+extension TransactionController {
     func composeAssetTransactionData(for account: Account, transactionType: TransactionType = .assetTransaction) {
         api.getTransactionParams { response in
             switch response {
@@ -127,7 +123,7 @@ extension TransactionManager {
                 self.params = params
                 self.transactAsset(for: account, transactionType: transactionType)
             case let .failure(error):
-                self.delegate?.transactionManager(self, didFailedComposing: error)
+                self.delegate?.transactionController(self, didFailedComposing: error)
             }
         }
     }
@@ -137,7 +133,7 @@ extension TransactionManager {
             let transactionDraft = assetTransactionDraft,
             let assetIndex = transactionDraft.assetIndex,
             let amountDoubleValue = transactionDraft.amount else {
-                delegate?.transactionManager(self, didFailedComposing: .custom(nil))
+                delegate?.transactionController(self, didFailedComposing: .custom(nil))
             return
         }
         
@@ -151,26 +147,61 @@ extension TransactionManager {
         let trimmedToAddress = account.address.trimmingCharacters(in: .whitespacesAndNewlines)
         var transactionError: NSError?
         
-        if !UtilsIsValidAddress(trimmedToAddress) {
-            delegate?.transactionManager(self, didFailedComposing: .custom(trimmedToAddress))
+        if !algorandSDK.isValidAddress(trimmedToAddress) {
+            delegate?.transactionController(self, didFailedComposing: .custom(trimmedToAddress))
             return
         }
         
-        guard let transactionData = TransactionMakeAssetTransferTxn(
-            trimmedFromAddress,
-            trimmedToAddress,
-            transactionType == .assetRemoval ? transactionDraft.assetCreator : "", // closing address should be empty
-            transactionAmount,
-            params.fee,
-            params.lastRound,
-            params.lastRound + 1000,
-            nil,
-            nil,
-            params.genesisHashData?.base64EncodedString(),
-            assetIndex,
-            &transactionError
-        ) else {
-            delegate?.transactionManager(self, didFailedComposing: .custom(transactionError))
+        let draft = AssetTransactionsDraft(
+            from: trimmedFromAddress,
+            to: trimmedToAddress,
+            transactionParams: params,
+            amount: transactionAmount,
+            assetIndex: assetIndex
+        )
+        
+        guard let transactionData = algorandSDK.sendAsset(with: draft, error: &transactionError) else {
+            delegate?.transactionController(self, didFailedComposing: .custom(transactionError))
+            return
+        }
+        
+        completeAssetTransacion(with: transactionData, transactionType: transactionType)
+    }
+    
+    private func removeAsset(for account: Account, transactionType: TransactionType) {
+        guard let params = params,
+            let transactionDraft = assetTransactionDraft,
+            let assetIndex = transactionDraft.assetIndex,
+            let amountDoubleValue = transactionDraft.amount else {
+                delegate?.transactionController(self, didFailedComposing: .custom(nil))
+            return
+        }
+        
+        var transactionAmount = Int64(amountDoubleValue)
+        
+        if transactionType == .assetTransaction {
+            transactionAmount = amountDoubleValue.toFraction(of: transactionDraft.assetDecimalFraction)
+        }
+        
+        let trimmedFromAddress = transactionDraft.fromAccount.address.trimmingCharacters(in: .whitespacesAndNewlines)
+        let trimmedToAddress = account.address.trimmingCharacters(in: .whitespacesAndNewlines)
+        var transactionError: NSError?
+        
+        if !algorandSDK.isValidAddress(trimmedToAddress) {
+            delegate?.transactionController(self, didFailedComposing: .custom(trimmedToAddress))
+            return
+        }
+        
+        let draft = AssetRemovalDraft(
+            from: trimmedFromAddress,
+            transactionParams: params,
+            amount: transactionAmount,
+            assetCreatorAddress: transactionDraft.assetCreator,
+            assetIndex: assetIndex
+        )
+        
+        guard let transactionData = algorandSDK.removeAsset(with: draft, error: &transactionError) else {
+            delegate?.transactionController(self, didFailedComposing: .custom(transactionError))
             return
         }
         
@@ -178,7 +209,7 @@ extension TransactionManager {
     }
 }
 
-extension TransactionManager {
+extension TransactionController {
     func composeAssetAdditionTransactionData(for account: Account) {
         api.getTransactionParams { response in
             switch response {
@@ -186,7 +217,7 @@ extension TransactionManager {
                 self.params = params
                 self.addAsset(to: account)
             case let .failure(error):
-                self.delegate?.transactionManager(self, didFailedComposing: error)
+                self.delegate?.transactionController(self, didFailedComposing: error)
             }
         }
     }
@@ -195,25 +226,16 @@ extension TransactionManager {
         guard let params = params,
             let transactionDraft = assetTransactionDraft,
             let assetIndex = transactionDraft.assetIndex else {
-                delegate?.transactionManager(self, didFailedComposing: .custom(assetTransactionDraft))
+                delegate?.transactionController(self, didFailedComposing: .custom(assetTransactionDraft))
             return
         }
         
         let trimmedFromAddress = transactionDraft.fromAccount.address.trimmingCharacters(in: .whitespacesAndNewlines)
         var transactionError: NSError?
+        let draft = AssetAdditionDraft(from: trimmedFromAddress, transactionParams: params, assetIndex: assetIndex)
         
-        guard let transactionData = TransactionMakeAssetAcceptanceTxn(
-            trimmedFromAddress,
-            params.fee,
-            params.lastRound,
-            params.lastRound + 1000,
-            nil,
-            nil,
-            params.genesisHashData?.base64EncodedString(),
-            assetIndex,
-            &transactionError
-        ) else {
-            delegate?.transactionManager(self, didFailedComposing: .custom(transactionError))
+        guard let transactionData = algorandSDK.addAsset(with: draft, error: &transactionError) else {
+            delegate?.transactionController(self, didFailedComposing: .custom(transactionError))
             return
         }
 
@@ -221,19 +243,7 @@ extension TransactionManager {
     }
 }
 
-extension TransactionManager {
-    private func sign(_ data: Data, for address: String) -> Data? {
-        var signedTransactionError: NSError?
-        
-        guard let privateData = api.session.privateData(forAccount: address),
-            let signedTransactionData = CryptoSignTransaction(privateData, data, &signedTransactionError) else {
-                delegate?.transactionManager(self, didFailedComposing: .custom(signedTransactionError))
-                return nil
-        }
-        
-        return signedTransactionData
-    }
-    
+extension TransactionController {
     private func completeAssetTransacion(with transactionData: Data, transactionType: TransactionType) {
         guard let params = params,
             let transactionDraft = assetTransactionDraft,
@@ -254,7 +264,7 @@ extension TransactionManager {
         if transactionType == .assetAddition &&
             Int64(account.amount) - calculatedFee < Int64(minimumTransactionMicroAlgosLimit * (account.assetDetails.count + 2)) {
             let mininmumAmount = Int64(minimumTransactionMicroAlgosLimit * (account.assetDetails.count + 2)) + calculatedFee
-            delegate?.transactionManager(self, didFailedComposing: .custom(mininmumAmount))
+            delegate?.transactionController(self, didFailedComposing: .custom(mininmumAmount))
             return
         }
         
@@ -264,11 +274,25 @@ extension TransactionManager {
             completeTransaction()
         }
         
-        delegate?.transactionManagerDidComposedAssetTransactionData(self, forTransaction: self.assetTransactionDraft)
+        delegate?.transactionControllerDidComposedAssetTransactionData(self, forTransaction: self.assetTransactionDraft)
     }
 }
 
-extension TransactionManager {
+extension TransactionController {
+    private func sign(_ data: Data, for address: String) -> Data? {
+        var signedTransactionError: NSError?
+        
+        guard let privateData = api.session.privateData(forAccount: address),
+            let signedTransactionData = algorandSDK.sign(privateData, with: data, error: &signedTransactionError) else {
+                delegate?.transactionController(self, didFailedComposing: .custom(signedTransactionError))
+                return nil
+        }
+        
+        return signedTransactionData
+    }
+}
+
+extension TransactionController {
     func setTransactionDraft(_ transactionDraft: TransactionPreviewDraft) {
         self.transactionDraft = transactionDraft
     }
@@ -278,8 +302,9 @@ extension TransactionManager {
     }
 }
 
-extension TransactionManager {
+extension TransactionController {
     enum TransactionType {
+        case algosTransaction
         case assetTransaction
         case assetAddition
         case assetRemoval

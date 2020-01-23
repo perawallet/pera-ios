@@ -41,7 +41,7 @@ class AssetRemovalViewController: BaseViewController {
     override func setListeners() {
         assetRemovalView.assetsCollectionView.delegate = self
         assetRemovalView.assetsCollectionView.dataSource = self
-        transactionManager?.delegate = self
+        transactionController?.delegate = self
     }
     
     override func prepareLayout() {
@@ -237,14 +237,14 @@ extension AssetRemovalViewController: AssetActionConfirmationViewControllerDeleg
             assetIndex: assetId,
             assetCreator: assetDetail.creator
         )
-        transactionManager?.setAssetTransactionDraft(assetTransactionDraft)
-        transactionManager?.composeAssetTransactionData(for: account, transactionType: .assetRemoval)
+        transactionController?.setAssetTransactionDraft(assetTransactionDraft)
+        transactionController?.composeAssetTransactionData(for: account, transactionType: .assetRemoval)
     }
 }
 
-extension AssetRemovalViewController: TransactionManagerDelegate {
-    func transactionManagerDidComposedAssetTransactionData(
-        _ transactionManager: TransactionManager,
+extension AssetRemovalViewController: TransactionControllerDelegate {
+    func transactionControllerDidComposedAssetTransactionData(
+        _ transactionController: TransactionController,
         forTransaction draft: AssetTransactionDraft?
     ) {
         guard let removedAssetDetail = getRemovedAssetDetail(from: draft) else {

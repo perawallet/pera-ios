@@ -229,11 +229,11 @@ extension TabBarController: AssetCancellableSupportAlertViewControllerDelegate {
                 return
         }
         
-        let transactionManager = TransactionManager(api: api)
+        let transactionController = TransactionController(api: api)
         
         let assetTransactionDraft = AssetTransactionDraft(fromAccount: account, recipient: nil, amount: nil, assetIndex: Int64(assetId))
-        transactionManager.setAssetTransactionDraft(assetTransactionDraft)
-        transactionManager.composeAssetAdditionTransactionData(for: account)
+        transactionController.setAssetTransactionDraft(assetTransactionDraft)
+        transactionController.composeAssetAdditionTransactionData(for: account)
         assetAlertDraft = nil
     }
 }
