@@ -62,6 +62,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         window?.backgroundColor = .white
         
+        if #available(iOS 13.0, *) {
+            window?.overrideUserInterfaceStyle = .light
+        }
+        
         window?.rootViewController = NavigationController(rootViewController: rootViewController)
         window?.makeKeyAndVisible()
     }
@@ -85,7 +89,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         guard let accountId = parseAccountId(from: algorandNotification) else {
             if let message = algorandNotification.alert {
-                pushNotificationController.showMessage(message)
+                pushNotificationController.showNotificationMessage(message)
             }
             return
         }
@@ -100,10 +104,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         switch notificationType {
-        case .transactionReceived:
+        case .transactionReceived,
+             .assetTransactionReceived:
             return notificationDetails.receiverAddress
-        case .transactionSent:
+        case .transactionSent,
+             .assetTransactionSent:
             return notificationDetails.senderAddress
+        case .assetSupportRequest:
+            return notificationDetails.receiverAddress
+        case .assetSupportSuccess:
+            return notificationDetails.receiverAddress
         default:
             return nil
         }
@@ -112,11 +122,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private func handleNotificationActions(for accountId: String, with notificationDetail: NotificationDetail?) {
         if UIApplication.shared.applicationState == .active,
             let notificationDetail = notificationDetail {
+            
+            if let notificationtype = notificationDetail.notificationType {
+                if notificationtype == .assetSupportRequest {
+                    rootViewController?.openAsset(from: notificationDetail, for: accountId)
+                    return
+                }
+            }
+            
             pushNotificationController.show(with: notificationDetail) {
-                self.rootViewController?.openAccount(with: accountId)
+                self.rootViewController?.openAsset(from: notificationDetail, for: accountId)
             }
         } else {
-            rootViewController?.openAccount(with: accountId)
+            guard let notificationDetail = notificationDetail else {
+                return
+            }
+            rootViewController?.openAsset(from: notificationDetail, for: accountId)
         }
     }
     

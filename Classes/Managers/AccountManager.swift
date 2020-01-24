@@ -26,7 +26,23 @@ class AccountManager {
 
 // MARK: - API
 extension AccountManager {
-    func fetchAllAccounts(completion: EmptyHandler?) {
+    func fetchAllAccounts(isVerifiedAssetsIncluded: Bool, completion: EmptyHandler?) {
+        if isVerifiedAssetsIncluded {
+            api.getVerifiedAssets { result in
+                switch result {
+                case let .success(list):
+                    self.api.session.verifiedAssets = list.results
+                    self.fetchAccounts(completion: completion)
+                case .failure:
+                    self.fetchAccounts(completion: completion)
+                }
+            }
+        } else {
+            fetchAccounts(completion: completion)
+        }
+    }
+    
+    private func fetchAccounts(completion: EmptyHandler?) {
         let completionOperation = BlockOperation {
             completion?()
         }
@@ -37,7 +53,7 @@ extension AccountManager {
                 if let fetchedAccount = fetchedAccount {
                     if fetchedAccount.amount == account.amount &&
                         fetchedAccount.rewards == account.rewards &&
-                        fetchedAccount.pendingRewards == account.pendingRewards {
+                        !fetchedAccount.areAssetsDifferent(than: account) {
                         return
                     }
                     
@@ -52,69 +68,49 @@ extension AccountManager {
         self.queue.addOperation(completionOperation)
     }
     
-    func fetchAccount(_ account: Account,
-                      then completion: EmptyHandler?) {
-        let completionOperation = BlockOperation {
-            completion?()
-        }
-        
-        let accountFetchOperation = AccountFetchOperation(address: account.address, api: api)
-        accountFetchOperation.onCompleted = { fetchedAccount, fetchError in
-            if let fetchedAccount = fetchedAccount {
-                if fetchedAccount.amount == account.amount &&
-                    fetchedAccount.rewards == account.rewards &&
-                    fetchedAccount.pendingRewards == account.pendingRewards {
-                    return
-                }
-                
-                self.user?.updateAccount(account)
-            }
-        }
-        
-        completionOperation.addDependency(accountFetchOperation)
-        self.queue.addOperation(accountFetchOperation)
-        self.queue.addOperation(completionOperation)
-    }
-    
     func waitForNextRoundAndFetchAccounts(round: Int64?, completion: ((Int64?) -> Void)?) {
         if let nextRound = round {
             self.api.waitRound(with: WaitRoundDraft(round: nextRound)) { roundDetailResponse in
                 switch roundDetailResponse {
                 case let .success(result):
                     let round = result.lastRound
-                    self.fetchAllAccounts {
+                    self.fetchAllAccounts(isVerifiedAssetsIncluded: false) {
                         completion?(round)
                     }
                 case .failure:
-                    break
+                    self.getTransactionParamsAndFetchAccounts(completion: completion)
                 }
             }
         } else {
-            api.getTransactionParams { response in
-                switch response {
+            getTransactionParamsAndFetchAccounts(completion: completion)
+        }
+    }
+    
+    private func getTransactionParamsAndFetchAccounts(completion: ((Int64?) -> Void)?) {
+        api.getTransactionParams { response in
+            switch response {
+            case .failure:
+                if let round = self.currentRound {
+                    self.currentRound = round + 1
+                }
+            case let .success(params):
+                self.currentRound = params.lastRound
+            }
+            
+            guard let round = self.currentRound else {
+                completion?(nil)
+                return
+            }
+            
+            self.api.waitRound(with: WaitRoundDraft(round: round)) { roundDetailResponse in
+                switch roundDetailResponse {
+                case let .success(result):
+                    let round = result.lastRound
+                    self.fetchAllAccounts(isVerifiedAssetsIncluded: false) {
+                        completion?(round)
+                    }
                 case .failure:
-                    if let round = self.currentRound {
-                        self.currentRound = round + 1
-                    }
-                case let .success(params):
-                    self.currentRound = params.lastRound
-                }
-                
-                guard let round = self.currentRound else {
                     completion?(nil)
-                    return
-                }
-                
-                self.api.waitRound(with: WaitRoundDraft(round: round)) { roundDetailResponse in
-                    switch roundDetailResponse {
-                    case let .success(result):
-                        let round = result.lastRound
-                        self.fetchAllAccounts {
-                            completion?(round)
-                        }
-                    case .failure:
-                        break
-                    }
                 }
             }
         }

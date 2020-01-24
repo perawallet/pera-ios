@@ -9,7 +9,6 @@
 import UIKit
 
 class AlertViewModel {
-    
     func configure(_ alertView: AlertView, with configurator: AlertViewConfigurator) {
         alertView.titleLabel.text = configurator.title
         alertView.explanationLabel.attributedText = configurator.explanation.attributed([.lineSpacing(1.2)])
@@ -26,18 +25,17 @@ class AlertViewModel {
             }
             
             return
-        } else if configurator.actionTitle != nil {
-            let defaultAlertView = alertView as? DefaultAlertView
-            
+        } else if let defaultAlertView = alertView as? DefaultAlertView,
+            configurator.actionTitle != nil {
             if let actionTitle = configurator.actionTitle {
-                defaultAlertView?.doneButton.setAttributedTitle(
+                defaultAlertView.doneButton.setAttributedTitle(
                     actionTitle.attributed([.letterSpacing(1.20), .textColor(.white)]),
                     for: .normal
                 )
             }
             
             if let actionImage = configurator.actionImage {
-                defaultAlertView?.doneButton.setBackgroundImage(actionImage, for: .normal)
+                defaultAlertView.doneButton.setBackgroundImage(actionImage, for: .normal)
             }
         }
     }

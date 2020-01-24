@@ -16,7 +16,7 @@
 mnemonic includes a checksum. Each word in the mnemonic represents 11 bits
 of data, and the last 11 bits are reserved for the checksum.
  */
-FOUNDATION_EXPORT NSString* _Nonnull MnemonicFromKey(NSData* _Nullable key, NSError* _Nullable* error);
+FOUNDATION_EXPORT NSString* _Nonnull MnemonicFromKey(NSData* _Nullable key, NSError* _Nullable* _Nullable error);
 
 // skipped function FromMasterDerivationKey with unsupported parameter or return types
 
@@ -25,7 +25,7 @@ FOUNDATION_EXPORT NSString* _Nonnull MnemonicFromKey(NSData* _Nullable key, NSEr
  * FromPrivateKey is a helper that converts an ed25519 private key to a
 human-readable mnemonic
  */
-FOUNDATION_EXPORT NSString* _Nonnull MnemonicFromPrivateKey(NSData* _Nullable sk, NSError* _Nullable* error);
+FOUNDATION_EXPORT NSString* _Nonnull MnemonicFromPrivateKey(NSData* _Nullable sk, NSError* _Nullable* _Nullable error);
 
 /**
  * ToKey converts a mnemonic generated using this library into the source
@@ -33,7 +33,7 @@ key used to create it. It returns an error if the passed mnemonic has an
 incorrect checksum, if the number of words is unexpected, or if one
 of the passed words is not found in the words list.
  */
-FOUNDATION_EXPORT NSData* _Nullable MnemonicToKey(NSString* _Nullable mnemonic, NSError* _Nullable* error);
+FOUNDATION_EXPORT NSData* _Nullable MnemonicToKey(NSString* _Nullable mnemonic, NSError* _Nullable* _Nullable error);
 
 // skipped function ToMasterDerivationKey with unsupported parameter or return types
 
@@ -42,6 +42,6 @@ FOUNDATION_EXPORT NSData* _Nullable MnemonicToKey(NSString* _Nullable mnemonic, 
  * ToPrivateKey is a helper that converts a mnemonic directly to an ed25519
 private key
  */
-FOUNDATION_EXPORT NSData* _Nullable MnemonicToPrivateKey(NSString* _Nullable mnemonic, NSError* _Nullable* error);
+FOUNDATION_EXPORT NSData* _Nullable MnemonicToPrivateKey(NSString* _Nullable mnemonic, NSError* _Nullable* _Nullable error);
 
 #endif

@@ -10,14 +10,6 @@ import UIKit
 
 class AlertViewController: BaseViewController {
     
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let horizontalInset: CGFloat = 20.0
-    }
-    
-    private enum Colors {
-        static let backgroundColor = rgba(0.04, 0.05, 0.07, 0.6)
-    }
-    
     private let layout = Layout<LayoutConstants>()
     
     private(set) var alertView: AlertView
@@ -26,22 +18,21 @@ class AlertViewController: BaseViewController {
     
     private let viewModel = AlertViewModel()
     
-    // MARK: Initialization
-    
     init(mode: Mode, alertConfigurator: AlertViewConfigurator, configuration: ViewControllerConfiguration) {
         self.mode = mode
         self.alertConfigurator = alertConfigurator
         
-        if mode == .default {
+        switch mode {
+        case .default:
             alertView = DefaultAlertView()
-        } else {
+        case .destructive:
             alertView = DestructiveAlertView()
+        case .qr:
+            alertView = QRAlertView()
         }
         
         super.init(configuration: configuration)
     }
-    
-    // MARK: Setup
     
     override func configureAppearance() {
         view.backgroundColor = Colors.backgroundColor
@@ -49,14 +40,27 @@ class AlertViewController: BaseViewController {
     }
     
     override func setListeners() {
-        if mode == .default {
+        switch mode {
+        case .default:
             setDefaultAlertViewAction()
-            return
+        case .destructive:
+            setDestructiveAlertViewAction()
+        case .qr:
+            setQRAlertViewAction()
         }
-        
-        setDestructiveAlertViewAction()
     }
     
+    override func prepareLayout() {
+        view.addSubview(alertView)
+        
+        alertView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.center.equalToSuperview()
+        }
+    }
+}
+
+extension AlertViewController {
     private func setDefaultAlertViewAction() {
         guard let defaultAlertView = alertView as? DefaultAlertView else {
             return
@@ -73,19 +77,16 @@ class AlertViewController: BaseViewController {
         destructiveAlertView.delegate = self
     }
     
-    // MARK: Layout
-    
-    override func prepareLayout() {
-        view.addSubview(alertView)
-        
-        alertView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.center.equalToSuperview()
+    private func setQRAlertViewAction() {
+        guard let qrAlertView = alertView as? QRAlertView else {
+            return
         }
+        
+        qrAlertView.delegate = self
     }
-    
-    // MARK: Actions
-    
+}
+
+extension AlertViewController {
     private func executeHandler() {
         if let handler = alertConfigurator.actionHandler {
             dismiss(animated: true) {
@@ -98,19 +99,13 @@ class AlertViewController: BaseViewController {
     }
 }
 
-// MARK: DefaultAlertViewDelegate
-
 extension AlertViewController: DefaultAlertViewDelegate {
-    
     func defaultAlertViewDidTapDoneButton(_ alertView: DefaultAlertView) {
         executeHandler()
     }
 }
 
-// MARK: DestructiveAlertViewDelegate
-
 extension AlertViewController: DestructiveAlertViewDelegate {
-    
     func destructiveAlertViewDidTapCancelButton(_ alertView: DestructiveAlertView) {
         dismissScreen()
     }
@@ -120,12 +115,32 @@ extension AlertViewController: DestructiveAlertViewDelegate {
     }
 }
 
-// MARK: AlertViewController.Mode
+extension AlertViewController: QRAlertViewDelegate {
+    func qRAlertViewDidTapCancelButton(_ alertView: QRAlertView) {
+        dismissScreen()
+    }
+    
+    func qrAlertViewDidTapActionButton(_ alertView: QRAlertView) {
+        executeHandler()
+    }
+}
 
 extension AlertViewController {
-    
     enum Mode {
         case `default`
         case destructive
+        case qr
+    }
+}
+
+extension AlertViewController {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let horizontalInset: CGFloat = 20.0
+    }
+}
+
+extension AlertViewController {
+    private enum Colors {
+        static let backgroundColor = rgba(0.04, 0.05, 0.07, 0.6)
     }
 }

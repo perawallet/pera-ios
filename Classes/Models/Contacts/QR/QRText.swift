@@ -10,57 +10,134 @@ import Foundation
 
 struct QRText: Codable {
     let mode: QRMode
-    let text: String
     let version = "1.0"
+    let address: String?
+    var mnemonic: String?
+    var amount: Int64?
+    var label: String?
+    var asset: Int64?
     
-    let amount: Int64?
-    
-    init(mode: QRMode, text: String, amount: Int64? = nil) {
+    init(mode: QRMode, address: String?, mnemonic: String? = nil, amount: Int64? = nil, label: String? = nil, asset: Int64? = nil) {
         self.mode = mode
-        self.text = text
+        self.address = address
+        self.mnemonic = mnemonic
         self.amount = amount
+        self.label = label
+        self.asset = asset
     }
     
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         
-        if let address = try values.decodeIfPresent(String.self, forKey: .address) {
-            mode = .address
-            text = address
-        } else if let mnemonic = try values.decodeIfPresent(String.self, forKey: .mnemonic) {
+        if try values.decodeIfPresent(String.self, forKey: .mnemonic) != nil {
             mode = .mnemonic
-            text = mnemonic
+        } else if try values.decodeIfPresent(String.self, forKey: .asset) != nil,
+            try values.decodeIfPresent(String.self, forKey: .amount) != nil {
+            mode = .assetRequest
+        } else if try values.decodeIfPresent(String.self, forKey: .amount) != nil {
+            mode = .algosRequest
         } else {
             mode = .address
-            text = ""
         }
         
-        amount = try values.decodeIfPresent(Int64.self, forKey: .amount)
+        address = try values.decodeIfPresent(String.self, forKey: .address)
+        label = try values.decodeIfPresent(String.self, forKey: .label)
+        mnemonic = try values.decodeIfPresent(String.self, forKey: .mnemonic)
+        
+        if let amountText = try values.decodeIfPresent(String.self, forKey: .amount) {
+            amount = Int64(amountText)
+        }
+        
+        if let assetText = try values.decodeIfPresent(String.self, forKey: .asset) {
+            asset = Int64(assetText)
+        }
     }
     
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
-        switch mode {
-        case .address:
-            try container.encode(text, forKey: .address)
-        case .mnemonic:
-            try container.encode(text, forKey: .mnemonic)
-        case .algosRequest:
-            try container.encode(text, forKey: .address)
-        }
-        
         try container.encode(version, forKey: .version)
         
-        if let amount = amount {
-            try container.encode(amount, forKey: .amount)
+        switch mode {
+        case .mnemonic:
+            try container.encode(mnemonic, forKey: .mnemonic)
+        case .address:
+            if let address = address {
+                try container.encode(address, forKey: .address)
+            }
+            if let label = label {
+                try container.encode(label, forKey: .label)
+            }
+        case .algosRequest:
+            if let address = address {
+                try container.encode(address, forKey: .address)
+            }
+            if let amount = amount {
+                try container.encode(amount, forKey: .amount)
+            }
+        case .assetRequest:
+            if let address = address {
+                try container.encode(address, forKey: .address)
+            }
+            if let amount = amount {
+                try container.encode(amount, forKey: .amount)
+            }
+            if let asset = asset {
+                try container.encode(asset, forKey: .asset)
+            }
         }
     }
-    
+}
+
+extension QRText {
+    func qrText() -> String {
+        let base = "algorand://"
+        switch mode {
+        case .mnemonic:
+            if let mnemonic = mnemonic {
+                return "\(mnemonic)"
+            }
+        case .address:
+            guard let address = address else {
+                return base
+            }
+            if let label = label {
+                return "\(base)\(address)?\(CodingKeys.label.rawValue)=\(label)"
+            }
+            return "\(address)"
+        case .algosRequest:
+            guard let address = address else {
+                return base
+            }
+            if let amount = amount {
+                return "\(base)\(address)?\(CodingKeys.amount.rawValue)=\(amount)"
+            }
+        case .assetRequest:
+            guard let address = address else {
+                return base
+            }
+            var query = ""
+            if let amount = amount {
+                query += "?\(CodingKeys.amount.rawValue)=\(amount)"
+            }
+            
+            if let asset = asset, !query.isEmpty {
+                query += "&\(CodingKeys.asset.rawValue)=\(asset)"
+            }
+            return "\(base)\(address)\(query)"
+        }
+        return ""
+    }
+}
+
+extension QRText {
     enum CodingKeys: String, CodingKey {
+        case mode = "mode"
+        case version = "version"
         case address = "address"
         case mnemonic = "mnemonic"
-        case version = "version"
         case amount = "amount"
+        case label = "label"
+        case asset = "asset"
     }
 }

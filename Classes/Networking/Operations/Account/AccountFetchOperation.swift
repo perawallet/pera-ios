@@ -27,17 +27,50 @@ class AccountFetchOperation: AsyncOperation {
     }
     
     override func main() {
-        
         if isCancelled {
             return
         }
         
         let draft = AccountFetchDraft(publicKey: address)
         
+        let verifiedAssets = api.session.verifiedAssets
+        
         api.fetchAccount(with: draft) { response in
             switch response {
             case .success(let account):
-                self.onCompleted?(account, nil)
+                if account.isThereAnyDifferentAsset() {
+                    if let assets = account.assets {
+                        for (index, _) in assets {
+                            self.api.getAssetDetails(with: AssetFetchDraft(assetId: "\(index)")) { assetResponse in
+                                switch assetResponse {
+                                case .success(let assetDetail):
+                                    assetDetail.id = Int64(index)
+                                    
+                                    if let verifiedAssets = verifiedAssets,
+                                        verifiedAssets.contains(where: { verifiedAsset -> Bool in
+                                            "\(verifiedAsset.id)" == index
+                                        }) {
+                                        assetDetail.isVerified = true
+                                    }
+                                    
+                                    account.assetDetails.append(assetDetail)
+                                    
+                                    if assets.count == account.assetDetails.count {
+                                        self.onCompleted?(account, nil)
+                                    }
+                                case .failure(let error):
+                                    account.removeAsset(Int64(index))
+                                    
+                                    if assets.count == account.assetDetails.count {
+                                        self.onCompleted?(nil, error)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    self.onCompleted?(account, nil)
+                }
             case .failure(let error):
                 self.onCompleted?(nil, error)
             }
@@ -47,8 +80,6 @@ class AccountFetchOperation: AsyncOperation {
         
         onStarted?()
     }
-    
-    // MARK: Public
     
     func finish(with error: Error? = nil) {
         state = .finished

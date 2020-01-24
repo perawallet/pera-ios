@@ -9,7 +9,6 @@
 import UIKit
 
 protocol AccountListLayoutBuilderDelegate: class {
-    
     func accountListLayoutBuilder(_ layoutBuilder: AccountListLayoutBuilder, didSelectAt indexPath: IndexPath)
 }
 
@@ -23,7 +22,7 @@ class AccountListLayoutBuilder: NSObject, UICollectionViewDelegateFlowLayout {
         sizeForItemAt indexPath: IndexPath
         ) -> CGSize {
         
-        return CGSize(width: UIScreen.main.bounds.width, height: 56.0)
+        return CGSize(width: UIScreen.main.bounds.width, height: 50.0)
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

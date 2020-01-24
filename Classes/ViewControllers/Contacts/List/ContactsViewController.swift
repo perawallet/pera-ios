@@ -45,12 +45,12 @@ class ContactsViewController: BaseViewController {
     
     override func configureNavigationBarAppearance() {
         let addBarButtonItem = ALGBarButtonItem(kind: .add) {
-            let controller = self.open(.addContact(mode: .new), by: .push) as? AddContactViewController
+            let controller = self.open(.addContact(mode: .new()), by: .push) as? AddContactViewController
             
             controller?.delegate = self
         }
         
-        rightBarButtonItems = [addBarButtonItem]
+        leftBarButtonItems = [addBarButtonItem]
     }
     
     override func setListeners() {
@@ -278,7 +278,6 @@ extension ContactsViewController: InputViewDelegate {
 // MARK: ContactCellDelegate
 
 extension ContactsViewController: ContactCellDelegate {
-    
     func contactCellDidTapQRDisplayButton(_ cell: ContactCell) {
         view.endEditing(true)
         
@@ -292,28 +291,9 @@ extension ContactsViewController: ContactCellDelegate {
             tabBarController?.open(.contactQRDisplay(contact: contact), by: .presentWithoutNavigationController)
         }
     }
-    
-    func contactCellDidTapSendButton(_ cell: ContactCell) {
-        view.endEditing(true)
-        
-        guard let indexPath = contactsView.contactsCollectionView.indexPath(for: cell) else {
-            return
-        }
-        
-        if indexPath.item < searchResults.count {
-            let contact = searchResults[indexPath.item]
-            
-            guard let currentAccount = session?.currentAccount else {
-                return
-            }
-            
-            open(.sendAlgos(account: currentAccount, receiver: .contact(contact)), by: .push)
-        }
-    }
 }
 
 extension ContactsViewController: AddContactViewControllerDelegate {
-    
     func addContactViewController(_ addContactViewController: AddContactViewController, didSave contact: Contact) {
         if contacts.isEmpty {
             contactsView.contactsCollectionView.contentState = .none

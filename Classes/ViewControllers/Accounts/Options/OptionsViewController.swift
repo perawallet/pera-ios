@@ -9,46 +9,21 @@
 import UIKit
 
 protocol OptionsViewControllerDelegate: class {
-    
     func optionsViewControllerDidShowQR(_ optionsViewController: OptionsViewController)
-    func optionsViewControllerDidSetDefaultAccount(_ optionsViewController: OptionsViewController)
+    func optionsViewControllerDidRemoveAsset(_ optionsViewController: OptionsViewController)
     func optionsViewControllerDidViewPassphrase(_ optionsViewController: OptionsViewController)
     func optionsViewControllerDidEditAccountName(_ optionsViewController: OptionsViewController)
     func optionsViewControllerDidRemoveAccount(_ optionsViewController: OptionsViewController)
 }
 
 class OptionsViewController: BaseViewController {
-
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let imageViewTopInset: CGFloat = 20.0
-        let collectionViewTopInset: CGFloat = 22.0
-        let cellHeight: CGFloat = 56.0
-    }
     
     private let layout = Layout<LayoutConstants>()
     
-    // MARK: Components
-    
-    private lazy var topImageView = UIImageView(image: img("icon-modal-top"))
-    
-    private(set) lazy var optionsCollectionView: UICollectionView = {
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.scrollDirection = .vertical
-        flowLayout.minimumLineSpacing = 0.0
-        flowLayout.minimumInteritemSpacing = 0.0
-        
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
-        collectionView.showsVerticalScrollIndicator = false
-        collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = .white
-        collectionView.contentInset = .zero
-        
-        collectionView.register(OptionsCell.self, forCellWithReuseIdentifier: OptionsCell.reusableIdentifier)
-        
-        return collectionView
-    }()
+    private lazy var optionsView = OptionsView()
     
     private let viewModel = OptionsViewModel()
+    private var account: Account
     
     override var shouldShowNavigationBar: Bool {
         return false
@@ -56,22 +31,18 @@ class OptionsViewController: BaseViewController {
     
     weak var delegate: OptionsViewControllerDelegate?
     
-    // MARK: Setup
+    private var options: [Options]
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    init(account: Account, configuration: ViewControllerConfiguration) {
+        self.account = account
         
-        DispatchQueue.main.async {
-            UIApplication.shared.appDelegate?.invalidateAccountManagerFetchPolling()
+        if account.isThereAnyDifferentAsset() {
+            options = Options.allOptions
+        } else {
+            options = Options.optionsWithoutRemoveAsset
         }
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
         
-        DispatchQueue.main.async {
-            UIApplication.shared.appDelegate?.validateAccountManagerFetchPolling()
-        }
+        super.init(configuration: configuration)
     }
     
     override func configureAppearance() {
@@ -79,42 +50,35 @@ class OptionsViewController: BaseViewController {
     }
     
     override func linkInteractors() {
-        optionsCollectionView.delegate = self
-        optionsCollectionView.dataSource = self
+        optionsView.optionsCollectionView.delegate = self
+        optionsView.delegate = self
+        optionsView.optionsCollectionView.dataSource = self
     }
-    
-    // MARK: Layout
     
     override func prepareLayout() {
-        setupTopImageViewLayout()
-        setupOptionsCollectionViewLayout()
+        setupOptionsViewLayout()
     }
-    
-    private func setupTopImageViewLayout() {
-        view.addSubview(topImageView)
+}
+
+extension OptionsViewController {
+    private func setupOptionsViewLayout() {
+        view.addSubview(optionsView)
         
-        topImageView.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(layout.current.imageViewTopInset)
-            make.centerX.equalToSuperview()
-        }
-    }
-    
-    private func setupOptionsCollectionViewLayout() {
-        view.addSubview(optionsCollectionView)
-        
-        optionsCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(topImageView.snp.bottom).offset(layout.current.collectionViewTopInset)
-            make.leading.trailing.bottom.equalToSuperview()
+        optionsView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
         }
     }
 }
 
-// MARK: UICollectionViewDataSource
+extension OptionsViewController: OptionsViewDelegate {
+    func optionsViewDidTapDismissButton(_ optionsView: OptionsView) {
+        dismissScreen()
+    }
+}
 
 extension OptionsViewController: UICollectionViewDataSource {
-    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return Options.allCases.count
+        return options.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -124,10 +88,7 @@ extension OptionsViewController: UICollectionViewDataSource {
                 fatalError("Index path is out of bounds")
         }
         
-        guard let option = Options(rawValue: indexPath.item) else {
-            fatalError("Index path is out of bounds")
-        }
-        
+        let option = options[indexPath.item]
         viewModel.configure(cell, with: option)
         
         return cell
@@ -137,47 +98,54 @@ extension OptionsViewController: UICollectionViewDataSource {
 // MARK: UICollectionViewDelegateFlowLayout
 
 extension OptionsViewController: UICollectionViewDelegateFlowLayout {
-    
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        
         return CGSize(width: view.frame.width, height: layout.current.cellHeight)
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let selectedOption = Options(rawValue: indexPath.item) else {
-            fatalError("Index path is out of bounds")
-        }
+        let selectedOption = options[indexPath.item]
         
         dismissScreen()
         
         switch selectedOption {
         case .showQR:
             delegate?.optionsViewControllerDidShowQR(self)
-        case .setDefault:
-            delegate?.optionsViewControllerDidSetDefaultAccount(self)
+        case .removeAsset:
+            delegate?.optionsViewControllerDidRemoveAsset(self)
         case .passPhrase:
             delegate?.optionsViewControllerDidViewPassphrase(self)
         case .edit:
             delegate?.optionsViewControllerDidEditAccountName(self)
-        case .remove:
+        case .removeAccount:
             delegate?.optionsViewControllerDidRemoveAccount(self)
         }
     }
 }
 
-// MARK: Options
-
 extension OptionsViewController {
-    
     enum Options: Int, CaseIterable {
         case showQR = 0
-        case setDefault = 1
+        case removeAsset = 1
         case passPhrase = 2
         case edit = 3
-        case remove = 4
+        case removeAccount = 4
+        
+        static var optionsWithoutRemoveAsset: [Options] {
+            return [.showQR, passPhrase, .edit, .removeAccount]
+        }
+        
+        static var allOptions: [Options] {
+            return [.showQR, .removeAsset, passPhrase, .edit, .removeAccount]
+        }
+    }
+}
+
+extension OptionsViewController {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let cellHeight: CGFloat = 56.0
     }
 }

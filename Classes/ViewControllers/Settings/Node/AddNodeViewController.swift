@@ -10,11 +10,17 @@ import UIKit
 import SnapKit
 import SVProgressHUD
 
+protocol AddNodeViewControllerDelegate: class {
+    func addNodeViewController(_ controller: AddNodeViewController, didChangeNodeFor action: AddNodeViewController.ActionType)
+}
+
 class AddNodeViewController: BaseScrollViewController {
     
     // MARK: Components
     
     private lazy var addNodeView = AddNodeView()
+    
+    weak var delegate: AddNodeViewControllerDelegate?
     
     private var contentViewBottomConstraint: Constraint?
     
@@ -82,6 +88,10 @@ class AddNodeViewController: BaseScrollViewController {
                 let deleteAction = UIAlertAction(
                     title: "node-settings-action-delete-title".localized,
                     style: .destructive) { _ in
+                        if node.isActive {
+                            self.session?.setDefaultNodeActive(true)
+                        }
+                        self.delegate?.addNodeViewController(self, didChangeNodeFor: .delete)
                         node.remove(entity: Node.entityName)
                         self.popScreen()
                         return
@@ -211,6 +221,7 @@ class AddNodeViewController: BaseScrollViewController {
                     self.createNode(with: [Node.DBKeys.name.rawValue: name,
                                            Node.DBKeys.address.rawValue: address,
                                            Node.DBKeys.token.rawValue: token,
+                                           Node.DBKeys.isActive.rawValue: false,
                                            Node.DBKeys.creationDate.rawValue: Date()])
                 case let .edit(node):
                     self.edit(node, with: [Node.DBKeys.name.rawValue: name,
@@ -231,27 +242,20 @@ class AddNodeViewController: BaseScrollViewController {
         ) { response in
             switch response {
             case .error:
-                self.displayAlert(message: "node-settings-database-error-description".localized,
-                                  mode: .dbFail)
+                self.displayAlert(message: "node-settings-database-error-description".localized, mode: .dbFail)
             case let .result(object):
                 guard object is Node else {
-                    self.displayAlert(message: "node-settings-database-error-description".localized,
-                                      mode: .dbFail)
+                    self.displayAlert(message: "node-settings-database-error-description".localized, mode: .dbFail)
                     return
                 }
-                
-                self.displayAlert(message: nil,
-                                  mode: .success)
-                
+                self.delegate?.addNodeViewController(self, didChangeNodeFor: .create)
+                self.displayAlert(message: nil, mode: .success)
             case let .results(objects):
                 guard objects.first is Node else {
-                    self.displayAlert(message: "node-settings-database-error-description".localized,
-                                      mode: .dbFail)
+                    self.displayAlert(message: "node-settings-database-error-description".localized, mode: .dbFail)
                     return
                 }
-                
-                self.displayAlert(message: nil,
-                                  mode: .success)
+                self.displayAlert(message: nil, mode: .success)
             }
         }
     }
@@ -261,17 +265,14 @@ class AddNodeViewController: BaseScrollViewController {
             switch result {
             case let .result(object):
                 guard object is Node else {
-                    self.displayAlert(message: "node-settings-database-error-description".localized,
-                                      mode: .dbFail)
+                    self.displayAlert(message: "node-settings-database-error-description".localized, mode: .dbFail)
                     return
                 }
                 
-                self.displayAlert(message: nil,
-                                  mode: .success)
-                
+                self.delegate?.addNodeViewController(self, didChangeNodeFor: .update)
+                self.displayAlert(message: nil, mode: .success)
             case .error:
-                self.displayAlert(message: "node-settings-database-error-description".localized,
-                                  mode: .dbFail)
+                self.displayAlert(message: "node-settings-database-error-description".localized, mode: .dbFail)
             default:
                 break
             }
@@ -322,7 +323,6 @@ class AddNodeViewController: BaseScrollViewController {
 // MARK: Mode
 
 extension AddNodeViewController {
-    
     enum Mode {
         case new
         case edit(node: Node)
@@ -333,14 +333,22 @@ extension AddNodeViewController {
         case testFail
         case success
     }
+    
+    enum ActionType {
+        case create
+        case update
+        case delete
+    }
 }
 
 // MARK: TouchDetectingScrollViewDelegate
 
 extension AddNodeViewController: TouchDetectingScrollViewDelegate {
-    
     func scrollViewDidDetectTouchEvent(scrollView: TouchDetectingScrollView, in point: CGPoint) {
-        if addNodeView.testButton.frame.contains(point) {
+        if addNodeView.testButton.frame.contains(point) ||
+            addNodeView.addressInputView.frame.contains(point) ||
+            addNodeView.nameInputView.frame.contains(point) ||
+            addNodeView.tokenInputView.frame.contains(point) {
             return
         }
         

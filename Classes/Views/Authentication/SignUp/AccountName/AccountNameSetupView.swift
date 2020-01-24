@@ -1,5 +1,5 @@
 //
-//  AccountNameView.swift
+//  AccountNameSetupView.swift
 //  algorand
 //
 //  Created by Göktuğ Berk Ulu on 21.03.2019.

@@ -229,13 +229,19 @@ extension ChoosePasswordViewController: ChoosePasswordViewDelegate {
     fileprivate func launchHome() {
         SVProgressHUD.show(withStatus: "title-loading".localized)
         
-        self.accountManager?.fetchAllAccounts {
+        self.accountManager?.fetchAllAccounts(isVerifiedAssetsIncluded: true) {
+            
+            DispatchQueue.main.async {
+                UIApplication.shared.rootViewController()?.tabBarViewController.route = self.route
+            }
             
             SVProgressHUD.showSuccess(withStatus: "title-done-lowercased".localized)
             
             SVProgressHUD.dismiss(withDelay: 1.0) {
-                self.dismiss(animated: false) {
-                    UIApplication.shared.rootViewController()?.setupTabBarController(withInitial: self.route)
+                DispatchQueue.main.async {
+                    self.dismiss(animated: false) {
+                        UIApplication.shared.rootViewController()?.setupTabBarController(withInitial: self.route)
+                    }
                 }
             }
         }

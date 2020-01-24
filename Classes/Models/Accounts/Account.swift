@@ -27,6 +27,7 @@ class Account: Model {
     var totalAssets: [String: AssetDetail]?
     var assets: [String: Asset]?
     
+    var assetDetails: [AssetDetail] = []
     var name: String?
     
     required init(from decoder: Decoder) throws {
@@ -39,8 +40,9 @@ class Account: Model {
         pendingRewards = try container.decodeIfPresent(UInt64.self, forKey: .pendingRewards)
         participation = try container.decodeIfPresent(Participation.self, forKey: .participation)
         name = try container.decodeIfPresent(String.self, forKey: .name)
-        totalAssets = try? container.decodeIfPresent([String: AssetDetail].self, forKey: .totalAssets) ?? nil
+        totalAssets = try? container.decodeIfPresent([String: AssetDetail].self, forKey: .totalAssets)
         assets = try? container.decodeIfPresent([String: Asset].self, forKey: .assets) ?? nil
+        assetDetails = try container.decodeIfPresent([AssetDetail].self, forKey: .assetDetails) ?? []
     }
     
     init(address: String) {
@@ -62,6 +64,7 @@ class Account: Model {
         participation = account.participation
         totalAssets = account.totalAssets
         assets = account.assets
+        assetDetails = account.assetDetails
         
         if let updatedName = account.name {
             name = updatedName
@@ -81,7 +84,31 @@ class Account: Model {
     }
 
     func isThereAnyDifferentAsset() -> Bool {
-        return totalAssets != nil || assets != nil
+        return assets != nil
+    }
+    
+    func areAssetsDifferent(than account: Account) -> Bool {
+        return assets != account.assets || !assetDetails.containsSameElements(as: account.assetDetails)
+    }
+    
+    func amount(for assetDetail: AssetDetail) -> Double? {
+        guard let assetId = assetDetail.id,
+            let asset = assets?["\(assetId)"] else {
+                return nil
+        }
+        return asset.amount.assetAmount(fromFraction: assetDetail.fractionDecimals)
+    }
+    
+    func removeAsset(_ id: Int64?) {
+        assetDetails.removeAll { assetDetail -> Bool in
+            assetDetail.id == id
+        }
+    }
+    
+    func containsAsset(_ id: Int64) -> Bool {
+        return assetDetails.contains { assetDetail -> Bool in
+            assetDetail.id == id
+        }
     }
 }
 
@@ -96,6 +123,7 @@ extension Account {
         case participation = "participation"
         case totalAssets = "thisassettotal"
         case assets = "assets"
+        case assetDetails = "assetDetails"
     }
 }
 
@@ -106,5 +134,11 @@ extension Account: Encodable {
 extension Account: Equatable {
     static func == (lhs: Account, rhs: Account) -> Bool {
         return lhs.address == rhs.address
+    }
+}
+
+extension Account: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(address.hashValue)
     }
 }

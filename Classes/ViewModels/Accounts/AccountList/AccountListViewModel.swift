@@ -9,30 +9,34 @@
 import UIKit
 
 class AccountListViewModel {
-    
-    func configure(_ cell: AccountViewCell, with account: Account) {
+    func configure(_ cell: AccountViewCell, with account: Account, for mode: AccountListViewController.Mode) {
         cell.contextView.nameLabel.text = account.name
-        
-        if account.amount > 0 {
-            cell.contextView.algoImageView.tintColor = SharedColors.turquois
-            cell.contextView.amountLabel.textColor = SharedColors.turquois
-            cell.contextView.amountLabel.text = "\(account.amount.toAlgos)"
-        } else if account.amount == 0 {
-            cell.contextView.algoImageView.tintColor = SharedColors.black
-            cell.contextView.amountLabel.textColor = SharedColors.black
-            cell.contextView.amountLabel.text = "\(account.amount.toAlgos)"
-        } else {
-            cell.contextView.algoImageView.tintColor = SharedColors.orange
-            cell.contextView.amountLabel.textColor = SharedColors.orange
-            cell.contextView.amountLabel.text = "\(account.amount.toAlgos)"
+        switch mode {
+        case .assetCount:
+            cell.contextView.detailLabel.text = "\(account.assetDetails.count) " + "accounts-title-assets".localized
+        case let .transactionSender(assetDetail),
+             let .transactionReceiver(assetDetail),
+             let .contact(assetDetail):
+            if let assetDetail = assetDetail {
+                guard let assetAmount = account.amount(for: assetDetail)else {
+                    return
+                }
+                
+                let amountText = "\(assetAmount.toFractionStringForLabel(fraction: assetDetail.fractionDecimals) ?? "")".attributed([
+                    .font(UIFont.font(.overpass, withWeight: .semiBold(size: 15.0))),
+                    .textColor(SharedColors.black)
+                ])
+                
+                let codeText = " (\(assetDetail.getAssetCode()))".attributed([
+                    .font(UIFont.font(.overpass, withWeight: .semiBold(size: 15.0))),
+                    .textColor(SharedColors.purple)
+                ])
+                cell.contextView.detailLabel.attributedText = amountText + codeText
+            } else {
+                cell.contextView.detailLabel.textColor = SharedColors.black
+                cell.contextView.imageView.isHidden = false
+                cell.contextView.detailLabel.text = account.amount.toAlgos.toDecimalStringForLabel
+            }
         }
-        
-        if let amount = account.amount.toAlgos.toDecimalStringForLabel {
-            cell.contextView.amountLabel.text = amount
-        }
-    }
-    
-    func configure(_ cell: AccountsTotalDisplayCell, with totalAmount: String) {
-        cell.contextView.amountLabel.text = totalAmount
     }
 }

@@ -9,19 +9,14 @@
 import UIKit
 
 protocol NodeSettingsViewModelDelegate: class {
-    func nodeSettingsViewModel(_ viewModel: NodeSettingsViewModel,
-                               didToggleValue value: Bool,
-                               atIndexPath indexPath: IndexPath)
-    func nodeSettingsViewModelDidTapEdit(_ viewModel: NodeSettingsViewModel,
-                                         atIndexPath indexPath: IndexPath)
+    func nodeSettingsViewModel(_ viewModel: NodeSettingsViewModel, didToggleValue value: Bool, atIndexPath indexPath: IndexPath)
+    func nodeSettingsViewModelDidTapEdit(_ viewModel: NodeSettingsViewModel, atIndexPath indexPath: IndexPath)
 }
 
 class NodeSettingsViewModel {
     weak var delegate: NodeSettingsViewModelDelegate?
     
-    func configureToggle(_ cell: SettingsToggleCell,
-                         with node: Node,
-                         for indexPath: IndexPath) {
+    func configureToggle(_ cell: SettingsToggleCell, with node: Node, for indexPath: IndexPath) {
         cell.contextView.indexPath = indexPath
         cell.contextView.nameLabel.text = node.name
         cell.contextView.toggle.setOn(node.isActive, animated: false)

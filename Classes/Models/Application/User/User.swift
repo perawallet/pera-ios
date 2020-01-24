@@ -11,7 +11,6 @@ import Magpie
 class User: Model {
     
     private(set) var accounts: [Account] = []
-    fileprivate var defaultAccountAddress: String?
     fileprivate(set) var defaultNode: String?
     private(set) var depositInstructions: [DepositInstruction]?
     
@@ -79,11 +78,6 @@ extension User {
         UIApplication.shared.appConfiguration?.session.authenticatedUser = self
     }
     
-    func setDefaultAccount(_ account: Account) {
-        self.defaultAccountAddress = account.address
-        syncronize()
-    }
-    
     func setDefaultNode(_ node: Node?) {
         defer {
             syncronize()
@@ -97,20 +91,8 @@ extension User {
         self.defaultNode = selectedNode.address
     }
     
-    func defaultAccount() -> Account? {
-        guard let address = defaultAccountAddress else {
-            return nil
-        }
-        
-        return accountFrom(address: address)
-    }
-    
     func account(address: String) -> Account? {
         return accountFrom(address: address)
-    }
-    
-    func isDefaultAccount(_ account: Account) -> Bool {
-        return account.address == defaultAccountAddress
     }
     
     func addInstruction(_ instruction: DepositInstruction) {

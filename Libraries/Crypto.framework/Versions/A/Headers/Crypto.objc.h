@@ -10,7 +10,6 @@
 #include "ref.h"
 #include "Universe.objc.h"
 
-#include "Msgpack.objc.h"
 
 @class CryptoAccount;
 
@@ -20,16 +19,16 @@ Algorand address
  */
 @interface CryptoAccount : NSObject <goSeqRefInterface> {
 }
-@property(strong, readonly) id _ref;
+@property(strong, readonly) _Nonnull id _ref;
 
-- (nonnull instancetype)initWithRef:(id)ref;
+- (nonnull instancetype)initWithRef:(_Nonnull id)ref;
 - (nonnull instancetype)init;
 @property (nonatomic) NSData* _Nullable publicKey;
 @property (nonatomic) NSData* _Nullable privateKey;
 @property (nonatomic) NSData* _Nullable address;
 @end
 
-FOUNDATION_EXPORT NSString* _Nonnull CryptoGenerateAddressFromSK(NSData* _Nullable sk, NSError* _Nullable* error);
+FOUNDATION_EXPORT NSString* _Nonnull CryptoGenerateAddressFromSK(NSData* _Nullable sk, NSError* _Nullable* _Nullable error);
 
 FOUNDATION_EXPORT NSData* _Nullable CryptoGenerateSK(void);
 
@@ -48,12 +47,12 @@ FOUNDATION_EXPORT void CryptoRandomBytes(NSData* _Nullable s);
  * SignBid accepts a private key and a bid, and returns the signature of the
 bid under that key
  */
-FOUNDATION_EXPORT NSData* _Nullable CryptoSignBid(NSData* _Nullable sk, NSData* _Nullable encodedBid, NSError* _Nullable* error);
+FOUNDATION_EXPORT NSData* _Nullable CryptoSignBid(NSData* _Nullable sk, NSData* _Nullable encodedBid, NSError* _Nullable* _Nullable error);
 
 /**
  * SignTransaction accepts a private key and a transaction, and returns the
 bytes of a signed bid in a note.
  */
-FOUNDATION_EXPORT NSData* _Nullable CryptoSignTransaction(NSData* _Nullable sk, NSData* _Nullable encodedTx, NSError* _Nullable* error);
+FOUNDATION_EXPORT NSData* _Nullable CryptoSignTransaction(NSData* _Nullable sk, NSData* _Nullable encodedTx, NSError* _Nullable* _Nullable error);
 
 #endif

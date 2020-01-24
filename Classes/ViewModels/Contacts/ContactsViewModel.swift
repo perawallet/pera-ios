@@ -20,6 +20,6 @@ class ContactsViewModel {
         }
         
         cell.contextView.nameLabel.text = contact.name
-        cell.contextView.addressLabel.text = contact.address
+        cell.contextView.addressLabel.text = contact.address?.shortAddressDisplay()
     }
 }
