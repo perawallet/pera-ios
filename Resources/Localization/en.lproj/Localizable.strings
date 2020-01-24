@@ -249,6 +249,7 @@
 "title-view-results" = "VIEW RESULTS";
 "history-alert-title" = "Incorrect Fields";
 "history-alert-message" = "Please fill the fields properly.";
+"history-alert-select-asset" = "You must select an asset.";
 "history-result-to" = "to";
 
 // MARK: Contacts

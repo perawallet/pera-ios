@@ -98,7 +98,7 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
         }
         sendTransactionPreviewView.transactionReceiverView.state = .address(address: qrAddress, amount: nil)
         if let amountFromQR = qrText.amount {
-            displayQRAlert(for: amountFromQR)
+            displayQRAlert(for: amountFromQR, with: qrText.asset)
         }
         receiver = .address(address: qrAddress, amount: nil)
         
@@ -118,12 +118,16 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
         }
     }
     
-    private func displayQRAlert(for amountFromQR: Int64) {
+    private func displayQRAlert(for amountFromQR: Int64, with asset: Int64?) {
         let configurator = AlertViewConfigurator(
             title: "send-qr-scan-alert-title".localized,
             image: img("icon-qr-alert"),
             explanation: "send-qr-scan-alert-message".localized,
             actionTitle: "title-approve".localized) {
+                if asset != nil {
+                    self.displaySimpleAlertWith(title: "", message: "send-qr-different-asset-alert".localized)
+                    return
+                }
                 let receivedAmount = amountFromQR.toAlgos
                 self.amount = receivedAmount
                 self.sendTransactionPreviewView.amountInputView.inputTextField.text = receivedAmount.toDecimalStringForAlgosInput

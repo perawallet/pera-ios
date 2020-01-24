@@ -65,6 +65,11 @@ extension HistoryViewController: HistoryViewDelegate {
             return
         }
         
+        if !isAlgoSelected && selectedAssetDetail == nil {
+            displaySimpleAlertWith(title: "history-alert-title".localized, message: "history-alert-select-asset".localized)
+            return
+        }
+        
         let startDate = historyView.startDate
         let endDate = historyView.endDate
         let historyDraft: HistoryDraft

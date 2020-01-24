@@ -29,6 +29,7 @@ class HistoryResultsView: BaseView {
     private(set) lazy var startDateDisplayView: DetailedInformationView = {
         let startDateDisplayView = DetailedInformationView()
         startDateDisplayView.backgroundColor = .clear
+        startDateDisplayView.containerView.backgroundColor = Colors.disabledColor
         startDateDisplayView.explanationLabel.text = "history-start-date".localized
         startDateDisplayView.isUserInteractionEnabled = true
         startDateDisplayView.detailLabel.font = UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))
@@ -38,6 +39,7 @@ class HistoryResultsView: BaseView {
     private(set) lazy var endDateDisplayView: DetailedInformationView = {
         let endDateDisplayView = DetailedInformationView()
         endDateDisplayView.backgroundColor = .clear
+        endDateDisplayView.containerView.backgroundColor = Colors.disabledColor
         endDateDisplayView.explanationLabel.text = "history-end-date".localized
         endDateDisplayView.isUserInteractionEnabled = true
         endDateDisplayView.detailLabel.font = UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))
@@ -65,6 +67,7 @@ class HistoryResultsView: BaseView {
         collectionView.backgroundColor = .white
         
         collectionView.register(TransactionHistoryCell.self, forCellWithReuseIdentifier: TransactionHistoryCell.reusableIdentifier)
+        collectionView.register(RewardCell.self, forCellWithReuseIdentifier: RewardCell.reusableIdentifier)
         
         return collectionView
     }()

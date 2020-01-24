@@ -10,6 +10,8 @@ import UIKit
 
 class HistoryResultsViewController: BaseViewController {
     
+    let layout = Layout<LayoutConstants>()
+    
     private var transactionHistoryDataSource: TransactionHistoryDataSource
     
     private lazy var historyResultsView = HistoryResultsView()
@@ -158,6 +160,17 @@ extension HistoryResultsViewController: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        return CGSize(width: UIScreen.main.bounds.width, height: 80.0)
+        if transactionHistoryDataSource.transaction(at: indexPath) == nil {
+            return layout.current.rewardCellSize
+        }
+        
+        return layout.current.transactionCellSize
+    }
+}
+
+extension HistoryResultsViewController {
+    struct LayoutConstants: AdaptiveLayoutConstants {
+        let transactionCellSize = CGSize(width: UIScreen.main.bounds.width, height: 72.0)
+        let rewardCellSize = CGSize(width: UIScreen.main.bounds.width, height: 50.0)
     }
 }

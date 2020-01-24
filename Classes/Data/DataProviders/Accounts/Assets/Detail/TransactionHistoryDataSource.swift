@@ -185,7 +185,7 @@ extension TransactionHistoryDataSource {
             transactions.removeAll()
         }
         
-        fetchRequest = api?.fetchTransactions(between: dates, for: account) { response in
+        fetchRequest = api?.fetchTransactions(between: dates, for: account, max: Int.max) { response in
             switch response {
             case let .failure(error):
                 handler(nil, error)
