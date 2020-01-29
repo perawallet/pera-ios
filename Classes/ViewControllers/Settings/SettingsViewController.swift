@@ -78,7 +78,7 @@ class SettingsViewController: BaseViewController {
 extension SettingsViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return isAuctionsEnabled ? 7 : 6
+        return isAuctionsEnabled ? 6 : 5
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -88,7 +88,7 @@ extension SettingsViewController: UICollectionViewDataSource {
         }
         
         switch mode {
-        case .serverSettings, .password:
+        case .password:
             guard let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: SettingsDetailCell.reusableIdentifier,
                 for: indexPath) as? SettingsDetailCell else {
@@ -184,8 +184,6 @@ extension SettingsViewController: UICollectionViewDelegateFlowLayout {
         }
         
         switch mode {
-        case .serverSettings:
-            open(.nodeSettings(mode: .initialize), by: .push)
         case .password:
             open(
                 .choosePassword(
@@ -253,7 +251,7 @@ extension SettingsViewController: SettingsViewModelDelegate {
         }
         
         let cancelAction = UIAlertAction(title: "title-cancel-lowercased".localized, style: .cancel) { _ in
-            let indexPath = IndexPath(item: 3, section: 0)
+            let indexPath = IndexPath(item: 2, section: 0)
             guard let cell = self.settingsView.collectionView.cellForItem(at: indexPath) as? ToggleCell else {
                 return
             }

@@ -204,6 +204,9 @@ extension TransactionHistoryDataSource {
                             guard let assetId = transaction.assetTransfer?.assetId else {
                                 return false
                             }
+                            if transaction.isAssetCreationTransaction(for: account.address) {
+                                return false
+                            }
                             return assetId == assetDetail.id
                         } else {
                             if let assetTransfer = transaction.assetTransfer,
@@ -249,6 +252,9 @@ extension TransactionHistoryDataSource {
                     self.transactions = transactions.transactions.filter { transaction -> Bool in
                         if let assetDetail = self.assetDetail {
                             guard let assetId = transaction.assetTransfer?.assetId else {
+                                return false
+                            }
+                            if transaction.isAssetCreationTransaction(for: account.address) {
                                 return false
                             }
                             return assetId == assetDetail.id

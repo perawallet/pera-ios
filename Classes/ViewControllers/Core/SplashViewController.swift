@@ -14,21 +14,9 @@ class SplashViewController: BaseViewController {
         UIImageView(image: img("icon-logo-small"))
     }()
     
-    private lazy var loadingIndicator: UIActivityIndicatorView = {
-        UIActivityIndicatorView(style: .gray)
-    }()
-    
     override var shouldShowNavigationBar: Bool {
         return false
     }
-    
-    private lazy var nodeManager: NodeManager? = {
-        guard let api = self.api else {
-            return nil
-        }
-        let manager = NodeManager(api: api)
-        return manager
-    }()
     
     override func configureAppearance() {
         let safeAreaView = UIView()
@@ -48,80 +36,36 @@ class SplashViewController: BaseViewController {
             make.center.equalToSuperview()
         }
         
-        safeAreaView.addSubview(loadingIndicator)
-        
-        loadingIndicator.snp.makeConstraints { make in
-            make.top.equalTo(imageView.snp.bottom).offset(10)
-            make.centerX.equalToSuperview()
-        }
-        
-        fetchNodes()
+        startFlow()
     }
     
-    private func fetchNodes() {
-        loadingIndicator.startAnimating()
-        
+    private func startFlow() {
         guard let session = self.session else {
             return
         }
         
-        guard let rootController = UIApplication.shared.rootViewController() else {
+        guard let rootViewController = UIApplication.shared.rootViewController() else {
             return
         }
         
-        nodeManager?.checkNodes { isFinished in
-            DispatchQueue.main.async {
-                self.loadingIndicator.stopAnimating()
-            }
-            
-            if isFinished {
-                if !session.isValid {
-                    if session.hasPassword() &&
-                        session.authenticatedUser != nil {
-                        
-                        DispatchQueue.main.async {
-                            self.dismiss(animated: false) {
-                                DispatchQueue.main.async {
-                                    rootController.open(
-                                        .choosePassword(mode: .login, route: nil),
-                                        by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
-                                    )
-                                }
-                            }
-                        }
-                    } else {
-                        session.reset()
-                        
-                        DispatchQueue.main.async {
-                            self.dismiss(animated: false) {
-                                DispatchQueue.main.async {
-                                    rootController.open(.introduction(mode: .initialize), by: .launch, animated: false)
-                                }
-                            }
-                        }
-                    }
-                } else {
-                    DispatchQueue.main.async {
-                        self.dismiss(animated: false) {
-                            DispatchQueue.main.async {
-                                UIApplication.shared.rootViewController()?.setupTabBarController()
-                            }
-                        }
-                    }
+        if !session.isValid {
+            if session.hasPassword() && session.authenticatedUser != nil {
+                self.dismiss(animated: false) {
+                    rootViewController.open(
+                        .choosePassword(mode: .login, route: nil),
+                        by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
+                    )
                 }
             } else {
-                DispatchQueue.main.async {
-                    let viewController = self.open(.nodeSettings(mode: .checkHealth), by: .present) as? NodeSettingsViewController
-                    viewController?.delegate = self
+                session.reset()
+                self.dismiss(animated: false) {
+                    rootViewController.open(.introduction(mode: .initialize), by: .launch, animated: false)
                 }
             }
+        } else {
+            self.dismiss(animated: false) {
+                rootViewController.setupTabBarController()
+            }
         }
-    }
-}
-
-// MARK: - NodeSettingsViewControllerDelegate
-extension SplashViewController: NodeSettingsViewControllerDelegate {
-    func nodeSettingsViewControllerDidUpdateNode(_ nodeSettingsViewController: NodeSettingsViewController) {
-        self.fetchNodes()
     }
 }
