@@ -24,53 +24,14 @@ class NodeManager {
 // MARK: - API
 extension NodeManager {
     func checkNodes(completion: BoolHandler?) {
-        let sortDescriptor = NSSortDescriptor(key: #keyPath(Node.creationDate), ascending: true)
-        
         let completionOperation = BlockOperation {
             completion?(false)
         }
         
-        if api.session.isDefaultNodeActive() {
-            let localNodeOperation = self.localNodeOperation(completion: completion)
-            
-            completionOperation.addDependency(localNodeOperation)
-            self.queue.addOperation(localNodeOperation)
-        }
-        
-        let nodeResult = Node.fetchAllSyncronous(
-            entity: Node.entityName,
-            with: NSPredicate(format: "isActive == %@", NSNumber(value: true)),
-            sortDescriptor: sortDescriptor
-        )
-        
-        switch nodeResult {
-        case let .results(objects):
-            for case let node as Node in objects {
-                let nodeHealthOperation = NodeHealthOperation(node: node, api: api)
-                nodeHealthOperation.onCompleted = { isHealthy in
-                    guard let address = node.address, let token = node.token else {
-                        return
-                    }
-                    
-                    if isHealthy {
-                        self.api.cancelAllEndpoints()
-                        
-                        self.api.base = address
-                        self.api.token = token
-                        
-                        completion?(true)
-                        self.queue.cancelAllOperations()
-                    }
-                }
-                
-                completionOperation.addDependency(nodeHealthOperation)
-                self.queue.addOperation(nodeHealthOperation)
-            }
-        default:
-            break
-        }
-        
-        self.queue.addOperation(completionOperation)
+        let localNodeOperation = self.localNodeOperation(completion: completion)
+        completionOperation.addDependency(localNodeOperation)
+        queue.addOperation(localNodeOperation)
+        queue.addOperation(completionOperation)
     }
     
     fileprivate func localNodeOperation(completion: BoolHandler?) -> NodeHealthOperation {

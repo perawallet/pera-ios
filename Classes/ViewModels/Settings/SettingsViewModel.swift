@@ -16,13 +16,12 @@ protocol SettingsViewModelDelegate: class {
 class SettingsViewModel {
     
     enum SettingsCellMode: Int {
-        case serverSettings = 0
-        case password = 1
-        case localAuthentication = 2
-        case notifications = 3
-        case rewards = 4
-        case language = 5
-        case coinlist = 6
+        case password = 0
+        case localAuthentication = 1
+        case notifications = 2
+        case rewards = 3
+        case language = 4
+        case coinlist = 5
     }
     
     var indexPath: IndexPath?
@@ -72,8 +71,6 @@ class SettingsViewModel {
     
     fileprivate func nameOfMode(_ mode: SettingsCellMode) -> String {
         switch mode {
-        case .serverSettings:
-            return "settings-server-node-settings".localized
         case .password:
             return "settings-change-password".localized
         case .localAuthentication:
