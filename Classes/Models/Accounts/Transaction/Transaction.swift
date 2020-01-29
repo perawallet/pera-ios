@@ -97,7 +97,11 @@ extension Transaction {
     }
 }
 
-// genesishashb64: String
-// genesisID: String
-// group: String
-// keyreg
+extension Transaction {
+    func isAssetCreationTransaction(for account: String) -> Bool {
+        guard let assetTransfer = assetTransfer else {
+            return false
+        }
+        return assetTransfer.receiverAddress == account && assetTransfer.amount == 0
+    }
+}
