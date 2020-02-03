@@ -14,19 +14,14 @@ class PassphraseViewController: BaseScrollViewController {
         guard let session = self.session else {
             return nil
         }
-        
         let mnemonics = session.mnemonics(forAccount: address)
-        
         return mnemonics
     }
     
     private(set) var address: String
     private var maxCellWidth: CGFloat?
     
-    private(set) lazy var passphraseView: PassphraseView = {
-        let view = PassphraseView()
-        return view
-    }()
+    private(set) lazy var passphraseView = PassphraseView()
     
     init(address: String, configuration: ViewControllerConfiguration) {
         self.address = address
@@ -44,15 +39,11 @@ class PassphraseViewController: BaseScrollViewController {
     }
 }
 
-// MARK: UICollectionViewDataSource
-
 extension PassphraseViewController: UICollectionViewDataSource {
-    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         guard let mnemonics = mnemonics else {
             return 0
         }
-        
         return mnemonics.count
     }
     
@@ -70,29 +61,20 @@ extension PassphraseViewController: UICollectionViewDataSource {
         }
         
         cell.contextView.phraseLabel.text = mnemonics[indexPath.item]
-        
         return cell
     }
 }
-
-// MARK: UICollectionViewDelegateFlowLayout
-
 extension PassphraseViewController: UICollectionViewDelegateFlowLayout {
-    
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
-        ) -> CGSize {
-        
+    ) -> CGSize {
         return CGSize(width: collectionView.frame.width / 3.0, height: 22.0)
     }
 }
 
-// MARK: PassPhraseBackUpViewDelegate
-
 extension PassphraseViewController: PassPhraseBackUpViewDelegate {
-    
     func passphraseViewDidTapShareButton(_ passphraseView: PassphraseView) {
         let mnemonics = self.session?.mnemonics(forAccount: address) ?? []
         

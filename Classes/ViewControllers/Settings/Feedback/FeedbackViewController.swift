@@ -227,10 +227,14 @@ extension FeedbackViewController {
             self.popScreen()
         }
         
-        let alertViewController = AlertViewController(mode: .default, alertConfigurator: configurator, configuration: configuration)
-        alertViewController.modalPresentationStyle = .overCurrentContext
-        alertViewController.modalTransitionStyle = .crossDissolve
-        present(alertViewController, animated: true, completion: nil)
+        open(
+            .alert(mode: .default, alertConfigurator: configurator),
+            by: .customPresentWithoutNavigationController(
+                presentationStyle: .overCurrentContext,
+                transitionStyle: .crossDissolve,
+                transitioningDelegate: nil
+            )
+        )
     }
 }
 

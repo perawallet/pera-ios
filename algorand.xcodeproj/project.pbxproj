@@ -728,6 +728,8 @@
 		2BDE9CDC224E2379007EFF30 /* TransactionHistoryContextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDE9CDB224E2379007EFF30 /* TransactionHistoryContextView.swift */; };
 		2BEE061623E03761004EBD6F /* SendTransactionPreviewViewController+Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEE061523E03760004EBD6F /* SendTransactionPreviewViewController+Keyboard.swift */; };
 		2BEE061723E03761004EBD6F /* SendTransactionPreviewViewController+Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEE061523E03760004EBD6F /* SendTransactionPreviewViewController+Keyboard.swift */; };
+		2BEE061A23E44B20004EBD6F /* TouchDetectingScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEE061923E44B20004EBD6F /* TouchDetectingScrollView.swift */; };
+		2BEE061B23E44B20004EBD6F /* TouchDetectingScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEE061923E44B20004EBD6F /* TouchDetectingScrollView.swift */; };
 		2BF34C992239AAD20052CAD3 /* UIViewController+Flow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF34C982239AAD20052CAD3 /* UIViewController+Flow.swift */; };
 		2BF34C9B2239AB130052CAD3 /* Screen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF34C9A2239AB130052CAD3 /* Screen.swift */; };
 		2BF34C9D2239AB530052CAD3 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF34C9C2239AB530052CAD3 /* Router.swift */; };
@@ -1126,6 +1128,7 @@
 		2BDE9CD9224E2336007EFF30 /* TransactionHistoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryCell.swift; sourceTree = "<group>"; };
 		2BDE9CDB224E2379007EFF30 /* TransactionHistoryContextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryContextView.swift; sourceTree = "<group>"; };
 		2BEE061523E03760004EBD6F /* SendTransactionPreviewViewController+Keyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SendTransactionPreviewViewController+Keyboard.swift"; sourceTree = "<group>"; };
+		2BEE061923E44B20004EBD6F /* TouchDetectingScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchDetectingScrollView.swift; sourceTree = "<group>"; };
 		2BF34C982239AAD20052CAD3 /* UIViewController+Flow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Flow.swift"; sourceTree = "<group>"; };
 		2BF34C9A2239AB130052CAD3 /* Screen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Screen.swift; sourceTree = "<group>"; };
 		2BF34C9C2239AB530052CAD3 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
@@ -2787,6 +2790,7 @@
 		2B8BE4F2223935CA005D8565 /* Base */ = {
 			isa = PBXGroup;
 			children = (
+				2BEE061823E44B0E004EBD6F /* ScrollView */,
 				2B8954BF2244047D00D6D068 /* BaseInputView.swift */,
 				2B8BE4F3223935DA005D8565 /* BaseView.swift */,
 				2BF34CBB223A8C460052CAD3 /* BaseCollectionViewCell.swift */,
@@ -3518,6 +3522,14 @@
 				2B4DF418236C6ACD00FF9551 /* Pending */,
 			);
 			path = Cell;
+			sourceTree = "<group>";
+		};
+		2BEE061823E44B0E004EBD6F /* ScrollView */ = {
+			isa = PBXGroup;
+			children = (
+				2BEE061923E44B20004EBD6F /* TouchDetectingScrollView.swift */,
+			);
+			path = ScrollView;
 			sourceTree = "<group>";
 		};
 		2BF34C962239AA8C0052CAD3 /* Flow */ = {
@@ -4503,6 +4515,7 @@
 				2B4487212379649700C19FDE /* AssetAdditionViewController.swift in Sources */,
 				17BD4EFF2292F1260003E49A /* LocalAuthenticator.swift in Sources */,
 				17BD4F012292F1260003E49A /* NSAttributedString+Additions.swift in Sources */,
+				2BEE061B23E44B20004EBD6F /* TouchDetectingScrollView.swift in Sources */,
 				2BB6EE56239339D800CF7874 /* ContactAssetView.swift in Sources */,
 				17BD4F022292F1260003E49A /* DefaultAlertView.swift in Sources */,
 				17BD4F032292F1260003E49A /* SingleLineInputField.swift in Sources */,
@@ -4876,6 +4889,7 @@
 				2B4487202379649700C19FDE /* AssetAdditionViewController.swift in Sources */,
 				2B6687152248DF83009F21E7 /* LocalAuthenticator.swift in Sources */,
 				2B8C127A2241970F00E34D37 /* NSAttributedString+Additions.swift in Sources */,
+				2BEE061A23E44B20004EBD6F /* TouchDetectingScrollView.swift in Sources */,
 				2BB6EE55239339D800CF7874 /* ContactAssetView.swift in Sources */,
 				2B8954AE2243D55200D6D068 /* DefaultAlertView.swift in Sources */,
 				2B8954C2224404B700D6D068 /* SingleLineInputField.swift in Sources */,

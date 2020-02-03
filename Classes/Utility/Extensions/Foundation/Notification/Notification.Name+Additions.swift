@@ -9,10 +9,27 @@
 import Foundation
 
 extension Notification.Name {
-    static let AuthenticatedUserUpdate = Notification.Name("com.algorand.algorand.notification.authenticated.user.update")
-    static let ApplicationWillEnterForeground = Notification.Name("com.algorand.algorand.notification.application.WillEnterForeground")
-    static let AccountUpdate = Notification.Name("com.algorand.algorand.notification.account.update")
-    static let ContactAddition = Notification.Name("com.algorand.algorand.notification.contact.addition")
-    static let ContactEdit = Notification.Name("com.algorand.algorand.notification.contact.edit")
-    static let ContactDeletion = Notification.Name("com.algorand.algorand.notification.contact.deletion")
+    static var AuthenticatedUserUpdate: Notification.Name {
+        return .init(rawValue: "com.algorand.algorand.notification.authenticated.user.update")
+    }
+
+    static var ApplicationWillEnterForeground: Notification.Name {
+        return .init(rawValue: "com.algorand.algorand.notification.application.WillEnterForeground")
+    }
+
+    static var AccountUpdate: Notification.Name {
+        return .init(rawValue: "com.algorand.algorand.notification.account.update")
+    }
+    
+    static var ContactAddition: Notification.Name {
+        return .init(rawValue: "com.algorand.algorand.notification.contact.addition")
+    }
+
+    static var ContactEdit: Notification.Name {
+        return .init(rawValue: "com.algorand.algorand.notification.contact.edit")
+    }
+
+    static var ContactDeletion: Notification.Name {
+        return .init(rawValue: "com.algorand.algorand.notification.contact.deletion")
+    }
 }

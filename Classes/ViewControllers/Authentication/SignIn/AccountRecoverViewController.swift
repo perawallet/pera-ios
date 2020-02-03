@@ -11,12 +11,7 @@ import SVProgressHUD
 
 class AccountRecoverViewController: BaseScrollViewController {
     
-    // MARK: Components
-    
-    private lazy var accountRecoverView: AccountRecoverView = {
-        let view = AccountRecoverView()
-        return view
-    }()
+    private lazy var accountRecoverView = AccountRecoverView()
     
     private var keyboardController = KeyboardController()
     
@@ -25,25 +20,20 @@ class AccountRecoverViewController: BaseScrollViewController {
             let user = session?.authenticatedUser  else {
                 return nil
         }
-        
         let manager = AccountManager(api: api)
         manager.user = user
         return manager
     }()
     
     var mode: AccountSetupMode = .initialize
-
-    // MARK: Setup
     
     override func configureAppearance() {
         super.configureAppearance()
-        
         title = "recover-from-seed-title".localized
     }
     
     override func setListeners() {
         super.setListeners()
-        
         keyboardController.beginTracking()
     }
     
@@ -53,14 +43,13 @@ class AccountRecoverViewController: BaseScrollViewController {
         scrollView.touchDetectingDelegate = self
     }
     
-    // MARK: Layout
-    
     override func prepareLayout() {
         super.prepareLayout()
-        
         setupAccountRecoverViewLayout()
     }
-    
+}
+
+extension AccountRecoverViewController {
     private func setupAccountRecoverViewLayout() {
         contentView.addSubview(accountRecoverView)
         
@@ -70,10 +59,7 @@ class AccountRecoverViewController: BaseScrollViewController {
     }
 }
 
-// MARK: AccountRecoverViewDelegate
-
 extension AccountRecoverViewController: AccountRecoverViewDelegate {
-    
     func accountRecoverViewDidTapQRCodeButton(_ accountRecoverView: AccountRecoverView) {
         if !UIImagePickerController.isSourceTypeAvailable(.camera) {
             displaySimpleAlertWith(title: "qr-scan-error-title".localized, message: "qr-scan-error-message".localized)
@@ -95,40 +81,33 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
         
         guard let mnemonics = accountRecoverView.passPhraseInputView.inputTextView.text,
             let privateKey = session?.privateKey(forMnemonics: mnemonics) else {
-                displaySimpleAlertWith(title: "title-error".localized,
-                                       message: "pass-phrase-verify-invalid-passphrase".localized)
+                displaySimpleAlertWith(title: "title-error".localized, message: "pass-phrase-verify-invalid-passphrase".localized)
                 return
         }
         
         guard let address = session?.address(fromPrivateKey: privateKey) else {
-            displaySimpleAlertWith(title: "title-error".localized,
-                                   message: "pass-phrase-verify-sdk-error".localized)
+            displaySimpleAlertWith(title: "title-error".localized, message: "pass-phrase-verify-sdk-error".localized)
             return
         }
         
         guard session?.authenticatedUser?.account(address: address) == nil else {
-            displaySimpleAlertWith(title: "title-error".localized,
-                                   message: "recover-from-seed-verify-exist-error".localized)
+            displaySimpleAlertWith(title: "title-error".localized, message: "recover-from-seed-verify-exist-error".localized)
             return
         }
         
-        let account = Account(address: address)
-        account.name = name
-        
-        session?.savePrivate(privateKey, forAccount: account.address)
+        let account = AccountInformation(address: address, name: name)
+        session?.savePrivate(privateKey, for: account.address)
         
         let user: User
         
         if let authenticatedUser = session?.authenticatedUser {
             user = authenticatedUser
-            
             user.addAccount(account)
         } else {
             user = User(accounts: [account])
         }
         
         session?.authenticatedUser = user
-        
         accountManager?.user = user
         
         view.endEditing(true)
@@ -141,20 +120,20 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
                 self.launchHome(with: account)
         }
         
-        let viewController = AlertViewController(mode: .default, alertConfigurator: configurator, configuration: configuration)
-        viewController.modalPresentationStyle = .overCurrentContext
-        viewController.modalTransitionStyle = .crossDissolve
-        
-        present(viewController, animated: true, completion: nil)
+        open(
+            .alert(mode: .default, alertConfigurator: configurator),
+            by: .customPresentWithoutNavigationController(
+                presentationStyle: .overCurrentContext,
+                transitionStyle: .crossDissolve,
+                transitioningDelegate: nil
+            )
+        )
     }
     
-    fileprivate func launchHome(with account: Account) {
+    private func launchHome(with account: AccountInformation) {
         SVProgressHUD.show(withStatus: "title-loading".localized)
-        
-        self.accountManager?.fetchAllAccounts(isVerifiedAssetsIncluded: true) {
-            
+        accountManager?.fetchAllAccounts(isVerifiedAssetsIncluded: true) {
             SVProgressHUD.showSuccess(withStatus: "title-done-lowercased".localized)
-            
             SVProgressHUD.dismiss(withDelay: 1.0) {
                 if self.session?.hasPassword() ?? false {
                     switch self.mode {
@@ -175,10 +154,7 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
     }
 }
 
-// MARK: QRScannerViewControllerDelegate
-
 extension AccountRecoverViewController: QRScannerViewControllerDelegate {
-    
     func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, then handler: EmptyHandler?) {
         guard qrText.mode == .mnemonic else {
             displaySimpleAlertWith(title: "title-error".localized, message: "qr-scan-should-scan-mnemonics-message".localized) { _ in
@@ -189,7 +165,6 @@ extension AccountRecoverViewController: QRScannerViewControllerDelegate {
             
             return
         }
-        
         accountRecoverView.passPhraseInputView.value = qrText.qrText()
     }
     
@@ -202,10 +177,7 @@ extension AccountRecoverViewController: QRScannerViewControllerDelegate {
     }
 }
 
-// MARK: KeyboardControllerDataSource
-
 extension AccountRecoverViewController: KeyboardControllerDataSource {
-    
     func bottomInsetWhenKeyboardPresented(for keyboardController: KeyboardController) -> CGFloat {
         return 15.0
     }
@@ -223,17 +195,13 @@ extension AccountRecoverViewController: KeyboardControllerDataSource {
     }
 }
 
-// MARK: TouchDetectingScrollViewDelegate
-
 extension AccountRecoverViewController: TouchDetectingScrollViewDelegate {
-    
     func scrollViewDidDetectTouchEvent(scrollView: TouchDetectingScrollView, in point: CGPoint) {
         if accountRecoverView.nextButton.frame.contains(point) ||
             accountRecoverView.accountNameInputView.frame.contains(point) ||
             accountRecoverView.passPhraseInputView.frame.contains(point) {
             return
         }
-        
         contentView.endEditing(true)
     }
 }

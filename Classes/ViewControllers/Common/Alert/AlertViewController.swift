@@ -51,6 +51,12 @@ class AlertViewController: BaseViewController {
     }
     
     override func prepareLayout() {
+        setupAlertViewLayout()
+    }
+}
+
+extension AlertViewController {
+    private func setupAlertViewLayout() {
         view.addSubview(alertView)
         
         alertView.snp.makeConstraints { make in

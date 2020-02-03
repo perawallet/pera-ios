@@ -14,36 +14,22 @@ class LocalAuthenticationPreferenceViewController: BaseViewController {
         return true
     }
     
-    // MARK: Components
-    
-    private lazy var localAuthenticationPreferenceView: LocalAuthenticationPreferenceView = {
-        let view = LocalAuthenticationPreferenceView()
-        return view
-    }()
+    private lazy var localAuthenticationPreferenceView = LocalAuthenticationPreferenceView()
     
     private let localAuthenticator = LocalAuthenticator()
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
-        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = false
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
-        
-        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = true
     }
     
-    // MARK: Setup
-    
     override func prepareLayout() {
-        view.addSubview(localAuthenticationPreferenceView)
-        
-        localAuthenticationPreferenceView.snp.makeConstraints { make in
-            make.leading.trailing.top.equalToSuperview()
-            make.bottom.safeEqualToBottom(of: self)
-        }
+        setupLocalAuthenticationPreferenceViewLayout()
     }
     
     override func linkInteractors() {
@@ -51,8 +37,18 @@ class LocalAuthenticationPreferenceViewController: BaseViewController {
     }
 }
 
+extension LocalAuthenticationPreferenceViewController {
+    private func setupLocalAuthenticationPreferenceViewLayout() {
+        view.addSubview(localAuthenticationPreferenceView)
+        
+        localAuthenticationPreferenceView.snp.makeConstraints { make in
+            make.leading.trailing.top.equalToSuperview()
+            make.bottom.safeEqualToBottom(of: self)
+        }
+    }
+}
+
 extension LocalAuthenticationPreferenceViewController: LocalAuthenticationPreferenceViewDelegate {
-    
     func localAuthenticationPreferenceViewDidTapYesButton(_ localAuthenticationPreferenceView: LocalAuthenticationPreferenceView) {
         if localAuthenticator.isLocalAuthenticationAvailable {
             localAuthenticator.authenticate { error in

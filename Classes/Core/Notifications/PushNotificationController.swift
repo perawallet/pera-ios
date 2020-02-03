@@ -129,14 +129,14 @@ extension PushNotificationController {
                         message = String(
                             format: isFailed ? "notification-sent-failed".localized : "notification-sent-success".localized,
                             "\(amountText) \(name) (\(code))",
-                            senderAccount.name ?? senderAddress,
+                            senderAccount.name,
                             results.first?.name ?? receiverAddress
                         )
                     } else {
                         message = String(
                             format: isFailed ? "notification-sent-failed".localized : "notification-sent-success".localized,
                             "\(amount)",
-                            senderAccount.name ?? senderAddress,
+                            senderAccount.name,
                             results.first?.name ?? receiverAddress
                         )
                     }
@@ -152,14 +152,14 @@ extension PushNotificationController {
                         message = String(
                             format: isFailed ? "notification-sent-failed".localized : "notification-sent-success".localized,
                             "\(amountText) \(name) (\(code))",
-                            (senderAccount.name ?? senderAddress),
+                            senderAccount.name,
                             receiverAddress
                         )
                     } else {
                         message = String(
                             format: isFailed ? "notification-sent-failed".localized : "notification-sent-success".localized,
                             "\(amount)",
-                            (senderAccount.name ?? senderAddress),
+                            senderAccount.name,
                             receiverAddress
                         )
                     }
@@ -196,14 +196,14 @@ extension PushNotificationController {
                         message = String(
                             format: "notification-received".localized,
                             "\(amountText) \(name) (\(code))",
-                            receiverAccount.name ?? receiverAddress,
+                            receiverAccount.name,
                             results.first?.name ?? senderAddress
                         )
                     } else {
                         message = String(
                             format: "notification-received".localized,
                             "\(amount.toAlgos) Algos",
-                            receiverAccount.name ?? receiverAddress,
+                            receiverAccount.name,
                             results.first?.name ?? senderAddress
                         )
                     }
@@ -219,14 +219,14 @@ extension PushNotificationController {
                         message = String(
                             format: "notification-received".localized,
                             "\(amountText) \(name) (\(code))",
-                            (receiverAccount.name ?? receiverAddress),
+                            receiverAccount.name,
                             senderAddress
                         )
                     } else {
                         message = String(
                             format: "notification-received".localized,
                             "\(amount.toAlgos) Algos",
-                            (receiverAccount.name ?? receiverAddress),
+                            receiverAccount.name,
                             senderAddress
                         )
                     }

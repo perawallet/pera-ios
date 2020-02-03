@@ -52,7 +52,7 @@ class AccountsViewController: BaseViewController {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(didUpdateAuthenticatedUser(notification:)),
-            name: Notification.Name.AuthenticatedUserUpdate,
+            name: .AuthenticatedUserUpdate,
             object: nil
         )
     }

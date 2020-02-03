@@ -10,25 +10,16 @@ import UIKit
 
 class PassPhraseVerifyViewController: BaseScrollViewController {
     
-    private enum Colors {
-        static let backgroundColor = rgb(0.97, 0.97, 0.98)
-        static let tryAgainLabelColor = rgb(0.67, 0.67, 0.72)
-    }
-    
-    fileprivate lazy var passPhraseViewModel: PassPhraseViewModel? = {
-        if let privateKey = session?.privateData(forAccount: "temp") {
+    private lazy var passPhraseViewModel: PassPhraseViewModel? = {
+        if let privateKey = session?.privateData(for: "temp") {
             return PassPhraseViewModel(privateKey: privateKey)
         }
-        
         return nil
     }()
     
-    fileprivate private(set) lazy var passPhraseVerifyView: PassPhraseVerifyView = {
-        let passPhraseVerifyView = PassPhraseVerifyView()
-        return passPhraseVerifyView
-    }()
+    private(set) lazy var passPhraseVerifyView = PassPhraseVerifyView()
     
-    fileprivate private(set) lazy var collectionView: UICollectionView = {
+    private(set) lazy var collectionView: UICollectionView = {
         let collectionViewLayout = LeftAlignedCollectionViewFlowLayout()
         collectionViewLayout.delegate = self
         collectionViewLayout.minimumLineSpacing = 8.0
@@ -36,8 +27,10 @@ class PassPhraseVerifyViewController: BaseScrollViewController {
         collectionViewLayout.scrollDirection = .vertical
         let collectionView = UICollectionView(frame: .zero,
                                               collectionViewLayout: collectionViewLayout)
-        collectionView.register(PassPhraseCollectionViewCell.self,
-                                forCellWithReuseIdentifier: PassPhraseCollectionViewCell.reusableIdentifier)
+        collectionView.register(
+            PassPhraseCollectionViewCell.self,
+            forCellWithReuseIdentifier: PassPhraseCollectionViewCell.reusableIdentifier
+        )
         collectionView.backgroundColor = .clear
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -57,52 +50,19 @@ class PassPhraseVerifyViewController: BaseScrollViewController {
     
     override func configureAppearance() {
         super.configureAppearance()
-        
         view.backgroundColor = Colors.backgroundColor
-        
         updatePassPhraseLabel()
     }
     
     override func prepareLayout() {
         super.prepareLayout()
-        
-        setupLayout()
-    }
-    
-    private func updatePassPhraseLabel() {
-        let currentIndex = passPhraseViewModel?.currentIndex.advanced(by: 1) ?? 1
-        let currentIndexValue = passPhraseViewModel?.currentIndexValue().advanced(by: 1) ?? 0
-        
-        let currentIndexString: String
-        
-        switch currentIndexValue {
-        case 1:
-            currentIndexString = "\(currentIndexValue)st"
-        case 2:
-            currentIndexString = "\(currentIndexValue)nd"
-        case 3:
-            currentIndexString = "\(currentIndexValue)rd"
-        default:
-            currentIndexString = "\(currentIndexValue)th"
-        }
-        
-        let titleText = "Question \(currentIndex) of \(passPhraseViewModel?.numberOfValidations ?? 0): ".localized
-        let subtitleText = "Select the \(currentIndexString) word of your passphrase".localized
-        
-        passPhraseVerifyView.questionTitleLabel.text = titleText
-        passPhraseVerifyView.questionSubtitleLabel.text = subtitleText
-    }
-}
-
-// MARK: - Layout
-extension PassPhraseVerifyViewController {
-    
-    fileprivate func setupLayout() {
         setupPassphraseViewLayout()
         setupCollectionViewLayout()
         setupTryAgainLabelLayout()
     }
-    
+}
+
+extension PassPhraseVerifyViewController {
     private func setupPassphraseViewLayout() {
         contentView.addSubview(passPhraseVerifyView)
         
@@ -133,39 +93,54 @@ extension PassPhraseVerifyViewController {
     }
 }
 
-// MARK: - UICollectionViewDelegate, UICollectionViewDataSource
-extension PassPhraseVerifyViewController: UICollectionViewDelegate,
-UICollectionViewDataSource {
-    
+extension PassPhraseVerifyViewController {
+    private func updatePassPhraseLabel() {
+        let currentIndex = passPhraseViewModel?.currentIndex.advanced(by: 1) ?? 1
+        let currentIndexValue = passPhraseViewModel?.currentIndexValue().advanced(by: 1) ?? 0
+        
+        let currentIndexString: String
+        
+        switch currentIndexValue {
+        case 1:
+            currentIndexString = "\(currentIndexValue)st"
+        case 2:
+            currentIndexString = "\(currentIndexValue)nd"
+        case 3:
+            currentIndexString = "\(currentIndexValue)rd"
+        default:
+            currentIndexString = "\(currentIndexValue)th"
+        }
+        
+        let titleText = "Question \(currentIndex) of \(passPhraseViewModel?.numberOfValidations ?? 0): ".localized
+        let subtitleText = "Select the \(currentIndexString) word of your passphrase".localized
+        
+        passPhraseVerifyView.questionTitleLabel.text = titleText
+        passPhraseVerifyView.questionSubtitleLabel.text = subtitleText
+    }
+}
+
+extension PassPhraseVerifyViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return passPhraseViewModel?.numberOfMnemonic() ?? 0
     }
     
-    func collectionView(_ collectionView: UICollectionView,
-                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let mnemonic = passPhraseViewModel?.mnemonic(atIndex: indexPath.item) else {
-            fatalError("Index path is out of bounds")
-        }
-        
-        guard let cell = collectionView.dequeueReusableCell(
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let mnemonic = passPhraseViewModel?.mnemonic(atIndex: indexPath.item),
+            let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: PassPhraseCollectionViewCell.reusableIdentifier,
             for: indexPath) as? PassPhraseCollectionViewCell else {
                 fatalError("Index path is out of bounds")
         }
         
         cell.contextView.phraseLabel.text = mnemonic
-        
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let viewModel = passPhraseViewModel,
-            let mnemonic = viewModel.mnemonic(atIndex: indexPath.item) else {
+            let mnemonic = viewModel.mnemonic(atIndex: indexPath.item),
+            let cell = collectionView.cellForItem(at: indexPath) as? PassPhraseCollectionViewCell else {
                 fatalError("Index path is out of bounds")
-        }
-        
-        guard let cell = collectionView.cellForItem(at: indexPath) as? PassPhraseCollectionViewCell else {
-            return
         }
         
         let isCorrect = viewModel.checkMnemonic(mnemonic)
@@ -183,14 +158,16 @@ UICollectionViewDataSource {
                         self.open(.accountNameSetup, by: .push)
                 }
                 
-                let viewController = AlertViewController(mode: .default, alertConfigurator: configurator, configuration: configuration)
-                viewController.modalPresentationStyle = .overCurrentContext
-                viewController.modalTransitionStyle = .crossDissolve
-                
-                present(viewController, animated: true, completion: nil)
+                open(
+                    .alert(mode: .default, alertConfigurator: configurator),
+                    by: .customPresentWithoutNavigationController(
+                        presentationStyle: .overCurrentContext,
+                        transitionStyle: .crossDissolve,
+                        transitioningDelegate: nil
+                    )
+                )
                 
                 cell.contextView.setMode(.idle)
-                
                 return
             } else {
                 viewModel.incrementCurrentIndex()
@@ -207,22 +184,25 @@ UICollectionViewDataSource {
     }
 }
 
-// MARK: - LeftAlignedCollectionViewFlowLayoutDelegate
 extension PassPhraseVerifyViewController: LeftAlignedCollectionViewFlowLayoutDelegate {
-    func leftAlignedLayout(_ layout: LeftAlignedCollectionViewFlowLayout,
-                           sizeFor indexPath: IndexPath) -> CGSize {
+    func leftAlignedLayout(_ layout: LeftAlignedCollectionViewFlowLayout, sizeFor indexPath: IndexPath) -> CGSize {
         guard let mnemonic = passPhraseViewModel?.mnemonic(atIndex: indexPath.item) else {
             fatalError("Index path is out of bounds")
         }
         
-        let width = mnemonic.width(usingFont: PassPhraseMnemonicView.Font.phraseLabel) + 50.0
-        
-        return CGSize(width: width, height: 44.0)
+        return CGSize(width: mnemonic.width(usingFont: PassPhraseMnemonicView.Font.phraseLabel) + 50.0, height: 44.0)
     }
     
     func leftAlignedLayoutDidCalculateHeight(_ height: CGFloat) {
-        self.collectionView.snp.updateConstraints { maker in
+        collectionView.snp.updateConstraints { maker in
             maker.height.greaterThanOrEqualTo(height)
         }
+    }
+}
+
+extension PassPhraseVerifyViewController {
+    private enum Colors {
+        static let backgroundColor = rgb(0.97, 0.97, 0.98)
+        static let tryAgainLabelColor = rgb(0.67, 0.67, 0.72)
     }
 }

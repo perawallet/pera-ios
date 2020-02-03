@@ -107,7 +107,7 @@ class TransactionDetailViewController: BaseScrollViewController {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(didContactAdded(notification:)),
-            name: Notification.Name.ContactAddition,
+            name: .ContactAddition,
             object: nil
         )
     }

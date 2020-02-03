@@ -10,7 +10,7 @@ import Foundation
 
 extension Session {
     func mnemonics(forAccount account: String) -> [String] {
-        guard let privateKey = privateData(forAccount: account) else {
+        guard let privateKey = privateData(for: account) else {
             return []
         }
         
@@ -36,8 +36,8 @@ extension Session {
         return privateKey
     }
     
-    func address(forAccount account: String) -> String? {
-        guard let privateKey = privateData(forAccount: account) else {
+    func address(for account: String) -> String? {
+        guard let privateKey = privateData(for: account) else {
             return nil
         }
         
