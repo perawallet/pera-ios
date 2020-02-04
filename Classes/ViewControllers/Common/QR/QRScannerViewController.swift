@@ -120,7 +120,9 @@ class QRScannerViewController: BaseViewController {
                         self.setupPreviewLayer()
                     }
                 } else {
-                    self.presentDisabledCameraAlert()
+                    DispatchQueue.main.async {
+                        self.presentDisabledCameraAlert()
+                    }
                 }
             }
         }
