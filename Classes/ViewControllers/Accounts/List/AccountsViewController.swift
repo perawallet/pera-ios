@@ -55,6 +55,13 @@ class AccountsViewController: BaseViewController {
             name: .AuthenticatedUserUpdate,
             object: nil
         )
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didUpdateAuthenticatedUser(notification:)),
+            name: .AccountUpdate,
+            object: nil
+        )
     }
     
     override func configureNavigationBarAppearance() {

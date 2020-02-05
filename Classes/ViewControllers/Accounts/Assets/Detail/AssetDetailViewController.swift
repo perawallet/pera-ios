@@ -96,21 +96,28 @@ class AssetDetailViewController: BaseViewController {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(didAccountUpdate(notification:)),
-            name: Notification.Name.AccountUpdate,
+            name: .AccountUpdate,
+            object: nil
+        )
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didAccountUpdate(notification:)),
+            name: .AuthenticatedUserUpdate,
             object: nil
         )
         
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(didContactAdded(notification:)),
-            name: Notification.Name.ContactAddition,
+            name: .ContactAddition,
             object: nil
         )
         
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(didContactEdited(notification:)),
-            name: Notification.Name.ContactEdit,
+            name: .ContactEdit,
             object: nil
         )
     }
@@ -211,7 +218,7 @@ extension AssetDetailViewController {
     }
     
     fileprivate func updateLayout() {
-        guard let account = session?.authenticatedUser?.account(address: account.address) else {
+        guard let account = session?.account(from: account.address) else {
             return
         }
         

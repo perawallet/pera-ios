@@ -112,7 +112,7 @@ extension EditAccountViewController: EditAccountViewDelegate {
         }
         
         account.name = name
-        session?.authenticatedUser?.updateAccount(account)
+        session?.updateName(name, for: account.address)
         dismissScreen()
     }
 }
