@@ -16,5 +16,4 @@ class Participation: Model {
     }
 }
 
-extension Participation: Encodable {
-}
+extension Participation: Encodable { }

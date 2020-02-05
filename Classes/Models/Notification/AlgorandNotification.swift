@@ -8,7 +8,7 @@
 
 import Magpie
 
-struct AlgorandNotification: Model {
+class AlgorandNotification: Model {
     let badge: Int?
     let alert: String?
     let details: NotificationDetail?

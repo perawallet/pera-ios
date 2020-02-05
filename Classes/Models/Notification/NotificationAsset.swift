@@ -8,7 +8,7 @@
 
 import Magpie
 
-struct NotificationAsset: Model {
+class NotificationAsset: Model {
     let id: Int64?
     let name: String?
     let code: String?
