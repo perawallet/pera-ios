@@ -15,7 +15,7 @@ extension UIViewController {
         _ screen: Screen,
         by style: Screen.Transition.Open,
         animated: Bool = true,
-        then completion: ScreenTransitionCompletion? = nil
+        then completion: EmptyHandler? = nil
     ) -> T? {
         
         let viewController = UIApplication.shared.route(to: screen, from: self, by: style, animated: animated, then: completion)
@@ -23,7 +23,7 @@ extension UIViewController {
         return viewController as? T
     }
 
-    func closeScreen(by style: Screen.Transition.Close, animated: Bool = true, onCompletion completion: ScreenTransitionCompletion? = nil) {
+    func closeScreen(by style: Screen.Transition.Close, animated: Bool = true, onCompletion completion: EmptyHandler? = nil) {
         switch style {
         case .pop:
             navigationController?.popViewController(animated: animated)

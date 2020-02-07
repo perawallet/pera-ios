@@ -8,7 +8,7 @@
 
 import UIKit
 
-enum AlgosReceiverState: Equatable {
+enum AssetReceiverState: Equatable {
     case initial
     case contact(Contact)
     case myAccount(Account)
@@ -80,7 +80,7 @@ class TransactionReceiverView: BaseView {
     
     weak var delegate: TransactionReceiverViewDelegate?
     
-    var state: AlgosReceiverState = .initial {
+    var state: AssetReceiverState = .initial {
         didSet {
             if state == oldValue {
                 return

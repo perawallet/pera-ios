@@ -170,9 +170,8 @@ class RootViewController: UIViewController {
         from viewController: UIViewController,
         by style: Screen.Transition.Open,
         animated: Bool = true,
-        then completion: ScreenTransitionCompletion? = nil
+        then completion: EmptyHandler? = nil
     ) -> T? {
-        
         return router?.route(to: screen, from: viewController, by: style, animated: animated, then: completion)
     }
 }
