@@ -221,14 +221,14 @@ class Router {
             configuration.transactionController = rootViewController.appConfiguration.transactionController
             viewController = SendAlgosTransactionPreviewViewController(
                 account: account,
-                receiver: receiver,
+                assetReceiverState: receiver,
                 configuration: configuration
             )
         case let .sendAssetTransactionPreview(account, receiver, assetDetail, isMaxTransaction):
             configuration.transactionController = rootViewController.appConfiguration.transactionController
             viewController = SendAssetTransactionPreviewViewController(
                 account: account,
-                receiver: receiver,
+                assetReceiverState: receiver,
                 assetDetail: assetDetail,
                 isMaxTransaction: isMaxTransaction,
                 configuration: configuration
@@ -236,15 +236,15 @@ class Router {
         case let .sendAlgosTransaction(algosTransactionDraft, receiver):
             configuration.transactionController = rootViewController.appConfiguration.transactionController
             viewController = SendAlgosTransactionViewController(
-                algosTransactionDraft: algosTransactionDraft,
-                receiver: receiver,
+                algosTransaction: algosTransactionDraft,
+                assetReceiverState: receiver,
                 configuration: configuration
             )
         case let .sendAssetTransaction(assetTransactionDraft, receiver):
             configuration.transactionController = rootViewController.appConfiguration.transactionController
             viewController = SendAssetTransactionViewController(
-                assetTransactionDraft: assetTransactionDraft,
-                receiver: receiver,
+                assetTransaction: assetTransactionDraft,
+                assetReceiverState: receiver,
                 configuration: configuration
             )
         case let .requestAlgosTransactionPreview(account):

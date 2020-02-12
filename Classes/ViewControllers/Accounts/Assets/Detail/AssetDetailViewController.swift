@@ -280,12 +280,27 @@ extension AssetDetailViewController: AssetDetailViewDelegate {
             guard let assetDetail = assetDetail else {
                 return
             }
-            open(.sendAssetTransactionPreview(account: account, receiver: .initial, assetDetail: assetDetail), by: .push)
+            open(
+                .sendAssetTransactionPreview(
+                    account: account,
+                    receiver: .initial,
+                    assetDetail: assetDetail,
+                    isMaxTransaction: false
+                ),
+                by: .push
+            )
         }
     }
     
     func assetDetailViewDidTapReceiveButton(_ assetDetailView: AssetDetailView) {
-        open(.requestTransactionPreview(account: account, assetDetail: assetDetail, isAlgoTransaction: isAlgoDisplay), by: .push)
+        if isAlgoDisplay {
+            open(.requestAlgosTransactionPreview(account: account), by: .push)
+        } else {
+            guard let assetDetail = assetDetail else {
+                return
+            }
+            open(.requestAssetTransactionPreview(account: account, assetDetail: assetDetail), by: .push)
+        }
     }
     
     func assetDetailView(_ assetDetailView: AssetDetailView, didTrigger dollarValueGestureRecognizer: UILongPressGestureRecognizer) {

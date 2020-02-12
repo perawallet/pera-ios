@@ -14,6 +14,4 @@ struct TransactionPreviewDraft: Codable {
     var identifier: String?
     var fee: Int64?
     var isMaxTransaction = false
-    var isAlgoTransaction = false
-    var assetDetail: AssetDetail?
 }

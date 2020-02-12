@@ -10,13 +10,11 @@ import UIKit
 
 class RequestAlgosTransactionViewController: RequestTransactionViewController {
     
-    private lazy var requestTransactionView: RequestTransactionView = {
-        return RequestTransactionView(
-            inputFieldFraction: algosFraction,
-            address: algosTransactionRequestDraft.account.address,
-            amount: algosTransactionRequestDraft.amount.toMicroAlgos
-        )
-    }()
+    private lazy var requestTransactionView = RequestTransactionView(
+        inputFieldFraction: algosFraction,
+        address: algosTransactionRequestDraft.account.address,
+        amount: algosTransactionRequestDraft.amount.toMicroAlgos
+    )
     
     private let viewModel: RequestAlgosTransactionViewModel
     private let algosTransactionRequestDraft: AlgosTransactionRequestDraft

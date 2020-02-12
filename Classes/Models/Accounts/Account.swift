@@ -99,6 +99,10 @@ class Account: Model {
         return asset.amount.assetAmount(fromFraction: assetDetail.fractionDecimals)
     }
     
+    func amountDisplayWithFraction(for assetDetail: AssetDetail) -> String? {
+        return amount(for: assetDetail)?.toFractionStringForLabel(fraction: assetDetail.fractionDecimals)
+    }
+    
     func removeAsset(_ id: Int64?) {
         assetDetails.removeAll { assetDetail -> Bool in
             assetDetail.id == id
