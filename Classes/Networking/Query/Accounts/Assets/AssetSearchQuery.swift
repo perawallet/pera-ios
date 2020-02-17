@@ -11,6 +11,7 @@ import Magpie
 struct AssetSearchQuery: Query {
     typealias Key = RequestParameter
     
+    let status: AssetSearchStatus
     let query: String?
     let limit: Int
     let offset: Int
@@ -20,6 +21,17 @@ struct AssetSearchQuery: Query {
         if let query = query {
             pairs.append(Pair(key: .query, value: .some(query)))
         }
+        
+        switch status {
+        case .all:
+            return pairs
+        default:
+            guard let statusValue = status.stringValue else {
+                return pairs
+            }
+            pairs.append(Pair(key: .status, value: .some(statusValue)))
+        }
+        
         return pairs
     }
 }

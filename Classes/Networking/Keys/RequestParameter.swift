@@ -41,4 +41,5 @@ enum RequestParameter: String, JSONBodyRequestParameter {
     case limit = "limit"
     case query = "q"
     case offset = "offset"
+    case status = "status"
 }
