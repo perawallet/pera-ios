@@ -269,7 +269,7 @@ extension TransactionController {
     private func sign(_ data: Data, with address: String) -> Data? {
         var signedTransactionError: NSError?
         
-        guard let privateData = api.session.privateData(forAccount: address),
+        guard let privateData = api.session.privateData(for: address),
             let signedTransactionData = algorandSDK.sign(privateData, with: data, error: &signedTransactionError) else {
                 delegate?.transactionController(self, didFailedComposing: .custom(signedTransactionError))
                 return nil
