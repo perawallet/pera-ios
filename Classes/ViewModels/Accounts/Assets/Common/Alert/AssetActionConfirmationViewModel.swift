@@ -44,7 +44,7 @@ class AssetActionConfirmationViewModel {
         
         let range = (detailText as NSString).range(of: unitName)
         let attributedString = NSMutableAttributedString(string: detailText)
-        attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: SharedColors.purple, range: range)
+        attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: SharedColors.darkGray, range: range)
         view.detailLabel.attributedText = attributedString
     }
 }

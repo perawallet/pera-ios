@@ -99,7 +99,7 @@ extension AssetDetail {
         if let name = assetName, !name.isEmptyOrBlank,
             let code = unitName, !code.isEmptyOrBlank {
             let nameText = name.attributed([.textColor(SharedColors.black), .font(font)])
-            let codeText = " (\(code.uppercased()))".attributed([.textColor(SharedColors.purple), .font(font)])
+            let codeText = " (\(code.uppercased()))".attributed([.textColor(SharedColors.darkGray), .font(font)])
             
             if shouldDisplayIndexWithName {
                 let indexText = " \(id)".attributed([.textColor(SharedColors.darkGray), .font(font)])
@@ -116,9 +116,9 @@ extension AssetDetail {
         } else if let code = unitName, !code.isEmptyOrBlank {
             if shouldDisplayIndexWithName {
                 let indexText = " \(id)".attributed([.textColor(SharedColors.darkGray), .font(font)])
-                return "(\(code.uppercased()))".attributed([.textColor(SharedColors.purple), .font(font)]) + indexText
+                return "(\(code.uppercased()))".attributed([.textColor(SharedColors.darkGray), .font(font)]) + indexText
             }
-            return "(\(code.uppercased()))".attributed([.textColor(SharedColors.purple), .font(font)])
+            return "(\(code.uppercased()))".attributed([.textColor(SharedColors.darkGray), .font(font)])
         } else {
             let unknownText = "title-unknown".localized.attributed([
                 .textColor(SharedColors.orange),

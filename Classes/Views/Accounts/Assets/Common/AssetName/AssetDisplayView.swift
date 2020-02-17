@@ -45,7 +45,7 @@ class AssetDisplayView: BaseView {
             .withLine(.single)
             .withAlignment(.center)
             .withFont(UIFont.font(.avenir, withWeight: .bold(size: 40.0)))
-            .withTextColor(SharedColors.purple)
+            .withTextColor(SharedColors.darkGray)
     }()
     
     private(set) lazy var assetNameLabel: UILabel = {

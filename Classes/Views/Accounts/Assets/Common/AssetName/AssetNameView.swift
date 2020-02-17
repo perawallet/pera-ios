@@ -23,7 +23,7 @@ class AssetNameView: BaseView {
     private(set) lazy var codeLabel: UILabel = {
         UILabel()
             .withFont(UIFont.font(.overpass, withWeight: .bold(size: 13.0)))
-            .withTextColor(SharedColors.purple)
+            .withTextColor(SharedColors.darkGray)
             .withLine(.single)
             .withAlignment(.left)
     }()
@@ -111,7 +111,7 @@ extension AssetNameView {
             nameLabel.textColor = SharedColors.orange
             nameLabel.font = UIFont.font(.overpass, withWeight: .boldItalic(size: 13.0))
         } else if secondDisplayName.isNilOrEmpty && assetDetail.assetName.isNilOrEmpty {
-            nameLabel.textColor = SharedColors.purple
+            nameLabel.textColor = SharedColors.darkGray
         }
         
         nameLabel.text = firstDisplayName
