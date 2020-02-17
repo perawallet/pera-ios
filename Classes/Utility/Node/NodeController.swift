@@ -1,5 +1,5 @@
 //
-//  NodeManager.swift
+//  NodeController.swift
 //  algorand
 //
 //  Created by Omer Emre Aslan on 18.04.2019.
@@ -8,9 +8,8 @@
 
 import Foundation
 
-class NodeManager {
+class NodeController {
     let api: API
-    
     let queue: OperationQueue
     
     init(api: API) {
@@ -21,9 +20,8 @@ class NodeManager {
     }
 }
 
-// MARK: - API
-extension NodeManager {
-    func checkNodes(completion: BoolHandler?) {
+extension NodeController {
+    func checkNodeHealth(completion: BoolHandler?) {
         let completionOperation = BlockOperation {
             completion?(false)
         }
@@ -34,28 +32,25 @@ extension NodeManager {
         queue.addOperation(completionOperation)
     }
     
-    fileprivate func localNodeOperation(completion: BoolHandler?) -> NodeHealthOperation {
+    private func localNodeOperation(completion: BoolHandler?) -> NodeHealthOperation {
         let address = Environment.current.serverApi
         let token = Environment.current.serverToken
-        
-        let localNodeHealthOperation = NodeHealthOperation(
-            address: address,
-            token: token,
-            api: api
-        )
+        let localNodeHealthOperation = NodeHealthOperation(address: address, token: token, api: api)
         
         localNodeHealthOperation.onCompleted = { isHealthy in
             if isHealthy {
-                self.api.cancelAllEndpoints()
-                
-                self.api.base = address
-                self.api.token = token
-                
-                completion?(true)
-                self.queue.cancelAllOperations()
+                self.setNewNode(with: address, and: token, then: completion)
             }
         }
         
         return localNodeHealthOperation
     }
+    
+    private func setNewNode(with address: String, and token: String, then completion: BoolHandler?) {
+         api.cancelAllEndpoints()
+         api.base = address
+         api.token = token
+         completion?(true)
+         queue.cancelAllOperations()
+     }
 }

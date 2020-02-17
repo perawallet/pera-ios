@@ -212,7 +212,7 @@ class AddNodeViewController: BaseScrollViewController {
         }
         
         SVProgressHUD.show(withStatus: "title-loading".localized)
-        api?.checkHealth(with: testDraft) { isValidated in
+        api?.checkNodeHealth(with: testDraft) { isValidated in
             SVProgressHUD.dismiss()
             
             if isValidated {
