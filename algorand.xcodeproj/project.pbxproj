@@ -728,6 +728,12 @@
 		2BDE9CDC224E2379007EFF30 /* TransactionHistoryContextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDE9CDB224E2379007EFF30 /* TransactionHistoryContextView.swift */; };
 		2BEE061623E03761004EBD6F /* SendTransactionPreviewViewController+Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEE061523E03760004EBD6F /* SendTransactionPreviewViewController+Keyboard.swift */; };
 		2BEE061723E03761004EBD6F /* SendTransactionPreviewViewController+Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEE061523E03760004EBD6F /* SendTransactionPreviewViewController+Keyboard.swift */; };
+		2BEE061A23E44B20004EBD6F /* TouchDetectingScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEE061923E44B20004EBD6F /* TouchDetectingScrollView.swift */; };
+		2BEE061B23E44B20004EBD6F /* TouchDetectingScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEE061923E44B20004EBD6F /* TouchDetectingScrollView.swift */; };
+		2BEE061D23E856F7004EBD6F /* AccountInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEE061C23E856F7004EBD6F /* AccountInformation.swift */; };
+		2BEE061E23E856F7004EBD6F /* AccountInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEE061C23E856F7004EBD6F /* AccountInformation.swift */; };
+		2BEE062123E8572E004EBD6F /* AccountStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEE062023E8572E004EBD6F /* AccountStatus.swift */; };
+		2BEE062223E8572E004EBD6F /* AccountStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEE062023E8572E004EBD6F /* AccountStatus.swift */; };
 		2BF34C992239AAD20052CAD3 /* UIViewController+Flow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF34C982239AAD20052CAD3 /* UIViewController+Flow.swift */; };
 		2BF34C9B2239AB130052CAD3 /* Screen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF34C9A2239AB130052CAD3 /* Screen.swift */; };
 		2BF34C9D2239AB530052CAD3 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF34C9C2239AB530052CAD3 /* Router.swift */; };
@@ -1126,6 +1132,9 @@
 		2BDE9CD9224E2336007EFF30 /* TransactionHistoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryCell.swift; sourceTree = "<group>"; };
 		2BDE9CDB224E2379007EFF30 /* TransactionHistoryContextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryContextView.swift; sourceTree = "<group>"; };
 		2BEE061523E03760004EBD6F /* SendTransactionPreviewViewController+Keyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SendTransactionPreviewViewController+Keyboard.swift"; sourceTree = "<group>"; };
+		2BEE061923E44B20004EBD6F /* TouchDetectingScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchDetectingScrollView.swift; sourceTree = "<group>"; };
+		2BEE061C23E856F7004EBD6F /* AccountInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountInformation.swift; sourceTree = "<group>"; };
+		2BEE062023E8572E004EBD6F /* AccountStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountStatus.swift; sourceTree = "<group>"; };
 		2BF34C982239AAD20052CAD3 /* UIViewController+Flow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Flow.swift"; sourceTree = "<group>"; };
 		2BF34C9A2239AB130052CAD3 /* Screen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Screen.swift; sourceTree = "<group>"; };
 		2BF34C9C2239AB530052CAD3 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
@@ -2048,12 +2057,12 @@
 		2B4DF439236C787600FF9551 /* Accounts */ = {
 			isa = PBXGroup;
 			children = (
+				2BEE061F23E8571F004EBD6F /* Account */,
 				2B46262823758CBB000AE73C /* Asset */,
 				2B4DF44D236C7E4B00FF9551 /* Conversion */,
 				2B4DF44E236C7E5200FF9551 /* Details */,
 				2B4DF448236C7D9E00FF9551 /* Reward */,
 				2B4DF441236C7B6000FF9551 /* Transaction */,
-				17B7D8A52240D8F900A6FF9E /* Account.swift */,
 			);
 			path = Accounts;
 			sourceTree = "<group>";
@@ -2787,6 +2796,7 @@
 		2B8BE4F2223935CA005D8565 /* Base */ = {
 			isa = PBXGroup;
 			children = (
+				2BEE061823E44B0E004EBD6F /* ScrollView */,
 				2B8954BF2244047D00D6D068 /* BaseInputView.swift */,
 				2B8BE4F3223935DA005D8565 /* BaseView.swift */,
 				2BF34CBB223A8C460052CAD3 /* BaseCollectionViewCell.swift */,
@@ -3520,6 +3530,24 @@
 			path = Cell;
 			sourceTree = "<group>";
 		};
+		2BEE061823E44B0E004EBD6F /* ScrollView */ = {
+			isa = PBXGroup;
+			children = (
+				2BEE061923E44B20004EBD6F /* TouchDetectingScrollView.swift */,
+			);
+			path = ScrollView;
+			sourceTree = "<group>";
+		};
+		2BEE061F23E8571F004EBD6F /* Account */ = {
+			isa = PBXGroup;
+			children = (
+				17B7D8A52240D8F900A6FF9E /* Account.swift */,
+				2BEE061C23E856F7004EBD6F /* AccountInformation.swift */,
+				2BEE062023E8572E004EBD6F /* AccountStatus.swift */,
+			);
+			path = Account;
+			sourceTree = "<group>";
+		};
 		2BF34C962239AA8C0052CAD3 /* Flow */ = {
 			isa = PBXGroup;
 			children = (
@@ -4159,6 +4187,7 @@
 				17BD4DFA2292F1260003E49A /* PassPhraseMnemonicView.swift in Sources */,
 				17BD4DFB2292F1260003E49A /* MultiLineInputField.swift in Sources */,
 				17BD4DFC2292F1260003E49A /* TabBarController.swift in Sources */,
+				2BEE062223E8572E004EBD6F /* AccountStatus.swift in Sources */,
 				2B79A14E23167CA300766021 /* RewardAmountContainerView.swift in Sources */,
 				17BD4DFD2292F1260003E49A /* UIApplication+Additions.swift in Sources */,
 				17BD4DFE2292F1260003E49A /* OptionsViewModel.swift in Sources */,
@@ -4236,6 +4265,7 @@
 				17BD4E372292F1260003E49A /* SettingsToggleContextView.swift in Sources */,
 				17BD4E382292F1260003E49A /* NumpadViewDataSource.swift in Sources */,
 				17BD4E3A2292F1260003E49A /* RequestTransactionView.swift in Sources */,
+				2BEE061E23E856F7004EBD6F /* AccountInformation.swift in Sources */,
 				2B7ABF69232BDE1C0050B64B /* Reward.swift in Sources */,
 				17BD4E3B2292F1260003E49A /* SettingsViewController.swift in Sources */,
 				17BD4E3C2292F1260003E49A /* IntroductionView.swift in Sources */,
@@ -4503,6 +4533,7 @@
 				2B4487212379649700C19FDE /* AssetAdditionViewController.swift in Sources */,
 				17BD4EFF2292F1260003E49A /* LocalAuthenticator.swift in Sources */,
 				17BD4F012292F1260003E49A /* NSAttributedString+Additions.swift in Sources */,
+				2BEE061B23E44B20004EBD6F /* TouchDetectingScrollView.swift in Sources */,
 				2BB6EE56239339D800CF7874 /* ContactAssetView.swift in Sources */,
 				17BD4F022292F1260003E49A /* DefaultAlertView.swift in Sources */,
 				17BD4F032292F1260003E49A /* SingleLineInputField.swift in Sources */,
@@ -4532,6 +4563,7 @@
 				2BF53176224AA50F00A7455F /* TabBarController.swift in Sources */,
 				2B8954BB2243FCFA00D6D068 /* UIApplication+Additions.swift in Sources */,
 				2B5DA9D1224CCC8400EE41B4 /* OptionsViewModel.swift in Sources */,
+				2BEE062123E8572E004EBD6F /* AccountStatus.swift in Sources */,
 				2B79A14723167BFC00766021 /* RewardDetailView.swift in Sources */,
 				2B8954C8224420B400D6D068 /* InputViewDelegate.swift in Sources */,
 				2B0D84FA2395D63100F0EAA7 /* SendAlgosTransactionPreviewViewController.swift in Sources */,
@@ -4609,6 +4641,7 @@
 				2BD73A0622412AC900B66EEF /* NumpadViewDataSource.swift in Sources */,
 				2B25BB4D225EAD700092C972 /* RequestTransactionView.swift in Sources */,
 				2BD5476A23182636007179FE /* RewardDetailViewModel.swift in Sources */,
+				2BEE061D23E856F7004EBD6F /* AccountInformation.swift in Sources */,
 				2BF5317C224AA89B00A7455F /* SettingsViewController.swift in Sources */,
 				2BD739D1223F97F600B66EEF /* IntroductionView.swift in Sources */,
 				179B93DA225E460500DD03E9 /* NodeSettingsHeaderView.swift in Sources */,
@@ -4876,6 +4909,7 @@
 				2B4487202379649700C19FDE /* AssetAdditionViewController.swift in Sources */,
 				2B6687152248DF83009F21E7 /* LocalAuthenticator.swift in Sources */,
 				2B8C127A2241970F00E34D37 /* NSAttributedString+Additions.swift in Sources */,
+				2BEE061A23E44B20004EBD6F /* TouchDetectingScrollView.swift in Sources */,
 				2BB6EE55239339D800CF7874 /* ContactAssetView.swift in Sources */,
 				2B8954AE2243D55200D6D068 /* DefaultAlertView.swift in Sources */,
 				2B8954C2224404B700D6D068 /* SingleLineInputField.swift in Sources */,

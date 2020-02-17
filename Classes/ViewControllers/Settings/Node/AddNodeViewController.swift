@@ -306,17 +306,18 @@ class AddNodeViewController: BaseScrollViewController {
                 }
         }
         
-        let viewController = AlertViewController(mode: .default,
-                                                 alertConfigurator: configurator,
-                                                 configuration: configuration)
-        viewController.modalPresentationStyle = .overCurrentContext
-        viewController.modalTransitionStyle = .crossDissolve
+        let viewController = open(
+            .alert(mode: .default, alertConfigurator: configurator),
+            by: .customPresentWithoutNavigationController(
+                presentationStyle: .overCurrentContext,
+                transitionStyle: .crossDissolve,
+                transitioningDelegate: nil
+            )
+        ) as? AlertViewController
         
-        if let alertView = viewController.alertView as? DefaultAlertView {
+        if let alertView = viewController?.alertView as? DefaultAlertView {
             alertView.doneButton.setTitleColor(SharedColors.darkGray, for: .normal)
         }
-        
-        tabBarController?.present(viewController, animated: true, completion: nil)
     }
 }
 

@@ -8,6 +8,6 @@
 
 import Magpie
 
-struct PendingTransactions: Model {
+class PendingTransactions: Model {
     var transactions: [Transaction]?
 }

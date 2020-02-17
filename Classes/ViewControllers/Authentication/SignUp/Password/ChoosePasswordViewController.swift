@@ -11,16 +11,12 @@ import AVFoundation
 import SVProgressHUD
 
 protocol ChoosePasswordViewControllerDelegate: class {
-    
     func choosePasswordViewController(_ choosePasswordViewController: ChoosePasswordViewController, didConfirmPassword isConfirmed: Bool)
 }
 
 class ChoosePasswordViewController: BaseViewController {
     
-    private lazy var choosePasswordView: ChoosePasswordView = {
-        let view = ChoosePasswordView()
-        return view
-    }()
+    private lazy var choosePasswordView = ChoosePasswordView()
     
     private let viewModel: ChoosePasswordViewModel
     private let mode: Mode
@@ -40,7 +36,6 @@ class ChoosePasswordViewController: BaseViewController {
             mode == .login else {
             return nil
         }
-        
         let manager = AccountManager(api: api)
         manager.user = user
         return manager
@@ -48,13 +43,10 @@ class ChoosePasswordViewController: BaseViewController {
     
     weak var delegate: ChoosePasswordViewControllerDelegate?
     
-    // MARK: Initialization
-    
     init(mode: Mode, route: Screen?, configuration: ViewControllerConfiguration) {
         self.mode = mode
         self.route = route
         self.viewModel = ChoosePasswordViewModel(mode: mode)
-        
         super.init(configuration: configuration)
     }
     
@@ -63,24 +55,19 @@ class ChoosePasswordViewController: BaseViewController {
         return true
     }
     
-    // MARK: Setup
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        if mode == .login {
-            if localAuthenticator.localAuthenticationStatus == .allowed {
-                localAuthenticator.authenticate { error in
-                    guard error == nil else {
-                        return
-                    }
-                    
-                    self.launchHome()
-                }
-            }
-            
-            return
-        }
+        checkLoginFlow()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.barTintColor = .white
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.navigationBar.barTintColor = SharedColors.warmWhite
     }
     
     override func configureNavigationBarAppearance() {
@@ -90,7 +77,6 @@ class ChoosePasswordViewController: BaseViewController {
             let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
                 self.dismissScreen()
             }
-            
             leftBarButtonItems = [closeBarButtonItem]
         default:
             break
@@ -100,8 +86,33 @@ class ChoosePasswordViewController: BaseViewController {
     override func configureAppearance() {
         super.configureAppearance()
         view.backgroundColor = .white
+        setTitle()
         viewModel.configure(choosePasswordView)
+    }
+    
+    override func prepareLayout() {
+        super.prepareLayout()
+        setupChoosePasswordViewLayout()
+    }
+    
+    override func linkInteractors() {
+        super.linkInteractors()
+        choosePasswordView.delegate = self
+    }
+}
+
+extension ChoosePasswordViewController {
+    private func setupChoosePasswordViewLayout() {
+        view.addSubview(choosePasswordView)
         
+        choosePasswordView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+    }
+}
+
+extension ChoosePasswordViewController {
+    private func setTitle() {
         switch mode {
         case .setup:
             title = "choose-password-title".localized
@@ -116,99 +127,26 @@ class ChoosePasswordViewController: BaseViewController {
         }
     }
     
-    override func prepareLayout() {
-        super.prepareLayout()
-        
-        view.addSubview(choosePasswordView)
-        
-        choosePasswordView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
-    }
-    
-    override func linkInteractors() {
-        super.linkInteractors()
-        
-        choosePasswordView.delegate = self
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationController?.navigationBar.barTintColor = .white
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        navigationController?.navigationBar.barTintColor = SharedColors.warmWhite
-    }
-}
-
-extension ChoosePasswordViewController: ChoosePasswordViewDelegate {
-    
-    func choosePasswordView(_ choosePasswordView: ChoosePasswordView, didSelect value: NumpadValue) {
-        switch mode {
-        case .setup:
-            viewModel.configureSelection(in: choosePasswordView, for: value) { password in
-                open(.choosePassword(mode: .verify(password), route: nil), by: .push)
-            }
-        case let .verify(previousPassword):
-            viewModel.configureSelection(in: choosePasswordView, for: value) { password in
-                if password != previousPassword {
-                    displaySimpleAlertWith(title: "password-verify-fail-title".localized, message: "password-verify-fail-message".localized)
-                    self.viewModel.reset(choosePasswordView)
-                    return
-                }
-                
-                self.configuration.session?.saveApp(password: password)
-                
-                open(.localAuthenticationPreference, by: .push)
-            }
-        case .login:
-            viewModel.configureSelection(in: choosePasswordView, for: value) { password in
-                if session?.isPasswordMatching(with: password) ?? false {
-                    choosePasswordView.numpadView.isUserInteractionEnabled = false
-                    
+    private func checkLoginFlow() {
+        if mode == .login {
+            if localAuthenticator.localAuthenticationStatus == .allowed {
+                localAuthenticator.authenticate { error in
+                    guard error == nil else {
+                        return
+                    }
                     self.launchHome()
-                } else {
-                    AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
-                    self.viewModel.displayWrongPasswordState(choosePasswordView)
                 }
             }
-            
-        case .resetPassword:
-            viewModel.configureSelection(in: choosePasswordView, for: value) { password in
-                open(.choosePassword(mode: .resetVerify(password), route: nil), by: .push)
-            }
-            
-        case let .resetVerify(previousPassword):
-            viewModel.configureSelection(in: choosePasswordView, for: value) { password in
-                if password != previousPassword {
-                    displaySimpleAlertWith(title: "password-verify-fail-title".localized, message: "password-verify-fail-message".localized)
-                    self.viewModel.reset(choosePasswordView)
-                    return
-                }
-                
-                self.configuration.session?.saveApp(password: password)
-                
-                dismissScreen()
-            }
-        case .confirm:
-            viewModel.configureSelection(in: choosePasswordView, for: value) { password in
-                dismissScreen()
-                
-                if session?.isPasswordMatching(with: password) ?? false {
-                    delegate?.choosePasswordViewController(self, didConfirmPassword: true)
-                } else {
-                    delegate?.choosePasswordViewController(self, didConfirmPassword: false)
-                }
-            }
+            return
         }
     }
     
-    func choosePasswordViewDidTapLogoutButton(_ choosePasswordView: ChoosePasswordView) {
-        let alertController = UIAlertController(title: "logout-warning-title".localized,
-                                                message: "logout-warning-message".localized,
-                                                preferredStyle: .alert)
+    private func presentLogoutAlert() {
+        let alertController = UIAlertController(
+            title: "logout-warning-title".localized,
+            message: "logout-warning-message".localized,
+            preferredStyle: .alert
+        )
         
         let cancelAction = UIAlertAction(title: "title-cancel-lowercased".localized, style: .cancel, handler: nil)
         alertController.addAction(cancelAction)
@@ -216,27 +154,27 @@ extension ChoosePasswordViewController: ChoosePasswordViewDelegate {
         let deleteAction = UIAlertAction(
             title: "logout-action-delete-title".localized,
             style: .destructive) { _ in
-                self.session?.reset()
-                self.pushNotificationController.revokeDevice()
-                
-                self.open(.introduction(mode: .initialize), by: .launch, animated: false)
+                self.logout()
         }
         alertController.addAction(deleteAction)
         
         present(alertController, animated: true)
     }
     
-    fileprivate func launchHome() {
+    private func logout() {
+        session?.reset()
+        pushNotificationController.revokeDevice()
+        open(.introduction(mode: .initialize), by: .launch, animated: false)
+    }
+    
+    private func launchHome() {
         SVProgressHUD.show(withStatus: "title-loading".localized)
-        
-        self.accountManager?.fetchAllAccounts(isVerifiedAssetsIncluded: true) {
-            
+        accountManager?.fetchAllAccounts(isVerifiedAssetsIncluded: true) {
             DispatchQueue.main.async {
                 UIApplication.shared.rootViewController()?.tabBarViewController.route = self.route
             }
             
             SVProgressHUD.showSuccess(withStatus: "title-done-lowercased".localized)
-            
             SVProgressHUD.dismiss(withDelay: 1.0) {
                 DispatchQueue.main.async {
                     self.dismiss(animated: false) {
@@ -248,8 +186,91 @@ extension ChoosePasswordViewController: ChoosePasswordViewDelegate {
     }
 }
 
-extension ChoosePasswordViewController {
+extension ChoosePasswordViewController: ChoosePasswordViewDelegate {
+    func choosePasswordView(_ choosePasswordView: ChoosePasswordView, didSelect value: NumpadValue) {
+        switch mode {
+        case .setup:
+            openVerifyPassword(with: value)
+        case let .verify(previousPassword):
+            verifyPassword(with: value, and: previousPassword)
+        case .login:
+            login(with: value)
+        case .resetPassword:
+            openResetVerify(with: value)
+        case let .resetVerify(previousPassword):
+            verifyResettedPassword(with: value, and: previousPassword)
+        case .confirm:
+            confirmPassword(with: value)
+        }
+    }
     
+    func choosePasswordViewDidTapLogoutButton(_ choosePasswordView: ChoosePasswordView) {
+        presentLogoutAlert()
+    }
+}
+
+extension ChoosePasswordViewController {
+    private func openVerifyPassword(with value: NumpadValue) {
+        viewModel.configureSelection(in: choosePasswordView, for: value) { password in
+            open(.choosePassword(mode: .verify(password), route: nil), by: .push)
+        }
+    }
+    
+    private func verifyPassword(with value: NumpadValue, and previousPassword: String) {
+        viewModel.configureSelection(in: choosePasswordView, for: value) { password in
+            if password != previousPassword {
+                displaySimpleAlertWith(title: "password-verify-fail-title".localized, message: "password-verify-fail-message".localized)
+                viewModel.reset(choosePasswordView)
+                return
+            }
+            configuration.session?.savePassword(password)
+            open(.localAuthenticationPreference, by: .push)
+        }
+    }
+
+    private func login(with value: NumpadValue) {
+        viewModel.configureSelection(in: choosePasswordView, for: value) { password in
+            if session?.isPasswordMatching(with: password) ?? false {
+                choosePasswordView.numpadView.isUserInteractionEnabled = false
+                launchHome()
+            } else {
+                AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
+                viewModel.displayWrongPasswordState(choosePasswordView)
+            }
+        }
+    }
+    
+    private func openResetVerify(with value: NumpadValue) {
+        viewModel.configureSelection(in: choosePasswordView, for: value) { password in
+            open(.choosePassword(mode: .resetVerify(password), route: nil), by: .push)
+        }
+    }
+    
+    private func verifyResettedPassword(with value: NumpadValue, and previousPassword: String) {
+        viewModel.configureSelection(in: choosePasswordView, for: value) { password in
+            if password != previousPassword {
+                displaySimpleAlertWith(title: "password-verify-fail-title".localized, message: "password-verify-fail-message".localized)
+                self.viewModel.reset(choosePasswordView)
+                return
+            }
+            configuration.session?.savePassword(password)
+            dismissScreen()
+        }
+    }
+    
+    private func confirmPassword(with value: NumpadValue) {
+        viewModel.configureSelection(in: choosePasswordView, for: value) { password in
+            dismissScreen()
+            if session?.isPasswordMatching(with: password) ?? false {
+                delegate?.choosePasswordViewController(self, didConfirmPassword: true)
+            } else {
+                delegate?.choosePasswordViewController(self, didConfirmPassword: false)
+            }
+        }
+    }
+}
+
+extension ChoosePasswordViewController {
     enum Mode: Equatable {
         case setup
         case verify(String)

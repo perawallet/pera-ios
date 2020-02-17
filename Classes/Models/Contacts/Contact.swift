@@ -32,10 +32,8 @@ public final class Contact: NSManagedObject, Model {
         self.name = try container.decodeIfPresent(String.self, forKey: .name)
     }
     
-    // MARK: - Encodable
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        
         try container.encode(identifier, forKey: .identifier)
         try container.encode(address, forKey: .address)
         try container.encode(image, forKey: .image)
@@ -56,17 +54,10 @@ extension Contact {
     }
 }
 
-// MARK: Codable
-
-extension Contact: Encodable {
-}
+extension Contact: Encodable { }
 
 extension Contact {
-    
     static let entityName = "Contact"
 }
 
-// MARK: DBStorable
-
-extension Contact: DBStorable {
-}
+extension Contact: DBStorable { }

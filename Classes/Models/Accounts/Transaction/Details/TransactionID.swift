@@ -8,8 +8,12 @@
 
 import Magpie
 
-struct TransactionID: Model {
+class TransactionID: Model {
     let identifier: String
+    
+    init(identifier: String) {
+        self.identifier = identifier
+    }
 }
 
 extension TransactionID {

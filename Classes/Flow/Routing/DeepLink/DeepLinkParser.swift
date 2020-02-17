@@ -33,13 +33,13 @@ struct DeepLinkParser {
             }
         case .assetRequest:
             guard let assetId = qrText.asset,
-                let user = UIApplication.shared.appConfiguration?.session.authenticatedUser else {
+                let userAccounts = UIApplication.shared.appConfiguration?.session.accounts else {
                 return nil
             }
             
             var requestedAssetDetail: AssetDetail?
             
-            for account in user.accounts {
+            for account in userAccounts {
                 for assetDetail in account.assetDetails where assetDetail.id == assetId {
                     requestedAssetDetail = assetDetail
                 }

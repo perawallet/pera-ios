@@ -28,12 +28,13 @@ class NavigationController: UINavigationController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         configureAppearance()
         linkInteractors()
     }
-    
-    func configureAppearance() {
+}
+
+extension NavigationController {
+    private func configureAppearance() {
         configureNavigationBarAppearance()
         configureViewAppearance()
     }
@@ -44,15 +45,16 @@ class NavigationController: UINavigationController {
         navigationBar.tintColor = SharedColors.warmWhite
         navigationBar.shadowImage = UIImage()
         navigationBar.layoutMargins = .zero
-        
         navigationBar.setBackgroundImage(UIImage(), for: .default)
     }
     
     private func configureViewAppearance() {
         view.backgroundColor = SharedColors.warmWhite
     }
-    
-    func linkInteractors() {
+}
+
+extension NavigationController {
+    private func linkInteractors() {
         delegate = self
         interactivePopGestureRecognizer?.delegate = self
     }

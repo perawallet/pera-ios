@@ -11,12 +11,6 @@ import CoreData
 
 @objc(ApplicationConfiguration)
 public final class ApplicationConfiguration: NSManagedObject {
-    enum DBKeys: String {
-        case password = "password"
-        case userData = "authenticatedUserData"
-        case isDefaultNodeActive = "isDefaultNodeActive"
-    }
-    
     @NSManaged public var password: String?
     @NSManaged public var authenticatedUserData: Data?
     @NSManaged public var isDefaultNodeActive: Bool
@@ -25,8 +19,15 @@ public final class ApplicationConfiguration: NSManagedObject {
         guard let data = authenticatedUserData else {
             return nil
         }
-        
         return try? JSONDecoder().decode(User.self, from: data)
+    }
+}
+
+extension ApplicationConfiguration {
+    enum DBKeys: String {
+        case password = "password"
+        case userData = "authenticatedUserData"
+        case isDefaultNodeActive = "isDefaultNodeActive"
     }
 }
 
@@ -34,5 +35,4 @@ extension ApplicationConfiguration {
     static let entityName = "ApplicationConfiguration"
 }
 
-extension ApplicationConfiguration: DBStorable {
-}
+extension ApplicationConfiguration: DBStorable { }

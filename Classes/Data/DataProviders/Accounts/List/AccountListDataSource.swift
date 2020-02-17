@@ -19,22 +19,22 @@ class AccountListDataSource: NSObject, UICollectionViewDataSource {
         self.mode = mode
         super.init()
         
-        guard let user = UIApplication.shared.appConfiguration?.session.authenticatedUser else {
+        guard let userAccounts = UIApplication.shared.appConfiguration?.session.accounts else {
             return
         }
         
         switch mode {
         case .assetCount:
-            accounts.append(contentsOf: user.accounts)
+            accounts.append(contentsOf: userAccounts)
         case let .transactionReceiver(assetDetail),
              let .transactionSender(assetDetail),
              let .contact(assetDetail):
             guard let assetDetail = assetDetail else {
-                accounts.append(contentsOf: user.accounts)
+                accounts.append(contentsOf: userAccounts)
                 return
             }
             
-            let filteredAccounts = user.accounts.filter { account -> Bool in
+            let filteredAccounts = userAccounts.filter { account -> Bool in
                 account.assetDetails.contains { detail -> Bool in
                      assetDetail.id == detail.id
                 }

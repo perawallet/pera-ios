@@ -47,7 +47,7 @@ class SettingsViewController: BaseViewController {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(didApplicationEnterForeground),
-            name: Notification.Name.ApplicationWillEnterForeground,
+            name: .ApplicationWillEnterForeground,
             object: nil
         )
     }

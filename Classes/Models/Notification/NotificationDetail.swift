@@ -8,7 +8,7 @@
 
 import Magpie
 
-struct NotificationDetail: Model {
+class NotificationDetail: Model {
     let senderAddress: String?
     let receiverAddress: String?
     let amount: Int64?

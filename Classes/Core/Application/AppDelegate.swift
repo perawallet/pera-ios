@@ -147,12 +147,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         guard let rootViewController = rootViewController else {
             return
         }
-        
-        NotificationCenter.default.post(
-            name: Notification.Name.ApplicationWillEnterForeground,
-            object: self,
-            userInfo: nil
-        )
+        NotificationCenter.default.post(name: .ApplicationWillEnterForeground, object: self, userInfo: nil)
         
         if shouldInvalidateUserSession {
             shouldInvalidateUserSession = false

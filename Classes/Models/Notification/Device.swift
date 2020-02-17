@@ -8,7 +8,7 @@
 
 import Magpie
 
-struct Device: Model {
+class Device: Model {
     let pushToken: String?
     let platform: String
     let model: String

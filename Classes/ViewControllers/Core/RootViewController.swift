@@ -94,7 +94,7 @@ class RootViewController: UIViewController {
     }
     
     func openAsset(from notification: NotificationDetail, for account: String) {
-        guard let account = appConfiguration.session.authenticatedUser?.account(address: account) else {
+        guard let account = appConfiguration.session.account(from: account) else {
             return
         }
         

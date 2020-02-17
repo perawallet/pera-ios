@@ -96,37 +96,38 @@ extension AccountsViewController: OptionsViewControllerDelegate {
             image: img("remove-account-alert-icon"),
             explanation: "options-remove-alert-explanation".localized,
             actionTitle: "title-remove".localized) {
-
                 guard let user = self.session?.authenticatedUser,
-                    let account = self.selectedAccount else {
+                    let account = self.selectedAccount,
+                    let accountInformation = self.session?.accountInformation(from: account.address) else {
                         return
                 }
-
-                user.removeAccount(account)
+                
+                user.removeAccount(accountInformation)
 
                 guard !user.accounts.isEmpty else {
                     self.session?.reset()
-
                     self.tabBarController?.open(.introduction(mode: .initialize), by: .launch, animated: false)
-
                     return
                 }
 
                 self.session?.authenticatedUser = user
         }
+        
+        let viewController = tabBarController?.open(
+            .alert(mode: .destructive, alertConfigurator: configurator),
+            by: .customPresentWithoutNavigationController(
+                presentationStyle: .overCurrentContext,
+                transitionStyle: .crossDissolve,
+                transitioningDelegate: nil
+            )
+        ) as? AlertViewController
 
-        let viewController = AlertViewController(mode: .destructive, alertConfigurator: configurator, configuration: configuration)
-        viewController.modalPresentationStyle = .overCurrentContext
-        viewController.modalTransitionStyle = .crossDissolve
-
-        if let alertView = viewController.alertView as? DestructiveAlertView {
+        if let alertView = viewController?.alertView as? DestructiveAlertView {
             alertView.cancelButton.setTitleColor(.white, for: .normal)
             alertView.cancelButton.setBackgroundImage(img("bg-black-cancel"), for: .normal)
             alertView.actionButton.setTitleColor(.white, for: .normal)
             alertView.actionButton.setBackgroundImage(img("bg-orange-action"), for: .normal)
         }
-
-        tabBarController?.present(viewController, animated: true, completion: nil)
     }
 }
 

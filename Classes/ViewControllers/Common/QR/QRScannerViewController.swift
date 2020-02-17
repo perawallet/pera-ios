@@ -15,21 +15,13 @@ enum QRScannerError: Error {
 }
 
 protocol QRScannerViewControllerDelegate: class {
-    
     func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, then handler: EmptyHandler?)
     func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError, then handler: EmptyHandler?)
 }
 
 class QRScannerViewController: BaseViewController {
     
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let bottomInset: CGFloat = 20.0
-        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
-    }
-    
     private let layout = Layout<LayoutConstants>()
-    
-    // MARK: Configuration
     
     override var prefersStatusBarHidden: Bool {
         return true
@@ -43,18 +35,13 @@ class QRScannerViewController: BaseViewController {
         return true
     }
     
-    // MARK: Components
-    
     private(set) lazy var cancelButton: MainButton = {
         let button = MainButton(title: "title-close".localized)
         button.setBackgroundImage(img("bg-black-button-big"), for: .normal)
         return button
     }()
     
-    private(set) lazy var overlayView: QRScannerOverlayView = {
-        let view = QRScannerOverlayView()
-        return view
-    }()
+    private(set) lazy var overlayView = QRScannerOverlayView()
     
     weak var delegate: QRScannerViewControllerDelegate?
     
@@ -72,31 +59,47 @@ class QRScannerViewController: BaseViewController {
     
     override init(configuration: ViewControllerConfiguration) {
         super.init(configuration: configuration)
-        
         hidesBottomBarWhenPushed = true
     }
     
-    // MARK: Setup
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if captureSession?.isRunning == false {
+            captureSessionQueue.async {
+                self.captureSession?.startRunning()
+            }
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        if captureSession?.isRunning == true {
+            captureSessionQueue.async {
+                self.captureSession?.stopRunning()
+            }
+        }
+    }
     
     override func configureAppearance() {
         super.configureAppearance()
-        
         title = "qr-scan-title".localized
     }
     
     override func setListeners() {
         super.setListeners()
-        
         cancelButton.addTarget(self, action: #selector(didTapCancelButton), for: .touchUpInside)
     }
     
     override func prepareLayout() {
         super.prepareLayout()
-        
         setupCancelButtonLayout()
         configureScannerView()
     }
-    
+}
+
+extension QRScannerViewController {
     private func setupCancelButtonLayout() {
         view.addSubview(cancelButton)
         
@@ -126,7 +129,9 @@ class QRScannerViewController: BaseViewController {
             }
         }
     }
-    
+}
+
+extension QRScannerViewController {
     private func setupCaptureSession() {
         captureSession = AVCaptureSession()
         
@@ -184,7 +189,6 @@ class QRScannerViewController: BaseViewController {
     
     private func handleFailedState() {
         captureSession = nil
-        
         displaySimpleAlertWith(title: "qr-scan-error-title".localized, message: "qr-scan-error-message".localized)
     }
     
@@ -216,41 +220,16 @@ class QRScannerViewController: BaseViewController {
             captureSession.startRunning()
         }
     }
-    
-    // MARK: View Lifecycle
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        if captureSession?.isRunning == false {
-            captureSessionQueue.async {
-                self.captureSession?.startRunning()
-            }
-        }
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        if captureSession?.isRunning == true {
-            captureSessionQueue.async {
-                self.captureSession?.stopRunning()
-            }
-        }
-    }
-    
-    // MARK: Actions
-    
+}
+
+extension QRScannerViewController {
     @objc
     private func didTapCancelButton() {
         closeScreen(by: .pop)
     }
 }
 
-// MARK: AVCaptureMetadataOutputObjectsDelegate
-
 extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
-    
     func metadataOutput(
         _ output: AVCaptureMetadataOutput,
         didOutput metadataObjects: [AVMetadataObject],
@@ -289,5 +268,12 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
                 return
             }
         }
+    }
+}
+
+extension QRScannerViewController {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let bottomInset: CGFloat = 20.0
+        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
     }
 }

@@ -8,7 +8,7 @@
 
 import Magpie
 
-struct AlgorandError: Model & Encodable {
+class AlgorandError: Model & Encodable {
     let type: String
     let message: String?
 }

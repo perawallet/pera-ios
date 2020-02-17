@@ -10,16 +10,20 @@ import UIKit
 
 class IntroductionViewController: BaseViewController {
     
-    // MARK: Components
-
-    private lazy var introductionView: IntroductionView = {
-        let view = IntroductionView(mode: self.mode)
-        return view
-    }()
+    private lazy var introductionView = IntroductionView(mode: self.mode)
     
     var mode: AccountSetupMode = .initialize
     
-    // MARK: Setup
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        view.backgroundColor = .white
+        navigationController?.navigationBar.barTintColor = .white
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.navigationBar.barTintColor = SharedColors.warmWhite
+    }
     
     override func configureAppearance() {
         super.configureAppearance()
@@ -30,19 +34,17 @@ class IntroductionViewController: BaseViewController {
         }
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        view.backgroundColor = .white
-        navigationController?.navigationBar.barTintColor = .white
-    }
-    
     override func prepareLayout() {
         super.prepareLayout()
-        
         setupIntroducitionViewLayout()
     }
     
+    override func linkInteractors() {
+        introductionView.delegate = self
+    }
+}
+
+extension IntroductionViewController {
     private func setupIntroducitionViewLayout() {
         view.addSubview(introductionView)
         
@@ -50,18 +52,7 @@ class IntroductionViewController: BaseViewController {
             make.edges.equalToSuperview()
         }
     }
-    
-    override func linkInteractors() {
-        introductionView.delegate = self
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        navigationController?.navigationBar.barTintColor = SharedColors.warmWhite
-    }
 }
-
-// MARK: IntroductionViewDelegate
 
 extension IntroductionViewController: IntroductionViewDelegate {
     func introductionViewDidTapCloseButton(_ introductionView: IntroductionView) {

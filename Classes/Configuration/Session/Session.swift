@@ -26,33 +26,27 @@ class Session: Storable {
         get {
             return applicationConfiguration?.authenticatedUser()
         }
-        
         set {
             guard let userData = newValue?.encoded() else {
                 return
             }
             
             if let config = applicationConfiguration {
-                config.update(entity: ApplicationConfiguration.entityName,
-                              with: [ApplicationConfiguration.DBKeys.userData.rawValue: userData])
+                config.update(
+                    entity: ApplicationConfiguration.entityName,
+                    with: [ApplicationConfiguration.DBKeys.userData.rawValue: userData]
+                )
             } else {
-                ApplicationConfiguration.create(entity: ApplicationConfiguration.entityName,
-                                                with: [ApplicationConfiguration.DBKeys.userData.rawValue: userData])
+                ApplicationConfiguration.create(
+                    entity: ApplicationConfiguration.entityName,
+                    with: [ApplicationConfiguration.DBKeys.userData.rawValue: userData]
+                )
             }
             
             Cache.configuration = nil
             Cache.configuration = applicationConfiguration
-            
-            NotificationCenter.default.post(
-                name: Notification.Name.AuthenticatedUserUpdate,
-                object: self,
-                userInfo: nil
-            )
+            NotificationCenter.default.post(name: .AuthenticatedUserUpdate, object: self, userInfo: nil)
         }
-    }
-    
-    enum Cache {
-        static var configuration: ApplicationConfiguration?
     }
     
     var applicationConfiguration: ApplicationConfiguration? {
@@ -72,9 +66,7 @@ class Session: Storable {
                     }
                     
                     Cache.configuration = configuration
-                    
                     return Cache.configuration
-                    
                 case .results(let objects):
                     guard let configuration = objects.first(where: { appConfig -> Bool in
                         if appConfig is ApplicationConfiguration {
@@ -86,16 +78,13 @@ class Session: Storable {
                     }
                     
                     Cache.configuration = configuration
-                    
                     return Cache.configuration
                 case .error:
                     return nil
                 }
             }
-            
             return Cache.configuration
         }
-        
         set {
             Cache.configuration = newValue
         }
@@ -107,10 +96,8 @@ class Session: Storable {
                 let rewardDisplayPreference = RewardPreference(rawValue: rewardPreference) else {
                     return .allowed
             }
-            
             return rewardDisplayPreference
         }
-        
         set {
             self.save(newValue.rawValue, for: rewardsPrefenceKey, to: .defaults)
         }
@@ -120,6 +107,8 @@ class Session: Storable {
     var isValid = false
     
     var verifiedAssets: [VerifiedAsset]?
+    
+    var accounts = [Account]()
 }
 
 extension Session {
@@ -129,15 +118,15 @@ extension Session {
     }
 }
 
-// MARK: - App Password
 extension Session {
-    func saveApp(password: String) {
+    func savePassword(_ password: String) {
         if let config = applicationConfiguration {
-            config.update(entity: ApplicationConfiguration.entityName,
-                          with: [ApplicationConfiguration.DBKeys.password.rawValue: password])
+            config.update(entity: ApplicationConfiguration.entityName, with: [ApplicationConfiguration.DBKeys.password.rawValue: password])
         } else {
-            ApplicationConfiguration.create(entity: ApplicationConfiguration.entityName,
-                                            with: [ApplicationConfiguration.DBKeys.password.rawValue: password])
+            ApplicationConfiguration.create(
+                entity: ApplicationConfiguration.entityName,
+                with: [ApplicationConfiguration.DBKeys.password.rawValue: password]
+            )
         }
     }
     
@@ -145,7 +134,6 @@ extension Session {
         guard let config = applicationConfiguration else {
             return false
         }
-
         return config.password == password
     }
     
@@ -153,7 +141,6 @@ extension Session {
         guard let config = applicationConfiguration else {
             return false
         }
-        
         return config.password != nil
     }
     
@@ -161,27 +148,80 @@ extension Session {
         guard let config = applicationConfiguration else {
             return true
         }
-        
         return config.isDefaultNodeActive
     }
     
     func setDefaultNodeActive(_ isActive: Bool) {
         if let config = applicationConfiguration {
-            config.update(entity: ApplicationConfiguration.entityName,
-                          with: [ApplicationConfiguration.DBKeys.isDefaultNodeActive.rawValue: NSNumber(value: isActive)])
+            config.update(
+                entity: ApplicationConfiguration.entityName,
+                with: [ApplicationConfiguration.DBKeys.isDefaultNodeActive.rawValue: NSNumber(value: isActive)]
+            )
         }
+    }
+    
+    func updateName(_ name: String, for accountAddress: String) {
+        guard let accountInformation = authenticatedUser?.account(address: accountAddress) else {
+            return
+        }
+        accountInformation.updateName(name)
+        authenticatedUser?.updateAccount(accountInformation)
+        
+        guard let account = account(from: accountAddress),
+            let index = index(of: account) else {
+            return
+        }
+        
+        account.name = name
+        accounts[index] = account
     }
 }
 
-// MARK: - Setting Private Key in Keychain
 extension Session {
-    func savePrivate(_ data: Data,
-                     forAccount account: String) {
+    func account(from accountInformation: AccountInformation) -> Account? {
+        return accounts.first { account -> Bool in
+            account.address == accountInformation.address
+        }
+    }
+    
+    func account(from address: String) -> Account? {
+        return accounts.first { account -> Bool in
+            account.address == address
+        }
+    }
+    
+    func accountInformation(from address: String) -> AccountInformation? {
+        return applicationConfiguration?.authenticatedUser()?.accounts.first { account -> Bool in
+            account.address == address
+        }
+    }
+    
+    func index(of account: Account) -> Int? {
+        guard let index = accounts.firstIndex(of: account) else {
+            return nil
+        }
+        return index
+    }
+    
+    func addAccount(_ account: Account) {
+        guard let index = index(of: account) else {
+            accounts.append(account)
+            NotificationCenter.default.post(name: .AccountUpdate, object: self, userInfo: ["account": account])
+            return
+        }
+        
+        accounts[index].update(with: account)
+        NotificationCenter.default.post(name: .AccountUpdate, object: self, userInfo: ["account": accounts[index]])
+    }
+}
+
+extension Session {
+    func savePrivate(_ data: Data, for account: String) {
         let dataKey = privateKey.appending(".\(account)")
         privateStorage.set(data, for: dataKey)
     }
     
-    func privateData(forAccount account: String) -> Data? {
+    func privateData(for account: String) -> Data? {
         let dataKey = privateKey.appending(".\(account)")
         return privateStorage.data(for: dataKey)
     }
@@ -192,7 +232,6 @@ extension Session {
     }
 }
 
-// MARK: - Common Methods
 extension Session {
     func reset() {
         applicationConfiguration = nil
@@ -207,5 +246,11 @@ extension Session {
         DispatchQueue.main.async {
             UIApplication.shared.appDelegate?.invalidateAccountManagerFetchPolling()
         }
+    }
+}
+
+extension Session {
+    private enum Cache {
+        static var configuration: ApplicationConfiguration?
     }
 }

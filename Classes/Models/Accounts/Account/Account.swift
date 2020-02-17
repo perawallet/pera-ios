@@ -8,15 +8,6 @@
 
 import Magpie
 
-enum AccountStatus: String, Model {
-    case offline = "Offline"
-    case online = "Online"
-    case notParticipating = "NotParticipating"
-}
-
-extension AccountStatus: Encodable {
-}
-
 class Account: Model {
     let address: String
     var amount: UInt64
@@ -49,14 +40,11 @@ class Account: Model {
         self.address = address
         amount = 0
         status = .offline
-        rewards = 0
-        pendingRewards = 0
-        participation = nil
-        totalAssets = nil
-        assets = nil
     }
-    
-    func update(withAccount account: Account) {
+}
+
+extension Account {
+    func update(with account: Account) {
         amount = account.amount
         status = account.status
         rewards = account.rewards
@@ -131,10 +119,8 @@ extension Account {
     }
 }
 
-extension Account: Encodable {
-}
+extension Account: Encodable { }
 
-// MARK: - Equatable
 extension Account: Equatable {
     static func == (lhs: Account, rhs: Account) -> Bool {
         return lhs.address == rhs.address
