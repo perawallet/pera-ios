@@ -95,7 +95,7 @@ extension UIApplication {
         from viewController: UIViewController,
         by style: Screen.Transition.Open,
         animated: Bool = true,
-        then completion: ScreenTransitionCompletion? = nil
+        then completion: EmptyHandler? = nil
     ) -> T? {
         
         guard let rootViewController = rootViewController() else {

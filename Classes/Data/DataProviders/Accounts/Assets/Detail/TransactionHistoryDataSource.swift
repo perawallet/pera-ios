@@ -57,7 +57,7 @@ class TransactionHistoryDataSource: NSObject, UICollectionViewDataSource {
                     case .pending:
                         return dequeuePendingCell(in: collectionView, with: transaction, at: indexPath)
                     case .failed:
-                        fatalError("Index path is out of bounds")
+                        return dequeueHistoryCell(in: collectionView, with: transaction, at: indexPath)
                     }
                 } else {
                     return dequeueHistoryCell(in: collectionView, with: transaction, at: indexPath)

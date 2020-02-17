@@ -285,10 +285,17 @@ extension ContactInfoViewController: AccountListViewControllerDelegate {
     func accountListViewController(_ viewController: AccountListViewController, didSelectAccount account: Account) {
         if let assetDetail = selectedAsset {
             selectedAsset = nil
-            open(.sendAssetTransactionPreview(account: account, receiver: .contact(contact), assetDetail: assetDetail), by: .push)
+            open(
+                .sendAssetTransactionPreview(
+                    account: account,
+                    receiver: .contact(contact),
+                    assetDetail: assetDetail,
+                    isMaxTransaction: false
+                ),
+                by: .push
+            )
         } else {
             open(.sendAlgosTransactionPreview(account: account, receiver: .contact(contact)), by: .push)
         }
-        
     }
 }

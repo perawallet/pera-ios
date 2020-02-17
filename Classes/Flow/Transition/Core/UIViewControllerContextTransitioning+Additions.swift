@@ -9,7 +9,6 @@
 import UIKit
 
 extension UIViewControllerContextTransitioning {
-    
     var fromViewController: UIViewController? {
         return viewController(forKey: .from)
     }

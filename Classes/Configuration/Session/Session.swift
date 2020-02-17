@@ -16,6 +16,8 @@ class Session: Storable {
     private let privateKey = "com.algorand.algorand.token.private.key"
     private let rewardsPrefenceKey = "com.algorand.algorand.rewards.preference"
     
+    let algorandSDK = AlgorandSDK()
+    
     private var privateStorage: KeychainAccess.Keychain {
         return KeychainAccess.Keychain(service: privateStorageKey).accessibility(.whenUnlocked)
     }

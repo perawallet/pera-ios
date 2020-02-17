@@ -10,18 +10,6 @@ import Foundation
 
 class AsyncOperation: Operation {
     
-    enum State: String {
-        case ready = "Ready"
-        case executing = "Executing"
-        case finished = "Finished"
-        
-        fileprivate var keyPath: String {
-            return "is" + rawValue
-        }
-    }
-    
-    // MARK: Variables
-    
     var state = State.ready {
         willSet {
             willChangeValue(forKey: newValue.keyPath)
@@ -33,8 +21,6 @@ class AsyncOperation: Operation {
             didChangeValue(forKey: state.keyPath)
         }
     }
-    
-    // MARK: Operation
     
     override var isReady: Bool {
         return super.isReady && state == .ready
@@ -55,7 +41,6 @@ class AsyncOperation: Operation {
     override func start() {
         if isCancelled {
             state = .finished
-            
             return
         }
         
@@ -68,6 +53,18 @@ class AsyncOperation: Operation {
         
         if state == .executing {
             state = .finished
+        }
+    }
+}
+
+extension AsyncOperation {
+    enum State: String {
+        case ready = "Ready"
+        case executing = "Executing"
+        case finished = "Finished"
+
+        fileprivate var keyPath: String {
+            return "is" + rawValue
         }
     }
 }

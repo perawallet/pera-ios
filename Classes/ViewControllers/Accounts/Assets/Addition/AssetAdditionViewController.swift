@@ -57,7 +57,7 @@ class AssetAdditionViewController: BaseViewController {
         assetAdditionView.assetInputView.delegate = self
         assetAdditionView.assetsCollectionView.delegate = self
         assetAdditionView.assetsCollectionView.dataSource = self
-        transactionManager?.delegate = self
+        transactionController?.delegate = self
     }
     
     override func prepareLayout() {
@@ -203,14 +203,14 @@ extension AssetAdditionViewController: AssetActionConfirmationViewControllerDele
             return
         }
         
-        let assetTransactionDraft = AssetTransactionDraft(fromAccount: account, recipient: nil, amount: nil, assetIndex: id)
-        transactionManager?.setAssetTransactionDraft(assetTransactionDraft)
-        transactionManager?.composeAssetAdditionTransactionData(for: account)
+        let assetTransactionDraft = AssetTransactionSendDraft(from: account, assetIndex: id)
+        transactionController?.setAssetTransactionDraft(assetTransactionDraft)
+        transactionController?.composeAssetTransactionData(transactionType: .assetAddition)
     }
 }
 
-extension AssetAdditionViewController: TransactionManagerDelegate {
-    func transactionManager(_ transactionManager: TransactionManager, didFailedComposing error: Error) {
+extension AssetAdditionViewController: TransactionControllerDelegate {
+    func transactionController(_ transactionController: TransactionController, didFailedComposing error: Error) {
         switch error {
         case let .custom(fee):
             guard let api = api,
@@ -229,9 +229,9 @@ extension AssetAdditionViewController: TransactionManagerDelegate {
         }
     }
     
-    func transactionManagerDidComposedAssetTransactionData(
-        _ transactionManager: TransactionManager,
-        forTransaction draft: AssetTransactionDraft?
+    func transactionControllerDidComposedAssetTransactionData(
+        _ transactionController: TransactionController,
+        forTransaction draft: AssetTransactionSendDraft?
     ) {
         guard let assetSearchResult = assetResults.first(where: { item -> Bool in
             guard let assetIndex = draft?.assetIndex else {

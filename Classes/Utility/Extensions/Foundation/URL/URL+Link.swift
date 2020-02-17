@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import Crypto
 
 extension URL {
     public var queryParameters: [String: String]? {
@@ -25,7 +24,7 @@ extension URL {
         }
         
         guard let queryParameters = queryParameters else {
-            if UtilsIsValidAddress(address) {
+            if AlgorandSDK().isValidAddress(address) {
                 return QRText(mode: .address, address: address)
             }
             return nil

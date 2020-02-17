@@ -9,7 +9,6 @@
 import Foundation
 
 protocol InputViewDelegate: NSObjectProtocol {
-    
     func inputViewDidBeginEditing(inputView: BaseInputView)
     func inputViewDidChangeValue(inputView: BaseInputView)
     func inputViewDidEndEditing(inputView: BaseInputView)
@@ -19,7 +18,6 @@ protocol InputViewDelegate: NSObjectProtocol {
 }
 
 extension InputViewDelegate {
-    
     func inputViewDidBeginEditing(inputView: BaseInputView) {
     }
     

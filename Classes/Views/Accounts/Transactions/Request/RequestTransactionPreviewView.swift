@@ -30,7 +30,7 @@ class RequestTransactionPreviewView: BaseView {
     
     private(set) lazy var previewButton = MainButton(title: "title-preview".localized)
     
-    init(inputFieldFraction: Int = algosFraction) {
+    init(inputFieldFraction: Int) {
         self.inputFieldFraction = inputFieldFraction
         super.init(frame: .zero)
     }

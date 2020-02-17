@@ -22,33 +22,29 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
     )
     
     private(set) lazy var sendTransactionPreviewView = SendTransactionPreviewView(inputFieldFraction: assetFraction)
-    
-    private var keyboard = Keyboard()
-    private var contentViewBottomConstraint: Constraint?
+    var keyboard = Keyboard()
+    private(set) var contentViewBottomConstraint: Constraint?
     
     var amount: Double = 0.00
     var selectedAccount: Account?
-    var receiver: AlgosReceiverState
+    var assetReceiverState: AssetReceiverState
     var assetFraction = algosFraction
     
     var shouldUpdateSenderForSelectedAccount = false
     var shouldUpdateReceiverForSelectedAccount = false
     
-    private(set) var isConnectedToInternet = true
-    
-    var isMaxButtonSelected: Bool {
-        return self.sendTransactionPreviewView.amountInputView.isMaxButtonSelected
+    var isMaxTransaction: Bool {
+        return sendTransactionPreviewView.amountInputView.isMaxButtonSelected
     }
     
     init(
         account: Account?,
-        receiver: AlgosReceiverState,
+        assetReceiverState: AssetReceiverState,
         configuration: ViewControllerConfiguration
     ) {
         self.selectedAccount = account
-        self.receiver = receiver
+        self.assetReceiverState = assetReceiverState
         super.init(configuration: configuration)
-        
         hidesBottomBarWhenPushed = true
     }
     
@@ -64,28 +60,12 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
     
     override func setListeners() {
         super.setListeners()
-        
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(didReceive(keyboardWillShow:)),
-            name: UIResponder.keyboardWillShowNotification,
-            object: nil
-        )
-        
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(didReceive(keyboardWillHide:)),
-            name: UIResponder.keyboardWillHideNotification,
-            object: nil
-        )
-        
-        api?.addDelegate(self)
+        setKeyboardListeners()
     }
     
     override func linkInteractors() {
         super.linkInteractors()
-        
-        transactionManager?.delegate = self
+        transactionController?.delegate = self
         scrollView.touchDetectingDelegate = self
         sendTransactionPreviewView.delegate = self
     }
@@ -95,39 +75,27 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
         setupSendTransactionPreviewViewLayout()
     }
     
-    func presentAccountList(isSender: Bool) {
-        
-    }
+    func presentAccountList(accountSelectionState: AccountSelectionState) { }
     
-    func updateSelectedAccountForSender(_ account: Account) {
-        
-    }
+    func updateSelectedAccountForSender(_ account: Account) { }
     
-    func transactionManagerDidComposedAlgoTransactionData(
-        _ transactionManager: TransactionManager,
-        forTransaction draft: TransactionPreviewDraft?
-    ) {
-        
-    }
+    func transactionControllerDidComposedAlgosTransactionData(
+        _ transactionController: TransactionController,
+        forTransaction draft: AlgosTransactionSendDraft?
+    ) { }
     
-    func transactionManagerDidComposedAssetTransactionData(
-        _ transactionManager: TransactionManager,
-        forTransaction draft: AssetTransactionDraft?
-    ) {
-        
-    }
+    func transactionControllerDidComposedAssetTransactionData(
+        _ transactionController: TransactionController,
+        forTransaction draft: AssetTransactionSendDraft?
+    ) { }
     
-    func displayTransactionPreview() {
-        
-    }
+    func displayTransactionPreview() { }
     
     func sendTransactionPreviewViewDidTapMaxButton(_ sendTransactionPreviewView: SendTransactionPreviewView) {
         sendTransactionPreviewView.amountInputView.inputTextField.text = selectedAccount?.amount.toAlgos.toDecimalStringForAlgosInput
     }
     
-    func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, then handler: EmptyHandler?) {
-        
-    }
+    func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, then handler: EmptyHandler?) { }
 }
 
 extension SendTransactionPreviewViewController {
@@ -142,66 +110,6 @@ extension SendTransactionPreviewViewController {
 }
 
 extension SendTransactionPreviewViewController {
-    @objc
-    fileprivate func didReceive(keyboardWillShow notification: Notification) {
-        if !UIApplication.shared.isActive {
-            return
-        }
-        
-        let kbHeight = notification.keyboardHeight ?? view.safeAreaBottom
-        
-        keyboard.height = kbHeight
-        
-        let duration = notification.keyboardAnimationDuration
-        let curve = notification.keyboardAnimationCurve
-        let curveAnimationOption = UIView.AnimationOptions(rawValue: UInt(curve.rawValue >> 16))
-        
-        if sendTransactionPreviewView.transactionReceiverView.frame.maxY > UIScreen.main.bounds.height - kbHeight - 58.0 {
-            scrollView.contentInset.bottom = kbHeight
-        } else {
-            contentViewBottomConstraint?.update(inset: kbHeight)
-            scrollView.setContentOffset(CGPoint(x: 0.0, y: view.safeAreaBottom), animated: true)
-        }
-        
-        UIView.animate(
-            withDuration: duration,
-            delay: 0.0,
-            options: [curveAnimationOption],
-            animations: {
-                self.view.layoutIfNeeded()
-            },
-            completion: nil
-        )
-    }
-    
-    @objc
-    fileprivate func didReceive(keyboardWillHide notification: Notification) {
-        if !UIApplication.shared.isActive {
-            return
-        }
-        
-        let duration = notification.keyboardAnimationDuration
-        let curve = notification.keyboardAnimationCurve
-        let curveAnimationOption = UIView.AnimationOptions(rawValue: UInt(curve.rawValue >> 16))
-        
-        scrollView.contentInset.bottom = 0.0
-        
-        scrollView.setContentOffset(CGPoint(x: 0.0, y: 0.0), animated: true)
-        contentViewBottomConstraint?.update(inset: view.safeAreaBottom)
-        
-        UIView.animate(
-            withDuration: duration,
-            delay: 0.0,
-            options: [curveAnimationOption],
-            animations: {
-                self.view.layoutIfNeeded()
-            },
-            completion: nil
-        )
-    }
-}
-
-extension SendTransactionPreviewViewController {
     private func displayQRScanner() {
         let qrScannerViewController = open(.qrScanner, by: .push) as? QRScannerViewController
         qrScannerViewController?.delegate = self
@@ -212,30 +120,24 @@ extension SendTransactionPreviewViewController {
         contactsViewController?.delegate = self
     }
         
-    func getAccount() -> Account? {
-        let account: Account
-            
-        switch receiver {
+    func getReceiverAccount() -> Account? {
+        switch assetReceiverState {
         case let .address(address, _):
-            account = Account(address: address)
+            return Account(address: address)
         case let .contact(contact):
             guard let address = contact.address else {
                 return nil
             }
-            account = Account(address: address)
+            return Account(address: address)
         case let .myAccount(myAccount):
-            account = myAccount
+            return myAccount
         case .initial:
             return nil
         }
-        return account
     }
         
     func isTransactionValid() -> Bool {
-        if receiver != .initial {
-            return true
-        }
-        return false
+        return assetReceiverState != .initial
     }
 }
 
@@ -245,13 +147,11 @@ extension SendTransactionPreviewViewController: SendTransactionPreviewViewDelega
         displayTransactionPreview()
     }
     
-    func sendTransactionPreviewViewDidTapAddressButton(_ sendTransactionPreviewView: SendTransactionPreviewView) {
-        
-    }
+    func sendTransactionPreviewViewDidTapAddressButton(_ sendTransactionPreviewView: SendTransactionPreviewView) { }
     
     func sendTransactionPreviewViewDidTapMyAccountsButton(_ sendTransactionPreviewView: SendTransactionPreviewView) {
         shouldUpdateReceiverForSelectedAccount = true
-        presentAccountList(isSender: false)
+        presentAccountList(accountSelectionState: .receiver)
     }
     
     func sendTransactionPreviewViewDidTapContactsButton(_ sendTransactionPreviewView: SendTransactionPreviewView) {
@@ -266,7 +166,7 @@ extension SendTransactionPreviewViewController: SendTransactionPreviewViewDelega
     
     func sendTransactionPreviewViewDidTapAccountSelectionView(_ sendTransactionPreviewView: SendTransactionPreviewView) {
         shouldUpdateSenderForSelectedAccount = true
-        presentAccountList(isSender: true)
+        presentAccountList(accountSelectionState: .sender)
     }
 }
 
@@ -274,7 +174,7 @@ extension SendTransactionPreviewViewController: AccountListViewControllerDelegat
     func accountListViewController(_ viewController: AccountListViewController, didSelectAccount account: Account) {
         if shouldUpdateReceiverForSelectedAccount {
             shouldUpdateReceiverForSelectedAccount = false
-            receiver = .myAccount(account)
+            assetReceiverState = .myAccount(account)
             sendTransactionPreviewView.transactionReceiverView.state = .address(address: account.address, amount: nil)
             return
         }
@@ -290,22 +190,20 @@ extension SendTransactionPreviewViewController: AccountListViewControllerDelegat
 extension SendTransactionPreviewViewController: ContactsViewControllerDelegate {
     func contactsViewController(_ contactsViewController: ContactsViewController, didSelect contact: Contact) {
         sendTransactionPreviewView.transactionReceiverView.state = .contact(contact)
-        receiver = .contact(contact)
+        assetReceiverState = .contact(contact)
     }
 }
 
 extension SendTransactionPreviewViewController: QRScannerViewControllerDelegate {
     func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError, then handler: EmptyHandler?) {
         displaySimpleAlertWith(title: "title-error".localized, message: "qr-scan-should-scan-valid-qr".localized) { _ in
-            if let handler = handler {
-                handler()
-            }
+            handler?()
         }
     }
 }
 
-extension SendTransactionPreviewViewController: TransactionManagerDelegate {
-    func transactionManager(_ transactionManager: TransactionManager, didFailedComposing error: Error) {
+extension SendTransactionPreviewViewController: TransactionControllerDelegate {
+    func transactionController(_ transactionController: TransactionController, didFailedComposing error: Error) {
         SVProgressHUD.dismiss()
         
         switch error {
@@ -330,28 +228,9 @@ extension SendTransactionPreviewViewController: TransactionManagerDelegate {
     }
 }
 
-extension SendTransactionPreviewViewController: TouchDetectingScrollViewDelegate {
-    func scrollViewDidDetectTouchEvent(scrollView: TouchDetectingScrollView, in point: CGPoint) {
-        if sendTransactionPreviewView.previewButton.frame.contains(point) ||
-            sendTransactionPreviewView.amountInputView.frame.contains(point) ||
-            sendTransactionPreviewView.transactionReceiverView.frame.contains(point) {
-            return
-        }
-        contentView.endEditing(true)
-    }
-}
-
-extension SendTransactionPreviewViewController: MagpieDelegate {
-    func magpie(
-        _ magpie: Magpie,
-        networkMonitor: NetworkMonitor,
-        didConnectVia connection: NetworkConnection,
-        from oldConnection: NetworkConnection
-    ) {
-        isConnectedToInternet = true
-    }
-    
-    func magpie(_ magpie: Magpie, networkMonitor: NetworkMonitor, didDisconnectFrom oldConnection: NetworkConnection) {
-        isConnectedToInternet = false
+extension SendTransactionPreviewViewController {
+    enum AccountSelectionState {
+        case sender
+        case receiver
     }
 }

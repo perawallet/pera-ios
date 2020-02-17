@@ -11,7 +11,7 @@ import Foundation
 class ViewControllerConfiguration {
     let api: API?
     var session: Session?
-    var transactionManager: TransactionManager?
+    var transactionController: TransactionController?
     
     init(api: API?, session: Session?) {
         self.api = api

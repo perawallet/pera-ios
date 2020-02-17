@@ -13,10 +13,9 @@ private enum AppTarget {
 }
 
 class Environment {
-    // MARK: Singleton
+    
     private static let instance = Environment()
     
-    // MARK: Variables
     static var current: Environment {
         return instance
     }
@@ -82,7 +81,6 @@ class Environment {
     
     private let target: AppTarget
     
-    // MARK: Initialization
     private init() {
         #if PRODUCTION
         target = .prod

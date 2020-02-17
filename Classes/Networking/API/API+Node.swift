@@ -10,7 +10,7 @@ import Magpie
 
 extension API {
     @discardableResult
-    func checkHealth(with draft: NodeTestDraft, then handler: BoolHandler? = nil) -> EndpointOperatable? {
+    func checkNodeHealth(with draft: NodeTestDraft, then handler: BoolHandler? = nil) -> EndpointOperatable? {
         let resultHandler: Endpoint.RawResultHandler = { result in
             switch result {
             case .success:

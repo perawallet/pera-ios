@@ -12,17 +12,17 @@ class AppConfiguration {
 
     let api: API
     let session: Session
-    let transactionManager: TransactionManager
+    let transactionController: TransactionController
     
     init(api: API, session: Session) {
         self.api = api
         self.session = session
-        self.transactionManager = TransactionManager(api: api)
+        self.transactionController = TransactionController(api: api)
     }
     
     func all() -> ViewControllerConfiguration {
         let configuration = ViewControllerConfiguration(api: api, session: session)
-        configuration.transactionManager = transactionManager
+        configuration.transactionController = transactionController
         return configuration
     }
     

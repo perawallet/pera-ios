@@ -175,8 +175,8 @@ extension BaseViewController {
         return configuration.api
     }
     
-    var transactionManager: TransactionManager? {
-        return configuration.transactionManager
+    var transactionController: TransactionController? {
+        return configuration.transactionController
     }
 }
 

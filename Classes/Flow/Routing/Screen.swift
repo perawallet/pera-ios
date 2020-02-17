@@ -27,16 +27,14 @@ indirect enum Screen {
     case addContact(mode: AddContactViewController.Mode)
     case contactDetail(contact: Contact)
     case contactQRDisplay(contact: Contact)
-    case sendAlgosTransactionPreview(account: Account?, receiver: AlgosReceiverState)
-    case sendAssetTransactionPreview(
-        account: Account?,
-        receiver: AlgosReceiverState,
-        assetDetail: AssetDetail,
-        isMaxTransaction: Bool = false
-    )
-    case sendTransaction(algosTransaction: TransactionPreviewDraft?, assetTransaction: AssetTransactionDraft?, receiver: AlgosReceiverState)
-    case requestTransactionPreview(account: Account, assetDetail: AssetDetail?, isAlgoTransaction: Bool)
-    case requestTransaction(transaction: TransactionPreviewDraft)
+    case sendAlgosTransactionPreview(account: Account?, receiver: AssetReceiverState)
+    case sendAssetTransactionPreview(account: Account?, receiver: AssetReceiverState, assetDetail: AssetDetail, isMaxTransaction: Bool)
+    case sendAlgosTransaction(algosTransactionSendDraft: AlgosTransactionSendDraft, receiver: AssetReceiverState)
+    case sendAssetTransaction(assetTransactionSendDraft: AssetTransactionSendDraft, receiver: AssetReceiverState)
+    case requestAlgosTransactionPreview(account: Account)
+    case requestAssetTransactionPreview(account: Account, assetDetail: AssetDetail)
+    case requestAlgosTransaction(algosTransactionRequestDraft: AlgosTransactionRequestDraft)
+    case requestAssetTransaction(assetTransactionRequestDraft: AssetTransactionRequestDraft)
     case historyResults(draft: HistoryDraft)
     case nodeSettings(mode: NodeSettingsViewController.Mode)
     case addNode
@@ -55,13 +53,11 @@ indirect enum Screen {
 }
 
 extension Screen {
-    
     enum Transition {
     }
 }
 
 extension Screen.Transition {
-    
     enum Open: Equatable {
         case push
         case present
@@ -83,7 +79,11 @@ extension Screen.Transition {
                 return true
             case (.present, .present):
                 return true
+            case (.presentWithoutNavigationController, .presentWithoutNavigationController):
+                return true
             case (.launch, .launch):
+                return true
+            case (.set, .set):
                 return true
             case (.customPresent, .customPresent):
                 return false

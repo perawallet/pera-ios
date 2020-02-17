@@ -11,7 +11,6 @@ import UIKit
 class CardModalPresenter: ModalPresenterObjectType {
     
     let config: Configuration
-    
     private var initialModalSize: ModalSize
     
     required init(config: Configuration, initialModalSize: ModalSize = .half) {
@@ -20,8 +19,11 @@ class CardModalPresenter: ModalPresenterObjectType {
         super.init()
     }
     
-    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController)
-        -> UIViewControllerAnimatedTransitioning? {
+    func animationController(
+        forPresented presented: UIViewController,
+        presenting: UIViewController,
+        source: UIViewController
+    ) -> UIViewControllerAnimatedTransitioning? {
             return CardModalAnimator(config: config)
     }
     
@@ -29,8 +31,11 @@ class CardModalPresenter: ModalPresenterObjectType {
         return CardModalAnimator(config: config)
     }
     
-    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController)
-        -> UIPresentationController? {
+    func presentationController(
+        forPresented presented: UIViewController,
+        presenting: UIViewController?,
+        source: UIViewController
+    ) -> UIPresentationController? {
             return CardModalPresentationController(
                 presentedViewController: presented,
                 presenting: presenting,

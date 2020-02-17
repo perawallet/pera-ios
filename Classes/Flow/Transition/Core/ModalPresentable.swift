@@ -9,7 +9,6 @@
 import Foundation
 
 protocol ModalPresentable {
-    
     func beforeAnimatedTransition()
     func alongsideAnimatedTransition()
     func afterAnimatedTransition()
