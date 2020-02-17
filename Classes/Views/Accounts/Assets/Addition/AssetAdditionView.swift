@@ -35,7 +35,7 @@ class AssetAdditionView: BaseView {
     private(set) lazy var verifiedAssetsButton: UIButton = {
         let button = UIButton(type: .custom)
             .withTitleColor(.white)
-            .withTitle("Verified".localized)
+            .withTitle("asset-verified-title".localized)
             .withBackgroundColor(Colors.verifiedButtonColor)
             .withFont(UIFont.font(.overpass, withWeight: .bold(size: 12.0)))
         button.layer.cornerRadius = 6.0
@@ -45,7 +45,7 @@ class AssetAdditionView: BaseView {
     private(set) lazy var unverifiedAssetsButton: UIButton = {
         let button = UIButton(type: .custom)
             .withTitleColor(.white)
-            .withTitle("Unverified".localized)
+            .withTitle("asset-unverified-title".localized)
             .withBackgroundColor(SharedColors.purple.withAlphaComponent(0.3))
             .withFont(UIFont.font(.overpass, withWeight: .bold(size: 12.0)))
         button.layer.cornerRadius = 6.0
