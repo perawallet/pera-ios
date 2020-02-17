@@ -1,5 +1,5 @@
 //
-//  AssetTransactionsDraft.swift
+//  AssetTransactionDraft.swift
 //  algorand
 //
 //  Created by Göktuğ Berk Ulu on 22.01.2020.
@@ -8,9 +8,9 @@
 
 import Foundation
 
-struct AssetTransactionsDraft: TransactionsDraft {
-    var from: String
-    let to: String
+struct AssetTransactionDraft: TransactionDraft {
+    var from: Account
+    let toAccount: String
     var transactionParams: TransactionParams
     let amount: Int64
     let assetIndex: Int64

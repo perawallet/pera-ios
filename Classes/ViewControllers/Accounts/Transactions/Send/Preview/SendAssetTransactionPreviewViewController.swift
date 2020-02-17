@@ -65,13 +65,19 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
     
     override func transactionControllerDidComposedAssetTransactionData(
         _ transactionController: TransactionController,
-        forTransaction draft: AssetTransactionDraft?
+        forTransaction draft: AssetTransactionSendDraft?
     ) {
         guard let assetTransactionDraft = draft else {
             return
         }
         
-        let controller = open(.sendAssetTransaction(assetTransactionDraft: assetTransactionDraft, receiver: assetReceiverState), by: .push)
+        let controller = open(
+            .sendAssetTransaction(
+                assetTransactionSendDraft: assetTransactionDraft,
+                receiver: assetReceiverState
+            ),
+            by: .push
+        )
         (controller as? SendTransactionViewController)?.delegate = self
     }
     
@@ -296,26 +302,24 @@ extension SendAssetTransactionPreviewViewController {
     
     private func composeTransactionData() {
         guard let selectedAccount = selectedAccount,
-            let assetId = assetDetail.id else {
-            return
-        }
-        
-        transactionController?.delegate = self
-        let transaction = AssetTransactionDraft(
-            fromAccount: selectedAccount,
-            amount: amount,
-            assetIndex: assetId,
-            assetDecimalFraction: assetDetail.fractionDecimals,
-            isVerified: assetDetail.isVerified
-        )
-        
-        guard let account = getReceiverAccount(),
+            let assetId = assetDetail.id,
+            let toAccount = getReceiverAccount()?.address,
             let transactionController = transactionController else {
             return
         }
+        
+        transactionController.delegate = self
+        let transaction = AssetTransactionSendDraft(
+            from: selectedAccount,
+            toAccount: toAccount,
+            amount: amount,
+            assetIndex: assetId,
+            assetDecimalFraction: assetDetail.fractionDecimals,
+            isVerifiedAsset: assetDetail.isVerified
+        )
                
         transactionController.setAssetTransactionDraft(transaction)
-        transactionController.composeAssetTransactionData(for: account)
+        transactionController.composeAssetTransactionData(transactionType: .assetTransaction)
     }
 }
 

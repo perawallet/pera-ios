@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol TransactionsDraft {
-    var from: String { get set }
+protocol TransactionDraft {
+    var from: Account { get set }
     var transactionParams: TransactionParams { get set }
 }

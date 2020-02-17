@@ -9,14 +9,14 @@
 import Magpie
 
 class TransactionController {
-    
     weak var delegate: TransactionControllerDelegate?
     
     private var api: API
     private var params: TransactionParams?
-    private var transactionDraft: TransactionPreviewDraft?
-    private var assetTransactionDraft: AssetTransactionDraft?
+    private var algosTransactionDraft: AlgosTransactionSendDraft?
+    private var assetTransactionDraft: AssetTransactionSendDraft?
     private var transactionData: Data?
+    
     private let algorandSDK = AlgorandSDK()
     
     init(api: API) {
@@ -25,19 +25,38 @@ class TransactionController {
 }
 
 extension TransactionController {
-    func composeAlgoTransactionData(for account: Account, isMaxValue: Bool) {
+    func composeAlgosTransactionData() {
         api.getTransactionParams { response in
             switch response {
             case let .success(params):
                 self.params = params
-                self.generateSignedAlgoTransactionData(for: account, isMaxValue: isMaxValue)
+                self.generateSignedAlgosTransactionData()
             case let .failure(error):
                 self.delegate?.transactionController(self, didFailedComposing: error)
             }
         }
     }
     
-    func completeTransaction() {
+    func composeAssetTransactionData(transactionType: TransactionType) {
+        api.getTransactionParams { response in
+            switch response {
+            case let .success(params):
+                self.params = params
+                
+                if transactionType == .assetAddition {
+                    self.addAsset()
+                } else if transactionType == .assetRemoval {
+                    self.removeAsset()
+                } else if transactionType == .assetTransaction {
+                    self.transactAsset()
+                }
+            case let .failure(error):
+                self.delegate?.transactionController(self, didFailedComposing: error)
+            }
+        }
+    }
+    
+    func sendTransaction(with completion: EmptyHandler? = nil) {
         guard let transactionData = transactionData else {
             return
         }
@@ -46,6 +65,7 @@ extension TransactionController {
             switch transactionIdResponse {
             case let .success(transactionId):
                 self.api.trackTransaction(with: TransactionTrackDraft(transactionId: transactionId.identifier))
+                completion?()
                 self.delegate?.transactionController(self, didCompletedTransaction: transactionId)
             case let .failure(error):
                 self.delegate?.transactionController(self, didFailedTransaction: error)
@@ -55,137 +75,113 @@ extension TransactionController {
 }
 
 extension TransactionController {
-    private func generateSignedAlgoTransactionData(
-        for account: Account,
-        isMaxValue: Bool,
-        initialFee: Int64 = Transaction.Constant.minimumFee
-    ) {
+    private func generateSignedAlgosTransactionData(initialFee: Int64 = Transaction.Constant.minimumFee) {
         guard let params = params,
-            let transactionDraft = transactionDraft else {
+            let algosTransactionDraft = algosTransactionDraft,
+            let amountDoubleValue = algosTransactionDraft.amount,
+            let toAddress = algosTransactionDraft.toAccount else {
                 delegate?.transactionController(self, didFailedComposing: .custom(nil))
             return
         }
         
-        var isMaxValue = isMaxValue
+        var isMaxTransaction = algosTransactionDraft.isMaxTransaction
+        var transactionAmount = amountDoubleValue.toMicroAlgos
         
-        var transactionError: NSError?
-        var transactionAmount = transactionDraft.amount.toMicroAlgos
-        
-        if isMaxValue {
-            if transactionAmount != transactionDraft.fromAccount.amount {
-                isMaxValue = false
+        if isMaxTransaction {
+            // Check if transaction amount is equal to amount of the sender account when it is max transaction
+            if transactionAmount != algosTransactionDraft.from.amount {
+                isMaxTransaction = false
             }
+            // Reduce fee from transaction amount
             transactionAmount -= initialFee * params.fee
         }
         
-        let trimmedFromAddress = transactionDraft.fromAccount.address.trimmingCharacters(in: .whitespacesAndNewlines)
-        let trimmedToAddress = account.address.trimmingCharacters(in: .whitespacesAndNewlines)
+        let trimmedToAddress = toAddress.trimmingCharacters(in: .whitespacesAndNewlines)
         
         if !algorandSDK.isValidAddress(trimmedToAddress) {
             delegate?.transactionController(self, didFailedComposing: .custom(trimmedToAddress))
             return
         }
         
-        let draft = AlgoTransactionDraft(
-            from: trimmedFromAddress,
-            to: trimmedToAddress,
+        let draft = AlgosTransactionDraft(
+            from: algosTransactionDraft.from,
+            toAccount: trimmedToAddress,
             transactionParams: params,
             amount: transactionAmount,
-            isMaxTransaction: isMaxValue
+            isMaxTransaction: isMaxTransaction
         )
+        
+        var transactionError: NSError?
         
         guard let transactionData = algorandSDK.sendAlgos(with: draft, error: &transactionError) else {
             delegate?.transactionController(self, didFailedComposing: .custom(transactionError))
             return
         }
         
-        guard let signedTransactionData = sign(transactionData, for: transactionDraft.fromAccount.address) else {
+        guard let signedTransactionData = sign(transactionData, with: algosTransactionDraft.from.address) else {
             return
         }
         
         self.transactionData = signedTransactionData
         let calculatedFee = Int64(signedTransactionData.count) * params.fee
-        self.transactionDraft?.fee = calculatedFee
+        self.algosTransactionDraft?.fee = calculatedFee
         
-        if initialFee < calculatedFee && isMaxValue {
-            generateSignedAlgoTransactionData(for: account, isMaxValue: true, initialFee: Int64(signedTransactionData.count))
+        // Re-sign transaction if the calculated fee is more than the minimum fee
+        if initialFee < calculatedFee && isMaxTransaction {
+            generateSignedAlgosTransactionData(initialFee: Int64(signedTransactionData.count))
         } else {
-            delegate?.transactionControllerDidComposedAlgoTransactionData(self, forTransaction: self.transactionDraft)
+            delegate?.transactionControllerDidComposedAlgosTransactionData(self, forTransaction: self.algosTransactionDraft)
         }
     }
 }
 
 extension TransactionController {
-    func composeAssetTransactionData(for account: Account, transactionType: TransactionType = .assetTransaction) {
-        api.getTransactionParams { response in
-            switch response {
-            case let .success(params):
-                self.params = params
-                self.transactAsset(for: account, transactionType: transactionType)
-            case let .failure(error):
-                self.delegate?.transactionController(self, didFailedComposing: error)
-            }
-        }
-    }
-    
-    private func transactAsset(for account: Account, transactionType: TransactionType) {
+    private func transactAsset() {
         guard let params = params,
             let transactionDraft = assetTransactionDraft,
             let assetIndex = transactionDraft.assetIndex,
-            let amountDoubleValue = transactionDraft.amount else {
+            let amountDoubleValue = transactionDraft.amount,
+            let toAddress = transactionDraft.toAccount else {
                 delegate?.transactionController(self, didFailedComposing: .custom(nil))
             return
         }
         
-        var transactionAmount = Int64(amountDoubleValue)
-        
-        if transactionType == .assetTransaction {
-            transactionAmount = amountDoubleValue.toFraction(of: transactionDraft.assetDecimalFraction)
-        }
-        
-        let trimmedFromAddress = transactionDraft.fromAccount.address.trimmingCharacters(in: .whitespacesAndNewlines)
-        let trimmedToAddress = account.address.trimmingCharacters(in: .whitespacesAndNewlines)
-        var transactionError: NSError?
+        let trimmedToAddress = toAddress.trimmingCharacters(in: .whitespacesAndNewlines)
         
         if !algorandSDK.isValidAddress(trimmedToAddress) {
             delegate?.transactionController(self, didFailedComposing: .custom(trimmedToAddress))
             return
         }
         
-        let draft = AssetTransactionsDraft(
-            from: trimmedFromAddress,
-            to: trimmedToAddress,
+        let draft = AssetTransactionDraft(
+            from: transactionDraft.from,
+            toAccount: trimmedToAddress,
             transactionParams: params,
-            amount: transactionAmount,
+            amount: amountDoubleValue.toFraction(of: transactionDraft.assetDecimalFraction),
             assetIndex: assetIndex
         )
+        
+        var transactionError: NSError?
         
         guard let transactionData = algorandSDK.sendAsset(with: draft, error: &transactionError) else {
             delegate?.transactionController(self, didFailedComposing: .custom(transactionError))
             return
         }
         
-        completeAssetTransacion(with: transactionData, transactionType: transactionType)
+        completeAssetTransacion(with: transactionData, transactionType: .assetTransaction)
     }
     
-    private func removeAsset(for account: Account, transactionType: TransactionType) {
+    private func removeAsset() {
         guard let params = params,
             let transactionDraft = assetTransactionDraft,
             let assetIndex = transactionDraft.assetIndex,
-            let amountDoubleValue = transactionDraft.amount else {
+            let amountDoubleValue = transactionDraft.amount,
+            let toAddress = transactionDraft.toAccount else {
                 delegate?.transactionController(self, didFailedComposing: .custom(nil))
             return
         }
         
-        var transactionAmount = Int64(amountDoubleValue)
-        
-        if transactionType == .assetTransaction {
-            transactionAmount = amountDoubleValue.toFraction(of: transactionDraft.assetDecimalFraction)
-        }
-        
-        let trimmedFromAddress = transactionDraft.fromAccount.address.trimmingCharacters(in: .whitespacesAndNewlines)
-        let trimmedToAddress = account.address.trimmingCharacters(in: .whitespacesAndNewlines)
-        var transactionError: NSError?
+        let trimmedToAddress = toAddress.trimmingCharacters(in: .whitespacesAndNewlines)
         
         if !algorandSDK.isValidAddress(trimmedToAddress) {
             delegate?.transactionController(self, didFailedComposing: .custom(trimmedToAddress))
@@ -193,46 +189,33 @@ extension TransactionController {
         }
         
         let draft = AssetRemovalDraft(
-            from: trimmedFromAddress,
+            from: transactionDraft.from,
             transactionParams: params,
-            amount: transactionAmount,
+            amount: Int64(amountDoubleValue),
             assetCreatorAddress: transactionDraft.assetCreator,
             assetIndex: assetIndex
         )
+        
+        var transactionError: NSError?
         
         guard let transactionData = algorandSDK.removeAsset(with: draft, error: &transactionError) else {
             delegate?.transactionController(self, didFailedComposing: .custom(transactionError))
             return
         }
         
-        completeAssetTransacion(with: transactionData, transactionType: transactionType)
+        completeAssetTransacion(with: transactionData, transactionType: .assetRemoval)
     }
-}
 
-extension TransactionController {
-    func composeAssetAdditionTransactionData(for account: Account) {
-        api.getTransactionParams { response in
-            switch response {
-            case let .success(params):
-                self.params = params
-                self.addAsset(to: account)
-            case let .failure(error):
-                self.delegate?.transactionController(self, didFailedComposing: error)
-            }
-        }
-    }
-    
-    private func addAsset(to account: Account) {
+    private func addAsset() {
         guard let params = params,
-            let transactionDraft = assetTransactionDraft,
-            let assetIndex = transactionDraft.assetIndex else {
-                delegate?.transactionController(self, didFailedComposing: .custom(assetTransactionDraft))
+            let assetTransactionDraft = assetTransactionDraft,
+            let assetIndex = assetTransactionDraft.assetIndex else {
+                delegate?.transactionController(self, didFailedComposing: .custom(self.assetTransactionDraft))
             return
         }
         
-        let trimmedFromAddress = transactionDraft.fromAccount.address.trimmingCharacters(in: .whitespacesAndNewlines)
         var transactionError: NSError?
-        let draft = AssetAdditionDraft(from: trimmedFromAddress, transactionParams: params, assetIndex: assetIndex)
+        let draft = AssetAdditionDraft(from: assetTransactionDraft.from, transactionParams: params, assetIndex: assetIndex)
         
         guard let transactionData = algorandSDK.addAsset(with: draft, error: &transactionError) else {
             delegate?.transactionController(self, didFailedComposing: .custom(transactionError))
@@ -246,8 +229,8 @@ extension TransactionController {
 extension TransactionController {
     private func completeAssetTransacion(with transactionData: Data, transactionType: TransactionType) {
         guard let params = params,
-            let transactionDraft = assetTransactionDraft,
-            let signedTransactionData = sign(transactionData, for: transactionDraft.fromAccount.address) else {
+            let assetTransactionDraft = assetTransactionDraft,
+            let signedTransactionData = sign(transactionData, with: assetTransactionDraft.from.address) else {
             return
         }
 
@@ -259,8 +242,9 @@ extension TransactionController {
             calculatedFee = Transaction.Constant.minimumFee
         }
         
-        let account = transactionDraft.fromAccount
+        let account = assetTransactionDraft.from
         
+        // Asset addition fee amount must be asset count * minimum algos limit + minimum fee
         if transactionType == .assetAddition &&
             Int64(account.amount) - calculatedFee < Int64(minimumTransactionMicroAlgosLimit * (account.assetDetails.count + 2)) {
             let mininmumAmount = Int64(minimumTransactionMicroAlgosLimit * (account.assetDetails.count + 2)) + calculatedFee
@@ -270,16 +254,19 @@ extension TransactionController {
         
         self.assetTransactionDraft?.fee = calculatedFee
         
+        // Asset addition and removal actions do not have approve part, so transaction should be completed here.
         if transactionType != .assetTransaction {
-            completeTransaction()
+            sendTransaction {
+                self.delegate?.transactionControllerDidComposedAssetTransactionData(self, forTransaction: self.assetTransactionDraft)
+            }
+        } else {
+            delegate?.transactionControllerDidComposedAssetTransactionData(self, forTransaction: self.assetTransactionDraft)
         }
-        
-        delegate?.transactionControllerDidComposedAssetTransactionData(self, forTransaction: self.assetTransactionDraft)
     }
 }
 
 extension TransactionController {
-    private func sign(_ data: Data, for address: String) -> Data? {
+    private func sign(_ data: Data, with address: String) -> Data? {
         var signedTransactionError: NSError?
         
         guard let privateData = api.session.privateData(forAccount: address),
@@ -293,11 +280,11 @@ extension TransactionController {
 }
 
 extension TransactionController {
-    func setTransactionDraft(_ transactionDraft: TransactionPreviewDraft) {
-        self.transactionDraft = transactionDraft
+    func setTransactionDraft(_ algosTransactionDraft: AlgosTransactionSendDraft) {
+        self.algosTransactionDraft = algosTransactionDraft
     }
     
-    func setAssetTransactionDraft(_ assetTransactionDraft: AssetTransactionDraft) {
+    func setAssetTransactionDraft(_ assetTransactionDraft: AssetTransactionSendDraft) {
         self.assetTransactionDraft = assetTransactionDraft
     }
 }

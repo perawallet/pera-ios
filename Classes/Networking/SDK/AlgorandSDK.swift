@@ -33,16 +33,17 @@ extension AlgorandSDK {
 }
 
 extension AlgorandSDK {
-    func sendAlgos(with draft: AlgoTransactionDraft, error: inout NSError?) -> Data? {
+    func sendAlgos(with draft: AlgosTransactionDraft, error: inout NSError?) -> Data? {
+        let toAddress = draft.toAccount.trimmingCharacters(in: .whitespacesAndNewlines)
         return TransactionMakePaymentTxn(
-            draft.from,
-            draft.to,
+            getTrimmedAddress(from: draft.from),
+            toAddress,
             draft.transactionParams.fee,
             draft.amount,
             draft.transactionParams.lastRound,
             draft.transactionParams.lastRound + 1000, // Need to add 1000 as last round
             nil,
-            draft.isMaxTransaction ? draft.to : nil,
+            draft.isMaxTransaction ? toAddress : nil,
             nil,
             draft.transactionParams.genesisHashData,
             &error
@@ -51,10 +52,10 @@ extension AlgorandSDK {
 }
 
 extension AlgorandSDK {
-    func sendAsset(with draft: AssetTransactionsDraft, error: inout NSError?) -> Data? {
+    func sendAsset(with draft: AssetTransactionDraft, error: inout NSError?) -> Data? {
         return TransactionMakeAssetTransferTxn(
-            draft.from,
-            draft.to,
+            getTrimmedAddress(from: draft.from),
+            draft.toAccount.trimmingCharacters(in: .whitespacesAndNewlines),
             "", // closing address should be empty for asset transaction
             draft.amount,
             draft.transactionParams.fee,
@@ -70,7 +71,7 @@ extension AlgorandSDK {
     
     func addAsset(with draft: AssetAdditionDraft, error: inout NSError?) -> Data? {
         return TransactionMakeAssetAcceptanceTxn(
-            draft.from,
+            getTrimmedAddress(from: draft.from),
             draft.transactionParams.fee,
             draft.transactionParams.lastRound,
             draft.transactionParams.lastRound + 1000, // Need to add 1000 as last round
@@ -84,8 +85,8 @@ extension AlgorandSDK {
     
     func removeAsset(with draft: AssetRemovalDraft, error: inout NSError?) -> Data? {
         return TransactionMakeAssetTransferTxn(
-            draft.from,
-            draft.from, // Receiver address should be same with the sender while removing an asset
+            getTrimmedAddress(from: draft.from),
+            getTrimmedAddress(from: draft.from), // Receiver address should be same with the sender while removing an asset
             draft.assetCreatorAddress, //
             draft.amount,
             draft.transactionParams.fee,
@@ -103,5 +104,11 @@ extension AlgorandSDK {
 extension AlgorandSDK {
     func isValidAddress(_ address: String) -> Bool {
         return UtilsIsValidAddress(address)
+    }
+}
+
+extension AlgorandSDK {
+    private func getTrimmedAddress(from account: Account) -> String {
+        return account.address.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 }

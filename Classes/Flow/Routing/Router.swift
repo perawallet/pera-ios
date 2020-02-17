@@ -233,17 +233,17 @@ class Router {
                 isMaxTransaction: isMaxTransaction,
                 configuration: configuration
             )
-        case let .sendAlgosTransaction(algosTransactionDraft, receiver):
+        case let .sendAlgosTransaction(algosTransactionSendDraft, receiver):
             configuration.transactionController = rootViewController.appConfiguration.transactionController
             viewController = SendAlgosTransactionViewController(
-                algosTransaction: algosTransactionDraft,
+                algosTransactionSendDraft: algosTransactionSendDraft,
                 assetReceiverState: receiver,
                 configuration: configuration
             )
-        case let .sendAssetTransaction(assetTransactionDraft, receiver):
+        case let .sendAssetTransaction(assetTransactionSendDraft, receiver):
             configuration.transactionController = rootViewController.appConfiguration.transactionController
             viewController = SendAssetTransactionViewController(
-                assetTransaction: assetTransactionDraft,
+                assetTransactionSendDraft: assetTransactionSendDraft,
                 assetReceiverState: receiver,
                 configuration: configuration
             )
@@ -255,9 +255,9 @@ class Router {
                 assetDetail: assetDetail,
                 configuration: configuration
             )
-        case let .requestAlgosTransaction(algoTransactionRequestDraft):
+        case let .requestAlgosTransaction(algosTransactionRequestDraft):
             viewController = RequestAlgosTransactionViewController(
-                algosTransactionRequestDraft: algoTransactionRequestDraft,
+                algosTransactionRequestDraft: algosTransactionRequestDraft,
                 configuration: configuration
             )
         case let .requestAssetTransaction(assetTransactionRequestDraft):

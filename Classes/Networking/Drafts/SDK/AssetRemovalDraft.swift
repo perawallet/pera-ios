@@ -8,8 +8,8 @@
 
 import Foundation
 
-struct AssetRemovalDraft: TransactionsDraft {
-    var from: String
+struct AssetRemovalDraft: TransactionDraft {
+    var from: Account
     var transactionParams: TransactionParams
     let amount: Int64
     let assetCreatorAddress: String

@@ -9,11 +9,11 @@
 import UIKit
 
 class SendAlgosTransactionViewModel {
-    func configure(_ view: SendTransactionView, with transaction: TransactionPreviewDraft) {
-        view.transactionParticipantView.accountSelectionView.detailLabel.text = transaction.fromAccount.name
-        view.amountInputView.inputTextField.text = transaction.amount.toDecimalStringForLabel
+    func configure(_ view: SendTransactionView, with algosTransactionSendDraft: AlgosTransactionSendDraft) {
+        view.transactionParticipantView.accountSelectionView.detailLabel.text = algosTransactionSendDraft.from.name
+        view.amountInputView.inputTextField.text = algosTransactionSendDraft.amount?.toDecimalStringForLabel
         view.transactionParticipantView.assetSelectionView.verifiedImageView.isHidden = false
         view.transactionParticipantView.assetSelectionView.detailLabel.text = "asset-algos-title".localized
-        view.transactionParticipantView.assetSelectionView.set(amount: transaction.fromAccount.amount.toAlgos)
+        view.transactionParticipantView.assetSelectionView.set(amount: algosTransactionSendDraft.from.amount.toAlgos)
     }
 }

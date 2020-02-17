@@ -1,5 +1,5 @@
 //
-//  AlgoTransactionRequestDraft.swift
+//  AlgosTransactionRequestDraft.swift
 //  algorand
 //
 //  Created by Göktuğ Berk Ulu on 27.01.2020.

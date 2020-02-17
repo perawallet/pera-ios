@@ -9,13 +9,13 @@
 import Magpie
 
 protocol TransactionControllerDelegate: class {
-    func transactionControllerDidComposedAlgoTransactionData(
+    func transactionControllerDidComposedAlgosTransactionData(
         _ transactionController: TransactionController,
-        forTransaction draft: TransactionPreviewDraft?
+        forTransaction draft: AlgosTransactionSendDraft?
     )
     func transactionControllerDidComposedAssetTransactionData(
         _ transactionController: TransactionController,
-        forTransaction draft: AssetTransactionDraft?
+        forTransaction draft: AssetTransactionSendDraft?
     )
     func transactionController(_ transactionController: TransactionController, didFailedComposing error: Error)
     func transactionController(_ transactionController: TransactionController, didCompletedTransaction id: TransactionID)
@@ -23,29 +23,19 @@ protocol TransactionControllerDelegate: class {
 }
 
 extension TransactionControllerDelegate {
-    func transactionControllerDidComposedAlgoTransactionData(
+    func transactionControllerDidComposedAlgosTransactionData(
         _ transactionController: TransactionController,
-        forTransaction draft: TransactionPreviewDraft?
-    ) {
-        
-    }
+        forTransaction draft: AlgosTransactionSendDraft?
+    ) { }
     
     func transactionControllerDidComposedAssetTransactionData(
         _ transactionController: TransactionController,
-        forTransaction draft: AssetTransactionDraft?
-    ) {
-        
-    }
+        forTransaction draft: AssetTransactionSendDraft?
+    ) { }
     
-    func transactionController(_ transactionController: TransactionController, didFailedComposing error: Error) {
-        
-    }
+    func transactionController(_ transactionController: TransactionController, didFailedComposing error: Error) { }
     
-    func transactionController(_ transactionController: TransactionController, didCompletedTransaction id: TransactionID) {
-        
-    }
+    func transactionController(_ transactionController: TransactionController, didCompletedTransaction id: TransactionID) { }
     
-    func transactionController(_ transactionController: TransactionController, didFailedTransaction error: Error) {
-        
-    }
+    func transactionController(_ transactionController: TransactionController, didFailedTransaction error: Error) { }
 }

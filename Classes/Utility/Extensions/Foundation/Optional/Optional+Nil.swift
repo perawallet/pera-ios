@@ -16,3 +16,13 @@ extension Optional where Wrapped == String {
         return strongSelf.isEmptyOrBlank
     }
 }
+
+extension Optional where Wrapped: Collection {
+    var isNilOrEmpty: Bool {
+        self?.isEmpty ?? true
+    }
+
+    var nonEmpty: Wrapped? {
+        isNilOrEmpty ? nil : self
+    }
+}

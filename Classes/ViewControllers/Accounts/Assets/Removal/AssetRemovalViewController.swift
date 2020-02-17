@@ -230,22 +230,22 @@ extension AssetRemovalViewController: AssetActionConfirmationViewControllerDeleg
             return
         }
         
-        let assetTransactionDraft = AssetTransactionDraft(
-            fromAccount: account,
-            recipient: assetDetail.creator,
+        let assetTransactionDraft = AssetTransactionSendDraft(
+            from: account,
+            toAccount: assetDetail.creator,
             amount: 0,
             assetIndex: assetId,
             assetCreator: assetDetail.creator
         )
         transactionController?.setAssetTransactionDraft(assetTransactionDraft)
-        transactionController?.composeAssetTransactionData(for: account, transactionType: .assetRemoval)
+        transactionController?.composeAssetTransactionData(transactionType: .assetRemoval)
     }
 }
 
 extension AssetRemovalViewController: TransactionControllerDelegate {
     func transactionControllerDidComposedAssetTransactionData(
         _ transactionController: TransactionController,
-        forTransaction draft: AssetTransactionDraft?
+        forTransaction draft: AssetTransactionSendDraft?
     ) {
         guard let removedAssetDetail = getRemovedAssetDetail(from: draft) else {
             return
@@ -255,7 +255,7 @@ extension AssetRemovalViewController: TransactionControllerDelegate {
         dismissScreen()
     }
     
-    private func getRemovedAssetDetail(from draft: AssetTransactionDraft?) -> AssetDetail? {
+    private func getRemovedAssetDetail(from draft: AssetTransactionSendDraft?) -> AssetDetail? {
         guard let removedAssetDetail = account.assetDetails.first(where: { assetDetail -> Bool in
             guard let id = assetDetail.id,
                 let assetId = draft?.assetIndex else {

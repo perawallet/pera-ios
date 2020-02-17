@@ -10,24 +10,28 @@ import UIKit
 
 class SendAlgosTransactionViewController: SendTransactionViewController {
     
-    private var algosTransaction: TransactionPreviewDraft
+    private var algosTransactionSendDraft: AlgosTransactionSendDraft
     private let viewModel = SendAlgosTransactionViewModel()
     
-    init(algosTransaction: TransactionPreviewDraft, assetReceiverState: AssetReceiverState, configuration: ViewControllerConfiguration) {
-        self.algosTransaction = algosTransaction
+    init(
+        algosTransactionSendDraft: AlgosTransactionSendDraft,
+        assetReceiverState: AssetReceiverState,
+        configuration: ViewControllerConfiguration
+    ) {
+        self.algosTransactionSendDraft = algosTransactionSendDraft
         super.init(assetReceiverState: assetReceiverState, configuration: configuration)
         
-        fee = algosTransaction.fee
-        transactionController?.setTransactionDraft(algosTransaction)
+        fee = algosTransactionSendDraft.fee
+        transactionController?.setTransactionDraft(algosTransactionSendDraft)
     }
     
     override func configureAppearance() {
         super.configureAppearance()
         title = "send-algos-title".localized
-        viewModel.configure(sendTransactionView, with: algosTransaction)
+        viewModel.configure(sendTransactionView, with: algosTransactionSendDraft)
     }
     
     override func completeTransaction(with id: TransactionID) {
-        algosTransaction.identifier = id.identifier
+        algosTransactionSendDraft.identifier = id.identifier
     }
 }

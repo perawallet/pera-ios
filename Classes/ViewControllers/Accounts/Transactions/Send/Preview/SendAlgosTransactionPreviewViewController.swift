@@ -87,14 +87,14 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
         composeTransactionData()
     }
     
-    override func transactionControllerDidComposedAlgoTransactionData(
+    override func transactionControllerDidComposedAlgosTransactionData(
         _ transactionController: TransactionController,
-        forTransaction draft: TransactionPreviewDraft?
+        forTransaction draft: AlgosTransactionSendDraft?
     ) {
         guard let algosTransactionDraft = draft else {
             return
         }
-        open(.sendAlgosTransaction(algosTransactionDraft: algosTransactionDraft, receiver: assetReceiverState), by: .push)
+        open(.sendAlgosTransaction(algosTransactionSendDraft: algosTransactionDraft, receiver: assetReceiverState), by: .push)
     }
     
     override func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, then handler: EmptyHandler?) {
@@ -234,47 +234,37 @@ extension SendAlgosTransactionPreviewViewController {
                     self.displaySimpleAlertWith(title: "title-error".localized, message: error.localizedDescription)
                 case let .success(account):
                     if account.amount == 0 {
-                        self.displaySimpleAlertWith(title: "title-error".localized,
-                                                    message: "send-algos-minimum-amount-error-new-account".localized)
+                        self.displaySimpleAlertWith(
+                            title: "title-error".localized,
+                            message: "send-algos-minimum-amount-error-new-account".localized
+                        )
                     } else {
-                        let transaction = TransactionPreviewDraft(
-                            fromAccount: selectedAccount,
-                            amount: self.amount,
-                            identifier: nil,
-                            fee: nil,
-                            isMaxTransaction: self.isMaxTransaction
-                        )
-                        
-                        guard let account = self.getReceiverAccount(),
-                            let transactionController = self.transactionController else {
-                            return
-                        }
-                               
-                        transactionController.setTransactionDraft(transaction)
-                        transactionController.composeAlgoTransactionData(
-                            for: account,
-                            isMaxValue: self.isMaxTransaction
-                        )
+                        self.composeAlgosTransactionData(for: selectedAccount)
                     }
                 }
             }
             return
         } else {
-            let transaction = TransactionPreviewDraft(
-                fromAccount: selectedAccount,
-                amount: amount,
-                identifier: nil,
-                fee: nil,
-                isMaxTransaction: isMaxTransaction
-            )
-                   
-            guard let account = getReceiverAccount(),
-                let transactionController = transactionController else {
-                return
-            }
-                   
-            transactionController.setTransactionDraft(transaction)
-            transactionController.composeAlgoTransactionData(for: account, isMaxValue: isMaxTransaction)
+            composeAlgosTransactionData(for: selectedAccount)
         }
+    }
+    
+    private func composeAlgosTransactionData(for selectedAccount: Account) {
+        guard let account = getReceiverAccount(),
+            let transactionController = transactionController else {
+            return
+        }
+        
+        let transactionDraft = AlgosTransactionSendDraft(
+            from: selectedAccount,
+            toAccount: account.address,
+            amount: amount,
+            fee: nil,
+            isMaxTransaction: isMaxTransaction,
+            identifier: nil
+        )
+        
+        transactionController.setTransactionDraft(transactionDraft)
+        transactionController.composeAlgosTransactionData()
     }
 }

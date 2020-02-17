@@ -10,33 +10,37 @@ import UIKit
 
 class SendAssetTransactionViewController: SendTransactionViewController {
     
-    private var assetTransaction: AssetTransactionDraft
+    private var assetTransactionSendDraft: AssetTransactionSendDraft
     private let viewModel = SendAssetTransactionViewModel()
     
-    init(assetTransaction: AssetTransactionDraft, assetReceiverState: AssetReceiverState, configuration: ViewControllerConfiguration) {
-        self.assetTransaction = assetTransaction
+    init(
+        assetTransactionSendDraft: AssetTransactionSendDraft,
+        assetReceiverState: AssetReceiverState,
+        configuration: ViewControllerConfiguration
+    ) {
+        self.assetTransactionSendDraft = assetTransactionSendDraft
         super.init(assetReceiverState: assetReceiverState, configuration: configuration)
         
-        fee = assetTransaction.fee
-        transactionController?.setAssetTransactionDraft(assetTransaction)
+        fee = assetTransactionSendDraft.fee
+        transactionController?.setAssetTransactionDraft(assetTransactionSendDraft)
     }
     
     override func configureAppearance() {
         super.configureAppearance()
         setTitle()
-        viewModel.configure(sendTransactionView, with: assetTransaction)
+        viewModel.configure(sendTransactionView, with: assetTransactionSendDraft)
     }
     
     override func completeTransaction(with id: TransactionID) {
-        assetTransaction.identifier = id.identifier
-        delegate?.sendTransactionViewController(self, didCompleteTransactionFor: assetTransaction.assetIndex)
+        assetTransactionSendDraft.identifier = id.identifier
+        delegate?.sendTransactionViewController(self, didCompleteTransactionFor: assetTransactionSendDraft.assetIndex)
     }
 }
 
 extension SendAssetTransactionViewController {
     private func setTitle() {
-        guard let assetIndex = assetTransaction.assetIndex,
-            let assetDetail = assetTransaction.fromAccount.assetDetails.first(where: { $0.id == assetIndex }) else {
+        guard let assetIndex = assetTransactionSendDraft.assetIndex,
+            let assetDetail = assetTransactionSendDraft.from.assetDetails.first(where: { $0.id == assetIndex }) else {
             return
         }
         title = "title-send-lowercased".localized + " \(assetDetail.getDisplayNames().0)"

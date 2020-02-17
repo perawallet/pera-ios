@@ -79,14 +79,14 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
     
     func updateSelectedAccountForSender(_ account: Account) { }
     
-    func transactionControllerDidComposedAlgoTransactionData(
+    func transactionControllerDidComposedAlgosTransactionData(
         _ transactionController: TransactionController,
-        forTransaction draft: TransactionPreviewDraft?
+        forTransaction draft: AlgosTransactionSendDraft?
     ) { }
     
     func transactionControllerDidComposedAssetTransactionData(
         _ transactionController: TransactionController,
-        forTransaction draft: AssetTransactionDraft?
+        forTransaction draft: AssetTransactionSendDraft?
     ) { }
     
     func displayTransactionPreview() { }

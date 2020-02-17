@@ -65,7 +65,7 @@ extension SendTransactionViewController {
 extension SendTransactionViewController: SendTransactionViewDelegate {
     func sendTransactionViewDidTapSendButton(_ sendTransactionView: SendTransactionView) {
         SVProgressHUD.show(withStatus: "title-loading".localized)
-        transactionController?.completeTransaction()
+        transactionController?.sendTransaction()
     }
 }
 
