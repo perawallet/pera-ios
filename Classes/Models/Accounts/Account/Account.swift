@@ -36,10 +36,11 @@ class Account: Model {
         assetDetails = try container.decodeIfPresent([AssetDetail].self, forKey: .assetDetails) ?? []
     }
     
-    init(address: String) {
+    init(address: String, name: String? = nil) {
         self.address = address
         amount = 0
         status = .offline
+        self.name = name
     }
 }
 
