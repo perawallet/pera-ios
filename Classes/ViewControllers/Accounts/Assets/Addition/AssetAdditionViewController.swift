@@ -30,7 +30,7 @@ class AssetAdditionViewController: BaseViewController {
     private var searchOffset = 0
     private var hasNext = false
     private let paginationRequestOffset = 3
-    private var assetSearchStatus = AssetSearchStatus.verified
+    private var assetSearchFilters = AssetSearchFilter.verified
     
     private lazy var assetAdditionView = AssetAdditionView()
     
@@ -86,7 +86,7 @@ extension AssetAdditionViewController {
 
 extension AssetAdditionViewController {
     private func fetchAssets(with query: String?, isPaginated: Bool) {
-        let searchDraft = AssetSearchQuery(status: assetSearchStatus, query: query, limit: searchLimit, offset: searchOffset)
+        let searchDraft = AssetSearchQuery(status: assetSearchFilters, query: query, limit: searchLimit, offset: searchOffset)
         api?.searchAssets(with: searchDraft) { [weak self] response in
             switch response {
             case let .success(searchResults):
@@ -190,18 +190,26 @@ extension AssetAdditionViewController: UICollectionViewDelegateFlowLayout {
 }
 
 extension AssetAdditionViewController: AssetAdditionViewDelegate {
-    func assetAdditionViewDidTapButton(_ assetAdditionView: AssetAdditionView, didTapButtonFor status: AssetSearchStatus) {
-        if assetSearchStatus.canToggle(for: status) {
-            assetSearchStatus.toggle(for: status)
-            viewModel.update(assetAdditionView, with: assetSearchStatus)
-            clearPagination()
-            
-            if let query = assetAdditionView.assetInputView.inputTextField.text, !query.isEmpty {
-                fetchAssets(with: query, isPaginated: false)
-            } else {
-                fetchAssets(with: nil, isPaginated: false)
-            }
+    func assetAdditionViewDidTapVerifiedAssetsButton(_ assetAdditionView: AssetAdditionView) {
+        updateFilteringOptions(with: .verified)
+        
+    }
+    
+    func assetAdditionViewDidTapUnverifiedAssetsButton(_ assetAdditionView: AssetAdditionView) {
+        updateFilteringOptions(with: .unverified)
+    }
+    
+    private func updateFilteringOptions(with filterOption: AssetSearchFilter) {
+        if !assetSearchFilters.canToggle(filterOption) {
+            return
         }
+        
+        assetSearchFilters.toggle(filterOption)
+        viewModel.update(assetAdditionView, with: assetSearchFilters)
+        resetPagination()
+        
+        let query = assetAdditionView.assetInputView.inputTextField.text
+        fetchAssets(with: query, isPaginated: false)
     }
 }
 
@@ -214,11 +222,11 @@ extension AssetAdditionViewController: InputViewDelegate {
         guard let query = assetAdditionView.assetInputView.inputTextField.text else {
             return
         }
-        clearPagination()
+        resetPagination()
         fetchAssets(with: query, isPaginated: false)
     }
     
-    private func clearPagination() {
+    private func resetPagination() {
         hasNext = false
         searchOffset = 0
     }

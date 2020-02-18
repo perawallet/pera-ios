@@ -8,10 +8,6 @@
 
 import UIKit
 
-protocol AssetAdditionViewDelegate: class {
-    func assetAdditionViewDidTapButton(_ assetAdditionView: AssetAdditionView, didTapButtonFor status: AssetSearchStatus)
-}
-
 class AssetAdditionView: BaseView {
     
     weak var delegate: AssetAdditionViewDelegate?
@@ -32,7 +28,7 @@ class AssetAdditionView: BaseView {
         return assetInputView
     }()
     
-    private(set) lazy var verifiedAssetsButton: UIButton = {
+    private lazy var verifiedAssetsButton: UIButton = {
         let button = UIButton(type: .custom)
             .withTitleColor(.white)
             .withTitle("asset-verified-title".localized)
@@ -42,7 +38,7 @@ class AssetAdditionView: BaseView {
         return button
     }()
     
-    private(set) lazy var unverifiedAssetsButton: UIButton = {
+    private lazy var unverifiedAssetsButton: UIButton = {
         let button = UIButton(type: .custom)
             .withTitleColor(.white)
             .withTitle("asset-unverified-title".localized)
@@ -68,8 +64,8 @@ class AssetAdditionView: BaseView {
     private lazy var contentStateView = ContentStateView()
     
     override func linkInteractors() {
-        verifiedAssetsButton.addTarget(self, action: #selector(notifyDelegateToVerifiedAssetsButtonTapped), for: .touchUpInside)
-        unverifiedAssetsButton.addTarget(self, action: #selector(notifyDelegateToUnverifiedAssetsButtonTapped), for: .touchUpInside)
+        verifiedAssetsButton.addTarget(self, action: #selector(notifyDelegateToFilterVerifyAssets), for: .touchUpInside)
+        unverifiedAssetsButton.addTarget(self, action: #selector(notifyDelegateToFilterUnverifiedAssets), for: .touchUpInside)
     }
     
     override func prepareLayout() {
@@ -82,13 +78,13 @@ class AssetAdditionView: BaseView {
 
 extension AssetAdditionView {
     @objc
-    private func notifyDelegateToVerifiedAssetsButtonTapped() {
-        delegate?.assetAdditionViewDidTapButton(self, didTapButtonFor: .verified)
+    private func notifyDelegateToFilterVerifyAssets() {
+        delegate?.assetAdditionViewDidTapVerifiedAssetsButton(self)
     }
     
     @objc
-    private func notifyDelegateToUnverifiedAssetsButtonTapped() {
-        delegate?.assetAdditionViewDidTapButton(self, didTapButtonFor: .unverified)
+    private func notifyDelegateToFilterUnverifiedAssets() {
+        delegate?.assetAdditionViewDidTapUnverifiedAssetsButton(self)
     }
 }
 
@@ -136,12 +132,12 @@ extension AssetAdditionView {
 }
 
 extension AssetAdditionView {
-    func set(button: UIButton, selected isSelected: Bool) {
-        if button == verifiedAssetsButton {
-            button.backgroundColor = isSelected ? Colors.verifiedButtonColor : Colors.verifiedButtonColor.withAlphaComponent(0.3)
-        } else {
-            button.backgroundColor = isSelected ? SharedColors.purple : SharedColors.purple.withAlphaComponent(0.3)
-        }
+    func setVerifiedAssetsButton(selected isSelected: Bool) {
+        verifiedAssetsButton.backgroundColor = isSelected ? Colors.verifiedButtonColor : Colors.verifiedButtonColor.withAlphaComponent(0.3)
+    }
+    
+    func setUnverifiedAssetsButton(selected isSelected: Bool) {
+        unverifiedAssetsButton.backgroundColor = isSelected ? SharedColors.purple : SharedColors.purple.withAlphaComponent(0.3)
     }
 }
 
@@ -161,4 +157,9 @@ extension AssetAdditionView {
         static let placeholderColor = rgba(0.67, 0.67, 0.72, 0.3)
         static let verifiedButtonColor = rgb(0.29, 0.42, 0.87)
     }
+}
+
+protocol AssetAdditionViewDelegate: class {
+    func assetAdditionViewDidTapVerifiedAssetsButton(_ assetAdditionView: AssetAdditionView)
+    func assetAdditionViewDidTapUnverifiedAssetsButton(_ assetAdditionView: AssetAdditionView)
 }

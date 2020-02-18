@@ -14,19 +14,8 @@ class AssetAdditionViewModel {
         cell.contextView.detailLabel.text = "\(assetSearchResult.id)"
     }
     
-    func update(_ view: AssetAdditionView, with status: AssetSearchStatus) {
-        switch status {
-        case .all:
-            view.set(button: view.verifiedAssetsButton, selected: true)
-            view.set(button: view.unverifiedAssetsButton, selected: true)
-        case .verified:
-            view.set(button: view.verifiedAssetsButton, selected: true)
-            view.set(button: view.unverifiedAssetsButton, selected: false)
-        case .unverified:
-            view.set(button: view.verifiedAssetsButton, selected: false)
-            view.set(button: view.unverifiedAssetsButton, selected: true)
-        default:
-            break
-        }
+    func update(_ view: AssetAdditionView, with filters: AssetSearchFilter) {
+        view.setVerifiedAssetsButton(selected: filters.contains(.verified))
+        view.setUnverifiedAssetsButton(selected: filters.contains(.unverified))
     }
 }
