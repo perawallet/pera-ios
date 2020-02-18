@@ -29,7 +29,7 @@ class AccountListViewModel {
                 
                 let codeText = " (\(assetDetail.getAssetCode()))".attributed([
                     .font(UIFont.font(.overpass, withWeight: .semiBold(size: 15.0))),
-                    .textColor(SharedColors.purple)
+                    .textColor(SharedColors.darkGray)
                 ])
                 cell.contextView.detailLabel.attributedText = amountText + codeText
             } else {

@@ -71,6 +71,11 @@ struct ALGBarButtonItem: BarButtonItem {
                 return ImageContent(normal: icon)
             }
             return nil
+        case .infoFilled:
+            if let icon = img("icon-info-filled") {
+                return ImageContent(normal: icon)
+            }
+            return nil
         }
     }
     
@@ -107,6 +112,8 @@ struct ALGBarButtonItem: BarButtonItem {
                 ),
                 height: .equal(44.0)
             )
+        case .infoFilled:
+            return .explicit(CGSize(width: 44.0, height: 44.0))
         }
     }
     
@@ -135,6 +142,7 @@ extension ALGBarButtonItem {
         case removeNode
         case save
         case qr
+        case infoFilled
     }
 }
 

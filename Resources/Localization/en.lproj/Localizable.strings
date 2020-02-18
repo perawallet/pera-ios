@@ -174,6 +174,8 @@
 "asset-support-add-title" = "You are about to receive an asset!";
 "asset-support-add-message" = "You are about to receive an asset to %@. Would you like to add this asset to this account to receive it?";
 "asset-id-copied-title" = "ID copied to clipboard";
+"asset-verified-title" = "Verified";
+"asset-unverified-title" = "Unverified";
 
 // MARK: Algos Send
 

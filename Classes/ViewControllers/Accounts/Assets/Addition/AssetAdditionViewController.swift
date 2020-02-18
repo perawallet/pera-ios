@@ -30,6 +30,7 @@ class AssetAdditionViewController: BaseViewController {
     private var searchOffset = 0
     private var hasNext = false
     private let paginationRequestOffset = 3
+    private var assetSearchFilters = AssetSearchFilter.verified
     
     private lazy var assetAdditionView = AssetAdditionView()
     
@@ -43,6 +44,13 @@ class AssetAdditionViewController: BaseViewController {
         hidesBottomBarWhenPushed = true
     }
     
+    override func configureNavigationBarAppearance() {
+        let infoBarButton = ALGBarButtonItem(kind: .infoFilled) { [weak self] in
+        }
+
+        rightBarButtonItems = [infoBarButton]
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         fetchAssets(with: nil, isPaginated: false)
@@ -54,6 +62,7 @@ class AssetAdditionViewController: BaseViewController {
     }
     
     override func setListeners() {
+        assetAdditionView.delegate = self
         assetAdditionView.assetInputView.delegate = self
         assetAdditionView.assetsCollectionView.delegate = self
         assetAdditionView.assetsCollectionView.dataSource = self
@@ -77,7 +86,8 @@ extension AssetAdditionViewController {
 
 extension AssetAdditionViewController {
     private func fetchAssets(with query: String?, isPaginated: Bool) {
-        api?.searchAssets(with: AssetSearchQuery(query: query, limit: searchLimit, offset: searchOffset)) { [weak self] response in
+        let searchDraft = AssetSearchQuery(status: assetSearchFilters, query: query, limit: searchLimit, offset: searchOffset)
+        api?.searchAssets(with: searchDraft) { [weak self] response in
             switch response {
             case let .success(searchResults):
                 guard let strongSelf = self else {
@@ -179,6 +189,30 @@ extension AssetAdditionViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
+extension AssetAdditionViewController: AssetAdditionViewDelegate {
+    func assetAdditionViewDidTapVerifiedAssetsButton(_ assetAdditionView: AssetAdditionView) {
+        updateFilteringOptions(with: .verified)
+        
+    }
+    
+    func assetAdditionViewDidTapUnverifiedAssetsButton(_ assetAdditionView: AssetAdditionView) {
+        updateFilteringOptions(with: .unverified)
+    }
+    
+    private func updateFilteringOptions(with filterOption: AssetSearchFilter) {
+        if !assetSearchFilters.canToggle(filterOption) {
+            return
+        }
+        
+        assetSearchFilters.toggle(filterOption)
+        viewModel.update(assetAdditionView, with: assetSearchFilters)
+        resetPagination()
+        
+        let query = assetAdditionView.assetInputView.inputTextField.text
+        fetchAssets(with: query, isPaginated: false)
+    }
+}
+
 extension AssetAdditionViewController: InputViewDelegate {
     func inputViewDidReturn(inputView: BaseInputView) {
         view.endEditing(true)
@@ -188,9 +222,13 @@ extension AssetAdditionViewController: InputViewDelegate {
         guard let query = assetAdditionView.assetInputView.inputTextField.text else {
             return
         }
+        resetPagination()
+        fetchAssets(with: query, isPaginated: false)
+    }
+    
+    private func resetPagination() {
         hasNext = false
         searchOffset = 0
-        fetchAssets(with: query, isPaginated: false)
     }
 }
 
