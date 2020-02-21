@@ -213,6 +213,15 @@ extension Session {
         accounts[index].update(with: account)
         NotificationCenter.default.post(name: .AccountUpdate, object: self, userInfo: ["account": accounts[index]])
     }
+    
+    func removeAccount(_ account: Account) {
+        guard let index = index(of: account) else {
+            return
+        }
+        
+        accounts.remove(at: index)
+        NotificationCenter.default.post(name: .AccountUpdate, object: self)
+    }
 }
 
 extension Session {

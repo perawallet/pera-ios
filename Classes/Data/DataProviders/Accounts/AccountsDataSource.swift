@@ -237,12 +237,11 @@ extension AccountsDataSource {
             }
             
             for (index, assetDetail) in addedAssets.enumerated() where assetDetail.isRecentlyAdded {
-                if accounts[accountIndex].assetDetails.contains(assetDetail) {
-                    var filteredAssets = addedAssets
-                    filteredAssets.remove(at: index)
-                    addedAssetDetails[addedAccount] = filteredAssets
-                    break
-                }
+                var filteredAssets = addedAssets
+                filteredAssets.remove(at: index)
+                addedAssetDetails[addedAccount] = filteredAssets
+                accounts[accountIndex].assetDetails.append(assetDetail)
+                break
             }
         }
     }
