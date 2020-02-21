@@ -28,10 +28,6 @@ class IntroductionViewController: BaseViewController {
     override func configureAppearance() {
         super.configureAppearance()
         view.backgroundColor = .white
-        
-        if mode == .new {
-            introductionView.welcomeLabel.isHidden = true
-        }
     }
     
     override func prepareLayout() {

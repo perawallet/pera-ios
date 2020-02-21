@@ -2,7 +2,21 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "bg-main-button.pdf"
+      "filename" : "bg-main-button.pdf",
+      "resizing" : {
+        "mode" : "9-part",
+        "center" : {
+          "mode" : "tile",
+          "width" : 1,
+          "height" : 1
+        },
+        "cap-insets" : {
+          "bottom" : 25,
+          "top" : 24,
+          "right" : 25,
+          "left" : 25
+        }
+      }
     }
   ],
   "info" : {
