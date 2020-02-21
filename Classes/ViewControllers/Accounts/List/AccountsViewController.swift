@@ -227,11 +227,7 @@ extension AccountsViewController {
     }
     
     private func setAccountsCollectionViewContentState() {
-        if accountsDataSource.accounts.isEmpty {
-            accountsView.accountsCollectionView.contentState = .empty(noConnectionView)
-        } else {
-            accountsView.accountsCollectionView.contentState = .none
-        }
+        accountsView.accountsCollectionView.contentState = accountsDataSource.accounts.isEmpty ? .empty(noConnectionView) : .none
     }
 }
 

@@ -104,7 +104,6 @@ extension AccountsViewController: OptionsViewControllerDelegate {
                 
                 self.session?.removeAccount(account)
                 user.removeAccount(accountInformation)
-                UIApplication.shared.accountManager?.user = self.session?.applicationConfiguration?.authenticatedUser()
                 
                 guard !user.accounts.isEmpty else {
                     self.session?.reset()
