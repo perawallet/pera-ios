@@ -10,6 +10,8 @@ import UIKit
 
 class AccountsView: BaseView {
     
+    private lazy var contentStateView = ContentStateView()
+    
     private(set) lazy var accountsCollectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .vertical
@@ -48,5 +50,7 @@ extension AccountsView {
         accountsCollectionView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+        
+        accountsCollectionView.backgroundView = contentStateView
     }
 }

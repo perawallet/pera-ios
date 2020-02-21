@@ -102,6 +102,8 @@ extension AccountManager {
             case .failure:
                 if let round = self.currentRound {
                     self.currentRound = round + 1
+                } else {
+                    self.currentRound = 0
                 }
             case let .success(params):
                 self.currentRound = params.lastRound

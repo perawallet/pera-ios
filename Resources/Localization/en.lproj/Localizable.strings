@@ -176,6 +176,8 @@
 "asset-id-copied-title" = "ID copied to clipboard";
 "asset-verified-title" = "Verified";
 "asset-unverified-title" = "Unverified";
+"asset-support-your-add-title" = "Your accounts do not contain this asset";
+"asset-support-your-add-message" = "Please add this asset and try again.";
 
 // MARK: Algos Send
 
