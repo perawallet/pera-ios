@@ -36,6 +36,7 @@ class AccountsViewController: BaseViewController {
     }()
     
     private(set) lazy var accountsView = AccountsView()
+    private lazy var noConnectionView = NoInternetConnectionView()
     private lazy var refreshControl = UIRefreshControl()
     
     private(set) var selectedAccount: Account?
@@ -104,6 +105,8 @@ class AccountsViewController: BaseViewController {
         
         pushNotificationController.requestAuthorization()
         pushNotificationController.registerDevice()
+        
+        setAccountsCollectionViewContentState()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -195,12 +198,14 @@ extension AccountsViewController {
     @objc
     fileprivate func didUpdateAuthenticatedUser(notification: Notification) {
         accountsDataSource.reload()
+        setAccountsCollectionViewContentState()
         accountsView.accountsCollectionView.reloadData()
     }
     
     @objc
     private func didRefreshList() {
         accountsDataSource.refresh()
+        setAccountsCollectionViewContentState()
         accountsView.accountsCollectionView.reloadData()
         if refreshControl.isRefreshing {
             refreshControl.endRefreshing()
@@ -219,6 +224,10 @@ extension AccountsViewController {
         let optionsViewController = open(.options(account: account), by: transitionStyle) as? OptionsViewController
         
         optionsViewController?.delegate = self
+    }
+    
+    private func setAccountsCollectionViewContentState() {
+        accountsView.accountsCollectionView.contentState = accountsDataSource.accounts.isEmpty ? .empty(noConnectionView) : .none
     }
 }
 
@@ -254,12 +263,12 @@ extension AccountsViewController: QRScannerViewControllerDelegate {
                     account: nil,
                     assetIndex: assetId,
                     assetDetail: nil,
-                    title: "asset-support-title".localized,
-                    detail: "asset-support-error".localized,
+                    title: "asset-support-your-add-title".localized,
+                    detail: "asset-support-your-add-message".localized,
                     actionTitle: "title-ok".localized
                 )
                 
-                open(
+                tabBarController?.open(
                     .assetSupportAlert(assetAlertDraft: assetAlertDraft),
                     by: .customPresentWithoutNavigationController(
                         presentationStyle: .overCurrentContext,

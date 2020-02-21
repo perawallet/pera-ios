@@ -9,7 +9,6 @@
 import Foundation
 
 class AccountManager {
-    var user: User?
     let api: API
     var currentRound: Int64?
     let queue: OperationQueue
@@ -44,7 +43,7 @@ extension AccountManager {
             completion?()
         }
         
-        guard let userAccounts = user?.accounts else {
+        guard let userAccounts = api.session.authenticatedUser?.accounts else {
             queue.addOperation(completionOperation)
             return
         }
@@ -100,9 +99,7 @@ extension AccountManager {
         api.getTransactionParams { response in
             switch response {
             case .failure:
-                if let round = self.currentRound {
-                    self.currentRound = round + 1
-                }
+                self.currentRound = self.currentRound.map { $0 + 1 } ?? 0
             case let .success(params):
                 self.currentRound = params.lastRound
             }

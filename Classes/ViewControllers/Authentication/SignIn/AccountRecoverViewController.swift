@@ -16,12 +16,10 @@ class AccountRecoverViewController: BaseScrollViewController {
     private var keyboardController = KeyboardController()
     
     private lazy var accountManager: AccountManager? = {
-        guard let api = self.api,
-            let user = session?.authenticatedUser  else {
-                return nil
+        guard let api = self.api else {
+            return nil
         }
         let manager = AccountManager(api: api)
-        manager.user = user
         return manager
     }()
     
@@ -109,7 +107,6 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
         
         session?.addAccount(Account(address: account.address, name: account.name))
         session?.authenticatedUser = user
-        accountManager?.user = user
         
         view.endEditing(true)
         

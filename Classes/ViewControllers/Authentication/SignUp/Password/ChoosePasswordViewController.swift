@@ -32,12 +32,10 @@ class ChoosePasswordViewController: BaseViewController {
     
     private lazy var accountManager: AccountManager? = {
         guard let api = self.api,
-            let user = session?.authenticatedUser,
             mode == .login else {
             return nil
         }
         let manager = AccountManager(api: api)
-        manager.user = user
         return manager
     }()
     
@@ -51,7 +49,9 @@ class ChoosePasswordViewController: BaseViewController {
     }
     
     override func didTapBackBarButton() -> Bool {
-        session?.reset()
+        if mode == .setup {
+            session?.reset()
+        }
         return true
     }
     

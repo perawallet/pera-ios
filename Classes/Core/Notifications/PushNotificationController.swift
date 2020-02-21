@@ -202,7 +202,7 @@ extension PushNotificationController {
                     } else {
                         message = String(
                             format: "notification-received".localized,
-                            "\(amount.toAlgos) Algos",
+                            "\(amount.toAlgos.toDecimalStringForLabel ?? "") Algos",
                             receiverAccount.name,
                             results.first?.name ?? senderAddress
                         )
@@ -225,7 +225,7 @@ extension PushNotificationController {
                     } else {
                         message = String(
                             format: "notification-received".localized,
-                            "\(amount.toAlgos) Algos",
+                            "\(amount.toAlgos.toDecimalStringForLabel ?? "") Algos",
                             receiverAccount.name,
                             senderAddress
                         )

@@ -483,6 +483,8 @@
 		2B56714523F9FF720037FCFA /* AssetDetailViewController+ScrollAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B56714323F9FF720037FCFA /* AssetDetailViewController+ScrollAnimation.swift */; };
 		2B56714823FABB550037FCFA /* AssetSearchFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B56714723FABB550037FCFA /* AssetSearchFilter.swift */; };
 		2B56714923FABB550037FCFA /* AssetSearchFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B56714723FABB550037FCFA /* AssetSearchFilter.swift */; };
+		2B56714B23FF42870037FCFA /* NoInternetConnectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B56714A23FF42870037FCFA /* NoInternetConnectionView.swift */; };
+		2B56714C23FF42870037FCFA /* NoInternetConnectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B56714A23FF42870037FCFA /* NoInternetConnectionView.swift */; };
 		2B56F7D6225B3C1D00E58737 /* SendTransactionPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B56F7D5225B3C1D00E58737 /* SendTransactionPreviewViewController.swift */; };
 		2B56F7D8225B3C4200E58737 /* RequestTransactionPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B56F7D7225B3C4200E58737 /* RequestTransactionPreviewViewController.swift */; };
 		2B56F7DA225B45B300E58737 /* SendTransactionPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B56F7D9225B45B300E58737 /* SendTransactionPreviewView.swift */; };
@@ -949,6 +951,7 @@
 		2B56714023F7E87A0037FCFA /* TransactionSendDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionSendDraft.swift; sourceTree = "<group>"; };
 		2B56714323F9FF720037FCFA /* AssetDetailViewController+ScrollAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AssetDetailViewController+ScrollAnimation.swift"; sourceTree = "<group>"; };
 		2B56714723FABB550037FCFA /* AssetSearchFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetSearchFilter.swift; sourceTree = "<group>"; };
+		2B56714A23FF42870037FCFA /* NoInternetConnectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoInternetConnectionView.swift; sourceTree = "<group>"; };
 		2B56F7D5225B3C1D00E58737 /* SendTransactionPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendTransactionPreviewViewController.swift; sourceTree = "<group>"; };
 		2B56F7D7225B3C4200E58737 /* RequestTransactionPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestTransactionPreviewViewController.swift; sourceTree = "<group>"; };
 		2B56F7D9225B45B300E58737 /* SendTransactionPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendTransactionPreviewView.swift; sourceTree = "<group>"; };
@@ -3521,6 +3524,7 @@
 			children = (
 				2BDE9CCF224E1A60007EFF30 /* EmptyStateView.swift */,
 				2BDE9CD6224E2082007EFF30 /* ContentStateView.swift */,
+				2B56714A23FF42870037FCFA /* NoInternetConnectionView.swift */,
 			);
 			path = List;
 			sourceTree = "<group>";
@@ -4429,6 +4433,7 @@
 				2B7ABF78233388570050B64B /* PendingTransactionList.swift in Sources */,
 				17BD4EB22292F1260003E49A /* Transaction.swift in Sources */,
 				2B02536F23C6101A003D5FDD /* QRAlertView.swift in Sources */,
+				2B56714C23FF42870037FCFA /* NoInternetConnectionView.swift in Sources */,
 				17BD4EB32292F1260003E49A /* UIFont+Additions.swift in Sources */,
 				17BD4EB42292F1260003E49A /* AccountListView.swift in Sources */,
 				17BD4EB62292F1260003E49A /* AppConfiguration.swift in Sources */,
@@ -4806,6 +4811,7 @@
 				2BB021DB224E46D60039D78A /* Transaction.swift in Sources */,
 				179278952244F8EE00097D32 /* UIFont+Additions.swift in Sources */,
 				2B656E97224BB9F80064A49B /* AccountListView.swift in Sources */,
+				2B56714B23FF42870037FCFA /* NoInternetConnectionView.swift in Sources */,
 				2B7ABF77233388570050B64B /* PendingTransactionList.swift in Sources */,
 				2BF34CA02239ACDC0052CAD3 /* AppConfiguration.swift in Sources */,
 				2B02536E23C6101A003D5FDD /* QRAlertView.swift in Sources */,
