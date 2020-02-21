@@ -145,6 +145,7 @@ class TransactionDetailViewModel {
         case .completed:
             view.transactionStatusView.detailLabel.textColor = SharedColors.purple
             view.transactionStatusView.pendingSpinnerView.stop()
+            view.lastRoundView.isHidden = false
         case .pending:
             view.transactionStatusView.pendingSpinnerView.show()
             view.lastRoundView.isHidden = true
