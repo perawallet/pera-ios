@@ -54,6 +54,7 @@
 "introduction-create-title" = "CREATE ACCOUNT";
 "introduction-welcome-title" = "Welcome to the\nBorderless Economy";
 "introduction-has-account" = "Already have an account?";
+"introduction-title-pair-ledger" = "PAIR LEDGER ACCOUNT";
 
 // MARK: Password Setting
 

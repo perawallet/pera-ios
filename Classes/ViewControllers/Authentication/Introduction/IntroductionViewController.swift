@@ -51,10 +51,6 @@ extension IntroductionViewController {
 }
 
 extension IntroductionViewController: IntroductionViewDelegate {
-    func introductionViewDidTapCloseButton(_ introductionView: IntroductionView) {
-        dismissScreen()
-    }
-    
     func introductionViewDidTapCreateAccountButton(_ introductionView: IntroductionView) {
         switch mode {
         case .initialize:
@@ -64,7 +60,15 @@ extension IntroductionViewController: IntroductionViewDelegate {
         }
     }
     
+    func introductionViewDidTapPairLedgerAccountButton(_ introductionView: IntroductionView) {
+        
+    }
+    
     func introductionViewDidTapRecoverButton(_ introductionView: IntroductionView) {
         open(.accountRecover(mode: mode), by: .push)
+    }
+    
+    func introductionViewDidTapCloseButton(_ introductionView: IntroductionView) {
+        dismissScreen()
     }
 }
