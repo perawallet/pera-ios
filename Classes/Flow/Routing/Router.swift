@@ -307,6 +307,8 @@ class Router {
             viewController = AssetListViewController(account: account, configuration: configuration)
         case .verifiedAssetInformation:
             viewController = VerifiedAssetInformationViewController(configuration: configuration)
+        case .ledgerTutorial:
+            viewController = LedgerTutorialViewController(configuration: configuration)
         }
         
         return viewController as? T

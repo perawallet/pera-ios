@@ -363,6 +363,7 @@
 "reward-list-title" = "Reward";
 
 // MARK: Notifications
+
 "notifications-title" = "Notifications";
 "notification-sent-success" = "Your transaction of %@ from %@ to %@ is complete.";
 "notification-sent-failed" = "Your transaction of %@ from %@ to %@ has failed.";
@@ -375,3 +376,13 @@
 "verified-asset-information-text" = "For certain assets in which Algorand Inc. has a relationship with the asset’s issuer, we mark those assets as “Verified” (which is denoted by a [blue checkmark] symbol).\n\nThis helps to serve as a secondary defense against mistakenly transacting with an unintended asset.\n\nThat being said, you should always double check that the asset’s ID is the one that you intended to choose before transacting with that asset.\n\nIf you have questions about the verification process or general feedback about the app, we encourage you to contact us";
 "verified-asset-double-check" = "always double check";
 "verified-asset-information-contact-us" = "contact us";
+
+// MARK: Ledger Tutorial
+
+"ledger-pair-title" = "Pair Ledger Device";
+"ledger-tutorial-title-text" = "Follow the steps below to add\nLedger Account";
+"ledger-tutorial-turned-on" = "Make sure you Ledger device is turned on.";
+"ledger-tutorial-install-app" = "Install the Algorand app onto your Ledger.";
+"ledger-tutorial-open-app" = "Open the Algorand app on your Ledger.";
+"ledger-tutorial-bluetooth" = "Turn your phones bluethooth on.";
+"ledger-search-button-title" = "SEARCH FOR LEDGER";

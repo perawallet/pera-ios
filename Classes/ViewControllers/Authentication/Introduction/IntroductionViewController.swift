@@ -61,7 +61,7 @@ extension IntroductionViewController: IntroductionViewDelegate {
     }
     
     func introductionViewDidTapPairLedgerAccountButton(_ introductionView: IntroductionView) {
-        
+        open(.ledgerTutorial, by: .push)
     }
     
     func introductionViewDidTapRecoverButton(_ introductionView: IntroductionView) {

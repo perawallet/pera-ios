@@ -51,6 +51,7 @@ indirect enum Screen {
     case rewardDetail(account: Account)
     case assetList(account: Account)
     case verifiedAssetInformation
+    case ledgerTutorial
 }
 
 extension Screen {
