@@ -387,6 +387,16 @@
 "ledger-tutorial-bluetooth" = "Turn your phones bluethooth on.";
 "ledger-search-button-title" = "SEARCH FOR LEDGER";
 
+// MARK: Ledger Troubleshooting
+
+"ledger-troubleshooting-title" = "Advanced Troubleshooting";
+"ledger-troubleshooting-close-others" = "Close other applications (Ledger apps, crypto wallets, or anything that might be trying to pair with the ledger.)";
+"ledger-troubleshooting-restart" = "Restart the Algorand Wallet and/or your device.";
+"ledger-troubleshooting-app-support" = "For help installing the Algorand Ledger app onto your device, visit %@";
+"ledger-troubleshooting-ledger-support" = "For general troubleshooting of the ledger device, please visit ";
+"ledger-troubleshooting-ledger-support-title" = "Ledger Support.";
+
+
 // MARK: Ledger Pairing
 
 "ledger-pairing-name-title" = "Name Account";

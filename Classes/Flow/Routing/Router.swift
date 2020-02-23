@@ -309,6 +309,8 @@ class Router {
             viewController = VerifiedAssetInformationViewController(configuration: configuration)
         case .ledgerTutorial:
             viewController = LedgerTutorialViewController(configuration: configuration)
+        case .ledgerTroubleshoot:
+            viewController = LedgerTroubleshootingViewController(configuration: configuration)
         case let .ledgerPairing(address):
             viewController = LedgerPairingViewController(address: address, configuration: configuration)
         }
