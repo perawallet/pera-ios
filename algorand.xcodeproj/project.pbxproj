@@ -2303,6 +2303,7 @@
 				2BB64BDE2402ABC700519981 /* Devices */,
 				2B5671672401F2060037FCFA /* Pairing */,
 				2B5671712402008E0037FCFA /* Troubleshooting */,
+				2B5671672401F2060037FCFA /* Pairing */,
 				2B56715D24008B360037FCFA /* Tutorial */,
 			);
 			path = Ledger;
