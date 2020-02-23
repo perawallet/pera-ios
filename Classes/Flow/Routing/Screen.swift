@@ -52,6 +52,7 @@ indirect enum Screen {
     case assetList(account: Account)
     case verifiedAssetInformation
     case ledgerTutorial
+    case ledgerPairing(address: String)
 }
 
 extension Screen {

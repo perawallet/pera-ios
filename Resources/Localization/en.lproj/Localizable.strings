@@ -386,3 +386,9 @@
 "ledger-tutorial-open-app" = "Open the Algorand app on your Ledger.";
 "ledger-tutorial-bluetooth" = "Turn your phones bluethooth on.";
 "ledger-search-button-title" = "SEARCH FOR LEDGER";
+
+// MARK: Ledger Pairing
+
+"ledger-pairing-name-title" = "Name Account";
+"ledger-pairing-key-title" = "Key:";
+"ledger-pairing-create-title" = "CREATE ACCOUNT";

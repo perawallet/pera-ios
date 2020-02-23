@@ -47,6 +47,6 @@ extension LedgerTutorialViewController {
 
 extension LedgerTutorialViewController: LedgerTutorialViewDelegate {
     func ledgerTutorialViewDidTapSearchButton(_ ledgerTutorialView: LedgerTutorialView) {
-        
+        open(.ledgerPairing(address: "YPIO7E6T4MGQYQ7GQ5LHXFPWIUDD74M45CZZQBQPT4MUMAFIOCRH"), by: .push)
     }
 }
