@@ -46,6 +46,7 @@ class AssetAdditionViewController: BaseViewController {
     
     override func configureNavigationBarAppearance() {
         let infoBarButton = ALGBarButtonItem(kind: .infoFilled) { [weak self] in
+            self?.open(.verifiedAssetInformation, by: .present)
         }
 
         rightBarButtonItems = [infoBarButton]

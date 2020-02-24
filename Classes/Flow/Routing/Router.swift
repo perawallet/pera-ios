@@ -305,6 +305,8 @@ class Router {
             viewController = RewardDetailViewController(account: account, configuration: configuration)
         case let .assetList(account):
             viewController = AssetListViewController(account: account, configuration: configuration)
+        case .verifiedAssetInformation:
+            viewController = VerifiedAssetInformationViewController(configuration: configuration)
         }
         
         return viewController as? T

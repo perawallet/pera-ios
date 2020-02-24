@@ -50,6 +50,7 @@ indirect enum Screen {
     case alert(mode: AlertViewController.Mode, alertConfigurator: AlertViewConfigurator)
     case rewardDetail(account: Account)
     case assetList(account: Account)
+    case verifiedAssetInformation
 }
 
 extension Screen {
