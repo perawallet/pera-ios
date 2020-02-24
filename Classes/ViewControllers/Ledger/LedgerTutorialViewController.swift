@@ -47,5 +47,6 @@ extension LedgerTutorialViewController {
 
 extension LedgerTutorialViewController: LedgerTutorialViewDelegate {
     func ledgerTutorialViewDidTapSearchButton(_ ledgerTutorialView: LedgerTutorialView) {
+        open(.ledgerDeviceList, by: .push)
     }
 }

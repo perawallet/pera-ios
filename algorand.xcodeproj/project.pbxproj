@@ -656,6 +656,16 @@
 		2BB64BD9240275DC00519981 /* LedgerTroubleshootingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB64BD7240275DC00519981 /* LedgerTroubleshootingViewModel.swift */; };
 		2BB64BDC240277A500519981 /* LedgerTroubleshootOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB64BDB240277A500519981 /* LedgerTroubleshootOption.swift */; };
 		2BB64BDD240277A500519981 /* LedgerTroubleshootOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB64BDB240277A500519981 /* LedgerTroubleshootOption.swift */; };
+		2BB64BE02402ABDD00519981 /* LedgerDeviceListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB64BDF2402ABDD00519981 /* LedgerDeviceListView.swift */; };
+		2BB64BE12402ABDD00519981 /* LedgerDeviceListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB64BDF2402ABDD00519981 /* LedgerDeviceListView.swift */; };
+		2BB64BE32402AC8400519981 /* LedgerDeviceListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB64BE22402AC8400519981 /* LedgerDeviceListViewController.swift */; };
+		2BB64BE42402AC8400519981 /* LedgerDeviceListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB64BE22402AC8400519981 /* LedgerDeviceListViewController.swift */; };
+		2BB64BE62402B47200519981 /* LedgerDeviceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB64BE52402B47200519981 /* LedgerDeviceView.swift */; };
+		2BB64BE72402B47200519981 /* LedgerDeviceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB64BE52402B47200519981 /* LedgerDeviceView.swift */; };
+		2BB64BE92402B47B00519981 /* LedgerDeviceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB64BE82402B47B00519981 /* LedgerDeviceCell.swift */; };
+		2BB64BEA2402B47B00519981 /* LedgerDeviceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB64BE82402B47B00519981 /* LedgerDeviceCell.swift */; };
+		2BB64BEC2402BBF600519981 /* LedgerDeviceListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB64BEB2402BBF600519981 /* LedgerDeviceListViewModel.swift */; };
+		2BB64BED2402BBF600519981 /* LedgerDeviceListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB64BEB2402BBF600519981 /* LedgerDeviceListViewModel.swift */; };
 		2BB6EE512392694800CF7874 /* Array+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB6EE502392694800CF7874 /* Array+Additions.swift */; };
 		2BB6EE522392694800CF7874 /* Array+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB6EE502392694800CF7874 /* Array+Additions.swift */; };
 		2BB6EE55239339D800CF7874 /* ContactAssetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB6EE54239339D800CF7874 /* ContactAssetView.swift */; };
@@ -1109,6 +1119,11 @@
 		2BB64BD3240273F600519981 /* LedgerTroubleshootingOptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerTroubleshootingOptionCell.swift; sourceTree = "<group>"; };
 		2BB64BD7240275DC00519981 /* LedgerTroubleshootingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerTroubleshootingViewModel.swift; sourceTree = "<group>"; };
 		2BB64BDB240277A500519981 /* LedgerTroubleshootOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerTroubleshootOption.swift; sourceTree = "<group>"; };
+		2BB64BDF2402ABDD00519981 /* LedgerDeviceListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerDeviceListView.swift; sourceTree = "<group>"; };
+		2BB64BE22402AC8400519981 /* LedgerDeviceListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerDeviceListViewController.swift; sourceTree = "<group>"; };
+		2BB64BE52402B47200519981 /* LedgerDeviceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerDeviceView.swift; sourceTree = "<group>"; };
+		2BB64BE82402B47B00519981 /* LedgerDeviceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerDeviceCell.swift; sourceTree = "<group>"; };
+		2BB64BEB2402BBF600519981 /* LedgerDeviceListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerDeviceListViewModel.swift; sourceTree = "<group>"; };
 		2BB6EE502392694800CF7874 /* Array+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Additions.swift"; sourceTree = "<group>"; };
 		2BB6EE54239339D800CF7874 /* ContactAssetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactAssetView.swift; sourceTree = "<group>"; };
 		2BB6EE57239339E400CF7874 /* ContactAssetCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactAssetCell.swift; sourceTree = "<group>"; };
@@ -2277,6 +2292,7 @@
 				2B5671562400751C0037FCFA /* LedgerTutorialViewController.swift */,
 				2B5671682401F2170037FCFA /* LedgerPairingViewController.swift */,
 				2B56716B240200510037FCFA /* LedgerTroubleshootingViewController.swift */,
+				2BB64BE22402AC8400519981 /* LedgerDeviceListViewController.swift */,
 			);
 			path = Ledger;
 			sourceTree = "<group>";
@@ -2284,6 +2300,7 @@
 		2B56715924007B210037FCFA /* Ledger */ = {
 			isa = PBXGroup;
 			children = (
+				2BB64BDE2402ABC700519981 /* Devices */,
 				2B5671672401F2060037FCFA /* Pairing */,
 				2B5671712402008E0037FCFA /* Troubleshooting */,
 				2B56715D24008B360037FCFA /* Tutorial */,
@@ -3117,6 +3134,7 @@
 			isa = PBXGroup;
 			children = (
 				2BB64BD7240275DC00519981 /* LedgerTroubleshootingViewModel.swift */,
+				2BB64BEB2402BBF600519981 /* LedgerDeviceListViewModel.swift */,
 			);
 			path = Ledger;
 			sourceTree = "<group>";
@@ -3127,6 +3145,16 @@
 				2BB64BDB240277A500519981 /* LedgerTroubleshootOption.swift */,
 			);
 			path = Ledger;
+			sourceTree = "<group>";
+		};
+		2BB64BDE2402ABC700519981 /* Devices */ = {
+			isa = PBXGroup;
+			children = (
+				2BB64BDF2402ABDD00519981 /* LedgerDeviceListView.swift */,
+				2BB64BE52402B47200519981 /* LedgerDeviceView.swift */,
+				2BB64BE82402B47B00519981 /* LedgerDeviceCell.swift */,
+			);
+			path = Devices;
 			sourceTree = "<group>";
 		};
 		2BB6EE4F2392693700CF7874 /* Array */ = {
@@ -4399,6 +4427,7 @@
 				2B4BDA11238CA1BD00491149 /* AssetDisplayViewModel.swift in Sources */,
 				17BD4E282292F1260003E49A /* CardModalAnimator.swift in Sources */,
 				2B3D73B723C3621500597D32 /* VerifiedAssetList.swift in Sources */,
+				2BB64BE12402ABDD00519981 /* LedgerDeviceListView.swift in Sources */,
 				17BD4E292292F1260003E49A /* OptionsContextView.swift in Sources */,
 				17BD4E2A2292F1260003E49A /* RootViewController.swift in Sources */,
 				17BD4E2C2292F1260003E49A /* NumpadDeleteCell.swift in Sources */,
@@ -4523,6 +4552,7 @@
 				17BD4E7A2292F1260003E49A /* Session.swift in Sources */,
 				17BD4E7B2292F1260003E49A /* RequestTransactionPreviewViewController.swift in Sources */,
 				17BD4E7C2292F1260003E49A /* Session+Crypto.swift in Sources */,
+				2BB64BEA2402B47B00519981 /* LedgerDeviceCell.swift in Sources */,
 				2BD5476E23184286007179FE /* API+Feedback.swift in Sources */,
 				17BD4E7E2292F1260003E49A /* SharedColors.swift in Sources */,
 				2BC1827823D8DF2400888476 /* AssetRemovalDraft.swift in Sources */,
@@ -4576,6 +4606,7 @@
 				2BAD558E239FB1A60037079F /* PendingAssetView.swift in Sources */,
 				2B79A131230EBE3200766021 /* FeedbackSelectionView.swift in Sources */,
 				17BD4EAC2292F1260003E49A /* PassphraseDisplayViewController.swift in Sources */,
+				2BB64BE72402B47200519981 /* LedgerDeviceView.swift in Sources */,
 				17BD4EAD2292F1260003E49A /* TransactionDetailViewModel.swift in Sources */,
 				17BD4EAE2292F1260003E49A /* TransactionHistoryDataSource.swift in Sources */,
 				17BD4EB02292F1260003E49A /* UIVIewController+Presentation.swift in Sources */,
@@ -4671,6 +4702,8 @@
 				17BD4EF02292F1260003E49A /* NodeTestDraft.swift in Sources */,
 				2B191C83232150C900EAB1B8 /* PushNotificationController.swift in Sources */,
 				2B0D84EF239488BD00F0EAA7 /* AssetTransferTransactionType.swift in Sources */,
+				2BB64BE42402AC8400519981 /* LedgerDeviceListViewController.swift in Sources */,
+				2BB64BED2402BBF600519981 /* LedgerDeviceListViewModel.swift in Sources */,
 				17BD4EF22292F1260003E49A /* AssetDetailSmallHeaderView.swift in Sources */,
 				2BB6EE522392694800CF7874 /* Array+Additions.swift in Sources */,
 				17BD4EF32292F1260003E49A /* QRSelectableLabel.swift in Sources */,
@@ -4792,6 +4825,7 @@
 				2B8BE4D422391C38005D8565 /* RootViewController.swift in Sources */,
 				2BD73A002241297700B66EEF /* NumpadDeleteCell.swift in Sources */,
 				2BF53155224A468400A7455F /* ModalPresentable.swift in Sources */,
+				2BB64BE02402ABDD00519981 /* LedgerDeviceListView.swift in Sources */,
 				2B448734237AAD1200C19FDE /* AlgoAssetView.swift in Sources */,
 				2B98233B231EC207009560CD /* TransactionsQuery.swift in Sources */,
 				2BDE9CD4224E1E91007EFF30 /* LoadingIndicator.swift in Sources */,
@@ -4916,6 +4950,7 @@
 				1761B3CD224A47AF00C6BA47 /* Session+Crypto.swift in Sources */,
 				2B8AD04A2244F82600939ECE /* SharedColors.swift in Sources */,
 				170AFAFA224C9FF800520EA5 /* QRCreationViewController.swift in Sources */,
+				2BB64BE92402B47B00519981 /* LedgerDeviceCell.swift in Sources */,
 				2B3D73B923C3621F00597D32 /* VerifiedAsset.swift in Sources */,
 				17512620223BEAE90095AF4F /* Storable.swift in Sources */,
 				2BC1827723D8DF2400888476 /* AssetRemovalDraft.swift in Sources */,
@@ -4969,6 +5004,7 @@
 				2B5DA9DA224D2F5C00EE41B4 /* PassphraseDisplayViewController.swift in Sources */,
 				2BF3D838226F43C000716C09 /* TransactionDetailViewModel.swift in Sources */,
 				2BB021E3224E7AD20039D78A /* TransactionHistoryDataSource.swift in Sources */,
+				2BB64BE62402B47200519981 /* LedgerDeviceView.swift in Sources */,
 				2BF5315B224A46E400A7455F /* UIVIewController+Presentation.swift in Sources */,
 				2BAD558D239FB1A60037079F /* PendingAssetView.swift in Sources */,
 				2B79A130230EBE3200766021 /* FeedbackSelectionView.swift in Sources */,
@@ -5064,6 +5100,8 @@
 				17D04F4C225F90D70051BC43 /* NodeTestDraft.swift in Sources */,
 				2B191C82232150C900EAB1B8 /* PushNotificationController.swift in Sources */,
 				2B0D84EE239488BD00F0EAA7 /* AssetTransferTransactionType.swift in Sources */,
+				2BB64BE32402AC8400519981 /* LedgerDeviceListViewController.swift in Sources */,
+				2BB64BEC2402BBF600519981 /* LedgerDeviceListViewModel.swift in Sources */,
 				2B8512572265E3E2000F8CB8 /* AssetDetailSmallHeaderView.swift in Sources */,
 				2BB6EE512392694800CF7874 /* Array+Additions.swift in Sources */,
 				17E2E3C722524E4C0065957A /* QRSelectableLabel.swift in Sources */,

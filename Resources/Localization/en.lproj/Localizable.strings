@@ -387,6 +387,13 @@
 "ledger-tutorial-bluetooth" = "Turn your phones bluethooth on.";
 "ledger-search-button-title" = "SEARCH FOR LEDGER";
 
+// MARK: Ledger Device List
+
+"ledger-device-list-title" = "Pair Ledger Device";
+"ledger-device-list-looking" = "Looking for Ledger Devices";
+"ledger-device-list-connect" = "Connect";
+"ledger-device-list-troubleshoot" = "Trouble Shoot";
+
 // MARK: Ledger Troubleshooting
 
 "ledger-troubleshooting-title" = "Advanced Troubleshooting";
