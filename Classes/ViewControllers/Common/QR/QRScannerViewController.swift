@@ -235,34 +235,40 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
         didOutput metadataObjects: [AVMetadataObject],
         from connection: AVCaptureConnection
     ) {
-        captureSession?.stopRunning()
+        captureSessionQueue.async {
+            self.captureSession?.stopRunning()
+        }
         
         if let metadataObject = metadataObjects.first {
             guard let readableObject = metadataObject as? AVMetadataMachineReadableCodeObject,
                 let qrString = readableObject.stringValue,
                 let qrStringData = qrString.data(using: .utf8) else {
+                    captureSession = nil
                     closeScreen(by: .pop)
-                    delegate?.qrScannerViewController(self, didFail: .invalidData, then: cameraResetHandler)
+                    delegate?.qrScannerViewController(self, didFail: .invalidData, then: nil)
                     return
             }
             
             AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
             
             if let qrText = try? JSONDecoder().decode(QRText.self, from: qrStringData) {
+                captureSession = nil
                 closeScreen(by: .pop)
-                delegate?.qrScannerViewController(self, didRead: qrText, then: cameraResetHandler)
+                delegate?.qrScannerViewController(self, didRead: qrText, then: nil)
             } else if let url = URL(string: qrString),
                 qrString.hasPrefix("algorand://") {
                 guard let qrText = url.buildQRText() else {
                     delegate?.qrScannerViewController(self, didFail: .jsonSerialization, then: cameraResetHandler)
                     return
                 }
+                captureSession = nil
                 closeScreen(by: .pop)
-                delegate?.qrScannerViewController(self, didRead: qrText, then: cameraResetHandler)
+                delegate?.qrScannerViewController(self, didRead: qrText, then: nil)
             } else if AlgorandSDK().isValidAddress(qrString) {
                 let qrText = QRText(mode: .address, address: qrString)
+                captureSession = nil
                 closeScreen(by: .pop)
-                delegate?.qrScannerViewController(self, didRead: qrText, then: cameraResetHandler)
+                delegate?.qrScannerViewController(self, didRead: qrText, then: nil)
             } else {
                 delegate?.qrScannerViewController(self, didFail: .jsonSerialization, then: cameraResetHandler)
                 return
