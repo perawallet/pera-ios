@@ -34,6 +34,13 @@ extension AccounsViewModel {
     func configure(_ header: AccountHeaderSupplementaryView, with account: Account) {
         header.contextView.setOptionsButton(hidden: false)
         
+        if let accountInformation = UIApplication.shared.appConfiguration?.session.accountInformation(from: account.address),
+            accountInformation.type == .ledger {
+            header.contextView.setLedgerAccount()
+        } else {
+            header.contextView.setStandardAccount()
+        }
+        
         guard let accountName = account.name else {
             return
         }

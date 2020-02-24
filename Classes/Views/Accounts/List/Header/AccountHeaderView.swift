@@ -18,7 +18,7 @@ class AccountHeaderView: BaseView {
     
     weak var delegate: AccountHeaderViewDelegate?
     
-    private lazy var imageView = UIImageView(image: img("icon-account-purple"))
+    private lazy var imageView = UIImageView()
     
     private lazy var titleLabel: UILabel = {
         UILabel().withAlignment(.left).withFont(UIFont.font(.avenir, withWeight: .bold(size: 13.0)))
@@ -84,6 +84,14 @@ extension AccountHeaderView {
     
     func setOptionsButton(hidden: Bool) {
         optionsButton.isHidden = hidden
+    }
+    
+    func setLedgerAccount() {
+        imageView.image = img("icon-account-type-ledger")
+    }
+    
+    func setStandardAccount() {
+        imageView.image = img("icon-account-type-standard")
     }
 }
 
