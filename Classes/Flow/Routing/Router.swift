@@ -307,14 +307,14 @@ class Router {
             viewController = AssetListViewController(account: account, configuration: configuration)
         case .verifiedAssetInformation:
             viewController = VerifiedAssetInformationViewController(configuration: configuration)
-        case .ledgerTutorial:
-            viewController = LedgerTutorialViewController(configuration: configuration)
-        case .ledgerDeviceList:
-            viewController = LedgerDeviceListViewController(configuration: configuration)
+        case let .ledgerTutorial(mode):
+            viewController = LedgerTutorialViewController(mode: mode, configuration: configuration)
+        case let .ledgerDeviceList(mode):
+            viewController = LedgerDeviceListViewController(mode: mode, configuration: configuration)
         case .ledgerTroubleshoot:
             viewController = LedgerTroubleshootingViewController(configuration: configuration)
-        case let .ledgerPairing(address):
-            viewController = LedgerPairingViewController(address: address, configuration: configuration)
+        case let .ledgerPairing(mode, address):
+            viewController = LedgerPairingViewController(mode: mode, address: address, configuration: configuration)
         }
         
         return viewController as? T
