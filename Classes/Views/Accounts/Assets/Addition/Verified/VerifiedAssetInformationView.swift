@@ -63,7 +63,7 @@ extension VerifiedAssetInformationView {
         let contactTextRange = fullText.range(of: "verified-asset-information-contact-us".localized)
 
         if gestureRecognizer.detectTouchForLabel(informationLabel, in: contactTextRange) {
-            delegate?.verifiedAssetInformationViewDidTapInformationLabel(self)
+            delegate?.verifiedAssetInformationViewDidTapContactText(self)
         }
     }
 }
@@ -134,5 +134,5 @@ extension VerifiedAssetInformationView {
 }
 
 protocol VerifiedAssetInformationViewDelegate: class {
-    func verifiedAssetInformationViewDidTapInformationLabel(_ verifiedAssetInformationView: VerifiedAssetInformationView)
+    func verifiedAssetInformationViewDidTapContactText(_ verifiedAssetInformationView: VerifiedAssetInformationView)
 }

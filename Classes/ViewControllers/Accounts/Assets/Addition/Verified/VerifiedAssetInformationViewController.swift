@@ -37,7 +37,7 @@ extension VerifiedAssetInformationViewController {
 }
 
 extension VerifiedAssetInformationViewController: VerifiedAssetInformationViewDelegate {
-    func verifiedAssetInformationViewDidTapInformationLabel(_ verifiedAssetInformationView: VerifiedAssetInformationView) {
+    func verifiedAssetInformationViewDidTapContactText(_ verifiedAssetInformationView: VerifiedAssetInformationView) {
         open(.feedback, by: .push)
     }
 }
