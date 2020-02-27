@@ -185,8 +185,10 @@ extension LedgerDeviceListViewController: LedgerBLEControllerDelegate {
             displaySimpleAlertWith(title: "title-error".localized, message: "ble-error-fail-fetch-account-address".localized)
             return
         }
-
-        open(.ledgerPairing(mode: mode, address: address), by: .push)
+        
+        if !isViewDisappearing {
+            open(.ledgerPairing(mode: mode, address: address), by: .push)
+        }
     }
 }
 

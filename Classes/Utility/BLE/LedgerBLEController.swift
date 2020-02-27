@@ -9,12 +9,12 @@
 import Foundation
 
 class LedgerBLEController: NSObject {
-    private var mtuSize: UInt16 = 35
+    private var mtuSize: UInt16 = 23
     private var expectedNextSequence: UInt16 = 0
     private var responseBytesRemaining: UInt16 = 0
     private var bufferedData = NSMutableData()
     private let maxResponseSize: UInt16 = 65535
-    private let minMTU: UInt16 = 20
+    private let minMTU: UInt16 = 23
     private let maxMTU: UInt16 = 100
     
     weak var delegate: LedgerBLEControllerDelegate?
