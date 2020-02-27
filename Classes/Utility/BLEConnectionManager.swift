@@ -68,7 +68,7 @@ extension BLEConnectionManager: CBCentralManagerDelegate {
     ) {
         print("Found new pheripheral devices with services")
         print("Peripheral name: \(String(describing: peripheral.name))")
-        print ("Advertisement Data: \(advertisementData)")
+        print("Advertisement Data: \(advertisementData)")
         
         blePeripheral = peripheral
         peripherals.append(peripheral)
