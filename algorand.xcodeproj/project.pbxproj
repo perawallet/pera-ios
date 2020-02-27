@@ -2462,6 +2462,15 @@
 			path = Cell;
 			sourceTree = "<group>";
 		};
+		2B62B03B240813A5002DF2A0 /* BLE */ = {
+			isa = PBXGroup;
+			children = (
+				2BB37B0E2405650100F58662 /* BLEConnectionManager.swift */,
+				2BB37B1824069F7500F58662 /* LedgerBLEController.swift */,
+			);
+			path = BLE;
+			sourceTree = "<group>";
+		};
 		2B656E8E224BAF0B0064A49B /* AccountList */ = {
 			isa = PBXGroup;
 			children = (
@@ -2961,6 +2970,7 @@
 		2B8BE4F5223936FD005D8565 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				2B62B03B240813A5002DF2A0 /* BLE */,
 				2BF34C9E2239ACC60052CAD3 /* Configuration */,
 				2B8BE4F62239370F005D8565 /* Extensions */,
 				2BC45DEC2252538D000CDCE2 /* ImagePicker */,
@@ -2971,8 +2981,6 @@
 				2B3A95E4238FF98800A3DF44 /* Transaction */,
 				1746715B225B6BE600B78641 /* TypeAliases */,
 				2BF34CA32239AD4A0052CAD3 /* UI */,
-				2BB37B0E2405650100F58662 /* BLEConnectionManager.swift */,
-				2BB37B1824069F7500F58662 /* LedgerBLEController.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
