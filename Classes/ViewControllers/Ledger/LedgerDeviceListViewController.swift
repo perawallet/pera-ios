@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreBluetooth
 
 class LedgerDeviceListViewController: BaseViewController {
     
@@ -14,9 +15,18 @@ class LedgerDeviceListViewController: BaseViewController {
 
     private lazy var ledgerDeviceListView = LedgerDeviceListView()
     
+    private lazy var bleConnectionManager = BLEConnectionManager()
+    private lazy var ledgerBLEController = LedgerBLEController()
+    
     private let viewModel = LedgerDeviceListViewModel()
     
-    private var ledgerDevices = ["Kaan's Ledger", "Hipo Ledger"]
+    private let mode: AccountSetupMode
+    private var ledgerDevices = [CBPeripheral]()
+    
+    init(mode: AccountSetupMode, configuration: ViewControllerConfiguration) {
+        self.mode = mode
+        super.init(configuration: configuration)
+    }
     
     override func configureAppearance() {
         super.configureAppearance()
@@ -26,6 +36,8 @@ class LedgerDeviceListViewController: BaseViewController {
     override func linkInteractors() {
         super.linkInteractors()
         ledgerDeviceListView.delegate = self
+        bleConnectionManager.delegate = self
+        ledgerBLEController.delegate = self
         ledgerDeviceListView.devicesCollectionView.delegate = self
         ledgerDeviceListView.devicesCollectionView.dataSource = self
     }
@@ -58,8 +70,10 @@ extension LedgerDeviceListViewController: UICollectionViewDataSource {
                 fatalError("Index path is out of bounds")
         }
         
-        let deviceName = ledgerDevices[indexPath.item]
-        viewModel.configure(cell, with: deviceName)
+        let devices = ledgerDevices[indexPath.item]
+        if let deviceName = devices.name {
+            viewModel.configure(cell, with: deviceName)
+        }
         cell.delegate = self
         return cell
     }
@@ -82,13 +96,57 @@ extension LedgerDeviceListViewController: LedgerDeviceCellDelegate {
         }
         
         let ledgerDevice = ledgerDevices[indexPath.item]
-        open(.ledgerPairing(address: ledgerDevice), by: .push)
+        bleConnectionManager.connectToDevice(ledgerDevice)
     }
 }
 
 extension LedgerDeviceListViewController: LedgerDeviceListViewDelegate {
     func ledgerDeviceListViewDidTapTroubleshootButton(_ ledgerDeviceListView: LedgerDeviceListView) {
         open(.ledgerTroubleshoot, by: .present)
+    }
+}
+
+extension LedgerDeviceListViewController: BLEConnectionManagerDelegate {
+    func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didConnect peripheral: CBPeripheral) {
+        guard let bleData = Data(fromHexEncodedString: bleLedgerAddressMessage) else {
+            return
+        }
+            
+        ledgerBLEController.fetchAddress(bleData)
+    }
+    
+    func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didDiscover peripherals: [CBPeripheral]) {
+        ledgerDevices = peripherals
+        ledgerDeviceListView.devicesCollectionView.reloadData()
+    }
+    
+    func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didFailBLEConnectionWith state: CBManagerState) {
+        
+    }
+    
+    func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didRead string: String) {
+        ledgerBLEController.updateIncomingData(with: string)
+    }
+}
+
+extension LedgerDeviceListViewController: LedgerBLEControllerDelegate {
+    func ledgerBLEController(_ ledgerBLEController: LedgerBLEController, shouldWrite data: Data) {
+        bleConnectionManager.write(data)
+    }
+    
+    func ledgerBLEController(_ ledgerBLEController: LedgerBLEController, received data: Data) {
+        // Remove last two bytes to fetch data
+        var mutableData = data
+        mutableData.removeLast(2)
+
+        var error: NSError?
+        let address = AlgorandSDK().addressFromPublicKey(mutableData, error: &error)
+
+        if error != nil {
+            return
+        }
+
+        open(.ledgerPairing(mode: mode, address: address), by: .push)
     }
 }
 
