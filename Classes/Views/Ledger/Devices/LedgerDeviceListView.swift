@@ -27,6 +27,17 @@ class LedgerDeviceListView: BaseView {
         return collectionView
     }()
     
+    private lazy var searchingSpinnerView = LoadingSpinnerView()
+    
+    private lazy var searchingDevicesLabel: UILabel = {
+        UILabel()
+            .withFont(UIFont.font(.avenir, withWeight: .medium(size: 14.0)))
+            .withTextColor(.black)
+            .withLine(.single)
+            .withAlignment(.center)
+            .withText("ledger-device-list-looking".localized)
+    }()
+    
     private lazy var troubleshootButton: UIButton = {
         UIButton(type: .custom)
             .withBackgroundImage(img("bg-purple-light"))
@@ -41,6 +52,8 @@ class LedgerDeviceListView: BaseView {
     
     override func prepareLayout() {
         setupTroubleshootButtonLayout()
+        setupSearchingDevicesLabelLayout()
+        setupSearchingSpinnerViewLayout()
         setupDevicesCollectionViewLayout()
     }
 }
@@ -62,14 +75,48 @@ extension LedgerDeviceListView {
         }
     }
     
+    private func setupSearchingDevicesLabelLayout() {
+        addSubview(searchingDevicesLabel)
+        
+        searchingDevicesLabel.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.bottom.equalTo(troubleshootButton.snp.top).offset(layout.current.searchLabelBottomInset)
+        }
+    }
+    
+    private func setupSearchingSpinnerViewLayout() {
+        addSubview(searchingSpinnerView)
+        
+        searchingSpinnerView.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.size.equalTo(layout.current.spinnerSize)
+            make.bottom.equalTo(searchingDevicesLabel.snp.top).offset(layout.current.spinnerBottomInset)
+        }
+    }
+    
     private func setupDevicesCollectionViewLayout() {
         addSubview(devicesCollectionView)
         
         devicesCollectionView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.top.equalToSuperview()
-            make.bottom.equalTo(troubleshootButton.snp.top).offset(layout.current.listBottomInset)
+            make.bottom.equalTo(searchingSpinnerView.snp.top).offset(layout.current.listBottomInset)
         }
+    }
+}
+
+extension LedgerDeviceListView {
+    func startSearchSpinner() {
+        searchingSpinnerView.show()
+    }
+    
+    func stopSearchSpinner() {
+        searchingSpinnerView.stop()
+    }
+    
+    func setSearchSpinner(visible isVisible: Bool) {
+        searchingDevicesLabel.isHidden = !isVisible
+        searchingSpinnerView.isHidden = !isVisible
     }
 }
 
@@ -78,6 +125,9 @@ extension LedgerDeviceListView {
         let buttonBottomInset: CGFloat = 60.0
         let listContentInset = UIEdgeInsets(top: 20.0, left: 0.0, bottom: 0.0, right: 0.0)
         let listBottomInset: CGFloat = -30.0
+        let searchLabelBottomInset: CGFloat = -20.0
+        let spinnerBottomInset: CGFloat = -30.0
+        let spinnerSize = CGSize(width: 22.0, height: 22.0)
     }
 }
 

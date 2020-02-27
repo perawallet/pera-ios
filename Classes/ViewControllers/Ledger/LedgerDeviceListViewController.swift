@@ -28,6 +28,16 @@ class LedgerDeviceListViewController: BaseViewController {
         super.init(configuration: configuration)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        ledgerDeviceListView.startSearchSpinner()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        ledgerDeviceListView.stopSearchSpinner()
+    }
+    
     override func configureAppearance() {
         super.configureAppearance()
         title = "ledger-device-list-title".localized
@@ -123,15 +133,15 @@ extension LedgerDeviceListViewController: BLEConnectionManagerDelegate {
     func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didFailBLEConnectionWith state: CBManagerState) {
         switch state {
         case .poweredOff:
-            displaySimpleAlertWith(title: "title-error", message: "ble-error-fail-ble-connection-power".localized)
+            displaySimpleAlertWith(title: "title-error".localized, message: "ble-error-fail-ble-connection-power".localized)
         case .unsupported:
-            displaySimpleAlertWith(title: "title-error", message: "ble-error-fail-ble-connection-unsupported".localized)
+            displaySimpleAlertWith(title: "title-error".localized, message: "ble-error-fail-ble-connection-unsupported".localized)
         case .unknown:
-            displaySimpleAlertWith(title: "title-error", message: "ble-error-fail-ble-connection-unknown".localized)
+            displaySimpleAlertWith(title: "title-error".localized, message: "ble-error-fail-ble-connection-unknown".localized)
         case .unauthorized:
-            displaySimpleAlertWith(title: "title-error", message: "ble-error-fail-ble-connection-unauthorized".localized)
+            displaySimpleAlertWith(title: "title-error".localized, message: "ble-error-fail-ble-connection-unauthorized".localized)
         case .resetting:
-            displaySimpleAlertWith(title: "title-error", message: "ble-error-fail-ble-connection-resetting".localized)
+            displaySimpleAlertWith(title: "title-error".localized, message: "ble-error-fail-ble-connection-resetting".localized)
         default:
             return
         }
@@ -146,7 +156,7 @@ extension LedgerDeviceListViewController: BLEConnectionManagerDelegate {
         didDisconnectFrom peripheral: CBPeripheral,
         with error: Error?
     ) {
-        displaySimpleAlertWith(title: "title-error", message: "ble-error-disconnected-peripheral".localized)
+        displaySimpleAlertWith(title: "title-error".localized, message: "ble-error-disconnected-peripheral".localized)
     }
     
     func bleConnectionManager(
@@ -154,7 +164,7 @@ extension LedgerDeviceListViewController: BLEConnectionManagerDelegate {
         didFailToConnect peripheral: CBPeripheral,
         with error: Error?
     ) {
-        displaySimpleAlertWith(title: "title-error", message: "ble-error-fail-connect-peripheral".localized)
+        displaySimpleAlertWith(title: "title-error".localized, message: "ble-error-fail-connect-peripheral".localized)
     }
 }
 
@@ -172,7 +182,7 @@ extension LedgerDeviceListViewController: LedgerBLEControllerDelegate {
         let address = AlgorandSDK().addressFromPublicKey(mutableData, error: &error)
 
         if error != nil {
-            displaySimpleAlertWith(title: "title-error", message: "ble-error-fail-fetch-account-address".localized)
+            displaySimpleAlertWith(title: "title-error".localized, message: "ble-error-fail-fetch-account-address".localized)
             return
         }
 
