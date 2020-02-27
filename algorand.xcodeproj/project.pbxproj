@@ -310,9 +310,6 @@
 		17F9E927225796DA004CDF24 /* AccountManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F9E926225796DA004CDF24 /* AccountManager.swift */; };
 		2B02536E23C6101A003D5FDD /* QRAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B02536D23C6101A003D5FDD /* QRAlertView.swift */; };
 		2B02536F23C6101A003D5FDD /* QRAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B02536D23C6101A003D5FDD /* QRAlertView.swift */; };
-		2B0823D423B0C42100D52BCF /* Crypto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B0823D323B0C42100D52BCF /* Crypto.framework */; };
-		2B0823D823B0C46A00D52BCF /* Crypto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B0823D723B0C46A00D52BCF /* Crypto.framework */; };
-		2B0823D923B0C46A00D52BCF /* Crypto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B0823D723B0C46A00D52BCF /* Crypto.framework */; };
 		2B0823DB23B6677A00D52BCF /* AssetSupportDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0823DA23B6677A00D52BCF /* AssetSupportDraft.swift */; };
 		2B0823DC23B6677A00D52BCF /* AssetSupportDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0823DA23B6677A00D52BCF /* AssetSupportDraft.swift */; };
 		2B0823DE23B668DB00D52BCF /* NotificationAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0823DD23B668DB00D52BCF /* NotificationAsset.swift */; };
@@ -521,6 +518,9 @@
 		2B5DA9D5224CE19700EE41B4 /* EditAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5DA9D4224CE19700EE41B4 /* EditAccountViewController.swift */; };
 		2B5DA9D8224CE1BC00EE41B4 /* EditAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5DA9D7224CE1BC00EE41B4 /* EditAccountView.swift */; };
 		2B5DA9DA224D2F5C00EE41B4 /* PassphraseDisplayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5DA9D9224D2F5C00EE41B4 /* PassphraseDisplayViewController.swift */; };
+		2B6238E6240739C800F76823 /* Crypto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B6238E5240739C800F76823 /* Crypto.framework */; };
+		2B62B03924073BB0002DF2A0 /* Crypto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B62B03824073BAF002DF2A0 /* Crypto.framework */; };
+		2B62B03A24073BB0002DF2A0 /* Crypto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B62B03824073BAF002DF2A0 /* Crypto.framework */; };
 		2B64DACC2369B9E400C09582 /* Participation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B64DACB2369B9E400C09582 /* Participation.swift */; };
 		2B64DACD2369B9E400C09582 /* Participation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B64DACB2369B9E400C09582 /* Participation.swift */; };
 		2B656E90224BAF200064A49B /* AccountListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B656E8F224BAF200064A49B /* AccountListViewController.swift */; };
@@ -648,6 +648,14 @@
 		2BB021E9224E828E0039D78A /* UICollectionView+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB021E8224E828E0039D78A /* UICollectionView+Additions.swift */; };
 		2BB64BF02404890900519981 /* UITapGestureRecognizer+LabelRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB64BEF2404890900519981 /* UITapGestureRecognizer+LabelRange.swift */; };
 		2BB64BF12404890900519981 /* UITapGestureRecognizer+LabelRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB64BEF2404890900519981 /* UITapGestureRecognizer+LabelRange.swift */; };
+		2BB37B0F2405650100F58662 /* BLEConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB37B0E2405650100F58662 /* BLEConnectionManager.swift */; };
+		2BB37B102405650100F58662 /* BLEConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB37B0E2405650100F58662 /* BLEConnectionManager.swift */; };
+		2BB37B122405CF6400F58662 /* Data+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB37B112405CF6400F58662 /* Data+Hex.swift */; };
+		2BB37B132405CF6400F58662 /* Data+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB37B112405CF6400F58662 /* Data+Hex.swift */; };
+		2BB37B162405D1C100F58662 /* LedgerUUIDKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB37B152405D1C100F58662 /* LedgerUUIDKey.swift */; };
+		2BB37B172405D1C100F58662 /* LedgerUUIDKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB37B152405D1C100F58662 /* LedgerUUIDKey.swift */; };
+		2BB37B1924069F7500F58662 /* LedgerBLEController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB37B1824069F7500F58662 /* LedgerBLEController.swift */; };
+		2BB37B1A24069F7500F58662 /* LedgerBLEController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB37B1824069F7500F58662 /* LedgerBLEController.swift */; };
 		2BB64BD124026DF900519981 /* LedgerTroubleshootingOptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB64BD024026DF900519981 /* LedgerTroubleshootingOptionView.swift */; };
 		2BB64BD224026DF900519981 /* LedgerTroubleshootingOptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB64BD024026DF900519981 /* LedgerTroubleshootingOptionView.swift */; };
 		2BB64BD4240273F600519981 /* LedgerTroubleshootingOptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB64BD3240273F600519981 /* LedgerTroubleshootingOptionCell.swift */; };
@@ -900,7 +908,6 @@
 		2AC10F1C54DF2982BFB4A180 /* Pods-algorand.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand.debug.xcconfig"; path = "Pods/Target Support Files/Pods-algorand/Pods-algorand.debug.xcconfig"; sourceTree = "<group>"; };
 		2B02536D23C6101A003D5FDD /* QRAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRAlertView.swift; sourceTree = "<group>"; };
 		2B0823D323B0C42100D52BCF /* Crypto.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Crypto.framework; path = ../../Crypto.framework; sourceTree = "<group>"; };
-		2B0823D723B0C46A00D52BCF /* Crypto.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crypto.framework; sourceTree = "<group>"; };
 		2B0823DA23B6677A00D52BCF /* AssetSupportDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetSupportDraft.swift; sourceTree = "<group>"; };
 		2B0823DD23B668DB00D52BCF /* NotificationAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationAsset.swift; sourceTree = "<group>"; };
 		2B09603722578C990005BE27 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -1017,6 +1024,8 @@
 		2B5DA9D4224CE19700EE41B4 /* EditAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAccountViewController.swift; sourceTree = "<group>"; };
 		2B5DA9D7224CE1BC00EE41B4 /* EditAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAccountView.swift; sourceTree = "<group>"; };
 		2B5DA9D9224D2F5C00EE41B4 /* PassphraseDisplayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseDisplayViewController.swift; sourceTree = "<group>"; };
+		2B6238E5240739C800F76823 /* Crypto.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Crypto.framework; path = ../Crypto.framework; sourceTree = "<group>"; };
+		2B62B03824073BAF002DF2A0 /* Crypto.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crypto.framework; sourceTree = "<group>"; };
 		2B64DACB2369B9E400C09582 /* Participation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Participation.swift; sourceTree = "<group>"; };
 		2B656E8F224BAF200064A49B /* AccountListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountListViewController.swift; sourceTree = "<group>"; };
 		2B656E92224BAF2E0064A49B /* OptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsViewController.swift; sourceTree = "<group>"; };
@@ -1115,6 +1124,10 @@
 		2BB021E2224E7AD20039D78A /* TransactionHistoryDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryDataSource.swift; sourceTree = "<group>"; };
 		2BB021E8224E828E0039D78A /* UICollectionView+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+Additions.swift"; sourceTree = "<group>"; };
 		2BB64BEF2404890900519981 /* UITapGestureRecognizer+LabelRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITapGestureRecognizer+LabelRange.swift"; sourceTree = "<group>"; };
+		2BB37B0E2405650100F58662 /* BLEConnectionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEConnectionManager.swift; sourceTree = "<group>"; };
+		2BB37B112405CF6400F58662 /* Data+Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Hex.swift"; sourceTree = "<group>"; };
+		2BB37B152405D1C100F58662 /* LedgerUUIDKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerUUIDKey.swift; sourceTree = "<group>"; };
+		2BB37B1824069F7500F58662 /* LedgerBLEController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerBLEController.swift; sourceTree = "<group>"; };
 		2BB64BD024026DF900519981 /* LedgerTroubleshootingOptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerTroubleshootingOptionView.swift; sourceTree = "<group>"; };
 		2BB64BD3240273F600519981 /* LedgerTroubleshootingOptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerTroubleshootingOptionCell.swift; sourceTree = "<group>"; };
 		2BB64BD7240275DC00519981 /* LedgerTroubleshootingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerTroubleshootingViewModel.swift; sourceTree = "<group>"; };
@@ -1264,7 +1277,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DCD3EE7678029738F4171F22 /* Pods_algorand_staging.framework in Frameworks */,
-				2B0823D923B0C46A00D52BCF /* Crypto.framework in Frameworks */,
+				2B62B03A24073BB0002DF2A0 /* Crypto.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1272,8 +1285,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2B0823D423B0C42100D52BCF /* Crypto.framework in Frameworks */,
-				2B0823D823B0C46A00D52BCF /* Crypto.framework in Frameworks */,
+				2B6238E6240739C800F76823 /* Crypto.framework in Frameworks */,
+				2B62B03924073BB0002DF2A0 /* Crypto.framework in Frameworks */,
 				654E149E940D74AF3955EEF3 /* (null) in Frameworks */,
 				E400DDD67009D0199ACDB9C1 /* Pods_algorand.framework in Frameworks */,
 			);
@@ -1324,7 +1337,7 @@
 		17512612223BDC2B0095AF4F /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				2B0823D723B0C46A00D52BCF /* Crypto.framework */,
+				2B62B03824073BAF002DF2A0 /* Crypto.framework */,
 			);
 			path = Libraries;
 			sourceTree = "<group>";
@@ -2951,12 +2964,15 @@
 				2BF34C9E2239ACC60052CAD3 /* Configuration */,
 				2B8BE4F62239370F005D8565 /* Extensions */,
 				2BC45DEC2252538D000CDCE2 /* ImagePicker */,
+				2BB37B142405D1B000F58662 /* Ledger */,
 				2B6687132248DF57009F21E7 /* LocalAuthentication */,
 				2B56714623FA0AF10037FCFA /* Node */,
 				2BF53172224A93E800A7455F /* Operations */,
 				2B3A95E4238FF98800A3DF44 /* Transaction */,
 				1746715B225B6BE600B78641 /* TypeAliases */,
 				2BF34CA32239AD4A0052CAD3 /* UI */,
+				2BB37B0E2405650100F58662 /* BLEConnectionManager.swift */,
+				2BB37B1824069F7500F58662 /* LedgerBLEController.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -3087,6 +3103,7 @@
 				17512622223BEB9D0095AF4F /* UserDefaults+Additions.swift */,
 				17B7D8AF224128EC00A6FF9E /* Keychain+Additions.swift */,
 				2B59F15B22550778005203DD /* Codable+CoreData.swift */,
+				2BB37B112405CF6400F58662 /* Data+Hex.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -3130,6 +3147,14 @@
 				2BB64BEF2404890900519981 /* UITapGestureRecognizer+LabelRange.swift */,
 			);
 			path = Gesture;
+            sourceTree = "<group>";
+        };
+		2BB37B142405D1B000F58662 /* Ledger */ = {
+			isa = PBXGroup;
+			children = (
+				2BB37B152405D1C100F58662 /* LedgerUUIDKey.swift */,
+			);
+			path = Ledger;
 			sourceTree = "<group>";
 		};
 		2BB64BD6240275CD00519981 /* Ledger */ = {
@@ -4031,6 +4056,7 @@
 			isa = PBXGroup;
 			children = (
 				2B0823D323B0C42100D52BCF /* Crypto.framework */,
+				2B6238E5240739C800F76823 /* Crypto.framework */,
 				2BDB953015FF2F948F5734D7 /* Pods_algorand_staging.framework */,
 				3BEF6555A275CB49FF59C5E2 /* Pods_algorand.framework */,
 			);
@@ -4420,6 +4446,7 @@
 				17BD4E222292F1260003E49A /* ContactInfoViewModel.swift in Sources */,
 				2BC182B223DF128A00888476 /* AlgosTransactionRequestDraft.swift in Sources */,
 				17BD4E232292F1260003E49A /* OptionsCell.swift in Sources */,
+				2BB37B1A24069F7500F58662 /* LedgerBLEController.swift in Sources */,
 				2B448735237AAD1200C19FDE /* AlgoAssetView.swift in Sources */,
 				17BD4E242292F1260003E49A /* RequestParameter.swift in Sources */,
 				2B98233C231EC207009560CD /* TransactionsQuery.swift in Sources */,
@@ -4553,6 +4580,7 @@
 				2BB64BF12404890900519981 /* UITapGestureRecognizer+LabelRange.swift in Sources */,
 				17BD4E7A2292F1260003E49A /* Session.swift in Sources */,
 				17BD4E7B2292F1260003E49A /* RequestTransactionPreviewViewController.swift in Sources */,
+				2BB37B132405CF6400F58662 /* Data+Hex.swift in Sources */,
 				17BD4E7C2292F1260003E49A /* Session+Crypto.swift in Sources */,
 				2BB64BEA2402B47B00519981 /* LedgerDeviceCell.swift in Sources */,
 				2BD5476E23184286007179FE /* API+Feedback.swift in Sources */,
@@ -4576,6 +4604,7 @@
 				17BD4E8E2292F1260003E49A /* AccountRecoverView.swift in Sources */,
 				17BD4E8F2292F1260003E49A /* PassphraseBackUpCell.swift in Sources */,
 				2B0D84F82395D4F500F0EAA7 /* SendAssetTransactionPreviewViewController.swift in Sources */,
+				2BB37B172405D1C100F58662 /* LedgerUUIDKey.swift in Sources */,
 				17BD4E902292F1260003E49A /* Double.swift in Sources */,
 				17BD4E912292F1260003E49A /* API+Transaction.swift in Sources */,
 				2B56716024008B440037FCFA /* LedgerTutorialInstructionListView.swift in Sources */,
@@ -4720,6 +4749,7 @@
 				17BD4EF82292F1260003E49A /* SettingsView.swift in Sources */,
 				17BD4EF92292F1260003E49A /* EmptyStateView.swift in Sources */,
 				17BD4EFA2292F1260003E49A /* BarButtonItem.swift in Sources */,
+				2BB37B102405650100F58662 /* BLEConnectionManager.swift in Sources */,
 				2B56714223F7E87A0037FCFA /* TransactionSendDraft.swift in Sources */,
 				2B256FF923F1BF700005CBA2 /* SendAssetTransactionViewController.swift in Sources */,
 				2BAD5591239FB1B10037079F /* PendingAssetCell.swift in Sources */,
@@ -4818,6 +4848,7 @@
 				2B5DA9CE224CB4B400EE41B4 /* OptionsCell.swift in Sources */,
 				2BC182B123DF128A00888476 /* AlgosTransactionRequestDraft.swift in Sources */,
 				2B46262D23758CF4000AE73C /* AssetDetail.swift in Sources */,
+				2BB37B1924069F7500F58662 /* LedgerBLEController.swift in Sources */,
 				1751261A223BE5930095AF4F /* RequestParameter.swift in Sources */,
 				2B656E9B224BC5370064A49B /* AccountViewCell.swift in Sources */,
 				2B65B1FE225268DA001DB5BE /* UIImage+Size.swift in Sources */,
@@ -4951,6 +4982,7 @@
 				2BB64BF02404890900519981 /* UITapGestureRecognizer+LabelRange.swift in Sources */,
 				1761B3CD224A47AF00C6BA47 /* Session+Crypto.swift in Sources */,
 				2B8AD04A2244F82600939ECE /* SharedColors.swift in Sources */,
+				2BB37B122405CF6400F58662 /* Data+Hex.swift in Sources */,
 				170AFAFA224C9FF800520EA5 /* QRCreationViewController.swift in Sources */,
 				2BB64BE92402B47B00519981 /* LedgerDeviceCell.swift in Sources */,
 				2B3D73B923C3621F00597D32 /* VerifiedAsset.swift in Sources */,
@@ -4974,6 +5006,7 @@
 				2B8954CB224430DC00D6D068 /* AccountRecoverView.swift in Sources */,
 				2BD78E8F226A0B4900A3D35C /* PassphraseBackUpCell.swift in Sources */,
 				17D04F51225FAD920051BC43 /* Double.swift in Sources */,
+				2BB37B162405D1C100F58662 /* LedgerUUIDKey.swift in Sources */,
 				173DA1E92255F7B500378A82 /* API+Transaction.swift in Sources */,
 				2BD739E5223FA07B00B66EEF /* MainButton.swift in Sources */,
 				2B56715F24008B440037FCFA /* LedgerTutorialInstructionListView.swift in Sources */,
@@ -5118,6 +5151,7 @@
 				17100B2C225CEC3600D13548 /* SettingsView.swift in Sources */,
 				2BDE9CD0224E1A60007EFF30 /* EmptyStateView.swift in Sources */,
 				2B66870E2248DB8B009F21E7 /* BarButtonItem.swift in Sources */,
+				2BB37B0F2405650100F58662 /* BLEConnectionManager.swift in Sources */,
 				2B56714123F7E87A0037FCFA /* TransactionSendDraft.swift in Sources */,
 				2B256FF823F1BF700005CBA2 /* SendAssetTransactionViewController.swift in Sources */,
 				2BAD5590239FB1B10037079F /* PendingAssetCell.swift in Sources */,
@@ -5168,6 +5202,7 @@
 			baseConfigurationReference = 60DCA59D3815D648E4728045 /* Pods-algorand-staging.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Göktuğ Berk Ulu (WQRGY2GD44)";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
