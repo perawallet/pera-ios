@@ -28,6 +28,8 @@ Algorand address
 @property (nonatomic) NSData* _Nullable address;
 @end
 
+FOUNDATION_EXPORT NSString* _Nonnull CryptoGenerateAddressFromPublicKey(NSData* _Nullable pk, NSError* _Nullable* _Nullable error);
+
 FOUNDATION_EXPORT NSString* _Nonnull CryptoGenerateAddressFromSK(NSData* _Nullable sk, NSError* _Nullable* _Nullable error);
 
 FOUNDATION_EXPORT NSData* _Nullable CryptoGenerateSK(void);

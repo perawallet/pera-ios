@@ -12,6 +12,13 @@ class LedgerTutorialViewController: BaseScrollViewController {
     
     private lazy var ledgerTutorialView = LedgerTutorialView()
     
+    private let mode: AccountSetupMode
+    
+    init(mode: AccountSetupMode, configuration: ViewControllerConfiguration) {
+        self.mode = mode
+        super.init(configuration: configuration)
+    }
+    
     override func configureNavigationBarAppearance() {
         let infoButtonItem = ALGBarButtonItem(kind: .infoBordered) { [weak self] in
             
@@ -47,6 +54,6 @@ extension LedgerTutorialViewController {
 
 extension LedgerTutorialViewController: LedgerTutorialViewDelegate {
     func ledgerTutorialViewDidTapSearchButton(_ ledgerTutorialView: LedgerTutorialView) {
-        open(.ledgerDeviceList, by: .push)
+        open(.ledgerDeviceList(mode: mode), by: .push)
     }
 }

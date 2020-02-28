@@ -51,10 +51,10 @@ indirect enum Screen {
     case rewardDetail(account: Account)
     case assetList(account: Account)
     case verifiedAssetInformation
-    case ledgerTutorial
-    case ledgerDeviceList
+    case ledgerTutorial(mode: AccountSetupMode)
+    case ledgerDeviceList(mode: AccountSetupMode)
     case ledgerTroubleshoot
-    case ledgerPairing(address: String)
+    case ledgerPairing(mode: AccountSetupMode, address: String)
 }
 
 extension Screen {

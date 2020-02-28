@@ -30,6 +30,10 @@ extension AlgorandSDK {
     func addressFrom(_ privateKey: Data, error: inout NSError?) -> String? {
         return CryptoGenerateAddressFromSK(privateKey, &error)
     }
+    
+    func addressFromPublicKey(_ publicKey: Data, error: inout NSError?) -> String {
+        return CryptoGenerateAddressFromPublicKey(publicKey, &error)
+    }
 }
 
 extension AlgorandSDK {

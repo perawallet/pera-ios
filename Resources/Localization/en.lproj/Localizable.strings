@@ -403,9 +403,19 @@
 "ledger-troubleshooting-ledger-support" = "For general troubleshooting of the ledger device, please visit ";
 "ledger-troubleshooting-ledger-support-title" = "Ledger Support.";
 
-
 // MARK: Ledger Pairing
 
 "ledger-pairing-name-title" = "Name Account";
 "ledger-pairing-key-title" = "Key:";
 "ledger-pairing-create-title" = "CREATE ACCOUNT";
+
+// MARK: BLE Errors
+
+"ble-error-fail-connect-peripheral" = "Failed to connect to peripheral";
+"ble-error-disconnected-peripheral" = "Disconnected from peripheral";
+"ble-error-fail-fetch-account-address" = "Failed to fetch account address";
+"ble-error-fail-ble-connection-power" = "Failed BLE connection for Power Off";
+"ble-error-fail-ble-connection-unsupported" = "Failed BLE connection for Unsupported";
+"ble-error-fail-ble-connection-unknown" = "Failed BLE connection for Unknown";
+"ble-error-fail-ble-connection-unauthorized" = "Failed BLE connection for Unauthorized";
+"ble-error-fail-ble-connection-resetting" = "Failed BLE connection for Resetting";

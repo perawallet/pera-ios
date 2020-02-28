@@ -78,7 +78,7 @@ extension LedgerDeviceView {
         connectButton.setContentCompressionResistancePriority(.required, for: .horizontal)
         
         connectButton.snp.makeConstraints { make in
-            make.top.bottom.equalToSuperview().inset(layout.current.buttonVerticalInset)
+            make.top.bottom.equalToSuperview()
             make.trailing.equalToSuperview().inset(layout.current.buttonTrailingInset)
         }
     }
@@ -104,7 +104,6 @@ extension LedgerDeviceView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let imageInset: CGFloat = 16.0
         let buttonTrailingInset: CGFloat = 15.0
-        let buttonVerticalInset: CGFloat = 18.0
         let nameLeadingOffset: CGFloat = 10.0
         let nameTrailingOffset: CGFloat = -20.0
     }

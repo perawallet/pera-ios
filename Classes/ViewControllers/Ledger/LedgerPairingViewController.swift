@@ -8,6 +8,7 @@
 
 import UIKit
 import SnapKit
+import SVProgressHUD
 
 class LedgerPairingViewController: BaseScrollViewController {
     
@@ -16,9 +17,20 @@ class LedgerPairingViewController: BaseScrollViewController {
     private var keyboard = Keyboard()
     private var contentViewBottomConstraint: Constraint?
     
+    private let mode: AccountSetupMode
+    
+    private lazy var accountManager: AccountManager? = {
+        guard let api = self.api else {
+            return nil
+        }
+        let manager = AccountManager(api: api)
+        return manager
+    }()
+    
     private let address: String
     
-    init(address: String, configuration: ViewControllerConfiguration) {
+    init(mode: AccountSetupMode, address: String, configuration: ViewControllerConfiguration) {
+        self.mode = mode
         self.address = address
         super.init(configuration: configuration)
     }
@@ -58,7 +70,81 @@ extension LedgerPairingViewController {
 
 extension LedgerPairingViewController: LedgerPairingViewDelegate {
     func ledgerPairingViewDidTapCreateAccountButton(_ ledgerPairingView: LedgerPairingView) {
+        guard let name = ledgerPairingView.accountNameInputView.inputTextField.text, !name.isEmpty else {
+            displaySimpleAlertWith(title: "title-error".localized, message: "account-name-setup-empty-error-message".localized)
+            return
+        }
         
+        if session?.authenticatedUser?.account(address: address) != nil {
+            displaySimpleAlertWith(title: "title-error".localized, message: "recover-from-seed-verify-exist-error".localized)
+            return
+        }
+        
+        view.endEditing(true)
+        
+        let account = setupAccount(with: name)
+        presentAccountSetupAlert(for: account)
+    }
+}
+
+extension LedgerPairingViewController {
+    private func presentAccountSetupAlert(for account: AccountInformation) {
+        let configurator = AlertViewConfigurator(
+            title: "recover-from-seed-verify-pop-up-title".localized,
+            image: img("account-verify-alert-icon"),
+            explanation: "recover-from-seed-verify-pop-up-explanation".localized,
+            actionTitle: nil) {
+                self.launchHome(with: account)
+        }
+        
+        open(
+            .alert(mode: .default, alertConfigurator: configurator),
+            by: .customPresentWithoutNavigationController(
+                presentationStyle: .overCurrentContext,
+                transitionStyle: .crossDissolve,
+                transitioningDelegate: nil
+            )
+        )
+    }
+    
+    private func setupAccount(with name: String) -> AccountInformation {
+        let account = AccountInformation(address: address, name: name, type: .ledger)
+        let user: User
+        
+        if let authenticatedUser = session?.authenticatedUser {
+            user = authenticatedUser
+            user.addAccount(account)
+        } else {
+            user = User(accounts: [account])
+        }
+        
+        session?.addAccount(Account(address: account.address, name: account.name))
+        session?.authenticatedUser = user
+        
+        return account
+    }
+    
+    private func launchHome(with account: AccountInformation) {
+        SVProgressHUD.show(withStatus: "title-loading".localized)
+        accountManager?.fetchAllAccounts(isVerifiedAssetsIncluded: true) {
+            SVProgressHUD.showSuccess(withStatus: "title-done-lowercased".localized)
+            SVProgressHUD.dismiss(withDelay: 1.0) {
+                if self.session?.hasPassword() ?? false {
+                    switch self.mode {
+                    case .initialize:
+                        DispatchQueue.main.async {
+                            self.dismiss(animated: false) {
+                                UIApplication.shared.rootViewController()?.setupTabBarController()
+                            }
+                        }
+                    case .new:
+                        self.closeScreen(by: .dismiss, animated: false)
+                    }
+                } else {
+                    self.open(.choosePassword(mode: .setup, route: nil), by: .push)
+                }
+            }
+        }
     }
 }
 
