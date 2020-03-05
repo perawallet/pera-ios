@@ -313,8 +313,15 @@ class Router {
             viewController = LedgerDeviceListViewController(mode: mode, configuration: configuration)
         case .ledgerTroubleshoot:
             viewController = LedgerTroubleshootingViewController(configuration: configuration)
-        case let .ledgerPairing(mode, address):
-            viewController = LedgerPairingViewController(mode: mode, address: address, configuration: configuration)
+        case let .ledgerPairing(mode, address, deviceId):
+            viewController = LedgerPairingViewController(
+                mode: mode,
+                address: address,
+                connectedDeviceId: deviceId,
+                configuration: configuration
+            )
+        case .ledgerApproval:
+            viewController = LedgerApprovalViewController(configuration: configuration)
         }
         
         return viewController as? T

@@ -54,7 +54,8 @@ indirect enum Screen {
     case ledgerTutorial(mode: AccountSetupMode)
     case ledgerDeviceList(mode: AccountSetupMode)
     case ledgerTroubleshoot
-    case ledgerPairing(mode: AccountSetupMode, address: String)
+    case ledgerPairing(mode: AccountSetupMode, address: String, connectedDeviceId: UUID)
+    case ledgerApproval
 }
 
 extension Screen {

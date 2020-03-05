@@ -37,6 +37,8 @@ class SelectionView: BaseView {
         return view
     }()
     
+    private lazy var leftImageView = UIImageView()
+    
     private(set) lazy var detailLabel: UILabel = {
         UILabel()
             .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 13.0)))
@@ -66,10 +68,18 @@ class SelectionView: BaseView {
         return button
     }()
     
+    private let hasLeftImageView: Bool
+    
+    init(hasLeftImageView: Bool = false) {
+        self.hasLeftImageView = hasLeftImageView
+        super.init(frame: .zero)
+    }
+    
     override func prepareLayout() {
         setupLeftExplanationLabelLayout()
         setupRightExplanationLabelLayout()
         setupContainerViewLayout()
+        setupLeftImageViewLayout()
         setupRightInputAccessoryButtonLayout()
         setupAmountViewLayout()
         setupDetailLabelLayout()
@@ -113,6 +123,20 @@ extension SelectionView {
         }
     }
     
+    private func setupLeftImageViewLayout() {
+        if !hasLeftImageView {
+            return
+        }
+        
+        containerView.addSubview(leftImageView)
+        
+        leftImageView.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().inset(layout.current.buttonTrailingInset)
+            make.centerY.equalToSuperview()
+            make.width.equalTo(layout.current.buttonWidth)
+        }
+    }
+    
     private func setupRightInputAccessoryButtonLayout() {
         containerView.addSubview(rightInputAccessoryButton)
         
@@ -143,7 +167,11 @@ extension SelectionView {
         detailLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
         
         detailLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(layout.current.defaultInset)
+            if hasLeftImageView {
+                make.leading.equalToSuperview().inset(layout.current.defaultInset)
+            } else {
+                make.leading.equalToSuperview().inset(layout.current.defaultInset)
+            }
             make.top.bottom.equalToSuperview().inset(layout.current.detailVerticalInset)
         }
     }

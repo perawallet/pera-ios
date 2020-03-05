@@ -12,6 +12,12 @@ class AccountContextView: BaseView {
     
     private let layout = Layout<LayoutConstants>()
     
+    private lazy var accountTypeImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.isHidden = true
+        return imageView
+    }()
+    
     private(set) lazy var nameLabel: UILabel = {
         UILabel()
             .withLine(.single)
@@ -47,6 +53,7 @@ class AccountContextView: BaseView {
     override func prepareLayout() {
         setupDetailLabelLayout()
         setupImageViewLayout()
+        setupAccountTypeImageViewLayout()
         setupNameLabelLayout()
         setupSeparatorViewLayout()
     }
@@ -71,6 +78,16 @@ extension AccountContextView {
         }
     }
     
+    private func setupAccountTypeImageViewLayout() {
+        addSubview(accountTypeImageView)
+        
+//        accountTypeImageView.snp.makeConstraints { make in
+//            make.trailing.equalToSuperview().inset(layout.current.buttonTrailingInset)
+//            make.centerY.equalToSuperview()
+//            make.width.equalTo(layout.current.buttonWidth)
+//        }
+    }
+    
     private func setupNameLabelLayout() {
         addSubview(nameLabel)
         
@@ -89,6 +106,13 @@ extension AccountContextView {
             make.height.equalTo(layout.current.separatorHeight)
             make.leading.trailing.equalToSuperview().inset(layout.current.defaultInset)
         }
+    }
+}
+
+extension AccountContextView {
+    func setAccountTypeImage(_ image: UIImage) {
+        accountTypeImageView.isHidden = false
+        accountTypeImageView.image = image
     }
 }
 
