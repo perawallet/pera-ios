@@ -79,7 +79,7 @@ extension BLEConnectionManager: CBCentralManagerDelegate {
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
         print("Connection complete")
         print("Peripheral info: \(String(describing: blePeripheral))")
-        centralManager?.stopScan()
+        stopScan()
         peripheral.delegate = self
         peripheral.discoverServices([bleServiceUuid])
         delegate?.bleConnectionManager(self, didConnect: peripheral)
@@ -193,26 +193,20 @@ extension BLEConnectionManager: CBPeripheralDelegate {
 }
 
 protocol BLEConnectionManagerDelegate: class {
-    func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didConnect peripheral: CBPeripheral)
+    typealias BLEError = Error
+    
     func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didDiscover peripherals: [CBPeripheral])
-    func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didFailBLEConnectionWith state: CBManagerState)
+    func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didConnect peripheral: CBPeripheral)
     func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didRead string: String)
-    func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didFailToConnect peripheral: CBPeripheral, with error: Error?)
-    func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didDisconnectFrom peripheral: CBPeripheral, with error: Error?)
-}
-
-extension BLEConnectionManagerDelegate {
-    func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didDiscover peripherals: [CBPeripheral]) { }
-    
-    func bleConnectionManager(
-        _ bleConnectionManager: BLEConnectionManager,
-        didDisconnectFrom peripheral: CBPeripheral,
-        with error: Error?
-    ) { }
-    
+    func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didFailBLEConnectionWith state: CBManagerState)
     func bleConnectionManager(
         _ bleConnectionManager: BLEConnectionManager,
         didFailToConnect peripheral: CBPeripheral,
-        with error: Error?
-    ) { }
+        with error: BLEError?
+    )
+    func bleConnectionManager(
+        _ bleConnectionManager: BLEConnectionManager,
+        didDisconnectFrom peripheral: CBPeripheral,
+        with error: BLEError?
+    )
 }

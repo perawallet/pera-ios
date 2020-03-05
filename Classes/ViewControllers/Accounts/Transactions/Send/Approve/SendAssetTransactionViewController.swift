@@ -22,7 +22,7 @@ class SendAssetTransactionViewController: SendTransactionViewController {
         super.init(assetReceiverState: assetReceiverState, configuration: configuration)
         
         fee = assetTransactionSendDraft.fee
-        transactionController?.setAssetTransactionDraft(assetTransactionSendDraft)
+        transactionController?.setTransactionDraft(assetTransactionSendDraft)
     }
     
     override func configureAppearance() {

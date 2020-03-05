@@ -20,6 +20,8 @@ class Account: Model {
     
     var assetDetails: [AssetDetail] = []
     var name: String?
+    var type: AccountType = .standard
+    var ledgerDetail: LedgerDetail?
     
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -34,13 +36,17 @@ class Account: Model {
         totalAssets = try? container.decodeIfPresent([String: AssetDetail].self, forKey: .totalAssets)
         assets = try? container.decodeIfPresent([String: Asset].self, forKey: .assets) ?? nil
         assetDetails = try container.decodeIfPresent([AssetDetail].self, forKey: .assetDetails) ?? []
+        type = try container.decodeIfPresent(AccountType.self, forKey: .type) ?? .standard
+        ledgerDetail = try container.decodeIfPresent(LedgerDetail.self, forKey: .ledgerDetail)
     }
     
-    init(address: String, name: String? = nil) {
+    init(address: String, type: AccountType = .standard, ledgerDetail: LedgerDetail? = nil, name: String? = nil) {
         self.address = address
         amount = 0
         status = .offline
         self.name = name
+        self.type = type
+        self.ledgerDetail = ledgerDetail
     }
 }
 
@@ -54,6 +60,8 @@ extension Account {
         totalAssets = account.totalAssets
         assets = account.assets
         assetDetails = account.assetDetails
+        type = account.type
+        ledgerDetail = account.ledgerDetail
         
         if let updatedName = account.name {
             name = updatedName
@@ -117,6 +125,8 @@ extension Account {
         case totalAssets = "thisassettotal"
         case assets = "assets"
         case assetDetails = "assetDetails"
+        case type = "type"
+        case ledgerDetail = "ledgerDetail"
     }
 }
 

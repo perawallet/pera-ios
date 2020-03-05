@@ -87,11 +87,11 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
         composeTransactionData()
     }
     
-    override func transactionControllerDidComposedAlgosTransactionData(
+    override func transactionController(
         _ transactionController: TransactionController,
-        forTransaction draft: AlgosTransactionSendDraft?
+        didComposedTransactionDataFor draft: TransactionSendDraft?
     ) {
-        guard let algosTransactionDraft = draft else {
+        guard let algosTransactionDraft = draft as? AlgosTransactionSendDraft else {
             return
         }
         open(.sendAlgosTransaction(algosTransactionSendDraft: algosTransactionDraft, receiver: assetReceiverState), by: .push)
@@ -265,6 +265,6 @@ extension SendAlgosTransactionPreviewViewController {
         )
         
         transactionController.setTransactionDraft(transactionDraft)
-        transactionController.composeAlgosTransactionData()
+        transactionController.getTransactionParamsAndComposeTransactionData(for: .algosTransaction)
     }
 }

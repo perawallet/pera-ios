@@ -21,6 +21,8 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
         )
     )
     
+    private lazy var ledgerApprovalViewController = LedgerApprovalViewController(configuration: configuration)
+    
     private(set) lazy var sendTransactionPreviewView = SendTransactionPreviewView(inputFieldFraction: assetFraction)
     var keyboard = Keyboard()
     private(set) var contentViewBottomConstraint: Constraint?
@@ -53,6 +55,11 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
         sendTransactionPreviewView.amountInputView.beginEditing()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        transactionController?.stopBLEScan()
+    }
+    
     override func configureAppearance() {
         super.configureAppearance()
         sendTransactionPreviewView.transactionParticipantView.accountSelectionView.set(enabled: selectedAccount == nil)
@@ -79,14 +86,9 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
     
     func updateSelectedAccountForSender(_ account: Account) { }
     
-    func transactionControllerDidComposedAlgosTransactionData(
+    func transactionController(
         _ transactionController: TransactionController,
-        forTransaction draft: AlgosTransactionSendDraft?
-    ) { }
-    
-    func transactionControllerDidComposedAssetTransactionData(
-        _ transactionController: TransactionController,
-        forTransaction draft: AssetTransactionSendDraft?
+        didComposedTransactionDataFor draft: TransactionSendDraft?
     ) { }
     
     func displayTransactionPreview() { }
@@ -106,6 +108,27 @@ extension SendTransactionPreviewViewController {
             make.leading.trailing.top.equalToSuperview()
             contentViewBottomConstraint = make.bottom.equalToSuperview().inset(view.safeAreaBottom).constraint
         }
+    }
+}
+
+extension SendTransactionPreviewViewController {
+    func displayLedgerApprovalViewController() {
+        if ledgerApprovalViewController.parent != nil {
+            return
+        }
+        
+        addChild(ledgerApprovalViewController)
+        view.addSubview(ledgerApprovalViewController.view)
+        
+        ledgerApprovalViewController.view.snp.makeConstraints { maker in
+            maker.edges.equalToSuperview()
+        }
+        
+        ledgerApprovalViewController.didMove(toParent: self)
+    }
+    
+    func hideLedgerApprovalViewController() {
+        
     }
 }
 

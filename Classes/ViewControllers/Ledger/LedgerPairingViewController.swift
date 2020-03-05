@@ -28,10 +28,12 @@ class LedgerPairingViewController: BaseScrollViewController {
     }()
     
     private let address: String
+    private let connectedDeviceId: UUID
     
-    init(mode: AccountSetupMode, address: String, configuration: ViewControllerConfiguration) {
+    init(mode: AccountSetupMode, address: String, connectedDeviceId: UUID, configuration: ViewControllerConfiguration) {
         self.mode = mode
         self.address = address
+        self.connectedDeviceId = connectedDeviceId
         super.init(configuration: configuration)
     }
 
@@ -108,7 +110,8 @@ extension LedgerPairingViewController {
     }
     
     private func setupAccount(with name: String) -> AccountInformation {
-        let account = AccountInformation(address: address, name: name, type: .ledger)
+        let ledgerDetail = LedgerDetail(id: connectedDeviceId)
+        let account = AccountInformation(address: address, name: name, type: .ledger, ledgerDetail: ledgerDetail)
         let user: User
         
         if let authenticatedUser = session?.authenticatedUser {
@@ -118,7 +121,7 @@ extension LedgerPairingViewController {
             user = User(accounts: [account])
         }
         
-        session?.addAccount(Account(address: account.address, name: account.name))
+        session?.addAccount(Account(address: account.address, type: account.type, ledgerDetail: ledgerDetail, name: account.name))
         session?.authenticatedUser = user
         
         return account

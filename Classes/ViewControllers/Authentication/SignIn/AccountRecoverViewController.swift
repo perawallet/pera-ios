@@ -105,7 +105,7 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
             user = User(accounts: [account])
         }
         
-        session?.addAccount(Account(address: account.address, name: account.name))
+        session?.addAccount(Account(address: account.address, type: account.type, name: account.name))
         session?.authenticatedUser = user
         
         view.endEditing(true)

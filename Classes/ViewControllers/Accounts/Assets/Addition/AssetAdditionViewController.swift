@@ -243,8 +243,8 @@ extension AssetAdditionViewController: AssetActionConfirmationViewControllerDele
         }
         
         let assetTransactionDraft = AssetTransactionSendDraft(from: account, assetIndex: id)
-        transactionController?.setAssetTransactionDraft(assetTransactionDraft)
-        transactionController?.composeAssetTransactionData(transactionType: .assetAddition)
+        transactionController?.setTransactionDraft(assetTransactionDraft)
+        transactionController?.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
     }
 }
 
@@ -268,17 +268,15 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
         }
     }
     
-    func transactionControllerDidComposedAssetTransactionData(
-        _ transactionController: TransactionController,
-        forTransaction draft: AssetTransactionSendDraft?
-    ) {
-        guard let assetSearchResult = assetResults.first(where: { item -> Bool in
-            guard let assetIndex = draft?.assetIndex else {
-                return false
-            }
-            return item.id == assetIndex
-        }) else {
-            return
+    func transactionController(_ transactionController: TransactionController, didComposedTransactionDataFor draft: TransactionSendDraft?) {
+        guard let assetTransactionDraft = draft as? AssetTransactionSendDraft,
+            let assetSearchResult = assetResults.first(where: { item -> Bool in
+                guard let assetIndex = assetTransactionDraft.assetIndex else {
+                    return false
+                }
+                return item.id == assetIndex
+            }) else {
+                return
         }
         
         delegate?.assetAdditionViewController(self, didAdd: assetSearchResult, to: account)

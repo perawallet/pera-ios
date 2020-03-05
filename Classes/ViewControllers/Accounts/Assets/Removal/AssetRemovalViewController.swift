@@ -237,17 +237,15 @@ extension AssetRemovalViewController: AssetActionConfirmationViewControllerDeleg
             assetIndex: assetId,
             assetCreator: assetDetail.creator
         )
-        transactionController?.setAssetTransactionDraft(assetTransactionDraft)
-        transactionController?.composeAssetTransactionData(transactionType: .assetRemoval)
+        transactionController?.setTransactionDraft(assetTransactionDraft)
+        transactionController?.getTransactionParamsAndComposeTransactionData(for: .assetRemoval)
     }
 }
 
 extension AssetRemovalViewController: TransactionControllerDelegate {
-    func transactionControllerDidComposedAssetTransactionData(
-        _ transactionController: TransactionController,
-        forTransaction draft: AssetTransactionSendDraft?
-    ) {
-        guard let removedAssetDetail = getRemovedAssetDetail(from: draft) else {
+    func transactionController(_ transactionController: TransactionController, didComposedTransactionDataFor draft: TransactionSendDraft?) {
+        guard let assetTransactionDraft = draft as? AssetTransactionSendDraft,
+            let removedAssetDetail = getRemovedAssetDetail(from: assetTransactionDraft) else {
             return
         }
         

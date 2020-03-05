@@ -63,11 +63,11 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
         accountListViewController?.delegate = self
     }
     
-    override func transactionControllerDidComposedAssetTransactionData(
+    override func transactionController(
         _ transactionController: TransactionController,
-        forTransaction draft: AssetTransactionSendDraft?
+        didComposedTransactionDataFor draft: TransactionSendDraft?
     ) {
-        guard let assetTransactionDraft = draft else {
+        guard let assetTransactionDraft = draft as? AssetTransactionSendDraft else {
             return
         }
         
@@ -318,8 +318,8 @@ extension SendAssetTransactionPreviewViewController {
             isVerifiedAsset: assetDetail.isVerified
         )
                
-        transactionController.setAssetTransactionDraft(transaction)
-        transactionController.composeAssetTransactionData(transactionType: .assetTransaction)
+        transactionController.setTransactionDraft(transaction)
+        transactionController.getTransactionParamsAndComposeTransactionData(for: .assetTransaction)
     }
 }
 

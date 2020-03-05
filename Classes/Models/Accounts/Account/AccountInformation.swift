@@ -12,11 +12,13 @@ class AccountInformation: Model {
     let address: String
     var name: String
     var type: AccountType = .standard
+    var ledgerDetail: LedgerDetail?
     
-    init(address: String, name: String, type: AccountType = .standard) {
+    init(address: String, name: String, type: AccountType = .standard, ledgerDetail: LedgerDetail? = nil) {
         self.address = address
         self.name = name
         self.type = type
+        self.ledgerDetail = ledgerDetail
     }
     
     required init(from decoder: Decoder) throws {
@@ -24,6 +26,7 @@ class AccountInformation: Model {
         address = try container.decode(String.self, forKey: .address)
         name = try container.decode(String.self, forKey: .name)
         type = try container.decodeIfPresent(AccountType.self, forKey: .type) ?? .standard
+        ledgerDetail = try container.decodeIfPresent(LedgerDetail.self, forKey: .ledgerDetail)
     }
 }
 
@@ -33,7 +36,7 @@ extension AccountInformation {
     }
     
     func mnemonics() -> [String]? {
-        if type == .watcher {
+        if type == .watcher || type == .ledger {
             return nil
         }
         return UIApplication.shared.appConfiguration?.session.mnemonics(forAccount: address)
@@ -53,6 +56,7 @@ extension AccountInformation {
         case address = "address"
         case name = "name"
         case type = "type"
+        case ledgerDetail = "ledgerDetail"
     }
 }
 
