@@ -28,6 +28,11 @@ Algorand address
 @property (nonatomic) NSData* _Nullable address;
 @end
 
+/**
+ * AttachSignature accepts a signature and a transaction, and returns the bytes of a the signed transaction
+ */
+FOUNDATION_EXPORT NSData* _Nullable CryptoAttachSignature(NSData* _Nullable signature, NSData* _Nullable encodedTx, NSError* _Nullable* _Nullable error);
+
 FOUNDATION_EXPORT NSString* _Nonnull CryptoGenerateAddressFromPublicKey(NSData* _Nullable pk, NSError* _Nullable* _Nullable error);
 
 FOUNDATION_EXPORT NSString* _Nonnull CryptoGenerateAddressFromSK(NSData* _Nullable sk, NSError* _Nullable* _Nullable error);
@@ -53,7 +58,7 @@ FOUNDATION_EXPORT NSData* _Nullable CryptoSignBid(NSData* _Nullable sk, NSData* 
 
 /**
  * SignTransaction accepts a private key and a transaction, and returns the
-bytes of a signed bid in a note.
+bytes of a signed txn.
  */
 FOUNDATION_EXPORT NSData* _Nullable CryptoSignTransaction(NSData* _Nullable sk, NSData* _Nullable encodedTx, NSError* _Nullable* _Nullable error);
 
