@@ -94,6 +94,11 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
         guard let algosTransactionDraft = draft as? AlgosTransactionSendDraft else {
             return
         }
+        
+        if algosTransactionDraft.from.type == .ledger {
+            ledgerApprovalViewController.removeFromParentController()
+        }
+        
         open(.sendAlgosTransaction(algosTransactionSendDraft: algosTransactionDraft, receiver: assetReceiverState), by: .push)
     }
     

@@ -24,6 +24,8 @@ class AssetRemovalViewController: BaseViewController {
     
     private var account: Account
     
+    private lazy var ledgerApprovalViewController = LedgerApprovalViewController(configuration: configuration)
+    
     private let viewModel = AssetRemovalViewModel()
     
     weak var delegate: AssetRemovalViewControllerDelegate?
@@ -249,8 +251,18 @@ extension AssetRemovalViewController: TransactionControllerDelegate {
             return
         }
         
+        if account.type == .ledger {
+            ledgerApprovalViewController.removeFromParentController()
+        }
+        
         delegate?.assetRemovalViewController(self, didRemove: removedAssetDetail, from: account)
         dismissScreen()
+    }
+    
+    func transactionController(_ transactionController: TransactionController, didFailedComposing error: Error) {
+        if account.type == .ledger {
+            ledgerApprovalViewController.removeFromParentController()
+        }
     }
     
     private func getRemovedAssetDetail(from draft: AssetTransactionSendDraft?) -> AssetDetail? {
@@ -265,6 +277,10 @@ extension AssetRemovalViewController: TransactionControllerDelegate {
         }
         
         return removedAssetDetail
+    }
+    
+    func transactionControllerDidStartBLEConnection(_ transactionController: TransactionController) {
+        add(ledgerApprovalViewController)
     }
 }
 

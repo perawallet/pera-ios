@@ -40,7 +40,9 @@ extension LedgerApprovalViewController {
 
 extension LedgerApprovalViewController: LedgerApprovalViewDelegate {
     func ledgerApprovalViewDidTapCancelButton(_ ledgerApprovalView: LedgerApprovalView) {
-        dismissScreen()
+        if parent != nil {
+            removeFromParentController()
+        }
     }
 }
 

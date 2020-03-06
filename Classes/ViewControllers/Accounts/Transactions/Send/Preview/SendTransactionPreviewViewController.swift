@@ -21,7 +21,7 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
         )
     )
     
-    private lazy var ledgerApprovalViewController = LedgerApprovalViewController(configuration: configuration)
+    private(set) lazy var ledgerApprovalViewController = LedgerApprovalViewController(configuration: configuration)
     
     private(set) lazy var sendTransactionPreviewView = SendTransactionPreviewView(inputFieldFraction: assetFraction)
     var keyboard = Keyboard()
@@ -108,27 +108,6 @@ extension SendTransactionPreviewViewController {
             make.leading.trailing.top.equalToSuperview()
             contentViewBottomConstraint = make.bottom.equalToSuperview().inset(view.safeAreaBottom).constraint
         }
-    }
-}
-
-extension SendTransactionPreviewViewController {
-    func displayLedgerApprovalViewController() {
-        if ledgerApprovalViewController.parent != nil {
-            return
-        }
-        
-        addChild(ledgerApprovalViewController)
-        view.addSubview(ledgerApprovalViewController.view)
-        
-        ledgerApprovalViewController.view.snp.makeConstraints { maker in
-            maker.edges.equalToSuperview()
-        }
-        
-        ledgerApprovalViewController.didMove(toParent: self)
-    }
-    
-    func hideLedgerApprovalViewController() {
-        
     }
 }
 
@@ -227,6 +206,8 @@ extension SendTransactionPreviewViewController: QRScannerViewControllerDelegate 
 
 extension SendTransactionPreviewViewController: TransactionControllerDelegate {
     func transactionController(_ transactionController: TransactionController, didFailedComposing error: Error) {
+        ledgerApprovalViewController.removeFromParentController()
+        
         SVProgressHUD.dismiss()
         
         switch error {
@@ -248,6 +229,10 @@ extension SendTransactionPreviewViewController: TransactionControllerDelegate {
         default:
             displaySimpleAlertWith(title: "title-error".localized, message: error.localizedDescription)
         }
+    }
+    
+    func transactionControllerDidStartBLEConnection(_ transactionController: TransactionController) {
+        add(ledgerApprovalViewController)
     }
 }
 

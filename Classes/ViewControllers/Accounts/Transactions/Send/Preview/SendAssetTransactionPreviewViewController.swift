@@ -71,6 +71,10 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
             return
         }
         
+        if assetTransactionDraft.from.type == .ledger {
+            ledgerApprovalViewController.removeFromParentController()
+        }
+        
         let controller = open(
             .sendAssetTransaction(
                 assetTransactionSendDraft: assetTransactionDraft,

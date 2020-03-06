@@ -32,6 +32,8 @@ class AssetAdditionViewController: BaseViewController {
     private let paginationRequestOffset = 3
     private var assetSearchFilters = AssetSearchFilter.verified
     
+    private lazy var ledgerApprovalViewController = LedgerApprovalViewController(configuration: configuration)
+    
     private lazy var assetAdditionView = AssetAdditionView()
     
     private lazy var emptyStateView = EmptyStateView(title: "asset-not-found".localized, topImage: nil, bottomImage: nil)
@@ -250,6 +252,10 @@ extension AssetAdditionViewController: AssetActionConfirmationViewControllerDele
 
 extension AssetAdditionViewController: TransactionControllerDelegate {
     func transactionController(_ transactionController: TransactionController, didFailedComposing error: Error) {
+        if account.type == .ledger {
+            ledgerApprovalViewController.removeFromParentController()
+        }
+        
         switch error {
         case let .custom(fee):
             guard let api = api,
@@ -279,8 +285,16 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
                 return
         }
         
+        if account.type == .ledger {
+            ledgerApprovalViewController.removeFromParentController()
+        }
+        
         delegate?.assetAdditionViewController(self, didAdd: assetSearchResult, to: account)
         popScreen()
+    }
+    
+    func transactionControllerDidStartBLEConnection(_ transactionController: TransactionController) {
+        add(ledgerApprovalViewController)
     }
 }
 
