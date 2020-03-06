@@ -81,18 +81,18 @@ extension AccountContextView {
     private func setupAccountTypeImageViewLayout() {
         addSubview(accountTypeImageView)
         
-//        accountTypeImageView.snp.makeConstraints { make in
-//            make.trailing.equalToSuperview().inset(layout.current.buttonTrailingInset)
-//            make.centerY.equalToSuperview()
-//            make.width.equalTo(layout.current.buttonWidth)
-//        }
+        accountTypeImageView.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(layout.current.defaultInset)
+            make.centerY.equalToSuperview()
+        }
     }
     
     private func setupNameLabelLayout() {
         addSubview(nameLabel)
         
         nameLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(layout.current.defaultInset)
+            make.leading.equalTo(accountTypeImageView.snp.trailing).offset(layout.current.nameLabelInset).priority(.required)
+            make.leading.equalToSuperview().inset(layout.current.defaultInset).priority(.medium)
             make.centerY.equalToSuperview()
             make.trailing.lessThanOrEqualTo(imageView.snp.leading)
         }
@@ -110,9 +110,13 @@ extension AccountContextView {
 }
 
 extension AccountContextView {
-    func setAccountTypeImage(_ image: UIImage) {
-        accountTypeImageView.isHidden = false
-        accountTypeImageView.image = image
+    func setAccountTypeImage(_ image: UIImage?, hidden isHidden: Bool) {
+        if isHidden {
+            accountTypeImageView.removeFromSuperview()
+        } else {
+            accountTypeImageView.isHidden = false
+            accountTypeImageView.image = image
+        }
     }
 }
 
@@ -121,6 +125,7 @@ extension AccountContextView {
         let defaultInset: CGFloat = 25.0
         let imageViewOffset: CGFloat = -2.0
         let separatorHeight: CGFloat = 1.0
+        let nameLabelInset: CGFloat = 11.0
     }
 }
 

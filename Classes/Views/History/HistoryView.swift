@@ -25,7 +25,7 @@ class HistoryView: BaseView {
     var endDate = Date()
     
     private(set) lazy var accountSelectionView: SelectionView = {
-        let accountSelectionView = SelectionView()
+        let accountSelectionView = SelectionView(hasLeftImageView: true)
         accountSelectionView.backgroundColor = .clear
         accountSelectionView.leftExplanationLabel.text = "history-account".localized
         return accountSelectionView

@@ -20,6 +20,13 @@ class RequestAssetTransactionViewModel {
         view.transactionParticipantView.accountSelectionView.amountView.amountLabel.textColor = SharedColors.black
         view.transactionParticipantView.accountSelectionView.amountView.algoIconImageView.removeFromSuperview()
         view.transactionParticipantView.accountSelectionView.detailLabel.text = assetTransactionRequestDraft.account.name
+        
+        if assetTransactionRequestDraft.account.type == .ledger {
+            view.transactionParticipantView.accountSelectionView.setLedgerAccount()
+        } else {
+            view.transactionParticipantView.accountSelectionView.setStandardAccount()
+        }
+        
         view.amountInputView.algosImageView.removeFromSuperview()
         
         let assetDetail = assetTransactionRequestDraft.assetDetail

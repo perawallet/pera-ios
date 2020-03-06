@@ -131,9 +131,8 @@ extension SelectionView {
         containerView.addSubview(leftImageView)
         
         leftImageView.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(layout.current.buttonTrailingInset)
+            make.leading.equalToSuperview().inset(layout.current.defaultInset)
             make.centerY.equalToSuperview()
-            make.width.equalTo(layout.current.buttonWidth)
         }
     }
     
@@ -168,7 +167,7 @@ extension SelectionView {
         
         detailLabel.snp.makeConstraints { make in
             if hasLeftImageView {
-                make.leading.equalToSuperview().inset(layout.current.defaultInset)
+                make.leading.equalTo(leftImageView.snp.trailing).offset(layout.current.detailLabelLeadingInset)
             } else {
                 make.leading.equalToSuperview().inset(layout.current.defaultInset)
             }
@@ -205,6 +204,14 @@ extension SelectionView {
             containerView.backgroundColor = Colors.borderColor
         }
     }
+    
+    func setLedgerAccount() {
+        leftImageView.image = img("icon-account-type-ledger")
+    }
+    
+    func setStandardAccount() {
+        leftImageView.image = img("icon-account-type-standard")
+    }
 }
 
 extension SelectionView {
@@ -214,6 +221,7 @@ extension SelectionView {
         let horizontalInset: CGFloat = 30.0
         let verticalInset: CGFloat = 15.0
         let containerViewTopInset: CGFloat = 7.0
+        let detailLabelLeadingInset: CGFloat = 12.0
         let amountViewHeight: CGFloat = 22.0
         let detailVerticalInset: CGFloat = 16.0
         let buttonTrailingInset: CGFloat = 12.0

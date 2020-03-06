@@ -11,6 +11,12 @@ import UIKit
 class HistoryViewModel {
     func configure(_ view: HistoryView, with account: Account) {
         view.accountSelectionView.detailLabel.text = account.name
+        
+        if account.type == .ledger {
+            view.accountSelectionView.setLedgerAccount()
+        } else {
+            view.accountSelectionView.setStandardAccount()
+        }
     }
     
     func configureForAlgos(_ view: HistoryView) {

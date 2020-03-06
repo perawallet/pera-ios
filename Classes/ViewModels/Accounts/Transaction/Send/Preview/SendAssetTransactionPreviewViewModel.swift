@@ -26,6 +26,13 @@ class SendAssetTransactionPreviewViewModel {
         if let selectedAccount = selectedAccount,
             let assetAmount = selectedAccount.amount(for: assetDetail) {
             view.transactionParticipantView.accountSelectionView.detailLabel.text = selectedAccount.name
+            
+            if selectedAccount.type == .ledger {
+                view.transactionParticipantView.accountSelectionView.setLedgerAccount()
+            } else {
+                view.transactionParticipantView.accountSelectionView.setStandardAccount()
+            }
+            
             view.amountInputView.maxAmount = assetAmount
             view.transactionParticipantView.assetSelectionView.set(amount: assetAmount, assetFraction: assetDetail.fractionDecimals)
         }
@@ -45,6 +52,13 @@ class SendAssetTransactionPreviewViewModel {
         }
         
         view.transactionParticipantView.accountSelectionView.detailLabel.text = account.name
+        
+        if account.type == .ledger {
+            view.transactionParticipantView.accountSelectionView.setLedgerAccount()
+        } else {
+            view.transactionParticipantView.accountSelectionView.setStandardAccount()
+        }
+        
         view.amountInputView.maxAmount = assetAmount
         view.transactionParticipantView.assetSelectionView.set(amount: assetAmount, assetFraction: assetDetail.fractionDecimals)
         
