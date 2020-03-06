@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreBluetooth
 
 protocol AssetRemovalViewControllerDelegate: class {
     func assetRemovalViewController(
@@ -25,6 +26,13 @@ class AssetRemovalViewController: BaseViewController {
     private var account: Account
     
     private lazy var ledgerApprovalViewController = LedgerApprovalViewController(configuration: configuration)
+    
+    private lazy var pushNotificationController: PushNotificationController = {
+        guard let api = api else {
+            fatalError("API should be set.")
+        }
+        return PushNotificationController(api: api)
+    }()
     
     private let viewModel = AssetRemovalViewModel()
     
@@ -281,6 +289,31 @@ extension AssetRemovalViewController: TransactionControllerDelegate {
     
     func transactionControllerDidStartBLEConnection(_ transactionController: TransactionController) {
         add(ledgerApprovalViewController)
+    }
+    
+    func transactionController(_ transactionController: TransactionController, didFailBLEConnectionWith state: CBManagerState) {
+        switch state {
+        case .poweredOff:
+            pushNotificationController.showFeedbackMessage("ble-error-fail-ble-connection-power".localized, subtitle: "")
+        case .unsupported:
+            pushNotificationController.showFeedbackMessage("ble-error-fail-ble-connection-unsupported".localized, subtitle: "")
+        case .unknown:
+            pushNotificationController.showFeedbackMessage("ble-error-fail-ble-connection-unknown".localized, subtitle: "")
+        case .unauthorized:
+            pushNotificationController.showFeedbackMessage("ble-error-fail-ble-connection-unauthorized".localized, subtitle: "")
+        case .resetting:
+            pushNotificationController.showFeedbackMessage("ble-error-fail-ble-connection-resetting".localized, subtitle: "")
+        default:
+            return
+        }
+    }
+    
+    func transactionController(_ transactionController: TransactionController, didFailToConnect peripheral: CBPeripheral) {
+        pushNotificationController.showFeedbackMessage("ble-error-fail-connect-peripheral".localized, subtitle: "")
+    }
+    
+    func transactionController(_ transactionController: TransactionController, didDisconnectFrom peripheral: CBPeripheral) {
+        pushNotificationController.showFeedbackMessage("ble-error-disconnected-peripheral".localized, subtitle: "")
     }
 }
 

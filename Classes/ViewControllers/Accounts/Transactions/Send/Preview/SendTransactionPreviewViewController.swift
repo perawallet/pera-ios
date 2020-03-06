@@ -11,6 +11,7 @@ import SnapKit
 import SVProgressHUD
 import Magpie
 import Alamofire
+import CoreBluetooth
 
 class SendTransactionPreviewViewController: BaseScrollViewController {
     
@@ -22,6 +23,13 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
     )
     
     private(set) lazy var ledgerApprovalViewController = LedgerApprovalViewController(configuration: configuration)
+    
+    private lazy var pushNotificationController: PushNotificationController = {
+        guard let api = api else {
+            fatalError("API should be set.")
+        }
+        return PushNotificationController(api: api)
+    }()
     
     private(set) lazy var sendTransactionPreviewView = SendTransactionPreviewView(inputFieldFraction: assetFraction)
     var keyboard = Keyboard()
@@ -233,6 +241,35 @@ extension SendTransactionPreviewViewController: TransactionControllerDelegate {
     
     func transactionControllerDidStartBLEConnection(_ transactionController: TransactionController) {
         add(ledgerApprovalViewController)
+    }
+    
+    func transactionController(_ transactionController: TransactionController, didFailBLEConnectionWith state: CBManagerState) {
+        switch state {
+        case .poweredOff:
+            pushNotificationController.showFeedbackMessage("ble-error-fail-ble-connection-power".localized, subtitle: "")
+        case .unsupported:
+            pushNotificationController.showFeedbackMessage("ble-error-fail-ble-connection-unsupported".localized, subtitle: "")
+        case .unknown:
+            pushNotificationController.showFeedbackMessage("ble-error-fail-ble-connection-unknown".localized, subtitle: "")
+        case .unauthorized:
+            pushNotificationController.showFeedbackMessage("ble-error-fail-ble-connection-unauthorized".localized, subtitle: "")
+        case .resetting:
+            pushNotificationController.showFeedbackMessage("ble-error-fail-ble-connection-resetting".localized, subtitle: "")
+        default:
+            return
+        }
+    }
+    
+    func transactionController(_ transactionController: TransactionController, didFailToConnect peripheral: CBPeripheral) {
+        pushNotificationController.showFeedbackMessage("ble-error-fail-connect-peripheral".localized, subtitle: "")
+    }
+    
+    func transactionController(_ transactionController: TransactionController, didDisconnectFrom peripheral: CBPeripheral) {
+        pushNotificationController.showFeedbackMessage("ble-error-disconnected-peripheral".localized, subtitle: "")
+    }
+    
+    func transactionControllerDidFailToSignWithLedger(_ transactionController: TransactionController) {
+        pushNotificationController.showFeedbackMessage("ble-error-fail-sign-transaction".localized, subtitle: "")
     }
 }
 

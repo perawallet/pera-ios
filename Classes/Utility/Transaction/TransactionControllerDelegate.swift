@@ -18,6 +18,7 @@ protocol TransactionControllerDelegate: class {
     func transactionController(_ transactionController: TransactionController, didFailBLEConnectionWith state: CBManagerState)
     func transactionController(_ transactionController: TransactionController, didFailToConnect peripheral: CBPeripheral)
     func transactionController(_ transactionController: TransactionController, didDisconnectFrom peripheral: CBPeripheral)
+    func transactionControllerDidFailToSignWithLedger(_ transactionController: TransactionController)
 }
 
 extension TransactionControllerDelegate where Self: BaseViewController {
@@ -34,28 +35,11 @@ extension TransactionControllerDelegate where Self: BaseViewController {
     
     func transactionControllerDidStartBLEConnection(_ transactionController: TransactionController) { }
     
-    func transactionController(_ transactionController: TransactionController, didFailBLEConnectionWith state: CBManagerState) {
-        switch state {
-        case .poweredOff:
-            displaySimpleAlertWith(title: "title-error".localized, message: "ble-error-fail-ble-connection-power".localized)
-        case .unsupported:
-            displaySimpleAlertWith(title: "title-error".localized, message: "ble-error-fail-ble-connection-unsupported".localized)
-        case .unknown:
-            displaySimpleAlertWith(title: "title-error".localized, message: "ble-error-fail-ble-connection-unknown".localized)
-        case .unauthorized:
-            displaySimpleAlertWith(title: "title-error".localized, message: "ble-error-fail-ble-connection-unauthorized".localized)
-        case .resetting:
-            displaySimpleAlertWith(title: "title-error".localized, message: "ble-error-fail-ble-connection-resetting".localized)
-        default:
-            return
-        }
-    }
+    func transactionController(_ transactionController: TransactionController, didFailBLEConnectionWith state: CBManagerState) { }
     
-    func transactionController(_ transactionController: TransactionController, didFailToConnect peripheral: CBPeripheral) {
-        displaySimpleAlertWith(title: "title-error".localized, message: "ble-error-fail-connect-peripheral".localized)
-    }
+    func transactionController(_ transactionController: TransactionController, didFailToConnect peripheral: CBPeripheral) { }
     
-    func transactionController(_ transactionController: TransactionController, didDisconnectFrom peripheral: CBPeripheral) {
-        displaySimpleAlertWith(title: "title-error".localized, message: "ble-error-disconnected-peripheral".localized)
-    }
+    func transactionController(_ transactionController: TransactionController, didDisconnectFrom peripheral: CBPeripheral) { }
+    
+    func transactionControllerDidFailToSignWithLedger(_ transactionController: TransactionController) { }
 }
