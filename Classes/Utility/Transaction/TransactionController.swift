@@ -421,23 +421,28 @@ extension TransactionController: LedgerBLEControllerDelegate {
     }
     
     func ledgerBLEController(_ ledgerBLEController: LedgerBLEController, received data: Data) {
-      //  signedTransactionData = data
-        
-        if !isTransactionSigned {
-            return
+        // Remove last to bytes, which are status codes.
+        var signatureData = data
+        signatureData.removeLast(2)
+      
+        var transactionError: NSError?
+      
+        guard let transactionData = unsignedTransactionData,
+            let signedTransaction = algorandSDK.getSignedTransaction(transactionData, from: signatureData, error: &transactionError),
+            let transactionType = currentTransactionType else {
+                delegate?.transactionController(self, didFailedComposing: .custom(transactionError))
+                return
         }
+      
+        self.signedTransactionData = signedTransaction
         
-        guard let transactionType = currentTransactionType else {
-            return
+        if transactionType == .algosTransaction {
+            calculateAlgosTransactionFee()
+            completeAlgosTransaction()
+        } else {
+            calculateAssetTransactionFee(for: transactionType)
+            completeAssetTransaction(for: transactionType)
         }
-        
-//        if transactionType == .algosTransaction {
-//            calculateAlgosTransactionFee()
-//            completeAlgosTransaction()
-//        } else {
-//            calculateAssetTransactionFee(for: transactionType)
-//            completeAssetTransaction(for: transactionType)
-//        }
     }
 }
 
