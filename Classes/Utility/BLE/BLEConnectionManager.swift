@@ -72,7 +72,6 @@ extension BLEConnectionManager: CBCentralManagerDelegate {
         
         blePeripheral = peripheral
         peripherals.append(peripheral)
-        peripheral.delegate = self
         delegate?.bleConnectionManager(self, didDiscover: peripherals)
     }
     
@@ -161,6 +160,9 @@ extension BLEConnectionManager: CBPeripheralDelegate {
             if characteristic.uuid.isEqual(bleCharacteristicUuidTx) {
                 txCharacteristic = characteristic
                 print("Tx Characteristic: \(characteristic.uuid)")
+                
+                // Can write a data to the device since txCharacteristic is set.
+                delegate?.bleConnectionManagerEnabledToWrite(self)
             }
             peripheral.discoverDescriptors(for: characteristic)
         }
@@ -197,6 +199,7 @@ protocol BLEConnectionManagerDelegate: class {
     
     func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didDiscover peripherals: [CBPeripheral])
     func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didConnect peripheral: CBPeripheral)
+    func bleConnectionManagerEnabledToWrite(_ bleConnectionManager: BLEConnectionManager)
     func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didRead string: String)
     func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didFailBLEConnectionWith state: CBManagerState)
     func bleConnectionManager(

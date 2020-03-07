@@ -24,6 +24,13 @@ class LedgerDeviceListViewController: BaseViewController {
     private var ledgerDevices = [CBPeripheral]()
     private var connectedDevice: CBPeripheral?
     
+    private lazy var pushNotificationController: PushNotificationController = {
+        guard let api = api else {
+            fatalError("API should be set.")
+        }
+        return PushNotificationController(api: api)
+    }()
+    
     init(mode: AccountSetupMode, configuration: ViewControllerConfiguration) {
         self.mode = mode
         super.init(configuration: configuration)
@@ -130,11 +137,14 @@ extension LedgerDeviceListViewController: BLEConnectionManagerDelegate {
     }
     
     func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didConnect peripheral: CBPeripheral) {
+        connectedDevice = peripheral
+    }
+    
+    func bleConnectionManagerEnabledToWrite(_ bleConnectionManager: BLEConnectionManager) {
         guard let bleData = Data(fromHexEncodedString: bleLedgerAddressMessage) else {
             return
         }
         
-        connectedDevice = peripheral
         ledgerBLEController.fetchAddress(bleData)
     }
     
@@ -144,17 +154,18 @@ extension LedgerDeviceListViewController: BLEConnectionManagerDelegate {
     
     func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didFailBLEConnectionWith state: CBManagerState) {
         connectedDevice = nil
+        
         switch state {
         case .poweredOff:
-            displaySimpleAlertWith(title: "title-error".localized, message: "ble-error-fail-ble-connection-power".localized)
+            pushNotificationController.showFeedbackMessage("ble-error-fail-ble-connection-power".localized, subtitle: "")
         case .unsupported:
-            displaySimpleAlertWith(title: "title-error".localized, message: "ble-error-fail-ble-connection-unsupported".localized)
+            pushNotificationController.showFeedbackMessage("ble-error-fail-ble-connection-unsupported".localized, subtitle: "")
         case .unknown:
-            displaySimpleAlertWith(title: "title-error".localized, message: "ble-error-fail-ble-connection-unknown".localized)
+            pushNotificationController.showFeedbackMessage("ble-error-fail-ble-connection-unknown".localized, subtitle: "")
         case .unauthorized:
-            displaySimpleAlertWith(title: "title-error".localized, message: "ble-error-fail-ble-connection-unauthorized".localized)
+            pushNotificationController.showFeedbackMessage("ble-error-fail-ble-connection-unauthorized".localized, subtitle: "")
         case .resetting:
-            displaySimpleAlertWith(title: "title-error".localized, message: "ble-error-fail-ble-connection-resetting".localized)
+            pushNotificationController.showFeedbackMessage("ble-error-fail-ble-connection-resetting".localized, subtitle: "")
         default:
             return
         }
@@ -166,7 +177,7 @@ extension LedgerDeviceListViewController: BLEConnectionManagerDelegate {
         with error: BLEError?
     ) {
         connectedDevice = nil
-        displaySimpleAlertWith(title: "title-error".localized, message: "ble-error-disconnected-peripheral".localized)
+        pushNotificationController.showFeedbackMessage("ble-error-disconnected-peripheral".localized, subtitle: "")
     }
     
     func bleConnectionManager(
@@ -175,7 +186,7 @@ extension LedgerDeviceListViewController: BLEConnectionManagerDelegate {
         with error: BLEError?
     ) {
         connectedDevice = nil
-        displaySimpleAlertWith(title: "title-error".localized, message: "ble-error-fail-connect-peripheral".localized)
+        pushNotificationController.showFeedbackMessage("ble-error-fail-connect-peripheral".localized, subtitle: "")
     }
 }
 
@@ -198,13 +209,13 @@ extension LedgerDeviceListViewController: LedgerBLEControllerDelegate {
         
         if !AlgorandSDK().isValidAddress(address) {
             connectedDevice = nil
-            displaySimpleAlertWith(title: "title-error".localized, message: "ble-error-fail-fetch-account-address".localized)
+            pushNotificationController.showFeedbackMessage("ble-error-fail-fetch-account-address".localized, subtitle: "")
             return
         }
 
         if error != nil {
             connectedDevice = nil
-            displaySimpleAlertWith(title: "title-error".localized, message: "ble-error-fail-fetch-account-address".localized)
+            pushNotificationController.showFeedbackMessage("ble-error-fail-fetch-account-address".localized, subtitle: "")
             return
         }
         
