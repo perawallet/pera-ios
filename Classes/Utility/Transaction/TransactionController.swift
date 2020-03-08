@@ -27,6 +27,8 @@ class TransactionController {
     private var currentTransactionType: TransactionType?
     private var connectedDevice: CBPeripheral?
     
+    private var receivedDataCount = 0
+    
     private var fromAccount: Account? {
         return transactionDraft?.from
     }
@@ -53,14 +55,9 @@ extension TransactionController {
         self.transactionDraft = transactionDraft
     }
     
-    func setupBLEConnections() {
-        if bleConnectionManager.delegate == nil {
-            bleConnectionManager.delegate = self
-        }
-        
-        if ledgerBLEController.delegate == nil {
-            ledgerBLEController.delegate = self
-        }
+    private func setupBLEConnections() {
+        bleConnectionManager.delegate = self
+        ledgerBLEController.delegate = self
     }
     
     func stopBLEScan() {
@@ -89,10 +86,9 @@ extension TransactionController {
         }
         
         api.sendTransaction(with: transactionData) { transactionIdResponse in
-            self.currentTransactionType = nil
-            
             switch transactionIdResponse {
             case let .success(transactionId):
+                self.currentTransactionType = nil
                 self.api.trackTransaction(with: TransactionTrackDraft(transactionId: transactionId.identifier))
                 completion?()
                 self.delegate?.transactionController(self, didCompletedTransaction: transactionId)
@@ -130,7 +126,11 @@ extension TransactionController {
     private func startSigningProcess(for accountType: AccountType, and transactionType: TransactionType) {
         if accountType == .ledger {
             setupBLEConnections()
-            bleConnectionManager.startScanForPeripherals()
+            // swiftlint:disable todo
+            // TODO: We need to restart scanning somehow here so that it can be restarted if there is an error in the same screen.
+            // For now, it will not start scanning unless the func centralManagerDidUpdateState(_ central: CBCentralManager) delegate
+            // function of central manager in BLEConnectionManager is not called.
+            // swiftlint:enable todo
         } else {
             if transactionType == .algosTransaction {
                 handleAlgosTransactionForStandardAccount()
@@ -410,6 +410,7 @@ extension TransactionController: BLEConnectionManagerDelegate {
     }
     
     func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didRead string: String) {
+        receivedDataCount += 1
         ledgerBLEController.updateIncomingData(with: string)
     }
     
@@ -440,6 +441,20 @@ extension TransactionController: LedgerBLEControllerDelegate {
     }
     
     func ledgerBLEController(_ ledgerBLEController: LedgerBLEController, received data: Data) {
+        guard let transactionType = currentTransactionType else {
+            return
+        }
+        
+        // swiftlint:disable todo
+        // TODO: This is a temp fix for a bug related to received data count from the ledger device.
+        // There is a bug that receives ble data even if the ledger does not approve trnsaction sign.
+        // So, the first response should be ignored.
+        // This issue should be tested on other devices and fixed in some other way.
+        // swiftlint:enable todo
+        if (transactionType == .algosTransaction || transactionType == .assetTransaction) && receivedDataCount == 1 {
+            return
+        }
+        
         if data.toHexString() == ledgerErrorResponse {
             delegate?.transactionControllerDidFailToSignWithLedger(self)
             return
@@ -457,8 +472,7 @@ extension TransactionController: LedgerBLEControllerDelegate {
         var transactionError: NSError?
       
         guard let transactionData = unsignedTransactionData,
-            let signedTransaction = algorandSDK.getSignedTransaction(transactionData, from: signatureData, error: &transactionError),
-            let transactionType = currentTransactionType else {
+            let signedTransaction = algorandSDK.getSignedTransaction(transactionData, from: signatureData, error: &transactionError) else {
                 connectedDevice = nil
                 delegate?.transactionController(self, didFailedComposing: .custom(transactionError))
                 return

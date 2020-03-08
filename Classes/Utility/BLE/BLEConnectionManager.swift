@@ -19,6 +19,7 @@ class BLEConnectionManager: NSObject {
     private var rxCharacteristic: CBCharacteristic?
     
     private var peripherals: [CBPeripheral] = []
+    private var isScanning = false
     
     override init() {
         super.init()
@@ -28,11 +29,26 @@ class BLEConnectionManager: NSObject {
 
 extension BLEConnectionManager {
     func startScanForPeripherals() {
-        peripherals = []
-        centralManager?.scanForPeripherals(withServices: [bleServiceUuid], options: [CBCentralManagerScanOptionAllowDuplicatesKey: false])
+        if !isScanning {
+            isScanning = true
+            peripherals = []
+            centralManager?.scanForPeripherals(
+                withServices: [bleServiceUuid],
+                options: [CBCentralManagerScanOptionAllowDuplicatesKey: false]
+            )
+        }
+    }
+    
+    func centralManagerDidUpdateState() {
+        guard let centralManager = centralManager else {
+            return
+        }
+        
+        centralManagerDidUpdateState(centralManager)
     }
     
     func stopScan() {
+        isScanning = false
         centralManager?.stopScan()
     }
     

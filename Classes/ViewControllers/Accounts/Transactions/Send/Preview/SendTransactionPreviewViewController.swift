@@ -268,14 +268,17 @@ extension SendTransactionPreviewViewController: TransactionControllerDelegate {
     }
     
     func transactionController(_ transactionController: TransactionController, didFailToConnect peripheral: CBPeripheral) {
+        ledgerApprovalViewController.removeFromParentController()
         pushNotificationController.showFeedbackMessage("ble-error-fail-connect-peripheral".localized, subtitle: "")
     }
     
     func transactionController(_ transactionController: TransactionController, didDisconnectFrom peripheral: CBPeripheral) {
+        ledgerApprovalViewController.removeFromParentController()
         pushNotificationController.showFeedbackMessage("ble-error-disconnected-peripheral".localized, subtitle: "")
     }
     
     func transactionControllerDidFailToSignWithLedger(_ transactionController: TransactionController) {
+        ledgerApprovalViewController.removeFromParentController()
         pushNotificationController.showFeedbackMessage("ble-error-fail-sign-transaction".localized, subtitle: "")
     }
 }

@@ -20,6 +20,10 @@ class LedgerDeviceListViewController: BaseViewController {
     
     private let viewModel = LedgerDeviceListViewModel()
     
+    private lazy var ledgerApprovalViewController = LedgerApprovalViewController(mode: .connection, configuration: configuration)
+    
+    private var receivedDataCount = 0
+    
     private let mode: AccountSetupMode
     private var ledgerDevices = [CBPeripheral]()
     private var connectedDevice: CBPeripheral?
@@ -38,7 +42,9 @@ class LedgerDeviceListViewController: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        bleConnectionManager.startScanForPeripherals()
+        // swiftlint:disable todo
+        // TODO: We might need to restart scanning here somehow.
+        // swiftlint:enable todo
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -138,6 +144,7 @@ extension LedgerDeviceListViewController: BLEConnectionManagerDelegate {
     
     func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didConnect peripheral: CBPeripheral) {
         connectedDevice = peripheral
+        add(ledgerApprovalViewController)
     }
     
     func bleConnectionManagerEnabledToWrite(_ bleConnectionManager: BLEConnectionManager) {
@@ -149,6 +156,7 @@ extension LedgerDeviceListViewController: BLEConnectionManagerDelegate {
     }
     
     func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didRead string: String) {
+        receivedDataCount += 1
         ledgerBLEController.updateIncomingData(with: string)
     }
     
@@ -177,6 +185,7 @@ extension LedgerDeviceListViewController: BLEConnectionManagerDelegate {
         with error: BLEError?
     ) {
         connectedDevice = nil
+        ledgerApprovalViewController.removeFromParentController()
         pushNotificationController.showFeedbackMessage("ble-error-disconnected-peripheral".localized, subtitle: "")
     }
     
@@ -186,6 +195,7 @@ extension LedgerDeviceListViewController: BLEConnectionManagerDelegate {
         with error: BLEError?
     ) {
         connectedDevice = nil
+        ledgerApprovalViewController.removeFromParentController()
         pushNotificationController.showFeedbackMessage("ble-error-fail-connect-peripheral".localized, subtitle: "")
     }
 }
@@ -199,6 +209,17 @@ extension LedgerDeviceListViewController: LedgerBLEControllerDelegate {
         if isViewDisappearing {
             return
         }
+        
+        // swiftlint:disable todo
+        // TODO: This is a temp fix for a bug related to received data count from the ledger device.
+        // The data somehow comes twice from the ledger device.
+        // This issue should be tested on other devices and fixed in some other way.
+        // swiftlint:enable todo
+        if receivedDataCount == 1 {
+            return
+        }
+        
+        ledgerApprovalViewController.removeFromParentController()
         
         // Remove last two bytes to fetch data
         var mutableData = data
