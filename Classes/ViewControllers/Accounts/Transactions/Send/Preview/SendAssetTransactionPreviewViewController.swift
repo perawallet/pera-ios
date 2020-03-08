@@ -78,6 +78,7 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
         let controller = open(
             .sendAssetTransaction(
                 assetTransactionSendDraft: assetTransactionDraft,
+                transactionController: transactionController,
                 receiver: assetReceiverState
             ),
             by: .push
@@ -307,8 +308,7 @@ extension SendAssetTransactionPreviewViewController {
     private func composeTransactionData() {
         guard let selectedAccount = selectedAccount,
             let assetId = assetDetail.id,
-            let toAccount = getReceiverAccount()?.address,
-            let transactionController = transactionController else {
+            let toAccount = getReceiverAccount()?.address else {
             return
         }
         

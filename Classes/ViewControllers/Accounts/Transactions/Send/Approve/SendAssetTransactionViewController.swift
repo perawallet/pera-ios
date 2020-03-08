@@ -16,13 +16,14 @@ class SendAssetTransactionViewController: SendTransactionViewController {
     init(
         assetTransactionSendDraft: AssetTransactionSendDraft,
         assetReceiverState: AssetReceiverState,
+        transactionController: TransactionController,
         configuration: ViewControllerConfiguration
     ) {
         self.assetTransactionSendDraft = assetTransactionSendDraft
-        super.init(assetReceiverState: assetReceiverState, configuration: configuration)
+        super.init(assetReceiverState: assetReceiverState, transactionController: transactionController, configuration: configuration)
         
         fee = assetTransactionSendDraft.fee
-        transactionController?.setTransactionDraft(assetTransactionSendDraft)
+        transactionController.setTransactionDraft(assetTransactionSendDraft)
     }
     
     override func configureAppearance() {

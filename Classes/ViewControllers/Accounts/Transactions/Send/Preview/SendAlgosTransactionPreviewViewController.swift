@@ -99,7 +99,14 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
             ledgerApprovalViewController.removeFromParentController()
         }
         
-        open(.sendAlgosTransaction(algosTransactionSendDraft: algosTransactionDraft, receiver: assetReceiverState), by: .push)
+        open(
+            .sendAlgosTransaction(
+                algosTransactionSendDraft: algosTransactionDraft,
+                transactionController: transactionController,
+                receiver: assetReceiverState
+            ),
+            by: .push
+        )
     }
     
     override func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, then handler: EmptyHandler?) {
@@ -190,7 +197,7 @@ extension SendAlgosTransactionPreviewViewController {
     }
     
     private func composeTransactionData() {
-        transactionController?.delegate = self
+        transactionController.delegate = self
         guard let selectedAccount = selectedAccount else {
             return
         }
@@ -255,8 +262,7 @@ extension SendAlgosTransactionPreviewViewController {
     }
     
     private func composeAlgosTransactionData(for selectedAccount: Account) {
-        guard let account = getReceiverAccount(),
-            let transactionController = transactionController else {
+        guard let account = getReceiverAccount() else {
             return
         }
         

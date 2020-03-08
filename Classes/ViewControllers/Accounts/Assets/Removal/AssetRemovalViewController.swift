@@ -25,13 +25,20 @@ class AssetRemovalViewController: BaseViewController {
     
     private var account: Account
     
-    private lazy var ledgerApprovalViewController = LedgerApprovalViewController(configuration: configuration)
+    private lazy var ledgerApprovalViewController = LedgerApprovalViewController(mode: .approve, configuration: configuration)
     
     private lazy var pushNotificationController: PushNotificationController = {
         guard let api = api else {
             fatalError("API should be set.")
         }
         return PushNotificationController(api: api)
+    }()
+    
+    private lazy var transactionController: TransactionController = {
+        guard let api = api else {
+            fatalError("API should be set.")
+        }
+        return TransactionController(api: api)
     }()
     
     private let viewModel = AssetRemovalViewModel()
@@ -51,7 +58,7 @@ class AssetRemovalViewController: BaseViewController {
     override func setListeners() {
         assetRemovalView.assetsCollectionView.delegate = self
         assetRemovalView.assetsCollectionView.dataSource = self
-        transactionController?.delegate = self
+        transactionController.delegate = self
     }
     
     override func prepareLayout() {
@@ -247,8 +254,8 @@ extension AssetRemovalViewController: AssetActionConfirmationViewControllerDeleg
             assetIndex: assetId,
             assetCreator: assetDetail.creator
         )
-        transactionController?.setTransactionDraft(assetTransactionDraft)
-        transactionController?.getTransactionParamsAndComposeTransactionData(for: .assetRemoval)
+        transactionController.setTransactionDraft(assetTransactionDraft)
+        transactionController.getTransactionParamsAndComposeTransactionData(for: .assetRemoval)
     }
 }
 

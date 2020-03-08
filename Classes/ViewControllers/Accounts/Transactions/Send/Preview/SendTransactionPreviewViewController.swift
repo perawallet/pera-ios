@@ -22,13 +22,20 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
         )
     )
     
-    private(set) lazy var ledgerApprovalViewController = LedgerApprovalViewController(configuration: configuration)
+    private(set) lazy var ledgerApprovalViewController = LedgerApprovalViewController(mode: .approve, configuration: configuration)
     
     private lazy var pushNotificationController: PushNotificationController = {
         guard let api = api else {
             fatalError("API should be set.")
         }
         return PushNotificationController(api: api)
+    }()
+    
+    private(set) lazy var transactionController: TransactionController = {
+        guard let api = api else {
+            fatalError("API should be set.")
+        }
+        return TransactionController(api: api)
     }()
     
     private(set) lazy var sendTransactionPreviewView = SendTransactionPreviewView(inputFieldFraction: assetFraction)
@@ -65,7 +72,7 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        transactionController?.stopBLEScan()
+        transactionController.stopBLEScan()
     }
     
     override func configureAppearance() {
@@ -80,7 +87,7 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
     
     override func linkInteractors() {
         super.linkInteractors()
-        transactionController?.delegate = self
+        transactionController.delegate = self
         scrollView.touchDetectingDelegate = self
         sendTransactionPreviewView.delegate = self
     }

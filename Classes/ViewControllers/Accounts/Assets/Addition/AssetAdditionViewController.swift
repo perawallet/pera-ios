@@ -33,7 +33,14 @@ class AssetAdditionViewController: BaseViewController {
     private let paginationRequestOffset = 3
     private var assetSearchFilters = AssetSearchFilter.verified
     
-    private lazy var ledgerApprovalViewController = LedgerApprovalViewController(configuration: configuration)
+    private lazy var ledgerApprovalViewController = LedgerApprovalViewController(mode: .approve, configuration: configuration)
+    
+    private lazy var transactionController: TransactionController = {
+        guard let api = api else {
+            fatalError("API should be set.")
+        }
+        return TransactionController(api: api)
+    }()
     
     private lazy var pushNotificationController: PushNotificationController = {
         guard let api = api else {
@@ -77,7 +84,7 @@ class AssetAdditionViewController: BaseViewController {
         assetAdditionView.assetInputView.delegate = self
         assetAdditionView.assetsCollectionView.delegate = self
         assetAdditionView.assetsCollectionView.dataSource = self
-        transactionController?.delegate = self
+        transactionController.delegate = self
     }
     
     override func prepareLayout() {
@@ -253,8 +260,8 @@ extension AssetAdditionViewController: AssetActionConfirmationViewControllerDele
         }
         
         let assetTransactionDraft = AssetTransactionSendDraft(from: account, assetIndex: id)
-        transactionController?.setTransactionDraft(assetTransactionDraft)
-        transactionController?.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
+        transactionController.setTransactionDraft(assetTransactionDraft)
+        transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
     }
 }
 
