@@ -425,3 +425,5 @@
 
 "ledger-approval-title" = "Ledger Approval";
 "ledger-approval-message" = "Please make sure to confirm the transaction on your Ledger device.";
+"ledger-approval-connection-title" = "Ledger Connection";
+"ledger-approval-connection-message" = "Waiting for ledger to connect.";

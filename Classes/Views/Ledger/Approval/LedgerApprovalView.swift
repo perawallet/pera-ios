@@ -20,7 +20,6 @@ class LedgerApprovalView: BaseView {
             .withFont(UIFont.font(.overpass, withWeight: .bold(size: 16.0)))
             .withAlignment(.center)
             .withTextColor(SharedColors.black)
-            .withText("ledger-approval-title".localized)
     }()
     
     private lazy var bluetoothImageView = UIImageView(image: img("icon-bluetooth-purple"))
@@ -35,7 +34,6 @@ class LedgerApprovalView: BaseView {
             .withFont(UIFont.font(.avenir, withWeight: .medium(size: 14.0)))
             .withAlignment(.center)
             .withTextColor(SharedColors.black)
-            .withText("ledger-approval-message".localized)
     }()
     
     private lazy var cancelButton: UIButton = {
@@ -133,6 +131,17 @@ extension LedgerApprovalView {
         }
     }
 }
+
+extension LedgerApprovalView {
+    func setTitle(_ title: String) {
+        titleLabel.text = title
+    }
+    
+    func setDetail(_ detail: String) {
+        detailLabel.text = detail
+    }
+}
+
 extension LedgerApprovalView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let titleVerticalInset: CGFloat = 30.0

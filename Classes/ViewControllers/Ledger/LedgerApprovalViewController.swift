@@ -14,6 +14,13 @@ class LedgerApprovalViewController: BaseViewController {
     
     private lazy var ledgerApprovalView = LedgerApprovalView()
     
+    private let mode: Mode
+    
+    init(mode: Mode, configuration: ViewControllerConfiguration) {
+        self.mode = mode
+        super.init(configuration: configuration)
+    }
+    
     override func configureAppearance() {
         view.backgroundColor = Colors.backgroundColor
     }
@@ -43,6 +50,25 @@ extension LedgerApprovalViewController: LedgerApprovalViewDelegate {
         if parent != nil {
             removeFromParentController()
         }
+    }
+}
+
+extension LedgerApprovalViewController {
+    private func setConnectionModeTexts() {
+        ledgerApprovalView.setTitle("ledger-approval-connection-title".localized)
+        ledgerApprovalView.setDetail("ledger-approval-connection-message".localized)
+    }
+    
+    private func setApproveModeTexts() {
+        ledgerApprovalView.setTitle("ledger-approval-title".localized)
+        ledgerApprovalView.setDetail("ledger-approval-message".localized)
+    }
+}
+
+extension LedgerApprovalViewController {
+    enum Mode {
+        case connection
+        case approve
     }
 }
 
