@@ -22,8 +22,6 @@ class LedgerDeviceListViewController: BaseViewController {
     
     private lazy var ledgerApprovalViewController = LedgerApprovalViewController(mode: .connection, configuration: configuration)
     
-    private var receivedDataCount = 0
-    
     private let mode: AccountSetupMode
     private var ledgerDevices = [CBPeripheral]()
     private var connectedDevice: CBPeripheral?
@@ -156,7 +154,6 @@ extension LedgerDeviceListViewController: BLEConnectionManagerDelegate {
     }
     
     func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didRead string: String) {
-        receivedDataCount += 1
         ledgerBLEController.updateIncomingData(with: string)
     }
     
@@ -207,15 +204,6 @@ extension LedgerDeviceListViewController: LedgerBLEControllerDelegate {
     
     func ledgerBLEController(_ ledgerBLEController: LedgerBLEController, received data: Data) {
         if isViewDisappearing {
-            return
-        }
-        
-        // swiftlint:disable todo
-        // TODO: This is a temp fix for a bug related to received data count from the ledger device.
-        // The data somehow comes twice from the ledger device.
-        // This issue should be tested on other devices and fixed in some other way.
-        // swiftlint:enable todo
-        if receivedDataCount == 1 {
             return
         }
         
