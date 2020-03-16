@@ -58,6 +58,8 @@ extension TransactionController {
     private func setupBLEConnections() {
         bleConnectionManager.delegate = self
         ledgerBLEController.delegate = self
+        
+        bleConnectionManager.connectSavedDeviceIfNeeded()
     }
     
     func stopBLEScan() {

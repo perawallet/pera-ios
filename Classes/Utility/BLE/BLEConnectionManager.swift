@@ -39,6 +39,14 @@ extension BLEConnectionManager {
         }
     }
     
+    func connectSavedDeviceIfNeeded() {
+        guard let peripheral = self.blePeripheral else {
+            return
+        }
+        
+        connectToDevice(peripheral)
+    }
+    
     func centralManagerDidUpdateState() {
         guard let centralManager = centralManager else {
             return
@@ -97,6 +105,7 @@ extension BLEConnectionManager: CBCentralManagerDelegate {
         stopScan()
         peripheral.delegate = self
         peripheral.discoverServices([bleServiceUuid])
+        
         delegate?.bleConnectionManager(self, didConnect: peripheral)
     }
     
@@ -124,6 +133,10 @@ extension BLEConnectionManager: CBPeripheralDelegate {
             return
         }
         
+        discoverCharacteristics(peripheral, of: services)
+    }
+    
+    private func discoverCharacteristics(_ peripheral: CBPeripheral, of services: [CBService]) {
         for service in services {
             peripheral.discoverCharacteristics(nil, for: service)
         }
@@ -159,6 +172,11 @@ extension BLEConnectionManager: CBPeripheralDelegate {
             return
         }
         
+        self.processCharacteristics(peripheral, of: characteristics)
+    }
+    
+    private func processCharacteristics(_ peripheral: CBPeripheral,
+                                        of characteristics: [CBCharacteristic]) {
         print("Found \(characteristics.count) characteristics!")
         
         for characteristic in characteristics {
@@ -186,7 +204,7 @@ extension BLEConnectionManager: CBPeripheralDelegate {
     
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
         if characteristic == rxCharacteristic {
-           guard let characteristicData = characteristic.value else {
+            guard let characteristicData = characteristic.value else {
                 return
             }
             
