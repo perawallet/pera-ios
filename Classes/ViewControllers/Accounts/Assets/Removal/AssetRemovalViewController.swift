@@ -141,6 +141,10 @@ extension AssetRemovalViewController: AssetActionableCellDelegate {
             return
         }
         
+        guard index.item < account.assetDetails.count else {
+            return
+        }
+        
         let assetDetail = account.assetDetails[index.item]
         guard let assetAmount = account.amount(for: assetDetail),
             let assetId = assetDetail.id else {
