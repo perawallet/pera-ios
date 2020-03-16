@@ -48,6 +48,8 @@ extension AccountHeaderView {
 
 extension AccountHeaderView {
     private func setupImageViewLayout() {
+        imageView.contentMode = .scaleAspectFit
+        
         addSubview(imageView)
         
         imageView.snp.makeConstraints { make in
