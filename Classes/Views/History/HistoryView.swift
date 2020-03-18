@@ -313,6 +313,9 @@ extension HistoryView {
             
             UIView.animate(withDuration: 0.3) {
                 self.layoutIfNeeded()
+                
+                self.startDateDisplayView.alpha = 1.0
+                self.endDateDisplayView.alpha = 0.3
             }
         } else {
             startDatePickerView.snp.updateConstraints { make in
@@ -323,6 +326,9 @@ extension HistoryView {
                 self.startDatePickerView.isHidden = true
                 
                 self.layoutIfNeeded()
+                
+                self.startDateDisplayView.alpha = 1.0
+                self.endDateDisplayView.alpha = 1.0
             }
         }
     }
@@ -348,9 +354,12 @@ extension HistoryView {
             }
             
             UIView.animate(withDuration: 0.3) {
-                
                 self.layoutIfNeeded()
+                
+                self.startDateDisplayView.alpha = 0.3
+                self.endDateDisplayView.alpha = 1.0
             }
+            
         } else {
             endDatePickerView.snp.updateConstraints { make in
                 make.height.equalTo(0.0)
@@ -360,6 +369,9 @@ extension HistoryView {
                 self.endDatePickerView.isHidden = true
                 
                 self.layoutIfNeeded()
+                
+                self.startDateDisplayView.alpha = 1.0
+                self.endDateDisplayView.alpha = 1.0
             }
         }
     }
