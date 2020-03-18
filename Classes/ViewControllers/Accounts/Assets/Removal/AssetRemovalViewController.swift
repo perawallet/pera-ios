@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreBluetooth
 
 protocol AssetRemovalViewControllerDelegate: class {
     func assetRemovalViewController(
@@ -23,6 +24,22 @@ class AssetRemovalViewController: BaseViewController {
     private lazy var assetRemovalView = AssetRemovalView()
     
     private var account: Account
+    
+    private lazy var ledgerApprovalViewController = LedgerApprovalViewController(mode: .approve, configuration: configuration)
+    
+    private lazy var pushNotificationController: PushNotificationController = {
+        guard let api = api else {
+            fatalError("API should be set.")
+        }
+        return PushNotificationController(api: api)
+    }()
+    
+    private lazy var transactionController: TransactionController = {
+        guard let api = api else {
+            fatalError("API should be set.")
+        }
+        return TransactionController(api: api)
+    }()
     
     private let viewModel = AssetRemovalViewModel()
     
@@ -41,7 +58,7 @@ class AssetRemovalViewController: BaseViewController {
     override func setListeners() {
         assetRemovalView.assetsCollectionView.delegate = self
         assetRemovalView.assetsCollectionView.dataSource = self
-        transactionController?.delegate = self
+        transactionController.delegate = self
     }
     
     override func prepareLayout() {
@@ -121,6 +138,10 @@ extension AssetRemovalViewController {
 extension AssetRemovalViewController: AssetActionableCellDelegate {
     func assetActionableCellDidTapActionButton(_ assetActionableCell: AssetActionableCell) {
         guard let index = assetRemovalView.assetsCollectionView.indexPath(for: assetActionableCell) else {
+            return
+        }
+        
+        guard index.item < account.assetDetails.count else {
             return
         }
         
@@ -237,22 +258,30 @@ extension AssetRemovalViewController: AssetActionConfirmationViewControllerDeleg
             assetIndex: assetId,
             assetCreator: assetDetail.creator
         )
-        transactionController?.setAssetTransactionDraft(assetTransactionDraft)
-        transactionController?.composeAssetTransactionData(transactionType: .assetRemoval)
+        transactionController.setTransactionDraft(assetTransactionDraft)
+        transactionController.getTransactionParamsAndComposeTransactionData(for: .assetRemoval)
     }
 }
 
 extension AssetRemovalViewController: TransactionControllerDelegate {
-    func transactionControllerDidComposedAssetTransactionData(
-        _ transactionController: TransactionController,
-        forTransaction draft: AssetTransactionSendDraft?
-    ) {
-        guard let removedAssetDetail = getRemovedAssetDetail(from: draft) else {
+    func transactionController(_ transactionController: TransactionController, didComposedTransactionDataFor draft: TransactionSendDraft?) {
+        guard let assetTransactionDraft = draft as? AssetTransactionSendDraft,
+            let removedAssetDetail = getRemovedAssetDetail(from: assetTransactionDraft) else {
             return
+        }
+        
+        if account.type == .ledger {
+            ledgerApprovalViewController.removeFromParentController()
         }
         
         delegate?.assetRemovalViewController(self, didRemove: removedAssetDetail, from: account)
         dismissScreen()
+    }
+    
+    func transactionController(_ transactionController: TransactionController, didFailedComposing error: Error) {
+        if account.type == .ledger {
+            ledgerApprovalViewController.removeFromParentController()
+        }
     }
     
     private func getRemovedAssetDetail(from draft: AssetTransactionSendDraft?) -> AssetDetail? {
@@ -267,6 +296,35 @@ extension AssetRemovalViewController: TransactionControllerDelegate {
         }
         
         return removedAssetDetail
+    }
+    
+    func transactionControllerDidStartBLEConnection(_ transactionController: TransactionController) {
+        add(ledgerApprovalViewController)
+    }
+    
+    func transactionController(_ transactionController: TransactionController, didFailBLEConnectionWith state: CBManagerState) {
+        switch state {
+        case .poweredOff:
+            pushNotificationController.showFeedbackMessage("ble-error-fail-ble-connection-power".localized, subtitle: "")
+        case .unsupported:
+            pushNotificationController.showFeedbackMessage("ble-error-fail-ble-connection-unsupported".localized, subtitle: "")
+        case .unknown:
+            pushNotificationController.showFeedbackMessage("ble-error-fail-ble-connection-unknown".localized, subtitle: "")
+        case .unauthorized:
+            pushNotificationController.showFeedbackMessage("ble-error-fail-ble-connection-unauthorized".localized, subtitle: "")
+        case .resetting:
+            pushNotificationController.showFeedbackMessage("ble-error-fail-ble-connection-resetting".localized, subtitle: "")
+        default:
+            return
+        }
+    }
+    
+    func transactionController(_ transactionController: TransactionController, didFailToConnect peripheral: CBPeripheral) {
+        pushNotificationController.showFeedbackMessage("ble-error-fail-connect-peripheral".localized, subtitle: "")
+    }
+    
+    func transactionController(_ transactionController: TransactionController, didDisconnectFrom peripheral: CBPeripheral) {
+        pushNotificationController.showFeedbackMessage("ble-error-disconnected-peripheral".localized, subtitle: "")
     }
 }
 

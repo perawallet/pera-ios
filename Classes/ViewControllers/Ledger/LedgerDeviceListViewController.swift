@@ -20,12 +20,29 @@ class LedgerDeviceListViewController: BaseViewController {
     
     private let viewModel = LedgerDeviceListViewModel()
     
+    private lazy var ledgerApprovalViewController = LedgerApprovalViewController(mode: .connection, configuration: configuration)
+    
     private let mode: AccountSetupMode
     private var ledgerDevices = [CBPeripheral]()
+    private var connectedDevice: CBPeripheral?
+    
+    private lazy var pushNotificationController: PushNotificationController = {
+        guard let api = api else {
+            fatalError("API should be set.")
+        }
+        return PushNotificationController(api: api)
+    }()
     
     init(mode: AccountSetupMode, configuration: ViewControllerConfiguration) {
         self.mode = mode
         super.init(configuration: configuration)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // swiftlint:disable todo
+        // TODO: We might need to restart scanning here somehow.
+        // swiftlint:enable todo
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -35,6 +52,7 @@ class LedgerDeviceListViewController: BaseViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        bleConnectionManager.stopScan()
         ledgerDeviceListView.stopSearchSpinner()
     }
     
@@ -117,54 +135,65 @@ extension LedgerDeviceListViewController: LedgerDeviceListViewDelegate {
 }
 
 extension LedgerDeviceListViewController: BLEConnectionManagerDelegate {
-    func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didConnect peripheral: CBPeripheral) {
-        guard let bleData = Data(fromHexEncodedString: bleLedgerAddressMessage) else {
-            return
-        }
-            
-        ledgerBLEController.fetchAddress(bleData)
-    }
-    
     func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didDiscover peripherals: [CBPeripheral]) {
         ledgerDevices = peripherals
         ledgerDeviceListView.devicesCollectionView.reloadData()
     }
     
-    func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didFailBLEConnectionWith state: CBManagerState) {
-        switch state {
-        case .poweredOff:
-            displaySimpleAlertWith(title: "title-error".localized, message: "ble-error-fail-ble-connection-power".localized)
-        case .unsupported:
-            displaySimpleAlertWith(title: "title-error".localized, message: "ble-error-fail-ble-connection-unsupported".localized)
-        case .unknown:
-            displaySimpleAlertWith(title: "title-error".localized, message: "ble-error-fail-ble-connection-unknown".localized)
-        case .unauthorized:
-            displaySimpleAlertWith(title: "title-error".localized, message: "ble-error-fail-ble-connection-unauthorized".localized)
-        case .resetting:
-            displaySimpleAlertWith(title: "title-error".localized, message: "ble-error-fail-ble-connection-resetting".localized)
-        default:
+    func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didConnect peripheral: CBPeripheral) {
+        connectedDevice = peripheral
+        add(ledgerApprovalViewController)
+    }
+    
+    func bleConnectionManagerEnabledToWrite(_ bleConnectionManager: BLEConnectionManager) {
+        guard let bleData = Data(fromHexEncodedString: bleLedgerAddressMessage) else {
             return
         }
+        
+        ledgerBLEController.fetchAddress(bleData)
     }
     
     func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didRead string: String) {
         ledgerBLEController.updateIncomingData(with: string)
     }
     
+    func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didFailBLEConnectionWith state: CBManagerState) {
+        connectedDevice = nil
+        
+        switch state {
+        case .poweredOff:
+            pushNotificationController.showFeedbackMessage("ble-error-fail-ble-connection-power".localized, subtitle: "")
+        case .unsupported:
+            pushNotificationController.showFeedbackMessage("ble-error-fail-ble-connection-unsupported".localized, subtitle: "")
+        case .unknown:
+            pushNotificationController.showFeedbackMessage("ble-error-fail-ble-connection-unknown".localized, subtitle: "")
+        case .unauthorized:
+            pushNotificationController.showFeedbackMessage("ble-error-fail-ble-connection-unauthorized".localized, subtitle: "")
+        case .resetting:
+            pushNotificationController.showFeedbackMessage("ble-error-fail-ble-connection-resetting".localized, subtitle: "")
+        default:
+            return
+        }
+    }
+    
     func bleConnectionManager(
         _ bleConnectionManager: BLEConnectionManager,
         didDisconnectFrom peripheral: CBPeripheral,
-        with error: Error?
+        with error: BLEError?
     ) {
-        displaySimpleAlertWith(title: "title-error".localized, message: "ble-error-disconnected-peripheral".localized)
+        connectedDevice = nil
+        ledgerApprovalViewController.removeFromParentController()
+        pushNotificationController.showFeedbackMessage("ble-error-disconnected-peripheral".localized, subtitle: "")
     }
     
     func bleConnectionManager(
         _ bleConnectionManager: BLEConnectionManager,
         didFailToConnect peripheral: CBPeripheral,
-        with error: Error?
+        with error: BLEError?
     ) {
-        displaySimpleAlertWith(title: "title-error".localized, message: "ble-error-fail-connect-peripheral".localized)
+        connectedDevice = nil
+        ledgerApprovalViewController.removeFromParentController()
+        pushNotificationController.showFeedbackMessage("ble-error-fail-connect-peripheral".localized, subtitle: "")
     }
 }
 
@@ -174,20 +203,33 @@ extension LedgerDeviceListViewController: LedgerBLEControllerDelegate {
     }
     
     func ledgerBLEController(_ ledgerBLEController: LedgerBLEController, received data: Data) {
+        if isViewDisappearing {
+            return
+        }
+        
+        ledgerApprovalViewController.removeFromParentController()
+        
         // Remove last two bytes to fetch data
         var mutableData = data
         mutableData.removeLast(2)
 
         var error: NSError?
         let address = AlgorandSDK().addressFromPublicKey(mutableData, error: &error)
+        
+        if !AlgorandSDK().isValidAddress(address) {
+            connectedDevice = nil
+            pushNotificationController.showFeedbackMessage("ble-error-fail-fetch-account-address".localized, subtitle: "")
+            return
+        }
 
         if error != nil {
-            displaySimpleAlertWith(title: "title-error".localized, message: "ble-error-fail-fetch-account-address".localized)
+            connectedDevice = nil
+            pushNotificationController.showFeedbackMessage("ble-error-fail-fetch-account-address".localized, subtitle: "")
             return
         }
         
-        if !isViewDisappearing {
-            open(.ledgerPairing(mode: mode, address: address), by: .push)
+        if let connectedDeviceId = connectedDevice?.identifier {
+            open(.ledgerPairing(mode: mode, address: address, connectedDeviceId: connectedDeviceId), by: .push)
         }
     }
 }

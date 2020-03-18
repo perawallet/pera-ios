@@ -17,3 +17,4 @@ let bleCharacteristicUuidTx = CBUUID(string: bleCharacteristicUuidTxText)
 let bleCharacteristicUuidRx = CBUUID(string: bleCharacteristicUuidRxText)
 
 let bleLedgerAddressMessage = "8003"
+let ledgerErrorResponse = "6e00"

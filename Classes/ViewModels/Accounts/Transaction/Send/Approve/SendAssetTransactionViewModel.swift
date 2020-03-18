@@ -13,6 +13,13 @@ class SendAssetTransactionViewModel {
         view.transactionParticipantView.accountSelectionView.amountView.amountLabel.textColor = SharedColors.black
         view.transactionParticipantView.accountSelectionView.amountView.algoIconImageView.removeFromSuperview()
         view.transactionParticipantView.accountSelectionView.detailLabel.text = assetTransactionSendDraft.from.name
+        
+        if assetTransactionSendDraft.from.type == .ledger {
+            view.transactionParticipantView.accountSelectionView.setLedgerAccount()
+        } else {
+            view.transactionParticipantView.accountSelectionView.setStandardAccount()
+        }
+        
         view.amountInputView.inputTextField.text
             = assetTransactionSendDraft.amount?.toFractionStringForLabel(fraction: assetTransactionSendDraft.assetDecimalFraction)
         view.amountInputView.algosImageView.removeFromSuperview()

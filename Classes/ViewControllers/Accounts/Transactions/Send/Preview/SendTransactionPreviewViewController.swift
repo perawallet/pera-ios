@@ -11,6 +11,7 @@ import SnapKit
 import SVProgressHUD
 import Magpie
 import Alamofire
+import CoreBluetooth
 
 class SendTransactionPreviewViewController: BaseScrollViewController {
     
@@ -20,6 +21,22 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
             dismissMode: .scroll
         )
     )
+    
+    private(set) lazy var ledgerApprovalViewController = LedgerApprovalViewController(mode: .approve, configuration: configuration)
+    
+    private lazy var pushNotificationController: PushNotificationController = {
+        guard let api = api else {
+            fatalError("API should be set.")
+        }
+        return PushNotificationController(api: api)
+    }()
+    
+    private(set) lazy var transactionController: TransactionController = {
+        guard let api = api else {
+            fatalError("API should be set.")
+        }
+        return TransactionController(api: api)
+    }()
     
     private(set) lazy var sendTransactionPreviewView = SendTransactionPreviewView(inputFieldFraction: assetFraction)
     var keyboard = Keyboard()
@@ -53,6 +70,11 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
         sendTransactionPreviewView.amountInputView.beginEditing()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        transactionController.stopBLEScan()
+    }
+    
     override func configureAppearance() {
         super.configureAppearance()
         sendTransactionPreviewView.transactionParticipantView.accountSelectionView.set(enabled: selectedAccount == nil)
@@ -65,7 +87,7 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
     
     override func linkInteractors() {
         super.linkInteractors()
-        transactionController?.delegate = self
+        transactionController.delegate = self
         scrollView.touchDetectingDelegate = self
         sendTransactionPreviewView.delegate = self
     }
@@ -79,14 +101,9 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
     
     func updateSelectedAccountForSender(_ account: Account) { }
     
-    func transactionControllerDidComposedAlgosTransactionData(
+    func transactionController(
         _ transactionController: TransactionController,
-        forTransaction draft: AlgosTransactionSendDraft?
-    ) { }
-    
-    func transactionControllerDidComposedAssetTransactionData(
-        _ transactionController: TransactionController,
-        forTransaction draft: AssetTransactionSendDraft?
+        didComposedTransactionDataFor draft: TransactionSendDraft?
     ) { }
     
     func displayTransactionPreview() { }
@@ -204,6 +221,8 @@ extension SendTransactionPreviewViewController: QRScannerViewControllerDelegate 
 
 extension SendTransactionPreviewViewController: TransactionControllerDelegate {
     func transactionController(_ transactionController: TransactionController, didFailedComposing error: Error) {
+        ledgerApprovalViewController.removeFromParentController()
+        
         SVProgressHUD.dismiss()
         
         switch error {
@@ -225,6 +244,42 @@ extension SendTransactionPreviewViewController: TransactionControllerDelegate {
         default:
             displaySimpleAlertWith(title: "title-error".localized, message: error.localizedDescription)
         }
+    }
+    
+    func transactionControllerDidStartBLEConnection(_ transactionController: TransactionController) {
+        add(ledgerApprovalViewController)
+    }
+    
+    func transactionController(_ transactionController: TransactionController, didFailBLEConnectionWith state: CBManagerState) {
+        switch state {
+        case .poweredOff:
+            pushNotificationController.showFeedbackMessage("ble-error-fail-ble-connection-power".localized, subtitle: "")
+        case .unsupported:
+            pushNotificationController.showFeedbackMessage("ble-error-fail-ble-connection-unsupported".localized, subtitle: "")
+        case .unknown:
+            pushNotificationController.showFeedbackMessage("ble-error-fail-ble-connection-unknown".localized, subtitle: "")
+        case .unauthorized:
+            pushNotificationController.showFeedbackMessage("ble-error-fail-ble-connection-unauthorized".localized, subtitle: "")
+        case .resetting:
+            pushNotificationController.showFeedbackMessage("ble-error-fail-ble-connection-resetting".localized, subtitle: "")
+        default:
+            return
+        }
+    }
+    
+    func transactionController(_ transactionController: TransactionController, didFailToConnect peripheral: CBPeripheral) {
+        ledgerApprovalViewController.removeFromParentController()
+        pushNotificationController.showFeedbackMessage("ble-error-fail-connect-peripheral".localized, subtitle: "")
+    }
+    
+    func transactionController(_ transactionController: TransactionController, didDisconnectFrom peripheral: CBPeripheral) {
+        ledgerApprovalViewController.removeFromParentController()
+        pushNotificationController.showFeedbackMessage("ble-error-disconnected-peripheral".localized, subtitle: "")
+    }
+    
+    func transactionControllerDidFailToSignWithLedger(_ transactionController: TransactionController) {
+        ledgerApprovalViewController.removeFromParentController()
+        pushNotificationController.showFeedbackMessage("ble-error-fail-sign-transaction".localized, subtitle: "")
     }
 }
 

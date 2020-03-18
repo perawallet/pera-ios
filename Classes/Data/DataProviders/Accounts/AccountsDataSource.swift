@@ -237,6 +237,11 @@ extension AccountsDataSource {
             }
             
             for (index, assetDetail) in addedAssets.enumerated() where assetDetail.isRecentlyAdded {
+                if accounts[accountIndex].assetDetails.contains(assetDetail) {
+                    // Preventing duplication
+                    continue
+                }
+                
                 var filteredAssets = addedAssets
                 filteredAssets.remove(at: index)
                 addedAssetDetails[addedAccount] = filteredAssets

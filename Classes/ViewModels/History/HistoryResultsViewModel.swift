@@ -11,6 +11,13 @@ import UIKit
 class HistoryResultsViewModel {
     func configure(_ view: HistoryResultsView, with draft: HistoryDraft) {
         view.accountSelectionView.detailLabel.text = draft.account.name
+        
+        if draft.account.type == .ledger {
+            view.accountSelectionView.setLedgerAccount()
+        } else {
+            view.accountSelectionView.setStandardAccount()
+        }
+        
         view.startDateDisplayView.detailLabel.text = draft.startDate.toFormat("dd MMMM yyyy")
         view.endDateDisplayView.detailLabel.text = draft.endDate.toFormat("dd MMMM yyyy")
         

@@ -2,7 +2,6 @@
 // Objective-C API for talking to the following Go packages
 //
 //	github.com/algorand/go-algorand-sdk/crypto
-//	github.com/algorand/go-algorand-sdk/auction
 //	github.com/algorand/go-algorand-sdk/transaction
 //	github.com/algorand/go-algorand-sdk/mnemonic
 //	github.com/algorand/go-algorand-sdk/utils
@@ -12,7 +11,6 @@
 #define __Crypto_FRAMEWORK_H__
 
 #include "Crypto.objc.h"
-#include "Auction.objc.h"
 #include "Transaction.objc.h"
 #include "Mnemonic.objc.h"
 #include "Utils.objc.h"

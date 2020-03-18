@@ -159,10 +159,6 @@ extension BaseViewController {
     var api: API? {
         return configuration.api
     }
-    
-    var transactionController: TransactionController? {
-        return configuration.transactionController
-    }
 }
 
 extension BaseViewController: NavigationBarConfigurable {

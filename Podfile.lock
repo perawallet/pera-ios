@@ -98,7 +98,8 @@ DEPENDENCIES:
   - SwiftLint
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  trunk:
+    - Alamofire
     - Charts
     - Crashlytics
     - Fabric
@@ -121,8 +122,6 @@ SPEC REPOS:
     - SVProgressHUD
     - SwiftDate
     - SwiftLint
-  trunk:
-    - Alamofire
 
 EXTERNAL SOURCES:
   Magpie:
@@ -161,4 +160,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: d1221ab5bf400ff7162f355632e723de7af2d557
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.9.0

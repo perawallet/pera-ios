@@ -411,11 +411,19 @@
 
 // MARK: BLE Errors
 
-"ble-error-fail-connect-peripheral" = "Failed to connect to peripheral";
-"ble-error-disconnected-peripheral" = "Disconnected from peripheral";
+"ble-error-fail-connect-peripheral" = "Failed to connect to device";
+"ble-error-disconnected-peripheral" = "Disconnected from device";
 "ble-error-fail-fetch-account-address" = "Failed to fetch account address";
+"ble-error-fail-sign-transaction" = "Failed to sign transaction";
 "ble-error-fail-ble-connection-power" = "Failed BLE connection for Power Off";
 "ble-error-fail-ble-connection-unsupported" = "Failed BLE connection for Unsupported";
 "ble-error-fail-ble-connection-unknown" = "Failed BLE connection for Unknown";
 "ble-error-fail-ble-connection-unauthorized" = "Failed BLE connection for Unauthorized";
 "ble-error-fail-ble-connection-resetting" = "Failed BLE connection for Resetting";
+
+// MARK: Ledger Approval
+
+"ledger-approval-title" = "Ledger Approval";
+"ledger-approval-message" = "Please make sure to confirm the transaction on your Ledger device.";
+"ledger-approval-connection-title" = "Ledger Connection";
+"ledger-approval-connection-message" = "Waiting for ledger to connect.";

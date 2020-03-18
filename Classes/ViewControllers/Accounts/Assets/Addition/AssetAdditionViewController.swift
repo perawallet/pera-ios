@@ -8,6 +8,7 @@
 
 import UIKit
 import Magpie
+import CoreBluetooth
 
 protocol AssetAdditionViewControllerDelegate: class {
     func assetAdditionViewController(
@@ -31,6 +32,22 @@ class AssetAdditionViewController: BaseViewController {
     private var hasNext = false
     private let paginationRequestOffset = 3
     private var assetSearchFilters = AssetSearchFilter.verified
+    
+    private lazy var ledgerApprovalViewController = LedgerApprovalViewController(mode: .approve, configuration: configuration)
+    
+    private lazy var transactionController: TransactionController = {
+        guard let api = api else {
+            fatalError("API should be set.")
+        }
+        return TransactionController(api: api)
+    }()
+    
+    private lazy var pushNotificationController: PushNotificationController = {
+        guard let api = api else {
+            fatalError("API should be set.")
+        }
+        return PushNotificationController(api: api)
+    }()
     
     private lazy var assetAdditionView = AssetAdditionView()
     
@@ -67,7 +84,7 @@ class AssetAdditionViewController: BaseViewController {
         assetAdditionView.assetInputView.delegate = self
         assetAdditionView.assetsCollectionView.delegate = self
         assetAdditionView.assetsCollectionView.dataSource = self
-        transactionController?.delegate = self
+        transactionController.delegate = self
     }
     
     override func prepareLayout() {
@@ -243,13 +260,17 @@ extension AssetAdditionViewController: AssetActionConfirmationViewControllerDele
         }
         
         let assetTransactionDraft = AssetTransactionSendDraft(from: account, assetIndex: id)
-        transactionController?.setAssetTransactionDraft(assetTransactionDraft)
-        transactionController?.composeAssetTransactionData(transactionType: .assetAddition)
+        transactionController.setTransactionDraft(assetTransactionDraft)
+        transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
     }
 }
 
 extension AssetAdditionViewController: TransactionControllerDelegate {
     func transactionController(_ transactionController: TransactionController, didFailedComposing error: Error) {
+        if account.type == .ledger {
+            ledgerApprovalViewController.removeFromParentController()
+        }
+        
         switch error {
         case let .custom(fee):
             guard let api = api,
@@ -268,21 +289,52 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
         }
     }
     
-    func transactionControllerDidComposedAssetTransactionData(
-        _ transactionController: TransactionController,
-        forTransaction draft: AssetTransactionSendDraft?
-    ) {
-        guard let assetSearchResult = assetResults.first(where: { item -> Bool in
-            guard let assetIndex = draft?.assetIndex else {
-                return false
-            }
-            return item.id == assetIndex
-        }) else {
+    func transactionController(_ transactionController: TransactionController, didFailBLEConnectionWith state: CBManagerState) {        
+        switch state {
+        case .poweredOff:
+            pushNotificationController.showFeedbackMessage("ble-error-fail-ble-connection-power".localized, subtitle: "")
+        case .unsupported:
+            pushNotificationController.showFeedbackMessage("ble-error-fail-ble-connection-unsupported".localized, subtitle: "")
+        case .unknown:
+            pushNotificationController.showFeedbackMessage("ble-error-fail-ble-connection-unknown".localized, subtitle: "")
+        case .unauthorized:
+            pushNotificationController.showFeedbackMessage("ble-error-fail-ble-connection-unauthorized".localized, subtitle: "")
+        case .resetting:
+            pushNotificationController.showFeedbackMessage("ble-error-fail-ble-connection-resetting".localized, subtitle: "")
+        default:
             return
+        }
+    }
+    
+    func transactionController(_ transactionController: TransactionController, didFailToConnect peripheral: CBPeripheral) {
+        pushNotificationController.showFeedbackMessage("ble-error-fail-connect-peripheral".localized, subtitle: "")
+    }
+    
+    func transactionController(_ transactionController: TransactionController, didDisconnectFrom peripheral: CBPeripheral) {
+        pushNotificationController.showFeedbackMessage("ble-error-disconnected-peripheral".localized, subtitle: "")
+    }
+    
+    func transactionController(_ transactionController: TransactionController, didComposedTransactionDataFor draft: TransactionSendDraft?) {
+        guard let assetTransactionDraft = draft as? AssetTransactionSendDraft,
+            let assetSearchResult = assetResults.first(where: { item -> Bool in
+                guard let assetIndex = assetTransactionDraft.assetIndex else {
+                    return false
+                }
+                return item.id == assetIndex
+            }) else {
+                return
+        }
+        
+        if account.type == .ledger {
+            ledgerApprovalViewController.removeFromParentController()
         }
         
         delegate?.assetAdditionViewController(self, didAdd: assetSearchResult, to: account)
         popScreen()
+    }
+    
+    func transactionControllerDidStartBLEConnection(_ transactionController: TransactionController) {
+        add(ledgerApprovalViewController)
     }
 }
 

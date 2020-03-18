@@ -19,6 +19,7 @@ class BLEConnectionManager: NSObject {
     private var rxCharacteristic: CBCharacteristic?
     
     private var peripherals: [CBPeripheral] = []
+    private var isScanning = false
     
     override init() {
         super.init()
@@ -28,11 +29,34 @@ class BLEConnectionManager: NSObject {
 
 extension BLEConnectionManager {
     func startScanForPeripherals() {
-        peripherals = []
-        centralManager?.scanForPeripherals(withServices: [bleServiceUuid], options: [CBCentralManagerScanOptionAllowDuplicatesKey: false])
+        if !isScanning {
+            isScanning = true
+            peripherals = []
+            centralManager?.scanForPeripherals(
+                withServices: [bleServiceUuid],
+                options: [CBCentralManagerScanOptionAllowDuplicatesKey: false]
+            )
+        }
+    }
+    
+    func connectSavedDeviceIfNeeded() {
+        guard let peripheral = self.blePeripheral else {
+            return
+        }
+        
+        connectToDevice(peripheral)
+    }
+    
+    func centralManagerDidUpdateState() {
+        guard let centralManager = centralManager else {
+            return
+        }
+        
+        centralManagerDidUpdateState(centralManager)
     }
     
     func stopScan() {
+        isScanning = false
         centralManager?.stopScan()
     }
     
@@ -72,16 +96,16 @@ extension BLEConnectionManager: CBCentralManagerDelegate {
         
         blePeripheral = peripheral
         peripherals.append(peripheral)
-        peripheral.delegate = self
         delegate?.bleConnectionManager(self, didDiscover: peripherals)
     }
     
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
         print("Connection complete")
         print("Peripheral info: \(String(describing: blePeripheral))")
-        centralManager?.stopScan()
+        stopScan()
         peripheral.delegate = self
         peripheral.discoverServices([bleServiceUuid])
+        
         delegate?.bleConnectionManager(self, didConnect: peripheral)
     }
     
@@ -109,6 +133,10 @@ extension BLEConnectionManager: CBPeripheralDelegate {
             return
         }
         
+        discoverCharacteristics(peripheral, of: services)
+    }
+    
+    private func discoverCharacteristics(_ peripheral: CBPeripheral, of services: [CBService]) {
         for service in services {
             peripheral.discoverCharacteristics(nil, for: service)
         }
@@ -144,6 +172,11 @@ extension BLEConnectionManager: CBPeripheralDelegate {
             return
         }
         
+        self.processCharacteristics(peripheral, of: characteristics)
+    }
+    
+    private func processCharacteristics(_ peripheral: CBPeripheral,
+                                        of characteristics: [CBCharacteristic]) {
         print("Found \(characteristics.count) characteristics!")
         
         for characteristic in characteristics {
@@ -161,6 +194,9 @@ extension BLEConnectionManager: CBPeripheralDelegate {
             if characteristic.uuid.isEqual(bleCharacteristicUuidTx) {
                 txCharacteristic = characteristic
                 print("Tx Characteristic: \(characteristic.uuid)")
+                
+                // Can write a data to the device since txCharacteristic is set.
+                delegate?.bleConnectionManagerEnabledToWrite(self)
             }
             peripheral.discoverDescriptors(for: characteristic)
         }
@@ -168,7 +204,7 @@ extension BLEConnectionManager: CBPeripheralDelegate {
     
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
         if characteristic == rxCharacteristic {
-           guard let characteristicData = characteristic.value else {
+            guard let characteristicData = characteristic.value else {
                 return
             }
             
@@ -193,26 +229,21 @@ extension BLEConnectionManager: CBPeripheralDelegate {
 }
 
 protocol BLEConnectionManagerDelegate: class {
-    func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didConnect peripheral: CBPeripheral)
+    typealias BLEError = Error
+    
     func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didDiscover peripherals: [CBPeripheral])
-    func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didFailBLEConnectionWith state: CBManagerState)
+    func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didConnect peripheral: CBPeripheral)
+    func bleConnectionManagerEnabledToWrite(_ bleConnectionManager: BLEConnectionManager)
     func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didRead string: String)
-    func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didFailToConnect peripheral: CBPeripheral, with error: Error?)
-    func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didDisconnectFrom peripheral: CBPeripheral, with error: Error?)
-}
-
-extension BLEConnectionManagerDelegate {
-    func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didDiscover peripherals: [CBPeripheral]) { }
-    
-    func bleConnectionManager(
-        _ bleConnectionManager: BLEConnectionManager,
-        didDisconnectFrom peripheral: CBPeripheral,
-        with error: Error?
-    ) { }
-    
+    func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didFailBLEConnectionWith state: CBManagerState)
     func bleConnectionManager(
         _ bleConnectionManager: BLEConnectionManager,
         didFailToConnect peripheral: CBPeripheral,
-        with error: Error?
-    ) { }
+        with error: BLEError?
+    )
+    func bleConnectionManager(
+        _ bleConnectionManager: BLEConnectionManager,
+        didDisconnectFrom peripheral: CBPeripheral,
+        with error: BLEError?
+    )
 }

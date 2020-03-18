@@ -21,7 +21,7 @@ class AccountHeaderView: BaseView {
     private lazy var imageView = UIImageView()
     
     private lazy var titleLabel: UILabel = {
-        UILabel().withAlignment(.left).withFont(UIFont.font(.avenir, withWeight: .bold(size: 13.0)))
+        UILabel().withAlignment(.left).withFont(UIFont.font(.overpass, withWeight: .extraBold(size: 12.0)))
     }()
     
     private lazy var optionsButton: UIButton = {
@@ -48,6 +48,8 @@ extension AccountHeaderView {
 
 extension AccountHeaderView {
     private func setupImageViewLayout() {
+        imageView.contentMode = .scaleAspectFit
+        
         addSubview(imageView)
         
         imageView.snp.makeConstraints { make in
@@ -79,7 +81,11 @@ extension AccountHeaderView {
 
 extension AccountHeaderView {
     func setAccountName(_ name: String) {
-        titleLabel.attributedText = name.attributed([.letterSpacing(1.10), .textColor(SharedColors.black)])
+        titleLabel.attributedText = name.attributed([
+            .letterSpacing(1.10),
+            .textColor(.black),
+            .font(UIFont.font(.overpass, withWeight: .extraBold(size: 12.0)))
+        ])
     }
     
     func setOptionsButton(hidden: Bool) {
