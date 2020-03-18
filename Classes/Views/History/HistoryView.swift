@@ -200,7 +200,10 @@ extension HistoryView {
         addSubview(viewResultsButton)
         
         viewResultsButton.snp.makeConstraints { make in
-            make.top.greaterThanOrEqualTo(endDatePickerView.snp.bottom).offset(layout.current.buttonMinimumInset)
+            make.top.greaterThanOrEqualTo(endDatePickerView.snp.bottom)
+                .offset(layout.current.buttonMinimumInset)
+            make.top.greaterThanOrEqualTo(startDatePickerView.snp.bottom)
+                .offset(layout.current.buttonMinimumInset)
             make.centerX.equalToSuperview()
             make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
             make.bottom.equalToSuperview().inset(safeAreaBottom + layout.current.bottomInset)
@@ -230,6 +233,10 @@ extension HistoryView {
     private func didChangeStartDate(picker: UIDatePicker) {
         if picker.date > Date() {
             delegate?.historyView(self, hasError: "history-future-date-error".localized)
+            startDatePickerView.date = startDate
+            return
+        } else if picker.date > endDate {
+            delegate?.historyView(self, hasError: "history-end-date-error".localized)
             startDatePickerView.date = startDate
             return
         }
@@ -306,6 +313,9 @@ extension HistoryView {
             
             UIView.animate(withDuration: 0.3) {
                 self.layoutIfNeeded()
+                
+                self.startDateDisplayView.alpha = 1.0
+                self.endDateDisplayView.alpha = 0.3
             }
         } else {
             startDatePickerView.snp.updateConstraints { make in
@@ -316,6 +326,9 @@ extension HistoryView {
                 self.startDatePickerView.isHidden = true
                 
                 self.layoutIfNeeded()
+                
+                self.startDateDisplayView.alpha = 1.0
+                self.endDateDisplayView.alpha = 1.0
             }
         }
     }
@@ -341,9 +354,12 @@ extension HistoryView {
             }
             
             UIView.animate(withDuration: 0.3) {
-                
                 self.layoutIfNeeded()
+                
+                self.startDateDisplayView.alpha = 0.3
+                self.endDateDisplayView.alpha = 1.0
             }
+            
         } else {
             endDatePickerView.snp.updateConstraints { make in
                 make.height.equalTo(0.0)
@@ -353,6 +369,9 @@ extension HistoryView {
                 self.endDatePickerView.isHidden = true
                 
                 self.layoutIfNeeded()
+                
+                self.startDateDisplayView.alpha = 1.0
+                self.endDateDisplayView.alpha = 1.0
             }
         }
     }
@@ -368,7 +387,7 @@ extension HistoryView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let horizontalInset: CGFloat = 20.0
         let bottomInset: CGFloat = 75.0
-        let buttonMinimumInset: CGFloat = 60.0
+        let buttonMinimumInset: CGFloat = -5.0
         let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
         let rewardsViewInset: CGFloat = 15.0
         let arrowTopInset: CGFloat = 19.0
