@@ -27,8 +27,6 @@ class TransactionController {
     private var currentTransactionType: TransactionType?
     private var connectedDevice: CBPeripheral?
     
-    private var receivedDataCount = 0
-    
     private var fromAccount: Account? {
         return transactionDraft?.from
     }
@@ -56,10 +54,11 @@ extension TransactionController {
     }
     
     private func setupBLEConnections() {
-        bleConnectionManager.delegate = self
-        ledgerBLEController.delegate = self
+        let manager = BLEConnectionManager()
+        manager.delegate = self
+        bleConnectionManager = manager
         
-        bleConnectionManager.connectSavedDeviceIfNeeded()
+        ledgerBLEController.delegate = self
     }
     
     func stopBLEScan() {
@@ -90,7 +89,6 @@ extension TransactionController {
         api.sendTransaction(with: transactionData) { transactionIdResponse in
             switch transactionIdResponse {
             case let .success(transactionId):
-                self.currentTransactionType = nil
                 self.api.trackTransaction(with: TransactionTrackDraft(transactionId: transactionId.identifier))
                 completion?()
                 self.delegate?.transactionController(self, didCompletedTransaction: transactionId)
@@ -412,8 +410,13 @@ extension TransactionController: BLEConnectionManagerDelegate {
     }
     
     func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didRead string: String) {
-        receivedDataCount += 1
+        if api.session.isLastTransaction(string) {
+            return
+        }
+        
         ledgerBLEController.updateIncomingData(with: string)
+        
+        api.session.saveTransaction(string)
     }
     
     func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didFailBLEConnectionWith state: CBManagerState) {
@@ -444,16 +447,6 @@ extension TransactionController: LedgerBLEControllerDelegate {
     
     func ledgerBLEController(_ ledgerBLEController: LedgerBLEController, received data: Data) {
         guard let transactionType = currentTransactionType else {
-            return
-        }
-        
-        // swiftlint:disable todo
-        // TODO: This is a temp fix for a bug related to received data count from the ledger device.
-        // There is a bug that receives ble data even if the ledger does not approve trnsaction sign.
-        // So, the first response should be ignored.
-        // This issue should be tested on other devices and fixed in some other way.
-        // swiftlint:enable todo
-        if (transactionType == .algosTransaction || transactionType == .assetTransaction) && receivedDataCount == 1 {
             return
         }
         

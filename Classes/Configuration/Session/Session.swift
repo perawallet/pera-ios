@@ -15,6 +15,7 @@ class Session: Storable {
     private let privateStorageKey = "com.algorand.algorand.token.private"
     private let privateKey = "com.algorand.algorand.token.private.key"
     private let rewardsPrefenceKey = "com.algorand.algorand.rewards.preference"
+    private let transactionKey = "com.algorand.algorand.ledger.transaction"
     
     let algorandSDK = AlgorandSDK()
     
@@ -238,6 +239,21 @@ extension Session {
     func removePrivateData(for account: String) {
         let dataKey = privateKey.appending(".\(account)")
         privateStorage.remove(for: dataKey)
+    }
+}
+
+// MARK: Ledger
+extension Session {
+    func saveTransaction(_ value: String) {
+        save(value, for: transactionKey, to: .defaults)
+    }
+    
+    func isLastTransaction(_ value: String) -> Bool {
+        guard let string = self.string(with: transactionKey, to: .defaults) else {
+            return false
+        }
+        
+        return value == string
     }
 }
 
