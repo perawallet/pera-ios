@@ -239,13 +239,19 @@ extension SendAlgosTransactionPreviewViewController {
                    
             SVProgressHUD.show(withStatus: "title-loading".localized)
             self.api?.fetchAccount(with: receiverFetchDraft) { accountResponse in
-                SVProgressHUD.dismiss()
-                       
+                if selectedAccount.type != .ledger {
+                    self.dismissProgressIfNeeded()
+                }
+                
                 switch accountResponse {
                 case let .failure(error):
+                    self.dismissProgressIfNeeded()
+                    
                     self.displaySimpleAlertWith(title: "title-error".localized, message: error.localizedDescription)
                 case let .success(account):
                     if account.amount == 0 {
+                        self.dismissProgressIfNeeded()
+                        
                         self.displaySimpleAlertWith(
                             title: "title-error".localized,
                             message: "send-algos-minimum-amount-error-new-account".localized
@@ -257,6 +263,7 @@ extension SendAlgosTransactionPreviewViewController {
             }
             return
         } else {
+            SVProgressHUD.show(withStatus: "title-loading".localized)
             composeAlgosTransactionData(for: selectedAccount)
         }
     }
@@ -265,6 +272,8 @@ extension SendAlgosTransactionPreviewViewController {
         guard let account = getReceiverAccount() else {
             return
         }
+        
+        validateTimer()
         
         let transactionDraft = AlgosTransactionSendDraft(
             from: selectedAccount,

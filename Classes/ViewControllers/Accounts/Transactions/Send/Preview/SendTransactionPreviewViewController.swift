@@ -54,6 +54,8 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
         return sendTransactionPreviewView.amountInputView.isMaxButtonSelected
     }
     
+    private var pollingOperation: PollingOperation?
+    
     init(
         account: Account?,
         assetReceiverState: AssetReceiverState,
@@ -247,6 +249,9 @@ extension SendTransactionPreviewViewController: TransactionControllerDelegate {
     }
     
     func transactionControllerDidStartBLEConnection(_ transactionController: TransactionController) {
+        dismissProgressIfNeeded()
+        invalidateTimer()
+        
         add(ledgerApprovalViewController)
     }
     
@@ -280,6 +285,40 @@ extension SendTransactionPreviewViewController: TransactionControllerDelegate {
     func transactionControllerDidFailToSignWithLedger(_ transactionController: TransactionController) {
         ledgerApprovalViewController.removeFromParentController()
         pushNotificationController.showFeedbackMessage("ble-error-fail-sign-transaction".localized, subtitle: "")
+    }
+}
+
+// MARK: Ledger Timer
+extension SendTransactionPreviewViewController {
+    func validateTimer() {
+        guard let account = selectedAccount, account.type == .ledger else {
+            return
+        }
+        
+        pollingOperation = PollingOperation(interval: 15.0) { [weak self] in
+            guard let self = self else {
+                return
+            }
+            
+            DispatchQueue.main.async {
+                self.transactionController.stopBLEScan()
+                self.dismissProgressIfNeeded()
+                self.pushNotificationController.showFeedbackMessage("ble-error-fail-sign-transaction".localized, subtitle: "")
+            }
+            
+            self.invalidateTimer()
+        }
+        
+        pollingOperation?.start()
+    }
+    
+    func invalidateTimer() {
+        guard let account = selectedAccount, account.type == .ledger else {
+            return
+        }
+        
+        pollingOperation?.invalidate()
+        pollingOperation = nil
     }
 }
 

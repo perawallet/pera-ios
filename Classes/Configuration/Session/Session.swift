@@ -255,6 +255,10 @@ extension Session {
         
         return value == string
     }
+    
+    func removeLastTransaction() {
+        remove(with: transactionKey, from: .defaults)
+    }
 }
 
 extension Session {
