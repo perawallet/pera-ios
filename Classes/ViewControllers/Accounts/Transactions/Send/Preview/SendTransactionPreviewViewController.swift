@@ -75,6 +75,8 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         transactionController.stopBLEScan()
+        dismissProgressIfNeeded()
+        invalidateTimer()
     }
     
     override func configureAppearance() {
