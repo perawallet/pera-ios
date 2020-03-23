@@ -260,33 +260,40 @@ extension SendTransactionPreviewViewController: TransactionControllerDelegate {
     func transactionController(_ transactionController: TransactionController, didFailBLEConnectionWith state: CBManagerState) {
         switch state {
         case .poweredOff:
-            pushNotificationController.showFeedbackMessage("ble-error-fail-ble-connection-power".localized, subtitle: "")
+            pushNotificationController.showFeedbackMessage("ble-error-bluetooth-title".localized,
+                                                           subtitle: "ble-error-fail-ble-connection-power".localized)
         case .unsupported:
-            pushNotificationController.showFeedbackMessage("ble-error-fail-ble-connection-unsupported".localized, subtitle: "")
+            pushNotificationController.showFeedbackMessage("ble-error-unsupported-device-title".localized,
+                                                           subtitle: "ble-error-fail-ble-connection-unsupported".localized)
         case .unknown:
-            pushNotificationController.showFeedbackMessage("ble-error-fail-ble-connection-unknown".localized, subtitle: "")
+            pushNotificationController.showFeedbackMessage("ble-error-unsupported-device-title".localized,
+                                                           subtitle: "ble-error-fail-ble-connection-unsupported".localized)
         case .unauthorized:
-            pushNotificationController.showFeedbackMessage("ble-error-fail-ble-connection-unauthorized".localized, subtitle: "")
+            pushNotificationController.showFeedbackMessage("ble-error-search-title".localized,
+                                                           subtitle: "ble-error-fail-ble-connection-unauthorized".localized)
         case .resetting:
-            pushNotificationController.showFeedbackMessage("ble-error-fail-ble-connection-resetting".localized, subtitle: "")
+            pushNotificationController.showFeedbackMessage("ble-error-bluetooth-title".localized,
+                                                           subtitle: "ble-error-fail-ble-connection-resetting".localized)
         default:
             return
         }
+        invalidateTimer()
+        dismissProgressIfNeeded()
     }
     
     func transactionController(_ transactionController: TransactionController, didFailToConnect peripheral: CBPeripheral) {
         ledgerApprovalViewController.removeFromParentController()
-        pushNotificationController.showFeedbackMessage("ble-error-fail-connect-peripheral".localized, subtitle: "")
+        pushNotificationController.showFeedbackMessage("ble-error-connection-title".localized,
+                                                       subtitle: "ble-error-fail-connect-peripheral".localized)
     }
     
     func transactionController(_ transactionController: TransactionController, didDisconnectFrom peripheral: CBPeripheral) {
-        ledgerApprovalViewController.removeFromParentController()
-        pushNotificationController.showFeedbackMessage("ble-error-disconnected-peripheral".localized, subtitle: "")
     }
     
     func transactionControllerDidFailToSignWithLedger(_ transactionController: TransactionController) {
         ledgerApprovalViewController.removeFromParentController()
-        pushNotificationController.showFeedbackMessage("ble-error-fail-sign-transaction".localized, subtitle: "")
+        pushNotificationController.showFeedbackMessage("ble-error-transaction-cancelled-title".localized,
+                                                       subtitle: "ble-error-fail-sign-transaction".localized)
     }
 }
 
@@ -305,7 +312,8 @@ extension SendTransactionPreviewViewController {
             DispatchQueue.main.async {
                 self.transactionController.stopBLEScan()
                 self.dismissProgressIfNeeded()
-                self.pushNotificationController.showFeedbackMessage("ble-error-fail-sign-transaction".localized, subtitle: "")
+                self.pushNotificationController.showFeedbackMessage("ble-error-connection-title".localized,
+                                                                    subtitle: "ble-error-fail-connect-peripheral".localized)
             }
             
             self.invalidateTimer()

@@ -162,15 +162,20 @@ extension LedgerDeviceListViewController: BLEConnectionManagerDelegate {
         
         switch state {
         case .poweredOff:
-            pushNotificationController.showFeedbackMessage("ble-error-fail-ble-connection-power".localized, subtitle: "")
+            pushNotificationController.showFeedbackMessage("ble-error-bluetooth-title".localized,
+                                                           subtitle: "ble-error-fail-ble-connection-power".localized)
         case .unsupported:
-            pushNotificationController.showFeedbackMessage("ble-error-fail-ble-connection-unsupported".localized, subtitle: "")
+            pushNotificationController.showFeedbackMessage("ble-error-unsupported-device-title".localized,
+                                                           subtitle: "ble-error-fail-ble-connection-unsupported".localized)
         case .unknown:
-            pushNotificationController.showFeedbackMessage("ble-error-fail-ble-connection-unknown".localized, subtitle: "")
+            pushNotificationController.showFeedbackMessage("ble-error-unsupported-device-title".localized,
+                                                           subtitle: "ble-error-fail-ble-connection-unsupported".localized)
         case .unauthorized:
-            pushNotificationController.showFeedbackMessage("ble-error-fail-ble-connection-unauthorized".localized, subtitle: "")
+            pushNotificationController.showFeedbackMessage("ble-error-search-title".localized,
+                                                           subtitle: "ble-error-fail-ble-connection-unauthorized".localized)
         case .resetting:
-            pushNotificationController.showFeedbackMessage("ble-error-fail-ble-connection-resetting".localized, subtitle: "")
+            pushNotificationController.showFeedbackMessage("ble-error-bluetooth-title".localized,
+                                                           subtitle: "ble-error-fail-ble-connection-resetting".localized)
         default:
             return
         }
@@ -183,7 +188,6 @@ extension LedgerDeviceListViewController: BLEConnectionManagerDelegate {
     ) {
         connectedDevice = nil
         ledgerApprovalViewController.removeFromParentController()
-        pushNotificationController.showFeedbackMessage("ble-error-disconnected-peripheral".localized, subtitle: "")
     }
     
     func bleConnectionManager(
@@ -193,7 +197,8 @@ extension LedgerDeviceListViewController: BLEConnectionManagerDelegate {
     ) {
         connectedDevice = nil
         ledgerApprovalViewController.removeFromParentController()
-        pushNotificationController.showFeedbackMessage("ble-error-fail-connect-peripheral".localized, subtitle: "")
+        pushNotificationController.showFeedbackMessage("ble-error-connection-title".localized,
+                                                       subtitle: "ble-error-fail-connect-peripheral".localized)
     }
 }
 
@@ -218,13 +223,15 @@ extension LedgerDeviceListViewController: LedgerBLEControllerDelegate {
         
         if !AlgorandSDK().isValidAddress(address) {
             connectedDevice = nil
-            pushNotificationController.showFeedbackMessage("ble-error-fail-fetch-account-address".localized, subtitle: "")
+            pushNotificationController.showFeedbackMessage("ble-error-transmission-title".localized,
+                                                           subtitle: "ble-error-fail-fetch-account-address".localized)
             return
         }
 
         if error != nil {
             connectedDevice = nil
-            pushNotificationController.showFeedbackMessage("ble-error-fail-fetch-account-address".localized, subtitle: "")
+            pushNotificationController.showFeedbackMessage("ble-error-transmission-title".localized,
+                                                           subtitle: "ble-error-fail-fetch-account-address".localized)
             return
         }
         

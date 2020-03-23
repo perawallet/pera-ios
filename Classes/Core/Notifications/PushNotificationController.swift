@@ -270,10 +270,11 @@ extension PushNotificationController {
             subtitle: subtitle,
             titleFont: UIFont.font(.overpass, withWeight: .semiBold(size: 15.0)),
             titleColor: UIColor.white,
-            titleTextAlign: .center,
+            titleTextAlign: .left,
             subtitleFont: UIFont.font(.avenir, withWeight: .demiBold(size: 12.0)),
             subtitleColor: UIColor.white.withAlphaComponent(0.8),
-            subtitleTextAlign: .center,
+            subtitleTextAlign: .left,
+            leftView: UIImageView(image: img("icon-warning-circle")),
             style: .warning,
             colors: CustomBannerColors()
         )
