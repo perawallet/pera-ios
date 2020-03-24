@@ -381,10 +381,10 @@
 
 "ledger-pair-title" = "Pair Ledger Device";
 "ledger-tutorial-title-text" = "Follow the steps below to add\nLedger Account";
-"ledger-tutorial-turned-on" = "Make sure you Ledger device is turned on.";
+"ledger-tutorial-turned-on" = "Make sure that your ledger device is on and has Bluetooth enabled.";
 "ledger-tutorial-install-app" = "Install the Algorand app onto your Ledger.";
 "ledger-tutorial-open-app" = "Open the Algorand app on your Ledger.";
-"ledger-tutorial-bluetooth" = "Turn your phones bluethooth on.";
+"ledger-tutorial-bluetooth" = "Make sure Bluetooth is enabled on your smartphone.";
 "ledger-search-button-title" = "SEARCH FOR LEDGER";
 
 // MARK: Ledger Device List
