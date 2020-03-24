@@ -54,6 +54,8 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
         return sendTransactionPreviewView.amountInputView.isMaxButtonSelected
     }
     
+    private var pollingOperation: PollingOperation?
+    
     init(
         account: Account?,
         assetReceiverState: AssetReceiverState,
@@ -73,6 +75,8 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         transactionController.stopBLEScan()
+        dismissProgressIfNeeded()
+        invalidateTimer()
     }
     
     override func configureAppearance() {
@@ -247,39 +251,84 @@ extension SendTransactionPreviewViewController: TransactionControllerDelegate {
     }
     
     func transactionControllerDidStartBLEConnection(_ transactionController: TransactionController) {
+        dismissProgressIfNeeded()
+        invalidateTimer()
+        
         add(ledgerApprovalViewController)
     }
     
     func transactionController(_ transactionController: TransactionController, didFailBLEConnectionWith state: CBManagerState) {
         switch state {
         case .poweredOff:
-            pushNotificationController.showFeedbackMessage("ble-error-fail-ble-connection-power".localized, subtitle: "")
+            pushNotificationController.showFeedbackMessage("ble-error-bluetooth-title".localized,
+                                                           subtitle: "ble-error-fail-ble-connection-power".localized)
         case .unsupported:
-            pushNotificationController.showFeedbackMessage("ble-error-fail-ble-connection-unsupported".localized, subtitle: "")
+            pushNotificationController.showFeedbackMessage("ble-error-unsupported-device-title".localized,
+                                                           subtitle: "ble-error-fail-ble-connection-unsupported".localized)
         case .unknown:
-            pushNotificationController.showFeedbackMessage("ble-error-fail-ble-connection-unknown".localized, subtitle: "")
+            pushNotificationController.showFeedbackMessage("ble-error-unsupported-device-title".localized,
+                                                           subtitle: "ble-error-fail-ble-connection-unsupported".localized)
         case .unauthorized:
-            pushNotificationController.showFeedbackMessage("ble-error-fail-ble-connection-unauthorized".localized, subtitle: "")
+            pushNotificationController.showFeedbackMessage("ble-error-search-title".localized,
+                                                           subtitle: "ble-error-fail-ble-connection-unauthorized".localized)
         case .resetting:
-            pushNotificationController.showFeedbackMessage("ble-error-fail-ble-connection-resetting".localized, subtitle: "")
+            pushNotificationController.showFeedbackMessage("ble-error-bluetooth-title".localized,
+                                                           subtitle: "ble-error-fail-ble-connection-resetting".localized)
         default:
             return
         }
+        invalidateTimer()
+        dismissProgressIfNeeded()
     }
     
     func transactionController(_ transactionController: TransactionController, didFailToConnect peripheral: CBPeripheral) {
         ledgerApprovalViewController.removeFromParentController()
-        pushNotificationController.showFeedbackMessage("ble-error-fail-connect-peripheral".localized, subtitle: "")
+        pushNotificationController.showFeedbackMessage("ble-error-connection-title".localized,
+                                                       subtitle: "ble-error-fail-connect-peripheral".localized)
     }
     
     func transactionController(_ transactionController: TransactionController, didDisconnectFrom peripheral: CBPeripheral) {
-        ledgerApprovalViewController.removeFromParentController()
-        pushNotificationController.showFeedbackMessage("ble-error-disconnected-peripheral".localized, subtitle: "")
     }
     
     func transactionControllerDidFailToSignWithLedger(_ transactionController: TransactionController) {
         ledgerApprovalViewController.removeFromParentController()
-        pushNotificationController.showFeedbackMessage("ble-error-fail-sign-transaction".localized, subtitle: "")
+        pushNotificationController.showFeedbackMessage("ble-error-transaction-cancelled-title".localized,
+                                                       subtitle: "ble-error-fail-sign-transaction".localized)
+    }
+}
+
+// MARK: Ledger Timer
+extension SendTransactionPreviewViewController {
+    func validateTimer() {
+        guard let account = selectedAccount, account.type == .ledger else {
+            return
+        }
+        
+        pollingOperation = PollingOperation(interval: 15.0) { [weak self] in
+            guard let self = self else {
+                return
+            }
+            
+            DispatchQueue.main.async {
+                self.transactionController.stopBLEScan()
+                self.dismissProgressIfNeeded()
+                self.pushNotificationController.showFeedbackMessage("ble-error-connection-title".localized,
+                                                                    subtitle: "ble-error-fail-connect-peripheral".localized)
+            }
+            
+            self.invalidateTimer()
+        }
+        
+        pollingOperation?.start()
+    }
+    
+    func invalidateTimer() {
+        guard let account = selectedAccount, account.type == .ledger else {
+            return
+        }
+        
+        pollingOperation?.invalidate()
+        pollingOperation = nil
     }
 }
 

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SVProgressHUD
 
 extension UIViewController {
     var topMostController: UIViewController? {
@@ -53,5 +54,14 @@ extension UIViewController {
         willMove(toParent: nil)
         view.removeFromSuperview()
         removeFromParent()
+    }
+}
+
+// MARK: SVProgessHUD
+extension UIViewController {
+    func dismissProgressIfNeeded() {
+        if SVProgressHUD.isVisible() {
+            SVProgressHUD.dismiss()
+        }
     }
 }

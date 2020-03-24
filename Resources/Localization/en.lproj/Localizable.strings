@@ -411,14 +411,23 @@
 
 // MARK: BLE Errors
 
-"ble-error-fail-connect-peripheral" = "Failed to connect to device";
+
+"ble-error-search-title" = "Search Error";
+"ble-error-connection-title" = "Connection Error";
+"ble-error-bluetooth-title" = "Bluetooth Error";
+"ble-error-ledger-connection-title" = "Ledger Connection Error";
+"ble-error-unsupported-device-title" = "Unsupported Device";
+"ble-error-transaction-cancelled-title" = "Transaction Cancelled";
+"ble-error-transmission-title" = "Transmission Error";
+
+
+"ble-error-fail-connect-peripheral" = "Could not connect to the Ledger device. Make sure the device is unlocked, nearby and has bluetooth enabled.";
 "ble-error-disconnected-peripheral" = "Disconnected from device";
-"ble-error-fail-fetch-account-address" = "Failed to fetch account address";
-"ble-error-fail-sign-transaction" = "Failed to sign transaction";
-"ble-error-fail-ble-connection-power" = "Failed BLE connection for Power Off";
-"ble-error-fail-ble-connection-unsupported" = "Failed BLE connection for Unsupported";
-"ble-error-fail-ble-connection-unknown" = "Failed BLE connection for Unknown";
-"ble-error-fail-ble-connection-unauthorized" = "Failed BLE connection for Unauthorized";
+"ble-error-fail-fetch-account-address" = "We were unable to receive the public key of your ledger device. Please try again.";
+"ble-error-fail-sign-transaction" = "The paired ledger device has cancelled the transaction request.";
+"ble-error-fail-ble-connection-power" = "Bluetooth must be enabled on your device in order to search for nearby Ledger devices.";
+"ble-error-fail-ble-connection-unsupported" = "The device you are trying to connect to is not supported with the Algorand Wallet.";
+"ble-error-fail-ble-connection-unauthorized" = "Bluetooth permission needs to be granted in order to search nearby Ledgers.";
 "ble-error-fail-ble-connection-resetting" = "Failed BLE connection for Resetting";
 
 // MARK: Ledger Approval

@@ -209,6 +209,10 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
 
 extension SendAssetTransactionPreviewViewController {
     private func checkIfAddressIsValidForTransaction(_ address: String) {
+        guard let selectedAccount = selectedAccount else {
+            return
+        }
+        
         if !AlgorandSDK().isValidAddress(address) {
             guard let api = api else {
                 return
@@ -225,8 +229,10 @@ extension SendAssetTransactionPreviewViewController {
         api?.fetchAccount(with: AccountFetchDraft(publicKey: address)) { fetchAccountResponse in
             switch fetchAccountResponse {
             case let .success(receiverAccount):
-                SVProgressHUD.showSuccess(withStatus: "title-done-lowercased".localized)
-                SVProgressHUD.dismiss()
+                if selectedAccount.type != .ledger {
+                    self.dismissProgressIfNeeded()
+                }
+                
                 if let assets = receiverAccount.assets {
                     guard let assetId = self.assetDetail.id else {
                         return
@@ -243,8 +249,7 @@ extension SendAssetTransactionPreviewViewController {
                     self.presentAssetNotSupportedAlert(receiverAddress: address)
                 }
             case .failure:
-                SVProgressHUD.showError(withStatus: nil)
-                SVProgressHUD.dismiss()
+                self.dismissProgressIfNeeded()
             }
         }
     }
@@ -311,6 +316,8 @@ extension SendAssetTransactionPreviewViewController {
             let toAccount = getReceiverAccount()?.address else {
             return
         }
+        
+        validateTimer()
         
         transactionController.delegate = self
         let transaction = AssetTransactionSendDraft(

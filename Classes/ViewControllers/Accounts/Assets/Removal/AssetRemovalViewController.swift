@@ -305,26 +305,31 @@ extension AssetRemovalViewController: TransactionControllerDelegate {
     func transactionController(_ transactionController: TransactionController, didFailBLEConnectionWith state: CBManagerState) {
         switch state {
         case .poweredOff:
-            pushNotificationController.showFeedbackMessage("ble-error-fail-ble-connection-power".localized, subtitle: "")
+            pushNotificationController.showFeedbackMessage("ble-error-bluetooth-title".localized,
+                                                           subtitle: "ble-error-fail-ble-connection-power".localized)
         case .unsupported:
-            pushNotificationController.showFeedbackMessage("ble-error-fail-ble-connection-unsupported".localized, subtitle: "")
+            pushNotificationController.showFeedbackMessage("ble-error-unsupported-device-title".localized,
+                                                           subtitle: "ble-error-fail-ble-connection-unsupported".localized)
         case .unknown:
-            pushNotificationController.showFeedbackMessage("ble-error-fail-ble-connection-unknown".localized, subtitle: "")
+            pushNotificationController.showFeedbackMessage("ble-error-unsupported-device-title".localized,
+                                                           subtitle: "ble-error-fail-ble-connection-unsupported".localized)
         case .unauthorized:
-            pushNotificationController.showFeedbackMessage("ble-error-fail-ble-connection-unauthorized".localized, subtitle: "")
+            pushNotificationController.showFeedbackMessage("ble-error-search-title".localized,
+                                                           subtitle: "ble-error-fail-ble-connection-unauthorized".localized)
         case .resetting:
-            pushNotificationController.showFeedbackMessage("ble-error-fail-ble-connection-resetting".localized, subtitle: "")
+            pushNotificationController.showFeedbackMessage("ble-error-bluetooth-title".localized,
+                                                           subtitle: "ble-error-fail-ble-connection-resetting".localized)
         default:
             return
         }
     }
     
     func transactionController(_ transactionController: TransactionController, didFailToConnect peripheral: CBPeripheral) {
-        pushNotificationController.showFeedbackMessage("ble-error-fail-connect-peripheral".localized, subtitle: "")
+        pushNotificationController.showFeedbackMessage("ble-error-connection-title".localized,
+                                                       subtitle: "ble-error-fail-connect-peripheral".localized)
     }
     
     func transactionController(_ transactionController: TransactionController, didDisconnectFrom peripheral: CBPeripheral) {
-        pushNotificationController.showFeedbackMessage("ble-error-disconnected-peripheral".localized, subtitle: "")
     }
 }
 

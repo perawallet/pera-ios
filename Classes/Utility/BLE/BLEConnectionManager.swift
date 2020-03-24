@@ -39,14 +39,6 @@ extension BLEConnectionManager {
         }
     }
     
-    func connectSavedDeviceIfNeeded() {
-        guard let peripheral = self.blePeripheral else {
-            return
-        }
-        
-        connectToDevice(peripheral)
-    }
-    
     func centralManagerDidUpdateState() {
         guard let centralManager = centralManager else {
             return
