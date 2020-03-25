@@ -318,6 +318,8 @@ class Router {
             )
         case let .ledgerApproval(mode):
             viewController = LedgerApprovalViewController(mode: mode, configuration: configuration)
+        case .ledgerTroubleshootBluetooth:
+            viewController = LedgerTroubleshootBluetoothViewController(configuration: configuration)
         }
         
         return viewController as? T

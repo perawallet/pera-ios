@@ -15,6 +15,7 @@ class LedgerTutorialInstructionListView: BaseView {
         view.setIcon(img("icon-shutdown"))
         view.setTitle("ledger-tutorial-turned-on".localized)
         setShadow(on: view)
+        view.isUserInteractionEnabled = true
         return view
     }()
     
@@ -23,6 +24,7 @@ class LedgerTutorialInstructionListView: BaseView {
         view.setIcon(img("icon-ledger-install"))
         view.setTitle("ledger-tutorial-install-app".localized)
         setShadow(on: view)
+        view.isUserInteractionEnabled = true
         return view
     }()
     
@@ -31,6 +33,7 @@ class LedgerTutorialInstructionListView: BaseView {
         view.setIcon(img("icon-algorand-ledger-tutorial"))
         view.setTitle("ledger-tutorial-open-app".localized)
         setShadow(on: view)
+        view.isUserInteractionEnabled = true
         return view
     }()
     
@@ -39,8 +42,11 @@ class LedgerTutorialInstructionListView: BaseView {
         view.setIcon(img("icon-bluetooth-purple"))
         view.setTitle("ledger-tutorial-bluetooth".localized)
         setShadow(on: view)
+        view.isUserInteractionEnabled = true
         return view
     }()
+    
+    weak var delegate: LedgerTutorialInstructionListViewDelegate?
         
     override func prepareLayout() {
         setupOpenLedgerInstructionViewLayout()
@@ -52,6 +58,24 @@ class LedgerTutorialInstructionListView: BaseView {
     override func layoutSubviews() {
         super.layoutSubviews()
         layer.shadowPath = UIBezierPath(rect: bounds).cgPath
+    }
+    
+    override func linkInteractors() {
+        super.linkInteractors()
+        
+        let ledgerBluetoothTapGestureRecognizer = UITapGestureRecognizer(target: self,
+                                                                         action: #selector(didTapLedgerBluetoothConnection))
+        let installAppTapGestureRecognizer = UITapGestureRecognizer(target: self,
+                                                                    action: #selector(didTapInstallApp))
+        let openAppTapGestureRecognizer = UITapGestureRecognizer(target: self,
+                                                                 action: #selector(didTapOpenApp))
+        let bluetoothTapGestureRecognizer = UITapGestureRecognizer(target: self,
+                                                                   action: #selector(didTapBluetoothConnection))
+        
+        openLedgerInstructionView.addGestureRecognizer(ledgerBluetoothTapGestureRecognizer)
+        installAppInstructionView.addGestureRecognizer(installAppTapGestureRecognizer)
+        openAppInstructionView.addGestureRecognizer(openAppTapGestureRecognizer)
+        turnOnBluetoohInstructionView.addGestureRecognizer(bluetoothTapGestureRecognizer)
     }
 }
 
@@ -107,6 +131,28 @@ extension LedgerTutorialInstructionListView {
 }
 
 extension LedgerTutorialInstructionListView {
+    @objc
+    private func didTapLedgerBluetoothConnection() {
+        delegate?.ledgerTutorialInstructionListViewDidTapLedgerBluetoothConnection(self)
+    }
+    
+    @objc
+    private func didTapInstallApp() {
+        delegate?.ledgerTutorialInstructionListViewDidTapInstallApp(self)
+    }
+    
+    @objc
+    private func didTapOpenApp() {
+        delegate?.ledgerTutorialInstructionListViewDidTapOpenApp(self)
+    }
+    
+    @objc
+    private func didTapBluetoothConnection() {
+        delegate?.ledgerTutorialInstructionListViewDidTapBluetoothConnection(self)
+    }
+}
+
+extension LedgerTutorialInstructionListView {
     private func setShadow(on view: UIView) {
         view.layer.shadowColor = Colors.shadowColor.cgColor
         view.layer.shadowOpacity = 1.0
@@ -119,4 +165,11 @@ extension LedgerTutorialInstructionListView {
     private enum Colors {
         static let shadowColor = rgb(0.91, 0.91, 0.95)
     }
+}
+
+protocol LedgerTutorialInstructionListViewDelegate: class {
+    func ledgerTutorialInstructionListViewDidTapLedgerBluetoothConnection(_ view: LedgerTutorialInstructionListView)
+    func ledgerTutorialInstructionListViewDidTapInstallApp(_ view: LedgerTutorialInstructionListView)
+    func ledgerTutorialInstructionListViewDidTapOpenApp(_ view: LedgerTutorialInstructionListView)
+    func ledgerTutorialInstructionListViewDidTapBluetoothConnection(_ view: LedgerTutorialInstructionListView)
 }

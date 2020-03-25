@@ -56,4 +56,16 @@ extension LedgerTutorialViewController: LedgerTutorialViewDelegate {
     func ledgerTutorialViewDidTapSearchButton(_ ledgerTutorialView: LedgerTutorialView) {
         open(.ledgerDeviceList(mode: mode), by: .push)
     }
+    
+    func ledgerTutorialView(_ ledgerTutorialView: LedgerTutorialView, didTap section: LedgerTutorialSection) {
+        switch section {
+        case .ledgerBluetoothConnection:
+            open(.ledgerTroubleshootBluetooth, by: .present)
+        case .bluetoothConnection:
+            open(.ledgerTroubleshootBluetooth, by: .present)
+            
+        default:
+            return
+        }
+    }
 }

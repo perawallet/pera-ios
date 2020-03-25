@@ -403,6 +403,8 @@
 "ledger-troubleshooting-ledger-support" = "For general troubleshooting of the ledger device, please visit ";
 "ledger-troubleshooting-ledger-support-title" = "Ledger Support.";
 
+"ledger-troubleshooting-bluetooth-connection-guide-html" = "For general usage of your Ledger’s Bluetooth feature, please refer to Ledger’s official <a href=\"https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection\">Bluetooth Connection Guide</a>.";
+"ledger-troubleshooting-bluetooth-connection-advanced-guide-html" = "For more advanced troubleshooting, please refer to Ledger’s official <a href=\"https://support.ledger.com/hc/en-us/articles/360025864773\">Bluetooth Troubleshooting Guide</a>.";
 // MARK: Ledger Pairing
 
 "ledger-pairing-name-title" = "Name Account";
