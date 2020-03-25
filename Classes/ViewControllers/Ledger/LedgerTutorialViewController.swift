@@ -60,7 +60,7 @@ extension LedgerTutorialViewController: LedgerTutorialViewDelegate {
     func ledgerTutorialView(_ ledgerTutorialView: LedgerTutorialView, didTap section: LedgerTutorialSection) {
         switch section {
         case .ledgerBluetoothConnection:
-            open(.ledgerTroubleshootBluetooth, by: .present)
+            open(.ledgerTroubleshootLedgerConnection, by: .present)
         case .bluetoothConnection:
             open(.ledgerTroubleshootBluetooth, by: .present)
             

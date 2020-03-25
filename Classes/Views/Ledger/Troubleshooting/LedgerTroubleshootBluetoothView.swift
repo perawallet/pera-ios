@@ -26,7 +26,7 @@ class LedgerTroubleshootBluetoothView: BaseView {
         textView.isScrollEnabled = false
         textView.dataDetectorTypes = .link
         textView.textContainerInset = .zero
-        if let htmlData = "ledger-troubleshooting-bluetooth-connection-guide-html".localized.data(using: .unicode),
+        if let htmlData = "ledger-troubleshooting-ledger-bluetooth-connection-guide-html".localized.data(using: .unicode),
             let attributedString = try? NSMutableAttributedString(
                 data: htmlData,
                 options: [.documentType: NSAttributedString.DocumentType.html],
@@ -53,7 +53,7 @@ class LedgerTroubleshootBluetoothView: BaseView {
         textView.isScrollEnabled = false
         textView.dataDetectorTypes = .link
         textView.textContainerInset = .zero
-        if let htmlData = "ledger-troubleshooting-bluetooth-connection-advanced-guide-html".localized.data(using: .unicode),
+        if let htmlData = "ledger-troubleshooting-ledger-bluetooth-connection-advanced-guide-html".localized.data(using: .unicode),
             let attributedString = try? NSMutableAttributedString(
                 data: htmlData,
                 options: [.documentType: NSAttributedString.DocumentType.html],

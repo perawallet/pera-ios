@@ -845,6 +845,10 @@
 		955CD653242B45D000647EDE /* LedgerTroubleshootBluetoothView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 955CD651242B45D000647EDE /* LedgerTroubleshootBluetoothView.swift */; };
 		955CD656242B48D700647EDE /* LedgerTutorialNumberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 955CD655242B48D700647EDE /* LedgerTutorialNumberView.swift */; };
 		955CD657242B48D700647EDE /* LedgerTutorialNumberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 955CD655242B48D700647EDE /* LedgerTutorialNumberView.swift */; };
+		95A1285D242BA3F900B491A5 /* LedgerTroubleshootBluetoothConnectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A1285C242BA3F900B491A5 /* LedgerTroubleshootBluetoothConnectionViewController.swift */; };
+		95A1285E242BA3F900B491A5 /* LedgerTroubleshootBluetoothConnectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A1285C242BA3F900B491A5 /* LedgerTroubleshootBluetoothConnectionViewController.swift */; };
+		95A12860242BA5E700B491A5 /* LedgerTroubleshootBluetoothConnectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A1285F242BA5E700B491A5 /* LedgerTroubleshootBluetoothConnectionView.swift */; };
+		95A12861242BA5E700B491A5 /* LedgerTroubleshootBluetoothConnectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A1285F242BA5E700B491A5 /* LedgerTroubleshootBluetoothConnectionView.swift */; };
 		95FEED30242A0882000E42EB /* LedgerTroubleshootBluetoothViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95FEED2F242A0882000E42EB /* LedgerTroubleshootBluetoothViewController.swift */; };
 		95FEED31242A0882000E42EB /* LedgerTroubleshootBluetoothViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95FEED2F242A0882000E42EB /* LedgerTroubleshootBluetoothViewController.swift */; };
 		DCD3EE7678029738F4171F22 /* Pods_algorand_staging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BDB953015FF2F948F5734D7 /* Pods_algorand_staging.framework */; };
@@ -1285,6 +1289,8 @@
 		8CA10E911394EB35A6B71CEB /* Pods-algorand.app store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand.app store.xcconfig"; path = "Pods/Target Support Files/Pods-algorand/Pods-algorand.app store.xcconfig"; sourceTree = "<group>"; };
 		955CD651242B45D000647EDE /* LedgerTroubleshootBluetoothView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerTroubleshootBluetoothView.swift; sourceTree = "<group>"; };
 		955CD655242B48D700647EDE /* LedgerTutorialNumberView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerTutorialNumberView.swift; sourceTree = "<group>"; };
+		95A1285C242BA3F900B491A5 /* LedgerTroubleshootBluetoothConnectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerTroubleshootBluetoothConnectionViewController.swift; sourceTree = "<group>"; };
+		95A1285F242BA5E700B491A5 /* LedgerTroubleshootBluetoothConnectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerTroubleshootBluetoothConnectionView.swift; sourceTree = "<group>"; };
 		95FEED2F242A0882000E42EB /* LedgerTroubleshootBluetoothViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerTroubleshootBluetoothViewController.swift; sourceTree = "<group>"; };
 		E3DDC639493AD9DFAB57110A /* Pods-algorand-staging.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand-staging.release.xcconfig"; path = "Pods/Target Support Files/Pods-algorand-staging/Pods-algorand-staging.release.xcconfig"; sourceTree = "<group>"; };
 		EC9412FF22BD6D4C00745662 /* Info-Demo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-Demo.plist"; sourceTree = "<group>"; };
@@ -2369,6 +2375,7 @@
 				2BB64BD024026DF900519981 /* LedgerTroubleshootingOptionView.swift */,
 				2BB64BD3240273F600519981 /* LedgerTroubleshootingOptionCell.swift */,
 				955CD651242B45D000647EDE /* LedgerTroubleshootBluetoothView.swift */,
+				95A1285F242BA5E700B491A5 /* LedgerTroubleshootBluetoothConnectionView.swift */,
 			);
 			path = Troubleshooting;
 			sourceTree = "<group>";
@@ -4103,6 +4110,7 @@
 			isa = PBXGroup;
 			children = (
 				95FEED2F242A0882000E42EB /* LedgerTroubleshootBluetoothViewController.swift */,
+				95A1285C242BA3F900B491A5 /* LedgerTroubleshootBluetoothConnectionViewController.swift */,
 			);
 			path = Troubleshoot;
 			sourceTree = "<group>";
@@ -4493,6 +4501,7 @@
 				17BD4E1A2292F1260003E49A /* AccountListViewModel.swift in Sources */,
 				2B46262E23758CF4000AE73C /* AssetDetail.swift in Sources */,
 				2B43B83D22A8394F00CEA8F3 /* Date+Additions.swift in Sources */,
+				95A1285E242BA3F900B491A5 /* LedgerTroubleshootBluetoothConnectionViewController.swift in Sources */,
 				17BD4E1B2292F1260003E49A /* API.swift in Sources */,
 				2BC1826F23D8DEE800888476 /* AlgosTransactionDraft.swift in Sources */,
 				17BD4E1C2292F1260003E49A /* StatusBarConfigurable.swift in Sources */,
@@ -4690,6 +4699,7 @@
 				17BD4EA12292F1260003E49A /* TabBar.swift in Sources */,
 				17BD4EA22292F1260003E49A /* String+Localization.swift in Sources */,
 				17BD4EA32292F1260003E49A /* CursorlessTextField.swift in Sources */,
+				95A12861242BA5E700B491A5 /* LedgerTroubleshootBluetoothConnectionView.swift in Sources */,
 				17BD4EA42292F1260003E49A /* Node.swift in Sources */,
 				17BD4EA52292F1260003E49A /* KeyboardController.swift in Sources */,
 				17BD4EA62292F1260003E49A /* AssetDetailViewModel.swift in Sources */,
@@ -4901,6 +4911,7 @@
 				2B656E9F224BCB130064A49B /* AccountListViewModel.swift in Sources */,
 				2B43B83C22A8394F00CEA8F3 /* Date+Additions.swift in Sources */,
 				2BF34CC2223A95A50052CAD3 /* API.swift in Sources */,
+				95A1285D242BA3F900B491A5 /* LedgerTroubleshootBluetoothConnectionViewController.swift in Sources */,
 				2BF34CB2223A77650052CAD3 /* StatusBarConfigurable.swift in Sources */,
 				2BC1826E23D8DEE800888476 /* AlgosTransactionDraft.swift in Sources */,
 				2BF34C9D2239AB530052CAD3 /* Router.swift in Sources */,
@@ -5098,6 +5109,7 @@
 				2B59F16122563F89005203DD /* TabBar.swift in Sources */,
 				2BF34CC5223A99670052CAD3 /* String+Localization.swift in Sources */,
 				17AA1B0622662B5B000B0BB0 /* CursorlessTextField.swift in Sources */,
+				95A12860242BA5E700B491A5 /* LedgerTroubleshootBluetoothConnectionView.swift in Sources */,
 				179B93D6225E447400DD03E9 /* Node.swift in Sources */,
 				2BF34CA62239AD6D0052CAD3 /* KeyboardController.swift in Sources */,
 				2BB021E0224E5FD20039D78A /* AssetDetailViewModel.swift in Sources */,
