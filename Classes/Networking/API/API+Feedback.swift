@@ -10,7 +10,9 @@ import Magpie
 
 extension API {
     @discardableResult
-    func getFeedbackCategories(then handler: @escaping Endpoint.DefaultResultHandler<[FeedbackCategory]>) -> EndpointOperatable {
+    func getFeedbackCategories(
+        then handler: @escaping Endpoint.DefaultResultHandler<[FeedbackCategory]>
+    ) -> EndpointOperatable {
         return Endpoint(path: Path("/api/feedback/categories/"))
             .base(Environment.current.mobileApi)
             .httpMethod(.get)

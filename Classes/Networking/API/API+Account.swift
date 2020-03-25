@@ -24,7 +24,9 @@ extension API {
     }
     
     @discardableResult
-    func fetchDollarValue(then handler: @escaping Endpoint.DefaultResultHandler<AlgoToDollarConversion>) -> EndpointOperatable {
+    func fetchDollarValue(
+        then handler: @escaping Endpoint.DefaultResultHandler<AlgoToDollarConversion>
+    ) -> EndpointOperatable {
         return Endpoint(path: Path("/api/v3/avgPrice"))
             .base(Environment.current.binanceApi)
             .httpMethod(.get)
