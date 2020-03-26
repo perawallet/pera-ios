@@ -19,13 +19,6 @@ class LedgerTutorialViewController: BaseScrollViewController {
         super.init(configuration: configuration)
     }
     
-    override func configureNavigationBarAppearance() {
-        let infoButtonItem = ALGBarButtonItem(kind: .infoBordered) { [weak self] in
-            
-        }
-        rightBarButtonItems = [infoButtonItem]
-    }
-    
     override func configureAppearance() {
         super.configureAppearance()
         title = "ledger-pair-title".localized

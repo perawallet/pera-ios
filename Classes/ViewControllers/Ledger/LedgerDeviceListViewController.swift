@@ -130,7 +130,7 @@ extension LedgerDeviceListViewController: LedgerDeviceCellDelegate {
 
 extension LedgerDeviceListViewController: LedgerDeviceListViewDelegate {
     func ledgerDeviceListViewDidTapTroubleshootButton(_ ledgerDeviceListView: LedgerDeviceListView) {
-        open(.ledgerTroubleshoot, by: .present)
+        open(.ledgerTroubleshoot, by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil))
     }
 }
 
