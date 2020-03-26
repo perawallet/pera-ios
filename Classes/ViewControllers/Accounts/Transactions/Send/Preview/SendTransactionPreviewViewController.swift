@@ -54,7 +54,7 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
         return sendTransactionPreviewView.amountInputView.isMaxButtonSelected
     }
     
-    private var pollingOperation: PollingOperation?
+    private var timer: Timer?
     
     init(
         account: Account?,
@@ -291,8 +291,9 @@ extension SendTransactionPreviewViewController {
             return
         }
         
-        pollingOperation = PollingOperation(interval: 15.0) { [weak self] in
+        timer = Timer.scheduledTimer(withTimeInterval: 15.0, repeats: false) { [weak self] timer in
             guard let self = self else {
+                timer.invalidate()
                 return
             }
             
@@ -305,8 +306,6 @@ extension SendTransactionPreviewViewController {
             
             self.invalidateTimer()
         }
-        
-        pollingOperation?.start()
     }
     
     func invalidateTimer() {
@@ -314,8 +313,8 @@ extension SendTransactionPreviewViewController {
             return
         }
         
-        pollingOperation?.invalidate()
-        pollingOperation = nil
+        timer?.invalidate()
+        timer = nil
     }
 }
 
