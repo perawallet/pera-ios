@@ -63,11 +63,10 @@ extension LedgerTutorialViewController: LedgerTutorialViewDelegate {
             open(.ledgerTroubleshootLedgerConnection, by: .present)
         case .installApp:
             open(.ledgerTroubleshootInstallApp, by: .present)
+        case .openApp:
+            open(.ledgerTroubleshootOpenApp, by: .present)
         case .bluetoothConnection:
             open(.ledgerTroubleshootBluetooth, by: .present)
-            
-        default:
-            return
         }
     }
 }

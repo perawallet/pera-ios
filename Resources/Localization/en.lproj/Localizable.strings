@@ -418,6 +418,9 @@
 "ledger-troubleshooting-install-app-first-html" = "Begin by following Ledger’s comprehensive <a href=\"https://www.ledger.com/start\">Getting Started</a> tutorial.";
 "ledger-troubleshooting-install-app-second-html" = "When the tutorial gets to the point where it directs you to “select the application(s) you want to install on your device,” type Algorand in the search bar and install.";
 
+"ledger-troubleshooting-open-app-first-html" = "Begin by following Ledger’s comprehensive <a href=\"https://www.ledger.com/start\">Getting Started</a> tutorial, which will direct you how to install and open apps on your ledger device.";
+"ledger-troubleshooting-open-app-second-html" = "If you haven’t already installed the <b>Algorand</b> app on your Ledger device, when the tutorial gets to the point where it directs you to “select the application(s) you want to install on your device,” type Algorand in the search bar and install.";
+
 // MARK: Ledger Pairing
 
 "ledger-pairing-name-title" = "Name Account";
