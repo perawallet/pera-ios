@@ -160,25 +160,11 @@ extension LedgerDeviceListViewController: BLEConnectionManagerDelegate {
     func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didFailBLEConnectionWith state: CBManagerState) {
         connectedDevice = nil
         
-        switch state {
-        case .poweredOff:
-            pushNotificationController.showFeedbackMessage("ble-error-bluetooth-title".localized,
-                                                           subtitle: "ble-error-fail-ble-connection-power".localized)
-        case .unsupported:
-            pushNotificationController.showFeedbackMessage("ble-error-unsupported-device-title".localized,
-                                                           subtitle: "ble-error-fail-ble-connection-unsupported".localized)
-        case .unknown:
-            pushNotificationController.showFeedbackMessage("ble-error-unsupported-device-title".localized,
-                                                           subtitle: "ble-error-fail-ble-connection-unsupported".localized)
-        case .unauthorized:
-            pushNotificationController.showFeedbackMessage("ble-error-search-title".localized,
-                                                           subtitle: "ble-error-fail-ble-connection-unauthorized".localized)
-        case .resetting:
-            pushNotificationController.showFeedbackMessage("ble-error-bluetooth-title".localized,
-                                                           subtitle: "ble-error-fail-ble-connection-resetting".localized)
-        default:
+        guard let errorTitle = state.errorTitle, let errorSubtitle = state.errorSubtitle else {
             return
         }
+        
+        pushNotificationController.showFeedbackMessage(errorTitle, subtitle: errorSubtitle)
     }
     
     func bleConnectionManager(
