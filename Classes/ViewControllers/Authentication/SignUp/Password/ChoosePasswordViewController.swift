@@ -141,32 +141,6 @@ extension ChoosePasswordViewController {
         }
     }
     
-    private func presentLogoutAlert() {
-        let alertController = UIAlertController(
-            title: "logout-warning-title".localized,
-            message: "logout-warning-message".localized,
-            preferredStyle: .alert
-        )
-        
-        let cancelAction = UIAlertAction(title: "title-cancel-lowercased".localized, style: .cancel, handler: nil)
-        alertController.addAction(cancelAction)
-        
-        let deleteAction = UIAlertAction(
-            title: "logout-action-delete-title".localized,
-            style: .destructive) { _ in
-                self.logout()
-        }
-        alertController.addAction(deleteAction)
-        
-        present(alertController, animated: true)
-    }
-    
-    private func logout() {
-        session?.reset()
-        pushNotificationController.revokeDevice()
-        open(.introduction(mode: .initialize), by: .launch, animated: false)
-    }
-    
     private func launchHome() {
         SVProgressHUD.show(withStatus: "title-loading".localized)
         accountManager?.fetchAllAccounts(isVerifiedAssetsIncluded: true) {
@@ -202,10 +176,6 @@ extension ChoosePasswordViewController: ChoosePasswordViewDelegate {
         case .confirm:
             confirmPassword(with: value)
         }
-    }
-    
-    func choosePasswordViewDidTapLogoutButton(_ choosePasswordView: ChoosePasswordView) {
-        presentLogoutAlert()
     }
 }
 
