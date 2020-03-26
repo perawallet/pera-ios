@@ -66,6 +66,7 @@ indirect enum Screen {
     case ledgerApproval(mode: LedgerApprovalViewController.Mode)
     case ledgerTroubleshootBluetooth
     case ledgerTroubleshootLedgerConnection
+    case ledgerTroubleshootInstallApp
 }
 
 extension Screen {

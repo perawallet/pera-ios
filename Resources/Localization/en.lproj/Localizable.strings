@@ -414,6 +414,10 @@
 <li>Flip the On/Off button to toggle</li>
 <li>Bluetooth on or off</li>
 </ul>";
+
+"ledger-troubleshooting-install-app-first-html" = "Begin by following Ledger’s comprehensive <a href=\"https://www.ledger.com/start\">Getting Started</a> tutorial.";
+"ledger-troubleshooting-install-app-second-html" = "When the tutorial gets to the point where it directs you to “select the application(s) you want to install on your device,” type Algorand in the search bar and install.";
+
 // MARK: Ledger Pairing
 
 "ledger-pairing-name-title" = "Name Account";

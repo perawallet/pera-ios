@@ -322,6 +322,8 @@ class Router {
             viewController = LedgerTroubleshootBluetoothConnectionViewController(configuration: configuration)
         case .ledgerTroubleshootLedgerConnection:
             viewController = LedgerTroubleshootBluetoothViewController(configuration: configuration)
+        case .ledgerTroubleshootInstallApp:
+            viewController = LedgerTroubleshootInstallAppViewController(configuration: configuration)
         }
         
         return viewController as? T
