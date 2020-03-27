@@ -28,10 +28,12 @@ protocol Storable {
     
     func save(_ string: String, for key: String, to store: Store)
     func save(_ data: Data, for key: String, to store: Store)
+    func save(_ bool: Bool, for key: String, to store: Store)
     
     func object(with key: String, to store: Store) -> Object?
     func string(with key: String, to store: Store) -> String?
     func data(with key: String, to store: Store) -> Data?
+    func bool(with key: String, to store: Store) -> Bool
     
     func remove(with key: String, from store: Store)
     func clear(_ store: Store)
@@ -64,6 +66,27 @@ extension Storable {
             userDefaults.set(data, for: key)
         case .keychain:
             keychain.set(data, for: key)
+        }
+    }
+    
+    func save(_ bool: Bool, for key: String, to store: Store) {
+        switch store {
+        case .defaults:
+            userDefaults.set(bool, for: key)
+        case .keychain:
+            keychain.set(bool ? "1" : "0", for: key)
+        }
+    }
+    
+    func bool(with key: String, to store: Store) -> Bool {
+        switch store {
+        case .defaults:
+            return userDefaults.bool(forKey: key)
+        case .keychain:
+            guard let string = keychain.string(for: key), string == "1" else {
+                return false
+            }
+            return true
         }
     }
     

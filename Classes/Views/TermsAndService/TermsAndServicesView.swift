@@ -38,17 +38,6 @@ class TermsAndServicesView: BaseView {
         textView.dataDetectorTypes = .link
         textView.textContainerInset = .zero
         textView.backgroundColor = .clear
-        if let htmlData = "terms-and-services-html".localized.data(using: .unicode),
-            let attributedString = try? NSMutableAttributedString(
-                data: htmlData,
-                options: [.documentType: NSAttributedString.DocumentType.html],
-                documentAttributes: nil) {
-            
-            attributedString.addAttributes([NSAttributedString.Key.font: UIFont.font(.avenir, withWeight: .demiBold(size: 14.0)),
-                                            NSAttributedString.Key.foregroundColor: SharedColors.black],
-                                           range: NSRange(location: 0, length: attributedString.string.count))
-            textView.attributedText = attributedString
-        }
         return textView
     }()
     
@@ -88,6 +77,7 @@ class TermsAndServicesView: BaseView {
     override func configureAppearance() {
         super.configureAppearance()
         backgroundColor = .white
+        bindData()
     }
     
     override func linkInteractors() {
@@ -95,6 +85,28 @@ class TermsAndServicesView: BaseView {
         
         textView.delegate = self
         checkbox.addTarget(self, action: #selector(didTapCheckbox), for: .touchUpInside)
+    }
+}
+
+// MARK: Data Binding
+extension TermsAndServicesView {
+    private func bindData() {
+        bindHtml("terms-and-services-html".localized, to: textView)
+    }
+    
+    private func bindHtml(_ html: String?, to textView: UITextView) {
+        guard let data = html?.data(using: .unicode),
+            let attributedString = try? NSMutableAttributedString(
+            data: data,
+            options: [.documentType: NSAttributedString.DocumentType.html],
+            documentAttributes: nil) else {
+                return
+        }
+        
+        attributedString.addAttributes([NSAttributedString.Key.font: UIFont.font(.avenir, withWeight: .medium(size: 14.0)),
+                                        NSAttributedString.Key.foregroundColor: SharedColors.black],
+                                       range: NSRange(location: 0, length: attributedString.string.count))
+        textView.attributedText = attributedString
     }
 }
 

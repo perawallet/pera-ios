@@ -265,15 +265,11 @@ extension Session {
 // MARK: Terms and Services
 extension Session {
     func acceptTermsAndServices() {
-        save("1", for: termsAndServicesKey, to: .defaults)
+        save(true, for: termsAndServicesKey, to: .defaults)
     }
     
     func isTermsAndServicesAccepted() -> Bool {
-        guard let accepted = string(with: termsAndServicesKey, to: .defaults) else {
-            return false
-        }
-        
-        return accepted == "1"
+        return bool(with: termsAndServicesKey, to: .defaults)
     }
 }
 

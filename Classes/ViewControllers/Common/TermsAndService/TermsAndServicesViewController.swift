@@ -10,9 +10,7 @@ import UIKit
 import SafariServices
 
 class TermsAndServicesViewController: BaseViewController {
-    private lazy var termsAndServicesView: TermsAndServicesView = {
-        TermsAndServicesView()
-    }()
+    private lazy var termsAndServicesView = TermsAndServicesView()
     
     override var shouldShowNavigationBar: Bool {
         return false
