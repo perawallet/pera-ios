@@ -129,10 +129,6 @@
 
 "login-title" = "Unlock";
 "login-subtitle" = "Enter six digit pin";
-"logout-title" = "LOGOUT";
-"logout-warning-title" = "Warning";
-"logout-warning-message" = "This action will remove all local accounts and delete your contacts database. Are you sure?";
-"logout-action-delete-title" = "Delete & Lock";
 
 // MARK: Accounts
 
@@ -361,6 +357,7 @@
 "total-rewards-faq-title" = "For more information on Algorand Rewards, visit our FAQ.";
 "total-rewards-faq" = "FAQ.";
 "reward-list-title" = "Reward";
+"total-rewards-account-title" = "Reward collected, included in your balance";
 
 // MARK: Notifications
 
@@ -454,3 +451,7 @@
 "ledger-approval-message" = "Please make sure to confirm the transaction on your Ledger device.";
 "ledger-approval-connection-title" = "Ledger Connection";
 "ledger-approval-connection-message" = "Waiting for ledger to connect.";
+
+// MARK: Terms and Services
+"terms-and-services-title" = "Terms and Services";
+"terms-and-services-html" = "I accept the <a href=\"https://www.algorand.com/wallet-disclaimer\">Terms and Services</a>";
