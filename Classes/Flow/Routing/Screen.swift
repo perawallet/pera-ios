@@ -68,6 +68,7 @@ indirect enum Screen {
     case ledgerTroubleshootLedgerConnection
     case ledgerTroubleshootInstallApp
     case ledgerTroubleshootOpenApp
+    case termsAndServices
 }
 
 extension Screen {

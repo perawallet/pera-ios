@@ -326,6 +326,8 @@ class Router {
             viewController = LedgerTroubleshootInstallAppViewController(configuration: configuration)
         case .ledgerTroubleshootOpenApp:
             viewController = LedgerTroubleshootOpenAppViewController(configuration: configuration)
+        case .termsAndServices:
+            viewController = TermsAndServicesViewController(configuration: configuration)
         }
         
         return viewController as? T

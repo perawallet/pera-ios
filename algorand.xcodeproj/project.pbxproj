@@ -841,6 +841,14 @@
 		2BFB2F692382EC5900F0158C /* AssetSelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFB2F672382EC5900F0158C /* AssetSelectionCell.swift */; };
 		2BFBAB72227B349E008BBB31 /* LoadingAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 2BFBAB71227B349E008BBB31 /* LoadingAnimation.json */; };
 		2BFBAB75227B35B7008BBB31 /* images in Resources */ = {isa = PBXBuildFile; fileRef = 2BFBAB74227B35B7008BBB31 /* images */; };
+		9511C290242E1AEA003211ED /* TermsAndServicesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9511C28F242E1AEA003211ED /* TermsAndServicesViewController.swift */; };
+		9511C291242E1AEA003211ED /* TermsAndServicesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9511C28F242E1AEA003211ED /* TermsAndServicesViewController.swift */; };
+		9511C294242E26A3003211ED /* TermsAndServicesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9511C293242E26A3003211ED /* TermsAndServicesView.swift */; };
+		9511C295242E26A3003211ED /* TermsAndServicesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9511C293242E26A3003211ED /* TermsAndServicesView.swift */; };
+		9511C297242E2B3C003211ED /* BaseControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9511C296242E2B3C003211ED /* BaseControl.swift */; };
+		9511C298242E2B3C003211ED /* BaseControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9511C296242E2B3C003211ED /* BaseControl.swift */; };
+		9511C29B242E2B6C003211ED /* Checkbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9511C29A242E2B6C003211ED /* Checkbox.swift */; };
+		9511C29C242E2B6C003211ED /* Checkbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9511C29A242E2B6C003211ED /* Checkbox.swift */; };
 		955CD652242B45D000647EDE /* LedgerTroubleshootBluetoothView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 955CD651242B45D000647EDE /* LedgerTroubleshootBluetoothView.swift */; };
 		955CD653242B45D000647EDE /* LedgerTroubleshootBluetoothView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 955CD651242B45D000647EDE /* LedgerTroubleshootBluetoothView.swift */; };
 		955CD656242B48D700647EDE /* LedgerTutorialNumberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 955CD655242B48D700647EDE /* LedgerTutorialNumberView.swift */; };
@@ -1297,6 +1305,10 @@
 		44FD8F3D210C1D99893A91DF /* Pods-algorand.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand.release.xcconfig"; path = "Pods/Target Support Files/Pods-algorand/Pods-algorand.release.xcconfig"; sourceTree = "<group>"; };
 		60DCA59D3815D648E4728045 /* Pods-algorand-staging.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand-staging.debug.xcconfig"; path = "Pods/Target Support Files/Pods-algorand-staging/Pods-algorand-staging.debug.xcconfig"; sourceTree = "<group>"; };
 		8CA10E911394EB35A6B71CEB /* Pods-algorand.app store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand.app store.xcconfig"; path = "Pods/Target Support Files/Pods-algorand/Pods-algorand.app store.xcconfig"; sourceTree = "<group>"; };
+		9511C28F242E1AEA003211ED /* TermsAndServicesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsAndServicesViewController.swift; sourceTree = "<group>"; };
+		9511C293242E26A3003211ED /* TermsAndServicesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsAndServicesView.swift; sourceTree = "<group>"; };
+		9511C296242E2B3C003211ED /* BaseControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseControl.swift; sourceTree = "<group>"; };
+		9511C29A242E2B6C003211ED /* Checkbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Checkbox.swift; sourceTree = "<group>"; };
 		955CD651242B45D000647EDE /* LedgerTroubleshootBluetoothView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerTroubleshootBluetoothView.swift; sourceTree = "<group>"; };
 		955CD655242B48D700647EDE /* LedgerTutorialNumberView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerTutorialNumberView.swift; sourceTree = "<group>"; };
 		95A1285C242BA3F900B491A5 /* LedgerTroubleshootBluetoothConnectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerTroubleshootBluetoothConnectionViewController.swift; sourceTree = "<group>"; };
@@ -2760,6 +2772,7 @@
 		2B8954A922438FA400D6D068 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				9511C28E242E1AD6003211ED /* TermsAndService */,
 				2B8954AA22438FA900D6D068 /* Alert */,
 				2B79A13B23147A3400766021 /* Passphrase */,
 				2B66871822491A46009F21E7 /* QR */,
@@ -2987,6 +3000,7 @@
 		2B8BE4F0223935A3005D8565 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				9511C292242E2695003211ED /* TermsAndService */,
 				2B656E94224BB9D60064A49B /* Accounts */,
 				2BD739CD223F97DF00B66EEF /* Authentication */,
 				2BD739E2223F9FDD00B66EEF /* Common */,
@@ -3017,6 +3031,7 @@
 				2B8BE4F3223935DA005D8565 /* BaseView.swift */,
 				2BF34CBB223A8C460052CAD3 /* BaseCollectionViewCell.swift */,
 				2B432A51237C56F0009191BF /* BaseSupplementaryView.swift */,
+				9511C296242E2B3C003211ED /* BaseControl.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -3557,6 +3572,7 @@
 		2BD739E2223F9FDD00B66EEF /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				9511C299242E2B64003211ED /* Checkbox */,
 				2B8954A62243853700D6D068 /* Alert */,
 				2BA873682248212F00511C7C /* Button */,
 				17BEC4612248CD2300AAF370 /* CollectionViewLayout */,
@@ -4116,6 +4132,30 @@
 			path = LoadingAnimation;
 			sourceTree = "<group>";
 		};
+		9511C28E242E1AD6003211ED /* TermsAndService */ = {
+			isa = PBXGroup;
+			children = (
+				9511C28F242E1AEA003211ED /* TermsAndServicesViewController.swift */,
+			);
+			path = TermsAndService;
+			sourceTree = "<group>";
+		};
+		9511C292242E2695003211ED /* TermsAndService */ = {
+			isa = PBXGroup;
+			children = (
+				9511C293242E26A3003211ED /* TermsAndServicesView.swift */,
+			);
+			path = TermsAndService;
+			sourceTree = "<group>";
+		};
+		9511C299242E2B64003211ED /* Checkbox */ = {
+			isa = PBXGroup;
+			children = (
+				9511C29A242E2B6C003211ED /* Checkbox.swift */,
+			);
+			path = Checkbox;
+			sourceTree = "<group>";
+		};
 		955CD654242B48CA00647EDE /* Common */ = {
 			isa = PBXGroup;
 			children = (
@@ -4639,6 +4679,7 @@
 				17BD4E642292F1260003E49A /* PassPhraseBackUpViewController.swift in Sources */,
 				2BD5477823184704007179FE /* FeedbackDraft.swift in Sources */,
 				17BD4E652292F1260003E49A /* Utils.swift in Sources */,
+				9511C29C242E2B6C003211ED /* Checkbox.swift in Sources */,
 				17BD4E662292F1260003E49A /* ContactQRDisplayViewController.swift in Sources */,
 				17BD4E672292F1260003E49A /* AlertViewConfigurator.swift in Sources */,
 				2BB64BD224026DF900519981 /* LedgerTroubleshootingOptionView.swift in Sources */,
@@ -4664,6 +4705,7 @@
 				2B0823DF23B668DB00D52BCF /* NotificationAsset.swift in Sources */,
 				17BD4E6F2292F1260003E49A /* Decimal+Additions.swift in Sources */,
 				17BD4E702292F1260003E49A /* NumpadNumericButton.swift in Sources */,
+				9511C298242E2B3C003211ED /* BaseControl.swift in Sources */,
 				17BD4E722292F1260003E49A /* BaseViewController.swift in Sources */,
 				17BD4E732292F1260003E49A /* Keychain+Additions.swift in Sources */,
 				17BD4E742292F1260003E49A /* AccountFetchDraft.swift in Sources */,
@@ -4699,6 +4741,7 @@
 				95A1286A242C9EA800B491A5 /* LedgerTroubleshootOpenAppViewController.swift in Sources */,
 				17BD4E882292F1260003E49A /* API+Account.swift in Sources */,
 				17BD4E8A2292F1260003E49A /* ContactCell.swift in Sources */,
+				9511C295242E26A3003211ED /* TermsAndServicesView.swift in Sources */,
 				17BD4E8C2292F1260003E49A /* Environment.swift in Sources */,
 				17BD4E8D2292F1260003E49A /* ModalAnimator.swift in Sources */,
 				17BD4E8E2292F1260003E49A /* AccountRecoverView.swift in Sources */,
@@ -4755,6 +4798,7 @@
 				17BD4EB42292F1260003E49A /* AccountListView.swift in Sources */,
 				17BD4EB62292F1260003E49A /* AppConfiguration.swift in Sources */,
 				17BD4EB72292F1260003E49A /* ApplicationConfiguration.swift in Sources */,
+				9511C291242E1AEA003211ED /* TermsAndServicesViewController.swift in Sources */,
 				2B79A151231683E100766021 /* RewardsSwitchView.swift in Sources */,
 				17BD4EB92292F1260003E49A /* Sequence+AttributedString.swift in Sources */,
 				2BC182AD23DEEEBD00888476 /* RequestAssetTransactionViewController.swift in Sources */,
@@ -5054,6 +5098,7 @@
 				2B8954B52243D7C400D6D068 /* AlertViewConfigurator.swift in Sources */,
 				175CE59B2295709F003F7C02 /* RoundDetail.swift in Sources */,
 				2B8954A82243854400D6D068 /* AlertView.swift in Sources */,
+				9511C29B242E2B6C003211ED /* Checkbox.swift in Sources */,
 				2BF53165224A47E000A7455F /* CardModalPresentationController.swift in Sources */,
 				2B6ED9602260EE2100787984 /* HistoryResultsViewModel.swift in Sources */,
 				2BB64BD124026DF900519981 /* LedgerTroubleshootingOptionView.swift in Sources */,
@@ -5079,6 +5124,7 @@
 				2BD547742318463E007179FE /* Feedback.swift in Sources */,
 				17B7D8AB2240E19600A6FF9E /* AccountFetchDraft.swift in Sources */,
 				2B1B536823279CD500D54029 /* AlgorandNotification.swift in Sources */,
+				9511C297242E2B3C003211ED /* BaseControl.swift in Sources */,
 				2B1B536B2328029F00D54029 /* NotificationDetail.swift in Sources */,
 				2B5DA9D8224CE1BC00EE41B4 /* EditAccountView.swift in Sources */,
 				17512623223BEB9D0095AF4F /* UserDefaults+Additions.swift in Sources */,
@@ -5114,6 +5160,7 @@
 				95A12869242C9EA800B491A5 /* LedgerTroubleshootOpenAppViewController.swift in Sources */,
 				2BD5477A23192E15007179FE /* AlgorandError.swift in Sources */,
 				2B432A52237C56F0009191BF /* BaseSupplementaryView.swift in Sources */,
+				9511C294242E26A3003211ED /* TermsAndServicesView.swift in Sources */,
 				17B7D8AE2240F25000A6FF9E /* Environment.swift in Sources */,
 				2BF5315F224A472800A7455F /* ModalAnimator.swift in Sources */,
 				2B8954CB224430DC00D6D068 /* AccountRecoverView.swift in Sources */,
@@ -5170,6 +5217,7 @@
 				2BF34CA02239ACDC0052CAD3 /* AppConfiguration.swift in Sources */,
 				2B02536E23C6101A003D5FDD /* QRAlertView.swift in Sources */,
 				17D50AA1225C755E00CA9C6E /* ApplicationConfiguration.swift in Sources */,
+				9511C290242E1AEA003211ED /* TermsAndServicesViewController.swift in Sources */,
 				2BA0C39822677E430037AE13 /* Sequence+AttributedString.swift in Sources */,
 				2BF34C9B2239AB130052CAD3 /* Screen.swift in Sources */,
 				2BC182AC23DEEEBD00888476 /* RequestAssetTransactionViewController.swift in Sources */,
