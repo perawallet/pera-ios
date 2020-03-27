@@ -22,26 +22,39 @@ class LedgerTroubleshootBluetoothConnectionView: BaseView {
         textView.isScrollEnabled = false
         textView.dataDetectorTypes = .link
         textView.textContainerInset = .zero
-        if let htmlData = "ledger-troubleshooting-bluetooth-connection-html".localized.data(using: .unicode),
-            let attributedString = try? NSMutableAttributedString(
-                data: htmlData,
-                options: [.documentType: NSAttributedString.DocumentType.html],
-                documentAttributes: nil) {
-            
-            attributedString.addAttributes([NSAttributedString.Key.font: UIFont.font(.avenir, withWeight: .medium(size: 14.0)),
-                                            NSAttributedString.Key.foregroundColor: SharedColors.black],
-                                           range: NSRange(location: 0, length: attributedString.string.count))
-            textView.attributedText = attributedString
-        }
         return textView
     }()
     
     override func configureAppearance() {
         backgroundColor = .white
+        
+        bindData()
     }
        
     override func prepareLayout() {
         setupFirstTutorialLayout()
+    }
+}
+
+// MARK: Data Binding
+extension LedgerTroubleshootBluetoothConnectionView {
+    private func bindData() {
+        bindHtml("ledger-troubleshooting-bluetooth-connection-html".localized, to: numberOneTextView)
+    }
+    
+    private func bindHtml(_ html: String?, to textView: UITextView) {
+        guard let data = html?.data(using: .unicode),
+            let attributedString = try? NSMutableAttributedString(
+            data: data,
+            options: [.documentType: NSAttributedString.DocumentType.html],
+            documentAttributes: nil) else {
+                return
+        }
+        
+        attributedString.addAttributes([NSAttributedString.Key.font: UIFont.font(.avenir, withWeight: .medium(size: 14.0)),
+                                        NSAttributedString.Key.foregroundColor: SharedColors.black],
+                                       range: NSRange(location: 0, length: attributedString.string.count))
+        textView.attributedText = attributedString
     }
 }
 

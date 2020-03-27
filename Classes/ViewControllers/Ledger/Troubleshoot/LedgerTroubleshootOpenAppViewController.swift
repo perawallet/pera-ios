@@ -12,10 +12,7 @@ import SafariServices
 class LedgerTroubleshootOpenAppViewController: BaseScrollViewController {
     // MARK: Components
     
-    private lazy var ledgerTroubleshootOpenAppView: LedgerTroubleshootOpenAppView = {
-        let view = LedgerTroubleshootOpenAppView()
-        return view
-    }()
+    private lazy var ledgerTroubleshootOpenAppView = LedgerTroubleshootOpenAppView()
     
     private lazy var separatorView: UIView = {
         let view = UIView()

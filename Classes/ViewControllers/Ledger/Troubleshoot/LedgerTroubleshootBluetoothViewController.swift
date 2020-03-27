@@ -12,10 +12,7 @@ import SafariServices
 class LedgerTroubleshootBluetoothViewController: BaseScrollViewController {
     // MARK: Components
     
-    private lazy var ledgerTroubleshootBluetoothView: LedgerTroubleshootBluetoothView = {
-        let view = LedgerTroubleshootBluetoothView()
-        return view
-    }()
+    private lazy var ledgerTroubleshootBluetoothView = LedgerTroubleshootBluetoothView()
     
     private lazy var separatorView: UIView = {
         let view = UIView()

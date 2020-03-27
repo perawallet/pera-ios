@@ -290,8 +290,9 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
     }
     
     func transactionController(_ transactionController: TransactionController, didFailBLEConnectionWith state: CBManagerState) {        
-        guard let errorTitle = state.errorTitle, let errorSubtitle = state.errorSubtitle else {
-            return
+        guard let errorTitle = state.errorDescription.title,
+            let errorSubtitle = state.errorDescription.subtitle else {
+                return
         }
         
         pushNotificationController.showFeedbackMessage(errorTitle, subtitle: errorSubtitle)

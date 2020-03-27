@@ -32,10 +32,7 @@ class LedgerTroubleshootingViewController: BaseScrollViewController {
         super.configureNavigationBarAppearance()
         
         let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [weak self] in
-            guard let strongSelf = self else {
-                return
-            }
-            strongSelf.closeScreen(by: .dismiss, animated: true)
+            self?.closeScreen(by: .dismiss, animated: true)
         }
         
         leftBarButtonItems = [closeBarButtonItem]

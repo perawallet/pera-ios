@@ -11,10 +11,7 @@ import UIKit
 class LedgerTroubleshootBluetoothConnectionViewController: BaseScrollViewController {
     // MARK: Components
     
-    private lazy var ledgerTroubleshootBluetoothConnectionView: LedgerTroubleshootBluetoothConnectionView = {
-        let view = LedgerTroubleshootBluetoothConnectionView()
-        return view
-    }()
+    private lazy var ledgerTroubleshootBluetoothConnectionView = LedgerTroubleshootBluetoothConnectionView()
     
     private lazy var separatorView: UIView = {
         let view = UIView()

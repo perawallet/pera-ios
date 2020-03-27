@@ -26,17 +26,6 @@ class LedgerTroubleshootBluetoothView: BaseView {
         textView.isScrollEnabled = false
         textView.dataDetectorTypes = .link
         textView.textContainerInset = .zero
-        if let htmlData = "ledger-troubleshooting-ledger-bluetooth-connection-guide-html".localized.data(using: .unicode),
-            let attributedString = try? NSMutableAttributedString(
-                data: htmlData,
-                options: [.documentType: NSAttributedString.DocumentType.html],
-                documentAttributes: nil) {
-            
-            attributedString.addAttributes([NSAttributedString.Key.font: UIFont.font(.avenir, withWeight: .medium(size: 14.0)),
-                                            NSAttributedString.Key.foregroundColor: SharedColors.black],
-                                           range: NSRange(location: 0, length: attributedString.string.count))
-            textView.attributedText = attributedString
-        }
         return textView
     }()
     
@@ -53,17 +42,6 @@ class LedgerTroubleshootBluetoothView: BaseView {
         textView.isScrollEnabled = false
         textView.dataDetectorTypes = .link
         textView.textContainerInset = .zero
-        if let htmlData = "ledger-troubleshooting-ledger-bluetooth-connection-advanced-guide-html".localized.data(using: .unicode),
-            let attributedString = try? NSMutableAttributedString(
-                data: htmlData,
-                options: [.documentType: NSAttributedString.DocumentType.html],
-                documentAttributes: nil) {
-            
-            attributedString.addAttributes([NSAttributedString.Key.font: UIFont.font(.avenir, withWeight: .medium(size: 14.0)),
-                                            NSAttributedString.Key.foregroundColor: SharedColors.black],
-                                           range: NSRange(location: 0, length: attributedString.string.count))
-            textView.attributedText = attributedString
-        }
         return textView
     }()
     
@@ -71,6 +49,8 @@ class LedgerTroubleshootBluetoothView: BaseView {
     
     override func configureAppearance() {
         backgroundColor = .white
+        
+        bindData()
     }
        
     override func prepareLayout() {
@@ -83,6 +63,29 @@ class LedgerTroubleshootBluetoothView: BaseView {
         
         numberOneTextView.delegate = self
         numberTwoTextView.delegate = self
+    }
+}
+
+// MARK: Data Binding
+extension LedgerTroubleshootBluetoothView {
+    private func bindData() {
+        bindHtml("ledger-troubleshooting-ledger-bluetooth-connection-guide-html".localized, to: numberOneTextView)
+        bindHtml("ledger-troubleshooting-ledger-bluetooth-connection-advanced-guide-html".localized, to: numberTwoTextView)
+    }
+    
+    private func bindHtml(_ html: String?, to textView: UITextView) {
+        guard let data = html?.data(using: .unicode),
+            let attributedString = try? NSMutableAttributedString(
+            data: data,
+            options: [.documentType: NSAttributedString.DocumentType.html],
+            documentAttributes: nil) else {
+                return
+        }
+        
+        attributedString.addAttributes([NSAttributedString.Key.font: UIFont.font(.avenir, withWeight: .medium(size: 14.0)),
+                                        NSAttributedString.Key.foregroundColor: SharedColors.black],
+                                       range: NSRange(location: 0, length: attributedString.string.count))
+        textView.attributedText = attributedString
     }
 }
 

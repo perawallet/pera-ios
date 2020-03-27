@@ -160,8 +160,9 @@ extension LedgerDeviceListViewController: BLEConnectionManagerDelegate {
     func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didFailBLEConnectionWith state: CBManagerState) {
         connectedDevice = nil
         
-        guard let errorTitle = state.errorTitle, let errorSubtitle = state.errorSubtitle else {
-            return
+        guard let errorTitle = state.errorDescription.title,
+            let errorSubtitle = state.errorDescription.subtitle else {
+                return
         }
         
         pushNotificationController.showFeedbackMessage(errorTitle, subtitle: errorSubtitle)
