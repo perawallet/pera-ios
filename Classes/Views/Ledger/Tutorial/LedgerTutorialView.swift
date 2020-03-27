@@ -51,6 +51,12 @@ class LedgerTutorialView: BaseView {
         setupLedgerTutorialInstructionListViewLayout()
         setupSearchButtonLayout()
     }
+    
+    override func linkInteractors() {
+        super.linkInteractors()
+        
+        ledgerTutorialInstructionListView.delegate = self
+    }
 }
 
 extension LedgerTutorialView {
@@ -140,4 +146,31 @@ extension LedgerTutorialView {
 
 protocol LedgerTutorialViewDelegate: class {
     func ledgerTutorialViewDidTapSearchButton(_ ledgerTutorialView: LedgerTutorialView)
+    func ledgerTutorialView(_ ledgerTutorialView: LedgerTutorialView, didTap section: LedgerTutorialSection)
+}
+
+enum LedgerTutorialSection {
+    case ledgerBluetoothConnection
+    case openApp
+    case installApp
+    case bluetoothConnection
+}
+
+// MARK: LedgerTutorialInstructionListViewDelegate
+extension LedgerTutorialView: LedgerTutorialInstructionListViewDelegate {
+    func ledgerTutorialInstructionListViewDidTapOpenApp(_ view: LedgerTutorialInstructionListView) {
+        delegate?.ledgerTutorialView(self, didTap: .openApp)
+    }
+    
+    func ledgerTutorialInstructionListViewDidTapInstallApp(_ view: LedgerTutorialInstructionListView) {
+        delegate?.ledgerTutorialView(self, didTap: .installApp)
+    }
+    
+    func ledgerTutorialInstructionListViewDidTapBluetoothConnection(_ view: LedgerTutorialInstructionListView) {
+        delegate?.ledgerTutorialView(self, didTap: .bluetoothConnection)
+    }
+    
+    func ledgerTutorialInstructionListViewDidTapLedgerBluetoothConnection(_ view: LedgerTutorialInstructionListView) {
+        delegate?.ledgerTutorialView(self, didTap: .ledgerBluetoothConnection)
+    }
 }

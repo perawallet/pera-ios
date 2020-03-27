@@ -64,6 +64,11 @@ indirect enum Screen {
     case ledgerTroubleshoot
     case ledgerPairing(mode: AccountSetupMode, address: String, connectedDeviceId: UUID)
     case ledgerApproval(mode: LedgerApprovalViewController.Mode)
+    case ledgerTroubleshootBluetooth
+    case ledgerTroubleshootLedgerConnection
+    case ledgerTroubleshootInstallApp
+    case ledgerTroubleshootOpenApp
+    case termsAndServices
 }
 
 extension Screen {

@@ -19,13 +19,6 @@ class LedgerTutorialViewController: BaseScrollViewController {
         super.init(configuration: configuration)
     }
     
-    override func configureNavigationBarAppearance() {
-        let infoButtonItem = ALGBarButtonItem(kind: .infoBordered) { [weak self] in
-            
-        }
-        rightBarButtonItems = [infoButtonItem]
-    }
-    
     override func configureAppearance() {
         super.configureAppearance()
         title = "ledger-pair-title".localized
@@ -55,5 +48,18 @@ extension LedgerTutorialViewController {
 extension LedgerTutorialViewController: LedgerTutorialViewDelegate {
     func ledgerTutorialViewDidTapSearchButton(_ ledgerTutorialView: LedgerTutorialView) {
         open(.ledgerDeviceList(mode: mode), by: .push)
+    }
+    
+    func ledgerTutorialView(_ ledgerTutorialView: LedgerTutorialView, didTap section: LedgerTutorialSection) {
+        switch section {
+        case .ledgerBluetoothConnection:
+            open(.ledgerTroubleshootLedgerConnection, by: .present)
+        case .installApp:
+            open(.ledgerTroubleshootInstallApp, by: .present)
+        case .openApp:
+            open(.ledgerTroubleshootOpenApp, by: .present)
+        case .bluetoothConnection:
+            open(.ledgerTroubleshootBluetooth, by: .present)
+        }
     }
 }

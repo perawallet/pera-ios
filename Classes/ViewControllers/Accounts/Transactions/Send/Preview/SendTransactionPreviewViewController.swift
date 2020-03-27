@@ -54,7 +54,7 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
         return sendTransactionPreviewView.amountInputView.isMaxButtonSelected
     }
     
-    private var pollingOperation: PollingOperation?
+    private var timer: Timer?
     
     init(
         account: Account?,
@@ -258,25 +258,13 @@ extension SendTransactionPreviewViewController: TransactionControllerDelegate {
     }
     
     func transactionController(_ transactionController: TransactionController, didFailBLEConnectionWith state: CBManagerState) {
-        switch state {
-        case .poweredOff:
-            pushNotificationController.showFeedbackMessage("ble-error-bluetooth-title".localized,
-                                                           subtitle: "ble-error-fail-ble-connection-power".localized)
-        case .unsupported:
-            pushNotificationController.showFeedbackMessage("ble-error-unsupported-device-title".localized,
-                                                           subtitle: "ble-error-fail-ble-connection-unsupported".localized)
-        case .unknown:
-            pushNotificationController.showFeedbackMessage("ble-error-unsupported-device-title".localized,
-                                                           subtitle: "ble-error-fail-ble-connection-unsupported".localized)
-        case .unauthorized:
-            pushNotificationController.showFeedbackMessage("ble-error-search-title".localized,
-                                                           subtitle: "ble-error-fail-ble-connection-unauthorized".localized)
-        case .resetting:
-            pushNotificationController.showFeedbackMessage("ble-error-bluetooth-title".localized,
-                                                           subtitle: "ble-error-fail-ble-connection-resetting".localized)
-        default:
-            return
+        guard let errorTitle = state.errorDescription.title,
+            let errorSubtitle = state.errorDescription.subtitle else {
+                return
         }
+        
+        pushNotificationController.showFeedbackMessage(errorTitle, subtitle: errorSubtitle)
+        
         invalidateTimer()
         dismissProgressIfNeeded()
     }
@@ -304,8 +292,9 @@ extension SendTransactionPreviewViewController {
             return
         }
         
-        pollingOperation = PollingOperation(interval: 15.0) { [weak self] in
+        timer = Timer.scheduledTimer(withTimeInterval: 15.0, repeats: false) { [weak self] timer in
             guard let self = self else {
+                timer.invalidate()
                 return
             }
             
@@ -318,8 +307,6 @@ extension SendTransactionPreviewViewController {
             
             self.invalidateTimer()
         }
-        
-        pollingOperation?.start()
     }
     
     func invalidateTimer() {
@@ -327,8 +314,8 @@ extension SendTransactionPreviewViewController {
             return
         }
         
-        pollingOperation?.invalidate()
-        pollingOperation = nil
+        timer?.invalidate()
+        timer = nil
     }
 }
 

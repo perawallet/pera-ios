@@ -11,7 +11,6 @@ import UIKit
 protocol ChoosePasswordViewDelegate: class {
     
     func choosePasswordView(_ choosePasswordView: ChoosePasswordView, didSelect value: NumpadValue)
-    func choosePasswordViewDidTapLogoutButton(_ choosePasswordView: ChoosePasswordView)
 }
 
 class ChoosePasswordView: BaseView {
@@ -53,16 +52,6 @@ class ChoosePasswordView: BaseView {
         return view
     }()
     
-    private(set) lazy var logoutButton: UIButton = {
-        let button = UIButton(type: .custom)
-        button.isHidden = true
-        return button
-            .withAlignment(.center)
-            .withBackgroundImage(img("bg-black-button"))
-            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 12.0)))
-            .withAttributedTitle("logout-title".localized.attributed([.letterSpacing(1.20), .textColor(.white)]))
-    }()
-    
     private(set) lazy var numpadView: NumpadView = {
         let view = NumpadView()
         return view
@@ -76,10 +65,6 @@ class ChoosePasswordView: BaseView {
         numpadView.delegate = self
     }
     
-    override func setListeners() {
-        logoutButton.addTarget(self, action: #selector(notifyDelegateToLogoutButtonTapped), for: .touchUpInside)
-    }
-    
     override func configureAppearance() {
         backgroundColor = .white
     }
@@ -90,7 +75,6 @@ class ChoosePasswordView: BaseView {
         setupTitleLabelLayout()
         setupSubtitleLabelLayout()
         setupPasswordViewLayout()
-        setupLogoutButtonLayout()
         setupNumpadViewLayout()
     }
     
@@ -122,32 +106,14 @@ class ChoosePasswordView: BaseView {
         }
     }
     
-    private func setupLogoutButtonLayout() {
-        addSubview(logoutButton)
-        
-        logoutButton.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.greaterThanOrEqualTo(passwordInputView.snp.bottom).offset(layout.current.logoutButtonTopInset)
-            make.height.equalTo(layout.current.logoutButtonHeight)
-        }
-    }
-    
     private func setupNumpadViewLayout() {
         addSubview(numpadView)
         
         numpadView.snp.makeConstraints { make in
             make.bottom.equalToSuperview().inset(layout.current.numpadBottomInset + safeAreaBottom)
             make.centerX.equalToSuperview()
-            make.top.greaterThanOrEqualTo(logoutButton.snp.bottom).offset(layout.current.numpadTopInset)
             make.leading.trailing.lessThanOrEqualToSuperview()
         }
-    }
-    
-    // MARK: Actions
-    
-    @objc
-    private func notifyDelegateToLogoutButtonTapped() {
-        delegate?.choosePasswordViewDidTapLogoutButton(self)
     }
 }
 

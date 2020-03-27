@@ -31,7 +31,6 @@ class ChoosePasswordViewModel {
         case .login:
             choosePasswordView.titleLabel.text = "login-title".localized
             choosePasswordView.subtitleLabel.text = "login-subtitle".localized
-            choosePasswordView.logoutButton.isHidden = false
         case .resetPassword:
             choosePasswordView.subtitleLabel.text = "password-change-subtitle".localized
         case .resetVerify:

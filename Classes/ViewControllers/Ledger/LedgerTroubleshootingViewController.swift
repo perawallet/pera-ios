@@ -8,18 +8,9 @@
 
 import UIKit
 
-class LedgerTroubleshootingViewController: BaseViewController {
+class LedgerTroubleshootingViewController: BaseScrollViewController {
     
-    private lazy var ledgerTroubleshootingView = LedgerTroubleshootingView()
-    
-    private let viewModel = LedgerTroubleshootingViewModel()
-    
-    private var troubleshootOptions = [
-        LedgerTroubleshootOption(number: .closeOthers, option: "ledger-troubleshooting-close-others".localized),
-        LedgerTroubleshootOption(number: .restart, option: "ledger-troubleshooting-restart".localized),
-        LedgerTroubleshootOption(number: .appSupport, option: "ledger-troubleshooting-app-support".localized),
-        LedgerTroubleshootOption(number: .ledgerSupport, option: "ledger-troubleshooting-ledger-support".localized)
-    ]
+    private lazy var ledgerTutorialInstructionListView = LedgerTutorialInstructionListView()
     
     override func configureAppearance() {
         super.configureAppearance()
@@ -28,51 +19,51 @@ class LedgerTroubleshootingViewController: BaseViewController {
     
     override func linkInteractors() {
         super.linkInteractors()
-        ledgerTroubleshootingView.optionsCollectionView.delegate = self
-        ledgerTroubleshootingView.optionsCollectionView.dataSource = self
+        
+        ledgerTutorialInstructionListView.delegate = self
     }
     
     override func prepareLayout() {
         super.prepareLayout()
         setupLedgerTroubleshootingViewLayout()
     }
+    
+    override func configureNavigationBarAppearance() {
+        super.configureNavigationBarAppearance()
+        
+        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [weak self] in
+            self?.closeScreen(by: .dismiss, animated: true)
+        }
+        
+        leftBarButtonItems = [closeBarButtonItem]
+    }
 }
 
 extension LedgerTroubleshootingViewController {
     private func setupLedgerTroubleshootingViewLayout() {
-        view.addSubview(ledgerTroubleshootingView)
+        contentView.addSubview(ledgerTutorialInstructionListView)
         
-        ledgerTroubleshootingView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+        ledgerTutorialInstructionListView.snp.makeConstraints { make in
+            make.top.leading.trailing.equalToSuperview().inset(20)
         }
     }
 }
 
-extension LedgerTroubleshootingViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        sizeForItemAt indexPath: IndexPath
-    ) -> CGSize {
-        let troubleshootOption = troubleshootOptions[indexPath.item]
-        return viewModel.sizeFor(troubleshootOption)
-    }
-}
-
-extension LedgerTroubleshootingViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return troubleshootOptions.count
+// MARK: LedgerTutorialInstructionListViewDelegate
+extension LedgerTroubleshootingViewController: LedgerTutorialInstructionListViewDelegate {
+    func ledgerTutorialInstructionListViewDidTapOpenApp(_ view: LedgerTutorialInstructionListView) {
+        open(.ledgerTroubleshootOpenApp, by: .present)
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: LedgerTroubleshootingOptionCell.reusableIdentifier,
-            for: indexPath) as? LedgerTroubleshootingOptionCell else {
-                fatalError("Index path is out of bounds")
-        }
-        
-        let troubleshootOption = troubleshootOptions[indexPath.item]
-        viewModel.configure(cell, with: troubleshootOption)
-        return cell
+    func ledgerTutorialInstructionListViewDidTapInstallApp(_ view: LedgerTutorialInstructionListView) {
+        open(.ledgerTroubleshootInstallApp, by: .present)
+    }
+    
+    func ledgerTutorialInstructionListViewDidTapBluetoothConnection(_ view: LedgerTutorialInstructionListView) {
+        open(.ledgerTroubleshootBluetooth, by: .present)
+    }
+    
+    func ledgerTutorialInstructionListViewDidTapLedgerBluetoothConnection(_ view: LedgerTutorialInstructionListView) {
+        open(.ledgerTroubleshootLedgerConnection, by: .present)
     }
 }

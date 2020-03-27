@@ -129,10 +129,6 @@
 
 "login-title" = "Unlock";
 "login-subtitle" = "Enter six digit pin";
-"logout-title" = "LOGOUT";
-"logout-warning-title" = "Warning";
-"logout-warning-message" = "This action will remove all local accounts and delete your contacts database. Are you sure?";
-"logout-action-delete-title" = "Delete & Lock";
 
 // MARK: Accounts
 
@@ -361,6 +357,7 @@
 "total-rewards-faq-title" = "For more information on Algorand Rewards, visit our FAQ.";
 "total-rewards-faq" = "FAQ.";
 "reward-list-title" = "Reward";
+"total-rewards-account-title" = "Reward collected, included in your balance";
 
 // MARK: Notifications
 
@@ -381,10 +378,10 @@
 
 "ledger-pair-title" = "Pair Ledger Device";
 "ledger-tutorial-title-text" = "Follow the steps below to add\nLedger Account";
-"ledger-tutorial-turned-on" = "Make sure you Ledger device is turned on.";
+"ledger-tutorial-turned-on" = "Make sure that your ledger device is on and has Bluetooth enabled.";
 "ledger-tutorial-install-app" = "Install the Algorand app onto your Ledger.";
 "ledger-tutorial-open-app" = "Open the Algorand app on your Ledger.";
-"ledger-tutorial-bluetooth" = "Turn your phones bluethooth on.";
+"ledger-tutorial-bluetooth" = "Make sure Bluetooth is enabled on your smartphone.";
 "ledger-search-button-title" = "SEARCH FOR LEDGER";
 
 // MARK: Ledger Device List
@@ -402,6 +399,24 @@
 "ledger-troubleshooting-app-support" = "For help installing the Algorand Ledger app onto your device, visit %@";
 "ledger-troubleshooting-ledger-support" = "For general troubleshooting of the ledger device, please visit ";
 "ledger-troubleshooting-ledger-support-title" = "Ledger Support.";
+
+"ledger-troubleshooting-ledger-bluetooth-connection-guide-html" = "For general usage of your Ledger’s Bluetooth feature, please refer to Ledger’s official <a href=\"https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection\">Bluetooth Connection Guide</a>.";
+"ledger-troubleshooting-ledger-bluetooth-connection-advanced-guide-html" = "For more advanced troubleshooting, please refer to Ledger’s official <a href=\"https://support.ledger.com/hc/en-us/articles/360025864773\">Bluetooth Troubleshooting Guide</a>.";
+
+"ledger-troubleshooting-bluetooth-connection-html" = "Disable or Enable Bluetooth for an iOS device. <br /> <br />
+<ul>
+<li>Tap on Settings</li>
+<li>Select “General”</li>
+<li>Tap on “Bluetooth”</li>
+<li>Flip the On/Off button to toggle</li>
+<li>Bluetooth on or off</li>
+</ul>";
+
+"ledger-troubleshooting-install-app-first-html" = "Begin by following Ledger’s comprehensive <a href=\"https://www.ledger.com/start\">Getting Started</a> tutorial.";
+"ledger-troubleshooting-install-app-second-html" = "When the tutorial gets to the point where it directs you to “select the application(s) you want to install on your device,” type Algorand in the search bar and install.";
+
+"ledger-troubleshooting-open-app-first-html" = "Begin by following Ledger’s comprehensive <a href=\"https://www.ledger.com/start\">Getting Started</a> tutorial, which will direct you how to install and open apps on your ledger device.";
+"ledger-troubleshooting-open-app-second-html" = "If you haven’t already installed the <b>Algorand</b> app on your Ledger device, when the tutorial gets to the point where it directs you to “select the application(s) you want to install on your device,” type Algorand in the search bar and install.";
 
 // MARK: Ledger Pairing
 
@@ -436,3 +451,7 @@
 "ledger-approval-message" = "Please make sure to confirm the transaction on your Ledger device.";
 "ledger-approval-connection-title" = "Ledger Connection";
 "ledger-approval-connection-message" = "Waiting for ledger to connect.";
+
+// MARK: Terms and Services
+"terms-and-services-title" = "Terms and Services";
+"terms-and-services-html" = "I accept the <a href=\"https://www.algorand.com/wallet-disclaimer\">Terms and Services</a>";

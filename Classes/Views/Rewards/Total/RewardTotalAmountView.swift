@@ -43,7 +43,7 @@ class RewardTotalAmountView: BaseView {
             .withTextColor(SharedColors.purple)
             .withLine(.single)
             .withAlignment(.left)
-            .withAttributedText("total-rewards-earned-title".localized.attributed([.letterSpacing(1.10)]))
+            .withText("total-rewards-account-title".localized)
     }()
     
     private(set) lazy var algosAmountView: AlgosAmountView = {

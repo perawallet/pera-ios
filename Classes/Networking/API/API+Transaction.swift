@@ -62,7 +62,9 @@ extension API {
     }
     
     @discardableResult
-    func getTransactionParams(then handler: @escaping Endpoint.DefaultResultHandler<TransactionParams>) -> EndpointOperatable {
+    func getTransactionParams(
+        then handler: @escaping Endpoint.DefaultResultHandler<TransactionParams>
+    ) -> EndpointOperatable {
         return Endpoint(path: Path("/v1/transactions/params"))
             .httpMethod(.get)
             .httpHeaders(algorandAuthenticatedHeaders())
