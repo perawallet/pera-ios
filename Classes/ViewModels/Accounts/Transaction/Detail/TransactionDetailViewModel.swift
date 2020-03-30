@@ -87,14 +87,17 @@ class TransactionDetailViewModel {
             view.lastRoundView.detailLabel.text = "\(round)"
         }
         
-        if let assetTransaction = transaction.assetTransfer,
-            let assetDetail = assetDetail {
+        if let assetTransaction = transaction.assetTransfer {
             if let contact = transaction.contact {
                 view.transactionOpponentView.state = .contact(contact)
                 view.transactionOpponentView.actionMode = .qrView
             } else {
                 view.transactionOpponentView.state = .address(address: assetTransaction.receiverAddress ?? "", amount: nil)
             }
+        }
+        
+        if let assetTransaction = transaction.assetTransfer,
+            let assetDetail = assetDetail {
             
             view.transactionAmountView.algosAmountView.algoIconImageView.removeFromSuperview()
             
