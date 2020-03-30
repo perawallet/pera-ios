@@ -37,6 +37,18 @@ class LedgerApprovalViewController: BaseViewController {
     override func prepareLayout() {
         setupLedgerApprovalViewLayout()
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        ledgerApprovalView.bluetoothImageView.show()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        ledgerApprovalView.bluetoothImageView.stop()
+    }
 }
 
 extension LedgerApprovalViewController {

@@ -22,7 +22,7 @@ class LedgerApprovalView: BaseView {
             .withTextColor(SharedColors.black)
     }()
     
-    private lazy var bluetoothImageView = UIImageView(image: img("icon-bluetooth-purple"))
+    private(set) lazy var bluetoothImageView = BluetoothLoadingView()
     
     private lazy var ledgerImageView = UIImageView(image: img("img-ledger-small"))
     
@@ -146,15 +146,15 @@ extension LedgerApprovalView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let titleVerticalInset: CGFloat = 30.0
         let titleHorizontalInset: CGFloat = 25.0
-        let deviceImageLeadingInset: CGFloat = 45.0
+        let deviceImageLeadingInset: CGFloat = 5.0
         let bluetoothTopInset: CGFloat = 75.0
         let deviceImageTopInset: CGFloat = 35.0
         let buttonVerticalInset: CGFloat = 20.0
-        let imageTrailingOffset: CGFloat = -45.0
+        let imageTrailingOffset: CGFloat = -5.0
         let horizontalInset: CGFloat = 30.0
         let detailLabelTopInset: CGFloat = 40.0
         let ledgerImageSize = CGSize(width: 27.0, height: 24.0)
-        let bluetoothImageSize = CGSize(width: 18.0, height: 18.0)
+        let bluetoothImageSize = CGSize(width: 100.0, height: 100.0)
     }
 }
 

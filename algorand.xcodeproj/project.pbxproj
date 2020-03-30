@@ -867,6 +867,10 @@
 		95A1286D242CA78400B491A5 /* LedgerTroubleshootOpenAppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A1286B242CA78400B491A5 /* LedgerTroubleshootOpenAppView.swift */; };
 		95C4C16E242CE01B005A57BB /* CBManagerState+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95C4C16D242CE01B005A57BB /* CBManagerState+Error.swift */; };
 		95C4C16F242CE01B005A57BB /* CBManagerState+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95C4C16D242CE01B005A57BB /* CBManagerState+Error.swift */; };
+		95E3152F243234A4008D79D4 /* bluetooth_animation.json in Resources */ = {isa = PBXBuildFile; fileRef = 95E3152E243234A3008D79D4 /* bluetooth_animation.json */; };
+		95E31530243234A4008D79D4 /* bluetooth_animation.json in Resources */ = {isa = PBXBuildFile; fileRef = 95E3152E243234A3008D79D4 /* bluetooth_animation.json */; };
+		95E3153324323517008D79D4 /* BluetoothLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95E3153224323517008D79D4 /* BluetoothLoadingView.swift */; };
+		95E3153424323517008D79D4 /* BluetoothLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95E3153224323517008D79D4 /* BluetoothLoadingView.swift */; };
 		95FEED30242A0882000E42EB /* LedgerTroubleshootBluetoothViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95FEED2F242A0882000E42EB /* LedgerTroubleshootBluetoothViewController.swift */; };
 		95FEED31242A0882000E42EB /* LedgerTroubleshootBluetoothViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95FEED2F242A0882000E42EB /* LedgerTroubleshootBluetoothViewController.swift */; };
 		DCD3EE7678029738F4171F22 /* Pods_algorand_staging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BDB953015FF2F948F5734D7 /* Pods_algorand_staging.framework */; };
@@ -1318,6 +1322,8 @@
 		95A12868242C9EA800B491A5 /* LedgerTroubleshootOpenAppViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerTroubleshootOpenAppViewController.swift; sourceTree = "<group>"; };
 		95A1286B242CA78400B491A5 /* LedgerTroubleshootOpenAppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerTroubleshootOpenAppView.swift; sourceTree = "<group>"; };
 		95C4C16D242CE01B005A57BB /* CBManagerState+Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CBManagerState+Error.swift"; sourceTree = "<group>"; };
+		95E3152E243234A3008D79D4 /* bluetooth_animation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = bluetooth_animation.json; sourceTree = "<group>"; };
+		95E3153224323517008D79D4 /* BluetoothLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothLoadingView.swift; sourceTree = "<group>"; };
 		95FEED2F242A0882000E42EB /* LedgerTroubleshootBluetoothViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerTroubleshootBluetoothViewController.swift; sourceTree = "<group>"; };
 		E3DDC639493AD9DFAB57110A /* Pods-algorand-staging.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand-staging.release.xcconfig"; path = "Pods/Target Support Files/Pods-algorand-staging/Pods-algorand-staging.release.xcconfig"; sourceTree = "<group>"; };
 		EC9412FF22BD6D4C00745662 /* Info-Demo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-Demo.plist"; sourceTree = "<group>"; };
@@ -3789,6 +3795,7 @@
 			children = (
 				2BDE9CD3224E1E91007EFF30 /* LoadingIndicator.swift */,
 				2B7ABF73233386B60050B64B /* LoadingSpinnerView.swift */,
+				95E3153224323517008D79D4 /* BluetoothLoadingView.swift */,
 			);
 			path = Loading;
 			sourceTree = "<group>";
@@ -4118,6 +4125,7 @@
 		2BFBAB73227B35A6008BBB31 /* Animations */ = {
 			isa = PBXGroup;
 			children = (
+				95E3152D24323498008D79D4 /* Bluetooth */,
 				2BFBAB76227B35CC008BBB31 /* LoadingAnimation */,
 			);
 			path = Animations;
@@ -4170,6 +4178,14 @@
 				95C4C16D242CE01B005A57BB /* CBManagerState+Error.swift */,
 			);
 			path = CoreBluetooth;
+			sourceTree = "<group>";
+		};
+		95E3152D24323498008D79D4 /* Bluetooth */ = {
+			isa = PBXGroup;
+			children = (
+				95E3152E243234A3008D79D4 /* bluetooth_animation.json */,
+			);
+			path = Bluetooth;
 			sourceTree = "<group>";
 		};
 		95FEED2E242A0843000E42EB /* Troubleshoot */ = {
@@ -4314,6 +4330,7 @@
 				2B43B83922A73A3800CEA8F3 /* Overpass-Regular.otf in Resources */,
 				2B43B83122A73A3800CEA8F3 /* Overpass-ExtraBold.otf in Resources */,
 				17BD4F192292F1260003E49A /* GoogleService-Info.plist in Resources */,
+				95E31530243234A4008D79D4 /* bluetooth_animation.json in Resources */,
 				17BD4F1A2292F1260003E49A /* LaunchScreen.storyboard in Resources */,
 				2B43B82F22A73A3800CEA8F3 /* AvenirNext-Medium.ttf in Resources */,
 				17BD4F1B2292F1260003E49A /* Localizable.strings in Resources */,
@@ -4338,6 +4355,7 @@
 				2B43B83822A73A3800CEA8F3 /* Overpass-Regular.otf in Resources */,
 				2B43B83022A73A3800CEA8F3 /* Overpass-ExtraBold.otf in Resources */,
 				2B09603822578C990005BE27 /* GoogleService-Info.plist in Resources */,
+				95E3152F243234A4008D79D4 /* bluetooth_animation.json in Resources */,
 				2B8BE4DC22391C3B005D8565 /* LaunchScreen.storyboard in Resources */,
 				2B43B82E22A73A3800CEA8F3 /* AvenirNext-Medium.ttf in Resources */,
 				2BF34CC9223AA63D0052CAD3 /* Localizable.strings in Resources */,
@@ -4546,6 +4564,7 @@
 				17BD4E072292F1260003E49A /* UIEdgeInsets+Additions.swift in Sources */,
 				17BD4E082292F1260003E49A /* EditAccountViewController.swift in Sources */,
 				17BD4E092292F1260003E49A /* Notification+Keyboard.swift in Sources */,
+				95E3153424323517008D79D4 /* BluetoothLoadingView.swift in Sources */,
 				2BC1827223D8DEFE00888476 /* AssetTransactionsDraft.swift in Sources */,
 				2B79A134230EBE4D00766021 /* FeedbackViewController.swift in Sources */,
 				2BB64BD9240275DC00519981 /* LedgerTroubleshootingViewModel.swift in Sources */,
@@ -4965,6 +4984,7 @@
 				2B4BD9FD238AD7F400491149 /* API+Assets.swift in Sources */,
 				2B8954B62243FBD600D6D068 /* NotificationCenter+Additions.swift in Sources */,
 				171111B4225E091A00DAF55C /* SettingsToggleCell.swift in Sources */,
+				95E3153324323517008D79D4 /* BluetoothLoadingView.swift in Sources */,
 				2BC1827123D8DEFE00888476 /* AssetTransactionsDraft.swift in Sources */,
 				2B3A95E9239011EB00A3DF44 /* AssetTransactionSendDraft.swift in Sources */,
 				2BB64BD8240275DC00519981 /* LedgerTroubleshootingViewModel.swift in Sources */,
