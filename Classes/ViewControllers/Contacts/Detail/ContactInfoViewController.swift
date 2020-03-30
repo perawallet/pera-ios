@@ -96,6 +96,8 @@ extension ContactInfoViewController {
         api?.fetchAccount(with: AccountFetchDraft(publicKey: address)) { [weak self] response in
             switch response {
             case let .success(account):
+                self?.contactAccount = account
+                
                 if account.isThereAnyDifferentAsset() {
                     if let assets = account.assets {
                         for (index, _) in assets {
@@ -137,6 +139,7 @@ extension ContactInfoViewController {
                     SVProgressHUD.dismiss()
                 }
             case .failure:
+                self?.contactAccount = nil
                 SVProgressHUD.dismiss()
             }
         }
