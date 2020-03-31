@@ -222,6 +222,12 @@ extension LedgerDeviceListViewController: LedgerBLEControllerDelegate {
             return
         }
         
+        if session?.account(from: address) != nil {
+            connectedDevice = nil
+            displaySimpleAlertWith(title: "title-error".localized, message: "recover-from-seed-verify-exist-error".localized)
+            return
+        }
+        
         if let connectedDeviceId = connectedDevice?.identifier {
             open(.ledgerPairing(mode: mode, address: address, connectedDeviceId: connectedDeviceId), by: .push)
         }

@@ -410,16 +410,7 @@ extension TransactionController: BLEConnectionManagerDelegate {
     }
     
     func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didRead string: String) {
-        if api.session.isLastTransaction(string) {
-            if string == transactionCancelResponseRaw {
-                api.session.removeLastTransaction()
-            }
-            return
-        }
-        
         ledgerBLEController.updateIncomingData(with: string)
-        
-        api.session.saveTransaction(string)
     }
     
     func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didFailBLEConnectionWith state: CBManagerState) {

@@ -195,6 +195,13 @@ extension BLEConnectionManager: CBPeripheralDelegate {
     }
     
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
+        // If it returns error, we should skip, wheter it has value or not.
+        // Otherwise it will send the old value
+        
+        guard error == nil else {
+            return
+        }
+        
         if characteristic == rxCharacteristic {
             guard let characteristicData = characteristic.value else {
                 return
