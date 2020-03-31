@@ -24,6 +24,14 @@ class VerifiedAssetInformationViewController: BaseViewController {
     override func prepareLayout() {
         setupVerifiedAssetInformationViewLayout()
     }
+    
+    override func configureNavigationBarAppearance() {
+        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [weak self] in
+            self?.closeScreen(by: .dismiss, animated: true)
+        }
+        
+        leftBarButtonItems = [closeBarButtonItem]
+    }
 }
 
 extension VerifiedAssetInformationViewController {

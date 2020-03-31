@@ -31,7 +31,7 @@ class AssetAdditionViewController: BaseViewController {
     private var searchOffset = 0
     private var hasNext = false
     private let paginationRequestOffset = 3
-    private var assetSearchFilters = AssetSearchFilter.verified
+    private var assetSearchFilters = AssetSearchFilter.all
     
     private lazy var ledgerApprovalViewController = LedgerApprovalViewController(mode: .approve, configuration: configuration)
     
@@ -208,22 +208,16 @@ extension AssetAdditionViewController: UICollectionViewDelegateFlowLayout {
 }
 
 extension AssetAdditionViewController: AssetAdditionViewDelegate {
-    func assetAdditionViewDidTapVerifiedAssetsButton(_ assetAdditionView: AssetAdditionView) {
-        updateFilteringOptions(with: .verified)
-        
+    func assetAdditionViewDidTapAllAssets(_ assetAdditionView: AssetAdditionView) {
+        updateFilteringOptions(with: .all)
     }
     
-    func assetAdditionViewDidTapUnverifiedAssetsButton(_ assetAdditionView: AssetAdditionView) {
-        updateFilteringOptions(with: .unverified)
+    func assetAdditionViewDidTapVerifiedAssets(_ assetAdditionView: AssetAdditionView) {
+        updateFilteringOptions(with: .verified)
     }
     
     private func updateFilteringOptions(with filterOption: AssetSearchFilter) {
-        if !assetSearchFilters.canToggle(filterOption) {
-            return
-        }
-        
-        assetSearchFilters.toggle(filterOption)
-        viewModel.update(assetAdditionView, with: assetSearchFilters)
+        assetSearchFilters = filterOption
         resetPagination()
         
         let query = assetAdditionView.assetInputView.inputTextField.text

@@ -176,6 +176,9 @@
 "asset-support-your-add-title" = "Your accounts do not contain this asset";
 "asset-support-your-add-message" = "Please add this asset and try again.";
 
+"asset-verified-title" = "Verified";
+"asset-all-title" = "All";
+
 // MARK: Algos Send
 
 "send-algos-title" = "Send Algos";
