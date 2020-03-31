@@ -353,14 +353,15 @@
 
 "rewards-title" = "Rewards";
 "rewards-show-title" = "Show Rewards";
-"rewards-detail-subtitle" = "You earn rewards just by owning Algos!\nHere’s a summary of your rewards activity.";
+"rewards-detail-subtitle" = "You earn rewards just by owning Algos! Here's a summary of your rewards activity since your last transaction. These rewards are always included in your balance.";
 "total-rewards-earned-title" = "TOTAL REWARDS EARNED";
 "total-rewards-pending-title" = "PENDING REWARDS*";
 "total-rewards-pending-subtitle" = "*Pending rewards become confirmed when you send or receive algos.";
 "total-rewards-faq-title" = "For more information on Algorand Rewards, visit our FAQ.";
 "total-rewards-faq" = "FAQ.";
 "reward-list-title" = "Reward";
-"total-rewards-account-title" = "Reward collected, included in your balance";
+"total-rewards-account-title" = "Rewards earned since last transaction";
+"total-rewards-since-last-transaction-title" = "SINCE LAST TRANSACTION";
 
 // MARK: Notifications
 
