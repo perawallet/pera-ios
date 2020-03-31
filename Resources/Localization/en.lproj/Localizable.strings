@@ -374,7 +374,7 @@
 
 "verified-assets-title" = "Verified Assets";
 "verified-asset-information-title" = "What does asset verification mean?";
-"verified-asset-information-text" = "For certain assets in which Algorand Inc. has a relationship with the asset’s issuer, we mark those assets as “Verified” (which is denoted by a [blue checkmark] symbol).\n\nThis helps to serve as a secondary defense against mistakenly transacting with an unintended asset.\n\nThat being said, you should always double check that the asset’s ID is the one that you intended to choose before transacting with that asset.\n\nIf you have questions about the verification process or general feedback about the app, we encourage you to contact us";
+"verified-asset-information-text" = "For certain assets in which Algorand Inc. has a relationship with the asset’s issuer, we mark those assets as “Verified” (which is denoted by a blue checkmark symbol).\n\nThis helps to serve as a secondary defense against mistakenly transacting with an unintended asset.\n\nThat being said, you should always double check that the asset’s ID is the one that you intended to choose before transacting with that asset.\n\nIf you have questions about the verification process or general feedback about the app, we encourage you to contact us";
 "verified-asset-double-check" = "always double check";
 "verified-asset-information-contact-us" = "contact us";
 
