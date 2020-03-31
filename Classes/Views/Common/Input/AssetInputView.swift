@@ -175,9 +175,7 @@ extension AssetInputView {
         }
         
         if doubleValue == maxAmount && shouldHandleMaxButtonStates {
-            textField.text = String(maxAmount).currencyInputFormatting(with: inputFieldFraction)
             toggleMaxButtonState(isSelected: true)
-            return
         }
         
         textField.text = doubleValueString

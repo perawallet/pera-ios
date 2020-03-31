@@ -176,6 +176,9 @@
 "asset-support-your-add-title" = "Your accounts do not contain this asset";
 "asset-support-your-add-message" = "Please add this asset and try again.";
 
+"asset-verified-title" = "Verified";
+"asset-all-title" = "All";
+
 // MARK: Algos Send
 
 "send-algos-title" = "Send Algos";
@@ -350,14 +353,15 @@
 
 "rewards-title" = "Rewards";
 "rewards-show-title" = "Show Rewards";
-"rewards-detail-subtitle" = "You earn rewards just by owning Algos!\nHere’s a summary of your rewards activity.";
+"rewards-detail-subtitle" = "You earn rewards just by owning Algos! Here's a summary of your rewards activity since your last transaction. These rewards are always included in your balance.";
 "total-rewards-earned-title" = "TOTAL REWARDS EARNED";
 "total-rewards-pending-title" = "PENDING REWARDS*";
 "total-rewards-pending-subtitle" = "*Pending rewards become confirmed when you send or receive algos.";
 "total-rewards-faq-title" = "For more information on Algorand Rewards, visit our FAQ.";
 "total-rewards-faq" = "FAQ.";
 "reward-list-title" = "Reward";
-"total-rewards-account-title" = "Reward collected, included in your balance";
+"total-rewards-account-title" = "Rewards earned since last transaction";
+"total-rewards-since-last-transaction-title" = "SINCE LAST TRANSACTION";
 
 // MARK: Notifications
 
@@ -370,7 +374,7 @@
 
 "verified-assets-title" = "Verified Assets";
 "verified-asset-information-title" = "What does asset verification mean?";
-"verified-asset-information-text" = "For certain assets in which Algorand Inc. has a relationship with the asset’s issuer, we mark those assets as “Verified” (which is denoted by a [blue checkmark] symbol).\n\nThis helps to serve as a secondary defense against mistakenly transacting with an unintended asset.\n\nThat being said, you should always double check that the asset’s ID is the one that you intended to choose before transacting with that asset.\n\nIf you have questions about the verification process or general feedback about the app, we encourage you to contact us";
+"verified-asset-information-text" = "For certain assets in which Algorand Inc. has a relationship with the asset’s issuer, we mark those assets as “Verified” (which is denoted by a blue checkmark symbol).\n\nThis helps to serve as a secondary defense against mistakenly transacting with an unintended asset.\n\nThat being said, you should always double check that the asset’s ID is the one that you intended to choose before transacting with that asset.\n\nIf you have questions about the verification process or general feedback about the app, we encourage you to contact us";
 "verified-asset-double-check" = "always double check";
 "verified-asset-information-contact-us" = "contact us";
 

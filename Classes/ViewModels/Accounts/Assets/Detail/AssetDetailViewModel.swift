@@ -46,7 +46,7 @@ extension AssetDetailViewModel {
         } else {
             view.algosAmountLabel.text = account.amount.toAlgos.toDecimalStringForLabel
             view.verifiedImageView.isHidden = false
-            let totalRewards: UInt64 = (account.rewards ?? 0)
+            let totalRewards: UInt64 = (account.pendingRewards ?? 0)
             view.rewardTotalAmountView.algosAmountView.amountLabel.text = totalRewards.toAlgos.toDecimalStringForLabel
         }
     }

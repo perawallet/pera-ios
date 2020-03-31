@@ -46,7 +46,7 @@ class RewardDetailView: BaseView {
     
     private(set) lazy var totalRewardAmountContainerView: RewardAmountContainerView = {
         let view = RewardAmountContainerView()
-        view.titleLabel.attributedText = "total-rewards-earned-title".localized.attributed([.letterSpacing(1.10)])
+        view.titleLabel.attributedText = "total-rewards-since-last-transaction-title".localized.attributed([.letterSpacing(1.10)])
         view.titleLabel.textColor = SharedColors.purple
         view.algoIconImageView.tintColor = SharedColors.purple
         view.amountLabel.textColor = SharedColors.purple
