@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreBluetooth
+import SVProgressHUD
 
 protocol AssetRemovalViewControllerDelegate: class {
     func assetRemovalViewController(
@@ -43,6 +44,8 @@ class AssetRemovalViewController: BaseViewController {
     
     private let viewModel = AssetRemovalViewModel()
     
+    private var timer: Timer?
+    
     weak var delegate: AssetRemovalViewControllerDelegate?
     
     init(account: Account, configuration: ViewControllerConfiguration) {
@@ -74,6 +77,13 @@ class AssetRemovalViewController: BaseViewController {
         }
         
         leftBarButtonItems = [closeBarButtonItem]
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        transactionController.stopBLEScan()
+        dismissProgressIfNeeded()
+        invalidateTimer()
     }
 }
 
@@ -260,6 +270,9 @@ extension AssetRemovalViewController: AssetActionConfirmationViewControllerDeleg
         )
         transactionController.setTransactionDraft(assetTransactionDraft)
         transactionController.getTransactionParamsAndComposeTransactionData(for: .assetRemoval)
+        
+        SVProgressHUD.show(withStatus: "title-loading".localized)
+        validateTimer()
     }
 }
 
@@ -299,6 +312,8 @@ extension AssetRemovalViewController: TransactionControllerDelegate {
     }
     
     func transactionControllerDidStartBLEConnection(_ transactionController: TransactionController) {
+        dismissProgressIfNeeded()
+        invalidateTimer()
         add(ledgerApprovalViewController)
     }
     
@@ -309,6 +324,9 @@ extension AssetRemovalViewController: TransactionControllerDelegate {
         }
         
         pushNotificationController.showFeedbackMessage(errorTitle, subtitle: errorSubtitle)
+        
+        invalidateTimer()
+        dismissProgressIfNeeded()
     }
     
     func transactionController(_ transactionController: TransactionController, didFailToConnect peripheral: CBPeripheral) {
@@ -317,6 +335,46 @@ extension AssetRemovalViewController: TransactionControllerDelegate {
     }
     
     func transactionController(_ transactionController: TransactionController, didDisconnectFrom peripheral: CBPeripheral) {
+    }
+    
+    func transactionControllerDidFailToSignWithLedger(_ transactionController: TransactionController) {
+        ledgerApprovalViewController.removeFromParentController()
+        pushNotificationController.showFeedbackMessage("ble-error-transaction-cancelled-title".localized,
+                                                       subtitle: "ble-error-fail-sign-transaction".localized)
+    }
+}
+
+// MARK: Ledger Timer
+extension AssetRemovalViewController {
+    func validateTimer() {
+        guard account.type == .ledger else {
+            return
+        }
+        
+        timer = Timer.scheduledTimer(withTimeInterval: 15.0, repeats: false) { [weak self] timer in
+            guard let self = self else {
+                timer.invalidate()
+                return
+            }
+            
+            DispatchQueue.main.async {
+                self.transactionController.stopBLEScan()
+                self.dismissProgressIfNeeded()
+                self.pushNotificationController.showFeedbackMessage("ble-error-connection-title".localized,
+                                                                    subtitle: "ble-error-fail-connect-peripheral".localized)
+            }
+            
+            self.invalidateTimer()
+        }
+    }
+    
+    func invalidateTimer() {
+        guard account.type == .ledger else {
+            return
+        }
+        
+        timer?.invalidate()
+        timer = nil
     }
 }
 

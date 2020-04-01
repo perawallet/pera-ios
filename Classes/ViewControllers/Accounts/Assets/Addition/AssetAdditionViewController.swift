@@ -9,6 +9,7 @@
 import UIKit
 import Magpie
 import CoreBluetooth
+import SVProgressHUD
 
 protocol AssetAdditionViewControllerDelegate: class {
     func assetAdditionViewController(
@@ -55,6 +56,8 @@ class AssetAdditionViewController: BaseViewController {
     
     private let viewModel = AssetAdditionViewModel()
     
+    private var timer: Timer?
+    
     init(account: Account, configuration: ViewControllerConfiguration) {
         self.account = account
         super.init(configuration: configuration)
@@ -72,6 +75,13 @@ class AssetAdditionViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         fetchAssets(with: nil, isPaginated: false)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        transactionController.stopBLEScan()
+        dismissProgressIfNeeded()
+        invalidateTimer()
     }
     
     override func configureAppearance() {
@@ -256,6 +266,9 @@ extension AssetAdditionViewController: AssetActionConfirmationViewControllerDele
         let assetTransactionDraft = AssetTransactionSendDraft(from: account, assetIndex: id)
         transactionController.setTransactionDraft(assetTransactionDraft)
         transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
+        
+        SVProgressHUD.show(withStatus: "title-loading".localized)
+        validateTimer()
     }
 }
 
@@ -290,6 +303,9 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
         }
         
         pushNotificationController.showFeedbackMessage(errorTitle, subtitle: errorSubtitle)
+        
+        invalidateTimer()
+        dismissProgressIfNeeded()
     }
     
     func transactionController(_ transactionController: TransactionController, didFailToConnect peripheral: CBPeripheral) {
@@ -320,7 +336,49 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
     }
     
     func transactionControllerDidStartBLEConnection(_ transactionController: TransactionController) {
+        dismissProgressIfNeeded()
+        invalidateTimer()
         add(ledgerApprovalViewController)
+    }
+    
+    func transactionControllerDidFailToSignWithLedger(_ transactionController: TransactionController) {
+        ledgerApprovalViewController.removeFromParentController()
+        pushNotificationController.showFeedbackMessage("ble-error-transaction-cancelled-title".localized,
+                                                       subtitle: "ble-error-fail-sign-transaction".localized)
+    }
+}
+
+// MARK: Ledger Timer
+extension AssetAdditionViewController {
+    func validateTimer() {
+        guard account.type == .ledger else {
+            return
+        }
+        
+        timer = Timer.scheduledTimer(withTimeInterval: 15.0, repeats: false) { [weak self] timer in
+            guard let self = self else {
+                timer.invalidate()
+                return
+            }
+            
+            DispatchQueue.main.async {
+                self.transactionController.stopBLEScan()
+                self.dismissProgressIfNeeded()
+                self.pushNotificationController.showFeedbackMessage("ble-error-connection-title".localized,
+                                                                    subtitle: "ble-error-fail-connect-peripheral".localized)
+            }
+            
+            self.invalidateTimer()
+        }
+    }
+    
+    func invalidateTimer() {
+        guard account.type == .ledger else {
+            return
+        }
+        
+        timer?.invalidate()
+        timer = nil
     }
 }
 
