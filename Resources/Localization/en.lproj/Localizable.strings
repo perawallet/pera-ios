@@ -41,6 +41,8 @@
 "title-remove-lowercased" = "Remove";
 "title-unknown" = "Unnamed";
 
+"title-preview-and-sign-with-ledger-title" = "PREVIEW AND SIGN WITH LEDGER";
+
 // MARK: Tabbar
 
 "tabbar-item-accounts" = "Accounts";
@@ -383,7 +385,7 @@
 "ledger-pair-title" = "Pair Ledger Device";
 "ledger-tutorial-title-text" = "Follow the steps below to add\nLedger Account";
 "ledger-tutorial-turned-on" = "Make sure that your ledger device is on and has Bluetooth enabled.";
-"ledger-tutorial-install-app" = "Install the Algorand app onto your Ledger.";
+"ledger-tutorial-install-app" = "Install the Algorand app (version 1.0.7 or later) onto your Ledger device.";
 "ledger-tutorial-open-app" = "Open the Algorand app on your Ledger.";
 "ledger-tutorial-bluetooth" = "Make sure Bluetooth is enabled on your smartphone.";
 "ledger-search-button-title" = "SEARCH FOR LEDGER";
@@ -451,8 +453,8 @@
 
 // MARK: Ledger Approval
 
-"ledger-approval-title" = "Ledger Approval";
-"ledger-approval-message" = "Please make sure to confirm the transaction on your Ledger device.";
+"ledger-approval-title" = "Preview and Sign";
+"ledger-approval-message" = "Please review and sign the transaction on your ledger device.";
 "ledger-approval-connection-title" = "Ledger Connection";
 "ledger-approval-connection-message" = "Waiting for ledger to connect.";
 

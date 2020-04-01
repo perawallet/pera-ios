@@ -38,7 +38,8 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
         return TransactionController(api: api)
     }()
     
-    private(set) lazy var sendTransactionPreviewView = SendTransactionPreviewView(inputFieldFraction: assetFraction)
+    private(set) lazy var sendTransactionPreviewView = SendTransactionPreviewView(accountType: selectedAccount?.type ?? .standard,
+                                                                                  inputFieldFraction: assetFraction)
     var keyboard = Keyboard()
     private(set) var contentViewBottomConstraint: Constraint?
     
