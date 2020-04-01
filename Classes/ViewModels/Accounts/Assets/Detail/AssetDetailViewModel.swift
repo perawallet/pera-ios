@@ -67,14 +67,14 @@ extension AssetDetailViewModel {
     func setDollarValue(visible: Bool, in view: AssetDetailHeaderView, for currentValue: Double) {
         view.algosAmountLabel.isHidden = visible
         view.dollarAmountLabel.isHidden = !visible
-        view.dollarImageView.isHidden = !visible
+        view.verifiedImageView.isHidden = visible
         
         if visible {
             view.assetNameLabel.text = "accounts-dollar-value-title".localized
             view.assetNameLabel.textColor = SharedColors.darkGray
             view.dollarValueLabel.backgroundColor = SharedColors.darkGray
             view.dollarValueLabel.textColor = .white
-            view.dollarAmountLabel.text = currentValue.toCryptoCurrencyStringForLabel
+            view.dollarAmountLabel.text = currentValue.toFractionStringForLabel(fraction: 2)
             view.dollarValueLabel.layer.borderWidth = 0.0
         } else {
             view.assetNameLabel.text = "accounts-algos-available-title".localized

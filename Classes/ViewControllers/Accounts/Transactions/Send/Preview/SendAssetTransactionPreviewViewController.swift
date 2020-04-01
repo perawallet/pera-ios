@@ -316,7 +316,8 @@ extension SendAssetTransactionPreviewViewController {
             let toAccount = getReceiverAccount()?.address else {
             return
         }
-        
+
+        SVProgressHUD.show(withStatus: "title-loading".localized)
         validateTimer()
         
         transactionController.delegate = self
