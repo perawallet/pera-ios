@@ -49,7 +49,9 @@
 		<true/>
 	</dict>
 	<key>NSBluetoothAlwaysUsageDescription</key>
-	<string>Algorand will use your bluetooth to communicate with Ledger X.</string>
+	<string>Algorand will use Bluetooth to communicate with Ledger X.</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>Algorand will use Bluetooth to communicate with Ledger X.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Algorand will use your camera to scan QR codes.</string>
 	<key>NSFaceIDUsageDescription</key>
