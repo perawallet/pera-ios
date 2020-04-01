@@ -67,7 +67,7 @@ struct ALGBarButtonItem: BarButtonItem {
         case .save:
             return nil
         case .qr:
-            if let icon = img("icon-qr-code-purple") {
+            if let icon = img("icon-qr-code-gray") {
                 return ImageContent(normal: icon)
             }
             return nil
