@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import CoreBluetooth
+import SVProgressHUD
 
 protocol AssetRemovalViewControllerDelegate: class {
     func assetRemovalViewController(
@@ -24,7 +26,25 @@ class AssetRemovalViewController: BaseViewController {
     
     private var account: Account
     
+    private lazy var ledgerApprovalViewController = LedgerApprovalViewController(mode: .approve, configuration: configuration)
+    
+    private lazy var pushNotificationController: PushNotificationController = {
+        guard let api = api else {
+            fatalError("API should be set.")
+        }
+        return PushNotificationController(api: api)
+    }()
+    
+    private lazy var transactionController: TransactionController = {
+        guard let api = api else {
+            fatalError("API should be set.")
+        }
+        return TransactionController(api: api)
+    }()
+    
     private let viewModel = AssetRemovalViewModel()
+    
+    private var timer: Timer?
     
     weak var delegate: AssetRemovalViewControllerDelegate?
     
@@ -41,7 +61,7 @@ class AssetRemovalViewController: BaseViewController {
     override func setListeners() {
         assetRemovalView.assetsCollectionView.delegate = self
         assetRemovalView.assetsCollectionView.dataSource = self
-        transactionController?.delegate = self
+        transactionController.delegate = self
     }
     
     override func prepareLayout() {
@@ -57,6 +77,13 @@ class AssetRemovalViewController: BaseViewController {
         }
         
         leftBarButtonItems = [closeBarButtonItem]
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        transactionController.stopBLEScan()
+        dismissProgressIfNeeded()
+        invalidateTimer()
     }
 }
 
@@ -121,6 +148,10 @@ extension AssetRemovalViewController {
 extension AssetRemovalViewController: AssetActionableCellDelegate {
     func assetActionableCellDidTapActionButton(_ assetActionableCell: AssetActionableCell) {
         guard let index = assetRemovalView.assetsCollectionView.indexPath(for: assetActionableCell) else {
+            return
+        }
+        
+        guard index.item < account.assetDetails.count else {
             return
         }
         
@@ -237,22 +268,33 @@ extension AssetRemovalViewController: AssetActionConfirmationViewControllerDeleg
             assetIndex: assetId,
             assetCreator: assetDetail.creator
         )
-        transactionController?.setAssetTransactionDraft(assetTransactionDraft)
-        transactionController?.composeAssetTransactionData(transactionType: .assetRemoval)
+        transactionController.setTransactionDraft(assetTransactionDraft)
+        transactionController.getTransactionParamsAndComposeTransactionData(for: .assetRemoval)
+        
+        SVProgressHUD.show(withStatus: "title-loading".localized)
+        validateTimer()
     }
 }
 
 extension AssetRemovalViewController: TransactionControllerDelegate {
-    func transactionControllerDidComposedAssetTransactionData(
-        _ transactionController: TransactionController,
-        forTransaction draft: AssetTransactionSendDraft?
-    ) {
-        guard let removedAssetDetail = getRemovedAssetDetail(from: draft) else {
+    func transactionController(_ transactionController: TransactionController, didComposedTransactionDataFor draft: TransactionSendDraft?) {
+        guard let assetTransactionDraft = draft as? AssetTransactionSendDraft,
+            let removedAssetDetail = getRemovedAssetDetail(from: assetTransactionDraft) else {
             return
+        }
+        
+        if account.type == .ledger {
+            ledgerApprovalViewController.removeFromParentController()
         }
         
         delegate?.assetRemovalViewController(self, didRemove: removedAssetDetail, from: account)
         dismissScreen()
+    }
+    
+    func transactionController(_ transactionController: TransactionController, didFailedComposing error: Error) {
+        if account.type == .ledger {
+            ledgerApprovalViewController.removeFromParentController()
+        }
     }
     
     private func getRemovedAssetDetail(from draft: AssetTransactionSendDraft?) -> AssetDetail? {
@@ -267,6 +309,72 @@ extension AssetRemovalViewController: TransactionControllerDelegate {
         }
         
         return removedAssetDetail
+    }
+    
+    func transactionControllerDidStartBLEConnection(_ transactionController: TransactionController) {
+        dismissProgressIfNeeded()
+        invalidateTimer()
+        add(ledgerApprovalViewController)
+    }
+    
+    func transactionController(_ transactionController: TransactionController, didFailBLEConnectionWith state: CBManagerState) {
+        guard let errorTitle = state.errorDescription.title,
+            let errorSubtitle = state.errorDescription.subtitle else {
+                return
+        }
+        
+        pushNotificationController.showFeedbackMessage(errorTitle, subtitle: errorSubtitle)
+        
+        invalidateTimer()
+        dismissProgressIfNeeded()
+    }
+    
+    func transactionController(_ transactionController: TransactionController, didFailToConnect peripheral: CBPeripheral) {
+        pushNotificationController.showFeedbackMessage("ble-error-connection-title".localized,
+                                                       subtitle: "ble-error-fail-connect-peripheral".localized)
+    }
+    
+    func transactionController(_ transactionController: TransactionController, didDisconnectFrom peripheral: CBPeripheral) {
+    }
+    
+    func transactionControllerDidFailToSignWithLedger(_ transactionController: TransactionController) {
+        ledgerApprovalViewController.removeFromParentController()
+        pushNotificationController.showFeedbackMessage("ble-error-transaction-cancelled-title".localized,
+                                                       subtitle: "ble-error-fail-sign-transaction".localized)
+    }
+}
+
+// MARK: Ledger Timer
+extension AssetRemovalViewController {
+    func validateTimer() {
+        guard account.type == .ledger else {
+            return
+        }
+        
+        timer = Timer.scheduledTimer(withTimeInterval: 15.0, repeats: false) { [weak self] timer in
+            guard let self = self else {
+                timer.invalidate()
+                return
+            }
+            
+            DispatchQueue.main.async {
+                self.transactionController.stopBLEScan()
+                self.dismissProgressIfNeeded()
+                self.pushNotificationController.showFeedbackMessage("ble-error-connection-title".localized,
+                                                                    subtitle: "ble-error-fail-connect-peripheral".localized)
+            }
+            
+            self.invalidateTimer()
+        }
+    }
+    
+    func invalidateTimer() {
+        guard account.type == .ledger else {
+            return
+        }
+        
+        timer?.invalidate()
+        timer = nil
     }
 }
 

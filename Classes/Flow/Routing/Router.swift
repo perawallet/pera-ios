@@ -218,14 +218,12 @@ class Router {
         case let .contactQRDisplay(contact):
             viewController = ContactQRDisplayViewController(contact: contact, configuration: configuration)
         case let .sendAlgosTransactionPreview(account, receiver):
-            configuration.transactionController = rootViewController.appConfiguration.transactionController
             viewController = SendAlgosTransactionPreviewViewController(
                 account: account,
                 assetReceiverState: receiver,
                 configuration: configuration
             )
         case let .sendAssetTransactionPreview(account, receiver, assetDetail, isMaxTransaction):
-            configuration.transactionController = rootViewController.appConfiguration.transactionController
             viewController = SendAssetTransactionPreviewViewController(
                 account: account,
                 assetReceiverState: receiver,
@@ -233,18 +231,18 @@ class Router {
                 isMaxTransaction: isMaxTransaction,
                 configuration: configuration
             )
-        case let .sendAlgosTransaction(algosTransactionSendDraft, receiver):
-            configuration.transactionController = rootViewController.appConfiguration.transactionController
+        case let .sendAlgosTransaction(algosTransactionSendDraft, transactionController, receiver):
             viewController = SendAlgosTransactionViewController(
                 algosTransactionSendDraft: algosTransactionSendDraft,
                 assetReceiverState: receiver,
+                transactionController: transactionController,
                 configuration: configuration
             )
-        case let .sendAssetTransaction(assetTransactionSendDraft, receiver):
-            configuration.transactionController = rootViewController.appConfiguration.transactionController
+        case let .sendAssetTransaction(assetTransactionSendDraft, transactionController, receiver):
             viewController = SendAssetTransactionViewController(
                 assetTransactionSendDraft: assetTransactionSendDraft,
                 assetReceiverState: receiver,
+                transactionController: transactionController,
                 configuration: configuration
             )
         case let .requestAlgosTransactionPreview(account):
@@ -288,10 +286,8 @@ class Router {
         case let .assetDetail(account, assetDetail):
             viewController = AssetDetailViewController(account: account, configuration: configuration, assetDetail: assetDetail)
         case let .addAsset(account):
-            configuration.transactionController = rootViewController.appConfiguration.transactionController
             viewController = AssetAdditionViewController(account: account, configuration: configuration)
         case let .removeAsset(account):
-            configuration.transactionController = rootViewController.appConfiguration.transactionController
             viewController = AssetRemovalViewController(account: account, configuration: configuration)
         case let .assetActionConfirmation(assetAlertDraft):
             viewController = AssetActionConfirmationViewController(assetAlertDraft: assetAlertDraft, configuration: configuration)
@@ -307,6 +303,31 @@ class Router {
             viewController = AssetListViewController(account: account, configuration: configuration)
         case .verifiedAssetInformation:
             viewController = VerifiedAssetInformationViewController(configuration: configuration)
+        case let .ledgerTutorial(mode):
+            viewController = LedgerTutorialViewController(mode: mode, configuration: configuration)
+        case let .ledgerDeviceList(mode):
+            viewController = LedgerDeviceListViewController(mode: mode, configuration: configuration)
+        case .ledgerTroubleshoot:
+            viewController = LedgerTroubleshootingViewController(configuration: configuration)
+        case let .ledgerPairing(mode, address, deviceId):
+            viewController = LedgerPairingViewController(
+                mode: mode,
+                address: address,
+                connectedDeviceId: deviceId,
+                configuration: configuration
+            )
+        case let .ledgerApproval(mode):
+            viewController = LedgerApprovalViewController(mode: mode, configuration: configuration)
+        case .ledgerTroubleshootBluetooth:
+            viewController = LedgerTroubleshootBluetoothConnectionViewController(configuration: configuration)
+        case .ledgerTroubleshootLedgerConnection:
+            viewController = LedgerTroubleshootBluetoothViewController(configuration: configuration)
+        case .ledgerTroubleshootInstallApp:
+            viewController = LedgerTroubleshootInstallAppViewController(configuration: configuration)
+        case .ledgerTroubleshootOpenApp:
+            viewController = LedgerTroubleshootOpenAppViewController(configuration: configuration)
+        case .termsAndServices:
+            viewController = TermsAndServicesViewController(configuration: configuration)
         }
         
         return viewController as? T

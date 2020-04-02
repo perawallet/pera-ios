@@ -87,14 +87,26 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
         composeTransactionData()
     }
     
-    override func transactionControllerDidComposedAlgosTransactionData(
+    override func transactionController(
         _ transactionController: TransactionController,
-        forTransaction draft: AlgosTransactionSendDraft?
+        didComposedTransactionDataFor draft: TransactionSendDraft?
     ) {
-        guard let algosTransactionDraft = draft else {
+        guard let algosTransactionDraft = draft as? AlgosTransactionSendDraft else {
             return
         }
-        open(.sendAlgosTransaction(algosTransactionSendDraft: algosTransactionDraft, receiver: assetReceiverState), by: .push)
+        
+        if algosTransactionDraft.from.type == .ledger {
+            ledgerApprovalViewController.removeFromParentController()
+        }
+        
+        open(
+            .sendAlgosTransaction(
+                algosTransactionSendDraft: algosTransactionDraft,
+                transactionController: transactionController,
+                receiver: assetReceiverState
+            ),
+            by: .push
+        )
     }
     
     override func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, then handler: EmptyHandler?) {
@@ -185,7 +197,7 @@ extension SendAlgosTransactionPreviewViewController {
     }
     
     private func composeTransactionData() {
-        transactionController?.delegate = self
+        transactionController.delegate = self
         guard let selectedAccount = selectedAccount else {
             return
         }
@@ -227,13 +239,19 @@ extension SendAlgosTransactionPreviewViewController {
                    
             SVProgressHUD.show(withStatus: "title-loading".localized)
             self.api?.fetchAccount(with: receiverFetchDraft) { accountResponse in
-                SVProgressHUD.dismiss()
-                       
+                if selectedAccount.type != .ledger {
+                    self.dismissProgressIfNeeded()
+                }
+                
                 switch accountResponse {
                 case let .failure(error):
+                    self.dismissProgressIfNeeded()
+                    
                     self.displaySimpleAlertWith(title: "title-error".localized, message: error.localizedDescription)
                 case let .success(account):
                     if account.amount == 0 {
+                        self.dismissProgressIfNeeded()
+                        
                         self.displaySimpleAlertWith(
                             title: "title-error".localized,
                             message: "send-algos-minimum-amount-error-new-account".localized
@@ -245,15 +263,17 @@ extension SendAlgosTransactionPreviewViewController {
             }
             return
         } else {
+            SVProgressHUD.show(withStatus: "title-loading".localized)
             composeAlgosTransactionData(for: selectedAccount)
         }
     }
     
     private func composeAlgosTransactionData(for selectedAccount: Account) {
-        guard let account = getReceiverAccount(),
-            let transactionController = transactionController else {
+        guard let account = getReceiverAccount() else {
             return
         }
+        
+        validateTimer()
         
         let transactionDraft = AlgosTransactionSendDraft(
             from: selectedAccount,
@@ -265,6 +285,6 @@ extension SendAlgosTransactionPreviewViewController {
         )
         
         transactionController.setTransactionDraft(transactionDraft)
-        transactionController.composeAlgosTransactionData()
+        transactionController.getTransactionParamsAndComposeTransactionData(for: .algosTransaction)
     }
 }

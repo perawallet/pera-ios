@@ -18,6 +18,13 @@ class RequestAlgosTransactionPreviewViewModel {
     
     func configure(_ view: RequestTransactionPreviewView) {
         view.transactionParticipantView.accountSelectionView.set(enabled: false)
+        
+        if account.type == .ledger {
+            view.transactionParticipantView.accountSelectionView.setLedgerAccount()
+        } else {
+            view.transactionParticipantView.accountSelectionView.setStandardAccount()
+        }
+        
         view.transactionParticipantView.accountSelectionView.detailLabel.text = account.name
         view.transactionParticipantView.assetSelectionView.detailLabel.text = "asset-algos-title".localized
         view.transactionParticipantView.assetSelectionView.amountView.amountLabel.textColor = SharedColors.turquois

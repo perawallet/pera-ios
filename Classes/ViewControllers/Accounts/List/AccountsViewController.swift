@@ -28,6 +28,14 @@ class AccountsViewController: BaseViewController {
         initialModalSize: .custom(CGSize(width: view.frame.width, height: layout.current.editAccountModalHeight))
     )
     
+    private(set) lazy var termsServiceModalPresenter = CardModalPresenter(
+        config: ModalConfiguration(
+            animationMode: .normal(duration: 0.25),
+            dismissMode: .none
+        ),
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: layout.current.termsAndServiceHeight))
+    )
+    
     private lazy var pushNotificationController: PushNotificationController = {
         guard let api = api else {
             fatalError("Api must be set before accessing this view controller.")
@@ -115,6 +123,8 @@ class AccountsViewController: BaseViewController {
         if accountsDataSource.hasPendingAssetAction {
             accountsView.accountsCollectionView.reloadData()
         }
+        
+        presentTermsAndServicesIfNeeded()
     }
     
     override func configureAppearance() {
@@ -229,6 +239,20 @@ extension AccountsViewController {
     private func setAccountsCollectionViewContentState() {
         accountsView.accountsCollectionView.contentState = accountsDataSource.accounts.isEmpty ? .empty(noConnectionView) : .none
     }
+    
+    private func presentTermsAndServicesIfNeeded() {
+        guard let session = self.session, !session.isTermsAndServicesAccepted() else {
+            return
+        }
+        
+        let transitionStyle = Screen.Transition.Open.customPresent(
+            presentationStyle: .custom,
+            transitionStyle: nil,
+            transitioningDelegate: termsServiceModalPresenter
+        )
+        
+        open(.termsAndServices, by: transitionStyle)
+    }
 }
 
 extension AccountsViewController: QRScannerViewControllerDelegate {
@@ -313,5 +337,6 @@ extension AccountsViewController {
         let transactionCellSize = CGSize(width: UIScreen.main.bounds.width, height: 72.0)
         let rewardCellSize = CGSize(width: UIScreen.main.bounds.width, height: 50.0)
         let editAccountModalHeight: CGFloat = 158.0
+        let termsAndServiceHeight: CGFloat = 300
     }
 }

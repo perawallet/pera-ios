@@ -13,7 +13,7 @@ class HistoryResultsView: BaseView {
     private let layout = Layout<LayoutConstants>()
     
     private(set) lazy var accountSelectionView: SelectionView = {
-        let accountSelectionView = SelectionView()
+        let accountSelectionView = SelectionView(hasLeftImageView: true)
         accountSelectionView.containerView.backgroundColor = Colors.disabledColor
         accountSelectionView.leftExplanationLabel.text = "history-account".localized
         return accountSelectionView

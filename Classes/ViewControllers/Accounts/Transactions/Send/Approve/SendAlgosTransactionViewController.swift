@@ -16,13 +16,14 @@ class SendAlgosTransactionViewController: SendTransactionViewController {
     init(
         algosTransactionSendDraft: AlgosTransactionSendDraft,
         assetReceiverState: AssetReceiverState,
+        transactionController: TransactionController,
         configuration: ViewControllerConfiguration
     ) {
         self.algosTransactionSendDraft = algosTransactionSendDraft
-        super.init(assetReceiverState: assetReceiverState, configuration: configuration)
+        super.init(assetReceiverState: assetReceiverState, transactionController: transactionController, configuration: configuration)
         
         fee = algosTransactionSendDraft.fee
-        transactionController?.setTransactionDraft(algosTransactionSendDraft)
+        transactionController.setTransactionDraft(algosTransactionSendDraft)
     }
     
     override func configureAppearance() {

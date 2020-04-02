@@ -11,6 +11,7 @@ import SnapKit
 import SVProgressHUD
 import Magpie
 import Alamofire
+import CoreBluetooth
 
 class SendTransactionPreviewViewController: BaseScrollViewController {
     
@@ -21,7 +22,24 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
         )
     )
     
-    private(set) lazy var sendTransactionPreviewView = SendTransactionPreviewView(inputFieldFraction: assetFraction)
+    private(set) lazy var ledgerApprovalViewController = LedgerApprovalViewController(mode: .approve, configuration: configuration)
+    
+    private lazy var pushNotificationController: PushNotificationController = {
+        guard let api = api else {
+            fatalError("API should be set.")
+        }
+        return PushNotificationController(api: api)
+    }()
+    
+    private(set) lazy var transactionController: TransactionController = {
+        guard let api = api else {
+            fatalError("API should be set.")
+        }
+        return TransactionController(api: api)
+    }()
+    
+    private(set) lazy var sendTransactionPreviewView = SendTransactionPreviewView(accountType: selectedAccount?.type ?? .standard,
+                                                                                  inputFieldFraction: assetFraction)
     var keyboard = Keyboard()
     private(set) var contentViewBottomConstraint: Constraint?
     
@@ -36,6 +54,8 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
     var isMaxTransaction: Bool {
         return sendTransactionPreviewView.amountInputView.isMaxButtonSelected
     }
+    
+    private var timer: Timer?
     
     init(
         account: Account?,
@@ -53,6 +73,13 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
         sendTransactionPreviewView.amountInputView.beginEditing()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        transactionController.stopBLEScan()
+        dismissProgressIfNeeded()
+        invalidateTimer()
+    }
+    
     override func configureAppearance() {
         super.configureAppearance()
         sendTransactionPreviewView.transactionParticipantView.accountSelectionView.set(enabled: selectedAccount == nil)
@@ -65,7 +92,7 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
     
     override func linkInteractors() {
         super.linkInteractors()
-        transactionController?.delegate = self
+        transactionController.delegate = self
         scrollView.touchDetectingDelegate = self
         sendTransactionPreviewView.delegate = self
     }
@@ -79,14 +106,9 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
     
     func updateSelectedAccountForSender(_ account: Account) { }
     
-    func transactionControllerDidComposedAlgosTransactionData(
+    func transactionController(
         _ transactionController: TransactionController,
-        forTransaction draft: AlgosTransactionSendDraft?
-    ) { }
-    
-    func transactionControllerDidComposedAssetTransactionData(
-        _ transactionController: TransactionController,
-        forTransaction draft: AssetTransactionSendDraft?
+        didComposedTransactionDataFor draft: TransactionSendDraft?
     ) { }
     
     func displayTransactionPreview() { }
@@ -204,6 +226,8 @@ extension SendTransactionPreviewViewController: QRScannerViewControllerDelegate 
 
 extension SendTransactionPreviewViewController: TransactionControllerDelegate {
     func transactionController(_ transactionController: TransactionController, didFailedComposing error: Error) {
+        ledgerApprovalViewController.removeFromParentController()
+        
         SVProgressHUD.dismiss()
         
         switch error {
@@ -225,6 +249,74 @@ extension SendTransactionPreviewViewController: TransactionControllerDelegate {
         default:
             displaySimpleAlertWith(title: "title-error".localized, message: error.localizedDescription)
         }
+    }
+    
+    func transactionControllerDidStartBLEConnection(_ transactionController: TransactionController) {
+        dismissProgressIfNeeded()
+        invalidateTimer()
+        
+        add(ledgerApprovalViewController)
+    }
+    
+    func transactionController(_ transactionController: TransactionController, didFailBLEConnectionWith state: CBManagerState) {
+        guard let errorTitle = state.errorDescription.title,
+            let errorSubtitle = state.errorDescription.subtitle else {
+                return
+        }
+        
+        pushNotificationController.showFeedbackMessage(errorTitle, subtitle: errorSubtitle)
+        
+        invalidateTimer()
+        dismissProgressIfNeeded()
+    }
+    
+    func transactionController(_ transactionController: TransactionController, didFailToConnect peripheral: CBPeripheral) {
+        ledgerApprovalViewController.removeFromParentController()
+        pushNotificationController.showFeedbackMessage("ble-error-connection-title".localized,
+                                                       subtitle: "ble-error-fail-connect-peripheral".localized)
+    }
+    
+    func transactionController(_ transactionController: TransactionController, didDisconnectFrom peripheral: CBPeripheral) {
+    }
+    
+    func transactionControllerDidFailToSignWithLedger(_ transactionController: TransactionController) {
+        ledgerApprovalViewController.removeFromParentController()
+        pushNotificationController.showFeedbackMessage("ble-error-transaction-cancelled-title".localized,
+                                                       subtitle: "ble-error-fail-sign-transaction".localized)
+    }
+}
+
+// MARK: Ledger Timer
+extension SendTransactionPreviewViewController {
+    func validateTimer() {
+        guard let account = selectedAccount, account.type == .ledger else {
+            return
+        }
+        
+        timer = Timer.scheduledTimer(withTimeInterval: 15.0, repeats: false) { [weak self] timer in
+            guard let self = self else {
+                timer.invalidate()
+                return
+            }
+            
+            DispatchQueue.main.async {
+                self.transactionController.stopBLEScan()
+                self.dismissProgressIfNeeded()
+                self.pushNotificationController.showFeedbackMessage("ble-error-connection-title".localized,
+                                                                    subtitle: "ble-error-fail-connect-peripheral".localized)
+            }
+            
+            self.invalidateTimer()
+        }
+    }
+    
+    func invalidateTimer() {
+        guard let account = selectedAccount, account.type == .ledger else {
+            return
+        }
+        
+        timer?.invalidate()
+        timer = nil
     }
 }
 

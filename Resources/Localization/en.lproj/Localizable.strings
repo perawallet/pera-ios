@@ -41,6 +41,8 @@
 "title-remove-lowercased" = "Remove";
 "title-unknown" = "Unnamed";
 
+"title-preview-and-sign-with-ledger-title" = "PREVIEW AND SIGN WITH LEDGER";
+
 // MARK: Tabbar
 
 "tabbar-item-accounts" = "Accounts";
@@ -54,6 +56,7 @@
 "introduction-create-title" = "CREATE ACCOUNT";
 "introduction-welcome-title" = "Welcome to the\nBorderless Economy";
 "introduction-has-account" = "Already have an account?";
+"introduction-title-pair-ledger" = "PAIR LEDGER ACCOUNT";
 
 // MARK: Password Setting
 
@@ -128,10 +131,6 @@
 
 "login-title" = "Unlock";
 "login-subtitle" = "Enter six digit pin";
-"logout-title" = "LOGOUT";
-"logout-warning-title" = "Warning";
-"logout-warning-message" = "This action will remove all local accounts and delete your contacts database. Are you sure?";
-"logout-action-delete-title" = "Delete & Lock";
 
 // MARK: Accounts
 
@@ -178,6 +177,9 @@
 "asset-unverified-title" = "Unverified";
 "asset-support-your-add-title" = "Your accounts do not contain this asset";
 "asset-support-your-add-message" = "Please add this asset and try again.";
+
+"asset-verified-title" = "Verified";
+"asset-all-title" = "All";
 
 // MARK: Algos Send
 
@@ -353,15 +355,18 @@
 
 "rewards-title" = "Rewards";
 "rewards-show-title" = "Show Rewards";
-"rewards-detail-subtitle" = "You earn rewards just by owning Algos!\nHere’s a summary of your rewards activity.";
+"rewards-detail-subtitle" = "You earn rewards just by owning Algos! Here's a summary of your rewards activity since your last transaction. These rewards are always included in your balance.";
 "total-rewards-earned-title" = "TOTAL REWARDS EARNED";
 "total-rewards-pending-title" = "PENDING REWARDS*";
 "total-rewards-pending-subtitle" = "*Pending rewards become confirmed when you send or receive algos.";
 "total-rewards-faq-title" = "For more information on Algorand Rewards, visit our FAQ.";
 "total-rewards-faq" = "FAQ.";
 "reward-list-title" = "Reward";
+"total-rewards-account-title" = "Rewards earned since last transaction";
+"total-rewards-since-last-transaction-title" = "SINCE LAST TRANSACTION";
 
 // MARK: Notifications
+
 "notifications-title" = "Notifications";
 "notification-sent-success" = "Your transaction of %@ from %@ to %@ is complete.";
 "notification-sent-failed" = "Your transaction of %@ from %@ to %@ has failed.";
@@ -371,6 +376,88 @@
 
 "verified-assets-title" = "Verified Assets";
 "verified-asset-information-title" = "What does asset verification mean?";
-"verified-asset-information-text" = "For certain assets in which Algorand Inc. has a relationship with the asset’s issuer, we mark those assets as “Verified” (which is denoted by a [blue checkmark] symbol).\n\nThis helps to serve as a secondary defense against mistakenly transacting with an unintended asset.\n\nThat being said, you should always double check that the asset’s ID is the one that you intended to choose before transacting with that asset.\n\nIf you have questions about the verification process or general feedback about the app, we encourage you to contact us";
+"verified-asset-information-text" = "For certain assets in which Algorand Inc. has a relationship with the asset’s issuer, we mark those assets as “Verified” (which is denoted by a blue checkmark symbol).\n\nThis helps to serve as a secondary defense against mistakenly transacting with an unintended asset.\n\nThat being said, you should always double check that the asset’s ID is the one that you intended to choose before transacting with that asset.\n\nIf you have questions about the verification process or general feedback about the app, we encourage you to contact us";
 "verified-asset-double-check" = "always double check";
 "verified-asset-information-contact-us" = "contact us";
+
+// MARK: Ledger Tutorial
+
+"ledger-pair-title" = "Pair Ledger Device";
+"ledger-tutorial-title-text" = "Follow the steps below to add\nLedger Account";
+"ledger-tutorial-turned-on" = "Make sure that your ledger device is on and has Bluetooth enabled.";
+"ledger-tutorial-install-app" = "Install the Algorand app (version 1.0.7 or later) onto your Ledger device.";
+"ledger-tutorial-open-app" = "Open the Algorand app on your Ledger.";
+"ledger-tutorial-bluetooth" = "Make sure Bluetooth is enabled on your smartphone.";
+"ledger-search-button-title" = "SEARCH FOR LEDGER";
+
+// MARK: Ledger Device List
+
+"ledger-device-list-title" = "Pair Ledger Device";
+"ledger-device-list-looking" = "Looking for Ledger Devices";
+"ledger-device-list-connect" = "Connect";
+"ledger-device-list-troubleshoot" = "Trouble Shoot";
+
+// MARK: Ledger Troubleshooting
+
+"ledger-troubleshooting-title" = "Advanced Troubleshooting";
+"ledger-troubleshooting-close-others" = "Close other applications (Ledger apps, crypto wallets, or anything that might be trying to pair with the ledger.)";
+"ledger-troubleshooting-restart" = "Restart the Algorand Wallet and/or your device.";
+"ledger-troubleshooting-app-support" = "For help installing the Algorand Ledger app onto your device, visit %@";
+"ledger-troubleshooting-ledger-support" = "For general troubleshooting of the ledger device, please visit ";
+"ledger-troubleshooting-ledger-support-title" = "Ledger Support.";
+
+"ledger-troubleshooting-ledger-bluetooth-connection-guide-html" = "For general usage of your Ledger’s Bluetooth feature, please refer to Ledger’s official <a href=\"https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection\">Bluetooth Connection Guide</a>.";
+"ledger-troubleshooting-ledger-bluetooth-connection-advanced-guide-html" = "For more advanced troubleshooting, please refer to Ledger’s official <a href=\"https://support.ledger.com/hc/en-us/articles/360025864773\">Bluetooth Troubleshooting Guide</a>.";
+
+"ledger-troubleshooting-bluetooth-connection-html" = "Disable or Enable Bluetooth for an iOS device. <br /> <br />
+<ul>
+<li>Tap on Settings</li>
+<li>Select “General”</li>
+<li>Tap on “Bluetooth”</li>
+<li>Flip the On/Off button to toggle</li>
+<li>Bluetooth on or off</li>
+</ul>";
+
+"ledger-troubleshooting-install-app-first-html" = "Begin by following Ledger’s comprehensive <a href=\"https://www.ledger.com/start\">Getting Started</a> tutorial.";
+"ledger-troubleshooting-install-app-second-html" = "When the tutorial gets to the point where it directs you to “select the application(s) you want to install on your device,” type Algorand in the search bar and install.";
+
+"ledger-troubleshooting-open-app-first-html" = "Begin by following Ledger’s comprehensive <a href=\"https://www.ledger.com/start\">Getting Started</a> tutorial, which will direct you how to install and open apps on your ledger device.";
+"ledger-troubleshooting-open-app-second-html" = "If you haven’t already installed the <b>Algorand</b> app on your Ledger device, when the tutorial gets to the point where it directs you to “select the application(s) you want to install on your device,” type Algorand in the search bar and install.";
+
+// MARK: Ledger Pairing
+
+"ledger-pairing-name-title" = "Name Account";
+"ledger-pairing-key-title" = "Key:";
+"ledger-pairing-create-title" = "CREATE ACCOUNT";
+
+// MARK: BLE Errors
+
+
+"ble-error-search-title" = "Search Error";
+"ble-error-connection-title" = "Connection Error";
+"ble-error-bluetooth-title" = "Bluetooth Error";
+"ble-error-ledger-connection-title" = "Ledger Connection Error";
+"ble-error-unsupported-device-title" = "Unsupported Device";
+"ble-error-transaction-cancelled-title" = "Transaction Cancelled";
+"ble-error-transmission-title" = "Transmission Error";
+
+
+"ble-error-fail-connect-peripheral" = "Could not connect to the Ledger device. Make sure the device is unlocked, nearby and has bluetooth enabled.";
+"ble-error-disconnected-peripheral" = "Disconnected from device";
+"ble-error-fail-fetch-account-address" = "We were unable to receive the public key of your ledger device. Please try again.";
+"ble-error-fail-sign-transaction" = "The paired ledger device has cancelled the transaction request.";
+"ble-error-fail-ble-connection-power" = "Bluetooth must be enabled on your device in order to search for nearby Ledger devices.";
+"ble-error-fail-ble-connection-unsupported" = "The device you are trying to connect to is not supported with the Algorand Wallet.";
+"ble-error-fail-ble-connection-unauthorized" = "Bluetooth permission needs to be granted in order to search nearby Ledgers.";
+"ble-error-fail-ble-connection-resetting" = "Failed BLE connection for Resetting";
+
+// MARK: Ledger Approval
+
+"ledger-approval-title" = "Preview and Sign";
+"ledger-approval-message" = "Please review and sign the transaction on your ledger device.";
+"ledger-approval-connection-title" = "Ledger Connection";
+"ledger-approval-connection-message" = "Waiting for ledger to connect.";
+
+// MARK: Terms and Services
+"terms-and-services-title" = "Terms and Services";
+"terms-and-services-html" = "I accept the <a href=\"https://www.algorand.com/wallet-disclaimer\">Terms and Services</a>";

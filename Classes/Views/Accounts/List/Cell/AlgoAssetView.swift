@@ -12,7 +12,7 @@ class AlgoAssetView: BaseView {
     
     private let layout = Layout<LayoutConstants>()
     
-    private lazy var algoIconImageView = UIImageView(image: img("icon-algo-small-purple"))
+    private lazy var algoIconImageView = UIImageView(image: img("icon-algo-purple"))
     
     private lazy var algosLabel: UILabel = {
         UILabel()

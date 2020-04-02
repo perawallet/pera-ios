@@ -344,13 +344,12 @@ extension AssetDetailViewController: UICollectionViewDelegateFlowLayout {
                 return
         }
         
-        if let payment = transaction.payment,
-            payment.toAddress == account.address {
+        if transaction.from == account.address {
             open(
                 .transactionDetail(
                     account: account,
                     transaction: transaction,
-                    transactionType: .received,
+                    transactionType: .sent,
                     assetDetail: assetDetail
                 ),
                 by: .push
@@ -360,7 +359,7 @@ extension AssetDetailViewController: UICollectionViewDelegateFlowLayout {
                 .transactionDetail(
                     account: account,
                     transaction: transaction,
-                    transactionType: .sent,
+                    transactionType: .received,
                     assetDetail: assetDetail
                 ),
                 by: .push

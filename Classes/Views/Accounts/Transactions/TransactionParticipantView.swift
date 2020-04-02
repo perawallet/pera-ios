@@ -10,7 +10,7 @@ import UIKit
 
 class TransactionParticipantView: BaseView {
     
-    private(set) lazy var accountSelectionView = SelectionView()
+    private(set) lazy var accountSelectionView = SelectionView(hasLeftImageView: true)
     
     private(set) lazy var assetSelectionView: SelectionView = {
         let assetSelectionView = SelectionView()

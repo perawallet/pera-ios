@@ -29,8 +29,16 @@ indirect enum Screen {
     case contactQRDisplay(contact: Contact)
     case sendAlgosTransactionPreview(account: Account?, receiver: AssetReceiverState)
     case sendAssetTransactionPreview(account: Account?, receiver: AssetReceiverState, assetDetail: AssetDetail, isMaxTransaction: Bool)
-    case sendAlgosTransaction(algosTransactionSendDraft: AlgosTransactionSendDraft, receiver: AssetReceiverState)
-    case sendAssetTransaction(assetTransactionSendDraft: AssetTransactionSendDraft, receiver: AssetReceiverState)
+    case sendAlgosTransaction(
+        algosTransactionSendDraft: AlgosTransactionSendDraft,
+        transactionController: TransactionController,
+        receiver: AssetReceiverState
+    )
+    case sendAssetTransaction(
+        assetTransactionSendDraft: AssetTransactionSendDraft,
+        transactionController: TransactionController,
+        receiver: AssetReceiverState
+    )
     case requestAlgosTransactionPreview(account: Account)
     case requestAssetTransactionPreview(account: Account, assetDetail: AssetDetail)
     case requestAlgosTransaction(algosTransactionRequestDraft: AlgosTransactionRequestDraft)
@@ -51,6 +59,16 @@ indirect enum Screen {
     case rewardDetail(account: Account)
     case assetList(account: Account)
     case verifiedAssetInformation
+    case ledgerTutorial(mode: AccountSetupMode)
+    case ledgerDeviceList(mode: AccountSetupMode)
+    case ledgerTroubleshoot
+    case ledgerPairing(mode: AccountSetupMode, address: String, connectedDeviceId: UUID)
+    case ledgerApproval(mode: LedgerApprovalViewController.Mode)
+    case ledgerTroubleshootBluetooth
+    case ledgerTroubleshootLedgerConnection
+    case ledgerTroubleshootInstallApp
+    case ledgerTroubleshootOpenApp
+    case termsAndServices
 }
 
 extension Screen {

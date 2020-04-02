@@ -111,6 +111,8 @@ extension PushNotificationController {
         
         let isAssetTransaction = notificationDetail.asset != nil
         
+        let receiverName = api.session.authenticatedUser?.account(address: receiverAddress)?.name ?? receiverAddress
+        
         if let senderAccount = api.session.authenticatedUser?.account(address: senderAddress) {
             Contact.fetchAll(entity: Contact.entityName, with: NSPredicate(format: "address = %@", receiverAddress)) { response in
                 switch response {
@@ -130,14 +132,14 @@ extension PushNotificationController {
                             format: isFailed ? "notification-sent-failed".localized : "notification-sent-success".localized,
                             "\(amountText) \(name) (\(code))",
                             senderAccount.name,
-                            results.first?.name ?? receiverAddress
+                            results.first?.name ?? receiverName
                         )
                     } else {
                         message = String(
                             format: isFailed ? "notification-sent-failed".localized : "notification-sent-success".localized,
                             "\(amount)",
                             senderAccount.name,
-                            results.first?.name ?? receiverAddress
+                            results.first?.name ?? receiverName
                         )
                     }
                     self.showNotificationMessage(message, then: handler)
@@ -153,14 +155,14 @@ extension PushNotificationController {
                             format: isFailed ? "notification-sent-failed".localized : "notification-sent-success".localized,
                             "\(amountText) \(name) (\(code))",
                             senderAccount.name,
-                            receiverAddress
+                            receiverName
                         )
                     } else {
                         message = String(
                             format: isFailed ? "notification-sent-failed".localized : "notification-sent-success".localized,
                             "\(amount)",
                             senderAccount.name,
-                            receiverAddress
+                            receiverName
                         )
                     }
                     self.showNotificationMessage(message, then: handler)
@@ -177,6 +179,8 @@ extension PushNotificationController {
         }
         
         let isAssetTransaction = notificationDetail.asset != nil
+        
+        let senderName = api.session.authenticatedUser?.account(address: senderAddress)?.name ?? senderAddress
         
         if let receiverAccount = api.session.authenticatedUser?.account(address: receiverAddress) {
             Contact.fetchAll(entity: Contact.entityName, with: NSPredicate(format: "address = %@", senderAddress)) { response in
@@ -197,14 +201,14 @@ extension PushNotificationController {
                             format: "notification-received".localized,
                             "\(amountText) \(name) (\(code))",
                             receiverAccount.name,
-                            results.first?.name ?? senderAddress
+                            results.first?.name ?? senderName
                         )
                     } else {
                         message = String(
                             format: "notification-received".localized,
                             "\(amount.toAlgos.toDecimalStringForLabel ?? "") Algos",
                             receiverAccount.name,
-                            results.first?.name ?? senderAddress
+                            results.first?.name ?? senderName
                         )
                     }
                     self.showNotificationMessage(message, then: handler)
@@ -220,14 +224,14 @@ extension PushNotificationController {
                             format: "notification-received".localized,
                             "\(amountText) \(name) (\(code))",
                             receiverAccount.name,
-                            senderAddress
+                            senderName
                         )
                     } else {
                         message = String(
                             format: "notification-received".localized,
                             "\(amount.toAlgos.toDecimalStringForLabel ?? "") Algos",
                             receiverAccount.name,
-                            senderAddress
+                            senderName
                         )
                     }
                     self.showNotificationMessage(message, then: handler)
@@ -270,10 +274,11 @@ extension PushNotificationController {
             subtitle: subtitle,
             titleFont: UIFont.font(.overpass, withWeight: .semiBold(size: 15.0)),
             titleColor: UIColor.white,
-            titleTextAlign: .center,
+            titleTextAlign: .left,
             subtitleFont: UIFont.font(.avenir, withWeight: .demiBold(size: 12.0)),
             subtitleColor: UIColor.white.withAlphaComponent(0.8),
-            subtitleTextAlign: .center,
+            subtitleTextAlign: .left,
+            leftView: UIImageView(image: img("icon-warning-circle")),
             style: .warning,
             colors: CustomBannerColors()
         )

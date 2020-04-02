@@ -15,6 +15,7 @@ class Session: Storable {
     private let privateStorageKey = "com.algorand.algorand.token.private"
     private let privateKey = "com.algorand.algorand.token.private.key"
     private let rewardsPrefenceKey = "com.algorand.algorand.rewards.preference"
+    private let termsAndServicesKey = "com.algorand.algorand.terms.services"
     
     let algorandSDK = AlgorandSDK()
     
@@ -241,8 +242,21 @@ extension Session {
     }
 }
 
+// MARK: Terms and Services
+extension Session {
+    func acceptTermsAndServices() {
+        save(true, for: termsAndServicesKey, to: .defaults)
+    }
+    
+    func isTermsAndServicesAccepted() -> Bool {
+        return bool(with: termsAndServicesKey, to: .defaults)
+    }
+}
+
 extension Session {
     func reset() {
+        let termsAndServicesAccepted = isTermsAndServicesAccepted()
+        
         applicationConfiguration = nil
         ApplicationConfiguration.clear(entity: ApplicationConfiguration.entityName)
         Contact.clear(entity: Contact.entityName)
@@ -251,6 +265,10 @@ extension Session {
         self.clear(.defaults)
         self.clear(.keychain)
         self.isValid = false
+        
+        if termsAndServicesAccepted {
+            acceptTermsAndServices()
+        }
         
         DispatchQueue.main.async {
             UIApplication.shared.appDelegate?.invalidateAccountManagerFetchPolling()

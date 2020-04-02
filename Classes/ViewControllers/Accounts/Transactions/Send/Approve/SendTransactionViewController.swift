@@ -21,14 +21,16 @@ class SendTransactionViewController: BaseViewController {
     private(set) lazy var sendTransactionView = SendTransactionView()
     
     private let assetReceiverState: AssetReceiverState
+    private(set) var transactionController: TransactionController
     var fee: Int64?
     
     private let viewModel = SendTransactionViewModel()
     
     var transactionData: Data?
     
-    init(assetReceiverState: AssetReceiverState, configuration: ViewControllerConfiguration) {
+    init(assetReceiverState: AssetReceiverState, transactionController: TransactionController, configuration: ViewControllerConfiguration) {
         self.assetReceiverState = assetReceiverState
+        self.transactionController = transactionController
         super.init(configuration: configuration)
         hidesBottomBarWhenPushed = true
     }
@@ -40,7 +42,7 @@ class SendTransactionViewController: BaseViewController {
     
     override func linkInteractors() {
         sendTransactionView.transactionDelegate = self
-        transactionController?.delegate = self
+        transactionController.delegate = self
     }
     
     override func prepareLayout() {
@@ -65,7 +67,7 @@ extension SendTransactionViewController {
 extension SendTransactionViewController: SendTransactionViewDelegate {
     func sendTransactionViewDidTapSendButton(_ sendTransactionView: SendTransactionView) {
         SVProgressHUD.show(withStatus: "title-loading".localized)
-        transactionController?.sendTransaction()
+        transactionController.uploadTransaction()
     }
 }
 

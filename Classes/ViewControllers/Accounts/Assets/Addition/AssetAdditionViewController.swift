@@ -8,6 +8,8 @@
 
 import UIKit
 import Magpie
+import CoreBluetooth
+import SVProgressHUD
 
 protocol AssetAdditionViewControllerDelegate: class {
     func assetAdditionViewController(
@@ -30,13 +32,31 @@ class AssetAdditionViewController: BaseViewController {
     private var searchOffset = 0
     private var hasNext = false
     private let paginationRequestOffset = 3
-    private var assetSearchFilters = AssetSearchFilter.verified
+    private var assetSearchFilters = AssetSearchFilter.all
+    
+    private lazy var ledgerApprovalViewController = LedgerApprovalViewController(mode: .approve, configuration: configuration)
+    
+    private lazy var transactionController: TransactionController = {
+        guard let api = api else {
+            fatalError("API should be set.")
+        }
+        return TransactionController(api: api)
+    }()
+    
+    private lazy var pushNotificationController: PushNotificationController = {
+        guard let api = api else {
+            fatalError("API should be set.")
+        }
+        return PushNotificationController(api: api)
+    }()
     
     private lazy var assetAdditionView = AssetAdditionView()
     
     private lazy var emptyStateView = EmptyStateView(title: "asset-not-found".localized, topImage: nil, bottomImage: nil)
     
     private let viewModel = AssetAdditionViewModel()
+    
+    private var timer: Timer?
     
     init(account: Account, configuration: ViewControllerConfiguration) {
         self.account = account
@@ -57,6 +77,13 @@ class AssetAdditionViewController: BaseViewController {
         fetchAssets(with: nil, isPaginated: false)
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        transactionController.stopBLEScan()
+        dismissProgressIfNeeded()
+        invalidateTimer()
+    }
+    
     override func configureAppearance() {
         super.configureAppearance()
         navigationItem.title = "title-add-asset".localized
@@ -67,7 +94,7 @@ class AssetAdditionViewController: BaseViewController {
         assetAdditionView.assetInputView.delegate = self
         assetAdditionView.assetsCollectionView.delegate = self
         assetAdditionView.assetsCollectionView.dataSource = self
-        transactionController?.delegate = self
+        transactionController.delegate = self
     }
     
     override func prepareLayout() {
@@ -191,22 +218,16 @@ extension AssetAdditionViewController: UICollectionViewDelegateFlowLayout {
 }
 
 extension AssetAdditionViewController: AssetAdditionViewDelegate {
-    func assetAdditionViewDidTapVerifiedAssetsButton(_ assetAdditionView: AssetAdditionView) {
-        updateFilteringOptions(with: .verified)
-        
+    func assetAdditionViewDidTapAllAssets(_ assetAdditionView: AssetAdditionView) {
+        updateFilteringOptions(with: .all)
     }
     
-    func assetAdditionViewDidTapUnverifiedAssetsButton(_ assetAdditionView: AssetAdditionView) {
-        updateFilteringOptions(with: .unverified)
+    func assetAdditionViewDidTapVerifiedAssets(_ assetAdditionView: AssetAdditionView) {
+        updateFilteringOptions(with: .verified)
     }
     
     private func updateFilteringOptions(with filterOption: AssetSearchFilter) {
-        if !assetSearchFilters.canToggle(filterOption) {
-            return
-        }
-        
-        assetSearchFilters.toggle(filterOption)
-        viewModel.update(assetAdditionView, with: assetSearchFilters)
+        assetSearchFilters = filterOption
         resetPagination()
         
         let query = assetAdditionView.assetInputView.inputTextField.text
@@ -243,13 +264,20 @@ extension AssetAdditionViewController: AssetActionConfirmationViewControllerDele
         }
         
         let assetTransactionDraft = AssetTransactionSendDraft(from: account, assetIndex: id)
-        transactionController?.setAssetTransactionDraft(assetTransactionDraft)
-        transactionController?.composeAssetTransactionData(transactionType: .assetAddition)
+        transactionController.setTransactionDraft(assetTransactionDraft)
+        transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
+        
+        SVProgressHUD.show(withStatus: "title-loading".localized)
+        validateTimer()
     }
 }
 
 extension AssetAdditionViewController: TransactionControllerDelegate {
     func transactionController(_ transactionController: TransactionController, didFailedComposing error: Error) {
+        if account.type == .ledger {
+            ledgerApprovalViewController.removeFromParentController()
+        }
+        
         switch error {
         case let .custom(fee):
             guard let api = api,
@@ -268,21 +296,89 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
         }
     }
     
-    func transactionControllerDidComposedAssetTransactionData(
-        _ transactionController: TransactionController,
-        forTransaction draft: AssetTransactionSendDraft?
-    ) {
-        guard let assetSearchResult = assetResults.first(where: { item -> Bool in
-            guard let assetIndex = draft?.assetIndex else {
-                return false
-            }
-            return item.id == assetIndex
-        }) else {
-            return
+    func transactionController(_ transactionController: TransactionController, didFailBLEConnectionWith state: CBManagerState) {        
+        guard let errorTitle = state.errorDescription.title,
+            let errorSubtitle = state.errorDescription.subtitle else {
+                return
+        }
+        
+        pushNotificationController.showFeedbackMessage(errorTitle, subtitle: errorSubtitle)
+        
+        invalidateTimer()
+        dismissProgressIfNeeded()
+    }
+    
+    func transactionController(_ transactionController: TransactionController, didFailToConnect peripheral: CBPeripheral) {
+        pushNotificationController.showFeedbackMessage("ble-error-connection-title".localized,
+                                                       subtitle: "ble-error-fail-connect-peripheral".localized)
+    }
+    
+    func transactionController(_ transactionController: TransactionController, didDisconnectFrom peripheral: CBPeripheral) {
+    }
+    
+    func transactionController(_ transactionController: TransactionController, didComposedTransactionDataFor draft: TransactionSendDraft?) {
+        guard let assetTransactionDraft = draft as? AssetTransactionSendDraft,
+            let assetSearchResult = assetResults.first(where: { item -> Bool in
+                guard let assetIndex = assetTransactionDraft.assetIndex else {
+                    return false
+                }
+                return item.id == assetIndex
+            }) else {
+                return
+        }
+        
+        if account.type == .ledger {
+            ledgerApprovalViewController.removeFromParentController()
         }
         
         delegate?.assetAdditionViewController(self, didAdd: assetSearchResult, to: account)
         popScreen()
+    }
+    
+    func transactionControllerDidStartBLEConnection(_ transactionController: TransactionController) {
+        dismissProgressIfNeeded()
+        invalidateTimer()
+        add(ledgerApprovalViewController)
+    }
+    
+    func transactionControllerDidFailToSignWithLedger(_ transactionController: TransactionController) {
+        ledgerApprovalViewController.removeFromParentController()
+        pushNotificationController.showFeedbackMessage("ble-error-transaction-cancelled-title".localized,
+                                                       subtitle: "ble-error-fail-sign-transaction".localized)
+    }
+}
+
+// MARK: Ledger Timer
+extension AssetAdditionViewController {
+    func validateTimer() {
+        guard account.type == .ledger else {
+            return
+        }
+        
+        timer = Timer.scheduledTimer(withTimeInterval: 15.0, repeats: false) { [weak self] timer in
+            guard let self = self else {
+                timer.invalidate()
+                return
+            }
+            
+            DispatchQueue.main.async {
+                self.transactionController.stopBLEScan()
+                self.dismissProgressIfNeeded()
+                self.pushNotificationController.showFeedbackMessage("ble-error-connection-title".localized,
+                                                                    subtitle: "ble-error-fail-connect-peripheral".localized)
+            }
+            
+            self.invalidateTimer()
+        }
+    }
+    
+    func invalidateTimer() {
+        guard account.type == .ledger else {
+            return
+        }
+        
+        timer?.invalidate()
+        timer = nil
     }
 }
 

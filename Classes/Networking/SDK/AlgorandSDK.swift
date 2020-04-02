@@ -16,6 +16,10 @@ class AlgorandSDK {
     func sign(_ privateData: Data, with data: Data, error: inout NSError?) -> Data? {
         return CryptoSignTransaction(privateData, data, &error)
     }
+    
+    func getSignedTransaction(_ transaction: Data, from signature: Data, error: inout NSError?) -> Data? {
+        return CryptoAttachSignature(signature, transaction, &error)
+    }
 }
 
 extension AlgorandSDK {
@@ -29,6 +33,10 @@ extension AlgorandSDK {
     
     func addressFrom(_ privateKey: Data, error: inout NSError?) -> String? {
         return CryptoGenerateAddressFromSK(privateKey, &error)
+    }
+    
+    func addressFromPublicKey(_ publicKey: Data, error: inout NSError?) -> String {
+        return CryptoGenerateAddressFromPublicKey(publicKey, &error)
     }
 }
 

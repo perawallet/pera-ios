@@ -20,6 +20,13 @@ class RequestAssetTransactionPreviewViewModel {
     
     func configure(_ view: RequestTransactionPreviewView) {
         view.transactionParticipantView.accountSelectionView.set(enabled: false)
+        
+        if account.type == .ledger {
+            view.transactionParticipantView.accountSelectionView.setLedgerAccount()
+        } else {
+            view.transactionParticipantView.accountSelectionView.setStandardAccount()
+        }
+        
         view.transactionParticipantView.accountSelectionView.amountView.amountLabel.textColor = SharedColors.black
         view.transactionParticipantView.accountSelectionView.amountView.algoIconImageView.isHidden = true
         view.transactionParticipantView.accountSelectionView.detailLabel.text = account.name

@@ -164,6 +164,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
             )
             return
+        } else {
+            validateAccountManagerFetchPolling()
         }
     }
     

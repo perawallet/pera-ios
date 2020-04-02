@@ -63,17 +63,22 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
         accountListViewController?.delegate = self
     }
     
-    override func transactionControllerDidComposedAssetTransactionData(
+    override func transactionController(
         _ transactionController: TransactionController,
-        forTransaction draft: AssetTransactionSendDraft?
+        didComposedTransactionDataFor draft: TransactionSendDraft?
     ) {
-        guard let assetTransactionDraft = draft else {
+        guard let assetTransactionDraft = draft as? AssetTransactionSendDraft else {
             return
+        }
+        
+        if assetTransactionDraft.from.type == .ledger {
+            ledgerApprovalViewController.removeFromParentController()
         }
         
         let controller = open(
             .sendAssetTransaction(
                 assetTransactionSendDraft: assetTransactionDraft,
+                transactionController: transactionController,
                 receiver: assetReceiverState
             ),
             by: .push
@@ -204,6 +209,10 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
 
 extension SendAssetTransactionPreviewViewController {
     private func checkIfAddressIsValidForTransaction(_ address: String) {
+        guard let selectedAccount = selectedAccount else {
+            return
+        }
+        
         if !AlgorandSDK().isValidAddress(address) {
             guard let api = api else {
                 return
@@ -220,8 +229,10 @@ extension SendAssetTransactionPreviewViewController {
         api?.fetchAccount(with: AccountFetchDraft(publicKey: address)) { fetchAccountResponse in
             switch fetchAccountResponse {
             case let .success(receiverAccount):
-                SVProgressHUD.showSuccess(withStatus: "title-done-lowercased".localized)
-                SVProgressHUD.dismiss()
+                if selectedAccount.type != .ledger {
+                    self.dismissProgressIfNeeded()
+                }
+                
                 if let assets = receiverAccount.assets {
                     guard let assetId = self.assetDetail.id else {
                         return
@@ -238,8 +249,7 @@ extension SendAssetTransactionPreviewViewController {
                     self.presentAssetNotSupportedAlert(receiverAddress: address)
                 }
             case .failure:
-                SVProgressHUD.showError(withStatus: nil)
-                SVProgressHUD.dismiss()
+                self.dismissProgressIfNeeded()
             }
         }
     }
@@ -303,10 +313,12 @@ extension SendAssetTransactionPreviewViewController {
     private func composeTransactionData() {
         guard let selectedAccount = selectedAccount,
             let assetId = assetDetail.id,
-            let toAccount = getReceiverAccount()?.address,
-            let transactionController = transactionController else {
+            let toAccount = getReceiverAccount()?.address else {
             return
         }
+
+        SVProgressHUD.show(withStatus: "title-loading".localized)
+        validateTimer()
         
         transactionController.delegate = self
         let transaction = AssetTransactionSendDraft(
@@ -318,8 +330,8 @@ extension SendAssetTransactionPreviewViewController {
             isVerifiedAsset: assetDetail.isVerified
         )
                
-        transactionController.setAssetTransactionDraft(transaction)
-        transactionController.composeAssetTransactionData(transactionType: .assetTransaction)
+        transactionController.setTransactionDraft(transaction)
+        transactionController.getTransactionParamsAndComposeTransactionData(for: .assetTransaction)
     }
 }
 

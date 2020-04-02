@@ -24,6 +24,8 @@ class IntroductionView: BaseView {
     
     private lazy var createAccountButton = MainButton(title: "introduction-create-title".localized)
     
+    private lazy var pairLedgerAccountButton = MainButton(title: "introduction-title-pair-ledger".localized)
+    
     private lazy var subtitleLabel: UILabel = {
         UILabel()
             .withAlignment(.center)
@@ -59,6 +61,7 @@ class IntroductionView: BaseView {
     
     override func setListeners() {
         createAccountButton.addTarget(self, action: #selector(notifyDelegateToCreateAccount), for: .touchUpInside)
+        pairLedgerAccountButton.addTarget(self, action: #selector(notifyDelegateToPairLedgerAccount), for: .touchUpInside)
         recoverButton.addTarget(self, action: #selector(notifyDelegateToRecoverAccount), for: .touchUpInside)
         closeButton.addTarget(self, action: #selector(notifyDelegateToClose), for: .touchUpInside)
     }
@@ -71,6 +74,7 @@ class IntroductionView: BaseView {
         setupLogoImageViewLayout()
         setupWelcomeLabelLayout()
         setupCreateAccountButtonLayout()
+        setupPairLedgerAccountButtonLayout()
         setupSubtitleLabelLayout()
         setupRecoverButtonLayout()
         
@@ -110,11 +114,21 @@ extension IntroductionView {
         }
     }
     
+    private func setupPairLedgerAccountButtonLayout() {
+        addSubview(pairLedgerAccountButton)
+        
+        pairLedgerAccountButton.snp.makeConstraints { make in
+            make.top.equalTo(createAccountButton.snp.bottom).offset(layout.current.bottomInset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
+            make.centerX.equalToSuperview()
+        }
+    }
+    
     private func setupSubtitleLabelLayout() {
         addSubview(subtitleLabel)
         
         subtitleLabel.snp.makeConstraints { make in
-            make.top.equalTo(createAccountButton.snp.bottom).offset(layout.current.buttonMinimumTopInset)
+            make.top.equalTo(pairLedgerAccountButton.snp.bottom).offset(layout.current.buttonMinimumTopInset)
             make.centerX.equalToSuperview()
         }
     }
@@ -147,6 +161,11 @@ extension IntroductionView {
     @objc
     func notifyDelegateToCreateAccount() {
         delegate?.introductionViewDidTapCreateAccountButton(self)
+    }
+    
+    @objc
+    func notifyDelegateToPairLedgerAccount() {
+        delegate?.introductionViewDidTapPairLedgerAccountButton(self)
     }
 
     @objc
@@ -183,6 +202,7 @@ extension IntroductionView {
 
 protocol IntroductionViewDelegate: class {
     func introductionViewDidTapCreateAccountButton(_ introductionView: IntroductionView)
+    func introductionViewDidTapPairLedgerAccountButton(_ introductionView: IntroductionView)
     func introductionViewDidTapRecoverButton(_ introductionView: IntroductionView)
     func introductionViewDidTapCloseButton(_ introductionView: IntroductionView)
 }
