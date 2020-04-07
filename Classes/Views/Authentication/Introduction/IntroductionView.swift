@@ -8,35 +8,9 @@
 
 import UIKit
 
-protocol IntroductionViewDelegate: class {
-    
-    func introductionViewDidTapCreateAccountButton(_ introductionView: IntroductionView)
-    func introductionViewDidTapRecoverButton(_ introductionView: IntroductionView)
-    func introductionViewDidTapCloseButton(_ introductionView: IntroductionView)
-}
-
 class IntroductionView: BaseView {
     
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let logoInset: CGFloat = 100.0 * verticalScale
-        let verticalInset: CGFloat = 25.0 * verticalScale
-        let createButtonTopInset: CGFloat = 200.0 * verticalScale
-        let bottomInset: CGFloat = 20.0 * verticalScale
-        let minimumHorizontalInset: CGFloat = 20.0
-        let buttonMinimumTopInset: CGFloat = 40.0 * verticalScale
-        let recoverButtonTopInset: CGFloat = 13.0 * verticalScale
-        let closeButtonMinimumTopInset: CGFloat = 35.0 * verticalScale
-        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
-    }
-    
     private let layout = Layout<LayoutConstants>()
-    
-    private enum Colors {
-        static let recoverButtonColor = rgba(0.04, 0.05, 0.07, 0.57)
-        static let gradientColor = rgb(0.9, 0.9, 0.93)
-    }
-    
-    // MARK: Components
     
     private lazy var logoImageView = UIImageView(image: img("icon-logo-small"))
     
@@ -48,10 +22,9 @@ class IntroductionView: BaseView {
             .withAlignment(.center)
     }()
     
-    private lazy var createAccountButton: MainButton = {
-        let button = MainButton(title: "introduction-create-title".localized)
-        return button
-    }()
+    private lazy var createAccountButton = MainButton(title: "introduction-create-title".localized)
+    
+    private lazy var pairLedgerAccountButton = MainButton(title: "introduction-title-pair-ledger".localized)
     
     private lazy var subtitleLabel: UILabel = {
         UILabel()
@@ -86,15 +59,12 @@ class IntroductionView: BaseView {
         super.init(frame: .zero)
     }
     
-    // MARK: Configuration
-    
     override func setListeners() {
-        createAccountButton.addTarget(self, action: #selector(notifyDelegateToCreateAccountButtonTapped), for: .touchUpInside)
-        recoverButton.addTarget(self, action: #selector(notifyDelegateToRecoverButtonTapped), for: .touchUpInside)
-        closeButton.addTarget(self, action: #selector(notifyDelegateToCloseButtonTapped), for: .touchUpInside)
+        createAccountButton.addTarget(self, action: #selector(notifyDelegateToCreateAccount), for: .touchUpInside)
+        pairLedgerAccountButton.addTarget(self, action: #selector(notifyDelegateToPairLedgerAccount), for: .touchUpInside)
+        recoverButton.addTarget(self, action: #selector(notifyDelegateToRecoverAccount), for: .touchUpInside)
+        closeButton.addTarget(self, action: #selector(notifyDelegateToClose), for: .touchUpInside)
     }
-    
-    // MARK: Layout
     
     override func configureAppearance() {
         backgroundColor = .white
@@ -104,6 +74,7 @@ class IntroductionView: BaseView {
         setupLogoImageViewLayout()
         setupWelcomeLabelLayout()
         setupCreateAccountButtonLayout()
+        setupPairLedgerAccountButtonLayout()
         setupSubtitleLabelLayout()
         setupRecoverButtonLayout()
         
@@ -111,7 +82,9 @@ class IntroductionView: BaseView {
             setupCloseButtonLayout()
         }
     }
-    
+}
+
+extension IntroductionView {
     private func setupLogoImageViewLayout() {
         addSubview(logoImageView)
         
@@ -141,11 +114,21 @@ class IntroductionView: BaseView {
         }
     }
     
+    private func setupPairLedgerAccountButtonLayout() {
+        addSubview(pairLedgerAccountButton)
+        
+        pairLedgerAccountButton.snp.makeConstraints { make in
+            make.top.equalTo(createAccountButton.snp.bottom).offset(layout.current.bottomInset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
+            make.centerX.equalToSuperview()
+        }
+    }
+    
     private func setupSubtitleLabelLayout() {
         addSubview(subtitleLabel)
         
         subtitleLabel.snp.makeConstraints { make in
-            make.top.equalTo(createAccountButton.snp.bottom).offset(layout.current.buttonMinimumTopInset)
+            make.top.equalTo(pairLedgerAccountButton.snp.bottom).offset(layout.current.buttonMinimumTopInset)
             make.centerX.equalToSuperview()
         }
     }
@@ -172,21 +155,54 @@ class IntroductionView: BaseView {
             make.bottom.equalToSuperview().inset(layout.current.bottomInset + safeAreaBottom)
         }
     }
-    
-    // MARK: Actions
+}
+
+extension IntroductionView {
+    @objc
+    func notifyDelegateToCreateAccount() {
+        delegate?.introductionViewDidTapCreateAccountButton(self)
+    }
     
     @objc
-    func notifyDelegateToCreateAccountButtonTapped() {
-        delegate?.introductionViewDidTapCreateAccountButton(self)
+    func notifyDelegateToPairLedgerAccount() {
+        delegate?.introductionViewDidTapPairLedgerAccountButton(self)
     }
 
     @objc
-    func notifyDelegateToRecoverButtonTapped() {
+    func notifyDelegateToRecoverAccount() {
         delegate?.introductionViewDidTapRecoverButton(self)
     }
     
     @objc
-    func notifyDelegateToCloseButtonTapped() {
+    func notifyDelegateToClose() {
         delegate?.introductionViewDidTapCloseButton(self)
     }
+}
+
+extension IntroductionView {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let logoInset: CGFloat = 100.0 * verticalScale
+        let verticalInset: CGFloat = 25.0 * verticalScale
+        let createButtonTopInset: CGFloat = 200.0 * verticalScale
+        let bottomInset: CGFloat = 20.0 * verticalScale
+        let minimumHorizontalInset: CGFloat = 20.0
+        let buttonMinimumTopInset: CGFloat = 40.0 * verticalScale
+        let recoverButtonTopInset: CGFloat = 13.0 * verticalScale
+        let closeButtonMinimumTopInset: CGFloat = 35.0 * verticalScale
+        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
+    }
+}
+
+extension IntroductionView {
+    private enum Colors {
+        static let recoverButtonColor = rgba(0.04, 0.05, 0.07, 0.57)
+        static let gradientColor = rgb(0.9, 0.9, 0.93)
+    }
+}
+
+protocol IntroductionViewDelegate: class {
+    func introductionViewDidTapCreateAccountButton(_ introductionView: IntroductionView)
+    func introductionViewDidTapPairLedgerAccountButton(_ introductionView: IntroductionView)
+    func introductionViewDidTapRecoverButton(_ introductionView: IntroductionView)
+    func introductionViewDidTapCloseButton(_ introductionView: IntroductionView)
 }

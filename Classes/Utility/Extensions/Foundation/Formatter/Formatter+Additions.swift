@@ -53,50 +53,6 @@ extension Formatter {
         return formatter
     }
     
-    static let numberToStringFormatter: NumberFormatter = {
-        let formatter = NumberFormatter()
-        formatter.groupingSeparator = ""
-        formatter.currencySymbol = ""
-        formatter.locale = Locale(identifier: "en_US")
-        formatter.numberStyle = .currencyAccounting
-        formatter.minimumFractionDigits = 2
-        formatter.maximumFractionDigits = 6
-        return formatter
-    }()
-    
-    static let separatorForBidInput: NumberFormatter = {
-        let formatter = NumberFormatter()
-        formatter.groupingSeparator = ","
-        formatter.currencySymbol = "$"
-        formatter.locale = Locale(identifier: "en_US")
-        formatter.numberStyle = .currencyAccounting
-        formatter.minimumFractionDigits = 2
-        formatter.maximumFractionDigits = 2
-        return formatter
-    }()
-    
-    static let twoDecimalFormatter: NumberFormatter = {
-        let formatter = NumberFormatter()
-        formatter.groupingSeparator = ","
-        formatter.locale = Locale(identifier: "en_US")
-        formatter.minimumIntegerDigits = 1
-        formatter.minimumFractionDigits = 2
-        formatter.maximumFractionDigits = 2
-        return formatter
-    }()
-    
-    static let depositAmountFormatter: NumberFormatter = {
-        let formatter = NumberFormatter()
-        formatter.groupingSeparator = ","
-        formatter.currencySymbol = ""
-        formatter.locale = Locale(identifier: "en_US")
-        formatter.numberStyle = .currency
-        formatter.minimumIntegerDigits = 1
-        formatter.minimumFractionDigits = 2
-        formatter.maximumFractionDigits = 2
-        return formatter
-    }()
-    
     static let cryptoCurrencyFormatter: NumberFormatter = {
         let formatter = NumberFormatter()
         formatter.groupingSeparator = ","

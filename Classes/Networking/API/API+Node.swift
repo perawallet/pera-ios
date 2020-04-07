@@ -10,7 +10,7 @@ import Magpie
 
 extension API {
     @discardableResult
-    func checkHealth(with draft: NodeTestDraft, then handler: BoolHandler? = nil) -> EndpointOperatable? {
+    func checkNodeHealth(with draft: NodeTestDraft, then handler: BoolHandler? = nil) -> EndpointOperatable? {
         let resultHandler: Endpoint.RawResultHandler = { result in
             switch result {
             case .success:
@@ -38,7 +38,10 @@ extension API {
     }
     
     @discardableResult
-    func waitRound(with draft: WaitRoundDraft, then handler: @escaping Endpoint.DefaultResultHandler<RoundDetail>) -> EndpointOperatable {
+    func waitRound(
+        with draft: WaitRoundDraft,
+        then handler: @escaping Endpoint.DefaultResultHandler<RoundDetail>
+    ) -> EndpointOperatable {
         return Endpoint(path: Path("/v1/status/wait-for-block-after/\(draft.round)"))
             .httpMethod(.get)
             .httpHeaders(algorandAuthenticatedHeaders())

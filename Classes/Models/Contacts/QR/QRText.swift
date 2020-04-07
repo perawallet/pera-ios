@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct QRText: Codable {
+class QRText: Codable {
     let mode: QRMode
     let version = "1.0"
     let address: String?
@@ -26,7 +26,7 @@ struct QRText: Codable {
         self.asset = asset
     }
     
-    init(from decoder: Decoder) throws {
+    required init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         
         if try values.decodeIfPresent(String.self, forKey: .mnemonic) != nil {

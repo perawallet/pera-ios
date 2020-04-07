@@ -44,7 +44,9 @@ extension API {
     }
     
     @discardableResult
-    func getVerifiedAssets(then handler: @escaping Endpoint.DefaultResultHandler<VerifiedAssetList>) -> EndpointOperatable {
+    func getVerifiedAssets(
+        then handler: @escaping Endpoint.DefaultResultHandler<VerifiedAssetList>
+    ) -> EndpointOperatable {
         return Endpoint(path: Path("/api/verified-assets/"))
             .httpMethod(.get)
             .base(Environment.current.mobileApi)

@@ -27,26 +27,28 @@ indirect enum Screen {
     case addContact(mode: AddContactViewController.Mode)
     case contactDetail(contact: Contact)
     case contactQRDisplay(contact: Contact)
-    case sendAlgosTransactionPreview(account: Account?, receiver: AlgosReceiverState)
-    case sendAssetTransactionPreview(
-        account: Account?,
-        receiver: AlgosReceiverState,
-        assetDetail: AssetDetail,
-        isMaxTransaction: Bool = false
+    case sendAlgosTransactionPreview(account: Account?, receiver: AssetReceiverState)
+    case sendAssetTransactionPreview(account: Account?, receiver: AssetReceiverState, assetDetail: AssetDetail, isMaxTransaction: Bool)
+    case sendAlgosTransaction(
+        algosTransactionSendDraft: AlgosTransactionSendDraft,
+        transactionController: TransactionController,
+        receiver: AssetReceiverState
     )
-    case sendTransaction(algosTransaction: TransactionPreviewDraft?, assetTransaction: AssetTransactionDraft?, receiver: AlgosReceiverState)
-    case requestTransactionPreview(account: Account, assetDetail: AssetDetail?, isAlgoTransaction: Bool)
-    case requestTransaction(transaction: TransactionPreviewDraft)
+    case sendAssetTransaction(
+        assetTransactionSendDraft: AssetTransactionSendDraft,
+        transactionController: TransactionController,
+        receiver: AssetReceiverState
+    )
+    case requestAlgosTransactionPreview(account: Account)
+    case requestAssetTransactionPreview(account: Account, assetDetail: AssetDetail)
+    case requestAlgosTransaction(algosTransactionRequestDraft: AlgosTransactionRequestDraft)
+    case requestAssetTransaction(assetTransactionRequestDraft: AssetTransactionRequestDraft)
     case historyResults(draft: HistoryDraft)
     case nodeSettings(mode: NodeSettingsViewController.Mode)
     case addNode
     case editNode(node: Node)
     case splash
     case transactionDetail(account: Account, transaction: Transaction, transactionType: TransactionType, assetDetail: AssetDetail?)
-    case auctionDetail(auction: Auction, user: AuctionUser, activeAuction: ActiveAuction)
-    case pastAuctionDetail(auction: Auction, user: AuctionUser, activeAuction: ActiveAuction)
-    case balance(user: AuctionUser)
-    case deposit(user: AuctionUser)
     case feedback
     case addAsset(account: Account)
     case removeAsset(account: Account)
@@ -56,16 +58,25 @@ indirect enum Screen {
     case alert(mode: AlertViewController.Mode, alertConfigurator: AlertViewConfigurator)
     case rewardDetail(account: Account)
     case assetList(account: Account)
+    case verifiedAssetInformation
+    case ledgerTutorial(mode: AccountSetupMode)
+    case ledgerDeviceList(mode: AccountSetupMode)
+    case ledgerTroubleshoot
+    case ledgerPairing(mode: AccountSetupMode, address: String, connectedDeviceId: UUID)
+    case ledgerApproval(mode: LedgerApprovalViewController.Mode)
+    case ledgerTroubleshootBluetooth
+    case ledgerTroubleshootLedgerConnection
+    case ledgerTroubleshootInstallApp
+    case ledgerTroubleshootOpenApp
+    case termsAndServices
 }
 
 extension Screen {
-    
     enum Transition {
     }
 }
 
 extension Screen.Transition {
-    
     enum Open: Equatable {
         case push
         case present
@@ -87,7 +98,11 @@ extension Screen.Transition {
                 return true
             case (.present, .present):
                 return true
+            case (.presentWithoutNavigationController, .presentWithoutNavigationController):
+                return true
             case (.launch, .launch):
+                return true
+            case (.set, .set):
                 return true
             case (.customPresent, .customPresent):
                 return false

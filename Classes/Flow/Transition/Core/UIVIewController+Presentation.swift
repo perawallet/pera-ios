@@ -9,7 +9,6 @@
 import UIKit
 
 extension UIViewController {
-    
     var modalPresenter: ModalPresenterInteractable? {
         return (navigationController ?? self).presentationController as? ModalPresenterInteractable
     }

@@ -14,7 +14,6 @@ class CardModalAnimator: AnimatorObjectType {
     
     required init(config: Configuration) {
         self.config = config
-        
         super.init()
     }
     

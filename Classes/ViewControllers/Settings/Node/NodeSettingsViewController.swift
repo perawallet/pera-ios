@@ -29,12 +29,12 @@ class NodeSettingsViewController: BaseViewController {
     
     private var latestActiveNode: Node?
     
-    private lazy var nodeManager: NodeManager? = {
+    private lazy var nodeController: NodeController = {
         guard let api = self.api else {
-            return nil
+            fatalError("API should be initialized.")
         }
-        let manager = NodeManager(api: api)
-        return manager
+        let nodeController = NodeController(api: api)
+        return nodeController
     }()
     
     init(mode: Mode, configuration: ViewControllerConfiguration) {
@@ -238,7 +238,7 @@ extension NodeSettingsViewController {
             }
         }
         
-        nodeManager?.checkNodes { isHealthy in
+        nodeController.checkNodeHealth { isHealthy in
             if isHealthy {
                 self.latestActiveNode = self.activeNode()
                 

@@ -8,12 +8,12 @@
 
 import Magpie
 
-struct TransactionParams: Model {
+class TransactionParams: Model {
     let fee: Int64
     let lastRound: Int64
     let genesisHashData: Data?
     
-    init(from decoder: Decoder) throws {
+    required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
         fee = try container.decode(Int64.self, forKey: .fee)

@@ -17,10 +17,6 @@ enum QRMode {
 }
 
 class QRCreationViewController: BaseScrollViewController {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let bottomInset: CGFloat = 20.0
-        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
-    }
     
     private let layout = Layout<LayoutConstants>()
     private let address: String
@@ -60,16 +56,26 @@ class QRCreationViewController: BaseScrollViewController {
             .withTitleEdgeInsets(UIEdgeInsets(top: 0, left: 5.0, bottom: 0, right: 0))
     }()
     
-    private lazy var qrSelectableLabel: QRSelectableLabel = {
-        let qrSelectableLabel = QRSelectableLabel()
-        qrSelectableLabel.delegate = self
-        return qrSelectableLabel
-    }()
+    private lazy var qrSelectableLabel = QRSelectableLabel()
     
     private(set) lazy var qrView: QRView = {
         let qrText = QRText(mode: self.mode, address: self.address, mnemonic: self.mnemonic)
         return QRView(qrText: qrText)
     }()
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if mode == .mnemonic {
+            navigationController?.navigationBar.barTintColor = .white
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        if mode == .mnemonic {
+            navigationController?.navigationBar.barTintColor = SharedColors.warmWhite
+        }
+    }
     
     override func configureAppearance() {
         super.configureAppearance()
@@ -85,16 +91,19 @@ class QRCreationViewController: BaseScrollViewController {
         }
     }
     
+    override func linkInteractors() {
+        super.linkInteractors()
+        qrSelectableLabel.delegate = self
+    }
+    
     override func setListeners() {
         super.setListeners()
-        
         cancelButton.addTarget(self, action: #selector(tap(cancel:)), for: .touchUpInside)
         shareButton.addTarget(self, action: #selector(tap(share:)), for: .touchUpInside)
     }
     
     override func prepareLayout() {
         super.prepareLayout()
-        
         setupQRView()
         setupShareButtonLayout()
         
@@ -103,20 +112,6 @@ class QRCreationViewController: BaseScrollViewController {
         }
         
         setupCancelButtonLayout()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        if mode == .mnemonic {
-            navigationController?.navigationBar.barTintColor = .white
-        }
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        if mode == .mnemonic {
-            navigationController?.navigationBar.barTintColor = SharedColors.warmWhite
-        }
     }
 }
 
@@ -194,5 +189,12 @@ extension QRCreationViewController {
 extension QRCreationViewController: QRSelectableLabelDelegate {
     func qrSelectableLabel(_ qrSelectableLabel: QRSelectableLabel, didTapText text: String) {
         UIPasteboard.general.string = text
+    }
+}
+
+extension QRCreationViewController {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let bottomInset: CGFloat = 20.0
+        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
     }
 }

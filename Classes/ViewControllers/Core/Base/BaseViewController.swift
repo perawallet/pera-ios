@@ -10,8 +10,6 @@ import UIKit
 
 class BaseViewController: UIViewController {
     
-    // MARK: Configuration
-    
     var isStatusBarHidden: Bool = false
     
     var hidesStatusBarWhenAppeared: Bool = false
@@ -45,8 +43,6 @@ class BaseViewController: UIViewController {
         return true
     }
     
-    // MARK: Properties
-    
     private(set) var isViewFirstLoaded = true
     private(set) var isViewAppearing = false
     private(set) var isViewAppeared = false
@@ -55,13 +51,9 @@ class BaseViewController: UIViewController {
     
     let configuration: ViewControllerConfiguration
     
-    // MARK: Initialization
-    
     init(configuration: ViewControllerConfiguration) {
         self.configuration = configuration
-        
         super.init(nibName: nil, bundle: nil)
-        
         configureNavigationBarAppearance()
         beginTracking()
     }
@@ -84,8 +76,6 @@ class BaseViewController: UIViewController {
     func endTracking() {
         NotificationCenter.unobserve(self)
     }
-    
-    // MARK: View Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -117,7 +107,6 @@ class BaseViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         setNeedsStatusBarLayoutUpdateWhenAppearing()
         setNeedsNavigationBarAppearanceUpdateWhenAppearing()
         
@@ -127,14 +116,12 @@ class BaseViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
         isViewAppearing = false
         isViewAppeared = true
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        
         setNeedsStatusBarLayoutUpdateWhenDisappearing()
         
         isViewFirstLoaded = false
@@ -144,7 +131,6 @@ class BaseViewController: UIViewController {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        
         isViewDisappearing = false
         isViewDisappeared = true
     }
@@ -165,7 +151,6 @@ class BaseViewController: UIViewController {
 extension BaseViewController: StatusBarConfigurable {
 }
 
-// MARK: - API Variables
 extension BaseViewController {
     var session: Session? {
         return configuration.session
@@ -174,13 +159,8 @@ extension BaseViewController {
     var api: API? {
         return configuration.api
     }
-    
-    var transactionManager: TransactionManager? {
-        return configuration.transactionManager
-    }
 }
 
 extension BaseViewController: NavigationBarConfigurable {
-    
     typealias BarButtonItemRef = ALGBarButtonItem
 }

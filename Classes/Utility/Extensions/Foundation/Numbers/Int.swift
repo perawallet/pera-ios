@@ -9,7 +9,6 @@
 import Foundation
 
 let algosInMicroAlgos = 1000000
-let maximumMicroAlgos = Int64.max / Int64(algosInMicroAlgos)
 let minimumFee: UInt64 = 1000
 let minimumTransactionMicroAlgosLimit = 100000
 let algosFraction = 6

@@ -7,19 +7,24 @@
 //
 
 import UIKit
-import Crypto
 import SVProgressHUD
 
 class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewController {
     
+    private let viewModel = SendAlgosTransactionPreviewViewModel()
+    
     override func configureAppearance() {
         super.configureAppearance()
-        configureViewForAlgos()
+        title = "send-algos-title".localized
+        viewModel.configure(sendTransactionPreviewView, with: selectedAccount)
+        configureTransactionReceiver()
     }
     
-    override func presentAccountList(isSender: Bool) {
+    override func presentAccountList(accountSelectionState: AccountSelectionState) {
         let accountListViewController = open(
-            .accountList(mode: isSender ? .transactionSender(assetDetail: nil) : .transactionReceiver(assetDetail: nil)),
+            .accountList(
+                mode: accountSelectionState == .sender ? .transactionSender(assetDetail: nil) : .transactionReceiver(assetDetail: nil)
+            ),
             by: .customPresent(
                 presentationStyle: .custom,
                 transitionStyle: nil,
@@ -37,11 +42,11 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
         }
         
         if !sendTransactionPreviewView.transactionReceiverView.passphraseInputView.inputTextView.text.isEmpty {
-            switch receiver {
+            switch assetReceiverState {
             case .contact:
                 break
             default:
-                receiver = .address(
+                assetReceiverState = .address(
                     address: sendTransactionPreviewView.transactionReceiverView.passphraseInputView.inputTextView.text,
                     amount: nil
                 )
@@ -58,19 +63,19 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
             return
         }
             
-        if selectedAccount.amount <= UInt64(amount.toMicroAlgos) && !isMaxButtonSelected {
+        if selectedAccount.amount <= UInt64(amount.toMicroAlgos) && !isMaxTransaction {
             self.displaySimpleAlertWith(title: "title-error".localized, message: "send-algos-amount-error".localized)
             return
         }
             
-        if !isMaxButtonSelected {
+        if !isMaxTransaction {
             if Int(selectedAccount.amount) - Int(amount.toMicroAlgos) - Int(minimumFee) < minimumTransactionMicroAlgosLimit {
                 self.displaySimpleAlertWith(title: "title-error".localized, message: "send-algos-minimum-amount-error".localized)
                 return
             }
         }
             
-        if isMaxButtonSelected {
+        if isMaxTransaction {
             if selectedAccount.doesAccountHasParticipationKey() {
                 presentAccountRemoveWarning()
                 return
@@ -82,14 +87,26 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
         composeTransactionData()
     }
     
-    override func transactionManagerDidComposedAlgoTransactionData(
-        _ transactionManager: TransactionManager,
-        forTransaction draft: TransactionPreviewDraft?
+    override func transactionController(
+        _ transactionController: TransactionController,
+        didComposedTransactionDataFor draft: TransactionSendDraft?
     ) {
-        guard let transactionDraft = draft else {
+        guard let algosTransactionDraft = draft as? AlgosTransactionSendDraft else {
             return
         }
-        open(.sendTransaction(algosTransaction: transactionDraft, assetTransaction: nil, receiver: receiver), by: .push)
+        
+        if algosTransactionDraft.from.type == .ledger {
+            ledgerApprovalViewController.removeFromParentController()
+        }
+        
+        open(
+            .sendAlgosTransaction(
+                algosTransactionSendDraft: algosTransactionDraft,
+                transactionController: transactionController,
+                receiver: assetReceiverState
+            ),
+            by: .push
+        )
     }
     
     override func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, then handler: EmptyHandler?) {
@@ -100,7 +117,7 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
         if let amountFromQR = qrText.amount {
             displayQRAlert(for: amountFromQR, with: qrText.asset)
         }
-        receiver = .address(address: qrAddress, amount: nil)
+        assetReceiverState = .address(address: qrAddress, amount: nil)
         
         if let handler = handler {
             handler()
@@ -108,14 +125,7 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
     }
     
     override func updateSelectedAccountForSender(_ account: Account) {
-        sendTransactionPreviewView.transactionParticipantView.accountSelectionView.detailLabel.text = account.name
-        sendTransactionPreviewView.transactionParticipantView.assetSelectionView.set(amount: account.amount.toAlgos)
-        sendTransactionPreviewView.amountInputView.maxAmount = account.amount.toAlgos
-        
-        if isMaxButtonSelected {
-            sendTransactionPreviewView.amountInputView.inputTextField.text =
-                sendTransactionPreviewView.transactionParticipantView.assetSelectionView.amountView.amountLabel.text
-        }
+        viewModel.update(sendTransactionPreviewView, with: account, isMaxTransaction: isMaxTransaction)
     }
     
     private func displayQRAlert(for amountFromQR: Int64, with asset: Int64?) {
@@ -146,19 +156,11 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
 }
 
 extension SendAlgosTransactionPreviewViewController {
-    private func configureViewForAlgos() {
-        title = "send-algos-title".localized
-        
-        sendTransactionPreviewView.transactionParticipantView.assetSelectionView.detailLabel.text = "asset-algos-title".localized
-        sendTransactionPreviewView.transactionParticipantView.assetSelectionView.verifiedImageView.isHidden = false
-        sendTransactionPreviewView.transactionParticipantView.assetSelectionView.amountView.algoIconImageView.tintColor =
-            SharedColors.turquois
-        updateSelectedAccountAppearance()
-        
-        switch receiver {
+    private func configureTransactionReceiver() {
+        switch assetReceiverState {
         case .initial:
             amount = 0.00
-            sendTransactionPreviewView.transactionReceiverView.state = receiver
+            sendTransactionPreviewView.transactionReceiverView.state = assetReceiverState
         case let .address(_, amount):
             if let sendAmount = amount,
                 let amountInt = Int(sendAmount) {
@@ -167,23 +169,10 @@ extension SendAlgosTransactionPreviewViewController {
                 sendTransactionPreviewView.amountInputView.inputTextField.text = self.amount.toDecimalStringForLabel
             }
             
-            sendTransactionPreviewView.transactionReceiverView.state = receiver
-        case .myAccount:
-            sendTransactionPreviewView.transactionReceiverView.state = receiver
-        case .contact:
-            sendTransactionPreviewView.transactionReceiverView.state = receiver
+            sendTransactionPreviewView.transactionReceiverView.state = assetReceiverState
+        case .myAccount, .contact:
+            sendTransactionPreviewView.transactionReceiverView.state = assetReceiverState
         }
-    }
-    
-    private func updateSelectedAccountAppearance() {
-        guard let selectedAccount = selectedAccount else {
-            return
-        }
-        
-        sendTransactionPreviewView.transactionParticipantView.accountSelectionView.detailLabel.text = selectedAccount.name
-        sendTransactionPreviewView.transactionParticipantView.assetSelectionView.set(amount: selectedAccount.amount.toAlgos)
-
-        sendTransactionPreviewView.amountInputView.maxAmount = selectedAccount.amount.toAlgos
     }
 }
 
@@ -208,7 +197,7 @@ extension SendAlgosTransactionPreviewViewController {
     }
     
     private func composeTransactionData() {
-        transactionManager?.delegate = self
+        transactionController.delegate = self
         guard let selectedAccount = selectedAccount else {
             return
         }
@@ -216,7 +205,7 @@ extension SendAlgosTransactionPreviewViewController {
         if amount.toMicroAlgos < minimumTransactionMicroAlgosLimit {
             var receiverAddress: String
                    
-            switch receiver {
+            switch assetReceiverState {
             case let .address(address, _):
                 receiverAddress = address
             case let .contact(contact):
@@ -234,7 +223,7 @@ extension SendAlgosTransactionPreviewViewController {
                    
             receiverAddress = receiverAddress.trimmingCharacters(in: .whitespacesAndNewlines)
             
-            if !UtilsIsValidAddress(receiverAddress) {
+            if !AlgorandSDK().isValidAddress(receiverAddress) {
                 guard let api = api else {
                     return
                 }
@@ -250,61 +239,52 @@ extension SendAlgosTransactionPreviewViewController {
                    
             SVProgressHUD.show(withStatus: "title-loading".localized)
             self.api?.fetchAccount(with: receiverFetchDraft) { accountResponse in
-                SVProgressHUD.dismiss()
-                       
+                if selectedAccount.type != .ledger {
+                    self.dismissProgressIfNeeded()
+                }
+                
                 switch accountResponse {
                 case let .failure(error):
-                    if !self.isConnectedToInternet {
-                        self.displaySimpleAlertWith(title: "title-error".localized, message: "title-internet-connection".localized)
-                        return
-                    }
+                    self.dismissProgressIfNeeded()
+                    
                     self.displaySimpleAlertWith(title: "title-error".localized, message: error.localizedDescription)
                 case let .success(account):
                     if account.amount == 0 {
-                        self.displaySimpleAlertWith(title: "title-error".localized,
-                                                    message: "send-algos-minimum-amount-error-new-account".localized)
-                    } else {
-                        let transaction = TransactionPreviewDraft(
-                            fromAccount: selectedAccount,
-                            amount: self.amount,
-                            identifier: nil,
-                            fee: nil,
-                            isMaxTransaction: self.isMaxButtonSelected
-                        )
+                        self.dismissProgressIfNeeded()
                         
-                        guard let account = self.getAccount(),
-                            let transactionManager = self.transactionManager else {
-                            return
-                        }
-                               
-                        transactionManager.setTransactionDraft(transaction)
-                        transactionManager.composeAlgoTransactionData(
-                            for: account,
-                            isMaxValue: self.isMaxButtonSelected
+                        self.displaySimpleAlertWith(
+                            title: "title-error".localized,
+                            message: "send-algos-minimum-amount-error-new-account".localized
                         )
+                    } else {
+                        self.composeAlgosTransactionData(for: selectedAccount)
                     }
                 }
             }
             return
         } else {
-            let transaction = TransactionPreviewDraft(
-                fromAccount: selectedAccount,
-                amount: amount,
-                identifier: nil,
-                fee: nil,
-                isMaxTransaction: isMaxButtonSelected
-            )
-                   
-            guard let account = getAccount(),
-                let transactionManager = transactionManager else {
-                return
-            }
-                   
-            transactionManager.setTransactionDraft(transaction)
-            transactionManager.composeAlgoTransactionData(
-                for: account,
-                isMaxValue: isMaxButtonSelected
-            )
+            SVProgressHUD.show(withStatus: "title-loading".localized)
+            composeAlgosTransactionData(for: selectedAccount)
         }
+    }
+    
+    private func composeAlgosTransactionData(for selectedAccount: Account) {
+        guard let account = getReceiverAccount() else {
+            return
+        }
+        
+        validateTimer()
+        
+        let transactionDraft = AlgosTransactionSendDraft(
+            from: selectedAccount,
+            toAccount: account.address,
+            amount: amount,
+            fee: nil,
+            isMaxTransaction: isMaxTransaction,
+            identifier: nil
+        )
+        
+        transactionController.setTransactionDraft(transactionDraft)
+        transactionController.getTransactionParamsAndComposeTransactionData(for: .algosTransaction)
     }
 }

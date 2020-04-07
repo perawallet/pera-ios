@@ -222,12 +222,7 @@ extension AddContactViewController: AddContactViewDelegate {
                     return
                 }
                 
-                NotificationCenter.default.post(
-                    name: Notification.Name.ContactAddition,
-                    object: self,
-                    userInfo: ["contact": contact]
-                )
-                
+                NotificationCenter.default.post(name: .ContactAddition, object: self, userInfo: ["contact": contact])
                 self.closeScreen(by: .pop)
             default:
                 break
@@ -243,14 +238,8 @@ extension AddContactViewController: AddContactViewDelegate {
                     return
                 }
                 
-                NotificationCenter.default.post(
-                    name: Notification.Name.ContactEdit,
-                    object: self,
-                    userInfo: ["contact": contact]
-                )
-                
+                NotificationCenter.default.post(name: .ContactEdit, object: self, userInfo: ["contact": contact])
                 self.delegate?.addContactViewController(self, didSave: contact)
-                
                 self.closeScreen(by: .dismiss)
             default:
                 break

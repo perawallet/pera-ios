@@ -96,6 +96,8 @@ extension ContactInfoViewController {
         api?.fetchAccount(with: AccountFetchDraft(publicKey: address)) { [weak self] response in
             switch response {
             case let .success(account):
+                self?.contactAccount = account
+                
                 if account.isThereAnyDifferentAsset() {
                     if let assets = account.assets {
                         for (index, _) in assets {
@@ -137,6 +139,7 @@ extension ContactInfoViewController {
                     SVProgressHUD.dismiss()
                 }
             case .failure:
+                self?.contactAccount = nil
                 SVProgressHUD.dismiss()
             }
         }
@@ -248,29 +251,26 @@ extension ContactInfoViewController: ContactInfoViewDelegate {
             explanation: "contacts-delete-contact-alert-explanation".localized,
             actionTitle: "title-yes".localized) {
                 self.contact.remove(entity: Contact.entityName)
-                
-                NotificationCenter.default.post(
-                    name: Notification.Name.ContactDeletion,
-                    object: self,
-                    userInfo: ["contact": self.contact]
-                )
-                
+                NotificationCenter.default.post(name: .ContactDeletion, object: self, userInfo: ["contact": self.contact])
                 self.popScreen()
                 return
         }
         
-        let viewController = AlertViewController(mode: .destructive, alertConfigurator: configurator, configuration: configuration)
-        viewController.modalPresentationStyle = .overCurrentContext
-        viewController.modalTransitionStyle = .crossDissolve
+        let viewController = open(
+            .alert(mode: .destructive, alertConfigurator: configurator),
+            by: .customPresentWithoutNavigationController(
+                presentationStyle: .overCurrentContext,
+                transitionStyle: .crossDissolve,
+                transitioningDelegate: nil
+            )
+        ) as? AlertViewController
         
-        if let alertView = viewController.alertView as? DestructiveAlertView {
+        if let alertView = viewController?.alertView as? DestructiveAlertView {
             alertView.cancelButton.setTitleColor(.white, for: .normal)
             alertView.cancelButton.setBackgroundImage(img("bg-black-cancel"), for: .normal)
             alertView.actionButton.setTitleColor(.white, for: .normal)
             alertView.actionButton.setBackgroundImage(img("bg-purple-action"), for: .normal)
         }
-        
-        tabBarController?.present(viewController, animated: true, completion: nil)
     }
 }
 
@@ -285,10 +285,17 @@ extension ContactInfoViewController: AccountListViewControllerDelegate {
     func accountListViewController(_ viewController: AccountListViewController, didSelectAccount account: Account) {
         if let assetDetail = selectedAsset {
             selectedAsset = nil
-            open(.sendAssetTransactionPreview(account: account, receiver: .contact(contact), assetDetail: assetDetail), by: .push)
+            open(
+                .sendAssetTransactionPreview(
+                    account: account,
+                    receiver: .contact(contact),
+                    assetDetail: assetDetail,
+                    isMaxTransaction: false
+                ),
+                by: .push
+            )
         } else {
             open(.sendAlgosTransactionPreview(account: account, receiver: .contact(contact)), by: .push)
         }
-        
     }
 }

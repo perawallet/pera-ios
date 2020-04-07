@@ -2,7 +2,21 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "bg-black-button-big.pdf"
+      "filename" : "bg-black-button-big.pdf",
+      "resizing" : {
+        "mode" : "9-part",
+        "center" : {
+          "mode" : "tile",
+          "width" : 1,
+          "height" : 1
+        },
+        "cap-insets" : {
+          "bottom" : 25,
+          "top" : 24,
+          "right" : 25,
+          "left" : 25
+        }
+      }
     }
   ],
   "info" : {

@@ -17,11 +17,9 @@ class NodeHealthOperation: AsyncOperation {
     var onStarted: EmptyHandler?
     var onCompleted: BoolHandler?
     
-    // MARK: Initialization
     init(node: Node, api: API) {
         self.address = node.address
         self.token = node.token
-        
         self.api = api
         super.init()
     }
@@ -29,13 +27,11 @@ class NodeHealthOperation: AsyncOperation {
     init(address: String?, token: String?, api: API) {
         self.address = address
         self.token = token
-        
         self.api = api
         super.init()
     }
     
     override func main() {
-        
         if isCancelled {
             return
         }
@@ -43,23 +39,16 @@ class NodeHealthOperation: AsyncOperation {
         guard let address = self.address,
             let token = self.token else {
                 self.onCompleted?(false)
-                self.finish()
+                self.state = .finished
             return
         }
 
         let nodeTestDraft = NodeTestDraft(address: address, token: token)
-        api.checkHealth(with: nodeTestDraft) { isHealthy in
+        api.checkNodeHealth(with: nodeTestDraft) { isHealthy in
             self.onCompleted?(isHealthy)
-            
-            self.finish()
+            self.state = .finished
         }
         
         onStarted?()
-    }
-    
-    // MARK: Public
-    
-    func finish(with error: Error? = nil) {
-        state = .finished
     }
 }

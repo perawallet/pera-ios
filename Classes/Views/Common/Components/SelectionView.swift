@@ -37,6 +37,8 @@ class SelectionView: BaseView {
         return view
     }()
     
+    private lazy var leftImageView = UIImageView()
+    
     private(set) lazy var detailLabel: UILabel = {
         UILabel()
             .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 13.0)))
@@ -66,10 +68,18 @@ class SelectionView: BaseView {
         return button
     }()
     
+    private let hasLeftImageView: Bool
+    
+    init(hasLeftImageView: Bool = false) {
+        self.hasLeftImageView = hasLeftImageView
+        super.init(frame: .zero)
+    }
+    
     override func prepareLayout() {
         setupLeftExplanationLabelLayout()
         setupRightExplanationLabelLayout()
         setupContainerViewLayout()
+        setupLeftImageViewLayout()
         setupRightInputAccessoryButtonLayout()
         setupAmountViewLayout()
         setupDetailLabelLayout()
@@ -113,6 +123,19 @@ extension SelectionView {
         }
     }
     
+    private func setupLeftImageViewLayout() {
+        if !hasLeftImageView {
+            return
+        }
+        
+        containerView.addSubview(leftImageView)
+        
+        leftImageView.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(layout.current.defaultInset)
+            make.centerY.equalToSuperview()
+        }
+    }
+    
     private func setupRightInputAccessoryButtonLayout() {
         containerView.addSubview(rightInputAccessoryButton)
         
@@ -143,7 +166,11 @@ extension SelectionView {
         detailLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
         
         detailLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(layout.current.defaultInset)
+            if hasLeftImageView {
+                make.leading.equalTo(leftImageView.snp.trailing).offset(layout.current.detailLabelLeadingInset)
+            } else {
+                make.leading.equalToSuperview().inset(layout.current.defaultInset)
+            }
             make.top.bottom.equalToSuperview().inset(layout.current.detailVerticalInset)
         }
     }
@@ -177,6 +204,14 @@ extension SelectionView {
             containerView.backgroundColor = Colors.borderColor
         }
     }
+    
+    func setLedgerAccount() {
+        leftImageView.image = img("icon-account-type-ledger")
+    }
+    
+    func setStandardAccount() {
+        leftImageView.image = img("icon-account-type-standard")
+    }
 }
 
 extension SelectionView {
@@ -186,6 +221,7 @@ extension SelectionView {
         let horizontalInset: CGFloat = 30.0
         let verticalInset: CGFloat = 15.0
         let containerViewTopInset: CGFloat = 7.0
+        let detailLabelLeadingInset: CGFloat = 12.0
         let amountViewHeight: CGFloat = 22.0
         let detailVerticalInset: CGFloat = 16.0
         let buttonTrailingInset: CGFloat = 12.0

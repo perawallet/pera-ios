@@ -8,7 +8,7 @@
 
 import Magpie
 
-struct PendingTransactionList: Model {
+class PendingTransactionList: Model {
     var pendingTransactions: PendingTransactions
     var count: Int
 }

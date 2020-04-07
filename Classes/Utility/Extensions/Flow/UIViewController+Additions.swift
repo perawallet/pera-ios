@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SVProgressHUD
 
 extension UIViewController {
     var topMostController: UIViewController? {
@@ -34,9 +35,33 @@ extension UIViewController {
         present(alertController, animated: true)
     }
     
+    func add(_ child: UIViewController) {
+        if child.parent != nil {
+            return
+        }
+        
+        addChild(child)
+        view.addSubview(child.view)
+
+        child.view.snp.makeConstraints { maker in
+            maker.edges.equalToSuperview()
+        }
+
+        child.didMove(toParent: self)
+    }
+
     func removeFromParentController() {
-        self.willMove(toParent: nil)
-        self.removeFromParent()
-        self.view.removeFromSuperview()
+        willMove(toParent: nil)
+        view.removeFromSuperview()
+        removeFromParent()
+    }
+}
+
+// MARK: SVProgessHUD
+extension UIViewController {
+    func dismissProgressIfNeeded() {
+        if SVProgressHUD.isVisible() {
+            SVProgressHUD.dismiss()
+        }
     }
 }

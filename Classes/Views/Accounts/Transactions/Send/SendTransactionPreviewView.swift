@@ -46,9 +46,18 @@ class SendTransactionPreviewView: BaseView {
         return transactionReceiverView
     }()
     
-    private(set) lazy var previewButton = MainButton(title: "title-preview".localized)
+    private(set) lazy var previewButton: MainButton = {
+        if accountType == .ledger {
+            return MainButton(title: "title-preview-and-sign-with-ledger-title".localized)
+        } else {
+            return MainButton(title: "title-preview".localized)
+        }
+    }()
     
-    init(inputFieldFraction: Int = algosFraction) {
+    private let accountType: AccountType
+    
+    init(accountType: AccountType = .standard, inputFieldFraction: Int = algosFraction) {
+        self.accountType = accountType
         self.inputFieldFraction = inputFieldFraction
         super.init(frame: .zero)
     }

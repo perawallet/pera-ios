@@ -7,8 +7,11 @@
 //
 
 import UIKit
+import BetterSegmentedControl
 
 class AssetAdditionView: BaseView {
+    
+    weak var delegate: AssetAdditionViewDelegate?
     
     private let layout = Layout<LayoutConstants>()
     
@@ -19,7 +22,6 @@ class AssetAdditionView: BaseView {
             attributes: [NSAttributedString.Key.foregroundColor: Colors.placeholderColor,
                          NSAttributedString.Key.font: UIFont.font(.overpass, withWeight: .semiBold(size: 13.0))]
         )
-        
         assetInputView.inputTextField.textColor = SharedColors.black
         assetInputView.inputTextField.tintColor = SharedColors.black
         assetInputView.inputTextField.returnKeyType = .done
@@ -27,27 +29,72 @@ class AssetAdditionView: BaseView {
         return assetInputView
     }()
     
+    private lazy var segmentControlContainerView = UIView()
+    
+    private lazy var assetSegmentControl: BetterSegmentedControl = {
+        let segments = [
+            SegmentItem(text: "asset-all-title".localized),
+            SegmentItem(text: "asset-verified-title".localized, image: img("icon-verified"))
+        ]
+        let control = BetterSegmentedControl(
+            frame: .zero,
+            segments: segments,
+            index: 0,
+            options: [
+                .backgroundColor(rgb(0.95, 0.95, 0.96)),
+                .indicatorViewBackgroundColor(.white),
+                .cornerRadius(10.0),
+                .indicatorViewInset(4.0)
+            ]
+        )
+        return control
+    }()
+    
     private(set) lazy var assetsCollectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .vertical
         flowLayout.minimumLineSpacing = 0.0
-        
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = .white
         collectionView.contentInset = .zero
-        
         collectionView.register(AssetSelectionCell.self, forCellWithReuseIdentifier: AssetSelectionCell.reusableIdentifier)
-        
         return collectionView
     }()
     
     private lazy var contentStateView = ContentStateView()
     
+    override func linkInteractors() {
+        assetSegmentControl.addTarget(self, action: #selector(self.segmentedControlValueChanged(_:)), for: .valueChanged)
+    }
+    
     override func prepareLayout() {
         setupAssetInputViewLayout()
+        setupSegmentControlLayout()
         setupAssetsCollectionViewLayout()
+    }
+    
+    override func configureAppearance() {
+        super.configureAppearance()
+        
+        segmentControlContainerView.backgroundColor = .white
+        
+        assetSegmentControl.setIndex(0)
+    }
+}
+
+extension AssetAdditionView {
+    @objc
+    private func segmentedControlValueChanged(_ segmentedControl: BetterSegmentedControl) {
+        switch segmentedControl.index {
+        case 0:
+            delegate?.assetAdditionViewDidTapAllAssets(self)
+        case 1:
+            delegate?.assetAdditionViewDidTapVerifiedAssets(self)
+        default:
+            return
+        }
     }
 }
 
@@ -56,8 +103,24 @@ extension AssetAdditionView {
         addSubview(assetInputView)
         
         assetInputView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.leading.trailing.equalToSuperview()
             make.top.equalToSuperview().inset(layout.current.topInset)
+        }
+    }
+    
+    private func setupSegmentControlLayout() {
+        addSubview(segmentControlContainerView)
+        segmentControlContainerView.snp.makeConstraints { maker in
+            maker.leading.trailing.equalToSuperview()
+            maker.top.equalTo(assetInputView.snp.bottom).offset(layout.current.topInset)
+            maker.height.equalTo(layout.current.segmentControlContainerHeight)
+        }
+        
+        segmentControlContainerView.addSubview(assetSegmentControl)
+        assetSegmentControl.snp.makeConstraints { maker in
+            maker.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            maker.top.equalToSuperview().inset(layout.current.segmentControlTopInset)
+            maker.height.equalTo(layout.current.segmentControlHeight)
         }
     }
 
@@ -66,7 +129,7 @@ extension AssetAdditionView {
         
         assetsCollectionView.snp.makeConstraints { make in
             make.leading.trailing.bottom.equalToSuperview()
-            make.top.equalTo(assetInputView.snp.bottom).offset(layout.current.collectionViewTopInset)
+            make.top.equalTo(segmentControlContainerView.snp.bottom)
         }
         
         assetsCollectionView.backgroundView = contentStateView
@@ -77,13 +140,23 @@ extension AssetAdditionView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let horizontalInset: CGFloat = 15.0
         let topInset: CGFloat = 10.0
+        let unverifiedAssetsButtonInset: CGFloat = 5.0
+        let segmentControlHeight: CGFloat = 48.0
         let inputViewHeight: CGFloat = 50.0
-        let collectionViewTopInset: CGFloat = 17.0
+        let collectionViewTopInset: CGFloat = 15.0
+        let segmentControlContainerHeight = 77.0
+        let segmentControlTopInset = 14.0
     }
 }
 
 extension AssetAdditionView {
     private enum Colors {
         static let placeholderColor = rgba(0.67, 0.67, 0.72, 0.3)
+        static let verifiedButtonColor = rgb(0.29, 0.42, 0.87)
     }
+}
+
+protocol AssetAdditionViewDelegate: class {
+    func assetAdditionViewDidTapVerifiedAssets(_ assetAdditionView: AssetAdditionView)
+    func assetAdditionViewDidTapAllAssets(_ assetAdditionView: AssetAdditionView)
 }

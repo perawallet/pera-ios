@@ -80,8 +80,6 @@ class AssetDetailHeaderView: BaseView {
         return label
     }()
     
-    private(set) lazy var dollarImageView = UIImageView(image: img("icon-dollar-black"))
-    
     private(set) lazy var dollarAmountLabel: UILabel = {
         UILabel()
             .withAlignment(.left)
@@ -164,7 +162,6 @@ class AssetDetailHeaderView: BaseView {
     override func configureAppearance() {
         super.configureAppearance()
         dollarAmountLabel.isHidden = true
-        dollarImageView.isHidden = true
     }
     
     override func setListeners() {
@@ -181,7 +178,6 @@ class AssetDetailHeaderView: BaseView {
         setupAssetNameLabelLayout()
         setupVerifiedImageViewLayout()
         setupAmountLabelLayout()
-        setupDollarImageViewLayout()
         setupDollarAmountLabelLayout()
         setupAssetIdLabelLayout()
         setupSendButtonLayout()
@@ -240,20 +236,11 @@ extension AssetDetailHeaderView {
         }
     }
     
-    private func setupDollarImageViewLayout() {
-        containerView.addSubview(dollarImageView)
-        
-        dollarImageView.snp.makeConstraints { make in
-            make.top.equalTo(assetNameLabel.snp.bottom).offset(layout.current.verticalInset)
-            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
-        }
-    }
-    
     private func setupDollarAmountLabelLayout() {
         containerView.addSubview(dollarAmountLabel)
         
         dollarAmountLabel.snp.makeConstraints { make in
-            make.leading.equalTo(dollarImageView.snp.trailing).offset(layout.current.dollarValueInset)
+            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
             make.top.equalTo(assetNameLabel.snp.bottom).offset(layout.current.amountTopInset)
             make.trailing.lessThanOrEqualToSuperview().inset(layout.current.horizontalInset)
         }

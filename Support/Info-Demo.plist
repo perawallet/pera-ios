@@ -48,6 +48,10 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>Algorand will use Bluetooth to communicate with Ledger X.</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>Algorand will use Bluetooth to communicate with Ledger X.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Algorand will use your camera to scan QR codes.</string>
 	<key>NSFaceIDUsageDescription</key>
@@ -60,10 +64,13 @@
 		<string>AvenirNext-DemiBold.ttf</string>
 		<string>AvenirNext-Medium.ttf</string>
 		<string>AvenirNext-Regular.ttf</string>
+		<string>AvenirNext-BoldItalic.ttf</string>
+		<string>AvenirNext-DemiBoldItalic.ttf</string>
 		<string>Overpass-Bold.otf</string>
 		<string>Overpass-ExtraBold.otf</string>
 		<string>Overpass-Regular.otf</string>
 		<string>Overpass-SemiBold.otf</string>
+		<string>Overpass-SemiBoldItalic.otf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

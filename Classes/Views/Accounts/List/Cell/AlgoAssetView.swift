@@ -12,12 +12,12 @@ class AlgoAssetView: BaseView {
     
     private let layout = Layout<LayoutConstants>()
     
-    private lazy var algoIconImageView = UIImageView(image: img("icon-algo-small-purple"))
+    private lazy var algoIconImageView = UIImageView(image: img("icon-algo-purple"))
     
     private lazy var algosLabel: UILabel = {
         UILabel()
             .withFont(UIFont.font(.overpass, withWeight: .bold(size: 13.0)))
-            .withTextColor(SharedColors.purple)
+            .withTextColor(SharedColors.black)
             .withLine(.single)
             .withAlignment(.left)
             .withText("asset-algos-title".localized)

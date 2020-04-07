@@ -10,8 +10,6 @@ import UIKit
 
 class TabBarController: UITabBarController {
     
-    // MARK: Variables
-    
     private(set) lazy var accountsNavigationController = NavigationController(
         rootViewController: AccountsViewController(configuration: configuration)
     )
@@ -28,10 +26,6 @@ class TabBarController: UITabBarController {
         rootViewController: SettingsViewController(configuration: configuration)
     )
     
-    private enum Colors {
-        static let shadowColor = rgba(0.24, 0.27, 0.32, 0.1)
-    }
-    
     private let configuration: ViewControllerConfiguration
     
     var selectedTab: Tab {
@@ -41,8 +35,6 @@ class TabBarController: UITabBarController {
     var route: Screen?
     
     private var assetAlertDraft: AssetAlertDraft?
-    
-    // MARK: Components
     
     private lazy var customTabBar: TabBar = {
         let tabBar = TabBar()
@@ -57,20 +49,14 @@ class TabBarController: UITabBarController {
         return tabBar
     }()
     
-    // MARK: Initialization
-    
     init(configuration: ViewControllerConfiguration, selectedTab: Tab = .accounts) {
         self.configuration = configuration
-        
         super.init(nibName: nil, bundle: nil)
-        
         setupTabBarController()
-        
         configureAccountsTab()
         configureHistoryTab()
         configureContactsTab()
         configureSettingsTab()
-        
         configureAppearance()
     }
     
@@ -79,19 +65,39 @@ class TabBarController: UITabBarController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: Setup
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        setValue(customTabBar, forKey: "tabBar")
+        tabBar.layer.shadowOffset = CGSize(width: 0, height: 0)
+        tabBar.layer.shadowRadius = 10
+        tabBar.layer.shadowColor = Colors.shadowColor.cgColor
+        tabBar.layer.shadowOpacity = 1.0
+        tabBar.layer.masksToBounds = false
+    }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        navigationController?.setNavigationBarHidden(true, animated: true)
+        
+        if let appConfiguration = UIApplication.shared.appConfiguration {
+            appConfiguration.session.isValid = true
+        }
+        
+        routeForDeeplink()
+    }
+}
+
+extension TabBarController {
     private func setupTabBarController() {
         delegate = self
-        
-        let controllers = [
+        viewControllers = [
             accountsNavigationController,
             historyNavigationController,
             contactsNavigationController,
             settingsNavigationController
         ]
-        
-        viewControllers = controllers
     }
     
     private func configureAccountsTab() {
@@ -143,33 +149,9 @@ class TabBarController: UITabBarController {
         UITabBarItem.appearance().setTitleTextAttributes(fontAttributes, for: .normal)
         UITabBarItem.appearance().setTitleTextAttributes(fontAttributes, for: .selected)
     }
-    
-    // MARK: View Lifecycle
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        setValue(customTabBar, forKey: "tabBar")
-        
-        tabBar.layer.shadowOffset = CGSize(width: 0, height: 0)
-        tabBar.layer.shadowRadius = 10
-        tabBar.layer.shadowColor = Colors.shadowColor.cgColor
-        tabBar.layer.shadowOpacity = 1.0
-        tabBar.layer.masksToBounds = false
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        navigationController?.setNavigationBarHidden(true, animated: true)
-        
-        if let appConfiguration = UIApplication.shared.appConfiguration {
-            appConfiguration.session.isValid = true
-        }
-        
-        routeForDeeplink()
-    }
-    
+}
+
+extension TabBarController {
     func routeForDeeplink() {
         if let route = route {
             self.route = nil
@@ -213,8 +195,6 @@ class TabBarController: UITabBarController {
     }
 }
 
-// MARK: UITabBarControllerDelegate
-
 extension TabBarController: UITabBarControllerDelegate {
     
 }
@@ -229,16 +209,14 @@ extension TabBarController: AssetCancellableSupportAlertViewControllerDelegate {
                 return
         }
         
-        let transactionManager = TransactionManager(api: api)
+        let transactionController = TransactionController(api: api)
         
-        let assetTransactionDraft = AssetTransactionDraft(fromAccount: account, recipient: nil, amount: nil, assetIndex: Int64(assetId))
-        transactionManager.setAssetTransactionDraft(assetTransactionDraft)
-        transactionManager.composeAssetAdditionTransactionData(for: account)
+        let assetTransactionDraft = AssetTransactionSendDraft(from: account, assetIndex: Int64(assetId))
+        transactionController.setTransactionDraft(assetTransactionDraft)
+        transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
         assetAlertDraft = nil
     }
 }
-
-// MARK: Tab
 
 extension TabBarController {
     enum Tab: Int {
@@ -246,5 +224,11 @@ extension TabBarController {
         case history = 1
         case contacts = 2
         case settings = 3
+    }
+}
+
+extension TabBarController {
+    private enum Colors {
+        static let shadowColor = rgba(0.24, 0.27, 0.32, 0.1)
     }
 }

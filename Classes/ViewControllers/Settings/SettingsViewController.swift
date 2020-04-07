@@ -21,20 +21,6 @@ class SettingsViewController: BaseViewController {
     
     private let localAuthenticator = LocalAuthenticator()
     
-    private var authManager: AuthManager?
-    
-    private var isAuctionsEnabled: Bool {
-        return Environment.current.isAuctionsEnabled
-    }
-    
-    // MARK: Initialization
-    
-    override init(configuration: ViewControllerConfiguration) {
-        super.init(configuration: configuration)
-        
-        authManager = AuthManager()
-    }
-    
     // MARK: Setup
     
     override func configureAppearance() {
@@ -55,14 +41,13 @@ class SettingsViewController: BaseViewController {
         settingsView.collectionView.delegate = self
         settingsView.collectionView.dataSource = self
         viewModel.delegate = self
-        authManager?.delegate = self
     }
     
     override func setListeners() {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(didApplicationEnterForeground),
-            name: Notification.Name.ApplicationWillEnterForeground,
+            name: .ApplicationWillEnterForeground,
             object: nil
         )
     }
@@ -78,7 +63,7 @@ class SettingsViewController: BaseViewController {
 extension SettingsViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return isAuctionsEnabled ? 6 : 5
+        return 5
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -147,18 +132,6 @@ extension SettingsViewController: UICollectionViewDataSource {
             }
             
             viewModel.configureInfo(cell, with: mode)
-            
-            return cell
-        case .coinlist:
-            guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: CoinlistCell.reusableIdentifier,
-                for: indexPath) as? CoinlistCell else {
-                    fatalError("Index path is out of bounds")
-            }
-            
-            if let session = session {
-                viewModel.configureCoinlist(cell, for: session)
-            }
             
             return cell
         }
@@ -282,47 +255,6 @@ extension SettingsViewController: SettingsViewModelDelegate {
         alertController.addAction(cancelAction)
         
         present(alertController, animated: true, completion: nil)
-    }
-    
-    func settingsViewModel(_ viewModel: SettingsViewModel, didTapCoinlistActionIn cell: CoinlistCell) {
-        if cell.contextView.actionMode == .connect {
-            authManager?.authorize()
-        } else {
-            session?.coinlistToken = nil
-            session?.coinlistUserId = nil
-            cell.contextView.actionMode = .connect
-            
-            NotificationCenter.default.post(name: Notification.Name.CoinlistDisconnected, object: self)
-        }
-    }
-}
-
-// MARK: AuthManagerDelegate
-
-extension SettingsViewController: AuthManagerDelegate {
-    
-    func authManager(_ authManager: AuthManager, didCaptureToken token: String?, withError error: Error?) {
-        if error != nil {
-            displaySimpleAlertWith(title: "title-error".localized, message: "auction-auth-error-message".localized)
-            self.authManager = AuthManager()
-            self.authManager?.delegate = self
-            
-            return
-        }
-        
-        guard let code = token else {
-            return
-        }
-        
-        guard let cell = settingsView.collectionView.cellForItem(at: IndexPath(item: 4, section: 0)) as? CoinlistCell else {
-            return
-        }
-        
-        cell.contextView.actionMode = .disconnect
-        
-        NotificationCenter.default.post(name: Notification.Name.CoinlistConnected, object: self, userInfo: ["code": code])
-        
-        tabBarController?.selectedIndex = 2
     }
 }
 

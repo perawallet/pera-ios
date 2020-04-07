@@ -19,7 +19,7 @@ class AccountsDataSource: NSObject, UICollectionViewDataSource {
     
     weak var delegate: AccountsDataSourceDelegate?
     
-    var accounts: [Account] = UIApplication.shared.appConfiguration?.session.authenticatedUser?.accounts ?? []
+    var accounts: [Account] = UIApplication.shared.appConfiguration?.session.accounts ?? []
     
     private var addedAssetDetails: [Account: [AssetDetail]] = [:]
     private var removedAssetDetails: [Account: [AssetDetail]] = [:]
@@ -29,10 +29,10 @@ class AccountsDataSource: NSObject, UICollectionViewDataSource {
     }
     
     func reload() {
-        guard let user = UIApplication.shared.appConfiguration?.session.authenticatedUser else {
+        guard let session = UIApplication.shared.appConfiguration?.session else {
             return
         }
-        accounts = user.accounts
+        accounts = session.accounts
         
         filterAddedAssetDetails()
         filterRemovedAssetDetails()
@@ -238,11 +238,15 @@ extension AccountsDataSource {
             
             for (index, assetDetail) in addedAssets.enumerated() where assetDetail.isRecentlyAdded {
                 if accounts[accountIndex].assetDetails.contains(assetDetail) {
-                    var filteredAssets = addedAssets
-                    filteredAssets.remove(at: index)
-                    addedAssetDetails[addedAccount] = filteredAssets
-                    break
+                    // Preventing duplication
+                    continue
                 }
+                
+                var filteredAssets = addedAssets
+                filteredAssets.remove(at: index)
+                addedAssetDetails[addedAccount] = filteredAssets
+                accounts[accountIndex].assetDetails.append(assetDetail)
+                break
             }
         }
     }

@@ -15,21 +15,10 @@ class EditAccountViewController: BaseViewController {
         return false
     }
     
-    private enum Colors {
-        static let backgroundColor = rgb(0.95, 0.96, 0.96)
-    }
-    
-    // MARK: Components
-    
-    private lazy var editAccountView: EditAccountView = {
-        let view = EditAccountView()
-        return view
-    }()
+    private lazy var editAccountView = EditAccountView()
     
     private var keyboard = Keyboard()
-    
     private var contentViewBottomConstraint: Constraint?
-    
     fileprivate let account: Account
     
     init(account: Account, configuration: ViewControllerConfiguration) {
@@ -37,11 +26,8 @@ class EditAccountViewController: BaseViewController {
         super.init(configuration: configuration)
     }
     
-    // MARK: Setup
-    
     override func configureAppearance() {
         view.backgroundColor = Colors.backgroundColor
-        
         editAccountView.accountNameInputView.inputTextField.text = account.name
     }
     
@@ -57,13 +43,26 @@ class EditAccountViewController: BaseViewController {
     override func linkInteractors() {
         editAccountView.delegate = self
     }
-    
-    // MARK: Layout
-    
     override func prepareLayout() {
         setupEditAccountViewLayout()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        editAccountView.accountNameInputView.beginEditing()
+    }
+    
+    private var modalSize: ModalSize {
+        let kbHeight = keyboard.height ?? 0.0
+        let size = CGSize(
+            width: self.view.bounds.width,
+            height: kbHeight + 158.0
+        )
+        return .custom(size)
+    }
+}
+
+extension EditAccountViewController {
     private func setupEditAccountViewLayout() {
         view.addSubview(editAccountView)
         
@@ -72,13 +71,9 @@ class EditAccountViewController: BaseViewController {
             contentViewBottomConstraint = make.bottom.equalToSuperview().inset(0.0).constraint
         }
     }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        editAccountView.accountNameInputView.beginEditing()
-    }
-    
+}
+
+extension EditAccountViewController {
     @objc
     fileprivate func didReceive(keyboardWillShow notification: Notification) {
         if !UIApplication.shared.isActive {
@@ -107,22 +102,9 @@ class EditAccountViewController: BaseViewController {
             completion: nil
         )
     }
-    
-    private var modalSize: ModalSize {
-        let kbHeight = keyboard.height ?? 0.0
-        let size = CGSize(
-            width: self.view.bounds.width,
-            height: kbHeight + 158.0
-        )
-        
-        return .custom(size)
-    }
 }
 
-// MARK: EditAccountViewDelegate
-
 extension EditAccountViewController: EditAccountViewDelegate {
-    
     func editAccountViewDidTapSaveButton(_ editAccountView: EditAccountView) {
         guard let name = editAccountView.accountNameInputView.inputTextField.text else {
             displaySimpleAlertWith(title: "title-error".localized, message: "account-name-setup-empty-error-message".localized)
@@ -130,9 +112,13 @@ extension EditAccountViewController: EditAccountViewDelegate {
         }
         
         account.name = name
-        
-        session?.authenticatedUser?.updateAccount(account)
-        
+        session?.updateName(name, for: account.address)
         dismissScreen()
+    }
+}
+
+extension EditAccountViewController {
+    private enum Colors {
+        static let backgroundColor = rgb(0.95, 0.96, 0.96)
     }
 }

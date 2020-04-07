@@ -66,16 +66,4 @@ extension API {
         headers.set(.custom("X-Algo-API-Token", .some(nodeToken)))
         return headers
     }
-    
-    func coinlistTokenHeaders() -> Headers {
-        guard let coinlistToken = session.coinlistToken,
-            let token = token else {
-            return sharedHttpHeaders
-        }
-        
-        var headers = sharedHttpHeaders
-        headers.set(.authorization(.bearer(coinlistToken)))
-        headers.set(.custom("X-Algo-API-Token", .some(token)))
-        return headers
-    }
 }

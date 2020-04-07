@@ -22,13 +22,10 @@ extension Asset {
     }
 }
 
-extension Asset: Encodable {
-}
+extension Asset: Encodable { }
 
 extension Asset: Equatable {
     static func == (lhs: Asset, rhs: Asset) -> Bool {
-        return lhs.creator == rhs.creator &&
-            lhs.amount == rhs.amount &&
-            lhs.isFrozen == rhs.isFrozen
+        return lhs.creator == rhs.creator && lhs.amount == rhs.amount && lhs.isFrozen == rhs.isFrozen
     }
 }

@@ -11,14 +11,6 @@ import CoreData
 
 @objc(Node)
 public final class Node: NSManagedObject {
-    enum DBKeys: String {
-        case address = "address"
-        case token = "token"
-        case name = "name"
-        case isActive = "isActive"
-        case creationDate = "creationDate"
-    }
-    
     @NSManaged public var address: String?
     @NSManaged public var token: String?
     @NSManaged public var name: String?
@@ -30,5 +22,14 @@ extension Node {
     static let entityName = "Node"
 }
 
-extension Node: DBStorable {
+extension Node {
+    enum DBKeys: String {
+        case address = "address"
+        case token = "token"
+        case name = "name"
+        case isActive = "isActive"
+        case creationDate = "creationDate"
+    }
 }
+
+extension Node: DBStorable { }

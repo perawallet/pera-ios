@@ -10,39 +10,48 @@ import UIKit
 
 class IntroductionViewController: BaseViewController {
     
-    // MARK: Components
-
-    private lazy var introductionView: IntroductionView = {
-        let view = IntroductionView(mode: self.mode)
-        return view
-    }()
+    private lazy var introductionView = IntroductionView(mode: self.mode)
+    
+    private(set) lazy var termsServiceModalPresenter = CardModalPresenter(
+        config: ModalConfiguration(
+            animationMode: .normal(duration: 0.25),
+            dismissMode: .none
+        ),
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: 300))
+    )
     
     var mode: AccountSetupMode = .initialize
     
-    // MARK: Setup
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        view.backgroundColor = .white
+        navigationController?.navigationBar.barTintColor = .white
+        
+        presentTermsAndServicesIfNeeded()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.navigationBar.barTintColor = SharedColors.warmWhite
+    }
     
     override func configureAppearance() {
         super.configureAppearance()
         view.backgroundColor = .white
-        
-        if mode == .new {
-            introductionView.welcomeLabel.isHidden = true
-        }
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        view.backgroundColor = .white
-        navigationController?.navigationBar.barTintColor = .white
     }
     
     override func prepareLayout() {
         super.prepareLayout()
-        
         setupIntroducitionViewLayout()
     }
     
+    override func linkInteractors() {
+        introductionView.delegate = self
+    }
+    
+}
+
+extension IntroductionViewController {
     private func setupIntroducitionViewLayout() {
         view.addSubview(introductionView)
         
@@ -50,24 +59,25 @@ class IntroductionViewController: BaseViewController {
             make.edges.equalToSuperview()
         }
     }
-    
-    override func linkInteractors() {
-        introductionView.delegate = self
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        navigationController?.navigationBar.barTintColor = SharedColors.warmWhite
+}
+
+extension IntroductionViewController {
+    private func presentTermsAndServicesIfNeeded() {
+        guard let session = self.session, !session.isTermsAndServicesAccepted() else {
+            return
+        }
+        
+        let transitionStyle = Screen.Transition.Open.customPresent(
+            presentationStyle: .custom,
+            transitionStyle: nil,
+            transitioningDelegate: termsServiceModalPresenter
+        )
+        
+        open(.termsAndServices, by: transitionStyle)
     }
 }
 
-// MARK: IntroductionViewDelegate
-
 extension IntroductionViewController: IntroductionViewDelegate {
-    func introductionViewDidTapCloseButton(_ introductionView: IntroductionView) {
-        dismissScreen()
-    }
-    
     func introductionViewDidTapCreateAccountButton(_ introductionView: IntroductionView) {
         switch mode {
         case .initialize:
@@ -77,7 +87,15 @@ extension IntroductionViewController: IntroductionViewDelegate {
         }
     }
     
+    func introductionViewDidTapPairLedgerAccountButton(_ introductionView: IntroductionView) {
+        open(.ledgerTutorial(mode: mode), by: .push)
+    }
+    
     func introductionViewDidTapRecoverButton(_ introductionView: IntroductionView) {
         open(.accountRecover(mode: mode), by: .push)
+    }
+    
+    func introductionViewDidTapCloseButton(_ introductionView: IntroductionView) {
+        dismissScreen()
     }
 }

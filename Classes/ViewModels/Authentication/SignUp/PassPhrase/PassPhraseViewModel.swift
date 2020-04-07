@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import Crypto
 
 class PassPhraseViewModel {
     private let privateKey: Data
@@ -23,9 +22,9 @@ class PassPhraseViewModel {
     
     required init(privateKey: Data) {
         self.privateKey = privateKey
-        var error: NSError?
         
-        let mnemonics = MnemonicFromPrivateKey(privateKey, &error)
+        var error: NSError?
+        let mnemonics = AlgorandSDK().mnemonicFrom(privateKey, error: &error)
         
         guard error == nil else {
             self.mnemonics = []

@@ -59,14 +59,14 @@ class ContactsViewController: BaseViewController {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(didContactAdded(notification:)),
-            name: Notification.Name.ContactAddition,
+            name: .ContactAddition,
             object: nil
         )
         
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(didContactDeleted(notification:)),
-            name: Notification.Name.ContactDeletion,
+            name: .ContactDeletion,
             object: nil
         )
     }

@@ -8,7 +8,7 @@
 
 import UIKit
 
-enum AlgosReceiverState: Equatable {
+enum AssetReceiverState: Equatable {
     case initial
     case contact(Contact)
     case myAccount(Account)
@@ -57,7 +57,7 @@ class TransactionReceiverView: BaseView {
         let horizontalInset: CGFloat = 30.0
         let containerTopInset: CGFloat = 7.0
         let qrButtonInset: CGFloat = 63.0
-        let inputViewInset: CGFloat = 50.0
+        let inputViewInset: CGFloat = 55.0
         let verticalInset: CGFloat = 15.0
         let inputViewHeight: CGFloat = 44.0
         let buttonSize: CGFloat = 38.0
@@ -80,7 +80,7 @@ class TransactionReceiverView: BaseView {
     
     weak var delegate: TransactionReceiverViewDelegate?
     
-    var state: AlgosReceiverState = .initial {
+    var state: AssetReceiverState = .initial {
         didSet {
             if state == oldValue {
                 return

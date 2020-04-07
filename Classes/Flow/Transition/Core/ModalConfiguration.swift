@@ -20,7 +20,6 @@ struct ModalConfiguration {
 }
 
 extension ModalConfiguration {
-    
     enum AnimationMode {
         case normal(duration: TimeInterval)
         case spring(duration: TimeInterval, damping: CGFloat, velocity: CGFloat)
@@ -34,7 +33,6 @@ extension ModalConfiguration {
 }
 
 extension ModalConfiguration.AnimationMode {
-    
     typealias AfterAnimationHandler = (Bool) -> Void
     
     func animate(
@@ -74,7 +72,6 @@ extension ModalConfiguration.AnimationMode {
 }
 
 extension ModalConfiguration.DismissMode {
-    
     var isCancelled: Bool {
         return self == .none
     }

@@ -9,11 +9,8 @@
 import Foundation
 
 class AccountManager {
-    var user: User?
     let api: API
-    
     var currentRound: Int64?
-    
     let queue: OperationQueue
     
     init(api: API) {
@@ -24,7 +21,6 @@ class AccountManager {
     }
 }
 
-// MARK: - API
 extension AccountManager {
     func fetchAllAccounts(isVerifiedAssetsIncluded: Bool, completion: EmptyHandler?) {
         if isVerifiedAssetsIncluded {
@@ -47,25 +43,40 @@ extension AccountManager {
             completion?()
         }
         
-        for account in user?.accounts ?? [] {
-            let accountFetchOperation = AccountFetchOperation(address: account.address, api: api)
-            accountFetchOperation.onCompleted = { fetchedAccount, fetchError in
-                if let fetchedAccount = fetchedAccount {
-                    if fetchedAccount.amount == account.amount &&
-                        fetchedAccount.rewards == account.rewards &&
-                        !fetchedAccount.areAssetsDifferent(than: account) {
-                        return
-                    }
-                    
-                    self.user?.updateAccount(fetchedAccount)
-                }
-            }
-            
-            completionOperation.addDependency(accountFetchOperation)
-            self.queue.addOperation(accountFetchOperation)
+        guard let userAccounts = api.session.authenticatedUser?.accounts else {
+            queue.addOperation(completionOperation)
+            return
         }
         
-        self.queue.addOperation(completionOperation)
+        for account in userAccounts {
+            let accountFetchOperation = AccountFetchOperation(address: account.address, api: api)
+            accountFetchOperation.onCompleted = { fetchedAccount, fetchError in
+                guard let fetchedAccount = fetchedAccount else {
+                    return
+                }
+                
+                fetchedAccount.name = account.name
+                fetchedAccount.type = account.type
+                fetchedAccount.ledgerDetail = account.ledgerDetail
+                
+                guard let currentAccount = self.api.session.account(from: fetchedAccount.address) else {
+                    self.api.session.addAccount(fetchedAccount)
+                    return
+                }
+                
+                if fetchedAccount.amount == currentAccount.amount &&
+                    fetchedAccount.rewards == currentAccount.rewards &&
+                    !fetchedAccount.areAssetsDifferent(than: currentAccount) {
+                    return
+                }
+                
+                self.api.session.addAccount(fetchedAccount)
+            }
+            completionOperation.addDependency(accountFetchOperation)
+            queue.addOperation(accountFetchOperation)
+        }
+        
+        queue.addOperation(completionOperation)
     }
     
     func waitForNextRoundAndFetchAccounts(round: Int64?, completion: ((Int64?) -> Void)?) {
@@ -90,9 +101,7 @@ extension AccountManager {
         api.getTransactionParams { response in
             switch response {
             case .failure:
-                if let round = self.currentRound {
-                    self.currentRound = round + 1
-                }
+                self.currentRound = self.currentRound.map { $0 + 1 } ?? 0
             case let .success(params):
                 self.currentRound = params.lastRound
             }

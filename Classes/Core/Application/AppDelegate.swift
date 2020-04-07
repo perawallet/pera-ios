@@ -147,12 +147,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         guard let rootViewController = rootViewController else {
             return
         }
-        
-        NotificationCenter.default.post(
-            name: Notification.Name.ApplicationWillEnterForeground,
-            object: self,
-            userInfo: nil
-        )
+        NotificationCenter.default.post(name: .ApplicationWillEnterForeground, object: self, userInfo: nil)
         
         if shouldInvalidateUserSession {
             shouldInvalidateUserSession = false
@@ -169,6 +164,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
             )
             return
+        } else {
+            validateAccountManagerFetchPolling()
         }
     }
     
@@ -239,9 +236,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return
         }
         
-        if let user = session.authenticatedUser {
-            accountManager.user = user
-            
+        if session.authenticatedUser != nil {
             self.accountManager.waitForNextRoundAndFetchAccounts(round: round) { nextRound in
                 self.fetchAccounts(round: nextRound)
             }

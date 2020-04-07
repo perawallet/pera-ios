@@ -36,10 +36,20 @@ class OptionsViewController: BaseViewController {
     init(account: Account, configuration: ViewControllerConfiguration) {
         self.account = account
         
-        if account.isThereAnyDifferentAsset() {
-            options = Options.allOptions
+        if let accountInformation = configuration.session?.accountInformation(from: account.address) {
+            if account.isThereAnyDifferentAsset() {
+                options = Options.allOptions
+            } else {
+                options = Options.optionsWithoutRemoveAsset
+            }
+            
+            if accountInformation.type == .ledger {
+                options.removeAll { option -> Bool in
+                    option == .passPhrase
+                }
+            }
         } else {
-            options = Options.optionsWithoutRemoveAsset
+            options = Options.allOptions
         }
         
         super.init(configuration: configuration)
@@ -136,6 +146,14 @@ extension OptionsViewController {
         
         static var optionsWithoutRemoveAsset: [Options] {
             return [.showQR, passPhrase, .edit, .removeAccount]
+        }
+
+        static var optionsWithoutPassphrase: [Options] {
+            return [.showQR, .removeAsset, .edit, .removeAccount]
+        }
+        
+        static var optionsWithoutPassphraseAndRemoveAsset: [Options] {
+            return [.showQR, .edit, .removeAccount]
         }
         
         static var allOptions: [Options] {

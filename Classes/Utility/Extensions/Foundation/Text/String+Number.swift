@@ -16,22 +16,8 @@ extension String {
         return Formatter.separatorWith(fraction: fraction).number(from: self)?.doubleValue
     }
     
-    var doubleForReadSeparator: Double? {
-        return Formatter.separatorForAlgosLabel.number(from: self)?.doubleValue
-    }
-    
     func currencyInputFormatting(with fraction: Int) -> String? {
         let decimal = self.decimal / pow(10, fraction)
         return Formatter.separatorForInputWith(fraction: fraction).string(for: decimal)
-    }
-    
-    func currencyBidInputFormatting() -> String? {
-        let decimal = self.decimal / pow(10, Formatter.separatorForBidInput.maximumFractionDigits)
-        return Formatter.separatorForBidInput.string(for: decimal)
-    }
-    
-    func depositAmountFormatter() -> String? {
-        let decimal = self.decimal / pow(10, Formatter.depositAmountFormatter.maximumFractionDigits)
-        return Formatter.depositAmountFormatter.string(for: decimal)
     }
 }

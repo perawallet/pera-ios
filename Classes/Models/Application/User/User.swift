@@ -9,12 +9,10 @@
 import Magpie
 
 class User: Model {
+    private(set) var accounts: [AccountInformation] = []
+    private(set) var defaultNode: String?
     
-    private(set) var accounts: [Account] = []
-    fileprivate(set) var defaultNode: String?
-    private(set) var depositInstructions: [DepositInstruction]?
-    
-    init(accounts: [Account]) {
+    init(accounts: [AccountInformation]) {
         self.accounts = accounts
     }
     
@@ -23,14 +21,13 @@ class User: Model {
     }
 }
 
-// MARK: - API
 extension User {
-    func addAccount(_ account: Account) {
+    func addAccount(_ account: AccountInformation) {
         accounts.append(account)
         syncronize()
     }
     
-    func removeAccount(_ account: Account) {
+    func removeAccount(_ account: AccountInformation) {
         guard let index = index(of: account) else {
             return
         }
@@ -39,7 +36,7 @@ extension User {
         syncronize()
     }
     
-    func index(of account: Account) -> Int? {
+    func index(of account: AccountInformation) -> Int? {
         guard let index = accounts.firstIndex(of: account) else {
             return nil
         }
@@ -47,7 +44,7 @@ extension User {
         return index
     }
     
-    func account(at index: Int) -> Account? {
+    func account(at index: Int) -> AccountInformation? {
         guard index < accounts.count else {
             return nil
         }
@@ -55,22 +52,16 @@ extension User {
         return accounts[index]
     }
     
-    func updateAccount(_ account: Account) {
+    func updateAccount(_ account: AccountInformation) {
         guard let index = index(of: account) else {
             return
         }
         
-        accounts[index].update(withAccount: account)
+        accounts[index].updateName(account.name)
         syncronize()
-        
-        NotificationCenter.default.post(
-            name: Notification.Name.AccountUpdate,
-            object: self,
-            userInfo: ["account": accounts[index]]
-        )
     }
     
-    fileprivate func syncronize() {
+    private func syncronize() {
         guard UIApplication.shared.appConfiguration?.session.authenticatedUser != nil else {
             return
         }
@@ -91,49 +82,15 @@ extension User {
         self.defaultNode = selectedNode.address
     }
     
-    func account(address: String) -> Account? {
+    func account(address: String) -> AccountInformation? {
         return accountFrom(address: address)
-    }
-    
-    func addInstruction(_ instruction: DepositInstruction) {
-        if depositInstructions != nil {
-            depositInstructions?.insert(instruction, at: 0)
-        } else {
-            depositInstructions = [instruction]
-        }
-        
-        syncronize()
-    }
-    
-    func removeInstruction(at index: Int) {
-        if let depositInstructions = depositInstructions {
-            if index < depositInstructions.count {
-                self.depositInstructions?.remove(at: index)
-                syncronize()
-            }
-        }
-    }
-    
-    func depositInstruction(at index: Int) -> DepositInstruction? {
-        guard let depositInstructions = depositInstructions else {
-            return nil
-        }
-
-        guard index < depositInstructions.count else {
-            return nil
-        }
-        
-        return depositInstructions[index]
     }
 }
 
-// MARK: - Helpers
 extension User {
-    fileprivate func accountFrom(address: String) -> Account? {
+    private func accountFrom(address: String) -> AccountInformation? {
         return accounts.first { $0.address == address }
     }
 }
 
-// MARK: - Codable
-extension User: Encodable {
-}
+extension User: Encodable { }

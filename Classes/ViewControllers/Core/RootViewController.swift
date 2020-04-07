@@ -94,7 +94,7 @@ class RootViewController: UIViewController {
     }
     
     func openAsset(from notification: NotificationDetail, for account: String) {
-        guard let account = appConfiguration.session.authenticatedUser?.account(address: account) else {
+        guard let account = appConfiguration.session.account(from: account) else {
             return
         }
         
@@ -170,9 +170,8 @@ class RootViewController: UIViewController {
         from viewController: UIViewController,
         by style: Screen.Transition.Open,
         animated: Bool = true,
-        then completion: ScreenTransitionCompletion? = nil
+        then completion: EmptyHandler? = nil
     ) -> T? {
-        
         return router?.route(to: screen, from: viewController, by: style, animated: animated, then: completion)
     }
 }

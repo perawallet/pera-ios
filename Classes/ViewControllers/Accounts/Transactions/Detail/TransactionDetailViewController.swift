@@ -79,6 +79,8 @@ class TransactionDetailViewController: BaseScrollViewController {
             switch response {
             case let .success(transaction):
                 if !transaction.isPending() {
+                    transaction.contact = self.transaction.contact
+                    self.transaction = transaction
                     self.transaction.status = .completed
                     self.configureTransactionDetail()
                     self.pollingOperation?.invalidate()
@@ -107,7 +109,7 @@ class TransactionDetailViewController: BaseScrollViewController {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(didContactAdded(notification:)),
-            name: Notification.Name.ContactAddition,
+            name: .ContactAddition,
             object: nil
         )
     }

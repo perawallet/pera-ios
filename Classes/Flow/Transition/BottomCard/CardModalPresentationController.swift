@@ -9,11 +9,6 @@
 import UIKit
 
 class CardModalPresentationController: UIPresentationController {
-    
-    private enum Colors {
-        static let backgroundColor = rgba(0.29, 0.29, 0.31, 0.6)
-    }
-    
     typealias Configuration = ModalConfiguration
     
     private(set) var modalSize: ModalSize
@@ -173,7 +168,6 @@ class CardModalPresentationController: UIPresentationController {
 }
 
 extension CardModalPresentationController {
-    
     func calculateOriginOfPresentedView(with size: CGSize, inParentSize parentSize: CGSize) -> CGPoint {
         switch modalSize {
         case .compressed, .expanded, .half, .custom:
@@ -213,9 +207,7 @@ extension CardModalPresentationController {
 }
 
 extension CardModalPresentationController: ModalPresenterInteractable {
-    
     func changeModalSize(to newModalSize: ModalSize, animated: Bool, then completion: (() -> Void)?) {
-        
         if modalSize == newModalSize {
             completion?()
             return
@@ -246,5 +238,11 @@ extension CardModalPresentationController: ModalPresenterInteractable {
     
     func changeModalSize(to newModalSize: ModalSize, animated: Bool) {
         changeModalSize(to: newModalSize, animated: animated, then: nil)
+    }
+}
+
+extension CardModalPresentationController {
+    private enum Colors {
+        static let backgroundColor = rgba(0.29, 0.29, 0.31, 0.6)
     }
 }
