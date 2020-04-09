@@ -46,7 +46,19 @@ class RootViewController: UIViewController {
         
         view.backgroundColor = SharedColors.warmWhite
         
-        open(.splash, by: .launch, animated: false)
+        if !appConfiguration.session.isValid {
+            if appConfiguration.session.hasPassword() && appConfiguration.session.authenticatedUser != nil {
+                open(
+                    .choosePassword(mode: .login, route: nil),
+                    by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
+                )
+            } else {
+                appConfiguration.session.reset()
+                open(.introduction(mode: .initialize), by: .launch, animated: false)
+            }
+        } else {
+            setupTabBarController()
+        }
     }
     
     func setupTabBarController(withInitial screen: Screen? = nil) {

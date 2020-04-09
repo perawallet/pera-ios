@@ -40,7 +40,6 @@
 "title-internet-connection" = "The internet connection appears to be offline.";
 "title-remove-lowercased" = "Remove";
 "title-unknown" = "Unnamed";
-
 "title-preview-and-sign-with-ledger-title" = "PREVIEW AND SIGN WITH LEDGER";
 
 // MARK: Tabbar
@@ -65,10 +64,8 @@
 "password-verify-title" = "Verify Password";
 "password-change-subtitle" = "Enter six digit password";
 "password-verify-subtitle" = "Enter the same six digits";
-
 "password-verify-fail-title" = "Wrong Password";
 "password-verify-fail-message" = "Password did not match with previous password.";
-
 "password-change-title" = "Change Password";
 
 // MARK: Local Authentication Preferences9
@@ -431,7 +428,6 @@
 "ledger-pairing-create-title" = "CREATE ACCOUNT";
 
 // MARK: BLE Errors
-
 
 "ble-error-search-title" = "Search Error";
 "ble-error-connection-title" = "Connection Error";

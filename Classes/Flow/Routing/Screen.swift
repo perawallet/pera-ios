@@ -47,7 +47,6 @@ indirect enum Screen {
     case nodeSettings(mode: NodeSettingsViewController.Mode)
     case addNode
     case editNode(node: Node)
-    case splash
     case transactionDetail(account: Account, transaction: Transaction, transactionType: TransactionType, assetDetail: AssetDetail?)
     case feedback
     case addAsset(account: Account)
