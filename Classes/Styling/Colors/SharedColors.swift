@@ -9,7 +9,6 @@
 import UIKit
 
 enum SharedColors {
-    
     static let purple = rgb(0.64, 0.03, 0.53)
     static let turquois = rgb(0.34, 0.75, 0.71)
     static let black = rgb(0.04, 0.05, 0.07)
