@@ -17,6 +17,10 @@ func img(_ named: String) -> UIImage? {
     return img(named, isTemplate: false)
 }
 
+func color(_ named: String) -> UIColor? {
+    return UIColor(named: named)
+}
+
 func img(_ named: String, isTemplate: Bool) -> UIImage? {
     let image: UIImage?
     

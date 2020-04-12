@@ -9,30 +9,32 @@
 import UIKit
 
 class MainButton: UIButton {
+    private let title: String
     
-    enum Constants {
-        static let horizontalInset: CGFloat = 24.0
-    }
-    
-    // MARK: Initialization
-
-    init(title: String? = nil) {
+    init(title: String) {
+        self.title = title
         super.init(frame: .zero)
-        
         configureButton()
-        setAttributedTitle(title?.attributed([.letterSpacing(1.20), .textColor(.white)]), for: .normal)
     }
     
     @available(*, unavailable)
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    // MARK: Configuration
-    
+}
+
+extension MainButton {
     private func configureButton() {
         titleLabel?.textAlignment = .center
+        setTitleColor(.white, for: .normal)
+        setTitle(title, for: .normal)
         setBackgroundImage(img("bg-main-button"), for: .normal)
-        titleLabel?.font = UIFont.font(.avenir, withWeight: .demiBold(size: 12.0))
+        titleLabel?.font = UIFont.font(.publicSans, withWeight: .semiBold(size: 16.0))
+    }
+}
+
+extension MainButton {
+    enum Constants {
+        static let horizontalInset: CGFloat = 16.0
     }
 }

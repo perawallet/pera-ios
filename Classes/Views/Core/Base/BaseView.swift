@@ -13,8 +13,6 @@ class BaseView: UIView {
     var endsEditingAfterTouches: Bool {
         return false
     }
-    
-    // MARK: Initialization
 
     override init(frame: CGRect) {
         
@@ -32,7 +30,7 @@ class BaseView: UIView {
     }
     
     func configureAppearance() {
-        backgroundColor = SharedColors.warmWhite
+        backgroundColor = color("primaryBackground")
     }
     
     func prepareLayout() {

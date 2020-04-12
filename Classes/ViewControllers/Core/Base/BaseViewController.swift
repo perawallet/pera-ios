@@ -11,9 +11,7 @@ import UIKit
 class BaseViewController: UIViewController {
     
     var isStatusBarHidden: Bool = false
-    
     var hidesStatusBarWhenAppeared: Bool = false
-    
     var hidesStatusBarWhenPresented: Bool = false
     
     override var prefersStatusBarHidden: Bool {
@@ -88,7 +86,7 @@ class BaseViewController: UIViewController {
     }
     
     func configureAppearance() {
-        view.backgroundColor = SharedColors.warmWhite
+        view.backgroundColor = color("primaryBackground")
         
         navigationController?.navigationBar.titleTextAttributes = [
             NSAttributedString.Key.font: UIFont.font(.overpass, withWeight: .semiBold(size: 16.0)),

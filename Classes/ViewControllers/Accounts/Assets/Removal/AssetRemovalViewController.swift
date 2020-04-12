@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Magpie
 import CoreBluetooth
 import SVProgressHUD
 
