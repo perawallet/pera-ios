@@ -172,19 +172,18 @@ class Router {
         )
         
         switch screen {
-        case let .introduction(mode):
-            let introductionViewController = IntroductionViewController(configuration: configuration)
-            introductionViewController.mode = mode
-            
-            viewController = introductionViewController
+        case .introduction:
+            viewController = IntroductionViewController(configuration: configuration)
+        case .addNewAccount:
+            viewController = AddNewAccountViewController(configuration: configuration)
         case let .choosePassword(mode, route):
             viewController = ChoosePasswordViewController(mode: mode, route: route, configuration: configuration)
         case .localAuthenticationPreference:
             viewController = LocalAuthenticationPreferenceViewController(configuration: configuration)
         case let .passphraseView(address):
-            viewController = PassPhraseBackUpViewController(address: address, configuration: configuration)
-        case .passPhraseVerify:
-            viewController = PassPhraseVerifyViewController(configuration: configuration)
+            viewController = PassphraseBackUpViewController(address: address, configuration: configuration)
+        case .passphraseVerify:
+            viewController = PassphraseVerifyViewController(configuration: configuration)
         case .accountNameSetup:
             viewController = AccountNameSetupViewController(configuration: configuration)
         case let .accountRecover(mode):

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PassphraseDisplayViewController: PassphraseViewController {
+class PassphraseDisplayViewController: BaseViewController {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let horizontalInset: CGFloat = 20.0
@@ -21,55 +21,40 @@ class PassphraseDisplayViewController: PassphraseViewController {
         static let backgroundColor = rgba(0.04, 0.05, 0.07, 0.6)
     }
     
+    private var address: String
+    
     private let layout = Layout<LayoutConstants>()
+    
+    init(address: String, configuration: ViewControllerConfiguration) {
+        self.address = address
+        super.init(configuration: configuration)
+    }
     
     // MARK: Setup
     
     override func configureAppearance() {
         view.backgroundColor = Colors.backgroundColor
-        passphraseView.layer.cornerRadius = 10.0
+      //  passphraseView.layer.cornerRadius = 10.0
     }
 
     override func prepareLayout() {
         super.prepareLayout()
-        
+
         setupPassphraseViewLayout()
-        adjustPassphraseViewForDisplayMode()
     }
     
-    override func passphraseViewDidTapActionButton(_ passphraseView: PassphraseView) {
+    func passphraseViewDidTapActionButton(_ passphraseView: PassphraseView) {
         dismissScreen()
     }
 }
 
 extension PassphraseDisplayViewController {
     private func setupPassphraseViewLayout() {
-        view.addSubview(passphraseView)
-        
-        passphraseView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.center.equalToSuperview()
-        }
-    }
-    
-    private func adjustPassphraseViewForDisplayMode() {
-        passphraseView.titleLabel.text = "view-pass-phrase-title".localized
-        passphraseView.actionButton.setAttributedTitle(
-            "title-ok".localized.attributed([.letterSpacing(1.20), .textColor(.white)]),
-            for: .normal
-        )
-        passphraseView.warningContainerView.isHidden = true
-        passphraseView.warningLabel.isHidden = true
-        
-        passphraseView.titleLabel.snp.updateConstraints { make in
-            make.top.equalToSuperview().inset(layout.current.topInset)
-        }
-        
-        passphraseView.actionButton.snp.remakeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalTo(passphraseView.passphraseContainerView.snp.bottom).offset(layout.current.topInset)
-            make.bottom.equalToSuperview().inset(layout.current.bottomInset)
-            make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
-        }
+//        view.addSubview(passphraseView)
+//        
+//        passphraseView.snp.makeConstraints { make in
+//            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+//            make.center.equalToSuperview()
+//        }
     }
 }

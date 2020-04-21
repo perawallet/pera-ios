@@ -34,8 +34,8 @@ extension UILabel {
     }
     
     @discardableResult
-    func withTextColor(_ textColor: UIColor?) -> UILabel {
-        self.textColor = textColor ?? .black
+    func withTextColor(_ textColor: UIColor) -> UILabel {
+        self.textColor = textColor
         return self
     }
     

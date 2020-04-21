@@ -9,11 +9,12 @@
 import UIKit
 
 indirect enum Screen {
-    case introduction(mode: AccountSetupMode)
+    case introduction
+    case addNewAccount
     case choosePassword(mode: ChoosePasswordViewController.Mode, route: Screen?)
     case localAuthenticationPreference
     case passphraseView(address: String)
-    case passPhraseVerify
+    case passphraseVerify
     case accountNameSetup
     case accountRecover(mode: AccountSetupMode)
     case qrScanner

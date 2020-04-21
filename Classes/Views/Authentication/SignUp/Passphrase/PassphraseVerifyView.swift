@@ -8,7 +8,9 @@
 
 import UIKit
 
-class PassPhraseVerifyView: UIView {
+class PassphraseVerifyView: BaseView {
+    
+    private let layout = Layout<LayoutConstants>()
     
     private(set) lazy var questionTitleLabel: UILabel = {
         UILabel(frame: .zero)
@@ -24,31 +26,40 @@ class PassPhraseVerifyView: UIView {
             .withAlignment(NSTextAlignment.center)
     }()
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setupLayout()
+    override func prepareLayout() {
+        setuptQuestionTitleLabelLayout()
+        setuptQuestionSubtitleLabelLayout()
     }
     
-    @available(*, unavailable)
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    override func configureAppearance() {
+        backgroundColor = .clear
     }
 }
 
-// MARK: - Layout
-extension PassPhraseVerifyView {
-    fileprivate func setupLayout() {
+extension PassphraseVerifyView {
+    private func setuptQuestionTitleLabelLayout() {
         addSubview(questionTitleLabel)
+        
         questionTitleLabel.snp.makeConstraints { maker in
             maker.top.equalToSuperview().inset(69 * verticalScale)
             maker.leading.trailing.equalToSuperview().inset(15)
         }
-        
+    }
+    
+    private func setuptQuestionSubtitleLabelLayout() {
         addSubview(questionSubtitleLabel)
+        
         questionSubtitleLabel.snp.makeConstraints { maker in
             maker.top.equalTo(questionTitleLabel.snp.bottom).offset(16 * verticalScale)
             maker.leading.trailing.equalToSuperview().inset(15)
             maker.bottom.equalToSuperview().inset(20.0 * verticalScale)
         }
+    }
+}
+
+extension PassphraseVerifyView {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let leadingInset: CGFloat = 2.0
+        let centerOffset: CGFloat = -1.0
     }
 }

@@ -84,7 +84,7 @@ class AccountsViewController: BaseViewController {
                 return
             }
             strongSelf.open(
-                .introduction(mode: .new),
+                .addNewAccount,
                 by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
             )
         }

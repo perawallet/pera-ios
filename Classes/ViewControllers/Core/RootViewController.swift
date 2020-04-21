@@ -54,7 +54,7 @@ class RootViewController: UIViewController {
                 )
             } else {
                 appConfiguration.session.reset()
-                open(.introduction(mode: .initialize), by: .launch, animated: false)
+                open(.introduction, by: .launch, animated: false)
             }
         } else {
             setupTabBarController()
@@ -86,7 +86,7 @@ class RootViewController: UIViewController {
                     by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
                 ) != nil
             } else {
-                return open(.introduction(mode: .initialize), by: .launch, animated: false) != nil
+                return open(.introduction, by: .launch, animated: false) != nil
             }
         } else {
             switch screen {
@@ -146,7 +146,7 @@ class RootViewController: UIViewController {
                     )
                 }
             } else {
-                open(.introduction(mode: .initialize), by: .launch, animated: false)
+                open(.introduction, by: .launch, animated: false)
             }
         } else {
             if let notificationtype = notification.notificationType,

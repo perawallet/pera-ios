@@ -8,7 +8,7 @@
 
 import Foundation
 
-class PassPhraseViewModel {
+class PassphraseViewModel {
     private let privateKey: Data
     
     fileprivate let numberOfShownMnemonic = 18 // It should be less than 25
@@ -33,13 +33,12 @@ class PassPhraseViewModel {
         
         self.mnemonics = mnemonics.components(separatedBy: " ")
         
-        self.generateRandomIndexes()
-        self.generateRandomMnemonics()
+        generateRandomIndexes()
+        generateRandomMnemonics()
     }
 }
 
-// MARK: - API
-extension PassPhraseViewModel {
+extension PassphraseViewModel {
     func getMnemonics() -> [String] {
         return shownMnemonics
     }
@@ -83,10 +82,8 @@ extension PassPhraseViewModel {
     }
 }
 
-// MARK: - Helpers
-extension PassPhraseViewModel {
+extension PassphraseViewModel {
     fileprivate func generateRandomIndexes() {
-        
         while validationIndexes.count < numberOfValidations {
             let randomIndex = Int.random(in: 0 ..< mnemonics.count)
             

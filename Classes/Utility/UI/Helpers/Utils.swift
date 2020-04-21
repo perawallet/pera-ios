@@ -17,8 +17,8 @@ func img(_ named: String) -> UIImage? {
     return img(named, isTemplate: false)
 }
 
-func color(_ named: String) -> UIColor? {
-    return UIColor(named: named)
+func color(_ named: String) -> UIColor {
+    return UIColor(named: named) ?? .black
 }
 
 func img(_ named: String, isTemplate: Bool) -> UIImage? {
