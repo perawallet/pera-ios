@@ -9,7 +9,7 @@
     <key>compileBitcode</key>
     <false/>
     <key>signingCertificate</key>
-    <string>iPhone Distribution: Algorand llc (87QL82XC78)</string>
+    <string>Apple Distribution: Algorand llc (87QL82XC78)</string>
     <key>provisioningProfiles</key>
     <dict>
         <key>com.algorandllc.algorand</key>
