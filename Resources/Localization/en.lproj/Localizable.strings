@@ -7,20 +7,20 @@
 */
 
 // MARK: Common
-
 "title-yes" = "YES";
 "title-no" = "NO";
 "title-ok" = "OK";
-"title-next" = "NEXT";
-"title-verify" = "VERIFY";
-"title-cancel" = "CANCEL";
+"title-next" = "Next";
+"title-accept" = "Accept";
+"title-verify" = "Verify";
+"title-cancel" = "Cancel";
 "title-remove" = "REMOVE";
 "title-proceed" = "PROCEED";
-"title-approve" = "APPROVE";
+"title-approve" = "Approve";
+"title-go-home" = "Go To Home";
 "title-share" = "Share";
 "title-share-big" = "SHARE";
 "title-get-started" = "GET STARTED";
-"title-cancel-lowercased" = "Cancel";
 "title-proceed-lowercased" = "Proceed";
 "title-go-to-settings" = "Go To Settings";
 "title-error" = "Error";
@@ -41,82 +41,84 @@
 "title-remove-lowercased" = "Remove";
 "title-unknown" = "Unnamed";
 "title-preview-and-sign-with-ledger-title" = "PREVIEW AND SIGN WITH LEDGER";
+"title-qr-share" = "Share QR";
 
 // MARK: Tabbar
-
 "tabbar-item-accounts" = "Accounts";
 "tabbar-item-history" = "History";
 "tabbar-item-contacts" = "Contacts";
 "tabbar-item-settings" = "Settings";
 
 // MARK: Introduction
-
-"introduction-recover-title" = "RECOVER FROM PASSPHRASE";
-"introduction-create-title" = "CREATE ACCOUNT";
-"introduction-welcome-title" = "Welcome to the\nBorderless Economy";
+"introduction-recover-title" = "Recover From Passphrase";
+"introduction-create-title" = "Create Account";
+"introduction-title-text" = "Manage all assets\nfrom one account";
+"introduction-add-new-text" = "Add new account";
+"introduction-add-new-title-text" = "Manage all assets from one account";
 "introduction-has-account" = "Already have an account?";
-"introduction-title-pair-ledger" = "PAIR LEDGER ACCOUNT";
+"introduction-title-pair-ledger" = "Pair Ledger Account";
 
 // MARK: Password Setting
-
-"choose-password-title" = "Choose Password";
-"password-set-subtitle" = "Choose a six digit password";
-"password-verify-title" = "Verify Password";
-"password-change-subtitle" = "Enter six digit password";
+"choose-password-title" = "Choose Passcode";
+"password-set-subtitle" = "Choose a six digit passcode";
+"password-verify-title" = "Verify Passcode";
+"password-change-subtitle" = "Enter six digit pin";
 "password-verify-subtitle" = "Enter the same six digits";
 "password-verify-fail-title" = "Wrong Password";
 "password-verify-fail-message" = "Password did not match with previous password.";
 "password-change-title" = "Change Password";
 
-// MARK: Local Authentication Preferences9
-
-"local-authentication-preference-title" = "Enable touch/face ID";
+// MARK: Local Authentication Preferences
+"local-authentication-preference-title" = "Enable Face ID/Touch";
 "local-authentication-preference-subtitle" = "We recommend this for improved security";
 "local-authentication-reason-face-id-title" = "Use Face ID to unlock";
 "local-authentication-reason-touch-id-title" = "Use Touch ID to unlock";
 "local-authentication-go-settings-title" = "Biometric Authentication";
 "local-authentication-go-settings-text" = "You have disabled biometric authentication. Please go to Settings and enable this option.";
+"local-authentication-enable" = "Enable Face ID/Touch";
+"local-authentication-no" = "No, i’m fine";
 
 // MARK: Passphrase Back Up
-
-"new-account-title" = "New Account";
+"new-account-title" = "Back up passphrase";
 "back-up-phrase-title" = "Back up this Passphrase";
 "back-up-phrase-warning" = "In order to access this account if you lose this device copy or print this phrase and keep it someplace safe.";
-"back-up-phrase-button-title" = "VERIFY RECOVERY PHRASE";
-"view-pass-phrase-title" = "View Passphrase";
-
+"back-up-phrase-button-title" = "Verify Recovery Passphrase";
+"back-up-phrase-qr" = "Show QR";
 
 // MARK: Passphrase Verify
-
 "pass-phrase-verify-pop-up-title" = "Passphrase Verified";
-"pass-phrase-verify-try-again" = "Please try again";
+"pass-phrase-verify-select-title" = "Select the %@ word of your passphrase";
+"pass-phrase-verify-question-title" = "Question %@ of %@";
+"pass-phrase-verify-wrong-selection" = "Wrong choice";
 "pass-phrase-verify-pop-up-explanation" = "Your passphrase has been verified. Make sure that you have backed it up as you will need it to recover your account.";
 "pass-phrase-verify-invalid-passphrase" = "Your passphrase is invalid. Please make sure that you entered correct one.";
 "pass-phrase-verify-sdk-error" = "There is something wrong. Please try again later.";
 
 // MARK: Account Name Setup
-
-"account-name-setup-explanation" = "Account Name:";
-"account-name-setup-placeholder" = "Please name your account";
+"account-details-title" = "Account Details";
+"account-name-setup-explanation" = "Account Name";
+"account-name-setup-placeholder" = "Savings Account";
 "account-name-setup-empty-error-message" = "Account name should not be empty";
 
 // MARK: Recover From Seed
-
-"recover-from-seed-title" = "Recover from Seed";
+"recover-from-seed-title" = "Recover from passphrase";
+"recover-from-seed-name-title" = "Name";
+"recover-from-seed-name-placeholder" = "Example name";
+"recover-from-seed-passphrase-title" = "Passphrase";
 "pass-pharase-enter-placeholder" = "Enter Passphrase or Scan QR";
-"recover-from-seed-verify-pop-up-explanation" = "Welcome to Algorand! Your account is ready to use.";
+"recover-from-seed-verify-pop-up-explanation" = "Welcome to Algorand!\nYour account is ready to use.";
 "recover-from-seed-verify-pop-up-title" = "Account Verified";
 "recover-from-seed-verify-exist-error" = "This account already exists";
 
 // MARK: QR Scanning
-
-"qr-scan-title" = "Scan QR";
+"qr-scan-title" = "Scan QR Code";
 "qr-scan-error-title" = "Camera is not available";
 "qr-scan-error-message" = "Your device does not support scanning a qr code.";
 "qr-scan-go-settings-title" = "Camera Disabled";
 "qr-scan-go-settings-message" = "You have disabled camera. Please go to Settings and enable this option.";
 "qr-scan-should-scan-address-message" = "You should scan valid account address";
 "qr-scan-should-scan-mnemonics-message" = "You should scan valid passphrases";
+"qr-scan-message-text" = "You can only scan your QR from this page, To view your QR please select the icon on your account";
 "qr-scan-should-scan-valid-qr" = "QR is not valid.";
 
 // MARK: QR Creation
@@ -125,12 +127,10 @@
 "qr-creation-copied" = "Copied";
 
 // MARK: Login
-
 "login-title" = "Unlock";
 "login-subtitle" = "Enter six digit pin";
 
 // MARK: Accounts
-
 "accounts-tranaction-empty-text" = "No Transactions Yet";
 "tranaction-empty-text" = "No Transactions Found";
 "accounts-algos-available-title" = "Algos";
@@ -139,7 +139,6 @@
 "accounts-add-account" = "+ ADD ACCOUNT";
 
 // MARK: Asset
-
 "asset-title" = "Asset";
 "asset-not-found" = "Asset not found";
 "asset-algos-title" = "Algos";
@@ -179,7 +178,6 @@
 "asset-all-title" = "All";
 
 // MARK: Algos Send
-
 "send-algos-title" = "Send Algos";
 "send-algos-from" = "From:";
 "send-algos-select" = "Select Account";
@@ -214,18 +212,15 @@
 "send-qr-different-asset-alert" = "The QR contains different asset than selected one. Amount is ignored while decoding.";
 
 // MARK: Algos Request
-
 "request-algos-title" = "Request Algos";
 "request-title" = "Request";
 "request-asset-title" = "Asset Request";
 
 // MARK: Account List
-
 "account-list-add" = "ADD NEW ACCOUNT";
 "account-list-total" = "Total";
 
 // MARK: Options
-
 "options-title" = "ACCOUNT SETTINGS";
 "options-show-qr" = "Show QR and address";
 "options-remove-assets" = "Remove Assets";
@@ -240,7 +235,6 @@
 "options-view-passphrase-password-alert-message" = "You should enter your correct password to display your passphrase.";
 
 // MARK: History
-
 "history-title" = "History";
 "history-account" = "Account:";
 "history-asset" = "Asset:";
@@ -256,7 +250,6 @@
 "history-result-to" = "to";
 
 // MARK: Contacts
-
 "contacts-title" = "Contacts";
 "contacts-search" = "Search Contacts";
 "contacts-add" = "Add Contact";
@@ -283,7 +276,6 @@
 "title-select-asset" = "Select Asset";
 
 // MARK: Settings
-
 "settings-title" = "Settings";
 "settings-server-node-settings" = "Node Settings";
 "settings-change-password" = "Set/Change Password";
@@ -294,7 +286,7 @@
 "settings-notification-disabled-go-settings-text" = "You have disabled notifications. Please go to Settings and enable this option.";
 "settings-notification-enabled-go-settings-text" = "You have enabled notifications. Please go to Settings and disable this option.";
 
-// MARK: NodeSettings
+// MARK: Node Settings
 "node-settings-title" = "Node Settings";
 "node-settings-warning-title" = "Warning";
 "add-node-title" = "Add Node";
@@ -311,11 +303,9 @@
 "node-settings-text-validation-health-error" = "Please verify the address and token and try again.";
 "node-settings-has-same-result" = "You cannot create same node twice";
 "node-settings-none-active-node-error-description" = "None of the active nodes seem to be active. Please make sure you have at least one active node before proceeding.";
-
 "node-settings-db-error-title" = "System operation failed";
 "node-settings-test-error-title" = "Connection failed";
 "node-settings-test-success-title" = "Connection successful!";
-
 "node-settings-database-error-description" = "An error occured on system.";
 "node-settings-warning-message" = "This action will remove the node. Are you sure?";
 "node-settings-action-delete-title" = "Delete";
@@ -325,7 +315,6 @@
 "node-settings-health-problem-message" = "None of your active nodes are online. Please add or select another node";
 
 // MARK: Transaction Detail
-
 "transaction-detail-title" = "Transaction Detail";
 "transaction-detail-status" = "Status:";
 "transaction-detail-round" = "Round:";
@@ -333,7 +322,6 @@
 "transaction-detail-reward" = "Reward:";
 
 // MARK: Feedback
-
 "feedback-title" = "Send Feedback";
 "feedback-title-category" = "Category";
 "feedback-subtitle-category" = "Type of feedback";
@@ -349,7 +337,6 @@
 "feedback-success-title" = "Thank you, we’ve recived your feedback";
 
 // MARK: Rewards
-
 "rewards-title" = "Rewards";
 "rewards-show-title" = "Show Rewards";
 "rewards-detail-subtitle" = "You earn rewards just by owning Algos! Here's a summary of your rewards activity since your last transaction. These rewards are always included in your balance.";
@@ -363,14 +350,12 @@
 "total-rewards-since-last-transaction-title" = "SINCE LAST TRANSACTION";
 
 // MARK: Notifications
-
 "notifications-title" = "Notifications";
 "notification-sent-success" = "Your transaction of %@ from %@ to %@ is complete.";
 "notification-sent-failed" = "Your transaction of %@ from %@ to %@ has failed.";
 "notification-received" = "\%@ were sent to %@ by %@.";
 
 // MARK: Verified Asset Information
-
 "verified-assets-title" = "Verified Assets";
 "verified-asset-information-title" = "What does asset verification mean?";
 "verified-asset-information-text" = "For certain assets in which Algorand Inc. has a relationship with the asset’s issuer, we mark those assets as “Verified” (which is denoted by a blue checkmark symbol).\n\nThis helps to serve as a secondary defense against mistakenly transacting with an unintended asset.\n\nThat being said, you should always double check that the asset’s ID is the one that you intended to choose before transacting with that asset.\n\nIf you have questions about the verification process or general feedback about the app, we encourage you to contact us";
@@ -378,24 +363,25 @@
 "verified-asset-information-contact-us" = "contact us";
 
 // MARK: Ledger Tutorial
-
-"ledger-pair-title" = "Pair Ledger Device";
-"ledger-tutorial-title-text" = "Follow the steps below to add\nLedger Account";
+"ledger-pair-title" = "Create Ledger Account";
+"ledger-tutorial-title-text" = "Follow the steps below to create a new\nledger account";
 "ledger-tutorial-turned-on" = "Make sure that your ledger device is on and has Bluetooth enabled.";
-"ledger-tutorial-install-app" = "Install the Algorand app (version 1.0.7 or later) onto your Ledger device.";
+"ledger-tutorial-install-app" = "Install the Algorand app (version 1.0.7 or later) onto your Ledger.";
 "ledger-tutorial-open-app" = "Open the Algorand app on your Ledger.";
 "ledger-tutorial-bluetooth" = "Make sure Bluetooth is enabled on your smartphone.";
-"ledger-search-button-title" = "SEARCH FOR LEDGER";
+"ledger-search-button-title" = "Search for Ledger";
 
 // MARK: Ledger Device List
-
 "ledger-device-list-title" = "Pair Ledger Device";
-"ledger-device-list-looking" = "Looking for Ledger Devices";
+"ledger-device-list-looking" = "Looking for Other Ledger Devices";
 "ledger-device-list-connect" = "Connect";
 "ledger-device-list-troubleshoot" = "Trouble Shoot";
 
 // MARK: Ledger Troubleshooting
-
+"title-step-1" = "Step 1";
+"title-step-2" = "Step 2";
+"title-step-3" = "Step 3";
+"title-step-4" = "Step 4";
 "ledger-troubleshooting-title" = "Advanced Troubleshooting";
 "ledger-troubleshooting-close-others" = "Close other applications (Ledger apps, crypto wallets, or anything that might be trying to pair with the ledger.)";
 "ledger-troubleshooting-restart" = "Restart the Algorand Wallet and/or your device.";
@@ -405,30 +391,24 @@
 
 "ledger-troubleshooting-ledger-bluetooth-connection-guide-html" = "For general usage of your Ledger’s Bluetooth feature, please refer to Ledger’s official <a href=\"https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection\">Bluetooth Connection Guide</a>.";
 "ledger-troubleshooting-ledger-bluetooth-connection-advanced-guide-html" = "For more advanced troubleshooting, please refer to Ledger’s official <a href=\"https://support.ledger.com/hc/en-us/articles/360025864773\">Bluetooth Troubleshooting Guide</a>.";
-
 "ledger-troubleshooting-bluetooth-connection-html" = "Disable or Enable Bluetooth for an iOS device. <br /> <br />
 <ul>
-<li>Tap on Settings</li>
-<li>Select “General”</li>
-<li>Tap on “Bluetooth”</li>
-<li>Flip the On/Off button to toggle</li>
-<li>Bluetooth on or off</li>
+<li>Tap on <b>Settings</b></li>
+<li>Select <b>“General”</b></li>
+<li>Tap on <b>“Bluetooth”</b></li>
+<li>Flip the <b>On/Off button</b> to toggle</li>
+<li>Bluetooth <b>On or Off</b></li>
 </ul>";
-
 "ledger-troubleshooting-install-app-first-html" = "Begin by following Ledger’s comprehensive <a href=\"https://www.ledger.com/start\">Getting Started</a> tutorial.";
-"ledger-troubleshooting-install-app-second-html" = "When the tutorial gets to the point where it directs you to “select the application(s) you want to install on your device,” type Algorand in the search bar and install.";
-
+"ledger-troubleshooting-install-app-second-html" = "When the tutorial gets to the point where it directs you to “Select the application(s) you want to install on your device,” type <b>Algorand</b> in the search bar and install.";
 "ledger-troubleshooting-open-app-first-html" = "Begin by following Ledger’s comprehensive <a href=\"https://www.ledger.com/start\">Getting Started</a> tutorial, which will direct you how to install and open apps on your ledger device.";
-"ledger-troubleshooting-open-app-second-html" = "If you haven’t already installed the <b>Algorand</b> app on your Ledger device, when the tutorial gets to the point where it directs you to “select the application(s) you want to install on your device,” type Algorand in the search bar and install.";
+"ledger-troubleshooting-open-app-second-html" = "If you haven’t already installed the <b>Algorand</b> app on your Ledger device, when the tutorial gets to the point where it directs you to “Select the application(s) you want to install on your device,” type <b>Algorand</b> in the search bar and install.";
 
 // MARK: Ledger Pairing
-
-"ledger-pairing-name-title" = "Name Account";
-"ledger-pairing-key-title" = "Key:";
-"ledger-pairing-create-title" = "CREATE ACCOUNT";
+"ledger-pairing-key-title" = "Key";
+"ledger-pairing-create-title" = "Create Account";
 
 // MARK: BLE Errors
-
 "ble-error-search-title" = "Search Error";
 "ble-error-connection-title" = "Connection Error";
 "ble-error-bluetooth-title" = "Bluetooth Error";
@@ -436,8 +416,6 @@
 "ble-error-unsupported-device-title" = "Unsupported Device";
 "ble-error-transaction-cancelled-title" = "Transaction Cancelled";
 "ble-error-transmission-title" = "Transmission Error";
-
-
 "ble-error-fail-connect-peripheral" = "Could not connect to the Ledger device. Make sure the device is unlocked, nearby and has bluetooth enabled.";
 "ble-error-disconnected-peripheral" = "Disconnected from device";
 "ble-error-fail-fetch-account-address" = "We were unable to receive the public key of your ledger device. Please try again.";
@@ -448,7 +426,6 @@
 "ble-error-fail-ble-connection-resetting" = "Failed BLE connection for Resetting";
 
 // MARK: Ledger Approval
-
 "ledger-approval-title" = "Preview and Sign";
 "ledger-approval-message" = "Please review and sign the transaction on your ledger device.";
 "ledger-approval-connection-title" = "Ledger Connection";
