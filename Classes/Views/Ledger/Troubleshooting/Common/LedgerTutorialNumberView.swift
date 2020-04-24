@@ -9,29 +9,35 @@
 import UIKit
 
 class LedgerTutorialNumberView: BaseView {
+    
     private lazy var numberLabel: UILabel = {
         UILabel()
             .withLine(.single)
-            .withFont(UIFont.font(.overpass, withWeight: .bold(size: 14.0)))
-            .withAlignment(.left)
-            .withTextColor(SharedColors.black)
+            .withFont(UIFont.font(.publicSans, withWeight: .medium(size: 14.0)))
+            .withAlignment(.center)
+            .withTextColor(color("secondaryText"))
     }()
     
     override func configureAppearance() {
-        backgroundColor = rgb(0.95, 0.95, 0.96)
+        backgroundColor = color("gray100")
     }
     
     override func prepareLayout() {
         super.prepareLayout()
-        
+        setupNumberLabelLayout()
+    }
+}
+
+extension LedgerTutorialNumberView {
+    private func setupNumberLabelLayout() {
         addSubview(numberLabel)
+        
         numberLabel.snp.makeConstraints { maker in
             maker.center.equalToSuperview()
         }
     }
 }
 
-// MARK: API
 extension LedgerTutorialNumberView {
     func setCornerRadius(_ radius: CGFloat) {
         layer.cornerRadius = radius

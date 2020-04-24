@@ -12,34 +12,58 @@ class LedgerTutorialInstructionView: BaseView {
     
     private let layout = Layout<LayoutConstants>()
     
-    private lazy var iconImageView = UIImageView()
+    private lazy var tutorialNumberView: LedgerTutorialNumberView = {
+        let numberView = LedgerTutorialNumberView()
+        numberView.setCornerRadius(16.0)
+        return numberView
+    }()
     
     private lazy var titleLabel: UILabel = {
         UILabel()
             .withLine(.contained)
-            .withFont(UIFont.font(.avenir, withWeight: .medium(size: 12.0)))
+            .withFont(UIFont.font(.publicSans, withWeight: .regular(size: 14.0)))
             .withAlignment(.left)
-            .withTextColor(.black)
+            .withTextColor(color("secondaryText"))
     }()
     
+    private lazy var arrowImageView = UIImageView(image: img("icon-arrow-gray-24"))
+    
     override func configureAppearance() {
-        backgroundColor = .white
+        backgroundColor = color("secondaryBackground")
+        layer.cornerRadius = 12.0
+        setShadow()
     }
     
     override func prepareLayout() {
-        setupIconImageViewLayout()
+        setupTutorialNumberViewLayout()
+        setupArrowImageViewLayout()
         setupTitleLabelLayout()
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        layer.shadowPath = UIBezierPath(rect: bounds).cgPath
     }
 }
 
 extension LedgerTutorialInstructionView {
-    private func setupIconImageViewLayout() {
-        addSubview(iconImageView)
+    private func setupTutorialNumberViewLayout() {
+        addSubview(tutorialNumberView)
         
-        iconImageView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(layout.current.iconHorizontalInset)
+        tutorialNumberView.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
+            make.centerY.equalToSuperview()
+            make.size.equalTo(layout.current.numberSize)
+        }
+    }
+    
+    private func setupArrowImageViewLayout() {
+        addSubview(arrowImageView)
+        
+        arrowImageView.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.size.equalTo(layout.current.iconSize)
+            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
         }
     }
 
@@ -47,28 +71,41 @@ extension LedgerTutorialInstructionView {
         addSubview(titleLabel)
         
         titleLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(iconImageView)
-            make.leading.equalTo(iconImageView.snp.trailing).offset(layout.current.titleHorizontalInset)
-            make.trailing.equalToSuperview().inset(layout.current.titleHorizontalInset)
+            make.centerY.equalTo(tutorialNumberView)
+            make.leading.equalTo(tutorialNumberView.snp.trailing).offset(layout.current.horizontalInset)
+            make.trailing.equalTo(arrowImageView.snp.leading).offset(layout.current.titleHorizontalInset)
         }
     }
 }
 
 extension LedgerTutorialInstructionView {
-    func setIcon(_ icon: UIImage?) {
-        iconImageView.image = icon
+    func setNumber(_ number: Int) {
+        tutorialNumberView.setNumber(number)
     }
     
     func setTitle(_ title: String) {
         titleLabel.text = title
     }
+    
+    private func setShadow() {
+        layer.shadowColor = Colors.shadowColor.cgColor
+        layer.shadowOpacity = 1.0
+        layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
+        layer.shadowRadius = 4.0
+    }
 }
 
 extension LedgerTutorialInstructionView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let iconHorizontalInset: CGFloat = 14.0
-        let iconSize = CGSize(width: 20.0, height: 20.0)
-        let titleBottomInset: CGFloat = 21.0
-        let titleHorizontalInset: CGFloat = 18.0
+        let horizontalInset: CGFloat = 16.0
+        let iconSize = CGSize(width: 24.0, height: 24.0)
+        let numberSize = CGSize(width: 32.0, height: 32.0)
+        let titleHorizontalInset: CGFloat = -12.0
+    }
+}
+
+extension LedgerTutorialInstructionView {
+    private enum Colors {
+        static let shadowColor = rgba(0.17, 0.17, 0.23, 0.04)
     }
 }

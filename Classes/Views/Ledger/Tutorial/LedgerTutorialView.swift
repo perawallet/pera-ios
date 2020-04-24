@@ -14,38 +14,26 @@ class LedgerTutorialView: BaseView {
     
     weak var delegate: LedgerTutorialViewDelegate?
     
-    private lazy var imageBackgroundView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .white
-        return view
-    }()
-    
     private lazy var ledgerDeviceImageView = UIImageView(image: img("img-ledger-device"))
     
     private lazy var titleLabel: UILabel = {
         UILabel()
             .withLine(.contained)
-            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 12.0)))
+            .withFont(UIFont.font(.publicSans, withWeight: .medium(size: 16.0)))
             .withText("ledger-tutorial-title-text".localized)
             .withAlignment(.center)
-            .withTextColor(SharedColors.darkGray)
+            .withTextColor(color("primaryText"))
     }()
     
     private lazy var ledgerTutorialInstructionListView = LedgerTutorialInstructionListView()
     
     private lazy var searchButton = MainButton(title: "ledger-search-button-title".localized)
     
-    override func configureAppearance() {
-        super.configureAppearance()
-        setImageBackgroundViewShadow()
-    }
-    
     override func setListeners() {
         searchButton.addTarget(self, action: #selector(notifyDelegateToSearchLedgerDevices), for: .touchUpInside)
     }
     
     override func prepareLayout() {
-        setupImageBackgroundViewLayout()
         setupLedgerDeviceImageViewLayout()
         setupTitleLabelLayout()
         setupLedgerTutorialInstructionListViewLayout()
@@ -54,7 +42,6 @@ class LedgerTutorialView: BaseView {
     
     override func linkInteractors() {
         super.linkInteractors()
-        
         ledgerTutorialInstructionListView.delegate = self
     }
 }
@@ -67,23 +54,12 @@ extension LedgerTutorialView {
 }
 
 extension LedgerTutorialView {
-    private func setupImageBackgroundViewLayout() {
-        addSubview(imageBackgroundView)
-        
-        imageBackgroundView.layer.cornerRadius = layout.current.imageBackgroundViewSize.width / 2
-        
-        imageBackgroundView.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalToSuperview().inset(layout.current.imageBackgroundViewTopInset)
-            make.size.equalTo(layout.current.imageBackgroundViewSize)
-        }
-    }
-    
     private func setupLedgerDeviceImageViewLayout() {
-        imageBackgroundView.addSubview(ledgerDeviceImageView)
+        addSubview(ledgerDeviceImageView)
         
         ledgerDeviceImageView.snp.makeConstraints { make in
-            make.center.equalToSuperview()
+            make.top.equalToSuperview().inset(layout.current.imageTopInset)
+            make.centerX.equalToSuperview()
         }
     }
     
@@ -92,7 +68,7 @@ extension LedgerTutorialView {
         
         titleLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalTo(imageBackgroundView.snp.bottom).offset(layout.current.titleTopInset)
+            make.top.equalTo(ledgerDeviceImageView.snp.bottom).offset(layout.current.titleTopInset)
         }
     }
     
@@ -101,7 +77,7 @@ extension LedgerTutorialView {
         
         ledgerTutorialInstructionListView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.imageBackgroundViewTopInset)
+            make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.listTopInset)
         }
     }
     
@@ -117,46 +93,6 @@ extension LedgerTutorialView {
     }
 }
 
-extension LedgerTutorialView {
-    private func setImageBackgroundViewShadow() {
-        imageBackgroundView.layer.shadowColor = Colors.shadowColor.cgColor
-        imageBackgroundView.layer.shadowOpacity = 1.0
-        imageBackgroundView.layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
-        imageBackgroundView.layer.shadowRadius = 4.0
-    }
-}
-
-extension LedgerTutorialView {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let horizontalInset: CGFloat = 20.0
-        let imageBackgroundViewSize = CGSize(width: 127.0, height: 127.0)
-        let imageBackgroundViewTopInset: CGFloat = 60.0
-        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
-        let buttonBottomInset: CGFloat = 60.0
-        let titleTopInset: CGFloat = 16.0
-        let buttonMinimumTopInset: CGFloat = 20.0
-    }
-}
-
-extension LedgerTutorialView {
-    private enum Colors {
-        static let shadowColor = rgb(0.91, 0.91, 0.95)
-    }
-}
-
-protocol LedgerTutorialViewDelegate: class {
-    func ledgerTutorialViewDidTapSearchButton(_ ledgerTutorialView: LedgerTutorialView)
-    func ledgerTutorialView(_ ledgerTutorialView: LedgerTutorialView, didTap section: LedgerTutorialSection)
-}
-
-enum LedgerTutorialSection {
-    case ledgerBluetoothConnection
-    case openApp
-    case installApp
-    case bluetoothConnection
-}
-
-// MARK: LedgerTutorialInstructionListViewDelegate
 extension LedgerTutorialView: LedgerTutorialInstructionListViewDelegate {
     func ledgerTutorialInstructionListViewDidTapOpenApp(_ view: LedgerTutorialInstructionListView) {
         delegate?.ledgerTutorialView(self, didTap: .openApp)
@@ -173,4 +109,28 @@ extension LedgerTutorialView: LedgerTutorialInstructionListViewDelegate {
     func ledgerTutorialInstructionListViewDidTapLedgerBluetoothConnection(_ view: LedgerTutorialInstructionListView) {
         delegate?.ledgerTutorialView(self, didTap: .ledgerBluetoothConnection)
     }
+}
+
+extension LedgerTutorialView {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let horizontalInset: CGFloat = 16.0
+        let imageTopInset: CGFloat = 40.0
+        let listTopInset: CGFloat = 60.0
+        let buttonHorizontalInset: CGFloat = 32.0
+        let buttonBottomInset: CGFloat = 40.0
+        let titleTopInset: CGFloat = 16.0
+        let buttonMinimumTopInset: CGFloat = 20.0
+    }
+}
+
+protocol LedgerTutorialViewDelegate: class {
+    func ledgerTutorialViewDidTapSearchButton(_ ledgerTutorialView: LedgerTutorialView)
+    func ledgerTutorialView(_ ledgerTutorialView: LedgerTutorialView, didTap section: LedgerTutorialSection)
+}
+
+enum LedgerTutorialSection {
+    case ledgerBluetoothConnection
+    case openApp
+    case installApp
+    case bluetoothConnection
 }
