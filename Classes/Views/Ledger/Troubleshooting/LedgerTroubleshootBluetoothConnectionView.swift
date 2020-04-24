@@ -9,10 +9,12 @@
 import UIKit
 
 class LedgerTroubleshootBluetoothConnectionView: BaseView {
+    private let layout = Layout<LayoutConstants>()
+    
     private lazy var numberOneView: LedgerTutorialNumberView = {
         let numberView = LedgerTutorialNumberView()
         numberView.setNumber(1)
-        numberView.setCornerRadius(16)
+        numberView.setCornerRadius(16.0)
         return numberView
     }()
     
@@ -26,17 +28,38 @@ class LedgerTroubleshootBluetoothConnectionView: BaseView {
     }()
     
     override func configureAppearance() {
-        backgroundColor = .white
-        
+        backgroundColor = color("secondaryBackground")
         bindData()
     }
        
     override func prepareLayout() {
-        setupFirstTutorialLayout()
+        setupNumberOneViewLayout()
+        setupNumberOneTextViewLayout()
     }
 }
 
-// MARK: Data Binding
+extension LedgerTroubleshootBluetoothConnectionView {
+    private func setupNumberOneViewLayout() {
+        addSubview(numberOneView)
+        
+        numberOneView.snp.makeConstraints { make in
+            make.top.equalToSuperview().inset(layout.current.topInset)
+            make.size.equalTo(layout.current.numberSize)
+            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
+        }
+    }
+    
+    private func setupNumberOneTextViewLayout() {
+        addSubview(numberOneTextView)
+        
+        numberOneTextView.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.leading.equalTo(numberOneView.snp.trailing).offset(layout.current.leadingInset)
+            make.top.equalTo(numberOneView)
+        }
+    }
+}
+
 extension LedgerTroubleshootBluetoothConnectionView {
     private func bindData() {
         bindHtml("ledger-troubleshooting-bluetooth-connection-html".localized, to: numberOneTextView)
@@ -51,28 +74,23 @@ extension LedgerTroubleshootBluetoothConnectionView {
                 return
         }
         
-        attributedString.addAttributes([NSAttributedString.Key.font: UIFont.font(.avenir, withWeight: .medium(size: 14.0)),
-                                        NSAttributedString.Key.foregroundColor: SharedColors.black],
-                                       range: NSRange(location: 0, length: attributedString.string.count))
+        attributedString.addAttributes(
+            [
+                NSAttributedString.Key.font: UIFont.font(.publicSans, withWeight: .regular(size: 14.0)),
+                NSAttributedString.Key.foregroundColor: color("primaryText")
+            ],
+            range: NSRange(location: 0, length: attributedString.string.count)
+        )
         textView.attributedText = attributedString
     }
 }
 
-// MARK: Layout
 extension LedgerTroubleshootBluetoothConnectionView {
-    private func setupFirstTutorialLayout() {
-        addSubview(numberOneView)
-        numberOneView.snp.makeConstraints { maker in
-            maker.leading.top.equalToSuperview().inset(20)
-            maker.height.width.equalTo(32)
-        }
-        
-        addSubview(numberOneTextView)
-        numberOneTextView.snp.makeConstraints { maker in
-            maker.trailing.equalToSuperview().inset(20)
-            maker.leading.equalTo(numberOneView.snp.trailing).offset(16)
-            maker.top.equalTo(numberOneView)
-            maker.height.equalTo(200)
-        }
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let numberSize = CGSize(width: 32.0, height: 32.0)
+        let topInset: CGFloat = 28.0
+        let horizontalInset: CGFloat = 20.0
+        let textViewOffset: CGFloat = 32.0
+        let leadingInset: CGFloat = 16.0
     }
 }

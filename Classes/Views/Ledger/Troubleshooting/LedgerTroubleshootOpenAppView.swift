@@ -8,15 +8,15 @@
 
 import UIKit
 
-protocol LedgerTroubleshootOpenAppViewDelegate: class {
-    func ledgerTroubleshootOpenAppView(_ view: LedgerTroubleshootOpenAppView, didTapUrl url: URL)
-}
-
 class LedgerTroubleshootOpenAppView: BaseView {
+    private let layout = Layout<LayoutConstants>()
+    
+    weak var delegate: LedgerTroubleshootOpenAppViewDelegate?
+    
     private lazy var numberOneView: LedgerTutorialNumberView = {
         let numberView = LedgerTutorialNumberView()
         numberView.setNumber(1)
-        numberView.setCornerRadius(16)
+        numberView.setCornerRadius(16.0)
         return numberView
     }()
     
@@ -26,13 +26,18 @@ class LedgerTroubleshootOpenAppView: BaseView {
         textView.isScrollEnabled = false
         textView.dataDetectorTypes = .link
         textView.textContainerInset = .zero
+        textView.linkTextAttributes = [
+            .foregroundColor: color("tertiaryText"),
+            .underlineColor: UIColor.clear,
+            .font: UIFont.font(.publicSans, withWeight: .medium(size: 14.0))
+        ]
         return textView
     }()
     
     private lazy var numberTwoView: LedgerTutorialNumberView = {
         let numberView = LedgerTutorialNumberView()
         numberView.setNumber(2)
-        numberView.setCornerRadius(16)
+        numberView.setCornerRadius(16.0)
         return numberView
     }()
     
@@ -45,27 +50,66 @@ class LedgerTroubleshootOpenAppView: BaseView {
         return textView
     }()
     
-    weak var delegate: LedgerTroubleshootOpenAppViewDelegate?
-    
     override func configureAppearance() {
-        backgroundColor = .white
-        
+        backgroundColor = color("secondaryBackground")
         bindData()
-    }
-       
-    override func prepareLayout() {
-        setupFirstTutorialLayout()
-        setupSecondTutorialLayout()
     }
     
     override func linkInteractors() {
         super.linkInteractors()
-        
         numberOneTextView.delegate = self
+    }
+       
+    override func prepareLayout() {
+        setupNumberOneViewLayout()
+        setupNumberOneTextViewLayout()
+        setupNumberTwoViewLayout()
+        setupNumberTwoTextViewLayout()
     }
 }
 
-// MARK: Data Binding
+extension LedgerTroubleshootOpenAppView {
+    private func setupNumberOneViewLayout() {
+        addSubview(numberOneView)
+        
+        numberOneView.snp.makeConstraints { make in
+            make.top.equalToSuperview().inset(layout.current.topInset)
+            make.size.equalTo(layout.current.numberSize)
+            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
+        }
+    }
+    
+    private func setupNumberOneTextViewLayout() {
+        addSubview(numberOneTextView)
+        
+        numberOneTextView.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.leading.equalTo(numberOneView.snp.trailing).offset(layout.current.leadingInset)
+            make.top.equalTo(numberOneView)
+        }
+    }
+    
+    private func setupNumberTwoViewLayout() {
+        addSubview(numberTwoView)
+        
+        numberTwoView.snp.makeConstraints { make in
+            make.leading.equalTo(numberOneView)
+            make.top.equalTo(numberOneTextView.snp.bottom).offset(layout.current.textViewOffset)
+            make.size.equalTo(layout.current.numberSize)
+        }
+    }
+    
+    private func setupNumberTwoTextViewLayout() {
+        addSubview(numberTwoTextView)
+        
+        numberTwoTextView.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.leading.equalTo(numberTwoView.snp.trailing).offset(layout.current.leadingInset)
+            make.top.equalTo(numberTwoView)
+        }
+    }
+}
+
 extension LedgerTroubleshootOpenAppView {
     private func bindData() {
         bindHtml("ledger-troubleshooting-open-app-first-html".localized, to: numberOneTextView)
@@ -81,56 +125,39 @@ extension LedgerTroubleshootOpenAppView {
                 return
         }
         
-        attributedString.addAttributes([NSAttributedString.Key.font: UIFont.font(.avenir, withWeight: .medium(size: 14.0)),
-                                        NSAttributedString.Key.foregroundColor: SharedColors.black],
-                                       range: NSRange(location: 0, length: attributedString.string.count))
+        attributedString.addAttributes(
+            [
+                NSAttributedString.Key.font: UIFont.font(.publicSans, withWeight: .regular(size: 14.0)),
+                NSAttributedString.Key.foregroundColor: color("primaryText")
+            ],
+            range: NSRange(location: 0, length: attributedString.string.count)
+        )
         textView.attributedText = attributedString
     }
 }
 
-// MARK: Layout
-extension LedgerTroubleshootOpenAppView {
-    private func setupFirstTutorialLayout() {
-        addSubview(numberOneView)
-        numberOneView.snp.makeConstraints { maker in
-            maker.leading.top.equalToSuperview().inset(20)
-            maker.height.width.equalTo(32)
-        }
-        
-        addSubview(numberOneTextView)
-        numberOneTextView.snp.makeConstraints { maker in
-            maker.trailing.equalToSuperview().inset(20)
-            maker.leading.equalTo(numberOneView.snp.trailing).offset(16)
-            maker.top.equalTo(numberOneView)
-            maker.height.equalTo(80)
-        }
-    }
-    
-    private func setupSecondTutorialLayout() {
-        addSubview(numberTwoView)
-        numberTwoView.snp.makeConstraints { maker in
-            maker.leading.equalTo(numberOneView)
-            maker.top.equalTo(numberOneTextView.snp.bottom).offset(40)
-            maker.height.width.equalTo(32)
-        }
-        
-        addSubview(numberTwoTextView)
-        numberTwoTextView.snp.makeConstraints { maker in
-            maker.trailing.equalToSuperview().inset(20)
-            maker.leading.equalTo(numberTwoView.snp.trailing).offset(16)
-            maker.top.equalTo(numberTwoView)
-            maker.height.equalTo(120)
-        }
-    }
-}
-
-// MARK: UITextViewDelegate
 extension LedgerTroubleshootOpenAppView: UITextViewDelegate {
-    func textView(_ textView: UITextView,
-                  shouldInteractWith URL: URL,
-                  in characterRange: NSRange,
-                  interaction: UITextItemInteraction) -> Bool {
+    func textView(
+        _ textView: UITextView,
+        shouldInteractWith URL: URL,
+        in characterRange: NSRange,
+        interaction: UITextItemInteraction
+    ) -> Bool {
         delegate?.ledgerTroubleshootOpenAppView(self, didTapUrl: URL)
         return false
     }
+}
+
+extension LedgerTroubleshootOpenAppView {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let numberSize = CGSize(width: 32.0, height: 32.0)
+        let topInset: CGFloat = 28.0
+        let horizontalInset: CGFloat = 20.0
+        let textViewOffset: CGFloat = 32.0
+        let leadingInset: CGFloat = 16.0
+    }
+}
+
+protocol LedgerTroubleshootOpenAppViewDelegate: class {
+    func ledgerTroubleshootOpenAppView(_ view: LedgerTroubleshootOpenAppView, didTapUrl url: URL)
 }
