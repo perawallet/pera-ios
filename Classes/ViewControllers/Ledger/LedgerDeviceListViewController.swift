@@ -38,13 +38,6 @@ class LedgerDeviceListViewController: BaseViewController {
         super.init(configuration: configuration)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        // swiftlint:disable todo
-        // TODO: We might need to restart scanning here somehow.
-        // swiftlint:enable todo
-    }
-    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         ledgerDeviceListView.startSearchSpinner()
@@ -137,6 +130,7 @@ extension LedgerDeviceListViewController: LedgerDeviceListViewDelegate {
 extension LedgerDeviceListViewController: BLEConnectionManagerDelegate {
     func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didDiscover peripherals: [CBPeripheral]) {
         ledgerDevices = peripherals
+        ledgerDeviceListView.updateListHeightForItemSize(ledgerDevices.count)
         ledgerDeviceListView.devicesCollectionView.reloadData()
     }
     
@@ -236,6 +230,6 @@ extension LedgerDeviceListViewController: LedgerBLEControllerDelegate {
 
 extension LedgerDeviceListViewController {
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let cellSize = CGSize(width: UIScreen.main.bounds.width - 36.0, height: 58.0)
+        let cellSize = CGSize(width: UIScreen.main.bounds.width - 28.0, height: 60.0)
     }
 }
