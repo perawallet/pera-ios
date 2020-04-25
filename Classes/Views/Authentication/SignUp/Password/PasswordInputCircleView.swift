@@ -11,28 +11,26 @@ import UIKit
 class PasswordInputCircleView: UIImageView {
     
     override var intrinsicContentSize: CGSize {
-        return CGSize(width: 40.0, height: 40.0)
+        return CGSize(width: 20.0, height: 20.0)
     }
     
     var state: State = .empty {
         didSet {
             switch state {
             case .empty:
-                image = img("green-button-border", isTemplate: true)
-                tintColor = SharedColors.purple.withAlphaComponent(0.2)
+                image = img("gray-button-border")
             case .error:
-                image = img("green-button-border", isTemplate: true)
-                tintColor = UIColor.red
+                image = img("gray-button-border", isTemplate: true)
+                tintColor = color("red")
             case .filled:
-                image = img("purple-button-filled")
+                image = img("green-button-filled")
             }
         }
     }
     
     init() {
-        super.init(image: img("green-button-border", isTemplate: true))
-        tintColor = SharedColors.purple.withAlphaComponent(0.2)
-        layer.cornerRadius = 20.0
+        super.init(image: img("gray-button-border"))
+        layer.cornerRadius = 10.0
         contentMode = .center
     }
     

@@ -25,18 +25,17 @@ class ChoosePasswordViewModel {
     func configure(_ choosePasswordView: ChoosePasswordView) {
         switch mode {
         case .setup:
-            choosePasswordView.subtitleLabel.text = "password-set-subtitle".localized
+            choosePasswordView.titleLabel.text = "password-set-subtitle".localized
         case .verify:
-            choosePasswordView.subtitleLabel.text = "password-verify-subtitle".localized
+            choosePasswordView.titleLabel.text = "password-verify-subtitle".localized
         case .login:
-            choosePasswordView.titleLabel.text = "login-title".localized
-            choosePasswordView.subtitleLabel.text = "login-subtitle".localized
+            choosePasswordView.titleLabel.text = "login-subtitle".localized
         case .resetPassword:
-            choosePasswordView.subtitleLabel.text = "password-change-subtitle".localized
+            choosePasswordView.titleLabel.text = "password-change-subtitle".localized
         case .resetVerify:
-            choosePasswordView.subtitleLabel.text = "password-verify-subtitle".localized
+            choosePasswordView.titleLabel.text = "password-verify-subtitle".localized
         case .confirm:
-            choosePasswordView.subtitleLabel.text = "login-subtitle".localized
+            choosePasswordView.titleLabel.text = "login-subtitle".localized
         }
     }
     
@@ -48,15 +47,13 @@ class ChoosePasswordViewModel {
                 return
             }
             
-            guard let number = number else {
-                return
-            }
-            
             password.append(number)
         case .delete:
             if !password.isEmpty {
                 password.removeLast()
             }
+        case .spacing:
+            break
         }
         
         if isPasswordValid {
@@ -80,12 +77,6 @@ class ChoosePasswordViewModel {
             }
             
             passwordInputCircleView.state = .filled
-            
-            passwordInputCircleView.backgroundColor = rgba(0.64, 0.03, 0.53, 0.2)
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                passwordInputCircleView.backgroundColor = .clear
-            }
         case .delete:
             if isPasswordValid {
                 let passwordInputCircleView = choosePasswordView.passwordInputView.passwordInputCircleViews[password.count - 1]
@@ -101,6 +92,8 @@ class ChoosePasswordViewModel {
             
             passwordInputCircleView.state = .empty
             return
+        case .spacing:
+            break
         }
     }
     

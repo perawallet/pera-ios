@@ -16,7 +16,7 @@ protocol ChoosePasswordViewControllerDelegate: class {
 
 class ChoosePasswordViewController: BaseViewController {
     
-    private lazy var choosePasswordView = ChoosePasswordView()
+    private lazy var choosePasswordView = ChoosePasswordView(mode: mode)
     
     private let viewModel: ChoosePasswordViewModel
     private let mode: Mode
