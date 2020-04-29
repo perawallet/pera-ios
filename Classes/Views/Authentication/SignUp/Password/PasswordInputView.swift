@@ -25,7 +25,7 @@ class PasswordInputView: BaseView {
     }()
     
     override func configureAppearance() {
-        backgroundColor = color("secondaryBackground")
+        backgroundColor = SharedColors.secondaryBackground
     }
     
     override func prepareLayout() {

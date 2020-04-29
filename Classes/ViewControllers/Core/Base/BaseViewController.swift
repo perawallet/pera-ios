@@ -86,7 +86,7 @@ class BaseViewController: UIViewController {
     }
     
     func configureAppearance() {
-        view.backgroundColor = color("primaryBackground")
+        view.backgroundColor = SharedColors.primaryBackground
         
         navigationController?.navigationBar.titleTextAttributes = [
             NSAttributedString.Key.font: UIFont.font(.overpass, withWeight: .semiBold(size: 16.0)),

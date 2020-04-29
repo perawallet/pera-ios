@@ -18,26 +18,26 @@ class LocalAuthenticationPreferenceView: BaseView {
     private lazy var titleLabel: UILabel = {
         UILabel()
             .withText("local-authentication-preference-title".localized)
-            .withTextColor(color("primaryText"))
+            .withTextColor(SharedColors.primaryText)
             .withAlignment(.center)
-            .withFont(UIFont.font(.publicSans, withWeight: .bold(size: 28.0)))
+            .withFont(UIFont.font(withWeight: .bold(size: 28.0)))
     }()
     
     private lazy var subtitleLabel: UILabel = {
         UILabel()
             .withText("local-authentication-preference-subtitle".localized)
-            .withTextColor(color("primaryText"))
+            .withTextColor(SharedColors.primaryText)
             .withAlignment(.center)
             .withLine(.contained)
-            .withFont(UIFont.font(.publicSans, withWeight: .regular(size: 16.0)))
+            .withFont(UIFont.font(withWeight: .regular(size: 16.0)))
     }()
     
     private lazy var enableButton = MainButton(title: "local-authentication-enable".localized)
     
     private lazy var noButton: UIButton = {
         UIButton(type: .custom)
-            .withFont(UIFont.font(.publicSans, withWeight: .medium(size: 16.0)))
-            .withTitleColor(color("primaryText"))
+            .withFont(UIFont.font(withWeight: .medium(size: 16.0)))
+            .withTitleColor(SharedColors.primaryText)
             .withTitle("local-authentication-no".localized)
             .withAlignment(.center)
     }()

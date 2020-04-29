@@ -21,15 +21,15 @@ class LedgerTutorialInstructionView: BaseView {
     private lazy var titleLabel: UILabel = {
         UILabel()
             .withLine(.contained)
-            .withFont(UIFont.font(.publicSans, withWeight: .regular(size: 14.0)))
+            .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
             .withAlignment(.left)
-            .withTextColor(color("secondaryText"))
+            .withTextColor(SharedColors.secondaryText)
     }()
     
     private lazy var arrowImageView = UIImageView(image: img("icon-arrow-gray-24"))
     
     override func configureAppearance() {
-        backgroundColor = color("secondaryBackground")
+        backgroundColor = SharedColors.secondaryBackground
         layer.cornerRadius = 12.0
         setShadow()
     }

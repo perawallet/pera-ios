@@ -41,9 +41,9 @@ class AssetAdditionView: BaseView {
             segments: segments,
             index: 0,
             options: [
-                .backgroundColor(rgb(0.95, 0.95, 0.96)),
-                .indicatorViewBackgroundColor(.white),
-                .cornerRadius(10.0),
+                .backgroundColor(SharedColors.gray100),
+                .indicatorViewBackgroundColor(SharedColors.secondaryBackground),
+                .cornerRadius(8.0),
                 .indicatorViewInset(4.0)
             ]
         )
@@ -77,9 +77,7 @@ class AssetAdditionView: BaseView {
     
     override func configureAppearance() {
         super.configureAppearance()
-        
-        segmentControlContainerView.backgroundColor = .white
-        
+        segmentControlContainerView.backgroundColor = SharedColors.secondaryBackground
         assetSegmentControl.setIndex(0)
     }
 }
@@ -152,7 +150,6 @@ extension AssetAdditionView {
 extension AssetAdditionView {
     private enum Colors {
         static let placeholderColor = rgba(0.67, 0.67, 0.72, 0.3)
-        static let verifiedButtonColor = rgb(0.29, 0.42, 0.87)
     }
 }
 

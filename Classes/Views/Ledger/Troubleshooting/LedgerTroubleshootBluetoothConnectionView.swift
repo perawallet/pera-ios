@@ -28,7 +28,7 @@ class LedgerTroubleshootBluetoothConnectionView: BaseView {
     }()
     
     override func configureAppearance() {
-        backgroundColor = color("secondaryBackground")
+        backgroundColor = SharedColors.secondaryBackground
         bindData()
     }
        
@@ -76,8 +76,8 @@ extension LedgerTroubleshootBluetoothConnectionView {
         
         attributedString.addAttributes(
             [
-                NSAttributedString.Key.font: UIFont.font(.publicSans, withWeight: .regular(size: 14.0)),
-                NSAttributedString.Key.foregroundColor: color("primaryText")
+                NSAttributedString.Key.font: UIFont.font(withWeight: .regular(size: 14.0)),
+                NSAttributedString.Key.foregroundColor: SharedColors.primaryText
             ],
             range: NSRange(location: 0, length: attributedString.string.count)
         )

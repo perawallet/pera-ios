@@ -19,11 +19,9 @@ class IntroductionView: BaseView {
     private lazy var titleLabel: UILabel = {
         UILabel()
             .withLine(.contained)
-            .withFont(UIFont.font(.publicSans, withWeight: .bold(size: 28.0 * verticalScale)))
-            .withAttributedText("introduction-title-text".localized.attributed([
-                .lineSpacing(0.98),
-                .textColor(color("primaryText"))
-            ]))
+            .withFont(UIFont.font(withWeight: .bold(size: 28.0 * verticalScale)))
+            .withText("introduction-title-text".localized)
+            .withTextColor(SharedColors.primaryText)
             .withAlignment(.left)
     }()
     
@@ -33,14 +31,14 @@ class IntroductionView: BaseView {
         UIButton(type: .custom)
             .withBackgroundImage(img("bg-orange-button"))
             .withTitle("introduction-title-pair-ledger".localized)
-            .withTitleColor(color("primaryButtonTitle"))
+            .withTitleColor(SharedColors.primaryButtonTitle)
             .withAlignment(.center)
-            .withFont(UIFont.font(.publicSans, withWeight: .semiBold(size: 16.0)))
+            .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
     }()
     
     private lazy var separatorView: UIView = {
         let view = UIView()
-        view.backgroundColor = color("gray300")
+        view.backgroundColor = SharedColors.gray300
         return view
     }()
     
@@ -48,8 +46,8 @@ class IntroductionView: BaseView {
         UILabel()
             .withAlignment(.center)
             .withLine(.single)
-            .withTextColor(color("gray500"))
-            .withFont(UIFont.font(.publicSans, withWeight: .medium(size: 14.0 * verticalScale)))
+            .withTextColor(SharedColors.gray500)
+            .withFont(UIFont.font(withWeight: .medium(size: 14.0 * verticalScale)))
             .withText("introduction-has-account".localized)
     }()
     
@@ -57,9 +55,9 @@ class IntroductionView: BaseView {
         UIButton(type: .custom)
             .withBackgroundImage(img("bg-light-gray-button"))
             .withTitle("introduction-recover-title".localized)
-            .withTitleColor(color("secondaryButtonTitle"))
+            .withTitleColor(SharedColors.secondaryButtonTitle)
             .withAlignment(.center)
-            .withFont(UIFont.font(.publicSans, withWeight: .semiBold(size: 16.0)))
+            .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
     }()
     
     override func setListeners() {
@@ -69,7 +67,7 @@ class IntroductionView: BaseView {
     }
     
     override func configureAppearance() {
-        backgroundColor = color("secondaryBackground")
+        backgroundColor = SharedColors.secondaryBackground
     }
     
     override func prepareLayout() {

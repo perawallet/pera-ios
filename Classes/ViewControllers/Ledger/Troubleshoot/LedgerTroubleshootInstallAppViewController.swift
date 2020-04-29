@@ -15,18 +15,15 @@ class LedgerTroubleshootInstallAppViewController: BaseScrollViewController {
     
     private lazy var separatorView: UIView = {
         let view = UIView()
-        view.backgroundColor = color("gray100")
+        view.backgroundColor = SharedColors.gray100
         return view
     }()
     
     override func configureNavigationBarAppearance() {
         super.configureNavigationBarAppearance()
         
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [weak self] in
-            guard let strongSelf = self else {
-                return
-            }
-            strongSelf.closeScreen(by: .dismiss, animated: true)
+        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [unowned self] in
+            self.closeScreen(by: .dismiss, animated: true)
         }
         
         leftBarButtonItems = [closeBarButtonItem]
@@ -35,10 +32,10 @@ class LedgerTroubleshootInstallAppViewController: BaseScrollViewController {
     override func configureAppearance() {
         super.configureAppearance()
         title = "title-step-2".localized
-        view.backgroundColor = .white
-        contentView.backgroundColor = .white
-        scrollView.backgroundColor = .white
-        navigationController?.navigationBar.barTintColor = .white
+        view.backgroundColor = SharedColors.secondaryBackground
+        contentView.backgroundColor = SharedColors.secondaryBackground
+        scrollView.backgroundColor = SharedColors.secondaryBackground
+        navigationController?.navigationBar.barTintColor = SharedColors.secondaryBackground
     }
     
     override func linkInteractors() {

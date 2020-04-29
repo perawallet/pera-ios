@@ -83,7 +83,7 @@ class NumpadView: BaseView {
     private lazy var deleteButton = NumpadButton(numpadValue: .delete)
     
     override func configureAppearance() {
-        backgroundColor = color("secondaryBackground")
+        backgroundColor = SharedColors.secondaryBackground
     }
     
     override func linkInteractors() {
