@@ -91,11 +91,13 @@ extension AccountsViewController: OptionsViewControllerDelegate {
     }
     
     private func displayRemoveAccountAlert() {
-        let configurator = AlertViewConfigurator(
+        let configurator = BottomInformationViewConfigurator(
             title: "options-remove-account".localized,
-            image: img("remove-account-alert-icon"),
+            image: img("img-remove-account"),
             explanation: "options-remove-alert-explanation".localized,
-            actionTitle: "title-remove".localized) {
+            actionTitle: "options-remove-account".localized,
+            actionImage: img("bg-button-red"),
+            closeTitle: "title-keep".localized) {
                 guard let user = self.session?.authenticatedUser,
                     let account = self.selectedAccount,
                     let accountInformation = self.session?.accountInformation(from: account.address) else {
@@ -114,21 +116,14 @@ extension AccountsViewController: OptionsViewControllerDelegate {
                 self.session?.authenticatedUser = user
         }
         
-        let viewController = tabBarController?.open(
-            .alert(mode: .destructive, alertConfigurator: configurator),
-            by: .customPresentWithoutNavigationController(
-                presentationStyle: .overCurrentContext,
-                transitionStyle: .crossDissolve,
-                transitioningDelegate: nil
+        open(
+            .bottomInformation(mode: .action, configurator: configurator),
+            by: .customPresent(
+                presentationStyle: .custom,
+                transitionStyle: nil,
+                transitioningDelegate: removeAccountModalPresenter
             )
-        ) as? AlertViewController
-
-        if let alertView = viewController?.alertView as? DestructiveAlertView {
-            alertView.cancelButton.setTitleColor(.white, for: .normal)
-            alertView.cancelButton.setBackgroundImage(img("bg-black-cancel"), for: .normal)
-            alertView.actionButton.setTitleColor(.white, for: .normal)
-            alertView.actionButton.setBackgroundImage(img("bg-orange-action"), for: .normal)
-        }
+        )
     }
 }
 

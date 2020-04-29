@@ -11,14 +11,6 @@ import Magpie
 import CoreBluetooth
 import SVProgressHUD
 
-protocol AssetAdditionViewControllerDelegate: class {
-    func assetAdditionViewController(
-        _ assetAdditionViewController: AssetAdditionViewController,
-        didAdd assetSearchResult: AssetSearchResult,
-        to account: Account
-    )
-}
-
 class AssetAdditionViewController: BaseViewController {
     
     private let layout = Layout<LayoutConstants>()
@@ -364,8 +356,10 @@ extension AssetAdditionViewController {
             DispatchQueue.main.async {
                 self.transactionController.stopBLEScan()
                 self.dismissProgressIfNeeded()
-                self.pushNotificationController.showFeedbackMessage("ble-error-connection-title".localized,
-                                                                    subtitle: "ble-error-fail-connect-peripheral".localized)
+                self.pushNotificationController.showFeedbackMessage(
+                    "ble-error-connection-title".localized,
+                    subtitle: "ble-error-fail-connect-peripheral".localized
+                )
             }
             
             self.invalidateTimer()
@@ -386,4 +380,12 @@ extension AssetAdditionViewController {
     struct LayoutConstants: AdaptiveLayoutConstants {
         let cellHeight: CGFloat = 50.0
     }
+}
+
+protocol AssetAdditionViewControllerDelegate: class {
+    func assetAdditionViewController(
+        _ assetAdditionViewController: AssetAdditionViewController,
+        didAdd assetSearchResult: AssetSearchResult,
+        to account: Account
+    )
 }

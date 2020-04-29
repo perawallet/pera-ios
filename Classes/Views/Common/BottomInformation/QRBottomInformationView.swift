@@ -1,5 +1,5 @@
 //
-//  QRAlertView.swift
+//  QRBottomInformationView.swift
 //  algorand
 //
 //  Created by Göktuğ Berk Ulu on 8.01.2020.
@@ -8,12 +8,7 @@
 
 import UIKit
 
-protocol QRAlertViewDelegate: class {
-    func qRAlertViewDidTapCancelButton(_ alertView: QRAlertView)
-    func qrAlertViewDidTapActionButton(_ alertView: QRAlertView)
-}
-
-class QRAlertView: AlertView {
+class QRBottomInformationView: BottomInformationView {
     
     private let layout = Layout<LayoutConstants>()
     
@@ -33,7 +28,7 @@ class QRAlertView: AlertView {
             .withTitleColor(SharedColors.black)
     }()
     
-    weak var delegate: QRAlertViewDelegate?
+    weak var delegate: QRBottomInformationViewDelegate?
     
     override func setListeners() {
         actionButton.addTarget(self, action: #selector(notifyDelegateToActionButtonTapped), for: .touchUpInside)
@@ -47,7 +42,7 @@ class QRAlertView: AlertView {
     }
 }
 
-extension QRAlertView {
+extension QRBottomInformationView {
     private func setupActionButtonLayout() {
         addSubview(actionButton)
         
@@ -68,22 +63,27 @@ extension QRAlertView {
     }
 }
 
-extension QRAlertView {
+extension QRBottomInformationView {
     @objc
     private func notifyDelegateToCancelButtonTapped() {
-        delegate?.qRAlertViewDidTapCancelButton(self)
+        delegate?.qrBottomInformationViewDidTapCancelButton(self)
     }
     
     @objc
     private func notifyDelegateToActionButtonTapped() {
-        delegate?.qrAlertViewDidTapActionButton(self)
+        delegate?.qrBottomInformationViewDidTapActionButton(self)
     }
 }
 
-extension QRAlertView {
+extension QRBottomInformationView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let horizontalInset: CGFloat = 25.0
         let buttonOffset: CGFloat = 10.0
         let verticalInset: CGFloat = 35.0
     }
+}
+
+protocol QRBottomInformationViewDelegate: class {
+    func qrBottomInformationViewDidTapCancelButton(_ qrBottomInformationView: QRBottomInformationView)
+    func qrBottomInformationViewDidTapActionButton(_ qrBottomInformationView: QRBottomInformationView)
 }

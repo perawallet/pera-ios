@@ -55,7 +55,7 @@ indirect enum Screen {
     case assetActionConfirmation(assetAlertDraft: AssetAlertDraft)
     case assetSupportAlert(assetAlertDraft: AssetAlertDraft)
     case assetCancellableSupportAlert(assetAlertDraft: AssetAlertDraft)
-    case alert(mode: AlertViewController.Mode, alertConfigurator: AlertViewConfigurator)
+    case bottomInformation(mode: BottomInformationViewController.Mode, configurator: BottomInformationViewConfigurator)
     case rewardDetail(account: Account)
     case assetList(account: Account)
     case verifiedAssetInformation

@@ -245,7 +245,7 @@ extension ContactInfoViewController: ContactInfoViewDelegate {
     }
     
     private func displayDeleteContactAlert() {
-        let configurator = AlertViewConfigurator(
+        let configurator = BottomInformationViewConfigurator(
             title: "contacts-delete-contact-alert-title".localized,
             image: img("icon-delete-contact"),
             explanation: "contacts-delete-contact-alert-explanation".localized,
@@ -256,21 +256,14 @@ extension ContactInfoViewController: ContactInfoViewDelegate {
                 return
         }
         
-        let viewController = open(
-            .alert(mode: .destructive, alertConfigurator: configurator),
+        open(
+            .bottomInformation(mode: .action, configurator: configurator),
             by: .customPresentWithoutNavigationController(
                 presentationStyle: .overCurrentContext,
                 transitionStyle: .crossDissolve,
                 transitioningDelegate: nil
             )
-        ) as? AlertViewController
-        
-        if let alertView = viewController?.alertView as? DestructiveAlertView {
-            alertView.cancelButton.setTitleColor(.white, for: .normal)
-            alertView.cancelButton.setBackgroundImage(img("bg-black-cancel"), for: .normal)
-            alertView.actionButton.setTitleColor(.white, for: .normal)
-            alertView.actionButton.setBackgroundImage(img("bg-purple-action"), for: .normal)
-        }
+        )
     }
 }
 

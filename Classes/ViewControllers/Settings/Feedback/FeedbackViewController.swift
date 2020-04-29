@@ -217,7 +217,7 @@ extension FeedbackViewController {
     }
     
     private func displaySuccessAlert() {
-        let configurator = AlertViewConfigurator(
+        let configurator = BottomInformationViewConfigurator(
             title: "feedback-success-title".localized,
             image: img("feedback-success-icon"),
             explanation: "",
@@ -228,7 +228,7 @@ extension FeedbackViewController {
         }
         
         open(
-            .alert(mode: .default, alertConfigurator: configurator),
+            .bottomInformation(mode: .default, configurator: configurator),
             by: .customPresentWithoutNavigationController(
                 presentationStyle: .overCurrentContext,
                 transitionStyle: .crossDissolve,

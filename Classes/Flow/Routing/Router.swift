@@ -292,8 +292,12 @@ class Router {
             viewController = AssetSupportAlertViewController(assetAlertDraft: assetAlertDraft, configuration: configuration)
         case let .assetCancellableSupportAlert(assetAlertDraft):
             viewController = AssetCancellableSupportAlertViewController(assetAlertDraft: assetAlertDraft, configuration: configuration)
-        case let .alert(mode, configurator):
-            viewController = AlertViewController(mode: mode, alertConfigurator: configurator, configuration: configuration)
+        case let .bottomInformation(mode, configurator):
+            viewController = BottomInformationViewController(
+                mode: mode,
+                bottomInformationViewConfigurator: configurator,
+                configuration: configuration
+            )
         case let .rewardDetail(account):
             viewController = RewardDetailViewController(account: account, configuration: configuration)
         case let .assetList(account):

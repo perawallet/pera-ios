@@ -20,6 +20,14 @@ class AccountsViewController: BaseViewController {
         initialModalSize: .custom(CGSize(width: view.frame.width, height: layout.current.optionsModalHeight))
     )
     
+    private(set) lazy var removeAccountModalPresenter = CardModalPresenter(
+        config: ModalConfiguration(
+            animationMode: .normal(duration: 0.25),
+            dismissMode: .scroll
+        ),
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: layout.current.removeAccountModalHeight))
+    )
+    
     private(set) lazy var editAccountModalPresenter = CardModalPresenter(
         config: ModalConfiguration(
             animationMode: .normal(duration: 0.25),
@@ -334,6 +342,7 @@ extension AccountsViewController: QRScannerViewControllerDelegate {
 extension AccountsViewController {
     struct LayoutConstants: AdaptiveLayoutConstants {
         let optionsModalHeight: CGFloat = 384.0
+        let removeAccountModalHeight: CGFloat = 402.0
         let transactionCellSize = CGSize(width: UIScreen.main.bounds.width, height: 72.0)
         let rewardCellSize = CGSize(width: UIScreen.main.bounds.width, height: 50.0)
         let editAccountModalHeight: CGFloat = 158.0

@@ -10,6 +10,14 @@ import UIKit
 
 class PassphraseVerifyViewController: BaseScrollViewController {
     
+    private lazy var bottomModalPresenter = CardModalPresenter(
+        config: ModalConfiguration(
+            animationMode: .normal(duration: 0.25),
+            dismissMode: .scroll
+        ),
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: 358.0))
+    )
+    
     private lazy var passphraseViewModel: PassphraseViewModel? = {
         if let privateKey = session?.privateData(for: "temp") {
             return PassphraseViewModel(privateKey: privateKey)
@@ -117,11 +125,11 @@ extension PassphraseVerifyViewController: UICollectionViewDelegate, UICollection
                 }
                 
                 open(
-                    .alert(mode: .default, alertConfigurator: configurator),
+                    .bottomInformation(mode: .default, configurator: configurator),
                     by: .customPresentWithoutNavigationController(
-                        presentationStyle: .overCurrentContext,
-                        transitionStyle: .crossDissolve,
-                        transitioningDelegate: nil
+                        presentationStyle: .custom,
+                        transitionStyle: nil,
+                        transitioningDelegate: bottomModalPresenter
                     )
                 )
                 

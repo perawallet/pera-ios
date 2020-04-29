@@ -129,7 +129,7 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
     }
     
     private func displayQRAlert(for amountFromQR: Int64, with asset: Int64?) {
-        let configurator = AlertViewConfigurator(
+        let configurator = BottomInformationViewConfigurator(
             title: "send-qr-scan-alert-title".localized,
             image: img("icon-qr-alert"),
             explanation: "send-qr-scan-alert-message".localized,
@@ -145,7 +145,7 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
         }
         
         open(
-            .alert(mode: .qr, alertConfigurator: configurator),
+            .bottomInformation(mode: .qr, configurator: configurator),
             by: .customPresentWithoutNavigationController(
                 presentationStyle: .overCurrentContext,
                 transitionStyle: .crossDissolve,
