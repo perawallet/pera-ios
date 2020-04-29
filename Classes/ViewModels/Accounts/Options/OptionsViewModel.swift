@@ -11,13 +11,10 @@ import UIKit
 class OptionsViewModel {
     func configure(_ cell: OptionsCell, with option: OptionsViewController.Options) {
         switch option {
-        case .showQR:
-            cell.contextView.iconImageView.image = img("icon-qr-code-purple")
-            cell.contextView.optionLabel.text = "options-show-qr".localized
         case .removeAsset:
             cell.contextView.iconImageView.image = img("icon-remove-assets")
             cell.contextView.optionLabel.text = "options-remove-assets".localized
-        case .passPhrase:
+        case .passphrase:
             cell.contextView.iconImageView.image = img("icon-show-passphrase")
             cell.contextView.optionLabel.text = "options-view-passphrase".localized
         case .edit:

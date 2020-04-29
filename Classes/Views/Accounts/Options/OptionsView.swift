@@ -8,95 +8,102 @@
 
 import UIKit
 
-protocol OptionsViewDelegate: class {
-    func optionsViewDidTapDismissButton(_ optionsView: OptionsView)
-}
-
 class OptionsView: BaseView {
     
     private let layout = Layout<LayoutConstants>()
     
     weak var delegate: OptionsViewDelegate?
     
-    private lazy var titleLabel: UILabel = {
-        UILabel()
-            .withAlignment(.center)
-            .withAttributedText("options-title".localized.attributed([.letterSpacing(1.10), .textColor(SharedColors.darkGray)]))
-            .withFont(UIFont.font(.avenir, withWeight: .bold(size: 11.0)))
-    }()
-    
-    private lazy var dismissButton: UIButton = {
-        UIButton(type: .custom).withImage(img("icon-close"))
-    }()
-    
     private(set) lazy var optionsCollectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .vertical
-        flowLayout.minimumLineSpacing = 0.0
+        flowLayout.minimumLineSpacing = 8.0
         flowLayout.minimumInteritemSpacing = 0.0
-        
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = .white
+        collectionView.backgroundColor = SharedColors.secondaryBackground
         collectionView.contentInset = .zero
         collectionView.register(OptionsCell.self, forCellWithReuseIdentifier: OptionsCell.reusableIdentifier)
         return collectionView
     }()
     
+    private lazy var separatorView: UIView = {
+        let view = UIView()
+        view.backgroundColor = SharedColors.gray100
+        return view
+    }()
+    
+    private lazy var cancelButton: UIButton = {
+        UIButton(type: .custom)
+            .withBackgroundColor(SharedColors.secondaryBackground)
+            .withTitle("title-cancel".localized)
+            .withTitleColor(SharedColors.gray500)
+            .withAlignment(.center)
+            .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
+    }()
+    
     override func configureAppearance() {
-        backgroundColor = .white
+        backgroundColor = SharedColors.secondaryBackground
     }
     
     override func setListeners() {
-        dismissButton.addTarget(self, action: #selector(notifyDelegateToDismissButtonTapped), for: .touchUpInside)
+        cancelButton.addTarget(self, action: #selector(notifyDelegateToCloseScreen), for: .touchUpInside)
     }
     
     override func prepareLayout() {
-        setupTitleLabelLayout()
         setupDismissButtonLayout()
+        setupSeparatorViewLayout()
         setupOptionsCollectionViewLayout()
-    }
-    
-    @objc
-    private func notifyDelegateToDismissButtonTapped() {
-        delegate?.optionsViewDidTapDismissButton(self)
     }
 }
 
 extension OptionsView {
-    private func setupTitleLabelLayout() {
-        addSubview(titleLabel)
-        
-        titleLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(layout.current.labelTopInset)
-            make.centerX.equalToSuperview()
-        }
+    @objc
+    private func notifyDelegateToCloseScreen() {
+        delegate?.optionsViewDidTapCancelButton(self)
     }
-    
-    private func setupDismissButtonLayout() {
-        addSubview(dismissButton)
-        
-        dismissButton.snp.makeConstraints { make in
-            make.centerY.equalTo(titleLabel)
-            make.trailing.equalToSuperview().inset(layout.current.dismissButtonInset)
-        }
-    }
-    
+}
+
+extension OptionsView {
     private func setupOptionsCollectionViewLayout() {
         addSubview(optionsCollectionView)
         
         optionsCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.collectionViewTopInset)
+            make.top.equalToSuperview().inset(layout.current.defaultInset)
             make.leading.trailing.bottom.equalToSuperview()
+        }
+    }
+    
+    private func setupSeparatorViewLayout() {
+        addSubview(separatorView)
+        
+        separatorView.snp.makeConstraints { make in
+            make.height.equalTo(layout.current.separatorHeight)
+            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(optionsCollectionView.snp.bottom)
+        }
+    }
+    
+    private func setupDismissButtonLayout() {
+        addSubview(cancelButton)
+        
+        cancelButton.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(layout.current.defaultInset)
+            make.top.equalTo(separatorView.snp.bottom).offset(layout.current.buttonTopInset)
         }
     }
 }
 
 extension OptionsView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let labelTopInset: CGFloat = 30.0
-        let collectionViewTopInset: CGFloat = 25.0
-        let dismissButtonInset: CGFloat = 15.0
+        let buttonTopInset: CGFloat = 22.0
+        let defaultInset: CGFloat = 8.0
+        let separatorHeight: CGFloat = 1.0
     }
+}
+
+protocol OptionsViewDelegate: class {
+    func optionsViewDidTapCancelButton(_ optionsView: OptionsView)
 }

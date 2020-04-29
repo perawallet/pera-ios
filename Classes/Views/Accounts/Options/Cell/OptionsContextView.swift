@@ -10,20 +10,7 @@ import UIKit
 
 class OptionsContextView: BaseView {
     
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let horizontalInset: CGFloat = 26.0
-        let separatorHorizontalInset: CGFloat = 20.0
-        let separatorHeight: CGFloat = 1.0
-        let labelLefInset: CGFloat = 53.0
-    }
-    
     private let layout = Layout<LayoutConstants>()
-    
-    private enum Colors {
-        static let separatorColor = rgb(0.95, 0.96, 0.96)
-    }
-    
-    // MARK: Components
     
     private(set) lazy var iconImageView = UIImageView()
     
@@ -31,30 +18,21 @@ class OptionsContextView: BaseView {
         UILabel()
             .withLine(.single)
             .withAlignment(.left)
-            .withFont(UIFont.font(.avenir, withWeight: .medium(size: 13.0)))
-            .withTextColor(SharedColors.black)
+            .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
+            .withTextColor(SharedColors.primaryText)
     }()
-    
-    private lazy var separatorView: UIView = {
-        let view = UIView()
-        view.backgroundColor = Colors.separatorColor
-        return view
-    }()
-    
-    // MARK: Setup
     
     override func configureAppearance() {
-        backgroundColor = .white
+        backgroundColor = SharedColors.secondaryBackground
     }
-    
-    // MARK: Layout
     
     override func prepareLayout() {
         setupIconImageViewLayout()
         setupOptionLabelLayout()
-        setupSeparatorViewLayout()
     }
-    
+}
+
+extension OptionsContextView {
     private func setupIconImageViewLayout() {
         addSubview(iconImageView)
         
@@ -73,14 +51,11 @@ class OptionsContextView: BaseView {
             make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
         }
     }
-    
-    private func setupSeparatorViewLayout() {
-        addSubview(separatorView)
-        
-        separatorView.snp.makeConstraints { make in
-            make.bottom.equalToSuperview()
-            make.height.equalTo(layout.current.separatorHeight)
-            make.leading.trailing.equalToSuperview().inset(layout.current.separatorHorizontalInset)
-        }
+}
+
+extension OptionsContextView {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let horizontalInset: CGFloat = 16.0
+        let labelLefInset: CGFloat = 53.0
     }
 }
