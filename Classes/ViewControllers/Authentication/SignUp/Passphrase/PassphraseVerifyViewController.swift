@@ -19,46 +19,22 @@ class PassphraseVerifyViewController: BaseScrollViewController {
     
     private(set) lazy var passphraseVerifyView = PassphraseVerifyView()
     
-    private(set) lazy var collectionView: UICollectionView = {
-        let collectionViewLayout = LeftAlignedCollectionViewFlowLayout()
-        collectionViewLayout.delegate = self
-        collectionViewLayout.minimumLineSpacing = 8.0
-        collectionViewLayout.minimumInteritemSpacing = 8.0
-        collectionViewLayout.scrollDirection = .vertical
-        let collectionView = UICollectionView(frame: .zero,
-                                              collectionViewLayout: collectionViewLayout)
-        collectionView.register(
-            PassphraseCollectionViewCell.self,
-            forCellWithReuseIdentifier: PassphraseCollectionViewCell.reusableIdentifier
-        )
-        collectionView.backgroundColor = .clear
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        collectionView.isScrollEnabled = false
-        return collectionView
-    }()
-    
-    private lazy var tryAgainLabel: UILabel = {
-        let label = UILabel()
-            .withText("pass-phrase-verify-try-again".localized)
-            .withTextColor(Colors.tryAgainLabelColor)
-            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 13.0)))
-            .withAlignment(.center)
-        label.isHidden = true
-        return label
-    }()
-    
     override func configureAppearance() {
         super.configureAppearance()
-        view.backgroundColor = Colors.backgroundColor
+        view.backgroundColor = SharedColors.primaryBackground
         updatePassPhraseLabel()
+    }
+    
+    override func linkInteractors() {
+        super.linkInteractors()
+        passphraseVerifyView.passphraseCollectionView.delegate = self
+        passphraseVerifyView.passphraseCollectionView.dataSource = self
+        (passphraseVerifyView.passphraseCollectionView.collectionViewLayout as? LeftAlignedCollectionViewFlowLayout)?.delegate = self
     }
     
     override func prepareLayout() {
         super.prepareLayout()
         setupPassphraseViewLayout()
-        setupCollectionViewLayout()
-        setupTryAgainLabelLayout()
     }
 }
 
@@ -69,26 +45,7 @@ extension PassphraseVerifyViewController {
         passphraseVerifyView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.top.equalToSuperview()
-        }
-    }
-    
-    private func setupCollectionViewLayout() {
-        contentView.addSubview(collectionView)
-        
-        collectionView.snp.makeConstraints { make in
-            make.top.equalTo(passphraseVerifyView.snp.bottom).offset(60)
-            make.leading.trailing.equalToSuperview().inset(25)
-            make.height.greaterThanOrEqualTo(200)
-        }
-    }
-    
-    private func setupTryAgainLabelLayout() {
-        contentView.addSubview(tryAgainLabel)
-        
-        tryAgainLabel.snp.makeConstraints { make in
-            make.top.equalTo(collectionView.snp.bottom)
-            make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().inset(20.0 + view.safeAreaBottom)
+            make.bottom.equalToSuperview()
         }
     }
 }
@@ -111,11 +68,11 @@ extension PassphraseVerifyViewController {
             currentIndexString = "\(currentIndexValue)th"
         }
         
-        let titleText = "Question \(currentIndex) of \(passphraseViewModel?.numberOfValidations ?? 0): ".localized
+        let titleText = "Question \(currentIndex) of \(passphraseViewModel?.numberOfValidations ?? 0)".localized
         let subtitleText = "Select the \(currentIndexString) word of your passphrase".localized
         
-        passphraseVerifyView.questionTitleLabel.text = titleText
-        passphraseVerifyView.questionSubtitleLabel.text = subtitleText
+        title = titleText
+        passphraseVerifyView.questionTitleLabel.text = subtitleText
     }
 }
 
@@ -146,15 +103,16 @@ extension PassphraseVerifyViewController: UICollectionViewDelegate, UICollection
         let isCorrect = viewModel.checkMnemonic(mnemonic)
         
         if isCorrect {
-            tryAgainLabel.isHidden = true
+            passphraseVerifyView.setWrongChoiceLabel(hidden: true)
             cell.contextView.setMode(.correct)
             
             if viewModel.currentIndex == viewModel.numberOfValidations - 1 {
-                let configurator = AlertViewConfigurator(
+                let configurator = BottomInformationViewConfigurator(
                     title: "pass-phrase-verify-pop-up-title".localized,
-                    image: img("password-alert-icon"),
+                    image: img("img-green-checkmark"),
                     explanation: "pass-phrase-verify-pop-up-explanation".localized,
-                    actionTitle: nil) {
+                    actionTitle: "title-accept".localized,
+                    actionImage: img("bg-main-button")) {
                         self.open(.accountNameSetup, by: .push)
                 }
                 
@@ -174,7 +132,7 @@ extension PassphraseVerifyViewController: UICollectionViewDelegate, UICollection
                 updatePassPhraseLabel()
             }
         } else {
-            tryAgainLabel.isHidden = false
+            passphraseVerifyView.setWrongChoiceLabel(hidden: false)
             cell.contextView.setMode(.wrong)
         }
         
@@ -190,19 +148,12 @@ extension PassphraseVerifyViewController: LeftAlignedCollectionViewFlowLayoutDel
             fatalError("Index path is out of bounds")
         }
         
-        return CGSize(width: mnemonic.width(usingFont: UIFont.font(.overpass, withWeight: .semiBold(size: 13.0))) + 50.0, height: 44.0)
+        return CGSize(width: mnemonic.width(usingFont: UIFont.font(withWeight: .medium(size: 14.0))) + 50.0, height: 48.0)
     }
     
     func leftAlignedLayoutDidCalculateHeight(_ height: CGFloat) {
-        collectionView.snp.updateConstraints { maker in
+        passphraseVerifyView.passphraseCollectionView.snp.updateConstraints { maker in
             maker.height.greaterThanOrEqualTo(height)
         }
-    }
-}
-
-extension PassphraseVerifyViewController {
-    private enum Colors {
-        static let backgroundColor = rgb(0.97, 0.97, 0.98)
-        static let tryAgainLabelColor = rgb(0.67, 0.67, 0.72)
     }
 }

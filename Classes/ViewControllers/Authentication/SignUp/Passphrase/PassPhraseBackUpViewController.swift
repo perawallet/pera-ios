@@ -33,6 +33,11 @@ class PassphraseBackUpViewController: BaseScrollViewController {
         generatePrivateKey()
     }
     
+    override func configureAppearance() {
+        super.configureAppearance()
+        title = "new-account-title".localized
+    }
+    
     override func prepareLayout() {
         super.prepareLayout()
         setupPassphraseViewLayout()
@@ -74,7 +79,7 @@ extension PassphraseBackUpViewController: UICollectionViewDataSource {
                 fatalError("Index path is out of bounds")
         }
         
-        cell.contextView.numberLabel.text = "\(indexPath.item + 1)"
+        cell.contextView.numberLabel.text = "\(indexPath.item + 1)."
         
         guard let mnemonics = mnemonics else {
             return cell

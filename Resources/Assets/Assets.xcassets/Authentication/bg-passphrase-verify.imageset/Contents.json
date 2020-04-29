@@ -2,7 +2,7 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "bg-main-button.pdf",
+      "filename" : "bg-passphrase-verify.pdf",
       "resizing" : {
         "mode" : "9-part",
         "center" : {
@@ -11,10 +11,10 @@
           "height" : 1
         },
         "cap-insets" : {
-          "bottom" : 26,
-          "top" : 25,
-          "right" : 26,
-          "left" : 26
+          "bottom" : 28,
+          "top" : 27,
+          "right" : 28,
+          "left" : 28
         }
       }
     }

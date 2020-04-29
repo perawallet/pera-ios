@@ -17,7 +17,7 @@ class PassphraseView: BaseView {
     private(set) lazy var passphraseContainerView: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 12.0
-        view.backgroundColor = color("secondaryBackground")
+        view.backgroundColor = SharedColors.secondaryBackground
         return view
     }()
     
@@ -25,7 +25,7 @@ class PassphraseView: BaseView {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .vertical
         flowLayout.sectionInset = .zero
-        flowLayout.minimumLineSpacing = 5.0
+        flowLayout.minimumLineSpacing = 13.0
         flowLayout.minimumInteritemSpacing = 0.0
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
@@ -38,37 +38,42 @@ class PassphraseView: BaseView {
     }()
     
     private(set) lazy var shareButton: AlignedButton = {
-        let positions: AlignedButton.StylePositionAdjustment = (image: CGPoint(x: 4.5, y: 0.0), title: CGPoint(x: -4.5, y: 0.0))
-        let button = AlignedButton(style: .imageRight(positions))
+        let positions: AlignedButton.StylePositionAdjustment = (image: CGPoint(x: 0.0, y: 0.0), title: CGPoint(x: 4.0, y: 0.0))
+        let button = AlignedButton(style: .imageLeftTitleCentered(positions))
         button.setImage(img("icon-share"), for: .normal)
         button.setTitle("title-share".localized, for: .normal)
-        button.setTitleColor(SharedColors.purple, for: .normal)
-        button.titleLabel?.font = UIFont.font(.overpass, withWeight: .semiBold(size: 13.0))
+        button.setTitleColor(SharedColors.tertiaryText, for: .normal)
+        button.titleLabel?.font = UIFont.font(withWeight: .semiBold(size: 14.0))
         return button
     }()
     
     private(set) lazy var qrButton: AlignedButton = {
-        let positions: AlignedButton.StylePositionAdjustment = (image: CGPoint(x: 4.5, y: 0.0), title: CGPoint(x: -4.5, y: 0.0))
-        let button = AlignedButton(style: .imageRight(positions))
-        button.setImage(img("icon-share"), for: .normal)
-        button.setTitle("title-share".localized, for: .normal)
-        button.setTitleColor(SharedColors.purple, for: .normal)
-        button.titleLabel?.font = UIFont.font(.overpass, withWeight: .semiBold(size: 13.0))
+        let positions: AlignedButton.StylePositionAdjustment = (image: CGPoint(x: 0.0, y: 0.0), title: CGPoint(x: 4.0, y: 0.0))
+        let button = AlignedButton(style: .imageLeftTitleCentered(positions))
+        button.setImage(img("icon-show-qr"), for: .normal)
+        button.setTitle("back-up-phrase-qr".localized, for: .normal)
+        button.setTitleColor(SharedColors.tertiaryText, for: .normal)
+        button.titleLabel?.font = UIFont.font(withWeight: .semiBold(size: 14.0))
         return button
     }()
     
-    private lazy var informationImageView = UIImageView(image: img(""))
+    private lazy var informationImageView = UIImageView(image: img("icon-info-gray"))
     
     private(set) lazy var warningLabel: UILabel = {
         UILabel()
             .withLine(.contained)
-            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 11.0)))
+            .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
             .withText("back-up-phrase-warning".localized)
-            .withAttributedText("back-up-phrase-warning".localized.attributed([.lineSpacing(1.5), .textColor(.white)]))
+            .withAttributedText("back-up-phrase-warning".localized.attributed([.lineSpacing(1.2), .textColor(SharedColors.primaryText)]))
             .withAlignment(.left)
     }()
     
     private lazy var verifyButton = MainButton(title: "back-up-phrase-button-title".localized)
+    
+    override func configureAppearance() {
+        super.configureAppearance()
+        setShadow()
+    }
     
     override func setListeners() {
         shareButton.addTarget(self, action: #selector(notifyDelegateToShareButtonTapped), for: .touchUpInside)
@@ -81,8 +86,14 @@ class PassphraseView: BaseView {
         setupPassphraseCollectionViewLayout()
         setupShareButtonLayout()
         setupQrButtonLayout()
+        setupInformationImageViewLayout()
         setupWarningLabelLayout()
         setupVerifyButtonLayout()
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        layer.shadowPath = UIBezierPath(rect: bounds).cgPath
     }
 }
 
@@ -119,7 +130,7 @@ extension PassphraseView {
         passphraseCollectionView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(layout.current.collectionViewHorizontalInset)
             make.top.equalToSuperview().inset(layout.current.passPhraseCollectionViewVerticalInset)
-            make.height.equalTo(238.0)
+            make.height.equalTo(layout.current.collectionViewHeight)
         }
     }
     
@@ -128,7 +139,8 @@ extension PassphraseView {
         
         shareButton.snp.makeConstraints { make in
             make.top.equalTo(passphraseCollectionView.snp.bottom).offset(layout.current.warningLabelVerticalInset)
-            make.bottom.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.bottom.equalToSuperview().inset(layout.current.horizontalInset)
+            make.trailing.equalToSuperview().inset(layout.current.shareTrailingInset)
         }
     }
     
@@ -136,10 +148,19 @@ extension PassphraseView {
         passphraseContainerView.addSubview(qrButton)
         
         qrButton.snp.makeConstraints { make in
-            make.top.equalTo(passphraseCollectionView.snp.bottom).offset(layout.current.warningLabelVerticalInset)
             make.leading.equalToSuperview().inset(layout.current.horizontalInset)
+            make.top.equalTo(passphraseCollectionView.snp.bottom).offset(layout.current.warningLabelVerticalInset)
             make.centerY.equalTo(shareButton)
-            make.height.width.equalTo(20)
+        }
+    }
+    
+    private func setupInformationImageViewLayout() {
+        addSubview(informationImageView)
+        
+        informationImageView.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
+            make.size.equalTo(layout.current.infoIconSize)
+            make.top.equalTo(passphraseContainerView.snp.bottom).offset(layout.current.informationTopOffset)
         }
     }
     
@@ -147,8 +168,9 @@ extension PassphraseView {
         addSubview(warningLabel)
         
         warningLabel.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(layout.current.titleHorizontalInset)
-            make.top.bottom.equalToSuperview().inset(layout.current.warningLabelVerticalInset)
+            make.leading.equalTo(informationImageView.snp.trailing).offset(layout.current.informationLabelLeading)
+            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.top.equalTo(passphraseContainerView.snp.bottom).offset(layout.current.informationTopOffset)
         }
     }
     
@@ -159,25 +181,35 @@ extension PassphraseView {
             make.centerX.equalToSuperview()
             make.top.equalTo(warningLabel.snp.bottom).offset(layout.current.buttonMinimumTopInset)
             make.bottom.lessThanOrEqualToSuperview().inset(layout.current.bottomInset)
-            make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
         }
     }
 }
 
 extension PassphraseView {
+    private func setShadow() {
+        layer.shadowColor = rgba(0.26, 0.26, 0.31, 0.07).cgColor
+        layer.shadowOpacity = 1.0
+        layer.shadowOffset = CGSize(width: 0.0, height: 4.0)
+        layer.shadowRadius = 12.0
+    }
+}
+
+extension PassphraseView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let topInset: CGFloat = 69.0 * verticalScale
-        let horizontalInset: CGFloat = 25.0
-        let titleHorizontalInset: CGFloat = 17.0
-        let passPhraseContainerViewTopInset: CGFloat = 43.0
-        let passPhraseCollectionViewVerticalInset: CGFloat = 16.5
-        let containerViewHorizontalInset: CGFloat = 15.0 * horizontalScale
-        let collectionViewHorizontalInset: CGFloat = 25.0 * horizontalScale
-        let warningContainerViewTopInset: CGFloat = 24.0
-        let warningLabelVerticalInset: CGFloat = 20.0
+        let horizontalInset: CGFloat = 20.0 * horizontalScale
+        let passPhraseContainerViewTopInset: CGFloat = 60.0
+        let shareTrailingInset: CGFloat = 25.0 * horizontalScale
+        let passPhraseCollectionViewVerticalInset: CGFloat = 21.0
+        let containerViewHorizontalInset: CGFloat = 20.0 * horizontalScale
+        let collectionViewHorizontalInset: CGFloat = 20.0 * horizontalScale
+        let warningLabelVerticalInset: CGFloat = 29.0
+        let collectionViewHeight: CGFloat = 316.0
         let bottomInset: CGFloat = 55.0
         let buttonMinimumTopInset: CGFloat = 60.0
-        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
+        let informationTopOffset: CGFloat = 28.0
+        let infoIconSize = CGSize(width: 24.0, height: 24.0)
+        let informationLabelLeading: CGFloat = 12.0
     }
 }
 
