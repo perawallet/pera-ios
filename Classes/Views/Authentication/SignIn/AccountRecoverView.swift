@@ -8,47 +8,24 @@
 
 import UIKit
 
-protocol AccountRecoverViewDelegate: class {
-    
-    func accountRecoverViewDidTapQRCodeButton(_ accountRecoverView: AccountRecoverView)
-    func accountRecoverViewDidTapNextButton(_ accountRecoverView: AccountRecoverView)
-}
-
 class AccountRecoverView: BaseView {
     
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let fieldTopInset: CGFloat = 30.0
-        let nextButtonTopInset: CGFloat = 52.0
-        let multiFieldHeight: CGFloat = 160.0
-        let bottomInset: CGFloat = 15.0
-        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
-    }
-    
     private let layout = Layout<LayoutConstants>()
-
-    private enum Colors {
-        static let separatorColor = rgba(0.67, 0.67, 0.72, 0.31)
-    }
     
     weak var delegate: AccountRecoverViewDelegate?
     
-    // MARK: Components
-    
     private(set) lazy var accountNameInputView: SingleLineInputField = {
         let accountNameInputView = SingleLineInputField()
-        accountNameInputView.explanationLabel.text = "account-name-setup-explanation".localized
-        accountNameInputView.inputTextField.attributedPlaceholder = NSAttributedString(
-            string: "account-name-setup-placeholder".localized,
-            attributes: [NSAttributedString.Key.foregroundColor: SharedColors.softGray,
-                         NSAttributedString.Key.font: UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))]
-        )
+        accountNameInputView.explanationLabel.text = "recover-from-seed-name-title".localized
+        accountNameInputView.placeholderText = "recover-from-seed-name-placeholder".localized
         accountNameInputView.nextButtonMode = .next
         accountNameInputView.inputTextField.autocorrectionType = .no
         return accountNameInputView
     }()
     
     private(set) lazy var passPhraseInputView: MultiLineInputField = {
-        let passPhraseInputView = MultiLineInputField(displaysExplanationText: false, displaysRightInputAccessoryButton: true)
+        let passPhraseInputView = MultiLineInputField(displaysRightInputAccessoryButton: true)
+        passPhraseInputView.explanationLabel.text = "recover-from-seed-passphrase-title".localized
         passPhraseInputView.placeholderLabel.text = "pass-pharase-enter-placeholder".localized
         passPhraseInputView.nextButtonMode = .submit
         passPhraseInputView.inputTextView.autocorrectionType = .no
@@ -57,12 +34,7 @@ class AccountRecoverView: BaseView {
         return passPhraseInputView
     }()
     
-    private(set) lazy var nextButton: MainButton = {
-        let button = MainButton(title: "title-verify".localized)
-        return button
-    }()
-    
-    // MARK: Configuration
+    private(set) lazy var nextButton = MainButton(title: "title-verify".localized)
     
     override func linkInteractors() {
         accountNameInputView.delegate = self
@@ -73,20 +45,27 @@ class AccountRecoverView: BaseView {
         nextButton.addTarget(self, action: #selector(notifyDelegateToNextButtonTapped), for: .touchUpInside)
     }
     
-    // MARK: Layout
-    
     override func prepareLayout() {
         setupAccountNameInputViewLayout()
         setupPassPhraseInputViewLayout()
         setupNextButtonLayout()
     }
-    
+}
+
+extension AccountRecoverView {
+    @objc
+    func notifyDelegateToNextButtonTapped() {
+        delegate?.accountRecoverViewDidTapNextButton(self)
+    }
+}
+
+extension AccountRecoverView {
     private func setupAccountNameInputViewLayout() {
         addSubview(accountNameInputView)
         
         accountNameInputView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.top.equalToSuperview().inset(layout.current.fieldTopInset)
+            make.top.equalToSuperview().inset(layout.current.topInset)
         }
     }
 
@@ -95,7 +74,7 @@ class AccountRecoverView: BaseView {
         
         passPhraseInputView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.top.equalTo(accountNameInputView.snp.bottom)
+            make.top.equalTo(accountNameInputView.snp.bottom).offset(layout.current.fieldTopInset)
             make.height.equalTo(layout.current.multiFieldHeight)
         }
     }
@@ -106,23 +85,13 @@ class AccountRecoverView: BaseView {
         nextButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(passPhraseInputView.snp.bottom).offset(layout.current.nextButtonTopInset)
-            make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
             make.bottom.lessThanOrEqualToSuperview().inset(layout.current.bottomInset)
         }
     }
-    
-    // MARK: Actions
-    
-    @objc
-    func notifyDelegateToNextButtonTapped() {
-        delegate?.accountRecoverViewDidTapNextButton(self)
-    }
 }
 
-// MARK: InputViewDelegate
-
 extension AccountRecoverView: InputViewDelegate {
-    
     func inputViewDidTapAccessoryButton(inputView: BaseInputView) {
         delegate?.accountRecoverViewDidTapQRCodeButton(self)
     }
@@ -134,4 +103,20 @@ extension AccountRecoverView: InputViewDelegate {
             delegate?.accountRecoverViewDidTapNextButton(self)
         }
     }
+}
+
+extension AccountRecoverView {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let topInset: CGFloat = 36.0
+        let horizontalInset: CGFloat = 20.0
+        let fieldTopInset: CGFloat = 20.0
+        let nextButtonTopInset: CGFloat = 28.0
+        let multiFieldHeight: CGFloat = 160.0
+        let bottomInset: CGFloat = 20.0
+    }
+}
+
+protocol AccountRecoverViewDelegate: class {
+    func accountRecoverViewDidTapQRCodeButton(_ accountRecoverView: AccountRecoverView)
+    func accountRecoverViewDidTapNextButton(_ accountRecoverView: AccountRecoverView)
 }
