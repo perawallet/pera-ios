@@ -31,8 +31,7 @@
 "title-request" = "REQUEST";
 "title-select" = "SELECT RECIPIENT";
 "title-preview" = "PREVIEW";
-"title-done" = "DONE";
-"title-done-lowercased" = "Done";
+"title-done" = "Done";
 "title-loading" = "Loading";
 "default-error-message" = "An error occured.";
 "title-send-algos-uppercase" = "SEND ALGOS";
@@ -102,7 +101,7 @@
 "account-name-setup-empty-error-message" = "Account name should not be empty";
 
 // MARK: Recover From Seed
-"recover-from-seed-title" = "Recover from passphrase";
+"recover-from-seed-title" = "Recover from Passphrase";
 "recover-from-seed-name-title" = "Name";
 "recover-from-seed-name-placeholder" = "Example name";
 "recover-from-seed-passphrase-title" = "Passphrase";

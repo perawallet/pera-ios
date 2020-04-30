@@ -39,7 +39,7 @@ class LedgerPairingViewController: BaseScrollViewController {
 
     override func configureAppearance() {
         super.configureAppearance()
-        title = "ledger-pairing-name-title".localized
+        title = "account-details-title".localized
         ledgerPairingView.setAddress(address)
     }
     
