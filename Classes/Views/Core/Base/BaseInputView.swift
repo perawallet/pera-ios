@@ -9,72 +9,60 @@
 import UIKit
 
 class BaseInputView: BaseView {
-    
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let defaultInset: CGFloat = 15.0
-        let labelInset: CGFloat = 30.0
-        let contentViewTopInset: CGFloat = 7.0
-        let contentViewMaximumTopInset: CGFloat = 10.0
-        let buttonTopInset: CGFloat = 11.0
-        let buttonTrailingInset: CGFloat = 13.0
-        let buttonWidth: CGFloat = 36.0
-    }
-    
     private let layout = Layout<LayoutConstants>()
     
-    private enum Colors {
-        static let borderColor = rgb(0.94, 0.94, 0.94)
-    }
-    
-    // MARK: Customization
-    
     var nextButtonMode = NextButtonMode.next
-    
     private let displaysExplanationText: Bool
+    let displaysLeftImageView: Bool
     let displaysRightInputAccessoryButton: Bool
     
-    // MARK: Components
-    
     private(set) lazy var explanationLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.font(.avenir, withWeight: .medium(size: 13.0))
-        label.textColor = SharedColors.greenishGray
-        return label
+        UILabel().withFont(UIFont.font(withWeight: .regular(size: 14.0))).withTextColor(SharedColors.inputTitle).withAlignment(.left)
     }()
     
     private(set) lazy var contentView: UIView = {
         let view = UIView()
-        view.layer.borderWidth = 1.0
-        view.layer.borderColor = Colors.borderColor.cgColor
-        view.layer.cornerRadius = 4.0
-        view.backgroundColor = .white
+        view.layer.cornerRadius = 12.0
+        view.backgroundColor = SharedColors.secondaryBackground
         return view
     }()
+    
+    private(set) lazy var leftImageView = UIImageView()
     
     private(set) lazy var rightInputAccessoryButton = UIButton(type: .custom)
     
     weak var delegate: InputViewDelegate?
     
-    // MARK: Initialization
-    
-    init(displaysExplanationText: Bool = true, displaysRightInputAccessoryButton: Bool = false) {
+    init(displaysExplanationText: Bool = true, displaysRightInputAccessoryButton: Bool = false, displaysLeftImageView: Bool = false) {
         self.displaysExplanationText = displaysExplanationText
         self.displaysRightInputAccessoryButton = displaysRightInputAccessoryButton
+        self.displaysLeftImageView = displaysLeftImageView
         super.init(frame: .zero)
+    }
+    
+    override func configureAppearance() {
+        super.configureAppearance()
+        contentView.applyShadow(Shadow(color: SharedColors.inputShadow, offset: CGSize(width: 0.0, height: 4.0), radius: 6.0, opacity: 1.0))
     }
     
     override func linkInteractors() {
         rightInputAccessoryButton.addTarget(self, action: #selector(notifyDelegateToAccessoryButtonTapped), for: .touchUpInside)
     }
     
-    // MARK: Layout
-    
     override func prepareLayout() {
         setupExplanationLabelLayout()
         setupContentViewLayout()
+        setupLeftImageViewLayout()
         setupRightInputAccessoryButtonLayout()
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        contentView.layer.shadowPath = UIBezierPath(roundedRect: contentView.bounds, cornerRadius: 12.0).cgPath
+    }
+}
+
+extension BaseInputView {
     private func setupExplanationLabelLayout() {
         if !displaysExplanationText {
             return
@@ -83,8 +71,8 @@ class BaseInputView: BaseView {
         addSubview(explanationLabel)
         
         explanationLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(layout.current.labelInset)
-            make.trailing.lessThanOrEqualToSuperview().inset(layout.current.labelInset)
+            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
+            make.trailing.lessThanOrEqualToSuperview().inset(layout.current.horizontalInset)
             make.top.equalToSuperview()
         }
     }
@@ -93,7 +81,7 @@ class BaseInputView: BaseView {
         addSubview(contentView)
         
         contentView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(layout.current.defaultInset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
             make.bottom.equalToSuperview()
             
             if displaysExplanationText {
@@ -101,6 +89,20 @@ class BaseInputView: BaseView {
             } else {
                 make.top.equalToSuperview().offset(layout.current.contentViewMaximumTopInset)
             }
+        }
+    }
+    
+    private func setupLeftImageViewLayout() {
+        if !displaysLeftImageView {
+            return
+        }
+        
+        contentView.addSubview(leftImageView)
+        
+        leftImageView.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(layout.current.iconLeadingInset)
+            make.top.equalToSuperview().inset(layout.current.iconTopInset)
+            make.size.equalTo(layout.current.iconSize)
         }
     }
     
@@ -112,21 +114,32 @@ class BaseInputView: BaseView {
         contentView.addSubview(rightInputAccessoryButton)
         
         rightInputAccessoryButton.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(layout.current.buttonTrailingInset)
-            make.top.equalToSuperview().inset(layout.current.buttonTopInset)
-            make.width.height.equalTo(layout.current.buttonWidth)
+            make.trailing.equalToSuperview().inset(layout.current.buttonInset)
+            make.top.equalToSuperview().inset(layout.current.buttonInset)
+            make.size.equalTo(layout.current.buttonSize)
         }
     }
-    
-    // MARK: Actions
-    
+}
+
+extension BaseInputView {
     @objc
     func notifyDelegateToAccessoryButtonTapped() {
         delegate?.inputViewDidTapAccessoryButton(inputView: self)
     }
 }
 
-// MARK: NextButtonMode
+extension BaseInputView {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let horizontalInset: CGFloat = 20.0
+        let contentViewTopInset: CGFloat = 8.0
+        let contentViewMaximumTopInset: CGFloat = 10.0
+        let buttonSize = CGSize(width: 40.0, height: 40.0)
+        let iconSize = CGSize(width: 24.0, height: 24.0)
+        let iconTopInset: CGFloat = 12.0
+        let iconLeadingInset: CGFloat = 16.0
+        let buttonInset: CGFloat = 12.0
+    }
+}
 
 extension BaseInputView {
     enum NextButtonMode {

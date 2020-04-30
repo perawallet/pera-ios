@@ -47,4 +47,5 @@ enum SharedColors {
     static let secondaryText = color("secondaryText")
     static let subtitleText = color("subtitleText")
     static let tertiaryText = color("tertiaryText")
+    static let inputShadow = color("inputShadow")
 }

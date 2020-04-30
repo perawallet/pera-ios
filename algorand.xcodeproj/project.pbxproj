@@ -779,6 +779,10 @@
 		2BE936FA244F292000322C1E /* AddNewAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE936F8244F292000322C1E /* AddNewAccountView.swift */; };
 		2BE936FC24534F5600322C1E /* NumpadButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE936FB24534F5600322C1E /* NumpadButton.swift */; };
 		2BE936FD24534F5600322C1E /* NumpadButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE936FB24534F5600322C1E /* NumpadButton.swift */; };
+		2BE93700245A2EE700322C1E /* Shadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE936FF245A2EE700322C1E /* Shadow.swift */; };
+		2BE93701245A2EE700322C1E /* Shadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE936FF245A2EE700322C1E /* Shadow.swift */; };
+		2BE93705245A2F4B00322C1E /* UIView+Shadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE93704245A2F4B00322C1E /* UIView+Shadow.swift */; };
+		2BE93706245A2F4B00322C1E /* UIView+Shadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE93704245A2F4B00322C1E /* UIView+Shadow.swift */; };
 		2BEE061623E03761004EBD6F /* SendTransactionPreviewViewController+Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEE061523E03760004EBD6F /* SendTransactionPreviewViewController+Keyboard.swift */; };
 		2BEE061723E03761004EBD6F /* SendTransactionPreviewViewController+Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEE061523E03760004EBD6F /* SendTransactionPreviewViewController+Keyboard.swift */; };
 		2BEE061A23E44B20004EBD6F /* TouchDetectingScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEE061923E44B20004EBD6F /* TouchDetectingScrollView.swift */; };
@@ -1245,6 +1249,8 @@
 		2BE936F5244F290400322C1E /* AddNewAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewAccountViewController.swift; sourceTree = "<group>"; };
 		2BE936F8244F292000322C1E /* AddNewAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewAccountView.swift; sourceTree = "<group>"; };
 		2BE936FB24534F5600322C1E /* NumpadButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumpadButton.swift; sourceTree = "<group>"; };
+		2BE936FF245A2EE700322C1E /* Shadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shadow.swift; sourceTree = "<group>"; };
+		2BE93704245A2F4B00322C1E /* UIView+Shadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Shadow.swift"; sourceTree = "<group>"; };
 		2BEE061523E03760004EBD6F /* SendTransactionPreviewViewController+Keyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SendTransactionPreviewViewController+Keyboard.swift"; sourceTree = "<group>"; };
 		2BEE061923E44B20004EBD6F /* TouchDetectingScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchDetectingScrollView.swift; sourceTree = "<group>"; };
 		2BEE061C23E856F7004EBD6F /* AccountInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountInformation.swift; sourceTree = "<group>"; };
@@ -3098,6 +3104,7 @@
 			isa = PBXGroup;
 			children = (
 				2B8BE4FD22393958005D8565 /* Layout */,
+				2BE93702245A2EFE00322C1E /* Shadow */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -3120,6 +3127,7 @@
 				2B65B1FC225268CC001DB5BE /* Image */,
 				2BF34CB8223A88030052CAD3 /* Layout */,
 				2BB021E7224E827B0039D78A /* List */,
+				2BE93703245A2F3D00322C1E /* Shadow */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -3754,6 +3762,22 @@
 				2B4DF418236C6ACD00FF9551 /* Pending */,
 			);
 			path = Cell;
+			sourceTree = "<group>";
+		};
+		2BE93702245A2EFE00322C1E /* Shadow */ = {
+			isa = PBXGroup;
+			children = (
+				2BE936FF245A2EE700322C1E /* Shadow.swift */,
+			);
+			path = Shadow;
+			sourceTree = "<group>";
+		};
+		2BE93703245A2F3D00322C1E /* Shadow */ = {
+			isa = PBXGroup;
+			children = (
+				2BE93704245A2F4B00322C1E /* UIView+Shadow.swift */,
+			);
+			path = Shadow;
 			sourceTree = "<group>";
 		};
 		2BEE061823E44B0E004EBD6F /* ScrollView */ = {
@@ -4554,6 +4578,7 @@
 				2B25700723F1D8620005CBA2 /* SendAssetTransactionPreviewViewModel.swift in Sources */,
 				17BD4E192292F1260003E49A /* UserInformationView.swift in Sources */,
 				17BD4E1A2292F1260003E49A /* AccountListViewModel.swift in Sources */,
+				2BE93706245A2F4B00322C1E /* UIView+Shadow.swift in Sources */,
 				2B46262E23758CF4000AE73C /* AssetDetail.swift in Sources */,
 				2B43B83D22A8394F00CEA8F3 /* Date+Additions.swift in Sources */,
 				95A1285E242BA3F900B491A5 /* LedgerTroubleshootBluetoothConnectionViewController.swift in Sources */,
@@ -4578,6 +4603,7 @@
 				2B4BDA11238CA1BD00491149 /* AssetDisplayViewModel.swift in Sources */,
 				17BD4E282292F1260003E49A /* CardModalAnimator.swift in Sources */,
 				2B3D73B723C3621500597D32 /* VerifiedAssetList.swift in Sources */,
+				2BE93701245A2EE700322C1E /* Shadow.swift in Sources */,
 				2BB64BE12402ABDD00519981 /* LedgerDeviceListView.swift in Sources */,
 				17BD4E292292F1260003E49A /* OptionsContextView.swift in Sources */,
 				17BD4E2A2292F1260003E49A /* RootViewController.swift in Sources */,
@@ -4964,6 +4990,7 @@
 				2B25700623F1D8620005CBA2 /* SendAssetTransactionPreviewViewModel.swift in Sources */,
 				2BF71910224ECFAF001E8420 /* UserInformationView.swift in Sources */,
 				2B656E9F224BCB130064A49B /* AccountListViewModel.swift in Sources */,
+				2BE93705245A2F4B00322C1E /* UIView+Shadow.swift in Sources */,
 				2B43B83C22A8394F00CEA8F3 /* Date+Additions.swift in Sources */,
 				2BF34CC2223A95A50052CAD3 /* API.swift in Sources */,
 				95A1285D242BA3F900B491A5 /* LedgerTroubleshootBluetoothConnectionViewController.swift in Sources */,
@@ -4988,6 +5015,7 @@
 				2B8BE4D422391C38005D8565 /* RootViewController.swift in Sources */,
 				2BF53155224A468400A7455F /* ModalPresentable.swift in Sources */,
 				2BB64BE02402ABDD00519981 /* LedgerDeviceListView.swift in Sources */,
+				2BE93700245A2EE700322C1E /* Shadow.swift in Sources */,
 				2B448734237AAD1200C19FDE /* AlgoAssetView.swift in Sources */,
 				2B98233B231EC207009560CD /* TransactionsQuery.swift in Sources */,
 				2BDE9CD4224E1E91007EFF30 /* LoadingIndicator.swift in Sources */,
