@@ -7,28 +7,8 @@
 //
 
 import UIKit
-import SnapKit
-
-enum QRMode {
-    case address
-    case mnemonic
-    case algosRequest
-    case assetRequest
-}
 
 class QRCreationViewController: BaseScrollViewController {
-    
-    private let layout = Layout<LayoutConstants>()
-    private let address: String
-    private let mnemonic: String?
-    
-    init(configuration: ViewControllerConfiguration, address: String, mnemonic: String? = nil) {
-        self.address = address
-        self.mnemonic = mnemonic
-        super.init(configuration: configuration)
-    }
-    
-    var mode: QRMode = .mnemonic
     
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         return .portrait
@@ -38,143 +18,60 @@ class QRCreationViewController: BaseScrollViewController {
         return true
     }
     
-    private(set) lazy var cancelButton: MainButton = {
-        let button = MainButton(title: "title-close".localized)
-        button.setBackgroundImage(img("bg-black-button-big"), for: .normal)
-        return button
-    }()
+    private lazy var qrCreationView = QRCreationView(address: address, mode: mode, mnemonic: mnemonic)
     
-    private(set) lazy var shareButton: UIButton = {
-        UIButton(type: .custom)
-            .withBackgroundImage(img("bg-purple-button"))
-            .withImage(img("icon-share", isTemplate: true))
-            .withTitle("title-share".localized)
-            .withTitleColor(UIColor.white)
-            .withTintColor(UIColor.white)
-            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 14.0)))
-            .withImageEdgeInsets(UIEdgeInsets(top: 0, left: -10.0, bottom: 0, right: 0))
-            .withTitleEdgeInsets(UIEdgeInsets(top: 0, left: 5.0, bottom: 0, right: 0))
-    }()
+    private let address: String
+    private let mnemonic: String?
+    var mode: QRMode = .mnemonic
     
-    private lazy var qrSelectableLabel = QRSelectableLabel()
-    
-    private(set) lazy var qrView: QRView = {
-        let qrText = QRText(mode: self.mode, address: self.address, mnemonic: self.mnemonic)
-        return QRView(qrText: qrText)
-    }()
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        if mode == .mnemonic {
-            navigationController?.navigationBar.barTintColor = .white
-        }
+    init(configuration: ViewControllerConfiguration, address: String, mnemonic: String? = nil) {
+        self.address = address
+        self.mnemonic = mnemonic
+        super.init(configuration: configuration)
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        if mode == .mnemonic {
-            navigationController?.navigationBar.barTintColor = SharedColors.warmWhite
+    override func configureNavigationBarAppearance() {
+        super.configureNavigationBarAppearance()
+        
+        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [unowned self] in
+            self.closeScreen(by: .dismiss, animated: true)
         }
+        
+        leftBarButtonItems = [closeBarButtonItem]
     }
     
     override func configureAppearance() {
-        super.configureAppearance()
-        
-        if self.title == nil {
-            title = "qr-creation-title".localized
-        }
+        view.backgroundColor = SharedColors.secondaryBackground
         
         if mode == .address {
-            qrSelectableLabel.label.text = self.address
-        } else if mode == .mnemonic {
-            view.backgroundColor = .white
+            qrCreationView.setAddress(address)
         }
     }
     
     override func linkInteractors() {
         super.linkInteractors()
-        qrSelectableLabel.delegate = self
-    }
-    
-    override func setListeners() {
-        super.setListeners()
-        cancelButton.addTarget(self, action: #selector(tap(cancel:)), for: .touchUpInside)
-        shareButton.addTarget(self, action: #selector(tap(share:)), for: .touchUpInside)
+        qrCreationView.delegate = self
     }
     
     override func prepareLayout() {
         super.prepareLayout()
-        setupQRView()
-        setupShareButtonLayout()
-        
-        if mode == .address {
-            setupQRSelectableLabel()
-        }
-        
-        setupCancelButtonLayout()
+        setupQRCreationViewLayout()
     }
 }
 
 extension QRCreationViewController {
-    private func setupQRView() {
-        contentView.addSubview(qrView)
+    private func setupQRCreationViewLayout() {
+        contentView.addSubview(qrCreationView)
         
-        qrView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(75)
-            make.height.equalTo(qrView.snp.width)
-            make.top.equalToSuperview().inset(69.0 * verticalScale)
-        }
-    }
-    
-    private func setupShareButtonLayout() {
-        contentView.addSubview(shareButton)
-        
-        shareButton.snp.makeConstraints { make in
-            make.top.equalTo(qrView.snp.bottom).offset(35 * verticalScale)
-            make.height.equalTo(45)
-            make.width.equalTo(135)
-            make.centerX.equalTo(qrView)
-        }
-    }
-    
-    private func setupQRSelectableLabel() {
-        contentView.addSubview(qrSelectableLabel)
-        
-        qrSelectableLabel.snp.makeConstraints { make in
-            make.top.equalTo(shareButton.snp.bottom).offset(50 * verticalScale)
-            make.leading.trailing.equalToSuperview().inset(30)
-        }
-    }
-    
-    private func setupCancelButtonLayout() {
-        let constraintItem: ConstraintItem
-        
-        if mode == .address {
-            constraintItem = qrSelectableLabel.snp.bottom
-        } else {
-            constraintItem = shareButton.snp.bottom
-        }
-        
-        contentView.addSubview(cancelButton)
-        
-        cancelButton.snp.makeConstraints { make in
-            make.top.greaterThanOrEqualTo(constraintItem).offset(60 * verticalScale)
-            make.centerX.equalToSuperview()
-            make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
-            make.bottom.equalToSuperview().inset(layout.current.bottomInset + view.safeAreaBottom)
+        qrCreationView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
         }
     }
 }
 
-extension QRCreationViewController {
-    @objc
-    fileprivate func tap(cancel: UIButton) {
-        closeScreen(by: .dismiss)
-    }
-    
-    @objc
-    fileprivate func tap(share: UIButton) {
-        guard let qrImage = qrView.imageView.image else {
+extension QRCreationViewController: QRCreationViewDelegate {
+    func qrCreationViewDidTapShareButton(_ qrCreationView: QRCreationView) {
+        guard let qrImage = qrCreationView.getQRImage() else {
             return
         }
         
@@ -184,17 +81,15 @@ extension QRCreationViewController {
         
         navigationController?.present(activityViewController, animated: true, completion: nil)
     }
-}
-
-extension QRCreationViewController: QRSelectableLabelDelegate {
-    func qrSelectableLabel(_ qrSelectableLabel: QRSelectableLabel, didTapText text: String) {
+    
+    func qrCreationView(_ qrCreationView: QRCreationView, didSelect text: String) {
         UIPasteboard.general.string = text
     }
 }
 
-extension QRCreationViewController {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let bottomInset: CGFloat = 20.0
-        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
-    }
+enum QRMode {
+    case address
+    case mnemonic
+    case algosRequest
+    case assetRequest
 }
