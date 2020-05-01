@@ -50,7 +50,7 @@ class PassphraseView: BaseView {
     private(set) lazy var qrButton: AlignedButton = {
         let positions: AlignedButton.StylePositionAdjustment = (image: CGPoint(x: 0.0, y: 0.0), title: CGPoint(x: 4.0, y: 0.0))
         let button = AlignedButton(style: .imageLeftTitleCentered(positions))
-        button.setImage(img("icon-show-qr"), for: .normal)
+        button.setImage(img("icon-qr-show-green"), for: .normal)
         button.setTitle("back-up-phrase-qr".localized, for: .normal)
         button.setTitleColor(SharedColors.tertiaryText, for: .normal)
         button.titleLabel?.font = UIFont.font(withWeight: .semiBold(size: 14.0))

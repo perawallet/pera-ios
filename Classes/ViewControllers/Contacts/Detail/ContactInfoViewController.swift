@@ -232,7 +232,11 @@ extension ContactInfoViewController {
 
 extension ContactInfoViewController: ContactInfoViewDelegate {
     func contactInfoViewDidTapQRCodeButton(_ contactInfoView: ContactInfoView) {
-        tabBarController?.open(.contactQRDisplay(contact: contact), by: .presentWithoutNavigationController)
+        guard let address = contact.address else {
+            return
+        }
+        
+        open(.qrGenerator(title: contact.name, address: address, mnemonic: nil, mode: .address), by: .present)
     }
     
     func contactInfoViewDidEditContactButton(_ contactInfoView: ContactInfoView) {

@@ -136,7 +136,6 @@
 		17BD4E592292F1260003E49A /* QRView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170AFAFD224CCBF300520EA5 /* QRView.swift */; };
 		17BD4E5B2292F1260003E49A /* CardModalPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF53160224A476600A7455F /* CardModalPresenter.swift */; };
 		17BD4E5C2292F1260003E49A /* BaseScrollViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF34CB3223A87440052CAD3 /* BaseScrollViewController.swift */; };
-		17BD4E5D2292F1260003E49A /* ContactQRDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF71913224ED081001E8420 /* ContactQRDisplayView.swift */; };
 		17BD4E5E2292F1260003E49A /* ContactInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF7190D224ECF4A001E8420 /* ContactInfoView.swift */; };
 		17BD4E5F2292F1260003E49A /* PassphraseVerifyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17BEC45C2248C7D900AAF370 /* PassphraseVerifyViewController.swift */; };
 		17BD4E602292F1260003E49A /* HistoryResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6ED95A225F762800787984 /* HistoryResultsViewController.swift */; };
@@ -144,7 +143,6 @@
 		17BD4E622292F1260003E49A /* ContactContextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B82B1C92253A50100A8909F /* ContactContextView.swift */; };
 		17BD4E632292F1260003E49A /* LeftAlignedCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17BEC4622248CD3C00AAF370 /* LeftAlignedCollectionViewFlowLayout.swift */; };
 		17BD4E652292F1260003E49A /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD739D8223F987E00B66EEF /* Utils.swift */; };
-		17BD4E662292F1260003E49A /* ContactQRDisplayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF71919224ED0E8001E8420 /* ContactQRDisplayViewController.swift */; };
 		17BD4E672292F1260003E49A /* BottomInformationViewConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8954B42243D7C400D6D068 /* BottomInformationViewConfigurator.swift */; };
 		17BD4E682292F1260003E49A /* BottomInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8954A72243854400D6D068 /* BottomInformationView.swift */; };
 		17BD4E692292F1260003E49A /* CardModalPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF53164224A47E000A7455F /* CardModalPresentationController.swift */; };
@@ -783,6 +781,8 @@
 		2BE93701245A2EE700322C1E /* Shadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE936FF245A2EE700322C1E /* Shadow.swift */; };
 		2BE93705245A2F4B00322C1E /* UIView+Shadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE93704245A2F4B00322C1E /* UIView+Shadow.swift */; };
 		2BE93706245A2F4B00322C1E /* UIView+Shadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE93704245A2F4B00322C1E /* UIView+Shadow.swift */; };
+		2BE93708245B38ED00322C1E /* QRCreationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE93707245B38ED00322C1E /* QRCreationView.swift */; };
+		2BE93709245B38ED00322C1E /* QRCreationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE93707245B38ED00322C1E /* QRCreationView.swift */; };
 		2BEE061623E03761004EBD6F /* SendTransactionPreviewViewController+Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEE061523E03760004EBD6F /* SendTransactionPreviewViewController+Keyboard.swift */; };
 		2BEE061723E03761004EBD6F /* SendTransactionPreviewViewController+Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEE061523E03760004EBD6F /* SendTransactionPreviewViewController+Keyboard.swift */; };
 		2BEE061A23E44B20004EBD6F /* TouchDetectingScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEE061923E44B20004EBD6F /* TouchDetectingScrollView.swift */; };
@@ -829,10 +829,8 @@
 		2BF7190E224ECF4A001E8420 /* ContactInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF7190D224ECF4A001E8420 /* ContactInfoView.swift */; };
 		2BF71910224ECFAF001E8420 /* UserInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF7190F224ECFAF001E8420 /* UserInformationView.swift */; };
 		2BF71912224ECFEC001E8420 /* ContactsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF71911224ECFEC001E8420 /* ContactsView.swift */; };
-		2BF71914224ED082001E8420 /* ContactQRDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF71913224ED081001E8420 /* ContactQRDisplayView.swift */; };
 		2BF71916224ED0A6001E8420 /* AddContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF71915224ED0A6001E8420 /* AddContactViewController.swift */; };
 		2BF71918224ED0C5001E8420 /* ContactInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF71917224ED0C5001E8420 /* ContactInfoViewController.swift */; };
-		2BF7191A224ED0E8001E8420 /* ContactQRDisplayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF71919224ED0E8001E8420 /* ContactQRDisplayViewController.swift */; };
 		2BFB2F652382EC4F00F0158C /* AssetSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFB2F642382EC4F00F0158C /* AssetSelectionView.swift */; };
 		2BFB2F662382EC4F00F0158C /* AssetSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFB2F642382EC4F00F0158C /* AssetSelectionView.swift */; };
 		2BFB2F682382EC5900F0158C /* AssetSelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFB2F672382EC5900F0158C /* AssetSelectionCell.swift */; };
@@ -1251,6 +1249,7 @@
 		2BE936FB24534F5600322C1E /* NumpadButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumpadButton.swift; sourceTree = "<group>"; };
 		2BE936FF245A2EE700322C1E /* Shadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shadow.swift; sourceTree = "<group>"; };
 		2BE93704245A2F4B00322C1E /* UIView+Shadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Shadow.swift"; sourceTree = "<group>"; };
+		2BE93707245B38ED00322C1E /* QRCreationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCreationView.swift; sourceTree = "<group>"; };
 		2BEE061523E03760004EBD6F /* SendTransactionPreviewViewController+Keyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SendTransactionPreviewViewController+Keyboard.swift"; sourceTree = "<group>"; };
 		2BEE061923E44B20004EBD6F /* TouchDetectingScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchDetectingScrollView.swift; sourceTree = "<group>"; };
 		2BEE061C23E856F7004EBD6F /* AccountInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountInformation.swift; sourceTree = "<group>"; };
@@ -1296,10 +1295,8 @@
 		2BF7190D224ECF4A001E8420 /* ContactInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactInfoView.swift; sourceTree = "<group>"; };
 		2BF7190F224ECFAF001E8420 /* UserInformationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInformationView.swift; sourceTree = "<group>"; };
 		2BF71911224ECFEC001E8420 /* ContactsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsView.swift; sourceTree = "<group>"; };
-		2BF71913224ED081001E8420 /* ContactQRDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactQRDisplayView.swift; sourceTree = "<group>"; };
 		2BF71915224ED0A6001E8420 /* AddContactViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddContactViewController.swift; sourceTree = "<group>"; };
 		2BF71917224ED0C5001E8420 /* ContactInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactInfoViewController.swift; sourceTree = "<group>"; };
-		2BF71919224ED0E8001E8420 /* ContactQRDisplayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactQRDisplayViewController.swift; sourceTree = "<group>"; };
 		2BFB2F642382EC4F00F0158C /* AssetSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetSelectionView.swift; sourceTree = "<group>"; };
 		2BFB2F672382EC5900F0158C /* AssetSelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetSelectionCell.swift; sourceTree = "<group>"; };
 		2BFBAB71227B349E008BBB31 /* LoadingAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LoadingAnimation.json; sourceTree = "<group>"; };
@@ -1898,7 +1895,6 @@
 				2BB6EE53239339C600CF7874 /* Cell */,
 				2BF7190D224ECF4A001E8420 /* ContactInfoView.swift */,
 				2BF7190F224ECFAF001E8420 /* UserInformationView.swift */,
-				2BF71913224ED081001E8420 /* ContactQRDisplayView.swift */,
 			);
 			path = Detail;
 			sourceTree = "<group>";
@@ -2054,7 +2050,6 @@
 			isa = PBXGroup;
 			children = (
 				2BF71917224ED0C5001E8420 /* ContactInfoViewController.swift */,
-				2BF71919224ED0E8001E8420 /* ContactQRDisplayViewController.swift */,
 			);
 			path = Detail;
 			sourceTree = "<group>";
@@ -3975,6 +3970,7 @@
 				2BF5314D22491E7F00A7455F /* QRScannerOverlayView.swift */,
 				170AFAFD224CCBF300520EA5 /* QRView.swift */,
 				17E2E3C622524E4C0065957A /* QRSelectableLabel.swift */,
+				2BE93707245B38ED00322C1E /* QRCreationView.swift */,
 			);
 			path = QR;
 			sourceTree = "<group>";
@@ -4674,7 +4670,6 @@
 				17BD4E5B2292F1260003E49A /* CardModalPresenter.swift in Sources */,
 				2BB6EE6523942F8200CF7874 /* AssetListViewModel.swift in Sources */,
 				17BD4E5C2292F1260003E49A /* BaseScrollViewController.swift in Sources */,
-				17BD4E5D2292F1260003E49A /* ContactQRDisplayView.swift in Sources */,
 				17BD4E5E2292F1260003E49A /* ContactInfoView.swift in Sources */,
 				17BD4E5F2292F1260003E49A /* PassphraseVerifyViewController.swift in Sources */,
 				17BD4E602292F1260003E49A /* HistoryResultsViewController.swift in Sources */,
@@ -4687,7 +4682,6 @@
 				2BD5477823184704007179FE /* FeedbackDraft.swift in Sources */,
 				17BD4E652292F1260003E49A /* Utils.swift in Sources */,
 				9511C29C242E2B6C003211ED /* Checkbox.swift in Sources */,
-				17BD4E662292F1260003E49A /* ContactQRDisplayViewController.swift in Sources */,
 				17BD4E672292F1260003E49A /* BottomInformationViewConfigurator.swift in Sources */,
 				175CE59C2295709F003F7C02 /* RoundDetail.swift in Sources */,
 				2B4BDA26238D490300491149 /* AssetFetchDraft.swift in Sources */,
@@ -4889,6 +4883,7 @@
 				2BB64BED2402BBF600519981 /* LedgerDeviceListViewModel.swift in Sources */,
 				17BD4EF22292F1260003E49A /* AssetDetailSmallHeaderView.swift in Sources */,
 				2BB6EE522392694800CF7874 /* Array+Additions.swift in Sources */,
+				2BE93709245B38ED00322C1E /* QRCreationView.swift in Sources */,
 				17BD4EF32292F1260003E49A /* QRSelectableLabel.swift in Sources */,
 				2B4BDA08238C940F00491149 /* AssetCancellableSupportAlertViewController.swift in Sources */,
 				2BB6EE59239339E400CF7874 /* ContactAssetCell.swift in Sources */,
@@ -5079,7 +5074,6 @@
 				2BF53161224A476600A7455F /* CardModalPresenter.swift in Sources */,
 				2BF34CB4223A87440052CAD3 /* BaseScrollViewController.swift in Sources */,
 				2BFB2F682382EC5900F0158C /* AssetSelectionCell.swift in Sources */,
-				2BF71914224ED082001E8420 /* ContactQRDisplayView.swift in Sources */,
 				2B4487002379592300C19FDE /* AssetCell.swift in Sources */,
 				2B7ABF6B232BF58E0050B64B /* PendingTransactions.swift in Sources */,
 				2BF7190E224ECF4A001E8420 /* ContactInfoView.swift in Sources */,
@@ -5094,7 +5088,6 @@
 				17BEC4632248CD3C00AAF370 /* LeftAlignedCollectionViewFlowLayout.swift in Sources */,
 				2BB6EE6423942F8200CF7874 /* AssetListViewModel.swift in Sources */,
 				2BD739D9223F987E00B66EEF /* Utils.swift in Sources */,
-				2BF7191A224ED0E8001E8420 /* ContactQRDisplayViewController.swift in Sources */,
 				2B8954B52243D7C400D6D068 /* BottomInformationViewConfigurator.swift in Sources */,
 				175CE59B2295709F003F7C02 /* RoundDetail.swift in Sources */,
 				2B8954A82243854400D6D068 /* BottomInformationView.swift in Sources */,
@@ -5301,6 +5294,7 @@
 				2BB64BEC2402BBF600519981 /* LedgerDeviceListViewModel.swift in Sources */,
 				2B8512572265E3E2000F8CB8 /* AssetDetailSmallHeaderView.swift in Sources */,
 				2BB6EE512392694800CF7874 /* Array+Additions.swift in Sources */,
+				2BE93708245B38ED00322C1E /* QRCreationView.swift in Sources */,
 				17E2E3C722524E4C0065957A /* QRSelectableLabel.swift in Sources */,
 				2B4BDA07238C940F00491149 /* AssetCancellableSupportAlertViewController.swift in Sources */,
 				2BB6EE58239339E400CF7874 /* ContactAssetCell.swift in Sources */,

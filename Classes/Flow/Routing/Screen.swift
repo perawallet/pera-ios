@@ -27,7 +27,6 @@ indirect enum Screen {
     case contactSelection
     case addContact(mode: AddContactViewController.Mode)
     case contactDetail(contact: Contact)
-    case contactQRDisplay(contact: Contact)
     case sendAlgosTransactionPreview(account: Account?, receiver: AssetReceiverState)
     case sendAssetTransactionPreview(account: Account?, receiver: AssetReceiverState, assetDetail: AssetDetail, isMaxTransaction: Bool)
     case sendAlgosTransaction(

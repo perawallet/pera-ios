@@ -288,7 +288,9 @@ extension ContactsViewController: ContactCellDelegate {
         if indexPath.item < searchResults.count {
             let contact = searchResults[indexPath.item]
             
-            tabBarController?.open(.contactQRDisplay(contact: contact), by: .presentWithoutNavigationController)
+            if let address = contact.address {
+                open(.qrGenerator(title: contact.name, address: address, mnemonic: nil, mode: .address), by: .present)
+            }
         }
     }
 }

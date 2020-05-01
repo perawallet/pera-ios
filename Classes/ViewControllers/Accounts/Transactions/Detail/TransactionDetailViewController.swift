@@ -172,10 +172,11 @@ extension TransactionDetailViewController: TransactionDetailViewDelegate {
     }
     
     func transactionDetailViewDidTapShowQRButton(_ transactionDetailView: TransactionDetailView) {
-        guard let contact = transaction.contact else {
+        guard let contact = transaction.contact,
+            let address = contact.address else {
             return
         }
         
-        open(.contactQRDisplay(contact: contact), by: .presentWithoutNavigationController)
+        open(.qrGenerator(title: contact.name, address: address, mnemonic: nil, mode: .address), by: .present)
     }
 }

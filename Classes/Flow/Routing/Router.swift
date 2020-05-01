@@ -214,8 +214,6 @@ class Router {
             viewController = AddContactViewController(mode: mode, configuration: configuration)
         case let .contactDetail(contact):
             viewController = ContactInfoViewController(contact: contact, configuration: configuration)
-        case let .contactQRDisplay(contact):
-            viewController = ContactQRDisplayViewController(contact: contact, configuration: configuration)
         case let .sendAlgosTransactionPreview(account, receiver):
             viewController = SendAlgosTransactionPreviewViewController(
                 account: account,
