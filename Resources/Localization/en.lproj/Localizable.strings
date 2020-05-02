@@ -43,12 +43,6 @@
 "title-qr-share" = "Share QR";
 "title-keep" = "Keep";
 
-// MARK: Tabbar
-"tabbar-item-accounts" = "Accounts";
-"tabbar-item-history" = "History";
-"tabbar-item-contacts" = "Contacts";
-"tabbar-item-settings" = "Settings";
-
 // MARK: Introduction
 "introduction-recover-title" = "Recover From Passphrase";
 "introduction-create-title" = "Create Account";
@@ -436,3 +430,7 @@
 // MARK: Terms and Services
 "terms-and-services-title" = "Terms and Services";
 "terms-and-services-html" = "I accept the <a href=\"https://www.algorand.com/wallet-disclaimer\">Terms and Services</a>";
+
+// MARK: Notifications Tab
+"notifications-coming-soon-title" = "COMING SOON";
+"notifications-coming-soon-detail-text" = "Your recent transactions, asset requests and other notifications will appear here";
