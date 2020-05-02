@@ -61,7 +61,6 @@ extension ChoosePasswordView {
         unlockImageView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalToSuperview().inset(layout.current.imageViewTopInset)
-            make.leading.trailing.lessThanOrEqualToSuperview().inset(layout.current.imageViewHorizontalInset)
         }
     }
     

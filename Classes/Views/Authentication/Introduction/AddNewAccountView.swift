@@ -153,7 +153,7 @@ extension AddNewAccountView {
         addSubview(recoverButton)
         
         recoverButton.snp.makeConstraints { make in
-            make.top.equalTo(subtitleLabel.snp.bottom).offset(layout.current.recoverButtonTopInset)
+            make.top.equalTo(hasAccountLabel.snp.bottom).offset(layout.current.recoverButtonTopInset)
             make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
             make.bottom.lessThanOrEqualToSuperview().inset(layout.current.bottomInset + safeAreaBottom)
         }
