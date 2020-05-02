@@ -783,6 +783,10 @@
 		2BE93706245A2F4B00322C1E /* UIView+Shadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE93704245A2F4B00322C1E /* UIView+Shadow.swift */; };
 		2BE93708245B38ED00322C1E /* QRCreationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE93707245B38ED00322C1E /* QRCreationView.swift */; };
 		2BE93709245B38ED00322C1E /* QRCreationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE93707245B38ED00322C1E /* QRCreationView.swift */; };
+		2BE9370C245CAC2900322C1E /* NotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE9370B245CAC2900322C1E /* NotificationsViewController.swift */; };
+		2BE9370D245CAC2900322C1E /* NotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE9370B245CAC2900322C1E /* NotificationsViewController.swift */; };
+		2BE93710245CAC8600322C1E /* NotificationsComingSoonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE9370F245CAC8600322C1E /* NotificationsComingSoonView.swift */; };
+		2BE93711245CAC8600322C1E /* NotificationsComingSoonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE9370F245CAC8600322C1E /* NotificationsComingSoonView.swift */; };
 		2BEE061623E03761004EBD6F /* SendTransactionPreviewViewController+Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEE061523E03760004EBD6F /* SendTransactionPreviewViewController+Keyboard.swift */; };
 		2BEE061723E03761004EBD6F /* SendTransactionPreviewViewController+Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEE061523E03760004EBD6F /* SendTransactionPreviewViewController+Keyboard.swift */; };
 		2BEE061A23E44B20004EBD6F /* TouchDetectingScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEE061923E44B20004EBD6F /* TouchDetectingScrollView.swift */; };
@@ -1250,6 +1254,8 @@
 		2BE936FF245A2EE700322C1E /* Shadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shadow.swift; sourceTree = "<group>"; };
 		2BE93704245A2F4B00322C1E /* UIView+Shadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Shadow.swift"; sourceTree = "<group>"; };
 		2BE93707245B38ED00322C1E /* QRCreationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCreationView.swift; sourceTree = "<group>"; };
+		2BE9370B245CAC2900322C1E /* NotificationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsViewController.swift; sourceTree = "<group>"; };
+		2BE9370F245CAC8600322C1E /* NotificationsComingSoonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsComingSoonView.swift; sourceTree = "<group>"; };
 		2BEE061523E03760004EBD6F /* SendTransactionPreviewViewController+Keyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SendTransactionPreviewViewController+Keyboard.swift"; sourceTree = "<group>"; };
 		2BEE061923E44B20004EBD6F /* TouchDetectingScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchDetectingScrollView.swift; sourceTree = "<group>"; };
 		2BEE061C23E856F7004EBD6F /* AccountInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountInformation.swift; sourceTree = "<group>"; };
@@ -2944,6 +2950,7 @@
 				2B8BE4EB22393547005D8565 /* Core */,
 				2BF53178224AA86B00A7455F /* History */,
 				2B567155240074F60037FCFA /* Ledger */,
+				2BE9370A245CAC0B00322C1E /* Notifications */,
 				2BF5317A224AA88600A7455F /* Settings */,
 			);
 			path = ViewControllers;
@@ -2989,7 +2996,6 @@
 		2B8BE4F0223935A3005D8565 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				9511C292242E2695003211ED /* TermsAndService */,
 				2B656E94224BB9D60064A49B /* Accounts */,
 				2BD739CD223F97DF00B66EEF /* Authentication */,
 				2BD739E2223F9FDD00B66EEF /* Common */,
@@ -2997,8 +3003,10 @@
 				2B8BE4F1223935C6005D8565 /* Core */,
 				2B6ED955225F756E00787984 /* History */,
 				2B56715924007B210037FCFA /* Ledger */,
+				2BE9370E245CAC2E00322C1E /* Notifications */,
 				2B79A14223167BCE00766021 /* Rewards */,
 				17100B2A225CEC2900D13548 /* Settings */,
+				9511C292242E2695003211ED /* TermsAndService */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -3773,6 +3781,22 @@
 				2BE93704245A2F4B00322C1E /* UIView+Shadow.swift */,
 			);
 			path = Shadow;
+			sourceTree = "<group>";
+		};
+		2BE9370A245CAC0B00322C1E /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				2BE9370B245CAC2900322C1E /* NotificationsViewController.swift */,
+			);
+			path = Notifications;
+			sourceTree = "<group>";
+		};
+		2BE9370E245CAC2E00322C1E /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				2BE9370F245CAC8600322C1E /* NotificationsComingSoonView.swift */,
+			);
+			path = Notifications;
 			sourceTree = "<group>";
 		};
 		2BEE061823E44B0E004EBD6F /* ScrollView */ = {
@@ -4558,6 +4582,7 @@
 				2B4BD9F72389F21F00491149 /* AssetDisplayView.swift in Sources */,
 				2B0D84F2239488D900F0EAA7 /* TransactionEffect.swift in Sources */,
 				2B4BDA02238AE66E00491149 /* AssetAdditionViewModel.swift in Sources */,
+				2BE9370D245CAC2900322C1E /* NotificationsViewController.swift in Sources */,
 				17BD4E0B2292F1260003E49A /* NotificationCenter+Additions.swift in Sources */,
 				2BAD559823A29C9C0037079F /* String+Empty.swift in Sources */,
 				2BD5477223184310007179FE /* FeedbackCategory.swift in Sources */,
@@ -4759,6 +4784,7 @@
 				17BD4E932292F1260003E49A /* NodeSettingsViewModel.swift in Sources */,
 				17BD4E942292F1260003E49A /* TransactionReceiverView.swift in Sources */,
 				17BD4E962292F1260003E49A /* PasswordInputView.swift in Sources */,
+				2BE93711245CAC8600322C1E /* NotificationsComingSoonView.swift in Sources */,
 				2B448742237B0AFB00C19FDE /* AccountsViewController+Options.swift in Sources */,
 				17BD4E982292F1260003E49A /* ContentStateView.swift in Sources */,
 				17BD4E992292F1260003E49A /* CIImage+Additions.swift in Sources */,
@@ -4969,6 +4995,7 @@
 				2BF3D832226F0F9100716C09 /* TransactionDetailViewController.swift in Sources */,
 				2BA242382263C0D800E2841F /* SwiftDate+Region.swift in Sources */,
 				2B4BD9F02389F13F00491149 /* AssetSupportAlertView.swift in Sources */,
+				2BE9370C245CAC2900322C1E /* NotificationsViewController.swift in Sources */,
 				17AA1B0422660E59000B0BB0 /* Formatter+Additions.swift in Sources */,
 				2BDDCA482268A3630081CED2 /* DeepLinkParser.swift in Sources */,
 				17D04F48225F697E0051BC43 /* AddNodeView.swift in Sources */,
@@ -5170,6 +5197,7 @@
 				2B0D84F72395D4F500F0EAA7 /* SendAssetTransactionPreviewViewController.swift in Sources */,
 				2BD739FA2240527B00B66EEF /* PasswordInputView.swift in Sources */,
 				2B4BD9ED2389CBC000491149 /* AssetNameView.swift in Sources */,
+				2BE93710245CAC8600322C1E /* NotificationsComingSoonView.swift in Sources */,
 				2BDE9CD7224E2082007EFF30 /* ContentStateView.swift in Sources */,
 				170AFB02224D1CE100520EA5 /* CIImage+Additions.swift in Sources */,
 				17F6E68A224B71A6006DD31F /* User.swift in Sources */,

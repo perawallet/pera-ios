@@ -14,14 +14,14 @@ class TabBarController: UITabBarController {
         rootViewController: AccountsViewController(configuration: configuration)
     )
     
-    private lazy var historyNavigationController = NavigationController(
-        rootViewController: HistoryViewController(configuration: configuration)
-    )
-    
     private lazy var contactsNavigationController = NavigationController(
         rootViewController: ContactsViewController(configuration: configuration)
     )
 
+    private lazy var notificationsNavigationController = NavigationController(
+        rootViewController: NotificationsViewController(configuration: configuration)
+    )
+    
     private lazy var settingsNavigationController = NavigationController(
         rootViewController: SettingsViewController(configuration: configuration)
     )
@@ -41,11 +41,21 @@ class TabBarController: UITabBarController {
         tabBar.delegate = self
         tabBar.backgroundColor = .white
         tabBar.barTintColor = .white
-        tabBar.clipsToBounds = true
-        tabBar.tintColor = SharedColors.black
-        tabBar.unselectedItemTintColor = SharedColors.darkGray
-        tabBar.backgroundImage = UIImage()
-        tabBar.shadowImage = UIImage()
+        tabBar.clipsToBounds = false
+        tabBar.tintColor = SharedColors.primary
+        tabBar.unselectedItemTintColor = SharedColors.gray900
+        
+        if #available(iOS 13, *) {
+            let appearance = tabBar.standardAppearance.copy()
+            appearance.backgroundImage = UIImage()
+            appearance.shadowImage = UIImage()
+            appearance.shadowColor = .clear
+            tabBar.standardAppearance = appearance
+        } else {
+            tabBar.shadowImage = UIImage()
+            tabBar.backgroundImage = UIImage()
+        }
+
         return tabBar
     }()
     
@@ -54,10 +64,9 @@ class TabBarController: UITabBarController {
         super.init(nibName: nil, bundle: nil)
         setupTabBarController()
         configureAccountsTab()
-        configureHistoryTab()
         configureContactsTab()
+        configureNotificationsTab()
         configureSettingsTab()
-        configureAppearance()
     }
     
     @available(*, unavailable)
@@ -69,11 +78,12 @@ class TabBarController: UITabBarController {
         super.viewDidLoad()
         
         setValue(customTabBar, forKey: "tabBar")
-        tabBar.layer.shadowOffset = CGSize(width: 0, height: 0)
-        tabBar.layer.shadowRadius = 10
-        tabBar.layer.shadowColor = Colors.shadowColor.cgColor
-        tabBar.layer.shadowOpacity = 1.0
-        tabBar.layer.masksToBounds = false
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        tabBar.applyShadow(Shadow(color: Colors.shadowColor, offset: CGSize(width: 0.0, height: 4.0), radius: 16.0, opacity: 1.0))
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -94,60 +104,54 @@ extension TabBarController {
         delegate = self
         viewControllers = [
             accountsNavigationController,
-            historyNavigationController,
             contactsNavigationController,
+            notificationsNavigationController,
             settingsNavigationController
         ]
     }
     
     private func configureAccountsTab() {
         accountsNavigationController.tabBarItem = UITabBarItem(
-            title: "tabbar-item-accounts".localized,
+            title: "",
             image: img("tabbar-icon-accounts")?.withRenderingMode(.alwaysOriginal),
             selectedImage: img("tabbar-icon-accounts-selected")?.withRenderingMode(.alwaysOriginal)
         )
         
-        accountsNavigationController.tabBarItem.imageInsets = UIEdgeInsets(top: 2.0, left: 0.0, bottom: -2.0, right: 0.0)
+        accountsNavigationController.tabBarItem.imageInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: 0.0)
         accountsNavigationController.tabBarItem.tag = 0
-    }
-    
-    private func configureHistoryTab() {
-        historyNavigationController.tabBarItem = UITabBarItem(
-            title: "tabbar-item-history".localized,
-            image: img("tabbar-icon-history")?.withRenderingMode(.alwaysOriginal),
-            selectedImage: img("tabbar-icon-history-selected")?.withRenderingMode(.alwaysOriginal)
-        )
-        
-        historyNavigationController.tabBarItem.imageInsets = UIEdgeInsets(top: 2.0, left: 0.0, bottom: -2.0, right: 0.0)
-        historyNavigationController.tabBarItem.tag = 1
     }
     
     private func configureContactsTab() {
         contactsNavigationController.tabBarItem = UITabBarItem(
-            title: "tabbar-item-contacts".localized,
+            title: "",
             image: img("tabbar-icon-contacts")?.withRenderingMode(.alwaysOriginal),
             selectedImage: img("tabbar-icon-contacts-selected")?.withRenderingMode(.alwaysOriginal)
         )
         
-        contactsNavigationController.tabBarItem.imageInsets = UIEdgeInsets(top: 1.5, left: 0.0, bottom: -1.5, right: 0.0)
-        contactsNavigationController.tabBarItem.tag = 2
+        contactsNavigationController.tabBarItem.imageInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: 0.0)
+        contactsNavigationController.tabBarItem.tag = 1
+    }
+    
+    private func configureNotificationsTab() {
+        notificationsNavigationController.tabBarItem = UITabBarItem(
+            title: "",
+            image: img("tabbar-icon-notifications")?.withRenderingMode(.alwaysOriginal),
+            selectedImage: img("tabbar-icon-notifications-selected")?.withRenderingMode(.alwaysOriginal)
+        )
+        
+        notificationsNavigationController.tabBarItem.imageInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: 0.0)
+        notificationsNavigationController.tabBarItem.tag = 2
     }
     
     private func configureSettingsTab() {
         settingsNavigationController.tabBarItem = UITabBarItem(
-            title: "tabbar-item-settings".localized,
+            title: "",
             image: img("tabbar-icon-settings")?.withRenderingMode(.alwaysOriginal),
             selectedImage: img("tabbar-icon-settings-selected")?.withRenderingMode(.alwaysOriginal)
         )
         
-        settingsNavigationController.tabBarItem.imageInsets = UIEdgeInsets(top: 2.0, left: 0.0, bottom: -2.0, right: 0.0)
+        settingsNavigationController.tabBarItem.imageInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: 0.0)
         settingsNavigationController.tabBarItem.tag = 3
-    }
-    
-    private func configureAppearance() {
-        let fontAttributes = [NSAttributedString.Key.font: UIFont.font(.avenir, withWeight: .demiBold(size: 10.0))]
-        UITabBarItem.appearance().setTitleTextAttributes(fontAttributes, for: .normal)
-        UITabBarItem.appearance().setTitleTextAttributes(fontAttributes, for: .selected)
     }
 }
 
@@ -221,14 +225,14 @@ extension TabBarController: AssetCancellableSupportAlertViewControllerDelegate {
 extension TabBarController {
     enum Tab: Int {
         case accounts = 0
-        case history = 1
-        case contacts = 2
+        case contacts = 1
+        case notifications = 2
         case settings = 3
     }
 }
 
 extension TabBarController {
     private enum Colors {
-        static let shadowColor = rgba(0.24, 0.27, 0.32, 0.1)
+        static let shadowColor = rgba(0.0, 0.0, 0.0, 0.1)
     }
 }
