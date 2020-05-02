@@ -260,8 +260,6 @@ class Router {
                 assetTransactionRequestDraft: assetTransactionRequestDraft,
                 configuration: configuration
             )
-        case let .historyResults(draft):
-            viewController = HistoryResultsViewController(draft: draft, configuration: configuration)
         case let .nodeSettings(mode):
             viewController = NodeSettingsViewController(mode: mode, configuration: configuration)
         case .addNode:

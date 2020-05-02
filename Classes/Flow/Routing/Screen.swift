@@ -43,7 +43,6 @@ indirect enum Screen {
     case requestAssetTransactionPreview(account: Account, assetDetail: AssetDetail)
     case requestAlgosTransaction(algosTransactionRequestDraft: AlgosTransactionRequestDraft)
     case requestAssetTransaction(assetTransactionRequestDraft: AssetTransactionRequestDraft)
-    case historyResults(draft: HistoryDraft)
     case nodeSettings(mode: NodeSettingsViewController.Mode)
     case addNode
     case editNode(node: Node)
