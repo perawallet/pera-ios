@@ -9,64 +9,58 @@
 import UIKit
 
 class EmptyStateView: BaseView {
-
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let titleInset: CGFloat = 79.0 * verticalScale
-        let topImageViewInset: CGFloat = 13.0 * verticalScale
-        let bottomImageViewInset: CGFloat = 10.0 * verticalScale
-        let bottomInset: CGFloat = 150.0 * verticalScale
-    }
     
     private let layout = Layout<LayoutConstants>()
     
-    // MARK: Components
+    private(set) lazy var imageView = UIImageView(image: image)
     
     private(set) lazy var titleLabel: UILabel = {
         UILabel()
             .withAlignment(.center)
             .withLine(.contained)
-            .withTextColor(SharedColors.softGray)
-            .withFont(UIFont.font(.avenir, withWeight: .medium(size: 13.0)))
+            .withTextColor(SharedColors.primaryText)
+            .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
             .withText(title)
     }()
     
-    private(set) lazy var topImageView = UIImageView(image: topImage)
+    private(set) lazy var subtitleLabel: UILabel = {
+        UILabel()
+            .withAttributedText(subtitle.attributed([.lineSpacing(1.2)]))
+            .withAlignment(.center)
+            .withLine(.contained)
+            .withTextColor(SharedColors.gray800)
+            .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
+    }()
     
-    private(set) lazy var bottomImageView = UIImageView(image: bottomImage)
-    
-    // MARK: Initialization
-    
+    private let image: UIImage?
     private let title: String
-    private let topImage: UIImage?
-    private let bottomImage: UIImage?
-    private let alignment: Alignment
+    private let subtitle: String
     
-    init(title: String, topImage: UIImage?, bottomImage: UIImage?, alignment: Alignment = .top) {
+    init(image: UIImage?, title: String, subtitle: String) {
+        self.image = image
         self.title = title
-        self.topImage = topImage
-        self.bottomImage = bottomImage
-        self.alignment = alignment
-        
+        self.subtitle = subtitle
         super.init(frame: .zero)
     }
     
-    // MARK: Setup
-    
     override func configureAppearance() {
-        backgroundColor = .white
+        backgroundColor = SharedColors.secondaryBackground
     }
     
-    // MARK: Layout
-    
     override func prepareLayout() {
-        if alignment == .top {
-            setupTitleLabelLayout()
-            setupTopImageViewLayout()
-            setupBottomImageViewLayout()
-        } else {
-            setupBottomImageViewLayout()
-            setupTopImageViewLayout()
-            setupTitleLabelLayout()
+        setupImageViewLayout()
+        setupTitleLabelLayout()
+        setupSubtitleLabelLayout()
+    }
+}
+
+extension EmptyStateView {
+    private func setupImageViewLayout() {
+        addSubview(imageView)
+        
+        imageView.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalToSuperview().inset(layout.current.topInset)
         }
     }
     
@@ -75,50 +69,27 @@ class EmptyStateView: BaseView {
         
         titleLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            
-            if alignment == .top {
-                make.top.equalToSuperview().inset(layout.current.titleInset)
-            } else {
-                make.bottom.equalTo(topImageView.snp.top).inset(-layout.current.topImageViewInset)
-            }
+            make.top.equalTo(imageView.snp.bottom).offset(layout.current.titleTopInset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
         }
     }
     
-    private func setupTopImageViewLayout() {
-        addSubview(topImageView)
+    private func setupSubtitleLabelLayout() {
+        addSubview(subtitleLabel)
         
-        topImageView.snp.makeConstraints { make in
+        subtitleLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            
-            if alignment == .top {
-                make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.topImageViewInset)
-            } else {
-                make.bottom.equalTo(bottomImageView.snp.top).offset(-layout.current.bottomImageViewInset)
-            }
-        }
-    }
-    
-    private func setupBottomImageViewLayout() {
-        addSubview(bottomImageView)
-        
-        bottomImageView.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            
-            if alignment == .top {
-                make.top.equalTo(topImageView.snp.bottom).offset(layout.current.bottomImageViewInset)
-            } else {
-                make.bottom.equalToSuperview().inset(layout.current.bottomInset)
-            }
+            make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.subtitleTopInset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
         }
     }
 }
 
-// MARK: Alignment
-
 extension EmptyStateView {
-    
-    enum Alignment {
-        case top
-        case bottom
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let topInset: CGFloat = 120.0
+        let horizontalInset: CGFloat = 40.0
+        let titleTopInset: CGFloat = 24.0
+        let subtitleTopInset: CGFloat = 12.0
     }
 }

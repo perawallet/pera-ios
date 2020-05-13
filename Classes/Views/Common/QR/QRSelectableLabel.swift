@@ -57,6 +57,9 @@ class QRSelectableLabel: BaseView {
             .withLine(.single)
             .withAlignment(.center)
         label.backgroundColor = SharedColors.gray800
+        label.layer.cornerRadius = 22.0
+        label.layer.masksToBounds = true
+        label.isHidden = true
         return label
     }()
     

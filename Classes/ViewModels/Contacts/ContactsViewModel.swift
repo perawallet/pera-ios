@@ -9,7 +9,6 @@
 import UIKit
 
 class ContactsViewModel {
-    
     func configure(_ cell: ContactCell, with contact: Contact) {
         if let imageData = contact.image,
             let image = UIImage(data: imageData) {
