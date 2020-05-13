@@ -16,13 +16,13 @@ class BottomInformationViewController: BaseViewController {
     
     private(set) var bottomInformationView: BottomInformationView
     private let mode: Mode
-    private let bottomInformationViewConfigurator: BottomInformationViewConfigurator
+    private let bottomInformationBundle: BottomInformationBundle
     
     private let viewModel = BottomInformationViewModel()
     
-    init(mode: Mode, bottomInformationViewConfigurator: BottomInformationViewConfigurator, configuration: ViewControllerConfiguration) {
+    init(mode: Mode, bottomInformationBundle: BottomInformationBundle, configuration: ViewControllerConfiguration) {
         self.mode = mode
-        self.bottomInformationViewConfigurator = bottomInformationViewConfigurator
+        self.bottomInformationBundle = bottomInformationBundle
         
         switch mode {
         case .confirmation:
@@ -38,7 +38,7 @@ class BottomInformationViewController: BaseViewController {
     
     override func configureAppearance() {
         view.backgroundColor = SharedColors.secondaryBackground
-        viewModel.configure(bottomInformationView, with: bottomInformationViewConfigurator)
+        viewModel.configure(bottomInformationView, with: bottomInformationBundle)
     }
     
     override func setListeners() {
@@ -95,7 +95,7 @@ extension BottomInformationViewController {
 
 extension BottomInformationViewController {
     private func executeHandler() {
-        if let handler = bottomInformationViewConfigurator.actionHandler {
+        if let handler = bottomInformationBundle.actionHandler {
             dismiss(animated: true) {
                 handler()
             }

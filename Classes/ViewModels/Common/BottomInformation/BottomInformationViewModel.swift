@@ -9,7 +9,7 @@
 import UIKit
 
 class BottomInformationViewModel {
-    func configure(_ bottomInformationView: BottomInformationView, with configurator: BottomInformationViewConfigurator) {
+    func configure(_ bottomInformationView: BottomInformationView, with configurator: BottomInformationBundle) {
         bottomInformationView.titleLabel.attributedText = configurator.title.attributed([.lineSpacing(1.2)])
         bottomInformationView.titleLabel.textAlignment = .center
         bottomInformationView.explanationLabel.attributedText = configurator.explanation.attributed([.lineSpacing(1.2)])
@@ -29,7 +29,7 @@ class BottomInformationViewModel {
     
     private func configureConfirmationInformationView(
         _ informationView: ConfirmationBottomInformationView,
-        with configurator: BottomInformationViewConfigurator
+        with configurator: BottomInformationBundle
     ) {
         if let actionTitle = configurator.actionTitle {
             informationView.actionButton.setTitle(actionTitle, for: .normal)
@@ -42,7 +42,7 @@ class BottomInformationViewModel {
     
     private func configureActionInformationView(
         _ informationView: ActionBottomInformationView,
-        with configurator: BottomInformationViewConfigurator
+        with configurator: BottomInformationBundle
     ) {
         if let actionTitle = configurator.actionTitle {
             informationView.actionButton.setTitle(actionTitle, for: .normal)

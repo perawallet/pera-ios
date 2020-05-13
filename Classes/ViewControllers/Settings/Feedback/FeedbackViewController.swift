@@ -199,7 +199,7 @@ extension FeedbackViewController {
     }
     
     private func displaySuccessAlert() {
-        let configurator = BottomInformationViewConfigurator(
+        let configurator = BottomInformationBundle(
             title: "feedback-success-title".localized,
             image: img("feedback-success-icon"),
             explanation: "",
