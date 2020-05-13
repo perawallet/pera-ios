@@ -1,0 +1,125 @@
+//
+//  ContactDisplayView.swift
+//  algorand
+//
+//  Created by Göktuğ Berk Ulu on 8.05.2020.
+//  Copyright © 2020 hippo. All rights reserved.
+//
+
+import UIKit
+
+class ContactDisplayView: BaseView {
+    
+    private let layout = Layout<LayoutConstants>()
+    
+    weak var delegate: ContactDisplayViewDelegate?
+    
+    private lazy var imageView = UIImageView()
+    
+    private(set) lazy var nameLabel: UILabel = {
+        UILabel()
+            .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
+            .withLine(.contained)
+            .withAlignment(.left)
+            .withTextColor(SharedColors.primaryText)
+    }()
+    
+    private lazy var actionButton = UIButton()
+    
+    override func configureAppearance() {
+        imageView.contentMode = .scaleAspectFit
+        backgroundColor = .clear
+    }
+    
+    override func setListeners() {
+        actionButton.addTarget(self, action: #selector(notifyDelegateToHandleAction), for: .touchUpInside)
+    }
+    
+    override func prepareLayout() {
+        setupActionButtonLayout()
+        setupNameLabelLayout()
+        setupImageViewLayout()
+    }
+}
+
+extension ContactDisplayView {
+    @objc
+    private func notifyDelegateToHandleAction() {
+        delegate?.contactDisplayViewDidTapActionButton(self)
+    }
+}
+
+extension ContactDisplayView {
+    private func setupActionButtonLayout() {
+        addSubview(actionButton)
+        
+        actionButton.snp.makeConstraints { make in
+            make.size.equalTo(layout.current.buttonSize)
+            make.trailing.equalToSuperview().inset(layout.current.buttonTrailingInset)
+            make.centerY.equalToSuperview()
+        }
+    }
+    
+    private func setupNameLabelLayout() {
+        addSubview(nameLabel)
+        
+        nameLabel.snp.makeConstraints { make in
+            make.trailing.equalTo(actionButton.snp.leading).offset(layout.current.nameLabelOffset)
+            make.top.bottom.equalToSuperview().inset(layout.current.veritcalInset)
+        }
+    }
+    
+    private func setupImageViewLayout() {
+        addSubview(imageView)
+        
+        imageView.snp.makeConstraints { make in
+            make.leading.equalToSuperview()
+            make.trailing.equalTo(nameLabel.snp.leading).offset(layout.current.imageOffset)
+            make.size.equalTo(layout.current.imageSize)
+        }
+    }
+}
+
+extension ContactDisplayView {
+    func setContact(_ contact: Contact) {
+        if let imageData = contact.image,
+            let image = UIImage(data: imageData) {
+            let resizedImage = image.convert(to: CGSize(width: 24.0, height: 24.0))
+            imageView.image = resizedImage
+        }
+        
+        nameLabel.text = contact.name
+    }
+    
+    func setQRAction() {
+        actionButton.setBackgroundImage((img("icon-qr-view")), for: .normal)
+    }
+    
+    func setAddContactAction() {
+        actionButton.setBackgroundImage((img("icon-user-add")), for: .normal)
+    }
+    
+    func setName(_ name: String) {
+        nameLabel.text = name
+    }
+    
+    func setImage(hidden: Bool) {
+        imageView.isHidden = hidden
+    }
+}
+
+extension ContactDisplayView {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let buttonSize = CGSize(width: 40.0, height: 40.0)
+        let imageSize = CGSize(width: 24.0, height: 24.0)
+        let veritcalInset: CGFloat = 10.0
+        let nameLabelOffset: CGFloat = -12.0
+        let imageOffset: CGFloat = -8.0
+        let buttonTrailingInset: CGFloat = 8.0
+        let horizontalInset: CGFloat = 20.0
+    }
+}
+
+protocol ContactDisplayViewDelegate: class {
+    func contactDisplayViewDidTapActionButton(_ contactDisplayView: ContactDisplayView)
+}
