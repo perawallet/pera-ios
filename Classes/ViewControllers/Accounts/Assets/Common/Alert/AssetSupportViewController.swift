@@ -1,21 +1,19 @@
 //
-//  AssetActionConfirmationViewController.swift
+//  AssetSupportViewController.swift
 //  algorand
 //
-//  Created by Göktuğ Berk Ulu on 11.11.2019.
+//  Created by Göktuğ Berk Ulu on 24.11.2019.
 //  Copyright © 2019 hippo. All rights reserved.
 //
 
 import UIKit
 import SVProgressHUD
 
-class AssetActionConfirmationViewController: BaseViewController {
+class AssetSupportViewController: BaseViewController {
     
-    weak var delegate: AssetActionConfirmationViewControllerDelegate?
+    private lazy var assetSupportView = AssetSupportView()
     
-    private lazy var assetActionConfirmationView = AssetActionConfirmationView()
-    
-    private let viewModel = AssetActionConfirmationViewModel()
+    private let viewModel = AssetSupportViewModel()
     
     private var assetAlertDraft: AssetAlertDraft
     
@@ -31,31 +29,31 @@ class AssetActionConfirmationViewController: BaseViewController {
     
     override func configureAppearance() {
         view.backgroundColor = SharedColors.secondaryBackground
-        viewModel.configure(assetActionConfirmationView, with: assetAlertDraft)
+        viewModel.configure(assetSupportView, with: assetAlertDraft)
     }
     
     override func setListeners() {
-        assetActionConfirmationView.delegate = self
+        assetSupportView.delegate = self
     }
     
     override func prepareLayout() {
-        setupAssetActionConfirmationViewLayout()
+        setupAssetSupportViewLayout()
     }
 }
 
-extension AssetActionConfirmationViewController {
-    private func setupAssetActionConfirmationViewLayout() {
-        view.addSubview(assetActionConfirmationView)
+extension AssetSupportViewController {
+    private func setupAssetSupportViewLayout() {
+        view.addSubview(assetSupportView)
         
-        assetActionConfirmationView.snp.makeConstraints { make in
+        assetSupportView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
     }
 }
 
-extension AssetActionConfirmationViewController {
+extension AssetSupportViewController {
     private func fetchAssetDetailIfNeeded() {
-        if !assetAlertDraft.isAssetDetailValid() {
+        if assetAlertDraft.assetDetail == nil {
             SVProgressHUD.show(withStatus: "title-loading".localized)
             api?.getAssetDetails(with: AssetFetchDraft(assetId: "\(assetAlertDraft.assetIndex)")) { response in
                 switch response {
@@ -75,7 +73,7 @@ extension AssetActionConfirmationViewController {
         var assetDetail = asset
         setVerifiedIfNeeded(&assetDetail)
         assetAlertDraft.assetDetail = assetDetail
-        viewModel.configure(self.assetActionConfirmationView.assetDisplayView, with: assetAlertDraft)
+        viewModel.configure(self.assetSupportView.assetDisplayView, with: assetAlertDraft)
     }
     
     private func setVerifiedIfNeeded(_ assetDetail: inout AssetDetail) {
@@ -88,22 +86,8 @@ extension AssetActionConfirmationViewController {
     }
 }
 
-extension AssetActionConfirmationViewController: AssetActionConfirmationViewDelegate {
-    func assetActionConfirmationViewDidTapActionButton(_ assetActionConfirmationView: AssetActionConfirmationView) {
-        if let assetDetail = assetAlertDraft.assetDetail {
-            delegate?.assetActionConfirmationViewController(self, didConfirmedActionFor: assetDetail)
-        }
+extension AssetSupportViewController: AssetSupportViewDelegate {
+    func assetSupportViewDidTapOKButton(_ assetSupportView: AssetSupportView) {
         dismissScreen()
     }
-    
-    func assetActionConfirmationViewDidTapCancelButton(_ assetActionConfirmationView: AssetActionConfirmationView) {
-        dismissScreen()
-    }
-}
-
-protocol AssetActionConfirmationViewControllerDelegate: class {
-    func assetActionConfirmationViewController(
-        _ assetActionConfirmationViewController: AssetActionConfirmationViewController,
-        didConfirmedActionFor assetDetail: AssetDetail
-    )
 }

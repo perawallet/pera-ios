@@ -284,14 +284,12 @@ class Router {
             viewController = AssetRemovalViewController(account: account, configuration: configuration)
         case let .assetActionConfirmation(assetAlertDraft):
             viewController = AssetActionConfirmationViewController(assetAlertDraft: assetAlertDraft, configuration: configuration)
-        case let .assetSupportAlert(assetAlertDraft):
-            viewController = AssetSupportAlertViewController(assetAlertDraft: assetAlertDraft, configuration: configuration)
-        case let .assetCancellableSupportAlert(assetAlertDraft):
-            viewController = AssetCancellableSupportAlertViewController(assetAlertDraft: assetAlertDraft, configuration: configuration)
+        case let .assetSupport(assetAlertDraft):
+            viewController = AssetSupportViewController(assetAlertDraft: assetAlertDraft, configuration: configuration)
         case let .bottomInformation(mode, configurator):
             viewController = BottomInformationViewController(
                 mode: mode,
-                bottomInformationViewConfigurator: configurator,
+                bottomInformationBundle: configurator,
                 configuration: configuration
             )
         case let .rewardDetail(account):
@@ -325,6 +323,8 @@ class Router {
             viewController = LedgerTroubleshootOpenAppViewController(configuration: configuration)
         case .termsAndServices:
             viewController = TermsAndServicesViewController(configuration: configuration)
+        case .selectAsset:
+            viewController = SelectAssetViewController(configuration: configuration)
         }
         
         return viewController as? T
