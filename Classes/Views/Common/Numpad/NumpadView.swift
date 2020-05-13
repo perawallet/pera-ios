@@ -15,89 +15,54 @@ class NumpadView: BaseView {
     weak var delegate: NumpadViewDelegate?
     
     private lazy var firstRowStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.distribution = .fillEqually
-        stackView.alignment = .center
-        stackView.axis = .horizontal
-        stackView.spacing = layout.current.stackViewSpacing
-        stackView.isUserInteractionEnabled = true
-        return stackView
+        createRow()
     }()
     
-    private lazy var numberOneButton = NumpadButton(numpadValue: .number("1"))
+    private lazy var numberOneButton = NumpadButton(numpadKey: .number("1"))
     
-    private lazy var numberTwoButton = NumpadButton(numpadValue: .number("2"))
+    private lazy var numberTwoButton = NumpadButton(numpadKey: .number("2"))
     
-    private lazy var numberThreeButton = NumpadButton(numpadValue: .number("3"))
+    private lazy var numberThreeButton = NumpadButton(numpadKey: .number("3"))
     
     private lazy var secondRowStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.distribution = .fillEqually
-        stackView.alignment = .center
-        stackView.axis = .horizontal
-        stackView.spacing = layout.current.stackViewSpacing
-        stackView.isUserInteractionEnabled = true
-        return stackView
+        createRow()
     }()
     
-    private lazy var numberFourButton = NumpadButton(numpadValue: .number("4"))
+    private lazy var numberFourButton = NumpadButton(numpadKey: .number("4"))
     
-    private lazy var numberFiveButton = NumpadButton(numpadValue: .number("5"))
+    private lazy var numberFiveButton = NumpadButton(numpadKey: .number("5"))
     
-    private lazy var numberSixButton = NumpadButton(numpadValue: .number("6"))
+    private lazy var numberSixButton = NumpadButton(numpadKey: .number("6"))
     
     private lazy var thirdRowStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.distribution = .fillEqually
-        stackView.alignment = .center
-        stackView.axis = .horizontal
-        stackView.spacing = layout.current.stackViewSpacing
-        stackView.isUserInteractionEnabled = true
-        return stackView
+        createRow()
     }()
     
-    private lazy var numberSevenButton = NumpadButton(numpadValue: .number("7"))
+    private lazy var numberSevenButton = NumpadButton(numpadKey: .number("7"))
     
-    private lazy var numberEightButton = NumpadButton(numpadValue: .number("8"))
+    private lazy var numberEightButton = NumpadButton(numpadKey: .number("8"))
     
-    private lazy var numberNineButton = NumpadButton(numpadValue: .number("9"))
+    private lazy var numberNineButton = NumpadButton(numpadKey: .number("9"))
     
     private lazy var fourthRowStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.distribution = .fillEqually
-        stackView.alignment = .center
-        stackView.axis = .horizontal
-        stackView.spacing = layout.current.stackViewSpacing
-        stackView.isUserInteractionEnabled = true
-        return stackView
+        createRow()
     }()
     
-    private lazy var spacingButton = NumpadButton(numpadValue: .spacing)
+    private lazy var spacingButton = NumpadButton(numpadKey: .spacing)
     
-    private lazy var zeroButton = NumpadButton(numpadValue: .number("0"))
+    private lazy var zeroButton = NumpadButton(numpadKey: .number("0"))
     
-    private lazy var deleteButton = NumpadButton(numpadValue: .delete)
+    private lazy var deleteButton = NumpadButton(numpadKey: .delete)
     
     override func configureAppearance() {
         backgroundColor = SharedColors.secondaryBackground
     }
     
     override func linkInteractors() {
-        numberOneButton.addTarget(self, action: #selector(notifyDelegateToAddNumpadValue), for: .touchUpInside)
-        numberTwoButton.addTarget(self, action: #selector(notifyDelegateToAddNumpadValue), for: .touchUpInside)
-        numberThreeButton.addTarget(self, action: #selector(notifyDelegateToAddNumpadValue), for: .touchUpInside)
-        numberFourButton.addTarget(self, action: #selector(notifyDelegateToAddNumpadValue), for: .touchUpInside)
-        numberFiveButton.addTarget(self, action: #selector(notifyDelegateToAddNumpadValue), for: .touchUpInside)
-        numberSixButton.addTarget(self, action: #selector(notifyDelegateToAddNumpadValue), for: .touchUpInside)
-        numberSevenButton.addTarget(self, action: #selector(notifyDelegateToAddNumpadValue), for: .touchUpInside)
-        numberEightButton.addTarget(self, action: #selector(notifyDelegateToAddNumpadValue), for: .touchUpInside)
-        numberNineButton.addTarget(self, action: #selector(notifyDelegateToAddNumpadValue), for: .touchUpInside)
-        zeroButton.addTarget(self, action: #selector(notifyDelegateToAddNumpadValue), for: .touchUpInside)
-        deleteButton.addTarget(self, action: #selector(notifyDelegateToAddNumpadValue), for: .touchUpInside)
+        [
+            numberOneButton, numberTwoButton, numberThreeButton, numberFourButton, numberFiveButton, numberSixButton, numberSevenButton,
+            numberEightButton, numberNineButton, zeroButton, deleteButton
+        ].forEach { $0.addTarget(self, action: #selector(notifyDelegateToAddNumpadValue), for: .touchUpInside) }
     }
     
     override func prepareLayout() {
@@ -111,7 +76,7 @@ class NumpadView: BaseView {
 extension NumpadView {
     @objc
     private func notifyDelegateToAddNumpadValue(sender: NumpadButton) {
-        delegate?.numpadView(self, didSelect: sender.numpadValue)
+        delegate?.numpadView(self, didSelect: sender.numpadKey)
     }
 }
 
@@ -175,6 +140,19 @@ extension NumpadView {
 }
 
 extension NumpadView {
+    private func createRow() -> UIStackView {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.distribution = .fillEqually
+        stackView.alignment = .center
+        stackView.axis = .horizontal
+        stackView.spacing = layout.current.stackViewSpacing
+        stackView.isUserInteractionEnabled = true
+        return stackView
+    }
+}
+
+extension NumpadView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let stackViewSpacing: CGFloat = 24.0 * verticalScale
         let stackViewHeight: CGFloat = 72.0 * verticalScale
@@ -182,10 +160,10 @@ extension NumpadView {
 }
 
 protocol NumpadViewDelegate: class {
-    func numpadView(_ numpadView: NumpadView, didSelect value: NumpadValue)
+    func numpadView(_ numpadView: NumpadView, didSelect value: NumpadKey)
 }
 
-enum NumpadValue {
+enum NumpadKey {
     case spacing
     case number(String)
     case delete

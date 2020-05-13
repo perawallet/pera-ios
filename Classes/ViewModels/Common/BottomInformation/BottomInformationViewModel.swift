@@ -16,8 +16,8 @@ class BottomInformationViewModel {
         bottomInformationView.explanationLabel.textAlignment = .center
         bottomInformationView.imageView.image = configurator.image
         
-        if let bottomInformationView = bottomInformationView as? DefaultBottomInformationView {
-            configureDefaultInformationView(bottomInformationView, with: configurator)
+        if let bottomInformationView = bottomInformationView as? ConfirmationBottomInformationView {
+            configureConfirmationInformationView(bottomInformationView, with: configurator)
             return
         }
         
@@ -27,8 +27,8 @@ class BottomInformationViewModel {
         }
     }
     
-    private func configureDefaultInformationView(
-        _ informationView: DefaultBottomInformationView,
+    private func configureConfirmationInformationView(
+        _ informationView: ConfirmationBottomInformationView,
         with configurator: BottomInformationViewConfigurator
     ) {
         if let actionTitle = configurator.actionTitle {

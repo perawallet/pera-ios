@@ -1,5 +1,5 @@
 //
-//  DefaultBottomInformationView.swift
+//  ConfirmationBottomInformationView.swift
 //  algorand
 //
 //  Created by Göktuğ Berk Ulu on 21.03.2019.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DefaultBottomInformationView: BottomInformationView {
+class ConfirmationBottomInformationView: BottomInformationView {
     
     private let layout = Layout<LayoutConstants>()
     
@@ -18,7 +18,7 @@ class DefaultBottomInformationView: BottomInformationView {
             .withTitleColor(SharedColors.primaryButtonTitle)
     }()
     
-    weak var delegate: DefaultBottomInformationViewDelegate?
+    weak var delegate: ConfirmationBottomInformationViewDelegate?
     
     override func setListeners() {
         actionButton.addTarget(self, action: #selector(notifyDelegateToDoneButtonTapped), for: .touchUpInside)
@@ -30,14 +30,14 @@ class DefaultBottomInformationView: BottomInformationView {
     }
 }
 
-extension DefaultBottomInformationView {
+extension ConfirmationBottomInformationView {
     @objc
     private func notifyDelegateToDoneButtonTapped() {
-        delegate?.defaultBottomInformationViewDidTapActionButton(self)
+        delegate?.confirmationBottomInformationViewDidTapActionButton(self)
     }
 }
 
-extension DefaultBottomInformationView {
+extension ConfirmationBottomInformationView {
     private func setupActionButtonLayout() {
         addSubview(actionButton)
         
@@ -45,18 +45,18 @@ extension DefaultBottomInformationView {
             make.top.equalTo(explanationLabel.snp.bottom).offset(layout.current.verticalInset)
             make.centerX.equalToSuperview()
             make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
-            make.bottom.equalToSuperview().inset(layout.current.verticalInset)
+            make.bottom.lessThanOrEqualToSuperview().inset(layout.current.verticalInset)
         }
     }
 }
 
-extension DefaultBottomInformationView {
+extension ConfirmationBottomInformationView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let verticalInset: CGFloat = 28.0
         let buttonHorizontalInset: CGFloat = 32.0
     }
 }
 
-protocol DefaultBottomInformationViewDelegate: class {
-    func defaultBottomInformationViewDidTapActionButton(_ defaultBottomInformationView: DefaultBottomInformationView)
+protocol ConfirmationBottomInformationViewDelegate: class {
+    func confirmationBottomInformationViewDidTapActionButton(_ confirmationBottomInformationView: ConfirmationBottomInformationView)
 }

@@ -25,8 +25,8 @@ class BottomInformationViewController: BaseViewController {
         self.bottomInformationViewConfigurator = bottomInformationViewConfigurator
         
         switch mode {
-        case .default:
-            bottomInformationView = DefaultBottomInformationView()
+        case .confirmation:
+            bottomInformationView = ConfirmationBottomInformationView()
         case .action:
             bottomInformationView = ActionBottomInformationView()
         case .qr:
@@ -43,8 +43,8 @@ class BottomInformationViewController: BaseViewController {
     
     override func setListeners() {
         switch mode {
-        case .default:
-            setDefaultBottomInformationViewAction()
+        case .confirmation:
+            setConfirmationBottomInformationViewAction()
         case .action:
             setActionBottomInformationViewAction()
         case .qr:
@@ -68,12 +68,12 @@ extension BottomInformationViewController {
 }
 
 extension BottomInformationViewController {
-    private func setDefaultBottomInformationViewAction() {
-        guard let defaultBottomInformationView = bottomInformationView as? DefaultBottomInformationView else {
+    private func setConfirmationBottomInformationViewAction() {
+        guard let confirmationBottomInformationView = bottomInformationView as? ConfirmationBottomInformationView else {
             return
         }
         
-        defaultBottomInformationView.delegate = self
+        confirmationBottomInformationView.delegate = self
     }
     
     private func setActionBottomInformationViewAction() {
@@ -106,8 +106,8 @@ extension BottomInformationViewController {
     }
 }
 
-extension BottomInformationViewController: DefaultBottomInformationViewDelegate {
-    func defaultBottomInformationViewDidTapActionButton(_ defaultBottomInformationView: DefaultBottomInformationView) {
+extension BottomInformationViewController: ConfirmationBottomInformationViewDelegate {
+    func confirmationBottomInformationViewDidTapActionButton(_ confirmationBottomInformationView: ConfirmationBottomInformationView) {
         executeHandler()
     }
 }
@@ -134,7 +134,7 @@ extension BottomInformationViewController: QRBottomInformationViewDelegate {
 
 extension BottomInformationViewController {
     enum Mode {
-        case `default`
+        case confirmation
         case action
         case qr
     }

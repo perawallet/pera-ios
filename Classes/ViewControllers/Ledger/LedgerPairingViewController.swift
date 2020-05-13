@@ -100,7 +100,7 @@ extension LedgerPairingViewController {
         }
         
         open(
-            .bottomInformation(mode: .default, configurator: configurator),
+            .bottomInformation(mode: .confirmation, configurator: configurator),
             by: .customPresentWithoutNavigationController(
                 presentationStyle: .overCurrentContext,
                 transitionStyle: .crossDissolve,

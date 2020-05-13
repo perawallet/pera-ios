@@ -125,7 +125,7 @@ extension PassphraseVerifyViewController: UICollectionViewDelegate, UICollection
                 }
                 
                 open(
-                    .bottomInformation(mode: .default, configurator: configurator),
+                    .bottomInformation(mode: .confirmation, configurator: configurator),
                     by: .customPresentWithoutNavigationController(
                         presentationStyle: .custom,
                         transitionStyle: nil,
