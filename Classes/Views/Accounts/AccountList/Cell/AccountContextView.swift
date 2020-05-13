@@ -22,8 +22,8 @@ class AccountContextView: BaseView {
         UILabel()
             .withLine(.single)
             .withAlignment(.left)
-            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 14.0)))
-            .withTextColor(SharedColors.black)
+            .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
+            .withTextColor(SharedColors.primaryText)
     }()
     
     private(set) lazy var imageView: UIImageView = {
@@ -36,18 +36,14 @@ class AccountContextView: BaseView {
         UILabel()
             .withLine(.single)
             .withAlignment(.right)
-            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 15.0)))
-            .withTextColor(SharedColors.purple)
+            .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
+            .withTextColor(SharedColors.primaryText)
     }()
     
-    private lazy var separatorView: UIView = {
-        let view = UIView()
-        view.backgroundColor = Colors.separatorColor
-        return view
-    }()
+    private lazy var separatorView = LineSeparatorView()
     
     override func configureAppearance() {
-        backgroundColor = .white
+        backgroundColor = SharedColors.secondaryBackground
     }
     
     override func prepareLayout() {
@@ -55,7 +51,6 @@ class AccountContextView: BaseView {
         setupImageViewLayout()
         setupAccountTypeImageViewLayout()
         setupNameLabelLayout()
-        setupSeparatorViewLayout()
     }
 }
 
@@ -97,16 +92,6 @@ extension AccountContextView {
             make.trailing.lessThanOrEqualTo(imageView.snp.leading)
         }
     }
-    
-    private func setupSeparatorViewLayout() {
-        addSubview(separatorView)
-        
-        separatorView.snp.makeConstraints { make in
-            make.bottom.equalToSuperview()
-            make.height.equalTo(layout.current.separatorHeight)
-            make.leading.trailing.equalToSuperview().inset(layout.current.defaultInset)
-        }
-    }
 }
 
 extension AccountContextView {
@@ -122,15 +107,8 @@ extension AccountContextView {
 
 extension AccountContextView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let defaultInset: CGFloat = 25.0
+        let defaultInset: CGFloat = 20.0
         let imageViewOffset: CGFloat = -2.0
-        let separatorHeight: CGFloat = 1.0
-        let nameLabelInset: CGFloat = 11.0
-    }
-}
-
-extension AccountContextView {
-    private enum Colors {
-        static let separatorColor = rgb(0.91, 0.91, 0.92)
+        let nameLabelInset: CGFloat = 12.0
     }
 }
