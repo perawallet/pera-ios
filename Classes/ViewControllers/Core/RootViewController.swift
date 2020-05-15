@@ -10,11 +10,19 @@ import UIKit
 
 class RootViewController: UIViewController {
     
+    private var shouldHideTestNetBanner: Bool {
+        return tabBarViewController.parent == nil
+    }
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        if #available(iOS 13.0, *) {
-            return .darkContent
+        if appConfiguration.api.isTestNet && !shouldHideTestNetBanner {
+            return .lightContent
         } else {
-            return .default
+            if #available(iOS 13.0, *) {
+                return .darkContent
+            } else {
+                return .default
+            }
         }
     }
     
@@ -45,6 +53,8 @@ class RootViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = SharedColors.warmWhite
+        
+        initializeNetwork()
         
         if !appConfiguration.session.isValid {
             if appConfiguration.session.hasPassword() && appConfiguration.session.authenticatedUser != nil {
@@ -185,5 +195,40 @@ class RootViewController: UIViewController {
         then completion: EmptyHandler? = nil
     ) -> T? {
         return router?.route(to: screen, from: viewController, by: style, animated: animated, then: completion)
+    }
+}
+
+extension RootViewController {
+    private func initializeNetwork() {
+        if let authenticatedUser = appConfiguration.session.authenticatedUser {
+            if let preferredAlgorandNetwork = authenticatedUser.preferredAlgorandNetwork() {
+                setNetwork(to: preferredAlgorandNetwork)
+            } else {
+                setNetworkFromTarget()
+            }
+        } else {
+            setNetworkFromTarget()
+        }
+    }
+    
+    func setNetworkFromTarget() {
+        if Environment.current.isTestNet {
+            setNetwork(to: .testnet)
+        } else {
+            setNetwork(to: .mainnet)
+        }
+    }
+    
+    func setNetwork(to network: API.BaseNetwork) {
+        appConfiguration.api.cancelAllEndpoints()
+        appConfiguration.api.network = network
+        
+        if network == .mainnet {
+            appConfiguration.api.base = Environment.current.mainNetApi
+            appConfiguration.api.token = Environment.current.mainNetToken
+        } else {
+            appConfiguration.api.base = Environment.current.testNetApi
+            appConfiguration.api.token = Environment.current.testNetToken
+        }
     }
 }

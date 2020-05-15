@@ -87,6 +87,16 @@ class AssetDetailViewController: BaseViewController {
         super.configureAppearance()
         assetDetailView.transactionHistoryCollectionView.refreshControl = refreshControl
         viewModel.configure(assetDetailView.headerView, with: account, and: assetDetail)
+        
+        guard let isTestNet = api?.isTestNet else {
+            return
+        }
+        
+        if isTestNet {
+            navigationItem.titleView = TestNetTitleView(title: account.name)
+        } else {
+            title = account.name
+        }
     }
     
     override func linkInteractors() {

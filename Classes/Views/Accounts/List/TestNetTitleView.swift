@@ -22,7 +22,7 @@ class TestNetTitleView: BaseView {
             .withTextColor(SharedColors.primaryButtonTitle)
             .withAlignment(.center)
             .withText("title-testnet".localized)
-        label.backgroundColor = SharedColors.verified
+        label.backgroundColor = SharedColors.testNetBanner
         label.layer.cornerRadius = 12.0
         label.layer.masksToBounds = true
         return label

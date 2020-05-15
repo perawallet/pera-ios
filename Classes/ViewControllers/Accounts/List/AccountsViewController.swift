@@ -105,6 +105,7 @@ class AccountsViewController: BaseViewController {
             accountsView.accountsCollectionView.reloadData()
         }
         
+        displayTestNetBannerIfNeeded()
         presentTermsAndServicesIfNeeded()
     }
     
@@ -245,6 +246,14 @@ extension AccountsViewController {
         )
         
         open(.termsAndServices, by: transitionStyle)
+    }
+    
+    private func displayTestNetBannerIfNeeded() {
+        guard let isTestNet = api?.isTestNet else {
+            return
+        }
+        
+        accountsView.setTestNetLabelHidden(!isTestNet)
     }
 }
 

@@ -78,6 +78,12 @@ extension AccountsView {
     }
 }
 
+extension AccountsView {
+    func setTestNetLabelHidden(_ hidden: Bool) {
+        accountsHeaderView.setTestNetLabelHidden(hidden)
+    }
+}
+
 extension AccountsView: AccountsHeaderViewDelegate {
     func accountsHeaderViewDidTapQRButton(_ accountsHeaderView: AccountsHeaderView) {
         delegate?.accountsViewDidTapQRButton(self)

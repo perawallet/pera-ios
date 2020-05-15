@@ -28,10 +28,10 @@ class AccountsHeaderView: BaseView {
             .withTextColor(SharedColors.primaryButtonTitle)
             .withAlignment(.center)
             .withText("title-testnet".localized)
-        label.backgroundColor = SharedColors.verified
+        label.backgroundColor = SharedColors.testNetBanner
         label.layer.cornerRadius = 12.0
         label.layer.masksToBounds = true
-        label.isHidden = false
+        label.isHidden = true
         return label
     }()
     
@@ -122,7 +122,7 @@ extension AccountsHeaderView {
 }
 
 extension AccountsHeaderView {
-    func setTestNetLabel(hidden: Bool) {
+    func setTestNetLabelHidden(_ hidden: Bool) {
         testNetLabel.isHidden = hidden
     }
 }

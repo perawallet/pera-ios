@@ -55,4 +55,5 @@ enum SharedColors {
     static let smallBottomShadow = color("smallBottomShadow")
     static let smallTopShadow = color("smallTopShadow")
     static let errorShadow = color("errorShadow")
+    static let testNetBanner = color("testNetBanner")
 }
