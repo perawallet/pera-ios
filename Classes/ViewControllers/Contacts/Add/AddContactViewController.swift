@@ -93,8 +93,8 @@ class AddContactViewController: BaseScrollViewController {
             preferredStyle: .alert
         )
         
-        let cancelAction = UIAlertAction(title: "title-cancel-lowercased".localized, style: .cancel, handler: nil)
-        let doneAction = UIAlertAction(title: "title-done-lowercased".localized, style: .default) { _ in
+        let cancelAction = UIAlertAction(title: "title-cancel".localized, style: .cancel, handler: nil)
+        let doneAction = UIAlertAction(title: "title-done".localized, style: .default) { _ in
             self.closeScreen(by: .dismiss, animated: true)
         }
         
