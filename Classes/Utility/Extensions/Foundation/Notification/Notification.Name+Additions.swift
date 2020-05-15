@@ -32,4 +32,8 @@ extension Notification.Name {
     static var ContactDeletion: Notification.Name {
         return .init(rawValue: "com.algorand.algorand.notification.contact.deletion")
     }
+    
+    static var NetworkChanged: Notification.Name {
+        return .init(rawValue: "com.algorand.algorand.notification.network.change")
+    }
 }
