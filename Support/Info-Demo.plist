@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -71,13 +73,13 @@
 		<string>PublicSans-Italic.ttf</string>
 		<string>PublicSans-Light.ttf</string>
 		<string>PublicSans-LightItalic.ttf</string>
-        <string>PublicSans-Medium.ttf</string>
-        <string>PublicSans-MediumItalic.ttf</string>
-        <string>PublicSans-Regular.ttf</string>
-        <string>PublicSans-SemiBold.ttf</string>
-        <string>PublicSans-SemiBoldItalic.ttf</string>
-        <string>PublicSans-Thin.ttf</string>
-        <string>PublicSans-ThinItalic.ttf</string>
+		<string>PublicSans-Medium.ttf</string>
+		<string>PublicSans-MediumItalic.ttf</string>
+		<string>PublicSans-Regular.ttf</string>
+		<string>PublicSans-SemiBold.ttf</string>
+		<string>PublicSans-SemiBoldItalic.ttf</string>
+		<string>PublicSans-Thin.ttf</string>
+		<string>PublicSans-ThinItalic.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

@@ -14,15 +14,15 @@ class SelectionView: BaseView {
     
     private(set) lazy var leftExplanationLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(.avenir, withWeight: .medium(size: 13.0)))
-            .withTextColor(SharedColors.greenishGray)
+            .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
+            .withTextColor(SharedColors.inputTitle)
             .withText("send-algos-from".localized)
     }()
     
     private(set) lazy var rightExplanationLabel: UILabel = {
         let label = UILabel()
-            .withFont(UIFont.font(.avenir, withWeight: .medium(size: 13.0)))
-            .withTextColor(SharedColors.greenishGray)
+            .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
+            .withTextColor(SharedColors.inputTitle)
             .withAlignment(.right)
         label.isHidden = true
         return label
@@ -30,10 +30,8 @@ class SelectionView: BaseView {
     
     private(set) lazy var containerView: UIView = {
         let view = UIView()
-        view.layer.borderWidth = 1.0
-        view.layer.borderColor = Colors.borderColor.cgColor
-        view.layer.cornerRadius = 4.0
-        view.backgroundColor = .white
+        view.layer.cornerRadius = 12.0
+        view.backgroundColor = SharedColors.secondaryBackground
         return view
     }()
     
@@ -41,8 +39,8 @@ class SelectionView: BaseView {
     
     private(set) lazy var detailLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 13.0)))
-            .withTextColor(SharedColors.black)
+            .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
+            .withTextColor(SharedColors.gray400)
             .withText("send-algos-select".localized)
             .withLine(.single)
     }()
@@ -96,7 +94,7 @@ extension SelectionView {
         
         leftExplanationLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(layout.current.horizontalInset)
-            make.top.equalToSuperview().inset(layout.current.verticalInset)
+            make.top.equalToSuperview()
         }
     }
     
@@ -109,7 +107,7 @@ extension SelectionView {
         rightExplanationLabel.snp.makeConstraints { make in
             make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
             make.leading.greaterThanOrEqualTo(leftExplanationLabel.snp.trailing).offset(layout.current.horizontalInset)
-            make.top.equalToSuperview().inset(layout.current.verticalInset)
+            make.top.equalToSuperview()
         }
     }
     
@@ -117,7 +115,7 @@ extension SelectionView {
         addSubview(containerView)
         
         containerView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(layout.current.defaultInset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
             make.bottom.equalToSuperview()
             make.top.equalTo(leftExplanationLabel.snp.bottom).offset(layout.current.containerViewTopInset)
         }
@@ -140,7 +138,7 @@ extension SelectionView {
         containerView.addSubview(rightInputAccessoryButton)
         
         rightInputAccessoryButton.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(layout.current.buttonTrailingInset)
+            make.trailing.equalToSuperview().inset(layout.current.defaultInset)
             make.centerY.equalToSuperview()
             make.width.equalTo(layout.current.buttonWidth)
         }
@@ -201,7 +199,6 @@ extension SelectionView {
             containerView.backgroundColor = .white
         } else {
             rightInputAccessoryButton.isHidden = true
-            containerView.backgroundColor = Colors.borderColor
         }
     }
     
@@ -216,25 +213,17 @@ extension SelectionView {
 
 extension SelectionView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let defaultInset: CGFloat = 15.0
+        let defaultInset: CGFloat = 16.0
         let amountViewTrailingInset: CGFloat = 20.0
-        let horizontalInset: CGFloat = 30.0
+        let horizontalInset: CGFloat = 20.0
         let verticalInset: CGFloat = 15.0
-        let containerViewTopInset: CGFloat = 7.0
+        let containerViewTopInset: CGFloat = 8.0
         let detailLabelLeadingInset: CGFloat = 12.0
         let amountViewHeight: CGFloat = 22.0
         let detailVerticalInset: CGFloat = 16.0
-        let buttonTrailingInset: CGFloat = 12.0
         let nameTrailingInset: CGFloat = -5.0
-        let buttonTopInset: CGFloat = 13.0
         let buttonWidth: CGFloat = 25.0
         let imageSize = CGSize(width: 13.0, height: 13.0)
         let imageViewOffset: CGFloat = 6.0
-    }
-}
-
-extension SelectionView {
-    private enum Colors {
-        static let borderColor = rgb(0.91, 0.91, 0.92)
     }
 }

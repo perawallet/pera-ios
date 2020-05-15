@@ -283,6 +283,8 @@
 "settings-notification-go-settings-title" = "Notifications";
 "settings-notification-disabled-go-settings-text" = "You have disabled notifications. Please go to Settings and enable this option.";
 "settings-notification-enabled-go-settings-text" = "You have enabled notifications. Please go to Settings and disable this option.";
+"settings-logout-title" = "Delete All Data";
+"settings-logout-detail" = "Are you sure you want to delete all the data?";
 
 // MARK: Node Settings
 "node-settings-title" = "Node Settings";
@@ -337,7 +339,8 @@
 "feedback-empty-note-message" = "Please add your note.";
 "feedback-error-title" = "Error";
 "feedback-error-message" = "Your feedback could not sent!";
-"feedback-success-title" = "Thank you, we’ve recived your feedback";
+"feedback-success-title" = "Your feedback has been sent";
+"feedback-success-detail" = "Thank you, we’ve recived your feedback";
 
 // MARK: Rewards
 "rewards-title" = "Rewards";
