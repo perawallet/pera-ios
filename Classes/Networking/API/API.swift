@@ -10,7 +10,13 @@ import Magpie
 
 class API: Magpie {
     var token: String?
+    var network: BaseNetwork = .mainnet
+    var mobileApiBase: String = Environment.current.mobileApi
     let session: Session
+    
+    var isTestNet: Bool {
+        return network == .testnet
+    }
     
     init(session: Session) {
         self.session = session
@@ -61,9 +67,22 @@ extension API {
         return headers
     }
     
+    func mobileApiHeaders() -> Headers {
+        var headers = sharedHttpHeaders
+        headers.set(.custom("algorand-network", .some(network.rawValue)))
+        return headers
+    }
+    
     func nodeHealthHeaders(for nodeToken: String) -> Headers {
         var headers = sharedHttpHeaders
         headers.set(.custom("X-Algo-API-Token", .some(nodeToken)))
         return headers
+    }
+}
+
+extension API {
+    enum BaseNetwork: String {
+        case testnet = "testnet"
+        case mainnet = "mainnet"
     }
 }

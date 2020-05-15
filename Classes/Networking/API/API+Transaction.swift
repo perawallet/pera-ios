@@ -75,7 +75,8 @@ extension API {
     @discardableResult
     func trackTransaction(with draft: TransactionTrackDraft) -> EndpointOperatable {
         return Endpoint(path: Path("/api/transactions/"))
-            .base(Environment.current.mobileApi)
+            .base(mobileApiBase)
+            .httpHeaders(mobileApiHeaders())
             .httpMethod(.post)
             .httpBody(draft)
             .buildAndSend(self)
