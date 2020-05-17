@@ -8,10 +8,6 @@
 
 import UIKit
 
-protocol RequestTransactionPreviewViewDelegate: class {
-    func requestTransactionPreviewViewDidTapPreviewButton(_ requestTransactionPreviewView: RequestTransactionPreviewView)
-}
-
 class RequestTransactionPreviewView: BaseView {
     
     private let layout = Layout<LayoutConstants>()
@@ -20,11 +16,7 @@ class RequestTransactionPreviewView: BaseView {
     
     private var inputFieldFraction: Int
     
-    private(set) lazy var transactionParticipantView: TransactionParticipantView = {
-        let transactionParticipantView = TransactionParticipantView()
-        transactionParticipantView.accountSelectionView.leftExplanationLabel.text = "send-algos-to".localized
-        return transactionParticipantView
-    }()
+    private(set) lazy var transactionAccountInformationView = TransactionAccountInformationView()
     
     private(set) lazy var amountInputView = AssetInputView(inputFieldFraction: inputFieldFraction)
     
@@ -40,18 +32,18 @@ class RequestTransactionPreviewView: BaseView {
     }
     
     override func prepareLayout() {
-        setupTransactionParticipantViewLayout()
+        setupTransactionAccountInformationViewLayout()
         setupAmountInputViewLayout()
         setupPreviewButtonLayout()
     }
 }
 
 extension RequestTransactionPreviewView {
-    private func setupTransactionParticipantViewLayout() {
-        addSubview(transactionParticipantView)
+    private func setupTransactionAccountInformationViewLayout() {
+        addSubview(transactionAccountInformationView)
         
-        transactionParticipantView.snp.makeConstraints { make in
-            make.top.equalToSuperview()
+        transactionAccountInformationView.snp.makeConstraints { make in
+            make.top.equalToSuperview().inset(layout.current.topInset)
             make.leading.trailing.equalToSuperview()
         }
     }
@@ -60,7 +52,7 @@ extension RequestTransactionPreviewView {
         addSubview(amountInputView)
         
         amountInputView.snp.makeConstraints { make in
-            make.top.equalTo(transactionParticipantView.snp.bottom).offset(layout.current.topInset)
+            make.top.equalTo(transactionAccountInformationView.snp.bottom).offset(layout.current.amountTopInset)
             make.leading.trailing.equalToSuperview()
         }
     }
@@ -69,9 +61,9 @@ extension RequestTransactionPreviewView {
         addSubview(previewButton)
         
         previewButton.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
-            make.top.greaterThanOrEqualTo(amountInputView.snp.bottom).offset(layout.current.buttonMinimumInset)
-            make.bottom.equalToSuperview().inset(layout.current.bottomInset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.top.equalTo(amountInputView.snp.bottom).offset(layout.current.buttonVerticalInset)
+            make.bottom.lessThanOrEqualToSuperview().inset(layout.current.buttonVerticalInset)
         }
     }
 }
@@ -85,9 +77,13 @@ extension RequestTransactionPreviewView {
 
 extension RequestTransactionPreviewView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let topInset: CGFloat = 10.0
-        let bottomInset: CGFloat = 18.0
-        let buttonMinimumInset: CGFloat = 18.0
-        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
+        let topInset: CGFloat = 12.0
+        let amountTopInset: CGFloat = 20.0
+        let buttonVerticalInset: CGFloat = 28.0
+        let horizontalInset: CGFloat = 20.0
     }
+}
+
+protocol RequestTransactionPreviewViewDelegate: class {
+    func requestTransactionPreviewViewDidTapPreviewButton(_ requestTransactionPreviewView: RequestTransactionPreviewView)
 }

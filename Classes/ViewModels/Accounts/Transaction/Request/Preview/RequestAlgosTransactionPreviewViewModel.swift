@@ -17,18 +17,18 @@ class RequestAlgosTransactionPreviewViewModel {
     }
     
     func configure(_ view: RequestTransactionPreviewView) {
-        view.transactionParticipantView.accountSelectionView.set(enabled: false)
+        view.transactionAccountInformationView.setDisabled()
         
         if account.type == .ledger {
-            view.transactionParticipantView.accountSelectionView.setLedgerAccount()
+            view.transactionAccountInformationView.setAccountImage(img("icon-account-type-ledger"))
         } else {
-            view.transactionParticipantView.accountSelectionView.setStandardAccount()
+            view.transactionAccountInformationView.setAccountImage(img("icon-account-type-standard"))
         }
         
-        view.transactionParticipantView.accountSelectionView.detailLabel.text = account.name
-        view.transactionParticipantView.assetSelectionView.detailLabel.text = "asset-algos-title".localized
-        view.transactionParticipantView.assetSelectionView.amountView.amountLabel.textColor = SharedColors.turquois
-        view.transactionParticipantView.assetSelectionView.amountView.algoIconImageView.tintColor = SharedColors.turquois
-        view.transactionParticipantView.assetSelectionView.verifiedImageView.isHidden = false
+        view.transactionAccountInformationView.setAccountName(account.name)
+        view.transactionAccountInformationView.removeAmountLabel()
+        view.transactionAccountInformationView.setAssetName("asset-algos-title".localized)
+        view.transactionAccountInformationView.setAssetVerified(true)
+        view.transactionAccountInformationView.removeAssetId()
     }
 }

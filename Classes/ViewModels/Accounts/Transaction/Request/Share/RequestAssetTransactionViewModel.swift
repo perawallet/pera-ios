@@ -16,25 +16,24 @@ class RequestAssetTransactionViewModel {
         self.assetTransactionRequestDraft = assetTransactionRequestDraft
     }
     
-    func configure(_ view: RequestTransactionPreviewView) {
-        view.transactionParticipantView.accountSelectionView.amountView.amountLabel.textColor = SharedColors.black
-        view.transactionParticipantView.accountSelectionView.amountView.algoIconImageView.removeFromSuperview()
-        view.transactionParticipantView.accountSelectionView.detailLabel.text = assetTransactionRequestDraft.account.name
-        
+    func configure(_ view: RequestTransactionView) {
         if assetTransactionRequestDraft.account.type == .ledger {
-            view.transactionParticipantView.accountSelectionView.setLedgerAccount()
+            view.setAccountImage(img("icon-account-type-ledger"))
         } else {
-            view.transactionParticipantView.accountSelectionView.setStandardAccount()
+            view.setAccountImage(img("icon-account-type-standard"))
         }
         
-        view.amountInputView.algosImageView.removeFromSuperview()
+        view.setAccountName(assetTransactionRequestDraft.account.name)
         
-        let assetDetail = assetTransactionRequestDraft.assetDetail
-        view.transactionParticipantView.accountSelectionView.set(enabled: false)
-        view.transactionParticipantView.assetSelectionView.verifiedImageView.isHidden = !assetDetail.isVerified
-        view.amountInputView.inputTextField.text = assetTransactionRequestDraft.amount.toFractionStringForLabel(
-            fraction: assetDetail.fractionDecimals
+        view.setAssetName(for: assetTransactionRequestDraft.assetDetail)
+        view.removeAssetId()
+        
+        view.setAmountInformationViewMode(
+            .normal(
+                amount: assetTransactionRequestDraft.amount,
+                isAlgos: false,
+                fraction: assetTransactionRequestDraft.assetDetail.fractionDecimals
+            )
         )
-        view.transactionParticipantView.assetSelectionView.detailLabel.attributedText = assetDetail.assetDisplayName()
     }
 }

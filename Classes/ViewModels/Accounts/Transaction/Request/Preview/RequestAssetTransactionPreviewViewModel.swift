@@ -19,20 +19,18 @@ class RequestAssetTransactionPreviewViewModel {
     }
     
     func configure(_ view: RequestTransactionPreviewView) {
-        view.transactionParticipantView.accountSelectionView.set(enabled: false)
+        view.transactionAccountInformationView.setDisabled()
         
         if account.type == .ledger {
-            view.transactionParticipantView.accountSelectionView.setLedgerAccount()
+            view.transactionAccountInformationView.setAccountImage(img("icon-account-type-ledger"))
         } else {
-            view.transactionParticipantView.accountSelectionView.setStandardAccount()
+            view.transactionAccountInformationView.setAccountImage(img("icon-account-type-standard"))
         }
         
-        view.transactionParticipantView.accountSelectionView.amountView.amountLabel.textColor = SharedColors.black
-        view.transactionParticipantView.accountSelectionView.amountView.algoIconImageView.isHidden = true
-        view.transactionParticipantView.accountSelectionView.detailLabel.text = account.name
-        view.amountInputView.algosImageView.removeFromSuperview()
-        
-        view.transactionParticipantView.assetSelectionView.verifiedImageView.isHidden = !assetDetail.isVerified
-        view.transactionParticipantView.assetSelectionView.detailLabel.attributedText = assetDetail.assetDisplayName()
+        view.transactionAccountInformationView.setAccountName(account.name)
+        view.transactionAccountInformationView.removeAmountLabel()
+        view.transactionAccountInformationView.setAssetName(for: assetDetail)
+        view.transactionAccountInformationView.setAssetTransaction()
+        view.transactionAccountInformationView.removeAssetId()
     }
 }

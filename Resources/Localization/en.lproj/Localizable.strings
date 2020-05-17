@@ -19,7 +19,6 @@
 "title-approve" = "Approve";
 "title-go-home" = "Go To Home";
 "title-share" = "Share";
-"title-share-big" = "SHARE";
 "title-get-started" = "GET STARTED";
 "title-go-to-settings" = "Go To Settings";
 "title-error" = "Error";
@@ -28,7 +27,7 @@
 "title-send" = "Send";
 "title-request" = "Request";
 "title-select" = "SELECT RECIPIENT";
-"title-preview" = "PREVIEW";
+"title-preview" = "Preview";
 "title-done" = "Done";
 "title-loading" = "Loading";
 "default-error-message" = "An error occured.";
@@ -41,6 +40,7 @@
 "title-keep" = "Keep";
 "title-edit" = "Edit";
 "title-testnet" = "TESTNET";
+"title-account" = "Account";
 
 // MARK: Introduction
 "introduction-recover-title" = "Recover From Passphrase";

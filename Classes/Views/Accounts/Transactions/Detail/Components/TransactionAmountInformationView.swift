@@ -68,6 +68,10 @@ extension TransactionAmountInformationView {
     func setAmountViewMode(_ mode: TransactionAmountView.Mode) {
         transactionAmountView.mode = mode
     }
+    
+    func setSeparatorHidden(_ hidden: Bool) {
+        separatorView.isHidden = hidden
+    }
 }
 
 extension TransactionAmountInformationView {
