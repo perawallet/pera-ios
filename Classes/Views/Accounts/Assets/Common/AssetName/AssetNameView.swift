@@ -30,13 +30,13 @@ class AssetNameView: BaseView {
     
     private(set) lazy var idLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
-            .withTextColor(SharedColors.primaryText)
+            .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
+            .withTextColor(SharedColors.detailText)
             .withLine(.single)
             .withAlignment(.left)
     }()
     
-    private(set) lazy var verifiedImageView: UIImageView = {
+    private lazy var verifiedImageView: UIImageView = {
         let imageView = UIImageView(image: img("icon-verified"))
         imageView.isHidden = true
         return imageView
@@ -108,8 +108,8 @@ extension AssetNameView {
         let (firstDisplayName, secondDisplayName) = assetDetail.getDisplayNames()
         
         if firstDisplayName.isUnknown() && !assetDetail.hasDisplayName() {
-            nameLabel.textColor = SharedColors.orange
-            nameLabel.font = UIFont.font(.overpass, withWeight: .boldItalic(size: 13.0))
+            nameLabel.textColor = SharedColors.secondary
+            nameLabel.font = UIFont.font(withWeight: .boldItalic(size: 14.0))
         } else if secondDisplayName.isNilOrEmpty && assetDetail.assetName.isNilOrEmpty {
             nameLabel.textColor = SharedColors.subtitleText
         }
@@ -123,11 +123,31 @@ extension AssetNameView {
         
         verifiedImageView.isHidden = !assetDetail.isVerified
     }
+    
+    func setVerified(_ hidden: Bool) {
+        verifiedImageView.isHidden = !hidden
+    }
+    
+    func setName(_ name: String) {
+        nameLabel.text = name
+    }
+    
+    func setCode(_ code: String) {
+        codeLabel.text = code
+    }
+    
+    func setId(_ id: String) {
+        idLabel.text = id
+    }
+    
+    func removeId() {
+        idLabel.removeFromSuperview()
+    }
 }
 
 extension AssetNameView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let codeLabelOffset: CGFloat = 2.0
+        let codeLabelOffset: CGFloat = 4.0
         let imageSize = CGSize(width: 20.0, height: 20.0)
         let imageViewOffset: CGFloat = 4.0
     }

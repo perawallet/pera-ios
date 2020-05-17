@@ -14,7 +14,7 @@ class AssetView: BaseView {
     
     private(set) lazy var assetNameView: AssetNameView = {
         let view = AssetNameView()
-        view.idLabel.removeFromSuperview()
+        view.removeId()
         return view
     }()
     

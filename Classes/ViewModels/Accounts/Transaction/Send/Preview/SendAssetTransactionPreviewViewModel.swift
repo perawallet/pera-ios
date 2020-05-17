@@ -20,7 +20,6 @@ class SendAssetTransactionPreviewViewModel {
     func configure(_ view: SendTransactionPreviewView, with selectedAccount: Account?) {
         view.transactionParticipantView.assetSelectionView.amountView.amountLabel.textColor = SharedColors.black
         view.transactionParticipantView.assetSelectionView.amountView.algoIconImageView.removeFromSuperview()
-        view.amountInputView.algosImageView.removeFromSuperview()
         view.transactionParticipantView.assetSelectionView.verifiedImageView.isHidden = !assetDetail.isVerified
         
         if let selectedAccount = selectedAccount,
@@ -38,9 +37,8 @@ class SendAssetTransactionPreviewViewModel {
         }
         
         if isForcedMaxTransaction {
-            view.amountInputView.algosImageView.removeFromSuperview()
             view.amountInputView.inputTextField.text = selectedAccount?.amountDisplayWithFraction(for: assetDetail)
-            view.amountInputView.set(enabled: false)
+            view.amountInputView.setEnabled(false)
         }
         
         view.transactionParticipantView.assetSelectionView.detailLabel.attributedText = assetDetail.assetDisplayName()

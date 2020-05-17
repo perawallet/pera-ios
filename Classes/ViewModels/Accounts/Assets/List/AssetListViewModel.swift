@@ -11,9 +11,9 @@ import UIKit
 class AssetListViewModel {
     func configure(_ cell: AssetSelectionCell, at indexPath: IndexPath, with account: Account) {
         if indexPath.item == 0 {
-            cell.contextView.assetNameView.nameLabel.text = "asset-algos-title".localized
+            cell.contextView.assetNameView.setName("asset-algos-title".localized)
             cell.contextView.detailLabel.text = account.amount.toAlgos.toDecimalStringForLabel
-            cell.contextView.assetNameView.verifiedImageView.isHidden = false
+            cell.contextView.assetNameView.setVerified(true)
         } else {
             let assetDetail = account.assetDetails[indexPath.item - 1]
             cell.contextView.assetNameView.setAssetName(for: assetDetail)

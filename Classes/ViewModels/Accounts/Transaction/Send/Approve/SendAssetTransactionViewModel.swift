@@ -22,7 +22,6 @@ class SendAssetTransactionViewModel {
         
         view.amountInputView.inputTextField.text
             = assetTransactionSendDraft.amount?.toFractionStringForLabel(fraction: assetTransactionSendDraft.assetDecimalFraction)
-        view.amountInputView.algosImageView.removeFromSuperview()
         view.transactionParticipantView.assetSelectionView.verifiedImageView.isHidden = !assetTransactionSendDraft.isVerifiedAsset
         
         guard let assetIndex = assetTransactionSendDraft.assetIndex,
