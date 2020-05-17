@@ -404,8 +404,6 @@ extension AssetDetailViewController {
         assetDetailView.snp.makeConstraints { make in
             make.top.leading.trailing.bottom.equalToSuperview()
         }
-        
-        assetDetailView.transactionHistoryCollectionView.contentInset.top = headerHeight
     }
 }
 

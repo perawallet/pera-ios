@@ -60,16 +60,6 @@ class ChoosePasswordViewController: BaseViewController {
         checkLoginFlow()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationController?.navigationBar.barTintColor = .white
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        navigationController?.navigationBar.barTintColor = SharedColors.warmWhite
-    }
-    
     override func configureNavigationBarAppearance() {
         switch mode {
         case .confirm,

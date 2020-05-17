@@ -66,7 +66,7 @@ extension AssetDetailView {
         
         transactionHistoryCollectionView.snp.makeConstraints { make in
             make.leading.trailing.bottom.equalToSuperview()
-            make.top.equalToSuperview()
+            make.top.equalTo(headerView.snp.bottom).offset(layout.current.listTopInset)
         }
     }
     
