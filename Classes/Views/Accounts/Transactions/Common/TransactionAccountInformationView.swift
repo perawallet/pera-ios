@@ -1,0 +1,234 @@
+//
+//  TransactionAccountInformationView.swift
+//  algorand
+//
+//  Created by Göktuğ Berk Ulu on 15.05.2020.
+//  Copyright © 2020 hippo. All rights reserved.
+//
+
+import UIKit
+
+class TransactionAccountInformationView: BaseView {
+    
+    private let layout = Layout<LayoutConstants>()
+    
+    weak var delegate: TransactionAccountInformationViewDelegate?
+    
+    private lazy var titleLabel = TransactionDetailTitleLabel()
+    
+    private lazy var containerView = UIView()
+    
+    private lazy var accountNameView = AccountNameView()
+    
+    private lazy var separatorView = UIView()
+    
+    private lazy var algosImageView = UIImageView(image: img("icon-algo-gray", isTemplate: true))
+    
+    private lazy var assetNameView = AssetNameView()
+    
+    private lazy var amountLabel: UILabel = {
+        UILabel()
+            .withTextColor(SharedColors.primaryText)
+            .withLine(.single)
+            .withAlignment(.right)
+            .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
+    }()
+    
+    private lazy var removeButton = UIButton().withImage(img("img-remove-sender"))
+    
+    override func configureAppearance() {
+        super.configureAppearance()
+        titleLabel.text = "asset-title".localized
+        containerView.backgroundColor = SharedColors.disabledBackground
+        separatorView.backgroundColor = SharedColors.gray200
+        removeButton.isHidden = true
+        algosImageView.tintColor = SharedColors.gray500
+        containerView.layer.cornerRadius = 12.0
+    }
+    
+    override func setListeners() {
+        removeButton.addTarget(self, action: #selector(notifyDelegateToRemoveView), for: .touchUpInside)
+    }
+    
+    override func prepareLayout() {
+        setupTitleLabelLayout()
+        setupContainerViewLayout()
+        setupRemoveButtonLayout()
+        setupAccountNameViewLayout()
+        setupSeparatorViewLayout()
+        setupAlgosImageViewLayout()
+        setupAmountLabelLayout()
+        setupAssetNameViewLayout()
+    }
+}
+
+extension TransactionAccountInformationView {
+    @objc
+    private func notifyDelegateToRemoveView() {
+        delegate?.transactionAccountInformationViewDidTapRemoveButton(self)
+    }
+}
+
+extension TransactionAccountInformationView {
+    private func setupTitleLabelLayout() {
+        addSubview(titleLabel)
+        
+        titleLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(layout.current.titleLeadingInset)
+            make.top.equalToSuperview()
+        }
+    }
+    
+    private func setupContainerViewLayout() {
+        addSubview(containerView)
+        
+        containerView.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.containerTopInset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.containerHorizontalInset)
+            make.bottom.equalToSuperview()
+        }
+    }
+    
+    private func setupRemoveButtonLayout() {
+        containerView.addSubview(removeButton)
+        
+        removeButton.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().inset(layout.current.buttonTrailingInset)
+            make.size.equalTo(layout.current.buttonSize)
+            make.centerY.equalToSuperview()
+        }
+    }
+    
+    private func setupAccountNameViewLayout() {
+        containerView.addSubview(accountNameView)
+        
+        accountNameView.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(layout.current.defaultInset)
+            make.top.equalToSuperview().inset(layout.current.defaultInset)
+            make.trailing.equalToSuperview().inset(layout.current.defaultInset).priority(.low)
+            make.trailing.equalTo(removeButton.snp.leading).offset(-layout.current.buttonTrailingInset)
+        }
+    }
+    
+    private func setupSeparatorViewLayout() {
+        containerView.addSubview(separatorView)
+        
+        separatorView.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(layout.current.defaultInset)
+            make.trailing.equalToSuperview().inset(layout.current.defaultInset).priority(.low)
+            make.trailing.equalTo(removeButton.snp.leading).offset(-layout.current.buttonTrailingInset)
+            make.top.equalTo(accountNameView.snp.bottom).offset(layout.current.verticalInset)
+            make.height.equalTo(layout.current.separatorHeight)
+        }
+    }
+    
+    private func setupAlgosImageViewLayout() {
+        containerView.addSubview(algosImageView)
+        
+        algosImageView.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(layout.current.defaultInset)
+            make.top.equalTo(separatorView.snp.bottom).offset(layout.current.imageVerticalOffset)
+            make.size.equalTo(layout.current.imageSize)
+        }
+    }
+    
+    private func setupAmountLabelLayout() {
+        containerView.addSubview(amountLabel)
+        
+        amountLabel.snp.makeConstraints { make in
+            make.trailing.equalTo(separatorView)
+            make.top.equalTo(separatorView.snp.bottom).offset(layout.current.verticalInset)
+        }
+    }
+    
+    private func setupAssetNameViewLayout() {
+        containerView.addSubview(assetNameView)
+        
+        assetNameView.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(layout.current.defaultInset).priority(.low)
+            make.leading.equalTo(algosImageView.snp.trailing).offset(layout.current.minimumOffset)
+            make.top.equalTo(separatorView.snp.bottom).offset(layout.current.verticalInset)
+            make.bottom.equalToSuperview().inset(layout.current.defaultInset)
+            make.trailing.lessThanOrEqualTo(separatorView).priority(.low)
+            make.trailing.lessThanOrEqualTo(amountLabel).offset(-layout.current.minimumOffset)
+        }
+    }
+}
+
+extension TransactionAccountInformationView {
+    func setAssetTransaction() {
+        algosImageView.removeFromSuperview()
+    }
+    
+    func setEnabled() {
+        containerView.backgroundColor = SharedColors.secondaryBackground
+        removeButton.isHidden = false
+        separatorView.backgroundColor = SharedColors.primaryBackground
+    }
+    
+    func setDisabled() {
+        containerView.backgroundColor = SharedColors.disabledBackground
+        removeButton.removeFromSuperview()
+        separatorView.backgroundColor = SharedColors.gray200
+    }
+    
+    func setAccountImage(_ image: UIImage?) {
+        accountNameView.setAccountImage(image)
+    }
+    
+    func setAccountName(_ name: String?) {
+        accountNameView.setAccountName(name)
+    }
+    
+    func setAmount(_ amount: String) {
+        amountLabel.text = amount
+    }
+    
+    func removeAmountLabel() {
+        amountLabel.removeFromSuperview()
+    }
+    
+    func setAssetName(for assetDetail: AssetDetail) {
+        assetNameView.setAssetName(for: assetDetail)
+    }
+    
+    func setAssetName(_ name: String) {
+        assetNameView.setName(name)
+    }
+    
+    func setAssetCode(_ code: String) {
+        assetNameView.setCode(code)
+    }
+    
+    func setAssetId(_ id: String) {
+        assetNameView.setId(id)
+    }
+    
+    func setAssetVerified(_ hidden: Bool) {
+        assetNameView.setVerified(hidden)
+    }
+    
+    func removeAssetId() {
+        assetNameView.removeId()
+    }
+}
+
+extension TransactionAccountInformationView {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let defaultInset: CGFloat = 16.0
+        let containerHorizontalInset: CGFloat = 20.0
+        let containerTopInset: CGFloat = 8.0
+        let titleLeadingInset: CGFloat = 24.0
+        let buttonTrailingInset: CGFloat = 14.0
+        let minimumOffset: CGFloat = 4.0
+        let separatorHeight: CGFloat = 1.0
+        let verticalInset: CGFloat = 12.0
+        let imageVerticalOffset: CGFloat = 10.0
+        let imageSize = CGSize(width: 20.0, height: 20.0)
+        let buttonSize = CGSize(width: 40.0, height: 40.0)
+    }
+}
+
+protocol TransactionAccountInformationViewDelegate: class {
+    func transactionAccountInformationViewDidTapRemoveButton(_ transactionAccountInformationView: TransactionAccountInformationView)
+}
