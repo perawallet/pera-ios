@@ -180,7 +180,7 @@ extension TransactionAccountInformationView {
         accountNameView.setAccountName(name)
     }
     
-    func setAmount(_ amount: String) {
+    func setAmount(_ amount: String?) {
         amountLabel.text = amount
     }
     

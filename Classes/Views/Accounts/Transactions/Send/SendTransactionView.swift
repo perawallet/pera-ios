@@ -1,5 +1,5 @@
 //
-//  SendTransactionViewb.swift
+//  SendTransactionView.swift
 //  algorand
 //
 //  Created by Göktuğ Berk Ulu on 9.04.2019.
@@ -8,84 +8,212 @@
 
 import UIKit
 
-protocol SendTransactionViewDelegate: class {
-    func sendTransactionViewDidTapSendButton(_ sendTransactionView: SendTransactionView)
-}
-
-class SendTransactionView: SendTransactionPreviewView {
+class SendTransactionView: BaseView {
     
     private let layout = Layout<LayoutConstants>()
     
     weak var transactionDelegate: SendTransactionViewDelegate?
     
-    private(set) lazy var feeInformationView: DetailedInformationView = {
-        let feeInformationView = DetailedInformationView(mode: .algos)
-        feeInformationView.explanationLabel.text = "send-algos-fee".localized
-        feeInformationView.containerView.backgroundColor = rgb(0.91, 0.91, 0.92)
-        feeInformationView.algosAmountView.amountLabel.font = UIFont.font(.overpass, withWeight: .bold(size: 15.0))
-        return feeInformationView
-    }()
+    private lazy var containerView = UIView()
     
-    private(set) lazy var sendButton = MainButton(title: "title-send".localized)
+    private lazy var accountInformationView = TransactionAccountNameView()
+    
+    private lazy var assetInformationView = TransactionAssetView()
+    
+    private lazy var amountInformationView = TransactionAmountInformationView()
+    
+    private lazy var receiverInformationView = TransactionContactInformationView()
+    
+    private lazy var feeInformationView = TransactionAmountInformationView()
+    
+    private lazy var noteInformationView = TransactionTitleInformationView()
+    
+    private lazy var sendButton = MainButton(title: "title-send".localized)
     
     override func configureAppearance() {
         super.configureAppearance()
-        transactionReceiverView.passphraseInputView.inputTextView.isEditable = false
-        transactionReceiverView.actionMode = .none
-        transactionReceiverView.passphraseInputView.contentView.backgroundColor = rgb(0.91, 0.91, 0.92)
-        amountInputView.maxButton.isHidden = true
-        amountInputView.set(enabled: false)
-        transactionParticipantView.accountSelectionView.set(enabled: false)
+        containerView.backgroundColor = SharedColors.secondaryBackground
+        containerView.layer.cornerRadius = 12.0
+        containerView.applySmallShadow()
+        assetInformationView.removeAssetId()
+        amountInformationView.setTitle("transaction-detail-amount".localized)
+        receiverInformationView.setTitle("transaction-detail-to".localized)
+        receiverInformationView.removeContactAction()
+        feeInformationView.setTitle("transaction-detail-fee".localized)
+        noteInformationView.setTitle("transaction-detail-note".localized)
     }
     
     override func setListeners() {
-        sendButton.addTarget(self, action: #selector(notifyDelegateToSendButtonTapped), for: .touchUpInside)
+        sendButton.addTarget(self, action: #selector(notifyDelegateToSendTransaction), for: .touchUpInside)
     }
     
     override func prepareLayout() {
-        super.prepareLayout()
+        setupContainerViewLayout()
+        setupAccountInformationViewLayout()
+        setupAssetInformationViewLayout()
+        setupAmountInformationViewLayout()
+        setupReceiverInformationViewLayout()
         setupFeeInformationViewLayout()
+        setupNoteInformationViewLayout()
         setupSendButtonLayout()
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        containerView.setShadowFrames()
     }
 }
 
 extension SendTransactionView {
+    private func setupContainerViewLayout() {
+        addSubview(containerView)
+        
+        containerView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.top.equalToSuperview().inset(layout.current.topInset)
+        }
+    }
+    
+    private func setupAccountInformationViewLayout() {
+        containerView.addSubview(accountInformationView)
+        
+        accountInformationView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalToSuperview().inset(layout.current.itemVerticalInset)
+        }
+    }
+    
+    private func setupAssetInformationViewLayout() {
+        containerView.addSubview(assetInformationView)
+        
+        assetInformationView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(accountInformationView.snp.bottom)
+        }
+    }
+    
+    private func setupAmountInformationViewLayout() {
+        containerView.addSubview(amountInformationView)
+        
+        amountInformationView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(assetInformationView.snp.bottom)
+        }
+    }
+    
+    private func setupReceiverInformationViewLayout() {
+        containerView.addSubview(receiverInformationView)
+        
+        receiverInformationView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(amountInformationView.snp.bottom)
+        }
+    }
+    
     private func setupFeeInformationViewLayout() {
-        addSubview(feeInformationView)
+        containerView.addSubview(feeInformationView)
         
         feeInformationView.snp.makeConstraints { make in
-            make.top.equalTo(transactionReceiverView.snp.bottom)
-            make.height.equalTo(layout.current.feeViewHeight)
             make.leading.trailing.equalToSuperview()
+            make.top.equalTo(receiverInformationView.snp.bottom)
+            make.bottom.equalToSuperview().inset(layout.current.itemVerticalInset).priority(.low)
+        }
+    }
+    
+    private func setupNoteInformationViewLayout() {
+        containerView.addSubview(noteInformationView)
+        
+        noteInformationView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(feeInformationView.snp.bottom)
+            make.bottom.equalToSuperview().inset(layout.current.itemVerticalInset)
         }
     }
     
     private func setupSendButtonLayout() {
-        previewButton.removeFromSuperview()
-        
         addSubview(sendButton)
         
         sendButton.snp.makeConstraints { make in
+            make.top.equalTo(containerView.snp.bottom).offset(layout.current.verticalInset)
             make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().inset(layout.current.bottomInset)
-            make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
+            make.bottom.lessThanOrEqualToSuperview().inset(layout.current.verticalInset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
         }
     }
 }
 
 extension SendTransactionView {
     @objc
-    private func notifyDelegateToSendButtonTapped() {
+    private func notifyDelegateToSendTransaction() {
         transactionDelegate?.sendTransactionViewDidTapSendButton(self)
     }
 }
 
 extension SendTransactionView {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let topInset: CGFloat = 20.0
-        let trailingInset: CGFloat = 15.0
-        let feeViewHeight: CGFloat = 90.0
-        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
-        let bottomInset: CGFloat = 18.0
+    func setAccountImage(_ image: UIImage?) {
+        accountInformationView.setAccountImage(image)
     }
+    
+    func setAccountName(_ name: String?) {
+        accountInformationView.setAccountName(name)
+    }
+    
+    func setAssetName(for assetDetail: AssetDetail) {
+        assetInformationView.setAssetName(for: assetDetail)
+    }
+    
+    func setAssetVerified(_ hidden: Bool) {
+        assetInformationView.setAssetVerified(hidden)
+    }
+    
+    func setAssetName(_ name: String) {
+        assetInformationView.setAssetName(name)
+    }
+    
+    func setAmountInformationViewMode(_ mode: TransactionAmountView.Mode) {
+        amountInformationView.setAmountViewMode(mode)
+    }
+    
+    func setReceiverAsContact(_ contact: Contact) {
+        receiverInformationView.setContact(contact)
+    }
+    
+    func setReceiverName(_ name: String) {
+        receiverInformationView.setName(name)
+    }
+    
+    func removeReceiverImage() {
+        receiverInformationView.removeContactImage()
+    }
+    
+    func setFeeInformationViewMode(_ mode: TransactionAmountView.Mode) {
+        feeInformationView.setAmountViewMode(mode)
+    }
+    
+    func setTransactionNote(_ note: String) {
+        noteInformationView.setDetail(note)
+        noteInformationView.setSeparatorView(hidden: true)
+    }
+    
+    func removeTransactionNote() {
+        noteInformationView.removeFromSuperview()
+        feeInformationView.setSeparatorHidden(true)
+    }
+    
+    func setButtonTitle(_ title: String) {
+        sendButton.setTitle(title, for: .normal)
+    }
+}
+
+extension SendTransactionView {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let topInset: CGFloat = 12.0
+        let itemVerticalInset: CGFloat = 8.0
+        let verticalInset: CGFloat = 28.0
+        let horizontalInset: CGFloat = 20.0
+    }
+}
+
+protocol SendTransactionViewDelegate: class {
+    func sendTransactionViewDidTapSendButton(_ sendTransactionView: SendTransactionView)
 }

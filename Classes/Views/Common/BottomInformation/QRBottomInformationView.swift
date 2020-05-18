@@ -17,15 +17,16 @@ class QRBottomInformationView: BottomInformationView {
             .withBackgroundImage(img("bg-main-button"))
             .withTitle("title-approve".localized)
             .withAlignment(.center)
-            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 12.0)))
-            .withTitleColor(UIColor.white)
+            .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
+            .withTitleColor(SharedColors.primaryButtonTitle)
     }()
     
     private(set) lazy var cancelButton: UIButton = {
         UIButton(type: .custom)
+            .withBackgroundImage(img("bg-light-gray-button"))
             .withTitle("title-cancel".localized)
-            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 12.0)))
-            .withTitleColor(SharedColors.black)
+            .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
+            .withTitleColor(SharedColors.primaryText)
     }()
     
     weak var delegate: QRBottomInformationViewDelegate?
@@ -58,7 +59,7 @@ extension QRBottomInformationView {
         cancelButton.snp.makeConstraints { make in
             make.top.equalTo(actionButton.snp.bottom).offset(layout.current.buttonOffset)
             make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.bottom.equalToSuperview().inset(layout.current.horizontalInset)
+            make.bottom.lessThanOrEqualToSuperview().inset(layout.current.bottomInset + safeAreaBottom)
         }
     }
 }
@@ -77,9 +78,10 @@ extension QRBottomInformationView {
 
 extension QRBottomInformationView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let horizontalInset: CGFloat = 25.0
-        let buttonOffset: CGFloat = 10.0
-        let verticalInset: CGFloat = 35.0
+        let horizontalInset: CGFloat = 20.0
+        let buttonOffset: CGFloat = 12.0
+        let verticalInset: CGFloat = 28.0
+        let bottomInset: CGFloat = 16.0
     }
 }
 
