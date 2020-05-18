@@ -15,7 +15,7 @@ class Transaction: Model, TransactionItem {
     let id: TransactionID
     let fee: Int64
     let firstRound: Int64
-    let noteb64: String?
+    let noteb64: Data?
     let from: String
     let payment: Payment?
     let lastRound: Int64
@@ -40,7 +40,7 @@ class Transaction: Model, TransactionItem {
         
         fee = try container.decode(Int64.self, forKey: .fee)
         firstRound = try container.decode(Int64.self, forKey: .firstRound)
-        noteb64 = try container.decodeIfPresent(String.self, forKey: .noteb64)
+        noteb64 = try container.decodeIfPresent(Data.self, forKey: .noteb64)
         from = try container.decode(String.self, forKey: .from)
         payment = try container.decodeIfPresent(Payment.self, forKey: .payment)
         lastRound = try container.decode(Int64.self, forKey: .lastRound)
