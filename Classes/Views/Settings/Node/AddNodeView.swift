@@ -15,7 +15,7 @@ class AddNodeView: BaseView {
         let inputHeight: CGFloat = 87.0
         let tokenHeight: CGFloat = 119.0
         let verticalOffset: CGFloat = 20.0
-        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
+        let buttonHorizontalInset: CGFloat = 20.0
     }
     
     private let layout = Layout<LayoutConstants>()

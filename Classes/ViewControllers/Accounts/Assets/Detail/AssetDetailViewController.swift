@@ -89,6 +89,7 @@ class AssetDetailViewController: BaseViewController {
         viewModel.configure(assetDetailView.headerView, with: account, and: assetDetail)
         
         guard let isTestNet = api?.isTestNet else {
+            title = account.name
             return
         }
         
@@ -393,6 +394,9 @@ extension AssetDetailViewController: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         referenceSizeForHeaderInSection section: Int
     ) -> CGSize {
+        if transactionHistoryDataSource.transactionCount() == 0 {
+            return .zero
+        }
         return layout.current.headerSize
     }
 }

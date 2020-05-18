@@ -169,7 +169,7 @@ extension TabBarController {
             self.route = nil
             switch route {
             case .addContact:
-                selectedIndex = 2
+                selectedIndex = 1
                 topMostController?.open(route, by: .push)
             case .sendAlgosTransactionPreview,
                  .sendAssetTransactionPreview:

@@ -245,7 +245,7 @@ extension QRScannerViewController: QRScannerOverlayViewDelegate {
 extension QRScannerViewController {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let bottomInset: CGFloat = 20.0
-        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
+        let buttonHorizontalInset: CGFloat = 20.0
     }
 }
 

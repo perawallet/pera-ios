@@ -55,6 +55,7 @@ extension TestNetTitleView {
         titleLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview()
             make.trailing.equalTo(testNetLabel.snp.leading).offset(layout.current.titleOffset)
+            make.centerY.equalTo(testNetLabel)
         }
     }
 }

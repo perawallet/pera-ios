@@ -169,6 +169,10 @@ extension AccountsViewController: AccountsDataSourceDelegate {
         let controller = open(.addAsset(account: account), by: .push)
         (controller as? AssetAdditionViewController)?.delegate = self
     }
+    
+    func accountsDataSource(_ accountsDataSource: AccountsDataSource, didTapQRButtonFor account: Account) {
+        open(.qrGenerator(title: "qr-creation-sharing-title".localized, address: account.address, mode: .address), by: .present)
+    }
 }
 
 extension AccountsViewController: AccountsViewDelegate {

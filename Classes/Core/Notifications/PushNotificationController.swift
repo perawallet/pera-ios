@@ -247,8 +247,8 @@ extension PushNotificationController {
     func showNotificationMessage(_ title: String, then handler: EmptyHandler? = nil) {
         let banner = FloatingNotificationBanner(
             title: title,
-            titleFont: UIFont.font(.overpass, withWeight: .semiBold(size: 14.0)),
-            titleColor: .black,
+            titleFont: UIFont.font(withWeight: .semiBold(size: 16.0)),
+            titleColor: SharedColors.primaryText,
             titleTextAlign: .left,
             colors: CustomBannerColors()
         )
@@ -256,7 +256,7 @@ extension PushNotificationController {
         banner.duration = 3.0
         
         banner.show(
-            edgeInsets: UIEdgeInsets(top: 20.0, left: 10.0, bottom: 0.0, right: 10.0),
+            edgeInsets: UIEdgeInsets(top: 20.0, left: 20.0, bottom: 0.0, right: 20.0),
             cornerRadius: 10.0,
             shadowColor: rgba(0.0, 0.0, 0.0, 0.1),
             shadowOpacity: 1.0,
@@ -272,11 +272,11 @@ extension PushNotificationController {
         let banner = FloatingNotificationBanner(
             title: title,
             subtitle: subtitle,
-            titleFont: UIFont.font(.overpass, withWeight: .semiBold(size: 15.0)),
-            titleColor: UIColor.white,
+            titleFont: UIFont.font(withWeight: .semiBold(size: 16.0)),
+            titleColor: SharedColors.white,
             titleTextAlign: .left,
-            subtitleFont: UIFont.font(.avenir, withWeight: .demiBold(size: 12.0)),
-            subtitleColor: UIColor.white.withAlphaComponent(0.8),
+            subtitleFont: UIFont.font(withWeight: .regular(size: 14.0)),
+            subtitleColor: SharedColors.white,
             subtitleTextAlign: .left,
             leftView: UIImageView(image: img("icon-warning-circle")),
             style: .warning,
@@ -286,13 +286,13 @@ extension PushNotificationController {
         banner.duration = 3.0
         
         banner.show(
-            edgeInsets: UIEdgeInsets(top: 20.0, left: 15.0, bottom: 0.0, right: 15.0),
-            cornerRadius: 10.0,
-            shadowColor: rgba(0.0, 0.0, 0.0, 0.1),
+            edgeInsets: UIEdgeInsets(top: 20.0, left: 20.0, bottom: 0.0, right: 20.0),
+            cornerRadius: 12.0,
+            shadowColor: SharedColors.errorShadow,
             shadowOpacity: 1.0,
-            shadowBlurRadius: 6.0,
+            shadowBlurRadius: 20.0,
             shadowCornerRadius: 6.0,
-            shadowOffset: UIOffset(horizontal: 0.0, vertical: 2.0)
+            shadowOffset: UIOffset(horizontal: 0.0, vertical: 12.0)
         )
     }
 }
@@ -311,9 +311,9 @@ class CustomBannerColors: BannerColorsProtocol {
     internal func color(for style: BannerStyle) -> UIColor {
         switch style {
         case .warning:
-            return rgb(0.94, 0.4, 0.4)
+            return SharedColors.red
         default:
-            return .white
+            return SharedColors.white
         }
     }
 }

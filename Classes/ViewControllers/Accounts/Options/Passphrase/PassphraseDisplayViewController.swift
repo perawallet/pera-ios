@@ -14,7 +14,7 @@ class PassphraseDisplayViewController: BaseViewController {
         let horizontalInset: CGFloat = 20.0
         let topInset: CGFloat = 30.0
         let bottomInset: CGFloat = 20.0
-        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
+        let buttonHorizontalInset: CGFloat = 20.0
     }
     
     private enum Colors {

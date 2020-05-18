@@ -30,7 +30,7 @@ class SelectAssetViewController: BaseViewController {
     
     override func configureAppearance() {
         view.backgroundColor = SharedColors.secondaryBackground
-        navigationController?.navigationBar.barTintColor = SharedColors.secondaryBackground
+        setSecondaryBackgroundColor()
         navigationItem.title = "send-select-asset".localized
     }
     

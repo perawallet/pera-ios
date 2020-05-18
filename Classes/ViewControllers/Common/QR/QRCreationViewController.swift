@@ -42,6 +42,7 @@ class QRCreationViewController: BaseScrollViewController {
     
     override func configureAppearance() {
         view.backgroundColor = SharedColors.secondaryBackground
+        setSecondaryBackgroundColor()
         
         if mode == .address {
             qrCreationView.setAddress(address)

@@ -15,14 +15,10 @@ class RootViewController: UIViewController {
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        if appConfiguration.api.isTestNet && !shouldHideTestNetBanner {
-            return .lightContent
+        if #available(iOS 13.0, *) {
+            return .darkContent
         } else {
-            if #available(iOS 13.0, *) {
-                return .darkContent
-            } else {
-                return .default
-            }
+            return .default
         }
     }
     
