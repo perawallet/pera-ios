@@ -19,12 +19,20 @@ protocol SendAssetTransactionPreviewViewControllerDelegate: class {
 
 class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewController {
     
-    private lazy var modalScreenPresenter = CardModalPresenter(
+    private lazy var assetSupportPresenter = CardModalPresenter(
         config: ModalConfiguration(
             animationMode: .normal(duration: 0.25),
             dismissMode: .scroll
         ),
-        initialModalSize: .custom(CGSize(width: view.frame.width, height: 490.0))
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: 422.0))
+    )
+    
+    private lazy var bottomInformationPresenter = CardModalPresenter(
+        config: ModalConfiguration(
+            animationMode: .normal(duration: 0.25),
+            dismissMode: .scroll
+        ),
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: 422.0))
     )
     
     weak var delegate: SendAssetTransactionPreviewViewControllerDelegate?
@@ -49,9 +57,19 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
     
     override func configureAppearance() {
         super.configureAppearance()
-        title = "title-send-lowercased".localized + " \(assetDetail.getDisplayNames().0)"
         viewModel.configure(sendTransactionPreviewView, with: selectedAccount)
         configureTransactionReceiver()
+        
+        guard let isTestNet = api?.isTestNet else {
+            title = "title-send".localized + " \(assetDetail.getDisplayNames().0)"
+            return
+        }
+        
+        if isTestNet {
+            navigationItem.titleView = TestNetTitleView(title: "title-send".localized + " \(assetDetail.getDisplayNames().0)")
+        } else {
+            title = "title-send".localized + " \(assetDetail.getDisplayNames().0)"
+        }
     }
     
     override func presentAccountList(accountSelectionState: AccountSelectionState) {
@@ -80,7 +98,7 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
         }
         
         if assetTransactionDraft.from.type == .ledger {
-            ledgerApprovalViewController.removeFromParentController()
+            ledgerApprovalViewController?.dismissScreen()
         }
         
         let controller = open(
@@ -112,8 +130,8 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
         case .myAccount:
             validateTransaction()
         default:
-            if let address = sendTransactionPreviewView.transactionReceiverView.passphraseInputView.inputTextView.text,
-                !address.isEmpty {
+            let address = sendTransactionPreviewView.transactionReceiverView.addressText
+            if !address.isEmpty {
                 assetReceiverState = .address(address: address, amount: nil)
                 checkIfAddressIsValidForTransaction(address)
                 return
@@ -207,9 +225,9 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
         open(
             .bottomInformation(mode: .qr, configurator: configurator),
             by: .customPresentWithoutNavigationController(
-                presentationStyle: .overCurrentContext,
-                transitionStyle: .crossDissolve,
-                transitioningDelegate: nil
+                presentationStyle: .custom,
+                transitionStyle: nil,
+                transitioningDelegate: bottomInformationPresenter
             )
         )
     }
@@ -290,7 +308,7 @@ extension SendAssetTransactionPreviewViewController {
             by: .customPresentWithoutNavigationController(
                 presentationStyle: .custom,
                 transitionStyle: nil,
-                transitioningDelegate: modalScreenPresenter
+                transitioningDelegate: assetSupportPresenter
             )
         )
     }
@@ -335,7 +353,8 @@ extension SendAssetTransactionPreviewViewController {
             amount: amount,
             assetIndex: assetId,
             assetDecimalFraction: assetDetail.fractionDecimals,
-            isVerifiedAsset: assetDetail.isVerified
+            isVerifiedAsset: assetDetail.isVerified,
+            note: getNoteText()
         )
                
         transactionController.setTransactionDraft(transaction)

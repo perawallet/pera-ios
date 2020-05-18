@@ -11,13 +11,31 @@ import SVProgressHUD
 
 class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewController {
     
+    private lazy var bottomModalPresenter = CardModalPresenter(
+        config: ModalConfiguration(
+            animationMode: .normal(duration: 0.25),
+            dismissMode: .scroll
+        ),
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: 422.0))
+    )
+    
     private let viewModel = SendAlgosTransactionPreviewViewModel()
     
     override func configureAppearance() {
         super.configureAppearance()
-        title = "send-algos-title".localized
         viewModel.configure(sendTransactionPreviewView, with: selectedAccount)
         configureTransactionReceiver()
+        
+        guard let isTestNet = api?.isTestNet else {
+            title = "send-algos-title".localized
+            return
+        }
+        
+        if isTestNet {
+            navigationItem.titleView = TestNetTitleView(title: "send-algos-title".localized)
+        } else {
+            title = "send-algos-title".localized
+        }
     }
     
     override func presentAccountList(accountSelectionState: AccountSelectionState) {
@@ -41,13 +59,13 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
             return
         }
         
-        if !sendTransactionPreviewView.transactionReceiverView.passphraseInputView.inputTextView.text.isEmpty {
+        if !sendTransactionPreviewView.transactionReceiverView.addressText.isEmpty {
             switch assetReceiverState {
             case .contact:
                 break
             default:
                 assetReceiverState = .address(
-                    address: sendTransactionPreviewView.transactionReceiverView.passphraseInputView.inputTextView.text,
+                    address: sendTransactionPreviewView.transactionReceiverView.addressText,
                     amount: nil
                 )
             }
@@ -96,7 +114,7 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
         }
         
         if algosTransactionDraft.from.type == .ledger {
-            ledgerApprovalViewController.removeFromParentController()
+            ledgerApprovalViewController?.dismissScreen()
         }
         
         open(
@@ -147,9 +165,9 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
         open(
             .bottomInformation(mode: .qr, configurator: configurator),
             by: .customPresentWithoutNavigationController(
-                presentationStyle: .overCurrentContext,
-                transitionStyle: .crossDissolve,
-                transitioningDelegate: nil
+                presentationStyle: .custom,
+                transitionStyle: nil,
+                transitioningDelegate: bottomModalPresenter
             )
         )
     }
@@ -281,7 +299,8 @@ extension SendAlgosTransactionPreviewViewController {
             amount: amount,
             fee: nil,
             isMaxTransaction: isMaxTransaction,
-            identifier: nil
+            identifier: nil,
+            note: getNoteText()
         )
         
         transactionController.setTransactionDraft(transactionDraft)

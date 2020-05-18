@@ -10,43 +10,40 @@ import UIKit
 
 class SendAlgosTransactionPreviewViewModel {
     func configure(_ view: SendTransactionPreviewView, with selectedAccount: Account?) {
-        view.transactionParticipantView.assetSelectionView.detailLabel.text = "asset-algos-title".localized
-        view.transactionParticipantView.assetSelectionView.verifiedImageView.isHidden = false
-        view.transactionParticipantView.assetSelectionView.amountView.algoIconImageView.tintColor = SharedColors.turquois
-        configureSelectedAccount(view, with: selectedAccount)
-    }
-    
-    private func configureSelectedAccount(_ view: SendTransactionPreviewView, with selectedAccount: Account?) {
-        guard let selectedAccount = selectedAccount else {
+        guard let account = selectedAccount else {
             return
         }
         
-        view.transactionParticipantView.accountSelectionView.detailLabel.text = selectedAccount.name
+        view.transactionAccountInformationView.setDisabled()
         
-        if selectedAccount.type == .ledger {
-            view.transactionParticipantView.accountSelectionView.setLedgerAccount()
+        if account.type == .ledger {
+            view.transactionAccountInformationView.setAccountImage(img("icon-account-type-ledger"))
         } else {
-            view.transactionParticipantView.accountSelectionView.setStandardAccount()
+            view.transactionAccountInformationView.setAccountImage(img("icon-account-type-standard"))
         }
         
-        view.transactionParticipantView.assetSelectionView.set(amount: selectedAccount.amount.toAlgos)
-        view.amountInputView.maxAmount = selectedAccount.amount.toAlgos
+        view.transactionAccountInformationView.setAccountName(account.name)
+        view.transactionAccountInformationView.setAmount(account.amount.toAlgos.toDecimalStringForLabel)
+        view.amountInputView.maxAmount = account.amount.toAlgos
+        view.transactionAccountInformationView.setAssetName("asset-algos-title".localized)
+        view.transactionAccountInformationView.setAssetVerified(true)
+        view.transactionAccountInformationView.removeAssetId()
     }
     
     func update(_ view: SendTransactionPreviewView, with account: Account, isMaxTransaction: Bool) {
-        view.transactionParticipantView.accountSelectionView.detailLabel.text = account.name
+        view.transactionAccountInformationView.setAccountName(account.name)
         
         if account.type == .ledger {
-            view.transactionParticipantView.accountSelectionView.setLedgerAccount()
+            view.transactionAccountInformationView.setAccountImage(img("icon-account-type-ledger"))
         } else {
-            view.transactionParticipantView.accountSelectionView.setStandardAccount()
+            view.transactionAccountInformationView.setAccountImage(img("icon-account-type-standard"))
         }
-        
-        view.transactionParticipantView.assetSelectionView.set(amount: account.amount.toAlgos)
+
+        view.transactionAccountInformationView.setAmount(account.amount.toAlgos.toDecimalStringForLabel)
         view.amountInputView.maxAmount = account.amount.toAlgos
-        
+
         if isMaxTransaction {
-            view.amountInputView.inputTextField.text = view.transactionParticipantView.assetSelectionView.amountView.amountLabel.text
+            view.amountInputView.inputTextField.text = account.amount.toAlgos.toDecimalStringForLabel
         }
     }
 }

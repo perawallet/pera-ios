@@ -22,7 +22,15 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
         )
     )
     
-    private(set) lazy var ledgerApprovalViewController = LedgerApprovalViewController(mode: .approve, configuration: configuration)
+    private lazy var ledgerApprovalPresenter = CardModalPresenter(
+        config: ModalConfiguration(
+            animationMode: .normal(duration: 0.25),
+            dismissMode: .none
+        ),
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: 354.0))
+    )
+    
+    private(set) var ledgerApprovalViewController: LedgerApprovalViewController?
     
     private lazy var pushNotificationController: PushNotificationController = {
         guard let api = api else {
@@ -80,11 +88,6 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
         invalidateTimer()
     }
     
-    override func configureAppearance() {
-        super.configureAppearance()
-        sendTransactionPreviewView.transactionParticipantView.accountSelectionView.set(enabled: selectedAccount == nil)
-    }
-    
     override func setListeners() {
         super.setListeners()
         setKeyboardListeners()
@@ -126,8 +129,14 @@ extension SendTransactionPreviewViewController {
         
         sendTransactionPreviewView.snp.makeConstraints { make in
             make.leading.trailing.top.equalToSuperview()
-            contentViewBottomConstraint = make.bottom.equalToSuperview().inset(view.safeAreaBottom).constraint
+            contentViewBottomConstraint = make.bottom.equalToSuperview().inset(0.0).constraint
         }
+    }
+    
+    func getNoteText() -> String? {
+        return sendTransactionPreviewView.noteInputView.inputTextView.text.isEmpty
+            ? nil
+            : sendTransactionPreviewView.noteInputView.inputTextView.text.addByteLimiter(maximumLimitInByte: 1024)
     }
 }
 
@@ -138,7 +147,7 @@ extension SendTransactionPreviewViewController {
     }
         
     private func displayContactList() {
-        let contactsViewController = open(.contactSelection, by: .push) as? ContactsViewController
+        let contactsViewController = open(.contactSelection, by: .present) as? ContactsViewController
         contactsViewController?.delegate = self
     }
         
@@ -169,9 +178,16 @@ extension SendTransactionPreviewViewController: SendTransactionPreviewViewDelega
         displayTransactionPreview()
     }
     
-    func sendTransactionPreviewViewDidTapAddressButton(_ sendTransactionPreviewView: SendTransactionPreviewView) { }
+    func sendTransactionPreviewViewDidTapCloseButton(_ sendTransactionPreviewView: SendTransactionPreviewView) {
+        sendTransactionPreviewView.transactionReceiverView.state = .initial
+    }
     
-    func sendTransactionPreviewViewDidTapMyAccountsButton(_ sendTransactionPreviewView: SendTransactionPreviewView) {
+    func sendTransactionPreviewViewDidTapAddressButton(_ sendTransactionPreviewView: SendTransactionPreviewView) {
+        sendTransactionPreviewView.transactionReceiverView.state = .address(address: "", amount: nil)
+        assetReceiverState = .address(address: "", amount: nil)
+    }
+    
+    func sendTransactionPreviewViewDidTapAccountsButton(_ sendTransactionPreviewView: SendTransactionPreviewView) {
         shouldUpdateReceiverForSelectedAccount = true
         presentAccountList(accountSelectionState: .receiver)
     }
@@ -226,7 +242,7 @@ extension SendTransactionPreviewViewController: QRScannerViewControllerDelegate 
 
 extension SendTransactionPreviewViewController: TransactionControllerDelegate {
     func transactionController(_ transactionController: TransactionController, didFailedComposing error: Error) {
-        ledgerApprovalViewController.removeFromParentController()
+        ledgerApprovalViewController?.dismissScreen()
         
         SVProgressHUD.dismiss()
         
@@ -255,7 +271,10 @@ extension SendTransactionPreviewViewController: TransactionControllerDelegate {
         dismissProgressIfNeeded()
         invalidateTimer()
         
-        add(ledgerApprovalViewController)
+        ledgerApprovalViewController = open(
+            .ledgerApproval(mode: .approve),
+            by: .customPresent(presentationStyle: .custom, transitionStyle: nil, transitioningDelegate: ledgerApprovalPresenter)
+        ) as? LedgerApprovalViewController
     }
     
     func transactionController(_ transactionController: TransactionController, didFailBLEConnectionWith state: CBManagerState) {
@@ -271,7 +290,7 @@ extension SendTransactionPreviewViewController: TransactionControllerDelegate {
     }
     
     func transactionController(_ transactionController: TransactionController, didFailToConnect peripheral: CBPeripheral) {
-        ledgerApprovalViewController.removeFromParentController()
+        ledgerApprovalViewController?.dismissScreen()
         pushNotificationController.showFeedbackMessage("ble-error-connection-title".localized,
                                                        subtitle: "ble-error-fail-connect-peripheral".localized)
     }
@@ -280,7 +299,7 @@ extension SendTransactionPreviewViewController: TransactionControllerDelegate {
     }
     
     func transactionControllerDidFailToSignWithLedger(_ transactionController: TransactionController) {
-        ledgerApprovalViewController.removeFromParentController()
+        ledgerApprovalViewController?.dismissScreen()
         pushNotificationController.showFeedbackMessage("ble-error-transaction-cancelled-title".localized,
                                                        subtitle: "ble-error-fail-sign-transaction".localized)
     }

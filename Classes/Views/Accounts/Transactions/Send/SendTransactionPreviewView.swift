@@ -8,16 +8,6 @@
 
 import UIKit
 
-protocol SendTransactionPreviewViewDelegate: class {
-    func sendTransactionPreviewViewDidTapPreviewButton(_ sendTransactionPreviewView: SendTransactionPreviewView)
-    func sendTransactionPreviewViewDidTapAddressButton(_ sendTransactionPreviewView: SendTransactionPreviewView)
-    func sendTransactionPreviewViewDidTapMyAccountsButton(_ sendTransactionPreviewView: SendTransactionPreviewView)
-    func sendTransactionPreviewViewDidTapContactsButton(_ sendTransactionPreviewView: SendTransactionPreviewView)
-    func sendTransactionPreviewViewDidTapScanQRButton(_ sendTransactionPreviewView: SendTransactionPreviewView)
-    func sendTransactionPreviewViewDidTapMaxButton(_ sendTransactionPreviewView: SendTransactionPreviewView)
-    func sendTransactionPreviewViewDidTapAccountSelectionView(_ sendTransactionPreviewView: SendTransactionPreviewView)
-}
-
 class SendTransactionPreviewView: BaseView {
     
     private let layout = Layout<LayoutConstants>()
@@ -26,24 +16,28 @@ class SendTransactionPreviewView: BaseView {
     
     var inputFieldFraction: Int
     
-    private(set) lazy var transactionParticipantView: TransactionParticipantView = {
-        let transactionParticipantView = TransactionParticipantView()
-        transactionParticipantView.accountSelectionView.leftExplanationLabel.text = "send-algos-from".localized
-        transactionParticipantView.assetSelectionView.rightExplanationLabel.isHidden = false
-        transactionParticipantView.assetSelectionView.rightExplanationLabel.text = "send-algos-balance-title".localized
-        return transactionParticipantView
-    }()
+    private lazy var assetSelectionView = SelectionView()
+    
+    private(set) lazy var transactionAccountInformationView = TransactionAccountInformationView()
     
     private(set) lazy var amountInputView: AssetInputView = {
         let view = AssetInputView(inputFieldFraction: inputFieldFraction, shouldHandleMaxButtonStates: true)
-        view.maxButton.isHidden = false
+        view.setMaxButtonHidden(false)
         return view
     }()
     
-    private(set) lazy var transactionReceiverView: TransactionReceiverView = {
-        let transactionReceiverView = TransactionReceiverView()
-        transactionReceiverView.passphraseInputView.inputTextView.returnKeyType = .done
-        return transactionReceiverView
+    private(set) lazy var transactionReceiverView = TransactionReceiverView()
+
+    private(set) lazy var noteInputView: MultiLineInputField = {
+        let noteInputView = MultiLineInputField()
+        noteInputView.explanationLabel.text = "send-enter-note-title".localized
+        noteInputView.placeholderLabel.text = "send-enter-note-placeholder".localized
+        noteInputView.nextButtonMode = .submit
+        noteInputView.inputTextView.autocorrectionType = .no
+        noteInputView.inputTextView.autocapitalizationType = .none
+        noteInputView.inputTextView.textContainer.heightTracksTextView = true
+        noteInputView.inputTextView.isScrollEnabled = false
+        return noteInputView
     }()
     
     private(set) lazy var previewButton: MainButton = {
@@ -62,32 +56,46 @@ class SendTransactionPreviewView: BaseView {
         super.init(frame: .zero)
     }
     
+    override func configureAppearance() {
+        super.configureAppearance()
+        setAssetSelectionHidden(true)
+    }
+    
     override func setListeners() {
         transactionReceiverView.delegate = self
-        
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(notifyDelegateToAccountSelectionViewTapped))
-        transactionParticipantView.accountSelectionView.addGestureRecognizer(tapGestureRecognizer)
     }
     
     override func linkInteractors() {
         amountInputView.delegate = self
-        previewButton.addTarget(self, action: #selector(notifyDelegateToPreviewButtonTapped), for: .touchUpInside)
+        assetSelectionView.addTarget(self, action: #selector(notifyDelegateToSelectAsset), for: .touchUpInside)
+        previewButton.addTarget(self, action: #selector(notifyDelegateToPreviewTransaction), for: .touchUpInside)
     }
     
     override func prepareLayout() {
-        setupTransactionParticipantViewLayout()
+        setupAssetSelectionViewLayout()
+        setupTransactionAccountInformationViewLayout()
         setupAmountInputViewLayout()
         setupTransactionReceiverViewLayout()
+        setupNoteInputViewLayout()
         setupPreviewButtonLayout()
     }
 }
 
 extension SendTransactionPreviewView {
-    private func setupTransactionParticipantViewLayout() {
-        addSubview(transactionParticipantView)
+    private func setupAssetSelectionViewLayout() {
+        addSubview(assetSelectionView)
         
-        transactionParticipantView.snp.makeConstraints { make in
-            make.top.equalToSuperview()
+        assetSelectionView.snp.makeConstraints { make in
+            make.top.equalToSuperview().inset(layout.current.topInset)
+            make.leading.trailing.equalToSuperview()
+        }
+    }
+    
+    private func setupTransactionAccountInformationViewLayout() {
+        addSubview(transactionAccountInformationView)
+        
+        transactionAccountInformationView.snp.makeConstraints { make in
+            make.top.equalToSuperview().inset(layout.current.topInset)
             make.leading.trailing.equalToSuperview()
         }
     }
@@ -96,7 +104,7 @@ extension SendTransactionPreviewView {
         addSubview(amountInputView)
         
         amountInputView.snp.makeConstraints { make in
-            make.top.equalTo(transactionParticipantView.snp.bottom).offset(layout.current.topInset)
+            make.top.equalTo(transactionAccountInformationView.snp.bottom).offset(layout.current.verticalInset)
             make.leading.trailing.equalToSuperview()
         }
     }
@@ -106,8 +114,17 @@ extension SendTransactionPreviewView {
         
         transactionReceiverView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.height.equalTo(layout.current.receiverViewHeight)
-            make.top.equalTo(amountInputView.snp.bottom)
+            make.top.equalTo(amountInputView.snp.bottom).offset(layout.current.verticalInset)
+            make.height.equalTo(104.0)
+        }
+    }
+    
+    private func setupNoteInputViewLayout() {
+        addSubview(noteInputView)
+        
+        noteInputView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(transactionReceiverView.snp.bottom).offset(layout.current.verticalInset)
         }
     }
     
@@ -116,36 +133,39 @@ extension SendTransactionPreviewView {
         
         previewButton.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
-            make.top.greaterThanOrEqualTo(transactionReceiverView.snp.bottom).offset(layout.current.buttonMinimumInset)
-            make.bottom.equalToSuperview().inset(layout.current.bottomInset)
+            make.top.equalTo(noteInputView.snp.bottom).offset(layout.current.buttonVerticalInset)
+            make.bottom.lessThanOrEqualToSuperview().inset(layout.current.buttonVerticalInset + safeAreaBottom)
         }
     }
 }
 
 extension SendTransactionPreviewView {
     @objc
-    private func notifyDelegateToPreviewButtonTapped() {
+    private func notifyDelegateToPreviewTransaction() {
         delegate?.sendTransactionPreviewViewDidTapPreviewButton(self)
     }
     
     @objc
-    private func notifyDelegateToAccountSelectionViewTapped() {
+    private func notifyDelegateToSelectAsset() {
         delegate?.sendTransactionPreviewViewDidTapAccountSelectionView(self)
     }
 }
 
 extension SendTransactionPreviewView: TransactionReceiverViewDelegate {
-    
-    func transactionReceiverViewDidTapAddressButton(_ transactionReceiverView: TransactionReceiverView) {
-        delegate?.sendTransactionPreviewViewDidTapAddressButton(self)
+    func transactionReceiverViewDidTapCloseButton(_ transactionReceiverView: TransactionReceiverView) {
+        delegate?.sendTransactionPreviewViewDidTapCloseButton(self)
     }
     
-    func transactionReceiverViewDidTapMyAccountsButton(_ transactionReceiverView: TransactionReceiverView) {
-        delegate?.sendTransactionPreviewViewDidTapMyAccountsButton(self)
+    func transactionReceiverViewDidTapAccountsButton(_ transactionReceiverView: TransactionReceiverView) {
+        delegate?.sendTransactionPreviewViewDidTapAccountsButton(self)
     }
     
     func transactionReceiverViewDidTapContactsButton(_ transactionReceiverView: TransactionReceiverView) {
         delegate?.sendTransactionPreviewViewDidTapContactsButton(self)
+    }
+    
+    func transactionReceiverViewDidTapAddressButton(_ transactionReceiverView: TransactionReceiverView) {
+        delegate?.sendTransactionPreviewViewDidTapAddressButton(self)
     }
     
     func transactionReceiverViewDidTapScanQRButton(_ transactionReceiverView: TransactionReceiverView) {
@@ -160,11 +180,28 @@ extension SendTransactionPreviewView: AssetInputViewDelegate {
 }
 
 extension SendTransactionPreviewView {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let topInset: CGFloat = 10.0
-        let bottomInset: CGFloat = 18.0
-        let receiverViewHeight: CGFloat = 115.0
-        let buttonMinimumInset: CGFloat = 18.0 * verticalScale
-        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
+    func setAssetSelectionHidden(_ hidden: Bool) {
+        assetSelectionView.isHidden = hidden
+        assetSelectionView.isUserInteractionEnabled = !hidden
     }
+}
+
+extension SendTransactionPreviewView {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let topInset: CGFloat = 12.0
+        let verticalInset: CGFloat = 20.0
+        let buttonHorizontalInset: CGFloat = 20.0
+        let buttonVerticalInset: CGFloat = 20.0
+    }
+}
+
+protocol SendTransactionPreviewViewDelegate: class {
+    func sendTransactionPreviewViewDidTapPreviewButton(_ sendTransactionPreviewView: SendTransactionPreviewView)
+    func sendTransactionPreviewViewDidTapCloseButton(_ sendTransactionPreviewView: SendTransactionPreviewView)
+    func sendTransactionPreviewViewDidTapAddressButton(_ sendTransactionPreviewView: SendTransactionPreviewView)
+    func sendTransactionPreviewViewDidTapAccountsButton(_ sendTransactionPreviewView: SendTransactionPreviewView)
+    func sendTransactionPreviewViewDidTapContactsButton(_ sendTransactionPreviewView: SendTransactionPreviewView)
+    func sendTransactionPreviewViewDidTapScanQRButton(_ sendTransactionPreviewView: SendTransactionPreviewView)
+    func sendTransactionPreviewViewDidTapMaxButton(_ sendTransactionPreviewView: SendTransactionPreviewView)
+    func sendTransactionPreviewViewDidTapAccountSelectionView(_ sendTransactionPreviewView: SendTransactionPreviewView)
 }
