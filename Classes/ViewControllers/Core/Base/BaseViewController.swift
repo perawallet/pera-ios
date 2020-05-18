@@ -23,22 +23,10 @@ class BaseViewController: UIViewController {
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        guard let api = api else {
-            if #available(iOS 13.0, *) {
-                return .darkContent
-            } else {
-                return .default
-            }
-        }
-        
-        if api.isTestNet && !shouldHideTestNetBanner {
-            return .lightContent
+        if #available(iOS 13.0, *) {
+            return .darkContent
         } else {
-            if #available(iOS 13.0, *) {
-                return .darkContent
-            } else {
-                return .default
-            }
+            return .default
         }
     }
     
@@ -100,40 +88,13 @@ class BaseViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setPrimaryBackgroundColor()
         setNeedsNavigationBarAppearanceUpdate()
         linkInteractors()
         setListeners()
         configureAppearance()
         prepareLayout()
         addTestNetBannerIfNeeded()
-    }
-    
-    private func addTestNetBannerIfNeeded() {
-        guard let api = api,
-            navigationController?.view != nil,
-            api.isTestNet,
-            !shouldHideTestNetBanner else {
-            return
-        }
-        
-        if #available(iOS 13.0, *) {
-            let statusBarHeight: CGFloat = UIApplication.shared.statusBarFrame.size.height
-            
-            let statusbarView = UIView()
-            statusbarView.backgroundColor = SharedColors.testNetBanner
-            navigationController?.view.addSubview(statusbarView)
-          
-            statusbarView.translatesAutoresizingMaskIntoConstraints = false
-            
-            statusbarView.snp.makeConstraints { make in
-                make.centerX.equalToSuperview()
-                make.height.equalTo(statusBarHeight)
-                make.top.leading.trailing.equalToSuperview()
-            }
-        } else {
-            let statusBar = UIApplication.shared.value(forKeyPath: "statusBarWindow.statusBar") as? UIView
-            statusBar?.backgroundColor = SharedColors.testNetBanner
-        }
     }
     
     func configureAppearance() {
@@ -200,6 +161,40 @@ class BaseViewController: UIViewController {
     private func didChangedNetwork(notification: Notification) {
         addTestNetBannerIfNeeded()
         setNeedsStatusBarAppearanceUpdate()
+    }
+}
+
+extension BaseViewController {
+    private func addTestNetBannerIfNeeded() {
+        guard let api = api,
+            navigationController?.view != nil,
+            api.isTestNet,
+            !shouldHideTestNetBanner else {
+            return
+        }
+        
+        addTestNetBanner()
+    }
+    
+    func addTestNetBanner() {
+        if #available(iOS 13.0, *) {
+            let statusBarHeight: CGFloat = UIApplication.shared.statusBarFrame.size.height
+            
+            let statusbarView = UIView()
+            statusbarView.backgroundColor = SharedColors.testNetBanner
+            navigationController?.view.addSubview(statusbarView)
+          
+            statusbarView.translatesAutoresizingMaskIntoConstraints = false
+            
+            statusbarView.snp.makeConstraints { make in
+                make.centerX.equalToSuperview()
+                make.height.equalTo(statusBarHeight)
+                make.top.leading.trailing.equalToSuperview()
+            }
+        } else {
+            let statusBar = UIApplication.shared.value(forKeyPath: "statusBarWindow.statusBar") as? UIView
+            statusBar?.backgroundColor = SharedColors.testNetBanner
+        }
     }
 }
 

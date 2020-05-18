@@ -14,7 +14,7 @@ class AccountRecoverViewController: BaseScrollViewController {
     private lazy var bottomModalPresenter = CardModalPresenter(
         config: ModalConfiguration(
             animationMode: .normal(duration: 0.25),
-            dismissMode: .scroll
+            dismissMode: .none
         ),
         initialModalSize: .custom(CGSize(width: view.frame.width, height: 338.0))
     )
