@@ -5533,7 +5533,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 60DCA59D3815D648E4728045 /* Pods-algorand-staging.debug.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Staging";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 7;
@@ -5563,7 +5563,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E3DDC639493AD9DFAB57110A /* Pods-algorand-staging.release.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Staging";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 7;
@@ -5592,7 +5592,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 04EB0A42AA75229AEB36F88D /* Pods-algorand-staging.app store.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Staging";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 7;
