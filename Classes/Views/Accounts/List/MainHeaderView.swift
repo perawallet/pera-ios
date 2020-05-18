@@ -1,5 +1,5 @@
 //
-//  AccountsHeaderView.swift
+//  MainHeaderView.swift
 //  algorand
 //
 //  Created by Göktuğ Berk Ulu on 4.05.2020.
@@ -8,18 +8,17 @@
 
 import UIKit
 
-class AccountsHeaderView: BaseView {
+class MainHeaderView: BaseView {
     
     private let layout = Layout<LayoutConstants>()
     
-    weak var delegate: AccountsHeaderViewDelegate?
+    weak var delegate: MainHeaderViewDelegate?
     
     private lazy var titleLabel: UILabel = {
         UILabel()
             .withFont(UIFont.font(withWeight: .bold(size: 28.0)))
             .withTextColor(SharedColors.primaryText)
             .withAlignment(.left)
-            .withText("accounts-title".localized)
     }()
     
     private lazy var testNetLabel: UILabel = {
@@ -68,19 +67,19 @@ class AccountsHeaderView: BaseView {
     }
 }
 
-extension AccountsHeaderView {
+extension MainHeaderView {
     @objc
     private func notifyDelegateToScanQR() {
-        delegate?.accountsHeaderViewDidTapQRButton(self)
+        delegate?.mainHeaderViewDidTapQRButton(self)
     }
     
     @objc
     private func notifyDelegateToAddAccount() {
-        delegate?.accountsHeaderViewDidTapAddButton(self)
+        delegate?.mainHeaderViewDidTapAddButton(self)
     }
 }
 
-extension AccountsHeaderView {
+extension MainHeaderView {
     private func setupTitleLabelLayout() {
         addSubview(titleLabel)
         
@@ -121,13 +120,25 @@ extension AccountsHeaderView {
     }
 }
 
-extension AccountsHeaderView {
+extension MainHeaderView {
     func setTestNetLabelHidden(_ hidden: Bool) {
         testNetLabel.isHidden = hidden
     }
+    
+    func setQRButtonHidden(_ hidden: Bool) {
+        qrButton.isHidden = true
+    }
+    
+    func setAddButtonHidden(_ hidden: Bool) {
+        addButton.isHidden = true
+    }
+    
+    func setTitle(_ title: String) {
+        titleLabel.text = title
+    }
 }
 
-extension AccountsHeaderView {
+extension MainHeaderView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let horizontalInset: CGFloat = 20.0
         let buttonOffset: CGFloat = -16.0
@@ -138,13 +149,13 @@ extension AccountsHeaderView {
     }
 }
 
-extension AccountsHeaderView {
+extension MainHeaderView {
     private enum Colors {
         static let shadowColor = rgba(0.26, 0.26, 0.31, 0.07)
     }
 }
 
-protocol AccountsHeaderViewDelegate: class {
-    func accountsHeaderViewDidTapQRButton(_ accountsHeaderView: AccountsHeaderView)
-    func accountsHeaderViewDidTapAddButton(_ accountsHeaderView: AccountsHeaderView)
+protocol MainHeaderViewDelegate: class {
+    func mainHeaderViewDidTapQRButton(_ mainHeaderView: MainHeaderView)
+    func mainHeaderViewDidTapAddButton(_ mainHeaderView: MainHeaderView)
 }

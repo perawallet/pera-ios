@@ -35,7 +35,7 @@
 "title-max" = "MAX";
 "title-internet-connection" = "The internet connection appears to be offline.";
 "title-unknown" = "Unnamed";
-"title-preview-and-sign-with-ledger-title" = "PREVIEW AND SIGN WITH LEDGER";
+"title-preview-and-sign-with-ledger-title" = "Preview and Sign With Ledger";
 "title-qr-share" = "Share QR";
 "title-keep" = "Keep";
 "title-edit" = "Edit";
@@ -183,6 +183,7 @@
 "send-sending-algos-select" = "Select Sending Account";
 "send-receiving-algos-select" = "Select Receiving Account";
 "send-select-asset" = "Select Asset";
+"send-choose-asset" = "Choose asset";
 "send-algos-to" = "To:";
 "send-algos-fee" = "Fee:";
 "send-algos-balance-title" = "Balance:";
@@ -209,6 +210,8 @@
 "send-qr-scan-alert-title" = "QR Scan";
 "send-qr-scan-alert-message" = "You just scanned a QR code of a transaction request. Please review all transaction fields as they may have changed.";
 "send-qr-different-asset-alert" = "The QR contains different asset than selected one. Amount is ignored while decoding.";
+"send-enter-note-placeholder" = "Enter note here";
+"send-enter-note-title" = "Add Note";
 
 // MARK: Algos Request
 "request-algos-title" = "Request Algos";
@@ -324,7 +327,7 @@
 "transaction-detail-fee" = "Fee";
 "transaction-detail-round" = "Round";
 "transaction-detail-id" = "Transaction ID";
-"transaction-detail-reward" = "Note";
+"transaction-detail-note" = "Note";
 
 // MARK: Feedback
 "feedback-title" = "Send Feedback";

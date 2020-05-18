@@ -27,7 +27,7 @@ class FeedbackViewController: BaseScrollViewController {
         didSet {
             if let selectedCategory = selectedCategory {
                 self.feedbackView.categorySelectionView.detailLabel.text = selectedCategory.name
-                self.feedbackView.categorySelectionView.detailLabel.textColor = SharedColors.black
+                self.feedbackView.categorySelectionView.detailLabel.textColor = SharedColors.primaryText
             }
         }
     }

@@ -20,13 +20,15 @@ class ContactDisplayView: BaseView {
         UILabel()
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
             .withLine(.contained)
-            .withAlignment(.left)
+            .withAlignment(.right)
             .withTextColor(SharedColors.primaryText)
     }()
     
     private lazy var actionButton = UIButton()
     
     override func configureAppearance() {
+        imageView.layer.cornerRadius = layout.current.imageSize.width / 2
+        imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFit
         backgroundColor = .clear
     }
@@ -63,9 +65,14 @@ extension ContactDisplayView {
     private func setupNameLabelLayout() {
         addSubview(nameLabel)
         
+        nameLabel.setContentHuggingPriority(.required, for: .horizontal)
+        nameLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+        
         nameLabel.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().priority(.low)
             make.trailing.equalTo(actionButton.snp.leading).offset(layout.current.nameLabelOffset)
             make.top.bottom.equalToSuperview().inset(layout.current.veritcalInset)
+            make.leading.equalToSuperview().priority(.low)
         }
     }
     
@@ -74,6 +81,7 @@ extension ContactDisplayView {
         
         imageView.snp.makeConstraints { make in
             make.leading.equalToSuperview()
+            make.centerY.equalTo(nameLabel)
             make.trailing.equalTo(nameLabel.snp.leading).offset(layout.current.imageOffset)
             make.size.equalTo(layout.current.imageSize)
         }
@@ -99,12 +107,20 @@ extension ContactDisplayView {
         actionButton.setBackgroundImage((img("icon-user-add")), for: .normal)
     }
     
+    func removeAction() {
+        actionButton.removeFromSuperview()
+    }
+    
     func setName(_ name: String) {
         nameLabel.text = name
     }
     
     func setImage(hidden: Bool) {
         imageView.isHidden = hidden
+    }
+    
+    func removeImage() {
+        imageView.removeFromSuperview()
     }
 }
 
