@@ -34,7 +34,15 @@ class AssetAdditionViewController: BaseViewController {
     private let paginationRequestOffset = 3
     private var assetSearchFilters = AssetSearchFilter.all
     
-    private lazy var ledgerApprovalViewController = LedgerApprovalViewController(mode: .approve, configuration: configuration)
+    private lazy var ledgerApprovalPresenter = CardModalPresenter(
+        config: ModalConfiguration(
+            animationMode: .normal(duration: 0.25),
+            dismissMode: .none
+        ),
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: 354.0))
+    )
+    
+    private var ledgerApprovalViewController: LedgerApprovalViewController?
     
     private lazy var transactionController: TransactionController = {
         guard let api = api else {
@@ -275,7 +283,7 @@ extension AssetAdditionViewController: AssetActionConfirmationViewControllerDele
 extension AssetAdditionViewController: TransactionControllerDelegate {
     func transactionController(_ transactionController: TransactionController, didFailedComposing error: Error) {
         if account.type == .ledger {
-            ledgerApprovalViewController.removeFromParentController()
+            ledgerApprovalViewController?.dismissScreen()
         }
         
         switch error {
@@ -328,7 +336,7 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
         }
         
         if account.type == .ledger {
-            ledgerApprovalViewController.removeFromParentController()
+            ledgerApprovalViewController?.dismissScreen()
         }
         
         delegate?.assetAdditionViewController(self, didAdd: assetSearchResult, to: account)
@@ -338,11 +346,14 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
     func transactionControllerDidStartBLEConnection(_ transactionController: TransactionController) {
         dismissProgressIfNeeded()
         invalidateTimer()
-        add(ledgerApprovalViewController)
+        ledgerApprovalViewController = open(
+            .ledgerApproval(mode: .approve),
+            by: .customPresent(presentationStyle: .custom, transitionStyle: nil, transitioningDelegate: ledgerApprovalPresenter)
+        ) as? LedgerApprovalViewController
     }
     
     func transactionControllerDidFailToSignWithLedger(_ transactionController: TransactionController) {
-        ledgerApprovalViewController.removeFromParentController()
+        ledgerApprovalViewController?.dismissScreen()
         pushNotificationController.showFeedbackMessage("ble-error-transaction-cancelled-title".localized,
                                                        subtitle: "ble-error-fail-sign-transaction".localized)
     }

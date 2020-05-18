@@ -28,8 +28,18 @@ class SendAlgosTransactionViewController: SendTransactionViewController {
     
     override func configureAppearance() {
         super.configureAppearance()
-        title = "send-algos-title".localized
         viewModel.configure(sendTransactionView, with: algosTransactionSendDraft)
+        
+        guard let isTestNet = api?.isTestNet else {
+            title = "send-algos-title".localized
+            return
+        }
+        
+        if isTestNet {
+            navigationItem.titleView = TestNetTitleView(title: "send-algos-title".localized)
+        } else {
+            title = "send-algos-title".localized
+        }
     }
     
     override func completeTransaction(with id: TransactionID) {

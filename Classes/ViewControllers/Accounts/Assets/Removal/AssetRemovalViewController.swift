@@ -27,7 +27,15 @@ class AssetRemovalViewController: BaseViewController {
     
     private var account: Account
     
-    private lazy var ledgerApprovalViewController = LedgerApprovalViewController(mode: .approve, configuration: configuration)
+    private lazy var ledgerApprovalPresenter = CardModalPresenter(
+        config: ModalConfiguration(
+            animationMode: .normal(duration: 0.25),
+            dismissMode: .none
+        ),
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: 354.0))
+    )
+    
+    private var ledgerApprovalViewController: LedgerApprovalViewController?
     
     private lazy var pushNotificationController: PushNotificationController = {
         guard let api = api else {
@@ -52,6 +60,11 @@ class AssetRemovalViewController: BaseViewController {
     init(account: Account, configuration: ViewControllerConfiguration) {
         self.account = account
         super.init(configuration: configuration)
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        addTestNetBanner()
     }
     
     override func configureAppearance() {
@@ -129,20 +142,29 @@ extension AssetRemovalViewController {
         viewForSupplementaryElementOfKind kind: String,
         at indexPath: IndexPath
     ) -> UICollectionReusableView {
-        if kind != UICollectionView.elementKindSectionHeader {
-            fatalError("Unexpected element kind")
+        if kind == UICollectionView.elementKindSectionHeader {
+            guard let headerView = collectionView.dequeueReusableSupplementaryView(
+                ofKind: kind,
+                withReuseIdentifier: AccountHeaderSupplementaryView.reusableIdentifier,
+                for: indexPath
+            ) as? AccountHeaderSupplementaryView else {
+                fatalError("Unexpected element kind")
+            }
+            
+            viewModel.configure(headerView, with: account)
+            
+            return headerView
+        } else {
+            guard let headerView = collectionView.dequeueReusableSupplementaryView(
+                ofKind: kind,
+                withReuseIdentifier: AssetRemovalFooterSupplementaryView.reusableIdentifier,
+                for: indexPath
+            ) as? AssetRemovalFooterSupplementaryView else {
+                fatalError("Unexpected element kind")
+            }
+            
+            return headerView
         }
-        guard let headerView = collectionView.dequeueReusableSupplementaryView(
-            ofKind: kind,
-            withReuseIdentifier: AccountHeaderSupplementaryView.reusableIdentifier,
-            for: indexPath
-        ) as? AccountHeaderSupplementaryView else {
-            fatalError("Unexpected element kind")
-        }
-        
-        viewModel.configure(headerView, with: account)
-        
-        return headerView
     }
 }
 
@@ -227,6 +249,17 @@ extension AssetRemovalViewController: UICollectionViewDelegateFlowLayout {
             height: layout.current.itemHeight
         )
     }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        referenceSizeForFooterInSection section: Int
+    ) -> CGSize {
+        return CGSize(
+            width: UIScreen.main.bounds.width - layout.current.defaultSectionInsets.left - layout.current.defaultSectionInsets.right,
+            height: layout.current.footerHeight
+        )
+    }
 }
 
 extension AssetRemovalViewController: AssetActionConfirmationViewControllerDelegate {
@@ -280,7 +313,7 @@ extension AssetRemovalViewController: TransactionControllerDelegate {
         }
         
         if account.type == .ledger {
-            ledgerApprovalViewController.removeFromParentController()
+            ledgerApprovalViewController?.dismissScreen()
         }
         
         delegate?.assetRemovalViewController(self, didRemove: removedAssetDetail, from: account)
@@ -289,7 +322,7 @@ extension AssetRemovalViewController: TransactionControllerDelegate {
     
     func transactionController(_ transactionController: TransactionController, didFailedComposing error: Error) {
         if account.type == .ledger {
-            ledgerApprovalViewController.removeFromParentController()
+            ledgerApprovalViewController?.dismissScreen()
         }
     }
     
@@ -310,7 +343,10 @@ extension AssetRemovalViewController: TransactionControllerDelegate {
     func transactionControllerDidStartBLEConnection(_ transactionController: TransactionController) {
         dismissProgressIfNeeded()
         invalidateTimer()
-        add(ledgerApprovalViewController)
+        ledgerApprovalViewController = open(
+            .ledgerApproval(mode: .approve),
+            by: .customPresent(presentationStyle: .custom, transitionStyle: nil, transitioningDelegate: ledgerApprovalPresenter)
+        ) as? LedgerApprovalViewController
     }
     
     func transactionController(_ transactionController: TransactionController, didFailBLEConnectionWith state: CBManagerState) {
@@ -334,7 +370,7 @@ extension AssetRemovalViewController: TransactionControllerDelegate {
     }
     
     func transactionControllerDidFailToSignWithLedger(_ transactionController: TransactionController) {
-        ledgerApprovalViewController.removeFromParentController()
+        ledgerApprovalViewController?.dismissScreen()
         pushNotificationController.showFeedbackMessage("ble-error-transaction-cancelled-title".localized,
                                                        subtitle: "ble-error-fail-sign-transaction".localized)
     }
@@ -389,6 +425,7 @@ extension AssetRemovalViewController {
         let defaultSectionInsets = UIEdgeInsets(top: 0.0, left: 20.0, bottom: 0.0, right: 20.0)
         let itemHeight: CGFloat = 52.0
         let modalHeight: CGFloat = 490.0
+        let footerHeight: CGFloat = 10.0
     }
 }
 

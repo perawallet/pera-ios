@@ -44,6 +44,20 @@ extension SendAssetTransactionViewController {
             let assetDetail = assetTransactionSendDraft.from.assetDetails.first(where: { $0.id == assetIndex }) else {
             return
         }
-        title = "title-send-lowercased".localized + " \(assetDetail.getDisplayNames().0)"
+        
+        let assetTitle = "title-send".localized + " \(assetDetail.getDisplayNames().0)"
+        
+        guard let isTestNet = api?.isTestNet else {
+            title = assetTitle
+            return
+        }
+        
+        if isTestNet {
+            navigationItem.titleView = TestNetTitleView(title: assetTitle)
+        } else {
+            title = assetTitle
+        }
+        
+        sendTransactionView.setButtonTitle(assetTitle)
     }
 }

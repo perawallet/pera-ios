@@ -73,6 +73,7 @@ class TransactionDetailViewController: BaseScrollViewController {
         super.configureAppearance()
         title = "transaction-detail-title".localized
         contentView.backgroundColor = SharedColors.secondaryBackground
+        setSecondaryBackgroundColor()
         configureTransactionDetail()
     }
     
