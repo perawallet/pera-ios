@@ -8,11 +8,6 @@
 
 import UIKit
 
-protocol AccountsDataSourceDelegate: class {
-    func accountsDataSource(_ accountsDataSource: AccountsDataSource, didTapOptionsButtonFor account: Account)
-    func accountsDataSource(_ accountsDataSource: AccountsDataSource, didTapAddAssetButtonFor account: Account)
-}
-
 class AccountsDataSource: NSObject, UICollectionViewDataSource {
     
     private let viewModel = AccountsViewModel()
@@ -213,7 +208,10 @@ extension AccountsDataSource {
 
 extension AccountsDataSource: AccountHeaderSupplementaryViewDelegate {
     func accountHeaderSupplementaryViewDidTapQRButton(_ accountHeaderSupplementaryView: AccountHeaderSupplementaryView) {
-        
+        if accountHeaderSupplementaryView.tag < accounts.count {
+            let account = accounts[accountHeaderSupplementaryView.tag]
+            delegate?.accountsDataSource(self, didTapQRButtonFor: account)
+        }
     }
     
     func accountHeaderSupplementaryViewDidTapOptionsButton(_ accountHeaderSupplementaryView: AccountHeaderSupplementaryView) {
@@ -271,4 +269,10 @@ extension AccountsDataSource {
             }
         }
     }
+}
+
+protocol AccountsDataSourceDelegate: class {
+    func accountsDataSource(_ accountsDataSource: AccountsDataSource, didTapOptionsButtonFor account: Account)
+    func accountsDataSource(_ accountsDataSource: AccountsDataSource, didTapAddAssetButtonFor account: Account)
+    func accountsDataSource(_ accountsDataSource: AccountsDataSource, didTapQRButtonFor account: Account)
 }

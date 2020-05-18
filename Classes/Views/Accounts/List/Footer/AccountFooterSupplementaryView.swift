@@ -12,12 +12,6 @@ class AccountFooterSupplementaryView: BaseSupplementaryView<AccountFooterView> {
     
     weak var delegate: AccountFooterSupplementaryViewDelegate?
     
-    override func configureAppearance() {
-        backgroundColor = SharedColors.secondaryBackground
-        layer.cornerRadius = 12.0
-        layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
-    }
-    
     override func setListeners() {
         contextView.delegate = self
     }
