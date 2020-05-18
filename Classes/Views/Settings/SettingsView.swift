@@ -10,6 +10,15 @@ import UIKit
 
 class SettingsView: BaseView {
     
+    private lazy var settingsHeaderView: MainHeaderView = {
+        let view = MainHeaderView()
+        view.setTitle("settings-title".localized)
+        view.setQRButtonHidden(true)
+        view.setAddButtonHidden(true)
+        view.setTestNetLabelHidden(true)
+        return view
+    }()
+    
     private(set) lazy var collectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .vertical
@@ -33,22 +42,28 @@ class SettingsView: BaseView {
         )
         return collectionView
     }()
-    
-    override func configureAppearance() {
-        backgroundColor = SharedColors.secondaryBackground
-    }
 
     override func prepareLayout() {
+        setupSettingsHeaderViewLayout()
         setupCollectionViewLayout()
     }
 }
 
 extension SettingsView {
+    private func setupSettingsHeaderViewLayout() {
+        addSubview(settingsHeaderView)
+        
+        settingsHeaderView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalToSuperview().inset(44.0)
+        }
+    }
+    
     private func setupCollectionViewLayout() {
         addSubview(collectionView)
         
         collectionView.snp.makeConstraints { make in
-            make.top.equalTo(safeAreaLayoutGuide.snp.top)
+            make.top.equalTo(settingsHeaderView.snp.bottom)
             make.leading.bottom.trailing.equalToSuperview()
         }
     }

@@ -9,14 +9,6 @@
 import UIKit
 
 extension AccountsViewController: OptionsViewControllerDelegate {
-    func optionsViewControllerDidShowQR(_ optionsViewController: OptionsViewController) {
-        guard let account = selectedAccount else {
-            return
-        }
-        
-        open(.qrGenerator(title: "qr-creation-sharing-title".localized, address: account.address, mode: .address), by: .present)
-    }
-    
     func optionsViewControllerDidRemoveAsset(_ optionsViewController: OptionsViewController) {
         guard let account = selectedAccount else {
             return
@@ -130,7 +122,7 @@ extension AccountsViewController: OptionsViewControllerDelegate {
 extension AccountsViewController: ChoosePasswordViewControllerDelegate {
     func choosePasswordViewController(_ choosePasswordViewController: ChoosePasswordViewController, didConfirmPassword isConfirmed: Bool) {
         if isConfirmed {
-            presentPassphraseView()
+            
         } else {
             displaySimpleAlertWith(
                 title: "password-verify-fail-title".localized,

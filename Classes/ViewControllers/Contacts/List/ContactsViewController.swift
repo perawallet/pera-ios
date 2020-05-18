@@ -10,6 +10,10 @@ import UIKit
 
 class ContactsViewController: BaseViewController {
     
+    override var shouldShowNavigationBar: Bool {
+        return false
+    }
+    
     private lazy var contactsView = ContactsView()
     
     private lazy var emptyStateView = ContactsEmptyView(
@@ -31,16 +35,6 @@ class ContactsViewController: BaseViewController {
     
     weak var delegate: ContactsViewControllerDelegate?
     
-    override func configureNavigationBarAppearance() {
-        let addBarButtonItem = ALGBarButtonItem(kind: .add) {
-            let controller = self.open(.addContact(mode: .new()), by: .push) as? AddContactViewController
-            
-            controller?.delegate = self
-        }
-        
-        rightBarButtonItems = [addBarButtonItem]
-    }
-    
     override func setListeners() {
         super.setListeners()
         
@@ -61,6 +55,7 @@ class ContactsViewController: BaseViewController {
     
     override func linkInteractors() {
         emptyStateView.delegate = self
+        contactsView.delegate = self
         contactsView.contactNameInputView.delegate = self
         contactsView.contactsCollectionView.delegate = self
         contactsView.contactsCollectionView.dataSource = self
@@ -203,7 +198,7 @@ extension ContactsViewController: UICollectionViewDelegateFlowLayout {
                 return
             }
             
-            popScreen()
+            dismissScreen()
             delegate.contactsViewController(self, didSelect: contact)
         }
     }
@@ -317,6 +312,19 @@ extension ContactsViewController: ContactsEmptyViewDelegate {
     func contactsEmptyViewDidTapAddContactButton(_ contactsEmptyView: ContactsEmptyView) {
         let controller = self.open(.addContact(mode: .new()), by: .push) as? AddContactViewController
         controller?.delegate = self
+    }
+}
+
+extension ContactsViewController: ContactsViewDelegate {
+    func contactsViewDidTapAddButton(_ contactsView: ContactsView) {
+        let controller = open(.addContact(mode: .new()), by: .push) as? AddContactViewController
+        controller?.delegate = self
+    }
+}
+
+extension ContactsViewController {
+    func removeHeader() {
+        contactsView.removeHeader()
     }
 }
 

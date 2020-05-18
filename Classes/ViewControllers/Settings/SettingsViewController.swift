@@ -12,6 +12,10 @@ import UserNotifications
 
 class SettingsViewController: BaseViewController {
     
+    override var shouldShowNavigationBar: Bool {
+        return false
+    }
+    
     private lazy var bottomModalPresenter = CardModalPresenter(
         config: ModalConfiguration(
             animationMode: .normal(duration: 0.25),
