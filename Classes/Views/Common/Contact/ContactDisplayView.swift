@@ -65,9 +65,6 @@ extension ContactDisplayView {
     private func setupNameLabelLayout() {
         addSubview(nameLabel)
         
-        nameLabel.setContentHuggingPriority(.required, for: .horizontal)
-        nameLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
-        
         nameLabel.snp.makeConstraints { make in
             make.trailing.equalToSuperview().priority(.low)
             make.trailing.equalTo(actionButton.snp.leading).offset(layout.current.nameLabelOffset)
