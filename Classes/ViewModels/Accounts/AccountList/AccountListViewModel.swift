@@ -30,12 +30,12 @@ class AccountListViewModel {
                 }
                 
                 let amountText = "\(assetAmount.toFractionStringForLabel(fraction: assetDetail.fractionDecimals) ?? "")".attributed([
-                    .font(UIFont.font(.overpass, withWeight: .semiBold(size: 15.0))),
-                    .textColor(SharedColors.black)
+                    .font(UIFont.font(withWeight: .medium(size: 14.0))),
+                    .textColor(SharedColors.primaryText)
                 ])
                 
                 let codeText = " (\(assetDetail.getAssetCode()))".attributed([
-                    .font(UIFont.font(.overpass, withWeight: .semiBold(size: 15.0))),
+                    .font(UIFont.font(withWeight: .medium(size: 14.0))),
                     .textColor(SharedColors.darkGray)
                 ])
                 cell.contextView.detailLabel.attributedText = amountText + codeText

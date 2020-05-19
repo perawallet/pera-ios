@@ -17,7 +17,7 @@ class TermsAndServicesView: BaseView {
     private lazy var titleLabel: UILabel = {
         UILabel()
             .withTextColor(SharedColors.darkGray)
-            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 14.0)))
+            .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
             .withAttributedText("terms-and-services-title".localized.uppercased().attributed([.letterSpacing(1.07)]))
     }()
     
@@ -103,8 +103,8 @@ extension TermsAndServicesView {
                 return
         }
         
-        attributedString.addAttributes([NSAttributedString.Key.font: UIFont.font(.avenir, withWeight: .medium(size: 14.0)),
-                                        NSAttributedString.Key.foregroundColor: SharedColors.black],
+        attributedString.addAttributes([NSAttributedString.Key.font: UIFont.font(withWeight: .medium(size: 14.0)),
+                                        NSAttributedString.Key.foregroundColor: SharedColors.primaryText],
                                        range: NSRange(location: 0, length: attributedString.string.count))
         textView.attributedText = attributedString
     }

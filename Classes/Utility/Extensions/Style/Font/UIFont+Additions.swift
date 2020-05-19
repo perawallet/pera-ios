@@ -9,8 +9,6 @@
 import UIKit
 
 enum FontType: String {
-    case avenir = "AvenirNext"
-    case overpass = "Overpass"
     case publicSans = "PublicSans"
 }
 
@@ -33,9 +31,6 @@ enum FontWeight {
     case semiBoldItalic(size: CGFloat)
     case thin(size: CGFloat)
     case thinItalic(size: CGFloat)
-    
-    case demiBold(size: CGFloat)
-    case demiBoldItalic(size: CGFloat)
 }
 
 extension UIFont {
@@ -80,11 +75,6 @@ extension UIFont {
             return UIFont(name: fontName, size: size) ?? UIFont.systemFont(ofSize: size, weight: .medium)
         case .thinItalic(let size):
             return UIFont(name: fontName, size: size) ?? UIFont.systemFont(ofSize: size, weight: .medium)
-
-        case .demiBold(let size):
-            return UIFont(name: fontName, size: size) ?? UIFont.systemFont(ofSize: size, weight: .semibold)
-        case .demiBoldItalic(let size):
-            return UIFont(name: fontName, size: size) ?? UIFont.italicSystemFont(ofSize: size)
         }
     }
     // swiftlint:enable function_default_parameter_at_end
@@ -129,11 +119,6 @@ extension UIFont {
             return fontName.appending("Thin")
         case .thinItalic:
             return fontName.appending("ThinItalic")
-            
-        case .demiBold:
-            return fontName.appending("DemiBold")
-        case .demiBoldItalic:
-            return fontName.appending("DemiBoldItalic")
         }
     }
 }

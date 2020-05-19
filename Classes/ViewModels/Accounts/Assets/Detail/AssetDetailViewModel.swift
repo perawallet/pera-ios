@@ -29,7 +29,7 @@ extension AssetDetailViewModel {
             view.verifiedImageView.isHidden = !assetDetail.isVerified
             view.rewardTotalAmountView.removeFromSuperview()
             view.assetNameLabel.attributedText = assetDetail.assetDisplayName(
-                with: UIFont.font(.avenir, withWeight: .demiBold(size: 14.0)),
+                with: UIFont.font(withWeight: .medium(size: 14.0)),
                 isIndexIncluded: false,
                 shouldDisplayIndexWithName: false
             )
