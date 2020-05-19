@@ -9,7 +9,6 @@
 import UIKit
 
 extension UICollectionView {
-    
     var isEmpty: Bool {
         if numberOfSections == 0 {
             return true
@@ -25,8 +24,12 @@ extension UICollectionView {
     }
     
     var contentState: ContentStateView.State {
-        get { return (backgroundView as? ContentStateView).map { $0.state } ?? .none }
-        set { (backgroundView as? ContentStateView)?.state = newValue }
+        get {
+            return (backgroundView as? ContentStateView).map { $0.state } ?? .none
+        }
+        set {
+            (backgroundView as? ContentStateView)?.state = newValue
+        }
     }
     
     func reloadSection(_ section: Int) {
