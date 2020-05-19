@@ -94,6 +94,7 @@ extension ContactInfoViewController {
                 
                 if account.isThereAnyDifferentAsset() {
                     if let assets = account.assets {
+                        var failedAssetFetchCount = 0
                         for (index, _) in assets {
                             self?.api?.getAssetDetails(with: AssetFetchDraft(assetId: "\(index)")) { assetResponse in
                                 switch assetResponse {
@@ -109,7 +110,7 @@ extension ContactInfoViewController {
                                     
                                     account.assetDetails.append(assetDetail)
                                     
-                                    if assets.count == account.assetDetails.count {
+                                    if assets.count == account.assetDetails.count + failedAssetFetchCount {
                                         SVProgressHUD.showSuccess(withStatus: "title-done".localized)
                                         SVProgressHUD.dismiss()
                                         
@@ -120,7 +121,7 @@ extension ContactInfoViewController {
                                         strongSelf.configureViewForContactAssets()
                                     }
                                 case .failure:
-                                    SVProgressHUD.dismiss()
+                                    failedAssetFetchCount += 1
                                 }
                             }
                         }

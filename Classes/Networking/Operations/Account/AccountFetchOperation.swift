@@ -57,7 +57,9 @@ extension AccountFetchOperation {
             return
         }
         
+        var removedAssetCount = 0
         for (index, _) in assets {
+            totalCount += 1
             guard let id = Int64(index) else {
                 continue
             }
@@ -66,7 +68,11 @@ extension AccountFetchOperation {
                 case .success(let assetDetail):
                     self.composeAssetDetail(assetDetail, of: account, with: id)
                 case .failure(let error):
+                    removedAssetCount += 1
                     self.removeAssetDetail(with: id, from: account, for: error)
+                    if assets.count == account.assetDetails.count + removedAssetCount {
+                        self.onCompleted?(account, nil)
+                    }
                 }
             }
         }
@@ -102,9 +108,5 @@ extension AccountFetchOperation {
         }
         
         account.removeAsset(Int64(id))
-        
-        if assets.count == account.assetDetails.count {
-            self.onCompleted?(nil, error)
-        }
     }
 }
