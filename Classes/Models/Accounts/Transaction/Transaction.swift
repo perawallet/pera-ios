@@ -61,6 +61,14 @@ extension Transaction {
         }
         return round == nil || round == 0
     }
+    
+    func isAssetAdditionTransaction(for address: String) -> Bool {
+        guard let assetTransfer = assetTransfer else {
+            return false
+        }
+        
+        return assetTransfer.receiverAddress == address && assetTransfer.amount == 0 && type == "axfer"
+    }
 }
 
 extension Transaction {

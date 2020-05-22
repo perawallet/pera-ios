@@ -35,6 +35,8 @@ class TransactionDetailViewModel {
         
         if let assetTransaction = transaction.assetTransfer,
             let assetDetail = assetDetail {
+            view.closeAmountView.removeFromSuperview()
+            view.closeToView.removeFromSuperview()
             let amount = assetTransaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals)
 
             if amount == 0 {
@@ -45,14 +47,16 @@ class TransactionDetailViewModel {
             
             view.rewardView.removeFromSuperview()
         } else if let payment = transaction.payment {
-            let amount = payment.amountForTransaction().toAlgos
+            let amount = payment.amountForTransaction(includesCloseAmount: false).toAlgos
 
             if amount == 0 {
                 view.amountView.setAmountViewMode(.normal(amount: amount))
             } else {
                 view.amountView.setAmountViewMode(.positive(amount: amount))
             }
-
+            
+            setCloseAmount(for: transaction, in: view)
+            setCloseTo(for: transaction, in: view)
             setReward(for: transaction, in: view)
         }
         
@@ -87,6 +91,8 @@ class TransactionDetailViewModel {
         
         if let assetTransaction = transaction.assetTransfer,
             let assetDetail = assetDetail {
+            view.closeAmountView.removeFromSuperview()
+            view.closeToView.removeFromSuperview()
             setOpponent(for: transaction, with: assetTransaction.receiverAddress ?? "", in: view)
             
             let amount = assetTransaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals)
@@ -99,17 +105,36 @@ class TransactionDetailViewModel {
         } else if let payment = transaction.payment {
             setOpponent(for: transaction, with: payment.toAddress, in: view)
             
-            let amount = payment.amountForTransaction().toAlgos
+            let amount = payment.amountForTransaction(includesCloseAmount: false).toAlgos
 
             if amount == 0 {
                 view.amountView.setAmountViewMode(.normal(amount: amount))
             } else {
                 view.amountView.setAmountViewMode(.negative(amount: amount))
             }
+            
+            setCloseAmount(for: transaction, in: view)
+            setCloseTo(for: transaction, in: view)
         }
         
         view.idView.setDetail(transaction.id.identifier)
         setNote(for: transaction, in: view)
+    }
+    
+    func setCloseAmount(for transaction: Transaction, in view: TransactionDetailView) {
+        if let closeAmount = transaction.payment?.closeAmountForTransaction()?.toAlgos {
+            view.closeAmountView.setAmountViewMode(.normal(amount: closeAmount))
+        } else {
+            view.closeAmountView.removeFromSuperview()
+        }
+    }
+    
+    func setCloseTo(for transaction: Transaction, in view: TransactionDetailView) {
+        if let closeAddress = transaction.payment?.closeAddress {
+            view.closeToView.setDetail(closeAddress.shortAddressDisplay())
+        } else {
+            view.closeToView.removeFromSuperview()
+        }
     }
     
     func setOpponent(for transaction: Transaction, with address: String, in view: TransactionDetailView) {
