@@ -53,12 +53,11 @@ extension PushNotificationController {
     }
     
     func registerDevice(_ handler: BoolHandler? = nil) {
-        guard let accounts = api.session.applicationConfiguration?.authenticatedUser()?.accounts else {
-            return
+        if let token = token,
+            let accounts = api.session.applicationConfiguration?.authenticatedUser()?.accounts {
+            let draft = DeviceRegistrationDraft(pushToken: token, accounts: accounts.map { $0.address })
+            api.registerDevice(with: draft)
         }
-        
-        let draft = DeviceRegistrationDraft(pushToken: token, accounts: accounts.map { $0.address })
-        api.registerDevice(with: draft, then: handler)
     }
     
     func revokeDevice() {
