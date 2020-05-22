@@ -11,10 +11,6 @@ import SnapKit
 
 class EditAccountViewController: BaseViewController {
     
-    override var shouldShowNavigationBar: Bool {
-        return false
-    }
-    
     private lazy var editAccountView = EditAccountView()
     
     private var keyboard = Keyboard()
@@ -26,8 +22,32 @@ class EditAccountViewController: BaseViewController {
         super.init(configuration: configuration)
     }
     
+    override func configureNavigationBarAppearance() {
+        let doneBarButtonItem = ALGBarButtonItem(kind: .done) { [weak self] in
+            guard let strongSelf = self else {
+                return
+            }
+            
+            guard let name = strongSelf.editAccountView.accountNameTextField.text else {
+                strongSelf.displaySimpleAlertWith(
+                    title: "title-error".localized,
+                    message: "account-name-setup-empty-error-message".localized
+                )
+                return
+            }
+            
+            strongSelf.account.name = name
+            strongSelf.session?.updateName(name, for: strongSelf.account.address)
+            strongSelf.dismissScreen()
+        }
+        
+        rightBarButtonItems = [doneBarButtonItem]
+    }
+    
     override func configureAppearance() {
-        view.backgroundColor = Colors.backgroundColor
+        view.backgroundColor = SharedColors.secondaryBackground
+        title = "options-edit-account-name".localized
+        setSecondaryBackgroundColor()
         editAccountView.accountNameTextField.text = account.name
     }
     
@@ -40,9 +60,6 @@ class EditAccountViewController: BaseViewController {
         )
     }
     
-    override func linkInteractors() {
-        editAccountView.delegate = self
-    }
     override func prepareLayout() {
         setupEditAccountViewLayout()
     }
@@ -56,7 +73,7 @@ class EditAccountViewController: BaseViewController {
         let kbHeight = keyboard.height ?? 0.0
         let size = CGSize(
             width: self.view.bounds.width,
-            height: kbHeight + 158.0
+            height: kbHeight + 154.0
         )
         return .custom(size)
     }
@@ -101,24 +118,5 @@ extension EditAccountViewController {
             },
             completion: nil
         )
-    }
-}
-
-extension EditAccountViewController: EditAccountViewDelegate {
-    func editAccountViewDidTapSaveButton(_ editAccountView: EditAccountView) {
-        guard let name = editAccountView.accountNameTextField.text else {
-            displaySimpleAlertWith(title: "title-error".localized, message: "account-name-setup-empty-error-message".localized)
-            return
-        }
-        
-        account.name = name
-        session?.updateName(name, for: account.address)
-        dismissScreen()
-    }
-}
-
-extension EditAccountViewController {
-    private enum Colors {
-        static let backgroundColor = rgb(0.95, 0.96, 0.96)
     }
 }
