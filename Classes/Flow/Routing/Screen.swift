@@ -67,6 +67,7 @@ indirect enum Screen {
     case ledgerTroubleshootOpenApp
     case termsAndServices
     case selectAsset
+    case passphraseDisplay(address: String)
 }
 
 extension Screen {

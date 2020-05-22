@@ -367,6 +367,8 @@
 		2B3D73BA23C3621F00597D32 /* VerifiedAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3D73B823C3621F00597D32 /* VerifiedAsset.swift */; };
 		2B3D73BC23C3638900597D32 /* LimitQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3D73BB23C3638900597D32 /* LimitQuery.swift */; };
 		2B3D73BD23C3638A00597D32 /* LimitQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3D73BB23C3638900597D32 /* LimitQuery.swift */; };
+		2B3E39F02478372E00E8AEB7 /* PassphraseDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3E39EF2478372E00E8AEB7 /* PassphraseDisplayView.swift */; };
+		2B3E39F12478372E00E8AEB7 /* PassphraseDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3E39EF2478372E00E8AEB7 /* PassphraseDisplayView.swift */; };
 		2B432A4F237C4F5D009191BF /* AccountsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B432A4E237C4F5D009191BF /* AccountsViewModel.swift */; };
 		2B432A50237C4F5D009191BF /* AccountsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B432A4E237C4F5D009191BF /* AccountsViewModel.swift */; };
 		2B432A52237C56F0009191BF /* BaseSupplementaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B432A51237C56F0009191BF /* BaseSupplementaryView.swift */; };
@@ -1029,6 +1031,7 @@
 		2B3D73B523C3621500597D32 /* VerifiedAssetList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifiedAssetList.swift; sourceTree = "<group>"; };
 		2B3D73B823C3621F00597D32 /* VerifiedAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifiedAsset.swift; sourceTree = "<group>"; };
 		2B3D73BB23C3638900597D32 /* LimitQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LimitQuery.swift; sourceTree = "<group>"; };
+		2B3E39EF2478372E00E8AEB7 /* PassphraseDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseDisplayView.swift; sourceTree = "<group>"; };
 		2B432A4E237C4F5D009191BF /* AccountsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsViewModel.swift; sourceTree = "<group>"; };
 		2B432A51237C56F0009191BF /* BaseSupplementaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseSupplementaryView.swift; sourceTree = "<group>"; };
 		2B432A54237C5793009191BF /* AccountHeaderSupplementaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountHeaderSupplementaryView.swift; sourceTree = "<group>"; };
@@ -2577,6 +2580,7 @@
 				2B5DA9D6224CE1AA00EE41B4 /* Cell */,
 				2B5DA9D7224CE1BC00EE41B4 /* EditAccountView.swift */,
 				2B4BDA15238D1BD500491149 /* OptionsView.swift */,
+				2B3E39EF2478372E00E8AEB7 /* PassphraseDisplayView.swift */,
 			);
 			path = Options;
 			sourceTree = "<group>";
@@ -4984,6 +4988,7 @@
 				2BC1828823DEECBE00888476 /* RequestAlgosTransactionPreviewViewController.swift in Sources */,
 				17BD4EC02292F1260003E49A /* AlignedButton.swift in Sources */,
 				17BD4EC12292F1260003E49A /* TransactionID.swift in Sources */,
+				2B3E39F12478372E00E8AEB7 /* PassphraseDisplayView.swift in Sources */,
 				2B3A34DB246D7998001C8F22 /* NodeSelectionView.swift in Sources */,
 				175CE59922955CEE003F7C02 /* WaitRoundDraft.swift in Sources */,
 				2BE9373C2464AF9E00322C1E /* TransactionStatusView.swift in Sources */,
@@ -5416,6 +5421,7 @@
 				2BC1828723DEECBE00888476 /* RequestAlgosTransactionPreviewViewController.swift in Sources */,
 				173DA2102256643A00378A82 /* TransactionID.swift in Sources */,
 				2B4BDA16238D1BD500491149 /* OptionsView.swift in Sources */,
+				2B3E39F02478372E00E8AEB7 /* PassphraseDisplayView.swift in Sources */,
 				2B3A34DA246D7998001C8F22 /* NodeSelectionView.swift in Sources */,
 				175CE59822955CEE003F7C02 /* WaitRoundDraft.swift in Sources */,
 				2BE9373B2464AF9E00322C1E /* TransactionStatusView.swift in Sources */,

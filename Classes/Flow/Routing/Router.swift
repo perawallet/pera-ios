@@ -325,6 +325,8 @@ class Router {
             viewController = TermsAndServicesViewController(configuration: configuration)
         case .selectAsset:
             viewController = SelectAssetViewController(configuration: configuration)
+        case let .passphraseDisplay(address):
+            viewController = PassphraseDisplayViewController(address: address, configuration: configuration)
         }
         
         return viewController as? T

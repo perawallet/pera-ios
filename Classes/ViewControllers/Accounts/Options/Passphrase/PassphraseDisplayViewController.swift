@@ -10,51 +10,112 @@ import UIKit
 
 class PassphraseDisplayViewController: BaseViewController {
     
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let horizontalInset: CGFloat = 20.0
-        let topInset: CGFloat = 30.0
-        let bottomInset: CGFloat = 20.0
-        let buttonHorizontalInset: CGFloat = 20.0
-    }
-    
-    private enum Colors {
-        static let backgroundColor = rgba(0.04, 0.05, 0.07, 0.6)
+    var mnemonics: [String]? {
+        guard let session = self.session else {
+            return nil
+        }
+        let mnemonics = session.mnemonics(forAccount: address)
+        return mnemonics
     }
     
     private var address: String
     
-    private let layout = Layout<LayoutConstants>()
+    private lazy var passphraseDisplayView = PassphraseDisplayView()
     
     init(address: String, configuration: ViewControllerConfiguration) {
         self.address = address
         super.init(configuration: configuration)
     }
     
-    // MARK: Setup
+    override func configureNavigationBarAppearance() {
+        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [weak self] in
+            self?.closeScreen(by: .dismiss, animated: true)
+        }
+        
+        leftBarButtonItems = [closeBarButtonItem]
+    }
     
     override func configureAppearance() {
-        view.backgroundColor = Colors.backgroundColor
-      //  passphraseView.layer.cornerRadius = 10.0
+        view.backgroundColor = SharedColors.secondaryBackground
+        title = "options-view-passphrase".localized
+        setSecondaryBackgroundColor()
+    }
+    
+    override func linkInteractors() {
+        passphraseDisplayView.delegate = self
+        passphraseDisplayView.passphraseCollectionView.delegate = self
+        passphraseDisplayView.passphraseCollectionView.dataSource = self
     }
 
     override func prepareLayout() {
-        super.prepareLayout()
-
         setupPassphraseViewLayout()
-    }
-    
-    func passphraseViewDidTapActionButton(_ passphraseView: PassphraseView) {
-        dismissScreen()
     }
 }
 
 extension PassphraseDisplayViewController {
     private func setupPassphraseViewLayout() {
-//        view.addSubview(passphraseView)
-//        
-//        passphraseView.snp.makeConstraints { make in
-//            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-//            make.center.equalToSuperview()
-//        }
+        view.addSubview(passphraseDisplayView)
+        
+        passphraseDisplayView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+    }
+}
+
+extension PassphraseDisplayViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        guard let mnemonics = mnemonics else {
+            return 0
+        }
+        return mnemonics.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: PassphraseBackUpCell.reusableIdentifier,
+            for: indexPath) as? PassphraseBackUpCell else {
+                fatalError("Index path is out of bounds")
+        }
+        
+        cell.contextView.numberLabel.text = "\(indexPath.item + 1)."
+        
+        guard let mnemonics = mnemonics else {
+            return cell
+        }
+        
+        cell.contextView.phraseLabel.text = mnemonics[indexPath.item]
+        return cell
+    }
+}
+
+extension PassphraseDisplayViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        sizeForItemAt indexPath: IndexPath
+    ) -> CGSize {
+        return CGSize(width: collectionView.frame.width / 3.0, height: 22.0)
+    }
+}
+
+extension PassphraseDisplayViewController: PassphraseDisplayViewDelegate {
+    func passphraseViewDidOpenQR(_ passphraseDisplayView: PassphraseDisplayView) {
+        let mnemonics = self.session?.mnemonics(forAccount: address) ?? []
+        let mnemonicText = mnemonics.joined(separator: " ")
+        open(.qrGenerator(title: "qr-creation-title".localized, address: address, mnemonic: mnemonicText, mode: .mnemonic), by: .present)
+    }
+    
+    func passphraseViewDidShare(_ passphraseDisplayView: PassphraseDisplayView) {
+        let mnemonics = self.session?.mnemonics(forAccount: address) ?? []
+        
+        let sharedItem = [mnemonics.joined(separator: " ")]
+        let activityViewController = UIActivityViewController(activityItems: sharedItem, applicationActivities: nil)
+        activityViewController.excludedActivityTypes = [UIActivity.ActivityType.addToReadingList]
+        
+        if let navigationController = navigationController {
+            navigationController.present(activityViewController, animated: true, completion: nil)
+        } else {
+            present(activityViewController, animated: true, completion: nil)
+        }
     }
 }
