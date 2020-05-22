@@ -18,10 +18,6 @@ class BaseViewController: UIViewController {
         return isStatusBarHidden
     }
     
-    private var shouldHideTestNetBanner: Bool {
-        return presentingViewController != nil || modalPresentationStyle == .custom
-    }
-    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         if #available(iOS 13.0, *) {
             return .darkContent
@@ -94,16 +90,15 @@ class BaseViewController: UIViewController {
         setListeners()
         configureAppearance()
         prepareLayout()
-        addTestNetBannerIfNeeded()
-    }
-    
-    func configureAppearance() {
-        view.backgroundColor = SharedColors.primaryBackground
         
         navigationController?.navigationBar.titleTextAttributes = [
             NSAttributedString.Key.font: UIFont.font(withWeight: .semiBold(size: 16.0)),
             NSAttributedString.Key.foregroundColor: SharedColors.primaryText
         ]
+    }
+    
+    func configureAppearance() {
+        view.backgroundColor = SharedColors.primaryBackground
     }
     
     func prepareLayout() {
@@ -159,28 +154,21 @@ class BaseViewController: UIViewController {
     
     @objc
     private func didChangedNetwork(notification: Notification) {
-        addTestNetBannerIfNeeded()
         setNeedsStatusBarAppearanceUpdate()
     }
 }
 
 extension BaseViewController {
-    private func addTestNetBannerIfNeeded() {
-        guard let api = api,
-            navigationController?.view != nil,
-            api.isTestNet,
-            !shouldHideTestNetBanner else {
+    func addTestNetBanner() {
+        guard let api = api, api.isTestNet else {
             return
         }
         
-        addTestNetBanner()
-    }
-    
-    func addTestNetBanner() {
         if #available(iOS 13.0, *) {
             let statusBarHeight: CGFloat = UIApplication.shared.statusBarFrame.size.height
             
             let statusbarView = UIView()
+            statusbarView.layer.zPosition = 1
             statusbarView.backgroundColor = SharedColors.testNetBanner
             navigationController?.view.addSubview(statusbarView)
           
