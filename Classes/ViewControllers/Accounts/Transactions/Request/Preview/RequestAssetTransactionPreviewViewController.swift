@@ -8,7 +8,7 @@
 
 import UIKit
 
-class RequestAssetTransactionPreviewViewController: RequestTransactionPreviewViewController {
+class RequestAssetTransactionPreviewViewController: RequestTransactionPreviewViewController, TestNetTitleDisplayable {
     
     private lazy var requestTransactionPreviewView = RequestTransactionPreviewView(inputFieldFraction: assetDetail.fractionDecimals)
     
@@ -23,8 +23,8 @@ class RequestAssetTransactionPreviewViewController: RequestTransactionPreviewVie
     
     override func configureAppearance() {
         super.configureAppearance()
-        title = "request-asset-title".localized
         viewModel.configure(requestTransactionPreviewView)
+        displayTestNetTitleView(with: "request-title".localized + " \(assetDetail.getDisplayNames().0)")
     }
     
     override func prepareLayout() {

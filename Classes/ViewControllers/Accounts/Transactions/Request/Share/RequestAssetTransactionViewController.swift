@@ -8,7 +8,7 @@
 
 import UIKit
 
-class RequestAssetTransactionViewController: RequestTransactionViewController {
+class RequestAssetTransactionViewController: RequestTransactionViewController, TestNetTitleDisplayable {
     
     private lazy var requestTransactionView: RequestTransactionView = {
         let assetDetail = assetTransactionRequestDraft.assetDetail
@@ -31,8 +31,8 @@ class RequestAssetTransactionViewController: RequestTransactionViewController {
     
     override func configureAppearance() {
         super.configureAppearance()
-        title = "\(assetTransactionRequestDraft.assetDetail.getDisplayNames().0) " + "request-title".localized
         viewModel.configure(requestTransactionView)
+        displayTestNetTitleView(with: "request-title".localized + " \(assetTransactionRequestDraft.assetDetail.getDisplayNames().0)")
     }
     
     override func linkInteractors() {

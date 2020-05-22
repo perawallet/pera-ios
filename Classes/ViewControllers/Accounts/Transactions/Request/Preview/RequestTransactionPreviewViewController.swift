@@ -22,6 +22,11 @@ class RequestTransactionPreviewViewController: BaseViewController {
         hidesBottomBarWhenPushed = true
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        addTestNetBanner()
+    }
+    
     override func setListeners() {
         super.setListeners()
         setKeyboardListeners()

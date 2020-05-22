@@ -51,29 +51,13 @@ extension AccountsViewController: OptionsViewControllerDelegate {
         guard let account = self.selectedAccount else {
             return
         }
-
-        let viewController = PassphraseDisplayViewController(address: account.address, configuration: configuration)
-        viewController.modalPresentationStyle = .overCurrentContext
-        viewController.modalTransitionStyle = .crossDissolve
-
-        tabBarController?.present(viewController, animated: true, completion: nil)
-    }
-    
-    func optionsViewControllerDidEditAccountName(_ optionsViewController: OptionsViewController) {
-        openEditAccountModalView()
-    }
-    
-    private func openEditAccountModalView() {
-        guard let selectedAccount = self.selectedAccount else {
-            return
-        }
-
+        
         open(
-            .editAccount(account: selectedAccount),
+            .passphraseDisplay(address: account.address),
             by: .customPresent(
                 presentationStyle: .custom,
                 transitionStyle: nil,
-                transitioningDelegate: editAccountModalPresenter
+                transitioningDelegate: passphraseModalPresenter
             )
         )
     }
@@ -122,7 +106,7 @@ extension AccountsViewController: OptionsViewControllerDelegate {
 extension AccountsViewController: ChoosePasswordViewControllerDelegate {
     func choosePasswordViewController(_ choosePasswordViewController: ChoosePasswordViewController, didConfirmPassword isConfirmed: Bool) {
         if isConfirmed {
-            
+            presentPassphraseView()
         } else {
             displaySimpleAlertWith(
                 title: "password-verify-fail-title".localized,

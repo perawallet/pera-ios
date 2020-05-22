@@ -17,7 +17,7 @@ protocol SendAssetTransactionPreviewViewControllerDelegate: class {
     )
 }
 
-class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewController {
+class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewController, TestNetTitleDisplayable {
     
     private lazy var assetSupportPresenter = CardModalPresenter(
         config: ModalConfiguration(
@@ -59,17 +59,7 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
         super.configureAppearance()
         viewModel.configure(sendTransactionPreviewView, with: selectedAccount)
         configureTransactionReceiver()
-        
-        guard let isTestNet = api?.isTestNet else {
-            title = "title-send".localized + " \(assetDetail.getDisplayNames().0)"
-            return
-        }
-        
-        if isTestNet {
-            navigationItem.titleView = TestNetTitleView(title: "title-send".localized + " \(assetDetail.getDisplayNames().0)")
-        } else {
-            title = "title-send".localized + " \(assetDetail.getDisplayNames().0)"
-        }
+        displayTestNetTitleView(with: "title-send".localized + " \(assetDetail.getDisplayNames().0)")
     }
     
     override func presentAccountList(accountSelectionState: AccountSelectionState) {

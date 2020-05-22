@@ -8,7 +8,7 @@
 
 import UIKit
 
-class RequestAlgosTransactionPreviewViewController: RequestTransactionPreviewViewController {
+class RequestAlgosTransactionPreviewViewController: RequestTransactionPreviewViewController, TestNetTitleDisplayable {
     
     private lazy var requestTransactionPreviewView = RequestTransactionPreviewView(inputFieldFraction: algosFraction)
     
@@ -21,8 +21,8 @@ class RequestAlgosTransactionPreviewViewController: RequestTransactionPreviewVie
     
     override func configureAppearance() {
         super.configureAppearance()
-        title = "request-algos-title".localized
         viewModel.configure(requestTransactionPreviewView)
+        displayTestNetTitleView(with: "request-algos-title".localized)
     }
     
     override func prepareLayout() {

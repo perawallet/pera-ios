@@ -9,7 +9,7 @@
 import UIKit
 import SVProgressHUD
 
-class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewController {
+class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewController, TestNetTitleDisplayable {
     
     private lazy var bottomModalPresenter = CardModalPresenter(
         config: ModalConfiguration(
@@ -25,17 +25,7 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
         super.configureAppearance()
         viewModel.configure(sendTransactionPreviewView, with: selectedAccount)
         configureTransactionReceiver()
-        
-        guard let isTestNet = api?.isTestNet else {
-            title = "send-algos-title".localized
-            return
-        }
-        
-        if isTestNet {
-            navigationItem.titleView = TestNetTitleView(title: "send-algos-title".localized)
-        } else {
-            title = "send-algos-title".localized
-        }
+        displayTestNetTitleView(with: "send-algos-title".localized)
     }
     
     override func presentAccountList(accountSelectionState: AccountSelectionState) {
@@ -262,10 +252,10 @@ extension SendAlgosTransactionPreviewViewController {
                 }
                 
                 switch accountResponse {
-                case let .failure(error):
+                case .failure:
                     self.dismissProgressIfNeeded()
                     
-                    self.displaySimpleAlertWith(title: "title-error".localized, message: error.localizedDescription)
+                    self.displaySimpleAlertWith(title: "title-error".localized, message: "title-internet-connection".localized)
                 case let .success(account):
                     if account.amount == 0 {
                         self.dismissProgressIfNeeded()

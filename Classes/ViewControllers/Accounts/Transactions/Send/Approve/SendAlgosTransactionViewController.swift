@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SendAlgosTransactionViewController: SendTransactionViewController {
+class SendAlgosTransactionViewController: SendTransactionViewController, TestNetTitleDisplayable {
     
     private var algosTransactionSendDraft: AlgosTransactionSendDraft
     private let viewModel = SendAlgosTransactionViewModel()
@@ -29,17 +29,7 @@ class SendAlgosTransactionViewController: SendTransactionViewController {
     override func configureAppearance() {
         super.configureAppearance()
         viewModel.configure(sendTransactionView, with: algosTransactionSendDraft)
-        
-        guard let isTestNet = api?.isTestNet else {
-            title = "send-algos-title".localized
-            return
-        }
-        
-        if isTestNet {
-            navigationItem.titleView = TestNetTitleView(title: "send-algos-title".localized)
-        } else {
-            title = "send-algos-title".localized
-        }
+        displayTestNetTitleView(with: "send-algos-title".localized)
     }
     
     override func completeTransaction(with id: TransactionID) {

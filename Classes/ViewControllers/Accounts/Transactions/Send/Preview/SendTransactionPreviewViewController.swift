@@ -76,9 +76,9 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
         hidesBottomBarWhenPushed = true
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        sendTransactionPreviewView.amountInputView.beginEditing()
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        addTestNetBanner()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -261,9 +261,9 @@ extension SendTransactionPreviewViewController: TransactionControllerDelegate {
                 )
                 return
             }
-            displaySimpleAlertWith(title: "title-error".localized, message: error.localizedDescription)
+            displaySimpleAlertWith(title: "title-error".localized, message: "title-internet-connection".localized)
         default:
-            displaySimpleAlertWith(title: "title-error".localized, message: error.localizedDescription)
+            displaySimpleAlertWith(title: "title-error".localized, message: "title-internet-connection".localized)
         }
     }
     

@@ -35,6 +35,11 @@ class SendTransactionViewController: BaseViewController {
         hidesBottomBarWhenPushed = true
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        addTestNetBanner()
+    }
+    
     override func configureAppearance() {
         super.configureAppearance()
         viewModel.configure(sendTransactionView, with: assetReceiverState, and: fee)

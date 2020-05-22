@@ -14,6 +14,11 @@ class RequestTransactionViewController: BaseScrollViewController {
         super.init(configuration: configuration)
         hidesBottomBarWhenPushed = true
     }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        addTestNetBanner()
+    }
 }
 
 extension RequestTransactionViewController {

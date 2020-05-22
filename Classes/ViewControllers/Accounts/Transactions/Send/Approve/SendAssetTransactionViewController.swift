@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SendAssetTransactionViewController: SendTransactionViewController {
+class SendAssetTransactionViewController: SendTransactionViewController, TestNetTitleDisplayable {
     
     private var assetTransactionSendDraft: AssetTransactionSendDraft
     private let viewModel = SendAssetTransactionViewModel()
@@ -46,18 +46,7 @@ extension SendAssetTransactionViewController {
         }
         
         let assetTitle = "title-send".localized + " \(assetDetail.getDisplayNames().0)"
-        
-        guard let isTestNet = api?.isTestNet else {
-            title = assetTitle
-            return
-        }
-        
-        if isTestNet {
-            navigationItem.titleView = TestNetTitleView(title: assetTitle)
-        } else {
-            title = assetTitle
-        }
-        
+        displayTestNetTitleView(with: assetTitle)
         sendTransactionView.setButtonTitle(assetTitle)
     }
 }
