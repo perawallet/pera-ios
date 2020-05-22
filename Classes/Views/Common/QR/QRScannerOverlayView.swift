@@ -24,19 +24,28 @@ class QRScannerOverlayView: BaseView {
     }()
     
     private lazy var overlayView: UIView = {
-        let view = UIView()
-        view.layer.cornerRadius = 18.0
-        view.backgroundColor = .clear
-        return view
+        let overlayView = UIView(frame: UIScreen.main.bounds)
+        overlayView.backgroundColor = SharedColors.gray900.withAlphaComponent(0.9)
+        let path = CGMutablePath()
+        path.addRect(UIScreen.main.bounds)
+        path.addRoundedRect(
+            in: overlayViewCenterRect,
+            cornerWidth: 18.0,
+            cornerHeight: 18.0
+        )
+        let maskLayer = CAShapeLayer()
+        maskLayer.path = path
+        maskLayer.fillRule = CAShapeLayerFillRule.evenOdd
+        overlayView.layer.mask = maskLayer
+        return overlayView
     }()
     
-    private lazy var topLeftOverlayImageView = UIImageView(image: img("img-qr-overlay-top-left"))
+    private lazy var overlayViewCenterRect: CGRect = {
+        let size: CGFloat = 248.0
+        return CGRect(x: UIScreen.main.bounds.midX - (size / 2.0), y: UIScreen.main.bounds.midY - (size / 2.0), width: size, height: size)
+    }()
     
-    private lazy var topRightOverlayImageView = UIImageView(image: img("img-qr-overlay-top-right"))
-    
-    private lazy var bottomLeftOverlayImageView = UIImageView(image: img("img-qr-overlay-bottom-left"))
-    
-    private lazy var bottomRightOverlayImageView = UIImageView(image: img("img-qr-overlay-bottom-right"))
+    private lazy var overlayImageView = UIImageView(image: img("img-qr-overlay-center"))
     
     private lazy var explanationLabel: UILabel = {
         UILabel()
@@ -65,11 +74,7 @@ class QRScannerOverlayView: BaseView {
     
     override func prepareLayout() {
         setupOverlayViewLayout()
-        setupTopLeftOverlayImageViewLayout()
-        setupTopRightOverlayImageViewLayout()
-        setupBottomLeftOverlayImageViewLayout()
-        setupBottomRightOverlayImageViewLayout()
-        setupQRDisplayViewLayout()
+        setupOverlayImageViewLayout()
         setupTitleLabelLayout()
         setupCancelButtonLayout()
         setupExplanationLabelLayout()
@@ -88,88 +93,13 @@ extension QRScannerOverlayView {
         addSubview(overlayView)
         
         overlayView.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.centerY.equalToSuperview()
-            make.size.equalTo(layout.current.overlaySize)
+            make.edges.equalToSuperview()
         }
     }
     
-    private func setupTopLeftOverlayImageViewLayout() {
-        overlayView.addSubview(topLeftOverlayImageView)
-        
-        topLeftOverlayImageView.snp.makeConstraints { make in
-            make.top.leading.equalToSuperview()
-        }
-    }
-    
-    private func setupTopRightOverlayImageViewLayout() {
-        overlayView.addSubview(topRightOverlayImageView)
-        
-        topRightOverlayImageView.snp.makeConstraints { make in
-            make.top.trailing.equalToSuperview()
-        }
-    }
-    
-    private func setupBottomLeftOverlayImageViewLayout() {
-        overlayView.addSubview(bottomLeftOverlayImageView)
-        
-        bottomLeftOverlayImageView.snp.makeConstraints { make in
-            make.leading.bottom.equalToSuperview()
-        }
-    }
-    
-    private func setupBottomRightOverlayImageViewLayout() {
-        overlayView.addSubview(bottomRightOverlayImageView)
-        
-        bottomRightOverlayImageView.snp.makeConstraints { make in
-            make.bottom.trailing.equalToSuperview()
-        }
-    }
-    
-    private func setupQRDisplayViewLayout() {
-        let topOverlayView = UIView()
-        topOverlayView.backgroundColor = SharedColors.gray900.withAlphaComponent(0.9)
-        
-        addSubview(topOverlayView)
-        
-        topOverlayView.snp.makeConstraints { make in
-            make.leading.trailing.top.equalToSuperview()
-            make.bottom.equalTo(overlayView.snp.top)
-        }
-        
-        let bottomOverlayView = UIView()
-        bottomOverlayView.backgroundColor = SharedColors.gray900.withAlphaComponent(0.9)
-        
-        addSubview(bottomOverlayView)
-        
-        bottomOverlayView.snp.makeConstraints { make in
-            make.leading.trailing.bottom.equalToSuperview()
-            make.top.equalTo(overlayView.snp.bottom)
-        }
-        
-        let leftOverlayView = UIView()
-        leftOverlayView.backgroundColor = SharedColors.gray900.withAlphaComponent(0.9)
-        
-        addSubview(leftOverlayView)
-        
-        leftOverlayView.snp.makeConstraints { make in
-            make.leading.equalToSuperview()
-            make.top.equalTo(topOverlayView.snp.bottom)
-            make.bottom.equalTo(bottomOverlayView.snp.top)
-            make.trailing.equalTo(overlayView.snp.leading)
-        }
-        
-        let rightOverlayView = UIView()
-        rightOverlayView.backgroundColor = SharedColors.gray900.withAlphaComponent(0.9)
-        
-        addSubview(rightOverlayView)
-        
-        rightOverlayView.snp.makeConstraints { make in
-            make.trailing.equalToSuperview()
-            make.top.equalTo(topOverlayView.snp.bottom)
-            make.bottom.equalTo(bottomOverlayView.snp.top)
-            make.leading.equalTo(overlayView.snp.trailing)
-        }
+    private func setupOverlayImageViewLayout() {
+        addSubview(overlayImageView)
+        overlayImageView.frame = overlayViewCenterRect
     }
     
     private func setupTitleLabelLayout() {
@@ -196,7 +126,6 @@ extension QRScannerOverlayView {
         
         explanationLabel.snp.makeConstraints { make in
             make.bottom.equalTo(cancelButton.snp.top).offset(-layout.current.buttonVerticalInset)
-            make.top.greaterThanOrEqualTo(overlayView.snp.bottom).offset(layout.current.explanationLabelTopInset)
             make.centerX.equalToSuperview()
             make.leading.trailing.equalToSuperview().inset(layout.current.explanationLabelHorizontalInset)
         }
@@ -208,9 +137,7 @@ extension QRScannerOverlayView {
         let horizontalInset: CGFloat = 20.0
         let buttonVerticalInset: CGFloat = 40.0 * verticalScale
         let titleLabelTopInset: CGFloat = 40.0
-        let overlaySize = CGSize(width: 248.0, height: 248.0)
         let explanationLabelHorizontalInset: CGFloat = 40.0
-        let explanationLabelTopInset: CGFloat = 20.0 * verticalScale
     }
 }
 
