@@ -62,11 +62,6 @@ class AssetRemovalViewController: BaseViewController {
         super.init(configuration: configuration)
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        addTestNetBanner()
-    }
-    
     override func configureAppearance() {
         super.configureAppearance()
         navigationItem.title = "title-remove-assets".localized
@@ -324,6 +319,8 @@ extension AssetRemovalViewController: TransactionControllerDelegate {
         if account.type == .ledger {
             ledgerApprovalViewController?.dismissScreen()
         }
+        
+        SVProgressHUD.dismiss()
     }
     
     private func getRemovedAssetDetail(from draft: AssetTransactionSendDraft?) -> AssetDetail? {

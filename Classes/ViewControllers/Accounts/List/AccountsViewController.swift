@@ -32,20 +32,20 @@ class AccountsViewController: BaseViewController {
         initialModalSize: .custom(CGSize(width: view.frame.width, height: layout.current.removeAccountModalHeight))
     )
     
-    private(set) lazy var editAccountModalPresenter = CardModalPresenter(
-        config: ModalConfiguration(
-            animationMode: .normal(duration: 0.25),
-            dismissMode: .backgroundTouch
-        ),
-        initialModalSize: .custom(CGSize(width: view.frame.width, height: layout.current.editAccountModalHeight))
-    )
-    
     private(set) lazy var termsServiceModalPresenter = CardModalPresenter(
         config: ModalConfiguration(
             animationMode: .normal(duration: 0.25),
             dismissMode: .none
         ),
         initialModalSize: .custom(CGSize(width: view.frame.width, height: layout.current.termsAndServiceHeight))
+    )
+    
+    private(set) lazy var passphraseModalPresenter = CardModalPresenter(
+        config: ModalConfiguration(
+            animationMode: .normal(duration: 0.25),
+            dismissMode: .scroll
+        ),
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: layout.current.passphraseModalHeight))
     )
     
     private lazy var pushNotificationController: PushNotificationController = {
@@ -96,6 +96,7 @@ class AccountsViewController: BaseViewController {
         pushNotificationController.registerDevice()
         
         setAccountsCollectionViewContentState()
+        addTestNetBanner()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -137,7 +138,8 @@ extension AccountsViewController {
         view.addSubview(accountsView)
         
         accountsView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.leading.trailing.bottom.equalToSuperview()
+            make.top.safeEqualToTop(of: self)
         }
     }
 }
@@ -204,7 +206,7 @@ extension AccountsViewController: AssetAdditionViewControllerDelegate {
 
 extension AccountsViewController {
     @objc
-    fileprivate func didUpdateAuthenticatedUser(notification: Notification) {
+    private func didUpdateAuthenticatedUser(notification: Notification) {
         accountsDataSource.reload()
         setAccountsCollectionViewContentState()
         accountsView.accountsCollectionView.reloadData()
@@ -236,6 +238,7 @@ extension AccountsViewController {
     
     private func setAccountsCollectionViewContentState() {
         accountsView.accountsCollectionView.contentState = accountsDataSource.accounts.isEmpty ? .empty(noConnectionView) : .none
+        accountsView.setHeaderButtonsHidden(accountsDataSource.accounts.isEmpty)
     }
     
     private func presentTermsAndServicesIfNeeded() {
@@ -342,6 +345,7 @@ extension AccountsViewController {
         let optionsModalHeight: CGFloat = 384.0
         let removeAccountModalHeight: CGFloat = 402.0
         let editAccountModalHeight: CGFloat = 158.0
+        let passphraseModalHeight: CGFloat = 470.0
         let termsAndServiceHeight: CGFloat = 300
     }
 }

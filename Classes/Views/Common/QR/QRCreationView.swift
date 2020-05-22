@@ -20,7 +20,7 @@ class QRCreationView: BaseView {
         UIButton(type: .custom)
             .withBackgroundImage(img("bg-main-button-small"))
             .withImage(img("icon-share-white"))
-            .withTitle("title-share".localized)
+            .withTitle("title-share-qr".localized)
             .withTitleColor(SharedColors.primaryButtonTitle)
             .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
             .withImageEdgeInsets(UIEdgeInsets(top: 0, left: -10.0, bottom: 0, right: 0))

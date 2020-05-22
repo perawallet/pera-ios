@@ -126,11 +126,11 @@ extension MainHeaderView {
     }
     
     func setQRButtonHidden(_ hidden: Bool) {
-        qrButton.isHidden = true
+        qrButton.isHidden = hidden
     }
     
     func setAddButtonHidden(_ hidden: Bool) {
-        addButton.isHidden = true
+        addButton.isHidden = hidden
     }
     
     func setTitle(_ title: String) {

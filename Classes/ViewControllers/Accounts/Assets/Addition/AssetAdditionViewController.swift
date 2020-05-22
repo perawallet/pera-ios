@@ -250,8 +250,12 @@ extension AssetAdditionViewController: InputViewDelegate {
     
     func inputViewDidChangeValue(inputView: BaseInputView) {
         guard let query = assetAdditionView.assetInputView.inputTextField.text else {
+            assetAdditionView.assetInputView.rightInputAccessoryButton.isHidden = false
             return
         }
+        
+        assetAdditionView.assetInputView.rightInputAccessoryButton.isHidden = query.isEmpty
+        
         resetPagination()
         fetchAssets(with: query, isPaginated: false)
     }
@@ -259,6 +263,13 @@ extension AssetAdditionViewController: InputViewDelegate {
     private func resetPagination() {
         hasNext = false
         searchOffset = 0
+    }
+    
+    func inputViewDidTapAccessoryButton(inputView: BaseInputView) {
+        assetAdditionView.assetInputView.rightInputAccessoryButton.isHidden = true
+        assetAdditionView.assetInputView.inputTextField.text = nil
+        resetPagination()
+        fetchAssets(with: nil, isPaginated: false)
     }
 }
 
@@ -286,6 +297,8 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
             ledgerApprovalViewController?.dismissScreen()
         }
         
+        SVProgressHUD.dismiss()
+        
         switch error {
         case let .custom(fee):
             guard let api = api,
@@ -304,7 +317,7 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
         }
     }
     
-    func transactionController(_ transactionController: TransactionController, didFailBLEConnectionWith state: CBManagerState) {        
+    func transactionController(_ transactionController: TransactionController, didFailBLEConnectionWith state: CBManagerState) {
         guard let errorTitle = state.errorDescription.title,
             let errorSubtitle = state.errorDescription.subtitle else {
                 return

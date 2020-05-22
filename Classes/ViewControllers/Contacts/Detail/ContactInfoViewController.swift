@@ -63,6 +63,15 @@ class ContactInfoViewController: BaseScrollViewController {
         contactInfoView.assetsCollectionView.dataSource = self
     }
     
+    override func setListeners() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didContactDeleted(notification:)),
+            name: .ContactDeletion,
+            object: nil
+        )
+    }
+    
     override func prepareLayout() {
         super.prepareLayout()
         setupContactInfoViewLayout()
@@ -152,6 +161,11 @@ extension ContactInfoViewController {
         }
         
         contactInfoView.assetsCollectionView.reloadData()
+    }
+    
+    @objc
+    private func didContactDeleted(notification: Notification) {
+        closeScreen(by: .pop, animated: false)
     }
 }
 

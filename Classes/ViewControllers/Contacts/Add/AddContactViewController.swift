@@ -54,7 +54,7 @@ class AddContactViewController: BaseScrollViewController {
             self.checkFieldsHaveChanges()
             
             if self.isUserEdited {
-                self.presentDisabledLocalAuthenticationAlert()
+                self.presentCloseWithoutSavingAlert()
             } else {
                 self.closeScreen(by: .dismiss, animated: true)
             }
@@ -86,7 +86,7 @@ class AddContactViewController: BaseScrollViewController {
         }
     }
     
-    private func presentDisabledLocalAuthenticationAlert() {
+    private func presentCloseWithoutSavingAlert() {
         let alertController = UIAlertController(
             title: "contacts-close-warning-subtitle".localized,
             message: "contacts-close-warning-subtitle".localized,

@@ -18,7 +18,8 @@
 "title-proceed" = "Proceed";
 "title-approve" = "Approve";
 "title-go-home" = "Go To Home";
-"title-share" = "Share";
+"title-share" = "Share QR";
+"title-share-qr" = "Share QR";
 "title-get-started" = "GET STARTED";
 "title-go-to-settings" = "Go To Settings";
 "title-error" = "Error";
@@ -37,7 +38,7 @@
 "title-unknown" = "Unnamed";
 "title-preview-and-sign-with-ledger-title" = "Preview and Sign With Ledger";
 "title-qr-share" = "Share QR";
-"title-keep" = "Keep";
+"title-keep" = "Keep it";
 "title-edit" = "Edit";
 "title-testnet" = "TESTNET";
 "title-account" = "Account";
@@ -72,7 +73,7 @@
 "local-authentication-no" = "No, i’m fine";
 
 // MARK: Passphrase Back Up
-"new-account-title" = "Back up passphrase";
+"new-account-title" = "Back up Passphrase";
 "back-up-phrase-title" = "Back up this Passphrase";
 "back-up-phrase-warning" = "In order to access this account if you lose this device copy or print this phrase and keep it someplace safe.";
 "back-up-phrase-button-title" = "Verify Recovery Passphrase";
@@ -147,7 +148,7 @@
 "asset-remove-confirmation-title" = "Removing Asset";
 "asset-transfer-balance" = "Transfer Balance";
 "title-remove-assets" = "Remove Assets";
-"title-add-asset" = "Add Asset";
+"title-add-asset" = "Add New Asset";
 "asset-add-warning" = "Adding an asset requires sending a transaction with a minimum transaction fee. This will appear on your transaction history.";
 "asset-support-error" = "Unfortunately, this account has not added this asset. Please instruct the account owner to add the asset, and then try again.";
 "asset-support-title" = "Account does not accept this asset";
@@ -184,10 +185,10 @@
 "send-receiving-algos-select" = "Select Receiving Account";
 "send-select-asset" = "Select Asset";
 "send-choose-asset" = "Choose asset";
-"send-algos-to" = "To:";
+"send-algos-to" = "To";
 "send-algos-fee" = "Fee:";
 "send-algos-balance-title" = "Balance:";
-"send-algos-amount" = "Amount:";
+"send-algos-amount" = "Amount";
 "send-algos-transaction-id" = "Transaction ID:";
 "send-algos-more" = "SEND MORE";
 "send-algos-sent-title" = "Algos Sent!";
@@ -328,6 +329,8 @@
 "transaction-detail-round" = "Round";
 "transaction-detail-id" = "Transaction ID";
 "transaction-detail-note" = "Note";
+"transaction-detail-close-to" = "Close To";
+"transaction-detail-close-amount" = "Close Amount";
 
 // MARK: Feedback
 "feedback-title" = "Send Feedback";

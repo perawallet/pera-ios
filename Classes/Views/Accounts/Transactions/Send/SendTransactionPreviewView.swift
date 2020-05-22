@@ -115,7 +115,6 @@ extension SendTransactionPreviewView {
         transactionReceiverView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(amountInputView.snp.bottom).offset(layout.current.verticalInset)
-            make.height.equalTo(104.0)
         }
     }
     

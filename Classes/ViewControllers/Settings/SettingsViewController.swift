@@ -69,7 +69,8 @@ extension SettingsViewController {
         view.addSubview(settingsView)
         
         settingsView.snp.makeConstraints { make in
-            make.top.leading.trailing.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
+            make.top.safeEqualToTop(of: self)
             make.bottom.safeEqualToBottom(of: self)
         }
     }

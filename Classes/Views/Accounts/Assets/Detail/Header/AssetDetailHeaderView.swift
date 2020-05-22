@@ -121,7 +121,7 @@ class AssetDetailHeaderView: BaseView {
     override func configureAppearance() {
         backgroundColor = SharedColors.secondaryBackground
         algosImageView.contentMode = .scaleAspectFit
-        dollarValueImageView.contentMode = .scaleAspectFit
+        dollarValueImageView.contentMode = .center
         dollarAmountLabel.isHidden = true
         layer.cornerRadius = 12.0
         applyMediumShadow()
@@ -231,7 +231,6 @@ extension AssetDetailHeaderView {
             make.top.equalTo(algosAmountLabel.snp.bottom).offset(layout.current.defaultInset)
             make.width.equalTo(layout.current.buttonWidth)
             make.height.equalTo(layout.current.buttonHeight)
-            make.bottom.equalToSuperview().inset(layout.current.defaultInset).priority(.medium)
         }
     }
     
@@ -251,7 +250,7 @@ extension AssetDetailHeaderView {
         
         rewardTotalAmountView.snp.makeConstraints { make in
             make.top.equalTo(sendButton.snp.bottom).offset(layout.current.defaultInset)
-            make.leading.trailing.bottom.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
         }
     }
 }

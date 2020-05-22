@@ -28,6 +28,7 @@ class ContactInfoViewModel {
         if indexPath.item == 0 {
             cell.contextView.assetNameView.removeId()
             cell.contextView.assetNameView.nameLabel.text = "asset-algos-title".localized
+            cell.contextView.assetNameView.setVerified(true)
         } else {
             guard let account = contactAccount else {
                 return

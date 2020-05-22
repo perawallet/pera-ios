@@ -202,7 +202,7 @@ extension FeedbackViewController {
         let configurator = BottomInformationBundle(
             title: "feedback-success-title".localized,
             image: img("feedback-success-icon"),
-            explanation: "feedback-success-detail",
+            explanation: "feedback-success-detail".localized,
             actionTitle: "title-close".localized,
             actionImage: img("bg-main-button")
         ) {

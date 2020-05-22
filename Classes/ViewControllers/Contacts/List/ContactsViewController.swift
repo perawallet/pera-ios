@@ -100,7 +100,8 @@ class ContactsViewController: BaseViewController {
         view.addSubview(contactsView)
         
         contactsView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.top.safeEqualToTop(of: self)
+            make.leading.trailing.bottom.equalToSuperview()
         }
     }
     
