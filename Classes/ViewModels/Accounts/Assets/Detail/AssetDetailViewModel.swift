@@ -146,7 +146,7 @@ extension AssetDetailViewModel {
     }
     
     func configure(_ cell: RewardCell, with reward: Reward) {
-        cell.contextView.transactionAmountView.amountLabel.text = reward.amount.toAlgos.toDecimalStringForLabel
+        cell.contextView.transactionAmountView.mode = .normal(amount: reward.amount.toAlgos)
     }
 }
 
