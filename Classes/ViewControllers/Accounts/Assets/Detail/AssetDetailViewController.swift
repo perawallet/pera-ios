@@ -203,6 +203,10 @@ extension AssetDetailViewController: TransactionsViewControllerDelegate {
                 scrollView.setContentOffset(CGPoint(x: 0.0, y: 0.0), animated: false)
             }
         } else {
+            if scrollView.contentOffset.y > 0.0 {
+                return
+            }
+            
             offset = scrollOffset > headerHeight ? 0.0 : scrollOffset - headerHeight
             if offset == 0.0 || transactionsViewController.view.frame.minY >= headerHeight {
                 assetDetailTitleView.animateDown(with: 1.0)
