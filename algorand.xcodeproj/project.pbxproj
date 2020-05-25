@@ -371,6 +371,20 @@
 		2B3E39F12478372E00E8AEB7 /* PassphraseDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3E39EF2478372E00E8AEB7 /* PassphraseDisplayView.swift */; };
 		2B3E39F4247837D700E8AEB7 /* TestNetTitleDisplayable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3E39F3247837D700E8AEB7 /* TestNetTitleDisplayable.swift */; };
 		2B3E39F5247837D700E8AEB7 /* TestNetTitleDisplayable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3E39F3247837D700E8AEB7 /* TestNetTitleDisplayable.swift */; };
+		2B3E39FA2479665B00E8AEB7 /* TabBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3E39F92479665B00E8AEB7 /* TabBarButton.swift */; };
+		2B3E39FB2479665B00E8AEB7 /* TabBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3E39F92479665B00E8AEB7 /* TabBarButton.swift */; };
+		2B3E39FD247966AF00E8AEB7 /* TabBarConfigurable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3E39FC247966AF00E8AEB7 /* TabBarConfigurable.swift */; };
+		2B3E39FE247966AF00E8AEB7 /* TabBarConfigurable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3E39FC247966AF00E8AEB7 /* TabBarConfigurable.swift */; };
+		2B3E3A00247966D300E8AEB7 /* TabBarButtonItemConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3E39FF247966D300E8AEB7 /* TabBarButtonItemConvertible.swift */; };
+		2B3E3A01247966D300E8AEB7 /* TabBarButtonItemConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3E39FF247966D300E8AEB7 /* TabBarButtonItemConvertible.swift */; };
+		2B3E3A062479684900E8AEB7 /* TabBarItemConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3E3A052479684900E8AEB7 /* TabBarItemConvertible.swift */; };
+		2B3E3A072479684900E8AEB7 /* TabBarItemConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3E3A052479684900E8AEB7 /* TabBarItemConvertible.swift */; };
+		2B3E3A0924796FCC00E8AEB7 /* TabBarItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3E3A0824796FCC00E8AEB7 /* TabBarItems.swift */; };
+		2B3E3A0A24796FCC00E8AEB7 /* TabBarItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3E3A0824796FCC00E8AEB7 /* TabBarItems.swift */; };
+		2B3E3A0C247BFD6E00E8AEB7 /* UIStackView+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3E3A0B247BFD6E00E8AEB7 /* UIStackView+Additions.swift */; };
+		2B3E3A0D247BFD6E00E8AEB7 /* UIStackView+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3E3A0B247BFD6E00E8AEB7 /* UIStackView+Additions.swift */; };
+		2B3E3A10247BFDA600E8AEB7 /* Bool+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3E3A0F247BFDA600E8AEB7 /* Bool+Additions.swift */; };
+		2B3E3A11247BFDA600E8AEB7 /* Bool+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3E3A0F247BFDA600E8AEB7 /* Bool+Additions.swift */; };
 		2B432A4F237C4F5D009191BF /* AccountsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B432A4E237C4F5D009191BF /* AccountsViewModel.swift */; };
 		2B432A50237C4F5D009191BF /* AccountsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B432A4E237C4F5D009191BF /* AccountsViewModel.swift */; };
 		2B432A52237C56F0009191BF /* BaseSupplementaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B432A51237C56F0009191BF /* BaseSupplementaryView.swift */; };
@@ -1035,6 +1049,13 @@
 		2B3D73BB23C3638900597D32 /* LimitQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LimitQuery.swift; sourceTree = "<group>"; };
 		2B3E39EF2478372E00E8AEB7 /* PassphraseDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseDisplayView.swift; sourceTree = "<group>"; };
 		2B3E39F3247837D700E8AEB7 /* TestNetTitleDisplayable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestNetTitleDisplayable.swift; sourceTree = "<group>"; };
+		2B3E39F92479665B00E8AEB7 /* TabBarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarButton.swift; sourceTree = "<group>"; };
+		2B3E39FC247966AF00E8AEB7 /* TabBarConfigurable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarConfigurable.swift; sourceTree = "<group>"; };
+		2B3E39FF247966D300E8AEB7 /* TabBarButtonItemConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarButtonItemConvertible.swift; sourceTree = "<group>"; };
+		2B3E3A052479684900E8AEB7 /* TabBarItemConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarItemConvertible.swift; sourceTree = "<group>"; };
+		2B3E3A0824796FCC00E8AEB7 /* TabBarItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarItems.swift; sourceTree = "<group>"; };
+		2B3E3A0B247BFD6E00E8AEB7 /* UIStackView+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+Additions.swift"; sourceTree = "<group>"; };
+		2B3E3A0F247BFDA600E8AEB7 /* Bool+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bool+Additions.swift"; sourceTree = "<group>"; };
 		2B432A4E237C4F5D009191BF /* AccountsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsViewModel.swift; sourceTree = "<group>"; };
 		2B432A51237C56F0009191BF /* BaseSupplementaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseSupplementaryView.swift; sourceTree = "<group>"; };
 		2B432A54237C5793009191BF /* AccountHeaderSupplementaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountHeaderSupplementaryView.swift; sourceTree = "<group>"; };
@@ -1615,6 +1636,14 @@
 				2B3E39F3247837D700E8AEB7 /* TestNetTitleDisplayable.swift */,
 			);
 			path = TestNet;
+			sourceTree = "<group>";
+		};
+		2B3E3A0E247BFD8B00E8AEB7 /* Bool */ = {
+			isa = PBXGroup;
+			children = (
+				2B3E3A0F247BFDA600E8AEB7 /* Bool+Additions.swift */,
+			);
+			path = Bool;
 			sourceTree = "<group>";
 		};
 		2B432A4D237C4F4A009191BF /* List */ = {
@@ -2573,6 +2602,11 @@
 			isa = PBXGroup;
 			children = (
 				2B59F16022563F89005203DD /* TabBar.swift */,
+				2B3E39F92479665B00E8AEB7 /* TabBarButton.swift */,
+				2B3E39FC247966AF00E8AEB7 /* TabBarConfigurable.swift */,
+				2B3E39FF247966D300E8AEB7 /* TabBarButtonItemConvertible.swift */,
+				2B3E3A052479684900E8AEB7 /* TabBarItemConvertible.swift */,
+				2B3E3A0824796FCC00E8AEB7 /* TabBarItems.swift */,
 			);
 			path = Container;
 			sourceTree = "<group>";
@@ -3151,6 +3185,7 @@
 			isa = PBXGroup;
 			children = (
 				2BB6EE4F2392693700CF7874 /* Array */,
+				2B3E3A0E247BFD8B00E8AEB7 /* Bool */,
 				2B982331231D3958009560CD /* Codable */,
 				2B43B83A22A8394000CEA8F3 /* Date */,
 				17AA1B0222660E43000B0BB0 /* Formatter */,
@@ -3294,6 +3329,7 @@
 			isa = PBXGroup;
 			children = (
 				2BB021E8224E828E0039D78A /* UICollectionView+Additions.swift */,
+				2B3E3A0B247BFD6E00E8AEB7 /* UIStackView+Additions.swift */,
 			);
 			path = List;
 			sourceTree = "<group>";
@@ -4747,6 +4783,7 @@
 				17BD4E132292F1260003E49A /* AddNodeView.swift in Sources */,
 				17BD4E142292F1260003E49A /* SendTransactionPreviewViewController.swift in Sources */,
 				17BD4E152292F1260003E49A /* RequestTransactionViewController.swift in Sources */,
+				2B3E3A072479684900E8AEB7 /* TabBarItemConvertible.swift in Sources */,
 				17BD4E162292F1260003E49A /* PassphraseViewModel.swift in Sources */,
 				17BD4E172292F1260003E49A /* Payment.swift in Sources */,
 				2B25700723F1D8620005CBA2 /* SendAssetTransactionPreviewViewModel.swift in Sources */,
@@ -4798,10 +4835,12 @@
 				2B25700123F1BFFF0005CBA2 /* SendAssetTransactionViewModel.swift in Sources */,
 				17BD4E372292F1260003E49A /* SettingsToggleContextView.swift in Sources */,
 				17BD4E3A2292F1260003E49A /* RequestTransactionView.swift in Sources */,
+				2B3E39FE247966AF00E8AEB7 /* TabBarConfigurable.swift in Sources */,
 				2BEE061E23E856F7004EBD6F /* AccountInformation.swift in Sources */,
 				2B7ABF69232BDE1C0050B64B /* Reward.swift in Sources */,
 				17BD4E3B2292F1260003E49A /* SettingsViewController.swift in Sources */,
 				17BD4E3C2292F1260003E49A /* IntroductionView.swift in Sources */,
+				2B3E3A01247966D300E8AEB7 /* TabBarButtonItemConvertible.swift in Sources */,
 				2B4BDA14238CA1E500491149 /* AssetActionConfirmationViewModel.swift in Sources */,
 				17BD4E3D2292F1260003E49A /* NodeSettingsHeaderView.swift in Sources */,
 				2B3A34EA246EDA83001C8F22 /* TransactionAssetView.swift in Sources */,
@@ -4930,6 +4969,7 @@
 				9511C295242E26A3003211ED /* TermsAndServicesView.swift in Sources */,
 				17BD4E8C2292F1260003E49A /* Environment.swift in Sources */,
 				17BD4E8D2292F1260003E49A /* ModalAnimator.swift in Sources */,
+				2B3E39FB2479665B00E8AEB7 /* TabBarButton.swift in Sources */,
 				17BD4E8E2292F1260003E49A /* AccountRecoverView.swift in Sources */,
 				17BD4E8F2292F1260003E49A /* PassphraseBackUpCell.swift in Sources */,
 				2B0D84F82395D4F500F0EAA7 /* SendAssetTransactionPreviewViewController.swift in Sources */,
@@ -4998,6 +5038,7 @@
 				2B4BDA17238D1BD500491149 /* OptionsView.swift in Sources */,
 				17BD4EBE2292F1260003E49A /* Notification.Name+Additions.swift in Sources */,
 				17BD4EBF2292F1260003E49A /* UIViewController+Flow.swift in Sources */,
+				2B3E3A0A24796FCC00E8AEB7 /* TabBarItems.swift in Sources */,
 				2BC1828823DEECBE00888476 /* RequestAlgosTransactionPreviewViewController.swift in Sources */,
 				17BD4EC02292F1260003E49A /* AlignedButton.swift in Sources */,
 				17BD4EC12292F1260003E49A /* TransactionID.swift in Sources */,
@@ -5019,6 +5060,7 @@
 				17BD4ECA2292F1260003E49A /* BottomInformationViewController.swift in Sources */,
 				17BD4ECC2292F1260003E49A /* NodeController.swift in Sources */,
 				2B4BDA22238D3A6800491149 /* AssetSearchQuery.swift in Sources */,
+				2B3E3A11247BFDA600E8AEB7 /* Bool+Additions.swift in Sources */,
 				17BD4ECD2292F1260003E49A /* AccountFetchOperation.swift in Sources */,
 				2B4BD9F42389F17400491149 /* AssetSupportViewController.swift in Sources */,
 				17BD4ECE2292F1260003E49A /* PassphraseCollectionViewCell.swift in Sources */,
@@ -5098,6 +5140,7 @@
 				2B56715C24007B3F0037FCFA /* LedgerTutorialView.swift in Sources */,
 				17BD4EFB2292F1260003E49A /* TransactionAmountView.swift in Sources */,
 				17BD4EFC2292F1260003E49A /* UILabel+Factory.swift in Sources */,
+				2B3E3A0D247BFD6E00E8AEB7 /* UIStackView+Additions.swift in Sources */,
 				2BE9371424602F3500322C1E /* MainHeaderView.swift in Sources */,
 				17BD4EFD2292F1260003E49A /* BottomInformationViewModel.swift in Sources */,
 				17BD4EFE2292F1260003E49A /* NodeSettingsViewController.swift in Sources */,
@@ -5181,6 +5224,7 @@
 				2B25BB4B225EAD600092C972 /* RequestTransactionViewController.swift in Sources */,
 				2BAD559723A29C9C0037079F /* String+Empty.swift in Sources */,
 				2BD5477123184310007179FE /* FeedbackCategory.swift in Sources */,
+				2B3E3A062479684900E8AEB7 /* TabBarItemConvertible.swift in Sources */,
 				1761B3CB224A39D400C6BA47 /* PassphraseViewModel.swift in Sources */,
 				2B6ED964226105E100787984 /* Payment.swift in Sources */,
 				2B25700623F1D8620005CBA2 /* SendAssetTransactionPreviewViewModel.swift in Sources */,
@@ -5232,10 +5276,12 @@
 				2B25700023F1BFFF0005CBA2 /* SendAssetTransactionViewModel.swift in Sources */,
 				2B25BB4D225EAD700092C972 /* RequestTransactionView.swift in Sources */,
 				2BD5476A23182636007179FE /* RewardDetailViewModel.swift in Sources */,
+				2B3E39FD247966AF00E8AEB7 /* TabBarConfigurable.swift in Sources */,
 				2BEE061D23E856F7004EBD6F /* AccountInformation.swift in Sources */,
 				2BF5317C224AA89B00A7455F /* SettingsViewController.swift in Sources */,
 				2BD739D1223F97F600B66EEF /* IntroductionView.swift in Sources */,
 				179B93DA225E460500DD03E9 /* NodeSettingsHeaderView.swift in Sources */,
+				2B3E3A00247966D300E8AEB7 /* TabBarButtonItemConvertible.swift in Sources */,
 				2BD73A1C2241636C00B66EEF /* PassphraseView.swift in Sources */,
 				17AA1B0822662BAB000B0BB0 /* String+Number.swift in Sources */,
 				2B3A34E9246EDA83001C8F22 /* TransactionAssetView.swift in Sources */,
@@ -5364,6 +5410,7 @@
 				9511C294242E26A3003211ED /* TermsAndServicesView.swift in Sources */,
 				17B7D8AE2240F25000A6FF9E /* Environment.swift in Sources */,
 				2BF5315F224A472800A7455F /* ModalAnimator.swift in Sources */,
+				2B3E39FA2479665B00E8AEB7 /* TabBarButton.swift in Sources */,
 				2B8954CB224430DC00D6D068 /* AccountRecoverView.swift in Sources */,
 				2BD78E8F226A0B4900A3D35C /* PassphraseBackUpCell.swift in Sources */,
 				17D04F51225FAD920051BC43 /* Double.swift in Sources */,
@@ -5432,6 +5479,7 @@
 				17E2E3C5225210390065957A /* Notification.Name+Additions.swift in Sources */,
 				2BF34C992239AAD20052CAD3 /* UIViewController+Flow.swift in Sources */,
 				2BA8736A2248214800511C7C /* AlignedButton.swift in Sources */,
+				2B3E3A0924796FCC00E8AEB7 /* TabBarItems.swift in Sources */,
 				2BC1828723DEECBE00888476 /* RequestAlgosTransactionPreviewViewController.swift in Sources */,
 				173DA2102256643A00378A82 /* TransactionID.swift in Sources */,
 				2B4BDA16238D1BD500491149 /* OptionsView.swift in Sources */,
@@ -5453,6 +5501,7 @@
 				17695B3A2268CA7400765D31 /* NodeController.swift in Sources */,
 				2BB6EE602394108000CF7874 /* AssetListView.swift in Sources */,
 				17F9E924225789E7004CDF24 /* AccountFetchOperation.swift in Sources */,
+				2B3E3A10247BFDA600E8AEB7 /* Bool+Additions.swift in Sources */,
 				17BEC4662248D39900AAF370 /* PassphraseCollectionViewCell.swift in Sources */,
 				2B7572A6225CA1E3009E0253 /* SendTransactionView.swift in Sources */,
 				2B4BDA21238D3A6800491149 /* AssetSearchQuery.swift in Sources */,
@@ -5532,6 +5581,7 @@
 				2B56715B24007B3F0037FCFA /* LedgerTutorialView.swift in Sources */,
 				2BB021D9224E2A7E0039D78A /* TransactionAmountView.swift in Sources */,
 				2BD739EF223FDE8400B66EEF /* UILabel+Factory.swift in Sources */,
+				2B3E3A0C247BFD6E00E8AEB7 /* UIStackView+Additions.swift in Sources */,
 				2BE9371324602F3500322C1E /* MainHeaderView.swift in Sources */,
 				2B8954B32243D7AD00D6D068 /* BottomInformationViewModel.swift in Sources */,
 				171111BA225E34E400DAF55C /* NodeSettingsViewController.swift in Sources */,
