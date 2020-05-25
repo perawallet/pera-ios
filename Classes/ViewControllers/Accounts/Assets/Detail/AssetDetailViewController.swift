@@ -66,6 +66,10 @@ class AssetDetailViewController: BaseViewController {
         handleDeepLinkRoutingIfNeeded()
     }
     
+    override func customizeTabBarAppearence() {
+        isTabBarHidden = true
+    }
+    
     override func configureAppearance() {
         super.configureAppearance()
         viewModel.configure(assetDetailView.headerView, with: account, and: assetDetail)
@@ -264,7 +268,7 @@ extension AssetDetailViewController: TransactionsViewControllerDelegate {
 extension AssetDetailViewController: AssetDetailViewDelegate {
     func assetDetailViewDidTapSendButton(_ assetDetailView: AssetDetailView) {
         if isAlgoDisplay {
-            open(.sendAlgosTransactionPreview(account: account, receiver: .initial), by: .push)
+            open(.sendAlgosTransactionPreview(account: account, receiver: .initial, isSenderEditable: false), by: .push)
         } else {
             guard let assetDetail = assetDetail else {
                 return
@@ -274,6 +278,7 @@ extension AssetDetailViewController: AssetDetailViewDelegate {
                     account: account,
                     receiver: .initial,
                     assetDetail: assetDetail,
+                    isSenderEditable: false,
                     isMaxTransaction: false
                 ),
                 by: .push
@@ -283,12 +288,12 @@ extension AssetDetailViewController: AssetDetailViewDelegate {
     
     func assetDetailViewDidTapReceiveButton(_ assetDetailView: AssetDetailView) {
         if isAlgoDisplay {
-            open(.requestAlgosTransactionPreview(account: account), by: .push)
+            open(.requestAlgosTransactionPreview(account: account, isReceiverEditable: false), by: .push)
         } else {
             guard let assetDetail = assetDetail else {
                 return
             }
-            open(.requestAssetTransactionPreview(account: account, assetDetail: assetDetail), by: .push)
+            open(.requestAssetTransactionPreview(account: account, assetDetail: assetDetail, isReceiverEditable: false), by: .push)
         }
     }
     

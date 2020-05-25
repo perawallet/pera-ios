@@ -27,8 +27,14 @@ indirect enum Screen {
     case contactSelection
     case addContact(mode: AddContactViewController.Mode)
     case contactDetail(contact: Contact)
-    case sendAlgosTransactionPreview(account: Account?, receiver: AssetReceiverState)
-    case sendAssetTransactionPreview(account: Account?, receiver: AssetReceiverState, assetDetail: AssetDetail, isMaxTransaction: Bool)
+    case sendAlgosTransactionPreview(account: Account?, receiver: AssetReceiverState, isSenderEditable: Bool)
+    case sendAssetTransactionPreview(
+        account: Account?,
+        receiver: AssetReceiverState,
+        assetDetail: AssetDetail,
+        isSenderEditable: Bool,
+        isMaxTransaction: Bool
+    )
     case sendAlgosTransaction(
         algosTransactionSendDraft: AlgosTransactionSendDraft,
         transactionController: TransactionController,
@@ -39,8 +45,8 @@ indirect enum Screen {
         transactionController: TransactionController,
         receiver: AssetReceiverState
     )
-    case requestAlgosTransactionPreview(account: Account)
-    case requestAssetTransactionPreview(account: Account, assetDetail: AssetDetail)
+    case requestAlgosTransactionPreview(account: Account, isReceiverEditable: Bool)
+    case requestAssetTransactionPreview(account: Account, assetDetail: AssetDetail, isReceiverEditable: Bool)
     case requestAlgosTransaction(algosTransactionRequestDraft: AlgosTransactionRequestDraft)
     case requestAssetTransaction(assetTransactionRequestDraft: AssetTransactionRequestDraft)
     case nodeSettings

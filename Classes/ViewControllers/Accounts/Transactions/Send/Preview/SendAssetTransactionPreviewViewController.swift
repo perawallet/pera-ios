@@ -45,13 +45,19 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
         account: Account?,
         assetReceiverState: AssetReceiverState,
         assetDetail: AssetDetail,
+        isSenderEditable: Bool,
         isMaxTransaction: Bool,
         configuration: ViewControllerConfiguration
     ) {
         self.assetDetail = assetDetail
         self.isForcedMaxTransaction = isMaxTransaction
         viewModel = SendAssetTransactionPreviewViewModel(assetDetail: assetDetail, isForcedMaxTransaction: isMaxTransaction)
-        super.init(account: account, assetReceiverState: assetReceiverState, configuration: configuration)
+        super.init(
+            account: account,
+            assetReceiverState: assetReceiverState,
+            isSenderEditable: isSenderEditable,
+            configuration: configuration
+        )
         self.assetFraction = assetDetail.fractionDecimals
     }
     

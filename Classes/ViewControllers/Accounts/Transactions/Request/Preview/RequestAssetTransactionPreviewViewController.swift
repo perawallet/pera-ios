@@ -15,10 +15,10 @@ class RequestAssetTransactionPreviewViewController: RequestTransactionPreviewVie
     private let assetDetail: AssetDetail
     private let viewModel: RequestAssetTransactionPreviewViewModel
     
-    init(account: Account, assetDetail: AssetDetail, configuration: ViewControllerConfiguration) {
+    init(account: Account, assetDetail: AssetDetail, isReceiverEditable: Bool, configuration: ViewControllerConfiguration) {
         self.assetDetail = assetDetail
         self.viewModel = RequestAssetTransactionPreviewViewModel(account: account, assetDetail: assetDetail)
-        super.init(account: account, configuration: configuration)
+        super.init(account: account, isReceiverEditable: isReceiverEditable, configuration: configuration)
     }
     
     override func configureAppearance() {

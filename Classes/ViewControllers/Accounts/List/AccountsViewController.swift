@@ -274,7 +274,14 @@ extension AccountsViewController: QRScannerViewControllerDelegate {
                 let amount = qrText.amount else {
                 return
             }
-            open(.sendAlgosTransactionPreview(account: nil, receiver: .address(address: address, amount: "\(amount)")), by: .push)
+            open(
+                .sendAlgosTransactionPreview(
+                    account: nil,
+                    receiver: .address(address: address, amount: "\(amount)"),
+                    isSenderEditable: false
+                ),
+                by: .push
+            )
         case .assetRequest:
             guard let address = qrText.address,
                 let amount = qrText.amount,
@@ -322,6 +329,7 @@ extension AccountsViewController: QRScannerViewControllerDelegate {
                             .toFractionStringForLabel(fraction: assetDetail.fractionDecimals)
                     ),
                     assetDetail: assetDetail,
+                    isSenderEditable: false,
                     isMaxTransaction: false
                 ),
                 by: .push

@@ -15,9 +15,11 @@ class RequestTransactionPreviewViewController: BaseViewController {
     private var contentViewBottomConstraint: Constraint?
     private(set) var amount = 0.00
     let account: Account
+    private var isReceiverEditable: Bool
     
-    init(account: Account, configuration: ViewControllerConfiguration) {
+    init(account: Account, isReceiverEditable: Bool, configuration: ViewControllerConfiguration) {
         self.account = account
+        self.isReceiverEditable = isReceiverEditable
         super.init(configuration: configuration)
         hidesBottomBarWhenPushed = true
     }

@@ -12,6 +12,8 @@ class SelectAssetViewController: BaseViewController {
     
     private let layout = Layout<LayoutConstants>()
     
+    weak var delegate: SelectAssetViewControllerDelegate?
+    
     private lazy var selectAssetView = SelectAssetView()
     
     private let viewModel = SelectAssetViewModel()
@@ -173,7 +175,19 @@ extension SelectAssetViewController: UICollectionViewDelegateFlowLayout {
 
 extension SelectAssetViewController {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let account = accounts[safe: indexPath.section] else {
+            return
+        }
         
+        dismissScreen()
+        
+        if indexPath.item == 0 {
+            delegate?.selectAssetViewController(self, didSelectAlgosIn: account)
+        } else {
+            if let assetDetail = account.assetDetails[safe: indexPath.item + 1] {
+                delegate?.selectAssetViewController(self, didSelect: assetDetail, in: account)
+            }
+        }
     }
 }
 
@@ -183,4 +197,13 @@ extension SelectAssetViewController {
         let headerHeight: CGFloat = 48.0
         let itemHeight: CGFloat = 52.0
     }
+}
+
+protocol SelectAssetViewControllerDelegate: class {
+    func selectAssetViewController(_ selectAssetViewController: SelectAssetViewController, didSelectAlgosIn account: Account)
+    func selectAssetViewController(
+        _ selectAssetViewController: SelectAssetViewController,
+        didSelect asetDetail: AssetDetail,
+        in account: Account
+    )
 }

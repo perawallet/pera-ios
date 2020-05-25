@@ -269,6 +269,7 @@ extension AssetRemovalViewController: AssetActionConfirmationViewControllerDeleg
                     account: account,
                     receiver: .initial,
                     assetDetail: assetDetail,
+                    isSenderEditable: false,
                     isMaxTransaction: true
                 ),
                 by: .push

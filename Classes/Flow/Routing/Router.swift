@@ -214,17 +214,19 @@ class Router {
             viewController = AddContactViewController(mode: mode, configuration: configuration)
         case let .contactDetail(contact):
             viewController = ContactInfoViewController(contact: contact, configuration: configuration)
-        case let .sendAlgosTransactionPreview(account, receiver):
+        case let .sendAlgosTransactionPreview(account, receiver, isSenderEditable):
             viewController = SendAlgosTransactionPreviewViewController(
                 account: account,
                 assetReceiverState: receiver,
+                isSenderEditable: isSenderEditable,
                 configuration: configuration
             )
-        case let .sendAssetTransactionPreview(account, receiver, assetDetail, isMaxTransaction):
+        case let .sendAssetTransactionPreview(account, receiver, assetDetail, isSenderEditable, isMaxTransaction):
             viewController = SendAssetTransactionPreviewViewController(
                 account: account,
                 assetReceiverState: receiver,
                 assetDetail: assetDetail,
+                isSenderEditable: isSenderEditable,
                 isMaxTransaction: isMaxTransaction,
                 configuration: configuration
             )
@@ -242,12 +244,17 @@ class Router {
                 transactionController: transactionController,
                 configuration: configuration
             )
-        case let .requestAlgosTransactionPreview(account):
-            viewController = RequestAlgosTransactionPreviewViewController(account: account, configuration: configuration)
-        case let .requestAssetTransactionPreview(account, assetDetail):
+        case let .requestAlgosTransactionPreview(account, isReceiverEditable):
+            viewController = RequestAlgosTransactionPreviewViewController(
+                account: account,
+                isReceiverEditable: isReceiverEditable,
+                configuration: configuration
+            )
+        case let .requestAssetTransactionPreview(account, assetDetail, isReceiverEditable):
             viewController = RequestAssetTransactionPreviewViewController(
                 account: account,
                 assetDetail: assetDetail,
+                isReceiverEditable: isReceiverEditable,
                 configuration: configuration
             )
         case let .requestAlgosTransaction(algosTransactionRequestDraft):

@@ -14,9 +14,9 @@ class RequestAlgosTransactionPreviewViewController: RequestTransactionPreviewVie
     
     private let viewModel: RequestAlgosTransactionPreviewViewModel
     
-    override init(account: Account, configuration: ViewControllerConfiguration) {
+    override init(account: Account, isReceiverEditable: Bool, configuration: ViewControllerConfiguration) {
         self.viewModel = RequestAlgosTransactionPreviewViewModel(account: account)
-        super.init(account: account, configuration: configuration)
+        super.init(account: account, isReceiverEditable: isReceiverEditable, configuration: configuration)
     }
     
     override func configureAppearance() {

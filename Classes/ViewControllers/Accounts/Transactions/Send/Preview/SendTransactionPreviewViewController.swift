@@ -59,6 +59,8 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
     var shouldUpdateSenderForSelectedAccount = false
     var shouldUpdateReceiverForSelectedAccount = false
     
+    private var isSenderEditable: Bool
+    
     var isMaxTransaction: Bool {
         return sendTransactionPreviewView.amountInputView.isMaxButtonSelected
     }
@@ -68,10 +70,12 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
     init(
         account: Account?,
         assetReceiverState: AssetReceiverState,
+        isSenderEditable: Bool,
         configuration: ViewControllerConfiguration
     ) {
         self.selectedAccount = account
         self.assetReceiverState = assetReceiverState
+        self.isSenderEditable = isSenderEditable
         super.init(configuration: configuration)
         hidesBottomBarWhenPushed = true
     }
