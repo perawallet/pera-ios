@@ -16,6 +16,10 @@ class NotificationsViewController: BaseViewController {
 
     private lazy var notificationsComingSoonView = NotificationsComingSoonView()
     
+    override func customizeTabBarAppearence() {
+        isTabBarHidden = false
+    }
+    
     override func prepareLayout() {
         view.addSubview(notificationsComingSoonView)
         

@@ -72,7 +72,7 @@ indirect enum Screen {
     case ledgerTroubleshootInstallApp
     case ledgerTroubleshootOpenApp
     case termsAndServices
-    case selectAsset
+    case selectAsset(transactionAction: TransactionAction)
     case passphraseDisplay(address: String)
 }
 

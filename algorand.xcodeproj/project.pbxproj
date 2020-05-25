@@ -385,6 +385,8 @@
 		2B3E3A0D247BFD6E00E8AEB7 /* UIStackView+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3E3A0B247BFD6E00E8AEB7 /* UIStackView+Additions.swift */; };
 		2B3E3A10247BFDA600E8AEB7 /* Bool+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3E3A0F247BFDA600E8AEB7 /* Bool+Additions.swift */; };
 		2B3E3A11247BFDA600E8AEB7 /* Bool+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3E3A0F247BFDA600E8AEB7 /* Bool+Additions.swift */; };
+		2B3E3A15247C2D1A00E8AEB7 /* TabBarController+Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3E3A14247C2D1A00E8AEB7 /* TabBarController+Animation.swift */; };
+		2B3E3A16247C2D1A00E8AEB7 /* TabBarController+Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3E3A14247C2D1A00E8AEB7 /* TabBarController+Animation.swift */; };
 		2B432A4F237C4F5D009191BF /* AccountsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B432A4E237C4F5D009191BF /* AccountsViewModel.swift */; };
 		2B432A50237C4F5D009191BF /* AccountsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B432A4E237C4F5D009191BF /* AccountsViewModel.swift */; };
 		2B432A52237C56F0009191BF /* BaseSupplementaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B432A51237C56F0009191BF /* BaseSupplementaryView.swift */; };
@@ -1056,6 +1058,7 @@
 		2B3E3A0824796FCC00E8AEB7 /* TabBarItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarItems.swift; sourceTree = "<group>"; };
 		2B3E3A0B247BFD6E00E8AEB7 /* UIStackView+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+Additions.swift"; sourceTree = "<group>"; };
 		2B3E3A0F247BFDA600E8AEB7 /* Bool+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bool+Additions.swift"; sourceTree = "<group>"; };
+		2B3E3A14247C2D1A00E8AEB7 /* TabBarController+Animation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TabBarController+Animation.swift"; sourceTree = "<group>"; };
 		2B432A4E237C4F5D009191BF /* AccountsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsViewModel.swift; sourceTree = "<group>"; };
 		2B432A51237C56F0009191BF /* BaseSupplementaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseSupplementaryView.swift; sourceTree = "<group>"; };
 		2B432A54237C5793009191BF /* AccountHeaderSupplementaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountHeaderSupplementaryView.swift; sourceTree = "<group>"; };
@@ -1644,6 +1647,23 @@
 				2B3E3A0F247BFDA600E8AEB7 /* Bool+Additions.swift */,
 			);
 			path = Bool;
+			sourceTree = "<group>";
+		};
+		2B3E3A12247C055800E8AEB7 /* TabBar */ = {
+			isa = PBXGroup;
+			children = (
+				2B3E39FC247966AF00E8AEB7 /* TabBarConfigurable.swift */,
+			);
+			path = TabBar;
+			sourceTree = "<group>";
+		};
+		2B3E3A13247C2D0300E8AEB7 /* TabBar */ = {
+			isa = PBXGroup;
+			children = (
+				2BF53175224AA50F00A7455F /* TabBarController.swift */,
+				2B3E3A14247C2D1A00E8AEB7 /* TabBarController+Animation.swift */,
+			);
+			path = TabBar;
 			sourceTree = "<group>";
 		};
 		2B432A4D237C4F4A009191BF /* List */ = {
@@ -2603,7 +2623,6 @@
 			children = (
 				2B59F16022563F89005203DD /* TabBar.swift */,
 				2B3E39F92479665B00E8AEB7 /* TabBarButton.swift */,
-				2B3E39FC247966AF00E8AEB7 /* TabBarConfigurable.swift */,
 				2B3E39FF247966D300E8AEB7 /* TabBarButtonItemConvertible.swift */,
 				2B3E3A052479684900E8AEB7 /* TabBarItemConvertible.swift */,
 				2B3E3A0824796FCC00E8AEB7 /* TabBarItems.swift */,
@@ -4063,6 +4082,7 @@
 				2B4DF429236C76CD00FF9551 /* Session */,
 				2B4DF405236C5E7500FF9551 /* StatusBar */,
 				2B4DF428236C76A500FF9551 /* Storable */,
+				2B3E3A12247C055800E8AEB7 /* TabBar */,
 			);
 			path = Configuration;
 			sourceTree = "<group>";
@@ -4088,8 +4108,8 @@
 		2BF34CBD223A8E5F0052CAD3 /* Container */ = {
 			isa = PBXGroup;
 			children = (
+				2B3E3A13247C2D0300E8AEB7 /* TabBar */,
 				2BF34CBE223A8E740052CAD3 /* NavigationController.swift */,
-				2BF53175224AA50F00A7455F /* TabBarController.swift */,
 			);
 			path = Container;
 			sourceTree = "<group>";
@@ -5051,6 +5071,7 @@
 				17BD4EC32292F1260003E49A /* AccountListDataSource.swift in Sources */,
 				17BD4EC42292F1260003E49A /* AssetDetailView.swift in Sources */,
 				2BFB2F662382EC4F00F0158C /* AssetSelectionView.swift in Sources */,
+				2B3E3A16247C2D1A00E8AEB7 /* TabBarController+Animation.swift in Sources */,
 				17BD4EC52292F1260003E49A /* PasswordInputCircleView.swift in Sources */,
 				2B4487102379617900C19FDE /* AssetActionableView.swift in Sources */,
 				2B256FF723F1BF700005CBA2 /* SendAlgosTransactionViewController.swift in Sources */,
@@ -5492,6 +5513,7 @@
 				2BDE9CCB224E1458007EFF30 /* AssetDetailView.swift in Sources */,
 				2BD739FC2241052600B66EEF /* PasswordInputCircleView.swift in Sources */,
 				2BD739EC223FA0DC00B66EEF /* LocalAuthenticationPreferenceViewController.swift in Sources */,
+				2B3E3A15247C2D1A00E8AEB7 /* TabBarController+Animation.swift in Sources */,
 				2B79A140231580AC00766021 /* TransactionController.swift in Sources */,
 				2BF53153224A460B00A7455F /* ModalConfiguration.swift in Sources */,
 				2B256FF623F1BF700005CBA2 /* SendAlgosTransactionViewController.swift in Sources */,

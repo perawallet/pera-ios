@@ -85,6 +85,10 @@ class AccountsViewController: BaseViewController {
         )
     }
     
+    override func customizeTabBarAppearence() {
+        isTabBarHidden = false
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         

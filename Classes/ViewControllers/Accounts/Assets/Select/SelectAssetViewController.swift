@@ -20,6 +20,13 @@ class SelectAssetViewController: BaseViewController {
     
     var accounts: [Account] = UIApplication.shared.appConfiguration?.session.accounts ?? []
     
+    private let transactionAction: TransactionAction
+    
+    init(transactionAction: TransactionAction, configuration: ViewControllerConfiguration) {
+        self.transactionAction = transactionAction
+        super.init(configuration: configuration)
+    }
+    
     override func configureNavigationBarAppearance() {
         super.configureNavigationBarAppearance()
         
@@ -182,10 +189,10 @@ extension SelectAssetViewController {
         dismissScreen()
         
         if indexPath.item == 0 {
-            delegate?.selectAssetViewController(self, didSelectAlgosIn: account)
+            delegate?.selectAssetViewController(self, didSelectAlgosIn: account, forAction: transactionAction)
         } else {
             if let assetDetail = account.assetDetails[safe: indexPath.item + 1] {
-                delegate?.selectAssetViewController(self, didSelect: assetDetail, in: account)
+                delegate?.selectAssetViewController(self, didSelect: assetDetail, in: account, forAction: transactionAction)
             }
         }
     }
@@ -200,10 +207,15 @@ extension SelectAssetViewController {
 }
 
 protocol SelectAssetViewControllerDelegate: class {
-    func selectAssetViewController(_ selectAssetViewController: SelectAssetViewController, didSelectAlgosIn account: Account)
     func selectAssetViewController(
         _ selectAssetViewController: SelectAssetViewController,
-        didSelect asetDetail: AssetDetail,
-        in account: Account
+        didSelectAlgosIn account: Account,
+        forAction transactionAction: TransactionAction
+    )
+    func selectAssetViewController(
+        _ selectAssetViewController: SelectAssetViewController,
+        didSelect assetDetail: AssetDetail,
+        in account: Account,
+        forAction transactionAction: TransactionAction
     )
 }

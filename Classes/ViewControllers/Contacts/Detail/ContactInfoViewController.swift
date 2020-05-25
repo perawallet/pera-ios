@@ -269,12 +269,13 @@ extension ContactInfoViewController: AccountListViewControllerDelegate {
                     account: account,
                     receiver: .contact(contact),
                     assetDetail: assetDetail,
+                    isSenderEditable: false,
                     isMaxTransaction: false
                 ),
                 by: .push
             )
         } else {
-            open(.sendAlgosTransactionPreview(account: account, receiver: .contact(contact)), by: .push)
+            open(.sendAlgosTransactionPreview(account: account, receiver: .contact(contact), isSenderEditable: false), by: .push)
         }
     }
 }

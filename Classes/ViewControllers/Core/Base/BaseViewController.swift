@@ -8,7 +8,9 @@
 
 import UIKit
 
-class BaseViewController: UIViewController {
+class BaseViewController: UIViewController, TabBarConfigurable {
+    var isTabBarHidden = true
+    var tabBarSnapshot: UIView?
     
     var isStatusBarHidden: Bool = false
     var hidesStatusBarWhenAppeared: Bool = false
@@ -53,6 +55,7 @@ class BaseViewController: UIViewController {
         self.configuration = configuration
         super.init(nibName: nil, bundle: nil)
         configureNavigationBarAppearance()
+        customizeTabBarAppearence()
         beginTracking()
     }
     
@@ -64,6 +67,8 @@ class BaseViewController: UIViewController {
     deinit {
         endTracking()
     }
+    
+    func customizeTabBarAppearence() { }
     
     func configureNavigationBarAppearance() {
     }
@@ -114,6 +119,7 @@ class BaseViewController: UIViewController {
         super.viewWillAppear(animated)
         setNeedsStatusBarLayoutUpdateWhenAppearing()
         setNeedsNavigationBarAppearanceUpdateWhenAppearing()
+        setNeedsTabBarAppearanceUpdateOnAppearing()
         
         isViewDisappeared = false
         isViewAppearing = true
@@ -121,6 +127,7 @@ class BaseViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        setNeedsTabBarAppearanceUpdateOnAppeared()
         isViewAppearing = false
         isViewAppeared = true
     }
@@ -136,12 +143,13 @@ class BaseViewController: UIViewController {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+        setNeedsTabBarAppearanceUpdateOnDisappeared()
         isViewDisappearing = false
         isViewDisappeared = true
     }
     
     private func setNeedsNavigationBarAppearanceUpdateWhenAppearing() {
-        navigationController?.setNavigationBarHidden(!shouldShowNavigationBar, animated: false)
+        navigationController?.setNavigationBarHidden(!shouldShowNavigationBar, animated: true)
     }
     
     func didTapBackBarButton() -> Bool {

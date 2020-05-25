@@ -66,10 +66,6 @@ class AssetDetailViewController: BaseViewController {
         handleDeepLinkRoutingIfNeeded()
     }
     
-    override func customizeTabBarAppearence() {
-        isTabBarHidden = true
-    }
-    
     override func configureAppearance() {
         super.configureAppearance()
         viewModel.configure(assetDetailView.headerView, with: account, and: assetDetail)

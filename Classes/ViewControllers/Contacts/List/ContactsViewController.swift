@@ -35,6 +35,10 @@ class ContactsViewController: BaseViewController {
     
     weak var delegate: ContactsViewControllerDelegate?
     
+    override func customizeTabBarAppearence() {
+        isTabBarHidden = false
+    }
+    
     override func setListeners() {
         super.setListeners()
         
