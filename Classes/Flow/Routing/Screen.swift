@@ -76,6 +76,7 @@ indirect enum Screen {
     case termsAndServices
     case selectAsset(transactionAction: TransactionAction, filterOption: SelectAssetViewController.FilterOption = .none)
     case passphraseDisplay(address: String)
+    case tooltip(title: String)
 }
 
 extension Screen {

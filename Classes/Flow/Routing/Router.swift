@@ -339,6 +339,8 @@ class Router {
             )
         case let .passphraseDisplay(address):
             viewController = PassphraseDisplayViewController(address: address, configuration: configuration)
+        case let .tooltip(title):
+            viewController = TooltipViewController(title: title, configuration: configuration)
         }
         
         return viewController as? T

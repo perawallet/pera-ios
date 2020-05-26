@@ -89,6 +89,15 @@ class AccountsViewController: BaseViewController {
         isTabBarHidden = false
     }
     
+    override func beginTracking() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didChangedNetwork(notification:)),
+            name: .NetworkChanged,
+            object: nil
+        )
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -112,6 +121,14 @@ class AccountsViewController: BaseViewController {
         
         displayTestNetBannerIfNeeded()
         presentTermsAndServicesIfNeeded()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.presentQRTooltipIfNeeded()
+        }
     }
     
     override func configureAppearance() {
@@ -223,6 +240,19 @@ extension AccountsViewController {
         accountsView.accountsCollectionView.reloadData()
         if refreshControl.isRefreshing {
             refreshControl.endRefreshing()
+        }
+    }
+    
+    @objc
+    private func didChangedNetwork(notification: Notification) {
+        guard let isTestNet = api?.isTestNet else {
+            return
+        }
+        
+        if isTestNet {
+            addTestNetBanner()
+        } else {
+            removeTestNetBanner()
         }
     }
 }
@@ -349,6 +379,39 @@ extension AccountsViewController: QRScannerViewControllerDelegate {
                 handler()
             }
         }
+    }
+}
+
+extension AccountsViewController {
+    func presentQRTooltipIfNeeded() {
+        guard let isAccountQRTooltipDisplayed = session?.isAccountQRTooltipDisplayed(),
+            !isAccountQRTooltipDisplayed else {
+            return
+        }
+ 
+        // Needs to set presentationController before calling present. So it's not initialized from the Router.
+        let tooltipViewController = TooltipViewController(title: "accounts-qr-tooltip".localized, configuration: configuration)
+        tooltipViewController.presentationController?.delegate = self
+        present(tooltipViewController, animated: true)
+        
+        guard let headerView = accountsView.accountsCollectionView.supplementaryView(
+            forElementKind: UICollectionView.elementKindSectionHeader,
+            at: IndexPath(item: 0, section: 0)
+        ) as? AccountHeaderSupplementaryView else {
+            return
+        }
+        
+        tooltipViewController.setSourceView(headerView.contextView.qrButton)
+        session?.setAccountQRTooltipDisplayed()
+    }
+}
+
+extension AccountsViewController: UIPopoverPresentationControllerDelegate {
+    func adaptivePresentationStyle(
+        for controller: UIPresentationController,
+        traitCollection: UITraitCollection
+    ) -> UIModalPresentationStyle {
+        return .none
     }
 }
 
