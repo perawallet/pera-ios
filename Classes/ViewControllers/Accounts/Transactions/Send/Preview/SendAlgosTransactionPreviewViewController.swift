@@ -19,7 +19,26 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
         initialModalSize: .custom(CGSize(width: view.frame.width, height: 422.0))
     )
     
-    private let viewModel = SendAlgosTransactionPreviewViewModel()
+    private let viewModel: SendAlgosTransactionPreviewViewModel
+    
+    override var filterOption: SelectAssetViewController.FilterOption {
+        return .algos
+    }
+    
+    override init(
+        account: Account?,
+        assetReceiverState: AssetReceiverState,
+        isSenderEditable: Bool,
+        configuration: ViewControllerConfiguration
+    ) {
+        viewModel = SendAlgosTransactionPreviewViewModel(isAccountSelectionEnabled: isSenderEditable)
+        super.init(
+            account: account,
+            assetReceiverState: assetReceiverState,
+            isSenderEditable: isSenderEditable,
+            configuration: configuration
+        )
+    }
     
     override func configureAppearance() {
         super.configureAppearance()
@@ -41,6 +60,12 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
         ) as? AccountListViewController
     
         accountListViewController?.delegate = self
+    }
+    
+    override func configure(forSelected account: Account, with assetDetail: AssetDetail?) {
+        selectedAccount = account
+        viewModel.configure(sendTransactionPreviewView, with: selectedAccount)
+        sendTransactionPreviewView.setAssetSelectionHidden(true)
     }
     
     override func displayTransactionPreview() {
@@ -111,7 +136,8 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
             .sendAlgosTransaction(
                 algosTransactionSendDraft: algosTransactionDraft,
                 transactionController: transactionController,
-                receiver: assetReceiverState
+                receiver: assetReceiverState,
+                isSenderEditable: isSenderEditable
             ),
             by: .push
         )

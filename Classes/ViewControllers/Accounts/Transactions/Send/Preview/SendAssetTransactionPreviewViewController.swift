@@ -37,9 +37,13 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
     
     weak var delegate: SendAssetTransactionPreviewViewControllerDelegate?
     
-    private var assetDetail: AssetDetail
+    private let assetDetail: AssetDetail
     private var isForcedMaxTransaction = false
     private let viewModel: SendAssetTransactionPreviewViewModel
+    
+    override var filterOption: SelectAssetViewController.FilterOption {
+        return .asset(assetDetail: assetDetail)
+    }
     
     init(
         account: Account?,
@@ -51,7 +55,11 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
     ) {
         self.assetDetail = assetDetail
         self.isForcedMaxTransaction = isMaxTransaction
-        viewModel = SendAssetTransactionPreviewViewModel(assetDetail: assetDetail, isForcedMaxTransaction: isMaxTransaction)
+        viewModel = SendAssetTransactionPreviewViewModel(
+            assetDetail: assetDetail,
+            isForcedMaxTransaction: isMaxTransaction,
+            isAccountSelectionEnabled: isSenderEditable
+        )
         super.init(
             account: account,
             assetReceiverState: assetReceiverState,
@@ -66,6 +74,12 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
         viewModel.configure(sendTransactionPreviewView, with: selectedAccount)
         configureTransactionReceiver()
         displayTestNetTitleView(with: "title-send".localized + " \(assetDetail.getDisplayNames().0)")
+    }
+    
+    override func configure(forSelected account: Account, with assetDetail: AssetDetail?) {
+        selectedAccount = account
+        viewModel.configure(sendTransactionPreviewView, with: selectedAccount)
+        sendTransactionPreviewView.setAssetSelectionHidden(true)
     }
     
     override func presentAccountList(accountSelectionState: AccountSelectionState) {
@@ -101,7 +115,8 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
             .sendAssetTransaction(
                 assetTransactionSendDraft: assetTransactionDraft,
                 transactionController: transactionController,
-                receiver: assetReceiverState
+                receiver: assetReceiverState,
+                isSenderEditable: isSenderEditable
             ),
             by: .push
         )

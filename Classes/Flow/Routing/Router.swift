@@ -209,7 +209,6 @@ class Router {
             viewController = EditAccountViewController(account: account, configuration: configuration)
         case .contactSelection:
             viewController = ContactSelectionViewController(configuration: configuration)
-            viewController.hidesBottomBarWhenPushed = true
         case let .addContact(mode):
             viewController = AddContactViewController(mode: mode, configuration: configuration)
         case let .contactDetail(contact):
@@ -230,18 +229,20 @@ class Router {
                 isMaxTransaction: isMaxTransaction,
                 configuration: configuration
             )
-        case let .sendAlgosTransaction(algosTransactionSendDraft, transactionController, receiver):
+        case let .sendAlgosTransaction(algosTransactionSendDraft, transactionController, receiver, isSenderEditable):
             viewController = SendAlgosTransactionViewController(
                 algosTransactionSendDraft: algosTransactionSendDraft,
                 assetReceiverState: receiver,
                 transactionController: transactionController,
+                isSenderEditable: isSenderEditable,
                 configuration: configuration
             )
-        case let .sendAssetTransaction(assetTransactionSendDraft, transactionController, receiver):
+        case let .sendAssetTransaction(assetTransactionSendDraft, transactionController, receiver, isSenderEditable):
             viewController = SendAssetTransactionViewController(
                 assetTransactionSendDraft: assetTransactionSendDraft,
                 assetReceiverState: receiver,
                 transactionController: transactionController,
+                isSenderEditable: isSenderEditable,
                 configuration: configuration
             )
         case let .requestAlgosTransactionPreview(account, isReceiverEditable):
@@ -330,8 +331,12 @@ class Router {
             viewController = LedgerTroubleshootOpenAppViewController(configuration: configuration)
         case .termsAndServices:
             viewController = TermsAndServicesViewController(configuration: configuration)
-        case let .selectAsset(transactionAction):
-            viewController = SelectAssetViewController(transactionAction: transactionAction, configuration: configuration)
+        case let .selectAsset(transactionAction, filterOption):
+            viewController = SelectAssetViewController(
+                transactionAction: transactionAction,
+                filterOption: filterOption,
+                configuration: configuration
+            )
         case let .passphraseDisplay(address):
             viewController = PassphraseDisplayViewController(address: address, configuration: configuration)
         }

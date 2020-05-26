@@ -17,10 +17,16 @@ class SendAlgosTransactionViewController: SendTransactionViewController, TestNet
         algosTransactionSendDraft: AlgosTransactionSendDraft,
         assetReceiverState: AssetReceiverState,
         transactionController: TransactionController,
+        isSenderEditable: Bool,
         configuration: ViewControllerConfiguration
     ) {
         self.algosTransactionSendDraft = algosTransactionSendDraft
-        super.init(assetReceiverState: assetReceiverState, transactionController: transactionController, configuration: configuration)
+        super.init(
+            assetReceiverState: assetReceiverState,
+            transactionController: transactionController,
+            isSenderEditable: isSenderEditable,
+            configuration: configuration
+        )
         
         fee = algosTransactionSendDraft.fee
         transactionController.setTransactionDraft(algosTransactionSendDraft)

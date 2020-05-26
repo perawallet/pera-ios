@@ -9,12 +9,22 @@
 import UIKit
 
 class SendAlgosTransactionPreviewViewModel {
+    private let isAccountSelectionEnabled: Bool
+    
+    init(isAccountSelectionEnabled: Bool) {
+        self.isAccountSelectionEnabled = isAccountSelectionEnabled
+    }
+    
     func configure(_ view: SendTransactionPreviewView, with selectedAccount: Account?) {
         guard let account = selectedAccount else {
             return
         }
         
-        view.transactionAccountInformationView.setDisabled()
+        if isAccountSelectionEnabled {
+            view.transactionAccountInformationView.setEnabled()
+        } else {
+            view.transactionAccountInformationView.setDisabled()
+        }
         
         if account.type == .ledger {
             view.transactionAccountInformationView.setAccountImage(img("icon-account-type-ledger"))

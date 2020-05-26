@@ -15,9 +15,17 @@ class RequestAssetTransactionPreviewViewController: RequestTransactionPreviewVie
     private let assetDetail: AssetDetail
     private let viewModel: RequestAssetTransactionPreviewViewModel
     
+    override var filterOption: SelectAssetViewController.FilterOption {
+        return .asset(assetDetail: assetDetail)
+    }
+    
     init(account: Account, assetDetail: AssetDetail, isReceiverEditable: Bool, configuration: ViewControllerConfiguration) {
         self.assetDetail = assetDetail
-        self.viewModel = RequestAssetTransactionPreviewViewModel(account: account, assetDetail: assetDetail)
+        self.viewModel = RequestAssetTransactionPreviewViewModel(
+            account: account,
+            assetDetail: assetDetail,
+            isAccountSelectionEnabled: isReceiverEditable
+        )
         super.init(account: account, isReceiverEditable: isReceiverEditable, configuration: configuration)
     }
     
@@ -44,5 +52,12 @@ class RequestAssetTransactionPreviewViewController: RequestTransactionPreviewVie
     override func openRequestScreen() {
         let draft = AssetTransactionRequestDraft(account: account, amount: amount, assetDetail: assetDetail)
         open(.requestAssetTransaction(assetTransactionRequestDraft: draft), by: .push)
+    }
+    
+    override func configure(forSelected account: Account, with assetDetail: AssetDetail?) {
+        self.account = account
+        viewModel.updateAccount(account)
+        viewModel.configure(requestTransactionPreviewView)
+        requestTransactionPreviewView.setAssetSelectionHidden(true)
     }
 }

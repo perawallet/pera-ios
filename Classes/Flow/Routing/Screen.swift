@@ -38,12 +38,14 @@ indirect enum Screen {
     case sendAlgosTransaction(
         algosTransactionSendDraft: AlgosTransactionSendDraft,
         transactionController: TransactionController,
-        receiver: AssetReceiverState
+        receiver: AssetReceiverState,
+        isSenderEditable: Bool
     )
     case sendAssetTransaction(
         assetTransactionSendDraft: AssetTransactionSendDraft,
         transactionController: TransactionController,
-        receiver: AssetReceiverState
+        receiver: AssetReceiverState,
+        isSenderEditable: Bool
     )
     case requestAlgosTransactionPreview(account: Account, isReceiverEditable: Bool)
     case requestAssetTransactionPreview(account: Account, assetDetail: AssetDetail, isReceiverEditable: Bool)
@@ -72,7 +74,7 @@ indirect enum Screen {
     case ledgerTroubleshootInstallApp
     case ledgerTroubleshootOpenApp
     case termsAndServices
-    case selectAsset(transactionAction: TransactionAction)
+    case selectAsset(transactionAction: TransactionAction, filterOption: SelectAssetViewController.FilterOption = .none)
     case passphraseDisplay(address: String)
 }
 

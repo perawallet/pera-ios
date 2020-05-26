@@ -10,16 +10,22 @@ import UIKit
 
 class RequestAssetTransactionPreviewViewModel {
     
-    private let account: Account
+    private var account: Account
     private let assetDetail: AssetDetail
+    private let isAccountSelectionEnabled: Bool
     
-    init(account: Account, assetDetail: AssetDetail) {
+    init(account: Account, assetDetail: AssetDetail, isAccountSelectionEnabled: Bool) {
         self.account = account
         self.assetDetail = assetDetail
+        self.isAccountSelectionEnabled = isAccountSelectionEnabled
     }
     
     func configure(_ view: RequestTransactionPreviewView) {
-        view.transactionAccountInformationView.setDisabled()
+        if isAccountSelectionEnabled {
+            view.transactionAccountInformationView.setEnabled()
+        } else {
+            view.transactionAccountInformationView.setDisabled()
+        }
         
         if account.type == .ledger {
             view.transactionAccountInformationView.setAccountImage(img("icon-account-type-ledger"))
@@ -32,5 +38,11 @@ class RequestAssetTransactionPreviewViewModel {
         view.transactionAccountInformationView.setAssetName(for: assetDetail)
         view.transactionAccountInformationView.setAssetTransaction()
         view.transactionAccountInformationView.removeAssetId()
+    }
+}
+
+extension RequestAssetTransactionPreviewViewModel {
+    func updateAccount(_ account: Account) {
+        self.account = account
     }
 }

@@ -11,14 +11,21 @@ import UIKit
 class SendAssetTransactionPreviewViewModel {
     private let assetDetail: AssetDetail
     private let isForcedMaxTransaction: Bool
+    private let isAccountSelectionEnabled: Bool
     
-    init(assetDetail: AssetDetail, isForcedMaxTransaction: Bool) {
+    init(assetDetail: AssetDetail, isForcedMaxTransaction: Bool, isAccountSelectionEnabled: Bool) {
         self.assetDetail = assetDetail
         self.isForcedMaxTransaction = isForcedMaxTransaction
+        self.isAccountSelectionEnabled = isAccountSelectionEnabled
     }
     
     func configure(_ view: SendTransactionPreviewView, with selectedAccount: Account?) {
-        view.transactionAccountInformationView.setDisabled()
+        if isAccountSelectionEnabled {
+            view.transactionAccountInformationView.setEnabled()
+        } else {
+            view.transactionAccountInformationView.setDisabled()
+        }
+        
         view.transactionAccountInformationView.setAssetName(for: assetDetail)
         view.transactionAccountInformationView.setAssetTransaction()
         view.transactionAccountInformationView.removeAssetId()
