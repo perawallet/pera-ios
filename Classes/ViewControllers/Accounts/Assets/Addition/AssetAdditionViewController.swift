@@ -69,7 +69,6 @@ class AssetAdditionViewController: BaseViewController {
     init(account: Account, configuration: ViewControllerConfiguration) {
         self.account = account
         super.init(configuration: configuration)
-        hidesBottomBarWhenPushed = true
     }
     
     override func configureNavigationBarAppearance() {

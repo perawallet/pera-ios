@@ -29,10 +29,7 @@ class ContactInfoViewController: BaseScrollViewController {
     
     init(contact: Contact, configuration: ViewControllerConfiguration) {
         self.contact = contact
-        
         super.init(configuration: configuration)
-        
-        hidesBottomBarWhenPushed = true
     }
     
     override func configureNavigationBarAppearance() {

@@ -52,7 +52,6 @@ class AssetDetailViewController: BaseViewController {
         self.isAlgoDisplay = assetDetail == nil
         viewModel = AssetDetailViewModel(account: account, assetDetail: assetDetail)
         super.init(configuration: configuration)
-        hidesBottomBarWhenPushed = true
     }
     
     override func viewDidLoad() {

@@ -32,12 +32,8 @@ class AddContactViewController: BaseScrollViewController {
     
     init(mode: Mode, configuration: ViewControllerConfiguration) {
         self.mode = mode
-        
         imagePicker = ImagePicker()
-        
         super.init(configuration: configuration)
-        
-        hidesBottomBarWhenPushed = true
     }
     
     override func configureNavigationBarAppearance() {
