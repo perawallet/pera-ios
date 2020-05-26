@@ -46,9 +46,9 @@
 // MARK: Introduction
 "introduction-recover-title" = "Recover From Passphrase";
 "introduction-create-title" = "Create Account";
-"introduction-title-text" = "Manage all assets\nfrom one account";
+"introduction-title-text" = "Manage all assets\nfrom one place";
 "introduction-add-new-text" = "Add new account";
-"introduction-add-new-title-text" = "Manage all assets from one account";
+"introduction-add-new-title-text" = "Manage all assets from one place";
 "introduction-has-account" = "Already have an account?";
 "introduction-title-pair-ledger" = "Pair Ledger Account";
 
