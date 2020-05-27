@@ -28,7 +28,7 @@ class EditAccountViewController: BaseViewController {
     
     override func configureAppearance() {
         view.backgroundColor = Colors.backgroundColor
-        editAccountView.accountNameInputView.inputTextField.text = account.name
+        editAccountView.accountNameTextField.text = account.name
     }
     
     override func setListeners() {
@@ -49,7 +49,7 @@ class EditAccountViewController: BaseViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        editAccountView.accountNameInputView.beginEditing()
+        editAccountView.accountNameTextField.becomeFirstResponder()
     }
     
     private var modalSize: ModalSize {
@@ -106,7 +106,7 @@ extension EditAccountViewController {
 
 extension EditAccountViewController: EditAccountViewDelegate {
     func editAccountViewDidTapSaveButton(_ editAccountView: EditAccountView) {
-        guard let name = editAccountView.accountNameInputView.inputTextField.text else {
+        guard let name = editAccountView.accountNameTextField.text else {
             displaySimpleAlertWith(title: "title-error".localized, message: "account-name-setup-empty-error-message".localized)
             return
         }

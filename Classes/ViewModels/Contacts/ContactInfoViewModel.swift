@@ -9,13 +9,10 @@
 import UIKit
 
 class ContactInfoViewModel {
-    
     func configure(_ userInformationView: UserInformationView, with contact: Contact) {
         if let imageData = contact.image,
             let image = UIImage(data: imageData) {
-            
-            let resizedImage = image.convert(to: CGSize(width: 108.0, height: 108.0))
-            
+            let resizedImage = image.convert(to: CGSize(width: 88.0, height: 88.0))
             userInformationView.userImageView.image = resizedImage
         }
         

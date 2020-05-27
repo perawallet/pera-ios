@@ -16,6 +16,7 @@ class ActionBottomInformationView: BottomInformationView {
         UIButton(type: .custom)
             .withFont(UIFont.font(withWeight: .medium(size: 16.0)))
             .withTitleColor(SharedColors.primaryButtonTitle)
+            .withAlignment(.center)
     }()
     
     private(set) lazy var cancelButton: UIButton = {
@@ -24,6 +25,7 @@ class ActionBottomInformationView: BottomInformationView {
             .withBackgroundImage(img("bg-light-gray-button"))
             .withFont(UIFont.font(withWeight: .medium(size: 16.0)))
             .withTitleColor(SharedColors.primaryText)
+            .withAlignment(.center)
     }()
     
     weak var delegate: ActionBottomInformationViewDelegate?
@@ -41,22 +43,24 @@ class ActionBottomInformationView: BottomInformationView {
 }
 
 extension ActionBottomInformationView {
-    private func setupCancelButtonLayout() {
+    private func setupActionButtonLayout() {
         addSubview(actionButton)
         
         actionButton.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
             make.top.equalTo(explanationLabel.snp.bottom).offset(layout.current.verticalInset)
-            make.leading.bottom.equalToSuperview().inset(layout.current.buttonHorizontalInset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
         }
     }
     
-    private func setupActionButtonLayout() {
+    private func setupCancelButtonLayout() {
         addSubview(cancelButton)
         
         cancelButton.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
             make.top.equalTo(actionButton.snp.bottom).offset(layout.current.cancelButtonTopInset)
             make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
-            make.bottom.equalToSuperview().inset(layout.current.verticalInset)
+            make.bottom.lessThanOrEqualToSuperview().inset(layout.current.verticalInset)
         }
     }
 }

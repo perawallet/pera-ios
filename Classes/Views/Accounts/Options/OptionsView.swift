@@ -36,7 +36,7 @@ class OptionsView: BaseView {
     
     private lazy var cancelButton: UIButton = {
         UIButton(type: .custom)
-            .withBackgroundColor(SharedColors.secondaryBackground)
+            .withBackgroundImage(img("bg-light-gray-button"))
             .withTitle("title-cancel".localized)
             .withTitleColor(SharedColors.gray500)
             .withAlignment(.center)
@@ -52,8 +52,7 @@ class OptionsView: BaseView {
     }
     
     override func prepareLayout() {
-        setupDismissButtonLayout()
-        setupSeparatorViewLayout()
+        setupCancelButtonLayout()
         setupOptionsCollectionViewLayout()
     }
 }
@@ -66,32 +65,23 @@ extension OptionsView {
 }
 
 extension OptionsView {
-    private func setupOptionsCollectionViewLayout() {
-        addSubview(optionsCollectionView)
-        
-        optionsCollectionView.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(layout.current.defaultInset)
-            make.leading.trailing.bottom.equalToSuperview()
-        }
-    }
-    
-    private func setupSeparatorViewLayout() {
-        addSubview(separatorView)
-        
-        separatorView.snp.makeConstraints { make in
-            make.height.equalTo(layout.current.separatorHeight)
-            make.leading.trailing.equalToSuperview()
-            make.top.equalTo(optionsCollectionView.snp.bottom)
-        }
-    }
-    
-    private func setupDismissButtonLayout() {
+    private func setupCancelButtonLayout() {
         addSubview(cancelButton)
         
         cancelButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.leading.trailing.equalToSuperview().inset(layout.current.defaultInset)
-            make.top.equalTo(separatorView.snp.bottom).offset(layout.current.buttonTopInset)
+            make.bottom.equalToSuperview().inset(layout.current.buttonBottomInset)
+        }
+    }
+    
+    private func setupOptionsCollectionViewLayout() {
+        addSubview(optionsCollectionView)
+        
+        optionsCollectionView.snp.makeConstraints { make in
+            make.top.equalToSuperview().inset(layout.current.topInset)
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalTo(cancelButton.snp.top).offset(layout.current.bottomInset)
         }
     }
 }
@@ -99,8 +89,10 @@ extension OptionsView {
 extension OptionsView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let buttonTopInset: CGFloat = 22.0
-        let defaultInset: CGFloat = 8.0
-        let separatorHeight: CGFloat = 1.0
+        let buttonBottomInset: CGFloat = 20.0
+        let defaultInset: CGFloat = 20.0
+        let topInset: CGFloat = 10.0
+        let bottomInset: CGFloat = -20.0
     }
 }
 

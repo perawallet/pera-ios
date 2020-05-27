@@ -61,7 +61,6 @@ extension ChoosePasswordView {
         unlockImageView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalToSuperview().inset(layout.current.imageViewTopInset)
-            make.leading.trailing.lessThanOrEqualToSuperview().inset(layout.current.imageViewHorizontalInset)
         }
     }
     
@@ -99,7 +98,7 @@ extension ChoosePasswordView {
 }
 
 extension ChoosePasswordView: NumpadViewDelegate {
-    func numpadView(_ numpadView: NumpadView, didSelect value: NumpadValue) {
+    func numpadView(_ numpadView: NumpadView, didSelect value: NumpadKey) {
         delegate?.choosePasswordView(self, didSelect: value)
     }
 }
@@ -117,5 +116,5 @@ extension ChoosePasswordView {
 }
 
 protocol ChoosePasswordViewDelegate: class {
-    func choosePasswordView(_ choosePasswordView: ChoosePasswordView, didSelect value: NumpadValue)
+    func choosePasswordView(_ choosePasswordView: ChoosePasswordView, didSelect value: NumpadKey)
 }
