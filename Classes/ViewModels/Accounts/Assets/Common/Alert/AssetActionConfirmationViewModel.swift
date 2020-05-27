@@ -13,38 +13,46 @@ class AssetActionConfirmationViewModel {
         view.titleLabel.text = draft.title
         view.assetDisplayView.assetIndexLabel.text = "\(draft.assetIndex)"
         view.actionButton.setTitle(draft.actionTitle, for: .normal)
- 
-        guard let assetDetail = draft.assetDetail else {
-            return
-        }
         
-        view.assetDisplayView.verifiedImageView.isHidden = !assetDetail.isVerified
-        
-        let displayNames = assetDetail.getDisplayNames(isDisplayingBrackets: false)
-        
-        if displayNames.0.isUnknown() {
-            view.assetDisplayView.assetCodeLabel.font = UIFont.font(.avenir, withWeight: .demiBoldItalic(size: 40.0))
-            view.assetDisplayView.assetCodeLabel.textColor = SharedColors.orange
-            view.assetDisplayView.assetCodeLabel.text = displayNames.0
-        } else {
-            view.assetDisplayView.assetNameLabel.text = displayNames.0
-            view.assetDisplayView.assetCodeLabel.text = displayNames.1
-        }
-        
+        configure(view.assetDisplayView, with: draft)
         configureAttributedText(in: view, with: draft)
     }
     
     private func configureAttributedText(in view: AssetActionConfirmationView, with draft: AssetAlertDraft) {
-        guard let detailText = draft.detail,
-            let assetDetail = draft.assetDetail,
+        guard let detailText = draft.detail else {
+            return
+        }
+        
+        let attributedDetailText = NSMutableAttributedString(attributedString: detailText.attributed([.lineSpacing(1.2)]))
+        
+        guard let assetDetail = draft.assetDetail,
             let unitName = assetDetail.unitName, !unitName.isEmptyOrBlank else {
-            view.detailLabel.text = draft.detail
+            view.detailLabel.attributedText = attributedDetailText
             return
         }
         
         let range = (detailText as NSString).range(of: unitName)
-        let attributedString = NSMutableAttributedString(string: detailText)
-        attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: SharedColors.darkGray, range: range)
-        view.detailLabel.attributedText = attributedString
+        attributedDetailText.addAttribute(NSAttributedString.Key.foregroundColor, value: SharedColors.primary, range: range)
+        attributedDetailText.addAttribute(NSAttributedString.Key.foregroundColor, value: SharedColors.primary, range: range)
+        view.detailLabel.attributedText = attributedDetailText
+    }
+    
+    func configure(_ view: AssetDisplayView, with draft: AssetAlertDraft) {
+        guard let assetDetail = draft.assetDetail else {
+            return
+        }
+        
+        view.verifiedImageView.isHidden = !assetDetail.isVerified
+        
+        let displayNames = assetDetail.getDisplayNames(isDisplayingBrackets: false)
+        
+        if displayNames.0.isUnknown() {
+            view.assetCodeLabel.font = UIFont.font(withWeight: .semiBoldItalic(size: 40.0))
+            view.assetCodeLabel.textColor = SharedColors.secondary
+            view.assetCodeLabel.text = displayNames.0
+        } else {
+            view.assetNameLabel.text = displayNames.0
+            view.assetCodeLabel.text = displayNames.1
+        }
     }
 }

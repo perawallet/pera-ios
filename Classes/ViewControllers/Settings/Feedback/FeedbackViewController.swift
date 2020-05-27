@@ -12,12 +12,15 @@ import Magpie
 
 class FeedbackViewController: BaseScrollViewController {
     
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let pickerRowHeight: CGFloat = 50.0
-        let pickerOpenedHeight: CGFloat = 130.0
-    }
-    
     private let layout = Layout<LayoutConstants>()
+    
+    private lazy var bottomModalPresenter = CardModalPresenter(
+        config: ModalConfiguration(
+            animationMode: .normal(duration: 0.25),
+            dismissMode: .scroll
+        ),
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: 318.0))
+    )
     
     private var categories = [FeedbackCategory]()
     private var selectedCategory: FeedbackCategory? {
@@ -31,31 +34,39 @@ class FeedbackViewController: BaseScrollViewController {
     
     private var keyboardController = KeyboardController()
     
-    // MARK: Components
-    
-    private lazy var feedbackView: FeedbackView = {
-        let view = FeedbackView()
-        return view
-    }()
-    
-    // MARK: Initialization
+    private lazy var feedbackView = FeedbackView()
     
     override init(configuration: ViewControllerConfiguration) {
         super.init(configuration: configuration)
-        
         hidesBottomBarWhenPushed = true
     }
     
-    // MARK: Setup
-    
     override func configureAppearance() {
         super.configureAppearance()
-        
         title = "feedback-title".localized
-        
         fetchFeedbackCategories()
     }
     
+    override func linkInteractors() {
+        super.linkInteractors()
+        feedbackView.delegate = self
+        feedbackView.categoryPickerView.delegate = self
+        feedbackView.categoryPickerView.dataSource = self
+        keyboardController.dataSource = self
+    }
+    
+    override func setListeners() {
+        super.setListeners()
+        keyboardController.beginTracking()
+    }
+    
+    override func prepareLayout() {
+        super.prepareLayout()
+        setupFeedbackViewLayout()
+    }
+}
+
+extension FeedbackViewController {
     private func fetchFeedbackCategories() {
         SVProgressHUD.show(withStatus: "title-loading".localized)
         
@@ -73,30 +84,9 @@ class FeedbackViewController: BaseScrollViewController {
             }
         }
     }
-    
-    override func linkInteractors() {
-        super.linkInteractors()
-        
-        feedbackView.delegate = self
-        feedbackView.categoryPickerView.delegate = self
-        feedbackView.categoryPickerView.dataSource = self
-        keyboardController.dataSource = self
-    }
-    
-    override func setListeners() {
-        super.setListeners()
-        
-        keyboardController.beginTracking()
-    }
-    
-    // MARK: Layout
-    
-    override func prepareLayout() {
-        super.prepareLayout()
-        
-        setupFeedbackViewLayout()
-    }
-    
+}
+
+extension FeedbackViewController {
     private func setupFeedbackViewLayout() {
         contentView.addSubview(feedbackView)
         
@@ -105,8 +95,6 @@ class FeedbackViewController: BaseScrollViewController {
         }
     }
 }
-
-// MARK: FeedbackViewDelegate
 
 extension FeedbackViewController: FeedbackViewDelegate {
     func feedbackViewDidTriggerCategorySelection(_ feedbackView: FeedbackView) {
@@ -142,8 +130,6 @@ extension FeedbackViewController: FeedbackViewDelegate {
     }
 }
 
-// MARK: UIPickerViewDataSource
-
 extension FeedbackViewController: UIPickerViewDataSource {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
@@ -157,8 +143,6 @@ extension FeedbackViewController: UIPickerViewDataSource {
         return layout.current.pickerRowHeight
     }
 }
-
-// MARK: UIPickerViewDelegate
 
 extension FeedbackViewController: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
@@ -176,8 +160,6 @@ extension FeedbackViewController: UIPickerViewDelegate {
         return categories[row].name
     }
 }
-
-// MARK: Actions
 
 extension FeedbackViewController {
     private func sendFeedback() {
@@ -217,7 +199,7 @@ extension FeedbackViewController {
     }
     
     private func displaySuccessAlert() {
-        let configurator = AlertViewConfigurator(
+        let configurator = BottomInformationBundle(
             title: "feedback-success-title".localized,
             image: img("feedback-success-icon"),
             explanation: "",
@@ -228,20 +210,17 @@ extension FeedbackViewController {
         }
         
         open(
-            .alert(mode: .default, alertConfigurator: configurator),
+            .bottomInformation(mode: .confirmation, configurator: configurator),
             by: .customPresentWithoutNavigationController(
-                presentationStyle: .overCurrentContext,
-                transitionStyle: .crossDissolve,
-                transitioningDelegate: nil
+                presentationStyle: .custom,
+                transitionStyle: nil,
+                transitioningDelegate: bottomModalPresenter
             )
         )
     }
 }
 
-// MARK: KeyboardControllerDataSource
-
 extension FeedbackViewController: KeyboardControllerDataSource {
-    
     func bottomInsetWhenKeyboardPresented(for keyboardController: KeyboardController) -> CGFloat {
         return 15.0
     }
@@ -256,5 +235,12 @@ extension FeedbackViewController: KeyboardControllerDataSource {
     
     func bottomInsetWhenKeyboardDismissed(for keyboardController: KeyboardController) -> CGFloat {
         return 15.0
+    }
+}
+
+extension FeedbackViewController {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let pickerRowHeight: CGFloat = 50.0
+        let pickerOpenedHeight: CGFloat = 130.0
     }
 }

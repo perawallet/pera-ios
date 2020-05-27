@@ -11,12 +11,10 @@ import UIKit
 class PasswordInputView: BaseView {
     
     override var intrinsicContentSize: CGSize {
-        return CGSize(width: 260.0, height: 40.0)
+        return CGSize(width: 220.0, height: 20.0)
     }
     
     private(set) var passwordInputCircleViews = [PasswordInputCircleView]()
-    
-    // MARK: Components
 
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
@@ -26,17 +24,17 @@ class PasswordInputView: BaseView {
         return stackView
     }()
     
-    // MARK: Setup
-    
     override func configureAppearance() {
-        backgroundColor = .white
+        backgroundColor = SharedColors.secondaryBackground
     }
     
     override func prepareLayout() {
         setupStackViewLayout()
         configureStackView()
     }
-    
+}
+
+extension PasswordInputView {
     private func setupStackViewLayout() {
         addSubview(stackView)
         
@@ -49,7 +47,6 @@ class PasswordInputView: BaseView {
         for _ in 1...6 {
             let circleView = PasswordInputCircleView()
             passwordInputCircleViews.append(circleView)
-            
             stackView.addArrangedSubview(circleView)
         }
     }

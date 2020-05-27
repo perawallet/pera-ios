@@ -23,7 +23,7 @@ class LedgerDeviceListView: BaseView {
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.bounces = false
         collectionView.isScrollEnabled = false
-        collectionView.backgroundColor = color("primaryBackground")
+        collectionView.backgroundColor = SharedColors.primaryBackground
         collectionView.contentInset = layout.current.listContentInset
         collectionView.register(LedgerDeviceCell.self, forCellWithReuseIdentifier: LedgerDeviceCell.reusableIdentifier)
         return collectionView
@@ -31,8 +31,8 @@ class LedgerDeviceListView: BaseView {
     
     private lazy var searchingDevicesLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(.publicSans, withWeight: .regular(size: 14.0)))
-            .withTextColor(color("primaryText"))
+            .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
+            .withTextColor(SharedColors.primaryText)
             .withLine(.single)
             .withAlignment(.left)
             .withText("ledger-device-list-looking".localized)
@@ -48,8 +48,8 @@ class LedgerDeviceListView: BaseView {
         let button = AlignedButton(style: .imageRight(positions))
         button.setImage(img("img-question-24"), for: .normal)
         button.setTitle("ledger-device-list-troubleshoot".localized, for: .normal)
-        button.setTitleColor(color("primaryButtonTitle"), for: .normal)
-        button.titleLabel?.font = UIFont.font(.publicSans, withWeight: .semiBold(size: 16.0))
+        button.setTitleColor(SharedColors.primaryButtonTitle, for: .normal)
+        button.titleLabel?.font = UIFont.font(withWeight: .semiBold(size: 16.0))
         button.setBackgroundImage(img("bg-gray-600-button"), for: .normal)
         button.titleLabel?.textAlignment = .center
         return button
@@ -129,7 +129,7 @@ extension LedgerDeviceListView {
         searchingSpinnerView.isHidden = !isVisible
     }
     
-    func updateListHeightForItemSize(_ size: Int) {
+    func invalidateContentSize(by size: Int) {
         devicesCollectionView.snp.updateConstraints { make in
             make.height.equalTo(size * layout.current.deviceItemTotalSize)
         }

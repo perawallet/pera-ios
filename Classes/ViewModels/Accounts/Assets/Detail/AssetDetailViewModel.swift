@@ -25,7 +25,7 @@ class AssetDetailViewModel {
 extension AssetDetailViewModel {
     func configure(_ view: AssetDetailHeaderView, with account: Account, and assetDetail: AssetDetail?) {
         if let assetDetail = assetDetail {
-            view.dollarValueLabel.isHidden = true
+            view.dollarValueImageView.isHidden = true
             view.verifiedImageView.isHidden = !assetDetail.isVerified
             view.rewardTotalAmountView.removeFromSuperview()
             view.assetNameLabel.attributedText = assetDetail.assetDisplayName(
@@ -47,18 +47,7 @@ extension AssetDetailViewModel {
             view.algosAmountLabel.text = account.amount.toAlgos.toDecimalStringForLabel
             view.verifiedImageView.isHidden = false
             let totalRewards: UInt64 = (account.pendingRewards ?? 0)
-            view.rewardTotalAmountView.algosAmountView.amountLabel.text = totalRewards.toAlgos.toDecimalStringForLabel
-        }
-    }
-    
-    func configure(_ view: AssetDetailSmallHeaderView, with account: Account, and assetDetail: AssetDetail?) {
-        if let assetDetail = assetDetail {
-            guard let amount = account.amount(for: assetDetail) else {
-                return
-            }
-            view.algosAmountLabel.text = amount.toFractionStringForLabel(fraction: assetDetail.fractionDecimals)
-        } else {
-            view.algosAmountLabel.text = account.amount.toAlgos.toDecimalStringForLabel
+            view.rewardTotalAmountView.setReward(amount: totalRewards.toAlgos.toDecimalStringForLabel ?? "0.00")
         }
     }
 }
@@ -71,28 +60,19 @@ extension AssetDetailViewModel {
         
         if visible {
             view.assetNameLabel.text = "accounts-dollar-value-title".localized
-            view.assetNameLabel.textColor = SharedColors.darkGray
-            view.dollarValueLabel.backgroundColor = SharedColors.darkGray
-            view.dollarValueLabel.textColor = .white
+            view.assetNameLabel.textColor = SharedColors.detailText
             view.dollarAmountLabel.text = currentValue.toFractionStringForLabel(fraction: 2)
-            view.dollarValueLabel.layer.borderWidth = 0.0
+            view.algosImageView.isHidden = true
         } else {
             view.assetNameLabel.text = "accounts-algos-available-title".localized
-            view.assetNameLabel.textColor = SharedColors.black
-            view.dollarValueLabel.backgroundColor = .white
-            view.dollarValueLabel.textColor = .black
-            view.dollarValueLabel.layer.borderWidth = 1.0
+            view.assetNameLabel.textColor = SharedColors.detailText
+            view.algosImageView.isHidden = false
         }
     }
 }
 
 extension AssetDetailViewModel {
     func configure(_ view: TransactionHistoryContextView, with transaction: Transaction, for contact: Contact? = nil) {
-        if let pendingTransactionView = view as? PendingTransactionView,
-            transaction.status == .pending {
-            pendingTransactionView.pendingSpinnerView.show()
-        }
-        
         if let assetDetail = assetDetail {
             guard let assetTransaction = transaction.assetTransfer else {
                 return
@@ -107,14 +87,14 @@ extension AssetDetailViewModel {
                 view.transactionAmountView.algoIconImageView.removeFromSuperview()
                 view.transactionAmountView.mode = .positive(
                     amount: assetTransaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
-                    assetFraction: assetDetail.fractionDecimals
+                    fraction: assetDetail.fractionDecimals
                 )
             } else {
                 configure(view, with: contact, and: assetTransaction.receiverAddress)
                 view.transactionAmountView.algoIconImageView.removeFromSuperview()
                 view.transactionAmountView.mode = .negative(
                     amount: assetTransaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
-                    assetFraction: assetDetail.fractionDecimals
+                    fraction: assetDetail.fractionDecimals
                 )
             }
         } else {

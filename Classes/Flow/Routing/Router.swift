@@ -214,8 +214,6 @@ class Router {
             viewController = AddContactViewController(mode: mode, configuration: configuration)
         case let .contactDetail(contact):
             viewController = ContactInfoViewController(contact: contact, configuration: configuration)
-        case let .contactQRDisplay(contact):
-            viewController = ContactQRDisplayViewController(contact: contact, configuration: configuration)
         case let .sendAlgosTransactionPreview(account, receiver):
             viewController = SendAlgosTransactionPreviewViewController(
                 account: account,
@@ -262,8 +260,6 @@ class Router {
                 assetTransactionRequestDraft: assetTransactionRequestDraft,
                 configuration: configuration
             )
-        case let .historyResults(draft):
-            viewController = HistoryResultsViewController(draft: draft, configuration: configuration)
         case let .nodeSettings(mode):
             viewController = NodeSettingsViewController(mode: mode, configuration: configuration)
         case .addNode:
@@ -288,12 +284,14 @@ class Router {
             viewController = AssetRemovalViewController(account: account, configuration: configuration)
         case let .assetActionConfirmation(assetAlertDraft):
             viewController = AssetActionConfirmationViewController(assetAlertDraft: assetAlertDraft, configuration: configuration)
-        case let .assetSupportAlert(assetAlertDraft):
-            viewController = AssetSupportAlertViewController(assetAlertDraft: assetAlertDraft, configuration: configuration)
-        case let .assetCancellableSupportAlert(assetAlertDraft):
-            viewController = AssetCancellableSupportAlertViewController(assetAlertDraft: assetAlertDraft, configuration: configuration)
-        case let .alert(mode, configurator):
-            viewController = AlertViewController(mode: mode, alertConfigurator: configurator, configuration: configuration)
+        case let .assetSupport(assetAlertDraft):
+            viewController = AssetSupportViewController(assetAlertDraft: assetAlertDraft, configuration: configuration)
+        case let .bottomInformation(mode, configurator):
+            viewController = BottomInformationViewController(
+                mode: mode,
+                bottomInformationBundle: configurator,
+                configuration: configuration
+            )
         case let .rewardDetail(account):
             viewController = RewardDetailViewController(account: account, configuration: configuration)
         case let .assetList(account):
@@ -325,6 +323,8 @@ class Router {
             viewController = LedgerTroubleshootOpenAppViewController(configuration: configuration)
         case .termsAndServices:
             viewController = TermsAndServicesViewController(configuration: configuration)
+        case .selectAsset:
+            viewController = SelectAssetViewController(configuration: configuration)
         }
         
         return viewController as? T

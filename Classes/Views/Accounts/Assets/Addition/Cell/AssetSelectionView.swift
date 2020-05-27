@@ -20,20 +20,20 @@ class AssetSelectionView: BaseView {
     
     private(set) lazy var detailLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 14.0)))
-            .withTextColor(SharedColors.darkGray)
+            .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
+            .withTextColor(SharedColors.gray700)
             .withLine(.single)
             .withAlignment(.right)
     }()
     
     private lazy var separatorView: UIView = {
         let view = UIView()
-        view.backgroundColor = Colors.separatorColor
+        view.backgroundColor = SharedColors.gray100
         return view
     }()
     
     override func configureAppearance() {
-        backgroundColor = .white
+        backgroundColor = SharedColors.secondaryBackground
     }
     
     override func prepareLayout() {
@@ -83,12 +83,6 @@ extension AssetSelectionView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let separatorHeight: CGFloat = 1.0
         let codeLabelInset: CGFloat = 3.0
-        let horizontalInset: CGFloat = 25.0
-    }
-}
-
-extension AssetSelectionView {
-    private enum Colors {
-        static let separatorColor = rgb(0.91, 0.91, 0.92)
+        let horizontalInset: CGFloat = 20.0
     }
 }
