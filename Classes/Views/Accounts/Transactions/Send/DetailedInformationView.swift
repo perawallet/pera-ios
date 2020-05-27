@@ -10,23 +10,7 @@ import UIKit
 
 class DetailedInformationView: BaseView {
     
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let horizontalInset: CGFloat = 15.0
-        let labelLeadingInset: CGFloat = 30.0
-        let labelTopInset: CGFloat = 15.0
-        let containerViewTopInset: CGFloat = 7.0
-        let verticalInset: CGFloat = 16.0
-        let amountViewHeight: CGFloat = 22.0
-        let spinnerSize = CGSize(width: 22.0, height: 22.0)
-    }
-    
     private let layout = Layout<LayoutConstants>()
-    
-    private enum Colors {
-        static let borderColor = rgb(0.94, 0.94, 0.94)
-    }
-    
-    // MARK: Components
     
     private(set) lazy var explanationLabel: UILabel = {
         let label = UILabel()
@@ -38,7 +22,6 @@ class DetailedInformationView: BaseView {
     private(set) lazy var containerView: UIView = {
         let view = UIView()
         view.layer.borderWidth = 1.0
-        view.layer.borderColor = Colors.borderColor.cgColor
         view.layer.cornerRadius = 4.0
         view.backgroundColor = .white
         return view
@@ -46,36 +29,29 @@ class DetailedInformationView: BaseView {
     
     private(set) lazy var detailLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 13.0)))
+            .withFont(UIFont.font(withWeight: .semiBold(size: 13.0)))
             .withTextColor(SharedColors.black)
             .withLine(.contained)
     }()
     
-    private(set) lazy var algosAmountView: AlgosAmountView = {
-        let view = AlgosAmountView()
+    private(set) lazy var algosAmountView: TransactionAmountView = {
+        let view = TransactionAmountView()
         view.amountLabel.textAlignment = .left
-        view.amountLabel.font = UIFont.font(.overpass, withWeight: .bold(size: 15.0))
+        view.amountLabel.font = UIFont.font(withWeight: .bold(size: 15.0))
         view.mode = .normal(amount: 0.0)
         return view
     }()
     
-    private(set) lazy var pendingSpinnerView = LoadingSpinnerView()
-    
     private let mode: Mode
-    
-    // MARK: Initialization
     
     init(mode: Mode = .text) {
         self.mode = mode
-        
         super.init(frame: .zero)
     }
     
     override func configureAppearance() {
         backgroundColor = .clear
     }
-    
-    // MARK: Layout
     
     override func prepareLayout() {
         setupExplanationLabelLayout()
@@ -86,10 +62,11 @@ class DetailedInformationView: BaseView {
             setupAlgosAmountViewLayout()
         } else {
             setupDetailLabelLayout()
-            setupPendingSpinnerViewLayout()
         }
     }
-    
+}
+
+extension DetailedInformationView {
     private func setupExplanationLabelLayout() {
         addSubview(explanationLabel)
         
@@ -130,24 +107,24 @@ class DetailedInformationView: BaseView {
             make.bottom.equalToSuperview().inset(layout.current.verticalInset)
         }
     }
-    
-    private func setupPendingSpinnerViewLayout() {
-        containerView.addSubview(pendingSpinnerView)
-        
-        pendingSpinnerView.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.size.equalTo(layout.current.spinnerSize)
-        }
-    }
 }
-
-// MARK: Mode
 
 extension DetailedInformationView {
     enum Mode {
         case text
         case algos
         case loader
+    }
+}
+
+extension DetailedInformationView {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let horizontalInset: CGFloat = 15.0
+        let labelLeadingInset: CGFloat = 30.0
+        let labelTopInset: CGFloat = 15.0
+        let containerViewTopInset: CGFloat = 7.0
+        let verticalInset: CGFloat = 16.0
+        let amountViewHeight: CGFloat = 22.0
+        let spinnerSize = CGSize(width: 22.0, height: 22.0)
     }
 }

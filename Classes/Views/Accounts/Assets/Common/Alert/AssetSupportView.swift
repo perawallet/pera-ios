@@ -1,5 +1,5 @@
 //
-//  AssetSupportAlertView.swift
+//  AssetSupportView.swift
 //  algorand
 //
 //  Created by Göktuğ Berk Ulu on 24.11.2019.
@@ -8,22 +8,18 @@
 
 import UIKit
 
-protocol AssetSupportAlertViewDelegate: class {
-    func assetSupportAlertViewDidTapOKButton(_ assetSupportAlertView: AssetSupportAlertView)
-}
-
-class AssetSupportAlertView: BaseView {
+class AssetSupportView: BaseView {
     
     private let layout = Layout<LayoutConstants>()
     
-    weak var delegate: AssetSupportAlertViewDelegate?
+    weak var delegate: AssetSupportViewDelegate?
     
     private(set) lazy var titleLabel: UILabel = {
         UILabel()
             .withLine(.single)
             .withAlignment(.center)
-            .withFont(UIFont.font(.overpass, withWeight: .bold(size: 16.0)))
-            .withTextColor(SharedColors.black)
+            .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
+            .withTextColor(SharedColors.primaryText)
         
     }()
     
@@ -33,22 +29,18 @@ class AssetSupportAlertView: BaseView {
         UILabel()
             .withLine(.contained)
             .withAlignment(.center)
-            .withFont(UIFont.font(.avenir, withWeight: .medium(size: 14.0)))
-            .withTextColor(SharedColors.black)
+            .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
+            .withTextColor(SharedColors.primaryText)
     }()
     
-    private lazy var okButton: UIButton = {
-        UIButton(type: .custom)
-            .withBackgroundImage(img("bg-black-button"))
-            .withTitle("title-ok".localized)
-            .withAlignment(.center)
-            .withTitleColor(UIColor.white)
-            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 12.0)))
-    }()
+    private lazy var okButton = MainButton(title: "title-ok".localized)
     
     override func configureAppearance() {
-        backgroundColor = .white
-        layer.cornerRadius = 10.0
+        backgroundColor = SharedColors.secondaryBackground
+    }
+    
+    override func setListeners() {
+        okButton.addTarget(self, action: #selector(notifyDelegateToCloseScreen), for: .touchUpInside)
     }
     
     override func prepareLayout() {
@@ -57,25 +49,22 @@ class AssetSupportAlertView: BaseView {
         setupDetailLabelLayout()
         setupOKButtonLayout()
     }
-    
-    override func setListeners() {
-        okButton.addTarget(self, action: #selector(notifyDelegateToOKButtonTapped), for: .touchUpInside)
-    }
 }
 
-extension AssetSupportAlertView {
+extension AssetSupportView {
     @objc
-    private func notifyDelegateToOKButtonTapped() {
-        delegate?.assetSupportAlertViewDidTapOKButton(self)
+    private func notifyDelegateToCloseScreen() {
+        delegate?.assetSupportViewDidTapOKButton(self)
     }
 }
 
-extension AssetSupportAlertView {
+extension AssetSupportView {
     private func setupTitleLabelLayout() {
         addSubview(titleLabel)
         
         titleLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(layout.current.titleLabelHorizontalInset)
             make.top.equalToSuperview().inset(layout.current.titleLabelTopInset)
         }
     }
@@ -86,6 +75,7 @@ extension AssetSupportAlertView {
         assetDisplayView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.displayViewTopInset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.displayViewHorizontalInset)
         }
     }
     
@@ -102,18 +92,25 @@ extension AssetSupportAlertView {
         addSubview(okButton)
         
         okButton.snp.makeConstraints { make in
-            make.top.equalTo(detailLabel.snp.bottom).offset(layout.current.verticalInset)
+            make.top.equalTo(detailLabel.snp.bottom).offset(layout.current.displayViewTopInset)
             make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.bottom.equalToSuperview().inset(layout.current.verticalInset)
+            make.bottom.lessThanOrEqualToSuperview().inset(layout.current.bottomInset)
         }
     }
 }
 
-extension AssetSupportAlertView {
+extension AssetSupportView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let verticalInset: CGFloat = 35.0
-        let titleLabelTopInset: CGFloat = 30.0
-        let displayViewTopInset: CGFloat = 24.0
-        let horizontalInset: CGFloat = 25.0
+        let titleLabelTopInset: CGFloat = 16.0
+        let titleLabelHorizontalInset: CGFloat = 40.0
+        let displayViewTopInset: CGFloat = 28.0
+        let horizontalInset: CGFloat = 20.0
+        let bottomInset: CGFloat = 30.0
+        let displayViewHorizontalInset: CGFloat = 32.0
     }
+}
+
+protocol AssetSupportViewDelegate: class {
+    func assetSupportViewDidTapOKButton(_ assetSupportView: AssetSupportView)
 }

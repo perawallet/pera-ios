@@ -10,6 +10,14 @@ import UIKit
 
 class TabBarController: UITabBarController {
     
+    private lazy var modalScreenPresenter = CardModalPresenter(
+        config: ModalConfiguration(
+            animationMode: .normal(duration: 0.25),
+            dismissMode: .scroll
+        ),
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: 490.0))
+    )
+    
     private(set) lazy var accountsNavigationController = NavigationController(
         rootViewController: AccountsViewController(configuration: configuration)
     )
@@ -167,27 +175,27 @@ extension TabBarController {
                  .sendAssetTransactionPreview:
                 selectedIndex = 0
                 topMostController?.open(route, by: .push)
-            case .assetSupportAlert:
+            case .assetSupport:
                 selectedIndex = 0
                 open(
                     route,
                     by: .customPresentWithoutNavigationController(
-                        presentationStyle: .overCurrentContext,
-                        transitionStyle: .crossDissolve,
-                        transitioningDelegate: nil
+                        presentationStyle: .custom,
+                        transitionStyle: nil,
+                        transitioningDelegate: modalScreenPresenter
                     )
                 )
             case .assetDetail:
                 topMostController?.open(route, by: .push)
-            case let .assetCancellableSupportAlert(draft):
+            case let .assetActionConfirmation(draft):
                 let controller = topMostController?.open(
                     route,
                     by: .customPresentWithoutNavigationController(
-                        presentationStyle: .overCurrentContext,
-                        transitionStyle: .crossDissolve,
-                        transitioningDelegate: nil
+                        presentationStyle: .custom,
+                        transitionStyle: nil,
+                        transitioningDelegate: modalScreenPresenter
                     )
-                ) as? AssetCancellableSupportAlertViewController
+                ) as? AssetActionConfirmationViewController
                 
                 assetAlertDraft = draft
                 
@@ -203,9 +211,10 @@ extension TabBarController: UITabBarControllerDelegate {
     
 }
 
-extension TabBarController: AssetCancellableSupportAlertViewControllerDelegate {
-    func assetCancellableSupportAlertViewControllerDidTapOKButton(
-        _ assetCancellableSupportAlertViewController: AssetCancellableSupportAlertViewController
+extension TabBarController: AssetActionConfirmationViewControllerDelegate {
+    func assetActionConfirmationViewController(
+        _ assetActionConfirmationViewController: AssetActionConfirmationViewController,
+        didConfirmedActionFor assetDetail: AssetDetail
     ) {
         guard let account = assetAlertDraft?.account,
             let assetId = assetAlertDraft?.assetIndex,
