@@ -29,21 +29,11 @@ extension AccountsLayoutBuilder {
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
-        minimumLineSpacingForSectionAt section: Int
-    ) -> CGFloat {
-        return layout.current.cellSpacing
-    }
-}
-
-extension AccountsLayoutBuilder {
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
         return CGSize(
             width: UIScreen.main.bounds.width - layout.current.defaultSectionInsets.left - layout.current.defaultSectionInsets.right,
-            height: layout.current.cellHeight
+            height: layout.current.itemHeight
         )
     }
     
@@ -52,7 +42,10 @@ extension AccountsLayoutBuilder {
         layout collectionViewLayout: UICollectionViewLayout,
         referenceSizeForHeaderInSection section: Int
     ) -> CGSize {
-        return CGSize(width: UIScreen.main.bounds.width, height: layout.current.headerHeight)
+        return CGSize(
+            width: UIScreen.main.bounds.width - layout.current.defaultSectionInsets.left - layout.current.defaultSectionInsets.right,
+            height: layout.current.itemHeight
+        )
     }
     
     func collectionView(
@@ -60,17 +53,16 @@ extension AccountsLayoutBuilder {
         layout collectionViewLayout: UICollectionViewLayout,
         referenceSizeForFooterInSection section: Int
     ) -> CGSize {
-        return CGSize(width: UIScreen.main.bounds.width, height: layout.current.footerHeight)
+        return CGSize(
+            width: UIScreen.main.bounds.width - layout.current.defaultSectionInsets.left - layout.current.defaultSectionInsets.right,
+            height: layout.current.itemHeight
+        )
     }
 }
 
 extension AccountsLayoutBuilder {
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let firstSectionInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: 0.0)
-        let defaultSectionInsets = UIEdgeInsets(top: 0.0, left: 10.0, bottom: 0.0, right: 10.0)
-        let cellSpacing: CGFloat = 5.0
-        let cellHeight: CGFloat = 50.0
-        let footerHeight: CGFloat = 59.0
-        let headerHeight: CGFloat = 49.0
+        let defaultSectionInsets = UIEdgeInsets(top: 0.0, left: 20.0, bottom: 0.0, right: 20.0)
+        let itemHeight: CGFloat = 52.0
     }
 }

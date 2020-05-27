@@ -1,27 +1,24 @@
 //
-//  RewardView.swift
+//  TransactionHistoryHeaderView.swift
 //  algorand
 //
-//  Created by Göktuğ Berk Ulu on 12.09.2019.
-//  Copyright © 2019 hippo. All rights reserved.
+//  Created by Göktuğ Berk Ulu on 13.05.2020.
+//  Copyright © 2020 hippo. All rights reserved.
 //
 
 import UIKit
 
-class RewardView: BaseView {
-    
+class TransactionHistoryHeaderView: BaseView {
+
     private let layout = Layout<LayoutConstants>()
     
-    private(set) lazy var titleLabel: UILabel = {
+    private lazy var titleLabel: UILabel = {
         UILabel()
-            .withLine(.single)
             .withAlignment(.left)
-            .withFont(UIFont.font(withWeight: .demiBold(size: 13.0)))
+            .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
             .withTextColor(SharedColors.primaryText)
-            .withText("reward-list-title".localized)
+            .withText("contacts-transactions-title".localized)
     }()
-    
-    private(set) lazy var transactionAmountView = TransactionAmountView()
     
     private lazy var separatorView = LineSeparatorView()
     
@@ -31,27 +28,17 @@ class RewardView: BaseView {
     
     override func prepareLayout() {
         setupTitleLabelLayout()
-        setupTransactionAmountViewLayout()
         setupSeparatorViewLayout()
     }
 }
 
-extension RewardView {
+extension TransactionHistoryHeaderView {
     private func setupTitleLabelLayout() {
         addSubview(titleLabel)
         
         titleLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(layout.current.horizontalInset)
-            make.top.bottom.equalToSuperview().inset(layout.current.verticalInset)
-        }
-    }
-    
-    private func setupTransactionAmountViewLayout() {
-        addSubview(transactionAmountView)
-        
-        transactionAmountView.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.centerY.equalTo(titleLabel)
+            make.centerY.equalToSuperview()
         }
     }
     
@@ -66,10 +53,9 @@ extension RewardView {
     }
 }
 
-extension RewardView {
+extension TransactionHistoryHeaderView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let horizontalInset: CGFloat = 20.0
-        let verticalInset: CGFloat = 26.0
         let separatorHeight: CGFloat = 1.0
     }
 }
