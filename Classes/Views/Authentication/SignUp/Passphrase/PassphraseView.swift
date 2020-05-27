@@ -50,7 +50,7 @@ class PassphraseView: BaseView {
     private(set) lazy var qrButton: AlignedButton = {
         let positions: AlignedButton.StylePositionAdjustment = (image: CGPoint(x: 0.0, y: 0.0), title: CGPoint(x: 4.0, y: 0.0))
         let button = AlignedButton(style: .imageLeftTitleCentered(positions))
-        button.setImage(img("icon-show-qr"), for: .normal)
+        button.setImage(img("icon-qr-show-green"), for: .normal)
         button.setTitle("back-up-phrase-qr".localized, for: .normal)
         button.setTitleColor(SharedColors.tertiaryText, for: .normal)
         button.titleLabel?.font = UIFont.font(withWeight: .semiBold(size: 14.0))
@@ -72,7 +72,7 @@ class PassphraseView: BaseView {
     
     override func configureAppearance() {
         super.configureAppearance()
-        setShadow()
+        passphraseContainerView.applyMediumShadow()
     }
     
     override func setListeners() {
@@ -93,7 +93,7 @@ class PassphraseView: BaseView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        layer.shadowPath = UIBezierPath(rect: bounds).cgPath
+        passphraseContainerView.setShadowFrames()
     }
 }
 
@@ -183,15 +183,6 @@ extension PassphraseView {
             make.bottom.lessThanOrEqualToSuperview().inset(layout.current.bottomInset)
             make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
         }
-    }
-}
-
-extension PassphraseView {
-    private func setShadow() {
-        layer.shadowColor = rgba(0.26, 0.26, 0.31, 0.07).cgColor
-        layer.shadowOpacity = 1.0
-        layer.shadowOffset = CGSize(width: 0.0, height: 4.0)
-        layer.shadowRadius = 12.0
     }
 }
 

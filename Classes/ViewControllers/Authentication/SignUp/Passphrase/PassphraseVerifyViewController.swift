@@ -10,6 +10,14 @@ import UIKit
 
 class PassphraseVerifyViewController: BaseScrollViewController {
     
+    private lazy var bottomModalPresenter = CardModalPresenter(
+        config: ModalConfiguration(
+            animationMode: .normal(duration: 0.25),
+            dismissMode: .scroll
+        ),
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: 358.0))
+    )
+    
     private lazy var passphraseViewModel: PassphraseViewModel? = {
         if let privateKey = session?.privateData(for: "temp") {
             return PassphraseViewModel(privateKey: privateKey)
@@ -103,11 +111,11 @@ extension PassphraseVerifyViewController: UICollectionViewDelegate, UICollection
         let isCorrect = viewModel.checkMnemonic(mnemonic)
         
         if isCorrect {
-            passphraseVerifyView.setWrongChoiceLabel(hidden: true)
+            passphraseVerifyView.setWrongChoiceLabelHidden(true)
             cell.contextView.setMode(.correct)
             
             if viewModel.currentIndex == viewModel.numberOfValidations - 1 {
-                let configurator = BottomInformationViewConfigurator(
+                let configurator = BottomInformationBundle(
                     title: "pass-phrase-verify-pop-up-title".localized,
                     image: img("img-green-checkmark"),
                     explanation: "pass-phrase-verify-pop-up-explanation".localized,
@@ -117,11 +125,11 @@ extension PassphraseVerifyViewController: UICollectionViewDelegate, UICollection
                 }
                 
                 open(
-                    .alert(mode: .default, alertConfigurator: configurator),
+                    .bottomInformation(mode: .confirmation, configurator: configurator),
                     by: .customPresentWithoutNavigationController(
-                        presentationStyle: .overCurrentContext,
-                        transitionStyle: .crossDissolve,
-                        transitioningDelegate: nil
+                        presentationStyle: .custom,
+                        transitionStyle: nil,
+                        transitioningDelegate: bottomModalPresenter
                     )
                 )
                 
@@ -132,7 +140,7 @@ extension PassphraseVerifyViewController: UICollectionViewDelegate, UICollection
                 updatePassPhraseLabel()
             }
         } else {
-            passphraseVerifyView.setWrongChoiceLabel(hidden: false)
+            passphraseVerifyView.setWrongChoiceLabelHidden(false)
             cell.contextView.setMode(.wrong)
         }
         

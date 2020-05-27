@@ -161,7 +161,7 @@ extension ChoosePasswordViewController {
 }
 
 extension ChoosePasswordViewController: ChoosePasswordViewDelegate {
-    func choosePasswordView(_ choosePasswordView: ChoosePasswordView, didSelect value: NumpadValue) {
+    func choosePasswordView(_ choosePasswordView: ChoosePasswordView, didSelect value: NumpadKey) {
         switch mode {
         case .setup:
             openVerifyPassword(with: value)
@@ -180,13 +180,13 @@ extension ChoosePasswordViewController: ChoosePasswordViewDelegate {
 }
 
 extension ChoosePasswordViewController {
-    private func openVerifyPassword(with value: NumpadValue) {
+    private func openVerifyPassword(with value: NumpadKey) {
         viewModel.configureSelection(in: choosePasswordView, for: value) { password in
             open(.choosePassword(mode: .verify(password), route: nil), by: .push)
         }
     }
     
-    private func verifyPassword(with value: NumpadValue, and previousPassword: String) {
+    private func verifyPassword(with value: NumpadKey, and previousPassword: String) {
         viewModel.configureSelection(in: choosePasswordView, for: value) { password in
             if password != previousPassword {
                 displaySimpleAlertWith(title: "password-verify-fail-title".localized, message: "password-verify-fail-message".localized)
@@ -198,7 +198,7 @@ extension ChoosePasswordViewController {
         }
     }
 
-    private func login(with value: NumpadValue) {
+    private func login(with value: NumpadKey) {
         viewModel.configureSelection(in: choosePasswordView, for: value) { password in
             if session?.isPasswordMatching(with: password) ?? false {
                 choosePasswordView.numpadView.isUserInteractionEnabled = false
@@ -210,13 +210,13 @@ extension ChoosePasswordViewController {
         }
     }
     
-    private func openResetVerify(with value: NumpadValue) {
+    private func openResetVerify(with value: NumpadKey) {
         viewModel.configureSelection(in: choosePasswordView, for: value) { password in
             open(.choosePassword(mode: .resetVerify(password), route: nil), by: .push)
         }
     }
     
-    private func verifyResettedPassword(with value: NumpadValue, and previousPassword: String) {
+    private func verifyResettedPassword(with value: NumpadKey, and previousPassword: String) {
         viewModel.configureSelection(in: choosePasswordView, for: value) { password in
             if password != previousPassword {
                 displaySimpleAlertWith(title: "password-verify-fail-title".localized, message: "password-verify-fail-message".localized)
@@ -228,7 +228,7 @@ extension ChoosePasswordViewController {
         }
     }
     
-    private func confirmPassword(with value: NumpadValue) {
+    private func confirmPassword(with value: NumpadKey) {
         viewModel.configureSelection(in: choosePasswordView, for: value) { password in
             dismissScreen()
             if session?.isPasswordMatching(with: password) ?? false {

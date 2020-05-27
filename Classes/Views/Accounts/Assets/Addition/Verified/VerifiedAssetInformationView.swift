@@ -21,8 +21,8 @@ class VerifiedAssetInformationView: BaseView {
     
     private lazy var titleLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 16.0)))
-            .withTextColor(SharedColors.purple)
+            .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
+            .withTextColor(SharedColors.primaryText)
             .withAlignment(.left)
             .withText("verified-asset-information-title".localized)
             .withLine(.contained)
@@ -32,8 +32,8 @@ class VerifiedAssetInformationView: BaseView {
     
     private lazy var informationLabel: UILabel = {
         let label = UILabel()
-            .withFont(UIFont.font(.overpass, withWeight: .regular(size: 14.0)))
-            .withTextColor(.black)
+            .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
+            .withTextColor(SharedColors.primaryText)
             .withAlignment(.left)
             .withLine(.contained)
         label.isUserInteractionEnabled = true
@@ -45,7 +45,7 @@ class VerifiedAssetInformationView: BaseView {
     }
     
     override func configureAppearance() {
-        backgroundColor = .white
+        backgroundColor = SharedColors.secondaryBackground
         addInformationTextAttributes()
     }
     
@@ -77,8 +77,8 @@ extension VerifiedAssetInformationView {
         
         titleLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(layout.current.titleTopInset)
-            make.leading.equalToSuperview().inset(layout.current.titleHorizontalInset)
-            make.trailing.lessThanOrEqualToSuperview().inset(layout.current.titleHorizontalInset)
+            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
+            make.trailing.lessThanOrEqualToSuperview().inset(layout.current.horizontalInset)
         }
     }
     
@@ -87,7 +87,7 @@ extension VerifiedAssetInformationView {
         
         verifiedImageView.snp.makeConstraints { make in
             make.leading.equalTo(titleLabel.snp.trailing).offset(layout.current.imageLeadingOffset)
-            make.bottom.equalTo(titleLabel).offset(layout.current.imageBottomOffset)
+            make.centerY.equalTo(titleLabel)
         }
     }
     
@@ -95,9 +95,9 @@ extension VerifiedAssetInformationView {
         addSubview(informationLabel)
         
         informationLabel.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(layout.current.informationHorizontalInset)
-            make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.informationVerticalInset)
-            make.bottom.lessThanOrEqualToSuperview().inset(layout.current.informationVerticalInset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.horizontalInset)
+            make.bottom.lessThanOrEqualToSuperview().inset(layout.current.horizontalInset)
         }
     }
 }
@@ -111,12 +111,10 @@ extension VerifiedAssetInformationView {
         let fullAttributedText = NSMutableAttributedString(string: fullText)
         
         let doubleCheckTextRange = (fullText as NSString).range(of: doubleCheckText)
-        fullAttributedText.addAttribute(.foregroundColor, value: SharedColors.blue, range: doubleCheckTextRange)
+        fullAttributedText.addAttribute(.foregroundColor, value: SharedColors.verified, range: doubleCheckTextRange)
         
         let contactTextRange = (fullText as NSString).range(of: contactText)
-        fullAttributedText.addAttribute(.foregroundColor, value: SharedColors.purple, range: contactTextRange)
-        fullAttributedText.addAttribute(.underlineStyle, value: NSUnderlineStyle.single.rawValue, range: contactTextRange)
-        fullAttributedText.addAttribute(.underlineColor, value: SharedColors.purple, range: contactTextRange)
+        fullAttributedText.addAttribute(.foregroundColor, value: SharedColors.tertiaryText, range: contactTextRange)
         
         informationLabel.attributedText = fullAttributedText
     }
@@ -124,12 +122,9 @@ extension VerifiedAssetInformationView {
 
 extension VerifiedAssetInformationView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let titleHorizontalInset: CGFloat = 26.0
-        let titleTopInset: CGFloat = 39.0
-        let imageLeadingOffset: CGFloat = 10.0
-        let imageBottomOffset: CGFloat = -3.0
-        let informationHorizontalInset: CGFloat = 25.0
-        let informationVerticalInset: CGFloat = 18.0
+        let horizontalInset: CGFloat = 20.0
+        let titleTopInset: CGFloat = 28.0
+        let imageLeadingOffset: CGFloat = 12.0
     }
 }
 

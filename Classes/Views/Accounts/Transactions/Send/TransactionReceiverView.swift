@@ -186,7 +186,6 @@ class TransactionReceiverView: BaseView {
         }
         
         receiverContactView.qrDisplayButton.isHidden = true
-        receiverContactView.separatorView.isHidden = true
         receiverContactView.nameLabel.text = contact.name
         receiverContactView.addressLabel.text = contact.address?.shortAddressDisplay()
     }

@@ -118,7 +118,7 @@ extension PassphraseBackUpViewController: PassphraseBackUpViewDelegate {
     func passphraseViewDidTapQrButton(_ passphraseView: PassphraseView) {
         let mnemonics = self.session?.mnemonics(forAccount: address) ?? []
         let mnemonicText = mnemonics.joined(separator: " ")
-        open(.qrGenerator(title: nil, address: address, mnemonic: mnemonicText, mode: .mnemonic), by: .present)
+        open(.qrGenerator(title: "qr-creation-title".localized, address: address, mnemonic: mnemonicText, mode: .mnemonic), by: .present)
     }
 }
 

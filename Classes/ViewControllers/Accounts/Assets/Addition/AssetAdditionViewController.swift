@@ -11,19 +11,19 @@ import Magpie
 import CoreBluetooth
 import SVProgressHUD
 
-protocol AssetAdditionViewControllerDelegate: class {
-    func assetAdditionViewController(
-        _ assetAdditionViewController: AssetAdditionViewController,
-        didAdd assetSearchResult: AssetSearchResult,
-        to account: Account
-    )
-}
-
 class AssetAdditionViewController: BaseViewController {
     
     private let layout = Layout<LayoutConstants>()
     
     weak var delegate: AssetAdditionViewControllerDelegate?
+    
+    private lazy var assetActionConfirmationPresenter = CardModalPresenter(
+        config: ModalConfiguration(
+            animationMode: .normal(duration: 0.25),
+            dismissMode: .scroll
+        ),
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: layout.current.modalHeight))
+    )
     
     private var account: Account
     
@@ -52,7 +52,7 @@ class AssetAdditionViewController: BaseViewController {
     
     private lazy var assetAdditionView = AssetAdditionView()
     
-    private lazy var emptyStateView = EmptyStateView(title: "asset-not-found".localized, topImage: nil, bottomImage: nil)
+    private lazy var emptyStateView = AssetSearchEmptyView()
     
     private let viewModel = AssetAdditionViewModel()
     
@@ -65,7 +65,7 @@ class AssetAdditionViewController: BaseViewController {
     }
     
     override func configureNavigationBarAppearance() {
-        let infoBarButton = ALGBarButtonItem(kind: .infoFilled) { [weak self] in
+        let infoBarButton = ALGBarButtonItem(kind: .infoBordered) { [weak self] in
             self?.open(.verifiedAssetInformation, by: .present)
         }
 
@@ -190,9 +190,9 @@ extension AssetAdditionViewController: UICollectionViewDelegateFlowLayout {
         let controller = open(
             .assetActionConfirmation(assetAlertDraft: assetAlertDraft),
             by: .customPresentWithoutNavigationController(
-                presentationStyle: .overCurrentContext,
-                transitionStyle: .crossDissolve,
-                transitioningDelegate: nil
+                presentationStyle: .custom,
+                transitionStyle: nil,
+                transitioningDelegate: assetActionConfirmationPresenter
             )
         ) as? AssetActionConfirmationViewController
         
@@ -364,8 +364,10 @@ extension AssetAdditionViewController {
             DispatchQueue.main.async {
                 self.transactionController.stopBLEScan()
                 self.dismissProgressIfNeeded()
-                self.pushNotificationController.showFeedbackMessage("ble-error-connection-title".localized,
-                                                                    subtitle: "ble-error-fail-connect-peripheral".localized)
+                self.pushNotificationController.showFeedbackMessage(
+                    "ble-error-connection-title".localized,
+                    subtitle: "ble-error-fail-connect-peripheral".localized
+                )
             }
             
             self.invalidateTimer()
@@ -385,5 +387,14 @@ extension AssetAdditionViewController {
 extension AssetAdditionViewController {
     struct LayoutConstants: AdaptiveLayoutConstants {
         let cellHeight: CGFloat = 50.0
+        let modalHeight: CGFloat = 510.0
     }
+}
+
+protocol AssetAdditionViewControllerDelegate: class {
+    func assetAdditionViewController(
+        _ assetAdditionViewController: AssetAdditionViewController,
+        didAdd assetSearchResult: AssetSearchResult,
+        to account: Account
+    )
 }

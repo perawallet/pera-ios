@@ -8,13 +8,15 @@
 
 import UIKit
 
-protocol AccountHeaderSupplementaryViewDelegate: class {
-    func accountHeaderSupplementaryViewDidTapOptionsButton(_ accountHeaderSupplementaryView: AccountHeaderSupplementaryView)
-}
-
-class AccountHeaderSupplementaryView: BaseCollectionViewCell<AccountHeaderView> {
+class AccountHeaderSupplementaryView: BaseSupplementaryView<AccountHeaderView> {
     
     weak var delegate: AccountHeaderSupplementaryViewDelegate?
+    
+    override func configureAppearance() {
+        backgroundColor = SharedColors.secondaryBackground
+        layer.cornerRadius = 12.0
+        layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+    }
     
     override func setListeners() {
         contextView.delegate = self
@@ -22,7 +24,16 @@ class AccountHeaderSupplementaryView: BaseCollectionViewCell<AccountHeaderView> 
 }
 
 extension AccountHeaderSupplementaryView: AccountHeaderViewDelegate {
+    func accountHeaderViewDidTapQRButton(_ accountHeaderView: AccountHeaderView) {
+        delegate?.accountHeaderSupplementaryViewDidTapQRButton(self)
+    }
+    
     func accountHeaderViewDidTapOptionsButton(_ accountHeaderView: AccountHeaderView) {
         delegate?.accountHeaderSupplementaryViewDidTapOptionsButton(self)
     }
+}
+
+protocol AccountHeaderSupplementaryViewDelegate: class {
+    func accountHeaderSupplementaryViewDidTapQRButton(_ accountHeaderSupplementaryView: AccountHeaderSupplementaryView)
+    func accountHeaderSupplementaryViewDidTapOptionsButton(_ accountHeaderSupplementaryView: AccountHeaderSupplementaryView)
 }

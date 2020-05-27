@@ -10,58 +10,33 @@ import UIKit
 
 class RewardView: BaseView {
     
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let horizontalInset: CGFloat = 25.0
-        let verticalInset: CGFloat = 16.0
-        let separatorInset: CGFloat = 30.0
-        let separatorHeight: CGFloat = 1.0
-    }
-    
     private let layout = Layout<LayoutConstants>()
-    
-    private enum Colors {
-        static let separatorColor = rgb(0.95, 0.96, 0.96)
-    }
-    
-    // MARK: Components
     
     private(set) lazy var titleLabel: UILabel = {
         UILabel()
             .withLine(.single)
             .withAlignment(.left)
-            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 13.0)))
-            .withTextColor(SharedColors.black)
+            .withFont(UIFont.font(withWeight: .demiBold(size: 13.0)))
+            .withTextColor(SharedColors.primaryText)
             .withText("reward-list-title".localized)
     }()
     
-    private(set) lazy var transactionAmountView: AlgosAmountView = {
-        let view = AlgosAmountView()
-        view.signLabel.isHidden = true
-        view.algoIconImageView.tintColor = SharedColors.purple
-        view.amountLabel.textColor = SharedColors.purple
-        return view
-    }()
+    private(set) lazy var transactionAmountView = TransactionAmountView()
     
-    private lazy var separatorView: UIView = {
-        let view = UIView()
-        view.backgroundColor = Colors.separatorColor
-        return view
-    }()
-    
-    // MARK: Setup
+    private lazy var separatorView = LineSeparatorView()
     
     override func configureAppearance() {
-        backgroundColor = .white
+        backgroundColor = SharedColors.secondaryBackground
     }
-    
-    // MARK: Layout
     
     override func prepareLayout() {
         setupTitleLabelLayout()
         setupTransactionAmountViewLayout()
         setupSeparatorViewLayout()
     }
-    
+}
+
+extension RewardView {
     private func setupTitleLabelLayout() {
         addSubview(titleLabel)
         
@@ -86,7 +61,15 @@ class RewardView: BaseView {
         separatorView.snp.makeConstraints { make in
             make.bottom.equalToSuperview()
             make.height.equalTo(layout.current.separatorHeight)
-            make.leading.trailing.equalToSuperview().inset(layout.current.separatorInset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
         }
+    }
+}
+
+extension RewardView {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let horizontalInset: CGFloat = 20.0
+        let verticalInset: CGFloat = 26.0
+        let separatorHeight: CGFloat = 1.0
     }
 }
