@@ -9,34 +9,16 @@
 import UIKit
 
 class ContactsView: BaseView {
-
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let inputViewHeight: CGFloat = 60.0
-        let separatorInset: CGFloat = 15.0
-    }
     
     private let layout = Layout<LayoutConstants>()
-    
-    private enum Colors {
-        static let placeholderColor = rgba(0.67, 0.67, 0.72, 0.3)
-    }
     
     override var endsEditingAfterTouches: Bool {
         return true
     }
     
-    // MARK: Components
-    
     private(set) lazy var contactNameInputView: SingleLineInputField = {
         let contactNameInputView = SingleLineInputField(displaysExplanationText: false)
-        contactNameInputView.inputTextField.attributedPlaceholder = NSAttributedString(
-            string: "contacts-search".localized,
-            attributes: [NSAttributedString.Key.foregroundColor: Colors.placeholderColor,
-                         NSAttributedString.Key.font: UIFont.font(.overpass, withWeight: .semiBold(size: 13.0))]
-        )
-        
-        contactNameInputView.inputTextField.textColor = SharedColors.black
-        contactNameInputView.inputTextField.tintColor = SharedColors.black
+        contactNameInputView.placeholderText = "contacts-search".localized
         contactNameInputView.nextButtonMode = .next
         contactNameInputView.inputTextField.autocorrectionType = .no
         return contactNameInputView
@@ -51,32 +33,29 @@ class ContactsView: BaseView {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = .white
-        collectionView.contentInset = .zero
+        collectionView.backgroundColor = SharedColors.secondaryBackground
+        collectionView.contentInset = UIEdgeInsets(top: 16.0, left: 0.0, bottom: 0.0, right: 0.0)
         collectionView.keyboardDismissMode = .onDrag
-        
         collectionView.register(ContactCell.self, forCellWithReuseIdentifier: ContactCell.reusableIdentifier)
         collectionView.register(ContactSelectionCell.self, forCellWithReuseIdentifier: ContactSelectionCell.reusableIdentifier)
-        
         return collectionView
     }()
     
     private lazy var contentStateView = ContentStateView()
     
-    // MARK: Layout
-    
     override func prepareLayout() {
         setupContactNameInputViewLayout()
         setupContactsCollectionViewLayout()
     }
-    
+}
+
+extension ContactsView {
     private func setupContactNameInputViewLayout() {
         addSubview(contactNameInputView)
         
         contactNameInputView.snp.makeConstraints { make in
-            make.top.equalToSuperview()
+            make.top.equalToSuperview().inset(layout.current.topInset)
             make.leading.trailing.equalToSuperview()
-            make.height.equalTo(layout.current.inputViewHeight)
         }
     }
 
@@ -84,10 +63,17 @@ class ContactsView: BaseView {
         addSubview(contactsCollectionView)
         
         contactsCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(contactNameInputView.snp.bottom).offset(layout.current.separatorInset)
+            make.top.equalTo(contactNameInputView.snp.bottom).offset(layout.current.listOffset)
             make.leading.trailing.bottom.equalToSuperview()
         }
         
         contactsCollectionView.backgroundView = contentStateView
+    }
+}
+
+extension ContactsView {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let topInset: CGFloat = 4.0
+        let listOffset: CGFloat = 16.0
     }
 }

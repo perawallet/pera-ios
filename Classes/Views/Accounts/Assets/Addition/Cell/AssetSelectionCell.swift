@@ -17,9 +17,9 @@ class AssetSelectionCell: BaseCollectionViewCell<AssetSelectionView> {
         contextView.assetNameView.codeLabel.text = ""
         contextView.detailLabel.text = ""
         
-        contextView.assetNameView.nameLabel.font = UIFont.font(.overpass, withWeight: .bold(size: 13.0))
-        contextView.assetNameView.nameLabel.textColor = SharedColors.black
-        contextView.assetNameView.codeLabel.font = UIFont.font(.overpass, withWeight: .bold(size: 13.0))
-        contextView.assetNameView.codeLabel.textColor = SharedColors.darkGray
+        contextView.assetNameView.nameLabel.font = UIFont.font(withWeight: .medium(size: 14.0))
+        contextView.assetNameView.nameLabel.textColor = SharedColors.primaryText
+        contextView.assetNameView.codeLabel.font = UIFont.font(withWeight: .medium(size: 14.0))
+        contextView.assetNameView.codeLabel.textColor = SharedColors.subtitleText
     }
 }

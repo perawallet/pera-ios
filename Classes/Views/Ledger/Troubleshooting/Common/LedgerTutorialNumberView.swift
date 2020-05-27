@@ -13,13 +13,13 @@ class LedgerTutorialNumberView: BaseView {
     private lazy var numberLabel: UILabel = {
         UILabel()
             .withLine(.single)
-            .withFont(UIFont.font(.publicSans, withWeight: .medium(size: 14.0)))
+            .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
             .withAlignment(.center)
-            .withTextColor(color("secondaryText"))
+            .withTextColor(SharedColors.secondaryText)
     }()
     
     override func configureAppearance() {
-        backgroundColor = color("gray100")
+        backgroundColor = SharedColors.gray100
     }
     
     override func prepareLayout() {

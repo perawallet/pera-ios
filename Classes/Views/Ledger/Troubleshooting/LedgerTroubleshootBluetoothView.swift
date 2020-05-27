@@ -27,9 +27,9 @@ class LedgerTroubleshootBluetoothView: BaseView {
         textView.dataDetectorTypes = .link
         textView.textContainerInset = .zero
         textView.linkTextAttributes = [
-            .foregroundColor: color("tertiaryText"),
+            .foregroundColor: SharedColors.tertiaryText,
             .underlineColor: UIColor.clear,
-            .font: UIFont.font(.publicSans, withWeight: .medium(size: 14.0))
+            .font: UIFont.font(withWeight: .medium(size: 14.0))
         ]
         return textView
     }()
@@ -48,15 +48,15 @@ class LedgerTroubleshootBluetoothView: BaseView {
         textView.dataDetectorTypes = .link
         textView.textContainerInset = .zero
         textView.linkTextAttributes = [
-            .foregroundColor: color("tertiaryText"),
+            .foregroundColor: SharedColors.tertiaryText,
             .underlineColor: UIColor.clear,
-            .font: UIFont.font(.publicSans, withWeight: .medium(size: 14.0))
+            .font: UIFont.font(withWeight: .medium(size: 14.0))
         ]
         return textView
     }()
     
     override func configureAppearance() {
-        backgroundColor = color("secondaryBackground")
+        backgroundColor = SharedColors.secondaryBackground
         bindData()
     }
     
@@ -133,8 +133,8 @@ extension LedgerTroubleshootBluetoothView {
         
         attributedString.addAttributes(
             [
-                NSAttributedString.Key.font: UIFont.font(.publicSans, withWeight: .regular(size: 14.0)),
-                NSAttributedString.Key.foregroundColor: color("primaryText")
+                NSAttributedString.Key.font: UIFont.font(withWeight: .regular(size: 14.0)),
+                NSAttributedString.Key.foregroundColor: SharedColors.primaryText
             ],
             range: NSRange(location: 0, length: attributedString.string.count)
         )

@@ -33,6 +33,11 @@ class PassphraseBackUpViewController: BaseScrollViewController {
         generatePrivateKey()
     }
     
+    override func configureAppearance() {
+        super.configureAppearance()
+        title = "new-account-title".localized
+    }
+    
     override func prepareLayout() {
         super.prepareLayout()
         setupPassphraseViewLayout()
@@ -74,7 +79,7 @@ extension PassphraseBackUpViewController: UICollectionViewDataSource {
                 fatalError("Index path is out of bounds")
         }
         
-        cell.contextView.numberLabel.text = "\(indexPath.item + 1)"
+        cell.contextView.numberLabel.text = "\(indexPath.item + 1)."
         
         guard let mnemonics = mnemonics else {
             return cell
@@ -113,7 +118,7 @@ extension PassphraseBackUpViewController: PassphraseBackUpViewDelegate {
     func passphraseViewDidTapQrButton(_ passphraseView: PassphraseView) {
         let mnemonics = self.session?.mnemonics(forAccount: address) ?? []
         let mnemonicText = mnemonics.joined(separator: " ")
-        open(.qrGenerator(title: nil, address: address, mnemonic: mnemonicText, mode: .mnemonic), by: .present)
+        open(.qrGenerator(title: "qr-creation-title".localized, address: address, mnemonic: mnemonicText, mode: .mnemonic), by: .present)
     }
 }
 

@@ -8,63 +8,57 @@
 
 import UIKit
 
-protocol AddContactViewDelegate: class {
-    
-    func addContactViewDidTapAddContactButton(_ addContactView: AddContactView)
-    func addContactViewDidTapAddImageButton(_ addContactView: AddContactView)
-    func addContactViewDidTapQRCodeButton(_ addContactView: AddContactView)
-}
-
 class AddContactView: BaseView {
-    
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let informationViewHeight: CGFloat = 333.0
-        let bottomInset: CGFloat = 15.0
-        let minimumInset: CGFloat = 10.0
-        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
-    }
     
     private let layout = Layout<LayoutConstants>()
     
-    // MARK: Components
+    private(set) lazy var userInformationView = UserInformationView()
     
-    private(set) lazy var userInformationView: UserInformationView = {
-        let view = UserInformationView()
-        view.algorandAddressInputView.rightInputAccessoryButton.setImage(img("icon-qr-scan"), for: .normal)
-        return view
-    }()
+    private(set) lazy var addContactButton = MainButton(title: "contacts-add".localized)
     
-    private(set) lazy var addContactButton: MainButton = {
-        let button = MainButton(title: "contacts-add-button".localized)
+    private(set) lazy var deleteContactButton: AlignedButton = {
+        let positions: AlignedButton.StylePositionAdjustment = (image: CGPoint(x: 0.0, y: 0.0), title: CGPoint(x: 4.0, y: 0.0))
+        let button = AlignedButton(style: .imageLeftTitleCentered(positions))
+        button.setImage(img("icon-trash", isTemplate: true), for: .normal)
+        button.tintColor = SharedColors.red
+        button.setTitle("contacts-delete-contact".localized, for: .normal)
+        button.setTitleColor(SharedColors.red, for: .normal)
+        button.titleLabel?.font = UIFont.font(withWeight: .semiBold(size: 16.0))
         return button
     }()
     
     weak var delegate: AddContactViewDelegate?
     
-    // MARK: Setup
-    
     override func setListeners() {
-        addContactButton.addTarget(self, action: #selector(notifyDelegateToAddButtonTapped), for: .touchUpInside)
+        addContactButton.addTarget(self, action: #selector(notifyDelegateToHandleAction), for: .touchUpInside)
+        deleteContactButton.addTarget(self, action: #selector(notifyDelegateToHandleAction), for: .touchUpInside)
     }
     
     override func linkInteractors() {
         userInformationView.delegate = self
     }
     
-    // MARK: Layout
-    
     override func prepareLayout() {
         setupUserInformationViewLayout()
         setupAddButtonLayout()
+        setupDeleteContactButtonLayout()
     }
-    
+}
+
+extension AddContactView {
+    @objc
+    private func notifyDelegateToHandleAction() {
+        delegate?.addContactViewDidTapActionButton(self)
+    }
+}
+
+extension AddContactView {
     private func setupUserInformationViewLayout() {
         addSubview(userInformationView)
         
         userInformationView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(safeAreaLayoutGuide.snp.top)
-            make.height.equalTo(layout.current.informationViewHeight)
         }
     }
     
@@ -72,25 +66,26 @@ class AddContactView: BaseView {
         addSubview(addContactButton)
         
         addContactButton.snp.makeConstraints { make in
-            make.top.greaterThanOrEqualTo(userInformationView.snp.bottom).offset(layout.current.minimumInset)
+            make.top.equalTo(userInformationView.snp.bottom).offset(layout.current.topInset)
             make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().inset(safeAreaBottom + layout.current.bottomInset)
+            make.bottom.lessThanOrEqualToSuperview().inset(safeAreaBottom + layout.current.bottomInset)
             make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
         }
     }
     
-    // MARK: Actions
-    
-    @objc
-    private func notifyDelegateToAddButtonTapped() {
-        delegate?.addContactViewDidTapAddContactButton(self)
+    private func setupDeleteContactButtonLayout() {
+        addSubview(deleteContactButton)
+        
+        deleteContactButton.snp.makeConstraints { make in
+            make.top.equalTo(userInformationView.snp.bottom).offset(layout.current.topInset)
+            make.centerX.equalToSuperview()
+            make.bottom.lessThanOrEqualToSuperview().inset(safeAreaBottom + layout.current.bottomInset)
+            make.size.equalTo(layout.current.deleteButtonSize)
+        }
     }
 }
 
-// MARK: UserInformationViewDelegate
-
 extension AddContactView: UserInformationViewDelegate {
-    
     func userInformationViewDidTapAddImageButton(_ userInformationView: UserInformationView) {
         delegate?.addContactViewDidTapAddImageButton(self)
     }
@@ -98,4 +93,19 @@ extension AddContactView: UserInformationViewDelegate {
     func userInformationViewDidTapQRCodeButton(_ userInformationView: UserInformationView) {
         delegate?.addContactViewDidTapQRCodeButton(self)
     }
+}
+
+extension AddContactView {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let bottomInset: CGFloat = 15.0
+        let topInset: CGFloat = 28.0
+        let buttonHorizontalInset: CGFloat = 20.0
+        let deleteButtonSize = CGSize(width: 145.0, height: 44.0)
+    }
+}
+
+protocol AddContactViewDelegate: class {
+    func addContactViewDidTapActionButton(_ addContactView: AddContactView)
+    func addContactViewDidTapAddImageButton(_ addContactView: AddContactView)
+    func addContactViewDidTapQRCodeButton(_ addContactView: AddContactView)
 }

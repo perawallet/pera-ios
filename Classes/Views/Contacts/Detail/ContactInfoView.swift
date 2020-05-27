@@ -8,15 +8,11 @@
 
 import UIKit
 
-protocol ContactInfoViewDelegate: class {
-    func contactInfoViewDidTapQRCodeButton(_ contactInfoView: ContactInfoView)
-    func contactInfoViewDidEditContactButton(_ contactInfoView: ContactInfoView)
-    func contactInfoViewDidDeleteContactButton(_ contactInfoView: ContactInfoView)
-}
-
 class ContactInfoView: BaseView {
     
     private let layout = Layout<LayoutConstants>()
+    
+    weak var delegate: ContactInfoViewDelegate?
     
     private(set) lazy var userInformationView = UserInformationView(isEditable: false)
     
@@ -32,7 +28,7 @@ class ContactInfoView: BaseView {
     private(set) lazy var assetsCollectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .vertical
-        flowLayout.minimumLineSpacing = 5.0
+        flowLayout.minimumLineSpacing = 8.0
         flowLayout.minimumInteritemSpacing = 0.0
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
@@ -42,36 +38,35 @@ class ContactInfoView: BaseView {
         collectionView.contentInset = .zero
         collectionView.keyboardDismissMode = .onDrag
         collectionView.register(ContactAssetCell.self, forCellWithReuseIdentifier: ContactAssetCell.reusableIdentifier)
-        
         return collectionView
     }()
     
-    private(set) lazy var editContactButton = MainButton(title: "contacts-edit-button".localized)
-    
-    private(set) lazy var deleteContactButton: MainButton = {
-        let button = MainButton(title: "contacts-delete-contact".localized)
-        button.setBackgroundImage(img("bg-black-button-big"), for: .normal)
-        button.setTitleColor(.white, for: .normal)
+    private(set) lazy var shareButton: AlignedButton = {
+        let positions: AlignedButton.StylePositionAdjustment = (image: CGPoint(x: 30.0, y: 0.0), title: CGPoint(x: 4.0, y: 0.0))
+        let button = AlignedButton(style: .imageLeftTitleCentered(positions))
+        button.setTitle("title-share".localized, for: .normal)
+        button.setTitleColor(SharedColors.primaryText, for: .normal)
+        button.titleLabel?.font = UIFont.font(withWeight: .semiBold(size: 16.0))
+        button.backgroundColor = SharedColors.white
+        button.layer.cornerRadius = 26.0
+        button.setImage(img("icon-share", isTemplate: true), for: .normal)
+        button.tintColor = SharedColors.gray700
         return button
     }()
-    
-    weak var delegate: ContactInfoViewDelegate?
     
     override func linkInteractors() {
         userInformationView.delegate = self
     }
     
     override func setListeners() {
-        editContactButton.addTarget(self, action: #selector(notifyDelegateToEditContactButtonTapped), for: .touchUpInside)
-        deleteContactButton.addTarget(self, action: #selector(notifyDelegateToDeleteContactButtonTapped), for: .touchUpInside)
+        shareButton.addTarget(self, action: #selector(notifyDelegateToShareContact), for: .touchUpInside)
     }
     
     override func prepareLayout() {
         setupUserInformationViewLayout()
         setupAssetsTitleLabelLayout()
         setupAssetsCollectionViewLayout()
-        setupEditContactButtonLayout()
-        setupDeleteContactButtonLayout()
+        setupShareButtonLayout()
     }
 }
 
@@ -82,7 +77,6 @@ extension ContactInfoView {
         userInformationView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(safeAreaLayoutGuide.snp.top)
-            make.height.equalTo(layout.current.informationViewHeight)
         }
     }
     
@@ -105,37 +99,22 @@ extension ContactInfoView {
         }
     }
     
-    private func setupEditContactButtonLayout() {
-        addSubview(editContactButton)
+    private func setupShareButtonLayout() {
+        addSubview(shareButton)
         
-        editContactButton.snp.makeConstraints { make in
-            make.top.greaterThanOrEqualTo(assetsCollectionView.snp.bottom).offset(layout.current.assetsLabelHorizontalInset)
+        shareButton.snp.makeConstraints { make in
+            make.top.equalTo(assetsCollectionView.snp.bottom).offset(layout.current.shareButtonTopInset)
             make.centerX.equalToSuperview()
-            make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
-        }
-    }
-    
-    private func setupDeleteContactButtonLayout() {
-        addSubview(deleteContactButton)
-        
-        deleteContactButton.snp.makeConstraints { make in
-            make.top.equalTo(editContactButton.snp.bottom).offset(layout.current.deleteButtonTopInset)
-            make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().inset(layout.current.verticalInset + safeAreaBottom)
-            make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
+            make.bottom.lessThanOrEqualToSuperview().inset(layout.current.verticalInset + safeAreaBottom)
+            make.size.equalTo(layout.current.buttonSize)
         }
     }
 }
 
 extension ContactInfoView {
     @objc
-    private func notifyDelegateToEditContactButtonTapped() {
-        delegate?.contactInfoViewDidEditContactButton(self)
-    }
-    
-    @objc
-    private func notifyDelegateToDeleteContactButtonTapped() {
-        delegate?.contactInfoViewDidDeleteContactButton(self)
+    private func notifyDelegateToShareContact() {
+        delegate?.contactInfoViewDidTapShareButton(self)
     }
 }
 
@@ -150,19 +129,16 @@ extension ContactInfoView: UserInformationViewDelegate {
 
 extension ContactInfoView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let informationViewHeight: CGFloat = 333.0
-        let verticalInset: CGFloat = 15.0
-        let minimumInset: CGFloat = 10.0
-        let assetsLabelHorizontalInset: CGFloat = 30.0
+        let verticalInset: CGFloat = 20.0
+        let assetsLabelHorizontalInset: CGFloat = 20.0
         let collectionViewHeight: CGFloat = 50.0
-        let collectionViewTopInset: CGFloat = 7.0
-        let deleteButtonTopInset: CGFloat = 10.0
-        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
+        let collectionViewTopInset: CGFloat = 8.0
+        let shareButtonTopInset: CGFloat = 30.0
+        let buttonSize = CGSize(width: 160.0, height: 52.0)
     }
 }
 
-extension ContactInfoView {
-    private enum Colors {
-        static let separatorColor = rgba(0.67, 0.67, 0.72, 0.31)
-    }
+protocol ContactInfoViewDelegate: class {
+    func contactInfoViewDidTapQRCodeButton(_ contactInfoView: ContactInfoView)
+    func contactInfoViewDidTapShareButton(_ contactInfoView: ContactInfoView)
 }

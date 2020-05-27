@@ -21,17 +21,17 @@ class LedgerTutorialInstructionView: BaseView {
     private lazy var titleLabel: UILabel = {
         UILabel()
             .withLine(.contained)
-            .withFont(UIFont.font(.publicSans, withWeight: .regular(size: 14.0)))
+            .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
             .withAlignment(.left)
-            .withTextColor(color("secondaryText"))
+            .withTextColor(SharedColors.secondaryText)
     }()
     
     private lazy var arrowImageView = UIImageView(image: img("icon-arrow-gray-24"))
     
     override func configureAppearance() {
-        backgroundColor = color("secondaryBackground")
+        backgroundColor = SharedColors.secondaryBackground
         layer.cornerRadius = 12.0
-        setShadow()
+        applySmallShadow()
     }
     
     override func prepareLayout() {
@@ -42,7 +42,7 @@ class LedgerTutorialInstructionView: BaseView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        layer.shadowPath = UIBezierPath(rect: bounds).cgPath
+        setShadowFrames()
     }
 }
 
@@ -85,13 +85,6 @@ extension LedgerTutorialInstructionView {
     
     func setTitle(_ title: String) {
         titleLabel.text = title
-    }
-    
-    private func setShadow() {
-        layer.shadowColor = Colors.shadowColor.cgColor
-        layer.shadowOpacity = 1.0
-        layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
-        layer.shadowRadius = 4.0
     }
 }
 

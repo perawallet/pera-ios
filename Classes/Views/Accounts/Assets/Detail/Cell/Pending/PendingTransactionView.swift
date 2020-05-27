@@ -10,31 +10,18 @@ import UIKit
 
 class PendingTransactionView: TransactionHistoryContextView {
     
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let horizontalInset: CGFloat = 25.0
-        let spinnerSize = CGSize(width: 22.0, height: 22.0)
-        let titleLabelInset: CGFloat = 65.0
-    }
-    
     private let layout = Layout<LayoutConstants>()
     
-    // MARK: Components
-    
-    private(set) lazy var pendingSpinnerView = LoadingSpinnerView()
-    
-    // MARK: Setup
-    
-    override func configureAppearance() {
-        backgroundColor = .clear
-    }
+    private(set) lazy var pendingImageView = UIImageView(image: img("icon-pending"))
     
     override func prepareLayout() {
         super.prepareLayout()
-        
         adjustTitleLabelLayout()
-        setupPendingSpinnerViewLayout()
+        setupPendingImageViewLayout()
     }
-    
+}
+
+extension PendingTransactionView {
     private func adjustTitleLabelLayout() {
         contactLabel.snp.updateConstraints { make in
             make.leading.equalToSuperview().inset(layout.current.titleLabelInset)
@@ -45,13 +32,21 @@ class PendingTransactionView: TransactionHistoryContextView {
         }
     }
     
-    private func setupPendingSpinnerViewLayout() {
-        addSubview(pendingSpinnerView)
+    private func setupPendingImageViewLayout() {
+        addSubview(pendingImageView)
         
-        pendingSpinnerView.snp.makeConstraints { make in
+        pendingImageView.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.leading.equalToSuperview().inset(layout.current.horizontalInset)
-            make.size.equalTo(layout.current.spinnerSize)
+            make.size.equalTo(layout.current.imageSize)
         }
+    }
+}
+
+extension PendingTransactionView {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let horizontalInset: CGFloat = 20.0
+        let imageSize = CGSize(width: 24.0, height: 24.0)
+        let titleLabelInset: CGFloat = 56.0
     }
 }
