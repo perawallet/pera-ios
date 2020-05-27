@@ -40,8 +40,6 @@ class AccountContextView: BaseView {
             .withTextColor(SharedColors.primaryText)
     }()
     
-    private lazy var separatorView = LineSeparatorView()
-    
     override func configureAppearance() {
         backgroundColor = SharedColors.secondaryBackground
     }

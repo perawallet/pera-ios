@@ -8,41 +8,11 @@
 
 import UIKit
 
-protocol AssetDetailViewDelegate: class {
-    func assetDetailViewDidTapSendButton(_ assetDetailView: AssetDetailView)
-    func assetDetailViewDidTapReceiveButton(_ assetDetailView: AssetDetailView)
-    func assetDetailView(_ assetDetailView: AssetDetailView, didTrigger dollarValueGestureRecognizer: UILongPressGestureRecognizer)
-    func assetDetailView(_ assetDetailView: AssetDetailView, didTriggerAssetIdCopyValue gestureRecognizer: UILongPressGestureRecognizer)
-    func assetDetailViewDidTapRewardView(_ assetDetailView: AssetDetailView)
-}
-
 class AssetDetailView: BaseView {
-
-    struct LayoutConstants: AdaptiveLayoutConstants {
-        static var algosHeaderHeight: CGFloat = 267.0
-        static var assetHeaderHeight: CGFloat = 225.0
-        static let smallHeaderHeight: CGFloat = 111.0
-    }
     
     private let layout = Layout<LayoutConstants>()
     
-    // MARK: Components
-    
-    private(set) lazy var accountsHeaderContainerView: UIView = {
-        let view = UIView()
-        return view
-    }()
-    
-    private(set) lazy var headerView: AssetDetailHeaderView = {
-        let view = AssetDetailHeaderView()
-        return view
-    }()
-    
-    private(set) lazy var smallHeaderView: AssetDetailSmallHeaderView = {
-        let view = AssetDetailSmallHeaderView()
-        view.alpha = 0.0
-        return view
-    }()
+    private(set) lazy var headerView = AssetDetailHeaderView()
     
     private(set) lazy var transactionHistoryCollectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
@@ -53,12 +23,16 @@ class AssetDetailView: BaseView {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = .white
+        collectionView.backgroundColor = .clear
         
         collectionView.register(TransactionHistoryCell.self, forCellWithReuseIdentifier: TransactionHistoryCell.reusableIdentifier)
         collectionView.register(PendingTransactionCell.self, forCellWithReuseIdentifier: PendingTransactionCell.reusableIdentifier)
         collectionView.register(RewardCell.self, forCellWithReuseIdentifier: RewardCell.reusableIdentifier)
-        
+        collectionView.register(
+            TransactionHistoryHeaderSupplementaryView.self,
+            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+            withReuseIdentifier: TransactionHistoryHeaderSupplementaryView.reusableIdentifier
+        )
         return collectionView
     }()
     
@@ -66,53 +40,33 @@ class AssetDetailView: BaseView {
     
     weak var delegate: AssetDetailViewDelegate?
     
-    // MARK: Setup
-    
     override func linkInteractors() {
         headerView.delegate = self
-        smallHeaderView.delegate = self
     }
     
-    // MARK: Layout
-    
     override func prepareLayout() {
-        setupTransactionHistoryCollectionViewLayout()
-        setupAccountsHeaderContainerViewLayout()
         setupHeaderViewLayout()
-        setupSmallHeaderViewLayout()
+        setupTransactionHistoryCollectionViewLayout()
         setupContentStateView()
+    }
+}
+
+extension AssetDetailView {
+    private func setupHeaderViewLayout() {
+        addSubview(headerView)
+        
+        headerView.snp.makeConstraints { make in
+            make.top.equalToSuperview().inset(layout.current.topInset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+        }
     }
     
     private func setupTransactionHistoryCollectionViewLayout() {
         addSubview(transactionHistoryCollectionView)
         
         transactionHistoryCollectionView.snp.makeConstraints { make in
-            make.top.leading.trailing.bottom.equalToSuperview()
-        }
-    }
-    
-    private func setupAccountsHeaderContainerViewLayout() {
-        addSubview(accountsHeaderContainerView)
-        
-        accountsHeaderContainerView.snp.makeConstraints { make in
-            make.leading.trailing.top.equalToSuperview()
-            make.height.equalTo(LayoutConstants.algosHeaderHeight)
-        }
-    }
-    
-    private func setupHeaderViewLayout() {
-        accountsHeaderContainerView.addSubview(headerView)
-        
-        headerView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
-    }
-    
-    private func setupSmallHeaderViewLayout() {
-        accountsHeaderContainerView.addSubview(smallHeaderView)
-        
-        smallHeaderView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.leading.trailing.bottom.equalToSuperview()
+            make.top.equalToSuperview()
         }
     }
     
@@ -124,8 +78,6 @@ class AssetDetailView: BaseView {
         }
     }
 }
-
-// MARK: AssetDetailHeaderViewDelegate
 
 extension AssetDetailView: AssetDetailHeaderViewDelegate {
     func assetDetailHeaderViewDidTapSendButton(_ assetDetailHeaderView: AssetDetailHeaderView) {
@@ -155,14 +107,20 @@ extension AssetDetailView: AssetDetailHeaderViewDelegate {
     }
 }
 
-// MARK: AssetDetailSmallHeaderViewDelegate
+extension AssetDetailView {
+    struct LayoutConstants: AdaptiveLayoutConstants {
+        let topInset: CGFloat = 12.0
+        let horizontalInset: CGFloat = 20.0
+        let listTopInset: CGFloat = 32.0
+        static var algosHeaderHeight: CGFloat = 264.0
+        static var assetHeaderHeight: CGFloat = 216.0
+    }
+}
 
-extension AssetDetailView: AssetDetailSmallHeaderViewDelegate {
-    func assetDetailSmallHeaderViewDidTapSendButton(_ assetDetailHeaderView: AssetDetailSmallHeaderView) {
-        delegate?.assetDetailViewDidTapSendButton(self)
-    }
-    
-    func assetDetailSmallHeaderViewDidTapReceiveButton(_ assetDetailHeaderView: AssetDetailSmallHeaderView) {
-        delegate?.assetDetailViewDidTapReceiveButton(self)
-    }
+protocol AssetDetailViewDelegate: class {
+    func assetDetailViewDidTapSendButton(_ assetDetailView: AssetDetailView)
+    func assetDetailViewDidTapReceiveButton(_ assetDetailView: AssetDetailView)
+    func assetDetailView(_ assetDetailView: AssetDetailView, didTrigger dollarValueGestureRecognizer: UILongPressGestureRecognizer)
+    func assetDetailView(_ assetDetailView: AssetDetailView, didTriggerAssetIdCopyValue gestureRecognizer: UILongPressGestureRecognizer)
+    func assetDetailViewDidTapRewardView(_ assetDetailView: AssetDetailView)
 }
