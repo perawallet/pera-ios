@@ -91,7 +91,7 @@ extension LedgerPairingViewController: LedgerPairingViewDelegate {
 
 extension LedgerPairingViewController {
     private func presentAccountSetupAlert(for account: AccountInformation) {
-        let configurator = BottomInformationViewConfigurator(
+        let configurator = BottomInformationBundle(
             title: "recover-from-seed-verify-pop-up-title".localized,
             image: img("account-verify-alert-icon"),
             explanation: "recover-from-seed-verify-pop-up-explanation".localized,
@@ -100,7 +100,7 @@ extension LedgerPairingViewController {
         }
         
         open(
-            .bottomInformation(mode: .default, configurator: configurator),
+            .bottomInformation(mode: .confirmation, configurator: configurator),
             by: .customPresentWithoutNavigationController(
                 presentationStyle: .overCurrentContext,
                 transitionStyle: .crossDissolve,

@@ -16,17 +16,17 @@ class BottomInformationViewController: BaseViewController {
     
     private(set) var bottomInformationView: BottomInformationView
     private let mode: Mode
-    private let bottomInformationViewConfigurator: BottomInformationViewConfigurator
+    private let bottomInformationBundle: BottomInformationBundle
     
     private let viewModel = BottomInformationViewModel()
     
-    init(mode: Mode, bottomInformationViewConfigurator: BottomInformationViewConfigurator, configuration: ViewControllerConfiguration) {
+    init(mode: Mode, bottomInformationBundle: BottomInformationBundle, configuration: ViewControllerConfiguration) {
         self.mode = mode
-        self.bottomInformationViewConfigurator = bottomInformationViewConfigurator
+        self.bottomInformationBundle = bottomInformationBundle
         
         switch mode {
-        case .default:
-            bottomInformationView = DefaultBottomInformationView()
+        case .confirmation:
+            bottomInformationView = ConfirmationBottomInformationView()
         case .action:
             bottomInformationView = ActionBottomInformationView()
         case .qr:
@@ -38,13 +38,13 @@ class BottomInformationViewController: BaseViewController {
     
     override func configureAppearance() {
         view.backgroundColor = SharedColors.secondaryBackground
-        viewModel.configure(bottomInformationView, with: bottomInformationViewConfigurator)
+        viewModel.configure(bottomInformationView, with: bottomInformationBundle)
     }
     
     override func setListeners() {
         switch mode {
-        case .default:
-            setDefaultBottomInformationViewAction()
+        case .confirmation:
+            setConfirmationBottomInformationViewAction()
         case .action:
             setActionBottomInformationViewAction()
         case .qr:
@@ -68,12 +68,12 @@ extension BottomInformationViewController {
 }
 
 extension BottomInformationViewController {
-    private func setDefaultBottomInformationViewAction() {
-        guard let defaultBottomInformationView = bottomInformationView as? DefaultBottomInformationView else {
+    private func setConfirmationBottomInformationViewAction() {
+        guard let confirmationBottomInformationView = bottomInformationView as? ConfirmationBottomInformationView else {
             return
         }
         
-        defaultBottomInformationView.delegate = self
+        confirmationBottomInformationView.delegate = self
     }
     
     private func setActionBottomInformationViewAction() {
@@ -95,7 +95,7 @@ extension BottomInformationViewController {
 
 extension BottomInformationViewController {
     private func executeHandler() {
-        if let handler = bottomInformationViewConfigurator.actionHandler {
+        if let handler = bottomInformationBundle.actionHandler {
             dismiss(animated: true) {
                 handler()
             }
@@ -106,8 +106,8 @@ extension BottomInformationViewController {
     }
 }
 
-extension BottomInformationViewController: DefaultBottomInformationViewDelegate {
-    func defaultBottomInformationViewDidTapActionButton(_ defaultBottomInformationView: DefaultBottomInformationView) {
+extension BottomInformationViewController: ConfirmationBottomInformationViewDelegate {
+    func confirmationBottomInformationViewDidTapActionButton(_ confirmationBottomInformationView: ConfirmationBottomInformationView) {
         executeHandler()
     }
 }
@@ -134,7 +134,7 @@ extension BottomInformationViewController: QRBottomInformationViewDelegate {
 
 extension BottomInformationViewController {
     enum Mode {
-        case `default`
+        case confirmation
         case action
         case qr
     }

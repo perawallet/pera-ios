@@ -98,7 +98,7 @@ extension ChoosePasswordView {
 }
 
 extension ChoosePasswordView: NumpadViewDelegate {
-    func numpadView(_ numpadView: NumpadView, didSelect value: NumpadValue) {
+    func numpadView(_ numpadView: NumpadView, didSelect value: NumpadKey) {
         delegate?.choosePasswordView(self, didSelect: value)
     }
 }
@@ -116,5 +116,5 @@ extension ChoosePasswordView {
 }
 
 protocol ChoosePasswordViewDelegate: class {
-    func choosePasswordView(_ choosePasswordView: ChoosePasswordView, didSelect value: NumpadValue)
+    func choosePasswordView(_ choosePasswordView: ChoosePasswordView, didSelect value: NumpadKey)
 }

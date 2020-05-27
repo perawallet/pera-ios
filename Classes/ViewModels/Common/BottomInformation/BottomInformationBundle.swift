@@ -1,5 +1,5 @@
 //
-//  BottomInformationViewConfigurator.swift
+//  BottomInformationBundle.swift
 //  algorand
 //
 //  Created by Göktuğ Berk Ulu on 21.03.2019.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-struct BottomInformationViewConfigurator {
+struct BottomInformationBundle {
     let title: String
     let image: UIImage?
     let explanation: String

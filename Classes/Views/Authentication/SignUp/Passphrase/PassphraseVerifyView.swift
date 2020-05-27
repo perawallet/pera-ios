@@ -88,7 +88,7 @@ extension PassphraseVerifyView {
 }
 
 extension PassphraseVerifyView {
-    func setWrongChoiceLabel(hidden: Bool) {
+    func setWrongChoiceLabelHidden(_ hidden: Bool) {
         wrongChoiceLabel.isHidden = hidden
     }
 }

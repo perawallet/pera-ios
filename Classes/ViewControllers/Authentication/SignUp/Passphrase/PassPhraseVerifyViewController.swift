@@ -111,11 +111,11 @@ extension PassphraseVerifyViewController: UICollectionViewDelegate, UICollection
         let isCorrect = viewModel.checkMnemonic(mnemonic)
         
         if isCorrect {
-            passphraseVerifyView.setWrongChoiceLabel(hidden: true)
+            passphraseVerifyView.setWrongChoiceLabelHidden(true)
             cell.contextView.setMode(.correct)
             
             if viewModel.currentIndex == viewModel.numberOfValidations - 1 {
-                let configurator = BottomInformationViewConfigurator(
+                let configurator = BottomInformationBundle(
                     title: "pass-phrase-verify-pop-up-title".localized,
                     image: img("img-green-checkmark"),
                     explanation: "pass-phrase-verify-pop-up-explanation".localized,
@@ -125,7 +125,7 @@ extension PassphraseVerifyViewController: UICollectionViewDelegate, UICollection
                 }
                 
                 open(
-                    .bottomInformation(mode: .default, configurator: configurator),
+                    .bottomInformation(mode: .confirmation, configurator: configurator),
                     by: .customPresentWithoutNavigationController(
                         presentationStyle: .custom,
                         transitionStyle: nil,
@@ -140,7 +140,7 @@ extension PassphraseVerifyViewController: UICollectionViewDelegate, UICollection
                 updatePassPhraseLabel()
             }
         } else {
-            passphraseVerifyView.setWrongChoiceLabel(hidden: false)
+            passphraseVerifyView.setWrongChoiceLabelHidden(false)
             cell.contextView.setMode(.wrong)
         }
         
