@@ -48,7 +48,7 @@ class SettingsToggleContextView: BaseView {
 
 extension SettingsToggleContextView {
     @objc
-    fileprivate func didChangeToggle(_ toggle: Toggle) {
+    private func didChangeToggle(_ toggle: Toggle) {
         guard let indexPath = self.indexPath else {
             return
         }

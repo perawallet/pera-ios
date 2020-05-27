@@ -92,7 +92,7 @@ extension EditAccountViewController {
 
 extension EditAccountViewController {
     @objc
-    fileprivate func didReceive(keyboardWillShow notification: Notification) {
+    private func didReceive(keyboardWillShow notification: Notification) {
         if !UIApplication.shared.isActive {
             return
         }

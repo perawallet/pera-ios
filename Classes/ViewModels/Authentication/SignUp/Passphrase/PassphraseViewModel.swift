@@ -83,7 +83,7 @@ extension PassphraseViewModel {
 }
 
 extension PassphraseViewModel {
-    fileprivate func generateRandomIndexes() {
+    private func generateRandomIndexes() {
         while validationIndexes.count < numberOfValidations {
             let randomIndex = Int.random(in: 0 ..< mnemonics.count)
             
@@ -95,7 +95,7 @@ extension PassphraseViewModel {
         }
     }
     
-    fileprivate func generateRandomMnemonics() {
+    private func generateRandomMnemonics() {
         var randomMnemonics: Set<String> = []
         
         for index in validationIndexes {
