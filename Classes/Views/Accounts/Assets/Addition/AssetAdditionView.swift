@@ -17,19 +17,19 @@ class AssetAdditionView: BaseView {
     
     private(set) lazy var assetInputView: SingleLineInputField = {
         let assetInputView = SingleLineInputField(displaysExplanationText: false)
-        assetInputView.inputTextField.attributedPlaceholder = NSAttributedString(
-            string: "asset-search-placeholder".localized,
-            attributes: [NSAttributedString.Key.foregroundColor: Colors.placeholderColor,
-                         NSAttributedString.Key.font: UIFont.font(.overpass, withWeight: .semiBold(size: 13.0))]
-        )
-        assetInputView.inputTextField.textColor = SharedColors.black
-        assetInputView.inputTextField.tintColor = SharedColors.black
+        assetInputView.placeholderText = "asset-search-placeholder".localized
+        assetInputView.inputTextField.textColor = SharedColors.primaryText
+        assetInputView.inputTextField.tintColor = SharedColors.primaryText
         assetInputView.inputTextField.returnKeyType = .done
         assetInputView.inputTextField.autocorrectionType = .no
         return assetInputView
     }()
     
-    private lazy var segmentControlContainerView = UIView()
+    private lazy var segmentControlContainerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = SharedColors.secondaryBackground
+        return view
+    }()
     
     private lazy var assetSegmentControl: BetterSegmentedControl = {
         let segments = [
@@ -57,7 +57,7 @@ class AssetAdditionView: BaseView {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = .white
+        collectionView.backgroundColor = SharedColors.secondaryBackground
         collectionView.contentInset = .zero
         collectionView.register(AssetSelectionCell.self, forCellWithReuseIdentifier: AssetSelectionCell.reusableIdentifier)
         return collectionView
@@ -77,7 +77,6 @@ class AssetAdditionView: BaseView {
     
     override func configureAppearance() {
         super.configureAppearance()
-        segmentControlContainerView.backgroundColor = SharedColors.secondaryBackground
         assetSegmentControl.setIndex(0)
     }
 }
@@ -108,6 +107,7 @@ extension AssetAdditionView {
     
     private func setupSegmentControlLayout() {
         addSubview(segmentControlContainerView)
+        
         segmentControlContainerView.snp.makeConstraints { maker in
             maker.leading.trailing.equalToSuperview()
             maker.top.equalTo(assetInputView.snp.bottom).offset(layout.current.topInset)
@@ -115,6 +115,7 @@ extension AssetAdditionView {
         }
         
         segmentControlContainerView.addSubview(assetSegmentControl)
+        
         assetSegmentControl.snp.makeConstraints { maker in
             maker.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
             maker.top.equalToSuperview().inset(layout.current.segmentControlTopInset)
@@ -136,13 +137,13 @@ extension AssetAdditionView {
 
 extension AssetAdditionView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let horizontalInset: CGFloat = 15.0
-        let topInset: CGFloat = 10.0
+        let horizontalInset: CGFloat = 20.0
+        let topInset: CGFloat = 16.0
         let unverifiedAssetsButtonInset: CGFloat = 5.0
         let segmentControlHeight: CGFloat = 48.0
         let inputViewHeight: CGFloat = 50.0
         let collectionViewTopInset: CGFloat = 15.0
-        let segmentControlContainerHeight = 77.0
+        let segmentControlContainerHeight = 72.0
         let segmentControlTopInset = 14.0
     }
 }

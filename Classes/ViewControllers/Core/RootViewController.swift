@@ -92,7 +92,7 @@ class RootViewController: UIViewController {
             switch screen {
             case .addContact,
                  .sendAlgosTransactionPreview,
-                 .assetSupportAlert,
+                 .assetSupport,
                  .sendAssetTransactionPreview:
                 tabBarViewController.route = screen
                 tabBarViewController.routeForDeeplink()
@@ -135,7 +135,7 @@ class RootViewController: UIViewController {
                         actionTitle: "title-ok".localized
                     )
                     open(.choosePassword(
-                        mode: .login, route: .assetCancellableSupportAlert(assetAlertDraft: draft)),
+                        mode: .login, route: .assetActionConfirmation(assetAlertDraft: draft)),
                          by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
                     )
                     return
@@ -165,7 +165,7 @@ class RootViewController: UIViewController {
                     ),
                     actionTitle: "title-ok".localized
                 )
-                tabBarViewController.route = .assetCancellableSupportAlert(assetAlertDraft: draft)
+                tabBarViewController.route = .assetActionConfirmation(assetAlertDraft: draft)
                 tabBarViewController.routeForDeeplink()
                 return
             } else {

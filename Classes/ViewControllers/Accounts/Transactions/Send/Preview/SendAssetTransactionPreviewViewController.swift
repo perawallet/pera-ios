@@ -19,6 +19,14 @@ protocol SendAssetTransactionPreviewViewControllerDelegate: class {
 
 class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewController {
     
+    private lazy var modalScreenPresenter = CardModalPresenter(
+        config: ModalConfiguration(
+            animationMode: .normal(duration: 0.25),
+            dismissMode: .scroll
+        ),
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: 490.0))
+    )
+    
     weak var delegate: SendAssetTransactionPreviewViewControllerDelegate?
     
     private var assetDetail: AssetDetail
@@ -173,7 +181,7 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
     }
     
     private func displayQRAlert(for qrAmount: Int64, to qrAddress: String, with assetId: Int64?) {
-        let configurator = BottomInformationViewConfigurator(
+        let configurator = BottomInformationBundle(
             title: "send-qr-scan-alert-title".localized,
             image: img("icon-qr-alert"),
             explanation: "send-qr-scan-alert-message".localized,
@@ -278,11 +286,11 @@ extension SendAssetTransactionPreviewViewController {
         }
         
         self.open(
-            .assetSupportAlert(assetAlertDraft: assetAlertDraft),
+            .assetSupport(assetAlertDraft: assetAlertDraft),
             by: .customPresentWithoutNavigationController(
-                presentationStyle: .overCurrentContext,
-                transitionStyle: .crossDissolve,
-                transitioningDelegate: nil
+                presentationStyle: .custom,
+                transitionStyle: nil,
+                transitioningDelegate: modalScreenPresenter
             )
         )
     }
