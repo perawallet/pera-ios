@@ -295,7 +295,7 @@ class AddNodeViewController: BaseScrollViewController {
             image = img("icon-green-server")
         }
         
-        let configurator = BottomInformationViewConfigurator(
+        let configurator = BottomInformationBundle(
             title: alertTitle,
             image: image,
             explanation: message ?? "",
@@ -307,7 +307,7 @@ class AddNodeViewController: BaseScrollViewController {
         }
         
         open(
-            .bottomInformation(mode: .default, configurator: configurator),
+            .bottomInformation(mode: .confirmation, configurator: configurator),
             by: .customPresentWithoutNavigationController(
                 presentationStyle: .overCurrentContext,
                 transitionStyle: .crossDissolve,

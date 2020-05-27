@@ -12,12 +12,12 @@ class AlgoAssetView: BaseView {
     
     private let layout = Layout<LayoutConstants>()
     
-    private lazy var algoIconImageView = UIImageView(image: img("icon-algo-purple"))
+    private lazy var algoIconImageView = UIImageView(image: img("icon-algo-gray"))
     
     private lazy var algosLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(.overpass, withWeight: .bold(size: 13.0)))
-            .withTextColor(SharedColors.black)
+            .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
+            .withTextColor(SharedColors.primaryText)
             .withLine(.single)
             .withAlignment(.left)
             .withText("asset-algos-title".localized)
@@ -27,24 +27,28 @@ class AlgoAssetView: BaseView {
     
     private(set) lazy var amountLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(.overpass, withWeight: .bold(size: 14.0)))
-            .withTextColor(SharedColors.purple)
+            .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
+            .withTextColor(SharedColors.primaryText)
             .withLine(.single)
             .withAlignment(.right)
     }()
     
-    private lazy var arrowImageView = UIImageView(image: img("icon-arrow-purple"))
+    private lazy var separatorView: UIView = {
+        let view = UIView()
+        view.backgroundColor = SharedColors.primaryBackground
+        return view
+    }()
     
     override func configureAppearance() {
-        backgroundColor = .white
+        backgroundColor = SharedColors.secondaryBackground
     }
     
     override func prepareLayout() {
         setupAlgoIconImageViewLayout()
         setupAlgosLabelLayout()
         setupVerifiedImageViewLayout()
-        setupArrowImageViewLayout()
         setupAmountLabelLayout()
+        setupSeparatorViewLayout()
     }
 }
 
@@ -74,19 +78,9 @@ extension AlgoAssetView {
         addSubview(verifiedImageView)
         
         verifiedImageView.snp.makeConstraints { make in
-            make.leading.equalTo(algosLabel.snp.trailing).offset(layout.current.imageViewOffset)
+            make.leading.equalTo(algosLabel.snp.trailing).offset(layout.current.nameInset)
             make.centerY.equalToSuperview()
             make.size.equalTo(layout.current.imageSize)
-        }
-    }
-    
-    private func setupArrowImageViewLayout() {
-        addSubview(arrowImageView)
-        
-        arrowImageView.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(layout.current.imageInset)
-            make.size.equalTo(layout.current.arrowImageSize)
-            make.centerY.equalToSuperview()
         }
     }
     
@@ -97,20 +91,31 @@ extension AlgoAssetView {
         amountLabel.setContentHuggingPriority(.required, for: .horizontal)
         
         amountLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(arrowImageView)
-            make.trailing.equalTo(arrowImageView.snp.leading).offset(-layout.current.imageInset)
+            make.centerY.equalToSuperview()
+            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
             make.leading.greaterThanOrEqualTo(verifiedImageView.snp.trailing).offset(layout.current.imageInset)
+        }
+    }
+
+    private func setupSeparatorViewLayout() {
+        addSubview(separatorView)
+        
+        separatorView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(layout.current.separatorInset)
+            make.height.equalTo(layout.current.separatorHeight)
+            make.bottom.equalToSuperview()
         }
     }
 }
 
 extension AlgoAssetView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let horizontalInset: CGFloat = 15.0
+        let horizontalInset: CGFloat = 20.0
         let imageInset: CGFloat = 10.0
-        let nameInset: CGFloat = 7.0
-        let arrowImageSize = CGSize(width: 20.0, height: 20.0)
-        let imageSize = CGSize(width: 13.0, height: 13.0)
+        let nameInset: CGFloat = 4.0
+        let imageSize = CGSize(width: 20.0, height: 20.0)
         let imageViewOffset: CGFloat = 6.0
+        let separatorHeight: CGFloat = 1.0
+        let separatorInset: CGFloat = 14.0
     }
 }

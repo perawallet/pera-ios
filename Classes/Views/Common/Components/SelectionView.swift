@@ -53,8 +53,8 @@ class SelectionView: BaseView {
         return imageView
     }()
     
-    private(set) lazy var amountView: AlgosAmountView = {
-        let amountView = AlgosAmountView()
+    private(set) lazy var amountView: TransactionAmountView = {
+        let amountView = TransactionAmountView()
         amountView.signLabel.isHidden = true
         amountView.isHidden = true
         amountView.amountLabel.font = UIFont.font(.overpass, withWeight: .bold(size: 14.0))
@@ -191,7 +191,7 @@ extension SelectionView {
     func set(amount: Double, assetFraction: Int? = nil) {
         amountView.isHidden = false
         rightInputAccessoryButton.isHidden = true
-        amountView.mode = .normal(amount: amount, assetFraction: assetFraction)
+        amountView.mode = .normal(amount: amount, fraction: assetFraction)
     }
     
     func set(enabled: Bool) {

@@ -9,15 +9,15 @@
 import UIKit
 
 class BottomInformationViewModel {
-    func configure(_ bottomInformationView: BottomInformationView, with configurator: BottomInformationViewConfigurator) {
+    func configure(_ bottomInformationView: BottomInformationView, with configurator: BottomInformationBundle) {
         bottomInformationView.titleLabel.attributedText = configurator.title.attributed([.lineSpacing(1.2)])
         bottomInformationView.titleLabel.textAlignment = .center
         bottomInformationView.explanationLabel.attributedText = configurator.explanation.attributed([.lineSpacing(1.2)])
         bottomInformationView.explanationLabel.textAlignment = .center
         bottomInformationView.imageView.image = configurator.image
         
-        if let bottomInformationView = bottomInformationView as? DefaultBottomInformationView {
-            configureDefaultInformationView(bottomInformationView, with: configurator)
+        if let bottomInformationView = bottomInformationView as? ConfirmationBottomInformationView {
+            configureConfirmationInformationView(bottomInformationView, with: configurator)
             return
         }
         
@@ -27,9 +27,9 @@ class BottomInformationViewModel {
         }
     }
     
-    private func configureDefaultInformationView(
-        _ informationView: DefaultBottomInformationView,
-        with configurator: BottomInformationViewConfigurator
+    private func configureConfirmationInformationView(
+        _ informationView: ConfirmationBottomInformationView,
+        with configurator: BottomInformationBundle
     ) {
         if let actionTitle = configurator.actionTitle {
             informationView.actionButton.setTitle(actionTitle, for: .normal)
@@ -42,7 +42,7 @@ class BottomInformationViewModel {
     
     private func configureActionInformationView(
         _ informationView: ActionBottomInformationView,
-        with configurator: BottomInformationViewConfigurator
+        with configurator: BottomInformationBundle
     ) {
         if let actionTitle = configurator.actionTitle {
             informationView.actionButton.setTitle(actionTitle, for: .normal)
