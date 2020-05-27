@@ -126,9 +126,9 @@ extension OptionsViewController: UICollectionViewDelegateFlowLayout {
 
 extension OptionsViewController {
     enum Options: Int, CaseIterable {
-        case removeAsset = 0
-        case passphrase = 1
-        case edit = 2
+        case passphrase = 0
+        case edit = 1
+        case removeAsset = 2
         case removeAccount = 3
         
         static var optionsWithoutRemoveAsset: [Options] {
@@ -136,7 +136,7 @@ extension OptionsViewController {
         }
 
         static var optionsWithoutPassphrase: [Options] {
-            return [.removeAsset, .edit, .removeAccount]
+            return [.edit, .removeAsset, .removeAccount]
         }
         
         static var optionsWithoutPassphraseAndRemoveAsset: [Options] {
@@ -144,7 +144,7 @@ extension OptionsViewController {
         }
         
         static var allOptions: [Options] {
-            return [.removeAsset, .passphrase, .edit, .removeAccount]
+            return [.passphrase, .edit, .removeAsset, .removeAccount]
         }
     }
 }

@@ -8,24 +8,14 @@
 
 import UIKit
 
-protocol ContactsViewControllerDelegate: class {
-    
-    func contactsViewController(_ contactsViewController: ContactsViewController, didSelect contact: Contact)
-}
-
 class ContactsViewController: BaseViewController {
     
-    // MARK: Components
+    private lazy var contactsView = ContactsView()
     
-    private lazy var contactsView: ContactsView = {
-        let view = ContactsView()
-        return view
-    }()
-    
-    private lazy var emptyStateView = EmptyStateView(
+    private lazy var emptyStateView = ContactsEmptyView(
+        image: img("icon-contacts-empty"),
         title: "contacts-empty-text".localized,
-        topImage: img("icon-contacts-empty"),
-        bottomImage: img("icon-contacts-empty")
+        subtitle: "contacts-empty-detail-text".localized
     )
     
     private lazy var refreshControl: UIRefreshControl = {
@@ -41,8 +31,6 @@ class ContactsViewController: BaseViewController {
     
     weak var delegate: ContactsViewControllerDelegate?
     
-    // MARK: Setup
-    
     override func configureNavigationBarAppearance() {
         let addBarButtonItem = ALGBarButtonItem(kind: .add) {
             let controller = self.open(.addContact(mode: .new()), by: .push) as? AddContactViewController
@@ -50,7 +38,7 @@ class ContactsViewController: BaseViewController {
             controller?.delegate = self
         }
         
-        leftBarButtonItems = [addBarButtonItem]
+        rightBarButtonItems = [addBarButtonItem]
     }
     
     override func setListeners() {
@@ -72,6 +60,7 @@ class ContactsViewController: BaseViewController {
     }
     
     override func linkInteractors() {
+        emptyStateView.delegate = self
         contactsView.contactNameInputView.delegate = self
         contactsView.contactsCollectionView.delegate = self
         contactsView.contactsCollectionView.dataSource = self
@@ -79,8 +68,6 @@ class ContactsViewController: BaseViewController {
     
     override func configureAppearance() {
         super.configureAppearance()
-        
-        title = "contacts-title".localized
         contactsView.contactsCollectionView.refreshControl = refreshControl
         
         fetchContacts()
@@ -113,8 +100,6 @@ class ContactsViewController: BaseViewController {
             }
         }
     }
-    
-    // MARK: Layout
     
     override func prepareLayout() {
         view.addSubview(contactsView)
@@ -167,10 +152,7 @@ class ContactsViewController: BaseViewController {
     }
 }
 
-// MARK: UICollectionViewDataSource
-
 extension ContactsViewController: UICollectionViewDataSource {
-
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return searchResults.count
     }
@@ -198,10 +180,7 @@ extension ContactsViewController: UICollectionViewDataSource {
     }
 }
 
-// MARK: UICollectionViewDelegateFlowLayout
-
 extension ContactsViewController: UICollectionViewDelegateFlowLayout {
-    
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
@@ -230,10 +209,7 @@ extension ContactsViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-// MARK: InputViewDelegate
-
 extension ContactsViewController: InputViewDelegate {
-    
     func inputViewDidReturn(inputView: BaseInputView) {
         view.endEditing(true)
     }
@@ -322,7 +298,6 @@ extension ContactsViewController: AddContactViewControllerDelegate {
 }
 
 extension ContactsViewController: ContactInfoViewControllerDelegate {
-    
     func contactInfoViewController(_ contactInfoViewController: ContactInfoViewController, didUpdate contact: Contact) {
         if let updatedContact = contacts.firstIndex(of: contact) {
             contacts[updatedContact] = contact
@@ -336,4 +311,15 @@ extension ContactsViewController: ContactInfoViewControllerDelegate {
         
         contactsView.contactsCollectionView.reloadItems(at: [IndexPath(row: index, section: 0)])
     }
+}
+
+extension ContactsViewController: ContactsEmptyViewDelegate {
+    func contactsEmptyViewDidTapAddContactButton(_ contactsEmptyView: ContactsEmptyView) {
+        let controller = self.open(.addContact(mode: .new()), by: .push) as? AddContactViewController
+        controller?.delegate = self
+    }
+}
+
+protocol ContactsViewControllerDelegate: class {
+    func contactsViewController(_ contactsViewController: ContactsViewController, didSelect contact: Contact)
 }

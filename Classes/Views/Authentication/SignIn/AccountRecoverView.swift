@@ -31,6 +31,8 @@ class AccountRecoverView: BaseView {
         passPhraseInputView.inputTextView.autocorrectionType = .no
         passPhraseInputView.inputTextView.autocapitalizationType = .none
         passPhraseInputView.rightInputAccessoryButton.setImage(img("icon-qr-scan"), for: .normal)
+        passPhraseInputView.inputTextView.textContainer.heightTracksTextView = true
+        passPhraseInputView.inputTextView.isScrollEnabled = false
         return passPhraseInputView
     }()
     
@@ -75,7 +77,6 @@ extension AccountRecoverView {
         passPhraseInputView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(accountNameInputView.snp.bottom).offset(layout.current.fieldTopInset)
-            make.height.equalTo(layout.current.multiFieldHeight)
         }
     }
     

@@ -26,8 +26,6 @@ class SettingsViewController: BaseViewController {
     override func configureAppearance() {
         super.configureAppearance()
         
-        title = "settings-title".localized
-        
         view.addSubview(settingsView)
         settingsView.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(10.0)

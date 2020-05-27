@@ -8,19 +8,9 @@
 
 import UIKit
 
-enum TransactionType {
-    case sent
-    case received
-}
-
 class TransactionDetailViewController: BaseScrollViewController {
     
-    // MARK: Components
-    
-    private lazy var transactionDetailView: TransactionDetailView = {
-        let view = TransactionDetailView(transactionType: transactionType)
-        return view
-    }()
+    private lazy var transactionDetailView = TransactionDetailView(transactionType: transactionType)
     
     private var transaction: Transaction
     private let account: Account
@@ -29,8 +19,6 @@ class TransactionDetailViewController: BaseScrollViewController {
     private var pollingOperation: PollingOperation?
     
     private let viewModel = TransactionDetailViewModel()
-    
-    // MARK: Initialization
     
     init(
         account: Account,
@@ -44,18 +32,70 @@ class TransactionDetailViewController: BaseScrollViewController {
         self.transactionType = transactionType
         self.assetDetail = assetDetail
         super.init(configuration: configuration)
-        
-        hidesBottomBarWhenPushed = true
     }
     
-    // MARK: View Lifecycle
+    override func configureNavigationBarAppearance() {
+        super.configureNavigationBarAppearance()
+        
+        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [unowned self] in
+            self.closeScreen(by: .dismiss, animated: true)
+        }
+        
+        leftBarButtonItems = [closeBarButtonItem]
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         startPolling()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        pollingOperation?.invalidate()
+    }
+    
+    override func linkInteractors() {
+        transactionDetailView.delegate = self
+    }
+    
+    override func setListeners() {
+        super.setListeners()
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didContactAdded(notification:)),
+            name: .ContactAddition,
+            object: nil
+        )
+    }
+    
+    override func configureAppearance() {
+        super.configureAppearance()
+        title = "transaction-detail-title".localized
+        contentView.backgroundColor = SharedColors.secondaryBackground
+        configureTransactionDetail()
+    }
+    
+    override func prepareLayout() {
+        super.prepareLayout()
+        setupTransactionDetailViewLayout()
+    }
+}
+
+extension TransactionDetailViewController {
+    @objc
+    fileprivate func didContactAdded(notification: Notification) {
+        guard let userInfo = notification.userInfo as? [String: Contact],
+            let contact = userInfo["contact"] else {
+                return
+        }
+        
+        transaction.contact = contact
+        viewModel.setOpponent(for: transaction, with: contact.address ?? "", in: transactionDetailView)
+    }
+}
+
+extension TransactionDetailViewController {
     private func startPolling() {
         pollingOperation = PollingOperation(interval: 1.0) { [weak self] in
             guard let strongSelf = self else {
@@ -90,37 +130,9 @@ class TransactionDetailViewController: BaseScrollViewController {
             }
         }
     }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        pollingOperation?.invalidate()
-    }
-    
-    // MARK: Setup
-    
-    override func linkInteractors() {
-        transactionDetailView.delegate = self
-    }
-    
-    override func setListeners() {
-        super.setListeners()
-        
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(didContactAdded(notification:)),
-            name: .ContactAddition,
-            object: nil
-        )
-    }
-    
-    override func configureAppearance() {
-        super.configureAppearance()
-        
-        title = "transaction-detail-title".localized
-        configureTransactionDetail()
-    }
-    
+}
+
+extension TransactionDetailViewController {
     private func configureTransactionDetail() {
         if transactionType == .sent {
             viewModel.configureSentTransaction(transactionDetailView, with: transaction, and: assetDetail, for: account)
@@ -128,13 +140,9 @@ class TransactionDetailViewController: BaseScrollViewController {
             viewModel.configureReceivedTransaction(transactionDetailView, with: transaction, and: assetDetail, for: account)
         }
     }
-    
-    override func prepareLayout() {
-        super.prepareLayout()
-        
-        setupTransactionDetailViewLayout()
-    }
-    
+}
+
+extension TransactionDetailViewController {
     private func setupTransactionDetailViewLayout() {
         contentView.addSubview(transactionDetailView)
         
@@ -142,41 +150,26 @@ class TransactionDetailViewController: BaseScrollViewController {
             make.edges.equalToSuperview()
         }
     }
-    
-    @objc
-    fileprivate func didContactAdded(notification: Notification) {
-        guard let userInfo = notification.userInfo as? [String: Contact],
-            let contact = userInfo["contact"] else {
-                return
-        }
-        
-        transaction.contact = contact
-        
-        transactionDetailView.transactionOpponentView.state = .contact(contact)
-        transactionDetailView.transactionOpponentView.actionMode = .qrView
-    }
 }
 
-// MARK: TransactionDetailViewDelegate
-
 extension TransactionDetailViewController: TransactionDetailViewDelegate {
-    
-    func transactionDetailViewDidTapAddContactButton(_ transactionDetailView: TransactionDetailView) {
-        guard let address = transactionDetailView.transactionOpponentView.passphraseInputView.inputTextView.text else {
-            return
-        }
-        
-        let viewController = open(.addContact(mode: .new()), by: .push) as? AddContactViewController
-        
-        viewController?.addContactView.userInformationView.algorandAddressInputView.value = address
-    }
-    
-    func transactionDetailViewDidTapShowQRButton(_ transactionDetailView: TransactionDetailView) {
+    func transactionDetailViewDidTapOpponentActionButton(_ transactionDetailView: TransactionDetailView) {
         guard let contact = transaction.contact,
             let address = contact.address else {
-            return
+                guard let address = transactionDetailView.opponentView.contactDisplayView.nameLabel.text else {
+                    return
+                }
+
+                let viewController = open(.addContact(mode: .new()), by: .push) as? AddContactViewController
+                viewController?.addContactView.userInformationView.algorandAddressInputView.value = address
+                return
         }
         
         open(.qrGenerator(title: contact.name, address: address, mnemonic: nil, mode: .address), by: .present)
     }
+}
+
+enum TransactionType {
+    case sent
+    case received
 }

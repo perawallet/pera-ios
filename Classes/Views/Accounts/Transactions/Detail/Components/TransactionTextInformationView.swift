@@ -1,0 +1,92 @@
+//
+//  TransactionTextInformationView.swift
+//  algorand
+//
+//  Created by Göktuğ Berk Ulu on 8.05.2020.
+//  Copyright © 2020 hippo. All rights reserved.
+//
+
+import UIKit
+
+class TransactionTextInformationView: BaseView {
+    
+    private let layout = Layout<LayoutConstants>()
+    
+    weak var delegate: TransactionTextInformationViewDelegate?
+    
+    private lazy var titleLabel = TransactionDetailTitleLabel()
+    
+    private lazy var detailLabel: UILabel = {
+        UILabel()
+            .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
+            .withLine(.contained)
+            .withAlignment(.right)
+            .withTextColor(SharedColors.primaryText)
+    }()
+    
+    private lazy var separatorView = LineSeparatorView()
+    
+    override func configureAppearance() {
+        backgroundColor = SharedColors.secondaryBackground
+    }
+    
+    override func prepareLayout() {
+        setupTitleLabelLayout()
+        setupDetailLabelLayout()
+        setupSeparatorViewLayout()
+    }
+}
+
+extension TransactionTextInformationView {
+    private func setupTitleLabelLayout() {
+        addSubview(titleLabel)
+        
+        titleLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview().inset(layout.current.labelTopInset)
+            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
+        }
+    }
+    
+    private func setupDetailLabelLayout() {
+        addSubview(detailLabel)
+        
+        detailLabel.snp.makeConstraints { make in
+            make.top.bottom.equalToSuperview().inset(layout.current.detailLabelOffset)
+            make.leading.greaterThanOrEqualTo(titleLabel.snp.trailing).offset(layout.current.detailLabelOffset)
+            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+        }
+    }
+    
+    private func setupSeparatorViewLayout() {
+        addSubview(separatorView)
+        
+        separatorView.snp.makeConstraints { make in
+            make.bottom.equalToSuperview()
+            make.height.equalTo(layout.current.separatorHeight)
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+        }
+    }
+}
+
+extension TransactionTextInformationView {
+    func setTitle(_ title: String) {
+        titleLabel.text = title
+    }
+    
+    func setDetail(_ detail: String) {
+        detailLabel.text = detail
+    }
+}
+
+extension TransactionTextInformationView {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let detailLabelOffset: CGFloat = 20.0
+        let horizontalInset: CGFloat = 20.0
+        let labelTopInset: CGFloat = 20.0
+        let separatorHeight: CGFloat = 1.0
+    }
+}
+
+protocol TransactionTextInformationViewDelegate: class {
+    func transactionTextInformationViewDidTapActionButton(_ transactionTextInformationView: TransactionTextInformationView)
+}

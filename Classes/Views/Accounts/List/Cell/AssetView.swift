@@ -20,22 +20,26 @@ class AssetView: BaseView {
     
     private(set) lazy var amountLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(.overpass, withWeight: .bold(size: 14.0)))
-            .withTextColor(SharedColors.darkGray)
+            .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
+            .withTextColor(SharedColors.primaryText)
             .withLine(.single)
             .withAlignment(.right)
     }()
     
-    private lazy var arrowImageView = UIImageView(image: img("icon-arrow-gray"))
+    private lazy var separatorView: UIView = {
+        let view = UIView()
+        view.backgroundColor = SharedColors.primaryBackground
+        return view
+    }()
     
     override func configureAppearance() {
-        backgroundColor = .white
+        backgroundColor = SharedColors.secondaryBackground
     }
     
     override func prepareLayout() {
         setupAssetNameViewLayout()
-        setupArrowImageViewLayout()
         setupAmountLabelLayout()
+        setupSeparatorViewLayout()
     }
 }
 
@@ -52,16 +56,6 @@ extension AssetView {
         }
     }
     
-    private func setupArrowImageViewLayout() {
-        addSubview(arrowImageView)
-        
-        arrowImageView.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(layout.current.imageInset)
-            make.size.equalTo(layout.current.arrowImageSize)
-            make.centerY.equalToSuperview()
-        }
-    }
-    
     private func setupAmountLabelLayout() {
         addSubview(amountLabel)
         
@@ -69,17 +63,28 @@ extension AssetView {
         amountLabel.setContentHuggingPriority(.required, for: .horizontal)
         
         amountLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(arrowImageView)
-            make.trailing.equalTo(arrowImageView.snp.leading).offset(-layout.current.imageInset)
-            make.leading.greaterThanOrEqualTo(assetNameView.snp.trailing).offset(layout.current.imageInset)
+            make.centerY.equalToSuperview()
+            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.leading.greaterThanOrEqualTo(assetNameView.snp.trailing).offset(layout.current.assetNameOffet)
+        }
+    }
+    
+    private func setupSeparatorViewLayout() {
+        addSubview(separatorView)
+        
+        separatorView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(layout.current.separatorInset)
+            make.height.equalTo(layout.current.separatorHeight)
+            make.bottom.equalToSuperview()
         }
     }
 }
 
 extension AssetView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let horizontalInset: CGFloat = 15.0
-        let imageInset: CGFloat = 10.0
-        let arrowImageSize = CGSize(width: 20.0, height: 20.0)
+        let horizontalInset: CGFloat = 20.0
+        let assetNameOffet: CGFloat = 10.0
+        let separatorHeight: CGFloat = 1.0
+        let separatorInset: CGFloat = 10.0
     }
 }
