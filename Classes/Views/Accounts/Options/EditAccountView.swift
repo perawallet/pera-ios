@@ -8,104 +8,110 @@
 
 import UIKit
 
-protocol EditAccountViewDelegate: class {
-    
-    func editAccountViewDidTapSaveButton(_ editAccountView: EditAccountView)
-}
-
 class EditAccountView: BaseView {
-    
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let horizontalInset: CGFloat = 25.0
-        let verticalInset: CGFloat = 20.0
-        let fieldTopInset: CGFloat = 13.0
-        let separatorHeight: CGFloat = 1.0
-        let separatorInset: CGFloat = 16.0
-        let fieldHeight: CGFloat = 75.0
-    }
     
     private let layout = Layout<LayoutConstants>()
     
-    private enum Colors {
-        static let backgroundColor = rgb(0.97, 0.97, 0.97)
-        static let separatorColor = rgba(0.67, 0.67, 0.72, 0.31)
-    }
-    
-    // MARK: Components
+    weak var delegate: EditAccountViewDelegate?
     
     private lazy var titleLabel: UILabel = {
         UILabel()
-            .withAlignment(.left)
+            .withAlignment(.center)
             .withLine(.single)
-            .withTextColor(SharedColors.darkGray)
-            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 13.0)))
+            .withTextColor(SharedColors.primaryText)
+            .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
             .withText("options-edit-account-name".localized)
     }()
     
-    private lazy var saveButton: UIButton = {
+    private lazy var doneButton: UIButton = {
         UIButton(type: .custom)
-            .withTitleColor(SharedColors.turquois)
-            .withTitle("title-save".localized)
+            .withTitleColor(SharedColors.tertiaryText)
+            .withTitle("title-done".localized)
             .withAlignment(.right)
-            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 13.0)))
+            .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
+    }()
+    
+    private lazy var nameTitleLabel: UILabel = {
+        UILabel()
+            .withAlignment(.left)
+            .withLine(.single)
+            .withTextColor(SharedColors.primaryText)
+            .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
+            .withText("account-name-setup-explanation".localized)
+    }()
+    
+    private(set) lazy var accountNameTextField: UITextField = {
+        let textField = UITextField()
+        textField.textColor = SharedColors.primaryText
+        textField.tintColor = SharedColors.primaryText
+        textField.font = UIFont.font(withWeight: .medium(size: 18.0))
+        return textField
     }()
     
     private lazy var separatorView: UIView = {
         let view = UIView()
-        view.backgroundColor = Colors.separatorColor
+        view.backgroundColor = SharedColors.primary
         return view
     }()
     
-    private(set) lazy var accountNameInputView: SingleLineInputField = {
-        let accountNameInputView = SingleLineInputField()
-        accountNameInputView.explanationLabel.text = "account-name-setup-explanation".localized
-        accountNameInputView.inputTextField.attributedPlaceholder = NSAttributedString(
-            string: "account-name-setup-placeholder".localized,
-            attributes: [NSAttributedString.Key.foregroundColor: SharedColors.softGray,
-                         NSAttributedString.Key.font: UIFont.font(.overpass, withWeight: .semiBold(size: 15.0))]
-        )
-        accountNameInputView.nextButtonMode = .submit
-        accountNameInputView.inputTextField.autocorrectionType = .no
-        accountNameInputView.backgroundColor = .clear
-        return accountNameInputView
-    }()
-    
-    weak var delegate: EditAccountViewDelegate?
-    
-    // MARK: Setup
-    
     override func configureAppearance() {
-        backgroundColor = backgroundColor
+        backgroundColor = SharedColors.secondaryBackground
     }
     
     override func setListeners() {
-        saveButton.addTarget(self, action: #selector(notifyDelegateToSaveButtonTapped), for: .touchUpInside)
+        doneButton.addTarget(self, action: #selector(notifyDelegateToSaveButtonTapped), for: .touchUpInside)
     }
-    
-    // MARK: Layout
     
     override func prepareLayout() {
         setupTitleLabelLayout()
         setupSaveButtonLayout()
-        setupSeparatorViewLayout()
+        setupNameTitleLabelLayout()
         setupAccountNameInputViewLayout()
+        setupSeparatorViewLayout()
     }
-    
+}
+
+extension EditAccountView {
+    @objc
+    private func notifyDelegateToSaveButtonTapped() {
+        delegate?.editAccountViewDidTapSaveButton(self)
+    }
+}
+
+extension EditAccountView {
     private func setupTitleLabelLayout() {
         addSubview(titleLabel)
         
         titleLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
-            make.top.equalToSuperview().inset(layout.current.verticalInset)
+            make.centerX.equalToSuperview()
+            make.top.equalToSuperview().inset(layout.current.topInset)
         }
     }
     
     private func setupSaveButtonLayout() {
-        addSubview(saveButton)
+        addSubview(doneButton)
         
-        saveButton.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+        doneButton.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().inset(layout.current.topInset)
             make.centerY.equalTo(titleLabel)
+        }
+    }
+    
+    private func setupNameTitleLabelLayout() {
+        addSubview(nameTitleLabel)
+        
+        nameTitleLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
+            make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.nameTitleTopInset)
+        }
+    }
+    
+    private func setupAccountNameInputViewLayout() {
+        addSubview(accountNameTextField)
+        
+        accountNameTextField.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.top.equalTo(nameTitleLabel.snp.bottom).offset(layout.current.fieldTopInset)
         }
     }
     
@@ -113,26 +119,26 @@ class EditAccountView: BaseView {
         addSubview(separatorView)
         
         separatorView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
             make.height.equalTo(layout.current.separatorHeight)
-            make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.separatorInset)
+            make.top.equalTo(accountNameTextField.snp.bottom).offset(layout.current.separatorInset)
+            make.bottom.equalToSuperview().inset(layout.current.bottomInset)
         }
     }
-    
-    private func setupAccountNameInputViewLayout() {
-        addSubview(accountNameInputView)
-        
-        accountNameInputView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.top.equalTo(separatorView.snp.bottom).offset(layout.current.fieldTopInset)
-            make.height.equalTo(layout.current.fieldHeight)
-        }
+}
+
+extension EditAccountView {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let horizontalInset: CGFloat = 20.0
+        let topInset: CGFloat = 16.0
+        let nameTitleTopInset: CGFloat = 32.0
+        let fieldTopInset: CGFloat = 7.0
+        let separatorHeight: CGFloat = 2.0
+        let separatorInset: CGFloat = 3.0
+        let bottomInset: CGFloat = 24.0
     }
-    
-    // MARK: Actions
-    
-    @objc
-    private func notifyDelegateToSaveButtonTapped() {
-        delegate?.editAccountViewDidTapSaveButton(self)
-    }
+}
+
+protocol EditAccountViewDelegate: class {
+    func editAccountViewDidTapSaveButton(_ editAccountView: EditAccountView)
 }

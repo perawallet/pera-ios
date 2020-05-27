@@ -130,7 +130,7 @@ extension LedgerDeviceListViewController: LedgerDeviceListViewDelegate {
 extension LedgerDeviceListViewController: BLEConnectionManagerDelegate {
     func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didDiscover peripherals: [CBPeripheral]) {
         ledgerDevices = peripherals
-        ledgerDeviceListView.updateListHeightForItemSize(ledgerDevices.count)
+        ledgerDeviceListView.invalidateContentSize(by: ledgerDevices.count)
         ledgerDeviceListView.devicesCollectionView.reloadData()
     }
     

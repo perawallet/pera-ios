@@ -10,12 +10,6 @@ import UIKit
 
 class SingleLineInputField: BaseInputView {
     
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let verticalInset: CGFloat = 16.0
-        let horizontalInset: CGFloat = 15.0
-        let minimumHorizontalInset: CGFloat = -3.0
-    }
-    
     private let layout = Layout<LayoutConstants>()
     
     override var nextButtonMode: NextButtonMode {
@@ -29,17 +23,22 @@ class SingleLineInputField: BaseInputView {
         }
     }
     
-    // MARK: Components
-
+    var placeholderText: String = "" {
+        didSet {
+            inputTextField.attributedPlaceholder = NSAttributedString(
+                string: placeholderText,
+                attributes: [.foregroundColor: SharedColors.informationText, .font: UIFont.font(withWeight: .medium(size: 14.0))]
+            )
+        }
+    }
+    
     private(set) lazy var inputTextField: UITextField = {
         let textField = UITextField()
-        textField.textColor = SharedColors.black
-        textField.tintColor = SharedColors.black
-        textField.font = UIFont.font(.overpass, withWeight: .semiBold(size: 13.0))
+        textField.textColor = SharedColors.primaryText
+        textField.tintColor = SharedColors.primaryText
+        textField.font = UIFont.font(withWeight: .medium(size: 14.0))
         return textField
     }()
-    
-    // MARK: Helpers
     
     var isEditing: Bool {
         return inputTextField.isFirstResponder
@@ -49,58 +48,54 @@ class SingleLineInputField: BaseInputView {
         _ = inputTextField.becomeFirstResponder()
     }
     
-    // MARK: Setup
-    
     override func setListeners() {
         super.setListeners()
-        
         inputTextField.addTarget(self, action: #selector(didChange(textField:)), for: .editingChanged)
     }
     
     override func linkInteractors() {
         super.linkInteractors()
-        
         inputTextField.delegate = self
     }
     
-    // MARK: Layout
-    
     override func prepareLayout() {
         super.prepareLayout()
-        
         setupInputTextFieldLayout()
     }
-    
+}
+
+extension SingleLineInputField {
     private func setupInputTextFieldLayout() {
         contentView.addSubview(inputTextField)
         
         inputTextField.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
             make.top.bottom.equalToSuperview().inset(layout.current.verticalInset)
             
             if displaysRightInputAccessoryButton {
-                make.trailing.equalTo(rightInputAccessoryButton.snp.leading).offset(layout.current.minimumHorizontalInset)
+                make.trailing.equalTo(rightInputAccessoryButton.snp.leading).offset(-layout.current.itemOffset)
             } else {
-                make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+                make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            }
+            
+            if displaysLeftImageView {
+                make.leading.equalTo(leftImageView.snp.trailing).offset(layout.current.itemOffset)
+            } else {
+                make.leading.equalToSuperview().inset(layout.current.horizontalInset)
             }
         }
     }
-    
-    // MARK: Actions
-    
+}
+
+extension SingleLineInputField {
     @objc
     func didChange(textField: UITextField) {
         delegate?.inputViewDidChangeValue(inputView: self)
     }
 }
 
-// MARK: UITextFieldDelegate
-
 extension SingleLineInputField: UITextFieldDelegate {
-    
     func textFieldDidEndEditing(_ textField: UITextField) {
         inputTextField.layoutIfNeeded()
-        
         delegate?.inputViewDidEndEditing(inputView: self)
     }
     
@@ -110,7 +105,14 @@ extension SingleLineInputField: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         delegate?.inputViewDidReturn(inputView: self)
-        
         return true
+    }
+}
+
+extension SingleLineInputField {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let verticalInset: CGFloat = 14.0
+        let horizontalInset: CGFloat = 16.0
+        let itemOffset: CGFloat = 12.0
     }
 }

@@ -17,11 +17,9 @@ class AddNewAccountView: BaseView {
     private lazy var titleLabel: UILabel = {
         UILabel()
             .withLine(.single)
-            .withFont(UIFont.font(.publicSans, withWeight: .bold(size: 28.0 * verticalScale)))
-            .withAttributedText("introduction-add-new-text".localized.attributed([
-                .lineSpacing(0.98),
-                .textColor(color("primaryText"))
-            ]))
+            .withFont(UIFont.font(withWeight: .bold(size: 28.0 * verticalScale)))
+            .withText("introduction-add-new-text".localized)
+            .withTextColor(SharedColors.primaryText)
             .withAlignment(.left)
     }()
     
@@ -31,9 +29,9 @@ class AddNewAccountView: BaseView {
             .withLine(.single)
             .withAttributedText("introduction-add-new-title-text".localized.attributed([
                 .lineSpacing(1.2),
-                .textColor(color("secondaryText"))
+                .textColor(SharedColors.secondaryText)
             ]))
-            .withFont(UIFont.font(.publicSans, withWeight: .regular(size: 14.0 * verticalScale)))
+            .withFont(UIFont.font(withWeight: .regular(size: 14.0 * verticalScale)))
     }()
     
     private lazy var createAccountButton = MainButton(title: "introduction-create-title".localized)
@@ -42,23 +40,19 @@ class AddNewAccountView: BaseView {
         UIButton(type: .custom)
             .withBackgroundImage(img("bg-orange-button"))
             .withTitle("introduction-title-pair-ledger".localized)
-            .withTitleColor(color("primaryButtonTitle"))
+            .withTitleColor(SharedColors.primaryButtonTitle)
             .withAlignment(.center)
-            .withFont(UIFont.font(.publicSans, withWeight: .semiBold(size: 16.0)))
+            .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
     }()
     
-    private lazy var separatorView: UIView = {
-        let view = UIView()
-        view.backgroundColor = color("gray300")
-        return view
-    }()
+    private lazy var separatorView = LineSeparatorView()
     
     private lazy var hasAccountLabel: UILabel = {
         UILabel()
             .withAlignment(.center)
             .withLine(.single)
-            .withTextColor(color("gray500"))
-            .withFont(UIFont.font(.publicSans, withWeight: .medium(size: 14.0 * verticalScale)))
+            .withTextColor(SharedColors.gray500)
+            .withFont(UIFont.font(withWeight: .medium(size: 14.0 * verticalScale)))
             .withText("introduction-has-account".localized)
     }()
     
@@ -66,9 +60,9 @@ class AddNewAccountView: BaseView {
         UIButton(type: .custom)
             .withBackgroundImage(img("bg-light-gray-button"))
             .withTitle("introduction-recover-title".localized)
-            .withTitleColor(color("secondaryButtonTitle"))
+            .withTitleColor(SharedColors.secondaryButtonTitle)
             .withAlignment(.center)
-            .withFont(UIFont.font(.publicSans, withWeight: .semiBold(size: 16.0)))
+            .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
     }()
     
     override func setListeners() {
@@ -78,7 +72,7 @@ class AddNewAccountView: BaseView {
     }
     
     override func configureAppearance() {
-        backgroundColor = color("secondaryBackground")
+        backgroundColor = SharedColors.secondaryBackground
     }
     
     override func prepareLayout() {
@@ -155,7 +149,7 @@ extension AddNewAccountView {
         addSubview(recoverButton)
         
         recoverButton.snp.makeConstraints { make in
-            make.top.equalTo(subtitleLabel.snp.bottom).offset(layout.current.recoverButtonTopInset)
+            make.top.equalTo(hasAccountLabel.snp.bottom).offset(layout.current.recoverButtonTopInset)
             make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
             make.bottom.lessThanOrEqualToSuperview().inset(layout.current.bottomInset + safeAreaBottom)
         }

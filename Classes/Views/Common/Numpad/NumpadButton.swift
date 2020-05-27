@@ -16,14 +16,14 @@ class NumpadButton: UIButton {
         return layout.current.size
     }
     
-    private(set) var numpadValue: NumpadValue
+    private(set) var numpadKey: NumpadKey
     
-    init(numpadValue: NumpadValue) {
-        self.numpadValue = numpadValue
+    init(numpadKey: NumpadKey) {
+        self.numpadKey = numpadKey
         super.init(frame: .zero)
         
         configureAppearance()
-        setNumpadValue()
+        setNumpadKey()
     }
     
     @available(*, unavailable)
@@ -32,20 +32,20 @@ class NumpadButton: UIButton {
     }
     
     private func configureAppearance() {
-        switch numpadValue {
+        switch numpadKey {
         case .number:
             setBackgroundImage(img("bg-passcode-number"), for: .normal)
             setBackgroundImage(img("bg-passcode-number-selected"), for: .highlighted)
-            setTitleColor(color("primaryText"), for: .normal)
-            titleLabel?.font = UIFont.font(.publicSans, withWeight: .medium(size: 24.0))
+            setTitleColor(SharedColors.primaryText, for: .normal)
+            titleLabel?.font = UIFont.font(withWeight: .medium(size: 24.0))
             titleLabel?.textAlignment = .center
         default:
             break
         }
     }
     
-    private func setNumpadValue() {
-        switch numpadValue {
+    private func setNumpadKey() {
+        switch numpadKey {
         case .spacing:
             break
         case let .number(value):

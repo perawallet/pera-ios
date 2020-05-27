@@ -11,27 +11,23 @@ import SafariServices
 
 class RewardDetailViewController: BaseViewController {
     
-    private let layout = Layout<LayoutConstants>()
+    override var shouldShowNavigationBar: Bool {
+        return false
+    }
     
     private let account: Account
     
     private let viewModel = RewardDetailViewModel()
     
-    // MARK: Components
-    
     private lazy var rewardDetailView = RewardDetailView()
-    
-    // MARK: Initialization
     
     init(account: Account, configuration: ViewControllerConfiguration) {
         self.account = account
         super.init(configuration: configuration)
     }
     
-    // MARK: Setup
-    
     override func configureAppearance() {
-        view.backgroundColor = Colors.backgroundColor
+        view.backgroundColor = SharedColors.secondaryBackground
         viewModel.configure(rewardDetailView, for: account)
     }
     
@@ -49,13 +45,10 @@ extension RewardDetailViewController {
         view.addSubview(rewardDetailView)
         
         rewardDetailView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.centerY.equalToSuperview()
+            make.edges.equalToSuperview()
         }
     }
 }
-
-// MARK: RewardDetailViewDelegate
 
 extension RewardDetailViewController: RewardDetailViewDelegate {
     func rewardDetailViewDidTapFAQLabel(_ rewardDetailView: RewardDetailView) {
@@ -69,17 +62,5 @@ extension RewardDetailViewController: RewardDetailViewDelegate {
     
     func rewardDetailViewDidTapOKButton(_ rewardDetailView: RewardDetailView) {
         dismissScreen()
-    }
-}
-
-extension RewardDetailViewController {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let horizontalInset: CGFloat = 20.0
-    }
-}
-
-extension RewardDetailViewController {
-    private enum Colors {
-        static let backgroundColor = rgba(0.04, 0.05, 0.07, 0.6)
     }
 }

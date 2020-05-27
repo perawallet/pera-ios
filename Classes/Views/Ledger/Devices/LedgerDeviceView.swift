@@ -21,16 +21,16 @@ class LedgerDeviceView: BaseView {
     private lazy var deviceNameLabel: UILabel = {
         UILabel()
             .withLine(.single)
-            .withFont(UIFont.font(.publicSans, withWeight: .medium(size: 14.0)))
+            .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
             .withAlignment(.left)
-            .withTextColor(color("primaryText"))
+            .withTextColor(SharedColors.primaryText)
     }()
     
     private lazy var connectButton: UIButton = {
         UIButton(type: .custom)
             .withTitle("ledger-device-list-connect".localized)
-            .withTitleColor(color("tertiaryText"))
-            .withFont(UIFont.font(.publicSans, withWeight: .semiBold(size: 14.0)))
+            .withTitleColor(SharedColors.tertiaryText)
+            .withFont(UIFont.font(withWeight: .semiBold(size: 14.0)))
     }()
     
     override func setListeners() {

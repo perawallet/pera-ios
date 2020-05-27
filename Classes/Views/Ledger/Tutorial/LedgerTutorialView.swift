@@ -19,10 +19,10 @@ class LedgerTutorialView: BaseView {
     private lazy var titleLabel: UILabel = {
         UILabel()
             .withLine(.contained)
-            .withFont(UIFont.font(.publicSans, withWeight: .medium(size: 16.0)))
+            .withFont(UIFont.font(withWeight: .medium(size: 16.0)))
             .withText("ledger-tutorial-title-text".localized)
             .withAlignment(.center)
-            .withTextColor(color("primaryText"))
+            .withTextColor(SharedColors.primaryText)
     }()
     
     private lazy var ledgerTutorialInstructionListView = LedgerTutorialInstructionListView()

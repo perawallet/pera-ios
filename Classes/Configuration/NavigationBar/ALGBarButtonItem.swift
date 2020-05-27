@@ -18,7 +18,19 @@ struct ALGBarButtonItem: BarButtonItem {
             return BarButtonItemTitleContent(
                 text: "title-save".localized,
                 textColor: .black,
-                font: UIFont.font(.overpass, withWeight: .bold(size: 12.0))
+                font: UIFont.font(withWeight: .bold(size: 12.0))
+            )
+        case .done:
+            return BarButtonItemTitleContent(
+                text: "title-done".localized,
+                textColor: SharedColors.tertiaryText,
+                font: UIFont.font(withWeight: .semiBold(size: 16.0))
+            )
+        case .edit:
+            return BarButtonItemTitleContent(
+                text: "title-edit".localized,
+                textColor: SharedColors.primaryText,
+                font: UIFont.font(withWeight: .semiBold(size: 16.0))
             )
         default:
             return nil
@@ -43,7 +55,7 @@ struct ALGBarButtonItem: BarButtonItem {
             }
             return nil
         case .add:
-            if let icon = img("icon-add") {
+            if let icon = img("img-accounts-add") {
                 return ImageContent(normal: icon)
             }
             return nil
@@ -77,9 +89,13 @@ struct ALGBarButtonItem: BarButtonItem {
             }
             return nil
         case .infoBordered:
-            if let icon = img("icon-info-bordered") {
+            if let icon = img("icon-info-green") {
                 return ImageContent(normal: icon)
             }
+            return nil
+        case .done:
+            return nil
+        case .edit:
             return nil
         }
     }
@@ -121,6 +137,22 @@ struct ALGBarButtonItem: BarButtonItem {
             return .explicit(CGSize(width: 44.0, height: 44.0))
         case .infoBordered:
             return .explicit(CGSize(width: 44.0, height: 44.0))
+        case .done:
+            return .expanded(
+                width: .dynamicWidth(BarButtonExpandedSizeHorizontalInsets(
+                    contentInsets: (left: 0.0, right: 0.0),
+                    titleInsets: (left: 4.0, right: -4.0))
+                ),
+                height: .equal(44.0)
+            )
+        case .edit:
+            return .expanded(
+                width: .dynamicWidth(BarButtonExpandedSizeHorizontalInsets(
+                    contentInsets: (left: 0.0, right: 0.0),
+                    titleInsets: (left: 4.0, right: -4.0))
+                ),
+                height: .equal(44.0)
+            )
         }
     }
     
@@ -150,6 +182,8 @@ extension ALGBarButtonItem {
         case save
         case qr
         case infoFilled
+        case done
+        case edit
         case infoBordered
     }
 }

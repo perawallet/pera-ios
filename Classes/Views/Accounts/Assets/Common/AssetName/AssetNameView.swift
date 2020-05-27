@@ -14,24 +14,24 @@ class AssetNameView: BaseView {
     
     private(set) lazy var nameLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(.overpass, withWeight: .bold(size: 13.0)))
-            .withTextColor(SharedColors.black)
+            .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
+            .withTextColor(SharedColors.primaryText)
             .withLine(.single)
             .withAlignment(.left)
     }()
     
     private(set) lazy var codeLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(.overpass, withWeight: .bold(size: 13.0)))
-            .withTextColor(SharedColors.darkGray)
+            .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
+            .withTextColor(SharedColors.detailText)
             .withLine(.single)
             .withAlignment(.left)
     }()
     
     private(set) lazy var idLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(.overpass, withWeight: .bold(size: 13.0)))
-            .withTextColor(SharedColors.darkGray)
+            .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
+            .withTextColor(SharedColors.primaryText)
             .withLine(.single)
             .withAlignment(.left)
     }()
@@ -111,7 +111,7 @@ extension AssetNameView {
             nameLabel.textColor = SharedColors.orange
             nameLabel.font = UIFont.font(.overpass, withWeight: .boldItalic(size: 13.0))
         } else if secondDisplayName.isNilOrEmpty && assetDetail.assetName.isNilOrEmpty {
-            nameLabel.textColor = SharedColors.darkGray
+            nameLabel.textColor = SharedColors.subtitleText
         }
         
         nameLabel.text = firstDisplayName
@@ -128,7 +128,7 @@ extension AssetNameView {
 extension AssetNameView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let codeLabelOffset: CGFloat = 2.0
-        let imageSize = CGSize(width: 13.0, height: 13.0)
-        let imageViewOffset: CGFloat = 6.0
+        let imageSize = CGSize(width: 20.0, height: 20.0)
+        let imageViewOffset: CGFloat = 4.0
     }
 }
