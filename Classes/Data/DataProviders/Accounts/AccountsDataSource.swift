@@ -15,7 +15,7 @@ protocol AccountsDataSourceDelegate: class {
 
 class AccountsDataSource: NSObject, UICollectionViewDataSource {
     
-    private let viewModel = AccounsViewModel()
+    private let viewModel = AccountsViewModel()
     
     weak var delegate: AccountsDataSourceDelegate?
     
@@ -212,6 +212,10 @@ extension AccountsDataSource {
 }
 
 extension AccountsDataSource: AccountHeaderSupplementaryViewDelegate {
+    func accountHeaderSupplementaryViewDidTapQRButton(_ accountHeaderSupplementaryView: AccountHeaderSupplementaryView) {
+        
+    }
+    
     func accountHeaderSupplementaryViewDidTapOptionsButton(_ accountHeaderSupplementaryView: AccountHeaderSupplementaryView) {
         if accountHeaderSupplementaryView.tag < accounts.count {
             let account = accounts[accountHeaderSupplementaryView.tag]

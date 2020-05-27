@@ -8,10 +8,6 @@
 
 import UIKit
 
-protocol ContactCellDelegate: class {
-    func contactCellDidTapQRDisplayButton(_ cell: ContactCell)
-}
-
 class ContactCell: BaseCollectionViewCell<ContactContextView> {
     
     weak var delegate: ContactCellDelegate?
@@ -30,4 +26,8 @@ extension ContactCell: ContactContextViewDelegate {
     func contactContextViewDidTapQRDisplayButton(_ contactContextView: ContactContextView) {
         delegate?.contactCellDidTapQRDisplayButton(self)
     }
+}
+
+protocol ContactCellDelegate: class {
+    func contactCellDidTapQRDisplayButton(_ cell: ContactCell)
 }

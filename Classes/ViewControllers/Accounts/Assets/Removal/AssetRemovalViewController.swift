@@ -11,17 +11,17 @@ import Magpie
 import CoreBluetooth
 import SVProgressHUD
 
-protocol AssetRemovalViewControllerDelegate: class {
-    func assetRemovalViewController(
-        _ assetRemovalViewController: AssetRemovalViewController,
-        didRemove assetDetail: AssetDetail,
-        from account: Account
-    )
-}
-
 class AssetRemovalViewController: BaseViewController {
     
     private let layout = Layout<LayoutConstants>()
+    
+    private lazy var assetActionConfirmationPresenter = CardModalPresenter(
+        config: ModalConfiguration(
+            animationMode: .normal(duration: 0.25),
+            dismissMode: .scroll
+        ),
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: layout.current.modalHeight))
+    )
     
     private lazy var assetRemovalView = AssetRemovalView()
     
@@ -70,14 +70,14 @@ class AssetRemovalViewController: BaseViewController {
     }
     
     override func configureNavigationBarAppearance() {
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [weak self] in
+        let doneBarButtonItem = ALGBarButtonItem(kind: .done) { [weak self] in
             guard let strongSelf = self else {
                 return
             }
             strongSelf.closeScreen(by: .dismiss, animated: true)
         }
         
-        leftBarButtonItems = [closeBarButtonItem]
+        rightBarButtonItems = [doneBarButtonItem]
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -195,9 +195,9 @@ extension AssetRemovalViewController: AssetActionableCellDelegate {
         let controller = open(
             .assetActionConfirmation(assetAlertDraft: assetAlertDraft),
             by: .customPresentWithoutNavigationController(
-                presentationStyle: .overCurrentContext,
-                transitionStyle: .crossDissolve,
-                transitioningDelegate: nil
+                presentationStyle: .custom,
+                transitionStyle: nil,
+                transitioningDelegate: assetActionConfirmationPresenter
                 )
         ) as? AssetActionConfirmationViewController
         
@@ -209,19 +209,11 @@ extension AssetRemovalViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
-        minimumLineSpacingForSectionAt section: Int
-    ) -> CGFloat {
-        return layout.current.cellSpacing
-    }
-    
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
         return CGSize(
             width: UIScreen.main.bounds.width - layout.current.defaultSectionInsets.left - layout.current.defaultSectionInsets.right,
-            height: layout.current.cellHeight
+            height: layout.current.itemHeight
         )
     }
     
@@ -230,7 +222,10 @@ extension AssetRemovalViewController: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         referenceSizeForHeaderInSection section: Int
     ) -> CGSize {
-        return CGSize(width: UIScreen.main.bounds.width, height: layout.current.headerHeight)
+        return CGSize(
+            width: UIScreen.main.bounds.width - layout.current.defaultSectionInsets.left - layout.current.defaultSectionInsets.right,
+            height: layout.current.itemHeight
+        )
     }
 }
 
@@ -345,7 +340,6 @@ extension AssetRemovalViewController: TransactionControllerDelegate {
     }
 }
 
-// MARK: Ledger Timer
 extension AssetRemovalViewController {
     func validateTimer() {
         guard account.type == .ledger else {
@@ -392,9 +386,16 @@ extension AssetRemovalViewController: SendAssetTransactionPreviewViewControllerD
 
 extension AssetRemovalViewController {
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let defaultSectionInsets = UIEdgeInsets(top: 0.0, left: 10.0, bottom: 0.0, right: 10.0)
-        let cellSpacing: CGFloat = 5.0
-        let cellHeight: CGFloat = 50.0
-        let headerHeight: CGFloat = 49.0
+        let defaultSectionInsets = UIEdgeInsets(top: 0.0, left: 20.0, bottom: 0.0, right: 20.0)
+        let itemHeight: CGFloat = 52.0
+        let modalHeight: CGFloat = 490.0
     }
+}
+
+protocol AssetRemovalViewControllerDelegate: class {
+    func assetRemovalViewController(
+        _ assetRemovalViewController: AssetRemovalViewController,
+        didRemove assetDetail: AssetDetail,
+        from account: Account
+    )
 }

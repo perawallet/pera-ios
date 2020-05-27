@@ -10,6 +10,10 @@ import UIKit
 
 class AccountsViewController: BaseViewController {
     
+    override var shouldShowNavigationBar: Bool {
+        return false
+    }
+    
     let layout = Layout<LayoutConstants>()
     
     private lazy var optionsModalPresenter = CardModalPresenter(
@@ -81,37 +85,6 @@ class AccountsViewController: BaseViewController {
         )
     }
     
-    override func configureNavigationBarAppearance() {
-        setupLeftBarButtonItems()
-        setupRightBarButtonItems()
-    }
-    
-    private func setupLeftBarButtonItems() {
-        let addAccountBarButtonItem = ALGBarButtonItem(kind: .add) { [weak self] in
-            guard let strongSelf = self else {
-                return
-            }
-            strongSelf.open(
-                .addNewAccount,
-                by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
-            )
-        }
-        
-        leftBarButtonItems = [addAccountBarButtonItem]
-    }
-    
-    private func setupRightBarButtonItems() {
-        let qrBarButtonItem = ALGBarButtonItem(kind: .qr) { [weak self] in
-            guard let strongSelf = self else {
-                return
-            }
-            let qrScannerViewController = strongSelf.open(.qrScanner, by: .push) as? QRScannerViewController
-            qrScannerViewController?.delegate = strongSelf
-        }
-
-        rightBarButtonItems = [qrBarButtonItem]
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -144,6 +117,7 @@ class AccountsViewController: BaseViewController {
     override func setListeners() {
         accountsLayoutBuilder.delegate = self
         accountsDataSource.delegate = self
+        accountsView.delegate = self
         accountsView.accountsCollectionView.delegate = accountsLayoutBuilder
         accountsView.accountsCollectionView.dataSource = accountsDataSource
     }
@@ -193,6 +167,17 @@ extension AccountsViewController: AccountsDataSourceDelegate {
         selectedAccount = account
         let controller = open(.addAsset(account: account), by: .push)
         (controller as? AssetAdditionViewController)?.delegate = self
+    }
+}
+
+extension AccountsViewController: AccountsViewDelegate {
+    func accountsViewDidTapQRButton(_ accountsView: AccountsView) {
+        let qrScannerViewController = open(.qrScanner, by: .push) as? QRScannerViewController
+        qrScannerViewController?.delegate = self
+    }
+    
+    func accountsViewDidTapAddButton(_ accountsView: AccountsView) {
+        open(.addNewAccount, by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil))
     }
 }
 
@@ -301,11 +286,11 @@ extension AccountsViewController: QRScannerViewControllerDelegate {
                 )
                 
                 tabBarController?.open(
-                    .assetSupportAlert(assetAlertDraft: assetAlertDraft),
+                    .assetSupport(assetAlertDraft: assetAlertDraft),
                     by: .customPresentWithoutNavigationController(
-                        presentationStyle: .overCurrentContext,
-                        transitionStyle: .crossDissolve,
-                        transitioningDelegate: nil
+                        presentationStyle: .custom,
+                        transitionStyle: nil,
+                        transitioningDelegate: optionsModalPresenter
                     )
                 )
                 return
@@ -343,8 +328,6 @@ extension AccountsViewController {
     struct LayoutConstants: AdaptiveLayoutConstants {
         let optionsModalHeight: CGFloat = 384.0
         let removeAccountModalHeight: CGFloat = 402.0
-        let transactionCellSize = CGSize(width: UIScreen.main.bounds.width, height: 72.0)
-        let rewardCellSize = CGSize(width: UIScreen.main.bounds.width, height: 50.0)
         let editAccountModalHeight: CGFloat = 158.0
         let termsAndServiceHeight: CGFloat = 300
     }

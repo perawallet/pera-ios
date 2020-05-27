@@ -1,5 +1,5 @@
 //
-//  AlgosAmountView.swift
+//  TransactionAmountView.swift
 //  algorand
 //
 //  Created by Göktuğ Berk Ulu on 29.03.2019.
@@ -8,11 +8,7 @@
 
 import UIKit
 
-class AlgosAmountView: BaseView {
-    
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let labelInset: CGFloat = 3.0
-    }
+class TransactionAmountView: BaseView {
     
     private let layout = Layout<LayoutConstants>()
     
@@ -22,40 +18,36 @@ class AlgosAmountView: BaseView {
         }
     }
     
-    // MARK: Components
-    
     private(set) lazy var signLabel: UILabel = {
         UILabel()
             .withAlignment(.left)
             .withLine(.single)
-            .withTextColor(SharedColors.black)
-            .withFont(UIFont.font(.overpass, withWeight: .bold(size: 15.0)))
+            .withTextColor(SharedColors.primaryText)
+            .withFont(UIFont.font(withWeight: .semiBold(size: 14.0)))
     }()
     
-    private(set) lazy var algoIconImageView = UIImageView(image: img("icon-algo-black", isTemplate: true))
+    private(set) lazy var algoIconImageView = UIImageView(image: img("icon-algo-gray", isTemplate: true))
     
     private(set) lazy var amountLabel: UILabel = {
         UILabel()
             .withAlignment(.right)
             .withLine(.single)
-            .withTextColor(SharedColors.black)
-            .withFont(UIFont.font(.overpass, withWeight: .bold(size: 15.0)))
+            .withTextColor(SharedColors.primaryText)
+            .withFont(UIFont.font(withWeight: .semiBold(size: 14.0)))
     }()
-
-    // MARK: Setup
     
     override func configureAppearance() {
         backgroundColor = .clear
     }
-    
-    // MARK: Layout
     
     override func prepareLayout() {
         setupAmountLabelLayout()
         setupAlgoIconImageViewLayout()
         setupSignLabelLayout()
     }
-    
+}
+
+extension TransactionAmountView {
     private func setupAmountLabelLayout() {
         addSubview(amountLabel)
         
@@ -63,6 +55,7 @@ class AlgosAmountView: BaseView {
         amountLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
         
         amountLabel.snp.makeConstraints { make in
+            make.top.bottom.equalToSuperview()
             make.centerY.equalToSuperview()
             make.trailing.equalToSuperview()
         }
@@ -75,7 +68,7 @@ class AlgosAmountView: BaseView {
         algoIconImageView.setContentCompressionResistancePriority(.required, for: .horizontal)
         
         algoIconImageView.snp.makeConstraints { make in
-            make.trailing.equalTo(amountLabel.snp.leading).offset(-layout.current.labelInset)
+            make.trailing.equalTo(amountLabel.snp.leading)
             make.centerY.equalToSuperview()
         }
     }
@@ -93,62 +86,64 @@ class AlgosAmountView: BaseView {
             make.trailing.equalTo(amountLabel.snp.leading).offset(-layout.current.labelInset).priority(.low)
         }
     }
-    
-    // MARK: Update
-    
+}
+
+extension TransactionAmountView {
     private func updateAmountView() {
         switch mode {
-        case let .normal(amount, assetFraction):
+        case let .normal(amount, isAlgos, assetFraction):
             signLabel.isHidden = true
             
-            if let fraction = assetFraction {
-                amountLabel.text = amount.toFractionStringForLabel(fraction: fraction)
-            } else {
-                amountLabel.text = amount.toDecimalStringForLabel
-            }
-            
-            amountLabel.textColor = SharedColors.black
-            
-            algoIconImageView.tintColor = SharedColors.black
-        case let .positive(amount, assetFraction):
+            setAmount(amount, with: assetFraction)
+            amountLabel.textColor = SharedColors.primaryText
+            algoIconImageView.tintColor = SharedColors.primaryText
+            removeAlgoIconForAssetIfNeeded(isAlgos)
+        case let .positive(amount, isAlgos, assetFraction):
             signLabel.isHidden = false
             signLabel.text = "+"
-            signLabel.textColor = SharedColors.turquois
+            signLabel.textColor = SharedColors.tertiaryText
             
-            if let fraction = assetFraction {
-                amountLabel.text = amount.toFractionStringForLabel(fraction: fraction)
-            } else {
-                amountLabel.text = amount.toDecimalStringForLabel
-            }
-            
-            amountLabel.textColor = SharedColors.turquois
-            
-            algoIconImageView.tintColor = SharedColors.turquois
-        case let .negative(amount, assetFraction):
+            setAmount(amount, with: assetFraction)
+            amountLabel.textColor = SharedColors.tertiaryText
+            algoIconImageView.tintColor = SharedColors.tertiaryText
+            removeAlgoIconForAssetIfNeeded(isAlgos)
+        case let .negative(amount, isAlgos, assetFraction):
             signLabel.isHidden = false
             signLabel.text = "-"
-            signLabel.textColor = SharedColors.orange
+            signLabel.textColor = SharedColors.red
             
-            if let fraction = assetFraction {
-                amountLabel.text = amount.toFractionStringForLabel(fraction: fraction)
-            } else {
-                amountLabel.text = amount.toDecimalStringForLabel
-            }
-            
-            amountLabel.textColor = SharedColors.orange
-            
-            algoIconImageView.tintColor = SharedColors.orange
+            setAmount(amount, with: assetFraction)
+            amountLabel.textColor = SharedColors.red
+            algoIconImageView.tintColor = SharedColors.red
+            removeAlgoIconForAssetIfNeeded(isAlgos)
+        }
+    }
+    
+    private func setAmount(_ amount: Double, with assetFraction: Int?) {
+        if let fraction = assetFraction {
+            amountLabel.text = amount.toFractionStringForLabel(fraction: fraction)
+        } else {
+            amountLabel.text = amount.toDecimalStringForLabel
+        }
+    }
+    
+    private func removeAlgoIconForAssetIfNeeded(_ isAlgos: Bool) {
+        if !isAlgos {
+            algoIconImageView.removeFromSuperview()
         }
     }
 }
 
-// MARK: Mode
-
-extension AlgosAmountView {
-    
+extension TransactionAmountView {
     enum Mode {
-        case normal(amount: Double, assetFraction: Int? = nil)
-        case positive(amount: Double, assetFraction: Int? = nil)
-        case negative(amount: Double, assetFraction: Int? = nil)
+        case normal(amount: Double, isAlgos: Bool = true, fraction: Int? = nil)
+        case positive(amount: Double, isAlgos: Bool = true, fraction: Int? = nil)
+        case negative(amount: Double, isAlgos: Bool = true, fraction: Int? = nil)
+    }
+}
+
+extension TransactionAmountView {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let labelInset: CGFloat = 4.0
     }
 }
