@@ -20,7 +20,9 @@ extension TestNetTitleDisplayable where Self: BaseViewController {
         }
         
         if isTestNet {
-            navigationItem.titleView = TestNetTitleView(title: title)
+            let titleView = TestNetTitleView()
+            titleView.setTitle(title)
+            navigationItem.titleView = titleView
         } else {
             self.title = title
         }
