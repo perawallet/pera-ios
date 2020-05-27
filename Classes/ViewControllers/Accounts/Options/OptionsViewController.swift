@@ -8,15 +8,11 @@
 
 import UIKit
 
-protocol OptionsViewControllerDelegate: class {
-    func optionsViewControllerDidShowQR(_ optionsViewController: OptionsViewController)
-    func optionsViewControllerDidRemoveAsset(_ optionsViewController: OptionsViewController)
-    func optionsViewControllerDidViewPassphrase(_ optionsViewController: OptionsViewController)
-    func optionsViewControllerDidEditAccountName(_ optionsViewController: OptionsViewController)
-    func optionsViewControllerDidRemoveAccount(_ optionsViewController: OptionsViewController)
-}
-
 class OptionsViewController: BaseViewController {
+    
+    override var shouldShowNavigationBar: Bool {
+        return false
+    }
     
     private let layout = Layout<LayoutConstants>()
     
@@ -24,10 +20,6 @@ class OptionsViewController: BaseViewController {
     
     private let viewModel = OptionsViewModel()
     private var account: Account
-    
-    override var shouldShowNavigationBar: Bool {
-        return false
-    }
     
     weak var delegate: OptionsViewControllerDelegate?
     
@@ -45,7 +37,7 @@ class OptionsViewController: BaseViewController {
             
             if accountInformation.type == .ledger {
                 options.removeAll { option -> Bool in
-                    option == .passPhrase
+                    option == .passphrase
                 }
             }
         } else {
@@ -56,7 +48,7 @@ class OptionsViewController: BaseViewController {
     }
     
     override func configureAppearance() {
-        view.backgroundColor = .white
+        view.backgroundColor = SharedColors.secondaryBackground
     }
     
     override func linkInteractors() {
@@ -81,7 +73,7 @@ extension OptionsViewController {
 }
 
 extension OptionsViewController: OptionsViewDelegate {
-    func optionsViewDidTapDismissButton(_ optionsView: OptionsView) {
+    func optionsViewDidTapCancelButton(_ optionsView: OptionsView) {
         dismissScreen()
     }
 }
@@ -105,8 +97,6 @@ extension OptionsViewController: UICollectionViewDataSource {
     }
 }
 
-// MARK: UICollectionViewDelegateFlowLayout
-
 extension OptionsViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(
         _ collectionView: UICollectionView,
@@ -122,11 +112,9 @@ extension OptionsViewController: UICollectionViewDelegateFlowLayout {
         dismissScreen()
         
         switch selectedOption {
-        case .showQR:
-            delegate?.optionsViewControllerDidShowQR(self)
         case .removeAsset:
             delegate?.optionsViewControllerDidRemoveAsset(self)
-        case .passPhrase:
+        case .passphrase:
             delegate?.optionsViewControllerDidViewPassphrase(self)
         case .edit:
             delegate?.optionsViewControllerDidEditAccountName(self)
@@ -138,32 +126,38 @@ extension OptionsViewController: UICollectionViewDelegateFlowLayout {
 
 extension OptionsViewController {
     enum Options: Int, CaseIterable {
-        case showQR = 0
-        case removeAsset = 1
-        case passPhrase = 2
-        case edit = 3
-        case removeAccount = 4
+        case passphrase = 0
+        case edit = 1
+        case removeAsset = 2
+        case removeAccount = 3
         
         static var optionsWithoutRemoveAsset: [Options] {
-            return [.showQR, passPhrase, .edit, .removeAccount]
+            return [.edit, .removeAccount]
         }
 
         static var optionsWithoutPassphrase: [Options] {
-            return [.showQR, .removeAsset, .edit, .removeAccount]
+            return [.edit, .removeAsset, .removeAccount]
         }
         
         static var optionsWithoutPassphraseAndRemoveAsset: [Options] {
-            return [.showQR, .edit, .removeAccount]
+            return [.edit, .removeAccount]
         }
         
         static var allOptions: [Options] {
-            return [.showQR, .removeAsset, passPhrase, .edit, .removeAccount]
+            return [.passphrase, .edit, .removeAsset, .removeAccount]
         }
     }
 }
 
 extension OptionsViewController {
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let cellHeight: CGFloat = 56.0
+        let cellHeight: CGFloat = 48.0
     }
+}
+
+protocol OptionsViewControllerDelegate: class {
+    func optionsViewControllerDidRemoveAsset(_ optionsViewController: OptionsViewController)
+    func optionsViewControllerDidViewPassphrase(_ optionsViewController: OptionsViewController)
+    func optionsViewControllerDidEditAccountName(_ optionsViewController: OptionsViewController)
+    func optionsViewControllerDidRemoveAccount(_ optionsViewController: OptionsViewController)
 }

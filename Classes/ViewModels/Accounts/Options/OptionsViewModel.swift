@@ -11,14 +11,11 @@ import UIKit
 class OptionsViewModel {
     func configure(_ cell: OptionsCell, with option: OptionsViewController.Options) {
         switch option {
-        case .showQR:
-            cell.contextView.iconImageView.image = img("icon-qr-code-purple")
-            cell.contextView.optionLabel.text = "options-show-qr".localized
         case .removeAsset:
             cell.contextView.iconImageView.image = img("icon-remove-assets")
             cell.contextView.optionLabel.text = "options-remove-assets".localized
-        case .passPhrase:
-            cell.contextView.iconImageView.image = img("icon-show-passphrase")
+        case .passphrase:
+            cell.contextView.iconImageView.image = img("icon-lock")
             cell.contextView.optionLabel.text = "options-view-passphrase".localized
         case .edit:
             cell.contextView.iconImageView.image = img("icon-edit-account")
@@ -26,6 +23,7 @@ class OptionsViewModel {
         case .removeAccount:
             cell.contextView.iconImageView.image = img("icon-remove-account")
             cell.contextView.optionLabel.text = "options-remove-account".localized
+            cell.contextView.optionLabel.textColor = SharedColors.red
         }
     }
 }

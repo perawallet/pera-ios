@@ -8,45 +8,22 @@
 
 import UIKit
 
-protocol AccountNameSetupViewDelegate: class {
-    
-    func accountNameSetupViewDidTapNextButton(_ accountNameSetupView: AccountNameSetupView)
-    func accountNameSetupViewDidChangeValue(_ accountNameSetupView: AccountNameSetupView)
-}
-
 class AccountNameSetupView: BaseView {
-
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let topInset: CGFloat = 167.0 * verticalScale
-        let buttonBottomInset: CGFloat = 15.0
-        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
-    }
     
     private let layout = Layout<LayoutConstants>()
     
-    // MARK: Components
+    weak var delegate: AccountNameSetupViewDelegate?
     
     private(set) lazy var accountNameInputView: SingleLineInputField = {
         let accountNameInputView = SingleLineInputField()
         accountNameInputView.explanationLabel.text = "account-name-setup-explanation".localized
-        accountNameInputView.inputTextField.attributedPlaceholder = NSAttributedString(
-            string: "account-name-setup-placeholder".localized,
-            attributes: [NSAttributedString.Key.foregroundColor: SharedColors.softGray,
-                         NSAttributedString.Key.font: UIFont.font(.overpass, withWeight: .semiBold(size: 13.0))]
-        )
+        accountNameInputView.placeholderText = "account-name-setup-placeholder".localized
         accountNameInputView.nextButtonMode = .submit
         accountNameInputView.inputTextField.autocorrectionType = .no
         return accountNameInputView
     }()
     
-    private(set) lazy var nextButton: MainButton = {
-        let button = MainButton(title: "title-next".localized)
-        return button
-    }()
-    
-    weak var delegate: AccountNameSetupViewDelegate?
-    
-    // MARK: Configuration
+    private(set) lazy var nextButton = MainButton(title: "title-next".localized)
     
     override func linkInteractors() {
         accountNameInputView.delegate = self
@@ -56,13 +33,20 @@ class AccountNameSetupView: BaseView {
         nextButton.addTarget(self, action: #selector(notifyDelegateToNextButtonTapped), for: .touchUpInside)
     }
     
-    // MARK: Layout
-    
     override func prepareLayout() {
         setupAccountNameInputViewLayout()
         setupNextButtonLayout()
     }
-    
+}
+
+extension AccountNameSetupView {
+    @objc
+    func notifyDelegateToNextButtonTapped() {
+        delegate?.accountNameSetupViewDidTapNextButton(self)
+    }
+}
+
+extension AccountNameSetupView {
     private func setupAccountNameInputViewLayout() {
         addSubview(accountNameInputView)
         
@@ -76,24 +60,30 @@ class AccountNameSetupView: BaseView {
         addSubview(nextButton)
         
         nextButton.snp.makeConstraints { make in
-            make.top.equalTo(accountNameInputView.snp.bottom).offset(layout.current.topInset)
+            make.top.equalTo(accountNameInputView.snp.bottom).offset(layout.current.buttonTopInset)
             make.bottom.lessThanOrEqualToSuperview().inset(layout.current.buttonBottomInset)
-            make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
             make.centerX.equalToSuperview()
         }
     }
-    
-    // MARK: Actions
-    
-    @objc
-    func notifyDelegateToNextButtonTapped() {
-        delegate?.accountNameSetupViewDidTapNextButton(self)
+}
+
+extension AccountNameSetupView {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let topInset: CGFloat = 36.0
+        let buttonBottomInset: CGFloat = 15.0
+        let buttonTopInset: CGFloat = 24.0
+        let horizontalInset: CGFloat = 20.0
     }
 }
 
 extension AccountNameSetupView: InputViewDelegate {
-    
     func inputViewDidChangeValue(inputView: BaseInputView) {
         delegate?.accountNameSetupViewDidChangeValue(self)
     }
+}
+
+protocol AccountNameSetupViewDelegate: class {
+    func accountNameSetupViewDidTapNextButton(_ accountNameSetupView: AccountNameSetupView)
+    func accountNameSetupViewDidChangeValue(_ accountNameSetupView: AccountNameSetupView)
 }

@@ -39,7 +39,7 @@ class ChoosePasswordViewModel {
         }
     }
     
-    func configureSelection(in choosePasswordView: ChoosePasswordView, for value: NumpadValue, then handler: (String) -> Void) {
+    func configureSelection(in choosePasswordView: ChoosePasswordView, for value: NumpadKey, then handler: (String) -> Void) {
         switch value {
         case let .number(number):
             if isPasswordValid {
@@ -65,7 +65,7 @@ class ChoosePasswordViewModel {
         update(in: choosePasswordView, for: value)
     }
     
-    func update(in choosePasswordView: ChoosePasswordView, for value: NumpadValue) {
+    func update(in choosePasswordView: ChoosePasswordView, for value: NumpadKey) {
         switch value {
         case .number:
             let passwordInputCircleView = choosePasswordView.passwordInputView.passwordInputCircleViews[password.count - 1]

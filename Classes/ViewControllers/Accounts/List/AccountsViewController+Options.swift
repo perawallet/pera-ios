@@ -14,7 +14,7 @@ extension AccountsViewController: OptionsViewControllerDelegate {
             return
         }
         
-        open(.qrGenerator(title: account.name, address: account.address, mode: .address), by: .present)
+        open(.qrGenerator(title: "qr-creation-sharing-title".localized, address: account.address, mode: .address), by: .present)
     }
     
     func optionsViewControllerDidRemoveAsset(_ optionsViewController: OptionsViewController) {
@@ -91,7 +91,7 @@ extension AccountsViewController: OptionsViewControllerDelegate {
     }
     
     private func displayRemoveAccountAlert() {
-        let configurator = BottomInformationViewConfigurator(
+        let configurator = BottomInformationBundle(
             title: "options-remove-account".localized,
             image: img("img-remove-account"),
             explanation: "options-remove-alert-explanation".localized,

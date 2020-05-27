@@ -32,7 +32,7 @@ class Environment {
     lazy var serverHost: String = {
         switch target {
         case .staging:
-            return "3.15.4.163:8080"
+            return "indexer-testnet.algorand.network:8080"
         case .prod:
             return "indexer.algorand.network:8443"
         }

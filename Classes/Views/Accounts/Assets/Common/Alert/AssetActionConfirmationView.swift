@@ -8,11 +8,6 @@
 
 import UIKit
 
-protocol AssetActionConfirmationViewDelegate: class {
-    func assetActionConfirmationViewDidTapActionButton(_ assetActionConfirmationView: AssetActionConfirmationView)
-    func assetActionConfirmationViewDidTapCancelButton(_ assetActionConfirmationView: AssetActionConfirmationView)
-}
-
 class AssetActionConfirmationView: BaseView {
     
     private let layout = Layout<LayoutConstants>()
@@ -23,7 +18,7 @@ class AssetActionConfirmationView: BaseView {
         UILabel()
             .withLine(.single)
             .withAlignment(.center)
-            .withFont(UIFont.font(.overpass, withWeight: .bold(size: 16.0)))
+            .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
             .withTextColor(SharedColors.black)
     }()
     
@@ -33,29 +28,34 @@ class AssetActionConfirmationView: BaseView {
         UILabel()
             .withLine(.contained)
             .withAlignment(.center)
-            .withFont(UIFont.font(.avenir, withWeight: .medium(size: 14.0)))
+            .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
             .withTextColor(SharedColors.black)
     }()
     
     private(set) lazy var actionButton: UIButton = {
         UIButton(type: .custom)
-            .withBackgroundImage(img("bg-purple-button-big"))
+            .withBackgroundImage(img("bg-main-button"))
             .withAlignment(.center)
-            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 12.0)))
-            .withTitleColor(UIColor.white)
+            .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
+            .withTitleColor(SharedColors.primaryButtonTitle)
     }()
     
     private lazy var cancelButton: UIButton = {
         UIButton(type: .custom)
             .withTitle("title-cancel".localized)
+            .withBackgroundImage(img("bg-light-gray-button"))
             .withAlignment(.center)
-            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 12.0)))
-            .withTitleColor(SharedColors.darkGray)
+            .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
+            .withTitleColor(SharedColors.primaryText)
     }()
     
     override func configureAppearance() {
-        backgroundColor = .white
-        layer.cornerRadius = 10.0
+        backgroundColor = SharedColors.secondaryBackground
+    }
+    
+    override func setListeners() {
+        actionButton.addTarget(self, action: #selector(notifyDelegateToHandleAction), for: .touchUpInside)
+        cancelButton.addTarget(self, action: #selector(notifyDelegateToCancelScreen), for: .touchUpInside)
     }
     
     override func prepareLayout() {
@@ -65,21 +65,16 @@ class AssetActionConfirmationView: BaseView {
         setupActionButtonLayout()
         setupCancelButtonLayout()
     }
-    
-    override func setListeners() {
-        actionButton.addTarget(self, action: #selector(notifyDelegateToActionButtonTapped), for: .touchUpInside)
-        cancelButton.addTarget(self, action: #selector(notifyDelegateToCancelButtonTapped), for: .touchUpInside)
-    }
 }
 
 extension AssetActionConfirmationView {
     @objc
-    private func notifyDelegateToActionButtonTapped() {
+    private func notifyDelegateToHandleAction() {
         delegate?.assetActionConfirmationViewDidTapActionButton(self)
     }
     
     @objc
-    private func notifyDelegateToCancelButtonTapped() {
+    private func notifyDelegateToCancelScreen() {
         delegate?.assetActionConfirmationViewDidTapCancelButton(self)
     }
 }
@@ -100,6 +95,7 @@ extension AssetActionConfirmationView {
         assetDisplayView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.displayViewTopInset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.displayViewHorizontalInset)
         }
     }
     
@@ -116,7 +112,7 @@ extension AssetActionConfirmationView {
         addSubview(actionButton)
         
         actionButton.snp.makeConstraints { make in
-            make.top.equalTo(detailLabel.snp.bottom).offset(layout.current.verticalInset)
+            make.top.equalTo(detailLabel.snp.bottom).offset(layout.current.displayViewTopInset)
             make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
         }
     }
@@ -127,16 +123,23 @@ extension AssetActionConfirmationView {
         cancelButton.snp.makeConstraints { make in
             make.top.equalTo(actionButton.snp.bottom).offset(layout.current.buttonOffset)
             make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.bottom.equalToSuperview().inset(layout.current.horizontalInset)
+            make.bottom.lessThanOrEqualToSuperview().inset(layout.current.bottomInset)
         }
     }
 }
 
 extension AssetActionConfirmationView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let verticalInset: CGFloat = 30.0
-        let displayViewTopInset: CGFloat = 24.0
-        let horizontalInset: CGFloat = 25.0
-        let buttonOffset: CGFloat = 10.0
+        let verticalInset: CGFloat = 16.0
+        let displayViewHorizontalInset: CGFloat = 32.0
+        let displayViewTopInset: CGFloat = 28.0
+        let horizontalInset: CGFloat = 20.0
+        let buttonOffset: CGFloat = 12.0
+        let bottomInset: CGFloat = 30.0
     }
+}
+
+protocol AssetActionConfirmationViewDelegate: class {
+    func assetActionConfirmationViewDidTapActionButton(_ assetActionConfirmationView: AssetActionConfirmationView)
+    func assetActionConfirmationViewDidTapCancelButton(_ assetActionConfirmationView: AssetActionConfirmationView)
 }
