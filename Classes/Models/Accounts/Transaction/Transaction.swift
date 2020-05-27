@@ -85,9 +85,9 @@ extension Transaction {
 
 extension Transaction {
     enum Status: String {
-        case pending = "Pending"
-        case completed = "Confirmed"
-        case failed = "Failed"
+        case pending = "PENDING"
+        case completed = "COMPLETED"
+        case failed = "FAILED"
     }
 }
 

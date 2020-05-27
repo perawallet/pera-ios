@@ -8,7 +8,8 @@
 
 import UIKit
 
-class QRView: UIView {
+class QRView: BaseView {
+    
     private let outputWidth: CGFloat = 200.0
     
     private(set) lazy var imageView = UIImageView()
@@ -19,8 +20,6 @@ class QRView: UIView {
         self.qrText = qrText
         super.init(frame: .zero)
         
-        setupLayout()
-        
         if qrText.mode == .mnemonic {
             generateMnemonicsQR()
         } else {
@@ -28,23 +27,25 @@ class QRView: UIView {
         }
     }
     
-    @available(*, unavailable)
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    override func configureAppearance() {
+        backgroundColor = SharedColors.secondaryBackground
+    }
+    
+    override func prepareLayout() {
+        setupImageViewLayout()
     }
 }
 
-// MARK: - Layout
 extension QRView {
-    fileprivate func setupLayout() {
+    fileprivate func setupImageViewLayout() {
         addSubview(imageView)
+        
         imageView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
     }
 }
 
-// MARK: - Helpers
 extension QRView {
     private func generateLinkQR() {
         guard let data = qrText.qrText().data(using: .ascii) else {

@@ -14,21 +14,41 @@ class PassphraseVerifyView: BaseView {
     
     private(set) lazy var questionTitleLabel: UILabel = {
         UILabel(frame: .zero)
-            .withFont(UIFont.font(.overpass, withWeight: .bold(size: 20.0)))
-            .withTextColor(SharedColors.black)
-            .withAlignment(NSTextAlignment.center)
+            .withFont(UIFont.font(withWeight: .medium(size: 16.0)))
+            .withTextColor(SharedColors.primaryText)
+            .withAlignment(.center)
     }()
     
-    private(set) lazy var questionSubtitleLabel: UILabel = {
-        UILabel(frame: .zero)
-            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 14.0)))
-            .withTextColor(SharedColors.purple)
-            .withAlignment(NSTextAlignment.center)
+    private(set) lazy var passphraseCollectionView: UICollectionView = {
+        let collectionViewLayout = LeftAlignedCollectionViewFlowLayout()
+        collectionViewLayout.minimumLineSpacing = 8.0
+        collectionViewLayout.minimumInteritemSpacing = 8.0
+        collectionViewLayout.scrollDirection = .vertical
+        let collectionView = UICollectionView(frame: .zero,
+                                              collectionViewLayout: collectionViewLayout)
+        collectionView.register(
+            PassphraseCollectionViewCell.self,
+            forCellWithReuseIdentifier: PassphraseCollectionViewCell.reusableIdentifier
+        )
+        collectionView.backgroundColor = .clear
+        collectionView.isScrollEnabled = false
+        return collectionView
+    }()
+    
+    private lazy var wrongChoiceLabel: UILabel = {
+        let label = UILabel()
+            .withText("pass-phrase-verify-wrong-selection".localized)
+            .withTextColor(SharedColors.red)
+            .withFont(UIFont.font(withWeight: .semiBold(size: 14.0)))
+            .withAlignment(.center)
+        label.isHidden = true
+        return label
     }()
     
     override func prepareLayout() {
         setuptQuestionTitleLabelLayout()
-        setuptQuestionSubtitleLabelLayout()
+        setupCollectionViewLayout()
+        setupWrongChoiceLabelLayout()
     }
     
     override func configureAppearance() {
@@ -41,25 +61,44 @@ extension PassphraseVerifyView {
         addSubview(questionTitleLabel)
         
         questionTitleLabel.snp.makeConstraints { maker in
-            maker.top.equalToSuperview().inset(69 * verticalScale)
-            maker.leading.trailing.equalToSuperview().inset(15)
+            maker.top.equalToSuperview().inset(layout.current.titleTopInset)
+            maker.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
         }
     }
     
-    private func setuptQuestionSubtitleLabelLayout() {
-        addSubview(questionSubtitleLabel)
+    private func setupCollectionViewLayout() {
+        addSubview(passphraseCollectionView)
         
-        questionSubtitleLabel.snp.makeConstraints { maker in
-            maker.top.equalTo(questionTitleLabel.snp.bottom).offset(16 * verticalScale)
-            maker.leading.trailing.equalToSuperview().inset(15)
-            maker.bottom.equalToSuperview().inset(20.0 * verticalScale)
+        passphraseCollectionView.snp.makeConstraints { make in
+            make.top.equalTo(questionTitleLabel.snp.bottom).offset(layout.current.listTopOffset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.height.greaterThanOrEqualTo(layout.current.listMinHeight)
+        }
+    }
+    
+    private func setupWrongChoiceLabelLayout() {
+        addSubview(wrongChoiceLabel)
+        
+        wrongChoiceLabel.snp.makeConstraints { make in
+            make.top.greaterThanOrEqualTo(passphraseCollectionView.snp.bottom).offset(layout.current.wrongChoiceLabelVerticalInset)
+            make.centerX.equalToSuperview()
+            make.bottom.equalToSuperview().inset(layout.current.wrongChoiceLabelVerticalInset)
         }
     }
 }
 
 extension PassphraseVerifyView {
+    func setWrongChoiceLabelHidden(_ hidden: Bool) {
+        wrongChoiceLabel.isHidden = hidden
+    }
+}
+
+extension PassphraseVerifyView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let leadingInset: CGFloat = 2.0
-        let centerOffset: CGFloat = -1.0
+        let titleTopInset: CGFloat = 80.0
+        let horizontalInset: CGFloat = 32.0
+        let wrongChoiceLabelVerticalInset: CGFloat = 30.0
+        let listTopOffset: CGFloat = 40.0
+        let listMinHeight: CGFloat = 220.0
     }
 }
