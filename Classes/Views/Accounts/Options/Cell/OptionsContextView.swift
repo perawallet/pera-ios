@@ -55,7 +55,7 @@ extension OptionsContextView {
 
 extension OptionsContextView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let horizontalInset: CGFloat = 16.0
-        let labelLefInset: CGFloat = 53.0
+        let horizontalInset: CGFloat = 20.0
+        let labelLefInset: CGFloat = 56.0
     }
 }

@@ -11,13 +11,13 @@ import UIKit
 class AccountListView: BaseView {
     
     private let layout = Layout<LayoutConstants>()
-
-    private lazy var topImageView = UIImageView(image: img("icon-modal-top"))
+    
+    weak var delegate: AccountListViewDelegate?
     
     private(set) lazy var titleLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(.overpass, withWeight: .bold(size: 16.0)))
-            .withTextColor(SharedColors.black)
+            .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
+            .withTextColor(SharedColors.primaryText)
             .withLine(.single)
             .withAlignment(.center)
     }()
@@ -31,39 +31,50 @@ class AccountListView: BaseView {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = .white
+        collectionView.backgroundColor = SharedColors.secondaryBackground
         collectionView.contentInset = .zero
         collectionView.register(AccountViewCell.self, forCellWithReuseIdentifier: AccountViewCell.reusableIdentifier)
         return collectionView
     }()
     
+    private lazy var cancelButton: UIButton = {
+        UIButton(type: .custom)
+            .withTitle("title-cancel".localized)
+            .withBackgroundImage(img("bg-light-gray-button"))
+            .withAlignment(.center)
+            .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
+            .withTitleColor(SharedColors.primaryText)
+    }()
+    
     override func configureAppearance() {
-        backgroundColor = .white
+        backgroundColor = SharedColors.secondaryBackground
+    }
+    
+    override func setListeners() {
+        cancelButton.addTarget(self, action: #selector(notifyDelegateToCloseScreen), for: .touchUpInside)
     }
     
     override func prepareLayout() {
-        setupTopImageViewLayout()
         setupTitleLabelLayout()
         setupAccountCollectionViewLayout()
+        setupCancelButtonLayout()
     }
 }
 
 extension AccountListView {
-    private func setupTopImageViewLayout() {
-        addSubview(topImageView)
-        
-        topImageView.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalToSuperview().inset(layout.current.imageViewTopInset)
-        }
+    @objc
+    private func notifyDelegateToCloseScreen() {
+        delegate?.accountListViewDidTapCancelButton(self)
     }
-    
+}
+
+extension AccountListView {
     private func setupTitleLabelLayout() {
         addSubview(titleLabel)
         
         titleLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalTo(topImageView.snp.bottom).offset(layout.current.titleLabelOffset)
+            make.top.equalToSuperview().inset(layout.current.titleLabelOffset)
         }
     }
     
@@ -72,7 +83,16 @@ extension AccountListView {
         
         accountsCollectionView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.accountListTopInset)
+            make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.verticalInset)
+        }
+    }
+    
+    private func setupCancelButtonLayout() {
+        addSubview(cancelButton)
+        
+        cancelButton.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.top.equalTo(accountsCollectionView.snp.bottom).offset(layout.current.verticalInset)
             make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).offset(layout.current.accountListBottomInset)
         }
     }
@@ -80,9 +100,13 @@ extension AccountListView {
 
 extension AccountListView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let imageViewTopInset: CGFloat = 10.0
-        let titleLabelOffset: CGFloat = 15.0
-        let accountListTopInset: CGFloat = 20.0
+        let horizontalInset: CGFloat = 20.0
+        let verticalInset: CGFloat = 28.0
+        let titleLabelOffset: CGFloat = 16.0
         let accountListBottomInset: CGFloat = -20.0
     }
+}
+
+protocol AccountListViewDelegate: class {
+    func accountListViewDidTapCancelButton(_ accountListView: AccountListView)
 }

@@ -118,7 +118,7 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
         
         view.endEditing(true)
         
-        let configurator = BottomInformationViewConfigurator(
+        let configurator = BottomInformationBundle(
             title: "recover-from-seed-verify-pop-up-title".localized,
             image: img("img-green-checkmark"),
             explanation: "recover-from-seed-verify-pop-up-explanation".localized,
@@ -128,7 +128,7 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
         }
         
         open(
-            .bottomInformation(mode: .default, configurator: configurator),
+            .bottomInformation(mode: .confirmation, configurator: configurator),
             by: .customPresentWithoutNavigationController(
                 presentationStyle: .custom,
                 transitionStyle: nil,
