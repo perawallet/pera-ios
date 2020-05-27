@@ -9,7 +9,6 @@
 import UIKit
 
 class LocalAuthenticationPreferenceViewController: BaseViewController {
-    
     override var hidesCloseBarButtonItem: Bool {
         return true
     }
@@ -55,12 +54,9 @@ extension LocalAuthenticationPreferenceViewController: LocalAuthenticationPrefer
                 guard error == nil else {
                     return
                 }
-                
                 self.localAuthenticator.localAuthenticationStatus = .allowed
-                
                 self.openNextFlow()
             }
-            
             return
         }
         
@@ -82,7 +78,6 @@ extension LocalAuthenticationPreferenceViewController: LocalAuthenticationPrefer
         
         alertController.addAction(settingsAction)
         alertController.addAction(cancelAction)
-        
         present(alertController, animated: true, completion: nil)
     }
     
@@ -90,11 +85,11 @@ extension LocalAuthenticationPreferenceViewController: LocalAuthenticationPrefer
         openNextFlow()
     }
     
-    fileprivate func openNextFlow() {
+    private func openNextFlow() {
         if session?.authenticatedUser == nil {
             open(.passphraseView(address: "temp"), by: .push)
         } else {
-            self.dismiss(animated: false) {
+            dismiss(animated: false) {
                 UIApplication.shared.rootViewController()?.setupTabBarController()
             }
         }

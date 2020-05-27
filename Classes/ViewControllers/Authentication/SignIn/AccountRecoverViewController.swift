@@ -11,6 +11,14 @@ import SVProgressHUD
 
 class AccountRecoverViewController: BaseScrollViewController {
     
+    private lazy var bottomModalPresenter = CardModalPresenter(
+        config: ModalConfiguration(
+            animationMode: .normal(duration: 0.25),
+            dismissMode: .scroll
+        ),
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: 338.0))
+    )
+    
     private lazy var accountRecoverView = AccountRecoverView()
     
     private var keyboardController = KeyboardController()
@@ -110,20 +118,21 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
         
         view.endEditing(true)
         
-        let configurator = AlertViewConfigurator(
+        let configurator = BottomInformationBundle(
             title: "recover-from-seed-verify-pop-up-title".localized,
-            image: img("account-verify-alert-icon"),
+            image: img("img-green-checkmark"),
             explanation: "recover-from-seed-verify-pop-up-explanation".localized,
-            actionTitle: nil) {
+            actionTitle: "title-go-home".localized,
+            actionImage: img("bg-main-button")) {
                 self.launchHome(with: account)
         }
         
         open(
-            .alert(mode: .default, alertConfigurator: configurator),
+            .bottomInformation(mode: .confirmation, configurator: configurator),
             by: .customPresentWithoutNavigationController(
-                presentationStyle: .overCurrentContext,
-                transitionStyle: .crossDissolve,
-                transitioningDelegate: nil
+                presentationStyle: .custom,
+                transitionStyle: nil,
+                transitioningDelegate: bottomModalPresenter
             )
         )
     }

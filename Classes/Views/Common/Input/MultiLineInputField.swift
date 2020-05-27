@@ -10,14 +10,6 @@ import UIKit
 
 class MultiLineInputField: BaseInputView {
     
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let placeholderTopOffset: CGFloat = 7.5
-        let topInset: CGFloat = 10.0
-        let bottomInset: CGFloat = 11.0
-        let horizontalInset: CGFloat = 15.0
-        let minimumHorizontalInset: CGFloat = -3.0
-    }
-    
     private let layout = Layout<LayoutConstants>()
     
     override var nextButtonMode: NextButtonMode {
@@ -31,13 +23,11 @@ class MultiLineInputField: BaseInputView {
         }
     }
     
-    // MARK: Components
-    
     private(set) lazy var inputTextView: UITextView = {
         let textView = UITextView()
-        textView.font = UIFont.font(.overpass, withWeight: .semiBold(size: 13.0))
-        textView.textColor = SharedColors.black
-        textView.tintColor = SharedColors.black
+        textView.font = UIFont.font(withWeight: .medium(size: 14.0))
+        textView.textColor = SharedColors.primaryText
+        textView.tintColor = SharedColors.primaryText
         textView.backgroundColor = .clear
         textView.isSelectable = true
         textView.isEditable = true
@@ -48,12 +38,11 @@ class MultiLineInputField: BaseInputView {
     
     private(set) lazy var placeholderLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 13.0)))
+            .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
             .withLine(.contained)
-            .withTextColor(SharedColors.softGray)
+            .withTextColor(SharedColors.informationText)
+            .withAlignment(.left)
     }()
-    
-    // MARK: Helpers
     
     var isEditing: Bool {
         return inputTextView.isFirstResponder
@@ -74,35 +63,36 @@ class MultiLineInputField: BaseInputView {
         }
     }
     
-    // MARK: Setup
-    
     override func linkInteractors() {
         super.linkInteractors()
-        
         inputTextView.delegate = self
     }
     
-    // MARK: Layout
-    
     override func prepareLayout() {
         super.prepareLayout()
-        
         setupInputTextViewLayout()
         setupPlaceholderLabelLayout()
     }
-    
+}
+
+extension MultiLineInputField {
     private func setupInputTextViewLayout() {
         contentView.addSubview(inputTextView)
         
         inputTextView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
-            make.top.equalToSuperview().inset(layout.current.topInset)
-            make.bottom.equalToSuperview().inset(layout.current.bottomInset)
+            make.top.equalToSuperview().inset(layout.current.verticalInset)
+            make.bottom.equalToSuperview().inset(layout.current.verticalInset)
             
             if displaysRightInputAccessoryButton {
-                make.trailing.equalTo(rightInputAccessoryButton.snp.leading).offset(layout.current.minimumHorizontalInset)
+                make.trailing.equalTo(rightInputAccessoryButton.snp.leading).offset(-layout.current.itemOffset)
             } else {
-                make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+                make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            }
+            
+            if displaysLeftImageView {
+                make.leading.equalTo(leftImageView.snp.trailing).offset(layout.current.itemOffset)
+            } else {
+                make.leading.equalToSuperview().inset(layout.current.horizontalInset)
             }
         }
     }
@@ -112,15 +102,12 @@ class MultiLineInputField: BaseInputView {
         
         placeholderLabel.snp.makeConstraints { make in
             make.top.equalTo(inputTextView.textInputView).offset(layout.current.placeholderTopOffset)
-            make.leading.trailing.equalTo(inputTextView.textInputView).offset(3.0)
+            make.leading.trailing.equalTo(inputTextView.textInputView).offset(layout.current.placeholderInset)
         }
     }
 }
 
-// MARK: UITextViewDelegate
-
 extension MultiLineInputField: UITextViewDelegate {
-    
     func textViewDidBeginEditing(_ textView: UITextView) {
         delegate?.inputViewDidBeginEditing(inputView: self)
     }
@@ -145,5 +132,15 @@ extension MultiLineInputField: UITextViewDelegate {
         }
         
         return delegate.inputViewShouldChangeText(inputView: self, with: text)
+    }
+}
+
+extension MultiLineInputField {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let placeholderTopOffset: CGFloat = 7.5
+        let placeholderInset: CGFloat = 3.0
+        let verticalInset: CGFloat = 16.0
+        let horizontalInset: CGFloat = 16.0
+        let itemOffset: CGFloat = 12.0
     }
 }

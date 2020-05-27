@@ -10,31 +10,45 @@ import UIKit
 
 class PassphraseMnemonicView: BaseView {
     
+    private let layout = Layout<LayoutConstants>()
+    
     private(set) var mode: PassphraseMode = .idle
+    
+    private lazy var backgroundImageView = UIImageView(image: img("bg-passphrase-verify", isTemplate: true))
     
     private(set) lazy var phraseLabel: UILabel = {
         UILabel(frame: .zero)
-            .withFont(UIFont.font(.publicSans, withWeight: .medium(size: 14.0)))
-            .withTextColor(color("primaryText"))
+            .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
+            .withTextColor(SharedColors.primaryText)
             .withAlignment(.center)
     }()
     
     override func configureAppearance() {
-        backgroundColor = UIColor(named: "secondaryBackground")
+        backgroundImageView.tintColor = SharedColors.secondaryBackground
         layer.cornerRadius = 24.0
     }
     
     override func prepareLayout() {
+        setupBackgroundImageViewLayout()
         setupPhraseLabelLayout()
     }
 }
 
 extension PassphraseMnemonicView {
-    private func setupPhraseLabelLayout() {
-        addSubview(phraseLabel)
+    private func setupBackgroundImageViewLayout() {
+        addSubview(backgroundImageView)
         
-        phraseLabel.snp.makeConstraints { maker in
-            maker.edges.equalToSuperview()
+        backgroundImageView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+    }
+    
+    private func setupPhraseLabelLayout() {
+        backgroundImageView.addSubview(phraseLabel)
+        
+        phraseLabel.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview().offset(layout.current.centerOffset)
         }
     }
 }
@@ -59,17 +73,23 @@ extension PassphraseMnemonicView {
     }
     
     fileprivate func updateModeLayout() {
-        phraseLabel.textColor = UIColor(named: "white")
-        
         switch mode {
         case .idle:
-            backgroundColor = UIColor(named: "secondaryBackground")
-            phraseLabel.textColor = UIColor(named: "primaryText")
+            phraseLabel.textColor = SharedColors.primaryText
+            backgroundImageView.tintColor = SharedColors.secondaryBackground
         case .correct:
-            backgroundColor = UIColor(named: "primary")
+            phraseLabel.textColor = SharedColors.white
+            backgroundImageView.tintColor = SharedColors.primary
         case .wrong:
-            backgroundColor = UIColor(named: "red")
+            phraseLabel.textColor = SharedColors.white
+            backgroundImageView.tintColor = SharedColors.red
         }
+    }
+}
+
+extension PassphraseMnemonicView {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let centerOffset: CGFloat = -2.0
     }
 }
 

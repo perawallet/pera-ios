@@ -8,28 +8,17 @@
 
 import UIKit
 
-protocol ContactAssetCellDelegate: class {
-    func contactAssetCellDidTapSendButton(_ contactAssetCell: ContactAssetCell)
-}
-
 class ContactAssetCell: BaseCollectionViewCell<ContactAssetView> {
     
     weak var delegate: ContactAssetCellDelegate?
     
+    override func configureAppearance() {
+        contextView.layer.cornerRadius = 12.0
+    }
+    
     override func setListeners() {
         super.setListeners()
         contextView.delegate = self
-    }
-    
-    override func configureAppearance() {
-        super.configureAppearance()
-        configureBorders()
-    }
-        
-    private func configureBorders() {
-        layer.cornerRadius = 4.0
-        layer.borderColor = Colors.borderColor.cgColor
-        layer.borderWidth = 1.0
     }
 }
 
@@ -39,8 +28,6 @@ extension ContactAssetCell: ContactAssetViewDelegate {
     }
 }
 
-extension ContactAssetCell {
-    private enum Colors {
-        static let borderColor = rgb(0.91, 0.91, 0.92)
-    }
+protocol ContactAssetCellDelegate: class {
+    func contactAssetCellDidTapSendButton(_ contactAssetCell: ContactAssetCell)
 }

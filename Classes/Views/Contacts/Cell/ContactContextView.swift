@@ -8,35 +8,13 @@
 
 import UIKit
 
-protocol ContactContextViewDelegate: class {
-    func contactContextViewDidTapQRDisplayButton(_ contactContextView: ContactContextView)
-}
-
 class ContactContextView: BaseView {
-    
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let separatorHeight: CGFloat = 1.0
-        let imageInset: CGFloat = 30.0
-        let separatorInset: CGFloat = 25.0
-        let horizontalInset: CGFloat = 15.0
-        let imageSize: CGFloat = 40.0
-        let labelCenterOffset: CGFloat = 5.0
-        let labelLeftInset: CGFloat = 8.0
-        let verticalInset: CGFloat = 23.0
-        let buttonSize: CGFloat = 38.0
-    }
     
     private let layout = Layout<LayoutConstants>()
     
-    private enum Colors {
-        static let separatorColor = rgb(0.91, 0.91, 0.92)
-    }
-    
-    // MARK: Components
-    
     private(set) lazy var userImageView: UIImageView = {
         let imageView = UIImageView(image: img("icon-user-placeholder"))
-        imageView.backgroundColor = SharedColors.warmWhite
+        imageView.backgroundColor = SharedColors.primaryBackground
         imageView.layer.cornerRadius = layout.current.imageSize / 2
         imageView.clipsToBounds = true
         imageView.contentMode = .center
@@ -45,28 +23,25 @@ class ContactContextView: BaseView {
     
     private(set) lazy var nameLabel: UILabel = {
         UILabel()
-            .withTextColor(SharedColors.black)
+            .withTextColor(SharedColors.primaryText)
             .withLine(.single)
             .withAlignment(.left)
-            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 13.0)))
+            .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
     }()
     
     private(set) lazy var addressLabel: UILabel = {
         UILabel()
-            .withTextColor(SharedColors.softGray)
+            .withTextColor(SharedColors.gray500)
             .withAlignment(.left)
             .withLine(.single)
-            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 12.0)))
+            .withFont(UIFont.font(withWeight: .regular(size: 12.0)))
     }()
     
     private(set) lazy var qrDisplayButton: UIButton = {
-        UIButton(type: .custom).withImage(img("icon-qr-view"))
-    }()
-    
-    private(set) lazy var separatorView: UIView = {
-        let view = UIView()
-        view.backgroundColor = Colors.separatorColor
-        return view
+        let button = UIButton(type: .custom).withImage(img("icon-qr", isTemplate: true)).withBackgroundColor(SharedColors.primaryBackground)
+        button.layer.cornerRadius = 20.0
+        button.tintColor = SharedColors.gray600
+        return button
     }()
     
     weak var delegate: ContactContextViewDelegate?
@@ -76,7 +51,7 @@ class ContactContextView: BaseView {
     }
     
     override func configureAppearance() {
-        backgroundColor = .white
+        backgroundColor = SharedColors.secondaryBackground
     }
     
     override func prepareLayout() {
@@ -84,16 +59,24 @@ class ContactContextView: BaseView {
         setupNameLabelLayout()
         setupAddressLabelLayout()
         setupQRDisplayButtonLayout()
-        setupSeparatorViewLayout()
     }
-    
+}
+
+extension ContactContextView {
+    @objc
+    private func notifyDelegateToQRDisplayButtonTapped() {
+        delegate?.contactContextViewDidTapQRDisplayButton(self)
+    }
+}
+
+extension ContactContextView {
     private func setupUserImageViewLayout() {
         addSubview(userImageView)
         
         userImageView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(layout.current.imageInset)
+            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
             make.width.height.equalTo(layout.current.imageSize)
-            make.top.bottom.equalToSuperview().inset(layout.current.verticalInset)
+            make.centerY.equalToSuperview()
         }
     }
     
@@ -101,7 +84,7 @@ class ContactContextView: BaseView {
         addSubview(nameLabel)
         
         nameLabel.snp.makeConstraints { make in
-            make.bottom.equalTo(userImageView.snp.centerY).inset(-layout.current.labelCenterOffset)
+            make.bottom.equalTo(userImageView.snp.centerY).inset(-layout.current.minimumOffset)
             make.leading.equalTo(userImageView.snp.trailing).offset(layout.current.labelLeftInset)
         }
     }
@@ -110,7 +93,7 @@ class ContactContextView: BaseView {
         addSubview(addressLabel)
         
         addressLabel.snp.makeConstraints { make in
-            make.top.equalTo(userImageView.snp.centerY).offset(layout.current.labelCenterOffset)
+            make.top.equalTo(userImageView.snp.centerY).offset(layout.current.minimumOffset)
             make.leading.equalTo(nameLabel)
         }
     }
@@ -121,23 +104,23 @@ class ContactContextView: BaseView {
         qrDisplayButton.snp.makeConstraints { make in
             make.width.height.equalTo(layout.current.buttonSize)
             make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.centerY.equalToSuperview()
-            make.leading.equalTo(addressLabel.snp.trailing).offset(layout.current.labelCenterOffset)
+            make.centerY.equalTo(userImageView)
+            make.leading.greaterThanOrEqualTo(addressLabel.snp.trailing).offset(layout.current.minimumOffset)
         }
     }
-    
-    private func setupSeparatorViewLayout() {
-        addSubview(separatorView)
-        
-        separatorView.snp.makeConstraints { make in
-            make.bottom.equalToSuperview()
-            make.height.equalTo(layout.current.separatorHeight)
-            make.leading.trailing.equalToSuperview().inset(layout.current.separatorInset)
-        }
+}
+
+extension ContactContextView {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let horizontalInset: CGFloat = 20.0
+        let verticalInset: CGFloat = 10.0
+        let imageSize: CGFloat = 44.0
+        let buttonSize: CGFloat = 40.0
+        let labelLeftInset: CGFloat = 12.0
+        let minimumOffset: CGFloat = 4.0
     }
-    
-    @objc
-    private func notifyDelegateToQRDisplayButtonTapped() {
-        delegate?.contactContextViewDidTapQRDisplayButton(self)
-    }
+}
+
+protocol ContactContextViewDelegate: class {
+    func contactContextViewDidTapQRDisplayButton(_ contactContextView: ContactContextView)
 }
