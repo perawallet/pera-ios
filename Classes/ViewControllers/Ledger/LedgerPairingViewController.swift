@@ -39,7 +39,7 @@ class LedgerPairingViewController: BaseScrollViewController {
 
     override func configureAppearance() {
         super.configureAppearance()
-        title = "ledger-pairing-name-title".localized
+        title = "account-details-title".localized
         ledgerPairingView.setAddress(address)
     }
     
@@ -91,7 +91,7 @@ extension LedgerPairingViewController: LedgerPairingViewDelegate {
 
 extension LedgerPairingViewController {
     private func presentAccountSetupAlert(for account: AccountInformation) {
-        let configurator = AlertViewConfigurator(
+        let configurator = BottomInformationBundle(
             title: "recover-from-seed-verify-pop-up-title".localized,
             image: img("account-verify-alert-icon"),
             explanation: "recover-from-seed-verify-pop-up-explanation".localized,
@@ -100,7 +100,7 @@ extension LedgerPairingViewController {
         }
         
         open(
-            .alert(mode: .default, alertConfigurator: configurator),
+            .bottomInformation(mode: .confirmation, configurator: configurator),
             by: .customPresentWithoutNavigationController(
                 presentationStyle: .overCurrentContext,
                 transitionStyle: .crossDissolve,

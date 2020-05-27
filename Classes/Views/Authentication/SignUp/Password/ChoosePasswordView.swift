@@ -8,74 +8,60 @@
 
 import UIKit
 
-protocol ChoosePasswordViewDelegate: class {
-    
-    func choosePasswordView(_ choosePasswordView: ChoosePasswordView, didSelect value: NumpadValue)
-}
-
 class ChoosePasswordView: BaseView {
-
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let titleLabelTopInset: CGFloat = 69.0 * verticalScale
-        let subtitleTopInset: CGFloat = 14.0 * verticalScale
-        let subtitleHorizontalInset: CGFloat = 60.0
-        let inputViewTopInset: CGFloat = 45.0 * verticalScale
-        let numpadBottomInset: CGFloat = 32.0
-        let numpadTopInset: CGFloat = 10.0 * verticalScale
-        let passwordInputViewInset: CGFloat = -10.0
-        let logoutButtonTopInset: CGFloat = 40.0 * verticalScale
-        let logoutButtonHeight: CGFloat = 50.0
-        let logoutButtonWidth: CGFloat = 115.0 * horizontalScale
-    }
     
     private let layout = Layout<LayoutConstants>()
     
-    // MARK: Components
+    weak var delegate: ChoosePasswordViewDelegate?
+    
+    private let mode: ChoosePasswordViewController.Mode
+    
+    private lazy var unlockImageView = UIImageView(image: img("icon-lock"))
     
     private(set) lazy var titleLabel: UILabel = {
         UILabel()
-            .withTextColor(SharedColors.black)
+            .withTextColor(SharedColors.primaryText)
             .withAlignment(.center)
-            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 20.0)))
+            .withFont(UIFont.font(withWeight: .regular(size: 16.0 * verticalScale)))
     }()
     
-    private(set) lazy var subtitleLabel: UILabel = {
-        UILabel()
-            .withTextColor(SharedColors.purple)
-            .withLine(.contained)
-            .withAlignment(.center)
-            .withFont(UIFont.font(.avenir, withWeight: .medium(size: 16.0)))
-    }()
+    private(set) lazy var passwordInputView = PasswordInputView()
     
-    private(set) lazy var passwordInputView: PasswordInputView = {
-        let view = PasswordInputView()
-        return view
-    }()
+    private(set) lazy var numpadView = NumpadView()
     
-    private(set) lazy var numpadView: NumpadView = {
-        let view = NumpadView()
-        return view
-    }()
-    
-    weak var delegate: ChoosePasswordViewDelegate?
-    
-    // MARK: Setup
+    init(mode: ChoosePasswordViewController.Mode) {
+        self.mode = mode
+        super.init(frame: .zero)
+    }
     
     override func linkInteractors() {
         numpadView.delegate = self
     }
     
     override func configureAppearance() {
-        backgroundColor = .white
+        backgroundColor = SharedColors.secondaryBackground
     }
     
-    // MARK: Layout
-    
     override func prepareLayout() {
+        setupUnlockImageViewLayout()
         setupTitleLabelLayout()
-        setupSubtitleLabelLayout()
         setupPasswordViewLayout()
         setupNumpadViewLayout()
+    }
+}
+
+extension ChoosePasswordView {
+    private func setupUnlockImageViewLayout() {
+        if mode != .login {
+            return
+        }
+        
+        addSubview(unlockImageView)
+        
+        unlockImageView.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalToSuperview().inset(layout.current.imageViewTopInset)
+        }
     }
     
     private func setupTitleLabelLayout() {
@@ -83,17 +69,11 @@ class ChoosePasswordView: BaseView {
         
         titleLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalToSuperview().inset(layout.current.titleLabelTopInset)
-        }
-    }
-    
-    private func setupSubtitleLabelLayout() {
-        addSubview(subtitleLabel)
-        
-        subtitleLabel.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.leading.trailing.equalToSuperview().inset(layout.current.subtitleHorizontalInset)
-            make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.subtitleTopInset)
+            if mode == .login {
+                make.top.equalTo(unlockImageView.snp.bottom).offset(layout.current.titleLabelImageOffset)
+            } else {
+                make.top.equalToSuperview().inset(layout.current.titleLabelTopInset)
+            }
         }
     }
     
@@ -101,7 +81,7 @@ class ChoosePasswordView: BaseView {
         addSubview(passwordInputView)
         
         passwordInputView.snp.makeConstraints { make in
-            make.top.equalTo(subtitleLabel.snp.bottom).offset(layout.current.inputViewTopInset)
+            make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.inputViewTopInset)
             make.centerX.equalToSuperview()
         }
     }
@@ -118,8 +98,23 @@ class ChoosePasswordView: BaseView {
 }
 
 extension ChoosePasswordView: NumpadViewDelegate {
-    
-    func numpadView(_ numpadView: NumpadView, didSelect value: NumpadValue) {
+    func numpadView(_ numpadView: NumpadView, didSelect value: NumpadKey) {
         delegate?.choosePasswordView(self, didSelect: value)
     }
+}
+
+extension ChoosePasswordView {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let imageViewHorizontalInset: CGFloat = 20.0
+        let imageViewTopInset: CGFloat = 70.0 * verticalScale
+        let titleLabelImageOffset: CGFloat = 40.0 * verticalScale
+        let titleLabelTopInset: CGFloat = 100.0 * verticalScale
+        let inputViewTopInset: CGFloat = 20.0 * verticalScale
+        let numpadBottomInset: CGFloat = 32.0 * verticalScale
+        let passwordInputViewInset: CGFloat = -10.0
+    }
+}
+
+protocol ChoosePasswordViewDelegate: class {
+    func choosePasswordView(_ choosePasswordView: ChoosePasswordView, didSelect value: NumpadKey)
 }

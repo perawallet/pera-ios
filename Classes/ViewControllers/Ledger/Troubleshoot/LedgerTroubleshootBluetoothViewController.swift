@@ -10,60 +10,54 @@ import UIKit
 import SafariServices
 
 class LedgerTroubleshootBluetoothViewController: BaseScrollViewController {
-    // MARK: Components
     
     private lazy var ledgerTroubleshootBluetoothView = LedgerTroubleshootBluetoothView()
     
     private lazy var separatorView: UIView = {
         let view = UIView()
-        view.backgroundColor = rgb(0.91, 0.91, 0.92)
+        view.backgroundColor = SharedColors.gray100
         return view
     }()
-    
-    // MARK: View Lifecycle
-    
-    override func configureAppearance() {
-        super.configureAppearance()
-        
-        navigationItem.titleView = UIImageView(image: img("icon-shutdown"))
-        view.backgroundColor = .white
-        contentView.backgroundColor = .white
-        scrollView.backgroundColor = .white
-        navigationController?.navigationBar.barTintColor = .white
-    }
-    
-    override func prepareLayout() {
-        super.prepareLayout()
-        
-        setupSeparatorView()
-        setupLedgerTroubleshootBluetoothView()
-    }
     
     override func configureNavigationBarAppearance() {
         super.configureNavigationBarAppearance()
         
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [weak self] in
-            guard let strongSelf = self else {
-                return
-            }
-            strongSelf.closeScreen(by: .dismiss, animated: true)
+        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [unowned self] in
+            self.closeScreen(by: .dismiss, animated: true)
         }
         
         leftBarButtonItems = [closeBarButtonItem]
     }
     
+    override func configureAppearance() {
+        super.configureAppearance()
+        title = "title-step-1".localized
+        view.backgroundColor = SharedColors.secondaryBackground
+        contentView.backgroundColor = SharedColors.secondaryBackground
+        scrollView.backgroundColor = SharedColors.secondaryBackground
+        navigationController?.navigationBar.barTintColor = SharedColors.secondaryBackground
+    }
+    
     override func linkInteractors() {
         super.linkInteractors()
-        
         ledgerTroubleshootBluetoothView.delegate = self
     }
     
+    override func prepareLayout() {
+        super.prepareLayout()
+        setupSeparatorView()
+        setupLedgerTroubleshootBluetoothView()
+    }
+}
+
+extension LedgerTroubleshootBluetoothViewController {
     private func setupSeparatorView() {
         view.addSubview(separatorView)
+        
         separatorView.snp.makeConstraints { maker in
             maker.top.equalTo(scrollView.snp.top)
             maker.leading.trailing.equalToSuperview()
-            maker.height.equalTo(1)
+            maker.height.equalTo(1.0)
         }
     }
     
@@ -76,7 +70,6 @@ class LedgerTroubleshootBluetoothViewController: BaseScrollViewController {
     }
 }
 
-// MARK: LedgerTroubleshootBluetoothViewDelegate
 extension LedgerTroubleshootBluetoothViewController: LedgerTroubleshootBluetoothViewDelegate {
     func ledgerTroubleshootBluetoothView(_ view: LedgerTroubleshootBluetoothView, didTapUrl url: URL) {
         let safariViewController = SFSafariViewController(url: url)

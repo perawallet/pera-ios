@@ -29,7 +29,7 @@ extension MainButton {
         setTitleColor(.white, for: .normal)
         setTitle(title, for: .normal)
         setBackgroundImage(img("bg-main-button"), for: .normal)
-        titleLabel?.font = UIFont.font(.publicSans, withWeight: .semiBold(size: 16.0))
+        titleLabel?.font = UIFont.font(withWeight: .semiBold(size: 16.0))
     }
 }
 

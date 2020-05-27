@@ -295,7 +295,7 @@ class AddNodeViewController: BaseScrollViewController {
             image = img("icon-green-server")
         }
         
-        let configurator = AlertViewConfigurator(
+        let configurator = BottomInformationBundle(
             title: alertTitle,
             image: image,
             explanation: message ?? "",
@@ -306,18 +306,14 @@ class AddNodeViewController: BaseScrollViewController {
                 }
         }
         
-        let viewController = open(
-            .alert(mode: .default, alertConfigurator: configurator),
+        open(
+            .bottomInformation(mode: .confirmation, configurator: configurator),
             by: .customPresentWithoutNavigationController(
                 presentationStyle: .overCurrentContext,
                 transitionStyle: .crossDissolve,
                 transitioningDelegate: nil
             )
-        ) as? AlertViewController
-        
-        if let alertView = viewController?.alertView as? DefaultAlertView {
-            alertView.doneButton.setTitleColor(SharedColors.darkGray, for: .normal)
-        }
+        )
     }
 }
 

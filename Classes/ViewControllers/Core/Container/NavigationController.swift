@@ -41,15 +41,15 @@ extension NavigationController {
     
     private func configureNavigationBarAppearance() {
         navigationBar.isTranslucent = false
-        navigationBar.barTintColor = SharedColors.warmWhite
-        navigationBar.tintColor = SharedColors.warmWhite
+        navigationBar.barTintColor = SharedColors.primaryBackground
+        navigationBar.tintColor = SharedColors.primaryBackground
         navigationBar.shadowImage = UIImage()
         navigationBar.layoutMargins = .zero
         navigationBar.setBackgroundImage(UIImage(), for: .default)
     }
     
     private func configureViewAppearance() {
-        view.backgroundColor = SharedColors.warmWhite
+        view.backgroundColor = SharedColors.primaryBackground
     }
 }
 

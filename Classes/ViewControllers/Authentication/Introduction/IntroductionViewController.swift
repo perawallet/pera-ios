@@ -27,7 +27,7 @@ class IntroductionViewController: BaseViewController {
     
     override func configureAppearance() {
         super.configureAppearance()
-        view.backgroundColor = color("secondaryBackground")
+        view.backgroundColor = SharedColors.secondaryBackground
     }
     
     override func prepareLayout() {
