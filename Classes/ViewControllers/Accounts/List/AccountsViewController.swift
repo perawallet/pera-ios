@@ -194,7 +194,8 @@ extension AccountsViewController: AccountsDataSourceDelegate {
     }
     
     func accountsDataSource(_ accountsDataSource: AccountsDataSource, didTapQRButtonFor account: Account) {
-        open(.qrGenerator(title: "qr-creation-sharing-title".localized, address: account.address, mode: .address), by: .present)
+        let draft = QRCreationDraft(address: account.address, mode: .address)
+        open(.qrGenerator(title: "qr-creation-sharing-title".localized, draft: draft), by: .present)
     }
 }
 
@@ -299,7 +300,7 @@ extension AccountsViewController {
 }
 
 extension AccountsViewController: QRScannerViewControllerDelegate {
-    func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, then handler: EmptyHandler?) {
+    func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, completionHandler: EmptyHandler?) {
         switch qrText.mode {
         case .address:
             open(.addContact(mode: .new(address: qrText.address, name: qrText.label)), by: .push)
@@ -342,7 +343,7 @@ extension AccountsViewController: QRScannerViewControllerDelegate {
                     actionTitle: "title-ok".localized
                 )
                 
-                tabBarController?.open(
+                open(
                     .assetSupport(assetAlertDraft: assetAlertDraft),
                     by: .customPresentWithoutNavigationController(
                         presentationStyle: .custom,
@@ -373,9 +374,9 @@ extension AccountsViewController: QRScannerViewControllerDelegate {
         }
     }
     
-    func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError, then handler: EmptyHandler?) {
+    func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError, completionHandler: EmptyHandler?) {
         displaySimpleAlertWith(title: "title-error".localized, message: "qr-scan-should-scan-valid-qr".localized) { _ in
-            if let handler = handler {
+            if let handler = completionHandler {
                 handler()
             }
         }

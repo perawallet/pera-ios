@@ -84,7 +84,7 @@ class QRScannerOverlayView: BaseView {
 extension QRScannerOverlayView {
     @objc
     private func notifyDelegateToCloseScreen() {
-        delegate?.qrScannerOverlayViewDidTapCancelButton(self)
+        delegate?.qrScannerOverlayViewDidCancel(self)
     }
 }
 
@@ -142,5 +142,5 @@ extension QRScannerOverlayView {
 }
 
 protocol QRScannerOverlayViewDelegate: class {
-    func qrScannerOverlayViewDidTapCancelButton(_ qrScannerOverlayView: QRScannerOverlayView)
+    func qrScannerOverlayViewDidCancel(_ qrScannerOverlayView: QRScannerOverlayView)
 }

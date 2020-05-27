@@ -199,7 +199,7 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
                 let qrStringData = qrString.data(using: .utf8) else {
                     captureSession = nil
                     closeScreen(by: .pop)
-                    delegate?.qrScannerViewController(self, didFail: .invalidData, then: nil)
+                    delegate?.qrScannerViewController(self, didFail: .invalidData, completionHandler: nil)
                     return
             }
             
@@ -208,23 +208,23 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
             if let qrText = try? JSONDecoder().decode(QRText.self, from: qrStringData) {
                 captureSession = nil
                 closeScreen(by: .pop)
-                delegate?.qrScannerViewController(self, didRead: qrText, then: nil)
+                delegate?.qrScannerViewController(self, didRead: qrText, completionHandler: nil)
             } else if let url = URL(string: qrString),
                 qrString.hasPrefix("algorand://") {
                 guard let qrText = url.buildQRText() else {
-                    delegate?.qrScannerViewController(self, didFail: .jsonSerialization, then: cameraResetHandler)
+                    delegate?.qrScannerViewController(self, didFail: .jsonSerialization, completionHandler: cameraResetHandler)
                     return
                 }
                 captureSession = nil
                 closeScreen(by: .pop)
-                delegate?.qrScannerViewController(self, didRead: qrText, then: nil)
+                delegate?.qrScannerViewController(self, didRead: qrText, completionHandler: nil)
             } else if AlgorandSDK().isValidAddress(qrString) {
                 let qrText = QRText(mode: .address, address: qrString)
                 captureSession = nil
                 closeScreen(by: .pop)
-                delegate?.qrScannerViewController(self, didRead: qrText, then: nil)
+                delegate?.qrScannerViewController(self, didRead: qrText, completionHandler: nil)
             } else {
-                delegate?.qrScannerViewController(self, didFail: .jsonSerialization, then: cameraResetHandler)
+                delegate?.qrScannerViewController(self, didFail: .jsonSerialization, completionHandler: cameraResetHandler)
                 return
             }
         }
@@ -232,7 +232,7 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
 }
 
 extension QRScannerViewController: QRScannerOverlayViewDelegate {
-    func qrScannerOverlayViewDidTapCancelButton(_ qrScannerOverlayView: QRScannerOverlayView) {
+    func qrScannerOverlayViewDidCancel(_ qrScannerOverlayView: QRScannerOverlayView) {
         closeScreen(by: .pop)
     }
 }
@@ -245,8 +245,8 @@ extension QRScannerViewController {
 }
 
 protocol QRScannerViewControllerDelegate: class {
-    func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, then handler: EmptyHandler?)
-    func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError, then handler: EmptyHandler?)
+    func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, completionHandler: EmptyHandler?)
+    func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError, completionHandler: EmptyHandler?)
 }
 
 enum QRScannerError: Error {
