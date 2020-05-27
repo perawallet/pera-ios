@@ -15,13 +15,10 @@ class LedgerPairingView: BaseView {
     weak var delegate: LedgerPairingViewDelegate?
 
     private(set) lazy var accountNameInputView: SingleLineInputField = {
-        let accountNameInputView = SingleLineInputField()
+        let accountNameInputView = SingleLineInputField(displaysLeftImageView: true)
         accountNameInputView.explanationLabel.text = "account-name-setup-explanation".localized
-        accountNameInputView.inputTextField.attributedPlaceholder = NSAttributedString(
-            string: "account-name-setup-placeholder".localized,
-            attributes: [NSAttributedString.Key.foregroundColor: SharedColors.softGray,
-                         NSAttributedString.Key.font: UIFont.font(.overpass, withWeight: .semiBold(size: 13.0))]
-        )
+        accountNameInputView.placeholderText = "account-name-setup-placeholder".localized
+        accountNameInputView.leftImageView.image = img("img-ledger-small")
         accountNameInputView.nextButtonMode = .submit
         accountNameInputView.inputTextField.autocorrectionType = .no
         return accountNameInputView
@@ -65,7 +62,7 @@ extension LedgerPairingView {
         
         accountNameInputView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.top.equalToSuperview().inset(layout.current.fieldTopInset)
+            make.top.equalToSuperview().inset(layout.current.topInset)
         }
     }
 
@@ -84,9 +81,9 @@ extension LedgerPairingView {
         
         createAccountButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.greaterThanOrEqualTo(addressInputView.snp.bottom).offset(layout.current.fieldTopInset)
-            make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
-            make.bottom.equalToSuperview().inset(layout.current.bottomInset)
+            make.top.equalTo(addressInputView.snp.bottom).offset(layout.current.buttonTopInset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.bottom.lessThanOrEqualToSuperview().inset(layout.current.bottomInset)
         }
     }
 }
@@ -107,11 +104,12 @@ extension LedgerPairingView: InputViewDelegate {
 
 extension LedgerPairingView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let fieldTopInset: CGFloat = 30.0
-        let nextButtonTopInset: CGFloat = 52.0
-        let multiFieldHeight: CGFloat = 95.0
-        let bottomInset: CGFloat = 60.0
-        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
+        let topInset: CGFloat = 36.0
+        let fieldTopInset: CGFloat = 20.0
+        let buttonTopInset: CGFloat = 24.0
+        let multiFieldHeight: CGFloat = 96.0
+        let bottomInset: CGFloat = 30.0
+        let horizontalInset: CGFloat = 20.0
     }
 }
 

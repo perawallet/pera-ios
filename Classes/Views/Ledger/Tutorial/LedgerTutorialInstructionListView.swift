@@ -9,39 +9,36 @@
 import UIKit
 
 class LedgerTutorialInstructionListView: BaseView {
+    private let layout = Layout<LayoutConstants>()
     
     private lazy var openLedgerInstructionView: LedgerTutorialInstructionView = {
         let view = LedgerTutorialInstructionView()
-        view.setIcon(img("icon-shutdown"))
+        view.setNumber(1)
         view.setTitle("ledger-tutorial-turned-on".localized)
-        setShadow(on: view)
         view.isUserInteractionEnabled = true
         return view
     }()
     
     private lazy var installAppInstructionView: LedgerTutorialInstructionView = {
         let view = LedgerTutorialInstructionView()
-        view.setIcon(img("icon-ledger-install"))
+        view.setNumber(2)
         view.setTitle("ledger-tutorial-install-app".localized)
-        setShadow(on: view)
         view.isUserInteractionEnabled = true
         return view
     }()
     
     private lazy var openAppInstructionView: LedgerTutorialInstructionView = {
         let view = LedgerTutorialInstructionView()
-        view.setIcon(img("icon-algorand-ledger-tutorial"))
+        view.setNumber(3)
         view.setTitle("ledger-tutorial-open-app".localized)
-        setShadow(on: view)
         view.isUserInteractionEnabled = true
         return view
     }()
     
     private lazy var turnOnBluetoohInstructionView: LedgerTutorialInstructionView = {
         let view = LedgerTutorialInstructionView()
-        view.setIcon(img("icon-bluetooth-purple"))
+        view.setNumber(4)
         view.setTitle("ledger-tutorial-bluetooth".localized)
-        setShadow(on: view)
         view.isUserInteractionEnabled = true
         return view
     }()
@@ -55,26 +52,18 @@ class LedgerTutorialInstructionListView: BaseView {
         setupTurnOnBluetoohInstructionViewLayout()
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        layer.shadowPath = UIBezierPath(rect: bounds).cgPath
-    }
-    
     override func linkInteractors() {
         super.linkInteractors()
-        
-        let ledgerBluetoothTapGestureRecognizer = UITapGestureRecognizer(target: self,
-                                                                         action: #selector(didTapLedgerBluetoothConnection))
-        let installAppTapGestureRecognizer = UITapGestureRecognizer(target: self,
-                                                                    action: #selector(didTapInstallApp))
-        let openAppTapGestureRecognizer = UITapGestureRecognizer(target: self,
-                                                                 action: #selector(didTapOpenApp))
-        let bluetoothTapGestureRecognizer = UITapGestureRecognizer(target: self,
-                                                                   action: #selector(didTapBluetoothConnection))
-        
+        let ledgerBluetoothTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapLedgerBluetoothConnection))
         openLedgerInstructionView.addGestureRecognizer(ledgerBluetoothTapGestureRecognizer)
+        
+        let installAppTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapInstallApp))
         installAppInstructionView.addGestureRecognizer(installAppTapGestureRecognizer)
+        
+        let openAppTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapOpenApp))
         openAppInstructionView.addGestureRecognizer(openAppTapGestureRecognizer)
+        
+        let bluetoothTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapBluetoothConnection))
         turnOnBluetoohInstructionView.addGestureRecognizer(bluetoothTapGestureRecognizer)
     }
 }
@@ -83,23 +72,19 @@ extension LedgerTutorialInstructionListView {
     private func setupOpenLedgerInstructionViewLayout() {
         addSubview(openLedgerInstructionView)
         
-        openLedgerInstructionView.layer.cornerRadius = 10
-        
         openLedgerInstructionView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.top.equalToSuperview()
-            make.height.equalTo(60)
+            make.height.equalTo(layout.current.instructionHeight)
         }
     }
 
     private func setupInstallAppInstructionViewLayout() {
         addSubview(installAppInstructionView)
         
-        installAppInstructionView.layer.cornerRadius = 10
-        
         installAppInstructionView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.top.equalTo(openLedgerInstructionView.snp.bottom).offset(6)
+            make.top.equalTo(openLedgerInstructionView.snp.bottom).offset(layout.current.instructionOffset)
             make.height.equalTo(openLedgerInstructionView)
         }
     }
@@ -107,11 +92,9 @@ extension LedgerTutorialInstructionListView {
     private func setupOpenAppInstructionViewLayout() {
         addSubview(openAppInstructionView)
         
-        openAppInstructionView.layer.cornerRadius = 10
-        
         openAppInstructionView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.top.equalTo(installAppInstructionView.snp.bottom).offset(6)
+            make.top.equalTo(installAppInstructionView.snp.bottom).offset(layout.current.instructionOffset)
             make.height.equalTo(openLedgerInstructionView)
         }
     }
@@ -119,11 +102,9 @@ extension LedgerTutorialInstructionListView {
     private func setupTurnOnBluetoohInstructionViewLayout() {
         addSubview(turnOnBluetoohInstructionView)
         
-        turnOnBluetoohInstructionView.layer.cornerRadius = 10
-        
         turnOnBluetoohInstructionView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.top.equalTo(openAppInstructionView.snp.bottom).offset(6)
+            make.top.equalTo(openAppInstructionView.snp.bottom).offset(layout.current.instructionOffset)
             make.height.equalTo(openLedgerInstructionView)
             make.bottom.equalToSuperview()
         }
@@ -153,17 +134,9 @@ extension LedgerTutorialInstructionListView {
 }
 
 extension LedgerTutorialInstructionListView {
-    private func setShadow(on view: UIView) {
-        view.layer.shadowColor = Colors.shadowColor.cgColor
-        view.layer.shadowOpacity = 1.0
-        view.layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
-        view.layer.shadowRadius = 4.0
-    }
-}
-
-extension LedgerTutorialInstructionListView {
-    private enum Colors {
-        static let shadowColor = rgb(0.91, 0.91, 0.95)
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let instructionHeight: CGFloat = 64.0
+        let instructionOffset: CGFloat = 12.0
     }
 }
 

@@ -30,7 +30,7 @@ class BaseView: UIView {
     }
     
     func configureAppearance() {
-        backgroundColor = color("primaryBackground")
+        backgroundColor = SharedColors.primaryBackground
     }
     
     func prepareLayout() {

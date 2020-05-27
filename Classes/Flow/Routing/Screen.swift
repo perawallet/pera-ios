@@ -27,7 +27,6 @@ indirect enum Screen {
     case contactSelection
     case addContact(mode: AddContactViewController.Mode)
     case contactDetail(contact: Contact)
-    case contactQRDisplay(contact: Contact)
     case sendAlgosTransactionPreview(account: Account?, receiver: AssetReceiverState)
     case sendAssetTransactionPreview(account: Account?, receiver: AssetReceiverState, assetDetail: AssetDetail, isMaxTransaction: Bool)
     case sendAlgosTransaction(
@@ -44,7 +43,6 @@ indirect enum Screen {
     case requestAssetTransactionPreview(account: Account, assetDetail: AssetDetail)
     case requestAlgosTransaction(algosTransactionRequestDraft: AlgosTransactionRequestDraft)
     case requestAssetTransaction(assetTransactionRequestDraft: AssetTransactionRequestDraft)
-    case historyResults(draft: HistoryDraft)
     case nodeSettings(mode: NodeSettingsViewController.Mode)
     case addNode
     case editNode(node: Node)
@@ -53,9 +51,8 @@ indirect enum Screen {
     case addAsset(account: Account)
     case removeAsset(account: Account)
     case assetActionConfirmation(assetAlertDraft: AssetAlertDraft)
-    case assetSupportAlert(assetAlertDraft: AssetAlertDraft)
-    case assetCancellableSupportAlert(assetAlertDraft: AssetAlertDraft)
-    case alert(mode: AlertViewController.Mode, alertConfigurator: AlertViewConfigurator)
+    case assetSupport(assetAlertDraft: AssetAlertDraft)
+    case bottomInformation(mode: BottomInformationViewController.Mode, configurator: BottomInformationBundle)
     case rewardDetail(account: Account)
     case assetList(account: Account)
     case verifiedAssetInformation
@@ -69,6 +66,7 @@ indirect enum Screen {
     case ledgerTroubleshootInstallApp
     case ledgerTroubleshootOpenApp
     case termsAndServices
+    case selectAsset
 }
 
 extension Screen {

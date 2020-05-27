@@ -86,11 +86,11 @@ class BaseViewController: UIViewController {
     }
     
     func configureAppearance() {
-        view.backgroundColor = color("primaryBackground")
+        view.backgroundColor = SharedColors.primaryBackground
         
         navigationController?.navigationBar.titleTextAttributes = [
-            NSAttributedString.Key.font: UIFont.font(.overpass, withWeight: .semiBold(size: 16.0)),
-            NSAttributedString.Key.foregroundColor: UIColor.black
+            NSAttributedString.Key.font: UIFont.font(withWeight: .semiBold(size: 16.0)),
+            NSAttributedString.Key.foregroundColor: SharedColors.primaryText
         ]
     }
     
@@ -143,6 +143,18 @@ class BaseViewController: UIViewController {
     
     func didTapDismissBarButton() -> Bool {
         return true
+    }
+}
+
+extension BaseViewController {
+    func setPrimaryBackgroundColor() {
+        navigationController?.navigationBar.barTintColor = SharedColors.primaryBackground
+        navigationController?.navigationBar.tintColor = SharedColors.primaryBackground
+    }
+    
+    func setSecondaryBackgroundColor() {
+        navigationController?.navigationBar.barTintColor = SharedColors.secondaryBackground
+        navigationController?.navigationBar.tintColor = SharedColors.secondaryBackground
     }
 }
 

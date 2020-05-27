@@ -13,6 +13,14 @@ class AssetDetailViewController: BaseViewController {
     
     let layout = Layout<LayoutConstants>()
     
+    private lazy var rewardsModalPresenter = CardModalPresenter(
+        config: ModalConfiguration(
+            animationMode: .normal(duration: 0.25),
+            dismissMode: .scroll
+        ),
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: 472.0))
+    )
+    
     private var pollingOperation: PollingOperation?
     private var account: Account
     private var assetDetail: AssetDetail?
@@ -32,10 +40,9 @@ class AssetDetailViewController: BaseViewController {
     private(set) lazy var assetDetailView = AssetDetailView()
     
     private lazy var emptyStateView = EmptyStateView(
+        image: img("icon-transactions-empty"),
         title: "accounts-tranaction-empty-text".localized,
-        topImage: img("icon-transaction-empty-blue"),
-        bottomImage: img("icon-transaction-empty-orange"),
-        alignment: .bottom
+        subtitle: "accounts-tranaction-empty-detail".localized
     )
     
     private lazy var refreshControl: UIRefreshControl = {
@@ -78,10 +85,8 @@ class AssetDetailViewController: BaseViewController {
     
     override func configureAppearance() {
         super.configureAppearance()
-        navigationItem.title = account.name
         assetDetailView.transactionHistoryCollectionView.refreshControl = refreshControl
         viewModel.configure(assetDetailView.headerView, with: account, and: assetDetail)
-        viewModel.configure(assetDetailView.smallHeaderView, with: account, and: assetDetail)
     }
     
     override func linkInteractors() {
@@ -223,7 +228,6 @@ extension AssetDetailViewController {
         }
         
         viewModel.configure(assetDetailView.headerView, with: account, and: assetDetail)
-        viewModel.configure(assetDetailView.smallHeaderView, with: account, and: assetDetail)
     }
     
     private func updateAccount() {
@@ -231,7 +235,6 @@ extension AssetDetailViewController {
         assetDetailView.transactionHistoryCollectionView.reloadData()
         assetDetailView.transactionHistoryCollectionView.contentState = .loading
         fetchTransactions()
-        adjustDefaultHeaderViewLayout(withContentInsetUpdate: true)
         updateLayout()
     }
 }
@@ -320,12 +323,12 @@ extension AssetDetailViewController: AssetDetailViewDelegate {
     }
     
     func assetDetailViewDidTapRewardView(_ assetDetailView: AssetDetailView) {
-        tabBarController?.open(
+        open(
             .rewardDetail(account: account),
-            by: .customPresentWithoutNavigationController(
-                presentationStyle: .overCurrentContext,
-                transitionStyle: .crossDissolve,
-                transitioningDelegate: nil
+            by: .customPresent(
+                presentationStyle: .custom,
+                transitionStyle: nil,
+                transitioningDelegate: rewardsModalPresenter
             )
         )
     }
@@ -352,7 +355,7 @@ extension AssetDetailViewController: UICollectionViewDelegateFlowLayout {
                     transactionType: .sent,
                     assetDetail: assetDetail
                 ),
-                by: .push
+                by: .present
             )
         } else {
             open(
@@ -362,7 +365,7 @@ extension AssetDetailViewController: UICollectionViewDelegateFlowLayout {
                     transactionType: .received,
                     assetDetail: assetDetail
                 ),
-                by: .push
+                by: .present
             )
         }
     }
@@ -372,10 +375,15 @@ extension AssetDetailViewController: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        if transactionHistoryDataSource.transaction(at: indexPath) == nil {
-            return layout.current.rewardCellSize
-        }
         return layout.current.transactionCellSize
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        referenceSizeForHeaderInSection section: Int
+    ) -> CGSize {
+        return layout.current.headerSize
     }
 }
 
@@ -384,12 +392,7 @@ extension AssetDetailViewController {
         view.addSubview(assetDetailView)
         
         assetDetailView.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(layout.current.topInset)
-            make.leading.trailing.bottom.equalToSuperview()
-        }
-        
-        assetDetailView.accountsHeaderContainerView.snp.updateConstraints { make in
-            make.height.equalTo(headerHeight)
+            make.top.leading.trailing.bottom.equalToSuperview()
         }
         
         assetDetailView.transactionHistoryCollectionView.contentInset.top = headerHeight
@@ -398,10 +401,8 @@ extension AssetDetailViewController {
 
 extension AssetDetailViewController {
     struct LayoutConstants: AdaptiveLayoutConstants {
-        let optionsModalHeight: CGFloat = 348.0
-        let topInset: CGFloat = 20.0
         let transactionCellSize = CGSize(width: UIScreen.main.bounds.width, height: 72.0)
-        let rewardCellSize = CGSize(width: UIScreen.main.bounds.width, height: 50.0)
         let editAccountModalHeight: CGFloat = 158.0
+        let headerSize = CGSize(width: UIScreen.main.bounds.width, height: 68.0)
     }
 }

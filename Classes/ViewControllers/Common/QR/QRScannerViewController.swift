@@ -9,41 +9,29 @@
 import UIKit
 import AVFoundation
 
-enum QRScannerError: Error {
-    case jsonSerialization
-    case invalidData
-}
-
-protocol QRScannerViewControllerDelegate: class {
-    func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, then handler: EmptyHandler?)
-    func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError, then handler: EmptyHandler?)
-}
-
 class QRScannerViewController: BaseViewController {
     
     private let layout = Layout<LayoutConstants>()
     
-    override var prefersStatusBarHidden: Bool {
-        return true
-    }
-    
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         return .portrait
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
+    override var shouldShowNavigationBar: Bool {
+        return false
     }
     
     override var hidesCloseBarButtonItem: Bool {
         return true
     }
     
-    private(set) lazy var cancelButton: MainButton = {
-        let button = MainButton(title: "title-close".localized)
-        button.setBackgroundImage(img("bg-black-button-big"), for: .normal)
-        return button
-    }()
+    weak var delegate: QRScannerViewControllerDelegate?
     
     private(set) lazy var overlayView = QRScannerOverlayView()
-    
-    weak var delegate: QRScannerViewControllerDelegate?
     
     private var captureSession: AVCaptureSession?
     private let captureSessionQueue = DispatchQueue(label: AVCaptureSession.self.description(), attributes: [], target: nil)
@@ -82,34 +70,17 @@ class QRScannerViewController: BaseViewController {
         }
     }
     
-    override func configureAppearance() {
-        super.configureAppearance()
-        title = "qr-scan-title".localized
-    }
-    
-    override func setListeners() {
-        super.setListeners()
-        cancelButton.addTarget(self, action: #selector(didTapCancelButton), for: .touchUpInside)
+    override func linkInteractors() {
+        overlayView.delegate = self
     }
     
     override func prepareLayout() {
         super.prepareLayout()
-        setupCancelButtonLayout()
         configureScannerView()
     }
 }
 
 extension QRScannerViewController {
-    private func setupCancelButtonLayout() {
-        view.addSubview(cancelButton)
-        
-        cancelButton.snp.makeConstraints { make in
-            make.bottom.equalToSuperview().inset(layout.current.bottomInset + view.safeAreaBottom)
-            make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
-            make.centerX.equalToSuperview()
-        }
-    }
-    
     private func configureScannerView() {
         if AVCaptureDevice.authorizationStatus(for: .video) ==  .authorized {
             setupCaptureSession()
@@ -203,12 +174,7 @@ extension QRScannerViewController {
             return
         }
         
-        previewLayer.frame = CGRect(
-            x: 0,
-            y: 80.0,
-            width: view.frame.width,
-            height: 5 * (view.frame.height - view.safeAreaTop - view.safeAreaBottom) / 8
-        )
+        previewLayer.frame = view.frame
         previewLayer.videoGravity = .resizeAspectFill
         
         view.layer.addSublayer(previewLayer)
@@ -219,13 +185,6 @@ extension QRScannerViewController {
         captureSessionQueue.async {
             captureSession.startRunning()
         }
-    }
-}
-
-extension QRScannerViewController {
-    @objc
-    private func didTapCancelButton() {
-        closeScreen(by: .pop)
     }
 }
 
@@ -277,9 +236,25 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
     }
 }
 
+extension QRScannerViewController: QRScannerOverlayViewDelegate {
+    func qrScannerOverlayViewDidTapCancelButton(_ qrScannerOverlayView: QRScannerOverlayView) {
+        closeScreen(by: .pop)
+    }
+}
+
 extension QRScannerViewController {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let bottomInset: CGFloat = 20.0
         let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
     }
+}
+
+protocol QRScannerViewControllerDelegate: class {
+    func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, then handler: EmptyHandler?)
+    func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError, then handler: EmptyHandler?)
+}
+
+enum QRScannerError: Error {
+    case jsonSerialization
+    case invalidData
 }
