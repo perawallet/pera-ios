@@ -139,7 +139,7 @@ extension MultiLineInputField {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let placeholderTopOffset: CGFloat = 7.5
         let placeholderInset: CGFloat = 3.0
-        let verticalInset: CGFloat = 14.0
+        let verticalInset: CGFloat = 16.0
         let horizontalInset: CGFloat = 16.0
         let itemOffset: CGFloat = 12.0
     }

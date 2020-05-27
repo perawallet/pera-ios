@@ -69,6 +69,28 @@ class TransactionHistoryDataSource: NSObject, UICollectionViewDataSource {
 }
 
 extension TransactionHistoryDataSource {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        viewForSupplementaryElementOfKind kind: String,
+        at indexPath: IndexPath
+    ) -> UICollectionReusableView {
+        if kind != UICollectionView.elementKindSectionHeader {
+            fatalError("Unexpected element kind")
+        }
+        
+        guard let headerView = collectionView.dequeueReusableSupplementaryView(
+            ofKind: kind,
+            withReuseIdentifier: TransactionHistoryHeaderSupplementaryView.reusableIdentifier,
+            for: indexPath
+        ) as? TransactionHistoryHeaderSupplementaryView else {
+            fatalError("Unexpected element kind")
+        }
+        
+        return headerView
+    }
+}
+
+extension TransactionHistoryDataSource {
     private func dequeueHistoryCell(
         in collectionView: UICollectionView,
         with transaction: Transaction,

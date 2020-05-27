@@ -31,7 +31,7 @@ class LedgerTutorialInstructionView: BaseView {
     override func configureAppearance() {
         backgroundColor = SharedColors.secondaryBackground
         layer.cornerRadius = 12.0
-        setShadow()
+        applySmallShadow()
     }
     
     override func prepareLayout() {
@@ -42,7 +42,7 @@ class LedgerTutorialInstructionView: BaseView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        layer.shadowPath = UIBezierPath(rect: bounds).cgPath
+        setShadowFrames()
     }
 }
 
@@ -85,13 +85,6 @@ extension LedgerTutorialInstructionView {
     
     func setTitle(_ title: String) {
         titleLabel.text = title
-    }
-    
-    private func setShadow() {
-        layer.shadowColor = Colors.shadowColor.cgColor
-        layer.shadowOpacity = 1.0
-        layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
-        layer.shadowRadius = 4.0
     }
 }
 

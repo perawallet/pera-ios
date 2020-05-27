@@ -45,11 +45,7 @@ class AddNewAccountView: BaseView {
             .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
     }()
     
-    private lazy var separatorView: UIView = {
-        let view = UIView()
-        view.backgroundColor = SharedColors.gray300
-        return view
-    }()
+    private lazy var separatorView = LineSeparatorView()
     
     private lazy var hasAccountLabel: UILabel = {
         UILabel()

@@ -42,7 +42,7 @@ class BaseInputView: BaseView {
     
     override func configureAppearance() {
         super.configureAppearance()
-        contentView.applyShadow(Shadow(color: SharedColors.inputShadow, offset: CGSize(width: 0.0, height: 4.0), radius: 6.0, opacity: 1.0))
+        contentView.applySmallShadow()
     }
     
     override func linkInteractors() {
@@ -58,7 +58,7 @@ class BaseInputView: BaseView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        contentView.layer.shadowPath = UIBezierPath(roundedRect: contentView.bounds, cornerRadius: 12.0).cgPath
+        contentView.setShadowFrames()
     }
 }
 
