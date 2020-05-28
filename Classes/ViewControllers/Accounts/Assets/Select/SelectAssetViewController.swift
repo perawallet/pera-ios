@@ -23,11 +23,25 @@ class SelectAssetViewController: BaseViewController {
     private let transactionAction: TransactionAction
     
     private let filterOption: FilterOption
+    private let isDismissable: Bool
     
-    init(transactionAction: TransactionAction, filterOption: FilterOption, configuration: ViewControllerConfiguration) {
+    init(
+        transactionAction: TransactionAction,
+        filterOption: FilterOption,
+        configuration: ViewControllerConfiguration,
+        isDismissable: Bool = true
+    ) {
         self.transactionAction = transactionAction
         self.filterOption = filterOption
+        self.isDismissable = isDismissable
         super.init(configuration: configuration)
+        
+        if !isDismissable {
+            if #available(iOS 13.0, *) {
+                isModalInPresentation = true
+            }
+        }
+        
         accounts = filterAccounts()
     }
     
@@ -42,7 +56,9 @@ class SelectAssetViewController: BaseViewController {
             self.closeScreen(by: .dismiss, animated: true)
         }
         
-        leftBarButtonItems = [closeBarButtonItem]
+        if isDismissable {
+            leftBarButtonItems = [closeBarButtonItem]
+        }
     }
     
     override func configureAppearance() {

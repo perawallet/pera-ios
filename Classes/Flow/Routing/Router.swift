@@ -329,16 +329,20 @@ class Router {
             viewController = LedgerTroubleshootOpenAppViewController(configuration: configuration)
         case .termsAndServices:
             viewController = TermsAndServicesViewController(configuration: configuration)
-        case let .selectAsset(transactionAction, filterOption):
+        case let .selectAsset(transactionAction, filterOption, isDismissable):
             viewController = SelectAssetViewController(
                 transactionAction: transactionAction,
                 filterOption: filterOption,
-                configuration: configuration
+                configuration: configuration,
+                isDismissable: isDismissable
             )
         case let .passphraseDisplay(address):
             viewController = PassphraseDisplayViewController(address: address, configuration: configuration)
         case let .tooltip(title):
             viewController = TooltipViewController(title: title, configuration: configuration)
+        case .assetActionConfirmationNotification,
+             .assetDetailNotification:
+            return nil
         }
         
         return viewController as? T
