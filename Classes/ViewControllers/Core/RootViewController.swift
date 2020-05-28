@@ -112,42 +112,18 @@ class RootViewController: UIViewController {
     }
     
     func openAsset(from notification: NotificationDetail, for account: String) {
-        guard let account = appConfiguration.session.account(from: account) else {
-            return
-        }
-        
-        var assetDetail: AssetDetail?
-        
-        if let assetId = notification.asset?.id {
-            assetDetail = account.assetDetails.first { $0.id == assetId }
-        }
-        
         if !appConfiguration.session.isValid {
             if appConfiguration.session.hasPassword() && appConfiguration.session.authenticatedUser != nil {
                 if let notificationtype = notification.notificationType,
                     notificationtype == .assetSupportRequest {
-                    guard let assetId = notification.asset?.id else {
-                        return
-                    }
-                    let draft = AssetAlertDraft(
-                        account: account,
-                        assetIndex: assetId,
-                        assetDetail: nil,
-                        title: "asset-support-add-title".localized,
-                        detail: String(
-                            format: "asset-support-add-message".localized,
-                            "\(account.name ?? "")"
-                        ),
-                        actionTitle: "title-ok".localized
-                    )
                     open(.choosePassword(
-                        mode: .login, route: .assetActionConfirmation(assetAlertDraft: draft)),
+                        mode: .login, route: .assetActionConfirmationNotification(address: account, assetId: notification.asset?.id)),
                          by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
                     )
                     return
                 } else {
                     open(.choosePassword(
-                        mode: .login, route: .assetDetail(account: account, assetDetail: assetDetail)),
+                        mode: .login, route: .assetDetailNotification(address: account, assetId: notification.asset?.id)),
                          by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
                     )
                 }
@@ -155,8 +131,18 @@ class RootViewController: UIViewController {
                 open(.introduction, by: .launch, animated: false)
             }
         } else {
+            guard let account = appConfiguration.session.account(from: account) else {
+                return
+            }
+            
+            var assetDetail: AssetDetail?
+            
+            if let assetId = notification.asset?.id {
+                assetDetail = account.assetDetails.first { $0.id == assetId }
+            }
+            
             if let notificationtype = notification.notificationType,
-                notificationtype == .assetSupportRequest || notificationtype == .assetSupportSuccess {
+                notificationtype == .assetSupportRequest {
                 guard let assetId = notification.asset?.id else {
                     return
                 }

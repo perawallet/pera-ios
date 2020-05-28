@@ -92,6 +92,8 @@ extension PushNotificationController {
         case .transactionFailed,
              .assetTransactionFailed:
             displaySentNotification(with: notificationDetail, isFailed: true, then: handler)
+        case .assetSupportSuccess:
+            displayAssetSupportSuccessNotification(with: notificationDetail)
         default:
             break
         }
@@ -235,6 +237,43 @@ extension PushNotificationController {
                     }
                     self.showNotificationMessage(message, then: handler)
                 }
+            }
+        }
+    }
+    
+    private func displayAssetSupportSuccessNotification(with notificationDetail: NotificationDetail) {
+        guard let senderAddress = notificationDetail.senderAddress,
+            let asset = notificationDetail.asset else {
+            return
+        }
+        
+        Contact.fetchAll(entity: Contact.entityName, with: NSPredicate(format: "address = %@", senderAddress)) { response in
+            switch response {
+            case let .results(objects: objects):
+                guard let results = objects as? [Contact] else {
+                    return
+                }
+                
+                let name = asset.name ?? ""
+                let code = asset.code ?? ""
+                let message = String(
+                    format: "notification-support-success".localized(
+                        params: results.first?.name ?? senderAddress,
+                        "\(name) (\(code))"
+                    )
+                )
+                
+                self.showNotificationMessage(message)
+            default:
+                let name = asset.name ?? ""
+                let code = asset.code ?? ""
+                let message = String(
+                    format: "notification-support-success".localized(
+                        params: senderAddress,
+                        "\(name) (\(code))"
+                    )
+                )
+                self.showNotificationMessage(message)
             }
         }
     }
