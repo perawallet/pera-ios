@@ -79,7 +79,7 @@ class AddNodeViewController: BaseScrollViewController {
                                                         message: "node-settings-warning-message".localized,
                                                         preferredStyle: .alert)
                 
-                let cancelAction = UIAlertAction(title: "title-cancel-lowercased".localized, style: .cancel, handler: nil)
+                let cancelAction = UIAlertAction(title: "title-cancel".localized, style: .cancel, handler: nil)
                 alertController.addAction(cancelAction)
                 
                 let deleteAction = UIAlertAction(

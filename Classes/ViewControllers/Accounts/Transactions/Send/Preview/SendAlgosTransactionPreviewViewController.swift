@@ -218,7 +218,7 @@ extension SendAlgosTransactionPreviewViewController {
             preferredStyle: .alert
         )
         
-        let cancelAction = UIAlertAction(title: "title-cancel-lowercased".localized, style: .cancel)
+        let cancelAction = UIAlertAction(title: "title-cancel".localized, style: .cancel)
         
         let proceedAction = UIAlertAction(title: "title-proceed".localized, style: .destructive) { _ in
             self.composeTransactionData()

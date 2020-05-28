@@ -145,7 +145,7 @@ extension QRScannerViewController {
             UIApplication.shared.openAppSettings()
         }
         
-        let cancelAction = UIAlertAction(title: "title-cancel-lowercased".localized, style: .cancel, handler: nil)
+        let cancelAction = UIAlertAction(title: "title-cancel".localized, style: .cancel, handler: nil)
         
         alertController.addAction(settingsAction)
         alertController.addAction(cancelAction)
