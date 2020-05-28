@@ -56,7 +56,7 @@ extension ContactsEmptyView {
 
 extension ContactsEmptyView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let topInset: CGFloat = 20.0 * verticalScale
+        let topInset: CGFloat = 12.0
         let buttonSize = CGSize(width: 142.0, height: 52.0)
     }
 }

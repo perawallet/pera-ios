@@ -25,7 +25,7 @@ class EmptyStateView: BaseView {
     
     private(set) lazy var subtitleLabel: UILabel = {
         UILabel()
-            .withAttributedText(subtitle.attributed([.lineSpacing(1.2)]))
+            .withAttributedText(subtitle.attributed([.lineSpacing(1.2 * verticalScale)]))
             .withAlignment(.center)
             .withLine(.contained)
             .withTextColor(SharedColors.gray800)
@@ -45,6 +45,7 @@ class EmptyStateView: BaseView {
     
     override func configureAppearance() {
         backgroundColor = SharedColors.secondaryBackground
+        imageView.contentMode = .scaleAspectFill
     }
     
     override func prepareLayout() {
@@ -61,6 +62,7 @@ extension EmptyStateView {
         imageView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalToSuperview().inset(layout.current.topInset)
+            make.height.lessThanOrEqualTo(layout.current.maximumImageHeight)
         }
     }
     
@@ -69,7 +71,7 @@ extension EmptyStateView {
         
         titleLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalTo(imageView.snp.bottom).offset(layout.current.titleTopInset)
+            make.top.equalTo(imageView.snp.bottom).inset(layout.current.titleTopInset)
             make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
         }
     }
@@ -87,9 +89,10 @@ extension EmptyStateView {
 
 extension EmptyStateView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let topInset: CGFloat = 70 * verticalScale
+        let topInset: CGFloat = 30.0 * verticalScale
         let horizontalInset: CGFloat = 40.0
-        let titleTopInset: CGFloat = 24.0 * verticalScale
-        let subtitleTopInset: CGFloat = 12.0
+        let maximumImageHeight: CGFloat = 200.0
+        let titleTopInset: CGFloat = 40.0
+        let subtitleTopInset: CGFloat = 12.0 * verticalScale
     }
 }

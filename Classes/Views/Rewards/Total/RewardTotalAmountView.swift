@@ -78,6 +78,7 @@ extension RewardTotalAmountView {
         let range = (fullString as NSString).range(of: attributedPart)
         attributedRewardText.addAttribute(.foregroundColor, value: SharedColors.primaryText, range: range)
         rewardLabel.attributedText = attributedRewardText
+        rewardLabel.lineBreakMode = .byTruncatingTail
     }
 }
 
