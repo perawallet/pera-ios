@@ -56,18 +56,12 @@ class TooltipViewController: BaseViewController {
 extension TooltipViewController {
     private func setPreferredContentSize() {
         let tooltipFont = UIFont.font(withWeight: .semiBold(size: 14.0))
-        var tooltipLabelSize = tooltipText.size(usingFont: tooltipFont)
-        let totalHorizontalInset = layout.current.horizontalInset * 2
-        
-        if tooltipLabelSize.width > UIScreen.main.bounds.width - totalHorizontalInset {
-            let maxHeight = tooltipText.height(withConstrained: UIScreen.main.bounds.width - totalHorizontalInset, font: tooltipFont)
-            tooltipLabelSize.height = maxHeight
-            tooltipLabelSize.width = UIScreen.main.bounds.width - totalHorizontalInset
-        }
+        let totalHorizontalInset = layout.current.horizontalInset * 4
+        let height = tooltipText.height(withConstrained: UIScreen.main.bounds.width - totalHorizontalInset, font: tooltipFont)
         
         preferredContentSize = CGSize(
-            width: tooltipLabelSize.width + totalHorizontalInset,
-            height: tooltipLabelSize.height + layout.current.verticalInset * 2
+            width: UIScreen.main.bounds.width - layout.current.horizontalInset * 2,
+            height: height + layout.current.verticalInset * 2
         )
     }
 }

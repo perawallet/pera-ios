@@ -60,7 +60,7 @@ class AssetAdditionViewController: BaseViewController {
     
     private lazy var assetAdditionView = AssetAdditionView()
     
-    private lazy var emptyStateView = AssetSearchEmptyView()
+    private lazy var emptyStateView = SearchEmptyView()
     
     private let viewModel = AssetAdditionViewModel()
     
@@ -94,6 +94,8 @@ class AssetAdditionViewController: BaseViewController {
     override func configureAppearance() {
         super.configureAppearance()
         navigationItem.title = "title-add-asset".localized
+        emptyStateView.setTitle("asset-not-found-title".localized)
+        emptyStateView.setDetail("asset-not-found-detail".localized)
     }
     
     override func setListeners() {

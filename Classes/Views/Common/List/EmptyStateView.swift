@@ -90,7 +90,7 @@ extension EmptyStateView {
 extension EmptyStateView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let topInset: CGFloat = 30.0 * verticalScale
-        let horizontalInset: CGFloat = 40.0
+        let horizontalInset: CGFloat = 40.0 * horizontalScale
         let maximumImageHeight: CGFloat = 200.0
         let titleTopInset: CGFloat = 40.0
         let subtitleTopInset: CGFloat = 12.0 * verticalScale

@@ -1,4 +1,4 @@
-/* 
+/*
   Localizable.strings
   algorand
 
@@ -43,9 +43,9 @@
 // MARK: Introduction
 "introduction-recover-title" = "Recover From Passphrase";
 "introduction-create-title" = "Create Account";
-"introduction-title-text" = "Manage all assets\nfrom one place";
+"introduction-title-text" = "Manage all assets\nfrom one app";
 "introduction-add-new-text" = "Add new account";
-"introduction-add-new-title-text" = "Manage all assets from one place";
+"introduction-add-new-title-text" = "Manage all assets from one app";
 "introduction-has-account" = "Already have an account?";
 "introduction-title-pair-ledger" = "Pair Ledger Account";
 
@@ -67,12 +67,11 @@
 "local-authentication-go-settings-title" = "Biometric Authentication";
 "local-authentication-go-settings-text" = "You have disabled biometric authentication. Please go to Settings and enable this option.";
 "local-authentication-enable" = "Enable Face ID/Touch";
-"local-authentication-no" = "No, i’m fine";
+"local-authentication-no" = "Do not use Face ID/Touch";
 
 // MARK: Passphrase Back Up
-"new-account-title" = "Back up Passphrase";
-"back-up-phrase-title" = "Back up this Passphrase";
-"back-up-phrase-warning" = "In order to access this account if you lose this device copy or print this phrase and keep it someplace safe.";
+"new-account-title" = "Back Up Passphrase";
+"back-up-phrase-warning" = "Ensure that you back up this account passphrase. This is the only way to recover your Algorand account.";
 "back-up-phrase-button-title" = "Verify Recovery Passphrase";
 "back-up-phrase-qr" = "Show QR";
 
@@ -125,7 +124,7 @@
 
 // MARK: Accounts
 "accounts-tranaction-empty-text" = "No Transactions Yet";
-"accounts-tranaction-empty-detail" = "No transactions have been made with the asset before.";
+"accounts-tranaction-empty-detail" = "No transactions have been made with this asset.";
 "tranaction-empty-text" = "No Transactions Found";
 "accounts-algos-available-title" = "Algos";
 "accounts-dollar-value-title" = "Dollar Value";
@@ -133,14 +132,14 @@
 "accounts-add-account" = "+ ADD ACCOUNT";
 "accounts-title" = "Accounts";
 "accounts-add-new" = "Add new asset";
-"accounts-qr-tooltip" = "Your account's QR Address is here";
+"accounts-qr-tooltip" = "Your account's address QR can be found here";
 
 // MARK: Asset
 "asset-title" = "Asset";
 "asset-not-found-title" = "No asset found";
-"asset-not-found-detail" = "Try different asset name or asset id";
+"asset-not-found-detail" = "Please try a different asset name or asset ID";
 "asset-algos-title" = "Algos";
-"asset-remove-title" = "Removing an Asset";
+"asset-remove-title" = "Removing an asset";
 "asset-remove-subtitle" = "To remove an asset, you must first transfer that asset’s balance to another account";
 "asset-search-placeholder" = "Search Assets ID or Name";
 "asset-remove-confirmation-title" = "Removing Asset";
@@ -263,7 +262,7 @@
 "contacts-input-address-placeholder" = "Paste # or Scan QR";
 "contacts-transactions-title" = "Transactions";
 "contacts-edit-confirm-button" = "CONFIRM EDIT";
-"contacts-empty-text" = "You haven't added any people yet";
+"contacts-empty-text" = "You haven't added any contacts yet";
 "contacts-empty-detail-text" = "You can make the process of sending assets faster by adding new contacts.";
 "contacts-name-validation-error" = "Name is empty.";
 "contacts-address-validation-error" = "Address is wrong. Please make sure that you entered correct one.";
@@ -274,6 +273,8 @@
 "accounts-title-assets" = "Assets";
 "contacts-title-assets" = "Assets:";
 "title-select-asset" = "Select Asset";
+"contact-search-empty-title" = "No contact found";
+"contact-search-empty-detail" = "Please try a different contact name";
 
 // MARK: Settings
 "settings-title" = "Settings";

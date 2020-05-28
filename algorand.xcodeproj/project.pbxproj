@@ -820,8 +820,8 @@
 		2BE9371424602F3500322C1E /* MainHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE9371224602F3500322C1E /* MainHeaderView.swift */; };
 		2BE9371624602F9400322C1E /* TestNetTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE9371524602F9400322C1E /* TestNetTitleView.swift */; };
 		2BE9371724602F9400322C1E /* TestNetTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE9371524602F9400322C1E /* TestNetTitleView.swift */; };
-		2BE9371A2461D13F00322C1E /* AssetSearchEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE937192461D13F00322C1E /* AssetSearchEmptyView.swift */; };
-		2BE9371B2461D13F00322C1E /* AssetSearchEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE937192461D13F00322C1E /* AssetSearchEmptyView.swift */; };
+		2BE9371A2461D13F00322C1E /* SearchEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE937192461D13F00322C1E /* SearchEmptyView.swift */; };
+		2BE9371B2461D13F00322C1E /* SearchEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE937192461D13F00322C1E /* SearchEmptyView.swift */; };
 		2BE9371E246308D600322C1E /* SelectAssetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE9371D246308D500322C1E /* SelectAssetViewController.swift */; };
 		2BE9371F246308D600322C1E /* SelectAssetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE9371D246308D500322C1E /* SelectAssetViewController.swift */; };
 		2BE9372224630A7D00322C1E /* SelectAssetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE9372124630A7D00322C1E /* SelectAssetView.swift */; };
@@ -1335,7 +1335,7 @@
 		2BE9370F245CAC8600322C1E /* ComingSoonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComingSoonView.swift; sourceTree = "<group>"; };
 		2BE9371224602F3500322C1E /* MainHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainHeaderView.swift; sourceTree = "<group>"; };
 		2BE9371524602F9400322C1E /* TestNetTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestNetTitleView.swift; sourceTree = "<group>"; };
-		2BE937192461D13F00322C1E /* AssetSearchEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetSearchEmptyView.swift; sourceTree = "<group>"; };
+		2BE937192461D13F00322C1E /* SearchEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchEmptyView.swift; sourceTree = "<group>"; };
 		2BE9371D246308D500322C1E /* SelectAssetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectAssetViewController.swift; sourceTree = "<group>"; };
 		2BE9372124630A7D00322C1E /* SelectAssetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectAssetView.swift; sourceTree = "<group>"; };
 		2BE9372424630AC800322C1E /* SelectAssetHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectAssetHeaderView.swift; sourceTree = "<group>"; };
@@ -3973,7 +3973,7 @@
 		2BE937182461D13400322C1E /* Empty */ = {
 			isa = PBXGroup;
 			children = (
-				2BE937192461D13F00322C1E /* AssetSearchEmptyView.swift */,
+				2BE937192461D13F00322C1E /* SearchEmptyView.swift */,
 			);
 			path = Empty;
 			sourceTree = "<group>";
@@ -4953,7 +4953,7 @@
 				175CE59C2295709F003F7C02 /* RoundDetail.swift in Sources */,
 				2B4BDA26238D490300491149 /* AssetFetchDraft.swift in Sources */,
 				2B448724237964D700C19FDE /* AssetRemovalViewController.swift in Sources */,
-				2BE9371B2461D13F00322C1E /* AssetSearchEmptyView.swift in Sources */,
+				2BE9371B2461D13F00322C1E /* SearchEmptyView.swift in Sources */,
 				2BC1828B23DEECCF00888476 /* RequestAssetTransactionPreviewViewController.swift in Sources */,
 				17BD4E682292F1260003E49A /* BottomInformationView.swift in Sources */,
 				2B44872D2379663C00C19FDE /* AssetRemovalView.swift in Sources */,
@@ -5397,7 +5397,7 @@
 				2BF34CBC223A8C460052CAD3 /* BaseCollectionViewCell.swift in Sources */,
 				2B64DACC2369B9E400C09582 /* Participation.swift in Sources */,
 				2BC1828A23DEECCF00888476 /* RequestAssetTransactionPreviewViewController.swift in Sources */,
-				2BE9371A2461D13F00322C1E /* AssetSearchEmptyView.swift in Sources */,
+				2BE9371A2461D13F00322C1E /* SearchEmptyView.swift in Sources */,
 				2B982333231D396D009560CD /* Codable+JSON.swift in Sources */,
 				171111B2225DF92300DAF55C /* SettingsInfoContextView.swift in Sources */,
 				2BD5477723184704007179FE /* FeedbackDraft.swift in Sources */,

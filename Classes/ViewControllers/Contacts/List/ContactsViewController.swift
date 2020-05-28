@@ -22,6 +22,8 @@ class ContactsViewController: BaseViewController {
         subtitle: "contacts-empty-detail-text".localized
     )
     
+    private lazy var searchEmptyStateView = SearchEmptyView()
+    
     private lazy var refreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(didRefreshList), for: .valueChanged)
@@ -68,7 +70,8 @@ class ContactsViewController: BaseViewController {
     override func configureAppearance() {
         super.configureAppearance()
         contactsView.contactsCollectionView.refreshControl = refreshControl
-        
+        searchEmptyStateView.setTitle("contact-search-empty-title".localized)
+        searchEmptyStateView.setDetail("contact-search-empty-detail".localized)
         fetchContacts()
     }
     
@@ -242,7 +245,7 @@ extension ContactsViewController: InputViewDelegate {
         }
         
         if searchResults.isEmpty {
-            contactsView.contactsCollectionView.contentState = .empty(emptyStateView)
+            contactsView.contactsCollectionView.contentState = .empty(searchEmptyStateView)
         } else {
             contactsView.contactsCollectionView.contentState = .none
         }
