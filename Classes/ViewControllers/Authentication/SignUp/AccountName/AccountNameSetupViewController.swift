@@ -34,6 +34,11 @@ class AccountNameSetupViewController: BaseScrollViewController {
         super.prepareLayout()
         setupAccountNameSetupViewLayout()
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        accountNameSetupView.beginEditing()
+    }
 }
 
 extension AccountNameSetupViewController {

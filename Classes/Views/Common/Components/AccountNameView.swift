@@ -17,7 +17,7 @@ class AccountNameView: BaseView {
     private lazy var nameLabel: UILabel = {
         UILabel()
             .withTextColor(SharedColors.primaryText)
-            .withLine(.single)
+            .withLine(.contained)
             .withAlignment(.left)
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
     }()

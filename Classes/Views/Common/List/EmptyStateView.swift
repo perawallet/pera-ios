@@ -25,7 +25,7 @@ class EmptyStateView: BaseView {
     
     private(set) lazy var subtitleLabel: UILabel = {
         UILabel()
-            .withAttributedText(subtitle.attributed([.lineSpacing(1.2 * verticalScale)]))
+            .withAttributedText(subtitle.attributed([.lineSpacing(1.2)]))
             .withAlignment(.center)
             .withLine(.contained)
             .withTextColor(SharedColors.gray800)
@@ -49,30 +49,30 @@ class EmptyStateView: BaseView {
     }
     
     override func prepareLayout() {
-        setupImageViewLayout()
         setupTitleLabelLayout()
+        setupImageViewLayout()
         setupSubtitleLabelLayout()
     }
 }
 
 extension EmptyStateView {
-    private func setupImageViewLayout() {
-        addSubview(imageView)
-        
-        imageView.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalToSuperview().inset(layout.current.topInset)
-            make.height.lessThanOrEqualTo(layout.current.maximumImageHeight)
-        }
-    }
-    
     private func setupTitleLabelLayout() {
         addSubview(titleLabel)
         
         titleLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalTo(imageView.snp.bottom).inset(layout.current.titleTopInset)
+            make.centerY.equalToSuperview().offset(10.0)
             make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+        }
+    }
+    
+    private func setupImageViewLayout() {
+        addSubview(imageView)
+        
+        imageView.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.bottom.equalTo(titleLabel.snp.top).inset(layout.current.titleTopInset)
+            make.height.lessThanOrEqualTo(layout.current.maximumImageHeight)
         }
     }
     
@@ -89,7 +89,6 @@ extension EmptyStateView {
 
 extension EmptyStateView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let topInset: CGFloat = 30.0 * verticalScale
         let horizontalInset: CGFloat = 40.0 * horizontalScale
         let maximumImageHeight: CGFloat = 200.0
         let titleTopInset: CGFloat = 40.0
