@@ -311,11 +311,22 @@ extension SendTransactionPreviewViewController: TransactionControllerDelegate {
         switch error {
         case .networkUnavailable:
             displaySimpleAlertWith(title: "title-error".localized, message: "title-internet-connection".localized)
-        case let .custom(address):
-            if address as? String != nil {
-                guard let api = api else {
+        case let .custom(value):
+            guard let api = api else {
+                return
+            }
+            
+            if let feeValue = value as? Int64,
+                let feeString = feeValue.toAlgos.toDecimalStringForLabel {
+                    let pushNotificationController = PushNotificationController(api: api)
+                    pushNotificationController.showFeedbackMessage(
+                        "asset-min-transaction-error-title".localized,
+                        subtitle: String(format: "send-algos-minimum-amount-custom-error".localized, feeString)
+                    )
                     return
-                }
+            }
+                
+            if value as? String != nil {
                 let pushNotificationController = PushNotificationController(api: api)
                 pushNotificationController.showFeedbackMessage(
                     "title-error".localized,
@@ -323,6 +334,7 @@ extension SendTransactionPreviewViewController: TransactionControllerDelegate {
                 )
                 return
             }
+            
             displaySimpleAlertWith(title: "title-error".localized, message: "title-internet-connection".localized)
         default:
             displaySimpleAlertWith(title: "title-error".localized, message: "title-internet-connection".localized)
