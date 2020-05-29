@@ -213,7 +213,7 @@ extension TransactionDetailView {
         addSubview(roundView)
         
         roundView.snp.makeConstraints { make in
-            make.trailing.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
             make.top.equalTo(feeView.snp.bottom)
         }
     }
@@ -222,7 +222,8 @@ extension TransactionDetailView {
         addSubview(idView)
         
         idView.snp.makeConstraints { make in
-            make.top.equalTo(feeView.snp.bottom)
+            make.top.equalTo(roundView.snp.bottom)
+            make.top.equalTo(feeView.snp.bottom).priority(.low)
             make.leading.trailing.equalToSuperview()
             make.bottom.lessThanOrEqualToSuperview().inset(layout.current.bottomInset).priority(.low)
         }

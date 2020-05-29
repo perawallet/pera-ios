@@ -42,8 +42,8 @@ class PendingAssetView: BaseView {
     
     override func prepareLayout() {
         setupPendingImageViewLayout()
-        setupAssetNameViewLayout()
         setupDetailLabelLayout()
+        setupAssetNameViewLayout()
         setupSeparatorViewLayout()
     }
 }
@@ -59,18 +59,6 @@ extension PendingAssetView {
         }
     }
     
-    private func setupAssetNameViewLayout() {
-        addSubview(assetNameView)
-        
-        assetNameView.setContentCompressionResistancePriority(.required, for: .horizontal)
-        assetNameView.setContentHuggingPriority(.required, for: .horizontal)
-        
-        assetNameView.snp.makeConstraints { make in
-            make.leading.equalTo(pendingImageView.snp.trailing).offset( layout.current.imageViewOffset)
-            make.centerY.equalToSuperview()
-        }
-    }
-    
     private func setupDetailLabelLayout() {
         addSubview(detailLabel)
         
@@ -78,9 +66,21 @@ extension PendingAssetView {
         detailLabel.setContentHuggingPriority(.required, for: .horizontal)
         
         detailLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(assetNameView)
+            make.centerY.equalToSuperview()
             make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.leading.greaterThanOrEqualTo(assetNameView.snp.trailing).offset(layout.current.labelInset)
+        }
+    }
+    
+    private func setupAssetNameViewLayout() {
+        addSubview(assetNameView)
+        
+        assetNameView.setContentCompressionResistancePriority(.required, for: .horizontal)
+        assetNameView.setContentHuggingPriority(.required, for: .horizontal)
+        
+        assetNameView.snp.makeConstraints { make in
+            make.leading.equalTo(pendingImageView.snp.trailing).offset(layout.current.imageViewOffset)
+            make.trailing.lessThanOrEqualTo(detailLabel.snp.leading).offset(-layout.current.imageViewOffset)
+            make.centerY.equalToSuperview()
         }
     }
     

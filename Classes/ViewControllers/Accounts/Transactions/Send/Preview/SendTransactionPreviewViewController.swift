@@ -98,6 +98,15 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
         addTestNetBanner()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if selectedAccount == nil {
+            sendTransactionPreviewView.setAssetSelectionHidden(false)
+            presentAssetSelection()
+        }
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         transactionController.stopBLEScan()
@@ -223,6 +232,14 @@ extension SendTransactionPreviewViewController: SendTransactionPreviewViewDelega
     
     func sendTransactionPreviewViewDidTapAccountSelectionView(_ sendTransactionPreviewView: SendTransactionPreviewView) {
         shouldUpdateSenderForSelectedAccount = true
+        presentAssetSelection()
+    }
+    
+    func sendTransactionPreviewViewDidTapRemoveButton(_ sendTransactionPreviewView: SendTransactionPreviewView) {
+        sendTransactionPreviewView.setAssetSelectionHidden(!isSenderEditable)
+    }
+    
+    func presentAssetSelection() {
         let controller = open(
             .selectAsset(
                 transactionAction: .send,
@@ -231,10 +248,6 @@ extension SendTransactionPreviewViewController: SendTransactionPreviewViewDelega
             by: .present
         ) as? SelectAssetViewController
         controller?.delegate = self
-    }
-    
-    func sendTransactionPreviewViewDidTapRemoveButton(_ sendTransactionPreviewView: SendTransactionPreviewView) {
-        sendTransactionPreviewView.setAssetSelectionHidden(!isSenderEditable)
     }
 }
 

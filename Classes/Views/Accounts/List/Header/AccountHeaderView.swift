@@ -114,7 +114,7 @@ extension AccountHeaderView {
         titleLabel.snp.makeConstraints { make in
             make.leading.equalTo(imageView.snp.trailing).offset(layout.current.labelInset)
             make.centerY.equalTo(imageView)
-            make.trailing.lessThanOrEqualTo(optionsButton.snp.leading).offset(-layout.current.labelInset)
+            make.trailing.lessThanOrEqualTo(qrButton.snp.leading).offset(-layout.current.labelInset)
         }
     }
 }

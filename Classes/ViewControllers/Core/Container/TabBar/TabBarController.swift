@@ -333,6 +333,10 @@ extension TabBarController {
     }
     
     func setTabBarHidden(_ isHidden: Bool, animated: Bool) {
+        if isHidden && isDisplayingTransactionButtons {
+            isDisplayingTransactionButtons = false
+        }
+        
         tabBar.snp.updateConstraints { maker in
             maker.bottom.equalToSuperview().inset(isHidden ? -tabBar.bounds.height : 0.0)
         }

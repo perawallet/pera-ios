@@ -45,32 +45,34 @@ class EmptyStateView: BaseView {
     
     override func configureAppearance() {
         backgroundColor = SharedColors.secondaryBackground
+        imageView.contentMode = .scaleAspectFill
     }
     
     override func prepareLayout() {
-        setupImageViewLayout()
         setupTitleLabelLayout()
+        setupImageViewLayout()
         setupSubtitleLabelLayout()
     }
 }
 
 extension EmptyStateView {
-    private func setupImageViewLayout() {
-        addSubview(imageView)
-        
-        imageView.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalToSuperview().inset(layout.current.topInset)
-        }
-    }
-    
     private func setupTitleLabelLayout() {
         addSubview(titleLabel)
         
         titleLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalTo(imageView.snp.bottom).offset(layout.current.titleTopInset)
+            make.centerY.equalToSuperview().offset(10.0)
             make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+        }
+    }
+    
+    private func setupImageViewLayout() {
+        addSubview(imageView)
+        
+        imageView.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.bottom.equalTo(titleLabel.snp.top).inset(layout.current.titleTopInset)
+            make.height.lessThanOrEqualTo(layout.current.maximumImageHeight)
         }
     }
     
@@ -87,9 +89,9 @@ extension EmptyStateView {
 
 extension EmptyStateView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let topInset: CGFloat = 70 * verticalScale
-        let horizontalInset: CGFloat = 40.0
-        let titleTopInset: CGFloat = 24.0 * verticalScale
-        let subtitleTopInset: CGFloat = 12.0
+        let horizontalInset: CGFloat = 40.0 * horizontalScale
+        let maximumImageHeight: CGFloat = 200.0
+        let titleTopInset: CGFloat = 40.0
+        let subtitleTopInset: CGFloat = 12.0 * verticalScale
     }
 }

@@ -20,7 +20,7 @@ class ChoosePasswordViewController: BaseViewController {
     
     private let viewModel: ChoosePasswordViewModel
     private let mode: Mode
-    private let route: Screen?
+    private var route: Screen?
     
     private let localAuthenticator = LocalAuthenticator()
     private lazy var pushNotificationController: PushNotificationController = {
@@ -135,6 +135,7 @@ extension ChoosePasswordViewController {
     private func launchHome() {
         SVProgressHUD.show(withStatus: "title-loading".localized)
         accountManager?.fetchAllAccounts(isVerifiedAssetsIncluded: true) {
+            self.setupRouteFromNotification()
             DispatchQueue.main.async {
                 UIApplication.shared.rootViewController()?.tabBarViewController.route = self.route
             }
@@ -143,11 +144,54 @@ extension ChoosePasswordViewController {
             SVProgressHUD.dismiss(withDelay: 1.0) {
                 DispatchQueue.main.async {
                     self.dismiss(animated: false) {
-                        UIApplication.shared.rootViewController()?.setupTabBarController(withInitial: self.route)
+                        UIApplication.shared.rootViewController()?.setupTabBarController()
                     }
                 }
             }
         }
+    }
+    
+    private func setupRouteFromNotification() {
+        guard let navigationRoute = route else {
+            return
+        }
+        
+        switch navigationRoute {
+        case let .assetDetailNotification(address, assetId):
+            guard let account = session?.account(from: address) else {
+                return
+            }
+            
+            var assetDetail: AssetDetail?
+            
+            if let assetId = assetId {
+                assetDetail = account.assetDetails.first { $0.id == assetId }
+            }
+            
+            route = .assetDetail(account: account, assetDetail: assetDetail)
+        case let .assetActionConfirmationNotification(address, assetId):
+            guard let account = session?.account(from: address),
+                let assetId = assetId else {
+                return
+            }
+            
+            let draft = AssetAlertDraft(
+                account: account,
+                assetIndex: assetId,
+                assetDetail: nil,
+                title: "asset-support-add-title".localized,
+                detail: String(
+                    format: "asset-support-add-message".localized,
+                    "\(account.name ?? "")"
+                ),
+                actionTitle: "title-ok".localized
+            )
+            
+            route = .assetActionConfirmation(assetAlertDraft: draft)
+        default:
+            break
+        }
+
     }
 }
 

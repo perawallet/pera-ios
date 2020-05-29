@@ -69,6 +69,12 @@ extension AccountNameSetupView {
 }
 
 extension AccountNameSetupView {
+    func beginEditing() {
+        accountNameInputView.beginEditing()
+    }
+}
+
+extension AccountNameSetupView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let topInset: CGFloat = 36.0
         let buttonBottomInset: CGFloat = 15.0

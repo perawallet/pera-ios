@@ -1,5 +1,5 @@
 //
-//  AssetSearchEmptyView.swift
+//  SearchEmptyView.swift
 //  algorand
 //
 //  Created by Göktuğ Berk Ulu on 5.05.2020.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AssetSearchEmptyView: BaseView {
+class SearchEmptyView: BaseView {
     
     private let layout = Layout<LayoutConstants>()
     
@@ -18,16 +18,14 @@ class AssetSearchEmptyView: BaseView {
             .withAlignment(.center)
             .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
             .withTextColor(SharedColors.primaryText)
-            .withText("asset-not-found-title".localized)
     }()
     
     private lazy var detailLabel: UILabel = {
         UILabel()
-            .withLine(.single)
+            .withLine(.contained)
             .withAlignment(.center)
             .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
             .withTextColor(SharedColors.inputTitle)
-            .withText("asset-not-found-detail".localized)
     }()
     
     override func configureAppearance() {
@@ -40,7 +38,7 @@ class AssetSearchEmptyView: BaseView {
     }
 }
 
-extension AssetSearchEmptyView {
+extension SearchEmptyView {
     private func setupTitleLabelLayout() {
         addSubview(titleLabel)
         
@@ -61,7 +59,17 @@ extension AssetSearchEmptyView {
     }
 }
 
-extension AssetSearchEmptyView {
+extension SearchEmptyView {
+    func setTitle(_ title: String) {
+        titleLabel.text = title
+    }
+    
+    func setDetail(_ detail: String) {
+        detailLabel.text = detail
+    }
+}
+
+extension SearchEmptyView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let horizontalInset: CGFloat = 48.0
         let topInset: CGFloat = 12.0

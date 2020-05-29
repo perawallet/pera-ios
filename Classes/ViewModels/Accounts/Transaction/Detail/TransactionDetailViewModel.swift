@@ -24,9 +24,7 @@ class TransactionDetailViewModel {
         
         view.feeView.setAmountViewMode(.normal(amount: transaction.fee.toAlgos))
 
-        if let round = transaction.round {
-            view.roundView.setDetail("\(round)")
-        }
+        setRound(for: transaction, in: view)
         
         view.opponentView.setTitle("transaction-detail-from".localized)
         setOpponent(for: transaction, with: transaction.from, in: view)
@@ -75,9 +73,7 @@ class TransactionDetailViewModel {
         
         view.feeView.setAmountViewMode(.normal(amount: transaction.fee.toAlgos))
 
-        if let round = transaction.round {
-            view.roundView.setDetail("\(round)")
-        }
+        setRound(for: transaction, in: view)
         
         view.opponentView.setTitle("transaction-detail-to".localized)
         
@@ -110,7 +106,7 @@ class TransactionDetailViewModel {
         setNote(for: transaction, in: view)
     }
     
-    func setCloseAmount(for transaction: Transaction, in view: TransactionDetailView) {
+    private func setCloseAmount(for transaction: Transaction, in view: TransactionDetailView) {
         if let closeAmount = transaction.payment?.closeAmountForTransaction()?.toAlgos {
             view.closeAmountView.setAmountViewMode(.normal(amount: closeAmount))
         } else {
@@ -118,7 +114,7 @@ class TransactionDetailViewModel {
         }
     }
     
-    func setCloseTo(for transaction: Transaction, in view: TransactionDetailView) {
+    private func setCloseTo(for transaction: Transaction, in view: TransactionDetailView) {
         if let closeAddress = transaction.payment?.closeAddress {
             view.closeToView.setDetail(closeAddress)
         } else {
@@ -134,6 +130,16 @@ class TransactionDetailViewModel {
             view.opponentView.setContactButtonImage(img("icon-user-add"))
             view.opponentView.setName(address)
             view.opponentView.setContactImage(hidden: true)
+        }
+    }
+    
+    private func setRound(for transaction: Transaction, in view: TransactionDetailView) {
+        if transaction.isPending() {
+            view.roundView.removeFromSuperview()
+        } else {
+            if let round = transaction.round {
+                view.roundView.setDetail("\(round)")
+            }
         }
     }
     

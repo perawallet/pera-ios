@@ -105,8 +105,7 @@ extension TransactionAccountInformationView {
         accountNameView.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(layout.current.defaultInset)
             make.top.equalToSuperview().inset(layout.current.defaultInset)
-            make.trailing.equalToSuperview().inset(layout.current.defaultInset).priority(.low)
-            make.trailing.equalTo(removeButton.snp.leading).offset(-layout.current.buttonTrailingInset)
+            make.trailing.equalToSuperview().inset(layout.current.defaultInset)
         }
     }
     

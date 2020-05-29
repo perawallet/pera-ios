@@ -24,7 +24,11 @@ class SelectAssetViewController: BaseViewController {
     
     private let filterOption: FilterOption
     
-    init(transactionAction: TransactionAction, filterOption: FilterOption, configuration: ViewControllerConfiguration) {
+    init(
+        transactionAction: TransactionAction,
+        filterOption: FilterOption,
+        configuration: ViewControllerConfiguration
+    ) {
         self.transactionAction = transactionAction
         self.filterOption = filterOption
         super.init(configuration: configuration)
@@ -41,7 +45,7 @@ class SelectAssetViewController: BaseViewController {
         let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [unowned self] in
             self.closeScreen(by: .dismiss, animated: true)
         }
-        
+    
         leftBarButtonItems = [closeBarButtonItem]
     }
     

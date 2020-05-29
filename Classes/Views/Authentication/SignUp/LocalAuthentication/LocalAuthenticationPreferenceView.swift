@@ -36,7 +36,7 @@ class LocalAuthenticationPreferenceView: BaseView {
     
     private lazy var noButton: UIButton = {
         UIButton(type: .custom)
-            .withFont(UIFont.font(withWeight: .medium(size: 16.0)))
+            .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
             .withTitleColor(SharedColors.primaryText)
             .withTitle("local-authentication-no".localized)
             .withAlignment(.center)

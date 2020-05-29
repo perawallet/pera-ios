@@ -286,7 +286,7 @@ extension SettingsViewController: SettingsViewModelDelegate {
             UIApplication.shared.openAppSettings()
         }
         
-        let cancelAction = UIAlertAction(title: "title-cancel-lowercased".localized, style: .cancel) { _ in
+        let cancelAction = UIAlertAction(title: "title-cancel".localized, style: .cancel) { _ in
             let indexPath = IndexPath(item: 3, section: 0)
             guard let cell = self.settingsView.collectionView.cellForItem(at: indexPath) as? SettingsToggleCell else {
                 return
@@ -312,7 +312,7 @@ extension SettingsViewController: SettingsViewModelDelegate {
             UIApplication.shared.openAppSettings()
         }
         
-        let cancelAction = UIAlertAction(title: "title-cancel-lowercased".localized, style: .cancel, handler: nil)
+        let cancelAction = UIAlertAction(title: "title-cancel".localized, style: .cancel, handler: nil)
         
         alertController.addAction(settingsAction)
         alertController.addAction(cancelAction)
