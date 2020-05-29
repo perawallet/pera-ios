@@ -263,6 +263,8 @@ extension TabBarController: SelectAssetViewControllerDelegate {
         didSelectAlgosIn account: Account,
         forAction transactionAction: TransactionAction
     ) {
+        isDisplayingTransactionButtons = false
+        
         let fullScreenPresentation = Screen.Transition.Open.customPresent(
             presentationStyle: .fullScreen,
             transitionStyle: nil,
@@ -289,6 +291,8 @@ extension TabBarController: SelectAssetViewControllerDelegate {
         in account: Account,
         forAction transactionAction: TransactionAction
     ) {
+        isDisplayingTransactionButtons = false
+        
         let fullScreenPresentation = Screen.Transition.Open.customPresent(
             presentationStyle: .fullScreen,
             transitionStyle: nil,

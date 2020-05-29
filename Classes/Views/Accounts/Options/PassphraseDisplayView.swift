@@ -31,7 +31,10 @@ class PassphraseDisplayView: BaseView {
     }()
     
     private(set) lazy var qrButton: AlignedButton = {
-        let positions: AlignedButton.StylePositionAdjustment = (image: CGPoint(x: 28.0, y: 0.0), title: CGPoint(x: 4.0, y: 0.0))
+        let positions: AlignedButton.StylePositionAdjustment = (
+            image: CGPoint(x: 28.0 * horizontalScale, y: 0.0),
+            title: CGPoint(x: 4.0, y: 0.0)
+        )
         let button = AlignedButton(style: .imageLeftTitleCentered(positions))
         button.setImage(img("icon-qr-show", isTemplate: true), for: .normal)
         button.tintColor = SharedColors.gray700
@@ -43,7 +46,10 @@ class PassphraseDisplayView: BaseView {
     }()
     
     private(set) lazy var shareButton: AlignedButton = {
-        let positions: AlignedButton.StylePositionAdjustment = (image: CGPoint(x: 40.0, y: 0.0), title: CGPoint(x: 4.0, y: 0.0))
+        let positions: AlignedButton.StylePositionAdjustment = (
+            image: CGPoint(x: 30.0 * horizontalScale, y: 0.0),
+            title: CGPoint(x: 4.0, y: 0.0)
+        )
         let button = AlignedButton(style: .imageLeftTitleCentered(positions))
         button.setImage(img("icon-share-white", isTemplate: true), for: .normal)
         button.tintColor = SharedColors.gray700
@@ -125,7 +131,7 @@ extension PassphraseDisplayView {
         let buttonTopInset: CGFloat = 27.0
         let bottomInset: CGFloat = 16.0
         let collectionViewHeight: CGFloat = 275.0
-        let buttonSize = CGSize(width: 157.0, height: 52.0)
+        let buttonSize = CGSize(width: 157.0 * horizontalScale, height: 52.0)
     }
 }
 

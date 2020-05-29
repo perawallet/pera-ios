@@ -16,7 +16,12 @@ class SendTransactionPreviewView: BaseView {
     
     var inputFieldFraction: Int
     
-    private lazy var assetSelectionView = SelectionView()
+    private lazy var assetSelectionView: SelectionView = {
+        let view = SelectionView()
+        view.isHidden = true
+        view.isUserInteractionEnabled = false
+        return view
+    }()
     
     private(set) lazy var transactionAccountInformationView = TransactionAccountInformationView()
     
@@ -56,13 +61,9 @@ class SendTransactionPreviewView: BaseView {
         super.init(frame: .zero)
     }
     
-    override func configureAppearance() {
-        super.configureAppearance()
-        setAssetSelectionHidden(true)
-    }
-    
     override func setListeners() {
         transactionReceiverView.delegate = self
+        transactionAccountInformationView.delegate = self
     }
     
     override func linkInteractors() {
@@ -104,7 +105,7 @@ extension SendTransactionPreviewView {
         addSubview(amountInputView)
         
         amountInputView.snp.makeConstraints { make in
-            make.top.equalTo(transactionAccountInformationView.snp.bottom).offset(layout.current.verticalInset)
+            make.top.equalToSuperview().inset(layout.current.amountFieldTopInset)
             make.leading.trailing.equalToSuperview()
         }
     }
@@ -178,10 +179,25 @@ extension SendTransactionPreviewView: AssetInputViewDelegate {
     }
 }
 
+extension SendTransactionPreviewView: TransactionAccountInformationViewDelegate {
+    func transactionAccountInformationViewDidTapRemoveButton(_ transactionAccountInformationView: TransactionAccountInformationView) {
+        delegate?.sendTransactionPreviewViewDidTapRemoveButton(self)
+    }
+}
+
 extension SendTransactionPreviewView {
     func setAssetSelectionHidden(_ hidden: Bool) {
+        transactionAccountInformationView.isHidden = !hidden
         assetSelectionView.isHidden = hidden
         assetSelectionView.isUserInteractionEnabled = !hidden
+        
+        amountInputView.snp.updateConstraints { make in
+            if hidden {
+                make.top.equalToSuperview().inset(layout.current.amountFieldTopInset)
+            } else {
+                make.top.equalToSuperview().inset(layout.current.amountFieldTopInsetToAssetSelection)
+            }
+        }
     }
 }
 
@@ -191,6 +207,8 @@ extension SendTransactionPreviewView {
         let verticalInset: CGFloat = 20.0
         let buttonHorizontalInset: CGFloat = 20.0
         let buttonVerticalInset: CGFloat = 20.0
+        let amountFieldTopInset: CGFloat = 154.0
+        let amountFieldTopInsetToAssetSelection: CGFloat = 108.0
     }
 }
 
@@ -203,4 +221,5 @@ protocol SendTransactionPreviewViewDelegate: class {
     func sendTransactionPreviewViewDidTapScanQRButton(_ sendTransactionPreviewView: SendTransactionPreviewView)
     func sendTransactionPreviewViewDidTapMaxButton(_ sendTransactionPreviewView: SendTransactionPreviewView)
     func sendTransactionPreviewViewDidTapAccountSelectionView(_ sendTransactionPreviewView: SendTransactionPreviewView)
+    func sendTransactionPreviewViewDidTapRemoveButton(_ sendTransactionPreviewView: SendTransactionPreviewView)
 }

@@ -19,7 +19,26 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
         initialModalSize: .custom(CGSize(width: view.frame.width, height: 422.0))
     )
     
-    private let viewModel = SendAlgosTransactionPreviewViewModel()
+    private let viewModel: SendAlgosTransactionPreviewViewModel
+    
+    override var filterOption: SelectAssetViewController.FilterOption {
+        return .algos
+    }
+    
+    override init(
+        account: Account?,
+        assetReceiverState: AssetReceiverState,
+        isSenderEditable: Bool,
+        configuration: ViewControllerConfiguration
+    ) {
+        viewModel = SendAlgosTransactionPreviewViewModel(isAccountSelectionEnabled: isSenderEditable)
+        super.init(
+            account: account,
+            assetReceiverState: assetReceiverState,
+            isSenderEditable: isSenderEditable,
+            configuration: configuration
+        )
+    }
     
     override func configureAppearance() {
         super.configureAppearance()
@@ -41,6 +60,12 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
         ) as? AccountListViewController
     
         accountListViewController?.delegate = self
+    }
+    
+    override func configure(forSelected account: Account, with assetDetail: AssetDetail?) {
+        selectedAccount = account
+        viewModel.configure(sendTransactionPreviewView, with: selectedAccount)
+        sendTransactionPreviewView.setAssetSelectionHidden(true)
     }
     
     override func displayTransactionPreview() {
@@ -111,13 +136,14 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
             .sendAlgosTransaction(
                 algosTransactionSendDraft: algosTransactionDraft,
                 transactionController: transactionController,
-                receiver: assetReceiverState
+                receiver: assetReceiverState,
+                isSenderEditable: isSenderEditable
             ),
             by: .push
         )
     }
     
-    override func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, then handler: EmptyHandler?) {
+    override func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, completionHandler: EmptyHandler?) {
         guard let qrAddress = qrText.address else {
             return
         }
@@ -127,7 +153,7 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
         }
         assetReceiverState = .address(address: qrAddress, amount: nil)
         
-        if let handler = handler {
+        if let handler = completionHandler {
             handler()
         }
     }

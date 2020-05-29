@@ -16,7 +16,7 @@ class ContactInfoViewModel {
             userInformationView.userImageView.image = resizedImage
         }
         
-        userInformationView.addButton.isHidden = true
+        userInformationView.setAddButtonHidden(true)
         userInformationView.contactNameInputView.inputTextField.text = contact.name
         
         if let address = contact.address {

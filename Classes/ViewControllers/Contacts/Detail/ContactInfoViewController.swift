@@ -29,10 +29,7 @@ class ContactInfoViewController: BaseScrollViewController {
     
     init(contact: Contact, configuration: ViewControllerConfiguration) {
         self.contact = contact
-        
         super.init(configuration: configuration)
-        
-        hidesBottomBarWhenPushed = true
     }
     
     override func configureNavigationBarAppearance() {
@@ -244,8 +241,9 @@ extension ContactInfoViewController: ContactInfoViewDelegate {
         guard let address = contact.address else {
             return
         }
-        
-        open(.qrGenerator(title: contact.name, address: address, mnemonic: nil, mode: .address), by: .present)
+
+        let draft = QRCreationDraft(address: address, mode: .address)
+        open(.qrGenerator(title: contact.name, draft: draft), by: .present)
     }
     
     func contactInfoViewDidTapShareButton(_ contactInfoView: ContactInfoView) {

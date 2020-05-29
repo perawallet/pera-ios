@@ -29,7 +29,7 @@ class UserInformationView: BaseView {
         return imageView
     }()
     
-    private(set) lazy var addButton: UIButton = {
+    private lazy var addButton: UIButton = {
         let button = UIButton(type: .custom).withBackgroundColor(SharedColors.primary).withImage(img("icon-add-white"))
         button.layer.cornerRadius = 16.0
         return button
@@ -164,6 +164,16 @@ extension UserInformationView: InputViewDelegate {
         } else {
             algorandAddressInputView.inputTextView.resignFirstResponder()
         }
+    }
+}
+
+extension UserInformationView {
+    func setAddButtonIcon(_ icon: UIImage?) {
+        addButton.setImage(icon, for: .normal)
+    }
+    
+    func setAddButtonHidden(_ isHidden: Bool) {
+        addButton.isHidden = isHidden
     }
 }
 
