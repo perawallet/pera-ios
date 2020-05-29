@@ -9,10 +9,6 @@
 import UIKit
 import SVProgressHUD
 
-protocol ContactInfoViewControllerDelegate: class {
-    func contactInfoViewController(_ contactInfoViewController: ContactInfoViewController, didUpdate contact: Contact)
-}
-
 class ContactInfoViewController: BaseScrollViewController {
     
     private lazy var accountListModalPresenter = CardModalPresenter(
@@ -24,12 +20,6 @@ class ContactInfoViewController: BaseScrollViewController {
     
     private lazy var contactInfoView = ContactInfoView()
     
-    private lazy var emptyStateView = EmptyStateView(
-        title: "tranaction-empty-text".localized,
-        topImage: img("icon-transaction-empty-blue"),
-        bottomImage: img("icon-transaction-empty-orange")
-    )
-    
     private let viewModel = ContactInfoViewModel()
     private let contact: Contact
     private var contactAccount: Account?
@@ -39,17 +29,18 @@ class ContactInfoViewController: BaseScrollViewController {
     
     init(contact: Contact, configuration: ViewControllerConfiguration) {
         self.contact = contact
-        
         super.init(configuration: configuration)
-        
-        hidesBottomBarWhenPushed = true
     }
     
     override func configureNavigationBarAppearance() {
-        let addBarButtonItem = ALGBarButtonItem(kind: .share) {
-            self.shareContact()
+        let editBarButtonItem = ALGBarButtonItem(kind: .edit) { [unowned self] in
+            let controller = self.open(
+                .addContact(mode: .edit(contact: self.contact)),
+                by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
+            ) as? AddContactViewController
+            controller?.delegate = self
         }
-        rightBarButtonItems = [addBarButtonItem]
+        rightBarButtonItems = [editBarButtonItem]
     }
     
     override func viewDidLoad() {
@@ -67,6 +58,15 @@ class ContactInfoViewController: BaseScrollViewController {
         contactInfoView.delegate = self
         contactInfoView.assetsCollectionView.delegate = self
         contactInfoView.assetsCollectionView.dataSource = self
+    }
+    
+    override func setListeners() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didContactDeleted(notification:)),
+            name: .ContactDeletion,
+            object: nil
+        )
     }
     
     override func prepareLayout() {
@@ -100,6 +100,7 @@ extension ContactInfoViewController {
                 
                 if account.isThereAnyDifferentAsset() {
                     if let assets = account.assets {
+                        var failedAssetFetchCount = 0
                         for (index, _) in assets {
                             self?.api?.getAssetDetails(with: AssetFetchDraft(assetId: "\(index)")) { assetResponse in
                                 switch assetResponse {
@@ -115,8 +116,8 @@ extension ContactInfoViewController {
                                     
                                     account.assetDetails.append(assetDetail)
                                     
-                                    if assets.count == account.assetDetails.count {
-                                        SVProgressHUD.showSuccess(withStatus: "title-done-lowercased".localized)
+                                    if assets.count == account.assetDetails.count + failedAssetFetchCount {
+                                        SVProgressHUD.showSuccess(withStatus: "title-done".localized)
                                         SVProgressHUD.dismiss()
                                         
                                         guard let strongSelf = self else {
@@ -126,16 +127,16 @@ extension ContactInfoViewController {
                                         strongSelf.configureViewForContactAssets()
                                     }
                                 case .failure:
-                                    SVProgressHUD.dismiss()
+                                    failedAssetFetchCount += 1
                                 }
                             }
                         }
                     } else {
-                        SVProgressHUD.showSuccess(withStatus: "title-done-lowercased".localized)
+                        SVProgressHUD.showSuccess(withStatus: "title-done".localized)
                         SVProgressHUD.dismiss()
                     }
                 } else {
-                    SVProgressHUD.showSuccess(withStatus: "title-done-lowercased".localized)
+                    SVProgressHUD.showSuccess(withStatus: "title-done".localized)
                     SVProgressHUD.dismiss()
                 }
             case .failure:
@@ -150,13 +151,18 @@ extension ContactInfoViewController {
             return
         }
         
-        let collectionViewHeight = CGFloat((account.assetDetails.count + 1) * 50) + CGFloat((account.assetDetails.count + 1) * 5)
+        let collectionViewHeight = CGFloat((account.assetDetails.count + 1) * 50) + CGFloat((account.assetDetails.count + 1) * 8)
         
         contactInfoView.assetsCollectionView.snp.updateConstraints { make in
             make.height.equalTo(collectionViewHeight)
         }
         
         contactInfoView.assetsCollectionView.reloadData()
+    }
+    
+    @objc
+    private func didContactDeleted(notification: Notification) {
+        closeScreen(by: .pop, animated: false)
     }
 }
 
@@ -188,7 +194,7 @@ extension ContactInfoViewController: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        return CGSize(width: view.frame.width - 20.0, height: 50.0)
+        return CGSize(width: view.frame.width - 40.0, height: 50.0)
     }
 }
 
@@ -232,45 +238,16 @@ extension ContactInfoViewController {
 
 extension ContactInfoViewController: ContactInfoViewDelegate {
     func contactInfoViewDidTapQRCodeButton(_ contactInfoView: ContactInfoView) {
-        tabBarController?.open(.contactQRDisplay(contact: contact), by: .presentWithoutNavigationController)
-    }
-    
-    func contactInfoViewDidEditContactButton(_ contactInfoView: ContactInfoView) {
-        let controller = open(.addContact(mode: .edit(contact: contact)), by: .present) as? AddContactViewController
-        controller?.delegate = self
-    }
-    
-    func contactInfoViewDidDeleteContactButton(_ contactInfoView: ContactInfoView) {
-        displayDeleteContactAlert()
-    }
-    
-    private func displayDeleteContactAlert() {
-        let configurator = AlertViewConfigurator(
-            title: "contacts-delete-contact-alert-title".localized,
-            image: img("icon-delete-contact"),
-            explanation: "contacts-delete-contact-alert-explanation".localized,
-            actionTitle: "title-yes".localized) {
-                self.contact.remove(entity: Contact.entityName)
-                NotificationCenter.default.post(name: .ContactDeletion, object: self, userInfo: ["contact": self.contact])
-                self.popScreen()
-                return
+        guard let address = contact.address else {
+            return
         }
-        
-        let viewController = open(
-            .alert(mode: .destructive, alertConfigurator: configurator),
-            by: .customPresentWithoutNavigationController(
-                presentationStyle: .overCurrentContext,
-                transitionStyle: .crossDissolve,
-                transitioningDelegate: nil
-            )
-        ) as? AlertViewController
-        
-        if let alertView = viewController?.alertView as? DestructiveAlertView {
-            alertView.cancelButton.setTitleColor(.white, for: .normal)
-            alertView.cancelButton.setBackgroundImage(img("bg-black-cancel"), for: .normal)
-            alertView.actionButton.setTitleColor(.white, for: .normal)
-            alertView.actionButton.setBackgroundImage(img("bg-purple-action"), for: .normal)
-        }
+
+        let draft = QRCreationDraft(address: address, mode: .address)
+        open(.qrGenerator(title: contact.name, draft: draft), by: .present)
+    }
+    
+    func contactInfoViewDidTapShareButton(_ contactInfoView: ContactInfoView) {
+        shareContact()
     }
 }
 
@@ -290,12 +267,17 @@ extension ContactInfoViewController: AccountListViewControllerDelegate {
                     account: account,
                     receiver: .contact(contact),
                     assetDetail: assetDetail,
+                    isSenderEditable: false,
                     isMaxTransaction: false
                 ),
                 by: .push
             )
         } else {
-            open(.sendAlgosTransactionPreview(account: account, receiver: .contact(contact)), by: .push)
+            open(.sendAlgosTransactionPreview(account: account, receiver: .contact(contact), isSenderEditable: false), by: .push)
         }
     }
+}
+
+protocol ContactInfoViewControllerDelegate: class {
+    func contactInfoViewController(_ contactInfoViewController: ContactInfoViewController, didUpdate contact: Contact)
 }

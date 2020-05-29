@@ -30,10 +30,7 @@ class AddNodeViewController: BaseScrollViewController {
     
     init(mode: Mode, configuration: ViewControllerConfiguration) {
         self.mode = mode
-        
         super.init(configuration: configuration)
-        
-        hidesBottomBarWhenPushed = true
     }
     
     override func setListeners() {
@@ -82,7 +79,7 @@ class AddNodeViewController: BaseScrollViewController {
                                                         message: "node-settings-warning-message".localized,
                                                         preferredStyle: .alert)
                 
-                let cancelAction = UIAlertAction(title: "title-cancel-lowercased".localized, style: .cancel, handler: nil)
+                let cancelAction = UIAlertAction(title: "title-cancel".localized, style: .cancel, handler: nil)
                 alertController.addAction(cancelAction)
                 
                 let deleteAction = UIAlertAction(
@@ -128,7 +125,7 @@ class AddNodeViewController: BaseScrollViewController {
     // MARK: Keyboard
     
     @objc
-    fileprivate func didReceive(keyboardWillShow notification: Notification) {
+    private func didReceive(keyboardWillShow notification: Notification) {
         if !UIApplication.shared.isActive {
             return
         }
@@ -161,7 +158,7 @@ class AddNodeViewController: BaseScrollViewController {
     }
     
     @objc
-    fileprivate func didReceive(keyboardWillHide notification: Notification) {
+    private func didReceive(keyboardWillHide notification: Notification) {
         if !UIApplication.shared.isActive {
             return
         }
@@ -186,7 +183,7 @@ class AddNodeViewController: BaseScrollViewController {
     }
     
     @objc
-    fileprivate func tap(test button: MainButton) {
+    private func tap(test button: MainButton) {
         view.endEditing(true)
         
         guard let name = addNodeView.nameInputView.inputTextField.text, !name.isEmpty,
@@ -295,7 +292,7 @@ class AddNodeViewController: BaseScrollViewController {
             image = img("icon-green-server")
         }
         
-        let configurator = AlertViewConfigurator(
+        let configurator = BottomInformationBundle(
             title: alertTitle,
             image: image,
             explanation: message ?? "",
@@ -306,18 +303,14 @@ class AddNodeViewController: BaseScrollViewController {
                 }
         }
         
-        let viewController = open(
-            .alert(mode: .default, alertConfigurator: configurator),
+        open(
+            .bottomInformation(mode: .confirmation, configurator: configurator),
             by: .customPresentWithoutNavigationController(
                 presentationStyle: .overCurrentContext,
                 transitionStyle: .crossDissolve,
                 transitioningDelegate: nil
             )
-        ) as? AlertViewController
-        
-        if let alertView = viewController?.alertView as? DefaultAlertView {
-            alertView.doneButton.setTitleColor(SharedColors.darkGray, for: .normal)
-        }
+        )
     }
 }
 

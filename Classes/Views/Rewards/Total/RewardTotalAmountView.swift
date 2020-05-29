@@ -10,103 +10,84 @@ import UIKit
 
 class RewardTotalAmountView: BaseView {
     
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let separatorHeight: CGFloat = 1.0
-        let imageInset: CGFloat = 13.0
-        let imageSize = CGSize(width: 12.0, height: 12.0)
-        let horizontalInset: CGFloat = 25.0
-        let verticalInset: CGFloat = 15.0
-        let amountLeadingInset: CGFloat = 3.0
-        let titleLeadingInset: CGFloat = 5.0
-        let trailingInset: CGFloat = 17.0
-    }
-    
     private let layout = Layout<LayoutConstants>()
     
-    private enum Colors {
-        static let separatorColor = rgb(0.94, 0.94, 0.94)
-    }
-    
-    // MARK: Components
-    
-    private lazy var separatorView: UIView = {
-        let view = UIView()
-        view.backgroundColor = Colors.separatorColor
-        return view
-    }()
-    
-    private lazy var infoImageView = UIImageView(image: img("icon-info-purple"))
+    private lazy var algosImageView = UIImageView(image: img("icon-algo-gray", isTemplate: true))
 
-    private lazy var titleLabel: UILabel = {
+    private lazy var rewardLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 10.0)))
-            .withTextColor(SharedColors.purple)
+            .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
+            .withTextColor(SharedColors.detailText)
             .withLine(.single)
             .withAlignment(.left)
-            .withText("total-rewards-account-title".localized)
     }()
     
-    private(set) lazy var algosAmountView: AlgosAmountView = {
-        let view = AlgosAmountView()
-        view.amountLabel.textAlignment = .right
-        view.amountLabel.font = UIFont.font(.overpass, withWeight: .bold(size: 12.0))
-        view.signLabel.isHidden = true
-        view.amountLabel.text = 0.0.toDecimalStringForLabel
-        view.amountLabel.textColor = SharedColors.purple
-        view.algoIconImageView.image = img("icon-algo-small-purple")
-        return view
-    }()
-    
-    // MARK: Setup
+    private lazy var infoImageView = UIImageView(image: img("icon-info-green"))
     
     override func configureAppearance() {
-        backgroundColor = UIColor.white.withAlphaComponent(0.5)
+        backgroundColor = SharedColors.gray50
+        algosImageView.tintColor = SharedColors.gray300
+        layer.cornerRadius = 12.0
+        layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
     }
-    
-    // MARK: Layout
     
     override func prepareLayout() {
-        setupSeparatorViewLayout()
         setupInfoImageViewLayout()
-        setupTitleLabelLayout()
-        setupAlgosAmountViewLayout()
+        setupAlgosImageViewLayout()
+        setupRewardLabelLayout()
     }
-    
-    private func setupSeparatorViewLayout() {
-        addSubview(separatorView)
-        
-        separatorView.snp.makeConstraints { make in
-            make.leading.trailing.top.equalToSuperview()
-            make.height.equalTo(layout.current.separatorHeight)
-        }
-    }
-    
+}
+
+extension RewardTotalAmountView {
     private func setupInfoImageViewLayout() {
         addSubview(infoImageView)
         
         infoImageView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(layout.current.imageInset)
-            make.centerY.equalToSuperview()
+            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.top.bottom.equalToSuperview().inset(layout.current.verticalInset)
             make.size.equalTo(layout.current.imageSize)
         }
     }
     
-    private func setupTitleLabelLayout() {
-        addSubview(titleLabel)
+    private func setupAlgosImageViewLayout() {
+        addSubview(algosImageView)
         
-        titleLabel.snp.makeConstraints { make in
-            make.leading.equalTo(infoImageView.snp.trailing).offset(layout.current.titleLeadingInset)
-            make.top.bottom.equalToSuperview().inset(layout.current.verticalInset)
+        algosImageView.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
+            make.centerY.equalTo(infoImageView)
+            make.size.equalTo(layout.current.algoSize)
         }
     }
     
-    private func setupAlgosAmountViewLayout() {
-        addSubview(algosAmountView)
+    private func setupRewardLabelLayout() {
+        addSubview(rewardLabel)
         
-        algosAmountView.snp.makeConstraints { make in
-            make.leading.greaterThanOrEqualTo(titleLabel.snp.trailing).offset(layout.current.amountLeadingInset)
-            make.trailing.equalToSuperview().inset(layout.current.trailingInset)
-            make.centerY.equalTo(titleLabel)
+        rewardLabel.snp.makeConstraints { make in
+            make.leading.equalTo(algosImageView.snp.trailing).offset(layout.current.titleLeadingInset)
+            make.trailing.equalTo(infoImageView.snp.leading).offset(-layout.current.titleLeadingInset)
+            make.centerY.equalTo(infoImageView)
         }
+    }
+}
+
+extension RewardTotalAmountView {
+    func setReward(amount: String) {
+        let fullString = "total-rewards-full-title" .localized(params: amount)
+        let attributedPart = "total-rewards-partial-title".localized(params: amount)
+        let attributedRewardText = NSMutableAttributedString(attributedString: fullString.attributed([.lineSpacing(1.2)]))
+        let range = (fullString as NSString).range(of: attributedPart)
+        attributedRewardText.addAttribute(.foregroundColor, value: SharedColors.primaryText, range: range)
+        rewardLabel.attributedText = attributedRewardText
+        rewardLabel.lineBreakMode = .byTruncatingTail
+    }
+}
+
+extension RewardTotalAmountView {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let verticalInset: CGFloat = 15.0
+        let imageSize = CGSize(width: 24.0, height: 24.0)
+        let algoSize = CGSize(width: 20.0, height: 20.0)
+        let horizontalInset: CGFloat = 16.0
+        let titleLeadingInset: CGFloat = 4.0
     }
 }

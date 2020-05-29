@@ -11,19 +11,19 @@ import Magpie
 import CoreBluetooth
 import SVProgressHUD
 
-protocol AssetAdditionViewControllerDelegate: class {
-    func assetAdditionViewController(
-        _ assetAdditionViewController: AssetAdditionViewController,
-        didAdd assetSearchResult: AssetSearchResult,
-        to account: Account
-    )
-}
-
 class AssetAdditionViewController: BaseViewController {
     
     private let layout = Layout<LayoutConstants>()
     
     weak var delegate: AssetAdditionViewControllerDelegate?
+    
+    private lazy var assetActionConfirmationPresenter = CardModalPresenter(
+        config: ModalConfiguration(
+            animationMode: .normal(duration: 0.25),
+            dismissMode: .scroll
+        ),
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: layout.current.modalHeight))
+    )
     
     private var account: Account
     
@@ -34,7 +34,15 @@ class AssetAdditionViewController: BaseViewController {
     private let paginationRequestOffset = 3
     private var assetSearchFilters = AssetSearchFilter.all
     
-    private lazy var ledgerApprovalViewController = LedgerApprovalViewController(mode: .approve, configuration: configuration)
+    private lazy var ledgerApprovalPresenter = CardModalPresenter(
+        config: ModalConfiguration(
+            animationMode: .normal(duration: 0.25),
+            dismissMode: .none
+        ),
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: 354.0))
+    )
+    
+    private var ledgerApprovalViewController: LedgerApprovalViewController?
     
     private lazy var transactionController: TransactionController = {
         guard let api = api else {
@@ -52,7 +60,7 @@ class AssetAdditionViewController: BaseViewController {
     
     private lazy var assetAdditionView = AssetAdditionView()
     
-    private lazy var emptyStateView = EmptyStateView(title: "asset-not-found".localized, topImage: nil, bottomImage: nil)
+    private lazy var emptyStateView = SearchEmptyView()
     
     private let viewModel = AssetAdditionViewModel()
     
@@ -61,11 +69,10 @@ class AssetAdditionViewController: BaseViewController {
     init(account: Account, configuration: ViewControllerConfiguration) {
         self.account = account
         super.init(configuration: configuration)
-        hidesBottomBarWhenPushed = true
     }
     
     override func configureNavigationBarAppearance() {
-        let infoBarButton = ALGBarButtonItem(kind: .infoFilled) { [weak self] in
+        let infoBarButton = ALGBarButtonItem(kind: .infoBordered) { [weak self] in
             self?.open(.verifiedAssetInformation, by: .present)
         }
 
@@ -87,6 +94,8 @@ class AssetAdditionViewController: BaseViewController {
     override func configureAppearance() {
         super.configureAppearance()
         navigationItem.title = "title-add-asset".localized
+        emptyStateView.setTitle("asset-not-found-title".localized)
+        emptyStateView.setDetail("asset-not-found-detail".localized)
     }
     
     override func setListeners() {
@@ -190,9 +199,9 @@ extension AssetAdditionViewController: UICollectionViewDelegateFlowLayout {
         let controller = open(
             .assetActionConfirmation(assetAlertDraft: assetAlertDraft),
             by: .customPresentWithoutNavigationController(
-                presentationStyle: .overCurrentContext,
-                transitionStyle: .crossDissolve,
-                transitioningDelegate: nil
+                presentationStyle: .custom,
+                transitionStyle: nil,
+                transitioningDelegate: assetActionConfirmationPresenter
             )
         ) as? AssetActionConfirmationViewController
         
@@ -242,8 +251,12 @@ extension AssetAdditionViewController: InputViewDelegate {
     
     func inputViewDidChangeValue(inputView: BaseInputView) {
         guard let query = assetAdditionView.assetInputView.inputTextField.text else {
+            assetAdditionView.assetInputView.rightInputAccessoryButton.isHidden = false
             return
         }
+        
+        assetAdditionView.assetInputView.rightInputAccessoryButton.isHidden = query.isEmpty
+        
         resetPagination()
         fetchAssets(with: query, isPaginated: false)
     }
@@ -251,6 +264,13 @@ extension AssetAdditionViewController: InputViewDelegate {
     private func resetPagination() {
         hasNext = false
         searchOffset = 0
+    }
+    
+    func inputViewDidTapAccessoryButton(inputView: BaseInputView) {
+        assetAdditionView.assetInputView.rightInputAccessoryButton.isHidden = true
+        assetAdditionView.assetInputView.inputTextField.text = nil
+        resetPagination()
+        fetchAssets(with: nil, isPaginated: false)
     }
 }
 
@@ -274,9 +294,11 @@ extension AssetAdditionViewController: AssetActionConfirmationViewControllerDele
 
 extension AssetAdditionViewController: TransactionControllerDelegate {
     func transactionController(_ transactionController: TransactionController, didFailedComposing error: Error) {
-        if account.type == .ledger {
-            ledgerApprovalViewController.removeFromParentController()
+        if account.type.isLedger() {
+            ledgerApprovalViewController?.dismissScreen()
         }
+        
+        SVProgressHUD.dismiss()
         
         switch error {
         case let .custom(fee):
@@ -296,7 +318,7 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
         }
     }
     
-    func transactionController(_ transactionController: TransactionController, didFailBLEConnectionWith state: CBManagerState) {        
+    func transactionController(_ transactionController: TransactionController, didFailBLEConnectionWith state: CBManagerState) {
         guard let errorTitle = state.errorDescription.title,
             let errorSubtitle = state.errorDescription.subtitle else {
                 return
@@ -327,8 +349,8 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
                 return
         }
         
-        if account.type == .ledger {
-            ledgerApprovalViewController.removeFromParentController()
+        if account.type.isLedger() {
+            ledgerApprovalViewController?.dismissScreen()
         }
         
         delegate?.assetAdditionViewController(self, didAdd: assetSearchResult, to: account)
@@ -338,11 +360,14 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
     func transactionControllerDidStartBLEConnection(_ transactionController: TransactionController) {
         dismissProgressIfNeeded()
         invalidateTimer()
-        add(ledgerApprovalViewController)
+        ledgerApprovalViewController = open(
+            .ledgerApproval(mode: .approve),
+            by: .customPresent(presentationStyle: .custom, transitionStyle: nil, transitioningDelegate: ledgerApprovalPresenter)
+        ) as? LedgerApprovalViewController
     }
     
     func transactionControllerDidFailToSignWithLedger(_ transactionController: TransactionController) {
-        ledgerApprovalViewController.removeFromParentController()
+        ledgerApprovalViewController?.dismissScreen()
         pushNotificationController.showFeedbackMessage("ble-error-transaction-cancelled-title".localized,
                                                        subtitle: "ble-error-fail-sign-transaction".localized)
     }
@@ -351,7 +376,7 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
 // MARK: Ledger Timer
 extension AssetAdditionViewController {
     func validateTimer() {
-        guard account.type == .ledger else {
+        guard account.type.isLedger() else {
             return
         }
         
@@ -364,8 +389,10 @@ extension AssetAdditionViewController {
             DispatchQueue.main.async {
                 self.transactionController.stopBLEScan()
                 self.dismissProgressIfNeeded()
-                self.pushNotificationController.showFeedbackMessage("ble-error-connection-title".localized,
-                                                                    subtitle: "ble-error-fail-connect-peripheral".localized)
+                self.pushNotificationController.showFeedbackMessage(
+                    "ble-error-connection-title".localized,
+                    subtitle: "ble-error-fail-connect-peripheral".localized
+                )
             }
             
             self.invalidateTimer()
@@ -373,7 +400,7 @@ extension AssetAdditionViewController {
     }
     
     func invalidateTimer() {
-        guard account.type == .ledger else {
+        guard account.type.isLedger() else {
             return
         }
         
@@ -385,5 +412,14 @@ extension AssetAdditionViewController {
 extension AssetAdditionViewController {
     struct LayoutConstants: AdaptiveLayoutConstants {
         let cellHeight: CGFloat = 50.0
+        let modalHeight: CGFloat = 510.0
     }
+}
+
+protocol AssetAdditionViewControllerDelegate: class {
+    func assetAdditionViewController(
+        _ assetAdditionViewController: AssetAdditionViewController,
+        didAdd assetSearchResult: AssetSearchResult,
+        to account: Account
+    )
 }

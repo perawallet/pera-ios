@@ -69,6 +69,28 @@ class TransactionHistoryDataSource: NSObject, UICollectionViewDataSource {
 }
 
 extension TransactionHistoryDataSource {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        viewForSupplementaryElementOfKind kind: String,
+        at indexPath: IndexPath
+    ) -> UICollectionReusableView {
+        if kind != UICollectionView.elementKindSectionHeader {
+            fatalError("Unexpected element kind")
+        }
+        
+        guard let headerView = collectionView.dequeueReusableSupplementaryView(
+            ofKind: kind,
+            withReuseIdentifier: TransactionHistoryHeaderSupplementaryView.reusableIdentifier,
+            for: indexPath
+        ) as? TransactionHistoryHeaderSupplementaryView else {
+            fatalError("Unexpected element kind")
+        }
+        
+        return headerView
+    }
+}
+
+extension TransactionHistoryDataSource {
     private func dequeueHistoryCell(
         in collectionView: UICollectionView,
         with transaction: Transaction,
@@ -290,14 +312,14 @@ extension TransactionHistoryDataSource {
                 payment.toAddress == account.address,
                 assetDetail == nil {
                 if let rewards = transaction.payment?.rewards, rewards > 0 {
-                    let reward = Reward(amount: Int64(rewards))
+                    let reward = Reward(amount: Int64(rewards), round: transaction.lastRound)
                     self.transactions.append(reward)
                 }
             } else {
                 if let rewards = transaction.fromRewards,
                     rewards > 0,
                     assetDetail == nil {
-                    let reward = Reward(amount: Int64(rewards))
+                    let reward = Reward(amount: Int64(rewards), round: transaction.lastRound)
                     self.transactions.append(reward)
                 }
             }
@@ -388,5 +410,9 @@ extension TransactionHistoryDataSource {
     func clear() {
         fetchRequest?.cancel()
         transactions.removeAll()
+    }
+    
+    var isEmpty: Bool {
+        transactions.isEmpty
     }
 }

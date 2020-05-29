@@ -14,25 +14,26 @@ class AssetRemovalView: BaseView {
     
     private lazy var topContainerView: UIView = {
         let view = UIView()
-        view.backgroundColor = .white
-        view.layer.cornerRadius = 4.0
-        view.layer.borderWidth = 1.0
-        view.layer.borderColor = Colors.borderColor.cgColor
+        view.backgroundColor = SharedColors.secondaryBackground
+        view.layer.cornerRadius = 12.0
         return view
     }()
+    
+    private lazy var infoImageView = UIImageView(image: img("icon-info-green"))
     
     private lazy var titleLabel: UILabel = {
         UILabel()
             .withLine(.single)
             .withAlignment(.left)
-            .withFont(UIFont.font(.avenir, withWeight: .bold(size: 11.0)))
-            .withAttributedText("asset-remove-title".localized.attributed([.letterSpacing(1.10), .textColor(SharedColors.orange)]))
+            .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
+            .withTextColor(SharedColors.black)
+            .withText("asset-remove-title".localized)
     }()
     
     private lazy var subtitleLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(.overpass, withWeight: .regular(size: 13.0)))
-            .withTextColor(SharedColors.darkGray)
+            .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
+            .withTextColor(SharedColors.inputTitle)
             .withLine(.contained)
             .withAlignment(.left)
             .withText("asset-remove-subtitle".localized)
@@ -41,12 +42,14 @@ class AssetRemovalView: BaseView {
     private(set) lazy var assetsCollectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .vertical
+        flowLayout.minimumLineSpacing = 0.0
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = SharedColors.warmWhite
+        collectionView.backgroundColor = SharedColors.primaryBackground
         collectionView.contentInset = .zero
+        collectionView.layer.cornerRadius = 12.0
         
         collectionView.register(AssetActionableCell.self, forCellWithReuseIdentifier: AssetActionableCell.reusableIdentifier)
         collectionView.register(
@@ -55,14 +58,31 @@ class AssetRemovalView: BaseView {
             withReuseIdentifier: AccountHeaderSupplementaryView.reusableIdentifier
         )
         
+        collectionView.register(
+            AssetRemovalFooterSupplementaryView.self,
+            forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
+            withReuseIdentifier: AssetRemovalFooterSupplementaryView.reusableIdentifier
+        )
+        
         return collectionView
     }()
     
+    override func configureAppearance() {
+        super.configureAppearance()
+        topContainerView.applyMediumShadow()
+    }
+    
     override func prepareLayout() {
         setupTopContainerViewLayout()
+        setupInfoImageViewLayout()
         setupTitleLabelLayout()
         setupSubtitleLabelLayout()
         setupAssetsCollectionViewLayout()
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        topContainerView.setShadowFrames()
     }
 }
 
@@ -76,11 +96,21 @@ extension AssetRemovalView {
         }
     }
 
+    private func setupInfoImageViewLayout() {
+        topContainerView.addSubview(infoImageView)
+        
+        infoImageView.snp.makeConstraints { make in
+            make.leading.top.equalToSuperview().inset(layout.current.defaultInset)
+            make.size.equalTo(layout.current.imageSize)
+        }
+    }
+    
     private func setupTitleLabelLayout() {
         topContainerView.addSubview(titleLabel)
         
         titleLabel.snp.makeConstraints { make in
-            make.leading.top.equalToSuperview().inset(layout.current.labelHorizontalInset)
+            make.top.equalToSuperview().inset(layout.current.defaultInset)
+            make.leading.equalTo(infoImageView.snp.trailing).offset(layout.current.titleHorizontalInset)
         }
     }
     
@@ -90,8 +120,8 @@ extension AssetRemovalView {
         subtitleLabel.snp.makeConstraints { make in
             make.leading.equalTo(titleLabel)
             make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.subtitleTopInset)
-            make.trailing.equalToSuperview().inset(layout.current.labelHorizontalInset)
-            make.bottom.equalToSuperview().inset(layout.current.subtitleBottomInset)
+            make.trailing.equalToSuperview().inset(layout.current.defaultInset)
+            make.bottom.equalToSuperview().inset(layout.current.defaultInset)
             
         }
     }
@@ -100,23 +130,21 @@ extension AssetRemovalView {
         addSubview(assetsCollectionView)
         
         assetsCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(topContainerView.snp.bottom).offset(layout.current.collectionViewTopInset)
-            make.leading.trailing.bottom.equalToSuperview()
+            make.top.equalTo(topContainerView.snp.bottom).offset(layout.current.collectionViewVerticalInset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.bottom.equalToSuperview().inset(layout.current.collectionViewVerticalInset)
         }
     }
 }
 
 extension AssetRemovalView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let horizontalInset: CGFloat = 10.0
-        let containerTopInset: CGFloat = 9.0
-        let labelHorizontalInset: CGFloat = 15.0
-        let subtitleTopInset: CGFloat = 11.0
-        let subtitleBottomInset: CGFloat = 17.0
-        let collectionViewTopInset: CGFloat = 10.0
-    }
-    
-    private enum Colors {
-        static let borderColor = rgb(0.91, 0.91, 0.92)
+        let horizontalInset: CGFloat = 20.0
+        let imageSize = CGSize(width: 24.0, height: 24.0)
+        let defaultInset: CGFloat = 16.0
+        let titleHorizontalInset: CGFloat = 12.0
+        let containerTopInset: CGFloat = 10.0
+        let subtitleTopInset: CGFloat = 8.0
+        let collectionViewVerticalInset: CGFloat = 20.0
     }
 }

@@ -9,17 +9,14 @@
 import UIKit
 
 class ContactInfoViewModel {
-    
     func configure(_ userInformationView: UserInformationView, with contact: Contact) {
         if let imageData = contact.image,
             let image = UIImage(data: imageData) {
-            
-            let resizedImage = image.convert(to: CGSize(width: 108.0, height: 108.0))
-            
+            let resizedImage = image.convert(to: CGSize(width: 88.0, height: 88.0))
             userInformationView.userImageView.image = resizedImage
         }
         
-        userInformationView.addButton.isHidden = true
+        userInformationView.setAddButtonHidden(true)
         userInformationView.contactNameInputView.inputTextField.text = contact.name
         
         if let address = contact.address {
@@ -29,8 +26,9 @@ class ContactInfoViewModel {
     
     func configure(_ cell: ContactAssetCell, at indexPath: IndexPath, with contactAccount: Account?) {
         if indexPath.item == 0 {
-            cell.contextView.assetNameView.verifiedImageView.isHidden = false
+            cell.contextView.assetNameView.removeId()
             cell.contextView.assetNameView.nameLabel.text = "asset-algos-title".localized
+            cell.contextView.assetNameView.setVerified(true)
         } else {
             guard let account = contactAccount else {
                 return

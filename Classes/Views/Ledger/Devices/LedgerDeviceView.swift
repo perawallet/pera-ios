@@ -21,16 +21,16 @@ class LedgerDeviceView: BaseView {
     private lazy var deviceNameLabel: UILabel = {
         UILabel()
             .withLine(.single)
-            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 12.0)))
+            .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
             .withAlignment(.left)
-            .withTextColor(.black)
+            .withTextColor(SharedColors.primaryText)
     }()
     
     private lazy var connectButton: UIButton = {
         UIButton(type: .custom)
             .withTitle("ledger-device-list-connect".localized)
-            .withTitleColor(SharedColors.purple)
-            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 12.0)))
+            .withTitleColor(SharedColors.tertiaryText)
+            .withFont(UIFont.font(withWeight: .semiBold(size: 14.0)))
     }()
     
     override func setListeners() {
@@ -66,7 +66,7 @@ extension LedgerDeviceView {
         addSubview(deviceImageView)
         
         deviceImageView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(layout.current.imageInset)
+            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
             make.centerY.equalToSuperview()
         }
     }
@@ -79,7 +79,7 @@ extension LedgerDeviceView {
         
         connectButton.snp.makeConstraints { make in
             make.top.bottom.equalToSuperview()
-            make.trailing.equalToSuperview().inset(layout.current.buttonTrailingInset)
+            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
         }
     }
     
@@ -87,8 +87,8 @@ extension LedgerDeviceView {
         addSubview(deviceNameLabel)
         
         deviceNameLabel.snp.makeConstraints { make in
-            make.leading.equalTo(deviceImageView.snp.trailing).offset(layout.current.nameLeadingOffset)
-            make.trailing.lessThanOrEqualTo(connectButton.snp.leading).offset(layout.current.nameTrailingOffset)
+            make.leading.equalTo(deviceImageView.snp.trailing).offset(layout.current.nameHorizontalOffset)
+            make.trailing.lessThanOrEqualTo(connectButton.snp.leading).offset(-layout.current.nameHorizontalOffset)
             make.centerY.equalTo(deviceImageView)
         }
     }
@@ -102,10 +102,8 @@ extension LedgerDeviceView {
 
 extension LedgerDeviceView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let imageInset: CGFloat = 16.0
-        let buttonTrailingInset: CGFloat = 15.0
-        let nameLeadingOffset: CGFloat = 10.0
-        let nameTrailingOffset: CGFloat = -20.0
+        let horizontalInset: CGFloat = 20.0
+        let nameHorizontalOffset: CGFloat = 12.0
     }
 }
 

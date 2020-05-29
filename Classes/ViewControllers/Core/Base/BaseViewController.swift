@@ -8,13 +8,21 @@
 
 import UIKit
 
-class BaseViewController: UIViewController {
+class BaseViewController: UIViewController, TabBarConfigurable {
+    var isTabBarHidden = true
+    var tabBarSnapshot: UIView?
     
     var isStatusBarHidden: Bool = false
-    
     var hidesStatusBarWhenAppeared: Bool = false
-    
     var hidesStatusBarWhenPresented: Bool = false
+    
+    private lazy var statusbarView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.layer.zPosition = 1.0
+        view.backgroundColor = SharedColors.testNetBanner
+        return view
+    }()
     
     override var prefersStatusBarHidden: Bool {
         return isStatusBarHidden
@@ -55,6 +63,7 @@ class BaseViewController: UIViewController {
         self.configuration = configuration
         super.init(nibName: nil, bundle: nil)
         configureNavigationBarAppearance()
+        customizeTabBarAppearence()
         beginTracking()
     }
     
@@ -67,11 +76,12 @@ class BaseViewController: UIViewController {
         endTracking()
     }
     
+    func customizeTabBarAppearence() { }
+    
     func configureNavigationBarAppearance() {
     }
     
-    func beginTracking() {
-    }
+    func beginTracking() { }
 
     func endTracking() {
         NotificationCenter.unobserve(self)
@@ -80,20 +90,21 @@ class BaseViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setPrimaryBackgroundColor()
         setNeedsNavigationBarAppearanceUpdate()
         linkInteractors()
         setListeners()
         configureAppearance()
         prepareLayout()
+        
+        navigationController?.navigationBar.titleTextAttributes = [
+            NSAttributedString.Key.font: UIFont.font(withWeight: .semiBold(size: 16.0)),
+            NSAttributedString.Key.foregroundColor: SharedColors.primaryText
+        ]
     }
     
     func configureAppearance() {
-        view.backgroundColor = SharedColors.warmWhite
-        
-        navigationController?.navigationBar.titleTextAttributes = [
-            NSAttributedString.Key.font: UIFont.font(.overpass, withWeight: .semiBold(size: 16.0)),
-            NSAttributedString.Key.foregroundColor: UIColor.black
-        ]
+        view.backgroundColor = SharedColors.primaryBackground
     }
     
     func prepareLayout() {
@@ -109,6 +120,7 @@ class BaseViewController: UIViewController {
         super.viewWillAppear(animated)
         setNeedsStatusBarLayoutUpdateWhenAppearing()
         setNeedsNavigationBarAppearanceUpdateWhenAppearing()
+        setNeedsTabBarAppearanceUpdateOnAppearing()
         
         isViewDisappeared = false
         isViewAppearing = true
@@ -116,6 +128,7 @@ class BaseViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        setNeedsTabBarAppearanceUpdateOnAppeared()
         isViewAppearing = false
         isViewAppeared = true
     }
@@ -131,12 +144,13 @@ class BaseViewController: UIViewController {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+        setNeedsTabBarAppearanceUpdateOnDisappeared()
         isViewDisappearing = false
         isViewDisappeared = true
     }
     
     private func setNeedsNavigationBarAppearanceUpdateWhenAppearing() {
-        navigationController?.setNavigationBarHidden(!shouldShowNavigationBar, animated: false)
+        navigationController?.setNavigationBarHidden(!shouldShowNavigationBar, animated: true)
     }
     
     func didTapBackBarButton() -> Bool {
@@ -145,6 +159,40 @@ class BaseViewController: UIViewController {
     
     func didTapDismissBarButton() -> Bool {
         return true
+    }
+}
+
+extension BaseViewController {
+    func addTestNetBanner() {
+        guard let api = api, api.isTestNet else {
+            removeTestNetBanner()
+            return
+        }
+        
+        let statusBarHeight: CGFloat = UIApplication.shared.statusBarFrame.size.height
+        navigationController?.view.addSubview(statusbarView)
+        
+        statusbarView.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.height.equalTo(statusBarHeight)
+            make.top.leading.trailing.equalToSuperview()
+        }
+    }
+    
+    func removeTestNetBanner() {
+        statusbarView.removeFromSuperview()
+    }
+}
+
+extension BaseViewController {
+    func setPrimaryBackgroundColor() {
+        navigationController?.navigationBar.barTintColor = SharedColors.primaryBackground
+        navigationController?.navigationBar.tintColor = SharedColors.primaryBackground
+    }
+    
+    func setSecondaryBackgroundColor() {
+        navigationController?.navigationBar.barTintColor = SharedColors.secondaryBackground
+        navigationController?.navigationBar.tintColor = SharedColors.secondaryBackground
     }
 }
 

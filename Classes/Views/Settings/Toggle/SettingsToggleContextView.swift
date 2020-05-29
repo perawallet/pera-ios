@@ -8,84 +8,63 @@
 
 import UIKit
 
-protocol SettingsToggleContextViewDelegate: class {
-    func settingsToggle(_ toggle: Toggle, didChangeValue value: Bool, forIndexPath indexPath: IndexPath)
-    func settingsToggleDidTapEdit(forIndexPath indexPath: IndexPath)
-}
-
 class SettingsToggleContextView: BaseView {
     
-    struct LayoutConstants: AdaptiveLayoutConstants {
-        let separatorHeight: CGFloat = 1.0
-        let editButtonInset: CGFloat = 15.0
-        let horizontalInset: CGFloat = 25.0
-        let horizontalOffset: CGFloat = 10.0
-    }
-    
     let layout = Layout<LayoutConstants>()
-    
-    private enum Colors {
-        static let separatorColor = rgb(0.94, 0.94, 0.94)
-    }
     
     weak var delegate: SettingsToggleContextViewDelegate?
     
     var indexPath: IndexPath?
     
-    // MARK: Components
+    private lazy var imageView = UIImageView()
     
     private(set) lazy var nameLabel: UILabel = {
         UILabel()
-            .withTextColor(SharedColors.black)
+            .withTextColor(SharedColors.primaryText)
             .withLine(.single)
             .withAlignment(.left)
-            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 14.0)))
+            .withFont(UIFont.font(withWeight: .semiBold(size: 14.0)))
     }()
     
-    private(set) lazy var editButton: UIButton = {
-        let button = UIButton(type: .custom)
-        button.addTarget(self, action: #selector(didTapEditButton(_:)), for: .touchUpInside)
-        button.setImage(img("icon-server-edit"), for: .normal)
-        return button
-    }()
+    private(set) lazy var toggle = Toggle()
     
-    private(set) lazy var toggle: Toggle = {
-        Toggle()
-    }()
-    
-    private lazy var separatorView: UIView = {
-        let view = UIView()
-        view.backgroundColor = Colors.separatorColor
-        return view
-    }()
-    
-    // MARK: Setup
+    private lazy var separatorView = LineSeparatorView()
     
     override func setListeners() {
         toggle.addTarget(self, action: #selector(didChangeToggle(_:)), for: .touchUpInside)
     }
     
     override func configureAppearance() {
-        backgroundColor = .white
+        backgroundColor = SharedColors.secondaryBackground
     }
     
-    // MARK: Layout
-    
     override func prepareLayout() {
-        
         setupImageViewLayout()
         setupNameLabelLayout()
         setupToggleLayout()
         setupSeparatorViewLayout()
     }
-    
-    private func setupImageViewLayout() {
-        addSubview(editButton)
+}
+
+extension SettingsToggleContextView {
+    @objc
+    private func didChangeToggle(_ toggle: Toggle) {
+        guard let indexPath = self.indexPath else {
+            return
+        }
         
-        editButton.snp.makeConstraints { make in
+        delegate?.settingsToggle(toggle, didChangeValue: toggle.isOn, forIndexPath: indexPath)
+    }
+}
+
+extension SettingsToggleContextView {
+    private func setupImageViewLayout() {
+        addSubview(imageView)
+        
+        imageView.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
-            make.leading.equalToSuperview().inset(layout.current.editButtonInset)
-            make.width.height.equalTo(44)
+            make.size.equalTo(layout.current.imageSize)
+            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
         }
     }
     
@@ -93,8 +72,8 @@ class SettingsToggleContextView: BaseView {
         addSubview(nameLabel)
         
         nameLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(editButton)
-            make.leading.equalTo(editButton.snp.trailing).offset(layout.current.horizontalOffset)
+            make.centerY.equalTo(imageView)
+            make.leading.equalTo(imageView.snp.trailing).offset(layout.current.nameOffset)
         }
     }
     
@@ -102,9 +81,9 @@ class SettingsToggleContextView: BaseView {
         addSubview(toggle)
         
         toggle.snp.makeConstraints { make in
-            make.centerY.equalTo(editButton)
+            make.centerY.equalTo(imageView)
             make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.leading.lessThanOrEqualTo(nameLabel.snp.trailing).offset(15.0)
+            make.leading.greaterThanOrEqualTo(nameLabel.snp.trailing).offset(12.0)
         }
     }
     
@@ -114,28 +93,26 @@ class SettingsToggleContextView: BaseView {
         separatorView.snp.makeConstraints { make in
             make.bottom.equalToSuperview()
             make.height.equalTo(layout.current.separatorHeight)
-            make.leading.trailing.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
         }
     }
 }
 
-// MARK: - Actions
 extension SettingsToggleContextView {
-    @objc
-    fileprivate func didChangeToggle(_ toggle: Toggle) {
-        guard let indexPath = self.indexPath else {
-            return
-        }
-        
-        delegate?.settingsToggle(toggle, didChangeValue: toggle.isOn, forIndexPath: indexPath)
+    func setImage(_ image: UIImage?) {
+        imageView.image = image
     }
-    
-    @objc
-    fileprivate func didTapEditButton(_ button: UIButton) {
-        guard let indexPath = self.indexPath else {
-            return
-        }
-        
-        delegate?.settingsToggleDidTapEdit(forIndexPath: indexPath)
+}
+
+extension SettingsToggleContextView {
+    struct LayoutConstants: AdaptiveLayoutConstants {
+        let separatorHeight: CGFloat = 1.0
+        let nameOffset: CGFloat = 12.0
+        let imageSize = CGSize(width: 24.0, height: 24.0)
+        let horizontalInset: CGFloat = 20.0
     }
+}
+
+protocol SettingsToggleContextViewDelegate: class {
+    func settingsToggle(_ toggle: Toggle, didChangeValue value: Bool, forIndexPath indexPath: IndexPath)
 }

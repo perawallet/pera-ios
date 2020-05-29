@@ -17,33 +17,69 @@ protocol SendAssetTransactionPreviewViewControllerDelegate: class {
     )
 }
 
-class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewController {
+class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewController, TestNetTitleDisplayable {
+    
+    private lazy var assetSupportPresenter = CardModalPresenter(
+        config: ModalConfiguration(
+            animationMode: .normal(duration: 0.25),
+            dismissMode: .scroll
+        ),
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: 422.0))
+    )
+    
+    private lazy var bottomInformationPresenter = CardModalPresenter(
+        config: ModalConfiguration(
+            animationMode: .normal(duration: 0.25),
+            dismissMode: .scroll
+        ),
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: 422.0))
+    )
     
     weak var delegate: SendAssetTransactionPreviewViewControllerDelegate?
     
-    private var assetDetail: AssetDetail
+    private let assetDetail: AssetDetail
     private var isForcedMaxTransaction = false
     private let viewModel: SendAssetTransactionPreviewViewModel
+    
+    override var filterOption: SelectAssetViewController.FilterOption {
+        return .asset(assetDetail: assetDetail)
+    }
     
     init(
         account: Account?,
         assetReceiverState: AssetReceiverState,
         assetDetail: AssetDetail,
+        isSenderEditable: Bool,
         isMaxTransaction: Bool,
         configuration: ViewControllerConfiguration
     ) {
         self.assetDetail = assetDetail
         self.isForcedMaxTransaction = isMaxTransaction
-        viewModel = SendAssetTransactionPreviewViewModel(assetDetail: assetDetail, isForcedMaxTransaction: isMaxTransaction)
-        super.init(account: account, assetReceiverState: assetReceiverState, configuration: configuration)
+        viewModel = SendAssetTransactionPreviewViewModel(
+            assetDetail: assetDetail,
+            isForcedMaxTransaction: isMaxTransaction,
+            isAccountSelectionEnabled: isSenderEditable
+        )
+        super.init(
+            account: account,
+            assetReceiverState: assetReceiverState,
+            isSenderEditable: isSenderEditable,
+            configuration: configuration
+        )
         self.assetFraction = assetDetail.fractionDecimals
     }
     
     override func configureAppearance() {
         super.configureAppearance()
-        title = "title-send-lowercased".localized + " \(assetDetail.getDisplayNames().0)"
         viewModel.configure(sendTransactionPreviewView, with: selectedAccount)
         configureTransactionReceiver()
+        displayTestNetTitleView(with: "title-send".localized + " \(assetDetail.getDisplayNames().0)")
+    }
+    
+    override func configure(forSelected account: Account, with assetDetail: AssetDetail?) {
+        selectedAccount = account
+        viewModel.configure(sendTransactionPreviewView, with: selectedAccount)
+        sendTransactionPreviewView.setAssetSelectionHidden(true)
     }
     
     override func presentAccountList(accountSelectionState: AccountSelectionState) {
@@ -72,14 +108,15 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
         }
         
         if assetTransactionDraft.from.type == .ledger {
-            ledgerApprovalViewController.removeFromParentController()
+            ledgerApprovalViewController?.dismissScreen()
         }
         
         let controller = open(
             .sendAssetTransaction(
                 assetTransactionSendDraft: assetTransactionDraft,
                 transactionController: transactionController,
-                receiver: assetReceiverState
+                receiver: assetReceiverState,
+                isSenderEditable: isSenderEditable
             ),
             by: .push
         )
@@ -104,8 +141,8 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
         case .myAccount:
             validateTransaction()
         default:
-            if let address = sendTransactionPreviewView.transactionReceiverView.passphraseInputView.inputTextView.text,
-                !address.isEmpty {
+            let address = sendTransactionPreviewView.transactionReceiverView.addressText
+            if !address.isEmpty {
                 assetReceiverState = .address(address: address, amount: nil)
                 checkIfAddressIsValidForTransaction(address)
                 return
@@ -115,7 +152,7 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
         }
     }
     
-    override func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, then handler: EmptyHandler?) {
+    override func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, completionHandler: EmptyHandler?) {
         guard let qrAddress = qrText.address else {
             return
         }
@@ -132,7 +169,7 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
             if !isAccountContainsAsset(qrAssetText) {
                 presentAssetNotSupportedAlert(receiverAddress: qrText.address)
                 
-                if let handler = handler {
+                if let handler = completionHandler {
                     handler()
                 }
                 
@@ -143,7 +180,7 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
                 qrAssetText != "\(assetDetailId)" {
                 displaySimpleAlertWith(title: "asset-support-not-same-title".localized, message: "asset-support-not-same-error".localized)
                 
-                if let handler = handler {
+                if let handler = completionHandler {
                     handler()
                 }
                 
@@ -173,7 +210,7 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
     }
     
     private func displayQRAlert(for qrAmount: Int64, to qrAddress: String, with assetId: Int64?) {
-        let configurator = AlertViewConfigurator(
+        let configurator = BottomInformationBundle(
             title: "send-qr-scan-alert-title".localized,
             image: img("icon-qr-alert"),
             explanation: "send-qr-scan-alert-message".localized,
@@ -197,11 +234,11 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
         }
         
         open(
-            .alert(mode: .qr, alertConfigurator: configurator),
+            .bottomInformation(mode: .qr, configurator: configurator),
             by: .customPresentWithoutNavigationController(
-                presentationStyle: .overCurrentContext,
-                transitionStyle: .crossDissolve,
-                transitioningDelegate: nil
+                presentationStyle: .custom,
+                transitionStyle: nil,
+                transitioningDelegate: bottomInformationPresenter
             )
         )
     }
@@ -278,11 +315,11 @@ extension SendAssetTransactionPreviewViewController {
         }
         
         self.open(
-            .assetSupportAlert(assetAlertDraft: assetAlertDraft),
+            .assetSupport(assetAlertDraft: assetAlertDraft),
             by: .customPresentWithoutNavigationController(
-                presentationStyle: .overCurrentContext,
-                transitionStyle: .crossDissolve,
-                transitioningDelegate: nil
+                presentationStyle: .custom,
+                transitionStyle: nil,
+                transitioningDelegate: assetSupportPresenter
             )
         )
     }
@@ -327,7 +364,8 @@ extension SendAssetTransactionPreviewViewController {
             amount: amount,
             assetIndex: assetId,
             assetDecimalFraction: assetDetail.fractionDecimals,
-            isVerifiedAsset: assetDetail.isVerified
+            isVerifiedAsset: assetDetail.isVerified,
+            note: getNoteText()
         )
                
         transactionController.setTransactionDraft(transaction)

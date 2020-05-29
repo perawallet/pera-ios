@@ -15,57 +15,45 @@ class TransactionDetailViewModel {
         and assetDetail: AssetDetail?,
         for account: Account
     ) {
-        configureTransactionStatus(for: transaction, in: view)
-        view.transactionOpponentView.passphraseInputView.inputTextView.isEditable = false
-        
-        view.userAccountView.detailLabel.text = account.name
-        view.transactionOpponentView.titleLabel.text = "send-algos-from".localized
-        view.userAccountView.explanationLabel.text = "send-algos-to".localized
-        view.transactionIdView.detailLabel.text = transaction.id.identifier
-        view.feeView.algosAmountView.mode = .normal(amount: transaction.fee.toAlgos)
-        
-        if let round = transaction.round {
-            view.lastRoundView.detailLabel.text = "\(round)"
+        if let status = transaction.status {
+             view.statusView.setTransactionStatus(status)
         }
         
-        if let contact = transaction.contact {
-            view.transactionOpponentView.state = .contact(contact)
-            view.transactionOpponentView.actionMode = .qrView
-        } else {
-            view.transactionOpponentView.state = .address(address: transaction.from, amount: nil)
-        }
+        view.userView.setTitle("transaction-detail-to".localized)
+        view.userView.setDetail(account.name)
+        
+        view.feeView.setAmountViewMode(.normal(amount: transaction.fee.toAlgos))
+
+        setRound(for: transaction, in: view)
+        
+        view.opponentView.setTitle("transaction-detail-from".localized)
+        setOpponent(for: transaction, with: transaction.from, in: view)
         
         if let assetTransaction = transaction.assetTransfer,
             let assetDetail = assetDetail {
-            view.transactionAmountView.algosAmountView.algoIconImageView.removeFromSuperview()
-            
+            view.closeAmountView.removeFromSuperview()
+            view.closeToView.removeFromSuperview()
             let amount = assetTransaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals)
+
+            let value: TransactionAmountView.Mode = amount == 0
+                ? .normal(amount: amount, isAlgos: false, fraction: assetDetail.fractionDecimals)
+                : .positive(amount: amount, isAlgos: false, fraction: assetDetail.fractionDecimals)
+            view.amountView.setAmountViewMode(value)
             
-            if amount == 0 {
-                view.transactionAmountView.algosAmountView.mode = .normal(
-                    amount: amount,
-                    assetFraction: assetDetail.fractionDecimals
-                )
-            } else {
-                view.transactionAmountView.algosAmountView.mode = .positive(
-                    amount: amount,
-                    assetFraction: assetDetail.fractionDecimals
-                )
-            }
+            view.rewardView.removeFromSuperview()
         } else if let payment = transaction.payment {
-            let amount = payment.amountForTransaction().toAlgos
+            let amount = payment.amountForTransaction(includesCloseAmount: false).toAlgos
+
+            let value: TransactionAmountView.Mode = amount == 0 ? .normal(amount: amount) : .positive(amount: amount)
+            view.amountView.setAmountViewMode(value)
             
-            if amount == 0 {
-                view.transactionAmountView.algosAmountView.mode = .normal(amount: payment.amountForTransaction().toAlgos)
-            } else {
-                view.transactionAmountView.algosAmountView.mode = .positive(amount: payment.amountForTransaction().toAlgos)
-            }
-            
-            if let rewards = payment.rewards, rewards > 0 {
-                view.rewardView.isHidden = false
-                view.rewardView.algosAmountView.amountLabel.text = "\(rewards.toAlgos)"
-            }
+            setCloseAmount(for: transaction, in: view)
+            setCloseTo(for: transaction, in: view)
+            setReward(for: transaction, in: view)
         }
+        
+        view.idView.setDetail(transaction.id.identifier)
+        setNote(for: transaction, in: view)
     }
     
     func configureSentTransaction(
@@ -74,86 +62,103 @@ class TransactionDetailViewModel {
         and assetDetail: AssetDetail?,
         for account: Account
     ) {
-        configureTransactionStatus(for: transaction, in: view)
-        view.transactionOpponentView.passphraseInputView.inputTextView.isEditable = false
-        
-        view.userAccountView.detailLabel.text = account.name
-        view.userAccountView.explanationLabel.text = "send-algos-from".localized
-        view.transactionOpponentView.titleLabel.text = "send-algos-to".localized
-        view.transactionIdView.detailLabel.text = transaction.id.identifier
-        view.feeView.algosAmountView.mode = .normal(amount: transaction.fee.toAlgos)
-        
-        if let round = transaction.round {
-            view.lastRoundView.detailLabel.text = "\(round)"
+        if let status = transaction.status {
+             view.statusView.setTransactionStatus(status)
         }
         
-        if let assetTransaction = transaction.assetTransfer {
-            if let contact = transaction.contact {
-                view.transactionOpponentView.state = .contact(contact)
-                view.transactionOpponentView.actionMode = .qrView
-            } else {
-                view.transactionOpponentView.state = .address(address: assetTransaction.receiverAddress ?? "", amount: nil)
-            }
-        }
+        setReward(for: transaction, in: view)
+        
+        view.userView.setTitle("transaction-detail-from".localized)
+        view.userView.setDetail(account.name)
+        
+        view.feeView.setAmountViewMode(.normal(amount: transaction.fee.toAlgos))
+
+        setRound(for: transaction, in: view)
+        
+        view.opponentView.setTitle("transaction-detail-to".localized)
         
         if let assetTransaction = transaction.assetTransfer,
             let assetDetail = assetDetail {
-            
-            view.transactionAmountView.algosAmountView.algoIconImageView.removeFromSuperview()
+            view.closeAmountView.removeFromSuperview()
+            view.closeToView.removeFromSuperview()
+            setOpponent(for: transaction, with: assetTransaction.receiverAddress ?? "", in: view)
             
             let amount = assetTransaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals)
             
-            if amount == 0 {
-                view.transactionAmountView.algosAmountView.mode = .normal(
-                    amount: amount,
-                    assetFraction: assetDetail.fractionDecimals
-                )
-            } else {
-                view.transactionAmountView.algosAmountView.mode = .negative(
-                    amount: amount,
-                    assetFraction: assetDetail.fractionDecimals
-                )
-            }
+            let value: TransactionAmountView.Mode = amount == 0
+                ? .normal(amount: amount, isAlgos: false, fraction: assetDetail.fractionDecimals)
+                : .negative(amount: amount, isAlgos: false, fraction: assetDetail.fractionDecimals)
+            view.amountView.setAmountViewMode(value)
+            
         } else if let payment = transaction.payment {
-            if let contact = transaction.contact {
-                view.transactionOpponentView.state = .contact(contact)
-                view.transactionOpponentView.actionMode = .qrView
-            } else {
-                view.transactionOpponentView.state = .address(address: payment.toAddress, amount: nil)
-            }
+            setOpponent(for: transaction, with: payment.toAddress, in: view)
             
-            let amount = payment.amountForTransaction().toAlgos
+            let amount = payment.amountForTransaction(includesCloseAmount: false).toAlgos
+
+            let value: TransactionAmountView.Mode = amount == 0 ? .normal(amount: amount) : .negative(amount: amount)
+            view.amountView.setAmountViewMode(value)
             
-            if amount == 0 {
-                view.transactionAmountView.algosAmountView.mode = .normal(amount: payment.amountForTransaction().toAlgos)
-            } else {
-                view.transactionAmountView.algosAmountView.mode = .negative(amount: payment.amountForTransaction().toAlgos)
-            }
+            setCloseAmount(for: transaction, in: view)
+            setCloseTo(for: transaction, in: view)
         }
         
-        if let rewards = transaction.fromRewards, rewards > 0 {
-            view.rewardView.isHidden = false
-            view.rewardView.algosAmountView.amountLabel.text = "\(rewards.toAlgos)"
+        view.idView.setDetail(transaction.id.identifier)
+        setNote(for: transaction, in: view)
+    }
+    
+    private func setCloseAmount(for transaction: Transaction, in view: TransactionDetailView) {
+        if let closeAmount = transaction.payment?.closeAmountForTransaction()?.toAlgos {
+            view.closeAmountView.setAmountViewMode(.normal(amount: closeAmount))
+        } else {
+            view.closeAmountView.removeFromSuperview()
         }
     }
     
-    private func configureTransactionStatus(for transaction: Transaction, in view: TransactionDetailView) {
-        guard let status = transaction.status else {
-            return
+    private func setCloseTo(for transaction: Transaction, in view: TransactionDetailView) {
+        if let closeAddress = transaction.payment?.closeAddress {
+            view.closeToView.setDetail(closeAddress)
+        } else {
+            view.closeToView.removeFromSuperview()
         }
-        
-        view.transactionStatusView.detailLabel.text = status.rawValue
-        view.transactionStatusView.detailLabel.font = UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))
-        switch status {
-        case .completed:
-            view.transactionStatusView.detailLabel.textColor = SharedColors.purple
-            view.transactionStatusView.pendingSpinnerView.stop()
-            view.lastRoundView.isHidden = false
-        case .pending:
-            view.transactionStatusView.pendingSpinnerView.show()
-            view.lastRoundView.isHidden = true
-        default:
-            view.lastRoundView.isHidden = true
+    }
+    
+    func setOpponent(for transaction: Transaction, with address: String, in view: TransactionDetailView) {
+        if let contact = transaction.contact {
+            view.opponentView.setContact(contact)
+            view.opponentView.setContactButtonImage(img("icon-qr-view"))
+        } else {
+            view.opponentView.setContactButtonImage(img("icon-user-add"))
+            view.opponentView.setName(address)
+            view.opponentView.setContactImage(hidden: true)
+        }
+    }
+    
+    private func setRound(for transaction: Transaction, in view: TransactionDetailView) {
+        if transaction.isPending() {
+            view.roundView.removeFromSuperview()
+        } else {
+            if let round = transaction.round {
+                view.roundView.setDetail("\(round)")
+            }
+        }
+    }
+    
+    private func setReward(for transaction: Transaction, in view: TransactionDetailView) {
+        if let rewards = transaction.fromRewards, rewards > 0 {
+            view.rewardView.setAmountViewMode(.normal(amount: rewards.toAlgos))
+        } else {
+            view.rewardView.removeFromSuperview()
+        }
+    }
+    
+    private func setNote(for transaction: Transaction, in view: TransactionDetailView) {
+        if let noteData = transaction.noteb64, !noteData.isEmpty {
+            let utf8String = String(data: noteData, encoding: .utf8)
+            view.noteView.setDetail(utf8String ?? noteData.base64EncodedString())
+            view.noteView.setSeparatorView(hidden: true)
+        } else {
+            view.idView.setSeparatorView(hidden: true)
+            view.noteView.removeFromSuperview()
         }
     }
 }

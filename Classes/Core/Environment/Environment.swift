@@ -23,20 +23,30 @@ class Environment {
     lazy var serverSchema: String = {
         switch target {
         case .staging:
-            return "http"
+            return testNetSchema
         case .prod:
-            return "https"
+            return mainNetSchema
         }
     }()
+    
+    lazy var isTestNet = target == .staging
+    
+    lazy var testNetSchema = "http"
+    
+    lazy var mainNetSchema = "https"
     
     lazy var serverHost: String = {
         switch target {
         case .staging:
-            return "3.15.4.163:8080"
+            return testNetHost
         case .prod:
-            return "indexer.algorand.network:8443"
+            return mainNetHost
         }
     }()
+    
+    lazy var testNetHost = "indexer-testnet.algorand.network:8080"
+    
+    lazy var mainNetHost = "indexer.algorand.network:8443"
     
     lazy var binanceHost = "api.binance.com"
     
@@ -46,6 +56,10 @@ class Environment {
         let api = "\(serverSchema)://\(serverHost)"
         return api
     }()
+    
+    lazy var testNetApi = "\(testNetSchema)://\(testNetHost)"
+    
+    lazy var mainNetApi = "\(mainNetSchema)://\(mainNetHost)"
     
     lazy var binanceApi: String = {
         let api = "https://\(binanceHost)"
@@ -61,14 +75,22 @@ class Environment {
         }
     }()
     
+    lazy var testNetMobileApi = "https://staging.\(mobileHost)"
+    
+    lazy var mainNetMobileApi = "https://\(mobileHost)"
+    
     lazy var serverToken: String = {
         switch target {
         case .staging:
-            return "402049a2fde425a3e0e81b41c4c32fd70104544caee916ec86adea955f04c14b"
+            return testNetToken
         case .prod:
-            return "0f24cac92e5ead6afbcf389e0ade28bb609d24ca6687359f342748c68d6cf9b2"
+            return mainNetToken
         }
     }()
+    
+    lazy var testNetToken = "402049a2fde425a3e0e81b41c4c32fd70104544caee916ec86adea955f04c14b"
+    
+    lazy var mainNetToken = "0f24cac92e5ead6afbcf389e0ade28bb609d24ca6687359f342748c68d6cf9b2"
     
     lazy var algorandNodeName: String = {
         switch target {

@@ -20,4 +20,5 @@ struct AssetTransactionSendDraft: TransactionSendDraft {
     var closeAssetsTo: String?
     var assetDecimalFraction = 0
     var isVerifiedAsset = false
+    var note: String?
 }

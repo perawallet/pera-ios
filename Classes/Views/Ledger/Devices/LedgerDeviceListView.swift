@@ -17,33 +17,42 @@ class LedgerDeviceListView: BaseView {
     private(set) lazy var devicesCollectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .vertical
-        flowLayout.minimumLineSpacing = 7.0
+        flowLayout.minimumLineSpacing = 4.0
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = SharedColors.warmWhite
+        collectionView.bounces = false
+        collectionView.isScrollEnabled = false
+        collectionView.backgroundColor = SharedColors.primaryBackground
         collectionView.contentInset = layout.current.listContentInset
         collectionView.register(LedgerDeviceCell.self, forCellWithReuseIdentifier: LedgerDeviceCell.reusableIdentifier)
         return collectionView
     }()
     
-    private lazy var searchingSpinnerView = LoadingSpinnerView()
-    
     private lazy var searchingDevicesLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(.avenir, withWeight: .medium(size: 14.0)))
-            .withTextColor(.black)
+            .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
+            .withTextColor(SharedColors.primaryText)
             .withLine(.single)
-            .withAlignment(.center)
+            .withAlignment(.left)
             .withText("ledger-device-list-looking".localized)
     }()
     
-    private lazy var troubleshootButton: UIButton = {
-        UIButton(type: .custom)
-            .withBackgroundImage(img("bg-purple-light"))
-            .withTitle("ledger-device-list-troubleshoot".localized)
-            .withTitleColor(SharedColors.purple)
-            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 12.0)))
+    private lazy var searchingSpinnerView = LoadingSpinnerView()
+    
+    private lazy var troubleshootButton: AlignedButton = {
+        let positions: AlignedButton.StylePositionAdjustment = (
+            image: CGPoint(x: -19.0, y: 0.0),
+            title: CGPoint(x: UIScreen.main.bounds.width / 2 - 75.0, y: 0.0)
+        )
+        let button = AlignedButton(style: .imageRight(positions))
+        button.setImage(img("img-question-24"), for: .normal)
+        button.setTitle("ledger-device-list-troubleshoot".localized, for: .normal)
+        button.setTitleColor(SharedColors.primaryButtonTitle, for: .normal)
+        button.titleLabel?.font = UIFont.font(withWeight: .semiBold(size: 16.0))
+        button.setBackgroundImage(img("bg-gray-600-button"), for: .normal)
+        button.titleLabel?.textAlignment = .center
+        return button
     }()
 
     override func setListeners() {
@@ -52,9 +61,9 @@ class LedgerDeviceListView: BaseView {
     
     override func prepareLayout() {
         setupTroubleshootButtonLayout()
+        setupDevicesCollectionViewLayout()
         setupSearchingDevicesLabelLayout()
         setupSearchingSpinnerViewLayout()
-        setupDevicesCollectionViewLayout()
     }
 }
 
@@ -71,26 +80,8 @@ extension LedgerDeviceListView {
         
         troubleshootButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
             make.bottom.equalToSuperview().inset(layout.current.buttonBottomInset)
-        }
-    }
-    
-    private func setupSearchingDevicesLabelLayout() {
-        addSubview(searchingDevicesLabel)
-        
-        searchingDevicesLabel.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.bottom.equalTo(troubleshootButton.snp.top).offset(layout.current.searchLabelBottomInset)
-        }
-    }
-    
-    private func setupSearchingSpinnerViewLayout() {
-        addSubview(searchingSpinnerView)
-        
-        searchingSpinnerView.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.size.equalTo(layout.current.spinnerSize)
-            make.bottom.equalTo(searchingDevicesLabel.snp.top).offset(layout.current.spinnerBottomInset)
         }
     }
     
@@ -100,7 +91,26 @@ extension LedgerDeviceListView {
         devicesCollectionView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.top.equalToSuperview()
-            make.bottom.equalTo(searchingSpinnerView.snp.top).offset(layout.current.listBottomInset)
+            make.height.equalTo(layout.current.collectionViewHeight)
+        }
+    }
+    
+    private func setupSearchingDevicesLabelLayout() {
+        addSubview(searchingDevicesLabel)
+        
+        searchingDevicesLabel.snp.makeConstraints { make in
+            make.top.equalTo(devicesCollectionView.snp.bottom).offset(layout.current.devicesLabelTopOffset)
+            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
+        }
+    }
+    
+    private func setupSearchingSpinnerViewLayout() {
+        addSubview(searchingSpinnerView)
+        
+        searchingSpinnerView.snp.makeConstraints { make in
+            make.centerY.equalTo(searchingDevicesLabel)
+            make.leading.equalTo(searchingDevicesLabel.snp.trailing).offset(layout.current.spinnerLeadingInset)
+            make.size.equalTo(layout.current.spinnerSize)
         }
     }
 }
@@ -118,16 +128,24 @@ extension LedgerDeviceListView {
         searchingDevicesLabel.isHidden = !isVisible
         searchingSpinnerView.isHidden = !isVisible
     }
+    
+    func invalidateContentSize(by size: Int) {
+        devicesCollectionView.snp.updateConstraints { make in
+            make.height.equalTo(size * layout.current.deviceItemTotalSize)
+        }
+    }
 }
 
 extension LedgerDeviceListView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
+        let deviceItemTotalSize = 64
         let buttonBottomInset: CGFloat = 60.0
-        let listContentInset = UIEdgeInsets(top: 20.0, left: 0.0, bottom: 0.0, right: 0.0)
-        let listBottomInset: CGFloat = -30.0
-        let searchLabelBottomInset: CGFloat = -20.0
-        let spinnerBottomInset: CGFloat = -30.0
-        let spinnerSize = CGSize(width: 22.0, height: 22.0)
+        let listContentInset = UIEdgeInsets(top: 10.0, left: 0.0, bottom: 0.0, right: 0.0)
+        let horizontalInset: CGFloat = 20.0
+        let spinnerLeadingInset: CGFloat = 13.0
+        let devicesLabelTopOffset: CGFloat = 12.0
+        let collectionViewHeight: CGFloat = 0.0
+        let spinnerSize = CGSize(width: 17.5, height: 17.5)
     }
 }
 

@@ -10,66 +10,41 @@ import UIKit
 
 class RewardAmountContainerView: BaseView {
     
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let titleTopInset: CGFloat = 9.0
-        let separatorHeight: CGFloat = 1.0
-        let separatorTopInset: CGFloat = 7.0
-        let imageSize = CGSize(width: 16.0, height: 16.0)
-        let imageTrailingInset: CGFloat = -4.0
-        let amountVerticalInset: CGFloat = 12.0
-        let amountCenterOffset: CGFloat = 10.0
-    }
-    
     private let layout = Layout<LayoutConstants>()
     
-    private enum Colors {
-        static let separatorColor = rgb(0.94, 0.94, 0.94)
-    }
-    
-    // MARK: Components
-    
-    private(set) lazy var titleLabel: UILabel = {
+    private lazy var titleLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 10.0)))
-            .withTextColor(SharedColors.darkGray)
+            .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
+            .withTextColor(SharedColors.primaryText)
             .withLine(.single)
             .withAlignment(.center)
+            .withText("rewards-since-last-text".localized)
     }()
     
-    private lazy var separatorView: UIView = {
-        let view = UIView()
-        view.backgroundColor = Colors.separatorColor
-        return view
-    }()
-    
-    private(set) lazy var algoIconImageView = UIImageView(image: img("algo-icon-accounts", isTemplate: true))
+    private(set) lazy var algoIconImageView = UIImageView(image: img("icon-algorand-asset-detail", isTemplate: true))
     
     private(set) lazy var amountLabel: UILabel = {
         UILabel()
             .withAlignment(.center)
             .withLine(.single)
-            .withTextColor(SharedColors.darkGray)
-            .withFont(UIFont.font(.overpass, withWeight: .bold(size: 24.0)))
+            .withTextColor(SharedColors.primary)
+            .withFont(UIFont.font(withWeight: .semiBold(size: 28.0)))
     }()
     
-    // MARK: Setup
-    
     override func configureAppearance() {
-        layer.cornerRadius = 6.0
-        backgroundColor = .white
-        layer.borderColor = Colors.separatorColor.cgColor
-        layer.borderWidth = 1.0
+        super.configureAppearance()
+        algoIconImageView.tintColor = SharedColors.primary
+        layer.cornerRadius = 12.0
     }
-    
-    // MARK: Layout
     
     override func prepareLayout() {
         setupTitleLabelLayout()
-        setupSeparatorViewLayout()
         setupAmountLabelLayout()
         setupAlgoIconImageViewLayout()
     }
-    
+}
+
+extension RewardAmountContainerView {
     private func setupTitleLabelLayout() {
         addSubview(titleLabel)
         
@@ -79,23 +54,14 @@ class RewardAmountContainerView: BaseView {
         }
     }
     
-    private func setupSeparatorViewLayout() {
-        addSubview(separatorView)
-        
-        separatorView.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.separatorTopInset)
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(layout.current.separatorHeight)
-        }
-    }
-    
     private func setupAmountLabelLayout() {
         addSubview(amountLabel)
         
         amountLabel.snp.makeConstraints { make in
-            make.top.equalTo(separatorView.snp.bottom).offset(layout.current.amountVerticalInset)
+            make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.amountTopInset)
             make.centerX.equalToSuperview().offset(layout.current.amountCenterOffset)
-            make.bottom.equalToSuperview().inset(layout.current.amountVerticalInset)
+            make.bottom.equalToSuperview().inset(layout.current.amountBottomInset)
+            make.trailing.lessThanOrEqualToSuperview().inset(layout.current.amountCenterOffset)
         }
     }
     
@@ -107,5 +73,16 @@ class RewardAmountContainerView: BaseView {
             make.size.equalTo(layout.current.imageSize)
             make.centerY.equalTo(amountLabel)
         }
+    }
+}
+
+extension RewardAmountContainerView {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let titleTopInset: CGFloat = 20.0
+        let imageSize = CGSize(width: 24.0, height: 24.0)
+        let imageTrailingInset: CGFloat = -4.0
+        let amountTopInset: CGFloat = 4.0
+        let amountBottomInset: CGFloat = 20.0
+        let amountCenterOffset: CGFloat = 13.0
     }
 }

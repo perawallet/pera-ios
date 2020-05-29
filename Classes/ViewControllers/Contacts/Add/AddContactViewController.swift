@@ -8,19 +8,17 @@
 
 import UIKit
 
-protocol AddContactViewControllerDelegate: class {
-    
-    func addContactViewController(_ addContactViewController: AddContactViewController, didSave contact: Contact)
-}
-
 class AddContactViewController: BaseScrollViewController {
-
-    // MARK: Components
     
-    private(set) lazy var addContactView: AddContactView = {
-        let view = AddContactView()
-        return view
-    }()
+    private lazy var removeContactModalPresenter = CardModalPresenter(
+        config: ModalConfiguration(
+            animationMode: .normal(duration: 0.25),
+            dismissMode: .scroll
+        ),
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: 382.0))
+    )
+    
+    private(set) lazy var addContactView = AddContactView()
     
     private var isUserEdited = false
     
@@ -34,12 +32,8 @@ class AddContactViewController: BaseScrollViewController {
     
     init(mode: Mode, configuration: ViewControllerConfiguration) {
         self.mode = mode
-        
         imagePicker = ImagePicker()
-        
         super.init(configuration: configuration)
-        
-        hidesBottomBarWhenPushed = true
     }
     
     override func configureNavigationBarAppearance() {
@@ -56,13 +50,13 @@ class AddContactViewController: BaseScrollViewController {
             self.checkFieldsHaveChanges()
             
             if self.isUserEdited {
-                self.presentDisabledLocalAuthenticationAlert()
+                self.presentCloseWithoutSavingAlert()
             } else {
                 self.closeScreen(by: .dismiss, animated: true)
             }
         }
         
-        let saveBarButtonItem = ALGBarButtonItem(kind: .save) {
+        let saveBarButtonItem = ALGBarButtonItem(kind: .done) {
             if let keyedValues = self.parseFieldsForContact() {
                 self.edit(contact, with: keyedValues)
             }
@@ -88,15 +82,15 @@ class AddContactViewController: BaseScrollViewController {
         }
     }
     
-    private func presentDisabledLocalAuthenticationAlert() {
+    private func presentCloseWithoutSavingAlert() {
         let alertController = UIAlertController(
             title: "contacts-close-warning-subtitle".localized,
             message: "contacts-close-warning-subtitle".localized,
             preferredStyle: .alert
         )
         
-        let cancelAction = UIAlertAction(title: "title-cancel-lowercased".localized, style: .cancel, handler: nil)
-        let doneAction = UIAlertAction(title: "title-done-lowercased".localized, style: .default) { _ in
+        let cancelAction = UIAlertAction(title: "title-cancel".localized, style: .cancel, handler: nil)
+        let doneAction = UIAlertAction(title: "title-done".localized, style: .default) { _ in
             self.closeScreen(by: .dismiss, animated: true)
         }
         
@@ -105,8 +99,6 @@ class AddContactViewController: BaseScrollViewController {
         
         present(alertController, animated: true, completion: nil)
     }
-    
-    // MARK: Setup
     
     override func configureAppearance() {
         super.configureAppearance()
@@ -119,11 +111,13 @@ class AddContactViewController: BaseScrollViewController {
                 addContactView.userInformationView.algorandAddressInputView.value = address
             }
             addContactView.userInformationView.contactNameInputView.inputTextField.text = name
+            
+            addContactView.deleteContactButton.isHidden = true
         case let .edit(contact):
-            title = "contacts-edit".localized
+            title = "contacts-info-edit".localized
             
             addContactView.addContactButton.isHidden = true
-            
+            addContactView.setUserActionButtonIcon(img("icon-edit-white"))
             addContactView.userInformationView.contactNameInputView.inputTextField.text = contact.name
             
             if let address = contact.address {
@@ -132,7 +126,7 @@ class AddContactViewController: BaseScrollViewController {
             
             if let imageData = contact.image,
                 let image = UIImage(data: imageData) {
-                let resizedImage = image.convert(to: CGSize(width: 108.0, height: 108.0))
+                let resizedImage = image.convert(to: CGSize(width: 88.0, height: 88.0))
                 
                 addContactView.userInformationView.userImageView.image = resizedImage
             }
@@ -141,7 +135,6 @@ class AddContactViewController: BaseScrollViewController {
     
     override func setListeners() {
         super.setListeners()
-        
         keyboardController.beginTracking()
     }
     
@@ -150,8 +143,6 @@ class AddContactViewController: BaseScrollViewController {
         addContactView.delegate = self
         scrollView.touchDetectingDelegate = self
     }
-    
-    // MARK: Layout
     
     override func prepareLayout() {
         super.prepareLayout()
@@ -165,21 +156,23 @@ class AddContactViewController: BaseScrollViewController {
     }
 }
 
-// MARK: AddContactViewDelegate
-
 extension AddContactViewController: AddContactViewDelegate {
+    func addContactViewDidTapActionButton(_ addContactView: AddContactView) {
+        switch mode {
+        case .new:
+            guard let keyedValues = parseFieldsForContact() else {
+                return
+            }
+            
+            addContact(with: keyedValues)
+        case let .edit(contact):
+            displayDeleteAlert(for: contact)
+        }
+    }
     
     func addContactViewDidTapAddImageButton(_ addContactView: AddContactView) {
         imagePicker.delegate = self
         imagePicker.present(from: self)
-    }
-    
-    func addContactViewDidTapAddContactButton(_ addContactView: AddContactView) {
-        guard let keyedValues = parseFieldsForContact() else {
-            return
-        }
-        
-        addContact(with: keyedValues)
     }
     
     private func parseFieldsForContact() -> [String: Any]? {
@@ -259,23 +252,42 @@ extension AddContactViewController: AddContactViewDelegate {
         
         qrScannerViewController.delegate = self
     }
+    
+    private func displayDeleteAlert(for contact: Contact) {
+        let configurator = BottomInformationBundle(
+            title: "contacts-delete-contact".localized,
+            image: img("img-remove-account"),
+            explanation: "contacts-delete-contact-alert-explanation".localized,
+            actionTitle: "contacts-delete-contact".localized,
+            actionImage: img("bg-button-red"),
+            closeTitle: "title-keep".localized) {
+                contact.remove(entity: Contact.entityName)
+                NotificationCenter.default.post(name: .ContactDeletion, object: self, userInfo: ["contact": contact])
+                self.dismissScreen()
+                return
+        }
+        
+        open(
+            .bottomInformation(mode: .action, configurator: configurator),
+            by: .customPresentWithoutNavigationController(
+                presentationStyle: .custom,
+                transitionStyle: nil,
+                transitioningDelegate: removeContactModalPresenter
+            )
+        )
+    }
 }
 
-// MARK: ImagePickerDelegate
-
 extension AddContactViewController: ImagePickerDelegate {
-    
     func imagePicker(didPick image: UIImage, withInfo info: [String: Any]) {
         isUserEdited = true
-        let resizedImage = image.convert(to: CGSize(width: 108.0, height: 108.0))
+        addContactView.setUserActionButtonIcon(img("icon-edit-white"))
+        let resizedImage = image.convert(to: CGSize(width: 88.0, height: 88.0))
         addContactView.userInformationView.userImageView.image = resizedImage
     }
 }
 
-// MARK: KeyboardControllerDataSource
-
 extension AddContactViewController: KeyboardControllerDataSource {
-    
     func bottomInsetWhenKeyboardPresented(for keyboardController: KeyboardController) -> CGFloat {
         return 15.0
     }
@@ -293,14 +305,12 @@ extension AddContactViewController: KeyboardControllerDataSource {
     }
 }
 
-// MARK: QRScannerViewControllerDelegate
-
 extension AddContactViewController: QRScannerViewControllerDelegate {
-    func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, then handler: EmptyHandler?) {
+    func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, completionHandler: EmptyHandler?) {
         guard qrText.mode == .address,
             let qrAddress = qrText.address else {
             displaySimpleAlertWith(title: "title-error".localized, message: "qr-scan-should-scan-address-message".localized) { _ in
-                if let handler = handler {
+                if let handler = completionHandler {
                     handler()
                 }
             }
@@ -310,29 +320,23 @@ extension AddContactViewController: QRScannerViewControllerDelegate {
         addContactView.userInformationView.algorandAddressInputView.value = qrAddress
     }
     
-    func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError, then handler: EmptyHandler?) {
+    func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError, completionHandler: EmptyHandler?) {
         displaySimpleAlertWith(title: "title-error".localized, message: "qr-scan-should-scan-valid-qr".localized) { _ in
-            if let handler = handler {
+            if let handler = completionHandler {
                 handler()
             }
         }
     }
 }
 
-// MARK: Mode
-
 extension AddContactViewController {
-    
     enum Mode {
         case new(address: String? = nil, name: String? = nil)
         case edit(contact: Contact)
     }
 }
 
-// MARK: TouchDetectingScrollViewDelegate
-
 extension AddContactViewController: TouchDetectingScrollViewDelegate {
-    
     func scrollViewDidDetectTouchEvent(scrollView: TouchDetectingScrollView, in point: CGPoint) {
         if addContactView.addContactButton.frame.contains(point) ||
             addContactView.userInformationView.algorandAddressInputView.frame.contains(point) {
@@ -341,4 +345,8 @@ extension AddContactViewController: TouchDetectingScrollViewDelegate {
         
         contentView.endEditing(true)
     }
+}
+
+protocol AddContactViewControllerDelegate: class {
+    func addContactViewController(_ addContactViewController: AddContactViewController, didSave contact: Contact)
 }

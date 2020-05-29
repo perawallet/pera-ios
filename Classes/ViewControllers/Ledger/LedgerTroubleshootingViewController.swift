@@ -12,6 +12,16 @@ class LedgerTroubleshootingViewController: BaseScrollViewController {
     
     private lazy var ledgerTutorialInstructionListView = LedgerTutorialInstructionListView()
     
+    override func configureNavigationBarAppearance() {
+        super.configureNavigationBarAppearance()
+        
+        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [unowned self] in
+            self.closeScreen(by: .dismiss, animated: true)
+        }
+        
+        leftBarButtonItems = [closeBarButtonItem]
+    }
+    
     override func configureAppearance() {
         super.configureAppearance()
         title = "ledger-troubleshooting-title".localized
@@ -19,23 +29,12 @@ class LedgerTroubleshootingViewController: BaseScrollViewController {
     
     override func linkInteractors() {
         super.linkInteractors()
-        
         ledgerTutorialInstructionListView.delegate = self
     }
     
     override func prepareLayout() {
         super.prepareLayout()
         setupLedgerTroubleshootingViewLayout()
-    }
-    
-    override func configureNavigationBarAppearance() {
-        super.configureNavigationBarAppearance()
-        
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [weak self] in
-            self?.closeScreen(by: .dismiss, animated: true)
-        }
-        
-        leftBarButtonItems = [closeBarButtonItem]
     }
 }
 
@@ -49,7 +48,6 @@ extension LedgerTroubleshootingViewController {
     }
 }
 
-// MARK: LedgerTutorialInstructionListViewDelegate
 extension LedgerTroubleshootingViewController: LedgerTutorialInstructionListViewDelegate {
     func ledgerTutorialInstructionListViewDidTapOpenApp(_ view: LedgerTutorialInstructionListView) {
         open(.ledgerTroubleshootOpenApp, by: .present)

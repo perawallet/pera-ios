@@ -8,17 +8,9 @@
 
 import UIKit
 
-protocol AssetInputViewDelegate: class {
-    func assetInputViewDidTapMaxButton(_ assetInputView: AssetInputView)
-}
-
 class AssetInputView: BaseView {
     
     private let layout = Layout<LayoutConstants>()
-    
-    private enum Colors {
-        static let borderColor = rgb(0.91, 0.91, 0.92)
-    }
     
     weak var delegate: AssetInputViewDelegate?
     
@@ -28,60 +20,49 @@ class AssetInputView: BaseView {
     private var inputFieldFraction: Int
     private let maximumAmount: Int64
     
-    // MARK: Components
-    
-    private(set) lazy var explanationLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.font(.avenir, withWeight: .medium(size: 13.0))
-        label.textColor = SharedColors.greenishGray
-        label.text = "send-algos-amount".localized
-        return label
+    private lazy var explanationLabel: UILabel = {
+        UILabel()
+            .withTextColor(SharedColors.subtitleText)
+            .withLine(.single)
+            .withAlignment(.left)
+            .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
+            .withText("send-algos-amount".localized)
     }()
     
     private lazy var containerView: UIView = {
         let view = UIView()
-        view.layer.borderWidth = 1.0
-        view.layer.borderColor = Colors.borderColor.cgColor
-        view.layer.cornerRadius = 4.0
-        view.backgroundColor = .white
+        view.layer.cornerRadius = 12.0
+        view.backgroundColor = SharedColors.secondaryBackground
         return view
     }()
     
-    private(set) lazy var algosImageView = UIImageView(image: img("icon-algo-black"))
-    
-    private(set) lazy var maxButton: UIButton = {
+    private lazy var maxButton: UIButton = {
         let button = UIButton(type: .custom)
         button.isHidden = true
-        button.titleLabel?.font = UIFont.font(.avenir, withWeight: .bold(size: 10.0))
-        button.setAttributedTitle("title-max".localized.attributed([.letterSpacing(1.10), .textColor(SharedColors.gray)]), for: .normal)
-        button.setBackgroundImage(img("bg-max-button"), for: .normal)
-        button.layer.borderWidth = 1.0
-        button.layer.borderColor = Colors.borderColor.cgColor
-        button.layer.cornerRadius = 4.0
+        button.titleLabel?.font = UIFont.font(withWeight: .semiBold(size: 12.0))
+        button.setTitleColor(SharedColors.gray500, for: .normal)
+        button.setTitle("title-max".localized, for: .normal)
+        button.backgroundColor = SharedColors.secondaryBackground
+        button.layer.borderWidth = 2.0
+        button.layer.borderColor = SharedColors.gray200.cgColor
+        button.layer.cornerRadius = 8.0
         return button
     }()
     
     private(set) lazy var inputTextField: CursorlessTextField = {
         let textField = CursorlessTextField()
-        textField.textColor = .black
-        textField.tintColor = .black
+        textField.textColor = SharedColors.primaryText
+        textField.tintColor = SharedColors.primaryText
         textField.keyboardType = .numberPad
-        textField.font = UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))
+        textField.font = UIFont.font(withWeight: .medium(size: 14.0))
         textField.attributedPlaceholder = NSAttributedString(
             string: "0".currencyInputFormatting(with: inputFieldFraction) ?? "0.000000",
-            attributes: [NSAttributedString.Key.foregroundColor: UIColor.black,
-                         NSAttributedString.Key.font: UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))]
+            attributes: [NSAttributedString.Key.foregroundColor: SharedColors.informationText,
+                         NSAttributedString.Key.font: UIFont.font(withWeight: .medium(size: 14.0))]
         )
-        textField.addTarget(self, action: #selector(didChangeText(_:)), for: .editingChanged)
-        textField.delegate = self
-        textField.adjustsFontSizeToFitWidth = true
         textField.textAlignment = .left
         return textField
     }()
-    
-    var isEditing: Bool {
-        return inputTextField.isFirstResponder
-    }
     
     func beginEditing() {
         _ = inputTextField.becomeFirstResponder()
@@ -94,16 +75,30 @@ class AssetInputView: BaseView {
         super.init(frame: .zero)
     }
     
+    override func configureAppearance() {
+        super.configureAppearance()
+        containerView.applySmallShadow()
+    }
+    
+    override func setListeners() {
+        inputTextField.delegate = self
+    }
+    
     override func linkInteractors() {
         maxButton.addTarget(self, action: #selector(notifyDelegateToMaxButtonTapped), for: .touchUpInside)
+        inputTextField.addTarget(self, action: #selector(didChangeText(_:)), for: .editingChanged)
     }
     
     override func prepareLayout() {
         setupExplanationLabelLayout()
         setupContainerViewLayout()
-        setupAlgosImageViewLayout()
         setupMaxButtonLayout()
         setupInputTextFieldLayout()
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        containerView.setShadowFrames()
     }
 }
 
@@ -114,7 +109,7 @@ extension AssetInputView {
         explanationLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(layout.current.horizontalInset)
             make.trailing.lessThanOrEqualToSuperview().inset(layout.current.horizontalInset)
-            make.top.equalToSuperview().inset(layout.current.topInset)
+            make.top.equalToSuperview()
         }
     }
     
@@ -122,20 +117,9 @@ extension AssetInputView {
         addSubview(containerView)
         
         containerView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(layout.current.defaultInset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
             make.bottom.equalToSuperview()
-            make.height.equalTo(layout.current.containerHeight)
             make.top.equalTo(explanationLabel.snp.bottom).offset(layout.current.contentViewInset)
-        }
-    }
-    
-    private func setupAlgosImageViewLayout() {
-        containerView.addSubview(algosImageView)
-        
-        algosImageView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(layout.current.defaultInset)
-            make.centerY.equalToSuperview()
-            make.width.height.equalTo(layout.current.imageViewHeight)
         }
     }
     
@@ -153,10 +137,10 @@ extension AssetInputView {
         containerView.addSubview(inputTextField)
         
         inputTextField.snp.makeConstraints { make in
-            make.leading.equalTo(algosImageView.snp.trailing).offset(layout.current.fieldLeadingInset)
-            make.leading.equalToSuperview().inset(layout.current.defaultInset).priority(.low)
-            make.trailing.lessThanOrEqualToSuperview().inset(layout.current.fieldTrailingInset)
-            make.centerY.equalToSuperview()
+            make.leading.equalToSuperview().inset(layout.current.fieldInset)
+            make.top.bottom.equalToSuperview().inset(layout.current.verticalInset)
+            make.trailing.equalTo(maxButton.snp.leading).offset(-layout.current.fieldInset)
+            make.trailing.equalToSuperview().inset(layout.current.fieldInset).priority(.low)
         }
     }
 }
@@ -199,24 +183,17 @@ extension AssetInputView {
         }
         
         if isMaxButtonSelected {
-            maxButton.setAttributedTitle("title-max".localized.attributed([.letterSpacing(1.10), .textColor(.white)]), for: .normal)
-            maxButton.setBackgroundImage(img("bg-max-button-selected"), for: .normal)
-            maxButton.layer.borderColor = SharedColors.purple.cgColor
+            maxButton.backgroundColor = SharedColors.primary
+            maxButton.setTitleColor(SharedColors.primaryButtonTitle, for: .normal)
+            maxButton.layer.borderColor = SharedColors.primary.cgColor
         } else {
-            maxButton.setAttributedTitle(
-                "title-max".localized.attributed([
-                    .letterSpacing(1.10),
-                    .textColor(SharedColors.gray)
-                ]),
-                for: .normal
-            )
-            maxButton.setBackgroundImage(img("bg-max-button"), for: .normal)
-            maxButton.layer.borderColor = Colors.borderColor.cgColor
+            maxButton.backgroundColor = SharedColors.secondaryBackground
+            maxButton.setTitleColor(SharedColors.gray500, for: .normal)
+            maxButton.layer.borderColor = SharedColors.gray200.cgColor
         }
     }
 }
 
-// MARK: - TextFieldDelegate
 extension AssetInputView: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         guard let text = textField.text else {
@@ -238,28 +215,32 @@ extension AssetInputView: UITextFieldDelegate {
 }
 
 extension AssetInputView {
-    func set(enabled: Bool) {
+    func setEnabled(_ enabled: Bool) {
         inputTextField.isEnabled = enabled
         
         if enabled {
-            containerView.backgroundColor = .white
+            containerView.backgroundColor = SharedColors.secondaryBackground
         } else {
-            containerView.backgroundColor = Colors.borderColor
+            containerView.backgroundColor = SharedColors.disabledBackground
         }
+    }
+    
+    func setMaxButtonHidden(_ hidden: Bool) {
+        maxButton.isHidden = hidden
     }
 }
 
 extension AssetInputView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let defaultInset: CGFloat = 15.0
-        let horizontalInset: CGFloat = 30.0
-        let contentViewInset: CGFloat = 7.0
-        let topInset: CGFloat = 10.0
-        let imageViewHeight: CGFloat = 10.0
-        let containerHeight: CGFloat = 50.0
-        let fieldLeadingInset: CGFloat = 3.0
-        let fieldTrailingInset: CGFloat = 70.0
-        let buttonSize = CGSize(width: 60.0, height: 34.0)
+        let contentViewInset: CGFloat = 8.0
+        let horizontalInset: CGFloat = 20.0
         let buttonTrailingInset: CGFloat = 8.0
+        let buttonSize = CGSize(width: 53.0, height: 32.0)
+        let verticalInset: CGFloat = 14.0
+        let fieldInset: CGFloat = 16.0
     }
+}
+
+protocol AssetInputViewDelegate: class {
+    func assetInputViewDidTapMaxButton(_ assetInputView: AssetInputView)
 }

@@ -10,9 +10,9 @@ import UIKit
 
 class IntroductionViewController: BaseViewController {
     
-    private lazy var introductionView = IntroductionView(mode: self.mode)
+    private lazy var introductionView = IntroductionView()
     
-    private(set) lazy var termsServiceModalPresenter = CardModalPresenter(
+    private lazy var termsServiceModalPresenter = CardModalPresenter(
         config: ModalConfiguration(
             animationMode: .normal(duration: 0.25),
             dismissMode: .none
@@ -20,24 +20,15 @@ class IntroductionViewController: BaseViewController {
         initialModalSize: .custom(CGSize(width: view.frame.width, height: 300))
     )
     
-    var mode: AccountSetupMode = .initialize
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        view.backgroundColor = .white
-        navigationController?.navigationBar.barTintColor = .white
-        
         presentTermsAndServicesIfNeeded()
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        navigationController?.navigationBar.barTintColor = SharedColors.warmWhite
     }
     
     override func configureAppearance() {
         super.configureAppearance()
-        view.backgroundColor = .white
+        view.backgroundColor = SharedColors.secondaryBackground
+        setSecondaryBackgroundColor()
     }
     
     override func prepareLayout() {
@@ -48,7 +39,6 @@ class IntroductionViewController: BaseViewController {
     override func linkInteractors() {
         introductionView.delegate = self
     }
-    
 }
 
 extension IntroductionViewController {
@@ -79,23 +69,14 @@ extension IntroductionViewController {
 
 extension IntroductionViewController: IntroductionViewDelegate {
     func introductionViewDidTapCreateAccountButton(_ introductionView: IntroductionView) {
-        switch mode {
-        case .initialize:
-            open(.choosePassword(mode: .setup, route: nil), by: .push)
-        case .new:
-            open(.passphraseView(address: "temp"), by: .push)
-        }
+        open(.choosePassword(mode: .setup, route: nil), by: .push)
     }
     
     func introductionViewDidTapPairLedgerAccountButton(_ introductionView: IntroductionView) {
-        open(.ledgerTutorial(mode: mode), by: .push)
+        open(.ledgerTutorial(mode: .initialize), by: .push)
     }
     
     func introductionViewDidTapRecoverButton(_ introductionView: IntroductionView) {
-        open(.accountRecover(mode: mode), by: .push)
-    }
-    
-    func introductionViewDidTapCloseButton(_ introductionView: IntroductionView) {
-        dismissScreen()
+        open(.accountRecover(mode: .initialize), by: .push)
     }
 }

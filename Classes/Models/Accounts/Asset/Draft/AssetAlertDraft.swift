@@ -31,4 +31,8 @@ struct AssetAlertDraft {
         self.detail = detail
         self.actionTitle = actionTitle
     }
+    
+    func isValid() -> Bool {
+        return assetDetail != nil
+    }
 }

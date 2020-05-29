@@ -8,103 +8,163 @@
 
 import UIKit
 
-enum NumpadValue {
-    case number(String?)
-    case delete
-}
-
-protocol NumpadTypeable where Self: UIView {
-    
-    var value: NumpadValue { get set }
-}
-
-protocol NumpadViewDelegate: class {
-    
-    func numpadView(_ numpadView: NumpadView, didSelect value: NumpadValue)
-}
-
 class NumpadView: BaseView {
-    
-    override var intrinsicContentSize: CGSize {
-        return CGSize(width: layout.current.width, height: layout.current.height)
-    }
-    
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let width: CGFloat = UIScreen.main.bounds.width - 26.0
-        let height: CGFloat = 267.0 * verticalScale
-        let horizontalInset: CGFloat = 13.0
-        let bottomInset: CGFloat = 4.0
-    }
     
     private let layout = Layout<LayoutConstants>()
     
-    private var numpadViewLayoutBuilder: NumpadViewLayoutBuilder
-    private var numpadViewDataSource: NumpadViewDataSource
-    
-    // MARK: Components
-    
-    private lazy var collectionView: UICollectionView = {
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.scrollDirection = .vertical
-        
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
-        collectionView.showsVerticalScrollIndicator = false
-        collectionView.showsHorizontalScrollIndicator = false
-        collectionView.isScrollEnabled = false
-        
-        collectionView.register(NumpadNumericCell.self, forCellWithReuseIdentifier: NumpadNumericCell.reusableIdentifier)
-        collectionView.register(NumpadDeleteCell.self, forCellWithReuseIdentifier: NumpadDeleteCell.reusableIdentifier)
-        return collectionView
-    }()
-    
     weak var delegate: NumpadViewDelegate?
     
-    override init(frame: CGRect) {
-        numpadViewLayoutBuilder = NumpadViewLayoutBuilder()
-        numpadViewDataSource = NumpadViewDataSource()
-        
-        super.init(frame: frame)
-    }
+    private lazy var firstRowStackView: UIStackView = {
+        createRow()
+    }()
     
-    // MARK: Configuration
+    private lazy var numberOneButton = NumpadButton(numpadKey: .number("1"))
+    
+    private lazy var numberTwoButton = NumpadButton(numpadKey: .number("2"))
+    
+    private lazy var numberThreeButton = NumpadButton(numpadKey: .number("3"))
+    
+    private lazy var secondRowStackView: UIStackView = {
+        createRow()
+    }()
+    
+    private lazy var numberFourButton = NumpadButton(numpadKey: .number("4"))
+    
+    private lazy var numberFiveButton = NumpadButton(numpadKey: .number("5"))
+    
+    private lazy var numberSixButton = NumpadButton(numpadKey: .number("6"))
+    
+    private lazy var thirdRowStackView: UIStackView = {
+        createRow()
+    }()
+    
+    private lazy var numberSevenButton = NumpadButton(numpadKey: .number("7"))
+    
+    private lazy var numberEightButton = NumpadButton(numpadKey: .number("8"))
+    
+    private lazy var numberNineButton = NumpadButton(numpadKey: .number("9"))
+    
+    private lazy var fourthRowStackView: UIStackView = {
+        createRow()
+    }()
+    
+    private lazy var spacingButton = NumpadButton(numpadKey: .spacing)
+    
+    private lazy var zeroButton = NumpadButton(numpadKey: .number("0"))
+    
+    private lazy var deleteButton = NumpadButton(numpadKey: .delete)
     
     override func configureAppearance() {
-        backgroundColor = .white
-        
-        collectionView.backgroundColor = .white
-        collectionView.contentInset = UIEdgeInsets(
-            top: 0.0,
-            left: layout.current.horizontalInset,
-            bottom: layout.current.bottomInset,
-            right: layout.current.horizontalInset
-        )
+        backgroundColor = SharedColors.secondaryBackground
     }
     
     override func linkInteractors() {
-        collectionView.delegate = numpadViewLayoutBuilder
-        collectionView.dataSource = numpadViewDataSource
-        
-        numpadViewLayoutBuilder.delegate = self
+        [
+            numberOneButton, numberTwoButton, numberThreeButton, numberFourButton, numberFiveButton, numberSixButton, numberSevenButton,
+            numberEightButton, numberNineButton, zeroButton, deleteButton
+        ].forEach { $0.addTarget(self, action: #selector(notifyDelegateToAddNumpadValue), for: .touchUpInside) }
     }
-    
-    // MARK: Layout
     
     override func prepareLayout() {
-        setupCollectionViewLayout()
-    }
-    
-    private func setupCollectionViewLayout() {
-        addSubview(collectionView)
-        
-        collectionView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
+        setupFirstRowStackViewLayout()
+        setupSecondRowStackViewLayout()
+        setupThirdRowStackViewLayout()
+        setupFourthRowStackViewLayout()
     }
 }
 
-extension NumpadView: NumpadViewLayoutBuilderDelegate {
-    
-    func numpadViewLayoutBuilder(_ layoutBuilder: NumpadViewLayoutBuilder, didSelect value: NumpadValue) {
-        delegate?.numpadView(self, didSelect: value)
+extension NumpadView {
+    @objc
+    private func notifyDelegateToAddNumpadValue(sender: NumpadButton) {
+        delegate?.numpadView(self, didSelect: sender.numpadKey)
     }
+}
+
+extension NumpadView {
+    private func setupFirstRowStackViewLayout() {
+        addSubview(firstRowStackView)
+        
+        firstRowStackView.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.height.equalTo(layout.current.stackViewHeight)
+            make.centerX.equalToSuperview()
+        }
+        
+        firstRowStackView.addArrangedSubview(numberOneButton)
+        firstRowStackView.addArrangedSubview(numberTwoButton)
+        firstRowStackView.addArrangedSubview(numberThreeButton)
+    }
+    
+    private func setupSecondRowStackViewLayout() {
+        addSubview(secondRowStackView)
+        
+        secondRowStackView.snp.makeConstraints { make in
+            make.top.equalTo(firstRowStackView.snp.bottom).offset(layout.current.stackViewSpacing)
+            make.height.equalTo(layout.current.stackViewHeight)
+            make.centerX.equalToSuperview()
+        }
+        
+        secondRowStackView.addArrangedSubview(numberFourButton)
+        secondRowStackView.addArrangedSubview(numberFiveButton)
+        secondRowStackView.addArrangedSubview(numberSixButton)
+    }
+    
+    private func setupThirdRowStackViewLayout() {
+        addSubview(thirdRowStackView)
+        
+        thirdRowStackView.snp.makeConstraints { make in
+            make.top.equalTo(secondRowStackView.snp.bottom).offset(layout.current.stackViewSpacing)
+            make.height.equalTo(layout.current.stackViewHeight)
+            make.centerX.equalToSuperview()
+        }
+        
+        thirdRowStackView.addArrangedSubview(numberSevenButton)
+        thirdRowStackView.addArrangedSubview(numberEightButton)
+        thirdRowStackView.addArrangedSubview(numberNineButton)
+    }
+    
+    private func setupFourthRowStackViewLayout() {
+        addSubview(fourthRowStackView)
+        
+        fourthRowStackView.snp.makeConstraints { make in
+            make.top.equalTo(thirdRowStackView.snp.bottom).offset(layout.current.stackViewSpacing)
+            make.bottom.equalToSuperview()
+            make.height.equalTo(layout.current.stackViewHeight)
+            make.centerX.equalToSuperview()
+        }
+        
+        fourthRowStackView.addArrangedSubview(spacingButton)
+        fourthRowStackView.addArrangedSubview(zeroButton)
+        fourthRowStackView.addArrangedSubview(deleteButton)
+    }
+}
+
+extension NumpadView {
+    private func createRow() -> UIStackView {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.distribution = .fillEqually
+        stackView.alignment = .center
+        stackView.axis = .horizontal
+        stackView.spacing = layout.current.stackViewSpacing
+        stackView.isUserInteractionEnabled = true
+        return stackView
+    }
+}
+
+extension NumpadView {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let stackViewSpacing: CGFloat = 24.0 * verticalScale
+        let stackViewHeight: CGFloat = 72.0 * verticalScale
+    }
+}
+
+protocol NumpadViewDelegate: class {
+    func numpadView(_ numpadView: NumpadView, didSelect value: NumpadKey)
+}
+
+enum NumpadKey {
+    case spacing
+    case number(String)
+    case delete
 }

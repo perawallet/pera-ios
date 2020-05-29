@@ -9,15 +9,16 @@
 import UIKit
 
 indirect enum Screen {
-    case introduction(mode: AccountSetupMode)
+    case introduction
+    case addNewAccount
     case choosePassword(mode: ChoosePasswordViewController.Mode, route: Screen?)
     case localAuthenticationPreference
     case passphraseView(address: String)
-    case passPhraseVerify
+    case passphraseVerify
     case accountNameSetup
     case accountRecover(mode: AccountSetupMode)
     case qrScanner
-    case qrGenerator(title: String?, address: String, mnemonic: String? = nil, mode: QRMode)
+    case qrGenerator(title: String?, draft: QRCreationDraft)
     case home(route: Screen?)
     case assetDetail(account: Account, assetDetail: AssetDetail?)
     case options(account: Account)
@@ -26,36 +27,40 @@ indirect enum Screen {
     case contactSelection
     case addContact(mode: AddContactViewController.Mode)
     case contactDetail(contact: Contact)
-    case contactQRDisplay(contact: Contact)
-    case sendAlgosTransactionPreview(account: Account?, receiver: AssetReceiverState)
-    case sendAssetTransactionPreview(account: Account?, receiver: AssetReceiverState, assetDetail: AssetDetail, isMaxTransaction: Bool)
+    case sendAlgosTransactionPreview(account: Account?, receiver: AssetReceiverState, isSenderEditable: Bool)
+    case sendAssetTransactionPreview(
+        account: Account?,
+        receiver: AssetReceiverState,
+        assetDetail: AssetDetail,
+        isSenderEditable: Bool,
+        isMaxTransaction: Bool
+    )
     case sendAlgosTransaction(
         algosTransactionSendDraft: AlgosTransactionSendDraft,
         transactionController: TransactionController,
-        receiver: AssetReceiverState
+        receiver: AssetReceiverState,
+        isSenderEditable: Bool
     )
     case sendAssetTransaction(
         assetTransactionSendDraft: AssetTransactionSendDraft,
         transactionController: TransactionController,
-        receiver: AssetReceiverState
+        receiver: AssetReceiverState,
+        isSenderEditable: Bool
     )
-    case requestAlgosTransactionPreview(account: Account)
-    case requestAssetTransactionPreview(account: Account, assetDetail: AssetDetail)
+    case requestAlgosTransactionPreview(account: Account, isReceiverEditable: Bool)
+    case requestAssetTransactionPreview(account: Account, assetDetail: AssetDetail, isReceiverEditable: Bool)
     case requestAlgosTransaction(algosTransactionRequestDraft: AlgosTransactionRequestDraft)
     case requestAssetTransaction(assetTransactionRequestDraft: AssetTransactionRequestDraft)
-    case historyResults(draft: HistoryDraft)
-    case nodeSettings(mode: NodeSettingsViewController.Mode)
+    case nodeSettings
     case addNode
     case editNode(node: Node)
-    case splash
     case transactionDetail(account: Account, transaction: Transaction, transactionType: TransactionType, assetDetail: AssetDetail?)
     case feedback
     case addAsset(account: Account)
     case removeAsset(account: Account)
     case assetActionConfirmation(assetAlertDraft: AssetAlertDraft)
-    case assetSupportAlert(assetAlertDraft: AssetAlertDraft)
-    case assetCancellableSupportAlert(assetAlertDraft: AssetAlertDraft)
-    case alert(mode: AlertViewController.Mode, alertConfigurator: AlertViewConfigurator)
+    case assetSupport(assetAlertDraft: AssetAlertDraft)
+    case bottomInformation(mode: BottomInformationViewController.Mode, configurator: BottomInformationBundle)
     case rewardDetail(account: Account)
     case assetList(account: Account)
     case verifiedAssetInformation
@@ -69,6 +74,11 @@ indirect enum Screen {
     case ledgerTroubleshootInstallApp
     case ledgerTroubleshootOpenApp
     case termsAndServices
+    case selectAsset(transactionAction: TransactionAction, filterOption: SelectAssetViewController.FilterOption = .none)
+    case passphraseDisplay(address: String)
+    case tooltip(title: String)
+    case assetDetailNotification(address: String, assetId: Int64?)
+    case assetActionConfirmationNotification(address: String, assetId: Int64?)
 }
 
 extension Screen {

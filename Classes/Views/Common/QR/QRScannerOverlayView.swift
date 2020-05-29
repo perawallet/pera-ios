@@ -10,98 +10,137 @@ import UIKit
 
 class QRScannerOverlayView: BaseView {
     
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let qrIconImageViewVerticalInset: CGFloat = -15.0
-    }
-    
-    private enum Colors {
-        static let overlayColor = rgba(0.04, 0.05, 0.07, 0.5)
-    }
-    
     private let layout = Layout<LayoutConstants>()
     
-    // MARK: Components
+    weak var delegate: QRScannerOverlayViewDelegate?
     
-    private lazy var qrIconImageView = UIImageView(image: img("icon-qr-code-white"))
+    private lazy var titleLabel: UILabel = {
+        UILabel()
+            .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
+            .withTextColor(SharedColors.white)
+            .withText("qr-scan-title".localized)
+            .withLine(.single)
+            .withAlignment(.center)
+    }()
     
-    private(set) lazy var overlayImageView = UIImageView(image: img("bg-dotted-rect"))
+    private lazy var overlayView: UIView = {
+        let overlayView = UIView(frame: UIScreen.main.bounds)
+        overlayView.backgroundColor = SharedColors.gray900.withAlphaComponent(0.9)
+        let path = CGMutablePath()
+        path.addRect(UIScreen.main.bounds)
+        path.addRoundedRect(
+            in: overlayViewCenterRect,
+            cornerWidth: 18.0,
+            cornerHeight: 18.0
+        )
+        let maskLayer = CAShapeLayer()
+        maskLayer.path = path
+        maskLayer.fillRule = CAShapeLayerFillRule.evenOdd
+        overlayView.layer.mask = maskLayer
+        return overlayView
+    }()
     
-    // MARK: Setup
+    private lazy var overlayViewCenterRect: CGRect = {
+        let size: CGFloat = 248.0
+        return CGRect(x: UIScreen.main.bounds.midX - (size / 2.0), y: UIScreen.main.bounds.midY - (size / 2.0), width: size, height: size)
+    }()
+    
+    private lazy var overlayImageView = UIImageView(image: img("img-qr-overlay-center"))
+    
+    private lazy var explanationLabel: UILabel = {
+        UILabel()
+            .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
+            .withTextColor(SharedColors.white.withAlphaComponent(0.8))
+            .withText("qr-scan-message-text".localized)
+            .withLine(.contained)
+            .withAlignment(.center)
+    }()
+    
+    private lazy var cancelButton: UIButton = {
+        UIButton(type: .custom)
+            .withBackgroundImage(img("button-bg-scan-qr"))
+            .withTitle("title-cancel".localized)
+            .withTitleColor(SharedColors.primaryButtonTitle)
+            .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
+    }()
     
     override func configureAppearance() {
         backgroundColor = .clear
     }
     
-    // MARK: Layout
+    override func setListeners() {
+        cancelButton.addTarget(self, action: #selector(notifyDelegateToCloseScreen), for: .touchUpInside)
+    }
     
     override func prepareLayout() {
-        super.prepareLayout()
-        
+        setupOverlayViewLayout()
         setupOverlayImageViewLayout()
-        setupQRDisplayViewLayout()
-        setupQRIconImageViewLayout()
+        setupTitleLabelLayout()
+        setupCancelButtonLayout()
+        setupExplanationLabelLayout()
+    }
+}
+
+extension QRScannerOverlayView {
+    @objc
+    private func notifyDelegateToCloseScreen() {
+        delegate?.qrScannerOverlayViewDidCancel(self)
+    }
+}
+
+extension QRScannerOverlayView {
+    private func setupOverlayViewLayout() {
+        addSubview(overlayView)
+        
+        overlayView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
     }
     
     private func setupOverlayImageViewLayout() {
         addSubview(overlayImageView)
-        
-        overlayImageView.snp.makeConstraints { make in
-            make.center.equalToSuperview()
-        }
+        overlayImageView.frame = overlayViewCenterRect
     }
     
-    private func setupQRDisplayViewLayout() {
-        let topOverlayView = UIView()
-        topOverlayView.backgroundColor = Colors.overlayColor
+    private func setupTitleLabelLayout() {
+        addSubview(titleLabel)
         
-        addSubview(topOverlayView)
-        
-        topOverlayView.snp.makeConstraints { make in
-            make.leading.trailing.top.equalToSuperview()
-            make.bottom.equalTo(overlayImageView.snp.top)
-        }
-        
-        let bottomOverlayView = UIView()
-        bottomOverlayView.backgroundColor = Colors.overlayColor
-        
-        addSubview(bottomOverlayView)
-        
-        bottomOverlayView.snp.makeConstraints { make in
-            make.leading.trailing.bottom.equalToSuperview()
-            make.top.equalTo(overlayImageView.snp.bottom)
-        }
-        
-        let leftOverlayView = UIView()
-        leftOverlayView.backgroundColor = Colors.overlayColor
-        
-        addSubview(leftOverlayView)
-        
-        leftOverlayView.snp.makeConstraints { make in
-            make.leading.equalToSuperview()
-            make.top.equalTo(topOverlayView.snp.bottom)
-            make.bottom.equalTo(bottomOverlayView.snp.top)
-            make.trailing.equalTo(overlayImageView.snp.leading)
-        }
-        
-        let rightOverlayView = UIView()
-        rightOverlayView.backgroundColor = Colors.overlayColor
-        
-        addSubview(rightOverlayView)
-        
-        rightOverlayView.snp.makeConstraints { make in
-            make.trailing.equalToSuperview()
-            make.top.equalTo(topOverlayView.snp.bottom)
-            make.bottom.equalTo(bottomOverlayView.snp.top)
-            make.leading.equalTo(overlayImageView.snp.trailing)
-        }
-    }
-    
-    private func setupQRIconImageViewLayout() {
-        addSubview(qrIconImageView)
-        
-        qrIconImageView.snp.makeConstraints { make in
-            make.bottom.equalTo(overlayImageView.snp.top).offset(layout.current.qrIconImageViewVerticalInset)
+        titleLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview().inset(layout.current.titleLabelTopInset)
             make.centerX.equalToSuperview()
         }
     }
+    
+    private func setupCancelButtonLayout() {
+        addSubview(cancelButton)
+        
+        cancelButton.snp.makeConstraints { make in
+            make.bottom.equalToSuperview().inset(layout.current.buttonVerticalInset)
+            make.centerX.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+        }
+    }
+    
+    private func setupExplanationLabelLayout() {
+        addSubview(explanationLabel)
+        
+        explanationLabel.snp.makeConstraints { make in
+            make.bottom.equalTo(cancelButton.snp.top).offset(-layout.current.buttonVerticalInset)
+            make.centerX.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(layout.current.explanationLabelHorizontalInset)
+        }
+    }
+}
+
+extension QRScannerOverlayView {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let horizontalInset: CGFloat = 20.0
+        let buttonVerticalInset: CGFloat = 40.0 * verticalScale
+        let titleLabelTopInset: CGFloat = 40.0
+        let explanationLabelHorizontalInset: CGFloat = 40.0
+    }
+}
+
+protocol QRScannerOverlayViewDelegate: class {
+    func qrScannerOverlayViewDidCancel(_ qrScannerOverlayView: QRScannerOverlayView)
 }

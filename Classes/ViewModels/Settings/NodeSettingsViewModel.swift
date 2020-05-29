@@ -8,36 +8,39 @@
 
 import UIKit
 
-protocol NodeSettingsViewModelDelegate: class {
-    func nodeSettingsViewModel(_ viewModel: NodeSettingsViewModel, didToggleValue value: Bool, atIndexPath indexPath: IndexPath)
-    func nodeSettingsViewModelDidTapEdit(_ viewModel: NodeSettingsViewModel, atIndexPath indexPath: IndexPath)
-}
-
 class NodeSettingsViewModel {
-    weak var delegate: NodeSettingsViewModelDelegate?
-    
-    func configureToggle(_ cell: SettingsToggleCell, with node: Node, for indexPath: IndexPath) {
-        cell.contextView.indexPath = indexPath
-        cell.contextView.nameLabel.text = node.name
-        cell.contextView.toggle.setOn(node.isActive, animated: false)
-        cell.contextView.delegate = self
+    func configure(_ cell: NodeSelectionCell, with node: AlgorandNode, activeNetwork: API.BaseNetwork) {
+        cell.contextView.setName(node.name)
+        
+        if node.network == activeNetwork {
+            setActive(cell)
+        } else {
+            setInactive(cell)
+        }
     }
     
-    func configureDefaultNode(_ cell: ToggleCell, enabled: Bool, for indexPath: IndexPath) {
-        cell.contextView.indexPath = indexPath
-        cell.contextView.nameLabel.text = Environment.current.algorandNodeName
-        cell.contextView.toggle.setOn(enabled, animated: false)
-        cell.contextView.delegate = self
-    }
-}
-
-// MARK: - SettingsToggleContextViewDelegate
-extension NodeSettingsViewModel: SettingsToggleContextViewDelegate {
-    func settingsToggleDidTapEdit(forIndexPath indexPath: IndexPath) {
-        delegate?.nodeSettingsViewModelDidTapEdit(self, atIndexPath: indexPath)
+    func setSelected(at indexPath: IndexPath, in collectionView: UICollectionView) {
+        guard let cell = collectionView.cellForItem(at: indexPath) as? NodeSelectionCell else {
+            return
+        }
+        setActive(cell)
+        
+        let otherCellIndex = indexPath.item == 0 ? 1 : 0
+        
+        guard let otherCell = collectionView.cellForItem(at: IndexPath(item: otherCellIndex, section: 0)) as? NodeSelectionCell else {
+            return
+        }
+        
+        setInactive(otherCell)
     }
     
-    func settingsToggle(_ toggle: Toggle, didChangeValue value: Bool, forIndexPath indexPath: IndexPath) {
-        delegate?.nodeSettingsViewModel(self, didToggleValue: value, atIndexPath: indexPath)
+    private func setActive(_ cell: NodeSelectionCell) {
+        cell.contextView.setBackgroundImage(img("bg-settings-node-selected"))
+        cell.contextView.setImage(img("settings-node-active"))
+    }
+    
+    private func setInactive(_ cell: NodeSelectionCell) {
+        cell.contextView.setBackgroundImage(img("bg-settings-node-unselected"))
+        cell.contextView.setImage(img("settings-node-inactive"))
     }
 }

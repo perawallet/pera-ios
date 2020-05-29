@@ -8,4 +8,5 @@
 
 struct Reward: TransactionItem {
     let amount: Int64
+    let round: Int64
 }

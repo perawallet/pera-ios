@@ -16,11 +16,11 @@ protocol ChoosePasswordViewControllerDelegate: class {
 
 class ChoosePasswordViewController: BaseViewController {
     
-    private lazy var choosePasswordView = ChoosePasswordView()
+    private lazy var choosePasswordView = ChoosePasswordView(mode: mode)
     
     private let viewModel: ChoosePasswordViewModel
     private let mode: Mode
-    private let route: Screen?
+    private var route: Screen?
     
     private let localAuthenticator = LocalAuthenticator()
     private lazy var pushNotificationController: PushNotificationController = {
@@ -58,16 +58,7 @@ class ChoosePasswordViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         checkLoginFlow()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationController?.navigationBar.barTintColor = .white
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        navigationController?.navigationBar.barTintColor = SharedColors.warmWhite
+        setSecondaryBackgroundColor()
     }
     
     override func configureNavigationBarAppearance() {
@@ -144,24 +135,68 @@ extension ChoosePasswordViewController {
     private func launchHome() {
         SVProgressHUD.show(withStatus: "title-loading".localized)
         accountManager?.fetchAllAccounts(isVerifiedAssetsIncluded: true) {
+            self.setupRouteFromNotification()
             DispatchQueue.main.async {
                 UIApplication.shared.rootViewController()?.tabBarViewController.route = self.route
             }
             
-            SVProgressHUD.showSuccess(withStatus: "title-done-lowercased".localized)
+            SVProgressHUD.showSuccess(withStatus: "title-done".localized)
             SVProgressHUD.dismiss(withDelay: 1.0) {
                 DispatchQueue.main.async {
                     self.dismiss(animated: false) {
-                        UIApplication.shared.rootViewController()?.setupTabBarController(withInitial: self.route)
+                        UIApplication.shared.rootViewController()?.setupTabBarController()
                     }
                 }
             }
         }
     }
+    
+    private func setupRouteFromNotification() {
+        guard let navigationRoute = route else {
+            return
+        }
+        
+        switch navigationRoute {
+        case let .assetDetailNotification(address, assetId):
+            guard let account = session?.account(from: address) else {
+                return
+            }
+            
+            var assetDetail: AssetDetail?
+            
+            if let assetId = assetId {
+                assetDetail = account.assetDetails.first { $0.id == assetId }
+            }
+            
+            route = .assetDetail(account: account, assetDetail: assetDetail)
+        case let .assetActionConfirmationNotification(address, assetId):
+            guard let account = session?.account(from: address),
+                let assetId = assetId else {
+                return
+            }
+            
+            let draft = AssetAlertDraft(
+                account: account,
+                assetIndex: assetId,
+                assetDetail: nil,
+                title: "asset-support-add-title".localized,
+                detail: String(
+                    format: "asset-support-add-message".localized,
+                    "\(account.name ?? "")"
+                ),
+                actionTitle: "title-ok".localized
+            )
+            
+            route = .assetActionConfirmation(assetAlertDraft: draft)
+        default:
+            break
+        }
+
+    }
 }
 
 extension ChoosePasswordViewController: ChoosePasswordViewDelegate {
-    func choosePasswordView(_ choosePasswordView: ChoosePasswordView, didSelect value: NumpadValue) {
+    func choosePasswordView(_ choosePasswordView: ChoosePasswordView, didSelect value: NumpadKey) {
         switch mode {
         case .setup:
             openVerifyPassword(with: value)
@@ -180,13 +215,13 @@ extension ChoosePasswordViewController: ChoosePasswordViewDelegate {
 }
 
 extension ChoosePasswordViewController {
-    private func openVerifyPassword(with value: NumpadValue) {
+    private func openVerifyPassword(with value: NumpadKey) {
         viewModel.configureSelection(in: choosePasswordView, for: value) { password in
             open(.choosePassword(mode: .verify(password), route: nil), by: .push)
         }
     }
     
-    private func verifyPassword(with value: NumpadValue, and previousPassword: String) {
+    private func verifyPassword(with value: NumpadKey, and previousPassword: String) {
         viewModel.configureSelection(in: choosePasswordView, for: value) { password in
             if password != previousPassword {
                 displaySimpleAlertWith(title: "password-verify-fail-title".localized, message: "password-verify-fail-message".localized)
@@ -198,7 +233,7 @@ extension ChoosePasswordViewController {
         }
     }
 
-    private func login(with value: NumpadValue) {
+    private func login(with value: NumpadKey) {
         viewModel.configureSelection(in: choosePasswordView, for: value) { password in
             if session?.isPasswordMatching(with: password) ?? false {
                 choosePasswordView.numpadView.isUserInteractionEnabled = false
@@ -210,13 +245,13 @@ extension ChoosePasswordViewController {
         }
     }
     
-    private func openResetVerify(with value: NumpadValue) {
+    private func openResetVerify(with value: NumpadKey) {
         viewModel.configureSelection(in: choosePasswordView, for: value) { password in
             open(.choosePassword(mode: .resetVerify(password), route: nil), by: .push)
         }
     }
     
-    private func verifyResettedPassword(with value: NumpadValue, and previousPassword: String) {
+    private func verifyResettedPassword(with value: NumpadKey, and previousPassword: String) {
         viewModel.configureSelection(in: choosePasswordView, for: value) { password in
             if password != previousPassword {
                 displaySimpleAlertWith(title: "password-verify-fail-title".localized, message: "password-verify-fail-message".localized)
@@ -228,7 +263,7 @@ extension ChoosePasswordViewController {
         }
     }
     
-    private func confirmPassword(with value: NumpadValue) {
+    private func confirmPassword(with value: NumpadKey) {
         viewModel.configureSelection(in: choosePasswordView, for: value) { password in
             dismissScreen()
             if session?.isPasswordMatching(with: password) ?? false {

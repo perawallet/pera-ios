@@ -69,7 +69,7 @@ extension User {
         UIApplication.shared.appConfiguration?.session.authenticatedUser = self
     }
     
-    func setDefaultNode(_ node: Node?) {
+    func setDefaultNode(_ node: AlgorandNode?) {
         defer {
             syncronize()
         }
@@ -80,6 +80,14 @@ extension User {
         }
         
         self.defaultNode = selectedNode.address
+    }
+    
+    func preferredAlgorandNetwork() -> API.BaseNetwork? {
+        guard let defaultNode = defaultNode else {
+            return nil
+        }
+        
+        return defaultNode == Environment.current.testNetApi ? .testnet : .mainnet
     }
     
     func account(address: String) -> AccountInformation? {

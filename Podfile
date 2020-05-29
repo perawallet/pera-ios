@@ -19,7 +19,6 @@ def main_pods
   
   #UI
   pod 'SVProgressHUD'
-  pod 'Charts'
   pod 'lottie-ios'
   pod 'NotificationBannerSwift'
   pod 'BetterSegmentedControl', '~> 1.3'

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AccounsViewModel {
+class AccountsViewModel {
     func configure(_ cell: AssetCell, with assetDetail: AssetDetail, and asset: Asset) {
         cell.contextView.assetNameView.setAssetName(for: assetDetail)
         cell.contextView.amountLabel.text = asset.amount.assetAmount(fromFraction: assetDetail.fractionDecimals)
@@ -16,7 +16,6 @@ class AccounsViewModel {
     }
     
     func configure(_ cell: PendingAssetCell, with assetDetail: AssetDetail, isRemoving: Bool) {
-        cell.contextView.pendingSpinnerView.show()
         cell.contextView.assetNameView.setAssetName(for: assetDetail)
         if isRemoving {
             cell.contextView.detailLabel.text = "asset-remove-confirmation-title".localized
@@ -30,9 +29,10 @@ class AccounsViewModel {
     }
 }
 
-extension AccounsViewModel {
+extension AccountsViewModel {
     func configure(_ header: AccountHeaderSupplementaryView, with account: Account) {
         header.contextView.setOptionsButton(hidden: false)
+        header.contextView.setQRButton(hidden: false)
         
         if let accountInformation = UIApplication.shared.appConfiguration?.session.accountInformation(from: account.address),
             accountInformation.type == .ledger {
@@ -45,6 +45,6 @@ extension AccounsViewModel {
             return
         }
         
-        header.contextView.setAccountName(accountName.uppercased())
+        header.contextView.setAccountName(accountName)
     }
 }

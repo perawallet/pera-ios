@@ -25,11 +25,12 @@ class AssetDetailViewModel {
 extension AssetDetailViewModel {
     func configure(_ view: AssetDetailHeaderView, with account: Account, and assetDetail: AssetDetail?) {
         if let assetDetail = assetDetail {
-            view.dollarValueLabel.isHidden = true
+            view.dollarValueImageView.isHidden = true
+            view.algosImageView.removeFromSuperview()
             view.verifiedImageView.isHidden = !assetDetail.isVerified
             view.rewardTotalAmountView.removeFromSuperview()
             view.assetNameLabel.attributedText = assetDetail.assetDisplayName(
-                with: UIFont.font(.avenir, withWeight: .demiBold(size: 14.0)),
+                with: UIFont.font(withWeight: .medium(size: 14.0)),
                 isIndexIncluded: false,
                 shouldDisplayIndexWithName: false
             )
@@ -47,18 +48,18 @@ extension AssetDetailViewModel {
             view.algosAmountLabel.text = account.amount.toAlgos.toDecimalStringForLabel
             view.verifiedImageView.isHidden = false
             let totalRewards: UInt64 = (account.pendingRewards ?? 0)
-            view.rewardTotalAmountView.algosAmountView.amountLabel.text = totalRewards.toAlgos.toDecimalStringForLabel
+            view.rewardTotalAmountView.setReward(amount: totalRewards.toAlgos.toDecimalStringForLabel ?? "0.00")
         }
     }
     
-    func configure(_ view: AssetDetailSmallHeaderView, with account: Account, and assetDetail: AssetDetail?) {
+    func configure(_ view: AssetDetailTitleView, with account: Account, and assetDetail: AssetDetail?) {
         if let assetDetail = assetDetail {
             guard let amount = account.amount(for: assetDetail) else {
                 return
             }
-            view.algosAmountLabel.text = amount.toFractionStringForLabel(fraction: assetDetail.fractionDecimals)
+            view.setDetail("\(amount.toFractionStringForLabel(fraction: assetDetail.fractionDecimals) ?? "") \(assetDetail.getAssetCode())")
         } else {
-            view.algosAmountLabel.text = account.amount.toAlgos.toDecimalStringForLabel
+            view.setDetail("\(account.amount.toAlgos.toDecimalStringForLabel ?? "") ALGO")
         }
     }
 }
@@ -71,28 +72,19 @@ extension AssetDetailViewModel {
         
         if visible {
             view.assetNameLabel.text = "accounts-dollar-value-title".localized
-            view.assetNameLabel.textColor = SharedColors.darkGray
-            view.dollarValueLabel.backgroundColor = SharedColors.darkGray
-            view.dollarValueLabel.textColor = .white
+            view.assetNameLabel.textColor = SharedColors.detailText
             view.dollarAmountLabel.text = currentValue.toFractionStringForLabel(fraction: 2)
-            view.dollarValueLabel.layer.borderWidth = 0.0
+            view.algosImageView.isHidden = true
         } else {
             view.assetNameLabel.text = "accounts-algos-available-title".localized
-            view.assetNameLabel.textColor = SharedColors.black
-            view.dollarValueLabel.backgroundColor = .white
-            view.dollarValueLabel.textColor = .black
-            view.dollarValueLabel.layer.borderWidth = 1.0
+            view.assetNameLabel.textColor = SharedColors.detailText
+            view.algosImageView.isHidden = false
         }
     }
 }
 
 extension AssetDetailViewModel {
     func configure(_ view: TransactionHistoryContextView, with transaction: Transaction, for contact: Contact? = nil) {
-        if let pendingTransactionView = view as? PendingTransactionView,
-            transaction.status == .pending {
-            pendingTransactionView.pendingSpinnerView.show()
-        }
-        
         if let assetDetail = assetDetail {
             guard let assetTransaction = transaction.assetTransfer else {
                 return
@@ -107,14 +99,14 @@ extension AssetDetailViewModel {
                 view.transactionAmountView.algoIconImageView.removeFromSuperview()
                 view.transactionAmountView.mode = .positive(
                     amount: assetTransaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
-                    assetFraction: assetDetail.fractionDecimals
+                    fraction: assetDetail.fractionDecimals
                 )
             } else {
                 configure(view, with: contact, and: assetTransaction.receiverAddress)
                 view.transactionAmountView.algoIconImageView.removeFromSuperview()
                 view.transactionAmountView.mode = .negative(
                     amount: assetTransaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
-                    assetFraction: assetDetail.fractionDecimals
+                    fraction: assetDetail.fractionDecimals
                 )
             }
         } else {
@@ -132,10 +124,10 @@ extension AssetDetailViewModel {
             
             if payment.toAddress == account.address {
                 configure(view, with: contact, and: transaction.from)
-                view.transactionAmountView.mode = .positive(amount: payment.amountForTransaction().toAlgos)
+                view.transactionAmountView.mode = .positive(amount: payment.amountForTransaction(includesCloseAmount: true).toAlgos)
             } else {
                 configure(view, with: contact, and: payment.toAddress)
-                view.transactionAmountView.mode = .negative(amount: payment.amountForTransaction().toAlgos)
+                view.transactionAmountView.mode = .negative(amount: payment.amountForTransaction(includesCloseAmount: true).toAlgos)
             }
         }
         
@@ -154,7 +146,9 @@ extension AssetDetailViewModel {
     }
     
     func configure(_ cell: RewardCell, with reward: Reward) {
-        cell.contextView.transactionAmountView.amountLabel.text = reward.amount.toAlgos.toDecimalStringForLabel
+        cell.contextView.transactionAmountView.mode = .positive(amount: reward.amount.toAlgos)
+        let formattedDate = findDate(from: reward.round).toFormat("MMMM dd, yyyy")
+        cell.contextView.setDate(formattedDate)
     }
 }
 

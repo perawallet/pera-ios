@@ -7,17 +7,9 @@
 //
 
 import UIKit
-
-protocol AssetActionConfirmationViewControllerDelegate: class {
-    func assetActionConfirmationViewController(
-        _ assetActionConfirmationViewController: AssetActionConfirmationViewController,
-        didConfirmedActionFor assetDetail: AssetDetail
-    )
-}
+import SVProgressHUD
 
 class AssetActionConfirmationViewController: BaseViewController {
-    
-    private let layout = Layout<LayoutConstants>()
     
     weak var delegate: AssetActionConfirmationViewControllerDelegate?
     
@@ -32,8 +24,13 @@ class AssetActionConfirmationViewController: BaseViewController {
         super.init(configuration: configuration)
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        fetchAssetDetailIfNeeded()
+    }
+    
     override func configureAppearance() {
-        view.backgroundColor = Colors.backgroundColor
+        view.backgroundColor = SharedColors.secondaryBackground
         viewModel.configure(assetActionConfirmationView, with: assetAlertDraft)
     }
     
@@ -51,8 +48,42 @@ extension AssetActionConfirmationViewController {
         view.addSubview(assetActionConfirmationView)
         
         assetActionConfirmationView.snp.makeConstraints { make in
-            make.center.equalToSuperview()
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.edges.equalToSuperview()
+        }
+    }
+}
+
+extension AssetActionConfirmationViewController {
+    private func fetchAssetDetailIfNeeded() {
+        if !assetAlertDraft.isValid() {
+            SVProgressHUD.show(withStatus: "title-loading".localized)
+            api?.getAssetDetails(with: AssetFetchDraft(assetId: "\(assetAlertDraft.assetIndex)")) { response in
+                switch response {
+                case let .success(asset):
+                    self.handleAssetDetailSetup(with: asset)
+                case .failure:
+                    SVProgressHUD.showError(withStatus: nil)
+                    SVProgressHUD.dismiss()
+                }
+            }
+        }
+    }
+    
+    private func handleAssetDetailSetup(with asset: AssetDetail) {
+        SVProgressHUD.showSuccess(withStatus: "title-done".localized)
+        SVProgressHUD.dismiss()
+        var assetDetail = asset
+        setVerifiedIfNeeded(&assetDetail)
+        assetAlertDraft.assetDetail = assetDetail
+        viewModel.configure(self.assetActionConfirmationView.assetDisplayView, with: assetAlertDraft)
+    }
+    
+    private func setVerifiedIfNeeded(_ assetDetail: inout AssetDetail) {
+        if let verifiedAssets = self.session?.verifiedAssets,
+            verifiedAssets.contains(where: { verifiedAsset -> Bool in
+                verifiedAsset.id == self.assetAlertDraft.assetIndex
+            }) {
+            assetDetail.isVerified = true
         }
     }
 }
@@ -70,14 +101,9 @@ extension AssetActionConfirmationViewController: AssetActionConfirmationViewDele
     }
 }
 
-extension AssetActionConfirmationViewController {
-    struct LayoutConstants: AdaptiveLayoutConstants {
-        let horizontalInset: CGFloat = 20.0
-    }
-}
-
-extension AssetActionConfirmationViewController {
-    private enum Colors {
-        static let backgroundColor = rgba(0.29, 0.29, 0.31, 0.6)
-    }
+protocol AssetActionConfirmationViewControllerDelegate: class {
+    func assetActionConfirmationViewController(
+        _ assetActionConfirmationViewController: AssetActionConfirmationViewController,
+        didConfirmedActionFor assetDetail: AssetDetail
+    )
 }

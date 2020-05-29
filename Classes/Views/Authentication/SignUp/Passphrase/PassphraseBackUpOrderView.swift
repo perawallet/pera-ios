@@ -1,0 +1,70 @@
+//
+//  PassphraseBackUpOrderView.swift
+//  algorand
+//
+//  Created by Göktuğ Berk Ulu on 19.04.2019.
+//  Copyright © 2019 hippo. All rights reserved.
+//
+
+import UIKit
+
+class PassphraseBackUpOrderView: BaseView {
+    
+    private let layout = Layout<LayoutConstants>()
+    
+    private(set) lazy var numberLabel: UILabel = {
+        UILabel()
+            .withFont(UIFont.font(withWeight: .medium(size: 12.0)))
+            .withTextColor(SharedColors.gray400)
+            .withAlignment(.left)
+    }()
+    
+    private(set) lazy var phraseLabel: UILabel = {
+        let label = UILabel()
+            .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
+            .withTextColor(SharedColors.primaryText)
+            .withAlignment(.left)
+        
+        label.numberOfLines = 1
+        label.adjustsFontSizeToFitWidth = true
+        label.minimumScaleFactor = 0.8
+        return label
+    }()
+    
+    override func configureAppearance() {
+        backgroundColor = SharedColors.secondaryBackground
+    }
+    
+    override func prepareLayout() {
+        super.prepareLayout()
+        setupNumberLabelLayout()
+        setupPhraseLabelLayout()
+    }
+}
+
+extension PassphraseBackUpOrderView {
+    private func setupNumberLabelLayout() {
+        addSubview(numberLabel)
+        
+        numberLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview()
+            make.centerY.equalToSuperview()
+        }
+    }
+    
+    private func setupPhraseLabelLayout() {
+        addSubview(phraseLabel)
+        
+        phraseLabel.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.leading.equalTo(numberLabel.snp.trailing).offset(layout.current.leadingInset)
+            make.trailing.lessThanOrEqualToSuperview()
+        }
+    }
+}
+
+extension PassphraseBackUpOrderView {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let leadingInset: CGFloat = 2.0
+    }
+}

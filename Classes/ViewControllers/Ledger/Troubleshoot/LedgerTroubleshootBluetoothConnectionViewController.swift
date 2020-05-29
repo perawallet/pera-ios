@@ -9,54 +9,49 @@
 import UIKit
 
 class LedgerTroubleshootBluetoothConnectionViewController: BaseScrollViewController {
-    // MARK: Components
     
     private lazy var ledgerTroubleshootBluetoothConnectionView = LedgerTroubleshootBluetoothConnectionView()
     
     private lazy var separatorView: UIView = {
         let view = UIView()
-        view.backgroundColor = rgb(0.91, 0.91, 0.92)
+        view.backgroundColor = SharedColors.gray100
         return view
     }()
-    
-    // MARK: View Lifecycle
-    
-    override func configureAppearance() {
-        super.configureAppearance()
-        
-        navigationItem.titleView = UIImageView(image: img("icon-bluetooth-purple"))
-        view.backgroundColor = .white
-        contentView.backgroundColor = .white
-        scrollView.backgroundColor = .white
-        navigationController?.navigationBar.barTintColor = .white
-    }
-    
-    override func prepareLayout() {
-        super.prepareLayout()
-        
-        setupSeparatorView()
-        setupLedgerTroubleshootBluetoothView()
-    }
     
     override func configureNavigationBarAppearance() {
         super.configureNavigationBarAppearance()
         
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [weak self] in
-            guard let strongSelf = self else {
-                return
-            }
-            strongSelf.closeScreen(by: .dismiss, animated: true)
+        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [unowned self] in
+            self.closeScreen(by: .dismiss, animated: true)
         }
         
         leftBarButtonItems = [closeBarButtonItem]
     }
     
+    override func configureAppearance() {
+        super.configureAppearance()
+        title = "title-step-4".localized
+        view.backgroundColor = SharedColors.secondaryBackground
+        contentView.backgroundColor = SharedColors.secondaryBackground
+        scrollView.backgroundColor = SharedColors.secondaryBackground
+        setSecondaryBackgroundColor()
+    }
+    
+    override func prepareLayout() {
+        super.prepareLayout()
+        setupSeparatorView()
+        setupLedgerTroubleshootBluetoothView()
+    }
+}
+
+extension LedgerTroubleshootBluetoothConnectionViewController {
     private func setupSeparatorView() {
         view.addSubview(separatorView)
+        
         separatorView.snp.makeConstraints { maker in
             maker.top.equalTo(scrollView.snp.top)
             maker.leading.trailing.equalToSuperview()
-            maker.height.equalTo(1)
+            maker.height.equalTo(1.0)
         }
     }
     

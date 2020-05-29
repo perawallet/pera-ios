@@ -10,18 +10,11 @@ import UIKit
 
 class SendTransactionViewModel {
     func configure(_ view: SendTransactionView, with state: AssetReceiverState, and fee: Int64?) {
-        view.transactionReceiverView.state = state
-        view.transactionReceiverView.receiverContainerView.backgroundColor = rgb(0.91, 0.91, 0.92)
-        view.transactionReceiverView.actionMode = .none
-        updateFeeLayout(view, with: fee)
-    }
-    
-    private func updateFeeLayout(_ view: SendTransactionView, with fee: Int64?) {
         if var receivedFee = fee {
             if receivedFee < Transaction.Constant.minimumFee {
                 receivedFee = Transaction.Constant.minimumFee
             }
-            view.feeInformationView.algosAmountView.mode = .normal(amount: receivedFee.toAlgos)
+            view.setFeeInformationViewMode(.normal(amount: receivedFee.toAlgos))
         }
     }
 }

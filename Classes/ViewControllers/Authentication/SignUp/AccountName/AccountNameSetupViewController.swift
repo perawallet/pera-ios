@@ -8,11 +8,6 @@
 
 import UIKit
 
-enum AccountSetupMode {
-    case initialize
-    case new
-}
-
 class AccountNameSetupViewController: BaseScrollViewController {
     
     private lazy var accountNameSetupView = AccountNameSetupView()
@@ -21,7 +16,7 @@ class AccountNameSetupViewController: BaseScrollViewController {
     
     override func configureAppearance() {
         super.configureAppearance()
-        title = "new-account-title".localized
+        title = "account-details-title".localized
     }
     
     override func setListeners() {
@@ -38,6 +33,11 @@ class AccountNameSetupViewController: BaseScrollViewController {
     override func prepareLayout() {
         super.prepareLayout()
         setupAccountNameSetupViewLayout()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        accountNameSetupView.beginEditing()
     }
 }
 
@@ -118,8 +118,7 @@ extension AccountNameSetupViewController: TouchDetectingScrollViewDelegate {
     }
 }
 
-extension AccountNameSetupViewController {
-    private enum Colors {
-        static let separatorColor = rgba(0.67, 0.67, 0.72, 0.31)
-    }
+enum AccountSetupMode {
+    case initialize
+    case new
 }

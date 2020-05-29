@@ -8,68 +8,115 @@
 
 import UIKit
 
-class PassphraseDisplayViewController: PassphraseViewController {
+class PassphraseDisplayViewController: BaseViewController {
     
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let horizontalInset: CGFloat = 20.0
-        let topInset: CGFloat = 30.0
-        let bottomInset: CGFloat = 20.0
-        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
+    var mnemonics: [String]? {
+        guard let session = self.session else {
+            return nil
+        }
+        let mnemonics = session.mnemonics(forAccount: address)
+        return mnemonics
     }
     
-    private enum Colors {
-        static let backgroundColor = rgba(0.04, 0.05, 0.07, 0.6)
+    private var address: String
+    
+    private lazy var passphraseDisplayView = PassphraseDisplayView()
+    
+    init(address: String, configuration: ViewControllerConfiguration) {
+        self.address = address
+        super.init(configuration: configuration)
     }
     
-    private let layout = Layout<LayoutConstants>()
-    
-    // MARK: Setup
+    override func configureNavigationBarAppearance() {
+        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [weak self] in
+            self?.closeScreen(by: .dismiss, animated: true)
+        }
+        
+        leftBarButtonItems = [closeBarButtonItem]
+    }
     
     override func configureAppearance() {
-        view.backgroundColor = Colors.backgroundColor
-        passphraseView.layer.cornerRadius = 10.0
+        view.backgroundColor = SharedColors.secondaryBackground
+        title = "options-view-passphrase".localized
+        setSecondaryBackgroundColor()
+    }
+    
+    override func linkInteractors() {
+        passphraseDisplayView.delegate = self
+        passphraseDisplayView.passphraseCollectionView.delegate = self
+        passphraseDisplayView.passphraseCollectionView.dataSource = self
     }
 
     override func prepareLayout() {
-        super.prepareLayout()
-        
         setupPassphraseViewLayout()
-        adjustPassphraseViewForDisplayMode()
-    }
-    
-    override func passphraseViewDidTapActionButton(_ passphraseView: PassphraseView) {
-        dismissScreen()
     }
 }
 
 extension PassphraseDisplayViewController {
     private func setupPassphraseViewLayout() {
-        view.addSubview(passphraseView)
+        view.addSubview(passphraseDisplayView)
         
-        passphraseView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.center.equalToSuperview()
+        passphraseDisplayView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
         }
     }
+}
+
+extension PassphraseDisplayViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        guard let mnemonics = mnemonics else {
+            return 0
+        }
+        return mnemonics.count
+    }
     
-    private func adjustPassphraseViewForDisplayMode() {
-        passphraseView.titleLabel.text = "view-pass-phrase-title".localized
-        passphraseView.actionButton.setAttributedTitle(
-            "title-ok".localized.attributed([.letterSpacing(1.20), .textColor(.white)]),
-            for: .normal
-        )
-        passphraseView.warningContainerView.isHidden = true
-        passphraseView.warningLabel.isHidden = true
-        
-        passphraseView.titleLabel.snp.updateConstraints { make in
-            make.top.equalToSuperview().inset(layout.current.topInset)
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: PassphraseBackUpCell.reusableIdentifier,
+            for: indexPath) as? PassphraseBackUpCell else {
+                fatalError("Index path is out of bounds")
         }
         
-        passphraseView.actionButton.snp.remakeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalTo(passphraseView.passphraseContainerView.snp.bottom).offset(layout.current.topInset)
-            make.bottom.equalToSuperview().inset(layout.current.bottomInset)
-            make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
+        cell.contextView.numberLabel.text = "\(indexPath.item + 1)."
+        
+        guard let mnemonics = mnemonics else {
+            return cell
+        }
+        
+        cell.contextView.phraseLabel.text = mnemonics[indexPath.item]
+        return cell
+    }
+}
+
+extension PassphraseDisplayViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        sizeForItemAt indexPath: IndexPath
+    ) -> CGSize {
+        return CGSize(width: collectionView.frame.width / 3.0, height: 22.0)
+    }
+}
+
+extension PassphraseDisplayViewController: PassphraseDisplayViewDelegate {
+    func passphraseViewDidOpenQR(_ passphraseDisplayView: PassphraseDisplayView) {
+        let mnemonics = self.session?.mnemonics(forAccount: address) ?? []
+        let mnemonicText = mnemonics.joined(separator: " ")
+        let draft = QRCreationDraft(address: address, mode: .mnemonic, mnemonic: mnemonicText)
+        open(.qrGenerator(title: "qr-creation-title".localized, draft: draft), by: .present)
+    }
+    
+    func passphraseViewDidShare(_ passphraseDisplayView: PassphraseDisplayView) {
+        let mnemonics = self.session?.mnemonics(forAccount: address) ?? []
+        
+        let sharedItem = [mnemonics.joined(separator: " ")]
+        let activityViewController = UIActivityViewController(activityItems: sharedItem, applicationActivities: nil)
+        activityViewController.excludedActivityTypes = [UIActivity.ActivityType.addToReadingList]
+        
+        if let navigationController = navigationController {
+            navigationController.present(activityViewController, animated: true, completion: nil)
+        } else {
+            present(activityViewController, animated: true, completion: nil)
         }
     }
 }

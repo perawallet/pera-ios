@@ -8,24 +8,11 @@
 
 import UIKit
 
-protocol UserInformationViewDelegate: class {
-    
-    func userInformationViewDidTapAddImageButton(_ userInformationView: UserInformationView)
-    func userInformationViewDidTapQRCodeButton(_ userInformationView: UserInformationView)
-}
-
 class UserInformationView: BaseView {
-    
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let backgroundViewSize: CGFloat = 108.0
-        let imageInset: CGFloat = 28.0
-        let verticalInset: CGFloat = 15.0
-        let buttonSize: CGFloat = 36.0
-    }
     
     private let layout = Layout<LayoutConstants>()
     
-    // MARK: Components
+    weak var delegate: UserInformationViewDelegate?
     
     private lazy var imageBackgroundView: UIView = {
         let view = UIView()
@@ -42,28 +29,18 @@ class UserInformationView: BaseView {
         return imageView
     }()
     
-    private(set) lazy var addButton: UIButton = {
-        let button = UIButton(type: .custom).withBackgroundColor(SharedColors.darkGray).withImage(img("icon-add-white"))
-        button.layer.cornerRadius = 18.0
+    private lazy var addButton: UIButton = {
+        let button = UIButton(type: .custom).withBackgroundColor(SharedColors.primary).withImage(img("icon-add-white"))
+        button.layer.cornerRadius = 16.0
         return button
     }()
     
     private(set) lazy var contactNameInputView: SingleLineInputField = {
         let contactNameInputView = SingleLineInputField()
         contactNameInputView.explanationLabel.text = "contacts-input-name-explanation".localized
-        contactNameInputView.inputTextField.attributedPlaceholder = NSAttributedString(
-            string: "contacts-input-name-placeholder".localized,
-            attributes: [NSAttributedString.Key.foregroundColor: SharedColors.softGray,
-                         NSAttributedString.Key.font: UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))]
-        )
-        
-        contactNameInputView.inputTextField.textColor = SharedColors.black
-        contactNameInputView.inputTextField.tintColor = SharedColors.black
-        contactNameInputView.inputTextField.font = UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))
+        contactNameInputView.placeholderText = "contacts-input-name-placeholder".localized
         contactNameInputView.nextButtonMode = .next
         contactNameInputView.inputTextField.autocorrectionType = .no
-        contactNameInputView.backgroundColor = .clear
-        
         contactNameInputView.inputTextField.isEnabled = isEditable
         return contactNameInputView
     }()
@@ -75,26 +52,24 @@ class UserInformationView: BaseView {
         algorandAddressInputView.nextButtonMode = .submit
         algorandAddressInputView.inputTextView.autocorrectionType = .no
         algorandAddressInputView.inputTextView.autocapitalizationType = .none
-        algorandAddressInputView.rightInputAccessoryButton.setImage(img("icon-qr-view"), for: .normal)
-        algorandAddressInputView.inputTextView.textContainer.heightTracksTextView = false
-        algorandAddressInputView.inputTextView.isScrollEnabled = true
-        algorandAddressInputView.backgroundColor = .clear
-        
+        algorandAddressInputView.rightInputAccessoryButton.setImage(img("icon-qr-scan"), for: .normal)
+        algorandAddressInputView.inputTextView.textContainer.heightTracksTextView = true
+        algorandAddressInputView.inputTextView.isScrollEnabled = false
         algorandAddressInputView.inputTextView.isEditable = isEditable
         return algorandAddressInputView
     }()
-    
-    weak var delegate: UserInformationViewDelegate?
     
     private var isEditable: Bool
     
     init(isEditable: Bool = true) {
         self.isEditable = isEditable
-        
         super.init(frame: .zero)
     }
     
-    // MARK: Setup
+    override func configureAppearance() {
+        super.configureAppearance()
+        imageBackgroundView.applySmallShadow()
+    }
     
     override func setListeners() {
         addButton.addTarget(self, action: #selector(notifyDelegateToAddButtonTapped), for: .touchUpInside)
@@ -104,8 +79,6 @@ class UserInformationView: BaseView {
         algorandAddressInputView.delegate = self
     }
     
-    // MARK: Layout
-    
     override func prepareLayout() {
         setupImageBackgroundViewLayout()
         setupUserImageViewLayout()
@@ -113,7 +86,16 @@ class UserInformationView: BaseView {
         setupContactNameInputViewLayout()
         setupAlgorandAddressInputViewLayout()
     }
-    
+}
+
+extension UserInformationView {
+    @objc
+    private func notifyDelegateToAddButtonTapped() {
+        delegate?.userInformationViewDidTapAddImageButton(self)
+    }
+}
+
+extension UserInformationView {
     private func setupImageBackgroundViewLayout() {
         addSubview(imageBackgroundView)
         
@@ -148,7 +130,7 @@ class UserInformationView: BaseView {
         
         contactNameInputView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.top.equalTo(imageBackgroundView.snp.bottom).offset(layout.current.verticalInset)
+            make.top.equalTo(imageBackgroundView.snp.bottom).offset(layout.current.nameTopInset)
         }
     }
     
@@ -156,20 +138,16 @@ class UserInformationView: BaseView {
         addSubview(algorandAddressInputView)
         
         algorandAddressInputView.snp.makeConstraints { make in
-            make.top.equalTo(contactNameInputView.snp.bottom).offset(layout.current.verticalInset)
+            make.top.equalTo(contactNameInputView.snp.bottom).offset(layout.current.addressTopInset)
             make.leading.trailing.bottom.equalToSuperview()
         }
     }
     
-    // MARK: Actions
-    
-    @objc
-    private func notifyDelegateToAddButtonTapped() {
-        delegate?.userInformationViewDidTapAddImageButton(self)
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        imageBackgroundView.setShadowFrames()
     }
 }
-
-// MARK: InputViewDelegate
 
 extension UserInformationView: InputViewDelegate {
     func inputViewShouldChangeText(inputView: BaseInputView, with text: String) -> Bool {
@@ -187,4 +165,29 @@ extension UserInformationView: InputViewDelegate {
             algorandAddressInputView.inputTextView.resignFirstResponder()
         }
     }
+}
+
+extension UserInformationView {
+    func setAddButtonIcon(_ icon: UIImage?) {
+        addButton.setImage(icon, for: .normal)
+    }
+    
+    func setAddButtonHidden(_ isHidden: Bool) {
+        addButton.isHidden = isHidden
+    }
+}
+
+extension UserInformationView {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let backgroundViewSize: CGFloat = 88.0
+        let imageInset: CGFloat = 40.0
+        let nameTopInset: CGFloat = 40.0
+        let addressTopInset: CGFloat = 20.0
+        let buttonSize: CGFloat = 32.0
+    }
+}
+
+protocol UserInformationViewDelegate: class {
+    func userInformationViewDidTapAddImageButton(_ userInformationView: UserInformationView)
+    func userInformationViewDidTapQRCodeButton(_ userInformationView: UserInformationView)
 }

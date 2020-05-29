@@ -8,11 +8,7 @@
 
 import UIKit
 
-protocol AccountFooterSupplementaryViewDelegate: class {
-    func accountFooterSupplementaryViewDidTapAddAssetButton(_ accountFooterSupplementaryView: AccountFooterSupplementaryView)
-}
-
-class AccountFooterSupplementaryView: BaseCollectionViewCell<AccountFooterView> {
+class AccountFooterSupplementaryView: BaseSupplementaryView<AccountFooterView> {
     
     weak var delegate: AccountFooterSupplementaryViewDelegate?
     
@@ -25,4 +21,8 @@ extension AccountFooterSupplementaryView: AccountFooterViewDelegate {
     func accountFooterViewDidTapAddAssetButton(_ accountFooterView: AccountFooterView) {
         delegate?.accountFooterSupplementaryViewDidTapAddAssetButton(self)
     }
+}
+
+protocol AccountFooterSupplementaryViewDelegate: class {
+    func accountFooterSupplementaryViewDidTapAddAssetButton(_ accountFooterSupplementaryView: AccountFooterSupplementaryView)
 }

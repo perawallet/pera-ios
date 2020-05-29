@@ -8,10 +8,6 @@
 
 import UIKit
 
-protocol AccountListViewControllerDelegate: class {
-    func accountListViewController(_ viewController: AccountListViewController, didSelectAccount account: Account)
-}
-
 class AccountListViewController: BaseViewController {
     
     override var shouldShowNavigationBar: Bool {
@@ -34,7 +30,7 @@ class AccountListViewController: BaseViewController {
     }
     
     override func configureAppearance() {
-        view.backgroundColor = .white
+        view.backgroundColor = SharedColors.secondaryBackground
         
         switch mode {
         case .contact,
@@ -49,6 +45,7 @@ class AccountListViewController: BaseViewController {
     
     override func setListeners() {
         accountListLayoutBuilder.delegate = self
+        accountListView.delegate = self
         accountListView.accountsCollectionView.dataSource = accountListDataSource
         accountListView.accountsCollectionView.delegate = accountListLayoutBuilder
     }
@@ -65,6 +62,12 @@ extension AccountListViewController {
         accountListView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+    }
+}
+
+extension AccountListViewController: AccountListViewDelegate {
+    func accountListViewDidTapCancelButton(_ accountListView: AccountListView) {
+        dismissScreen()
     }
 }
 
@@ -89,4 +92,8 @@ extension AccountListViewController {
         case transactionReceiver(assetDetail: AssetDetail?)
         case transactionSender(assetDetail: AssetDetail?)
     }
+}
+
+protocol AccountListViewControllerDelegate: class {
+    func accountListViewController(_ viewController: AccountListViewController, didSelectAccount account: Account)
 }

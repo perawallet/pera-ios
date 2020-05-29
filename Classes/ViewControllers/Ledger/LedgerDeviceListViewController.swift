@@ -20,7 +20,15 @@ class LedgerDeviceListViewController: BaseViewController {
     
     private let viewModel = LedgerDeviceListViewModel()
     
-    private lazy var ledgerApprovalViewController = LedgerApprovalViewController(mode: .connection, configuration: configuration)
+    private lazy var ledgerApprovalPresenter = CardModalPresenter(
+        config: ModalConfiguration(
+            animationMode: .normal(duration: 0.25),
+            dismissMode: .none
+        ),
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: 354.0))
+    )
+    
+    private var ledgerApprovalViewController: LedgerApprovalViewController?
     
     private let mode: AccountSetupMode
     private var ledgerDevices = [CBPeripheral]()
@@ -36,13 +44,6 @@ class LedgerDeviceListViewController: BaseViewController {
     init(mode: AccountSetupMode, configuration: ViewControllerConfiguration) {
         self.mode = mode
         super.init(configuration: configuration)
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        // swiftlint:disable todo
-        // TODO: We might need to restart scanning here somehow.
-        // swiftlint:enable todo
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -137,12 +138,16 @@ extension LedgerDeviceListViewController: LedgerDeviceListViewDelegate {
 extension LedgerDeviceListViewController: BLEConnectionManagerDelegate {
     func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didDiscover peripherals: [CBPeripheral]) {
         ledgerDevices = peripherals
+        ledgerDeviceListView.invalidateContentSize(by: ledgerDevices.count)
         ledgerDeviceListView.devicesCollectionView.reloadData()
     }
     
     func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didConnect peripheral: CBPeripheral) {
         connectedDevice = peripheral
-        add(ledgerApprovalViewController)
+        ledgerApprovalViewController = open(
+            .ledgerApproval(mode: .connection),
+            by: .customPresent(presentationStyle: .custom, transitionStyle: nil, transitioningDelegate: ledgerApprovalPresenter)
+        ) as? LedgerApprovalViewController
     }
     
     func bleConnectionManagerEnabledToWrite(_ bleConnectionManager: BLEConnectionManager) {
@@ -174,7 +179,7 @@ extension LedgerDeviceListViewController: BLEConnectionManagerDelegate {
         with error: BLEError?
     ) {
         connectedDevice = nil
-        ledgerApprovalViewController.removeFromParentController()
+        ledgerApprovalViewController?.dismissScreen()
     }
     
     func bleConnectionManager(
@@ -183,7 +188,7 @@ extension LedgerDeviceListViewController: BLEConnectionManagerDelegate {
         with error: BLEError?
     ) {
         connectedDevice = nil
-        ledgerApprovalViewController.removeFromParentController()
+        ledgerApprovalViewController?.dismissScreen()
         pushNotificationController.showFeedbackMessage("ble-error-connection-title".localized,
                                                        subtitle: "ble-error-fail-connect-peripheral".localized)
     }
@@ -199,7 +204,7 @@ extension LedgerDeviceListViewController: LedgerBLEControllerDelegate {
             return
         }
         
-        ledgerApprovalViewController.removeFromParentController()
+        ledgerApprovalViewController?.dismissScreen()
         
         // Remove last two bytes to fetch data
         var mutableData = data
@@ -236,6 +241,6 @@ extension LedgerDeviceListViewController: LedgerBLEControllerDelegate {
 
 extension LedgerDeviceListViewController {
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let cellSize = CGSize(width: UIScreen.main.bounds.width - 36.0, height: 58.0)
+        let cellSize = CGSize(width: UIScreen.main.bounds.width - 28.0, height: 60.0)
     }
 }

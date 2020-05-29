@@ -8,11 +8,7 @@
 
 import UIKit
 
-protocol RequestTransactionViewDelegate: class {
-    func requestTransactionViewDidTapShareButton(_ requestTransactionView: RequestTransactionView)
-}
-
-class RequestTransactionView: RequestTransactionPreviewView {
+class RequestTransactionView: BaseView {
     
     private let layout = Layout<LayoutConstants>()
     
@@ -21,6 +17,14 @@ class RequestTransactionView: RequestTransactionPreviewView {
     private let address: String
     private let amount: Int64
     private let assetIndex: Int64?
+    
+    private lazy var containerView = UIView()
+    
+    private lazy var accountInformationView = TransactionAccountNameView()
+    
+    private lazy var assetInformationView = TransactionAssetView()
+    
+    private lazy var amountInformationView = TransactionAmountInformationView()
     
     private(set) lazy var qrView: QRView = {
         if let assetIndex = assetIndex {
@@ -32,10 +36,8 @@ class RequestTransactionView: RequestTransactionPreviewView {
         }
     }()
     
-    private(set) lazy var shareButton: UIButton = {
-        let button = MainButton(title: "title-share-big".localized)
-            .withImage(img("icon-share", isTemplate: true))
-            .withTintColor(.white)
+    private lazy var shareButton: UIButton = {
+        let button = MainButton(title: "title-share-qr".localized).withImage(img("icon-share-white"))
         button.imageEdgeInsets = UIEdgeInsets(top: 0, left: -10.0, bottom: 0, right: 0)
         button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 5.0, bottom: 0, right: 0)
         return button
@@ -45,12 +47,16 @@ class RequestTransactionView: RequestTransactionPreviewView {
         self.address = address
         self.amount = amount
         self.assetIndex = assetIndex
-        super.init(inputFieldFraction: inputFieldFraction)
+        super.init(frame: .zero)
     }
     
     override func configureAppearance() {
         super.configureAppearance()
-        amountInputView.set(enabled: false)
+        containerView.backgroundColor = SharedColors.secondaryBackground
+        containerView.layer.cornerRadius = 12.0
+        containerView.applySmallShadow()
+        amountInformationView.setSeparatorHidden(true)
+        amountInformationView.setTitle("transaction-detail-amount".localized)
     }
     
     override func setListeners() {
@@ -58,41 +64,76 @@ class RequestTransactionView: RequestTransactionPreviewView {
     }
     
     override func prepareLayout() {
-        super.prepareLayout()
+        setupContainerViewLayout()
         setupQRViewLayout()
-        updateAlgosInputViewLayout()
+        setupAccountInformationViewLayout()
+        setupAssetInformationViewLayout()
+        setupAmountInformationViewLayout()
         setupShareButtonLayout()
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        containerView.setShadowFrames()
     }
 }
 
 extension RequestTransactionView {
+    private func setupContainerViewLayout() {
+        addSubview(containerView)
+        
+        containerView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.top.equalToSuperview().inset(layout.current.topInset)
+        }
+    }
+    
     private func setupQRViewLayout() {
-        addSubview(qrView)
+        containerView.addSubview(qrView)
         
         qrView.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(layout.current.topInset)
+            make.top.equalToSuperview().inset(layout.current.verticalInset)
             make.centerX.equalToSuperview()
             make.height.equalTo(qrView.snp.width)
         }
     }
     
-    private func updateAlgosInputViewLayout() {
-        transactionParticipantView.snp.remakeConstraints { make in
-            make.top.equalTo(qrView.snp.bottom).offset(layout.current.algosInputViewInset)
+    private func setupAccountInformationViewLayout() {
+        containerView.addSubview(accountInformationView)
+        
+        accountInformationView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
+            make.top.equalTo(qrView.snp.bottom).offset(layout.current.topInset)
+        }
+    }
+    
+    private func setupAssetInformationViewLayout() {
+        containerView.addSubview(assetInformationView)
+        
+        assetInformationView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(accountInformationView.snp.bottom)
+        }
+    }
+    
+    private func setupAmountInformationViewLayout() {
+        containerView.addSubview(amountInformationView)
+        
+        amountInformationView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalToSuperview().inset(layout.current.bottomInset)
+            make.top.equalTo(assetInformationView.snp.bottom)
         }
     }
     
     private func setupShareButtonLayout() {
-        previewButton.removeFromSuperview()
-        
         addSubview(shareButton)
         
         shareButton.snp.makeConstraints { make in
-            make.top.greaterThanOrEqualTo(amountInputView.snp.bottom).offset(layout.current.verticalInset)
+            make.top.equalTo(containerView.snp.bottom).offset(layout.current.verticalInset)
             make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().inset(layout.current.verticalInset)
-            make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
+            make.bottom.lessThanOrEqualToSuperview().inset(layout.current.verticalInset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
         }
     }
 }
@@ -105,10 +146,52 @@ extension RequestTransactionView {
 }
 
 extension RequestTransactionView {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let topInset: CGFloat = 45.0 * verticalScale
-        let verticalInset: CGFloat = 20.0 * verticalScale
-        let algosInputViewInset: CGFloat = 20.0 * verticalScale
-        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
+    func setAccountImage(_ image: UIImage?) {
+        accountInformationView.setAccountImage(image)
     }
+    
+    func setAccountName(_ name: String?) {
+        accountInformationView.setAccountName(name)
+    }
+    
+    func setAmountInformationViewMode(_ mode: TransactionAmountView.Mode) {
+        amountInformationView.setAmountViewMode(mode)
+    }
+    
+    func setAssetName(for assetDetail: AssetDetail) {
+        assetInformationView.setAssetName(for: assetDetail)
+    }
+    
+    func setAssetVerified(_ hidden: Bool) {
+        assetInformationView.setAssetVerified(hidden)
+    }
+    
+    func setAssetName(_ name: String) {
+        assetInformationView.setAssetName(name)
+    }
+    
+    func setAssetCode(_ code: String) {
+        assetInformationView.setAssetCode(code)
+    }
+    
+    func setAssetId(_ id: String) {
+        assetInformationView.setAssetId(id)
+    }
+    
+    func removeAssetId() {
+        assetInformationView.removeAssetId()
+    }
+}
+
+extension RequestTransactionView {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let topInset: CGFloat = 12.0
+        let bottomInset: CGFloat = 8.0
+        let verticalInset: CGFloat = 28.0
+        let horizontalInset: CGFloat = 20.0
+    }
+}
+
+protocol RequestTransactionViewDelegate: class {
+    func requestTransactionViewDidTapShareButton(_ requestTransactionView: RequestTransactionView)
 }

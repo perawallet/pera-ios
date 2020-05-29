@@ -9,7 +9,6 @@
 import UIKit
 
 extension UICollectionView {
-    
     var isEmpty: Bool {
         if numberOfSections == 0 {
             return true
@@ -24,12 +23,16 @@ extension UICollectionView {
         return true
     }
     
-    // swiftlint:disable implicit_getter
+    //swiftlint:disable implicit_getter
     var contentState: ContentStateView.State {
-        get { return (backgroundView as? ContentStateView).map { $0.state } ?? .none }
-        set { (backgroundView as? ContentStateView)?.state = newValue }
+        get {
+            return (backgroundView as? ContentStateView).map { $0.state } ?? .none
+        }
+        set {
+            (backgroundView as? ContentStateView)?.state = newValue
+        }
     }
-    // swiftlint:enable function_body_length
+    //swiftlint:enable implicit_getter
     
     func reloadSection(_ section: Int) {
         reloadSections(IndexSet(integersIn: section...section))

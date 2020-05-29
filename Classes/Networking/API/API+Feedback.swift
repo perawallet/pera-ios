@@ -14,8 +14,9 @@ extension API {
         then handler: @escaping Endpoint.DefaultResultHandler<[FeedbackCategory]>
     ) -> EndpointOperatable {
         return Endpoint(path: Path("/api/feedback/categories/"))
-            .base(Environment.current.mobileApi)
+            .base(mobileApiBase)
             .httpMethod(.get)
+            .httpHeaders(mobileApiHeaders())
             .resultHandler(handler)
             .buildAndSend(self)
     }
@@ -26,8 +27,9 @@ extension API {
         then handler: @escaping Endpoint.DefaultResultHandler<Feedback>
     ) -> EndpointOperatable {
         return Endpoint(path: Path("/api/feedback/"))
-            .base(Environment.current.mobileApi)
+            .base(mobileApiBase)
             .httpMethod(.post)
+            .httpHeaders(mobileApiHeaders())
             .httpBody(draft)
             .resultHandler(handler)
             .buildAndSend(self)
