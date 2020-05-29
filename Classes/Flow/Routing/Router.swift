@@ -329,12 +329,11 @@ class Router {
             viewController = LedgerTroubleshootOpenAppViewController(configuration: configuration)
         case .termsAndServices:
             viewController = TermsAndServicesViewController(configuration: configuration)
-        case let .selectAsset(transactionAction, filterOption, isDismissable):
+        case let .selectAsset(transactionAction, filterOption):
             viewController = SelectAssetViewController(
                 transactionAction: transactionAction,
                 filterOption: filterOption,
-                configuration: configuration,
-                isDismissable: isDismissable
+                configuration: configuration
             )
         case let .passphraseDisplay(address):
             viewController = PassphraseDisplayViewController(address: address, configuration: configuration)

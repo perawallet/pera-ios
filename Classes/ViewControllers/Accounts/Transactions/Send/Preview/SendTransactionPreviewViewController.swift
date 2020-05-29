@@ -102,7 +102,8 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
         super.viewWillAppear(animated)
         
         if selectedAccount == nil {
-            presentAssetSelection(isDismissable: false)
+            sendTransactionPreviewView.setAssetSelectionHidden(false)
+            presentAssetSelection()
         }
     }
     
@@ -231,19 +232,18 @@ extension SendTransactionPreviewViewController: SendTransactionPreviewViewDelega
     
     func sendTransactionPreviewViewDidTapAccountSelectionView(_ sendTransactionPreviewView: SendTransactionPreviewView) {
         shouldUpdateSenderForSelectedAccount = true
-        presentAssetSelection(isDismissable: true)
+        presentAssetSelection()
     }
     
     func sendTransactionPreviewViewDidTapRemoveButton(_ sendTransactionPreviewView: SendTransactionPreviewView) {
         sendTransactionPreviewView.setAssetSelectionHidden(!isSenderEditable)
     }
     
-    func presentAssetSelection(isDismissable: Bool) {
+    func presentAssetSelection() {
         let controller = open(
             .selectAsset(
                 transactionAction: .send,
-                filterOption: filterOption,
-                isDismissable: isDismissable
+                filterOption: filterOption
             ),
             by: .present
         ) as? SelectAssetViewController

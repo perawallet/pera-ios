@@ -74,11 +74,7 @@ indirect enum Screen {
     case ledgerTroubleshootInstallApp
     case ledgerTroubleshootOpenApp
     case termsAndServices
-    case selectAsset(
-        transactionAction: TransactionAction,
-        filterOption: SelectAssetViewController.FilterOption = .none,
-        isDismissable: Bool = true
-    )
+    case selectAsset(transactionAction: TransactionAction, filterOption: SelectAssetViewController.FilterOption = .none)
     case passphraseDisplay(address: String)
     case tooltip(title: String)
     case assetDetailNotification(address: String, assetId: Int64?)

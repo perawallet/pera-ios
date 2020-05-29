@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Magpie
 
 class AccountsViewController: BaseViewController {
     
@@ -65,6 +66,23 @@ class AccountsViewController: BaseViewController {
     private var accountsLayoutBuilder: AccountsLayoutBuilder
     private(set) var accountsDataSource: AccountsDataSource
     
+    private var isConnectedToInternet = true {
+        didSet {
+            if isConnectedToInternet == oldValue {
+                return
+            }
+            
+            if isConnectedToInternet {
+                refreshAccounts()
+            } else {
+                accountsDataSource.accounts.removeAll()
+                accountsView.accountsCollectionView.contentState = .empty(noConnectionView)
+                accountsView.setHeaderButtonsHidden(true)
+                accountsView.accountsCollectionView.reloadData()
+            }
+        }
+    }
+    
     override init(configuration: ViewControllerConfiguration) {
         accountsLayoutBuilder = AccountsLayoutBuilder()
         accountsDataSource = AccountsDataSource()
@@ -121,6 +139,7 @@ class AccountsViewController: BaseViewController {
         
         displayTestNetBannerIfNeeded()
         presentTermsAndServicesIfNeeded()
+        api?.addDelegate(self)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -129,6 +148,11 @@ class AccountsViewController: BaseViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.presentQRTooltipIfNeeded()
         }
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        api?.removeDelegate(self)
     }
     
     override func configureAppearance() {
@@ -229,6 +253,10 @@ extension AccountsViewController: AssetAdditionViewControllerDelegate {
 extension AccountsViewController {
     @objc
     private func didUpdateAuthenticatedUser(notification: Notification) {
+        if !isConnectedToInternet {
+            return
+        }
+        
         accountsDataSource.reload()
         setAccountsCollectionViewContentState()
         accountsView.accountsCollectionView.reloadData()
@@ -236,12 +264,24 @@ extension AccountsViewController {
     
     @objc
     private func didRefreshList() {
-        accountsDataSource.refresh()
-        setAccountsCollectionViewContentState()
-        accountsView.accountsCollectionView.reloadData()
+        if !isConnectedToInternet {
+            if refreshControl.isRefreshing {
+                refreshControl.endRefreshing()
+            }
+            return
+        }
+        
+        refreshAccounts()
+        
         if refreshControl.isRefreshing {
             refreshControl.endRefreshing()
         }
+    }
+    
+    private func refreshAccounts() {
+        accountsDataSource.refresh()
+        setAccountsCollectionViewContentState()
+        accountsView.accountsCollectionView.reloadData()
     }
     
     @objc
@@ -313,9 +353,13 @@ extension AccountsViewController: QRScannerViewControllerDelegate {
                 .sendAlgosTransactionPreview(
                     account: nil,
                     receiver: .address(address: address, amount: "\(amount)"),
-                    isSenderEditable: false
+                    isSenderEditable: true
                 ),
-                by: .push
+                by: .customPresent(
+                    presentationStyle: .fullScreen,
+                    transitionStyle: nil,
+                    transitioningDelegate: nil
+                )
             )
         case .assetRequest:
             guard let address = qrText.address,
@@ -404,6 +448,21 @@ extension AccountsViewController {
         
         tooltipViewController.setSourceView(headerView.contextView.qrButton)
         session?.setAccountQRTooltipDisplayed()
+    }
+}
+
+extension AccountsViewController: MagpieDelegate {
+    func magpie(
+        _ magpie: Magpie,
+        networkMonitor: NetworkMonitor,
+        didConnectVia connection: NetworkConnection,
+        from oldConnection: NetworkConnection
+    ) {
+        isConnectedToInternet = networkMonitor.isConnected
+    }
+    
+    func magpie(_ magpie: Magpie, networkMonitor: NetworkMonitor, didDisconnectFrom oldConnection: NetworkConnection) {
+        isConnectedToInternet = networkMonitor.isConnected
     }
 }
 
