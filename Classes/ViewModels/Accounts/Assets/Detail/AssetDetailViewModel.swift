@@ -146,7 +146,9 @@ extension AssetDetailViewModel {
     }
     
     func configure(_ cell: RewardCell, with reward: Reward) {
-        cell.contextView.transactionAmountView.mode = .normal(amount: reward.amount.toAlgos)
+        cell.contextView.transactionAmountView.mode = .positive(amount: reward.amount.toAlgos)
+        let formattedDate = findDate(from: reward.round).toFormat("MMMM dd, yyyy")
+        cell.contextView.setDate(formattedDate)
     }
 }
 

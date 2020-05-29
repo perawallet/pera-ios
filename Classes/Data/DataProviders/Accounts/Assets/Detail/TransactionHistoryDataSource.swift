@@ -312,14 +312,14 @@ extension TransactionHistoryDataSource {
                 payment.toAddress == account.address,
                 assetDetail == nil {
                 if let rewards = transaction.payment?.rewards, rewards > 0 {
-                    let reward = Reward(amount: Int64(rewards))
+                    let reward = Reward(amount: Int64(rewards), round: transaction.lastRound)
                     self.transactions.append(reward)
                 }
             } else {
                 if let rewards = transaction.fromRewards,
                     rewards > 0,
                     assetDetail == nil {
-                    let reward = Reward(amount: Int64(rewards))
+                    let reward = Reward(amount: Int64(rewards), round: transaction.lastRound)
                     self.transactions.append(reward)
                 }
             }
