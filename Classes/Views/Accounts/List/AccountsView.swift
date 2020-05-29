@@ -66,7 +66,7 @@ extension AccountsView {
         
         accountsHeaderView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.top.equalToSuperview().inset(layout.current.headerTopInset)
+            make.top.equalToSuperview()
         }
     }
     
@@ -83,6 +83,11 @@ extension AccountsView {
 }
 
 extension AccountsView {
+    func setHeaderButtonsHidden(_ hidden: Bool) {
+        accountsHeaderView.setQRButtonHidden(hidden)
+        accountsHeaderView.setAddButtonHidden(hidden)
+    }
+    
     func setTestNetLabelHidden(_ hidden: Bool) {
         accountsHeaderView.setTestNetLabelHidden(hidden)
     }
@@ -101,7 +106,6 @@ extension AccountsView: MainHeaderViewDelegate {
 extension AccountsView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let listTopInset: CGFloat = 12.0
-        let headerTopInset: CGFloat = 44.0
     }
 }
 

@@ -69,7 +69,6 @@ class AssetAdditionViewController: BaseViewController {
     init(account: Account, configuration: ViewControllerConfiguration) {
         self.account = account
         super.init(configuration: configuration)
-        hidesBottomBarWhenPushed = true
     }
     
     override func configureNavigationBarAppearance() {
@@ -250,8 +249,12 @@ extension AssetAdditionViewController: InputViewDelegate {
     
     func inputViewDidChangeValue(inputView: BaseInputView) {
         guard let query = assetAdditionView.assetInputView.inputTextField.text else {
+            assetAdditionView.assetInputView.rightInputAccessoryButton.isHidden = false
             return
         }
+        
+        assetAdditionView.assetInputView.rightInputAccessoryButton.isHidden = query.isEmpty
+        
         resetPagination()
         fetchAssets(with: query, isPaginated: false)
     }
@@ -259,6 +262,13 @@ extension AssetAdditionViewController: InputViewDelegate {
     private func resetPagination() {
         hasNext = false
         searchOffset = 0
+    }
+    
+    func inputViewDidTapAccessoryButton(inputView: BaseInputView) {
+        assetAdditionView.assetInputView.rightInputAccessoryButton.isHidden = true
+        assetAdditionView.assetInputView.inputTextField.text = nil
+        resetPagination()
+        fetchAssets(with: nil, isPaginated: false)
     }
 }
 
@@ -282,9 +292,11 @@ extension AssetAdditionViewController: AssetActionConfirmationViewControllerDele
 
 extension AssetAdditionViewController: TransactionControllerDelegate {
     func transactionController(_ transactionController: TransactionController, didFailedComposing error: Error) {
-        if account.type == .ledger {
+        if account.type.isLedger() {
             ledgerApprovalViewController?.dismissScreen()
         }
+        
+        SVProgressHUD.dismiss()
         
         switch error {
         case let .custom(fee):
@@ -304,7 +316,7 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
         }
     }
     
-    func transactionController(_ transactionController: TransactionController, didFailBLEConnectionWith state: CBManagerState) {        
+    func transactionController(_ transactionController: TransactionController, didFailBLEConnectionWith state: CBManagerState) {
         guard let errorTitle = state.errorDescription.title,
             let errorSubtitle = state.errorDescription.subtitle else {
                 return
@@ -335,7 +347,7 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
                 return
         }
         
-        if account.type == .ledger {
+        if account.type.isLedger() {
             ledgerApprovalViewController?.dismissScreen()
         }
         
@@ -362,7 +374,7 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
 // MARK: Ledger Timer
 extension AssetAdditionViewController {
     func validateTimer() {
-        guard account.type == .ledger else {
+        guard account.type.isLedger() else {
             return
         }
         
@@ -386,7 +398,7 @@ extension AssetAdditionViewController {
     }
     
     func invalidateTimer() {
-        guard account.type == .ledger else {
+        guard account.type.isLedger() else {
             return
         }
         

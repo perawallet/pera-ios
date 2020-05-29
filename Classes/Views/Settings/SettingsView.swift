@@ -55,7 +55,7 @@ extension SettingsView {
         
         settingsHeaderView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.top.equalToSuperview().inset(44.0)
+            make.top.equalToSuperview()
         }
     }
     

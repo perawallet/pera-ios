@@ -54,6 +54,7 @@ class AccountFetchOperation: AsyncOperation {
 extension AccountFetchOperation {
     private func fetchAssets(for account: Account) {
         guard let assets = account.assets else {
+            onCompleted?(account, nil)
             return
         }
         
@@ -65,7 +66,7 @@ extension AccountFetchOperation {
             self.api.getAssetDetails(with: AssetFetchDraft(assetId: index)) { assetResponse in
                 switch assetResponse {
                 case .success(let assetDetail):
-                    self.composeAssetDetail(assetDetail, of: account, with: id)
+                    self.composeAssetDetail(assetDetail, of: account, with: id, removedAssetCount: &removedAssetCount)
                 case .failure:
                     removedAssetCount += 1
                     account.removeAsset(Int64(id))
@@ -77,8 +78,9 @@ extension AccountFetchOperation {
         }
     }
     
-    private func composeAssetDetail(_ assetDetail: AssetDetail, of account: Account, with id: Int64) {
+    private func composeAssetDetail(_ assetDetail: AssetDetail, of account: Account, with id: Int64, removedAssetCount: inout Int) {
         guard let assets = account.assets else {
+            onCompleted?(account, nil)
             return
         }
         
@@ -87,7 +89,7 @@ extension AccountFetchOperation {
         setVerifiedIfNeeded(&assetDetail, with: id)
         account.assetDetails.append(assetDetail)
         
-        if assets.count == account.assetDetails.count {
+        if assets.count == account.assetDetails.count + removedAssetCount {
             self.onCompleted?(account, nil)
         }
     }

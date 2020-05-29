@@ -45,6 +45,6 @@ extension AccountsViewModel {
             return
         }
         
-        header.contextView.setAccountName(accountName.uppercased())
+        header.contextView.setAccountName(accountName)
     }
 }

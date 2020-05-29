@@ -9,14 +9,24 @@
 import UIKit
 
 class SendAlgosTransactionPreviewViewModel {
+    private let isAccountSelectionEnabled: Bool
+    
+    init(isAccountSelectionEnabled: Bool) {
+        self.isAccountSelectionEnabled = isAccountSelectionEnabled
+    }
+    
     func configure(_ view: SendTransactionPreviewView, with selectedAccount: Account?) {
         guard let account = selectedAccount else {
             return
         }
         
-        view.transactionAccountInformationView.setDisabled()
+        if isAccountSelectionEnabled {
+            view.transactionAccountInformationView.setEnabled()
+        } else {
+            view.transactionAccountInformationView.setDisabled()
+        }
         
-        if account.type == .ledger {
+        if account.type.isLedger() {
             view.transactionAccountInformationView.setAccountImage(img("icon-account-type-ledger"))
         } else {
             view.transactionAccountInformationView.setAccountImage(img("icon-account-type-standard"))
@@ -33,7 +43,7 @@ class SendAlgosTransactionPreviewViewModel {
     func update(_ view: SendTransactionPreviewView, with account: Account, isMaxTransaction: Bool) {
         view.transactionAccountInformationView.setAccountName(account.name)
         
-        if account.type == .ledger {
+        if account.type.isLedger() {
             view.transactionAccountInformationView.setAccountImage(img("icon-account-type-ledger"))
         } else {
             view.transactionAccountInformationView.setAccountImage(img("icon-account-type-standard"))

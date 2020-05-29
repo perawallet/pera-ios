@@ -73,7 +73,7 @@ extension TransactionTextInformationView {
         titleLabel.text = title
     }
     
-    func setDetail(_ detail: String) {
+    func setDetail(_ detail: String?) {
         detailLabel.text = detail
     }
 }

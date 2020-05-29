@@ -8,7 +8,7 @@
 
 import UIKit
 
-class RequestAlgosTransactionViewController: RequestTransactionViewController {
+class RequestAlgosTransactionViewController: RequestTransactionViewController, TestNetTitleDisplayable {
     
     private lazy var requestTransactionView = RequestTransactionView(
         inputFieldFraction: algosFraction,
@@ -27,8 +27,8 @@ class RequestAlgosTransactionViewController: RequestTransactionViewController {
     
     override func configureAppearance() {
         super.configureAppearance()
-        title = "request-algos-title".localized
         viewModel.configure(requestTransactionView)
+        displayTestNetTitleView(with: "request-algos-title".localized)
     }
     
     override func linkInteractors() {

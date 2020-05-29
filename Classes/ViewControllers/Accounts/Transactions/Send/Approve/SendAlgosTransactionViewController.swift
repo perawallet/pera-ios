@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SendAlgosTransactionViewController: SendTransactionViewController {
+class SendAlgosTransactionViewController: SendTransactionViewController, TestNetTitleDisplayable {
     
     private var algosTransactionSendDraft: AlgosTransactionSendDraft
     private let viewModel = SendAlgosTransactionViewModel()
@@ -17,10 +17,16 @@ class SendAlgosTransactionViewController: SendTransactionViewController {
         algosTransactionSendDraft: AlgosTransactionSendDraft,
         assetReceiverState: AssetReceiverState,
         transactionController: TransactionController,
+        isSenderEditable: Bool,
         configuration: ViewControllerConfiguration
     ) {
         self.algosTransactionSendDraft = algosTransactionSendDraft
-        super.init(assetReceiverState: assetReceiverState, transactionController: transactionController, configuration: configuration)
+        super.init(
+            assetReceiverState: assetReceiverState,
+            transactionController: transactionController,
+            isSenderEditable: isSenderEditable,
+            configuration: configuration
+        )
         
         fee = algosTransactionSendDraft.fee
         transactionController.setTransactionDraft(algosTransactionSendDraft)
@@ -29,17 +35,7 @@ class SendAlgosTransactionViewController: SendTransactionViewController {
     override func configureAppearance() {
         super.configureAppearance()
         viewModel.configure(sendTransactionView, with: algosTransactionSendDraft)
-        
-        guard let isTestNet = api?.isTestNet else {
-            title = "send-algos-title".localized
-            return
-        }
-        
-        if isTestNet {
-            navigationItem.titleView = TestNetTitleView(title: "send-algos-title".localized)
-        } else {
-            title = "send-algos-title".localized
-        }
+        displayTestNetTitleView(with: "send-algos-title".localized)
     }
     
     override func completeTransaction(with id: TransactionID) {

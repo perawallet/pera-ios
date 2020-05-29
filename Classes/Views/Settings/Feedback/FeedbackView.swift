@@ -49,7 +49,7 @@ class FeedbackView: BaseView {
         return noteInputView
     }()
     
-    private lazy var sendButton = MainButton(title: "title-send".localized)
+    private lazy var sendButton = MainButton(title: "feedback-title".localized)
     
     override func linkInteractors() {
         emailInputView.delegate = self

@@ -24,7 +24,7 @@ class TransactionReceiverSelectionView: BaseView {
     }()
     
     private lazy var accountsButton = TransactionReceiverButton(
-        title: "send-algos-my-accounts".localized,
+        title: "accounts-title".localized,
         image: img("icon-receiver-accounts")
     )
     

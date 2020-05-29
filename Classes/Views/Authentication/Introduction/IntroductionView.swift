@@ -14,7 +14,7 @@ class IntroductionView: BaseView {
     
     weak var delegate: IntroductionViewDelegate?
     
-    private lazy var introductionImageView = UIImageView()
+    private lazy var introductionImageView = UIImageView(image: img("logo-introduction"))
     
     private lazy var titleLabel: UILabel = {
         UILabel()
@@ -22,7 +22,7 @@ class IntroductionView: BaseView {
             .withFont(UIFont.font(withWeight: .bold(size: 28.0 * verticalScale)))
             .withText("introduction-title-text".localized)
             .withTextColor(SharedColors.primaryText)
-            .withAlignment(.left)
+            .withAlignment(.center)
     }()
     
     private lazy var createAccountButton = MainButton(title: "introduction-create-title".localized)
@@ -64,6 +64,7 @@ class IntroductionView: BaseView {
     
     override func configureAppearance() {
         backgroundColor = SharedColors.secondaryBackground
+        introductionImageView.contentMode = .scaleAspectFit
     }
     
     override func prepareLayout() {
@@ -82,10 +83,8 @@ extension IntroductionView {
         addSubview(introductionImageView)
         
         introductionImageView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(layout.current.imageViewLeadingInset)
-            make.trailing.equalToSuperview()
+            make.centerX.equalToSuperview()
             make.top.equalToSuperview().inset(layout.current.imageViewTopInset)
-            make.height.equalTo(layout.current.imageViewHeight)
         }
     }
     
@@ -93,7 +92,7 @@ extension IntroductionView {
         addSubview(titleLabel)
         
         titleLabel.snp.makeConstraints { make in
-            make.top.lessThanOrEqualTo(introductionImageView.snp.bottom).offset(layout.current.titleLabelTopInset)
+            make.top.lessThanOrEqualTo(introductionImageView.snp.bottom).offset(layout.current.imageViewTopInset)
             make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
         }
     }
@@ -168,9 +167,8 @@ extension IntroductionView {
 
 extension IntroductionView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let imageViewHeight: CGFloat = 192.0 * verticalScale
         let imageViewLeadingInset: CGFloat = 28.0
-        let imageViewTopInset: CGFloat = 50.0 * verticalScale
+        let imageViewTopInset: CGFloat = 120.0 * verticalScale
         let titleLabelTopInset: CGFloat = 80.0 * verticalScale
         let separatorHeight: CGFloat = 1.0
         let separatorVerticalInset: CGFloat = 32.0 * verticalScale

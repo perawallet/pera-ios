@@ -32,20 +32,20 @@ class AccountsViewController: BaseViewController {
         initialModalSize: .custom(CGSize(width: view.frame.width, height: layout.current.removeAccountModalHeight))
     )
     
-    private(set) lazy var editAccountModalPresenter = CardModalPresenter(
-        config: ModalConfiguration(
-            animationMode: .normal(duration: 0.25),
-            dismissMode: .backgroundTouch
-        ),
-        initialModalSize: .custom(CGSize(width: view.frame.width, height: layout.current.editAccountModalHeight))
-    )
-    
     private(set) lazy var termsServiceModalPresenter = CardModalPresenter(
         config: ModalConfiguration(
             animationMode: .normal(duration: 0.25),
             dismissMode: .none
         ),
         initialModalSize: .custom(CGSize(width: view.frame.width, height: layout.current.termsAndServiceHeight))
+    )
+    
+    private(set) lazy var passphraseModalPresenter = CardModalPresenter(
+        config: ModalConfiguration(
+            animationMode: .normal(duration: 0.25),
+            dismissMode: .scroll
+        ),
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: layout.current.passphraseModalHeight))
     )
     
     private lazy var pushNotificationController: PushNotificationController = {
@@ -85,6 +85,19 @@ class AccountsViewController: BaseViewController {
         )
     }
     
+    override func customizeTabBarAppearence() {
+        isTabBarHidden = false
+    }
+    
+    override func beginTracking() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didChangedNetwork(notification:)),
+            name: .NetworkChanged,
+            object: nil
+        )
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -96,6 +109,7 @@ class AccountsViewController: BaseViewController {
         pushNotificationController.registerDevice()
         
         setAccountsCollectionViewContentState()
+        addTestNetBanner()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -107,6 +121,14 @@ class AccountsViewController: BaseViewController {
         
         displayTestNetBannerIfNeeded()
         presentTermsAndServicesIfNeeded()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.presentQRTooltipIfNeeded()
+        }
     }
     
     override func configureAppearance() {
@@ -137,7 +159,8 @@ extension AccountsViewController {
         view.addSubview(accountsView)
         
         accountsView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.leading.trailing.bottom.equalToSuperview()
+            make.top.safeEqualToTop(of: self)
         }
     }
 }
@@ -171,7 +194,8 @@ extension AccountsViewController: AccountsDataSourceDelegate {
     }
     
     func accountsDataSource(_ accountsDataSource: AccountsDataSource, didTapQRButtonFor account: Account) {
-        open(.qrGenerator(title: "qr-creation-sharing-title".localized, address: account.address, mode: .address), by: .present)
+        let draft = QRCreationDraft(address: account.address, mode: .address)
+        open(.qrGenerator(title: "qr-creation-sharing-title".localized, draft: draft), by: .present)
     }
 }
 
@@ -204,7 +228,7 @@ extension AccountsViewController: AssetAdditionViewControllerDelegate {
 
 extension AccountsViewController {
     @objc
-    fileprivate func didUpdateAuthenticatedUser(notification: Notification) {
+    private func didUpdateAuthenticatedUser(notification: Notification) {
         accountsDataSource.reload()
         setAccountsCollectionViewContentState()
         accountsView.accountsCollectionView.reloadData()
@@ -217,6 +241,19 @@ extension AccountsViewController {
         accountsView.accountsCollectionView.reloadData()
         if refreshControl.isRefreshing {
             refreshControl.endRefreshing()
+        }
+    }
+    
+    @objc
+    private func didChangedNetwork(notification: Notification) {
+        guard let isTestNet = api?.isTestNet else {
+            return
+        }
+        
+        if isTestNet {
+            addTestNetBanner()
+        } else {
+            removeTestNetBanner()
         }
     }
 }
@@ -236,6 +273,7 @@ extension AccountsViewController {
     
     private func setAccountsCollectionViewContentState() {
         accountsView.accountsCollectionView.contentState = accountsDataSource.accounts.isEmpty ? .empty(noConnectionView) : .none
+        accountsView.setHeaderButtonsHidden(accountsDataSource.accounts.isEmpty)
     }
     
     private func presentTermsAndServicesIfNeeded() {
@@ -262,7 +300,7 @@ extension AccountsViewController {
 }
 
 extension AccountsViewController: QRScannerViewControllerDelegate {
-    func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, then handler: EmptyHandler?) {
+    func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, completionHandler: EmptyHandler?) {
         switch qrText.mode {
         case .address:
             open(.addContact(mode: .new(address: qrText.address, name: qrText.label)), by: .push)
@@ -271,7 +309,14 @@ extension AccountsViewController: QRScannerViewControllerDelegate {
                 let amount = qrText.amount else {
                 return
             }
-            open(.sendAlgosTransactionPreview(account: nil, receiver: .address(address: address, amount: "\(amount)")), by: .push)
+            open(
+                .sendAlgosTransactionPreview(
+                    account: nil,
+                    receiver: .address(address: address, amount: "\(amount)"),
+                    isSenderEditable: false
+                ),
+                by: .push
+            )
         case .assetRequest:
             guard let address = qrText.address,
                 let amount = qrText.amount,
@@ -298,7 +343,7 @@ extension AccountsViewController: QRScannerViewControllerDelegate {
                     actionTitle: "title-ok".localized
                 )
                 
-                tabBarController?.open(
+                open(
                     .assetSupport(assetAlertDraft: assetAlertDraft),
                     by: .customPresentWithoutNavigationController(
                         presentationStyle: .custom,
@@ -319,6 +364,7 @@ extension AccountsViewController: QRScannerViewControllerDelegate {
                             .toFractionStringForLabel(fraction: assetDetail.fractionDecimals)
                     ),
                     assetDetail: assetDetail,
+                    isSenderEditable: false,
                     isMaxTransaction: false
                 ),
                 by: .push
@@ -328,12 +374,45 @@ extension AccountsViewController: QRScannerViewControllerDelegate {
         }
     }
     
-    func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError, then handler: EmptyHandler?) {
+    func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError, completionHandler: EmptyHandler?) {
         displaySimpleAlertWith(title: "title-error".localized, message: "qr-scan-should-scan-valid-qr".localized) { _ in
-            if let handler = handler {
+            if let handler = completionHandler {
                 handler()
             }
         }
+    }
+}
+
+extension AccountsViewController {
+    func presentQRTooltipIfNeeded() {
+        guard let isAccountQRTooltipDisplayed = session?.isAccountQRTooltipDisplayed(),
+            !isAccountQRTooltipDisplayed else {
+            return
+        }
+ 
+        // Needs to set presentationController before calling present. So it's not initialized from the Router.
+        let tooltipViewController = TooltipViewController(title: "accounts-qr-tooltip".localized, configuration: configuration)
+        tooltipViewController.presentationController?.delegate = self
+        present(tooltipViewController, animated: true)
+        
+        guard let headerView = accountsView.accountsCollectionView.supplementaryView(
+            forElementKind: UICollectionView.elementKindSectionHeader,
+            at: IndexPath(item: 0, section: 0)
+        ) as? AccountHeaderSupplementaryView else {
+            return
+        }
+        
+        tooltipViewController.setSourceView(headerView.contextView.qrButton)
+        session?.setAccountQRTooltipDisplayed()
+    }
+}
+
+extension AccountsViewController: UIPopoverPresentationControllerDelegate {
+    func adaptivePresentationStyle(
+        for controller: UIPresentationController,
+        traitCollection: UITraitCollection
+    ) -> UIModalPresentationStyle {
+        return .none
     }
 }
 
@@ -342,6 +421,7 @@ extension AccountsViewController {
         let optionsModalHeight: CGFloat = 384.0
         let removeAccountModalHeight: CGFloat = 402.0
         let editAccountModalHeight: CGFloat = 158.0
+        let passphraseModalHeight: CGFloat = 470.0
         let termsAndServiceHeight: CGFloat = 300
     }
 }

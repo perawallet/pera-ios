@@ -8,10 +8,9 @@
 
 import UIKit
 import NotificationBannerSwift
+import SnapKit
 
 class AssetDetailViewController: BaseViewController {
-    
-    let layout = Layout<LayoutConstants>()
     
     private lazy var rewardsModalPresenter = CardModalPresenter(
         config: ModalConfiguration(
@@ -21,14 +20,14 @@ class AssetDetailViewController: BaseViewController {
         initialModalSize: .custom(CGSize(width: view.frame.width, height: 472.0))
     )
     
-    private var pollingOperation: PollingOperation?
     private var account: Account
     private var assetDetail: AssetDetail?
     private var isAlgoDisplay: Bool
-    private(set) var transactionHistoryDataSource: TransactionHistoryDataSource
     private var currentDollarConversion: Double?
     private let viewModel: AssetDetailViewModel
     var route: Screen?
+    
+    var transactionsTopConstraint: Constraint?
     
     var headerHeight: CGFloat {
         if isAlgoDisplay {
@@ -39,71 +38,43 @@ class AssetDetailViewController: BaseViewController {
     
     private(set) lazy var assetDetailView = AssetDetailView()
     
-    private lazy var emptyStateView = EmptyStateView(
-        image: img("icon-transactions-empty"),
-        title: "accounts-tranaction-empty-text".localized,
-        subtitle: "accounts-tranaction-empty-detail".localized
-    )
+    private lazy var assetDetailTitleView = AssetDetailTitleView(title: account.name)
     
-    private lazy var refreshControl: UIRefreshControl = {
-        let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(didRefreshList), for: .valueChanged)
-        return refreshControl
-    }()
+    private lazy var transactionsViewController = TransactionsViewController(
+        account: account,
+        configuration: configuration,
+        assetDetail: assetDetail
+    )
     
     init(account: Account, configuration: ViewControllerConfiguration, assetDetail: AssetDetail? = nil) {
         self.account = account
         self.assetDetail = assetDetail
         self.isAlgoDisplay = assetDetail == nil
         viewModel = AssetDetailViewModel(account: account, assetDetail: assetDetail)
-        transactionHistoryDataSource = TransactionHistoryDataSource(api: configuration.api, account: account, assetDetail: assetDetail)
         super.init(configuration: configuration)
-        hidesBottomBarWhenPushed = true
-    }
-    
-    deinit {
-        pollingOperation?.invalidate()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        transactionHistoryDataSource.setupContacts()
-        fetchTransactions()
+        addTestNetBanner()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         fetchDollarConversion()
-        startPendingTransactionPolling()
         handleDeepLinkRoutingIfNeeded()
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        pollingOperation?.invalidate()
     }
     
     override func configureAppearance() {
         super.configureAppearance()
-        assetDetailView.transactionHistoryCollectionView.refreshControl = refreshControl
         viewModel.configure(assetDetailView.headerView, with: account, and: assetDetail)
         
-        guard let isTestNet = api?.isTestNet else {
-            title = account.name
-            return
-        }
-        
-        if isTestNet {
-            navigationItem.titleView = TestNetTitleView(title: account.name)
-        } else {
-            title = account.name
-        }
+        navigationItem.titleView = assetDetailTitleView
+        viewModel.configure(assetDetailTitleView, with: account, and: assetDetail)
     }
     
     override func linkInteractors() {
         assetDetailView.delegate = self
-        assetDetailView.transactionHistoryCollectionView.delegate = self
-        assetDetailView.transactionHistoryCollectionView.dataSource = transactionHistoryDataSource
     }
     
     override func setListeners() {
@@ -122,88 +93,15 @@ class AssetDetailViewController: BaseViewController {
             name: .AuthenticatedUserUpdate,
             object: nil
         )
-        
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(didContactAdded(notification:)),
-            name: .ContactAddition,
-            object: nil
-        )
-        
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(didContactEdited(notification:)),
-            name: .ContactEdit,
-            object: nil
-        )
     }
     
     override func prepareLayout() {
         setupAssetDetaiViewLayout()
+        setupTransactionsViewController()
     }
 }
 
 extension AssetDetailViewController {
-    private func startPendingTransactionPolling() {
-        pollingOperation = PollingOperation(interval: 0.8) { [weak self] in
-            guard let strongSelf = self else {
-                return
-            }
-            
-            strongSelf.transactionHistoryDataSource.fetchPendingTransactions(for: strongSelf.account) { pendingTransactions, error in
-                if error != nil {
-                    return
-                }
-                
-                guard let pendingTransactions = pendingTransactions, !pendingTransactions.isEmpty else {
-                    return
-                }
-                
-                strongSelf.assetDetailView.transactionHistoryCollectionView.contentState = .none
-                strongSelf.assetDetailView.transactionHistoryCollectionView.reloadData()
-            }
-        }
-        
-        pollingOperation?.start()
-    }
-    
-    private func fetchTransactions(witRefresh refresh: Bool = true) {
-        if !refreshControl.isRefreshing {
-            assetDetailView.transactionHistoryCollectionView.contentState = .loading
-        }
-        
-        transactionHistoryDataSource.loadData(for: account, withRefresh: refresh) { transactions, error in
-            if self.refreshControl.isRefreshing {
-                self.refreshControl.endRefreshing()
-            }
-            
-            if let error = error {
-                switch error {
-                case .cancelled:
-                    break
-                default:
-                    self.assetDetailView.transactionHistoryCollectionView.contentState = .empty(self.emptyStateView)
-                }
-                
-                self.assetDetailView.transactionHistoryCollectionView.reloadData()
-                return
-            }
-            
-            guard let transactions = transactions else {
-                self.assetDetailView.transactionHistoryCollectionView.contentState = .none
-                return
-            }
-            
-            if transactions.isEmpty {
-                self.assetDetailView.transactionHistoryCollectionView.contentState = .empty(self.emptyStateView)
-                return
-            }
-            
-            self.assetDetailView.transactionHistoryCollectionView.contentState = .none
-            self.assetDetailView.transactionHistoryCollectionView.reloadData()
-        }
-    }
-    
     private func fetchDollarConversion() {
         api?.fetchDollarValue { response in
             switch response {
@@ -220,12 +118,36 @@ extension AssetDetailViewController {
 }
 
 extension AssetDetailViewController {
+    private func setupAssetDetaiViewLayout() {
+        view.addSubview(assetDetailView)
+        
+        assetDetailView.snp.makeConstraints { make in
+            make.top.leading.trailing.equalToSuperview()
+            make.height.equalTo(headerHeight)
+        }
+    }
+    
+    private func setupTransactionsViewController() {
+        addChild(transactionsViewController)
+        view.addSubview(transactionsViewController.view)
+
+        transactionsViewController.view.snp.makeConstraints { make in
+            transactionsTopConstraint = make.top.equalTo(assetDetailView.snp.bottom).offset(0.0).constraint
+            make.leading.trailing.bottom.equalToSuperview()
+        }
+
+        transactionsViewController.delegate = self
+        transactionsViewController.didMove(toParent: self)
+    }
+}
+
+extension AssetDetailViewController {
     private func handleDeepLinkRoutingIfNeeded() {
         if let route = route {
             switch route {
             case .assetDetail:
                 self.route = nil
-                updateAccount()
+                updateLayout()
             default:
                 self.route = nil
                 open(route, by: .push, animated: false)
@@ -233,33 +155,19 @@ extension AssetDetailViewController {
         }
     }
     
-    fileprivate func updateLayout() {
+    private func updateLayout() {
         guard let account = session?.account(from: account.address) else {
             return
         }
         
         viewModel.configure(assetDetailView.headerView, with: account, and: assetDetail)
-    }
-    
-    private func updateAccount() {
-        transactionHistoryDataSource.clear()
-        assetDetailView.transactionHistoryCollectionView.reloadData()
-        assetDetailView.transactionHistoryCollectionView.contentState = .loading
-        fetchTransactions()
-        updateLayout()
+        transactionsViewController.updateList()
     }
 }
 
 extension AssetDetailViewController {
     @objc
-    private func didRefreshList() {
-        transactionHistoryDataSource.clear()
-        assetDetailView.transactionHistoryCollectionView.reloadData()
-        fetchTransactions()
-    }
-    
-    @objc
-    fileprivate func didAccountUpdate(notification: Notification) {
+    private func didAccountUpdate(notification: Notification) {
         guard let userInfo = notification.userInfo as? [String: Account],
             let updatedAccount = userInfo["account"] else {
             return
@@ -268,30 +176,94 @@ extension AssetDetailViewController {
         if account == updatedAccount {
             account = updatedAccount
             updateLayout()
-            transactionHistoryDataSource.clear()
-            assetDetailView.transactionHistoryCollectionView.reloadData()
-            assetDetailView.transactionHistoryCollectionView.contentState = .loading
-            fetchTransactions()
+        }
+    }
+}
+
+extension AssetDetailViewController: TransactionsViewControllerDelegate {
+    func transactionsViewController(_ transactionsViewController: TransactionsViewController, didScroll scrollView: UIScrollView) {
+        if transactionsViewController.isTransactionListEmpty {
+            return
+        }
+        
+        let scrollOffset = scrollView.panGestureRecognizer.translation(in: view).y
+        let isScrollDirectionUp = scrollOffset < 0
+        
+        var offset: CGFloat = 0.0
+        
+        if isScrollDirectionUp {
+            offset = -scrollOffset > headerHeight ? headerHeight : scrollOffset
+            if offset == headerHeight || transactionsViewController.view.frame.minY <= 5.0 {
+                assetDetailTitleView.animateUp(with: 1.0)
+                transactionsTopConstraint?.update(offset: -headerHeight)
+                return
+            } else {
+                assetDetailTitleView.animateUp(with: -scrollOffset / headerHeight)
+                scrollView.setContentOffset(CGPoint(x: 0.0, y: 0.0), animated: false)
+            }
+        } else {
+            if scrollView.contentOffset.y > 0.0 {
+                return
+            }
+            
+            offset = scrollOffset > headerHeight ? 0.0 : scrollOffset - headerHeight
+            if offset == 0.0 || transactionsViewController.view.frame.minY >= headerHeight {
+                assetDetailTitleView.animateDown(with: 1.0)
+                transactionsTopConstraint?.update(offset: 0.0)
+                return
+            } else {
+                assetDetailTitleView.animateDown(with: scrollOffset / headerHeight)
+                scrollView.setContentOffset(CGPoint(x: 0.0, y: 0.0), animated: false)
+            }
+        }
+        
+        transactionsTopConstraint?.update(offset: offset)
+        view.layoutIfNeeded()
+    }
+    
+    func transactionsViewController(_ transactionsViewController: TransactionsViewController, didStopScrolling scrollView: UIScrollView) {
+        if transactionsViewController.isTransactionListEmpty {
+            return
+        }
+        
+        let isScrollDirectionUp = scrollView.panGestureRecognizer.translation(in: view).y < 0
+        
+        if isScrollDirectionUp {
+            if transactionsViewController.view.frame.minY <= 5.0 {
+                return
+            }
+            
+            assetDetailTitleView.animateUp(with: 1.0)
+            updateScrollOffset(-self.headerHeight)
+            
+            if transactionsViewController.view.frame.minY <= 5.0 {
+                return
+            }
+            
+            view.layoutIfNeeded()
+            scrollView.setContentOffset(CGPoint(x: 0.0, y: 0.0), animated: false)
+        } else {
+            if transactionsViewController.view.frame.minY >= headerHeight {
+                return
+            }
+            
+            assetDetailTitleView.animateDown(with: 1.0)
+            updateScrollOffset(0.0)
         }
     }
     
-    @objc
-    fileprivate func didContactAdded(notification: Notification) {
-        transactionHistoryDataSource.setupContacts()
-        assetDetailView.transactionHistoryCollectionView.reloadData()
-    }
-    
-    @objc
-    fileprivate func didContactEdited(notification: Notification) {
-        transactionHistoryDataSource.setupContacts()
-        assetDetailView.transactionHistoryCollectionView.reloadData()
+    private func updateScrollOffset(_ offset: CGFloat) {
+        UIView.animate(withDuration: 0.33) {
+            self.transactionsTopConstraint?.update(offset: offset)
+            self.view.layoutIfNeeded()
+        }
     }
 }
 
 extension AssetDetailViewController: AssetDetailViewDelegate {
     func assetDetailViewDidTapSendButton(_ assetDetailView: AssetDetailView) {
         if isAlgoDisplay {
-            open(.sendAlgosTransactionPreview(account: account, receiver: .initial), by: .push)
+            open(.sendAlgosTransactionPreview(account: account, receiver: .initial, isSenderEditable: false), by: .push)
         } else {
             guard let assetDetail = assetDetail else {
                 return
@@ -301,6 +273,7 @@ extension AssetDetailViewController: AssetDetailViewDelegate {
                     account: account,
                     receiver: .initial,
                     assetDetail: assetDetail,
+                    isSenderEditable: false,
                     isMaxTransaction: false
                 ),
                 by: .push
@@ -310,12 +283,12 @@ extension AssetDetailViewController: AssetDetailViewDelegate {
     
     func assetDetailViewDidTapReceiveButton(_ assetDetailView: AssetDetailView) {
         if isAlgoDisplay {
-            open(.requestAlgosTransactionPreview(account: account), by: .push)
+            open(.requestAlgosTransactionPreview(account: account, isReceiverEditable: false), by: .push)
         } else {
             guard let assetDetail = assetDetail else {
                 return
             }
-            open(.requestAssetTransactionPreview(account: account, assetDetail: assetDetail), by: .push)
+            open(.requestAssetTransactionPreview(account: account, assetDetail: assetDetail, isReceiverEditable: false), by: .push)
         }
     }
     
@@ -349,72 +322,5 @@ extension AssetDetailViewController: AssetDetailViewDelegate {
             displaySimpleAlertWith(title: "asset-id-copied-title".localized, message: "")
             UIPasteboard.general.string = "\(id)"
         }
-    }
-}
-
-extension AssetDetailViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let transaction = transactionHistoryDataSource.transaction(at: indexPath) else {
-                return
-        }
-        
-        if transaction.from == account.address {
-            open(
-                .transactionDetail(
-                    account: account,
-                    transaction: transaction,
-                    transactionType: .sent,
-                    assetDetail: assetDetail
-                ),
-                by: .present
-            )
-        } else {
-            open(
-                .transactionDetail(
-                    account: account,
-                    transaction: transaction,
-                    transactionType: .received,
-                    assetDetail: assetDetail
-                ),
-                by: .present
-            )
-        }
-    }
-    
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        sizeForItemAt indexPath: IndexPath
-    ) -> CGSize {
-        return layout.current.transactionCellSize
-    }
-    
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        referenceSizeForHeaderInSection section: Int
-    ) -> CGSize {
-        if transactionHistoryDataSource.transactionCount() == 0 {
-            return .zero
-        }
-        return layout.current.headerSize
-    }
-}
-
-extension AssetDetailViewController {
-    private func setupAssetDetaiViewLayout() {
-        view.addSubview(assetDetailView)
-        
-        assetDetailView.snp.makeConstraints { make in
-            make.top.leading.trailing.bottom.equalToSuperview()
-        }
-    }
-}
-
-extension AssetDetailViewController {
-    struct LayoutConstants: AdaptiveLayoutConstants {
-        let transactionCellSize = CGSize(width: UIScreen.main.bounds.width, height: 72.0)
-        let editAccountModalHeight: CGFloat = 158.0
-        let headerSize = CGSize(width: UIScreen.main.bounds.width, height: 68.0)
     }
 }

@@ -70,7 +70,7 @@ extension ContactsView {
         
         contactsHeaderView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.top.equalToSuperview().inset(layout.current.headerTopInset)
+            make.top.equalToSuperview()
         }
     }
     
@@ -116,7 +116,6 @@ extension ContactsView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let topInset: CGFloat = 4.0
         let listOffset: CGFloat = 16.0
-        let headerTopInset: CGFloat = 44.0
     }
 }
 

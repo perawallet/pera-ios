@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SendAssetTransactionViewController: SendTransactionViewController {
+class SendAssetTransactionViewController: SendTransactionViewController, TestNetTitleDisplayable {
     
     private var assetTransactionSendDraft: AssetTransactionSendDraft
     private let viewModel = SendAssetTransactionViewModel()
@@ -17,10 +17,16 @@ class SendAssetTransactionViewController: SendTransactionViewController {
         assetTransactionSendDraft: AssetTransactionSendDraft,
         assetReceiverState: AssetReceiverState,
         transactionController: TransactionController,
+        isSenderEditable: Bool,
         configuration: ViewControllerConfiguration
     ) {
         self.assetTransactionSendDraft = assetTransactionSendDraft
-        super.init(assetReceiverState: assetReceiverState, transactionController: transactionController, configuration: configuration)
+        super.init(
+            assetReceiverState: assetReceiverState,
+            transactionController: transactionController,
+            isSenderEditable: isSenderEditable,
+            configuration: configuration
+        )
         
         fee = assetTransactionSendDraft.fee
         transactionController.setTransactionDraft(assetTransactionSendDraft)
@@ -46,18 +52,7 @@ extension SendAssetTransactionViewController {
         }
         
         let assetTitle = "title-send".localized + " \(assetDetail.getDisplayNames().0)"
-        
-        guard let isTestNet = api?.isTestNet else {
-            title = assetTitle
-            return
-        }
-        
-        if isTestNet {
-            navigationItem.titleView = TestNetTitleView(title: assetTitle)
-        } else {
-            title = assetTitle
-        }
-        
+        displayTestNetTitleView(with: assetTitle)
         sendTransactionView.setButtonTitle(assetTitle)
     }
 }

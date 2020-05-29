@@ -29,7 +29,11 @@ struct DeepLinkParser {
             return .addContact(mode: .new(address: accountAddress, name: qrText.label))
         case .algosRequest:
             if let amount = qrText.amount {
-                return .sendAlgosTransactionPreview(account: nil, receiver: .address(address: accountAddress, amount: "\(amount)"))
+                return .sendAlgosTransactionPreview(
+                    account: nil,
+                    receiver: .address(address: accountAddress, amount: "\(amount)"),
+                    isSenderEditable: false
+                )
             }
         case .assetRequest:
             guard let assetId = qrText.asset,
@@ -63,6 +67,7 @@ struct DeepLinkParser {
                     account: nil,
                     receiver: .address(address: accountAddress, amount: "\(amount)"),
                     assetDetail: assetDetail,
+                    isSenderEditable: false,
                     isMaxTransaction: false
                 )
             }
