@@ -32,7 +32,7 @@ class SendAssetTransactionPreviewViewModel {
         
         if let account = selectedAccount,
             let assetAmount = account.amount(for: assetDetail) {
-            if account.type == .ledger {
+            if account.type.isLedger() {
                 view.transactionAccountInformationView.setAccountImage(img("icon-account-type-ledger"))
             } else {
                 view.transactionAccountInformationView.setAccountImage(img("icon-account-type-standard"))
@@ -55,7 +55,7 @@ class SendAssetTransactionPreviewViewModel {
             return
         }
         
-        if account.type == .ledger {
+        if account.type.isLedger() {
             view.transactionAccountInformationView.setAccountImage(img("icon-account-type-ledger"))
         } else {
             view.transactionAccountInformationView.setAccountImage(img("icon-account-type-standard"))

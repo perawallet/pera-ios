@@ -18,7 +18,7 @@ indirect enum Screen {
     case accountNameSetup
     case accountRecover(mode: AccountSetupMode)
     case qrScanner
-    case qrGenerator(title: String?, address: String, mnemonic: String? = nil, mode: QRMode)
+    case qrGenerator(title: String?, draft: QRCreationDraft)
     case home(route: Screen?)
     case assetDetail(account: Account, assetDetail: AssetDetail?)
     case options(account: Account)

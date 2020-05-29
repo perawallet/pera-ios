@@ -216,13 +216,13 @@ extension TransactionsViewController {
 
 extension TransactionsViewController {
     @objc
-    fileprivate func didContactAdded(notification: Notification) {
+    private func didContactAdded(notification: Notification) {
         transactionHistoryDataSource.setupContacts()
         transactionListView.reloadData()
     }
     
     @objc
-    fileprivate func didContactEdited(notification: Notification) {
+    private func didContactEdited(notification: Notification) {
         transactionHistoryDataSource.setupContacts()
         transactionListView.reloadData()
     }

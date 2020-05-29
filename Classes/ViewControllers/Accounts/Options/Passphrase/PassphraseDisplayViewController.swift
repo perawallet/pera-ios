@@ -102,7 +102,8 @@ extension PassphraseDisplayViewController: PassphraseDisplayViewDelegate {
     func passphraseViewDidOpenQR(_ passphraseDisplayView: PassphraseDisplayView) {
         let mnemonics = self.session?.mnemonics(forAccount: address) ?? []
         let mnemonicText = mnemonics.joined(separator: " ")
-        open(.qrGenerator(title: "qr-creation-title".localized, address: address, mnemonic: mnemonicText, mode: .mnemonic), by: .present)
+        let draft = QRCreationDraft(address: address, mode: .mnemonic, mnemonic: mnemonicText)
+        open(.qrGenerator(title: "qr-creation-title".localized, draft: draft), by: .present)
     }
     
     func passphraseViewDidShare(_ passphraseDisplayView: PassphraseDisplayView) {

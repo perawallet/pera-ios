@@ -117,7 +117,7 @@ class AddContactViewController: BaseScrollViewController {
             title = "contacts-info-edit".localized
             
             addContactView.addContactButton.isHidden = true
-            addContactView.userInformationView.addButton.setImage(img("icon-edit-white"), for: .normal)
+            addContactView.setUserActionButtonIcon(img("icon-edit-white"))
             addContactView.userInformationView.contactNameInputView.inputTextField.text = contact.name
             
             if let address = contact.address {
@@ -281,7 +281,7 @@ extension AddContactViewController: AddContactViewDelegate {
 extension AddContactViewController: ImagePickerDelegate {
     func imagePicker(didPick image: UIImage, withInfo info: [String: Any]) {
         isUserEdited = true
-        addContactView.userInformationView.addButton.setImage(img("icon-edit-white"), for: .normal)
+        addContactView.setUserActionButtonIcon(img("icon-edit-white"))
         let resizedImage = image.convert(to: CGSize(width: 88.0, height: 88.0))
         addContactView.userInformationView.userImageView.image = resizedImage
     }
@@ -306,11 +306,11 @@ extension AddContactViewController: KeyboardControllerDataSource {
 }
 
 extension AddContactViewController: QRScannerViewControllerDelegate {
-    func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, then handler: EmptyHandler?) {
+    func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, completionHandler: EmptyHandler?) {
         guard qrText.mode == .address,
             let qrAddress = qrText.address else {
             displaySimpleAlertWith(title: "title-error".localized, message: "qr-scan-should-scan-address-message".localized) { _ in
-                if let handler = handler {
+                if let handler = completionHandler {
                     handler()
                 }
             }
@@ -320,9 +320,9 @@ extension AddContactViewController: QRScannerViewControllerDelegate {
         addContactView.userInformationView.algorandAddressInputView.value = qrAddress
     }
     
-    func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError, then handler: EmptyHandler?) {
+    func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError, completionHandler: EmptyHandler?) {
         displaySimpleAlertWith(title: "title-error".localized, message: "qr-scan-should-scan-valid-qr".localized) { _ in
-            if let handler = handler {
+            if let handler = completionHandler {
                 handler()
             }
         }

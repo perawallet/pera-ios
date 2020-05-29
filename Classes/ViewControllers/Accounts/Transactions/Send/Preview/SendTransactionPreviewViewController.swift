@@ -137,7 +137,7 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
         sendTransactionPreviewView.amountInputView.inputTextField.text = selectedAccount?.amount.toAlgos.toDecimalStringForAlgosInput
     }
     
-    func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, then handler: EmptyHandler?) { }
+    func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, completionHandler: EmptyHandler?) { }
     
     func configure(forSelected account: Account, with assetDetail: AssetDetail?) { }
 }
@@ -263,9 +263,9 @@ extension SendTransactionPreviewViewController: ContactsViewControllerDelegate {
 }
 
 extension SendTransactionPreviewViewController: QRScannerViewControllerDelegate {
-    func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError, then handler: EmptyHandler?) {
+    func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError, completionHandler: EmptyHandler?) {
         displaySimpleAlertWith(title: "title-error".localized, message: "qr-scan-should-scan-valid-qr".localized) { _ in
-            handler?()
+            completionHandler?()
         }
     }
 }
@@ -357,7 +357,7 @@ extension SendTransactionPreviewViewController: TransactionControllerDelegate {
 // MARK: Ledger Timer
 extension SendTransactionPreviewViewController {
     func validateTimer() {
-        guard let account = selectedAccount, account.type == .ledger else {
+        guard let account = selectedAccount, account.type.isLedger() else {
             return
         }
         
@@ -379,7 +379,7 @@ extension SendTransactionPreviewViewController {
     }
     
     func invalidateTimer() {
-        guard let account = selectedAccount, account.type == .ledger else {
+        guard let account = selectedAccount, account.type.isLedger() else {
             return
         }
         

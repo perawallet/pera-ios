@@ -61,7 +61,7 @@ class KeyboardController {
     // MARK: Notification
     
     @objc
-    fileprivate func didReceive(keyboardWillShow notification: Notification) {
+    private func didReceive(keyboardWillShow notification: Notification) {
         if !UIApplication.shared.isActive {
             return
         }
@@ -89,7 +89,7 @@ class KeyboardController {
     }
     
     @objc
-    fileprivate func didReceive(keyboardWillHide notification: Notification) {
+    private func didReceive(keyboardWillHide notification: Notification) {
         if !UIApplication.shared.isActive {
             return
         }
@@ -114,7 +114,7 @@ class KeyboardController {
 // MARK: Private
 extension KeyboardController {
     
-    fileprivate func updateContentInsetWithKeyboard() {
+    private func updateContentInsetWithKeyboard() {
         
         guard let kbHeight = keyboard.height,
             let dataSource = dataSource else {
@@ -140,7 +140,7 @@ extension KeyboardController {
         dataSource.scrollView.scrollIndicatorInsets = scrollIndicatorInsets
     }
     
-    fileprivate func updateContentInsetWithoutKeyboard() {
+    private func updateContentInsetWithoutKeyboard() {
         guard let dataSource = dataSource else {
             return
         }
