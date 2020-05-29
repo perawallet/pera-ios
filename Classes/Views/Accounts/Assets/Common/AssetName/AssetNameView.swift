@@ -58,8 +58,7 @@ extension AssetNameView {
     private func setupNameLabelLayout() {
         addSubview(nameLabel)
         
-        nameLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
-        nameLabel.setContentHuggingPriority(.required, for: .horizontal)
+        nameLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         
         nameLabel.snp.makeConstraints { make in
             make.leading.top.bottom.equalToSuperview()

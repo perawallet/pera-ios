@@ -182,6 +182,9 @@ extension AssetDetailHeaderView {
     private func setupAssetIdLabelLayout() {
         addSubview(assetIdLabel)
         
+        assetIdLabel.setContentHuggingPriority(.required, for: .horizontal)
+        assetIdLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+        
         assetIdLabel.snp.makeConstraints { make in
             make.trailing.top.equalToSuperview().inset(layout.current.defaultInset)
             make.leading.greaterThanOrEqualTo(verifiedImageView.snp.trailing).offset(layout.current.minimumOffset)

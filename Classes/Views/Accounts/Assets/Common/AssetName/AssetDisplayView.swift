@@ -120,8 +120,8 @@ extension AssetDisplayView {
         
         assetIndexLabel.snp.makeConstraints { make in
             make.center.equalToSuperview()
-            make.leading.equalTo(verifiedImageView.snp.trailing).offset(layout.current.indexLabelInset)
-            make.trailing.equalTo(copyButton.snp.leading).offset(-layout.current.indexLabelInset)
+            make.leading.greaterThanOrEqualTo(verifiedImageView.snp.trailing).offset(layout.current.indexLabelInset)
+            make.trailing.lessThanOrEqualTo(copyButton.snp.leading).offset(-layout.current.indexLabelInset)
         }
     }
     

@@ -37,25 +37,13 @@ class AssetSelectionView: BaseView {
     }
     
     override func prepareLayout() {
-        setupAssetNameViewLayout()
         setupDetailLabelLayout()
+        setupAssetNameViewLayout()
         setupSeparatorViewLayout()
     }
 }
 
 extension AssetSelectionView {
-    private func setupAssetNameViewLayout() {
-        addSubview(assetNameView)
-        
-        assetNameView.setContentCompressionResistancePriority(.required, for: .horizontal)
-        assetNameView.setContentHuggingPriority(.required, for: .horizontal)
-        
-        assetNameView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
-            make.centerY.equalToSuperview()
-        }
-    }
-    
     private func setupDetailLabelLayout() {
         addSubview(detailLabel)
         
@@ -64,6 +52,16 @@ extension AssetSelectionView {
         
         detailLabel.snp.makeConstraints { make in
             make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.centerY.equalToSuperview()
+        }
+    }
+    
+    private func setupAssetNameViewLayout() {
+        addSubview(assetNameView)
+        
+        assetNameView.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
+            make.trailing.lessThanOrEqualTo(detailLabel.snp.leading).offset(-4.0)
             make.centerY.equalToSuperview()
         }
     }
