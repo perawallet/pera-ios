@@ -20,19 +20,16 @@
 "title-go-home" = "Go To Home";
 "title-share" = "Share QR";
 "title-share-qr" = "Share QR";
-"title-get-started" = "GET STARTED";
 "title-go-to-settings" = "Go To Settings";
 "title-error" = "Error";
 "title-save" = "Save";
 "title-close" = "Close";
 "title-send" = "Send";
 "title-request" = "Request";
-"title-select" = "SELECT RECIPIENT";
 "title-preview" = "Preview";
 "title-done" = "Done";
 "title-loading" = "Loading";
 "default-error-message" = "An error occured.";
-"title-send-algos-uppercase" = "SEND ALGOS";
 "title-max" = "MAX";
 "title-internet-connection" = "The internet connection appears to be offline.";
 "title-unknown" = "Unnamed";
@@ -46,9 +43,9 @@
 // MARK: Introduction
 "introduction-recover-title" = "Recover From Passphrase";
 "introduction-create-title" = "Create Account";
-"introduction-title-text" = "Manage all assets\nfrom one account";
+"introduction-title-text" = "Manage all assets\nfrom one place";
 "introduction-add-new-text" = "Add new account";
-"introduction-add-new-title-text" = "Manage all assets from one account";
+"introduction-add-new-title-text" = "Manage all assets from one place";
 "introduction-has-account" = "Already have an account?";
 "introduction-title-pair-ledger" = "Pair Ledger Account";
 
@@ -136,6 +133,7 @@
 "accounts-add-account" = "+ ADD ACCOUNT";
 "accounts-title" = "Accounts";
 "accounts-add-new" = "Add new asset";
+"accounts-qr-tooltip" = "Your account's QR Address is here";
 
 // MARK: Asset
 "asset-title" = "Asset";

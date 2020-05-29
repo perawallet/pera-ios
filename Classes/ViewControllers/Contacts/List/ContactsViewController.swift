@@ -35,6 +35,10 @@ class ContactsViewController: BaseViewController {
     
     weak var delegate: ContactsViewControllerDelegate?
     
+    override func customizeTabBarAppearence() {
+        isTabBarHidden = false
+    }
+    
     override func setListeners() {
         super.setListeners()
         
@@ -112,7 +116,7 @@ class ContactsViewController: BaseViewController {
     }
     
     @objc
-    fileprivate func didContactAdded(notification: Notification) {
+    private func didContactAdded(notification: Notification) {
         guard let userInfo = notification.userInfo as? [String: Contact],
             let contact = userInfo["contact"] else {
                 return
@@ -142,7 +146,7 @@ class ContactsViewController: BaseViewController {
     }
     
     @objc
-    fileprivate func didContactDeleted(notification: Notification) {
+    private func didContactDeleted(notification: Notification) {
         contacts.removeAll()
         fetchContacts()
     }
@@ -261,7 +265,8 @@ extension ContactsViewController: ContactCellDelegate {
             let contact = searchResults[indexPath.item]
             
             if let address = contact.address {
-                open(.qrGenerator(title: contact.name, address: address, mnemonic: nil, mode: .address), by: .present)
+                let draft = QRCreationDraft(address: address, mode: .address)
+                open(.qrGenerator(title: contact.name, draft: draft), by: .present)
             }
         }
     }

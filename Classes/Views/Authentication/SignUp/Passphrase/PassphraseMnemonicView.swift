@@ -61,7 +61,7 @@ extension PassphraseMnemonicView {
 }
 
 extension PassphraseMnemonicView {
-    fileprivate func updateLayout(animated: Bool) {
+    private func updateLayout(animated: Bool) {
         if animated {
             UIView.animate(withDuration: 0.25) {
                 self.updateModeLayout()
@@ -72,7 +72,7 @@ extension PassphraseMnemonicView {
         updateModeLayout()
     }
     
-    fileprivate func updateModeLayout() {
+    private func updateModeLayout() {
         switch mode {
         case .idle:
             phraseLabel.textColor = SharedColors.primaryText

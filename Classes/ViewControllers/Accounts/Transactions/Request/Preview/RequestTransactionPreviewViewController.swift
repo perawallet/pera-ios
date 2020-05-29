@@ -14,12 +14,27 @@ class RequestTransactionPreviewViewController: BaseViewController {
     private var keyboard = Keyboard()
     private var contentViewBottomConstraint: Constraint?
     private(set) var amount = 0.00
-    let account: Account
+    var account: Account
+    private var isReceiverEditable: Bool
     
-    init(account: Account, configuration: ViewControllerConfiguration) {
+    var filterOption: SelectAssetViewController.FilterOption {
+        return .none
+    }
+    
+    init(account: Account, isReceiverEditable: Bool, configuration: ViewControllerConfiguration) {
         self.account = account
+        self.isReceiverEditable = isReceiverEditable
         super.init(configuration: configuration)
-        hidesBottomBarWhenPushed = true
+    }
+    
+    override func configureNavigationBarAppearance() {
+        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [weak self] in
+            self?.closeScreen(by: .dismiss, animated: true)
+        }
+        
+        if isReceiverEditable {
+            leftBarButtonItems = [closeBarButtonItem]
+        }
     }
     
     override func viewDidLoad() {
@@ -33,6 +48,8 @@ class RequestTransactionPreviewViewController: BaseViewController {
     }
     
     func openRequestScreen() { }
+    
+    func configure(forSelected account: Account, with assetDetail: AssetDetail?) { }
 }
 
 extension RequestTransactionPreviewViewController {
@@ -84,7 +101,7 @@ extension RequestTransactionPreviewViewController {
 
 extension RequestTransactionPreviewViewController {
     @objc
-    fileprivate func didReceive(keyboardWillShow notification: Notification) {
+    private func didReceive(keyboardWillShow notification: Notification) {
         if !UIApplication.shared.isActive {
             return
         }
@@ -111,7 +128,7 @@ extension RequestTransactionPreviewViewController {
     }
     
     @objc
-    fileprivate func didReceive(keyboardWillHide notification: Notification) {
+    private func didReceive(keyboardWillHide notification: Notification) {
         if !UIApplication.shared.isActive {
             return
         }
@@ -137,5 +154,39 @@ extension RequestTransactionPreviewViewController {
 extension RequestTransactionPreviewViewController: RequestTransactionPreviewViewDelegate {
     func requestTransactionPreviewViewDidTapPreviewButton(_ requestTransactionPreviewView: RequestTransactionPreviewView) {
         displayPreview(from: requestTransactionPreviewView)
+    }
+    
+    func requestTransactionPreviewDidTapAssetSelectionView(_ requestTransactionPreviewView: RequestTransactionPreviewView) {
+        let controller = open(
+            .selectAsset(
+                transactionAction: .request,
+                filterOption: filterOption
+            ),
+            by: .present
+        ) as? SelectAssetViewController
+        controller?.delegate = self
+    }
+    
+    func requestTransactionPreviewDidTapRemoveButton(_ requestTransactionPreviewView: RequestTransactionPreviewView) {
+        requestTransactionPreviewView.setAssetSelectionHidden(!isReceiverEditable)
+    }
+}
+
+extension RequestTransactionPreviewViewController: SelectAssetViewControllerDelegate {
+    func selectAssetViewController(
+        _ selectAssetViewController: SelectAssetViewController,
+        didSelectAlgosIn account: Account,
+        forAction transactionAction: TransactionAction
+    ) {
+        configure(forSelected: account, with: nil)
+    }
+    
+    func selectAssetViewController(
+        _ selectAssetViewController: SelectAssetViewController,
+        didSelect assetDetail: AssetDetail,
+        in account: Account,
+        forAction transactionAction: TransactionAction
+    ) {
+        configure(forSelected: account, with: assetDetail)
     }
 }

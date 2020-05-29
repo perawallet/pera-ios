@@ -36,11 +36,6 @@ class FeedbackViewController: BaseScrollViewController {
     
     private lazy var feedbackView = FeedbackView()
     
-    override init(configuration: ViewControllerConfiguration) {
-        super.init(configuration: configuration)
-        hidesBottomBarWhenPushed = true
-    }
-    
     override func configureAppearance() {
         super.configureAppearance()
         title = "feedback-title".localized

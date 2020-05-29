@@ -17,10 +17,16 @@ class SendAssetTransactionViewController: SendTransactionViewController, TestNet
         assetTransactionSendDraft: AssetTransactionSendDraft,
         assetReceiverState: AssetReceiverState,
         transactionController: TransactionController,
+        isSenderEditable: Bool,
         configuration: ViewControllerConfiguration
     ) {
         self.assetTransactionSendDraft = assetTransactionSendDraft
-        super.init(assetReceiverState: assetReceiverState, transactionController: transactionController, configuration: configuration)
+        super.init(
+            assetReceiverState: assetReceiverState,
+            transactionController: transactionController,
+            isSenderEditable: isSenderEditable,
+            configuration: configuration
+        )
         
         fee = assetTransactionSendDraft.fee
         transactionController.setTransactionDraft(assetTransactionSendDraft)

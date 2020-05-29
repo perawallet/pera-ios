@@ -73,6 +73,10 @@ enum AccountType: String, Model {
     case watcher = "watcher"
     case ledger = "ledger"
     case multiSig = "multiSig"
+    
+    func isLedger() -> Bool {
+        return self == .ledger
+    }
 }
 
 extension AccountType: Encodable { }

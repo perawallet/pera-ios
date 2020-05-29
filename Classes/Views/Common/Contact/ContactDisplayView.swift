@@ -96,12 +96,8 @@ extension ContactDisplayView {
         nameLabel.text = contact.name
     }
     
-    func setQRAction() {
-        actionButton.setBackgroundImage((img("icon-qr-view")), for: .normal)
-    }
-    
-    func setAddContactAction() {
-        actionButton.setBackgroundImage((img("icon-user-add")), for: .normal)
+    func setButtonImage(_ image: UIImage?) {
+        actionButton.setBackgroundImage(image, for: .normal)
     }
     
     func removeAction() {

@@ -83,7 +83,10 @@ class AssetDetailHeaderView: BaseView {
     }()
     
     private lazy var sendButton: AlignedButton = {
-        let positions: AlignedButton.StylePositionAdjustment = (image: CGPoint(x: 40.0, y: 0.0), title: CGPoint(x: 0.0, y: 0.0))
+        let positions: AlignedButton.StylePositionAdjustment = (
+            image: CGPoint(x: 40.0 * horizontalScale, y: 0.0),
+            title: CGPoint(x: 0.0, y: 0.0)
+        )
         
         let button = AlignedButton(style: .imageLeftTitleCentered(positions))
         button.setImage(img("icon-arrow-up"), for: .normal)
@@ -97,7 +100,10 @@ class AssetDetailHeaderView: BaseView {
     }()
     
     private lazy var requestButton: AlignedButton = {
-        let positions: AlignedButton.StylePositionAdjustment = (image: CGPoint(x: 30.0, y: 0.0), title: CGPoint(x: 0.0, y: 0.0))
+        let positions: AlignedButton.StylePositionAdjustment = (
+            image: CGPoint(x: 30.0 * horizontalScale, y: 0.0),
+            title: CGPoint(x: 0.0, y: 0.0)
+        )
         
         let button = AlignedButton(style: .imageLeftTitleCentered(positions))
         button.setImage(img("icon-arrow-down"), for: .normal)

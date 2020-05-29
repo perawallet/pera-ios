@@ -51,6 +51,10 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
     var keyboard = Keyboard()
     private(set) var contentViewBottomConstraint: Constraint?
     
+    var filterOption: SelectAssetViewController.FilterOption {
+        return .none
+    }
+    
     var amount: Double = 0.00
     var selectedAccount: Account?
     var assetReceiverState: AssetReceiverState
@@ -58,6 +62,8 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
     
     var shouldUpdateSenderForSelectedAccount = false
     var shouldUpdateReceiverForSelectedAccount = false
+    
+    private(set) var isSenderEditable: Bool
     
     var isMaxTransaction: Bool {
         return sendTransactionPreviewView.amountInputView.isMaxButtonSelected
@@ -68,12 +74,23 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
     init(
         account: Account?,
         assetReceiverState: AssetReceiverState,
+        isSenderEditable: Bool,
         configuration: ViewControllerConfiguration
     ) {
         self.selectedAccount = account
         self.assetReceiverState = assetReceiverState
+        self.isSenderEditable = isSenderEditable
         super.init(configuration: configuration)
-        hidesBottomBarWhenPushed = true
+    }
+    
+    override func configureNavigationBarAppearance() {
+        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [weak self] in
+            self?.closeScreen(by: .dismiss, animated: true)
+        }
+        
+        if isSenderEditable {
+            leftBarButtonItems = [closeBarButtonItem]
+        }
     }
     
     override func viewDidLoad() {
@@ -120,7 +137,9 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
         sendTransactionPreviewView.amountInputView.inputTextField.text = selectedAccount?.amount.toAlgos.toDecimalStringForAlgosInput
     }
     
-    func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, then handler: EmptyHandler?) { }
+    func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, completionHandler: EmptyHandler?) { }
+    
+    func configure(forSelected account: Account, with assetDetail: AssetDetail?) { }
 }
 
 extension SendTransactionPreviewViewController {
@@ -204,7 +223,18 @@ extension SendTransactionPreviewViewController: SendTransactionPreviewViewDelega
     
     func sendTransactionPreviewViewDidTapAccountSelectionView(_ sendTransactionPreviewView: SendTransactionPreviewView) {
         shouldUpdateSenderForSelectedAccount = true
-        presentAccountList(accountSelectionState: .sender)
+        let controller = open(
+            .selectAsset(
+                transactionAction: .send,
+                filterOption: filterOption
+            ),
+            by: .present
+        ) as? SelectAssetViewController
+        controller?.delegate = self
+    }
+    
+    func sendTransactionPreviewViewDidTapRemoveButton(_ sendTransactionPreviewView: SendTransactionPreviewView) {
+        sendTransactionPreviewView.setAssetSelectionHidden(!isSenderEditable)
     }
 }
 
@@ -233,10 +263,29 @@ extension SendTransactionPreviewViewController: ContactsViewControllerDelegate {
 }
 
 extension SendTransactionPreviewViewController: QRScannerViewControllerDelegate {
-    func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError, then handler: EmptyHandler?) {
+    func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError, completionHandler: EmptyHandler?) {
         displaySimpleAlertWith(title: "title-error".localized, message: "qr-scan-should-scan-valid-qr".localized) { _ in
-            handler?()
+            completionHandler?()
         }
+    }
+}
+
+extension SendTransactionPreviewViewController: SelectAssetViewControllerDelegate {
+    func selectAssetViewController(
+        _ selectAssetViewController: SelectAssetViewController,
+        didSelectAlgosIn account: Account,
+        forAction transactionAction: TransactionAction
+    ) {
+        configure(forSelected: account, with: nil)
+    }
+    
+    func selectAssetViewController(
+        _ selectAssetViewController: SelectAssetViewController,
+        didSelect assetDetail: AssetDetail,
+        in account: Account,
+        forAction transactionAction: TransactionAction
+    ) {
+        configure(forSelected: account, with: assetDetail)
     }
 }
 
@@ -308,7 +357,7 @@ extension SendTransactionPreviewViewController: TransactionControllerDelegate {
 // MARK: Ledger Timer
 extension SendTransactionPreviewViewController {
     func validateTimer() {
-        guard let account = selectedAccount, account.type == .ledger else {
+        guard let account = selectedAccount, account.type.isLedger() else {
             return
         }
         
@@ -330,7 +379,7 @@ extension SendTransactionPreviewViewController {
     }
     
     func invalidateTimer() {
-        guard let account = selectedAccount, account.type == .ledger else {
+        guard let account = selectedAccount, account.type.isLedger() else {
             return
         }
         

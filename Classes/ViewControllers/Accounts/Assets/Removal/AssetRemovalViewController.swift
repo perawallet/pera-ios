@@ -269,6 +269,7 @@ extension AssetRemovalViewController: AssetActionConfirmationViewControllerDeleg
                     account: account,
                     receiver: .initial,
                     assetDetail: assetDetail,
+                    isSenderEditable: false,
                     isMaxTransaction: true
                 ),
                 by: .push
@@ -307,7 +308,7 @@ extension AssetRemovalViewController: TransactionControllerDelegate {
             return
         }
         
-        if account.type == .ledger {
+        if account.type.isLedger() {
             ledgerApprovalViewController?.dismissScreen()
         }
         
@@ -316,7 +317,7 @@ extension AssetRemovalViewController: TransactionControllerDelegate {
     }
     
     func transactionController(_ transactionController: TransactionController, didFailedComposing error: Error) {
-        if account.type == .ledger {
+        if account.type.isLedger() {
             ledgerApprovalViewController?.dismissScreen()
         }
         
@@ -375,7 +376,7 @@ extension AssetRemovalViewController: TransactionControllerDelegate {
 
 extension AssetRemovalViewController {
     func validateTimer() {
-        guard account.type == .ledger else {
+        guard account.type.isLedger() else {
             return
         }
         
@@ -397,7 +398,7 @@ extension AssetRemovalViewController {
     }
     
     func invalidateTimer() {
-        guard account.type == .ledger else {
+        guard account.type.isLedger() else {
             return
         }
         

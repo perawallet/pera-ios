@@ -37,6 +37,10 @@ class SettingsViewController: BaseViewController {
     
     private let localAuthenticator = LocalAuthenticator()
     
+    override func customizeTabBarAppearence() {
+        isTabBarHidden = false
+    }
+    
     override func linkInteractors() {
         settingsView.collectionView.delegate = self
         settingsView.collectionView.dataSource = self

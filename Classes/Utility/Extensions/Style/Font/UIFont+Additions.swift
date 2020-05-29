@@ -34,8 +34,7 @@ enum FontWeight {
 }
 
 extension UIFont {
-    // swiftlint:disable function_default_parameter_at_end
-    static func font(_ font: FontType = .publicSans, withWeight weight: FontWeight) -> UIFont {
+    static func font(withWeight weight: FontWeight, _ font: FontType = .publicSans) -> UIFont {
         let fontName = self.fontName(font, withWeight: weight)
         
         switch weight {
@@ -77,7 +76,6 @@ extension UIFont {
             return UIFont(name: fontName, size: size) ?? UIFont.systemFont(ofSize: size, weight: .medium)
         }
     }
-    // swiftlint:enable function_default_parameter_at_end
     
     private static func fontName(_ font: FontType, withWeight weight: FontWeight) -> String {
         let fontName = "\(font.rawValue)-"

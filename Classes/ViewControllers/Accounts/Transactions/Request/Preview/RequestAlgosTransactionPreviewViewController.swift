@@ -14,9 +14,13 @@ class RequestAlgosTransactionPreviewViewController: RequestTransactionPreviewVie
     
     private let viewModel: RequestAlgosTransactionPreviewViewModel
     
-    override init(account: Account, configuration: ViewControllerConfiguration) {
-        self.viewModel = RequestAlgosTransactionPreviewViewModel(account: account)
-        super.init(account: account, configuration: configuration)
+    override var filterOption: SelectAssetViewController.FilterOption {
+        return .algos
+    }
+    
+    override init(account: Account, isReceiverEditable: Bool, configuration: ViewControllerConfiguration) {
+        self.viewModel = RequestAlgosTransactionPreviewViewModel(account: account, isAccountSelectionEnabled: isReceiverEditable)
+        super.init(account: account, isReceiverEditable: isReceiverEditable, configuration: configuration)
     }
     
     override func configureAppearance() {
@@ -42,5 +46,12 @@ class RequestAlgosTransactionPreviewViewController: RequestTransactionPreviewVie
     override func openRequestScreen() {
         let draft = AlgosTransactionRequestDraft(account: account, amount: amount)
         open(.requestAlgosTransaction(algosTransactionRequestDraft: draft), by: .push)
+    }
+    
+    override func configure(forSelected account: Account, with assetDetail: AssetDetail?) {
+        self.account = account
+        viewModel.updateAccount(account)
+        viewModel.configure(requestTransactionPreviewView)
+        requestTransactionPreviewView.setAssetSelectionHidden(true)
     }
 }

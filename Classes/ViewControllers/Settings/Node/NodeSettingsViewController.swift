@@ -46,11 +46,6 @@ class NodeSettingsViewController: BaseViewController {
         return PushNotificationController(api: api)
     }()
     
-    override init(configuration: ViewControllerConfiguration) {
-        super.init(configuration: configuration)
-        hidesBottomBarWhenPushed = true
-    }
-    
     override func linkInteractors() {
         nodeSettingsView.collectionView.delegate = self
         nodeSettingsView.collectionView.dataSource = self
@@ -143,9 +138,8 @@ extension NodeSettingsViewController {
         lastActiveNetwork = selectedNode.network
         DispatchQueue.main.async {
             UIApplication.shared.rootViewController()?.setNetwork(to: selectedNode.network)
+            NotificationCenter.default.post(name: .NetworkChanged, object: self, userInfo: nil)
         }
-        
-        NotificationCenter.default.post(name: .NetworkChanged, object: self, userInfo: nil)
         
         UIApplication.shared.accountManager?.fetchAllAccounts(isVerifiedAssetsIncluded: true) {
             SVProgressHUD.showSuccess(withStatus: "title-done".localized)
