@@ -16,6 +16,14 @@ class BaseViewController: UIViewController, TabBarConfigurable {
     var hidesStatusBarWhenAppeared: Bool = false
     var hidesStatusBarWhenPresented: Bool = false
     
+    private lazy var statusbarView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.layer.zPosition = 1.0
+        view.backgroundColor = SharedColors.testNetBanner
+        return view
+    }()
+    
     override var prefersStatusBarHidden: Bool {
         return isStatusBarHidden
     }
@@ -73,14 +81,7 @@ class BaseViewController: UIViewController, TabBarConfigurable {
     func configureNavigationBarAppearance() {
     }
     
-    func beginTracking() {
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(didChangedNetwork(notification:)),
-            name: .NetworkChanged,
-            object: nil
-        )
-    }
+    func beginTracking() { }
 
     func endTracking() {
         NotificationCenter.unobserve(self)
@@ -159,38 +160,27 @@ class BaseViewController: UIViewController, TabBarConfigurable {
     func didTapDismissBarButton() -> Bool {
         return true
     }
-    
-    @objc
-    private func didChangedNetwork(notification: Notification) {
-        setNeedsStatusBarAppearanceUpdate()
-    }
 }
 
 extension BaseViewController {
     func addTestNetBanner() {
         guard let api = api, api.isTestNet else {
+            removeTestNetBanner()
             return
         }
         
-        if #available(iOS 13.0, *) {
-            let statusBarHeight: CGFloat = UIApplication.shared.statusBarFrame.size.height
-            
-            let statusbarView = UIView()
-            statusbarView.layer.zPosition = 1
-            statusbarView.backgroundColor = SharedColors.testNetBanner
-            navigationController?.view.addSubview(statusbarView)
-          
-            statusbarView.translatesAutoresizingMaskIntoConstraints = false
-            
-            statusbarView.snp.makeConstraints { make in
-                make.centerX.equalToSuperview()
-                make.height.equalTo(statusBarHeight)
-                make.top.leading.trailing.equalToSuperview()
-            }
-        } else {
-            let statusBar = UIApplication.shared.value(forKeyPath: "statusBarWindow.statusBar") as? UIView
-            statusBar?.backgroundColor = SharedColors.testNetBanner
+        let statusBarHeight: CGFloat = UIApplication.shared.statusBarFrame.size.height
+        navigationController?.view.addSubview(statusbarView)
+        
+        statusbarView.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.height.equalTo(statusBarHeight)
+            make.top.leading.trailing.equalToSuperview()
         }
+    }
+    
+    func removeTestNetBanner() {
+        statusbarView.removeFromSuperview()
     }
 }
 

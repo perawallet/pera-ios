@@ -101,7 +101,7 @@ extension RequestTransactionPreviewViewController {
 
 extension RequestTransactionPreviewViewController {
     @objc
-    fileprivate func didReceive(keyboardWillShow notification: Notification) {
+    private func didReceive(keyboardWillShow notification: Notification) {
         if !UIApplication.shared.isActive {
             return
         }
@@ -128,7 +128,7 @@ extension RequestTransactionPreviewViewController {
     }
     
     @objc
-    fileprivate func didReceive(keyboardWillHide notification: Notification) {
+    private func didReceive(keyboardWillHide notification: Notification) {
         if !UIApplication.shared.isActive {
             return
         }

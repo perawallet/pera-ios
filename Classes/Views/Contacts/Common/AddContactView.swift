@@ -96,6 +96,12 @@ extension AddContactView: UserInformationViewDelegate {
 }
 
 extension AddContactView {
+    func setUserActionButtonIcon(_ image: UIImage?) {
+        userInformationView.setAddButtonIcon(image)
+    }
+}
+
+extension AddContactView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let bottomInset: CGFloat = 15.0
         let topInset: CGFloat = 28.0

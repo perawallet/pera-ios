@@ -18,15 +18,12 @@ class QRCreationViewController: BaseScrollViewController {
         return true
     }
     
-    private lazy var qrCreationView = QRCreationView(address: address, mode: mode, mnemonic: mnemonic)
+    private lazy var qrCreationView = QRCreationView(draft: draft)
     
-    private let address: String
-    private let mnemonic: String?
-    var mode: QRMode = .mnemonic
+    private let draft: QRCreationDraft
     
-    init(configuration: ViewControllerConfiguration, address: String, mnemonic: String? = nil) {
-        self.address = address
-        self.mnemonic = mnemonic
+    init(draft: QRCreationDraft, configuration: ViewControllerConfiguration) {
+        self.draft = draft
         super.init(configuration: configuration)
     }
     
@@ -44,8 +41,8 @@ class QRCreationViewController: BaseScrollViewController {
         view.backgroundColor = SharedColors.secondaryBackground
         setSecondaryBackgroundColor()
         
-        if mode == .address {
-            qrCreationView.setAddress(address)
+        if draft.isSelectable {
+            qrCreationView.setAddress(draft.address)
         }
     }
     
@@ -71,7 +68,7 @@ extension QRCreationViewController {
 }
 
 extension QRCreationViewController: QRCreationViewDelegate {
-    func qrCreationViewDidTapShareButton(_ qrCreationView: QRCreationView) {
+    func qrCreationViewDidShare(_ qrCreationView: QRCreationView) {
         guard let qrImage = qrCreationView.getQRImage() else {
             return
         }

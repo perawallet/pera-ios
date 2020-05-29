@@ -152,7 +152,7 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
         }
     }
     
-    override func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, then handler: EmptyHandler?) {
+    override func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, completionHandler: EmptyHandler?) {
         guard let qrAddress = qrText.address else {
             return
         }
@@ -169,7 +169,7 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
             if !isAccountContainsAsset(qrAssetText) {
                 presentAssetNotSupportedAlert(receiverAddress: qrText.address)
                 
-                if let handler = handler {
+                if let handler = completionHandler {
                     handler()
                 }
                 
@@ -180,7 +180,7 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
                 qrAssetText != "\(assetDetailId)" {
                 displaySimpleAlertWith(title: "asset-support-not-same-title".localized, message: "asset-support-not-same-error".localized)
                 
-                if let handler = handler {
+                if let handler = completionHandler {
                     handler()
                 }
                 

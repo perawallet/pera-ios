@@ -193,11 +193,9 @@ class Router {
             viewController = accountRecoverViewController
         case .qrScanner:
             viewController = QRScannerViewController(configuration: configuration)
-        case let .qrGenerator(title, address, mnemonic, mode):
-            let qrCreationController = QRCreationViewController(configuration: configuration, address: address, mnemonic: mnemonic)
-            qrCreationController.mode = mode
+        case let .qrGenerator(title, draft):
+            let qrCreationController = QRCreationViewController(draft: draft, configuration: configuration)
             qrCreationController.title = title
-            
             viewController = qrCreationController
         case .home:
             viewController = TabBarController(configuration: configuration)
@@ -339,6 +337,8 @@ class Router {
             )
         case let .passphraseDisplay(address):
             viewController = PassphraseDisplayViewController(address: address, configuration: configuration)
+        case let .tooltip(title):
+            viewController = TooltipViewController(title: title, configuration: configuration)
         }
         
         return viewController as? T

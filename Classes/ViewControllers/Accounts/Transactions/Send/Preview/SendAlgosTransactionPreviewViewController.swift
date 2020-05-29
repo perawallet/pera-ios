@@ -143,7 +143,7 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
         )
     }
     
-    override func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, then handler: EmptyHandler?) {
+    override func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, completionHandler: EmptyHandler?) {
         guard let qrAddress = qrText.address else {
             return
         }
@@ -153,7 +153,7 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
         }
         assetReceiverState = .address(address: qrAddress, amount: nil)
         
-        if let handler = handler {
+        if let handler = completionHandler {
             handler()
         }
     }

@@ -31,11 +31,6 @@ class TestNetTitleView: BaseView {
         return label
     }()
     
-    init(title: String?) {
-        super.init(frame: .zero)
-        titleLabel.text = title
-    }
-    
     override func prepareLayout() {
         setupTestNetLabelLayout()
         setupTitleLabelLayout()

@@ -16,7 +16,7 @@ class MainHeaderView: BaseView {
     
     private lazy var titleLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(withWeight: .bold(size: 28.0)))
+            .withFont(UIFont.font(withWeight: .bold(size: 28.0 * horizontalScale)))
             .withTextColor(SharedColors.primaryText)
             .withAlignment(.left)
     }()
@@ -141,8 +141,8 @@ extension MainHeaderView {
 extension MainHeaderView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let horizontalInset: CGFloat = 20.0
-        let buttonOffset: CGFloat = -16.0
-        let labelOffset: CGFloat = 8.0
+        let buttonOffset: CGFloat = -16.0 * horizontalScale
+        let labelOffset: CGFloat = 8.0 * horizontalScale
         let verticalInset: CGFloat = 18.0
         let buttonSize = CGSize(width: 40.0, height: 40.0)
         let testNetLabelSize = CGSize(width: 63.0, height: 24.0)

@@ -16,6 +16,7 @@ class Session: Storable {
     private let privateKey = "com.algorand.algorand.token.private.key"
     private let rewardsPrefenceKey = "com.algorand.algorand.rewards.preference"
     private let termsAndServicesKey = "com.algorand.algorand.terms.services"
+    private let accountsQRTooltipKey = "com.algorand.algorand.accounts.qr.tooltip"
     
     let algorandSDK = AlgorandSDK()
     
@@ -250,6 +251,16 @@ extension Session {
     
     func isTermsAndServicesAccepted() -> Bool {
         return bool(with: termsAndServicesKey, to: .defaults)
+    }
+}
+
+extension Session {
+    func setAccountQRTooltipDisplayed() {
+        save(true, for: accountsQRTooltipKey, to: .defaults)
+    }
+    
+    func isAccountQRTooltipDisplayed() -> Bool {
+        return bool(with: accountsQRTooltipKey, to: .defaults)
     }
 }
 

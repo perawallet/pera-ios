@@ -90,12 +90,8 @@ extension TransactionContactInformationView {
         contactDisplayView.removeImage()
     }
     
-    func setQRAction() {
-        contactDisplayView.setQRAction()
-    }
-    
-    func setAddContactAction() {
-        contactDisplayView.setAddContactAction()
+    func setContactButtonImage(_ image: UIImage?) {
+        contactDisplayView.setButtonImage(image)
     }
     
     func setContactImage(hidden: Bool) {

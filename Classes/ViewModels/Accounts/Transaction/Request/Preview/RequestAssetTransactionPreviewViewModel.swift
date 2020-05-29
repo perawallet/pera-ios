@@ -27,7 +27,7 @@ class RequestAssetTransactionPreviewViewModel {
             view.transactionAccountInformationView.setDisabled()
         }
         
-        if account.type == .ledger {
+        if account.type.isLedger() {
             view.transactionAccountInformationView.setAccountImage(img("icon-account-type-ledger"))
         } else {
             view.transactionAccountInformationView.setAccountImage(img("icon-account-type-standard"))
