@@ -55,7 +55,7 @@ extension AccountsLayoutBuilder {
     ) -> CGSize {
         return CGSize(
             width: UIScreen.main.bounds.width - layout.current.defaultSectionInsets.left - layout.current.defaultSectionInsets.right,
-            height: layout.current.itemHeight
+            height: layout.current.footherHeight
         )
     }
 }
@@ -64,5 +64,6 @@ extension AccountsLayoutBuilder {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let defaultSectionInsets = UIEdgeInsets(top: 0.0, left: 20.0, bottom: 0.0, right: 20.0)
         let itemHeight: CGFloat = 52.0
+        let footherHeight: CGFloat = 72.0
     }
 }

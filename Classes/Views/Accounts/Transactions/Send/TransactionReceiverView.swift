@@ -100,8 +100,8 @@ class TransactionReceiverView: BaseView {
         addressInputView.nextButtonMode = .submit
         addressInputView.inputTextView.autocorrectionType = .no
         addressInputView.inputTextView.autocapitalizationType = .none
-        addressInputView.inputTextView.textContainer.heightTracksTextView = false
-        addressInputView.inputTextView.isScrollEnabled = true
+        addressInputView.inputTextView.textContainer.heightTracksTextView = true
+        addressInputView.inputTextView.isScrollEnabled = false
         addressInputView.rightInputAccessoryButton.setImage(img("img-remove-sender"), for: .normal)
         return addressInputView
     }()

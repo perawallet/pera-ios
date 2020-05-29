@@ -14,30 +14,6 @@ class AssetDetailView: BaseView {
     
     private(set) lazy var headerView = AssetDetailHeaderView()
     
-    private(set) lazy var transactionHistoryCollectionView: UICollectionView = {
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.scrollDirection = .vertical
-        flowLayout.minimumLineSpacing = 0.0
-        flowLayout.minimumInteritemSpacing = 0.0
-        
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
-        collectionView.showsVerticalScrollIndicator = false
-        collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = .clear
-        
-        collectionView.register(TransactionHistoryCell.self, forCellWithReuseIdentifier: TransactionHistoryCell.reusableIdentifier)
-        collectionView.register(PendingTransactionCell.self, forCellWithReuseIdentifier: PendingTransactionCell.reusableIdentifier)
-        collectionView.register(RewardCell.self, forCellWithReuseIdentifier: RewardCell.reusableIdentifier)
-        collectionView.register(
-            TransactionHistoryHeaderSupplementaryView.self,
-            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-            withReuseIdentifier: TransactionHistoryHeaderSupplementaryView.reusableIdentifier
-        )
-        return collectionView
-    }()
-    
-    private lazy var contentStateView = ContentStateView()
-    
     weak var delegate: AssetDetailViewDelegate?
     
     override func linkInteractors() {
@@ -46,8 +22,6 @@ class AssetDetailView: BaseView {
     
     override func prepareLayout() {
         setupHeaderViewLayout()
-        setupTransactionHistoryCollectionViewLayout()
-        setupContentStateView()
     }
 }
 
@@ -58,23 +32,7 @@ extension AssetDetailView {
         headerView.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(layout.current.topInset)
             make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-        }
-    }
-    
-    private func setupTransactionHistoryCollectionViewLayout() {
-        addSubview(transactionHistoryCollectionView)
-        
-        transactionHistoryCollectionView.snp.makeConstraints { make in
-            make.leading.trailing.bottom.equalToSuperview()
-            make.top.equalTo(headerView.snp.bottom).offset(layout.current.listTopInset)
-        }
-    }
-    
-    private func setupContentStateView() {
-        transactionHistoryCollectionView.backgroundView = contentStateView
-        
-        contentStateView.loadingIndicator.snp.updateConstraints { make in
-            make.top.equalToSuperview().inset(326.0 * verticalScale)
+            make.bottom.equalToSuperview().inset(layout.current.bottomInset)
         }
     }
 }
@@ -111,9 +69,9 @@ extension AssetDetailView {
     struct LayoutConstants: AdaptiveLayoutConstants {
         let topInset: CGFloat = 12.0
         let horizontalInset: CGFloat = 20.0
-        let listTopInset: CGFloat = 32.0
-        static var algosHeaderHeight: CGFloat = 264.0
-        static var assetHeaderHeight: CGFloat = 216.0
+        let bottomInset: CGFloat = 32.0
+        static var algosHeaderHeight: CGFloat = 260.0
+        static var assetHeaderHeight: CGFloat = 212.0
     }
 }
 

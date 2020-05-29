@@ -85,7 +85,7 @@ class TransactionDetailViewController: BaseScrollViewController {
 
 extension TransactionDetailViewController {
     @objc
-    fileprivate func didContactAdded(notification: Notification) {
+    private func didContactAdded(notification: Notification) {
         guard let userInfo = notification.userInfo as? [String: Contact],
             let contact = userInfo["contact"] else {
                 return
@@ -166,7 +166,8 @@ extension TransactionDetailViewController: TransactionDetailViewDelegate {
                 return
         }
         
-        open(.qrGenerator(title: contact.name, address: address, mnemonic: nil, mode: .address), by: .present)
+        let draft = QRCreationDraft(address: address, mode: .address)
+        open(.qrGenerator(title: contact.name, draft: draft), by: .present)
     }
 }
 

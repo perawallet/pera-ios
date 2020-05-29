@@ -12,11 +12,28 @@ class SelectAssetViewController: BaseViewController {
     
     private let layout = Layout<LayoutConstants>()
     
+    weak var delegate: SelectAssetViewControllerDelegate?
+    
     private lazy var selectAssetView = SelectAssetView()
     
     private let viewModel = SelectAssetViewModel()
     
-    var accounts: [Account] = UIApplication.shared.appConfiguration?.session.accounts ?? []
+    private var accounts = [Account]()
+    
+    private let transactionAction: TransactionAction
+    
+    private let filterOption: FilterOption
+    
+    init(transactionAction: TransactionAction, filterOption: FilterOption, configuration: ViewControllerConfiguration) {
+        self.transactionAction = transactionAction
+        self.filterOption = filterOption
+        super.init(configuration: configuration)
+        accounts = filterAccounts()
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
     
     override func configureNavigationBarAppearance() {
         super.configureNavigationBarAppearance()
@@ -30,7 +47,7 @@ class SelectAssetViewController: BaseViewController {
     
     override func configureAppearance() {
         view.backgroundColor = SharedColors.secondaryBackground
-        navigationController?.navigationBar.barTintColor = SharedColors.secondaryBackground
+        setSecondaryBackgroundColor()
         navigationItem.title = "send-select-asset".localized
     }
     
@@ -52,6 +69,34 @@ extension SelectAssetViewController {
             make.edges.equalToSuperview()
         }
     }
+    
+    private func filterAccounts() -> [Account] {
+        guard let allAccounts = UIApplication.shared.appConfiguration?.session.accounts else {
+            return []
+        }
+        
+        switch filterOption {
+        case .none:
+            return allAccounts
+        case .algos:
+            allAccounts.forEach { $0.assetDetails.removeAll() }
+            return allAccounts
+        case let .asset(assetDetail):
+            let filteredAccounts = allAccounts.filter { account -> Bool in
+                account.assetDetails.contains { detail -> Bool in
+                     assetDetail.id == detail.id
+                }
+            }
+            
+            filteredAccounts.forEach { account in
+                account.assetDetails.removeAll { asset -> Bool in
+                    assetDetail.id != asset.id
+                }
+            }
+            
+            return filteredAccounts
+        }
+    }
 }
 
 extension SelectAssetViewController: UICollectionViewDataSource {
@@ -61,20 +106,34 @@ extension SelectAssetViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         let account = accounts[section]
-        if account.assetDetails.isEmpty {
+        
+        switch filterOption {
+        case .none:
+            if account.assetDetails.isEmpty {
+                return 1
+            }
+            
+            return account.assetDetails.count + 1
+        case .algos,
+             .asset:
             return 1
         }
-        
-        return account.assetDetails.count + 1
     }
 }
 
 extension SelectAssetViewController {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if indexPath.item == 0 {
+        switch filterOption {
+        case .none:
+            if indexPath.item == 0 {
+                return dequeueAlgoAssetCell(in: collectionView, cellForItemAt: indexPath)
+            }
+            return dequeueAssetCell(in: collectionView, cellForItemAt: indexPath)
+        case .algos:
             return dequeueAlgoAssetCell(in: collectionView, cellForItemAt: indexPath)
+        case .asset:
+            return dequeueAssetCell(in: collectionView, cellForItemAt: indexPath)
         }
-        return dequeueAssetCell(in: collectionView, cellForItemAt: indexPath)
     }
     
     private func dequeueAlgoAssetCell(in collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -100,7 +159,14 @@ extension SelectAssetViewController {
         }
         
         let account = accounts[indexPath.section]
-        let assetDetail = account.assetDetails[indexPath.item - 1]
+        let assetDetail: AssetDetail
+        
+        switch filterOption {
+        case .none:
+            assetDetail = account.assetDetails[indexPath.item - 1]
+        default:
+            assetDetail = account.assetDetails[indexPath.item]
+        }
         
         if let assets = account.assets,
             let assetId = assetDetail.id,
@@ -173,7 +239,38 @@ extension SelectAssetViewController: UICollectionViewDelegateFlowLayout {
 
 extension SelectAssetViewController {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let account = accounts[safe: indexPath.section] else {
+            return
+        }
         
+        dismissScreen()
+        
+        switch filterOption {
+        case .none:
+            if indexPath.item == 0 {
+                delegate?.selectAssetViewController(self, didSelectAlgosIn: account, forAction: transactionAction)
+            } else {
+                if let assetDetail = account.assetDetails[safe: indexPath.item - 1] {
+                    delegate?.selectAssetViewController(self, didSelect: assetDetail, in: account, forAction: transactionAction)
+                }
+            }
+        case .algos:
+            delegate?.selectAssetViewController(self, didSelectAlgosIn: account, forAction: transactionAction)
+        case let .asset(asset):
+            if let assetDetail = account.assetDetails.first(where: { filteredAsset -> Bool in
+                asset.id == filteredAsset.id
+            }) {
+                delegate?.selectAssetViewController(self, didSelect: assetDetail, in: account, forAction: transactionAction)
+            }
+        }
+    }
+}
+
+extension SelectAssetViewController {
+    enum FilterOption {
+        case none
+        case algos
+        case asset(assetDetail: AssetDetail)
     }
 }
 
@@ -183,4 +280,18 @@ extension SelectAssetViewController {
         let headerHeight: CGFloat = 48.0
         let itemHeight: CGFloat = 52.0
     }
+}
+
+protocol SelectAssetViewControllerDelegate: class {
+    func selectAssetViewController(
+        _ selectAssetViewController: SelectAssetViewController,
+        didSelectAlgosIn account: Account,
+        forAction transactionAction: TransactionAction
+    )
+    func selectAssetViewController(
+        _ selectAssetViewController: SelectAssetViewController,
+        didSelect assetDetail: AssetDetail,
+        in account: Account,
+        forAction transactionAction: TransactionAction
+    )
 }

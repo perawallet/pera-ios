@@ -18,7 +18,7 @@ indirect enum Screen {
     case accountNameSetup
     case accountRecover(mode: AccountSetupMode)
     case qrScanner
-    case qrGenerator(title: String?, address: String, mnemonic: String? = nil, mode: QRMode)
+    case qrGenerator(title: String?, draft: QRCreationDraft)
     case home(route: Screen?)
     case assetDetail(account: Account, assetDetail: AssetDetail?)
     case options(account: Account)
@@ -27,20 +27,28 @@ indirect enum Screen {
     case contactSelection
     case addContact(mode: AddContactViewController.Mode)
     case contactDetail(contact: Contact)
-    case sendAlgosTransactionPreview(account: Account?, receiver: AssetReceiverState)
-    case sendAssetTransactionPreview(account: Account?, receiver: AssetReceiverState, assetDetail: AssetDetail, isMaxTransaction: Bool)
+    case sendAlgosTransactionPreview(account: Account?, receiver: AssetReceiverState, isSenderEditable: Bool)
+    case sendAssetTransactionPreview(
+        account: Account?,
+        receiver: AssetReceiverState,
+        assetDetail: AssetDetail,
+        isSenderEditable: Bool,
+        isMaxTransaction: Bool
+    )
     case sendAlgosTransaction(
         algosTransactionSendDraft: AlgosTransactionSendDraft,
         transactionController: TransactionController,
-        receiver: AssetReceiverState
+        receiver: AssetReceiverState,
+        isSenderEditable: Bool
     )
     case sendAssetTransaction(
         assetTransactionSendDraft: AssetTransactionSendDraft,
         transactionController: TransactionController,
-        receiver: AssetReceiverState
+        receiver: AssetReceiverState,
+        isSenderEditable: Bool
     )
-    case requestAlgosTransactionPreview(account: Account)
-    case requestAssetTransactionPreview(account: Account, assetDetail: AssetDetail)
+    case requestAlgosTransactionPreview(account: Account, isReceiverEditable: Bool)
+    case requestAssetTransactionPreview(account: Account, assetDetail: AssetDetail, isReceiverEditable: Bool)
     case requestAlgosTransaction(algosTransactionRequestDraft: AlgosTransactionRequestDraft)
     case requestAssetTransaction(assetTransactionRequestDraft: AssetTransactionRequestDraft)
     case nodeSettings
@@ -66,7 +74,9 @@ indirect enum Screen {
     case ledgerTroubleshootInstallApp
     case ledgerTroubleshootOpenApp
     case termsAndServices
-    case selectAsset
+    case selectAsset(transactionAction: TransactionAction, filterOption: SelectAssetViewController.FilterOption = .none)
+    case passphraseDisplay(address: String)
+    case tooltip(title: String)
 }
 
 extension Screen {

@@ -23,7 +23,7 @@ class AssetDisplayView: BaseView {
         UILabel()
             .withLine(.single)
             .withAlignment(.center)
-            .withFont(UIFont.font(.avenir, withWeight: .regular(size: 14.0)))
+            .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
             .withTextColor(SharedColors.primaryText)
     }()
     

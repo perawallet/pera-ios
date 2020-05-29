@@ -28,19 +28,13 @@ class OptionsView: BaseView {
         return collectionView
     }()
     
-    private lazy var separatorView: UIView = {
-        let view = UIView()
-        view.backgroundColor = SharedColors.gray100
-        return view
-    }()
-    
     private lazy var cancelButton: UIButton = {
         UIButton(type: .custom)
             .withBackgroundImage(img("bg-light-gray-button"))
             .withTitle("title-cancel".localized)
-            .withTitleColor(SharedColors.gray500)
+            .withTitleColor(SharedColors.gray700)
             .withAlignment(.center)
-            .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
+            .withFont(UIFont.font(withWeight: .semiBold(size: 14.0)))
     }()
     
     override func configureAppearance() {
@@ -92,7 +86,7 @@ extension OptionsView {
         let buttonBottomInset: CGFloat = 20.0
         let defaultInset: CGFloat = 20.0
         let topInset: CGFloat = 10.0
-        let bottomInset: CGFloat = -20.0
+        let bottomInset: CGFloat = -14.0
     }
 }
 

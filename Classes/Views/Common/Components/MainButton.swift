@@ -32,9 +32,3 @@ extension MainButton {
         titleLabel?.font = UIFont.font(withWeight: .semiBold(size: 16.0))
     }
 }
-
-extension MainButton {
-    enum Constants {
-        static let horizontalInset: CGFloat = 16.0
-    }
-}

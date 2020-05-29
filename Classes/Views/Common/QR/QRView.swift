@@ -37,7 +37,7 @@ class QRView: BaseView {
 }
 
 extension QRView {
-    fileprivate func setupImageViewLayout() {
+    private func setupImageViewLayout() {
         addSubview(imageView)
         
         imageView.snp.makeConstraints { make in

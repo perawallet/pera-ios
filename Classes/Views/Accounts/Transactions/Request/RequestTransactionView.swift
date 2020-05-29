@@ -37,7 +37,7 @@ class RequestTransactionView: BaseView {
     }()
     
     private lazy var shareButton: UIButton = {
-        let button = MainButton(title: "title-share".localized).withImage(img("icon-share-white"))
+        let button = MainButton(title: "title-share-qr".localized).withImage(img("icon-share-white"))
         button.imageEdgeInsets = UIEdgeInsets(top: 0, left: -10.0, bottom: 0, right: 0)
         button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 5.0, bottom: 0, right: 0)
         return button

@@ -26,7 +26,6 @@ extension UIView {
             shadowLayer.shadowOpacity = shadow.opacity
             shadowLayer.shadowOffset = shadow.offset
             shadowLayer.backgroundColor = backgroundColor?.cgColor
-            shadowLayer.needsDisplayOnBoundsChange = true
             shadowLayer.cornerRadius = layer.cornerRadius
             shadowLayer.masksToBounds = false
 

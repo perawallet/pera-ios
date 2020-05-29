@@ -65,9 +65,6 @@ extension ContactDisplayView {
     private func setupNameLabelLayout() {
         addSubview(nameLabel)
         
-        nameLabel.setContentHuggingPriority(.required, for: .horizontal)
-        nameLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
-        
         nameLabel.snp.makeConstraints { make in
             make.trailing.equalToSuperview().priority(.low)
             make.trailing.equalTo(actionButton.snp.leading).offset(layout.current.nameLabelOffset)
@@ -99,12 +96,8 @@ extension ContactDisplayView {
         nameLabel.text = contact.name
     }
     
-    func setQRAction() {
-        actionButton.setBackgroundImage((img("icon-qr-view")), for: .normal)
-    }
-    
-    func setAddContactAction() {
-        actionButton.setBackgroundImage((img("icon-user-add")), for: .normal)
+    func setButtonImage(_ image: UIImage?) {
+        actionButton.setBackgroundImage(image, for: .normal)
     }
     
     func removeAction() {

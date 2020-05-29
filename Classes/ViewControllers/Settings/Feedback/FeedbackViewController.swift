@@ -36,11 +36,6 @@ class FeedbackViewController: BaseScrollViewController {
     
     private lazy var feedbackView = FeedbackView()
     
-    override init(configuration: ViewControllerConfiguration) {
-        super.init(configuration: configuration)
-        hidesBottomBarWhenPushed = true
-    }
-    
     override func configureAppearance() {
         super.configureAppearance()
         title = "feedback-title".localized
@@ -202,7 +197,7 @@ extension FeedbackViewController {
         let configurator = BottomInformationBundle(
             title: "feedback-success-title".localized,
             image: img("feedback-success-icon"),
-            explanation: "feedback-success-detail",
+            explanation: "feedback-success-detail".localized,
             actionTitle: "title-close".localized,
             actionImage: img("bg-main-button")
         ) {
