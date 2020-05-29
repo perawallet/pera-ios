@@ -27,7 +27,7 @@ class AccountHeaderView: BaseView {
         UILabel().withAlignment(.left).withFont(UIFont.font(withWeight: .medium(size: 14.0))).withTextColor(SharedColors.inputTitle)
     }()
     
-    private lazy var qrButton: UIButton = {
+    private(set) lazy var qrButton: UIButton = {
         UIButton(type: .custom).withImage(img("icon-qr"))
     }()
     

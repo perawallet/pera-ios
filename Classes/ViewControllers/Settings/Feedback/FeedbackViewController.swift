@@ -27,7 +27,7 @@ class FeedbackViewController: BaseScrollViewController {
         didSet {
             if let selectedCategory = selectedCategory {
                 self.feedbackView.categorySelectionView.detailLabel.text = selectedCategory.name
-                self.feedbackView.categorySelectionView.detailLabel.textColor = SharedColors.black
+                self.feedbackView.categorySelectionView.detailLabel.textColor = SharedColors.primaryText
             }
         }
     }
@@ -35,11 +35,6 @@ class FeedbackViewController: BaseScrollViewController {
     private var keyboardController = KeyboardController()
     
     private lazy var feedbackView = FeedbackView()
-    
-    override init(configuration: ViewControllerConfiguration) {
-        super.init(configuration: configuration)
-        hidesBottomBarWhenPushed = true
-    }
     
     override func configureAppearance() {
         super.configureAppearance()
@@ -202,7 +197,7 @@ extension FeedbackViewController {
         let configurator = BottomInformationBundle(
             title: "feedback-success-title".localized,
             image: img("feedback-success-icon"),
-            explanation: "feedback-success-detail",
+            explanation: "feedback-success-detail".localized,
             actionTitle: "title-close".localized,
             actionImage: img("bg-main-button")
         ) {

@@ -185,9 +185,11 @@ extension AssetInputView {
         if isMaxButtonSelected {
             maxButton.backgroundColor = SharedColors.primary
             maxButton.setTitleColor(SharedColors.primaryButtonTitle, for: .normal)
+            maxButton.layer.borderColor = SharedColors.primary.cgColor
         } else {
             maxButton.backgroundColor = SharedColors.secondaryBackground
             maxButton.setTitleColor(SharedColors.gray500, for: .normal)
+            maxButton.layer.borderColor = SharedColors.gray200.cgColor
         }
     }
 }

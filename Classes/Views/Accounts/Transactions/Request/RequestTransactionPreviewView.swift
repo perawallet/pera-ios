@@ -16,6 +16,13 @@ class RequestTransactionPreviewView: BaseView {
     
     private var inputFieldFraction: Int
     
+    private lazy var assetSelectionView: SelectionView = {
+        let view = SelectionView()
+        view.isHidden = true
+        view.isUserInteractionEnabled = false
+        return view
+    }()
+    
     private(set) lazy var transactionAccountInformationView = TransactionAccountInformationView()
     
     private(set) lazy var amountInputView = AssetInputView(inputFieldFraction: inputFieldFraction)
@@ -27,11 +34,17 @@ class RequestTransactionPreviewView: BaseView {
         super.init(frame: .zero)
     }
     
+    override func setListeners() {
+        transactionAccountInformationView.delegate = self
+    }
+    
     override func linkInteractors() {
         previewButton.addTarget(self, action: #selector(notifyDelegateToPreviewButtonTapped), for: .touchUpInside)
+        assetSelectionView.addTarget(self, action: #selector(notifyDelegateToSelectAsset), for: .touchUpInside)
     }
     
     override func prepareLayout() {
+        setupAssetSelectionViewLayout()
         setupTransactionAccountInformationViewLayout()
         setupAmountInputViewLayout()
         setupPreviewButtonLayout()
@@ -39,6 +52,15 @@ class RequestTransactionPreviewView: BaseView {
 }
 
 extension RequestTransactionPreviewView {
+    private func setupAssetSelectionViewLayout() {
+        addSubview(assetSelectionView)
+        
+        assetSelectionView.snp.makeConstraints { make in
+            make.top.equalToSuperview().inset(layout.current.topInset)
+            make.leading.trailing.equalToSuperview()
+        }
+    }
+    
     private func setupTransactionAccountInformationViewLayout() {
         addSubview(transactionAccountInformationView)
         
@@ -52,7 +74,7 @@ extension RequestTransactionPreviewView {
         addSubview(amountInputView)
         
         amountInputView.snp.makeConstraints { make in
-            make.top.equalTo(transactionAccountInformationView.snp.bottom).offset(layout.current.amountTopInset)
+            make.top.equalToSuperview().inset(layout.current.amountFieldTopInset)
             make.leading.trailing.equalToSuperview()
         }
     }
@@ -73,6 +95,33 @@ extension RequestTransactionPreviewView {
     private func notifyDelegateToPreviewButtonTapped() {
         delegate?.requestTransactionPreviewViewDidTapPreviewButton(self)
     }
+    
+    @objc
+    private func notifyDelegateToSelectAsset() {
+        delegate?.requestTransactionPreviewDidTapAssetSelectionView(self)
+    }
+}
+
+extension RequestTransactionPreviewView: TransactionAccountInformationViewDelegate {
+    func transactionAccountInformationViewDidTapRemoveButton(_ transactionAccountInformationView: TransactionAccountInformationView) {
+        delegate?.requestTransactionPreviewDidTapRemoveButton(self)
+    }
+}
+
+extension RequestTransactionPreviewView {
+    func setAssetSelectionHidden(_ hidden: Bool) {
+        transactionAccountInformationView.isHidden = !hidden
+        assetSelectionView.isHidden = hidden
+        assetSelectionView.isUserInteractionEnabled = !hidden
+        
+        amountInputView.snp.updateConstraints { make in
+            if hidden {
+                make.top.equalToSuperview().inset(layout.current.amountFieldTopInset)
+            } else {
+                make.top.equalToSuperview().inset(layout.current.amountFieldTopInsetToAssetSelection)
+            }
+        }
+    }
 }
 
 extension RequestTransactionPreviewView {
@@ -81,9 +130,13 @@ extension RequestTransactionPreviewView {
         let amountTopInset: CGFloat = 20.0
         let buttonVerticalInset: CGFloat = 28.0
         let horizontalInset: CGFloat = 20.0
+        let amountFieldTopInset: CGFloat = 154.0
+        let amountFieldTopInsetToAssetSelection: CGFloat = 108.0
     }
 }
 
 protocol RequestTransactionPreviewViewDelegate: class {
     func requestTransactionPreviewViewDidTapPreviewButton(_ requestTransactionPreviewView: RequestTransactionPreviewView)
+    func requestTransactionPreviewDidTapAssetSelectionView(_ requestTransactionPreviewView: RequestTransactionPreviewView)
+    func requestTransactionPreviewDidTapRemoveButton(_ requestTransactionPreviewView: RequestTransactionPreviewView)
 }

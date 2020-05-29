@@ -46,11 +46,6 @@ class NodeSettingsViewController: BaseViewController {
         return PushNotificationController(api: api)
     }()
     
-    override init(configuration: ViewControllerConfiguration) {
-        super.init(configuration: configuration)
-        hidesBottomBarWhenPushed = true
-    }
-    
     override func linkInteractors() {
         nodeSettingsView.collectionView.delegate = self
         nodeSettingsView.collectionView.dataSource = self
@@ -123,28 +118,35 @@ extension NodeSettingsViewController {
         
         let selectedNode = nodes[indexPath.item]
         
-        pushNotificationController.registerDevice { isCompleted in
-            if isCompleted {
-                self.session?.authenticatedUser?.setDefaultNode(selectedNode)
-                self.lastActiveNetwork = selectedNode.network
-                DispatchQueue.main.async {
-                    UIApplication.shared.rootViewController()?.setNetwork(to: selectedNode.network)
-                }
-                
-                NotificationCenter.default.post(name: .NetworkChanged, object: self, userInfo: nil)
-                
-                UIApplication.shared.accountManager?.fetchAllAccounts(isVerifiedAssetsIncluded: true) {
-                    SVProgressHUD.showSuccess(withStatus: "title-done".localized)
-                    
+        if pushNotificationController.token == nil {
+            switchNetwork(for: selectedNode, at: indexPath)
+        } else {
+            pushNotificationController.registerDevice { isCompleted in
+                if isCompleted {
+                    self.switchNetwork(for: selectedNode, at: indexPath)
+                } else {
                     SVProgressHUD.dismiss(withDelay: 1.0) {
                         self.setActionsEnabled(true)
-                        self.viewModel.setSelected(at: indexPath, in: self.nodeSettingsView.collectionView)
                     }
                 }
-            } else {
-                SVProgressHUD.dismiss(withDelay: 1.0) {
-                    self.setActionsEnabled(true)
-                }
+            }
+        }
+    }
+    
+    private func switchNetwork(for selectedNode: AlgorandNode, at indexPath: IndexPath) {
+        session?.authenticatedUser?.setDefaultNode(selectedNode)
+        lastActiveNetwork = selectedNode.network
+        DispatchQueue.main.async {
+            UIApplication.shared.rootViewController()?.setNetwork(to: selectedNode.network)
+            NotificationCenter.default.post(name: .NetworkChanged, object: self, userInfo: nil)
+        }
+        
+        UIApplication.shared.accountManager?.fetchAllAccounts(isVerifiedAssetsIncluded: true) {
+            SVProgressHUD.showSuccess(withStatus: "title-done".localized)
+            
+            SVProgressHUD.dismiss(withDelay: 1.0) {
+                self.setActionsEnabled(true)
+                self.viewModel.setSelected(at: indexPath, in: self.nodeSettingsView.collectionView)
             }
         }
     }

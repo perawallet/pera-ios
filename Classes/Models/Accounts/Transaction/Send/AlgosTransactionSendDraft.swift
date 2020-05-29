@@ -15,4 +15,5 @@ struct AlgosTransactionSendDraft: TransactionSendDraft {
     var fee: Int64?
     var isMaxTransaction = false
     var identifier: String?
+    var note: String?
 }

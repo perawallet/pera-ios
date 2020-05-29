@@ -16,8 +16,15 @@ class AssetAdditionView: BaseView {
     private let layout = Layout<LayoutConstants>()
     
     private(set) lazy var assetInputView: SingleLineInputField = {
-        let assetInputView = SingleLineInputField(displaysExplanationText: false)
+        let assetInputView = SingleLineInputField(
+            displaysExplanationText: false,
+            displaysRightInputAccessoryButton: true,
+            displaysLeftImageView: true
+        )
         assetInputView.placeholderText = "asset-search-placeholder".localized
+        assetInputView.leftImageView.image = img("icon-field-search")
+        assetInputView.rightInputAccessoryButton.setImage(img("icon-field-close"), for: .normal)
+        assetInputView.rightInputAccessoryButton.isHidden = true
         assetInputView.inputTextField.textColor = SharedColors.primaryText
         assetInputView.inputTextField.tintColor = SharedColors.primaryText
         assetInputView.inputTextField.returnKeyType = .done
@@ -102,6 +109,10 @@ extension AssetAdditionView {
         assetInputView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.top.equalToSuperview().inset(layout.current.topInset)
+        }
+        
+        assetInputView.rightInputAccessoryButton.snp.updateConstraints { make in
+            make.top.equalToSuperview().inset(3.0)
         }
     }
     

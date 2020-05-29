@@ -9,14 +9,6 @@
 import UIKit
 
 extension AccountsViewController: OptionsViewControllerDelegate {
-    func optionsViewControllerDidShowQR(_ optionsViewController: OptionsViewController) {
-        guard let account = selectedAccount else {
-            return
-        }
-        
-        open(.qrGenerator(title: "qr-creation-sharing-title".localized, address: account.address, mode: .address), by: .present)
-    }
-    
     func optionsViewControllerDidRemoveAsset(_ optionsViewController: OptionsViewController) {
         guard let account = selectedAccount else {
             return
@@ -59,29 +51,13 @@ extension AccountsViewController: OptionsViewControllerDelegate {
         guard let account = self.selectedAccount else {
             return
         }
-
-        let viewController = PassphraseDisplayViewController(address: account.address, configuration: configuration)
-        viewController.modalPresentationStyle = .overCurrentContext
-        viewController.modalTransitionStyle = .crossDissolve
-
-        tabBarController?.present(viewController, animated: true, completion: nil)
-    }
-    
-    func optionsViewControllerDidEditAccountName(_ optionsViewController: OptionsViewController) {
-        openEditAccountModalView()
-    }
-    
-    private func openEditAccountModalView() {
-        guard let selectedAccount = self.selectedAccount else {
-            return
-        }
-
+        
         open(
-            .editAccount(account: selectedAccount),
+            .passphraseDisplay(address: account.address),
             by: .customPresent(
                 presentationStyle: .custom,
                 transitionStyle: nil,
-                transitioningDelegate: editAccountModalPresenter
+                transitioningDelegate: passphraseModalPresenter
             )
         )
     }
@@ -109,7 +85,7 @@ extension AccountsViewController: OptionsViewControllerDelegate {
                 
                 guard !user.accounts.isEmpty else {
                     self.session?.reset()
-                    self.tabBarController?.open(.introduction, by: .launch, animated: false)
+                    self.tabBarContainer?.open(.introduction, by: .launch, animated: false)
                     return
                 }
 

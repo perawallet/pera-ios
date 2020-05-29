@@ -40,6 +40,8 @@ class AccountContextView: BaseView {
             .withTextColor(SharedColors.primaryText)
     }()
     
+    private lazy var separatorView = LineSeparatorView()
+    
     override func configureAppearance() {
         backgroundColor = SharedColors.secondaryBackground
     }
@@ -49,6 +51,7 @@ class AccountContextView: BaseView {
         setupImageViewLayout()
         setupAccountTypeImageViewLayout()
         setupNameLabelLayout()
+        setupSeparatorViewLayout()
     }
 }
 
@@ -90,6 +93,16 @@ extension AccountContextView {
             make.trailing.lessThanOrEqualTo(imageView.snp.leading)
         }
     }
+    
+    private func setupSeparatorViewLayout() {
+        addSubview(separatorView)
+        
+        separatorView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(layout.current.defaultInset)
+            make.height.equalTo(layout.current.separatorHeight)
+            make.bottom.equalToSuperview()
+        }
+    }
 }
 
 extension AccountContextView {
@@ -107,6 +120,7 @@ extension AccountContextView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let defaultInset: CGFloat = 20.0
         let imageViewOffset: CGFloat = -2.0
+        let separatorHeight: CGFloat = 1.0
         let nameLabelInset: CGFloat = 12.0
     }
 }

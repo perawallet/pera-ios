@@ -11,37 +11,43 @@ import UIKit
 class SendAssetTransactionPreviewViewModel {
     private let assetDetail: AssetDetail
     private let isForcedMaxTransaction: Bool
+    private let isAccountSelectionEnabled: Bool
     
-    init(assetDetail: AssetDetail, isForcedMaxTransaction: Bool) {
+    init(assetDetail: AssetDetail, isForcedMaxTransaction: Bool, isAccountSelectionEnabled: Bool) {
         self.assetDetail = assetDetail
         self.isForcedMaxTransaction = isForcedMaxTransaction
+        self.isAccountSelectionEnabled = isAccountSelectionEnabled
     }
     
     func configure(_ view: SendTransactionPreviewView, with selectedAccount: Account?) {
-        view.transactionParticipantView.assetSelectionView.amountView.amountLabel.textColor = SharedColors.black
-        view.transactionParticipantView.assetSelectionView.amountView.algoIconImageView.removeFromSuperview()
-        view.transactionParticipantView.assetSelectionView.verifiedImageView.isHidden = !assetDetail.isVerified
+        if isAccountSelectionEnabled {
+            view.transactionAccountInformationView.setEnabled()
+        } else {
+            view.transactionAccountInformationView.setDisabled()
+        }
         
-        if let selectedAccount = selectedAccount,
-            let assetAmount = selectedAccount.amount(for: assetDetail) {
-            view.transactionParticipantView.accountSelectionView.detailLabel.text = selectedAccount.name
-            
-            if selectedAccount.type == .ledger {
-                view.transactionParticipantView.accountSelectionView.setLedgerAccount()
+        view.transactionAccountInformationView.setAssetName(for: assetDetail)
+        view.transactionAccountInformationView.setAssetTransaction()
+        view.transactionAccountInformationView.removeAssetId()
+        
+        if let account = selectedAccount,
+            let assetAmount = account.amount(for: assetDetail) {
+            if account.type.isLedger() {
+                view.transactionAccountInformationView.setAccountImage(img("icon-account-type-ledger"))
             } else {
-                view.transactionParticipantView.accountSelectionView.setStandardAccount()
+                view.transactionAccountInformationView.setAccountImage(img("icon-account-type-standard"))
             }
             
+            view.transactionAccountInformationView.setAccountName(account.name)
+            
             view.amountInputView.maxAmount = assetAmount
-            view.transactionParticipantView.assetSelectionView.set(amount: assetAmount, assetFraction: assetDetail.fractionDecimals)
+            view.transactionAccountInformationView.setAmount(assetAmount.toFractionStringForLabel(fraction: assetDetail.fractionDecimals))
         }
         
         if isForcedMaxTransaction {
             view.amountInputView.inputTextField.text = selectedAccount?.amountDisplayWithFraction(for: assetDetail)
             view.amountInputView.setEnabled(false)
         }
-        
-        view.transactionParticipantView.assetSelectionView.detailLabel.attributedText = assetDetail.assetDisplayName()
     }
     
     func update(_ view: SendTransactionPreviewView, with account: Account, isMaxTransaction: Bool) {
@@ -49,16 +55,16 @@ class SendAssetTransactionPreviewViewModel {
             return
         }
         
-        view.transactionParticipantView.accountSelectionView.detailLabel.text = account.name
-        
-        if account.type == .ledger {
-            view.transactionParticipantView.accountSelectionView.setLedgerAccount()
+        if account.type.isLedger() {
+            view.transactionAccountInformationView.setAccountImage(img("icon-account-type-ledger"))
         } else {
-            view.transactionParticipantView.accountSelectionView.setStandardAccount()
+            view.transactionAccountInformationView.setAccountImage(img("icon-account-type-standard"))
         }
         
+        view.transactionAccountInformationView.setAccountName(account.name)
+        
         view.amountInputView.maxAmount = assetAmount
-        view.transactionParticipantView.assetSelectionView.set(amount: assetAmount, assetFraction: assetDetail.fractionDecimals)
+        view.transactionAccountInformationView.setAmount(assetAmount.toFractionStringForLabel(fraction: assetDetail.fractionDecimals))
         
         if isMaxTransaction {
             view.amountInputView.inputTextField.text = assetAmount.toFractionStringForLabel(fraction: assetDetail.fractionDecimals)

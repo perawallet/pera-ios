@@ -14,19 +14,11 @@ class FeedbackView: BaseView {
     
     weak var delegate: FeedbackViewDelegate?
     
-    private lazy var categorySelectionGestureRecognizer = UITapGestureRecognizer(
-        target: self,
-        action: #selector(didTriggerCategorySelection(tapGestureRecognizer:))
-    )
-    
     private(set) lazy var categorySelectionView: SelectionView = {
         let categorySelectionView = SelectionView()
-        categorySelectionView.backgroundColor = .clear
-        categorySelectionView.containerView.isUserInteractionEnabled = true
         categorySelectionView.leftExplanationLabel.text = "feedback-title-category".localized
         categorySelectionView.detailLabel.text = "feedback-subtitle-category".localized
         categorySelectionView.rightInputAccessoryButton.setImage(img("icon-picker-selection-down"), for: .normal)
-        categorySelectionView.layer.cornerRadius = 12.0
         return categorySelectionView
     }()
     
@@ -57,12 +49,7 @@ class FeedbackView: BaseView {
         return noteInputView
     }()
     
-    private lazy var sendButton = MainButton(title: "title-send".localized)
-    
-    override func configureAppearance() {
-        super.configureAppearance()
-        categorySelectionView.applySmallShadow()
-    }
+    private lazy var sendButton = MainButton(title: "feedback-title".localized)
     
     override func linkInteractors() {
         emailInputView.delegate = self
@@ -70,7 +57,7 @@ class FeedbackView: BaseView {
     
     override func setListeners() {
         sendButton.addTarget(self, action: #selector(notifyDelegateToSendButtonTapped), for: .touchUpInside)
-        categorySelectionView.containerView.addGestureRecognizer(categorySelectionGestureRecognizer)
+        categorySelectionView.addTarget(self, action: #selector(notifyDelegateToSelectCategory), for: .touchUpInside)
     }
     
     override func prepareLayout() {
@@ -91,16 +78,11 @@ class FeedbackView: BaseView {
         
         return super.hitTest(point, with: event)
     }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        categorySelectionView.setShadowFrames()
-    }
 }
 
 extension FeedbackView {
     @objc
-    private func didTriggerCategorySelection(tapGestureRecognizer: UITapGestureRecognizer) {
+    private func notifyDelegateToSelectCategory() {
         delegate?.feedbackViewDidTriggerCategorySelection(self)
     }
     

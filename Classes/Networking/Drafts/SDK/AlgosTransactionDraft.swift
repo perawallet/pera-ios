@@ -14,4 +14,5 @@ struct AlgosTransactionDraft: TransactionDraft {
     var transactionParams: TransactionParams
     let amount: Int64
     let isMaxTransaction: Bool
+    var note: Data?
 }

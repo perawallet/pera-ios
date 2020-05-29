@@ -14,6 +14,8 @@ class AccountFooterView: BaseView {
     
     weak var delegate: AccountFooterViewDelegate?
     
+    private lazy var containerView = UIView()
+    
     private lazy var addAssetButton: AlignedButton = {
         let positions: AlignedButton.StylePositionAdjustment = (image: CGPoint(x: 0.0, y: 0.0), title: CGPoint(x: 5.0, y: 0.0))
         let button = AlignedButton(style: .imageLeftTitleCentered(positions))
@@ -26,12 +28,14 @@ class AccountFooterView: BaseView {
     }()
     
     override func configureAppearance() {
-        backgroundColor = SharedColors.secondaryBackground
-        layer.cornerRadius = 12.0
-        layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+        super.configureAppearance()
+        containerView.backgroundColor = SharedColors.secondaryBackground
+        containerView.layer.cornerRadius = 12.0
+        containerView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
     }
     
     override func prepareLayout() {
+        setupContainerViewLayout()
         setupAddAssetButtonLayout()
     }
     
@@ -48,8 +52,17 @@ extension AccountFooterView {
 }
 
 extension AccountFooterView {
+    private func setupContainerViewLayout() {
+        addSubview(containerView)
+        
+        containerView.snp.makeConstraints { make in
+            make.leading.trailing.top.equalToSuperview()
+            make.height.equalTo(layout.current.containerHeight)
+        }
+    }
+    
     private func setupAddAssetButtonLayout() {
-        addSubview(addAssetButton)
+        containerView.addSubview(addAssetButton)
         
         addAssetButton.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(layout.current.horizontalInset)
@@ -62,6 +75,7 @@ extension AccountFooterView {
 extension AccountFooterView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let topInset: CGFloat = 12.0
+        let containerHeight: CGFloat = 52.0
         let bottomInset: CGFloat = 16.0
         let horizontalInset: CGFloat = 20.0
     }

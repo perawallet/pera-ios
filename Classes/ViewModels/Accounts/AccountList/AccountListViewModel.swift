@@ -12,7 +12,7 @@ class AccountListViewModel {
     func configure(_ cell: AccountViewCell, with account: Account, for mode: AccountListViewController.Mode) {
         cell.contextView.nameLabel.text = account.name
         
-        if account.type == .ledger {
+        if account.type.isLedger() {
             cell.contextView.setAccountTypeImage(img("icon-account-type-ledger"), hidden: false)
         } else {
             cell.contextView.setAccountTypeImage(img("icon-account-type-standard"), hidden: false)
@@ -30,12 +30,12 @@ class AccountListViewModel {
                 }
                 
                 let amountText = "\(assetAmount.toFractionStringForLabel(fraction: assetDetail.fractionDecimals) ?? "")".attributed([
-                    .font(UIFont.font(.overpass, withWeight: .semiBold(size: 15.0))),
-                    .textColor(SharedColors.black)
+                    .font(UIFont.font(withWeight: .medium(size: 14.0))),
+                    .textColor(SharedColors.primaryText)
                 ])
                 
                 let codeText = " (\(assetDetail.getAssetCode()))".attributed([
-                    .font(UIFont.font(.overpass, withWeight: .semiBold(size: 15.0))),
+                    .font(UIFont.font(withWeight: .medium(size: 14.0))),
                     .textColor(SharedColors.darkGray)
                 ])
                 cell.contextView.detailLabel.attributedText = amountText + codeText

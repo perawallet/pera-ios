@@ -58,6 +58,7 @@ class ChoosePasswordViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         checkLoginFlow()
+        setSecondaryBackgroundColor()
     }
     
     override func configureNavigationBarAppearance() {

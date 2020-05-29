@@ -21,6 +21,7 @@ class SendTransactionViewController: BaseViewController {
     private(set) lazy var sendTransactionView = SendTransactionView()
     
     private let assetReceiverState: AssetReceiverState
+    private(set) var isSenderEditable: Bool
     private(set) var transactionController: TransactionController
     var fee: Int64?
     
@@ -28,11 +29,21 @@ class SendTransactionViewController: BaseViewController {
     
     var transactionData: Data?
     
-    init(assetReceiverState: AssetReceiverState, transactionController: TransactionController, configuration: ViewControllerConfiguration) {
+    init(
+        assetReceiverState: AssetReceiverState,
+        transactionController: TransactionController,
+        isSenderEditable: Bool,
+        configuration: ViewControllerConfiguration
+    ) {
         self.assetReceiverState = assetReceiverState
         self.transactionController = transactionController
+        self.isSenderEditable = isSenderEditable
         super.init(configuration: configuration)
-        hidesBottomBarWhenPushed = true
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        addTestNetBanner()
     }
     
     override func configureAppearance() {
@@ -75,6 +86,12 @@ extension SendTransactionViewController: TransactionControllerDelegate {
     func transactionController(_ transactionController: TransactionController, didCompletedTransaction id: TransactionID) {
         SVProgressHUD.dismiss()
         completeTransaction(with: id)
+        
+        if isSenderEditable {
+            dismissScreen()
+            return
+        }
+        
         navigateBack()
     }
     
