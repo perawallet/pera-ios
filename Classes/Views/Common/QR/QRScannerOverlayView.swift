@@ -115,7 +115,7 @@ extension QRScannerOverlayView {
         addSubview(cancelButton)
         
         cancelButton.snp.makeConstraints { make in
-            make.bottom.equalToSuperview().inset(layout.current.buttonVerticalInset)
+            make.bottom.equalToSuperview().inset(layout.current.buttonVerticalInset + safeAreaBottom)
             make.centerX.equalToSuperview()
             make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
         }
@@ -135,7 +135,7 @@ extension QRScannerOverlayView {
 extension QRScannerOverlayView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let horizontalInset: CGFloat = 20.0
-        let buttonVerticalInset: CGFloat = 40.0 * verticalScale
+        let buttonVerticalInset: CGFloat = 40.0
         let titleLabelTopInset: CGFloat = 40.0
         let explanationLabelHorizontalInset: CGFloat = 40.0
     }

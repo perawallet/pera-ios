@@ -144,7 +144,7 @@ extension TransactionController {
         signTransaction()
         
         if isTransactionSigned {
-            calculateAlgosTransactionFee()
+            calculateAssetTransactionFee(for: .algosTransaction)
             completeAlgosTransaction()
         }
     }
@@ -364,9 +364,16 @@ extension TransactionController {
         }
         
         // Asset addition fee amount must be asset count * minimum algos limit + minimum fee
-        if transactionType == .assetAddition &&
+        if transactionType != .assetAddition &&
             Int64(account.amount) - calculatedFee < Int64(minimumTransactionMicroAlgosLimit * (account.assetDetails.count + 2)) {
             let mininmumAmount = Int64(minimumTransactionMicroAlgosLimit * (account.assetDetails.count + 2)) + calculatedFee
+            delegate?.transactionController(self, didFailedComposing: .custom(mininmumAmount))
+            return
+        }
+        
+        if transactionType != .assetRemoval &&
+            Int64(account.amount) - calculatedFee < Int64(minimumTransactionMicroAlgosLimit * (account.assetDetails.count + 1)) {
+            let mininmumAmount = Int64(minimumTransactionMicroAlgosLimit * (account.assetDetails.count + 1)) + calculatedFee
             delegate?.transactionController(self, didFailedComposing: .custom(mininmumAmount))
             return
         }
@@ -472,7 +479,7 @@ extension TransactionController: LedgerBLEControllerDelegate {
         self.signedTransactionData = signedTransaction
         
         if transactionType == .algosTransaction {
-            calculateAlgosTransactionFee()
+            calculateAssetTransactionFee(for: .algosTransaction)
             completeAlgosTransaction()
         } else {
             calculateAssetTransactionFee(for: transactionType)
