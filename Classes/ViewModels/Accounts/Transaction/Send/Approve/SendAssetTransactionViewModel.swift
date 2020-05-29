@@ -10,31 +10,60 @@ import UIKit
 
 class SendAssetTransactionViewModel {
     func configure(_ view: SendTransactionView, with assetTransactionSendDraft: AssetTransactionSendDraft) {
-        view.transactionParticipantView.accountSelectionView.amountView.amountLabel.textColor = SharedColors.black
-        view.transactionParticipantView.accountSelectionView.amountView.algoIconImageView.removeFromSuperview()
-        view.transactionParticipantView.accountSelectionView.detailLabel.text = assetTransactionSendDraft.from.name
-        
         if assetTransactionSendDraft.from.type == .ledger {
-            view.transactionParticipantView.accountSelectionView.setLedgerAccount()
+            view.setAccountImage(img("icon-account-type-ledger"))
         } else {
-            view.transactionParticipantView.accountSelectionView.setStandardAccount()
+            view.setAccountImage(img("icon-account-type-standard"))
         }
         
-        view.amountInputView.inputTextField.text
-            = assetTransactionSendDraft.amount?.toFractionStringForLabel(fraction: assetTransactionSendDraft.assetDecimalFraction)
-        view.amountInputView.algosImageView.removeFromSuperview()
-        view.transactionParticipantView.assetSelectionView.verifiedImageView.isHidden = !assetTransactionSendDraft.isVerifiedAsset
+        view.setAccountName(assetTransactionSendDraft.from.name)
+        
+        if let amount = assetTransactionSendDraft.amount {
+            view.setAmountInformationViewMode(
+                .normal(amount: amount, isAlgos: false, fraction: assetTransactionSendDraft.assetDecimalFraction)
+            )
+        }
+        
+        if let note = assetTransactionSendDraft.note, !note.isEmpty {
+            view.setTransactionNote(note)
+        } else {
+            view.removeTransactionNote()
+        }
+        
+        setReceiver(in: view, with: assetTransactionSendDraft)
         
         guard let assetIndex = assetTransactionSendDraft.assetIndex,
             let assetDetail = assetTransactionSendDraft.from.assetDetails.first(where: { $0.id == assetIndex }) else {
             return
         }
         
-        view.transactionParticipantView.assetSelectionView.detailLabel.attributedText = assetDetail.assetDisplayName()
+        view.setAssetName(for: assetDetail)
+    }
+    
+    private func setReceiver(in view: SendTransactionView, with assetTransactionSendDraft: AssetTransactionSendDraft) {
+        guard let receiverAddress = assetTransactionSendDraft.toAccount else {
+            return
+        }
         
-        if let assetAmount = assetTransactionSendDraft.from.amount(for: assetDetail) {
-            view.transactionParticipantView.assetSelectionView.amountView.algoIconImageView.removeFromSuperview()
-            view.transactionParticipantView.assetSelectionView.set(amount: assetAmount, assetFraction: assetDetail.fractionDecimals)
+        Contact.fetchAll(entity: Contact.entityName, with: NSPredicate(format: "address = %@", receiverAddress)) { response in
+            switch response {
+            case let .results(objects: objects):
+                guard let results = objects as? [Contact], !results.isEmpty else {
+                    self.setRecieverWithAddress(receiverAddress, in: view)
+                    return
+                }
+                
+                view.setReceiverAsContact(results[0])
+            default:
+                self.setRecieverWithAddress(receiverAddress, in: view)
+            }
+        }
+    }
+    
+    private func setRecieverWithAddress(_ address: String, in view: SendTransactionView) {
+        if let shortAddressDisplay = address.shortAddressDisplay() {
+            view.setReceiverName(shortAddressDisplay)
+            view.removeReceiverImage()
         }
     }
 }

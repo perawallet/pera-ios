@@ -12,30 +12,36 @@ import UserNotifications
 
 class SettingsViewController: BaseViewController {
     
-    private lazy var settingsView: SettingsView = {
-        let settingsView = SettingsView()
-        return settingsView
+    override var shouldShowNavigationBar: Bool {
+        return false
+    }
+    
+    private lazy var bottomModalPresenter = CardModalPresenter(
+        config: ModalConfiguration(
+            animationMode: .normal(duration: 0.25),
+            dismissMode: .scroll
+        ),
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: 402.0))
+    )
+    
+    private lazy var pushNotificationController: PushNotificationController = {
+        guard let api = api else {
+            fatalError("API should be set.")
+        }
+        return PushNotificationController(api: api)
     }()
+    
+    private lazy var settingsView = SettingsView()
     
     private let viewModel = SettingsViewModel()
     
     private let localAuthenticator = LocalAuthenticator()
     
-    // MARK: Setup
-    
-    override func configureAppearance() {
-        super.configureAppearance()
-        
-        view.addSubview(settingsView)
-        settingsView.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(10.0)
-            make.leading.trailing.equalToSuperview()
-            make.bottom.safeEqualToBottom(of: self)
-        }
+    override func customizeTabBarAppearence() {
+        isTabBarHidden = false
     }
     
     override func linkInteractors() {
-        settingsView.delegate = self
         settingsView.collectionView.delegate = self
         settingsView.collectionView.dataSource = self
         viewModel.delegate = self
@@ -50,27 +56,50 @@ class SettingsViewController: BaseViewController {
         )
     }
     
+    override func prepareLayout() {
+        setupSettingsViewLayout()
+    }
+}
+
+extension SettingsViewController {
     @objc
     private func didApplicationEnterForeground() {
         settingsView.collectionView.reloadData()
     }
 }
 
-// MARK: UICollectionViewDataSource
+extension SettingsViewController {
+    private func setupSettingsViewLayout() {
+        view.addSubview(settingsView)
+        
+        settingsView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.safeEqualToTop(of: self)
+            make.bottom.safeEqualToBottom(of: self)
+        }
+    }
+}
 
 extension SettingsViewController: UICollectionViewDataSource {
-    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
+        return 7
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
         guard let mode = SettingsViewModel.SettingsCellMode(rawValue: indexPath.item) else {
             fatalError("Index path is out of bounds")
         }
         
         switch mode {
+        case .nodeSettings:
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: SettingsDetailCell.reusableIdentifier,
+                for: indexPath) as? SettingsDetailCell else {
+                    fatalError("Index path is out of bounds")
+            }
+            
+            viewModel.configureDetail(cell, with: mode)
+            return cell
         case .password:
             guard let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: SettingsDetailCell.reusableIdentifier,
@@ -79,25 +108,21 @@ extension SettingsViewController: UICollectionViewDataSource {
             }
             
             viewModel.configureDetail(cell, with: mode)
-            
             return cell
-            
         case .localAuthentication:
             guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: ToggleCell.reusableIdentifier,
-                for: indexPath) as? ToggleCell else {
+                withReuseIdentifier: SettingsToggleCell.reusableIdentifier,
+                for: indexPath) as? SettingsToggleCell else {
                     fatalError("Index path is out of bounds")
             }
             
             let localAuthenticationStatus = localAuthenticator.localAuthenticationStatus == .allowed
-            
             viewModel.configureToggle(cell, enabled: localAuthenticationStatus, with: mode, for: indexPath)
-            
             return cell
         case .notifications:
             guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: ToggleCell.reusableIdentifier,
-                for: indexPath) as? ToggleCell else {
+                withReuseIdentifier: SettingsToggleCell.reusableIdentifier,
+                for: indexPath) as? SettingsToggleCell else {
                     fatalError("Index path is out of bounds")
             }
             
@@ -114,8 +139,8 @@ extension SettingsViewController: UICollectionViewDataSource {
             return cell
         case .rewards:
             guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: ToggleCell.reusableIdentifier,
-                for: indexPath) as? ToggleCell else {
+                withReuseIdentifier: SettingsToggleCell.reusableIdentifier,
+                for: indexPath) as? SettingsToggleCell else {
                     fatalError("Index path is out of bounds")
             }
             
@@ -130,23 +155,56 @@ extension SettingsViewController: UICollectionViewDataSource {
             }
             
             viewModel.configureInfo(cell, with: mode)
+            return cell
+        case .feedback:
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: SettingsDetailCell.reusableIdentifier,
+                for: indexPath) as? SettingsDetailCell else {
+                    fatalError("Index path is out of bounds")
+            }
             
+            viewModel.configureDetail(cell, with: mode)
             return cell
         }
     }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        viewForSupplementaryElementOfKind kind: String,
+        at indexPath: IndexPath
+    ) -> UICollectionReusableView {
+        if kind != UICollectionView.elementKindSectionFooter {
+            fatalError("Unexpected element kind")
+        }
+        
+        guard let footerView = collectionView.dequeueReusableSupplementaryView(
+            ofKind: kind,
+            withReuseIdentifier: SettingsFooterSupplementaryView.reusableIdentifier,
+            for: indexPath
+        ) as? SettingsFooterSupplementaryView else {
+            fatalError("Unexpected element kind")
+        }
+        
+        footerView.delegate = self
+        return footerView
+    }
 }
 
-// MARK: UICollectionViewDelegateFlowLayout
-
 extension SettingsViewController: UICollectionViewDelegateFlowLayout {
-    
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        
-        return CGSize(width: UIScreen.main.bounds.width, height: 80.0 * verticalScale)
+        return CGSize(width: UIScreen.main.bounds.width, height: 72.0)
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        referenceSizeForFooterInSection section: Int
+    ) -> CGSize {
+        return CGSize(width: UIScreen.main.bounds.width, height: 128.0)
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -155,22 +213,29 @@ extension SettingsViewController: UICollectionViewDelegateFlowLayout {
         }
         
         switch mode {
+        case .nodeSettings:
+            open(.nodeSettings, by: .push)
         case .password:
             open(
                 .choosePassword(
                     mode: ChoosePasswordViewController.Mode.resetPassword, route: nil),
                     by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
             )
+        case .feedback:
+            open(.feedback, by: .push)
         default:
             break
         }
     }
 }
 
-// MARK: - SettingsViewModelDelegate
+extension SettingsViewController: SettingsFooterSupplementaryViewDelegate {
+    func settingsFooterSupplementaryViewDidTapLogoutButton(_ settingsFooterSupplementaryView: SettingsFooterSupplementaryView) {
+        presentLogoutAlert()
+    }
+}
 
 extension SettingsViewController: SettingsViewModelDelegate {
-    
     func settingsViewModel(_ viewModel: SettingsViewModel, didToggleValue value: Bool, atIndexPath indexPath: IndexPath) {
         guard let mode = SettingsViewModel.SettingsCellMode(rawValue: indexPath.item),
             let cell = settingsView.collectionView.cellForItem(at: indexPath) as? SettingsToggleCell else {
@@ -222,8 +287,8 @@ extension SettingsViewController: SettingsViewModelDelegate {
         }
         
         let cancelAction = UIAlertAction(title: "title-cancel-lowercased".localized, style: .cancel) { _ in
-            let indexPath = IndexPath(item: 2, section: 0)
-            guard let cell = self.settingsView.collectionView.cellForItem(at: indexPath) as? ToggleCell else {
+            let indexPath = IndexPath(item: 3, section: 0)
+            guard let cell = self.settingsView.collectionView.cellForItem(at: indexPath) as? SettingsToggleCell else {
                 return
             }
             
@@ -254,12 +319,31 @@ extension SettingsViewController: SettingsViewModelDelegate {
         
         present(alertController, animated: true, completion: nil)
     }
-}
-
-// MARK: SettingsViewDelegate
-
-extension SettingsViewController: SettingsViewDelegate {
-    func settingsViewDidTapFeedbackView(_ settingsView: SettingsView) {
-        open(.feedback, by: .push)
+    
+    private func presentLogoutAlert() {
+        let configurator = BottomInformationBundle(
+            title: "settings-logout-title".localized,
+            image: img("icon-settings-logout"),
+            explanation: "settings-logout-detail".localized,
+            actionTitle: "node-settings-action-delete-title".localized,
+            actionImage: img("bg-button-red")
+        ) {
+            self.logout()
+        }
+        
+        open(
+            .bottomInformation(mode: .action, configurator: configurator),
+            by: .customPresentWithoutNavigationController(
+                presentationStyle: .custom,
+                transitionStyle: nil,
+                transitioningDelegate: bottomModalPresenter
+            )
+        )
     }
+    
+    private func logout() {
+        session?.reset()
+        pushNotificationController.revokeDevice()
+        open(.introduction, by: .launch, animated: false)
+     }
 }

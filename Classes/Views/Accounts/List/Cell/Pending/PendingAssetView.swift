@@ -16,7 +16,7 @@ class PendingAssetView: BaseView {
     
     private(set) lazy var assetNameView: AssetNameView = {
         let view = AssetNameView()
-        view.idLabel.removeFromSuperview()
+        view.removeId()
         view.nameLabel.textColor = SharedColors.gray600
         view.codeLabel.textColor = SharedColors.gray400
         return view

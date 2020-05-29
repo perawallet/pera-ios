@@ -8,23 +8,16 @@
 
 import UIKit
 
-protocol SettingsViewDelegate: class {
-    func settingsViewDidTapFeedbackView(_ settingsView: SettingsView)
-}
-
 class SettingsView: BaseView {
     
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let collectionViewHeight: CGFloat = 480.0 * verticalScale
-        let versionLabelOffset: CGFloat = 20.0
-        let feedbackHeight: CGFloat = 80.0 * verticalScale
-    }
-    
-    private let layout = Layout<LayoutConstants>()
-    
-    weak var delegate: SettingsViewDelegate?
-    
-    // MARK: Components
+    private lazy var settingsHeaderView: MainHeaderView = {
+        let view = MainHeaderView()
+        view.setTitle("settings-title".localized)
+        view.setQRButtonHidden(true)
+        view.setAddButtonHidden(true)
+        view.setTestNetLabelHidden(true)
+        return view
+    }()
     
     private(set) lazy var collectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
@@ -35,85 +28,43 @@ class SettingsView: BaseView {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = .white
-        collectionView.contentInset = .zero
+        collectionView.backgroundColor = SharedColors.secondaryBackground
+        collectionView.contentInset = UIEdgeInsets(top: 12.0, left: 0.0, bottom: 0.0, right: 0.0)
         collectionView.keyboardDismissMode = .onDrag
         
         collectionView.register(SettingsDetailCell.self, forCellWithReuseIdentifier: SettingsDetailCell.reusableIdentifier)
         collectionView.register(SettingsInfoCell.self, forCellWithReuseIdentifier: SettingsInfoCell.reusableIdentifier)
-        collectionView.register(ToggleCell.self, forCellWithReuseIdentifier: ToggleCell.reusableIdentifier)
-        
+        collectionView.register(SettingsToggleCell.self, forCellWithReuseIdentifier: SettingsToggleCell.reusableIdentifier)
+        collectionView.register(
+            SettingsFooterSupplementaryView.self,
+            forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
+            withReuseIdentifier: SettingsFooterSupplementaryView.reusableIdentifier
+        )
         return collectionView
     }()
-    
-    private lazy var versionLabel: UILabel = {
-        UILabel()
-            .withAlignment(.center)
-            .withLine(.single)
-            .withTextColor(SharedColors.softGray)
-            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 14.0)))
-    }()
-    
-    private(set) lazy var feedbackSelectionView: FeedbackSelectionView = {
-        let view = FeedbackSelectionView()
-        return view
-    }()
-    
-    // MARK: Setup
-    
-    override func configureAppearance() {
-        backgroundColor = .white
-    }
-    
-    override func linkInteractors() {
-        feedbackSelectionView.delegate = self
-    }
-    
-    // MARK: Layout
-    
+
     override func prepareLayout() {
+        setupSettingsHeaderViewLayout()
         setupCollectionViewLayout()
-        setupVersionLabelLayout()
-        setupFeedbackSelectionViewLayout()
+    }
+}
+
+extension SettingsView {
+    private func setupSettingsHeaderViewLayout() {
+        addSubview(settingsHeaderView)
+        
+        settingsHeaderView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalToSuperview()
+        }
     }
     
     private func setupCollectionViewLayout() {
         addSubview(collectionView)
         
         collectionView.snp.makeConstraints { make in
-            make.top.equalTo(safeAreaLayoutGuide.snp.top)
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(layout.current.collectionViewHeight)
+            make.top.equalTo(settingsHeaderView.snp.bottom)
+            make.leading.bottom.trailing.equalToSuperview()
         }
-    }
-    
-    private func setupVersionLabelLayout() {
-        addSubview(versionLabel)
-        
-        versionLabel.snp.makeConstraints { make in
-            make.top.equalTo(collectionView.snp.bottom).offset(layout.current.versionLabelOffset)
-            make.centerX.equalToSuperview()
-        }
-        
-        if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
-            versionLabel.text = "Version \(version)"
-        }
-    }
-    
-    private func setupFeedbackSelectionViewLayout() {
-        addSubview(feedbackSelectionView)
-        
-        feedbackSelectionView.snp.makeConstraints { make in
-            make.leading.trailing.bottom.equalToSuperview()
-            make.height.equalTo(layout.current.feedbackHeight)
-        }
-    }
-}
-
-// MARK: FeedbackSelectionViewDelegate
-
-extension SettingsView: FeedbackSelectionViewDelegate {
-    func feedbackSelectionViewDidSelected(_ feedbackSelectionView: FeedbackSelectionView) {
-        delegate?.settingsViewDidTapFeedbackView(self)
     }
 }

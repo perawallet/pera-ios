@@ -12,11 +12,6 @@ class AssetActionableCell: BaseCollectionViewCell<AssetActionableView> {
     
     weak var delegate: AssetActionableCellDelegate?
     
-    override func configureAppearance() {
-        contextView.layer.cornerRadius = 12.0
-        contextView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
-    }
-    
     override func setListeners() {
         contextView.delegate = self
     }

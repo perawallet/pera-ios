@@ -10,29 +10,39 @@ import UIKit
 
 class RequestAssetTransactionPreviewViewModel {
     
-    private let account: Account
+    private var account: Account
     private let assetDetail: AssetDetail
+    private let isAccountSelectionEnabled: Bool
     
-    init(account: Account, assetDetail: AssetDetail) {
+    init(account: Account, assetDetail: AssetDetail, isAccountSelectionEnabled: Bool) {
         self.account = account
         self.assetDetail = assetDetail
+        self.isAccountSelectionEnabled = isAccountSelectionEnabled
     }
     
     func configure(_ view: RequestTransactionPreviewView) {
-        view.transactionParticipantView.accountSelectionView.set(enabled: false)
-        
-        if account.type == .ledger {
-            view.transactionParticipantView.accountSelectionView.setLedgerAccount()
+        if isAccountSelectionEnabled {
+            view.transactionAccountInformationView.setEnabled()
         } else {
-            view.transactionParticipantView.accountSelectionView.setStandardAccount()
+            view.transactionAccountInformationView.setDisabled()
         }
         
-        view.transactionParticipantView.accountSelectionView.amountView.amountLabel.textColor = SharedColors.black
-        view.transactionParticipantView.accountSelectionView.amountView.algoIconImageView.isHidden = true
-        view.transactionParticipantView.accountSelectionView.detailLabel.text = account.name
-        view.amountInputView.algosImageView.removeFromSuperview()
+        if account.type.isLedger() {
+            view.transactionAccountInformationView.setAccountImage(img("icon-account-type-ledger"))
+        } else {
+            view.transactionAccountInformationView.setAccountImage(img("icon-account-type-standard"))
+        }
         
-        view.transactionParticipantView.assetSelectionView.verifiedImageView.isHidden = !assetDetail.isVerified
-        view.transactionParticipantView.assetSelectionView.detailLabel.attributedText = assetDetail.assetDisplayName()
+        view.transactionAccountInformationView.setAccountName(account.name)
+        view.transactionAccountInformationView.removeAmountLabel()
+        view.transactionAccountInformationView.setAssetName(for: assetDetail)
+        view.transactionAccountInformationView.setAssetTransaction()
+        view.transactionAccountInformationView.removeAssetId()
+    }
+}
+
+extension RequestAssetTransactionPreviewViewModel {
+    func updateAccount(_ account: Account) {
+        self.account = account
     }
 }

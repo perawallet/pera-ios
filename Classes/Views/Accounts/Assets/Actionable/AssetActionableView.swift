@@ -8,10 +8,6 @@
 
 import UIKit
 
-protocol AssetActionableViewDelegate: class {
-    func assetActionableViewDidTapActionButton(_ assetActionableView: AssetActionableView)
-}
-
 class AssetActionableView: BaseView {
     
     private let layout = Layout<LayoutConstants>()
@@ -59,6 +55,9 @@ extension AssetActionableView {
     private func setupActionButtonLayout() {
         addSubview(actionButton)
         
+        actionButton.setContentHuggingPriority(.required, for: .horizontal)
+        actionButton.setContentCompressionResistancePriority(.required, for: .horizontal)
+        
         actionButton.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
@@ -68,10 +67,12 @@ extension AssetActionableView {
     private func setupAssetNameViewLayout() {
         addSubview(assetNameView)
         
+        assetNameView.nameLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        
         assetNameView.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.leading.equalToSuperview().inset(layout.current.horizontalInset)
-            make.trailing.lessThanOrEqualTo(actionButton.snp.leading).offset(layout.current.assetNameOffset)
+            make.trailing.lessThanOrEqualTo(actionButton.snp.leading).offset(-layout.current.assetNameOffset)
         }
     }
     
@@ -93,4 +94,8 @@ extension AssetActionableView {
         let separatorHeight: CGFloat = 1.0
         let separatorInset: CGFloat = 10.0
     }
+}
+
+protocol AssetActionableViewDelegate: class {
+    func assetActionableViewDidTapActionButton(_ assetActionableView: AssetActionableView)
 }

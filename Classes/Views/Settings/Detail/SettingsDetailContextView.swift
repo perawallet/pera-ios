@@ -10,50 +10,43 @@ import UIKit
 
 class SettingsDetailContextView: BaseView {
     
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let separatorHeight: CGFloat = 1.0
-        let horizontalInset: CGFloat = 25.0
-    }
-    
     private let layout = Layout<LayoutConstants>()
     
-    private enum Colors {
-        static let separatorColor = rgb(0.94, 0.94, 0.94)
-    }
+    private lazy var imageView = UIImageView()
     
-    // MARK: Components
-    
-    private(set) lazy var detailImageView: UIImageView = {
-        let imageView = UIImageView(image: img("icon-arrow"))
-        return imageView
-    }()
+    private lazy var detailImageView = UIImageView(image: img("icon-arrow"))
     
     private(set) lazy var nameLabel: UILabel = {
         UILabel()
-            .withTextColor(SharedColors.black)
+            .withTextColor(SharedColors.primaryText)
             .withLine(.single)
             .withAlignment(.left)
-            .withFont(UIFont.font(.overpass, withWeight: .semiBold(size: 14.0)))
+            .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
     }()
     
-    private lazy var separatorView: UIView = {
-        let view = UIView()
-        view.backgroundColor = Colors.separatorColor
-        return view
-    }()
-    
-    // MARK: Setup
+    private lazy var separatorView = LineSeparatorView()
     
     override func configureAppearance() {
-        backgroundColor = .white
+        backgroundColor = SharedColors.secondaryBackground
     }
     
-    // MARK: Layout
-    
     override func prepareLayout() {
+        setupImageViewLayout()
         setupNameLabelLayout()
         setupDetailImageViewLayout()
         setupSeparatorViewLayout()
+    }
+}
+
+extension SettingsDetailContextView {
+    private func setupImageViewLayout() {
+        addSubview(imageView)
+        
+        imageView.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.size.equalTo(layout.current.imageSize)
+            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
+        }
     }
     
     private func setupNameLabelLayout() {
@@ -61,7 +54,7 @@ class SettingsDetailContextView: BaseView {
         
         nameLabel.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
-            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
+            make.leading.equalTo(imageView.snp.trailing).offset(layout.current.nameOffset)
         }
     }
     
@@ -70,6 +63,7 @@ class SettingsDetailContextView: BaseView {
         
         detailImageView.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
+            make.size.equalTo(layout.current.imageSize)
             make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
         }
     }
@@ -80,7 +74,22 @@ class SettingsDetailContextView: BaseView {
         separatorView.snp.makeConstraints { make in
             make.bottom.equalToSuperview()
             make.height.equalTo(layout.current.separatorHeight)
-            make.leading.trailing.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
         }
+    }
+}
+
+extension SettingsDetailContextView {
+    func setImage(_ image: UIImage?) {
+        imageView.image = image
+    }
+}
+
+extension SettingsDetailContextView {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let separatorHeight: CGFloat = 1.0
+        let nameOffset: CGFloat = 12.0
+        let imageSize = CGSize(width: 24.0, height: 24.0)
+        let horizontalInset: CGFloat = 20.0
     }
 }

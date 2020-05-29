@@ -18,8 +18,8 @@ class ContactInfoView: BaseView {
     
     private lazy var assetsTitleLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(.avenir, withWeight: .medium(size: 14.0)))
-            .withTextColor(SharedColors.greenishGray)
+            .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
+            .withTextColor(SharedColors.inputTitle)
             .withLine(.single)
             .withAlignment(.left)
             .withText("contacts-title-assets".localized)
@@ -44,7 +44,7 @@ class ContactInfoView: BaseView {
     private(set) lazy var shareButton: AlignedButton = {
         let positions: AlignedButton.StylePositionAdjustment = (image: CGPoint(x: 30.0, y: 0.0), title: CGPoint(x: 4.0, y: 0.0))
         let button = AlignedButton(style: .imageLeftTitleCentered(positions))
-        button.setTitle("title-share".localized, for: .normal)
+        button.setTitle("title-share-qr".localized, for: .normal)
         button.setTitleColor(SharedColors.primaryText, for: .normal)
         button.titleLabel?.font = UIFont.font(withWeight: .semiBold(size: 16.0))
         button.backgroundColor = SharedColors.white

@@ -27,7 +27,7 @@ class FeedbackViewController: BaseScrollViewController {
         didSet {
             if let selectedCategory = selectedCategory {
                 self.feedbackView.categorySelectionView.detailLabel.text = selectedCategory.name
-                self.feedbackView.categorySelectionView.detailLabel.textColor = SharedColors.black
+                self.feedbackView.categorySelectionView.detailLabel.textColor = SharedColors.primaryText
             }
         }
     }
@@ -35,11 +35,6 @@ class FeedbackViewController: BaseScrollViewController {
     private var keyboardController = KeyboardController()
     
     private lazy var feedbackView = FeedbackView()
-    
-    override init(configuration: ViewControllerConfiguration) {
-        super.init(configuration: configuration)
-        hidesBottomBarWhenPushed = true
-    }
     
     override func configureAppearance() {
         super.configureAppearance()
@@ -73,7 +68,7 @@ extension FeedbackViewController {
         api?.getFeedbackCategories { response in
             switch response {
             case let .success(result):
-                SVProgressHUD.showSuccess(withStatus: "title-done-lowercased".localized)
+                SVProgressHUD.showSuccess(withStatus: "title-done".localized)
                 SVProgressHUD.dismiss()
                 
                 self.categories = result
@@ -124,7 +119,7 @@ extension FeedbackViewController: FeedbackViewDelegate {
     }
     
     func feedbackView(_ feedbackView: FeedbackView, inputDidReturn inputView: BaseInputView) {
-        if inputView == feedbackView.emailInputView {
+        if inputView == feedbackView.noteInputView {
             sendFeedback()
         }
     }
@@ -186,7 +181,7 @@ extension FeedbackViewController {
         api?.sendFeedback(with: feedbackDraft) { response in
             switch response {
             case .success:
-                SVProgressHUD.showSuccess(withStatus: "title-done-lowercased".localized)
+                SVProgressHUD.showSuccess(withStatus: "title-done".localized)
                 SVProgressHUD.dismiss()
                 
                 self.displaySuccessAlert()
@@ -202,9 +197,9 @@ extension FeedbackViewController {
         let configurator = BottomInformationBundle(
             title: "feedback-success-title".localized,
             image: img("feedback-success-icon"),
-            explanation: "",
+            explanation: "feedback-success-detail".localized,
             actionTitle: "title-close".localized,
-            actionImage: img("bg-black-button-big")
+            actionImage: img("bg-main-button")
         ) {
             self.popScreen()
         }
@@ -226,7 +221,7 @@ extension FeedbackViewController: KeyboardControllerDataSource {
     }
     
     func firstResponder(for keyboardController: KeyboardController) -> UIView? {
-        return feedbackView.emailInputView
+        return feedbackView.noteInputView
     }
     
     func containerView(for keyboardController: KeyboardController) -> UIView {

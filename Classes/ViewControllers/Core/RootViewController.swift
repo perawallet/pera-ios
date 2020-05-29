@@ -10,6 +10,10 @@ import UIKit
 
 class RootViewController: UIViewController {
     
+    private var shouldHideTestNetBanner: Bool {
+        return tabBarViewController.parent == nil
+    }
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         if #available(iOS 13.0, *) {
             return .darkContent
@@ -44,7 +48,9 @@ class RootViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = SharedColors.warmWhite
+        view.backgroundColor = SharedColors.primaryBackground
+        
+        initializeNetwork()
         
         if !appConfiguration.session.isValid {
             if appConfiguration.session.hasPassword() && appConfiguration.session.authenticatedUser != nil {
@@ -169,7 +175,7 @@ class RootViewController: UIViewController {
                 tabBarViewController.routeForDeeplink()
                 return
             } else {
-                tabBarViewController.selectedIndex = 0
+                tabBarContainer?.selectedItem = tabBarContainer?.items[0]
                 tabBarViewController.route = .assetDetail(account: account, assetDetail: assetDetail)
                 tabBarViewController.routeForDeeplink()
             }
@@ -185,5 +191,40 @@ class RootViewController: UIViewController {
         then completion: EmptyHandler? = nil
     ) -> T? {
         return router?.route(to: screen, from: viewController, by: style, animated: animated, then: completion)
+    }
+}
+
+extension RootViewController {
+    private func initializeNetwork() {
+        if let authenticatedUser = appConfiguration.session.authenticatedUser {
+            if let preferredAlgorandNetwork = authenticatedUser.preferredAlgorandNetwork() {
+                setNetwork(to: preferredAlgorandNetwork)
+            } else {
+                setNetworkFromTarget()
+            }
+        } else {
+            setNetworkFromTarget()
+        }
+    }
+    
+    func setNetworkFromTarget() {
+        if Environment.current.isTestNet {
+            setNetwork(to: .testnet)
+        } else {
+            setNetwork(to: .mainnet)
+        }
+    }
+    
+    func setNetwork(to network: API.BaseNetwork) {
+        appConfiguration.api.cancelAllEndpoints()
+        appConfiguration.api.network = network
+        
+        if network == .mainnet {
+            appConfiguration.api.base = Environment.current.mainNetApi
+            appConfiguration.api.token = Environment.current.mainNetToken
+        } else {
+            appConfiguration.api.base = Environment.current.testNetApi
+            appConfiguration.api.token = Environment.current.testNetToken
+        }
     }
 }

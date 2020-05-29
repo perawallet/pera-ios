@@ -41,7 +41,7 @@ class PassphraseView: BaseView {
         let positions: AlignedButton.StylePositionAdjustment = (image: CGPoint(x: 0.0, y: 0.0), title: CGPoint(x: 4.0, y: 0.0))
         let button = AlignedButton(style: .imageLeftTitleCentered(positions))
         button.setImage(img("icon-share"), for: .normal)
-        button.setTitle("title-share".localized, for: .normal)
+        button.setTitle("title-share-qr".localized, for: .normal)
         button.setTitleColor(SharedColors.tertiaryText, for: .normal)
         button.titleLabel?.font = UIFont.font(withWeight: .semiBold(size: 14.0))
         return button

@@ -17,9 +17,9 @@ class LedgerApprovalView: BaseView {
     private lazy var titleLabel: UILabel = {
         UILabel()
             .withLine(.single)
-            .withFont(UIFont.font(.overpass, withWeight: .bold(size: 16.0)))
+            .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
             .withAlignment(.center)
-            .withTextColor(SharedColors.black)
+            .withTextColor(SharedColors.primaryText)
     }()
     
     private(set) lazy var bluetoothImageView = BluetoothLoadingView()
@@ -31,22 +31,22 @@ class LedgerApprovalView: BaseView {
     private lazy var detailLabel: UILabel = {
         UILabel()
             .withLine(.contained)
-            .withFont(UIFont.font(.avenir, withWeight: .medium(size: 14.0)))
+            .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
             .withAlignment(.center)
             .withTextColor(SharedColors.black)
     }()
     
     private lazy var cancelButton: UIButton = {
         UIButton(type: .custom)
+            .withBackgroundImage(img("bg-light-gray-button"))
             .withTitle("title-cancel".localized)
-            .withTitleColor(SharedColors.darkGray)
+            .withTitleColor(SharedColors.primaryText)
             .withAlignment(.center)
-            .withFont(UIFont.font(.avenir, withWeight: .demiBold(size: 12.0)))
+            .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
     }()
     
     override func configureAppearance() {
-        backgroundColor = .white
-        layer.cornerRadius = 10.0
+        backgroundColor = SharedColors.secondaryBackground
     }
     
     override func setListeners() {
@@ -127,7 +127,7 @@ extension LedgerApprovalView {
             make.top.equalTo(detailLabel.snp.bottom).offset(layout.current.buttonVerticalInset)
             make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
             make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().inset(layout.current.buttonVerticalInset)
+            make.bottom.lessThanOrEqualToSuperview().inset(layout.current.buttonVerticalInset + safeAreaBottom)
         }
     }
 }
@@ -144,15 +144,15 @@ extension LedgerApprovalView {
 
 extension LedgerApprovalView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let titleVerticalInset: CGFloat = 30.0
+        let titleVerticalInset: CGFloat = 16.0
         let titleHorizontalInset: CGFloat = 25.0
         let deviceImageLeadingInset: CGFloat = 5.0
-        let bluetoothTopInset: CGFloat = 75.0
+        let bluetoothTopInset: CGFloat = 25.0
         let deviceImageTopInset: CGFloat = 35.0
-        let buttonVerticalInset: CGFloat = 20.0
+        let buttonVerticalInset: CGFloat = 28.0
         let imageTrailingOffset: CGFloat = -5.0
         let horizontalInset: CGFloat = 30.0
-        let detailLabelTopInset: CGFloat = 40.0
+        let detailLabelTopInset: CGFloat = 20.0
         let ledgerImageSize = CGSize(width: 27.0, height: 24.0)
         let bluetoothImageSize = CGSize(width: 100.0, height: 100.0)
     }

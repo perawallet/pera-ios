@@ -61,6 +61,7 @@ extension ChoosePasswordView {
         unlockImageView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalToSuperview().inset(layout.current.imageViewTopInset)
+            make.size.equalTo(layout.current.unlockImageSize)
         }
     }
     
@@ -111,6 +112,7 @@ extension ChoosePasswordView {
         let titleLabelTopInset: CGFloat = 100.0 * verticalScale
         let inputViewTopInset: CGFloat = 20.0 * verticalScale
         let numpadBottomInset: CGFloat = 32.0 * verticalScale
+        let unlockImageSize = CGSize(width: 48.0 * verticalScale, height: 48.0 * verticalScale)
         let passwordInputViewInset: CGFloat = -10.0
     }
 }

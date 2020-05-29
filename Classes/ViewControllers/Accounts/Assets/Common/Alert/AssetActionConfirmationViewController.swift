@@ -55,7 +55,7 @@ extension AssetActionConfirmationViewController {
 
 extension AssetActionConfirmationViewController {
     private func fetchAssetDetailIfNeeded() {
-        if !assetAlertDraft.isAssetDetailValid() {
+        if !assetAlertDraft.isValid() {
             SVProgressHUD.show(withStatus: "title-loading".localized)
             api?.getAssetDetails(with: AssetFetchDraft(assetId: "\(assetAlertDraft.assetIndex)")) { response in
                 switch response {

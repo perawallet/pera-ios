@@ -15,7 +15,7 @@ class AddNodeView: BaseView {
         let inputHeight: CGFloat = 87.0
         let tokenHeight: CGFloat = 119.0
         let verticalOffset: CGFloat = 20.0
-        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
+        let buttonHorizontalInset: CGFloat = 20.0
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -23,15 +23,10 @@ class AddNodeView: BaseView {
     private(set) lazy var nameInputView: SingleLineInputField = {
         let inputView = SingleLineInputField()
         inputView.explanationLabel.text = "node-settings-enter-node-name".localized
-        inputView.inputTextField.attributedPlaceholder = NSAttributedString(
-            string: "node-settings-placeholder-name".localized,
-            attributes: [NSAttributedString.Key.foregroundColor: SharedColors.softGray,
-                         NSAttributedString.Key.font: UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))]
-        )
-        
+        inputView.placeholderText = "node-settings-placeholder-name".localized
         inputView.inputTextField.textColor = SharedColors.black
         inputView.inputTextField.tintColor = SharedColors.black
-        inputView.inputTextField.font = UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))
+        inputView.inputTextField.font = UIFont.font(withWeight: .semiBold(size: 14.0))
         inputView.nextButtonMode = .next
         inputView.inputTextField.autocorrectionType = .no
         inputView.backgroundColor = .clear
@@ -41,15 +36,10 @@ class AddNodeView: BaseView {
     private(set) lazy var addressInputView: SingleLineInputField = {
         let inputView = SingleLineInputField()
         inputView.explanationLabel.text = "node-settings-enter-node-address".localized
-        inputView.inputTextField.attributedPlaceholder = NSAttributedString(
-            string: "node-settings-placeholder-address".localized,
-            attributes: [NSAttributedString.Key.foregroundColor: SharedColors.softGray,
-                         NSAttributedString.Key.font: UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))]
-        )
-        
+        inputView.placeholderText = "node-settings-placeholder-address".localized
         inputView.inputTextField.textColor = SharedColors.black
         inputView.inputTextField.tintColor = SharedColors.black
-        inputView.inputTextField.font = UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))
+        inputView.inputTextField.font = UIFont.font(withWeight: .semiBold(size: 14.0))
         inputView.nextButtonMode = .next
         inputView.inputTextField.autocorrectionType = .no
         inputView.backgroundColor = .clear
@@ -62,7 +52,7 @@ class AddNodeView: BaseView {
         algorandAddressInputView.placeholderLabel.attributedText = NSAttributedString(
             string: "node-settings-placeholder-api-key".localized,
             attributes: [NSAttributedString.Key.foregroundColor: SharedColors.softGray,
-                         NSAttributedString.Key.font: UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))]
+                         NSAttributedString.Key.font: UIFont.font(withWeight: .semiBold(size: 14.0))]
         )
         algorandAddressInputView.nextButtonMode = .submit
         algorandAddressInputView.inputTextView.autocorrectionType = .no
@@ -70,7 +60,7 @@ class AddNodeView: BaseView {
         algorandAddressInputView.inputTextView.textContainer.heightTracksTextView = false
         algorandAddressInputView.inputTextView.textColor = SharedColors.black
         algorandAddressInputView.inputTextView.tintColor = SharedColors.black
-        algorandAddressInputView.inputTextView.font = UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))
+        algorandAddressInputView.inputTextView.font = UIFont.font(withWeight: .semiBold(size: 14.0))
         algorandAddressInputView.inputTextView.isScrollEnabled = true
         algorandAddressInputView.backgroundColor = .clear
         

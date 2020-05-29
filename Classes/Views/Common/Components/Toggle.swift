@@ -12,10 +12,10 @@ class Toggle: UISwitch {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        tintColor = SharedColors.softGray
-        backgroundColor = SharedColors.softGray
+        tintColor = rgba(0.47, 0.47, 0.5, 0.16)
+        backgroundColor = rgba(0.47, 0.47, 0.5, 0.16)
         layer.cornerRadius = 16
-        onTintColor = SharedColors.purple
+        onTintColor = SharedColors.primary
     }
     
     @available(*, unavailable)

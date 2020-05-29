@@ -9,60 +9,42 @@
 import UIKit
 import SVProgressHUD
 
-protocol NodeSettingsViewControllerDelegate: class {
-    func nodeSettingsViewControllerDidUpdateNode(_ nodeSettingsViewController: NodeSettingsViewController)
-}
-
 class NodeSettingsViewController: BaseViewController {
     
     private lazy var nodeSettingsView = NodeSettingsView()
     
-    var nodes: [Node] = []
+    private let nodes = [
+        AlgorandNode(
+            token: Environment.current.mainNetToken,
+            address: Environment.current.mainNetApi,
+            name: "node-settings-default-node-name".localized,
+            network: .mainnet
+        ),
+        AlgorandNode(
+            token: Environment.current.testNetToken,
+            address: Environment.current.testNetApi,
+            name: "node-settings-default-test-node-name".localized,
+            network: .testnet
+        )
+    ]
     
     private let viewModel = NodeSettingsViewModel()
     
-    weak var delegate: NodeSettingsViewControllerDelegate?
-    
     private var canTapBarButton = true
     
-    private let mode: Mode
-    
-    private var latestActiveNode: Node?
-    
-    private lazy var nodeController: NodeController = {
-        guard let api = self.api else {
-            fatalError("API should be initialized.")
+    private lazy var lastActiveNetwork: API.BaseNetwork = {
+        guard let api = api else {
+            fatalError("API should be set.")
         }
-        let nodeController = NodeController(api: api)
-        return nodeController
+        return api.network
     }()
     
-    init(mode: Mode, configuration: ViewControllerConfiguration) {
-        self.mode = mode
-        super.init(configuration: configuration)
-        hidesBottomBarWhenPushed = true
-    }
-    
-    override func configureNavigationBarAppearance() {
-        let addBarButtonItem = ALGBarButtonItem(kind: .add) {
-            self.open(.addNode, by: .push)
+    private lazy var pushNotificationController: PushNotificationController = {
+        guard let api = api else {
+            fatalError("API should be set.")
         }
-        
-        switch mode {
-        case .checkHealth:
-            let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
-                self.closeScreen(by: .dismiss, animated: true) {
-                    self.delegate?.nodeSettingsViewControllerDidUpdateNode(self)
-                }
-            }
-            
-            leftBarButtonItems = [closeBarButtonItem]
-        default:
-            break
-        }
-        
-        rightBarButtonItems = [addBarButtonItem]
-    }
+        return PushNotificationController(api: api)
+    }()
     
     override func linkInteractors() {
         nodeSettingsView.collectionView.delegate = self
@@ -72,35 +54,10 @@ class NodeSettingsViewController: BaseViewController {
     override func configureAppearance() {
         super.configureAppearance()
         title = "node-settings-title".localized
-        fetchNodes()
     }
     
     override func prepareLayout() {
         setupNodeSettingsViewLayout()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        view.backgroundColor = .white
-        navigationController?.navigationBar.barTintColor = .white
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        fetchNodes()
-        
-        switch mode {
-        case .checkHealth:
-            self.displaySimpleAlertWith(title: "title-error".localized, message: "node-settings-health-problem-message".localized)
-        default:
-            return
-        }
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        navigationController?.navigationBar.barTintColor = SharedColors.warmWhite
     }
     
     override func didTapBackBarButton() -> Bool {
@@ -122,65 +79,21 @@ extension NodeSettingsViewController {
     }
 }
 
-extension NodeSettingsViewController {
-    private func fetchNodes() {
-        let sortDescriptor = NSSortDescriptor(key: #keyPath(Node.creationDate), ascending: true)
-        
-        Node.fetchAll(entity: Node.entityName, sortDescriptor: sortDescriptor) { response in
-            switch response {
-            case let .results(objects: objects):
-                guard let results = objects as? [Node] else {
-                    return
-                }
-                
-                self.nodes = results
-                self.latestActiveNode = self.activeNode()
-            default:
-                break
-            }
-            
-            self.nodeSettingsView.collectionView.reloadData()
-        }
-    }
-}
-
 extension NodeSettingsViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return nodes.count + 1
+        return 2
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if indexPath.item == 0 {
-            guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: ToggleCell.reusableIdentifier,
-                for: indexPath) as? ToggleCell else {
-                    fatalError("Index path is out of bounds")
-            }
-            
-            viewModel.configureDefaultNode(cell, enabled: session?.isDefaultNodeActive() ?? false, for: indexPath)
-            cell.contextView.toggle.isEnabled = numberOfActiveNodes() > 0
-            return cell
-        } else {
-            guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: SettingsToggleCell.reusableIdentifier,
-                for: indexPath) as? SettingsToggleCell else {
-                    fatalError("Index path is out of bounds")
-            }
-            
-            if indexPath.item < nodes.count + 1 {
-                let node = nodes[indexPath.item - 1]
-                viewModel.configureToggle(cell, with: node, for: indexPath)
-                viewModel.delegate = self
-                
-                if node.isActive {
-                    cell.contextView.toggle.isEnabled = (session?.isDefaultNodeActive() ?? false) || numberOfActiveNodes() > 1
-                } else {
-                    cell.contextView.toggle.isEnabled = true
-                }
-            }
-            
-            return cell
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: NodeSelectionCell.reusableIdentifier,
+            for: indexPath) as? NodeSelectionCell else {
+                fatalError("Index path is out of bounds")
         }
+        
+        let algorandNode = nodes[indexPath.item]
+        viewModel.configure(cell, with: algorandNode, activeNetwork: lastActiveNetwork)
+        return cell
     }
 }
 
@@ -190,162 +103,57 @@ extension NodeSettingsViewController: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        return CGSize(width: UIScreen.main.bounds.width, height: 80.0)
-    }
-}
-
-extension NodeSettingsViewController: NodeSettingsViewModelDelegate {
-    func nodeSettingsViewModel(_ viewModel: NodeSettingsViewModel, didToggleValue value: Bool, atIndexPath indexPath: IndexPath) {
-        checkNodesHealth(shouldUpdateNodeAt: indexPath, with: value)
+        return CGSize(width: UIScreen.main.bounds.width - 32.0, height: 64.0)
     }
     
-    func nodeSettingsViewModelDidTapEdit(_ viewModel: NodeSettingsViewModel, atIndexPath indexPath: IndexPath) {
-        guard indexPath.item < nodes.count + 1,
-            indexPath.item != 0 else {
-            return
-        }
-        let controller = open(.editNode(node: nodes[indexPath.item - 1]), by: .push) as? AddNodeViewController
-        controller?.delegate = self
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        changeNode(at: indexPath)
     }
 }
 
 extension NodeSettingsViewController {
-    private func checkNodesHealth(shouldUpdateNodeAt indexPath: IndexPath? = nil, with value: Bool? = nil) {
+    private func changeNode(at indexPath: IndexPath) {
         SVProgressHUD.show(withStatus: "title-loading".localized)
-        self.view.isUserInteractionEnabled = false
-        canTapBarButton = false
-        let accountManager = UIApplication.shared.accountManager
+        setActionsEnabled(false)
         
-        if let indexPath = indexPath,
-            let value = value {
-            guard indexPath.item < self.nodes.count + 1 else {
-                return
-            }
-            
-            if indexPath.item == 0 {
-                self.session?.setDefaultNodeActive(value)
-                
-                if value {
-                    self.nodes.forEach { $0.update(entity: Node.entityName, with: ["isActive": NSNumber(value: 0)]) }
-                }
-            } else {
-                let node = self.nodes[indexPath.item - 1]
-                node.update(entity: Node.entityName, with: ["isActive": NSNumber(value: value)])
-                
-                if value {
-                    self.session?.setDefaultNodeActive(false)
-                }
-            }
-        }
+        let selectedNode = nodes[indexPath.item]
         
-        nodeController.checkNodeHealth { isHealthy in
-            if isHealthy {
-                self.latestActiveNode = self.activeNode()
-                
-                accountManager?.fetchAllAccounts(isVerifiedAssetsIncluded: true) {
-                    SVProgressHUD.showSuccess(withStatus: "title-done-lowercased".localized)
-                    
-                    SVProgressHUD.dismiss(withDelay: 1.0) {
-                        self.canTapBarButton = true
-                        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
-                        
-                        self.view.isUserInteractionEnabled = true
-                        self.updateNodes()
-                    }
-                }
-            } else {
-                if let indexPath = indexPath {
-                    guard indexPath.item < self.nodes.count + 1 else {
-                        return
-                    }
-                    
-                    if let latestActiveNode = self.latestActiveNode {
-                        self.session?.setDefaultNodeActive(false)
-                        if let nodeIndex = self.nodes.firstIndex(of: latestActiveNode) {
-                            self.nodes[nodeIndex].update(entity: Node.entityName, with: ["isActive": NSNumber(value: 1)])
-                        }
-                    } else {
-                        self.nodes.forEach { $0.update(entity: Node.entityName, with: ["isActive": NSNumber(value: 0)]) }
-                        self.session?.setDefaultNodeActive(true)
-                    }
-                }
-                
-                SVProgressHUD.dismiss {
-                    self.canTapBarButton = false
-                    self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
-                    
-                    self.view.isUserInteractionEnabled = true
-                    self.updateNodes()
-                    
-                    self.displaySimpleAlertWith(
-                        title: "title-error".localized,
-                        message: "node-settings-none-active-node-error-description".localized
-                    )
-                }
-            }
-        }
-    }
-    
-    private func updateNodes() {
-        for cell in nodeSettingsView.collectionView.visibleCells {
-            if let defaultNodeCell = cell as? ToggleCell {
-                guard let indexPath = defaultNodeCell.contextView.indexPath else {
-                    continue
-                }
-                
-                viewModel.configureDefaultNode(defaultNodeCell, enabled: session?.isDefaultNodeActive() ?? false, for: indexPath)
-                defaultNodeCell.contextView.toggle.isEnabled = numberOfActiveNodes() > 0
-            } else if let nodeCell = cell as? SettingsToggleCell {
-                guard let indexPath = nodeCell.contextView.indexPath else {
-                    continue
-                }
-                
-                let node = nodes[indexPath.item - 1]
-                
-                viewModel.configureToggle(nodeCell, with: node, for: indexPath)
-                
-                if node.isActive {
-                    nodeCell.contextView.toggle.isEnabled = (session?.isDefaultNodeActive() ?? false) || numberOfActiveNodes() > 1
+        if pushNotificationController.token == nil {
+            switchNetwork(for: selectedNode, at: indexPath)
+        } else {
+            pushNotificationController.registerDevice { isCompleted in
+                if isCompleted {
+                    self.switchNetwork(for: selectedNode, at: indexPath)
                 } else {
-                    nodeCell.contextView.toggle.isEnabled = true
+                    SVProgressHUD.dismiss(withDelay: 1.0) {
+                        self.setActionsEnabled(true)
+                    }
                 }
             }
         }
     }
-}
-
-extension NodeSettingsViewController {
-    private func numberOfActiveNodes() -> Int {
-        return nodes.filter { node -> Bool in
-            node.isActive
-        }.count
+    
+    private func switchNetwork(for selectedNode: AlgorandNode, at indexPath: IndexPath) {
+        session?.authenticatedUser?.setDefaultNode(selectedNode)
+        lastActiveNetwork = selectedNode.network
+        DispatchQueue.main.async {
+            UIApplication.shared.rootViewController()?.setNetwork(to: selectedNode.network)
+            NotificationCenter.default.post(name: .NetworkChanged, object: self, userInfo: nil)
+        }
+        
+        UIApplication.shared.accountManager?.fetchAllAccounts(isVerifiedAssetsIncluded: true) {
+            SVProgressHUD.showSuccess(withStatus: "title-done".localized)
+            
+            SVProgressHUD.dismiss(withDelay: 1.0) {
+                self.setActionsEnabled(true)
+                self.viewModel.setSelected(at: indexPath, in: self.nodeSettingsView.collectionView)
+            }
+        }
     }
     
-    private func activeNode() -> Node? {
-        return nodes.first { node -> Bool in
-            node.isActive
-        }
-    }
-    
-    private func indexOfActiveNode() -> Int? {
-        guard let activeNode = activeNode() else {
-            return nil
-        }
-        return nodes.firstIndex(of: activeNode)
-    }
-}
-
-extension NodeSettingsViewController: AddNodeViewControllerDelegate {
-    func addNodeViewController(_ addNodeViewController: AddNodeViewController, didChangeNodeFor action: AddNodeViewController.ActionType) {
-        if action == .delete {
-            checkNodesHealth()
-        }
-    }
-}
-
-extension NodeSettingsViewController {
-    enum Mode {
-        case initialize
-        case checkHealth
+    private func setActionsEnabled(_ isEnabled: Bool) {
+        canTapBarButton = isEnabled
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = isEnabled
+        view.isUserInteractionEnabled = isEnabled
     }
 }

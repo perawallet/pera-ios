@@ -8,42 +8,16 @@
 
 import UIKit
 
-protocol FeedbackViewDelegate: class {
-    func feedbackViewDidTriggerCategorySelection(_ feedbackView: FeedbackView)
-    func feedbackViewDidTapSendButton(_ feedbackView: FeedbackView)
-    func feedbackView(_ feedbackView: FeedbackView, inputDidReturn inputView: BaseInputView)
-}
-
 class FeedbackView: BaseView {
-    
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let pickerInitialHeight: CGFloat = 0.0
-        let pickerImageTopInset: CGFloat = 23.0
-        let topInset: CGFloat = 10.0
-        let noteViewHeight: CGFloat = 232.0
-        let verticalInset: CGFloat = 15.0
-        let buttonHorizontalInset: CGFloat = MainButton.Constants.horizontalInset
-        let bottomInset: CGFloat = 57.0
-    }
     
     private let layout = Layout<LayoutConstants>()
     
     weak var delegate: FeedbackViewDelegate?
     
-    private lazy var categorySelectionGestureRecognizer = UITapGestureRecognizer(
-        target: self,
-        action: #selector(didTriggerCategorySelection(tapGestureRecognizer:))
-    )
-    
-    // MARK: Components
-    
     private(set) lazy var categorySelectionView: SelectionView = {
         let categorySelectionView = SelectionView()
-        categorySelectionView.backgroundColor = .clear
-        categorySelectionView.containerView.isUserInteractionEnabled = true
         categorySelectionView.leftExplanationLabel.text = "feedback-title-category".localized
         categorySelectionView.detailLabel.text = "feedback-subtitle-category".localized
-        categorySelectionView.detailLabel.textColor = SharedColors.softGray
         categorySelectionView.rightInputAccessoryButton.setImage(img("icon-picker-selection-down"), for: .normal)
         return categorySelectionView
     }()
@@ -54,39 +28,28 @@ class FeedbackView: BaseView {
         return pickerView
     }()
     
-    private(set) lazy var noteInputView: MultiLineInputField = {
-        let passPhraseInputView = MultiLineInputField()
-        passPhraseInputView.explanationLabel.text = "feedback-title-note".localized
-        passPhraseInputView.placeholderLabel.text = "feedback-subtitle-note".localized
-        passPhraseInputView.placeholderLabel.font = UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))
-        passPhraseInputView.inputTextView.font = UIFont.font(.overpass, withWeight: .semiBold(size: 14.0))
-        passPhraseInputView.nextButtonMode = .next
-        passPhraseInputView.inputTextView.autocorrectionType = .no
-        passPhraseInputView.inputTextView.autocapitalizationType = .none
-        return passPhraseInputView
-    }()
-    
     private(set) lazy var emailInputView: SingleLineInputField = {
         let accountNameInputView = SingleLineInputField()
         accountNameInputView.explanationLabel.text = "feedback-title-email".localized
-        accountNameInputView.inputTextField.attributedPlaceholder = NSAttributedString(
-            string: "feedback-subtitle-email".localized,
-            attributes: [NSAttributedString.Key.foregroundColor: SharedColors.softGray,
-                         NSAttributedString.Key.font: UIFont.font(.overpass, withWeight: .semiBold(size: 13.0))]
-        )
-        accountNameInputView.nextButtonMode = .submit
+        accountNameInputView.placeholderText = "feedback-subtitle-email".localized
+        accountNameInputView.nextButtonMode = .next
         accountNameInputView.inputTextField.autocorrectionType = .no
         accountNameInputView.inputTextField.autocapitalizationType = .none
         accountNameInputView.inputTextField.keyboardType = .emailAddress
         return accountNameInputView
     }()
     
-    private lazy var sendButton: MainButton = {
-        let button = MainButton(title: "title-send".localized)
-        return button
+    private(set) lazy var noteInputView: MultiLineInputField = {
+        let noteInputView = MultiLineInputField()
+        noteInputView.explanationLabel.text = "feedback-title-note".localized
+        noteInputView.placeholderLabel.text = "feedback-subtitle-note".localized
+        noteInputView.nextButtonMode = .submit
+        noteInputView.inputTextView.autocorrectionType = .no
+        noteInputView.inputTextView.autocapitalizationType = .none
+        return noteInputView
     }()
     
-    // MARK: Setup
+    private lazy var sendButton = MainButton(title: "feedback-title".localized)
     
     override func linkInteractors() {
         emailInputView.delegate = self
@@ -94,19 +57,42 @@ class FeedbackView: BaseView {
     
     override func setListeners() {
         sendButton.addTarget(self, action: #selector(notifyDelegateToSendButtonTapped), for: .touchUpInside)
-        categorySelectionView.containerView.addGestureRecognizer(categorySelectionGestureRecognizer)
+        categorySelectionView.addTarget(self, action: #selector(notifyDelegateToSelectCategory), for: .touchUpInside)
     }
-    
-    // MARK: Layout
     
     override func prepareLayout() {
         setupCategorySelectionViewLayout()
         setupCategoryPickerViewLayout()
-        setupNoteInputViewLayout()
         setupEmailInputViewLayout()
+        setupNoteInputViewLayout()
         setupSendButtonLayout()
     }
     
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        if !categorySelectionView.frame.contains(point) &&
+            !categoryPickerView.frame.contains(point) &&
+            !sendButton.frame.contains(point) &&
+            !categoryPickerView.isHidden {
+            delegate?.feedbackViewDidTriggerCategorySelection(self)
+        }
+        
+        return super.hitTest(point, with: event)
+    }
+}
+
+extension FeedbackView {
+    @objc
+    private func notifyDelegateToSelectCategory() {
+        delegate?.feedbackViewDidTriggerCategorySelection(self)
+    }
+    
+    @objc
+    private func notifyDelegateToSendButtonTapped() {
+        delegate?.feedbackViewDidTapSendButton(self)
+    }
+}
+
+extension FeedbackView {
     private func setupCategorySelectionViewLayout() {
         addSubview(categorySelectionView)
         
@@ -126,22 +112,22 @@ class FeedbackView: BaseView {
         }
     }
     
-    private func setupNoteInputViewLayout() {
-        addSubview(noteInputView)
-        
-        noteInputView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.top.equalTo(categoryPickerView.snp.bottom).offset(layout.current.verticalInset)
-            make.height.equalTo(layout.current.noteViewHeight)
-        }
-    }
-    
     private func setupEmailInputViewLayout() {
         addSubview(emailInputView)
         
         emailInputView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.top.equalTo(noteInputView.snp.bottom).offset(layout.current.verticalInset)
+            make.top.equalTo(categoryPickerView.snp.bottom).offset(layout.current.verticalInset)
+        }
+    }
+    
+    private func setupNoteInputViewLayout() {
+        addSubview(noteInputView)
+        
+        noteInputView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(emailInputView.snp.bottom).offset(layout.current.verticalInset)
+            make.height.equalTo(layout.current.noteViewHeight)
         }
     }
     
@@ -150,39 +136,32 @@ class FeedbackView: BaseView {
         
         sendButton.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
-            make.top.greaterThanOrEqualTo(emailInputView.snp.bottom).offset(layout.current.verticalInset)
-            make.bottom.equalToSuperview().inset(layout.current.bottomInset)
+            make.top.equalTo(noteInputView.snp.bottom).offset(layout.current.buttonTopInset)
+            make.bottom.lessThanOrEqualToSuperview().inset(layout.current.bottomInset)
         }
-    }
-    
-    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-        if !categorySelectionView.frame.contains(point) &&
-            !categoryPickerView.frame.contains(point) &&
-            !sendButton.frame.contains(point) &&
-            !categoryPickerView.isHidden {
-            delegate?.feedbackViewDidTriggerCategorySelection(self)
-        }
-        
-        return super.hitTest(point, with: event)
-    }
-    
-    // MARK: Actions
-    
-    @objc
-    private func didTriggerCategorySelection(tapGestureRecognizer: UITapGestureRecognizer) {
-        delegate?.feedbackViewDidTriggerCategorySelection(self)
-    }
-    
-    @objc
-    private func notifyDelegateToSendButtonTapped() {
-        delegate?.feedbackViewDidTapSendButton(self)
     }
 }
-
-// MARK: InputViewDelegate
 
 extension FeedbackView: InputViewDelegate {
     func inputViewDidReturn(inputView: BaseInputView) {
         delegate?.feedbackView(self, inputDidReturn: inputView)
     }
+}
+
+extension FeedbackView {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let pickerInitialHeight: CGFloat = 0.0
+        let topInset: CGFloat = 12.0
+        let noteViewHeight: CGFloat = 136.0
+        let verticalInset: CGFloat = 20.0
+        let buttonHorizontalInset: CGFloat = 20.0
+        let bottomInset: CGFloat = 30.0
+        let buttonTopInset: CGFloat = 28.0
+    }
+}
+
+protocol FeedbackViewDelegate: class {
+    func feedbackViewDidTriggerCategorySelection(_ feedbackView: FeedbackView)
+    func feedbackViewDidTapSendButton(_ feedbackView: FeedbackView)
+    func feedbackView(_ feedbackView: FeedbackView, inputDidReturn inputView: BaseInputView)
 }

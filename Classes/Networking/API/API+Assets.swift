@@ -28,7 +28,8 @@ extension API {
     ) -> EndpointOperatable {
         return Endpoint(path: Path("/api/assets/"))
             .httpMethod(.get)
-            .base(Environment.current.mobileApi)
+            .base(mobileApiBase)
+            .httpHeaders(mobileApiHeaders())
             .query(draft)
             .resultHandler(handler)
             .buildAndSend(self)
@@ -38,7 +39,8 @@ extension API {
     func sendAssetSupportRequest(with draft: AssetSupportDraft) -> EndpointOperatable {
         return Endpoint(path: Path("/api/asset-requests/"))
             .httpMethod(.post)
-            .base(Environment.current.mobileApi)
+            .base(mobileApiBase)
+            .httpHeaders(mobileApiHeaders())
             .httpBody(draft)
             .buildAndSend(self)
     }
@@ -49,7 +51,8 @@ extension API {
     ) -> EndpointOperatable {
         return Endpoint(path: Path("/api/verified-assets/"))
             .httpMethod(.get)
-            .base(Environment.current.mobileApi)
+            .base(mobileApiBase)
+            .httpHeaders(mobileApiHeaders())
             .query(LimitQuery())
             .resultHandler(handler)
             .buildAndSend(self)

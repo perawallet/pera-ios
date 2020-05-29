@@ -10,57 +10,39 @@ import UIKit
 
 class NodeSettingsView: BaseView {
     
-    struct LayoutConstants: AdaptiveLayoutConstants {
-        static let headerHeight: CGFloat = 240.0
-    }
-    
     private let layout = Layout<LayoutConstants>()
     
-    // MARK: Components
-    
-    private(set) lazy var headerView: NodeSettingsHeaderView = {
-        let view = NodeSettingsHeaderView()
-        return view
-    }()
+    private lazy var headerView = NodeSettingsHeaderView()
     
     private(set) lazy var collectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .vertical
-        flowLayout.minimumLineSpacing = 0.0
+        flowLayout.minimumLineSpacing = 12.0
         flowLayout.minimumInteritemSpacing = 0.0
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = .white
-        collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: self.safeAreaBottom, right: 0)
-        
-        collectionView.register(SettingsToggleCell.self, forCellWithReuseIdentifier: SettingsToggleCell.reusableIdentifier)
-        collectionView.register(ToggleCell.self, forCellWithReuseIdentifier: ToggleCell.reusableIdentifier)
-        
+        collectionView.backgroundColor = SharedColors.primaryBackground
+        collectionView.contentInset = .zero
+        collectionView.register(NodeSelectionCell.self, forCellWithReuseIdentifier: NodeSelectionCell.reusableIdentifier)
         return collectionView
     }()
-    
-    // MARK: Setup
-    
-    override func configureAppearance() {
-        backgroundColor = .white
-    }
-    
-    // MARK: Layout
     
     override func prepareLayout() {
         setupHeaderViewLayout()
         setupCollectionViewLayout()
     }
-    
+}
+
+extension NodeSettingsView {
     private func setupHeaderViewLayout() {
         addSubview(headerView)
         
         headerView.snp.makeConstraints { make in
             make.top.equalTo(safeAreaLayoutGuide.snp.top)
             make.leading.trailing.equalToSuperview()
-            make.height.equalTo(LayoutConstants.headerHeight)
+            make.height.equalTo(layout.current.headerHeight)
         }
     }
     
@@ -71,5 +53,11 @@ class NodeSettingsView: BaseView {
             make.top.equalTo(headerView.snp.bottom)
             make.leading.bottom.trailing.equalToSuperview()
         }
+    }
+}
+
+extension NodeSettingsView {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let headerHeight: CGFloat = 210.0
     }
 }

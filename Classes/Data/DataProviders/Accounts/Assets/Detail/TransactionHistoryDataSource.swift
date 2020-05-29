@@ -411,4 +411,8 @@ extension TransactionHistoryDataSource {
         fetchRequest?.cancel()
         transactions.removeAll()
     }
+    
+    var isEmpty: Bool {
+        transactions.isEmpty
+    }
 }

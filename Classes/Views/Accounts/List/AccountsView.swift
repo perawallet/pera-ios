@@ -14,7 +14,11 @@ class AccountsView: BaseView {
     
     weak var delegate: AccountsViewDelegate?
     
-    private lazy var accountsHeaderView = AccountsHeaderView()
+    private lazy var accountsHeaderView: MainHeaderView = {
+        let view = MainHeaderView()
+        view.setTitle("accounts-title".localized)
+        return view
+    }()
     
     private lazy var contentStateView = ContentStateView()
     
@@ -27,7 +31,7 @@ class AccountsView: BaseView {
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = SharedColors.primaryBackground
-        collectionView.contentInset = UIEdgeInsets(top: 0.0, left: 20.0, bottom: 0.0, right: 20.0)
+        collectionView.contentInset = UIEdgeInsets(top: 0.0, left: 20.0, bottom: 20.0, right: 20.0)
         
         collectionView.register(AlgoAssetCell.self, forCellWithReuseIdentifier: AlgoAssetCell.reusableIdentifier)
         collectionView.register(AssetCell.self, forCellWithReuseIdentifier: AssetCell.reusableIdentifier)
@@ -62,7 +66,7 @@ extension AccountsView {
         
         accountsHeaderView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.top.equalToSuperview().inset(layout.current.headerTopInset)
+            make.top.equalToSuperview()
         }
     }
     
@@ -78,12 +82,23 @@ extension AccountsView {
     }
 }
 
-extension AccountsView: AccountsHeaderViewDelegate {
-    func accountsHeaderViewDidTapQRButton(_ accountsHeaderView: AccountsHeaderView) {
+extension AccountsView {
+    func setHeaderButtonsHidden(_ hidden: Bool) {
+        accountsHeaderView.setQRButtonHidden(hidden)
+        accountsHeaderView.setAddButtonHidden(hidden)
+    }
+    
+    func setTestNetLabelHidden(_ hidden: Bool) {
+        accountsHeaderView.setTestNetLabelHidden(hidden)
+    }
+}
+
+extension AccountsView: MainHeaderViewDelegate {
+    func mainHeaderViewDidTapQRButton(_ mainHeaderView: MainHeaderView) {
         delegate?.accountsViewDidTapQRButton(self)
     }
     
-    func accountsHeaderViewDidTapAddButton(_ accountsHeaderView: AccountsHeaderView) {
+    func mainHeaderViewDidTapAddButton(_ mainHeaderView: MainHeaderView) {
         delegate?.accountsViewDidTapAddButton(self)
     }
 }
@@ -91,7 +106,6 @@ extension AccountsView: AccountsHeaderViewDelegate {
 extension AccountsView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let listTopInset: CGFloat = 12.0
-        let headerTopInset: CGFloat = 44.0
     }
 }
 

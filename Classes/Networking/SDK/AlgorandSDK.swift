@@ -50,7 +50,7 @@ extension AlgorandSDK {
             draft.amount,
             draft.transactionParams.lastRound,
             draft.transactionParams.lastRound + 1000, // Need to add 1000 as last round
-            nil,
+            draft.note,
             draft.isMaxTransaction ? toAddress : nil,
             nil,
             draft.transactionParams.genesisHashData,
@@ -69,7 +69,7 @@ extension AlgorandSDK {
             draft.transactionParams.fee,
             draft.transactionParams.lastRound,
             draft.transactionParams.lastRound + 1000, // Need to add 1000 as last round
-            nil,
+            draft.note,
             nil,
             draft.transactionParams.genesisHashData?.base64EncodedString(),
             draft.assetIndex,

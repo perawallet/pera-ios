@@ -82,12 +82,16 @@ extension TransactionContactInformationView {
         contactDisplayView.setName(name)
     }
     
-    func setQRAction() {
-        contactDisplayView.setQRAction()
+    func removeContactAction() {
+        contactDisplayView.removeAction()
     }
     
-    func setAddContactAction() {
-        contactDisplayView.setAddContactAction()
+    func removeContactImage() {
+        contactDisplayView.removeImage()
+    }
+    
+    func setContactButtonImage(_ image: UIImage?) {
+        contactDisplayView.setButtonImage(image)
     }
     
     func setContactImage(hidden: Bool) {

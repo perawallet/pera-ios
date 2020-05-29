@@ -58,16 +58,7 @@ class ChoosePasswordViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         checkLoginFlow()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationController?.navigationBar.barTintColor = .white
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        navigationController?.navigationBar.barTintColor = SharedColors.warmWhite
+        setSecondaryBackgroundColor()
     }
     
     override func configureNavigationBarAppearance() {
@@ -148,7 +139,7 @@ extension ChoosePasswordViewController {
                 UIApplication.shared.rootViewController()?.tabBarViewController.route = self.route
             }
             
-            SVProgressHUD.showSuccess(withStatus: "title-done-lowercased".localized)
+            SVProgressHUD.showSuccess(withStatus: "title-done".localized)
             SVProgressHUD.dismiss(withDelay: 1.0) {
                 DispatchQueue.main.async {
                     self.dismiss(animated: false) {
