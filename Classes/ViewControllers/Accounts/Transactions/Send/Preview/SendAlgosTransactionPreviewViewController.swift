@@ -9,7 +9,7 @@
 import UIKit
 import SVProgressHUD
 
-class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewController {
+class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewController, TestNetTitleDisplayable {
     
     private lazy var bottomModalPresenter = CardModalPresenter(
         config: ModalConfiguration(
@@ -19,23 +19,32 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
         initialModalSize: .custom(CGSize(width: view.frame.width, height: 422.0))
     )
     
-    private let viewModel = SendAlgosTransactionPreviewViewModel()
+    private let viewModel: SendAlgosTransactionPreviewViewModel
+    
+    override var filterOption: SelectAssetViewController.FilterOption {
+        return .algos
+    }
+    
+    override init(
+        account: Account?,
+        assetReceiverState: AssetReceiverState,
+        isSenderEditable: Bool,
+        configuration: ViewControllerConfiguration
+    ) {
+        viewModel = SendAlgosTransactionPreviewViewModel(isAccountSelectionEnabled: isSenderEditable)
+        super.init(
+            account: account,
+            assetReceiverState: assetReceiverState,
+            isSenderEditable: isSenderEditable,
+            configuration: configuration
+        )
+    }
     
     override func configureAppearance() {
         super.configureAppearance()
         viewModel.configure(sendTransactionPreviewView, with: selectedAccount)
         configureTransactionReceiver()
-        
-        guard let isTestNet = api?.isTestNet else {
-            title = "send-algos-title".localized
-            return
-        }
-        
-        if isTestNet {
-            navigationItem.titleView = TestNetTitleView(title: "send-algos-title".localized)
-        } else {
-            title = "send-algos-title".localized
-        }
+        displayTestNetTitleView(with: "send-algos-title".localized)
     }
     
     override func presentAccountList(accountSelectionState: AccountSelectionState) {
@@ -51,6 +60,12 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
         ) as? AccountListViewController
     
         accountListViewController?.delegate = self
+    }
+    
+    override func configure(forSelected account: Account, with assetDetail: AssetDetail?) {
+        selectedAccount = account
+        viewModel.configure(sendTransactionPreviewView, with: selectedAccount)
+        sendTransactionPreviewView.setAssetSelectionHidden(true)
     }
     
     override func displayTransactionPreview() {
@@ -121,13 +136,14 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
             .sendAlgosTransaction(
                 algosTransactionSendDraft: algosTransactionDraft,
                 transactionController: transactionController,
-                receiver: assetReceiverState
+                receiver: assetReceiverState,
+                isSenderEditable: isSenderEditable
             ),
             by: .push
         )
     }
     
-    override func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, then handler: EmptyHandler?) {
+    override func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, completionHandler: EmptyHandler?) {
         guard let qrAddress = qrText.address else {
             return
         }
@@ -137,7 +153,7 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
         }
         assetReceiverState = .address(address: qrAddress, amount: nil)
         
-        if let handler = handler {
+        if let handler = completionHandler {
             handler()
         }
     }
@@ -262,10 +278,10 @@ extension SendAlgosTransactionPreviewViewController {
                 }
                 
                 switch accountResponse {
-                case let .failure(error):
+                case .failure:
                     self.dismissProgressIfNeeded()
                     
-                    self.displaySimpleAlertWith(title: "title-error".localized, message: error.localizedDescription)
+                    self.displaySimpleAlertWith(title: "title-error".localized, message: "title-internet-connection".localized)
                 case let .success(account):
                     if account.amount == 0 {
                         self.dismissProgressIfNeeded()

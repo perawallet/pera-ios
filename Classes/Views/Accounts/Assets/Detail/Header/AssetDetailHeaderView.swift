@@ -83,7 +83,10 @@ class AssetDetailHeaderView: BaseView {
     }()
     
     private lazy var sendButton: AlignedButton = {
-        let positions: AlignedButton.StylePositionAdjustment = (image: CGPoint(x: 40.0, y: 0.0), title: CGPoint(x: 0.0, y: 0.0))
+        let positions: AlignedButton.StylePositionAdjustment = (
+            image: CGPoint(x: 40.0 * horizontalScale, y: 0.0),
+            title: CGPoint(x: 0.0, y: 0.0)
+        )
         
         let button = AlignedButton(style: .imageLeftTitleCentered(positions))
         button.setImage(img("icon-arrow-up"), for: .normal)
@@ -97,7 +100,10 @@ class AssetDetailHeaderView: BaseView {
     }()
     
     private lazy var requestButton: AlignedButton = {
-        let positions: AlignedButton.StylePositionAdjustment = (image: CGPoint(x: 30.0, y: 0.0), title: CGPoint(x: 0.0, y: 0.0))
+        let positions: AlignedButton.StylePositionAdjustment = (
+            image: CGPoint(x: 30.0 * horizontalScale, y: 0.0),
+            title: CGPoint(x: 0.0, y: 0.0)
+        )
         
         let button = AlignedButton(style: .imageLeftTitleCentered(positions))
         button.setImage(img("icon-arrow-down"), for: .normal)
@@ -121,7 +127,7 @@ class AssetDetailHeaderView: BaseView {
     override func configureAppearance() {
         backgroundColor = SharedColors.secondaryBackground
         algosImageView.contentMode = .scaleAspectFit
-        dollarValueImageView.contentMode = .scaleAspectFit
+        dollarValueImageView.contentMode = .center
         dollarAmountLabel.isHidden = true
         layer.cornerRadius = 12.0
         applyMediumShadow()
@@ -231,7 +237,6 @@ extension AssetDetailHeaderView {
             make.top.equalTo(algosAmountLabel.snp.bottom).offset(layout.current.defaultInset)
             make.width.equalTo(layout.current.buttonWidth)
             make.height.equalTo(layout.current.buttonHeight)
-            make.bottom.equalToSuperview().inset(layout.current.defaultInset).priority(.medium)
         }
     }
     
@@ -251,7 +256,7 @@ extension AssetDetailHeaderView {
         
         rewardTotalAmountView.snp.makeConstraints { make in
             make.top.equalTo(sendButton.snp.bottom).offset(layout.current.defaultInset)
-            make.leading.trailing.bottom.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
         }
     }
 }

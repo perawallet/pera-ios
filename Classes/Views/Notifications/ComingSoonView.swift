@@ -1,5 +1,5 @@
 //
-//  NotificationsComingSoonView.swift
+//  ComingSoonView.swift
 //  algorand
 //
 //  Created by Göktuğ Berk Ulu on 1.05.2020.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class NotificationsComingSoonView: BaseView {
+class ComingSoonView: BaseView {
     
     private let layout = Layout<LayoutConstants>()
     
@@ -24,7 +24,6 @@ class NotificationsComingSoonView: BaseView {
         UILabel()
             .withFont(UIFont.font(withWeight: .bold(size: 28.0)))
             .withTextColor(SharedColors.primaryText)
-            .withText("notifications-title".localized)
             .withLine(.single)
             .withAlignment(.center)
     }()
@@ -33,7 +32,6 @@ class NotificationsComingSoonView: BaseView {
         UILabel()
             .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
             .withTextColor(SharedColors.gray800)
-            .withText("notifications-coming-soon-detail-text".localized)
             .withLine(.contained)
             .withAlignment(.center)
     }()
@@ -49,7 +47,7 @@ class NotificationsComingSoonView: BaseView {
     }
 }
 
-extension NotificationsComingSoonView {
+extension ComingSoonView {
     private func setupTitleLabelLayout() {
         addSubview(titleLabel)
         
@@ -79,7 +77,17 @@ extension NotificationsComingSoonView {
     }
 }
 
-extension NotificationsComingSoonView {
+extension ComingSoonView {
+    func setTitle(_ title: String) {
+        titleLabel.text = title
+    }
+    
+    func setDetail(_ detail: String) {
+        detailLabel.text = detail
+    }
+}
+
+extension ComingSoonView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let buttonBottomInset: CGFloat = -20.0
         let comingSoonWidth: CGFloat = 114.0

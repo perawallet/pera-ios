@@ -14,13 +14,13 @@ class QRCreationView: BaseView {
     
     weak var delegate: QRCreationViewDelegate?
     
-    private lazy var qrView = QRView(qrText: QRText(mode: self.mode, address: self.address, mnemonic: self.mnemonic))
+    private lazy var qrView = QRView(qrText: QRText(mode: draft.mode, address: draft.address, mnemonic: draft.mnemonic))
     
     private lazy var shareButton: UIButton = {
         UIButton(type: .custom)
             .withBackgroundImage(img("bg-main-button-small"))
             .withImage(img("icon-share-white"))
-            .withTitle("title-share".localized)
+            .withTitle("title-share-qr".localized)
             .withTitleColor(SharedColors.primaryButtonTitle)
             .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
             .withImageEdgeInsets(UIEdgeInsets(top: 0, left: -10.0, bottom: 0, right: 0))
@@ -29,18 +29,10 @@ class QRCreationView: BaseView {
     
     private lazy var qrSelectableLabel = QRSelectableLabel()
     
-    private let address: String
-    private let mode: QRMode
-    private let mnemonic: String?
+    private let draft: QRCreationDraft
     
-    private var shouldDisplayQRSelectableLabel: Bool {
-        return mode == .address
-    }
-    
-    init(address: String, mode: QRMode, mnemonic: String? = nil) {
-        self.address = address
-        self.mode = mode
-        self.mnemonic = mnemonic
+    init(draft: QRCreationDraft) {
+        self.draft = draft
         super.init(frame: .zero)
     }
     
@@ -68,7 +60,7 @@ class QRCreationView: BaseView {
 extension QRCreationView {
     @objc
     private func notifyDelegateToShareQR() {
-        delegate?.qrCreationViewDidTapShareButton(self)
+        delegate?.qrCreationViewDidShare(self)
     }
 }
 
@@ -91,14 +83,14 @@ extension QRCreationView {
             make.centerX.equalToSuperview()
             make.width.equalTo(layout.current.shareButtonWidth)
             
-            if shouldDisplayQRSelectableLabel {
+            if draft.isSelectable {
                 make.bottom.lessThanOrEqualToSuperview().inset(layout.current.verticalInset)
             }
         }
     }
     
     private func setupQRSelectableLabelLayout() {
-        if !shouldDisplayQRSelectableLabel {
+        if !draft.isSelectable {
             return
         }
         
@@ -140,6 +132,6 @@ extension QRCreationView {
 }
 
 protocol QRCreationViewDelegate: class {
-    func qrCreationViewDidTapShareButton(_ qrCreationView: QRCreationView)
+    func qrCreationViewDidShare(_ qrCreationView: QRCreationView)
     func qrCreationView(_ qrCreationView: QRCreationView, didSelect text: String)
 }

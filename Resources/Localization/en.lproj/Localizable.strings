@@ -18,26 +18,24 @@
 "title-proceed" = "Proceed";
 "title-approve" = "Approve";
 "title-go-home" = "Go To Home";
-"title-share" = "Share";
-"title-get-started" = "GET STARTED";
+"title-share" = "Share QR";
+"title-share-qr" = "Share QR";
 "title-go-to-settings" = "Go To Settings";
 "title-error" = "Error";
 "title-save" = "Save";
 "title-close" = "Close";
 "title-send" = "Send";
 "title-request" = "Request";
-"title-select" = "SELECT RECIPIENT";
 "title-preview" = "Preview";
 "title-done" = "Done";
 "title-loading" = "Loading";
 "default-error-message" = "An error occured.";
-"title-send-algos-uppercase" = "SEND ALGOS";
 "title-max" = "MAX";
 "title-internet-connection" = "The internet connection appears to be offline.";
 "title-unknown" = "Unnamed";
 "title-preview-and-sign-with-ledger-title" = "Preview and Sign With Ledger";
 "title-qr-share" = "Share QR";
-"title-keep" = "Keep";
+"title-keep" = "Keep it";
 "title-edit" = "Edit";
 "title-testnet" = "TESTNET";
 "title-account" = "Account";
@@ -45,9 +43,9 @@
 // MARK: Introduction
 "introduction-recover-title" = "Recover From Passphrase";
 "introduction-create-title" = "Create Account";
-"introduction-title-text" = "Manage all assets\nfrom one account";
+"introduction-title-text" = "Manage all assets\nfrom one place";
 "introduction-add-new-text" = "Add new account";
-"introduction-add-new-title-text" = "Manage all assets from one account";
+"introduction-add-new-title-text" = "Manage all assets from one place";
 "introduction-has-account" = "Already have an account?";
 "introduction-title-pair-ledger" = "Pair Ledger Account";
 
@@ -72,7 +70,7 @@
 "local-authentication-no" = "No, i’m fine";
 
 // MARK: Passphrase Back Up
-"new-account-title" = "Back up passphrase";
+"new-account-title" = "Back up Passphrase";
 "back-up-phrase-title" = "Back up this Passphrase";
 "back-up-phrase-warning" = "In order to access this account if you lose this device copy or print this phrase and keep it someplace safe.";
 "back-up-phrase-button-title" = "Verify Recovery Passphrase";
@@ -135,6 +133,7 @@
 "accounts-add-account" = "+ ADD ACCOUNT";
 "accounts-title" = "Accounts";
 "accounts-add-new" = "Add new asset";
+"accounts-qr-tooltip" = "Your account's QR Address is here";
 
 // MARK: Asset
 "asset-title" = "Asset";
@@ -147,7 +146,7 @@
 "asset-remove-confirmation-title" = "Removing Asset";
 "asset-transfer-balance" = "Transfer Balance";
 "title-remove-assets" = "Remove Assets";
-"title-add-asset" = "Add Asset";
+"title-add-asset" = "Add New Asset";
 "asset-add-warning" = "Adding an asset requires sending a transaction with a minimum transaction fee. This will appear on your transaction history.";
 "asset-support-error" = "Unfortunately, this account has not added this asset. Please instruct the account owner to add the asset, and then try again.";
 "asset-support-title" = "Account does not accept this asset";
@@ -184,10 +183,10 @@
 "send-receiving-algos-select" = "Select Receiving Account";
 "send-select-asset" = "Select Asset";
 "send-choose-asset" = "Choose asset";
-"send-algos-to" = "To:";
+"send-algos-to" = "To";
 "send-algos-fee" = "Fee:";
 "send-algos-balance-title" = "Balance:";
-"send-algos-amount" = "Amount:";
+"send-algos-amount" = "Amount";
 "send-algos-transaction-id" = "Transaction ID:";
 "send-algos-more" = "SEND MORE";
 "send-algos-sent-title" = "Algos Sent!";
@@ -328,6 +327,8 @@
 "transaction-detail-round" = "Round";
 "transaction-detail-id" = "Transaction ID";
 "transaction-detail-note" = "Note";
+"transaction-detail-close-to" = "Close To";
+"transaction-detail-close-amount" = "Close Amount";
 
 // MARK: Feedback
 "feedback-title" = "Send Feedback";

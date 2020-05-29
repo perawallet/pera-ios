@@ -67,7 +67,8 @@ extension OptionsViewController {
         view.addSubview(optionsView)
         
         optionsView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.leading.trailing.top.equalToSuperview()
+            make.bottom.safeEqualToBottom(of: self)
         }
     }
 }
@@ -109,16 +110,17 @@ extension OptionsViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let selectedOption = options[indexPath.item]
         
-        dismissScreen()
-        
         switch selectedOption {
         case .removeAsset:
+            dismissScreen()
             delegate?.optionsViewControllerDidRemoveAsset(self)
         case .passphrase:
+            dismissScreen()
             delegate?.optionsViewControllerDidViewPassphrase(self)
         case .edit:
-            delegate?.optionsViewControllerDidEditAccountName(self)
+            open(.editAccount(account: account), by: .push)
         case .removeAccount:
+            dismissScreen()
             delegate?.optionsViewControllerDidRemoveAccount(self)
         }
     }
@@ -132,7 +134,7 @@ extension OptionsViewController {
         case removeAccount = 3
         
         static var optionsWithoutRemoveAsset: [Options] {
-            return [.edit, .removeAccount]
+            return [.passphrase, .edit, .removeAccount]
         }
 
         static var optionsWithoutPassphrase: [Options] {
@@ -151,13 +153,12 @@ extension OptionsViewController {
 
 extension OptionsViewController {
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let cellHeight: CGFloat = 48.0
+        let cellHeight: CGFloat = 56.0
     }
 }
 
 protocol OptionsViewControllerDelegate: class {
     func optionsViewControllerDidRemoveAsset(_ optionsViewController: OptionsViewController)
     func optionsViewControllerDidViewPassphrase(_ optionsViewController: OptionsViewController)
-    func optionsViewControllerDidEditAccountName(_ optionsViewController: OptionsViewController)
     func optionsViewControllerDidRemoveAccount(_ optionsViewController: OptionsViewController)
 }

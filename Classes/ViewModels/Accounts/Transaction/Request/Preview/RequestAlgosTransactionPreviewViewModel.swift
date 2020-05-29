@@ -10,16 +10,22 @@ import Foundation
 
 class RequestAlgosTransactionPreviewViewModel {
     
-    private let account: Account
+    private var account: Account
+    private let isAccountSelectionEnabled: Bool
     
-    init(account: Account) {
+    init(account: Account, isAccountSelectionEnabled: Bool) {
         self.account = account
+        self.isAccountSelectionEnabled = isAccountSelectionEnabled
     }
     
     func configure(_ view: RequestTransactionPreviewView) {
-        view.transactionAccountInformationView.setDisabled()
+        if isAccountSelectionEnabled {
+            view.transactionAccountInformationView.setEnabled()
+        } else {
+            view.transactionAccountInformationView.setDisabled()
+        }
         
-        if account.type == .ledger {
+        if account.type.isLedger() {
             view.transactionAccountInformationView.setAccountImage(img("icon-account-type-ledger"))
         } else {
             view.transactionAccountInformationView.setAccountImage(img("icon-account-type-standard"))
@@ -30,5 +36,11 @@ class RequestAlgosTransactionPreviewViewModel {
         view.transactionAccountInformationView.setAssetName("asset-algos-title".localized)
         view.transactionAccountInformationView.setAssetVerified(true)
         view.transactionAccountInformationView.removeAssetId()
+    }
+}
+
+extension RequestAlgosTransactionPreviewViewModel {
+    func updateAccount(_ account: Account) {
+        self.account = account
     }
 }

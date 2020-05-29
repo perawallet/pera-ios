@@ -26,6 +26,7 @@ extension AssetDetailViewModel {
     func configure(_ view: AssetDetailHeaderView, with account: Account, and assetDetail: AssetDetail?) {
         if let assetDetail = assetDetail {
             view.dollarValueImageView.isHidden = true
+            view.algosImageView.removeFromSuperview()
             view.verifiedImageView.isHidden = !assetDetail.isVerified
             view.rewardTotalAmountView.removeFromSuperview()
             view.assetNameLabel.attributedText = assetDetail.assetDisplayName(
@@ -48,6 +49,17 @@ extension AssetDetailViewModel {
             view.verifiedImageView.isHidden = false
             let totalRewards: UInt64 = (account.pendingRewards ?? 0)
             view.rewardTotalAmountView.setReward(amount: totalRewards.toAlgos.toDecimalStringForLabel ?? "0.00")
+        }
+    }
+    
+    func configure(_ view: AssetDetailTitleView, with account: Account, and assetDetail: AssetDetail?) {
+        if let assetDetail = assetDetail {
+            guard let amount = account.amount(for: assetDetail) else {
+                return
+            }
+            view.setDetail("\(amount.toFractionStringForLabel(fraction: assetDetail.fractionDecimals) ?? "") \(assetDetail.getAssetCode())")
+        } else {
+            view.setDetail("\(account.amount.toAlgos.toDecimalStringForLabel ?? "") ALGO")
         }
     }
 }
@@ -112,10 +124,10 @@ extension AssetDetailViewModel {
             
             if payment.toAddress == account.address {
                 configure(view, with: contact, and: transaction.from)
-                view.transactionAmountView.mode = .positive(amount: payment.amountForTransaction().toAlgos)
+                view.transactionAmountView.mode = .positive(amount: payment.amountForTransaction(includesCloseAmount: true).toAlgos)
             } else {
                 configure(view, with: contact, and: payment.toAddress)
-                view.transactionAmountView.mode = .negative(amount: payment.amountForTransaction().toAlgos)
+                view.transactionAmountView.mode = .negative(amount: payment.amountForTransaction(includesCloseAmount: true).toAlgos)
             }
         }
         
@@ -134,7 +146,7 @@ extension AssetDetailViewModel {
     }
     
     func configure(_ cell: RewardCell, with reward: Reward) {
-        cell.contextView.transactionAmountView.amountLabel.text = reward.amount.toAlgos.toDecimalStringForLabel
+        cell.contextView.transactionAmountView.mode = .normal(amount: reward.amount.toAlgos)
     }
 }
 

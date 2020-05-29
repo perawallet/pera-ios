@@ -29,10 +29,7 @@ class ContactInfoViewController: BaseScrollViewController {
     
     init(contact: Contact, configuration: ViewControllerConfiguration) {
         self.contact = contact
-        
         super.init(configuration: configuration)
-        
-        hidesBottomBarWhenPushed = true
     }
     
     override func configureNavigationBarAppearance() {
@@ -61,6 +58,15 @@ class ContactInfoViewController: BaseScrollViewController {
         contactInfoView.delegate = self
         contactInfoView.assetsCollectionView.delegate = self
         contactInfoView.assetsCollectionView.dataSource = self
+    }
+    
+    override func setListeners() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didContactDeleted(notification:)),
+            name: .ContactDeletion,
+            object: nil
+        )
     }
     
     override func prepareLayout() {
@@ -153,6 +159,11 @@ extension ContactInfoViewController {
         
         contactInfoView.assetsCollectionView.reloadData()
     }
+    
+    @objc
+    private func didContactDeleted(notification: Notification) {
+        closeScreen(by: .pop, animated: false)
+    }
 }
 
 extension ContactInfoViewController: UICollectionViewDataSource {
@@ -230,8 +241,9 @@ extension ContactInfoViewController: ContactInfoViewDelegate {
         guard let address = contact.address else {
             return
         }
-        
-        open(.qrGenerator(title: contact.name, address: address, mnemonic: nil, mode: .address), by: .present)
+
+        let draft = QRCreationDraft(address: address, mode: .address)
+        open(.qrGenerator(title: contact.name, draft: draft), by: .present)
     }
     
     func contactInfoViewDidTapShareButton(_ contactInfoView: ContactInfoView) {
@@ -255,12 +267,13 @@ extension ContactInfoViewController: AccountListViewControllerDelegate {
                     account: account,
                     receiver: .contact(contact),
                     assetDetail: assetDetail,
+                    isSenderEditable: false,
                     isMaxTransaction: false
                 ),
                 by: .push
             )
         } else {
-            open(.sendAlgosTransactionPreview(account: account, receiver: .contact(contact)), by: .push)
+            open(.sendAlgosTransactionPreview(account: account, receiver: .contact(contact), isSenderEditable: false), by: .push)
         }
     }
 }

@@ -162,10 +162,10 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
 }
 
 extension AccountRecoverViewController: QRScannerViewControllerDelegate {
-    func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, then handler: EmptyHandler?) {
+    func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, completionHandler: EmptyHandler?) {
         guard qrText.mode == .mnemonic else {
             displaySimpleAlertWith(title: "title-error".localized, message: "qr-scan-should-scan-mnemonics-message".localized) { _ in
-                if let handler = handler {
+                if let handler = completionHandler {
                     handler()
                 }
             }
@@ -175,9 +175,9 @@ extension AccountRecoverViewController: QRScannerViewControllerDelegate {
         accountRecoverView.passPhraseInputView.value = qrText.qrText()
     }
     
-    func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError, then handler: EmptyHandler?) {
+    func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError, completionHandler: EmptyHandler?) {
         displaySimpleAlertWith(title: "title-error".localized, message: "qr-scan-should-scan-valid-qr".localized) { _ in
-            if let handler = handler {
+            if let handler = completionHandler {
                 handler()
             }
         }

@@ -175,7 +175,7 @@ class RootViewController: UIViewController {
                 tabBarViewController.routeForDeeplink()
                 return
             } else {
-                tabBarViewController.selectedIndex = 0
+                tabBarContainer?.selectedItem = tabBarContainer?.items[0]
                 tabBarViewController.route = .assetDetail(account: account, assetDetail: assetDetail)
                 tabBarViewController.routeForDeeplink()
             }
