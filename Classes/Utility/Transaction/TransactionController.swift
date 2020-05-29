@@ -210,7 +210,8 @@ extension TransactionController {
             toAccount: trimmedToAddress,
             transactionParams: params,
             amount: transactionAmount,
-            isMaxTransaction: isMaxTransaction
+            isMaxTransaction: isMaxTransaction,
+            note: algosTransactionDraft.note?.data(using: .utf8)
         )
         
         var transactionError: NSError?
@@ -275,7 +276,8 @@ extension TransactionController {
             toAccount: trimmedToAddress,
             transactionParams: params,
             amount: amountDoubleValue.toFraction(of: transactionDraft.assetDecimalFraction),
-            assetIndex: assetIndex
+            assetIndex: assetIndex,
+            note: transactionDraft.note?.data(using: .utf8)
         )
         
         var transactionError: NSError?

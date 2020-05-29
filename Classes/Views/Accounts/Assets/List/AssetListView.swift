@@ -16,8 +16,8 @@ class AssetListView: BaseView {
     
     private lazy var titleLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(.overpass, withWeight: .bold(size: 16.0)))
-            .withTextColor(SharedColors.black)
+            .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
+            .withTextColor(SharedColors.primaryText)
             .withLine(.single)
             .withAlignment(.center)
             .withText("title-select-asset".localized)

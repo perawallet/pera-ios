@@ -16,7 +16,7 @@ class RewardView: BaseView {
         UILabel()
             .withLine(.single)
             .withAlignment(.left)
-            .withFont(UIFont.font(withWeight: .demiBold(size: 13.0)))
+            .withFont(UIFont.font(withWeight: .semiBold(size: 13.0)))
             .withTextColor(SharedColors.primaryText)
             .withText("reward-list-title".localized)
     }()

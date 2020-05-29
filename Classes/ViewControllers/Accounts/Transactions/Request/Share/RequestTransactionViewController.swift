@@ -10,9 +10,9 @@ import UIKit
 
 class RequestTransactionViewController: BaseScrollViewController {
     
-    override init(configuration: ViewControllerConfiguration) {
-        super.init(configuration: configuration)
-        hidesBottomBarWhenPushed = true
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        addTestNetBanner()
     }
 }
 

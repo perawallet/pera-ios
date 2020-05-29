@@ -38,7 +38,7 @@ extension SendTransactionPreviewViewController {
         let curve = notification.keyboardAnimationCurve
         let curveAnimationOption = UIView.AnimationOptions(rawValue: UInt(curve.rawValue >> 16))
         
-        if sendTransactionPreviewView.transactionReceiverView.frame.maxY > UIScreen.main.bounds.height - kbHeight - 58.0 {
+        if sendTransactionPreviewView.noteInputView.frame.maxY > UIScreen.main.bounds.height - kbHeight - 58.0 {
             scrollView.contentInset.bottom = kbHeight
         } else {
             contentViewBottomConstraint?.update(inset: kbHeight)
@@ -87,7 +87,8 @@ extension SendTransactionPreviewViewController: TouchDetectingScrollViewDelegate
     func scrollViewDidDetectTouchEvent(scrollView: TouchDetectingScrollView, in point: CGPoint) {
         if sendTransactionPreviewView.previewButton.frame.contains(point) ||
             sendTransactionPreviewView.amountInputView.frame.contains(point) ||
-            sendTransactionPreviewView.transactionReceiverView.frame.contains(point) {
+            sendTransactionPreviewView.transactionReceiverView.frame.contains(point) ||
+            sendTransactionPreviewView.noteInputView.frame.contains(point) {
             return
         }
         contentView.endEditing(true)

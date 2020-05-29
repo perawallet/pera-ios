@@ -10,25 +10,37 @@ import Foundation
 
 class RequestAlgosTransactionPreviewViewModel {
     
-    private let account: Account
+    private var account: Account
+    private let isAccountSelectionEnabled: Bool
     
-    init(account: Account) {
+    init(account: Account, isAccountSelectionEnabled: Bool) {
         self.account = account
+        self.isAccountSelectionEnabled = isAccountSelectionEnabled
     }
     
     func configure(_ view: RequestTransactionPreviewView) {
-        view.transactionParticipantView.accountSelectionView.set(enabled: false)
-        
-        if account.type == .ledger {
-            view.transactionParticipantView.accountSelectionView.setLedgerAccount()
+        if isAccountSelectionEnabled {
+            view.transactionAccountInformationView.setEnabled()
         } else {
-            view.transactionParticipantView.accountSelectionView.setStandardAccount()
+            view.transactionAccountInformationView.setDisabled()
         }
         
-        view.transactionParticipantView.accountSelectionView.detailLabel.text = account.name
-        view.transactionParticipantView.assetSelectionView.detailLabel.text = "asset-algos-title".localized
-        view.transactionParticipantView.assetSelectionView.amountView.amountLabel.textColor = SharedColors.turquois
-        view.transactionParticipantView.assetSelectionView.amountView.algoIconImageView.tintColor = SharedColors.turquois
-        view.transactionParticipantView.assetSelectionView.verifiedImageView.isHidden = false
+        if account.type.isLedger() {
+            view.transactionAccountInformationView.setAccountImage(img("icon-account-type-ledger"))
+        } else {
+            view.transactionAccountInformationView.setAccountImage(img("icon-account-type-standard"))
+        }
+        
+        view.transactionAccountInformationView.setAccountName(account.name)
+        view.transactionAccountInformationView.removeAmountLabel()
+        view.transactionAccountInformationView.setAssetName("asset-algos-title".localized)
+        view.transactionAccountInformationView.setAssetVerified(true)
+        view.transactionAccountInformationView.removeAssetId()
+    }
+}
+
+extension RequestAlgosTransactionPreviewViewModel {
+    func updateAccount(_ account: Account) {
+        self.account = account
     }
 }

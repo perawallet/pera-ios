@@ -11,10 +11,19 @@ import UIKit
 class AddNewAccountViewController: BaseViewController {
     
     private lazy var addNewAccountView = AddNewAccountView()
+    
+    override func configureNavigationBarAppearance() {
+        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [unowned self] in
+            self.closeScreen(by: .dismiss, animated: true)
+        }
+        
+        leftBarButtonItems = [closeBarButtonItem]
+    }
         
     override func configureAppearance() {
         super.configureAppearance()
         view.backgroundColor = SharedColors.secondaryBackground
+        setSecondaryBackgroundColor()
     }
         
     override func prepareLayout() {

@@ -16,8 +16,8 @@ class NoInternetConnectionView: BaseView {
     
     private lazy var titleLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(.overpass, withWeight: .bold(size: 16.0)))
-            .withTextColor(SharedColors.purple)
+            .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
+            .withTextColor(SharedColors.primaryText)
             .withAlignment(.center)
             .withText("internet-connection-error-title".localized)
             .withLine(.single)
@@ -25,8 +25,8 @@ class NoInternetConnectionView: BaseView {
     
     private lazy var subtitleLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(.avenir, withWeight: .medium(size: 14.0)))
-            .withTextColor(SharedColors.black)
+            .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
+            .withTextColor(SharedColors.gray800)
             .withAlignment(.center)
             .withText("internet-connection-error-detail".localized)
             .withLine(.contained)
@@ -52,7 +52,7 @@ extension NoInternetConnectionView {
         addSubview(titleLabel)
         
         titleLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(layout.current.verticalInset)
+            make.top.equalTo(imageView.snp.bottom).offset(layout.current.verticalInset)
             make.centerX.equalToSuperview()
         }
     }

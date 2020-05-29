@@ -12,6 +12,10 @@ import UserNotifications
 
 class SettingsViewController: BaseViewController {
     
+    override var shouldShowNavigationBar: Bool {
+        return false
+    }
+    
     private lazy var bottomModalPresenter = CardModalPresenter(
         config: ModalConfiguration(
             animationMode: .normal(duration: 0.25),
@@ -32,6 +36,10 @@ class SettingsViewController: BaseViewController {
     private let viewModel = SettingsViewModel()
     
     private let localAuthenticator = LocalAuthenticator()
+    
+    override func customizeTabBarAppearence() {
+        isTabBarHidden = false
+    }
     
     override func linkInteractors() {
         settingsView.collectionView.delegate = self
@@ -65,7 +73,8 @@ extension SettingsViewController {
         view.addSubview(settingsView)
         
         settingsView.snp.makeConstraints { make in
-            make.top.leading.trailing.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
+            make.top.safeEqualToTop(of: self)
             make.bottom.safeEqualToBottom(of: self)
         }
     }

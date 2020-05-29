@@ -30,10 +30,7 @@ class AddNodeViewController: BaseScrollViewController {
     
     init(mode: Mode, configuration: ViewControllerConfiguration) {
         self.mode = mode
-        
         super.init(configuration: configuration)
-        
-        hidesBottomBarWhenPushed = true
     }
     
     override func setListeners() {
@@ -128,7 +125,7 @@ class AddNodeViewController: BaseScrollViewController {
     // MARK: Keyboard
     
     @objc
-    fileprivate func didReceive(keyboardWillShow notification: Notification) {
+    private func didReceive(keyboardWillShow notification: Notification) {
         if !UIApplication.shared.isActive {
             return
         }
@@ -161,7 +158,7 @@ class AddNodeViewController: BaseScrollViewController {
     }
     
     @objc
-    fileprivate func didReceive(keyboardWillHide notification: Notification) {
+    private func didReceive(keyboardWillHide notification: Notification) {
         if !UIApplication.shared.isActive {
             return
         }
@@ -186,7 +183,7 @@ class AddNodeViewController: BaseScrollViewController {
     }
     
     @objc
-    fileprivate func tap(test button: MainButton) {
+    private func tap(test button: MainButton) {
         view.endEditing(true)
         
         guard let name = addNodeView.nameInputView.inputTextField.text, !name.isEmpty,

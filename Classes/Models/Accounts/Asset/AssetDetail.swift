@@ -88,7 +88,7 @@ extension AssetDetail {
 
 extension AssetDetail {
     func assetDisplayName(
-        with font: UIFont = UIFont.font(.overpass, withWeight: .semiBold(size: 13.0)),
+        with font: UIFont = UIFont.font(withWeight: .medium(size: 14.0)),
         isIndexIncluded: Bool = true,
         shouldDisplayIndexWithName: Bool = true
     ) -> NSAttributedString? {
@@ -98,39 +98,39 @@ extension AssetDetail {
         
         if let name = assetName, !name.isEmptyOrBlank,
             let code = unitName, !code.isEmptyOrBlank {
-            let nameText = name.attributed([.textColor(SharedColors.black), .font(font)])
-            let codeText = " (\(code.uppercased()))".attributed([.textColor(SharedColors.darkGray), .font(font)])
+            let nameText = name.attributed([.textColor(SharedColors.primaryText), .font(font)])
+            let codeText = " (\(code.uppercased()))".attributed([.textColor(SharedColors.detailText), .font(font)])
             
             if shouldDisplayIndexWithName {
-                let indexText = " \(id)".attributed([.textColor(SharedColors.darkGray), .font(font)])
+                let indexText = " \(id)".attributed([.textColor(SharedColors.detailText), .font(font)])
                 return nameText + codeText + indexText
             }
             
             return nameText + codeText
         } else if let name = assetName, !name.isEmptyOrBlank {
             if shouldDisplayIndexWithName {
-                let indexText = " \(id)".attributed([.textColor(SharedColors.darkGray), .font(font)])
-                return name.attributed([.textColor(SharedColors.black), .font(font)]) + indexText
+                let indexText = " \(id)".attributed([.textColor(SharedColors.detailText), .font(font)])
+                return name.attributed([.textColor(SharedColors.primaryText), .font(font)]) + indexText
             }
-            return name.attributed([.textColor(SharedColors.black), .font(font)])
+            return name.attributed([.textColor(SharedColors.primaryText), .font(font)])
         } else if let code = unitName, !code.isEmptyOrBlank {
             if shouldDisplayIndexWithName {
-                let indexText = " \(id)".attributed([.textColor(SharedColors.darkGray), .font(font)])
-                return "(\(code.uppercased()))".attributed([.textColor(SharedColors.darkGray), .font(font)]) + indexText
+                let indexText = " \(id)".attributed([.textColor(SharedColors.detailText), .font(font)])
+                return "(\(code.uppercased()))".attributed([.textColor(SharedColors.detailText), .font(font)]) + indexText
             }
-            return "(\(code.uppercased()))".attributed([.textColor(SharedColors.darkGray), .font(font)])
+            return "(\(code.uppercased()))".attributed([.textColor(SharedColors.detailText), .font(font)])
         } else {
             let unknownText = "title-unknown".localized.attributed([
-                .textColor(SharedColors.orange),
-                 .font(UIFont.font(.avenir, withWeight: .demiBoldItalic(size: 13.0)))
+                .textColor(SharedColors.secondary),
+                 .font(UIFont.font(withWeight: .boldItalic(size: 14.0)))
             ])
             if !isIndexIncluded {
                 return unknownText
             }
             
             let indexText = "\(id)".attributed([
-                .textColor(SharedColors.black),
-                .font(UIFont.font(.avenir, withWeight: .demiBold(size: 13.0)))
+                .textColor(SharedColors.primaryText),
+                .font(UIFont.font(withWeight: .medium(size: 14.0)))
             ])
             
             return unknownText + " ".attributed() + indexText

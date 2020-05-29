@@ -15,14 +15,10 @@ class RootViewController: UIViewController {
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        if appConfiguration.api.isTestNet && !shouldHideTestNetBanner {
-            return .lightContent
+        if #available(iOS 13.0, *) {
+            return .darkContent
         } else {
-            if #available(iOS 13.0, *) {
-                return .darkContent
-            } else {
-                return .default
-            }
+            return .default
         }
     }
     
@@ -52,7 +48,7 @@ class RootViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = SharedColors.warmWhite
+        view.backgroundColor = SharedColors.primaryBackground
         
         initializeNetwork()
         
@@ -179,7 +175,7 @@ class RootViewController: UIViewController {
                 tabBarViewController.routeForDeeplink()
                 return
             } else {
-                tabBarViewController.selectedIndex = 0
+                tabBarContainer?.selectedItem = tabBarContainer?.items[0]
                 tabBarViewController.route = .assetDetail(account: account, assetDetail: assetDetail)
                 tabBarViewController.routeForDeeplink()
             }

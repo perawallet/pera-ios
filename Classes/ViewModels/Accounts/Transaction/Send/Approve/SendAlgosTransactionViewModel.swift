@@ -10,17 +10,56 @@ import UIKit
 
 class SendAlgosTransactionViewModel {
     func configure(_ view: SendTransactionView, with algosTransactionSendDraft: AlgosTransactionSendDraft) {
-        view.transactionParticipantView.accountSelectionView.detailLabel.text = algosTransactionSendDraft.from.name
+        view.setButtonTitle("send-algos-title".localized)
         
         if algosTransactionSendDraft.from.type == .ledger {
-            view.transactionParticipantView.accountSelectionView.setLedgerAccount()
+            view.setAccountImage(img("icon-account-type-ledger"))
         } else {
-            view.transactionParticipantView.accountSelectionView.setStandardAccount()
+            view.setAccountImage(img("icon-account-type-standard"))
         }
         
-        view.amountInputView.inputTextField.text = algosTransactionSendDraft.amount?.toDecimalStringForLabel
-        view.transactionParticipantView.assetSelectionView.verifiedImageView.isHidden = false
-        view.transactionParticipantView.assetSelectionView.detailLabel.text = "asset-algos-title".localized
-        view.transactionParticipantView.assetSelectionView.set(amount: algosTransactionSendDraft.from.amount.toAlgos)
+        view.setAccountName(algosTransactionSendDraft.from.name)
+        
+        if let amount = algosTransactionSendDraft.amount {
+            view.setAmountInformationViewMode(.normal(amount: amount))
+        }
+        
+        if let note = algosTransactionSendDraft.note, !note.isEmpty {
+            view.setTransactionNote(note)
+        } else {
+            view.removeTransactionNote()
+        }
+        
+        setReceiver(in: view, with: algosTransactionSendDraft)
+        
+        view.setAssetName("asset-algos-title".localized)
+        view.setAssetVerified(true)
+    }
+    
+    private func setReceiver(in view: SendTransactionView, with algosTransactionSendDraft: AlgosTransactionSendDraft) {
+        guard let receiverAddress = algosTransactionSendDraft.toAccount else {
+            return
+        }
+        
+        Contact.fetchAll(entity: Contact.entityName, with: NSPredicate(format: "address = %@", receiverAddress)) { response in
+            switch response {
+            case let .results(objects: objects):
+                guard let results = objects as? [Contact], !results.isEmpty else {
+                    self.setRecieverWithAddress(receiverAddress, in: view)
+                    return
+                }
+                
+                view.setReceiverAsContact(results[0])
+            default:
+                self.setRecieverWithAddress(receiverAddress, in: view)
+            }
+        }
+    }
+    
+    private func setRecieverWithAddress(_ address: String, in view: SendTransactionView) {
+        if let shortAddressDisplay = address.shortAddressDisplay() {
+            view.setReceiverName(shortAddressDisplay)
+            view.removeReceiverImage()
+        }
     }
 }

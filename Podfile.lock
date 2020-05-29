@@ -1,9 +1,6 @@
 PODS:
   - Alamofire (5.0.0-rc.2)
   - BetterSegmentedControl (1.3.0)
-  - Charts (3.3.0):
-    - Charts/Core (= 3.3.0)
-  - Charts/Core (3.3.0)
   - Crashlytics (3.13.4):
     - Fabric (~> 1.10.2)
   - Fabric (1.10.2)
@@ -86,7 +83,6 @@ PODS:
 
 DEPENDENCIES:
   - BetterSegmentedControl (~> 1.3)
-  - Charts
   - Crashlytics
   - Fabric
   - Firebase/Core
@@ -103,7 +99,6 @@ SPEC REPOS:
   trunk:
     - Alamofire
     - BetterSegmentedControl
-    - Charts
     - Crashlytics
     - Fabric
     - Firebase
@@ -138,7 +133,6 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   Alamofire: f9450d3c7f6bea2ad62e7a541c3e9b186c7991d6
   BetterSegmentedControl: 85d1b0343a09603b098884d527f550dfc8e6cdd9
-  Charts: e0dd4cd8f257bccf98407b58183ddca8e8d5b578
   Crashlytics: 2dfd686bcb918dc10ee0e76f7f853fe42c7bd552
   Fabric: 706c8b8098fff96c33c0db69cbf81f9c551d0d74
   Firebase: 291d7b0a7b393f252358083b5d224884126fa46d
@@ -162,6 +156,6 @@ SPEC CHECKSUMS:
   SwiftDate: 8d4f14bf1ef68e95094511504856547bf9e3e1a6
   SwiftLint: 5553187048b900c91aa03552807681bb6b027846
 
-PODFILE CHECKSUM: eb6c6911434dcb8b6be2b74739926116e86c394c
+PODFILE CHECKSUM: adbe29d25c9200e8634a52e4fad38d2a359966a8
 
 COCOAPODS: 1.9.0

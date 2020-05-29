@@ -10,7 +10,9 @@ import UIKit
 
 class LedgerApprovalViewController: BaseViewController {
     
-    private let layout = Layout<LayoutConstants>()
+    override var shouldShowNavigationBar: Bool {
+        return false
+    }
     
     private lazy var ledgerApprovalView = LedgerApprovalView()
     
@@ -22,7 +24,7 @@ class LedgerApprovalViewController: BaseViewController {
     }
     
     override func configureAppearance() {
-        view.backgroundColor = Colors.backgroundColor
+        view.backgroundColor = SharedColors.secondaryBackground
         if mode == .connection {
             setConnectionModeTexts()
         } else {
@@ -56,14 +58,14 @@ extension LedgerApprovalViewController {
         view.addSubview(ledgerApprovalView)
         
         ledgerApprovalView.snp.makeConstraints { make in
-            make.center.equalToSuperview()
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.edges.equalToSuperview()
         }
     }
 }
 
 extension LedgerApprovalViewController: LedgerApprovalViewDelegate {
     func ledgerApprovalViewDidTapCancelButton(_ ledgerApprovalView: LedgerApprovalView) {
+        dismissScreen()
         if parent != nil {
             removeFromParentController()
         }
@@ -86,17 +88,5 @@ extension LedgerApprovalViewController {
     enum Mode {
         case connection
         case approve
-    }
-}
-
-extension LedgerApprovalViewController {
-    struct LayoutConstants: AdaptiveLayoutConstants {
-        let horizontalInset: CGFloat = 20.0
-    }
-}
-
-extension LedgerApprovalViewController {
-    private enum Colors {
-        static let backgroundColor = rgba(0.29, 0.29, 0.31, 0.6)
     }
 }

@@ -28,6 +28,12 @@ class TransactionDetailView: BaseView {
         return amountView
     }()
     
+    private(set) lazy var closeAmountView: TransactionAmountInformationView = {
+        let rewardView = TransactionAmountInformationView()
+        rewardView.setTitle("transaction-detail-close-amount".localized)
+        return rewardView
+    }()
+    
     private(set) lazy var rewardView: TransactionAmountInformationView = {
         let rewardView = TransactionAmountInformationView()
         rewardView.setTitle("transaction-detail-reward".localized)
@@ -37,6 +43,12 @@ class TransactionDetailView: BaseView {
     private(set) lazy var userView = TransactionTextInformationView()
     
     private(set) lazy var opponentView = TransactionContactInformationView()
+    
+    private(set) lazy var closeToView: TransactionTextInformationView = {
+        let closeToView = TransactionTextInformationView()
+        closeToView.setTitle("transaction-detail-close-to".localized)
+        return closeToView
+    }()
     
     private(set) lazy var feeView: TransactionAmountInformationView = {
         let feeView = TransactionAmountInformationView()
@@ -79,14 +91,17 @@ class TransactionDetailView: BaseView {
     override func prepareLayout() {
         setupStatusViewLayout()
         setupAmountViewLayout()
+        setupCloseAmountViewLayout()
         setupRewardViewLayout()
         
         if transactionType == .received {
             setupOpponentViewLayout()
             setupUserViewLayout()
+            setupCloseToViewLayout()
         } else {
             setupUserViewLayout()
             setupOpponentViewLayout()
+            setupCloseToViewLayout()
         }
 
         setupFeeViewLayout()
@@ -115,11 +130,21 @@ extension TransactionDetailView {
         }
     }
     
+    private func setupCloseAmountViewLayout() {
+        addSubview(closeAmountView)
+        
+        closeAmountView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(amountView.snp.bottom)
+        }
+    }
+    
     private func setupRewardViewLayout() {
         addSubview(rewardView)
         
         rewardView.snp.makeConstraints { make in
-            make.top.equalTo(amountView.snp.bottom)
+            make.top.equalTo(closeAmountView.snp.bottom)
+            make.top.equalTo(amountView.snp.bottom).priority(.low)
             make.leading.trailing.equalToSuperview()
         }
     }
@@ -132,6 +157,7 @@ extension TransactionDetailView {
                 make.top.equalTo(opponentView.snp.bottom)
             } else {
                 make.top.equalTo(rewardView.snp.bottom)
+                make.top.equalTo(closeAmountView.snp.bottom).priority(.medium)
                 make.top.equalTo(amountView.snp.bottom).priority(.low)
             }
             
@@ -145,6 +171,7 @@ extension TransactionDetailView {
         opponentView.snp.makeConstraints { make in
             if transactionType == .received {
                 make.top.equalTo(amountView.snp.bottom).priority(.low)
+                make.top.equalTo(closeAmountView.snp.bottom).priority(.medium)
                 make.top.equalTo(rewardView.snp.bottom)
             } else {
                 make.top.equalTo(userView.snp.bottom)
@@ -154,15 +181,30 @@ extension TransactionDetailView {
         }
     }
     
+    private func setupCloseToViewLayout() {
+        addSubview(closeToView)
+        
+        closeToView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            if transactionType == .received {
+                make.top.equalTo(userView.snp.bottom)
+            } else {
+                make.top.equalTo(opponentView.snp.bottom)
+            }
+        }
+    }
+    
     private func setupFeeViewLayout() {
         addSubview(feeView)
         
         feeView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             if transactionType == .received {
-                make.top.equalTo(userView.snp.bottom)
+                make.top.equalTo(closeToView.snp.bottom)
+                make.top.equalTo(userView.snp.bottom).priority(.low)
             } else {
-                make.top.equalTo(opponentView.snp.bottom)
+                make.top.equalTo(closeToView.snp.bottom)
+                make.top.equalTo(opponentView.snp.bottom).priority(.low)
             }
         }
     }

@@ -57,11 +57,57 @@ extension UIViewController {
     }
 }
 
-// MARK: SVProgessHUD
+extension UIViewController {
+    @discardableResult
+    func addContent(_ content: UIViewController, prepareLayout: (UIView) -> Void) -> UIViewController {
+        addChild(content)
+        prepareLayout(content.view)
+        content.didMove(toParent: self)
+        return content
+    }
+
+    func removeFromContainer(animated: Bool = false, completion: (() -> Void)? = nil) {
+        func remove() {
+            willMove(toParent: nil)
+            removeFromParent()
+            view.removeFromSuperview()
+        }
+        if !animated {
+            remove()
+            completion?()
+            return
+        }
+        UIView.animate(
+            withDuration: 0.2,
+            animations: {
+                self.view.alpha = 0.0
+            },
+            completion: { _ in
+                remove()
+                completion?()
+            }
+        )
+    }
+}
+
 extension UIViewController {
     func dismissProgressIfNeeded() {
         if SVProgressHUD.isVisible() {
             SVProgressHUD.dismiss()
         }
+    }
+}
+
+extension UIViewController {
+    var tabBarContainer: TabBarController? {
+        var parentContainer = parent
+
+        while parentContainer != nil {
+            if let tabBarContainer = parentContainer as? TabBarController {
+                return tabBarContainer
+            }
+            parentContainer = parentContainer?.parent
+        }
+        return nil
     }
 }

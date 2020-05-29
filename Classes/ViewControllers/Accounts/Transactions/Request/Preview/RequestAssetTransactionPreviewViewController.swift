@@ -8,23 +8,31 @@
 
 import UIKit
 
-class RequestAssetTransactionPreviewViewController: RequestTransactionPreviewViewController {
+class RequestAssetTransactionPreviewViewController: RequestTransactionPreviewViewController, TestNetTitleDisplayable {
     
     private lazy var requestTransactionPreviewView = RequestTransactionPreviewView(inputFieldFraction: assetDetail.fractionDecimals)
     
     private let assetDetail: AssetDetail
     private let viewModel: RequestAssetTransactionPreviewViewModel
     
-    init(account: Account, assetDetail: AssetDetail, configuration: ViewControllerConfiguration) {
+    override var filterOption: SelectAssetViewController.FilterOption {
+        return .asset(assetDetail: assetDetail)
+    }
+    
+    init(account: Account, assetDetail: AssetDetail, isReceiverEditable: Bool, configuration: ViewControllerConfiguration) {
         self.assetDetail = assetDetail
-        self.viewModel = RequestAssetTransactionPreviewViewModel(account: account, assetDetail: assetDetail)
-        super.init(account: account, configuration: configuration)
+        self.viewModel = RequestAssetTransactionPreviewViewModel(
+            account: account,
+            assetDetail: assetDetail,
+            isAccountSelectionEnabled: isReceiverEditable
+        )
+        super.init(account: account, isReceiverEditable: isReceiverEditable, configuration: configuration)
     }
     
     override func configureAppearance() {
         super.configureAppearance()
-        title = "request-asset-title".localized
         viewModel.configure(requestTransactionPreviewView)
+        displayTestNetTitleView(with: "request-title".localized + " \(assetDetail.getDisplayNames().0)")
     }
     
     override func prepareLayout() {
@@ -44,5 +52,12 @@ class RequestAssetTransactionPreviewViewController: RequestTransactionPreviewVie
     override func openRequestScreen() {
         let draft = AssetTransactionRequestDraft(account: account, amount: amount, assetDetail: assetDetail)
         open(.requestAssetTransaction(assetTransactionRequestDraft: draft), by: .push)
+    }
+    
+    override func configure(forSelected account: Account, with assetDetail: AssetDetail?) {
+        self.account = account
+        viewModel.updateAccount(account)
+        viewModel.configure(requestTransactionPreviewView)
+        requestTransactionPreviewView.setAssetSelectionHidden(true)
     }
 }

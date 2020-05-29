@@ -10,6 +10,10 @@ import UIKit
 
 class ContactsViewController: BaseViewController {
     
+    override var shouldShowNavigationBar: Bool {
+        return false
+    }
+    
     private lazy var contactsView = ContactsView()
     
     private lazy var emptyStateView = ContactsEmptyView(
@@ -31,14 +35,8 @@ class ContactsViewController: BaseViewController {
     
     weak var delegate: ContactsViewControllerDelegate?
     
-    override func configureNavigationBarAppearance() {
-        let addBarButtonItem = ALGBarButtonItem(kind: .add) {
-            let controller = self.open(.addContact(mode: .new()), by: .push) as? AddContactViewController
-            
-            controller?.delegate = self
-        }
-        
-        rightBarButtonItems = [addBarButtonItem]
+    override func customizeTabBarAppearence() {
+        isTabBarHidden = false
     }
     
     override func setListeners() {
@@ -61,6 +59,7 @@ class ContactsViewController: BaseViewController {
     
     override func linkInteractors() {
         emptyStateView.delegate = self
+        contactsView.delegate = self
         contactsView.contactNameInputView.delegate = self
         contactsView.contactsCollectionView.delegate = self
         contactsView.contactsCollectionView.dataSource = self
@@ -105,7 +104,8 @@ class ContactsViewController: BaseViewController {
         view.addSubview(contactsView)
         
         contactsView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.top.safeEqualToTop(of: self)
+            make.leading.trailing.bottom.equalToSuperview()
         }
     }
     
@@ -116,7 +116,7 @@ class ContactsViewController: BaseViewController {
     }
     
     @objc
-    fileprivate func didContactAdded(notification: Notification) {
+    private func didContactAdded(notification: Notification) {
         guard let userInfo = notification.userInfo as? [String: Contact],
             let contact = userInfo["contact"] else {
                 return
@@ -146,7 +146,7 @@ class ContactsViewController: BaseViewController {
     }
     
     @objc
-    fileprivate func didContactDeleted(notification: Notification) {
+    private func didContactDeleted(notification: Notification) {
         contacts.removeAll()
         fetchContacts()
     }
@@ -203,7 +203,7 @@ extension ContactsViewController: UICollectionViewDelegateFlowLayout {
                 return
             }
             
-            popScreen()
+            dismissScreen()
             delegate.contactsViewController(self, didSelect: contact)
         }
     }
@@ -265,7 +265,8 @@ extension ContactsViewController: ContactCellDelegate {
             let contact = searchResults[indexPath.item]
             
             if let address = contact.address {
-                open(.qrGenerator(title: contact.name, address: address, mnemonic: nil, mode: .address), by: .present)
+                let draft = QRCreationDraft(address: address, mode: .address)
+                open(.qrGenerator(title: contact.name, draft: draft), by: .present)
             }
         }
     }
@@ -317,6 +318,19 @@ extension ContactsViewController: ContactsEmptyViewDelegate {
     func contactsEmptyViewDidTapAddContactButton(_ contactsEmptyView: ContactsEmptyView) {
         let controller = self.open(.addContact(mode: .new()), by: .push) as? AddContactViewController
         controller?.delegate = self
+    }
+}
+
+extension ContactsViewController: ContactsViewDelegate {
+    func contactsViewDidTapAddButton(_ contactsView: ContactsView) {
+        let controller = open(.addContact(mode: .new()), by: .push) as? AddContactViewController
+        controller?.delegate = self
+    }
+}
+
+extension ContactsViewController {
+    func removeHeader() {
+        contactsView.removeHeader()
     }
 }
 
