@@ -56,7 +56,7 @@ extension PushNotificationController {
         if let token = token,
             let accounts = api.session.applicationConfiguration?.authenticatedUser()?.accounts {
             let draft = DeviceRegistrationDraft(pushToken: token, accounts: accounts.map(\.address))
-            api.registerDevice(with: draft)
+            api.registerDevice(with: draft, then: handler)
         }
     }
     
