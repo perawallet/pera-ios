@@ -1,12 +1,15 @@
 {
   "images" : [
     {
-      "idiom" : "universal",
-      "filename" : "settings-node-inactive.pdf"
+      "filename" : "settings-node-inactive.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {
-    "version" : 1,
-    "author" : "xcode"
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "preserves-vector-representation" : true
   }
 }

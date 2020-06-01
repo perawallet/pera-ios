@@ -74,7 +74,7 @@ class AddNodeViewController: BaseScrollViewController {
         case .new:
             return
         case let .edit(node):
-            let barButtonItem = ALGBarButtonItem(kind: .removeNode) {
+            let barButtonItem = ALGBarButtonItem(kind: .close) {
                 let alertController = UIAlertController(title: "node-settings-warning-title".localized,
                                                         message: "node-settings-warning-message".localized,
                                                         preferredStyle: .alert)

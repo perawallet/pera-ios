@@ -16,7 +16,7 @@ protocol TermsAndServicesViewDelegate: class {
 class TermsAndServicesView: BaseView {
     private lazy var titleLabel: UILabel = {
         UILabel()
-            .withTextColor(SharedColors.darkGray)
+            .withTextColor(SharedColors.primaryText)
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
             .withAttributedText("terms-and-services-title".localized.uppercased().attributed([.letterSpacing(1.07)]))
     }()

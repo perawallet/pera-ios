@@ -17,7 +17,7 @@ struct ALGBarButtonItem: BarButtonItem {
         case .save:
             return BarButtonItemTitleContent(
                 text: "title-save".localized,
-                textColor: .black,
+                textColor: SharedColors.primaryText,
                 font: UIFont.font(withWeight: .bold(size: 12.0))
             )
         case .done:
@@ -49,30 +49,13 @@ struct ALGBarButtonItem: BarButtonItem {
                 return ImageContent(normal: icon)
             }
             return nil
-        case .menu:
-            if let icon = img("icon-menu") {
-                return ImageContent(normal: icon)
-            }
-            return nil
         case .add:
             if let icon = img("img-accounts-add") {
                 return ImageContent(normal: icon)
             }
             return nil
-        case .share:
-            if let icon = img("icon-share-black") {
-                return ImageContent(normal: icon)
-            }
-            return nil
-            
         case .close:
             if let icon = img("icon-close") {
-                return ImageContent(normal: icon)
-            }
-            return nil
-            
-        case .removeNode:
-            if let icon = img("icon-server-remove") {
                 return ImageContent(normal: icon)
             }
             return nil
@@ -83,12 +66,7 @@ struct ALGBarButtonItem: BarButtonItem {
                 return ImageContent(normal: icon)
             }
             return nil
-        case .infoFilled:
-            if let icon = img("icon-info-filled") {
-                return ImageContent(normal: icon)
-            }
-            return nil
-        case .infoBordered:
+        case .info:
             if let icon = img("icon-info-green") {
                 return ImageContent(normal: icon)
             }
@@ -111,17 +89,9 @@ struct ALGBarButtonItem: BarButtonItem {
                 width: .dynamicWidth(BarButtonExpandedSizeHorizontalInsets(contentInsets: (left: 4.0, right: 4.0))),
                 height: .equal(44.0)
             )
-        case .menu:
-            return .compressed(
-                BarButtonCompressedSizeInsets(contentInsets: UIEdgeInsets(top: 4.0, left: 4.0, bottom: 4.0, right: 4.0))
-            )
         case .add:
             return .explicit(CGSize(width: 44.0, height: 44.0))
-        case .share:
-            return .explicit(CGSize(width: 44.0, height: 44.0))
         case .close:
-            return .explicit(CGSize(width: 44.0, height: 44.0))
-        case .removeNode:
             return .explicit(CGSize(width: 44.0, height: 44.0))
         case .qr:
             return .explicit(CGSize(width: 44.0, height: 44.0))
@@ -133,9 +103,7 @@ struct ALGBarButtonItem: BarButtonItem {
                 ),
                 height: .equal(44.0)
             )
-        case .infoFilled:
-            return .explicit(CGSize(width: 44.0, height: 44.0))
-        case .infoBordered:
+        case .info:
             return .explicit(CGSize(width: 44.0, height: 44.0))
         case .done:
             return .expanded(
@@ -173,18 +141,14 @@ extension ALGBarButtonItem {
     
     enum Kind: Hashable {
         case back
-        case menu
         case options
         case add
-        case share
         case close
-        case removeNode
         case save
         case qr
-        case infoFilled
         case done
         case edit
-        case infoBordered
+        case info
     }
 }
 

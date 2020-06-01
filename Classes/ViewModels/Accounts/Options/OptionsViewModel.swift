@@ -12,7 +12,7 @@ class OptionsViewModel {
     func configure(_ cell: OptionsCell, with option: OptionsViewController.Options) {
         switch option {
         case .removeAsset:
-            cell.contextView.iconImageView.image = img("icon-remove-assets")
+            cell.contextView.iconImageView.image = img("icon-trash")
             cell.contextView.optionLabel.text = "options-remove-assets".localized
         case .passphrase:
             cell.contextView.iconImageView.image = img("icon-lock")

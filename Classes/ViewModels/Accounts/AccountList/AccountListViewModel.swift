@@ -36,11 +36,11 @@ class AccountListViewModel {
                 
                 let codeText = " (\(assetDetail.getAssetCode()))".attributed([
                     .font(UIFont.font(withWeight: .medium(size: 14.0))),
-                    .textColor(SharedColors.darkGray)
+                    .textColor(SharedColors.detailText)
                 ])
                 cell.contextView.detailLabel.attributedText = amountText + codeText
             } else {
-                cell.contextView.detailLabel.textColor = SharedColors.black
+                cell.contextView.detailLabel.textColor = SharedColors.primaryText
                 cell.contextView.imageView.isHidden = false
                 cell.contextView.detailLabel.text = account.amount.toAlgos.toDecimalStringForLabel
             }

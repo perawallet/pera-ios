@@ -18,7 +18,6 @@
 "title-proceed" = "Proceed";
 "title-approve" = "Approve";
 "title-go-home" = "Go To Home";
-"title-share" = "Share QR";
 "title-share-qr" = "Share QR";
 "title-go-to-settings" = "Go To Settings";
 "title-error" = "Error";
@@ -34,7 +33,6 @@
 "title-internet-connection" = "The internet connection appears to be offline.";
 "title-unknown" = "Unnamed";
 "title-preview-and-sign-with-ledger-title" = "Preview and Sign With Ledger";
-"title-qr-share" = "Share QR";
 "title-keep" = "Keep it";
 "title-edit" = "Edit";
 "title-testnet" = "TESTNET";
@@ -150,13 +148,10 @@
 "asset-support-error" = "Unfortunately, this account has not added this asset. Please instruct the account owner to add the asset, and then try again.";
 "asset-support-title" = "Account does not accept this asset";
 "asset-add-confirmation-title" = "Adding Asset";
-"asset-not-found" = "Asset not found";
 "internet-connection-error-title" = "Connect to the Internet";
 "internet-connection-error-detail" = "We couldn’t reach the server, make sure you are connected to the internet";
 "asset-remove-warning" = "To remove %@, the balance must be 0. Please transfer the balance to another account and try again.";
 "asset-remove-transaction-warning" = "You are about to remove %@ from %@. You will not be able to transact with this asset from this account unless you re-add it.";
-"asset-support-qr-error" = "None of your account support this asset, would you like to add and proceed?";
-"asset-support-qr-title" = "You do not support this Asset";
 "asset-creation-fee-title" = "Add Asset Fee";
 "asset-min-transaction-error-title" = "Min Transaction Error!";
 "asset-min-transaction-error-message" = "You need at least %@ Algos to add this asset";
@@ -167,27 +162,20 @@
 "asset-support-add-message" = "You are about to receive an asset to %@. Would you like to add this asset to this account to receive it?";
 "asset-id-copied-title" = "ID copied to clipboard";
 "asset-verified-title" = "Verified";
-"asset-unverified-title" = "Unverified";
 "asset-support-your-add-title" = "Your accounts do not contain this asset";
 "asset-support-your-add-message" = "Please add this asset and try again.";
-
-"asset-verified-title" = "Verified";
 "asset-all-title" = "All";
 
 // MARK: Algos Send
 "send-algos-title" = "Send Algos";
-"send-algos-from" = "From:";
 "send-algos-select" = "Select Account";
 "send-sending-algos-select" = "Select Sending Account";
 "send-receiving-algos-select" = "Select Receiving Account";
 "send-select-asset" = "Select Asset";
 "send-choose-asset" = "Choose asset";
 "send-algos-to" = "To";
-"send-algos-fee" = "Fee:";
 "send-algos-balance-title" = "Balance:";
 "send-algos-amount" = "Amount";
-"send-algos-transaction-id" = "Transaction ID:";
-"send-algos-more" = "SEND MORE";
 "send-algos-sent-title" = "Algos Sent!";
 "send-algos-alert-title" = "Wrong Transaction";
 "send-algos-alert-message" = "Please fill the fields.";
@@ -198,8 +186,6 @@
 "send-asset-amount-error" = "Transaction amount cannot be more than your available amount.";
 "send-algos-contact-not-found" = "Contact not found";
 "send-algos-address-not-selected" = "Address not selected";
-"send-algos-address" = "Address";
-"send-algos-my-accounts" = "My Accounts";
 "send-algos-contacts" = "Contacts";
 "send-algos-scan" = "Scan QR";
 "send-algos-account-delete-title" = "Your account is about to be deleted, are you sure you want to proceed?";
@@ -215,11 +201,6 @@
 // MARK: Algos Request
 "request-algos-title" = "Request Algos";
 "request-title" = "Request";
-"request-asset-title" = "Asset Request";
-
-// MARK: Account List
-"account-list-add" = "ADD NEW ACCOUNT";
-"account-list-total" = "Total";
 
 // MARK: Options
 "options-title" = "ACCOUNT SETTINGS";
@@ -229,32 +210,14 @@
 "options-edit-account-name" = "Edit Account Name";
 "options-remove-account" = "Remove Account";
 "options-remove-alert-explanation" = "You are about to remove an account. Are you sure you want to proceed with this choice?";
-"options-default-account-title" = "Default Account";
-"options-default-account-message" = "Default acount is set.";
 "options-view-passphrase-alert-title" = "Biometric Authentication";
 "options-view-passphrase-alert-message" = "You should provide biometric authentication to display your passphrase.";
 "options-view-passphrase-password-alert-message" = "You should enter your correct password to display your passphrase.";
-
-// MARK: History
-"history-title" = "History";
-"history-account" = "Account:";
-"history-asset" = "Asset:";
-"history-start-date" = "Start Date:";
-"history-end-date" = "End Date:";
-"history-select-date" = "Select Date";
-"history-future-date-error" = "You cannot select a date in the future";
-"history-end-date-error" = "You cannot select a date older than your start date";
-"title-view-results" = "VIEW RESULTS";
-"history-alert-title" = "Incorrect Fields";
-"history-alert-message" = "Please fill the fields properly.";
-"history-alert-select-asset" = "You must select an asset.";
-"history-result-to" = "to";
 
 // MARK: Contacts
 "contacts-title" = "Contacts";
 "contacts-search" = "Search Contacts";
 "contacts-add" = "Add Contact";
-"contacts-edit" = "Edit Contact";
 "contacts-info" = "Contact Info";
 "contacts-info-edit" = "Edit Contact Info";
 "contacts-input-name-explanation" = "Name";
@@ -262,7 +225,6 @@
 "contacts-input-address-explanation" = "Address";
 "contacts-input-address-placeholder" = "Paste # or Scan QR";
 "contacts-transactions-title" = "Transactions";
-"contacts-edit-confirm-button" = "CONFIRM EDIT";
 "contacts-empty-text" = "You haven't added any contacts yet";
 "contacts-empty-detail-text" = "You can make the process of sending assets faster by adding new contacts.";
 "contacts-name-validation-error" = "Name is empty.";
@@ -315,7 +277,6 @@
 "node-settings-action-delete-title" = "Delete";
 "node-settings-default-node-name" = "Algorand MainNet Node";
 "node-settings-default-test-node-name" = "TestNet";
-"node-settings-default-beta-node-name" = "BetaNet";
 "node-settings-health-problem-message" = "None of your active nodes are online. Please add or select another node";
 
 // MARK: Transaction Detail
@@ -352,9 +313,6 @@
 "rewards-title" = "Rewards";
 "rewards-show-title" = "Show Rewards";
 "rewards-detail-subtitle" = "You earn rewards just by owning Algos! Here's a summary of your rewards activity since your last transaction. These rewards are always included in your balance.";
-"total-rewards-earned-title" = "TOTAL REWARDS EARNED";
-"total-rewards-pending-title" = "PENDING REWARDS*";
-"total-rewards-pending-subtitle" = "*Pending rewards become confirmed when you send or receive algos.";
 "total-rewards-faq-title" = "For more information on Algorand Rewards, visit our FAQ.";
 "total-rewards-faq" = "FAQ.";
 "reward-list-title" = "Reward";

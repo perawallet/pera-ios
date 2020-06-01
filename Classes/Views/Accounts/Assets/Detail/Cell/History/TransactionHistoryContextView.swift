@@ -17,7 +17,7 @@ class TransactionHistoryContextView: BaseView {
             .withLine(.single)
             .withAlignment(.left)
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
-            .withTextColor(SharedColors.black)
+            .withTextColor(SharedColors.primaryText)
         label.isHidden = true
         return label
     }()
@@ -27,7 +27,7 @@ class TransactionHistoryContextView: BaseView {
             .withLine(.single)
             .withAlignment(.left)
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
-            .withTextColor(SharedColors.black)
+            .withTextColor(SharedColors.primaryText)
         label.lineBreakMode = .byTruncatingMiddle
         label.isHidden = true
         return label

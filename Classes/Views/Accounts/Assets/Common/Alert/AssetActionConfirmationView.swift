@@ -19,7 +19,7 @@ class AssetActionConfirmationView: BaseView {
             .withLine(.single)
             .withAlignment(.center)
             .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
-            .withTextColor(SharedColors.black)
+            .withTextColor(SharedColors.primaryText)
     }()
     
     private(set) lazy var assetDisplayView = AssetDisplayView()
@@ -29,7 +29,7 @@ class AssetActionConfirmationView: BaseView {
             .withLine(.contained)
             .withAlignment(.center)
             .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
-            .withTextColor(SharedColors.black)
+            .withTextColor(SharedColors.primaryText)
     }()
     
     private(set) lazy var actionButton: UIButton = {

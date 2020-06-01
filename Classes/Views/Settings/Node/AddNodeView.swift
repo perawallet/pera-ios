@@ -24,8 +24,8 @@ class AddNodeView: BaseView {
         let inputView = SingleLineInputField()
         inputView.explanationLabel.text = "node-settings-enter-node-name".localized
         inputView.placeholderText = "node-settings-placeholder-name".localized
-        inputView.inputTextField.textColor = SharedColors.black
-        inputView.inputTextField.tintColor = SharedColors.black
+        inputView.inputTextField.textColor = SharedColors.primaryText
+        inputView.inputTextField.tintColor = SharedColors.primaryText
         inputView.inputTextField.font = UIFont.font(withWeight: .semiBold(size: 14.0))
         inputView.nextButtonMode = .next
         inputView.inputTextField.autocorrectionType = .no
@@ -37,8 +37,8 @@ class AddNodeView: BaseView {
         let inputView = SingleLineInputField()
         inputView.explanationLabel.text = "node-settings-enter-node-address".localized
         inputView.placeholderText = "node-settings-placeholder-address".localized
-        inputView.inputTextField.textColor = SharedColors.black
-        inputView.inputTextField.tintColor = SharedColors.black
+        inputView.inputTextField.textColor = SharedColors.primaryText
+        inputView.inputTextField.tintColor = SharedColors.primaryText
         inputView.inputTextField.font = UIFont.font(withWeight: .semiBold(size: 14.0))
         inputView.nextButtonMode = .next
         inputView.inputTextField.autocorrectionType = .no
@@ -51,15 +51,15 @@ class AddNodeView: BaseView {
         algorandAddressInputView.explanationLabel.text = "node-settings-api-key".localized
         algorandAddressInputView.placeholderLabel.attributedText = NSAttributedString(
             string: "node-settings-placeholder-api-key".localized,
-            attributes: [NSAttributedString.Key.foregroundColor: SharedColors.softGray,
+            attributes: [NSAttributedString.Key.foregroundColor: SharedColors.gray700,
                          NSAttributedString.Key.font: UIFont.font(withWeight: .semiBold(size: 14.0))]
         )
         algorandAddressInputView.nextButtonMode = .submit
         algorandAddressInputView.inputTextView.autocorrectionType = .no
         algorandAddressInputView.inputTextView.autocapitalizationType = .none
         algorandAddressInputView.inputTextView.textContainer.heightTracksTextView = false
-        algorandAddressInputView.inputTextView.textColor = SharedColors.black
-        algorandAddressInputView.inputTextView.tintColor = SharedColors.black
+        algorandAddressInputView.inputTextView.textColor = SharedColors.primaryText
+        algorandAddressInputView.inputTextView.tintColor = SharedColors.primaryText
         algorandAddressInputView.inputTextView.font = UIFont.font(withWeight: .semiBold(size: 14.0))
         algorandAddressInputView.inputTextView.isScrollEnabled = true
         algorandAddressInputView.backgroundColor = .clear

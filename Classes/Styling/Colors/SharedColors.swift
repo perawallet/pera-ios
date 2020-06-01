@@ -9,15 +9,6 @@
 import UIKit
 
 enum SharedColors {
-    static let purple = rgb(0.64, 0.03, 0.53)
-    static let turquois = rgb(0.34, 0.75, 0.71)
-    static let black = rgb(0.04, 0.05, 0.07)
-    static let softGray = rgb(0.71, 0.71, 0.73)
-    static let gray = rgb(0.67, 0.67, 0.72)
-    static let darkGray = rgb(0.29, 0.29, 0.31)
-    static let greenishGray = rgb(0.42, 0.42, 0.47)
-    static let orange = rgb(0.91, 0.36, 0.16)
-    
     static let primary = color("primary")
     static let red = color("red")
     static let secondary = color("secondary")
