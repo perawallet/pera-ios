@@ -33,7 +33,7 @@ class LedgerApprovalView: BaseView {
             .withLine(.contained)
             .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
             .withAlignment(.center)
-            .withTextColor(SharedColors.black)
+            .withTextColor(SharedColors.primaryText)
     }()
     
     private lazy var cancelButton: UIButton = {

@@ -26,7 +26,7 @@ class AssetRemovalView: BaseView {
             .withLine(.single)
             .withAlignment(.left)
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
-            .withTextColor(SharedColors.black)
+            .withTextColor(SharedColors.primaryText)
             .withText("asset-remove-title".localized)
     }()
     
