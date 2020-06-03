@@ -93,11 +93,6 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
         }
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        addTestNetBanner()
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         

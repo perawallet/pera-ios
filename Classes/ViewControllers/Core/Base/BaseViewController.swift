@@ -121,6 +121,7 @@ class BaseViewController: UIViewController, TabBarConfigurable {
         setNeedsStatusBarLayoutUpdateWhenAppearing()
         setNeedsNavigationBarAppearanceUpdateWhenAppearing()
         setNeedsTabBarAppearanceUpdateOnAppearing()
+        displayTestNetBannerIfNeeded()
         
         isViewDisappeared = false
         isViewAppearing = true
@@ -136,6 +137,7 @@ class BaseViewController: UIViewController, TabBarConfigurable {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         setNeedsStatusBarLayoutUpdateWhenDisappearing()
+        removeTestNetBanner()
         
         isViewFirstLoaded = false
         isViewAppeared = false
@@ -163,9 +165,31 @@ class BaseViewController: UIViewController, TabBarConfigurable {
 }
 
 extension BaseViewController {
+    private func displayTestNetBannerIfNeeded() {
+        guard let navigationController = navigationController,
+            !canDisplayTestNetBanner(on: navigationController),
+            !canDisplayTestNetBanner(on: self) else {
+                removeTestNetBanner()
+                return
+        }
+        
+        addTestNetBanner()
+    }
+    
+    private func canDisplayTestNetBanner(on viewController: UIViewController) -> Bool {
+        return viewController.isBeingPresented
+            && (viewController.modalPresentationStyle == .custom
+            || viewController.modalPresentationStyle == .pageSheet
+            || viewController.modalPresentationStyle == .popover)
+    }
+    
     func addTestNetBanner() {
         guard let api = api, api.isTestNet else {
             removeTestNetBanner()
+            return
+        }
+        
+        if statusbarView.superview != nil {
             return
         }
         
@@ -180,7 +204,9 @@ extension BaseViewController {
     }
     
     func removeTestNetBanner() {
-        statusbarView.removeFromSuperview()
+        if statusbarView.superview != nil {
+            statusbarView.removeFromSuperview()
+        }
     }
 }
 

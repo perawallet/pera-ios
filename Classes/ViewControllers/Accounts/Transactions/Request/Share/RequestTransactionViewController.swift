@@ -8,13 +8,7 @@
 
 import UIKit
 
-class RequestTransactionViewController: BaseScrollViewController {
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        addTestNetBanner()
-    }
-}
+class RequestTransactionViewController: BaseScrollViewController { }
 
 extension RequestTransactionViewController {
     func prepareLayout(of requestTransactionView: RequestTransactionView) {

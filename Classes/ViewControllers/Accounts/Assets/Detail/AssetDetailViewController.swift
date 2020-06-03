@@ -54,11 +54,6 @@ class AssetDetailViewController: BaseViewController {
         super.init(configuration: configuration)
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        addTestNetBanner()
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         fetchDollarConversion()
