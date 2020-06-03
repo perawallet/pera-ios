@@ -14,11 +14,7 @@ class TransactionTextInformationView: BaseView {
     
     weak var delegate: TransactionTextInformationViewDelegate?
     
-    private lazy var copyValueGestureRecognizer: UILongPressGestureRecognizer = {
-        let recognizer = UILongPressGestureRecognizer(target: self, action: #selector(notifyDelegateToCopyValue))
-        recognizer.minimumPressDuration = 1.0
-        return recognizer
-    }()
+    private lazy var copyValueGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(notifyDelegateToCopyValue))
     
     private lazy var titleLabel = TransactionDetailTitleLabel()
     
