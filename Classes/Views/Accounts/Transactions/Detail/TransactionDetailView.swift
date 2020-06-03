@@ -86,6 +86,9 @@ class TransactionDetailView: BaseView {
     override func linkInteractors() {
         super.linkInteractors()
         opponentView.delegate = self
+        closeToView.delegate = self
+        idView.delegate = self
+        noteView.delegate = self
     }
     
     override func prepareLayout() {
@@ -244,6 +247,33 @@ extension TransactionDetailView: TransactionContactInformationViewDelegate {
     func transactionContactInformationViewDidTapActionButton(_ transactionContactInformationView: TransactionContactInformationView) {
         delegate?.transactionDetailViewDidTapOpponentActionButton(self)
     }
+    
+    func transactionContactInformationViewDidCopyDetail(_ transactionContactInformationView: TransactionContactInformationView) {
+        delegate?.transactionDetailViewDidCopyOpponentAddress(self)
+    }
+}
+
+extension TransactionDetailView: TransactionTextInformationViewDelegate {
+    func transactionTextInformationViewDidCopyDetail(_ transactionTextInformationView: TransactionTextInformationView) {
+        if transactionTextInformationView == closeToView {
+            delegate?.transactionDetailViewDidCopyCloseToAddress(self)
+            return
+        }
+    }
+}
+
+extension TransactionDetailView: TransactionTitleInformationViewDelegate {
+    func transactionTitleInformationViewDidCopyDetail(_ transactionTitleInformationView: TransactionTitleInformationView) {
+        if transactionTitleInformationView == noteView {
+            delegate?.transactionDetailViewDidCopyTransactionNote(self)
+            return
+        }
+        
+        if transactionTitleInformationView == idView {
+            delegate?.transactionDetailViewDidCopyTransactionID(self)
+            return
+        }
+    }
 }
 
 extension TransactionDetailView {
@@ -255,4 +285,8 @@ extension TransactionDetailView {
 
 protocol TransactionDetailViewDelegate: class {
     func transactionDetailViewDidTapOpponentActionButton(_ transactionDetailView: TransactionDetailView)
+    func transactionDetailViewDidCopyOpponentAddress(_ transactionDetailView: TransactionDetailView)
+    func transactionDetailViewDidCopyCloseToAddress(_ transactionDetailView: TransactionDetailView)
+    func transactionDetailViewDidCopyTransactionID(_ transactionDetailView: TransactionDetailView)
+    func transactionDetailViewDidCopyTransactionNote(_ transactionDetailView: TransactionDetailView)
 }

@@ -14,14 +14,22 @@ class ContactDisplayView: BaseView {
     
     weak var delegate: ContactDisplayViewDelegate?
     
+    private lazy var copyValueGestureRecognizer: UILongPressGestureRecognizer = {
+        let recognizer = UILongPressGestureRecognizer(target: self, action: #selector(notifyDelegateToCopyValue))
+        recognizer.minimumPressDuration = 1.0
+        return recognizer
+    }()
+    
     private lazy var imageView = UIImageView()
     
     private(set) lazy var nameLabel: UILabel = {
-        UILabel()
+        let label = UILabel()
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
             .withLine(.contained)
             .withAlignment(.right)
             .withTextColor(SharedColors.primaryText)
+        label.isUserInteractionEnabled = true
+        return label
     }()
     
     private lazy var actionButton = UIButton()
@@ -37,6 +45,10 @@ class ContactDisplayView: BaseView {
         actionButton.addTarget(self, action: #selector(notifyDelegateToHandleAction), for: .touchUpInside)
     }
     
+    override func linkInteractors() {
+        nameLabel.addGestureRecognizer(copyValueGestureRecognizer)
+    }
+    
     override func prepareLayout() {
         setupActionButtonLayout()
         setupNameLabelLayout()
@@ -48,6 +60,11 @@ extension ContactDisplayView {
     @objc
     private func notifyDelegateToHandleAction() {
         delegate?.contactDisplayViewDidTapActionButton(self)
+    }
+    
+    @objc
+    private func notifyDelegateToCopyValue(copyValueGestureRecognizer: UILongPressGestureRecognizer) {
+        delegate?.contactDisplayViewDidCopyDetail(self)
     }
 }
 
@@ -131,4 +148,5 @@ extension ContactDisplayView {
 
 protocol ContactDisplayViewDelegate: class {
     func contactDisplayViewDidTapActionButton(_ contactDisplayView: ContactDisplayView)
+    func contactDisplayViewDidCopyDetail(_ contactDisplayView: ContactDisplayView)
 }

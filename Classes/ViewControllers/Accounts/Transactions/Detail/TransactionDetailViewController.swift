@@ -171,6 +171,36 @@ extension TransactionDetailViewController: TransactionDetailViewDelegate {
             viewController?.addContactView.userInformationView.algorandAddressInputView.value = address
         }
     }
+    
+    func transactionDetailViewDidCopyOpponentAddress(_ transactionDetailView: TransactionDetailView) {
+        guard let opponentType = viewModel.opponentType else {
+            return
+        }
+        
+        switch opponentType {
+        case let .contact(address),
+             let .localAccount(address),
+             let .address(address):
+            UIPasteboard.general.string = address
+        }
+        
+        displaySimpleAlertWith(title: "qr-creation-copied".localized)
+    }
+    
+    func transactionDetailViewDidCopyCloseToAddress(_ transactionDetailView: TransactionDetailView) {
+        UIPasteboard.general.string = transaction.payment?.closeAddress
+        displaySimpleAlertWith(title: "qr-creation-copied".localized)
+    }
+    
+    func transactionDetailViewDidCopyTransactionID(_ transactionDetailView: TransactionDetailView) {
+        UIPasteboard.general.string = transaction.id.identifier
+        displaySimpleAlertWith(title: "transaction-detail-id-copied".localized)
+    }
+    
+    func transactionDetailViewDidCopyTransactionNote(_ transactionDetailView: TransactionDetailView) {
+        UIPasteboard.general.string = transaction.noteRepresentation()
+        displaySimpleAlertWith(title: "transaction-detail-note-copied".localized)
+    }
 }
 
 enum TransactionType {

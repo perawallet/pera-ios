@@ -161,9 +161,8 @@ class TransactionDetailViewModel {
     }
     
     private func setNote(for transaction: Transaction, in view: TransactionDetailView) {
-        if let noteData = transaction.noteb64, !noteData.isEmpty {
-            let utf8String = String(data: noteData, encoding: .utf8)
-            view.noteView.setDetail(utf8String ?? noteData.base64EncodedString())
+        if let note = transaction.noteRepresentation() {
+            view.noteView.setDetail(note)
             view.noteView.setSeparatorView(hidden: true)
         } else {
             view.idView.setSeparatorView(hidden: true)

@@ -103,6 +103,10 @@ extension TransactionContactInformationView: ContactDisplayViewDelegate {
     func contactDisplayViewDidTapActionButton(_ contactDisplayView: ContactDisplayView) {
         delegate?.transactionContactInformationViewDidTapActionButton(self)
     }
+    
+    func contactDisplayViewDidCopyDetail(_ contactDisplayView: ContactDisplayView) {
+        delegate?.transactionContactInformationViewDidCopyDetail(self)
+    }
 }
 
 extension TransactionContactInformationView {
@@ -116,4 +120,11 @@ extension TransactionContactInformationView {
 
 protocol TransactionContactInformationViewDelegate: class {
     func transactionContactInformationViewDidTapActionButton(_ transactionContactInformationView: TransactionContactInformationView)
+    func transactionContactInformationViewDidCopyDetail(_ transactionContactInformationView: TransactionContactInformationView)
+}
+
+extension TransactionContactInformationViewDelegate {
+    func transactionContactInformationViewDidCopyDetail(_ transactionContactInformationView: TransactionContactInformationView) {
+        
+    }
 }

@@ -69,6 +69,14 @@ extension Transaction {
         
         return assetTransfer.receiverAddress == address && assetTransfer.amount == 0 && type == "axfer"
     }
+    
+    func noteRepresentation() -> String? {
+        guard let noteData = noteb64, !noteData.isEmpty else {
+            return nil
+        }
+        
+        return String(data: noteData, encoding: .utf8) ?? noteData.base64EncodedString()
+    }
 }
 
 extension Transaction {
