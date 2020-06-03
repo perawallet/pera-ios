@@ -316,13 +316,13 @@ extension SendTransactionPreviewViewController: TransactionControllerDelegate {
                 return
             }
             
-            displaTransactionError(from: transactionError)
+            displayTransactionError(from: transactionError)
         default:
             displaySimpleAlertWith(title: "title-error".localized, message: "title-internet-connection".localized)
         }
     }
     
-    private func displaTransactionError(from transactionError: TransactionController.TransactionError) {
+    private func displayTransactionError(from transactionError: TransactionController.TransactionError) {
         guard let api = api else {
             return
         }

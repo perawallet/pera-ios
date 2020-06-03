@@ -43,8 +43,6 @@ class PassphraseDisplayViewController: BaseViewController {
     
     override func linkInteractors() {
         passphraseDisplayView.delegate = self
-        passphraseDisplayView.passphraseCollectionView.delegate = self
-        passphraseDisplayView.passphraseCollectionView.dataSource = self
     }
 
     override func prepareLayout() {

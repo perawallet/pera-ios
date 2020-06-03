@@ -10,7 +10,12 @@ import UIKit
 
 class PassphraseDisplayView: BaseView {
     
-    weak var delegate: PassphraseDisplayViewDelegate?
+    weak var delegate: PassphraseDisplayViewDelegate? {
+        didSet {
+            passphraseCollectionView.delegate = delegate as? UICollectionViewDelegateFlowLayout
+            passphraseCollectionView.dataSource = delegate as? UICollectionViewDataSource
+        }
+    }
     
     private let layout = Layout<LayoutConstants>()
     

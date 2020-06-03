@@ -32,7 +32,7 @@ class SelectAssetViewController: BaseViewController {
         self.transactionAction = transactionAction
         self.filterOption = filterOption
         super.init(configuration: configuration)
-        accounts = filterAccounts()
+        accounts = initAccounts(with: filterOption)
     }
     
     override func viewDidLoad() {
@@ -74,7 +74,7 @@ extension SelectAssetViewController {
         }
     }
     
-    private func filterAccounts() -> [Account] {
+    private func initAccounts(with filter: FilterOption) -> [Account] {
         guard let allAccounts = UIApplication.shared.appConfiguration?.session.accounts else {
             return []
         }
