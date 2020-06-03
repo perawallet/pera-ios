@@ -139,6 +139,10 @@ extension AssetDetailViewModel {
         if let contact = contact {
             view.setContact(contact.name)
             view.subtitleLabel.text = contact.address?.shortAddressDisplay()
+        } else if let address = address,
+            let localAccount = UIApplication.shared.appConfiguration?.session.accountInformation(from: address) {
+            view.setContact(localAccount.name)
+            view.subtitleLabel.text = address.shortAddressDisplay()
         } else {
             view.setAddress(address)
             view.subtitleLabel.isHidden = true

@@ -11,7 +11,7 @@ import Magpie
 import CoreBluetooth
 import SVProgressHUD
 
-class AssetAdditionViewController: BaseViewController {
+class AssetAdditionViewController: BaseViewController, TestNetTitleDisplayable {
     
     private let layout = Layout<LayoutConstants>()
     
@@ -93,7 +93,7 @@ class AssetAdditionViewController: BaseViewController {
     
     override func configureAppearance() {
         super.configureAppearance()
-        navigationItem.title = "title-add-asset".localized
+        displayTestNetTitleView(with: "title-add-asset".localized)
         emptyStateView.setTitle("asset-not-found-title".localized)
         emptyStateView.setDetail("asset-not-found-detail".localized)
     }
@@ -301,17 +301,28 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
         SVProgressHUD.dismiss()
         
         switch error {
-        case let .custom(fee):
-            guard let api = api,
-                let feeValue = fee as? Int64,
-                let feeString = feeValue.toAlgos.toDecimalStringForLabel else {
+        case let .custom(errorType):
+            guard let transactionError = errorType as? TransactionController.TransactionError else {
                 return
             }
             
+            displayMinimumTransactionError(from: transactionError)
+        default:
+            break
+        }
+    }
+    
+    private func displayMinimumTransactionError(from transactionError: TransactionController.TransactionError) {
+        guard let api = api else {
+            return
+        }
+        
+        switch transactionError {
+        case let .minimumAmount(amount):
             let pushNotificationController = PushNotificationController(api: api)
             pushNotificationController.showFeedbackMessage(
                 "asset-min-transaction-error-title".localized,
-                subtitle: String(format: "asset-min-transaction-error-message".localized, feeString)
+                subtitle: String(format: "asset-min-transaction-error-message".localized, amount.toAlgos.toDecimalStringForLabel ?? "")
             )
         default:
             break

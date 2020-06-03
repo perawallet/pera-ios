@@ -225,16 +225,6 @@ extension TransactionController {
         self.unsignedTransactionData = transactionData
     }
     
-    private func calculateAlgosTransactionFee() {
-        guard let params = params,
-            let signedTransactionData = signedTransactionData else {
-            return
-        }
-        
-        let calculatedFee = Int64(signedTransactionData.count) * params.fee
-        self.transactionDraft?.fee = calculatedFee
-    }
-        
     private func completeAlgosTransaction() {
         guard let calculatedFee = transactionDraft?.fee,
             let algosTransactionDraft = algosTransactionDraft,
@@ -267,7 +257,7 @@ extension TransactionController {
         
         if !algorandSDK.isValidAddress(trimmedToAddress) {
             connectedDevice = nil
-            delegate?.transactionController(self, didFailedComposing: .custom(trimmedToAddress))
+            delegate?.transactionController(self, didFailedComposing: .custom(TransactionError.invalidAddress(address: trimmedToAddress)))
             return
         }
         
@@ -363,22 +353,29 @@ extension TransactionController {
             calculatedFee = Transaction.Constant.minimumFee
         }
         
-        // Asset addition fee amount must be asset count * minimum algos limit + minimum fee
-        if transactionType != .assetAddition &&
-            Int64(account.amount) - calculatedFee < Int64(minimumTransactionMicroAlgosLimit * (account.assetDetails.count + 2)) {
-            let mininmumAmount = Int64(minimumTransactionMicroAlgosLimit * (account.assetDetails.count + 2)) + calculatedFee
-            delegate?.transactionController(self, didFailedComposing: .custom(mininmumAmount))
+        // Asset transaction fee amount must be asset count * minimum algos limit + minimum fee
+        if transactionType == .assetAddition
+            && !isValidTransactionAmount(for: account, calculatedFee: calculatedFee, containsCurrentAsset: true) {
             return
         }
         
-        if transactionType != .assetRemoval &&
-            Int64(account.amount) - calculatedFee < Int64(minimumTransactionMicroAlgosLimit * (account.assetDetails.count + 1)) {
-            let mininmumAmount = Int64(minimumTransactionMicroAlgosLimit * (account.assetDetails.count + 1)) + calculatedFee
-            delegate?.transactionController(self, didFailedComposing: .custom(mininmumAmount))
+        if transactionType != .assetRemoval
+            && !isValidTransactionAmount(for: account, calculatedFee: calculatedFee, containsCurrentAsset: false) {
             return
         }
         
         self.transactionDraft?.fee = calculatedFee
+    }
+    
+    private func isValidTransactionAmount(for account: Account, calculatedFee: Int64, containsCurrentAsset: Bool) -> Bool {
+        let assetCount = containsCurrentAsset ? account.assetDetails.count + 2 : account.assetDetails.count + 1
+        let minimumAmount = Int64(minimumTransactionMicroAlgosLimit * assetCount) + calculatedFee
+        if Int64(account.amount) < minimumAmount {
+            delegate?.transactionController(self, didFailedComposing: .custom(TransactionError.minimumAmount(amount: minimumAmount)))
+            return false
+        }
+        
+        return true
     }
     
     private func completeAssetTransaction(for transactionType: TransactionType) {
@@ -477,12 +474,11 @@ extension TransactionController: LedgerBLEControllerDelegate {
         }
       
         self.signedTransactionData = signedTransaction
+        calculateAssetTransactionFee(for: transactionType)
         
         if transactionType == .algosTransaction {
-            calculateAssetTransactionFee(for: .algosTransaction)
             completeAlgosTransaction()
         } else {
-            calculateAssetTransactionFee(for: transactionType)
             completeAssetTransaction(for: transactionType)
         }
     }
@@ -494,5 +490,13 @@ extension TransactionController {
         case assetTransaction
         case assetAddition
         case assetRemoval
+    }
+}
+
+extension TransactionController {
+    enum TransactionError {
+        case minimumAmount(amount: Int64)
+        case invalidAddress(address: String)
+        case other
     }
 }

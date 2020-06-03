@@ -9,6 +9,8 @@
 import UIKit
 
 class TransactionDetailViewModel {
+    private(set) var opponentType: Opponent?
+    
     func configureReceivedTransaction(
         _ view: TransactionDetailView,
         with transaction: Transaction,
@@ -124,9 +126,16 @@ class TransactionDetailViewModel {
     
     func setOpponent(for transaction: Transaction, with address: String, in view: TransactionDetailView) {
         if let contact = transaction.contact {
+            opponentType = .contact(address: address)
             view.opponentView.setContact(contact)
             view.opponentView.setContactButtonImage(img("icon-qr-view"))
+        } else if let localAccount = UIApplication.shared.appConfiguration?.session.accountInformation(from: address) {
+            opponentType = .localAccount(address: address)
+            view.opponentView.setName(localAccount.name)
+            view.opponentView.setContactImage(hidden: true)
+            view.opponentView.setContactButtonImage(img("icon-qr-view"))
         } else {
+            opponentType = .address(address: address)
             view.opponentView.setContactButtonImage(img("icon-user-add"))
             view.opponentView.setName(address)
             view.opponentView.setContactImage(hidden: true)
@@ -160,5 +169,13 @@ class TransactionDetailViewModel {
             view.idView.setSeparatorView(hidden: true)
             view.noteView.removeFromSuperview()
         }
+    }
+}
+
+extension TransactionDetailViewModel {
+    enum Opponent {
+        case localAccount(address: String)
+        case contact(address: String)
+        case address(address: String)
     }
 }
