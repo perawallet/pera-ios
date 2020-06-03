@@ -108,7 +108,7 @@ extension SendTransactionViewController: TransactionControllerDelegate {
     func transactionController(_ transactionController: TransactionController, didFailedTransaction error: Error) {
         SVProgressHUD.dismiss()
         switch error {
-        case .networkUnavailable:
+        case .networkUnavailable, .custom:
             displaySimpleAlertWith(title: "title-error".localized, message: "title-internet-connection".localized)
         default:
             displaySimpleAlertWith(title: "title-error".localized, message: error.localizedDescription)

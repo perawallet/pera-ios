@@ -35,7 +35,7 @@ class TabBar: BaseView {
     private var selectedBarButton: TabBarButton?
 
     override var intrinsicContentSize: CGSize {
-        return CGSize(width: UIView.noIntrinsicMetric, height: 44.0 + compactSafeAreaInsets.bottom)
+        return CGSize(width: UIView.noIntrinsicMetric, height: 62.0 + compactSafeAreaInsets.bottom)
     }
     
     override func configureAppearance() {

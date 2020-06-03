@@ -155,19 +155,21 @@ extension TransactionDetailViewController {
 
 extension TransactionDetailViewController: TransactionDetailViewDelegate {
     func transactionDetailViewDidTapOpponentActionButton(_ transactionDetailView: TransactionDetailView) {
-        guard let contact = transaction.contact,
-            let address = contact.address else {
-                guard let address = transactionDetailView.opponentView.contactDisplayView.nameLabel.text else {
-                    return
-                }
-
-                let viewController = open(.addContact(mode: .new()), by: .push) as? AddContactViewController
-                viewController?.addContactView.userInformationView.algorandAddressInputView.value = address
-                return
+        guard let opponentType = viewModel.opponentType else {
+            return
         }
         
-        let draft = QRCreationDraft(address: address, mode: .address)
-        open(.qrGenerator(title: contact.name, draft: draft), by: .present)
+        switch opponentType {
+        case let .contact(address):
+            let draft = QRCreationDraft(address: address, mode: .address)
+            open(.qrGenerator(title: transaction.contact?.name ?? "qr-creation-sharing-title".localized, draft: draft), by: .present)
+        case let .localAccount(address):
+            let draft = QRCreationDraft(address: address, mode: .address)
+            open(.qrGenerator(title: "qr-creation-sharing-title".localized, draft: draft), by: .present)
+        case let .address(address):
+            let viewController = open(.addContact(mode: .new()), by: .push) as? AddContactViewController
+            viewController?.addContactView.userInformationView.algorandAddressInputView.value = address
+        }
     }
 }
 

@@ -11,7 +11,7 @@ import Magpie
 import CoreBluetooth
 import SVProgressHUD
 
-class AssetAdditionViewController: BaseViewController {
+class AssetAdditionViewController: BaseViewController, TestNetTitleDisplayable {
     
     private let layout = Layout<LayoutConstants>()
     
@@ -93,7 +93,7 @@ class AssetAdditionViewController: BaseViewController {
     
     override func configureAppearance() {
         super.configureAppearance()
-        navigationItem.title = "title-add-asset".localized
+        displayTestNetTitleView(with: "title-add-asset".localized)
         emptyStateView.setTitle("asset-not-found-title".localized)
         emptyStateView.setDetail("asset-not-found-detail".localized)
     }
