@@ -430,15 +430,11 @@ extension AccountsViewController: QRScannerViewControllerDelegate {
 extension AccountsViewController {
     func presentQRTooltipIfNeeded() {
         guard let isAccountQRTooltipDisplayed = session?.isAccountQRTooltipDisplayed(),
+            isViewAppeared,
             !isAccountQRTooltipDisplayed else {
             return
         }
  
-        // Needs to set presentationController before calling present. So it's not initialized from the Router.
-        let tooltipViewController = TooltipViewController(title: "accounts-qr-tooltip".localized, configuration: configuration)
-        tooltipViewController.presentationController?.delegate = self
-        present(tooltipViewController, animated: true)
-        
         guard let headerView = accountsView.accountsCollectionView.supplementaryView(
             forElementKind: UICollectionView.elementKindSectionHeader,
             at: IndexPath(item: 0, section: 0)
@@ -446,7 +442,12 @@ extension AccountsViewController {
             return
         }
         
+        // Needs to set presentationController before calling present. So it's not initialized from the Router.
+        let tooltipViewController = TooltipViewController(title: "accounts-qr-tooltip".localized, configuration: configuration)
+        tooltipViewController.presentationController?.delegate = self
         tooltipViewController.setSourceView(headerView.contextView.qrButton)
+        present(tooltipViewController, animated: true)
+        
         session?.setAccountQRTooltipDisplayed()
     }
 }
