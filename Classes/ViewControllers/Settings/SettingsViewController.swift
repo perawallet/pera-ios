@@ -342,7 +342,7 @@ extension SettingsViewController: SettingsViewModelDelegate {
     }
     
     private func logout() {
-        session?.reset()
+        session?.reset(isContactIncluded: true)
         pushNotificationController.revokeDevice()
         open(.introduction, by: .launch, animated: false)
      }

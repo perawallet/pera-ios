@@ -59,7 +59,7 @@ class RootViewController: UIViewController {
                     by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
                 )
             } else {
-                appConfiguration.session.reset()
+                appConfiguration.session.reset(isContactIncluded: false)
                 open(.introduction, by: .launch, animated: false)
             }
         } else {
