@@ -45,11 +45,13 @@ extension UIView {
         applyShadow(errorShadow)
     }
     
-    func setShadowFrames() {
+    func setShadowFrameAndPath(cornerRadius: CGFloat = 0.0) {
         layer.sublayers?.forEach { sublayer in
             if let sublayerName = sublayer.name,
                 sublayerName.hasPrefix("shadow_") {
                     sublayer.frame = bounds
+                    let shadowRadius = cornerRadius > 0.0 ? cornerRadius : layer.cornerRadius
+                    sublayer.shadowPath = UIBezierPath(roundedRect: bounds, cornerRadius: shadowRadius).cgPath
             }
         }
     }

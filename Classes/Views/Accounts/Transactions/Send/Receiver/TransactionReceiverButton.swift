@@ -45,7 +45,7 @@ class TransactionReceiverButton: BaseControl {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        containerView.setShadowFrames()
+        containerView.setShadowFrameAndPath()
     }
 }
 

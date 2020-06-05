@@ -82,7 +82,7 @@ class AssetRemovalView: BaseView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        topContainerView.setShadowFrames()
+        topContainerView.setShadowFrameAndPath()
     }
 }
 

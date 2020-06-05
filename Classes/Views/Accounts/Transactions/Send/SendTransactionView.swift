@@ -60,7 +60,7 @@ class SendTransactionView: BaseView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        containerView.setShadowFrames()
+        containerView.setShadowFrameAndPath()
     }
 }
 

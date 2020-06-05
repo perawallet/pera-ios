@@ -93,7 +93,7 @@ class PassphraseView: BaseView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        passphraseContainerView.setShadowFrames()
+        passphraseContainerView.setShadowFrameAndPath()
     }
 }
 

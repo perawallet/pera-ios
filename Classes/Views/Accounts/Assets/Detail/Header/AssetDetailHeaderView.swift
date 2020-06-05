@@ -156,7 +156,7 @@ class AssetDetailHeaderView: BaseView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        setShadowFrames()
+        setShadowFrameAndPath()
     }
 }
 
