@@ -32,7 +32,7 @@ class AssetAdditionViewController: BaseViewController, TestNetTitleDisplayable {
     private var searchOffset = 0
     private var hasNext = false
     private let paginationRequestOffset = 3
-    private var assetSearchFilters = AssetSearchFilter.all
+    private var assetSearchFilters = AssetSearchFilter.verified
     
     private lazy var ledgerApprovalPresenter = CardModalPresenter(
         config: ModalConfiguration(
