@@ -45,6 +45,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     ) -> Bool {
         
         FirebaseApp.configure()
+        Analytics.setAnalyticsCollectionEnabled(true)
         SwiftDate.setupDateRegion()
         setupWindow()
         
