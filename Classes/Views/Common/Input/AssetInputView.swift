@@ -98,7 +98,7 @@ class AssetInputView: BaseView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        containerView.setShadowFrames()
+        containerView.updateShadowLayoutWhenViewDidLayoutSubviews()
     }
 }
 

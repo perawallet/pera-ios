@@ -145,7 +145,7 @@ extension UserInformationView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        imageBackgroundView.setShadowFrames()
+        imageBackgroundView.updateShadowLayoutWhenViewDidLayoutSubviews()
     }
 }
 

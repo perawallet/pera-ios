@@ -161,9 +161,9 @@ class TabBarController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        sendButton.setShadowFrames()
-        requestButton.setShadowFrames()
-        tabBar.setShadowFrames()
+        sendButton.updateShadowLayoutWhenViewDidLayoutSubviews(cornerRadius: 24.0)
+        requestButton.updateShadowLayoutWhenViewDidLayoutSubviews(cornerRadius: 24.0)
+        tabBar.updateShadowLayoutWhenViewDidLayoutSubviews()
     }
 }
 
