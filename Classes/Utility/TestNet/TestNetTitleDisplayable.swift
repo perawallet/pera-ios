@@ -14,17 +14,13 @@ protocol TestNetTitleDisplayable {
 
 extension TestNetTitleDisplayable where Self: BaseViewController {
     func displayTestNetTitleView(with title: String) {
-        guard let isTestNet = api?.isTestNet else {
+        guard let isTestNet = api?.isTestNet, isTestNet else {
             self.title = title
             return
         }
         
-        if isTestNet {
-            let titleView = TestNetTitleView()
-            titleView.setTitle(title)
-            navigationItem.titleView = titleView
-        } else {
-            self.title = title
-        }
+        let titleView = TestNetTitleView()
+        titleView.setTitle(title)
+        navigationItem.titleView = titleView
     }
 }

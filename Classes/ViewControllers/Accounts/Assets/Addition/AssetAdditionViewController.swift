@@ -81,7 +81,7 @@ class AssetAdditionViewController: BaseViewController, TestNetTitleDisplayable {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        fetchAssets(with: nil, isPaginated: false)
+        fetchAssets(query: nil, isPaginated: false)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -122,7 +122,7 @@ extension AssetAdditionViewController {
 }
 
 extension AssetAdditionViewController {
-    private func fetchAssets(with query: String?, isPaginated: Bool) {
+    private func fetchAssets(query: String?, isPaginated: Bool) {
         let searchDraft = AssetSearchQuery(status: assetSearchFilters, query: query, limit: searchLimit, offset: searchOffset)
         api?.searchAssets(with: searchDraft) { [weak self] response in
             switch response {
@@ -221,7 +221,7 @@ extension AssetAdditionViewController: UICollectionViewDelegateFlowLayout {
             guard let query = assetAdditionView.assetInputView.inputTextField.text else {
                 return
             }
-            fetchAssets(with: query.isEmpty ? nil : query, isPaginated: true)
+            fetchAssets(query: query.isEmpty ? nil : query, isPaginated: true)
         }
     }
 }
@@ -240,7 +240,7 @@ extension AssetAdditionViewController: AssetAdditionViewDelegate {
         resetPagination()
         
         let query = assetAdditionView.assetInputView.inputTextField.text
-        fetchAssets(with: query, isPaginated: false)
+        fetchAssets(query: query, isPaginated: false)
     }
 }
 
@@ -258,7 +258,7 @@ extension AssetAdditionViewController: InputViewDelegate {
         assetAdditionView.assetInputView.rightInputAccessoryButton.isHidden = query.isEmpty
         
         resetPagination()
-        fetchAssets(with: query, isPaginated: false)
+        fetchAssets(query: query, isPaginated: false)
     }
     
     private func resetPagination() {
@@ -270,7 +270,7 @@ extension AssetAdditionViewController: InputViewDelegate {
         assetAdditionView.assetInputView.rightInputAccessoryButton.isHidden = true
         assetAdditionView.assetInputView.inputTextField.text = nil
         resetPagination()
-        fetchAssets(with: nil, isPaginated: false)
+        fetchAssets(query: nil, isPaginated: false)
     }
 }
 
