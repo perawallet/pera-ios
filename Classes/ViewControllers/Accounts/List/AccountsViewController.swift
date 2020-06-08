@@ -107,15 +107,6 @@ class AccountsViewController: BaseViewController {
         isTabBarHidden = false
     }
     
-    override func beginTracking() {
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(didChangedNetwork(notification:)),
-            name: .NetworkChanged,
-            object: nil
-        )
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -127,7 +118,6 @@ class AccountsViewController: BaseViewController {
         pushNotificationController.registerDevice()
         
         setAccountsCollectionViewContentState()
-        addTestNetBanner()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -282,19 +272,6 @@ extension AccountsViewController {
         accountsDataSource.refresh()
         setAccountsCollectionViewContentState()
         accountsView.accountsCollectionView.reloadData()
-    }
-    
-    @objc
-    private func didChangedNetwork(notification: Notification) {
-        guard let isTestNet = api?.isTestNet else {
-            return
-        }
-        
-        if isTestNet {
-            addTestNetBanner()
-        } else {
-            removeTestNetBanner()
-        }
     }
 }
 

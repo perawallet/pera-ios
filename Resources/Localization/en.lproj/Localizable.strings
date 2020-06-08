@@ -173,6 +173,7 @@
 "send-receiving-algos-select" = "Select Receiving Account";
 "send-select-asset" = "Select Asset";
 "send-choose-asset" = "Choose asset";
+"send-algos-address" = "Address";
 "send-algos-to" = "To";
 "send-algos-balance-title" = "Balance:";
 "send-algos-amount" = "Amount";

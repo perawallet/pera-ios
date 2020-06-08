@@ -16,14 +16,6 @@ class BaseViewController: UIViewController, TabBarConfigurable {
     var hidesStatusBarWhenAppeared: Bool = false
     var hidesStatusBarWhenPresented: Bool = false
     
-    private lazy var statusbarView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.zPosition = 1.0
-        view.backgroundColor = SharedColors.testNetBanner
-        return view
-    }()
-    
     override var prefersStatusBarHidden: Bool {
         return isStatusBarHidden
     }
@@ -159,28 +151,6 @@ class BaseViewController: UIViewController, TabBarConfigurable {
     
     func didTapDismissBarButton() -> Bool {
         return true
-    }
-}
-
-extension BaseViewController {
-    func addTestNetBanner() {
-        guard let api = api, api.isTestNet else {
-            removeTestNetBanner()
-            return
-        }
-        
-        let statusBarHeight: CGFloat = UIApplication.shared.statusBarFrame.size.height
-        navigationController?.view.addSubview(statusbarView)
-        
-        statusbarView.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.height.equalTo(statusBarHeight)
-            make.top.leading.trailing.equalToSuperview()
-        }
-    }
-    
-    func removeTestNetBanner() {
-        statusbarView.removeFromSuperview()
     }
 }
 

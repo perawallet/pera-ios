@@ -138,7 +138,7 @@ extension NodeSettingsViewController {
         lastActiveNetwork = selectedNode.network
         DispatchQueue.main.async {
             UIApplication.shared.rootViewController()?.setNetwork(to: selectedNode.network)
-            NotificationCenter.default.post(name: .NetworkChanged, object: self, userInfo: nil)
+            UIApplication.shared.rootViewController()?.addTestNetBanner()
         }
         
         UIApplication.shared.accountManager?.fetchAllAccounts(isVerifiedAssetsIncluded: true) {

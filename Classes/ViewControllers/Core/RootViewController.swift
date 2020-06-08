@@ -23,6 +23,14 @@ class RootViewController: UIViewController {
     }
     
     // MARK: Properties
+    
+    private lazy var statusbarView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.layer.zPosition = 1.0
+        view.backgroundColor = SharedColors.testNetBanner
+        return view
+    }()
 
     let appConfiguration: AppConfiguration
     
@@ -51,6 +59,7 @@ class RootViewController: UIViewController {
         view.backgroundColor = SharedColors.primaryBackground
         
         initializeNetwork()
+        addTestNetBanner()
         
         if !appConfiguration.session.isValid {
             if appConfiguration.session.hasPassword() && appConfiguration.session.authenticatedUser != nil {
@@ -211,6 +220,38 @@ extension RootViewController {
         } else {
             appConfiguration.api.base = Environment.current.testNetApi
             appConfiguration.api.token = Environment.current.testNetToken
+        }
+    }
+}
+
+extension RootViewController {
+    func addTestNetBanner() {
+        guard let window = UIApplication.shared.keyWindow else {
+            return
+        }
+        
+        if !appConfiguration.api.isTestNet {
+            removeTestNetBanner()
+            return
+        }
+        
+        if statusbarView.superview != nil {
+            return
+        }
+        
+        let statusBarHeight: CGFloat = UIApplication.shared.statusBarFrame.size.height
+        window.addSubview(statusbarView)
+        
+        statusbarView.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.height.equalTo(statusBarHeight)
+            make.top.leading.trailing.equalToSuperview()
+        }
+    }
+    
+    func removeTestNetBanner() {
+        if statusbarView.superview != nil {
+            statusbarView.removeFromSuperview()
         }
     }
 }
