@@ -14,20 +14,28 @@ class TransactionTextInformationView: BaseView {
     
     weak var delegate: TransactionTextInformationViewDelegate?
     
+    private lazy var copyValueGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(notifyDelegateToCopyValue))
+    
     private lazy var titleLabel = TransactionDetailTitleLabel()
     
     private lazy var detailLabel: UILabel = {
-        UILabel()
+        let label = UILabel()
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
             .withLine(.contained)
             .withAlignment(.right)
             .withTextColor(SharedColors.primaryText)
+        label.isUserInteractionEnabled = true
+        return label
     }()
     
     private lazy var separatorView = LineSeparatorView()
     
     override func configureAppearance() {
         backgroundColor = SharedColors.secondaryBackground
+    }
+    
+    override func linkInteractors() {
+        detailLabel.addGestureRecognizer(copyValueGestureRecognizer)
     }
     
     override func prepareLayout() {
@@ -69,6 +77,13 @@ extension TransactionTextInformationView {
 }
 
 extension TransactionTextInformationView {
+    @objc
+    private func notifyDelegateToCopyValue(copyValueGestureRecognizer: UILongPressGestureRecognizer) {
+        delegate?.transactionTextInformationViewDidCopyDetail(self)
+    }
+}
+
+extension TransactionTextInformationView {
     func setTitle(_ title: String) {
         titleLabel.text = title
     }
@@ -88,5 +103,5 @@ extension TransactionTextInformationView {
 }
 
 protocol TransactionTextInformationViewDelegate: class {
-    func transactionTextInformationViewDidTapActionButton(_ transactionTextInformationView: TransactionTextInformationView)
+    func transactionTextInformationViewDidCopyDetail(_ transactionTextInformationView: TransactionTextInformationView)
 }

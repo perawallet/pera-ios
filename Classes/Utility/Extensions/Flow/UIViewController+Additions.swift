@@ -26,6 +26,13 @@ extension UIViewController {
         return self
     }
     
+    func displaySimpleAlertWith(title: String) {
+        let alertController = UIAlertController(title: title, message: nil, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "title-ok".localized, style: .default, handler: nil)
+        alertController.addAction(okAction)
+        present(alertController, animated: true)
+    }
+    
     func displaySimpleAlertWith(title: String, message: String, handler: ((UIAlertAction) -> Void)? = nil) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         

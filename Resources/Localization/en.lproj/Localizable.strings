@@ -292,6 +292,8 @@
 "transaction-detail-note" = "Note";
 "transaction-detail-close-to" = "Close To";
 "transaction-detail-close-amount" = "Close Amount";
+"transaction-detail-note-copied" = "Transaction note copied to clipboard";
+"transaction-detail-id-copied" = "Transaction ID copied to clipboard";
 
 // MARK: Feedback
 "feedback-title" = "Send Feedback";

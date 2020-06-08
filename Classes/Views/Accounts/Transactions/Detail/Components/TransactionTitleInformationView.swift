@@ -10,22 +10,32 @@ import UIKit
 
 class TransactionTitleInformationView: BaseView {
     
+    weak var delegate: TransactionTitleInformationViewDelegate?
+    
     private let layout = Layout<LayoutConstants>()
+    
+    private lazy var copyValueGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(notifyDelegateToCopyValue))
     
     private lazy var titleLabel = TransactionDetailTitleLabel()
     
     private lazy var detailLabel: UILabel = {
-        UILabel()
+        let label = UILabel()
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
             .withLine(.contained)
             .withAlignment(.left)
             .withTextColor(SharedColors.primaryText)
+        label.isUserInteractionEnabled = true
+        return label
     }()
     
     private lazy var separatorView = LineSeparatorView()
     
     override func configureAppearance() {
         backgroundColor = SharedColors.secondaryBackground
+    }
+    
+    override func linkInteractors() {
+        detailLabel.addGestureRecognizer(copyValueGestureRecognizer)
     }
     
     override func prepareLayout() {
@@ -67,6 +77,13 @@ extension TransactionTitleInformationView {
 }
 
 extension TransactionTitleInformationView {
+    @objc
+    private func notifyDelegateToCopyValue(copyValueGestureRecognizer: UILongPressGestureRecognizer) {
+        delegate?.transactionTitleInformationViewDidCopyDetail(self)
+    }
+}
+
+extension TransactionTitleInformationView {
     func setTitle(_ title: String) {
         titleLabel.text = title
     }
@@ -87,4 +104,8 @@ extension TransactionTitleInformationView {
         let separatorHeight: CGFloat = 1.0
         let labelTopOffset: CGFloat = 8.0
     }
+}
+
+protocol TransactionTitleInformationViewDelegate: class {
+    func transactionTitleInformationViewDidCopyDetail(_ transactionTitleInformationView: TransactionTitleInformationView)
 }
