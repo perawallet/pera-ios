@@ -40,8 +40,8 @@ class AssetAdditionView: BaseView {
     
     private lazy var assetSegmentControl: BetterSegmentedControl = {
         let segments = [
-            SegmentItem(text: "asset-all-title".localized),
-            SegmentItem(text: "asset-verified-title".localized, image: img("icon-verified"))
+            SegmentItem(text: "asset-verified-title".localized, image: img("icon-verified")),
+            SegmentItem(text: "asset-all-title".localized)
         ]
         let control = BetterSegmentedControl(
             frame: .zero,
@@ -93,9 +93,9 @@ extension AssetAdditionView {
     private func segmentedControlValueChanged(_ segmentedControl: BetterSegmentedControl) {
         switch segmentedControl.index {
         case 0:
-            delegate?.assetAdditionViewDidTapAllAssets(self)
-        case 1:
             delegate?.assetAdditionViewDidTapVerifiedAssets(self)
+        case 1:
+            delegate?.assetAdditionViewDidTapAllAssets(self)
         default:
             return
         }
