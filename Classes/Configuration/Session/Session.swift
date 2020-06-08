@@ -265,12 +265,16 @@ extension Session {
 }
 
 extension Session {
-    func reset() {
+    func reset(isContactIncluded: Bool) {
         let termsAndServicesAccepted = isTermsAndServicesAccepted()
         
         applicationConfiguration = nil
         ApplicationConfiguration.clear(entity: ApplicationConfiguration.entityName)
-        Contact.clear(entity: Contact.entityName)
+        
+        if isContactIncluded {
+            Contact.clear(entity: Contact.entityName)
+        }
+        
         Node.clear(entity: Node.entityName)
         try? privateStorage.removeAll()
         self.clear(.defaults)

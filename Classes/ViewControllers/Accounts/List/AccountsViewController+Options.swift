@@ -84,7 +84,7 @@ extension AccountsViewController: OptionsViewControllerDelegate {
                 user.removeAccount(accountInformation)
                 
                 guard !user.accounts.isEmpty else {
-                    self.session?.reset()
+                    self.session?.reset(isContactIncluded: false)
                     self.tabBarContainer?.open(.introduction, by: .launch, animated: false)
                     return
                 }

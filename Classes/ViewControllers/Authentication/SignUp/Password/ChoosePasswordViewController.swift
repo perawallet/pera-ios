@@ -50,7 +50,7 @@ class ChoosePasswordViewController: BaseViewController {
     
     override func didTapBackBarButton() -> Bool {
         if mode == .setup {
-            session?.reset()
+            session?.reset(isContactIncluded: false)
         }
         return true
     }
