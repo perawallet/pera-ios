@@ -208,7 +208,7 @@ extension BLEConnectionManager: CBPeripheralDelegate {
             }
             
             let readData = characteristicData.toHexString()
-            print("Value Recieved: \(readData)")
+            print("Value Received: \(readData)")
             
             delegate?.bleConnectionManager(self, didRead: readData)
         }

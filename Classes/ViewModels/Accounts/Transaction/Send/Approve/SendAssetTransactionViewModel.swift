@@ -49,18 +49,18 @@ class SendAssetTransactionViewModel {
             switch response {
             case let .results(objects: objects):
                 guard let results = objects as? [Contact], !results.isEmpty else {
-                    self.setRecieverWithAddress(receiverAddress, in: view)
+                    self.setReceiverWithAddress(receiverAddress, in: view)
                     return
                 }
                 
                 view.setReceiverAsContact(results[0])
             default:
-                self.setRecieverWithAddress(receiverAddress, in: view)
+                self.setReceiverWithAddress(receiverAddress, in: view)
             }
         }
     }
     
-    private func setRecieverWithAddress(_ address: String, in view: SendTransactionView) {
+    private func setReceiverWithAddress(_ address: String, in view: SendTransactionView) {
         if let shortAddressDisplay = address.shortAddressDisplay() {
             view.setReceiverName(shortAddressDisplay)
             view.removeReceiverImage()
