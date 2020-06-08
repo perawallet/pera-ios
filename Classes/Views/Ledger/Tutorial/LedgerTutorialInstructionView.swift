@@ -42,7 +42,7 @@ class LedgerTutorialInstructionView: BaseView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        setShadowFrameAndPath()
+        updateShadowLayoutWhenViewDidLayoutSubviews()
     }
 }
 

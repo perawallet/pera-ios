@@ -55,7 +55,7 @@ class SelectionView: BaseControl {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        containerView.setShadowFrameAndPath()
+        containerView.updateShadowLayoutWhenViewDidLayoutSubviews()
     }
 }
 

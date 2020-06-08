@@ -58,7 +58,7 @@ class BaseInputView: BaseView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        contentView.setShadowFrameAndPath()
+        contentView.updateShadowLayoutWhenViewDidLayoutSubviews()
     }
 }
 

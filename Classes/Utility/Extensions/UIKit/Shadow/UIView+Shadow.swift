@@ -45,7 +45,7 @@ extension UIView {
         applyShadow(errorShadow)
     }
     
-    func setShadowFrameAndPath(cornerRadius: CGFloat = 0.0) {
+    func updateShadowLayoutWhenViewDidLayoutSubviews(cornerRadius: CGFloat = 0.0) {
         layer.sublayers?.forEach { sublayer in
             if let sublayerName = sublayer.name,
                 sublayerName.hasPrefix("shadow_") {

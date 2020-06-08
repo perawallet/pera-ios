@@ -74,7 +74,7 @@ class AssetDisplayView: BaseView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        topContainerView.setShadowFrameAndPath()
+        topContainerView.updateShadowLayoutWhenViewDidLayoutSubviews()
     }
 }
 

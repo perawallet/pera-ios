@@ -123,7 +123,7 @@ extension TabBarConfigurable where Self: UIViewController {
             size: tabBar.bounds.size
         )
         
-        newTabBarSnaphot.setShadowFrameAndPath()
+        newTabBarSnaphot.updateShadowLayoutWhenViewDidLayoutSubviews()
 
         tabBarSnapshot = newTabBarSnaphot
     }
