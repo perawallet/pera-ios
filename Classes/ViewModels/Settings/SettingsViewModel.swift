@@ -51,6 +51,8 @@ class SettingsViewModel {
             return "settings-server-node-settings".localized
         case .feedback:
             return "feedback-title".localized
+        case .termsAndServices:
+            return "terms-and-services-title".localized
         }
     }
     
@@ -70,6 +72,8 @@ class SettingsViewModel {
             return img("icon-settings-node")
         case .feedback:
             return img("icon-feedback")
+        case .termsAndServices:
+            return img("icon-terms-and-services")
         }
     }
 }
@@ -81,7 +85,7 @@ extension SettingsViewModel: SettingsToggleContextViewDelegate {
 }
 
 extension SettingsViewModel {
-    enum SettingsCellMode: Int {
+    enum SettingsCellMode: Int, CaseIterable {
         case nodeSettings = 0
         case password = 1
         case localAuthentication = 2
@@ -89,6 +93,7 @@ extension SettingsViewModel {
         case rewards = 4
         case language = 5
         case feedback = 6
+        case termsAndServices = 7
     }
 }
 

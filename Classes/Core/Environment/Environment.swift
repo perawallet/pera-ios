@@ -101,6 +101,8 @@ class Environment {
         }
     }()
     
+    lazy var termsAndServicesUrl = "https://www.algorand.com/wallet-disclaimer"
+    
     private let target: AppTarget
     
     private init() {

@@ -9,6 +9,7 @@
 import UIKit
 import SVProgressHUD
 import UserNotifications
+import SafariServices
 
 class SettingsViewController: BaseViewController {
     
@@ -82,7 +83,7 @@ extension SettingsViewController {
 
 extension SettingsViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 7
+        return SettingsViewModel.SettingsCellMode.allCases.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -165,6 +166,15 @@ extension SettingsViewController: UICollectionViewDataSource {
             
             viewModel.configureDetail(cell, with: mode)
             return cell
+        case .termsAndServices:
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: SettingsDetailCell.reusableIdentifier,
+                for: indexPath) as? SettingsDetailCell else {
+                    fatalError("Index path is out of bounds")
+            }
+            
+            viewModel.configureDetail(cell, with: mode)
+            return cell
         }
     }
     
@@ -223,6 +233,13 @@ extension SettingsViewController: UICollectionViewDelegateFlowLayout {
             )
         case .feedback:
             open(.feedback, by: .push)
+        case .termsAndServices:
+            guard let url = URL(string: Environment.current.termsAndServicesUrl) else {
+                return
+            }
+            
+            let safariViewController = SFSafariViewController(url: url)
+            present(safariViewController, animated: true, completion: nil)
         default:
             break
         }
@@ -343,6 +360,7 @@ extension SettingsViewController: SettingsViewModelDelegate {
     
     private func logout() {
         session?.reset(isContactIncluded: true)
+        NotificationCenter.default.post(name: .ContactDeletion, object: self, userInfo: nil)
         pushNotificationController.revokeDevice()
         open(.introduction, by: .launch, animated: false)
      }
