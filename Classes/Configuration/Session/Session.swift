@@ -15,7 +15,9 @@ class Session: Storable {
     private let privateStorageKey = "com.algorand.algorand.token.private"
     private let privateKey = "com.algorand.algorand.token.private.key"
     private let rewardsPrefenceKey = "com.algorand.algorand.rewards.preference"
+    /// <todo> Remove this key in other releases later when the v2 is accepted.
     private let termsAndServicesKey = "com.algorand.algorand.terms.services"
+    private let termsAndServicesKeyV2 = "com.algorand.algorand.terms.services.v2"
     private let accountsQRTooltipKey = "com.algorand.algorand.accounts.qr.tooltip"
     
     let algorandSDK = AlgorandSDK()
@@ -246,11 +248,19 @@ extension Session {
 // MARK: Terms and Services
 extension Session {
     func acceptTermsAndServices() {
-        save(true, for: termsAndServicesKey, to: .defaults)
+        save(true, for: termsAndServicesKeyV2, to: .defaults)
     }
     
     func isTermsAndServicesAccepted() -> Bool {
-        return bool(with: termsAndServicesKey, to: .defaults)
+        return bool(with: termsAndServicesKeyV2, to: .defaults)
+    }
+    
+    /// <todo> Remove this check in other releases later when the v2 is accepted.
+    func removeOldTermsAndServicesKeyFromDefaults() {
+        let isOldTermsAndServicesAccepted = bool(with: termsAndServicesKey, to: .defaults)
+        if isOldTermsAndServicesAccepted {
+            userDefaults.remove(for: termsAndServicesKey)
+        }
     }
 }
 

@@ -74,6 +74,8 @@ class RootViewController: UIViewController {
         } else {
             setupTabBarController()
         }
+        
+        appConfiguration.session.removeOldTermsAndServicesKeyFromDefaults()
     }
     
     func setupTabBarController(withInitial screen: Screen? = nil) {
