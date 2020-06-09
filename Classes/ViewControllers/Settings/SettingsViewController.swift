@@ -9,7 +9,6 @@
 import UIKit
 import SVProgressHUD
 import UserNotifications
-import SafariServices
 
 class SettingsViewController: BaseViewController {
     
@@ -83,11 +82,11 @@ extension SettingsViewController {
 
 extension SettingsViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return SettingsViewModel.SettingsCellMode.allCases.count
+        return SettingsViewModel.CellMode.allCases.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let mode = SettingsViewModel.SettingsCellMode(rawValue: indexPath.item) else {
+        guard let mode = SettingsViewModel.CellMode(rawValue: indexPath.item) else {
             fatalError("Index path is out of bounds")
         }
         
@@ -213,7 +212,7 @@ extension SettingsViewController: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let mode = SettingsViewModel.SettingsCellMode(rawValue: indexPath.item) else {
+        guard let mode = SettingsViewModel.CellMode(rawValue: indexPath.item) else {
             fatalError("Index path is out of bounds")
         }
         
@@ -233,8 +232,7 @@ extension SettingsViewController: UICollectionViewDelegateFlowLayout {
                 return
             }
             
-            let safariViewController = SFSafariViewController(url: url)
-            present(safariViewController, animated: true, completion: nil)
+            open(url)
         default:
             break
         }
@@ -249,7 +247,7 @@ extension SettingsViewController: SettingsFooterSupplementaryViewDelegate {
 
 extension SettingsViewController: SettingsViewModelDelegate {
     func settingsViewModel(_ viewModel: SettingsViewModel, didToggleValue value: Bool, atIndexPath indexPath: IndexPath) {
-        guard let mode = SettingsViewModel.SettingsCellMode(rawValue: indexPath.item),
+        guard let mode = SettingsViewModel.CellMode(rawValue: indexPath.item),
             let cell = settingsView.collectionView.cellForItem(at: indexPath) as? SettingsToggleCell else {
             return
         }

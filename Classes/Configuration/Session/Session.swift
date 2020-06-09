@@ -113,6 +113,10 @@ class Session: Storable {
     var verifiedAssets: [VerifiedAsset]?
     
     var accounts = [Account]()
+    
+    init() {
+        removeOldTermsAndServicesKeyFromDefaults()
+    }
 }
 
 extension Session {
@@ -256,7 +260,7 @@ extension Session {
     }
     
     /// <todo> Remove this check in other releases later when the v2 is accepted.
-    func removeOldTermsAndServicesKeyFromDefaults() {
+    private func removeOldTermsAndServicesKeyFromDefaults() {
         let isOldTermsAndServicesAccepted = bool(with: termsAndServicesKey, to: .defaults)
         if isOldTermsAndServicesAccepted {
             userDefaults.remove(for: termsAndServicesKey)

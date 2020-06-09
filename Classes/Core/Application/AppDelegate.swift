@@ -43,9 +43,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
-        
-        FirebaseApp.configure()
-        Analytics.setAnalyticsCollectionEnabled(true)
+        setupFirebase()
         SwiftDate.setupDateRegion()
         setupWindow()
         
@@ -69,6 +67,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         window?.rootViewController = NavigationController(rootViewController: rootViewController)
         window?.makeKeyAndVisible()
+    }
+    
+    private func setupFirebase() {
+        FirebaseApp.configure()
+        Analytics.setAnalyticsCollectionEnabled(true)
     }
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {

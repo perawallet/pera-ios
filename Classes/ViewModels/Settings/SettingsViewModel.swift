@@ -14,18 +14,18 @@ class SettingsViewModel {
     
     weak var delegate: SettingsViewModelDelegate?
     
-    func configureDetail(_ cell: SettingsDetailCell, with mode: SettingsCellMode) {
+    func configureDetail(_ cell: SettingsDetailCell, with mode: CellMode) {
         cell.contextView.nameLabel.text = nameForMode(mode)
         cell.contextView.setImage(imageForMode(mode))
     }
     
-    func configureInfo(_ cell: SettingsInfoCell, with mode: SettingsCellMode) {
+    func configureInfo(_ cell: SettingsInfoCell, with mode: CellMode) {
         cell.contextView.nameLabel.text = nameForMode(mode)
         cell.contextView.detailLabel.text = "settings-language-english".localized
         cell.contextView.setImage(imageForMode(mode))
     }
     
-    func configureToggle(_ cell: SettingsToggleCell, enabled: Bool, with mode: SettingsCellMode, for indexPath: IndexPath) {
+    func configureToggle(_ cell: SettingsToggleCell, enabled: Bool, with mode: CellMode, for indexPath: IndexPath) {
         self.indexPath = indexPath
         cell.contextView.indexPath = indexPath
         
@@ -35,7 +35,7 @@ class SettingsViewModel {
         cell.contextView.delegate = self
     }
     
-    private func nameForMode(_ mode: SettingsCellMode) -> String {
+    private func nameForMode(_ mode: CellMode) -> String {
         switch mode {
         case .password:
             return "settings-change-password".localized
@@ -56,7 +56,7 @@ class SettingsViewModel {
         }
     }
     
-    private func imageForMode(_ mode: SettingsCellMode) -> UIImage? {
+    private func imageForMode(_ mode: CellMode) -> UIImage? {
         switch mode {
         case .password:
             return img("icon-settings-password")
@@ -85,7 +85,7 @@ extension SettingsViewModel: SettingsToggleContextViewDelegate {
 }
 
 extension SettingsViewModel {
-    enum SettingsCellMode: Int, CaseIterable {
+    enum CellMode: Int, CaseIterable {
         case nodeSettings = 0
         case password = 1
         case localAuthentication = 2
