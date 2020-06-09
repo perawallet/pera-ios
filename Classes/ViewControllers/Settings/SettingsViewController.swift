@@ -93,33 +93,30 @@ extension SettingsViewController: UICollectionViewDataSource {
         
         switch mode {
         case .nodeSettings:
-            guard let cell = collectionView.dequeueReusableCell(
+            if let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: SettingsDetailCell.reusableIdentifier,
-                for: indexPath) as? SettingsDetailCell else {
-                    fatalError("Index path is out of bounds")
+                for: indexPath
+            ) as? SettingsDetailCell {
+                viewModel.configureDetail(cell, with: mode)
+                return cell
             }
-            
-            viewModel.configureDetail(cell, with: mode)
-            return cell
         case .password:
-            guard let cell = collectionView.dequeueReusableCell(
+            if let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: SettingsDetailCell.reusableIdentifier,
-                for: indexPath) as? SettingsDetailCell else {
-                    fatalError("Index path is out of bounds")
+                for: indexPath
+            ) as? SettingsDetailCell {
+                viewModel.configureDetail(cell, with: mode)
+                return cell
             }
-            
-            viewModel.configureDetail(cell, with: mode)
-            return cell
         case .localAuthentication:
-            guard let cell = collectionView.dequeueReusableCell(
+            if let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: SettingsToggleCell.reusableIdentifier,
-                for: indexPath) as? SettingsToggleCell else {
-                    fatalError("Index path is out of bounds")
+                for: indexPath
+            ) as? SettingsToggleCell {
+                let localAuthenticationStatus = localAuthenticator.localAuthenticationStatus == .allowed
+                viewModel.configureToggle(cell, enabled: localAuthenticationStatus, with: mode, for: indexPath)
+                return cell
             }
-            
-            let localAuthenticationStatus = localAuthenticator.localAuthenticationStatus == .allowed
-            viewModel.configureToggle(cell, enabled: localAuthenticationStatus, with: mode, for: indexPath)
-            return cell
         case .notifications:
             guard let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: SettingsToggleCell.reusableIdentifier,
@@ -139,43 +136,41 @@ extension SettingsViewController: UICollectionViewDataSource {
             
             return cell
         case .rewards:
-            guard let cell = collectionView.dequeueReusableCell(
+            if let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: SettingsToggleCell.reusableIdentifier,
-                for: indexPath) as? SettingsToggleCell else {
-                    fatalError("Index path is out of bounds")
+                for: indexPath
+            ) as? SettingsToggleCell {
+                let rewardDisplayPreference = session?.rewardDisplayPreference == .allowed
+                viewModel.configureToggle(cell, enabled: rewardDisplayPreference, with: mode, for: indexPath)
+                return cell
             }
-            
-            let rewardDisplayPreference = session?.rewardDisplayPreference == .allowed
-            viewModel.configureToggle(cell, enabled: rewardDisplayPreference, with: mode, for: indexPath)
-            return cell
         case .language:
-            guard let cell = collectionView.dequeueReusableCell(
+            if let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: SettingsInfoCell.reusableIdentifier,
-                for: indexPath) as? SettingsInfoCell else {
-                    fatalError("Index path is out of bounds")
+                for: indexPath
+            ) as? SettingsInfoCell {
+                viewModel.configureInfo(cell, with: mode)
+                return cell
             }
-            
-            viewModel.configureInfo(cell, with: mode)
-            return cell
         case .feedback:
-            guard let cell = collectionView.dequeueReusableCell(
+            if let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: SettingsDetailCell.reusableIdentifier,
-                for: indexPath) as? SettingsDetailCell else {
-                    fatalError("Index path is out of bounds")
+                for: indexPath
+            ) as? SettingsDetailCell {
+                viewModel.configureDetail(cell, with: mode)
+                return cell
             }
-            
-            viewModel.configureDetail(cell, with: mode)
-            return cell
         case .termsAndServices:
-            guard let cell = collectionView.dequeueReusableCell(
+            if let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: SettingsDetailCell.reusableIdentifier,
-                for: indexPath) as? SettingsDetailCell else {
-                    fatalError("Index path is out of bounds")
+                for: indexPath
+            ) as? SettingsDetailCell {
+                viewModel.configureDetail(cell, with: mode)
+                return cell
             }
-            
-            viewModel.configureDetail(cell, with: mode)
-            return cell
         }
+        
+        fatalError("Index path is out of bounds")
     }
     
     func collectionView(
