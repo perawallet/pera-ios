@@ -180,6 +180,8 @@ extension LedgerDeviceListViewController: BLEConnectionManagerDelegate {
     ) {
         connectedDevice = nil
         ledgerApprovalViewController?.dismissScreen()
+        pushNotificationController.showFeedbackMessage("ble-error-connection-title".localized,
+                                                       subtitle: "ble-error-fail-connect-peripheral".localized)
     }
     
     func bleConnectionManager(

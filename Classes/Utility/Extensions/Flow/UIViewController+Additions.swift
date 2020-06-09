@@ -8,6 +8,7 @@
 
 import UIKit
 import SVProgressHUD
+import SafariServices
 
 extension UIViewController {
     var topMostController: UIViewController? {
@@ -116,5 +117,12 @@ extension UIViewController {
             parentContainer = parentContainer?.parent
         }
         return nil
+    }
+}
+
+extension UIViewController {
+    func open(_ url: URL) {
+        let safariViewController = SFSafariViewController(url: url)
+        present(safariViewController, animated: true, completion: nil)
     }
 }
