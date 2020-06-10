@@ -138,7 +138,7 @@ extension PushNotificationController {
                     } else {
                         message = String(
                             format: isFailed ? "notification-sent-failed".localized : "notification-sent-success".localized,
-                            "\(amount)",
+                            "\(amount.toAlgos.toDecimalStringForLabel ?? "") Algos",
                             senderAccount.name,
                             results.first?.name ?? receiverName
                         )
@@ -161,7 +161,7 @@ extension PushNotificationController {
                     } else {
                         message = String(
                             format: isFailed ? "notification-sent-failed".localized : "notification-sent-success".localized,
-                            "\(amount)",
+                            "\(amount.toAlgos.toDecimalStringForLabel ?? "") Algos",
                             senderAccount.name,
                             receiverName
                         )
