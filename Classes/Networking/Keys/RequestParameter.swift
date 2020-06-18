@@ -42,4 +42,5 @@ enum RequestParameter: String, JSONBodyRequestParameter {
     case query = "q"
     case offset = "offset"
     case status = "status"
+    case transactionDetailId = "txid"
 }

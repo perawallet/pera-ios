@@ -11,12 +11,16 @@ import Magpie
 class Account: Model {
     let address: String
     var amount: UInt64
+    var amountWithoutRewards: UInt64?
+    var rewardsBase: UInt64?
+    var round: UInt64?
+    var signatureType: SignatureType?
     var status: AccountStatus
     var rewards: UInt64?
     var pendingRewards: UInt64?
     var participation: Participation?
-    var totalAssets: [String: AssetDetail]?
-    var assets: [String: Asset]?
+    var createdAssets: [AssetDetail]?
+    var assets: [Asset]?
     
     var assetDetails: [AssetDetail] = []
     var name: String?
@@ -28,13 +32,17 @@ class Account: Model {
         
         address = try container.decode(String.self, forKey: .address)
         amount = try container.decode(UInt64.self, forKey: .amount)
+        amountWithoutRewards = try container.decodeIfPresent(UInt64.self, forKey: .amountWithoutRewards)
+        rewardsBase = try container.decodeIfPresent(UInt64.self, forKey: .rewardsBase)
+        round = try container.decodeIfPresent(UInt64.self, forKey: .round)
+        signatureType = try container.decodeIfPresent(SignatureType.self, forKey: .signatureType)
         status = try container.decode(AccountStatus.self, forKey: .status)
         rewards = try container.decodeIfPresent(UInt64.self, forKey: .rewards)
         pendingRewards = try container.decodeIfPresent(UInt64.self, forKey: .pendingRewards)
         participation = try container.decodeIfPresent(Participation.self, forKey: .participation)
         name = try container.decodeIfPresent(String.self, forKey: .name)
-        totalAssets = try? container.decodeIfPresent([String: AssetDetail].self, forKey: .totalAssets)
-        assets = try? container.decodeIfPresent([String: Asset].self, forKey: .assets) ?? nil
+        createdAssets = try? container.decodeIfPresent([AssetDetail].self, forKey: .createdAssets)
+        assets = try? container.decodeIfPresent([Asset].self, forKey: .assets) ?? nil
         assetDetails = try container.decodeIfPresent([AssetDetail].self, forKey: .assetDetails) ?? []
         type = try container.decodeIfPresent(AccountType.self, forKey: .type) ?? .standard
         ledgerDetail = try container.decodeIfPresent(LedgerDetail.self, forKey: .ledgerDetail)
@@ -57,11 +65,15 @@ extension Account {
         rewards = account.rewards
         pendingRewards = account.pendingRewards
         participation = account.participation
-        totalAssets = account.totalAssets
+        createdAssets = account.createdAssets
         assets = account.assets
         assetDetails = account.assetDetails
         type = account.type
         ledgerDetail = account.ledgerDetail
+        amountWithoutRewards = account.amountWithoutRewards
+        rewardsBase = account.rewardsBase
+        round = account.round
+        signatureType = account.signatureType
         
         if let updatedName = account.name {
             name = updatedName
@@ -77,7 +89,7 @@ extension Account {
     }
     
     func doesAccountHasParticipationKey() -> Bool {
-        return !(participation == nil || participation?.partpkb64 == defaultParticipationKey)
+        return !(participation == nil || participation?.voteParticipationKey == defaultParticipationKey)
     }
 
     func isThereAnyDifferentAsset() -> Bool {
@@ -89,9 +101,8 @@ extension Account {
     }
     
     func amount(for assetDetail: AssetDetail) -> Double? {
-        guard let assetId = assetDetail.id,
-            let asset = assets?["\(assetId)"] else {
-                return nil
+        guard let asset = assets?.first(where: { $0.id == assetDetail.id }) else {
+            return nil
         }
         return asset.amount.assetAmount(fromFraction: assetDetail.fractionDecimals)
     }
@@ -119,14 +130,18 @@ extension Account {
         case amount = "amount"
         case status = "status"
         case rewards = "rewards"
-        case pendingRewards = "pendingrewards"
+        case amountWithoutRewards = "amount-without-pending-rewards"
+        case pendingRewards = "pending-rewards"
+        case rewardsBase = "reward-base"
         case name = "name"
         case participation = "participation"
-        case totalAssets = "thisassettotal"
+        case createdAssets = "created-assets"
         case assets = "assets"
         case assetDetails = "assetDetails"
         case type = "type"
         case ledgerDetail = "ledgerDetail"
+        case signatureType = "sig-type"
+        case round = "round"
     }
 }
 
@@ -141,5 +156,27 @@ extension Account: Equatable {
 extension Account: Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(address.hashValue)
+    }
+}
+
+extension Account {
+    enum SignatureType: String, Model {
+        case sig = "sig"
+        case multiSig = "msig"
+        case logicSig = "lsig"
+    }
+}
+
+extension Account.SignatureType: Encodable { }
+
+class AccountResponse: Model {
+    let account: Account
+    let currentRound: Int64
+}
+
+extension AccountResponse {
+    enum CodingKeys: String, CodingKey {
+        case account = "account"
+        case currentRound = "current-round"
     }
 }

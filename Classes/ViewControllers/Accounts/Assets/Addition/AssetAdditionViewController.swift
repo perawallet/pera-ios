@@ -279,11 +279,7 @@ extension AssetAdditionViewController: AssetActionConfirmationViewControllerDele
         _ assetActionConfirmationViewController: AssetActionConfirmationViewController,
         didConfirmedActionFor assetDetail: AssetDetail
     ) {
-        guard let id = assetDetail.id else {
-            return
-        }
-        
-        let assetTransactionDraft = AssetTransactionSendDraft(from: account, assetIndex: id)
+        let assetTransactionDraft = AssetTransactionSendDraft(from: account, assetIndex: assetDetail.id)
         transactionController.setTransactionDraft(assetTransactionDraft)
         transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
         

@@ -31,11 +31,11 @@ class AccountFetchOperation: AsyncOperation {
         
         api.fetchAccount(with: AccountFetchDraft(publicKey: address)) { response in
             switch response {
-            case .success(let account):
-                if account.isThereAnyDifferentAsset() {
-                    self.fetchAssets(for: account)
+            case .success(let accountWrapper):
+                if accountWrapper.account.isThereAnyDifferentAsset() {
+                    self.fetchAssets(for: accountWrapper.account)
                 } else {
-                    self.onCompleted?(account, nil)
+                    self.onCompleted?(accountWrapper.account, nil)
                 }
             case .failure(let error):
                 self.onCompleted?(nil, error)
@@ -59,17 +59,19 @@ extension AccountFetchOperation {
         }
         
         var removedAssetCount = 0
-        for (index, _) in assets {
-            guard let id = Int64(index) else {
-                continue
-            }
-            self.api.getAssetDetails(with: AssetFetchDraft(assetId: index)) { assetResponse in
+        for asset in assets {
+            self.api.getAssetDetails(with: AssetFetchDraft(assetId: "\(asset.id)")) { assetResponse in
                 switch assetResponse {
-                case .success(let assetDetail):
-                    self.composeAssetDetail(assetDetail, of: account, with: id, removedAssetCount: &removedAssetCount)
+                case .success(let assetDetailResponse):
+                    self.composeAssetDetail(
+                        assetDetailResponse.assetDetail,
+                        of: account,
+                        with: asset.id,
+                        removedAssetCount: &removedAssetCount
+                    )
                 case .failure:
                     removedAssetCount += 1
-                    account.removeAsset(Int64(id))
+                    account.removeAsset(asset.id)
                     if assets.count == account.assetDetails.count + removedAssetCount {
                         self.onCompleted?(account, nil)
                     }
@@ -85,7 +87,6 @@ extension AccountFetchOperation {
         }
         
         var assetDetail = assetDetail
-        assetDetail.id = Int64(id)
         setVerifiedIfNeeded(&assetDetail, with: id)
         account.assetDetails.append(assetDetail)
         

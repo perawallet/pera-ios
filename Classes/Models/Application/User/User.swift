@@ -79,7 +79,7 @@ extension User {
             return
         }
         
-        self.defaultNode = selectedNode.address
+        self.defaultNode = selectedNode.network.rawValue
     }
     
     func preferredAlgorandNetwork() -> API.BaseNetwork? {
@@ -87,7 +87,13 @@ extension User {
             return nil
         }
         
-        return defaultNode == Environment.current.testNetApi ? .testnet : .mainnet
+        if defaultNode == API.BaseNetwork.mainnet.rawValue {
+            return .mainnet
+        } else if defaultNode == API.BaseNetwork.testnet.rawValue {
+            return .testnet
+        } else {
+            return nil
+        }
     }
     
     func account(address: String) -> AccountInformation? {

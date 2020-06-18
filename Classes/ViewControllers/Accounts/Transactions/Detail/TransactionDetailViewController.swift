@@ -193,7 +193,7 @@ extension TransactionDetailViewController: TransactionDetailViewDelegate {
     }
     
     func transactionDetailViewDidCopyTransactionID(_ transactionDetailView: TransactionDetailView) {
-        UIPasteboard.general.string = transaction.id.identifier
+        UIPasteboard.general.string = transaction.id
         displaySimpleAlertWith(title: "transaction-detail-id-copied".localized)
     }
     

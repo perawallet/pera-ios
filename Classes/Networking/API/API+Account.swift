@@ -12,13 +12,12 @@ extension API {
     @discardableResult
     func fetchAccount(
         with draft: AccountFetchDraft,
-        then handler: @escaping Endpoint.DefaultResultHandler<Account>
+        then handler: @escaping Endpoint.DefaultResultHandler<AccountResponse>
     ) -> EndpointOperatable {
-        let address = draft.publicKey
-        
-        return Endpoint(path: Path("/v1/account/\(address)"))
+        return Endpoint(path: Path("/v2/accounts/\(draft.publicKey)"))
+            .base(indexerBase)
             .httpMethod(.get)
-            .httpHeaders(algorandAuthenticatedHeaders())
+            .httpHeaders(indexerAuthenticatedHeaders())
             .resultHandler(handler)
             .buildAndSend(self)
     }

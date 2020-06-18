@@ -11,26 +11,15 @@ import Magpie
 extension API {
     @discardableResult
     func fetchTransactions(
-        between dates: (Date, Date)?,
         for account: Account,
         max: Int = 100,
         then handler: @escaping Endpoint.DefaultResultHandler<TransactionList>
     ) -> EndpointOperatable {
-        var from: String?
-        var to: String?
-        
-        if let betweenDates = dates,
-            let dayAfter = betweenDates.1.dayAfter {
-            from = Formatter.date.string(from: betweenDates.0)
-            to = Formatter.date.string(from: dayAfter)
-        }
-        
-        let query = TransactionsQuery(max: max, from: from, to: to)
-        
-        return Endpoint(path: Path("/v1/account/\(account.address)/transactions"))
+        return Endpoint(path: Path("/v2/accounts/\(account.address)/transactions"))
+            .base(indexerBase)
             .httpMethod(.get)
-            .httpHeaders(algorandAuthenticatedHeaders())
-            .query(query)
+            .httpHeaders(indexerAuthenticatedHeaders())
+            .query(TransactionsQuery(limit: max))
             .resultHandler(handler)
             .buildAndSend(self)
     }
@@ -38,12 +27,14 @@ extension API {
     @discardableResult
     func fetchTransactionDetail(
         for account: Account,
-        with id: TransactionID,
+        with id: String,
         then handler: @escaping Endpoint.DefaultResultHandler<Transaction>
     ) -> EndpointOperatable {
-        return Endpoint(path: Path("/v1/account/\(account.address)/transaction/\(id.identifier)"))
+        return Endpoint(path: Path("/v2/transactions"))
+            .base(indexerBase)
             .httpMethod(.get)
-            .httpHeaders(algorandAuthenticatedHeaders())
+            .httpHeaders(indexerAuthenticatedHeaders())
+            .query(TransactionSearchQuery(id: id))
             .resultHandler(handler)
             .buildAndSend(self)
     }
@@ -53,9 +44,10 @@ extension API {
         with transactionData: Data,
         then handler: @escaping Endpoint.DefaultResultHandler<TransactionID>
     ) -> EndpointOperatable {
-        return Endpoint(path: Path("/v1/transactions"))
+        return Endpoint(path: Path("/v2/transactions"))
+            .base(algodBase)
             .httpMethod(.post)
-            .httpHeaders(algorandAuthenticatedHeaders())
+            .httpHeaders(algodBinaryAuthenticatedHeaders())
             .resultHandler(handler)
             .context(.upload(.data(transactionData)))
             .buildAndSend(self)
@@ -65,9 +57,10 @@ extension API {
     func getTransactionParams(
         then handler: @escaping Endpoint.DefaultResultHandler<TransactionParams>
     ) -> EndpointOperatable {
-        return Endpoint(path: Path("/v1/transactions/params"))
+        return Endpoint(path: Path("/v2/transactions/params"))
+            .base(algodBase)
             .httpMethod(.get)
-            .httpHeaders(algorandAuthenticatedHeaders())
+            .httpHeaders(algodAuthenticatedHeaders())
             .resultHandler(handler)
             .buildAndSend(self)
     }
@@ -87,9 +80,10 @@ extension API {
         for address: String,
         then handler: @escaping Endpoint.DefaultResultHandler<PendingTransactionList>
     ) -> EndpointOperatable {
-        return Endpoint(path: Path("/v1/account/\(address)/transactions/pending"))
+        return Endpoint(path: Path("/v2/accounts/\(address)/transactions/pending"))
+            .base(algodBase)
             .httpMethod(.get)
-            .httpHeaders(algorandAuthenticatedHeaders())
+            .httpHeaders(algodAuthenticatedHeaders())
             .resultHandler(handler)
             .buildAndSend(self)
     }

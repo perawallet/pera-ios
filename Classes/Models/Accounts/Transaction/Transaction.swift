@@ -11,46 +11,53 @@ import Magpie
 protocol TransactionItem {}
 
 class Transaction: Model, TransactionItem {
-    let round: Int64?
-    let id: TransactionID
+    let closeRewards: Int64?
+    let closeAmount: Int64?
+    let confirmedRound: Int64?
     let fee: Int64
     let firstRound: Int64
-    let noteb64: Data?
-    let from: String
-    let payment: Payment?
+    let id: String
     let lastRound: Int64
-    let type: String
-    let fromRewards: UInt64?
-    let poolError: String?
-    let transactionEffect: TransactionEffect?
-    let assetFreeze: AssetFreezeTransactionType?
-    let assetConfig: AssetConfigTransactionType?
-    let assetTransfer: AssetTransferTransactionType?
+    let note: Data?
+    let payment: Payment?
+    let receiverRewards: Int64?
+    let sender: String
+    let senderRewards: Int64?
+    let type: TransferType
+    let createdAssetId: Int64?
+    let assetFreeze: AssetFreezeTransaction?
+    let assetConfig: AssetConfigTransaction?
+    let assetTransfer: AssetTransferTransaction?
+    let date: Date?
     
     var status: Status?
     var contact: Contact?
     
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        
-        round = try container.decodeIfPresent(Int64.self, forKey: .round)
-        
-        let transactionId = try container.decode(String.self, forKey: .id)
-        id = TransactionID(identifier: transactionId)
-        
+        closeRewards = try container.decodeIfPresent(Int64.self, forKey: .closeRewards)
+        closeAmount = try container.decodeIfPresent(Int64.self, forKey: .closeAmount)
+        confirmedRound = try container.decodeIfPresent(Int64.self, forKey: .confirmedRound)
         fee = try container.decode(Int64.self, forKey: .fee)
         firstRound = try container.decode(Int64.self, forKey: .firstRound)
-        noteb64 = try container.decodeIfPresent(Data.self, forKey: .noteb64)
-        from = try container.decode(String.self, forKey: .from)
-        payment = try container.decodeIfPresent(Payment.self, forKey: .payment)
+        id = try container.decode(String.self, forKey: .id)
         lastRound = try container.decode(Int64.self, forKey: .lastRound)
-        type = try container.decode(String.self, forKey: .type)
-        fromRewards = try container.decodeIfPresent(UInt64.self, forKey: .fromRewards)
-        poolError = try container.decodeIfPresent(String.self, forKey: .poolError)
-        transactionEffect = try container.decodeIfPresent(TransactionEffect.self, forKey: .transactionEffect)
-        assetFreeze = try container.decodeIfPresent(AssetFreezeTransactionType.self, forKey: .assetFreeze)
-        assetConfig = try container.decodeIfPresent(AssetConfigTransactionType.self, forKey: .assetConfig)
-        assetTransfer = try container.decodeIfPresent(AssetTransferTransactionType.self, forKey: .assetTransfer)
+        note = try container.decodeIfPresent(Data.self, forKey: .note)
+        payment = try container.decodeIfPresent(Payment.self, forKey: .payment)
+        receiverRewards = try container.decodeIfPresent(Int64.self, forKey: .receiverRewards)
+        sender = try container.decode(String.self, forKey: .sender)
+        senderRewards = try container.decodeIfPresent(Int64.self, forKey: .senderRewards)
+        type = try container.decode(TransferType.self, forKey: .type)
+        createdAssetId = try container.decodeIfPresent(Int64.self, forKey: .createdAssetId)
+        assetFreeze = try container.decodeIfPresent(AssetFreezeTransaction.self, forKey: .assetFreeze)
+        assetConfig = try container.decodeIfPresent(AssetConfigTransaction.self, forKey: .assetConfig)
+        assetTransfer = try container.decodeIfPresent(AssetTransferTransaction.self, forKey: .assetTransfer)
+        
+        if let timestamp = try container.decodeIfPresent(Double.self, forKey: .date) {
+            date = Date(timeIntervalSince1970: timestamp)
+        } else {
+            date = nil
+        }
     }
 }
 
@@ -59,7 +66,7 @@ extension Transaction {
         if let status = status {
             return status == .pending
         }
-        return round == nil || round == 0
+        return confirmedRound == nil || confirmedRound == 0
     }
     
     func isAssetAdditionTransaction(for address: String) -> Bool {
@@ -67,11 +74,11 @@ extension Transaction {
             return false
         }
         
-        return assetTransfer.receiverAddress == address && assetTransfer.amount == 0 && type == "axfer"
+        return assetTransfer.receiverAddress == address && assetTransfer.amount == 0 && type == .assetTransfer
     }
     
     func noteRepresentation() -> String? {
-        guard let noteData = noteb64, !noteData.isEmpty else {
+        guard let noteData = note, !noteData.isEmpty else {
             return nil
         }
         
@@ -81,21 +88,24 @@ extension Transaction {
 
 extension Transaction {
     enum CodingKeys: String, CodingKey {
-        case round = "round"
-        case id = "tx"
+        case closeRewards = "close-rewards"
+        case closeAmount = "closing-amount"
+        case confirmedRound = "confirmed-round"
         case fee = "fee"
-        case firstRound = "first-round"
-        case noteb64 = "noteb64"
-        case from = "from"
-        case payment = "payment"
-        case lastRound = "last-round"
-        case type = "type"
-        case fromRewards = "fromrewards"
-        case poolError = "poolerror"
-        case transactionEffect = "txresults"
-        case assetFreeze = "curfrz"
-        case assetConfig = "curcfg"
-        case assetTransfer = "curxfer"
+        case firstRound = "first-valid"
+        case id = "id"
+        case lastRound = "last-valid"
+        case note = "note"
+        case payment = "payment-transaction"
+        case receiverRewards = "receiver-rewards"
+        case sender = "sender"
+        case senderRewards = "sender-rewards"
+        case type = "tx-type"
+        case createdAssetId = "created-asset-index"
+        case assetFreeze = "asset-freeze-transaction"
+        case assetConfig = "asset-config-transaction"
+        case assetTransfer = "asset-transfer-transaction"
+        case date = "round-time"
     }
 }
 
@@ -104,6 +114,16 @@ extension Transaction {
         case pending = "PENDING"
         case completed = "COMPLETED"
         case failed = "FAILED"
+    }
+}
+
+extension Transaction {
+    enum TransferType: String, Model {
+        case payment = "pay"
+        case keyreg = "keyreg"
+        case assetConfig = "acfg"
+        case assetTransfer = "axfer"
+        case assetFreeze = "afrz"
     }
 }
 

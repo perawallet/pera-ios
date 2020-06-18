@@ -9,8 +9,11 @@
 import Foundation
 
 struct AlgorandNode {
-    let token: String
     let address: String
+    let algodToken: String
+    let indexerToken: String
+    let algodPort: String
+    let indexerPort: String
     let name: String
     let network: API.BaseNetwork
 }

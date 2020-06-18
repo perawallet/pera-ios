@@ -9,5 +9,13 @@
 import Magpie
 
 class TransactionList: Model {
+    let currentRound: Int64
     let transactions: [Transaction]
+}
+
+extension TransactionList {
+    enum CodingKeys: String, CodingKey {
+        case transactions = "transactions"
+        case currentRound = "current-round"
+    }
 }

@@ -1,5 +1,5 @@
 //
-//  AssetConfigTransactionType.swift
+//  AssetConfigTransaction.swift
 //  algorand
 //
 //  Created by Göktuğ Berk Ulu on 2.12.2019.
@@ -8,14 +8,12 @@
 
 import Magpie
 
-class AssetConfigTransactionType: Model {
+class AssetConfigTransaction: Model {
     let id: Int64?
-    let assetDetail: AssetDetail?
 }
 
-extension AssetConfigTransactionType {
+extension AssetConfigTransaction {
     private enum CodingKeys: String, CodingKey {
-        case id = "id"
-        case assetDetail = "params"
+        case id = "asset-id"
     }
 }

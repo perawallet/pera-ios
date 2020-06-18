@@ -12,6 +12,12 @@ class AssetNameView: BaseView {
 
     private let layout = Layout<LayoutConstants>()
     
+    private lazy var verifiedImageView: UIImageView = {
+        let imageView = UIImageView(image: img("icon-verified"))
+        imageView.isHidden = true
+        return imageView
+    }()
+    
     private(set) lazy var nameLabel: UILabel = {
         UILabel()
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
@@ -34,12 +40,6 @@ class AssetNameView: BaseView {
             .withTextColor(SharedColors.detailText)
             .withLine(.single)
             .withAlignment(.left)
-    }()
-    
-    private lazy var verifiedImageView: UIImageView = {
-        let imageView = UIImageView(image: img("icon-verified"))
-        imageView.isHidden = true
-        return imageView
     }()
     
     override func configureAppearance() {
@@ -115,10 +115,7 @@ extension AssetNameView {
         
         nameLabel.text = firstDisplayName
         codeLabel.text = secondDisplayName
-        
-        if let assetId = assetDetail.id {
-            idLabel.text = "\(assetId)"
-        }
+        idLabel.text = "\(assetDetail.id)"
         
         verifiedImageView.isHidden = !assetDetail.isVerified
     }

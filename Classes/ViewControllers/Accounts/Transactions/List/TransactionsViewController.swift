@@ -165,7 +165,7 @@ extension TransactionsViewController: UICollectionViewDelegateFlowLayout {
     }
     
     private func openTransactionDetail(_ transaction: Transaction) {
-        if transaction.from == account.address {
+        if transaction.sender == account.address {
             open(
                 .transactionDetail(
                     account: account,

@@ -50,18 +50,9 @@ class TransactionHistoryDataSource: NSObject, UICollectionViewDataSource {
                 viewModel.configure(cell, with: reward)
                 return cell
             } else if let transaction = transactions[indexPath.item] as? Transaction {
-                if let transactionStatus = transaction.status {
-                    switch transactionStatus {
-                    case .completed:
-                        return dequeueHistoryCell(in: collectionView, with: transaction, at: indexPath)
-                    case .pending:
-                        return dequeuePendingCell(in: collectionView, with: transaction, at: indexPath)
-                    case .failed:
-                        return dequeueHistoryCell(in: collectionView, with: transaction, at: indexPath)
-                    }
-                } else {
-                    return dequeueHistoryCell(in: collectionView, with: transaction, at: indexPath)
-                }
+                return dequeueHistoryCell(in: collectionView, with: transaction, at: indexPath)
+            } else if let transaction = transactions[indexPath.item] as? PendingTransaction {
+                return dequeuePendingCell(in: collectionView, with: transaction, at: indexPath)
             }
         }
         fatalError("Index path is out of bounds")
@@ -104,15 +95,15 @@ extension TransactionHistoryDataSource {
         
         if let assetTransaction = transaction.assetTransfer {
             if assetTransaction.receiverAddress == viewModel.account.address {
-                configure(cell, with: transaction, for: transaction.from)
+                configure(cell, with: transaction, for: transaction.sender)
             } else {
                 configure(cell, with: transaction, for: assetTransaction.receiverAddress)
             }
         } else if let payment = transaction.payment {
-            if payment.toAddress == viewModel.account.address {
-                configure(cell, with: transaction, for: transaction.from)
+            if payment.receiver == viewModel.account.address {
+                configure(cell, with: transaction, for: transaction.sender)
             } else {
-                configure(cell, with: transaction, for: transaction.payment?.toAddress)
+                configure(cell, with: transaction, for: transaction.payment?.receiver)
             }
         }
         
@@ -132,7 +123,7 @@ extension TransactionHistoryDataSource {
     
     private func dequeuePendingCell(
         in collectionView: UICollectionView,
-        with transaction: Transaction,
+        with transaction: PendingTransaction,
         at indexPath: IndexPath
     ) -> PendingTransactionCell {
         guard let cell = collectionView.dequeueReusableCell(
@@ -141,24 +132,24 @@ extension TransactionHistoryDataSource {
                 fatalError("Index path is out of bounds")
         }
         
-        if let payment = transaction.payment {
-            if payment.toAddress == viewModel.account.address {
-                configure(cell, with: transaction, for: transaction.from)
+        if transaction.type == .payment {
+            if transaction.receiver == viewModel.account.address {
+                configure(cell, with: transaction, for: transaction.sender)
             } else {
-                configure(cell, with: transaction, for: transaction.payment?.toAddress)
+                configure(cell, with: transaction, for: transaction.receiver)
             }
-        } else if let assetTransaction = transaction.assetTransfer {
-            if assetTransaction.receiverAddress == viewModel.account.address {
-                configure(cell, with: transaction, for: transaction.from)
+        } else {
+            if transaction.receiver == viewModel.account.address {
+                configure(cell, with: transaction, for: transaction.sender)
             } else {
-                configure(cell, with: transaction, for: assetTransaction.receiverAddress)
+                configure(cell, with: transaction, for: transaction.receiver)
             }
         }
         
         return cell
     }
     
-    private func configure(_ cell: PendingTransactionCell, with transaction: Transaction, for address: String?) {
+    private func configure(_ cell: PendingTransactionCell, with transaction: PendingTransaction, for address: String?) {
         if let contact = contacts.first(where: { contact -> Bool in
             contact.address == address
         }) {
@@ -207,7 +198,7 @@ extension TransactionHistoryDataSource {
             transactions.removeAll()
         }
         
-        fetchRequest = api?.fetchTransactions(between: dates, for: account, max: Int.max) { response in
+        fetchRequest = api?.fetchTransactions(for: account, max: Int.max) { response in
             switch response {
             case let .failure(error):
                 handler(nil, error)
@@ -257,7 +248,7 @@ extension TransactionHistoryDataSource {
             transactions.removeAll()
         }
         
-        fetchRequest = api?.fetchTransactions(between: nil, for: account, max: 15) { response in
+        fetchRequest = api?.fetchTransactions(for: account, max: 15) { response in
             switch response {
             case let .failure(error):
                 handler(nil, error)
@@ -309,17 +300,17 @@ extension TransactionHistoryDataSource {
         for transaction in filteredTransactions {
             self.transactions.append(transaction)
             if let payment = transaction.payment,
-                payment.toAddress == account.address,
+                payment.receiver == account.address,
                 assetDetail == nil {
-                if let rewards = transaction.payment?.rewards, rewards > 0 {
-                    let reward = Reward(amount: Int64(rewards), round: transaction.lastRound)
+                if let rewards = transaction.receiverRewards, rewards > 0 {
+                    let reward = Reward(amount: Int64(rewards), date: transaction.date)
                     self.transactions.append(reward)
                 }
             } else {
-                if let rewards = transaction.fromRewards,
+                if let rewards = transaction.senderRewards,
                     rewards > 0,
                     assetDetail == nil {
-                    let reward = Reward(amount: Int64(rewards), round: transaction.lastRound)
+                    let reward = Reward(amount: Int64(rewards), date: transaction.date)
                     self.transactions.append(reward)
                 }
             }
@@ -328,31 +319,24 @@ extension TransactionHistoryDataSource {
 }
 
 extension TransactionHistoryDataSource {
-    func fetchPendingTransactions(for account: Account, then handler: @escaping ([Transaction]?, Error?) -> Void) {
+    func fetchPendingTransactions(for account: Account, then handler: @escaping ([TransactionItem]?, Error?) -> Void) {
         api?.fetchPendingTransactions(for: account.address) { response in
             switch response {
             case let .success(pendingTransactionList):
-                guard let pendingTransactions = pendingTransactionList.pendingTransactions.transactions else {
-                    return
-                }
-                
-                self.filter(pendingTransactions)
-                handler(pendingTransactionList.pendingTransactions.transactions, nil)
+                self.filter(pendingTransactionList.pendingTransactions)
+                handler(pendingTransactionList.pendingTransactions, nil)
             case let .failure(error):
                 handler(nil, error)
             }
         }
     }
     
-    private func filter(_ pendingTransactions: [Transaction]) {
-        let filteredTransactions = transactions.filter { ($0 as? Transaction)?.status == .pending }
+    private func filter(_ pendingTransactions: [PendingTransaction]) {
+        let filteredTransactions = transactions.filter { ($0 as? PendingTransaction)?.id != nil }
         if filteredTransactions.count == pendingTransactions.count {
             return
         }
         
-        pendingTransactions.forEach { transaction in
-            transaction.status = .pending
-        }
         self.transactions = self.transactions.filter { item -> Bool in
             guard let transactionItem = item as? Transaction,
                 transactionItem.status == .pending else {
@@ -362,7 +346,7 @@ extension TransactionHistoryDataSource {
             var containsPendingTransaction = false
             
             pendingTransactions.forEach { pendingTransaction in
-                containsPendingTransaction = transactionItem.id.identifier == pendingTransaction.id.identifier
+                containsPendingTransaction = transactionItem.id == pendingTransaction.id
             }
             
             return !containsPendingTransaction

@@ -49,7 +49,7 @@ extension NodeController {
     private func setNewNode(with address: String, and token: String, then completion: BoolHandler?) {
          api.cancelAllEndpoints()
          api.base = address
-         api.token = token
+         api.algodToken = token
          completion?(true)
          queue.cancelAllOperations()
      }

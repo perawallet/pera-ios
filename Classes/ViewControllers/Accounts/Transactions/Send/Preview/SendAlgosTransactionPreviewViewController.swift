@@ -282,8 +282,8 @@ extension SendAlgosTransactionPreviewViewController {
                     self.dismissProgressIfNeeded()
                     
                     self.displaySimpleAlertWith(title: "title-error".localized, message: "title-internet-connection".localized)
-                case let .success(account):
-                    if account.amount == 0 {
+                case let .success(accountWrapper):
+                    if accountWrapper.account.amount == 0 {
                         self.dismissProgressIfNeeded()
                         
                         self.displaySimpleAlertWith(
