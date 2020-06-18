@@ -212,15 +212,7 @@ extension RootViewController {
     
     func setNetwork(to network: API.BaseNetwork) {
         appConfiguration.api.cancelAllEndpoints()
-        appConfiguration.api.network = network
-        
-        if network == .mainnet {
-            appConfiguration.api.base = Environment.current.mainNetApi
-            appConfiguration.api.token = Environment.current.mainNetToken
-        } else {
-            appConfiguration.api.base = Environment.current.testNetApi
-            appConfiguration.api.token = Environment.current.testNetToken
-        }
+        appConfiguration.api.setupEnvironment(for: network)
     }
 }
 

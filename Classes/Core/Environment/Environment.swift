@@ -32,8 +32,22 @@ class Environment {
     lazy var isTestNet = target == .staging
     
     lazy var testNetSchema = "http"
+    lazy var testNetHost = "18.191.127.220"
+    lazy var testNetAlgodPort = "8080"
+    lazy var testNetAlgodToken = "04f2acd11eab4c16942e0298efd7f1c9150ec812b6495bbf4c7127f763c4c4c5"
+    lazy var testNetIndexerPort = "8980"
+    lazy var testNetIndexerToken = "MCjDYTMPmjaHhclwTuVVPnhvcbSHkLdnnmYVxPEbkNMeKbJt"
+    lazy var testNetAlgodApi = "\(testNetSchema)://\(testNetHost):\(testNetAlgodPort)"
+    lazy var testNetIndexerApi = "\(testNetSchema)://\(testNetHost):\(testNetIndexerPort)"
     
     lazy var mainNetSchema = "https"
+    lazy var mainNetHost = "indexer.algorand.network"
+    lazy var mainNetAlgodPort = "8443"
+    lazy var mainNetAlgodToken = "0f24cac92e5ead6afbcf389e0ade28bb609d24ca6687359f342748c68d6cf9b2"
+    lazy var mainNetIndexerPort = "8443"
+    lazy var mainNetIndexerToken = "0f24cac92e5ead6afbcf389e0ade28bb609d24ca6687359f342748c68d6cf9b2"
+    lazy var mainNetAlgodApi = "\(mainNetSchema)://\(mainNetHost):\(mainNetAlgodPort)"
+    lazy var mainNetIndexerApi = "\(mainNetSchema)://\(mainNetHost):\(mainNetIndexerToken)"
     
     lazy var serverHost: String = {
         switch target {
@@ -44,10 +58,6 @@ class Environment {
         }
     }()
     
-    lazy var testNetHost = "indexer-testnet.algorand.network:8080"
-    
-    lazy var mainNetHost = "indexer.algorand.network:8443"
-    
     lazy var binanceHost = "api.binance.com"
     
     lazy var mobileHost = "mobile-api.algorand.com"
@@ -56,10 +66,6 @@ class Environment {
         let api = "\(serverSchema)://\(serverHost)"
         return api
     }()
-    
-    lazy var testNetApi = "\(testNetSchema)://\(testNetHost)"
-    
-    lazy var mainNetApi = "\(mainNetSchema)://\(mainNetHost)"
     
     lazy var binanceApi: String = {
         let api = "https://\(binanceHost)"
@@ -82,22 +88,9 @@ class Environment {
     lazy var serverToken: String = {
         switch target {
         case .staging:
-            return testNetToken
+            return testNetAlgodToken
         case .prod:
-            return mainNetToken
-        }
-    }()
-    
-    lazy var testNetToken = "402049a2fde425a3e0e81b41c4c32fd70104544caee916ec86adea955f04c14b"
-    
-    lazy var mainNetToken = "0f24cac92e5ead6afbcf389e0ade28bb609d24ca6687359f342748c68d6cf9b2"
-    
-    lazy var algorandNodeName: String = {
-        switch target {
-        case .staging:
-            return "node-settings-default-test-node-name".localized
-        case .prod:
-            return "node-settings-default-node-name".localized
+            return mainNetAlgodToken
         }
     }()
     

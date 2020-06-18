@@ -13,20 +13,7 @@ class NodeSettingsViewController: BaseViewController {
     
     private lazy var nodeSettingsView = NodeSettingsView()
     
-    private let nodes = [
-        AlgorandNode(
-            token: Environment.current.mainNetToken,
-            address: Environment.current.mainNetApi,
-            name: "node-settings-default-node-name".localized,
-            network: .mainnet
-        ),
-        AlgorandNode(
-            token: Environment.current.testNetToken,
-            address: Environment.current.testNetApi,
-            name: "node-settings-default-test-node-name".localized,
-            network: .testnet
-        )
-    ]
+    private let nodes = [mainNetNode, testNetNode]
     
     private let viewModel = NodeSettingsViewModel()
     
@@ -157,3 +144,23 @@ extension NodeSettingsViewController {
         view.isUserInteractionEnabled = isEnabled
     }
 }
+
+let mainNetNode = AlgorandNode(
+    address: Environment.current.mainNetHost,
+    algodToken: Environment.current.mainNetAlgodToken,
+    indexerToken: Environment.current.mainNetIndexerToken,
+    algodPort: Environment.current.mainNetAlgodPort,
+    indexerPort: Environment.current.mainNetIndexerPort,
+    name: "node-settings-default-node-name".localized,
+    network: .mainnet
+)
+
+let testNetNode = AlgorandNode(
+    address: Environment.current.testNetHost,
+    algodToken: Environment.current.testNetAlgodToken,
+    indexerToken: Environment.current.testNetIndexerToken,
+    algodPort: Environment.current.testNetAlgodPort,
+    indexerPort: Environment.current.testNetIndexerPort,
+    name: "node-settings-default-test-node-name".localized,
+    network: .testnet
+)
