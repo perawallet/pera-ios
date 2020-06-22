@@ -57,16 +57,10 @@ class AssetAdditionView: BaseView {
         return control
     }()
     
-    private(set) lazy var assetsCollectionView: UICollectionView = {
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.scrollDirection = .vertical
-        flowLayout.minimumLineSpacing = 0.0
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
-        collectionView.showsVerticalScrollIndicator = false
-        collectionView.showsHorizontalScrollIndicator = false
+    private(set) lazy var assetsCollectionView: AssetsCollectionView = {
+        let collectionView = AssetsCollectionView(containsPendingAssets: false)
         collectionView.backgroundColor = SharedColors.secondaryBackground
         collectionView.contentInset = .zero
-        collectionView.register(AssetSelectionCell.self, forCellWithReuseIdentifier: AssetSelectionCell.reusableIdentifier)
         return collectionView
     }()
     

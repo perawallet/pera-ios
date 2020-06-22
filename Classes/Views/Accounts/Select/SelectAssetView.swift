@@ -20,19 +20,12 @@ class SelectAssetView: BaseView {
         return view
     }()
     
-    private(set) lazy var accountsCollectionView: UICollectionView = {
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.scrollDirection = .vertical
-        flowLayout.minimumLineSpacing = 0.0
-        
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
-        collectionView.showsVerticalScrollIndicator = false
-        collectionView.showsHorizontalScrollIndicator = false
+    private(set) lazy var accountsCollectionView: AssetsCollectionView = {
+        let collectionView = AssetsCollectionView(containsPendingAssets: false)
         collectionView.backgroundColor = SharedColors.secondaryBackground
         collectionView.contentInset = .zero
         
         collectionView.register(AlgoAssetCell.self, forCellWithReuseIdentifier: AlgoAssetCell.reusableIdentifier)
-        collectionView.register(AssetCell.self, forCellWithReuseIdentifier: AssetCell.reusableIdentifier)
         collectionView.register(
             SelectAssetHeaderSupplementaryView.self,
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
