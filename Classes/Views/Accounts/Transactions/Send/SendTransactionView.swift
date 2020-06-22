@@ -162,8 +162,8 @@ extension SendTransactionView {
         assetInformationView.setAssetName(for: assetDetail)
     }
     
-    func setAssetVerified(_ hidden: Bool) {
-        assetInformationView.setAssetVerified(hidden)
+    func removeVerifiedAsset() {
+        assetInformationView.removeVerifiedAsset()
     }
     
     func setAssetName(_ name: String) {

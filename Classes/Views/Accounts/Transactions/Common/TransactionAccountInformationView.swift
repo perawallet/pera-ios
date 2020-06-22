@@ -203,8 +203,8 @@ extension TransactionAccountInformationView {
         assetNameView.setId(id)
     }
     
-    func setAssetVerified(_ hidden: Bool) {
-        assetNameView.setVerified(hidden)
+    func removeVerifiedAsset() {
+        assetNameView.removeVerified()
     }
     
     func removeAssetId() {

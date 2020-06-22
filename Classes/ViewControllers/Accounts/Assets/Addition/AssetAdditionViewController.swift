@@ -17,6 +17,8 @@ class AssetAdditionViewController: BaseViewController, TestNetTitleDisplayable {
     
     weak var delegate: AssetAdditionViewControllerDelegate?
     
+    private let layoutBuilder = AssetListLayoutBuilder()
+    
     private lazy var assetActionConfirmationPresenter = CardModalPresenter(
         config: ModalConfiguration(
             animationMode: .normal(duration: 0.25),
@@ -165,15 +167,10 @@ extension AssetAdditionViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: AssetSelectionCell.reusableIdentifier,
-            for: indexPath) as? AssetSelectionCell else {
-                fatalError("Index path is out of bounds")
-        }
-        
         let assetResult = assetResults[indexPath.item]
+        let assetDetail = AssetDetail(searchResult: assetResult)
+        let cell = layoutBuilder.dequeueAssetCells(in: collectionView, cellForItemAt: indexPath, for: assetDetail)
         viewModel.configure(cell, with: assetResult)
-        
         return cell
     }
 }
@@ -213,7 +210,14 @@ extension AssetAdditionViewController: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        return CGSize(width: UIScreen.main.bounds.width, height: layout.current.cellHeight)
+        let assetResult = assetResults[indexPath.item]
+        let assetDetail = AssetDetail(searchResult: assetResult)
+        
+        if assetDetail.hasBothDisplayName() {
+            return CGSize(width: UIScreen.main.bounds.width, height: layout.current.multiItemHeight)
+        } else {
+            return CGSize(width: UIScreen.main.bounds.width, height: layout.current.itemHeight)
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
@@ -422,7 +426,8 @@ extension AssetAdditionViewController {
 
 extension AssetAdditionViewController {
     struct LayoutConstants: AdaptiveLayoutConstants {
-        let cellHeight: CGFloat = 50.0
+        let itemHeight: CGFloat = 52.0
+        let multiItemHeight: CGFloat = 72.0
         let modalHeight: CGFloat = 510.0
     }
 }

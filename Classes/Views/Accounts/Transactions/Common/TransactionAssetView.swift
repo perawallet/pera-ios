@@ -70,8 +70,8 @@ extension TransactionAssetView {
         assetNameView.setAssetName(for: assetDetail)
     }
     
-    func setAssetVerified(_ hidden: Bool) {
-        assetNameView.setVerified(hidden)
+    func removeVerifiedAsset() {
+        assetNameView.removeVerified()
     }
     
     func setAssetName(_ name: String) {

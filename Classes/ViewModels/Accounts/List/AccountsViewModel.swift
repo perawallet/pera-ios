@@ -9,13 +9,14 @@
 import UIKit
 
 class AccountsViewModel {
-    func configure(_ cell: AssetCell, with assetDetail: AssetDetail, and asset: Asset) {
+    func configure(_ cell: BaseAssetCell, with assetDetail: AssetDetail, and asset: Asset) {
         cell.contextView.assetNameView.setAssetName(for: assetDetail)
-        cell.contextView.amountLabel.text = asset.amount.assetAmount(fromFraction: assetDetail.fractionDecimals)
+        let amountText = asset.amount.assetAmount(fromFraction: assetDetail.fractionDecimals)
             .toFractionStringForLabel(fraction: assetDetail.fractionDecimals)
+        cell.contextView.setActionText(amountText)
     }
     
-    func configure(_ cell: PendingAssetCell, with assetDetail: AssetDetail, isRemoving: Bool) {
+    func configure(_ cell: BasePendingAssetCell, with assetDetail: AssetDetail, isRemoving: Bool) {
         cell.contextView.assetNameView.setAssetName(for: assetDetail)
         if isRemoving {
             cell.contextView.detailLabel.text = "asset-remove-confirmation-title".localized

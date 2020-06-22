@@ -131,7 +131,7 @@ extension ContactInfoView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let verticalInset: CGFloat = 20.0
         let assetsLabelHorizontalInset: CGFloat = 20.0
-        let collectionViewHeight: CGFloat = 50.0
+        let collectionViewHeight: CGFloat = 72.0
         let collectionViewTopInset: CGFloat = 8.0
         let shareButtonTopInset: CGFloat = 30.0
         let buttonSize = CGSize(width: 160.0, height: 52.0)
