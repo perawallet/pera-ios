@@ -12,6 +12,7 @@ enum SharedColors {
     static let primary = color("primary")
     static let red = color("red")
     static let secondary = color("secondary")
+    static let secondary700 = color("secondary700")
     static let verified = color("verified")
     static let white = color("white")
     static let gray50 = color("gray50")
