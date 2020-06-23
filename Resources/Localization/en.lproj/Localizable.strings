@@ -295,6 +295,7 @@
 "transaction-detail-close-amount" = "Close Amount";
 "transaction-detail-note-copied" = "Transaction note copied to clipboard";
 "transaction-detail-id-copied" = "Transaction ID copied to clipboard";
+"transaction-detail-copy-tooltip" = "Press and hold to Copy to Clipboard";
 
 // MARK: Feedback
 "feedback-title" = "Send Feedback";
