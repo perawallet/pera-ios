@@ -18,6 +18,8 @@ class TransactionDetailViewController: BaseScrollViewController {
     private let transactionType: TransactionType
     private var pollingOperation: PollingOperation?
     
+    private let transactionDetailTooltipStorage = TransactionDetailTooltipStorage()
+    
     private let viewModel = TransactionDetailViewModel()
     
     init(
@@ -47,6 +49,14 @@ class TransactionDetailViewController: BaseScrollViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         startPolling()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.presentInformationCopyTooltipIfNeeded()
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -141,6 +151,19 @@ extension TransactionDetailViewController {
             viewModel.configureReceivedTransaction(transactionDetailView, with: transaction, and: assetDetail, for: account)
         }
     }
+    
+    private func presentInformationCopyTooltipIfNeeded() {
+        if transactionDetailTooltipStorage.isInformationCopyTooltipDisplayed() || !isViewAppeared {
+            return
+        }
+        
+        let tooltipViewController = TooltipViewController(title: "transaction-detail-copy-tooltip".localized, configuration: configuration)
+        tooltipViewController.presentationController?.delegate = self
+        tooltipViewController.setSourceView(transactionDetailView.opponentView.copyImageView)
+        present(tooltipViewController, animated: true)
+        
+        transactionDetailTooltipStorage.setInformationCopyTooltipDisplayed()
+    }
 }
 
 extension TransactionDetailViewController {
@@ -203,7 +226,30 @@ extension TransactionDetailViewController: TransactionDetailViewDelegate {
     }
 }
 
+extension TransactionDetailViewController: UIPopoverPresentationControllerDelegate {
+    func adaptivePresentationStyle(
+        for controller: UIPresentationController,
+        traitCollection: UITraitCollection
+    ) -> UIModalPresentationStyle {
+        return .none
+    }
+}
+
 enum TransactionType {
     case sent
     case received
+}
+
+private struct TransactionDetailTooltipStorage: Storable {
+    typealias Object = Any
+    
+    private let informationCopyTooltipKey = "com.algorand.algorand.transaction.detail.information.copy.tooltip"
+    
+    func setInformationCopyTooltipDisplayed() {
+        save(true, for: informationCopyTooltipKey, to: .defaults)
+    }
+    
+    func isInformationCopyTooltipDisplayed() -> Bool {
+        return bool(with: informationCopyTooltipKey, to: .defaults)
+    }
 }
