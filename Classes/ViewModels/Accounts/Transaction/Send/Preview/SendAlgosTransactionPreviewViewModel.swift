@@ -36,7 +36,6 @@ class SendAlgosTransactionPreviewViewModel {
         view.transactionAccountInformationView.setAmount(account.amount.toAlgos.toDecimalStringForLabel)
         view.amountInputView.maxAmount = account.amount.toAlgos
         view.transactionAccountInformationView.setAssetName("asset-algos-title".localized)
-        view.transactionAccountInformationView.setAssetVerified(true)
         view.transactionAccountInformationView.removeAssetId()
     }
     

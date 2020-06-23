@@ -34,8 +34,9 @@ class RequestAlgosTransactionPreviewViewModel {
         view.transactionAccountInformationView.setAccountName(account.name)
         view.transactionAccountInformationView.removeAmountLabel()
         view.transactionAccountInformationView.setAssetName("asset-algos-title".localized)
-        view.transactionAccountInformationView.setAssetVerified(true)
         view.transactionAccountInformationView.removeAssetId()
+        view.transactionAccountInformationView.removeAssetUnitName()
+        view.transactionAccountInformationView.setAssetNameAlignment(.right)
     }
 }
 

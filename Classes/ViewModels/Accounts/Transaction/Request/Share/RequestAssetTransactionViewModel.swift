@@ -25,8 +25,9 @@ class RequestAssetTransactionViewModel {
         
         view.setAccountName(assetTransactionRequestDraft.account.name)
         
-        view.setAssetName(for: assetTransactionRequestDraft.assetDetail)
-        view.removeAssetId()
+        if !assetTransactionRequestDraft.assetDetail.isVerified {
+            view.removeVerifiedAsset()
+        }
         
         view.setAmountInformationViewMode(
             .normal(
@@ -35,5 +36,29 @@ class RequestAssetTransactionViewModel {
                 fraction: assetTransactionRequestDraft.assetDetail.fractionDecimals
             )
         )
+        
+        view.setAssetAlignment(.right)
+        
+        if let id = assetTransactionRequestDraft.assetDetail.id {
+            view.setAssetId("\(id)")
+        }
+        
+        if assetTransactionRequestDraft.assetDetail.hasBothDisplayName() || assetTransactionRequestDraft.assetDetail.hasOnlyAssetName() {
+            view.setAssetName(assetTransactionRequestDraft.assetDetail.assetName)
+            view.removeAssetUnitName()
+            return
+        }
+        
+        if assetTransactionRequestDraft.assetDetail.hasOnlyUnitName() {
+            view.setAssetName(assetTransactionRequestDraft.assetDetail.unitName)
+            view.removeAssetUnitName()
+            return
+        }
+        
+        if assetTransactionRequestDraft.assetDetail.hasNoDisplayName() {
+            view.setAssetName("title-unknown".localized)
+            view.removeAssetUnitName()
+            return
+        }
     }
 }

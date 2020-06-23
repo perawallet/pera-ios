@@ -29,18 +29,14 @@ class AssetDetailHeaderView: BaseView {
         action: #selector(notifyDelegateToRewardsViewTapped)
     )
     
+    private(set) lazy var verifiedImageView = UIImageView(image: img("icon-verified"))
+    
     private(set) lazy var assetNameLabel: UILabel = {
         UILabel()
             .withAlignment(.left)
             .withTextColor(SharedColors.detailText)
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
             .withText("accounts-algos-available-title".localized)
-    }()
-    
-    private(set) lazy var verifiedImageView: UIImageView = {
-        let imageView = UIImageView(image: img("icon-verified"))
-        imageView.isHidden = true
-        return imageView
     }()
     
     private(set) lazy var algosImageView = UIImageView(image: img("icon-algorand-asset-detail"))
@@ -142,8 +138,8 @@ class AssetDetailHeaderView: BaseView {
     }
     
     override func prepareLayout() {
-        setupAssetNameLabelLayout()
         setupVerifiedImageViewLayout()
+        setupAssetNameLabelLayout()
         setupAssetIdLabelLayout()
         setupAlgosImageViewLayout()
         setupAmountLabelLayout()
@@ -161,21 +157,23 @@ class AssetDetailHeaderView: BaseView {
 }
 
 extension AssetDetailHeaderView {
-    private func setupAssetNameLabelLayout() {
-        addSubview(assetNameLabel)
-        
-        assetNameLabel.snp.makeConstraints { make in
-            make.leading.top.equalToSuperview().inset(layout.current.defaultInset)
-        }
-    }
-    
     private func setupVerifiedImageViewLayout() {
         addSubview(verifiedImageView)
         
         verifiedImageView.snp.makeConstraints { make in
-            make.leading.equalTo(assetNameLabel.snp.trailing).offset(layout.current.verifiedImageOffset)
-            make.centerY.equalTo(assetNameLabel)
+            make.leading.equalToSuperview().inset(layout.current.defaultInset)
+            make.top.equalToSuperview().inset(layout.current.defaultInset)
             make.size.equalTo(layout.current.imageSize)
+        }
+    }
+    
+    private func setupAssetNameLabelLayout() {
+        addSubview(assetNameLabel)
+        
+        assetNameLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview().inset(layout.current.defaultInset)
+            make.leading.equalToSuperview().inset(layout.current.defaultInset).priority(.medium)
+            make.leading.equalTo(verifiedImageView.snp.trailing).offset(layout.current.verifiedImageOffset)
         }
     }
     
@@ -187,7 +185,7 @@ extension AssetDetailHeaderView {
         
         assetIdLabel.snp.makeConstraints { make in
             make.trailing.top.equalToSuperview().inset(layout.current.defaultInset)
-            make.leading.greaterThanOrEqualTo(verifiedImageView.snp.trailing).offset(layout.current.minimumOffset)
+            make.leading.greaterThanOrEqualTo(assetNameLabel.snp.trailing).offset(layout.current.minimumOffset)
         }
     }
     
@@ -295,7 +293,7 @@ extension AssetDetailHeaderView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let defaultInset: CGFloat = 20.0
         let imageSize = CGSize(width: 20.0, height: 20.0)
-        let verifiedImageOffset: CGFloat = 6.0
+        let verifiedImageOffset: CGFloat = 8.0
         let minimumOffset: CGFloat = 4.0
         let algosImageSize = CGSize(width: 24.0, height: 24.0)
         let horizontalInset: CGFloat = 16.0

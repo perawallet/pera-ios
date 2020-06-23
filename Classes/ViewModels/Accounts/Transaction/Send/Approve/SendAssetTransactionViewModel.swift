@@ -31,13 +31,38 @@ class SendAssetTransactionViewModel {
         }
         
         setReceiver(in: view, with: assetTransactionSendDraft)
+        view.setAssetNameAlignment(.right)
+        
+        if !assetTransactionSendDraft.isVerifiedAsset {
+            view.removeVerifiedAsset()
+        }
         
         guard let assetIndex = assetTransactionSendDraft.assetIndex,
             let assetDetail = assetTransactionSendDraft.from.assetDetails.first(where: { $0.id == assetIndex }) else {
             return
         }
         
-        view.setAssetName(for: assetDetail)
+        if let id = assetDetail.id {
+            view.setAssetId("\(id)")
+        }
+        
+        if assetDetail.hasBothDisplayName() || assetDetail.hasOnlyAssetName() {
+            view.setAssetName(assetDetail.unitName)
+            view.removeAssetUnitName()
+            return
+        }
+        
+        if assetDetail.hasOnlyUnitName() {
+            view.setAssetName(assetDetail.unitName)
+            view.removeAssetUnitName()
+            return
+        }
+        
+        if assetDetail.hasNoDisplayName() {
+            view.setAssetName("title-unknown".localized)
+            view.removeAssetUnitName()
+            return
+        }
     }
     
     private func setReceiver(in view: SendTransactionView, with assetTransactionSendDraft: AssetTransactionSendDraft) {

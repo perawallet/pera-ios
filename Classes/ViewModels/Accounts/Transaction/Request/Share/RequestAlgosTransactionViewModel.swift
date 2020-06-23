@@ -23,12 +23,11 @@ class RequestAlgosTransactionViewModel {
             view.setAccountImage(img("icon-account-type-standard"))
         }
         
-        view.setAccountName(algosTransactionRequestDraft.account.name)
-        
-        view.setAssetName("asset-algos-title".localized)
-        view.setAssetVerified(true)
         view.removeAssetId()
-        
+        view.removeAssetUnitName()
+        view.setAssetAlignment(.right)
+        view.setAccountName(algosTransactionRequestDraft.account.name)
+        view.setAssetName("asset-algos-title".localized)
         view.setAmountInformationViewMode(.normal(amount: algosTransactionRequestDraft.amount))
     }
 }
