@@ -11,7 +11,7 @@ import UIKit
 class SendAssetTransactionViewModel {
     func configure(_ view: SendTransactionView, with assetTransactionSendDraft: AssetTransactionSendDraft) {
         if assetTransactionSendDraft.from.type == .ledger {
-            view.setAccountImage(img("icon-account-type-ledger"))
+            view.setAccountImage(img("img-ledger-small"))
         } else {
             view.setAccountImage(img("icon-account-type-standard"))
         }

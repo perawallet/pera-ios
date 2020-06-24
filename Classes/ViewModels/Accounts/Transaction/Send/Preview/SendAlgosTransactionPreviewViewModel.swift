@@ -27,7 +27,7 @@ class SendAlgosTransactionPreviewViewModel {
         }
         
         if account.type.isLedger() {
-            view.transactionAccountInformationView.setAccountImage(img("icon-account-type-ledger"))
+            view.transactionAccountInformationView.setAccountImage(img("img-ledger-small"))
         } else {
             view.transactionAccountInformationView.setAccountImage(img("icon-account-type-standard"))
         }
@@ -44,7 +44,7 @@ class SendAlgosTransactionPreviewViewModel {
         view.transactionAccountInformationView.setAccountName(account.name)
         
         if account.type.isLedger() {
-            view.transactionAccountInformationView.setAccountImage(img("icon-account-type-ledger"))
+            view.transactionAccountInformationView.setAccountImage(img("img-ledger-small"))
         } else {
             view.transactionAccountInformationView.setAccountImage(img("icon-account-type-standard"))
         }
