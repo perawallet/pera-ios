@@ -8,24 +8,25 @@
 
 import UIKit
 
-class TransactionTitleInformationView: BaseView {
-    
-    weak var delegate: TransactionTitleInformationViewDelegate?
+class TransactionTitleInformationView: BaseControl {
     
     private let layout = Layout<LayoutConstants>()
     
-    private lazy var copyValueGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(notifyDelegateToCopyValue))
-    
     private lazy var titleLabel = TransactionDetailTitleLabel()
     
+    private(set) lazy var copyImageView: UIImageView = {
+        let imageView = UIImageView(image: img("icon-copy", isTemplate: true))
+        imageView.tintColor = SharedColors.gray400
+        imageView.isHidden = true
+        return imageView
+    }()
+    
     private lazy var detailLabel: UILabel = {
-        let label = UILabel()
+        UILabel()
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
             .withLine(.contained)
             .withAlignment(.left)
             .withTextColor(SharedColors.primaryText)
-        label.isUserInteractionEnabled = true
-        return label
     }()
     
     private lazy var separatorView = LineSeparatorView()
@@ -34,12 +35,9 @@ class TransactionTitleInformationView: BaseView {
         backgroundColor = SharedColors.secondaryBackground
     }
     
-    override func linkInteractors() {
-        detailLabel.addGestureRecognizer(copyValueGestureRecognizer)
-    }
-    
     override func prepareLayout() {
         setupTitleLabelLayout()
+        setupCopyImageViewLayout()
         setupDetailLabelLayout()
         setupSeparatorViewLayout()
     }
@@ -52,6 +50,16 @@ extension TransactionTitleInformationView {
         titleLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(layout.current.verticalInset)
             make.leading.equalToSuperview().inset(layout.current.horizontalInset)
+        }
+    }
+    
+    private func setupCopyImageViewLayout() {
+        addSubview(copyImageView)
+        
+        copyImageView.snp.makeConstraints { make in
+            make.leading.equalTo(titleLabel.snp.trailing).offset(layout.current.copyImageOffset)
+            make.centerY.equalTo(titleLabel)
+            make.size.equalTo(layout.current.copyImageSize)
         }
     }
     
@@ -77,13 +85,6 @@ extension TransactionTitleInformationView {
 }
 
 extension TransactionTitleInformationView {
-    @objc
-    private func notifyDelegateToCopyValue(copyValueGestureRecognizer: UILongPressGestureRecognizer) {
-        delegate?.transactionTitleInformationViewDidCopyDetail(self)
-    }
-}
-
-extension TransactionTitleInformationView {
     func setTitle(_ title: String) {
         titleLabel.text = title
     }
@@ -103,9 +104,7 @@ extension TransactionTitleInformationView {
         let verticalInset: CGFloat = 20.0
         let separatorHeight: CGFloat = 1.0
         let labelTopOffset: CGFloat = 8.0
+        let copyImageOffset: CGFloat = 8.0
+        let copyImageSize = CGSize(width: 20.0, height: 20.0)
     }
-}
-
-protocol TransactionTitleInformationViewDelegate: class {
-    func transactionTitleInformationViewDidCopyDetail(_ transactionTitleInformationView: TransactionTitleInformationView)
 }
