@@ -27,8 +27,10 @@ class SendAssetTransactionPreviewViewModel {
         }
         
         view.transactionAccountInformationView.setAssetName(for: assetDetail)
-        view.transactionAccountInformationView.setAssetTransaction()
-        view.transactionAccountInformationView.removeAssetId()
+        
+        if !assetDetail.isVerified {
+            view.transactionAccountInformationView.removeVerifiedAsset()
+        }
         
         if let account = selectedAccount,
             let assetAmount = account.amount(for: assetDetail) {

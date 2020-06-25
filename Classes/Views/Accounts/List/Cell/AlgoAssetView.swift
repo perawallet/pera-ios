@@ -12,6 +12,8 @@ class AlgoAssetView: BaseView {
     
     private let layout = Layout<LayoutConstants>()
     
+    private(set) lazy var verifiedImageView = UIImageView(image: img("icon-verified"))
+    
     private lazy var algoIconImageView = UIImageView(image: img("icon-algo-gray"))
     
     private lazy var algosLabel: UILabel = {
@@ -22,8 +24,6 @@ class AlgoAssetView: BaseView {
             .withAlignment(.left)
             .withText("asset-algos-title".localized)
     }()
-    
-    private(set) lazy var verifiedImageView = UIImageView(image: img("icon-verified"))
     
     private(set) lazy var amountLabel: UILabel = {
         UILabel()
@@ -44,20 +44,30 @@ class AlgoAssetView: BaseView {
     }
     
     override func prepareLayout() {
+        setupVerifiedImageViewLayout()
         setupAlgoIconImageViewLayout()
         setupAlgosLabelLayout()
-        setupVerifiedImageViewLayout()
         setupAmountLabelLayout()
         setupSeparatorViewLayout()
     }
 }
 
 extension AlgoAssetView {
+    private func setupVerifiedImageViewLayout() {
+        addSubview(verifiedImageView)
+        
+        verifiedImageView.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
+            make.centerY.equalToSuperview()
+            make.size.equalTo(layout.current.imageSize)
+        }
+    }
+    
     private func setupAlgoIconImageViewLayout() {
         addSubview(algoIconImageView)
         
         algoIconImageView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
+            make.leading.equalTo(verifiedImageView.snp.trailing).offset(layout.current.nameInset)
             make.centerY.equalToSuperview()
         }
     }
@@ -74,16 +84,6 @@ extension AlgoAssetView {
         }
     }
     
-    private func setupVerifiedImageViewLayout() {
-        addSubview(verifiedImageView)
-        
-        verifiedImageView.snp.makeConstraints { make in
-            make.leading.equalTo(algosLabel.snp.trailing).offset(layout.current.nameInset)
-            make.centerY.equalToSuperview()
-            make.size.equalTo(layout.current.imageSize)
-        }
-    }
-    
     private func setupAmountLabelLayout() {
         addSubview(amountLabel)
         
@@ -93,7 +93,7 @@ extension AlgoAssetView {
         amountLabel.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.leading.greaterThanOrEqualTo(verifiedImageView.snp.trailing).offset(layout.current.imageInset)
+            make.leading.greaterThanOrEqualTo(algosLabel.snp.trailing).offset(layout.current.imageInset)
         }
     }
 

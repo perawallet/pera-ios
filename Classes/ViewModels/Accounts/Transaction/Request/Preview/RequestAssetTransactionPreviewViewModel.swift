@@ -33,11 +33,14 @@ class RequestAssetTransactionPreviewViewModel {
             view.transactionAccountInformationView.setAccountImage(img("icon-account-type-standard"))
         }
         
+        if !assetDetail.isVerified {
+            view.transactionAccountInformationView.removeVerifiedAsset()
+        }
+        
+        view.transactionAccountInformationView.setAssetNameAlignment(.right)
         view.transactionAccountInformationView.setAccountName(account.name)
         view.transactionAccountInformationView.removeAmountLabel()
         view.transactionAccountInformationView.setAssetName(for: assetDetail)
-        view.transactionAccountInformationView.setAssetTransaction()
-        view.transactionAccountInformationView.removeAssetId()
     }
 }
 

@@ -34,6 +34,9 @@ extension TransactionAccountNameView {
     private func setupTitleLabelLayout() {
         addSubview(titleLabel)
         
+        titleLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+        titleLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+        
         titleLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(layout.current.defaultInset)
             make.leading.equalToSuperview().inset(layout.current.defaultInset)
@@ -43,8 +46,7 @@ extension TransactionAccountNameView {
     private func setupAccountNameViewLayout() {
         addSubview(accountNameView)
         
-        accountNameView.setContentHuggingPriority(.required, for: .horizontal)
-        accountNameView.setContentCompressionResistancePriority(.required, for: .horizontal)
+        accountNameView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         
         accountNameView.snp.makeConstraints { make in
             make.top.bottom.equalToSuperview().inset(layout.current.defaultInset)

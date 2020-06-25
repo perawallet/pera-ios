@@ -23,7 +23,7 @@ class AssetSupportViewModel {
         
         view.verifiedImageView.isHidden = !assetDetail.isVerified
         
-        let displayNames = assetDetail.getDisplayNames(isDisplayingBrackets: false)
+        let displayNames = assetDetail.getDisplayNames()
         
         if displayNames.0.isUnknown() {
             view.assetCodeLabel.font = UIFont.font(withWeight: .semiBoldItalic(size: 40.0))

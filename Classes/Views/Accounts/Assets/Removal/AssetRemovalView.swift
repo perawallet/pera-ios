@@ -39,19 +39,11 @@ class AssetRemovalView: BaseView {
             .withText("asset-remove-subtitle".localized)
     }()
     
-    private(set) lazy var assetsCollectionView: UICollectionView = {
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.scrollDirection = .vertical
-        flowLayout.minimumLineSpacing = 0.0
-        
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
-        collectionView.showsVerticalScrollIndicator = false
-        collectionView.showsHorizontalScrollIndicator = false
+    private(set) lazy var assetsCollectionView: AssetsCollectionView = {
+        let collectionView = AssetsCollectionView(containsPendingAssets: false)
         collectionView.backgroundColor = SharedColors.primaryBackground
         collectionView.contentInset = .zero
         collectionView.layer.cornerRadius = 12.0
-        
-        collectionView.register(AssetActionableCell.self, forCellWithReuseIdentifier: AssetActionableCell.reusableIdentifier)
         collectionView.register(
             AccountHeaderSupplementaryView.self,
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,

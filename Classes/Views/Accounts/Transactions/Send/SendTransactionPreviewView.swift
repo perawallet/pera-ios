@@ -207,7 +207,7 @@ extension SendTransactionPreviewView {
         let verticalInset: CGFloat = 20.0
         let buttonHorizontalInset: CGFloat = 20.0
         let buttonVerticalInset: CGFloat = 20.0
-        let amountFieldTopInset: CGFloat = 154.0
+        let amountFieldTopInset: CGFloat = 164.0
         let amountFieldTopInsetToAssetSelection: CGFloat = 108.0
     }
 }

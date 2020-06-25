@@ -9,9 +9,11 @@
 import UIKit
 
 class AssetRemovalViewModel {    
-    func configure(_ cell: AssetActionableCell, with asset: AssetDetail) {
+    func configure(_ cell: BaseAssetCell, with asset: AssetDetail) {
         cell.contextView.assetNameView.setAssetName(for: asset)
-        cell.contextView.actionButton.setTitle("title-remove".localized, for: .normal)
+        cell.contextView.setActionText("title-remove".localized)
+        cell.contextView.setActionFont(UIFont.font(withWeight: .semiBold(size: 14.0)))
+        cell.contextView.setActionColor(SharedColors.red)
     }
     
     func configure(_ header: AccountHeaderSupplementaryView, with account: Account) {

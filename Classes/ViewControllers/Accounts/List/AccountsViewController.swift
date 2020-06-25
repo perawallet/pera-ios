@@ -63,7 +63,6 @@ class AccountsViewController: BaseViewController {
     private(set) var selectedAccount: Account?
     private(set) var localAuthenticator = LocalAuthenticator()
     
-    private var accountsLayoutBuilder: AccountsLayoutBuilder
     private(set) var accountsDataSource: AccountsDataSource
     
     private var isConnectedToInternet = true {
@@ -84,7 +83,6 @@ class AccountsViewController: BaseViewController {
     }
     
     override init(configuration: ViewControllerConfiguration) {
-        accountsLayoutBuilder = AccountsLayoutBuilder()
         accountsDataSource = AccountsDataSource()
         super.init(configuration: configuration)
         
@@ -152,10 +150,9 @@ class AccountsViewController: BaseViewController {
     }
     
     override func setListeners() {
-        accountsLayoutBuilder.delegate = self
         accountsDataSource.delegate = self
         accountsView.delegate = self
-        accountsView.accountsCollectionView.delegate = accountsLayoutBuilder
+        accountsView.accountsCollectionView.delegate = accountsDataSource
         accountsView.accountsCollectionView.dataSource = accountsDataSource
     }
     
@@ -179,8 +176,8 @@ extension AccountsViewController {
     }
 }
 
-extension AccountsViewController: AccountsLayoutBuilderDelegate {
-    func accountsLayoutBuilder(_ layoutBuilder: AccountsLayoutBuilder, didSelectAt indexPath: IndexPath) {
+extension AccountsViewController: AccountsDataSourceDelegate {
+    func accountsDataSource(_ accountsDataSource: AccountsDataSource, didSelectAt indexPath: IndexPath) {
         selectedAccount = accountsDataSource.accounts[indexPath.section]
         guard let account = selectedAccount else {
             return
@@ -193,9 +190,7 @@ extension AccountsViewController: AccountsLayoutBuilderDelegate {
             open(.assetDetail(account: account, assetDetail: assetDetail), by: .push)
         }
     }
-}
-
-extension AccountsViewController: AccountsDataSourceDelegate {
+    
     func accountsDataSource(_ accountsDataSource: AccountsDataSource, didTapOptionsButtonFor account: Account) {
         selectedAccount = account
         presentOptions(for: account)

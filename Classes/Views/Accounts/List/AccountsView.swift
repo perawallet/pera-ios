@@ -22,20 +22,14 @@ class AccountsView: BaseView {
     
     private lazy var contentStateView = ContentStateView()
     
-    private(set) lazy var accountsCollectionView: UICollectionView = {
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.scrollDirection = .vertical
-        flowLayout.minimumLineSpacing = 0.0
-        
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
+    private(set) lazy var accountsCollectionView: AssetsCollectionView = {
+        let collectionView = AssetsCollectionView(containsPendingAssets: true)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = SharedColors.primaryBackground
         collectionView.contentInset = UIEdgeInsets(top: 0.0, left: 20.0, bottom: 20.0, right: 20.0)
         
         collectionView.register(AlgoAssetCell.self, forCellWithReuseIdentifier: AlgoAssetCell.reusableIdentifier)
-        collectionView.register(AssetCell.self, forCellWithReuseIdentifier: AssetCell.reusableIdentifier)
-        collectionView.register(PendingAssetCell.self, forCellWithReuseIdentifier: PendingAssetCell.reusableIdentifier)
         collectionView.register(
             AccountHeaderSupplementaryView.self,
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,

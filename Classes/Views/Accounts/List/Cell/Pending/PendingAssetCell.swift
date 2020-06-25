@@ -8,6 +8,61 @@
 
 import UIKit
 
-class PendingAssetCell: BaseCollectionViewCell<PendingAssetView> {
-    
+class BasePendingAssetCell: BaseCollectionViewCell<PendingAssetView> { }
+
+class PendingAssetCell: BasePendingAssetCell { }
+
+class PendingOnlyNameAssetCell: BasePendingAssetCell {
+    override func configureAppearance() {
+        super.configureAppearance()
+        contextView.assetNameView.removeVerified()
+    }
+}
+
+class PendingOnlyUnitNameAssetCell: BasePendingAssetCell {
+    override func configureAppearance() {
+        super.configureAppearance()
+        contextView.assetNameView.removeVerified()
+    }
+}
+
+class PendingUnnamedAssetCell: BasePendingAssetCell {
+    override func configureAppearance() {
+        super.configureAppearance()
+        contextView.assetNameView.setName("title-unknown".localized)
+        contextView.assetNameView.nameLabel.textColor = SharedColors.secondary700
+        contextView.assetNameView.removeUnitName()
+        contextView.assetNameView.removeVerified()
+    }
+}
+
+class PendingUnverifiedAssetCell: BasePendingAssetCell {
+    override func configureAppearance() {
+        super.configureAppearance()
+        contextView.assetNameView.removeVerified()
+    }
+}
+
+class PendingUnverifiedOnlyNameAssetCell: BasePendingAssetCell {
+    override func configureAppearance() {
+        super.configureAppearance()
+        contextView.assetNameView.removeVerified()
+    }
+}
+
+class PendingUnverifiedOnlyUnitNameAssetCell: BasePendingAssetCell {
+    override func configureAppearance() {
+        super.configureAppearance()
+        contextView.assetNameView.removeVerified()
+    }
+}
+
+class PendingUnverifiedUnnamedAssetCell: BasePendingAssetCell {
+    override func configureAppearance() {
+        super.configureAppearance()
+        contextView.assetNameView.setName("title-unknown".localized)
+        contextView.assetNameView.nameLabel.textColor = SharedColors.secondary700
+        contextView.assetNameView.removeUnitName()
+        contextView.assetNameView.removeVerified()
+    }
 }

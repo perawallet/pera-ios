@@ -15,6 +15,8 @@ class AssetRemovalViewController: BaseViewController {
     
     private let layout = Layout<LayoutConstants>()
     
+    private let layoutBuilder = AssetListLayoutBuilder()
+    
     private lazy var assetActionConfirmationPresenter = CardModalPresenter(
         config: ModalConfiguration(
             animationMode: .normal(duration: 0.25),
@@ -108,25 +110,14 @@ extension AssetRemovalViewController {
 
 extension AssetRemovalViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if account.assetDetails.isEmpty {
-            return 1
-        }
-        
         return account.assetDetails.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: AssetActionableCell.reusableIdentifier,
-            for: indexPath) as? AssetActionableCell else {
-                fatalError("Index path is out of bounds")
-        }
-        
-        cell.delegate = self
-        
         let assetDetail = account.assetDetails[indexPath.item]
+        let cell = layoutBuilder.dequeueAssetCells(in: collectionView, cellForItemAt: indexPath, for: assetDetail)
+        cell.delegate = self
         viewModel.configure(cell, with: assetDetail)
-        
         return cell
     }
 }
@@ -163,9 +154,9 @@ extension AssetRemovalViewController {
     }
 }
 
-extension AssetRemovalViewController: AssetActionableCellDelegate {
-    func assetActionableCellDidTapActionButton(_ assetActionableCell: AssetActionableCell) {
-        guard let index = assetRemovalView.assetsCollectionView.indexPath(for: assetActionableCell) else {
+extension AssetRemovalViewController: BaseAssetCellDelegate {
+    func assetCellDidTapActionButton(_ assetCell: BaseAssetCell) {
+        guard let index = assetRemovalView.assetsCollectionView.indexPath(for: assetCell) else {
             return
         }
         
@@ -228,10 +219,14 @@ extension AssetRemovalViewController: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        return CGSize(
-            width: UIScreen.main.bounds.width - layout.current.defaultSectionInsets.left - layout.current.defaultSectionInsets.right,
-            height: layout.current.itemHeight
-        )
+        let width = UIScreen.main.bounds.width - layout.current.defaultSectionInsets.left - layout.current.defaultSectionInsets.right
+        let assetDetail = account.assetDetails[indexPath.item]
+        
+        if assetDetail.hasBothDisplayName() {
+            return CGSize(width: width, height: layout.current.multiItemHeight)
+        } else {
+            return CGSize(width: width, height: layout.current.itemHeight)
+        }
     }
     
     func collectionView(
@@ -422,6 +417,7 @@ extension AssetRemovalViewController {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let defaultSectionInsets = UIEdgeInsets(top: 0.0, left: 20.0, bottom: 0.0, right: 20.0)
         let itemHeight: CGFloat = 52.0
+        let multiItemHeight: CGFloat = 72.0
         let modalHeight: CGFloat = 490.0
         let footerHeight: CGFloat = 10.0
     }
