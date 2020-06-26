@@ -206,7 +206,15 @@ extension LedgerDeviceListViewController: LedgerBLEControllerDelegate {
             return
         }
         
-        ledgerApprovalViewController?.dismissScreen()
+        if data.toHexString() == ledgerErrorResponse {
+            ledgerApprovalViewController?.dismissScreen()
+            connectedDevice = nil
+            pushNotificationController.showFeedbackMessage(
+                "ble-error-ledger-connection-title".localized,
+                subtitle: "ble-error-ledger-connection-open-app-error".localized
+            )
+            return
+        }
         
         // Remove last two bytes to fetch data
         var mutableData = data
@@ -216,6 +224,7 @@ extension LedgerDeviceListViewController: LedgerBLEControllerDelegate {
         let address = AlgorandSDK().addressFromPublicKey(mutableData, error: &error)
         
         if !AlgorandSDK().isValidAddress(address) {
+            ledgerApprovalViewController?.dismissScreen()
             connectedDevice = nil
             pushNotificationController.showFeedbackMessage("ble-error-transmission-title".localized,
                                                            subtitle: "ble-error-fail-fetch-account-address".localized)
@@ -223,6 +232,7 @@ extension LedgerDeviceListViewController: LedgerBLEControllerDelegate {
         }
 
         if error != nil {
+            ledgerApprovalViewController?.dismissScreen()
             connectedDevice = nil
             pushNotificationController.showFeedbackMessage("ble-error-transmission-title".localized,
                                                            subtitle: "ble-error-fail-fetch-account-address".localized)
@@ -230,13 +240,17 @@ extension LedgerDeviceListViewController: LedgerBLEControllerDelegate {
         }
         
         if session?.account(from: address) != nil {
+            ledgerApprovalViewController?.dismissScreen()
             connectedDevice = nil
-            displaySimpleAlertWith(title: "title-error".localized, message: "recover-from-seed-verify-exist-error".localized)
+            pushNotificationController.showFeedbackMessage("title-error.localized".localized,
+                                                           subtitle: "recover-from-seed-verify-exist-error".localized)
             return
         }
         
         if let connectedDeviceId = connectedDevice?.identifier {
-            open(.ledgerPairing(mode: mode, address: address, connectedDeviceId: connectedDeviceId), by: .push)
+            ledgerApprovalViewController?.closeScreen(by: .dismiss, animated: true) {
+                self.open(.ledgerPairing(mode: self.mode, address: address, connectedDeviceId: connectedDeviceId), by: .push)
+            }
         }
     }
 }

@@ -13,7 +13,7 @@ class AccountListViewModel {
         cell.contextView.nameLabel.text = account.name
         
         if account.type.isLedger() {
-            cell.contextView.setAccountTypeImage(img("icon-account-type-ledger"), hidden: false)
+            cell.contextView.setAccountTypeImage(img("img-ledger-small"), hidden: false)
         } else {
             cell.contextView.setAccountTypeImage(img("icon-account-type-standard"), hidden: false)
         }

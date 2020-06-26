@@ -13,7 +13,7 @@ class SendAlgosTransactionViewModel {
         view.setButtonTitle("send-algos-title".localized)
         
         if algosTransactionSendDraft.from.type == .ledger {
-            view.setAccountImage(img("icon-account-type-ledger"))
+            view.setAccountImage(img("img-ledger-small"))
         } else {
             view.setAccountImage(img("icon-account-type-standard"))
         }
