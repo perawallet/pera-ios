@@ -27,14 +27,11 @@ extension AssetDetailViewModel {
         if let assetDetail = assetDetail {
             view.dollarValueImageView.isHidden = true
             view.algosImageView.removeFromSuperview()
-            view.verifiedImageView.isHidden = !assetDetail.isVerified
+            if !assetDetail.isVerified {
+                view.verifiedImageView.removeFromSuperview()
+            }
             view.rewardTotalAmountView.removeFromSuperview()
-            view.assetNameLabel.attributedText = assetDetail.assetDisplayName(
-                with: UIFont.font(withWeight: .medium(size: 14.0)),
-                isIndexIncluded: false,
-                shouldDisplayIndexWithName: false
-            )
-            
+            view.assetNameLabel.text = assetDetail.getDisplayNames().0
             view.assetIdLabel.isHidden = false
             view.assetIdLabel.text = "ID \(assetDetail.id)"
             

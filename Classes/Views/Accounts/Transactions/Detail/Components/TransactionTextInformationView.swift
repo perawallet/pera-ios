@@ -12,20 +12,21 @@ class TransactionTextInformationView: BaseView {
     
     private let layout = Layout<LayoutConstants>()
     
-    weak var delegate: TransactionTextInformationViewDelegate?
-    
-    private lazy var copyValueGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(notifyDelegateToCopyValue))
-    
     private lazy var titleLabel = TransactionDetailTitleLabel()
     
+    private(set) lazy var copyImageView: UIImageView = {
+        let imageView = UIImageView(image: img("icon-copy", isTemplate: true))
+        imageView.tintColor = SharedColors.gray400
+        imageView.isHidden = true
+        return imageView
+    }()
+    
     private lazy var detailLabel: UILabel = {
-        let label = UILabel()
+        UILabel()
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
             .withLine(.contained)
             .withAlignment(.right)
             .withTextColor(SharedColors.primaryText)
-        label.isUserInteractionEnabled = true
-        return label
     }()
     
     private lazy var separatorView = LineSeparatorView()
@@ -34,12 +35,9 @@ class TransactionTextInformationView: BaseView {
         backgroundColor = SharedColors.secondaryBackground
     }
     
-    override func linkInteractors() {
-        detailLabel.addGestureRecognizer(copyValueGestureRecognizer)
-    }
-    
     override func prepareLayout() {
         setupTitleLabelLayout()
+        setupCopyImageViewLayout()
         setupDetailLabelLayout()
         setupSeparatorViewLayout()
     }
@@ -55,12 +53,22 @@ extension TransactionTextInformationView {
         }
     }
     
+    private func setupCopyImageViewLayout() {
+        addSubview(copyImageView)
+        
+        copyImageView.snp.makeConstraints { make in
+            make.leading.equalTo(titleLabel.snp.trailing).offset(layout.current.copyImageOffset)
+            make.centerY.equalTo(titleLabel)
+            make.size.equalTo(layout.current.copyImageSize)
+        }
+    }
+    
     private func setupDetailLabelLayout() {
         addSubview(detailLabel)
         
         detailLabel.snp.makeConstraints { make in
             make.top.bottom.equalToSuperview().inset(layout.current.detailLabelOffset)
-            make.leading.greaterThanOrEqualTo(titleLabel.snp.trailing).offset(layout.current.detailLabelOffset)
+            make.leading.greaterThanOrEqualTo(copyImageView.snp.trailing).offset(layout.current.detailLabelOffset)
             make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
         }
     }
@@ -73,13 +81,6 @@ extension TransactionTextInformationView {
             make.height.equalTo(layout.current.separatorHeight)
             make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
         }
-    }
-}
-
-extension TransactionTextInformationView {
-    @objc
-    private func notifyDelegateToCopyValue(copyValueGestureRecognizer: UILongPressGestureRecognizer) {
-        delegate?.transactionTextInformationViewDidCopyDetail(self)
     }
 }
 
@@ -98,10 +99,8 @@ extension TransactionTextInformationView {
         let detailLabelOffset: CGFloat = 20.0
         let horizontalInset: CGFloat = 20.0
         let labelTopInset: CGFloat = 20.0
+        let copyImageOffset: CGFloat = 8.0
+        let copyImageSize = CGSize(width: 20.0, height: 20.0)
         let separatorHeight: CGFloat = 1.0
     }
-}
-
-protocol TransactionTextInformationViewDelegate: class {
-    func transactionTextInformationViewDidCopyDetail(_ transactionTextInformationView: TransactionTextInformationView)
 }

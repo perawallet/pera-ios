@@ -13,11 +13,14 @@ class SendAlgosTransactionViewModel {
         view.setButtonTitle("send-algos-title".localized)
         
         if algosTransactionSendDraft.from.type == .ledger {
-            view.setAccountImage(img("icon-account-type-ledger"))
+            view.setAccountImage(img("img-ledger-small"))
         } else {
             view.setAccountImage(img("icon-account-type-standard"))
         }
         
+        view.removeAssetUnitName()
+        view.removeAssetId()
+        view.setAssetNameAlignment(.right)
         view.setAccountName(algosTransactionSendDraft.from.name)
         
         if let amount = algosTransactionSendDraft.amount {
@@ -31,9 +34,7 @@ class SendAlgosTransactionViewModel {
         }
         
         setReceiver(in: view, with: algosTransactionSendDraft)
-        
         view.setAssetName("asset-algos-title".localized)
-        view.setAssetVerified(true)
     }
     
     private func setReceiver(in view: SendTransactionView, with algosTransactionSendDraft: AlgosTransactionSendDraft) {

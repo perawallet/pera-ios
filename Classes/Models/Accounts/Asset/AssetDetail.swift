@@ -126,73 +126,37 @@ extension AssetDetail {
 }
 
 extension AssetDetail {
-    func assetDisplayName(
-        with font: UIFont = UIFont.font(withWeight: .medium(size: 14.0)),
-        isIndexIncluded: Bool = true,
-        shouldDisplayIndexWithName: Bool = true
-    ) -> NSAttributedString? {
+    func getDisplayNames() -> (String, String?) {
         if let name = assetName, !name.isEmptyOrBlank,
             let code = unitName, !code.isEmptyOrBlank {
-            let nameText = name.attributed([.textColor(SharedColors.primaryText), .font(font)])
-            let codeText = " (\(code.uppercased()))".attributed([.textColor(SharedColors.detailText), .font(font)])
-            
-            if shouldDisplayIndexWithName {
-                let indexText = " \(id)".attributed([.textColor(SharedColors.detailText), .font(font)])
-                return nameText + codeText + indexText
-            }
-            
-            return nameText + codeText
-        } else if let name = assetName, !name.isEmptyOrBlank {
-            if shouldDisplayIndexWithName {
-                let indexText = " \(id)".attributed([.textColor(SharedColors.detailText), .font(font)])
-                return name.attributed([.textColor(SharedColors.primaryText), .font(font)]) + indexText
-            }
-            return name.attributed([.textColor(SharedColors.primaryText), .font(font)])
-        } else if let code = unitName, !code.isEmptyOrBlank {
-            if shouldDisplayIndexWithName {
-                let indexText = " \(id)".attributed([.textColor(SharedColors.detailText), .font(font)])
-                return "(\(code.uppercased()))".attributed([.textColor(SharedColors.detailText), .font(font)]) + indexText
-            }
-            return "(\(code.uppercased()))".attributed([.textColor(SharedColors.detailText), .font(font)])
-        } else {
-            let unknownText = "title-unknown".localized.attributed([
-                .textColor(SharedColors.secondary),
-                 .font(UIFont.font(withWeight: .boldItalic(size: 14.0)))
-            ])
-            if !isIndexIncluded {
-                return unknownText
-            }
-            
-            let indexText = "\(id)".attributed([
-                .textColor(SharedColors.primaryText),
-                .font(UIFont.font(withWeight: .medium(size: 14.0)))
-            ])
-            
-            return unknownText + " ".attributed() + indexText
-        }
-    }
-    
-    func getDisplayNames(isDisplayingBrackets: Bool = true) -> (String, String?) {
-        if let name = assetName, !name.isEmptyOrBlank,
-            let code = unitName, !code.isEmptyOrBlank {
-            if isDisplayingBrackets {
-                return (name, "(\(code.uppercased()))")
-            }
-            return (name, "\(code)")
+            return (name, "\(code.uppercased())")
         } else if let name = assetName, !name.isEmptyOrBlank {
             return (name, nil)
         } else if let code = unitName, !code.isEmptyOrBlank {
-            if isDisplayingBrackets {
-                return ("(\(code.uppercased()))", nil)
-            }
             return ("\(code.uppercased())", nil)
         } else {
             return ("title-unknown".localized, nil)
         }
     }
     
+    func hasOnlyAssetName() -> Bool {
+        return !assetName.isNilOrEmpty && unitName.isNilOrEmpty
+    }
+    
+    func hasOnlyUnitName() -> Bool {
+        return assetName.isNilOrEmpty && !unitName.isNilOrEmpty
+    }
+    
+    func hasBothDisplayName() -> Bool {
+        return !assetName.isNilOrEmpty && !unitName.isNilOrEmpty
+    }
+    
     func hasDisplayName() -> Bool {
         return !assetName.isNilOrEmpty || !unitName.isNilOrEmpty
+    }
+    
+    func hasNoDisplayName() -> Bool {
+        return assetName.isNilOrEmpty && unitName.isNilOrEmpty
     }
     
     func getAssetName() -> String {

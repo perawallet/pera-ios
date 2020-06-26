@@ -295,6 +295,7 @@
 "transaction-detail-close-amount" = "Close Amount";
 "transaction-detail-note-copied" = "Transaction note copied to clipboard";
 "transaction-detail-id-copied" = "Transaction ID copied to clipboard";
+"transaction-detail-copy-tooltip" = "Press and hold to Copy to Clipboard";
 
 // MARK: Feedback
 "feedback-title" = "Send Feedback";
@@ -388,6 +389,7 @@
 "ble-error-connection-title" = "Connection Error";
 "ble-error-bluetooth-title" = "Bluetooth Error";
 "ble-error-ledger-connection-title" = "Ledger Connection Error";
+"ble-error-ledger-connection-open-app-error" = "Please open the Algorand App on your ledger device.";
 "ble-error-unsupported-device-title" = "Unsupported Device";
 "ble-error-transaction-cancelled-title" = "Transaction Cancelled";
 "ble-error-transmission-title" = "Transmission Error";

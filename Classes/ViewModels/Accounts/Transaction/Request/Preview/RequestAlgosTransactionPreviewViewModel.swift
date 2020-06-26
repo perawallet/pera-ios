@@ -26,7 +26,7 @@ class RequestAlgosTransactionPreviewViewModel {
         }
         
         if account.type.isLedger() {
-            view.transactionAccountInformationView.setAccountImage(img("icon-account-type-ledger"))
+            view.transactionAccountInformationView.setAccountImage(img("img-ledger-small"))
         } else {
             view.transactionAccountInformationView.setAccountImage(img("icon-account-type-standard"))
         }
@@ -34,8 +34,9 @@ class RequestAlgosTransactionPreviewViewModel {
         view.transactionAccountInformationView.setAccountName(account.name)
         view.transactionAccountInformationView.removeAmountLabel()
         view.transactionAccountInformationView.setAssetName("asset-algos-title".localized)
-        view.transactionAccountInformationView.setAssetVerified(true)
         view.transactionAccountInformationView.removeAssetId()
+        view.transactionAccountInformationView.removeAssetUnitName()
+        view.transactionAccountInformationView.setAssetNameAlignment(.right)
     }
 }
 

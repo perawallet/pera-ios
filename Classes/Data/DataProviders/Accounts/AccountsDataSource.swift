@@ -14,6 +14,10 @@ class AccountsDataSource: NSObject, UICollectionViewDataSource {
     
     weak var delegate: AccountsDataSourceDelegate?
     
+    private let layout = Layout<LayoutConstants>()
+    
+    private let layoutBuilder = AssetListLayoutBuilder()
+    
     var accounts: [Account] = UIApplication.shared.appConfiguration?.session.accounts ?? []
     
     private var addedAssetDetails: [Account: [AssetDetail]] = [:]
@@ -117,52 +121,31 @@ extension AccountsDataSource {
             let account = accounts[indexPath.section]
             let assetDetail = account.assetDetails[indexPath.item - 1]
             
-            if assetDetail.isRemoved {
-                return dequeuePendingAssetCell(in: collectionView, cellForItemAt: indexPath, isRemoved: true)
-            } else if assetDetail.isRecentlyAdded {
-                return dequeuePendingAssetCell(in: collectionView, cellForItemAt: indexPath, isRemoved: false)
+            if assetDetail.isRemoved || assetDetail.isRecentlyAdded {
+                let cell = layoutBuilder.dequeuePendingAssetCells(
+                    in: collectionView,
+                    cellForItemAt: indexPath,
+                    for: assetDetail
+                )
+                viewModel.configure(cell, with: assetDetail, isRemoving: assetDetail.isRemoved)
+                return cell
             } else {
-                return dequeueAssetCell(in: collectionView, cellForItemAt: indexPath)
+                guard let assets = accounts[indexPath.section].assets,
+                    let asset = assets.first(where: { $0.id == assetDetail.id }) else {
+                        fatalError("Unexpected Element")
+                }
+                
+                let cell = layoutBuilder.dequeueAssetCells(
+                    in: collectionView,
+                    cellForItemAt: indexPath,
+                    for: assetDetail
+                )
+                viewModel.configure(cell, with: assetDetail, and: asset)
+                return cell
             }
         }
         
         fatalError("Index path is out of bounds")
-    }
-    
-    private func dequeuePendingAssetCell(
-        in collectionView: UICollectionView,
-        cellForItemAt indexPath: IndexPath,
-        isRemoved: Bool
-    ) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: PendingAssetCell.reusableIdentifier,
-            for: indexPath) as? PendingAssetCell else {
-                fatalError("Index path is out of bounds")
-        }
-        
-        let account = accounts[indexPath.section]
-        let assetDetail = account.assetDetails[indexPath.item - 1]
-        viewModel.configure(cell, with: assetDetail, isRemoving: isRemoved)
-        
-        return cell
-    }
-    
-    private func dequeueAssetCell(in collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: AssetCell.reusableIdentifier,
-            for: indexPath) as? AssetCell else {
-                fatalError("Index path is out of bounds")
-        }
-        
-        let account = accounts[indexPath.section]
-        let assetDetail = account.assetDetails[indexPath.item - 1]
-        
-        if let assets = account.assets,
-            let asset = assets.first(where: { $0.id == assetDetail.id }) {
-            viewModel.configure(cell, with: assetDetail, and: asset)
-        }
-        
-        return cell
     }
 }
 
@@ -270,8 +253,65 @@ extension AccountsDataSource {
     }
 }
 
+extension AccountsDataSource: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        delegate?.accountsDataSource(self, didSelectAt: indexPath)
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        sizeForItemAt indexPath: IndexPath
+    ) -> CGSize {
+        let width = UIScreen.main.bounds.width - layout.current.defaultSectionInsets.left - layout.current.defaultSectionInsets.right
+        if indexPath.item == 0 {
+            return CGSize(width: width, height: layout.current.itemHeight)
+        } else {
+            let account = accounts[indexPath.section]
+            let assetDetail = account.assetDetails[indexPath.item - 1]
+            
+            if assetDetail.hasBothDisplayName() {
+                return CGSize(width: width, height: layout.current.multiItemHeight)
+            } else {
+                return CGSize(width: width, height: layout.current.itemHeight)
+            }
+        }
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        referenceSizeForHeaderInSection section: Int
+    ) -> CGSize {
+        return CGSize(
+            width: UIScreen.main.bounds.width - layout.current.defaultSectionInsets.left - layout.current.defaultSectionInsets.right,
+            height: layout.current.itemHeight
+        )
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        referenceSizeForFooterInSection section: Int
+    ) -> CGSize {
+        return CGSize(
+            width: UIScreen.main.bounds.width - layout.current.defaultSectionInsets.left - layout.current.defaultSectionInsets.right,
+            height: layout.current.multiItemHeight
+        )
+    }
+}
+
+extension AccountsDataSource {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let defaultSectionInsets = UIEdgeInsets(top: 0.0, left: 20.0, bottom: 0.0, right: 20.0)
+        let itemHeight: CGFloat = 52.0
+        let multiItemHeight: CGFloat = 72.0
+    }
+}
+
 protocol AccountsDataSourceDelegate: class {
     func accountsDataSource(_ accountsDataSource: AccountsDataSource, didTapOptionsButtonFor account: Account)
     func accountsDataSource(_ accountsDataSource: AccountsDataSource, didTapAddAssetButtonFor account: Account)
     func accountsDataSource(_ accountsDataSource: AccountsDataSource, didTapQRButtonFor account: Account)
+    func accountsDataSource(_ accountsDataSource: AccountsDataSource, didSelectAt indexPath: IndexPath)
 }

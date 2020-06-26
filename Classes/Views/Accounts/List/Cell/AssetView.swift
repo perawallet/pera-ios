@@ -12,17 +12,18 @@ class AssetView: BaseView {
     
     private let layout = Layout<LayoutConstants>()
     
+    weak var delegate: AssetViewDelegate?
+    
     private(set) lazy var assetNameView: AssetNameView = {
         let view = AssetNameView()
         view.removeId()
         return view
     }()
     
-    private(set) lazy var amountLabel: UILabel = {
-        UILabel()
+    private lazy var actionButton: UIButton = {
+        UIButton(type: .custom)
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
-            .withTextColor(SharedColors.primaryText)
-            .withLine(.single)
+            .withTitleColor(SharedColors.primaryText)
             .withAlignment(.right)
     }()
     
@@ -36,21 +37,46 @@ class AssetView: BaseView {
         backgroundColor = SharedColors.secondaryBackground
     }
     
+    override func setListeners() {
+        actionButton.addTarget(self, action: #selector(notifyDelegateToActionButtonTapped), for: .touchUpInside)
+    }
+    
     override func prepareLayout() {
-        setupAmountLabelLayout()
+        setupActionButtonLayout()
         setupAssetNameViewLayout()
         setupSeparatorViewLayout()
     }
 }
 
 extension AssetView {
-    private func setupAmountLabelLayout() {
-        addSubview(amountLabel)
+    func setActionColor(_ color: UIColor?) {
+        actionButton.setTitleColor(color, for: .normal)
+    }
+    
+    func setActionFont(_ font: UIFont?) {
+        actionButton.titleLabel?.font = font
+    }
+    
+    func setActionText(_ text: String?) {
+        actionButton.setTitle(text, for: .normal)
+    }
+}
+
+extension AssetView {
+    @objc
+    private func notifyDelegateToActionButtonTapped() {
+        delegate?.assetViewDidTapActionButton(self)
+    }
+}
+
+extension AssetView {
+    private func setupActionButtonLayout() {
+        addSubview(actionButton)
         
-        amountLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
-        amountLabel.setContentHuggingPriority(.required, for: .horizontal)
+        actionButton.setContentCompressionResistancePriority(.required, for: .horizontal)
+        actionButton.setContentHuggingPriority(.required, for: .horizontal)
         
-        amountLabel.snp.makeConstraints { make in
+        actionButton.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
         }
@@ -62,7 +88,7 @@ extension AssetView {
         assetNameView.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(layout.current.horizontalInset)
             make.centerY.equalToSuperview()
-            make.trailing.lessThanOrEqualTo(amountLabel.snp.leading).offset(-layout.current.assetNameOffet)
+            make.trailing.lessThanOrEqualTo(actionButton.snp.leading).offset(-layout.current.assetNameOffet)
         }
     }
     
@@ -84,4 +110,8 @@ extension AssetView {
         let separatorHeight: CGFloat = 1.0
         let separatorInset: CGFloat = 10.0
     }
+}
+
+protocol AssetViewDelegate: class {
+    func assetViewDidTapActionButton(_ assetView: AssetView)
 }

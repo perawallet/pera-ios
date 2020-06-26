@@ -55,7 +55,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return
         }
         
-        window?.backgroundColor = .white
+        window?.backgroundColor = .clear
         
         if #available(iOS 13.0, *) {
             window?.overrideUserInterfaceStyle = .light

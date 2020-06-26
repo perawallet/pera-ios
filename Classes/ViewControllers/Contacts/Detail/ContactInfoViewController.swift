@@ -151,7 +151,7 @@ extension ContactInfoViewController {
             return
         }
         
-        let collectionViewHeight = CGFloat((account.assetDetails.count + 1) * 50) + CGFloat((account.assetDetails.count + 1) * 8)
+        let collectionViewHeight = CGFloat((account.assetDetails.count + 1) * 72) + CGFloat((account.assetDetails.count + 1) * 8)
         
         contactInfoView.assetsCollectionView.snp.updateConstraints { make in
             make.height.equalTo(collectionViewHeight)
@@ -194,7 +194,7 @@ extension ContactInfoViewController: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        return CGSize(width: view.frame.width - 40.0, height: 50.0)
+        return CGSize(width: view.frame.width - 40.0, height: 72.0)
     }
 }
 

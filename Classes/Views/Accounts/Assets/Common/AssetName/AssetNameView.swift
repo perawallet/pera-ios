@@ -12,11 +12,7 @@ class AssetNameView: BaseView {
 
     private let layout = Layout<LayoutConstants>()
     
-    private lazy var verifiedImageView: UIImageView = {
-        let imageView = UIImageView(image: img("icon-verified"))
-        imageView.isHidden = true
-        return imageView
-    }()
+    private lazy var verifiedImageView = UIImageView(image: img("icon-verified"))
     
     private(set) lazy var nameLabel: UILabel = {
         UILabel()
@@ -28,7 +24,7 @@ class AssetNameView: BaseView {
     
     private(set) lazy var codeLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
+            .withFont(UIFont.font(withWeight: .regular(size: 12.0)))
             .withTextColor(SharedColors.detailText)
             .withLine(.single)
             .withAlignment(.left)
@@ -36,7 +32,7 @@ class AssetNameView: BaseView {
     
     private(set) lazy var idLabel: UILabel = {
         UILabel()
-            .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
+            .withFont(UIFont.font(withWeight: .regular(size: 12.0)))
             .withTextColor(SharedColors.detailText)
             .withLine(.single)
             .withAlignment(.left)
@@ -47,33 +43,48 @@ class AssetNameView: BaseView {
     }
     
     override func prepareLayout() {
+        setupVerifiedImageViewLayout()
         setupNameLabelLayout()
         setupCodeLabelLayout()
         setupIdLabelLayout()
-        setupVerifiedImageViewLayout()
     }
 }
 
 extension AssetNameView {
+    private func setupVerifiedImageViewLayout() {
+        addSubview(verifiedImageView)
+        
+        verifiedImageView.snp.makeConstraints { make in
+            make.size.equalTo(layout.current.imageSize)
+            make.leading.equalToSuperview()
+            make.centerY.equalToSuperview()
+        }
+    }
+    
     private func setupNameLabelLayout() {
         addSubview(nameLabel)
         
         nameLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         
         nameLabel.snp.makeConstraints { make in
-            make.leading.top.bottom.equalToSuperview()
+            make.leading.equalTo(verifiedImageView.snp.trailing).offset(layout.current.labelInset)
+            make.top.equalToSuperview()
+            make.leading.equalToSuperview().priority(.medium)
+            make.bottom.equalToSuperview().priority(.medium)
+            make.trailing.lessThanOrEqualToSuperview().priority(.medium)
         }
     }
 
     private func setupCodeLabelLayout() {
         addSubview(codeLabel)
         
-        codeLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
-        codeLabel.setContentHuggingPriority(.required, for: .horizontal)
-        
         codeLabel.snp.makeConstraints { make in
-            make.leading.equalTo(nameLabel.snp.trailing).offset(layout.current.codeLabelOffset)
-            make.top.bottom.equalToSuperview()
+            make.leading.equalTo(verifiedImageView.snp.trailing).offset(layout.current.labelInset)
+            make.bottom.equalToSuperview()
+            make.top.equalTo(nameLabel.snp.bottom).offset(layout.current.codeLabelOffset)
+            make.top.equalToSuperview().priority(.medium)
+            make.leading.equalToSuperview().priority(.medium)
+            make.trailing.lessThanOrEqualToSuperview().priority(.medium)
         }
     }
     
@@ -85,54 +96,55 @@ extension AssetNameView {
         
         idLabel.snp.makeConstraints { make in
             make.leading.equalTo(codeLabel.snp.trailing).offset(layout.current.codeLabelOffset)
-            make.top.bottom.equalToSuperview()
-        }
-    }
-    
-    private func setupVerifiedImageViewLayout() {
-        addSubview(verifiedImageView)
-        
-        verifiedImageView.snp.makeConstraints { make in
-            make.leading.equalTo(idLabel.snp.trailing).offset(layout.current.imageViewOffset)
-            make.leading.equalTo(codeLabel.snp.trailing).offset(layout.current.imageViewOffset).priority(.low)
-            make.centerY.equalToSuperview()
-            make.trailing.equalToSuperview()
-            make.size.equalTo(layout.current.imageSize)
+            make.leading.equalTo(verifiedImageView.snp.trailing).offset(layout.current.labelInset).priority(.medium)
+            make.leading.equalToSuperview().priority(.low)
+            make.top.equalTo(nameLabel.snp.bottom).offset(layout.current.codeLabelOffset)
+            make.top.equalToSuperview().priority(.medium)
+            make.bottom.equalToSuperview()
+            make.trailing.lessThanOrEqualToSuperview()
         }
     }
 }
 
 extension AssetNameView {
-    func setAssetName(for assetDetail: AssetDetail) {
-        let (firstDisplayName, secondDisplayName) = assetDetail.getDisplayNames()
-        
-        if firstDisplayName.isUnknown() && !assetDetail.hasDisplayName() {
-            nameLabel.textColor = SharedColors.secondary
-            nameLabel.font = UIFont.font(withWeight: .boldItalic(size: 14.0))
-        } else if secondDisplayName.isNilOrEmpty && assetDetail.assetName.isNilOrEmpty {
-            nameLabel.textColor = SharedColors.subtitleText
+    func setAssetName(for assetDetail: AssetDetail) {        
+        if assetDetail.hasDisplayName() {
+            nameLabel.text = assetDetail.assetName
+            codeLabel.text = assetDetail.unitName
+        } else {
+            nameLabel.text = "title-unknown".localized
         }
         
-        nameLabel.text = firstDisplayName
-        codeLabel.text = secondDisplayName
-        idLabel.text = "\(assetDetail.id)"
-        
-        verifiedImageView.isHidden = !assetDetail.isVerified
+        idLabel.text = "· \(assetDetail.id)"
     }
     
-    func setVerified(_ hidden: Bool) {
-        verifiedImageView.isHidden = !hidden
+    func setAlignment(_ alignment: NSTextAlignment) {
+        nameLabel.textAlignment = alignment
+        codeLabel.textAlignment = alignment
+        idLabel.textAlignment = alignment
     }
     
-    func setName(_ name: String) {
+    func removeName() {
+        nameLabel.removeFromSuperview()
+    }
+    
+    func removeUnitName() {
+        codeLabel.removeFromSuperview()
+    }
+    
+    func removeVerified() {
+        verifiedImageView.removeFromSuperview()
+    }
+    
+    func setName(_ name: String?) {
         nameLabel.text = name
     }
     
-    func setCode(_ code: String) {
+    func setCode(_ code: String?) {
         codeLabel.text = code
     }
     
-    func setId(_ id: String) {
+    func setId(_ id: String?) {
         idLabel.text = id
     }
     
@@ -144,7 +156,8 @@ extension AssetNameView {
 extension AssetNameView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let codeLabelOffset: CGFloat = 4.0
+        let labelInset: CGFloat = 8.0
         let imageSize = CGSize(width: 20.0, height: 20.0)
-        let imageViewOffset: CGFloat = 4.0
+        let horizontalInset: CGFloat = 20.0
     }
 }
