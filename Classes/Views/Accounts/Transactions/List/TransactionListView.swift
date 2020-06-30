@@ -111,6 +111,17 @@ extension TransactionListView {
     func setNormalState() {
         transactionsCollectionView.contentState = .none
     }
+    
+    func headerView() -> TransactionHistoryHeaderSupplementaryView {
+        guard let headerView = transactionsCollectionView.supplementaryView(
+            forElementKind: UICollectionView.elementKindSectionHeader,
+            at: IndexPath(item: 0, section: 0)
+        ) as? TransactionHistoryHeaderSupplementaryView else {
+            fatalError("Unexpected element kind")
+        }
+        
+        return headerView
+    }
 }
 
 protocol TransactionListViewDelegate: class {

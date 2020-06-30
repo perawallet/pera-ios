@@ -415,3 +415,12 @@
 // MARK: Notifications Tab
 "notifications-coming-soon-title" = "COMING SOON";
 "notifications-coming-soon-detail-text" = "Your recent transactions, asset requests and other notifications will appear here";
+
+// MARK: Transaction Filter
+"transaction-filter-title-sort" = "Sort by Date";
+"transaction-filter-option-all" = "All Time";
+"transaction-filter-option-today" = "Today";
+"transaction-filter-option-yesterday" = "Yesterday";
+"transaction-filter-option-week" = "Last Week";
+"transaction-filter-option-month" = "Last Month";
+"transaction-filter-option-custom" = "Custom Range";

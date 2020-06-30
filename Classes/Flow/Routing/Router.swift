@@ -340,6 +340,8 @@ class Router {
         case .assetActionConfirmationNotification,
              .assetDetailNotification:
             return nil
+        case let .transactionFilter(filterOption):
+            viewController = TransactionFilterViewController(filterOption: filterOption, configuration: configuration)
         }
         
         return viewController as? T
