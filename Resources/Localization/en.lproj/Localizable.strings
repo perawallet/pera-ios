@@ -415,3 +415,7 @@
 // MARK: Notifications Tab
 "notifications-coming-soon-title" = "COMING SOON";
 "notifications-coming-soon-detail-text" = "Your recent transactions, asset requests and other notifications will appear here";
+
+// MARK: Pin Limit
+"pin-limit-title" = "Algorand is disabled";
+"pin-limit-try-again" = "Try again in";
