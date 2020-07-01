@@ -54,6 +54,18 @@ class AssetDetailViewController: BaseViewController {
         super.init(configuration: configuration)
     }
     
+    override func configureNavigationBarAppearance() {
+        let qrBarButton = ALGBarButtonItem(kind: .qr) { [weak self] in
+            guard let strongSelf = self else {
+                return
+            }
+            let draft = QRCreationDraft(address: strongSelf.account.address, mode: .address)
+            strongSelf.open(.qrGenerator(title: "qr-creation-sharing-title".localized, draft: draft), by: .present)
+        }
+
+        rightBarButtonItems = [qrBarButton]
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         fetchDollarConversion()
