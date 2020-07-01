@@ -285,7 +285,7 @@ extension TransactionsViewController: TransactionFilterViewControllerDelegate {
         _ transactionFilterViewController: TransactionFilterViewController,
         didSelect filterOption: TransactionFilterViewController.FilterOption
     ) {
-        if self.filterOption == filterOption {
+        if self.filterOption == filterOption && !self.filterOption.isCustomRange() {
             return
         }
         

@@ -73,7 +73,13 @@ extension TransactionFilterViewController: UICollectionViewDataSource {
         }
         
         let filterOption = filterOptions[indexPath.item]
-        viewModel.configure(cell, with: filterOption, isSelected: filterOption == selectedOption)
+        
+        if selectedOption.isCustomRange() && filterOption == selectedOption {
+            viewModel.configure(cell, with: selectedOption, isSelected: true)
+        } else {
+            viewModel.configure(cell, with: filterOption, isSelected: filterOption == selectedOption)
+        }
+        
         return cell
     }
 }
@@ -82,14 +88,33 @@ extension TransactionFilterViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let selectedFilterOption = filterOptions[indexPath.item]
         
-        switch selectedFilterOption {
-        case let .customRange(from, to):
-            break
-        default:
+        if selectedFilterOption.isCustomRange() {
+            if selectedOption.isCustomRange() {
+                switch selectedOption {
+                case let .customRange(from, to):
+                    openCustomRangeSelection(fromDate: from, toDate: to)
+                default:
+                    break
+                }
+            } else {
+                openCustomRangeSelection(fromDate: nil, toDate: nil)
+            }
+        } else {
             self.selectedOption = selectedFilterOption
             delegate?.transactionFilterViewController(self, didSelect: selectedOption)
             dismissScreen()
         }
+    }
+    
+    private func openCustomRangeSelection(fromDate: Date?, toDate: Date?) {
+        let controller = open(
+            .transactionFilterCustomRange(
+                fromDate: fromDate,
+                toDate: toDate
+            ),
+            by: .push
+        ) as? TransactionCustomRangeSelectionViewController
+        controller?.delegate = self
     }
     
     func collectionView(
@@ -101,6 +126,17 @@ extension TransactionFilterViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
+extension TransactionFilterViewController: TransactionCustomRangeSelectionViewControllerDelegate {
+    func transactionCustomRangeSelectionViewController(
+        _ transactionCustomRangeSelectionViewController: TransactionCustomRangeSelectionViewController,
+        didSelect range: (from: Date, to: Date)
+    ) {
+        selectedOption = .customRange(from: range.from, to: range.to)
+        delegate?.transactionFilterViewController(self, didSelect: selectedOption)
+        dismissScreen()
+    }
+}
+
 extension TransactionFilterViewController {
     enum FilterOption: Equatable {
         case allTime
@@ -109,6 +145,29 @@ extension TransactionFilterViewController {
         case lastWeek
         case lastMonth
         case customRange(from: Date?, to: Date?)
+        
+        static func == (lhs: FilterOption, rhs: FilterOption) -> Bool {
+            switch (lhs, rhs) {
+            case (.allTime, .allTime):
+                return true
+            case (.today, .today):
+                return true
+            case (.yesterday, .yesterday):
+                return true
+            case (.lastWeek, .lastWeek):
+                return true
+            case (.lastMonth, .lastMonth):
+                return true
+            case (.customRange, .customRange):
+                return true
+            default:
+                return false
+            }
+        }
+        
+        func isCustomRange() -> Bool {
+            return self == .customRange(from: nil, to: nil)
+        }
     }
 }
 
