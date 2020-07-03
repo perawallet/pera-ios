@@ -342,6 +342,8 @@ class Router {
             return nil
         case let .transactionFilter(filterOption):
             viewController = TransactionFilterViewController(filterOption: filterOption, configuration: configuration)
+        case let .transactionFilterCustomRange(fromDate, toDate):
+            viewController = TransactionCustomRangeSelectionViewController(fromDate: fromDate, toDate: toDate, configuration: configuration)
         }
         
         return viewController as? T
