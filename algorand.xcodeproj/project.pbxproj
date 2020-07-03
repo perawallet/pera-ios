@@ -5659,7 +5659,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.1.0;
+				MARKETING_VERSION = 4.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algoranddemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = Algorand_Demo_Development;
@@ -5689,7 +5689,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.1.0;
+				MARKETING_VERSION = 4.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algoranddemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = Algorand_Demo_Ad_Hoc;
@@ -5719,7 +5719,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.1.0;
+				MARKETING_VERSION = 4.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algoranddemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = Algorand_Demo_Ad_Hoc;
@@ -5866,7 +5866,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.1.0;
+				MARKETING_VERSION = 4.2.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -D PRODUCTION -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5897,7 +5897,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.1.0;
+				MARKETING_VERSION = 4.2.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5983,7 +5983,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.1.0;
+				MARKETING_VERSION = 4.2.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "$(TARGET_NAME)";
