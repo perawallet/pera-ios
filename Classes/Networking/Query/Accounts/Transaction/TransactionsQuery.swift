@@ -12,8 +12,27 @@ struct TransactionsQuery: Query {
     typealias Key = RequestParameter
     
     let limit: Int
+    let from: String?
+    let to: String?
+    let next: String?
+    let assetId: String?
     
     func decoded() -> [Pair]? {
-        return [Pair(key: .limit, value: .some(limit))]
+        
+        var pairs = [Pair(key: .limit, value: .some(limit))]
+        if let from = from,
+            let to = to {
+            pairs.append(contentsOf: [Pair(key: .afterTime, value: .some(from)), Pair(key: .beforeTime, value: .some(to))])
+        }
+        
+        if let next = next {
+            pairs.append(Pair(key: .next, value: .some(next)))
+        }
+        
+        if let assetId = assetId {
+            pairs.append(Pair(key: .assetIdFilter, value: .some(assetId)))
+        }
+        
+        return pairs
     }
 }

@@ -29,6 +29,7 @@ class Transaction: Model, TransactionItem {
     let assetConfig: AssetConfigTransaction?
     let assetTransfer: AssetTransferTransaction?
     let date: Date?
+    let signature: TransactionSignature?
     
     var status: Status?
     var contact: Contact?
@@ -52,6 +53,7 @@ class Transaction: Model, TransactionItem {
         assetFreeze = try container.decodeIfPresent(AssetFreezeTransaction.self, forKey: .assetFreeze)
         assetConfig = try container.decodeIfPresent(AssetConfigTransaction.self, forKey: .assetConfig)
         assetTransfer = try container.decodeIfPresent(AssetTransferTransaction.self, forKey: .assetTransfer)
+        signature = try container.decodeIfPresent(TransactionSignature.self, forKey: .signature)
         
         if let timestamp = try container.decodeIfPresent(Double.self, forKey: .date) {
             date = Date(timeIntervalSince1970: timestamp)
@@ -106,6 +108,7 @@ extension Transaction {
         case assetConfig = "asset-config-transaction"
         case assetTransfer = "asset-transfer-transaction"
         case date = "round-time"
+        case signature = "signature"
     }
 }
 

@@ -18,7 +18,6 @@ class PendingTransaction: Model, TransactionItem {
     let receiver: String
     let sender: String
     let type: Transaction.TransferType
-    let id: String = ""
     
     var contact: Contact?
     

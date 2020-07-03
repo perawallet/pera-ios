@@ -17,8 +17,8 @@ enum RequestParameter: String, JSONBodyRequestParameter {
     case username = "username"
     case bid = "SignedBinary"
     case max = "max"
-    case from = "fromDate"
-    case to = "toDate"
+    case beforeTime = "before-time"
+    case afterTime = "after-time"
     case clientId = "client_id"
     case clientSecret = "client_secret"
     case code = "code"
@@ -43,4 +43,7 @@ enum RequestParameter: String, JSONBodyRequestParameter {
     case offset = "offset"
     case status = "status"
     case transactionDetailId = "txid"
+    case next = "next"
+    case assetIdFilter = "asset-id"
+    case transactionType = "tx-type"
 }
