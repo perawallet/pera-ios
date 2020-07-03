@@ -67,11 +67,12 @@ extension TransactionFilterViewModel {
     
     private func configureLastMonth(_ cell: TransactionFilterOptionCell) {
         let todaysDate = Date()
-        cell.contextView.setDateImage(img("icon-calendar-month"))
+        cell.contextView.setDateImage(img("icon-calendar-all"))
         cell.contextView.setTitle("transaction-filter-option-month".localized)
         let prevOfLastMonth = todaysDate.dateAt(.prevMonth)
         let endOfLastMonth = prevOfLastMonth.dateAt(.endOfMonth)
         cell.contextView.setDate("\(prevOfLastMonth.toFormat("MMM dd"))-\(endOfLastMonth.day)")
+        cell.contextView.setDayText("\(endOfLastMonth.day)")
     }
     
     private func configureCustomRange(_ cell: TransactionFilterOptionCell, from: Date?, to: Date?) {
