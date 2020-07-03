@@ -22,6 +22,9 @@ class TransactionHistoryDataSource: NSObject, UICollectionViewDataSource {
     private var transactionParams: TransactionParams?
     private var fetchRequest: EndpointOperatable?
     
+    var openFilterOptionsHandler: ((TransactionHistoryDataSource) -> Void)?
+    var shareHistoryHandler: ((TransactionHistoryDataSource) -> Void)?
+    
     init(api: API?, account: Account, assetDetail: AssetDetail?) {
         self.api = api
         self.account = account
@@ -77,6 +80,7 @@ extension TransactionHistoryDataSource {
             fatalError("Unexpected element kind")
         }
         
+        headerView.delegate = self
         return headerView
     }
 }
@@ -398,5 +402,25 @@ extension TransactionHistoryDataSource {
     
     var isEmpty: Bool {
         transactions.isEmpty
+    }
+}
+
+extension TransactionHistoryDataSource: TransactionHistoryHeaderSupplementaryViewDelegate {
+    func transactionHistoryHeaderSupplementaryViewDidOpenFilterOptions(
+        _ transactionHistoryHeaderSupplementaryView: TransactionHistoryHeaderSupplementaryView
+    ) {
+        guard let openFilterOptionsHandler = openFilterOptionsHandler else {
+            return
+        }
+        openFilterOptionsHandler(self)
+    }
+    
+    func transactionHistoryHeaderSupplementaryViewDidShareHistory(
+        _ transactionHistoryHeaderSupplementaryView: TransactionHistoryHeaderSupplementaryView
+    ) {
+        guard let shareHistoryHandler = shareHistoryHandler else {
+            return
+        }
+        shareHistoryHandler(self)
     }
 }

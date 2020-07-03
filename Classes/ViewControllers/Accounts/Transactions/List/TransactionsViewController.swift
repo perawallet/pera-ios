@@ -16,7 +16,19 @@ class TransactionsViewController: BaseViewController {
     private var account: Account
     private var assetDetail: AssetDetail?
     
+    private let viewModel = TransactionsViewModel()
+    
     weak var delegate: TransactionsViewControllerDelegate?
+    
+    private var filterOption = TransactionFilterViewController.FilterOption.allTime
+    
+    private lazy var filterOptionsPresenter = CardModalPresenter(
+        config: ModalConfiguration(
+            animationMode: .normal(duration: 0.25),
+            dismissMode: .scroll
+        ),
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: layout.current.filterOptionsModalHeight))
+    )
     
     private var transactionHistoryDataSource: TransactionHistoryDataSource
     
@@ -63,6 +75,29 @@ class TransactionsViewController: BaseViewController {
             name: .ContactEdit,
             object: nil
         )
+        
+        transactionHistoryDataSource.openFilterOptionsHandler = { [weak self] dataSource -> Void in
+            guard let strongSelf = self else {
+                return
+            }
+            
+            let controller = strongSelf.open(
+                .transactionFilter(filterOption: strongSelf.filterOption),
+                by: .customPresent(
+                    presentationStyle: .custom,
+                    transitionStyle: nil,
+                    transitioningDelegate: strongSelf.filterOptionsPresenter
+                )
+            ) as? TransactionFilterViewController
+            
+            controller?.delegate = self
+        }
+        
+        transactionHistoryDataSource.shareHistoryHandler = { [weak self] dataSource -> Void in
+            guard let strongSelf = self else {
+                return
+            }
+        }
     }
     
     override func linkInteractors() {
@@ -245,11 +280,26 @@ extension TransactionsViewController {
     }
 }
 
+extension TransactionsViewController: TransactionFilterViewControllerDelegate {
+    func transactionFilterViewController(
+        _ transactionFilterViewController: TransactionFilterViewController,
+        didSelect filterOption: TransactionFilterViewController.FilterOption
+    ) {
+        if self.filterOption == filterOption && !self.filterOption.isCustomRange() {
+            return
+        }
+        
+        self.filterOption = filterOption
+        viewModel.configure(transactionListView.headerView(), for: filterOption)
+    }
+}
+
 extension TransactionsViewController {
     struct LayoutConstants: AdaptiveLayoutConstants {
         let transactionCellSize = CGSize(width: UIScreen.main.bounds.width, height: 72.0)
         let editAccountModalHeight: CGFloat = 158.0
         let headerSize = CGSize(width: UIScreen.main.bounds.width, height: 68.0)
+        let filterOptionsModalHeight: CGFloat = 506.0
     }
 }
 

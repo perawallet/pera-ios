@@ -78,6 +78,8 @@ indirect enum Screen {
     case tooltip(title: String)
     case assetDetailNotification(address: String, assetId: Int64?)
     case assetActionConfirmationNotification(address: String, assetId: Int64?)
+    case transactionFilter(filterOption: TransactionFilterViewController.FilterOption = .allTime)
+    case transactionFilterCustomRange(fromDate: Date?, toDate: Date?)
 }
 
 extension Screen {
