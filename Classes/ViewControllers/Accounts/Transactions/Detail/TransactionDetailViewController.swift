@@ -16,7 +16,6 @@ class TransactionDetailViewController: BaseScrollViewController {
     private let account: Account
     private var assetDetail: AssetDetail?
     private let transactionType: TransactionType
-    private var pollingOperation: PollingOperation?
     
     private let transactionDetailTooltipStorage = TransactionDetailTooltipStorage()
     
@@ -46,22 +45,12 @@ class TransactionDetailViewController: BaseScrollViewController {
         leftBarButtonItems = [closeBarButtonItem]
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        startPolling()
-    }
-    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.presentInformationCopyTooltipIfNeeded()
         }
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        pollingOperation?.invalidate()
     }
     
     override func linkInteractors() {
@@ -103,43 +92,6 @@ extension TransactionDetailViewController {
         
         transaction.contact = contact
         viewModel.setOpponent(for: transaction, with: contact.address ?? "", in: transactionDetailView)
-    }
-}
-
-extension TransactionDetailViewController {
-    private func startPolling() {
-        pollingOperation = PollingOperation(interval: 1.0) { [weak self] in
-            guard let strongSelf = self else {
-                return
-            }
-            
-            strongSelf.fetchTransactionDetail()
-        }
-        
-        if transaction.isPending() {
-            pollingOperation?.start()
-        }
-    }
-    
-    private func fetchTransactionDetail() {
-        if !transaction.isPending() {
-            return
-        }
-        
-        api?.fetchTransactionDetail(for: account, with: transaction.id) { response in
-            switch response {
-            case let .success(transaction):
-                if !transaction.isPending() {
-                    transaction.contact = self.transaction.contact
-                    self.transaction = transaction
-                    self.transaction.status = .completed
-                    self.configureTransactionDetail()
-                    self.pollingOperation?.invalidate()
-                }
-            case .failure:
-                break
-            }
-        }
     }
 }
 
