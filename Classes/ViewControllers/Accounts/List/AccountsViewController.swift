@@ -399,7 +399,7 @@ extension AccountsViewController: QRScannerViewControllerDelegate {
     }
 }
 
-extension AccountsViewController {
+extension AccountsViewController: TooltipPresentable {
     func presentQRTooltipIfNeeded() {
         guard let isAccountQRTooltipDisplayed = session?.isAccountQRTooltipDisplayed(),
             isViewAppeared,
@@ -414,13 +414,15 @@ extension AccountsViewController {
             return
         }
         
-        // Needs to set presentationController before calling present. So it's not initialized from the Router.
-        let tooltipViewController = TooltipViewController(title: "accounts-qr-tooltip".localized, configuration: configuration)
-        tooltipViewController.presentationController?.delegate = self
-        tooltipViewController.setSourceView(headerView.contextView.qrButton)
-        present(tooltipViewController, animated: true)
-        
+        presentTooltip(with: "accounts-qr-tooltip".localized, at: headerView.contextView.qrButton)
         session?.setAccountQRTooltipDisplayed()
+    }
+    
+    func adaptivePresentationStyle(
+        for controller: UIPresentationController,
+        traitCollection: UITraitCollection
+    ) -> UIModalPresentationStyle {
+        return .none
     }
 }
 
@@ -436,15 +438,6 @@ extension AccountsViewController: MagpieDelegate {
     
     func magpie(_ magpie: Magpie, networkMonitor: NetworkMonitor, didDisconnectFrom oldConnection: NetworkConnection) {
         isConnectedToInternet = networkMonitor.isConnected
-    }
-}
-
-extension AccountsViewController: UIPopoverPresentationControllerDelegate {
-    func adaptivePresentationStyle(
-        for controller: UIPresentationController,
-        traitCollection: UITraitCollection
-    ) -> UIModalPresentationStyle {
-        return .none
     }
 }
 

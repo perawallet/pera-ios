@@ -95,7 +95,7 @@ extension TransactionDetailViewController {
     }
 }
 
-extension TransactionDetailViewController {
+extension TransactionDetailViewController: TooltipPresentable {
     private func configureTransactionDetail() {
         if transactionType == .sent {
             viewModel.configureSentTransaction(transactionDetailView, with: transaction, and: assetDetail, for: account)
@@ -109,12 +109,15 @@ extension TransactionDetailViewController {
             return
         }
         
-        let tooltipViewController = TooltipViewController(title: "transaction-detail-copy-tooltip".localized, configuration: configuration)
-        tooltipViewController.presentationController?.delegate = self
-        tooltipViewController.setSourceView(transactionDetailView.opponentView.copyImageView)
-        present(tooltipViewController, animated: true)
-        
+        presentTooltip(with: "transaction-detail-copy-tooltip".localized, at: transactionDetailView.opponentView.copyImageView)
         transactionDetailTooltipStorage.setInformationCopyTooltipDisplayed()
+    }
+    
+    func adaptivePresentationStyle(
+        for controller: UIPresentationController,
+        traitCollection: UITraitCollection
+    ) -> UIModalPresentationStyle {
+        return .none
     }
 }
 
@@ -175,15 +178,6 @@ extension TransactionDetailViewController: TransactionDetailViewDelegate {
     func transactionDetailViewDidCopyTransactionNote(_ transactionDetailView: TransactionDetailView) {
         UIPasteboard.general.string = transaction.noteRepresentation()
         displaySimpleAlertWith(title: "transaction-detail-note-copied".localized)
-    }
-}
-
-extension TransactionDetailViewController: UIPopoverPresentationControllerDelegate {
-    func adaptivePresentationStyle(
-        for controller: UIPresentationController,
-        traitCollection: UITraitCollection
-    ) -> UIModalPresentationStyle {
-        return .none
     }
 }
 

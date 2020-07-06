@@ -424,3 +424,4 @@
 "transaction-filter-option-week" = "Last Week";
 "transaction-filter-option-month" = "Last Month";
 "transaction-filter-option-custom" = "Custom Range";
+"transaction-filter-tooltip" = "You can now filter the history of transactions";
