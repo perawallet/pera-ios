@@ -11,7 +11,7 @@ import UIKit
 class ContentStateView: BaseView {
     
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let loadingIndicatorInset: CGFloat = 50.0
+        let loadingIndicatorInset: CGFloat = 100.0
     }
     
     private let layout = Layout<LayoutConstants>()
@@ -33,6 +33,7 @@ class ContentStateView: BaseView {
     private lazy var contentView = UIView()
     
     private var emptyStateView: UIView?
+    private var errorStateView: UIView?
     
     private(set) lazy var loadingIndicator = LoadingIndicator()
     
@@ -74,14 +75,19 @@ class ContentStateView: BaseView {
         case .none:
             setLoadingIndicator(visible: false)
             setEmpty(emptyStateView, visible: false)
+            setError(errorStateView, visible: false)
         case .loading:
             setLoadingIndicator(visible: true)
             setEmpty(emptyStateView, visible: false)
+            setError(errorStateView, visible: false)
         case let .empty(emptyView):
             setLoadingIndicator(visible: false)
+            setError(errorStateView, visible: false)
             setEmpty(emptyView, visible: true)
-        case .unexpectedError:
-            break
+        case let .error(errorView):
+            setLoadingIndicator(visible: false)
+            setEmpty(emptyStateView, visible: false)
+            setError(errorView, visible: true)
         }
     }
     
@@ -112,6 +118,33 @@ class ContentStateView: BaseView {
         emptyView?.removeFromSuperview()
     }
     
+    private func setError(_ errorView: UIView?, visible: Bool) {
+        if visible {
+            if errorStateView == errorView {
+                return
+            }
+            
+            guard let view = errorView else {
+                errorStateView?.removeFromSuperview()
+                errorStateView = nil
+                return
+            }
+            
+            contentView.addSubview(view)
+            
+            view.snp.makeConstraints { make in
+                make.edges.equalToSuperview()
+            }
+            
+            errorStateView = errorView
+            
+            return
+        }
+        
+        self.errorStateView = nil
+        errorView?.removeFromSuperview()
+    }
+    
     private func setLoadingIndicator(visible: Bool) {
         if visible {
             loadingIndicator.show()
@@ -130,6 +163,6 @@ extension ContentStateView {
         case none
         case loading
         case empty(UIView)
-        case unexpectedError(UIView)
+        case error(UIView)
     }
 }

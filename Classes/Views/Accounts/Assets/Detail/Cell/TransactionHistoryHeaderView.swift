@@ -28,7 +28,7 @@ class TransactionHistoryHeaderView: BaseView {
         return button
     }()
     
-    private lazy var filterButton: UIButton = {
+    private(set) lazy var filterButton: UIButton = {
         UIButton(type: .custom).withImage(img("icon-transaction-filter"))
     }()
     

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Magpie
 
 class TransactionsViewController: BaseViewController {
     
@@ -15,12 +16,24 @@ class TransactionsViewController: BaseViewController {
     private var pollingOperation: PollingOperation?
     private var account: Account
     private var assetDetail: AssetDetail?
+    private var isConnectedToInternet = true {
+        didSet {
+            if isConnectedToInternet {
+                transactionListView.setInternetConnectionErrorState()
+            } else {
+                transactionListView.setNormalState()
+            }
+            transactionListView.reloadData()
+        }
+    }
     
     private let viewModel = TransactionsViewModel()
     
     weak var delegate: TransactionsViewControllerDelegate?
     
+    private let transactionsTooltipStorage = TransactionsTooltipStorage()
     private var filterOption = TransactionFilterViewController.FilterOption.allTime
+    private var paginationRequestOffset = 5
     
     private lazy var filterOptionsPresenter = CardModalPresenter(
         config: ModalConfiguration(
@@ -53,11 +66,21 @@ class TransactionsViewController: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        api?.addDelegate(self)
         startPendingTransactionPolling()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.presentFilterTooltipIfNeeded()
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        api?.removeDelegate(self)
         pollingOperation?.invalidate()
     }
     
@@ -77,26 +100,22 @@ class TransactionsViewController: BaseViewController {
         )
         
         transactionHistoryDataSource.openFilterOptionsHandler = { [weak self] dataSource -> Void in
-            guard let strongSelf = self else {
+            guard let filterOption = self?.filterOption else {
                 return
             }
-            
-            let controller = strongSelf.open(
-                .transactionFilter(filterOption: strongSelf.filterOption),
+            let controller = self?.open(
+                .transactionFilter(filterOption: filterOption),
                 by: .customPresent(
                     presentationStyle: .custom,
                     transitionStyle: nil,
-                    transitioningDelegate: strongSelf.filterOptionsPresenter
+                    transitioningDelegate: self?.filterOptionsPresenter
                 )
             ) as? TransactionFilterViewController
             
             controller?.delegate = self
         }
         
-        transactionHistoryDataSource.shareHistoryHandler = { [weak self] dataSource -> Void in
-            guard let strongSelf = self else {
-                return
-            }
+        transactionHistoryDataSource.shareHistoryHandler = { _ -> Void in
         }
     }
     
@@ -113,6 +132,14 @@ class TransactionsViewController: BaseViewController {
 
 extension TransactionsViewController: TransactionListViewDelegate {
     func transactionListViewDidRefreshList(_ transactionListView: TransactionListView) {
+        reloadData()
+    }
+    
+    func transactionListViewDidTryAgain(_ transactionListView: TransactionListView) {
+        reloadData()
+    }
+    
+    private func reloadData() {
         transactionHistoryDataSource.clear()
         transactionListView.reloadData()
         fetchTransactions()
@@ -143,18 +170,29 @@ extension TransactionsViewController {
         pollingOperation?.start()
     }
     
-    private func fetchTransactions(witRefresh refresh: Bool = true) {
+    private func fetchTransactions(witRefresh refresh: Bool = true, isPaginated: Bool = false) {
         transactionListView.setLoadingState()
         
-        transactionHistoryDataSource.loadData(for: account, withRefresh: refresh) { transactions, error in
+        transactionHistoryDataSource.loadData(
+            for: account,
+            withRefresh: refresh,
+            between: getTransactionFilterDates(),
+            isPaginated: isPaginated
+        ) { transactions, error in
             self.transactionListView.endRefreshing()
+            
+            if !self.isConnectedToInternet {
+                self.transactionListView.setInternetConnectionErrorState()
+                self.transactionListView.reloadData()
+                return
+            }
             
             if let error = error {
                 switch error {
                 case .cancelled:
                     break
                 default:
-                    self.transactionListView.setEmptyState()
+                    self.transactionListView.setOtherErrorState()
                 }
                 
                 self.transactionListView.reloadData()
@@ -175,6 +213,29 @@ extension TransactionsViewController {
             self.transactionListView.reloadData()
         }
     }
+    
+    private func getTransactionFilterDates() -> (Date?, Date?) {
+        switch filterOption {
+        case .allTime:
+            return (nil, nil)
+        case .today:
+            return (Date().dateAt(.startOfDay), Date().dateAt(.endOfDay))
+        case .yesterday:
+            let yesterday = Date().dateAt(.yesterday)
+            let endOfYesterday = yesterday.dateAt(.endOfDay)
+            return (yesterday, endOfYesterday)
+        case .lastWeek:
+            let prevOfLastWeek = Date().dateAt(.prevWeek)
+            let endOfLastWeek = prevOfLastWeek.dateAt(.endOfWeek)
+            return (prevOfLastWeek, endOfLastWeek)
+        case .lastMonth:
+            let prevOfLastMonth = Date().dateAt(.prevMonth)
+            let endOfLastMonth = prevOfLastMonth.dateAt(.endOfMonth)
+            return (prevOfLastMonth, endOfLastMonth)
+        case let .customRange(from, to):
+            return (from, to)
+        }
+    }
 }
 
 extension TransactionsViewController: UICollectionViewDelegateFlowLayout {
@@ -188,6 +249,20 @@ extension TransactionsViewController: UICollectionViewDelegateFlowLayout {
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         delegate?.transactionsViewController(self, didStopScrolling: scrollView)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if shouldSendPaginatedRequest(at: indexPath.item) {
+            fetchTransactions(witRefresh: false, isPaginated: true)
+        }
+    }
+    
+    private func shouldSendPaginatedRequest(at index: Int) -> Bool {
+        if transactionHistoryDataSource.transactionCount() < paginationRequestOffset {
+            return index == transactionHistoryDataSource.transactionCount() - 1 && transactionHistoryDataSource.hasNext
+        }
+        
+        return index == transactionHistoryDataSource.transactionCount() - paginationRequestOffset && transactionHistoryDataSource.hasNext
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -236,9 +311,6 @@ extension TransactionsViewController: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         referenceSizeForHeaderInSection section: Int
     ) -> CGSize {
-        if transactionHistoryDataSource.transactionCount() == 0 {
-            return .zero
-        }
         return layout.current.headerSize
     }
 }
@@ -289,8 +361,62 @@ extension TransactionsViewController: TransactionFilterViewControllerDelegate {
             return
         }
         
+        switch filterOption {
+        case .allTime:
+            pollingOperation?.start()
+        case let .customRange(_, to):
+            if let isToDateLaterThanNow = to?.isAfterDate(Date(), granularity: .day),
+                isToDateLaterThanNow {
+                pollingOperation?.invalidate()
+            } else {
+                pollingOperation?.start()
+            }
+        default:
+            pollingOperation?.invalidate()
+        }
+        
         self.filterOption = filterOption
-        viewModel.configure(transactionListView.headerView(), for: filterOption)
+        if let headerView = transactionListView.headerView() {
+            viewModel.configure(headerView, for: filterOption)
+        }
+        updateList()
+    }
+}
+
+extension TransactionsViewController: TooltipPresentable {
+    func presentFilterTooltipIfNeeded() {
+        if transactionsTooltipStorage.isFilterOptionTooltipDisplayed() || !isViewAppeared {
+            return
+        }
+        
+        guard let headerView = transactionListView.headerView() else {
+            return
+        }
+        
+        presentTooltip(with: "transaction-filter-tooltip".localized, at: headerView.contextView.filterButton)
+        transactionsTooltipStorage.setFilterOptionTooltipDisplayed()
+    }
+    
+    func adaptivePresentationStyle(
+        for controller: UIPresentationController,
+        traitCollection: UITraitCollection
+    ) -> UIModalPresentationStyle {
+        return .none
+    }
+}
+
+extension TransactionsViewController: MagpieDelegate {
+    func magpie(
+        _ magpie: Magpie,
+        networkMonitor: NetworkMonitor,
+        didConnectVia connection: NetworkConnection,
+        from oldConnection: NetworkConnection
+    ) {
+        isConnectedToInternet = networkMonitor.isConnected
+    }
+    
+    func magpie(_ magpie: Magpie, networkMonitor: NetworkMonitor, didDisconnectFrom oldConnection: NetworkConnection) {
+        isConnectedToInternet = networkMonitor.isConnected
     }
 }
 
@@ -306,4 +432,18 @@ extension TransactionsViewController {
 protocol TransactionsViewControllerDelegate: class {
     func transactionsViewController(_ transactionsViewController: TransactionsViewController, didScroll scrollView: UIScrollView)
     func transactionsViewController(_ transactionsViewController: TransactionsViewController, didStopScrolling scrollView: UIScrollView)
+}
+
+private struct TransactionsTooltipStorage: Storable {
+    typealias Object = Any
+    
+    private let filterOptionTooltipKey = "com.algorand.algorand.transaction.list.filter.option.tooltip"
+    
+    func setFilterOptionTooltipDisplayed() {
+        save(true, for: filterOptionTooltipKey, to: .defaults)
+    }
+    
+    func isFilterOptionTooltipDisplayed() -> Bool {
+        return bool(with: filterOptionTooltipKey, to: .defaults)
+    }
 }

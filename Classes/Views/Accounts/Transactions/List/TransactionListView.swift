@@ -23,6 +23,8 @@ class TransactionListView: BaseView {
         title: "accounts-tranaction-empty-text".localized,
         subtitle: "accounts-tranaction-empty-detail".localized
     )
+    private lazy var otherErrorView = TransactionErrorView()
+    private lazy var internetConnectionErrorView = TransactionErrorView()
     
     private lazy var transactionsCollectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
@@ -48,6 +50,21 @@ class TransactionListView: BaseView {
     }()
     
     private lazy var contentStateView = ContentStateView()
+    
+    override func configureAppearance() {
+        super.configureAppearance()
+        internetConnectionErrorView.setImage(img("icon-no-internet-connection"))
+        internetConnectionErrorView.setTitle("internet-connection-error-title".localized)
+        internetConnectionErrorView.setSubtitle("internet-connection-error-detail".localized)
+        otherErrorView.setImage(img("icon-warning-error"))
+        otherErrorView.setTitle("transaction-filter-error-title".localized)
+        otherErrorView.setSubtitle("transaction-filter-error-subtitle".localized)
+    }
+    
+    override func linkInteractors() {
+        otherErrorView.delegate = self
+        internetConnectionErrorView.delegate = self
+    }
     
     override func prepareLayout() {
         setupTransactionHistoryCollectionViewLayout()
@@ -102,6 +119,14 @@ extension TransactionListView {
         transactionsCollectionView.contentState = .empty(emptyStateView)
     }
     
+    func setOtherErrorState() {
+        transactionsCollectionView.contentState = .error(otherErrorView)
+    }
+    
+    func setInternetConnectionErrorState() {
+        transactionsCollectionView.contentState = .error(internetConnectionErrorView)
+    }
+    
     func setLoadingState() {
         if !refreshControl.isRefreshing {
             transactionsCollectionView.contentState = .loading
@@ -112,18 +137,21 @@ extension TransactionListView {
         transactionsCollectionView.contentState = .none
     }
     
-    func headerView() -> TransactionHistoryHeaderSupplementaryView {
-        guard let headerView = transactionsCollectionView.supplementaryView(
+    func headerView() -> TransactionHistoryHeaderSupplementaryView? {
+        return transactionsCollectionView.supplementaryView(
             forElementKind: UICollectionView.elementKindSectionHeader,
             at: IndexPath(item: 0, section: 0)
-        ) as? TransactionHistoryHeaderSupplementaryView else {
-            fatalError("Unexpected element kind")
-        }
-        
-        return headerView
+        ) as? TransactionHistoryHeaderSupplementaryView
+    }
+}
+
+extension TransactionListView: TransactionErrorViewDelegate {
+    func transactionErrorViewDidTryAgain(_ transactionErrorView: TransactionErrorView) {
+        delegate?.transactionListViewDidTryAgain(self)
     }
 }
 
 protocol TransactionListViewDelegate: class {
     func transactionListViewDidRefreshList(_ transactionListView: TransactionListView)
+    func transactionListViewDidTryAgain(_ transactionListView: TransactionListView)
 }

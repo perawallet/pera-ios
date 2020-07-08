@@ -62,7 +62,12 @@ extension TransactionFilterViewModel {
         cell.contextView.setTitle("transaction-filter-option-week".localized)
         let prevOfLastWeek = todaysDate.dateAt(.prevWeek)
         let endOfLastWeek = prevOfLastWeek.dateAt(.endOfWeek)
-        cell.contextView.setDate("\(prevOfLastWeek.toFormat("MMM dd"))-\(endOfLastWeek.day)")
+        
+        if prevOfLastWeek.month == endOfLastWeek.month {
+            cell.contextView.setDate("\(prevOfLastWeek.toFormat("MMM dd"))-\(endOfLastWeek.day)")
+        } else {
+            cell.contextView.setDate("\(prevOfLastWeek.toFormat("MMM dd"))-\(endOfLastWeek.toFormat("MMM dd"))")
+        }
     }
     
     private func configureLastMonth(_ cell: TransactionFilterOptionCell) {
