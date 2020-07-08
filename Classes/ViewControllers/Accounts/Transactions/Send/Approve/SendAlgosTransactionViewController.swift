@@ -40,5 +40,10 @@ class SendAlgosTransactionViewController: SendTransactionViewController, TestNet
     
     override func completeTransaction(with id: TransactionID) {
         algosTransactionSendDraft.identifier = id.identifier
+        TransactionEvent(
+            accountType: algosTransactionSendDraft.from.type,
+            assetId: nil,
+            isMaxTransaction: algosTransactionSendDraft.isMaxTransaction
+        ).logEvent()
     }
 }
