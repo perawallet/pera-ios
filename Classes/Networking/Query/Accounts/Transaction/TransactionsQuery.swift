@@ -11,15 +11,19 @@ import Magpie
 struct TransactionsQuery: Query {
     typealias Key = RequestParameter
     
-    let limit: Int
+    let limit: Int?
     let from: String?
     let to: String?
     let next: String?
     let assetId: String?
     
     func decoded() -> [Pair]? {
+        var pairs = [Pair]()
         
-        var pairs = [Pair(key: .limit, value: .some(limit))]
+        if let limit = limit {
+            pairs.append(Pair(key: .limit, value: .some(limit)))
+        }
+        
         if let from = from,
             let to = to {
             pairs.append(contentsOf: [Pair(key: .afterTime, value: .some(from)), Pair(key: .beforeTime, value: .some(to))])

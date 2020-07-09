@@ -79,6 +79,38 @@ extension Transaction {
         return assetTransfer.receiverAddress == address && assetTransfer.amount == 0 && type == .assetTransfer
     }
     
+    func getAmount() -> Int64? {
+        if let payment = payment {
+            return payment.amount
+        }
+        
+        return assetTransfer?.amount
+    }
+    
+    func getReceiver() -> String? {
+        if let payment = payment {
+            return payment.receiver
+        }
+        
+        return assetTransfer?.receiverAddress
+    }
+    
+    func getCloseAmount() -> Int64? {
+        if let payment = payment {
+            return payment.closeAmount
+        }
+        
+        return assetTransfer?.closeAmount
+    }
+    
+    func getCloseAddress() -> String? {
+        if let payment = payment {
+            return payment.closeAddress
+        }
+        
+        return assetTransfer?.closeToAddress
+    }
+    
     func noteRepresentation() -> String? {
         guard let noteData = note, !noteData.isEmpty else {
             return nil

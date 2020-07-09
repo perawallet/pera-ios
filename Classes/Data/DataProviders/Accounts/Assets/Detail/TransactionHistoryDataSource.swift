@@ -193,6 +193,7 @@ extension TransactionHistoryDataSource {
         between dates: (Date?, Date?),
         withRefresh refresh: Bool,
         isPaginated: Bool,
+        limit: Int = 15,
         then handler: @escaping ([TransactionItem]?, Error?) -> Void
     ) {
         if refresh {
@@ -200,12 +201,12 @@ extension TransactionHistoryDataSource {
         }
         
         var assetId: String?
-        
         if let id = assetDetail?.id {
             assetId = String(id)
         }
         
-        fetchRequest = api?.fetchTransactions(for: account, between: dates, next: nextToken, assetId: assetId) { response in
+        let draft = TransactionFetchDraft(account: account, dates: dates, nextToken: nextToken, assetId: assetId, limit: limit)
+        fetchRequest = api?.fetchTransactions(with: draft) { response in
             switch response {
             case let .failure(error):
                 handler(nil, error)
@@ -386,5 +387,28 @@ extension TransactionHistoryDataSource: TransactionHistoryHeaderSupplementaryVie
             return
         }
         shareHistoryHandler(self)
+    }
+}
+
+extension TransactionHistoryDataSource {
+    func fetchAllTransactions(
+        for account: Account,
+        between dates: (Date?, Date?),
+        then handler: @escaping ([Transaction]?, Error?) -> Void
+    ) {
+        var assetId: String?
+        if let id = assetDetail?.id {
+            assetId = String(id)
+        }
+        
+        let draft = TransactionFetchDraft(account: account, dates: dates, nextToken: nil, assetId: assetId, limit: nil)
+        api?.fetchTransactions(with: draft) { response in
+            switch response {
+            case let .failure(error):
+                handler(nil, error)
+            case let .success(transactions):
+                handler(transactions.transactions, nil)
+            }
+        }
     }
 }
