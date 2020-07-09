@@ -429,7 +429,7 @@ extension TransactionsViewController: CSVExportable {
     }
     
     private func shareCSVFile(for transactions: [Transaction]) {
-        let keys = ["Amount", "Reward", "Close Amount", "To", "Close To", "From", "Fee", "Round", "ID", "Note"]
+        let keys = ["Amount", "Reward", "Close Amount", "Close To", "To", "From", "Fee", "Round", "ID", "Note"]
         let config = CSVConfig(fileName: setCSVFileName(), keys: NSOrderedSet(array: keys))
         
         if let fileUrl = exportCSV(from: createCSVData(from: transactions), with: config) {
@@ -437,7 +437,10 @@ extension TransactionsViewController: CSVExportable {
             SVProgressHUD.dismiss()
             
             let activityViewController = UIActivityViewController(activityItems: [fileUrl], applicationActivities: nil)
-            present(activityViewController, animated: true, completion: nil)
+            activityViewController.completionWithItemsHandler = { activity, success, items, error in
+                try? FileManager.default.removeItem(at: fileUrl)
+            }
+            present(activityViewController, animated: true)
         } else {
             SVProgressHUD.showError(withStatus: "csv-download-error".localized)
             SVProgressHUD.dismiss()
@@ -462,11 +465,11 @@ extension TransactionsViewController: CSVExportable {
         var csvData = [[String: AnyObject]]()
         for transaction in transactions {
             let transactionData: [String: AnyObject] = [
-                "Amount": transaction.getCloseAmount() as AnyObject,
+                "Amount": transaction.getAmount() as AnyObject,
                 "Reward": transaction.senderRewards as AnyObject,
                 "Close Amount": transaction.getCloseAmount() as AnyObject,
-                "To": transaction.getReceiver() as AnyObject,
                 "Close To": transaction.getCloseAddress() as AnyObject,
+                "To": transaction.getReceiver() as AnyObject,
                 "From": transaction.sender as AnyObject,
                 "Fee": transaction.fee as AnyObject,
                 "Round": transaction.lastRound as AnyObject,
