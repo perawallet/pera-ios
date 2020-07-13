@@ -37,6 +37,7 @@
 "title-edit" = "Edit";
 "title-testnet" = "TESTNET";
 "title-account" = "Account";
+"title-id" = "ID";
 
 // MARK: Introduction
 "introduction-recover-title" = "Recover From Passphrase";
@@ -428,3 +429,5 @@
 "transaction-filter-try-again" = "Try Again";
 "transaction-filter-error-title" = "Something went wrong";
 "transaction-filter-error-subtitle" = "Sorry, something went wrong there.";
+"csv-download-title" = "Creating CSV File";
+"csv-download-error" = "Could not create a csv file for the transaction history.";

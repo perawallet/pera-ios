@@ -8,6 +8,7 @@
 
 import UIKit
 import Magpie
+import SVProgressHUD
 
 class TransactionsViewController: BaseViewController {
     
@@ -115,7 +116,8 @@ class TransactionsViewController: BaseViewController {
             controller?.delegate = self
         }
         
-        transactionHistoryDataSource.shareHistoryHandler = { _ -> Void in
+        transactionHistoryDataSource.shareHistoryHandler = { [weak self] dataSource -> Void in
+            self?.fetchAllTransactionsForCSV()
         }
     }
     
@@ -214,7 +216,7 @@ extension TransactionsViewController {
         }
     }
     
-    private func getTransactionFilterDates() -> (Date?, Date?) {
+    private func getTransactionFilterDates() -> (from: Date?, to: Date?) {
         switch filterOption {
         case .allTime:
             return (nil, nil)
@@ -402,6 +404,81 @@ extension TransactionsViewController: TooltipPresentable {
         traitCollection: UITraitCollection
     ) -> UIModalPresentationStyle {
         return .none
+    }
+}
+
+extension TransactionsViewController: CSVExportable {
+    private func fetchAllTransactionsForCSV() {
+        SVProgressHUD.show(withStatus: "csv-download-title".localized)
+        
+        transactionHistoryDataSource.fetchAllTransactions(for: account, between: getTransactionFilterDates()) { transactions, error in
+            if error != nil {
+                SVProgressHUD.showError(withStatus: "csv-download-error".localized)
+                SVProgressHUD.dismiss()
+                return
+            }
+            
+            guard let transactions = transactions else {
+                SVProgressHUD.showError(withStatus: "csv-download-error".localized)
+                SVProgressHUD.dismiss()
+                return
+            }
+            
+            self.shareCSVFile(for: transactions)
+        }
+    }
+    
+    private func shareCSVFile(for transactions: [Transaction]) {
+        let keys = ["Amount", "Reward", "Close Amount", "Close To", "To", "From", "Fee", "Round", "ID", "Note"]
+        let config = CSVConfig(fileName: setCSVFileName(), keys: NSOrderedSet(array: keys))
+        
+        if let fileUrl = exportCSV(from: createCSVData(from: transactions), with: config) {
+            SVProgressHUD.showSuccess(withStatus: "title-done".localized)
+            SVProgressHUD.dismiss()
+            
+            let activityViewController = UIActivityViewController(activityItems: [fileUrl], applicationActivities: nil)
+            activityViewController.completionWithItemsHandler = { activity, success, items, error in
+                try? FileManager.default.removeItem(at: fileUrl)
+            }
+            present(activityViewController, animated: true)
+        } else {
+            SVProgressHUD.showError(withStatus: "csv-download-error".localized)
+            SVProgressHUD.dismiss()
+        }
+    }
+    
+    private func setCSVFileName() -> String {
+        var fileName = "algorand_transactions"
+        let dates = getTransactionFilterDates()
+        if let fromDate = dates.from,
+            let toDate = dates.to {
+            if filterOption == .today {
+                fileName += "-" + fromDate.toFormat("MM-dd-yyyy")
+            } else {
+                fileName += "-" + fromDate.toFormat("MM-dd-yyyy") + "_" + toDate.toFormat("MM-dd-yyyy")
+            }
+        }
+        return "\(fileName).csv"
+    }
+    
+    private func createCSVData(from transactions: [Transaction]) -> [[String: AnyObject]] {
+        var csvData = [[String: AnyObject]]()
+        for transaction in transactions {
+            let transactionData: [String: AnyObject] = [
+                "transaction-detail-amount".localized: transaction.getAmount() as AnyObject,
+                "transaction-detail-reward".localized: transaction.senderRewards as AnyObject,
+                "transaction-detail-close-amount".localized: transaction.getCloseAmount() as AnyObject,
+                "transaction-detail-close-to".localized: transaction.getCloseAddress() as AnyObject,
+                "transaction-detail-to".localized: transaction.getReceiver() as AnyObject,
+                "transaction-detail-from".localized: transaction.sender as AnyObject,
+                "transaction-detail-fee".localized: transaction.fee as AnyObject,
+                "transaction-detail-round".localized: transaction.lastRound as AnyObject,
+                "title-id".localized: transaction.id as AnyObject,
+                "transaction-detail-note".localized: transaction.noteRepresentation() as AnyObject
+            ]
+            csvData.append(transactionData)
+        }
+        return csvData
     }
 }
 

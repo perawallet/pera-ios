@@ -146,21 +146,21 @@ extension NodeSettingsViewController {
 }
 
 let mainNetNode = AlgorandNode(
-    address: Environment.current.mainNetHost,
-    algodToken: Environment.current.mainNetAlgodToken,
-    indexerToken: Environment.current.mainNetIndexerToken,
-    algodPort: Environment.current.mainNetAlgodPort,
-    indexerPort: Environment.current.mainNetIndexerPort,
+    algodAddress: Environment.current.mainNetAlgodHost,
+    indexerAddress: Environment.current.mainNetAlgodHost,
+    algodToken: Environment.current.algodToken,
+    indexerToken: Environment.current.indexerToken,
+    port: Environment.current.port,
     name: "node-settings-default-node-name".localized,
     network: .mainnet
 )
 
 let testNetNode = AlgorandNode(
-    address: Environment.current.testNetHost,
-    algodToken: Environment.current.testNetAlgodToken,
-    indexerToken: Environment.current.testNetIndexerToken,
-    algodPort: Environment.current.testNetAlgodPort,
-    indexerPort: Environment.current.testNetIndexerPort,
+    algodAddress: Environment.current.testNetAlgodHost,
+    indexerAddress: Environment.current.testNetIndexerHost,
+    algodToken: Environment.current.algodToken,
+    indexerToken: Environment.current.indexerToken,
+    port: Environment.current.port,
     name: "node-settings-default-test-node-name".localized,
     network: .testnet
 )

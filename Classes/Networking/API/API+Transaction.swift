@@ -11,26 +11,23 @@ import Magpie
 extension API {
     @discardableResult
     func fetchTransactions(
-        for account: Account,
-        between dates: (from: Date?, to: Date?),
-        next token: String?,
-        assetId: String?,
+        with draft: TransactionFetchDraft,
         then handler: @escaping Endpoint.DefaultResultHandler<TransactionList>
     ) -> EndpointOperatable {
         var from: String?
         var to: String?
         
-        if let fromDate = dates.from,
-            let toDate = dates.to {
+        if let fromDate = draft.dates.from,
+            let toDate = draft.dates.to {
             from = "\(Formatter.date.string(from: fromDate))T00:00:00.000Z"
             to = "\(Formatter.date.string(from: toDate))T23:59:59.000Z"
         }
         
-        return Endpoint(path: Path("/v2/accounts/\(account.address)/transactions"))
+        return Endpoint(path: Path("/v2/accounts/\(draft.account.address)/transactions"))
             .base(indexerBase)
             .httpMethod(.get)
             .httpHeaders(indexerAuthenticatedHeaders())
-            .query(TransactionsQuery(limit: 15, from: from, to: to, next: token, assetId: assetId))
+            .query(TransactionsQuery(limit: draft.limit, from: from, to: to, next: draft.nextToken, assetId: draft.assetId))
             .resultHandler(handler)
             .buildAndSend(self)
     }

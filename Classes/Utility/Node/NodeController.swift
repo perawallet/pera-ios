@@ -34,7 +34,7 @@ extension NodeController {
     
     private func localNodeOperation(completion: BoolHandler?) -> NodeHealthOperation {
         let address = Environment.current.serverApi
-        let token = Environment.current.serverToken
+        let token = Environment.current.algodToken
         let localNodeHealthOperation = NodeHealthOperation(address: address, token: token, api: api)
         
         localNodeHealthOperation.onCompleted = { isHealthy in
