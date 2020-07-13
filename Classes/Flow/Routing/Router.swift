@@ -337,6 +337,8 @@ class Router {
             viewController = PassphraseDisplayViewController(address: address, configuration: configuration)
         case let .tooltip(title):
             viewController = TooltipViewController(title: title, configuration: configuration)
+        case .pinLimit:
+            viewController = PinLimitViewController(configuration: configuration)
         case .assetActionConfirmationNotification,
              .assetDetailNotification:
             return nil

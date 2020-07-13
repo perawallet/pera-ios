@@ -41,6 +41,13 @@ extension Int {
         formatter.maximumFractionDigits = 2
         return formatter.string(from: NSDecimalNumber(value: doubleValue)) ?? "$\(doubleValue)"
     }
+    
+    func convertSecondsToHoursMinutesSeconds() -> String? {
+        let formatter = DateComponentsFormatter()
+        formatter.allowedUnits = [.hour, .minute, .second]
+        formatter.unitsStyle = .positional
+        return formatter.string(from: TimeInterval(self))
+    }
 }
 
 extension Int64 {
