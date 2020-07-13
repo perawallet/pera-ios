@@ -37,6 +37,7 @@
 "title-edit" = "Edit";
 "title-testnet" = "TESTNET";
 "title-account" = "Account";
+"title-id" = "ID";
 
 // MARK: Introduction
 "introduction-recover-title" = "Recover From Passphrase";

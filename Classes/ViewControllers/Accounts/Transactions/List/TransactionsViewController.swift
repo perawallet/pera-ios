@@ -465,16 +465,16 @@ extension TransactionsViewController: CSVExportable {
         var csvData = [[String: AnyObject]]()
         for transaction in transactions {
             let transactionData: [String: AnyObject] = [
-                "Amount": transaction.getAmount() as AnyObject,
-                "Reward": transaction.senderRewards as AnyObject,
-                "Close Amount": transaction.getCloseAmount() as AnyObject,
-                "Close To": transaction.getCloseAddress() as AnyObject,
-                "To": transaction.getReceiver() as AnyObject,
-                "From": transaction.sender as AnyObject,
-                "Fee": transaction.fee as AnyObject,
-                "Round": transaction.lastRound as AnyObject,
-                "ID": transaction.id as AnyObject,
-                "Note": transaction.noteRepresentation() as AnyObject
+                "transaction-detail-amount".localized: transaction.getAmount() as AnyObject,
+                "transaction-detail-reward".localized: transaction.senderRewards as AnyObject,
+                "transaction-detail-close-amount".localized: transaction.getCloseAmount() as AnyObject,
+                "transaction-detail-close-to".localized: transaction.getCloseAddress() as AnyObject,
+                "transaction-detail-to".localized: transaction.getReceiver() as AnyObject,
+                "transaction-detail-from".localized: transaction.sender as AnyObject,
+                "transaction-detail-fee".localized: transaction.fee as AnyObject,
+                "transaction-detail-round".localized: transaction.lastRound as AnyObject,
+                "title-id".localized: transaction.id as AnyObject,
+                "transaction-detail-note".localized: transaction.noteRepresentation() as AnyObject
             ]
             csvData.append(transactionData)
         }
