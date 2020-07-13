@@ -424,3 +424,7 @@
 "transaction-filter-option-week" = "Last Week";
 "transaction-filter-option-month" = "Last Month";
 "transaction-filter-option-custom" = "Custom Range";
+
+// MARK: Pin Limit
+"pin-limit-title" = "Algorand is disabled";
+"pin-limit-try-again" = "Try again in";

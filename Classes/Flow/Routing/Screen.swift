@@ -80,6 +80,7 @@ indirect enum Screen {
     case assetActionConfirmationNotification(address: String, assetId: Int64?)
     case transactionFilter(filterOption: TransactionFilterViewController.FilterOption = .allTime)
     case transactionFilterCustomRange(fromDate: Date?, toDate: Date?)
+    case pinLimit
 }
 
 extension Screen {
