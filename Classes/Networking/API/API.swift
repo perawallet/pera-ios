@@ -11,8 +11,6 @@ import Magpie
 class API: Magpie {
     var algodToken: String?
     var indexerToken: String?
-    var algodPort: String?
-    var indexerPort: String?
     var network: BaseNetwork = .mainnet
     var mobileApiBase: String = Environment.current.mobileApi
     let session: Session
@@ -109,7 +107,7 @@ extension API {
     
     func mobileApiHeaders() -> Headers {
         var headers = sharedHttpHeaders
-        headers.set(.custom("algorand-network", .some("betanet")))
+        headers.set(.custom("algorand-network", .some(network.rawValue)))
         return headers
     }
     
@@ -125,11 +123,9 @@ extension API {
         self.network = network
         let node = network == .mainnet ? mainNetNode : testNetNode
         
-        base = node.address
+        base = node.algodAddress
         algodToken = node.algodToken
         indexerToken = node.indexerToken
-        algodPort = node.algodPort
-        indexerPort = node.indexerPort
     }
 }
 
