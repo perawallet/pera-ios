@@ -12,9 +12,9 @@ class EmptyStateView: BaseView {
     
     private let layout = Layout<LayoutConstants>()
     
-    private(set) lazy var imageView = UIImageView(image: image)
+    private lazy var imageView = UIImageView(image: image)
     
-    private(set) lazy var titleLabel: UILabel = {
+    private lazy var titleLabel: UILabel = {
         UILabel()
             .withAlignment(.center)
             .withLine(.contained)
@@ -32,9 +32,13 @@ class EmptyStateView: BaseView {
             .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
     }()
     
-    private let image: UIImage?
-    private let title: String
-    private let subtitle: String
+    private var image: UIImage?
+    private var title: String = ""
+    private var subtitle: String = ""
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+    }
     
     init(image: UIImage?, title: String, subtitle: String) {
         self.image = image
@@ -84,6 +88,20 @@ extension EmptyStateView {
             make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.subtitleTopInset)
             make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
         }
+    }
+}
+
+extension EmptyStateView {
+    func setImage(_ image: UIImage?) {
+        imageView.image = image
+    }
+    
+    func setTitle(_ title: String) {
+        titleLabel.text = title
+    }
+    
+    func setSubtitle(_ subtitle: String) {
+        subtitleLabel.text = subtitle
     }
 }
 

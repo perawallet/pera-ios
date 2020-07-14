@@ -7,20 +7,34 @@
 //
 
 import UIKit
+import Magpie
+import SVProgressHUD
 
 class TransactionsViewController: BaseViewController {
     
     let layout = Layout<LayoutConstants>()
     
-    private var pollingOperation: PollingOperation?
+    private var pendingTransactionPolling: PollingOperation?
     private var account: Account
     private var assetDetail: AssetDetail?
+    private var isConnectedToInternet = true {
+        didSet {
+            if isConnectedToInternet {
+                transactionListView.setInternetConnectionErrorState()
+            } else {
+                transactionListView.setNormalState()
+            }
+            transactionListView.reloadData()
+        }
+    }
     
     private let viewModel = TransactionsViewModel()
     
     weak var delegate: TransactionsViewControllerDelegate?
     
+    private let transactionsTooltipStorage = TransactionsTooltipStorage()
     private var filterOption = TransactionFilterViewController.FilterOption.allTime
+    private var paginationRequestThreshold = 5
     
     private lazy var filterOptionsPresenter = CardModalPresenter(
         config: ModalConfiguration(
@@ -42,7 +56,7 @@ class TransactionsViewController: BaseViewController {
     }
     
     deinit {
-        pollingOperation?.invalidate()
+        pendingTransactionPolling?.invalidate()
     }
     
     override func viewDidLoad() {
@@ -53,12 +67,22 @@ class TransactionsViewController: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        api?.addDelegate(self)
         startPendingTransactionPolling()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.presentFilterTooltipIfNeeded()
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        pollingOperation?.invalidate()
+        api?.removeDelegate(self)
+        pendingTransactionPolling?.invalidate()
     }
     
     override func setListeners() {
@@ -77,16 +101,15 @@ class TransactionsViewController: BaseViewController {
         )
         
         transactionHistoryDataSource.openFilterOptionsHandler = { [weak self] dataSource -> Void in
-            guard let strongSelf = self else {
+            guard let filterOption = self?.filterOption else {
                 return
             }
-            
-            let controller = strongSelf.open(
-                .transactionFilter(filterOption: strongSelf.filterOption),
+            let controller = self?.open(
+                .transactionFilter(filterOption: filterOption),
                 by: .customPresent(
                     presentationStyle: .custom,
                     transitionStyle: nil,
-                    transitioningDelegate: strongSelf.filterOptionsPresenter
+                    transitioningDelegate: self?.filterOptionsPresenter
                 )
             ) as? TransactionFilterViewController
             
@@ -94,9 +117,7 @@ class TransactionsViewController: BaseViewController {
         }
         
         transactionHistoryDataSource.shareHistoryHandler = { [weak self] dataSource -> Void in
-            guard let strongSelf = self else {
-                return
-            }
+            self?.fetchAllTransactionsForCSV()
         }
     }
     
@@ -113,6 +134,14 @@ class TransactionsViewController: BaseViewController {
 
 extension TransactionsViewController: TransactionListViewDelegate {
     func transactionListViewDidRefreshList(_ transactionListView: TransactionListView) {
+        reloadData()
+    }
+    
+    func transactionListViewDidTryAgain(_ transactionListView: TransactionListView) {
+        reloadData()
+    }
+    
+    private func reloadData() {
         transactionHistoryDataSource.clear()
         transactionListView.reloadData()
         fetchTransactions()
@@ -121,7 +150,7 @@ extension TransactionsViewController: TransactionListViewDelegate {
 
 extension TransactionsViewController {
     private func startPendingTransactionPolling() {
-        pollingOperation = PollingOperation(interval: 0.8) { [weak self] in
+        pendingTransactionPolling = PollingOperation(interval: 0.8) { [weak self] in
             guard let strongSelf = self else {
                 return
             }
@@ -140,21 +169,32 @@ extension TransactionsViewController {
             }
         }
         
-        pollingOperation?.start()
+        pendingTransactionPolling?.start()
     }
     
-    private func fetchTransactions(witRefresh refresh: Bool = true) {
+    private func fetchTransactions(witRefresh refresh: Bool = true, isPaginated: Bool = false) {
         transactionListView.setLoadingState()
         
-        transactionHistoryDataSource.loadData(for: account, withRefresh: refresh) { transactions, error in
+        transactionHistoryDataSource.loadData(
+            for: account,
+            withRefresh: refresh,
+            between: getTransactionFilterDates(),
+            isPaginated: isPaginated
+        ) { transactions, error in
             self.transactionListView.endRefreshing()
+            
+            if !self.isConnectedToInternet {
+                self.transactionListView.setInternetConnectionErrorState()
+                self.transactionListView.reloadData()
+                return
+            }
             
             if let error = error {
                 switch error {
                 case .cancelled:
                     break
                 default:
-                    self.transactionListView.setEmptyState()
+                    self.transactionListView.setOtherErrorState()
                 }
                 
                 self.transactionListView.reloadData()
@@ -175,6 +215,29 @@ extension TransactionsViewController {
             self.transactionListView.reloadData()
         }
     }
+    
+    private func getTransactionFilterDates() -> (from: Date?, to: Date?) {
+        switch filterOption {
+        case .allTime:
+            return (nil, nil)
+        case .today:
+            return (Date().dateAt(.startOfDay), Date().dateAt(.endOfDay))
+        case .yesterday:
+            let yesterday = Date().dateAt(.yesterday)
+            let endOfYesterday = yesterday.dateAt(.endOfDay)
+            return (yesterday, endOfYesterday)
+        case .lastWeek:
+            let prevOfLastWeek = Date().dateAt(.prevWeek)
+            let endOfLastWeek = prevOfLastWeek.dateAt(.endOfWeek)
+            return (prevOfLastWeek, endOfLastWeek)
+        case .lastMonth:
+            let prevOfLastMonth = Date().dateAt(.prevMonth)
+            let endOfLastMonth = prevOfLastMonth.dateAt(.endOfMonth)
+            return (prevOfLastMonth, endOfLastMonth)
+        case let .customRange(from, to):
+            return (from, to)
+        }
+    }
 }
 
 extension TransactionsViewController: UICollectionViewDelegateFlowLayout {
@@ -188,6 +251,12 @@ extension TransactionsViewController: UICollectionViewDelegateFlowLayout {
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         delegate?.transactionsViewController(self, didStopScrolling: scrollView)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if transactionHistoryDataSource.shouldSendPaginatedRequest(at: indexPath.item) {
+            fetchTransactions(witRefresh: false, isPaginated: true)
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -236,9 +305,6 @@ extension TransactionsViewController: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         referenceSizeForHeaderInSection section: Int
     ) -> CGSize {
-        if transactionHistoryDataSource.transactionCount() == 0 {
-            return .zero
-        }
         return layout.current.headerSize
     }
 }
@@ -289,8 +355,148 @@ extension TransactionsViewController: TransactionFilterViewControllerDelegate {
             return
         }
         
+        switch filterOption {
+        case .allTime:
+            pendingTransactionPolling?.start()
+        case let .customRange(_, to):
+            if let isToDateLaterThanNow = to?.isAfterDate(Date(), granularity: .day),
+                isToDateLaterThanNow {
+                pendingTransactionPolling?.invalidate()
+            } else {
+                pendingTransactionPolling?.start()
+            }
+        default:
+            pendingTransactionPolling?.invalidate()
+        }
+        
         self.filterOption = filterOption
-        viewModel.configure(transactionListView.headerView(), for: filterOption)
+        if let headerView = transactionListView.headerView() {
+            viewModel.configure(headerView, for: filterOption)
+        }
+        updateList()
+    }
+}
+
+extension TransactionsViewController: TooltipPresenter {
+    func presentFilterTooltipIfNeeded() {
+        if transactionsTooltipStorage.isFilterOptionTooltipDisplayed() || !isViewAppeared {
+            return
+        }
+        
+        guard let headerView = transactionListView.headerView() else {
+            return
+        }
+        
+        presentTooltip(with: "transaction-filter-tooltip".localized, using: configuration, at: headerView.contextView.filterButton)
+        transactionsTooltipStorage.setFilterOptionTooltipDisplayed()
+    }
+    
+    func adaptivePresentationStyle(
+        for controller: UIPresentationController,
+        traitCollection: UITraitCollection
+    ) -> UIModalPresentationStyle {
+        return .none
+    }
+}
+
+extension TransactionsViewController: CSVExportable {
+    private func fetchAllTransactionsForCSV() {
+        SVProgressHUD.show(withStatus: "csv-download-title".localized)
+        
+        transactionHistoryDataSource.fetchAllTransactions(for: account, between: getTransactionFilterDates()) { transactions, error in
+            if error != nil {
+                SVProgressHUD.showError(withStatus: "csv-download-error".localized)
+                SVProgressHUD.dismiss()
+                return
+            }
+            
+            guard let transactions = transactions else {
+                SVProgressHUD.showError(withStatus: "csv-download-error".localized)
+                SVProgressHUD.dismiss()
+                return
+            }
+            
+            self.shareCSVFile(for: transactions)
+        }
+    }
+    
+    private func shareCSVFile(for transactions: [Transaction]) {
+        let keys = [
+            "transaction-detail-amount".localized,
+            "transaction-detail-reward".localized,
+            "transaction-detail-close-amount".localized,
+            "transaction-detail-close-to".localized,
+            "transaction-detail-to".localized,
+            "transaction-detail-from".localized,
+            "transaction-detail-fee".localized,
+            "transaction-detail-round".localized,
+            "title-id".localized,
+            "transaction-detail-note".localized
+        ]
+        let config = CSVConfig(fileName: formCSVFileName(), keys: NSOrderedSet(array: keys))
+        
+        if let fileUrl = exportCSV(from: createCSVData(from: transactions), with: config) {
+            SVProgressHUD.showSuccess(withStatus: "title-done".localized)
+            SVProgressHUD.dismiss()
+            
+            let activityViewController = UIActivityViewController(activityItems: [fileUrl], applicationActivities: nil)
+            activityViewController.completionWithItemsHandler = { activity, success, items, error in
+                try? FileManager.default.removeItem(at: fileUrl)
+            }
+            present(activityViewController, animated: true)
+        } else {
+            SVProgressHUD.showError(withStatus: "csv-download-error".localized)
+            SVProgressHUD.dismiss()
+        }
+    }
+    
+    private func formCSVFileName() -> String {
+        var fileName = "algorand_transactions"
+        let dates = getTransactionFilterDates()
+        if let fromDate = dates.from,
+            let toDate = dates.to {
+            if filterOption == .today {
+                fileName += "-" + fromDate.toFormat("MM-dd-yyyy")
+            } else {
+                fileName += "-" + fromDate.toFormat("MM-dd-yyyy") + "_" + toDate.toFormat("MM-dd-yyyy")
+            }
+        }
+        return "\(fileName).csv"
+    }
+    
+    private func createCSVData(from transactions: [Transaction]) -> [[String: AnyObject]] {
+        var csvData = [[String: AnyObject]]()
+        for transaction in transactions {
+            let transactionData: [String: AnyObject] = [
+                "transaction-detail-amount".localized: transaction.getAmount() as AnyObject,
+                "transaction-detail-reward".localized: transaction.senderRewards as AnyObject,
+                "transaction-detail-close-amount".localized: transaction.getCloseAmount() as AnyObject,
+                "transaction-detail-close-to".localized: transaction.getCloseAddress() as AnyObject,
+                "transaction-detail-to".localized: transaction.getReceiver() as AnyObject,
+                "transaction-detail-from".localized: transaction.sender as AnyObject,
+                "transaction-detail-fee".localized: transaction.fee as AnyObject,
+                "transaction-detail-round".localized: transaction.lastRound as AnyObject,
+                "title-id".localized: transaction.id as AnyObject,
+                "transaction-detail-note".localized: transaction.noteRepresentation() as AnyObject
+            ]
+            csvData.append(transactionData)
+        }
+        return csvData
+    }
+}
+
+extension TransactionsViewController: MagpieDelegate {
+    func magpie(
+        _ magpie: Magpie,
+        networkMonitor: NetworkMonitor,
+        didConnectVia connection: NetworkConnection,
+        from oldConnection: NetworkConnection
+    ) {
+        isConnectedToInternet = networkMonitor.isConnected
+    }
+    
+    func magpie(_ magpie: Magpie, networkMonitor: NetworkMonitor, didDisconnectFrom oldConnection: NetworkConnection) {
+        isConnectedToInternet = networkMonitor.isConnected
     }
 }
 
@@ -306,4 +512,18 @@ extension TransactionsViewController {
 protocol TransactionsViewControllerDelegate: class {
     func transactionsViewController(_ transactionsViewController: TransactionsViewController, didScroll scrollView: UIScrollView)
     func transactionsViewController(_ transactionsViewController: TransactionsViewController, didStopScrolling scrollView: UIScrollView)
+}
+
+private struct TransactionsTooltipStorage: Storable {
+    typealias Object = Any
+    
+    private let filterOptionTooltipKey = "com.algorand.algorand.transaction.list.filter.option.tooltip"
+    
+    func setFilterOptionTooltipDisplayed() {
+        save(true, for: filterOptionTooltipKey, to: .defaults)
+    }
+    
+    func isFilterOptionTooltipDisplayed() -> Bool {
+        return bool(with: filterOptionTooltipKey, to: .defaults)
+    }
 }

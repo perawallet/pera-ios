@@ -29,6 +29,7 @@ class Transaction: Model, TransactionItem {
     let assetConfig: AssetConfigTransaction?
     let assetTransfer: AssetTransferTransaction?
     let date: Date?
+    let transactionSignature: TransactionSignature?
     
     var status: Status?
     var contact: Contact?
@@ -52,6 +53,7 @@ class Transaction: Model, TransactionItem {
         assetFreeze = try container.decodeIfPresent(AssetFreezeTransaction.self, forKey: .assetFreeze)
         assetConfig = try container.decodeIfPresent(AssetConfigTransaction.self, forKey: .assetConfig)
         assetTransfer = try container.decodeIfPresent(AssetTransferTransaction.self, forKey: .assetTransfer)
+        transactionSignature = try container.decodeIfPresent(TransactionSignature.self, forKey: .transactionSignature)
         
         if let timestamp = try container.decodeIfPresent(Double.self, forKey: .date) {
             date = Date(timeIntervalSince1970: timestamp)
@@ -75,6 +77,22 @@ extension Transaction {
         }
         
         return assetTransfer.receiverAddress == address && assetTransfer.amount == 0 && type == .assetTransfer
+    }
+    
+    func getAmount() -> Int64? {
+        return payment?.amount ?? assetTransfer?.amount
+    }
+    
+    func getReceiver() -> String? {
+        return payment?.receiver ?? assetTransfer?.receiverAddress
+    }
+    
+    func getCloseAmount() -> Int64? {
+        return payment?.closeAmount ?? assetTransfer?.closeAmount
+    }
+    
+    func getCloseAddress() -> String? {
+        return payment?.closeAddress ?? assetTransfer?.closeToAddress
     }
     
     func noteRepresentation() -> String? {
@@ -106,6 +124,7 @@ extension Transaction {
         case assetConfig = "asset-config-transaction"
         case assetTransfer = "asset-transfer-transaction"
         case date = "round-time"
+        case transactionSignature = "signature"
     }
 }
 
