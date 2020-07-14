@@ -399,7 +399,7 @@ extension AccountsViewController: QRScannerViewControllerDelegate {
     }
 }
 
-extension AccountsViewController: TooltipPresentable {
+extension AccountsViewController: TooltipPresenter {
     func presentQRTooltipIfNeeded() {
         guard let isAccountQRTooltipDisplayed = session?.isAccountQRTooltipDisplayed(),
             isViewAppeared,
@@ -414,7 +414,7 @@ extension AccountsViewController: TooltipPresentable {
             return
         }
         
-        presentTooltip(with: "accounts-qr-tooltip".localized, at: headerView.contextView.qrButton)
+        presentTooltip(with: "accounts-qr-tooltip".localized, using: configuration, at: headerView.contextView.qrButton)
         session?.setAccountQRTooltipDisplayed()
     }
     

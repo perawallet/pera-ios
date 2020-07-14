@@ -29,7 +29,7 @@ class Transaction: Model, TransactionItem {
     let assetConfig: AssetConfigTransaction?
     let assetTransfer: AssetTransferTransaction?
     let date: Date?
-    let signature: TransactionSignature?
+    let transactionSignature: TransactionSignature?
     
     var status: Status?
     var contact: Contact?
@@ -53,7 +53,7 @@ class Transaction: Model, TransactionItem {
         assetFreeze = try container.decodeIfPresent(AssetFreezeTransaction.self, forKey: .assetFreeze)
         assetConfig = try container.decodeIfPresent(AssetConfigTransaction.self, forKey: .assetConfig)
         assetTransfer = try container.decodeIfPresent(AssetTransferTransaction.self, forKey: .assetTransfer)
-        signature = try container.decodeIfPresent(TransactionSignature.self, forKey: .signature)
+        transactionSignature = try container.decodeIfPresent(TransactionSignature.self, forKey: .transactionSignature)
         
         if let timestamp = try container.decodeIfPresent(Double.self, forKey: .date) {
             date = Date(timeIntervalSince1970: timestamp)
@@ -80,35 +80,19 @@ extension Transaction {
     }
     
     func getAmount() -> Int64? {
-        if let payment = payment {
-            return payment.amount
-        }
-        
-        return assetTransfer?.amount
+        return payment?.amount ?? assetTransfer?.amount
     }
     
     func getReceiver() -> String? {
-        if let payment = payment {
-            return payment.receiver
-        }
-        
-        return assetTransfer?.receiverAddress
+        return payment?.receiver ?? assetTransfer?.receiverAddress
     }
     
     func getCloseAmount() -> Int64? {
-        if let payment = payment {
-            return payment.closeAmount
-        }
-        
-        return assetTransfer?.closeAmount
+        return payment?.closeAmount ?? assetTransfer?.closeAmount
     }
     
     func getCloseAddress() -> String? {
-        if let payment = payment {
-            return payment.closeAddress
-        }
-        
-        return assetTransfer?.closeToAddress
+        return payment?.closeAddress ?? assetTransfer?.closeToAddress
     }
     
     func noteRepresentation() -> String? {
@@ -140,7 +124,7 @@ extension Transaction {
         case assetConfig = "asset-config-transaction"
         case assetTransfer = "asset-transfer-transaction"
         case date = "round-time"
-        case signature = "signature"
+        case transactionSignature = "signature"
     }
 }
 

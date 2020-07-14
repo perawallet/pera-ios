@@ -22,7 +22,10 @@ class TransactionHistoryDataSource: NSObject, UICollectionViewDataSource {
     private var transactionParams: TransactionParams?
     private var fetchRequest: EndpointOperatable?
     private var nextToken: String?
-    private(set) var hasNext = false
+    var hasNext: Bool {
+        return nextToken != nil
+    }
+    private let paginationRequestThreshold = 5
     
     var openFilterOptionsHandler: ((TransactionHistoryDataSource) -> Void)?
     var shareHistoryHandler: ((TransactionHistoryDataSource) -> Void)?
@@ -196,10 +199,6 @@ extension TransactionHistoryDataSource {
         limit: Int = 15,
         then handler: @escaping ([TransactionItem]?, Error?) -> Void
     ) {
-        if refresh {
-            transactions.removeAll()
-        }
-        
         var assetId: String?
         if let id = assetDetail?.id {
             assetId = String(id)
@@ -211,12 +210,15 @@ extension TransactionHistoryDataSource {
             case let .failure(error):
                 handler(nil, error)
             case let .success(transactions):
+                if refresh {
+                    self.transactions.removeAll()
+                }
+                
                 transactions.transactions.forEach { transaction in
                     transaction.status = .completed
                 }
                 
                 self.nextToken = transactions.nextToken
-                self.hasNext = transactions.nextToken != nil
                 
                 if let rewardDisplayPreference = self.api?.session.rewardDisplayPreference,
                     rewardDisplayPreference == .allowed,
@@ -312,10 +314,8 @@ extension TransactionHistoryDataSource {
                 return true
             }
             
-            var containsPendingTransaction = false
-            
-            pendingTransactions.forEach { pendingTransaction in
-                containsPendingTransaction = transactionItem.signature?.signature == pendingTransaction.signature
+            let containsPendingTransaction = pendingTransactions.contains { pendingTransaction -> Bool in
+                transactionItem.transactionSignature?.signature == pendingTransaction.signature
             }
             
             return !containsPendingTransaction
@@ -362,11 +362,20 @@ extension TransactionHistoryDataSource {
     
     func clear() {
         fetchRequest?.cancel()
+        nextToken = nil
         transactions.removeAll()
     }
     
     var isEmpty: Bool {
         transactions.isEmpty
+    }
+    
+    func shouldSendPaginatedRequest(at index: Int) -> Bool {
+        if transactionCount() < paginationRequestThreshold {
+            return index == transactionCount() - 1 && hasNext
+        }
+        
+        return index == transactionCount() - paginationRequestThreshold && hasNext
     }
 }
 

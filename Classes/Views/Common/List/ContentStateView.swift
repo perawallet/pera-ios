@@ -137,7 +137,6 @@ class ContentStateView: BaseView {
             }
             
             errorStateView = errorView
-            
             return
         }
         

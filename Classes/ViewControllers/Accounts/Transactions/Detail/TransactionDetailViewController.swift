@@ -95,7 +95,7 @@ extension TransactionDetailViewController {
     }
 }
 
-extension TransactionDetailViewController: TooltipPresentable {
+extension TransactionDetailViewController: TooltipPresenter {
     private func configureTransactionDetail() {
         if transactionType == .sent {
             viewModel.configureSentTransaction(transactionDetailView, with: transaction, and: assetDetail, for: account)
@@ -109,7 +109,11 @@ extension TransactionDetailViewController: TooltipPresentable {
             return
         }
         
-        presentTooltip(with: "transaction-detail-copy-tooltip".localized, at: transactionDetailView.opponentView.copyImageView)
+        presentTooltip(
+            with: "transaction-detail-copy-tooltip".localized,
+            using: configuration,
+            at: transactionDetailView.opponentView.copyImageView
+        )
         transactionDetailTooltipStorage.setInformationCopyTooltipDisplayed()
     }
     

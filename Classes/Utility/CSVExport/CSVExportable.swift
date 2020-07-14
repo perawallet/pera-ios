@@ -25,10 +25,12 @@ extension CSVExportable {
         guard let keyValues = config.keys.array as? [String] else {
             return nil
         }
-        let header = "\(keyValues.joined(separator: ","))\n"
         
-        var values = ""
-        for dictionary in data {
+        var csvString = ""
+        csvString += keyValues.joined(separator: ",")
+        csvString += "\n"
+        csvString += data.reduce("") { result, dictionary -> String in
+            var values = result
             for key in keyValues {
                 if let value = dictionary[key] {
                     values += "\(value),"
@@ -37,14 +39,15 @@ extension CSVExportable {
                 }
             }
             values.append("\n")
+            return values
         }
-        return header + values
+        return csvString
     }
     
     private func createFileURL(from config: CSVConfig) -> URL? {
         guard let initialPath = try? FileManager.default.url(
             for: .documentDirectory,
-            in: .allDomainsMask,
+            in: .userDomainMask,
             appropriateFor: nil,
             create: false
         ) else {
@@ -60,12 +63,7 @@ extension CSVExportable {
     }
     
     private func createFile(from string: String, to url: URL) -> URL? {
-        do {
-            try string.write(to: url, atomically: true, encoding: .utf8)
-            return url
-        } catch {
-            print("error creating file")
-            return nil
-        }
+        try? string.write(to: url, atomically: true, encoding: .utf8)
+        return url
     }
 }

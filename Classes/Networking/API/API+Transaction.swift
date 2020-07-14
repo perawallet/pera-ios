@@ -7,6 +7,7 @@
 //
 
 import Magpie
+import SwiftDate
 
 extension API {
     @discardableResult
@@ -19,8 +20,8 @@ extension API {
         
         if let fromDate = draft.dates.from,
             let toDate = draft.dates.to {
-            from = "\(Formatter.date.string(from: fromDate))T00:00:00.000Z"
-            to = "\(Formatter.date.string(from: toDate))T23:59:59.000Z"
+            from = "\(fromDate.toFormat("yyyy-MM-dd"))T00:00:00.000Z"
+            to = "\(toDate.toFormat("yyyy-MM-dd"))T23:59:59.000Z"
         }
         
         return Endpoint(path: Path("/v2/accounts/\(draft.account.address)/transactions"))

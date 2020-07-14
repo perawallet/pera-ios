@@ -14,7 +14,7 @@ class TransactionsViewController: BaseViewController {
     
     let layout = Layout<LayoutConstants>()
     
-    private var pollingOperation: PollingOperation?
+    private var pendingTransactionPolling: PollingOperation?
     private var account: Account
     private var assetDetail: AssetDetail?
     private var isConnectedToInternet = true {
@@ -34,7 +34,7 @@ class TransactionsViewController: BaseViewController {
     
     private let transactionsTooltipStorage = TransactionsTooltipStorage()
     private var filterOption = TransactionFilterViewController.FilterOption.allTime
-    private var paginationRequestOffset = 5
+    private var paginationRequestThreshold = 5
     
     private lazy var filterOptionsPresenter = CardModalPresenter(
         config: ModalConfiguration(
@@ -56,7 +56,7 @@ class TransactionsViewController: BaseViewController {
     }
     
     deinit {
-        pollingOperation?.invalidate()
+        pendingTransactionPolling?.invalidate()
     }
     
     override func viewDidLoad() {
@@ -82,7 +82,7 @@ class TransactionsViewController: BaseViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         api?.removeDelegate(self)
-        pollingOperation?.invalidate()
+        pendingTransactionPolling?.invalidate()
     }
     
     override func setListeners() {
@@ -150,7 +150,7 @@ extension TransactionsViewController: TransactionListViewDelegate {
 
 extension TransactionsViewController {
     private func startPendingTransactionPolling() {
-        pollingOperation = PollingOperation(interval: 0.8) { [weak self] in
+        pendingTransactionPolling = PollingOperation(interval: 0.8) { [weak self] in
             guard let strongSelf = self else {
                 return
             }
@@ -169,7 +169,7 @@ extension TransactionsViewController {
             }
         }
         
-        pollingOperation?.start()
+        pendingTransactionPolling?.start()
     }
     
     private func fetchTransactions(witRefresh refresh: Bool = true, isPaginated: Bool = false) {
@@ -254,17 +254,9 @@ extension TransactionsViewController: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if shouldSendPaginatedRequest(at: indexPath.item) {
+        if transactionHistoryDataSource.shouldSendPaginatedRequest(at: indexPath.item) {
             fetchTransactions(witRefresh: false, isPaginated: true)
         }
-    }
-    
-    private func shouldSendPaginatedRequest(at index: Int) -> Bool {
-        if transactionHistoryDataSource.transactionCount() < paginationRequestOffset {
-            return index == transactionHistoryDataSource.transactionCount() - 1 && transactionHistoryDataSource.hasNext
-        }
-        
-        return index == transactionHistoryDataSource.transactionCount() - paginationRequestOffset && transactionHistoryDataSource.hasNext
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -365,16 +357,16 @@ extension TransactionsViewController: TransactionFilterViewControllerDelegate {
         
         switch filterOption {
         case .allTime:
-            pollingOperation?.start()
+            pendingTransactionPolling?.start()
         case let .customRange(_, to):
             if let isToDateLaterThanNow = to?.isAfterDate(Date(), granularity: .day),
                 isToDateLaterThanNow {
-                pollingOperation?.invalidate()
+                pendingTransactionPolling?.invalidate()
             } else {
-                pollingOperation?.start()
+                pendingTransactionPolling?.start()
             }
         default:
-            pollingOperation?.invalidate()
+            pendingTransactionPolling?.invalidate()
         }
         
         self.filterOption = filterOption
@@ -385,7 +377,7 @@ extension TransactionsViewController: TransactionFilterViewControllerDelegate {
     }
 }
 
-extension TransactionsViewController: TooltipPresentable {
+extension TransactionsViewController: TooltipPresenter {
     func presentFilterTooltipIfNeeded() {
         if transactionsTooltipStorage.isFilterOptionTooltipDisplayed() || !isViewAppeared {
             return
@@ -395,7 +387,7 @@ extension TransactionsViewController: TooltipPresentable {
             return
         }
         
-        presentTooltip(with: "transaction-filter-tooltip".localized, at: headerView.contextView.filterButton)
+        presentTooltip(with: "transaction-filter-tooltip".localized, using: configuration, at: headerView.contextView.filterButton)
         transactionsTooltipStorage.setFilterOptionTooltipDisplayed()
     }
     
@@ -429,8 +421,19 @@ extension TransactionsViewController: CSVExportable {
     }
     
     private func shareCSVFile(for transactions: [Transaction]) {
-        let keys = ["Amount", "Reward", "Close Amount", "Close To", "To", "From", "Fee", "Round", "ID", "Note"]
-        let config = CSVConfig(fileName: setCSVFileName(), keys: NSOrderedSet(array: keys))
+        let keys = [
+            "transaction-detail-amount".localized,
+            "transaction-detail-reward".localized,
+            "transaction-detail-close-amount".localized,
+            "transaction-detail-close-to".localized,
+            "transaction-detail-to".localized,
+            "transaction-detail-from".localized,
+            "transaction-detail-fee".localized,
+            "transaction-detail-round".localized,
+            "title-id".localized,
+            "transaction-detail-note".localized
+        ]
+        let config = CSVConfig(fileName: formCSVFileName(), keys: NSOrderedSet(array: keys))
         
         if let fileUrl = exportCSV(from: createCSVData(from: transactions), with: config) {
             SVProgressHUD.showSuccess(withStatus: "title-done".localized)
@@ -447,7 +450,7 @@ extension TransactionsViewController: CSVExportable {
         }
     }
     
-    private func setCSVFileName() -> String {
+    private func formCSVFileName() -> String {
         var fileName = "algorand_transactions"
         let dates = getTransactionFilterDates()
         if let fromDate = dates.from,

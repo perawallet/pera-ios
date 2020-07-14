@@ -312,8 +312,8 @@
 		2B1A1D5424AFAA2E00CB4E78 /* TransactionSignature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1A1D5224AFAA2E00CB4E78 /* TransactionSignature.swift */; };
 		2B1A1D5724B351CF00CB4E78 /* TransactionErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1A1D5624B351CF00CB4E78 /* TransactionErrorView.swift */; };
 		2B1A1D5824B351CF00CB4E78 /* TransactionErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1A1D5624B351CF00CB4E78 /* TransactionErrorView.swift */; };
-		2B1A1D6124B3526700CB4E78 /* TooltipPresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1A1D6024B3526700CB4E78 /* TooltipPresentable.swift */; };
-		2B1A1D6224B3526700CB4E78 /* TooltipPresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1A1D6024B3526700CB4E78 /* TooltipPresentable.swift */; };
+		2B1A1D6124B3526700CB4E78 /* TooltipPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1A1D6024B3526700CB4E78 /* TooltipPresenter.swift */; };
+		2B1A1D6224B3526700CB4E78 /* TooltipPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1A1D6024B3526700CB4E78 /* TooltipPresenter.swift */; };
 		2B1B536823279CD500D54029 /* AlgorandNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1B536723279CD500D54029 /* AlgorandNotification.swift */; };
 		2B1B536923279CD500D54029 /* AlgorandNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1B536723279CD500D54029 /* AlgorandNotification.swift */; };
 		2B1B536B2328029F00D54029 /* NotificationDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1B536A2328029F00D54029 /* NotificationDetail.swift */; };
@@ -1042,7 +1042,7 @@
 		2B191C892321998600EAB1B8 /* algorand.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = algorand.entitlements; sourceTree = "<group>"; };
 		2B1A1D5224AFAA2E00CB4E78 /* TransactionSignature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionSignature.swift; sourceTree = "<group>"; };
 		2B1A1D5624B351CF00CB4E78 /* TransactionErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionErrorView.swift; sourceTree = "<group>"; };
-		2B1A1D6024B3526700CB4E78 /* TooltipPresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TooltipPresentable.swift; sourceTree = "<group>"; };
+		2B1A1D6024B3526700CB4E78 /* TooltipPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TooltipPresenter.swift; sourceTree = "<group>"; };
 		2B1B536723279CD500D54029 /* AlgorandNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorandNotification.swift; sourceTree = "<group>"; };
 		2B1B536A2328029F00D54029 /* NotificationDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationDetail.swift; sourceTree = "<group>"; };
 		2B256FF323F1BF700005CBA2 /* SendAlgosTransactionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendAlgosTransactionViewController.swift; sourceTree = "<group>"; };
@@ -1659,7 +1659,7 @@
 		2B1A1D5F24B3525900CB4E78 /* Tooltip */ = {
 			isa = PBXGroup;
 			children = (
-				2B1A1D6024B3526700CB4E78 /* TooltipPresentable.swift */,
+				2B1A1D6024B3526700CB4E78 /* TooltipPresenter.swift */,
 			);
 			path = Tooltip;
 			sourceTree = "<group>";
@@ -5250,7 +5250,7 @@
 				2B79A13A231330D900766021 /* AlgoToDollarConversion.swift in Sources */,
 				17BD4EF72292F1260003E49A /* CGFloat+Additions.swift in Sources */,
 				17BD4EF82292F1260003E49A /* SettingsView.swift in Sources */,
-				2B1A1D6224B3526700CB4E78 /* TooltipPresentable.swift in Sources */,
+				2B1A1D6224B3526700CB4E78 /* TooltipPresenter.swift in Sources */,
 				95E3156624335F96008D79D4 /* SegmentItem.swift in Sources */,
 				17BD4EF92292F1260003E49A /* EmptyStateView.swift in Sources */,
 				2BE9371F246308D600322C1E /* SelectAssetViewController.swift in Sources */,
@@ -5703,7 +5703,7 @@
 				2B79A139231330D900766021 /* AlgoToDollarConversion.swift in Sources */,
 				2BF53168224A48DF00A7455F /* CGFloat+Additions.swift in Sources */,
 				17100B2C225CEC3600D13548 /* SettingsView.swift in Sources */,
-				2B1A1D6124B3526700CB4E78 /* TooltipPresentable.swift in Sources */,
+				2B1A1D6124B3526700CB4E78 /* TooltipPresenter.swift in Sources */,
 				95E3156524335F96008D79D4 /* SegmentItem.swift in Sources */,
 				2BDE9CD0224E1A60007EFF30 /* EmptyStateView.swift in Sources */,
 				2BE9371E246308D600322C1E /* SelectAssetViewController.swift in Sources */,
