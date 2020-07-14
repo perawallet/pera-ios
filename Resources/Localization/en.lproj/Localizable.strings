@@ -431,3 +431,7 @@
 "transaction-filter-error-subtitle" = "Sorry, something went wrong there.";
 "csv-download-title" = "Creating CSV File";
 "csv-download-error" = "Could not create a csv file for the transaction history.";
+
+// MARK: Pin Limit
+"pin-limit-title" = "Algorand is disabled";
+"pin-limit-try-again" = "Try again in";
