@@ -1,0 +1,134 @@
+//
+//  NotificationsView.swift
+//  algorand
+//
+//  Created by Göktuğ Berk Ulu on 14.07.2020.
+//  Copyright © 2020 hippo. All rights reserved.
+//
+
+import UIKit
+
+class NotificationsView: BaseView {
+    
+    weak var delegate: NotificationsViewDelegate?
+    
+    private let layout = Layout<LayoutConstants>()
+    
+    private lazy var notificationsHeaderView: MainHeaderView = {
+        let view = MainHeaderView()
+        view.setTitle("notifications-title".localized)
+        view.setQRButtonHidden(true)
+        view.setAddButtonHidden(true)
+        view.setTestNetLabelHidden(true)
+        return view
+    }()
+    
+    private lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(didRefreshList), for: .valueChanged)
+        return refreshControl
+    }()
+    
+    private lazy var emptyStateView = EmptyStateView(
+        image: img("img-nc-empty"),
+        title: "notifications-empty-title".localized,
+        subtitle: "notifications-empty-subtitle".localized
+    )
+    
+    private lazy var notificationsCollectionView: UICollectionView = {
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.scrollDirection = .vertical
+        flowLayout.minimumLineSpacing = 0.0
+        flowLayout.minimumInteritemSpacing = 0.0
+        flowLayout.sectionHeadersPinToVisibleBounds = true
+        
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.backgroundColor = .clear
+        collectionView.register(NotificationCell.self, forCellWithReuseIdentifier: NotificationCell.reusableIdentifier)
+        return collectionView
+    }()
+    
+    private lazy var contentStateView = ContentStateView()
+    
+    override func prepareLayout() {
+        setupNotificationsHeaderViewLayout()
+        setupNotificationsCollectionViewLayout()
+    }
+}
+
+extension NotificationsView {
+    private func setupNotificationsHeaderViewLayout() {
+        addSubview(notificationsHeaderView)
+        
+        notificationsHeaderView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalToSuperview()
+        }
+    }
+    
+    private func setupNotificationsCollectionViewLayout() {
+        addSubview(notificationsCollectionView)
+        
+        notificationsCollectionView.snp.makeConstraints { make in
+            make.leading.trailing.bottom.equalToSuperview()
+            make.top.equalTo(notificationsHeaderView.snp.bottom).offset(layout.current.listTopInset)
+        }
+    }
+}
+
+extension NotificationsView {
+    @objc
+    private func didRefreshList() {
+        delegate?.notificationsViewDidRefreshList(self)
+    }
+}
+
+extension NotificationsView {
+    func reloadData() {
+        notificationsCollectionView.reloadData()
+    }
+    
+    func setDelegate(_ delegate: UICollectionViewDelegate?) {
+        notificationsCollectionView.delegate = delegate
+    }
+    
+    func setDataSource(_ dataSource: UICollectionViewDataSource?) {
+        notificationsCollectionView.dataSource = dataSource
+    }
+    
+    var isListRefreshing: Bool {
+        return refreshControl.isRefreshing
+    }
+    
+    func endRefreshing() {
+        if refreshControl.isRefreshing {
+            refreshControl.endRefreshing()
+        }
+    }
+    
+    func setEmptyState() {
+        notificationsCollectionView.contentState = .empty(emptyStateView)
+    }
+    
+    func setNormalState() {
+        notificationsCollectionView.contentState = .none
+    }
+    
+    func setLoadingState() {
+        if !refreshControl.isRefreshing {
+            notificationsCollectionView.contentState = .loading
+        }
+    }
+}
+
+extension NotificationsView {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let listTopInset: CGFloat = 12.0
+    }
+}
+
+protocol NotificationsViewDelegate: class {
+    func notificationsViewDidRefreshList(_ notificationsView: NotificationsView)
+}

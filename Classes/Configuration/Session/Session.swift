@@ -107,6 +107,14 @@ class Session: Storable {
         }
     }
     
+    var deviceId: String? {
+        didSet {
+            if deviceId != nil {
+                NotificationCenter.default.post(name: .DeviceIDSet, object: nil)
+            }
+        }
+    }
+    
     // isExpired is true when login needed. It will fault after 5 mins entering background
     var isValid = false
     
