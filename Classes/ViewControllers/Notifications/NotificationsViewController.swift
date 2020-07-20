@@ -78,6 +78,12 @@ extension NotificationsViewController: UICollectionViewDelegateFlowLayout {
         openAssetDetail(from: notificationDetail)
     }
     
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if dataSource.shouldSendPaginatedRequest(at: indexPath.item) {
+            dataSource.loadData(withRefresh: false, isPaginated: true)
+        }
+    }
+    
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,

@@ -17,6 +17,12 @@ class NotificationsDataSource: NSObject {
     private var contacts = [Contact]()
     private var lastRequest: EndpointOperatable?
     
+    private let paginationRequestThreshold = 3
+    private var paginationCursor: String?
+    var hasNext: Bool {
+        return paginationCursor != nil
+    }
+    
     weak var delegate: NotificationsDataSourceDelegate?
 
     init(api: API) {
@@ -27,25 +33,44 @@ class NotificationsDataSource: NSObject {
 }
 
 extension NotificationsDataSource {
-    func loadData() {
+    func loadData(withRefresh refresh: Bool = true, isPaginated: Bool = false) {
         guard let deviceId = api.session.deviceId else {
             return
         }
         
-        lastRequest = api.getNotifications(for: deviceId) { response in
+        lastRequest = api.getNotifications(for: deviceId, with: paginationCursor) { response in
             switch response {
             case let .success(notifications):
-                self.notifications = notifications.results
+                if refresh {
+                    self.clear()
+                }
                 
-                self.viewModels.removeAll()
+                self.getCursor(from: notifications.next)
+                
+                if isPaginated {
+                    self.notifications.append(contentsOf: notifications.results)
+                } else {
+                    self.notifications = notifications.results
+                }
+                
                 notifications.results.forEach { notification in
                     self.viewModels.append(self.formViewModel(from: notification))
                 }
                 
-                self.delegate?.notificationsDataSource(self, didFetch: notifications.results)
+                self.delegate?.notificationsDataSource(self, didFetch: self.notifications)
             case let .failure(error):
                 self.delegate?.notificationsDataSource(self, didFailWith: error)
             }
+        }
+    }
+    
+    private func getCursor(from next: String?) {
+        if let next = next,
+            let nextUrl = URL(string: next),
+            let cursor = nextUrl.queryParameters?[RequestParameter.cursor.rawValue] {
+            paginationCursor = cursor
+        } else {
+            paginationCursor = nil
         }
     }
 }
@@ -145,6 +170,16 @@ extension NotificationsDataSource {
     
     func viewModel(at index: Int) -> NotificationsViewModel? {
         return viewModels[safe: index]
+    }
+    
+    func shouldSendPaginatedRequest(at index: Int) -> Bool {
+        return index == notifications.count - paginationRequestThreshold && hasNext
+    }
+    
+    func clear() {
+        viewModels.removeAll()
+        notifications.removeAll()
+        paginationCursor = nil
     }
 }
 

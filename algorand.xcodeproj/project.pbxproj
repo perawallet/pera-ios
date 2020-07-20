@@ -304,6 +304,8 @@
 		2B0D84FB2395D63100F0EAA7 /* SendAlgosTransactionPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0D84F92395D63100F0EAA7 /* SendAlgosTransactionPreviewViewController.swift */; };
 		2B0F3D8923C8D1D6006BB01B /* PaginatedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0F3D8823C8D1D6006BB01B /* PaginatedList.swift */; };
 		2B0F3D8A23C8D1D6006BB01B /* PaginatedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0F3D8823C8D1D6006BB01B /* PaginatedList.swift */; };
+		2B13952E24C605E0002F66D3 /* CursorQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B13952D24C605E0002F66D3 /* CursorQuery.swift */; };
+		2B13952F24C605E0002F66D3 /* CursorQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B13952D24C605E0002F66D3 /* CursorQuery.swift */; };
 		2B18BAF3247DB2AF00BFDBC6 /* TooltipViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B18BAF2247DB2AE00BFDBC6 /* TooltipViewController.swift */; };
 		2B18BAF4247DB2AF00BFDBC6 /* TooltipViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B18BAF2247DB2AE00BFDBC6 /* TooltipViewController.swift */; };
 		2B191C82232150C900EAB1B8 /* PushNotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B191C81232150C900EAB1B8 /* PushNotificationController.swift */; };
@@ -1052,6 +1054,7 @@
 		2B0D84F62395D4F500F0EAA7 /* SendAssetTransactionPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendAssetTransactionPreviewViewController.swift; sourceTree = "<group>"; };
 		2B0D84F92395D63100F0EAA7 /* SendAlgosTransactionPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendAlgosTransactionPreviewViewController.swift; sourceTree = "<group>"; };
 		2B0F3D8823C8D1D6006BB01B /* PaginatedList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaginatedList.swift; sourceTree = "<group>"; };
+		2B13952D24C605E0002F66D3 /* CursorQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CursorQuery.swift; sourceTree = "<group>"; };
 		2B18BAF2247DB2AE00BFDBC6 /* TooltipViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TooltipViewController.swift; sourceTree = "<group>"; };
 		2B191C81232150C900EAB1B8 /* PushNotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationController.swift; sourceTree = "<group>"; };
 		2B191C882321998100EAB1B8 /* algorand-staging.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "algorand-staging.entitlements"; sourceTree = "<group>"; };
@@ -1662,6 +1665,14 @@
 				2B0F3D8823C8D1D6006BB01B /* PaginatedList.swift */,
 			);
 			path = Common;
+			sourceTree = "<group>";
+		};
+		2B13952C24C605CC002F66D3 /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				2B13952D24C605E0002F66D3 /* CursorQuery.swift */,
+			);
+			path = Notifications;
 			sourceTree = "<group>";
 		};
 		2B18BAF1247DB28300BFDBC6 /* Tutorial */ = {
@@ -3396,6 +3407,7 @@
 			isa = PBXGroup;
 			children = (
 				2B4DF437236C77EB00FF9551 /* Accounts */,
+				2B13952C24C605CC002F66D3 /* Notifications */,
 			);
 			path = Query;
 			sourceTree = "<group>";
@@ -5188,6 +5200,7 @@
 				2B4BD9EE2389CBC000491149 /* AssetNameView.swift in Sources */,
 				2BC1828523DEEC0F00888476 /* RequestAlgosTransactionPreviewViewModel.swift in Sources */,
 				2BE9372924630B4400322C1E /* SelectAssetHeaderSupplementaryView.swift in Sources */,
+				2B13952F24C605E0002F66D3 /* CursorQuery.swift in Sources */,
 				17BD4E922292F1260003E49A /* MainButton.swift in Sources */,
 				17BD4E932292F1260003E49A /* NodeSettingsViewModel.swift in Sources */,
 				17BD4E942292F1260003E49A /* TransactionReceiverView.swift in Sources */,
@@ -5649,6 +5662,7 @@
 				17D04F53226107D70051BC43 /* NodeSettingsViewModel.swift in Sources */,
 				2BC1828423DEEC0F00888476 /* RequestAlgosTransactionPreviewViewModel.swift in Sources */,
 				2BE9372824630B4400322C1E /* SelectAssetHeaderSupplementaryView.swift in Sources */,
+				2B13952E24C605E0002F66D3 /* CursorQuery.swift in Sources */,
 				2B7572AE225CCB62009E0253 /* TransactionReceiverView.swift in Sources */,
 				2B0D84F72395D4F500F0EAA7 /* SendAssetTransactionPreviewViewController.swift in Sources */,
 				2BD739FA2240527B00B66EEF /* PasswordInputView.swift in Sources */,

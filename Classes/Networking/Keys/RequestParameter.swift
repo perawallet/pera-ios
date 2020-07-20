@@ -46,4 +46,5 @@ enum RequestParameter: String, JSONBodyRequestParameter {
     case next = "next"
     case assetIdFilter = "asset-id"
     case transactionType = "tx-type"
+    case cursor = "cursor"
 }
