@@ -32,10 +32,18 @@ extension CSVExportable {
         csvString += data.reduce("") { result, dictionary -> String in
             var values = result
             for key in keyValues {
-                if let value = dictionary[key] {
-                    values += "\(value),"
+                if key == keyValues.last {
+                    if let value = dictionary[key] {
+                        values += "\(value)"
+                    } else {
+                        values += "-"
+                    }
                 } else {
-                    values += "-,"
+                    if let value = dictionary[key] {
+                        values += "\(value),"
+                    } else {
+                        values += "-,"
+                    }
                 }
             }
             values.append("\n")

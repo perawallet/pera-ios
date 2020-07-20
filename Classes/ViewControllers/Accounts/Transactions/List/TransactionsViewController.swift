@@ -451,7 +451,11 @@ extension TransactionsViewController: CSVExportable {
     }
     
     private func formCSVFileName() -> String {
-        var fileName = "algorand_transactions"
+        var assetId = "algos"
+        if let assetDetailId = assetDetail?.id {
+            assetId = "\(assetDetailId)"
+        }
+        var fileName = "\(account.name ?? "")_\(assetId)"
         let dates = getTransactionFilterDates()
         if let fromDate = dates.from,
             let toDate = dates.to {
@@ -467,17 +471,19 @@ extension TransactionsViewController: CSVExportable {
     private func createCSVData(from transactions: [Transaction]) -> [[String: AnyObject]] {
         var csvData = [[String: AnyObject]]()
         for transaction in transactions {
+            let senderRewards = transaction.senderRewards == nil ? " " as AnyObject : transaction.senderRewards as AnyObject
+            let closeAmount = transaction.getCloseAmount() == nil ? " " as AnyObject : transaction.getCloseAmount() as AnyObject
             let transactionData: [String: AnyObject] = [
-                "transaction-detail-amount".localized: transaction.getAmount() as AnyObject,
-                "transaction-detail-reward".localized: transaction.senderRewards as AnyObject,
-                "transaction-detail-close-amount".localized: transaction.getCloseAmount() as AnyObject,
-                "transaction-detail-close-to".localized: transaction.getCloseAddress() as AnyObject,
-                "transaction-detail-to".localized: transaction.getReceiver() as AnyObject,
+                "transaction-detail-amount".localized: (transaction.getAmount()) as AnyObject,
+                "transaction-detail-reward".localized: senderRewards,
+                "transaction-detail-close-amount".localized: closeAmount,
+                "transaction-detail-close-to".localized: (transaction.getCloseAddress() ?? " ") as AnyObject,
+                "transaction-detail-to".localized: (transaction.getReceiver() ?? " ") as AnyObject,
                 "transaction-detail-from".localized: transaction.sender as AnyObject,
                 "transaction-detail-fee".localized: transaction.fee as AnyObject,
                 "transaction-detail-round".localized: transaction.lastRound as AnyObject,
                 "title-id".localized: transaction.id as AnyObject,
-                "transaction-detail-note".localized: transaction.noteRepresentation() as AnyObject
+                "transaction-detail-note".localized: (transaction.noteRepresentation() ?? " ") as AnyObject
             ]
             csvData.append(transactionData)
         }
