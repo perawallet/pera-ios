@@ -20,6 +20,7 @@ class NotificationView: BaseView {
     
     private lazy var notificationImageView: UIImageView = {
         let imageView = UIImageView()
+        imageView.backgroundColor = SharedColors.primaryBackground
         imageView.layer.cornerRadius = layout.current.notificationImageSize.width / 2
         imageView.clipsToBounds = true
         imageView.contentMode = .center
@@ -28,7 +29,7 @@ class NotificationView: BaseView {
     
     private lazy var titleLabel: UILabel = {
         UILabel()
-            .withLine(.single)
+            .withLine(.contained)
             .withAlignment(.left)
             .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
             .withTextColor(SharedColors.primaryText)
@@ -93,7 +94,6 @@ extension NotificationView {
         
         timeLabel.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.timeLabelTopInset)
-            make.bottom.equalToSuperview().inset(layout.current.timeLabelBottomInset)
             make.leading.equalTo(titleLabel)
         }
     }
@@ -144,7 +144,7 @@ extension NotificationView {
                     layout.current.titleLabelInset +
                     layout.current.horizontalInset
             ),
-            font: UIFont.font(withWeight: .medium(size: 14.0))
+            font: UIFont.font(withWeight: .regular(size: 14.0))
         ) ?? 40.0
         let timeLabelHeight: CGFloat = 20.0
         let height: CGFloat = constantHeight + titleLabelHeight + timeLabelHeight

@@ -45,7 +45,8 @@ class NotificationsView: BaseView {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = .clear
+        collectionView.contentInset = UIEdgeInsets(top: 8.0, left: 0.0, bottom: 0.0, right: 0.0)
+        collectionView.backgroundColor = SharedColors.secondaryBackground
         collectionView.register(NotificationCell.self, forCellWithReuseIdentifier: NotificationCell.reusableIdentifier)
         return collectionView
     }()
@@ -75,6 +76,9 @@ extension NotificationsView {
             make.leading.trailing.bottom.equalToSuperview()
             make.top.equalTo(notificationsHeaderView.snp.bottom).offset(layout.current.listTopInset)
         }
+        
+        notificationsCollectionView.backgroundView = contentStateView
+        notificationsCollectionView.refreshControl = refreshControl
     }
 }
 

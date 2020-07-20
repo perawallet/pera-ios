@@ -10,7 +10,7 @@ import Magpie
 
 class NotificationMessage: Model {
     let id: Int
-    let account: String
+    let account: Int
     let notificationType: NotificationType
     let message: String
     let detail: NotificationDetail?

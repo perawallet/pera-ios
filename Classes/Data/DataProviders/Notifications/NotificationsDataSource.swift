@@ -13,7 +13,11 @@ class NotificationsDataSource: NSObject {
     
     private let api: API
     private var notifications = [NotificationMessage]()
+    private var viewModels = [NotificationsViewModel]()
+    private var contacts = [Contact]()
     private var lastRequest: EndpointOperatable?
+    
+    weak var delegate: NotificationsDataSourceDelegate?
 
     init(api: API) {
         self.api = api
@@ -32,7 +36,31 @@ extension NotificationsDataSource {
             switch response {
             case let .success(notifications):
                 self.notifications = notifications
-            case .failure:
+                
+                self.viewModels.removeAll()
+                notifications.forEach { notification in
+                    self.viewModels.append(self.formViewModel(from: notification))
+                }
+                
+                self.delegate?.notificationsDataSource(self, didFetch: notifications)
+            case let .failure(error):
+                self.delegate?.notificationsDataSource(self, didFailWith: error)
+            }
+        }
+    }
+}
+
+extension NotificationsDataSource {
+    func fetchContacts() {
+        Contact.fetchAll(entity: Contact.entityName) { response in
+            switch response {
+            case let .results(objects: objects):
+                guard let results = objects as? [Contact] else {
+                    return
+                }
+                
+                self.contacts.append(contentsOf: results)
+            default:
                 break
             }
         }
@@ -68,13 +96,41 @@ extension NotificationsDataSource: UICollectionViewDataSource {
                 withReuseIdentifier: NotificationCell.reusableIdentifier,
                 for: indexPath
             ) as? NotificationCell,
-                let notification = notifications[safe: indexPath.item] {
-                let viewModel = NotificationsViewModel(notification: notification)
+                let viewModel = viewModels[safe: indexPath.item] {
                 viewModel.configure(cell)
                 return cell
             }
         }
         fatalError("Index path is out of bounds")
+    }
+    
+    private func formViewModel(from notification: NotificationMessage) -> NotificationsViewModel {
+        return NotificationsViewModel(
+            notification: notification,
+            account: getAccountIfExists(for: notification),
+            contact: getContactIfExists(for: notification)
+        )
+    }
+    
+    private func getAccountIfExists(for notification: NotificationMessage) -> Account? {
+        guard let details = notification.detail else {
+            return nil
+        }
+        
+        return api.session.accounts.first { $0.address == details.senderAddress || $0.address == details.receiverAddress }
+    }
+    
+    private func getContactIfExists(for notification: NotificationMessage) -> Contact? {
+        guard let details = notification.detail else {
+            return nil
+        }
+        
+        return contacts.first { contact -> Bool in
+            if let contactAddress = contact.address {
+                return contactAddress == details.senderAddress || contactAddress == details.receiverAddress
+            }
+            return false
+        }
     }
 }
 
@@ -86,4 +142,13 @@ extension NotificationsDataSource {
     func notification(at index: Int) -> NotificationMessage? {
         return notifications[safe: index]
     }
+    
+    func viewModel(at index: Int) -> NotificationsViewModel? {
+        return viewModels[safe: index]
+    }
+}
+
+protocol NotificationsDataSourceDelegate: class {
+    func notificationsDataSource(_ notificationsDataSource: NotificationsDataSource, didFetch notifications: [NotificationMessage])
+    func notificationsDataSource(_ notificationsDataSource: NotificationsDataSource, didFailWith error: Error)
 }
