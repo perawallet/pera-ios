@@ -45,7 +45,8 @@ class SendAssetTransactionViewController: SendTransactionViewController, TestNet
             TransactionEvent(
                 accountType: assetTransactionSendDraft.from.type,
                 assetId: String(id),
-                isMaxTransaction: assetTransactionSendDraft.isMaxTransaction
+                isMaxTransaction: assetTransactionSendDraft.isMaxTransaction,
+                amount: assetTransactionSendDraft.amount?.toFraction(of: assetTransactionSendDraft.assetDecimalFraction)
             ).logEvent()
         }
         

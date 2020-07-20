@@ -43,7 +43,8 @@ class SendAlgosTransactionViewController: SendTransactionViewController, TestNet
         TransactionEvent(
             accountType: algosTransactionSendDraft.from.type,
             assetId: nil,
-            isMaxTransaction: algosTransactionSendDraft.isMaxTransaction
+            isMaxTransaction: algosTransactionSendDraft.isMaxTransaction,
+            amount: algosTransactionSendDraft.amount?.toMicroAlgos
         ).logEvent()
     }
 }

@@ -16,11 +16,13 @@ struct TransactionEvent: TrackableEvent {
         return [
             "account_type": accountType.rawValue,
             "asset_id": assetId ?? algosEventId,
-            "is_max": isMaxTransaction
+            "is_max": isMaxTransaction,
+            "amount": amount ?? 0
         ]
     }
     
     let accountType: AccountType
     let assetId: String?
     let isMaxTransaction: Bool
+    let amount: Int64?
 }
