@@ -148,32 +148,42 @@ extension AssetDetailViewModel {
     
     func configure(_ view: TransactionHistoryContextView, with transaction: PendingTransaction, for contact: Contact? = nil) {
         if let assetDetail = assetDetail {
-            if transaction.receiver == account.address && transaction.amount == 0 && transaction.type == .assetTransfer {
+            if transaction.getReceiver() == account.address && transaction.getAmount() == 0 && transaction.type == .assetTransfer {
                 view.setContact("asset-creation-fee-title".localized)
                 view.subtitleLabel.isHidden = true
-                view.transactionAmountView.mode = .negative(amount: transaction.fee.toAlgos)
-            } else if transaction.receiver == account.address {
-                configure(view, with: contact, and: transaction.receiver)
+                if let fee = transaction.fee {
+                    view.transactionAmountView.mode = .negative(amount: fee.toAlgos)
+                }
+            } else if transaction.getReceiver() == account.address {
+                configure(view, with: contact, and: transaction.getReceiver())
                 view.transactionAmountView.algoIconImageView.removeFromSuperview()
-                view.transactionAmountView.mode = .positive(
-                    amount: transaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
-                    fraction: assetDetail.fractionDecimals
-                )
+                if let amount = transaction.getAmount() {
+                    view.transactionAmountView.mode = .positive(
+                        amount: amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
+                        fraction: assetDetail.fractionDecimals
+                    )
+                }
             } else {
-                configure(view, with: contact, and: transaction.receiver)
+                configure(view, with: contact, and: transaction.getReceiver())
                 view.transactionAmountView.algoIconImageView.removeFromSuperview()
-                view.transactionAmountView.mode = .negative(
-                    amount: transaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
-                    fraction: assetDetail.fractionDecimals
-                )
+                if let amount = transaction.getAmount() {
+                    view.transactionAmountView.mode = .negative(
+                        amount: amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
+                        fraction: assetDetail.fractionDecimals
+                    )
+                }
             }
         } else {
-            if transaction.receiver == account.address {
+            if transaction.getReceiver() == account.address {
                 configure(view, with: contact, and: transaction.sender)
-                view.transactionAmountView.mode = .positive(amount: transaction.amount.toAlgos)
+                if let amount = transaction.getAmount() {
+                    view.transactionAmountView.mode = .positive(amount: amount.toAlgos)
+                }
             } else {
-                configure(view, with: contact, and: transaction.receiver)
-                view.transactionAmountView.mode = .negative(amount: transaction.amount.toAlgos)
+                configure(view, with: contact, and: transaction.getReceiver())
+                if let amount = transaction.getAmount() {
+                    view.transactionAmountView.mode = .negative(amount: amount.toAlgos)
+                }
             }
         }
         

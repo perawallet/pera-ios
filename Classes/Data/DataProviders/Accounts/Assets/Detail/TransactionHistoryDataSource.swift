@@ -141,16 +141,16 @@ extension TransactionHistoryDataSource {
         }
         
         if transaction.type == .payment {
-            if transaction.receiver == viewModel.account.address {
+            if transaction.getReceiver() == viewModel.account.address {
                 configure(cell, with: transaction, for: transaction.sender)
             } else {
-                configure(cell, with: transaction, for: transaction.receiver)
+                configure(cell, with: transaction, for: transaction.getReceiver())
             }
         } else {
-            if transaction.receiver == viewModel.account.address {
+            if transaction.getReceiver() == viewModel.account.address {
                 configure(cell, with: transaction, for: transaction.sender)
             } else {
-                configure(cell, with: transaction, for: transaction.receiver)
+                configure(cell, with: transaction, for: transaction.getReceiver())
             }
         }
         
