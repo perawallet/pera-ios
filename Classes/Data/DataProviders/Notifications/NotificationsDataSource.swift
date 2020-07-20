@@ -35,14 +35,14 @@ extension NotificationsDataSource {
         lastRequest = api.getNotifications(for: deviceId) { response in
             switch response {
             case let .success(notifications):
-                self.notifications = notifications
+                self.notifications = notifications.results
                 
                 self.viewModels.removeAll()
-                notifications.forEach { notification in
+                notifications.results.forEach { notification in
                     self.viewModels.append(self.formViewModel(from: notification))
                 }
                 
-                self.delegate?.notificationsDataSource(self, didFetch: notifications)
+                self.delegate?.notificationsDataSource(self, didFetch: notifications.results)
             case let .failure(error):
                 self.delegate?.notificationsDataSource(self, didFailWith: error)
             }

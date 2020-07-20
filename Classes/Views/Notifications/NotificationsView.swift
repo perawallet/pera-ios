@@ -12,8 +12,6 @@ class NotificationsView: BaseView {
     
     weak var delegate: NotificationsViewDelegate?
     
-    private let layout = Layout<LayoutConstants>()
-    
     private lazy var notificationsHeaderView: MainHeaderView = {
         let view = MainHeaderView()
         view.setTitle("notifications-title".localized)
@@ -74,7 +72,7 @@ extension NotificationsView {
         
         notificationsCollectionView.snp.makeConstraints { make in
             make.leading.trailing.bottom.equalToSuperview()
-            make.top.equalTo(notificationsHeaderView.snp.bottom).offset(layout.current.listTopInset)
+            make.top.equalTo(notificationsHeaderView.snp.bottom)
         }
         
         notificationsCollectionView.backgroundView = contentStateView
@@ -124,12 +122,6 @@ extension NotificationsView {
         if !refreshControl.isRefreshing {
             notificationsCollectionView.contentState = .loading
         }
-    }
-}
-
-extension NotificationsView {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let listTopInset: CGFloat = 12.0
     }
 }
 

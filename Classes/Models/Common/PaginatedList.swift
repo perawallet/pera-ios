@@ -9,7 +9,7 @@
 import Magpie
 
 class PaginatedList<T: Model>: Model {
-    let count: Int
+    let count: Int?
     let next: String?
     let previous: String?
     let results: [T]
