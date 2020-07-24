@@ -125,15 +125,19 @@ extension NotificationsViewController: NotificationsDataSourceDelegate {
         notificationsView.reloadData()
     }
     
-    func notificationsDataSource(_ notificationsDataSource: NotificationsDataSource, didFailWith error: Error) {
+    func notificationsDataSourceDidFailFetching(_ notificationsDataSource: NotificationsDataSource) {
         notificationsView.endRefreshing()
-        notificationsView.setEmptyState()
+        notificationsView.setErrorState()
         notificationsView.reloadData()
     }
 }
 
 extension NotificationsViewController: NotificationsViewDelegate {
     func notificationsViewDidRefreshList(_ notificationsView: NotificationsView) {
+        getNotifications()
+    }
+    
+    func notificationsViewDidTryAgain(_ notificationsView: NotificationsView) {
         getNotifications()
     }
 }

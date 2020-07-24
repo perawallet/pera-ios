@@ -34,7 +34,8 @@ class NotificationsDataSource: NSObject {
 
 extension NotificationsDataSource {
     func loadData(withRefresh refresh: Bool = true, isPaginated: Bool = false) {
-        guard let deviceId = api.session.deviceId else {
+        guard let deviceId = api.session.authenticatedUser?.deviceId else {
+            delegate?.notificationsDataSourceDidFailFetching(self)
             return
         }
         
@@ -45,6 +46,7 @@ extension NotificationsDataSource {
                     self.clear()
                 }
                 
+                self.api.session.notificationLatestFetchTimestamp = Date().timeIntervalSince1970
                 self.getCursor(from: notifications.next)
                 
                 if isPaginated {
@@ -58,8 +60,8 @@ extension NotificationsDataSource {
                 }
                 
                 self.delegate?.notificationsDataSource(self, didFetch: self.notifications)
-            case let .failure(error):
-                self.delegate?.notificationsDataSource(self, didFailWith: error)
+            case .failure:
+                self.delegate?.notificationsDataSourceDidFailFetching(self)
             }
         }
     }
@@ -185,5 +187,5 @@ extension NotificationsDataSource {
 
 protocol NotificationsDataSourceDelegate: class {
     func notificationsDataSource(_ notificationsDataSource: NotificationsDataSource, didFetch notifications: [NotificationMessage])
-    func notificationsDataSource(_ notificationsDataSource: NotificationsDataSource, didFailWith error: Error)
+    func notificationsDataSourceDidFailFetching(_ notificationsDataSource: NotificationsDataSource)
 }
