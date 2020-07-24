@@ -11,6 +11,7 @@ import Magpie
 class User: Model {
     private(set) var accounts: [AccountInformation] = []
     private(set) var defaultNode: String?
+    private(set) var deviceId: String?
     
     init(accounts: [AccountInformation]) {
         self.accounts = accounts
@@ -94,6 +95,12 @@ extension User {
         } else {
             return nil
         }
+    }
+    
+    func setDeviceId(_ id: String?) {
+        deviceId = id
+        NotificationCenter.default.post(name: .DeviceIDSet, object: nil)
+        syncronize()
     }
     
     func account(address: String) -> AccountInformation? {

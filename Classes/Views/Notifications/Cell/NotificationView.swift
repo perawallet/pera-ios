@@ -118,8 +118,8 @@ extension NotificationView {
         notificationImageView.image = image
     }
     
-    func setTitle(_ title: String?) {
-        titleLabel.text = title
+    func setAttributedTitle(_ title: NSAttributedString?) {
+        titleLabel.attributedText = title
     }
     
     func setTime(_ time: String?) {
@@ -129,14 +129,14 @@ extension NotificationView {
     func reset() {
         setBadgeHidden(true)
         setNotificationImage(nil)
-        setTitle(nil)
+        setAttributedTitle(nil)
         setTime(nil)
     }
     
     static func calculatePreferredSize(_ viewModel: NotificationsViewModel, with layout: Layout<LayoutConstants>) -> CGSize {
         let width = UIScreen.main.bounds.width
         let constantHeight = layout.current.timeLabelTopInset + layout.current.timeLabelBottomInset + layout.current.titleLabelInset
-        let titleLabelHeight = viewModel.title?.height(
+        let titleLabelHeight = viewModel.title?.string.height(
             withConstrained: width - (
                 layout.current.badgeImageSize.width +
                     (layout.current.badgeImageHorizontalInset * 2) +

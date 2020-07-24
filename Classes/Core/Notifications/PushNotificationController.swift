@@ -58,7 +58,7 @@ extension PushNotificationController {
             api.registerDevice(with: draft) { response in
                 switch response {
                 case let .success(device):
-                    self.api.session.deviceId = device.id
+                    self.api.session.authenticatedUser?.setDeviceId(device.id)
                     handler?(true)
                 case .failure:
                     handler?(false)

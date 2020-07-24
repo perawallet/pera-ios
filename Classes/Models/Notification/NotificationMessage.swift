@@ -10,9 +10,10 @@ import Magpie
 
 class NotificationMessage: Model {
     let id: Int
-    let account: Int
-    let notificationType: NotificationType
-    let message: String
+    let account: Int?
+    let notificationType: NotificationType?
+    let date: Date
+    let message: String?
     let detail: NotificationDetail?
 }
 
@@ -21,6 +22,7 @@ extension NotificationMessage {
         case id = "id"
         case account = "account"
         case notificationType = "type"
+        case date = "creation_datetime"
         case message = "message"
         case detail = "metadata"
     }
