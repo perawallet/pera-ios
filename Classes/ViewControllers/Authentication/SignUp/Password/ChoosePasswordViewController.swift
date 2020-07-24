@@ -204,7 +204,7 @@ extension ChoosePasswordViewController {
     }
     
     private func displayPinLimitScreen() {
-        open(
+        let controller = open(
             .pinLimit,
             by: .customPresent(
                 presentationStyle: .fullScreen,
@@ -212,7 +212,8 @@ extension ChoosePasswordViewController {
                 transitioningDelegate: nil
             ),
             animated: false
-        )
+        ) as? PinLimitViewController
+        controller?.delegate = self
     }
     
     private func shouldDisplayPinLimitScreen(isFirstLaunch: Bool) -> Bool {
@@ -310,6 +311,15 @@ extension ChoosePasswordViewController {
                 delegate?.choosePasswordViewController(self, didConfirmPassword: false)
             }
         }
+    }
+}
+
+extension ChoosePasswordViewController: PinLimitViewControllerDelegate {
+    func pinLimitViewControllerDidResetAllData(_ pinLimitViewController: PinLimitViewController) {
+        session?.reset(isContactIncluded: true)
+        NotificationCenter.default.post(name: .ContactDeletion, object: self, userInfo: nil)
+        pushNotificationController.revokeDevice()
+        open(.introduction, by: .launch, animated: false)
     }
 }
 
