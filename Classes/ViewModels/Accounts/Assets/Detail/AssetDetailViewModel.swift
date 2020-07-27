@@ -148,25 +148,25 @@ extension AssetDetailViewModel {
     
     func configure(_ view: TransactionHistoryContextView, with transaction: PendingTransaction, for contact: Contact? = nil) {
         if let assetDetail = assetDetail {
-            if transaction.getReceiver() == account.address && transaction.getAmount() == 0 && transaction.type == .assetTransfer {
+            if transaction.receiver == account.address && transaction.amount == 0 && transaction.type == .assetTransfer {
                 view.setContact("asset-creation-fee-title".localized)
                 view.subtitleLabel.isHidden = true
                 if let fee = transaction.fee {
                     view.transactionAmountView.mode = .negative(amount: fee.toAlgos)
                 }
-            } else if transaction.getReceiver() == account.address {
-                configure(view, with: contact, and: transaction.getReceiver())
+            } else if transaction.receiver == account.address {
+                configure(view, with: contact, and: transaction.receiver)
                 view.transactionAmountView.algoIconImageView.removeFromSuperview()
-                if let amount = transaction.getAmount() {
+                if let amount = transaction.amount {
                     view.transactionAmountView.mode = .positive(
                         amount: amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
                         fraction: assetDetail.fractionDecimals
                     )
                 }
             } else {
-                configure(view, with: contact, and: transaction.getReceiver())
+                configure(view, with: contact, and: transaction.receiver)
                 view.transactionAmountView.algoIconImageView.removeFromSuperview()
-                if let amount = transaction.getAmount() {
+                if let amount = transaction.amount {
                     view.transactionAmountView.mode = .negative(
                         amount: amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
                         fraction: assetDetail.fractionDecimals
@@ -174,14 +174,14 @@ extension AssetDetailViewModel {
                 }
             }
         } else {
-            if transaction.getReceiver() == account.address {
+            if transaction.receiver == account.address {
                 configure(view, with: contact, and: transaction.sender)
-                if let amount = transaction.getAmount() {
+                if let amount = transaction.amount {
                     view.transactionAmountView.mode = .positive(amount: amount.toAlgos)
                 }
             } else {
-                configure(view, with: contact, and: transaction.getReceiver())
-                if let amount = transaction.getAmount() {
+                configure(view, with: contact, and: transaction.receiver)
+                if let amount = transaction.amount {
                     view.transactionAmountView.mode = .negative(amount: amount.toAlgos)
                 }
             }
