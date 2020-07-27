@@ -9,11 +9,11 @@
 import Foundation
 
 protocol CSVExportable {
-    func exportCSV(from data: [[String: AnyObject]], with config: CSVConfig) -> URL?
+    func exportCSV(from data: [[String: Any]], with config: CSVConfig) -> URL?
 }
 
 extension CSVExportable {
-    func exportCSV(from data: [[String: AnyObject]], with config: CSVConfig) -> URL? {
+    func exportCSV(from data: [[String: Any]], with config: CSVConfig) -> URL? {
         if let csvString = combineCSVString(from: data, with: config),
             let fileURL = createFileURL(from: config) {
             return createFile(from: csvString, to: fileURL)
@@ -21,7 +21,7 @@ extension CSVExportable {
         return nil
     }
     
-    private func combineCSVString(from data: [[String: AnyObject]], with config: CSVConfig) -> String? {
+    private func combineCSVString(from data: [[String: Any]], with config: CSVConfig) -> String? {
         guard let keyValues = config.keys.array as? [String] else {
             return nil
         }
@@ -29,25 +29,17 @@ extension CSVExportable {
         var csvString = ""
         csvString += keyValues.joined(separator: ",")
         csvString += "\n"
-        csvString += data.reduce("") { result, dictionary -> String in
-            var values = result
+        
+        csvString += data.reduce(into: "") { result, dictionary in
             for key in keyValues {
-                if key == keyValues.last {
-                    if let value = dictionary[key] {
-                        values += "\(value)"
-                    } else {
-                        values += "-"
-                    }
-                } else {
-                    if let value = dictionary[key] {
-                        values += "\(value),"
-                    } else {
-                        values += "-,"
-                    }
+                if let values = dictionary[key].map({ value -> String in
+                    "\(value),"
+                }) {
+                    result += values
                 }
             }
-            values.append("\n")
-            return values
+            result.removeLast()
+            result.append("\n")
         }
         return csvString
     }
