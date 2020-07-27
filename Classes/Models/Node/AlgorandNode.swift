@@ -13,7 +13,6 @@ struct AlgorandNode {
     let indexerAddress: String
     let algodToken: String
     let indexerToken: String
-    let port: String
     let name: String
     let network: API.BaseNetwork
 }
