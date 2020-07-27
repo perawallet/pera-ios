@@ -11,33 +11,26 @@ import SwiftDate
 
 class NotificationsViewModel {
     
-    private let notification: NotificationMessage
-    private let contact: Contact?
-    private let account: Account?
-    
     private var notificationImage: UIImage?
     private(set) var title: NSAttributedString?
     private var time: String?
     private var isRead: Bool = true
     
     init(notification: NotificationMessage, account: Account? = nil, contact: Contact? = nil) {
-        self.notification = notification
-        self.account = account
-        self.contact = contact
-        setImage()
-        setTitle()
-        setTime()
-        setIsRead()
+        setImage(notification: notification, contact: contact)
+        setTitle(notification: notification, account: account, contact: contact)
+        setTime(notification: notification)
+        setIsRead(notification: notification)
     }
     
-    private func setImage() {
+    private func setImage(notification: NotificationMessage, contact: Contact?) {
         if let contact = contact {
             if let imageData = contact.image,
                 let image = UIImage(data: imageData) {
                 let resizedImage = image.convert(to: CGSize(width: 36.0, height: 36.0))
                 notificationImage = resizedImage
             } else {
-                notificationImage = img("icon-user-placeholder")
+                notificationImage = img("icon-user-placeholder-gray")
             }
             return
         }
@@ -49,15 +42,15 @@ class NotificationsViewModel {
         }
     }
     
-    private func setTitle() {
+    private func setTitle(notification: NotificationMessage, account: Account?, contact: Contact?) {
         guard let notificationDetail = notification.detail,
             let notificationType = notification.notificationType else {
             title = NSAttributedString(string: notification.message ?? "")
             return
         }
         
-        let sender = getSenderInformationFromLocalValues(in: notificationDetail) ?? ""
-        let receiver = getReceiverInformationFromLocalValues(in: notificationDetail) ?? ""
+        let sender = getSenderInformationFromLocalValues(in: notificationDetail, account: account, contact: contact) ?? ""
+        let receiver = getReceiverInformationFromLocalValues(in: notificationDetail, account: account, contact: contact) ?? ""
         let assetDisplayName = getAssetDisplayName(from: notificationDetail) ?? ""
         let amount = getAmount(from: notificationDetail) ?? ""
         let assetWithAmount = "\(amount) \(assetDisplayName)"
@@ -84,22 +77,29 @@ class NotificationsViewModel {
         }
     }
     
-    private func setTime() {
-        time = (Date() - notification.date).ago.toRelative(style: RelativeFormatter.defaultStyle(), locale: Locales.english)
+    private func setTime(notification: NotificationMessage) {
+        if let notificationDate = notification.date {
+            time = (Date() - notificationDate).ago.toRelative(style: RelativeFormatter.defaultStyle(), locale: Locales.english)
+        }
     }
     
-    private func setIsRead() {
-        guard let notificationLatestFetchTimestamp = UIApplication.shared.appConfiguration?.session.notificationLatestFetchTimestamp else {
+    private func setIsRead(notification: NotificationMessage) {
+        guard let notificationLatestFetchTimestamp = UIApplication.shared.appConfiguration?.session.notificationLatestFetchTimestamp,
+            let notificationDate = notification.date else {
             isRead = false
             return
         }
         
-        isRead = notification.date.timeIntervalSince1970 < notificationLatestFetchTimestamp
+        isRead = notificationDate.timeIntervalSince1970 < notificationLatestFetchTimestamp
     }
 }
 
 extension NotificationsViewModel {
-    private func getSenderInformationFromLocalValues(in notificationDetail: NotificationDetail) -> String? {
+    private func getSenderInformationFromLocalValues(
+        in notificationDetail: NotificationDetail,
+        account: Account?,
+        contact: Contact?
+    ) -> String? {
         if let account = account,
             let accountName = account.name,
             let senderAddress = notificationDetail.senderAddress,
@@ -116,7 +116,11 @@ extension NotificationsViewModel {
         }
     }
     
-    private func getReceiverInformationFromLocalValues(in notificationDetail: NotificationDetail) -> String? {
+    private func getReceiverInformationFromLocalValues(
+        in notificationDetail: NotificationDetail,
+        account: Account?,
+        contact: Contact?
+    ) -> String? {
         if let account = account,
             let accountName = account.name,
             let receiverAddress = notificationDetail.receiverAddress,

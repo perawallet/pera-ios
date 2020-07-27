@@ -105,7 +105,7 @@ extension NotificationsView {
         notificationsCollectionView.reloadData()
     }
     
-    func setDelegate(_ delegate: UICollectionViewDelegate?) {
+    func setListDelegate(_ delegate: UICollectionViewDelegate?) {
         notificationsCollectionView.delegate = delegate
     }
     

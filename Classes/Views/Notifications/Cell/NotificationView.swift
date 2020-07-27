@@ -133,7 +133,11 @@ extension NotificationView {
         setTime(nil)
     }
     
-    static func calculatePreferredSize(_ viewModel: NotificationsViewModel, with layout: Layout<LayoutConstants>) -> CGSize {
+    static func calculatePreferredSize(_ viewModel: NotificationsViewModel?, with layout: Layout<LayoutConstants>) -> CGSize {
+        guard let viewModel = viewModel else {
+            return .zero
+        }
+        
         let width = UIScreen.main.bounds.width
         let constantHeight = layout.current.timeLabelTopInset + layout.current.timeLabelBottomInset + layout.current.titleLabelInset
         let titleLabelHeight = viewModel.title?.string.height(

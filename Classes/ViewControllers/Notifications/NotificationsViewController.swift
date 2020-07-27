@@ -30,14 +30,13 @@ class NotificationsViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        getContacts()
         getNotifications()
     }
     
     override func linkInteractors() {
         notificationsView.delegate = self
         notificationsView.setDataSource(dataSource)
-        notificationsView.setDelegate(self)
+        notificationsView.setListDelegate(self)
         dataSource.delegate = self
     }
     
@@ -63,6 +62,7 @@ extension NotificationsViewController {
     }
     
     private func getNotifications() {
+        getContacts()
         notificationsView.setLoadingState()
         dataSource.loadData()
     }
@@ -89,34 +89,22 @@ extension NotificationsViewController: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        guard let viewModel = dataSource.viewModel(at: indexPath.item) else {
-            return .zero
-        }
-        return NotificationCell.calculatePreferredSize(viewModel)
+        return NotificationCell.calculatePreferredSize(dataSource.viewModel(at: indexPath.item))
     }
     
     private func openAssetDetail(from notificationDetail: NotificationDetail) {
-        guard let userAccounts = session?.accounts,
-            let account = userAccounts.first(where: { account -> Bool in
-                account.address == notificationDetail.senderAddress || account.address == notificationDetail.receiverAddress
-            })  else {
-            return
+        let accountDetails = dataSource.getUserAccount(from: notificationDetail)
+        if let account = accountDetails.account {
+            open(.assetDetail(account: account, assetDetail: accountDetails.assetDetail), by: .push)
         }
-        
-        var assetDetail: AssetDetail?
-        if let assetId = notificationDetail.asset?.id {
-            assetDetail = account.assetDetails.first { $0.id == assetId }
-        }
-        
-        open(.assetDetail(account: account, assetDetail: assetDetail), by: .push)
     }
 }
 
 extension NotificationsViewController: NotificationsDataSourceDelegate {
-    func notificationsDataSource(_ notificationsDataSource: NotificationsDataSource, didFetch notifications: [NotificationMessage]) {
+    func notificationsDataSourceDidFetchNotifications(_ notificationsDataSource: NotificationsDataSource) {
         notificationsView.endRefreshing()
         
-        if notifications.isEmpty {
+        if notificationsDataSource.isEmpty {
             notificationsView.setEmptyState()
         } else {
             notificationsView.setNormalState()
@@ -125,7 +113,7 @@ extension NotificationsViewController: NotificationsDataSourceDelegate {
         notificationsView.reloadData()
     }
     
-    func notificationsDataSourceDidFailFetching(_ notificationsDataSource: NotificationsDataSource) {
+    func notificationsDataSourceDidFailToFetch(_ notificationsDataSource: NotificationsDataSource) {
         notificationsView.endRefreshing()
         notificationsView.setErrorState()
         notificationsView.reloadData()

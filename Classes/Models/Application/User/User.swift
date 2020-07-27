@@ -99,7 +99,7 @@ extension User {
     
     func setDeviceId(_ id: String?) {
         deviceId = id
-        NotificationCenter.default.post(name: .DeviceIDSet, object: nil)
+        NotificationCenter.default.post(name: .DeviceIDDidSet, object: nil)
         syncronize()
     }
     

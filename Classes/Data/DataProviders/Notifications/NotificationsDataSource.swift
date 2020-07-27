@@ -35,11 +35,11 @@ class NotificationsDataSource: NSObject {
 extension NotificationsDataSource {
     func loadData(withRefresh refresh: Bool = true, isPaginated: Bool = false) {
         guard let deviceId = api.session.authenticatedUser?.deviceId else {
-            delegate?.notificationsDataSourceDidFailFetching(self)
+            delegate?.notificationsDataSourceDidFailToFetch(self)
             return
         }
         
-        lastRequest = api.getNotifications(for: deviceId, with: paginationCursor) { response in
+        lastRequest = api.getNotifications(for: deviceId, with: CursorQuery(cursor: paginationCursor)) { response in
             switch response {
             case let .success(notifications):
                 if refresh {
@@ -47,7 +47,7 @@ extension NotificationsDataSource {
                 }
                 
                 self.api.session.notificationLatestFetchTimestamp = Date().timeIntervalSince1970
-                self.getCursor(from: notifications.next)
+                self.setCursor(from: notifications)
                 
                 if isPaginated {
                     self.notifications.append(contentsOf: notifications.results)
@@ -59,17 +59,16 @@ extension NotificationsDataSource {
                     self.viewModels.append(self.formViewModel(from: notification))
                 }
                 
-                self.delegate?.notificationsDataSource(self, didFetch: self.notifications)
-            case .failure:
-                self.delegate?.notificationsDataSourceDidFailFetching(self)
+                self.delegate?.notificationsDataSourceDidFetchNotifications(self)
+            case let .failure(error):
+                self.delegate?.notificationsDataSourceDidFailToFetch(self)
             }
         }
     }
     
-    private func getCursor(from next: String?) {
-        if let next = next,
-            let nextUrl = URL(string: next),
-            let cursor = nextUrl.queryParameters?[RequestParameter.cursor.rawValue] {
+    private func setCursor(from notifications: PaginatedList<NotificationMessage>) {
+        if let next = notifications.next,
+            let cursor = next.queryParameters?[RequestParameter.cursor.rawValue] {
             paginationCursor = cursor
         } else {
             paginationCursor = nil
@@ -86,7 +85,7 @@ extension NotificationsDataSource {
                     return
                 }
                 
-                self.contacts.append(contentsOf: results)
+                self.contacts = results
             default:
                 break
             }
@@ -99,7 +98,7 @@ extension NotificationsDataSource {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(didDeviceIDSet(notification:)),
-            name: .DeviceIDSet,
+            name: .DeviceIDDidSet,
             object: nil
         )
     }
@@ -123,7 +122,7 @@ extension NotificationsDataSource: UICollectionViewDataSource {
                 withReuseIdentifier: NotificationCell.reusableIdentifier,
                 for: indexPath
             ) as? NotificationCell,
-                let viewModel = viewModels[safe: indexPath.item] {
+                let viewModel = viewModel(at: indexPath.item) {
                 viewModel.configure(cell)
                 return cell
             }
@@ -179,13 +178,29 @@ extension NotificationsDataSource {
     }
     
     func clear() {
+        lastRequest?.cancel()
+        lastRequest = nil
         viewModels.removeAll()
         notifications.removeAll()
         paginationCursor = nil
     }
+    
+    func getUserAccount(from notificationDetail: NotificationDetail) -> (account: Account?, assetDetail: AssetDetail?) {
+        guard let account = api.session.accounts.first(where: { account -> Bool in
+            account.address == notificationDetail.senderAddress || account.address == notificationDetail.receiverAddress
+        }) else {
+            return (account: nil, assetDetail: nil)
+        }
+        
+        var assetDetail: AssetDetail?
+        if let assetId = notificationDetail.asset?.id {
+            assetDetail = account.assetDetails.first { $0.id == assetId }
+        }
+        return (account: account, assetDetail: assetDetail)
+    }
 }
 
 protocol NotificationsDataSourceDelegate: class {
-    func notificationsDataSource(_ notificationsDataSource: NotificationsDataSource, didFetch notifications: [NotificationMessage])
-    func notificationsDataSourceDidFailFetching(_ notificationsDataSource: NotificationsDataSource)
+    func notificationsDataSourceDidFetchNotifications(_ notificationsDataSource: NotificationsDataSource)
+    func notificationsDataSourceDidFailToFetch(_ notificationsDataSource: NotificationsDataSource)
 }
