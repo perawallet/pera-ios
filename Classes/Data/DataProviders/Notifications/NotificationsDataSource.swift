@@ -13,7 +13,17 @@ class NotificationsDataSource: NSObject {
     
     private let api: API
     private var notifications = [NotificationMessage]()
+    private var viewModels = [NotificationsViewModel]()
+    private var contacts = [Contact]()
     private var lastRequest: EndpointOperatable?
+    
+    private let paginationRequestThreshold = 3
+    private var paginationCursor: String?
+    var hasNext: Bool {
+        return paginationCursor != nil
+    }
+    
+    weak var delegate: NotificationsDataSourceDelegate?
 
     init(api: API) {
         self.api = api
@@ -23,16 +33,62 @@ class NotificationsDataSource: NSObject {
 }
 
 extension NotificationsDataSource {
-    func loadData() {
-        guard let deviceId = api.session.deviceId else {
+    func loadData(withRefresh refresh: Bool = true, isPaginated: Bool = false) {
+        guard let deviceId = api.session.authenticatedUser?.deviceId else {
+            delegate?.notificationsDataSourceDidFailToFetch(self)
             return
         }
         
-        lastRequest = api.getNotifications(for: deviceId) { response in
+        lastRequest = api.getNotifications(for: deviceId, with: CursorQuery(cursor: paginationCursor)) { response in
             switch response {
             case let .success(notifications):
-                self.notifications = notifications
+                if refresh {
+                    self.viewModels.removeAll()
+                    self.notifications.removeAll()
+                    self.paginationCursor = nil
+                }
+                
+                self.api.session.notificationLatestFetchTimestamp = Date().timeIntervalSince1970
+                self.setCursor(from: notifications)
+                
+                if isPaginated {
+                    self.notifications.append(contentsOf: notifications.results)
+                } else {
+                    self.notifications = notifications.results
+                }
+                
+                notifications.results.forEach { notification in
+                    self.viewModels.append(self.formViewModel(from: notification))
+                }
+                
+                self.delegate?.notificationsDataSourceDidFetchNotifications(self)
             case .failure:
+                self.delegate?.notificationsDataSourceDidFailToFetch(self)
+            }
+        }
+    }
+    
+    private func setCursor(from notifications: PaginatedList<NotificationMessage>) {
+        if let next = notifications.next,
+            let cursor = next.queryParameters?[RequestParameter.cursor.rawValue] {
+            paginationCursor = cursor
+        } else {
+            paginationCursor = nil
+        }
+    }
+}
+
+extension NotificationsDataSource {
+    func fetchContacts() {
+        Contact.fetchAll(entity: Contact.entityName) { response in
+            switch response {
+            case let .results(objects: objects):
+                guard let results = objects as? [Contact] else {
+                    return
+                }
+                
+                self.contacts = results
+            default:
                 break
             }
         }
@@ -44,7 +100,7 @@ extension NotificationsDataSource {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(didDeviceIDSet(notification:)),
-            name: .DeviceIDSet,
+            name: .DeviceIDDidSet,
             object: nil
         )
     }
@@ -68,13 +124,41 @@ extension NotificationsDataSource: UICollectionViewDataSource {
                 withReuseIdentifier: NotificationCell.reusableIdentifier,
                 for: indexPath
             ) as? NotificationCell,
-                let notification = notifications[safe: indexPath.item] {
-                let viewModel = NotificationsViewModel(notification: notification)
+                let viewModel = viewModel(at: indexPath.item) {
                 viewModel.configure(cell)
                 return cell
             }
         }
         fatalError("Index path is out of bounds")
+    }
+    
+    private func formViewModel(from notification: NotificationMessage) -> NotificationsViewModel {
+        return NotificationsViewModel(
+            notification: notification,
+            account: getAccountIfExists(for: notification),
+            contact: getContactIfExists(for: notification)
+        )
+    }
+    
+    private func getAccountIfExists(for notification: NotificationMessage) -> Account? {
+        guard let details = notification.detail else {
+            return nil
+        }
+        
+        return api.session.accounts.first { $0.address == details.senderAddress || $0.address == details.receiverAddress }
+    }
+    
+    private func getContactIfExists(for notification: NotificationMessage) -> Contact? {
+        guard let details = notification.detail else {
+            return nil
+        }
+        
+        return contacts.first { contact -> Bool in
+            if let contactAddress = contact.address {
+                return contactAddress == details.senderAddress || contactAddress == details.receiverAddress
+            }
+            return false
+        }
     }
 }
 
@@ -86,4 +170,39 @@ extension NotificationsDataSource {
     func notification(at index: Int) -> NotificationMessage? {
         return notifications[safe: index]
     }
+    
+    func viewModel(at index: Int) -> NotificationsViewModel? {
+        return viewModels[safe: index]
+    }
+    
+    func shouldSendPaginatedRequest(at index: Int) -> Bool {
+        return index == notifications.count - paginationRequestThreshold && hasNext
+    }
+    
+    func clear() {
+        lastRequest?.cancel()
+        lastRequest = nil
+        viewModels.removeAll()
+        notifications.removeAll()
+        paginationCursor = nil
+    }
+    
+    func getUserAccount(from notificationDetail: NotificationDetail) -> (account: Account?, assetDetail: AssetDetail?) {
+        guard let account = api.session.accounts.first(where: { account -> Bool in
+            account.address == notificationDetail.senderAddress || account.address == notificationDetail.receiverAddress
+        }) else {
+            return (account: nil, assetDetail: nil)
+        }
+        
+        var assetDetail: AssetDetail?
+        if let assetId = notificationDetail.asset?.id {
+            assetDetail = account.assetDetails.first { $0.id == assetId }
+        }
+        return (account: account, assetDetail: assetDetail)
+    }
+}
+
+protocol NotificationsDataSourceDelegate: class {
+    func notificationsDataSourceDidFetchNotifications(_ notificationsDataSource: NotificationsDataSource)
+    func notificationsDataSourceDidFailToFetch(_ notificationsDataSource: NotificationsDataSource)
 }

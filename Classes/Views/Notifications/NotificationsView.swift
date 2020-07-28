@@ -12,8 +12,6 @@ class NotificationsView: BaseView {
     
     weak var delegate: NotificationsViewDelegate?
     
-    private let layout = Layout<LayoutConstants>()
-    
     private lazy var notificationsHeaderView: MainHeaderView = {
         let view = MainHeaderView()
         view.setTitle("notifications-title".localized)
@@ -35,6 +33,8 @@ class NotificationsView: BaseView {
         subtitle: "notifications-empty-subtitle".localized
     )
     
+    private lazy var errorView = ListErrorView()
+    
     private lazy var notificationsCollectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .vertical
@@ -45,12 +45,24 @@ class NotificationsView: BaseView {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = .clear
+        collectionView.contentInset = UIEdgeInsets(top: 8.0, left: 0.0, bottom: 0.0, right: 0.0)
+        collectionView.backgroundColor = SharedColors.secondaryBackground
         collectionView.register(NotificationCell.self, forCellWithReuseIdentifier: NotificationCell.reusableIdentifier)
         return collectionView
     }()
     
     private lazy var contentStateView = ContentStateView()
+    
+    override func configureAppearance() {
+        super.configureAppearance()
+        errorView.setImage(img("icon-warning-error"))
+        errorView.setTitle("transaction-filter-error-title".localized)
+        errorView.setSubtitle("transaction-filter-error-subtitle".localized)
+    }
+    
+    override func linkInteractors() {
+        errorView.delegate = self
+    }
     
     override func prepareLayout() {
         setupNotificationsHeaderViewLayout()
@@ -73,8 +85,11 @@ extension NotificationsView {
         
         notificationsCollectionView.snp.makeConstraints { make in
             make.leading.trailing.bottom.equalToSuperview()
-            make.top.equalTo(notificationsHeaderView.snp.bottom).offset(layout.current.listTopInset)
+            make.top.equalTo(notificationsHeaderView.snp.bottom)
         }
+        
+        notificationsCollectionView.backgroundView = contentStateView
+        notificationsCollectionView.refreshControl = refreshControl
     }
 }
 
@@ -90,7 +105,7 @@ extension NotificationsView {
         notificationsCollectionView.reloadData()
     }
     
-    func setDelegate(_ delegate: UICollectionViewDelegate?) {
+    func setListDelegate(_ delegate: UICollectionViewDelegate?) {
         notificationsCollectionView.delegate = delegate
     }
     
@@ -112,6 +127,10 @@ extension NotificationsView {
         notificationsCollectionView.contentState = .empty(emptyStateView)
     }
     
+    func setErrorState() {
+        notificationsCollectionView.contentState = .error(errorView)
+    }
+    
     func setNormalState() {
         notificationsCollectionView.contentState = .none
     }
@@ -123,12 +142,13 @@ extension NotificationsView {
     }
 }
 
-extension NotificationsView {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let listTopInset: CGFloat = 12.0
+extension NotificationsView: ListErrorViewDelegate {
+    func listErrorViewDidTryAgain(_ listErrorView: ListErrorView) {
+        delegate?.notificationsViewDidTryAgain(self)
     }
 }
 
 protocol NotificationsViewDelegate: class {
     func notificationsViewDidRefreshList(_ notificationsView: NotificationsView)
+    func notificationsViewDidTryAgain(_ notificationsView: NotificationsView)
 }

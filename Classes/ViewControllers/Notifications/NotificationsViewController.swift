@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Magpie
 
 class NotificationsViewController: BaseViewController {
     
@@ -27,10 +28,16 @@ class NotificationsViewController: BaseViewController {
         isTabBarHidden = false
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        getNotifications()
+    }
+    
     override func linkInteractors() {
         notificationsView.delegate = self
         notificationsView.setDataSource(dataSource)
-        notificationsView.setDelegate(self)
+        notificationsView.setListDelegate(self)
+        dataSource.delegate = self
     }
     
     override func prepareLayout() {
@@ -49,9 +56,32 @@ extension NotificationsViewController {
     }
 }
 
+extension NotificationsViewController {
+    private func getContacts() {
+        dataSource.fetchContacts()
+    }
+    
+    private func getNotifications() {
+        getContacts()
+        notificationsView.setLoadingState()
+        dataSource.loadData()
+    }
+}
+
 extension NotificationsViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let notification = dataSource.notification(at: indexPath.item),
+            let notificationDetail = notification.detail else {
+            return
+        }
         
+        openAssetDetail(from: notificationDetail)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if dataSource.shouldSendPaginatedRequest(at: indexPath.item) {
+            dataSource.loadData(withRefresh: false, isPaginated: true)
+        }
     }
     
     func collectionView(
@@ -59,15 +89,47 @@ extension NotificationsViewController: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        guard let notification = dataSource.notification(at: indexPath.item) else {
-            return .zero
+        return NotificationCell.calculatePreferredSize(dataSource.viewModel(at: indexPath.item))
+    }
+    
+    private func openAssetDetail(from notificationDetail: NotificationDetail) {
+        let accountDetails = dataSource.getUserAccount(from: notificationDetail)
+        if let account = accountDetails.account {
+            open(.assetDetail(account: account, assetDetail: accountDetails.assetDetail), by: .push)
         }
-        return NotificationCell.calculatePreferredSize(NotificationsViewModel(notification: notification))
+    }
+}
+
+extension NotificationsViewController: NotificationsDataSourceDelegate {
+    func notificationsDataSourceDidFetchNotifications(_ notificationsDataSource: NotificationsDataSource) {
+        notificationsView.endRefreshing()
+        
+        if notificationsDataSource.isEmpty {
+            notificationsView.setEmptyState()
+        } else {
+            notificationsView.setNormalState()
+        }
+        
+        notificationsView.reloadData()
+    }
+    
+    func notificationsDataSourceDidFailToFetch(_ notificationsDataSource: NotificationsDataSource) {
+        notificationsView.endRefreshing()
+        notificationsView.setErrorState()
+        notificationsView.reloadData()
     }
 }
 
 extension NotificationsViewController: NotificationsViewDelegate {
     func notificationsViewDidRefreshList(_ notificationsView: NotificationsView) {
-        
+        dataSource.clear()
+        notificationsView.reloadData()
+        getNotifications()
+    }
+    
+    func notificationsViewDidTryAgain(_ notificationsView: NotificationsView) {
+        dataSource.clear()
+        notificationsView.reloadData()
+        getNotifications()
     }
 }

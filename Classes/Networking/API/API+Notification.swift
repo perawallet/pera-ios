@@ -36,11 +36,13 @@ extension API {
     @discardableResult
     func getNotifications(
         for id: String,
-        then handler: @escaping Endpoint.DefaultResultHandler<[NotificationMessage]>
+        with cursorQuery: CursorQuery,
+        then handler: @escaping Endpoint.DefaultResultHandler<PaginatedList<NotificationMessage>>
     ) -> EndpointOperatable {
         return Endpoint(path: Path("/api/devices/\(id)/notifications/"))
             .base(mobileApiBase)
             .httpHeaders(mobileApiHeaders())
+            .query(cursorQuery)
             .resultHandler(handler)
             .buildAndSend(self)
     }

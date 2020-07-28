@@ -23,19 +23,18 @@ class Environment {
     lazy var isTestNet = target == .staging
     
     lazy var schema = "https"
-    lazy var port = "443"
     lazy var algodToken = "0dw4Qu6ckPJTQY540Z0sEokH910KUWKjsf312fxNtTcVjw5UUhhlK4s4odcXIoEz"
     lazy var indexerToken = "KegWFLYQnBNVeP4oHCX64dObBk8VemzYdNqsnAOIxYQ8aqJLQTYeVDQyZNnx1PZA"
     
     lazy var testNetAlgodHost = "node-testnet.aws.algodev.network"
     lazy var testNetIndexerHost = "indexer-testnet.aws.algodev.network"
-    lazy var testNetAlgodApi = "\(schema)://\(testNetAlgodHost):\(port)"
-    lazy var testNetIndexerApi = "\(schema)://\(testNetIndexerHost):\(port)"
+    lazy var testNetAlgodApi = "\(schema)://\(testNetAlgodHost)"
+    lazy var testNetIndexerApi = "\(schema)://\(testNetIndexerHost)"
     
     lazy var mainNetAlgodHost = "node-mainnet.aws.algodev.network"
     lazy var mainNetIndexerHost = "indexer-mainnet.aws.algodev.network"
-    lazy var mainNetAlgodApi = "\(schema)://\(mainNetAlgodHost):\(port)"
-    lazy var mainNetIndexerApi = "\(schema)://\(mainNetIndexerHost):\(port)"
+    lazy var mainNetAlgodApi = "\(schema)://\(mainNetAlgodHost)"
+    lazy var mainNetIndexerApi = "\(schema)://\(mainNetIndexerHost)"
     
     lazy var serverHost: String = {
         switch target {
