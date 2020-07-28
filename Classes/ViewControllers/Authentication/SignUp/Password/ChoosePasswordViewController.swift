@@ -23,12 +23,6 @@ class ChoosePasswordViewController: BaseViewController {
     private var route: Screen?
     
     private let localAuthenticator = LocalAuthenticator()
-    private lazy var pushNotificationController: PushNotificationController = {
-        guard let api = api else {
-            fatalError("Api must be set before accessing this view controller.")
-        }
-        return PushNotificationController(api: api)
-    }()
     
     private var pinLimitStore = PinLimitStore()
     
@@ -204,7 +198,7 @@ extension ChoosePasswordViewController {
     }
     
     private func displayPinLimitScreen() {
-        open(
+        let controller = open(
             .pinLimit,
             by: .customPresent(
                 presentationStyle: .fullScreen,
@@ -212,7 +206,8 @@ extension ChoosePasswordViewController {
                 transitioningDelegate: nil
             ),
             animated: false
-        )
+        ) as? PinLimitViewController
+        controller?.delegate = self
     }
     
     private func shouldDisplayPinLimitScreen(isFirstLaunch: Bool) -> Bool {
@@ -310,6 +305,13 @@ extension ChoosePasswordViewController {
                 delegate?.choosePasswordViewController(self, didConfirmPassword: false)
             }
         }
+    }
+}
+
+extension ChoosePasswordViewController: PinLimitViewControllerDelegate {
+    func pinLimitViewControllerDidResetAllData(_ pinLimitViewController: PinLimitViewController) {
+        UIApplication.shared.rootViewController()?.deleteAllData()
+        open(.introduction, by: .launch, animated: false)
     }
 }
 

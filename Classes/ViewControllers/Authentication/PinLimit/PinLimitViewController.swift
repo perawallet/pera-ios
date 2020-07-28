@@ -18,6 +18,16 @@ class PinLimitViewController: BaseViewController {
     private var timer: PollingOperation?
     private var remainingTime = 0
     
+    weak var delegate: PinLimitViewControllerDelegate?
+    
+    private lazy var bottomModalPresenter = CardModalPresenter(
+        config: ModalConfiguration(
+            animationMode: .normal(duration: 0.25),
+            dismissMode: .scroll
+        ),
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: 402.0))
+    )
+    
     private lazy var pinLimitView = PinLimitView()
     
     override func viewDidLoad() {
@@ -49,6 +59,10 @@ class PinLimitViewController: BaseViewController {
             name: UIApplication.willResignActiveNotification,
             object: nil
         )
+    }
+    
+    override func linkInteractors() {
+        pinLimitView.delegate = self
     }
     
     override func prepareLayout() {
@@ -114,4 +128,36 @@ extension PinLimitViewController {
         pinLimitStore.setRemainingTime(remainingTime)
         timer?.invalidate()
     }
+}
+
+extension PinLimitViewController: PinLimitViewDelegate {
+    func pinLimitViewDidResetAllData(_ pinLimitView: PinLimitView) {
+        presentLogoutAlert()
+    }
+    
+    private func presentLogoutAlert() {
+        let configurator = BottomInformationBundle(
+            title: "settings-logout-title".localized,
+            image: img("icon-settings-logout"),
+            explanation: "settings-logout-detail".localized,
+            actionTitle: "node-settings-action-delete-title".localized,
+            actionImage: img("bg-button-red")
+        ) {
+            self.delegate?.pinLimitViewControllerDidResetAllData(self)
+            self.dismissScreen()
+        }
+        
+        open(
+            .bottomInformation(mode: .action, configurator: configurator),
+            by: .customPresentWithoutNavigationController(
+                presentationStyle: .custom,
+                transitionStyle: nil,
+                transitioningDelegate: bottomModalPresenter
+            )
+        )
+    }
+}
+
+protocol PinLimitViewControllerDelegate: class {
+    func pinLimitViewControllerDidResetAllData(_ pinLimitViewController: PinLimitViewController)
 }
