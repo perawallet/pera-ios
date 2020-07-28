@@ -43,7 +43,9 @@ extension NotificationsDataSource {
             switch response {
             case let .success(notifications):
                 if refresh {
-                    self.clear()
+                    self.viewModels.removeAll()
+                    self.notifications.removeAll()
+                    self.paginationCursor = nil
                 }
                 
                 self.api.session.notificationLatestFetchTimestamp = Date().timeIntervalSince1970
@@ -60,7 +62,7 @@ extension NotificationsDataSource {
                 }
                 
                 self.delegate?.notificationsDataSourceDidFetchNotifications(self)
-            case let .failure(error):
+            case .failure:
                 self.delegate?.notificationsDataSourceDidFailToFetch(self)
             }
         }

@@ -53,8 +53,8 @@ extension PushNotificationController {
     }
     
     func registerDevice(_ handler: BoolHandler? = nil) {
-        if let accounts = api.session.applicationConfiguration?.authenticatedUser()?.accounts {
-            let draft = DeviceRegistrationDraft(pushToken: token, accounts: accounts.map(\.address))
+        if let user = api.session.applicationConfiguration?.authenticatedUser() {
+            let draft = DeviceRegistrationDraft(id: user.deviceId, pushToken: token, accounts: user.accounts.map(\.address))
             api.registerDevice(with: draft) { response in
                 switch response {
                 case let .success(device):

@@ -122,10 +122,14 @@ extension NotificationsViewController: NotificationsDataSourceDelegate {
 
 extension NotificationsViewController: NotificationsViewDelegate {
     func notificationsViewDidRefreshList(_ notificationsView: NotificationsView) {
+        dataSource.clear()
+        notificationsView.reloadData()
         getNotifications()
     }
     
     func notificationsViewDidTryAgain(_ notificationsView: NotificationsView) {
+        dataSource.clear()
+        notificationsView.reloadData()
         getNotifications()
     }
 }
