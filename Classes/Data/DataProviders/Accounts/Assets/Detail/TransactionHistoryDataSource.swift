@@ -140,20 +140,8 @@ extension TransactionHistoryDataSource {
                 fatalError("Index path is out of bounds")
         }
         
-        if transaction.type == .payment {
-            if transaction.receiver == viewModel.account.address {
-                configure(cell, with: transaction, for: transaction.sender)
-            } else {
-                configure(cell, with: transaction, for: transaction.receiver)
-            }
-        } else {
-            if transaction.receiver == viewModel.account.address {
-                configure(cell, with: transaction, for: transaction.sender)
-            } else {
-                configure(cell, with: transaction, for: transaction.receiver)
-            }
-        }
-        
+        let address = transaction.receiver == viewModel.account.address ? transaction.sender : transaction.receiver
+        configure(cell, with: transaction, for: address)
         return cell
     }
     
