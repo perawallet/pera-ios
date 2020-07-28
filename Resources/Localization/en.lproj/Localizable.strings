@@ -435,5 +435,7 @@
 "csv-download-error" = "Could not create a csv file for the transaction history.";
 
 // MARK: Pin Limit
-"pin-limit-title" = "Algorand is disabled";
+"pin-limit-title" = "Algorand app is locked";
 "pin-limit-try-again" = "Try again in";
+"pin-limit-too-many" = "Too many PIN attempts";
+"pin-limit-reset-all" = "Reset All Data";

@@ -49,7 +49,7 @@ extension AccountManager {
         }
         
         for account in userAccounts {
-            let accountFetchOperation = AccountFetchOperation(address: account.address, api: api)
+            let accountFetchOperation = AccountFetchOperation(accountInformation: account, api: api)
             accountFetchOperation.onCompleted = { fetchedAccount, fetchError in
                 guard let fetchedAccount = fetchedAccount else {
                     return

@@ -12,7 +12,7 @@ extension API {
     @discardableResult
     func fetchAccount(
         with draft: AccountFetchDraft,
-        then handler: @escaping Endpoint.DefaultResultHandler<AccountResponse>
+        then handler: @escaping Endpoint.CompleteResultHandler<AccountResponse, IndexerError>
     ) -> EndpointOperatable {
         return Endpoint(path: Path("/v2/accounts/\(draft.publicKey)"))
             .base(indexerBase)

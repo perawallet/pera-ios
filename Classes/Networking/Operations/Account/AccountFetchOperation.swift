@@ -6,20 +6,20 @@
 //  Copyright © 2019 hippo. All rights reserved.
 //
 
-import Foundation
 import UIKit
+import Magpie
 
 typealias AccountFetchHandler = (Account?, Error?) -> Void
 
 class AccountFetchOperation: AsyncOperation {
-    let address: String
+    let accountInformation: AccountInformation
     let api: API
     
     var onStarted: EmptyHandler?
     var onCompleted: AccountFetchHandler?
     
-    init(address: String, api: API) {
-        self.address = address
+    init(accountInformation: AccountInformation, api: API) {
+        self.accountInformation = accountInformation
         self.api = api
         super.init()
     }
@@ -29,7 +29,7 @@ class AccountFetchOperation: AsyncOperation {
             return
         }
         
-        api.fetchAccount(with: AccountFetchDraft(publicKey: address)) { response in
+        api.fetchAccount(with: AccountFetchDraft(publicKey: accountInformation.address)) { response in
             switch response {
             case .success(let accountWrapper):
                 if accountWrapper.account.isThereAnyDifferentAsset() {
@@ -37,8 +37,12 @@ class AccountFetchOperation: AsyncOperation {
                 } else {
                     self.onCompleted?(accountWrapper.account, nil)
                 }
-            case .failure(let error):
-                self.onCompleted?(nil, error)
+            case let .failure(error, indexerError):
+                if indexerError?.containsAccount(self.accountInformation.address) ?? false {
+                    self.onCompleted?(Account(address: self.accountInformation.address, name: self.accountInformation.name), nil)
+                } else {
+                    self.onCompleted?(nil, error)
+                }
             }
             self.finish()
         }

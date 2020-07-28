@@ -151,29 +151,39 @@ extension AssetDetailViewModel {
             if transaction.receiver == account.address && transaction.amount == 0 && transaction.type == .assetTransfer {
                 view.setContact("asset-creation-fee-title".localized)
                 view.subtitleLabel.isHidden = true
-                view.transactionAmountView.mode = .negative(amount: transaction.fee.toAlgos)
+                if let fee = transaction.fee {
+                    view.transactionAmountView.mode = .negative(amount: fee.toAlgos)
+                }
             } else if transaction.receiver == account.address {
                 configure(view, with: contact, and: transaction.receiver)
                 view.transactionAmountView.algoIconImageView.removeFromSuperview()
-                view.transactionAmountView.mode = .positive(
-                    amount: transaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
-                    fraction: assetDetail.fractionDecimals
-                )
+                if let amount = transaction.amount {
+                    view.transactionAmountView.mode = .positive(
+                        amount: amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
+                        fraction: assetDetail.fractionDecimals
+                    )
+                }
             } else {
                 configure(view, with: contact, and: transaction.receiver)
                 view.transactionAmountView.algoIconImageView.removeFromSuperview()
-                view.transactionAmountView.mode = .negative(
-                    amount: transaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
-                    fraction: assetDetail.fractionDecimals
-                )
+                if let amount = transaction.amount {
+                    view.transactionAmountView.mode = .negative(
+                        amount: amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
+                        fraction: assetDetail.fractionDecimals
+                    )
+                }
             }
         } else {
             if transaction.receiver == account.address {
                 configure(view, with: contact, and: transaction.sender)
-                view.transactionAmountView.mode = .positive(amount: transaction.amount.toAlgos)
+                if let amount = transaction.amount {
+                    view.transactionAmountView.mode = .positive(amount: amount.toAlgos)
+                }
             } else {
                 configure(view, with: contact, and: transaction.receiver)
-                view.transactionAmountView.mode = .negative(amount: transaction.amount.toAlgos)
+                if let amount = transaction.amount {
+                    view.transactionAmountView.mode = .negative(amount: amount.toAlgos)
+                }
             }
         }
         

@@ -139,9 +139,15 @@ extension ContactInfoViewController {
                     SVProgressHUD.showSuccess(withStatus: "title-done".localized)
                     SVProgressHUD.dismiss()
                 }
-            case .failure:
-                self?.contactAccount = nil
-                SVProgressHUD.dismiss()
+            case let .failure(_, indexerError):
+                if indexerError?.containsAccount(address) ?? false {
+                    self?.contactAccount = Account(address: address)
+                    SVProgressHUD.showSuccess(withStatus: "title-done".localized)
+                    SVProgressHUD.dismiss()
+                } else {
+                    self?.contactAccount = nil
+                    SVProgressHUD.dismiss()
+                }
             }
         }
     }
