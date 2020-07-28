@@ -278,10 +278,17 @@ extension SendAlgosTransactionPreviewViewController {
                 }
                 
                 switch accountResponse {
-                case .failure:
-                    self.dismissProgressIfNeeded()
-                    
-                    self.displaySimpleAlertWith(title: "title-error".localized, message: "title-internet-connection".localized)
+                case let .failure(_, indexerError):
+                    if indexerError?.containsAccount(receiverAddress) ?? false {
+                        self.dismissProgressIfNeeded()
+                        self.displaySimpleAlertWith(
+                            title: "title-error".localized,
+                            message: "send-algos-minimum-amount-error-new-account".localized
+                        )
+                    } else {
+                        self.dismissProgressIfNeeded()
+                        self.displaySimpleAlertWith(title: "title-error".localized, message: "title-internet-connection".localized)
+                    }
                 case let .success(accountWrapper):
                     if accountWrapper.account.amount == 0 {
                         self.dismissProgressIfNeeded()

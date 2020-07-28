@@ -280,8 +280,15 @@ extension SendAssetTransactionPreviewViewController {
                 } else {
                     self.presentAssetNotSupportedAlert(receiverAddress: address)
                 }
-            case .failure:
-                self.dismissProgressIfNeeded()
+            case let .failure(_, indexerError):
+                if indexerError?.containsAccount(address) ?? false {
+                    if selectedAccount.type != .ledger {
+                        self.dismissProgressIfNeeded()
+                    }
+                    self.presentAssetNotSupportedAlert(receiverAddress: address)
+                } else {
+                    self.dismissProgressIfNeeded()
+                }
             }
         }
     }
