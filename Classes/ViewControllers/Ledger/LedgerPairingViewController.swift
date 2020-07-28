@@ -92,6 +92,8 @@ extension LedgerPairingViewController: LedgerPairingViewDelegate {
         
         view.endEditing(true)
         
+        RegistrationEvent(type: .ledger).logEvent()
+        
         let account = setupAccount(with: name)
         presentAccountSetupAlert(for: account)
     }
