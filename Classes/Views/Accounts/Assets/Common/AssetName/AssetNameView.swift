@@ -13,7 +13,7 @@ class AssetNameView: BaseView {
     private let layout = Layout<LayoutConstants>()
     
     private lazy var verifiedImageView = UIImageView(image: img("icon-verified"))
-
+    
     private(set) lazy var nameLabel: UILabel = {
         UILabel()
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
@@ -115,9 +115,7 @@ extension AssetNameView {
             nameLabel.text = "title-unknown".localized
         }
         
-        if let assetId = assetDetail.id {
-            idLabel.text = "· \(assetId)"
-        }
+        idLabel.text = "· \(assetDetail.id)"
     }
     
     func setAlignment(_ alignment: NSTextAlignment) {

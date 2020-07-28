@@ -165,8 +165,7 @@ extension AssetRemovalViewController: BaseAssetCellDelegate {
         }
         
         let assetDetail = account.assetDetails[index.item]
-        guard let assetAmount = account.amount(for: assetDetail),
-            let assetId = assetDetail.id else {
+        guard let assetAmount = account.amount(for: assetDetail) else {
             return
         }
         
@@ -175,7 +174,7 @@ extension AssetRemovalViewController: BaseAssetCellDelegate {
         if assetAmount == 0 {
             assetAlertDraft = AssetAlertDraft(
                 account: account,
-                assetIndex: assetId,
+                assetIndex: assetDetail.id,
                 assetDetail: assetDetail,
                 title: "asset-remove-confirmation-title".localized,
                 detail: String(
@@ -188,7 +187,7 @@ extension AssetRemovalViewController: BaseAssetCellDelegate {
         } else {
             assetAlertDraft = AssetAlertDraft(
                 account: account,
-                assetIndex: assetId,
+                assetIndex: assetDetail.id,
                 assetDetail: assetDetail,
                 title: "asset-remove-confirmation-title".localized,
                 detail: String(
@@ -277,15 +276,11 @@ extension AssetRemovalViewController: AssetActionConfirmationViewControllerDeleg
     }
     
     private func removeAssetFromAccount(_ assetDetail: AssetDetail) {
-        guard let assetId = assetDetail.id else {
-            return
-        }
-        
         let assetTransactionDraft = AssetTransactionSendDraft(
             from: account,
             toAccount: assetDetail.creator,
             amount: 0,
-            assetIndex: assetId,
+            assetIndex: assetDetail.id,
             assetCreator: assetDetail.creator
         )
         transactionController.setTransactionDraft(assetTransactionDraft)
@@ -321,11 +316,10 @@ extension AssetRemovalViewController: TransactionControllerDelegate {
     
     private func getRemovedAssetDetail(from draft: AssetTransactionSendDraft?) -> AssetDetail? {
         guard let removedAssetDetail = account.assetDetails.first(where: { assetDetail -> Bool in
-            guard let id = assetDetail.id,
-                let assetId = draft?.assetIndex else {
-                    return false
+            guard let assetId = draft?.assetIndex else {
+                return false
             }
-            return id == assetId
+            return assetDetail.id == assetId
         }) else {
             return nil
         }

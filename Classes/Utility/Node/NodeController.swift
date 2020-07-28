@@ -34,7 +34,7 @@ extension NodeController {
     
     private func localNodeOperation(completion: BoolHandler?) -> NodeHealthOperation {
         let address = Environment.current.serverApi
-        let token = Environment.current.serverToken
+        let token = Environment.current.algodToken
         let localNodeHealthOperation = NodeHealthOperation(address: address, token: token, api: api)
         
         localNodeHealthOperation.onCompleted = { isHealthy in
@@ -49,7 +49,7 @@ extension NodeController {
     private func setNewNode(with address: String, and token: String, then completion: BoolHandler?) {
          api.cancelAllEndpoints()
          api.base = address
-         api.token = token
+         api.algodToken = token
          completion?(true)
          queue.cancelAllOperations()
      }

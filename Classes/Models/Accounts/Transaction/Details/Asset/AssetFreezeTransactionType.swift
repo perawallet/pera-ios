@@ -1,5 +1,5 @@
 //
-//  AssetFreezeTransactionType.swift
+//  AssetFreezeTransaction.swift
 //  algorand
 //
 //  Created by Göktuğ Berk Ulu on 2.12.2019.
@@ -8,13 +8,13 @@
 
 import Magpie
 
-class AssetFreezeTransactionType: Model {
+class AssetFreezeTransaction: Model {
     let account: String
     let isFreeze: Bool
     let assetId: Int64
 }
 
-extension AssetFreezeTransactionType {
+extension AssetFreezeTransaction {
     private enum CodingKeys: String, CodingKey {
         case account = "acct"
         case isFreeze = "freeze"

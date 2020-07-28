@@ -95,21 +95,21 @@ extension ContactInfoViewController {
         
         api?.fetchAccount(with: AccountFetchDraft(publicKey: address)) { [weak self] response in
             switch response {
-            case let .success(account):
+            case let .success(accountWrapper):
+                let account = accountWrapper.account
                 self?.contactAccount = account
                 
                 if account.isThereAnyDifferentAsset() {
                     if let assets = account.assets {
                         var failedAssetFetchCount = 0
-                        for (index, _) in assets {
-                            self?.api?.getAssetDetails(with: AssetFetchDraft(assetId: "\(index)")) { assetResponse in
+                        for asset in assets {
+                            self?.api?.getAssetDetails(with: AssetFetchDraft(assetId: "\(asset.id)")) { assetResponse in
                                 switch assetResponse {
-                                case let .success(assetDetail):
-                                    assetDetail.id = Int64(index)
-                                    
+                                case let .success(assetDetailResponse):
+                                    let assetDetail = assetDetailResponse.assetDetail
                                     if let verifiedAssets = self?.session?.verifiedAssets,
                                         verifiedAssets.contains(where: { verifiedAsset -> Bool in
-                                            "\(verifiedAsset.id)" == index
+                                            verifiedAsset.id == asset.id
                                         }) {
                                         assetDetail.isVerified = true
                                     }
@@ -139,9 +139,15 @@ extension ContactInfoViewController {
                     SVProgressHUD.showSuccess(withStatus: "title-done".localized)
                     SVProgressHUD.dismiss()
                 }
-            case .failure:
-                self?.contactAccount = nil
-                SVProgressHUD.dismiss()
+            case let .failure(_, indexerError):
+                if indexerError?.containsAccount(address) ?? false {
+                    self?.contactAccount = Account(address: address)
+                    SVProgressHUD.showSuccess(withStatus: "title-done".localized)
+                    SVProgressHUD.dismiss()
+                } else {
+                    self?.contactAccount = nil
+                    SVProgressHUD.dismiss()
+                }
             }
         }
     }

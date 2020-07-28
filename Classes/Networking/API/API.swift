@@ -9,7 +9,8 @@
 import Magpie
 
 class API: Magpie {
-    var token: String?
+    var algodToken: String?
+    var indexerToken: String?
     var network: BaseNetwork = .mainnet
     var mobileApiBase: String = Environment.current.mobileApi
     let session: Session
@@ -57,13 +58,50 @@ extension API {
         base = Environment.current.serverApi
     }
     
-    func algorandAuthenticatedHeaders() -> Headers {
-        guard let token = token else {
+    var algodBase: String {
+        if network == .testnet {
+            return Environment.current.testNetAlgodApi
+        } else {
+            return Environment.current.mainNetAlgodApi
+        }
+    }
+    
+    var indexerBase: String {
+        if network == .testnet {
+            return Environment.current.testNetIndexerApi
+        } else {
+            return Environment.current.mainNetIndexerApi
+        }
+    }
+    
+    func algodAuthenticatedHeaders() -> Headers {
+        guard let token = algodToken else {
             return sharedHttpHeaders
         }
         
         var headers = sharedHttpHeaders
         headers.set(.custom("X-Algo-API-Token", .some(token)))
+        return headers
+    }
+    
+    func algodBinaryAuthenticatedHeaders() -> Headers {
+        guard let token = algodToken else {
+            return sharedHttpHeaders
+        }
+        
+        var headers = sharedHttpHeaders
+        headers.set(.contentType("application/x-binary"))
+        headers.set(.custom("X-Algo-API-Token", .some(token)))
+        return headers
+    }
+    
+    func indexerAuthenticatedHeaders() -> Headers {
+        guard let token = indexerToken else {
+            return sharedHttpHeaders
+        }
+        
+        var headers = sharedHttpHeaders
+        headers.set(.custom("X-Indexer-API-Token", .some(token)))
         return headers
     }
     
@@ -77,6 +115,17 @@ extension API {
         var headers = sharedHttpHeaders
         headers.set(.custom("X-Algo-API-Token", .some(nodeToken)))
         return headers
+    }
+}
+
+extension API {
+    func setupEnvironment(for network: API.BaseNetwork) {
+        self.network = network
+        let node = network == .mainnet ? mainNetNode : testNetNode
+        
+        base = node.algodAddress
+        algodToken = node.algodToken
+        indexerToken = node.indexerToken
     }
 }
 

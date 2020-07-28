@@ -22,6 +22,8 @@ class RootViewController: UIViewController {
         }
     }
     
+    private lazy var pushNotificationController = PushNotificationController(api: appConfiguration.api)
+    
     // MARK: Properties
     
     private lazy var statusbarView: UIView = {
@@ -212,15 +214,7 @@ extension RootViewController {
     
     func setNetwork(to network: API.BaseNetwork) {
         appConfiguration.api.cancelAllEndpoints()
-        appConfiguration.api.network = network
-        
-        if network == .mainnet {
-            appConfiguration.api.base = Environment.current.mainNetApi
-            appConfiguration.api.token = Environment.current.mainNetToken
-        } else {
-            appConfiguration.api.base = Environment.current.testNetApi
-            appConfiguration.api.token = Environment.current.testNetToken
-        }
+        appConfiguration.api.setupEnvironment(for: network)
     }
 }
 
@@ -253,5 +247,13 @@ extension RootViewController {
         if statusbarView.superview != nil {
             statusbarView.removeFromSuperview()
         }
+    }
+}
+
+extension RootViewController {
+    func deleteAllData() {
+        appConfiguration.session.reset(isContactIncluded: true)
+        NotificationCenter.default.post(name: .ContactDeletion, object: self, userInfo: nil)
+        pushNotificationController.revokeDevice()
     }
 }

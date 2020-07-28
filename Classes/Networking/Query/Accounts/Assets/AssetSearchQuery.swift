@@ -33,3 +33,17 @@ struct AssetSearchQuery: Query {
         }
     }
 }
+
+struct TransactionSearchQuery: Query {
+    typealias Key = RequestParameter
+    
+    let id: String?
+    
+    func decoded() -> [Pair]? {
+        if let id = id {
+            return [Pair(key: .transactionDetailId, value: .some(id))]
+        }
+        
+        return nil
+    }
+}

@@ -29,7 +29,7 @@ class TransactionDetailViewModel {
         setRound(for: transaction, in: view)
         
         view.opponentView.setTitle("transaction-detail-from".localized)
-        setOpponent(for: transaction, with: transaction.from, in: view)
+        setOpponent(for: transaction, with: transaction.sender, in: view)
         
         if let assetTransaction = transaction.assetTransfer,
             let assetDetail = assetDetail {
@@ -54,7 +54,7 @@ class TransactionDetailViewModel {
             setReward(for: transaction, in: view)
         }
         
-        view.idView.setDetail(transaction.id.identifier)
+        view.idView.setDetail(transaction.id)
         setNote(for: transaction, in: view)
     }
     
@@ -93,7 +93,7 @@ class TransactionDetailViewModel {
             view.amountView.setAmountViewMode(value)
             
         } else if let payment = transaction.payment {
-            setOpponent(for: transaction, with: payment.toAddress, in: view)
+            setOpponent(for: transaction, with: payment.receiver, in: view)
             
             let amount = payment.amountForTransaction(includesCloseAmount: false).toAlgos
 
@@ -104,7 +104,7 @@ class TransactionDetailViewModel {
             setCloseTo(for: transaction, in: view)
         }
         
-        view.idView.setDetail(transaction.id.identifier)
+        view.idView.setDetail(transaction.id)
         setNote(for: transaction, in: view)
     }
     
@@ -146,14 +146,14 @@ class TransactionDetailViewModel {
         if transaction.isPending() {
             view.roundView.removeFromSuperview()
         } else {
-            if let round = transaction.round {
+            if let round = transaction.confirmedRound {
                 view.roundView.setDetail("\(round)")
             }
         }
     }
     
     private func setReward(for transaction: Transaction, in view: TransactionDetailView) {
-        if let rewards = transaction.fromRewards, rewards > 0 {
+        if let rewards = transaction.senderRewards, rewards > 0 {
             view.rewardView.setAmountViewMode(.normal(amount: rewards.toAlgos))
         } else {
             view.rewardView.removeFromSuperview()

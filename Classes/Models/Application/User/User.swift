@@ -11,6 +11,7 @@ import Magpie
 class User: Model {
     private(set) var accounts: [AccountInformation] = []
     private(set) var defaultNode: String?
+    private(set) var deviceId: String?
     
     init(accounts: [AccountInformation]) {
         self.accounts = accounts
@@ -79,7 +80,7 @@ extension User {
             return
         }
         
-        self.defaultNode = selectedNode.address
+        self.defaultNode = selectedNode.network.rawValue
     }
     
     func preferredAlgorandNetwork() -> API.BaseNetwork? {
@@ -87,7 +88,19 @@ extension User {
             return nil
         }
         
-        return defaultNode == Environment.current.testNetApi ? .testnet : .mainnet
+        if defaultNode == API.BaseNetwork.mainnet.rawValue {
+            return .mainnet
+        } else if defaultNode == API.BaseNetwork.testnet.rawValue {
+            return .testnet
+        } else {
+            return nil
+        }
+    }
+    
+    func setDeviceId(_ id: String?) {
+        deviceId = id
+        NotificationCenter.default.post(name: .DeviceIDDidSet, object: nil)
+        syncronize()
     }
     
     func account(address: String) -> AccountInformation? {

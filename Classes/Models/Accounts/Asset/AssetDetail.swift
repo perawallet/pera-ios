@@ -8,6 +8,18 @@
 
 import Magpie
 
+class AssetDetailResponse: Model {
+    let assetDetail: AssetDetail
+    let currentRound: Int64
+}
+
+extension AssetDetailResponse {
+    enum CodingKeys: String, CodingKey {
+        case assetDetail = "asset"
+        case currentRound = "current-round"
+    }
+}
+
 class AssetDetail: Model {
     let creator: String
     let total: UInt64
@@ -20,31 +32,53 @@ class AssetDetail: Model {
     let freezeAddress: String?
     let clawBackAddress: String?
     let fractionDecimals: Int
+    let id: Int64
     
-    var id: Int64?
     var isVerified: Bool = false
     var isRemoved: Bool = false
     var isRecentlyAdded: Bool = false
     
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(Int64.self, forKey: .id)
+        let paramsContainer = try container.nestedContainer(keyedBy: ParamsCodingKeys.self, forKey: .params)
         
-        creator = try container.decode(String.self, forKey: .creator)
-        total = try container.decode(UInt64.self, forKey: .total)
-        isDefaultFrozen = try container.decodeIfPresent(Bool.self, forKey: .isDefaultFrozen)
-        unitName = try container.decodeIfPresent(String.self, forKey: .unitName)
-        assetName = try container.decodeIfPresent(String.self, forKey: .assetName)
-        url = try container.decodeIfPresent(String.self, forKey: .url)
-        managerKey = try container.decodeIfPresent(String.self, forKey: .managerKey)
-        reserveAddress = try? container.decodeIfPresent(String.self, forKey: .reserveAddress)
-        freezeAddress = try? container.decodeIfPresent(String.self, forKey: .freezeAddress)
-        clawBackAddress = try container.decodeIfPresent(String.self, forKey: .clawBackAddress)
-        fractionDecimals = try container.decodeIfPresent(Int.self, forKey: .fractionDecimals) ?? 0
+        creator = try paramsContainer.decode(String.self, forKey: .creator)
+        total = try paramsContainer.decode(UInt64.self, forKey: .total)
+        isDefaultFrozen = try paramsContainer.decodeIfPresent(Bool.self, forKey: .isDefaultFrozen)
+        unitName = try paramsContainer.decodeIfPresent(String.self, forKey: .unitName)
+        assetName = try paramsContainer.decodeIfPresent(String.self, forKey: .assetName)
+        url = try paramsContainer.decodeIfPresent(String.self, forKey: .url)
+        managerKey = try paramsContainer.decodeIfPresent(String.self, forKey: .managerKey)
+        reserveAddress = try? paramsContainer.decodeIfPresent(String.self, forKey: .reserveAddress)
+        freezeAddress = try? paramsContainer.decodeIfPresent(String.self, forKey: .freezeAddress)
+        clawBackAddress = try paramsContainer.decodeIfPresent(String.self, forKey: .clawBackAddress)
+        fractionDecimals = try paramsContainer.decodeIfPresent(Int.self, forKey: .fractionDecimals) ?? 0
         
-        id = try? container.decodeIfPresent(Int64.self, forKey: .id)
-        isVerified = try container.decodeIfPresent(Bool.self, forKey: .isVerified) ?? false
-        isRemoved = try container.decodeIfPresent(Bool.self, forKey: .isRemoved) ?? false
-        isRecentlyAdded = try container.decodeIfPresent(Bool.self, forKey: .isRecentlyAdded) ?? false
+        isVerified = try paramsContainer.decodeIfPresent(Bool.self, forKey: .isVerified) ?? false
+        isRemoved = try paramsContainer.decodeIfPresent(Bool.self, forKey: .isRemoved) ?? false
+        isRecentlyAdded = try paramsContainer.decodeIfPresent(Bool.self, forKey: .isRecentlyAdded) ?? false
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
+        
+        var paramsContainer = container.nestedContainer(keyedBy: ParamsCodingKeys.self, forKey: .params)
+        try paramsContainer.encode(creator, forKey: .creator)
+        try paramsContainer.encode(total, forKey: .total)
+        try paramsContainer.encodeIfPresent(isDefaultFrozen, forKey: .isDefaultFrozen)
+        try paramsContainer.encodeIfPresent(unitName, forKey: .unitName)
+        try paramsContainer.encodeIfPresent(assetName, forKey: .assetName)
+        try paramsContainer.encodeIfPresent(url, forKey: .url)
+        try paramsContainer.encodeIfPresent(managerKey, forKey: .managerKey)
+        try paramsContainer.encodeIfPresent(reserveAddress, forKey: .reserveAddress)
+        try paramsContainer.encodeIfPresent(freezeAddress, forKey: .freezeAddress)
+        try paramsContainer.encodeIfPresent(clawBackAddress, forKey: .clawBackAddress)
+        try paramsContainer.encodeIfPresent(fractionDecimals, forKey: .fractionDecimals)
+        try paramsContainer.encodeIfPresent(isVerified, forKey: .isVerified)
+        try paramsContainer.encodeIfPresent(isRemoved, forKey: .isRemoved)
+        try paramsContainer.encodeIfPresent(isRecentlyAdded, forKey: .isRecentlyAdded)
     }
     
     init(searchResult: AssetSearchResult) {
@@ -68,16 +102,21 @@ class AssetDetail: Model {
 
 extension AssetDetail {
     private enum CodingKeys: String, CodingKey {
+        case id = "index"
+        case params = "params"
+    }
+    
+    private enum ParamsCodingKeys: String, CodingKey {
         case creator = "creator"
         case total = "total"
-        case isDefaultFrozen = "defaultfrozen"
-        case unitName = "unitname"
-        case assetName = "assetname"
+        case isDefaultFrozen = "default-frozen"
+        case unitName = "unit-name"
+        case assetName = "name"
         case url = "url"
-        case managerKey = "managerkey"
-        case reserveAddress = "reserveaddr"
-        case freezeAddress = "freezeaddr"
-        case clawBackAddress = "clawbackaddr"
+        case managerKey = "manager"
+        case reserveAddress = "reserve"
+        case freezeAddress = "freeze"
+        case clawBackAddress = "clawback"
         case id = "index"
         case isRemoved = "isRemoved"
         case isRecentlyAdded = "isRecentlyAdded"
@@ -140,10 +179,8 @@ extension AssetDetail: Encodable {
 
 extension AssetDetail: Comparable {
     static func == (lhs: AssetDetail, rhs: AssetDetail) -> Bool {
-        guard let lhsId = lhs.id,
-            let rhsId = rhs.id else {
-                return false
-        }
+        let lhsId = lhs.id
+        let rhsId = rhs.id
         
         if lhsId == rhsId && lhs.fractionDecimals != rhs.fractionDecimals {
             return false
@@ -163,10 +200,6 @@ extension AssetDetail: Comparable {
     }
     
     static func < (lhs: AssetDetail, rhs: AssetDetail) -> Bool {
-        guard let lhsId = lhs.id,
-            let rhsId = rhs.id else {
-                return false
-        }
-        return lhsId < rhsId
+        return lhs.id < rhs.id
     }
 }

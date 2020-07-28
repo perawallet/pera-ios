@@ -42,9 +42,7 @@ class SendAssetTransactionViewModel {
             return
         }
         
-        if let id = assetDetail.id {
-            view.setAssetId("\(id)")
-        }
+        view.setAssetId("\(assetDetail.id )")
         
         if assetDetail.hasBothDisplayName() || assetDetail.hasOnlyAssetName() {
             view.setAssetName(assetDetail.unitName)

@@ -40,9 +40,7 @@ class ContactInfoViewModel {
                 cell.contextView.assetNameView.removeVerified()
             }
             
-            if let id = assetDetail.id {
-                cell.contextView.assetNameView.setId("\(id)")
-            }
+            cell.contextView.assetNameView.setId("\(assetDetail.id)")
             
             if assetDetail.hasBothDisplayName() {
                 cell.contextView.assetNameView.setAssetName(for: assetDetail)

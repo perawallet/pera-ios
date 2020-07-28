@@ -37,6 +37,7 @@
 "title-edit" = "Edit";
 "title-testnet" = "TESTNET";
 "title-account" = "Account";
+"title-id" = "ID";
 
 // MARK: Introduction
 "introduction-recover-title" = "Recover From Passphrase";
@@ -325,11 +326,11 @@
 "rewards-since-last-text" = "Since Last Transaction";
 
 // MARK: Notifications
-"notifications-title" = "Notifications";
 "notification-sent-success" = "Your transaction of %@ from %@ to %@ is complete.";
 "notification-sent-failed" = "Your transaction of %@ from %@ to %@ has failed.";
 "notification-received" = "\%@ were sent to %@ by %@.";
 "notification-support-success" = "%@ has added %@ to their account. You can send them.";
+"notification-support-request" ="%@ is trying to send you %@ however, you do not support this. If you want, we can add to your account.";
 
 // MARK: Verified Asset Information
 "verified-assets-title" = "Verified Assets";
@@ -413,9 +414,28 @@
 "terms-and-services-html" = "I accept the <a href=\"https://www.algorand.com/wallet-disclaimer\">Terms and Services</a>";
 
 // MARK: Notifications Tab
-"notifications-coming-soon-title" = "COMING SOON";
-"notifications-coming-soon-detail-text" = "Your recent transactions, asset requests and other notifications will appear here";
+
+"notifications-title" = "Notifications";
+"notifications-empty-title" = "No current notifications";
+"notifications-empty-subtitle" = "Your recent transactions, asset requests and other notifications will appear here.";
+
+// MARK: Transaction Filter
+"transaction-filter-title-sort" = "Sort by Date";
+"transaction-filter-option-all" = "All Time";
+"transaction-filter-option-today" = "Today";
+"transaction-filter-option-yesterday" = "Yesterday";
+"transaction-filter-option-week" = "Last Week";
+"transaction-filter-option-month" = "Last Month";
+"transaction-filter-option-custom" = "Custom Range";
+"transaction-filter-tooltip" = "You can now filter the history of transactions";
+"transaction-filter-try-again" = "Try Again";
+"transaction-filter-error-title" = "Something went wrong";
+"transaction-filter-error-subtitle" = "Sorry, something went wrong there.";
+"csv-download-title" = "Creating CSV File";
+"csv-download-error" = "Could not create a csv file for the transaction history.";
 
 // MARK: Pin Limit
-"pin-limit-title" = "Algorand is disabled";
+"pin-limit-title" = "Algorand app is locked";
 "pin-limit-try-again" = "Try again in";
+"pin-limit-too-many" = "Too many PIN attempts";
+"pin-limit-reset-all" = "Reset All Data";

@@ -9,13 +9,13 @@
 import Magpie
 
 class PendingTransactionList: Model {
-    var pendingTransactions: PendingTransactions
+    var pendingTransactions: [PendingTransaction]
     var count: Int
 }
 
 extension PendingTransactionList {
     private enum CodingKeys: String, CodingKey {
-        case pendingTransactions = "truncatedTxns"
-        case count = "totalTxns"
+        case pendingTransactions = "top-transactions"
+        case count = "total-transactions"
     }
 }

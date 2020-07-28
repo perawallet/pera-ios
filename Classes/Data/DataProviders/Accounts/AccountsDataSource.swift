@@ -131,8 +131,7 @@ extension AccountsDataSource {
                 return cell
             } else {
                 guard let assets = accounts[indexPath.section].assets,
-                    let assetId = assetDetail.id,
-                    let asset = assets["\(assetId)"] else {
+                    let asset = assets.first(where: { $0.id == assetDetail.id }) else {
                         fatalError("Unexpected Element")
                 }
                 

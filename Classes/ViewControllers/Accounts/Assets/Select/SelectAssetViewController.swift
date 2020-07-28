@@ -175,8 +175,7 @@ extension SelectAssetViewController {
         )
         
         if let assets = account.assets,
-            let assetId = assetDetail.id,
-            let asset = assets["\(assetId)"] {
+            let asset = assets.first(where: { $0.id == assetDetail.id }) {
             viewModel.configure(cell, with: assetDetail, and: asset)
         }
         

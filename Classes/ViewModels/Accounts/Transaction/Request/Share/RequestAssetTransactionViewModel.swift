@@ -38,10 +38,7 @@ class RequestAssetTransactionViewModel {
         )
         
         view.setAssetAlignment(.right)
-        
-        if let id = assetTransactionRequestDraft.assetDetail.id {
-            view.setAssetId("\(id)")
-        }
+        view.setAssetId("\(assetTransactionRequestDraft.assetDetail.id)")
         
         if assetTransactionRequestDraft.assetDetail.hasBothDisplayName() || assetTransactionRequestDraft.assetDetail.hasOnlyAssetName() {
             view.setAssetName(assetTransactionRequestDraft.assetDetail.assetName)
