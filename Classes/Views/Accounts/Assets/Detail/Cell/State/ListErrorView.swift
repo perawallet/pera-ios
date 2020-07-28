@@ -8,11 +8,11 @@
 
 import UIKit
 
-class TransactionErrorView: BaseView {
+class ListErrorView: BaseView {
     
     private let layout = Layout<LayoutConstants>()
     
-    weak var delegate: TransactionErrorViewDelegate?
+    weak var delegate: ListErrorViewDelegate?
     
     private lazy var imageView = UIImageView()
     
@@ -59,14 +59,14 @@ class TransactionErrorView: BaseView {
     }
 }
 
-extension TransactionErrorView {
+extension ListErrorView {
     @objc
     private func notifyDelegateToTryAgain() {
-        delegate?.transactionErrorViewDidTryAgain(self)
+        delegate?.listErrorViewDidTryAgain(self)
     }
 }
 
-extension TransactionErrorView {
+extension ListErrorView {
     private func setupImageViewLayout() {
         addSubview(imageView)
         
@@ -108,7 +108,7 @@ extension TransactionErrorView {
     }
 }
 
-extension TransactionErrorView {
+extension ListErrorView {
     func setImage(_ image: UIImage?) {
         imageView.image = image
     }
@@ -122,7 +122,7 @@ extension TransactionErrorView {
     }
 }
 
-extension TransactionErrorView {
+extension ListErrorView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let topInset: CGFloat = 100.0
         let imageSize = CGSize(width: 48.0, height: 48.0)
@@ -135,6 +135,6 @@ extension TransactionErrorView {
     }
 }
 
-protocol TransactionErrorViewDelegate: class {
-    func transactionErrorViewDidTryAgain(_ transactionErrorView: TransactionErrorView)
+protocol ListErrorViewDelegate: class {
+    func listErrorViewDidTryAgain(_ listErrorView: ListErrorView)
 }

@@ -11,6 +11,7 @@ import Magpie
 struct DeviceRegistrationDraft: JSONBody {
     typealias Key = RequestParameter
     
+    let id: String?
     let pushToken: String?
     let platform = "ios"
     let model = UIDevice.current.model
@@ -24,6 +25,10 @@ struct DeviceRegistrationDraft: JSONBody {
             Pair(key: .locale, value: locale),
             Pair(key: .accounts, value: accounts)
         ]
+
+        if let id = id {
+            pairs.append(Pair(key: .id, value: id))
+        }
         
         if let pushToken = pushToken {
             pairs.append(Pair(key: .pushToken, value: pushToken))

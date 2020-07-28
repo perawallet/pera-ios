@@ -36,4 +36,8 @@ extension Notification.Name {
     static var NetworkChanged: Notification.Name {
         return .init(rawValue: "com.algorand.algorand.notification.network.change")
     }
+    
+    static var DeviceIDDidSet: Notification.Name {
+        return .init(rawValue: "com.algorand.algorand.notification.device.id.set")
+    }
 }

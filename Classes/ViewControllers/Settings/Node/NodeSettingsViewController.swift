@@ -150,7 +150,6 @@ let mainNetNode = AlgorandNode(
     indexerAddress: Environment.current.mainNetAlgodHost,
     algodToken: Environment.current.algodToken,
     indexerToken: Environment.current.indexerToken,
-    port: Environment.current.port,
     name: "node-settings-default-node-name".localized,
     network: .mainnet
 )
@@ -160,7 +159,6 @@ let testNetNode = AlgorandNode(
     indexerAddress: Environment.current.testNetIndexerHost,
     algodToken: Environment.current.algodToken,
     indexerToken: Environment.current.indexerToken,
-    port: Environment.current.port,
     name: "node-settings-default-test-node-name".localized,
     network: .testnet
 )

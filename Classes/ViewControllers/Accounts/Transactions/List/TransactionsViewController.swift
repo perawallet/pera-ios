@@ -34,7 +34,6 @@ class TransactionsViewController: BaseViewController {
     
     private let transactionsTooltipStorage = TransactionsTooltipStorage()
     private var filterOption = TransactionFilterViewController.FilterOption.allTime
-    private var paginationRequestThreshold = 5
     
     private lazy var filterOptionsPresenter = CardModalPresenter(
         config: ModalConfiguration(
