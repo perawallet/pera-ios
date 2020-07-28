@@ -13,7 +13,7 @@ class NotificationDetail: Model {
     let receiverAddress: String?
     let amount: Int64?
     let asset: NotificationAsset?
-    let notificationType: Type?
+    let notificationType: NotificationType?
 }
 
 extension NotificationDetail {
@@ -26,15 +26,13 @@ extension NotificationDetail {
     }
 }
 
-extension NotificationDetail {
-    enum `Type`: String, Model {
-        case transactionSent = "transaction-sent"
-        case transactionReceived = "transaction-received"
-        case transactionFailed = "transaction-failed"
-        case assetTransactionSent = "asset-transaction-sent"
-        case assetTransactionReceived = "asset-transaction-received"
-        case assetTransactionFailed = "asset-transaction-failed"
-        case assetSupportRequest = "asset-support-request"
-        case assetSupportSuccess = "asset-support-success"
-    }
+enum NotificationType: String, Model {
+    case transactionSent = "transaction-sent"
+    case transactionReceived = "transaction-received"
+    case transactionFailed = "transaction-failed"
+    case assetTransactionSent = "asset-transaction-sent"
+    case assetTransactionReceived = "asset-transaction-received"
+    case assetTransactionFailed = "asset-transaction-failed"
+    case assetSupportRequest = "asset-support-request"
+    case assetSupportSuccess = "asset-support-success"
 }
