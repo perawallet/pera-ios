@@ -677,16 +677,16 @@
 		2B982339231EC1C1009560CD /* DollarValueQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B982337231EC1C1009560CD /* DollarValueQuery.swift */; };
 		2B98233B231EC207009560CD /* TransactionsQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B98233A231EC207009560CD /* TransactionsQuery.swift */; };
 		2B98233C231EC207009560CD /* TransactionsQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B98233A231EC207009560CD /* TransactionsQuery.swift */; };
-		2B9F064224B60EBE006880F0 /* CSVConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F064124B60EBE006880F0 /* CSVConfig.swift */; };
-		2B9F064324B60EBE006880F0 /* CSVConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F064124B60EBE006880F0 /* CSVConfig.swift */; };
-		2B9F064524B60ECF006880F0 /* CSVExportable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F064424B60ECF006880F0 /* CSVExportable.swift */; };
-		2B9F064624B60ECF006880F0 /* CSVExportable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F064424B60ECF006880F0 /* CSVExportable.swift */; };
 		2B9F063724B5E469006880F0 /* TrackableEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F063624B5E469006880F0 /* TrackableEvent.swift */; };
 		2B9F063824B5E469006880F0 /* TrackableEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F063624B5E469006880F0 /* TrackableEvent.swift */; };
 		2B9F063B24B5E48A006880F0 /* RegistrationEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F063A24B5E48A006880F0 /* RegistrationEvent.swift */; };
 		2B9F063C24B5E48A006880F0 /* RegistrationEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F063A24B5E48A006880F0 /* RegistrationEvent.swift */; };
 		2B9F063E24B5E4A7006880F0 /* TransactionEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F063D24B5E4A7006880F0 /* TransactionEvent.swift */; };
 		2B9F063F24B5E4A7006880F0 /* TransactionEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F063D24B5E4A7006880F0 /* TransactionEvent.swift */; };
+		2B9F064224B60EBE006880F0 /* CSVConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F064124B60EBE006880F0 /* CSVConfig.swift */; };
+		2B9F064324B60EBE006880F0 /* CSVConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F064124B60EBE006880F0 /* CSVConfig.swift */; };
+		2B9F064524B60ECF006880F0 /* CSVExportable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F064424B60ECF006880F0 /* CSVExportable.swift */; };
+		2B9F064624B60ECF006880F0 /* CSVExportable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F064424B60ECF006880F0 /* CSVExportable.swift */; };
 		2BA0C39822677E430037AE13 /* Sequence+AttributedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA0C39722677E430037AE13 /* Sequence+AttributedString.swift */; };
 		2BA242382263C0D800E2841F /* SwiftDate+Region.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA242372263C0D800E2841F /* SwiftDate+Region.swift */; };
 		2BA8736A2248214800511C7C /* AlignedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA873692248214800511C7C /* AlignedButton.swift */; };
@@ -1287,11 +1287,11 @@
 		2B982332231D396D009560CD /* Codable+JSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Codable+JSON.swift"; sourceTree = "<group>"; };
 		2B982337231EC1C1009560CD /* DollarValueQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DollarValueQuery.swift; sourceTree = "<group>"; };
 		2B98233A231EC207009560CD /* TransactionsQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsQuery.swift; sourceTree = "<group>"; };
-		2B9F064124B60EBE006880F0 /* CSVConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CSVConfig.swift; sourceTree = "<group>"; };
-		2B9F064424B60ECF006880F0 /* CSVExportable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CSVExportable.swift; sourceTree = "<group>"; };
 		2B9F063624B5E469006880F0 /* TrackableEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackableEvent.swift; sourceTree = "<group>"; };
 		2B9F063A24B5E48A006880F0 /* RegistrationEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationEvent.swift; sourceTree = "<group>"; };
 		2B9F063D24B5E4A7006880F0 /* TransactionEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionEvent.swift; sourceTree = "<group>"; };
+		2B9F064124B60EBE006880F0 /* CSVConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CSVConfig.swift; sourceTree = "<group>"; };
+		2B9F064424B60ECF006880F0 /* CSVExportable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CSVExportable.swift; sourceTree = "<group>"; };
 		2BA0C39722677E430037AE13 /* Sequence+AttributedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sequence+AttributedString.swift"; sourceTree = "<group>"; };
 		2BA242372263C0D800E2841F /* SwiftDate+Region.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SwiftDate+Region.swift"; sourceTree = "<group>"; };
 		2BA873692248214800511C7C /* AlignedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlignedButton.swift; sourceTree = "<group>"; };
@@ -3426,15 +3426,6 @@
 			path = Query;
 			sourceTree = "<group>";
 		};
-		2B9F064024B60EAA006880F0 /* CSVExport */ = {
-			isa = PBXGroup;
-			children = (
-				2B9F064124B60EBE006880F0 /* CSVConfig.swift */,
-				2B9F064424B60ECF006880F0 /* CSVExportable.swift */,
-			);
-			path = CSVExport;
-            sourceTree = "<group>";
-        };
 		2B9F063924B5E481006880F0 /* Events */ = {
 			isa = PBXGroup;
 			children = (
@@ -3442,6 +3433,15 @@
 				2B9F063D24B5E4A7006880F0 /* TransactionEvent.swift */,
 			);
 			path = Events;
+			sourceTree = "<group>";
+		};
+		2B9F064024B60EAA006880F0 /* CSVExport */ = {
+			isa = PBXGroup;
+			children = (
+				2B9F064124B60EBE006880F0 /* CSVConfig.swift */,
+				2B9F064424B60ECF006880F0 /* CSVExportable.swift */,
+			);
+			path = CSVExport;
 			sourceTree = "<group>";
 		};
 		2BA4998F24B5E43C00452650 /* Tracking */ = {
@@ -5915,7 +5915,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = NO;
@@ -5946,7 +5946,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -5976,7 +5976,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -6122,7 +6122,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = NO;
@@ -6154,7 +6154,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -6240,7 +6240,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
