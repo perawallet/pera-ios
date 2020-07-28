@@ -118,6 +118,8 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
         
         view.endEditing(true)
         
+        RegistrationEvent(type: .recover).logEvent()
+        
         let configurator = BottomInformationBundle(
             title: "recover-from-seed-verify-pop-up-title".localized,
             image: img("img-green-checkmark"),
