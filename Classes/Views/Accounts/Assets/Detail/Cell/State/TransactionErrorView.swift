@@ -28,6 +28,7 @@ class TransactionErrorView: BaseView {
             .withAlignment(.center)
             .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
             .withTextColor(SharedColors.secondaryText)
+            .withLine(.contained)
     }()
     
     private lazy var tryAgainButton: AlignedButton = {

@@ -451,7 +451,11 @@ extension TransactionsViewController: CSVExportable {
     }
     
     private func formCSVFileName() -> String {
-        var fileName = "algorand_transactions"
+        var assetId = "algos"
+        if let assetDetailId = assetDetail?.id {
+            assetId = "\(assetDetailId)"
+        }
+        var fileName = "\(account.name ?? "")_\(assetId)"
         let dates = getTransactionFilterDates()
         if let fromDate = dates.from,
             let toDate = dates.to {
@@ -464,20 +468,20 @@ extension TransactionsViewController: CSVExportable {
         return "\(fileName).csv"
     }
     
-    private func createCSVData(from transactions: [Transaction]) -> [[String: AnyObject]] {
-        var csvData = [[String: AnyObject]]()
+    private func createCSVData(from transactions: [Transaction]) -> [[String: Any]] {
+        var csvData = [[String: Any]]()
         for transaction in transactions {
-            let transactionData: [String: AnyObject] = [
-                "transaction-detail-amount".localized: transaction.getAmount() as AnyObject,
-                "transaction-detail-reward".localized: transaction.senderRewards as AnyObject,
-                "transaction-detail-close-amount".localized: transaction.getCloseAmount() as AnyObject,
-                "transaction-detail-close-to".localized: transaction.getCloseAddress() as AnyObject,
-                "transaction-detail-to".localized: transaction.getReceiver() as AnyObject,
-                "transaction-detail-from".localized: transaction.sender as AnyObject,
-                "transaction-detail-fee".localized: transaction.fee as AnyObject,
-                "transaction-detail-round".localized: transaction.lastRound as AnyObject,
-                "title-id".localized: transaction.id as AnyObject,
-                "transaction-detail-note".localized: transaction.noteRepresentation() as AnyObject
+            let transactionData: [String: Any] = [
+                "transaction-detail-amount".localized: transaction.getAmount() ?? " ",
+                "transaction-detail-reward".localized: transaction.senderRewards ?? " ",
+                "transaction-detail-close-amount".localized: transaction.getCloseAmount() ?? " ",
+                "transaction-detail-close-to".localized: transaction.getCloseAddress() ?? " ",
+                "transaction-detail-to".localized: transaction.getReceiver() ?? " ",
+                "transaction-detail-from".localized: transaction.sender,
+                "transaction-detail-fee".localized: transaction.fee,
+                "transaction-detail-round".localized: transaction.lastRound,
+                "title-id".localized: transaction.id,
+                "transaction-detail-note".localized: transaction.noteRepresentation() ?? " "
             ]
             csvData.append(transactionData)
         }
