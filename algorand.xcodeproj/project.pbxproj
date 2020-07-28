@@ -312,8 +312,8 @@
 		2B191C83232150C900EAB1B8 /* PushNotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B191C81232150C900EAB1B8 /* PushNotificationController.swift */; };
 		2B1A1D5324AFAA2E00CB4E78 /* TransactionSignature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1A1D5224AFAA2E00CB4E78 /* TransactionSignature.swift */; };
 		2B1A1D5424AFAA2E00CB4E78 /* TransactionSignature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1A1D5224AFAA2E00CB4E78 /* TransactionSignature.swift */; };
-		2B1A1D5724B351CF00CB4E78 /* TransactionErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1A1D5624B351CF00CB4E78 /* TransactionErrorView.swift */; };
-		2B1A1D5824B351CF00CB4E78 /* TransactionErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1A1D5624B351CF00CB4E78 /* TransactionErrorView.swift */; };
+		2B1A1D5724B351CF00CB4E78 /* ListErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1A1D5624B351CF00CB4E78 /* ListErrorView.swift */; };
+		2B1A1D5824B351CF00CB4E78 /* ListErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1A1D5624B351CF00CB4E78 /* ListErrorView.swift */; };
 		2B1A1D6124B3526700CB4E78 /* TooltipPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1A1D6024B3526700CB4E78 /* TooltipPresenter.swift */; };
 		2B1A1D6224B3526700CB4E78 /* TooltipPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1A1D6024B3526700CB4E78 /* TooltipPresenter.swift */; };
 		2B1B536823279CD500D54029 /* AlgorandNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1B536723279CD500D54029 /* AlgorandNotification.swift */; };
@@ -1060,7 +1060,7 @@
 		2B191C882321998100EAB1B8 /* algorand-staging.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "algorand-staging.entitlements"; sourceTree = "<group>"; };
 		2B191C892321998600EAB1B8 /* algorand.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = algorand.entitlements; sourceTree = "<group>"; };
 		2B1A1D5224AFAA2E00CB4E78 /* TransactionSignature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionSignature.swift; sourceTree = "<group>"; };
-		2B1A1D5624B351CF00CB4E78 /* TransactionErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionErrorView.swift; sourceTree = "<group>"; };
+		2B1A1D5624B351CF00CB4E78 /* ListErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListErrorView.swift; sourceTree = "<group>"; };
 		2B1A1D6024B3526700CB4E78 /* TooltipPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TooltipPresenter.swift; sourceTree = "<group>"; };
 		2B1B536723279CD500D54029 /* AlgorandNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorandNotification.swift; sourceTree = "<group>"; };
 		2B1B536A2328029F00D54029 /* NotificationDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationDetail.swift; sourceTree = "<group>"; };
@@ -1686,7 +1686,7 @@
 		2B1A1D5524B351B400CB4E78 /* State */ = {
 			isa = PBXGroup;
 			children = (
-				2B1A1D5624B351CF00CB4E78 /* TransactionErrorView.swift */,
+				2B1A1D5624B351CF00CB4E78 /* ListErrorView.swift */,
 			);
 			path = State;
 			sourceTree = "<group>";
@@ -5091,7 +5091,7 @@
 				2BC182A723DEEE8B00888476 /* RequestAssetTransactionViewModel.swift in Sources */,
 				17BD4E542292F1260003E49A /* Contact.swift in Sources */,
 				2B4487012379592300C19FDE /* AssetCell.swift in Sources */,
-				2B1A1D5824B351CF00CB4E78 /* TransactionErrorView.swift in Sources */,
+				2B1A1D5824B351CF00CB4E78 /* ListErrorView.swift in Sources */,
 				2B7ABF6C232BF58E0050B64B /* PendingTransactions.swift in Sources */,
 				2B56716324008B590037FCFA /* LedgerTutorialInstructionView.swift in Sources */,
 				17BD4E552292F1260003E49A /* ContactSelectionCell.swift in Sources */,
@@ -5553,7 +5553,7 @@
 				2BC182A623DEEE8B00888476 /* RequestAssetTransactionViewModel.swift in Sources */,
 				2BDE9CDC224E2379007EFF30 /* TransactionHistoryContextView.swift in Sources */,
 				2BBA1989231FEB080080A6F6 /* API+Notification.swift in Sources */,
-				2B1A1D5724B351CF00CB4E78 /* TransactionErrorView.swift in Sources */,
+				2B1A1D5724B351CF00CB4E78 /* ListErrorView.swift in Sources */,
 				2B7ABF712332DCF50050B64B /* PendingTransactionView.swift in Sources */,
 				2B56716224008B590037FCFA /* LedgerTutorialInstructionView.swift in Sources */,
 				2B2A9F44232AE20A00450DB0 /* RewardView.swift in Sources */,

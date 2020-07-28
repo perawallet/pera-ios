@@ -19,6 +19,7 @@ class Session: Storable {
     private let termsAndServicesKey = "com.algorand.algorand.terms.services"
     private let termsAndServicesKeyV2 = "com.algorand.algorand.terms.services.v2"
     private let accountsQRTooltipKey = "com.algorand.algorand.accounts.qr.tooltip"
+    private let notificationLatestTimestamp = "com.algorand.algorand.notification.latest.timestamp"
     
     let algorandSDK = AlgorandSDK()
     
@@ -107,10 +108,13 @@ class Session: Storable {
         }
     }
     
-    var deviceId: String? {
-        didSet {
-            if deviceId != nil {
-                NotificationCenter.default.post(name: .DeviceIDSet, object: nil)
+    var notificationLatestFetchTimestamp: TimeInterval? {
+        get {
+            return userDefaults.double(forKey: notificationLatestTimestamp)
+        }
+        set {
+            if let timestamp = newValue {
+                userDefaults.set(timestamp, forKey: notificationLatestTimestamp)
             }
         }
     }

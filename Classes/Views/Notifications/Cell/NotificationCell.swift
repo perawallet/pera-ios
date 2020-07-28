@@ -14,7 +14,7 @@ class NotificationCell: BaseCollectionViewCell<NotificationView> {
         contextView.reset()
     }
     
-    static func calculatePreferredSize(_ viewModel: NotificationsViewModel) -> CGSize {
+    static func calculatePreferredSize(_ viewModel: NotificationsViewModel?) -> CGSize {
         return NotificationView.calculatePreferredSize(viewModel, with: Layout<NotificationView.LayoutConstants>()) 
     }
 }

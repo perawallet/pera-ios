@@ -29,6 +29,7 @@ enum RequestParameter: String, JSONBodyRequestParameter {
     case email = "email"
     case category = "category"
     case pushToken = "push_token"
+    case id = "id"
     case platform = "platform"
     case model = "model"
     case locale = "locale"

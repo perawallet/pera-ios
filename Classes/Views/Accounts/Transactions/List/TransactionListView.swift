@@ -23,8 +23,8 @@ class TransactionListView: BaseView {
         title: "accounts-tranaction-empty-text".localized,
         subtitle: "accounts-tranaction-empty-detail".localized
     )
-    private lazy var otherErrorView = TransactionErrorView()
-    private lazy var internetConnectionErrorView = TransactionErrorView()
+    private lazy var otherErrorView = ListErrorView()
+    private lazy var internetConnectionErrorView = ListErrorView()
     
     private lazy var transactionsCollectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
@@ -145,8 +145,8 @@ extension TransactionListView {
     }
 }
 
-extension TransactionListView: TransactionErrorViewDelegate {
-    func transactionErrorViewDidTryAgain(_ transactionErrorView: TransactionErrorView) {
+extension TransactionListView: ListErrorViewDelegate {
+    func listErrorViewDidTryAgain(_ listErrorView: ListErrorView) {
         delegate?.transactionListViewDidTryAgain(self)
     }
 }
