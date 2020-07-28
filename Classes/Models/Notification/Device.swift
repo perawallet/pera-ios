@@ -9,19 +9,19 @@
 import Magpie
 
 class Device: Model {
+    let id: String?
     let pushToken: String?
-    let platform: String
-    let model: String
-    let locale: String
-    let accounts: [String]?
+    let platform: String?
+    let model: String?
+    let locale: String?
 }
 
 extension Device {
     enum CodingKeys: String, CodingKey {
+        case id = "id"
         case pushToken = "push_token"
         case platform = "platform"
         case model = "model"
         case locale = "locale"
-        case accounts = "accounts"
     }
 }

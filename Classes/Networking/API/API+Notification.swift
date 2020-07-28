@@ -10,22 +10,16 @@ import Magpie
 
 extension API {
     @discardableResult
-    func registerDevice(with draft: DeviceRegistrationDraft, then handler: BoolHandler? = nil) -> EndpointOperatable {
-        let resultHandler: Endpoint.RawResultHandler = { result in
-            switch result {
-            case .success:
-                handler?(true)
-            case .failure:
-                handler?(false)
-            }
-        }
-        
+    func registerDevice(
+        with draft: DeviceRegistrationDraft,
+        then handler: @escaping Endpoint.DefaultResultHandler<Device>
+    ) -> EndpointOperatable {
         return Endpoint(path: Path("/api/devices/"))
             .base(mobileApiBase)
             .httpMethod(.post)
             .httpHeaders(mobileApiHeaders())
             .httpBody(draft)
-            .resultHandler(resultHandler)
+            .resultHandler(handler)
             .buildAndSend(self)
     }
     
@@ -36,6 +30,20 @@ extension API {
             .httpHeaders(mobileApiHeaders())
             .httpMethod(.delete)
             .httpBody(draft)
+            .buildAndSend(self)
+    }
+    
+    @discardableResult
+    func getNotifications(
+        for id: String,
+        with cursorQuery: CursorQuery,
+        then handler: @escaping Endpoint.DefaultResultHandler<PaginatedList<NotificationMessage>>
+    ) -> EndpointOperatable {
+        return Endpoint(path: Path("/api/devices/\(id)/notifications/"))
+            .base(mobileApiBase)
+            .httpHeaders(mobileApiHeaders())
+            .query(cursorQuery)
+            .resultHandler(handler)
             .buildAndSend(self)
     }
 }

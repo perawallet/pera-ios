@@ -21,6 +21,14 @@ class TransactionHistoryDataSource: NSObject, UICollectionViewDataSource {
     
     private var transactionParams: TransactionParams?
     private var fetchRequest: EndpointOperatable?
+    private var nextToken: String?
+    var hasNext: Bool {
+        return nextToken != nil
+    }
+    private let paginationRequestThreshold = 5
+    
+    var openFilterOptionsHandler: ((TransactionHistoryDataSource) -> Void)?
+    var shareHistoryHandler: ((TransactionHistoryDataSource) -> Void)?
     
     init(api: API?, account: Account, assetDetail: AssetDetail?) {
         self.api = api
@@ -41,14 +49,13 @@ class TransactionHistoryDataSource: NSObject, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.item < transactions.count {
             if let reward = transactions[indexPath.item] as? Reward {
-                guard let cell = collectionView.dequeueReusableCell(
+                if let cell = collectionView.dequeueReusableCell(
                     withReuseIdentifier: RewardCell.reusableIdentifier,
-                    for: indexPath) as? RewardCell else {
-                        fatalError("Index path is out of bounds")
+                    for: indexPath
+                ) as? RewardCell {
+                    viewModel.configure(cell, with: reward)
+                    return cell
                 }
-                
-                viewModel.configure(cell, with: reward)
-                return cell
             } else if let transaction = transactions[indexPath.item] as? Transaction {
                 return dequeueHistoryCell(in: collectionView, with: transaction, at: indexPath)
             } else if let transaction = transactions[indexPath.item] as? PendingTransaction {
@@ -77,6 +84,7 @@ extension TransactionHistoryDataSource {
             fatalError("Unexpected element kind")
         }
         
+        headerView.delegate = self
         return headerView
     }
 }
@@ -132,20 +140,8 @@ extension TransactionHistoryDataSource {
                 fatalError("Index path is out of bounds")
         }
         
-        if transaction.type == .payment {
-            if transaction.receiver == viewModel.account.address {
-                configure(cell, with: transaction, for: transaction.sender)
-            } else {
-                configure(cell, with: transaction, for: transaction.receiver)
-            }
-        } else {
-            if transaction.receiver == viewModel.account.address {
-                configure(cell, with: transaction, for: transaction.sender)
-            } else {
-                configure(cell, with: transaction, for: transaction.receiver)
-            }
-        }
-        
+        let address = transaction.receiver == viewModel.account.address ? transaction.sender : transaction.receiver
+        configure(cell, with: transaction, for: address)
         return cell
     }
     
@@ -165,7 +161,8 @@ extension TransactionHistoryDataSource {
     func loadData(
         for account: Account,
         withRefresh refresh: Bool,
-        between dates: (Date, Date)? = nil,
+        between dates: (Date?, Date?),
+        isPaginated: Bool,
         then handler: @escaping ([TransactionItem]?, Error?) -> Void
     ) {
         api?.getTransactionParams { response in
@@ -175,13 +172,7 @@ extension TransactionHistoryDataSource {
             case let .success(params):
                 self.transactionParams = params
                 self.viewModel.lastRound = params.lastRound
-                
-                if let dateRange = dates {
-                    self.fetchTransactions(for: account, between: dateRange, withRefresh: refresh, then: handler)
-                    return
-                }
-                
-                self.fetchTransactions(for: account, withRefresh: refresh, then: handler)
+                self.fetchTransactions(for: account, between: dates, withRefresh: refresh, isPaginated: isPaginated, then: handler)
             }
         }
     }
@@ -190,29 +181,39 @@ extension TransactionHistoryDataSource {
 extension TransactionHistoryDataSource {
     private func fetchTransactions(
         for account: Account,
-        between dates: (Date, Date),
+        between dates: (Date?, Date?),
         withRefresh refresh: Bool,
+        isPaginated: Bool,
+        limit: Int = 15,
         then handler: @escaping ([TransactionItem]?, Error?) -> Void
     ) {
-        if refresh {
-            transactions.removeAll()
+        var assetId: String?
+        if let id = assetDetail?.id {
+            assetId = String(id)
         }
         
-        fetchRequest = api?.fetchTransactions(for: account, max: Int.max) { response in
+        let draft = TransactionFetchDraft(account: account, dates: dates, nextToken: nextToken, assetId: assetId, limit: limit)
+        fetchRequest = api?.fetchTransactions(with: draft) { response in
             switch response {
             case let .failure(error):
                 handler(nil, error)
             case let .success(transactions):
+                if refresh {
+                    self.transactions.removeAll()
+                }
+                
                 transactions.transactions.forEach { transaction in
                     transaction.status = .completed
                 }
                 
+                self.nextToken = transactions.nextToken
+                
                 if let rewardDisplayPreference = self.api?.session.rewardDisplayPreference,
                     rewardDisplayPreference == .allowed,
                     self.assetDetail == nil {
-                    self.setRewards(from: transactions, for: account)
+                    self.setRewards(from: transactions, for: account, isPaginated: isPaginated)
                 } else {
-                    self.transactions = transactions.transactions.filter { transaction -> Bool in
+                    let filteredTrnsactions = transactions.transactions.filter { transaction -> Bool in
                         if let assetDetail = self.assetDetail {
                             guard let assetId = transaction.assetTransfer?.assetId else {
                                 return false
@@ -230,6 +231,12 @@ extension TransactionHistoryDataSource {
                             return transaction.payment != nil
                         }
                     }
+                    
+                    if isPaginated {
+                        self.transactions.append(contentsOf: filteredTrnsactions)
+                    } else {
+                        self.transactions = filteredTrnsactions
+                    }
                 }
                 
                 handler(self.transactions, nil)
@@ -239,55 +246,7 @@ extension TransactionHistoryDataSource {
 }
 
 extension TransactionHistoryDataSource {
-    private func fetchTransactions(
-        for account: Account,
-        withRefresh refresh: Bool,
-        then handler: @escaping ([TransactionItem]?, Error?) -> Void
-    ) {
-        if refresh {
-            transactions.removeAll()
-        }
-        
-        fetchRequest = api?.fetchTransactions(for: account, max: 15) { response in
-            switch response {
-            case let .failure(error):
-                handler(nil, error)
-            case let .success(transactions):
-                transactions.transactions.forEach { transaction in
-                    transaction.status = .completed
-                }
-                
-                if let rewardDisplayPreference = self.api?.session.rewardDisplayPreference,
-                    rewardDisplayPreference == .allowed,
-                    self.assetDetail == nil {
-                    self.setRewards(from: transactions, for: account)
-                } else {
-                    self.transactions = transactions.transactions.filter { transaction -> Bool in
-                        if let assetDetail = self.assetDetail {
-                            guard let assetId = transaction.assetTransfer?.assetId else {
-                                return false
-                            }
-                            if transaction.isAssetCreationTransaction(for: account.address) {
-                                return false
-                            }
-                            return assetId == assetDetail.id
-                        } else {
-                            if let assetTransfer = transaction.assetTransfer,
-                                assetTransfer.receiverAddress == account.address,
-                                assetTransfer.amount == 0 {
-                                return true
-                            }
-                            return transaction.payment != nil
-                        }
-                    }
-                }
-                
-                handler(self.transactions, nil)
-            }
-        }
-    }
-    
-    private func setRewards(from transactions: TransactionList, for account: Account) {
+    private func setRewards(from transactions: TransactionList, for account: Account, isPaginated: Bool) {
         let filteredTransactions = transactions.transactions.filter { transaction -> Bool in
             if let assetTransfer = transaction.assetTransfer,
                 assetTransfer.receiverAddress == account.address,
@@ -332,7 +291,7 @@ extension TransactionHistoryDataSource {
     }
     
     private func filter(_ pendingTransactions: [PendingTransaction]) {
-        let filteredTransactions = transactions.filter { ($0 as? PendingTransaction)?.id != nil }
+        let filteredTransactions = transactions.filter { ($0 as? PendingTransaction)?.signature != nil }
         if filteredTransactions.count == pendingTransactions.count {
             return
         }
@@ -343,10 +302,8 @@ extension TransactionHistoryDataSource {
                 return true
             }
             
-            var containsPendingTransaction = false
-            
-            pendingTransactions.forEach { pendingTransaction in
-                containsPendingTransaction = transactionItem.id == pendingTransaction.id
+            let containsPendingTransaction = pendingTransactions.contains { pendingTransaction -> Bool in
+                transactionItem.transactionSignature?.signature == pendingTransaction.signature
             }
             
             return !containsPendingTransaction
@@ -393,10 +350,62 @@ extension TransactionHistoryDataSource {
     
     func clear() {
         fetchRequest?.cancel()
+        nextToken = nil
         transactions.removeAll()
     }
     
     var isEmpty: Bool {
         transactions.isEmpty
+    }
+    
+    func shouldSendPaginatedRequest(at index: Int) -> Bool {
+        if transactionCount() < paginationRequestThreshold {
+            return index == transactionCount() - 1 && hasNext
+        }
+        
+        return index == transactionCount() - paginationRequestThreshold && hasNext
+    }
+}
+
+extension TransactionHistoryDataSource: TransactionHistoryHeaderSupplementaryViewDelegate {
+    func transactionHistoryHeaderSupplementaryViewDidOpenFilterOptions(
+        _ transactionHistoryHeaderSupplementaryView: TransactionHistoryHeaderSupplementaryView
+    ) {
+        guard let openFilterOptionsHandler = openFilterOptionsHandler else {
+            return
+        }
+        openFilterOptionsHandler(self)
+    }
+    
+    func transactionHistoryHeaderSupplementaryViewDidShareHistory(
+        _ transactionHistoryHeaderSupplementaryView: TransactionHistoryHeaderSupplementaryView
+    ) {
+        guard let shareHistoryHandler = shareHistoryHandler else {
+            return
+        }
+        shareHistoryHandler(self)
+    }
+}
+
+extension TransactionHistoryDataSource {
+    func fetchAllTransactions(
+        for account: Account,
+        between dates: (Date?, Date?),
+        then handler: @escaping ([Transaction]?, Error?) -> Void
+    ) {
+        var assetId: String?
+        if let id = assetDetail?.id {
+            assetId = String(id)
+        }
+        
+        let draft = TransactionFetchDraft(account: account, dates: dates, nextToken: nil, assetId: assetId, limit: nil)
+        api?.fetchTransactions(with: draft) { response in
+            switch response {
+            case let .failure(error):
+                handler(nil, error)
+            case let .success(transactions):
+                handler(transactions.transactions, nil)
+            }
+        }
     }
 }
