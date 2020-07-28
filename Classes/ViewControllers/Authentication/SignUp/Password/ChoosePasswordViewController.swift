@@ -23,12 +23,6 @@ class ChoosePasswordViewController: BaseViewController {
     private var route: Screen?
     
     private let localAuthenticator = LocalAuthenticator()
-    private lazy var pushNotificationController: PushNotificationController = {
-        guard let api = api else {
-            fatalError("Api must be set before accessing this view controller.")
-        }
-        return PushNotificationController(api: api)
-    }()
     
     private var pinLimitStore = PinLimitStore()
     
@@ -316,9 +310,7 @@ extension ChoosePasswordViewController {
 
 extension ChoosePasswordViewController: PinLimitViewControllerDelegate {
     func pinLimitViewControllerDidResetAllData(_ pinLimitViewController: PinLimitViewController) {
-        session?.reset(isContactIncluded: true)
-        NotificationCenter.default.post(name: .ContactDeletion, object: self, userInfo: nil)
-        pushNotificationController.revokeDevice()
+        UIApplication.shared.rootViewController()?.deleteAllData()
         open(.introduction, by: .launch, animated: false)
     }
 }

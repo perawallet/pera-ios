@@ -22,6 +22,8 @@ class RootViewController: UIViewController {
         }
     }
     
+    private lazy var pushNotificationController = PushNotificationController(api: appConfiguration.api)
+    
     // MARK: Properties
     
     private lazy var statusbarView: UIView = {
@@ -245,5 +247,13 @@ extension RootViewController {
         if statusbarView.superview != nil {
             statusbarView.removeFromSuperview()
         }
+    }
+}
+
+extension RootViewController {
+    func deleteAllData() {
+        appConfiguration.session.reset(isContactIncluded: true)
+        NotificationCenter.default.post(name: .ContactDeletion, object: self, userInfo: nil)
+        pushNotificationController.revokeDevice()
     }
 }
