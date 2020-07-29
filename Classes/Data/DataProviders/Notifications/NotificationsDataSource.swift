@@ -39,6 +39,7 @@ extension NotificationsDataSource {
             return
         }
         
+        let latesTimestamp = api.session.notificationLatestFetchTimestamp
         lastRequest = api.getNotifications(for: deviceId, with: CursorQuery(cursor: paginationCursor)) { response in
             switch response {
             case let .success(notifications):
@@ -57,9 +58,11 @@ extension NotificationsDataSource {
                     self.notifications = notifications.results
                 }
                 
+                var viewModels = [NotificationsViewModel]()
                 notifications.results.forEach { notification in
-                    self.viewModels.append(self.formViewModel(from: notification))
+                    viewModels.append(self.formViewModel(from: notification, latesTimestamp: latesTimestamp))
                 }
+                self.viewModels = viewModels
                 
                 self.delegate?.notificationsDataSourceDidFetchNotifications(self)
             case .failure:
@@ -132,20 +135,32 @@ extension NotificationsDataSource: UICollectionViewDataSource {
         fatalError("Index path is out of bounds")
     }
     
-    private func formViewModel(from notification: NotificationMessage) -> NotificationsViewModel {
+    private func formViewModel(from notification: NotificationMessage, latesTimestamp: TimeInterval?) -> NotificationsViewModel {
         return NotificationsViewModel(
             notification: notification,
-            account: getAccountIfExists(for: notification),
-            contact: getContactIfExists(for: notification)
+            senderAccount: getSenderAccountIfExists(for: notification),
+            receiverAccount: getReceiverAccountIfExists(for: notification),
+            contact: getContactIfExists(for: notification),
+            latestReadTimestamp: latesTimestamp
         )
     }
     
-    private func getAccountIfExists(for notification: NotificationMessage) -> Account? {
-        guard let details = notification.detail else {
+    private func getSenderAccountIfExists(for notification: NotificationMessage) -> Account? {
+        guard let details = notification.detail,
+            let senderAddress = details.senderAddress else {
             return nil
         }
         
-        return api.session.accounts.first { $0.address == details.senderAddress || $0.address == details.receiverAddress }
+        return api.session.account(from: senderAddress)
+    }
+    
+    private func getReceiverAccountIfExists(for notification: NotificationMessage) -> Account? {
+        guard let details = notification.detail,
+            let receiverAddress = details.receiverAddress else {
+            return nil
+        }
+        
+        return api.session.account(from: receiverAddress)
     }
     
     private func getContactIfExists(for notification: NotificationMessage) -> Contact? {

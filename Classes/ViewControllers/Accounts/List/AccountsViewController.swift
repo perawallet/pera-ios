@@ -242,6 +242,7 @@ extension AccountsViewController {
             return
         }
         
+        pushNotificationController.registerDevice()
         accountsDataSource.reload()
         setAccountsCollectionViewContentState()
         accountsView.accountsCollectionView.reloadData()

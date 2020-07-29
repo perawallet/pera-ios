@@ -17,6 +17,8 @@ class NotificationsViewController: BaseViewController {
     
     private lazy var notificationsView = NotificationsView()
     
+    private var isInitialFetchCompleted = false
+    
     private lazy var dataSource: NotificationsDataSource = {
         guard let api = api else {
             fatalError("API should be set.")
@@ -31,6 +33,14 @@ class NotificationsViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         getNotifications()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if isInitialFetchCompleted {
+            reloadNotifications()
+        }
     }
     
     override func linkInteractors() {
@@ -102,6 +112,7 @@ extension NotificationsViewController: UICollectionViewDelegateFlowLayout {
 
 extension NotificationsViewController: NotificationsDataSourceDelegate {
     func notificationsDataSourceDidFetchNotifications(_ notificationsDataSource: NotificationsDataSource) {
+        isInitialFetchCompleted = true
         notificationsView.endRefreshing()
         
         if notificationsDataSource.isEmpty {
@@ -114,6 +125,7 @@ extension NotificationsViewController: NotificationsDataSourceDelegate {
     }
     
     func notificationsDataSourceDidFailToFetch(_ notificationsDataSource: NotificationsDataSource) {
+        isInitialFetchCompleted = true
         notificationsView.endRefreshing()
         notificationsView.setErrorState()
         notificationsView.reloadData()
@@ -122,12 +134,14 @@ extension NotificationsViewController: NotificationsDataSourceDelegate {
 
 extension NotificationsViewController: NotificationsViewDelegate {
     func notificationsViewDidRefreshList(_ notificationsView: NotificationsView) {
-        dataSource.clear()
-        notificationsView.reloadData()
-        getNotifications()
+        reloadNotifications()
     }
     
     func notificationsViewDidTryAgain(_ notificationsView: NotificationsView) {
+        reloadNotifications()
+    }
+    
+    private func reloadNotifications() {
         dataSource.clear()
         notificationsView.reloadData()
         getNotifications()

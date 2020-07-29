@@ -16,11 +16,17 @@ class NotificationsViewModel {
     private var time: String?
     private var isRead: Bool = true
     
-    init(notification: NotificationMessage, account: Account? = nil, contact: Contact? = nil) {
+    init(
+        notification: NotificationMessage,
+        senderAccount: Account? = nil,
+        receiverAccount: Account? = nil,
+        contact: Contact? = nil,
+        latestReadTimestamp: TimeInterval? = nil
+    ) {
         setImage(notification: notification, contact: contact)
-        setTitle(notification: notification, account: account, contact: contact)
+        setTitle(notification: notification, senderAccount: senderAccount, receiverAccount: receiverAccount, contact: contact)
         setTime(notification: notification)
-        setIsRead(notification: notification)
+        setIsRead(notification: notification, latestReadTimestamp: latestReadTimestamp)
     }
     
     private func setImage(notification: NotificationMessage, contact: Contact?) {
@@ -42,15 +48,15 @@ class NotificationsViewModel {
         }
     }
     
-    private func setTitle(notification: NotificationMessage, account: Account?, contact: Contact?) {
+    private func setTitle(notification: NotificationMessage, senderAccount: Account?, receiverAccount: Account?, contact: Contact?) {
         guard let notificationDetail = notification.detail,
             let notificationType = notification.notificationType else {
             title = NSAttributedString(string: notification.message ?? "")
             return
         }
         
-        let sender = getSenderInformationFromLocalValues(in: notificationDetail, account: account, contact: contact) ?? ""
-        let receiver = getReceiverInformationFromLocalValues(in: notificationDetail, account: account, contact: contact) ?? ""
+        let sender = getSenderInformationFromLocalValues(in: notificationDetail, account: senderAccount, contact: contact) ?? ""
+        let receiver = getReceiverInformationFromLocalValues(in: notificationDetail, account: receiverAccount, contact: contact) ?? ""
         let assetDisplayName = getAssetDisplayName(from: notificationDetail) ?? ""
         let amount = getAmount(from: notificationDetail) ?? ""
         let assetWithAmount = "\(amount) \(assetDisplayName)"
@@ -83,8 +89,8 @@ class NotificationsViewModel {
         }
     }
     
-    private func setIsRead(notification: NotificationMessage) {
-        guard let notificationLatestFetchTimestamp = UIApplication.shared.appConfiguration?.session.notificationLatestFetchTimestamp,
+    private func setIsRead(notification: NotificationMessage, latestReadTimestamp: TimeInterval?) {
+        guard let notificationLatestFetchTimestamp = latestReadTimestamp,
             let notificationDate = notification.date else {
             isRead = false
             return
@@ -149,7 +155,7 @@ extension NotificationsViewModel {
     private func getAssetDisplayName(from notificationDetail: NotificationDetail) -> String? {
         if let asset = notificationDetail.asset {
             let isUnknown = asset.name.isNilOrEmpty && asset.code.isNilOrEmpty
-            let assetDisplayName = isUnknown ? "title-unknown".localized : "\(asset.name ?? "") \(asset.code ?? ""))"
+            let assetDisplayName = isUnknown ? "title-unknown".localized : "\(asset.name ?? "") (\(asset.code ?? ""))"
             return assetDisplayName
         }
         return "Algos"
