@@ -95,7 +95,7 @@ class AccountsViewController: BaseViewController {
         
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(didUpdateAuthenticatedUser(notification:)),
+            selector: #selector(didUpdateAccount(notification:)),
             name: .AccountUpdate,
             object: nil
         )
@@ -242,7 +242,19 @@ extension AccountsViewController {
             return
         }
         
+        accountsDataSource.reload()
+        setAccountsCollectionViewContentState()
+        accountsView.accountsCollectionView.reloadData()
+    }
+    
+    @objc
+    private func didUpdateAccount(notification: Notification) {
+        if !isConnectedToInternet {
+            return
+        }
+        
         pushNotificationController.registerDevice()
+        
         accountsDataSource.reload()
         setAccountsCollectionViewContentState()
         accountsView.accountsCollectionView.reloadData()
