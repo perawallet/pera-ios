@@ -28,6 +28,6 @@ extension Asset: Encodable { }
 
 extension Asset: Equatable {
     static func == (lhs: Asset, rhs: Asset) -> Bool {
-        return lhs.id == rhs.id
+        return lhs.id == rhs.id && lhs.amount == rhs.amount
     }
 }
