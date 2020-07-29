@@ -294,6 +294,8 @@ extension Session {
     func reset(isContactIncluded: Bool) {
         let termsAndServicesAccepted = isTermsAndServicesAccepted()
         
+        authenticatedUser = nil
+        accounts.removeAll()
         applicationConfiguration = nil
         ApplicationConfiguration.clear(entity: ApplicationConfiguration.entityName)
         
