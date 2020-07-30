@@ -101,7 +101,7 @@ extension AccountManager {
         api.getTransactionParams { response in
             switch response {
             case .failure:
-                self.currentRound = self.currentRound.map { $0 + 1 } ?? 0
+                self.waitForNextRoundAndFetchAccounts(round: 0, completion: completion)
             case let .success(params):
                 self.currentRound = params.lastRound
             }

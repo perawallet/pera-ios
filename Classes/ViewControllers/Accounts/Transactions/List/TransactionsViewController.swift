@@ -495,11 +495,15 @@ extension TransactionsViewController: MagpieDelegate {
         didConnectVia connection: NetworkConnection,
         from oldConnection: NetworkConnection
     ) {
-        isConnectedToInternet = networkMonitor.isConnected
+        if UIApplication.shared.isActive {
+            isConnectedToInternet = networkMonitor.isConnected
+        }
     }
     
     func magpie(_ magpie: Magpie, networkMonitor: NetworkMonitor, didDisconnectFrom oldConnection: NetworkConnection) {
-        isConnectedToInternet = networkMonitor.isConnected
+        if UIApplication.shared.isActive {
+            isConnectedToInternet = networkMonitor.isConnected
+        }
     }
 }
 
