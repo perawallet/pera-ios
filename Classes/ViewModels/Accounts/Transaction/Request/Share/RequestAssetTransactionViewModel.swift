@@ -18,15 +18,16 @@ class RequestAssetTransactionViewModel {
     
     func configure(_ view: RequestTransactionView) {
         if assetTransactionRequestDraft.account.type.isLedger() {
-            view.setAccountImage(img("icon-account-type-ledger"))
+            view.setAccountImage(img("img-ledger-small"))
         } else {
             view.setAccountImage(img("icon-account-type-standard"))
         }
         
         view.setAccountName(assetTransactionRequestDraft.account.name)
         
-        view.setAssetName(for: assetTransactionRequestDraft.assetDetail)
-        view.removeAssetId()
+        if !assetTransactionRequestDraft.assetDetail.isVerified {
+            view.removeVerifiedAsset()
+        }
         
         view.setAmountInformationViewMode(
             .normal(
@@ -35,5 +36,26 @@ class RequestAssetTransactionViewModel {
                 fraction: assetTransactionRequestDraft.assetDetail.fractionDecimals
             )
         )
+        
+        view.setAssetAlignment(.right)
+        view.setAssetId("\(assetTransactionRequestDraft.assetDetail.id)")
+        
+        if assetTransactionRequestDraft.assetDetail.hasBothDisplayName() || assetTransactionRequestDraft.assetDetail.hasOnlyAssetName() {
+            view.setAssetName(assetTransactionRequestDraft.assetDetail.assetName)
+            view.removeAssetUnitName()
+            return
+        }
+        
+        if assetTransactionRequestDraft.assetDetail.hasOnlyUnitName() {
+            view.setAssetName(assetTransactionRequestDraft.assetDetail.unitName)
+            view.removeAssetUnitName()
+            return
+        }
+        
+        if assetTransactionRequestDraft.assetDetail.hasNoDisplayName() {
+            view.setAssetName("title-unknown".localized)
+            view.removeAssetUnitName()
+            return
+        }
     }
 }

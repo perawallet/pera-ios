@@ -300,8 +300,6 @@ class Router {
             )
         case let .rewardDetail(account):
             viewController = RewardDetailViewController(account: account, configuration: configuration)
-        case let .assetList(account):
-            viewController = AssetListViewController(account: account, configuration: configuration)
         case .verifiedAssetInformation:
             viewController = VerifiedAssetInformationViewController(configuration: configuration)
         case let .ledgerTutorial(mode):
@@ -339,9 +337,15 @@ class Router {
             viewController = PassphraseDisplayViewController(address: address, configuration: configuration)
         case let .tooltip(title):
             viewController = TooltipViewController(title: title, configuration: configuration)
+        case .pinLimit:
+            viewController = PinLimitViewController(configuration: configuration)
         case .assetActionConfirmationNotification,
              .assetDetailNotification:
             return nil
+        case let .transactionFilter(filterOption):
+            viewController = TransactionFilterViewController(filterOption: filterOption, configuration: configuration)
+        case let .transactionFilterCustomRange(fromDate, toDate):
+            viewController = TransactionCustomRangeSelectionViewController(fromDate: fromDate, toDate: toDate, configuration: configuration)
         }
         
         return viewController as? T

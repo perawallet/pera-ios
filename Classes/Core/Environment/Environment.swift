@@ -20,46 +20,39 @@ class Environment {
         return instance
     }
     
-    lazy var serverSchema: String = {
-        switch target {
-        case .staging:
-            return testNetSchema
-        case .prod:
-            return mainNetSchema
-        }
-    }()
-    
     lazy var isTestNet = target == .staging
     
-    lazy var testNetSchema = "http"
+    lazy var schema = "https"
+    lazy var algodToken = "0dw4Qu6ckPJTQY540Z0sEokH910KUWKjsf312fxNtTcVjw5UUhhlK4s4odcXIoEz"
+    lazy var indexerToken = "KegWFLYQnBNVeP4oHCX64dObBk8VemzYdNqsnAOIxYQ8aqJLQTYeVDQyZNnx1PZA"
     
-    lazy var mainNetSchema = "https"
+    lazy var testNetAlgodHost = "node-testnet.aws.algodev.network"
+    lazy var testNetIndexerHost = "indexer-testnet.aws.algodev.network"
+    lazy var testNetAlgodApi = "\(schema)://\(testNetAlgodHost)"
+    lazy var testNetIndexerApi = "\(schema)://\(testNetIndexerHost)"
+    
+    lazy var mainNetAlgodHost = "node-mainnet.aws.algodev.network"
+    lazy var mainNetIndexerHost = "indexer-mainnet.aws.algodev.network"
+    lazy var mainNetAlgodApi = "\(schema)://\(mainNetAlgodHost)"
+    lazy var mainNetIndexerApi = "\(schema)://\(mainNetIndexerHost)"
     
     lazy var serverHost: String = {
         switch target {
         case .staging:
-            return testNetHost
+            return testNetAlgodHost
         case .prod:
-            return mainNetHost
+            return mainNetAlgodHost
         }
     }()
-    
-    lazy var testNetHost = "indexer-testnet.algorand.network:8080"
-    
-    lazy var mainNetHost = "indexer.algorand.network:8443"
     
     lazy var binanceHost = "api.binance.com"
     
     lazy var mobileHost = "mobile-api.algorand.com"
     
     lazy var serverApi: String = {
-        let api = "\(serverSchema)://\(serverHost)"
+        let api = "\(schema)://\(serverHost)"
         return api
     }()
-    
-    lazy var testNetApi = "\(testNetSchema)://\(testNetHost)"
-    
-    lazy var mainNetApi = "\(mainNetSchema)://\(mainNetHost)"
     
     lazy var binanceApi: String = {
         let api = "https://\(binanceHost)"
@@ -78,28 +71,6 @@ class Environment {
     lazy var testNetMobileApi = "https://staging.\(mobileHost)"
     
     lazy var mainNetMobileApi = "https://\(mobileHost)"
-    
-    lazy var serverToken: String = {
-        switch target {
-        case .staging:
-            return testNetToken
-        case .prod:
-            return mainNetToken
-        }
-    }()
-    
-    lazy var testNetToken = "402049a2fde425a3e0e81b41c4c32fd70104544caee916ec86adea955f04c14b"
-    
-    lazy var mainNetToken = "0f24cac92e5ead6afbcf389e0ade28bb609d24ca6687359f342748c68d6cf9b2"
-    
-    lazy var algorandNodeName: String = {
-        switch target {
-        case .staging:
-            return "node-settings-default-test-node-name".localized
-        case .prod:
-            return "node-settings-default-node-name".localized
-        }
-    }()
     
     lazy var termsAndServicesUrl = "https://www.algorand.com/wallet-disclaimer"
     

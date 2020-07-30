@@ -27,18 +27,13 @@ extension AssetDetailViewModel {
         if let assetDetail = assetDetail {
             view.dollarValueImageView.isHidden = true
             view.algosImageView.removeFromSuperview()
-            view.verifiedImageView.isHidden = !assetDetail.isVerified
-            view.rewardTotalAmountView.removeFromSuperview()
-            view.assetNameLabel.attributedText = assetDetail.assetDisplayName(
-                with: UIFont.font(withWeight: .medium(size: 14.0)),
-                isIndexIncluded: false,
-                shouldDisplayIndexWithName: false
-            )
-            
-            view.assetIdLabel.isHidden = false
-            if let id = assetDetail.id {
-                view.assetIdLabel.text = "ID \(id)"
+            if !assetDetail.isVerified {
+                view.verifiedImageView.removeFromSuperview()
             }
+            view.rewardTotalAmountView.removeFromSuperview()
+            view.assetNameLabel.text = assetDetail.getDisplayNames().0
+            view.assetIdLabel.isHidden = false
+            view.assetIdLabel.text = "ID \(assetDetail.id)"
             
             guard let amount = account.amount(for: assetDetail) else {
                 return
@@ -90,7 +85,7 @@ extension AssetDetailViewModel {
                 return
             }
             
-            if assetTransaction.receiverAddress == account.address && assetTransaction.amount == 0 && transaction.type == "axfer" {
+            if assetTransaction.receiverAddress == account.address && assetTransaction.amount == 0 && transaction.type == .assetTransfer {
                 view.setContact("asset-creation-fee-title".localized)
                 view.subtitleLabel.isHidden = true
                 view.transactionAmountView.mode = .negative(amount: transaction.fee.toAlgos)
@@ -112,26 +107,28 @@ extension AssetDetailViewModel {
         } else {
             guard let payment = transaction.payment else {
                 if let assetTransaction = transaction.assetTransfer,
-                    assetTransaction.receiverAddress == account.address && assetTransaction.amount == 0 && transaction.type == "axfer" {
+                    assetTransaction.receiverAddress == account.address
+                    && assetTransaction.amount == 0
+                    && transaction.type == .assetTransfer {
                     view.setContact("asset-creation-fee-title".localized)
                     view.subtitleLabel.isHidden = true
                     view.transactionAmountView.mode = .negative(amount: transaction.fee.toAlgos)
                 }
-                let formattedDate = findDate(from: transaction.lastRound).toFormat("MMMM dd, yyyy")
+                let formattedDate = transaction.date?.toFormat("MMMM dd, yyyy")
                 view.dateLabel.text = formattedDate
                 return
             }
             
-            if payment.toAddress == account.address {
-                configure(view, with: contact, and: transaction.from)
+            if payment.receiver == account.address {
+                configure(view, with: contact, and: transaction.sender)
                 view.transactionAmountView.mode = .positive(amount: payment.amountForTransaction(includesCloseAmount: true).toAlgos)
             } else {
-                configure(view, with: contact, and: payment.toAddress)
+                configure(view, with: contact, and: payment.receiver)
                 view.transactionAmountView.mode = .negative(amount: payment.amountForTransaction(includesCloseAmount: true).toAlgos)
             }
         }
         
-        let formattedDate = findDate(from: transaction.lastRound).toFormat("MMMM dd, yyyy")
+        let formattedDate = transaction.date?.toFormat("MMMM dd, yyyy")
         view.dateLabel.text = formattedDate
     }
     
@@ -149,30 +146,55 @@ extension AssetDetailViewModel {
         }
     }
     
+    func configure(_ view: TransactionHistoryContextView, with transaction: PendingTransaction, for contact: Contact? = nil) {
+        if let assetDetail = assetDetail {
+            if transaction.receiver == account.address && transaction.amount == 0 && transaction.type == .assetTransfer {
+                view.setContact("asset-creation-fee-title".localized)
+                view.subtitleLabel.isHidden = true
+                if let fee = transaction.fee {
+                    view.transactionAmountView.mode = .negative(amount: fee.toAlgos)
+                }
+            } else if transaction.receiver == account.address {
+                configure(view, with: contact, and: transaction.receiver)
+                view.transactionAmountView.algoIconImageView.removeFromSuperview()
+                if let amount = transaction.amount {
+                    view.transactionAmountView.mode = .positive(
+                        amount: amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
+                        fraction: assetDetail.fractionDecimals
+                    )
+                }
+            } else {
+                configure(view, with: contact, and: transaction.receiver)
+                view.transactionAmountView.algoIconImageView.removeFromSuperview()
+                if let amount = transaction.amount {
+                    view.transactionAmountView.mode = .negative(
+                        amount: amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
+                        fraction: assetDetail.fractionDecimals
+                    )
+                }
+            }
+        } else {
+            if transaction.receiver == account.address {
+                configure(view, with: contact, and: transaction.sender)
+                if let amount = transaction.amount {
+                    view.transactionAmountView.mode = .positive(amount: amount.toAlgos)
+                }
+            } else {
+                configure(view, with: contact, and: transaction.receiver)
+                if let amount = transaction.amount {
+                    view.transactionAmountView.mode = .negative(amount: amount.toAlgos)
+                }
+            }
+        }
+        
+        let formattedDate = Date().toFormat("MMMM dd, yyyy")
+        view.dateLabel.text = formattedDate
+    }
+    
     func configure(_ cell: RewardCell, with reward: Reward) {
         cell.contextView.transactionAmountView.mode = .positive(amount: reward.amount.toAlgos)
-        let formattedDate = findDate(from: reward.round).toFormat("MMMM dd, yyyy")
-        cell.contextView.setDate(formattedDate)
-    }
-}
-
-extension AssetDetailViewModel {
-    private func findDate(from round: Int64) -> Date {
-        guard let lastRound = lastRound else {
-            return Date()
+        if let formattedDate = reward.date?.toFormat("MMMM dd, yyyy") {
+            cell.contextView.setDate(formattedDate)
         }
-    
-        let roundDifference = lastRound - round
-        let minuteDifference = roundDifference / 12
-        
-        if roundDifference <= 0 {
-            return Date()
-        }
-        
-        guard let transactionDate = Calendar.current.date(byAdding: .minute, value: Int(-minuteDifference), to: Date()) else {
-            return Date()
-        }
-        
-        return transactionDate
     }
 }

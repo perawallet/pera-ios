@@ -16,6 +16,26 @@ class TransactionDetailView: BaseView {
     
     private let transactionType: TransactionType
     
+    private lazy var closeToCopyValueGestureRecognizer = UILongPressGestureRecognizer(
+        target: self,
+        action: #selector(notifyDelegateToCopyCloseToView)
+    )
+    
+    private lazy var idCopyValueGestureRecognizer = UILongPressGestureRecognizer(
+        target: self,
+        action: #selector(notifyDelegateToCopyIdView)
+    )
+    
+    private lazy var opponentCopyValueGestureRecognizer = UILongPressGestureRecognizer(
+        target: self,
+        action: #selector(notifyDelegateToCopyOpponentView)
+    )
+    
+    private lazy var noteCopyValueGestureRecognizer = UILongPressGestureRecognizer(
+        target: self,
+        action: #selector(notifyDelegateToCopyNoteView)
+    )
+    
     private(set) lazy var statusView: TransactionStatusInformationView = {
         let statusView = TransactionStatusInformationView()
         statusView.setTitle("transaction-detail-status".localized)
@@ -47,6 +67,7 @@ class TransactionDetailView: BaseView {
     private(set) lazy var closeToView: TransactionTextInformationView = {
         let closeToView = TransactionTextInformationView()
         closeToView.setTitle("transaction-detail-close-to".localized)
+        closeToView.isUserInteractionEnabled = true
         return closeToView
     }()
     
@@ -65,12 +86,14 @@ class TransactionDetailView: BaseView {
     private(set) lazy var idView: TransactionTitleInformationView = {
         let idView = TransactionTitleInformationView()
         idView.setTitle("transaction-detail-id".localized)
+        idView.isUserInteractionEnabled = true
         return idView
     }()
     
     private(set) lazy var noteView: TransactionTitleInformationView = {
         let noteView = TransactionTitleInformationView()
         noteView.setTitle("transaction-detail-note".localized)
+        noteView.isUserInteractionEnabled = true
         return noteView
     }()
     
@@ -81,14 +104,20 @@ class TransactionDetailView: BaseView {
     
     override func configureAppearance() {
         backgroundColor = SharedColors.secondaryBackground
+        opponentView.isUserInteractionEnabled = true
+        closeToView.copyImageView.isHidden = false
+        idView.copyImageView.isHidden = false
+        opponentView.copyImageView.isHidden = false
+        noteView.copyImageView.isHidden = false
     }
     
     override func linkInteractors() {
         super.linkInteractors()
         opponentView.delegate = self
-        closeToView.delegate = self
-        idView.delegate = self
-        noteView.delegate = self
+        closeToView.addGestureRecognizer(closeToCopyValueGestureRecognizer)
+        idView.addGestureRecognizer(idCopyValueGestureRecognizer)
+        opponentView.addGestureRecognizer(opponentCopyValueGestureRecognizer)
+        noteView.addGestureRecognizer(noteCopyValueGestureRecognizer)
     }
     
     override func prepareLayout() {
@@ -247,32 +276,27 @@ extension TransactionDetailView: TransactionContactInformationViewDelegate {
     func transactionContactInformationViewDidTapActionButton(_ transactionContactInformationView: TransactionContactInformationView) {
         delegate?.transactionDetailViewDidTapOpponentActionButton(self)
     }
+}
+
+extension TransactionDetailView {
+    @objc
+    private func notifyDelegateToCopyCloseToView() {
+        delegate?.transactionDetailViewDidCopyCloseToAddress(self)
+    }
     
-    func transactionContactInformationViewDidCopyDetail(_ transactionContactInformationView: TransactionContactInformationView) {
+    @objc
+    private func notifyDelegateToCopyOpponentView() {
         delegate?.transactionDetailViewDidCopyOpponentAddress(self)
     }
-}
-
-extension TransactionDetailView: TransactionTextInformationViewDelegate {
-    func transactionTextInformationViewDidCopyDetail(_ transactionTextInformationView: TransactionTextInformationView) {
-        if transactionTextInformationView == closeToView {
-            delegate?.transactionDetailViewDidCopyCloseToAddress(self)
-            return
-        }
+    
+    @objc
+    private func notifyDelegateToCopyIdView() {
+        delegate?.transactionDetailViewDidCopyTransactionID(self)
     }
-}
-
-extension TransactionDetailView: TransactionTitleInformationViewDelegate {
-    func transactionTitleInformationViewDidCopyDetail(_ transactionTitleInformationView: TransactionTitleInformationView) {
-        if transactionTitleInformationView == noteView {
-            delegate?.transactionDetailViewDidCopyTransactionNote(self)
-            return
-        }
-        
-        if transactionTitleInformationView == idView {
-            delegate?.transactionDetailViewDidCopyTransactionID(self)
-            return
-        }
+    
+    @objc
+    private func notifyDelegateToCopyNoteView() {
+        delegate?.transactionDetailViewDidCopyTransactionNote(self)
     }
 }
 

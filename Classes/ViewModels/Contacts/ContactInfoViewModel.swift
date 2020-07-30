@@ -27,15 +27,44 @@ class ContactInfoViewModel {
     func configure(_ cell: ContactAssetCell, at indexPath: IndexPath, with contactAccount: Account?) {
         if indexPath.item == 0 {
             cell.contextView.assetNameView.removeId()
-            cell.contextView.assetNameView.nameLabel.text = "asset-algos-title".localized
-            cell.contextView.assetNameView.setVerified(true)
+            cell.contextView.assetNameView.setName("asset-algos-title".localized)
+            cell.contextView.assetNameView.removeUnitName()
         } else {
             guard let account = contactAccount else {
                 return
             }
             
             let assetDetail = account.assetDetails[indexPath.item - 1]
-            cell.contextView.assetNameView.setAssetName(for: assetDetail)
+            
+            if !assetDetail.isVerified {
+                cell.contextView.assetNameView.removeVerified()
+            }
+            
+            cell.contextView.assetNameView.setId("\(assetDetail.id)")
+            
+            if assetDetail.hasBothDisplayName() {
+                cell.contextView.assetNameView.setAssetName(for: assetDetail)
+                return
+            }
+            
+            if assetDetail.hasOnlyAssetName() {
+                cell.contextView.assetNameView.setName(assetDetail.assetName)
+                cell.contextView.assetNameView.removeUnitName()
+                return
+            }
+            
+            if assetDetail.hasOnlyUnitName() {
+                cell.contextView.assetNameView.setName(assetDetail.unitName)
+                cell.contextView.assetNameView.removeName()
+                return
+            }
+            
+            if assetDetail.hasNoDisplayName() {
+                cell.contextView.assetNameView.setName("title-unknown".localized)
+                cell.contextView.assetNameView.nameLabel.textColor = SharedColors.secondary700
+                cell.contextView.assetNameView.removeUnitName()
+                return
+            }
         }
     }
 }

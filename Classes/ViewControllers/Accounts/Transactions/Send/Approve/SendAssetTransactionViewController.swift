@@ -40,6 +40,16 @@ class SendAssetTransactionViewController: SendTransactionViewController, TestNet
     
     override func completeTransaction(with id: TransactionID) {
         assetTransactionSendDraft.identifier = id.identifier
+        
+        if let id = assetTransactionSendDraft.assetIndex {
+            TransactionEvent(
+                accountType: assetTransactionSendDraft.from.type,
+                assetId: String(id),
+                isMaxTransaction: assetTransactionSendDraft.isMaxTransaction,
+                amount: assetTransactionSendDraft.amount?.toFraction(of: assetTransactionSendDraft.assetDecimalFraction)
+            ).logEvent()
+        }
+        
         delegate?.sendTransactionViewController(self, didCompleteTransactionFor: assetTransactionSendDraft.assetIndex)
     }
 }

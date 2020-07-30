@@ -35,7 +35,6 @@ class SendTransactionView: BaseView {
         containerView.backgroundColor = SharedColors.secondaryBackground
         containerView.layer.cornerRadius = 12.0
         containerView.applySmallShadow()
-        assetInformationView.removeAssetId()
         amountInformationView.setTitle("transaction-detail-amount".localized)
         receiverInformationView.setTitle("transaction-detail-to".localized)
         receiverInformationView.removeContactAction()
@@ -162,12 +161,20 @@ extension SendTransactionView {
         assetInformationView.setAssetName(for: assetDetail)
     }
     
-    func setAssetVerified(_ hidden: Bool) {
-        assetInformationView.setAssetVerified(hidden)
+    func removeVerifiedAsset() {
+        assetInformationView.removeVerifiedAsset()
     }
     
-    func setAssetName(_ name: String) {
+    func setAssetName(_ name: String?) {
         assetInformationView.setAssetName(name)
+    }
+    
+    func setAssetId(_ id: String?) {
+        assetInformationView.setAssetId(id)
+    }
+    
+    func setAssetUnitName(_ unitName: String?) {
+        assetInformationView.setAssetCode(unitName)
     }
     
     func setAmountInformationViewMode(_ mode: TransactionAmountView.Mode) {
@@ -202,6 +209,22 @@ extension SendTransactionView {
     
     func setButtonTitle(_ title: String) {
         sendButton.setTitle(title, for: .normal)
+    }
+    
+    func removeAssetName() {
+        assetInformationView.removeAssetName()
+    }
+    
+    func removeAssetUnitName() {
+        assetInformationView.removeAssetUnitName()
+    }
+    
+    func removeAssetId() {
+        assetInformationView.removeAssetId()
+    }
+    
+    func setAssetNameAlignment(_ alignment: NSTextAlignment) {
+        assetInformationView.setAssetAlignment(alignment)
     }
 }
 

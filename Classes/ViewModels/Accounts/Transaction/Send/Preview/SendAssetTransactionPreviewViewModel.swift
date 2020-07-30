@@ -27,13 +27,15 @@ class SendAssetTransactionPreviewViewModel {
         }
         
         view.transactionAccountInformationView.setAssetName(for: assetDetail)
-        view.transactionAccountInformationView.setAssetTransaction()
-        view.transactionAccountInformationView.removeAssetId()
+        
+        if !assetDetail.isVerified {
+            view.transactionAccountInformationView.removeVerifiedAsset()
+        }
         
         if let account = selectedAccount,
             let assetAmount = account.amount(for: assetDetail) {
             if account.type.isLedger() {
-                view.transactionAccountInformationView.setAccountImage(img("icon-account-type-ledger"))
+                view.transactionAccountInformationView.setAccountImage(img("img-ledger-small"))
             } else {
                 view.transactionAccountInformationView.setAccountImage(img("icon-account-type-standard"))
             }
@@ -56,7 +58,7 @@ class SendAssetTransactionPreviewViewModel {
         }
         
         if account.type.isLedger() {
-            view.transactionAccountInformationView.setAccountImage(img("icon-account-type-ledger"))
+            view.transactionAccountInformationView.setAccountImage(img("img-ledger-small"))
         } else {
             view.transactionAccountInformationView.setAccountImage(img("icon-account-type-standard"))
         }

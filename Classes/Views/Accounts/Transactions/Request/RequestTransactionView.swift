@@ -162,12 +162,20 @@ extension RequestTransactionView {
         assetInformationView.setAssetName(for: assetDetail)
     }
     
-    func setAssetVerified(_ hidden: Bool) {
-        assetInformationView.setAssetVerified(hidden)
+    func removeVerifiedAsset() {
+        assetInformationView.removeVerifiedAsset()
     }
     
-    func setAssetName(_ name: String) {
+    func setAssetName(_ name: String?) {
         assetInformationView.setAssetName(name)
+    }
+    
+    func setAssetId(_ id: String?) {
+        assetInformationView.setAssetId(id)
+    }
+    
+    func setAssetUnitName(_ unitName: String?) {
+        assetInformationView.setAssetCode(unitName)
     }
     
     func setAssetCode(_ code: String) {
@@ -180,6 +188,18 @@ extension RequestTransactionView {
     
     func removeAssetId() {
         assetInformationView.removeAssetId()
+    }
+    
+    func removeAssetName() {
+        assetInformationView.removeAssetName()
+    }
+    
+    func removeAssetUnitName() {
+        assetInformationView.removeAssetUnitName()
+    }
+    
+    func setAssetAlignment(_ alignment: NSTextAlignment) {
+        assetInformationView.setAssetAlignment(alignment)
     }
 }
 

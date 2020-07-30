@@ -22,8 +22,6 @@ class TransactionAccountInformationView: BaseView {
     
     private lazy var separatorView = UIView()
     
-    private lazy var algosImageView = UIImageView(image: img("icon-algo-gray", isTemplate: true))
-    
     private lazy var assetNameView = AssetNameView()
     
     private lazy var amountLabel: UILabel = {
@@ -42,7 +40,6 @@ class TransactionAccountInformationView: BaseView {
         containerView.backgroundColor = SharedColors.disabledBackground
         separatorView.backgroundColor = SharedColors.gray200
         removeButton.isHidden = true
-        algosImageView.tintColor = SharedColors.gray500
         containerView.layer.cornerRadius = 12.0
     }
     
@@ -56,9 +53,8 @@ class TransactionAccountInformationView: BaseView {
         setupRemoveButtonLayout()
         setupAccountNameViewLayout()
         setupSeparatorViewLayout()
-        setupAlgosImageViewLayout()
-        setupAmountLabelLayout()
         setupAssetNameViewLayout()
+        setupAmountLabelLayout()
     }
 }
 
@@ -121,13 +117,14 @@ extension TransactionAccountInformationView {
         }
     }
     
-    private func setupAlgosImageViewLayout() {
-        containerView.addSubview(algosImageView)
+    private func setupAssetNameViewLayout() {
+        containerView.addSubview(assetNameView)
         
-        algosImageView.snp.makeConstraints { make in
+        assetNameView.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(layout.current.defaultInset)
-            make.top.equalTo(separatorView.snp.bottom).offset(layout.current.imageVerticalOffset)
-            make.size.equalTo(layout.current.imageSize)
+            make.top.equalTo(separatorView.snp.bottom).offset(layout.current.verticalInset)
+            make.bottom.equalToSuperview().inset(layout.current.defaultInset)
+            make.trailing.lessThanOrEqualTo(separatorView).priority(.low)
         }
     }
     
@@ -136,29 +133,13 @@ extension TransactionAccountInformationView {
         
         amountLabel.snp.makeConstraints { make in
             make.trailing.equalTo(separatorView)
-            make.top.equalTo(separatorView.snp.bottom).offset(layout.current.verticalInset)
-        }
-    }
-    
-    private func setupAssetNameViewLayout() {
-        containerView.addSubview(assetNameView)
-        
-        assetNameView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(layout.current.defaultInset).priority(.low)
-            make.leading.equalTo(algosImageView.snp.trailing).offset(layout.current.minimumOffset)
-            make.top.equalTo(separatorView.snp.bottom).offset(layout.current.verticalInset)
-            make.bottom.equalToSuperview().inset(layout.current.defaultInset)
-            make.trailing.lessThanOrEqualTo(separatorView).priority(.low)
-            make.trailing.lessThanOrEqualTo(amountLabel).offset(-layout.current.minimumOffset)
+            make.centerY.equalTo(assetNameView)
+            make.leading.equalTo(assetNameView.snp.trailing).offset(layout.current.minimumOffset)
         }
     }
 }
 
 extension TransactionAccountInformationView {
-    func setAssetTransaction() {
-        algosImageView.removeFromSuperview()
-    }
-    
     func setEnabled() {
         containerView.backgroundColor = SharedColors.secondaryBackground
         removeButton.isHidden = false
@@ -203,12 +184,24 @@ extension TransactionAccountInformationView {
         assetNameView.setId(id)
     }
     
-    func setAssetVerified(_ hidden: Bool) {
-        assetNameView.setVerified(hidden)
+    func removeVerifiedAsset() {
+        assetNameView.removeVerified()
     }
     
     func removeAssetId() {
         assetNameView.removeId()
+    }
+    
+    func removeAssetName() {
+        assetNameView.removeName()
+    }
+    
+    func removeAssetUnitName() {
+        assetNameView.removeUnitName()
+    }
+    
+    func setAssetNameAlignment(_ alignment: NSTextAlignment) {
+        assetNameView.setAlignment(alignment)
     }
 }
 

@@ -9,16 +9,18 @@
 import Magpie
 
 class Asset: Model {
-    let creator: String
+    let creator: String?
     let amount: UInt64
     let isFrozen: Bool?
+    let id: Int64
 }
 
 extension Asset {
     enum CodingKeys: String, CodingKey {
         case creator = "creator"
         case amount = "amount"
-        case isFrozen = "frozen"
+        case isFrozen = "is-frozen"
+        case id = "asset-id"
     }
 }
 
@@ -26,6 +28,6 @@ extension Asset: Encodable { }
 
 extension Asset: Equatable {
     static func == (lhs: Asset, rhs: Asset) -> Bool {
-        return lhs.creator == rhs.creator && lhs.amount == rhs.amount && lhs.isFrozen == rhs.isFrozen
+        return lhs.id == rhs.id && lhs.amount == rhs.amount
     }
 }

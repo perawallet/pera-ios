@@ -6,7 +6,9 @@
 //  Copyright © 2019 hippo. All rights reserved.
 //
 
+import Foundation
+
 struct Reward: TransactionItem {
     let amount: Int64
-    let round: Int64
+    let date: Date?
 }

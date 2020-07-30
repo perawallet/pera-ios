@@ -21,36 +21,32 @@ class TransactionAssetView: BaseView {
     override func configureAppearance() {
         backgroundColor = SharedColors.secondaryBackground
         titleLabel.text = "asset-title".localized
-        assetNameView.removeId()
     }
     
     override func prepareLayout() {
-        setupTitleLabelLayout()
         setupAssetNameViewLayout()
+        setupTitleLabelLayout()
         setupSeparatorViewLayout()
     }
 }
 
 extension TransactionAssetView {
+    private func setupAssetNameViewLayout() {
+        addSubview(assetNameView)
+        
+        assetNameView.snp.makeConstraints { make in
+            make.top.bottom.equalToSuperview().inset(layout.current.defaultInset)
+            make.trailing.equalToSuperview().inset(layout.current.defaultInset)
+        }
+    }
+    
     private func setupTitleLabelLayout() {
         addSubview(titleLabel)
         
         titleLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(layout.current.defaultInset)
+            make.centerY.equalTo(assetNameView)
             make.leading.equalToSuperview().inset(layout.current.defaultInset)
-        }
-    }
-    
-    private func setupAssetNameViewLayout() {
-        addSubview(assetNameView)
-        
-        assetNameView.setContentHuggingPriority(.required, for: .horizontal)
-        assetNameView.setContentCompressionResistancePriority(.required, for: .horizontal)
-        
-        assetNameView.snp.makeConstraints { make in
-            make.top.bottom.equalToSuperview().inset(layout.current.defaultInset)
-            make.leading.greaterThanOrEqualTo(titleLabel.snp.trailing).offset(layout.current.minimumOffset)
-            make.trailing.equalToSuperview().inset(layout.current.defaultInset)
+            make.trailing.lessThanOrEqualTo(assetNameView.snp.leading).offset(-layout.current.minimumOffset)
         }
     }
     
@@ -70,24 +66,36 @@ extension TransactionAssetView {
         assetNameView.setAssetName(for: assetDetail)
     }
     
-    func setAssetVerified(_ hidden: Bool) {
-        assetNameView.setVerified(hidden)
+    func removeVerifiedAsset() {
+        assetNameView.removeVerified()
     }
     
-    func setAssetName(_ name: String) {
+    func setAssetName(_ name: String?) {
         assetNameView.setName(name)
     }
     
-    func setAssetCode(_ code: String) {
+    func setAssetCode(_ code: String?) {
         assetNameView.setCode(code)
     }
     
-    func setAssetId(_ id: String) {
+    func setAssetId(_ id: String?) {
         assetNameView.setId(id)
     }
     
     func removeAssetId() {
         assetNameView.removeId()
+    }
+    
+    func removeAssetName() {
+        assetNameView.removeName()
+    }
+    
+    func removeAssetUnitName() {
+        assetNameView.removeUnitName()
+    }
+    
+    func setAssetAlignment(_ alignment: NSTextAlignment) {
+        assetNameView.setAlignment(alignment)
     }
 }
 

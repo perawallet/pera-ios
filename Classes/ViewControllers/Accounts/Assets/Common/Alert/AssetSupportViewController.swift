@@ -57,8 +57,8 @@ extension AssetSupportViewController {
             SVProgressHUD.show(withStatus: "title-loading".localized)
             api?.getAssetDetails(with: AssetFetchDraft(assetId: "\(assetAlertDraft.assetIndex)")) { response in
                 switch response {
-                case let .success(asset):
-                    self.handleAssetDetailSetup(with: asset)
+                case let .success(assetDetailResponse):
+                    self.handleAssetDetailSetup(with: assetDetailResponse.assetDetail)
                 case .failure:
                     SVProgressHUD.showError(withStatus: nil)
                     SVProgressHUD.dismiss()

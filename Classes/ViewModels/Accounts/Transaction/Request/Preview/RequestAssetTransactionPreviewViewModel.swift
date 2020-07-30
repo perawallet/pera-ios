@@ -28,16 +28,19 @@ class RequestAssetTransactionPreviewViewModel {
         }
         
         if account.type.isLedger() {
-            view.transactionAccountInformationView.setAccountImage(img("icon-account-type-ledger"))
+            view.transactionAccountInformationView.setAccountImage(img("img-ledger-small"))
         } else {
             view.transactionAccountInformationView.setAccountImage(img("icon-account-type-standard"))
         }
         
+        if !assetDetail.isVerified {
+            view.transactionAccountInformationView.removeVerifiedAsset()
+        }
+        
+        view.transactionAccountInformationView.setAssetNameAlignment(.right)
         view.transactionAccountInformationView.setAccountName(account.name)
         view.transactionAccountInformationView.removeAmountLabel()
         view.transactionAccountInformationView.setAssetName(for: assetDetail)
-        view.transactionAccountInformationView.setAssetTransaction()
-        view.transactionAccountInformationView.removeAssetId()
     }
 }
 

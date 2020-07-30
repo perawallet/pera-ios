@@ -62,7 +62,6 @@ indirect enum Screen {
     case assetSupport(assetAlertDraft: AssetAlertDraft)
     case bottomInformation(mode: BottomInformationViewController.Mode, configurator: BottomInformationBundle)
     case rewardDetail(account: Account)
-    case assetList(account: Account)
     case verifiedAssetInformation
     case ledgerTutorial(mode: AccountSetupMode)
     case ledgerDeviceList(mode: AccountSetupMode)
@@ -79,6 +78,9 @@ indirect enum Screen {
     case tooltip(title: String)
     case assetDetailNotification(address: String, assetId: Int64?)
     case assetActionConfirmationNotification(address: String, assetId: Int64?)
+    case transactionFilter(filterOption: TransactionFilterViewController.FilterOption = .allTime)
+    case transactionFilterCustomRange(fromDate: Date?, toDate: Date?)
+    case pinLimit
 }
 
 extension Screen {

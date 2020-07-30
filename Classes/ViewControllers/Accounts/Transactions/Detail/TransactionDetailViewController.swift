@@ -16,7 +16,8 @@ class TransactionDetailViewController: BaseScrollViewController {
     private let account: Account
     private var assetDetail: AssetDetail?
     private let transactionType: TransactionType
-    private var pollingOperation: PollingOperation?
+    
+    private let transactionDetailTooltipStorage = TransactionDetailTooltipStorage()
     
     private let viewModel = TransactionDetailViewModel()
     
@@ -44,14 +45,12 @@ class TransactionDetailViewController: BaseScrollViewController {
         leftBarButtonItems = [closeBarButtonItem]
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        startPolling()
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        pollingOperation?.invalidate()
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.presentInformationCopyTooltipIfNeeded()
+        }
     }
     
     override func linkInteractors() {
@@ -96,50 +95,33 @@ extension TransactionDetailViewController {
     }
 }
 
-extension TransactionDetailViewController {
-    private func startPolling() {
-        pollingOperation = PollingOperation(interval: 1.0) { [weak self] in
-            guard let strongSelf = self else {
-                return
-            }
-            
-            strongSelf.fetchTransactionDetail()
-        }
-        
-        if transaction.isPending() {
-            pollingOperation?.start()
-        }
-    }
-    
-    private func fetchTransactionDetail() {
-        if !transaction.isPending() {
-            return
-        }
-        
-        api?.fetchTransactionDetail(for: account, with: transaction.id) { response in
-            switch response {
-            case let .success(transaction):
-                if !transaction.isPending() {
-                    transaction.contact = self.transaction.contact
-                    self.transaction = transaction
-                    self.transaction.status = .completed
-                    self.configureTransactionDetail()
-                    self.pollingOperation?.invalidate()
-                }
-            case .failure:
-                break
-            }
-        }
-    }
-}
-
-extension TransactionDetailViewController {
+extension TransactionDetailViewController: TooltipPresenter {
     private func configureTransactionDetail() {
         if transactionType == .sent {
             viewModel.configureSentTransaction(transactionDetailView, with: transaction, and: assetDetail, for: account)
         } else {
             viewModel.configureReceivedTransaction(transactionDetailView, with: transaction, and: assetDetail, for: account)
         }
+    }
+    
+    private func presentInformationCopyTooltipIfNeeded() {
+        if transactionDetailTooltipStorage.isInformationCopyTooltipDisplayed() || !isViewAppeared {
+            return
+        }
+        
+        presentTooltip(
+            with: "transaction-detail-copy-tooltip".localized,
+            using: configuration,
+            at: transactionDetailView.opponentView.copyImageView
+        )
+        transactionDetailTooltipStorage.setInformationCopyTooltipDisplayed()
+    }
+    
+    func adaptivePresentationStyle(
+        for controller: UIPresentationController,
+        traitCollection: UITraitCollection
+    ) -> UIModalPresentationStyle {
+        return .none
     }
 }
 
@@ -193,7 +175,7 @@ extension TransactionDetailViewController: TransactionDetailViewDelegate {
     }
     
     func transactionDetailViewDidCopyTransactionID(_ transactionDetailView: TransactionDetailView) {
-        UIPasteboard.general.string = transaction.id.identifier
+        UIPasteboard.general.string = transaction.id
         displaySimpleAlertWith(title: "transaction-detail-id-copied".localized)
     }
     
@@ -206,4 +188,18 @@ extension TransactionDetailViewController: TransactionDetailViewDelegate {
 enum TransactionType {
     case sent
     case received
+}
+
+private struct TransactionDetailTooltipStorage: Storable {
+    typealias Object = Any
+    
+    private let informationCopyTooltipKey = "com.algorand.algorand.transaction.detail.information.copy.tooltip"
+    
+    func setInformationCopyTooltipDisplayed() {
+        save(true, for: informationCopyTooltipKey, to: .defaults)
+    }
+    
+    func isInformationCopyTooltipDisplayed() -> Bool {
+        return bool(with: informationCopyTooltipKey, to: .defaults)
+    }
 }

@@ -23,12 +23,8 @@ class ChoosePasswordViewController: BaseViewController {
     private var route: Screen?
     
     private let localAuthenticator = LocalAuthenticator()
-    private lazy var pushNotificationController: PushNotificationController = {
-        guard let api = api else {
-            fatalError("Api must be set before accessing this view controller.")
-        }
-        return PushNotificationController(api: api)
-    }()
+    
+    private var pinLimitStore = PinLimitStore()
     
     private lazy var accountManager: AccountManager? = {
         guard let api = self.api,
@@ -57,8 +53,8 @@ class ChoosePasswordViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        checkLoginFlow()
         setSecondaryBackgroundColor()
+        displayPinLimitScreenIfNeeded()
     }
     
     override func configureNavigationBarAppearance() {
@@ -103,6 +99,14 @@ extension ChoosePasswordViewController {
 }
 
 extension ChoosePasswordViewController {
+    private func displayPinLimitScreenIfNeeded() {
+        if shouldDisplayPinLimitScreen(isFirstLaunch: true) && mode == .login {
+            displayPinLimitScreen()
+        } else {
+            checkLoginFlow()
+        }
+    }
+    
     private func setTitle() {
         switch mode {
         case .setup:
@@ -191,7 +195,27 @@ extension ChoosePasswordViewController {
         default:
             break
         }
-
+    }
+    
+    private func displayPinLimitScreen() {
+        let controller = open(
+            .pinLimit,
+            by: .customPresent(
+                presentationStyle: .fullScreen,
+                transitionStyle: nil,
+                transitioningDelegate: nil
+            ),
+            animated: false
+        ) as? PinLimitViewController
+        controller?.delegate = self
+    }
+    
+    private func shouldDisplayPinLimitScreen(isFirstLaunch: Bool) -> Bool {
+        let (attemptCount, remainder) = pinLimitStore.attemptCount.quotientAndRemainder(dividingBy: pinLimitStore.allowedAttemptLimitCount)
+        if isFirstLaunch {
+            return attemptCount > 0 && remainder == 0 && pinLimitStore.remainingTime != 0
+        }
+        return attemptCount > 0 && remainder == 0
     }
 }
 
@@ -237,10 +261,19 @@ extension ChoosePasswordViewController {
         viewModel.configureSelection(in: choosePasswordView, for: value) { password in
             if session?.isPasswordMatching(with: password) ?? false {
                 choosePasswordView.numpadView.isUserInteractionEnabled = false
+                pinLimitStore.resetPinAttemptCount()
                 launchHome()
             } else {
+                pinLimitStore.increasePinAttemptCount()
                 AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
                 viewModel.displayWrongPasswordState(choosePasswordView)
+                let (attemptCount, _) = pinLimitStore.attemptCount.quotientAndRemainder(dividingBy: pinLimitStore.allowedAttemptLimitCount)
+                if shouldDisplayPinLimitScreen(isFirstLaunch: false) {
+                    // Pin limit waiting time increases exponentially with respect to attempt count and 30 seconds.
+                    let newRemainingTime = 30 * (pow(2, attemptCount - 1) as NSDecimalNumber).intValue
+                    pinLimitStore.setRemainingTime(newRemainingTime)
+                    displayPinLimitScreen()
+                }
             }
         }
     }
@@ -272,6 +305,13 @@ extension ChoosePasswordViewController {
                 delegate?.choosePasswordViewController(self, didConfirmPassword: false)
             }
         }
+    }
+}
+
+extension ChoosePasswordViewController: PinLimitViewControllerDelegate {
+    func pinLimitViewControllerDidResetAllData(_ pinLimitViewController: PinLimitViewController) {
+        UIApplication.shared.rootViewController()?.deleteAllData()
+        open(.introduction, by: .launch, animated: false)
     }
 }
 

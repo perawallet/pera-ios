@@ -72,7 +72,7 @@ extension RewardTotalAmountView {
 
 extension RewardTotalAmountView {
     func setReward(amount: String) {
-        let fullString = "total-rewards-full-title" .localized(params: amount)
+        let fullString = "total-rewards-full-title".localized(params: amount)
         let attributedPart = "total-rewards-partial-title".localized(params: amount)
         let attributedRewardText = NSMutableAttributedString(attributedString: fullString.attributed([.lineSpacing(1.2)]))
         let range = (fullString as NSString).range(of: attributedPart)

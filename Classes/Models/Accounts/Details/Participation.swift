@@ -9,10 +9,12 @@
 import Magpie
 
 class Participation: Model {
-    var partpkb64: String?
+    var selectionParticipationKey: String?
+    var voteParticipationKey: String?
     
     enum CodingKeys: String, CodingKey {
-        case partpkb64 = "partpkb64"
+        case selectionParticipationKey = "selection-participation-key"
+        case voteParticipationKey = "vote-participation-key"
     }
 }
 

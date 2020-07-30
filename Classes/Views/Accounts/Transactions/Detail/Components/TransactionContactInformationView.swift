@@ -16,6 +16,13 @@ class TransactionContactInformationView: BaseView {
     
     private lazy var titleLabel = TransactionDetailTitleLabel()
     
+    private(set) lazy var copyImageView: UIImageView = {
+        let imageView = UIImageView(image: img("icon-copy", isTemplate: true))
+        imageView.tintColor = SharedColors.gray400
+        imageView.isHidden = true
+        return imageView
+    }()
+    
     private(set) lazy var contactDisplayView = ContactDisplayView()
     
     private lazy var separatorView = LineSeparatorView()
@@ -30,6 +37,7 @@ class TransactionContactInformationView: BaseView {
     
     override func prepareLayout() {
         setupTitleLabelLayout()
+        setupCopyImageViewLayout()
         setupContactDisplayViewLayout()
         setupSeparatorViewLayout()
     }
@@ -48,12 +56,22 @@ extension TransactionContactInformationView {
         }
     }
     
+    private func setupCopyImageViewLayout() {
+        addSubview(copyImageView)
+        
+        copyImageView.snp.makeConstraints { make in
+            make.leading.equalTo(titleLabel.snp.trailing).offset(layout.current.copyImageOffset)
+            make.centerY.equalTo(titleLabel)
+            make.size.equalTo(layout.current.copyImageSize)
+        }
+    }
+    
     private func setupContactDisplayViewLayout() {
         addSubview(contactDisplayView)
         
         contactDisplayView.snp.makeConstraints { make in
             make.top.bottom.equalToSuperview().inset(layout.current.contactDisplayViewOffset)
-            make.leading.greaterThanOrEqualTo(titleLabel.snp.trailing).offset(layout.current.contactDisplayViewOffset)
+            make.leading.greaterThanOrEqualTo(copyImageView.snp.trailing).offset(layout.current.contactDisplayViewOffset)
             make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
         }
     }
@@ -103,10 +121,6 @@ extension TransactionContactInformationView: ContactDisplayViewDelegate {
     func contactDisplayViewDidTapActionButton(_ contactDisplayView: ContactDisplayView) {
         delegate?.transactionContactInformationViewDidTapActionButton(self)
     }
-    
-    func contactDisplayViewDidCopyDetail(_ contactDisplayView: ContactDisplayView) {
-        delegate?.transactionContactInformationViewDidCopyDetail(self)
-    }
 }
 
 extension TransactionContactInformationView {
@@ -114,17 +128,12 @@ extension TransactionContactInformationView {
         let horizontalInset: CGFloat = 20.0
         let contactDisplayViewOffset: CGFloat = 10.0
         let labelTopInset: CGFloat = 20.0
+        let copyImageOffset: CGFloat = 8.0
+        let copyImageSize = CGSize(width: 20.0, height: 20.0)
         let separatorHeight: CGFloat = 1.0
     }
 }
 
 protocol TransactionContactInformationViewDelegate: class {
     func transactionContactInformationViewDidTapActionButton(_ transactionContactInformationView: TransactionContactInformationView)
-    func transactionContactInformationViewDidCopyDetail(_ transactionContactInformationView: TransactionContactInformationView)
-}
-
-extension TransactionContactInformationViewDelegate {
-    func transactionContactInformationViewDidCopyDetail(_ transactionContactInformationView: TransactionContactInformationView) {
-        
-    }
 }

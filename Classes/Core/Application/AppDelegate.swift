@@ -22,11 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     private lazy var session = Session()
-    private lazy var api: API = {
-        let api = API(session: session)
-        api.token = Environment.current.serverToken
-        return api
-    }()
+    private lazy var api = API(session: session)
     private lazy var appConfiguration = AppConfiguration(api: api, session: session)
     private lazy var pushNotificationController = PushNotificationController(api: api)
     
@@ -59,7 +55,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return
         }
         
-        window?.backgroundColor = .white
+        window?.backgroundColor = .clear
         
         if #available(iOS 13.0, *) {
             window?.overrideUserInterfaceStyle = .light

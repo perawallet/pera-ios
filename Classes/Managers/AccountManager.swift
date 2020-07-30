@@ -49,7 +49,7 @@ extension AccountManager {
         }
         
         for account in userAccounts {
-            let accountFetchOperation = AccountFetchOperation(address: account.address, api: api)
+            let accountFetchOperation = AccountFetchOperation(accountInformation: account, api: api)
             accountFetchOperation.onCompleted = { fetchedAccount, fetchError in
                 guard let fetchedAccount = fetchedAccount else {
                     return
@@ -101,7 +101,7 @@ extension AccountManager {
         api.getTransactionParams { response in
             switch response {
             case .failure:
-                self.currentRound = self.currentRound.map { $0 + 1 } ?? 0
+                self.waitForNextRoundAndFetchAccounts(round: 0, completion: completion)
             case let .success(params):
                 self.currentRound = params.lastRound
             }

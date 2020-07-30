@@ -22,6 +22,8 @@ class SelectAssetViewController: BaseViewController {
     
     private let transactionAction: TransactionAction
     
+    private let layoutBuilder = AssetListLayoutBuilder()
+    
     private let filterOption: FilterOption
     
     init(
@@ -156,12 +158,6 @@ extension SelectAssetViewController {
     }
     
     private func dequeueAssetCell(in collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: AssetCell.reusableIdentifier,
-            for: indexPath) as? AssetCell else {
-                fatalError("Index path is out of bounds")
-        }
-        
         let account = accounts[indexPath.section]
         let assetDetail: AssetDetail
         
@@ -172,9 +168,14 @@ extension SelectAssetViewController {
             assetDetail = account.assetDetails[indexPath.item]
         }
         
+        let cell = layoutBuilder.dequeueAssetCells(
+            in: collectionView,
+            cellForItemAt: indexPath,
+            for: assetDetail
+        )
+        
         if let assets = account.assets,
-            let assetId = assetDetail.id,
-            let asset = assets["\(assetId)"] {
+            let asset = assets.first(where: { $0.id == assetDetail.id }) {
             viewModel.configure(cell, with: assetDetail, and: asset)
         }
         
@@ -215,10 +216,19 @@ extension SelectAssetViewController: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        return CGSize(
-            width: UIScreen.main.bounds.width - layout.current.defaultSectionInsets.left - layout.current.defaultSectionInsets.right,
-            height: layout.current.itemHeight
-        )
+        let width = UIScreen.main.bounds.width - layout.current.defaultSectionInsets.left - layout.current.defaultSectionInsets.right
+        if indexPath.item == 0 {
+            return CGSize(width: width, height: layout.current.itemHeight)
+        } else {
+            let account = accounts[indexPath.section]
+            let assetDetail = account.assetDetails[indexPath.item - 1]
+            
+            if assetDetail.hasBothDisplayName() {
+                return CGSize(width: width, height: layout.current.multiItemHeight)
+            } else {
+                return CGSize(width: width, height: layout.current.itemHeight)
+            }
+        }
     }
     
     func collectionView(
@@ -283,6 +293,7 @@ extension SelectAssetViewController {
         let defaultSectionInsets = UIEdgeInsets.zero
         let headerHeight: CGFloat = 48.0
         let itemHeight: CGFloat = 52.0
+        let multiItemHeight: CGFloat = 72.0
     }
 }
 

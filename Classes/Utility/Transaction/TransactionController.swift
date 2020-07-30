@@ -450,6 +450,11 @@ extension TransactionController: LedgerBLEControllerDelegate {
             return
         }
         
+        if data.toHexString() == ledgerTransactionCancelledCode {
+            delegate?.transactionControllerDidFailToSignWithLedger(self)
+            return
+        }
+        
         if data.toHexString() == ledgerErrorResponse {
             delegate?.transactionControllerDidFailToSignWithLedger(self)
             return

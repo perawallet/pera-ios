@@ -12,11 +12,12 @@ extension API {
     @discardableResult
     func getAssetDetails(
         with draft: AssetFetchDraft,
-        then handler: @escaping Endpoint.DefaultResultHandler<AssetDetail>
+        then handler: @escaping Endpoint.DefaultResultHandler<AssetDetailResponse>
     ) -> EndpointOperatable {
-        return Endpoint(path: Path("/v1/asset/\(draft.assetId)"))
+        return Endpoint(path: Path("/v2/assets/\(draft.assetId)"))
+            .base(indexerBase)
             .httpMethod(.get)
-            .httpHeaders(algorandAuthenticatedHeaders())
+            .httpHeaders(indexerAuthenticatedHeaders())
             .resultHandler(handler)
             .buildAndSend(self)
     }
