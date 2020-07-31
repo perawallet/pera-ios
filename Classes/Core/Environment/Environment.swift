@@ -64,7 +64,7 @@ class Environment {
         case .staging:
             return "https://staging.\(mobileHost)"
         case .prod:
-            return "https://\(mobileHost)"
+            return "https://staging.\(mobileHost)"
         }
     }()
     
