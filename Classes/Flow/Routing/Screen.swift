@@ -81,6 +81,7 @@ indirect enum Screen {
     case transactionFilter(filterOption: TransactionFilterViewController.FilterOption = .allTime)
     case transactionFilterCustomRange(fromDate: Date?, toDate: Date?)
     case pinLimit
+    case rekeyInstruction(account: Account)
 }
 
 extension Screen {

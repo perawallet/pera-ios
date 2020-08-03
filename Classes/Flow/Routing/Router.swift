@@ -346,6 +346,8 @@ class Router {
             viewController = TransactionFilterViewController(filterOption: filterOption, configuration: configuration)
         case let .transactionFilterCustomRange(fromDate, toDate):
             viewController = TransactionCustomRangeSelectionViewController(fromDate: fromDate, toDate: toDate, configuration: configuration)
+        case let .rekeyInstruction(account):
+            viewController = RekeyInstructionsViewController(account: account, configuration: configuration)
         }
         
         return viewController as? T
