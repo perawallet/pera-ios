@@ -17,7 +17,7 @@ class OptionsView: BaseView {
     private(set) lazy var optionsCollectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .vertical
-        flowLayout.minimumLineSpacing = 8.0
+        flowLayout.minimumLineSpacing = 0.0
         flowLayout.minimumInteritemSpacing = 0.0
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false

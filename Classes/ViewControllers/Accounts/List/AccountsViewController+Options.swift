@@ -9,6 +9,14 @@
 import UIKit
 
 extension AccountsViewController: OptionsViewControllerDelegate {
+    func optionsViewControllerDidOpenRekeying(_ optionsViewController: OptionsViewController) {
+        guard let account = selectedAccount else {
+            return
+        }
+        
+        open(.rekeyInstruction(account: account), by: .push)
+    }
+    
     func optionsViewControllerDidRemoveAsset(_ optionsViewController: OptionsViewController) {
         guard let account = selectedAccount else {
             return
