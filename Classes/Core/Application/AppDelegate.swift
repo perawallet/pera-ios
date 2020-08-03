@@ -123,6 +123,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if UIApplication.shared.applicationState == .active,
             let notificationDetail = notificationDetail {
             
+            NotificationCenter.default.post(name: .NotificationDidReceived, object: self, userInfo: nil)
+            
             if let notificationtype = notificationDetail.notificationType {
                 if notificationtype == .assetSupportRequest {
                     rootViewController?.openAsset(from: notificationDetail, for: accountId)
