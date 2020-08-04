@@ -433,6 +433,9 @@
 "transaction-filter-error-subtitle" = "Sorry, something went wrong there.";
 "csv-download-title" = "Creating CSV File";
 "csv-download-error" = "Could not create a csv file for the transaction history.";
+"transaction-download-from" = "From: Address";
+"transaction-download-to" = "To: Address";
+"transaction-download-close-to" = "Close To: Address";
 
 // MARK: Pin Limit
 "pin-limit-title" = "Algorand app is locked";
