@@ -304,6 +304,8 @@
 		2B0D84FB2395D63100F0EAA7 /* SendAlgosTransactionPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0D84F92395D63100F0EAA7 /* SendAlgosTransactionPreviewViewController.swift */; };
 		2B0F3D8923C8D1D6006BB01B /* PaginatedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0F3D8823C8D1D6006BB01B /* PaginatedList.swift */; };
 		2B0F3D8A23C8D1D6006BB01B /* PaginatedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0F3D8823C8D1D6006BB01B /* PaginatedList.swift */; };
+		2B0F5EE624DD4D5500DA22A6 /* RekeyTransitionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0F5EE524DD4D5500DA22A6 /* RekeyTransitionView.swift */; };
+		2B0F5EE724DD4D5500DA22A6 /* RekeyTransitionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0F5EE524DD4D5500DA22A6 /* RekeyTransitionView.swift */; };
 		2B13952E24C605E0002F66D3 /* CursorQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B13952D24C605E0002F66D3 /* CursorQuery.swift */; };
 		2B13952F24C605E0002F66D3 /* CursorQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B13952D24C605E0002F66D3 /* CursorQuery.swift */; };
 		2B18BAF3247DB2AF00BFDBC6 /* TooltipViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B18BAF2247DB2AE00BFDBC6 /* TooltipViewController.swift */; };
@@ -1068,6 +1070,7 @@
 		2B0D84F62395D4F500F0EAA7 /* SendAssetTransactionPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendAssetTransactionPreviewViewController.swift; sourceTree = "<group>"; };
 		2B0D84F92395D63100F0EAA7 /* SendAlgosTransactionPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendAlgosTransactionPreviewViewController.swift; sourceTree = "<group>"; };
 		2B0F3D8823C8D1D6006BB01B /* PaginatedList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaginatedList.swift; sourceTree = "<group>"; };
+		2B0F5EE524DD4D5500DA22A6 /* RekeyTransitionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyTransitionView.swift; sourceTree = "<group>"; };
 		2B13952D24C605E0002F66D3 /* CursorQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CursorQuery.swift; sourceTree = "<group>"; };
 		2B18BAF2247DB2AE00BFDBC6 /* TooltipViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TooltipViewController.swift; sourceTree = "<group>"; };
 		2B191C81232150C900EAB1B8 /* PushNotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationController.swift; sourceTree = "<group>"; };
@@ -1688,6 +1691,53 @@
 			path = Common;
 			sourceTree = "<group>";
 		};
+		2B0F5EE324DD4D3000DA22A6 /* Instruction */ = {
+			isa = PBXGroup;
+			children = (
+				2B38C92B24D435FB0059AB02 /* RekeyInstructionsView.swift */,
+				2B38C92F24D436F20059AB02 /* RekeyInstructionItemView.swift */,
+			);
+			path = Instruction;
+			sourceTree = "<group>";
+		};
+		2B0F5EE424DD4D3F00DA22A6 /* Confirm */ = {
+			isa = PBXGroup;
+			children = (
+				2B0F5EE524DD4D5500DA22A6 /* RekeyTransitionView.swift */,
+			);
+			path = Confirm;
+			sourceTree = "<group>";
+		};
+		2B0F5EE824DD4D9000DA22A6 /* Instruction */ = {
+			isa = PBXGroup;
+			children = (
+				2B38C92724D435C70059AB02 /* RekeyInstructionsViewController.swift */,
+			);
+			path = Instruction;
+			sourceTree = "<group>";
+		};
+		2B0F5EE924DD4D9B00DA22A6 /* Confirm */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Confirm;
+			sourceTree = "<group>";
+		};
+		2B0F5EEA24DD4DA400DA22A6 /* Rekey */ = {
+			isa = PBXGroup;
+			children = (
+				2B0F5EEB24DD4DA900DA22A6 /* Confirm */,
+			);
+			path = Rekey;
+			sourceTree = "<group>";
+		};
+		2B0F5EEB24DD4DA900DA22A6 /* Confirm */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Confirm;
+			sourceTree = "<group>";
+		};
 		2B13952C24C605CC002F66D3 /* Notifications */ = {
 			isa = PBXGroup;
 			children = (
@@ -1723,8 +1773,8 @@
 		2B38C92A24D435E80059AB02 /* Rekey */ = {
 			isa = PBXGroup;
 			children = (
-				2B38C92B24D435FB0059AB02 /* RekeyInstructionsView.swift */,
-				2B38C92F24D436F20059AB02 /* RekeyInstructionItemView.swift */,
+				2B0F5EE424DD4D3F00DA22A6 /* Confirm */,
+				2B0F5EE324DD4D3000DA22A6 /* Instruction */,
 			);
 			path = Rekey;
 			sourceTree = "<group>";
@@ -1732,7 +1782,8 @@
 		2B38C92E24D436130059AB02 /* Rekey */ = {
 			isa = PBXGroup;
 			children = (
-				2B38C92724D435C70059AB02 /* RekeyInstructionsViewController.swift */,
+				2B0F5EE924DD4D9B00DA22A6 /* Confirm */,
+				2B0F5EE824DD4D9000DA22A6 /* Instruction */,
 			);
 			path = Rekey;
 			sourceTree = "<group>";
@@ -3553,6 +3604,7 @@
 		2BB64BD6240275CD00519981 /* Ledger */ = {
 			isa = PBXGroup;
 			children = (
+				2B0F5EEA24DD4DA400DA22A6 /* Rekey */,
 				2BB64BEB2402BBF600519981 /* LedgerDeviceListViewModel.swift */,
 			);
 			path = Ledger;
@@ -5042,6 +5094,7 @@
 				17BD4E0E2292F1260003E49A /* TransactionDetailViewController.swift in Sources */,
 				17BD4E0F2292F1260003E49A /* SwiftDate+Region.swift in Sources */,
 				17BD4E112292F1260003E49A /* Formatter+Additions.swift in Sources */,
+				2B0F5EE724DD4D5500DA22A6 /* RekeyTransitionView.swift in Sources */,
 				2BE937482464B04900322C1E /* TransactionAmountInformationView.swift in Sources */,
 				17BD4E122292F1260003E49A /* DeepLinkParser.swift in Sources */,
 				2BE9374B2464B06A00322C1E /* TransactionStatusInformationView.swift in Sources */,
@@ -5511,6 +5564,7 @@
 				2B79A133230EBE4D00766021 /* FeedbackViewController.swift in Sources */,
 				2B56F7D6225B3C1D00E58737 /* SendTransactionPreviewViewController.swift in Sources */,
 				2B4BD9F62389F21F00491149 /* AssetDisplayView.swift in Sources */,
+				2B0F5EE624DD4D5500DA22A6 /* RekeyTransitionView.swift in Sources */,
 				2BE937472464B04900322C1E /* TransactionAmountInformationView.swift in Sources */,
 				2B4BDA01238AE66E00491149 /* AssetAdditionViewModel.swift in Sources */,
 				2BE9374A2464B06A00322C1E /* TransactionStatusInformationView.swift in Sources */,
