@@ -355,6 +355,12 @@ class Router {
                 connectedDeviceName: deviceName,
                 configuration: configuration
             )
+        case let .ledgerAccountSelection(deviceId, deviceName):
+            viewController = LedgerAccountSelectionViewController(
+                connectedDeviceId: deviceId,
+                connectedDeviceName: deviceName,
+                configuration: configuration
+            )
         }
         
         return viewController as? T

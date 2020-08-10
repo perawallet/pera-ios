@@ -83,6 +83,7 @@ indirect enum Screen {
     case pinLimit
     case rekeyInstruction(account: Account)
     case rekeyConfirmation(account: Account, deviceId: UUID, deviceName: String?)
+    case ledgerAccountSelection(deviceId: UUID, deviceName: String?)
 }
 
 extension Screen {
