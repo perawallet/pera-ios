@@ -10,6 +10,8 @@ import UIKit
 
 class RekeyInstructionsView: BaseView {
     
+    weak var delegate: RekeyInstructionsViewDelegate?
+    
     private let layout = Layout<LayoutConstants>()
     
     private lazy var titleLabel: UILabel = {
@@ -54,6 +56,10 @@ class RekeyInstructionsView: BaseView {
         thirdInstructionView.setTitle("rekey-instruction-third".localized)
     }
     
+    override func setListeners() {
+        startButton.addTarget(self, action: #selector(notifyDelegateToStartRekeying), for: .touchUpInside)
+    }
+    
     override func prepareLayout() {
         setupTitleLabelLayout()
         setupSubitleLabelLayout()
@@ -62,6 +68,13 @@ class RekeyInstructionsView: BaseView {
         setupSecondInstructionViewLayout()
         setupThirdInstructionViewLayout()
         setupStartButtonLayout()
+    }
+}
+
+extension RekeyInstructionsView {
+    @objc
+    private func notifyDelegateToStartRekeying() {
+        delegate?.rekeyInstructionsViewDidStartRekeying(self)
     }
 }
 
@@ -139,4 +152,8 @@ extension RekeyInstructionsView {
         let instructionInset: CGFloat = 12.0
         let buttonInset: CGFloat = 16.0
     }
+}
+
+protocol RekeyInstructionsViewDelegate: class {
+    func rekeyInstructionsViewDidStartRekeying(_ rekeyInstructionsView: RekeyInstructionsView)
 }

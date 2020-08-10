@@ -348,6 +348,13 @@ class Router {
             viewController = TransactionCustomRangeSelectionViewController(fromDate: fromDate, toDate: toDate, configuration: configuration)
         case let .rekeyInstruction(account):
             viewController = RekeyInstructionsViewController(account: account, configuration: configuration)
+        case let .rekeyConfirmation(account, deviceId, deviceName):
+            viewController = RekeyConfirmationViewController(
+                account: account,
+                connectedDeviceId: deviceId,
+                connectedDeviceName: deviceName,
+                configuration: configuration
+            )
         }
         
         return viewController as? T

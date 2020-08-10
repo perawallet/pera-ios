@@ -154,6 +154,8 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
                         }
                     case .new:
                         self.closeScreen(by: .dismiss, animated: false)
+                    case .rekey:
+                        break
                     }
                 } else {
                     self.open(.choosePassword(mode: .setup, route: nil), by: .push)

@@ -82,6 +82,7 @@ indirect enum Screen {
     case transactionFilterCustomRange(fromDate: Date?, toDate: Date?)
     case pinLimit
     case rekeyInstruction(account: Account)
+    case rekeyConfirmation(account: Account, deviceId: UUID, deviceName: String?)
 }
 
 extension Screen {
