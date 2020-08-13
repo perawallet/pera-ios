@@ -32,13 +32,6 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
     
     private(set) var ledgerApprovalViewController: LedgerApprovalViewController?
     
-    private lazy var pushNotificationController: PushNotificationController = {
-        guard let api = api else {
-            fatalError("API should be set.")
-        }
-        return PushNotificationController(api: api)
-    }()
-    
     private(set) lazy var transactionController: TransactionController = {
         guard let api = api else {
             fatalError("API should be set.")
@@ -318,23 +311,14 @@ extension SendTransactionPreviewViewController: TransactionControllerDelegate {
     }
     
     private func displayTransactionError(from transactionError: TransactionController.TransactionError) {
-        guard let api = api else {
-            return
-        }
-        
         switch transactionError {
         case let .minimumAmount(amount):
-            let pushNotificationController = PushNotificationController(api: api)
-            pushNotificationController.showFeedbackMessage(
+            NotificationBanner.showError(
                 "asset-min-transaction-error-title".localized,
-                subtitle: String(format: "send-algos-minimum-amount-custom-error".localized, amount.toAlgos.toDecimalStringForLabel ?? "")
+                message: "send-algos-minimum-amount-custom-error".localized(params: amount.toAlgos.toDecimalStringForLabel ?? "")
             )
         case .invalidAddress:
-            let pushNotificationController = PushNotificationController(api: api)
-            pushNotificationController.showFeedbackMessage(
-                "title-error".localized,
-                subtitle: "send-algos-receiver-address-validation".localized
-            )
+            NotificationBanner.showError("title-error".localized, message: "send-algos-receiver-address-validation".localized)
         default:
             displaySimpleAlertWith(title: "title-error".localized, message: "title-internet-connection".localized)
         }
@@ -355,17 +339,14 @@ extension SendTransactionPreviewViewController: TransactionControllerDelegate {
             let errorSubtitle = state.errorDescription.subtitle else {
                 return
         }
-        
-        pushNotificationController.showFeedbackMessage(errorTitle, subtitle: errorSubtitle)
-        
+        NotificationBanner.showError(errorTitle, message: errorSubtitle)
         invalidateTimer()
         dismissProgressIfNeeded()
     }
     
     func transactionController(_ transactionController: TransactionController, didFailToConnect peripheral: CBPeripheral) {
         ledgerApprovalViewController?.dismissScreen()
-        pushNotificationController.showFeedbackMessage("ble-error-connection-title".localized,
-                                                       subtitle: "ble-error-fail-connect-peripheral".localized)
+        NotificationBanner.showError("ble-error-connection-title".localized, message: "ble-error-fail-connect-peripheral".localized)
     }
     
     func transactionController(_ transactionController: TransactionController, didDisconnectFrom peripheral: CBPeripheral) {
@@ -373,8 +354,10 @@ extension SendTransactionPreviewViewController: TransactionControllerDelegate {
     
     func transactionControllerDidFailToSignWithLedger(_ transactionController: TransactionController) {
         ledgerApprovalViewController?.dismissScreen()
-        pushNotificationController.showFeedbackMessage("ble-error-transaction-cancelled-title".localized,
-                                                       subtitle: "ble-error-fail-sign-transaction".localized)
+        NotificationBanner.showError(
+            "ble-error-transaction-cancelled-title".localized,
+            message: "ble-error-fail-sign-transaction".localized
+        )
     }
 }
 
@@ -394,8 +377,7 @@ extension SendTransactionPreviewViewController {
             DispatchQueue.main.async {
                 self.transactionController.stopBLEScan()
                 self.dismissProgressIfNeeded()
-                self.pushNotificationController.showFeedbackMessage("ble-error-connection-title".localized,
-                                                                    subtitle: "ble-error-fail-connect-peripheral".localized)
+                NotificationBanner.showError("ble-error-connection-title".localized, message: "ble-error-fail-connect-peripheral".localized)
             }
             
             self.invalidateTimer()

@@ -53,13 +53,6 @@ class AssetAdditionViewController: BaseViewController, TestNetTitleDisplayable {
         return TransactionController(api: api)
     }()
     
-    private lazy var pushNotificationController: PushNotificationController = {
-        guard let api = api else {
-            fatalError("API should be set.")
-        }
-        return PushNotificationController(api: api)
-    }()
-    
     private lazy var assetAdditionView = AssetAdditionView()
     
     private lazy var emptyStateView = SearchEmptyView()
@@ -313,16 +306,11 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
     }
     
     private func displayMinimumTransactionError(from transactionError: TransactionController.TransactionError) {
-        guard let api = api else {
-            return
-        }
-        
         switch transactionError {
         case let .minimumAmount(amount):
-            let pushNotificationController = PushNotificationController(api: api)
-            pushNotificationController.showFeedbackMessage(
+            NotificationBanner.showError(
                 "asset-min-transaction-error-title".localized,
-                subtitle: String(format: "asset-min-transaction-error-message".localized, amount.toAlgos.toDecimalStringForLabel ?? "")
+                message: "asset-min-transaction-error-message".localized(params: amount.toAlgos.toDecimalStringForLabel ?? "")
             )
         default:
             break
@@ -334,16 +322,13 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
             let errorSubtitle = state.errorDescription.subtitle else {
                 return
         }
-        
-        pushNotificationController.showFeedbackMessage(errorTitle, subtitle: errorSubtitle)
-        
+        NotificationBanner.showError(errorTitle, message: errorSubtitle)
         invalidateTimer()
         dismissProgressIfNeeded()
     }
     
     func transactionController(_ transactionController: TransactionController, didFailToConnect peripheral: CBPeripheral) {
-        pushNotificationController.showFeedbackMessage("ble-error-connection-title".localized,
-                                                       subtitle: "ble-error-fail-connect-peripheral".localized)
+        NotificationBanner.showError("ble-error-connection-title".localized, message: "ble-error-fail-connect-peripheral".localized)
     }
     
     func transactionController(_ transactionController: TransactionController, didDisconnectFrom peripheral: CBPeripheral) {
@@ -379,8 +364,10 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
     
     func transactionControllerDidFailToSignWithLedger(_ transactionController: TransactionController) {
         ledgerApprovalViewController?.dismissScreen()
-        pushNotificationController.showFeedbackMessage("ble-error-transaction-cancelled-title".localized,
-                                                       subtitle: "ble-error-fail-sign-transaction".localized)
+        NotificationBanner.showError(
+            "ble-error-transaction-cancelled-title".localized,
+            message: "ble-error-fail-sign-transaction".localized
+        )
     }
 }
 
@@ -400,10 +387,7 @@ extension AssetAdditionViewController {
             DispatchQueue.main.async {
                 self.transactionController.stopBLEScan()
                 self.dismissProgressIfNeeded()
-                self.pushNotificationController.showFeedbackMessage(
-                    "ble-error-connection-title".localized,
-                    subtitle: "ble-error-fail-connect-peripheral".localized
-                )
+                NotificationBanner.showError("ble-error-connection-title".localized, message: "ble-error-fail-connect-peripheral".localized)
             }
             
             self.invalidateTimer()

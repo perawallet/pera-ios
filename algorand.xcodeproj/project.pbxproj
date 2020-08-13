@@ -328,6 +328,8 @@
 		2B0F5F1124E1A4F900DA22A6 /* LedgerAccountSelectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0F5F0F24E1A4F900DA22A6 /* LedgerAccountSelectionHeaderView.swift */; };
 		2B0F5F1324E1A51800DA22A6 /* LedgerAccountSelectionHeaderSupplementaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0F5F1224E1A51800DA22A6 /* LedgerAccountSelectionHeaderSupplementaryView.swift */; };
 		2B0F5F1424E1A51800DA22A6 /* LedgerAccountSelectionHeaderSupplementaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0F5F1224E1A51800DA22A6 /* LedgerAccountSelectionHeaderSupplementaryView.swift */; };
+		2B0F5F3924E5686200DA22A6 /* NotificationBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0F5F3824E5686200DA22A6 /* NotificationBanner.swift */; };
+		2B0F5F3A24E5686200DA22A6 /* NotificationBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0F5F3824E5686200DA22A6 /* NotificationBanner.swift */; };
 		2B13952E24C605E0002F66D3 /* CursorQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B13952D24C605E0002F66D3 /* CursorQuery.swift */; };
 		2B13952F24C605E0002F66D3 /* CursorQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B13952D24C605E0002F66D3 /* CursorQuery.swift */; };
 		2B18BAF3247DB2AF00BFDBC6 /* TooltipViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B18BAF2247DB2AE00BFDBC6 /* TooltipViewController.swift */; };
@@ -1104,6 +1106,7 @@
 		2B0F5F0B24E19ABA00DA22A6 /* LedgerAccountSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountSelectionView.swift; sourceTree = "<group>"; };
 		2B0F5F0F24E1A4F900DA22A6 /* LedgerAccountSelectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountSelectionHeaderView.swift; sourceTree = "<group>"; };
 		2B0F5F1224E1A51800DA22A6 /* LedgerAccountSelectionHeaderSupplementaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountSelectionHeaderSupplementaryView.swift; sourceTree = "<group>"; };
+		2B0F5F3824E5686200DA22A6 /* NotificationBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationBanner.swift; sourceTree = "<group>"; };
 		2B13952D24C605E0002F66D3 /* CursorQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CursorQuery.swift; sourceTree = "<group>"; };
 		2B18BAF2247DB2AE00BFDBC6 /* TooltipViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TooltipViewController.swift; sourceTree = "<group>"; };
 		2B191C81232150C900EAB1B8 /* PushNotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationController.swift; sourceTree = "<group>"; };
@@ -1840,6 +1843,14 @@
 				2B0F5F1224E1A51800DA22A6 /* LedgerAccountSelectionHeaderSupplementaryView.swift */,
 			);
 			path = Header;
+			sourceTree = "<group>";
+		};
+		2B0F5F3724E5684E00DA22A6 /* Banner */ = {
+			isa = PBXGroup;
+			children = (
+				2B0F5F3824E5686200DA22A6 /* NotificationBanner.swift */,
+			);
+			path = Banner;
 			sourceTree = "<group>";
 		};
 		2B13952C24C605CC002F66D3 /* Notifications */ = {
@@ -3484,6 +3495,7 @@
 		2B8BE4F5223936FD005D8565 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				2B0F5F3724E5684E00DA22A6 /* Banner */,
 				2B9F064024B60EAA006880F0 /* CSVExport */,
 				2B62B03B240813A5002DF2A0 /* BLE */,
 				2BF34C9E2239ACC60052CAD3 /* Configuration */,
@@ -5424,6 +5436,7 @@
 				955CD657242B48D700647EDE /* LedgerTutorialNumberView.swift in Sources */,
 				17BD4E902292F1260003E49A /* Double.swift in Sources */,
 				17BD4E912292F1260003E49A /* API+Transaction.swift in Sources */,
+				2B0F5F3A24E5686200DA22A6 /* NotificationBanner.swift in Sources */,
 				2B6607E424113507002AC00F /* LedgerApprovalView.swift in Sources */,
 				2B56716024008B440037FCFA /* LedgerTutorialInstructionListView.swift in Sources */,
 				2BCBBAF324A66B48002CD56F /* TransactionFilterOptionView.swift in Sources */,
@@ -5905,6 +5918,7 @@
 				955CD656242B48D700647EDE /* LedgerTutorialNumberView.swift in Sources */,
 				173DA1E92255F7B500378A82 /* API+Transaction.swift in Sources */,
 				2BD739E5223FA07B00B66EEF /* MainButton.swift in Sources */,
+				2B0F5F3924E5686200DA22A6 /* NotificationBanner.swift in Sources */,
 				2B6607E324113507002AC00F /* LedgerApprovalView.swift in Sources */,
 				2B56715F24008B440037FCFA /* LedgerTutorialInstructionListView.swift in Sources */,
 				2BCBBAF224A66B48002CD56F /* TransactionFilterOptionView.swift in Sources */,

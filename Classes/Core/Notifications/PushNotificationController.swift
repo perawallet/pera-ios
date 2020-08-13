@@ -8,7 +8,6 @@
 
 import UIKit
 import UserNotifications
-import NotificationBannerSwift
 
 class PushNotificationController: NSObject {
     var token: String? {
@@ -150,7 +149,7 @@ extension PushNotificationController {
                             results.first?.name ?? receiverName
                         )
                     }
-                    self.showNotificationMessage(message, then: handler)
+                    NotificationBanner.showInformation(message, completion: handler)
                 default:
                     var message: String
                     
@@ -173,7 +172,7 @@ extension PushNotificationController {
                             receiverName
                         )
                     }
-                    self.showNotificationMessage(message, then: handler)
+                    NotificationBanner.showInformation(message, completion: handler)
                 }
             }
         }
@@ -219,7 +218,7 @@ extension PushNotificationController {
                             results.first?.name ?? senderName
                         )
                     }
-                    self.showNotificationMessage(message, then: handler)
+                    NotificationBanner.showInformation(message, completion: handler)
                 default:
                     var message: String
                     
@@ -242,7 +241,7 @@ extension PushNotificationController {
                             senderName
                         )
                     }
-                    self.showNotificationMessage(message, then: handler)
+                    NotificationBanner.showInformation(message, completion: handler)
                 }
             }
         }
@@ -269,8 +268,7 @@ extension PushNotificationController {
                         "\(name) (\(code))"
                     )
                 )
-                
-                self.showNotificationMessage(message)
+                NotificationBanner.showInformation(message)
             default:
                 let name = asset.name ?? ""
                 let code = asset.code ?? ""
@@ -280,65 +278,9 @@ extension PushNotificationController {
                         "\(name) (\(code))"
                     )
                 )
-                self.showNotificationMessage(message)
+                NotificationBanner.showInformation(message)
             }
         }
-    }
-}
-
-// MARK: NotificationBannerSwift
-
-extension PushNotificationController {
-    func showNotificationMessage(_ title: String, then handler: EmptyHandler? = nil) {
-        let banner = FloatingNotificationBanner(
-            title: title,
-            titleFont: UIFont.font(withWeight: .semiBold(size: 16.0)),
-            titleColor: SharedColors.primaryText,
-            titleTextAlign: .left,
-            colors: CustomBannerColors()
-        )
-        
-        banner.duration = 3.0
-        
-        banner.show(
-            edgeInsets: UIEdgeInsets(top: 20.0, left: 20.0, bottom: 0.0, right: 20.0),
-            cornerRadius: 10.0,
-            shadowColor: rgba(0.0, 0.0, 0.0, 0.1),
-            shadowOpacity: 1.0,
-            shadowBlurRadius: 6.0,
-            shadowCornerRadius: 6.0,
-            shadowOffset: UIOffset(horizontal: 0.0, vertical: 2.0)
-        )
-        
-        banner.onTap = handler
-    }
-    
-    func showFeedbackMessage(_ title: String, subtitle: String) {
-        let banner = FloatingNotificationBanner(
-            title: title,
-            subtitle: subtitle,
-            titleFont: UIFont.font(withWeight: .semiBold(size: 16.0)),
-            titleColor: SharedColors.white,
-            titleTextAlign: .left,
-            subtitleFont: UIFont.font(withWeight: .regular(size: 14.0)),
-            subtitleColor: SharedColors.white,
-            subtitleTextAlign: .left,
-            leftView: UIImageView(image: img("icon-warning-circle")),
-            style: .warning,
-            colors: CustomBannerColors()
-        )
-        
-        banner.duration = 3.0
-        
-        banner.show(
-            edgeInsets: UIEdgeInsets(top: 20.0, left: 20.0, bottom: 0.0, right: 20.0),
-            cornerRadius: 12.0,
-            shadowColor: SharedColors.errorShadow,
-            shadowOpacity: 1.0,
-            shadowBlurRadius: 20.0,
-            shadowCornerRadius: 6.0,
-            shadowOffset: UIOffset(horizontal: 0.0, vertical: 12.0)
-        )
     }
 }
 
@@ -347,18 +289,5 @@ extension PushNotificationController {
 extension PushNotificationController {
     enum Persistence {
         static let DefaultsDeviceTokenKey = "DefaultsDeviceTokenKey"
-    }
-}
-
-// MARK: BannerColorsProtocol
-
-class CustomBannerColors: BannerColorsProtocol {
-    internal func color(for style: BannerStyle) -> UIColor {
-        switch style {
-        case .warning:
-            return SharedColors.red
-        default:
-            return SharedColors.white
-        }
     }
 }

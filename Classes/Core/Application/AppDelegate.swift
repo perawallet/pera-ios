@@ -89,7 +89,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         guard let accountId = parseAccountId(from: algorandNotification) else {
             if let message = algorandNotification.alert {
-                pushNotificationController.showNotificationMessage(message)
+                NotificationBanner.showInformation(message)
             }
             return
         }
