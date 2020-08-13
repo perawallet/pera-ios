@@ -249,7 +249,19 @@ extension LedgerDeviceListViewController: LedgerBLEControllerDelegate {
         
         if let connectedDeviceId = connectedDevice?.identifier {
             ledgerApprovalViewController?.closeScreen(by: .dismiss, animated: true) {
-                self.open(.ledgerPairing(mode: self.mode, address: address, connectedDeviceId: connectedDeviceId), by: .push)
+                switch self.mode {
+                case let .rekey(account):
+                    self.open(
+                        .rekeyConfirmation(
+                            account: account,
+                            deviceId: connectedDeviceId,
+                            deviceName: self.connectedDevice?.name
+                        ),
+                        by: .push
+                    )
+                default:
+                    self.open(.ledgerPairing(mode: self.mode, address: address, connectedDeviceId: connectedDeviceId), by: .push)
+                }
             }
         }
     }

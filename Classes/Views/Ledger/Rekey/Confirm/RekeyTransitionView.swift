@@ -84,9 +84,9 @@ extension RekeyTransitionView {
         addSubview(oldTitleLabel)
         
         oldTitleLabel.snp.makeConstraints { make in
-            make.trailing.equalTo(arrowImageView.snp.leading).offset(layout.current.arrowOffset)
-            make.bottom.equalTo(arrowImageView.snp.top)
-            make.leading.lessThanOrEqualToSuperview()
+            make.trailing.equalTo(arrowImageView.snp.leading).offset(-layout.current.arrowOffset)
+            make.bottom.equalTo(arrowImageView.snp.top).inset(layout.current.titleBottomInset)
+            make.leading.greaterThanOrEqualToSuperview()
         }
     }
     
@@ -96,8 +96,8 @@ extension RekeyTransitionView {
         oldValueLabel.snp.makeConstraints { make in
             make.top.equalTo(oldTitleLabel.snp.bottom).offset(layout.current.topInset)
             make.centerX.equalTo(oldTitleLabel)
-            make.leading.lessThanOrEqualToSuperview()
-            make.trailing.lessThanOrEqualTo(arrowImageView)
+            make.leading.greaterThanOrEqualToSuperview()
+            make.trailing.lessThanOrEqualTo(arrowImageView.snp.leading)
         }
     }
     
@@ -118,7 +118,7 @@ extension RekeyTransitionView {
             make.top.equalTo(newTitleLabel.snp.bottom).offset(layout.current.topInset)
             make.centerX.equalTo(newTitleLabel)
             make.trailing.lessThanOrEqualToSuperview()
-            make.leading.lessThanOrEqualTo(arrowImageView)
+            make.leading.lessThanOrEqualTo(arrowImageView.snp.trailing)
         }
     }
 }
@@ -145,7 +145,8 @@ extension RekeyTransitionView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let contentSize = CGSize(width: UIScreen.main.bounds.width - 40.0, height: 100.0)
         let arrowOffset: CGFloat = 40.0
-        let topInset: CGFloat = 4.0
+        let titleBottomInset: CGFloat = 4.0
+        let topInset: CGFloat = 8.0
         let iconSize = CGSize(width: 24.0, height: 24.0)
     }
 }

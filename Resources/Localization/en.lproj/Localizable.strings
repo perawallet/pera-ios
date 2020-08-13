@@ -464,3 +464,8 @@
 "ledger-rekey-success-title" = "Account Rekeyed";
 "ledger-rekey-success-message" = "The account %@ has been successfully rekeyed";
 
+// MARK: Ledger Account Selection
+
+"ledger-account-selection-title" = "Account Found";
+"ledger-account-selection-detail" = "Select 1 or more accounts to be added to your Algorand Wallet";
+"ledger-account-selection-add" = "Add Account";
