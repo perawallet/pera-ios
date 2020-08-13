@@ -123,4 +123,5 @@ extension AccountNameSetupViewController: TouchDetectingScrollViewDelegate {
 enum AccountSetupMode {
     case initialize
     case new
+    case rekey(account: Account)
 }

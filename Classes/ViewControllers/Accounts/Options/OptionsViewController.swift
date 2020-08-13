@@ -111,6 +111,9 @@ extension OptionsViewController: UICollectionViewDelegateFlowLayout {
         let selectedOption = options[indexPath.item]
         
         switch selectedOption {
+        case .rekey:
+            dismissScreen()
+            delegate?.optionsViewControllerDidOpenRekeying(self)
         case .removeAsset:
             dismissScreen()
             delegate?.optionsViewControllerDidRemoveAsset(self)
@@ -128,25 +131,26 @@ extension OptionsViewController: UICollectionViewDelegateFlowLayout {
 
 extension OptionsViewController {
     enum Options: Int, CaseIterable {
-        case passphrase = 0
-        case edit = 1
-        case removeAsset = 2
-        case removeAccount = 3
+        case rekey = 0
+        case passphrase = 1
+        case edit = 2
+        case removeAsset = 3
+        case removeAccount = 4
         
         static var optionsWithoutRemoveAsset: [Options] {
-            return [.passphrase, .edit, .removeAccount]
+            return [.rekey, .passphrase, .edit, .removeAccount]
         }
 
         static var optionsWithoutPassphrase: [Options] {
-            return [.edit, .removeAsset, .removeAccount]
+            return [.rekey, .edit, .removeAsset, .removeAccount]
         }
         
         static var optionsWithoutPassphraseAndRemoveAsset: [Options] {
-            return [.edit, .removeAccount]
+            return [.rekey, .edit, .removeAccount]
         }
         
         static var allOptions: [Options] {
-            return [.passphrase, .edit, .removeAsset, .removeAccount]
+            return [.rekey, .passphrase, .edit, .removeAsset, .removeAccount]
         }
     }
 }
@@ -158,6 +162,7 @@ extension OptionsViewController {
 }
 
 protocol OptionsViewControllerDelegate: class {
+    func optionsViewControllerDidOpenRekeying(_ optionsViewController: OptionsViewController)
     func optionsViewControllerDidRemoveAsset(_ optionsViewController: OptionsViewController)
     func optionsViewControllerDidViewPassphrase(_ optionsViewController: OptionsViewController)
     func optionsViewControllerDidRemoveAccount(_ optionsViewController: OptionsViewController)
