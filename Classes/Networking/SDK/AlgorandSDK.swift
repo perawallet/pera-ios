@@ -110,6 +110,21 @@ extension AlgorandSDK {
 }
 
 extension AlgorandSDK {
+    func rekeyAccount(with draft: RekeyTransactionDraft, error: inout NSError?) -> Data? {
+        return TransactionMakeRekeyTxn(
+            getTrimmedAddress(from: draft.from),
+            draft.rekeyedAccount.trimmingCharacters(in: .whitespacesAndNewlines),
+            draft.transactionParams.fee,
+            draft.transactionParams.lastRound,
+            draft.transactionParams.lastRound + 1000, // Need to add 1000 as last round
+            nil,
+            draft.transactionParams.genesisHashData,
+            &error
+        )
+    }
+}
+
+extension AlgorandSDK {
     func isValidAddress(_ address: String) -> Bool {
         return UtilsIsValidAddress(address)
     }

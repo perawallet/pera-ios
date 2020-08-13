@@ -63,4 +63,9 @@ FOUNDATION_EXPORT NSData* _Nullable TransactionMakeAssetTransferTxn(NSString* _N
  */
 FOUNDATION_EXPORT NSData* _Nullable TransactionMakePaymentTxn(NSString* _Nullable from, NSString* _Nullable to, int64_t feePerByte, int64_t amount, int64_t firstRound, int64_t lastRound, NSData* _Nullable note, NSString* _Nullable closeRemainderTo, NSString* _Nullable genesisID, NSData* _Nullable genesisHash, NSError* _Nullable* _Nullable error);
 
+/**
+ * MakeRekeyTxn constructs a rekey transaction using the passed parameters.
+ */
+FOUNDATION_EXPORT NSData* _Nullable TransactionMakeRekeyTxn(NSString* _Nullable from, NSString* _Nullable rekeyTo, int64_t feePerByte, int64_t firstRound, int64_t lastRound, NSString* _Nullable genesisID, NSData* _Nullable genesisHash, NSError* _Nullable* _Nullable error);
+
 #endif
