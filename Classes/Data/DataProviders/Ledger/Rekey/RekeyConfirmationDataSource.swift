@@ -58,8 +58,8 @@ extension RekeyConfirmationDataSource: UICollectionViewDataSource {
     }
         
     private func dequeueAssetCells(in collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let assetDetail = account.assetDetails[indexPath.item - 1]
-        if let assets = account.assets,
+        if let assetDetail = account.assetDetails[safe: indexPath.item - 1],
+            let assets = account.assets,
             let asset = assets.first(where: { $0.id == assetDetail.id }) {
             let cell = layoutBuilder.dequeueAssetCells(in: collectionView, cellForItemAt: indexPath, for: assetDetail)
             accountsViewModel.configure(cell, with: assetDetail, and: asset)

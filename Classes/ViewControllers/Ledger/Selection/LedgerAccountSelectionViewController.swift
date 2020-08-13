@@ -23,7 +23,7 @@ class LedgerAccountSelectionViewController: BaseViewController {
     
     override func configureAppearance() {
         super.configureAppearance()
-        title = ""
+        title = connectedDeviceName
     }
     
     override func prepareLayout() {
