@@ -1,0 +1,115 @@
+//
+//  RekeyConfirmationDataSource.swift
+//  algorand
+//
+//  Created by Göktuğ Berk Ulu on 5.08.2020.
+//  Copyright © 2020 hippo. All rights reserved.
+//
+
+import UIKit
+
+class RekeyConfirmationDataSource: NSObject {
+    
+    weak var delegate: RekeyConfirmationDataSourceDelegate?
+    
+    private let layoutBuilder = AssetListLayoutBuilder()
+    private let accountsViewModel = AccountsViewModel()
+    private let rekeyConfirmationViewModel: RekeyConfirmationViewModel
+    private let account: Account
+    
+    private var allAssetsDisplayed = false
+    
+    init(account: Account, rekeyConfirmationViewModel: RekeyConfirmationViewModel) {
+        self.account = account
+        self.rekeyConfirmationViewModel = rekeyConfirmationViewModel
+        allAssetsDisplayed = account.assetDetails.count < 2
+        super.init()
+    }
+}
+
+extension RekeyConfirmationDataSource: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if account.assetDetails.isEmpty {
+            return 1
+        }
+        
+        if allAssetsDisplayed {
+            return account.assetDetails.count + 1
+        } else {
+            return 2
+        }
+    }
+        
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        if indexPath.item == 0 {
+            return dequeueAlgoAssetCell(in: collectionView, cellForItemAt: indexPath)
+        }
+        return dequeueAssetCells(in: collectionView, cellForItemAt: indexPath)
+    }
+        
+    private func dequeueAlgoAssetCell(in collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        if let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: AlgoAssetCell.reusableIdentifier,
+            for: indexPath) as? AlgoAssetCell {
+            accountsViewModel.configure(cell, with: account)
+            return cell
+        }
+        fatalError("Index path is out of bounds")
+    }
+        
+    private func dequeueAssetCells(in collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let assetDetail = account.assetDetails[indexPath.item - 1]
+        if let assets = account.assets,
+            let asset = assets.first(where: { $0.id == assetDetail.id }) {
+            let cell = layoutBuilder.dequeueAssetCells(in: collectionView, cellForItemAt: indexPath, for: assetDetail)
+            accountsViewModel.configure(cell, with: assetDetail, and: asset)
+            return cell
+        }
+            
+        fatalError("Index path is out of bounds")
+    }
+        
+    func collectionView(
+        _ collectionView: UICollectionView,
+        viewForSupplementaryElementOfKind kind: String,
+        at indexPath: IndexPath
+    ) -> UICollectionReusableView {
+        if kind == UICollectionView.elementKindSectionHeader {
+            if let headerView = collectionView.dequeueReusableSupplementaryView(
+                ofKind: kind,
+                withReuseIdentifier: AccountHeaderSupplementaryView.reusableIdentifier,
+                for: indexPath
+            ) as? AccountHeaderSupplementaryView {
+                headerView.contextView.setQRButton(hidden: true)
+                headerView.contextView.setOptionsButton(hidden: true)
+                accountsViewModel.configure(headerView, with: account)
+                return headerView
+            }
+        } else {
+            if let footerView = collectionView.dequeueReusableSupplementaryView(
+                ofKind: kind,
+                withReuseIdentifier: RekeyConfirmationFooterSupplementaryView.reusableIdentifier,
+                for: indexPath
+            ) as? RekeyConfirmationFooterSupplementaryView {
+                footerView.delegate = self
+                rekeyConfirmationViewModel.configure(footerView)
+                return footerView
+            }
+        }
+        
+        fatalError("Unexpected element kind")
+    }
+}
+
+extension RekeyConfirmationDataSource: RekeyConfirmationFooterSupplementaryViewDelegate {
+    func rekeyConfirmationFooterSupplementaryViewDidShowMoreAssets(
+        _ rekeyConfirmationFooterSupplementaryView: RekeyConfirmationFooterSupplementaryView
+    ) {
+        allAssetsDisplayed = !allAssetsDisplayed
+        delegate?.rekeyConfirmationDataSourceDidShowMoreAssets(self)
+    }
+}
+
+protocol RekeyConfirmationDataSourceDelegate: class {
+    func rekeyConfirmationDataSourceDidShowMoreAssets(_ rekeyConfirmationDataSource: RekeyConfirmationDataSource)
+}

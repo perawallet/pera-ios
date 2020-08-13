@@ -441,7 +441,7 @@
 "pin-limit-too-many" = "Too many PIN attempts";
 "pin-limit-reset-all" = "Reset All Data";
 
-// MARK: Rekeying
+// MARK: Rekey Instruction
 
 "rekey-instruction-start" = "Start Process";
 "rekey-instruction-title" = "Rekey Account";
@@ -451,3 +451,21 @@
 "rekey-instruction-second" = "Your old Ledger will no longer function for this account.";
 "rekey-instruction-third" = "Your account’s public key, balances, and configuration will not change.";
 
+// MARK: Rekey Confirm
+
+"ledger-rekey-confirm-title" = "Confirm Rekeying";
+"ledger-rekey-transaction-title" = "Reykeying transaction";
+"ledger-rekey-ledger-old" = "Old Ledger";
+"ledger-rekey-ledger-passphrase" = "Passphrase";
+"ledger-rekey-ledger-new" = "New Ledger";
+"ledger-rekey-finalize" = "Finalize Rekeying";
+"ledger-rekey-total-fee" = "Total Rekeying fee of %@ Algos";
+"ledger-rekey-more-assets" = "+%@ more assets";
+"ledger-rekey-success-title" = "Account Rekeyed";
+"ledger-rekey-success-message" = "The account %@ has been successfully rekeyed";
+
+// MARK: Ledger Account Selection
+
+"ledger-account-selection-title" = "Account Found";
+"ledger-account-selection-detail" = "Select 1 or more accounts to be added to your Algorand Wallet";
+"ledger-account-selection-add" = "Add Account";
