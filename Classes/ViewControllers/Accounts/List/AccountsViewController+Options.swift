@@ -14,7 +14,14 @@ extension AccountsViewController: OptionsViewControllerDelegate {
             return
         }
         
-        open(.rekeyInstruction(account: account), by: .push)
+        open(
+            .rekeyInstruction(account: account),
+            by: .customPresent(
+                presentationStyle: .fullScreen,
+                transitionStyle: nil,
+                transitioningDelegate: nil
+            )
+        )
     }
     
     func optionsViewControllerDidRemoveAsset(_ optionsViewController: OptionsViewController) {
