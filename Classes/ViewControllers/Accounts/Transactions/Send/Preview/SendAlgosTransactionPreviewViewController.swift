@@ -258,14 +258,7 @@ extension SendAlgosTransactionPreviewViewController {
             receiverAddress = receiverAddress.trimmingCharacters(in: .whitespacesAndNewlines)
             
             if !AlgorandSDK().isValidAddress(receiverAddress) {
-                guard let api = api else {
-                    return
-                }
-                let pushNotificationController = PushNotificationController(api: api)
-                pushNotificationController.showFeedbackMessage(
-                    "title-error".localized,
-                    subtitle: "send-algos-receiver-address-validation".localized
-                )
+                NotificationBanner.showError("title-error".localized, message: "send-algos-receiver-address-validation".localized)
                 return
             }
             

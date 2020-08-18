@@ -39,13 +39,6 @@ class AssetRemovalViewController: BaseViewController {
     
     private var ledgerApprovalViewController: LedgerApprovalViewController?
     
-    private lazy var pushNotificationController: PushNotificationController = {
-        guard let api = api else {
-            fatalError("API should be set.")
-        }
-        return PushNotificationController(api: api)
-    }()
-    
     private lazy var transactionController: TransactionController = {
         guard let api = api else {
             fatalError("API should be set.")
@@ -342,15 +335,13 @@ extension AssetRemovalViewController: TransactionControllerDelegate {
                 return
         }
         
-        pushNotificationController.showFeedbackMessage(errorTitle, subtitle: errorSubtitle)
-        
+        NotificationBanner.showError(errorTitle, message: errorSubtitle)
         invalidateTimer()
         dismissProgressIfNeeded()
     }
     
     func transactionController(_ transactionController: TransactionController, didFailToConnect peripheral: CBPeripheral) {
-        pushNotificationController.showFeedbackMessage("ble-error-connection-title".localized,
-                                                       subtitle: "ble-error-fail-connect-peripheral".localized)
+        NotificationBanner.showError("ble-error-connection-title".localized, message: "ble-error-fail-connect-peripheral".localized)
     }
     
     func transactionController(_ transactionController: TransactionController, didDisconnectFrom peripheral: CBPeripheral) {
@@ -358,8 +349,10 @@ extension AssetRemovalViewController: TransactionControllerDelegate {
     
     func transactionControllerDidFailToSignWithLedger(_ transactionController: TransactionController) {
         ledgerApprovalViewController?.dismissScreen()
-        pushNotificationController.showFeedbackMessage("ble-error-transaction-cancelled-title".localized,
-                                                       subtitle: "ble-error-fail-sign-transaction".localized)
+        NotificationBanner.showError(
+            "ble-error-transaction-cancelled-title".localized,
+            message: "ble-error-fail-sign-transaction".localized
+        )
     }
 }
 
@@ -378,8 +371,7 @@ extension AssetRemovalViewController {
             DispatchQueue.main.async {
                 self.transactionController.stopBLEScan()
                 self.dismissProgressIfNeeded()
-                self.pushNotificationController.showFeedbackMessage("ble-error-connection-title".localized,
-                                                                    subtitle: "ble-error-fail-connect-peripheral".localized)
+                NotificationBanner.showError("ble-error-connection-title".localized, message: "ble-error-fail-connect-peripheral".localized)
             }
             
             self.invalidateTimer()
