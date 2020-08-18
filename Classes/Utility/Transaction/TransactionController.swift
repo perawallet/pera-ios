@@ -39,6 +39,10 @@ class TransactionController {
         return transactionDraft as? AlgosTransactionSendDraft
     }
     
+    private var rekeyTransactionDraft: RekeyTransactionSendDraft? {
+        return transactionDraft as? RekeyTransactionSendDraft
+    }
+    
     private var isTransactionSigned: Bool {
         return signedTransactionData != nil
     }
@@ -118,6 +122,9 @@ extension TransactionController {
         case .assetTransaction:
             composeAssetTransactionData()
             startSigningProcess(for: accountType, and: .assetTransaction)
+        case .rekey:
+            composeRekeyTransactionData()
+            startSigningProcess(for: .ledger, and: .rekey)
         }
     }
 }
@@ -390,6 +397,34 @@ extension TransactionController {
     }
 }
 
+extension TransactionController {
+    private func composeRekeyTransactionData() {
+        guard let params = params,
+            let draft = rekeyTransactionDraft else {
+                connectedDevice = nil
+                delegate?.transactionController(self, didFailedComposing: .custom(self.rekeyTransactionDraft))
+                return
+        }
+        
+        var transactionError: NSError?
+        let rekeyTransactionDraft = RekeyTransactionDraft(from: draft.from, rekeyedAccount: "", transactionParams: params)
+        
+        guard let transactionData = algorandSDK.rekeyAccount(with: rekeyTransactionDraft, error: &transactionError) else {
+            connectedDevice = nil
+            delegate?.transactionController(self, didFailedComposing: .custom(transactionError))
+            return
+        }
+        
+        self.unsignedTransactionData = transactionData
+    }
+    
+    private func completeRekeyTransaction() {
+        uploadTransaction {
+            self.delegate?.transactionController(self, didComposedTransactionDataFor: self.rekeyTransactionDraft)
+        }
+    }
+}
+
 extension TransactionController: BLEConnectionManagerDelegate {
     func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didDiscover peripherals: [CBPeripheral]) {
         guard let ledgerDetail = fromAccount?.ledgerDetail,
@@ -483,6 +518,8 @@ extension TransactionController: LedgerBLEControllerDelegate {
         
         if transactionType == .algosTransaction {
             completeAlgosTransaction()
+        } else if transactionType == .rekey {
+            completeRekeyTransaction()
         } else {
             completeAssetTransaction(for: transactionType)
         }
@@ -495,6 +532,7 @@ extension TransactionController {
         case assetTransaction
         case assetAddition
         case assetRemoval
+        case rekey
     }
 }
 

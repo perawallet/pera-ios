@@ -73,6 +73,7 @@ enum AccountType: String, Model {
     case watcher = "watcher"
     case ledger = "ledger"
     case multiSig = "multiSig"
+    case rekeyed = "rekeyed"
     
     func isLedger() -> Bool {
         return self == .ledger

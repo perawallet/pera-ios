@@ -19,6 +19,16 @@ class RekeyInstructionsViewController: BaseScrollViewController {
         super.init(configuration: configuration)
     }
     
+    override func configureNavigationBarAppearance() {
+        super.configureNavigationBarAppearance()
+        
+        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [unowned self] in
+            self.closeScreen(by: .dismiss, animated: true)
+        }
+        
+        leftBarButtonItems = [closeBarButtonItem]
+    }
+    
     override func linkInteractors() {
         super.linkInteractors()
         rekeyInstructionsView.delegate = self

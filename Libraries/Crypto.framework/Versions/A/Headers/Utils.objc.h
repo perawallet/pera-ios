@@ -13,4 +13,7 @@
 
 FOUNDATION_EXPORT BOOL UtilsIsValidAddress(NSString* _Nullable addr);
 
+// skipped function PendingResultsToTXID with unsupported parameter or return types
+
+
 #endif
