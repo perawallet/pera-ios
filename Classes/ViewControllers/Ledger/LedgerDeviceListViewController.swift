@@ -34,13 +34,6 @@ class LedgerDeviceListViewController: BaseViewController {
     private var ledgerDevices = [CBPeripheral]()
     private var connectedDevice: CBPeripheral?
     
-    private lazy var pushNotificationController: PushNotificationController = {
-        guard let api = api else {
-            fatalError("API should be set.")
-        }
-        return PushNotificationController(api: api)
-    }()
-    
     init(mode: AccountSetupMode, configuration: ViewControllerConfiguration) {
         self.mode = mode
         super.init(configuration: configuration)
@@ -170,7 +163,7 @@ extension LedgerDeviceListViewController: BLEConnectionManagerDelegate {
                 return
         }
         
-        pushNotificationController.showFeedbackMessage(errorTitle, subtitle: errorSubtitle)
+        NotificationBanner.showError(errorTitle, message: errorSubtitle)
     }
     
     func bleConnectionManager(
@@ -180,8 +173,7 @@ extension LedgerDeviceListViewController: BLEConnectionManagerDelegate {
     ) {
         connectedDevice = nil
         ledgerApprovalViewController?.dismissScreen()
-        pushNotificationController.showFeedbackMessage("ble-error-connection-title".localized,
-                                                       subtitle: "ble-error-fail-connect-peripheral".localized)
+        NotificationBanner.showError("ble-error-connection-title".localized, message: "ble-error-fail-connect-peripheral".localized)
     }
     
     func bleConnectionManager(
@@ -191,8 +183,7 @@ extension LedgerDeviceListViewController: BLEConnectionManagerDelegate {
     ) {
         connectedDevice = nil
         ledgerApprovalViewController?.dismissScreen()
-        pushNotificationController.showFeedbackMessage("ble-error-connection-title".localized,
-                                                       subtitle: "ble-error-fail-connect-peripheral".localized)
+        NotificationBanner.showError("ble-error-connection-title".localized, message: "ble-error-fail-connect-peripheral".localized)
     }
 }
 
@@ -209,9 +200,9 @@ extension LedgerDeviceListViewController: LedgerBLEControllerDelegate {
         if data.toHexString() == ledgerErrorResponse {
             ledgerApprovalViewController?.dismissScreen()
             connectedDevice = nil
-            pushNotificationController.showFeedbackMessage(
+            NotificationBanner.showError(
                 "ble-error-ledger-connection-title".localized,
-                subtitle: "ble-error-ledger-connection-open-app-error".localized
+                message: "ble-error-ledger-connection-open-app-error".localized
             )
             return
         }
@@ -226,24 +217,27 @@ extension LedgerDeviceListViewController: LedgerBLEControllerDelegate {
         if !AlgorandSDK().isValidAddress(address) {
             ledgerApprovalViewController?.dismissScreen()
             connectedDevice = nil
-            pushNotificationController.showFeedbackMessage("ble-error-transmission-title".localized,
-                                                           subtitle: "ble-error-fail-fetch-account-address".localized)
+            NotificationBanner.showError(
+                "ble-error-transmission-title".localized,
+                message: "ble-error-fail-fetch-account-address".localized
+            )
             return
         }
 
         if error != nil {
             ledgerApprovalViewController?.dismissScreen()
             connectedDevice = nil
-            pushNotificationController.showFeedbackMessage("ble-error-transmission-title".localized,
-                                                           subtitle: "ble-error-fail-fetch-account-address".localized)
+            NotificationBanner.showError(
+                "ble-error-transmission-title".localized,
+                message: "ble-error-fail-fetch-account-address".localized
+            )
             return
         }
         
         if session?.account(from: address) != nil {
             ledgerApprovalViewController?.dismissScreen()
             connectedDevice = nil
-            pushNotificationController.showFeedbackMessage("title-error.localized".localized,
-                                                           subtitle: "recover-from-seed-verify-exist-error".localized)
+            NotificationBanner.showError("title-error.localized".localized, message: "recover-from-seed-verify-exist-error".localized)
             return
         }
         
