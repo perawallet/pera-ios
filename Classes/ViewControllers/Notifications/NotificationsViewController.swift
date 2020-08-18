@@ -43,6 +43,15 @@ class NotificationsViewController: BaseViewController {
         }
     }
     
+    override func setListeners() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didReceiveNotification(notification:)),
+            name: .NotificationDidReceived,
+            object: nil
+        )
+    }
+    
     override func linkInteractors() {
         notificationsView.delegate = self
         notificationsView.setDataSource(dataSource)
@@ -62,6 +71,15 @@ extension NotificationsViewController {
         notificationsView.snp.makeConstraints { make in
             make.leading.trailing.bottom.equalToSuperview()
             make.top.safeEqualToTop(of: self)
+        }
+    }
+}
+
+extension NotificationsViewController {
+    @objc
+    private func didReceiveNotification(notification: Notification) {
+        if isInitialFetchCompleted && isViewAppeared {
+            reloadNotifications()
         }
     }
 }

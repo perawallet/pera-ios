@@ -40,4 +40,8 @@ extension Notification.Name {
     static var DeviceIDDidSet: Notification.Name {
         return .init(rawValue: "com.algorand.algorand.notification.device.id.set")
     }
+    
+    static var NotificationDidReceived: Notification.Name {
+        return .init(rawValue: "com.algorand.algorand.notification.received")
+    }
 }

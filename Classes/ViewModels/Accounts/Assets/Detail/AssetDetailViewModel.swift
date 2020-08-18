@@ -85,7 +85,16 @@ extension AssetDetailViewModel {
                 return
             }
             
-            if assetTransaction.receiverAddress == account.address && assetTransaction.amount == 0 && transaction.type == .assetTransfer {
+            if assetTransaction.receiverAddress == assetTransaction.senderAddress {
+                configure(view, with: contact, and: assetTransaction.receiverAddress)
+                view.transactionAmountView.algoIconImageView.removeFromSuperview()
+                view.transactionAmountView.mode = .normal(
+                    amount: assetTransaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
+                    fraction: assetDetail.fractionDecimals
+                )
+            } else if assetTransaction.receiverAddress == account.address &&
+                assetTransaction.amount == 0 &&
+                transaction.type == .assetTransfer {
                 view.setContact("asset-creation-fee-title".localized)
                 view.subtitleLabel.isHidden = true
                 view.transactionAmountView.mode = .negative(amount: transaction.fee.toAlgos)
@@ -119,7 +128,10 @@ extension AssetDetailViewModel {
                 return
             }
             
-            if payment.receiver == account.address {
+            if payment.receiver == transaction.sender {
+                configure(view, with: contact, and: transaction.sender)
+                view.transactionAmountView.mode = .normal(amount: payment.amountForTransaction(includesCloseAmount: true).toAlgos)
+            } else if payment.receiver == account.address {
                 configure(view, with: contact, and: transaction.sender)
                 view.transactionAmountView.mode = .positive(amount: payment.amountForTransaction(includesCloseAmount: true).toAlgos)
             } else {
@@ -148,7 +160,16 @@ extension AssetDetailViewModel {
     
     func configure(_ view: TransactionHistoryContextView, with transaction: PendingTransaction, for contact: Contact? = nil) {
         if let assetDetail = assetDetail {
-            if transaction.receiver == account.address && transaction.amount == 0 && transaction.type == .assetTransfer {
+            if transaction.receiver == transaction.sender {
+                configure(view, with: contact, and: transaction.receiver)
+                view.transactionAmountView.algoIconImageView.removeFromSuperview()
+                if let amount = transaction.amount {
+                    view.transactionAmountView.mode = .normal(
+                        amount: amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
+                        fraction: assetDetail.fractionDecimals
+                    )
+                }
+            } else if transaction.receiver == account.address && transaction.amount == 0 && transaction.type == .assetTransfer {
                 view.setContact("asset-creation-fee-title".localized)
                 view.subtitleLabel.isHidden = true
                 if let fee = transaction.fee {
@@ -174,7 +195,12 @@ extension AssetDetailViewModel {
                 }
             }
         } else {
-            if transaction.receiver == account.address {
+            if transaction.receiver == transaction.sender {
+                configure(view, with: contact, and: transaction.receiver)
+                if let amount = transaction.amount {
+                    view.transactionAmountView.mode = .normal(amount: amount.toAlgos)
+                }
+            } else if transaction.receiver == account.address {
                 configure(view, with: contact, and: transaction.sender)
                 if let amount = transaction.amount {
                     view.transactionAmountView.mode = .positive(amount: amount.toAlgos)
