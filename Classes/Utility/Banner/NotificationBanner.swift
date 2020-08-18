@@ -10,9 +10,9 @@ import Foundation
 import NotificationBannerSwift
 
 enum NotificationBanner {
-    static func showInformation(_ title: String, completion handler: EmptyHandler? = nil) {
+    static func showInformation(_ information: String, completion handler: EmptyHandler? = nil) {
         let banner = FloatingNotificationBanner(
-            title: title,
+            title: information,
             titleFont: UIFont.font(withWeight: .semiBold(size: 16.0)),
             titleColor: SharedColors.primaryText,
             titleTextAlign: .left,
@@ -34,9 +34,9 @@ enum NotificationBanner {
         banner.onTap = handler
     }
     
-    static func showError(_ title: String, message: String) {
+    static func showError(_ error: String, message: String) {
         let banner = FloatingNotificationBanner(
-            title: title,
+            title: error,
             subtitle: message,
             titleFont: UIFont.font(withWeight: .semiBold(size: 16.0)),
             titleColor: SharedColors.white,
@@ -62,9 +62,9 @@ enum NotificationBanner {
         )
     }
     
-    static func showSuccess(_ title: String, message: String) {
+    static func showSuccess(_ success: String, message: String) {
         let banner = FloatingNotificationBanner(
-            title: title,
+            title: success,
             subtitle: message,
             titleFont: UIFont.font(withWeight: .semiBold(size: 16.0)),
             titleColor: SharedColors.white,
