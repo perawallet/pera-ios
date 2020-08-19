@@ -46,7 +46,7 @@ class SendTransactionPreviewView: BaseView {
     }()
     
     private(set) lazy var previewButton: MainButton = {
-        if accountType == .ledger {
+        if accountType.requiresLedgerConnection() {
             return MainButton(title: "title-preview-and-sign-with-ledger-title".localized)
         } else {
             return MainButton(title: "title-preview".localized)

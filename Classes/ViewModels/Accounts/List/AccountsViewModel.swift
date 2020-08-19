@@ -36,9 +36,9 @@ extension AccountsViewModel {
         header.contextView.setQRButton(hidden: false)
         
         if let accountInformation = UIApplication.shared.appConfiguration?.session.accountInformation(from: account.address) {
-            if accountInformation.type == .ledger {
+            if accountInformation.type.isLedger() {
                 header.contextView.setLedgerAccount()
-            } else if accountInformation.type == .rekeyed {
+            } else if accountInformation.type.isRekeyed() {
                 header.contextView.setRekeyedAccount()
             } else {
                 header.contextView.setStandardAccount()

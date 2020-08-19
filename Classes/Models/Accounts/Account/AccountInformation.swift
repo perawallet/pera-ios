@@ -36,7 +36,7 @@ extension AccountInformation {
     }
     
     func mnemonics() -> [String]? {
-        if type == .watcher || type == .ledger {
+        if type == .watcher || type == .ledger || type == .rekeyed {
             return nil
         }
         return UIApplication.shared.appConfiguration?.session.mnemonics(forAccount: address)
@@ -81,6 +81,10 @@ enum AccountType: String, Model {
     
     func isRekeyed() -> Bool {
         return self == .rekeyed
+    }
+    
+    func requiresLedgerConnection() -> Bool {
+        return isLedger() || isRekeyed()
     }
 }
 

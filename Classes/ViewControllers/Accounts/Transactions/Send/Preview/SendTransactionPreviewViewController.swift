@@ -364,7 +364,7 @@ extension SendTransactionPreviewViewController: TransactionControllerDelegate {
 // MARK: Ledger Timer
 extension SendTransactionPreviewViewController {
     func validateTimer() {
-        guard let account = selectedAccount, account.type.isLedger() else {
+        guard let account = selectedAccount, account.type.requiresLedgerConnection() else {
             return
         }
         
@@ -385,7 +385,7 @@ extension SendTransactionPreviewViewController {
     }
     
     func invalidateTimer() {
-        guard let account = selectedAccount, account.type.isLedger() else {
+        guard let account = selectedAccount, account.type.requiresLedgerConnection() else {
             return
         }
         

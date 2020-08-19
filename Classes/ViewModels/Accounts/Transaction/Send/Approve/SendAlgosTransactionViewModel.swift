@@ -12,9 +12,9 @@ class SendAlgosTransactionViewModel {
     func configure(_ view: SendTransactionView, with algosTransactionSendDraft: AlgosTransactionSendDraft) {
         view.setButtonTitle("send-algos-title".localized)
         
-        if algosTransactionSendDraft.from.type == .ledger {
+        if algosTransactionSendDraft.from.type.isLedger() {
             view.setAccountImage(img("img-ledger-small"))
-        } else if algosTransactionSendDraft.from.type == .rekeyed {
+        } else if algosTransactionSendDraft.from.type.isRekeyed() {
             view.setAccountImage(img("icon-account-type-rekeyed"))
         } else {
             view.setAccountImage(img("icon-account-type-standard"))

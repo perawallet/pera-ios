@@ -25,11 +25,13 @@ class RekeyConfirmationViewModel {
     }
     
     private func setAssetCount(for account: Account) {
-        assetText = "ledger-rekey-more-assets".localized(params: "\(account.assetDetails.count - 1)")
+        if account.assetDetails.count > 1 {
+            assetText = "ledger-rekey-more-assets".localized(params: "\(account.assetDetails.count - 1)")
+        }
     }
     
     private func setOldTransitionTitle(for account: Account) {
-        if account.type == .ledger {
+        if account.type.requiresLedgerConnection() {
             oldTransitionTitle = "ledger-rekey-ledger-old".localized
         } else {
             oldTransitionTitle = "ledger-rekey-ledger-passphrase".localized
@@ -37,8 +39,12 @@ class RekeyConfirmationViewModel {
     }
     
     private func setOldTransitionValue(for account: Account) {
-        if account.type == .ledger {
-            oldTransitionValue = account.name
+        if account.type.requiresLedgerConnection() {
+            if let ledgerName = account.ledgerDetail?.name {
+                oldTransitionValue = ledgerName
+            } else {
+                oldTransitionValue = account.name
+            }
         } else {
             oldTransitionValue = "*********"
         }
