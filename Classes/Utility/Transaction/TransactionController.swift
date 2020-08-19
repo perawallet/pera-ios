@@ -124,14 +124,14 @@ extension TransactionController {
             startSigningProcess(for: accountType, and: .assetTransaction)
         case .rekey:
             composeRekeyTransactionData()
-            startSigningProcess(for: .ledger, and: .rekey)
+            startSigningProcess(for: accountType, and: .rekey)
         }
     }
 }
 
 extension TransactionController {
     private func startSigningProcess(for accountType: AccountType, and transactionType: TransactionType) {
-        if accountType == .ledger {
+        if accountType.requiresLedgerConnection() {
             setupBLEConnections()
             // swiftlint:disable todo
             // TODO: We need to restart scanning somehow here so that it can be restarted if there is an error in the same screen.
@@ -400,14 +400,15 @@ extension TransactionController {
 extension TransactionController {
     private func composeRekeyTransactionData() {
         guard let params = params,
-            let draft = rekeyTransactionDraft else {
+            let draft = rekeyTransactionDraft,
+            let rekeyedAccount = draft.toAccount else {
                 connectedDevice = nil
                 delegate?.transactionController(self, didFailedComposing: .custom(self.rekeyTransactionDraft))
                 return
         }
         
         var transactionError: NSError?
-        let rekeyTransactionDraft = RekeyTransactionDraft(from: draft.from, rekeyedAccount: "", transactionParams: params)
+        let rekeyTransactionDraft = RekeyTransactionDraft(from: draft.from, rekeyedAccount: rekeyedAccount, transactionParams: params)
         
         guard let transactionData = algorandSDK.rekeyAccount(with: rekeyTransactionDraft, error: &transactionError) else {
             connectedDevice = nil
@@ -505,15 +506,41 @@ extension TransactionController: LedgerBLEControllerDelegate {
         }
         
         var transactionError: NSError?
-      
-        guard let transactionData = unsignedTransactionData,
-            let signedTransaction = algorandSDK.getSignedTransaction(transactionData, from: signatureData, error: &transactionError) else {
+        
+        guard let account = transactionDraft?.from,
+            let transactionData = unsignedTransactionData else {
+            connectedDevice = nil
+            delegate?.transactionController(self, didFailedComposing: .custom(transactionError))
+            return
+        }
+        
+        if account.type == .rekeyed {
+            guard let signedTransaction = algorandSDK.getSignedTransaction(
+                with: account.authAddress,
+                transaction: transactionData,
+                from: signatureData,
+                error: &transactionError
+            ) else {
                 connectedDevice = nil
                 delegate?.transactionController(self, didFailedComposing: .custom(transactionError))
                 return
+            }
+            
+            self.signedTransactionData = signedTransaction
+        } else {
+            guard let signedTransaction = algorandSDK.getSignedTransaction(
+                transactionData,
+                from: signatureData,
+                error: &transactionError
+            ) else {
+                connectedDevice = nil
+                delegate?.transactionController(self, didFailedComposing: .custom(transactionError))
+                return
+            }
+            
+            self.signedTransactionData = signedTransaction
         }
-      
-        self.signedTransactionData = signedTransaction
+
         calculateAssetTransactionFee(for: transactionType)
         
         if transactionType == .algosTransaction {

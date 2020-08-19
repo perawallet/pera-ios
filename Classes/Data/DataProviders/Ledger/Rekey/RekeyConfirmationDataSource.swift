@@ -17,7 +17,7 @@ class RekeyConfirmationDataSource: NSObject {
     private let rekeyConfirmationViewModel: RekeyConfirmationViewModel
     private let account: Account
     
-    private var allAssetsDisplayed = false
+    private(set) var allAssetsDisplayed = false
     
     init(account: Account, rekeyConfirmationViewModel: RekeyConfirmationViewModel) {
         self.account = account
@@ -80,9 +80,9 @@ extension RekeyConfirmationDataSource: UICollectionViewDataSource {
                 withReuseIdentifier: AccountHeaderSupplementaryView.reusableIdentifier,
                 for: indexPath
             ) as? AccountHeaderSupplementaryView {
+                accountsViewModel.configure(headerView, with: account)
                 headerView.contextView.setQRButton(hidden: true)
                 headerView.contextView.setOptionsButton(hidden: true)
-                accountsViewModel.configure(headerView, with: account)
                 return headerView
             }
         } else {

@@ -46,6 +46,13 @@ class RekeyConfirmationViewController: BaseScrollViewController {
         super.init(configuration: configuration)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if rekeyConfirmationDataSource.allAssetsDisplayed {
+            setFooterHidden()
+        }
+    }
+    
     override func configureAppearance() {
         super.configureAppearance()
         title = "ledger-rekey-confirm-title".localized
@@ -78,6 +85,10 @@ extension RekeyConfirmationViewController {
 
 extension RekeyConfirmationViewController: RekeyConfirmationDataSourceDelegate {
     func rekeyConfirmationDataSourceDidShowMoreAssets(_ rekeyConfirmationDataSource: RekeyConfirmationDataSource) {
+        setFooterHidden()
+    }
+    
+    private func setFooterHidden() {
         rekeyConfirmationListLayout.setFooterHidden(true)
         rekeyConfirmationView.reloadData()
     }
@@ -94,55 +105,25 @@ extension RekeyConfirmationViewController: RekeyConfirmationViewDelegate {
     }
 }
 
-extension RekeyConfirmationViewController {
-    private func openLedgerApprovalScreen() {
-        ledgerApprovalViewController = open(
-            .ledgerApproval(mode: .connection),
-            by: .customPresent(presentationStyle: .custom, transitionStyle: nil, transitioningDelegate: cardModalPresenter)
-        ) as? LedgerApprovalViewController
-    }
-    
-    private func openRekeyConfirmationAlert() {
-        let accountName = account.name ?? ""
-        let configurator = BottomInformationBundle(
-            title: "ledger-rekey-success-title".localized,
-            image: img("img-green-checkmark"),
-            explanation: "ledger-rekey-success-message".localized(params: accountName),
-            actionTitle: "title-go-home".localized,
-            actionImage: img("bg-main-button")) {
-                self.handleRekeyUpdates()
-        }
-        
-        open(
-            .bottomInformation(mode: .confirmation, configurator: configurator),
-            by: .customPresentWithoutNavigationController(
-                presentationStyle: .custom,
-                transitionStyle: nil,
-                transitioningDelegate: cardModalPresenter
-            )
-        )
-    }
-    
-    private func handleRekeyUpdates() {
-        guard let accountInformation = api?.session.accountInformation(from: account.address) else {
-            return
-        }
-        
-        accountInformation.type = .rekeyed
-        accountInformation.ledgerDetail = LedgerDetail(id: ledger.id, name: ledger.name)
-        session?.authenticatedUser?.updateAccount(accountInformation)
-        dismissScreen()
-    }
-}
-
 extension RekeyConfirmationViewController: TransactionControllerDelegate {
     func transactionController(_ transactionController: TransactionController, didComposedTransactionDataFor draft: TransactionSendDraft?) {
         ledgerApprovalViewController?.dismissScreen()
-        openRekeyConfirmationAlert()
+        handleRekeyUpdates()
     }
     
     func transactionController(_ transactionController: TransactionController, didFailedComposing error: Error) {
         ledgerApprovalViewController?.dismissScreen()
+        
+        switch error {
+        case let .custom(errorType):
+            guard let transactionError = errorType as? TransactionController.TransactionError else {
+                return
+            }
+            
+            displayMinimumTransactionError(from: transactionError)
+        default:
+            break
+        }
     }
     
     func transactionControllerDidStartBLEConnection(_ transactionController: TransactionController) {
@@ -167,6 +148,7 @@ extension RekeyConfirmationViewController: TransactionControllerDelegate {
     
     func transactionController(_ transactionController: TransactionController, didDisconnectFrom peripheral: CBPeripheral) {
         ledgerApprovalViewController?.dismissScreen()
+        NotificationBanner.showError("ble-error-connection-title".localized, message: "ble-error-fail-connect-peripheral".localized)
     }
     
     func transactionControllerDidFailToSignWithLedger(_ transactionController: TransactionController) {
@@ -175,5 +157,57 @@ extension RekeyConfirmationViewController: TransactionControllerDelegate {
             "ble-error-transaction-cancelled-title".localized,
             message: "ble-error-fail-sign-transaction".localized
         )
+    }
+}
+
+extension RekeyConfirmationViewController {
+    private func openLedgerApprovalScreen() {
+        ledgerApprovalViewController = open(
+            .ledgerApproval(mode: .connection),
+            by: .customPresent(presentationStyle: .custom, transitionStyle: nil, transitioningDelegate: cardModalPresenter)
+        ) as? LedgerApprovalViewController
+    }
+    
+    private func openRekeyConfirmationAlert() {
+        let accountName = account.name ?? ""
+        let configurator = BottomInformationBundle(
+            title: "ledger-rekey-success-title".localized,
+            image: img("img-green-checkmark"),
+            explanation: "ledger-rekey-success-message".localized(params: accountName),
+            actionTitle: "title-go-home".localized,
+            actionImage: img("bg-main-button")) {
+                self.dismissScreen()
+        }
+        
+        open(
+            .bottomInformation(mode: .confirmation, configurator: configurator),
+            by: .customPresentWithoutNavigationController(
+                presentationStyle: .custom,
+                transitionStyle: nil,
+                transitioningDelegate: cardModalPresenter
+            )
+        )
+    }
+    
+    private func handleRekeyUpdates() {
+        guard let accountInformation = api?.session.accountInformation(from: account.address) else {
+            return
+        }
+        
+        accountInformation.type = .rekeyed
+        accountInformation.ledgerDetail = LedgerDetail(id: ledger.id, name: ledger.name)
+        session?.authenticatedUser?.updateAccount(accountInformation)
+    }
+    
+    private func displayMinimumTransactionError(from transactionError: TransactionController.TransactionError) {
+        switch transactionError {
+        case let .minimumAmount(amount):
+            NotificationBanner.showError(
+                "asset-min-transaction-error-title".localized,
+                message: "asset-min-transaction-error-message".localized(params: amount.toAlgos.toDecimalStringForLabel ?? "")
+            )
+        default:
+            break
+        }
     }
 }

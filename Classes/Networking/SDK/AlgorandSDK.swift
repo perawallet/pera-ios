@@ -20,6 +20,10 @@ class AlgorandSDK {
     func getSignedTransaction(_ transaction: Data, from signature: Data, error: inout NSError?) -> Data? {
         return CryptoAttachSignature(signature, transaction, &error)
     }
+    
+    func getSignedTransaction(with signer: String?, transaction: Data, from signature: Data, error: inout NSError?) -> Data? {
+        return CryptoAttachSignatureWithSigner(signature, transaction, signer, &error)
+    }
 }
 
 extension AlgorandSDK {

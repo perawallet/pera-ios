@@ -169,7 +169,7 @@ extension RekeyConfirmationView {
 extension RekeyConfirmationView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let horizontalInset: CGFloat = 20.0
-        let collectionViewHeight: CGFloat = 230.0
+        let collectionViewHeight: CGFloat = 104.0
         let transitionTitleLabelTopInset: CGFloat = 30.0
         let transitionViewTopInset: CGFloat = 10.0
         let feeLabelTopInset: CGFloat = 16.0
