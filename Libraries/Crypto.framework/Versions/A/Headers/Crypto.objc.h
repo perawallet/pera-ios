@@ -33,6 +33,11 @@ Algorand address
  */
 FOUNDATION_EXPORT NSData* _Nullable CryptoAttachSignature(NSData* _Nullable signature, NSData* _Nullable encodedTx, NSError* _Nullable* _Nullable error);
 
+/**
+ * AttachSignatureWithSigner accepts a signature, a transaction, and a signer address and returns the bytes of a the signed transaction
+ */
+FOUNDATION_EXPORT NSData* _Nullable CryptoAttachSignatureWithSigner(NSData* _Nullable signature, NSData* _Nullable encodedTx, NSString* _Nullable signer, NSError* _Nullable* _Nullable error);
+
 FOUNDATION_EXPORT NSString* _Nonnull CryptoGenerateAddressFromPublicKey(NSData* _Nullable pk, NSError* _Nullable* _Nullable error);
 
 FOUNDATION_EXPORT NSString* _Nonnull CryptoGenerateAddressFromSK(NSData* _Nullable sk, NSError* _Nullable* _Nullable error);
