@@ -12,18 +12,16 @@ class LedgerAccountSelectionViewController: BaseViewController {
     
     private lazy var ledgerAccountSelectionView = LedgerAccountSelectionView()
     
-    private let connectedDeviceId: UUID
-    private let connectedDeviceName: String?
+    private let ledger: LedgerDetail
     
-    init(connectedDeviceId: UUID, connectedDeviceName: String?, configuration: ViewControllerConfiguration) {
-        self.connectedDeviceId = connectedDeviceId
-        self.connectedDeviceName = connectedDeviceName
+    init(ledger: LedgerDetail, configuration: ViewControllerConfiguration) {
+        self.ledger = ledger
         super.init(configuration: configuration)
     }
     
     override func configureAppearance() {
         super.configureAppearance()
-        title = connectedDeviceName
+        title = ledger.name
     }
     
     override func prepareLayout() {

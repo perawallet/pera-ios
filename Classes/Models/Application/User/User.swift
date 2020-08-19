@@ -59,6 +59,8 @@ extension User {
         }
         
         accounts[index].updateName(account.name)
+        accounts[index].type = account.type
+        accounts[index].ledgerDetail = account.ledgerDetail
         syncronize()
     }
     

@@ -245,14 +245,8 @@ extension LedgerDeviceListViewController: LedgerBLEControllerDelegate {
             ledgerApprovalViewController?.closeScreen(by: .dismiss, animated: true) {
                 switch self.mode {
                 case let .rekey(account):
-                    self.open(
-                        .rekeyConfirmation(
-                            account: account,
-                            deviceId: connectedDeviceId,
-                            deviceName: self.connectedDevice?.name
-                        ),
-                        by: .push
-                    )
+                    let ledgerDetail = LedgerDetail(id: connectedDeviceId, name: self.connectedDevice?.name, address: address)
+                    self.open(.rekeyConfirmation(account: account, ledger: ledgerDetail), by: .push)
                 default:
                     self.open(.ledgerPairing(mode: self.mode, address: address, connectedDeviceId: connectedDeviceId), by: .push)
                 }

@@ -121,7 +121,7 @@ extension LedgerPairingViewController {
     }
     
     private func setupAccount(with name: String) -> AccountInformation {
-        let ledgerDetail = LedgerDetail(id: connectedDeviceId)
+        let ledgerDetail = LedgerDetail(id: connectedDeviceId, name: nil)
         let account = AccountInformation(address: address, name: name, type: .ledger, ledgerDetail: ledgerDetail)
         let user: User
         

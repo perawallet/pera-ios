@@ -21,6 +21,7 @@ class Account: Model {
     var participation: Participation?
     var createdAssets: [AssetDetail]?
     var assets: [Asset]?
+    var authAddress: String?
     
     var assetDetails: [AssetDetail] = []
     var name: String?
@@ -45,6 +46,7 @@ class Account: Model {
         assets = try? container.decodeIfPresent([Asset].self, forKey: .assets) ?? nil
         assetDetails = try container.decodeIfPresent([AssetDetail].self, forKey: .assetDetails) ?? []
         type = try container.decodeIfPresent(AccountType.self, forKey: .type) ?? .standard
+        authAddress = try container.decodeIfPresent(String.self, forKey: .authAddress)
         ledgerDetail = try container.decodeIfPresent(LedgerDetail.self, forKey: .ledgerDetail)
     }
     
@@ -74,6 +76,7 @@ extension Account {
         rewardsBase = account.rewardsBase
         round = account.round
         signatureType = account.signatureType
+        authAddress = account.authAddress
         
         if let updatedName = account.name {
             name = updatedName
@@ -142,6 +145,7 @@ extension Account {
         case ledgerDetail = "ledgerDetail"
         case signatureType = "sig-type"
         case round = "round"
+        case authAddress = "auth-addr"
     }
 }
 
