@@ -29,6 +29,8 @@ class RequestAssetTransactionPreviewViewModel {
         
         if account.type.isLedger() {
             view.transactionAccountInformationView.setAccountImage(img("img-ledger-small"))
+        } else if account.type.isRekeyed() {
+            view.transactionAccountInformationView.setAccountImage(img("icon-account-type-rekeyed"))
         } else {
             view.transactionAccountInformationView.setAccountImage(img("icon-account-type-standard"))
         }

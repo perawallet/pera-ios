@@ -35,7 +35,7 @@ class OptionsViewController: BaseViewController {
                 options = Options.optionsWithoutRemoveAsset
             }
             
-            if accountInformation.type == .ledger {
+            if accountInformation.type == .ledger || accountInformation.type == .rekeyed {
                 options.removeAll { option -> Bool in
                     option == .passphrase
                 }

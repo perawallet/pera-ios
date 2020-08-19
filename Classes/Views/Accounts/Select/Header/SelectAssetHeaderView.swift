@@ -64,6 +64,10 @@ extension SelectAssetHeaderView {
     func setStandardAccount() {
         imageView.image = img("icon-account-type-standard")
     }
+    
+    func setRekeyedAccount() {
+        imageView.image = img("icon-account-type-rekeyed")
+    }
 }
 
 extension SelectAssetHeaderView {

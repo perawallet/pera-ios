@@ -25,6 +25,8 @@ extension SelectAssetViewModel {
     func configure(_ header: SelectAssetHeaderSupplementaryView, with account: Account) {
         if account.type.isLedger() {
             header.contextView.setLedgerAccount()
+        } else if account.type.isRekeyed() {
+            header.contextView.setRekeyedAccount()
         } else {
             header.contextView.setStandardAccount()
         }

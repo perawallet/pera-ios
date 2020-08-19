@@ -78,6 +78,10 @@ enum AccountType: String, Model {
     func isLedger() -> Bool {
         return self == .ledger
     }
+    
+    func isRekeyed() -> Bool {
+        return self == .rekeyed
+    }
 }
 
 extension AccountType: Encodable { }

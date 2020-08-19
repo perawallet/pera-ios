@@ -12,6 +12,8 @@ class SendAssetTransactionViewModel {
     func configure(_ view: SendTransactionView, with assetTransactionSendDraft: AssetTransactionSendDraft) {
         if assetTransactionSendDraft.from.type == .ledger {
             view.setAccountImage(img("img-ledger-small"))
+        } else if assetTransactionSendDraft.from.type == .rekeyed {
+            view.setAccountImage(img("icon-account-type-rekeyed"))
         } else {
             view.setAccountImage(img("icon-account-type-standard"))
         }
