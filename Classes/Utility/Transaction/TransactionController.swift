@@ -194,7 +194,7 @@ extension TransactionController {
                 isMaxTransaction = false
             }
             // Reduce fee from transaction amount
-            transactionAmount -= initialFee * params.fee
+            transactionAmount -= max(initialFee * params.fee, Transaction.Constant.minimumFee)
         }
         
         let trimmedToAddress = toAddress.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -347,11 +347,7 @@ extension TransactionController {
             return
         }
         
-        var calculatedFee = Int64(signedTransactionData.count) * params.fee
-        
-        if calculatedFee < Transaction.Constant.minimumFee {
-            calculatedFee = Transaction.Constant.minimumFee
-        }
+        let calculatedFee = max((Int64(signedTransactionData.count) * params.fee), Transaction.Constant.minimumFee)
         
         // Asset transaction fee amount must be asset count * minimum algos limit + minimum fee
         if transactionType == .assetAddition
@@ -359,7 +355,7 @@ extension TransactionController {
             return
         }
         
-        if transactionType != .assetRemoval
+        if (transactionType != .assetRemoval && transactionType != .assetAddition)
             && !isValidTransactionAmount(for: account, calculatedFee: calculatedFee, containsCurrentAsset: false) {
             return
         }
