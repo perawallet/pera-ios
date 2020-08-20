@@ -300,7 +300,7 @@ extension AssetRemovalViewController: TransactionControllerDelegate {
     }
     
     func transactionController(_ transactionController: TransactionController, didFailedComposing error: Error) {
-        if account.type.requiresLedgerConnection(){
+        if account.type.requiresLedgerConnection() {
             ledgerApprovalViewController?.dismissScreen()
         }
         

@@ -9,6 +9,9 @@
 import Crypto
 
 class AlgorandSDK {
+    
+    let roundTreshold: Int64 = 1000
+    
     func generatePrivateKey() -> Data? {
         return CryptoGenerateSK()
     }
@@ -53,7 +56,7 @@ extension AlgorandSDK {
             draft.transactionParams.fee,
             draft.amount,
             draft.transactionParams.lastRound,
-            draft.transactionParams.lastRound + 1000, // Need to add 1000 as last round
+            draft.transactionParams.lastRound + roundTreshold, // Need to add 1000 as last round
             draft.note,
             draft.isMaxTransaction ? toAddress : nil,
             nil,
@@ -72,7 +75,7 @@ extension AlgorandSDK {
             draft.amount,
             draft.transactionParams.fee,
             draft.transactionParams.lastRound,
-            draft.transactionParams.lastRound + 1000, // Need to add 1000 as last round
+            draft.transactionParams.lastRound + roundTreshold, // Need to add 1000 as last round
             draft.note,
             nil,
             draft.transactionParams.genesisHashData?.base64EncodedString(),
@@ -86,7 +89,7 @@ extension AlgorandSDK {
             getTrimmedAddress(from: draft.from),
             draft.transactionParams.fee,
             draft.transactionParams.lastRound,
-            draft.transactionParams.lastRound + 1000, // Need to add 1000 as last round
+            draft.transactionParams.lastRound + roundTreshold, // Need to add 1000 as last round
             nil,
             nil,
             draft.transactionParams.genesisHashData?.base64EncodedString(),
@@ -99,11 +102,11 @@ extension AlgorandSDK {
         return TransactionMakeAssetTransferTxn(
             getTrimmedAddress(from: draft.from),
             getTrimmedAddress(from: draft.from), // Receiver address should be same with the sender while removing an asset
-            draft.assetCreatorAddress, //
+            draft.assetCreatorAddress,
             draft.amount,
             draft.transactionParams.fee,
             draft.transactionParams.lastRound,
-            draft.transactionParams.lastRound + 1000, // Need to add 1000 as last round
+            draft.transactionParams.lastRound + roundTreshold, // Need to add 1000 as last round
             nil,
             nil,
             draft.transactionParams.genesisHashData?.base64EncodedString(),
@@ -120,7 +123,7 @@ extension AlgorandSDK {
             draft.rekeyedAccount.trimmingCharacters(in: .whitespacesAndNewlines),
             draft.transactionParams.fee,
             draft.transactionParams.lastRound,
-            draft.transactionParams.lastRound + 1000, // Need to add 1000 as last round
+            draft.transactionParams.lastRound + roundTreshold, // Need to add 1000 as last round
             nil,
             draft.transactionParams.genesisHashData,
             &error
