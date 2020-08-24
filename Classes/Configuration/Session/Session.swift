@@ -124,6 +124,8 @@ class Session: Storable {
     
     var verifiedAssets: [VerifiedAsset]?
     
+    var assetDetails: [Int64: AssetDetail] = [:]
+    
     var accounts = [Account]()
     
     init() {

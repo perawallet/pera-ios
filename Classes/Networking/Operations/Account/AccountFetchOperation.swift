@@ -64,20 +64,28 @@ extension AccountFetchOperation {
         
         var removedAssetCount = 0
         for asset in assets {
-            self.api.getAssetDetails(with: AssetFetchDraft(assetId: "\(asset.id)")) { assetResponse in
-                switch assetResponse {
-                case .success(let assetDetailResponse):
-                    self.composeAssetDetail(
-                        assetDetailResponse.assetDetail,
-                        of: account,
-                        with: asset.id,
-                        removedAssetCount: &removedAssetCount
-                    )
-                case .failure:
-                    removedAssetCount += 1
-                    account.removeAsset(asset.id)
-                    if assets.count == account.assetDetails.count + removedAssetCount {
-                        self.onCompleted?(account, nil)
+            if let assetDetail = api.session.assetDetails[asset.id] {
+                account.assetDetails.append(assetDetail)
+                
+                if assets.count == account.assetDetails.count + removedAssetCount {
+                    self.onCompleted?(account, nil)
+                }
+            } else {
+                self.api.getAssetDetails(with: AssetFetchDraft(assetId: "\(asset.id)")) { assetResponse in
+                    switch assetResponse {
+                    case .success(let assetDetailResponse):
+                        self.composeAssetDetail(
+                            assetDetailResponse.assetDetail,
+                            of: account,
+                            with: asset.id,
+                            removedAssetCount: &removedAssetCount
+                        )
+                    case .failure:
+                        removedAssetCount += 1
+                        account.removeAsset(asset.id)
+                        if assets.count == account.assetDetails.count + removedAssetCount {
+                            self.onCompleted?(account, nil)
+                        }
                     }
                 }
             }
@@ -93,6 +101,7 @@ extension AccountFetchOperation {
         var assetDetail = assetDetail
         setVerifiedIfNeeded(&assetDetail, with: id)
         account.assetDetails.append(assetDetail)
+        api.session.assetDetails[id] = assetDetail
         
         if assets.count == account.assetDetails.count + removedAssetCount {
             self.onCompleted?(account, nil)
