@@ -466,9 +466,13 @@
 "ledger-rekey-more-assets" = "+%@ more assets";
 "ledger-rekey-success-title" = "Account Rekeyed";
 "ledger-rekey-success-message" = "The account %@ has been successfully rekeyed";
+"ledger-account-rekeyed-title" = "Account Rekeyed";
+"ledger-account-rekeyed-detail" = "This account was rekeyed.";
 
 // MARK: Ledger Account Selection
 
-"ledger-account-selection-title" = "Account Found";
-"ledger-account-selection-detail" = "Select 1 or more accounts to be added to your Algorand Wallet";
+"ledger-account-selection-title-singular" = "%1 Account Found";
+"ledger-account-selection-title-plural" = "%@ Accounts Found";
+"ledger-account-selection-detail" = "This ledger device can sign transactions for the following account. Select the account to add to your Algorand Wallet.";
 "ledger-account-selection-add" = "Add Account";
+"ledger-account-selection-ledger-rekeyed" = "Account is rekeyed to %@";
