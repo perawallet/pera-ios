@@ -74,18 +74,6 @@ enum AccountType: String, Model {
     case ledger = "ledger"
     case multiSig = "multiSig"
     case rekeyed = "rekeyed"
-    
-    func isLedger() -> Bool {
-        return self == .ledger
-    }
-    
-    func isRekeyed() -> Bool {
-        return self == .rekeyed
-    }
-    
-    func requiresLedgerConnection() -> Bool {
-        return isLedger() || isRekeyed()
-    }
 }
 
 extension AccountType: Encodable { }

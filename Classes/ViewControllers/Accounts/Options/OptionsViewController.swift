@@ -28,20 +28,16 @@ class OptionsViewController: BaseViewController {
     init(account: Account, configuration: ViewControllerConfiguration) {
         self.account = account
         
-        if let accountInformation = configuration.session?.accountInformation(from: account.address) {
-            if account.isThereAnyDifferentAsset() {
-                options = Options.allOptions
-            } else {
-                options = Options.optionsWithoutRemoveAsset
-            }
-            
-            if accountInformation.type.requiresLedgerConnection() {
-                options.removeAll { option -> Bool in
-                    option == .passphrase
-                }
-            }
-        } else {
+        if account.isThereAnyDifferentAsset() {
             options = Options.allOptions
+        } else {
+            options = Options.optionsWithoutRemoveAsset
+        }
+        
+        if account.requiresLedgerConnection() {
+            options.removeAll { option -> Bool in
+                option == .passphrase
+            }
         }
         
         super.init(configuration: configuration)

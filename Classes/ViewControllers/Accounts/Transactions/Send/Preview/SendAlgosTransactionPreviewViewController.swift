@@ -128,7 +128,7 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
             return
         }
         
-        if algosTransactionDraft.from.type.requiresLedgerConnection() {
+        if algosTransactionDraft.from.requiresLedgerConnection() {
             ledgerApprovalViewController?.dismissScreen()
         }
         

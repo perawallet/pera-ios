@@ -17,9 +17,9 @@ class RequestAlgosTransactionViewModel {
     }
     
     func configure(_ view: RequestTransactionView) {
-        if algosTransactionRequestDraft.account.type.isLedger() {
+        if algosTransactionRequestDraft.account.isLedger() {
             view.setAccountImage(img("img-ledger-small"))
-        } else if algosTransactionRequestDraft.account.type.isRekeyed() {
+        } else if algosTransactionRequestDraft.account.isRekeyed() {
             view.setAccountImage(img("icon-account-type-rekeyed"))
         } else {
             view.setAccountImage(img("icon-account-type-standard"))

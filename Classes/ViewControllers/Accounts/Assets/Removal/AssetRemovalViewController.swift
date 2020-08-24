@@ -291,7 +291,7 @@ extension AssetRemovalViewController: TransactionControllerDelegate {
             return
         }
         
-        if account.type.requiresLedgerConnection() {
+        if account.requiresLedgerConnection() {
             ledgerApprovalViewController?.dismissScreen()
         }
         
@@ -300,7 +300,7 @@ extension AssetRemovalViewController: TransactionControllerDelegate {
     }
     
     func transactionController(_ transactionController: TransactionController, didFailedComposing error: Error) {
-        if account.type.requiresLedgerConnection() {
+        if account.requiresLedgerConnection() {
             ledgerApprovalViewController?.dismissScreen()
         }
         
@@ -358,7 +358,7 @@ extension AssetRemovalViewController: TransactionControllerDelegate {
 
 extension AssetRemovalViewController {
     func validateTimer() {
-        guard account.type.requiresLedgerConnection() else {
+        guard account.requiresLedgerConnection() else {
             return
         }
         
@@ -379,7 +379,7 @@ extension AssetRemovalViewController {
     }
     
     func invalidateTimer() {
-        guard account.type.requiresLedgerConnection() else {
+        guard account.requiresLedgerConnection() else {
             return
         }
         

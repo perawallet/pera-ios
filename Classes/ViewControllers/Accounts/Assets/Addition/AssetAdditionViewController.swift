@@ -287,7 +287,7 @@ extension AssetAdditionViewController: AssetActionConfirmationViewControllerDele
 
 extension AssetAdditionViewController: TransactionControllerDelegate {
     func transactionController(_ transactionController: TransactionController, didFailedComposing error: Error) {
-        if account.type.requiresLedgerConnection() {
+        if account.requiresLedgerConnection() {
             ledgerApprovalViewController?.dismissScreen()
         }
         
@@ -345,7 +345,7 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
                 return
         }
         
-        if account.type.requiresLedgerConnection() {
+        if account.requiresLedgerConnection() {
             ledgerApprovalViewController?.dismissScreen()
         }
         
@@ -374,7 +374,7 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
 // MARK: Ledger Timer
 extension AssetAdditionViewController {
     func validateTimer() {
-        guard account.type.requiresLedgerConnection() else {
+        guard account.requiresLedgerConnection() else {
             return
         }
         
@@ -395,7 +395,7 @@ extension AssetAdditionViewController {
     }
     
     func invalidateTimer() {
-        guard account.type.requiresLedgerConnection() else {
+        guard account.requiresLedgerConnection() else {
             return
         }
         

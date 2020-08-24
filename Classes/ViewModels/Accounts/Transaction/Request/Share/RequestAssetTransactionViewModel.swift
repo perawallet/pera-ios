@@ -17,9 +17,9 @@ class RequestAssetTransactionViewModel {
     }
     
     func configure(_ view: RequestTransactionView) {
-        if assetTransactionRequestDraft.account.type.isLedger() {
+        if assetTransactionRequestDraft.account.isLedger() {
             view.setAccountImage(img("img-ledger-small"))
-        } else if assetTransactionRequestDraft.account.type.isRekeyed() {
+        } else if assetTransactionRequestDraft.account.isRekeyed() {
             view.setAccountImage(img("icon-account-type-rekeyed"))
         } else {
             view.setAccountImage(img("icon-account-type-standard"))

@@ -39,7 +39,7 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
         return TransactionController(api: api)
     }()
     
-    private(set) lazy var sendTransactionPreviewView = SendTransactionPreviewView(accountType: selectedAccount?.type ?? .standard,
+    private(set) lazy var sendTransactionPreviewView = SendTransactionPreviewView(account: selectedAccount,
                                                                                   inputFieldFraction: assetFraction)
     var keyboard = Keyboard()
     private(set) var contentViewBottomConstraint: Constraint?
@@ -364,7 +364,7 @@ extension SendTransactionPreviewViewController: TransactionControllerDelegate {
 // MARK: Ledger Timer
 extension SendTransactionPreviewViewController {
     func validateTimer() {
-        guard let account = selectedAccount, account.type.requiresLedgerConnection() else {
+        guard let account = selectedAccount, account.requiresLedgerConnection() else {
             return
         }
         
@@ -385,7 +385,7 @@ extension SendTransactionPreviewViewController {
     }
     
     func invalidateTimer() {
-        guard let account = selectedAccount, account.type.requiresLedgerConnection() else {
+        guard let account = selectedAccount, account.requiresLedgerConnection() else {
             return
         }
         
