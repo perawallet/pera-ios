@@ -66,7 +66,6 @@ indirect enum Screen {
     case ledgerTutorial(mode: AccountSetupMode)
     case ledgerDeviceList(mode: AccountSetupMode)
     case ledgerTroubleshoot
-    case ledgerPairing(mode: AccountSetupMode, address: String, connectedDeviceId: UUID)
     case ledgerApproval(mode: LedgerApprovalViewController.Mode)
     case ledgerTroubleshootBluetooth
     case ledgerTroubleshootLedgerConnection
@@ -83,7 +82,7 @@ indirect enum Screen {
     case pinLimit
     case rekeyInstruction(account: Account)
     case rekeyConfirmation(account: Account, ledger: LedgerDetail)
-    case ledgerAccountSelection(ledger: LedgerDetail)
+    case ledgerAccountSelection(mode: AccountSetupMode, ledger: LedgerDetail)
 }
 
 extension Screen {

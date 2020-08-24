@@ -308,13 +308,6 @@ class Router {
             viewController = LedgerDeviceListViewController(mode: mode, configuration: configuration)
         case .ledgerTroubleshoot:
             viewController = LedgerTroubleshootingViewController(configuration: configuration)
-        case let .ledgerPairing(mode, address, deviceId):
-            viewController = LedgerPairingViewController(
-                mode: mode,
-                address: address,
-                connectedDeviceId: deviceId,
-                configuration: configuration
-            )
         case let .ledgerApproval(mode):
             viewController = LedgerApprovalViewController(mode: mode, configuration: configuration)
         case .ledgerTroubleshootBluetooth:
@@ -350,8 +343,8 @@ class Router {
             viewController = RekeyInstructionsViewController(account: account, configuration: configuration)
         case let .rekeyConfirmation(account, ledger):
             viewController = RekeyConfirmationViewController(account: account, ledger: ledger, configuration: configuration)
-        case let .ledgerAccountSelection(ledger):
-            viewController = LedgerAccountSelectionViewController(ledger: ledger, configuration: configuration)
+        case let .ledgerAccountSelection(mode, ledger):
+            viewController = LedgerAccountSelectionViewController(mode: mode, ledger: ledger, configuration: configuration)
         }
         
         return viewController as? T
