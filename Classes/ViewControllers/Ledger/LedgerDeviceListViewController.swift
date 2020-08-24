@@ -243,12 +243,12 @@ extension LedgerDeviceListViewController: LedgerBLEControllerDelegate {
         
         if let connectedDeviceId = connectedDevice?.identifier {
             ledgerApprovalViewController?.closeScreen(by: .dismiss, animated: true) {
+                let ledgerDetail = LedgerDetail(id: connectedDeviceId, name: self.connectedDevice?.name, address: address)
                 switch self.mode {
                 case let .rekey(account):
-                    let ledgerDetail = LedgerDetail(id: connectedDeviceId, name: self.connectedDevice?.name, address: address)
                     self.open(.rekeyConfirmation(account: account, ledger: ledgerDetail), by: .push)
                 default:
-                    self.open(.ledgerPairing(mode: self.mode, address: address, connectedDeviceId: connectedDeviceId), by: .push)
+                    self.open(.ledgerAccountSelection(mode: self.mode, ledger: ledgerDetail), by: .push)
                 }
             }
         }

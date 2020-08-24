@@ -109,6 +109,7 @@ extension RekeyConfirmationViewController: TransactionControllerDelegate {
     func transactionController(_ transactionController: TransactionController, didComposedTransactionDataFor draft: TransactionSendDraft?) {
         ledgerApprovalViewController?.dismissScreen()
         handleRekeyUpdates()
+        openRekeyConfirmationAlert()
     }
     
     func transactionController(_ transactionController: TransactionController, didFailedComposing error: Error) {
