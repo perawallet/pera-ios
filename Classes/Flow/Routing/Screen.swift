@@ -81,8 +81,8 @@ indirect enum Screen {
     case transactionFilterCustomRange(fromDate: Date?, toDate: Date?)
     case pinLimit
     case rekeyInstruction(account: Account)
-    case rekeyConfirmation(account: Account, ledger: LedgerDetail)
-    case ledgerAccountSelection(flow: AccountSetupFlow, ledger: LedgerDetail)
+    case rekeyConfirmation(account: Account, ledger: LedgerDetail, ledgerAddress: String)
+    case ledgerAccountSelection(flow: AccountSetupFlow, ledger: LedgerDetail, ledgerAddress: String)
 }
 
 extension Screen {

@@ -21,22 +21,20 @@ class LedgerAccountSelectionDataSource: NSObject {
     private var accounts = [Account]()
     
     private let ledger: LedgerDetail
+    private let ledgerAddress: String
     
-    init(api: API, ledger: LedgerDetail) {
+    init(api: API, ledger: LedgerDetail, ledgerAddress: String) {
         self.api = api
         self.ledger = ledger
+        self.ledgerAddress = ledgerAddress
         super.init()
     }
 }
 
 extension LedgerAccountSelectionDataSource {
     func loadData() {
-        guard let address = ledger.address else {
-            return
-        }
-        
-        fetchLedgerAccount(for: address)
-        fetchRekeyedAccounts(ofLedger: address)
+        fetchLedgerAccount(for: ledgerAddress)
+        fetchRekeyedAccounts(ofLedger: ledgerAddress)
 
         assetGroup.enter()
         dispatchGroup.notify(queue: .global()) {
@@ -277,7 +275,7 @@ extension LedgerAccountSelectionDataSource {
     private func setupLocalAccount(from account: Account, isLedgerAccount: Bool) {
         let localAccount = AccountInformation(
             address: account.address,
-            name: account.address.shortAddressDisplay() ?? "",
+            name: account.address.shortAddressDisplay(),
             type: account.type,
             ledgerDetail: isLedgerAccount ? ledger : nil
         )

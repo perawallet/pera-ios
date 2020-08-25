@@ -243,23 +243,23 @@ extension LedgerDeviceListViewController: LedgerBLEControllerDelegate {
         
         if let connectedDeviceId = connectedDevice?.identifier {
             ledgerApprovalViewController?.closeScreen(by: .dismiss, animated: true) {
-                let ledgerDetail = LedgerDetail(id: connectedDeviceId, name: self.connectedDevice?.name, address: address)
+                let ledgerDetail = LedgerDetail(id: connectedDeviceId, name: self.connectedDevice?.name)
                 switch self.accountSetupFlow {
                 case let .initializeAccount(mode):
-                    self.openNextFlow(for: mode, with: ledgerDetail)
+                    self.openNextFlow(for: mode, with: ledgerDetail, for: address)
                 case let .addNewAccount(mode):
-                    self.openNextFlow(for: mode, with: ledgerDetail)
+                    self.openNextFlow(for: mode, with: ledgerDetail, for: address)
                 }
             }
         }
     }
     
-    private func openNextFlow(for mode: AccountSetupMode, with ledgerDetail: LedgerDetail) {
+    private func openNextFlow(for mode: AccountSetupMode, with ledgerDetail: LedgerDetail, for address: String) {
         switch mode {
         case let .rekey(account):
-            self.open(.rekeyConfirmation(account: account, ledger: ledgerDetail), by: .push)
+            self.open(.rekeyConfirmation(account: account, ledger: ledgerDetail, ledgerAddress: address), by: .push)
         default:
-            self.open(.ledgerAccountSelection(flow: accountSetupFlow, ledger: ledgerDetail), by: .push)
+            self.open(.ledgerAccountSelection(flow: accountSetupFlow, ledger: ledgerDetail, ledgerAddress: address), by: .push)
         }
     }
 }
