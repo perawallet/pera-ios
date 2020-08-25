@@ -30,9 +30,10 @@ class AccountSelectionView: BaseView {
                 if let titleView = stackView.arrangedSubviews.first as? LedgerAccountSelectionTitleView {
                     titleView.setSelectionImage(img("settings-node-inactive"))
                 }
-            case .disabled:
-                containerView.layer.borderWidth = 0.0
-                containerView.backgroundColor = SharedColors.disabledBackground
+            case .unselectable:
+                containerView.layer.borderWidth = 2.0
+                containerView.layer.borderColor = SharedColors.primary.cgColor
+                containerView.backgroundColor = SharedColors.secondaryBackground
             }
         }
     }
@@ -102,7 +103,7 @@ extension AccountSelectionView {
     enum State {
         case selected
         case unselected
-        case disabled
+        case unselectable
     }
 }
 

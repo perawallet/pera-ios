@@ -10,14 +10,14 @@ import UIKit
 
 class LedgerAccountSelectionTitleViewModel {
     
-    private let isEnabled: Bool
+    private let isUnselectable: Bool
     
     private var selectionImage: UIImage?
     private var accountImage: UIImage?
     private var accountName: String?
     
-    init(account: Account, isEnabled: Bool) {
-        self.isEnabled = isEnabled
+    init(account: Account, isUnselectable: Bool) {
+        self.isUnselectable = isUnselectable
         setSelectionImage()
         setAccountImage(from: account)
         setAccountName(from: account)
@@ -42,7 +42,9 @@ class LedgerAccountSelectionTitleViewModel {
 
 extension LedgerAccountSelectionTitleViewModel {
     func configure(_ view: LedgerAccountSelectionTitleView) {
-        view.setEnabled(isEnabled)
+        if isUnselectable {
+            view.setUnselectable()
+        }
         view.setSelectionImage(selectionImage)
         view.setAccountImage(accountImage)
         view.setAccountName(accountName)

@@ -22,7 +22,7 @@ class LedgerAccountSelectionViewController: BaseViewController {
     }()
     
     private let ledger: LedgerDetail
-    private let mode: AccountSetupMode
+    private let accountSetupFlow: AccountSetupFlow
 
     private lazy var dataSource: LedgerAccountSelectionDataSource = {
         guard let api = api else {
@@ -33,8 +33,8 @@ class LedgerAccountSelectionViewController: BaseViewController {
     
     private lazy var listLayout = LedgerAccountSelectionListLayout(dataSource: dataSource)
     
-    init(mode: AccountSetupMode, ledger: LedgerDetail, configuration: ViewControllerConfiguration) {
-        self.mode = mode
+    init(accountSetupFlow: AccountSetupFlow, ledger: LedgerDetail, configuration: ViewControllerConfiguration) {
+        self.accountSetupFlow = accountSetupFlow
         self.ledger = ledger
         super.init(configuration: configuration)
     }
@@ -57,7 +57,6 @@ class LedgerAccountSelectionViewController: BaseViewController {
         ledgerAccountSelectionView.setDataSource(dataSource)
         ledgerAccountSelectionView.setListDelegate(listLayout)
         dataSource.delegate = self
-        listLayout.delegate = self
     }
     
     override func prepareLayout() {
@@ -94,29 +93,10 @@ extension LedgerAccountSelectionViewController: LedgerAccountSelectionDataSource
         ledgerAccountSelectionView.setErrorState()
         ledgerAccountSelectionView.reloadData()
     }
-    
-    func ledgerAccountSelectionDataSourceDidCopyAuthAddress(_ ledgerAccountSelectionDataSource: LedgerAccountSelectionDataSource) {
-        displaySimpleAlertWith(title: "qr-creation-copied".localized, message: "")
-        UIPasteboard.general.string = dataSource.account(at: 0)?.authAddress
-    }
-}
-
-extension LedgerAccountSelectionViewController: LedgerAccountSelectionListLayoutDelegate {
-    func ledgerAccountSelectionListLayout(_ listLayout: LedgerAccountSelectionListLayout, didSelectAccountAt indexPath: IndexPath) {
-        setAddButtonEnabledIfNeeded()
-    }
-    
-    func ledgerAccountSelectionListLayout(_ listLayout: LedgerAccountSelectionListLayout, didDeselectAccountAt indexPath: IndexPath) {
-        setAddButtonEnabledIfNeeded()
-    }
 }
 
 extension LedgerAccountSelectionViewController: LedgerAccountSelectionViewDelegate {
     func ledgerAccountSelectionViewDidAddAccount(_ ledgerAccountSelectionView: LedgerAccountSelectionView) {
-        if ledgerAccountSelectionView.selectedIndexes.isEmpty {
-            return
-        }
-        
         RegistrationEvent(type: .ledger).logEvent()
         dataSource.saveSelectedAccounts(ledgerAccountSelectionView.selectedIndexes)
         launchHome()
@@ -127,21 +107,17 @@ extension LedgerAccountSelectionViewController: LedgerAccountSelectionViewDelega
         accountManager?.fetchAllAccounts(isVerifiedAssetsIncluded: true) {
             SVProgressHUD.showSuccess(withStatus: "title-done".localized)
             SVProgressHUD.dismiss(withDelay: 1.0) {
-                switch self.mode {
-                case .initialize:
+                switch self.accountSetupFlow {
+                case .initializeAccount:
                     self.dismiss(animated: false) {
                         UIApplication.shared.rootViewController()?.setupTabBarController()
                     }
-                case .new:
+                case .addNewAccount:
                     self.closeScreen(by: .dismiss, animated: false)
-                case .rekey:
+                default:
                     break
                 }
             }
         }
-    }
-    
-    private func setAddButtonEnabledIfNeeded() {
-        ledgerAccountSelectionView.setEnabled(!ledgerAccountSelectionView.selectedIndexes.isEmpty)
     }
 }

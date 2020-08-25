@@ -10,7 +10,6 @@ import UIKit
 
 class LedgerAccountSelectionListLayout: NSObject {
     
-    weak var delegate: LedgerAccountSelectionListLayoutDelegate?
     private weak var dataSource: LedgerAccountSelectionDataSource?
     
     init(dataSource: LedgerAccountSelectionDataSource) {
@@ -30,7 +29,6 @@ extension LedgerAccountSelectionListLayout: UICollectionViewDelegateFlowLayout {
         let algosHeight: CGFloat = 54.0
         let multiAssetNameHeight: CGFloat = 72.0
         let singleAssetNameHeight: CGFloat = 52.0
-        let rekeyInfoHeight: CGFloat = 68.0
         height += headerHeight + algosHeight
         
         if let account = dataSource?.account(at: indexPath.item) {
@@ -40,10 +38,6 @@ extension LedgerAccountSelectionListLayout: UICollectionViewDelegateFlowLayout {
                 } else {
                     height += singleAssetNameHeight
                 }
-            }
-            
-            if dataSource?.shouldSetDisabled(at: indexPath) ?? false {
-                height += rekeyInfoHeight
             }
         }
         
@@ -59,29 +53,16 @@ extension LedgerAccountSelectionListLayout: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        return !(dataSource?.shouldSetDisabled(at: indexPath) ?? false)
+        return indexPath.item != 0
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath) as? AccountSelectionCell
         cell?.contextView.state = .selected
-        delegate?.ledgerAccountSelectionListLayout(self, didSelectAccountAt: indexPath)
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath) as? AccountSelectionCell
         cell?.contextView.state = .unselected
-        delegate?.ledgerAccountSelectionListLayout(self, didDeselectAccountAt: indexPath)
     }
-}
-
-protocol LedgerAccountSelectionListLayoutDelegate: class {
-    func ledgerAccountSelectionListLayout(
-        _ listLayout: LedgerAccountSelectionListLayout,
-        didSelectAccountAt indexPath: IndexPath
-    )
-    func ledgerAccountSelectionListLayout(
-        _ listLayout: LedgerAccountSelectionListLayout,
-        didDeselectAccountAt indexPath: IndexPath
-    )
 }

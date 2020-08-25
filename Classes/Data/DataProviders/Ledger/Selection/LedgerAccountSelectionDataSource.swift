@@ -149,12 +149,13 @@ extension LedgerAccountSelectionDataSource: UICollectionViewDataSource {
                 for: indexPath
             ) as? AccountSelectionCell {
             
-            let isEnabled = !shouldSetDisabled(at: indexPath)
+            if isUnselectable(at: indexPath) {
+                cell.contextView.state = .unselectable
+            }
             
-            addLedgerAccountSelectionTitleView(to: cell, isEnabled: isEnabled, account: account)
-            addAlgoView(to: cell, isEnabled: isEnabled, account: account)
-            addAssetViews(to: cell, for: account, isEnabled: isEnabled)
-            addLedgerAccountSelectionRekeyedInfoViewIfNeeded(to: cell, isEnabled: isEnabled, account: account)
+            addLedgerAccountSelectionTitleView(to: cell, isUnselectable: isUnselectable(at: indexPath), account: account)
+            addAlgoView(to: cell, for: account)
+            addAssetViews(to: cell, for: account)
             
             return cell
         }
@@ -181,97 +182,64 @@ extension LedgerAccountSelectionDataSource: UICollectionViewDataSource {
 }
 
 extension LedgerAccountSelectionDataSource {
-    private func addLedgerAccountSelectionTitleView(to cell: AccountSelectionCell, isEnabled: Bool, account: Account) {
+    private func addLedgerAccountSelectionTitleView(to cell: AccountSelectionCell, isUnselectable: Bool, account: Account) {
         let ledgerAccountSelectionTitleView = LedgerAccountSelectionTitleView()
-        LedgerAccountSelectionTitleViewModel(account: account, isEnabled: isEnabled).configure(ledgerAccountSelectionTitleView)
+        LedgerAccountSelectionTitleViewModel(account: account, isUnselectable: isUnselectable).configure(ledgerAccountSelectionTitleView)
         cell.contextView.addView(ledgerAccountSelectionTitleView)
     }
     
-    private func addAlgoView(to cell: AccountSelectionCell, isEnabled: Bool, account: Account) {
+    private func addAlgoView(to cell: AccountSelectionCell, for account: Account) {
         let algoView = AlgoAssetView()
-        algoView.setEnabled(isEnabled)
         algoView.amountLabel.text = account.amount.toAlgos.toDecimalStringForLabel
         cell.contextView.addView(algoView)
     }
     
-    private func addAssetViews(to cell: AccountSelectionCell, for account: Account, isEnabled: Bool) {
+    private func addAssetViews(to cell: AccountSelectionCell, for account: Account) {
         for (index, assetDetail) in account.assetDetails.enumerated() {
             guard let asset = account.assets?[index] else {
                 continue
             }
             
             if assetDetail.isVerified {
-                addVerifiedAssetViews(to: cell, isEnabled: isEnabled, assetDetail: assetDetail, asset: asset)
+                addVerifiedAssetViews(to: cell, assetDetail: assetDetail, asset: asset)
             } else {
-                addUnverifiedAssetViews(to: cell, isEnabled: isEnabled, assetDetail: assetDetail, asset: asset)
+                addUnverifiedAssetViews(to: cell, assetDetail: assetDetail, asset: asset)
             }
         }
     }
     
-    private func addVerifiedAssetViews(
-        to cell: AccountSelectionCell,
-        isEnabled: Bool,
-        assetDetail: AssetDetail,
-        asset: Asset
-    ) {
+    private func addVerifiedAssetViews(to cell: AccountSelectionCell, assetDetail: AssetDetail, asset: Asset) {
         if assetDetail.hasBothDisplayName() {
-            addAssetView(AssetCell(), to: cell, isEnabled: isEnabled, assetDetail: assetDetail, asset: asset)
+            addAssetView(AssetCell(), to: cell, assetDetail: assetDetail, asset: asset)
         } else if assetDetail.hasOnlyAssetName() {
-            addAssetView(OnlyNameAssetCell(), to: cell, isEnabled: isEnabled, assetDetail: assetDetail, asset: asset)
+            addAssetView(OnlyNameAssetCell(), to: cell, assetDetail: assetDetail, asset: asset)
         } else if assetDetail.hasOnlyUnitName() {
-            addAssetView(OnlyUnitNameAssetCell(), to: cell, isEnabled: isEnabled, assetDetail: assetDetail, asset: asset)
+            addAssetView(OnlyUnitNameAssetCell(), to: cell, assetDetail: assetDetail, asset: asset)
         } else if assetDetail.hasNoDisplayName() {
-            addAssetView(UnnamedAssetCell(), to: cell, isEnabled: isEnabled, assetDetail: assetDetail, asset: asset)
+            addAssetView(UnnamedAssetCell(), to: cell, assetDetail: assetDetail, asset: asset)
         }
     }
     
-    private func addUnverifiedAssetViews(
-        to cell: AccountSelectionCell,
-        isEnabled: Bool,
-        assetDetail: AssetDetail,
-        asset: Asset
-    ) {
+    private func addUnverifiedAssetViews(to cell: AccountSelectionCell, assetDetail: AssetDetail, asset: Asset) {
         if assetDetail.hasBothDisplayName() {
-            addAssetView(UnverifiedAssetCell(), to: cell, isEnabled: isEnabled, assetDetail: assetDetail, asset: asset)
+            addAssetView(UnverifiedAssetCell(), to: cell, assetDetail: assetDetail, asset: asset)
         } else if assetDetail.hasOnlyAssetName() {
-            addAssetView(UnverifiedOnlyNameAssetCell(), to: cell, isEnabled: isEnabled, assetDetail: assetDetail, asset: asset)
+            addAssetView(UnverifiedOnlyNameAssetCell(), to: cell, assetDetail: assetDetail, asset: asset)
         } else if assetDetail.hasOnlyUnitName() {
-            addAssetView(
-                UnverifiedOnlyUnitNameAssetCell(),
-                to: cell,
-                isEnabled: isEnabled,
-                assetDetail: assetDetail,
-                asset: asset
-            )
+            addAssetView(UnverifiedOnlyUnitNameAssetCell(), to: cell, assetDetail: assetDetail, asset: asset)
         } else if assetDetail.hasNoDisplayName() {
-            addAssetView(UnverifiedUnnamedAssetCell(), to: cell, isEnabled: isEnabled, assetDetail: assetDetail, asset: asset)
+            addAssetView(UnverifiedUnnamedAssetCell(), to: cell, assetDetail: assetDetail, asset: asset)
         }
     }
     
     private func addAssetView(
         _ view: BaseAssetCell,
         to cell: AccountSelectionCell,
-        isEnabled: Bool,
         assetDetail: AssetDetail,
         asset: Asset
     ) {
-        view.contextView.setEnabled(isEnabled)
         viewModel.configure(view, with: assetDetail, and: asset)
         cell.contextView.addView(view)
-    }
-    
-    private func addLedgerAccountSelectionRekeyedInfoViewIfNeeded(to cell: AccountSelectionCell, isEnabled: Bool, account: Account) {
-        if !isEnabled {
-            let ledgerAccountSelectionRekeyedInfoView = LedgerAccountSelectionRekeyedInfoView()
-            LedgerAccountSelectionRekeyedInfoViewModel(account: account).configure(ledgerAccountSelectionRekeyedInfoView)
-            cell.contextView.addView(ledgerAccountSelectionRekeyedInfoView)
-            cell.contextView.state = .disabled
-        }
-    }
-    
-    @objc
-    private func notifyDelegateToCopyAuthAddress() {
-        delegate?.ledgerAccountSelectionDataSourceDidCopyAuthAddress(self)
     }
 }
 
@@ -288,30 +256,30 @@ extension LedgerAccountSelectionDataSource {
         accounts.removeAll()
     }
     
-    func shouldSetDisabled(at indexPath: IndexPath) -> Bool {
-        if let account = accounts[safe: indexPath.item],
-            indexPath.item == 0,
-            account.hasAuthAccount() {
-            return true
-        }
-        return false
+    func isUnselectable(at indexPath: IndexPath) -> Bool {
+        return indexPath.item == 0
     }
     
     func saveSelectedAccounts(_ indexes: [IndexPath]) {
         indexes.forEach { indexPath in
             if let account = accounts[safe: indexPath.item],
                 api.session.authenticatedUser?.account(address: account.address) == nil {
-                setupLocalAccount(from: account)
+                setupLocalAccount(from: account, isLedgerAccount: false)
             }
+        }
+        
+        /// Add ledger's account to local accounts
+        if let account = account(at: 0) {
+            setupLocalAccount(from: account, isLedgerAccount: true)
         }
     }
     
-    private func setupLocalAccount(from account: Account) {
+    private func setupLocalAccount(from account: Account, isLedgerAccount: Bool) {
         let localAccount = AccountInformation(
             address: account.address,
             name: account.address.shortAddressDisplay() ?? "",
             type: account.type,
-            ledgerDetail: ledger
+            ledgerDetail: isLedgerAccount ? ledger : nil
         )
         
         let user: User
@@ -323,7 +291,12 @@ extension LedgerAccountSelectionDataSource {
             user = User(accounts: [localAccount])
         }
         
-        let remoteAccount = Account(address: localAccount.address, type: localAccount.type, ledgerDetail: ledger, name: localAccount.name)
+        let remoteAccount = Account(
+            address: localAccount.address,
+            type: localAccount.type,
+            ledgerDetail: isLedgerAccount ? ledger : nil,
+            name: localAccount.name
+        )
         api.session.addAccount(remoteAccount)
         api.session.authenticatedUser = user
     }
@@ -335,5 +308,4 @@ protocol LedgerAccountSelectionDataSourceDelegate: class {
         didFetch accounts: [Account]
     )
     func ledgerAccountSelectionDataSourceDidFailToFetch(_ ledgerAccountSelectionDataSource: LedgerAccountSelectionDataSource)
-    func ledgerAccountSelectionDataSourceDidCopyAuthAddress(_ ledgerAccountSelectionDataSource: LedgerAccountSelectionDataSource)
 }

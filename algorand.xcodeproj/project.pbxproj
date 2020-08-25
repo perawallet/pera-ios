@@ -294,8 +294,6 @@
 		2B01E2C624EF11FA00C6E5B7 /* LedgerAccountSelectionListLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01E2C424EF11FA00C6E5B7 /* LedgerAccountSelectionListLayout.swift */; };
 		2B01E2C824EF121000C6E5B7 /* LedgerAccountSelectionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01E2C724EF121000C6E5B7 /* LedgerAccountSelectionDataSource.swift */; };
 		2B01E2C924EF121000C6E5B7 /* LedgerAccountSelectionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01E2C724EF121000C6E5B7 /* LedgerAccountSelectionDataSource.swift */; };
-		2B01E2CC24EF20CD00C6E5B7 /* LedgerAccountSelectionRekeyedInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01E2CB24EF20CD00C6E5B7 /* LedgerAccountSelectionRekeyedInfoView.swift */; };
-		2B01E2CD24EF20CD00C6E5B7 /* LedgerAccountSelectionRekeyedInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01E2CB24EF20CD00C6E5B7 /* LedgerAccountSelectionRekeyedInfoView.swift */; };
 		2B02536E23C6101A003D5FDD /* QRBottomInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B02536D23C6101A003D5FDD /* QRBottomInformationView.swift */; };
 		2B02536F23C6101A003D5FDD /* QRBottomInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B02536D23C6101A003D5FDD /* QRBottomInformationView.swift */; };
 		2B0823DB23B6677A00D52BCF /* AssetSupportDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0823DA23B6677A00D52BCF /* AssetSupportDraft.swift */; };
@@ -393,8 +391,6 @@
 		2B25BB4D225EAD700092C972 /* RequestTransactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B25BB4C225EAD700092C972 /* RequestTransactionView.swift */; };
 		2B298D1124F437360047408A /* LedgerAccountSelectionHeaderSupplementaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B298D1024F437360047408A /* LedgerAccountSelectionHeaderSupplementaryViewModel.swift */; };
 		2B298D1224F437360047408A /* LedgerAccountSelectionHeaderSupplementaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B298D1024F437360047408A /* LedgerAccountSelectionHeaderSupplementaryViewModel.swift */; };
-		2B298D1424F47E470047408A /* LedgerAccountSelectionRekeyedInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B298D1324F47E470047408A /* LedgerAccountSelectionRekeyedInfoViewModel.swift */; };
-		2B298D1524F47E470047408A /* LedgerAccountSelectionRekeyedInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B298D1324F47E470047408A /* LedgerAccountSelectionRekeyedInfoViewModel.swift */; };
 		2B298D1724F47FCF0047408A /* LedgerAccountSelectionTitleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B298D1624F47FCF0047408A /* LedgerAccountSelectionTitleViewModel.swift */; };
 		2B298D1824F47FCF0047408A /* LedgerAccountSelectionTitleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B298D1624F47FCF0047408A /* LedgerAccountSelectionTitleViewModel.swift */; };
 		2B2A9F41232A403600450DB0 /* TransactionTrackDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2A9F40232A403600450DB0 /* TransactionTrackDraft.swift */; };
@@ -1109,7 +1105,6 @@
 		2B01E2C124EF11DE00C6E5B7 /* LedgerAccountSelectionTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountSelectionTitleView.swift; sourceTree = "<group>"; };
 		2B01E2C424EF11FA00C6E5B7 /* LedgerAccountSelectionListLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountSelectionListLayout.swift; sourceTree = "<group>"; };
 		2B01E2C724EF121000C6E5B7 /* LedgerAccountSelectionDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountSelectionDataSource.swift; sourceTree = "<group>"; };
-		2B01E2CB24EF20CD00C6E5B7 /* LedgerAccountSelectionRekeyedInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountSelectionRekeyedInfoView.swift; sourceTree = "<group>"; };
 		2B02536D23C6101A003D5FDD /* QRBottomInformationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRBottomInformationView.swift; sourceTree = "<group>"; };
 		2B0823DA23B6677A00D52BCF /* AssetSupportDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetSupportDraft.swift; sourceTree = "<group>"; };
 		2B0823DD23B668DB00D52BCF /* NotificationAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationAsset.swift; sourceTree = "<group>"; };
@@ -1163,7 +1158,6 @@
 		2B25BB4A225EAD600092C972 /* RequestTransactionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestTransactionViewController.swift; sourceTree = "<group>"; };
 		2B25BB4C225EAD700092C972 /* RequestTransactionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestTransactionView.swift; sourceTree = "<group>"; };
 		2B298D1024F437360047408A /* LedgerAccountSelectionHeaderSupplementaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountSelectionHeaderSupplementaryViewModel.swift; sourceTree = "<group>"; };
-		2B298D1324F47E470047408A /* LedgerAccountSelectionRekeyedInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountSelectionRekeyedInfoViewModel.swift; sourceTree = "<group>"; };
 		2B298D1624F47FCF0047408A /* LedgerAccountSelectionTitleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountSelectionTitleViewModel.swift; sourceTree = "<group>"; };
 		2B2A9F40232A403600450DB0 /* TransactionTrackDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionTrackDraft.swift; sourceTree = "<group>"; };
 		2B2A9F43232AE20A00450DB0 /* RewardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardView.swift; sourceTree = "<group>"; };
@@ -1728,14 +1722,6 @@
 			path = Managers;
 			sourceTree = "<group>";
 		};
-		2B01E2CA24EF20AA00C6E5B7 /* RekeyedInfo */ = {
-			isa = PBXGroup;
-			children = (
-				2B01E2CB24EF20CD00C6E5B7 /* LedgerAccountSelectionRekeyedInfoView.swift */,
-			);
-			path = RekeyedInfo;
-			sourceTree = "<group>";
-		};
 		2B0D84E62394887000F0EAA7 /* Asset */ = {
 			isa = PBXGroup;
 			children = (
@@ -1915,7 +1901,6 @@
 			isa = PBXGroup;
 			children = (
 				2B0F5F5624E66FE600DA22A6 /* Enabled */,
-				2B01E2CA24EF20AA00C6E5B7 /* RekeyedInfo */,
 				2B0F5F2524E2C1F500DA22A6 /* Title */,
 			);
 			path = Cell;
@@ -2014,7 +1999,6 @@
 			isa = PBXGroup;
 			children = (
 				2B298D1024F437360047408A /* LedgerAccountSelectionHeaderSupplementaryViewModel.swift */,
-				2B298D1324F47E470047408A /* LedgerAccountSelectionRekeyedInfoViewModel.swift */,
 				2B298D1624F47FCF0047408A /* LedgerAccountSelectionTitleViewModel.swift */,
 			);
 			path = Selection;
@@ -5507,7 +5491,6 @@
 				2B1B536923279CD500D54029 /* AlgorandNotification.swift in Sources */,
 				2B1B536C2328029F00D54029 /* NotificationDetail.swift in Sources */,
 				2B6607E7241147BE002AC00F /* LedgerApprovalViewController.swift in Sources */,
-				2B298D1524F47E470047408A /* LedgerAccountSelectionRekeyedInfoViewModel.swift in Sources */,
 				17BD4E6C2292F1260003E49A /* SettingsInfoContextView.swift in Sources */,
 				17BD4E6D2292F1260003E49A /* BarButton.swift in Sources */,
 				2B0823DC23B6677A00D52BCF /* AssetSupportDraft.swift in Sources */,
@@ -5621,7 +5604,6 @@
 				17BD4EB12292F1260003E49A /* String+Address.swift in Sources */,
 				2B7ABF78233388570050B64B /* PendingTransactionList.swift in Sources */,
 				17BD4EB22292F1260003E49A /* Transaction.swift in Sources */,
-				2B01E2CD24EF20CD00C6E5B7 /* LedgerAccountSelectionRekeyedInfoView.swift in Sources */,
 				2B02536F23C6101A003D5FDD /* QRBottomInformationView.swift in Sources */,
 				2B56714C23FF42870037FCFA /* NoInternetConnectionView.swift in Sources */,
 				2BD6A06B24A50D6A00D2D28D /* PinLimitViewController.swift in Sources */,
@@ -6000,7 +5982,6 @@
 				2B8BE4EE22393577005D8565 /* BaseViewController.swift in Sources */,
 				2B6607E6241147BE002AC00F /* LedgerApprovalViewController.swift in Sources */,
 				2B448737237AAD1E00C19FDE /* AlgoAssetCell.swift in Sources */,
-				2B298D1424F47E470047408A /* LedgerAccountSelectionRekeyedInfoViewModel.swift in Sources */,
 				2B44871A2379645200C19FDE /* AssetAdditionView.swift in Sources */,
 				17B7D8B0224128EC00A6FF9E /* Keychain+Additions.swift in Sources */,
 				2BD547742318463E007179FE /* Feedback.swift in Sources */,
@@ -6114,7 +6095,6 @@
 				173DA1E72255EBE000378A82 /* String+Address.swift in Sources */,
 				2BB021DB224E46D60039D78A /* Transaction.swift in Sources */,
 				179278952244F8EE00097D32 /* UIFont+Additions.swift in Sources */,
-				2B01E2CC24EF20CD00C6E5B7 /* LedgerAccountSelectionRekeyedInfoView.swift in Sources */,
 				2B656E97224BB9F80064A49B /* AccountListView.swift in Sources */,
 				2B56714B23FF42870037FCFA /* NoInternetConnectionView.swift in Sources */,
 				2BD6A06A24A50D6A00D2D28D /* PinLimitViewController.swift in Sources */,

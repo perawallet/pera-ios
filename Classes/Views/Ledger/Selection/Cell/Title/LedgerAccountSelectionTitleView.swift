@@ -80,15 +80,8 @@ extension LedgerAccountSelectionTitleView {
         accountNameView.setAccountName(name)
     }
     
-    func setEnabled(_ isEnabled: Bool) {
-        if isEnabled {
-            backgroundColor = SharedColors.secondaryBackground
-            separatorView.backgroundColor = SharedColors.primaryBackground
-        } else {
-            selectionImageView.removeFromSuperview()
-            backgroundColor = SharedColors.disabledBackground
-            separatorView.backgroundColor = SharedColors.gray200
-        }
+    func setUnselectable() {
+        selectionImageView.removeFromSuperview()
     }
 }
 
