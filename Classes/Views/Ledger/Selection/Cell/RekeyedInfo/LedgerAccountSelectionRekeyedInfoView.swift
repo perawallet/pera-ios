@@ -16,7 +16,7 @@ class LedgerAccountSelectionRekeyedInfoView: BaseView {
     
     private lazy var addressLabel: UILabel = {
         UILabel()
-            .withLine(.contained)
+            .withLine(.single)
             .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
             .withAlignment(.center)
             .withTextColor(SharedColors.primaryText)
