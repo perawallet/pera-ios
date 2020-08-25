@@ -477,3 +477,5 @@
 "ledger-account-selection-detail" = "This ledger device can sign transactions for the following account. Select the account to add to your Algorand Wallet.";
 "ledger-account-selection-add" = "Add Account";
 "ledger-account-selection-ledger-rekeyed" = "Account is rekeyed to %@";
+"ledger-rekey-error-add-auth" = "The connected Ledger device cannot sign transactions for this account. In order to do so, please connect %@.";
+"ledger-rekey-error-not-found" = "No passphrase or Ledger pairing has been found with account. Try to add account with passphrase or ledger";
