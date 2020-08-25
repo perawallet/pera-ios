@@ -114,8 +114,6 @@ extension LedgerAccountSelectionViewController: LedgerAccountSelectionViewDelega
                     }
                 case .addNewAccount:
                     self.closeScreen(by: .dismiss, animated: false)
-                default:
-                    break
                 }
             }
         }

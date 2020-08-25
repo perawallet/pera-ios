@@ -52,10 +52,10 @@ extension AddNewAccountViewController: AddNewAccountViewDelegate {
     }
         
     func addNewAccountViewDidTapPairLedgerAccountButton(_ addNewAccountView: AddNewAccountView) {
-        open(.ledgerTutorial(mode: .new), by: .push)
+        open(.ledgerTutorial(flow: .addNewAccount(mode: .pair)), by: .push)
     }
         
     func addNewAccountViewDidTapRecoverButton(_ addNewAccountView: AddNewAccountView) {
-        open(.accountRecover(mode: .new), by: .push)
+        open(.accountRecover(flow: .addNewAccount(mode: .recover)), by: .push)
     }
 }

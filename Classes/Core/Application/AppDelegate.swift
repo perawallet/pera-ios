@@ -161,7 +161,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
             
             rootViewController.route(
-                to: .choosePassword(mode: .login, route: nil),
+                to: .choosePassword(mode: .login, flow: nil, route: nil),
                 from: topViewController,
                 by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
             )

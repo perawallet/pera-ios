@@ -222,7 +222,7 @@ extension SettingsViewController: UICollectionViewDelegateFlowLayout {
         case .password:
             open(
                 .choosePassword(
-                    mode: ChoosePasswordViewController.Mode.resetPassword, route: nil),
+                    mode: ChoosePasswordViewController.Mode.resetPassword, flow: nil, route: nil),
                     by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
             )
         case .feedback:

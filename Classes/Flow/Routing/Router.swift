@@ -176,21 +176,23 @@ class Router {
             viewController = IntroductionViewController(configuration: configuration)
         case .addNewAccount:
             viewController = AddNewAccountViewController(configuration: configuration)
-        case let .choosePassword(mode, route):
-            viewController = ChoosePasswordViewController(mode: mode, route: route, configuration: configuration)
-        case .localAuthenticationPreference:
-            viewController = LocalAuthenticationPreferenceViewController(configuration: configuration)
+        case let .choosePassword(mode, flow, route):
+            viewController = ChoosePasswordViewController(
+                mode: mode,
+                accountSetupFlow: flow,
+                route: route,
+                configuration: configuration
+            )
+        case let .localAuthenticationPreference(flow):
+            viewController = LocalAuthenticationPreferenceViewController(accountSetupFlow: flow, configuration: configuration)
         case let .passphraseView(address):
             viewController = PassphraseBackUpViewController(address: address, configuration: configuration)
         case .passphraseVerify:
             viewController = PassphraseVerifyViewController(configuration: configuration)
         case .accountNameSetup:
             viewController = AccountNameSetupViewController(configuration: configuration)
-        case let .accountRecover(mode):
-            let accountRecoverViewController = AccountRecoverViewController(configuration: configuration)
-            accountRecoverViewController.mode = mode
-            
-            viewController = accountRecoverViewController
+        case let .accountRecover(flow):
+            viewController = AccountRecoverViewController(accountSetupFlow: flow, configuration: configuration)
         case .qrScanner:
             viewController = QRScannerViewController(configuration: configuration)
         case let .qrGenerator(title, draft):
@@ -302,10 +304,10 @@ class Router {
             viewController = RewardDetailViewController(account: account, configuration: configuration)
         case .verifiedAssetInformation:
             viewController = VerifiedAssetInformationViewController(configuration: configuration)
-        case let .ledgerTutorial(mode):
-            viewController = LedgerTutorialViewController(mode: mode, configuration: configuration)
-        case let .ledgerDeviceList(mode):
-            viewController = LedgerDeviceListViewController(mode: mode, configuration: configuration)
+        case let .ledgerTutorial(flow):
+            viewController = LedgerTutorialViewController(accountSetupFlow: flow, configuration: configuration)
+        case let .ledgerDeviceList(flow):
+            viewController = LedgerDeviceListViewController(accountSetupFlow: flow, configuration: configuration)
         case .ledgerTroubleshoot:
             viewController = LedgerTroubleshootingViewController(configuration: configuration)
         case let .ledgerApproval(mode):
@@ -343,8 +345,8 @@ class Router {
             viewController = RekeyInstructionsViewController(account: account, configuration: configuration)
         case let .rekeyConfirmation(account, ledger):
             viewController = RekeyConfirmationViewController(account: account, ledger: ledger, configuration: configuration)
-        case let .ledgerAccountSelection(mode, ledger):
-            viewController = LedgerAccountSelectionViewController(mode: mode, ledger: ledger, configuration: configuration)
+        case let .ledgerAccountSelection(flow, ledger):
+            viewController = LedgerAccountSelectionViewController(accountSetupFlow: flow, ledger: ledger, configuration: configuration)
         }
         
         return viewController as? T
