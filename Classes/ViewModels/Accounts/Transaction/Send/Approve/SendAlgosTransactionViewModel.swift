@@ -60,9 +60,7 @@ class SendAlgosTransactionViewModel {
     }
     
     private func setReceiverWithAddress(_ address: String, in view: SendTransactionView) {
-        if let shortAddressDisplay = address.shortAddressDisplay() {
-            view.setReceiverName(shortAddressDisplay)
-            view.removeReceiverImage()
-        }
+        view.setReceiverName(address.shortAddressDisplay())
+        view.removeReceiverImage()
     }
 }
