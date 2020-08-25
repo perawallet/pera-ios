@@ -266,7 +266,7 @@ extension SendAlgosTransactionPreviewViewController {
                    
             SVProgressHUD.show(withStatus: "title-loading".localized)
             self.api?.fetchAccount(with: receiverFetchDraft) { accountResponse in
-                if selectedAccount.type != .ledger {
+                if !selectedAccount.requiresLedgerConnection() {
                     self.dismissProgressIfNeeded()
                 }
                 

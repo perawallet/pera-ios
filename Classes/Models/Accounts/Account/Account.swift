@@ -131,11 +131,14 @@ extension Account {
     }
     
     func isLedger() -> Bool {
+        if let authAddress = authAddress {
+            return address == authAddress
+        }
         return type == .ledger
     }
     
     func isRekeyed() -> Bool {
-        return type == .rekeyed || hasAuthAccount()
+        return hasAuthAccount()
     }
     
     func requiresLedgerConnection() -> Bool {

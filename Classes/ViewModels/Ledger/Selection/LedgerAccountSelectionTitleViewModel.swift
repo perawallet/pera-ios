@@ -28,7 +28,7 @@ class LedgerAccountSelectionTitleViewModel {
     }
     
     private func setAccountImage(from account: Account) {
-        if account.type == .rekeyed {
+        if account.isRekeyed() {
             accountImage = img("icon-account-type-rekeyed")
         } else {
             accountImage = img("img-ledger-small")

@@ -258,7 +258,7 @@ extension SendAssetTransactionPreviewViewController {
             switch fetchAccountResponse {
             case let .success(receiverAccountWrapper):
                 let receiverAccount = receiverAccountWrapper.account
-                if selectedAccount.type != .ledger {
+                if !selectedAccount.requiresLedgerConnection() {
                     self.dismissProgressIfNeeded()
                 }
                 
@@ -275,7 +275,7 @@ extension SendAssetTransactionPreviewViewController {
                 }
             case let .failure(_, indexerError):
                 if indexerError?.containsAccount(address) ?? false {
-                    if selectedAccount.type != .ledger {
+                    if !selectedAccount.requiresLedgerConnection(){
                         self.dismissProgressIfNeeded()
                     }
                     self.presentAssetNotSupportedAlert(receiverAddress: address)
