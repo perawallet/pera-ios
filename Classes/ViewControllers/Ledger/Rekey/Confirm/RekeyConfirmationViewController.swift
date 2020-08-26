@@ -16,6 +16,7 @@ class RekeyConfirmationViewController: BaseScrollViewController {
     
     private let account: Account
     private let ledger: LedgerDetail
+    private let ledgerAddress: String
     private var rekeyConfirmationDataSource: RekeyConfirmationDataSource
     private var rekeyConfirmationListLayout: RekeyConfirmationListLayout
     private let viewModel: RekeyConfirmationViewModel
@@ -37,9 +38,10 @@ class RekeyConfirmationViewController: BaseScrollViewController {
         return TransactionController(api: api)
     }()
     
-    init(account: Account, ledger: LedgerDetail, configuration: ViewControllerConfiguration) {
+    init(account: Account, ledger: LedgerDetail, ledgerAddress: String, configuration: ViewControllerConfiguration) {
         self.account = account
         self.ledger = ledger
+        self.ledgerAddress = ledgerAddress
         self.viewModel = RekeyConfirmationViewModel(account: account, ledgerName: ledger.name)
         rekeyConfirmationDataSource = RekeyConfirmationDataSource(account: account, rekeyConfirmationViewModel: viewModel)
         rekeyConfirmationListLayout = RekeyConfirmationListLayout(account: account)
@@ -96,9 +98,6 @@ extension RekeyConfirmationViewController: RekeyConfirmationDataSourceDelegate {
 
 extension RekeyConfirmationViewController: RekeyConfirmationViewDelegate {
     func rekeyConfirmationViewDidFinalizeConfirmation(_ rekeyConfirmationView: RekeyConfirmationView) {
-        guard let ledgerAddress = ledger.address else {
-            return
-        }
         let rekeyTransactionDraft = RekeyTransactionSendDraft(account: account, rekeyedTo: ledgerAddress)
         transactionController.setTransactionDraft(rekeyTransactionDraft)
         transactionController.getTransactionParamsAndComposeTransactionData(for: .rekey)
@@ -191,13 +190,39 @@ extension RekeyConfirmationViewController {
     }
     
     private func handleRekeyUpdates() {
-        guard let accountInformation = api?.session.accountInformation(from: account.address) else {
+        guard let accountInformation = session?.accountInformation(from: account.address) else {
             return
         }
         
+        addAuthAccountIfNeeded()
+        
         accountInformation.type = .rekeyed
-        accountInformation.ledgerDetail = LedgerDetail(id: ledger.id, name: ledger.name)
         session?.authenticatedUser?.updateAccount(accountInformation)
+        
+        account.type = .rekeyed
+        session?.updateAccount(account)
+    }
+    
+    private func addAuthAccountIfNeeded() {
+        if session?.accountInformation(from: ledgerAddress) == nil {
+            let ledgerAccountInformation = AccountInformation(
+                address: ledgerAddress,
+                name: ledgerAddress.shortAddressDisplay(),
+                type: .ledger,
+                ledgerDetail: ledger
+            )
+            
+            session?.authenticatedUser?.addAccount(ledgerAccountInformation)
+            
+            let remoteAccount = Account(
+                address: ledgerAccountInformation.address,
+                type: ledgerAccountInformation.type,
+                ledgerDetail: ledger,
+                name: ledgerAccountInformation.name
+            )
+            
+            session?.addAccount(remoteAccount)
+        }
     }
     
     private func displayMinimumTransactionError(from transactionError: TransactionController.TransactionError) {

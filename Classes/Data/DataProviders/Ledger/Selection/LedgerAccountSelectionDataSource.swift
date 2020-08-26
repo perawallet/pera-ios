@@ -259,16 +259,21 @@ extension LedgerAccountSelectionDataSource {
     }
     
     func saveSelectedAccounts(_ indexes: [IndexPath]) {
-        indexes.forEach { indexPath in
-            if let account = accounts[safe: indexPath.item],
-                api.session.authenticatedUser?.account(address: account.address) == nil {
-                setupLocalAccount(from: account, isLedgerAccount: false)
-            }
-        }
-        
         /// Add ledger's account to local accounts
-        if let account = account(at: 0) {
-            setupLocalAccount(from: account, isLedgerAccount: true)
+        addLedgerAccountIfNeeded()
+        
+        indexes.forEach { indexPath in
+            if let account = accounts[safe: indexPath.item] {
+                if let localAccount = api.session.accountInformation(from: account.address) {
+                    localAccount.type = .rekeyed
+                    api.session.authenticatedUser?.updateAccount(localAccount)
+                    
+                    account.type = .rekeyed
+                    api.session.updateAccount(account)
+                } else {
+                    setupLocalAccount(from: account, isLedgerAccount: false)
+                }
+            }
         }
     }
     
@@ -297,6 +302,13 @@ extension LedgerAccountSelectionDataSource {
         )
         api.session.addAccount(remoteAccount)
         api.session.authenticatedUser = user
+    }
+    
+    private func addLedgerAccountIfNeeded() {
+        if let account = account(at: 0),
+            api.session.accountInformation(from: account.address) == nil {
+            setupLocalAccount(from: account, isLedgerAccount: true)
+        }
     }
 }
 
