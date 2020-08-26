@@ -192,52 +192,18 @@ extension SendTransactionPreviewViewController: SendTransactionPreviewViewDelega
     func sendTransactionPreviewViewDidTapPreviewButton(_ sendTransactionPreviewView: SendTransactionPreviewView) {
         view.endEditing(true)
         
-        if !canSignTransaction() {
+        guard var account = selectedAccount,
+            let session = session else {
+            displaySimpleAlertWith(title: "title-error".localized, message: "send-algos-alert-message".localized)
             return
         }
         
+        if !session.canSignTransaction(for: &account) {
+            return
+        }
+        
+        selectedAccount = account
         displayTransactionPreview()
-    }
-    
-    func canSignTransaction() -> Bool {
-        guard let selectedAccount = selectedAccount,
-            let session = session else {
-            displaySimpleAlertWith(title: "title-error".localized, message: "send-algos-alert-message".localized)
-            return false
-        }
-        
-        /// Check whether auth address exists for the selected account.
-        if let authAccountAddress = selectedAccount.authAddress {
-            if let authAccount = session.accounts.first(where: { account -> Bool in
-                authAccountAddress == account.address
-            }) {
-                self.selectedAccount?.ledgerDetail = authAccount.ledgerDetail
-                return true
-            }
-            
-            NotificationBanner.showError(
-                "title-error".localized,
-                message: "ledger-rekey-error-add-auth".localized(params: authAccountAddress)
-            )
-            return false
-        }
-        
-        /// Check whether ledger details of the selected ledger account exists.
-        if selectedAccount.isLedger() {
-            if selectedAccount.ledgerDetail == nil {
-                NotificationBanner.showError("title-error".localized, message: "ledger-rekey-error-not-found".localized)
-                return false
-            }
-            return true
-        }
-        
-        /// Check whether private key of the selected account exists.
-        if session.privateData(for: selectedAccount.address) == nil {
-            NotificationBanner.showError("title-error".localized, message: "ledger-rekey-error-not-found".localized)
-            return false
-        }
-        
-        return true
     }
     
     func sendTransactionPreviewViewDidTapCloseButton(_ sendTransactionPreviewView: SendTransactionPreviewView) {
