@@ -478,4 +478,4 @@
 "ledger-account-selection-add" = "Add Account";
 "ledger-account-selection-ledger-rekeyed" = "Account is rekeyed to %@";
 "ledger-rekey-error-add-auth" = "The connected Ledger device cannot sign transactions for this account. In order to do so, please connect %@.";
-"ledger-rekey-error-not-found" = "No passphrase or Ledger pairing has been found with account. Try to add account with passphrase or ledger";
+"ledger-rekey-error-not-found" = "Ledger Pairing has not been done with account. Try to pair account with ledger.";

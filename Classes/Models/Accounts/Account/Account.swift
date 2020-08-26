@@ -153,6 +153,16 @@ extension Account {
     func requiresLedgerConnection() -> Bool {
         return isLedger() || isRekeyed()
     }
+    
+    func accountImage() -> UIImage? {
+        if isRekeyed() {
+            return img("icon-account-type-rekeyed")
+        } else if isLedger() {
+            return img("img-ledger-small")
+        } else {
+            return img("icon-account-type-standard")
+        }
+    }
 }
 
 extension Account {

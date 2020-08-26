@@ -11,15 +11,7 @@ import UIKit
 class SendAlgosTransactionViewModel {
     func configure(_ view: SendTransactionView, with algosTransactionSendDraft: AlgosTransactionSendDraft) {
         view.setButtonTitle("send-algos-title".localized)
-        
-        if algosTransactionSendDraft.from.isLedger() {
-            view.setAccountImage(img("img-ledger-small"))
-        } else if algosTransactionSendDraft.from.isRekeyed() {
-            view.setAccountImage(img("icon-account-type-rekeyed"))
-        } else {
-            view.setAccountImage(img("icon-account-type-standard"))
-        }
-        
+        view.setAccountImage(algosTransactionSendDraft.from.accountImage())
         view.removeAssetUnitName()
         view.removeAssetId()
         view.setAssetNameAlignment(.right)

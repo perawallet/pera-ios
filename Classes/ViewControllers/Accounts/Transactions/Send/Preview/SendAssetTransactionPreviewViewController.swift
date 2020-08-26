@@ -275,7 +275,7 @@ extension SendAssetTransactionPreviewViewController {
                 }
             case let .failure(_, indexerError):
                 if indexerError?.containsAccount(address) ?? false {
-                    if !selectedAccount.requiresLedgerConnection(){
+                    if !selectedAccount.requiresLedgerConnection() {
                         self.dismissProgressIfNeeded()
                     }
                     self.presentAssetNotSupportedAlert(receiverAddress: address)

@@ -10,14 +10,7 @@ import UIKit
 
 class SendAssetTransactionViewModel {
     func configure(_ view: SendTransactionView, with assetTransactionSendDraft: AssetTransactionSendDraft) {
-        if assetTransactionSendDraft.from.isLedger() {
-            view.setAccountImage(img("img-ledger-small"))
-        } else if assetTransactionSendDraft.from.isRekeyed() {
-            view.setAccountImage(img("icon-account-type-rekeyed"))
-        } else {
-            view.setAccountImage(img("icon-account-type-standard"))
-        }
-        
+        view.setAccountImage(assetTransactionSendDraft.from.accountImage())
         view.setAccountName(assetTransactionSendDraft.from.name)
         
         if let amount = assetTransactionSendDraft.amount {
