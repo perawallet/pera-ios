@@ -234,13 +234,6 @@ extension LedgerDeviceListViewController: LedgerBLEControllerDelegate {
             return
         }
         
-        if session?.account(from: address) != nil {
-            ledgerApprovalViewController?.dismissScreen()
-            connectedDevice = nil
-            NotificationBanner.showError("title-error.localized".localized, message: "recover-from-seed-verify-exist-error".localized)
-            return
-        }
-        
         if let connectedDeviceId = connectedDevice?.identifier {
             ledgerApprovalViewController?.closeScreen(by: .dismiss, animated: true) {
                 let ledgerDetail = LedgerDetail(id: connectedDeviceId, name: self.connectedDevice?.name)
