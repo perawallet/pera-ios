@@ -213,15 +213,7 @@ extension RekeyConfirmationViewController {
             )
             
             session?.authenticatedUser?.addAccount(ledgerAccountInformation)
-            
-            let remoteAccount = Account(
-                address: ledgerAccountInformation.address,
-                type: ledgerAccountInformation.type,
-                ledgerDetail: ledger,
-                name: ledgerAccountInformation.name
-            )
-            
-            session?.addAccount(remoteAccount)
+            session?.addAccount(Account(accountInformation: ledgerAccountInformation))
         }
     }
     

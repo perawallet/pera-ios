@@ -294,13 +294,7 @@ extension LedgerAccountSelectionDataSource {
             user = User(accounts: [localAccount])
         }
         
-        let remoteAccount = Account(
-            address: localAccount.address,
-            type: localAccount.type,
-            ledgerDetail: isLedgerAccount ? ledger : nil,
-            name: localAccount.name
-        )
-        api.session.addAccount(remoteAccount)
+        api.session.addAccount(Account(accountInformation: localAccount))
         api.session.authenticatedUser = user
     }
     

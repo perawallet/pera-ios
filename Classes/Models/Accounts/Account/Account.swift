@@ -58,6 +58,15 @@ class Account: Model {
         self.type = type
         self.ledgerDetail = ledgerDetail
     }
+    
+    init(accountInformation: AccountInformation) {
+        self.address = accountInformation.address
+        self.amount = 0
+        self.status = .offline
+        self.name = accountInformation.name
+        self.type = accountInformation.type
+        self.ledgerDetail = accountInformation.ledgerDetail
+    }
 }
 
 extension Account {
