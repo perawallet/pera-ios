@@ -14,7 +14,7 @@ class RekeyConfirmationViewController: BaseScrollViewController {
     
     private lazy var rekeyConfirmationView = RekeyConfirmationView()
     
-    private let account: Account
+    private var account: Account
     private let ledger: LedgerDetail
     private let ledgerAddress: String
     private var rekeyConfirmationDataSource: RekeyConfirmationDataSource
@@ -98,6 +98,11 @@ extension RekeyConfirmationViewController: RekeyConfirmationDataSourceDelegate {
 
 extension RekeyConfirmationViewController: RekeyConfirmationViewDelegate {
     func rekeyConfirmationViewDidFinalizeConfirmation(_ rekeyConfirmationView: RekeyConfirmationView) {
+        guard let session = session,
+            session.canSignTransaction(for: &account) else {
+            return
+        }
+        
         let rekeyTransactionDraft = RekeyTransactionSendDraft(account: account, rekeyedTo: ledgerAddress)
         transactionController.setTransactionDraft(rekeyTransactionDraft)
         transactionController.getTransactionParamsAndComposeTransactionData(for: .rekey)
