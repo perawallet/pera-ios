@@ -147,7 +147,10 @@ extension Account {
     }
     
     func isRekeyed() -> Bool {
-        return hasAuthAccount()
+        if let authAddress = authAddress {
+            return authAddress != address
+        }
+        return false
     }
     
     func requiresLedgerConnection() -> Bool {

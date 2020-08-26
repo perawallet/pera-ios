@@ -107,7 +107,7 @@ extension RekeyConfirmationViewController: RekeyConfirmationViewDelegate {
 extension RekeyConfirmationViewController: TransactionControllerDelegate {
     func transactionController(_ transactionController: TransactionController, didComposedTransactionDataFor draft: TransactionSendDraft?) {
         ledgerApprovalViewController?.dismissScreen()
-        handleRekeyUpdates()
+        addAuthAccountIfNeeded()
         openRekeyConfirmationAlert()
     }
     
@@ -187,20 +187,6 @@ extension RekeyConfirmationViewController {
                 transitioningDelegate: cardModalPresenter
             )
         )
-    }
-    
-    private func handleRekeyUpdates() {
-        guard let accountInformation = session?.accountInformation(from: account.address) else {
-            return
-        }
-        
-        addAuthAccountIfNeeded()
-        
-        accountInformation.type = .rekeyed
-        session?.authenticatedUser?.updateAccount(accountInformation)
-        
-        account.type = .rekeyed
-        session?.updateAccount(account)
     }
     
     private func addAuthAccountIfNeeded() {

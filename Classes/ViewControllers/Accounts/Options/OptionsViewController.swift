@@ -40,7 +40,7 @@ class OptionsViewController: BaseViewController {
             }
         }
         
-        if account.isRekeyed() {
+        if !account.isRekeyed() {
             options.removeAll { option -> Bool in
                 option == .rekeyInformation
             }
