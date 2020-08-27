@@ -107,7 +107,7 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
             return
         }
         
-        if assetTransactionDraft.from.type == .ledger {
+        if assetTransactionDraft.from.requiresLedgerConnection() {
             ledgerApprovalViewController?.dismissScreen()
         }
         

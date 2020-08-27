@@ -11,12 +11,12 @@ import UIKit
 indirect enum Screen {
     case introduction
     case addNewAccount
-    case choosePassword(mode: ChoosePasswordViewController.Mode, route: Screen?)
-    case localAuthenticationPreference
+    case choosePassword(mode: ChoosePasswordViewController.Mode, flow: AccountSetupFlow?, route: Screen?)
+    case localAuthenticationPreference(flow: AccountSetupFlow)
     case passphraseView(address: String)
     case passphraseVerify
     case accountNameSetup
-    case accountRecover(mode: AccountSetupMode)
+    case accountRecover(flow: AccountSetupFlow)
     case qrScanner
     case qrGenerator(title: String?, draft: QRCreationDraft)
     case home(route: Screen?)
@@ -63,10 +63,9 @@ indirect enum Screen {
     case bottomInformation(mode: BottomInformationViewController.Mode, configurator: BottomInformationBundle)
     case rewardDetail(account: Account)
     case verifiedAssetInformation
-    case ledgerTutorial(mode: AccountSetupMode)
-    case ledgerDeviceList(mode: AccountSetupMode)
+    case ledgerTutorial(flow: AccountSetupFlow)
+    case ledgerDeviceList(flow: AccountSetupFlow)
     case ledgerTroubleshoot
-    case ledgerPairing(mode: AccountSetupMode, address: String, connectedDeviceId: UUID)
     case ledgerApproval(mode: LedgerApprovalViewController.Mode)
     case ledgerTroubleshootBluetooth
     case ledgerTroubleshootLedgerConnection
@@ -82,8 +81,8 @@ indirect enum Screen {
     case transactionFilterCustomRange(fromDate: Date?, toDate: Date?)
     case pinLimit
     case rekeyInstruction(account: Account)
-    case rekeyConfirmation(account: Account, deviceId: UUID, deviceName: String?)
-    case ledgerAccountSelection(deviceId: UUID, deviceName: String?)
+    case rekeyConfirmation(account: Account, ledger: LedgerDetail)
+    case ledgerAccountSelection(flow: AccountSetupFlow, ledger: LedgerDetail)
 }
 
 extension Screen {

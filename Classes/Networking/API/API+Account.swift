@@ -33,4 +33,18 @@ extension API {
             .resultHandler(handler)
             .buildAndSend(self)
     }
+    
+    @discardableResult
+    func fetchRekeyedAccounts(
+        of account: String,
+        then handler: @escaping Endpoint.DefaultResultHandler<RekeyedAccountsResponse>
+    ) -> EndpointOperatable {
+        return Endpoint(path: Path("/v2/accounts"))
+            .base(indexerBase)
+            .httpMethod(.get)
+            .query(RekeyedAccountQuery(authAddress: account))
+            .httpHeaders(indexerAuthenticatedHeaders())
+            .resultHandler(handler)
+            .buildAndSend(self)
+    }
 }

@@ -12,8 +12,10 @@ class AccountListViewModel {
     func configure(_ cell: AccountViewCell, with account: Account, for mode: AccountListViewController.Mode) {
         cell.contextView.nameLabel.text = account.name
         
-        if account.type.isLedger() {
+        if account.isLedger() {
             cell.contextView.setAccountTypeImage(img("img-ledger-small"), hidden: false)
+        } else if account.isRekeyed() {
+            cell.contextView.setAccountTypeImage(img("icon-account-type-rekeyed"), hidden: false)
         } else {
             cell.contextView.setAccountTypeImage(img("icon-account-type-standard"), hidden: false)
         }
