@@ -249,6 +249,11 @@ extension AssetRemovalViewController: AssetActionConfirmationViewControllerDeleg
         _ assetActionConfirmationViewController: AssetActionConfirmationViewController,
         didConfirmedActionFor assetDetail: AssetDetail
     ) {
+        guard let session = session,
+            session.canSignTransaction(for: &account) else {
+            return
+        }
+        
         if let assetAmount = account.amount(for: assetDetail),
             assetAmount != 0 {
             let controller = open(

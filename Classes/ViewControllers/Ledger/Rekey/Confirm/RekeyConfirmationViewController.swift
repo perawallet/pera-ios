@@ -14,8 +14,9 @@ class RekeyConfirmationViewController: BaseScrollViewController {
     
     private lazy var rekeyConfirmationView = RekeyConfirmationView()
     
-    private let account: Account
+    private var account: Account
     private let ledger: LedgerDetail
+    private let ledgerAddress: String
     private var rekeyConfirmationDataSource: RekeyConfirmationDataSource
     private var rekeyConfirmationListLayout: RekeyConfirmationListLayout
     private let viewModel: RekeyConfirmationViewModel
@@ -37,9 +38,10 @@ class RekeyConfirmationViewController: BaseScrollViewController {
         return TransactionController(api: api)
     }()
     
-    init(account: Account, ledger: LedgerDetail, configuration: ViewControllerConfiguration) {
+    init(account: Account, ledger: LedgerDetail, ledgerAddress: String, configuration: ViewControllerConfiguration) {
         self.account = account
         self.ledger = ledger
+        self.ledgerAddress = ledgerAddress
         self.viewModel = RekeyConfirmationViewModel(account: account, ledgerName: ledger.name)
         rekeyConfirmationDataSource = RekeyConfirmationDataSource(account: account, rekeyConfirmationViewModel: viewModel)
         rekeyConfirmationListLayout = RekeyConfirmationListLayout(account: account)
@@ -96,9 +98,11 @@ extension RekeyConfirmationViewController: RekeyConfirmationDataSourceDelegate {
 
 extension RekeyConfirmationViewController: RekeyConfirmationViewDelegate {
     func rekeyConfirmationViewDidFinalizeConfirmation(_ rekeyConfirmationView: RekeyConfirmationView) {
-        guard let ledgerAddress = ledger.address else {
+        guard let session = session,
+            session.canSignTransaction(for: &account) else {
             return
         }
+        
         let rekeyTransactionDraft = RekeyTransactionSendDraft(account: account, rekeyedTo: ledgerAddress)
         transactionController.setTransactionDraft(rekeyTransactionDraft)
         transactionController.getTransactionParamsAndComposeTransactionData(for: .rekey)
@@ -108,7 +112,7 @@ extension RekeyConfirmationViewController: RekeyConfirmationViewDelegate {
 extension RekeyConfirmationViewController: TransactionControllerDelegate {
     func transactionController(_ transactionController: TransactionController, didComposedTransactionDataFor draft: TransactionSendDraft?) {
         ledgerApprovalViewController?.dismissScreen()
-        handleRekeyUpdates()
+        addAuthAccountIfNeeded()
         openRekeyConfirmationAlert()
     }
     
@@ -123,7 +127,7 @@ extension RekeyConfirmationViewController: TransactionControllerDelegate {
             
             displayMinimumTransactionError(from: transactionError)
         default:
-            break
+            NotificationBanner.showError("title-error".localized, message: error.localizedDescription)
         }
     }
     
@@ -190,14 +194,18 @@ extension RekeyConfirmationViewController {
         )
     }
     
-    private func handleRekeyUpdates() {
-        guard let accountInformation = api?.session.accountInformation(from: account.address) else {
-            return
+    private func addAuthAccountIfNeeded() {
+        if session?.accountInformation(from: ledgerAddress) == nil {
+            let ledgerAccountInformation = AccountInformation(
+                address: ledgerAddress,
+                name: ledgerAddress.shortAddressDisplay(),
+                type: .ledger,
+                ledgerDetail: ledger
+            )
+            
+            session?.authenticatedUser?.addAccount(ledgerAccountInformation)
+            session?.addAccount(Account(accountInformation: ledgerAccountInformation))
         }
-        
-        accountInformation.type = .rekeyed
-        accountInformation.ledgerDetail = LedgerDetail(id: ledger.id, name: ledger.name)
-        session?.authenticatedUser?.updateAccount(accountInformation)
     }
     
     private func displayMinimumTransactionError(from transactionError: TransactionController.TransactionError) {

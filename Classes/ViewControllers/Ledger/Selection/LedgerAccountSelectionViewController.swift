@@ -22,20 +22,22 @@ class LedgerAccountSelectionViewController: BaseViewController {
     }()
     
     private let ledger: LedgerDetail
+    private let ledgerAddress: String
     private let accountSetupFlow: AccountSetupFlow
 
     private lazy var dataSource: LedgerAccountSelectionDataSource = {
         guard let api = api else {
             fatalError("API should be set.")
         }
-        return LedgerAccountSelectionDataSource(api: api, ledger: ledger)
+        return LedgerAccountSelectionDataSource(api: api, ledger: ledger, ledgerAddress: ledgerAddress)
     }()
     
     private lazy var listLayout = LedgerAccountSelectionListLayout(dataSource: dataSource)
     
-    init(accountSetupFlow: AccountSetupFlow, ledger: LedgerDetail, configuration: ViewControllerConfiguration) {
+    init(accountSetupFlow: AccountSetupFlow, ledger: LedgerDetail, ledgerAddress: String, configuration: ViewControllerConfiguration) {
         self.accountSetupFlow = accountSetupFlow
         self.ledger = ledger
+        self.ledgerAddress = ledgerAddress
         super.init(configuration: configuration)
     }
     

@@ -458,7 +458,7 @@
 // MARK: Rekey Confirm
 
 "ledger-rekey-confirm-title" = "Confirm Rekeying";
-"ledger-rekey-transaction-title" = "Reykeying transaction";
+"ledger-rekey-transaction-title" = "Rekeying transaction";
 "ledger-rekey-ledger-old" = "Old Ledger";
 "ledger-rekey-ledger-passphrase" = "Passphrase";
 "ledger-rekey-ledger-new" = "New Ledger";
@@ -477,3 +477,5 @@
 "ledger-account-selection-detail" = "This ledger device can sign transactions for the following account. Select the account to add to your Algorand Wallet.";
 "ledger-account-selection-add" = "Add Account";
 "ledger-account-selection-ledger-rekeyed" = "Account is rekeyed to %@";
+"ledger-rekey-error-add-auth" = "The connected Ledger device cannot sign transactions for this account. In order to do so, please connect %@.";
+"ledger-rekey-error-not-found" = "This account has been rekeyed. Please recover this account with a passphrase or Ledger device.";

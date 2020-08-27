@@ -56,8 +56,8 @@ class RekeyConfirmationViewModel {
     
     private func setFeeValue() {
         /// <todo> This calculation will be updated when its details are clear.
-        let fee = max(Int64(minimumFee), Int64(50) * Int64(1))
-        feeValue = "ledger-rekey-total-fee".localized(params: "\(fee)")
+        let fee = max(Int64(minimumFee), 0)
+        feeValue = "ledger-rekey-total-fee".localized(params: "\(fee.toAlgos)")
     }
 }
 

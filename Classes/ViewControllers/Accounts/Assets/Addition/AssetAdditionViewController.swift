@@ -276,6 +276,11 @@ extension AssetAdditionViewController: AssetActionConfirmationViewControllerDele
         _ assetActionConfirmationViewController: AssetActionConfirmationViewController,
         didConfirmedActionFor assetDetail: AssetDetail
     ) {
+        guard let session = session,
+            session.canSignTransaction(for: &account) else {
+            return
+        }
+        
         let assetTransactionDraft = AssetTransactionSendDraft(from: account, assetIndex: assetDetail.id)
         transactionController.setTransactionDraft(assetTransactionDraft)
         transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)

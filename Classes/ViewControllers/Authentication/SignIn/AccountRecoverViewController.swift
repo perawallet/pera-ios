@@ -101,7 +101,8 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
             return
         }
         
-        guard session?.authenticatedUser?.account(address: address) == nil else {
+        if let sameAccount = session?.authenticatedUser?.account(address: address),
+            sameAccount.type != .rekeyed {
             displaySimpleAlertWith(title: "title-error".localized, message: "recover-from-seed-verify-exist-error".localized)
             return
         }

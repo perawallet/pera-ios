@@ -58,6 +58,15 @@ class Account: Model {
         self.type = type
         self.ledgerDetail = ledgerDetail
     }
+    
+    init(accountInformation: AccountInformation) {
+        self.address = accountInformation.address
+        self.amount = 0
+        self.status = .offline
+        self.name = accountInformation.name
+        self.type = accountInformation.type
+        self.ledgerDetail = accountInformation.ledgerDetail
+    }
 }
 
 extension Account {
@@ -131,15 +140,31 @@ extension Account {
     }
     
     func isLedger() -> Bool {
+        if let authAddress = authAddress {
+            return address == authAddress
+        }
         return type == .ledger
     }
     
     func isRekeyed() -> Bool {
-        return type == .rekeyed || hasAuthAccount()
+        if let authAddress = authAddress {
+            return authAddress != address
+        }
+        return false
     }
     
     func requiresLedgerConnection() -> Bool {
         return isLedger() || isRekeyed()
+    }
+    
+    func accountImage() -> UIImage? {
+        if isRekeyed() {
+            return img("icon-account-type-rekeyed")
+        } else if isLedger() {
+            return img("img-ledger-small")
+        } else {
+            return img("icon-account-type-standard")
+        }
     }
 }
 

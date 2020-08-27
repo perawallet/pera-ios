@@ -514,7 +514,7 @@ extension TransactionController: LedgerBLEControllerDelegate {
             return
         }
         
-        if account.type == .rekeyed {
+        if account.isRekeyed() {
             guard let signedTransaction = algorandSDK.getSignedTransaction(
                 with: account.authAddress,
                 transaction: transactionData,

@@ -12,8 +12,8 @@ class LedgerAccountSelectionDataSource: NSObject {
     
     weak var delegate: LedgerAccountSelectionDataSourceDelegate?
     
-    private let dispatchGroup = DispatchGroup()
-    private let assetGroup = DispatchGroup()
+    private let accountsFetchGroup = DispatchGroup()
+    private let assetsFetchGroup = DispatchGroup()
     
     private let viewModel = AccountsViewModel()
     
@@ -21,40 +21,38 @@ class LedgerAccountSelectionDataSource: NSObject {
     private var accounts = [Account]()
     
     private let ledger: LedgerDetail
+    private let ledgerAddress: String
     
-    init(api: API, ledger: LedgerDetail) {
+    init(api: API, ledger: LedgerDetail, ledgerAddress: String) {
         self.api = api
         self.ledger = ledger
+        self.ledgerAddress = ledgerAddress
         super.init()
     }
 }
 
 extension LedgerAccountSelectionDataSource {
     func loadData() {
-        guard let address = ledger.address else {
-            return
-        }
-        
-        fetchLedgerAccount(for: address)
-        fetchRekeyedAccounts(ofLedger: address)
+        fetchLedgerAccount(for: ledgerAddress)
+        fetchRekeyedAccounts(ofLedger: ledgerAddress)
 
-        assetGroup.enter()
-        dispatchGroup.notify(queue: .global()) {
+        assetsFetchGroup.enter()
+        accountsFetchGroup.notify(queue: .global()) {
             self.accounts.forEach { account in
                 if account.isThereAnyDifferentAsset() {
                     self.fetchAssets(for: account)
                 }
             }
-            self.assetGroup.leave()
+            self.assetsFetchGroup.leave()
         }
         
-        assetGroup.notify(queue: .main) {
+        assetsFetchGroup.notify(queue: .main) {
             self.delegate?.ledgerAccountSelectionDataSource(self, didFetch: self.accounts)
         }
     }
     
     private func fetchLedgerAccount(for address: String) {
-        dispatchGroup.enter()
+        accountsFetchGroup.enter()
         
         api.fetchAccount(with: AccountFetchDraft(publicKey: address)) { response in
             switch response {
@@ -69,12 +67,12 @@ extension LedgerAccountSelectionDataSource {
                 }
             }
             
-            self.dispatchGroup.leave()
+            self.accountsFetchGroup.leave()
         }
     }
     
     private func fetchRekeyedAccounts(ofLedger address: String) {
-        dispatchGroup.enter()
+        accountsFetchGroup.enter()
         
         api.fetchRekeyedAccounts(of: address) { response in
             switch response {
@@ -87,7 +85,7 @@ extension LedgerAccountSelectionDataSource {
                 self.delegate?.ledgerAccountSelectionDataSourceDidFailToFetch(self)
             }
             
-            self.dispatchGroup.leave()
+            self.accountsFetchGroup.leave()
         }
     }
     
@@ -100,7 +98,7 @@ extension LedgerAccountSelectionDataSource {
             if let assetDetail = api.session.assetDetails[asset.id] {
                 account.assetDetails.append(assetDetail)
             } else {
-                assetGroup.enter()
+                assetsFetchGroup.enter()
                 
                 self.api.getAssetDetails(with: AssetFetchDraft(assetId: "\(asset.id)")) { assetResponse in
                     switch assetResponse {
@@ -114,7 +112,7 @@ extension LedgerAccountSelectionDataSource {
                         account.removeAsset(asset.id)
                     }
                     
-                    self.assetGroup.leave()
+                    self.assetsFetchGroup.leave()
                 }
             }
         }
@@ -261,23 +259,28 @@ extension LedgerAccountSelectionDataSource {
     }
     
     func saveSelectedAccounts(_ indexes: [IndexPath]) {
-        indexes.forEach { indexPath in
-            if let account = accounts[safe: indexPath.item],
-                api.session.authenticatedUser?.account(address: account.address) == nil {
-                setupLocalAccount(from: account, isLedgerAccount: false)
-            }
-        }
-        
         /// Add ledger's account to local accounts
-        if let account = account(at: 0) {
-            setupLocalAccount(from: account, isLedgerAccount: true)
+        addLedgerAccountIfNeeded()
+        
+        indexes.forEach { indexPath in
+            if let account = accounts[safe: indexPath.item] {
+                if let localAccount = api.session.accountInformation(from: account.address) {
+                    localAccount.type = .rekeyed
+                    api.session.authenticatedUser?.updateAccount(localAccount)
+                    
+                    account.type = .rekeyed
+                    api.session.updateAccount(account)
+                } else {
+                    setupLocalAccount(from: account, isLedgerAccount: false)
+                }
+            }
         }
     }
     
     private func setupLocalAccount(from account: Account, isLedgerAccount: Bool) {
         let localAccount = AccountInformation(
             address: account.address,
-            name: account.address.shortAddressDisplay() ?? "",
+            name: account.address.shortAddressDisplay(),
             type: account.type,
             ledgerDetail: isLedgerAccount ? ledger : nil
         )
@@ -291,14 +294,15 @@ extension LedgerAccountSelectionDataSource {
             user = User(accounts: [localAccount])
         }
         
-        let remoteAccount = Account(
-            address: localAccount.address,
-            type: localAccount.type,
-            ledgerDetail: isLedgerAccount ? ledger : nil,
-            name: localAccount.name
-        )
-        api.session.addAccount(remoteAccount)
+        api.session.addAccount(Account(accountInformation: localAccount))
         api.session.authenticatedUser = user
+    }
+    
+    private func addLedgerAccountIfNeeded() {
+        if let account = account(at: 0),
+            api.session.accountInformation(from: account.address) == nil {
+            setupLocalAccount(from: account, isLedgerAccount: true)
+        }
     }
 }
 

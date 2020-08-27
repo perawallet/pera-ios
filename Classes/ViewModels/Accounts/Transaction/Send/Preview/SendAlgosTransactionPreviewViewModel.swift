@@ -26,14 +26,7 @@ class SendAlgosTransactionPreviewViewModel {
             view.transactionAccountInformationView.setDisabled()
         }
         
-        if account.isLedger() {
-            view.transactionAccountInformationView.setAccountImage(img("img-ledger-small"))
-        } else if account.isRekeyed() {
-            view.transactionAccountInformationView.setAccountImage(img("icon-account-type-rekeyed"))
-        } else {
-            view.transactionAccountInformationView.setAccountImage(img("icon-account-type-standard"))
-        }
-        
+        view.transactionAccountInformationView.setAccountImage(account.accountImage())
         view.transactionAccountInformationView.setAccountName(account.name)
         view.transactionAccountInformationView.setAmount(account.amount.toAlgos.toDecimalStringForLabel)
         view.amountInputView.maxAmount = account.amount.toAlgos
@@ -43,15 +36,7 @@ class SendAlgosTransactionPreviewViewModel {
     
     func update(_ view: SendTransactionPreviewView, with account: Account, isMaxTransaction: Bool) {
         view.transactionAccountInformationView.setAccountName(account.name)
-        
-        if account.isLedger() {
-            view.transactionAccountInformationView.setAccountImage(img("img-ledger-small"))
-        } else if account.isRekeyed() {
-            view.transactionAccountInformationView.setAccountImage(img("icon-account-type-rekeyed"))
-        } else {
-            view.transactionAccountInformationView.setAccountImage(img("icon-account-type-standard"))
-        }
-
+        view.transactionAccountInformationView.setAccountImage(account.accountImage())
         view.transactionAccountInformationView.setAmount(account.amount.toAlgos.toDecimalStringForLabel)
         view.amountInputView.maxAmount = account.amount.toAlgos
 

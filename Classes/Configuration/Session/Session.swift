@@ -236,6 +236,15 @@ extension Session {
         NotificationCenter.default.post(name: .AccountUpdate, object: self, userInfo: ["account": accounts[index]])
     }
     
+    func updateAccount(_ account: Account) {
+        guard let index = index(of: account) else {
+            return
+        }
+        
+        accounts[index].update(with: account)
+        NotificationCenter.default.post(name: .AccountUpdate, object: self, userInfo: ["account": accounts[index]])
+    }
+    
     func removeAccount(_ account: Account) {
         guard let index = index(of: account) else {
             return
@@ -243,6 +252,41 @@ extension Session {
         
         accounts.remove(at: index)
         NotificationCenter.default.post(name: .AccountUpdate, object: self)
+    }
+    
+    func canSignTransaction(for selectedAccount: inout Account) -> Bool {
+        /// Check whether auth address exists for the selected account.
+        if let authAccountAddress = selectedAccount.authAddress {
+            if let authAccount = accounts.first(where: { account -> Bool in
+                authAccountAddress == account.address
+            }) {
+                selectedAccount.ledgerDetail = authAccount.ledgerDetail
+                return true
+            }
+            
+            NotificationBanner.showError(
+                "title-error".localized,
+                message: "ledger-rekey-error-add-auth".localized(params: authAccountAddress.shortAddressDisplay())
+            )
+            return false
+        }
+        
+        /// Check whether ledger details of the selected ledger account exists.
+        if selectedAccount.isLedger() {
+            if selectedAccount.ledgerDetail == nil {
+                NotificationBanner.showError("title-error".localized, message: "ledger-rekey-error-not-found".localized)
+                return false
+            }
+            return true
+        }
+        
+        /// Check whether private key of the selected account exists.
+        if privateData(for: selectedAccount.address) == nil {
+            NotificationBanner.showError("title-error".localized, message: "ledger-rekey-error-not-found".localized)
+            return false
+        }
+        
+        return true
     }
 }
 

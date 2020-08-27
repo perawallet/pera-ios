@@ -34,14 +34,7 @@ class SendAssetTransactionPreviewViewModel {
         
         if let account = selectedAccount,
             let assetAmount = account.amount(for: assetDetail) {
-            if account.isLedger() {
-                view.transactionAccountInformationView.setAccountImage(img("img-ledger-small"))
-            } else if account.isRekeyed() {
-                view.transactionAccountInformationView.setAccountImage(img("icon-account-type-rekeyed"))
-            } else {
-                view.transactionAccountInformationView.setAccountImage(img("icon-account-type-standard"))
-            }
-            
+            view.transactionAccountInformationView.setAccountImage(account.accountImage())
             view.transactionAccountInformationView.setAccountName(account.name)
             
             view.amountInputView.maxAmount = assetAmount
@@ -59,14 +52,7 @@ class SendAssetTransactionPreviewViewModel {
             return
         }
         
-        if account.isLedger() {
-            view.transactionAccountInformationView.setAccountImage(img("img-ledger-small"))
-        } else if account.isRekeyed() {
-            view.transactionAccountInformationView.setAccountImage(img("icon-account-type-rekeyed"))
-        } else {
-            view.transactionAccountInformationView.setAccountImage(img("icon-account-type-standard"))
-        }
-        
+        view.transactionAccountInformationView.setAccountImage(account.accountImage())
         view.transactionAccountInformationView.setAccountName(account.name)
         
         view.amountInputView.maxAmount = assetAmount

@@ -191,6 +191,18 @@ extension SendTransactionPreviewViewController {
 extension SendTransactionPreviewViewController: SendTransactionPreviewViewDelegate {
     func sendTransactionPreviewViewDidTapPreviewButton(_ sendTransactionPreviewView: SendTransactionPreviewView) {
         view.endEditing(true)
+        
+        guard var account = selectedAccount,
+            let session = session else {
+            displaySimpleAlertWith(title: "title-error".localized, message: "send-algos-alert-message".localized)
+            return
+        }
+        
+        if !session.canSignTransaction(for: &account) {
+            return
+        }
+        
+        selectedAccount = account
         displayTransactionPreview()
     }
     
