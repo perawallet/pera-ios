@@ -105,33 +105,33 @@ extension TransactionController {
 
 extension TransactionController {
     private func composeTransactionData(for transactionType: TransactionType) {
-        guard let accountType = fromAccount?.type else {
-            return
-        }
-        
         switch transactionType {
         case .algosTransaction:
             composeAlgosTransactionData()
-            startSigningProcess(for: accountType, and: .algosTransaction)
+            startSigningProcess(for: .algosTransaction)
         case .assetAddition:
             composeAssetAdditionData()
-            startSigningProcess(for: accountType, and: .assetAddition)
+            startSigningProcess(for: .assetAddition)
         case .assetRemoval:
             composeAssetRemovalData()
-            startSigningProcess(for: accountType, and: .assetRemoval)
+            startSigningProcess(for: .assetRemoval)
         case .assetTransaction:
             composeAssetTransactionData()
-            startSigningProcess(for: accountType, and: .assetTransaction)
+            startSigningProcess(for: .assetTransaction)
         case .rekey:
             composeRekeyTransactionData()
-            startSigningProcess(for: accountType, and: .rekey)
+            startSigningProcess(for: .rekey)
         }
     }
 }
 
 extension TransactionController {
-    private func startSigningProcess(for accountType: AccountType, and transactionType: TransactionType) {
-        if accountType.requiresLedgerConnection() {
+    private func startSigningProcess(for transactionType: TransactionType) {
+        guard let account = fromAccount else {
+            return
+        }
+        
+        if account.requiresLedgerConnection() {
             setupBLEConnections()
             // swiftlint:disable todo
             // TODO: We need to restart scanning somehow here so that it can be restarted if there is an error in the same screen.

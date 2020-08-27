@@ -69,14 +69,26 @@ extension IntroductionViewController {
 
 extension IntroductionViewController: IntroductionViewDelegate {
     func introductionViewDidTapCreateAccountButton(_ introductionView: IntroductionView) {
-        open(.choosePassword(mode: .setup, route: nil), by: .push)
+        open(.choosePassword(mode: .setup, flow: .initializeAccount(mode: .create), route: nil), by: .push)
     }
     
     func introductionViewDidTapPairLedgerAccountButton(_ introductionView: IntroductionView) {
-        open(.ledgerTutorial(mode: .initialize), by: .push)
+        open(.choosePassword(mode: .setup, flow: .initializeAccount(mode: .pair), route: nil), by: .push)
     }
     
     func introductionViewDidTapRecoverButton(_ introductionView: IntroductionView) {
-        open(.accountRecover(mode: .initialize), by: .push)
+        open(.choosePassword(mode: .setup, flow: .initializeAccount(mode: .recover), route: nil), by: .push)
     }
+}
+
+enum AccountSetupFlow {
+    case initializeAccount(mode: AccountSetupMode)
+    case addNewAccount(mode: AccountSetupMode)
+}
+
+enum AccountSetupMode {
+    case create
+    case pair
+    case recover
+    case rekey(account: Account)
 }

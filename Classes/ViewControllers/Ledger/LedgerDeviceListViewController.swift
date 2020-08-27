@@ -30,12 +30,12 @@ class LedgerDeviceListViewController: BaseViewController {
     
     private var ledgerApprovalViewController: LedgerApprovalViewController?
     
-    private let mode: AccountSetupMode
+    private let accountSetupFlow: AccountSetupFlow
     private var ledgerDevices = [CBPeripheral]()
     private var connectedDevice: CBPeripheral?
     
-    init(mode: AccountSetupMode, configuration: ViewControllerConfiguration) {
-        self.mode = mode
+    init(accountSetupFlow: AccountSetupFlow, configuration: ViewControllerConfiguration) {
+        self.accountSetupFlow = accountSetupFlow
         super.init(configuration: configuration)
     }
     
@@ -243,14 +243,23 @@ extension LedgerDeviceListViewController: LedgerBLEControllerDelegate {
         
         if let connectedDeviceId = connectedDevice?.identifier {
             ledgerApprovalViewController?.closeScreen(by: .dismiss, animated: true) {
-                switch self.mode {
-                case let .rekey(account):
-                    let ledgerDetail = LedgerDetail(id: connectedDeviceId, name: self.connectedDevice?.name, address: address)
-                    self.open(.rekeyConfirmation(account: account, ledger: ledgerDetail), by: .push)
-                default:
-                    self.open(.ledgerPairing(mode: self.mode, address: address, connectedDeviceId: connectedDeviceId), by: .push)
+                let ledgerDetail = LedgerDetail(id: connectedDeviceId, name: self.connectedDevice?.name, address: address)
+                switch self.accountSetupFlow {
+                case let .initializeAccount(mode):
+                    self.openNextFlow(for: mode, with: ledgerDetail)
+                case let .addNewAccount(mode):
+                    self.openNextFlow(for: mode, with: ledgerDetail)
                 }
             }
+        }
+    }
+    
+    private func openNextFlow(for mode: AccountSetupMode, with ledgerDetail: LedgerDetail) {
+        switch mode {
+        case let .rekey(account):
+            self.open(.rekeyConfirmation(account: account, ledger: ledgerDetail), by: .push)
+        default:
+            self.open(.ledgerAccountSelection(flow: accountSetupFlow, ledger: ledgerDetail), by: .push)
         }
     }
 }

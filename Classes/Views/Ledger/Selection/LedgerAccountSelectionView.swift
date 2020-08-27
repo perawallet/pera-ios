@@ -19,15 +19,15 @@ class LedgerAccountSelectionView: BaseView {
     private lazy var accountsCollectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .vertical
+        flowLayout.sectionInset = UIEdgeInsets(top: 24.0, left: 0.0, bottom: layout.current.bottomInset + safeAreaBottom + 60.0, right: 0.0)
         flowLayout.minimumLineSpacing = 20.0
-        flowLayout.sectionHeadersPinToVisibleBounds = true
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.allowsMultipleSelection = true
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = SharedColors.secondaryBackground
+        collectionView.backgroundColor = SharedColors.primaryBackground
         collectionView.contentInset = .zero
-        collectionView.layer.cornerRadius = 12.0
+        collectionView.register(AccountSelectionCell.self, forCellWithReuseIdentifier: AccountSelectionCell.reusableIdentifier)
         collectionView.register(
             LedgerAccountSelectionHeaderSupplementaryView.self,
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
@@ -50,8 +50,8 @@ class LedgerAccountSelectionView: BaseView {
     }
     
     override func prepareLayout() {
-        setupAddButtonLayout()
         setupAccountsCollectionViewLayout()
+        setupAddButtonLayout()
     }
 }
 
@@ -63,22 +63,22 @@ extension LedgerAccountSelectionView {
 }
 
 extension LedgerAccountSelectionView {
-    private func setupAddButtonLayout() {
-        addSubview(addButton)
-        
-        addButton.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.bottom.equalToSuperview().inset(safeAreaBottom + layout.current.bottomInset)
-        }
-    }
-    
     private func setupAccountsCollectionViewLayout() {
         addSubview(accountsCollectionView)
         
         accountsCollectionView.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.leading.trailing.equalToSuperview()
-            make.bottom.equalTo(addButton.snp.top).offset(layout.current.listBottomInset)
+            make.bottom.equalToSuperview()
+        }
+    }
+    
+    private func setupAddButtonLayout() {
+        addSubview(addButton)
+        
+        addButton.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.bottom.equalToSuperview().inset(safeAreaBottom + layout.current.bottomInset)
         }
     }
 }
@@ -106,6 +106,10 @@ extension LedgerAccountSelectionView {
     
     func setLoadingState() {
         accountsCollectionView.contentState = .loading
+    }
+    
+    var selectedIndexes: [IndexPath] {
+        return accountsCollectionView.indexPathsForSelectedItems ?? []
     }
 }
 

@@ -18,7 +18,6 @@ class LedgerAccountSelectionHeaderView: BaseView {
             .withTextColor(SharedColors.primaryText)
             .withLine(.single)
             .withAlignment(.left)
-            .withText("ledger-account-selection-title".localized)
     }()
     
     private lazy var detailLabel: UILabel = {
@@ -57,7 +56,25 @@ extension LedgerAccountSelectionHeaderView {
 }
 
 extension LedgerAccountSelectionHeaderView {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
+    func setTitle(_ title: String?) {
+        titleLabel.text = title
+    }
+    
+    static func calculatePreferredSize(with layout: Layout<LayoutConstants>) -> CGSize {
+        let width = UIScreen.main.bounds.width
+        let constantHeight = layout.current.titleTopInset + layout.current.detailTopInset
+        let detailLabelHeight = "ledger-account-selection-detail".localized.height(
+            withConstrained: width - layout.current.horizontalInset * 2,
+            font: UIFont.font(withWeight: .regular(size: 14.0))
+        )
+        let titleLabelHeight: CGFloat = 24.0
+        let height: CGFloat = constantHeight + detailLabelHeight + titleLabelHeight
+        return CGSize(width: width, height: height)
+    }
+}
+
+extension LedgerAccountSelectionHeaderView {
+    struct LayoutConstants: AdaptiveLayoutConstants {
         let horizontalInset: CGFloat = 24.0
         let titleTopInset: CGFloat = 16.0
         let detailTopInset: CGFloat = 8.0

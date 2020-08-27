@@ -31,7 +31,7 @@ class RekeyConfirmationViewModel {
     }
     
     private func setOldTransitionTitle(for account: Account) {
-        if account.type.requiresLedgerConnection() {
+        if account.requiresLedgerConnection() {
             oldTransitionTitle = "ledger-rekey-ledger-old".localized
         } else {
             oldTransitionTitle = "ledger-rekey-ledger-passphrase".localized
@@ -39,7 +39,7 @@ class RekeyConfirmationViewModel {
     }
     
     private func setOldTransitionValue(for account: Account) {
-        if account.type.requiresLedgerConnection() {
+        if account.requiresLedgerConnection() {
             if let ledgerName = account.ledgerDetail?.name {
                 oldTransitionValue = ledgerName
             } else {

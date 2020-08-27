@@ -87,8 +87,8 @@ extension AssetView {
         
         assetNameView.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(layout.current.horizontalInset)
-            make.centerY.equalToSuperview()
             make.trailing.lessThanOrEqualTo(actionButton.snp.leading).offset(-layout.current.assetNameOffet)
+            make.top.bottom.equalToSuperview().inset(layout.current.verticalInset)
         }
     }
     
@@ -104,10 +104,18 @@ extension AssetView {
 }
 
 extension AssetView {
+    func setEnabled(_ isEnabled: Bool) {
+        backgroundColor = isEnabled ? SharedColors.secondaryBackground : SharedColors.disabledBackground
+        separatorView.backgroundColor = isEnabled ? SharedColors.primaryBackground : SharedColors.gray200
+    }
+}
+
+extension AssetView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let horizontalInset: CGFloat = 20.0
         let assetNameOffet: CGFloat = 10.0
         let separatorHeight: CGFloat = 1.0
+        let verticalInset: CGFloat = 16.0
         let separatorInset: CGFloat = 10.0
     }
 }

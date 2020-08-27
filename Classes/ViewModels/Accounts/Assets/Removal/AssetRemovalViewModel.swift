@@ -20,9 +20,9 @@ class AssetRemovalViewModel {
         header.contextView.setOptionsButton(hidden: true)
         header.contextView.setQRButton(hidden: true)
         
-        if account.type.isLedger() {
+        if account.isLedger() {
             header.contextView.setLedgerAccount()
-        } else if account.type.isRekeyed() {
+        } else if account.isRekeyed() {
             header.contextView.setRekeyedAccount()
         } else {
             header.contextView.setStandardAccount()

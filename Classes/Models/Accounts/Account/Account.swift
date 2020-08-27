@@ -125,6 +125,22 @@ extension Account {
             assetDetail.id == id
         }
     }
+    
+    func hasAuthAccount() -> Bool {
+        return authAddress != nil
+    }
+    
+    func isLedger() -> Bool {
+        return type == .ledger
+    }
+    
+    func isRekeyed() -> Bool {
+        return type == .rekeyed || hasAuthAccount()
+    }
+    
+    func requiresLedgerConnection() -> Bool {
+        return isLedger() || isRekeyed()
+    }
 }
 
 extension Account {

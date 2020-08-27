@@ -52,6 +52,6 @@ extension RekeyInstructionsViewController {
 
 extension RekeyInstructionsViewController: RekeyInstructionsViewDelegate {
     func rekeyInstructionsViewDidStartRekeying(_ rekeyInstructionsView: RekeyInstructionsView) {
-        open(.ledgerDeviceList(mode: .rekey(account: account)), by: .push)
+        open(.ledgerDeviceList(flow: .addNewAccount(mode: .rekey(account: account))), by: .push)
     }
 }

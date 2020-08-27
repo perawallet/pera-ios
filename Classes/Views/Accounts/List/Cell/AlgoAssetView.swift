@@ -81,6 +81,7 @@ extension AlgoAssetView {
         algosLabel.snp.makeConstraints { make in
             make.leading.equalTo(algoIconImageView.snp.trailing).offset(layout.current.nameInset)
             make.centerY.equalToSuperview()
+            make.top.bottom.equalToSuperview().inset(layout.current.verticalInset)
         }
     }
     
@@ -109,8 +110,16 @@ extension AlgoAssetView {
 }
 
 extension AlgoAssetView {
+    func setEnabled(_ isEnabled: Bool) {
+        backgroundColor = isEnabled ? SharedColors.secondaryBackground : SharedColors.disabledBackground
+        separatorView.backgroundColor = isEnabled ? SharedColors.primaryBackground : SharedColors.gray200
+    }
+}
+
+extension AlgoAssetView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let horizontalInset: CGFloat = 20.0
+        let verticalInset: CGFloat = 16.0
         let imageInset: CGFloat = 10.0
         let nameInset: CGFloat = 4.0
         let imageSize = CGSize(width: 20.0, height: 20.0)
