@@ -12,8 +12,8 @@ class LedgerAccountSelectionDataSource: NSObject {
     
     weak var delegate: LedgerAccountSelectionDataSourceDelegate?
     
-    private let dispatchGroup = DispatchGroup()
-    private let assetGroup = DispatchGroup()
+    private let accountsFetchGroup = DispatchGroup()
+    private let assetsFetchGroup = DispatchGroup()
     
     private let viewModel = AccountsViewModel()
     
@@ -36,23 +36,23 @@ extension LedgerAccountSelectionDataSource {
         fetchLedgerAccount(for: ledgerAddress)
         fetchRekeyedAccounts(ofLedger: ledgerAddress)
 
-        assetGroup.enter()
-        dispatchGroup.notify(queue: .global()) {
+        assetsFetchGroup.enter()
+        accountsFetchGroup.notify(queue: .global()) {
             self.accounts.forEach { account in
                 if account.isThereAnyDifferentAsset() {
                     self.fetchAssets(for: account)
                 }
             }
-            self.assetGroup.leave()
+            self.assetsFetchGroup.leave()
         }
         
-        assetGroup.notify(queue: .main) {
+        assetsFetchGroup.notify(queue: .main) {
             self.delegate?.ledgerAccountSelectionDataSource(self, didFetch: self.accounts)
         }
     }
     
     private func fetchLedgerAccount(for address: String) {
-        dispatchGroup.enter()
+        accountsFetchGroup.enter()
         
         api.fetchAccount(with: AccountFetchDraft(publicKey: address)) { response in
             switch response {
@@ -67,12 +67,12 @@ extension LedgerAccountSelectionDataSource {
                 }
             }
             
-            self.dispatchGroup.leave()
+            self.accountsFetchGroup.leave()
         }
     }
     
     private func fetchRekeyedAccounts(ofLedger address: String) {
-        dispatchGroup.enter()
+        accountsFetchGroup.enter()
         
         api.fetchRekeyedAccounts(of: address) { response in
             switch response {
@@ -85,7 +85,7 @@ extension LedgerAccountSelectionDataSource {
                 self.delegate?.ledgerAccountSelectionDataSourceDidFailToFetch(self)
             }
             
-            self.dispatchGroup.leave()
+            self.accountsFetchGroup.leave()
         }
     }
     
@@ -98,7 +98,7 @@ extension LedgerAccountSelectionDataSource {
             if let assetDetail = api.session.assetDetails[asset.id] {
                 account.assetDetails.append(assetDetail)
             } else {
-                assetGroup.enter()
+                assetsFetchGroup.enter()
                 
                 self.api.getAssetDetails(with: AssetFetchDraft(assetId: "\(asset.id)")) { assetResponse in
                     switch assetResponse {
@@ -112,7 +112,7 @@ extension LedgerAccountSelectionDataSource {
                         account.removeAsset(asset.id)
                     }
                     
-                    self.assetGroup.leave()
+                    self.assetsFetchGroup.leave()
                 }
             }
         }
