@@ -31,7 +31,12 @@ class AccountRecoverViewController: BaseScrollViewController {
         return manager
     }()
     
-    var mode: AccountSetupMode = .initialize
+    private let accountSetupFlow: AccountSetupFlow
+    
+    init(accountSetupFlow: AccountSetupFlow, configuration: ViewControllerConfiguration) {
+        self.accountSetupFlow = accountSetupFlow
+        super.init(configuration: configuration)
+    }
     
     override func configureAppearance() {
         super.configureAppearance()
@@ -144,21 +149,15 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
         accountManager?.fetchAllAccounts(isVerifiedAssetsIncluded: true) {
             SVProgressHUD.showSuccess(withStatus: "title-done".localized)
             SVProgressHUD.dismiss(withDelay: 1.0) {
-                if self.session?.hasPassword() ?? false {
-                    switch self.mode {
-                    case .initialize:
-                        DispatchQueue.main.async {
-                            self.dismiss(animated: false) {
-                                UIApplication.shared.rootViewController()?.setupTabBarController()
-                            }
+                switch self.accountSetupFlow {
+                case .initializeAccount:
+                    DispatchQueue.main.async {
+                        self.dismiss(animated: false) {
+                            UIApplication.shared.rootViewController()?.setupTabBarController()
                         }
-                    case .new:
-                        self.closeScreen(by: .dismiss, animated: false)
-                    case .rekey:
-                        break
                     }
-                } else {
-                    self.open(.choosePassword(mode: .setup, route: nil), by: .push)
+                case .addNewAccount:
+                    self.closeScreen(by: .dismiss, animated: false)
                 }
             }
         }

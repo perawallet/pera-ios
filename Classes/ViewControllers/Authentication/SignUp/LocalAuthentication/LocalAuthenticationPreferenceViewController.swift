@@ -16,6 +16,12 @@ class LocalAuthenticationPreferenceViewController: BaseViewController {
     private lazy var localAuthenticationPreferenceView = LocalAuthenticationPreferenceView()
     
     private let localAuthenticator = LocalAuthenticator()
+    private let accountSetupFlow: AccountSetupFlow
+    
+    init(accountSetupFlow: AccountSetupFlow, configuration: ViewControllerConfiguration) {
+        self.accountSetupFlow = accountSetupFlow
+        super.init(configuration: configuration)
+    }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -86,9 +92,19 @@ extension LocalAuthenticationPreferenceViewController: LocalAuthenticationPrefer
     }
     
     private func openNextFlow() {
-        if session?.authenticatedUser == nil {
-            open(.passphraseView(address: "temp"), by: .push)
-        } else {
+        switch accountSetupFlow {
+        case let .initializeAccount(mode):
+            switch mode {
+            case .create:
+                open(.passphraseView(address: "temp"), by: .push)
+            case .pair:
+                open(.ledgerTutorial(flow: accountSetupFlow), by: .push)
+            case .recover:
+                 open(.accountRecover(flow: accountSetupFlow), by: .push)
+            case .rekey:
+                break
+            }
+        case .addNewAccount:
             dismiss(animated: false) {
                 UIApplication.shared.rootViewController()?.setupTabBarController()
             }

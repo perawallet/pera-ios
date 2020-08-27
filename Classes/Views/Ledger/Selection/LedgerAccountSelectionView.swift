@@ -36,12 +36,7 @@ class LedgerAccountSelectionView: BaseView {
         return collectionView
     }()
     
-    private lazy var addButton: MainButton = {
-        let button = MainButton(title: "ledger-account-selection-add".localized)
-        button.setBackgroundImage(img("bg-gray-600-button"), for: .disabled)
-        button.isEnabled = false
-        return button
-    }()
+    private lazy var addButton = MainButton(title: "ledger-account-selection-add".localized)
     
     override func configureAppearance() {
         super.configureAppearance()
@@ -115,10 +110,6 @@ extension LedgerAccountSelectionView {
     
     var selectedIndexes: [IndexPath] {
         return accountsCollectionView.indexPathsForSelectedItems ?? []
-    }
-    
-    func setEnabled(_ isEnabled: Bool) {
-        addButton.isEnabled = isEnabled
     }
 }
 
