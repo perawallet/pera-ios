@@ -29,7 +29,7 @@ class AccountListView: BaseView {
         flowLayout.minimumInteritemSpacing = 0.0
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
-        collectionView.showsVerticalScrollIndicator = false
+        collectionView.showsVerticalScrollIndicator = true
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = SharedColors.secondaryBackground
         collectionView.contentInset = .zero

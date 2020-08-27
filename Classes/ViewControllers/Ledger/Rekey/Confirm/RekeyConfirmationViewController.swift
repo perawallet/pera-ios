@@ -127,7 +127,7 @@ extension RekeyConfirmationViewController: TransactionControllerDelegate {
             
             displayMinimumTransactionError(from: transactionError)
         default:
-            break
+            NotificationBanner.showError("title-error".localized, message: error.localizedDescription)
         }
     }
     
