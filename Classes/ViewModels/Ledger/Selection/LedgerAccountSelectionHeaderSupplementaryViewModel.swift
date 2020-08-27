@@ -1,0 +1,30 @@
+//
+//  LedgerAccountSelectionHeaderSupplementaryViewModel.swift
+//  algorand
+//
+//  Created by Göktuğ Berk Ulu on 24.08.2020.
+//  Copyright © 2020 hippo. All rights reserved.
+//
+
+import Foundation
+
+class LedgerAccountSelectionHeaderSupplementaryViewModel {
+    
+    private var accountCount: String?
+    
+    init(accounts: [Account]) {
+        setAccountCount(from: accounts)
+    }
+    
+    private func setAccountCount(from accounts: [Account]) {
+        accountCount = accounts.count == 1 ?
+            "ledger-account-selection-title-singular".localized(params: accounts.count) :
+            "ledger-account-selection-title-plural".localized(params: accounts.count)
+    }
+}
+
+extension LedgerAccountSelectionHeaderSupplementaryViewModel {
+    func configure(_ view: LedgerAccountSelectionHeaderSupplementaryView) {
+        view.contextView.setTitle(accountCount)
+    }
+}
