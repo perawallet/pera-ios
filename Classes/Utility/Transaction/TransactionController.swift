@@ -66,6 +66,7 @@ extension TransactionController {
     }
     
     func stopBLEScan() {
+        bleConnectionManager.disconnect(from: connectedDevice)
         bleConnectionManager.stopScan()
     }
 }

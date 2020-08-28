@@ -20,6 +20,7 @@ class BLEConnectionManager: NSObject {
     
     private var peripherals: [CBPeripheral] = []
     private var isScanning = false
+    private var isDisconnectedInternally = false
     
     override init() {
         super.init()
@@ -56,8 +57,11 @@ extension BLEConnectionManager {
         centralManager?.connect(peripheral)
     }
     
-    func disconnectFromDevice(_ peripheral: CBPeripheral) {
-        centralManager?.cancelPeripheralConnection(peripheral)
+    func disconnect(from connectedPeripheral: CBPeripheral?) {
+        if let peripheral = connectedPeripheral {
+            isDisconnectedInternally = true
+            centralManager?.cancelPeripheralConnection(peripheral)
+        }
     }
     
     func write(_ data: Data) {
@@ -95,6 +99,7 @@ extension BLEConnectionManager: CBCentralManagerDelegate {
         print("Connection complete")
         print("Peripheral info: \(String(describing: blePeripheral))")
         stopScan()
+        isDisconnectedInternally = false
         peripheral.delegate = self
         peripheral.discoverServices([bleServiceUuid])
         
@@ -109,7 +114,9 @@ extension BLEConnectionManager: CBCentralManagerDelegate {
     }
     
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
-        print("Disconnected")
+        if isDisconnectedInternally {
+            return
+        }
         delegate?.bleConnectionManager(self, didDisconnectFrom: peripheral, with: error)
     }
 }

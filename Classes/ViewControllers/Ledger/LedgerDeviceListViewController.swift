@@ -46,6 +46,7 @@ class LedgerDeviceListViewController: BaseViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        bleConnectionManager.disconnect(from: connectedDevice)
         bleConnectionManager.stopScan()
         ledgerDeviceListView.stopSearchSpinner()
     }
@@ -156,6 +157,10 @@ extension LedgerDeviceListViewController: BLEConnectionManagerDelegate {
     }
     
     func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didFailBLEConnectionWith state: CBManagerState) {
+        if isViewDisappearing {
+            return
+        }
+        
         connectedDevice = nil
         
         guard let errorTitle = state.errorDescription.title,
@@ -171,6 +176,10 @@ extension LedgerDeviceListViewController: BLEConnectionManagerDelegate {
         didDisconnectFrom peripheral: CBPeripheral,
         with error: BLEError?
     ) {
+        if isViewDisappearing {
+            return
+        }
+        
         connectedDevice = nil
         ledgerApprovalViewController?.dismissScreen()
         NotificationBanner.showError("ble-error-connection-title".localized, message: "ble-error-fail-connect-peripheral".localized)
@@ -181,6 +190,10 @@ extension LedgerDeviceListViewController: BLEConnectionManagerDelegate {
         didFailToConnect peripheral: CBPeripheral,
         with error: BLEError?
     ) {
+        if isViewDisappearing {
+            return
+        }
+        
         connectedDevice = nil
         ledgerApprovalViewController?.dismissScreen()
         NotificationBanner.showError("ble-error-connection-title".localized, message: "ble-error-fail-connect-peripheral".localized)
