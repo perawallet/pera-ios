@@ -29,6 +29,15 @@ class RekeyInstructionsViewController: BaseScrollViewController {
         leftBarButtonItems = [closeBarButtonItem]
     }
     
+    override func configureAppearance() {
+        super.configureAppearance()
+        if account.requiresLedgerConnection() {
+            rekeyInstructionsView.setSecondInstructionViewTitle("rekey-instruction-second-ledger".localized)
+        } else {
+            rekeyInstructionsView.setSecondInstructionViewTitle("rekey-instruction-second-standard".localized)
+        }
+    }
+    
     override func linkInteractors() {
         super.linkInteractors()
         rekeyInstructionsView.delegate = self

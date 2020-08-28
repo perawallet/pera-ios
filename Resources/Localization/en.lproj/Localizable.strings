@@ -452,7 +452,8 @@
 "rekey-instruction-subtitle" = "Replace your account ledger with a new Ledger Device";
 "rekey-instruction-header" = "What to expect:";
 "rekey-instruction-first" = "Future transactions will be signed by your new Ledger Device.";
-"rekey-instruction-second" = "Your old Ledger will no longer function for this account.";
+"rekey-instruction-second-ledger" = "Your old Ledger will no longer function for this account.";
+"rekey-instruction-second-standard" = "This account's passphrase will no longer function for this account";
 "rekey-instruction-third" = "Your account’s public key, balances, and configuration will not change.";
 
 // MARK: Rekey Confirm

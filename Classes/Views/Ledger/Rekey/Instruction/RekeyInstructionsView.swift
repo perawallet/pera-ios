@@ -52,7 +52,6 @@ class RekeyInstructionsView: BaseView {
     override func configureAppearance() {
         super.configureAppearance()
         firstInstructionView.setTitle("rekey-instruction-first".localized)
-        secondInstructionView.setTitle("rekey-instruction-second".localized)
         thirdInstructionView.setTitle("rekey-instruction-third".localized)
     }
     
@@ -141,6 +140,12 @@ extension RekeyInstructionsView {
             make.top.greaterThanOrEqualTo(thirdInstructionView.snp.bottom).offset(layout.current.buttonInset)
             make.bottom.equalToSuperview().inset(safeAreaBottom + layout.current.buttonInset)
         }
+    }
+}
+
+extension RekeyInstructionsView {
+    func setSecondInstructionViewTitle(_ title: String) {
+        secondInstructionView.setTitle(title)
     }
 }
 
