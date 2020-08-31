@@ -107,7 +107,7 @@ extension API {
     
     func mobileApiHeaders() -> Headers {
         var headers = sharedHttpHeaders
-        headers.set(.custom("algorand-network", .some("betanet")))
+        headers.set(.custom("algorand-network", .some(network.rawValue)))
         return headers
     }
     
