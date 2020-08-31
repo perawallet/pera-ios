@@ -310,6 +310,16 @@ extension AssetRemovalViewController: TransactionControllerDelegate {
         }
         
         SVProgressHUD.dismiss()
+        NotificationBanner.showError("title-error".localized, message: error.localizedDescription)
+    }
+    
+    func transactionController(_ transactionController: TransactionController, didFailedTransaction error: Error) {
+        if account.requiresLedgerConnection() {
+            ledgerApprovalViewController?.dismissScreen()
+        }
+        
+        SVProgressHUD.dismiss()
+        NotificationBanner.showError("title-error".localized, message: error.localizedDescription)
     }
     
     private func getRemovedAssetDetail(from draft: AssetTransactionSendDraft?) -> AssetDetail? {

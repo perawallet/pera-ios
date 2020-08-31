@@ -202,6 +202,11 @@ extension SendTransactionPreviewViewController: SendTransactionPreviewViewDelega
             return
         }
         
+        if isClosingToSameAccount() {
+            NotificationBanner.showError("title-error".localized, message: "send-transaction-max-same-account-error".localized)
+            return
+        }
+        
         selectedAccount = account
         displayTransactionPreview()
     }
@@ -403,6 +408,15 @@ extension SendTransactionPreviewViewController {
         
         timer?.invalidate()
         timer = nil
+    }
+    
+    private func isClosingToSameAccount() -> Bool {
+        guard let account = selectedAccount,
+              let receiverAccount = getReceiverAccount() else {
+            return false
+        }
+        
+        return isMaxTransaction && receiverAccount.address == account.address
     }
 }
 

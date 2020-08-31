@@ -10,10 +10,10 @@ import UIKit
 import CoreBluetooth
 
 class BLEConnectionManager: NSObject {
-    private var centralManager: CBCentralManager?
-    private var blePeripheral: CBPeripheral?
-    
     weak var delegate: BLEConnectionManagerDelegate?
+    
+    private var centralManager: CBCentralManager?
+    private var connectedPeripheral: CBPeripheral?
     
     private var txCharacteristic: CBCharacteristic?
     private var rxCharacteristic: CBCharacteristic?
@@ -40,14 +40,6 @@ extension BLEConnectionManager {
         }
     }
     
-    func centralManagerDidUpdateState() {
-        guard let centralManager = centralManager else {
-            return
-        }
-        
-        centralManagerDidUpdateState(centralManager)
-    }
-    
     func stopScan() {
         isScanning = false
         centralManager?.stopScan()
@@ -61,12 +53,13 @@ extension BLEConnectionManager {
         if let peripheral = connectedPeripheral {
             isDisconnectedInternally = true
             centralManager?.cancelPeripheralConnection(peripheral)
+            self.connectedPeripheral = nil
         }
     }
     
     func write(_ data: Data) {
         if let txCharacteristic = txCharacteristic {
-            blePeripheral?.writeValue(data, for: txCharacteristic, type: CBCharacteristicWriteType.withResponse)
+            connectedPeripheral?.writeValue(data, for: txCharacteristic, type: CBCharacteristicWriteType.withResponse)
         }
     }
 }
@@ -86,19 +79,13 @@ extension BLEConnectionManager: CBCentralManagerDelegate {
         advertisementData: [String: Any],
         rssi RSSI: NSNumber
     ) {
-        print("Found new pheripheral devices with services")
-        print("Peripheral name: \(String(describing: peripheral.name))")
-        print("Advertisement Data: \(advertisementData)")
-        
-        blePeripheral = peripheral
         peripherals.append(peripheral)
         delegate?.bleConnectionManager(self, didDiscover: peripherals)
     }
     
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
-        print("Connection complete")
-        print("Peripheral info: \(String(describing: blePeripheral))")
         stopScan()
+        connectedPeripheral = peripheral
         isDisconnectedInternally = false
         peripheral.delegate = self
         peripheral.discoverServices([bleServiceUuid])
@@ -107,9 +94,6 @@ extension BLEConnectionManager: CBCentralManagerDelegate {
     }
     
     func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) {
-        if error != nil {
-            print("Failed to connect to peripheral")
-        }
         delegate?.bleConnectionManager(self, didFailToConnect: peripheral, with: error)
     }
     
@@ -117,17 +101,17 @@ extension BLEConnectionManager: CBCentralManagerDelegate {
         if isDisconnectedInternally {
             return
         }
+        
+        if peripheral.identifier == connectedPeripheral?.identifier {
+            connectedPeripheral = nil
+        }
+        
         delegate?.bleConnectionManager(self, didDisconnectFrom: peripheral, with: error)
     }
 }
 
 extension BLEConnectionManager: CBPeripheralDelegate {
     func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
-        if let error = error {
-            print("Error discovering services: \(error.localizedDescription)")
-            return
-        }
-        
         guard let services = peripheral.services else {
             return
         }
@@ -139,31 +123,14 @@ extension BLEConnectionManager: CBPeripheralDelegate {
         for service in services {
             peripheral.discoverCharacteristics(nil, for: service)
         }
-        
-        print("Discovered Services: \(services)")
     }
     
     func peripheral(_ peripheral: CBPeripheral, didDiscoverDescriptorsFor characteristic: CBCharacteristic, error: Error?) {
-        if error != nil {
-            print("\(error.debugDescription)")
-            return
-        }
         
-        guard let descriptors = characteristic.descriptors else {
-            return
-        }
-        
-        for descriptor in descriptors {
-            let descript = descriptor as CBDescriptor
-            print("function name: DidDiscoverDescriptorForChar \(String(describing: descript.description))")
-            print("Rx Value \(String(describing: rxCharacteristic?.value))")
-            print("Tx Value \(String(describing: txCharacteristic?.value))")
-        }
     }
     
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
-        if let error = error {
-            print("Error discovering characteristics: \(error.localizedDescription)")
+        if error != nil {
             return
         }
         
@@ -171,13 +138,10 @@ extension BLEConnectionManager: CBPeripheralDelegate {
             return
         }
         
-        self.processCharacteristics(peripheral, of: characteristics)
+        processCharacteristics(peripheral, of: characteristics)
     }
     
-    private func processCharacteristics(_ peripheral: CBPeripheral,
-                                        of characteristics: [CBCharacteristic]) {
-        print("Found \(characteristics.count) characteristics!")
-        
+    private func processCharacteristics(_ peripheral: CBPeripheral, of characteristics: [CBCharacteristic]) {
         for characteristic in characteristics {
             if characteristic.uuid.isEqual(bleCharacteristicUuidRx) {
                 rxCharacteristic = characteristic
@@ -188,13 +152,12 @@ extension BLEConnectionManager: CBPeripheralDelegate {
                 
                 peripheral.setNotifyValue(true, for: rxCharacteristic)
                 peripheral.readValue(for: rxCharacteristic)
-                print("Rx Characteristic: \(characteristic.uuid)")
             }
+            
             if characteristic.uuid.isEqual(bleCharacteristicUuidTx) {
                 txCharacteristic = characteristic
-                print("Tx Characteristic: \(characteristic.uuid)")
                 
-                // Can write a data to the device since txCharacteristic is set.
+                /// Can write a data to the device since txCharacteristic is set.
                 delegate?.bleConnectionManagerEnabledToWrite(self)
             }
             peripheral.discoverDescriptors(for: characteristic)
@@ -202,10 +165,9 @@ extension BLEConnectionManager: CBPeripheralDelegate {
     }
     
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
-        // If it returns error, we should skip, wheter it has value or not.
-        // Otherwise it will send the old value
-        
-        guard error == nil else {
+        /// If it returns error, we should skip, whether it has value or not.
+        /// Otherwise it will send the old value
+        if error != nil {
             return
         }
         
@@ -214,23 +176,12 @@ extension BLEConnectionManager: CBPeripheralDelegate {
                 return
             }
             
-            let readData = characteristicData.toHexString()
-            print("Value Received: \(readData)")
-            
-            delegate?.bleConnectionManager(self, didRead: readData)
+            delegate?.bleConnectionManager(self, didRead: characteristicData.toHexString())
         }
     }
     
     func peripheral(_ peripheral: CBPeripheral, didUpdateNotificationStateFor characteristic: CBCharacteristic, error: Error?) {
-        if error != nil {
-            print("Error changing notification state:\(String(describing: error?.localizedDescription))")
-        } else {
-            print("Characteristic's value subscribed")
-        }
-        
-        if characteristic.isNotifying {
-            print("Subscribed. Notification has begun for: \(characteristic.uuid)")
-        }
+   
     }
 }
 

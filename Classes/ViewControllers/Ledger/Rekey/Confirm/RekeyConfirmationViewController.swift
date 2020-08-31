@@ -131,6 +131,14 @@ extension RekeyConfirmationViewController: TransactionControllerDelegate {
         }
     }
     
+    func transactionController(_ transactionController: TransactionController, didFailedTransaction error: Error) {
+        if account.requiresLedgerConnection() {
+            ledgerApprovalViewController?.dismissScreen()
+        }
+        
+        NotificationBanner.showError("title-error".localized, message: error.localizedDescription)
+    }
+    
     func transactionControllerDidStartBLEConnection(_ transactionController: TransactionController) {
         openLedgerApprovalScreen()
     }
@@ -213,7 +221,7 @@ extension RekeyConfirmationViewController {
         case let .minimumAmount(amount):
             NotificationBanner.showError(
                 "asset-min-transaction-error-title".localized,
-                message: "asset-min-transaction-error-message".localized(params: amount.toAlgos.toDecimalStringForLabel ?? "")
+                message: "send-algos-minimum-amount-custom-error".localized(params: amount.toAlgos.toDecimalStringForLabel ?? "")
             )
         default:
             break

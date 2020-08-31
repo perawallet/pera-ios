@@ -381,8 +381,9 @@ extension TransactionController {
             break
         case .assetAddition:
             assetCount = account.assetDetails.count + 2
-        case .assetRemoval,
-             .rekey:
+        case .rekey:
+            break
+        case .assetRemoval:
             return true
         }
         
