@@ -101,25 +101,36 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
             return
         }
         
-        if let sameAccount = session?.authenticatedUser?.account(address: address),
-            sameAccount.type != .rekeyed {
-            displaySimpleAlertWith(title: "title-error".localized, message: "recover-from-seed-verify-exist-error".localized)
-            return
+        let account: AccountInformation
+        
+        if let sameAccount = session?.account(from: address) {
+            if sameAccount.isRekeyed() {
+                account = AccountInformation(address: address, name: name, type: .rekeyed, ledgerDetail: sameAccount.ledgerDetail)
+            } else {
+                displaySimpleAlertWith(title: "title-error".localized, message: "recover-from-seed-verify-exist-error".localized)
+                return
+            }
+        } else {
+            account = AccountInformation(address: address, name: name)
         }
         
-        let account = AccountInformation(address: address, name: name)
         session?.savePrivate(privateKey, for: account.address)
         
         let user: User
         
         if let authenticatedUser = session?.authenticatedUser {
             user = authenticatedUser
-            user.addAccount(account)
+            
+            if session?.authenticatedUser?.account(address: address) != nil {
+                user.updateAccount(account)
+            } else {
+                user.addAccount(account)
+            }
         } else {
             user = User(accounts: [account])
         }
         
-        session?.addAccount(Account(address: account.address, type: account.type, name: account.name))
+        session?.addAccount(Account(accountInformation: account))
         session?.authenticatedUser = user
         
         view.endEditing(true)
