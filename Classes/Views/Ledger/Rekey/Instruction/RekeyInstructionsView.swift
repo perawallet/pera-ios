@@ -29,7 +29,6 @@ class RekeyInstructionsView: BaseView {
             .withFont(UIFont.font(withWeight: .regular(size: 16.0)))
             .withAlignment(.left)
             .withTextColor(SharedColors.inputTitle)
-            .withText("rekey-instruction-subtitle".localized)
     }()
     
     private lazy var instructionHeaderLabel: UILabel = {
@@ -144,6 +143,10 @@ extension RekeyInstructionsView {
 }
 
 extension RekeyInstructionsView {
+    func setSubtitleText(_ text: String) {
+        subtitleLabel.text = text
+    }
+    
     func setSecondInstructionViewTitle(_ title: String) {
         secondInstructionView.setTitle(title)
     }

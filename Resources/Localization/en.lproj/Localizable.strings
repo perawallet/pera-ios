@@ -450,7 +450,8 @@
 
 "rekey-instruction-start" = "Start Process";
 "rekey-instruction-title" = "Rekey Account";
-"rekey-instruction-subtitle" = "Replace your account ledger with a new Ledger Device";
+"rekey-instruction-subtitle-ledger" = "Replace your account ledger with a new Ledger Device";
+"rekey-instruction-subtitle-standard" = "Replace your account’s passphrase with a Ledger Device.";
 "rekey-instruction-header" = "What to expect:";
 "rekey-instruction-first" = "Future transactions will be signed by your new Ledger Device.";
 "rekey-instruction-second-ledger" = "Your old Ledger will no longer function for this account.";

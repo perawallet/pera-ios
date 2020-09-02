@@ -32,8 +32,10 @@ class RekeyInstructionsViewController: BaseScrollViewController {
     override func configureAppearance() {
         super.configureAppearance()
         if account.requiresLedgerConnection() {
+            rekeyInstructionsView.setSubtitleText("rekey-instruction-subtitle-ledger".localized)
             rekeyInstructionsView.setSecondInstructionViewTitle("rekey-instruction-second-ledger".localized)
         } else {
+            rekeyInstructionsView.setSubtitleText("rekey-instruction-subtitle-standard".localized)
             rekeyInstructionsView.setSecondInstructionViewTitle("rekey-instruction-second-standard".localized)
         }
     }
