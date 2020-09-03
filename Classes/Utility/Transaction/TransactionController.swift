@@ -194,7 +194,7 @@ extension TransactionController {
                 isMaxTransaction = false
             }
             // Reduce fee from transaction amount
-            transactionAmount -= initialFee * params.fee
+            transactionAmount -= max(initialFee * params.fee, Transaction.Constant.minimumFee)
         }
         
         let trimmedToAddress = toAddress.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -342,35 +342,43 @@ extension TransactionController {
     
     private func calculateAssetTransactionFee(for transactionType: TransactionType) {
         guard let params = params,
-            let signedTransactionData = signedTransactionData,
-            let account = fromAccount else {
+            let signedTransactionData = signedTransactionData else {
             return
         }
         
-        var calculatedFee = Int64(signedTransactionData.count) * params.fee
-        
-        if calculatedFee < Transaction.Constant.minimumFee {
-            calculatedFee = Transaction.Constant.minimumFee
-        }
+        let calculatedFee = max((Int64(signedTransactionData.count) * params.fee), Transaction.Constant.minimumFee)
         
         // Asset transaction fee amount must be asset count * minimum algos limit + minimum fee
-        if transactionType == .assetAddition
-            && !isValidTransactionAmount(for: account, calculatedFee: calculatedFee, containsCurrentAsset: true) {
-            return
-        }
-        
-        if transactionType != .assetRemoval
-            && !isValidTransactionAmount(for: account, calculatedFee: calculatedFee, containsCurrentAsset: false) {
+        if !isValidTransactionAmount(for: transactionType, calculatedFee: calculatedFee) {
             return
         }
         
         self.transactionDraft?.fee = calculatedFee
     }
     
-    private func isValidTransactionAmount(for account: Account, calculatedFee: Int64, containsCurrentAsset: Bool) -> Bool {
-        let assetCount = containsCurrentAsset ? account.assetDetails.count + 2 : account.assetDetails.count + 1
+    private func isValidTransactionAmount(for transactionType: TransactionType, calculatedFee: Int64) -> Bool {
+        guard let account = fromAccount,
+            let isMaxTransaction = transactionDraft?.isMaxTransaction,
+            !isMaxTransaction else {
+            return true
+        }
+        
+        var assetCount = account.assetDetails.count + 1
+        var transactionAmount: Int64 = 0
+        
+        switch transactionType {
+        case .algosTransaction:
+            transactionAmount = transactionDraft?.amount?.toMicroAlgos ?? 0
+        case .assetTransaction:
+            break
+        case .assetAddition:
+            assetCount = account.assetDetails.count + 2
+        case .assetRemoval:
+            return true
+        }
+        
         let minimumAmount = Int64(minimumTransactionMicroAlgosLimit * assetCount) + calculatedFee
-        if Int64(account.amount) < minimumAmount {
+        if Int64(account.amount) - transactionAmount < minimumAmount {
             delegate?.transactionController(self, didFailedComposing: .custom(TransactionError.minimumAmount(amount: minimumAmount)))
             return false
         }
