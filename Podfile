@@ -36,6 +36,13 @@ target 'algorand' do
   main_pods
 end
 
+target 'algorand-prod' do
+
+  use_frameworks!
+  
+  main_pods
+end
+
 target 'algorand-staging' do
   
   use_frameworks!
