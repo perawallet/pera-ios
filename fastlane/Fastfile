@@ -1,0 +1,253 @@
+default_platform(:ios)
+
+platform :ios do
+  desc "Upload Staging Application To Tryouts"
+  lane :staging do |options|
+    appIdentifier = get_app_identifier
+    isAvailable = is_app_available(
+      app_identifier: appIdentifier,
+      target: "staging"
+    )
+    if isAvailable
+      tryoutsAppId = ENV["STAGING_TRYOUTS_APP_ID"]
+      tryoutsApiToken = ENV["STAGING_TRYOUTS_API_TOKEN"]
+
+      register_missing_devices(
+        tryouts_app_id: tryoutsAppId,
+        tryouts_api_token: tryoutsApiToken
+      )
+      match_adhoc_cert(app_identifier: appIdentifier)
+      install_pods(is_store: false)
+      archive(
+        scheme: ENV["STAGING_SCHEMA"],
+        output_name: ENV["STAGING_IPA_NAME"],
+        export_method: "ad-hoc"
+      )
+      upload_to_tryouts(
+        tryouts_app_id: tryoutsAppId,
+        tryouts_api_token: tryoutsApiToken
+      )
+    end
+  end
+
+  desc "Sign Staging Development Application"
+  lane :staging_dev do |options|
+    appIdentifier = get_app_identifier
+    isAvailable = is_app_available(
+      app_identifier: appIdentifier,
+      target: "staging"
+    )
+    if isAvailable
+      match_dev_cert(app_identifier: appIdentifier)
+    end
+  end
+
+  desc "Upload Preprod Application To Tryouts"
+  lane :preprod do |options|
+    appIdentifier = get_app_identifier
+    UI.important appIdentifier
+    isAvailable = is_app_available(
+      app_identifier: appIdentifier,
+      target: "preprod"
+    )
+    if isAvailable
+      tryoutsAppId = ENV["PREPROD_TRYOUTS_APP_ID"]
+      tryoutsApiToken = ENV["PREPROD_TRYOUTS_API_TOKEN"]
+
+      register_missing_devices(
+        tryouts_app_id: tryoutsAppId,
+        tryouts_api_token: tryoutsApiToken
+      )
+      match_adhoc_cert(app_identifier: appIdentifier)
+      install_pods(is_store: false)
+      archive(
+        scheme: ENV["PREPROD_SCHEMA"],
+        output_name: ENV["PREPROD_IPA_NAME"],
+        export_method: "ad-hoc"
+      )
+      upload_to_tryouts(
+        tryouts_app_id: tryoutsAppId,
+        tryouts_api_token: tryoutsApiToken
+      )
+    end
+  end
+
+  desc "Sign Preprod Development Application"
+  lane :preprod_dev do |options|
+    appIdentifier = get_app_identifier
+    isAvailable = is_app_available(
+      app_identifier: appIdentifier,
+      target: "preprod"
+    )
+    if isAvailable
+      match_dev_cert(app_identifier: appIdentifier)
+    end
+  end
+
+  desc "Upload Production Application To Tryouts"
+  lane :prod do |options|
+    tryoutsAppId = ENV["TRYOUTS_APP_ID"]
+    tryoutsApiToken = ENV["TRYOUTS_API_TOKEN"]
+
+    register_missing_devices(
+      tryouts_app_id: tryoutsAppId,
+      tryouts_api_token: tryoutsApiToken
+    )
+    match_adhoc_cert(app_identifier: get_app_identifier)
+    install_pods(is_store: false)
+    archive(
+      scheme: ENV["PROD_SCHEMA"],
+      output_name: ENV["PROD_IPA_NAME"],
+      export_method: "ad-hoc"
+    )
+    upload_to_tryouts(
+      tryouts_app_id: tryoutsAppId,
+      tryouts_api_token: tryoutsApiToken
+    )
+  end
+
+  desc "Sign Production Development Application"
+  lane :prod_dev do |options|
+    match_dev_cert(app_identifier: get_app_identifier)
+  end
+
+  desc "Upload Staging&Prod Applications To Tryouts"
+  lane :beta_in_house do |options|
+    staging
+    preprod
+    prod
+  end
+
+  desc "Upload Beta To TestFlight"
+  lane :beta do |options|
+    match_adhoc_cert(app_identifier: get_app_identifier)
+    install_pods(is_store: true)
+    archive(
+      scheme: ENV["SCHEMA"],
+      output_name: ENV["BETA_IPA_NAME"],
+      export_method: "ad-hoc"
+    )
+  end
+
+  desc "Upload Release to AppStore"
+  lane :release do |options|
+    match_cert(
+      type: "appstore",
+      app_identifier: get_app_identifier
+    )
+    install_pods(is_store: true)
+    archive(
+        scheme: ENV["SCHEMA"],
+        output_name: ENV["IPA_NAME"],
+        export_method: "app-store"
+      )
+  end
+
+  desc "Get App Identifier"
+  private_lane :get_app_identifier do |options|
+    CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier)
+  end
+
+  desc "Check If App Identifier Is Available"
+  private_lane :is_app_available do |options|
+    if options[:app_identifier] == "nil"
+      UI.important "No application: #{options[:target]}"
+      false
+    else
+      true
+    end
+  end
+
+  desc "Register New Devices Taken From Tryouts"
+  private_lane :register_missing_devices do |options|
+    connection = Faraday.new "https://api.tryouts.io/v1/applications/#{options[:"tryouts_app_id"]}/testers/" do |conn|
+      conn.headers["Authorization"] = options[:"tryouts_api_token"]
+      conn.request :url_encoded
+      conn.response :json, :content_type => /\bjson$/
+      conn.use FaradayMiddleware::FollowRedirects
+      conn.adapter Faraday.default_adapter
+    end
+    response = connection.get
+    results = response.body["results"]
+
+    if results == nil
+      next
+    end
+
+    for tester in results
+      for device in tester["devices"]
+        if device["os"] == "1" # iOS
+          name = "#{tester["name"]} #{device["model"]}"
+          udid = device["udid"]
+          register_device(
+            name: name,
+            udid: udid
+          )
+          UI.message "#{name}: #{udid}"
+        end
+      end
+    end
+  end
+
+  desc "Match Cerificates For Given Profile Type"
+  private_lane :match_cert do |options|
+    match(
+      type: options[:type], 
+      app_identifier: options[:"app_identifier"],
+      force_for_new_devices: true,
+      verbose: true
+    )
+  end
+
+  desc "Match Development Cerificates Only"
+  private_lane :match_dev_cert do |options|
+    match_cert(
+      type: "development",
+      app_identifier: options[:app_identifier]
+    )
+  end
+
+  desc "Match Adhoc Certificates Only"
+  private_lane :match_adhoc_cert do |options|
+    match_cert(
+      type: "adhoc",
+      app_identifier: options[:app_identifier]
+    )
+  end
+
+  desc "Install Pods"
+  private_lane :install_pods do |options|
+    ENV["COCOAPODS_SCHEMA"] = options[:"is_store"] ? "production" : "development"
+    cocoapods(
+      repo_update: false,
+      clean_install: true
+    )
+  end
+
+  desc "Archive Application"
+  private_lane :archive do |options|
+    gym(
+      workspace: ENV["WORKSPACE"],
+      scheme: options[:"scheme"],
+      clean: true,
+      output_directory: "./archive",
+      output_name: options[:"output_name"],
+      include_bitcode: true,
+      export_method: options[:"export_method"],
+      verbose: true
+    )
+  end
+
+  desc "Upload To Tryouts"
+  private_lane :upload_to_tryouts do |options|
+    tryouts(
+      app_id: options[:"tryouts_app_id"],
+      api_token: options[:"tryouts_api_token"],
+      build_file: lane_context[SharedValues::IPA_OUTPUT_PATH],
+      notify: 0,
+      status: 1 # private release
+      # notes: "",
+      # notes_path: "",
+    )
+  end
+end
