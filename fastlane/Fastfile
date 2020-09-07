@@ -1,6 +1,7 @@
 default_platform(:ios)
 
 platform :ios do
+
   desc "Upload Staging Application To Tryouts"
   lane :staging do |options|
     appIdentifier = get_app_identifier
@@ -120,12 +121,19 @@ platform :ios do
 
   desc "Upload Beta To TestFlight"
   lane :beta do |options|
-    match_adhoc_cert(app_identifier: get_app_identifier)
+    match_cert(
+      type: "appstore",
+      app_identifier: get_app_identifier
+    )
     install_pods(is_store: true)
     archive(
-      scheme: ENV["SCHEMA"],
-      output_name: ENV["BETA_IPA_NAME"],
-      export_method: "ad-hoc"
+        scheme: ENV["SCHEMA"],
+        output_name: ENV["IPA_NAME"],
+        export_method: "app-store"
+    )
+    pilot(
+      skip_submission: true, 
+      skip_waiting_for_build_processing: true
     )
   end
 
@@ -140,7 +148,7 @@ platform :ios do
         scheme: ENV["SCHEMA"],
         output_name: ENV["IPA_NAME"],
         export_method: "app-store"
-      )
+    )
   end
 
   desc "Get App Identifier"
