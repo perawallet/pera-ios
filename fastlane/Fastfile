@@ -2,6 +2,15 @@ default_platform(:ios)
 
 platform :ios do
 
+  desc "Build without test"
+  lane :build do
+    scan(
+    	clean: true,
+    	build_for_testing: true, 
+    	scheme: ENV["PROD_SCHEMA"]
+    )
+  end
+
   desc "Upload Staging Application To Tryouts"
   lane :staging do |options|
     appIdentifier = get_app_identifier
