@@ -4,6 +4,7 @@ platform :ios do
 
   desc "Build without test"
   lane :build do |options|
+    install_pods(is_store: false)
     scan(
     	clean: true,
     	build_for_testing: true, 
