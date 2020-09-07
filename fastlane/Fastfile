@@ -7,7 +7,7 @@ platform :ios do
     scan(
     	clean: true,
     	build_for_testing: true, 
-    	scheme: ENV["PROD_SCHEMA"]
+    	scheme: ENV["STAGING_SCHEMA"]
     )
   end
 
