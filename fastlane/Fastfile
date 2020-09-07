@@ -4,10 +4,13 @@ platform :ios do
 
   desc "Build without test"
   lane :build do
+    appIdentifier = get_app_identifier
+
     scan(
     	clean: true,
     	build_for_testing: true, 
-    	scheme: ENV["STAGING_SCHEMA"]
+    	scheme: ENV["STAGING_SCHEMA"],
+    	app_identifier: appIdentifier
     )
   end
 
