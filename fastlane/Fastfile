@@ -5,6 +5,7 @@ platform :ios do
   desc "Build without test"
   lane :build do |options|
     scan(
+    	workspace: ENV["WORKSPACE"],
     	clean: true,
     	build_for_testing: true, 
     	scheme: ENV["STAGING_SCHEMA"],
