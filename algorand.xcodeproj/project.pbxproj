@@ -803,8 +803,6 @@
 		2B0F632524EC129D00DA22A6 /* PollingOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF53173224A940E00A7455F /* PollingOperation.swift */; };
 		2B0F632624EC129D00DA22A6 /* RewardDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD54765231714A9007179FE /* RewardDetailViewController.swift */; };
 		2B0F632724EC129D00DA22A6 /* AccountManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F9E926225796DA004CDF24 /* AccountManager.swift */; };
-		2B0F632924EC129D00DA22A6 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
-		2B0F632B24EC129D00DA22A6 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		2B0F632D24EC129D00DA22A6 /* LoadingAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 2BFBAB71227B349E008BBB31 /* LoadingAnimation.json */; };
 		2B0F632E24EC129D00DA22A6 /* PublicSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2B51615E243F739B006DEA54 /* PublicSans-Regular.ttf */; };
 		2B0F632F24EC129D00DA22A6 /* images in Resources */ = {isa = PBXBuildFile; fileRef = 2BFBAB74227B35B7008BBB31 /* images */; };
@@ -1511,7 +1509,7 @@
 		2BF71918224ED0C5001E8420 /* ContactInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF71917224ED0C5001E8420 /* ContactInfoViewController.swift */; };
 		2BFBAB72227B349E008BBB31 /* LoadingAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 2BFBAB71227B349E008BBB31 /* LoadingAnimation.json */; };
 		2BFBAB75227B35B7008BBB31 /* images in Resources */ = {isa = PBXBuildFile; fileRef = 2BFBAB74227B35B7008BBB31 /* images */; };
-		5440C5A77D4C764BB3689BF3 /* Pods_algorand_prod.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC2B0A54E565D4B17210814E /* Pods_algorand_prod.framework */; };
+		34E10EEDAEE4C90E51BCBBB2 /* Pods_algorand.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B23C40C68DA858CD7433E4E5 /* Pods_algorand.framework */; };
 		9511C290242E1AEA003211ED /* TermsAndServicesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9511C28F242E1AEA003211ED /* TermsAndServicesViewController.swift */; };
 		9511C291242E1AEA003211ED /* TermsAndServicesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9511C28F242E1AEA003211ED /* TermsAndServicesViewController.swift */; };
 		9511C294242E26A3003211ED /* TermsAndServicesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9511C293242E26A3003211ED /* TermsAndServicesView.swift */; };
@@ -1546,14 +1544,15 @@
 		95E3156624335F96008D79D4 /* SegmentItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95E3156424335F96008D79D4 /* SegmentItem.swift */; };
 		95FEED30242A0882000E42EB /* LedgerTroubleshootBluetoothViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95FEED2F242A0882000E42EB /* LedgerTroubleshootBluetoothViewController.swift */; };
 		95FEED31242A0882000E42EB /* LedgerTroubleshootBluetoothViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95FEED2F242A0882000E42EB /* LedgerTroubleshootBluetoothViewController.swift */; };
-		9E61A6F106B16D31340232C1 /* Pods_algorand.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A3C8C7DD51BE016E46596B7 /* Pods_algorand.framework */; };
-		DCD3EE7678029738F4171F22 /* Pods_algorand_staging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BDB953015FF2F948F5734D7 /* Pods_algorand_staging.framework */; };
-		E400DDD67009D0199ACDB9C1 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
+		97F637CB9A81E02C6567D1FE /* Pods_algorand_prod.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EFAFF961ADA8DD7AFE65EB88 /* Pods_algorand_prod.framework */; };
+		CB624417B8B29A26FE98B92E /* Pods_algorand_staging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 030F6B1A27825B4720C008C6 /* Pods_algorand_staging.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		04EB0A42AA75229AEB36F88D /* Pods-algorand-staging.app store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand-staging.app store.xcconfig"; path = "Pods/Target Support Files/Pods-algorand-staging/Pods-algorand-staging.app store.xcconfig"; sourceTree = "<group>"; };
-		109A8F9BBE75B9E9D3A21D26 /* Pods-algorand-prod.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand-prod.debug.xcconfig"; path = "Pods/Target Support Files/Pods-algorand-prod/Pods-algorand-prod.debug.xcconfig"; sourceTree = "<group>"; };
+		030F6B1A27825B4720C008C6 /* Pods_algorand_staging.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_algorand_staging.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		0A0D3580FD8AFA3672317C5F /* Pods-algorand-prod.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand-prod.release.xcconfig"; path = "Target Support Files/Pods-algorand-prod/Pods-algorand-prod.release.xcconfig"; sourceTree = "<group>"; };
+		0DE1E4BC8EACAFB035745309 /* Pods-algorand.app store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand.app store.xcconfig"; path = "Target Support Files/Pods-algorand/Pods-algorand.app store.xcconfig"; sourceTree = "<group>"; };
+		15FA165BDF6ABD213FF820E3 /* Pods-algorand.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand.release.xcconfig"; path = "Target Support Files/Pods-algorand/Pods-algorand.release.xcconfig"; sourceTree = "<group>"; };
 		170AFAF9224C9FF800520EA5 /* QRCreationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCreationViewController.swift; sourceTree = "<group>"; };
 		170AFAFB224CC70A00520EA5 /* QRText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRText.swift; sourceTree = "<group>"; };
 		170AFAFD224CCBF300520EA5 /* QRView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRView.swift; sourceTree = "<group>"; };
@@ -1616,7 +1615,7 @@
 		17F9E9212257895A004CDF24 /* AsyncOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncOperation.swift; sourceTree = "<group>"; };
 		17F9E923225789E7004CDF24 /* AccountFetchOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountFetchOperation.swift; sourceTree = "<group>"; };
 		17F9E926225796DA004CDF24 /* AccountManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountManager.swift; sourceTree = "<group>"; };
-		2AC10F1C54DF2982BFB4A180 /* Pods-algorand.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand.debug.xcconfig"; path = "Pods/Target Support Files/Pods-algorand/Pods-algorand.debug.xcconfig"; sourceTree = "<group>"; };
+		1FBA4CE73FF1117B608D16D7 /* Pods-algorand-staging.app store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand-staging.app store.xcconfig"; path = "Target Support Files/Pods-algorand-staging/Pods-algorand-staging.app store.xcconfig"; sourceTree = "<group>"; };
 		2B01E2BB24EF11B500C6E5B7 /* AccountSelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSelectionCell.swift; sourceTree = "<group>"; };
 		2B01E2BE24EF11C900C6E5B7 /* AccountSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSelectionView.swift; sourceTree = "<group>"; };
 		2B01E2C124EF11DE00C6E5B7 /* LedgerAccountSelectionTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountSelectionTitleView.swift; sourceTree = "<group>"; };
@@ -1974,7 +1973,6 @@
 		2BD73A1B2241636C00B66EEF /* PassphraseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseView.swift; sourceTree = "<group>"; };
 		2BD78E8C226A0B4800A3D35C /* PassphraseBackUpOrderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PassphraseBackUpOrderView.swift; sourceTree = "<group>"; };
 		2BD78E8D226A0B4800A3D35C /* PassphraseBackUpCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PassphraseBackUpCell.swift; sourceTree = "<group>"; };
-		2BDB953015FF2F948F5734D7 /* Pods_algorand_staging.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_algorand_staging.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BDDCA472268A3630081CED2 /* DeepLinkParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkParser.swift; sourceTree = "<group>"; };
 		2BDE31E022799FF0002E8235 /* ContactSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactSelectionViewController.swift; sourceTree = "<group>"; };
 		2BDE31E22279A319002E8235 /* ContactSelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactSelectionCell.swift; sourceTree = "<group>"; };
@@ -2058,12 +2056,7 @@
 		2BF71917224ED0C5001E8420 /* ContactInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactInfoViewController.swift; sourceTree = "<group>"; };
 		2BFBAB71227B349E008BBB31 /* LoadingAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LoadingAnimation.json; sourceTree = "<group>"; };
 		2BFBAB74227B35B7008BBB31 /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = images; sourceTree = "<group>"; };
-		3A3C8C7DD51BE016E46596B7 /* Pods_algorand.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_algorand.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		44FD8F3D210C1D99893A91DF /* Pods-algorand.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand.release.xcconfig"; path = "Pods/Target Support Files/Pods-algorand/Pods-algorand.release.xcconfig"; sourceTree = "<group>"; };
-		48FA8A0C94A2F8ECE53444FE /* Pods-algorand-prod.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand-prod.release.xcconfig"; path = "Pods/Target Support Files/Pods-algorand-prod/Pods-algorand-prod.release.xcconfig"; sourceTree = "<group>"; };
-		60DCA59D3815D648E4728045 /* Pods-algorand-staging.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand-staging.debug.xcconfig"; path = "Pods/Target Support Files/Pods-algorand-staging/Pods-algorand-staging.debug.xcconfig"; sourceTree = "<group>"; };
-		6AD155EA8505B4795228B552 /* Pods-algorand-prod.app store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand-prod.app store.xcconfig"; path = "Pods/Target Support Files/Pods-algorand-prod/Pods-algorand-prod.app store.xcconfig"; sourceTree = "<group>"; };
-		8CA10E911394EB35A6B71CEB /* Pods-algorand.app store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand.app store.xcconfig"; path = "Pods/Target Support Files/Pods-algorand/Pods-algorand.app store.xcconfig"; sourceTree = "<group>"; };
+		76FC9E9E99F106708B4AFC85 /* Pods-algorand.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand.debug.xcconfig"; path = "Target Support Files/Pods-algorand/Pods-algorand.debug.xcconfig"; sourceTree = "<group>"; };
 		9511C28F242E1AEA003211ED /* TermsAndServicesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsAndServicesViewController.swift; sourceTree = "<group>"; };
 		9511C293242E26A3003211ED /* TermsAndServicesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsAndServicesView.swift; sourceTree = "<group>"; };
 		9511C296242E2B3C003211ED /* BaseControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseControl.swift; sourceTree = "<group>"; };
@@ -2081,9 +2074,13 @@
 		95E3153224323517008D79D4 /* BluetoothLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothLoadingView.swift; sourceTree = "<group>"; };
 		95E3156424335F96008D79D4 /* SegmentItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentItem.swift; sourceTree = "<group>"; };
 		95FEED2F242A0882000E42EB /* LedgerTroubleshootBluetoothViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerTroubleshootBluetoothViewController.swift; sourceTree = "<group>"; };
-		E3DDC639493AD9DFAB57110A /* Pods-algorand-staging.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand-staging.release.xcconfig"; path = "Pods/Target Support Files/Pods-algorand-staging/Pods-algorand-staging.release.xcconfig"; sourceTree = "<group>"; };
-		EC2B0A54E565D4B17210814E /* Pods_algorand_prod.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_algorand_prod.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		99CD25304410760C91ECEEEC /* Pods-algorand-staging.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand-staging.release.xcconfig"; path = "Target Support Files/Pods-algorand-staging/Pods-algorand-staging.release.xcconfig"; sourceTree = "<group>"; };
+		A03FA65A2602E9C7A1240972 /* Pods-algorand-prod.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand-prod.debug.xcconfig"; path = "Target Support Files/Pods-algorand-prod/Pods-algorand-prod.debug.xcconfig"; sourceTree = "<group>"; };
+		B23C40C68DA858CD7433E4E5 /* Pods_algorand.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_algorand.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EC9412FF22BD6D4C00745662 /* Info-Demo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-Demo.plist"; sourceTree = "<group>"; };
+		EFAFF961ADA8DD7AFE65EB88 /* Pods_algorand_prod.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_algorand_prod.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F7B9432C7341B69AC9550A3A /* Pods-algorand-staging.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand-staging.debug.xcconfig"; path = "Target Support Files/Pods-algorand-staging/Pods-algorand-staging.debug.xcconfig"; sourceTree = "<group>"; };
+		FA7EFB93A97BCEEBD15E548B /* Pods-algorand-prod.app store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand-prod.app store.xcconfig"; path = "Target Support Files/Pods-algorand-prod/Pods-algorand-prod.app store.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2092,8 +2089,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				2B0F5F6324EAECD300DA22A6 /* Crypto.framework in Frameworks */,
-				DCD3EE7678029738F4171F22 /* Pods_algorand_staging.framework in Frameworks */,
 				2B0F5F5B24EAECB700DA22A6 /* Crypto.framework in Frameworks */,
+				CB624417B8B29A26FE98B92E /* Pods_algorand_staging.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2101,11 +2098,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2B0F632924EC129D00DA22A6 /* (null) in Frameworks */,
 				2B56B8452505019200AC7B8D /* Crypto.framework in Frameworks */,
 				2B56B8442505018E00AC7B8D /* Crypto.framework in Frameworks */,
-				2B0F632B24EC129D00DA22A6 /* (null) in Frameworks */,
-				5440C5A77D4C764BB3689BF3 /* Pods_algorand_prod.framework in Frameworks */,
+				97F637CB9A81E02C6567D1FE /* Pods_algorand_prod.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2114,9 +2109,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				2B0F5F6224EAECD300DA22A6 /* Crypto.framework in Frameworks */,
-				E400DDD67009D0199ACDB9C1 /* (null) in Frameworks */,
 				2B0F5F5E24EAECBE00DA22A6 /* Crypto.framework in Frameworks */,
-				9E61A6F106B16D31340232C1 /* Pods_algorand.framework in Frameworks */,
+				34E10EEDAEE4C90E51BCBBB2 /* Pods_algorand.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3970,10 +3964,10 @@
 				2B8BE4D022391C38005D8565 /* Classes */,
 				9F18DC6D0E56430348850CDE /* Frameworks */,
 				17512612223BDC2B0095AF4F /* Libraries */,
-				F8E302499974D39CA3FD5950 /* Pods */,
 				2B8BE4CF22391C38005D8565 /* Products */,
 				2B8BE4E5223924DB005D8565 /* Resources */,
 				2B8BE4E42239248A005D8565 /* Support */,
+				EC59E2CE8B21B82B62B16954 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -5470,27 +5464,28 @@
 			isa = PBXGroup;
 			children = (
 				2B0F5F5A24EAECB700DA22A6 /* Crypto.framework */,
-				2BDB953015FF2F948F5734D7 /* Pods_algorand_staging.framework */,
-				EC2B0A54E565D4B17210814E /* Pods_algorand_prod.framework */,
-				3A3C8C7DD51BE016E46596B7 /* Pods_algorand.framework */,
+				B23C40C68DA858CD7433E4E5 /* Pods_algorand.framework */,
+				EFAFF961ADA8DD7AFE65EB88 /* Pods_algorand_prod.framework */,
+				030F6B1A27825B4720C008C6 /* Pods_algorand_staging.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		F8E302499974D39CA3FD5950 /* Pods */ = {
+		EC59E2CE8B21B82B62B16954 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				2AC10F1C54DF2982BFB4A180 /* Pods-algorand.debug.xcconfig */,
-				44FD8F3D210C1D99893A91DF /* Pods-algorand.release.xcconfig */,
-				8CA10E911394EB35A6B71CEB /* Pods-algorand.app store.xcconfig */,
-				60DCA59D3815D648E4728045 /* Pods-algorand-staging.debug.xcconfig */,
-				E3DDC639493AD9DFAB57110A /* Pods-algorand-staging.release.xcconfig */,
-				04EB0A42AA75229AEB36F88D /* Pods-algorand-staging.app store.xcconfig */,
-				109A8F9BBE75B9E9D3A21D26 /* Pods-algorand-prod.debug.xcconfig */,
-				48FA8A0C94A2F8ECE53444FE /* Pods-algorand-prod.release.xcconfig */,
-				6AD155EA8505B4795228B552 /* Pods-algorand-prod.app store.xcconfig */,
+				76FC9E9E99F106708B4AFC85 /* Pods-algorand.debug.xcconfig */,
+				15FA165BDF6ABD213FF820E3 /* Pods-algorand.release.xcconfig */,
+				0DE1E4BC8EACAFB035745309 /* Pods-algorand.app store.xcconfig */,
+				A03FA65A2602E9C7A1240972 /* Pods-algorand-prod.debug.xcconfig */,
+				0A0D3580FD8AFA3672317C5F /* Pods-algorand-prod.release.xcconfig */,
+				FA7EFB93A97BCEEBD15E548B /* Pods-algorand-prod.app store.xcconfig */,
+				F7B9432C7341B69AC9550A3A /* Pods-algorand-staging.debug.xcconfig */,
+				99CD25304410760C91ECEEEC /* Pods-algorand-staging.release.xcconfig */,
+				1FBA4CE73FF1117B608D16D7 /* Pods-algorand-staging.app store.xcconfig */,
 			);
 			name = Pods;
+			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -5500,13 +5495,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 17BD4F212292F1260003E49A /* Build configuration list for PBXNativeTarget "algorand-staging" */;
 			buildPhases = (
-				17BD4DEF2292F1260003E49A /* [CP] Check Pods Manifest.lock */,
+				8055C3F9ED3441ACFB17D7C5 /* [CP] Check Pods Manifest.lock */,
 				17BD4DF02292F1260003E49A /* Sources */,
 				17BD4F072292F1260003E49A /* Frameworks */,
 				17BD4F0A2292F1260003E49A /* Resources */,
 				17BD4F1E2292F1260003E49A /* ShellScript */,
-				17BD4F1F2292F1260003E49A /* [CP] Embed Pods Frameworks */,
 				17BD4F202292F1260003E49A /* ShellScript */,
+				389594EC7503C048CF39AF9C /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -5521,13 +5516,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2B0F634A24EC129D00DA22A6 /* Build configuration list for PBXNativeTarget "algorand-prod" */;
 			buildPhases = (
-				2B0F615B24EC129D00DA22A6 /* [CP] Check Pods Manifest.lock */,
+				EC8AFDA76BAE4F54289C908D /* [CP] Check Pods Manifest.lock */,
 				2B0F615C24EC129D00DA22A6 /* Sources */,
 				2B0F632824EC129D00DA22A6 /* Frameworks */,
 				2B0F632C24EC129D00DA22A6 /* Resources */,
 				2B0F634724EC129D00DA22A6 /* ShellScript */,
-				2B0F634824EC129D00DA22A6 /* [CP] Embed Pods Frameworks */,
 				2B0F634924EC129D00DA22A6 /* ShellScript */,
+				9EF233B2B80FA8D222781C13 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -5542,13 +5537,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2B8BE4E022391C3B005D8565 /* Build configuration list for PBXNativeTarget "algorand" */;
 			buildPhases = (
-				57CAF9BCE38E1E024A2E6F97 /* [CP] Check Pods Manifest.lock */,
+				643201A94AB4D4D6F2CEFD0A /* [CP] Check Pods Manifest.lock */,
 				2B8BE4CA22391C38005D8565 /* Sources */,
 				2B8BE4CB22391C38005D8565 /* Frameworks */,
 				2B8BE4CC22391C38005D8565 /* Resources */,
 				2B8BE4E322392001005D8565 /* ShellScript */,
-				854F7067F2CC808F5596F620 /* [CP] Embed Pods Frameworks */,
 				2B096039225795170005BE27 /* ShellScript */,
+				F65394278C0CB0A4CFC10D23 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -5710,28 +5705,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		17BD4DEF2292F1260003E49A /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-algorand-staging-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
 		17BD4F1E2292F1260003E49A /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -5748,23 +5721,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\" lint --strict\n";
-		};
-		17BD4F1F2292F1260003E49A /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-algorand-staging/Pods-algorand-staging-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-algorand-staging/Pods-algorand-staging-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-algorand-staging/Pods-algorand-staging-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
 		};
 		17BD4F202292F1260003E49A /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -5802,28 +5758,6 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Fabric/run\"\n";
 		};
-		2B0F615B24EC129D00DA22A6 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-algorand-prod-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
 		2B0F634724EC129D00DA22A6 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -5840,23 +5774,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\" lint --strict\n";
-		};
-		2B0F634824EC129D00DA22A6 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-algorand-prod/Pods-algorand-prod-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-algorand-prod/Pods-algorand-prod-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-algorand-prod/Pods-algorand-prod-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
 		};
 		2B0F634924EC129D00DA22A6 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -5893,7 +5810,24 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\" lint --strict\n";
 		};
-		57CAF9BCE38E1E024A2E6F97 /* [CP] Check Pods Manifest.lock */ = {
+		389594EC7503C048CF39AF9C /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-algorand-staging/Pods-algorand-staging-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-algorand-staging/Pods-algorand-staging-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-algorand-staging/Pods-algorand-staging-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		643201A94AB4D4D6F2CEFD0A /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -5915,7 +5849,68 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		854F7067F2CC808F5596F620 /* [CP] Embed Pods Frameworks */ = {
+		8055C3F9ED3441ACFB17D7C5 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-algorand-staging-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9EF233B2B80FA8D222781C13 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-algorand-prod/Pods-algorand-prod-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-algorand-prod/Pods-algorand-prod-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-algorand-prod/Pods-algorand-prod-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EC8AFDA76BAE4F54289C908D /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-algorand-prod-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F65394278C0CB0A4CFC10D23 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -7432,7 +7427,7 @@
 /* Begin XCBuildConfiguration section */
 		17BD4F222292F1260003E49A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 60DCA59D3815D648E4728045 /* Pods-algorand-staging.debug.xcconfig */;
+			baseConfigurationReference = F7B9432C7341B69AC9550A3A /* Pods-algorand-staging.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Staging";
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
@@ -7463,7 +7458,7 @@
 		};
 		17BD4F232292F1260003E49A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E3DDC639493AD9DFAB57110A /* Pods-algorand-staging.release.xcconfig */;
+			baseConfigurationReference = 99CD25304410760C91ECEEEC /* Pods-algorand-staging.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Staging";
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
@@ -7493,7 +7488,7 @@
 		};
 		17BD4F242292F1260003E49A /* App Store */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 04EB0A42AA75229AEB36F88D /* Pods-algorand-staging.app store.xcconfig */;
+			baseConfigurationReference = 1FBA4CE73FF1117B608D16D7 /* Pods-algorand-staging.app store.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Staging";
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
@@ -7524,7 +7519,7 @@
 		};
 		2B0F634B24EC129D00DA22A6 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 109A8F9BBE75B9E9D3A21D26 /* Pods-algorand-prod.debug.xcconfig */;
+			baseConfigurationReference = A03FA65A2602E9C7A1240972 /* Pods-algorand-prod.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
@@ -7555,7 +7550,7 @@
 		};
 		2B0F634C24EC129D00DA22A6 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 48FA8A0C94A2F8ECE53444FE /* Pods-algorand-prod.release.xcconfig */;
+			baseConfigurationReference = 0A0D3580FD8AFA3672317C5F /* Pods-algorand-prod.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
@@ -7586,7 +7581,7 @@
 		};
 		2B0F634D24EC129D00DA22A6 /* App Store */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6AD155EA8505B4795228B552 /* Pods-algorand-prod.app store.xcconfig */;
+			baseConfigurationReference = FA7EFB93A97BCEEBD15E548B /* Pods-algorand-prod.app store.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
@@ -7733,7 +7728,7 @@
 		};
 		2B8BE4E122391C3B005D8565 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2AC10F1C54DF2982BFB4A180 /* Pods-algorand.debug.xcconfig */;
+			baseConfigurationReference = 76FC9E9E99F106708B4AFC85 /* Pods-algorand.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
@@ -7764,7 +7759,7 @@
 		};
 		2B8BE4E222391C3B005D8565 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 44FD8F3D210C1D99893A91DF /* Pods-algorand.release.xcconfig */;
+			baseConfigurationReference = 15FA165BDF6ABD213FF820E3 /* Pods-algorand.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
@@ -7850,7 +7845,7 @@
 		};
 		EC6B733522541CA8006D146B /* App Store */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8CA10E911394EB35A6B71CEB /* Pods-algorand.app store.xcconfig */;
+			baseConfigurationReference = 0DE1E4BC8EACAFB035745309 /* Pods-algorand.app store.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;

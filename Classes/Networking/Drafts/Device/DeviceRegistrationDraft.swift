@@ -8,7 +8,7 @@
 
 import Magpie
 
-struct DeviceRegistrationDraft: JSONBody {
+struct DeviceRegistrationDraft: JSONKeyedBody {
     typealias Key = RequestParameter
     
     let id: String?
@@ -38,7 +38,7 @@ struct DeviceRegistrationDraft: JSONBody {
     }
 }
 
-struct DeviceDeletionDraft: JSONBody {
+struct DeviceDeletionDraft: JSONKeyedBody {
     typealias Key = RequestParameter
     
     let pushToken: String

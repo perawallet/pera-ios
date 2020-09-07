@@ -23,7 +23,6 @@ extension UICollectionView {
         return true
     }
     
-    //swiftlint:disable implicit_getter
     var contentState: ContentStateView.State {
         get {
             return (backgroundView as? ContentStateView).map { $0.state } ?? .none
@@ -32,7 +31,6 @@ extension UICollectionView {
             (backgroundView as? ContentStateView)?.state = newValue
         }
     }
-    //swiftlint:enable implicit_getter
     
     func reloadSection(_ section: Int) {
         reloadSections(IndexSet(integersIn: section...section))

@@ -8,7 +8,7 @@
 
 import Magpie
 
-struct FeedbackDraft: JSONBody {
+struct FeedbackDraft: JSONKeyedBody {
     typealias Key = RequestParameter
     
     let note: String

@@ -8,7 +8,7 @@
 
 import Magpie
 
-struct TransactionTrackDraft: JSONBody {
+struct TransactionTrackDraft: JSONKeyedBody {
     typealias Key = RequestParameter
     
     let transactionId: String

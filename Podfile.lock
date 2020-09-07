@@ -1,85 +1,89 @@
 PODS:
-  - Alamofire (5.0.0-rc.2)
+  - Alamofire (5.0.5)
   - BetterSegmentedControl (1.3.0)
-  - Crashlytics (3.13.4):
+  - Crashlytics (3.14.0):
     - Fabric (~> 1.10.2)
   - Fabric (1.10.2)
-  - Firebase/Core (6.7.0):
+  - Firebase/Core (6.24.0):
     - Firebase/CoreOnly
-    - FirebaseAnalytics (= 6.1.1)
-  - Firebase/CoreOnly (6.7.0):
-    - FirebaseCore (= 6.2.1)
-  - FirebaseAnalytics (6.1.1):
-    - FirebaseCore (~> 6.2)
-    - FirebaseInstanceID (~> 4.2)
-    - GoogleAppMeasurement (= 6.1.1)
+    - FirebaseAnalytics (= 6.5.0)
+  - Firebase/CoreOnly (6.24.0):
+    - FirebaseCore (= 6.7.0)
+  - FirebaseAnalytics (6.5.0):
+    - FirebaseCore (~> 6.7)
+    - FirebaseInstallations (~> 1.2)
+    - GoogleAppMeasurement (= 6.5.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 6.0)
     - GoogleUtilities/MethodSwizzler (~> 6.0)
     - GoogleUtilities/Network (~> 6.0)
     - "GoogleUtilities/NSData+zlib (~> 6.0)"
-    - nanopb (~> 0.3)
-  - FirebaseCore (6.2.1):
-    - FirebaseCoreDiagnostics (~> 1.0)
-    - FirebaseCoreDiagnosticsInterop (~> 1.0)
-    - GoogleUtilities/Environment (~> 6.2)
-    - GoogleUtilities/Logger (~> 6.2)
-  - FirebaseCoreDiagnostics (1.0.1):
-    - FirebaseCoreDiagnosticsInterop (~> 1.0)
-    - GoogleDataTransportCCTSupport (~> 1.0)
-    - GoogleUtilities/Environment (~> 6.2)
-    - GoogleUtilities/Logger (~> 6.2)
-  - FirebaseCoreDiagnosticsInterop (1.0.0)
-  - FirebaseInstanceID (4.2.3):
-    - FirebaseCore (~> 6.0)
-    - GoogleUtilities/Environment (~> 6.0)
-    - GoogleUtilities/UserDefaults (~> 6.0)
-  - GoogleAppMeasurement (6.1.1):
+    - nanopb (~> 1.30905.0)
+  - FirebaseCore (6.7.0):
+    - FirebaseCoreDiagnostics (~> 1.3)
+    - FirebaseCoreDiagnosticsInterop (~> 1.2)
+    - GoogleUtilities/Environment (~> 6.5)
+    - GoogleUtilities/Logger (~> 6.5)
+  - FirebaseCoreDiagnostics (1.3.0):
+    - FirebaseCoreDiagnosticsInterop (~> 1.2)
+    - GoogleDataTransportCCTSupport (~> 3.1)
+    - GoogleUtilities/Environment (~> 6.5)
+    - GoogleUtilities/Logger (~> 6.5)
+    - nanopb (~> 1.30905.0)
+  - FirebaseCoreDiagnosticsInterop (1.2.0)
+  - FirebaseInstallations (1.3.0):
+    - FirebaseCore (~> 6.6)
+    - GoogleUtilities/Environment (~> 6.6)
+    - GoogleUtilities/UserDefaults (~> 6.6)
+    - PromisesObjC (~> 1.2)
+  - GoogleAppMeasurement (6.5.0):
     - GoogleUtilities/AppDelegateSwizzler (~> 6.0)
     - GoogleUtilities/MethodSwizzler (~> 6.0)
     - GoogleUtilities/Network (~> 6.0)
     - "GoogleUtilities/NSData+zlib (~> 6.0)"
-    - nanopb (~> 0.3)
-  - GoogleDataTransport (1.1.3)
-  - GoogleDataTransportCCTSupport (1.0.2):
-    - GoogleDataTransport (~> 1.1)
-    - nanopb
-  - GoogleUtilities/AppDelegateSwizzler (6.2.5):
+    - nanopb (~> 1.30905.0)
+  - GoogleDataTransport (6.1.0)
+  - GoogleDataTransportCCTSupport (3.1.0):
+    - GoogleDataTransport (~> 6.1)
+    - nanopb (~> 1.30905.0)
+  - GoogleUtilities/AppDelegateSwizzler (6.6.0):
     - GoogleUtilities/Environment
     - GoogleUtilities/Logger
     - GoogleUtilities/Network
-  - GoogleUtilities/Environment (6.2.5)
-  - GoogleUtilities/Logger (6.2.5):
+  - GoogleUtilities/Environment (6.6.0):
+    - PromisesObjC (~> 1.2)
+  - GoogleUtilities/Logger (6.6.0):
     - GoogleUtilities/Environment
-  - GoogleUtilities/MethodSwizzler (6.2.5):
+  - GoogleUtilities/MethodSwizzler (6.6.0):
     - GoogleUtilities/Logger
-  - GoogleUtilities/Network (6.2.5):
+  - GoogleUtilities/Network (6.6.0):
     - GoogleUtilities/Logger
     - "GoogleUtilities/NSData+zlib"
     - GoogleUtilities/Reachability
-  - "GoogleUtilities/NSData+zlib (6.2.5)"
-  - GoogleUtilities/Reachability (6.2.5):
+  - "GoogleUtilities/NSData+zlib (6.6.0)"
+  - GoogleUtilities/Reachability (6.6.0):
     - GoogleUtilities/Logger
-  - GoogleUtilities/UserDefaults (6.2.5):
+  - GoogleUtilities/UserDefaults (6.6.0):
     - GoogleUtilities/Logger
-  - KeychainAccess (3.2.0)
-  - lottie-ios (3.1.2)
-  - Magpie (2.0.0):
-    - Magpie/Package (= 2.0.0)
-  - Magpie/Package (2.0.0):
+  - KeychainAccess (4.2.0)
+  - lottie-ios (3.1.8)
+  - Magpie (2.1.0):
+    - Magpie/Package (= 2.1.0)
+  - Magpie/Package (2.1.0):
     - Alamofire (~> 5.0.0-rc.2)
-  - MarqueeLabel (4.0.0)
-  - nanopb (0.3.901):
-    - nanopb/decode (= 0.3.901)
-    - nanopb/encode (= 0.3.901)
-  - nanopb/decode (0.3.901)
-  - nanopb/encode (0.3.901)
-  - NotificationBannerSwift (2.5.1):
+  - MarqueeLabel (4.0.2)
+  - nanopb (1.30905.0):
+    - nanopb/decode (= 1.30905.0)
+    - nanopb/encode (= 1.30905.0)
+  - nanopb/decode (1.30905.0)
+  - nanopb/encode (1.30905.0)
+  - NotificationBannerSwift (3.0.2):
     - MarqueeLabel (~> 4.0.0)
     - SnapKit (~> 5.0.0)
+  - PromisesObjC (1.2.10)
   - SnapKit (5.0.1)
   - SVProgressHUD (2.2.5)
-  - SwiftDate (6.0.3)
-  - SwiftLint (0.35.0)
+  - SwiftDate (6.1.0)
+  - SwiftLint (0.39.2)
 
 DEPENDENCIES:
   - BetterSegmentedControl (~> 1.3)
@@ -106,7 +110,7 @@ SPEC REPOS:
     - FirebaseCore
     - FirebaseCoreDiagnostics
     - FirebaseCoreDiagnosticsInterop
-    - FirebaseInstanceID
+    - FirebaseInstallations
     - GoogleAppMeasurement
     - GoogleDataTransport
     - GoogleDataTransportCCTSupport
@@ -116,6 +120,7 @@ SPEC REPOS:
     - MarqueeLabel
     - nanopb
     - NotificationBannerSwift
+    - PromisesObjC
     - SnapKit
     - SVProgressHUD
     - SwiftDate
@@ -127,34 +132,35 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   Magpie:
-    :commit: 9dcb778c98b173b8ece932dc535115b96d7e30eb
+    :commit: 54577786122e0921077f879aa20bb958b5729372
     :git: https://github.com/Hipo/magpie.git
 
 SPEC CHECKSUMS:
-  Alamofire: f9450d3c7f6bea2ad62e7a541c3e9b186c7991d6
+  Alamofire: df2f8f826963b08b9a870791ad48e07a10090b2e
   BetterSegmentedControl: 85d1b0343a09603b098884d527f550dfc8e6cdd9
-  Crashlytics: 2dfd686bcb918dc10ee0e76f7f853fe42c7bd552
+  Crashlytics: 540b7e5f5da5a042647227a5e3ac51d85eed06df
   Fabric: 706c8b8098fff96c33c0db69cbf81f9c551d0d74
-  Firebase: 291d7b0a7b393f252358083b5d224884126fa46d
-  FirebaseAnalytics: 843c7f64a8f9c79f0d03281197ebe7bb1d58d477
-  FirebaseCore: 32b48f41c84a56fbde73b35ed01a830b3b6dc048
-  FirebaseCoreDiagnostics: 4c04ae09d0ab027c30179828c6bb47764df1bd13
-  FirebaseCoreDiagnosticsInterop: 6829da2b8d1fc795ff1bd99df751d3788035d2cb
-  FirebaseInstanceID: 8b42755db950682e7de0d167bc6fb26a57b244af
-  GoogleAppMeasurement: 86a82f0e1f20b8eedf8e20326530138fd71409de
-  GoogleDataTransport: 91e682bd60a49d3f8f69f2e909a66efaed5a1e7a
-  GoogleDataTransportCCTSupport: 6b545f7149111180763dc18c6f372c963de4a310
-  GoogleUtilities: e7dc37039b19df7fe543479d3e4a02ac8d11bb69
-  KeychainAccess: 3b1bf8a77eb4c6ea1ce9404c292e48f948954c6b
-  lottie-ios: 49cd85b1f24f61a7708ad7ec76a523ab2d0e3100
-  Magpie: 431d36955e9aaf15e179f82c17e700a6d53a195f
-  MarqueeLabel: b55b26e690b6ad41faedd95cbf5eae6f1d1735b4
-  nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
-  NotificationBannerSwift: e55dd801b0d78f1a7bacb10d722a935ec95f94a3
+  Firebase: b28e55c60efd98963cd9011fe2fac5a10c2ba124
+  FirebaseAnalytics: 7386fc2176e3f93ad8ef34b5b1f2b33a891e4962
+  FirebaseCore: e610482f64097b0e9f056cd97bc6b33dfabcbb6a
+  FirebaseCoreDiagnostics: 4a773a47bd83bbd5a9b1ccf1ce7caa8b2d535e67
+  FirebaseCoreDiagnosticsInterop: 296e2c5f5314500a850ad0b83e9e7c10b011a850
+  FirebaseInstallations: 6f5f680e65dc374397a483c32d1799ba822a395b
+  GoogleAppMeasurement: 4c644d86835d827bab30ab6aabb9ecaf1f500735
+  GoogleDataTransport: f6f8eba931df03ebd2232ff4645aa85f8f47b5ab
+  GoogleDataTransportCCTSupport: d70a561f7d236af529fee598835caad5e25f6d3d
+  GoogleUtilities: 39530bc0ad980530298e9c4af8549e991fd033b1
+  KeychainAccess: 3f760109aa99b05d0f231e28b22642da7153e38a
+  lottie-ios: 48fac6be217c76937e36e340e2d09cf7b10b7f5f
+  Magpie: 4691d732c66cc932ce50598c6986a96c68d4958f
+  MarqueeLabel: f762aa681ae201f66c1d511858b171f75d83013a
+  nanopb: c43f40fadfe79e8b8db116583945847910cbabc9
+  NotificationBannerSwift: 713e20f21b6105f4a36a00e5d9fa414a930d3d8e
+  PromisesObjC: b14b1c6b68e306650688599de8a45e49fae81151
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
-  SwiftDate: 8d4f14bf1ef68e95094511504856547bf9e3e1a6
-  SwiftLint: 5553187048b900c91aa03552807681bb6b027846
+  SwiftDate: fa2bb3962056bb44047b4b85a30044e5eae30b03
+  SwiftLint: 22ccbbe3b8008684be5955693bab135e0ed6a447
 
 PODFILE CHECKSUM: a23ff7eb93c0a83844a73955ee1ee3c7f8deff15
 
