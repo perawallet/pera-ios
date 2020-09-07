@@ -1,0 +1,123 @@
+//
+//  LedgerAccountSelectionViewController.swift
+//  algorand
+//
+//  Created by Göktuğ Berk Ulu on 10.08.2020.
+//  Copyright © 2020 hippo. All rights reserved.
+//
+
+import UIKit
+import SVProgressHUD
+
+class LedgerAccountSelectionViewController: BaseViewController {
+    
+    private lazy var ledgerAccountSelectionView = LedgerAccountSelectionView()
+    
+    private lazy var accountManager: AccountManager? = {
+        guard let api = self.api else {
+            return nil
+        }
+        let manager = AccountManager(api: api)
+        return manager
+    }()
+    
+    private let ledger: LedgerDetail
+    private let ledgerAddress: String
+    private let accountSetupFlow: AccountSetupFlow
+
+    private lazy var dataSource: LedgerAccountSelectionDataSource = {
+        guard let api = api else {
+            fatalError("API should be set.")
+        }
+        return LedgerAccountSelectionDataSource(api: api, ledger: ledger, ledgerAddress: ledgerAddress)
+    }()
+    
+    private lazy var listLayout = LedgerAccountSelectionListLayout(dataSource: dataSource)
+    
+    init(accountSetupFlow: AccountSetupFlow, ledger: LedgerDetail, ledgerAddress: String, configuration: ViewControllerConfiguration) {
+        self.accountSetupFlow = accountSetupFlow
+        self.ledger = ledger
+        self.ledgerAddress = ledgerAddress
+        super.init(configuration: configuration)
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        ledgerAccountSelectionView.setLoadingState()
+        
+        SVProgressHUD.show(withStatus: "title-loading".localized)
+        dataSource.loadData()
+    }
+    
+    override func configureAppearance() {
+        super.configureAppearance()
+        title = ledger.name
+    }
+    
+    override func linkInteractors() {
+        ledgerAccountSelectionView.delegate = self
+        ledgerAccountSelectionView.setDataSource(dataSource)
+        ledgerAccountSelectionView.setListDelegate(listLayout)
+        dataSource.delegate = self
+    }
+    
+    override func prepareLayout() {
+        setupLedgerAccountSelectionViewLayout()
+    }
+}
+
+extension LedgerAccountSelectionViewController {
+    private func setupLedgerAccountSelectionViewLayout() {
+        view.addSubview(ledgerAccountSelectionView)
+        
+        ledgerAccountSelectionView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+    }
+}
+
+extension LedgerAccountSelectionViewController: LedgerAccountSelectionDataSourceDelegate {
+    func ledgerAccountSelectionDataSource(
+        _ ledgerAccountSelectionDataSource: LedgerAccountSelectionDataSource,
+        didFetch accounts: [Account]
+    ) {
+        SVProgressHUD.showSuccess(withStatus: "title-done".localized)
+        SVProgressHUD.dismiss()
+        
+        ledgerAccountSelectionView.setNormalState()
+        ledgerAccountSelectionView.reloadData()
+    }
+    
+    func ledgerAccountSelectionDataSourceDidFailToFetch(_ ledgerAccountSelectionDataSource: LedgerAccountSelectionDataSource) {
+        SVProgressHUD.showError(withStatus: nil)
+        SVProgressHUD.dismiss()
+        
+        ledgerAccountSelectionView.setErrorState()
+        ledgerAccountSelectionView.reloadData()
+    }
+}
+
+extension LedgerAccountSelectionViewController: LedgerAccountSelectionViewDelegate {
+    func ledgerAccountSelectionViewDidAddAccount(_ ledgerAccountSelectionView: LedgerAccountSelectionView) {
+        RegistrationEvent(type: .ledger).logEvent()
+        dataSource.saveSelectedAccounts(ledgerAccountSelectionView.selectedIndexes)
+        launchHome()
+    }
+    
+    private func launchHome() {
+        SVProgressHUD.show(withStatus: "title-loading".localized)
+        accountManager?.fetchAllAccounts(isVerifiedAssetsIncluded: true) {
+            SVProgressHUD.showSuccess(withStatus: "title-done".localized)
+            SVProgressHUD.dismiss(withDelay: 1.0) {
+                switch self.accountSetupFlow {
+                case .initializeAccount:
+                    self.dismiss(animated: false) {
+                        UIApplication.shared.rootViewController()?.setupTabBarController()
+                    }
+                case .addNewAccount:
+                    self.closeScreen(by: .dismiss, animated: false)
+                }
+            }
+        }
+    }
+}

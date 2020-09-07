@@ -11,13 +11,7 @@ import UIKit
 class SendAlgosTransactionViewModel {
     func configure(_ view: SendTransactionView, with algosTransactionSendDraft: AlgosTransactionSendDraft) {
         view.setButtonTitle("send-algos-title".localized)
-        
-        if algosTransactionSendDraft.from.type == .ledger {
-            view.setAccountImage(img("img-ledger-small"))
-        } else {
-            view.setAccountImage(img("icon-account-type-standard"))
-        }
-        
+        view.setAccountImage(algosTransactionSendDraft.from.accountImage())
         view.removeAssetUnitName()
         view.removeAssetId()
         view.setAssetNameAlignment(.right)
@@ -58,9 +52,7 @@ class SendAlgosTransactionViewModel {
     }
     
     private func setReceiverWithAddress(_ address: String, in view: SendTransactionView) {
-        if let shortAddressDisplay = address.shortAddressDisplay() {
-            view.setReceiverName(shortAddressDisplay)
-            view.removeReceiverImage()
-        }
+        view.setReceiverName(address.shortAddressDisplay())
+        view.removeReceiverImage()
     }
 }

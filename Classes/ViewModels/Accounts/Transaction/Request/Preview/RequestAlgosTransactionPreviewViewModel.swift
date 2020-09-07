@@ -25,12 +25,7 @@ class RequestAlgosTransactionPreviewViewModel {
             view.transactionAccountInformationView.setDisabled()
         }
         
-        if account.type.isLedger() {
-            view.transactionAccountInformationView.setAccountImage(img("img-ledger-small"))
-        } else {
-            view.transactionAccountInformationView.setAccountImage(img("icon-account-type-standard"))
-        }
-        
+        view.transactionAccountInformationView.setAccountImage(account.accountImage())        
         view.transactionAccountInformationView.setAccountName(account.name)
         view.transactionAccountInformationView.removeAmountLabel()
         view.transactionAccountInformationView.setAssetName("asset-algos-title".localized)

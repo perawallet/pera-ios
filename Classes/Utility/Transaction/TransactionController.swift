@@ -39,6 +39,10 @@ class TransactionController {
         return transactionDraft as? AlgosTransactionSendDraft
     }
     
+    private var rekeyTransactionDraft: RekeyTransactionSendDraft? {
+        return transactionDraft as? RekeyTransactionSendDraft
+    }
+    
     private var isTransactionSigned: Bool {
         return signedTransactionData != nil
     }
@@ -62,6 +66,7 @@ extension TransactionController {
     }
     
     func stopBLEScan() {
+        bleConnectionManager.disconnect(from: connectedDevice)
         bleConnectionManager.stopScan()
     }
 }
@@ -101,30 +106,33 @@ extension TransactionController {
 
 extension TransactionController {
     private func composeTransactionData(for transactionType: TransactionType) {
-        guard let accountType = fromAccount?.type else {
-            return
-        }
-        
         switch transactionType {
         case .algosTransaction:
             composeAlgosTransactionData()
-            startSigningProcess(for: accountType, and: .algosTransaction)
+            startSigningProcess(for: .algosTransaction)
         case .assetAddition:
             composeAssetAdditionData()
-            startSigningProcess(for: accountType, and: .assetAddition)
+            startSigningProcess(for: .assetAddition)
         case .assetRemoval:
             composeAssetRemovalData()
-            startSigningProcess(for: accountType, and: .assetRemoval)
+            startSigningProcess(for: .assetRemoval)
         case .assetTransaction:
             composeAssetTransactionData()
-            startSigningProcess(for: accountType, and: .assetTransaction)
+            startSigningProcess(for: .assetTransaction)
+        case .rekey:
+            composeRekeyTransactionData()
+            startSigningProcess(for: .rekey)
         }
     }
 }
 
 extension TransactionController {
-    private func startSigningProcess(for accountType: AccountType, and transactionType: TransactionType) {
-        if accountType == .ledger {
+    private func startSigningProcess(for transactionType: TransactionType) {
+        guard let account = fromAccount else {
+            return
+        }
+        
+        if account.requiresLedgerConnection() {
             setupBLEConnections()
             // swiftlint:disable todo
             // TODO: We need to restart scanning somehow here so that it can be restarted if there is an error in the same screen.
@@ -373,6 +381,8 @@ extension TransactionController {
             break
         case .assetAddition:
             assetCount = account.assetDetails.count + 2
+        case .rekey:
+            break
         case .assetRemoval:
             return true
         }
@@ -394,6 +404,35 @@ extension TransactionController {
             }
         } else {
             delegate?.transactionController(self, didComposedTransactionDataFor: self.assetTransactionDraft)
+        }
+    }
+}
+
+extension TransactionController {
+    private func composeRekeyTransactionData() {
+        guard let params = params,
+            let draft = rekeyTransactionDraft,
+            let rekeyedAccount = draft.toAccount else {
+                connectedDevice = nil
+                delegate?.transactionController(self, didFailedComposing: .custom(self.rekeyTransactionDraft))
+                return
+        }
+        
+        var transactionError: NSError?
+        let rekeyTransactionDraft = RekeyTransactionDraft(from: draft.from, rekeyedAccount: rekeyedAccount, transactionParams: params)
+        
+        guard let transactionData = algorandSDK.rekeyAccount(with: rekeyTransactionDraft, error: &transactionError) else {
+            connectedDevice = nil
+            delegate?.transactionController(self, didFailedComposing: .custom(transactionError))
+            return
+        }
+        
+        self.unsignedTransactionData = transactionData
+    }
+    
+    private func completeRekeyTransaction() {
+        uploadTransaction {
+            self.delegate?.transactionController(self, didComposedTransactionDataFor: self.rekeyTransactionDraft)
         }
     }
 }
@@ -478,19 +517,47 @@ extension TransactionController: LedgerBLEControllerDelegate {
         }
         
         var transactionError: NSError?
-      
-        guard let transactionData = unsignedTransactionData,
-            let signedTransaction = algorandSDK.getSignedTransaction(transactionData, from: signatureData, error: &transactionError) else {
+        
+        guard let account = transactionDraft?.from,
+            let transactionData = unsignedTransactionData else {
+            connectedDevice = nil
+            delegate?.transactionController(self, didFailedComposing: .custom(transactionError))
+            return
+        }
+        
+        if account.isRekeyed() {
+            guard let signedTransaction = algorandSDK.getSignedTransaction(
+                with: account.authAddress,
+                transaction: transactionData,
+                from: signatureData,
+                error: &transactionError
+            ) else {
                 connectedDevice = nil
                 delegate?.transactionController(self, didFailedComposing: .custom(transactionError))
                 return
+            }
+            
+            self.signedTransactionData = signedTransaction
+        } else {
+            guard let signedTransaction = algorandSDK.getSignedTransaction(
+                transactionData,
+                from: signatureData,
+                error: &transactionError
+            ) else {
+                connectedDevice = nil
+                delegate?.transactionController(self, didFailedComposing: .custom(transactionError))
+                return
+            }
+            
+            self.signedTransactionData = signedTransaction
         }
-      
-        self.signedTransactionData = signedTransaction
+
         calculateAssetTransactionFee(for: transactionType)
         
         if transactionType == .algosTransaction {
             completeAlgosTransaction()
+        } else if transactionType == .rekey {
+            completeRekeyTransaction()
         } else {
             completeAssetTransaction(for: transactionType)
         }
@@ -503,6 +570,7 @@ extension TransactionController {
         case assetTransaction
         case assetAddition
         case assetRemoval
+        case rekey
     }
 }
 

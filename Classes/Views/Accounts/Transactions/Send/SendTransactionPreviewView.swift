@@ -46,17 +46,17 @@ class SendTransactionPreviewView: BaseView {
     }()
     
     private(set) lazy var previewButton: MainButton = {
-        if accountType == .ledger {
+        if account?.requiresLedgerConnection() ?? false {
             return MainButton(title: "title-preview-and-sign-with-ledger-title".localized)
         } else {
             return MainButton(title: "title-preview".localized)
         }
     }()
     
-    private let accountType: AccountType
+    private let account: Account?
     
-    init(accountType: AccountType = .standard, inputFieldFraction: Int = algosFraction) {
-        self.accountType = accountType
+    init(account: Account?, inputFieldFraction: Int = algosFraction) {
+        self.account = account
         self.inputFieldFraction = inputFieldFraction
         super.init(frame: .zero)
     }

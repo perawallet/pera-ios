@@ -27,11 +27,7 @@ class RequestAssetTransactionPreviewViewModel {
             view.transactionAccountInformationView.setDisabled()
         }
         
-        if account.type.isLedger() {
-            view.transactionAccountInformationView.setAccountImage(img("img-ledger-small"))
-        } else {
-            view.transactionAccountInformationView.setAccountImage(img("icon-account-type-standard"))
-        }
+        view.transactionAccountInformationView.setAccountImage(account.accountImage())
         
         if !assetDetail.isVerified {
             view.transactionAccountInformationView.removeVerifiedAsset()

@@ -132,12 +132,8 @@ extension AccountHeaderView {
         qrButton.isHidden = hidden
     }
     
-    func setLedgerAccount() {
-        imageView.image = img("img-ledger-small")
-    }
-    
-    func setStandardAccount() {
-        imageView.image = img("icon-account-type-standard")
+    func setAccountImage(_ image: UIImage?) {
+        imageView.image = image
     }
 }
 

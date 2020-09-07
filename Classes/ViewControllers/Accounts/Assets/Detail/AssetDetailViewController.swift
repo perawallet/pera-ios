@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import NotificationBannerSwift
 import SnapKit
 
 class AssetDetailViewController: BaseViewController {

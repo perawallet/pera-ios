@@ -23,11 +23,7 @@ class SelectAssetViewModel {
 
 extension SelectAssetViewModel {
     func configure(_ header: SelectAssetHeaderSupplementaryView, with account: Account) {
-        if account.type.isLedger() {
-            header.contextView.setLedgerAccount()
-        } else {
-            header.contextView.setStandardAccount()
-        }
+        header.contextView.setAccountImage(account.accountImage())
         
         guard let accountName = account.name else {
             return

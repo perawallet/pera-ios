@@ -34,13 +34,7 @@ extension AccountsViewModel {
     func configure(_ header: AccountHeaderSupplementaryView, with account: Account) {
         header.contextView.setOptionsButton(hidden: false)
         header.contextView.setQRButton(hidden: false)
-        
-        if let accountInformation = UIApplication.shared.appConfiguration?.session.accountInformation(from: account.address),
-            accountInformation.type == .ledger {
-            header.contextView.setLedgerAccount()
-        } else {
-            header.contextView.setStandardAccount()
-        }
+        header.contextView.setAccountImage(account.accountImage())
         
         guard let accountName = account.name else {
             return

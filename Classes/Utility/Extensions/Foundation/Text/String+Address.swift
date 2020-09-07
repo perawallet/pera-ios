@@ -16,7 +16,7 @@ extension String {
         return count == validatedAddressLength
     }
     
-    func shortAddressDisplay() -> String? {
+    func shortAddressDisplay() -> String {
         return String(prefix(6)) + "..." + String(suffix(6))
     }
 }

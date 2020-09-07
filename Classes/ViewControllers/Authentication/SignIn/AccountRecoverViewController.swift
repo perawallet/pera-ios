@@ -31,7 +31,12 @@ class AccountRecoverViewController: BaseScrollViewController {
         return manager
     }()
     
-    var mode: AccountSetupMode = .initialize
+    private let accountSetupFlow: AccountSetupFlow
+    
+    init(accountSetupFlow: AccountSetupFlow, configuration: ViewControllerConfiguration) {
+        self.accountSetupFlow = accountSetupFlow
+        super.init(configuration: configuration)
+    }
     
     override func configureAppearance() {
         super.configureAppearance()
@@ -96,24 +101,36 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
             return
         }
         
-        guard session?.authenticatedUser?.account(address: address) == nil else {
-            displaySimpleAlertWith(title: "title-error".localized, message: "recover-from-seed-verify-exist-error".localized)
-            return
+        let account: AccountInformation
+        
+        if let sameAccount = session?.account(from: address) {
+            if sameAccount.isRekeyed() {
+                account = AccountInformation(address: address, name: name, type: .rekeyed, ledgerDetail: sameAccount.ledgerDetail)
+            } else {
+                displaySimpleAlertWith(title: "title-error".localized, message: "recover-from-seed-verify-exist-error".localized)
+                return
+            }
+        } else {
+            account = AccountInformation(address: address, name: name)
         }
         
-        let account = AccountInformation(address: address, name: name)
         session?.savePrivate(privateKey, for: account.address)
         
         let user: User
         
         if let authenticatedUser = session?.authenticatedUser {
             user = authenticatedUser
-            user.addAccount(account)
+            
+            if session?.authenticatedUser?.account(address: address) != nil {
+                user.updateAccount(account)
+            } else {
+                user.addAccount(account)
+            }
         } else {
             user = User(accounts: [account])
         }
         
-        session?.addAccount(Account(address: account.address, type: account.type, name: account.name))
+        session?.addAccount(Account(accountInformation: account))
         session?.authenticatedUser = user
         
         view.endEditing(true)
@@ -144,19 +161,15 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
         accountManager?.fetchAllAccounts(isVerifiedAssetsIncluded: true) {
             SVProgressHUD.showSuccess(withStatus: "title-done".localized)
             SVProgressHUD.dismiss(withDelay: 1.0) {
-                if self.session?.hasPassword() ?? false {
-                    switch self.mode {
-                    case .initialize:
-                        DispatchQueue.main.async {
-                            self.dismiss(animated: false) {
-                                UIApplication.shared.rootViewController()?.setupTabBarController()
-                            }
+                switch self.accountSetupFlow {
+                case .initializeAccount:
+                    DispatchQueue.main.async {
+                        self.dismiss(animated: false) {
+                            UIApplication.shared.rootViewController()?.setupTabBarController()
                         }
-                    case .new:
-                        self.closeScreen(by: .dismiss, animated: false)
                     }
-                } else {
-                    self.open(.choosePassword(mode: .setup, route: nil), by: .push)
+                case .addNewAccount:
+                    self.closeScreen(by: .dismiss, animated: false)
                 }
             }
         }

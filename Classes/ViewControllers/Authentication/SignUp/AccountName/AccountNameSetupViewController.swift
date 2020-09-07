@@ -119,8 +119,3 @@ extension AccountNameSetupViewController: TouchDetectingScrollViewDelegate {
         contentView.endEditing(true)
     }
 }
-
-enum AccountSetupMode {
-    case initialize
-    case new
-}

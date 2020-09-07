@@ -128,7 +128,7 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
             return
         }
         
-        if algosTransactionDraft.from.type == .ledger {
+        if algosTransactionDraft.from.requiresLedgerConnection() {
             ledgerApprovalViewController?.dismissScreen()
         }
         
@@ -258,14 +258,7 @@ extension SendAlgosTransactionPreviewViewController {
             receiverAddress = receiverAddress.trimmingCharacters(in: .whitespacesAndNewlines)
             
             if !AlgorandSDK().isValidAddress(receiverAddress) {
-                guard let api = api else {
-                    return
-                }
-                let pushNotificationController = PushNotificationController(api: api)
-                pushNotificationController.showFeedbackMessage(
-                    "title-error".localized,
-                    subtitle: "send-algos-receiver-address-validation".localized
-                )
+                NotificationBanner.showError("title-error".localized, message: "send-algos-receiver-address-validation".localized)
                 return
             }
             
@@ -273,7 +266,7 @@ extension SendAlgosTransactionPreviewViewController {
                    
             SVProgressHUD.show(withStatus: "title-loading".localized)
             self.api?.fetchAccount(with: receiverFetchDraft) { accountResponse in
-                if selectedAccount.type != .ledger {
+                if !selectedAccount.requiresLedgerConnection() {
                     self.dismissProgressIfNeeded()
                 }
                 

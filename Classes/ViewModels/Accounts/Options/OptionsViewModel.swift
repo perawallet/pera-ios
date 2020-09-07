@@ -11,6 +11,12 @@ import UIKit
 class OptionsViewModel {
     func configure(_ cell: OptionsCell, with option: OptionsViewController.Options) {
         switch option {
+        case .rekey:
+            cell.contextView.iconImageView.image = img("icon-options-rekey")
+            cell.contextView.optionLabel.text = "options-rekey".localized
+        case .rekeyInformation:
+            cell.contextView.iconImageView.image = img("icon-qr")
+            cell.contextView.optionLabel.text = "options-auth-account".localized
         case .removeAsset:
             cell.contextView.iconImageView.image = img("icon-trash")
             cell.contextView.optionLabel.text = "options-remove-assets".localized

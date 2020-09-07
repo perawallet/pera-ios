@@ -17,12 +17,7 @@ class RequestAlgosTransactionViewModel {
     }
     
     func configure(_ view: RequestTransactionView) {
-        if algosTransactionRequestDraft.account.type.isLedger() {
-            view.setAccountImage(img("img-ledger-small"))
-        } else {
-            view.setAccountImage(img("icon-account-type-standard"))
-        }
-        
+        view.setAccountImage(algosTransactionRequestDraft.account.accountImage())
         view.removeAssetId()
         view.removeAssetUnitName()
         view.setAssetAlignment(.right)

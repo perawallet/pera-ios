@@ -9,6 +9,21 @@
 import UIKit
 
 extension AccountsViewController: OptionsViewControllerDelegate {
+    func optionsViewControllerDidOpenRekeying(_ optionsViewController: OptionsViewController) {
+        guard let account = selectedAccount else {
+            return
+        }
+        
+        open(
+            .rekeyInstruction(account: account),
+            by: .customPresent(
+                presentationStyle: .fullScreen,
+                transitionStyle: nil,
+                transitioningDelegate: nil
+            )
+        )
+    }
+    
     func optionsViewControllerDidRemoveAsset(_ optionsViewController: OptionsViewController) {
         guard let account = selectedAccount else {
             return
@@ -27,7 +42,7 @@ extension AccountsViewController: OptionsViewControllerDelegate {
     
     func optionsViewControllerDidViewPassphrase(_ optionsViewController: OptionsViewController) {
         if localAuthenticator.localAuthenticationStatus != .allowed {
-            let controller = open(.choosePassword(mode: .confirm(""), route: nil), by: .present) as? ChoosePasswordViewController
+            let controller = open(.choosePassword(mode: .confirm(""), flow: nil, route: nil), by: .present) as? ChoosePasswordViewController
             controller?.delegate = self
             return
         }
@@ -60,6 +75,15 @@ extension AccountsViewController: OptionsViewControllerDelegate {
                 transitioningDelegate: passphraseModalPresenter
             )
         )
+    }
+    
+    func optionsViewControllerDidViewRekeyInformation(_ optionsViewController: OptionsViewController) {
+        guard let authAddress = selectedAccount?.authAddress else {
+            return
+        }
+        
+        let draft = QRCreationDraft(address: authAddress, mode: .address)
+        open(.qrGenerator(title: "options-auth-account".localized, draft: draft), by: .present)
     }
     
     func optionsViewControllerDidRemoveAccount(_ optionsViewController: OptionsViewController) {

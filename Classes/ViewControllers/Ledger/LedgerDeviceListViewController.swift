@@ -30,19 +30,12 @@ class LedgerDeviceListViewController: BaseViewController {
     
     private var ledgerApprovalViewController: LedgerApprovalViewController?
     
-    private let mode: AccountSetupMode
+    private let accountSetupFlow: AccountSetupFlow
     private var ledgerDevices = [CBPeripheral]()
     private var connectedDevice: CBPeripheral?
     
-    private lazy var pushNotificationController: PushNotificationController = {
-        guard let api = api else {
-            fatalError("API should be set.")
-        }
-        return PushNotificationController(api: api)
-    }()
-    
-    init(mode: AccountSetupMode, configuration: ViewControllerConfiguration) {
-        self.mode = mode
+    init(accountSetupFlow: AccountSetupFlow, configuration: ViewControllerConfiguration) {
+        self.accountSetupFlow = accountSetupFlow
         super.init(configuration: configuration)
     }
     
@@ -53,6 +46,7 @@ class LedgerDeviceListViewController: BaseViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        bleConnectionManager.disconnect(from: connectedDevice)
         bleConnectionManager.stopScan()
         ledgerDeviceListView.stopSearchSpinner()
     }
@@ -163,6 +157,10 @@ extension LedgerDeviceListViewController: BLEConnectionManagerDelegate {
     }
     
     func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didFailBLEConnectionWith state: CBManagerState) {
+        if isViewDisappearing {
+            return
+        }
+        
         connectedDevice = nil
         
         guard let errorTitle = state.errorDescription.title,
@@ -170,7 +168,7 @@ extension LedgerDeviceListViewController: BLEConnectionManagerDelegate {
                 return
         }
         
-        pushNotificationController.showFeedbackMessage(errorTitle, subtitle: errorSubtitle)
+        NotificationBanner.showError(errorTitle, message: errorSubtitle)
     }
     
     func bleConnectionManager(
@@ -178,10 +176,13 @@ extension LedgerDeviceListViewController: BLEConnectionManagerDelegate {
         didDisconnectFrom peripheral: CBPeripheral,
         with error: BLEError?
     ) {
+        if isViewDisappearing {
+            return
+        }
+        
         connectedDevice = nil
         ledgerApprovalViewController?.dismissScreen()
-        pushNotificationController.showFeedbackMessage("ble-error-connection-title".localized,
-                                                       subtitle: "ble-error-fail-connect-peripheral".localized)
+        NotificationBanner.showError("ble-error-connection-title".localized, message: "ble-error-fail-connect-peripheral".localized)
     }
     
     func bleConnectionManager(
@@ -189,10 +190,13 @@ extension LedgerDeviceListViewController: BLEConnectionManagerDelegate {
         didFailToConnect peripheral: CBPeripheral,
         with error: BLEError?
     ) {
+        if isViewDisappearing {
+            return
+        }
+        
         connectedDevice = nil
         ledgerApprovalViewController?.dismissScreen()
-        pushNotificationController.showFeedbackMessage("ble-error-connection-title".localized,
-                                                       subtitle: "ble-error-fail-connect-peripheral".localized)
+        NotificationBanner.showError("ble-error-connection-title".localized, message: "ble-error-fail-connect-peripheral".localized)
     }
 }
 
@@ -209,9 +213,9 @@ extension LedgerDeviceListViewController: LedgerBLEControllerDelegate {
         if data.toHexString() == ledgerErrorResponse {
             ledgerApprovalViewController?.dismissScreen()
             connectedDevice = nil
-            pushNotificationController.showFeedbackMessage(
+            NotificationBanner.showError(
                 "ble-error-ledger-connection-title".localized,
-                subtitle: "ble-error-ledger-connection-open-app-error".localized
+                message: "ble-error-ledger-connection-open-app-error".localized
             )
             return
         }
@@ -226,31 +230,42 @@ extension LedgerDeviceListViewController: LedgerBLEControllerDelegate {
         if !AlgorandSDK().isValidAddress(address) {
             ledgerApprovalViewController?.dismissScreen()
             connectedDevice = nil
-            pushNotificationController.showFeedbackMessage("ble-error-transmission-title".localized,
-                                                           subtitle: "ble-error-fail-fetch-account-address".localized)
+            NotificationBanner.showError(
+                "ble-error-transmission-title".localized,
+                message: "ble-error-fail-fetch-account-address".localized
+            )
             return
         }
 
         if error != nil {
             ledgerApprovalViewController?.dismissScreen()
             connectedDevice = nil
-            pushNotificationController.showFeedbackMessage("ble-error-transmission-title".localized,
-                                                           subtitle: "ble-error-fail-fetch-account-address".localized)
-            return
-        }
-        
-        if session?.account(from: address) != nil {
-            ledgerApprovalViewController?.dismissScreen()
-            connectedDevice = nil
-            pushNotificationController.showFeedbackMessage("title-error.localized".localized,
-                                                           subtitle: "recover-from-seed-verify-exist-error".localized)
+            NotificationBanner.showError(
+                "ble-error-transmission-title".localized,
+                message: "ble-error-fail-fetch-account-address".localized
+            )
             return
         }
         
         if let connectedDeviceId = connectedDevice?.identifier {
             ledgerApprovalViewController?.closeScreen(by: .dismiss, animated: true) {
-                self.open(.ledgerPairing(mode: self.mode, address: address, connectedDeviceId: connectedDeviceId), by: .push)
+                let ledgerDetail = LedgerDetail(id: connectedDeviceId, name: self.connectedDevice?.name)
+                switch self.accountSetupFlow {
+                case let .initializeAccount(mode):
+                    self.openNextFlow(for: mode, with: ledgerDetail, for: address)
+                case let .addNewAccount(mode):
+                    self.openNextFlow(for: mode, with: ledgerDetail, for: address)
+                }
             }
+        }
+    }
+    
+    private func openNextFlow(for mode: AccountSetupMode, with ledgerDetail: LedgerDetail, for address: String) {
+        switch mode {
+        case let .rekey(account):
+            self.open(.rekeyConfirmation(account: account, ledger: ledgerDetail, ledgerAddress: address), by: .push)
+        default:
+            self.open(.ledgerAccountSelection(flow: accountSetupFlow, ledger: ledgerDetail, ledgerAddress: address), by: .push)
         }
     }
 }

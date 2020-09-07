@@ -12,10 +12,10 @@ class LedgerTutorialViewController: BaseScrollViewController {
     
     private lazy var ledgerTutorialView = LedgerTutorialView()
     
-    private let mode: AccountSetupMode
+    private let accountSetupFlow: AccountSetupFlow
     
-    init(mode: AccountSetupMode, configuration: ViewControllerConfiguration) {
-        self.mode = mode
+    init(accountSetupFlow: AccountSetupFlow, configuration: ViewControllerConfiguration) {
+        self.accountSetupFlow = accountSetupFlow
         super.init(configuration: configuration)
     }
     
@@ -47,7 +47,7 @@ extension LedgerTutorialViewController {
 
 extension LedgerTutorialViewController: LedgerTutorialViewDelegate {
     func ledgerTutorialViewDidTapSearchButton(_ ledgerTutorialView: LedgerTutorialView) {
-        open(.ledgerDeviceList(mode: mode), by: .push)
+        open(.ledgerDeviceList(flow: accountSetupFlow), by: .push)
     }
     
     func ledgerTutorialView(_ ledgerTutorialView: LedgerTutorialView, didTap section: LedgerTutorialSection) {

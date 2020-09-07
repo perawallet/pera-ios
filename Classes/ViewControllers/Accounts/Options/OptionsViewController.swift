@@ -28,20 +28,22 @@ class OptionsViewController: BaseViewController {
     init(account: Account, configuration: ViewControllerConfiguration) {
         self.account = account
         
-        if let accountInformation = configuration.session?.accountInformation(from: account.address) {
-            if account.isThereAnyDifferentAsset() {
-                options = Options.allOptions
-            } else {
-                options = Options.optionsWithoutRemoveAsset
-            }
-            
-            if accountInformation.type == .ledger {
-                options.removeAll { option -> Bool in
-                    option == .passphrase
-                }
-            }
-        } else {
+        if account.isThereAnyDifferentAsset() {
             options = Options.allOptions
+        } else {
+            options = Options.optionsWithoutRemoveAsset
+        }
+        
+        if account.requiresLedgerConnection() {
+            options.removeAll { option -> Bool in
+                option == .passphrase
+            }
+        }
+        
+        if !account.isRekeyed() {
+            options.removeAll { option -> Bool in
+                option == .rekeyInformation
+            }
         }
         
         super.init(configuration: configuration)
@@ -111,12 +113,18 @@ extension OptionsViewController: UICollectionViewDelegateFlowLayout {
         let selectedOption = options[indexPath.item]
         
         switch selectedOption {
+        case .rekey:
+            dismissScreen()
+            delegate?.optionsViewControllerDidOpenRekeying(self)
         case .removeAsset:
             dismissScreen()
             delegate?.optionsViewControllerDidRemoveAsset(self)
         case .passphrase:
             dismissScreen()
             delegate?.optionsViewControllerDidViewPassphrase(self)
+        case .rekeyInformation:
+            dismissScreen()
+            delegate?.optionsViewControllerDidViewRekeyInformation(self)
         case .edit:
             open(.editAccount(account: account), by: .push)
         case .removeAccount:
@@ -128,25 +136,27 @@ extension OptionsViewController: UICollectionViewDelegateFlowLayout {
 
 extension OptionsViewController {
     enum Options: Int, CaseIterable {
-        case passphrase = 0
-        case edit = 1
-        case removeAsset = 2
-        case removeAccount = 3
+        case rekey = 0
+        case passphrase = 1
+        case rekeyInformation = 2
+        case edit = 3
+        case removeAsset = 4
+        case removeAccount = 5
         
         static var optionsWithoutRemoveAsset: [Options] {
-            return [.passphrase, .edit, .removeAccount]
+            return [.rekey, .rekeyInformation, .passphrase, .edit, .removeAccount]
         }
 
         static var optionsWithoutPassphrase: [Options] {
-            return [.edit, .removeAsset, .removeAccount]
+            return [.rekey, .rekeyInformation, .edit, .removeAsset, .removeAccount]
         }
         
         static var optionsWithoutPassphraseAndRemoveAsset: [Options] {
-            return [.edit, .removeAccount]
+            return [.rekey, .rekeyInformation, .edit, .removeAccount]
         }
         
         static var allOptions: [Options] {
-            return [.passphrase, .edit, .removeAsset, .removeAccount]
+            return [.rekey, .passphrase, .rekeyInformation, .edit, .removeAsset, .removeAccount]
         }
     }
 }
@@ -158,7 +168,9 @@ extension OptionsViewController {
 }
 
 protocol OptionsViewControllerDelegate: class {
+    func optionsViewControllerDidOpenRekeying(_ optionsViewController: OptionsViewController)
     func optionsViewControllerDidRemoveAsset(_ optionsViewController: OptionsViewController)
     func optionsViewControllerDidViewPassphrase(_ optionsViewController: OptionsViewController)
+    func optionsViewControllerDidViewRekeyInformation(_ optionsViewController: OptionsViewController)
     func optionsViewControllerDidRemoveAccount(_ optionsViewController: OptionsViewController)
 }

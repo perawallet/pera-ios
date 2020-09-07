@@ -41,7 +41,9 @@ class SendAssetTransactionViewController: SendTransactionViewController, TestNet
     override func completeTransaction(with id: TransactionID) {
         assetTransactionSendDraft.identifier = id.identifier
         
-        if let id = assetTransactionSendDraft.assetIndex {
+        if let id = assetTransactionSendDraft.assetIndex,
+            let isTestNet = api?.isTestNet,
+            !isTestNet {
             TransactionEvent(
                 accountType: assetTransactionSendDraft.from.type,
                 assetId: String(id),

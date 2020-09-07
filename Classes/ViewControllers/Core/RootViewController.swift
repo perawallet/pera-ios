@@ -66,7 +66,7 @@ class RootViewController: UIViewController {
         if !appConfiguration.session.isValid {
             if appConfiguration.session.hasPassword() && appConfiguration.session.authenticatedUser != nil {
                 open(
-                    .choosePassword(mode: .login, route: nil),
+                    .choosePassword(mode: .login, flow: nil, route: nil),
                     by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
                 )
             } else {
@@ -99,7 +99,7 @@ class RootViewController: UIViewController {
         if !appConfiguration.session.isValid {
             if appConfiguration.session.hasPassword() && appConfiguration.session.authenticatedUser != nil {
                 return open(
-                    .choosePassword(mode: .login, route: screen),
+                    .choosePassword(mode: .login, flow: nil, route: screen),
                     by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
                 ) != nil
             } else {
@@ -128,13 +128,16 @@ class RootViewController: UIViewController {
                 if let notificationtype = notification.notificationType,
                     notificationtype == .assetSupportRequest {
                     open(.choosePassword(
-                        mode: .login, route: .assetActionConfirmationNotification(address: account, assetId: notification.asset?.id)),
+                            mode: .login,
+                            flow: nil,
+                            route: .assetActionConfirmationNotification(address: account, assetId: notification.asset?.id)
+                        ),
                          by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
                     )
                     return
                 } else {
                     open(.choosePassword(
-                        mode: .login, route: .assetDetailNotification(address: account, assetId: notification.asset?.id)),
+                        mode: .login, flow: nil, route: .assetDetailNotification(address: account, assetId: notification.asset?.id)),
                          by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
                     )
                 }

@@ -19,6 +19,7 @@ class ChoosePasswordViewController: BaseViewController {
     private lazy var choosePasswordView = ChoosePasswordView(mode: mode)
     
     private let viewModel: ChoosePasswordViewModel
+    private let accountSetupFlow: AccountSetupFlow?
     private let mode: Mode
     private var route: Screen?
     
@@ -37,8 +38,9 @@ class ChoosePasswordViewController: BaseViewController {
     
     weak var delegate: ChoosePasswordViewControllerDelegate?
     
-    init(mode: Mode, route: Screen?, configuration: ViewControllerConfiguration) {
+    init(mode: Mode, accountSetupFlow: AccountSetupFlow?, route: Screen?, configuration: ViewControllerConfiguration) {
         self.mode = mode
+        self.accountSetupFlow = accountSetupFlow
         self.route = route
         self.viewModel = ChoosePasswordViewModel(mode: mode)
         super.init(configuration: configuration)
@@ -241,11 +243,15 @@ extension ChoosePasswordViewController: ChoosePasswordViewDelegate {
 extension ChoosePasswordViewController {
     private func openVerifyPassword(with value: NumpadKey) {
         viewModel.configureSelection(in: choosePasswordView, for: value) { password in
-            open(.choosePassword(mode: .verify(password), route: nil), by: .push)
+            open(.choosePassword(mode: .verify(password), flow: accountSetupFlow, route: nil), by: .push)
         }
     }
     
     private func verifyPassword(with value: NumpadKey, and previousPassword: String) {
+        guard let flow = accountSetupFlow else {
+            return
+        }
+        
         viewModel.configureSelection(in: choosePasswordView, for: value) { password in
             if password != previousPassword {
                 displaySimpleAlertWith(title: "password-verify-fail-title".localized, message: "password-verify-fail-message".localized)
@@ -253,7 +259,7 @@ extension ChoosePasswordViewController {
                 return
             }
             configuration.session?.savePassword(password)
-            open(.localAuthenticationPreference, by: .push)
+            open(.localAuthenticationPreference(flow: flow), by: .push)
         }
     }
 
@@ -280,7 +286,7 @@ extension ChoosePasswordViewController {
     
     private func openResetVerify(with value: NumpadKey) {
         viewModel.configureSelection(in: choosePasswordView, for: value) { password in
-            open(.choosePassword(mode: .resetVerify(password), route: nil), by: .push)
+            open(.choosePassword(mode: .resetVerify(password), flow: nil, route: nil), by: .push)
         }
     }
     

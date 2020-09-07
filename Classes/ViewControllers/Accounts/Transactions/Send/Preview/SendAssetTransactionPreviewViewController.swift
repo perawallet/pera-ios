@@ -107,7 +107,7 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
             return
         }
         
-        if assetTransactionDraft.from.type == .ledger {
+        if assetTransactionDraft.from.requiresLedgerConnection() {
             ledgerApprovalViewController?.dismissScreen()
         }
         
@@ -249,14 +249,7 @@ extension SendAssetTransactionPreviewViewController {
         }
         
         if !AlgorandSDK().isValidAddress(address) {
-            guard let api = api else {
-                return
-            }
-            let pushNotificationController = PushNotificationController(api: api)
-            pushNotificationController.showFeedbackMessage(
-                "title-error".localized,
-                subtitle: "send-algos-receiver-address-validation".localized
-            )
+            NotificationBanner.showError("title-error".localized, message: "send-algos-receiver-address-validation".localized)
             return
         }
         
@@ -265,7 +258,7 @@ extension SendAssetTransactionPreviewViewController {
             switch fetchAccountResponse {
             case let .success(receiverAccountWrapper):
                 let receiverAccount = receiverAccountWrapper.account
-                if selectedAccount.type != .ledger {
+                if !selectedAccount.requiresLedgerConnection() {
                     self.dismissProgressIfNeeded()
                 }
                 
@@ -282,7 +275,7 @@ extension SendAssetTransactionPreviewViewController {
                 }
             case let .failure(_, indexerError):
                 if indexerError?.containsAccount(address) ?? false {
-                    if selectedAccount.type != .ledger {
+                    if !selectedAccount.requiresLedgerConnection() {
                         self.dismissProgressIfNeeded()
                     }
                     self.presentAssetNotSupportedAlert(receiverAddress: address)

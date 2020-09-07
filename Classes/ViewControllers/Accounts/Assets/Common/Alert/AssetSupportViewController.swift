@@ -54,14 +54,18 @@ extension AssetSupportViewController {
 extension AssetSupportViewController {
     private func fetchAssetDetailIfNeeded() {
         if assetAlertDraft.assetDetail == nil {
-            SVProgressHUD.show(withStatus: "title-loading".localized)
-            api?.getAssetDetails(with: AssetFetchDraft(assetId: "\(assetAlertDraft.assetIndex)")) { response in
-                switch response {
-                case let .success(assetDetailResponse):
-                    self.handleAssetDetailSetup(with: assetDetailResponse.assetDetail)
-                case .failure:
-                    SVProgressHUD.showError(withStatus: nil)
-                    SVProgressHUD.dismiss()
+            if let assetDetail = session?.assetDetails[assetAlertDraft.assetIndex] {
+                self.handleAssetDetailSetup(with: assetDetail)
+            } else {
+                SVProgressHUD.show(withStatus: "title-loading".localized)
+                api?.getAssetDetails(with: AssetFetchDraft(assetId: "\(assetAlertDraft.assetIndex)")) { response in
+                    switch response {
+                    case let .success(assetDetailResponse):
+                        self.handleAssetDetailSetup(with: assetDetailResponse.assetDetail)
+                    case .failure:
+                        SVProgressHUD.showError(withStatus: nil)
+                        SVProgressHUD.dismiss()
+                    }
                 }
             }
         }

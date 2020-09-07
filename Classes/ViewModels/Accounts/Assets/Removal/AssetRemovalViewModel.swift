@@ -19,12 +19,7 @@ class AssetRemovalViewModel {
     func configure(_ header: AccountHeaderSupplementaryView, with account: Account) {
         header.contextView.setOptionsButton(hidden: true)
         header.contextView.setQRButton(hidden: true)
-        
-        if account.type.isLedger() {
-            header.contextView.setLedgerAccount()
-        } else {
-            header.contextView.setStandardAccount()
-        }
+        header.contextView.setAccountImage(account.accountImage())
         
         guard let accountName = account.name else {
             return

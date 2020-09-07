@@ -199,6 +199,7 @@
 "send-qr-different-asset-alert" = "The QR contains different asset than selected one. Amount is ignored while decoding.";
 "send-enter-note-placeholder" = "Enter note here";
 "send-enter-note-title" = "Add Note";
+"send-transaction-max-same-account-error" = "You cannot send your max balance to yourself. Please select a different amount or recipient and try again.";
 
 // MARK: Algos Request
 "request-algos-title" = "Request Algos";
@@ -207,6 +208,7 @@
 // MARK: Options
 "options-title" = "ACCOUNT SETTINGS";
 "options-show-qr" = "Show QR and address";
+"options-rekey" = "Rekey Account";
 "options-remove-assets" = "Remove Assets";
 "options-view-passphrase" = "View Passphrase";
 "options-edit-account-name" = "Edit Account Name";
@@ -215,6 +217,7 @@
 "options-view-passphrase-alert-title" = "Biometric Authentication";
 "options-view-passphrase-alert-message" = "You should provide biometric authentication to display your passphrase.";
 "options-view-passphrase-password-alert-message" = "You should enter your correct password to display your passphrase.";
+"options-auth-account" = "Auth Account Address";
 
 // MARK: Contacts
 "contacts-title" = "Contacts";
@@ -442,3 +445,40 @@
 "pin-limit-try-again" = "Try again in";
 "pin-limit-too-many" = "Too many PIN attempts";
 "pin-limit-reset-all" = "Reset All Data";
+
+// MARK: Rekey Instruction
+
+"rekey-instruction-start" = "Start Process";
+"rekey-instruction-title" = "Rekey Account";
+"rekey-instruction-subtitle-ledger" = "Replace your account ledger with a new Ledger Device";
+"rekey-instruction-subtitle-standard" = "Replace your account’s passphrase with a Ledger Device.";
+"rekey-instruction-header" = "What to expect:";
+"rekey-instruction-first" = "Future transactions will be signed by your new Ledger Device.";
+"rekey-instruction-second-ledger" = "Your old Ledger will no longer function for this account.";
+"rekey-instruction-second-standard" = "This account's passphrase will no longer function for this account";
+"rekey-instruction-third" = "Your account’s public key, balances, and configuration will not change.";
+
+// MARK: Rekey Confirm
+
+"ledger-rekey-confirm-title" = "Confirm Rekeying";
+"ledger-rekey-transaction-title" = "Rekeying transaction";
+"ledger-rekey-ledger-old" = "Old Ledger";
+"ledger-rekey-ledger-passphrase" = "Passphrase";
+"ledger-rekey-ledger-new" = "New Ledger";
+"ledger-rekey-finalize" = "Finalize Rekeying";
+"ledger-rekey-total-fee" = "Total Rekeying fee of %@ Algos";
+"ledger-rekey-more-assets" = "+%@ more assets";
+"ledger-rekey-success-title" = "Account Rekeyed";
+"ledger-rekey-success-message" = "The account %@ has been successfully rekeyed";
+"ledger-account-rekeyed-title" = "Account Rekeyed";
+"ledger-account-rekeyed-detail" = "This account was rekeyed.";
+
+// MARK: Ledger Account Selection
+
+"ledger-account-selection-title-singular" = "%d Account Found";
+"ledger-account-selection-title-plural" = "%d Accounts Found";
+"ledger-account-selection-detail" = "This ledger device can sign transactions for the following account. Select the account to add to your Algorand Wallet.";
+"ledger-account-selection-add" = "Add Account";
+"ledger-account-selection-ledger-rekeyed" = "Account is rekeyed to %@";
+"ledger-rekey-error-add-auth" = "The connected Ledger device cannot sign transactions for this account. In order to do so, please connect %@.";
+"ledger-rekey-error-not-found" = "This account has been rekeyed. Please recover this account with a passphrase or Ledger device.";
