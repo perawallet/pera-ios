@@ -17,10 +17,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     
-    private enum Constants {
-        static let sessionInvalidateTime: Double = 300.0
-    }
-    
     private lazy var session = Session()
     private lazy var api = API(session: session)
     private lazy var appConfiguration = AppConfiguration(api: api, session: session)
@@ -146,18 +142,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillEnterForeground(_ application: UIApplication) {
         timer?.invalidate()
         
-        guard let rootViewController = rootViewController else {
+        guard let rootViewController = rootViewController,
+            appConfiguration.session.isValid,
+            !appConfiguration.session.accounts.isEmpty else {
             return
         }
+        
         NotificationCenter.default.post(name: .ApplicationWillEnterForeground, object: self, userInfo: nil)
         
         if shouldInvalidateUserSession {
             shouldInvalidateUserSession = false
             appConfiguration.session.isValid = false
             
-            guard let topNavigationViewController = window?.rootViewController?.presentedViewController as? NavigationController,
-                let topViewController = topNavigationViewController.viewControllers.last else {
-                    return
+            guard let topViewController = rootViewController.tabBarViewController.topMostController else {
+                return
             }
             
             rootViewController.route(
@@ -253,5 +251,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func invalidateAccountManagerFetchPolling() {
         shouldInvalidateAccountFetch = true
+    }
+}
+
+extension AppDelegate {
+    private enum Constants {
+        static let sessionInvalidateTime: Double = 60.0
     }
 }
