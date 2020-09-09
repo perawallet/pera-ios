@@ -21,11 +21,6 @@ class TransactionDetailView: BaseView {
         action: #selector(notifyDelegateToCopyCloseToView)
     )
     
-    private lazy var idCopyValueGestureRecognizer = UILongPressGestureRecognizer(
-        target: self,
-        action: #selector(notifyDelegateToCopyIdView)
-    )
-    
     private lazy var opponentCopyValueGestureRecognizer = UILongPressGestureRecognizer(
         target: self,
         action: #selector(notifyDelegateToCopyOpponentView)
@@ -77,18 +72,19 @@ class TransactionDetailView: BaseView {
         return feeView
     }()
     
+    private lazy var dateView: TransactionTextInformationView = {
+        let dateView = TransactionTextInformationView()
+        dateView.setTitle("transaction-detail-date".localized)
+        return dateView
+    }()
+    
     private(set) lazy var roundView: TransactionTextInformationView = {
         let roundView = TransactionTextInformationView()
         roundView.setTitle("transaction-detail-round".localized)
         return roundView
     }()
     
-    private(set) lazy var idView: TransactionTitleInformationView = {
-        let idView = TransactionTitleInformationView()
-        idView.setTitle("transaction-detail-id".localized)
-        idView.isUserInteractionEnabled = true
-        return idView
-    }()
+    private(set) lazy var idView = TransactionIDLabel()
     
     private(set) lazy var noteView: TransactionTitleInformationView = {
         let noteView = TransactionTitleInformationView()
@@ -106,7 +102,6 @@ class TransactionDetailView: BaseView {
         backgroundColor = SharedColors.secondaryBackground
         opponentView.isUserInteractionEnabled = true
         closeToView.copyImageView.isHidden = false
-        idView.copyImageView.isHidden = false
         opponentView.copyImageView.isHidden = false
         noteView.copyImageView.isHidden = false
     }
@@ -115,7 +110,7 @@ class TransactionDetailView: BaseView {
         super.linkInteractors()
         opponentView.delegate = self
         closeToView.addGestureRecognizer(closeToCopyValueGestureRecognizer)
-        idView.addGestureRecognizer(idCopyValueGestureRecognizer)
+        idView.delegate = self
         opponentView.addGestureRecognizer(opponentCopyValueGestureRecognizer)
         noteView.addGestureRecognizer(noteCopyValueGestureRecognizer)
     }
@@ -137,6 +132,7 @@ class TransactionDetailView: BaseView {
         }
 
         setupFeeViewLayout()
+        setupDateViewLayout()
         setupRoundViewLayout()
         setupIdViewLayout()
         setupNoteViewLayout()
@@ -241,12 +237,21 @@ extension TransactionDetailView {
         }
     }
     
+    private func setupDateViewLayout() {
+        addSubview(dateView)
+        
+        dateView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(feeView.snp.bottom)
+        }
+    }
+    
     private func setupRoundViewLayout() {
         addSubview(roundView)
         
         roundView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.top.equalTo(feeView.snp.bottom)
+            make.top.equalTo(dateView.snp.bottom)
         }
     }
     
@@ -290,13 +295,24 @@ extension TransactionDetailView {
     }
     
     @objc
-    private func notifyDelegateToCopyIdView() {
-        delegate?.transactionDetailViewDidCopyTransactionID(self)
-    }
-    
-    @objc
     private func notifyDelegateToCopyNoteView() {
         delegate?.transactionDetailViewDidCopyTransactionNote(self)
+    }
+}
+
+extension TransactionDetailView {
+    func setTransactionID(_ id: String) {
+        idView.setDetail(id)
+    }
+    
+    func setDate(_ date: String) {
+        dateView.setDetail(date)
+    }
+}
+
+extension TransactionDetailView: TransactionIDLabelDelegate {
+    func transactionIDLabelDidOpenExplorer(_ transactionIDLabel: TransactionIDLabel) {
+        delegate?.transactionDetailViewDidOpenExplorer(self)
     }
 }
 
@@ -311,6 +327,6 @@ protocol TransactionDetailViewDelegate: class {
     func transactionDetailViewDidTapOpponentActionButton(_ transactionDetailView: TransactionDetailView)
     func transactionDetailViewDidCopyOpponentAddress(_ transactionDetailView: TransactionDetailView)
     func transactionDetailViewDidCopyCloseToAddress(_ transactionDetailView: TransactionDetailView)
-    func transactionDetailViewDidCopyTransactionID(_ transactionDetailView: TransactionDetailView)
+    func transactionDetailViewDidOpenExplorer(_ transactionDetailView: TransactionDetailView)
     func transactionDetailViewDidCopyTransactionNote(_ transactionDetailView: TransactionDetailView)
 }

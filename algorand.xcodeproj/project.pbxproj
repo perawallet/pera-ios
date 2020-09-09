@@ -990,6 +990,12 @@
 		2B46262B23758CC9000AE73C /* Asset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B46262923758CC9000AE73C /* Asset.swift */; };
 		2B46262D23758CF4000AE73C /* AssetDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B46262C23758CF4000AE73C /* AssetDetail.swift */; };
 		2B46262E23758CF4000AE73C /* AssetDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B46262C23758CF4000AE73C /* AssetDetail.swift */; };
+		2B4A9C40250782E900D58B6B /* TransactionIDLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4A9C3F250782E900D58B6B /* TransactionIDLabel.swift */; };
+		2B4A9C41250782E900D58B6B /* TransactionIDLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4A9C3F250782E900D58B6B /* TransactionIDLabel.swift */; };
+		2B4A9C42250782E900D58B6B /* TransactionIDLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4A9C3F250782E900D58B6B /* TransactionIDLabel.swift */; };
+		2B4A9C442507831700D58B6B /* AlgoExplorerLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4A9C432507831700D58B6B /* AlgoExplorerLabel.swift */; };
+		2B4A9C452507831700D58B6B /* AlgoExplorerLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4A9C432507831700D58B6B /* AlgoExplorerLabel.swift */; };
+		2B4A9C462507831700D58B6B /* AlgoExplorerLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4A9C432507831700D58B6B /* AlgoExplorerLabel.swift */; };
 		2B4BD9ED2389CBC000491149 /* AssetNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4BD9EC2389CBC000491149 /* AssetNameView.swift */; };
 		2B4BD9EE2389CBC000491149 /* AssetNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4BD9EC2389CBC000491149 /* AssetNameView.swift */; };
 		2B4BD9F02389F13F00491149 /* AssetSupportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4BD9EF2389F13F00491149 /* AssetSupportView.swift */; };
@@ -1734,6 +1740,8 @@
 		2B44C381247419CB0074D57D /* TransactionListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionListView.swift; sourceTree = "<group>"; };
 		2B46262923758CC9000AE73C /* Asset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Asset.swift; sourceTree = "<group>"; };
 		2B46262C23758CF4000AE73C /* AssetDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetDetail.swift; sourceTree = "<group>"; };
+		2B4A9C3F250782E900D58B6B /* TransactionIDLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionIDLabel.swift; sourceTree = "<group>"; };
+		2B4A9C432507831700D58B6B /* AlgoExplorerLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgoExplorerLabel.swift; sourceTree = "<group>"; };
 		2B4BD9EC2389CBC000491149 /* AssetNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetNameView.swift; sourceTree = "<group>"; };
 		2B4BD9EF2389F13F00491149 /* AssetSupportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetSupportView.swift; sourceTree = "<group>"; };
 		2B4BD9F22389F17400491149 /* AssetSupportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetSupportViewController.swift; sourceTree = "<group>"; };
@@ -2840,6 +2848,14 @@
 				2B46262C23758CF4000AE73C /* AssetDetail.swift */,
 			);
 			path = Asset;
+			sourceTree = "<group>";
+		};
+		2B4A9C3E250782AB00D58B6B /* Transaction */ = {
+			isa = PBXGroup;
+			children = (
+				2B4A9C432507831700D58B6B /* AlgoExplorerLabel.swift */,
+			);
+			path = Transaction;
 			sourceTree = "<group>";
 		};
 		2B4BD9EB2389CBB000491149 /* AssetName */ = {
@@ -4788,6 +4804,7 @@
 				2BDE9CD2224E1E81007EFF30 /* Loading */,
 				2BD739F2223FF05C00B66EEF /* Numpad */,
 				2BF5314C22491E6A00A7455F /* QR */,
+				2B4A9C3E250782AB00D58B6B /* Transaction */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -5065,6 +5082,7 @@
 				2BE937432464B01D00322C1E /* TransactionTitleInformationView.swift */,
 				2BE937462464B04900322C1E /* TransactionAmountInformationView.swift */,
 				2BE937492464B06A00322C1E /* TransactionStatusInformationView.swift */,
+				2B4A9C3F250782E900D58B6B /* TransactionIDLabel.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -5484,7 +5502,6 @@
 				99CD25304410760C91ECEEEC /* Pods-algorand-staging.release.xcconfig */,
 				1FBA4CE73FF1117B608D16D7 /* Pods-algorand-staging.app store.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -6070,6 +6087,7 @@
 				2B3E39FE247966AF00E8AEB7 /* TabBarConfigurable.swift in Sources */,
 				2BEE061E23E856F7004EBD6F /* AccountInformation.swift in Sources */,
 				2BCBBAEB24A66AFD002CD56F /* TransactionFilterOptionCell.swift in Sources */,
+				2B4A9C462507831700D58B6B /* AlgoExplorerLabel.swift in Sources */,
 				2B7ABF69232BDE1C0050B64B /* Reward.swift in Sources */,
 				17BD4E3B2292F1260003E49A /* SettingsViewController.swift in Sources */,
 				17BD4E3C2292F1260003E49A /* IntroductionView.swift in Sources */,
@@ -6237,6 +6255,7 @@
 				2B71EBBD246C4F4C002ACB63 /* TransactionHistoryHeaderSupplementaryView.swift in Sources */,
 				2BC7E9DE24B74C4400FED513 /* TransactionFetchDraft.swift in Sources */,
 				2B9F063C24B5E48A006880F0 /* RegistrationEvent.swift in Sources */,
+				2B4A9C42250782E900D58B6B /* TransactionIDLabel.swift in Sources */,
 				2BE9371724602F9400322C1E /* TestNetTitleView.swift in Sources */,
 				17BD4E992292F1260003E49A /* CIImage+Additions.swift in Sources */,
 				17BD4E9A2292F1260003E49A /* User.swift in Sources */,
@@ -6561,6 +6580,7 @@
 				2B0F61C724EC129D00DA22A6 /* IndexerError.swift in Sources */,
 				2B0F61C824EC129D00DA22A6 /* TransactionHistoryHeaderView.swift in Sources */,
 				2B0F61C924EC129D00DA22A6 /* SettingsInfoCell.swift in Sources */,
+				2B4A9C452507831700D58B6B /* AlgoExplorerLabel.swift in Sources */,
 				2B0F61CA24EC129D00DA22A6 /* AssetSupportViewModel.swift in Sources */,
 				2B0F61CB24EC129D00DA22A6 /* SendTransactionViewController.swift in Sources */,
 				2B0F61CC24EC129D00DA22A6 /* SettingsViewModel.swift in Sources */,
@@ -6728,6 +6748,7 @@
 				2B0F626F24EC129D00DA22A6 /* NodeSettingsViewModel.swift in Sources */,
 				2B0F627024EC129D00DA22A6 /* RequestAlgosTransactionPreviewViewModel.swift in Sources */,
 				2B0F627124EC129D00DA22A6 /* SelectAssetHeaderSupplementaryView.swift in Sources */,
+				2B4A9C41250782E900D58B6B /* TransactionIDLabel.swift in Sources */,
 				2B0F627224EC129D00DA22A6 /* CursorQuery.swift in Sources */,
 				2B0F627324EC129D00DA22A6 /* TransactionReceiverView.swift in Sources */,
 				2B0F627424EC129D00DA22A6 /* SendAssetTransactionPreviewViewController.swift in Sources */,
@@ -7052,6 +7073,7 @@
 				2B3E39FD247966AF00E8AEB7 /* TabBarConfigurable.swift in Sources */,
 				2BEE061D23E856F7004EBD6F /* AccountInformation.swift in Sources */,
 				2BCBBAEA24A66AFD002CD56F /* TransactionFilterOptionCell.swift in Sources */,
+				2B4A9C442507831700D58B6B /* AlgoExplorerLabel.swift in Sources */,
 				2BF5317C224AA89B00A7455F /* SettingsViewController.swift in Sources */,
 				2BD739D1223F97F600B66EEF /* IntroductionView.swift in Sources */,
 				179B93DA225E460500DD03E9 /* NodeSettingsHeaderView.swift in Sources */,
@@ -7219,6 +7241,7 @@
 				2B71EBBC246C4F4C002ACB63 /* TransactionHistoryHeaderSupplementaryView.swift in Sources */,
 				2BC7E9DD24B74C4400FED513 /* TransactionFetchDraft.swift in Sources */,
 				2B9F063B24B5E48A006880F0 /* RegistrationEvent.swift in Sources */,
+				2B4A9C40250782E900D58B6B /* TransactionIDLabel.swift in Sources */,
 				2BE9371624602F9400322C1E /* TestNetTitleView.swift in Sources */,
 				17F6E68A224B71A6006DD31F /* User.swift in Sources */,
 				2B448741237B0AFB00C19FDE /* AccountsViewController+Options.swift in Sources */,
