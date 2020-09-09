@@ -163,12 +163,10 @@ extension AssetDetailViewModel {
             if transaction.receiver == transaction.sender {
                 configure(view, with: contact, and: transaction.receiver)
                 view.transactionAmountView.algoIconImageView.removeFromSuperview()
-                if let amount = transaction.amount {
-                    view.transactionAmountView.mode = .normal(
-                        amount: amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
-                        fraction: assetDetail.fractionDecimals
-                    )
-                }
+                view.transactionAmountView.mode = .normal(
+                    amount: transaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
+                    fraction: assetDetail.fractionDecimals
+                )
             } else if transaction.receiver == account.address && transaction.amount == 0 && transaction.type == .assetTransfer {
                 view.setContact("asset-creation-fee-title".localized)
                 view.subtitleLabel.isHidden = true
@@ -178,38 +176,28 @@ extension AssetDetailViewModel {
             } else if transaction.receiver == account.address {
                 configure(view, with: contact, and: transaction.receiver)
                 view.transactionAmountView.algoIconImageView.removeFromSuperview()
-                if let amount = transaction.amount {
-                    view.transactionAmountView.mode = .positive(
-                        amount: amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
-                        fraction: assetDetail.fractionDecimals
-                    )
-                }
+                view.transactionAmountView.mode = .positive(
+                    amount: transaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
+                    fraction: assetDetail.fractionDecimals
+                )
             } else {
                 configure(view, with: contact, and: transaction.receiver)
                 view.transactionAmountView.algoIconImageView.removeFromSuperview()
-                if let amount = transaction.amount {
-                    view.transactionAmountView.mode = .negative(
-                        amount: amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
-                        fraction: assetDetail.fractionDecimals
-                    )
-                }
+                view.transactionAmountView.mode = .negative(
+                    amount: transaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
+                    fraction: assetDetail.fractionDecimals
+                )
             }
         } else {
             if transaction.receiver == transaction.sender {
                 configure(view, with: contact, and: transaction.receiver)
-                if let amount = transaction.amount {
-                    view.transactionAmountView.mode = .normal(amount: amount.toAlgos)
-                }
+                view.transactionAmountView.mode = .normal(amount: transaction.amount.toAlgos)
             } else if transaction.receiver == account.address {
                 configure(view, with: contact, and: transaction.sender)
-                if let amount = transaction.amount {
-                    view.transactionAmountView.mode = .positive(amount: amount.toAlgos)
-                }
+                view.transactionAmountView.mode = .positive(amount: transaction.amount.toAlgos)
             } else {
                 configure(view, with: contact, and: transaction.receiver)
-                if let amount = transaction.amount {
-                    view.transactionAmountView.mode = .negative(amount: amount.toAlgos)
-                }
+                view.transactionAmountView.mode = .negative(amount: transaction.amount.toAlgos)
             }
         }
         
