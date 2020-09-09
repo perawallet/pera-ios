@@ -9,15 +9,15 @@
 import Magpie
 
 class AssetFreezeTransaction: Model {
-    let account: String
-    let isFreeze: Bool
-    let assetId: Int64
+    let address: String?
+    let isFreeze: Bool?
+    let assetId: Int64?
 }
 
 extension AssetFreezeTransaction {
     private enum CodingKeys: String, CodingKey {
-        case account = "acct"
-        case isFreeze = "freeze"
-        case assetId = "id"
+        case address = "address"
+        case isFreeze = "new-freeze-status"
+        case assetId = "asset-id"
     }
 }

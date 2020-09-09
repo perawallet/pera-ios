@@ -21,8 +21,8 @@ class PendingTransaction: Model, TransactionItem {
     let sender: String?
     let type: Transaction.TransferType?
     
-    var amount: Int64? {
-        return assetAmount ?? algosAmount
+    var amount: Int64 {
+        return assetAmount ?? algosAmount ?? 0
     }
     
     var receiver: String? {
