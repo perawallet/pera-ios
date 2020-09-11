@@ -24,14 +24,6 @@ class RequestAssetTransactionViewModel {
             view.removeVerifiedAsset()
         }
         
-        view.setAmountInformationViewMode(
-            .normal(
-                amount: assetTransactionRequestDraft.amount,
-                isAlgos: false,
-                fraction: assetTransactionRequestDraft.assetDetail.fractionDecimals
-            )
-        )
-        
         view.setAssetAlignment(.right)
         view.setAssetId("\(assetTransactionRequestDraft.assetDetail.id)")
         

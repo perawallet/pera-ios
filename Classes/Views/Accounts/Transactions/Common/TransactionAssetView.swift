@@ -97,6 +97,10 @@ extension TransactionAssetView {
     func setAssetAlignment(_ alignment: NSTextAlignment) {
         assetNameView.setAlignment(alignment)
     }
+    
+    func setSeparatorHidden(_ hidden: Bool) {
+        separatorView.isHidden = hidden
+    }
 }
 
 extension TransactionAssetView {

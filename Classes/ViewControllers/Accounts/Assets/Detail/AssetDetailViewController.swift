@@ -289,12 +289,19 @@ extension AssetDetailViewController: AssetDetailViewDelegate {
     
     func assetDetailViewDidTapReceiveButton(_ assetDetailView: AssetDetailView) {
         if isAlgoDisplay {
-            open(.requestAlgosTransactionPreview(account: account, isReceiverEditable: false), by: .push)
+            let draft = AlgosTransactionRequestDraft(account: account)
+            open(.requestAlgosTransaction(isPresented: false, algosTransactionRequestDraft: draft), by: .push)
         } else {
             guard let assetDetail = assetDetail else {
                 return
             }
-            open(.requestAssetTransactionPreview(account: account, assetDetail: assetDetail, isReceiverEditable: false), by: .push)
+            open(
+                .requestAssetTransaction(
+                    isPresented: false,
+                    assetTransactionRequestDraft: AssetTransactionRequestDraft(account: account, assetDetail: assetDetail)
+                ),
+                by: .push
+            )
         }
     }
     

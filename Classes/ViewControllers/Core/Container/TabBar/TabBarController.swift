@@ -281,7 +281,8 @@ extension TabBarController: SelectAssetViewControllerDelegate {
                 by: fullScreenPresentation
             )
         } else {
-            open(.requestAlgosTransactionPreview(account: account, isReceiverEditable: true), by: fullScreenPresentation)
+            let draft = AlgosTransactionRequestDraft(account: account)
+            open(.requestAlgosTransaction(isPresented: true, algosTransactionRequestDraft: draft), by: fullScreenPresentation)
         }
     }
     
@@ -312,10 +313,9 @@ extension TabBarController: SelectAssetViewControllerDelegate {
             )
         } else {
             open(
-                .requestAssetTransactionPreview(
-                    account: account,
-                    assetDetail: assetDetail,
-                    isReceiverEditable: true
+                .requestAssetTransaction(
+                    isPresented: true,
+                    assetTransactionRequestDraft: AssetTransactionRequestDraft(account: account, assetDetail: assetDetail)
                 ),
                 by: fullScreenPresentation
             )

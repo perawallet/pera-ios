@@ -15,7 +15,6 @@ class RequestTransactionView: BaseView {
     weak var transactionDelegate: RequestTransactionViewDelegate?
     
     private let address: String
-    private let amount: Int64
     private let assetIndex: Int64?
     
     private lazy var containerView = UIView()
@@ -24,14 +23,12 @@ class RequestTransactionView: BaseView {
     
     private lazy var assetInformationView = TransactionAssetView()
     
-    private lazy var amountInformationView = TransactionAmountInformationView()
-    
     private(set) lazy var qrView: QRView = {
         if let assetIndex = assetIndex {
-            let qrText = QRText(mode: .assetRequest, address: address, amount: amount, asset: assetIndex)
+            let qrText = QRText(mode: .assetRequest, address: address, asset: assetIndex)
             return QRView(qrText: qrText)
         } else {
-            let qrText = QRText(mode: .algosRequest, address: address, amount: amount, asset: assetIndex)
+            let qrText = QRText(mode: .algosRequest, address: address, asset: assetIndex)
             return QRView(qrText: qrText)
         }
     }()
@@ -43,9 +40,8 @@ class RequestTransactionView: BaseView {
         return button
     }()
     
-    init(inputFieldFraction: Int, address: String, amount: Int64, assetIndex: Int64? = nil) {
+    init(inputFieldFraction: Int, address: String, assetIndex: Int64? = nil) {
         self.address = address
-        self.amount = amount
         self.assetIndex = assetIndex
         super.init(frame: .zero)
     }
@@ -55,8 +51,7 @@ class RequestTransactionView: BaseView {
         containerView.backgroundColor = SharedColors.secondaryBackground
         containerView.layer.cornerRadius = 12.0
         containerView.applySmallShadow()
-        amountInformationView.setSeparatorHidden(true)
-        amountInformationView.setTitle("transaction-detail-amount".localized)
+        assetInformationView.setSeparatorHidden(true)
     }
     
     override func setListeners() {
@@ -68,7 +63,6 @@ class RequestTransactionView: BaseView {
         setupQRViewLayout()
         setupAccountInformationViewLayout()
         setupAssetInformationViewLayout()
-        setupAmountInformationViewLayout()
         setupShareButtonLayout()
     }
     
@@ -113,16 +107,7 @@ extension RequestTransactionView {
         assetInformationView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(accountInformationView.snp.bottom)
-        }
-    }
-    
-    private func setupAmountInformationViewLayout() {
-        containerView.addSubview(amountInformationView)
-        
-        amountInformationView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
             make.bottom.equalToSuperview().inset(layout.current.bottomInset)
-            make.top.equalTo(assetInformationView.snp.bottom)
         }
     }
     
@@ -152,10 +137,6 @@ extension RequestTransactionView {
     
     func setAccountName(_ name: String?) {
         accountInformationView.setAccountName(name)
-    }
-    
-    func setAmountInformationViewMode(_ mode: TransactionAmountView.Mode) {
-        amountInformationView.setAmountViewMode(mode)
     }
     
     func setAssetName(for assetDetail: AssetDetail) {

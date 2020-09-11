@@ -47,10 +47,8 @@ indirect enum Screen {
         receiver: AssetReceiverState,
         isSenderEditable: Bool
     )
-    case requestAlgosTransactionPreview(account: Account, isReceiverEditable: Bool)
-    case requestAssetTransactionPreview(account: Account, assetDetail: AssetDetail, isReceiverEditable: Bool)
-    case requestAlgosTransaction(algosTransactionRequestDraft: AlgosTransactionRequestDraft)
-    case requestAssetTransaction(assetTransactionRequestDraft: AssetTransactionRequestDraft)
+    case requestAlgosTransaction(isPresented: Bool, algosTransactionRequestDraft: AlgosTransactionRequestDraft)
+    case requestAssetTransaction(isPresented: Bool, assetTransactionRequestDraft: AssetTransactionRequestDraft)
     case nodeSettings
     case addNode
     case editNode(node: Node)

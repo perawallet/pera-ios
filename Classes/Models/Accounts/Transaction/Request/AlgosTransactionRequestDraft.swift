@@ -10,5 +10,4 @@ import Foundation
 
 struct AlgosTransactionRequestDraft: Codable {
     let account: Account
-    let amount: Double
 }

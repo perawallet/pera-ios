@@ -12,17 +12,16 @@ class RequestAlgosTransactionViewController: RequestTransactionViewController, T
     
     private lazy var requestTransactionView = RequestTransactionView(
         inputFieldFraction: algosFraction,
-        address: algosTransactionRequestDraft.account.address,
-        amount: algosTransactionRequestDraft.amount.toMicroAlgos
+        address: algosTransactionRequestDraft.account.address
     )
     
     private let viewModel: RequestAlgosTransactionViewModel
     private let algosTransactionRequestDraft: AlgosTransactionRequestDraft
     
-    init(algosTransactionRequestDraft: AlgosTransactionRequestDraft, configuration: ViewControllerConfiguration) {
+    init(isPresented: Bool, algosTransactionRequestDraft: AlgosTransactionRequestDraft, configuration: ViewControllerConfiguration) {
         self.algosTransactionRequestDraft = algosTransactionRequestDraft
         viewModel = RequestAlgosTransactionViewModel(algosTransactionRequestDraft: algosTransactionRequestDraft)
-        super.init(configuration: configuration)
+        super.init(isPresented: isPresented, configuration: configuration)
     }
     
     override func configureAppearance() {
