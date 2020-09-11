@@ -357,6 +357,8 @@ class Router {
                 ledgerAddress: ledgerAddress,
                 configuration: configuration
             )
+        case .developerSettings:
+            viewController = DeveloperSettingsViewController(configuration: configuration)
         }
         
         return viewController as? T
