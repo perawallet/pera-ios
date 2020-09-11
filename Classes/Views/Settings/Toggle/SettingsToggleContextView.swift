@@ -14,11 +14,9 @@ class SettingsToggleContextView: BaseView {
     
     weak var delegate: SettingsToggleContextViewDelegate?
     
-    var indexPath: IndexPath?
-    
     private lazy var imageView = UIImageView()
     
-    private(set) lazy var nameLabel: UILabel = {
+    private lazy var nameLabel: UILabel = {
         UILabel()
             .withTextColor(SharedColors.primaryText)
             .withLine(.single)
@@ -26,7 +24,7 @@ class SettingsToggleContextView: BaseView {
             .withFont(UIFont.font(withWeight: .semiBold(size: 14.0)))
     }()
     
-    private(set) lazy var toggle = Toggle()
+    private lazy var toggle = Toggle()
     
     private lazy var separatorView = LineSeparatorView()
     
@@ -49,11 +47,7 @@ class SettingsToggleContextView: BaseView {
 extension SettingsToggleContextView {
     @objc
     private func didChangeToggle(_ toggle: Toggle) {
-        guard let indexPath = self.indexPath else {
-            return
-        }
-        
-        delegate?.settingsToggle(toggle, didChangeValue: toggle.isOn, forIndexPath: indexPath)
+        delegate?.settingsToggleContextView(self, didChangeValue: toggle.isOn)
     }
 }
 
@@ -102,6 +96,18 @@ extension SettingsToggleContextView {
     func setImage(_ image: UIImage?) {
         imageView.image = image
     }
+    
+    func setName(_ name: String?) {
+        nameLabel.text = name
+    }
+    
+    func setToggleOn(_ isOn: Bool, animated: Bool) {
+        toggle.setOn(isOn, animated: animated)
+    }
+    
+    var isToggleOn: Bool {
+        return toggle.isOn
+    }
 }
 
 extension SettingsToggleContextView {
@@ -114,5 +120,5 @@ extension SettingsToggleContextView {
 }
 
 protocol SettingsToggleContextViewDelegate: class {
-    func settingsToggle(_ toggle: Toggle, didChangeValue value: Bool, forIndexPath indexPath: IndexPath)
+    func settingsToggleContextView(_ settingsToggleContextView: SettingsToggleContextView, didChangeValue value: Bool)
 }

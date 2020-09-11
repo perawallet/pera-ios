@@ -24,12 +24,13 @@ class SettingsView: BaseView {
         flowLayout.scrollDirection = .vertical
         flowLayout.minimumLineSpacing = 0.0
         flowLayout.minimumInteritemSpacing = 0.0
+        flowLayout.sectionInset = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 8.0, right: 0.0)
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = SharedColors.secondaryBackground
-        collectionView.contentInset = UIEdgeInsets(top: 12.0, left: 0.0, bottom: 0.0, right: 0.0)
+        collectionView.backgroundColor = SharedColors.primaryBackground
+        collectionView.contentInset = .zero
         collectionView.keyboardDismissMode = .onDrag
         
         collectionView.register(SettingsDetailCell.self, forCellWithReuseIdentifier: SettingsDetailCell.reusableIdentifier)
