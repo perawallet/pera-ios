@@ -31,9 +31,13 @@ class SettingsViewController: BaseViewController {
         return PushNotificationController(api: api)
     }()
     
-    private lazy var settingsView = SettingsView()
+    private lazy var settings: [[GeneralSettings]] = [developerSettings, securitySettings, preferenceSettings, appSettings]
+    private lazy var developerSettings: [GeneralSettings] = [.developer]
+    private lazy var securitySettings: [GeneralSettings] = [.password, .localAuthentication]
+    private lazy var preferenceSettings: [GeneralSettings] = [.notifications, .rewards, .language, .currency]
+    private lazy var appSettings: [GeneralSettings] = [.feedback, .termsAndServices]
     
-    private let viewModel = SettingsViewModel()
+    private lazy var settingsView = SettingsView()
     
     private let localAuthenticator = LocalAuthenticator()
     
@@ -44,7 +48,6 @@ class SettingsViewController: BaseViewController {
     override func linkInteractors() {
         settingsView.collectionView.delegate = self
         settingsView.collectionView.dataSource = self
-        viewModel.delegate = self
     }
     
     override func setListeners() {
@@ -81,92 +84,102 @@ extension SettingsViewController {
 }
 
 extension SettingsViewController: UICollectionViewDataSource {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return settings.count
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return SettingsViewModel.CellMode.allCases.count
+        return settings[section].count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let mode = SettingsViewModel.CellMode(rawValue: indexPath.item) else {
-            fatalError("Index path is out of bounds")
-        }
-        
-        switch mode {
-        case .nodeSettings:
-            if let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: SettingsDetailCell.reusableIdentifier,
-                for: indexPath
-            ) as? SettingsDetailCell {
-                viewModel.configureDetail(cell, with: mode)
-                return cell
-            }
-        case .password:
-            if let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: SettingsDetailCell.reusableIdentifier,
-                for: indexPath
-            ) as? SettingsDetailCell {
-                viewModel.configureDetail(cell, with: mode)
-                return cell
-            }
-        case .localAuthentication:
-            if let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: SettingsToggleCell.reusableIdentifier,
-                for: indexPath
-            ) as? SettingsToggleCell {
+        if let settings = settings[safe: indexPath.section],
+            let setting = settings[safe: indexPath.item] {
+            switch setting {
+            case .developer:
+                return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
+            case .password:
+                return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
+            case .localAuthentication:
                 let localAuthenticationStatus = localAuthenticator.localAuthenticationStatus == .allowed
-                viewModel.configureToggle(cell, enabled: localAuthenticationStatus, with: mode, for: indexPath)
-                return cell
-            }
-        case .notifications:
-            guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: SettingsToggleCell.reusableIdentifier,
-                for: indexPath) as? SettingsToggleCell else {
-                    fatalError("Index path is out of bounds")
-            }
-            
-            UNUserNotificationCenter.current().getNotificationSettings { settings in
-                DispatchQueue.main.async {
-                    if settings.authorizationStatus == .authorized {
-                        self.viewModel.configureToggle(cell, enabled: true, with: mode, for: indexPath)
-                    } else {
-                        self.viewModel.configureToggle(cell, enabled: false, with: mode, for: indexPath)
+                return setSettingsToggleCell(from: setting, isOn: localAuthenticationStatus, in: collectionView, at: indexPath)
+            case .notifications:
+                guard let cell = collectionView.dequeueReusableCell(
+                    withReuseIdentifier: SettingsToggleCell.reusableIdentifier,
+                    for: indexPath) as? SettingsToggleCell else {
+                        fatalError("Index path is out of bounds")
+                }
+                
+                UNUserNotificationCenter.current().getNotificationSettings { settings in
+                    DispatchQueue.main.async {
+                        SettingsToggleViewModel(setting: setting, isOn: settings.authorizationStatus == .authorized).configure(cell)
                     }
                 }
-            }
-            
-            return cell
-        case .rewards:
-            if let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: SettingsToggleCell.reusableIdentifier,
-                for: indexPath
-            ) as? SettingsToggleCell {
+                
+                return cell
+            case .rewards:
                 let rewardDisplayPreference = session?.rewardDisplayPreference == .allowed
-                viewModel.configureToggle(cell, enabled: rewardDisplayPreference, with: mode, for: indexPath)
-                return cell
+                return setSettingsToggleCell(from: setting, isOn: rewardDisplayPreference, in: collectionView, at: indexPath)
+            case .language:
+                return setSettingsInfoCell(from: setting, info: "settings-language-english".localized, in: collectionView, at: indexPath)
+            case .currency:
+                return setSettingsInfoCell(from: setting, info: "settings-currency-usd".localized, in: collectionView, at: indexPath)
+            case .feedback:
+                return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
+            case .termsAndServices:
+                return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
             }
-        case .language:
-            if let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: SettingsInfoCell.reusableIdentifier,
-                for: indexPath
-            ) as? SettingsInfoCell {
-                viewModel.configureInfo(cell, with: mode)
-                return cell
-            }
-        case .feedback:
-            if let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: SettingsDetailCell.reusableIdentifier,
-                for: indexPath
-            ) as? SettingsDetailCell {
-                viewModel.configureDetail(cell, with: mode)
-                return cell
-            }
-        case .termsAndServices:
-            if let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: SettingsDetailCell.reusableIdentifier,
-                for: indexPath
-            ) as? SettingsDetailCell {
-                viewModel.configureDetail(cell, with: mode)
-                return cell
-            }
+        }
+        
+        fatalError("Index path is out of bounds")
+    }
+    
+    private func setSettingsDetailCell(
+        from setting: Settings,
+        in collectionView: UICollectionView,
+        at indexPath: IndexPath
+    ) -> SettingsDetailCell {
+        if let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: SettingsDetailCell.reusableIdentifier,
+            for: indexPath
+        ) as? SettingsDetailCell {
+            SettingsDetailViewModel(setting: setting).configure(cell)
+            return cell
+        }
+        
+        fatalError("Index path is out of bounds")
+    }
+    
+    private func setSettingsInfoCell(
+        from setting: Settings,
+        info: String?,
+        in collectionView: UICollectionView,
+        at indexPath: IndexPath
+    ) -> SettingsInfoCell {
+        if let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: SettingsInfoCell.reusableIdentifier,
+            for: indexPath
+        ) as? SettingsInfoCell {
+            SettingsInfoViewModel(setting: setting, info: info).configure(cell)
+            return cell
+        }
+        
+        fatalError("Index path is out of bounds")
+    }
+    
+    private func setSettingsToggleCell(
+        from setting: Settings,
+        isOn: Bool,
+        in collectionView: UICollectionView,
+        at indexPath: IndexPath
+    ) -> SettingsToggleCell {
+        if let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: SettingsToggleCell.reusableIdentifier,
+            for: indexPath
+        ) as? SettingsToggleCell {
+            cell.delegate = self
+            SettingsToggleViewModel(setting: setting, isOn: isOn).configure(cell)
+            return cell
         }
         
         fatalError("Index path is out of bounds")
@@ -208,33 +221,36 @@ extension SettingsViewController: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         referenceSizeForFooterInSection section: Int
     ) -> CGSize {
-        return CGSize(width: UIScreen.main.bounds.width, height: 128.0)
+        if section == settings.count - 1 {
+            return CGSize(width: UIScreen.main.bounds.width, height: 128.0)
+        }
+        return .zero
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let mode = SettingsViewModel.CellMode(rawValue: indexPath.item) else {
-            fatalError("Index path is out of bounds")
-        }
+        if let settings = settings[safe: indexPath.section],
+            let setting = settings[safe: indexPath.item] {
         
-        switch mode {
-        case .nodeSettings:
-            open(.nodeSettings, by: .push)
-        case .password:
-            open(
-                .choosePassword(
-                    mode: ChoosePasswordViewController.Mode.resetPassword, flow: nil, route: nil),
-                    by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
-            )
-        case .feedback:
-            open(.feedback, by: .push)
-        case .termsAndServices:
-            guard let url = URL(string: Environment.current.termsAndServicesUrl) else {
-                return
+            switch setting {
+            case .developer:
+                open(.developerSettings, by: .push)
+            case .password:
+                open(
+                    .choosePassword(
+                        mode: ChoosePasswordViewController.Mode.resetPassword, flow: nil, route: nil),
+                        by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
+                )
+            case .feedback:
+                open(.feedback, by: .push)
+            case .termsAndServices:
+                guard let url = URL(string: Environment.current.termsAndServicesUrl) else {
+                    return
+                }
+                
+                open(url)
+            default:
+                break
             }
-            
-            open(url)
-        default:
-            break
         }
     }
 }
@@ -245,14 +261,15 @@ extension SettingsViewController: SettingsFooterSupplementaryViewDelegate {
     }
 }
 
-extension SettingsViewController: SettingsViewModelDelegate {
-    func settingsViewModel(_ viewModel: SettingsViewModel, didToggleValue value: Bool, atIndexPath indexPath: IndexPath) {
-        guard let mode = SettingsViewModel.CellMode(rawValue: indexPath.item),
-            let cell = settingsView.collectionView.cellForItem(at: indexPath) as? SettingsToggleCell else {
+extension SettingsViewController: SettingsToggleCellDelegate {
+    func settingsToggleCell(_ settingsToggleCell: SettingsToggleCell, didChangeValue value: Bool) {
+        guard let indexPath = settingsView.collectionView.indexPath(for: settingsToggleCell),
+            let settings = settings[safe: indexPath.section],
+            let setting = settings[safe: indexPath.item] else {
             return
         }
         
-        switch mode {
+        switch setting {
         case .localAuthentication:
             if !value {
                 localAuthenticator.localAuthenticationStatus = .notAllowed
@@ -262,13 +279,12 @@ extension SettingsViewController: SettingsViewModelDelegate {
             if localAuthenticator.isLocalAuthenticationAvailable {
                 localAuthenticator.authenticate { error in
                     guard error == nil else {
-                        cell.contextView.toggle.setOn(false, animated: true)
+                        settingsToggleCell.contextView.setToggleOn(false, animated: true)
                         return
                     }
                     
                     self.localAuthenticator.localAuthenticationStatus = .allowed
                 }
-                
                 return
             }
             
@@ -297,12 +313,12 @@ extension SettingsViewController: SettingsViewModelDelegate {
         }
         
         let cancelAction = UIAlertAction(title: "title-cancel".localized, style: .cancel) { _ in
-            let indexPath = IndexPath(item: 3, section: 0)
+            let indexPath = IndexPath(item: 0, section: 2)
             guard let cell = self.settingsView.collectionView.cellForItem(at: indexPath) as? SettingsToggleCell else {
                 return
             }
             
-            cell.contextView.toggle.setOn(!cell.contextView.toggle.isOn, animated: true)
+            cell.contextView.setToggleOn(!cell.contextView.isToggleOn, animated: true)
         }
         
         alertController.addAction(settingsAction)
@@ -322,7 +338,14 @@ extension SettingsViewController: SettingsViewModelDelegate {
             UIApplication.shared.openAppSettings()
         }
         
-        let cancelAction = UIAlertAction(title: "title-cancel".localized, style: .cancel, handler: nil)
+        let cancelAction = UIAlertAction(title: "title-cancel".localized, style: .cancel) { _ in
+            let indexPath = IndexPath(item: 1, section: 1)
+            guard let cell = self.settingsView.collectionView.cellForItem(at: indexPath) as? SettingsToggleCell else {
+                return
+            }
+            
+            cell.contextView.setToggleOn(!cell.contextView.isToggleOn, animated: true)
+        }
         
         alertController.addAction(settingsAction)
         alertController.addAction(cancelAction)

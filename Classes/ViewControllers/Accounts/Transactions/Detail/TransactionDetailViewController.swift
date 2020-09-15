@@ -180,11 +180,11 @@ extension TransactionDetailViewController: TransactionDetailViewDelegate {
         }
         
         if api.isTestNet {
-            if let url = URL(string: "https://testnet.algoexplorer.io/tx/\(transaction.id)") {
+            if let url = URL(string: "https://goalseeker.purestake.io/algorand/testnet/transaction/\(transaction.id)") {
                 open(url)
             }
         } else {
-            if let url = URL(string: "https://algoexplorer.io/tx/\(transaction.id)") {
+            if let url = URL(string: "https://goalseeker.purestake.io/algorand/mainnet/transaction/\(transaction.id)") {
                 open(url)
             }
         }

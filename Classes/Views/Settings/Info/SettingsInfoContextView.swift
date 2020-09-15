@@ -14,7 +14,7 @@ class SettingsInfoContextView: BaseView {
     
     private lazy var imageView = UIImageView()
     
-    private(set) lazy var nameLabel: UILabel = {
+    private lazy var nameLabel: UILabel = {
         UILabel()
             .withTextColor(SharedColors.primaryText)
             .withLine(.single)
@@ -22,7 +22,7 @@ class SettingsInfoContextView: BaseView {
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
     }()
     
-    private(set) lazy var detailLabel: UILabel = {
+    private lazy var detailLabel: UILabel = {
         UILabel()
             .withTextColor(SharedColors.inputTitle)
             .withLine(.single)
@@ -87,6 +87,14 @@ extension SettingsInfoContextView {
 extension SettingsInfoContextView {
     func setImage(_ image: UIImage?) {
         imageView.image = image
+    }
+    
+    func setName(_ name: String?) {
+        nameLabel.text = name
+    }
+    
+    func setDetail(_ detail: String?) {
+        detailLabel.text = detail
     }
 }
 
