@@ -8,7 +8,25 @@
 
 import UIKit
 
-class RequestTransactionViewController: BaseScrollViewController { }
+class RequestTransactionViewController: BaseScrollViewController {
+    
+    private let isPresented: Bool
+    
+    init(isPresented: Bool, configuration: ViewControllerConfiguration) {
+        self.isPresented = isPresented
+        super.init(configuration: configuration)
+    }
+    
+    override func configureNavigationBarAppearance() {
+        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [weak self] in
+            self?.closeScreen(by: .dismiss, animated: true)
+        }
+        
+        if isPresented {
+            leftBarButtonItems = [closeBarButtonItem]
+        }
+    }
+}
 
 extension RequestTransactionViewController {
     func prepareLayout(of requestTransactionView: RequestTransactionView) {

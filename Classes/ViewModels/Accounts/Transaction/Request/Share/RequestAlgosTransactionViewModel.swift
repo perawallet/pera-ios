@@ -23,6 +23,5 @@ class RequestAlgosTransactionViewModel {
         view.setAssetAlignment(.right)
         view.setAccountName(algosTransactionRequestDraft.account.name)
         view.setAssetName("asset-algos-title".localized)
-        view.setAmountInformationViewMode(.normal(amount: algosTransactionRequestDraft.amount))
     }
 }

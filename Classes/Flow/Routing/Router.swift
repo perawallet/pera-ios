@@ -245,26 +245,15 @@ class Router {
                 isSenderEditable: isSenderEditable,
                 configuration: configuration
             )
-        case let .requestAlgosTransactionPreview(account, isReceiverEditable):
-            viewController = RequestAlgosTransactionPreviewViewController(
-                account: account,
-                isReceiverEditable: isReceiverEditable,
-                configuration: configuration
-            )
-        case let .requestAssetTransactionPreview(account, assetDetail, isReceiverEditable):
-            viewController = RequestAssetTransactionPreviewViewController(
-                account: account,
-                assetDetail: assetDetail,
-                isReceiverEditable: isReceiverEditable,
-                configuration: configuration
-            )
-        case let .requestAlgosTransaction(algosTransactionRequestDraft):
+        case let .requestAlgosTransaction(isPresented, algosTransactionRequestDraft):
             viewController = RequestAlgosTransactionViewController(
+                isPresented: isPresented,
                 algosTransactionRequestDraft: algosTransactionRequestDraft,
                 configuration: configuration
             )
-        case let .requestAssetTransaction(assetTransactionRequestDraft):
+        case let .requestAssetTransaction(isPresented, assetTransactionRequestDraft):
             viewController = RequestAssetTransactionViewController(
+                isPresented: isPresented,
                 assetTransactionRequestDraft: assetTransactionRequestDraft,
                 configuration: configuration
             )
