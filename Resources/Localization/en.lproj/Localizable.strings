@@ -314,8 +314,9 @@
 "feedback-subtitle-category" = "Type of feedback";
 "feedback-title-note" = "Note";
 "feedback-subtitle-note" = "What’s on your mind";
-"feedback-title-email" = "Email (Optional)";
-"feedback-subtitle-email" = "Email";
+"feedback-title-email" = "Email";
+"feedback-subtitle-account-title" = "Account (Optional)";
+"feedback-subtitle-account-detail" = "Choose Account";
 "feedback-empty-title" = "Error";
 "feedback-empty-category-message" = "Please select a category.";
 "feedback-empty-note-message" = "Please add your note.";

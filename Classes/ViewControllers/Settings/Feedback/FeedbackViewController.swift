@@ -22,12 +22,28 @@ class FeedbackViewController: BaseScrollViewController {
         initialModalSize: .custom(CGSize(width: view.frame.width, height: 318.0))
     )
     
+    private(set) lazy var accountListModalPresenter = CardModalPresenter(
+        config: ModalConfiguration(
+            animationMode: .normal(duration: 0.25),
+            dismissMode: .scroll
+        )
+    )
+    
     private var categories = [FeedbackCategory]()
     private var selectedCategory: FeedbackCategory? {
         didSet {
             if let selectedCategory = selectedCategory {
                 self.feedbackView.categorySelectionView.detailLabel.text = selectedCategory.name
                 self.feedbackView.categorySelectionView.detailLabel.textColor = SharedColors.primaryText
+            }
+        }
+    }
+    
+    private var selectedAccount: Account? {
+        didSet {
+            if let account = selectedAccount {
+                self.feedbackView.accountSelectionView.detailLabel.text = account.name
+                self.feedbackView.accountSelectionView.detailLabel.textColor = SharedColors.primaryText
             }
         }
     }
@@ -92,7 +108,7 @@ extension FeedbackViewController {
 }
 
 extension FeedbackViewController: FeedbackViewDelegate {
-    func feedbackViewDidTriggerCategorySelection(_ feedbackView: FeedbackView) {
+    func feedbackViewDidSelectCategory(_ feedbackView: FeedbackView) {
         if feedbackView.categoryPickerView.isHidden {
             feedbackView.categoryPickerView.isHidden = false
             feedbackView.categoryPickerView.snp.updateConstraints { make in
@@ -114,6 +130,19 @@ extension FeedbackViewController: FeedbackViewDelegate {
         }
     }
     
+    func feedbackViewDidSelectAccount(_ feedbackView: FeedbackView) {
+        let accountListViewController = open(
+            .accountList(mode: .empty),
+            by: .customPresent(
+                presentationStyle: .custom,
+                transitionStyle: nil,
+                transitioningDelegate: accountListModalPresenter
+            )
+        ) as? AccountListViewController
+        
+        accountListViewController?.delegate = self
+    }
+    
     func feedbackViewDidTapSendButton(_ feedbackView: FeedbackView) {
         sendFeedback()
     }
@@ -122,6 +151,13 @@ extension FeedbackViewController: FeedbackViewDelegate {
         if inputView == feedbackView.noteInputView {
             sendFeedback()
         }
+    }
+}
+
+extension FeedbackViewController: AccountListViewControllerDelegate {
+    func accountListViewController(_ viewController: AccountListViewController, didSelectAccount account: Account) {
+        
+        selectedAccount = account
     }
 }
 
@@ -169,12 +205,18 @@ extension FeedbackViewController {
             return
         }
         
-        var feedbackDraft = FeedbackDraft(note: feedbackNote, category: selectedCategory.slug, email: nil)
-        
-        if let email = feedbackView.emailInputView.inputTextField.text,
-            !email.isEmpty {
-            feedbackDraft.email = email
+        guard let email = feedbackView.emailInputView.inputTextField.text,
+            !email.isEmpty else {
+            displaySimpleAlertWith(title: "feedback-empty-title".localized, message: "feedback-empty-note-message".localized)
+            return
         }
+        
+        let feedbackDraft = FeedbackDraft(
+            note: feedbackNote,
+            category: selectedCategory.slug,
+            email: email,
+            address: selectedAccount?.address
+        )
         
         SVProgressHUD.show(withStatus: "title-loading".localized)
         

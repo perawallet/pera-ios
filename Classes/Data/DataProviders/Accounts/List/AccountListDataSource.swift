@@ -24,7 +24,8 @@ class AccountListDataSource: NSObject, UICollectionViewDataSource {
         }
         
         switch mode {
-        case .assetCount:
+        case .empty,
+             .assetCount:
             accounts.append(contentsOf: userAccounts)
         case let .transactionReceiver(assetDetail),
              let .transactionSender(assetDetail),
