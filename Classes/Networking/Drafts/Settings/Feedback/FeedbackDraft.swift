@@ -24,7 +24,7 @@ struct FeedbackDraft: JSONKeyedBody {
         ]
         
         if let address = address {
-            pairs.append(Pair(key: .address, value: address))
+            pairs.append(Pair(key: .publicKey, value: address))
         }
         
         return pairs
