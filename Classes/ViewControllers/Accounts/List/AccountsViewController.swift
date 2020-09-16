@@ -113,7 +113,7 @@ class AccountsViewController: BaseViewController {
         }
         
         pushNotificationController.requestAuthorization()
-        pushNotificationController.registerDevice()
+        pushNotificationController.sendDeviceDetails()
         
         setAccountsCollectionViewContentState()
     }
@@ -253,7 +253,7 @@ extension AccountsViewController {
             return
         }
         
-        pushNotificationController.registerDevice()
+        pushNotificationController.sendDeviceDetails()
         
         accountsDataSource.reload()
         setAccountsCollectionViewContentState()
