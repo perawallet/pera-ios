@@ -141,7 +141,7 @@ extension ContactInfoViewController {
                 }
             case let .failure(_, indexerError):
                 if indexerError?.containsAccount(address) ?? false {
-                    self?.contactAccount = Account(address: address)
+                    self?.contactAccount = Account(address: address, type: .standard)
                     SVProgressHUD.showSuccess(withStatus: "title-done".localized)
                     SVProgressHUD.dismiss()
                 } else {

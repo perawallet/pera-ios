@@ -61,7 +61,7 @@ extension LedgerAccountSelectionDataSource {
                 self.accounts.insert(accountResponse.account, at: 0)
             case let .failure(_, indexerError):
                 if indexerError?.containsAccount(address) ?? false {
-                    self.accounts.insert(Account(address: address, name: address.shortAddressDisplay()), at: 0)
+                    self.accounts.insert(Account(address: address, type: .ledger, name: address.shortAddressDisplay()), at: 0)
                 } else {
                     self.delegate?.ledgerAccountSelectionDataSourceDidFailToFetch(self)
                 }
