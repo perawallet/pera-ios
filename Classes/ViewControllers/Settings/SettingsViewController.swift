@@ -31,11 +31,11 @@ class SettingsViewController: BaseViewController {
         return PushNotificationController(api: api)
     }()
     
-    private lazy var settings: [[GeneralSettings]] = [developerSettings, securitySettings, preferenceSettings, appSettings]
-    private lazy var developerSettings: [GeneralSettings] = [.developer]
+    private lazy var settings: [[GeneralSettings]] = [securitySettings, preferenceSettings, appSettings, developerSettings]
     private lazy var securitySettings: [GeneralSettings] = [.password, .localAuthentication]
     private lazy var preferenceSettings: [GeneralSettings] = [.notifications, .rewards, .language, .currency]
     private lazy var appSettings: [GeneralSettings] = [.feedback, .termsAndServices]
+    private lazy var developerSettings: [GeneralSettings] = [.developer]
     
     private lazy var settingsView = SettingsView()
     
@@ -96,8 +96,6 @@ extension SettingsViewController: UICollectionViewDataSource {
         if let settings = settings[safe: indexPath.section],
             let setting = settings[safe: indexPath.item] {
             switch setting {
-            case .developer:
-                return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
             case .password:
                 return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
             case .localAuthentication:
@@ -127,6 +125,8 @@ extension SettingsViewController: UICollectionViewDataSource {
             case .feedback:
                 return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
             case .termsAndServices:
+                return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
+            case .developer:
                 return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
             }
         }
@@ -232,8 +232,6 @@ extension SettingsViewController: UICollectionViewDelegateFlowLayout {
             let setting = settings[safe: indexPath.item] {
         
             switch setting {
-            case .developer:
-                open(.developerSettings, by: .push)
             case .password:
                 open(
                     .choosePassword(
@@ -248,6 +246,8 @@ extension SettingsViewController: UICollectionViewDelegateFlowLayout {
                 }
                 
                 open(url)
+            case .developer:
+                open(.developerSettings, by: .push)
             default:
                 break
             }
@@ -313,7 +313,7 @@ extension SettingsViewController: SettingsToggleCellDelegate {
         }
         
         let cancelAction = UIAlertAction(title: "title-cancel".localized, style: .cancel) { _ in
-            let indexPath = IndexPath(item: 0, section: 2)
+            let indexPath = IndexPath(item: 0, section: 1)
             guard let cell = self.settingsView.collectionView.cellForItem(at: indexPath) as? SettingsToggleCell else {
                 return
             }
@@ -339,7 +339,7 @@ extension SettingsViewController: SettingsToggleCellDelegate {
         }
         
         let cancelAction = UIAlertAction(title: "title-cancel".localized, style: .cancel) { _ in
-            let indexPath = IndexPath(item: 1, section: 1)
+            let indexPath = IndexPath(item: 1, section: 0)
             guard let cell = self.settingsView.collectionView.cellForItem(at: indexPath) as? SettingsToggleCell else {
                 return
             }
