@@ -267,7 +267,7 @@
 "node-settings-warning-title" = "Warning";
 "add-node-title" = "Add Node";
 "edit-node-title" = "Edit Node";
-"node-settings-subtitle" = "Toggle the nodes you would like to use";
+"node-settings-subtitle" = "Select the Node";
 "node-settings-enter-node-name" = "Name: ";
 "node-settings-enter-node-address" = "Address: ";
 "node-settings-api-key" = "Key: ";
