@@ -39,6 +39,8 @@ class AccountListViewModel {
                 cell.contextView.imageView.isHidden = false
                 cell.contextView.detailLabel.text = account.amount.toAlgos.toDecimalStringForLabel
             }
+        default:
+            break
         }
     }
 }

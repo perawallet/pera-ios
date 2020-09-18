@@ -108,7 +108,7 @@ extension NodeSettingsViewController {
         if pushNotificationController.token == nil {
             switchNetwork(for: selectedNode, at: indexPath)
         } else {
-            pushNotificationController.registerDevice { isCompleted in
+            pushNotificationController.sendDeviceDetails { isCompleted in
                 if isCompleted {
                     self.switchNetwork(for: selectedNode, at: indexPath)
                 } else {

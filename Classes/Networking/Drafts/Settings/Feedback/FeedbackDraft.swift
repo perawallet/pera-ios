@@ -13,13 +13,20 @@ struct FeedbackDraft: JSONKeyedBody {
     
     let note: String
     let category: String
-    var email: String?
+    let email: String
+    let address: String?
     
     func decoded() -> [Pair]? {
-        return [
+        var pairs = [
             Pair(key: .note, value: note),
             Pair(key: .category, value: category),
             Pair(key: .email, value: email)
         ]
+        
+        if let address = address {
+            pairs.append(Pair(key: .publicKey, value: address))
+        }
+        
+        return pairs
     }
 }

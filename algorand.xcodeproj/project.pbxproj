@@ -836,6 +836,12 @@
 		2B1A1D5824B351CF00CB4E78 /* ListErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1A1D5624B351CF00CB4E78 /* ListErrorView.swift */; };
 		2B1A1D6124B3526700CB4E78 /* TooltipPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1A1D6024B3526700CB4E78 /* TooltipPresenter.swift */; };
 		2B1A1D6224B3526700CB4E78 /* TooltipPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1A1D6024B3526700CB4E78 /* TooltipPresenter.swift */; };
+		2B1ADD772511823D008B205E /* DeviceDeletionDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1ADD762511823D008B205E /* DeviceDeletionDraft.swift */; };
+		2B1ADD782511823D008B205E /* DeviceDeletionDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1ADD762511823D008B205E /* DeviceDeletionDraft.swift */; };
+		2B1ADD792511823D008B205E /* DeviceDeletionDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1ADD762511823D008B205E /* DeviceDeletionDraft.swift */; };
+		2B1ADD7B2511824F008B205E /* DeviceUpdateDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1ADD7A2511824F008B205E /* DeviceUpdateDraft.swift */; };
+		2B1ADD7C2511824F008B205E /* DeviceUpdateDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1ADD7A2511824F008B205E /* DeviceUpdateDraft.swift */; };
+		2B1ADD7D2511824F008B205E /* DeviceUpdateDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1ADD7A2511824F008B205E /* DeviceUpdateDraft.swift */; };
 		2B1B536823279CD500D54029 /* AlgorandNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1B536723279CD500D54029 /* AlgorandNotification.swift */; };
 		2B1B536923279CD500D54029 /* AlgorandNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1B536723279CD500D54029 /* AlgorandNotification.swift */; };
 		2B1B536B2328029F00D54029 /* NotificationDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1B536A2328029F00D54029 /* NotificationDetail.swift */; };
@@ -894,6 +900,9 @@
 		2B2AACE0250BA63D00B8C5C5 /* GeneralSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2AACDF250BA63D00B8C5C5 /* GeneralSettings.swift */; };
 		2B2AACE1250BA63D00B8C5C5 /* GeneralSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2AACDF250BA63D00B8C5C5 /* GeneralSettings.swift */; };
 		2B2AACE2250BA63D00B8C5C5 /* GeneralSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2AACDF250BA63D00B8C5C5 /* GeneralSettings.swift */; };
+		2B2AACA9250A6D6600B8C5C5 /* RekeyEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2AACA8250A6D6600B8C5C5 /* RekeyEvent.swift */; };
+		2B2AACAA250A6D6600B8C5C5 /* RekeyEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2AACA8250A6D6600B8C5C5 /* RekeyEvent.swift */; };
+		2B2AACAB250A6D6600B8C5C5 /* RekeyEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2AACA8250A6D6600B8C5C5 /* RekeyEvent.swift */; };
 		2B38C92824D435C70059AB02 /* RekeyInstructionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B38C92724D435C70059AB02 /* RekeyInstructionsViewController.swift */; };
 		2B38C92924D435C70059AB02 /* RekeyInstructionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B38C92724D435C70059AB02 /* RekeyInstructionsViewController.swift */; };
 		2B38C92C24D435FB0059AB02 /* RekeyInstructionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B38C92B24D435FB0059AB02 /* RekeyInstructionsView.swift */; };
@@ -1687,6 +1696,8 @@
 		2B1A1D5224AFAA2E00CB4E78 /* TransactionSignature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionSignature.swift; sourceTree = "<group>"; };
 		2B1A1D5624B351CF00CB4E78 /* ListErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListErrorView.swift; sourceTree = "<group>"; };
 		2B1A1D6024B3526700CB4E78 /* TooltipPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TooltipPresenter.swift; sourceTree = "<group>"; };
+		2B1ADD762511823D008B205E /* DeviceDeletionDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceDeletionDraft.swift; sourceTree = "<group>"; };
+		2B1ADD7A2511824F008B205E /* DeviceUpdateDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceUpdateDraft.swift; sourceTree = "<group>"; };
 		2B1B536723279CD500D54029 /* AlgorandNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorandNotification.swift; sourceTree = "<group>"; };
 		2B1B536A2328029F00D54029 /* NotificationDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationDetail.swift; sourceTree = "<group>"; };
 		2B2362D424CF8BF6007ECEBE /* IndexerError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndexerError.swift; sourceTree = "<group>"; };
@@ -1713,6 +1724,7 @@
 		2B2AACD7250B6C6E00B8C5C5 /* SettingsDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDetailViewModel.swift; sourceTree = "<group>"; };
 		2B2AACDB250BA4C200B8C5C5 /* DeveloperSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeveloperSettings.swift; sourceTree = "<group>"; };
 		2B2AACDF250BA63D00B8C5C5 /* GeneralSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettings.swift; sourceTree = "<group>"; };
+		2B2AACA8250A6D6600B8C5C5 /* RekeyEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyEvent.swift; sourceTree = "<group>"; };
 		2B38C92724D435C70059AB02 /* RekeyInstructionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyInstructionsViewController.swift; sourceTree = "<group>"; };
 		2B38C92B24D435FB0059AB02 /* RekeyInstructionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyInstructionsView.swift; sourceTree = "<group>"; };
 		2B38C92F24D436F20059AB02 /* RekeyInstructionItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyInstructionItemView.swift; sourceTree = "<group>"; };
@@ -3321,6 +3333,8 @@
 			isa = PBXGroup;
 			children = (
 				2BBA198B231FF7650080A6F6 /* DeviceRegistrationDraft.swift */,
+				2B1ADD762511823D008B205E /* DeviceDeletionDraft.swift */,
+				2B1ADD7A2511824F008B205E /* DeviceUpdateDraft.swift */,
 			);
 			path = Device;
 			sourceTree = "<group>";
@@ -4344,6 +4358,7 @@
 			children = (
 				2B9F063A24B5E48A006880F0 /* RegistrationEvent.swift */,
 				2B9F063D24B5E4A7006880F0 /* TransactionEvent.swift */,
+				2B2AACA8250A6D6600B8C5C5 /* RekeyEvent.swift */,
 			);
 			path = Events;
 			sourceTree = "<group>";
@@ -6131,6 +6146,7 @@
 				17BD4E152292F1260003E49A /* RequestTransactionViewController.swift in Sources */,
 				2B3E3A072479684900E8AEB7 /* TabBarItemConvertible.swift in Sources */,
 				2B0F5EF824DD507000DA22A6 /* RekeyConfirmationViewController.swift in Sources */,
+				2B1ADD792511823D008B205E /* DeviceDeletionDraft.swift in Sources */,
 				17BD4E162292F1260003E49A /* PassphraseViewModel.swift in Sources */,
 				17BD4E172292F1260003E49A /* Payment.swift in Sources */,
 				2B0F5F0524DD50E900DA22A6 /* RekeyConfirmationDataSource.swift in Sources */,
@@ -6199,6 +6215,7 @@
 				2B4A9C462507831700D58B6B /* AlgoExplorerLabel.swift in Sources */,
 				2B7ABF69232BDE1C0050B64B /* Reward.swift in Sources */,
 				17BD4E3B2292F1260003E49A /* SettingsViewController.swift in Sources */,
+				2B2AACAB250A6D6600B8C5C5 /* RekeyEvent.swift in Sources */,
 				17BD4E3C2292F1260003E49A /* IntroductionView.swift in Sources */,
 				2B3E3A01247966D300E8AEB7 /* TabBarButtonItemConvertible.swift in Sources */,
 				2B4BDA14238CA1E500491149 /* AssetActionConfirmationViewModel.swift in Sources */,
@@ -6356,6 +6373,7 @@
 				2B13952F24C605E0002F66D3 /* CursorQuery.swift in Sources */,
 				17BD4E922292F1260003E49A /* MainButton.swift in Sources */,
 				17BD4E932292F1260003E49A /* NodeSettingsViewModel.swift in Sources */,
+				2B1ADD7D2511824F008B205E /* DeviceUpdateDraft.swift in Sources */,
 				17BD4E942292F1260003E49A /* TransactionReceiverView.swift in Sources */,
 				2B2AACD6250B6BF500B8C5C5 /* SettingsInfoViewModel.swift in Sources */,
 				17BD4E962292F1260003E49A /* PasswordInputView.swift in Sources */,
@@ -6631,6 +6649,7 @@
 				2B0F618724EC129D00DA22A6 /* AssetTransactionsDraft.swift in Sources */,
 				2B0F618824EC129D00DA22A6 /* AssetTransactionSendDraft.swift in Sources */,
 				2B0F618924EC129D00DA22A6 /* TransactionDetailViewController.swift in Sources */,
+				2B1ADD782511823D008B205E /* DeviceDeletionDraft.swift in Sources */,
 				2B0F618A24EC129D00DA22A6 /* SwiftDate+Region.swift in Sources */,
 				2B0F618B24EC129D00DA22A6 /* AssetSupportView.swift in Sources */,
 				2B0F618C24EC129D00DA22A6 /* PinLimitView.swift in Sources */,
@@ -6700,6 +6719,8 @@
 				2B4A9C452507831700D58B6B /* AlgoExplorerLabel.swift in Sources */,
 				2B0F61CA24EC129D00DA22A6 /* AssetSupportViewModel.swift in Sources */,
 				2B0F61CB24EC129D00DA22A6 /* SendTransactionViewController.swift in Sources */,
+				2B2AACAA250A6D6600B8C5C5 /* RekeyEvent.swift in Sources */,
+				2B0F61CC24EC129D00DA22A6 /* SettingsViewModel.swift in Sources */,
 				2B0F61CD24EC129D00DA22A6 /* VerifiedAssetInformationViewController.swift in Sources */,
 				2B0F61CE24EC129D00DA22A6 /* VerifiedAssetList.swift in Sources */,
 				2B0F61CF24EC129D00DA22A6 /* AssetAdditionDraft.swift in Sources */,
@@ -6856,6 +6877,7 @@
 				2B0F626724EC129D00DA22A6 /* TransactionReceiverSelectionView.swift in Sources */,
 				2B0F626824EC129D00DA22A6 /* LedgerTutorialNumberView.swift in Sources */,
 				2B0F626924EC129D00DA22A6 /* API+Transaction.swift in Sources */,
+				2B1ADD7C2511824F008B205E /* DeviceUpdateDraft.swift in Sources */,
 				2B0F626A24EC129D00DA22A6 /* MainButton.swift in Sources */,
 				2B0F626B24EC129D00DA22A6 /* LedgerApprovalView.swift in Sources */,
 				2B2AACD5250B6BF500B8C5C5 /* SettingsInfoViewModel.swift in Sources */,
@@ -7131,6 +7153,7 @@
 				2BD5477123184310007179FE /* FeedbackCategory.swift in Sources */,
 				2B3E3A062479684900E8AEB7 /* TabBarItemConvertible.swift in Sources */,
 				2B0F5EF724DD507000DA22A6 /* RekeyConfirmationViewController.swift in Sources */,
+				2B1ADD772511823D008B205E /* DeviceDeletionDraft.swift in Sources */,
 				1761B3CB224A39D400C6BA47 /* PassphraseViewModel.swift in Sources */,
 				2B6ED964226105E100787984 /* Payment.swift in Sources */,
 				2B0F5F0424DD50E900DA22A6 /* RekeyConfirmationDataSource.swift in Sources */,
@@ -7199,6 +7222,7 @@
 				2B4A9C442507831700D58B6B /* AlgoExplorerLabel.swift in Sources */,
 				2BF5317C224AA89B00A7455F /* SettingsViewController.swift in Sources */,
 				2BD739D1223F97F600B66EEF /* IntroductionView.swift in Sources */,
+				2B2AACA9250A6D6600B8C5C5 /* RekeyEvent.swift in Sources */,
 				179B93DA225E460500DD03E9 /* NodeSettingsHeaderView.swift in Sources */,
 				2B3E3A00247966D300E8AEB7 /* TabBarButtonItemConvertible.swift in Sources */,
 				2BD73A1C2241636C00B66EEF /* PassphraseView.swift in Sources */,
@@ -7356,6 +7380,7 @@
 				2B13952E24C605E0002F66D3 /* CursorQuery.swift in Sources */,
 				2B7572AE225CCB62009E0253 /* TransactionReceiverView.swift in Sources */,
 				2B0D84F72395D4F500F0EAA7 /* SendAssetTransactionPreviewViewController.swift in Sources */,
+				2B1ADD7B2511824F008B205E /* DeviceUpdateDraft.swift in Sources */,
 				2BD739FA2240527B00B66EEF /* PasswordInputView.swift in Sources */,
 				2B2AACD4250B6BF500B8C5C5 /* SettingsInfoViewModel.swift in Sources */,
 				2B4BD9ED2389CBC000491149 /* AssetNameView.swift in Sources */,
@@ -7584,7 +7609,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = NO;
@@ -7598,7 +7623,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.3.0;
+				MARKETING_VERSION = 4.3.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algoranddemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = Algorand_Demo_Development;
@@ -7615,7 +7640,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -7628,7 +7653,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.3.0;
+				MARKETING_VERSION = 4.3.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algoranddemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match AdHoc com.algorandllc.algoranddemo";
@@ -7645,7 +7670,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -7658,7 +7683,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.3.0;
+				MARKETING_VERSION = 4.3.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algoranddemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match AdHoc com.algorandllc.algoranddemo";
@@ -7675,7 +7700,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = NO;
@@ -7689,7 +7714,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.3.0;
+				MARKETING_VERSION = 4.3.1;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -D PRODUCTION -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -7707,7 +7732,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -7720,7 +7745,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.3.0;
+				MARKETING_VERSION = 4.3.1;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -7738,7 +7763,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -7751,7 +7776,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.3.0;
+				MARKETING_VERSION = 4.3.1;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -7884,7 +7909,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = NO;
@@ -7898,7 +7923,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.3.0;
+				MARKETING_VERSION = 4.3.1;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -D PRODUCTION -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -7916,7 +7941,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -7929,7 +7954,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.3.0;
+				MARKETING_VERSION = 4.3.1;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -8002,7 +8027,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -8015,7 +8040,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.3.0;
+				MARKETING_VERSION = 4.3.1;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "$(TARGET_NAME)";

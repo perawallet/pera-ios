@@ -24,6 +24,20 @@ extension API {
     }
     
     @discardableResult
+    func updateDevice(
+        with draft: DeviceUpdateDraft,
+        then handler: @escaping Endpoint.DefaultResultHandler<Device>
+    ) -> EndpointOperatable {
+        return Endpoint(path: Path("/api/devices/\(draft.id)"))
+            .base(mobileApiBase)
+            .httpMethod(.put)
+            .httpHeaders(mobileApiHeaders())
+            .httpBody(draft)
+            .resultHandler(handler)
+            .buildAndSend(self)
+    }
+    
+    @discardableResult
     func unregisterDevice(with draft: DeviceDeletionDraft) -> EndpointOperatable {
         return Endpoint(path: Path("/api/devices/"))
             .base(mobileApiBase)
