@@ -900,6 +900,9 @@
 		2B2AACE0250BA63D00B8C5C5 /* GeneralSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2AACDF250BA63D00B8C5C5 /* GeneralSettings.swift */; };
 		2B2AACE1250BA63D00B8C5C5 /* GeneralSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2AACDF250BA63D00B8C5C5 /* GeneralSettings.swift */; };
 		2B2AACE2250BA63D00B8C5C5 /* GeneralSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2AACDF250BA63D00B8C5C5 /* GeneralSettings.swift */; };
+		2B2AACA9250A6D6600B8C5C5 /* RekeyEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2AACA8250A6D6600B8C5C5 /* RekeyEvent.swift */; };
+		2B2AACAA250A6D6600B8C5C5 /* RekeyEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2AACA8250A6D6600B8C5C5 /* RekeyEvent.swift */; };
+		2B2AACAB250A6D6600B8C5C5 /* RekeyEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2AACA8250A6D6600B8C5C5 /* RekeyEvent.swift */; };
 		2B38C92824D435C70059AB02 /* RekeyInstructionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B38C92724D435C70059AB02 /* RekeyInstructionsViewController.swift */; };
 		2B38C92924D435C70059AB02 /* RekeyInstructionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B38C92724D435C70059AB02 /* RekeyInstructionsViewController.swift */; };
 		2B38C92C24D435FB0059AB02 /* RekeyInstructionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B38C92B24D435FB0059AB02 /* RekeyInstructionsView.swift */; };
@@ -1703,6 +1706,7 @@
 		2B2AACD7250B6C6E00B8C5C5 /* SettingsDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDetailViewModel.swift; sourceTree = "<group>"; };
 		2B2AACDB250BA4C200B8C5C5 /* DeveloperSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeveloperSettings.swift; sourceTree = "<group>"; };
 		2B2AACDF250BA63D00B8C5C5 /* GeneralSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettings.swift; sourceTree = "<group>"; };
+		2B2AACA8250A6D6600B8C5C5 /* RekeyEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyEvent.swift; sourceTree = "<group>"; };
 		2B38C92724D435C70059AB02 /* RekeyInstructionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyInstructionsViewController.swift; sourceTree = "<group>"; };
 		2B38C92B24D435FB0059AB02 /* RekeyInstructionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyInstructionsView.swift; sourceTree = "<group>"; };
 		2B38C92F24D436F20059AB02 /* RekeyInstructionItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyInstructionItemView.swift; sourceTree = "<group>"; };
@@ -4327,6 +4331,7 @@
 			children = (
 				2B9F063A24B5E48A006880F0 /* RegistrationEvent.swift */,
 				2B9F063D24B5E4A7006880F0 /* TransactionEvent.swift */,
+				2B2AACA8250A6D6600B8C5C5 /* RekeyEvent.swift */,
 			);
 			path = Events;
 			sourceTree = "<group>";
@@ -6114,6 +6119,7 @@
 				2B4A9C462507831700D58B6B /* AlgoExplorerLabel.swift in Sources */,
 				2B7ABF69232BDE1C0050B64B /* Reward.swift in Sources */,
 				17BD4E3B2292F1260003E49A /* SettingsViewController.swift in Sources */,
+				2B2AACAB250A6D6600B8C5C5 /* RekeyEvent.swift in Sources */,
 				17BD4E3C2292F1260003E49A /* IntroductionView.swift in Sources */,
 				2B3E3A01247966D300E8AEB7 /* TabBarButtonItemConvertible.swift in Sources */,
 				2B4BDA14238CA1E500491149 /* AssetActionConfirmationViewModel.swift in Sources */,
@@ -6611,6 +6617,8 @@
 				2B4A9C452507831700D58B6B /* AlgoExplorerLabel.swift in Sources */,
 				2B0F61CA24EC129D00DA22A6 /* AssetSupportViewModel.swift in Sources */,
 				2B0F61CB24EC129D00DA22A6 /* SendTransactionViewController.swift in Sources */,
+				2B2AACAA250A6D6600B8C5C5 /* RekeyEvent.swift in Sources */,
+				2B0F61CC24EC129D00DA22A6 /* SettingsViewModel.swift in Sources */,
 				2B0F61CD24EC129D00DA22A6 /* VerifiedAssetInformationViewController.swift in Sources */,
 				2B0F61CE24EC129D00DA22A6 /* VerifiedAssetList.swift in Sources */,
 				2B0F61CF24EC129D00DA22A6 /* AssetAdditionDraft.swift in Sources */,
@@ -7106,6 +7114,7 @@
 				2B4A9C442507831700D58B6B /* AlgoExplorerLabel.swift in Sources */,
 				2BF5317C224AA89B00A7455F /* SettingsViewController.swift in Sources */,
 				2BD739D1223F97F600B66EEF /* IntroductionView.swift in Sources */,
+				2B2AACA9250A6D6600B8C5C5 /* RekeyEvent.swift in Sources */,
 				179B93DA225E460500DD03E9 /* NodeSettingsHeaderView.swift in Sources */,
 				2B3E3A00247966D300E8AEB7 /* TabBarButtonItemConvertible.swift in Sources */,
 				2BD73A1C2241636C00B66EEF /* PassphraseView.swift in Sources */,
@@ -7488,7 +7497,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = NO;
@@ -7502,7 +7511,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.3.0;
+				MARKETING_VERSION = 4.3.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algoranddemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = Algorand_Demo_Development;
@@ -7519,7 +7528,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -7532,7 +7541,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.3.0;
+				MARKETING_VERSION = 4.3.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algoranddemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match AdHoc com.algorandllc.algoranddemo";
@@ -7549,7 +7558,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -7562,7 +7571,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.3.0;
+				MARKETING_VERSION = 4.3.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algoranddemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match AdHoc com.algorandllc.algoranddemo";
@@ -7579,7 +7588,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = NO;
@@ -7593,7 +7602,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.3.0;
+				MARKETING_VERSION = 4.3.1;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -D PRODUCTION -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -7611,7 +7620,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -7624,7 +7633,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.3.0;
+				MARKETING_VERSION = 4.3.1;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -7642,7 +7651,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -7655,7 +7664,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.3.0;
+				MARKETING_VERSION = 4.3.1;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -7788,7 +7797,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = NO;
@@ -7802,7 +7811,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.3.0;
+				MARKETING_VERSION = 4.3.1;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -D PRODUCTION -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -7820,7 +7829,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -7833,7 +7842,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.3.0;
+				MARKETING_VERSION = 4.3.1;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -7906,7 +7915,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -7919,7 +7928,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.3.0;
+				MARKETING_VERSION = 4.3.1;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "$(TARGET_NAME)";

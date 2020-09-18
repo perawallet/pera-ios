@@ -459,7 +459,7 @@ extension AccountsViewController {
         let optionsModalHeight: CGFloat = 406.0
         let removeAccountModalHeight: CGFloat = 402.0
         let editAccountModalHeight: CGFloat = 158.0
-        let passphraseModalHeight: CGFloat = 470.0
+        let passphraseModalHeight: CGFloat = 510.0
         let termsAndServiceHeight: CGFloat = 300
     }
 }

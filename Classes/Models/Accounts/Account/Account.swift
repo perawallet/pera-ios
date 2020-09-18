@@ -50,7 +50,7 @@ class Account: Model {
         ledgerDetail = try container.decodeIfPresent(LedgerDetail.self, forKey: .ledgerDetail)
     }
     
-    init(address: String, type: AccountType = .standard, ledgerDetail: LedgerDetail? = nil, name: String? = nil) {
+    init(address: String, type: AccountType, ledgerDetail: LedgerDetail? = nil, name: String? = nil) {
         self.address = address
         amount = 0
         status = .offline

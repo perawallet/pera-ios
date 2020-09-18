@@ -99,9 +99,17 @@ extension LedgerAccountSelectionViewController: LedgerAccountSelectionDataSource
 
 extension LedgerAccountSelectionViewController: LedgerAccountSelectionViewDelegate {
     func ledgerAccountSelectionViewDidAddAccount(_ ledgerAccountSelectionView: LedgerAccountSelectionView) {
-        RegistrationEvent(type: .ledger).logEvent()
+        logRegistrationEvents()
         dataSource.saveSelectedAccounts(ledgerAccountSelectionView.selectedIndexes)
         launchHome()
+    }
+    
+    private func logRegistrationEvents() {
+        RegistrationEvent(type: .ledger).logEvent()
+        
+        ledgerAccountSelectionView.selectedIndexes.forEach { _ in
+            RegistrationEvent(type: .rekeyed).logEvent()
+        }
     }
     
     private func launchHome() {

@@ -47,7 +47,7 @@ class AssetDetailHeaderView: BaseView {
             .withTextColor(SharedColors.primaryText)
             .withFont(UIFont.font(withWeight: .semiBold(size: 28.0)))
             .withText("0.000000")
-        label.minimumScaleFactor = 0.8
+        label.minimumScaleFactor = 0.7
         label.adjustsFontSizeToFitWidth = true
         return label
     }()
@@ -203,8 +203,8 @@ extension AssetDetailHeaderView {
         addSubview(algosAmountLabel)
         
         algosAmountLabel.snp.makeConstraints { make in
-            make.trailing.lessThanOrEqualToSuperview().inset(layout.current.amountTrailingInset)
-            make.leading.equalToSuperview().inset(layout.current.horizontalInset).priority(.low)
+            make.trailing.equalToSuperview().inset(layout.current.amountTrailingInset)
+            make.leading.equalToSuperview().inset(layout.current.horizontalInset).priority(.high)
             make.leading.equalTo(algosImageView.snp.trailing).offset(layout.current.minimumOffset)
             make.top.equalTo(assetNameLabel.snp.bottom).offset(layout.current.amountTopInset)
         }

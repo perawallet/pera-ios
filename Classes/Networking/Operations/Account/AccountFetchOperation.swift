@@ -39,7 +39,7 @@ class AccountFetchOperation: AsyncOperation {
                 }
             case let .failure(error, indexerError):
                 if indexerError?.containsAccount(self.accountInformation.address) ?? false {
-                    self.onCompleted?(Account(address: self.accountInformation.address, name: self.accountInformation.name), nil)
+                    self.onCompleted?(Account(accountInformation: self.accountInformation), nil)
                 } else {
                     self.onCompleted?(nil, error)
                 }

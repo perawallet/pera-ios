@@ -135,7 +135,7 @@ extension PassphraseDisplayView {
         let collectionViewHorizontalInset: CGFloat = 20.0 * horizontalScale
         let buttonTopInset: CGFloat = 27.0
         let bottomInset: CGFloat = 16.0
-        let collectionViewHeight: CGFloat = 275.0
+        let collectionViewHeight: CGFloat = 315.0
         let buttonSize = CGSize(width: 157.0 * horizontalScale, height: 52.0)
     }
 }
