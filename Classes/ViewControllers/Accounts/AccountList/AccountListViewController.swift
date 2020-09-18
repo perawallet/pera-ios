@@ -87,6 +87,7 @@ extension AccountListViewController: AccountListLayoutBuilderDelegate {
 
 extension AccountListViewController {
     enum Mode {
+        case empty
         case assetCount
         case contact(assetDetail: AssetDetail?)
         case transactionReceiver(assetDetail: AssetDetail?)

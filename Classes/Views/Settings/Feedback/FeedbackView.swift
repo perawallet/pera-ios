@@ -28,10 +28,18 @@ class FeedbackView: BaseView {
         return pickerView
     }()
     
+    private(set) lazy var accountSelectionView: SelectionView = {
+        let accountSelectionView = SelectionView()
+        accountSelectionView.leftExplanationLabel.text = "feedback-subtitle-account-title".localized
+        accountSelectionView.detailLabel.text = "feedback-subtitle-account-detail".localized
+        accountSelectionView.rightInputAccessoryButton.setImage(img("icon-picker-selection-down"), for: .normal)
+        return accountSelectionView
+    }()
+    
     private(set) lazy var emailInputView: SingleLineInputField = {
         let accountNameInputView = SingleLineInputField()
         accountNameInputView.explanationLabel.text = "feedback-title-email".localized
-        accountNameInputView.placeholderText = "feedback-subtitle-email".localized
+        accountNameInputView.placeholderText = "feedback-title-email".localized
         accountNameInputView.nextButtonMode = .next
         accountNameInputView.inputTextField.autocorrectionType = .no
         accountNameInputView.inputTextField.autocapitalizationType = .none
@@ -58,11 +66,13 @@ class FeedbackView: BaseView {
     override func setListeners() {
         sendButton.addTarget(self, action: #selector(notifyDelegateToSendButtonTapped), for: .touchUpInside)
         categorySelectionView.addTarget(self, action: #selector(notifyDelegateToSelectCategory), for: .touchUpInside)
+        accountSelectionView.addTarget(self, action: #selector(notifyDelegateToSelectAccount), for: .touchUpInside)
     }
     
     override func prepareLayout() {
         setupCategorySelectionViewLayout()
         setupCategoryPickerViewLayout()
+        setupAccountSelectionViewLayout()
         setupEmailInputViewLayout()
         setupNoteInputViewLayout()
         setupSendButtonLayout()
@@ -71,9 +81,10 @@ class FeedbackView: BaseView {
     override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
         if !categorySelectionView.frame.contains(point) &&
             !categoryPickerView.frame.contains(point) &&
+            !accountSelectionView.frame.contains(point) &&
             !sendButton.frame.contains(point) &&
             !categoryPickerView.isHidden {
-            delegate?.feedbackViewDidTriggerCategorySelection(self)
+            delegate?.feedbackViewDidSelectCategory(self)
         }
         
         return super.hitTest(point, with: event)
@@ -83,7 +94,12 @@ class FeedbackView: BaseView {
 extension FeedbackView {
     @objc
     private func notifyDelegateToSelectCategory() {
-        delegate?.feedbackViewDidTriggerCategorySelection(self)
+        delegate?.feedbackViewDidSelectCategory(self)
+    }
+    
+    @objc
+    private func notifyDelegateToSelectAccount() {
+        delegate?.feedbackViewDidSelectAccount(self)
     }
     
     @objc
@@ -112,12 +128,21 @@ extension FeedbackView {
         }
     }
     
+    private func setupAccountSelectionViewLayout() {
+        addSubview(accountSelectionView)
+        
+        accountSelectionView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(categoryPickerView.snp.bottom).offset(layout.current.verticalInset)
+        }
+    }
+    
     private func setupEmailInputViewLayout() {
         addSubview(emailInputView)
         
         emailInputView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.top.equalTo(categoryPickerView.snp.bottom).offset(layout.current.verticalInset)
+            make.top.equalTo(accountSelectionView.snp.bottom).offset(layout.current.verticalInset)
         }
     }
     
@@ -161,7 +186,8 @@ extension FeedbackView {
 }
 
 protocol FeedbackViewDelegate: class {
-    func feedbackViewDidTriggerCategorySelection(_ feedbackView: FeedbackView)
+    func feedbackViewDidSelectCategory(_ feedbackView: FeedbackView)
+    func feedbackViewDidSelectAccount(_ feedbackView: FeedbackView)
     func feedbackViewDidTapSendButton(_ feedbackView: FeedbackView)
     func feedbackView(_ feedbackView: FeedbackView, inputDidReturn inputView: BaseInputView)
 }
