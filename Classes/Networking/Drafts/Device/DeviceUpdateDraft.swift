@@ -1,16 +1,17 @@
 //
-//  DeviceRegistrationDraft.swift
+//  DeviceUpdateDraft.swift
 //  algorand
 //
-//  Created by Göktuğ Berk Ulu on 4.09.2019.
-//  Copyright © 2019 hippo. All rights reserved.
+//  Created by Göktuğ Berk Ulu on 16.09.2020.
+//  Copyright © 2020 hippo. All rights reserved.
 //
 
 import Magpie
 
-struct DeviceRegistrationDraft: JSONKeyedBody {
+struct DeviceUpdateDraft: JSONKeyedBody {
     typealias Key = RequestParameter
     
+    let id: String
     let pushToken: String?
     let platform = "ios"
     let model = UIDevice.current.model
@@ -19,6 +20,7 @@ struct DeviceRegistrationDraft: JSONKeyedBody {
     
     func decoded() -> [Pair]? {
         var pairs = [
+            Pair(key: .id, value: id),
             Pair(key: .platform, value: platform),
             Pair(key: .model, value: model),
             Pair(key: .locale, value: locale),
