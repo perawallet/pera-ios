@@ -42,4 +42,9 @@ class RequestAssetTransactionViewController: RequestTransactionViewController, T
         super.prepareLayout()
         prepareLayout(of: requestTransactionView)
     }
+    
+    override func copyAccountAddress() {
+        UIPasteboard.general.string = assetTransactionRequestDraft.account.address
+        NotificationBanner.showInformation("qr-creation-copied".localized)
+    }
 }

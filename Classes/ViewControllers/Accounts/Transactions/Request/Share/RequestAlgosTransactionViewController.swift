@@ -38,4 +38,9 @@ class RequestAlgosTransactionViewController: RequestTransactionViewController, T
         super.prepareLayout()
         prepareLayout(of: requestTransactionView)
     }
+    
+    override func copyAccountAddress() {
+        UIPasteboard.general.string = algosTransactionRequestDraft.account.address
+        NotificationBanner.showInformation("qr-creation-copied".localized)
+    }
 }
