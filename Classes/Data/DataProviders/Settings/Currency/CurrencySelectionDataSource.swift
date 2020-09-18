@@ -13,8 +13,6 @@ class CurrencySelectionDataSource: NSObject {
     
     private let api: API
     private var currencies = [String]()
-    private var viewModels = [NotificationsViewModel]()
-    private var contacts = [Contact]()
     private var lastRequest: EndpointOperatable?
     
     private let paginationRequestThreshold = 3
@@ -61,7 +59,7 @@ extension CurrencySelectionDataSource {
         return currencies.isEmpty
     }
     
-    func notification(at index: Int) -> String? {
+    func currency(at index: Int) -> String? {
         return currencies[safe: index]
     }
     
@@ -78,6 +76,6 @@ extension CurrencySelectionDataSource {
 }
 
 protocol CurrencySelectionDataSourceDelegate: class {
-    func currencySelectionDataSourceDidFetchNotifications(_ currencySelectionDataSource: CurrencySelectionDataSource)
+    func currencySelectionDataSourceDidFetchCurrencies(_ currencySelectionDataSource: CurrencySelectionDataSource)
     func currencySelectionDataSourceDidFailToFetch(_ currencySelectionDataSource: CurrencySelectionDataSource)
 }
