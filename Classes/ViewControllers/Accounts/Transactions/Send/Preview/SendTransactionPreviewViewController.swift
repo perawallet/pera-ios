@@ -170,12 +170,12 @@ extension SendTransactionPreviewViewController {
     func getReceiverAccount() -> Account? {
         switch assetReceiverState {
         case let .address(address, _):
-            return Account(address: address)
+            return Account(address: address, type: .standard)
         case let .contact(contact):
             guard let address = contact.address else {
                 return nil
             }
-            return Account(address: address)
+            return Account(address: address, type: .standard)
         case let .myAccount(myAccount):
             return myAccount
         case .initial:
