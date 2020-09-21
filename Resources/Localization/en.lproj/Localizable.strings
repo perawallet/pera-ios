@@ -490,3 +490,10 @@
 "ledger-account-selection-ledger-rekeyed" = "Account is rekeyed to %@";
 "ledger-rekey-error-add-auth" = "The connected Ledger device cannot sign transactions for this account. In order to do so, please connect %@.";
 "ledger-rekey-error-not-found" = "This account has been rekeyed. Please recover this account with a passphrase or Ledger device.";
+
+// MARK: Watch Account
+
+"title-watch-account" = "Watch Account";
+"watch-account-input-explanation" = "Account Address to Watch";
+"watch-account-input-placeholder" = "Paste Address or Scan QR";
+"watch-account-error-address" = "Please enter a valid address.";
