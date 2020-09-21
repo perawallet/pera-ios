@@ -23,5 +23,6 @@ extension RegistrationEvent {
         case ledger = "ledger"
         case recover = "recover"
         case rekeyed = "rekeyed"
+        case watch = "watch"
     }
 }

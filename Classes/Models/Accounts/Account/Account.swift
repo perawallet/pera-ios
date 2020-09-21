@@ -139,7 +139,15 @@ extension Account {
         return authAddress != nil
     }
     
+    func isWatchAccount() -> Bool {
+        return type == .watch
+    }
+    
     func isLedger() -> Bool {
+        if isWatchAccount() {
+            return false
+        }
+        
         if let authAddress = authAddress {
             return address == authAddress
         }
@@ -147,6 +155,10 @@ extension Account {
     }
     
     func isRekeyed() -> Bool {
+        if isWatchAccount() {
+            return false
+        }
+        
         if let authAddress = authAddress {
             return authAddress != address
         }
@@ -158,7 +170,9 @@ extension Account {
     }
     
     func accountImage() -> UIImage? {
-        if isRekeyed() {
+        if isWatchAccount() {
+            return img("icon-account-type-watch")
+        } else if isRekeyed() {
             return img("icon-account-type-rekeyed")
         } else if isLedger() {
             return img("img-ledger-small")

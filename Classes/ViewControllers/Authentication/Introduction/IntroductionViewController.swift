@@ -91,4 +91,5 @@ enum AccountSetupMode {
     case pair
     case recover
     case rekey(account: Account)
+    case watch
 }
