@@ -386,7 +386,6 @@ platform :ios do
       output_directory: "./archive",
       output_name: options[:output_name],
       include_bitcode: true,
-      xcargs: {:BITCODE_GENERATION_MODE => "bitcode"},
       export_method: options[:export_method],
       verbose: true
     )
