@@ -83,6 +83,7 @@ indirect enum Screen {
     case ledgerAccountSelection(flow: AccountSetupFlow, ledger: LedgerDetail, ledgerAddress: String)
     case developerSettings
     case watchAccountAddition(flow: AccountSetupFlow)
+    case accountTypeSelection(flow: AccountSetupFlow)
 }
 
 extension Screen {

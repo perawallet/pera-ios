@@ -350,6 +350,8 @@ class Router {
             viewController = DeveloperSettingsViewController(configuration: configuration)
         case let .watchAccountAddition(flow):
             viewController = WatchAccountAdditionViewController(accountSetupFlow: flow, configuration: configuration)
+        case let .accountTypeSelection(flow):
+            viewController = AccountTypeSelectionViewController(flow: flow, configuration: configuration)
         }
         
         return viewController as? T

@@ -39,6 +39,13 @@
 "title-account" = "Account";
 "title-id" = "ID";
 "title-copy" = "Copy";
+"title-new-uppercased" = "NEW";
+
+// MARK: Account Type Selection
+"account-type-choose-title" = "Choose Account Type";
+"account-type-selection-create" = "Create New Account";
+"account-type-selection-create-detail" = "Create a new Algorand Account";
+"account-type-selection-watch-detail" = "Follow the account transactions with the address.";
 
 // MARK: Introduction
 "introduction-recover-title" = "Recover From Passphrase";
