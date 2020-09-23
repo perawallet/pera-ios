@@ -172,10 +172,8 @@ class Router {
         )
         
         switch screen {
-        case .introduction:
-            viewController = IntroductionViewController(configuration: configuration)
-        case .addNewAccount:
-            viewController = AddNewAccountViewController(configuration: configuration)
+        case let .introduction(flow):
+            viewController = IntroductionViewController(accountSetupFlow: flow, configuration: configuration)
         case let .choosePassword(mode, flow, route):
             viewController = ChoosePasswordViewController(
                 mode: mode,

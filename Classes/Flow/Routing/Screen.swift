@@ -9,8 +9,7 @@
 import UIKit
 
 indirect enum Screen {
-    case introduction
-    case addNewAccount
+    case introduction(flow: AccountSetupFlow)
     case choosePassword(mode: ChoosePasswordViewController.Mode, flow: AccountSetupFlow?, route: Screen?)
     case localAuthenticationPreference(flow: AccountSetupFlow)
     case passphraseView(address: String)
