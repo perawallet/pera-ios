@@ -12,14 +12,7 @@ import Magpie
 class CurrencySelectionDataSource: NSObject {
     
     private let api: API
-    private var currencies = [String]()
-    private var lastRequest: EndpointOperatable?
-    
-    private let paginationRequestThreshold = 3
-    private var paginationCursor: String?
-    var hasNext: Bool {
-        return paginationCursor != nil
-    }
+    private var currencies = [Currency]()
     
     weak var delegate: CurrencySelectionDataSourceDelegate?
 
@@ -30,8 +23,20 @@ class CurrencySelectionDataSource: NSObject {
 }
 
 extension CurrencySelectionDataSource {
-    func loadData(withRefresh refresh: Bool = true, isPaginated: Bool = false) {
-        
+    func loadData(withRefresh refresh: Bool = true) {
+        api.getCurrencies { response in
+            if refresh {
+                self.currencies.removeAll()
+            }
+            
+            switch response {
+            case let .success(currencies):
+                self.currencies = currencies
+                self.delegate?.currencySelectionDataSourceDidFetchCurrencies(self)
+            case .failure:
+                self.delegate?.currencySelectionDataSourceDidFailToFetch(self)
+            }
+        }
     }
 }
 
@@ -46,7 +51,8 @@ extension CurrencySelectionDataSource: UICollectionViewDataSource {
                 withReuseIdentifier: SingleSelectionCell.reusableIdentifier,
                 for: indexPath
             ) as? SingleSelectionCell {
-                cell.contextView.bind(SingleSelectionViewModel())
+                let isSelected = api.session.preferredCurrency == currency.id
+                cell.contextView.bind(SingleSelectionViewModel(title: currency.name, isSelected: isSelected))
                 return cell
         }
     
@@ -59,19 +65,8 @@ extension CurrencySelectionDataSource {
         return currencies.isEmpty
     }
     
-    func currency(at index: Int) -> String? {
+    func currency(at index: Int) -> Currency? {
         return currencies[safe: index]
-    }
-    
-    func shouldSendPaginatedRequest(at index: Int) -> Bool {
-        return index == currencies.count - paginationRequestThreshold && hasNext
-    }
-    
-    func clear() {
-        lastRequest?.cancel()
-        lastRequest = nil
-        currencies.removeAll()
-        paginationCursor = nil
     }
 }
 

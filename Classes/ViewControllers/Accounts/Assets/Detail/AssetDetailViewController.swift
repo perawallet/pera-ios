@@ -109,7 +109,11 @@ class AssetDetailViewController: BaseViewController {
 
 extension AssetDetailViewController {
     private func fetchDollarConversion() {
-        api?.fetchDollarValue { response in
+        guard let preferredCurrency = session?.preferredCurrency else {
+            return
+        }
+        
+        api?.getCurrencyValue(for: preferredCurrency) { response in
             switch response {
             case let .success(result):
                 if let price = result.price,

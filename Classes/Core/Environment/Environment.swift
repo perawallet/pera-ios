@@ -54,11 +54,6 @@ class Environment {
         return api
     }()
     
-    lazy var binanceApi: String = {
-        let api = "https://\(binanceHost)"
-        return api
-    }()
-    
     lazy var mobileApi: String = {
         switch target {
         case .staging:
