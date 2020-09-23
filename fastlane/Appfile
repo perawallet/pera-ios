@@ -1,18 +1,2 @@
-apple_id(ENV["FASTLANE_ID"])
+apple_id(ENV["FASTLANE_USER"])
 team_id(ENV["TEAM_ID"])
-app_identifier(ENV["APP_ID"])
-
-for_platform :ios do
-    for_lane :staging do
-        app_identifier(ENV["STAGING_APP_ID"])
-    end
-    for_lane :staging_dev do
-        app_identifier(ENV["STAGING_APP_ID"])
-    end
-    for_lane :preprod do
-        app_identifier(ENV["PREPROD_APP_ID"])
-    end
-    for_lane :preprod_dev do
-        app_identifier(ENV["PREPROD_APP_ID"])
-    end
-end
