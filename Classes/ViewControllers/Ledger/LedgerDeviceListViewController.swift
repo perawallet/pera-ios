@@ -260,7 +260,10 @@ extension LedgerDeviceListViewController: LedgerBLEControllerDelegate {
         }
     }
     
-    private func openNextFlow(for mode: AccountSetupMode, with ledgerDetail: LedgerDetail, for address: String) {
+    private func openNextFlow(for mode: AccountSetupMode?, with ledgerDetail: LedgerDetail, for address: String) {
+        guard let mode = mode else {
+            return
+        }
         switch mode {
         case let .rekey(account):
             self.open(.rekeyConfirmation(account: account, ledger: ledgerDetail, ledgerAddress: address), by: .push)

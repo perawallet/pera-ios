@@ -109,7 +109,7 @@ extension AccountsViewController: OptionsViewControllerDelegate {
                 
                 guard !user.accounts.isEmpty else {
                     self.session?.reset(isContactIncluded: false)
-                    self.tabBarContainer?.open(.introduction, by: .launch, animated: false)
+                    self.tabBarContainer?.open(.introduction(flow: .initializeAccount(mode: nil)), by: .launch, animated: false)
                     return
                 }
 
