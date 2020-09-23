@@ -44,7 +44,7 @@ class AccountTypeViewModel {
         case .watch:
             title = "title-watch-account".localized
         case .recover:
-            title = "introduction-recover-title".localized
+            title = "account-type-selection-recover".localized
         case .pair:
             title = "ledger-device-list-title".localized
         default:
@@ -68,9 +68,9 @@ class AccountTypeViewModel {
         case .watch:
             detail = "account-type-selection-watch-detail".localized
         case .recover:
-            detail = "account-type-selection-create-detail".localized
+            detail = "account-type-selection-recover-detail".localized
         case .pair:
-            detail = "account-type-selection-create-detail".localized
+            detail = "account-type-selection-ledger-detail".localized
         default:
             break
         }
