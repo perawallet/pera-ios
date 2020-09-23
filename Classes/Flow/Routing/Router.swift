@@ -348,6 +348,8 @@ class Router {
             )
         case .developerSettings:
             viewController = DeveloperSettingsViewController(configuration: configuration)
+        case .currencySelection:
+            viewController = CurrencySelectionViewController(configuration: configuration)
         }
         
         return viewController as? T

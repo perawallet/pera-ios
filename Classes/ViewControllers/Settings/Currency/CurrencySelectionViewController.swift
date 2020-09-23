@@ -19,6 +19,13 @@ class CurrencySelectionViewController: BaseViewController {
         return CurrencySelectionDataSource(api: api)
     }()
     
+    weak var delegate: CurrencySelectionViewControllerDelegate?
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        getCurrencies()
+    }
+    
     override func configureAppearance() {
         super.configureAppearance()
         title = "settings-currency".localized
@@ -48,7 +55,7 @@ extension CurrencySelectionViewController {
 }
 
 extension CurrencySelectionViewController: CurrencySelectionDataSourceDelegate {
-    func currencySelectionDataSourceDidFetchNotifications(_ currencySelectionDataSource: CurrencySelectionDataSource) {
+    func currencySelectionDataSourceDidFetchCurrencies(_ currencySelectionDataSource: CurrencySelectionDataSource) {
         currencySelectionView.endRefreshing()
         currencySelectionView.setNormalState()
         currencySelectionView.reloadData()
@@ -59,15 +66,22 @@ extension CurrencySelectionViewController: CurrencySelectionDataSourceDelegate {
         currencySelectionView.setErrorState()
         currencySelectionView.reloadData()
     }
+    
+    private func getCurrencies() {
+        currencySelectionView.setLoadingState()
+        dataSource.loadData()
+    }
 }
 
 extension CurrencySelectionViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let selectedCurrency = dataSource.currency(at: indexPath.item) else {
+            return
+        }
         
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        
+        api?.session.preferredCurrency = selectedCurrency.id
+        currencySelectionView.reloadData()
+        delegate?.currencySelectionViewControllerDidSelectCurrency(self)
     }
     
     func collectionView(
@@ -81,10 +95,14 @@ extension CurrencySelectionViewController: UICollectionViewDelegateFlowLayout {
 
 extension CurrencySelectionViewController: CurrencySelectionViewDelegate {
     func currencySelectionViewDidRefreshList(_ currencySelectionView: CurrencySelectionView) {
-        
+        getCurrencies()
     }
     
     func currencySelectionViewDidTryAgain(_ currencySelectionView: CurrencySelectionView) {
-        
+        getCurrencies()
     }
+}
+
+protocol CurrencySelectionViewControllerDelegate: class {
+    func currencySelectionViewControllerDidSelectCurrency(_ currencySelectionViewController: CurrencySelectionViewController)
 }
