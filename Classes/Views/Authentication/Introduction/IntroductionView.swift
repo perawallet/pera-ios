@@ -157,8 +157,8 @@ extension IntroductionView {
 
 extension IntroductionView {
     func animateImages() {
-        middleAnimatedImageView.rotate360Degrees(duration: 3.0, repeatCount: .greatestFiniteMagnitude)
-        innerAnimatedImageView.rotate360Degrees(duration: 3.0, repeatCount: .greatestFiniteMagnitude)
+        middleAnimatedImageView.rotate360Degrees(duration: 4.0, repeatCount: .greatestFiniteMagnitude, isClockwise: false)
+        innerAnimatedImageView.rotate360Degrees(duration: 4.0, repeatCount: .greatestFiniteMagnitude, isClockwise: true)
     }
 }
 
