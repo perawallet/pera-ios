@@ -20,7 +20,7 @@ class SingleSelectionView: BaseView {
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
     }()
     
-    private lazy var selectionImageView = UIImageView()
+    private lazy var selectionImageView = UIImageView(image: img("icon-check"))
     
     private lazy var separatorView = LineSeparatorView()
     
@@ -70,12 +70,12 @@ extension SingleSelectionView {
 extension SingleSelectionView {
     func bind(_ viewModel: SingleSelectionViewModel) {
         titleLabel.text = viewModel.title
-        selectionImageView.image = viewModel.selectionImage
+        selectionImageView.isHidden = !viewModel.isSelected
     }
     
     func clear() {
         titleLabel.text = ""
-        selectionImageView.image = nil
+        selectionImageView.isHidden = true
     }
 }
 

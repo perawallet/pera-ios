@@ -11,18 +11,18 @@ import UIKit
 class SingleSelectionViewModel {
     
     private(set) var title: String?
-    private(set) var selectionImage: UIImage?
+    private(set) var isSelected = false
     
-    init() {
-        setTitle()
-        setSelectionImage()
+    init(title: String?, isSelected: Bool) {
+        setTitle(title: title)
+        setSelected(isSelected: isSelected)
     }
     
-    private func setTitle() {
-        
+    private func setTitle(title: String?) {
+        self.title = title
     }
     
-    private func setSelectionImage() {
-        
+    private func setSelected(isSelected: Bool) {
+        self.isSelected = isSelected
     }
 }

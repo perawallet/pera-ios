@@ -63,6 +63,7 @@ extension CurrencySelectionView {
         }
         
         collectionView.backgroundView = contentStateView
+        collectionView.refreshControl = refreshControl
     }
 }
 
@@ -104,6 +105,11 @@ extension CurrencySelectionView {
         collectionView.contentState = .none
     }
 
+    func setLoadingState() {
+        if !refreshControl.isRefreshing {
+            collectionView.contentState = .loading
+        }
+    }
 }
 
 extension CurrencySelectionView: ListErrorViewDelegate {
