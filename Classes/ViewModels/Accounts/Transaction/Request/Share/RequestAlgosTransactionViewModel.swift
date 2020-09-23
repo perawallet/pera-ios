@@ -18,6 +18,7 @@ class RequestAlgosTransactionViewModel {
     
     func configure(_ view: RequestTransactionView) {
         view.setAccountImage(algosTransactionRequestDraft.account.accountImage())
+        view.setAddress(algosTransactionRequestDraft.account.address.shortAddressDisplay())
         view.removeAssetId()
         view.removeAssetUnitName()
         view.setAssetAlignment(.right)

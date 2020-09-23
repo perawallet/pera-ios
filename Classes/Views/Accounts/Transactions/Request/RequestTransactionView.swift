@@ -14,12 +14,25 @@ class RequestTransactionView: BaseView {
     
     weak var transactionDelegate: RequestTransactionViewDelegate?
     
+    private lazy var addressCopyValueGestureRecognizer = UILongPressGestureRecognizer(
+        target: self,
+        action: #selector(notifyDelegateToCopyAddress)
+    )
+    
     private let address: String
     private let assetIndex: Int64?
     
     private lazy var containerView = UIView()
     
     private lazy var accountInformationView = TransactionAccountNameView()
+    
+    private lazy var addressView: TransactionTextInformationView = {
+        let addressView = TransactionTextInformationView()
+        addressView.setTitle("send-algos-address".localized)
+        addressView.isUserInteractionEnabled = true
+        addressView.copyImageView.isHidden = false
+        return addressView
+    }()
     
     private lazy var assetInformationView = TransactionAssetView()
     
@@ -54,6 +67,10 @@ class RequestTransactionView: BaseView {
         assetInformationView.setSeparatorHidden(true)
     }
     
+    override func linkInteractors() {
+        addressView.addGestureRecognizer(addressCopyValueGestureRecognizer)
+    }
+    
     override func setListeners() {
         shareButton.addTarget(self, action: #selector(notifyDelegateToShareButtonTapped), for: .touchUpInside)
     }
@@ -62,6 +79,7 @@ class RequestTransactionView: BaseView {
         setupContainerViewLayout()
         setupQRViewLayout()
         setupAccountInformationViewLayout()
+        setupAddressViewLayout()
         setupAssetInformationViewLayout()
         setupShareButtonLayout()
     }
@@ -101,12 +119,21 @@ extension RequestTransactionView {
         }
     }
     
+    private func setupAddressViewLayout() {
+        containerView.addSubview(addressView)
+        
+        addressView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(accountInformationView.snp.bottom)
+        }
+    }
+    
     private func setupAssetInformationViewLayout() {
         containerView.addSubview(assetInformationView)
         
         assetInformationView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.top.equalTo(accountInformationView.snp.bottom)
+            make.top.equalTo(addressView.snp.bottom)
             make.bottom.equalToSuperview().inset(layout.current.bottomInset)
         }
     }
@@ -124,6 +151,11 @@ extension RequestTransactionView {
 }
 
 extension RequestTransactionView {
+    @objc
+    private func notifyDelegateToCopyAddress() {
+        transactionDelegate?.requestTransactionViewDidCopyAddress(self)
+    }
+    
     @objc
     private func notifyDelegateToShareButtonTapped() {
         transactionDelegate?.requestTransactionViewDidTapShareButton(self)
@@ -182,6 +214,10 @@ extension RequestTransactionView {
     func setAssetAlignment(_ alignment: NSTextAlignment) {
         assetInformationView.setAssetAlignment(alignment)
     }
+    
+    func setAddress(_ address: String) {
+        addressView.setDetail(address)
+    }
 }
 
 extension RequestTransactionView {
@@ -194,5 +230,6 @@ extension RequestTransactionView {
 }
 
 protocol RequestTransactionViewDelegate: class {
+    func requestTransactionViewDidCopyAddress(_ requestTransactionView: RequestTransactionView)
     func requestTransactionViewDidTapShareButton(_ requestTransactionView: RequestTransactionView)
 }
