@@ -22,7 +22,16 @@ class AssetDetailViewController: BaseViewController {
     private var account: Account
     private var assetDetail: AssetDetail?
     private var isAlgoDisplay: Bool
-    private var currentDollarConversion: Double?
+    private var currentDollarConversion: Double? {
+        didSet {
+            guard let currentDollarConversion = currentDollarConversion else {
+                return
+            }
+            let dollarAmountForAccount = account.amount.toAlgos * currentDollarConversion
+            /// <todo> Currency will be changed with the real value in another branch.
+            viewModel.setDollarValue(in: assetDetailView.headerView, with: dollarAmountForAccount, for: "USD")
+        }
+    }
     private let viewModel: AssetDetailViewModel
     var route: Screen?
     
@@ -36,6 +45,8 @@ class AssetDetailViewController: BaseViewController {
     }
     
     private(set) lazy var assetDetailView = AssetDetailView()
+    
+    private lazy var transactionActionsView = TransactionActionsView()
     
     private lazy var assetDetailTitleView = AssetDetailTitleView(title: account.name)
     
@@ -81,6 +92,7 @@ class AssetDetailViewController: BaseViewController {
     
     override func linkInteractors() {
         assetDetailView.delegate = self
+        transactionActionsView.delegate = self
     }
     
     override func setListeners() {
@@ -103,6 +115,7 @@ class AssetDetailViewController: BaseViewController {
     
     override func prepareLayout() {
         setupAssetDetaiViewLayout()
+        setupTransactionActionsViewLayout()
         setupTransactionsViewController()
     }
 }
@@ -133,13 +146,23 @@ extension AssetDetailViewController {
         }
     }
     
+    private func setupTransactionActionsViewLayout() {
+        view.addSubview(transactionActionsView)
+        
+        transactionActionsView.snp.makeConstraints { make in
+            make.bottom.leading.trailing.equalToSuperview()
+            make.height.equalTo(view.safeAreaBottom + 92.0)
+        }
+    }
+    
     private func setupTransactionsViewController() {
         addChild(transactionsViewController)
         view.addSubview(transactionsViewController.view)
 
         transactionsViewController.view.snp.makeConstraints { make in
             transactionsTopConstraint = make.top.equalTo(assetDetailView.snp.bottom).offset(0.0).constraint
-            make.leading.trailing.bottom.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalTo(transactionActionsView.snp.top)
         }
 
         transactionsViewController.delegate = self
@@ -266,8 +289,8 @@ extension AssetDetailViewController: TransactionsViewControllerDelegate {
     }
 }
 
-extension AssetDetailViewController: AssetDetailViewDelegate {
-    func assetDetailViewDidTapSendButton(_ assetDetailView: AssetDetailView) {
+extension AssetDetailViewController: TransactionActionsViewDelegate {
+    func transactionActionsViewDidSendTransaction(_ transactionActionsView: TransactionActionsView) {
         if isAlgoDisplay {
             open(.sendAlgosTransactionPreview(account: account, receiver: .initial, isSenderEditable: false), by: .push)
         } else {
@@ -287,7 +310,7 @@ extension AssetDetailViewController: AssetDetailViewDelegate {
         }
     }
     
-    func assetDetailViewDidTapReceiveButton(_ assetDetailView: AssetDetailView) {
+    func transactionActionsViewDidRequestTransaction(_ transactionActionsView: TransactionActionsView) {
         if isAlgoDisplay {
             let draft = AlgosTransactionRequestDraft(account: account)
             open(.requestAlgosTransaction(isPresented: false, algosTransactionRequestDraft: draft), by: .push)
@@ -304,22 +327,10 @@ extension AssetDetailViewController: AssetDetailViewDelegate {
             )
         }
     }
-    
-    func assetDetailView(_ assetDetailView: AssetDetailView, didTrigger dollarValueGestureRecognizer: UILongPressGestureRecognizer) {
-        guard let currentDollarAmount = currentDollarConversion else {
-            return
-        }
-        
-        let dollarAmountForAccount = account.amount.toAlgos * currentDollarAmount
-        
-        if dollarValueGestureRecognizer.state != .ended {
-            viewModel.setDollarValue(visible: true, in: assetDetailView.headerView, for: dollarAmountForAccount)
-        } else {
-            viewModel.setDollarValue(visible: false, in: assetDetailView.headerView, for: dollarAmountForAccount)
-        }
-    }
-    
-    func assetDetailViewDidTapRewardView(_ assetDetailView: AssetDetailView) {
+}
+
+extension AssetDetailViewController: AssetDetailViewDelegate {
+    func assetDetailViewDidOpenRewardDetails(_ assetDetailView: AssetDetailView) {
         open(
             .rewardDetail(account: account),
             by: .customPresent(
@@ -330,7 +341,7 @@ extension AssetDetailViewController: AssetDetailViewDelegate {
         )
     }
     
-    func assetDetailView(_ assetDetailView: AssetDetailView, didTriggerAssetIdCopyValue gestureRecognizer: UILongPressGestureRecognizer) {
+    func assetDetailViewDidCopyAssetId(_ assetDetailView: AssetDetailView) {
         if let id = assetDetail?.id {
             displaySimpleAlertWith(title: "asset-id-copied-title".localized, message: "")
             UIPasteboard.general.string = "\(id)"
