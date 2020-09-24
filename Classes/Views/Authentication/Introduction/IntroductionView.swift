@@ -157,8 +157,9 @@ extension IntroductionView {
 
 extension IntroductionView {
     func animateImages() {
-        middleAnimatedImageView.rotate360Degrees(duration: 4.0, repeatCount: .greatestFiniteMagnitude, isClockwise: false)
-        innerAnimatedImageView.rotate360Degrees(duration: 4.0, repeatCount: .greatestFiniteMagnitude, isClockwise: true)
+        outerAnimatedImageView.rotate360Degrees(duration: 4.15, repeatCount: .greatestFiniteMagnitude, isClockwise: false)
+        middleAnimatedImageView.rotate360Degrees(duration: 3.5, repeatCount: .greatestFiniteMagnitude, isClockwise: false)
+        innerAnimatedImageView.rotate360Degrees(duration: 3.0, repeatCount: .greatestFiniteMagnitude, isClockwise: true)
     }
 }
 
@@ -176,9 +177,9 @@ extension IntroductionView {
 
 extension IntroductionView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let outerImageOffset: CGFloat = 124.0
+        let outerImageOffset: CGFloat = 116.0
         let middleImageOffset: CGFloat = 36.0
-        let innerImageOffset: CGFloat = 48.0
+        let innerImageOffset: CGFloat = 44.0
         let horizontalInset: CGFloat = 32.0
         let verticalInset: CGFloat = 20.0
         let buttonHorizontalInset: CGFloat = 20.0
