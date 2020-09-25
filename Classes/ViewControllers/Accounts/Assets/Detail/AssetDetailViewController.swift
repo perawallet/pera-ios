@@ -24,12 +24,12 @@ class AssetDetailViewController: BaseViewController {
     private var isAlgoDisplay: Bool
     private var currentDollarConversion: Double? {
         didSet {
-            guard let currentDollarConversion = currentDollarConversion else {
+            guard let currentDollarConversion = currentDollarConversion,
+                  let preferredCurrency = session?.preferredCurrency else {
                 return
             }
             let dollarAmountForAccount = account.amount.toAlgos * currentDollarConversion
-            /// <todo> Currency will be changed with the real value in another branch.
-            viewModel.setDollarValue(in: assetDetailView.headerView, with: dollarAmountForAccount, for: "USD")
+            viewModel.setDollarValue(in: assetDetailView.headerView, with: dollarAmountForAccount, for: preferredCurrency)
         }
     }
     private let viewModel: AssetDetailViewModel
