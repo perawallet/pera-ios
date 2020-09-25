@@ -39,15 +39,24 @@
 "title-account" = "Account";
 "title-id" = "ID";
 "title-copy" = "Copy";
+"title-new-uppercased" = "NEW";
+
+// MARK: Account Type Selection
+"account-type-choose-title" = "Choose Account Type";
+"account-type-selection-create" = "Create New Account";
+"account-type-selection-create-detail" = "Create a new Algorand Account";
+"account-type-selection-watch-detail" = "Follow the account transactions with the address.";
+"account-type-selection-recover" = "Recover From Passphrase";
+"account-type-selection-recover-detail" = "Recover your account with passphrase";
+"account-type-selection-ledger-detail" = "Use your Ledger Accout from the Algorand App";
 
 // MARK: Introduction
-"introduction-recover-title" = "Recover From Passphrase";
-"introduction-create-title" = "Create Account";
+
 "introduction-title-text" = "Manage all assets\nfrom one app";
-"introduction-add-new-text" = "Add new account";
-"introduction-add-new-title-text" = "Manage all assets from one app";
-"introduction-has-account" = "Already have an account?";
-"introduction-title-pair-ledger" = "Pair Ledger Account";
+"introduction-add-account-text" = "Add Account";
+"introduction-title-terms-and-services" = "By creating an account, you agree to Algorand’s Terms and Conditions and Privacy Policy";
+"introduction-title-terms-and-services-conditions" = "Terms and Conditions";
+"introduction-title-terms-and-services-privacy" = "Privacy Policy";
 
 // MARK: Password Setting
 "choose-password-title" = "Choose Passcode";
@@ -490,3 +499,10 @@
 "ledger-account-selection-ledger-rekeyed" = "Account is rekeyed to %@";
 "ledger-rekey-error-add-auth" = "The connected Ledger device cannot sign transactions for this account. In order to do so, please connect %@.";
 "ledger-rekey-error-not-found" = "This account has been rekeyed. Please recover this account with a passphrase or Ledger device.";
+
+// MARK: Watch Account
+
+"title-watch-account" = "Watch Account";
+"watch-account-input-explanation" = "Account Address to Watch";
+"watch-account-input-placeholder" = "Paste Address or Scan QR";
+"watch-account-error-address" = "Please enter a valid address.";

@@ -317,7 +317,7 @@ extension ChoosePasswordViewController {
 extension ChoosePasswordViewController: PinLimitViewControllerDelegate {
     func pinLimitViewControllerDidResetAllData(_ pinLimitViewController: PinLimitViewController) {
         UIApplication.shared.rootViewController()?.deleteAllData()
-        open(.introduction, by: .launch, animated: false)
+        open(.introduction(flow: .initializeAccount(mode: nil)), by: .launch, animated: false)
     }
 }
 

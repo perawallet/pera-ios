@@ -111,7 +111,7 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
                 return
             }
         } else {
-            account = AccountInformation(address: address, name: name)
+            account = AccountInformation(address: address, name: name, type: .standard)
         }
         
         session?.savePrivate(privateKey, for: account.address)

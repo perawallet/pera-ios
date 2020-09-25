@@ -77,8 +77,12 @@ extension SelectAssetViewController {
     }
     
     private func initAccounts(with filter: FilterOption) -> [Account] {
-        guard let allAccounts = UIApplication.shared.appConfiguration?.session.accounts else {
+        guard var allAccounts = UIApplication.shared.appConfiguration?.session.accounts else {
             return []
+        }
+        
+        allAccounts.removeAll { account -> Bool in
+            account.isWatchAccount()
         }
         
         switch filterOption {

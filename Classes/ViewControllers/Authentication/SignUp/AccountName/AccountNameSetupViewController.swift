@@ -73,7 +73,7 @@ extension AccountNameSetupViewController {
         
         RegistrationEvent(type: .create).logEvent()
         
-        let account = AccountInformation(address: address, name: name)
+        let account = AccountInformation(address: address, name: name, type: .standard)
         session?.savePrivate(tempPrivateKey, for: account.address)
         session?.removePrivateData(for: "temp")
         session?.addAccount(Account(address: account.address, type: account.type, name: account.name))

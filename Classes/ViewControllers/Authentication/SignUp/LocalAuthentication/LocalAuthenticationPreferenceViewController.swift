@@ -94,6 +94,9 @@ extension LocalAuthenticationPreferenceViewController: LocalAuthenticationPrefer
     private func openNextFlow() {
         switch accountSetupFlow {
         case let .initializeAccount(mode):
+            guard let mode = mode else {
+                break
+            }
             switch mode {
             case .create:
                 open(.passphraseView(address: "temp"), by: .push)
@@ -101,13 +104,13 @@ extension LocalAuthenticationPreferenceViewController: LocalAuthenticationPrefer
                 open(.ledgerTutorial(flow: accountSetupFlow), by: .push)
             case .recover:
                  open(.accountRecover(flow: accountSetupFlow), by: .push)
+            case .watch:
+                open(.watchAccountAddition(flow: accountSetupFlow), by: .push)
             case .rekey:
                 break
             }
         case .addNewAccount:
-            dismiss(animated: false) {
-                UIApplication.shared.rootViewController()?.setupTabBarController()
-            }
+            break
         }
     }
 }

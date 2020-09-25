@@ -255,6 +255,11 @@ extension Session {
     }
     
     func canSignTransaction(for selectedAccount: inout Account) -> Bool {
+        /// Check whether account is a watch account
+        if selectedAccount.isWatchAccount() {
+           return false
+        }
+        
         /// Check whether auth address exists for the selected account.
         if let authAccountAddress = selectedAccount.authAddress {
             if let authAccount = accounts.first(where: { account -> Bool in

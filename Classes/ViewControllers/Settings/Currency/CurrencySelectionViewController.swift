@@ -48,7 +48,7 @@ extension CurrencySelectionViewController {
 }
 
 extension CurrencySelectionViewController: CurrencySelectionDataSourceDelegate {
-    func currencySelectionDataSourceDidFetchNotifications(_ currencySelectionDataSource: CurrencySelectionDataSource) {
+    func currencySelectionDataSourceDidFetchCurrencies(_ currencySelectionDataSource: CurrencySelectionDataSource) {
         currencySelectionView.endRefreshing()
         currencySelectionView.setNormalState()
         currencySelectionView.reloadData()
