@@ -24,6 +24,7 @@
 "title-save" = "Save";
 "title-close" = "Close";
 "title-send" = "Send";
+"title-receive" = "Receive";
 "title-request" = "Request";
 "title-preview" = "Preview";
 "title-done" = "Done";
@@ -53,6 +54,7 @@
 // MARK: Introduction
 
 "introduction-title-text" = "Manage all assets\nfrom one app";
+"introduction-title-add-text" = "Add New Account";
 "introduction-add-account-text" = "Add Account";
 "introduction-title-terms-and-services" = "By creating an account, you agree to Algorand’s Terms and Conditions and Privacy Policy";
 "introduction-title-terms-and-services-conditions" = "Terms and Conditions";
