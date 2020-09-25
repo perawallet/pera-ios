@@ -71,7 +71,7 @@ class RootViewController: UIViewController {
                 )
             } else {
                 appConfiguration.session.reset(isContactIncluded: false)
-                open(.introduction, by: .launch, animated: false)
+                open(.introduction(flow: .initializeAccount(mode: nil)), by: .launch, animated: false)
             }
         } else {
             setupTabBarController()
@@ -103,7 +103,7 @@ class RootViewController: UIViewController {
                     by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
                 ) != nil
             } else {
-                return open(.introduction, by: .launch, animated: false) != nil
+                return open(.introduction(flow: .initializeAccount(mode: nil)), by: .launch, animated: false) != nil
             }
         } else {
             switch screen {
@@ -142,7 +142,7 @@ class RootViewController: UIViewController {
                     )
                 }
             } else {
-                open(.introduction, by: .launch, animated: false)
+                open(.introduction(flow: .initializeAccount(mode: nil)), by: .launch, animated: false)
             }
         } else {
             guard let account = appConfiguration.session.account(from: account) else {

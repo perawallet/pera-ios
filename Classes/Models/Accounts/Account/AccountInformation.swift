@@ -14,7 +14,7 @@ class AccountInformation: Model {
     var type: AccountType = .standard
     var ledgerDetail: LedgerDetail?
     
-    init(address: String, name: String, type: AccountType = .standard, ledgerDetail: LedgerDetail? = nil) {
+    init(address: String, name: String, type: AccountType, ledgerDetail: LedgerDetail? = nil) {
         self.address = address
         self.name = name
         self.type = type
@@ -36,14 +36,10 @@ extension AccountInformation {
     }
     
     func mnemonics() -> [String]? {
-        if type == .watcher || type == .ledger || type == .rekeyed {
+        if type == .watch || type == .ledger || type == .rekeyed {
             return nil
         }
         return UIApplication.shared.appConfiguration?.session.mnemonics(forAccount: address)
-    }
-    
-    func hasWriteAccess() -> Bool {
-        return type != .watcher
     }
     
     func encoded() -> Data? {
@@ -70,7 +66,7 @@ extension AccountInformation: Equatable {
 
 enum AccountType: String, Model {
     case standard = "standard"
-    case watcher = "watcher"
+    case watch = "watch"
     case ledger = "ledger"
     case multiSig = "multiSig"
     case rekeyed = "rekeyed"

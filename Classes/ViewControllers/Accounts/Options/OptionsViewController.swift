@@ -46,6 +46,12 @@ class OptionsViewController: BaseViewController {
             }
         }
         
+        if account.isWatchAccount() {
+            options.removeAll { option -> Bool in
+                option != .edit || option != .removeAccount
+            }
+        }
+        
         super.init(configuration: configuration)
     }
     

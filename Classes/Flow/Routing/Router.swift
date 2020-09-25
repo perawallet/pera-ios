@@ -172,10 +172,8 @@ class Router {
         )
         
         switch screen {
-        case .introduction:
-            viewController = IntroductionViewController(configuration: configuration)
-        case .addNewAccount:
-            viewController = AddNewAccountViewController(configuration: configuration)
+        case let .introduction(flow):
+            viewController = IntroductionViewController(accountSetupFlow: flow, configuration: configuration)
         case let .choosePassword(mode, flow, route):
             viewController = ChoosePasswordViewController(
                 mode: mode,
@@ -350,6 +348,10 @@ class Router {
             viewController = DeveloperSettingsViewController(configuration: configuration)
         case .currencySelection:
             viewController = CurrencySelectionViewController(configuration: configuration)
+        case let .watchAccountAddition(flow):
+            viewController = WatchAccountAdditionViewController(accountSetupFlow: flow, configuration: configuration)
+        case let .accountTypeSelection(flow):
+            viewController = AccountTypeSelectionViewController(flow: flow, configuration: configuration)
         }
         
         return viewController as? T

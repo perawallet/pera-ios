@@ -20,9 +20,34 @@ class IntroductionViewController: BaseViewController {
         initialModalSize: .custom(CGSize(width: view.frame.width, height: 300))
     )
     
+    private let accountSetupFlow: AccountSetupFlow
+    
+    init(accountSetupFlow: AccountSetupFlow, configuration: ViewControllerConfiguration) {
+        self.accountSetupFlow = accountSetupFlow
+        super.init(configuration: configuration)
+    }
+    
+    override func configureNavigationBarAppearance() {
+        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [unowned self] in
+            self.closeScreen(by: .dismiss, animated: true)
+        }
+        
+        switch accountSetupFlow {
+        case .addNewAccount:
+            leftBarButtonItems = [closeBarButtonItem]
+        default:
+            break
+        }
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         presentTermsAndServicesIfNeeded()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        introductionView.animateImages()
     }
     
     override func configureAppearance() {
@@ -68,22 +93,20 @@ extension IntroductionViewController {
 }
 
 extension IntroductionViewController: IntroductionViewDelegate {
-    func introductionViewDidTapCreateAccountButton(_ introductionView: IntroductionView) {
-        open(.choosePassword(mode: .setup, flow: .initializeAccount(mode: .create), route: nil), by: .push)
+    func introductionViewDidAddAccount(_ introductionView: IntroductionView) {
+        open(.accountTypeSelection(flow: accountSetupFlow), by: .push)
     }
     
-    func introductionViewDidTapPairLedgerAccountButton(_ introductionView: IntroductionView) {
-        open(.choosePassword(mode: .setup, flow: .initializeAccount(mode: .pair), route: nil), by: .push)
-    }
-    
-    func introductionViewDidTapRecoverButton(_ introductionView: IntroductionView) {
-        open(.choosePassword(mode: .setup, flow: .initializeAccount(mode: .recover), route: nil), by: .push)
+    func introductionViewDidOpenTermsAndConditions(_ introductionView: IntroductionView) {
+        if let termsAndServicesURL = URL(string: "https://www.algorand.com/wallet-disclaimer") {
+            open(termsAndServicesURL)
+        }
     }
 }
 
 enum AccountSetupFlow {
-    case initializeAccount(mode: AccountSetupMode)
-    case addNewAccount(mode: AccountSetupMode)
+    case initializeAccount(mode: AccountSetupMode?)
+    case addNewAccount(mode: AccountSetupMode?)
 }
 
 enum AccountSetupMode {
@@ -91,4 +114,5 @@ enum AccountSetupMode {
     case pair
     case recover
     case rekey(account: Account)
+    case watch
 }
