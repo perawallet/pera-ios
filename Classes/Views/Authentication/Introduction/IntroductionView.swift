@@ -31,7 +31,6 @@ class IntroductionView: BaseView {
         UILabel()
             .withLine(.contained)
             .withFont(UIFont.font(withWeight: .medium(size: 24.0)))
-            .withText("introduction-title-text".localized)
             .withTextColor(SharedColors.primaryText)
             .withAlignment(.center)
     }()
@@ -160,6 +159,10 @@ extension IntroductionView {
         outerAnimatedImageView.rotate360Degrees(duration: 4.15, repeatCount: .greatestFiniteMagnitude, isClockwise: false)
         middleAnimatedImageView.rotate360Degrees(duration: 3.5, repeatCount: .greatestFiniteMagnitude, isClockwise: false)
         innerAnimatedImageView.rotate360Degrees(duration: 3.0, repeatCount: .greatestFiniteMagnitude, isClockwise: true)
+    }
+    
+    func setTitle(_ title: String) {
+        titleLabel.text = title
     }
 }
 
