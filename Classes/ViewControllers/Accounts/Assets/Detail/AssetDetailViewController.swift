@@ -115,7 +115,9 @@ class AssetDetailViewController: BaseViewController {
     
     override func prepareLayout() {
         setupAssetDetaiViewLayout()
-        setupTransactionActionsViewLayout()
+        if !account.isWatchAccount() {
+            setupTransactionActionsViewLayout()
+        }
         setupTransactionsViewController()
     }
 }
@@ -166,7 +168,12 @@ extension AssetDetailViewController {
         transactionsViewController.view.snp.makeConstraints { make in
             transactionsTopConstraint = make.top.equalTo(assetDetailView.snp.bottom).offset(0.0).constraint
             make.leading.trailing.equalToSuperview()
-            make.bottom.equalTo(transactionActionsView.snp.top)
+            
+            if account.isWatchAccount() {
+                make.bottom.equalToSuperview()
+            } else {
+                make.bottom.equalTo(transactionActionsView.snp.top)
+            }
         }
 
         transactionsViewController.delegate = self
