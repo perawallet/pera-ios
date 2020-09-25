@@ -79,6 +79,8 @@ extension CurrencySelectionViewController: UICollectionViewDelegateFlowLayout {
             return
         }
         
+        CurrencyChangeEvent(currencyId: selectedCurrency.id).logEvent()
+        
         api?.session.preferredCurrency = selectedCurrency.id
         currencySelectionView.reloadData()
         delegate?.currencySelectionViewControllerDidSelectCurrency(self)

@@ -28,6 +28,11 @@ class RequestAssetTransactionViewController: RequestTransactionViewController, T
         super.init(isPresented: isPresented, configuration: configuration)
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        ReceiveEvent(address: assetTransactionRequestDraft.account.address).logEvent()
+    }
+    
     override func configureAppearance() {
         super.configureAppearance()
         viewModel.configure(requestTransactionView)
@@ -41,6 +46,10 @@ class RequestAssetTransactionViewController: RequestTransactionViewController, T
     override func prepareLayout() {
         super.prepareLayout()
         prepareLayout(of: requestTransactionView)
+    }
+    
+    override func logShareEvent() {
+        ReceiveShareEvent(address: assetTransactionRequestDraft.account.address).logEvent()
     }
     
     override func copyAccountAddress() {

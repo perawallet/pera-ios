@@ -27,6 +27,8 @@ class RequestTransactionViewController: BaseScrollViewController {
         }
     }
     
+    func logShareEvent() { }
+    
     func copyAccountAddress() { }
 }
 
@@ -50,6 +52,8 @@ extension RequestTransactionViewController: RequestTransactionViewDelegate {
         guard let shareUrl = URL(string: requestTransactionView.qrView.qrText.qrText()) else {
             return
         }
+        
+        logShareEvent()
         
         let sharedItem = [shareUrl]
         let activityViewController = UIActivityViewController(activityItems: sharedItem, applicationActivities: nil)

@@ -24,6 +24,15 @@ class RequestAlgosTransactionViewController: RequestTransactionViewController, T
         super.init(isPresented: isPresented, configuration: configuration)
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        ReceiveEvent(address: algosTransactionRequestDraft.account.address).logEvent()
+    }
+    
+    override func logShareEvent() {
+        ReceiveShareEvent(address: algosTransactionRequestDraft.account.address).logEvent()
+    }
+    
     override func configureAppearance() {
         super.configureAppearance()
         viewModel.configure(requestTransactionView)
