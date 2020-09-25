@@ -97,6 +97,13 @@ extension WatchAccountAdditionViewController: WatchAccountAdditionViewDelegate {
             return
         }
         
+        view.endEditing(true)
+        let account = createAccount(from: address)
+        RegistrationEvent(type: .watch).logEvent()
+        openSuccessModal(for: account)
+    }
+    
+    private func createAccount(from address: String) -> AccountInformation {
         let account = AccountInformation(address: address, name: address.shortAddressDisplay(), type: .watch)
         let user: User
         
@@ -113,11 +120,10 @@ extension WatchAccountAdditionViewController: WatchAccountAdditionViewDelegate {
         
         session?.addAccount(Account(accountInformation: account))
         session?.authenticatedUser = user
-        
-        view.endEditing(true)
-        
-        RegistrationEvent(type: .watch).logEvent()
-        
+        return account
+    }
+    
+    private func openSuccessModal(for account: AccountInformation) {
         let configurator = BottomInformationBundle(
             title: "recover-from-seed-verify-pop-up-title".localized,
             image: img("img-green-checkmark"),
