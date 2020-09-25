@@ -378,6 +378,6 @@ extension SettingsViewController: SettingsToggleCellDelegate {
         session?.reset(isContactIncluded: true)
         NotificationCenter.default.post(name: .ContactDeletion, object: self, userInfo: nil)
         pushNotificationController.revokeDevice()
-        open(.introduction, by: .launch, animated: false)
+        open(.introduction(flow: .initializeAccount(mode: nil)), by: .launch, animated: false)
      }
 }
