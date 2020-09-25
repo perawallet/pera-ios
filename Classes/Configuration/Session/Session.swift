@@ -20,6 +20,7 @@ class Session: Storable {
     private let termsAndServicesKeyV2 = "com.algorand.algorand.terms.services.v2"
     private let accountsQRTooltipKey = "com.algorand.algorand.accounts.qr.tooltip"
     private let notificationLatestTimestamp = "com.algorand.algorand.notification.latest.timestamp"
+    private let currencyPreferenceKey = "com.algorand.algorand.currency.preference"
     
     let algorandSDK = AlgorandSDK()
     
@@ -105,6 +106,15 @@ class Session: Storable {
         }
         set {
             self.save(newValue.rawValue, for: rewardsPrefenceKey, to: .defaults)
+        }
+    }
+    
+    var preferredCurrency: String {
+        get {
+            return string(with: currencyPreferenceKey, to: .defaults) ?? "USD"
+        }
+        set {
+            save(newValue, for: currencyPreferenceKey, to: .defaults)
         }
     }
     

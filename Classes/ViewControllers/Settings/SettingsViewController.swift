@@ -121,7 +121,8 @@ extension SettingsViewController: UICollectionViewDataSource {
             case .language:
                 return setSettingsInfoCell(from: setting, info: "settings-language-english".localized, in: collectionView, at: indexPath)
             case .currency:
-                return setSettingsInfoCell(from: setting, info: "settings-currency-usd".localized, in: collectionView, at: indexPath)
+                let preferredCurrency = api?.session.preferredCurrency ?? "settings-currency-usd".localized
+                return setSettingsInfoCell(from: setting, info: preferredCurrency, in: collectionView, at: indexPath)
             case .feedback:
                 return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
             case .termsAndServices:
@@ -240,6 +241,9 @@ extension SettingsViewController: UICollectionViewDelegateFlowLayout {
                 )
             case .feedback:
                 open(.feedback, by: .push)
+            case .currency:
+                let controller = open(.currencySelection, by: .push) as? CurrencySelectionViewController
+                controller?.delegate = self
             case .termsAndServices:
                 guard let url = URL(string: Environment.current.termsAndServicesUrl) else {
                     return
@@ -380,4 +384,10 @@ extension SettingsViewController: SettingsToggleCellDelegate {
         pushNotificationController.revokeDevice()
         open(.introduction(flow: .initializeAccount(mode: nil)), by: .launch, animated: false)
      }
+}
+
+extension SettingsViewController: CurrencySelectionViewControllerDelegate {
+    func currencySelectionViewControllerDidSelectCurrency(_ currencySelectionViewController: CurrencySelectionViewController) {
+        settingsView.collectionView.reloadItems(at: [IndexPath(item: 3, section: 1)])
+    }
 }

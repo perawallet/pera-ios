@@ -70,12 +70,13 @@ extension SingleSelectionView {
 extension SingleSelectionView {
     func bind(_ viewModel: SingleSelectionViewModel) {
         titleLabel.text = viewModel.title
+        selectionImageView.isHidden = !viewModel.isSelected
         selectionImageView.image = viewModel.selectionImage
     }
     
     func clear() {
         titleLabel.text = ""
-        selectionImageView.image = nil
+        selectionImageView.isHidden = true
     }
 }
 
