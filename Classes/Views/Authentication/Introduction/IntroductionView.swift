@@ -14,11 +14,6 @@ class IntroductionView: BaseView {
     
     weak var delegate: IntroductionViewDelegate?
     
-    private lazy var termsAndConditionsLabelGestureRecognizer = UITapGestureRecognizer(
-        target: self,
-        action: #selector(notifyDelegateToOpenTermsAndConditions)
-    )
-    
     private lazy var outerAnimatedImageView = UIImageView(image: img("img-introduction-bg-outer"))
     
     private lazy var middleAnimatedImageView = UIImageView(image: img("img-introduction-bg-middle"))
@@ -37,33 +32,44 @@ class IntroductionView: BaseView {
     
     private lazy var addAccountButton = MainButton(title: "introduction-add-account-text".localized)
     
-    private lazy var termsAndConditionsLabel: UILabel = {
-        let label = UILabel()
-            .withLine(.contained)
-            .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
-            .withTextColor(SharedColors.inputTitle)
-            .withAlignment(.center)
-        label.isUserInteractionEnabled = true
-        
-        let fullText = "introduction-title-terms-and-services".localized
-        let fullAttributedText = NSMutableAttributedString(string: fullText)
-        let termsRange = (fullText as NSString).range(of: "introduction-title-terms-and-services-conditions".localized)
-        let privacyRange = (fullText as NSString).range(of: "introduction-title-terms-and-services-privacy".localized)
-        fullAttributedText.addAttribute(NSAttributedString.Key.foregroundColor, value: SharedColors.primary, range: termsRange)
-        fullAttributedText.addAttribute(NSAttributedString.Key.foregroundColor, value: SharedColors.primary, range: privacyRange)
-        label.attributedText = fullAttributedText
-        
-        return label
+    private lazy var termsAndConditionsTextView: UITextView = {
+        let textView = UITextView()
+        textView.isEditable = false
+        textView.isScrollEnabled = false
+        textView.dataDetectorTypes = .link
+        textView.textContainerInset = .zero
+        textView.textAlignment = .center
+        textView.linkTextAttributes = [
+            .foregroundColor: SharedColors.primary,
+            .underlineColor: UIColor.clear,
+            .font: UIFont.font(withWeight: .regular(size: 14.0))
+        ]
+        return textView
     }()
     
     override func setListeners() {
         addAccountButton.addTarget(self, action: #selector(notifyDelegateToAddAccount), for: .touchUpInside)
-        termsAndConditionsLabel.addGestureRecognizer(termsAndConditionsLabelGestureRecognizer)
+    }
+    
+    override func linkInteractors() {
+        termsAndConditionsTextView.delegate = self
     }
     
     override func configureAppearance() {
         backgroundColor = SharedColors.secondaryBackground
         introductionImageView.contentMode = .scaleAspectFit
+        
+        let centerParagraphStyle = NSMutableParagraphStyle()
+        centerParagraphStyle.alignment = .center
+        
+        termsAndConditionsTextView.bindHtml(
+            "introduction-title-terms-and-services".localized,
+            with: [
+                .font: UIFont.font(withWeight: .regular(size: 14.0)),
+                .foregroundColor: SharedColors.inputTitle,
+                .paragraphStyle: centerParagraphStyle
+            ]
+        )
     }
     
     override func prepareLayout() {
@@ -72,7 +78,7 @@ class IntroductionView: BaseView {
         setupInnerAnimatedImageViewLayout()
         setupTitleLabelLayout()
         setupIntroductionImageViewLayout()
-        setupTermsAndConditionsLabelLayout()
+        setupTermsAndConditionsTextViewLayout()
         setupAddAccountButtonLayout()
     }
 }
@@ -132,10 +138,10 @@ extension IntroductionView {
         }
     }
     
-    private func setupTermsAndConditionsLabelLayout() {
-        addSubview(termsAndConditionsLabel)
+    private func setupTermsAndConditionsTextViewLayout() {
+        addSubview(termsAndConditionsTextView)
         
-        termsAndConditionsLabel.snp.makeConstraints { make in
+        termsAndConditionsTextView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
             make.bottom.equalToSuperview().inset(safeAreaBottom + layout.current.verticalInset)
             make.centerX.equalToSuperview()
@@ -149,7 +155,7 @@ extension IntroductionView {
             make.top.greaterThanOrEqualTo(titleLabel.snp.bottom).offset(layout.current.verticalInset)
             make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
             make.centerX.equalToSuperview()
-            make.bottom.equalTo(termsAndConditionsLabel.snp.top).offset(-layout.current.verticalInset)
+            make.bottom.equalTo(termsAndConditionsTextView.snp.top).offset(-layout.current.verticalInset)
         }
     }
 }
@@ -171,10 +177,17 @@ extension IntroductionView {
     private func notifyDelegateToAddAccount() {
         delegate?.introductionViewDidAddAccount(self)
     }
-    
-    @objc
-    private func notifyDelegateToOpenTermsAndConditions() {
-        delegate?.introductionViewDidOpenTermsAndConditions(self)
+}
+
+extension IntroductionView: UITextViewDelegate {
+    func textView(
+        _ textView: UITextView,
+        shouldInteractWith URL: URL,
+        in characterRange: NSRange,
+        interaction: UITextItemInteraction
+    ) -> Bool {
+        delegate?.introductionView(self, didOpen: URL)
+        return false
     }
 }
 
@@ -192,5 +205,5 @@ extension IntroductionView {
 
 protocol IntroductionViewDelegate: class {
     func introductionViewDidAddAccount(_ introductionView: IntroductionView)
-    func introductionViewDidOpenTermsAndConditions(_ introductionView: IntroductionView)
+    func introductionView(_ introductionView: IntroductionView, didOpen url: URL)
 }

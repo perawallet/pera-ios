@@ -301,6 +301,9 @@
 		2B05A667251E23D7008A8791 /* CurrencyChangeEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B05A666251E23D7008A8791 /* CurrencyChangeEvent.swift */; };
 		2B05A668251E23D7008A8791 /* CurrencyChangeEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B05A666251E23D7008A8791 /* CurrencyChangeEvent.swift */; };
 		2B05A669251E23D7008A8791 /* CurrencyChangeEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B05A666251E23D7008A8791 /* CurrencyChangeEvent.swift */; };
+		2B05A675251E3BED008A8791 /* UITextView+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B05A674251E3BED008A8791 /* UITextView+Additions.swift */; };
+		2B05A676251E3BED008A8791 /* UITextView+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B05A674251E3BED008A8791 /* UITextView+Additions.swift */; };
+		2B05A677251E3BED008A8791 /* UITextView+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B05A674251E3BED008A8791 /* UITextView+Additions.swift */; };
 		2B0823DB23B6677A00D52BCF /* AssetSupportDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0823DA23B6677A00D52BCF /* AssetSupportDraft.swift */; };
 		2B0823DC23B6677A00D52BCF /* AssetSupportDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0823DA23B6677A00D52BCF /* AssetSupportDraft.swift */; };
 		2B0823DE23B668DB00D52BCF /* NotificationAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0823DD23B668DB00D52BCF /* NotificationAsset.swift */; };
@@ -1687,6 +1690,7 @@
 		2B05A658251E2384008A8791 /* ReceiveEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveEvent.swift; sourceTree = "<group>"; };
 		2B05A65F251E2393008A8791 /* ReceiveShareEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveShareEvent.swift; sourceTree = "<group>"; };
 		2B05A666251E23D7008A8791 /* CurrencyChangeEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyChangeEvent.swift; sourceTree = "<group>"; };
+		2B05A674251E3BED008A8791 /* UITextView+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextView+Additions.swift"; sourceTree = "<group>"; };
 		2B0823DA23B6677A00D52BCF /* AssetSupportDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetSupportDraft.swift; sourceTree = "<group>"; };
 		2B0823DD23B668DB00D52BCF /* NotificationAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationAsset.swift; sourceTree = "<group>"; };
 		2B09603722578C990005BE27 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -2340,6 +2344,14 @@
 				17F9E926225796DA004CDF24 /* AccountManager.swift */,
 			);
 			path = Managers;
+			sourceTree = "<group>";
+		};
+		2B05A673251E3BDE008A8791 /* TextView */ = {
+			isa = PBXGroup;
+			children = (
+				2B05A674251E3BED008A8791 /* UITextView+Additions.swift */,
+			);
+			path = TextView;
 			sourceTree = "<group>";
 		};
 		2B0D84E62394887000F0EAA7 /* Asset */ = {
@@ -4402,6 +4414,7 @@
 				2BF34CB8223A88030052CAD3 /* Layout */,
 				2BB021E7224E827B0039D78A /* List */,
 				2BE93703245A2F3D00322C1E /* Shadow */,
+				2B05A673251E3BDE008A8791 /* TextView */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -6237,6 +6250,7 @@
 				2B0F5F0524DD50E900DA22A6 /* RekeyConfirmationDataSource.swift in Sources */,
 				2B25700723F1D8620005CBA2 /* SendAssetTransactionPreviewViewModel.swift in Sources */,
 				2B4EEEC224BE001D00059A16 /* NotificationCell.swift in Sources */,
+				2B05A677251E3BED008A8791 /* UITextView+Additions.swift in Sources */,
 				17BD4E192292F1260003E49A /* UserInformationView.swift in Sources */,
 				17BD4E1A2292F1260003E49A /* AccountListViewModel.swift in Sources */,
 				2B3A34E4246EDA50001C8F22 /* TransactionAccountNameView.swift in Sources */,
@@ -6749,6 +6763,7 @@
 				2B0F618C24EC129D00DA22A6 /* PinLimitView.swift in Sources */,
 				2B0F618D24EC129D00DA22A6 /* SettingsFooterView.swift in Sources */,
 				2B0F618E24EC129D00DA22A6 /* NotificationsViewController.swift in Sources */,
+				2B05A676251E3BED008A8791 /* UITextView+Additions.swift in Sources */,
 				2B0F618F24EC129D00DA22A6 /* Formatter+Additions.swift in Sources */,
 				2B0F619024EC129D00DA22A6 /* DeepLinkParser.swift in Sources */,
 				2B0F619124EC129D00DA22A6 /* AssetRemovalFooterView.swift in Sources */,
@@ -7261,6 +7276,7 @@
 				2B0F5F0424DD50E900DA22A6 /* RekeyConfirmationDataSource.swift in Sources */,
 				2B25700623F1D8620005CBA2 /* SendAssetTransactionPreviewViewModel.swift in Sources */,
 				2B4EEEC124BE001D00059A16 /* NotificationCell.swift in Sources */,
+				2B05A675251E3BED008A8791 /* UITextView+Additions.swift in Sources */,
 				2BF71910224ECFAF001E8420 /* UserInformationView.swift in Sources */,
 				2B656E9F224BCB130064A49B /* AccountListViewModel.swift in Sources */,
 				2B3A34E3246EDA50001C8F22 /* TransactionAccountNameView.swift in Sources */,

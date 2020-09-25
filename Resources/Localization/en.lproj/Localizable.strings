@@ -56,9 +56,7 @@
 "introduction-title-text" = "Manage all assets\nfrom one app";
 "introduction-title-add-text" = "Add New Account";
 "introduction-add-account-text" = "Add Account";
-"introduction-title-terms-and-services" = "By creating an account, you agree to Algorand’s Terms and Conditions and Privacy Policy";
-"introduction-title-terms-and-services-conditions" = "Terms and Conditions";
-"introduction-title-terms-and-services-privacy" = "Privacy Policy";
+"introduction-title-terms-and-services" = "By creating an account, you agree to Algorand’s <a href=\"https://www.algorand.com/wallet-disclaimer\">Terms and Conditions</a> and <a href=\"https://www.algorand.com/wallet-privacy-policy\">Privacy Policy</a>";
 
 // MARK: Password Setting
 "choose-password-title" = "Choose Passcode";

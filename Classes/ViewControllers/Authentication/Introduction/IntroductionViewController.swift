@@ -120,10 +120,8 @@ extension IntroductionViewController: IntroductionViewDelegate {
         open(.accountTypeSelection(flow: accountSetupFlow), by: .push)
     }
     
-    func introductionViewDidOpenTermsAndConditions(_ introductionView: IntroductionView) {
-        if let termsAndServicesURL = URL(string: "https://www.algorand.com/wallet-disclaimer") {
-            open(termsAndServicesURL)
-        }
+    func introductionView(_ introductionView: IntroductionView, didOpen url: URL) {
+        open(url)
     }
 }
 
