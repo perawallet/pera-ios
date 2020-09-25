@@ -22,6 +22,9 @@ class TransactionCustomRangeSelectionView: BaseView {
     private lazy var datePickerView: UIDatePicker = {
         let pickerView = UIDatePicker()
         pickerView.datePickerMode = .date
+        if #available(iOS 13.4, *) {
+            pickerView.preferredDatePickerStyle = .wheels
+        }
         pickerView.maximumDate = Date()
         return pickerView
     }()

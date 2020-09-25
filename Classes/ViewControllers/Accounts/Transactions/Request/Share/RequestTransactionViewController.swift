@@ -26,6 +26,8 @@ class RequestTransactionViewController: BaseScrollViewController {
             leftBarButtonItems = [closeBarButtonItem]
         }
     }
+    
+    func copyAccountAddress() { }
 }
 
 extension RequestTransactionViewController {
@@ -40,6 +42,10 @@ extension RequestTransactionViewController {
 }
 
 extension RequestTransactionViewController: RequestTransactionViewDelegate {
+    func requestTransactionViewDidCopyAddress(_ requestTransactionView: RequestTransactionView) {
+        copyAccountAddress()
+    }
+    
     func requestTransactionViewDidTapShareButton(_ requestTransactionView: RequestTransactionView) {
         guard let shareUrl = URL(string: requestTransactionView.qrView.qrText.qrText()) else {
             return
