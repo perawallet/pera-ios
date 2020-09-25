@@ -12,7 +12,7 @@ extension API {
     @discardableResult
     func registerDevice(
         with draft: DeviceRegistrationDraft,
-        then handler: @escaping Endpoint.DefaultResultHandler<Device>
+        then handler: @escaping Endpoint.CompleteResultHandler<Device, AlgorandError>
     ) -> EndpointOperatable {
         return Endpoint(path: Path("/api/devices/"))
             .base(mobileApiBase)
@@ -26,7 +26,7 @@ extension API {
     @discardableResult
     func updateDevice(
         with draft: DeviceUpdateDraft,
-        then handler: @escaping Endpoint.DefaultResultHandler<Device>
+        then handler: @escaping Endpoint.CompleteResultHandler<Device, AlgorandError>
     ) -> EndpointOperatable {
         return Endpoint(path: Path("/api/devices/\(draft.id)"))
             .base(mobileApiBase)
