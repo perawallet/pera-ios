@@ -19,3 +19,9 @@ extension AlgorandError {
         case message = "fallback_message"
     }
 }
+
+extension AlgorandError {
+    enum ErrorType: String {
+        case deviceAlreadyExists = "DeviceAlreadyExistsException"
+    }
+}

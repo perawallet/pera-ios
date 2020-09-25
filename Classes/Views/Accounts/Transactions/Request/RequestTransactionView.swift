@@ -38,10 +38,10 @@ class RequestTransactionView: BaseView {
     
     private(set) lazy var qrView: QRView = {
         if let assetIndex = assetIndex {
-            let qrText = QRText(mode: .assetRequest, address: address, asset: assetIndex)
+            let qrText = QRText(mode: .assetRequest, address: address, amount: 0, asset: assetIndex)
             return QRView(qrText: qrText)
         } else {
-            let qrText = QRText(mode: .algosRequest, address: address, asset: assetIndex)
+            let qrText = QRText(mode: .algosRequest, address: address, amount: 0, asset: assetIndex)
             return QRView(qrText: qrText)
         }
     }()

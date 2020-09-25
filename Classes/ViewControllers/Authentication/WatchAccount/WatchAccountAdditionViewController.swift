@@ -165,8 +165,8 @@ extension WatchAccountAdditionViewController: WatchAccountAdditionViewDelegate {
 
 extension WatchAccountAdditionViewController: QRScannerViewControllerDelegate {
     func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, completionHandler: EmptyHandler?) {
-        guard qrText.mode == .mnemonic else {
-            displaySimpleAlertWith(title: "title-error".localized, message: "qr-scan-should-scan-mnemonics-message".localized) { _ in
+        guard qrText.mode == .address else {
+            displaySimpleAlertWith(title: "title-error".localized, message: "qr-scan-should-scan-address-message".localized) { _ in
                 if let handler = completionHandler {
                     handler()
                 }

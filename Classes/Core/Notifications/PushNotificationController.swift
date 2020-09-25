@@ -70,8 +70,13 @@ extension PushNotificationController {
             case let .success(device):
                 self.api.session.authenticatedUser?.setDeviceId(device.id)
                 handler?(true)
-            case .failure:
-                handler?(false)
+            case let .failure(_, algorandError):
+                if let errorType = algorandError?.type,
+                   errorType == AlgorandError.ErrorType.deviceAlreadyExists.rawValue {
+                    self.registerDevice(for: user, completion: handler)
+                } else {
+                    handler?(false)
+                }
             }
         }
     }
@@ -83,8 +88,13 @@ extension PushNotificationController {
             case let .success(device):
                 self.api.session.authenticatedUser?.setDeviceId(device.id)
                 handler?(true)
-            case .failure:
-                handler?(false)
+            case let .failure(_, algorandError):
+                if let errorType = algorandError?.type,
+                   errorType == AlgorandError.ErrorType.deviceAlreadyExists.rawValue {
+                    self.registerDevice(for: user, completion: handler)
+                } else {
+                    handler?(false)
+                }
             }
         }
     }

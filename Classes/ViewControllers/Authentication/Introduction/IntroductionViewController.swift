@@ -54,6 +54,22 @@ class IntroductionViewController: BaseViewController {
         super.configureAppearance()
         view.backgroundColor = SharedColors.secondaryBackground
         setSecondaryBackgroundColor()
+        
+        switch accountSetupFlow {
+        case .addNewAccount:
+            introductionView.setTitle("introduction-title-add-text".localized)
+        case .initializeAccount:
+            introductionView.setTitle("introduction-title-text".localized)
+        }
+    }
+    
+    override func setListeners() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didApplicationEnterForeground),
+            name: .ApplicationWillEnterForeground,
+            object: nil
+        )
     }
     
     override func prepareLayout() {
@@ -73,6 +89,13 @@ extension IntroductionViewController {
         introductionView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+    }
+}
+
+extension IntroductionViewController {
+    @objc
+    private func didApplicationEnterForeground() {
+        introductionView.animateImages()
     }
 }
 
@@ -97,10 +120,8 @@ extension IntroductionViewController: IntroductionViewDelegate {
         open(.accountTypeSelection(flow: accountSetupFlow), by: .push)
     }
     
-    func introductionViewDidOpenTermsAndConditions(_ introductionView: IntroductionView) {
-        if let termsAndServicesURL = URL(string: "https://www.algorand.com/wallet-disclaimer") {
-            open(termsAndServicesURL)
-        }
+    func introductionView(_ introductionView: IntroductionView, didOpen url: URL) {
+        open(url)
     }
 }
 
