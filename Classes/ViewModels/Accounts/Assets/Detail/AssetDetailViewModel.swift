@@ -25,7 +25,6 @@ class AssetDetailViewModel {
 extension AssetDetailViewModel {
     func configure(_ view: AssetDetailHeaderView, with account: Account, and assetDetail: AssetDetail?) {
         if let assetDetail = assetDetail {
-            view.dollarValueImageView.isHidden = true
             view.algosImageView.removeFromSuperview()
             if !assetDetail.isVerified {
                 view.verifiedImageView.removeFromSuperview()
@@ -38,9 +37,10 @@ extension AssetDetailViewModel {
             guard let amount = account.amount(for: assetDetail) else {
                 return
             }
-            view.algosAmountLabel.text = amount.toFractionStringForLabel(fraction: assetDetail.fractionDecimals)
+            view.assetAmountLabel.text = amount.toFractionStringForLabel(fraction: assetDetail.fractionDecimals)
         } else {
-            view.algosAmountLabel.text = account.amount.toAlgos.toDecimalStringForLabel
+            view.assetNameLabel.text = "accounts-algos-available-title".localized
+            view.assetAmountLabel.text = account.amount.toAlgos.toDecimalStringForLabel
             view.verifiedImageView.isHidden = false
             let totalRewards: UInt64 = (account.pendingRewards ?? 0)
             view.rewardTotalAmountView.setReward(amount: totalRewards.toAlgos.toDecimalStringForLabel ?? "0.00")
@@ -60,20 +60,9 @@ extension AssetDetailViewModel {
 }
 
 extension AssetDetailViewModel {
-    func setDollarValue(visible: Bool, in view: AssetDetailHeaderView, for currentValue: Double) {
-        view.algosAmountLabel.isHidden = visible
-        view.dollarAmountLabel.isHidden = !visible
-        view.verifiedImageView.isHidden = visible
-        
-        if visible {
-            view.assetNameLabel.text = "accounts-dollar-value-title".localized
-            view.assetNameLabel.textColor = SharedColors.detailText
-            view.dollarAmountLabel.text = currentValue.toFractionStringForLabel(fraction: 2)
-            view.algosImageView.isHidden = true
-        } else {
-            view.assetNameLabel.text = "accounts-algos-available-title".localized
-            view.assetNameLabel.textColor = SharedColors.detailText
-            view.algosImageView.isHidden = false
+    func setDollarValue(in view: AssetDetailHeaderView, with currentValue: Double, for currency: String) {
+        if let currencyValue = currentValue.toFractionStringForLabel(fraction: 2) {
+            view.currencyAmountLabel.text = "\(currencyValue) \(currency)"
         }
     }
 }

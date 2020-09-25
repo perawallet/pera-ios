@@ -14,52 +14,52 @@ class IntroductionView: BaseView {
     
     weak var delegate: IntroductionViewDelegate?
     
+    private lazy var termsAndConditionsLabelGestureRecognizer = UITapGestureRecognizer(
+        target: self,
+        action: #selector(notifyDelegateToOpenTermsAndConditions)
+    )
+    
+    private lazy var outerAnimatedImageView = UIImageView(image: img("img-introduction-bg-outer"))
+    
+    private lazy var middleAnimatedImageView = UIImageView(image: img("img-introduction-bg-middle"))
+    
+    private lazy var innerAnimatedImageView = UIImageView(image: img("img-introduction-bg-inner"))
+    
     private lazy var introductionImageView = UIImageView(image: img("logo-introduction"))
     
     private lazy var titleLabel: UILabel = {
         UILabel()
             .withLine(.contained)
-            .withFont(UIFont.font(withWeight: .bold(size: 28.0 * verticalScale)))
+            .withFont(UIFont.font(withWeight: .medium(size: 24.0)))
             .withText("introduction-title-text".localized)
             .withTextColor(SharedColors.primaryText)
             .withAlignment(.center)
     }()
     
-    private lazy var createAccountButton = MainButton(title: "introduction-create-title".localized)
+    private lazy var addAccountButton = MainButton(title: "introduction-add-account-text".localized)
     
-    private lazy var pairLedgerAccountButton: UIButton = {
-        UIButton(type: .custom)
-            .withBackgroundImage(img("bg-orange-button"))
-            .withTitle("introduction-title-pair-ledger".localized)
-            .withTitleColor(SharedColors.primaryButtonTitle)
+    private lazy var termsAndConditionsLabel: UILabel = {
+        let label = UILabel()
+            .withLine(.contained)
+            .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
+            .withTextColor(SharedColors.inputTitle)
             .withAlignment(.center)
-            .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
-    }()
-    
-    private lazy var separatorView = LineSeparatorView()
-    
-    private lazy var subtitleLabel: UILabel = {
-        UILabel()
-            .withAlignment(.center)
-            .withLine(.single)
-            .withTextColor(SharedColors.gray500)
-            .withFont(UIFont.font(withWeight: .medium(size: 14.0 * verticalScale)))
-            .withText("introduction-has-account".localized)
-    }()
-    
-    private lazy var recoverButton: UIButton = {
-        UIButton(type: .custom)
-            .withBackgroundImage(img("bg-light-gray-button"))
-            .withTitle("introduction-recover-title".localized)
-            .withTitleColor(SharedColors.secondaryButtonTitle)
-            .withAlignment(.center)
-            .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
+        label.isUserInteractionEnabled = true
+        
+        let fullText = "introduction-title-terms-and-services".localized
+        let fullAttributedText = NSMutableAttributedString(string: fullText)
+        let termsRange = (fullText as NSString).range(of: "introduction-title-terms-and-services-conditions".localized)
+        let privacyRange = (fullText as NSString).range(of: "introduction-title-terms-and-services-privacy".localized)
+        fullAttributedText.addAttribute(NSAttributedString.Key.foregroundColor, value: SharedColors.primary, range: termsRange)
+        fullAttributedText.addAttribute(NSAttributedString.Key.foregroundColor, value: SharedColors.primary, range: privacyRange)
+        label.attributedText = fullAttributedText
+        
+        return label
     }()
     
     override func setListeners() {
-        createAccountButton.addTarget(self, action: #selector(notifyDelegateToCreateAccount), for: .touchUpInside)
-        pairLedgerAccountButton.addTarget(self, action: #selector(notifyDelegateToPairLedgerAccount), for: .touchUpInside)
-        recoverButton.addTarget(self, action: #selector(notifyDelegateToRecoverAccount), for: .touchUpInside)
+        addAccountButton.addTarget(self, action: #selector(notifyDelegateToAddAccount), for: .touchUpInside)
+        termsAndConditionsLabel.addGestureRecognizer(termsAndConditionsLabelGestureRecognizer)
     }
     
     override func configureAppearance() {
@@ -68,23 +68,49 @@ class IntroductionView: BaseView {
     }
     
     override func prepareLayout() {
-        setupIntroductionImageViewLayout()
+        setupOuterAnimatedImageViewLayout()
+        setupMiddleAnimatedImageViewLayout()
+        setupInnerAnimatedImageViewLayout()
         setupTitleLabelLayout()
-        setupCreateAccountButtonLayout()
-        setupPairLedgerAccountButtonLayout()
-        setupSeparatorViewLayout()
-        setupSubtitleLabelLayout()
-        setupRecoverButtonLayout()
+        setupIntroductionImageViewLayout()
+        setupTermsAndConditionsLabelLayout()
+        setupAddAccountButtonLayout()
     }
 }
 
 extension IntroductionView {
-    private func setupIntroductionImageViewLayout() {
-        addSubview(introductionImageView)
+    private func setupOuterAnimatedImageViewLayout() {
+        addSubview(outerAnimatedImageView)
         
-        introductionImageView.snp.makeConstraints { make in
+        outerAnimatedImageView.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(-layout.current.outerImageOffset)
+            make.trailing.equalToSuperview().offset(layout.current.outerImageOffset)
             make.centerX.equalToSuperview()
-            make.top.equalToSuperview().inset(layout.current.imageViewTopInset)
+            make.centerY.equalToSuperview().inset(layout.current.titleCenterOffset)
+            make.width.equalTo(outerAnimatedImageView.snp.height)
+        }
+    }
+    
+    private func setupMiddleAnimatedImageViewLayout() {
+        addSubview(middleAnimatedImageView)
+        
+        middleAnimatedImageView.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(-layout.current.middleImageOffset)
+            make.trailing.equalToSuperview().offset(layout.current.middleImageOffset)
+            make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview().inset(layout.current.titleCenterOffset)
+            make.width.equalTo(middleAnimatedImageView.snp.height)
+        }
+    }
+    
+    private func setupInnerAnimatedImageViewLayout() {
+        addSubview(innerAnimatedImageView)
+        
+        innerAnimatedImageView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(layout.current.innerImageOffset)
+            make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview().inset(layout.current.titleCenterOffset)
+            make.width.equalTo(innerAnimatedImageView.snp.height)
         }
     }
     
@@ -92,96 +118,76 @@ extension IntroductionView {
         addSubview(titleLabel)
         
         titleLabel.snp.makeConstraints { make in
-            make.top.lessThanOrEqualTo(introductionImageView.snp.bottom).offset(layout.current.imageViewTopInset)
+            make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview().inset(layout.current.titleCenterOffset)
             make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
         }
     }
     
-    private func setupCreateAccountButtonLayout() {
-        addSubview(createAccountButton)
+    private func setupIntroductionImageViewLayout() {
+        addSubview(introductionImageView)
         
-        createAccountButton.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.createButtonTopInset)
+        introductionImageView.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.bottom.equalTo(titleLabel.snp.top).offset(-layout.current.verticalInset)
+        }
+    }
+    
+    private func setupTermsAndConditionsLabelLayout() {
+        addSubview(termsAndConditionsLabel)
+        
+        termsAndConditionsLabel.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.bottom.equalToSuperview().inset(safeAreaBottom + layout.current.verticalInset)
             make.centerX.equalToSuperview()
         }
     }
     
-    private func setupPairLedgerAccountButtonLayout() {
-        addSubview(pairLedgerAccountButton)
+    private func setupAddAccountButtonLayout() {
+        addSubview(addAccountButton)
         
-        pairLedgerAccountButton.snp.makeConstraints { make in
-            make.top.equalTo(createAccountButton.snp.bottom).offset(layout.current.pairButtonTopInset)
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+        addAccountButton.snp.makeConstraints { make in
+            make.top.greaterThanOrEqualTo(titleLabel.snp.bottom).offset(layout.current.verticalInset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
             make.centerX.equalToSuperview()
-        }
-    }
-    
-    private func setupSeparatorViewLayout() {
-        addSubview(separatorView)
-        
-        separatorView.snp.makeConstraints { make in
-            make.top.equalTo(pairLedgerAccountButton.snp.bottom).offset(layout.current.separatorVerticalInset)
-            make.centerX.equalToSuperview()
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.height.equalTo(layout.current.separatorHeight)
-        }
-    }
-    
-    private func setupSubtitleLabelLayout() {
-        addSubview(subtitleLabel)
-        
-        subtitleLabel.snp.makeConstraints { make in
-            make.top.equalTo(separatorView.snp.bottom).offset(layout.current.separatorVerticalInset)
-            make.centerX.equalToSuperview()
-        }
-    }
-    
-    private func setupRecoverButtonLayout() {
-        addSubview(recoverButton)
-        
-        recoverButton.snp.makeConstraints { make in
-            make.top.equalTo(subtitleLabel.snp.bottom).offset(layout.current.recoverButtonTopInset)
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.bottom.equalToSuperview().inset(layout.current.bottomInset + safeAreaBottom)
+            make.bottom.equalTo(termsAndConditionsLabel.snp.top).offset(-layout.current.verticalInset)
         }
     }
 }
 
 extension IntroductionView {
+    func animateImages() {
+        outerAnimatedImageView.rotate360Degrees(duration: 4.15, repeatCount: .greatestFiniteMagnitude, isClockwise: false)
+        middleAnimatedImageView.rotate360Degrees(duration: 3.5, repeatCount: .greatestFiniteMagnitude, isClockwise: false)
+        innerAnimatedImageView.rotate360Degrees(duration: 3.0, repeatCount: .greatestFiniteMagnitude, isClockwise: true)
+    }
+}
+
+extension IntroductionView {
     @objc
-    func notifyDelegateToCreateAccount() {
-        delegate?.introductionViewDidTapCreateAccountButton(self)
+    private func notifyDelegateToAddAccount() {
+        delegate?.introductionViewDidAddAccount(self)
     }
     
     @objc
-    func notifyDelegateToPairLedgerAccount() {
-        delegate?.introductionViewDidTapPairLedgerAccountButton(self)
-    }
-
-    @objc
-    func notifyDelegateToRecoverAccount() {
-        delegate?.introductionViewDidTapRecoverButton(self)
+    private func notifyDelegateToOpenTermsAndConditions() {
+        delegate?.introductionViewDidOpenTermsAndConditions(self)
     }
 }
 
 extension IntroductionView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let imageViewLeadingInset: CGFloat = 28.0
-        let imageViewTopInset: CGFloat = 120.0 * verticalScale
-        let titleLabelTopInset: CGFloat = 80.0 * verticalScale
-        let separatorHeight: CGFloat = 1.0
-        let separatorVerticalInset: CGFloat = 32.0 * verticalScale
-        let createButtonTopInset: CGFloat = 40.0 * verticalScale
-        let pairButtonTopInset: CGFloat = 20.0 * verticalScale
-        let bottomInset: CGFloat = 20.0 * verticalScale
-        let recoverButtonTopInset: CGFloat = 16.0 * verticalScale
+        let outerImageOffset: CGFloat = 116.0
+        let middleImageOffset: CGFloat = 36.0
+        let innerImageOffset: CGFloat = 44.0
         let horizontalInset: CGFloat = 32.0
+        let verticalInset: CGFloat = 20.0
+        let buttonHorizontalInset: CGFloat = 20.0
+        let titleCenterOffset: CGFloat = 22.0
     }
 }
 
 protocol IntroductionViewDelegate: class {
-    func introductionViewDidTapCreateAccountButton(_ introductionView: IntroductionView)
-    func introductionViewDidTapPairLedgerAccountButton(_ introductionView: IntroductionView)
-    func introductionViewDidTapRecoverButton(_ introductionView: IntroductionView)
+    func introductionViewDidAddAccount(_ introductionView: IntroductionView)
+    func introductionViewDidOpenTermsAndConditions(_ introductionView: IntroductionView)
 }
