@@ -13,13 +13,13 @@ extension TabBarController {
         addTransactionButtons()
         animateCenterButtonAsSelected(true)
         animateSendButton()
-        animateRequestButton()
+        animateReceiveButton()
     }
     
     func hideTransactionFlow() {
         animateCenterButtonAsSelected(false)
         hideSendButton()
-        hideRequestButton()
+        hideReceiveButton()
     }
     
     private func animateCenterButtonAsSelected(_ isSelected: Bool) {
@@ -54,8 +54,8 @@ extension TabBarController {
         view.addSubview(sendButton)
         sendButton.frame = CGRect(x: view.frame.width / 2.0, y: tabBar.frame.minY + 5.0, width: 0.0, height: 0.0)
         
-        view.addSubview(requestButton)
-        requestButton.frame = CGRect(x: view.frame.width / 2.0, y: tabBar.frame.minY + 5.0, width: 0.0, height: 0.0)
+        view.addSubview(receiveButton)
+        receiveButton.frame = CGRect(x: view.frame.width / 2.0, y: tabBar.frame.minY + 5.0, width: 0.0, height: 0.0)
         
         view.layoutIfNeeded()
     }
@@ -90,32 +90,32 @@ extension TabBarController {
         )
     }
     
-    private func animateRequestButton() {
+    private func animateReceiveButton() {
         UIView.animate(
             withDuration: 0.2,
             delay: 0.08,
             options: [.allowUserInteraction, .curveEaseInOut],
             animations: {
-                self.requestButton.frame.origin.x += 12.0
-                self.requestButton.frame.origin.y -= 48.0
-                self.requestButton.frame.size = CGSize(width: 116.0, height: 48.0)
+                self.receiveButton.frame.origin.x += 12.0
+                self.receiveButton.frame.origin.y -= 48.0
+                self.receiveButton.frame.size = CGSize(width: 116.0, height: 48.0)
             },
             completion: nil
         )
     }
     
-    private func hideRequestButton() {
+    private func hideReceiveButton() {
         UIView.animate(
             withDuration: 0.2,
             delay: 0.08,
             options: UIView.AnimationOptions.allowUserInteraction,
             animations: {
-                self.requestButton.frame.origin.x -= 12.0
-                self.requestButton.frame.origin.y += 48.0
-                self.requestButton.frame.size = CGSize(width: 10.0, height: 10.0)
+                self.receiveButton.frame.origin.x -= 12.0
+                self.receiveButton.frame.origin.y += 48.0
+                self.receiveButton.frame.size = CGSize(width: 10.0, height: 10.0)
             },
             completion: { _ in
-                self.requestButton.removeFromSuperview()
+                self.receiveButton.removeFromSuperview()
             }
         )
     }

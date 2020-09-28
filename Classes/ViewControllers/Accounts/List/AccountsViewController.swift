@@ -113,7 +113,7 @@ class AccountsViewController: BaseViewController {
         }
         
         pushNotificationController.requestAuthorization()
-        pushNotificationController.registerDevice()
+        pushNotificationController.sendDeviceDetails()
         
         setAccountsCollectionViewContentState()
     }
@@ -215,7 +215,10 @@ extension AccountsViewController: AccountsViewDelegate {
     }
     
     func accountsViewDidTapAddButton(_ accountsView: AccountsView) {
-        open(.addNewAccount, by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil))
+        open(
+            .introduction(flow: .addNewAccount(mode: nil)),
+            by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
+        )
     }
 }
 
@@ -253,7 +256,7 @@ extension AccountsViewController {
             return
         }
         
-        pushNotificationController.registerDevice()
+        pushNotificationController.sendDeviceDetails()
         
         accountsDataSource.reload()
         setAccountsCollectionViewContentState()

@@ -12,21 +12,15 @@ class AssetDetailHeaderView: BaseView {
     
     private let layout = Layout<LayoutConstants>()
     
-    private lazy var dollarValueGestureRecognizer: UILongPressGestureRecognizer = {
-        let recognizer = UILongPressGestureRecognizer(target: self, action: #selector(notifyDelegateToDollarValueLabelTapped))
-        recognizer.minimumPressDuration = 0.0
-        return recognizer
-    }()
-    
     private lazy var assetIdCopyValueGestureRecognizer: UILongPressGestureRecognizer = {
-        let recognizer = UILongPressGestureRecognizer(target: self, action: #selector(notifyDelegateToAssetIdLabelTapped))
+        let recognizer = UILongPressGestureRecognizer(target: self, action: #selector(notifyDelegateToCopyAssetId))
         recognizer.minimumPressDuration = 1.5
         return recognizer
     }()
     
     private lazy var rewardsTapGestureRecognizer = UITapGestureRecognizer(
         target: self,
-        action: #selector(notifyDelegateToRewardsViewTapped)
+        action: #selector(notifyDelegateToOpenRewardDetails)
     )
     
     private(set) lazy var verifiedImageView = UIImageView(image: img("icon-verified"))
@@ -34,38 +28,30 @@ class AssetDetailHeaderView: BaseView {
     private(set) lazy var assetNameLabel: UILabel = {
         UILabel()
             .withAlignment(.left)
-            .withTextColor(SharedColors.detailText)
+            .withTextColor(SharedColors.primaryText)
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
-            .withText("accounts-algos-available-title".localized)
     }()
     
-    private(set) lazy var algosImageView = UIImageView(image: img("icon-algorand-asset-detail"))
-    
-    private(set) lazy var algosAmountLabel: UILabel = {
+    private(set) lazy var assetAmountLabel: UILabel = {
         let label = UILabel()
             .withAlignment(.left)
             .withTextColor(SharedColors.primaryText)
             .withFont(UIFont.font(withWeight: .semiBold(size: 28.0)))
-            .withText("0.000000")
         label.minimumScaleFactor = 0.7
         label.adjustsFontSizeToFitWidth = true
         return label
     }()
     
-    private(set) lazy var dollarAmountLabel: UILabel = {
+    private(set) lazy var algosImageView = UIImageView(image: img("icon-algorand-asset-detail"))
+    
+    private(set) lazy var currencyAmountLabel: UILabel = {
         let label = UILabel()
             .withAlignment(.left)
-            .withTextColor(SharedColors.primaryText)
-            .withFont(UIFont.font(withWeight: .semiBold(size: 28.0)))
+            .withTextColor(SharedColors.gray700)
+            .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
         label.minimumScaleFactor = 0.8
         label.adjustsFontSizeToFitWidth = true
         return label
-    }()
-    
-    private(set) lazy var dollarValueImageView: UIImageView = {
-        let imageView = UIImageView(image: img("icon-dollar"))
-        imageView.isUserInteractionEnabled = true
-        return imageView
     }()
     
     private(set) lazy var assetIdLabel: UILabel = {
@@ -76,40 +62,6 @@ class AssetDetailHeaderView: BaseView {
         label.isHidden = true
         label.isUserInteractionEnabled = true
         return label
-    }()
-    
-    private lazy var sendButton: AlignedButton = {
-        let positions: AlignedButton.StylePositionAdjustment = (
-            image: CGPoint(x: 40.0 * horizontalScale, y: 0.0),
-            title: CGPoint(x: 0.0, y: 0.0)
-        )
-        
-        let button = AlignedButton(style: .imageLeftTitleCentered(positions))
-        button.setImage(img("icon-arrow-up"), for: .normal)
-        button.setTitle("title-send".localized, for: .normal)
-        button.setTitleColor(SharedColors.primaryButtonTitle, for: .normal)
-        button.titleLabel?.font = UIFont.font(withWeight: .semiBold(size: 14.0))
-        button.backgroundColor = SharedColors.secondary
-        button.layer.cornerRadius = 24.0
-        button.titleLabel?.textAlignment = .center
-        return button
-    }()
-    
-    private lazy var requestButton: AlignedButton = {
-        let positions: AlignedButton.StylePositionAdjustment = (
-            image: CGPoint(x: 30.0 * horizontalScale, y: 0.0),
-            title: CGPoint(x: 0.0, y: 0.0)
-        )
-        
-        let button = AlignedButton(style: .imageLeftTitleCentered(positions))
-        button.setImage(img("icon-arrow-down"), for: .normal)
-        button.setTitle("title-request".localized, for: .normal)
-        button.setTitleColor(SharedColors.primaryButtonTitle, for: .normal)
-        button.titleLabel?.font = UIFont.font(withWeight: .semiBold(size: 14.0))
-        button.backgroundColor = SharedColors.primary
-        button.layer.cornerRadius = 24.0
-        button.titleLabel?.textAlignment = .center
-        return button
     }()
     
     private(set) lazy var rewardTotalAmountView: RewardTotalAmountView = {
@@ -123,16 +75,11 @@ class AssetDetailHeaderView: BaseView {
     override func configureAppearance() {
         backgroundColor = SharedColors.secondaryBackground
         algosImageView.contentMode = .scaleAspectFit
-        dollarValueImageView.contentMode = .center
-        dollarAmountLabel.isHidden = true
         layer.cornerRadius = 12.0
         applyMediumShadow()
     }
     
     override func setListeners() {
-        sendButton.addTarget(self, action: #selector(notifyDelegateToSendButtonTapped), for: .touchUpInside)
-        requestButton.addTarget(self, action: #selector(notifyDelegateToReceiveButtonTapped), for: .touchUpInside)
-        dollarValueImageView.addGestureRecognizer(dollarValueGestureRecognizer)
         assetIdLabel.addGestureRecognizer(assetIdCopyValueGestureRecognizer)
         rewardTotalAmountView.addGestureRecognizer(rewardsTapGestureRecognizer)
     }
@@ -141,12 +88,9 @@ class AssetDetailHeaderView: BaseView {
         setupVerifiedImageViewLayout()
         setupAssetNameLabelLayout()
         setupAssetIdLabelLayout()
+        setupAssetAmountLabelLayout()
         setupAlgosImageViewLayout()
-        setupAmountLabelLayout()
-        setupDollarAmountLabelLayout()
-        setupDollarValueImageViewLayout()
-        setupSendButtonLayout()
-        setupRequestButtonLayout()
+        setupCurrencyAmountLabelLayout()
         setupRewardTotalAmountView()
     }
     
@@ -188,67 +132,34 @@ extension AssetDetailHeaderView {
             make.leading.greaterThanOrEqualTo(assetNameLabel.snp.trailing).offset(layout.current.minimumOffset)
         }
     }
+
+    private func setupAssetAmountLabelLayout() {
+        addSubview(assetAmountLabel)
+        
+        assetAmountLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(layout.current.defaultInset)
+            make.trailing.lessThanOrEqualToSuperview().inset(layout.current.amountTrailingInset)
+            make.top.equalTo(assetNameLabel.snp.bottom).offset(layout.current.amountTopInset)
+        }
+    }
     
     private func setupAlgosImageViewLayout() {
         addSubview(algosImageView)
         
         algosImageView.snp.makeConstraints { make in
             make.size.equalTo(layout.current.algosImageSize)
-            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
+            make.leading.equalTo(assetAmountLabel.snp.trailing).offset(layout.current.minimumOffset)
             make.top.equalTo(assetNameLabel.snp.bottom).offset(layout.current.algosImageTopInset)
         }
     }
-
-    private func setupAmountLabelLayout() {
-        addSubview(algosAmountLabel)
-        
-        algosAmountLabel.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(layout.current.amountTrailingInset)
-            make.leading.equalToSuperview().inset(layout.current.horizontalInset).priority(.high)
-            make.leading.equalTo(algosImageView.snp.trailing).offset(layout.current.minimumOffset)
-            make.top.equalTo(assetNameLabel.snp.bottom).offset(layout.current.amountTopInset)
-        }
-    }
     
-    private func setupDollarAmountLabelLayout() {
-        addSubview(dollarAmountLabel)
+    private func setupCurrencyAmountLabelLayout() {
+        addSubview(currencyAmountLabel)
         
-        dollarAmountLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
-            make.top.equalTo(assetNameLabel.snp.bottom).offset(layout.current.amountTopInset)
-            make.trailing.lessThanOrEqualToSuperview().inset(layout.current.amountTrailingInset)
-        }
-    }
-    
-    private func setupDollarValueImageViewLayout() {
-        addSubview(dollarValueImageView)
-        
-        dollarValueImageView.snp.makeConstraints { make in
-            make.size.equalTo(layout.current.dollarValueSize)
-            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.top.equalTo(assetIdLabel.snp.bottom).offset(layout.current.minimumOffset)
-        }
-    }
-    
-    private func setupSendButtonLayout() {
-        addSubview(sendButton)
-        
-        sendButton.snp.makeConstraints { make in
+        currencyAmountLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(layout.current.defaultInset)
-            make.top.equalTo(algosAmountLabel.snp.bottom).offset(layout.current.defaultInset)
-            make.width.equalTo(layout.current.buttonWidth)
-            make.height.equalTo(layout.current.buttonHeight)
-        }
-    }
-    
-    private func setupRequestButtonLayout() {
-        addSubview(requestButton)
-        
-        requestButton.snp.makeConstraints { make in
-            make.leading.greaterThanOrEqualTo(sendButton.snp.trailing).offset(layout.current.minimumOffset)
-            make.width.height.equalTo(sendButton)
-            make.trailing.equalToSuperview().inset(layout.current.defaultInset)
-            make.top.bottom.equalTo(sendButton)
+            make.top.equalTo(assetAmountLabel.snp.bottom).offset(layout.current.verifiedImageOffset)
+            make.trailing.lessThanOrEqualToSuperview().inset(layout.current.amountTrailingInset)
         }
     }
     
@@ -256,36 +167,21 @@ extension AssetDetailHeaderView {
         addSubview(rewardTotalAmountView)
         
         rewardTotalAmountView.snp.makeConstraints { make in
-            make.top.equalTo(sendButton.snp.bottom).offset(layout.current.defaultInset)
-            make.leading.trailing.equalToSuperview()
+            make.top.greaterThanOrEqualTo(currencyAmountLabel.snp.bottom).offset(layout.current.defaultInset)
+            make.leading.bottom.trailing.equalToSuperview()
         }
     }
 }
 
 extension AssetDetailHeaderView {
     @objc
-    private func notifyDelegateToSendButtonTapped() {
-        delegate?.assetDetailHeaderViewDidTapSendButton(self)
+    private func notifyDelegateToCopyAssetId() {
+        delegate?.assetDetailHeaderViewDidCopyAssetId(self)
     }
     
     @objc
-    private func notifyDelegateToReceiveButtonTapped() {
-        delegate?.assetDetailHeaderViewDidTapReceiveButton(self)
-    }
-    
-    @objc
-    private func notifyDelegateToDollarValueLabelTapped(dollarValueGestureRecognizer: UILongPressGestureRecognizer) {
-        delegate?.assetDetailHeaderView(self, didTrigger: dollarValueGestureRecognizer)
-    }
-    
-    @objc
-    private func notifyDelegateToAssetIdLabelTapped(assetIdCopyValueGestureRecognizer: UILongPressGestureRecognizer) {
-        delegate?.assetDetailHeaderView(self, didTriggerAssetIdCopyValue: assetIdCopyValueGestureRecognizer)
-    }
-    
-    @objc
-    private func notifyDelegateToRewardsViewTapped() {
-        delegate?.assetDetailHeaderViewDidTapRewardView(self)
+    private func notifyDelegateToOpenRewardDetails() {
+        delegate?.assetDetailHeaderViewDidOpenRewardDetails(self)
     }
 }
 
@@ -296,26 +192,13 @@ extension AssetDetailHeaderView {
         let verifiedImageOffset: CGFloat = 8.0
         let minimumOffset: CGFloat = 4.0
         let algosImageSize = CGSize(width: 24.0, height: 24.0)
-        let horizontalInset: CGFloat = 16.0
-        let algosImageTopInset: CGFloat = 12.0
+        let algosImageTopInset: CGFloat = 30.0
         let amountTrailingInset: CGFloat = 60.0
-        let amountTopInset: CGFloat = 8.0
-        let dollarValueSize = CGSize(width: 40.0, height: 40.0)
-        let buttonHeight: CGFloat = 48.0
-        let buttonWidth: CGFloat = 142.0
+        let amountTopInset: CGFloat = 24.0
     }
 }
 
 protocol AssetDetailHeaderViewDelegate: class {
-    func assetDetailHeaderViewDidTapSendButton(_ assetDetailHeaderView: AssetDetailHeaderView)
-    func assetDetailHeaderViewDidTapReceiveButton(_ assetDetailHeaderView: AssetDetailHeaderView)
-    func assetDetailHeaderView(
-        _ assetDetailHeaderView: AssetDetailHeaderView,
-        didTrigger dollarValueGestureRecognizer: UILongPressGestureRecognizer
-    )
-    func assetDetailHeaderView(
-        _ assetDetailHeaderView: AssetDetailHeaderView,
-        didTriggerAssetIdCopyValue gestureRecognizer: UILongPressGestureRecognizer
-    )
-    func assetDetailHeaderViewDidTapRewardView(_ assetDetailHeaderView: AssetDetailHeaderView)
+    func assetDetailHeaderViewDidCopyAssetId(_ assetDetailHeaderView: AssetDetailHeaderView)
+    func assetDetailHeaderViewDidOpenRewardDetails(_ assetDetailHeaderView: AssetDetailHeaderView)
 }

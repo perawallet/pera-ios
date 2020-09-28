@@ -16,7 +16,7 @@ class SettingsDetailContextView: BaseView {
     
     private lazy var detailImageView = UIImageView(image: img("icon-arrow"))
     
-    private(set) lazy var nameLabel: UILabel = {
+    private lazy var nameLabel: UILabel = {
         UILabel()
             .withTextColor(SharedColors.primaryText)
             .withLine(.single)
@@ -82,6 +82,10 @@ extension SettingsDetailContextView {
 extension SettingsDetailContextView {
     func setImage(_ image: UIImage?) {
         imageView.image = image
+    }
+    
+    func setName(_ name: String?) {
+        nameLabel.text = name
     }
 }
 

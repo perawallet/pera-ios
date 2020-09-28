@@ -24,6 +24,7 @@
 "title-save" = "Save";
 "title-close" = "Close";
 "title-send" = "Send";
+"title-receive" = "Receive";
 "title-request" = "Request";
 "title-preview" = "Preview";
 "title-done" = "Done";
@@ -38,15 +39,24 @@
 "title-testnet" = "TESTNET";
 "title-account" = "Account";
 "title-id" = "ID";
+"title-copy" = "Copy";
+"title-new-uppercased" = "NEW";
+
+// MARK: Account Type Selection
+"account-type-choose-title" = "Choose Account Type";
+"account-type-selection-create" = "Create New Account";
+"account-type-selection-create-detail" = "Create a new Algorand Account";
+"account-type-selection-watch-detail" = "Follow the account transactions with the address.";
+"account-type-selection-recover" = "Recover From Passphrase";
+"account-type-selection-recover-detail" = "Recover your account with passphrase";
+"account-type-selection-ledger-detail" = "Use your Ledger Accout from the Algorand App";
 
 // MARK: Introduction
-"introduction-recover-title" = "Recover From Passphrase";
-"introduction-create-title" = "Create Account";
+
 "introduction-title-text" = "Manage all assets\nfrom one app";
-"introduction-add-new-text" = "Add new account";
-"introduction-add-new-title-text" = "Manage all assets from one app";
-"introduction-has-account" = "Already have an account?";
-"introduction-title-pair-ledger" = "Pair Ledger Account";
+"introduction-title-add-text" = "Add New Account";
+"introduction-add-account-text" = "Add Account";
+"introduction-title-terms-and-services" = "By creating an account, you agree to Algorand’s <a href=\"https://www.algorand.com/wallet-disclaimer\">Terms and Conditions</a> and <a href=\"https://www.algorand.com/wallet-privacy-policy\">Privacy Policy</a>";
 
 // MARK: Password Setting
 "choose-password-title" = "Choose Passcode";
@@ -256,13 +266,17 @@
 "settings-notification-enabled-go-settings-text" = "You have enabled notifications. Please go to Settings and disable this option.";
 "settings-logout-title" = "Delete All Data";
 "settings-logout-detail" = "Are you sure you want to delete all the data?";
+"settings-developer" = "Developer Settings";
+"settings-currency" = "Currency";
+"settings-developer-dispenser" = "Algorand Dispenser";
+"settings-currency-usd" = "USD";
 
 // MARK: Node Settings
 "node-settings-title" = "Node Settings";
 "node-settings-warning-title" = "Warning";
 "add-node-title" = "Add Node";
 "edit-node-title" = "Edit Node";
-"node-settings-subtitle" = "Toggle the nodes you would like to use";
+"node-settings-subtitle" = "Select the Node";
 "node-settings-enter-node-name" = "Name: ";
 "node-settings-enter-node-address" = "Address: ";
 "node-settings-api-key" = "Key: ";
@@ -292,6 +306,7 @@
 "transaction-detail-from" = "From";
 "transaction-detail-to" = "To";
 "transaction-detail-fee" = "Fee";
+"transaction-detail-date" = "Date";
 "transaction-detail-round" = "Round";
 "transaction-detail-id" = "Transaction ID";
 "transaction-detail-note" = "Note";
@@ -300,6 +315,7 @@
 "transaction-detail-note-copied" = "Transaction note copied to clipboard";
 "transaction-detail-id-copied" = "Transaction ID copied to clipboard";
 "transaction-detail-copy-tooltip" = "Press and hold to Copy to Clipboard";
+"transaction-id-open-explorer" = "Open in Explorer";
 
 // MARK: Feedback
 "feedback-title" = "Send Feedback";
@@ -307,8 +323,9 @@
 "feedback-subtitle-category" = "Type of feedback";
 "feedback-title-note" = "Note";
 "feedback-subtitle-note" = "What’s on your mind";
-"feedback-title-email" = "Email (Optional)";
-"feedback-subtitle-email" = "Email";
+"feedback-title-email" = "Email";
+"feedback-subtitle-account-title" = "Account (Optional)";
+"feedback-subtitle-account-detail" = "Choose Account";
 "feedback-empty-title" = "Error";
 "feedback-empty-category-message" = "Please select a category.";
 "feedback-empty-note-message" = "Please add your note.";
@@ -482,3 +499,10 @@
 "ledger-account-selection-ledger-rekeyed" = "Account is rekeyed to %@";
 "ledger-rekey-error-add-auth" = "The connected Ledger device cannot sign transactions for this account. In order to do so, please connect %@.";
 "ledger-rekey-error-not-found" = "This account has been rekeyed. Please recover this account with a passphrase or Ledger device.";
+
+// MARK: Watch Account
+
+"title-watch-account" = "Watch Account";
+"watch-account-input-explanation" = "Account Address to Watch";
+"watch-account-input-placeholder" = "Paste Address or Scan QR";
+"watch-account-error-address" = "Please enter a valid address.";

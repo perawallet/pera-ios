@@ -174,9 +174,20 @@ extension TransactionDetailViewController: TransactionDetailViewDelegate {
         displaySimpleAlertWith(title: "qr-creation-copied".localized)
     }
     
-    func transactionDetailViewDidCopyTransactionID(_ transactionDetailView: TransactionDetailView) {
-        UIPasteboard.general.string = transaction.id
-        displaySimpleAlertWith(title: "transaction-detail-id-copied".localized)
+    func transactionDetailViewDidOpenExplorer(_ transactionDetailView: TransactionDetailView) {
+        guard let api = api else {
+            return
+        }
+        
+        if api.isTestNet {
+            if let url = URL(string: "https://goalseeker.purestake.io/algorand/testnet/transaction/\(transaction.id)") {
+                open(url)
+            }
+        } else {
+            if let url = URL(string: "https://goalseeker.purestake.io/algorand/mainnet/transaction/\(transaction.id)") {
+                open(url)
+            }
+        }
     }
     
     func transactionDetailViewDidCopyTransactionNote(_ transactionDetailView: TransactionDetailView) {

@@ -49,4 +49,5 @@ enum RequestParameter: String, JSONBodyRequestParameter {
     case transactionType = "tx-type"
     case cursor = "cursor"
     case authAddress = "auth-addr"
+    case publicKey = "public_key"
 }

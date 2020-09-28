@@ -76,12 +76,13 @@ class TabBarController: UIViewController {
         return button
     }()
     
-    private(set) lazy var requestButton: AlignedButton = {
+    private(set) lazy var receiveButton: AlignedButton = {
         let positions: AlignedButton.StylePositionAdjustment = (image: CGPoint(x: 18.0, y: 0.0), title: CGPoint(x: 0.0, y: 0.0))
         let button = AlignedButton(style: .imageLeftTitleCentered(positions))
         button.setBackgroundImage(img("img-tabbar-receive"), for: .normal)
-        button.setImage(img("icon-arrow-down"), for: .normal)
-        button.setTitle("title-request".localized, for: .normal)
+        button.setImage(img("icon-qr", isTemplate: true), for: .normal)
+        button.tintColor = SharedColors.white
+        button.setTitle("title-receive".localized, for: .normal)
         button.setTitleColor(SharedColors.primaryButtonTitle, for: .normal)
         button.titleLabel?.font = UIFont.font(withWeight: .semiBold(size: 14.0))
         button.titleLabel?.textAlignment = .center
@@ -137,7 +138,7 @@ class TabBarController: UIViewController {
     
     func customizeAppearance() {
         sendButton.applyShadow(Shadow(color: Colors.sendShadow, offset: CGSize(width: 0.0, height: 8.0), radius: 20.0, opacity: 1.0))
-        requestButton.applyShadow(Shadow(color: Colors.requestShadow, offset: CGSize(width: 0.0, height: 8.0), radius: 20.0, opacity: 1.0))
+        receiveButton.applyShadow(Shadow(color: Colors.requestShadow, offset: CGSize(width: 0.0, height: 8.0), radius: 20.0, opacity: 1.0))
         tabBar.applyShadow(tabBarShadow)
     }
 
@@ -156,13 +157,13 @@ class TabBarController: UIViewController {
         }
         
         sendButton.addTarget(self, action: #selector(notifyDelegateToOpenAssetSelectionForSendFlow), for: .touchUpInside)
-        requestButton.addTarget(self, action: #selector(notifyDelegateToOpenAssetSelectionForRequestFlow), for: .touchUpInside)
+        receiveButton.addTarget(self, action: #selector(notifyDelegateToOpenAssetSelectionForRequestFlow), for: .touchUpInside)
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         sendButton.updateShadowLayoutWhenViewDidLayoutSubviews(cornerRadius: 24.0)
-        requestButton.updateShadowLayoutWhenViewDidLayoutSubviews(cornerRadius: 24.0)
+        receiveButton.updateShadowLayoutWhenViewDidLayoutSubviews(cornerRadius: 24.0)
         tabBar.updateShadowLayoutWhenViewDidLayoutSubviews()
     }
 }
@@ -281,7 +282,8 @@ extension TabBarController: SelectAssetViewControllerDelegate {
                 by: fullScreenPresentation
             )
         } else {
-            open(.requestAlgosTransactionPreview(account: account, isReceiverEditable: true), by: fullScreenPresentation)
+            let draft = AlgosTransactionRequestDraft(account: account)
+            open(.requestAlgosTransaction(isPresented: true, algosTransactionRequestDraft: draft), by: fullScreenPresentation)
         }
     }
     
@@ -312,10 +314,9 @@ extension TabBarController: SelectAssetViewControllerDelegate {
             )
         } else {
             open(
-                .requestAssetTransactionPreview(
-                    account: account,
-                    assetDetail: assetDetail,
-                    isReceiverEditable: true
+                .requestAssetTransaction(
+                    isPresented: true,
+                    assetTransactionRequestDraft: AssetTransactionRequestDraft(account: account, assetDetail: assetDetail)
                 ),
                 by: fullScreenPresentation
             )

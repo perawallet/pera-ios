@@ -12,17 +12,25 @@ class RequestAlgosTransactionViewController: RequestTransactionViewController, T
     
     private lazy var requestTransactionView = RequestTransactionView(
         inputFieldFraction: algosFraction,
-        address: algosTransactionRequestDraft.account.address,
-        amount: algosTransactionRequestDraft.amount.toMicroAlgos
+        address: algosTransactionRequestDraft.account.address
     )
     
     private let viewModel: RequestAlgosTransactionViewModel
     private let algosTransactionRequestDraft: AlgosTransactionRequestDraft
     
-    init(algosTransactionRequestDraft: AlgosTransactionRequestDraft, configuration: ViewControllerConfiguration) {
+    init(isPresented: Bool, algosTransactionRequestDraft: AlgosTransactionRequestDraft, configuration: ViewControllerConfiguration) {
         self.algosTransactionRequestDraft = algosTransactionRequestDraft
         viewModel = RequestAlgosTransactionViewModel(algosTransactionRequestDraft: algosTransactionRequestDraft)
-        super.init(configuration: configuration)
+        super.init(isPresented: isPresented, configuration: configuration)
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        ReceiveEvent(address: algosTransactionRequestDraft.account.address).logEvent()
+    }
+    
+    override func logShareEvent() {
+        ReceiveShareEvent(address: algosTransactionRequestDraft.account.address).logEvent()
     }
     
     override func configureAppearance() {
@@ -38,5 +46,10 @@ class RequestAlgosTransactionViewController: RequestTransactionViewController, T
     override func prepareLayout() {
         super.prepareLayout()
         prepareLayout(of: requestTransactionView)
+    }
+    
+    override func copyAccountAddress() {
+        UIPasteboard.general.string = algosTransactionRequestDraft.account.address
+        NotificationBanner.showInformation("qr-creation-copied".localized)
     }
 }

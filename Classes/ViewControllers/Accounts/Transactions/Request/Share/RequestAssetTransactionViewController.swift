@@ -15,7 +15,6 @@ class RequestAssetTransactionViewController: RequestTransactionViewController, T
         return RequestTransactionView(
             inputFieldFraction: assetDetail.fractionDecimals,
             address: assetTransactionRequestDraft.account.address,
-            amount: assetTransactionRequestDraft.amount.toFraction(of: assetDetail.fractionDecimals),
             assetIndex: assetDetail.id
         )
     }()
@@ -23,10 +22,15 @@ class RequestAssetTransactionViewController: RequestTransactionViewController, T
     private let viewModel: RequestAssetTransactionViewModel
     private let assetTransactionRequestDraft: AssetTransactionRequestDraft
     
-    init(assetTransactionRequestDraft: AssetTransactionRequestDraft, configuration: ViewControllerConfiguration) {
+    init(isPresented: Bool, assetTransactionRequestDraft: AssetTransactionRequestDraft, configuration: ViewControllerConfiguration) {
         self.assetTransactionRequestDraft = assetTransactionRequestDraft
         viewModel = RequestAssetTransactionViewModel(assetTransactionRequestDraft: assetTransactionRequestDraft)
-        super.init(configuration: configuration)
+        super.init(isPresented: isPresented, configuration: configuration)
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        ReceiveEvent(address: assetTransactionRequestDraft.account.address).logEvent()
     }
     
     override func configureAppearance() {
@@ -42,5 +46,14 @@ class RequestAssetTransactionViewController: RequestTransactionViewController, T
     override func prepareLayout() {
         super.prepareLayout()
         prepareLayout(of: requestTransactionView)
+    }
+    
+    override func logShareEvent() {
+        ReceiveShareEvent(address: assetTransactionRequestDraft.account.address).logEvent()
+    }
+    
+    override func copyAccountAddress() {
+        UIPasteboard.general.string = assetTransactionRequestDraft.account.address
+        NotificationBanner.showInformation("qr-creation-copied".localized)
     }
 }

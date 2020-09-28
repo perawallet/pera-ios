@@ -8,7 +8,29 @@
 
 import UIKit
 
-class RequestTransactionViewController: BaseScrollViewController { }
+class RequestTransactionViewController: BaseScrollViewController {
+    
+    private let isPresented: Bool
+    
+    init(isPresented: Bool, configuration: ViewControllerConfiguration) {
+        self.isPresented = isPresented
+        super.init(configuration: configuration)
+    }
+    
+    override func configureNavigationBarAppearance() {
+        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [weak self] in
+            self?.closeScreen(by: .dismiss, animated: true)
+        }
+        
+        if isPresented {
+            leftBarButtonItems = [closeBarButtonItem]
+        }
+    }
+    
+    func logShareEvent() { }
+    
+    func copyAccountAddress() { }
+}
 
 extension RequestTransactionViewController {
     func prepareLayout(of requestTransactionView: RequestTransactionView) {
@@ -22,10 +44,16 @@ extension RequestTransactionViewController {
 }
 
 extension RequestTransactionViewController: RequestTransactionViewDelegate {
+    func requestTransactionViewDidCopyAddress(_ requestTransactionView: RequestTransactionView) {
+        copyAccountAddress()
+    }
+    
     func requestTransactionViewDidTapShareButton(_ requestTransactionView: RequestTransactionView) {
         guard let shareUrl = URL(string: requestTransactionView.qrView.qrText.qrText()) else {
             return
         }
+        
+        logShareEvent()
         
         let sharedItem = [shareUrl]
         let activityViewController = UIActivityViewController(activityItems: sharedItem, applicationActivities: nil)

@@ -26,6 +26,7 @@ class TransactionDetailViewModel {
         
         view.feeView.setAmountViewMode(.normal(amount: transaction.fee.toAlgos))
 
+        setDate(for: transaction, in: view)
         setRound(for: transaction, in: view)
         
         view.opponentView.setTitle("transaction-detail-from".localized)
@@ -54,7 +55,7 @@ class TransactionDetailViewModel {
             setReward(for: transaction, in: view)
         }
         
-        view.idView.setDetail(transaction.id)
+        view.setTransactionID(transaction.id)
         setNote(for: transaction, in: view)
     }
     
@@ -75,6 +76,7 @@ class TransactionDetailViewModel {
         
         view.feeView.setAmountViewMode(.normal(amount: transaction.fee.toAlgos))
 
+        setDate(for: transaction, in: view)
         setRound(for: transaction, in: view)
         
         view.opponentView.setTitle("transaction-detail-to".localized)
@@ -104,7 +106,7 @@ class TransactionDetailViewModel {
             setCloseTo(for: transaction, in: view)
         }
         
-        view.idView.setDetail(transaction.id)
+        view.setTransactionID(transaction.id)
         setNote(for: transaction, in: view)
     }
     
@@ -139,6 +141,16 @@ class TransactionDetailViewModel {
             view.opponentView.setContactButtonImage(img("icon-user-add"))
             view.opponentView.setName(address)
             view.opponentView.setContactImage(hidden: true)
+        }
+    }
+    
+    private func setDate(for transaction: Transaction, in view: TransactionDetailView) {
+        if transaction.isPending() {
+            view.setDate(Date().toFormat("MMMM dd, yyyy - HH:mm"))
+        } else {
+            if let date = transaction.date {
+                view.setDate(date.toFormat("MMMM dd, yyyy - HH:mm"))
+            }
         }
     }
     

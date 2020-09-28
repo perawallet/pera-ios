@@ -18,9 +18,9 @@ class SettingsFooterView: BaseView {
         let button = UIButton(type: .custom)
             .withTitle("settings-logout-title".localized)
             .withAlignment(.center)
-            .withTitleColor(SharedColors.primaryText)
+            .withTitleColor(SharedColors.gray700)
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
-            .withBackgroundColor(SharedColors.primaryBackground)
+            .withBackgroundColor(SharedColors.secondaryBackground)
         button.layer.cornerRadius = 22.0
         return button
     }()
@@ -38,7 +38,8 @@ class SettingsFooterView: BaseView {
     }()
     
     override func configureAppearance() {
-        backgroundColor = SharedColors.secondaryBackground
+        super.configureAppearance()
+        logoutButton.applySmallShadow()
     }
     
     override func setListeners() {
@@ -48,6 +49,11 @@ class SettingsFooterView: BaseView {
     override func prepareLayout() {
         setupLogoutButtonLayout()
         setupVersionLabelLayout()
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        logoutButton.updateShadowLayoutWhenViewDidLayoutSubviews(cornerRadius: 22.0)
     }
 }
 

@@ -19,18 +19,11 @@ class RequestAssetTransactionViewModel {
     func configure(_ view: RequestTransactionView) {
         view.setAccountImage(assetTransactionRequestDraft.account.accountImage())
         view.setAccountName(assetTransactionRequestDraft.account.name)
+        view.setAddress(assetTransactionRequestDraft.account.address.shortAddressDisplay())
         
         if !assetTransactionRequestDraft.assetDetail.isVerified {
             view.removeVerifiedAsset()
         }
-        
-        view.setAmountInformationViewMode(
-            .normal(
-                amount: assetTransactionRequestDraft.amount,
-                isAlgos: false,
-                fraction: assetTransactionRequestDraft.assetDetail.fractionDecimals
-            )
-        )
         
         view.setAssetAlignment(.right)
         view.setAssetId("\(assetTransactionRequestDraft.assetDetail.id)")

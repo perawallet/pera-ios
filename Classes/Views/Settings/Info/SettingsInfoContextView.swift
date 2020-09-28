@@ -14,7 +14,7 @@ class SettingsInfoContextView: BaseView {
     
     private lazy var imageView = UIImageView()
     
-    private(set) lazy var nameLabel: UILabel = {
+    private lazy var nameLabel: UILabel = {
         UILabel()
             .withTextColor(SharedColors.primaryText)
             .withLine(.single)
@@ -22,13 +22,15 @@ class SettingsInfoContextView: BaseView {
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
     }()
     
-    private(set) lazy var detailLabel: UILabel = {
+    private lazy var detailLabel: UILabel = {
         UILabel()
             .withTextColor(SharedColors.inputTitle)
             .withLine(.single)
             .withAlignment(.right)
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
     }()
+    
+    private lazy var detailImageView = UIImageView(image: img("icon-arrow"))
     
     private lazy var separatorView = LineSeparatorView()
     
@@ -39,6 +41,7 @@ class SettingsInfoContextView: BaseView {
     override func prepareLayout() {
         setupImageViewLayout()
         setupNameLabelLayout()
+        setupDetailImageViewLayout()
         setupDetailLabelLayout()
         setupSeparatorViewLayout()
     }
@@ -64,12 +67,22 @@ extension SettingsInfoContextView {
         }
     }
     
+    private func setupDetailImageViewLayout() {
+        addSubview(detailImageView)
+        
+        detailImageView.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.size.equalTo(layout.current.imageSize)
+            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+        }
+    }
+    
     private func setupDetailLabelLayout() {
         addSubview(detailLabel)
         
         detailLabel.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
-            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.trailing.equalTo(detailImageView.snp.leading).offset(layout.current.detailOffset)
         }
     }
     
@@ -88,12 +101,21 @@ extension SettingsInfoContextView {
     func setImage(_ image: UIImage?) {
         imageView.image = image
     }
+    
+    func setName(_ name: String?) {
+        nameLabel.text = name
+    }
+    
+    func setDetail(_ detail: String?) {
+        detailLabel.text = detail
+    }
 }
 
 extension SettingsInfoContextView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let separatorHeight: CGFloat = 1.0
         let nameOffset: CGFloat = 12.0
+        let detailOffset: CGFloat = -8.0
         let imageSize = CGSize(width: 24.0, height: 24.0)
         let horizontalInset: CGFloat = 20.0
     }

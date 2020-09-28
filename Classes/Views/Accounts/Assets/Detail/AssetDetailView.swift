@@ -38,30 +38,12 @@ extension AssetDetailView {
 }
 
 extension AssetDetailView: AssetDetailHeaderViewDelegate {
-    func assetDetailHeaderViewDidTapSendButton(_ assetDetailHeaderView: AssetDetailHeaderView) {
-        delegate?.assetDetailViewDidTapSendButton(self)
+    func assetDetailHeaderViewDidCopyAssetId(_ assetDetailHeaderView: AssetDetailHeaderView) {
+        delegate?.assetDetailViewDidCopyAssetId(self)
     }
     
-    func assetDetailHeaderViewDidTapReceiveButton(_ assetDetailHeaderView: AssetDetailHeaderView) {
-        delegate?.assetDetailViewDidTapReceiveButton(self)
-    }
-    
-    func assetDetailHeaderView(
-        _ assetDetailHeaderView: AssetDetailHeaderView,
-        didTrigger dollarValueGestureRecognizer: UILongPressGestureRecognizer
-    ) {
-        delegate?.assetDetailView(self, didTrigger: dollarValueGestureRecognizer)
-    }
-    
-    func assetDetailHeaderView(
-        _ assetDetailHeaderView: AssetDetailHeaderView,
-        didTriggerAssetIdCopyValue gestureRecognizer: UILongPressGestureRecognizer
-    ) {
-        delegate?.assetDetailView(self, didTriggerAssetIdCopyValue: gestureRecognizer)
-    }
-    
-    func assetDetailHeaderViewDidTapRewardView(_ assetDetailHeaderView: AssetDetailHeaderView) {
-        delegate?.assetDetailViewDidTapRewardView(self)
+    func assetDetailHeaderViewDidOpenRewardDetails(_ assetDetailHeaderView: AssetDetailHeaderView) {
+        delegate?.assetDetailViewDidOpenRewardDetails(self)
     }
 }
 
@@ -70,15 +52,12 @@ extension AssetDetailView {
         let topInset: CGFloat = 12.0
         let horizontalInset: CGFloat = 20.0
         let bottomInset: CGFloat = 32.0
-        static var algosHeaderHeight: CGFloat = 260.0
-        static var assetHeaderHeight: CGFloat = 212.0
+        static var algosHeaderHeight: CGFloat = 230.0
+        static var assetHeaderHeight: CGFloat = 180.0
     }
 }
 
 protocol AssetDetailViewDelegate: class {
-    func assetDetailViewDidTapSendButton(_ assetDetailView: AssetDetailView)
-    func assetDetailViewDidTapReceiveButton(_ assetDetailView: AssetDetailView)
-    func assetDetailView(_ assetDetailView: AssetDetailView, didTrigger dollarValueGestureRecognizer: UILongPressGestureRecognizer)
-    func assetDetailView(_ assetDetailView: AssetDetailView, didTriggerAssetIdCopyValue gestureRecognizer: UILongPressGestureRecognizer)
-    func assetDetailViewDidTapRewardView(_ assetDetailView: AssetDetailView)
+    func assetDetailViewDidCopyAssetId(_ assetDetailView: AssetDetailView)
+    func assetDetailViewDidOpenRewardDetails(_ assetDetailView: AssetDetailView)
 }

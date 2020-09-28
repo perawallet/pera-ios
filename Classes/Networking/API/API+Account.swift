@@ -23,18 +23,6 @@ extension API {
     }
     
     @discardableResult
-    func fetchDollarValue(
-        then handler: @escaping Endpoint.DefaultResultHandler<AlgoToDollarConversion>
-    ) -> EndpointOperatable {
-        return Endpoint(path: Path("/api/v3/avgPrice"))
-            .base(Environment.current.binanceApi)
-            .httpMethod(.get)
-            .query(DollarValueQuery())
-            .resultHandler(handler)
-            .buildAndSend(self)
-    }
-    
-    @discardableResult
     func fetchRekeyedAccounts(
         of account: String,
         then handler: @escaping Endpoint.DefaultResultHandler<RekeyedAccountsResponse>

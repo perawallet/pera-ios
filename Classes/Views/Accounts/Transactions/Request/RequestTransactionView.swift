@@ -14,24 +14,34 @@ class RequestTransactionView: BaseView {
     
     weak var transactionDelegate: RequestTransactionViewDelegate?
     
+    private lazy var addressCopyValueGestureRecognizer = UILongPressGestureRecognizer(
+        target: self,
+        action: #selector(notifyDelegateToCopyAddress)
+    )
+    
     private let address: String
-    private let amount: Int64
     private let assetIndex: Int64?
     
     private lazy var containerView = UIView()
     
     private lazy var accountInformationView = TransactionAccountNameView()
     
-    private lazy var assetInformationView = TransactionAssetView()
+    private lazy var addressView: TransactionTextInformationView = {
+        let addressView = TransactionTextInformationView()
+        addressView.setTitle("send-algos-address".localized)
+        addressView.isUserInteractionEnabled = true
+        addressView.copyImageView.isHidden = false
+        return addressView
+    }()
     
-    private lazy var amountInformationView = TransactionAmountInformationView()
+    private lazy var assetInformationView = TransactionAssetView()
     
     private(set) lazy var qrView: QRView = {
         if let assetIndex = assetIndex {
-            let qrText = QRText(mode: .assetRequest, address: address, amount: amount, asset: assetIndex)
+            let qrText = QRText(mode: .assetRequest, address: address, amount: 0, asset: assetIndex)
             return QRView(qrText: qrText)
         } else {
-            let qrText = QRText(mode: .algosRequest, address: address, amount: amount, asset: assetIndex)
+            let qrText = QRText(mode: .algosRequest, address: address, amount: 0, asset: assetIndex)
             return QRView(qrText: qrText)
         }
     }()
@@ -43,9 +53,8 @@ class RequestTransactionView: BaseView {
         return button
     }()
     
-    init(inputFieldFraction: Int, address: String, amount: Int64, assetIndex: Int64? = nil) {
+    init(inputFieldFraction: Int, address: String, assetIndex: Int64? = nil) {
         self.address = address
-        self.amount = amount
         self.assetIndex = assetIndex
         super.init(frame: .zero)
     }
@@ -55,8 +64,11 @@ class RequestTransactionView: BaseView {
         containerView.backgroundColor = SharedColors.secondaryBackground
         containerView.layer.cornerRadius = 12.0
         containerView.applySmallShadow()
-        amountInformationView.setSeparatorHidden(true)
-        amountInformationView.setTitle("transaction-detail-amount".localized)
+        assetInformationView.setSeparatorHidden(true)
+    }
+    
+    override func linkInteractors() {
+        addressView.addGestureRecognizer(addressCopyValueGestureRecognizer)
     }
     
     override func setListeners() {
@@ -67,8 +79,8 @@ class RequestTransactionView: BaseView {
         setupContainerViewLayout()
         setupQRViewLayout()
         setupAccountInformationViewLayout()
+        setupAddressViewLayout()
         setupAssetInformationViewLayout()
-        setupAmountInformationViewLayout()
         setupShareButtonLayout()
     }
     
@@ -107,22 +119,22 @@ extension RequestTransactionView {
         }
     }
     
-    private func setupAssetInformationViewLayout() {
-        containerView.addSubview(assetInformationView)
+    private func setupAddressViewLayout() {
+        containerView.addSubview(addressView)
         
-        assetInformationView.snp.makeConstraints { make in
+        addressView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(accountInformationView.snp.bottom)
         }
     }
     
-    private func setupAmountInformationViewLayout() {
-        containerView.addSubview(amountInformationView)
+    private func setupAssetInformationViewLayout() {
+        containerView.addSubview(assetInformationView)
         
-        amountInformationView.snp.makeConstraints { make in
+        assetInformationView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
+            make.top.equalTo(addressView.snp.bottom)
             make.bottom.equalToSuperview().inset(layout.current.bottomInset)
-            make.top.equalTo(assetInformationView.snp.bottom)
         }
     }
     
@@ -140,6 +152,11 @@ extension RequestTransactionView {
 
 extension RequestTransactionView {
     @objc
+    private func notifyDelegateToCopyAddress() {
+        transactionDelegate?.requestTransactionViewDidCopyAddress(self)
+    }
+    
+    @objc
     private func notifyDelegateToShareButtonTapped() {
         transactionDelegate?.requestTransactionViewDidTapShareButton(self)
     }
@@ -152,10 +169,6 @@ extension RequestTransactionView {
     
     func setAccountName(_ name: String?) {
         accountInformationView.setAccountName(name)
-    }
-    
-    func setAmountInformationViewMode(_ mode: TransactionAmountView.Mode) {
-        amountInformationView.setAmountViewMode(mode)
     }
     
     func setAssetName(for assetDetail: AssetDetail) {
@@ -201,6 +214,10 @@ extension RequestTransactionView {
     func setAssetAlignment(_ alignment: NSTextAlignment) {
         assetInformationView.setAssetAlignment(alignment)
     }
+    
+    func setAddress(_ address: String) {
+        addressView.setDetail(address)
+    }
 }
 
 extension RequestTransactionView {
@@ -213,5 +230,6 @@ extension RequestTransactionView {
 }
 
 protocol RequestTransactionViewDelegate: class {
+    func requestTransactionViewDidCopyAddress(_ requestTransactionView: RequestTransactionView)
     func requestTransactionViewDidTapShareButton(_ requestTransactionView: RequestTransactionView)
 }

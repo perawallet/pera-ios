@@ -9,8 +9,7 @@
 import UIKit
 
 indirect enum Screen {
-    case introduction
-    case addNewAccount
+    case introduction(flow: AccountSetupFlow)
     case choosePassword(mode: ChoosePasswordViewController.Mode, flow: AccountSetupFlow?, route: Screen?)
     case localAuthenticationPreference(flow: AccountSetupFlow)
     case passphraseView(address: String)
@@ -47,10 +46,8 @@ indirect enum Screen {
         receiver: AssetReceiverState,
         isSenderEditable: Bool
     )
-    case requestAlgosTransactionPreview(account: Account, isReceiverEditable: Bool)
-    case requestAssetTransactionPreview(account: Account, assetDetail: AssetDetail, isReceiverEditable: Bool)
-    case requestAlgosTransaction(algosTransactionRequestDraft: AlgosTransactionRequestDraft)
-    case requestAssetTransaction(assetTransactionRequestDraft: AssetTransactionRequestDraft)
+    case requestAlgosTransaction(isPresented: Bool, algosTransactionRequestDraft: AlgosTransactionRequestDraft)
+    case requestAssetTransaction(isPresented: Bool, assetTransactionRequestDraft: AssetTransactionRequestDraft)
     case nodeSettings
     case addNode
     case editNode(node: Node)
@@ -83,6 +80,10 @@ indirect enum Screen {
     case rekeyInstruction(account: Account)
     case rekeyConfirmation(account: Account, ledger: LedgerDetail, ledgerAddress: String)
     case ledgerAccountSelection(flow: AccountSetupFlow, ledger: LedgerDetail, ledgerAddress: String)
+    case developerSettings
+    case currencySelection
+    case watchAccountAddition(flow: AccountSetupFlow)
+    case accountTypeSelection(flow: AccountSetupFlow)
 }
 
 extension Screen {

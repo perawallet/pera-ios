@@ -48,18 +48,51 @@ extension PushNotificationController {
     
     func authorizeDevice(with pushToken: String) {
         token = pushToken
-        registerDevice()
+        sendDeviceDetails()
     }
     
-    func registerDevice(_ handler: BoolHandler? = nil) {
-        if let user = api.session.applicationConfiguration?.authenticatedUser() {
-            let draft = DeviceRegistrationDraft(id: user.deviceId, pushToken: token, accounts: user.accounts.map(\.address))
-            api.registerDevice(with: draft) { response in
-                switch response {
-                case let .success(device):
-                    self.api.session.authenticatedUser?.setDeviceId(device.id)
-                    handler?(true)
-                case .failure:
+    func sendDeviceDetails(completion handler: BoolHandler? = nil) {
+        guard let user = api.session.applicationConfiguration?.authenticatedUser() else {
+            return
+        }
+        
+        if let deviceId = user.deviceId {
+            updateDevice(with: deviceId, for: user, completion: handler)
+        } else {
+            registerDevice(for: user, completion: handler)
+        }
+    }
+    
+    private func updateDevice(with id: String, for user: User, completion handler: BoolHandler? = nil) {
+        let draft = DeviceUpdateDraft(id: id, pushToken: token, accounts: user.accounts.map(\.address))
+        api.updateDevice(with: draft) { response in
+            switch response {
+            case let .success(device):
+                self.api.session.authenticatedUser?.setDeviceId(device.id)
+                handler?(true)
+            case let .failure(_, algorandError):
+                if let errorType = algorandError?.type,
+                   errorType == AlgorandError.ErrorType.deviceAlreadyExists.rawValue {
+                    self.registerDevice(for: user, completion: handler)
+                } else {
+                    handler?(false)
+                }
+            }
+        }
+    }
+    
+    private func registerDevice(for user: User, completion handler: BoolHandler? = nil) {
+        let draft = DeviceRegistrationDraft(pushToken: token, accounts: user.accounts.map(\.address))
+        api.registerDevice(with: draft) { response in
+            switch response {
+            case let .success(device):
+                self.api.session.authenticatedUser?.setDeviceId(device.id)
+                handler?(true)
+            case let .failure(_, algorandError):
+                if let errorType = algorandError?.type,
+                   errorType == AlgorandError.ErrorType.deviceAlreadyExists.rawValue {
+                    self.registerDevice(for: user, completion: handler)
+                } else {
                     handler?(false)
                 }
             }
