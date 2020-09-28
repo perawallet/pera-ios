@@ -64,12 +64,29 @@ class TabBarController: UIViewController {
     
     private(set) lazy var tabBar = TabBar()
 
-    private(set) lazy var sendButton: UIButton = {
-        return UIButton(type: .custom).withImage(img("img-send")).withAlignment(.center)
+    private(set) lazy var sendButton: AlignedButton = {
+        let positions: AlignedButton.StylePositionAdjustment = (image: CGPoint(x: 28.0, y: 0.0), title: CGPoint(x: 0.0, y: 0.0))
+        let button = AlignedButton(style: .imageLeftTitleCentered(positions))
+        button.setBackgroundImage(img("img-tabbar-send"), for: .normal)
+        button.setImage(img("icon-arrow-up"), for: .normal)
+        button.setTitle("title-send".localized, for: .normal)
+        button.setTitleColor(SharedColors.primaryButtonTitle, for: .normal)
+        button.titleLabel?.font = UIFont.font(withWeight: .semiBold(size: 14.0))
+        button.titleLabel?.textAlignment = .center
+        return button
     }()
     
-    private(set) lazy var receiveButton: UIButton = {
-        UIButton(type: .custom).withImage(img("img-receive")).withAlignment(.center)
+    private(set) lazy var receiveButton: AlignedButton = {
+        let positions: AlignedButton.StylePositionAdjustment = (image: CGPoint(x: 18.0, y: 0.0), title: CGPoint(x: 0.0, y: 0.0))
+        let button = AlignedButton(style: .imageLeftTitleCentered(positions))
+        button.setBackgroundImage(img("img-tabbar-receive"), for: .normal)
+        button.setImage(img("icon-qr", isTemplate: true), for: .normal)
+        button.tintColor = SharedColors.white
+        button.setTitle("title-receive".localized, for: .normal)
+        button.setTitleColor(SharedColors.primaryButtonTitle, for: .normal)
+        button.titleLabel?.font = UIFont.font(withWeight: .semiBold(size: 14.0))
+        button.titleLabel?.textAlignment = .center
+        return button
     }()
     
     private lazy var accountsViewController = AccountsViewController(configuration: configuration)

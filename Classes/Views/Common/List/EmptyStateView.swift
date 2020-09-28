@@ -65,7 +65,7 @@ extension EmptyStateView {
         
         titleLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.centerY.equalToSuperview().offset(10.0)
+            make.centerY.equalToSuperview().offset(50.0)
             make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
         }
     }

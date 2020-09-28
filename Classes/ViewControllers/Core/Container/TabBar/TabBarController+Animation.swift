@@ -13,13 +13,13 @@ extension TabBarController {
         addTransactionButtons()
         animateCenterButtonAsSelected(true)
         animateSendButton()
-        animateRequestButton()
+        animateReceiveButton()
     }
     
     func hideTransactionFlow() {
         animateCenterButtonAsSelected(false)
         hideSendButton()
-        hideRequestButton()
+        hideReceiveButton()
     }
     
     private func animateCenterButtonAsSelected(_ isSelected: Bool) {
@@ -66,9 +66,9 @@ extension TabBarController {
             delay: 0.0,
             options: [.allowUserInteraction, .curveEaseIn],
             animations: {
-                self.sendButton.frame.origin.x -= 61.0
+                self.sendButton.frame.origin.x -= 129.0
                 self.sendButton.frame.origin.y -= 48.0
-                self.sendButton.frame.size = CGSize(width: 48.0, height: 48.0)
+                self.sendButton.frame.size = CGSize(width: 116.0, height: 48.0)
             },
             completion: nil
         )
@@ -80,7 +80,7 @@ extension TabBarController {
             delay: 0.0,
             options: UIView.AnimationOptions.allowUserInteraction,
             animations: {
-                self.sendButton.frame.origin.x += 61.0
+                self.sendButton.frame.origin.x += 129.0
                 self.sendButton.frame.origin.y += 48.0
                 self.sendButton.frame.size = CGSize(width: 10.0, height: 10.0)
             },
@@ -90,7 +90,7 @@ extension TabBarController {
         )
     }
     
-    private func animateRequestButton() {
+    private func animateReceiveButton() {
         UIView.animate(
             withDuration: 0.2,
             delay: 0.08,
@@ -98,13 +98,13 @@ extension TabBarController {
             animations: {
                 self.receiveButton.frame.origin.x += 12.0
                 self.receiveButton.frame.origin.y -= 48.0
-                self.receiveButton.frame.size = CGSize(width: 48.0, height: 48.0)
+                self.receiveButton.frame.size = CGSize(width: 116.0, height: 48.0)
             },
             completion: nil
         )
     }
     
-    private func hideRequestButton() {
+    private func hideReceiveButton() {
         UIView.animate(
             withDuration: 0.2,
             delay: 0.08,
