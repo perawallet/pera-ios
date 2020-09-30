@@ -46,7 +46,7 @@ class AccountTypeViewModel {
         case .recover:
             title = "account-type-selection-recover".localized
         case .pair:
-            title = "ledger-device-list-title".localized
+            title = "account-type-selection-ledger".localized
         default:
             break
         }
