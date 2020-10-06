@@ -111,6 +111,10 @@ extension AssetRemovalViewController: UICollectionViewDataSource {
         let cell = layoutBuilder.dequeueAssetCells(in: collectionView, cellForItemAt: indexPath, for: assetDetail)
         cell.delegate = self
         viewModel.configure(cell, with: assetDetail)
+        
+        if indexPath.item == account.assetDetails.count - 1 {
+            cell.contextView.setSeparatorViewHidden(true)
+        }
         return cell
     }
 }
@@ -133,17 +137,8 @@ extension AssetRemovalViewController {
             viewModel.configure(headerView, with: account)
             
             return headerView
-        } else {
-            guard let headerView = collectionView.dequeueReusableSupplementaryView(
-                ofKind: kind,
-                withReuseIdentifier: AssetRemovalFooterSupplementaryView.reusableIdentifier,
-                for: indexPath
-            ) as? AssetRemovalFooterSupplementaryView else {
-                fatalError("Unexpected element kind")
-            }
-            
-            return headerView
         }
+        fatalError("Unexpected element kind")
     }
 }
 
@@ -229,17 +224,6 @@ extension AssetRemovalViewController: UICollectionViewDelegateFlowLayout {
         return CGSize(
             width: UIScreen.main.bounds.width - layout.current.defaultSectionInsets.left - layout.current.defaultSectionInsets.right,
             height: layout.current.itemHeight
-        )
-    }
-    
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        referenceSizeForFooterInSection section: Int
-    ) -> CGSize {
-        return CGSize(
-            width: UIScreen.main.bounds.width - layout.current.defaultSectionInsets.left - layout.current.defaultSectionInsets.right,
-            height: layout.current.footerHeight
         )
     }
 }
