@@ -25,7 +25,6 @@
 "title-close" = "Close";
 "title-send" = "Send";
 "title-receive" = "Receive";
-"title-request" = "Request";
 "title-preview" = "Preview";
 "title-done" = "Done";
 "title-loading" = "Loading";
@@ -402,10 +401,6 @@
 "ledger-troubleshooting-open-app-first-html" = "Begin by following Ledger’s comprehensive <a href=\"https://www.ledger.com/start\">Getting Started</a> tutorial, which will direct you how to install and open apps on your ledger device.";
 "ledger-troubleshooting-open-app-second-html" = "If you haven’t already installed the <b>Algorand</b> app on your Ledger device, when the tutorial gets to the point where it directs you to “Select the application(s) you want to install on your device,” type <b>Algorand</b> in the search bar and install.";
 
-// MARK: Ledger Pairing
-"ledger-pairing-key-title" = "Key";
-"ledger-pairing-create-title" = "Create Account";
-
 // MARK: BLE Errors
 "ble-error-search-title" = "Search Error";
 "ble-error-connection-title" = "Connection Error";
@@ -435,7 +430,6 @@
 "terms-and-services-html" = "I accept the <a href=\"https://www.algorand.com/wallet-disclaimer\">Terms and Services</a>";
 
 // MARK: Notifications Tab
-
 "notifications-title" = "Notifications";
 "notifications-empty-title" = "No current notifications";
 "notifications-empty-subtitle" = "Your recent transactions, asset requests and other notifications will appear here.";
@@ -465,7 +459,6 @@
 "pin-limit-reset-all" = "Reset All Data";
 
 // MARK: Rekey Instruction
-
 "rekey-instruction-start" = "Start Process";
 "rekey-instruction-title" = "Rekey Account";
 "rekey-instruction-subtitle-ledger" = "Replace your account ledger with a new Ledger Device";
@@ -477,7 +470,6 @@
 "rekey-instruction-third" = "Your account’s public key, balances, and configuration will not change.";
 
 // MARK: Rekey Confirm
-
 "ledger-rekey-confirm-title" = "Confirm Rekeying";
 "ledger-rekey-transaction-title" = "Rekeying transaction";
 "ledger-rekey-ledger-old" = "Old Ledger";
@@ -488,21 +480,16 @@
 "ledger-rekey-more-assets" = "+%@ more assets";
 "ledger-rekey-success-title" = "Account Rekeyed";
 "ledger-rekey-success-message" = "The account %@ has been successfully rekeyed";
-"ledger-account-rekeyed-title" = "Account Rekeyed";
-"ledger-account-rekeyed-detail" = "This account was rekeyed.";
 
 // MARK: Ledger Account Selection
-
 "ledger-account-selection-title-singular" = "%d Account Found";
 "ledger-account-selection-title-plural" = "%d Accounts Found";
 "ledger-account-selection-detail" = "This ledger device can sign transactions for the following account. Select the account to add to your Algorand Wallet.";
 "ledger-account-selection-add" = "Add Account";
-"ledger-account-selection-ledger-rekeyed" = "Account is rekeyed to %@";
 "ledger-rekey-error-add-auth" = "The connected Ledger device cannot sign transactions for this account. In order to do so, please connect %@.";
 "ledger-rekey-error-not-found" = "This account has been rekeyed. Please recover this account with a passphrase or Ledger device.";
 
 // MARK: Watch Account
-
 "title-watch-account" = "Watch Account";
 "watch-account-input-explanation" = "Account Address to Watch";
 "watch-account-input-placeholder" = "Paste Address or Scan QR";
