@@ -352,6 +352,8 @@ class Router {
             viewController = WatchAccountAdditionViewController(accountSetupFlow: flow, configuration: configuration)
         case let .accountTypeSelection(flow):
             viewController = AccountTypeSelectionViewController(flow: flow, configuration: configuration)
+        case .languageSelection:
+            viewController = LanguageSelectionViewController(configuration: configuration)
         }
         
         return viewController as? T

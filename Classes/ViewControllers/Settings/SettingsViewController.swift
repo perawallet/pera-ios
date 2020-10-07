@@ -241,6 +241,9 @@ extension SettingsViewController: UICollectionViewDelegateFlowLayout {
                 )
             case .feedback:
                 open(.feedback, by: .push)
+            case .language:
+                let controller = open(.languageSelection, by: .push) as? LanguageSelectionViewController
+                controller?.delegate = self
             case .currency:
                 let controller = open(.currencySelection, by: .push) as? CurrencySelectionViewController
                 controller?.delegate = self
@@ -389,5 +392,11 @@ extension SettingsViewController: SettingsToggleCellDelegate {
 extension SettingsViewController: CurrencySelectionViewControllerDelegate {
     func currencySelectionViewControllerDidSelectCurrency(_ currencySelectionViewController: CurrencySelectionViewController) {
         settingsView.collectionView.reloadItems(at: [IndexPath(item: 3, section: 1)])
+    }
+}
+
+extension SettingsViewController: LanguageSelectionViewControllerDelegate {
+    func languageSelectionViewControllerDidSelectLanguage(_ languageSelectionViewController: LanguageSelectionViewController) {
+        settingsView.collectionView.reloadItems(at: [IndexPath(item: 2, section: 1)])
     }
 }
