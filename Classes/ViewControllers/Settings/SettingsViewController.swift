@@ -119,7 +119,15 @@ extension SettingsViewController: UICollectionViewDataSource {
                 let rewardDisplayPreference = session?.rewardDisplayPreference == .allowed
                 return setSettingsToggleCell(from: setting, isOn: rewardDisplayPreference, in: collectionView, at: indexPath)
             case .language:
-                return setSettingsInfoCell(from: setting, info: "settings-language-english".localized, in: collectionView, at: indexPath)
+                let defaultLanguageText = "settings-language-english".localized
+                guard let preferredLocalization = Bundle.main.preferredLocalizations.first,
+                      let displayName = NSLocale(localeIdentifier: preferredLocalization).displayName(
+                        forKey: .identifier,
+                        value: preferredLocalization
+                      ) else {
+                    return setSettingsInfoCell(from: setting, info: defaultLanguageText, in: collectionView, at: indexPath)
+                }
+                return setSettingsInfoCell(from: setting, info: displayName, in: collectionView, at: indexPath)
             case .currency:
                 let preferredCurrency = api?.session.preferredCurrency ?? "settings-currency-usd".localized
                 return setSettingsInfoCell(from: setting, info: preferredCurrency, in: collectionView, at: indexPath)
@@ -242,8 +250,12 @@ extension SettingsViewController: UICollectionViewDelegateFlowLayout {
             case .feedback:
                 open(.feedback, by: .push)
             case .language:
-                let controller = open(.languageSelection, by: .push) as? LanguageSelectionViewController
-                controller?.delegate = self
+                displayProceedAlertWith(
+                    title: "settings-language-change-title".localized,
+                    message: "settings-language-change-detail".localized
+                ) { _ in
+                    UIApplication.shared.openAppSettings()
+                }
             case .currency:
                 let controller = open(.currencySelection, by: .push) as? CurrencySelectionViewController
                 controller?.delegate = self
@@ -392,11 +404,5 @@ extension SettingsViewController: SettingsToggleCellDelegate {
 extension SettingsViewController: CurrencySelectionViewControllerDelegate {
     func currencySelectionViewControllerDidSelectCurrency(_ currencySelectionViewController: CurrencySelectionViewController) {
         settingsView.collectionView.reloadItems(at: [IndexPath(item: 3, section: 1)])
-    }
-}
-
-extension SettingsViewController: LanguageSelectionViewControllerDelegate {
-    func languageSelectionViewControllerDidSelectLanguage(_ languageSelectionViewController: LanguageSelectionViewController) {
-        settingsView.collectionView.reloadItems(at: [IndexPath(item: 2, section: 1)])
     }
 }

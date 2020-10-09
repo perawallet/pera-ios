@@ -43,6 +43,18 @@ extension UIViewController {
         present(alertController, animated: true)
     }
     
+    func displayProceedAlertWith(title: String, message: String, handler: ((UIAlertAction) -> Void)? = nil) {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        
+        let proceedAction = UIAlertAction(title: "title-proceed".localized, style: .default, handler: handler)
+        alertController.addAction(proceedAction)
+        
+        let cancelAction = UIAlertAction(title: "title-cancel".localized, style: .cancel, handler: handler)
+        alertController.addAction(cancelAction)
+        
+        present(alertController, animated: true)
+    }
+    
     func add(_ child: UIViewController) {
         if child.parent != nil {
             return

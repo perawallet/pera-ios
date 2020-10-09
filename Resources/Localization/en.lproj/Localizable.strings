@@ -92,6 +92,12 @@
 "pass-phrase-verify-pop-up-explanation" = "Your passphrase has been verified. Make sure that you have backed it up as you will need it to recover your account.";
 "pass-phrase-verify-invalid-passphrase" = "Your passphrase is invalid. Please make sure that you entered correct one.";
 "pass-phrase-verify-sdk-error" = "There is something wrong. Please try again later.";
+"passphrase-question-another" = "%@th";
+"passphrase-question-third" = "3rd";
+"passphrase-question-second" = "2nd";
+"passphrase-question-first" = "1st";
+"passphrase-select-n-word" = "Select the %@ word of your passphrase";
+"passphrase-qeustion-counter" = "Question %@ of %@";
 
 // MARK: Account Name Setup
 "account-details-title" = "Account Details";
@@ -176,6 +182,7 @@
 "asset-support-your-add-title" = "Your accounts do not contain this asset";
 "asset-support-your-add-message" = "Please add this asset and try again.";
 "asset-all-title" = "All";
+"asset-detail-id-title" = "ID %@";
 
 // MARK: Algos Send
 "send-algos-title" = "Send Algos";
@@ -270,6 +277,9 @@
 "settings-currency" = "Currency";
 "settings-developer-dispenser" = "Algorand Dispenser";
 "settings-currency-usd" = "USD";
+"settings-app-version" = "Version %@";
+"settings-language-change-title" = "Language";
+"settings-language-change-detail" = "Open Your App Settings to change your language.";
 
 // MARK: Node Settings
 "node-settings-title" = "Node Settings";

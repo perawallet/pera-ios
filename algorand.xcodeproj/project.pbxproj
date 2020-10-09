@@ -1575,15 +1575,9 @@
 		2BF71918224ED0C5001E8420 /* ContactInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF71917224ED0C5001E8420 /* ContactInfoViewController.swift */; };
 		2BFBAB72227B349E008BBB31 /* LoadingAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 2BFBAB71227B349E008BBB31 /* LoadingAnimation.json */; };
 		2BFBAB75227B35B7008BBB31 /* images in Resources */ = {isa = PBXBuildFile; fileRef = 2BFBAB74227B35B7008BBB31 /* images */; };
-		2BFFE00D252DDF610064EAB4 /* LanguageSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFFE00C252DDF610064EAB4 /* LanguageSelectionViewController.swift */; };
-		2BFFE00E252DDF610064EAB4 /* LanguageSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFFE00C252DDF610064EAB4 /* LanguageSelectionViewController.swift */; };
-		2BFFE00F252DDF610064EAB4 /* LanguageSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFFE00C252DDF610064EAB4 /* LanguageSelectionViewController.swift */; };
 		2BFFE02B252DE87F0064EAB4 /* LanguageChangeEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFFE02A252DE87F0064EAB4 /* LanguageChangeEvent.swift */; };
 		2BFFE02C252DE87F0064EAB4 /* LanguageChangeEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFFE02A252DE87F0064EAB4 /* LanguageChangeEvent.swift */; };
 		2BFFE02D252DE87F0064EAB4 /* LanguageChangeEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFFE02A252DE87F0064EAB4 /* LanguageChangeEvent.swift */; };
-		2BFFE034252E1E9C0064EAB4 /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFFE033252E1E9C0064EAB4 /* Language.swift */; };
-		2BFFE035252E1E9C0064EAB4 /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFFE033252E1E9C0064EAB4 /* Language.swift */; };
-		2BFFE036252E1E9C0064EAB4 /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFFE033252E1E9C0064EAB4 /* Language.swift */; };
 		34E10EEDAEE4C90E51BCBBB2 /* Pods_algorand.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B23C40C68DA858CD7433E4E5 /* Pods_algorand.framework */; };
 		9511C290242E1AEA003211ED /* TermsAndServicesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9511C28F242E1AEA003211ED /* TermsAndServicesViewController.swift */; };
 		9511C291242E1AEA003211ED /* TermsAndServicesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9511C28F242E1AEA003211ED /* TermsAndServicesViewController.swift */; };
@@ -1916,6 +1910,12 @@
 		2B6687112248DC7D009F21E7 /* BarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarButton.swift; sourceTree = "<group>"; };
 		2B6687142248DF83009F21E7 /* LocalAuthenticator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAuthenticator.swift; sourceTree = "<group>"; };
 		2B66871922491A5E009F21E7 /* QRScannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRScannerViewController.swift; sourceTree = "<group>"; };
+		2B681159252F59A000D4437F /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		2B68115D252F59B600D4437F /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		2B68115E252F59BE00D4437F /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
+		2B68115F252F59C600D4437F /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		2B681161252F59EC00D4437F /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
+		2B681165252F731F00D4437F /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		2B6ED961226105CD00787984 /* AlgosTransactionSendDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgosTransactionSendDraft.swift; sourceTree = "<group>"; };
 		2B6ED963226105E100787984 /* Payment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Payment.swift; sourceTree = "<group>"; };
 		2B6ED9652261063700787984 /* TransactionList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionList.swift; sourceTree = "<group>"; };
@@ -2153,9 +2153,7 @@
 		2BF71917224ED0C5001E8420 /* ContactInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactInfoViewController.swift; sourceTree = "<group>"; };
 		2BFBAB71227B349E008BBB31 /* LoadingAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LoadingAnimation.json; sourceTree = "<group>"; };
 		2BFBAB74227B35B7008BBB31 /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = images; sourceTree = "<group>"; };
-		2BFFE00C252DDF610064EAB4 /* LanguageSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageSelectionViewController.swift; sourceTree = "<group>"; };
 		2BFFE02A252DE87F0064EAB4 /* LanguageChangeEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageChangeEvent.swift; sourceTree = "<group>"; };
-		2BFFE033252E1E9C0064EAB4 /* Language.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Language.swift; sourceTree = "<group>"; };
 		76FC9E9E99F106708B4AFC85 /* Pods-algorand.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand.debug.xcconfig"; path = "Target Support Files/Pods-algorand/Pods-algorand.debug.xcconfig"; sourceTree = "<group>"; };
 		9511C28F242E1AEA003211ED /* TermsAndServicesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsAndServicesViewController.swift; sourceTree = "<group>"; };
 		9511C293242E26A3003211ED /* TermsAndServicesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsAndServicesView.swift; sourceTree = "<group>"; };
@@ -2667,7 +2665,6 @@
 			isa = PBXGroup;
 			children = (
 				2B5BE14C251B731300324BEE /* Currency */,
-				2BFFE031252E1E850064EAB4 /* Language */,
 				2B2AACB7250AA5DE00B8C5C5 /* Settings.swift */,
 				2B2AACDF250BA63D00B8C5C5 /* GeneralSettings.swift */,
 				2B2AACDB250BA4C200B8C5C5 /* DeveloperSettings.swift */,
@@ -5602,7 +5599,6 @@
 				2BDD43BA2513A7B500C6D3B5 /* Currency */,
 				2B2AACB1250A7E8000B8C5C5 /* Developer */,
 				2B4DF424236C75FC00FF9551 /* Feedback */,
-				2BFFE00B252DDF4B0064EAB4 /* Language */,
 				2B4DF423236C75F800FF9551 /* Node */,
 				2BF5317B224AA89B00A7455F /* SettingsViewController.swift */,
 			);
@@ -5636,22 +5632,6 @@
 				2BFBAB74227B35B7008BBB31 /* images */,
 			);
 			path = LoadingAnimation;
-			sourceTree = "<group>";
-		};
-		2BFFE00B252DDF4B0064EAB4 /* Language */ = {
-			isa = PBXGroup;
-			children = (
-				2BFFE00C252DDF610064EAB4 /* LanguageSelectionViewController.swift */,
-			);
-			path = Language;
-			sourceTree = "<group>";
-		};
-		2BFFE031252E1E850064EAB4 /* Language */ = {
-			isa = PBXGroup;
-			children = (
-				2BFFE033252E1E9C0064EAB4 /* Language.swift */,
-			);
-			path = Language;
 			sourceTree = "<group>";
 		};
 		9511C28E242E1AD6003211ED /* TermsAndService */ = {
@@ -5849,6 +5829,12 @@
 			knownRegions = (
 				en,
 				Base,
+				"zh-Hans",
+				tr,
+				es,
+				de,
+				ko,
+				"pt-BR",
 			);
 			mainGroup = 2B8BE4C522391C38005D8565;
 			productRefGroup = 2B8BE4CF22391C38005D8565 /* Products */;
@@ -6211,7 +6197,6 @@
 				2B0F5F0024DD50C600DA22A6 /* RekeyConfirmationListLayout.swift in Sources */,
 				2BE9372624630AC800322C1E /* SelectAssetHeaderView.swift in Sources */,
 				2B2AACDA250B6C6E00B8C5C5 /* SettingsDetailViewModel.swift in Sources */,
-				2BFFE036252E1E9C0064EAB4 /* Language.swift in Sources */,
 				2B56715023FFFA3A0037FCFA /* VerifiedAssetInformationView.swift in Sources */,
 				17BD4DF92292F1260003E49A /* Snapkit+SafeArea.swift in Sources */,
 				17BD4DFA2292F1260003E49A /* PassphraseMnemonicView.swift in Sources */,
@@ -6645,7 +6630,6 @@
 				17BD4EE92292F1260003E49A /* BaseView.swift in Sources */,
 				2B44C383247419CB0074D57D /* TransactionListView.swift in Sources */,
 				17BD4EEB2292F1260003E49A /* QRText.swift in Sources */,
-				2BFFE00F252DDF610064EAB4 /* LanguageSelectionViewController.swift in Sources */,
 				2B7ABF75233386B60050B64B /* LoadingSpinnerView.swift in Sources */,
 				17BD4EED2292F1260003E49A /* ContactsView.swift in Sources */,
 				17BD4EEE2292F1260003E49A /* UIViewController+Additions.swift in Sources */,
@@ -6727,7 +6711,6 @@
 				2B56B8362505013600AC7B8D /* LedgerAccountSelectionHeaderSupplementaryViewModel.swift in Sources */,
 				2B56B8372505013600AC7B8D /* LedgerAccountSelectionTitleViewModel.swift in Sources */,
 				2B56B8382505013600AC7B8D /* RekeyConfirmationFooterView.swift in Sources */,
-				2BFFE035252E1E9C0064EAB4 /* Language.swift in Sources */,
 				2B56B8392505013600AC7B8D /* RekeyConfirmationFooterSupplementaryView.swift in Sources */,
 				2B2AACD9250B6C6E00B8C5C5 /* SettingsDetailViewModel.swift in Sources */,
 				2B56B83A2505013600AC7B8D /* RekeyTransitionView.swift in Sources */,
@@ -7161,7 +7144,6 @@
 				2B0F62EE24EC129D00DA22A6 /* AccountFooterView.swift in Sources */,
 				2B0F62EF24EC129D00DA22A6 /* ChoosePasswordView.swift in Sources */,
 				2B0F62F124EC129D00DA22A6 /* AccountsDataSource.swift in Sources */,
-				2BFFE00E252DDF610064EAB4 /* LanguageSelectionViewController.swift in Sources */,
 				2B0F62F224EC129D00DA22A6 /* BaseView.swift in Sources */,
 				2B0F62F424EC129D00DA22A6 /* TransactionListView.swift in Sources */,
 				2B0F62F524EC129D00DA22A6 /* QRText.swift in Sources */,
@@ -7243,7 +7225,6 @@
 				2B56714F23FFFA3A0037FCFA /* VerifiedAssetInformationView.swift in Sources */,
 				2B0F5F0C24E19ABA00DA22A6 /* LedgerAccountSelectionView.swift in Sources */,
 				2B2AACD8250B6C6E00B8C5C5 /* SettingsDetailViewModel.swift in Sources */,
-				2BFFE034252E1E9C0064EAB4 /* Language.swift in Sources */,
 				2B8954C4224404C900D6D068 /* MultiLineInputField.swift in Sources */,
 				2BF53176224AA50F00A7455F /* TabBarController.swift in Sources */,
 				2B8954BB2243FCFA00D6D068 /* UIApplication+Additions.swift in Sources */,
@@ -7677,7 +7658,6 @@
 				2B8BE4F4223935DA005D8565 /* BaseView.swift in Sources */,
 				2B44C382247419CB0074D57D /* TransactionListView.swift in Sources */,
 				170AFAFC224CC70A00520EA5 /* QRText.swift in Sources */,
-				2BFFE00D252DDF610064EAB4 /* LanguageSelectionViewController.swift in Sources */,
 				2B7ABF74233386B60050B64B /* LoadingSpinnerView.swift in Sources */,
 				2BF71912224ECFEC001E8420 /* ContactsView.swift in Sources */,
 				2B89549F2242D90000D6D068 /* UIViewController+Additions.swift in Sources */,
@@ -7753,6 +7733,12 @@
 			isa = PBXVariantGroup;
 			children = (
 				2BF34CCA223AA63D0052CAD3 /* en */,
+				2B681159252F59A000D4437F /* zh-Hans */,
+				2B68115D252F59B600D4437F /* tr */,
+				2B68115E252F59BE00D4437F /* es */,
+				2B68115F252F59C600D4437F /* de */,
+				2B681161252F59EC00D4437F /* ko */,
+				2B681165252F731F00D4437F /* pt-BR */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -7949,6 +7935,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -8010,6 +7997,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -8127,6 +8115,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
