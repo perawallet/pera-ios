@@ -85,7 +85,7 @@ class NotificationsViewModel {
     
     private func setTime(notification: NotificationMessage) {
         if let notificationDate = notification.date {
-            time = (Date() - notificationDate).ago.toRelative(style: RelativeFormatter.defaultStyle(), locale: Locales.english)
+            time = (Date() - notificationDate).ago.toRelative(style: RelativeFormatter.defaultStyle(), locale: Locales.autoUpdating)
         }
     }
     
