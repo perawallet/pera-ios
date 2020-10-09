@@ -67,17 +67,20 @@ extension PassphraseVerifyViewController {
         
         switch currentIndexValue {
         case 1:
-            currentIndexString = "\(currentIndexValue)st"
+            currentIndexString = "passphrase-question-first".localized
         case 2:
-            currentIndexString = "\(currentIndexValue)nd"
+            currentIndexString = "passphrase-question-second".localized
         case 3:
-            currentIndexString = "\(currentIndexValue)rd"
+            currentIndexString = "passphrase-question-third".localized
         default:
-            currentIndexString = "\(currentIndexValue)th"
+            currentIndexString = "passphrase-question-another".localized(params: "\(currentIndexValue)")
         }
         
-        let titleText = "Question \(currentIndex) of \(passphraseViewModel?.numberOfValidations ?? 0)".localized
-        let subtitleText = "Select the \(currentIndexString) word of your passphrase".localized
+        let titleText = "passphrase-qeustion-counter".localized(
+            params: "\(currentIndex)",
+            "\(passphraseViewModel?.numberOfValidations ?? 0)"
+        )
+        let subtitleText = "passphrase-select-n-word".localized(params: currentIndexString)
         
         title = titleText
         passphraseVerifyView.questionTitleLabel.text = subtitleText

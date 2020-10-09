@@ -32,7 +32,7 @@ extension AssetDetailViewModel {
             view.rewardTotalAmountView.removeFromSuperview()
             view.assetNameLabel.text = assetDetail.getDisplayNames().0
             view.assetIdLabel.isHidden = false
-            view.assetIdLabel.text = "ID \(assetDetail.id)"
+            view.assetIdLabel.text = "asset-detail-id-title".localized(params: "\(assetDetail.id)")
             
             guard let amount = account.amount(for: assetDetail) else {
                 return
