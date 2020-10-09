@@ -84,7 +84,6 @@ indirect enum Screen {
     case currencySelection
     case watchAccountAddition(flow: AccountSetupFlow)
     case accountTypeSelection(flow: AccountSetupFlow)
-    case languageSelection
 }
 
 extension Screen {
