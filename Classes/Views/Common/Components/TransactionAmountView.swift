@@ -123,7 +123,7 @@ extension TransactionAmountView {
         if let fraction = assetFraction {
             amountLabel.text = amount.toFractionStringForLabel(fraction: fraction)
         } else {
-            amountLabel.text = amount.toDecimalStringForLabel
+            amountLabel.text = amount.toAlgosStringForLabel
         }
     }
     

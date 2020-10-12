@@ -315,7 +315,7 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
         case let .minimumAmount(amount):
             NotificationBanner.showError(
                 "asset-min-transaction-error-title".localized,
-                message: "asset-min-transaction-error-message".localized(params: amount.toAlgos.toDecimalStringForLabel ?? "")
+                message: "asset-min-transaction-error-message".localized(params: amount.toAlgos.toAlgosStringForLabel ?? "")
             )
         default:
             break

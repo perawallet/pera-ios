@@ -49,8 +49,6 @@ class AssetDetailHeaderView: BaseView {
             .withAlignment(.left)
             .withTextColor(SharedColors.gray700)
             .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
-        label.minimumScaleFactor = 0.8
-        label.adjustsFontSizeToFitWidth = true
         return label
     }()
     

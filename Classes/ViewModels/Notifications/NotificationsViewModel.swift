@@ -149,7 +149,7 @@ extension NotificationsViewModel {
             let fraction = asset.fractionDecimals ?? 0
             return amount.toFractionStringForLabel(fraction: fraction)
         }
-        return amount.toAlgos.toDecimalStringForLabel
+        return amount.toAlgos.toAlgosStringForLabel
     }
     
     private func getAssetDisplayName(from notificationDetail: NotificationDetail) -> String? {

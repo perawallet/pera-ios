@@ -37,7 +37,7 @@ class AccountListViewModel {
             } else {
                 cell.contextView.detailLabel.textColor = SharedColors.primaryText
                 cell.contextView.imageView.isHidden = false
-                cell.contextView.detailLabel.text = account.amount.toAlgos.toDecimalStringForLabel
+                cell.contextView.detailLabel.text = account.amount.toAlgos.toAlgosStringForLabel
             }
         default:
             break

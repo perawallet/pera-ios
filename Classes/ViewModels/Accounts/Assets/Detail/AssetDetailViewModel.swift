@@ -40,10 +40,10 @@ extension AssetDetailViewModel {
             view.assetAmountLabel.text = amount.toFractionStringForLabel(fraction: assetDetail.fractionDecimals)
         } else {
             view.assetNameLabel.text = "accounts-algos-available-title".localized
-            view.assetAmountLabel.text = account.amount.toAlgos.toDecimalStringForLabel
+            view.assetAmountLabel.text = account.amount.toAlgos.toAlgosStringForLabel
             view.verifiedImageView.isHidden = false
             let totalRewards: UInt64 = (account.pendingRewards ?? 0)
-            view.rewardTotalAmountView.setReward(amount: totalRewards.toAlgos.toDecimalStringForLabel ?? "0.00")
+            view.rewardTotalAmountView.setReward(amount: totalRewards.toAlgos.toAlgosStringForLabel ?? "0.00")
         }
     }
     
@@ -54,15 +54,15 @@ extension AssetDetailViewModel {
             }
             view.setDetail("\(amount.toFractionStringForLabel(fraction: assetDetail.fractionDecimals) ?? "") \(assetDetail.getAssetCode())")
         } else {
-            view.setDetail("\(account.amount.toAlgos.toDecimalStringForLabel ?? "") ALGO")
+            view.setDetail("\(account.amount.toAlgos.toAlgosStringForLabel ?? "") ALGO")
         }
     }
 }
 
 extension AssetDetailViewModel {
     func setDollarValue(in view: AssetDetailHeaderView, with currentValue: Double, for currency: String) {
-        if let currencyValue = currentValue.toFractionStringForLabel(fraction: 2) {
-            view.currencyAmountLabel.text = "\(currencyValue) \(currency)"
+        if let currencyValue = currentValue.toCurrencyStringForLabel {
+            view.currencyAmountLabel.text = currencyValue + " " + currency
         }
     }
 }

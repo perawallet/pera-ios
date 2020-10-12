@@ -491,7 +491,7 @@ extension TransactionsViewController: CSVExportable {
         if let assetDetail = assetDetail {
             return amount?.toFractionStringForLabel(fraction: assetDetail.fractionDecimals) ?? " "
         } else {
-            return amount?.toAlgos.toDecimalStringForLabel ?? " "
+            return amount?.toAlgos.toAlgosStringForLabel ?? " "
         }
     }
 }

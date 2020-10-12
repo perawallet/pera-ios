@@ -45,10 +45,6 @@ extension Int64 {
         return Double(self) / (pow(10, decimal) as NSDecimalNumber).doubleValue
     }
     
-    var toDecimalStringForLabel: String? {
-        return Formatter.separatorForAlgosLabel.string(from: NSNumber(value: self))
-    }
-    
     func toFractionStringForLabel(fraction: Int) -> String? {
         return Formatter.separatorWith(fraction: fraction).string(from: NSNumber(value: self))
     }

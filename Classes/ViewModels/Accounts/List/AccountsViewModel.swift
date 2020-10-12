@@ -26,7 +26,7 @@ class AccountsViewModel {
     }
     
     func configure(_ cell: AlgoAssetCell, with account: Account) {
-        cell.contextView.amountLabel.text = account.amount.toAlgos.toDecimalStringForLabel
+        cell.contextView.amountLabel.text = account.amount.toAlgos.toAlgosStringForLabel
     }
 }
 

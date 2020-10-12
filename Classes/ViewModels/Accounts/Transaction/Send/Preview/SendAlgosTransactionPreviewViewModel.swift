@@ -28,7 +28,7 @@ class SendAlgosTransactionPreviewViewModel {
         
         view.transactionAccountInformationView.setAccountImage(account.accountImage())
         view.transactionAccountInformationView.setAccountName(account.name)
-        view.transactionAccountInformationView.setAmount(account.amount.toAlgos.toDecimalStringForLabel)
+        view.transactionAccountInformationView.setAmount(account.amount.toAlgos.toAlgosStringForLabel)
         view.amountInputView.maxAmount = account.amount.toAlgos
         view.transactionAccountInformationView.setAssetName("asset-algos-title".localized)
         view.transactionAccountInformationView.removeAssetId()
@@ -37,11 +37,11 @@ class SendAlgosTransactionPreviewViewModel {
     func update(_ view: SendTransactionPreviewView, with account: Account, isMaxTransaction: Bool) {
         view.transactionAccountInformationView.setAccountName(account.name)
         view.transactionAccountInformationView.setAccountImage(account.accountImage())
-        view.transactionAccountInformationView.setAmount(account.amount.toAlgos.toDecimalStringForLabel)
+        view.transactionAccountInformationView.setAmount(account.amount.toAlgos.toAlgosStringForLabel)
         view.amountInputView.maxAmount = account.amount.toAlgos
 
         if isMaxTransaction {
-            view.amountInputView.inputTextField.text = account.amount.toAlgos.toDecimalStringForLabel
+            view.amountInputView.inputTextField.text = account.amount.toAlgos.toAlgosStringForLabel
         }
     }
 }
