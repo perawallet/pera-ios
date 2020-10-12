@@ -1218,6 +1218,12 @@
 		2B6687122248DC7D009F21E7 /* BarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6687112248DC7D009F21E7 /* BarButton.swift */; };
 		2B6687152248DF83009F21E7 /* LocalAuthenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6687142248DF83009F21E7 /* LocalAuthenticator.swift */; };
 		2B66871A22491A5E009F21E7 /* QRScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B66871922491A5E009F21E7 /* QRScannerViewController.swift */; };
+		2B6811DF25345B5700D4437F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2B6811E325345B5700D4437F /* InfoPlist.strings */; };
+		2B6811E025345B5700D4437F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2B6811E325345B5700D4437F /* InfoPlist.strings */; };
+		2B6811E125345B5700D4437F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2B6811E325345B5700D4437F /* InfoPlist.strings */; };
+		2B6811EF2534614800D4437F /* Locale+Preference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6811EE2534614800D4437F /* Locale+Preference.swift */; };
+		2B6811F02534614800D4437F /* Locale+Preference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6811EE2534614800D4437F /* Locale+Preference.swift */; };
+		2B6811F12534614800D4437F /* Locale+Preference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6811EE2534614800D4437F /* Locale+Preference.swift */; };
 		2B6ED962226105CD00787984 /* AlgosTransactionSendDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6ED961226105CD00787984 /* AlgosTransactionSendDraft.swift */; };
 		2B6ED964226105E100787984 /* Payment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6ED963226105E100787984 /* Payment.swift */; };
 		2B6ED9662261063700787984 /* TransactionList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6ED9652261063700787984 /* TransactionList.swift */; };
@@ -1916,6 +1922,14 @@
 		2B68115F252F59C600D4437F /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		2B681161252F59EC00D4437F /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
 		2B681165252F731F00D4437F /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		2B6811E225345B5700D4437F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		2B6811E725345B6100D4437F /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		2B6811E825345B6100D4437F /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		2B6811E925345B6200D4437F /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		2B6811EA25345B6400D4437F /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		2B6811EB25345B6500D4437F /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		2B6811EC25345B6500D4437F /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		2B6811EE2534614800D4437F /* Locale+Preference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Locale+Preference.swift"; sourceTree = "<group>"; };
 		2B6ED961226105CD00787984 /* AlgosTransactionSendDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgosTransactionSendDraft.swift; sourceTree = "<group>"; };
 		2B6ED963226105E100787984 /* Payment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Payment.swift; sourceTree = "<group>"; };
 		2B6ED9652261063700787984 /* TransactionList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionList.swift; sourceTree = "<group>"; };
@@ -3977,6 +3991,14 @@
 			path = QR;
 			sourceTree = "<group>";
 		};
+		2B6811ED2534613A00D4437F /* Locale */ = {
+			isa = PBXGroup;
+			children = (
+				2B6811EE2534614800D4437F /* Locale+Preference.swift */,
+			);
+			path = Locale;
+			sourceTree = "<group>";
+		};
 		2B71EBC1246C990B002ACB63 /* Common */ = {
 			isa = PBXGroup;
 			children = (
@@ -4367,6 +4389,7 @@
 				2B982331231D3958009560CD /* Codable */,
 				2B43B83A22A8394000CEA8F3 /* Date */,
 				17AA1B0222660E43000B0BB0 /* Formatter */,
+				2B6811ED2534613A00D4437F /* Locale */,
 				2B8BE4F822393721005D8565 /* Notification */,
 				17D04F4D225FACDC0051BC43 /* Numbers */,
 				2BAD559223A29C610037079F /* Optional */,
@@ -5453,6 +5476,7 @@
 			isa = PBXGroup;
 			children = (
 				2BF34CCB223AA63D0052CAD3 /* Localizable.strings */,
+				2B6811E325345B5700D4437F /* InfoPlist.strings */,
 			);
 			path = Localization;
 			sourceTree = "<group>";
@@ -5869,6 +5893,7 @@
 				2B516186243F739D006DEA54 /* PublicSans-ExtraBoldItalic.ttf in Resources */,
 				17BD4F1A2292F1260003E49A /* LaunchScreen.storyboard in Resources */,
 				2B51618E243F739D006DEA54 /* PublicSans-Thin.ttf in Resources */,
+				2B6811E125345B5700D4437F /* InfoPlist.strings in Resources */,
 				2B51617A243F739D006DEA54 /* PublicSans-Bold.ttf in Resources */,
 				2B516182243F739D006DEA54 /* PublicSans-Italic.ttf in Resources */,
 				2B516159243CE5DD006DEA54 /* Colors.xcassets in Resources */,
@@ -5902,6 +5927,7 @@
 				2B0F633A24EC129D00DA22A6 /* PublicSans-ExtraBoldItalic.ttf in Resources */,
 				2B0F633B24EC129D00DA22A6 /* LaunchScreen.storyboard in Resources */,
 				2B0F633C24EC129D00DA22A6 /* PublicSans-Thin.ttf in Resources */,
+				2B6811E025345B5700D4437F /* InfoPlist.strings in Resources */,
 				2B0F633D24EC129D00DA22A6 /* PublicSans-Bold.ttf in Resources */,
 				2B0F633E24EC129D00DA22A6 /* PublicSans-Italic.ttf in Resources */,
 				2B0F633F24EC129D00DA22A6 /* Colors.xcassets in Resources */,
@@ -5935,6 +5961,7 @@
 				2B516185243F739D006DEA54 /* PublicSans-ExtraBoldItalic.ttf in Resources */,
 				2B8BE4DC22391C3B005D8565 /* LaunchScreen.storyboard in Resources */,
 				2B51618D243F739D006DEA54 /* PublicSans-Thin.ttf in Resources */,
+				2B6811DF25345B5700D4437F /* InfoPlist.strings in Resources */,
 				2B516179243F739D006DEA54 /* PublicSans-Bold.ttf in Resources */,
 				2B516181243F739D006DEA54 /* PublicSans-Italic.ttf in Resources */,
 				2B516158243CE5DD006DEA54 /* Colors.xcassets in Resources */,
@@ -6556,6 +6583,7 @@
 				17BD4EC02292F1260003E49A /* AlignedButton.swift in Sources */,
 				17BD4EC12292F1260003E49A /* TransactionID.swift in Sources */,
 				2BCBBADF24A60A02002CD56F /* PinLimitStore.swift in Sources */,
+				2B6811F12534614800D4437F /* Locale+Preference.swift in Sources */,
 				2B3E39F12478372E00E8AEB7 /* PassphraseDisplayView.swift in Sources */,
 				2B3A34DB246D7998001C8F22 /* NodeSelectionView.swift in Sources */,
 				175CE59922955CEE003F7C02 /* WaitRoundDraft.swift in Sources */,
@@ -7070,6 +7098,7 @@
 				2B0F62A824EC129D00DA22A6 /* QRScannerViewController.swift in Sources */,
 				2B0F62A924EC129D00DA22A6 /* TrackableEvent.swift in Sources */,
 				2B0F62AA24EC129D00DA22A6 /* ActionBottomInformationView.swift in Sources */,
+				2B6811F02534614800D4437F /* Locale+Preference.swift in Sources */,
 				2B0F62AB24EC129D00DA22A6 /* AccountListLayoutBuilder.swift in Sources */,
 				2B0F62AC24EC129D00DA22A6 /* Notification.Name+Additions.swift in Sources */,
 				2B0F62AD24EC129D00DA22A6 /* UIViewController+Flow.swift in Sources */,
@@ -7584,6 +7613,7 @@
 				173DA2102256643A00378A82 /* TransactionID.swift in Sources */,
 				2B4BDA16238D1BD500491149 /* OptionsView.swift in Sources */,
 				2BCBBADE24A60A02002CD56F /* PinLimitStore.swift in Sources */,
+				2B6811EF2534614800D4437F /* Locale+Preference.swift in Sources */,
 				2B3E39F02478372E00E8AEB7 /* PassphraseDisplayView.swift in Sources */,
 				2B3A34DA246D7998001C8F22 /* NodeSelectionView.swift in Sources */,
 				175CE59822955CEE003F7C02 /* WaitRoundDraft.swift in Sources */,
@@ -7721,6 +7751,20 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		2B6811E325345B5700D4437F /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2B6811E225345B5700D4437F /* en */,
+				2B6811E725345B6100D4437F /* tr */,
+				2B6811E825345B6100D4437F /* es */,
+				2B6811E925345B6200D4437F /* pt-BR */,
+				2B6811EA25345B6400D4437F /* ko */,
+				2B6811EB25345B6500D4437F /* de */,
+				2B6811EC25345B6500D4437F /* zh-Hans */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 		2B8BE4DA22391C3B005D8565 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
