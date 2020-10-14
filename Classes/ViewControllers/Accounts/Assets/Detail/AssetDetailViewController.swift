@@ -44,7 +44,7 @@ class AssetDetailViewController: BaseViewController {
         return AssetDetailView.LayoutConstants.assetHeaderHeight
     }
     
-    private(set) lazy var assetDetailView = AssetDetailView()
+    private(set) lazy var assetDetailView = AssetDetailView(isAlgoDisplay: isAlgoDisplay)
     
     private lazy var transactionActionsView = TransactionActionsView()
     

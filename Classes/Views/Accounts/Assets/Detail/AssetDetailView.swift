@@ -12,9 +12,16 @@ class AssetDetailView: BaseView {
     
     private let layout = Layout<LayoutConstants>()
     
-    private(set) lazy var headerView = AssetDetailHeaderView()
+    private(set) lazy var headerView = AssetDetailHeaderView(isAlgoDisplay: isAlgoDisplay)
     
     weak var delegate: AssetDetailViewDelegate?
+    
+    private let isAlgoDisplay: Bool
+    
+    init(isAlgoDisplay: Bool) {
+        self.isAlgoDisplay = isAlgoDisplay
+        super.init(frame: .zero)
+    }
     
     override func linkInteractors() {
         headerView.delegate = self

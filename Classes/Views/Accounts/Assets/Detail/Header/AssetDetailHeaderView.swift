@@ -23,6 +23,13 @@ class AssetDetailHeaderView: BaseView {
         action: #selector(notifyDelegateToOpenRewardDetails)
     )
     
+    private let isAlgoDisplay: Bool
+    
+    init(isAlgoDisplay: Bool) {
+        self.isAlgoDisplay = isAlgoDisplay
+        super.init(frame: .zero)
+    }
+    
     private(set) lazy var verifiedImageView = UIImageView(image: img("icon-verified"))
     
     private(set) lazy var assetNameLabel: UILabel = {
@@ -85,11 +92,18 @@ class AssetDetailHeaderView: BaseView {
     override func prepareLayout() {
         setupVerifiedImageViewLayout()
         setupAssetNameLabelLayout()
-        setupAssetIdLabelLayout()
+        
+        if !isAlgoDisplay {
+            setupAssetIdLabelLayout()
+        }
+        
         setupAssetAmountLabelLayout()
-        setupAlgosImageViewLayout()
-        setupCurrencyAmountLabelLayout()
-        setupRewardTotalAmountView()
+        
+        if isAlgoDisplay {
+            setupAlgosImageViewLayout()
+            setupCurrencyAmountLabelLayout()
+            setupRewardTotalAmountView()
+        }
     }
     
     override func layoutSubviews() {
@@ -165,7 +179,6 @@ extension AssetDetailHeaderView {
         addSubview(rewardTotalAmountView)
         
         rewardTotalAmountView.snp.makeConstraints { make in
-            make.top.greaterThanOrEqualTo(currencyAmountLabel.snp.bottom).offset(layout.current.defaultInset)
             make.leading.bottom.trailing.equalToSuperview()
         }
     }

@@ -25,11 +25,9 @@ class AssetDetailViewModel {
 extension AssetDetailViewModel {
     func configure(_ view: AssetDetailHeaderView, with account: Account, and assetDetail: AssetDetail?) {
         if let assetDetail = assetDetail {
-            view.algosImageView.removeFromSuperview()
             if !assetDetail.isVerified {
                 view.verifiedImageView.removeFromSuperview()
             }
-            view.rewardTotalAmountView.removeFromSuperview()
             view.assetNameLabel.text = assetDetail.getDisplayNames().0
             view.assetIdLabel.isHidden = false
             view.assetIdLabel.text = "asset-detail-id-title".localized(params: "\(assetDetail.id)")
@@ -76,7 +74,6 @@ extension AssetDetailViewModel {
             
             if assetTransaction.receiverAddress == assetTransaction.senderAddress {
                 configure(view, with: contact, and: assetTransaction.receiverAddress)
-                view.transactionAmountView.algoIconImageView.removeFromSuperview()
                 view.transactionAmountView.mode = .normal(
                     amount: assetTransaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
                     fraction: assetDetail.fractionDecimals
@@ -89,14 +86,12 @@ extension AssetDetailViewModel {
                 view.transactionAmountView.mode = .negative(amount: transaction.fee.toAlgos)
             } else if assetTransaction.receiverAddress == account.address {
                 configure(view, with: contact, and: assetTransaction.receiverAddress)
-                view.transactionAmountView.algoIconImageView.removeFromSuperview()
                 view.transactionAmountView.mode = .positive(
                     amount: assetTransaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
                     fraction: assetDetail.fractionDecimals
                 )
             } else {
                 configure(view, with: contact, and: assetTransaction.receiverAddress)
-                view.transactionAmountView.algoIconImageView.removeFromSuperview()
                 view.transactionAmountView.mode = .negative(
                     amount: assetTransaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
                     fraction: assetDetail.fractionDecimals
@@ -151,7 +146,6 @@ extension AssetDetailViewModel {
         if let assetDetail = assetDetail {
             if transaction.receiver == transaction.sender {
                 configure(view, with: contact, and: transaction.receiver)
-                view.transactionAmountView.algoIconImageView.removeFromSuperview()
                 view.transactionAmountView.mode = .normal(
                     amount: transaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
                     fraction: assetDetail.fractionDecimals
@@ -164,14 +158,12 @@ extension AssetDetailViewModel {
                 }
             } else if transaction.receiver == account.address {
                 configure(view, with: contact, and: transaction.receiver)
-                view.transactionAmountView.algoIconImageView.removeFromSuperview()
                 view.transactionAmountView.mode = .positive(
                     amount: transaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
                     fraction: assetDetail.fractionDecimals
                 )
             } else {
                 configure(view, with: contact, and: transaction.receiver)
-                view.transactionAmountView.algoIconImageView.removeFromSuperview()
                 view.transactionAmountView.mode = .negative(
                     amount: transaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
                     fraction: assetDetail.fractionDecimals
