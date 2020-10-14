@@ -286,7 +286,7 @@
 "rewards-show-title" = "Ödülleri Göster";
 "rewards-detail-subtitle" = "Algo sahibi olarak ödül kazanabilirsiniz! İşte son işleminizden bu yana ödül etkinliğinizin bir özeti. Bu ödüller her zaman bakiyenize dahil edilir.";
 "total-rewards-faq-title" = "Algorand Ödülleri hakkında daha fazla bilgi almak için, SSS bölümünü ziyaret edin.";
-"total-rewards-faq" = "SSS.";
+"total-rewards-faq" = "SSS";
 "reward-list-title" = "Ödül";
 
 /*MARK: Notifications*/
