@@ -287,7 +287,7 @@
 /*MARK: Notifications*/
 "notification-sent-success" = "您从 %@ 到%@ 的 %@ 交易已经完成。";
 "notification-sent-failed" = "您从 %@ 到%@ 的 %@ 交易失败。";
-"notification-received" = "%@发送\\%@ 至%@ 处。";
+"notification-received" = "%@发送 %@ 至%@ 处。";
 
 /*MARK: Verified Asset Information*/
 "verified-assets-title" = "已验证的资产";

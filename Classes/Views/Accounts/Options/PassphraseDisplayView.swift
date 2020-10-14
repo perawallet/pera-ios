@@ -36,11 +36,7 @@ class PassphraseDisplayView: BaseView {
     }()
     
     private(set) lazy var qrButton: AlignedButton = {
-        let positions: AlignedButton.StylePositionAdjustment = (
-            image: CGPoint(x: 28.0 * horizontalScale, y: 0.0),
-            title: CGPoint(x: 4.0, y: 0.0)
-        )
-        let button = AlignedButton(style: .imageLeftTitleCentered(positions))
+        let button = AlignedButton(.imageAtLeft(spacing: 4.0))
         button.setImage(img("icon-qr-show", isTemplate: true), for: .normal)
         button.tintColor = SharedColors.gray700
         button.setTitle("back-up-phrase-qr".localized, for: .normal)
@@ -51,11 +47,7 @@ class PassphraseDisplayView: BaseView {
     }()
     
     private(set) lazy var shareButton: AlignedButton = {
-        let positions: AlignedButton.StylePositionAdjustment = (
-            image: CGPoint(x: 30.0 * horizontalScale, y: 0.0),
-            title: CGPoint(x: 4.0, y: 0.0)
-        )
-        let button = AlignedButton(style: .imageLeftTitleCentered(positions))
+        let button = AlignedButton(.imageAtLeft(spacing: 4.0))
         button.setImage(img("icon-share-white", isTemplate: true), for: .normal)
         button.tintColor = SharedColors.gray700
         button.setTitle("title-share-qr".localized, for: .normal)

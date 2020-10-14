@@ -49,7 +49,7 @@ extension UIViewController {
         let proceedAction = UIAlertAction(title: "title-proceed".localized, style: .default, handler: handler)
         alertController.addAction(proceedAction)
         
-        let cancelAction = UIAlertAction(title: "title-cancel".localized, style: .cancel, handler: handler)
+        let cancelAction = UIAlertAction(title: "title-cancel".localized, style: .cancel, handler: nil)
         alertController.addAction(cancelAction)
         
         present(alertController, animated: true)

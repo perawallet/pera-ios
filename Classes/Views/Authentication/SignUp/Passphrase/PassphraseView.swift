@@ -38,8 +38,7 @@ class PassphraseView: BaseView {
     }()
     
     private(set) lazy var shareButton: AlignedButton = {
-        let positions: AlignedButton.StylePositionAdjustment = (image: CGPoint(x: 0.0, y: 0.0), title: CGPoint(x: 4.0, y: 0.0))
-        let button = AlignedButton(style: .imageLeftTitleCentered(positions))
+        let button = AlignedButton(.imageAtLeft(spacing: 8.0))
         button.setImage(img("icon-share"), for: .normal)
         button.setTitle("title-share-qr".localized, for: .normal)
         button.setTitleColor(SharedColors.tertiaryText, for: .normal)
@@ -48,8 +47,7 @@ class PassphraseView: BaseView {
     }()
     
     private(set) lazy var qrButton: AlignedButton = {
-        let positions: AlignedButton.StylePositionAdjustment = (image: CGPoint(x: 0.0, y: 0.0), title: CGPoint(x: 4.0, y: 0.0))
-        let button = AlignedButton(style: .imageLeftTitleCentered(positions))
+        let button = AlignedButton(.imageAtLeft(spacing: 8.0))
         button.setImage(img("icon-qr-show-green"), for: .normal)
         button.setTitle("back-up-phrase-qr".localized, for: .normal)
         button.setTitleColor(SharedColors.tertiaryText, for: .normal)
@@ -151,6 +149,7 @@ extension PassphraseView {
             make.leading.equalToSuperview().inset(layout.current.horizontalInset)
             make.top.equalTo(passphraseCollectionView.snp.bottom).offset(layout.current.warningLabelVerticalInset)
             make.centerY.equalTo(shareButton)
+            make.trailing.lessThanOrEqualTo(shareButton.snp.leading).offset(-layout.current.minimumOffset)
         }
     }
     
@@ -201,6 +200,7 @@ extension PassphraseView {
         let informationTopOffset: CGFloat = 28.0
         let infoIconSize = CGSize(width: 24.0, height: 24.0)
         let informationLabelLeading: CGFloat = 12.0
+        let minimumOffset: CGFloat = 4.0
     }
 }
 

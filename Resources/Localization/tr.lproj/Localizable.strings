@@ -299,7 +299,7 @@
 "notification-sent-failed" = "%@ işleminiz, %@ adresinden %@ adresine gönderilemeyerek başarısız oldu.";
 
 /*Could you please provide some context for the placeholders here? Current translation considers first placeholder as Asset, second and third one as Contact. Also, is it possible to change the order of these placeholders?*/
-"notification-received" = "\\%@, %@ adresine %@ tarafından gönderildi.";
+"notification-received" = "%@, %@ adresine %@ tarafından gönderildi.";
 
 /*MARK: Verified Asset Information*/
 "verified-assets-title" = "Doğrulanan Varlıklar";

@@ -17,8 +17,7 @@ class AddContactView: BaseView {
     private(set) lazy var addContactButton = MainButton(title: "contacts-add".localized)
     
     private(set) lazy var deleteContactButton: AlignedButton = {
-        let positions: AlignedButton.StylePositionAdjustment = (image: CGPoint(x: 0.0, y: 0.0), title: CGPoint(x: 4.0, y: 0.0))
-        let button = AlignedButton(style: .imageLeftTitleCentered(positions))
+        let button = AlignedButton(.imageAtLeft(spacing: 8.0))
         button.setImage(img("icon-trash", isTemplate: true), for: .normal)
         button.tintColor = SharedColors.red
         button.setTitle("contacts-delete-contact".localized, for: .normal)
