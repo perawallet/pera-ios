@@ -5,3 +5,9 @@
   Created by Göktuğ Berk Ulu on 12.10.2020.
   Copyright © 2020 hippo. All rights reserved.
 */
+
+"NSPhotoLibraryAddUsageDescription" = "Algorand, QR kodlarını fotoğraf kütüphanenize kaydedecek.";
+"NSFaceIDUsageDescription" = "Algorand, güvenli bir biçimde giriş yapmanız için Face ID'yi kullanacak.";
+"NSCameraUsageDescription" = "Algorand, QR kodlarını taramak için kameranızı kullanacak.";
+"NSBluetoothAlwaysUsageDescription" = "Algorand, Ledger X ile iletişim kurmak için Bluetooth'u kullanacak.";
+"NSBluetoothPeripheralUsageDescription" = "Algorand, Ledger X ile iletişim kurmak için Bluetooth'u kullanacak.";

@@ -104,7 +104,7 @@
 
 /*MARK: Login*/
 "login-title" = "Kilidi aç";
-"login-subtitle" = "Altı haneli parolanızı girin";
+"login-subtitle" = "Altı haneli şifrenizi girin";
 
 /*MARK: Accounts*/
 "accounts-tranaction-empty-text" = "Henüz İşlem Yok";
@@ -410,8 +410,7 @@
 "transaction-detail-id-copied" = "İşlem kimliği panoya kopyalandı";
 "transaction-detail-copy-tooltip" = "Panoya kopyalamak için basılı tutun";
 "feedback-success-detail" = "Teşekkürler, geri bildiriminizi aldık";
-"total-rewards-full-title" = "Son işlemden bu yana %@ ödül";
-"total-rewards-partial-title" = "%@ ödül";
+"total-rewards-title" = "%@ ödül";
 "rewards-since-last-text" = "Son İşlemden Bu Yana";
 "notification-support-success" = "%@, hesabına %@ ekledi. Bunları gönderebilirsiniz.";
 "notification-support-request" = "%@, size %@ göndermeye çalışıyor. Ancak, bunu desteklemiyorsunuz. İsterseniz, hesabınıza ekleyebiliriz.";
@@ -474,37 +473,50 @@
 "ledger-rekey-error-add-auth" = "Bağlanan Ledger cihazı, bu hesabın işlemlerini imzalayamaz. İmzalamak için, lütfen %@ bağlanın.";
 "ledger-rekey-error-not-found" = "Bu hesap yeniden anahtarlanmış. Lütfen bu hesabı bir parola veya Ledger cihazı ile kurtarın.";
 "send-transaction-max-same-account-error" = "Bakiyenizin tümünü kendinize gönderemezsiniz. Lütfen farklı bir miktar veya alıcı seçerek tekrar deneyin.";
-"title-receive" = "";
-"title-copy" = "";
-"title-new-uppercased" = "";
+"title-receive" = "Al";
+"title-copy" = "Kopyala";
+"title-new-uppercased" = "YENİ";
 
 /*MARK: Account Type Selection*/
-"account-type-choose-title" = "";
-"account-type-selection-create" = "";
-"account-type-selection-create-detail" = "";
-"account-type-selection-watch-detail" = "";
-"account-type-selection-recover" = "";
-"account-type-selection-recover-detail" = "";
-"account-type-selection-ledger" = "";
-"account-type-selection-ledger-detail" = "";
-"introduction-title-add-text" = "";
-"introduction-add-account-text" = "";
-"introduction-title-terms-and-services" = "";
-"settings-developer" = "";
-"settings-currency" = "";
-"settings-developer-dispenser" = "";
-"settings-currency-usd" = "";
-"transaction-detail-date" = "";
-"transaction-id-open-explorer" = "";
-"feedback-subtitle-account-title" = "";
-"feedback-subtitle-account-detail" = "";
-"rekey-instruction-subtitle-ledger" = "";
-"rekey-instruction-subtitle-standard" = "";
-"rekey-instruction-second-ledger" = "";
-"rekey-instruction-second-standard" = "";
+"account-type-choose-title" = "Hesap Türünü Seçin";
+"account-type-selection-create" = "Yeni Hesap Oluştur";
+"account-type-selection-create-detail" = "Yeni bir adres ve parola ile bir hesap oluşturun";
+"account-type-selection-watch-detail" = "Bir hesabın yalnızca adresini kullanarak işlemlerini izleyin ";
+"account-type-selection-recover" = "Paroladan Kurtar";
+"account-type-selection-recover-detail" = "Hesabı 25 kelimelik bir parola ile kurtarın";
+"account-type-selection-ledger" = "Ledger Hesabını Eşleştir";
+"account-type-selection-ledger-detail" = "Ledger Donanım cüzdanı ile desteklenen bir hesap ile eşleştirin";
+"introduction-title-add-text" = "Yeni Hesap Ekle";
+"introduction-add-account-text" = "Hesap Ekle";
+"introduction-title-terms-and-services" = "Hesap oluşturarak Algorand’ın <a href=\"https://www.algorand.com/wallet-disclaimer\">Hüküm ve Koşulları</a> ile <a href=\"https://www.algorand.com/wallet-privacy-policy\">Gizlilik Politikasını</a> kabul ediyorsunuz.";
+"settings-developer" = "Geliştirici Ayarları";
+"settings-currency" = "Para Birimi";
+
+/*Could you please provide context for "Dispenser"?*/
+"settings-developer-dispenser" = "Algorand Dağıtıcı";
+"settings-currency-usd" = "USD";
+"transaction-detail-date" = "Tarih";
+"transaction-id-open-explorer" = "Gezginde Aç";
+"feedback-subtitle-account-title" = "Hesap (İsteğe bağlı)";
+"feedback-subtitle-account-detail" = "Hesap Seç";
+"rekey-instruction-subtitle-ledger" = "Ledger hesabınızı, yeni bir Ledger Cihazı ile değiştirin";
+"rekey-instruction-subtitle-standard" = "Hesabınızın parolasını bir Ledger Cihazı ile değiştirin.";
+"rekey-instruction-second-ledger" = "Eski Ledger'ınız, bu hesap için artık çalışmayacak.";
+"rekey-instruction-second-standard" = "Bu hesabın parolası, bu hesap için artık çalışmayacak";
 
 /*MARK: Watch Account*/
-"title-watch-account" = "";
-"watch-account-input-explanation" = "";
-"watch-account-input-placeholder" = "";
-"watch-account-error-address" = "";
+"title-watch-account" = "Hesabı İzle";
+"watch-account-input-explanation" = "İzlenecek Hesap Adresi";
+"watch-account-input-placeholder" = "Adresi Yapıştır veya QR Kodunu Tara";
+"watch-account-error-address" = "Lütfen geçerli bir adres girin.";
+"passphrase-question-another" = "%@.";
+"passphrase-question-third" = "3.";
+"passphrase-question-second" = "2.";
+"passphrase-question-first" = "1.";
+"passphrase-select-n-word" = "Parolanızın %@ kelimesini seçin";
+"passphrase-qeustion-counter" = "Soru %@/%@";
+"asset-detail-id-title" = "%@ Kimliği";
+"settings-app-version" = "Sürüm: %@";
+
+"settings-language-change-title" = "Uygulama Dilini Ayarla";
+"settings-language-change-detail" = "Telefonunuzdaki güncellemeler nedeniyle, dilinizi değiştirmeniz için farklı adımlar vardır.\n\n1. Sonraki ekrana ilerleyin.\n2. Dilediğiniz dili seçmek için Dil'e dokunun.\n\nDil ayarı yoksa, tercih ettiğiniz birincil dili ayarlamak için iPhone'unuzun genel dil ayarlarına gidin.";

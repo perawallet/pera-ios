@@ -351,8 +351,7 @@
 "total-rewards-faq-title" = "For more information on Algorand Rewards, visit our FAQ.";
 "total-rewards-faq" = "FAQ.";
 "reward-list-title" = "Reward";
-"total-rewards-full-title" = "%@ rewards since last transaction";
-"total-rewards-partial-title" = "%@ rewards";
+"total-rewards-title" = "%@ Rewards";
 "rewards-since-last-text" = "Since Last Transaction";
 
 // MARK: Notifications

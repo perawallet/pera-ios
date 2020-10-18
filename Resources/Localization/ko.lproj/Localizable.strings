@@ -394,8 +394,7 @@
 "transaction-detail-id-copied" = "트랜잭션 ID 클립보드로 복사 완료";
 "transaction-detail-copy-tooltip" = "오래 누르면 클립보드로 복사됩니다";
 "feedback-success-detail" = "감사합니다, 피드백을 받았습니다";
-"total-rewards-full-title" = "최종 트랜잭션 이후 보상: %@";
-"total-rewards-partial-title" = "보상: %@";
+"total-rewards-title" = "보상: %@";
 "rewards-since-last-text" = "최종 트랜잭션 이후";
 "notification-support-success" = "%@에서 %@ 자산을 계정에 추가했습니다. 이제 해당 자산을 전송하실 수 있습니다.";
 "notification-support-request" = "%@에서 %@ 자산을 전송하려 했으나, 내 계정에서 지원되지 않습니다. 원하시는 경우 계정에 추가해드릴 수 있습니다.";
@@ -456,37 +455,50 @@
 "ledger-rekey-error-add-auth" = "연결된 Ledger 기기는 이 계정의 트랜잭션에 서명할 수 없습니다. 이를 실행하려면 %@에 연결해 주세요.";
 "ledger-rekey-error-not-found" = "계정의 키가 재지정되었습니다. 비밀문구나 Ledger 기기로 계정을 복구해 주세요.";
 "send-transaction-max-same-account-error" = "나 자신에게 최대 잔액을 전송할 수 없습니다. 다른 금액을 선택하거나 받으시는 분을 변경한 다음 다시 시도해 주세요.";
-"title-receive" = "";
-"title-copy" = "";
-"title-new-uppercased" = "";
+"title-receive" = "받기";
+"title-copy" = "복사";
+"title-new-uppercased" = "NEW";
 
 /*MARK: Account Type Selection*/
-"account-type-choose-title" = "";
-"account-type-selection-create" = "";
-"account-type-selection-create-detail" = "";
-"account-type-selection-watch-detail" = "";
-"account-type-selection-recover" = "";
-"account-type-selection-recover-detail" = "";
-"account-type-selection-ledger" = "";
-"account-type-selection-ledger-detail" = "";
-"introduction-title-add-text" = "";
-"introduction-add-account-text" = "";
-"introduction-title-terms-and-services" = "";
-"settings-developer" = "";
-"settings-currency" = "";
-"settings-developer-dispenser" = "";
-"settings-currency-usd" = "";
-"transaction-detail-date" = "";
-"transaction-id-open-explorer" = "";
-"feedback-subtitle-account-title" = "";
-"feedback-subtitle-account-detail" = "";
-"rekey-instruction-subtitle-ledger" = "";
-"rekey-instruction-subtitle-standard" = "";
-"rekey-instruction-second-ledger" = "";
-"rekey-instruction-second-standard" = "";
+"account-type-choose-title" = "계정 유형 선택";
+"account-type-selection-create" = "새 계정 만들기";
+"account-type-selection-create-detail" = "새로운 주소와 비밀문구로 계정을 생성합니다";
+"account-type-selection-watch-detail" = "계정 주소만 있으면 계정의 트랜잭션을 조회할 수 있습니다";
+"account-type-selection-recover" = "비밀문구로 복구";
+"account-type-selection-recover-detail" = "25자 비밀문구로 계정 복구";
+"account-type-selection-ledger" = "Ledger 계정 페어링";
+"account-type-selection-ledger-detail" = "Ledger 하드웨어 지갑을 사용하는 계정을 페어링합니다";
+"introduction-title-add-text" = "새 계정 추가";
+"introduction-add-account-text" = "계정 추가";
+"introduction-title-terms-and-services" = "계정을 만드시면 알고랜드의 <a href=\"https://www.algorand.com/wallet-disclaimer\">이용약관</a>과 <a href=\"https://www.algorand.com/wallet-privacy-policy\">개인정보 보호 정책</a>에 동의하신 것으로 간주합니다";
+"settings-developer" = "개발자 설정";
+"settings-currency" = "통화";
+"settings-developer-dispenser" = "알고랜드 디스펜서";
+"settings-currency-usd" = "달러";
+"transaction-detail-date" = "날짜";
+"transaction-id-open-explorer" = "익스플로러로 열기";
+"feedback-subtitle-account-title" = "계정(선택 사항)";
+"feedback-subtitle-account-detail" = "계정 선택";
+"rekey-instruction-subtitle-ledger" = "내 계정의 Ledger를 새 Ledger 기기로 교체합니다";
+"rekey-instruction-subtitle-standard" = "내 계정의 비밀문구를 새 Ledger 기기로 교체합니다";
+"rekey-instruction-second-ledger" = "기존의 Ledger는 더 이상 이 계정에서 사용할 수 없습니다.";
+"rekey-instruction-second-standard" = "계정에 설정된 비밀문구는 더 이상 이 계정에서 사용할 수 없습니다.";
 
 /*MARK: Watch Account*/
-"title-watch-account" = "";
-"watch-account-input-explanation" = "";
-"watch-account-input-placeholder" = "";
-"watch-account-error-address" = "";
+"title-watch-account" = "계정 조회";
+
+/*Could you provide more context, please?*/
+"watch-account-input-explanation" = "조회할 계정 주소";
+"watch-account-input-placeholder" = "주소를 붙여넣거나 QR 코드를 스캔하세요";
+"watch-account-error-address" = "정확한 주소를 입력하세요.";
+"passphrase-question-another" = "%@번째";
+"passphrase-question-third" = "3번째";
+"passphrase-question-second" = "2번째";
+"passphrase-question-first" = "1번째";
+"passphrase-select-n-word" = "%@자의 비밀문구를 선택하세요";
+"passphrase-qeustion-counter" = "질문 %@ / %@";
+"asset-detail-id-title" = "ID %@";
+"settings-app-version" = "버전 %@";
+
+"settings-language-change-title" = "앱 언어 설정";
+"settings-language-change-detail" = "스마트폰의 업데이트로 인해 언어 변경 절차가 변경되었습니다.\n\n1. 다음 화면으로 진행하세요.\n2. 원하는 언어를 눌러 선택하세요.\n\n언어 설정이 불가능한 경우 일반적인 iPhone 언어 설정으로 가셔서 사용할 언어를 먼저 설정하시기 바랍니다.";
