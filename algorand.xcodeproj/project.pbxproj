@@ -5870,7 +5870,7 @@
 				2B8BE4CB22391C38005D8565 /* Frameworks */,
 				2B8BE4CC22391C38005D8565 /* Resources */,
 				2B8BE4E322392001005D8565 /* ShellScript */,
-				2B096039225795170005BE27 /* ShellScript */,
+				2B096039225795170005BE27 /* Run Script */,
 				F65394278C0CB0A4CFC10D23 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
@@ -6075,9 +6075,9 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Fabric/run\"\n";
+			shellScript = "\"${PODS_ROOT}/FirebaseCrashlytics/run\"\n";
 		};
-		2B096039225795170005BE27 /* ShellScript */ = {
+		2B096039225795170005BE27 /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -6087,13 +6087,14 @@
 			inputPaths = (
 				"$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)",
 			);
+			name = "Run Script";
 			outputFileListPaths = (
 			);
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Fabric/run\"\n";
+			shellScript = "\"${PODS_ROOT}/FirebaseCrashlytics/run\"\n";
 		};
 		2B0F634724EC129D00DA22A6 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -6128,7 +6129,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Fabric/run\"\n";
+			shellScript = "\"${PODS_ROOT}/FirebaseCrashlytics/run\"\n";
 		};
 		2B8BE4E322392001005D8565 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
