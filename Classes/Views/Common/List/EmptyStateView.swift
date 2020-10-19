@@ -14,7 +14,7 @@ class EmptyStateView: BaseView {
     
     private lazy var imageView = UIImageView(image: image)
     
-    private lazy var titleLabel: UILabel = {
+    private(set) lazy var titleLabel: UILabel = {
         UILabel()
             .withAlignment(.center)
             .withLine(.contained)

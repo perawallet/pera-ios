@@ -19,7 +19,7 @@ class TransactionHistoryHeaderView: BaseView {
     private lazy var titleLabel: UILabel = {
         UILabel()
             .withAlignment(.left)
-            .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
+            .withFont(UIFont.font(withWeight: .medium(size: 16.0)))
             .withTextColor(SharedColors.primaryText)
             .withText("contacts-transactions-title".localized)
     }()

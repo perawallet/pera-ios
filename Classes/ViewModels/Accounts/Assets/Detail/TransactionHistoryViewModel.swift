@@ -26,9 +26,9 @@ class TransactionHistoryViewModel {
             
             if assetTransaction.receiverAddress == assetTransaction.senderAddress {
                 configure(view, with: contact, and: assetTransaction.receiverAddress)
-                view.transactionAmountView.algoIconImageView.removeFromSuperview()
                 view.transactionAmountView.mode = .normal(
                     amount: assetTransaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
+                    isAlgos: false,
                     fraction: assetDetail.fractionDecimals
                 )
             } else if assetTransaction.receiverAddress == account.address &&
@@ -39,16 +39,16 @@ class TransactionHistoryViewModel {
                 view.transactionAmountView.mode = .negative(amount: transaction.fee.toAlgos)
             } else if assetTransaction.receiverAddress == account.address {
                 configure(view, with: contact, and: assetTransaction.receiverAddress)
-                view.transactionAmountView.algoIconImageView.removeFromSuperview()
                 view.transactionAmountView.mode = .positive(
                     amount: assetTransaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
+                    isAlgos: false,
                     fraction: assetDetail.fractionDecimals
                 )
             } else {
                 configure(view, with: contact, and: assetTransaction.receiverAddress)
-                view.transactionAmountView.algoIconImageView.removeFromSuperview()
                 view.transactionAmountView.mode = .negative(
                     amount: assetTransaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
+                    isAlgos: false,
                     fraction: assetDetail.fractionDecimals
                 )
             }
@@ -108,9 +108,9 @@ class TransactionHistoryViewModel {
         if let assetDetail = transactionConfigurator.assetDetail {
             if transaction.receiver == transaction.sender {
                 configure(view, with: contact, and: transaction.receiver)
-                view.transactionAmountView.algoIconImageView.removeFromSuperview()
                 view.transactionAmountView.mode = .normal(
                     amount: transaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
+                    isAlgos: false,
                     fraction: assetDetail.fractionDecimals
                 )
             } else if transaction.receiver == account.address && transaction.amount == 0 && transaction.type == .assetTransfer {
@@ -121,16 +121,16 @@ class TransactionHistoryViewModel {
                 }
             } else if transaction.receiver == account.address {
                 configure(view, with: contact, and: transaction.receiver)
-                view.transactionAmountView.algoIconImageView.removeFromSuperview()
                 view.transactionAmountView.mode = .positive(
                     amount: transaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
+                    isAlgos: false,
                     fraction: assetDetail.fractionDecimals
                 )
             } else {
                 configure(view, with: contact, and: transaction.receiver)
-                view.transactionAmountView.algoIconImageView.removeFromSuperview()
                 view.transactionAmountView.mode = .negative(
                     amount: transaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
+                    isAlgos: false,
                     fraction: assetDetail.fractionDecimals
                 )
             }
