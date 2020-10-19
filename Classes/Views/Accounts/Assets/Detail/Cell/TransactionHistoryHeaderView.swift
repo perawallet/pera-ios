@@ -14,6 +14,8 @@ class TransactionHistoryHeaderView: BaseView {
     
     weak var delegate: TransactionHistoryHeaderViewDelegate?
     
+    private lazy var topImageView = UIImageView(image: img("modal-top-icon"))
+    
     private lazy var titleLabel: UILabel = {
         UILabel()
             .withAlignment(.left)
@@ -36,6 +38,8 @@ class TransactionHistoryHeaderView: BaseView {
     
     override func configureAppearance() {
         backgroundColor = SharedColors.secondaryBackground
+        layer.cornerRadius = 20.0
+        layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
     }
     
     override func setListeners() {
@@ -44,6 +48,7 @@ class TransactionHistoryHeaderView: BaseView {
     }
     
     override func prepareLayout() {
+        setupTopImageViewLayout()
         setupShareButtonLayout()
         setupFilterButtonLayout()
         setupTitleLabelLayout()
@@ -64,6 +69,15 @@ extension TransactionHistoryHeaderView {
 }
 
 extension TransactionHistoryHeaderView {
+    private func setupTopImageViewLayout() {
+        addSubview(topImageView)
+        
+        topImageView.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalToSuperview().inset(layout.current.topInset)
+        }
+    }
+    
     private func setupShareButtonLayout() {
         addSubview(shareButton)
         
@@ -117,6 +131,7 @@ extension TransactionHistoryHeaderView {
 
 extension TransactionHistoryHeaderView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
+        let topInset: CGFloat = 8.0
         let horizontalInset: CGFloat = 20.0
         let buttonSize = CGSize(width: 40.0, height: 40.0)
         let trailingInset: CGFloat = 16.0

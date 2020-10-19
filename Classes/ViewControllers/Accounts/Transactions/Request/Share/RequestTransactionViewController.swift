@@ -37,8 +37,7 @@ extension RequestTransactionViewController {
         contentView.addSubview(requestTransactionView)
         
         requestTransactionView.snp.makeConstraints { make in
-            make.leading.trailing.top.equalToSuperview()
-            make.bottom.equalToSuperview().inset(view.safeAreaBottom)
+            make.leading.trailing.top.bottom.equalToSuperview()
         }
     }
 }
