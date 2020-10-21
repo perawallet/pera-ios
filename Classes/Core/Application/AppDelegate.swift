@@ -11,6 +11,7 @@ import CoreData
 import Firebase
 import SwiftDate
 import UserNotifications
+import FirebaseCrashlytics
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {

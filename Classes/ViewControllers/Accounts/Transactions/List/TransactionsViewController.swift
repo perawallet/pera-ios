@@ -340,6 +340,12 @@ extension TransactionsViewController {
         fetchTransactions()
     }
     
+    func updateSelectedAsset(_ assetDetail: AssetDetail?) {
+        self.assetDetail = assetDetail
+        transactionHistoryDataSource.updateAssetDetail(assetDetail)
+        updateList()
+    }
+    
     var isTransactionListEmpty: Bool {
         return transactionHistoryDataSource.isEmpty
     }

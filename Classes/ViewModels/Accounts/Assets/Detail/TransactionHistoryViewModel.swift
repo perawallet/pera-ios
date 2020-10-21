@@ -1,5 +1,5 @@
 //
-//  AssetDetailViewModel.swift
+//  TransactionHistoryViewModel.swift
 //  algorand
 //
 //  Created by Göktuğ Berk Ulu on 29.03.2019.
@@ -9,65 +9,17 @@
 import UIKit
 import SwiftDate
 
-class AssetDetailViewModel {
+class TransactionHistoryViewModel {
     
-    var lastRound: Int64?
-    
-    private(set) var account: Account
-    private(set) var assetDetail: AssetDetail?
-    
-    init(account: Account, assetDetail: AssetDetail?) {
-        self.account = account
-        self.assetDetail = assetDetail
-    }
-}
-
-extension AssetDetailViewModel {
-    func configure(_ view: AssetDetailHeaderView, with account: Account, and assetDetail: AssetDetail?) {
-        if let assetDetail = assetDetail {
-            if !assetDetail.isVerified {
-                view.verifiedImageView.removeFromSuperview()
-            }
-            view.assetNameLabel.text = assetDetail.getDisplayNames().0
-            view.assetIdLabel.isHidden = false
-            view.assetIdLabel.text = "asset-detail-id-title".localized(params: "\(assetDetail.id)")
-            
-            guard let amount = account.amount(for: assetDetail) else {
-                return
-            }
-            view.assetAmountLabel.text = amount.toFractionStringForLabel(fraction: assetDetail.fractionDecimals)
-        } else {
-            view.assetNameLabel.text = "accounts-algos-available-title".localized
-            view.assetAmountLabel.text = account.amount.toAlgos.toAlgosStringForLabel
-            view.verifiedImageView.isHidden = false
-            let totalRewards: UInt64 = (account.pendingRewards ?? 0)
-            view.rewardTotalAmountView.setReward(amount: totalRewards.toAlgos.toAlgosStringForLabel ?? "0.00")
+    func configure(_ view: TransactionHistoryContextView, with dependencies: TransactionViewModelDependencies) {
+        guard let transaction = dependencies.transaction as? Transaction else {
+            return
         }
-    }
-    
-    func configure(_ view: AssetDetailTitleView, with account: Account, and assetDetail: AssetDetail?) {
-        if let assetDetail = assetDetail {
-            guard let amount = account.amount(for: assetDetail) else {
-                return
-            }
-            view.setDetail("\(amount.toFractionStringForLabel(fraction: assetDetail.fractionDecimals) ?? "") \(assetDetail.getAssetCode())")
-        } else {
-            view.setDetail("\(account.amount.toAlgos.toAlgosStringForLabel ?? "") ALGO")
-        }
-    }
-}
-
-extension AssetDetailViewModel {
-    func setDollarValue(in view: AssetDetailHeaderView, with currentValue: Double, for currency: String) {
-        if let currencyValue = currentValue.toCurrencyStringForLabel {
-            view.currencyAmountLabel.text = currencyValue + " " + currency
-        }
-    }
-}
-
-extension AssetDetailViewModel {
-    func configure(_ view: TransactionHistoryContextView, with transaction: Transaction, for contact: Contact? = nil) {
-        if let assetDetail = assetDetail {
+        
+        let account = dependencies.account
+        let contact = dependencies.contact
+        
+        if let assetDetail = dependencies.assetDetail {
             guard let assetTransaction = transaction.assetTransfer else {
                 return
             }
@@ -76,6 +28,7 @@ extension AssetDetailViewModel {
                 configure(view, with: contact, and: assetTransaction.receiverAddress)
                 view.transactionAmountView.mode = .normal(
                     amount: assetTransaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
+                    isAlgos: false,
                     fraction: assetDetail.fractionDecimals
                 )
             } else if assetTransaction.receiverAddress == account.address &&
@@ -88,12 +41,14 @@ extension AssetDetailViewModel {
                 configure(view, with: contact, and: assetTransaction.receiverAddress)
                 view.transactionAmountView.mode = .positive(
                     amount: assetTransaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
+                    isAlgos: false,
                     fraction: assetDetail.fractionDecimals
                 )
             } else {
                 configure(view, with: contact, and: assetTransaction.receiverAddress)
                 view.transactionAmountView.mode = .negative(
                     amount: assetTransaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
+                    isAlgos: false,
                     fraction: assetDetail.fractionDecimals
                 )
             }
@@ -142,12 +97,20 @@ extension AssetDetailViewModel {
         }
     }
     
-    func configure(_ view: TransactionHistoryContextView, with transaction: PendingTransaction, for contact: Contact? = nil) {
-        if let assetDetail = assetDetail {
+    func configurePending(_ view: TransactionHistoryContextView, with dependencies: TransactionViewModelDependencies) {
+        guard let transaction = dependencies.transaction as? PendingTransaction else {
+            return
+        }
+        
+        let account = dependencies.account
+        let contact = dependencies.contact
+        
+        if let assetDetail = dependencies.assetDetail {
             if transaction.receiver == transaction.sender {
                 configure(view, with: contact, and: transaction.receiver)
                 view.transactionAmountView.mode = .normal(
                     amount: transaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
+                    isAlgos: false,
                     fraction: assetDetail.fractionDecimals
                 )
             } else if transaction.receiver == account.address && transaction.amount == 0 && transaction.type == .assetTransfer {
@@ -160,12 +123,14 @@ extension AssetDetailViewModel {
                 configure(view, with: contact, and: transaction.receiver)
                 view.transactionAmountView.mode = .positive(
                     amount: transaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
+                    isAlgos: false,
                     fraction: assetDetail.fractionDecimals
                 )
             } else {
                 configure(view, with: contact, and: transaction.receiver)
                 view.transactionAmountView.mode = .negative(
                     amount: transaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
+                    isAlgos: false,
                     fraction: assetDetail.fractionDecimals
                 )
             }
@@ -184,12 +149,5 @@ extension AssetDetailViewModel {
         
         let formattedDate = Date().toFormat("MMMM dd, yyyy")
         view.dateLabel.text = formattedDate
-    }
-    
-    func configure(_ cell: RewardCell, with reward: Reward) {
-        cell.contextView.transactionAmountView.mode = .positive(amount: reward.amount.toAlgos)
-        if let formattedDate = reward.date?.toFormat("MMMM dd, yyyy") {
-            cell.contextView.setDate(formattedDate)
-        }
     }
 }
