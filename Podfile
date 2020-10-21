@@ -26,8 +26,7 @@ def main_pods
   
   #Analytics
   pod 'Firebase/Core'
-  pod 'Fabric'
-  pod 'Crashlytics'
+  pod 'Firebase/Crashlytics'
 end
 
 target 'algorand' do
