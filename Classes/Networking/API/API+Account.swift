@@ -8,31 +8,33 @@
 
 import Magpie
 
-extension API {
+extension AlgorandAPI {
     @discardableResult
     func fetchAccount(
         with draft: AccountFetchDraft,
-        then handler: @escaping Endpoint.CompleteResultHandler<AccountResponse, IndexerError>
+        then handler: @escaping (Response.Result<AccountResponse, IndexerError>) -> Void
     ) -> EndpointOperatable {
-        return Endpoint(path: Path("/v2/accounts/\(draft.publicKey)"))
+        return EndpointBuilder(api: self)
             .base(indexerBase)
-            .httpMethod(.get)
-            .httpHeaders(indexerAuthenticatedHeaders())
-            .resultHandler(handler)
-            .buildAndSend(self)
+            .path("/v2/accounts/\(draft.publicKey)")
+            .headers(indexerAuthenticatedHeaders())
+            .completionHandler(handler)
+            .build()
+            .send()
     }
     
     @discardableResult
     func fetchRekeyedAccounts(
         of account: String,
-        then handler: @escaping Endpoint.DefaultResultHandler<RekeyedAccountsResponse>
+        then handler: @escaping (Response.ModelResult<RekeyedAccountsResponse>) -> Void
     ) -> EndpointOperatable {
-        return Endpoint(path: Path("/v2/accounts"))
+        return EndpointBuilder(api: self)
             .base(indexerBase)
-            .httpMethod(.get)
+            .path("/v2/accounts")
             .query(RekeyedAccountQuery(authAddress: account))
-            .httpHeaders(indexerAuthenticatedHeaders())
-            .resultHandler(handler)
-            .buildAndSend(self)
+            .headers(indexerAuthenticatedHeaders())
+            .completionHandler(handler)
+            .build()
+            .send()
     }
 }

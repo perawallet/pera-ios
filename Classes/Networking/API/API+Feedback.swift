@@ -8,30 +8,33 @@
 
 import Magpie
 
-extension API {
+extension AlgorandAPI {
     @discardableResult
     func getFeedbackCategories(
-        then handler: @escaping Endpoint.DefaultResultHandler<[FeedbackCategory]>
+        then handler: @escaping (Response.ModelResult<[FeedbackCategory]>) -> Void
     ) -> EndpointOperatable {
-        return Endpoint(path: Path("/api/feedback/categories/"))
+        return EndpointBuilder(api: self)
             .base(mobileApiBase)
-            .httpMethod(.get)
-            .httpHeaders(mobileApiHeaders())
-            .resultHandler(handler)
-            .buildAndSend(self)
+            .path("/api/feedback/categories/")
+            .headers(mobileApiHeaders())
+            .completionHandler(handler)
+            .build()
+            .send()
     }
     
     @discardableResult
     func sendFeedback(
         with draft: FeedbackDraft,
-        then handler: @escaping Endpoint.DefaultResultHandler<Feedback>
+        then handler: @escaping (Response.ModelResult<Feedback>) -> Void
     ) -> EndpointOperatable {
-        return Endpoint(path: Path("/api/feedback/"))
+        return EndpointBuilder(api: self)
             .base(mobileApiBase)
-            .httpMethod(.post)
-            .httpHeaders(mobileApiHeaders())
-            .httpBody(draft)
-            .resultHandler(handler)
-            .buildAndSend(self)
+            .path("/api/feedback/")
+            .method(.post)
+            .headers(mobileApiHeaders())
+            .body(draft)
+            .completionHandler(handler)
+            .build()
+            .send()
     }
 }
