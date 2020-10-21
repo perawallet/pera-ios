@@ -19,6 +19,19 @@ class AccountTypeSelectionViewController: BaseViewController {
         super.init(configuration: configuration)
     }
     
+    override func configureNavigationBarAppearance() {
+        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [unowned self] in
+            self.closeScreen(by: .dismiss, animated: true)
+        }
+        
+        switch flow {
+        case .addNewAccount:
+            leftBarButtonItems = [closeBarButtonItem]
+        default:
+            break
+        }
+    }
+    
     override func configureAppearance() {
         view.backgroundColor = SharedColors.secondaryBackground
         setSecondaryBackgroundColor()
