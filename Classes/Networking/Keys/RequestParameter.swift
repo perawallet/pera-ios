@@ -8,7 +8,7 @@
 
 import Magpie
 
-enum RequestParameter: String, JSONBodyRequestParameter {
+enum RequestParameter: String, CodingKey {
     case address = "address"
     case firstRound = "firstRound"
     case lastRound = "lastRound"
@@ -51,3 +51,6 @@ enum RequestParameter: String, JSONBodyRequestParameter {
     case authAddress = "auth-addr"
     case publicKey = "public_key"
 }
+
+typealias QueryParam = ObjectQueryKeyedParam<RequestParameter>
+typealias BodyParam = JSONBodyKeyedParam<RequestParameter>

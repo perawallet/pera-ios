@@ -85,14 +85,14 @@ extension User {
         self.defaultNode = selectedNode.network.rawValue
     }
     
-    func preferredAlgorandNetwork() -> API.BaseNetwork? {
+    func preferredAlgorandNetwork() -> AlgorandAPI.BaseNetwork? {
         guard let defaultNode = defaultNode else {
             return nil
         }
         
-        if defaultNode == API.BaseNetwork.mainnet.rawValue {
+        if defaultNode == AlgorandAPI.BaseNetwork.mainnet.rawValue {
             return .mainnet
-        } else if defaultNode == API.BaseNetwork.testnet.rawValue {
+        } else if defaultNode == AlgorandAPI.BaseNetwork.testnet.rawValue {
             return .testnet
         } else {
             return nil

@@ -8,14 +8,12 @@
 
 import Magpie
 
-struct TransactionTrackDraft: JSONKeyedBody {
-    typealias Key = RequestParameter
-    
+struct TransactionTrackDraft: JSONObjectBody {
     let transactionId: String
     
-    func decoded() -> [Pair]? {
-        return [
-            Pair(key: .transactionId, value: transactionId)
-        ]
+    var bodyParams: [BodyParam] {
+        var params: [BodyParam] = []
+        params.append(.init(.transactionId, transactionId))
+        return params
     }
 }
