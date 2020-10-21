@@ -10,175 +10,118 @@ import UIKit
 
 class AlignedButton: UIButton {
     
-    private let style: Style
-    
-    init(style: Style) {
-        self.style = style
-        
-        super.init(frame: CGRect.zero)
-        
-        configure()
+    override var intrinsicContentSize: CGSize {
+        if currentImage == nil && currentTitle == nil {
+            return .zero
+        }
+        return super.intrinsicContentSize
     }
-    
+
+    private let style: Style
+
+    required init(_ style: Style = .none) {
+        self.style = style
+        super.init(frame: .zero)
+    }
+
     @available(*, unavailable)
-    required init?(coder aDecoder: NSCoder) {
+    required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    private func configure() {
-        if !style.isCenteredHorizontally {
-            return
-        }
-        titleLabel?.textAlignment = .center
-    }
-    
-    override func titleRect(forContentRect contentRect: CGRect) -> CGRect {
-        var titleRect = super.titleRect(forContentRect: contentRect)
-        
-        if image(for: .normal) == nil {
-            return titleRect
-        }
-        
-        switch style {
-        case .none:
-            return titleRect
-        case .imageTop(let adjustment),
-             .imageLeft(let adjustment),
-             .imageBottom(let adjustment),
-             .imageRight(let adjustment):
-            if style.isCenteredHorizontally {
-                titleRect.origin.x = 0.0
-                titleRect.size.width = contentRect.width
-            } else if case .imageLeft = style {
-                titleRect.origin.x =
-                    contentRect.width - (titleRect.width + contentEdgeInsets.right).rounded()
-            } else if case .imageRight = style {
-                titleRect.origin.x = contentEdgeInsets.left
-            }
-            
-            if style.isCenteredVertically {
-                let spaceY = contentRect.height - (titleRect.height + contentEdgeInsets.vertical)
-                titleRect.origin.y = (spaceY / 2.0).rounded()
-            } else if case .imageTop = style {
-                titleRect.origin.y =
-                    contentRect.height - (titleRect.height + contentEdgeInsets.bottom).rounded()
-            } else if case .imageBottom = style {
-                titleRect.origin.y = contentEdgeInsets.top
-            }
-            
-            titleRect.origin.x += adjustment?.title.x ?? 0.0
-            titleRect.origin.y += adjustment?.title.y ?? 0.0
-            
-            return titleRect
-            
-        case .imageLeftTitleCentered(let adjustment):
-            titleRect.origin.x += adjustment?.title.x ?? 0.0
-            titleRect.origin.y += adjustment?.title.y ?? 0.0
-            
-            return titleRect
-        }
-    }
-    
+
     override func imageRect(forContentRect contentRect: CGRect) -> CGRect {
-        var imageRect = super.imageRect(forContentRect: contentRect)
-        
-        if title(for: .normal) == nil {
-            return imageRect
+        var rect = super.imageRect(forContentRect: contentRect)
+
+        if currentTitle == nil {
+            return rect
         }
         
         switch style {
         case .none:
-            return imageRect
-        case .imageTop(let adjustment),
-             .imageLeft(let adjustment),
-             .imageBottom(let adjustment),
-             .imageRight(let adjustment):
-            
-            if style.isCenteredHorizontally {
-                let spaceX = contentRect.width - (imageRect.width + contentEdgeInsets.horizontal)
-                imageRect.origin.x = (spaceX / 2.0).rounded()
-            } else if case .imageLeft = style {
-                imageRect.origin.x = contentEdgeInsets.left
-            } else if case .imageRight = style {
-                imageRect.origin.x =
-                    contentRect.width - (imageRect.width + contentEdgeInsets.right).rounded()
-            }
-            
-            if style.isCenteredVertically {
-                let spaceY = contentRect.height - (imageRect.height + contentEdgeInsets.vertical)
-                imageRect.origin.y = (spaceY / 2.0).rounded()
-            } else if case .imageTop = style {
-                imageRect.origin.y = contentEdgeInsets.top
-            } else if case .imageBottom = style {
-                imageRect.origin.y =
-                    contentRect.height - (imageRect.height + contentEdgeInsets.bottom).rounded()
-            }
-            
-            imageRect.origin.x += adjustment?.image.x ?? 0.0
-            imageRect.origin.y += adjustment?.image.y ?? 0.0
-            
-            return imageRect
-        case .imageLeftTitleCentered(let adjustment):
-            imageRect.origin.x = contentEdgeInsets.left
-            
-            let spaceY = contentRect.height - (imageRect.height + contentEdgeInsets.vertical)
-            imageRect.origin.y = (spaceY / 2.0).rounded()
-            
-            imageRect.origin.x += adjustment?.image.x ?? 0.0
-            imageRect.origin.y += adjustment?.image.y ?? 0.0
-            
-            return imageRect
+            return rect
+        case .imageAtTop(let spacing):
+            let titleHeight = super.titleRect(forContentRect: contentRect).height
+            rect.origin.x = ((contentRect.width - rect.width) / 2.0).rounded() + contentEdgeInsets.left
+            rect.origin.y = ((contentRect.height - (rect.height + spacing + titleHeight)) / 2.0).rounded() + contentEdgeInsets.top
+            return rect
+        case .imageAtTopmost(let padding, _):
+            rect.origin.x = ((contentRect.width - rect.width) / 2.0).rounded() + contentEdgeInsets.left
+            rect.origin.y = contentRect.minY + padding + contentEdgeInsets.top
+            return rect
+        case .imageAtLeft(let spacing):
+            rect.origin.x -= (spacing / 2.0).rounded()
+            return rect
+        case .imageAtLeftmost(let padding, _):
+            rect.origin.x = contentRect.width - (padding + contentEdgeInsets.left)
+            return rect
+        case .imageAtRight(let spacing):
+            let titleWidth = super.titleRect(forContentRect: contentRect).width
+            rect.origin.x = rect.minX + titleWidth + (spacing / 2.0).rounded() + contentEdgeInsets.left
+            return rect
+        case .imageAtRightmost(let padding, _):
+            rect.origin.x = contentRect.width - (rect.width + padding + contentEdgeInsets.right)
+            return rect
+        case .titleAtBottommost(_, let imageAdjustmentY):
+            rect.origin.x = ((contentRect.width - rect.width) / 2.0).rounded() + contentEdgeInsets.left
+            rect.origin.y = ((contentRect.height - rect.height) / 2.0).rounded() + imageAdjustmentY + contentEdgeInsets.top
+            return rect
+        }
+    }
+
+    override func titleRect(forContentRect contentRect: CGRect) -> CGRect {
+        var rect = super.titleRect(forContentRect: contentRect)
+
+        if currentImage == nil {
+            return rect
+        }
+        
+        switch style {
+        case .none:
+            return rect
+        case .imageAtTop(let spacing):
+            let imageHeight = super.imageRect(forContentRect: contentRect).height
+            rect.origin.x = ((contentRect.width - rect.width) / 2.0).rounded() + contentEdgeInsets.left
+            rect.origin.y = contentRect.height -
+                ((contentRect.height - (imageHeight + spacing + rect.height)) / 2.0).rounded() -
+                (rect.height + contentEdgeInsets.bottom)
+            return rect
+        case .imageAtTopmost(_, let titleAdjustmentY):
+            rect.origin.x = ((contentRect.width - rect.width) / 2.0).rounded() + contentEdgeInsets.left
+            rect.origin.y = ((contentRect.height - rect.height) / 2.0).rounded() + titleAdjustmentY + contentEdgeInsets.top
+            return rect
+        case .imageAtLeft(let spacing):
+            rect.origin.x += (spacing / 2.0).rounded()
+            return rect
+        case .imageAtLeftmost(_, let titleAdjustmentX):
+            rect.origin.x = ((contentRect.width - rect.width) / 2.0).rounded() + titleAdjustmentX + contentEdgeInsets.left
+            return rect
+        case .imageAtRight(let spacing):
+            let imageWidth = super.imageRect(forContentRect: contentRect).width
+            rect.origin.x = ((contentRect.width - (rect.width + spacing + imageWidth)) / 2.0).rounded() + contentEdgeInsets.left
+            return rect
+        case .imageAtRightmost(_, let titleAdjustmentX):
+            rect.origin.x = ((contentRect.width - rect.width) / 2.0).rounded() + titleAdjustmentX + contentEdgeInsets.left
+            return rect
+        case .titleAtBottommost(let padding, _):
+            rect.origin.x = ((contentRect.width - rect.width) / 2.0).rounded() + contentEdgeInsets.left
+            rect.origin.y = contentRect.maxY - (rect.height + padding + contentEdgeInsets.bottom)
+            return rect
         }
     }
 }
 
 extension AlignedButton {
-    
-    typealias StylePositionAdjustment = (image: CGPoint, title: CGPoint)?
-    
     enum Style {
         case none
-        case imageTop(StylePositionAdjustment)
-        case imageLeft(StylePositionAdjustment)
-        case imageBottom(StylePositionAdjustment)
-        case imageRight(StylePositionAdjustment)
-        case imageLeftTitleCentered(StylePositionAdjustment)
-    }
-}
-
-extension AlignedButton.Style {
-    
-    var isCenteredHorizontally: Bool {
-        switch self {
-        case .imageTop, .imageBottom:
-            return true
-        default:
-            return false
-        }
-    }
-    
-    var isCenteredVertically: Bool {
-        switch self {
-        case .imageLeft, .imageRight:
-            return true
-        default:
-            return false
-        }
-    }
-}
-
-extension AlignedButton.Style: Equatable {
-    
-    static func == (lhs: AlignedButton.Style, rhs: AlignedButton.Style) -> Bool {
-        switch (lhs, rhs) {
-        case (.none, .none),
-             (.imageTop, .imageTop),
-             (.imageLeft, .imageLeft),
-             (.imageBottom, .imageBottom),
-             (.imageRight, .imageRight):
-            return true
-        default:
-            return false
-        }
+        case imageAtTop(spacing: CGFloat)
+        /// <note> Padding equals to the inset from top for the image while the title is centered.
+        case imageAtTopmost(padding: CGFloat, titleAdjustmentY: CGFloat)
+        case imageAtLeft(spacing: CGFloat)
+        /// <note> Padding equals to the inset from left for the image while the title is centered offset by titleAdjustmentX.
+        case imageAtLeftmost(padding: CGFloat, titleAdjustmentX: CGFloat)
+        case imageAtRight(spacing: CGFloat)
+        /// <note> Padding equals to the inset from right for the image while the title is centered offset by titleAdjustmentX.
+        case imageAtRightmost(padding: CGFloat, titleAdjustmentX: CGFloat)
+        case titleAtBottommost(padding: CGFloat, imageAdjustmentY: CGFloat)
     }
 }

@@ -65,8 +65,7 @@ class TabBarController: UIViewController {
     private(set) lazy var tabBar = TabBar()
 
     private(set) lazy var sendButton: AlignedButton = {
-        let positions: AlignedButton.StylePositionAdjustment = (image: CGPoint(x: 28.0, y: 0.0), title: CGPoint(x: 0.0, y: 0.0))
-        let button = AlignedButton(style: .imageLeftTitleCentered(positions))
+        let button = AlignedButton(.imageAtLeft(spacing: 4.0))
         button.setBackgroundImage(img("img-tabbar-send"), for: .normal)
         button.setImage(img("icon-arrow-up"), for: .normal)
         button.setTitle("title-send".localized, for: .normal)
@@ -77,8 +76,7 @@ class TabBarController: UIViewController {
     }()
     
     private(set) lazy var receiveButton: AlignedButton = {
-        let positions: AlignedButton.StylePositionAdjustment = (image: CGPoint(x: 18.0, y: 0.0), title: CGPoint(x: 0.0, y: 0.0))
-        let button = AlignedButton(style: .imageLeftTitleCentered(positions))
+        let button = AlignedButton(.imageAtLeft(spacing: 4.0))
         button.setBackgroundImage(img("img-tabbar-receive"), for: .normal)
         button.setImage(img("icon-qr", isTemplate: true), for: .normal)
         button.tintColor = SharedColors.white

@@ -222,7 +222,7 @@ extension RekeyConfirmationViewController {
         case let .minimumAmount(amount):
             NotificationBanner.showError(
                 "asset-min-transaction-error-title".localized,
-                message: "send-algos-minimum-amount-custom-error".localized(params: amount.toAlgos.toDecimalStringForLabel ?? "")
+                message: "send-algos-minimum-amount-custom-error".localized(params: amount.toAlgos.toAlgosStringForLabel ?? "")
             )
         default:
             break

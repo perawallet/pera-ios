@@ -25,23 +25,6 @@ extension Int {
         return Double(self) / (pow(10, decimal) as NSDecimalNumber).doubleValue
     }
     
-    func convertToDollars(withSymbol: Bool = true) -> String {
-        let doubleValue = Double(self) / 100
-        let formatter = NumberFormatter()
-        
-        if withSymbol {
-            formatter.currencyCode = "USD"
-            formatter.currencySymbol = "$"
-            formatter.numberStyle = .currencyAccounting
-        }
-        
-        formatter.locale = Locale(identifier: "en_US")
-        formatter.groupingSeparator = ","
-        formatter.minimumFractionDigits = 2
-        formatter.maximumFractionDigits = 2
-        return formatter.string(from: NSDecimalNumber(value: doubleValue)) ?? "$\(doubleValue)"
-    }
-    
     func convertSecondsToHoursMinutesSeconds() -> String? {
         let formatter = DateComponentsFormatter()
         formatter.allowedUnits = [.hour, .minute, .second]
@@ -60,10 +43,6 @@ extension Int64 {
             return Double(self)
         }
         return Double(self) / (pow(10, decimal) as NSDecimalNumber).doubleValue
-    }
-    
-    var toDecimalStringForLabel: String? {
-        return Formatter.separatorForAlgosLabel.string(from: NSNumber(value: self))
     }
     
     func toFractionStringForLabel(fraction: Int) -> String? {

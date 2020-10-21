@@ -10,7 +10,7 @@ import UIKit
 
 class CurrencySelectionViewController: BaseViewController {
     
-    private lazy var currencySelectionView = CurrencySelectionView()
+    private lazy var currencySelectionView = SingleSelectionListView()
     
     private lazy var dataSource: CurrencySelectionDataSource = {
         guard let api = api else {
@@ -95,12 +95,12 @@ extension CurrencySelectionViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-extension CurrencySelectionViewController: CurrencySelectionViewDelegate {
-    func currencySelectionViewDidRefreshList(_ currencySelectionView: CurrencySelectionView) {
+extension CurrencySelectionViewController: SingleSelectionListViewDelegate {
+    func singleSelectionListViewDidRefreshList(_ singleSelectionListView: SingleSelectionListView) {
         getCurrencies()
     }
     
-    func currencySelectionViewDidTryAgain(_ currencySelectionView: CurrencySelectionView) {
+    func singleSelectionListViewDidTryAgain(_ singleSelectionListView: SingleSelectionListView) {
         getCurrencies()
     }
 }

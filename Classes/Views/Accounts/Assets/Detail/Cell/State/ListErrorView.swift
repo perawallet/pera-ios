@@ -32,8 +32,7 @@ class ListErrorView: BaseView {
     }()
     
     private lazy var tryAgainButton: AlignedButton = {
-        let positions: AlignedButton.StylePositionAdjustment = (image: CGPoint(x: 24.0, y: 0.0), title: CGPoint(x: 0.0, y: 0.0))
-        let button = AlignedButton(style: .imageLeftTitleCentered(positions))
+        let button = AlignedButton(.imageAtLeft(spacing: 8.0))
         button.setBackgroundImage(img("bg-try-again"), for: .normal)
         button.setImage(img("icon-reload"), for: .normal)
         button.setTitle("transaction-filter-try-again".localized, for: .normal)

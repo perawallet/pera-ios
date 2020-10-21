@@ -1,5 +1,5 @@
 //
-//  CurrencySelectionView.swift
+//  SingleSelectionListView.swift
 //  algorand
 //
 //  Created by Göktuğ Berk Ulu on 17.09.2020.
@@ -8,9 +8,9 @@
 
 import UIKit
 
-class CurrencySelectionView: BaseView {
+class SingleSelectionListView: BaseView {
     
-    weak var delegate: CurrencySelectionViewDelegate?
+    weak var delegate: SingleSelectionListViewDelegate?
     
     private(set) lazy var collectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
@@ -54,7 +54,7 @@ class CurrencySelectionView: BaseView {
     }
 }
 
-extension CurrencySelectionView {
+extension SingleSelectionListView {
     private func setupCollectionViewLayout() {
         addSubview(collectionView)
         
@@ -67,14 +67,14 @@ extension CurrencySelectionView {
     }
 }
 
-extension CurrencySelectionView {
+extension SingleSelectionListView {
     @objc
     private func didRefreshList() {
-        delegate?.currencySelectionViewDidRefreshList(self)
+        delegate?.singleSelectionListViewDidRefreshList(self)
     }
 }
 
-extension CurrencySelectionView {
+extension SingleSelectionListView {
     func reloadData() {
         collectionView.reloadData()
     }
@@ -112,13 +112,13 @@ extension CurrencySelectionView {
     }
 }
 
-extension CurrencySelectionView: ListErrorViewDelegate {
+extension SingleSelectionListView: ListErrorViewDelegate {
     func listErrorViewDidTryAgain(_ listErrorView: ListErrorView) {
-        delegate?.currencySelectionViewDidTryAgain(self)
+        delegate?.singleSelectionListViewDidTryAgain(self)
     }
 }
 
-protocol CurrencySelectionViewDelegate: class {
-    func currencySelectionViewDidRefreshList(_ currencySelectionView: CurrencySelectionView)
-    func currencySelectionViewDidTryAgain(_ currencySelectionView: CurrencySelectionView)
+protocol SingleSelectionListViewDelegate: class {
+    func singleSelectionListViewDidRefreshList(_ singleSelectionListView: SingleSelectionListView)
+    func singleSelectionListViewDidTryAgain(_ singleSelectionListView: SingleSelectionListView)
 }

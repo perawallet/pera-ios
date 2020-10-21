@@ -33,10 +33,7 @@ class TabBarButton: UIControl {
 
     let barButtonItem: TabBarButtonItemConvertible
 
-    private(set) lazy var contentView: AlignedButton = {
-        let positions: AlignedButton.StylePositionAdjustment = (image: CGPoint(x: 0.0, y: 0.0), title: CGPoint(x: 0.0, y: 0.0))
-        return AlignedButton(style: .imageTop(positions))
-    }()
+    private(set) lazy var contentView = AlignedButton()
     
     private lazy var badgeView = UIButton()
 

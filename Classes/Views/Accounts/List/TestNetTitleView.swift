@@ -161,6 +161,12 @@ extension AssetDetailTitleView {
 }
 
 extension AssetDetailTitleView {
+    func bind(_ viewModel: AssetDetailTitleViewModel) {
+        detailLabel.text = viewModel.detail
+    }
+}
+
+extension AssetDetailTitleView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let verticalInset: CGFloat = 10.0
     }

@@ -340,6 +340,12 @@ extension TransactionsViewController {
         fetchTransactions()
     }
     
+    func updateSelectedAsset(_ assetDetail: AssetDetail?) {
+        self.assetDetail = assetDetail
+        transactionHistoryDataSource.updateAssetDetail(assetDetail)
+        updateList()
+    }
+    
     var isTransactionListEmpty: Bool {
         return transactionHistoryDataSource.isEmpty
     }
@@ -491,7 +497,7 @@ extension TransactionsViewController: CSVExportable {
         if let assetDetail = assetDetail {
             return amount?.toFractionStringForLabel(fraction: assetDetail.fractionDecimals) ?? " "
         } else {
-            return amount?.toAlgos.toDecimalStringForLabel ?? " "
+            return amount?.toAlgos.toAlgosStringForLabel ?? " "
         }
     }
 }

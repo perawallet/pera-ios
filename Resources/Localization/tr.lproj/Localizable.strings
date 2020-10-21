@@ -1,0 +1,522 @@
+
+/*Localizable.strings
+  algorand
+
+  Created by Göktuğ Berk Ulu on 14.03.2019.
+  Copyright © 2019 hippo. All rights reserved.
+
+ MARK: Common*/
+"title-yes" = "EVET";
+"title-no" = "HAYIR";
+"title-ok" = "Tamam";
+"title-next" = "İleri";
+"title-accept" = "Kabul et";
+"title-verify" = "Doğrula";
+"title-cancel" = "İptal";
+"title-remove" = "Kaldır";
+"title-proceed" = "İlerle";
+"title-approve" = "Onayla";
+"title-go-home" = "Ana Sayfaya Git";
+"title-go-to-settings" = "Ayarlara Git";
+"title-error" = "Hata";
+"title-save" = "Kaydet";
+"title-close" = "Kapat";
+"title-send" = "Gönder";
+"title-preview" = "Önizleme";
+"title-done" = "Bitti";
+"title-loading" = "Yükleniyor";
+"default-error-message" = "Bir hata meydana geldi.";
+"title-max" = "MAKS";
+"title-internet-connection" = "İnternet bağlantısı çevrimdışı görünüyor.";
+"title-unknown" = "Adsız";
+
+/*Could you please provide some context about Ledger here? Is that the hardware wallet Ledger (Nano etc.) or Ledger as in Distributed Ledger Technology (DLT)?*/
+"title-preview-and-sign-with-ledger-title" = "Önizle ve Ledger ile İmzala";
+
+/*MARK: Introduction*/
+"introduction-title-text" = "Tüm varlıkları tek uygulamadan yönetin";
+
+/*MARK: Password Setting*/
+"choose-password-title" = "Geçiş Kodu Seç";
+"password-set-subtitle" = "Altı haneli geçiş kodu seçin";
+"password-verify-title" = "Geçiş Kodunu Doğrula";
+"password-change-subtitle" = "Altı haneli şifrenizi girin";
+"password-verify-subtitle" = "Aynı altı haneli şifrenizi girin";
+"password-verify-fail-title" = "Hatalı Şifre";
+"password-verify-fail-message" = "Şifre, önceki şifre ile eşleşmiyor.";
+"password-change-title" = "Şifreyi Değiştir";
+
+/*MARK: Local Authentication Preferences*/
+"local-authentication-preference-title" = "Face ID/Touch ID'yi Etkinleştir";
+"local-authentication-preference-subtitle" = "Gelişmiş güvenlik için bunu öneriyoruz";
+"local-authentication-reason-face-id-title" = "Kilidi açmak için Face ID'yi kullan";
+"local-authentication-reason-touch-id-title" = "Kilidi açmak için Touch ID'yi kullan";
+"local-authentication-go-settings-title" = "Biyometrik Kimlik Doğrulaması";
+"local-authentication-go-settings-text" = "Biyometrik kimlik doğrulamasını devre dışı bıraktınız. Lütfen Ayarlara gidin ve bu seçeneği etkinleştirin.";
+"local-authentication-enable" = "Face ID/Touch ID'yi Etkinleştir";
+"local-authentication-no" = "Face ID/Touch ID'yi kullanma";
+
+/*MARK: Passphrase Back Up*/
+"new-account-title" = "Parolayı Yedekle";
+"back-up-phrase-warning" = "Bu hesap parolasını yedeklediğinizden emin olun. Algorand hesabınızı kurtarmanın tek yolu budur.";
+"back-up-phrase-button-title" = "Kurtarma Parolasını Doğrula";
+"back-up-phrase-qr" = "QR Kodunu Göster";
+
+/*MARK: Passphrase Verify*/
+"pass-phrase-verify-pop-up-title" = "Parola Doğrulandı";
+"pass-phrase-verify-select-title" = "Parolanızın %@ kelimesini seçin";
+"pass-phrase-verify-question-title" = "Soru %@/%@";
+"pass-phrase-verify-wrong-selection" = "Yanlış seçim";
+"pass-phrase-verify-pop-up-explanation" = "Parolanız doğrulandı. Hesabınızı kurtarmak için ihtiyaç duyabileceğinizden, parolanızı yedeklediğinizden emin olun.";
+"pass-phrase-verify-invalid-passphrase" = "Parolanız geçersiz. Doğru parolayı girdiğinizden lütfen emin olun.";
+"pass-phrase-verify-sdk-error" = "Bir sorun var. Lütfen daha sonra tekrar deneyin.";
+
+/*MARK: Account Name Setup*/
+"account-details-title" = "Hesap Ayrıntıları";
+"account-name-setup-explanation" = "Hesap Adı";
+"account-name-setup-placeholder" = "Birikim Hesabı";
+"account-name-setup-empty-error-message" = "Hesap adı boş olamaz";
+
+/*MARK: Recover From Seed*/
+"recover-from-seed-title" = "Paroladan Kurtar";
+"recover-from-seed-name-title" = "Ad";
+"recover-from-seed-name-placeholder" = "Örnek ad";
+"recover-from-seed-passphrase-title" = "Parola";
+"pass-pharase-enter-placeholder" = "Parolayı Gir veya QR Kodunu Tara";
+"recover-from-seed-verify-pop-up-explanation" = "Algorand'a Hoş Geldiniz!\nHesabınız kullanıma hazır.";
+"recover-from-seed-verify-pop-up-title" = "Hesap Doğrulandı";
+"recover-from-seed-verify-exist-error" = "Bu hesap zaten mevcut";
+
+/*MARK: QR Scanning*/
+"qr-scan-title" = "QR Kodunu Tara";
+"qr-scan-error-title" = "Kamera kullanılamıyor";
+"qr-scan-error-message" = "Cihazınız QR Kodunun taranmasını desteklemiyor";
+"qr-scan-go-settings-title" = "Kamera Devre Dışı";
+"qr-scan-go-settings-message" = "Kamerayı devre dışı bıraktınız. Lütfen Ayarlara gidin ve bu seçeneği etkinleştirin.";
+"qr-scan-should-scan-address-message" = "Geçerli bir hesap adresi taramanız gerekli";
+"qr-scan-should-scan-mnemonics-message" = "Geçerli parolalar taramanız gerekli";
+"qr-scan-message-text" = "Bu sayfada yalnızca QR Kodunuzu tarayabilirsiniz. QR Kodunuzu görüntülemek için lütfen hesabınızdaki simgeyi seçin";
+"qr-scan-should-scan-valid-qr" = "QR Kodu geçersiz.";
+
+/*MARK: QR Creation*/
+"qr-creation-title" = "Parola QR Kodu";
+"qr-creation-copied" = "Adres panoya kopyalandı";
+
+/*MARK: Login*/
+"login-title" = "Kilidi aç";
+"login-subtitle" = "Altı haneli şifrenizi girin";
+
+/*MARK: Accounts*/
+"accounts-tranaction-empty-text" = "Henüz İşlem Yok";
+"tranaction-empty-text" = "İşlem Bulunamadı";
+"accounts-algos-available-title" = "Algo'lar";
+"accounts-dollar-value-title" = "Dolar Değeri";
+"accounts-transaction-history-title" = "İşlem Geçmişi";
+"accounts-add-account" = "+ HESAP EKLE";
+
+/*MARK: Asset*/
+"asset-title" = "Varlık";
+"asset-algos-title" = "Algo'lar";
+"asset-remove-title" = "Varlık kaldırma";
+"asset-remove-subtitle" = "Varlık kaldırmak için, önce söz konusu varlığı başka bir hesaba transfer etmeniz gerekir";
+"asset-search-placeholder" = "Varlık Kimliğini veya Adını Ara";
+"asset-remove-confirmation-title" = "Varlık Kaldırma";
+"asset-transfer-balance" = "Transfer Bakiyesi";
+"title-remove-assets" = "Varlıkları Kaldır";
+"title-add-asset" = "Yeni Varlık Ekle";
+"asset-add-warning" = "Varlık eklemek, minimum işlem komisyonuyla işlem gönderimini gerektirir. Bu, işlem geçmişinizde görünür.";
+"asset-support-error" = "Ne yazık ki, bu hesap bu varlığı eklememiş. Lütfen hesap sahibinden varlığı eklemesini isteyin ve tekrar deneyin.";
+"asset-support-title" = "Hesap, bu varlığı kabul etmiyor";
+"asset-add-confirmation-title" = "Varlık Ekleme";
+"internet-connection-error-title" = "İnternete Bağlan";
+"internet-connection-error-detail" = "Sunucuya ulaşamadık. İnternete bağlı olduğunuzdan emin olun";
+"asset-remove-warning" = "%@ varlığını kaldırmak için bakiyenin 0 olması gerekir. Lütfen bakiyeyi başka bir hesaba transfer edin ve tekrar deneyin.";
+
+/*Could you please provide some context about the variables here? I think the first one refers to the asset but I'm not sure if the second one refers to wallet, account or something else. Could you please clarify? Current translation considers the first one as "asset" and second one as "account".*/
+"asset-remove-transaction-warning" = "%@ varlığını %@ hesabından kaldırmak üzeresiniz. Tekrar eklemediğiniz sürece, bu varlıkla bu hesapta işlem yapamayacaksınız.";
+"asset-creation-fee-title" = "Varlık Komisyonu Ekle";
+"asset-min-transaction-error-title" = "Min İşlem Hatası!";
+"asset-min-transaction-error-message" = "Bu varlığı eklemek için en az %@ Algo'ya ihtiyacınız var";
+"asset-you-already-own-message" = "Zaten bu varlığa sahipsiniz";
+"asset-support-not-same-error" = "Bu hesap, bu varlığı eklemiş. Ancak bu, seçili varlık değil. Lütfen varlığı düzeltin ve tekrar deneyin.";
+"asset-support-not-same-title" = "Hesap, bu varlığı kabul etmiyor";
+"asset-support-add-title" = "Varlık almak üzeresiniz!";
+"asset-support-add-message" = "%@ hesabına bir varlık almak üzeresiniz. Bu varlığı almak için bu hesaba eklemek ister misiniz?";
+"asset-id-copied-title" = "Kimlik panoya kopyalandı";
+"asset-verified-title" = "Doğrulandı";
+"asset-support-your-add-title" = "Bu varlık hesabınızda bulunmuyor";
+"asset-support-your-add-message" = "Lütfen bu varlığı ekleyin ve tekrar deneyin.";
+"asset-all-title" = "Tümü";
+
+/*MARK: Algos Send*/
+"send-algos-title" = "Algo Gönder";
+"send-algos-select" = "Hesap Seç";
+"send-sending-algos-select" = "Gönderme Hesabını Seç";
+"send-receiving-algos-select" = "Alıcı Hesabını Seç";
+"send-select-asset" = "Varlık Seç";
+"send-algos-to" = "Alıcı:";
+"send-algos-balance-title" = "Bakiye:";
+"send-algos-amount" = "Miktar:";
+"send-algos-sent-title" = "Algo'lar Gönderildi!";
+"send-algos-alert-title" = "Yanlış İşlem";
+"send-algos-alert-message" = "Lütfen tüm alanları doldurun.";
+"send-algos-minimum-amount-error-new-account" = "Yeni bir hesaba para göndermeye çalışıyorsunuz. Miktarın en az 0,1 Algo olması gerekir.";
+
+/*Could you please clarify the source?*/
+"send-algos-minimum-amount-error" = "İşlem miktarı, 0,1 Algo tutarındaki minimum hesap bakiyesinden düşük bir bakiye ile sonuçlanıyor.";
+"send-algos-amount-error" = "İşlem miktarı, kullanılabilir Algo'larınızdan fazla olamaz";
+"send-asset-amount-error" = "İşlem miktarı, kullanılabilir bakiyenizden fazla olamaz.";
+"send-algos-contact-not-found" = "Kişi bulunamadı";
+"send-algos-address-not-selected" = "Adres seçilmedi";
+"send-algos-address" = "Adres";
+"send-algos-contacts" = "Kişiler";
+"send-algos-scan" = "QR Kodunu Tara";
+"send-algos-account-delete-title" = "Hesabınız silinmek üzere. Devam etmek istediğinizden emin misiniz?";
+"send-algos-account-delete-body" = "Hesabınızı açık tutmak için, hesabınızda en az 0,01 ALGO bulunması gerekir. Maksimum tutarda gönderim yaparsanız, hesabınız ile etkin katılım anahtarlarınız silinir.";
+"send-algos-account-delete-asset-title" = "Hesabı silmek için, hesap bakiyenizdeki tüm varlıkları boşaltmanız ve oluşturduğunuz herhangi bir varlık varsa, bu varlıkları da yok etmeniz gerekir.";
+"send-algos-receiver-address-validation" = "Anahtar geçersiz. Lütfen doğru anahtara sahip olduğunuzdan emin olun.";
+"send-qr-scan-alert-title" = "QR Kodunu Tara";
+"send-qr-scan-alert-message" = "Bir işlem isteğinin QR kodunu taradınız. Değişiklik gösterebileceğinden, lütfen tüm işlem alanlarını gözden geçirin.";
+"send-qr-different-asset-alert" = "QR Kodu, seçilen varlıktan farklı bir varlığı içeriyor. ";
+
+/*MARK: Algos Request*/
+"request-algos-title" = "Algo İste";
+"request-title" = "İste";
+
+/*MARK: Options*/
+"options-title" = "HESAP AYARLARI";
+"options-show-qr" = "QR Kodunu ve adresi göster";
+"options-remove-assets" = "Varlıkları Kaldır";
+"options-view-passphrase" = "Parolayı Görüntüle";
+"options-edit-account-name" = "Hesap Adını Düzenle";
+"options-remove-account" = "Hesabı Kaldır";
+"options-remove-alert-explanation" = "Hesabı kaldırmak üzeresiniz. Devam etmek istediğinizden emin misiniz?";
+"options-view-passphrase-alert-title" = "Biyometrik Kimlik Doğrulaması";
+"options-view-passphrase-alert-message" = "Parolanızı görüntülemek için biyometrik kimlik doğrulaması sunmanız gerekir.";
+"options-view-passphrase-password-alert-message" = "Parolanızı görüntülemek için şifrenizi doğru girmeniz gerekir.";
+
+/*MARK: Contacts*/
+"contacts-title" = "Kişiler";
+"contacts-search" = "Kişi Ara";
+"contacts-add" = "Kişi Ekle";
+"contacts-info" = "Kişi Bilgileri";
+"contacts-input-name-explanation" = "Ad";
+"contacts-input-name-placeholder" = "Kişi adı";
+"contacts-input-address-explanation" = "Adres";
+"contacts-input-address-placeholder" = "# Yapıştır veya QR Kodunu Tara";
+"contacts-transactions-title" = "İşlemler";
+"contacts-empty-text" = "Henüz bir kişi eklemediniz.";
+"contacts-name-validation-error" = "Ad alanı boş.";
+"contacts-address-validation-error" = "Adres yanlış. Lütfen adresi doğru girdiğinizden emin olun.";
+"contacts-delete-contact" = "Kişiyi Sil";
+"contacts-delete-contact-alert-explanation" = "Bu kişiyi silmek istediğinizden emin misiniz?";
+"contacts-close-warning-title" = "Emin misiniz?";
+"contacts-close-warning-subtitle" = "Kaydedilmeyen ilerlemeniz kaybedilecek. Emin misiniz?";
+"accounts-title-assets" = "Varlıklar";
+"contacts-title-assets" = "Varlıklar:";
+"title-select-asset" = "Varlık Seç";
+
+/*MARK: Settings*/
+"settings-title" = "Ayarlar";
+"settings-server-node-settings" = "Düğüm Ayarları";
+"settings-change-password" = "Şifre Belirle/Şifreyi Değiştir";
+"settings-local-authentication" = "Face ID/Touch ID'yi Etkinleştir";
+"settings-language" = "Dil";
+"settings-language-english" = "İngilizce";
+"settings-notification-go-settings-title" = "Bildirimler";
+"settings-notification-disabled-go-settings-text" = "Bildirimleri devre dışı bıraktınız. Lütfen Ayarlara gidin ve bu seçeneği etkinleştirin.";
+"settings-notification-enabled-go-settings-text" = "Bildirimleri etkinleştirdiniz. Bu seçeneği devre dışı bırakmak için lütfen Ayarlara gidin.";
+
+/*MARK: Node Settings*/
+"node-settings-title" = "Düğüm Ayarları";
+"node-settings-warning-title" = "Uyarı";
+"add-node-title" = "Düğüm Ekle";
+"edit-node-title" = "Düğümü Düzenle";
+
+/*Fuzzy*/
+"node-settings-subtitle" = "Kullanmak istediğiniz düğümleri açın veya kapatın";
+"node-settings-enter-node-name" = "Ad: ";
+"node-settings-enter-node-address" = "Adres: ";
+"node-settings-api-key" = "Anahtar: ";
+"node-settings-placeholder-name" = "Düğüm Adı";
+"node-settings-placeholder-address" = "http://yournode.com:8000";
+"node-settings-placeholder-api-key" = "65ef12c245b47fcf497b1c7d0faea4d82df470671974eeeed3e29ab4df1ed918";
+"node-settings-test-button-title" = "TEST ET";
+"node-settings-text-validation-empty-error" = "Lütfen tüm alanları doldurun.";
+"node-settings-text-validation-health-error" = "Lütfen adresi ve belirteci doğrulayarak tekrar deneyin.";
+"node-settings-has-same-result" = "Aynı düğümü iki kez oluşturamazsınız";
+"node-settings-none-active-node-error-description" = "Aktif düğümlerin hiçbiri aktif durumda görünmüyor. Devam etmeden önce lütfen en az bir aktif düğüme sahip olduğunuzdan emin olun.";
+"node-settings-db-error-title" = "Sistem işlemi başarısız oldu";
+"node-settings-test-error-title" = "Bağlanamadı";
+"node-settings-test-success-title" = "Bağlantı başarılı!";
+"node-settings-database-error-description" = "Sistemde bir hata oluştu.";
+"node-settings-warning-message" = "Bu eylem, düğümü kaldıracak. Emin misiniz?";
+"node-settings-action-delete-title" = "Sil";
+"node-settings-default-node-name" = "Algorand MainNet Düğümü";
+"node-settings-default-test-node-name" = "TestNet";
+"node-settings-health-problem-message" = "Aktif düğümlerinizin hiçbiri çevrimiçi değil. Lütfen düğüm ekleyin veya başka bir düğüm seçin";
+
+/*MARK: Transaction Detail*/
+"transaction-detail-title" = "İşlem Ayrıntısı";
+"transaction-detail-status" = "Durum";
+
+/*Could you please provide some context for this?*/
+"transaction-detail-round" = "Tur";
+"transaction-detail-amount" = "Miktar";
+"transaction-detail-reward" = "Ödül";
+
+/*MARK: Feedback*/
+"feedback-title" = "Geri Bildirim Gönder";
+"feedback-title-category" = "Kategoriler";
+"feedback-subtitle-category" = "Geri bildirim türü";
+"feedback-title-note" = "Not";
+"feedback-subtitle-note" = "Ne düşünüyorsunuz?";
+
+/*Fuzzy*/
+"feedback-title-email" = "E-posta (İsteğe bağlı)";
+"feedback-empty-title" = "Hata";
+"feedback-empty-category-message" = "Lütfen bir kategori seçin.";
+"feedback-empty-note-message" = "Lütfen notunuzu ekleyin.";
+"feedback-error-title" = "Hata";
+"feedback-error-message" = "Geri bildiriminiz gönderilemedi!";
+"feedback-success-title" = "Geri bildiriminiz gönderildi";
+
+/*MARK: Rewards*/
+"rewards-title" = "Ödüller";
+"rewards-show-title" = "Ödülleri Göster";
+"rewards-detail-subtitle" = "Algo sahibi olarak ödül kazanabilirsiniz! İşte son işleminizden bu yana ödül etkinliğinizin bir özeti. Bu ödüller her zaman bakiyenize dahil edilir.";
+"total-rewards-faq-title" = "Algorand Ödülleri hakkında daha fazla bilgi almak için, SSS bölümünü ziyaret edin.";
+"total-rewards-faq" = "SSS";
+"reward-list-title" = "Ödül";
+
+/*MARK: Notifications*/
+"notifications-title" = "Bildirimler";
+
+/*MARK: Notifications*/
+"notification-sent-success" = "%@ işleminiz, %@ adresinden %@ adresine gönderilerek tamamlandı.";
+
+/*Could you please provide some context for the placeholders here? Current translation considers first placeholder as Asset, second and third one as Contact. Also, is it possible to change the order of these placeholders?*/
+"notification-sent-failed" = "%@ işleminiz, %@ adresinden %@ adresine gönderilemeyerek başarısız oldu.";
+
+/*Could you please provide some context for the placeholders here? Current translation considers first placeholder as Asset, second and third one as Contact. Also, is it possible to change the order of these placeholders?*/
+"notification-received" = "%@, %@ adresine %@ tarafından gönderildi.";
+
+/*MARK: Verified Asset Information*/
+"verified-assets-title" = "Doğrulanan Varlıklar";
+"verified-asset-information-title" = "Varlık doğrulama nedir?";
+"verified-asset-information-text" = "Algorand Inc.'nin varlığın düzenleyicisi ile ilişkisi bulunması durumunda, bazı varlıkları “Doğrulandı” (mavi onay sembolü ile gösterilir) olarak işaretliyoruz.\n\nBu, işlem yapılması istenmeyen varlıkların yanlışlıkla işlem görmemesi için ikinci bir savunma mekanizması görevi görmesine yardımcı oluyor.\n\nBununla birlikte, söz konusu varlıkla işlem yapmadan önce varlık kimliğinin seçmek istediğiniz varlığa ait olduğunu her zaman tekrar kontrol etmeniz gerekir.\n\nDoğrulama süreci ile ilgili herhangi bir sorunuz veya uygulama ile ilgili genel bir geri bildiriminiz varsa, bizimle iletişime geçmenizi öneririz";
+"verified-asset-double-check" = "her zaman tekrar kontrol edin";
+"verified-asset-information-contact-us" = "bizimle iletişime geçin";
+
+/*MARK: Ledger Tutorial*/
+"ledger-pair-title" = "Ledger Hesabı Oluştur";
+"ledger-tutorial-title-text" = "Yeni bir Ledger hesabı oluşturmak için aşağıdaki adımları izleyin";
+"ledger-tutorial-turned-on" = "Ledger cihazınızın açık ve Bluetooth özelliğinin etkin olduğundan emin olun.";
+"ledger-tutorial-install-app" = "Ledger'ınıza Algorand uygulamasını (1.0.7 veya daha yeni sürümleri) yükleyin.";
+"ledger-tutorial-open-app" = "Algorand uygulamasını Ledger'ınızda açın.";
+"ledger-tutorial-bluetooth" = "Akıllı telefonunuzda Bluetooth'un etkin olduğundan emin olun.";
+"ledger-search-button-title" = "Ledger Ara";
+
+/*MARK: Ledger Device List*/
+"ledger-device-list-title" = "Ledger Cihazını Eşleştir";
+"ledger-device-list-looking" = "Diğer Ledger Cihazları Aranıyor";
+"ledger-device-list-connect" = "Bağlan";
+"ledger-device-list-troubleshoot" = "Sorun Gider";
+
+/*MARK: Ledger Troubleshooting*/
+"title-step-1" = "1. Adım";
+"title-step-2" = "2. Adım";
+"title-step-3" = "3. Adım";
+"title-step-4" = "4. Adım";
+"ledger-troubleshooting-title" = "Gelişmiş Sorun Giderme";
+"ledger-troubleshooting-close-others" = "Diğer uygulamaları kapat (Ledger uygulamaları, kripto cüzdanları veya ";
+
+/*Could you please confirm if the Wallet name should be translated or left as is?*/
+"ledger-troubleshooting-restart" = "Algorand Wallet'i ve/veya cihazınızı yeniden başlatın.";
+"ledger-troubleshooting-app-support" = "Algorand Ledger uygulamasını cihazınıza yükleme konusunda yardım almak için ziyaret edin: %@";
+"ledger-troubleshooting-ledger-support" = "Ledger cihazınız ile ilgili genel sorun giderme işlemleri için, lütfen ziyaret edin: ";
+"ledger-troubleshooting-ledger-support-title" = "Ledger Destek";
+"ledger-troubleshooting-ledger-bluetooth-connection-guide-html" = "Ledger'ınızın Bluetooth özelliğinin kullanımı için, lütfen Ledger'ın resmi <a href=\"https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection\">Bluetooth Bağlantı Kılavuzu</a>'na başvurun.";
+"ledger-troubleshooting-ledger-bluetooth-connection-advanced-guide-html" = "Daha gelişmiş sorun giderme için, lütfen Ledger'ın resmi <a href=\"https://support.ledger.com/hc/en-us/articles/360025864773\">Bluetooth Sorun Giderme Kılavuzu</a>'na başvurun.";
+"ledger-troubleshooting-bluetooth-connection-html" = "iOS cihazının Bluetooth özelliğini Etkinleştirin veya Devre Dışı Bırakın.<br /> <br />\n<ul>\n<li><b>Ayarlar</b>a dokunun</li>\n<li><b>“Genel”</b>i seçin</li>\n<li><b>“Bluetooth”</b>a dokunun</li>\n<li>Açıp-kapatmak için <b>Açma/Kapama düğmesini</b> çevirin</li>\n<li>Bluetooth <b>Açık veya Kapalı</b></li>\n</ul>";
+"ledger-troubleshooting-install-app-first-html" = "Ledger'ın kapsamlı <a href=\"https://www.ledger.com/start\">Kullanmaya Başlama</a> öğreticisini izleyerek başlayın.";
+"ledger-troubleshooting-install-app-second-html" = "Öğretici sizi “Cihazınıza yüklemek istediğiniz uygulamaları seçin” adımına getirdiğinde, arama çubuğuna <b>Algorand</b> yazın ve yükleyin.";
+"ledger-troubleshooting-open-app-first-html" = "Uygulamaları Ledger cihazınıza nasıl yükleyeceğinizi ve nasıl açacağınızı gösteren, Ledger'ın kapsamlı <a href=\"https://www.ledger.com/start\">Kullanmaya Başlama</a> öğreticisini izleyerek başlayın.";
+"ledger-troubleshooting-open-app-second-html" = "Ledger cihazınıza <b>Algorand</b> uygulamasını henüz yüklemediyseniz, öğretici sizi “Cihazınıza yüklemek istediğiniz uygulamaları seçin” adımına getirdiğinde, arama çubuğuna <b>Algorand</b> yazın ve yükleyin.";
+
+/*MARK: BLE Errors*/
+"ble-error-search-title" = "Arama Hatası";
+"ble-error-connection-title" = "Bağlantı Hatası";
+"ble-error-bluetooth-title" = "Bluetooth Hatası";
+"ble-error-ledger-connection-title" = "Ledger Bağlantı Hatası";
+"ble-error-unsupported-device-title" = "Desteklenmeyen Cihaz";
+"ble-error-transaction-cancelled-title" = "İşlem İptal Edildi";
+"ble-error-transmission-title" = "İletim Hatası";
+"ble-error-fail-connect-peripheral" = "Ledger cihazına bağlanamadı. Cihazın kilidinin açık, yakında ve Bluetooth özelliğinin etkin olduğundan emin olun.";
+"ble-error-disconnected-peripheral" = "Cihazın bağlantısı kesildi";
+"ble-error-fail-fetch-account-address" = "Ledger cihazınızın ortak anahtarını alamadık. Lütfen tekrar deneyin.";
+"ble-error-fail-sign-transaction" = "Eşleştirilen Ledger cihazı, işlem isteğini iptal etti.";
+"ble-error-fail-ble-connection-power" = "Yakındaki Ledger cihazlarını aramak için cihazınızda Bluetooth özelliğinin açık olması gerekir.";
+"ble-error-fail-ble-connection-unsupported" = "Bağlanmaya çalıştığınız cihaz, Algorand Wallet tarafından desteklenmiyor.";
+"ble-error-fail-ble-connection-unauthorized" = "Yakındaki Ledger'ları aramak için Bluetooth izninin verilmesi gerekir.";
+"ble-error-fail-ble-connection-resetting" = "Sıfırlamak için BLE bağlantısı başarısız";
+
+/*MARK: Ledger Approval*/
+"ledger-approval-title" = "Önizle ve İmzala";
+"ledger-approval-message" = "Lütfen işlemi Ledger cihazınızda önizleyin ve imzalayın.";
+"ledger-approval-connection-title" = "Ledger Bağlantısı";
+"ledger-approval-connection-message" = "Ledger'ın bağlanması bekleniyor.";
+
+/*MARK: Terms and Services*/
+"terms-and-services-title" = "Koşullar ve Hizmetler";
+"terms-and-services-html" = "<a href=\"https://www.algorand.com/wallet-disclaimer\">Koşullar ve Hizmetler</a>'i kabul ediyorum.";
+"title-share-qr" = "QR Kodunu Paylaş";
+"title-keep" = "Koru";
+"title-edit" = "Düzenle";
+"title-testnet" = "TESTNET";
+"title-account" = "Hesap";
+"title-id" = "Kimlik";
+"qr-creation-sharing-title" = "QR Kodunu ve Adresi Paylaş";
+"qr-creation-copy-address" = "Adresi kopyala";
+"qr-creation-address" = "Hesap adresi";
+"accounts-tranaction-empty-detail" = "Bu varlık ile işlem yapılmadı.";
+"accounts-title" = "Hesaplar";
+"accounts-add-new" = "Yeni varlık ekle";
+"accounts-qr-tooltip" = "Hesabınızın adresine ait QR Kodunu burada bulabilirsiniz";
+"asset-not-found-title" = "Varlık bulunamadı";
+"asset-not-found-detail" = "Lütfen farklı bir varlık adı veya varlık kimliği deneyin";
+"send-choose-asset" = "Varlık seç";
+"send-algos-minimum-amount-custom-error" = "İşlem miktarı, %@ Algo tutarındaki minimum hesap bakiyesinden düşük bir bakiye ile sonuçlanıyor.";
+"send-enter-note-placeholder" = "Buraya not girin";
+"send-enter-note-title" = "Not Ekle";
+"options-rekey" = "Hesabı Yeniden Anahtarla";
+"options-auth-account" = "Hesap Adresini Doğrula";
+"contacts-info-edit" = "Kişi Bilgilerini Düzenle";
+"contacts-empty-detail-text" = "Yeni kişiler ekleyerek, varlık gönderim sürecini daha hızlı bir hale getirebilirsiniz.";
+"contact-search-empty-title" = "Kişi bulunamadı";
+"contact-search-empty-detail" = "Lütfen farklı bir kişi adı deneyin";
+"settings-logout-title" = "Tüm Verileri Sil";
+"settings-logout-detail" = "Tüm verileri silmek istediğinizden emin misiniz?";
+"transaction-detail-from" = "Gönderen";
+"transaction-detail-to" = "Alıcı";
+"transaction-detail-fee" = "Komisyon";
+"transaction-detail-id" = "İşlem Kimliği";
+"transaction-detail-note" = "Not";
+
+/*Could you please provide some context for this?*/
+"transaction-detail-close-to" = "Kapanış Hesabı";
+"transaction-detail-close-amount" = "Kapanış Miktarı";
+"transaction-detail-note-copied" = "İşlem notu panoya kopyalandı";
+"transaction-detail-id-copied" = "İşlem kimliği panoya kopyalandı";
+"transaction-detail-copy-tooltip" = "Panoya kopyalamak için basılı tutun";
+"feedback-success-detail" = "Teşekkürler, geri bildiriminizi aldık";
+"total-rewards-title" = "%@ ödül";
+"rewards-since-last-text" = "Son İşlemden Bu Yana";
+"notification-support-success" = "%@, hesabına %@ ekledi. Bunları gönderebilirsiniz.";
+"notification-support-request" = "%@, size %@ göndermeye çalışıyor. Ancak, bunu desteklemiyorsunuz. İsterseniz, hesabınıza ekleyebiliriz.";
+"ble-error-ledger-connection-open-app-error" = "Lütfen Ledger cihazınızda Algorand Uygulamasını açın.";
+"notifications-empty-title" = "Mevcut bildirim yok";
+"notifications-empty-subtitle" = "Son işlemleriniz, varlık istekleriniz ve diğer bildirimleriniz burada görüntülenir.";
+
+/*MARK: Transaction Filter*/
+"transaction-filter-title-sort" = "Tarihe Göre Sırala";
+"transaction-filter-option-all" = "Tüm Zamanlar";
+"transaction-filter-option-today" = "Bugün";
+"transaction-filter-option-yesterday" = "Dün";
+"transaction-filter-option-week" = "Geçen Hafta";
+
+/*MARK: Transaction Filter*/
+"transaction-filter-option-month" = "Geçen Ay";
+"transaction-filter-option-custom" = "Özel Aralık";
+"transaction-filter-tooltip" = "Artık işlem geçmişini filtreleyebilirsiniz";
+"transaction-filter-try-again" = "Tekrar Dene";
+"transaction-filter-error-title" = "Bir sorun oluştu";
+"transaction-filter-error-subtitle" = "Üzgünüz, bir sorun oluştu";
+"csv-download-title" = "CSV Dosyası Oluşturuluyor";
+"csv-download-error" = "İşlem geçmişine ait csv dosyası oluşturulamadı.";
+"transaction-download-from" = "Gönderen: Adres";
+"transaction-download-to" = "Alıcı: Adres";
+"transaction-download-close-to" = "Kapanış Hesabı: Adres";
+
+/*MARK: Pin Limit*/
+"pin-limit-title" = "Algorand uygulaması kilitlendi";
+
+/*Could you please inform what may follow?*/
+"pin-limit-try-again" = "Tekrar deneyin:";
+"pin-limit-too-many" = "Çok fazla PIN denemesi";
+"pin-limit-reset-all" = "Tüm Verileri Sıfırla";
+
+/*MARK: Rekey Instruction*/
+"rekey-instruction-start" = "Süreci Başlat";
+"rekey-instruction-title" = "Hesabı Yeniden Anahtarla";
+"rekey-instruction-header" = "Sizi neler bekliyor:";
+"rekey-instruction-first" = "Gelecekte yapacağınız işlemler yeni Ledger Cihazınız ile imzalanacak.";
+"rekey-instruction-third" = "Hesabınızın ortak anahtarı, bakiyeleri ve yapılandırması değişmeyecek.";
+
+/*MARK: Rekey Confirm*/
+"ledger-rekey-confirm-title" = "Yeniden Anahtarlamayı Onayla";
+"ledger-rekey-transaction-title" = "İşlem yeniden anahtarlanıyor";
+"ledger-rekey-ledger-old" = "Eski Ledger";
+"ledger-rekey-ledger-passphrase" = "Parola";
+"ledger-rekey-ledger-new" = "Yeni Ledger";
+"ledger-rekey-finalize" = "Yeniden Anahtarlamayı Bitir";
+"ledger-rekey-total-fee" = "Toplam Yeniden Anahtarlama Komisyonu @ Algo";
+"ledger-rekey-more-assets" = "+%@ varlık daha";
+"ledger-rekey-success-title" = "Hesap Yeniden Anahtarlandı";
+"ledger-rekey-success-message" = "%@ hesabı, başarıyla yeniden anahtarlandı";
+
+/*MARK: Ledger Account Selection*/
+"ledger-account-selection-title-singular" = "%d Hesap Bulundu";
+"ledger-account-selection-title-plural" = "%d Hesap Bulundu";
+"ledger-account-selection-detail" = "Bu Ledger cihazı, aşağıdaki hesabın işlemlerini imzalayabilir.\nAlgorand Wallet'ınıza eklemek istediğiniz hesabı seçin.";
+"ledger-account-selection-add" = "Hesap Ekle";
+"ledger-rekey-error-add-auth" = "Bağlanan Ledger cihazı, bu hesabın işlemlerini imzalayamaz. İmzalamak için, lütfen %@ bağlanın.";
+"ledger-rekey-error-not-found" = "Bu hesap yeniden anahtarlanmış. Lütfen bu hesabı bir parola veya Ledger cihazı ile kurtarın.";
+"send-transaction-max-same-account-error" = "Bakiyenizin tümünü kendinize gönderemezsiniz. Lütfen farklı bir miktar veya alıcı seçerek tekrar deneyin.";
+"title-receive" = "Al";
+"title-copy" = "Kopyala";
+"title-new-uppercased" = "YENİ";
+
+/*MARK: Account Type Selection*/
+"account-type-choose-title" = "Hesap Türünü Seçin";
+"account-type-selection-create" = "Yeni Hesap Oluştur";
+"account-type-selection-create-detail" = "Yeni bir adres ve parola ile bir hesap oluşturun";
+"account-type-selection-watch-detail" = "Bir hesabın yalnızca adresini kullanarak işlemlerini izleyin ";
+"account-type-selection-recover" = "Paroladan Kurtar";
+"account-type-selection-recover-detail" = "Hesabı 25 kelimelik bir parola ile kurtarın";
+"account-type-selection-ledger" = "Ledger Hesabını Eşleştir";
+"account-type-selection-ledger-detail" = "Ledger Donanım cüzdanı ile desteklenen bir hesap ile eşleştirin";
+"introduction-title-add-text" = "Yeni Hesap Ekle";
+"introduction-add-account-text" = "Hesap Ekle";
+"introduction-title-terms-and-services" = "Hesap oluşturarak Algorand’ın <a href=\"https://www.algorand.com/wallet-disclaimer\">Hüküm ve Koşulları</a> ile <a href=\"https://www.algorand.com/wallet-privacy-policy\">Gizlilik Politikasını</a> kabul ediyorsunuz.";
+"settings-developer" = "Geliştirici Ayarları";
+"settings-currency" = "Para Birimi";
+
+/*Could you please provide context for "Dispenser"?*/
+"settings-developer-dispenser" = "Algorand Dağıtıcı";
+"settings-currency-usd" = "USD";
+"transaction-detail-date" = "Tarih";
+"transaction-id-open-explorer" = "Gezginde Aç";
+"feedback-subtitle-account-title" = "Hesap (İsteğe bağlı)";
+"feedback-subtitle-account-detail" = "Hesap Seç";
+"rekey-instruction-subtitle-ledger" = "Ledger hesabınızı, yeni bir Ledger Cihazı ile değiştirin";
+"rekey-instruction-subtitle-standard" = "Hesabınızın parolasını bir Ledger Cihazı ile değiştirin.";
+"rekey-instruction-second-ledger" = "Eski Ledger'ınız, bu hesap için artık çalışmayacak.";
+"rekey-instruction-second-standard" = "Bu hesabın parolası, bu hesap için artık çalışmayacak";
+
+/*MARK: Watch Account*/
+"title-watch-account" = "Hesabı İzle";
+"watch-account-input-explanation" = "İzlenecek Hesap Adresi";
+"watch-account-input-placeholder" = "Adresi Yapıştır veya QR Kodunu Tara";
+"watch-account-error-address" = "Lütfen geçerli bir adres girin.";
+"passphrase-question-another" = "%@.";
+"passphrase-question-third" = "3.";
+"passphrase-question-second" = "2.";
+"passphrase-question-first" = "1.";
+"passphrase-select-n-word" = "Parolanızın %@ kelimesini seçin";
+"passphrase-qeustion-counter" = "Soru %@/%@";
+"asset-detail-id-title" = "%@ Kimliği";
+"settings-app-version" = "Sürüm: %@";
+
+"settings-language-change-title" = "Uygulama Dilini Ayarla";
+"settings-language-change-detail" = "Telefonunuzdaki güncellemeler nedeniyle, dilinizi değiştirmeniz için farklı adımlar vardır.\n\n1. Sonraki ekrana ilerleyin.\n2. Dilediğiniz dili seçmek için Dil'e dokunun.\n\nDil ayarı yoksa, tercih ettiğiniz birincil dili ayarlamak için iPhone'unuzun genel dil ayarlarına gidin.";

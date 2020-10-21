@@ -41,8 +41,7 @@ class LedgerDeviceListView: BaseView {
     private lazy var searchingSpinnerView = LoadingSpinnerView()
     
     private lazy var troubleshootButton: AlignedButton = {
-        let positions: AlignedButton.StylePositionAdjustment = (image: CGPoint(x: 100.0, y: 0.0), title: CGPoint(x: 4.0, y: 0.0))
-        let button = AlignedButton(style: .imageLeftTitleCentered(positions))
+        let button = AlignedButton(.imageAtLeft(spacing: 8.0))
         button.setImage(img("img-question-24"), for: .normal)
         button.setTitle("ledger-device-list-troubleshoot".localized, for: .normal)
         button.setTitleColor(SharedColors.primaryButtonTitle, for: .normal)

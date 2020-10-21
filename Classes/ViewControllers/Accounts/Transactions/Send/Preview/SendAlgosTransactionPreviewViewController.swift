@@ -200,7 +200,7 @@ extension SendAlgosTransactionPreviewViewController {
                 let amountInt = Int(sendAmount) {
                 
                 self.amount = amountInt.toAlgos
-                sendTransactionPreviewView.amountInputView.inputTextField.text = self.amount.toDecimalStringForLabel
+                sendTransactionPreviewView.amountInputView.inputTextField.text = self.amount.toAlgosStringForLabel
             }
             
             sendTransactionPreviewView.transactionReceiverView.state = assetReceiverState

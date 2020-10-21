@@ -18,12 +18,22 @@ class TransactionAmountView: BaseView {
         }
     }
     
+    private lazy var amountStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.distribution = .equalSpacing
+        stackView.alignment = .center
+        stackView.axis = .horizontal
+        stackView.spacing = 0.0
+        return stackView
+    }()
+    
     private(set) lazy var signLabel: UILabel = {
         UILabel()
             .withAlignment(.left)
             .withLine(.single)
             .withTextColor(SharedColors.primaryText)
-            .withFont(UIFont.font(withWeight: .semiBold(size: 14.0)))
+            .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
     }()
     
     private(set) lazy var algoIconImageView = UIImageView(image: img("icon-algo-gray", isTemplate: true))
@@ -33,7 +43,7 @@ class TransactionAmountView: BaseView {
             .withAlignment(.right)
             .withLine(.single)
             .withTextColor(SharedColors.primaryText)
-            .withFont(UIFont.font(withWeight: .semiBold(size: 14.0)))
+            .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
     }()
     
     override func configureAppearance() {
@@ -41,50 +51,24 @@ class TransactionAmountView: BaseView {
     }
     
     override func prepareLayout() {
-        setupAmountLabelLayout()
-        setupAlgoIconImageViewLayout()
-        setupSignLabelLayout()
+        setupAmountStackViewLayout()
     }
 }
 
 extension TransactionAmountView {
-    private func setupAmountLabelLayout() {
-        addSubview(amountLabel)
+    private func setupAmountStackViewLayout() {
+        addSubview(amountStackView)
         
         amountLabel.setContentHuggingPriority(.required, for: .horizontal)
         amountLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
         
-        amountLabel.snp.makeConstraints { make in
-            make.top.bottom.equalToSuperview()
-            make.centerY.equalToSuperview()
-            make.trailing.equalToSuperview()
+        amountStackView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
         }
-    }
-    
-    private func setupAlgoIconImageViewLayout() {
-        addSubview(algoIconImageView)
         
-        algoIconImageView.setContentHuggingPriority(.required, for: .horizontal)
-        algoIconImageView.setContentCompressionResistancePriority(.required, for: .horizontal)
-        
-        algoIconImageView.snp.makeConstraints { make in
-            make.trailing.equalTo(amountLabel.snp.leading)
-            make.centerY.equalToSuperview()
-        }
-    }
-    
-    private func setupSignLabelLayout() {
-        addSubview(signLabel)
-        
-        signLabel.setContentHuggingPriority(.required, for: .horizontal)
-        signLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
-        
-        signLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview()
-            make.centerY.equalToSuperview()
-            make.trailing.equalTo(algoIconImageView.snp.leading)
-            make.trailing.equalTo(amountLabel.snp.leading).offset(-layout.current.labelInset).priority(.low)
-        }
+        amountStackView.addArrangedSubview(signLabel)
+        amountStackView.addArrangedSubview(algoIconImageView)
+        amountStackView.addArrangedSubview(amountLabel)
     }
 }
 
@@ -97,7 +81,7 @@ extension TransactionAmountView {
             setAmount(amount, with: assetFraction)
             amountLabel.textColor = SharedColors.primaryText
             algoIconImageView.tintColor = SharedColors.primaryText
-            removeAlgoIconForAssetIfNeeded(isAlgos)
+            setAlgoIconHidden(!isAlgos)
         case let .positive(amount, isAlgos, assetFraction):
             signLabel.isHidden = false
             signLabel.text = "+"
@@ -106,7 +90,7 @@ extension TransactionAmountView {
             setAmount(amount, with: assetFraction)
             amountLabel.textColor = SharedColors.tertiaryText
             algoIconImageView.tintColor = SharedColors.tertiaryText
-            removeAlgoIconForAssetIfNeeded(isAlgos)
+            setAlgoIconHidden(!isAlgos)
         case let .negative(amount, isAlgos, assetFraction):
             signLabel.isHidden = false
             signLabel.text = "-"
@@ -115,7 +99,7 @@ extension TransactionAmountView {
             setAmount(amount, with: assetFraction)
             amountLabel.textColor = SharedColors.red
             algoIconImageView.tintColor = SharedColors.red
-            removeAlgoIconForAssetIfNeeded(isAlgos)
+            setAlgoIconHidden(!isAlgos)
         }
     }
     
@@ -123,14 +107,12 @@ extension TransactionAmountView {
         if let fraction = assetFraction {
             amountLabel.text = amount.toFractionStringForLabel(fraction: fraction)
         } else {
-            amountLabel.text = amount.toDecimalStringForLabel
+            amountLabel.text = amount.toAlgosStringForLabel
         }
     }
     
-    private func removeAlgoIconForAssetIfNeeded(_ isAlgos: Bool) {
-        if !isAlgos {
-            algoIconImageView.removeFromSuperview()
-        }
+    private func setAlgoIconHidden(_ isHidden: Bool) {
+        algoIconImageView.isHidden = isHidden
     }
 }
 

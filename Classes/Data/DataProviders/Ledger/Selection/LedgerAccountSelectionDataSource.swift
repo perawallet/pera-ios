@@ -188,7 +188,7 @@ extension LedgerAccountSelectionDataSource {
     
     private func addAlgoView(to cell: AccountSelectionCell, for account: Account) {
         let algoView = AlgoAssetView()
-        algoView.amountLabel.text = account.amount.toAlgos.toDecimalStringForLabel
+        algoView.amountLabel.text = account.amount.toAlgos.toAlgosStringForLabel
         cell.contextView.addView(algoView)
     }
     

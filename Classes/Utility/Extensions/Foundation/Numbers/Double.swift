@@ -25,7 +25,7 @@ extension Double {
         return Formatter.separatorForAlgosInput.string(from: NSNumber(value: self))
     }
     
-    var toDecimalStringForLabel: String? {
+    var toAlgosStringForLabel: String? {
         return Formatter.separatorForAlgosLabel.string(from: NSNumber(value: self))
     }
     
@@ -33,7 +33,7 @@ extension Double {
         return Formatter.separatorWith(fraction: fraction).string(from: NSNumber(value: self))
     }
     
-    var toCryptoCurrencyStringForLabel: String? {
-        return Formatter.cryptoCurrencyFormatter.string(from: NSNumber(value: self))
+    var toCurrencyStringForLabel: String? {
+        return Formatter.currencyFormatter.string(from: NSNumber(value: self))
     }
 }

@@ -1,0 +1,13 @@
+/* 
+  InfoPlist.strings
+  algorand
+
+  Created by Göktuğ Berk Ulu on 12.10.2020.
+  Copyright © 2020 hippo. All rights reserved.
+*/
+
+"NSPhotoLibraryAddUsageDescription" = "Algorand会将二维码保存到你的相册中。";
+"NSFaceIDUsageDescription" = "Algorand将使用面容ID让您安全登录。";
+"NSCameraUsageDescription" = "Algorand将使用您的相机扫描二维码。";
+"NSBluetoothAlwaysUsageDescription" = "Algorand将使用蓝牙与Ledger X交流。";
+"NSBluetoothPeripheralUsageDescription" = "Algorand将使用蓝牙与Ledger X交流。";

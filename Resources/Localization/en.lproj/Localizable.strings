@@ -92,6 +92,12 @@
 "pass-phrase-verify-pop-up-explanation" = "Your passphrase has been verified. Make sure that you have backed it up as you will need it to recover your account.";
 "pass-phrase-verify-invalid-passphrase" = "Your passphrase is invalid. Please make sure that you entered correct one.";
 "pass-phrase-verify-sdk-error" = "There is something wrong. Please try again later.";
+"passphrase-question-another" = "%@th";
+"passphrase-question-third" = "3rd";
+"passphrase-question-second" = "2nd";
+"passphrase-question-first" = "1st";
+"passphrase-select-n-word" = "Select the %@ word of your passphrase";
+"passphrase-qeustion-counter" = "Question %@ of %@";
 
 // MARK: Account Name Setup
 "account-details-title" = "Account Details";
@@ -176,6 +182,7 @@
 "asset-support-your-add-title" = "Your accounts do not contain this asset";
 "asset-support-your-add-message" = "Please add this asset and try again.";
 "asset-all-title" = "All";
+"asset-detail-id-title" = "ID %@";
 
 // MARK: Algos Send
 "send-algos-title" = "Send Algos";
@@ -270,6 +277,9 @@
 "settings-currency" = "Currency";
 "settings-developer-dispenser" = "Algorand Dispenser";
 "settings-currency-usd" = "USD";
+"settings-app-version" = "Version %@";
+"settings-language-change-title" = "Set App Language";
+"settings-language-change-detail" = "Due to updates to your phone, there are different steps to change your language.\n\n1. Proceed to the next screen.\n2. Tap Language to select the language you want.\n\nIf no language setting is available, go to your general iPhone language settings to first set a preferred language.";
 
 // MARK: Node Settings
 "node-settings-title" = "Node Settings";
@@ -341,14 +351,13 @@
 "total-rewards-faq-title" = "For more information on Algorand Rewards, visit our FAQ.";
 "total-rewards-faq" = "FAQ.";
 "reward-list-title" = "Reward";
-"total-rewards-full-title" = "%@ rewards since last transaction";
-"total-rewards-partial-title" = "%@ rewards";
+"total-rewards-title" = "%@ Rewards";
 "rewards-since-last-text" = "Since Last Transaction";
 
 // MARK: Notifications
 "notification-sent-success" = "Your transaction of %@ from %@ to %@ is complete.";
 "notification-sent-failed" = "Your transaction of %@ from %@ to %@ has failed.";
-"notification-received" = "\%@ were sent to %@ by %@.";
+"notification-received" = "%@ were sent to %@ by %@.";
 "notification-support-success" = "%@ has added %@ to their account. You can send them.";
 "notification-support-request" ="%@ is trying to send you %@ however, you do not support this. If you want, we can add to your account.";
 
