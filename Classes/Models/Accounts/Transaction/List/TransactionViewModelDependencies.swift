@@ -1,5 +1,5 @@
 //
-//  TransactionConfigurator.swift
+//  TransactionViewModelDependencies.swift
 //  algorand
 //
 //  Created by Göktuğ Berk Ulu on 19.10.2020.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct TransactionConfigurator {
+struct TransactionViewModelDependencies {
     let account: Account
     let assetDetail: AssetDetail?
     let transaction: TransactionItem

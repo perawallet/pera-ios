@@ -121,10 +121,15 @@ extension TransactionHistoryDataSource {
             contact.address == address
         }) {
             transaction.contact = contact
-            let config = TransactionConfigurator(account: account, assetDetail: assetDetail, transaction: transaction, contact: contact)
+            let config = TransactionViewModelDependencies(
+                account: account,
+                assetDetail: assetDetail,
+                transaction: transaction,
+                contact: contact
+            )
             TransactionHistoryViewModel().configure(cell.contextView, with: config)
         } else {
-            let config = TransactionConfigurator(account: account, assetDetail: assetDetail, transaction: transaction)
+            let config = TransactionViewModelDependencies(account: account, assetDetail: assetDetail, transaction: transaction)
             TransactionHistoryViewModel().configure(cell.contextView, with: config)
         }
     }
@@ -150,10 +155,15 @@ extension TransactionHistoryDataSource {
             contact.address == address
         }) {
             transaction.contact = contact
-            let config = TransactionConfigurator(account: account, assetDetail: assetDetail, transaction: transaction, contact: contact)
+            let config = TransactionViewModelDependencies(
+                account: account,
+                assetDetail: assetDetail,
+                transaction: transaction,
+                contact: contact
+            )
             TransactionHistoryViewModel().configurePending(cell.contextView, with: config)
         } else {
-            let config = TransactionConfigurator(account: account, assetDetail: assetDetail, transaction: transaction)
+            let config = TransactionViewModelDependencies(account: account, assetDetail: assetDetail, transaction: transaction)
             TransactionHistoryViewModel().configurePending(cell.contextView, with: config)
         }
     }

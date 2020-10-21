@@ -11,15 +11,15 @@ import SwiftDate
 
 class TransactionHistoryViewModel {
     
-    func configure(_ view: TransactionHistoryContextView, with transactionConfigurator: TransactionConfigurator) {
-        guard let transaction = transactionConfigurator.transaction as? Transaction else {
+    func configure(_ view: TransactionHistoryContextView, with dependencies: TransactionViewModelDependencies) {
+        guard let transaction = dependencies.transaction as? Transaction else {
             return
         }
         
-        let account = transactionConfigurator.account
-        let contact = transactionConfigurator.contact
+        let account = dependencies.account
+        let contact = dependencies.contact
         
-        if let assetDetail = transactionConfigurator.assetDetail {
+        if let assetDetail = dependencies.assetDetail {
             guard let assetTransaction = transaction.assetTransfer else {
                 return
             }
@@ -97,15 +97,15 @@ class TransactionHistoryViewModel {
         }
     }
     
-    func configurePending(_ view: TransactionHistoryContextView, with transactionConfigurator: TransactionConfigurator) {
-        guard let transaction = transactionConfigurator.transaction as? PendingTransaction else {
+    func configurePending(_ view: TransactionHistoryContextView, with dependencies: TransactionViewModelDependencies) {
+        guard let transaction = dependencies.transaction as? PendingTransaction else {
             return
         }
         
-        let account = transactionConfigurator.account
-        let contact = transactionConfigurator.contact
+        let account = dependencies.account
+        let contact = dependencies.contact
         
-        if let assetDetail = transactionConfigurator.assetDetail {
+        if let assetDetail = dependencies.assetDetail {
             if transaction.receiver == transaction.sender {
                 configure(view, with: contact, and: transaction.receiver)
                 view.transactionAmountView.mode = .normal(
