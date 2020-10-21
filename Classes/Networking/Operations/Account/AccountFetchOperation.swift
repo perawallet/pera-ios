@@ -13,12 +13,12 @@ typealias AccountFetchHandler = (Account?, Error?) -> Void
 
 class AccountFetchOperation: AsyncOperation {
     let accountInformation: AccountInformation
-    let api: API
+    let api: AlgorandAPI
     
     var onStarted: EmptyHandler?
     var onCompleted: AccountFetchHandler?
     
-    init(accountInformation: AccountInformation, api: API) {
+    init(accountInformation: AccountInformation, api: AlgorandAPI) {
         self.accountInformation = accountInformation
         self.api = api
         super.init()

@@ -215,8 +215,8 @@ extension RootViewController {
         }
     }
     
-    func setNetwork(to network: API.BaseNetwork) {
-        appConfiguration.api.cancelAllEndpoints()
+    func setNetwork(to network: AlgorandAPI.BaseNetwork) {
+        appConfiguration.api.cancelEndpoints()
         appConfiguration.api.setupEnvironment(for: network)
     }
 }

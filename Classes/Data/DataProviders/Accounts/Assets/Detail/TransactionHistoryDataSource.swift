@@ -16,7 +16,7 @@ class TransactionHistoryDataSource: NSObject, UICollectionViewDataSource {
     private var assetDetail: AssetDetail?
     private var contacts = [Contact]()
     
-    private let api: API?
+    private let api: AlgorandAPI?
     
     private var transactionParams: TransactionParams?
     private var fetchRequest: EndpointOperatable?
@@ -29,7 +29,7 @@ class TransactionHistoryDataSource: NSObject, UICollectionViewDataSource {
     var openFilterOptionsHandler: ((TransactionHistoryDataSource) -> Void)?
     var shareHistoryHandler: ((TransactionHistoryDataSource) -> Void)?
     
-    init(api: API?, account: Account, assetDetail: AssetDetail?) {
+    init(api: AlgorandAPI?, account: Account, assetDetail: AssetDetail?) {
         self.api = api
         self.account = account
         self.assetDetail = assetDetail

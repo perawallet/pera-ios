@@ -174,7 +174,7 @@ extension BaseViewController {
         return configuration.session
     }
     
-    var api: API? {
+    var api: AlgorandAPI? {
         return configuration.api
     }
 }

@@ -75,10 +75,34 @@ PODS:
     - GoogleUtilities/Logger
   - KeychainAccess (4.2.0)
   - lottie-ios (3.1.8)
-  - Magpie (2.1.0):
-    - Magpie/Package (= 2.1.0)
-  - Magpie/Package (2.1.0):
-    - Alamofire (~> 5.0.0-rc.2)
+  - Magpie/Alamofire (2.4.0):
+    - Alamofire (~> 5.0.0-rc.3)
+  - Magpie/Core (2.4.0):
+    - Magpie/Core/API (= 2.4.0)
+    - Magpie/Core/Endpoint (= 2.4.0)
+    - Magpie/Core/NetworkMonitoring (= 2.4.0)
+    - Magpie/Core/Request (= 2.4.0)
+    - Magpie/Core/Response (= 2.4.0)
+    - Magpie/Core/Utils (= 2.4.0)
+  - Magpie/Core/API (2.4.0)
+  - Magpie/Core/Endpoint (2.4.0)
+  - Magpie/Core/NetworkMonitoring (2.4.0)
+  - Magpie/Core/Request (2.4.0)
+  - Magpie/Core/Response (2.4.0)
+  - Magpie/Core/Utils (2.4.0):
+    - Magpie/Core/Utils/Extensions (= 2.4.0)
+    - Magpie/Core/Utils/Logging (= 2.4.0)
+    - Magpie/Core/Utils/Objects (= 2.4.0)
+    - Magpie/Core/Utils/Serializing (= 2.4.0)
+  - Magpie/Core/Utils/Extensions (2.4.0)
+  - Magpie/Core/Utils/Logging (2.4.0)
+  - Magpie/Core/Utils/Objects (2.4.0)
+  - Magpie/Core/Utils/Serializing (2.4.0)
+  - Magpie/HIPAuthorization (2.4.0):
+    - Valet (~> 3.2)
+  - Magpie/HIPExceptions (2.4.0)
+  - Magpie/HIPModels (2.4.0):
+    - Magpie/HIPExceptions
   - MarqueeLabel (4.0.2)
   - nanopb (1.30905.0):
     - nanopb/decode (= 1.30905.0)
@@ -93,6 +117,7 @@ PODS:
   - SVProgressHUD (2.2.5)
   - SwiftDate (6.1.0)
   - SwiftLint (0.39.2)
+  - Valet (3.2.8)
 
 DEPENDENCIES:
   - BetterSegmentedControl (~> 1.3)
@@ -100,7 +125,10 @@ DEPENDENCIES:
   - Firebase/Crashlytics
   - KeychainAccess
   - lottie-ios
-  - Magpie (from `https://github.com/Hipo/magpie.git`)
+  - Magpie/Alamofire (from `https://github.com/Hipo/magpie.git`, branch `custom-header-init`)
+  - Magpie/Core (from `https://github.com/Hipo/magpie.git`, branch `custom-header-init`)
+  - Magpie/HIPAuthorization (from `https://github.com/Hipo/magpie.git`, branch `custom-header-init`)
+  - Magpie/HIPModels (from `https://github.com/Hipo/magpie.git`, branch `custom-header-init`)
   - NotificationBannerSwift
   - SnapKit
   - SVProgressHUD
@@ -133,14 +161,16 @@ SPEC REPOS:
     - SVProgressHUD
     - SwiftDate
     - SwiftLint
+    - Valet
 
 EXTERNAL SOURCES:
   Magpie:
+    :branch: custom-header-init
     :git: https://github.com/Hipo/magpie.git
 
 CHECKOUT OPTIONS:
   Magpie:
-    :commit: 54577786122e0921077f879aa20bb958b5729372
+    :commit: d68375d7491a6494ff47ca4efb296f0edac9116c
     :git: https://github.com/Hipo/magpie.git
 
 SPEC CHECKSUMS:
@@ -160,7 +190,7 @@ SPEC CHECKSUMS:
   GoogleUtilities: 39530bc0ad980530298e9c4af8549e991fd033b1
   KeychainAccess: 3f760109aa99b05d0f231e28b22642da7153e38a
   lottie-ios: 48fac6be217c76937e36e340e2d09cf7b10b7f5f
-  Magpie: 4691d732c66cc932ce50598c6986a96c68d4958f
+  Magpie: 634d04731b5221ece19f289da0905c4dc607b6c2
   MarqueeLabel: f762aa681ae201f66c1d511858b171f75d83013a
   nanopb: c43f40fadfe79e8b8db116583945847910cbabc9
   NotificationBannerSwift: 713e20f21b6105f4a36a00e5d9fa414a930d3d8e
@@ -169,7 +199,8 @@ SPEC CHECKSUMS:
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   SwiftDate: fa2bb3962056bb44047b4b85a30044e5eae30b03
   SwiftLint: 22ccbbe3b8008684be5955693bab135e0ed6a447
+  Valet: 16d0537d70db79d9ba953b9060b5da4fb8004e51
 
-PODFILE CHECKSUM: 4b0412afcce30fa1cbc1150f596ec85f36a0ea40
+PODFILE CHECKSUM: 64ac93561c25f9a44a1fe57cc90c8812b118a443
 
 COCOAPODS: 1.9.3

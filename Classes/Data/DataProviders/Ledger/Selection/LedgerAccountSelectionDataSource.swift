@@ -17,13 +17,13 @@ class LedgerAccountSelectionDataSource: NSObject {
     
     private let viewModel = AccountsViewModel()
     
-    private let api: API
+    private let api: AlgorandAPI
     private var accounts = [Account]()
     
     private let ledger: LedgerDetail
     private let ledgerAddress: String
     
-    init(api: API, ledger: LedgerDetail, ledgerAddress: String) {
+    init(api: AlgorandAPI, ledger: LedgerDetail, ledgerAddress: String) {
         self.api = api
         self.ledger = ledger
         self.ledgerAddress = ledgerAddress

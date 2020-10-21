@@ -20,9 +20,9 @@ class PushNotificationController: NSObject {
         }
     }
     
-    private var api: API
+    private var api: AlgorandAPI
     
-    init(api: API) {
+    init(api: AlgorandAPI) {
         self.api = api
     }
 }

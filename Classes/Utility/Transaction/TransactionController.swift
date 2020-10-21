@@ -12,7 +12,7 @@ import CoreBluetooth
 class TransactionController {
     weak var delegate: TransactionControllerDelegate?
     
-    private var api: API
+    private var api: AlgorandAPI
     private var params: TransactionParams?
     private var transactionDraft: TransactionSendDraft?
     
@@ -47,7 +47,7 @@ class TransactionController {
         return signedTransactionData != nil
     }
     
-    init(api: API) {
+    init(api: AlgorandAPI) {
         self.api = api
     }
 }
