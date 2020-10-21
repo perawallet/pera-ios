@@ -108,6 +108,10 @@ extension AssetView {
         backgroundColor = isEnabled ? SharedColors.secondaryBackground : SharedColors.disabledBackground
         separatorView.backgroundColor = isEnabled ? SharedColors.primaryBackground : SharedColors.gray200
     }
+    
+    func setSeparatorViewHidden(_ isHidden: Bool) {
+        separatorView.isHidden = isHidden
+    }
 }
 
 extension AssetView {

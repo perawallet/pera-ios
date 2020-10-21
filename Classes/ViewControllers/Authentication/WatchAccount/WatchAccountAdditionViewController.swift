@@ -92,19 +92,24 @@ extension WatchAccountAdditionViewController: WatchAccountAdditionViewDelegate {
             return
         }
         
+        guard let accountName = watchAccountAdditionView.accountNameInputView.inputTextField.text, !accountName.isEmpty else {
+            displaySimpleAlertWith(title: "title-error".localized, message: "account-name-setup-empty-error-message".localized)
+            return
+        }
+        
         if session?.account(from: address) != nil {
             displaySimpleAlertWith(title: "title-error".localized, message: "recover-from-seed-verify-exist-error".localized)
             return
         }
         
         view.endEditing(true)
-        let account = createAccount(from: address)
+        let account = createAccount(from: address, with: accountName)
         RegistrationEvent(type: .watch).logEvent()
         openSuccessModal(for: account)
     }
     
-    private func createAccount(from address: String) -> AccountInformation {
-        let account = AccountInformation(address: address, name: address.shortAddressDisplay(), type: .watch)
+    private func createAccount(from address: String, with name: String) -> AccountInformation {
+        let account = AccountInformation(address: address, name: name, type: .watch)
         let user: User
         
         if let authenticatedUser = session?.authenticatedUser {
