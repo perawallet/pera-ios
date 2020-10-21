@@ -14,6 +14,15 @@ class WatchAccountAdditionView: BaseView {
     
     weak var delegate: WatchAccountAdditionViewDelegate?
     
+    private(set) lazy var accountNameInputView: SingleLineInputField = {
+        let accountNameInputView = SingleLineInputField()
+        accountNameInputView.explanationLabel.text = "recover-from-seed-name-title".localized
+        accountNameInputView.placeholderText = "recover-from-seed-name-placeholder".localized
+        accountNameInputView.nextButtonMode = .next
+        accountNameInputView.inputTextField.autocorrectionType = .no
+        return accountNameInputView
+    }()
+    
     private(set) lazy var addressInputView: MultiLineInputField = {
         let addressInputView = MultiLineInputField(displaysRightInputAccessoryButton: true)
         addressInputView.explanationLabel.text = "watch-account-input-explanation".localized
@@ -30,6 +39,7 @@ class WatchAccountAdditionView: BaseView {
     private(set) lazy var nextButton = MainButton(title: "title-next".localized)
     
     override func linkInteractors() {
+        accountNameInputView.delegate = self
         addressInputView.delegate = self
     }
     
@@ -38,6 +48,7 @@ class WatchAccountAdditionView: BaseView {
     }
     
     override func prepareLayout() {
+        setupAccountNameInputViewLayout()
         setupAddressInputViewLayout()
         setupNextButtonLayout()
     }
@@ -51,12 +62,21 @@ extension WatchAccountAdditionView {
 }
 
 extension WatchAccountAdditionView {
+    private func setupAccountNameInputViewLayout() {
+        addSubview(accountNameInputView)
+        
+        accountNameInputView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalToSuperview().inset(layout.current.topInset)
+        }
+    }
+    
     private func setupAddressInputViewLayout() {
         addSubview(addressInputView)
         
         addressInputView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.top.equalToSuperview().inset(layout.current.topInset)
+            make.top.equalTo(accountNameInputView.snp.bottom).offset(layout.current.fieldTopInset)
         }
     }
 
@@ -84,13 +104,18 @@ extension WatchAccountAdditionView: InputViewDelegate {
     }
     
     func inputViewDidReturn(inputView: BaseInputView) {
-        delegate?.watchAccountAdditionViewDidAddAccount(self)
+        if inputView == accountNameInputView {
+            addressInputView.beginEditing()
+        } else {
+            delegate?.watchAccountAdditionViewDidAddAccount(self)
+        }
     }
 }
 
 extension WatchAccountAdditionView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let topInset: CGFloat = 36.0
+        let fieldTopInset: CGFloat = 20.0
         let buttonBottomInset: CGFloat = 15.0
         let buttonTopInset: CGFloat = 24.0
         let horizontalInset: CGFloat = 20.0
