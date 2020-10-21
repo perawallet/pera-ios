@@ -52,16 +52,16 @@ class AlgosCardView: BaseView {
     }()
     
     private lazy var rewardAmountButton: AlignedButton = {
-        let button = AlignedButton(.imageAtLeft(spacing: 8.0))
+        let button = AlignedButton(.imageAtLeft(spacing: 4.0))
         button.layer.cornerRadius = 18.0
         button.backgroundColor = SharedColors.white.withAlphaComponent(0.1)
-        button.setImage(img("icon-info-green", isTemplate: true), for: .normal)
-        button.contentMode = .center
+        button.setImage(img("icon-info-gray", isTemplate: true), for: .normal)
+        button.imageView?.contentMode = .scaleAspectFit
         button.tintColor = SharedColors.white
         button.setTitleColor(SharedColors.primaryButtonTitle, for: .normal)
         button.titleLabel?.font = UIFont.font(withWeight: .regular(size: 12.0))
         button.titleLabel?.textAlignment = .left
-        button.contentEdgeInsets = UIEdgeInsets(top: 8.0, left: 8.0, bottom: 8.0, right: 12.0)
+        button.contentEdgeInsets = UIEdgeInsets(top: 8.0, left: 12.0, bottom: 8.0, right: 12.0)
         return button
     }()
     
