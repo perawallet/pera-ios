@@ -53,30 +53,29 @@ class EmptyStateView: BaseView {
     }
     
     override func prepareLayout() {
-        setupTitleLabelLayout()
         setupImageViewLayout()
+        setupTitleLabelLayout()
         setupSubtitleLabelLayout()
     }
 }
 
 extension EmptyStateView {
-    private func setupTitleLabelLayout() {
-        addSubview(titleLabel)
-        
-        titleLabel.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.centerY.equalToSuperview().offset(50.0)
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-        }
-    }
-    
     private func setupImageViewLayout() {
         addSubview(imageView)
         
         imageView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.bottom.equalTo(titleLabel.snp.top).inset(layout.current.titleTopInset)
-            make.height.lessThanOrEqualTo(layout.current.maximumImageHeight)
+            make.centerY.equalToSuperview().inset(layout.current.imagecCenterOffset)
+        }
+    }
+    
+    private func setupTitleLabelLayout() {
+        addSubview(titleLabel)
+        
+        titleLabel.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalTo(imageView.snp.bottom).offset(layout.current.titleTopInset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
         }
     }
     
@@ -108,8 +107,8 @@ extension EmptyStateView {
 extension EmptyStateView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let horizontalInset: CGFloat = 40.0 * horizontalScale
-        let maximumImageHeight: CGFloat = 200.0
-        let titleTopInset: CGFloat = 40.0
+        let imagecCenterOffset: CGFloat = 60.0
+        let titleTopInset: CGFloat = 24.0 * verticalScale
         let subtitleTopInset: CGFloat = 12.0 * verticalScale
     }
 }
