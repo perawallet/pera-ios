@@ -49,13 +49,6 @@ class AssetRemovalView: BaseView {
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
             withReuseIdentifier: AccountHeaderSupplementaryView.reusableIdentifier
         )
-        
-        collectionView.register(
-            AssetRemovalFooterSupplementaryView.self,
-            forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
-            withReuseIdentifier: AssetRemovalFooterSupplementaryView.reusableIdentifier
-        )
-        
         return collectionView
     }()
     
