@@ -41,6 +41,13 @@ class AssetCardDisplayView: BaseView {
         setupAssetsCollectionViewLayout()
         setupPageControlLayout()
     }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        pageControl.subviews.forEach {
+            $0.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
+        }
+    }
 }
 
 extension AssetCardDisplayView {

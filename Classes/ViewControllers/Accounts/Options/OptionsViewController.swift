@@ -47,9 +47,7 @@ class OptionsViewController: BaseViewController {
         }
         
         if account.isWatchAccount() {
-            options.removeAll { option -> Bool in
-                option != .edit || option != .removeAccount
-            }
+            options = Options.watchAccountOptions
         }
         
         super.init(configuration: configuration)
@@ -163,6 +161,10 @@ extension OptionsViewController {
         
         static var allOptions: [Options] {
             return [.rekey, .passphrase, .rekeyInformation, .edit, .removeAsset, .removeAccount]
+        }
+        
+        static var watchAccountOptions: [Options] {
+            return [.edit, .removeAccount]
         }
     }
 }

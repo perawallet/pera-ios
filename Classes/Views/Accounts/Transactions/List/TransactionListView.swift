@@ -52,7 +52,7 @@ class TransactionListView: BaseView {
     private lazy var contentStateView = ContentStateView()
     
     override func configureAppearance() {
-        super.configureAppearance()
+        backgroundColor = SharedColors.secondaryBackground
         internetConnectionErrorView.setImage(img("icon-no-internet-connection"))
         internetConnectionErrorView.setTitle("internet-connection-error-title".localized)
         internetConnectionErrorView.setSubtitle("internet-connection-error-detail".localized)
