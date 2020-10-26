@@ -1,5 +1,5 @@
 PODS:
-  - Alamofire (5.0.5)
+  - Alamofire (5.3.0)
   - BetterSegmentedControl (1.3.0)
   - Firebase/Core (6.24.0):
     - Firebase/CoreOnly
@@ -75,34 +75,18 @@ PODS:
     - GoogleUtilities/Logger
   - KeychainAccess (4.2.0)
   - lottie-ios (3.1.8)
-  - Magpie/Alamofire (2.4.0):
-    - Alamofire (~> 5.0.0-rc.3)
-  - Magpie/Core (2.4.0):
-    - Magpie/Core/API (= 2.4.0)
-    - Magpie/Core/Endpoint (= 2.4.0)
-    - Magpie/Core/NetworkMonitoring (= 2.4.0)
-    - Magpie/Core/Request (= 2.4.0)
-    - Magpie/Core/Response (= 2.4.0)
-    - Magpie/Core/Utils (= 2.4.0)
-  - Magpie/Core/API (2.4.0)
-  - Magpie/Core/Endpoint (2.4.0)
-  - Magpie/Core/NetworkMonitoring (2.4.0)
-  - Magpie/Core/Request (2.4.0)
-  - Magpie/Core/Response (2.4.0)
-  - Magpie/Core/Utils (2.4.0):
-    - Magpie/Core/Utils/Extensions (= 2.4.0)
-    - Magpie/Core/Utils/Logging (= 2.4.0)
-    - Magpie/Core/Utils/Objects (= 2.4.0)
-    - Magpie/Core/Utils/Serializing (= 2.4.0)
-  - Magpie/Core/Utils/Extensions (2.4.0)
-  - Magpie/Core/Utils/Logging (2.4.0)
-  - Magpie/Core/Utils/Objects (2.4.0)
-  - Magpie/Core/Utils/Serializing (2.4.0)
-  - Magpie/HIPAuthorization (2.4.0):
-    - Valet (~> 3.2)
-  - Magpie/HIPExceptions (2.4.0)
-  - Magpie/HIPModels (2.4.0):
+  - Magpie/Alamofire (2.0.3):
+    - Alamofire (~> 5.2)
+    - Magpie/Core
+  - Magpie/Core (2.0.3):
+    - Magpie/HIPUtils
+  - Magpie/HIPAPI (2.0.3):
+    - Magpie/Alamofire
     - Magpie/HIPExceptions
+    - Valet (~> 4.1)
+  - Magpie/HIPExceptions (2.0.3):
+    - Magpie/HIPUtils
+  - Magpie/HIPUtils (2.0.3)
   - MarqueeLabel (4.0.2)
   - nanopb (1.30905.0):
     - nanopb/decode (= 1.30905.0)
@@ -117,7 +101,7 @@ PODS:
   - SVProgressHUD (2.2.5)
   - SwiftDate (6.1.0)
   - SwiftLint (0.39.2)
-  - Valet (3.2.8)
+  - Valet (4.1.1)
 
 DEPENDENCIES:
   - BetterSegmentedControl (~> 1.3)
@@ -125,10 +109,7 @@ DEPENDENCIES:
   - Firebase/Crashlytics
   - KeychainAccess
   - lottie-ios
-  - Magpie/Alamofire (from `https://github.com/Hipo/magpie.git`, branch `custom-header-init`)
-  - Magpie/Core (from `https://github.com/Hipo/magpie.git`, branch `custom-header-init`)
-  - Magpie/HIPAuthorization (from `https://github.com/Hipo/magpie.git`, branch `custom-header-init`)
-  - Magpie/HIPModels (from `https://github.com/Hipo/magpie.git`, branch `custom-header-init`)
+  - Magpie/HIPAPI
   - NotificationBannerSwift
   - SnapKit
   - SVProgressHUD
@@ -153,6 +134,7 @@ SPEC REPOS:
     - GoogleUtilities
     - KeychainAccess
     - lottie-ios
+    - Magpie
     - MarqueeLabel
     - nanopb
     - NotificationBannerSwift
@@ -163,18 +145,8 @@ SPEC REPOS:
     - SwiftLint
     - Valet
 
-EXTERNAL SOURCES:
-  Magpie:
-    :branch: custom-header-init
-    :git: https://github.com/Hipo/magpie.git
-
-CHECKOUT OPTIONS:
-  Magpie:
-    :commit: d68375d7491a6494ff47ca4efb296f0edac9116c
-    :git: https://github.com/Hipo/magpie.git
-
 SPEC CHECKSUMS:
-  Alamofire: df2f8f826963b08b9a870791ad48e07a10090b2e
+  Alamofire: 2c792affbdc2f18016e08fdbcacd60aebe1ba593
   BetterSegmentedControl: 85d1b0343a09603b098884d527f550dfc8e6cdd9
   Firebase: b28e55c60efd98963cd9011fe2fac5a10c2ba124
   FirebaseAnalytics: 7386fc2176e3f93ad8ef34b5b1f2b33a891e4962
@@ -190,7 +162,7 @@ SPEC CHECKSUMS:
   GoogleUtilities: 39530bc0ad980530298e9c4af8549e991fd033b1
   KeychainAccess: 3f760109aa99b05d0f231e28b22642da7153e38a
   lottie-ios: 48fac6be217c76937e36e340e2d09cf7b10b7f5f
-  Magpie: 634d04731b5221ece19f289da0905c4dc607b6c2
+  Magpie: fbc77130170b58fb86236016d050bf5906d10bc4
   MarqueeLabel: f762aa681ae201f66c1d511858b171f75d83013a
   nanopb: c43f40fadfe79e8b8db116583945847910cbabc9
   NotificationBannerSwift: 713e20f21b6105f4a36a00e5d9fa414a930d3d8e
@@ -199,8 +171,8 @@ SPEC CHECKSUMS:
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   SwiftDate: fa2bb3962056bb44047b4b85a30044e5eae30b03
   SwiftLint: 22ccbbe3b8008684be5955693bab135e0ed6a447
-  Valet: 16d0537d70db79d9ba953b9060b5da4fb8004e51
+  Valet: 11ab0e318b7284888a81392e36136563b4af5deb
 
-PODFILE CHECKSUM: 64ac93561c25f9a44a1fe57cc90c8812b118a443
+PODFILE CHECKSUM: 021de3dd35d5e05e5d8841608f6dbc2e0be8049d
 
 COCOAPODS: 1.9.3

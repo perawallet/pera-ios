@@ -10,10 +10,7 @@ def main_pods
   pod 'SwiftLint'
   
   #Networking
-  pod 'Magpie/Alamofire', :git => 'https://github.com/Hipo/magpie.git', :branch => 'custom-header-init'
-  pod 'Magpie/Core', :git => 'https://github.com/Hipo/magpie.git', :branch => 'custom-header-init'
-  pod 'Magpie/HIPAuthorization', :git => 'https://github.com/Hipo/magpie.git', :branch => 'custom-header-init'
-  pod 'Magpie/HIPModels', :git => 'https://github.com/Hipo/magpie.git', :branch => 'custom-header-init'
+  pod 'Magpie/HIPAPI'
   
   #Persistance
   pod 'KeychainAccess'

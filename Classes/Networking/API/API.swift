@@ -38,16 +38,6 @@ class AlgorandAPI: API {
         
         authorize()
     }
-
-    @available(*, unavailable)
-    public required init(
-        base: String,
-        networking: Networking,
-        interceptor: APIInterceptor? = nil,
-        networkMonitor: NetworkMonitor? = nil
-    ) {
-        fatalError("init(base:networking:interceptor:networkMonitor:) has not been implemented")
-    }
 }
 
 extension AlgorandAPI {
