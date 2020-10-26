@@ -42,18 +42,6 @@ class AssetDetailViewController: BaseViewController {
         super.init(configuration: configuration)
     }
     
-    override func configureNavigationBarAppearance() {
-        let qrBarButton = ALGBarButtonItem(kind: .qr) { [weak self] in
-            guard let strongSelf = self else {
-                return
-            }
-            let draft = QRCreationDraft(address: strongSelf.account.address, mode: .address)
-            strongSelf.open(.qrGenerator(title: "qr-creation-sharing-title".localized, draft: draft), by: .present)
-        }
-
-        rightBarButtonItems = [qrBarButton]
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         handleDeepLinkRoutingIfNeeded()
@@ -281,18 +269,8 @@ extension AssetDetailViewController: TransactionActionsViewDelegate {
     }
     
     func transactionActionsViewDidRequestTransaction(_ transactionActionsView: TransactionActionsView) {
-        if let assetDetail = assetDetail {
-            open(
-                .requestAssetTransaction(
-                    isPresented: false,
-                    assetTransactionRequestDraft: AssetTransactionRequestDraft(account: account, assetDetail: assetDetail)
-                ),
-                by: .push
-            )
-        } else {
-            let draft = AlgosTransactionRequestDraft(account: account)
-            open(.requestAlgosTransaction(isPresented: false, algosTransactionRequestDraft: draft), by: .push)
-        }
+        let draft = QRCreationDraft(address: account.address, mode: .address)
+        open(.qrGenerator(title: account.name ?? account.address.shortAddressDisplay(), draft: draft, eventFlow: .detail), by: .present)
     }
 }
 

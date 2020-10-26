@@ -204,7 +204,7 @@ extension AccountsViewController: AccountsDataSourceDelegate {
     
     func accountsDataSource(_ accountsDataSource: AccountsDataSource, didTapQRButtonFor account: Account) {
         let draft = QRCreationDraft(address: account.address, mode: .address)
-        open(.qrGenerator(title: "qr-creation-sharing-title".localized, draft: draft), by: .present)
+        open(.qrGenerator(title: "qr-creation-sharing-title".localized, draft: draft, eventFlow: .accounts), by: .present)
     }
 }
 

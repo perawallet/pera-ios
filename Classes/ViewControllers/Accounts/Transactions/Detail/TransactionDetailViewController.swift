@@ -144,10 +144,24 @@ extension TransactionDetailViewController: TransactionDetailViewDelegate {
         switch opponentType {
         case let .contact(address):
             let draft = QRCreationDraft(address: address, mode: .address)
-            open(.qrGenerator(title: transaction.contact?.name ?? "qr-creation-sharing-title".localized, draft: draft), by: .present)
+            open(
+                .qrGenerator(
+                    title: transaction.contact?.name ?? "qr-creation-sharing-title".localized,
+                    draft: draft,
+                    eventFlow: .transactionDetailContact
+                ),
+                by: .present
+            )
         case let .localAccount(address):
             let draft = QRCreationDraft(address: address, mode: .address)
-            open(.qrGenerator(title: "qr-creation-sharing-title".localized, draft: draft), by: .present)
+            open(
+                .qrGenerator(
+                    title: "qr-creation-sharing-title".localized,
+                    draft: draft,
+                    eventFlow: .transactionDetailAccount
+                ),
+                by: .present
+            )
         case let .address(address):
             let viewController = open(.addContact(mode: .new()), by: .push) as? AddContactViewController
             viewController?.addContactView.userInformationView.algorandAddressInputView.value = address

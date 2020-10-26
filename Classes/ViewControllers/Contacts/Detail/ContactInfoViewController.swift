@@ -249,7 +249,7 @@ extension ContactInfoViewController: ContactInfoViewDelegate {
         }
 
         let draft = QRCreationDraft(address: address, mode: .address)
-        open(.qrGenerator(title: contact.name, draft: draft), by: .present)
+        open(.qrGenerator(title: contact.name, draft: draft, eventFlow: .contactDetail), by: .present)
     }
     
     func contactInfoViewDidTapShareButton(_ contactInfoView: ContactInfoView) {

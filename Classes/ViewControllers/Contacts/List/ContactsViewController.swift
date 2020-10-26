@@ -269,7 +269,7 @@ extension ContactsViewController: ContactCellDelegate {
             
             if let address = contact.address {
                 let draft = QRCreationDraft(address: address, mode: .address)
-                open(.qrGenerator(title: contact.name, draft: draft), by: .present)
+                open(.qrGenerator(title: contact.name, draft: draft, eventFlow: .contact), by: .present)
             }
         }
     }

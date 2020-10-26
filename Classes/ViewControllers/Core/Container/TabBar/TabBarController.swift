@@ -280,8 +280,8 @@ extension TabBarController: SelectAssetViewControllerDelegate {
                 by: fullScreenPresentation
             )
         } else {
-            let draft = AlgosTransactionRequestDraft(account: account)
-            open(.requestAlgosTransaction(isPresented: true, algosTransactionRequestDraft: draft), by: fullScreenPresentation)
+            let draft = QRCreationDraft(address: account.address, mode: .address)
+            open(.qrGenerator(title: account.name ?? account.address.shortAddressDisplay(), draft: draft, eventFlow: .tab), by: .present)
         }
     }
     
@@ -311,13 +311,8 @@ extension TabBarController: SelectAssetViewControllerDelegate {
                 by: fullScreenPresentation
             )
         } else {
-            open(
-                .requestAssetTransaction(
-                    isPresented: true,
-                    assetTransactionRequestDraft: AssetTransactionRequestDraft(account: account, assetDetail: assetDetail)
-                ),
-                by: fullScreenPresentation
-            )
+            let draft = QRCreationDraft(address: account.address, mode: .address)
+            open(.qrGenerator(title: account.name ?? account.address.shortAddressDisplay(), draft: draft, eventFlow: .tab), by: .present)
         }
     }
 }
