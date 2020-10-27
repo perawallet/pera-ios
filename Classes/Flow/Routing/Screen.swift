@@ -17,7 +17,7 @@ indirect enum Screen {
     case accountNameSetup
     case accountRecover(flow: AccountSetupFlow)
     case qrScanner
-    case qrGenerator(title: String?, draft: QRCreationDraft)
+    case qrGenerator(title: String?, draft: QRCreationDraft, isTrackable: Bool = false)
     case home(route: Screen?)
     case assetDetail(account: Account, assetDetail: AssetDetail?)
     case options(account: Account)
@@ -46,8 +46,6 @@ indirect enum Screen {
         receiver: AssetReceiverState,
         isSenderEditable: Bool
     )
-    case requestAlgosTransaction(isPresented: Bool, algosTransactionRequestDraft: AlgosTransactionRequestDraft)
-    case requestAssetTransaction(isPresented: Bool, assetTransactionRequestDraft: AssetTransactionRequestDraft)
     case nodeSettings
     case addNode
     case editNode(node: Node)

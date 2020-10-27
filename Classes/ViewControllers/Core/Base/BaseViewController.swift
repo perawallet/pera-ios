@@ -8,13 +8,17 @@
 
 import UIKit
 
-class BaseViewController: UIViewController, TabBarConfigurable {
+class BaseViewController: UIViewController, TabBarConfigurable, TrackableScreen {
     var isTabBarHidden = true
     var tabBarSnapshot: UIView?
     
     var isStatusBarHidden: Bool = false
     var hidesStatusBarWhenAppeared: Bool = false
     var hidesStatusBarWhenPresented: Bool = false
+    
+    var screenKey: String? {
+        return nil
+    }
     
     override var prefersStatusBarHidden: Bool {
         return isStatusBarHidden
@@ -88,6 +92,7 @@ class BaseViewController: UIViewController, TabBarConfigurable {
         setListeners()
         configureAppearance()
         prepareLayout()
+        trackScreen()
         
         navigationController?.navigationBar.titleTextAttributes = [
             NSAttributedString.Key.font: UIFont.font(withWeight: .semiBold(size: 16.0)),

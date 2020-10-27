@@ -1,16 +1,15 @@
 //
-//  ReceiveShareEvent.swift
+//  ReceiveShareCompleteEvent.swift
 //  algorand
 //
-//  Created by Göktuğ Berk Ulu on 25.09.2020.
+//  Created by Göktuğ Berk Ulu on 26.10.2020.
 //  Copyright © 2020 hippo. All rights reserved.
 //
 
 import Foundation
 
-struct ReceiveShareEvent: TrackableEvent {
-    let eventKey = "receive_share"
-    
+struct ReceiveShareCompleteEvent: TrackableEvent {
+    var eventKey = "tap_show_qr_share_complete"
     let address: String
     
     var parameters: [String: Any]? {
