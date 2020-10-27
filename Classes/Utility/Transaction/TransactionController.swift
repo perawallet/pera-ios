@@ -79,9 +79,9 @@ extension TransactionController {
             case let .success(params):
                 self.params = params
                 self.composeTransactionData(for: transactionType)
-            case let .failure(error):
+            case let .failure(error, _):
                 self.connectedDevice = nil
-                self.delegate?.transactionController(self, didFailedComposing: error)
+                self.delegate?.transactionController(self, didFailedComposing: .unexpected(error))
             }
         }
     }
@@ -97,8 +97,8 @@ extension TransactionController {
                 self.api.trackTransaction(with: TransactionTrackDraft(transactionId: transactionId.identifier))
                 completion?()
                 self.delegate?.transactionController(self, didCompletedTransaction: transactionId)
-            case let .failure(error):
-                self.delegate?.transactionController(self, didFailedTransaction: error)
+            case let .failure(error, _):
+                self.delegate?.transactionController(self, didFailedTransaction: .unexpected(error))
             }
         }
     }
@@ -174,7 +174,7 @@ extension TransactionController {
             let privateData = api.session.privateData(for: accountAddress),
             let signedTransactionData = algorandSDK.sign(privateData, with: unsignedTransactionData, error: &signedTransactionError) else {
                 connectedDevice = nil
-                delegate?.transactionController(self, didFailedComposing: .custom(signedTransactionError))
+                delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.sdkError(error: signedTransactionError)))
                 return
         }
         
@@ -189,7 +189,7 @@ extension TransactionController {
             let amountDoubleValue = algosTransactionDraft.amount,
             let toAddress = algosTransactionDraft.toAccount else {
                 connectedDevice = nil
-                delegate?.transactionController(self, didFailedComposing: .custom(nil))
+                delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.other))
             return
         }
         
@@ -209,7 +209,7 @@ extension TransactionController {
         
         if !algorandSDK.isValidAddress(trimmedToAddress) {
             connectedDevice = nil
-            delegate?.transactionController(self, didFailedComposing: .custom(trimmedToAddress))
+            delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.invalidAddress(address: trimmedToAddress)))
             return
         }
         
@@ -226,7 +226,7 @@ extension TransactionController {
         
         guard let transactionData = algorandSDK.sendAlgos(with: draft, error: &transactionError) else {
             connectedDevice = nil
-            delegate?.transactionController(self, didFailedComposing: .custom(transactionError))
+            delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.sdkError(error: transactionError)))
             return
         }
         
@@ -257,7 +257,7 @@ extension TransactionController {
             let amountDoubleValue = transactionDraft.amount,
             let toAddress = transactionDraft.toAccount else {
                 connectedDevice = nil
-                delegate?.transactionController(self, didFailedComposing: .custom(nil))
+                delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.other))
             return
         }
         
@@ -265,7 +265,7 @@ extension TransactionController {
         
         if !algorandSDK.isValidAddress(trimmedToAddress) {
             connectedDevice = nil
-            delegate?.transactionController(self, didFailedComposing: .custom(TransactionError.invalidAddress(address: trimmedToAddress)))
+            delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.invalidAddress(address: trimmedToAddress)))
             return
         }
         
@@ -282,7 +282,7 @@ extension TransactionController {
         
         guard let transactionData = algorandSDK.sendAsset(with: draft, error: &transactionError) else {
             connectedDevice = nil
-            delegate?.transactionController(self, didFailedComposing: .custom(transactionError))
+            delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.sdkError(error: transactionError)))
             return
         }
         
@@ -296,7 +296,7 @@ extension TransactionController {
             let amountDoubleValue = transactionDraft.amount,
             let toAddress = transactionDraft.toAccount else {
                 connectedDevice = nil
-                delegate?.transactionController(self, didFailedComposing: .custom(nil))
+                delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.other))
             return
         }
         
@@ -304,7 +304,7 @@ extension TransactionController {
         
         if !algorandSDK.isValidAddress(trimmedToAddress) {
             connectedDevice = nil
-            delegate?.transactionController(self, didFailedComposing: .custom(trimmedToAddress))
+            delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.invalidAddress(address: trimmedToAddress)))
             return
         }
         
@@ -320,7 +320,7 @@ extension TransactionController {
         
         guard let transactionData = algorandSDK.removeAsset(with: draft, error: &transactionError) else {
             connectedDevice = nil
-            delegate?.transactionController(self, didFailedComposing: .custom(transactionError))
+            delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.sdkError(error: transactionError)))
             return
         }
         
@@ -332,7 +332,7 @@ extension TransactionController {
             let assetTransactionDraft = assetTransactionDraft,
             let assetIndex = assetTransactionDraft.assetIndex else {
                 connectedDevice = nil
-                delegate?.transactionController(self, didFailedComposing: .custom(self.assetTransactionDraft))
+                delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.draft(draft: self.assetTransactionDraft)))
                 return
         }
         
@@ -341,7 +341,7 @@ extension TransactionController {
         
         guard let transactionData = algorandSDK.addAsset(with: draft, error: &transactionError) else {
             connectedDevice = nil
-            delegate?.transactionController(self, didFailedComposing: .custom(transactionError))
+            delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.sdkError(error: transactionError)))
             return
         }
         
@@ -389,7 +389,7 @@ extension TransactionController {
         
         let minimumAmount = Int64(minimumTransactionMicroAlgosLimit * assetCount) + calculatedFee
         if Int64(account.amount) - transactionAmount < minimumAmount {
-            delegate?.transactionController(self, didFailedComposing: .custom(TransactionError.minimumAmount(amount: minimumAmount)))
+            delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.minimumAmount(amount: minimumAmount)))
             return false
         }
         
@@ -414,7 +414,7 @@ extension TransactionController {
             let draft = rekeyTransactionDraft,
             let rekeyedAccount = draft.toAccount else {
                 connectedDevice = nil
-                delegate?.transactionController(self, didFailedComposing: .custom(self.rekeyTransactionDraft))
+                delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.draft(draft: self.rekeyTransactionDraft)))
                 return
         }
         
@@ -423,7 +423,7 @@ extension TransactionController {
         
         guard let transactionData = algorandSDK.rekeyAccount(with: rekeyTransactionDraft, error: &transactionError) else {
             connectedDevice = nil
-            delegate?.transactionController(self, didFailedComposing: .custom(transactionError))
+            delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.sdkError(error: transactionError)))
             return
         }
         
@@ -521,7 +521,7 @@ extension TransactionController: LedgerBLEControllerDelegate {
         guard let account = transactionDraft?.from,
             let transactionData = unsignedTransactionData else {
             connectedDevice = nil
-            delegate?.transactionController(self, didFailedComposing: .custom(transactionError))
+            delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.sdkError(error: transactionError)))
             return
         }
         
@@ -533,7 +533,7 @@ extension TransactionController: LedgerBLEControllerDelegate {
                 error: &transactionError
             ) else {
                 connectedDevice = nil
-                delegate?.transactionController(self, didFailedComposing: .custom(transactionError))
+                delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.sdkError(error: transactionError)))
                 return
             }
             
@@ -545,7 +545,7 @@ extension TransactionController: LedgerBLEControllerDelegate {
                 error: &transactionError
             ) else {
                 connectedDevice = nil
-                delegate?.transactionController(self, didFailedComposing: .custom(transactionError))
+                delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.sdkError(error: transactionError)))
                 return
             }
             
@@ -575,9 +575,11 @@ extension TransactionController {
 }
 
 extension TransactionController {
-    enum TransactionError {
+    enum TransactionError: Error {
         case minimumAmount(amount: Int64)
         case invalidAddress(address: String)
+        case sdkError(error: NSError?)
+        case draft(draft: TransactionSendDraft?)
         case other
     }
 }

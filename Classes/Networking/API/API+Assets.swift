@@ -30,6 +30,7 @@ extension AlgorandAPI {
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
             .base(mobileApiBase)
+            .path("/api/assets/")
             .headers(mobileApiHeaders())
             .query(draft)
             .completionHandler(handler)

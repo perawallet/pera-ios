@@ -11,7 +11,7 @@ import Magpie
 extension AlgorandAPI {
     @discardableResult
     func getFeedbackCategories(
-        then handler: @escaping (Response.ModelResult<[FeedbackCategory]>) -> Void
+        then handler: @escaping (Response.Result<[FeedbackCategory], HIPAPIError>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
             .base(mobileApiBase)
@@ -25,7 +25,7 @@ extension AlgorandAPI {
     @discardableResult
     func sendFeedback(
         with draft: FeedbackDraft,
-        then handler: @escaping (Response.ModelResult<Feedback>) -> Void
+        then handler: @escaping (Response.Result<Feedback, HIPAPIError>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
             .base(mobileApiBase)

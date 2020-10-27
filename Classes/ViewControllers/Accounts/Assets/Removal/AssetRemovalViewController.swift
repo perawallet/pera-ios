@@ -288,22 +288,53 @@ extension AssetRemovalViewController: TransactionControllerDelegate {
         dismissScreen()
     }
     
-    func transactionController(_ transactionController: TransactionController, didFailedComposing error: Error) {
+    func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPError) {
         if account.requiresLedgerConnection() {
             ledgerApprovalViewController?.dismissScreen()
         }
         
         SVProgressHUD.dismiss()
-        NotificationBanner.showError("title-error".localized, message: error.localizedDescription)
+        
+        switch error {
+        case let .inapp(errorType):
+            guard let transactionError = errorType as? TransactionController.TransactionError else {
+                return
+            }
+            
+            displayTransactionError(from: transactionError)
+        default:
+            break
+        }
     }
     
-    func transactionController(_ transactionController: TransactionController, didFailedTransaction error: Error) {
+    private func displayTransactionError(from transactionError: TransactionController.TransactionError) {
+        switch transactionError {
+        case let .minimumAmount(amount):
+            NotificationBanner.showError(
+                "asset-min-transaction-error-title".localized,
+                message: "asset-min-transaction-error-message".localized(params: amount.toAlgos.toAlgosStringForLabel ?? "")
+            )
+        case .invalidAddress:
+            NotificationBanner.showError("title-error".localized, message: "send-algos-receiver-address-validation".localized)
+        case let .sdkError(error):
+            NotificationBanner.showError("title-error".localized, message: error.debugDescription)
+        default:
+            break
+        }
+    }
+    
+    func transactionController(_ transactionController: TransactionController, didFailedTransaction error: HIPError) {
         if account.requiresLedgerConnection() {
             ledgerApprovalViewController?.dismissScreen()
         }
         
         SVProgressHUD.dismiss()
-        NotificationBanner.showError("title-error".localized, message: error.localizedDescription)
+        switch error {
+        case let .unexpected(apiError):
+            NotificationBanner.showError("title-error".localized, message: apiError.debugDescription)
+        default:
+            NotificationBanner.showError("title-error".localized, message: error.localizedDescription)
+        }
     }
     
     private func getRemovedAssetDetail(from draft: AssetTransactionSendDraft?) -> AssetDetail? {

@@ -188,14 +188,8 @@ extension TransactionsViewController {
                 return
             }
             
-            if let error = error {
-                switch error {
-                case .cancelled:
-                    break
-                default:
-                    self.transactionListView.setOtherErrorState()
-                }
-                
+            if error != nil {
+                self.transactionListView.setOtherErrorState()
                 self.transactionListView.reloadData()
                 return
             }

@@ -12,7 +12,7 @@ extension AlgorandAPI {
     @discardableResult
     func fetchAccount(
         with draft: AccountFetchDraft,
-        then handler: @escaping (Response.Result<AccountResponse, IndexerError>) -> Void
+        then handler: @escaping (Response.ModelResult<AccountResponse>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
             .base(indexerBase)

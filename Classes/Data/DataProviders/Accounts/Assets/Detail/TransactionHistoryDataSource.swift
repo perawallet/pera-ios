@@ -175,12 +175,12 @@ extension TransactionHistoryDataSource {
         withRefresh refresh: Bool,
         between dates: (Date?, Date?),
         isPaginated: Bool,
-        then handler: @escaping ([TransactionItem]?, Error?) -> Void
+        then handler: @escaping ([TransactionItem]?, APIError?) -> Void
     ) {
         api?.getTransactionParams { response in
             switch response {
-            case let .failure(error):
-                handler(nil, error)
+            case let .failure(apiError, _):
+                handler(nil, apiError)
             case let .success(params):
                 self.transactionParams = params
                 self.fetchTransactions(for: account, between: dates, withRefresh: refresh, isPaginated: isPaginated, then: handler)
@@ -196,7 +196,7 @@ extension TransactionHistoryDataSource {
         withRefresh refresh: Bool,
         isPaginated: Bool,
         limit: Int = 15,
-        then handler: @escaping ([TransactionItem]?, Error?) -> Void
+        then handler: @escaping ([TransactionItem]?, APIError?) -> Void
     ) {
         var assetId: String?
         if let id = assetDetail?.id {
@@ -206,8 +206,8 @@ extension TransactionHistoryDataSource {
         let draft = TransactionFetchDraft(account: account, dates: dates, nextToken: nextToken, assetId: assetId, limit: limit)
         fetchRequest = api?.fetchTransactions(with: draft) { response in
             switch response {
-            case let .failure(error):
-                handler(nil, error)
+            case let .failure(apiError, _):
+                handler(nil, apiError)
             case let .success(transactions):
                 if refresh {
                     self.transactions.removeAll()
@@ -289,14 +289,14 @@ extension TransactionHistoryDataSource {
 }
 
 extension TransactionHistoryDataSource {
-    func fetchPendingTransactions(for account: Account, then handler: @escaping ([TransactionItem]?, Error?) -> Void) {
+    func fetchPendingTransactions(for account: Account, then handler: @escaping ([TransactionItem]?, APIError?) -> Void) {
         api?.fetchPendingTransactions(for: account.address) { response in
             switch response {
             case let .success(pendingTransactionList):
                 self.filter(pendingTransactionList.pendingTransactions)
                 handler(pendingTransactionList.pendingTransactions, nil)
-            case let .failure(error):
-                handler(nil, error)
+            case let .failure(apiError, _):
+                handler(nil, apiError)
             }
         }
     }
@@ -406,7 +406,7 @@ extension TransactionHistoryDataSource {
     func fetchAllTransactions(
         for account: Account,
         between dates: (Date?, Date?),
-        then handler: @escaping ([Transaction]?, Error?) -> Void
+        then handler: @escaping ([Transaction]?, APIError?) -> Void
     ) {
         var assetId: String?
         if let id = assetDetail?.id {
@@ -416,8 +416,8 @@ extension TransactionHistoryDataSource {
         let draft = TransactionFetchDraft(account: account, dates: dates, nextToken: nil, assetId: assetId, limit: nil)
         api?.fetchTransactions(with: draft) { response in
             switch response {
-            case let .failure(error):
-                handler(nil, error)
+            case let .failure(apiError, _):
+                handler(nil, apiError)
             case let .success(transactions):
                 handler(transactions.transactions, nil)
             }

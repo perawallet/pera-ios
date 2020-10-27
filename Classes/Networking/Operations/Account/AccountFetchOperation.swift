@@ -37,8 +37,8 @@ class AccountFetchOperation: AsyncOperation {
                 } else {
                     self.onCompleted?(accountWrapper.account, nil)
                 }
-            case let .failure(error, indexerError):
-                if indexerError?.containsAccount(self.accountInformation.address) ?? false {
+            case let .failure(error, _):
+                if error.isHttpNotFound {
                     self.onCompleted?(Account(accountInformation: self.accountInformation), nil)
                 } else {
                     self.onCompleted?(nil, error)
