@@ -18,6 +18,10 @@ class ContactInfoViewController: BaseScrollViewController {
         )
     )
     
+    override var screenKey: String? {
+        return "screen_contact_detail"
+    }
+    
     private lazy var contactInfoView = ContactInfoView()
     
     private let viewModel = ContactInfoViewModel()
@@ -249,7 +253,7 @@ extension ContactInfoViewController: ContactInfoViewDelegate {
         }
 
         let draft = QRCreationDraft(address: address, mode: .address)
-        open(.qrGenerator(title: contact.name, draft: draft, eventFlow: .contactDetail), by: .present)
+        open(.qrGenerator(title: contact.name, draft: draft, isTrackable: true), by: .present)
     }
     
     func contactInfoViewDidTapShareButton(_ contactInfoView: ContactInfoView) {

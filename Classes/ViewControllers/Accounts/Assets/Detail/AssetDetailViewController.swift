@@ -11,6 +11,10 @@ import SnapKit
 
 class AssetDetailViewController: BaseViewController {
     
+    override var screenKey: String? {
+        return "screen_asset_detail"
+    }
+    
     private var account: Account
     private var assetDetail: AssetDetail?
     var route: Screen?
@@ -270,7 +274,7 @@ extension AssetDetailViewController: TransactionActionsViewDelegate {
     
     func transactionActionsViewDidRequestTransaction(_ transactionActionsView: TransactionActionsView) {
         let draft = QRCreationDraft(address: account.address, mode: .address)
-        open(.qrGenerator(title: account.name ?? account.address.shortAddressDisplay(), draft: draft, eventFlow: .detail), by: .present)
+        open(.qrGenerator(title: account.name ?? account.address.shortAddressDisplay(), draft: draft, isTrackable: true), by: .present)
     }
 }
 

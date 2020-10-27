@@ -18,22 +18,19 @@ class QRCreationViewController: BaseScrollViewController {
         return true
     }
     
+    override var screenKey: String? {
+        return isTrackable ? "screen_receive" : nil
+    }
+    
     private lazy var qrCreationView = QRCreationView(draft: draft)
     
     private let draft: QRCreationDraft
-    private let eventFlow: ReceiveEventFlow?
+    private let isTrackable: Bool
     
-    init(draft: QRCreationDraft, configuration: ViewControllerConfiguration, eventFlow: ReceiveEventFlow? = nil) {
+    init(draft: QRCreationDraft, configuration: ViewControllerConfiguration, isTrackable: Bool = false) {
         self.draft = draft
-        self.eventFlow = eventFlow
+        self.isTrackable = isTrackable
         super.init(configuration: configuration)
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        if let event = eventFlow {
-            ReceiveEvent(flow: event, address: draft.address).logEvent()
-        }
     }
     
     override func configureNavigationBarAppearance() {
@@ -88,24 +85,19 @@ extension QRCreationViewController: QRCreationViewDelegate {
         
         activityViewController.completionWithItemsHandler = { [weak self] activity, success, items, error in
             if success {
-                if let flow = self?.eventFlow,
-                   let address = self?.draft.address {
-                    ReceiveShareCompleteEvent(flow: flow, address: address).logEvent()
+                guard let self = self else {
+                    return
                 }
+                ReceiveShareCompleteEvent(address: self.draft.address).logEvent()
             }
         }
         
-        if let event = eventFlow {
-            ReceiveShareEvent(flow: event, address: draft.address).logEvent()
-        }
-        
+        ReceiveShareEvent(address: draft.address).logEvent()
         navigationController?.present(activityViewController, animated: true, completion: nil)
     }
     
     func qrCreationView(_ qrCreationView: QRCreationView, didSelect text: String) {
-        if let event = eventFlow {
-            ReceiveCopyEvent(flow: event, address: draft.address).logEvent()
-        }
+        ReceiveCopyEvent(address: draft.address).logEvent()
         UIPasteboard.general.string = text
     }
 }

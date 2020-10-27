@@ -17,7 +17,7 @@ indirect enum Screen {
     case accountNameSetup
     case accountRecover(flow: AccountSetupFlow)
     case qrScanner
-    case qrGenerator(title: String?, draft: QRCreationDraft, eventFlow: ReceiveEventFlow? = nil)
+    case qrGenerator(title: String?, draft: QRCreationDraft, isTrackable: Bool = false)
     case home(route: Screen?)
     case assetDetail(account: Account, assetDetail: AssetDetail?)
     case options(account: Account)

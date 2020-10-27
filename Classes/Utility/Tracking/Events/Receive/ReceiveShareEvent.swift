@@ -9,11 +9,7 @@
 import Foundation
 
 struct ReceiveShareEvent: TrackableEvent {
-    var eventKey: String {
-        return "receive_\(flow.rawValue)_share"
-    }
-    
-    let flow: ReceiveEventFlow
+    let eventKey = "tap_receive_share"
     let address: String
     
     var parameters: [String: Any]? {

@@ -65,6 +65,10 @@ class AccountsViewController: BaseViewController {
     
     private(set) var accountsDataSource: AccountsDataSource
     
+    override var screenKey: String? {
+        return "screen_accounts"
+    }
+    
     private var isConnectedToInternet = true {
         didSet {
             if isConnectedToInternet == oldValue {
@@ -204,7 +208,7 @@ extension AccountsViewController: AccountsDataSourceDelegate {
     
     func accountsDataSource(_ accountsDataSource: AccountsDataSource, didTapQRButtonFor account: Account) {
         let draft = QRCreationDraft(address: account.address, mode: .address)
-        open(.qrGenerator(title: "qr-creation-sharing-title".localized, draft: draft, eventFlow: .accounts), by: .present)
+        open(.qrGenerator(title: "qr-creation-sharing-title".localized, draft: draft, isTrackable: true), by: .present)
     }
 }
 

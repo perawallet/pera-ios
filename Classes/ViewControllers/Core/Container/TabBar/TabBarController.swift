@@ -280,8 +280,9 @@ extension TabBarController: SelectAssetViewControllerDelegate {
                 by: fullScreenPresentation
             )
         } else {
+            ReceiveTabEvent().logEvent()
             let draft = QRCreationDraft(address: account.address, mode: .address)
-            open(.qrGenerator(title: account.name ?? account.address.shortAddressDisplay(), draft: draft, eventFlow: .tab), by: .present)
+            open(.qrGenerator(title: account.name ?? account.address.shortAddressDisplay(), draft: draft, isTrackable: true), by: .present)
         }
     }
     
@@ -311,8 +312,9 @@ extension TabBarController: SelectAssetViewControllerDelegate {
                 by: fullScreenPresentation
             )
         } else {
+            ReceiveTabEvent().logEvent()
             let draft = QRCreationDraft(address: account.address, mode: .address)
-            open(.qrGenerator(title: account.name ?? account.address.shortAddressDisplay(), draft: draft, eventFlow: .tab), by: .present)
+            open(.qrGenerator(title: account.name ?? account.address.shortAddressDisplay(), draft: draft, isTrackable: true), by: .present)
         }
     }
 }

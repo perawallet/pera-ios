@@ -10,6 +10,10 @@ import UIKit
 
 class TransactionDetailViewController: BaseScrollViewController {
     
+    override var screenKey: String? {
+        return "screen_transaction_detail"
+    }
+    
     private lazy var transactionDetailView = TransactionDetailView(transactionType: transactionType)
     
     private var transaction: Transaction
@@ -148,7 +152,7 @@ extension TransactionDetailViewController: TransactionDetailViewDelegate {
                 .qrGenerator(
                     title: transaction.contact?.name ?? "qr-creation-sharing-title".localized,
                     draft: draft,
-                    eventFlow: .transactionDetailContact
+                    isTrackable: true
                 ),
                 by: .present
             )
@@ -158,7 +162,7 @@ extension TransactionDetailViewController: TransactionDetailViewDelegate {
                 .qrGenerator(
                     title: "qr-creation-sharing-title".localized,
                     draft: draft,
-                    eventFlow: .transactionDetailAccount
+                    isTrackable: true
                 ),
                 by: .present
             )
