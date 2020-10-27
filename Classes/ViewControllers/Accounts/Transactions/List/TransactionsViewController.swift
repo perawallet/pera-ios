@@ -84,6 +84,10 @@ class TransactionsViewController: BaseViewController {
         pendingTransactionPolling?.invalidate()
     }
     
+    override func configureAppearance() {
+        view.backgroundColor = SharedColors.secondaryBackground
+    }
+    
     override func setListeners() {
         NotificationCenter.default.addObserver(
             self,
