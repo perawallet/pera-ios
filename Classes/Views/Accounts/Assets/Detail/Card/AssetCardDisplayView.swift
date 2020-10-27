@@ -10,6 +10,8 @@ import UIKit
 
 class AssetCardDisplayView: BaseView {
     
+    private var isPageControlSizeUpdateCompleted = false
+    
     private let layout = Layout<LayoutConstants>()
     
     private lazy var assetsCollectionView: UICollectionView = {
@@ -44,8 +46,12 @@ class AssetCardDisplayView: BaseView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        pageControl.subviews.forEach {
-            $0.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
+        
+        if !isPageControlSizeUpdateCompleted {
+            pageControl.subviews.forEach {
+                $0.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
+            }
+            isPageControlSizeUpdateCompleted = true
         }
     }
 }
