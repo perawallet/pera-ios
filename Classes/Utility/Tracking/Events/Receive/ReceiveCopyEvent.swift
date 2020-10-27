@@ -9,7 +9,7 @@
 import Foundation
 
 struct ReceiveCopyEvent: TrackableEvent {
-    let eventKey = "tap_receive_copy"
+    let eventKey = "tap_show_qr_copy"
     let address: String
     
     var parameters: [String: Any]? {

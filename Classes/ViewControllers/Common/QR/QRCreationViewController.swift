@@ -19,7 +19,7 @@ class QRCreationViewController: BaseScrollViewController {
     }
     
     override var screenKey: String? {
-        return isTrackable ? "screen_receive" : nil
+        return isTrackable ? "screen_show_qr" : nil
     }
     
     private lazy var qrCreationView = QRCreationView(draft: draft)
