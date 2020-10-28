@@ -27,6 +27,8 @@ class TransactionController {
     private var currentTransactionType: TransactionType?
     private var connectedDevice: CBPeripheral?
     
+    private var isCorrectLedgerAddressFetched = false
+    
     private var fromAccount: Account? {
         return transactionDraft?.from
     }
@@ -454,12 +456,11 @@ extension TransactionController: BLEConnectionManagerDelegate {
     }
     
     func bleConnectionManagerEnabledToWrite(_ bleConnectionManager: BLEConnectionManager) {
-        guard let hexString = unsignedTransactionData?.toHexString(),
-            let bleData = Data(fromHexEncodedString: hexString) else {
-            return
+        if isCorrectLedgerAddressFetched {
+            signTransactionWithLedger()
+        } else {
+            fetchAddressFromLedger()
         }
-        
-        ledgerBLEController.signTransaction(bleData)
     }
     
     func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didRead string: String) {
@@ -493,6 +494,17 @@ extension TransactionController: LedgerBLEControllerDelegate {
     }
     
     func ledgerBLEController(_ ledgerBLEController: LedgerBLEController, received data: Data) {
+        if !isCorrectLedgerAddressFetched {
+            if canParseLedgerAddress(from: data) {
+                signTransactionWithLedger()
+            } else {
+                delegate?.transactionControllerDidFailToSignWithLedger(self)
+            }
+            return
+        }
+        
+        isCorrectLedgerAddressFetched = false
+        
         guard let transactionType = currentTransactionType else {
             return
         }
@@ -560,6 +572,73 @@ extension TransactionController: LedgerBLEControllerDelegate {
             completeRekeyTransaction()
         } else {
             completeAssetTransaction(for: transactionType)
+        }
+    }
+    
+    private func fetchAddressFromLedger() {
+        guard let bleData = Data(fromHexEncodedString: bleLedgerAddressMessage) else {
+            return
+        }
+        
+        ledgerBLEController.fetchAddress(bleData)
+    }
+    
+    private func signTransactionWithLedger() {
+        guard let hexString = unsignedTransactionData?.toHexString(),
+            let bleData = Data(fromHexEncodedString: hexString) else {
+            return
+        }
+        
+        ledgerBLEController.signTransaction(bleData)
+    }
+    
+    private func canParseLedgerAddress(from data: Data) -> Bool {
+        if data.toHexString() == ledgerErrorResponse {
+            connectedDevice = nil
+            NotificationBanner.showError(
+                "ble-error-ledger-connection-title".localized,
+                message: "ble-error-ledger-connection-open-app-error".localized
+            )
+            return false
+        }
+        
+        // Remove last two bytes to fetch data
+        var mutableData = data
+        mutableData.removeLast(2)
+
+        var error: NSError?
+        let address = AlgorandSDK().addressFromPublicKey(mutableData, error: &error)
+        
+        if !AlgorandSDK().isValidAddress(address) || error != nil {
+            connectedDevice = nil
+            NotificationBanner.showError(
+                "ble-error-transmission-title".localized,
+                message: "ble-error-fail-fetch-account-address".localized
+            )
+            return false
+        }
+        
+        return isLedgerAddressMatching(address)
+    }
+    
+    private func isLedgerAddressMatching(_ address: String) -> Bool {
+        guard let account = fromAccount else {
+            return false
+        }
+        
+        if let authAddress = account.authAddress,
+           authAddress == address {
+            isCorrectLedgerAddressFetched = true
+            return true
+        } else if account.address == address {
+            isCorrectLedgerAddressFetched = true
+            return true
+        } else {
+            NotificationBanner.showError(
+                "ble-error-transmission-title".localized,
+                message: "ledger-transaction-account-match-error".localized
+            )
+            return false
         }
     }
 }
