@@ -602,14 +602,14 @@ extension TransactionController: LedgerBLEControllerDelegate {
             return false
         }
         
-        // Remove last two bytes to fetch data
+        // Remove last two bytes to fetch data that provides message status, not related to the account address
         var mutableData = data
         mutableData.removeLast(2)
 
         var error: NSError?
         let address = AlgorandSDK().addressFromPublicKey(mutableData, error: &error)
         
-        if !AlgorandSDK().isValidAddress(address) || error != nil {
+        if error != nil || !AlgorandSDK().isValidAddress(address) {
             connectedDevice = nil
             NotificationBanner.showError(
                 "ble-error-transmission-title".localized,
@@ -618,27 +618,26 @@ extension TransactionController: LedgerBLEControllerDelegate {
             return false
         }
         
-        return isLedgerAddressMatching(address)
+        updateAccountAddressValidationWithLedger(address)
+        return isCorrectLedgerAddressFetched
     }
     
-    private func isLedgerAddressMatching(_ address: String) -> Bool {
+    private func updateAccountAddressValidationWithLedger(_ address: String) {
         guard let account = fromAccount else {
-            return false
+            return
         }
         
         if let authAddress = account.authAddress,
            authAddress == address {
             isCorrectLedgerAddressFetched = true
-            return true
         } else if account.address == address {
             isCorrectLedgerAddressFetched = true
-            return true
         } else {
             NotificationBanner.showError(
                 "ble-error-transmission-title".localized,
                 message: "ledger-transaction-account-match-error".localized
             )
-            return false
+            isCorrectLedgerAddressFetched = false
         }
     }
 }
