@@ -288,7 +288,7 @@ extension AssetRemovalViewController: TransactionControllerDelegate {
         dismissScreen()
     }
     
-    func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPError) {
+    func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPError<TransactionError>) {
         if account.requiresLedgerConnection() {
             ledgerApprovalViewController?.dismissScreen()
         }
@@ -296,18 +296,14 @@ extension AssetRemovalViewController: TransactionControllerDelegate {
         SVProgressHUD.dismiss()
         
         switch error {
-        case let .inapp(errorType):
-            guard let transactionError = errorType as? TransactionController.TransactionError else {
-                return
-            }
-            
+        case let .inapp(transactionError):
             displayTransactionError(from: transactionError)
         default:
             break
         }
     }
     
-    private func displayTransactionError(from transactionError: TransactionController.TransactionError) {
+    private func displayTransactionError(from transactionError: TransactionError) {
         switch transactionError {
         case let .minimumAmount(amount):
             NotificationBanner.showError(
@@ -323,14 +319,14 @@ extension AssetRemovalViewController: TransactionControllerDelegate {
         }
     }
     
-    func transactionController(_ transactionController: TransactionController, didFailedTransaction error: HIPError) {
+    func transactionController(_ transactionController: TransactionController, didFailedTransaction error: HIPError<TransactionError>) {
         if account.requiresLedgerConnection() {
             ledgerApprovalViewController?.dismissScreen()
         }
         
         SVProgressHUD.dismiss()
         switch error {
-        case let .unexpected(apiError):
+        case let .network(apiError):
             NotificationBanner.showError("title-error".localized, message: apiError.debugDescription)
         default:
             NotificationBanner.showError("title-error".localized, message: error.localizedDescription)

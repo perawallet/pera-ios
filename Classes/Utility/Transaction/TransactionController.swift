@@ -83,7 +83,7 @@ extension TransactionController {
                 self.composeTransactionData(for: transactionType)
             case let .failure(error, _):
                 self.connectedDevice = nil
-                self.delegate?.transactionController(self, didFailedComposing: .unexpected(error))
+                self.delegate?.transactionController(self, didFailedComposing: .network(.unexpected(error)))
             }
         }
     }
@@ -100,7 +100,7 @@ extension TransactionController {
                 completion?()
                 self.delegate?.transactionController(self, didCompletedTransaction: transactionId)
             case let .failure(error, _):
-                self.delegate?.transactionController(self, didFailedTransaction: .unexpected(error))
+                self.delegate?.transactionController(self, didFailedTransaction: .network(.unexpected(error)))
             }
         }
     }
@@ -640,12 +640,10 @@ extension TransactionController {
     }
 }
 
-extension TransactionController {
-    enum TransactionError: Error {
-        case minimumAmount(amount: Int64)
-        case invalidAddress(address: String)
-        case sdkError(error: NSError?)
-        case draft(draft: TransactionSendDraft?)
-        case other
-    }
+enum TransactionError: Error {
+    case minimumAmount(amount: Int64)
+    case invalidAddress(address: String)
+    case sdkError(error: NSError?)
+    case draft(draft: TransactionSendDraft?)
+    case other
 }

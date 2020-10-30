@@ -192,8 +192,10 @@ extension TransactionsViewController {
                 return
             }
             
-            if error != nil {
-                self.transactionListView.setOtherErrorState()
+            if let error = error {
+                if !error.isCancelled {
+                    self.transactionListView.setOtherErrorState()
+                }
                 self.transactionListView.reloadData()
                 return
             }
