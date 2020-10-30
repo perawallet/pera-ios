@@ -494,20 +494,28 @@ extension TransactionController: LedgerBLEControllerDelegate {
     }
     
     func ledgerBLEController(_ ledgerBLEController: LedgerBLEController, received data: Data) {
+        guard let transactionType = currentTransactionType,
+              let account = fromAccount else {
+            return
+        }
+        
         if !isCorrectLedgerAddressFetched {
-            if canParseLedgerAddress(from: data) {
-                signTransactionWithLedger()
-            } else {
-                delegate?.transactionControllerDidFailToSignWithLedger(self)
+            if data.isLedgerErrorResponse() {
+                resetLedgerConnectionAndDisplayError("ble-error-ledger-connection-open-app-error".localized)
+                return
             }
+            
+            guard let address = getValidAddress(from: data) else {
+                resetLedgerConnectionAndDisplayError("ble-error-fail-fetch-account-address".localized)
+                return
+            }
+            
+            isCorrectLedgerAddressFetched = account.authAddress.unwrap(or: account.address) == address
+            proceedSigningTransactionByLedgerIfPossible()
             return
         }
         
         isCorrectLedgerAddressFetched = false
-        
-        guard let transactionType = currentTransactionType else {
-            return
-        }
         
         if data.toHexString() == ledgerTransactionCancelledCode {
             delegate?.transactionControllerDidFailToSignWithLedger(self)
@@ -530,8 +538,7 @@ extension TransactionController: LedgerBLEControllerDelegate {
         
         var transactionError: NSError?
         
-        guard let account = transactionDraft?.from,
-            let transactionData = unsignedTransactionData else {
+        guard let transactionData = unsignedTransactionData else {
             connectedDevice = nil
             delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.sdkError(error: transactionError)))
             return
@@ -592,16 +599,17 @@ extension TransactionController: LedgerBLEControllerDelegate {
         ledgerBLEController.signTransaction(bleData)
     }
     
-    private func canParseLedgerAddress(from data: Data) -> Bool {
-        if data.toHexString() == ledgerErrorResponse {
-            connectedDevice = nil
-            NotificationBanner.showError(
-                "ble-error-ledger-connection-title".localized,
-                message: "ble-error-ledger-connection-open-app-error".localized
-            )
-            return false
-        }
-        
+    private func resetLedgerConnectionAndDisplayError(_ message: String) {
+        resetLedgerConnection()
+        NotificationBanner.showError("ble-error-ledger-connection-title".localized, message: message)
+    }
+    
+    private func resetLedgerConnection() {
+        connectedDevice = nil
+        isCorrectLedgerAddressFetched = false
+    }
+    
+    private func getValidAddress(from data: Data) -> String? {
         // Remove last two bytes to fetch data that provides message status, not related to the account address
         var mutableData = data
         mutableData.removeLast(2)
@@ -609,35 +617,15 @@ extension TransactionController: LedgerBLEControllerDelegate {
         var error: NSError?
         let address = AlgorandSDK().addressFromPublicKey(mutableData, error: &error)
         
-        if error != nil || !AlgorandSDK().isValidAddress(address) {
-            connectedDevice = nil
-            NotificationBanner.showError(
-                "ble-error-transmission-title".localized,
-                message: "ble-error-fail-fetch-account-address".localized
-            )
-            return false
-        }
-        
-        updateAccountAddressValidationWithLedger(address)
-        return isCorrectLedgerAddressFetched
+        return error == nil && AlgorandSDK().isValidAddress(address) ? address : nil
     }
     
-    private func updateAccountAddressValidationWithLedger(_ address: String) {
-        guard let account = fromAccount else {
-            return
-        }
-        
-        if let authAddress = account.authAddress,
-           authAddress == address {
-            isCorrectLedgerAddressFetched = true
-        } else if account.address == address {
-            isCorrectLedgerAddressFetched = true
+    private func proceedSigningTransactionByLedgerIfPossible() {
+        if isCorrectLedgerAddressFetched {
+            signTransactionWithLedger()
         } else {
-            NotificationBanner.showError(
-                "ble-error-transmission-title".localized,
-                message: "ledger-transaction-account-match-error".localized
-            )
-            isCorrectLedgerAddressFetched = false
+            resetLedgerConnectionAndDisplayError("ledger-transaction-account-match-error".localized)
+            delegate?.transactionControllerDidFailToSignWithLedger(self)
         }
     }
 }
