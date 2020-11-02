@@ -81,4 +81,8 @@ extension AccountTypeSelectionViewController: AccountTypeSelectionViewDelegate {
             }
         }
     }
+    
+    func accountTypeSelectionView(_ accountTypeSelectionView: AccountTypeSelectionView, didOpen url: URL) {
+        open(url)
+    }
 }
