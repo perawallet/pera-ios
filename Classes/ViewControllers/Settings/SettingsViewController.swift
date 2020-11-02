@@ -34,7 +34,7 @@ class SettingsViewController: BaseViewController {
     private lazy var settings: [[GeneralSettings]] = [securitySettings, preferenceSettings, appSettings, developerSettings]
     private lazy var securitySettings: [GeneralSettings] = [.password, .localAuthentication]
     private lazy var preferenceSettings: [GeneralSettings] = [.notifications, .rewards, .language, .currency]
-    private lazy var appSettings: [GeneralSettings] = [.feedback, .termsAndServices]
+    private lazy var appSettings: [GeneralSettings] = [.feedback, .termsAndServices, .privacyPolicy]
     private lazy var developerSettings: [GeneralSettings] = [.developer]
     
     private lazy var settingsView = SettingsView()
@@ -134,6 +134,8 @@ extension SettingsViewController: UICollectionViewDataSource {
             case .feedback:
                 return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
             case .termsAndServices:
+                return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
+            case .privacyPolicy:
                 return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
             case .developer:
                 return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
@@ -261,6 +263,12 @@ extension SettingsViewController: UICollectionViewDelegateFlowLayout {
                 controller?.delegate = self
             case .termsAndServices:
                 guard let url = URL(string: Environment.current.termsAndServicesUrl) else {
+                    return
+                }
+                
+                open(url)
+            case .privacyPolicy:
+                guard let url = URL(string: Environment.current.privacyPolicyUrl) else {
                     return
                 }
                 

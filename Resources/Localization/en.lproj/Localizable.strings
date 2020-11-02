@@ -436,7 +436,7 @@
 
 // MARK: Terms and Services
 "terms-and-services-title" = "Terms and Services";
-"terms-and-services-html" = "I accept the <a href=\"https://www.algorand.com/wallet-disclaimer\">Terms and Services</a>";
+"privacy-policy-title" = "Privacy Policy";
 
 // MARK: Notifications Tab
 "notifications-title" = "Notifications";

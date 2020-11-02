@@ -355,7 +355,8 @@
 
 /*MARK: Terms and Services*/
 "terms-and-services-title" = "Termos e Serviços";
-"terms-and-services-html" = "Aceito os <a href=\"https://www.algorand.com/wallet-disclaimer\">Termos e Serviços</a>";
+"privacy-policy-title" = "Política de Privacidade";
+
 "title-share-qr" = "Compartilhar QR";
 "title-keep" = "Manter";
 "title-edit" = "Editar";
