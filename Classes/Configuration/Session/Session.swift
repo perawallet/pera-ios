@@ -139,7 +139,7 @@ class Session: Storable {
     var accounts = [Account]()
     
     init() {
-        removeOldTermsAndServicesKeyFromDefaults()
+        removeOldTermsAndServicesKeysFromDefaults()
     }
 }
 
@@ -324,20 +324,10 @@ extension Session {
 
 // MARK: Terms and Services
 extension Session {
-    func acceptTermsAndServices() {
-        save(true, for: termsAndServicesKeyV2, to: .defaults)
-    }
-    
-    func isTermsAndServicesAccepted() -> Bool {
-        return bool(with: termsAndServicesKeyV2, to: .defaults)
-    }
-    
     /// <todo> Remove this check in other releases later when the v2 is accepted.
-    private func removeOldTermsAndServicesKeyFromDefaults() {
-        let isOldTermsAndServicesAccepted = bool(with: termsAndServicesKey, to: .defaults)
-        if isOldTermsAndServicesAccepted {
-            userDefaults.remove(for: termsAndServicesKey)
-        }
+    private func removeOldTermsAndServicesKeysFromDefaults() {
+        userDefaults.remove(for: termsAndServicesKey)
+        userDefaults.remove(for: termsAndServicesKeyV2)
     }
 }
 
@@ -353,8 +343,6 @@ extension Session {
 
 extension Session {
     func reset(isContactIncluded: Bool) {
-        let termsAndServicesAccepted = isTermsAndServicesAccepted()
-        
         authenticatedUser = nil
         accounts.removeAll()
         applicationConfiguration = nil
@@ -369,10 +357,6 @@ extension Session {
         self.clear(.defaults)
         self.clear(.keychain)
         self.isValid = false
-        
-        if termsAndServicesAccepted {
-            acceptTermsAndServices()
-        }
         
         DispatchQueue.main.async {
             UIApplication.shared.appDelegate?.invalidateAccountManagerFetchPolling()

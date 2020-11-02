@@ -295,8 +295,6 @@ class Router {
             viewController = LedgerTroubleshootInstallAppViewController(configuration: configuration)
         case .ledgerTroubleshootOpenApp:
             viewController = LedgerTroubleshootOpenAppViewController(configuration: configuration)
-        case .termsAndServices:
-            viewController = TermsAndServicesViewController(configuration: configuration)
         case let .selectAsset(transactionAction, filterOption):
             viewController = SelectAssetViewController(
                 transactionAction: transactionAction,
