@@ -8,54 +8,59 @@
 
 import Magpie
 
-extension API {
+extension AlgorandAPI {
     @discardableResult
     func getAssetDetails(
         with draft: AssetFetchDraft,
-        then handler: @escaping Endpoint.DefaultResultHandler<AssetDetailResponse>
+        then handler: @escaping (Response.ModelResult<AssetDetailResponse>) -> Void
     ) -> EndpointOperatable {
-        return Endpoint(path: Path("/v2/assets/\(draft.assetId)"))
+        return EndpointBuilder(api: self)
             .base(indexerBase)
-            .httpMethod(.get)
-            .httpHeaders(indexerAuthenticatedHeaders())
-            .resultHandler(handler)
-            .buildAndSend(self)
+            .path("/v2/assets/\(draft.assetId)")
+            .headers(indexerAuthenticatedHeaders())
+            .completionHandler(handler)
+            .build()
+            .send()
     }
     
     @discardableResult
     func searchAssets(
         with draft: AssetSearchQuery,
-        then handler: @escaping Endpoint.DefaultResultHandler<PaginatedList<AssetSearchResult>>
+        then handler: @escaping (Response.ModelResult<PaginatedList<AssetSearchResult>>) -> Void
     ) -> EndpointOperatable {
-        return Endpoint(path: Path("/api/assets/"))
-            .httpMethod(.get)
+        return EndpointBuilder(api: self)
             .base(mobileApiBase)
-            .httpHeaders(mobileApiHeaders())
+            .path("/api/assets/")
+            .headers(mobileApiHeaders())
             .query(draft)
-            .resultHandler(handler)
-            .buildAndSend(self)
+            .completionHandler(handler)
+            .build()
+            .send()
     }
     
     @discardableResult
     func sendAssetSupportRequest(with draft: AssetSupportDraft) -> EndpointOperatable {
-        return Endpoint(path: Path("/api/asset-requests/"))
-            .httpMethod(.post)
+        return EndpointBuilder(api: self)
             .base(mobileApiBase)
-            .httpHeaders(mobileApiHeaders())
-            .httpBody(draft)
-            .buildAndSend(self)
+            .path("/api/asset-requests/")
+            .method(.post)
+            .headers(mobileApiHeaders())
+            .body(draft)
+            .build()
+            .send()
     }
     
     @discardableResult
     func getVerifiedAssets(
-        then handler: @escaping Endpoint.DefaultResultHandler<VerifiedAssetList>
+        then handler: @escaping (Response.ModelResult<VerifiedAssetList>) -> Void
     ) -> EndpointOperatable {
-        return Endpoint(path: Path("/api/verified-assets/"))
-            .httpMethod(.get)
+        return EndpointBuilder(api: self)
             .base(mobileApiBase)
-            .httpHeaders(mobileApiHeaders())
+            .path("/api/verified-assets/")
+            .headers(mobileApiHeaders())
             .query(LimitQuery())
-            .resultHandler(handler)
-            .buildAndSend(self)
+            .completionHandler(handler)
+            .build()
+            .send()
     }
 }

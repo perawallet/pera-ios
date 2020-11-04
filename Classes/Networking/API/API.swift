@@ -8,7 +8,7 @@
 
 import Magpie
 
-class API: Magpie {
+class AlgorandAPI: API {
     var algodToken: String?
     var indexerToken: String?
     var network: BaseNetwork = .mainnet
@@ -19,41 +19,28 @@ class API: Magpie {
         return network == .testnet
     }
     
-    init(session: Session) {
+    let sharedHeaders: Headers = [AcceptHeader.json(), AcceptEncodingHeader.gzip(), ContentTypeHeader.json()]
+    
+    required init(
+        session: Session,
+        base: String,
+        networking: Networking = AlamofireNetworking(),
+        interceptor: APIInterceptor? = nil,
+        networkMonitor: NetworkMonitor? = AlamofireNetworkMonitor()
+    ) {
         self.session = session
-        
-        if #available(iOS 12, *) {
-            super.init(
-                base: Environment.current.serverApi,
-                networking: AlamofireNetworking(),
-                networkMonitor: NWNetworkMonitor()
-            )
-        } else {
-            super.init(
-                base: Environment.current.serverApi,
-                networking: AlamofireNetworking(),
-                networkMonitor: AlamofireNetworkMonitor()
-            )
-        }
+        super.init(
+            base: base,
+            networking: networking,
+            interceptor: interceptor,
+            networkMonitor: networkMonitor
+        )
         
         authorize()
-        
-        sharedJsonBodyEncodingStrategy = JSONBodyEncodingStrategy(date: JSONEncoder.DateEncodingStrategy.shared)
-        sharedModelDecodingStrategy = ModelDecodingStrategy(date: JSONDecoder.DateDecodingStrategy.shared)
-        sharedErrorModelDecodingStrategy = ModelDecodingStrategy(date: JSONDecoder.DateDecodingStrategy.shared)
-        
-        runIfRelease {
-            logFilter = .none()
-        }
-    }
-    
-    @available(*, unavailable)
-    required init(base: String, networking: Networking, networkMonitor: NetworkMonitor? = nil) {
-        fatalError("init(base:networking:networkMonitor:) has not been implemented")
     }
 }
 
-extension API {
+extension AlgorandAPI {
     func authorize() {
         base = Environment.current.serverApi
     }
@@ -76,50 +63,50 @@ extension API {
     
     func algodAuthenticatedHeaders() -> Headers {
         guard let token = algodToken else {
-            return sharedHttpHeaders
+            return sharedHeaders
         }
         
-        var headers = sharedHttpHeaders
-        headers.set(.custom("X-Algo-API-Token", .some(token)))
+        var headers = sharedHeaders
+        headers.insert(CustomHeader(key: "X-Algo-API-Token", value: token))
         return headers
     }
     
     func algodBinaryAuthenticatedHeaders() -> Headers {
         guard let token = algodToken else {
-            return sharedHttpHeaders
+            return sharedHeaders
         }
         
-        var headers = sharedHttpHeaders
-        headers.set(.contentType("application/x-binary"))
-        headers.set(.custom("X-Algo-API-Token", .some(token)))
+        var headers = sharedHeaders
+        headers.insert(CustomHeader(key: "X-Algo-API-Token", value: token))
+        headers.insert(CustomHeader(key: "Content-Type", value: "application/x-binary"))
         return headers
     }
     
     func indexerAuthenticatedHeaders() -> Headers {
         guard let token = indexerToken else {
-            return sharedHttpHeaders
+            return sharedHeaders
         }
         
-        var headers = sharedHttpHeaders
-        headers.set(.custom("X-Indexer-API-Token", .some(token)))
+        var headers = sharedHeaders
+        headers.insert(CustomHeader(key: "X-Indexer-API-Token", value: token))
         return headers
     }
     
     func mobileApiHeaders() -> Headers {
-        var headers = sharedHttpHeaders
-        headers.set(.custom("algorand-network", .some(network.rawValue)))
+        var headers = sharedHeaders
+        headers.insert(CustomHeader(key: "algorand-network", value: network.rawValue))
         return headers
     }
     
     func nodeHealthHeaders(for nodeToken: String) -> Headers {
-        var headers = sharedHttpHeaders
-        headers.set(.custom("X-Algo-API-Token", .some(nodeToken)))
+        var headers = sharedHeaders
+        headers.insert(CustomHeader(key: "X-Algo-API-Token", value: nodeToken))
         return headers
     }
 }
 
-extension API {
-    func setupEnvironment(for network: API.BaseNetwork) {
+extension AlgorandAPI {
+    func setupEnvironment(for network: AlgorandAPI.BaseNetwork) {
         self.network = network
         let node = network == .mainnet ? mainNetNode : testNetNode
         
@@ -129,7 +116,7 @@ extension API {
     }
 }
 
-extension API {
+extension AlgorandAPI {
     enum BaseNetwork: String {
         case testnet = "testnet"
         case mainnet = "mainnet"

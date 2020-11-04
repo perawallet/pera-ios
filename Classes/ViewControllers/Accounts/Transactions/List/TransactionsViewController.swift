@@ -66,7 +66,7 @@ class TransactionsViewController: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        api?.addDelegate(self)
+        api?.addListener(self)
         startPendingTransactionPolling()
     }
     
@@ -80,7 +80,7 @@ class TransactionsViewController: BaseViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        api?.removeDelegate(self)
+        api?.removeListener(self)
         pendingTransactionPolling?.invalidate()
     }
     
@@ -193,13 +193,9 @@ extension TransactionsViewController {
             }
             
             if let error = error {
-                switch error {
-                case .cancelled:
-                    break
-                default:
+                if !error.isCancelled {
                     self.transactionListView.setOtherErrorState()
                 }
-                
                 self.transactionListView.reloadData()
                 return
             }
@@ -506,9 +502,9 @@ extension TransactionsViewController: CSVExportable {
     }
 }
 
-extension TransactionsViewController: MagpieDelegate {
-    func magpie(
-        _ magpie: Magpie,
+extension TransactionsViewController: APIListener {
+    func api(
+        _ api: API,
         networkMonitor: NetworkMonitor,
         didConnectVia connection: NetworkConnection,
         from oldConnection: NetworkConnection
@@ -518,7 +514,7 @@ extension TransactionsViewController: MagpieDelegate {
         }
     }
     
-    func magpie(_ magpie: Magpie, networkMonitor: NetworkMonitor, didDisconnectFrom oldConnection: NetworkConnection) {
+    func api(_ api: API, networkMonitor: NetworkMonitor, didDisconnectFrom oldConnection: NetworkConnection) {
         if UIApplication.shared.isActive {
             isConnectedToInternet = networkMonitor.isConnected
         }

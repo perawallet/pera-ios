@@ -308,26 +308,19 @@ extension SendTransactionPreviewViewController: SelectAssetViewControllerDelegat
 }
 
 extension SendTransactionPreviewViewController: TransactionControllerDelegate {
-    func transactionController(_ transactionController: TransactionController, didFailedComposing error: Error) {
+    func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPError<TransactionError>) {
         ledgerApprovalViewController?.dismissScreen()
         
         SVProgressHUD.dismiss()
-        
         switch error {
-        case .networkUnavailable:
+        case .network:
             displaySimpleAlertWith(title: "title-error".localized, message: "title-internet-connection".localized)
-        case let .custom(errorType):
-            guard let transactionError = errorType as? TransactionController.TransactionError else {
-                return
-            }
-            
+        case let .inapp(transactionError):
             displayTransactionError(from: transactionError)
-        default:
-            displaySimpleAlertWith(title: "title-error".localized, message: "title-internet-connection".localized)
         }
     }
     
-    private func displayTransactionError(from transactionError: TransactionController.TransactionError) {
+    private func displayTransactionError(from transactionError: TransactionError) {
         switch transactionError {
         case let .minimumAmount(amount):
             NotificationBanner.showError(
@@ -336,6 +329,8 @@ extension SendTransactionPreviewViewController: TransactionControllerDelegate {
             )
         case .invalidAddress:
             NotificationBanner.showError("title-error".localized, message: "send-algos-receiver-address-validation".localized)
+        case let .sdkError(error):
+            NotificationBanner.showError("title-error".localized, message: error.debugDescription)
         default:
             displaySimpleAlertWith(title: "title-error".localized, message: "title-internet-connection".localized)
         }

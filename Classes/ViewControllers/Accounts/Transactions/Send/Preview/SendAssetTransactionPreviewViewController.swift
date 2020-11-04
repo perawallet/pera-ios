@@ -273,8 +273,8 @@ extension SendAssetTransactionPreviewViewController {
                 } else {
                     self.presentAssetNotSupportedAlert(receiverAddress: address)
                 }
-            case let .failure(_, indexerError):
-                if indexerError?.containsAccount(address) ?? false {
+            case let .failure(error, _):
+                if error.isHttpNotFound {
                     if !selectedAccount.requiresLedgerConnection() {
                         self.dismissProgressIfNeeded()
                     }

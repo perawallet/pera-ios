@@ -11,9 +11,9 @@ import CoreBluetooth
 
 protocol TransactionControllerDelegate: class {
     func transactionController(_ transactionController: TransactionController, didComposedTransactionDataFor draft: TransactionSendDraft?)
-    func transactionController(_ transactionController: TransactionController, didFailedComposing error: Error)
+    func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPError<TransactionError>)
     func transactionController(_ transactionController: TransactionController, didCompletedTransaction id: TransactionID)
-    func transactionController(_ transactionController: TransactionController, didFailedTransaction error: Error)
+    func transactionController(_ transactionController: TransactionController, didFailedTransaction error: HIPError<TransactionError>)
     func transactionControllerDidStartBLEConnection(_ transactionController: TransactionController)
     func transactionController(_ transactionController: TransactionController, didFailBLEConnectionWith state: CBManagerState)
     func transactionController(_ transactionController: TransactionController, didFailToConnect peripheral: CBPeripheral)
@@ -27,11 +27,11 @@ extension TransactionControllerDelegate where Self: BaseViewController {
         didComposedTransactionDataFor draft: TransactionSendDraft?
     ) { }
     
-    func transactionController(_ transactionController: TransactionController, didFailedComposing error: Error) { }
+    func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPError<TransactionError>) { }
     
     func transactionController(_ transactionController: TransactionController, didCompletedTransaction id: TransactionID) { }
     
-    func transactionController(_ transactionController: TransactionController, didFailedTransaction error: Error) { }
+    func transactionController(_ transactionController: TransactionController, didFailedTransaction error: HIPError<TransactionError>) { }
     
     func transactionControllerDidStartBLEConnection(_ transactionController: TransactionController) { }
     

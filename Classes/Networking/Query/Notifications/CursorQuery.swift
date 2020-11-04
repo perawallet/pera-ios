@@ -8,18 +8,14 @@
 
 import Magpie
 
-struct CursorQuery: Query {
-    typealias Key = RequestParameter
-    
+struct CursorQuery: ObjectQuery {
     let cursor: String?
     
-    func decoded() -> [Pair]? {
-        var pairs = [Pair]()
-        
+    var queryParams: [QueryParam] {
+        var params: [QueryParam] = []
         if let cursor = cursor {
-            pairs.append(Pair(key: .cursor, value: .some(cursor)))
+            params.append(.init(.cursor, cursor))
         }
-        
-        return pairs
+        return params
     }
 }

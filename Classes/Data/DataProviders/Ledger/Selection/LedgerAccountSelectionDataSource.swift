@@ -17,13 +17,13 @@ class LedgerAccountSelectionDataSource: NSObject {
     
     private let viewModel = AccountsViewModel()
     
-    private let api: API
+    private let api: AlgorandAPI
     private var accounts = [Account]()
     
     private let ledger: LedgerDetail
     private let ledgerAddress: String
     
-    init(api: API, ledger: LedgerDetail, ledgerAddress: String) {
+    init(api: AlgorandAPI, ledger: LedgerDetail, ledgerAddress: String) {
         self.api = api
         self.ledger = ledger
         self.ledgerAddress = ledgerAddress
@@ -59,8 +59,8 @@ extension LedgerAccountSelectionDataSource {
             case let .success(accountResponse):
                 accountResponse.account.type = .ledger
                 self.accounts.insert(accountResponse.account, at: 0)
-            case let .failure(_, indexerError):
-                if indexerError?.containsAccount(address) ?? false {
+            case let .failure(error, _):
+                if error.isHttpNotFound {
                     self.accounts.insert(Account(address: address, type: .ledger, name: address.shortAddressDisplay()), at: 0)
                 } else {
                     self.delegate?.ledgerAccountSelectionDataSourceDidFailToFetch(self)

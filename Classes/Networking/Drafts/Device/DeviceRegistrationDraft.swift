@@ -8,27 +8,20 @@
 
 import Magpie
 
-struct DeviceRegistrationDraft: JSONKeyedBody {
-    typealias Key = RequestParameter
-    
+struct DeviceRegistrationDraft: JSONObjectBody {
     let pushToken: String?
     let platform = "ios"
     let model = UIDevice.current.model
     let locale = Locale.current.languageCode ?? "en"
     var accounts: [String] = []
     
-    func decoded() -> [Pair]? {
-        var pairs = [
-            Pair(key: .platform, value: platform),
-            Pair(key: .model, value: model),
-            Pair(key: .locale, value: locale),
-            Pair(key: .accounts, value: accounts)
-        ]
-        
-        if let pushToken = pushToken {
-            pairs.append(Pair(key: .pushToken, value: pushToken))
-        }
-        
-        return pairs
+    var bodyParams: [BodyParam] {
+        var params: [BodyParam] = []
+        params.append(.init(.platform, platform))
+        params.append(.init(.model, model))
+        params.append(.init(.locale, locale))
+        params.append(.init(.accounts, accounts))
+        params.append(.init(.pushToken, pushToken, .setIfPresent))
+        return params
     }
 }

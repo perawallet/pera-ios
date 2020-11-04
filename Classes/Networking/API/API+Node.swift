@@ -8,10 +8,10 @@
 
 import Magpie
 
-extension API {
+extension AlgorandAPI {
     @discardableResult
     func checkNodeHealth(with draft: NodeTestDraft, then handler: BoolHandler? = nil) -> EndpointOperatable? {
-        let resultHandler: Endpoint.RawResultHandler = { result in
+        let resultHandler: (Response.RawResult) -> Void = { result in
             switch result {
             case .success:
                 handler?(true)
@@ -28,25 +28,27 @@ extension API {
             return nil
         }
         
-        return Endpoint(path: Path("/health"))
-            .httpMethod(.get)
-            .validateResponseFirstWhenReceived(false)
+        return EndpointBuilder(api: self)
             .base(url.absoluteString)
-            .httpHeaders(nodeHealthHeaders(for: token))
-            .resultHandler(resultHandler)
-            .buildAndSend(self)
+            .path("/health")
+            .validateResponseBeforeEndpointCompleted(false)
+            .headers(nodeHealthHeaders(for: token))
+            .completionHandler(resultHandler)
+            .build()
+            .send()
     }
     
     @discardableResult
     func waitRound(
         with draft: WaitRoundDraft,
-        then handler: @escaping Endpoint.DefaultResultHandler<RoundDetail>
+        then handler: @escaping (Response.ModelResult<RoundDetail>) -> Void
     ) -> EndpointOperatable {
-        return Endpoint(path: Path("/v2/status/wait-for-block-after/\(draft.round)"))
+        return EndpointBuilder(api: self)
             .base(algodBase)
-            .httpMethod(.get)
-            .httpHeaders(algodAuthenticatedHeaders())
-            .resultHandler(handler)
-            .buildAndSend(self)
+            .path("/v2/status/wait-for-block-after/\(draft.round)")
+            .headers(algodAuthenticatedHeaders())
+            .completionHandler(handler)
+            .build()
+            .send()
     }
 }

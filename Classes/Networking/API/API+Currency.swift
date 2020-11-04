@@ -8,29 +8,31 @@
 
 import Magpie
 
-extension API {
+extension AlgorandAPI {
     @discardableResult
     func getCurrencies(
-        then handler: @escaping Endpoint.DefaultResultHandler<[Currency]>
+        then handler: @escaping (Response.ModelResult<[Currency]>) -> Void
     ) -> EndpointOperatable {
-        return Endpoint(path: Path("/api/currencies/"))
+        return EndpointBuilder(api: self)
             .base(mobileApiBase)
-            .httpMethod(.get)
-            .httpHeaders(mobileApiHeaders())
-            .resultHandler(handler)
-            .buildAndSend(self)
+            .path("/api/currencies/")
+            .headers(mobileApiHeaders())
+            .completionHandler(handler)
+            .build()
+            .send()
     }
     
     @discardableResult
     func getCurrencyValue(
         for currencyId: String,
-        then handler: @escaping Endpoint.DefaultResultHandler<Currency>
+        then handler: @escaping (Response.ModelResult<Currency>) -> Void
     ) -> EndpointOperatable {
-        return Endpoint(path: Path("/api/currencies/\(currencyId)"))
+        return EndpointBuilder(api: self)
             .base(mobileApiBase)
-            .httpMethod(.get)
-            .httpHeaders(mobileApiHeaders())
-            .resultHandler(handler)
-            .buildAndSend(self)
+            .path("/api/currencies/\(currencyId)")
+            .headers(mobileApiHeaders())
+            .completionHandler(handler)
+            .build()
+            .send()
     }
 }

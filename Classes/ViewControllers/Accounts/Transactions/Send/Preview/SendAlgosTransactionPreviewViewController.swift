@@ -271,8 +271,8 @@ extension SendAlgosTransactionPreviewViewController {
                 }
                 
                 switch accountResponse {
-                case let .failure(_, indexerError):
-                    if indexerError?.containsAccount(receiverAddress) ?? false {
+                case let .failure(error, _):
+                    if error.isHttpNotFound {
                         self.dismissProgressIfNeeded()
                         self.displaySimpleAlertWith(
                             title: "title-error".localized,
