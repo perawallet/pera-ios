@@ -107,12 +107,14 @@ extension TransactionController {
     }
     
     private func logLedgerTransactionError() {
-        guard let sender = fromAccount?.address else {
+        guard let account = fromAccount,
+              account.requiresLedgerConnection() else {
             return
         }
+        let sender = account.address
         let unsignedTransaction = unsignedTransactionData?.base64EncodedString()
         let signedTransaction = signedTransactionData?.base64EncodedString()
-        var log = LedgerTransactionErrorLog(sender: sender, unsignedTransaction: unsignedTransaction, signedTransaction: signedTransaction)
+        let log = LedgerTransactionErrorLog(sender: sender, unsignedTransaction: unsignedTransaction, signedTransaction: signedTransaction)
         log.record()
     }
 }
