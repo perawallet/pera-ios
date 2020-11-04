@@ -8,14 +8,12 @@
 
 import Magpie
 
-struct RekeyedAccountQuery: Query {
-    typealias Key = RequestParameter
-    
+struct RekeyedAccountQuery: ObjectQuery {
     let authAddress: String
     
-    func decoded() -> [Pair]? {
-        return [
-            Pair(key: .authAddress, value: .some(authAddress))
-        ]
+    var queryParams: [QueryParam] {
+        var params: [QueryParam] = []
+        params.append(.init(.authAddress, authAddress))
+        return params
     }
 }

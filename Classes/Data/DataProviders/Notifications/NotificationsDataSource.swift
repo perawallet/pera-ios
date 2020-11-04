@@ -11,7 +11,7 @@ import Magpie
 
 class NotificationsDataSource: NSObject {
     
-    private let api: API
+    private let api: AlgorandAPI
     private var notifications = [NotificationMessage]()
     private var viewModels = [NotificationsViewModel]()
     private var contacts = [Contact]()
@@ -25,7 +25,7 @@ class NotificationsDataSource: NSObject {
     
     weak var delegate: NotificationsDataSourceDelegate?
 
-    init(api: API) {
+    init(api: AlgorandAPI) {
         self.api = api
         super.init()
         startObserving()

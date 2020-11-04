@@ -8,25 +8,18 @@
 
 import Magpie
 
-struct FeedbackDraft: JSONKeyedBody {
-    typealias Key = RequestParameter
-    
-    let note: String
-    let category: String
-    let email: String
-    let address: String?
-    
-    func decoded() -> [Pair]? {
-        var pairs = [
-            Pair(key: .note, value: note),
-            Pair(key: .category, value: category),
-            Pair(key: .email, value: email)
-        ]
-        
-        if let address = address {
-            pairs.append(Pair(key: .publicKey, value: address))
-        }
-        
-        return pairs
+struct FeedbackDraft: JSONObjectBody {
+    var note: String
+    var category: String
+    var email: String
+    var address: String?
+
+    var bodyParams: [BodyParam] {
+        var params: [BodyParam] = []
+        params.append(.init(.note, note))
+        params.append(.init(.category, category))
+        params.append(.init(.email, email))
+        params.append(.init(.address, address, .setIfPresent))
+        return params
     }
 }

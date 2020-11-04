@@ -291,7 +291,7 @@ extension AssetAdditionViewController: AssetActionConfirmationViewControllerDele
 }
 
 extension AssetAdditionViewController: TransactionControllerDelegate {
-    func transactionController(_ transactionController: TransactionController, didFailedComposing error: Error) {
+    func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPError<TransactionError>) {
         if account.requiresLedgerConnection() {
             ledgerApprovalViewController?.dismissScreen()
         }
@@ -299,36 +299,41 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
         SVProgressHUD.dismiss()
         
         switch error {
-        case let .custom(errorType):
-            guard let transactionError = errorType as? TransactionController.TransactionError else {
-                return
-            }
-            
-            displayMinimumTransactionError(from: transactionError)
+        case let .inapp(transactionError):
+            displayTransactionError(from: transactionError)
         default:
             break
         }
     }
     
-    private func displayMinimumTransactionError(from transactionError: TransactionController.TransactionError) {
+    private func displayTransactionError(from transactionError: TransactionError) {
         switch transactionError {
         case let .minimumAmount(amount):
             NotificationBanner.showError(
                 "asset-min-transaction-error-title".localized,
                 message: "asset-min-transaction-error-message".localized(params: amount.toAlgos.toAlgosStringForLabel ?? "")
             )
+        case .invalidAddress:
+            NotificationBanner.showError("title-error".localized, message: "send-algos-receiver-address-validation".localized)
+        case let .sdkError(error):
+            NotificationBanner.showError("title-error".localized, message: error.debugDescription)
         default:
             break
         }
     }
     
-    func transactionController(_ transactionController: TransactionController, didFailedTransaction error: Error) {
+    func transactionController(_ transactionController: TransactionController, didFailedTransaction error: HIPError<TransactionError>) {
         if account.requiresLedgerConnection() {
             ledgerApprovalViewController?.dismissScreen()
         }
         
         SVProgressHUD.dismiss()
-        NotificationBanner.showError("title-error".localized, message: error.localizedDescription)
+        switch error {
+        case let .network(apiError):
+            NotificationBanner.showError("title-error".localized, message: apiError.debugDescription)
+        default:
+            NotificationBanner.showError("title-error".localized, message: error.localizedDescription)
+        }
     }
     
     func transactionController(_ transactionController: TransactionController, didFailBLEConnectionWith state: CBManagerState) {

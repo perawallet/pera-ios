@@ -51,4 +51,8 @@ extension Data {
     func toHexString() -> String {
         return self.map { String(format: "%02x", $0) }.joined()
     }
+    
+    func isLedgerErrorResponse() -> Bool {
+        toHexString() == ledgerErrorResponse
+    }
 }

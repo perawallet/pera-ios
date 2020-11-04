@@ -11,12 +11,12 @@ import Magpie
 
 class CurrencySelectionDataSource: NSObject {
     
-    private let api: API
+    private let api: AlgorandAPI
     private var currencies = [Currency]()
     
     weak var delegate: CurrencySelectionDataSourceDelegate?
 
-    init(api: API) {
+    init(api: AlgorandAPI) {
         self.api = api
         super.init()
     }

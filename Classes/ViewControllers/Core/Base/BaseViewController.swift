@@ -92,7 +92,6 @@ class BaseViewController: UIViewController, TabBarConfigurable, TrackableScreen 
         setListeners()
         configureAppearance()
         prepareLayout()
-        trackScreen()
         
         navigationController?.navigationBar.titleTextAttributes = [
             NSAttributedString.Key.font: UIFont.font(withWeight: .semiBold(size: 16.0)),
@@ -118,6 +117,7 @@ class BaseViewController: UIViewController, TabBarConfigurable, TrackableScreen 
         setNeedsStatusBarLayoutUpdateWhenAppearing()
         setNeedsNavigationBarAppearanceUpdateWhenAppearing()
         setNeedsTabBarAppearanceUpdateOnAppearing()
+        trackScreen()
         
         isViewDisappeared = false
         isViewAppearing = true
@@ -179,7 +179,7 @@ extension BaseViewController {
         return configuration.session
     }
     
-    var api: API? {
+    var api: AlgorandAPI? {
         return configuration.api
     }
 }

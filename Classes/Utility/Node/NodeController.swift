@@ -9,10 +9,10 @@
 import Foundation
 
 class NodeController {
-    let api: API
+    let api: AlgorandAPI
     let queue: OperationQueue
     
-    init(api: API) {
+    init(api: AlgorandAPI) {
         self.api = api
         self.queue = OperationQueue()
         self.queue.name = "NodeFetchOperation"
@@ -47,7 +47,7 @@ extension NodeController {
     }
     
     private func setNewNode(with address: String, and token: String, then completion: BoolHandler?) {
-         api.cancelAllEndpoints()
+         api.cancelEndpoints()
          api.base = address
          api.algodToken = token
          completion?(true)
