@@ -100,9 +100,20 @@ extension TransactionController {
                 completion?()
                 self.delegate?.transactionController(self, didCompletedTransaction: transactionId)
             case let .failure(error, _):
+                self.logLedgerTransactionError()
                 self.delegate?.transactionController(self, didFailedTransaction: .network(.unexpected(error)))
             }
         }
+    }
+    
+    private func logLedgerTransactionError() {
+        guard let sender = fromAccount?.address else {
+            return
+        }
+        let unsignedTransaction = unsignedTransactionData?.base64EncodedString()
+        let signedTransaction = signedTransactionData?.base64EncodedString()
+        var log = LedgerTransactionErrorLog(sender: sender, unsignedTransaction: unsignedTransaction, signedTransaction: signedTransaction)
+        log.record()
     }
 }
 
