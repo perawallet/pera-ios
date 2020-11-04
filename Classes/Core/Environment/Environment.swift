@@ -68,6 +68,7 @@ class Environment {
     lazy var mainNetMobileApi = "https://\(mobileHost)"
     
     lazy var termsAndServicesUrl = "https://www.algorand.com/wallet-disclaimer"
+    lazy var privacyPolicyUrl = "https://www.algorand.com/wallet-privacy-policy"
     
     private let target: AppTarget
     

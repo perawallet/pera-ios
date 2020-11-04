@@ -355,7 +355,8 @@
 
 /*MARK: Terms and Services*/
 "terms-and-services-title" = "이용 약관";
-"terms-and-services-html" = "본인은 <a href=\"https://www.algorand.com/wallet-disclaimer\">이용 약관에 동의합니다</a>";
+"privacy-policy-title" = "개인정보 보호 정책";
+
 "title-share-qr" = "QR 공유";
 "title-keep" = "유지";
 "title-edit" = "수정";

@@ -130,7 +130,6 @@ class AccountsViewController: BaseViewController {
         }
         
         displayTestNetBannerIfNeeded()
-        presentTermsAndServicesIfNeeded()
         api?.addListener(self)
     }
     
@@ -306,20 +305,6 @@ extension AccountsViewController {
     private func setAccountsCollectionViewContentState() {
         accountsView.accountsCollectionView.contentState = accountsDataSource.accounts.isEmpty ? .empty(noConnectionView) : .none
         accountsView.setHeaderButtonsHidden(accountsDataSource.accounts.isEmpty)
-    }
-    
-    private func presentTermsAndServicesIfNeeded() {
-        guard let session = self.session, !session.isTermsAndServicesAccepted() else {
-            return
-        }
-        
-        let transitionStyle = Screen.Transition.Open.customPresent(
-            presentationStyle: .custom,
-            transitionStyle: nil,
-            transitioningDelegate: termsServiceModalPresenter
-        )
-        
-        open(.termsAndServices, by: transitionStyle)
     }
     
     private func displayTestNetBannerIfNeeded() {

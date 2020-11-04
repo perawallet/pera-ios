@@ -369,7 +369,8 @@
 
 /*MARK: Terms and Services*/
 "terms-and-services-title" = "Koşullar ve Hizmetler";
-"terms-and-services-html" = "<a href=\"https://www.algorand.com/wallet-disclaimer\">Koşullar ve Hizmetler</a>'i kabul ediyorum.";
+"privacy-policy-title" = "Gizlilik Politikası";
+
 "title-share-qr" = "QR Kodunu Paylaş";
 "title-keep" = "Koru";
 "title-edit" = "Düzenle";

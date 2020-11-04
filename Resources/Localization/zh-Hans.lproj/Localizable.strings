@@ -355,7 +355,8 @@
 
 /*MARK: Terms and Services*/
 "terms-and-services-title" = "服务条款";
-"terms-and-services-html" = "我接受 <a href=\"https://www.algorand.com/wallet-disclaimer\">的服务条款</a>";
+"privacy-policy-title" = "隐私政策";
+
 "title-share-qr" = "分享二维码";
 "title-keep" = "保留";
 "title-edit" = "编辑";

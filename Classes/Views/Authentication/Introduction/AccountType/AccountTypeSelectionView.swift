@@ -10,6 +10,8 @@ import UIKit
 
 class AccountTypeSelectionView: BaseView {
     
+    private let layout = Layout<LayoutConstants>()
+    
     weak var delegate: AccountTypeSelectionViewDelegate?
     
     private lazy var stackView: UIStackView = {
@@ -24,6 +26,33 @@ class AccountTypeSelectionView: BaseView {
         return stackView
     }()
     
+    private lazy var termsAndConditionsTextView: UITextView = {
+        let textView = UITextView()
+        textView.isEditable = false
+        textView.isScrollEnabled = false
+        textView.dataDetectorTypes = .link
+        textView.textContainerInset = .zero
+        textView.textAlignment = .center
+        textView.linkTextAttributes = [
+            .foregroundColor: SharedColors.primary,
+            .underlineColor: UIColor.clear,
+            .font: UIFont.font(withWeight: .regular(size: 14.0))
+        ]
+        
+        let centerParagraphStyle = NSMutableParagraphStyle()
+        centerParagraphStyle.alignment = .center
+        
+        textView.bindHtml(
+            "introduction-title-terms-and-services".localized,
+            with: [
+                .font: UIFont.font(withWeight: .regular(size: 14.0)),
+                .foregroundColor: SharedColors.inputTitle,
+                .paragraphStyle: centerParagraphStyle
+            ]
+        )
+        return textView
+    }()
+    
     private lazy var createNewAccountView = AccountTypeView()
     
     private lazy var watchAccountView = AccountTypeView()
@@ -36,6 +65,10 @@ class AccountTypeSelectionView: BaseView {
         backgroundColor = SharedColors.secondaryBackground
     }
     
+    override func linkInteractors() {
+        termsAndConditionsTextView.delegate = self
+    }
+    
     override func setListeners() {
         createNewAccountView.addTarget(self, action: #selector(notifyDelegateToSelectCreateNewAccount), for: .touchUpInside)
         watchAccountView.addTarget(self, action: #selector(notifyDelegateToSelectWatchAccount), for: .touchUpInside)
@@ -44,6 +77,7 @@ class AccountTypeSelectionView: BaseView {
     }
     
     override func prepareLayout() {
+        setupTermsAndConditionsTextViewLayout()
         setupStackViewLayout()
     }
 }
@@ -71,19 +105,41 @@ extension AccountTypeSelectionView {
 }
 
 extension AccountTypeSelectionView {
+    private func setupTermsAndConditionsTextViewLayout() {
+        addSubview(termsAndConditionsTextView)
+        
+        termsAndConditionsTextView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.bottom.equalToSuperview().inset(safeAreaBottom + layout.current.verticalInset)
+            make.centerX.equalToSuperview()
+        }
+    }
+    
     private func setupStackViewLayout() {
         addSubview(stackView)
         
         stackView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.top.equalToSuperview()
-            make.bottom.lessThanOrEqualToSuperview()
+            make.bottom.lessThanOrEqualTo(termsAndConditionsTextView.snp.top).offset(-layout.current.verticalInset)
         }
         
         stackView.addArrangedSubview(createNewAccountView)
         stackView.addArrangedSubview(watchAccountView)
         stackView.addArrangedSubview(recoverAccountView)
         stackView.addArrangedSubview(pairAccountView)
+    }
+}
+
+extension AccountTypeSelectionView: UITextViewDelegate {
+    func textView(
+        _ textView: UITextView,
+        shouldInteractWith URL: URL,
+        in characterRange: NSRange,
+        interaction: UITextItemInteraction
+    ) -> Bool {
+        delegate?.accountTypeSelectionView(self, didOpen: URL)
+        return false
     }
 }
 
@@ -105,6 +161,14 @@ extension AccountTypeSelectionView {
     }
 }
 
+extension AccountTypeSelectionView {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let horizontalInset: CGFloat = 32.0
+        let verticalInset: CGFloat = 20.0
+    }
+}
+
 protocol AccountTypeSelectionViewDelegate: class {
     func accountTypeSelectionView(_ accountTypeSelectionView: AccountTypeSelectionView, didSelect mode: AccountSetupMode)
+    func accountTypeSelectionView(_ accountTypeSelectionView: AccountTypeSelectionView, didOpen url: URL)
 }
