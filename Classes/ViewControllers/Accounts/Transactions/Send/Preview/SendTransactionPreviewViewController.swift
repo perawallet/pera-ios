@@ -308,25 +308,19 @@ extension SendTransactionPreviewViewController: SelectAssetViewControllerDelegat
 }
 
 extension SendTransactionPreviewViewController: TransactionControllerDelegate {
-    func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPError) {
+    func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPError<TransactionError>) {
         ledgerApprovalViewController?.dismissScreen()
         
         SVProgressHUD.dismiss()
         switch error {
         case .network:
             displaySimpleAlertWith(title: "title-error".localized, message: "title-internet-connection".localized)
-        case let .inapp(errorType):
-            guard let transactionError = errorType as? TransactionController.TransactionError else {
-                return
-            }
-            
+        case let .inapp(transactionError):
             displayTransactionError(from: transactionError)
-        default:
-            displaySimpleAlertWith(title: "title-error".localized, message: "title-internet-connection".localized)
         }
     }
     
-    private func displayTransactionError(from transactionError: TransactionController.TransactionError) {
+    private func displayTransactionError(from transactionError: TransactionError) {
         switch transactionError {
         case let .minimumAmount(amount):
             NotificationBanner.showError(

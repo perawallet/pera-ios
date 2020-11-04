@@ -10,7 +10,7 @@ def main_pods
   pod 'SwiftLint'
   
   #Networking
-  pod 'Magpie/HIPAPI'
+  pod 'Magpie/HIPAPI', '~> 2.0.4'
   
   #Persistance
   pod 'KeychainAccess'
