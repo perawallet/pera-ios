@@ -156,7 +156,7 @@ extension AlgosCardView {
         rewardAmountButton.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(layout.current.defaultInset)
             make.height.equalTo(layout.current.rewardButtonHeight)
-            make.top.equalTo(currencyAmountLabel.snp.bottom).offset(layout.current.rewardButtonTopInset)
+            make.bottom.equalToSuperview().inset(layout.current.defaultInset)
         }
     }
 }

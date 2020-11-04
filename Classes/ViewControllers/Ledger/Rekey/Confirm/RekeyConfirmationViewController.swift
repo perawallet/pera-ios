@@ -117,28 +117,24 @@ extension RekeyConfirmationViewController: TransactionControllerDelegate {
         openRekeyConfirmationAlert()
     }
     
-    func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPError) {
+    func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPError<TransactionError>) {
         ledgerApprovalViewController?.dismissScreen()
         
         switch error {
-        case let .inapp(errorType):
-            guard let transactionError = errorType as? TransactionController.TransactionError else {
-                return
-            }
-            
+        case let .inapp(transactionError):
             displayTransactionError(from: transactionError)
         default:
             NotificationBanner.showError("title-error".localized, message: error.asAFError?.errorDescription ?? error.localizedDescription)
         }
     }
     
-    func transactionController(_ transactionController: TransactionController, didFailedTransaction error: HIPError) {
+    func transactionController(_ transactionController: TransactionController, didFailedTransaction error: HIPError<TransactionError>) {
         if account.requiresLedgerConnection() {
             ledgerApprovalViewController?.dismissScreen()
         }
         
         switch error {
-        case let .unexpected(apiError):
+        case let .network(apiError):
             NotificationBanner.showError("title-error".localized, message: apiError.debugDescription)
         default:
             NotificationBanner.showError("title-error".localized, message: error.localizedDescription)
@@ -222,7 +218,7 @@ extension RekeyConfirmationViewController {
         }
     }
     
-    private func displayTransactionError(from transactionError: TransactionController.TransactionError) {
+    private func displayTransactionError(from transactionError: TransactionError) {
         switch transactionError {
         case let .minimumAmount(amount):
             NotificationBanner.showError(

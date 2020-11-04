@@ -100,13 +100,16 @@ extension SendTransactionViewController: TransactionControllerDelegate {
         self.navigationController?.setViewControllers(viewControllers, animated: false)
     }
     
-    func transactionController(_ transactionController: TransactionController, didFailedTransaction error: HIPError) {
+    func transactionController(_ transactionController: TransactionController, didFailedTransaction error: HIPError<TransactionError>) {
         SVProgressHUD.dismiss()
         switch error {
-        case .network:
-            displaySimpleAlertWith(title: "title-error".localized, message: "title-internet-connection".localized)
-        case let .unexpected(apiError):
-            NotificationBanner.showError("title-error".localized, message: apiError.debugDescription)
+        case let .network(apiError):
+            switch apiError {
+            case .connection:
+                displaySimpleAlertWith(title: "title-error".localized, message: "title-internet-connection".localized)
+            default:
+                NotificationBanner.showError("title-error".localized, message: apiError.debugDescription)
+            }
         default:
             NotificationBanner.showError("title-error".localized, message: error.localizedDescription)
         }

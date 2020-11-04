@@ -27,6 +27,8 @@ class TransactionController {
     private var currentTransactionType: TransactionType?
     private var connectedDevice: CBPeripheral?
     
+    private var isCorrectLedgerAddressFetched = false
+    
     private var fromAccount: Account? {
         return transactionDraft?.from
     }
@@ -81,7 +83,7 @@ extension TransactionController {
                 self.composeTransactionData(for: transactionType)
             case let .failure(error, _):
                 self.connectedDevice = nil
-                self.delegate?.transactionController(self, didFailedComposing: .unexpected(error))
+                self.delegate?.transactionController(self, didFailedComposing: .network(.unexpected(error)))
             }
         }
     }
@@ -98,7 +100,7 @@ extension TransactionController {
                 completion?()
                 self.delegate?.transactionController(self, didCompletedTransaction: transactionId)
             case let .failure(error, _):
-                self.delegate?.transactionController(self, didFailedTransaction: .unexpected(error))
+                self.delegate?.transactionController(self, didFailedTransaction: .network(.unexpected(error)))
             }
         }
     }
@@ -454,12 +456,11 @@ extension TransactionController: BLEConnectionManagerDelegate {
     }
     
     func bleConnectionManagerEnabledToWrite(_ bleConnectionManager: BLEConnectionManager) {
-        guard let hexString = unsignedTransactionData?.toHexString(),
-            let bleData = Data(fromHexEncodedString: hexString) else {
-            return
+        if isCorrectLedgerAddressFetched {
+            signTransactionWithLedger()
+        } else {
+            fetchAddressFromLedger()
         }
-        
-        ledgerBLEController.signTransaction(bleData)
     }
     
     func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didRead string: String) {
@@ -493,9 +494,28 @@ extension TransactionController: LedgerBLEControllerDelegate {
     }
     
     func ledgerBLEController(_ ledgerBLEController: LedgerBLEController, received data: Data) {
-        guard let transactionType = currentTransactionType else {
+        guard let transactionType = currentTransactionType,
+              let account = fromAccount else {
             return
         }
+        
+        if !isCorrectLedgerAddressFetched {
+            if data.isLedgerErrorResponse() {
+                resetLedgerConnectionAndDisplayError("ble-error-ledger-connection-open-app-error".localized)
+                return
+            }
+            
+            guard let address = getValidAddress(from: data) else {
+                resetLedgerConnectionAndDisplayError("ble-error-fail-fetch-account-address".localized)
+                return
+            }
+            
+            isCorrectLedgerAddressFetched = account.authAddress.unwrap(or: account.address) == address
+            proceedSigningTransactionByLedgerIfPossible()
+            return
+        }
+        
+        isCorrectLedgerAddressFetched = false
         
         if data.toHexString() == ledgerTransactionCancelledCode {
             delegate?.transactionControllerDidFailToSignWithLedger(self)
@@ -518,8 +538,7 @@ extension TransactionController: LedgerBLEControllerDelegate {
         
         var transactionError: NSError?
         
-        guard let account = transactionDraft?.from,
-            let transactionData = unsignedTransactionData else {
+        guard let transactionData = unsignedTransactionData else {
             connectedDevice = nil
             delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.sdkError(error: transactionError)))
             return
@@ -562,6 +581,53 @@ extension TransactionController: LedgerBLEControllerDelegate {
             completeAssetTransaction(for: transactionType)
         }
     }
+    
+    private func fetchAddressFromLedger() {
+        guard let bleData = Data(fromHexEncodedString: bleLedgerAddressMessage) else {
+            return
+        }
+        
+        ledgerBLEController.fetchAddress(bleData)
+    }
+    
+    private func signTransactionWithLedger() {
+        guard let hexString = unsignedTransactionData?.toHexString(),
+            let bleData = Data(fromHexEncodedString: hexString) else {
+            return
+        }
+        
+        ledgerBLEController.signTransaction(bleData)
+    }
+    
+    private func resetLedgerConnectionAndDisplayError(_ message: String) {
+        resetLedgerConnection()
+        NotificationBanner.showError("ble-error-ledger-connection-title".localized, message: message)
+    }
+    
+    private func resetLedgerConnection() {
+        connectedDevice = nil
+        isCorrectLedgerAddressFetched = false
+    }
+    
+    private func getValidAddress(from data: Data) -> String? {
+        // Remove last two bytes to fetch data that provides message status, not related to the account address
+        var mutableData = data
+        mutableData.removeLast(2)
+
+        var error: NSError?
+        let address = AlgorandSDK().addressFromPublicKey(mutableData, error: &error)
+        
+        return error == nil && AlgorandSDK().isValidAddress(address) ? address : nil
+    }
+    
+    private func proceedSigningTransactionByLedgerIfPossible() {
+        if isCorrectLedgerAddressFetched {
+            signTransactionWithLedger()
+        } else {
+            resetLedgerConnectionAndDisplayError("ledger-transaction-account-match-error".localized)
+            delegate?.transactionControllerDidFailToSignWithLedger(self)
+        }
+    }
 }
 
 extension TransactionController {
@@ -574,12 +640,10 @@ extension TransactionController {
     }
 }
 
-extension TransactionController {
-    enum TransactionError: Error {
-        case minimumAmount(amount: Int64)
-        case invalidAddress(address: String)
-        case sdkError(error: NSError?)
-        case draft(draft: TransactionSendDraft?)
-        case other
-    }
+enum TransactionError: Error {
+    case minimumAmount(amount: Int64)
+    case invalidAddress(address: String)
+    case sdkError(error: NSError?)
+    case draft(draft: TransactionSendDraft?)
+    case other
 }
