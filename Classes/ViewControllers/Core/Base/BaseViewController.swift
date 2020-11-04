@@ -117,7 +117,6 @@ class BaseViewController: UIViewController, TabBarConfigurable, TrackableScreen 
         setNeedsStatusBarLayoutUpdateWhenAppearing()
         setNeedsNavigationBarAppearanceUpdateWhenAppearing()
         setNeedsTabBarAppearanceUpdateOnAppearing()
-        trackScreen()
         
         isViewDisappeared = false
         isViewAppearing = true
@@ -126,6 +125,7 @@ class BaseViewController: UIViewController, TabBarConfigurable, TrackableScreen 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         setNeedsTabBarAppearanceUpdateOnAppeared()
+        trackScreen()
         isViewAppearing = false
         isViewAppeared = true
     }

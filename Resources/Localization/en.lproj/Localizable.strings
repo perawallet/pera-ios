@@ -497,7 +497,7 @@
 "ledger-account-selection-add" = "Add Account";
 "ledger-rekey-error-add-auth" = "The connected Ledger device cannot sign transactions for this account. In order to do so, please connect %@.";
 "ledger-rekey-error-not-found" = "This account has been rekeyed. Please recover this account with a passphrase or Ledger device.";
-"ledger-transaction-account-match-error" = "The ledger that is connected to your account is not matching with the account’s address. You need to pair your ledger device again.";
+"ledger-transaction-account-match-error" = "It appears this Ledger device has been reset and the account on the device no longer matches this account. Please pair the Ledger again from the homepage.";
 
 // MARK: Watch Account
 "title-watch-account" = "Watch Account";
