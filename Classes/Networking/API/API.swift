@@ -9,6 +9,9 @@
 import Magpie
 
 class AlgorandAPI: API {
+    private lazy var application = HIPApplication()
+    private lazy var device = HIPDevice()
+    
     var algodToken: String?
     var indexerToken: String?
     var network: BaseNetwork = .mainnet
@@ -95,6 +98,12 @@ extension AlgorandAPI {
     func mobileApiHeaders() -> Headers {
         var headers = sharedHeaders
         headers.insert(CustomHeader(key: "algorand-network", value: network.rawValue))
+        headers.insert(AppNameHeader(application))
+        headers.insert(AppPackageNameHeader(application))
+        headers.insert(AppVersionHeader(application))
+        headers.insert(ClientTypeHeader(device))
+        headers.insert(DeviceOSVersionHeader(device))
+        headers.insert(DeviceModelHeader(device))
         return headers
     }
     
