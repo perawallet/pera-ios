@@ -302,7 +302,7 @@
 "ledger-pair-title" = "Crear cuenta Ledger";
 "ledger-tutorial-title-text" = "Sigue los pasos a continuación para crear una nueva cuenta Ledger";
 "ledger-tutorial-turned-on" = "Asegúrate de que el dispositivo Ledger esté encendido y de que tenga Bluetooth activado.";
-"ledger-tutorial-install-app" = "Instala la aplicación Algorand (versión 1.0.7 o posterior) en tu dispositivo Ledger.";
+"ledger-tutorial-install-app" = "Instala la aplicación Algorand (versión 1.2.9 o posterior) en tu dispositivo Ledger.";
 "ledger-tutorial-open-app" = "Abre la aplicación de Algorand en tu dispositivo Ledger.";
 "ledger-tutorial-bluetooth" = "Asegúrate de que Bluetooth esté activado en tu teléfono.";
 "ledger-search-button-title" = "Buscar Ledger";

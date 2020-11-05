@@ -312,7 +312,7 @@
 "ledger-pair-title" = "Ledger Hesabı Oluştur";
 "ledger-tutorial-title-text" = "Yeni bir Ledger hesabı oluşturmak için aşağıdaki adımları izleyin";
 "ledger-tutorial-turned-on" = "Ledger cihazınızın açık ve Bluetooth özelliğinin etkin olduğundan emin olun.";
-"ledger-tutorial-install-app" = "Ledger'ınıza Algorand uygulamasını (1.0.7 veya daha yeni sürümleri) yükleyin.";
+"ledger-tutorial-install-app" = "Ledger'ınıza Algorand uygulamasını (1.2.9 veya daha yeni sürümleri) yükleyin.";
 "ledger-tutorial-open-app" = "Algorand uygulamasını Ledger'ınızda açın.";
 "ledger-tutorial-bluetooth" = "Akıllı telefonunuzda Bluetooth'un etkin olduğundan emin olun.";
 "ledger-search-button-title" = "Ledger Ara";

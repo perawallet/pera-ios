@@ -300,7 +300,7 @@
 "ledger-pair-title" = "Criar Conta Ledger";
 "ledger-tutorial-title-text" = "Siga os passos abaixo para criar uma nova conta ledger";
 "ledger-tutorial-turned-on" = "Tenha seu dispositivo ledger ligado e habilitado para Bluetooth.";
-"ledger-tutorial-install-app" = "Instale o aplicativo Algorand (versão 1.0.7 ou superior) em seu Ledger.";
+"ledger-tutorial-install-app" = "Instale o aplicativo Algorand (versão 1.2.9 ou superior) em seu Ledger.";
 "ledger-tutorial-open-app" = "Abra o aplicativo Algorand em seu Ledger.";
 "ledger-tutorial-bluetooth" = "Tenha o Bluetooth habilitado em seu smartphone.";
 "ledger-search-button-title" = "Buscar Ledger";

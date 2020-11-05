@@ -300,7 +300,7 @@
 "ledger-pair-title" = "Ledger 계정 만들기";
 "ledger-tutorial-title-text" = "다음의 절차를 따라 새 Ledger 계정을\n만들어 주세요.";
 "ledger-tutorial-turned-on" = "Ledger 기기 전원을 켜고 Bluetooth를 활성화했는지 확인하세요.";
-"ledger-tutorial-install-app" = "Ledger에 알고랜드 앱을 설치하세요(버전 1.0.7 이상).";
+"ledger-tutorial-install-app" = "Ledger에 알고랜드 앱을 설치하세요(버전 1.2.9 이상).";
 "ledger-tutorial-open-app" = "Ledger에서 알고랜드 앱을 엽니다.";
 "ledger-tutorial-bluetooth" = "내 스마트폰에서 Bluetooth가 켜졌는지 확인합니다.";
 "ledger-search-button-title" = "Ledger를 찾습니다.";

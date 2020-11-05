@@ -300,7 +300,7 @@
 "ledger-pair-title" = "创建Ledger账户";
 "ledger-tutorial-title-text" = "请按照以下指示，创建新的Ledger账户";
 "ledger-tutorial-turned-on" = "确认您的Ledger设备已开启，并启用了蓝牙功能。";
-"ledger-tutorial-install-app" = "请在您的Ledger上安装Algorand的APP（1.0.7或更新的版本）。";
+"ledger-tutorial-install-app" = "请在您的Ledger上安装Algorand的APP（1.2.9或更新的版本）。";
 "ledger-tutorial-open-app" = "在您的Ledger上打开Algorand的APP";
 "ledger-tutorial-bluetooth" = "确认开启手机上的蓝牙功能";
 "ledger-search-button-title" = "搜索Ledger";

@@ -372,7 +372,7 @@
 "ledger-pair-title" = "Create Ledger Account";
 "ledger-tutorial-title-text" = "Follow the steps below to create a new\nledger account";
 "ledger-tutorial-turned-on" = "Make sure that your ledger device is on and has Bluetooth enabled.";
-"ledger-tutorial-install-app" = "Install the Algorand app (version 1.0.7 or later) onto your Ledger.";
+"ledger-tutorial-install-app" = "Install the Algorand app (version 1.2.9 or later) onto your Ledger.";
 "ledger-tutorial-open-app" = "Open the Algorand app on your Ledger.";
 "ledger-tutorial-bluetooth" = "Make sure Bluetooth is enabled on your smartphone.";
 "ledger-search-button-title" = "Search for Ledger";
@@ -381,7 +381,7 @@
 "ledger-device-list-title" = "Pair Ledger Device";
 "ledger-device-list-looking" = "Looking for Other Ledger Devices";
 "ledger-device-list-connect" = "Connect";
-"ledger-device-list-troubleshoot" = "Trouble Shoot";
+"ledger-device-list-troubleshoot" = "Troubleshoot";
 
 // MARK: Ledger Troubleshooting
 "title-step-1" = "Step 1";
