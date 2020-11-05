@@ -105,18 +105,6 @@ extension TransactionController {
             }
         }
     }
-    
-    private func logLedgerTransactionError() {
-        guard let account = fromAccount,
-              account.requiresLedgerConnection() else {
-            return
-        }
-        let sender = account.address
-        let unsignedTransaction = unsignedTransactionData?.base64EncodedString()
-        let signedTransaction = signedTransactionData?.base64EncodedString()
-        let log = LedgerTransactionErrorLog(sender: sender, unsignedTransaction: unsignedTransaction, signedTransaction: signedTransaction)
-        log.record()
-    }
 }
 
 extension TransactionController {
@@ -640,6 +628,21 @@ extension TransactionController: LedgerBLEControllerDelegate {
             resetLedgerConnectionAndDisplayError("ledger-transaction-account-match-error".localized)
             delegate?.transactionControllerDidFailToSignWithLedger(self)
         }
+    }
+}
+
+extension TransactionController {
+    private func logLedgerTransactionError() {
+        guard let account = fromAccount,
+              account.requiresLedgerConnection() else {
+            return
+        }
+        
+        LedgerTransactionErrorLog(
+            account: account,
+            unsignedTransaction: unsignedTransactionData,
+            signedTransaction: signedTransactionData
+        ).record()
     }
 }
 

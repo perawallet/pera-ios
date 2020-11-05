@@ -9,23 +9,14 @@
 import Foundation
 
 struct LedgerTransactionErrorLog: ErrorLog {
-    var id: Int {
-        return 1
-    }
+    let name: ErrorLogs = .ledgerTransactionError
+    var params: [ErrorLogParamKeys: Any]
     
-    var name: String {
-        return "LedgerTransactionError"
-    }
-
-    var params: [String: String] {
-        return [
-            "sender": sender,
-            "unsigned_transaction": unsignedTransaction ?? "",
-            "signed_transaction": unsignedTransaction ?? ""
+    init(account: Account, unsignedTransaction: Data?, signedTransaction: Data?) {
+        params = [
+            .sender: account.address,
+            .unsignedTransaction: unsignedTransaction?.base64EncodedString() ?? "",
+            .signedTransaction: signedTransaction?.base64EncodedString() ?? ""
         ]
     }
-    
-    let sender: String
-    let unsignedTransaction: String?
-    let signedTransaction: String?
 }
