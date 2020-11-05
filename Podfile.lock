@@ -75,18 +75,18 @@ PODS:
     - GoogleUtilities/Logger
   - KeychainAccess (4.2.0)
   - lottie-ios (3.1.8)
-  - Magpie/Alamofire (2.0.4):
+  - Magpie/Alamofire (2.0.5):
     - Alamofire (~> 5.2)
     - Magpie/Core
-  - Magpie/Core (2.0.4):
+  - Magpie/Core (2.0.5):
     - Magpie/HIPUtils
-  - Magpie/HIPAPI (2.0.4):
+  - Magpie/HIPAPI (2.0.5):
     - Magpie/Alamofire
     - Magpie/HIPExceptions
     - Valet (~> 4.1)
-  - Magpie/HIPExceptions (2.0.4):
+  - Magpie/HIPExceptions (2.0.5):
     - Magpie/HIPUtils
-  - Magpie/HIPUtils (2.0.4)
+  - Magpie/HIPUtils (2.0.5)
   - MarqueeLabel (4.0.2)
   - nanopb (1.30905.0):
     - nanopb/decode (= 1.30905.0)
@@ -109,7 +109,7 @@ DEPENDENCIES:
   - Firebase/Crashlytics
   - KeychainAccess
   - lottie-ios
-  - Magpie/HIPAPI (~> 2.0.4)
+  - Magpie/HIPAPI (~> 2.0.5)
   - NotificationBannerSwift
   - SnapKit
   - SVProgressHUD
@@ -162,7 +162,7 @@ SPEC CHECKSUMS:
   GoogleUtilities: 39530bc0ad980530298e9c4af8549e991fd033b1
   KeychainAccess: 3f760109aa99b05d0f231e28b22642da7153e38a
   lottie-ios: 48fac6be217c76937e36e340e2d09cf7b10b7f5f
-  Magpie: 84effd52394ce8fd62964e7ba2ec3f0c4d9cc5e2
+  Magpie: 50a82ab4b27defa9b24f44796c9b2b03f3a43110
   MarqueeLabel: f762aa681ae201f66c1d511858b171f75d83013a
   nanopb: c43f40fadfe79e8b8db116583945847910cbabc9
   NotificationBannerSwift: 713e20f21b6105f4a36a00e5d9fa414a930d3d8e
@@ -173,6 +173,6 @@ SPEC CHECKSUMS:
   SwiftLint: 22ccbbe3b8008684be5955693bab135e0ed6a447
   Valet: 11ab0e318b7284888a81392e36136563b4af5deb
 
-PODFILE CHECKSUM: 79aada851732c36b8a12cd50953d2c2286d7c3c0
+PODFILE CHECKSUM: ee0adc39add096d0393bfe805ee61c6a302cde01
 
 COCOAPODS: 1.9.3
