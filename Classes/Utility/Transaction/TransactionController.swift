@@ -100,6 +100,7 @@ extension TransactionController {
                 completion?()
                 self.delegate?.transactionController(self, didCompletedTransaction: transactionId)
             case let .failure(error, _):
+                self.logLedgerTransactionError()
                 self.delegate?.transactionController(self, didFailedTransaction: .network(.unexpected(error)))
             }
         }
@@ -627,6 +628,21 @@ extension TransactionController: LedgerBLEControllerDelegate {
             resetLedgerConnectionAndDisplayError("ledger-transaction-account-match-error".localized)
             delegate?.transactionControllerDidFailToSignWithLedger(self)
         }
+    }
+}
+
+extension TransactionController {
+    private func logLedgerTransactionError() {
+        guard let account = fromAccount,
+              account.requiresLedgerConnection() else {
+            return
+        }
+        
+        LedgerTransactionErrorLog(
+            account: account,
+            unsignedTransaction: unsignedTransactionData,
+            signedTransaction: signedTransactionData
+        ).record()
     }
 }
 
