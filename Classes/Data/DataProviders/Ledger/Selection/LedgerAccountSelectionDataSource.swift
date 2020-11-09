@@ -299,9 +299,16 @@ extension LedgerAccountSelectionDataSource {
     }
     
     private func addLedgerAccountIfNeeded() {
-        if let account = account(at: 0),
-            api.session.accountInformation(from: account.address) == nil {
-            setupLocalAccount(from: account, isLedgerAccount: true)
+        if let account = account(at: 0) {
+            if let ledgerAccount = api.session.accountInformation(from: account.address) {
+                ledgerAccount.ledgerDetail = ledger
+                api.session.authenticatedUser?.updateAccount(ledgerAccount)
+                
+                account.ledgerDetail = ledger
+                api.session.updateAccount(account)
+            } else {
+                setupLocalAccount(from: account, isLedgerAccount: true)
+            }
         }
     }
 }
