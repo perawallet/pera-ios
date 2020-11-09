@@ -256,6 +256,7 @@ extension AssetDetailViewController: TransactionsViewControllerDelegate {
 
 extension AssetDetailViewController: TransactionActionsViewDelegate {
     func transactionActionsViewDidSendTransaction(_ transactionActionsView: TransactionActionsView) {
+        SendAssetDetailEvent(address: account.address).logEvent()
         if let assetDetail = assetDetail {
             open(
                 .sendAssetTransactionPreview(
@@ -273,6 +274,7 @@ extension AssetDetailViewController: TransactionActionsViewDelegate {
     }
     
     func transactionActionsViewDidRequestTransaction(_ transactionActionsView: TransactionActionsView) {
+        ReceiveAssetDetailEvent(address: account.address).logEvent()
         let draft = QRCreationDraft(address: account.address, mode: .address)
         open(.qrGenerator(title: account.name ?? account.address.shortAddressDisplay(), draft: draft, isTrackable: true), by: .present)
     }
