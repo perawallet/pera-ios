@@ -24,3 +24,13 @@ extension UIView {
         return UIApplication.shared.keyWindow?.safeAreaInsets ?? .zero
     }
 }
+
+extension UIView {
+    var isDarkModeDisplay: Bool {
+        if #available(iOS 12.0, *) {
+            return traitCollection.userInterfaceStyle == .dark
+        }
+        
+        return false
+    }
+}
