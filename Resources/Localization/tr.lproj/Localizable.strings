@@ -37,9 +37,9 @@
 "introduction-title-text" = "Tüm varlıkları tek uygulamadan yönetin";
 
 /*MARK: Password Setting*/
-"choose-password-title" = "Geçiş Kodu Seç";
-"password-set-subtitle" = "Altı haneli geçiş kodu seçin";
-"password-verify-title" = "Geçiş Kodunu Doğrula";
+"choose-password-title" = "Giriş Kodu Seç";
+"password-set-subtitle" = "Altı haneli giriş kodu seçin";
+"password-verify-title" = "Giriş Kodunu Doğrula";
 "password-change-subtitle" = "Altı haneli şifrenizi girin";
 "password-verify-subtitle" = "Aynı altı haneli şifrenizi girin";
 "password-verify-fail-title" = "Hatalı Şifre";
@@ -481,9 +481,9 @@
 /*MARK: Account Type Selection*/
 "account-type-choose-title" = "Hesap Türünü Seçin";
 "account-type-selection-create" = "Yeni Hesap Oluştur";
-"account-type-selection-create-detail" = "Yeni bir adres ve parola ile bir hesap oluşturun";
+"account-type-selection-create-detail" = "Yeni bir adres ve parola ile hesap oluşturun";
 "account-type-selection-watch-detail" = "Bir hesabın yalnızca adresini kullanarak işlemlerini izleyin ";
-"account-type-selection-recover" = "Paroladan Kurtar";
+"account-type-selection-recover" = "Parola ile Kurtar";
 "account-type-selection-recover-detail" = "Hesabı 25 kelimelik bir parola ile kurtarın";
 "account-type-selection-ledger" = "Ledger Hesabını Eşleştir";
 "account-type-selection-ledger-detail" = "Ledger Donanım cüzdanı ile desteklenen bir hesap ile eşleştirin";

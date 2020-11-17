@@ -279,6 +279,7 @@ extension TabBarController: SelectAssetViewControllerDelegate {
         )
         
         if transactionAction == .send {
+            SendTabEvent().logEvent()
             open(
                 .sendAlgosTransactionPreview(
                     account: account,
@@ -309,6 +310,7 @@ extension TabBarController: SelectAssetViewControllerDelegate {
         )
         
         if transactionAction == .send {
+            SendTabEvent().logEvent()
             open(
                 .sendAssetTransactionPreview(
                     account: account,

@@ -1137,6 +1137,15 @@
 		2B56F7D6225B3C1D00E58737 /* SendTransactionPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B56F7D5225B3C1D00E58737 /* SendTransactionPreviewViewController.swift */; };
 		2B56F7DA225B45B300E58737 /* SendTransactionPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B56F7D9225B45B300E58737 /* SendTransactionPreviewView.swift */; };
 		2B56F7DC225B51C100E58737 /* AssetInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B56F7DB225B51C100E58737 /* AssetInputView.swift */; };
+		2B57D8EF25587F4F006E6FCE /* ReceiveAssetDetailEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B57D8EE25587F4F006E6FCE /* ReceiveAssetDetailEvent.swift */; };
+		2B57D8F025587F4F006E6FCE /* ReceiveAssetDetailEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B57D8EE25587F4F006E6FCE /* ReceiveAssetDetailEvent.swift */; };
+		2B57D8F125587F4F006E6FCE /* ReceiveAssetDetailEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B57D8EE25587F4F006E6FCE /* ReceiveAssetDetailEvent.swift */; };
+		2B57D8F625587FBB006E6FCE /* SendAssetDetailEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B57D8F525587FBB006E6FCE /* SendAssetDetailEvent.swift */; };
+		2B57D8F725587FBB006E6FCE /* SendAssetDetailEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B57D8F525587FBB006E6FCE /* SendAssetDetailEvent.swift */; };
+		2B57D8F825587FBB006E6FCE /* SendAssetDetailEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B57D8F525587FBB006E6FCE /* SendAssetDetailEvent.swift */; };
+		2B57D8FD25587FDF006E6FCE /* SendTabEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B57D8FC25587FDF006E6FCE /* SendTabEvent.swift */; };
+		2B57D8FE25587FDF006E6FCE /* SendTabEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B57D8FC25587FDF006E6FCE /* SendTabEvent.swift */; };
+		2B57D8FF25587FDF006E6FCE /* SendTabEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B57D8FC25587FDF006E6FCE /* SendTabEvent.swift */; };
 		2B59F1392254BABF005203DD /* algorand.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2B59F1372254BABF005203DD /* algorand.xcdatamodeld */; };
 		2B59F15C22550778005203DD /* Codable+CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B59F15B22550778005203DD /* Codable+CoreData.swift */; };
 		2B59F15E22552845005203DD /* DBStorable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B59F15D22552845005203DD /* DBStorable.swift */; };
@@ -1881,6 +1890,9 @@
 		2B56F7D5225B3C1D00E58737 /* SendTransactionPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendTransactionPreviewViewController.swift; sourceTree = "<group>"; };
 		2B56F7D9225B45B300E58737 /* SendTransactionPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendTransactionPreviewView.swift; sourceTree = "<group>"; };
 		2B56F7DB225B51C100E58737 /* AssetInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetInputView.swift; sourceTree = "<group>"; };
+		2B57D8EE25587F4F006E6FCE /* ReceiveAssetDetailEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveAssetDetailEvent.swift; sourceTree = "<group>"; };
+		2B57D8F525587FBB006E6FCE /* SendAssetDetailEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendAssetDetailEvent.swift; sourceTree = "<group>"; };
+		2B57D8FC25587FDF006E6FCE /* SendTabEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendTabEvent.swift; sourceTree = "<group>"; };
 		2B59F1382254BABF005203DD /* Contact.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Contact.xcdatamodel; sourceTree = "<group>"; };
 		2B59F15B22550778005203DD /* Codable+CoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Codable+CoreData.swift"; sourceTree = "<group>"; };
 		2B59F15D22552845005203DD /* DBStorable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBStorable.swift; sourceTree = "<group>"; };
@@ -2714,6 +2726,7 @@
 		2B32A2462552EFBD007CC3A6 /* Events */ = {
 			isa = PBXGroup;
 			children = (
+				2B57D8ED25587F26006E6FCE /* Send */,
 				2B8E5EB5254700D4001D8E30 /* Receive */,
 				2B9F063A24B5E48A006880F0 /* RegistrationEvent.swift */,
 				2B9F063D24B5E4A7006880F0 /* TransactionEvent.swift */,
@@ -3741,6 +3754,15 @@
 			path = Send;
 			sourceTree = "<group>";
 		};
+		2B57D8ED25587F26006E6FCE /* Send */ = {
+			isa = PBXGroup;
+			children = (
+				2B57D8F525587FBB006E6FCE /* SendAssetDetailEvent.swift */,
+				2B57D8FC25587FDF006E6FCE /* SendTabEvent.swift */,
+			);
+			path = Send;
+			sourceTree = "<group>";
+		};
 		2B59F15F22563F78005203DD /* Container */ = {
 			isa = PBXGroup;
 			children = (
@@ -4478,6 +4500,7 @@
 				2B8E5F0E25471F6E001D8E30 /* ReceiveShareEvent.swift */,
 				2B8E5F1525471F7D001D8E30 /* ReceiveShareCompleteEvent.swift */,
 				2B8E5F8D25482FC6001D8E30 /* ReceiveTabEvent.swift */,
+				2B57D8EE25587F4F006E6FCE /* ReceiveAssetDetailEvent.swift */,
 			);
 			path = Receive;
 			sourceTree = "<group>";
@@ -6294,6 +6317,7 @@
 				2B3A34E4246EDA50001C8F22 /* TransactionAccountNameView.swift in Sources */,
 				2BE93706245A2F4B00322C1E /* UIView+Shadow.swift in Sources */,
 				2B01E2C924EF121000C6E5B7 /* LedgerAccountSelectionDataSource.swift in Sources */,
+				2B57D8F825587FBB006E6FCE /* SendAssetDetailEvent.swift in Sources */,
 				2B46262E23758CF4000AE73C /* AssetDetail.swift in Sources */,
 				2B43B83D22A8394F00CEA8F3 /* Date+Additions.swift in Sources */,
 				95A1285E242BA3F900B491A5 /* LedgerTroubleshootBluetoothConnectionViewController.swift in Sources */,
@@ -6324,6 +6348,7 @@
 				2B298D1824F47FCF0047408A /* LedgerAccountSelectionTitleViewModel.swift in Sources */,
 				2B3D73B723C3621500597D32 /* VerifiedAssetList.swift in Sources */,
 				2BE93701245A2EE700322C1E /* Shadow.swift in Sources */,
+				2B57D8FF25587FDF006E6FCE /* SendTabEvent.swift in Sources */,
 				2B44C37F247419910074D57D /* TransactionsViewController.swift in Sources */,
 				2BB64BE12402ABDD00519981 /* LedgerDeviceListView.swift in Sources */,
 				17BD4E292292F1260003E49A /* OptionsContextView.swift in Sources */,
@@ -6396,6 +6421,7 @@
 				17BD4E532292F1260003E49A /* TransactionHistoryCell.swift in Sources */,
 				2B8E7C94246AD8B800CC5A58 /* ContactsEmptyView.swift in Sources */,
 				2BB64BDD240277A500519981 /* LedgerTroubleshootOption.swift in Sources */,
+				2B57D8F125587F4F006E6FCE /* ReceiveAssetDetailEvent.swift in Sources */,
 				17BD4E542292F1260003E49A /* Contact.swift in Sources */,
 				2B4487012379592300C19FDE /* AssetCell.swift in Sources */,
 				2B1A1D5824B351CF00CB4E78 /* ListErrorView.swift in Sources */,
@@ -6811,6 +6837,7 @@
 				2B0F618F24EC129D00DA22A6 /* Formatter+Additions.swift in Sources */,
 				2B0F619024EC129D00DA22A6 /* DeepLinkParser.swift in Sources */,
 				2B0F619224EC129D00DA22A6 /* AddNodeView.swift in Sources */,
+				2B57D8F725587FBB006E6FCE /* SendAssetDetailEvent.swift in Sources */,
 				2B0F619324EC129D00DA22A6 /* FeedbackViewController.swift in Sources */,
 				2B0F619424EC129D00DA22A6 /* SendTransactionPreviewViewController.swift in Sources */,
 				2B0F619524EC129D00DA22A6 /* AssetDisplayView.swift in Sources */,
@@ -6841,6 +6868,7 @@
 				2B0F61AE24EC129D00DA22A6 /* AccountRecoverViewController.swift in Sources */,
 				2B0F61AF24EC129D00DA22A6 /* LedgerTroubleshootInstallAppViewController.swift in Sources */,
 				2B0F61B024EC129D00DA22A6 /* AccountNameSetupViewController.swift in Sources */,
+				2B57D8FE25587FDF006E6FCE /* SendTabEvent.swift in Sources */,
 				2B0F61B124EC129D00DA22A6 /* Int.swift in Sources */,
 				2B0F61B224EC129D00DA22A6 /* QRCreationDraft.swift in Sources */,
 				2B0F61B324EC129D00DA22A6 /* ContactInfoViewModel.swift in Sources */,
@@ -6913,6 +6941,7 @@
 				2B0F61EF24EC129D00DA22A6 /* AssetInputView.swift in Sources */,
 				2B0F61F024EC129D00DA22A6 /* AccountsViewModel.swift in Sources */,
 				2B0F61F124EC129D00DA22A6 /* AlgorandSDK.swift in Sources */,
+				2B57D8F025587F4F006E6FCE /* ReceiveAssetDetailEvent.swift in Sources */,
 				2B0F61F224EC129D00DA22A6 /* SendTransactionPreviewView.swift in Sources */,
 				2B0F61F424EC129D00DA22A6 /* API+Node.swift in Sources */,
 				2B0F61F524EC129D00DA22A6 /* LocalAuthenticationPreferenceView.swift in Sources */,
@@ -7328,6 +7357,7 @@
 				2B3A34E3246EDA50001C8F22 /* TransactionAccountNameView.swift in Sources */,
 				2BE93705245A2F4B00322C1E /* UIView+Shadow.swift in Sources */,
 				2B01E2C824EF121000C6E5B7 /* LedgerAccountSelectionDataSource.swift in Sources */,
+				2B57D8F625587FBB006E6FCE /* SendAssetDetailEvent.swift in Sources */,
 				2B43B83C22A8394F00CEA8F3 /* Date+Additions.swift in Sources */,
 				2BF34CC2223A95A50052CAD3 /* API.swift in Sources */,
 				95A1285D242BA3F900B491A5 /* LedgerTroubleshootBluetoothConnectionViewController.swift in Sources */,
@@ -7358,6 +7388,7 @@
 				2B298D1724F47FCF0047408A /* LedgerAccountSelectionTitleViewModel.swift in Sources */,
 				2BB64BE02402ABDD00519981 /* LedgerDeviceListView.swift in Sources */,
 				2BE93700245A2EE700322C1E /* Shadow.swift in Sources */,
+				2B57D8FD25587FDF006E6FCE /* SendTabEvent.swift in Sources */,
 				2B44C37E247419910074D57D /* TransactionsViewController.swift in Sources */,
 				2B448734237AAD1200C19FDE /* AlgoAssetView.swift in Sources */,
 				2B98233B231EC207009560CD /* TransactionsQuery.swift in Sources */,
@@ -7430,6 +7461,7 @@
 				2BE9372D2463272500322C1E /* SelectAssetViewModel.swift in Sources */,
 				2B8E7C93246AD8B800CC5A58 /* ContactsEmptyView.swift in Sources */,
 				2BB64BDC240277A500519981 /* LedgerTroubleshootOption.swift in Sources */,
+				2B57D8EF25587F4F006E6FCE /* ReceiveAssetDetailEvent.swift in Sources */,
 				2BDE9CDC224E2379007EFF30 /* TransactionHistoryContextView.swift in Sources */,
 				2BBA1989231FEB080080A6F6 /* API+Notification.swift in Sources */,
 				2B1A1D5724B351CF00CB4E78 /* ListErrorView.swift in Sources */,
@@ -7807,7 +7839,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 8;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = YES;
@@ -7838,7 +7870,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -7868,7 +7900,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -7898,7 +7930,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 8;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = YES;
@@ -7930,7 +7962,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -7961,7 +7993,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -8109,7 +8141,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 8;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = YES;
@@ -8141,7 +8173,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -8228,7 +8260,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
