@@ -396,7 +396,7 @@ platform :ios do
       app_id: options[:tryouts_app_id],
       api_token: options[:tryouts_api_token],
       build_file: lane_context[SharedValues::IPA_OUTPUT_PATH],
-      notify: 1,
+      notify: 0,
       status: 2,
       notes_path: "./Release-Notes.md"
     )
