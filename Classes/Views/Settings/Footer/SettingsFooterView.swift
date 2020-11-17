@@ -18,9 +18,9 @@ class SettingsFooterView: BaseView {
         let button = UIButton(type: .custom)
             .withTitle("settings-logout-title".localized)
             .withAlignment(.center)
-            .withTitleColor(SharedColors.gray700)
+            .withTitleColor(Colors.Text.primary)
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
-            .withBackgroundColor(SharedColors.secondaryBackground)
+            .withBackgroundColor(Colors.Background.secondary)
         button.layer.cornerRadius = 22.0
         return button
     }()
@@ -29,7 +29,7 @@ class SettingsFooterView: BaseView {
         let label = UILabel()
             .withAlignment(.center)
             .withLine(.single)
-            .withTextColor(SharedColors.gray500)
+            .withTextColor(Colors.Text.secondary)
             .withFont(UIFont.font(withWeight: .regular(size: 12.0)))
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
             label.text = "settings-app-version".localized(params: version)
@@ -38,8 +38,10 @@ class SettingsFooterView: BaseView {
     }()
     
     override func configureAppearance() {
-        super.configureAppearance()
-        logoutButton.applySmallShadow()
+        backgroundColor = Colors.Background.tertiary
+        if !isDarkModeDisplay {
+            logoutButton.applySmallShadow()
+        }
     }
     
     override func setListeners() {
@@ -53,7 +55,9 @@ class SettingsFooterView: BaseView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        logoutButton.updateShadowLayoutWhenViewDidLayoutSubviews(cornerRadius: 22.0)
+        if !isDarkModeDisplay {
+            logoutButton.updateShadowLayoutWhenViewDidLayoutSubviews(cornerRadius: 22.0)
+        }
     }
 }
 

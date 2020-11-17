@@ -25,8 +25,8 @@ class AssetAdditionView: BaseView {
         assetInputView.leftImageView.image = img("icon-field-search")
         assetInputView.rightInputAccessoryButton.setImage(img("icon-field-close"), for: .normal)
         assetInputView.rightInputAccessoryButton.isHidden = true
-        assetInputView.inputTextField.textColor = SharedColors.primaryText
-        assetInputView.inputTextField.tintColor = SharedColors.primaryText
+        assetInputView.inputTextField.textColor = Colors.Text.primary
+        assetInputView.inputTextField.tintColor = Colors.Text.primary
         assetInputView.inputTextField.returnKeyType = .done
         assetInputView.inputTextField.autocorrectionType = .no
         return assetInputView
@@ -34,7 +34,7 @@ class AssetAdditionView: BaseView {
     
     private lazy var segmentControlContainerView: UIView = {
         let view = UIView()
-        view.backgroundColor = SharedColors.secondaryBackground
+        view.backgroundColor = Colors.Background.tertiary
         return view
     }()
     
@@ -48,8 +48,8 @@ class AssetAdditionView: BaseView {
             segments: segments,
             index: 0,
             options: [
-                .backgroundColor(SharedColors.gray100),
-                .indicatorViewBackgroundColor(SharedColors.secondaryBackground),
+                .backgroundColor(Colors.Component.assetHeader),
+                .indicatorViewBackgroundColor(Colors.Background.secondary),
                 .cornerRadius(8.0),
                 .indicatorViewInset(4.0)
             ]
@@ -59,7 +59,7 @@ class AssetAdditionView: BaseView {
     
     private(set) lazy var assetsCollectionView: AssetsCollectionView = {
         let collectionView = AssetsCollectionView(containsPendingAssets: false)
-        collectionView.backgroundColor = SharedColors.secondaryBackground
+        collectionView.backgroundColor = Colors.Background.tertiary
         collectionView.contentInset = .zero
         return collectionView
     }()
@@ -150,12 +150,6 @@ extension AssetAdditionView {
         let collectionViewTopInset: CGFloat = 15.0
         let segmentControlContainerHeight = 72.0
         let segmentControlTopInset = 14.0
-    }
-}
-
-extension AssetAdditionView {
-    private enum Colors {
-        static let placeholderColor = rgba(0.67, 0.67, 0.72, 0.3)
     }
 }
 

@@ -26,16 +26,16 @@ class AccountListViewModel {
                 
                 let amountText = "\(assetAmount.toFractionStringForLabel(fraction: assetDetail.fractionDecimals) ?? "")".attributed([
                     .font(UIFont.font(withWeight: .medium(size: 14.0))),
-                    .textColor(SharedColors.primaryText)
+                    .textColor(Colors.Text.primary)
                 ])
                 
                 let codeText = " (\(assetDetail.getAssetCode()))".attributed([
                     .font(UIFont.font(withWeight: .medium(size: 14.0))),
-                    .textColor(SharedColors.detailText)
+                    .textColor(Colors.Text.tertiary)
                 ])
                 cell.contextView.detailLabel.attributedText = amountText + codeText
             } else {
-                cell.contextView.detailLabel.textColor = SharedColors.primaryText
+                cell.contextView.detailLabel.textColor = Colors.Text.primary
                 cell.contextView.imageView.isHidden = false
                 cell.contextView.detailLabel.text = account.amount.toAlgos.toAlgosStringForLabel
             }

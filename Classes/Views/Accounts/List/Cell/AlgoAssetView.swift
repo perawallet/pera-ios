@@ -19,7 +19,7 @@ class AlgoAssetView: BaseView {
     private lazy var algosLabel: UILabel = {
         UILabel()
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.Text.primary)
             .withLine(.single)
             .withAlignment(.left)
             .withText("asset-algos-title".localized)
@@ -28,19 +28,19 @@ class AlgoAssetView: BaseView {
     private(set) lazy var amountLabel: UILabel = {
         UILabel()
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.Text.primary)
             .withLine(.single)
             .withAlignment(.right)
     }()
     
     private lazy var separatorView: UIView = {
         let view = UIView()
-        view.backgroundColor = SharedColors.primaryBackground
+        view.backgroundColor = Colors.Component.separator
         return view
     }()
     
     override func configureAppearance() {
-        backgroundColor = SharedColors.secondaryBackground
+        backgroundColor = Colors.Background.secondary
     }
     
     override func prepareLayout() {
@@ -111,7 +111,7 @@ extension AlgoAssetView {
 
 extension AlgoAssetView {
     func setEnabled(_ isEnabled: Bool) {
-        backgroundColor = isEnabled ? SharedColors.secondaryBackground : SharedColors.disabledBackground
+        backgroundColor = isEnabled ? SharedColors.secondaryBackground : Colors.Background.disabled
         separatorView.backgroundColor = isEnabled ? SharedColors.primaryBackground : SharedColors.gray200
     }
 }

@@ -17,7 +17,7 @@ class BottomInformationView: BaseView {
             .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
             .withLine(.contained)
             .withAlignment(.center)
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.Text.primary)
     }()
     
     private(set) lazy var imageView = UIImageView()
@@ -27,11 +27,11 @@ class BottomInformationView: BaseView {
             .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
             .withLine(.contained)
             .withAlignment(.center)
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.Text.primary)
     }()
     
     override func configureAppearance() {
-        backgroundColor = SharedColors.secondaryBackground
+        backgroundColor = Colors.Background.secondary
     }
     
     override func prepareLayout() {

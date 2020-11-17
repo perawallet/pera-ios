@@ -17,7 +17,7 @@ class AssetNameView: BaseView {
     private(set) lazy var nameLabel: UILabel = {
         UILabel()
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.Text.primary)
             .withLine(.single)
             .withAlignment(.left)
     }()
@@ -25,7 +25,7 @@ class AssetNameView: BaseView {
     private(set) lazy var codeLabel: UILabel = {
         UILabel()
             .withFont(UIFont.font(withWeight: .regular(size: 12.0)))
-            .withTextColor(SharedColors.detailText)
+            .withTextColor(Colors.Text.secondary)
             .withLine(.single)
             .withAlignment(.left)
     }()
@@ -33,7 +33,7 @@ class AssetNameView: BaseView {
     private(set) lazy var idLabel: UILabel = {
         UILabel()
             .withFont(UIFont.font(withWeight: .regular(size: 12.0)))
-            .withTextColor(SharedColors.detailText)
+            .withTextColor(Colors.Text.secondary)
             .withLine(.single)
             .withAlignment(.left)
     }()

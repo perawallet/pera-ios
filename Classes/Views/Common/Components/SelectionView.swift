@@ -15,14 +15,14 @@ class SelectionView: BaseControl {
     private(set) lazy var leftExplanationLabel: UILabel = {
         UILabel()
             .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
-            .withTextColor(SharedColors.inputTitle)
+            .withTextColor(Colors.Text.primary)
             .withText("asset-title".localized)
     }()
     
     private lazy var containerView: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 12.0
-        view.backgroundColor = SharedColors.secondaryBackground
+        view.backgroundColor = Colors.Background.secondary
         view.isUserInteractionEnabled = false
         return view
     }()
@@ -30,7 +30,7 @@ class SelectionView: BaseControl {
     private(set) lazy var detailLabel: UILabel = {
         UILabel()
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
-            .withTextColor(SharedColors.gray400)
+            .withTextColor(Colors.Text.hint)
             .withText("send-choose-asset".localized)
             .withLine(.single)
     }()
@@ -43,7 +43,9 @@ class SelectionView: BaseControl {
     
     override func configureAppearance() {
         super.configureAppearance()
-        containerView.applySmallShadow()
+        if !isDarkModeDisplay {
+            containerView.applySmallShadow()
+        }
     }
     
     override func prepareLayout() {
@@ -55,7 +57,9 @@ class SelectionView: BaseControl {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        containerView.updateShadowLayoutWhenViewDidLayoutSubviews()
+        if !isDarkModeDisplay {
+            containerView.updateShadowLayoutWhenViewDidLayoutSubviews()
+        }
     }
 }
 

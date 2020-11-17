@@ -16,7 +16,7 @@ class SettingsInfoContextView: BaseView {
     
     private lazy var nameLabel: UILabel = {
         UILabel()
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.Text.primary)
             .withLine(.single)
             .withAlignment(.left)
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
@@ -24,7 +24,7 @@ class SettingsInfoContextView: BaseView {
     
     private lazy var detailLabel: UILabel = {
         UILabel()
-            .withTextColor(SharedColors.inputTitle)
+            .withTextColor(Colors.Text.tertiary)
             .withLine(.single)
             .withAlignment(.right)
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
@@ -35,7 +35,7 @@ class SettingsInfoContextView: BaseView {
     private lazy var separatorView = LineSeparatorView()
     
     override func configureAppearance() {
-        backgroundColor = SharedColors.secondaryBackground
+        backgroundColor = Colors.Background.tertiary
     }
     
     override func prepareLayout() {
@@ -108,6 +108,10 @@ extension SettingsInfoContextView {
     
     func setDetail(_ detail: String?) {
         detailLabel.text = detail
+    }
+    
+    func setSeparatorHidden(_ isHidden: Bool) {
+        separatorView.isHidden = isHidden
     }
 }
 

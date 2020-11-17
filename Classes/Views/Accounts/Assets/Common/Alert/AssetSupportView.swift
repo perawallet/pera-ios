@@ -19,7 +19,7 @@ class AssetSupportView: BaseView {
             .withLine(.single)
             .withAlignment(.center)
             .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.Text.primary)
         
     }()
     
@@ -30,13 +30,13 @@ class AssetSupportView: BaseView {
             .withLine(.contained)
             .withAlignment(.center)
             .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.Text.primary)
     }()
     
     private lazy var okButton = MainButton(title: "title-ok".localized)
     
     override func configureAppearance() {
-        backgroundColor = SharedColors.secondaryBackground
+        backgroundColor = Colors.Background.secondary
     }
     
     override func setListeners() {

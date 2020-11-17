@@ -30,7 +30,7 @@ class PassphraseDisplayView: BaseView {
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.contentInset = .zero
-        collectionView.backgroundColor = SharedColors.secondaryBackground
+        collectionView.backgroundColor = Colors.Background.secondary
         collectionView.register(PassphraseBackUpCell.self, forCellWithReuseIdentifier: PassphraseBackUpCell.reusableIdentifier)
         return collectionView
     }()
@@ -38,9 +38,9 @@ class PassphraseDisplayView: BaseView {
     private(set) lazy var qrButton: AlignedButton = {
         let button = AlignedButton(.imageAtLeft(spacing: 4.0))
         button.setImage(img("icon-qr-show", isTemplate: true), for: .normal)
-        button.tintColor = SharedColors.gray700
+        button.tintColor = Colors.Text.tertiary
         button.setTitle("back-up-phrase-qr".localized, for: .normal)
-        button.setTitleColor(SharedColors.primaryText, for: .normal)
+        button.setTitleColor(Colors.Text.primary, for: .normal)
         button.setBackgroundImage(img("bg-light-gray-button-small"), for: .normal)
         button.titleLabel?.font = UIFont.font(withWeight: .semiBold(size: 16.0))
         return button
@@ -48,17 +48,17 @@ class PassphraseDisplayView: BaseView {
     
     private(set) lazy var shareButton: AlignedButton = {
         let button = AlignedButton(.imageAtLeft(spacing: 4.0))
-        button.setImage(img("icon-share-white", isTemplate: true), for: .normal)
-        button.tintColor = SharedColors.gray700
+        button.setImage(img("icon-share-24", isTemplate: true), for: .normal)
+        button.tintColor = Colors.Text.tertiary
         button.setTitle("title-share-qr".localized, for: .normal)
         button.setBackgroundImage(img("bg-light-gray-button-small"), for: .normal)
-        button.setTitleColor(SharedColors.primaryText, for: .normal)
+        button.setTitleColor(Colors.Text.primary, for: .normal)
         button.titleLabel?.font = UIFont.font(withWeight: .semiBold(size: 16.0))
         return button
     }()
     
     override func configureAppearance() {
-        backgroundColor = SharedColors.secondaryBackground
+        backgroundColor = Colors.Background.secondary
     }
     
     override func setListeners() {

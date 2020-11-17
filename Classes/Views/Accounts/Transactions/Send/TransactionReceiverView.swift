@@ -84,7 +84,7 @@ class TransactionReceiverView: BaseView {
     private lazy var toLabel: UILabel = {
         UILabel()
             .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
-            .withTextColor(SharedColors.inputTitle)
+            .withTextColor(Colors.Text.primary)
             .withLine(.single)
             .withAlignment(.left)
             .withText("send-algos-to".localized)
@@ -108,6 +108,7 @@ class TransactionReceiverView: BaseView {
     
     private(set) lazy var receiverContactView: ContactContextView = {
         let view = ContactContextView()
+        view.backgroundColor = Colors.Background.secondary
         view.layer.cornerRadius = 12.0
         view.qrDisplayButton.setImage(img("img-remove-sender"), for: .normal)
         return view

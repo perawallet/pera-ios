@@ -26,7 +26,7 @@ class TransactionAccountInformationView: BaseView {
     
     private lazy var amountLabel: UILabel = {
         UILabel()
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.Text.primary)
             .withLine(.single)
             .withAlignment(.right)
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
@@ -37,7 +37,7 @@ class TransactionAccountInformationView: BaseView {
     override func configureAppearance() {
         super.configureAppearance()
         titleLabel.text = "asset-title".localized
-        containerView.backgroundColor = SharedColors.disabledBackground
+        containerView.backgroundColor = Colors.Background.disabled
         separatorView.backgroundColor = SharedColors.gray200
         removeButton.isHidden = true
         containerView.layer.cornerRadius = 12.0
@@ -147,7 +147,7 @@ extension TransactionAccountInformationView {
     }
     
     func setDisabled() {
-        containerView.backgroundColor = SharedColors.disabledBackground
+        containerView.backgroundColor = Colors.Background.disabled
         removeButton.removeFromSuperview()
         separatorView.backgroundColor = SharedColors.gray200
     }

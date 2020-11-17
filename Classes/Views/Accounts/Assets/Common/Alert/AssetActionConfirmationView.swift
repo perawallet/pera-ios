@@ -19,7 +19,7 @@ class AssetActionConfirmationView: BaseView {
             .withLine(.single)
             .withAlignment(.center)
             .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.Text.primary)
     }()
     
     private(set) lazy var assetDisplayView = AssetDisplayView()
@@ -29,7 +29,7 @@ class AssetActionConfirmationView: BaseView {
             .withLine(.contained)
             .withAlignment(.center)
             .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.Text.primary)
     }()
     
     private(set) lazy var actionButton: UIButton = {
@@ -37,7 +37,7 @@ class AssetActionConfirmationView: BaseView {
             .withBackgroundImage(img("bg-main-button"))
             .withAlignment(.center)
             .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
-            .withTitleColor(SharedColors.primaryButtonTitle)
+            .withTitleColor(Colors.ButtonText.primary)
     }()
     
     private lazy var cancelButton: UIButton = {
@@ -46,11 +46,11 @@ class AssetActionConfirmationView: BaseView {
             .withBackgroundImage(img("bg-light-gray-button"))
             .withAlignment(.center)
             .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
-            .withTitleColor(SharedColors.primaryText)
+            .withTitleColor(Colors.Text.primary)
     }()
     
     override func configureAppearance() {
-        backgroundColor = SharedColors.secondaryBackground
+        backgroundColor = Colors.Background.secondary
     }
     
     override func setListeners() {

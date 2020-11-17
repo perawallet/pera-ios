@@ -17,7 +17,7 @@ class SearchEmptyView: BaseView {
             .withLine(.single)
             .withAlignment(.center)
             .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.Text.primary)
     }()
     
     private lazy var detailLabel: UILabel = {
@@ -25,11 +25,11 @@ class SearchEmptyView: BaseView {
             .withLine(.contained)
             .withAlignment(.center)
             .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
-            .withTextColor(SharedColors.inputTitle)
+            .withTextColor(Colors.Text.tertiary)
     }()
     
     override func configureAppearance() {
-        backgroundColor = SharedColors.secondaryBackground
+        backgroundColor = .clear
     }
     
     override func prepareLayout() {

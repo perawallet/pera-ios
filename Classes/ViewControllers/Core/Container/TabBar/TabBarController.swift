@@ -69,7 +69,7 @@ class TabBarController: UIViewController {
         button.setBackgroundImage(img("img-tabbar-send"), for: .normal)
         button.setImage(img("icon-arrow-up"), for: .normal)
         button.setTitle("title-send".localized, for: .normal)
-        button.setTitleColor(SharedColors.primaryButtonTitle, for: .normal)
+        button.setTitleColor(Colors.ButtonText.primary, for: .normal)
         button.titleLabel?.font = UIFont.font(withWeight: .semiBold(size: 14.0))
         button.titleLabel?.textAlignment = .center
         return button
@@ -78,10 +78,10 @@ class TabBarController: UIViewController {
     private(set) lazy var receiveButton: AlignedButton = {
         let button = AlignedButton(.imageAtLeft(spacing: 4.0))
         button.setBackgroundImage(img("img-tabbar-receive"), for: .normal)
-        button.setImage(img("icon-qr", isTemplate: true), for: .normal)
-        button.tintColor = SharedColors.white
+        button.setImage(img("icon-qr-20", isTemplate: true), for: .normal)
+        button.tintColor = Colors.Background.secondary
         button.setTitle("title-receive".localized, for: .normal)
-        button.setTitleColor(SharedColors.primaryButtonTitle, for: .normal)
+        button.setTitleColor(Colors.ButtonText.primary, for: .normal)
         button.titleLabel?.font = UIFont.font(withWeight: .semiBold(size: 14.0))
         button.titleLabel?.textAlignment = .center
         return button
@@ -135,9 +135,15 @@ class TabBarController: UIViewController {
     }
     
     func customizeAppearance() {
-        sendButton.applyShadow(Shadow(color: Colors.sendShadow, offset: CGSize(width: 0.0, height: 8.0), radius: 20.0, opacity: 1.0))
-        receiveButton.applyShadow(Shadow(color: Colors.requestShadow, offset: CGSize(width: 0.0, height: 8.0), radius: 20.0, opacity: 1.0))
-        tabBar.applyShadow(tabBarShadow)
+        if !isDarkModeDisplay {
+            sendButton.applyShadow(
+                Shadow(color: ShadowColors.sendShadow, offset: CGSize(width: 0.0, height: 8.0), radius: 20.0, opacity: 1.0)
+            )
+            receiveButton.applyShadow(
+                Shadow(color: ShadowColors.requestShadow, offset: CGSize(width: 0.0, height: 8.0), radius: 20.0, opacity: 1.0)
+            )
+            tabBar.applyShadow(tabBarShadow)
+        }
     }
 
     func prepareLayout() {
@@ -160,9 +166,11 @@ class TabBarController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        sendButton.updateShadowLayoutWhenViewDidLayoutSubviews(cornerRadius: 24.0)
-        receiveButton.updateShadowLayoutWhenViewDidLayoutSubviews(cornerRadius: 24.0)
-        tabBar.updateShadowLayoutWhenViewDidLayoutSubviews()
+        if !isDarkModeDisplay {
+            sendButton.updateShadowLayoutWhenViewDidLayoutSubviews(cornerRadius: 24.0)
+            receiveButton.updateShadowLayoutWhenViewDidLayoutSubviews(cornerRadius: 24.0)
+            tabBar.updateShadowLayoutWhenViewDidLayoutSubviews()
+        }
     }
 }
 
@@ -397,7 +405,7 @@ extension TabBarController {
 }
 
 extension TabBarController {
-    private enum Colors {
+    private enum ShadowColors {
         static let sendShadow = rgba(0.96, 0.44, 0.32, 0.25)
         static let requestShadow = rgba(0.34, 0.75, 0.71, 0.25)
     }

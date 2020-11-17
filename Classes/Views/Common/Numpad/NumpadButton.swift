@@ -36,7 +36,7 @@ class NumpadButton: UIButton {
         case .number:
             setBackgroundImage(img("bg-passcode-number"), for: .normal)
             setBackgroundImage(img("bg-passcode-number-selected"), for: .highlighted)
-            setTitleColor(SharedColors.primaryText, for: .normal)
+            setTitleColor(Colors.Text.primary, for: .normal)
             titleLabel?.font = UIFont.font(withWeight: .medium(size: 24.0))
             titleLabel?.textAlignment = .center
         default:

@@ -52,6 +52,8 @@ class RekeyConfirmationViewController: BaseScrollViewController {
         super.viewDidAppear(animated)
         if rekeyConfirmationDataSource.allAssetsDisplayed {
             setFooterHidden()
+        } else {
+            rekeyConfirmationView.reloadData()
         }
     }
     

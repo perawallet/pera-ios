@@ -15,7 +15,7 @@ class LedgerTroubleshootOpenAppViewController: BaseScrollViewController {
     
     private lazy var separatorView: UIView = {
         let view = UIView()
-        view.backgroundColor = SharedColors.gray100
+        view.backgroundColor = Colors.Component.separator
         return view
     }()
     
@@ -32,10 +32,10 @@ class LedgerTroubleshootOpenAppViewController: BaseScrollViewController {
     override func configureAppearance() {
         super.configureAppearance()
         title = "title-step-3".localized
-        view.backgroundColor = SharedColors.secondaryBackground
-        contentView.backgroundColor = SharedColors.secondaryBackground
-        scrollView.backgroundColor = SharedColors.secondaryBackground
-        setSecondaryBackgroundColor()
+        view.backgroundColor = Colors.Background.tertiary
+        contentView.backgroundColor = Colors.Background.tertiary
+        scrollView.backgroundColor = Colors.Background.tertiary
+        setTertiaryBackgroundColor()
     }
     
     override func linkInteractors() {

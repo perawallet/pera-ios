@@ -95,12 +95,12 @@ class BaseViewController: UIViewController, TabBarConfigurable, TrackableScreen 
         
         navigationController?.navigationBar.titleTextAttributes = [
             NSAttributedString.Key.font: UIFont.font(withWeight: .semiBold(size: 16.0)),
-            NSAttributedString.Key.foregroundColor: SharedColors.primaryText
+            NSAttributedString.Key.foregroundColor: Colors.Text.primary
         ]
     }
     
     func configureAppearance() {
-        view.backgroundColor = SharedColors.primaryBackground
+        view.backgroundColor = Colors.Background.primary
     }
     
     func prepareLayout() {
@@ -161,13 +161,18 @@ class BaseViewController: UIViewController, TabBarConfigurable, TrackableScreen 
 
 extension BaseViewController {
     func setPrimaryBackgroundColor() {
-        navigationController?.navigationBar.barTintColor = SharedColors.primaryBackground
-        navigationController?.navigationBar.tintColor = SharedColors.primaryBackground
+        navigationController?.navigationBar.barTintColor = Colors.Background.primary
+        navigationController?.navigationBar.tintColor = Colors.Background.primary
     }
     
     func setSecondaryBackgroundColor() {
-        navigationController?.navigationBar.barTintColor = SharedColors.secondaryBackground
-        navigationController?.navigationBar.tintColor = SharedColors.secondaryBackground
+        navigationController?.navigationBar.barTintColor = Colors.Background.secondary
+        navigationController?.navigationBar.tintColor = Colors.Background.secondary
+    }
+    
+    func setTertiaryBackgroundColor() {
+        navigationController?.navigationBar.barTintColor = Colors.Background.tertiary
+        navigationController?.navigationBar.tintColor = Colors.Background.tertiary
     }
 }
 

@@ -61,7 +61,7 @@ class ContactInfoViewModel {
             
             if assetDetail.hasNoDisplayName() {
                 cell.contextView.assetNameView.setName("title-unknown".localized)
-                cell.contextView.assetNameView.nameLabel.textColor = SharedColors.secondary700
+                cell.contextView.assetNameView.nameLabel.textColor = Colors.Main.secondary700
                 cell.contextView.assetNameView.removeUnitName()
                 return
             }

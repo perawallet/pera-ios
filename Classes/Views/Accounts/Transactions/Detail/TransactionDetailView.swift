@@ -99,7 +99,7 @@ class TransactionDetailView: BaseView {
     }
     
     override func configureAppearance() {
-        backgroundColor = SharedColors.secondaryBackground
+        backgroundColor = Colors.Background.tertiary
         opponentView.isUserInteractionEnabled = true
         closeToView.copyImageView.isHidden = false
         opponentView.copyImageView.isHidden = false

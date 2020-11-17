@@ -18,7 +18,7 @@ class NodeSettingsHeaderView: BaseView {
         UILabel()
             .withAttributedText("node-settings-subtitle".localized.attributed([.lineSpacing(1.2)]))
             .withFont(UIFont.font(withWeight: .medium(size: 16.0)))
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.Text.primary)
             .withAlignment(.center)
             .withLine(.contained)
     }()

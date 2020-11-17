@@ -17,23 +17,23 @@ class AccountSelectionView: BaseView {
             switch state {
             case .selected:
                 containerView.layer.borderWidth = 2.0
-                containerView.layer.borderColor = SharedColors.primary.cgColor
-                containerView.backgroundColor = SharedColors.secondaryBackground
+                containerView.layer.borderColor = Colors.Main.primary600.cgColor
+                containerView.backgroundColor = Colors.Background.secondary
                 
                 if let titleView = stackView.arrangedSubviews.first as? LedgerAccountSelectionTitleView {
                     titleView.setSelectionImage(img("settings-node-active"))
                 }
             case .unselected:
                 containerView.layer.borderWidth = 0.0
-                containerView.backgroundColor = SharedColors.secondaryBackground
+                containerView.backgroundColor = Colors.Background.secondary
                 
                 if let titleView = stackView.arrangedSubviews.first as? LedgerAccountSelectionTitleView {
                     titleView.setSelectionImage(img("settings-node-inactive"))
                 }
             case .unselectable:
                 containerView.layer.borderWidth = 2.0
-                containerView.layer.borderColor = SharedColors.primary.cgColor
-                containerView.backgroundColor = SharedColors.secondaryBackground
+                containerView.layer.borderColor = Colors.Main.primary600.cgColor
+                containerView.backgroundColor = Colors.Background.secondary
             }
         }
     }
@@ -55,7 +55,7 @@ class AccountSelectionView: BaseView {
     
     override func configureAppearance() {
         super.configureAppearance()
-        containerView.backgroundColor = SharedColors.secondaryBackground
+        containerView.backgroundColor = Colors.Background.secondary
         containerView.layer.cornerRadius = 12.0
         containerView.layer.masksToBounds = true
     }

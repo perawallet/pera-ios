@@ -15,7 +15,7 @@ class LedgerAccountSelectionHeaderView: BaseView {
     private lazy var titleLabel: UILabel = {
         UILabel()
             .withFont(UIFont.font(withWeight: .medium(size: 16.0)))
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.Text.primary)
             .withLine(.single)
             .withAlignment(.left)
     }()
@@ -23,7 +23,7 @@ class LedgerAccountSelectionHeaderView: BaseView {
     private lazy var detailLabel: UILabel = {
         UILabel()
             .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
-            .withTextColor(SharedColors.secondaryText)
+            .withTextColor(Colors.Text.secondary)
             .withLine(.contained)
             .withAlignment(.left)
             .withText("ledger-account-selection-detail".localized)

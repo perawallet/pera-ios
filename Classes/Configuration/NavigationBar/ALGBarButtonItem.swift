@@ -17,19 +17,19 @@ struct ALGBarButtonItem: BarButtonItem {
         case .save:
             return BarButtonItemTitleContent(
                 text: "title-save".localized,
-                textColor: SharedColors.primaryText,
+                textColor: Colors.Text.primary,
                 font: UIFont.font(withWeight: .bold(size: 12.0))
             )
         case .done:
             return BarButtonItemTitleContent(
                 text: "title-done".localized,
-                textColor: SharedColors.tertiaryText,
+                textColor: Colors.ButtonText.actionButton,
                 font: UIFont.font(withWeight: .semiBold(size: 16.0))
             )
         case .edit:
             return BarButtonItemTitleContent(
                 text: "title-edit".localized,
-                textColor: SharedColors.primaryText,
+                textColor: Colors.Text.primary,
                 font: UIFont.font(withWeight: .semiBold(size: 16.0))
             )
         default:

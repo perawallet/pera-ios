@@ -37,7 +37,7 @@ class BottomInformationViewController: BaseViewController {
     }
     
     override func configureAppearance() {
-        view.backgroundColor = SharedColors.secondaryBackground
+        view.backgroundColor = Colors.Background.secondary
         viewModel.configure(bottomInformationView, with: bottomInformationBundle)
     }
     

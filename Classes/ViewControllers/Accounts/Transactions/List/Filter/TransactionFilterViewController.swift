@@ -26,7 +26,7 @@ class TransactionFilterViewController: BaseViewController {
     }
     
     override func configureAppearance() {
-        view.backgroundColor = SharedColors.secondaryBackground
+        view.backgroundColor = Colors.Background.secondary
         setSecondaryBackgroundColor()
         title = "transaction-filter-title-sort".localized
     }

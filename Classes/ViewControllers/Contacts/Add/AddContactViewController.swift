@@ -117,7 +117,7 @@ class AddContactViewController: BaseScrollViewController {
             title = "contacts-info-edit".localized
             
             addContactView.addContactButton.isHidden = true
-            addContactView.setUserActionButtonIcon(img("icon-edit-white"))
+            addContactView.setUserActionButtonIcon(img("icon-edit"))
             addContactView.userInformationView.contactNameInputView.inputTextField.text = contact.name
             
             if let address = contact.address {
@@ -281,7 +281,7 @@ extension AddContactViewController: AddContactViewDelegate {
 extension AddContactViewController: ImagePickerDelegate {
     func imagePicker(didPick image: UIImage, withInfo info: [String: Any]) {
         isUserEdited = true
-        addContactView.setUserActionButtonIcon(img("icon-edit-white"))
+        addContactView.setUserActionButtonIcon(img("icon-edit"))
         let resizedImage = image.convert(to: CGSize(width: 88.0, height: 88.0))
         addContactView.userInformationView.userImageView.image = resizedImage
     }

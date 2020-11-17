@@ -18,7 +18,7 @@ class TransactionIDLabel: BaseView {
     
     private(set) lazy var copyImageView: UIImageView = {
         let imageView = UIImageView(image: img("icon-copy", isTemplate: true))
-        imageView.tintColor = SharedColors.gray400
+        imageView.tintColor = Colors.Component.transactionDetailCopyIcon
         return imageView
     }()
     
@@ -28,14 +28,14 @@ class TransactionIDLabel: BaseView {
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
         label.textAlignment = .left
-        label.textColor = SharedColors.primaryText
+        label.textColor = Colors.Text.primary
         return label
     }()
     
     private lazy var separatorView = LineSeparatorView()
     
     override func configureAppearance() {
-        backgroundColor = SharedColors.secondaryBackground
+        backgroundColor = Colors.Background.tertiary
         titleLabel.text = "transaction-detail-id".localized
     }
     

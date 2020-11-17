@@ -16,13 +16,13 @@ class RekeyConfirmationFooterView: BaseView {
     
     private lazy var showMoreButton: UIButton = {
         UIButton(type: .custom)
-            .withTitleColor(SharedColors.gray500)
+            .withTitleColor(Colors.Text.secondary)
             .withAlignment(.left)
             .withFont(UIFont.font(withWeight: .semiBold(size: 14.0)))
     }()
     
     override func configureAppearance() {
-        backgroundColor = SharedColors.secondaryBackground
+        backgroundColor = Colors.Background.secondary
     }
     
     override func prepareLayout() {

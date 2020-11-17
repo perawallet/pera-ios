@@ -18,7 +18,7 @@ class QRBottomInformationView: BottomInformationView {
             .withTitle("title-approve".localized)
             .withAlignment(.center)
             .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
-            .withTitleColor(SharedColors.primaryButtonTitle)
+            .withTitleColor(Colors.ButtonText.primary)
     }()
     
     private(set) lazy var cancelButton: UIButton = {
@@ -26,7 +26,7 @@ class QRBottomInformationView: BottomInformationView {
             .withBackgroundImage(img("bg-light-gray-button"))
             .withTitle("title-cancel".localized)
             .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
-            .withTitleColor(SharedColors.primaryText)
+            .withTitleColor(Colors.ButtonText.secondary)
     }()
     
     weak var delegate: QRBottomInformationViewDelegate?

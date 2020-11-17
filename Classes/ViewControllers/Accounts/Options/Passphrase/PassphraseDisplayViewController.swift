@@ -36,7 +36,7 @@ class PassphraseDisplayViewController: BaseViewController {
     }
     
     override func configureAppearance() {
-        view.backgroundColor = SharedColors.secondaryBackground
+        view.backgroundColor = Colors.Background.secondary
         title = "options-view-passphrase".localized
         setSecondaryBackgroundColor()
     }

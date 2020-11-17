@@ -16,7 +16,7 @@ class PinLimitView: BaseView {
     
     private lazy var lockImageView: UIImageView = {
         let imageView = UIImageView(image: img("icon-lock", isTemplate: true))
-        imageView.tintColor = SharedColors.red
+        imageView.tintColor = Colors.Main.red600
         return imageView
     }()
     
@@ -24,7 +24,7 @@ class PinLimitView: BaseView {
         UILabel()
             .withAlignment(.center)
             .withFont(UIFont.font(withWeight: .medium(size: 24.0)))
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.Text.primary)
             .withText("pin-limit-title".localized)
     }()
     
@@ -32,7 +32,7 @@ class PinLimitView: BaseView {
         UILabel()
             .withAlignment(.center)
             .withFont(UIFont.font(withWeight: .regular(size: 16.0)))
-            .withTextColor(SharedColors.detailText)
+            .withTextColor(Colors.Text.tertiary)
             .withText("pin-limit-too-many".localized)
     }()
     
@@ -40,7 +40,7 @@ class PinLimitView: BaseView {
         UILabel()
             .withAlignment(.center)
             .withFont(UIFont.font(withWeight: .regular(size: 16.0)))
-            .withTextColor(SharedColors.detailText)
+            .withTextColor(Colors.Text.tertiary)
             .withText("pin-limit-try-again".localized)
     }()
     
@@ -48,20 +48,20 @@ class PinLimitView: BaseView {
         UILabel()
             .withAlignment(.center)
             .withFont(UIFont.font(withWeight: .medium(size: 24.0)))
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.Text.primary)
     }()
     
     private lazy var resetButton: UIButton = {
         UIButton(type: .custom)
             .withBackgroundImage(img("bg-button-red"))
             .withTitle("pin-limit-reset-all".localized)
-            .withTitleColor(SharedColors.primaryButtonTitle)
+            .withTitleColor(Colors.ButtonText.primary)
             .withAlignment(.center)
             .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
     }()
     
     override func configureAppearance() {
-        backgroundColor = SharedColors.secondaryBackground
+        backgroundColor = Colors.Background.tertiary
     }
     
     override func setListeners() {

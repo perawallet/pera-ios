@@ -29,7 +29,6 @@ class PassphraseVerifyViewController: BaseScrollViewController {
     
     override func configureAppearance() {
         super.configureAppearance()
-        view.backgroundColor = SharedColors.primaryBackground
         updatePassPhraseLabel()
     }
     

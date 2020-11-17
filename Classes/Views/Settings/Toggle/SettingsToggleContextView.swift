@@ -18,7 +18,7 @@ class SettingsToggleContextView: BaseView {
     
     private lazy var nameLabel: UILabel = {
         UILabel()
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.Text.primary)
             .withLine(.single)
             .withAlignment(.left)
             .withFont(UIFont.font(withWeight: .semiBold(size: 14.0)))
@@ -33,7 +33,7 @@ class SettingsToggleContextView: BaseView {
     }
     
     override func configureAppearance() {
-        backgroundColor = SharedColors.secondaryBackground
+        backgroundColor = Colors.Background.tertiary
     }
     
     override func prepareLayout() {
@@ -103,6 +103,10 @@ extension SettingsToggleContextView {
     
     func setToggleOn(_ isOn: Bool, animated: Bool) {
         toggle.setOn(isOn, animated: animated)
+    }
+    
+    func setSeparatorHidden(_ isHidden: Bool) {
+        separatorView.isHidden = isHidden
     }
     
     var isToggleOn: Bool {

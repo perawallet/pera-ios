@@ -30,7 +30,7 @@ class AccountListViewController: BaseViewController {
     }
     
     override func configureAppearance() {
-        view.backgroundColor = SharedColors.secondaryBackground
+        view.backgroundColor = Colors.Background.secondary
         
         switch mode {
         case .contact,

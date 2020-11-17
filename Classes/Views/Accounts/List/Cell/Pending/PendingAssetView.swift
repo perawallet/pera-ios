@@ -25,7 +25,7 @@ class PendingAssetView: BaseView {
     private(set) lazy var detailLabel: UILabel = {
         UILabel()
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.Text.primary)
             .withLine(.single)
             .withAlignment(.right)
     }()

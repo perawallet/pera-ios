@@ -15,7 +15,7 @@ class PassphraseVerifyView: BaseView {
     private(set) lazy var questionTitleLabel: UILabel = {
         UILabel(frame: .zero)
             .withFont(UIFont.font(withWeight: .medium(size: 16.0)))
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.Text.primary)
             .withAlignment(.center)
     }()
     
@@ -38,7 +38,7 @@ class PassphraseVerifyView: BaseView {
     private lazy var wrongChoiceLabel: UILabel = {
         let label = UILabel()
             .withText("pass-phrase-verify-wrong-selection".localized)
-            .withTextColor(SharedColors.red)
+            .withTextColor(Colors.Main.red600)
             .withFont(UIFont.font(withWeight: .semiBold(size: 14.0)))
             .withAlignment(.center)
         label.isHidden = true
@@ -52,7 +52,7 @@ class PassphraseVerifyView: BaseView {
     }
     
     override func configureAppearance() {
-        backgroundColor = .clear
+        backgroundColor = Colors.Background.primary
     }
 }
 

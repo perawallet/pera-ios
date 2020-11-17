@@ -30,7 +30,7 @@ class RootViewController: UIViewController {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.zPosition = 1.0
-        view.backgroundColor = SharedColors.testNetBanner
+        view.backgroundColor = Colors.General.testNetBanner
         return view
     }()
 
@@ -58,7 +58,7 @@ class RootViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = SharedColors.primaryBackground
+        view.backgroundColor = Colors.Background.primary
         
         initializeNetwork()
         addTestNetBanner()

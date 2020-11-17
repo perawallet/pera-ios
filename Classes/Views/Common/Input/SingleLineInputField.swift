@@ -27,15 +27,16 @@ class SingleLineInputField: BaseInputView {
         didSet {
             inputTextField.attributedPlaceholder = NSAttributedString(
                 string: placeholderText,
-                attributes: [.foregroundColor: SharedColors.informationText, .font: UIFont.font(withWeight: .medium(size: 14.0))]
+                attributes: [.foregroundColor: Colors.Text.hint, .font: UIFont.font(withWeight: .medium(size: 14.0))]
             )
         }
     }
     
     private(set) lazy var inputTextField: UITextField = {
         let textField = UITextField()
-        textField.textColor = SharedColors.primaryText
-        textField.tintColor = SharedColors.primaryText
+        textField.backgroundColor = Colors.Background.secondary
+        textField.textColor = Colors.Text.primary
+        textField.tintColor = Colors.Text.primary
         textField.font = UIFont.font(withWeight: .medium(size: 14.0))
         return textField
     }()

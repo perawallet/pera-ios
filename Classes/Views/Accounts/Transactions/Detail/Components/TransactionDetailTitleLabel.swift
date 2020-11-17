@@ -24,6 +24,6 @@ class TransactionDetailTitleLabel: UILabel {
         textAlignment = .left
         numberOfLines = 1
         font = UIFont.font(withWeight: .regular(size: 14.0))
-        textColor = SharedColors.inputTitle
+        textColor = Colors.Text.tertiary
     }
 }

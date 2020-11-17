@@ -20,7 +20,7 @@ class ChoosePasswordView: BaseView {
     
     private(set) lazy var titleLabel: UILabel = {
         UILabel()
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.Text.primary)
             .withAlignment(.center)
             .withFont(UIFont.font(withWeight: .regular(size: 16.0 * verticalScale)))
     }()
@@ -39,7 +39,7 @@ class ChoosePasswordView: BaseView {
     }
     
     override func configureAppearance() {
-        backgroundColor = SharedColors.secondaryBackground
+        backgroundColor = Colors.Background.tertiary
     }
     
     override func prepareLayout() {

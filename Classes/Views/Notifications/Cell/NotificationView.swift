@@ -20,7 +20,7 @@ class NotificationView: BaseView {
     
     private lazy var notificationImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.backgroundColor = SharedColors.primaryBackground
+        imageView.backgroundColor = Colors.Background.reversePrimary
         imageView.layer.cornerRadius = layout.current.notificationImageSize.width / 2
         imageView.clipsToBounds = true
         imageView.contentMode = .center
@@ -32,7 +32,7 @@ class NotificationView: BaseView {
             .withLine(.contained)
             .withAlignment(.left)
             .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.Text.primary)
     }()
     
     private lazy var timeLabel: UILabel = {
@@ -40,13 +40,13 @@ class NotificationView: BaseView {
             .withLine(.single)
             .withAlignment(.left)
             .withFont(UIFont.font(withWeight: .regular(size: 12.0)))
-            .withTextColor(SharedColors.gray500)
+            .withTextColor(Colors.Text.secondary)
     }()
     
     private lazy var separatorView = LineSeparatorView()
     
     override func configureAppearance() {
-        backgroundColor = SharedColors.secondaryBackground
+        backgroundColor = Colors.Background.tertiary
     }
     
     override func prepareLayout() {

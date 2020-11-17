@@ -23,13 +23,13 @@ class LedgerDeviceView: BaseView {
             .withLine(.single)
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
             .withAlignment(.left)
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.Text.primary)
     }()
     
     private lazy var connectButton: UIButton = {
         UIButton(type: .custom)
             .withTitle("ledger-device-list-connect".localized)
-            .withTitleColor(SharedColors.tertiaryText)
+            .withTitleColor(Colors.ButtonText.actionButton)
             .withFont(UIFont.font(withWeight: .semiBold(size: 14.0)))
     }()
     

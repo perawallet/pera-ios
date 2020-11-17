@@ -19,13 +19,15 @@ class RekeyInstructionItemView: BaseView {
             .withLine(.contained)
             .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
             .withAlignment(.left)
-            .withTextColor(SharedColors.secondaryText)
+            .withTextColor(Colors.Text.primary)
     }()
     
     override func configureAppearance() {
-        backgroundColor = SharedColors.secondaryBackground
+        backgroundColor = Colors.Background.secondary
         layer.cornerRadius = 12.0
-        applySmallShadow()
+        if !isDarkModeDisplay {
+            applySmallShadow()
+        }
     }
     
     override func prepareLayout() {
@@ -35,7 +37,9 @@ class RekeyInstructionItemView: BaseView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        updateShadowLayoutWhenViewDidLayoutSubviews(cornerRadius: 12.0)
+        if !isDarkModeDisplay {
+            updateShadowLayoutWhenViewDidLayoutSubviews(cornerRadius: 12.0)
+        }
     }
 }
 
