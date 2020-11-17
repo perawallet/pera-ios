@@ -3,6 +3,16 @@
     {
       "filename" : "img-receive.pdf",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "img-receive-1.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {

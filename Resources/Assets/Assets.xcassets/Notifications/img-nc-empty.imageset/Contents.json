@@ -3,6 +3,16 @@
     {
       "filename" : "img-nc-empty.pdf",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "img-nc-empty-1.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {

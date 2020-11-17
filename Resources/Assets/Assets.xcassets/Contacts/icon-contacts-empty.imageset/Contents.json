@@ -3,6 +3,16 @@
     {
       "filename" : "icon-contacts-empty.pdf",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "icon-contacts-empty-1.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {

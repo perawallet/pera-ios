@@ -1,13 +1,23 @@
 {
   "images" : [
     {
-      "idiom" : "universal",
-      "filename" : "icon-user-add.pdf"
+      "filename" : "icon-user-add.pdf",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "icon-user-add-1.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {
-    "version" : 1,
-    "author" : "xcode"
+    "author" : "xcode",
+    "version" : 1
   },
   "properties" : {
     "preserves-vector-representation" : true

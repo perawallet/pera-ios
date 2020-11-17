@@ -3,6 +3,16 @@
     {
       "filename" : "img-custom-range-separator.pdf",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "img-custom-range-separator-1.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {

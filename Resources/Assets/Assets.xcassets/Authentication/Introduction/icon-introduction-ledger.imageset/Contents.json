@@ -3,6 +3,16 @@
     {
       "filename" : "icon-introduction-ledger.pdf",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "introduction-ledger.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {

@@ -3,6 +3,16 @@
     {
       "filename" : "img-introduction-bg-outer.pdf",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "img-introduction-bg-outer-1.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {

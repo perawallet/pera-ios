@@ -3,6 +3,16 @@
     {
       "filename" : "img-introduction-bg-middle.pdf",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "img-introduction-bg-middle-1.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {
