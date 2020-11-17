@@ -122,7 +122,7 @@
 "asset-transfer-balance" = "Transferir el saldo";
 "title-remove-assets" = "Eliminar activos";
 "title-add-asset" = "Agregar nuevo activo";
-"asset-add-warning" = "Agregar un activo requiere que se envíe una transacción con una tarifa mínima. Esto aparecerá en tu historial de transacciones.";
+"asset-add-warning" = "Agregar un activo requiere que se envíe una transacción con una comisión mínima. Esto aparecerá en tu historial de transacciones.";
 "asset-support-error" = "Lamentablemente, esta cuenta no agregó este activo. Indícale al titular de la cuenta que agregue el activo e inténtalo nuevamente.";
 "asset-support-title" = "La cuenta no acepta este activo";
 "asset-add-confirmation-title" = "Agregando activo";
@@ -130,7 +130,7 @@
 "internet-connection-error-detail" = "No fue posible conectarse al servidor, asegúrate de estar conectado a Internet";
 "asset-remove-warning" = "Para eliminar %@, el saldo debe ser 0. Transfiere el saldo a otra cuenta e inténtalo nuevamente.";
 "asset-remove-transaction-warning" = "Estas a punto de eliminar %@ de %@. No podrás operar con este activo desde esta cuenta a menos que vuelvas a agregarlo.";
-"asset-creation-fee-title" = "Agregar tarifa del activo";
+"asset-creation-fee-title" = "Agregar comisión del activo";
 "asset-min-transaction-error-title" = "Error en el mínimo de la transacción";
 "asset-min-transaction-error-message" = "Necesitas al menos %@ Algos para agregar este activo";
 "asset-you-already-own-message" = "Ya posees este activo";
@@ -319,8 +319,8 @@
 "title-step-3" = "Paso 3";
 "title-step-4" = "Paso 4";
 "ledger-troubleshooting-title" = "Resolución de problemas avanzada";
-"ledger-troubleshooting-close-others" = "Cierra otras aplicaciones (aplicaciones de Ledger, monederos de criptomonedas, o cualquier otra cosa que intente emparejarse con el dispositivo Ledger).";
-"ledger-troubleshooting-restart" = "Reinicia el monedero Algorand o tu dispositivo.";
+"ledger-troubleshooting-close-others" = "Cierra otras aplicaciones (aplicaciones de Ledger, billeteras de criptomonedas, o cualquier otra cosa que intente emparejarse con el dispositivo Ledger).";
+"ledger-troubleshooting-restart" = "Reinicia el billetera Algorand o tu dispositivo.";
 "ledger-troubleshooting-app-support" = "Para obtener ayuda para instalar la aplicación de Algorand para Ledger en tu dispositivo, visita %@";
 "ledger-troubleshooting-ledger-support" = "Para consultar la resolución de problemas general, visita ";
 "ledger-troubleshooting-ledger-support-title" = "Soporte de Ledger.";
@@ -345,7 +345,7 @@
 "ble-error-fail-fetch-account-address" = "No pudimos recibir la clave pública de tu dispositivo Ledger. Inténtalo de nuevo.";
 "ble-error-fail-sign-transaction" = "El dispositivo Ledger emparejado canceló la solicitud de transacción.";
 "ble-error-fail-ble-connection-power" = "Tu dispositivo debe tener Blueetooth activado para poder buscar los dispositivos Ledger cercanos.";
-"ble-error-fail-ble-connection-unsupported" = "El dispositivo al que estás intentando conectarte no es compatible con el monedero Algorand.";
+"ble-error-fail-ble-connection-unsupported" = "El dispositivo al que estás intentando conectarte no es compatible con el billetera Algorand.";
 "ble-error-fail-ble-connection-unauthorized" = "Se deben otorgar permisos de Bluetooth para poder buscar los Ledgers cercanos.";
 "ble-error-fail-ble-connection-resetting" = "Falló la conexión BLE para reiniciar.";
 
@@ -388,7 +388,7 @@
 "settings-logout-detail" = "¿Estás seguro de que quieres borrar toda la información?";
 "transaction-detail-from" = "De";
 "transaction-detail-to" = "Para";
-"transaction-detail-fee" = "Tarifa";
+"transaction-detail-fee" = "Comisión";
 "transaction-detail-id" = "ID de transacción";
 "transaction-detail-note" = "Nota";
 "transaction-detail-close-to" = "Cierre para";
@@ -445,7 +445,7 @@
 "ledger-rekey-ledger-passphrase" = "Frase secreta";
 "ledger-rekey-ledger-new" = "Nuevo Ledger";
 "ledger-rekey-finalize" = "Finalizar cambio de clave";
-"ledger-rekey-total-fee" = "Tarifa total de %@ Algos por cambio de clave";
+"ledger-rekey-total-fee" = "Comisión total de %@ Algos por cambio de clave";
 "ledger-rekey-more-assets" = "+%@ más activos";
 "ledger-rekey-success-title" = "Cuenta con cambio de clave";
 "ledger-rekey-success-message" = "Se cambió la clave de la cuenta %@ con éxito";
@@ -453,7 +453,7 @@
 /*MARK: Ledger Account Selection*/
 "ledger-account-selection-title-singular" = "Se encontró %d cuenta";
 "ledger-account-selection-title-plural" = "Se encontraron %d cuentas";
-"ledger-account-selection-detail" = "Este dispositivo Ledger puede firmar transacciones para la siguientes cuenta. Selecciona la cuenta para agregar al monedero Algorand.";
+"ledger-account-selection-detail" = "Este dispositivo Ledger puede firmar transacciones para la siguientes cuenta. Selecciona la cuenta para agregar al billetera Algorand.";
 "ledger-account-selection-add" = "Agregar cuenta";
 "ledger-rekey-error-add-auth" = "El dispositivo Ledger conectado no puede firmar transacciones para esta cuenta. Para poder hacerlo, conecta %@.";
 "ledger-rekey-error-not-found" = "Se cambió la clave de esta cuenta. Recupera esta cuenta con una frase secreta o con un dispositivo Ledger.";

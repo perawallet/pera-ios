@@ -140,8 +140,8 @@
 /*Context not clear*/
 "asset-support-not-same-error" = "Das Asset wurde diesem Konto hinzugefügt; dieses ist jedoch nicht das ausgewählte Asset. Bitte wählen Sie das richtige Asset und versuchen Sie es erneut.";
 "asset-support-not-same-title" = "Das Konto unterstützt dieses Asset nicht";
-"asset-support-add-title" = "Sie werden gleich ein Asset erhalten!";
-"asset-support-add-message" = "Sie werden gleich ein Asset auf <b>%1$s</b> erhalten! Möchten Sie diesem Konto dieses Asset hinzufügen, um die Überweisung empfangen zu können?";
+"asset-support-add-title" = "Sie werden gleich ein Asset empfangen!";
+"asset-support-add-message" = "Sie werden gleich ein Asset auf <b>%1$s</b> empfangen! Möchten Sie diesem Konto dieses Asset hinzufügen, um die Überweisung empfangen zu können?";
 "asset-id-copied-title" = "In die Zwischenablage";
 "asset-verified-title" = "Verifiziert";
 "asset-support-your-add-title" = "Dieses Asset wurde ihrem Konto noch nicht hinzugefügt.";
@@ -303,7 +303,7 @@
 "ledger-tutorial-title-text" = "Führen Sie die folgenden Schritte aus, um ein neues Ledger-Konto zu eröffnen";
 "ledger-tutorial-turned-on" = "Stellen Sie sicher, dass Ihr Ledger-Gerät eingeschaltet und Bluetooth aktiviert ist.";
 "ledger-tutorial-install-app" = "Installieren Sie die Algorand-App (Version 1.2.9 oder neuer) auf Ihrem Ledger-Gerät.";
-"ledger-tutorial-open-app" = "Öffnen Sie in Ihrem Ledger-Gerät die Algorand-App.";
+"ledger-tutorial-open-app" = "Öffnen Sie auf Ihrem Ledger-Gerät die Algorand-App.";
 "ledger-tutorial-bluetooth" = "Stellen Sie sicher, dass bei Ihrem Smartphone Bluetooth aktiviert ist.";
 "ledger-search-button-title" = "Nach Ledger-Gerät suchen";
 
@@ -400,7 +400,7 @@
 "transaction-detail-note-copied" = "Transaktionskommentar in die Zwischenablage kopiert";
 "transaction-detail-id-copied" = "Transaktions-ID in Zwischenablage kopiert";
 "transaction-detail-copy-tooltip" = "Bitte drücken und halten, um es in die Zwischenablage zu kopieren";
-"feedback-success-detail" = "Vielen Dank! Wir haben Ihr Feedback erhalten";
+"feedback-success-detail" = "Vielen Dank! Wir haben Ihr Feedback empfangen";
 "total-rewards-title" = "%@ Rewards";
 "rewards-since-last-text" = "Seit der letzten Transaktion";
 "notification-support-success" = "%@ hat seinem Konto %@ hinzugefügt. Sie können sie senden.";
@@ -466,7 +466,7 @@
 "ledger-rekey-error-add-auth" = "Das verbundene Ledger-Gerät kann für dieses Konto keine Transaktionen signieren. Verbinden Sie zu diesem Zweck bitte %@.";
 "ledger-rekey-error-not-found" = "Das Rekeying für dieses Konto wurde abgeschlossen. Bitte stellen Sie dieses Konto mit einer Passphrase oder einem Ledger-Gerät wieder her.";
 "send-transaction-max-same-account-error" = "Sie können Ihr maximales Guthaben nicht an sich selbst senden. Bitte wählen Sie einen anderen Betrag oder Empfänger und versuchen Sie es erneut.";
-"title-receive" = "Erhalten";
+"title-receive" = "Empfangen";
 "title-copy" = "Kopieren";
 "title-new-uppercased" = "NEU";
 
@@ -480,7 +480,7 @@
 "account-type-selection-recover" = "Mit Passphrase wiederherstellen";
 "account-type-selection-recover-detail" = "Ein Konto mit einer aus 25 Wörtern bestehenden Passphrase wiederherstellen";
 "account-type-selection-ledger" = "Ledger-Konto koppeln";
-"account-type-selection-ledger-detail" = "Ein Konto koppeln, das von einer Ledger-Hardware-Wallet unterstützt wird";
+"account-type-selection-ledger-detail" = "Ein Konto koppeln, das von einem Ledger-Hardware-Wallet unterstützt wird";
 "introduction-title-add-text" = "Neues Konto hinzufügen";
 "introduction-add-account-text" = "Konto hinzufügen";
 "introduction-title-terms-and-services" = "Indem Sie ein Konto erstellen, stimmen Sie den <a href=\"https://www.algorand.com/wallet-disclaimer\">Nutzungsbedingungen</a></a> und den <a href=\"https://www.algorand.com/wallet-privacy-policy\">Datenschutzbestimmungen</a> von Algorand zu";
@@ -502,11 +502,11 @@
 "watch-account-input-explanation" = "Adresse des zu beobachtenden Kontos";
 "watch-account-input-placeholder" = "Adresse einfügen oder QR-Code scannen";
 "watch-account-error-address" = "Bitte geben Sie eine gültige Adresse ein.";
-"passphrase-question-another" = "%@th";
+"passphrase-question-another" = "%@.";
 "passphrase-question-third" = "3.";
 "passphrase-question-second" = "2.";
 "passphrase-question-first" = "1.";
-"passphrase-select-n-word" = "Wählen Sie das %@ Wort Ihrer Passphrase";
+"passphrase-select-n-word" = "Wählen Sie das %@. Wort Ihrer Ihrer";
 "passphrase-qeustion-counter" = "Frage %@ von %@";
 "asset-detail-id-title" = "ID %@";
 "settings-app-version" = "Version %@";

@@ -32,7 +32,7 @@
 "title-preview-and-sign-with-ledger-title" = "Visualizar e Assinar com Ledger";
 
 /*MARK: Introduction*/
-"introduction-title-text" = "Gerir todos os ativos de um aplicativo";
+"introduction-title-text" = "Gerencie todos os seus ativos por um aplicativo";
 
 /*MARK: Password Setting*/
 "choose-password-title" = "Escolher senha";
@@ -46,7 +46,7 @@
 
 /*MARK: Local Authentication Preferences*/
 "local-authentication-preference-title" = "Habilitar ID Facial/Toque";
-"local-authentication-preference-subtitle" = "Recomendado para maior segurança";
+"local-authentication-preference-subtitle" = "Isso é recomendado para maior segurança";
 "local-authentication-reason-face-id-title" = "Utilizar ID Facial para desbloquear";
 "local-authentication-reason-touch-id-title" = "Utilizar ID Toque para desbloquear";
 "local-authentication-go-settings-title" = "Autenticação Biométrica";
@@ -55,14 +55,14 @@
 "local-authentication-no" = "Não utilizar ID Facial/Toque";
 
 /*MARK: Passphrase Back Up*/
-"new-account-title" = "Frase senha backup";
+"new-account-title" = "Frase Senha de Recuperação";
 "back-up-phrase-warning" = "Certifique-se de gravar a frase senha de sua conta. Esta é a única maneira de recuperar sua conta Algorand.";
 "back-up-phrase-button-title" = "Confirmar Frase Senha de Recuperação";
 "back-up-phrase-qr" = "Exibir QR";
 
 /*MARK: Passphrase Verify*/
 "pass-phrase-verify-pop-up-title" = "Frase Senha Confirmada";
-"pass-phrase-verify-select-title" = "Selecionar a %@ palavra de sua frase senha";
+"pass-phrase-verify-select-title" = "Selecione a %@ palavra de sua frase senha";
 "pass-phrase-verify-question-title" = "Pergunta %@ of %@";
 "pass-phrase-verify-wrong-selection" = "Opção Errada";
 "pass-phrase-verify-pop-up-explanation" = "Sua frase senha foi confirmada. Certifique-se de tê-la gravada, pois ela será necessária para a recuperação da conta.";
@@ -97,7 +97,7 @@
 "qr-scan-should-scan-valid-qr" = "QR inválido.";
 
 /*MARK: QR Creation*/
-"qr-creation-title" = "Frase Senha QR";
+"qr-creation-title" = "QR de Frase Senha";
 "qr-creation-copied" = "Endereço copiado";
 
 /*MARK: Login*/
@@ -197,7 +197,7 @@
 "contacts-input-name-explanation" = "Nome";
 "contacts-input-name-placeholder" = "Nome do Contato";
 "contacts-input-address-explanation" = "Endereço";
-"contacts-input-address-placeholder" = "Cole # ou Escaneie QR";
+"contacts-input-address-placeholder" = "Cole o N° ou Escaneie o QR";
 "contacts-transactions-title" = "Transações";
 "contacts-empty-text" = "Você ainda não adicionou contatos";
 "contacts-name-validation-error" = "Nome está em branco.";
@@ -215,7 +215,7 @@
 "settings-server-node-settings" = "Configurações de Node";
 "settings-change-password" = "Criar/Trocar Senha";
 "settings-local-authentication" = "Habilitar ID Facial/Toque";
-"settings-language" = "Língua";
+"settings-language" = "Idioma";
 "settings-language-english" = "Inglês";
 "settings-notification-go-settings-title" = "Notificações";
 "settings-notification-disabled-go-settings-text" = "Você desabilitou as notificações. Vá a Configurações e habilite esta opção.";
@@ -468,7 +468,7 @@
 "account-type-selection-recover" = "Recuperar Frase Senha";
 "account-type-selection-recover-detail" = "Recuperar uma conta com frase senha de 25 palavras";
 "account-type-selection-ledger" = "Parear Conta Ledger";
-"account-type-selection-ledger-detail" = "Parear uma conta bancada por uma carteira Ledger Hardware";
+"account-type-selection-ledger-detail" = "Parear uma conta que é sustentada por uma carteira Ledger Hardware";
 "introduction-title-add-text" = "Adicionar nova conta";
 "introduction-add-account-text" = "Adicionar Conta";
 "introduction-title-terms-and-services" = "Ao criar uma conta, você concorda com os <a href=\"https://www.algorand.com/wallet-disclaimer\">Termos e Condições</a> da Algorand e sua <a href=\"https://www.algorand.com/wallet-privacy-policy\">Política de Privacidade</a>";
@@ -486,7 +486,7 @@
 "rekey-instruction-second-standard" = "Esta frase senha de conta não funcionará mais para esta conta";
 
 /*MARK: Watch Account*/
-"title-watch-account" = "Observar Conta";
+"title-watch-account" = "Conta de Monitoração";
 "watch-account-input-explanation" = "Endereço de Conta a ser Observada";
 "watch-account-input-placeholder" = "Colar Endereço ou Escanear QR";
 "watch-account-error-address" = "Insira um endereço válido.";
@@ -494,7 +494,7 @@
 "passphrase-question-third" = "3º";
 "passphrase-question-second" = "2º";
 "passphrase-question-first" = "1º";
-"passphrase-select-n-word" = "Selecionar a %@ palavra de sua frase senha";
+"passphrase-select-n-word" = "Selecione a %@ palavra de sua frase senha";
 "passphrase-qeustion-counter" = "Pergunta %@ of %@";
 "asset-detail-id-title" = "ID %@";
 "settings-app-version" = "Versão %@";

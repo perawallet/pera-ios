@@ -38,6 +38,8 @@ class ListErrorView: BaseView {
         button.setTitle("transaction-filter-try-again".localized, for: .normal)
         button.setTitleColor(SharedColors.primaryText, for: .normal)
         button.titleLabel?.font = UIFont.font(withWeight: .semiBold(size: 16.0))
+        button.titleLabel?.adjustsFontSizeToFitWidth = true
+        button.titleLabel?.minimumScaleFactor = 0.7
         button.titleLabel?.textAlignment = .center
         return button
     }()
