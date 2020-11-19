@@ -38,7 +38,7 @@ class TransactionAccountInformationView: BaseView {
         super.configureAppearance()
         titleLabel.text = "asset-title".localized
         containerView.backgroundColor = Colors.Background.disabled
-        separatorView.backgroundColor = SharedColors.gray200
+        separatorView.backgroundColor = Colors.Component.separator
         removeButton.isHidden = true
         containerView.layer.cornerRadius = 12.0
     }
@@ -141,15 +141,15 @@ extension TransactionAccountInformationView {
 
 extension TransactionAccountInformationView {
     func setEnabled() {
-        containerView.backgroundColor = SharedColors.secondaryBackground
+        containerView.backgroundColor = Colors.Background.secondary
         removeButton.isHidden = false
-        separatorView.backgroundColor = SharedColors.primaryBackground
+        separatorView.backgroundColor = Colors.Component.separator
     }
     
     func setDisabled() {
         containerView.backgroundColor = Colors.Background.disabled
         removeButton.removeFromSuperview()
-        separatorView.backgroundColor = SharedColors.gray200
+        separatorView.backgroundColor = Colors.Component.separator
     }
     
     func setAccountImage(_ image: UIImage?) {

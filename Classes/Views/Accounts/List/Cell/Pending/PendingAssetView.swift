@@ -17,8 +17,8 @@ class PendingAssetView: BaseView {
     private(set) lazy var assetNameView: AssetNameView = {
         let view = AssetNameView()
         view.removeId()
-        view.nameLabel.textColor = SharedColors.gray600
-        view.codeLabel.textColor = SharedColors.gray400
+        view.nameLabel.textColor = Colors.Text.tertiary
+        view.codeLabel.textColor = Colors.Text.secondary
         return view
     }()
     
@@ -32,12 +32,12 @@ class PendingAssetView: BaseView {
     
     private lazy var separatorView: UIView = {
         let view = UIView()
-        view.backgroundColor = SharedColors.primaryBackground
+        view.backgroundColor = Colors.Component.separator
         return view
     }()
     
     override func configureAppearance() {
-        backgroundColor = SharedColors.secondaryBackground
+        backgroundColor = Colors.Background.secondary
     }
     
     override func prepareLayout() {

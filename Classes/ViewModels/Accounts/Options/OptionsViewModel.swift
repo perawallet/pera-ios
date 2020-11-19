@@ -29,7 +29,7 @@ class OptionsViewModel {
         case .removeAccount:
             cell.contextView.iconImageView.image = img("icon-remove-account")
             cell.contextView.optionLabel.text = "options-remove-account".localized
-            cell.contextView.optionLabel.textColor = Colors.Main.red600
+            cell.contextView.optionLabel.textColor = Colors.General.error
         }
     }
 }

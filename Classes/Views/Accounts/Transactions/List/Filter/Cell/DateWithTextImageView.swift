@@ -65,8 +65,8 @@ extension DateWithTextImageView {
     }
     
     func setSelected() {
-        dayLabel.textColor = Colors.Main.primary600
-        imageView.tintColor = Colors.Main.primary600
+        dayLabel.textColor = Colors.General.selected
+        imageView.tintColor = Colors.General.selected
     }
     
     func setDeselected() {

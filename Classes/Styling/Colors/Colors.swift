@@ -1,5 +1,5 @@
 //
-//  SharedColors.swift
+//  Colors.swift
 //  algorand
 //
 //  Created by Göktuğ Berk Ulu on 22.03.2019.
@@ -7,20 +7,6 @@
 //
 
 import UIKit
-
-enum SharedColors {
-    static let primary = color("primary")
-    static let secondary700 = color("secondary700")
-    static let white = color("white")
-    static let gray200 = color("gray200")
-    static let gray400 = color("gray400")
-    static let gray500 = color("gray500")
-    static let gray600 = color("gray600")
-    static let gray800 = color("gray800")
-    static let primaryBackground = color("primaryBackground")
-    static let secondaryBackground = color("secondaryBackground")
-    static let primaryButtonTitle = color("primaryButtonTitle")
-}
 
 enum Colors {
     enum Main {
@@ -71,7 +57,9 @@ extension Colors {
         static let verified = color("verified")
         static let testNetBanner = color("testNetBanner")
         static let error = color("errorColor")
+        static let success = color("primary600")
         static let selected = color("selectedColor")
+        static let unknown = color("unknownColor")
     }
 }
 

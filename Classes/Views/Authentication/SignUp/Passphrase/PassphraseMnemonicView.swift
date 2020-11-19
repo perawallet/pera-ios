@@ -79,10 +79,10 @@ extension PassphraseMnemonicView {
             backgroundImageView.tintColor = Colors.Background.secondary
         case .correct:
             phraseLabel.textColor = Colors.PassphraseMnemonic.selectedText
-            backgroundImageView.tintColor = Colors.Main.primary600
+            backgroundImageView.tintColor = Colors.General.success
         case .wrong:
             phraseLabel.textColor = Colors.PassphraseMnemonic.selectedText
-            backgroundImageView.tintColor = Colors.Main.red600
+            backgroundImageView.tintColor = Colors.General.error
         }
     }
 }

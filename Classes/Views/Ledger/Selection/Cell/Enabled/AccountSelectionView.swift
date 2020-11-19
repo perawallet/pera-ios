@@ -17,7 +17,7 @@ class AccountSelectionView: BaseView {
             switch state {
             case .selected:
                 containerView.layer.borderWidth = 2.0
-                containerView.layer.borderColor = Colors.Main.primary600.cgColor
+                containerView.layer.borderColor = Colors.General.selected.cgColor
                 containerView.backgroundColor = Colors.Background.secondary
                 
                 if let titleView = stackView.arrangedSubviews.first as? LedgerAccountSelectionTitleView {
@@ -32,7 +32,7 @@ class AccountSelectionView: BaseView {
                 }
             case .unselectable:
                 containerView.layer.borderWidth = 2.0
-                containerView.layer.borderColor = Colors.Main.primary600.cgColor
+                containerView.layer.borderColor = Colors.General.selected.cgColor
                 containerView.backgroundColor = Colors.Background.secondary
             }
         }

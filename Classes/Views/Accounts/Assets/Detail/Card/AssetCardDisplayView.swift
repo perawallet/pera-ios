@@ -35,7 +35,7 @@ class AssetCardDisplayView: BaseView {
         let pageControl = UIPageControl()
         pageControl.currentPage = 0
         pageControl.pageIndicatorTintColor = Colors.Text.primary.withAlphaComponent(0.1)
-        pageControl.currentPageIndicatorTintColor = Colors.Main.primary600
+        pageControl.currentPageIndicatorTintColor = Colors.General.selected
         return pageControl
     }()
 

@@ -42,7 +42,7 @@ class AssetDisplayView: BaseView {
             .withLine(.single)
             .withAlignment(.center)
             .withFont(UIFont.font(withWeight: .bold(size: 28.0)))
-            .withTextColor(Colors.Main.primary600)
+            .withTextColor(Colors.General.selected)
     }()
     
     private(set) lazy var assetNameLabel: UILabel = {

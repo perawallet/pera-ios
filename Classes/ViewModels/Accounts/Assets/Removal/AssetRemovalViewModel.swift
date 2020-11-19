@@ -13,7 +13,7 @@ class AssetRemovalViewModel {
         cell.contextView.assetNameView.setAssetName(for: asset)
         cell.contextView.setActionText("title-remove".localized)
         cell.contextView.setActionFont(UIFont.font(withWeight: .semiBold(size: 14.0)))
-        cell.contextView.setActionColor(Colors.Main.red600)
+        cell.contextView.setActionColor(Colors.General.error)
     }
     
     func configure(_ header: AccountHeaderSupplementaryView, with account: Account) {

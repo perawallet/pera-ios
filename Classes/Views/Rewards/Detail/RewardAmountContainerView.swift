@@ -27,13 +27,13 @@ class RewardAmountContainerView: BaseView {
         UILabel()
             .withAlignment(.center)
             .withLine(.single)
-            .withTextColor(Colors.Main.primary600)
+            .withTextColor(Colors.General.selected)
             .withFont(UIFont.font(withWeight: .semiBold(size: 28.0)))
     }()
     
     override func configureAppearance() {
         super.configureAppearance()
-        algoIconImageView.tintColor = Colors.Main.primary600
+        algoIconImageView.tintColor = Colors.General.selected
         layer.cornerRadius = 12.0
     }
     

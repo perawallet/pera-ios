@@ -20,7 +20,7 @@ class TooltipViewController: BaseViewController {
         UILabel()
             .withAlignment(.center)
             .withText(tooltipText)
-            .withTextColor(SharedColors.white)
+            .withTextColor(Colors.Main.white)
             .withLine(.contained)
             .withFont(UIFont.font(withWeight: .semiBold(size: 14.0)))
     }()
@@ -43,8 +43,8 @@ class TooltipViewController: BaseViewController {
     }
     
     override func configureAppearance() {
-        view.backgroundColor = SharedColors.gray800
-        popoverPresentationController?.backgroundColor = SharedColors.gray800
+        view.backgroundColor = Colors.TooltipView.background
+        popoverPresentationController?.backgroundColor = Colors.TooltipView.background
         popoverPresentationController?.permittedArrowDirections = .up
     }
     
@@ -94,5 +94,11 @@ extension TooltipViewController {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let horizontalInset: CGFloat = 20.0
         let verticalInset: CGFloat = 12.0
+    }
+}
+
+extension Colors {
+    fileprivate enum TooltipView {
+        static let background = color("tooltipBackground")
     }
 }

@@ -38,7 +38,7 @@ class PassphraseVerifyView: BaseView {
     private lazy var wrongChoiceLabel: UILabel = {
         let label = UILabel()
             .withText("pass-phrase-verify-wrong-selection".localized)
-            .withTextColor(Colors.Main.red600)
+            .withTextColor(Colors.General.error)
             .withFont(UIFont.font(withWeight: .semiBold(size: 14.0)))
             .withAlignment(.center)
         label.isHidden = true

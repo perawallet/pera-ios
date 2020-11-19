@@ -16,7 +16,7 @@ class PinLimitView: BaseView {
     
     private lazy var lockImageView: UIImageView = {
         let imageView = UIImageView(image: img("icon-lock", isTemplate: true))
-        imageView.tintColor = Colors.Main.red600
+        imageView.tintColor = Colors.General.error
         return imageView
     }()
     

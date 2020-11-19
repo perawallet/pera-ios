@@ -22,7 +22,7 @@ class SelectAssetView: BaseView {
     
     private(set) lazy var accountsCollectionView: AssetsCollectionView = {
         let collectionView = AssetsCollectionView(containsPendingAssets: false)
-        collectionView.backgroundColor = SharedColors.secondaryBackground
+        collectionView.backgroundColor = Colors.Background.tertiary
         collectionView.contentInset = .zero
         
         collectionView.register(AlgoAssetCell.self, forCellWithReuseIdentifier: AlgoAssetCell.reusableIdentifier)

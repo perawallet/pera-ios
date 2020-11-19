@@ -110,7 +110,7 @@ extension TransactionFilterOptionView {
     
     func setSelected() {
         selectedIconImageView.isHidden = false
-        titleLabel.textColor = Colors.Main.primary600
+        titleLabel.textColor = Colors.General.selected
         dateImageView.setSelected()
     }
     

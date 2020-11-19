@@ -111,8 +111,7 @@ extension AlgoAssetView {
 
 extension AlgoAssetView {
     func setEnabled(_ isEnabled: Bool) {
-        backgroundColor = isEnabled ? SharedColors.secondaryBackground : Colors.Background.disabled
-        separatorView.backgroundColor = isEnabled ? SharedColors.primaryBackground : SharedColors.gray200
+        backgroundColor = isEnabled ? Colors.Background.secondary : Colors.Background.disabled
     }
 }
 

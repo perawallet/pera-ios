@@ -93,9 +93,9 @@ class CustomBannerColors: BannerColorsProtocol {
     internal func color(for style: BannerStyle) -> UIColor {
         switch style {
         case .warning:
-            return Colors.Main.red600
+            return Colors.General.error
         case .success:
-            return Colors.Main.primary600
+            return Colors.General.success
         default:
             return Colors.Background.secondary
         }
