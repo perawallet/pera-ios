@@ -10,6 +10,6 @@ import UIKit
 
 class LineSeparatorView: BaseView {
     override func configureAppearance() {
-        backgroundColor = SharedColors.primaryBackground
+        backgroundColor = Colors.Component.separator
     }
 }

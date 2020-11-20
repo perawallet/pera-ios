@@ -33,8 +33,8 @@ class AccountTypeSelectionViewController: BaseViewController {
     }
     
     override func configureAppearance() {
-        view.backgroundColor = SharedColors.secondaryBackground
-        setSecondaryBackgroundColor()
+        view.backgroundColor = Colors.Background.tertiary
+        setTertiaryBackgroundColor()
         title = "account-type-choose-title".localized
         accountTypeSelectionView.configureCreateNewAccountView(with: AccountTypeViewModel(accountSetupMode: .create))
         accountTypeSelectionView.configureWatchAccountView(with: AccountTypeViewModel(accountSetupMode: .watch))

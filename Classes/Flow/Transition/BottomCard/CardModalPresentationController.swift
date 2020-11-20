@@ -24,7 +24,7 @@ class CardModalPresentationController: UIPresentationController {
     private lazy var chromeView: UIView = {
         let view = UIView()
         view.isUserInteractionEnabled = true
-        view.backgroundColor = Colors.backgroundColor
+        view.backgroundColor = Colors.CardModal.background
         return view
     }()
     
@@ -241,8 +241,8 @@ extension CardModalPresentationController: ModalPresenterInteractable {
     }
 }
 
-extension CardModalPresentationController {
-    private enum Colors {
-        static let backgroundColor = rgba(0.29, 0.29, 0.31, 0.6)
+extension Colors {
+    fileprivate enum CardModal {
+        static let background = color("bottomOverlayBackground")
     }
 }

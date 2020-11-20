@@ -23,7 +23,7 @@ class TransactionActionsView: BaseView {
             .withLine(.single)
             .withAlignment(.center)
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
-            .withTextColor(SharedColors.gray500)
+            .withTextColor(Colors.Text.secondary)
             .withText("title-send".localized)
     }()
     
@@ -36,12 +36,12 @@ class TransactionActionsView: BaseView {
             .withLine(.single)
             .withAlignment(.center)
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
-            .withTextColor(SharedColors.gray500)
+            .withTextColor(Colors.Text.secondary)
             .withText("title-receive".localized)
     }()
     
     override func configureAppearance() {
-        backgroundColor = SharedColors.secondaryBackground
+        backgroundColor = Colors.Background.secondary
     }
     
     override func setListeners() {

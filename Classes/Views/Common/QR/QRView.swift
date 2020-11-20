@@ -28,7 +28,7 @@ class QRView: BaseView {
     }
     
     override func configureAppearance() {
-        backgroundColor = SharedColors.secondaryBackground
+        backgroundColor = .clear
     }
     
     override func prepareLayout() {

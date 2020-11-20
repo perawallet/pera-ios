@@ -46,7 +46,7 @@ class NotificationsView: BaseView {
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.contentInset = UIEdgeInsets(top: 8.0, left: 0.0, bottom: 0.0, right: 0.0)
-        collectionView.backgroundColor = SharedColors.secondaryBackground
+        collectionView.backgroundColor = Colors.Background.tertiary
         collectionView.register(NotificationCell.self, forCellWithReuseIdentifier: NotificationCell.reusableIdentifier)
         return collectionView
     }()

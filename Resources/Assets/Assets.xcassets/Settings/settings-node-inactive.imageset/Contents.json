@@ -3,6 +3,16 @@
     {
       "filename" : "settings-node-inactive.pdf",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "settings-node-inactive-1.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {

@@ -21,12 +21,16 @@ class ContactDisplayView: BaseView {
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
             .withLine(.contained)
             .withAlignment(.right)
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.Text.primary)
         label.isUserInteractionEnabled = true
         return label
     }()
     
-    private lazy var actionButton = UIButton()
+    private lazy var actionButton: UIButton = {
+        let button = UIButton(type: .custom).withBackgroundColor(Colors.Background.reversePrimary)
+        button.layer.cornerRadius = 20.0
+        return button
+    }()
     
     override func configureAppearance() {
         imageView.layer.cornerRadius = layout.current.imageSize.width / 2
@@ -99,7 +103,7 @@ extension ContactDisplayView {
     }
     
     func setButtonImage(_ image: UIImage?) {
-        actionButton.setBackgroundImage(image, for: .normal)
+        actionButton.setImage(image, for: .normal)
     }
     
     func removeAction() {

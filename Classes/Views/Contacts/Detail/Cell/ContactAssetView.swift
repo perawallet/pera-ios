@@ -21,14 +21,14 @@ class ContactAssetView: BaseView {
     private lazy var sendButton: UIButton = {
         let button = UIButton(type: .custom)
             .withBackgroundImage(img("bg-send-small"))
-            .withImage(img("icon-arrow-up"))
+            .withImage(img("icon-arrow-up-24"))
             .withAlignment(.center)
         button.contentMode = .scaleAspectFit
         return button
     }()
     
     override func configureAppearance() {
-        backgroundColor = SharedColors.secondaryBackground
+        backgroundColor = Colors.Background.secondary
     }
     
     override func setListeners() {

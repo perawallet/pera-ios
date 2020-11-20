@@ -38,14 +38,14 @@ class AssetCardView: BaseView {
     private lazy var assetNameLabel: UILabel = {
         UILabel()
             .withAlignment(.left)
-            .withTextColor(SharedColors.white)
+            .withTextColor(Colors.Main.white)
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
     }()
     
     private lazy var assetAmountLabel: UILabel = {
         let label = UILabel()
             .withAlignment(.left)
-            .withTextColor(SharedColors.white)
+            .withTextColor(Colors.Main.white)
             .withFont(UIFont.font(withWeight: .medium(size: 32.0)))
         label.minimumScaleFactor = 0.7
         label.adjustsFontSizeToFitWidth = true
@@ -54,9 +54,9 @@ class AssetCardView: BaseView {
     
     private lazy var assetIDButton: AlignedButton = {
         let button = AlignedButton(.imageAtLeft(spacing: 8.0))
-        button.setImage(img("icon-info-gray", isTemplate: true), for: .normal)
-        button.tintColor = SharedColors.white
-        button.setTitleColor(SharedColors.primaryButtonTitle, for: .normal)
+        button.setImage(img("icon-info-24", isTemplate: true), for: .normal)
+        button.tintColor = Colors.Main.white
+        button.setTitleColor(Colors.Main.white, for: .normal)
         button.titleLabel?.font = UIFont.font(withWeight: .regular(size: 12.0))
         button.titleLabel?.textAlignment = .left
         return button

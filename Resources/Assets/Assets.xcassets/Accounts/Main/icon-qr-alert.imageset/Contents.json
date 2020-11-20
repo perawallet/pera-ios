@@ -3,6 +3,16 @@
     {
       "filename" : "icon-qr-alert\".pdf",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "icon-qr-alert.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {

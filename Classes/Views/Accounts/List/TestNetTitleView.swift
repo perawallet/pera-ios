@@ -15,17 +15,17 @@ class TestNetTitleView: BaseView {
     private lazy var titleLabel: UILabel = {
         UILabel()
             .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.Text.primary)
             .withAlignment(.left)
     }()
     
     private lazy var testNetLabel: UILabel = {
         let label = UILabel()
             .withFont(UIFont.font(withWeight: .bold(size: 10.0)))
-            .withTextColor(SharedColors.primaryButtonTitle)
+            .withTextColor(Colors.ButtonText.primary)
             .withAlignment(.center)
             .withText("title-testnet".localized)
-        label.backgroundColor = SharedColors.testNetBanner
+        label.backgroundColor = Colors.General.testNetBanner
         label.layer.cornerRadius = 12.0
         label.layer.masksToBounds = true
         return label
@@ -78,14 +78,14 @@ class AssetDetailTitleView: BaseView {
     private lazy var titleLabel: UILabel = {
         UILabel()
             .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.Text.primary)
             .withAlignment(.center)
     }()
     
     private lazy var detailLabel: UILabel = {
         let label = UILabel()
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
-            .withTextColor(SharedColors.gray500)
+            .withTextColor(Colors.Text.secondary)
             .withAlignment(.center)
         label.alpha = 0.0
         return label

@@ -21,7 +21,7 @@ class PasswordInputCircleView: UIImageView {
                 image = img("gray-button-border")
             case .error:
                 image = img("gray-button-border", isTemplate: true)
-                tintColor = SharedColors.red
+                tintColor = Colors.General.error
             case .filled:
                 image = img("green-button-filled")
             }

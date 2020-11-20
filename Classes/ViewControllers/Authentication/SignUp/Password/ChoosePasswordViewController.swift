@@ -55,7 +55,7 @@ class ChoosePasswordViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setSecondaryBackgroundColor()
+        setTertiaryBackgroundColor()
         displayPinLimitScreenIfNeeded()
     }
     
@@ -74,7 +74,7 @@ class ChoosePasswordViewController: BaseViewController {
     
     override func configureAppearance() {
         super.configureAppearance()
-        view.backgroundColor = .white
+        view.backgroundColor = Colors.Background.tertiary
         setTitle()
         viewModel.configure(choosePasswordView)
     }

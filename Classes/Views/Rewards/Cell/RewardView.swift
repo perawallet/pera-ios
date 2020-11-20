@@ -17,7 +17,7 @@ class RewardView: BaseView {
             .withLine(.single)
             .withAlignment(.left)
             .withFont(UIFont.font(withWeight: .semiBold(size: 13.0)))
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.Text.primary)
             .withText("reward-list-title".localized)
     }()
     
@@ -28,13 +28,13 @@ class RewardView: BaseView {
             .withLine(.single)
             .withAlignment(.right)
             .withFont(UIFont.font(withWeight: .regular(size: 12.0)))
-            .withTextColor(SharedColors.gray600)
+            .withTextColor(Colors.Text.secondary)
     }()
     
     private lazy var separatorView = LineSeparatorView()
     
     override func configureAppearance() {
-        backgroundColor = SharedColors.secondaryBackground
+        backgroundColor = Colors.Background.secondary
     }
     
     override func prepareLayout() {

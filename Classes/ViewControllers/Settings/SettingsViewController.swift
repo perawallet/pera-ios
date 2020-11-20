@@ -45,6 +45,10 @@ class SettingsViewController: BaseViewController {
         isTabBarHidden = false
     }
     
+    override func configureAppearance() {
+        view.backgroundColor = Colors.Background.tertiary
+    }
+    
     override func linkInteractors() {
         settingsView.collectionView.delegate = self
         settingsView.collectionView.dataSource = self
@@ -154,6 +158,9 @@ extension SettingsViewController: UICollectionViewDataSource {
             withReuseIdentifier: SettingsDetailCell.reusableIdentifier,
             for: indexPath
         ) as? SettingsDetailCell {
+            if shouldHideSeparator(at: indexPath, in: collectionView) {
+                cell.contextView.setSeparatorHidden(true)
+            }
             SettingsDetailViewModel(setting: setting).configure(cell)
             return cell
         }
@@ -171,6 +178,9 @@ extension SettingsViewController: UICollectionViewDataSource {
             withReuseIdentifier: SettingsInfoCell.reusableIdentifier,
             for: indexPath
         ) as? SettingsInfoCell {
+            if shouldHideSeparator(at: indexPath, in: collectionView) {
+                cell.contextView.setSeparatorHidden(true)
+            }
             SettingsInfoViewModel(setting: setting, info: info).configure(cell)
             return cell
         }
@@ -188,12 +198,19 @@ extension SettingsViewController: UICollectionViewDataSource {
             withReuseIdentifier: SettingsToggleCell.reusableIdentifier,
             for: indexPath
         ) as? SettingsToggleCell {
+            if shouldHideSeparator(at: indexPath, in: collectionView) {
+                cell.contextView.setSeparatorHidden(true)
+            }
             cell.delegate = self
             SettingsToggleViewModel(setting: setting, isOn: isOn).configure(cell)
             return cell
         }
         
         fatalError("Index path is out of bounds")
+    }
+    
+    private func shouldHideSeparator(at indexPath: IndexPath, in collectionView: UICollectionView) -> Bool {
+        return isDarkModeDisplay && collectionView.numberOfItems(inSection: indexPath.section) == indexPath.item + 1
     }
     
     func collectionView(

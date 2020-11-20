@@ -19,7 +19,7 @@ class RekeyInstructionsView: BaseView {
             .withLine(.single)
             .withFont(UIFont.font(withWeight: .bold(size: 28.0)))
             .withAlignment(.left)
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.Text.primary)
             .withText("rekey-instruction-title".localized)
     }()
     
@@ -28,7 +28,7 @@ class RekeyInstructionsView: BaseView {
             .withLine(.contained)
             .withFont(UIFont.font(withWeight: .regular(size: 16.0)))
             .withAlignment(.left)
-            .withTextColor(SharedColors.inputTitle)
+            .withTextColor(Colors.Text.tertiary)
     }()
     
     private lazy var instructionHeaderLabel: UILabel = {
@@ -36,7 +36,7 @@ class RekeyInstructionsView: BaseView {
             .withLine(.single)
             .withFont(UIFont.font(withWeight: .regular(size: 16.0)))
             .withAlignment(.left)
-            .withTextColor(SharedColors.inputTitle)
+            .withTextColor(Colors.Text.tertiary)
             .withText("rekey-instruction-header".localized)
     }()
     

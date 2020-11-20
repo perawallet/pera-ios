@@ -27,7 +27,7 @@ class CurrencySelectionViewController: BaseViewController {
     }
     
     override func configureAppearance() {
-        super.configureAppearance()
+        view.backgroundColor = Colors.Background.tertiary
         title = "settings-currency".localized
     }
     

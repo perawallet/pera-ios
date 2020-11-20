@@ -28,7 +28,7 @@ class AssetSupportViewController: BaseViewController {
     }
     
     override func configureAppearance() {
-        view.backgroundColor = SharedColors.secondaryBackground
+        view.backgroundColor = Colors.Background.secondary
         viewModel.configure(assetSupportView, with: assetAlertDraft)
     }
     

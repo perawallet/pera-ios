@@ -19,7 +19,7 @@ class TransactionAssetView: BaseView {
     private lazy var separatorView = LineSeparatorView()
     
     override func configureAppearance() {
-        backgroundColor = SharedColors.secondaryBackground
+        backgroundColor = .clear
         titleLabel.text = "asset-title".localized
     }
     

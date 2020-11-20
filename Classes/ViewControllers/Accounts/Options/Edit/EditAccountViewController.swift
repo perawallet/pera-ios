@@ -45,7 +45,7 @@ class EditAccountViewController: BaseViewController {
     }
     
     override func configureAppearance() {
-        view.backgroundColor = SharedColors.secondaryBackground
+        view.backgroundColor = Colors.Background.secondary
         title = "options-edit-account-name".localized
         setSecondaryBackgroundColor()
         editAccountView.accountNameTextField.text = account.name

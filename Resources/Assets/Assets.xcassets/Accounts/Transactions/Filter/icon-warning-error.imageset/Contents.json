@@ -3,6 +3,16 @@
     {
       "filename" : "icon-warning-error.pdf",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "icon-warning-error-1.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {

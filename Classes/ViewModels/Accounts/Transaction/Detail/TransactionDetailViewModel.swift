@@ -130,12 +130,12 @@ class TransactionDetailViewModel {
         if let contact = transaction.contact {
             opponentType = .contact(address: address)
             view.opponentView.setContact(contact)
-            view.opponentView.setContactButtonImage(img("icon-qr-view"))
+            view.opponentView.setContactButtonImage(img("icon-qr"))
         } else if let localAccount = UIApplication.shared.appConfiguration?.session.accountInformation(from: address) {
             opponentType = .localAccount(address: address)
             view.opponentView.setName(localAccount.name)
             view.opponentView.setContactImage(hidden: true)
-            view.opponentView.setContactButtonImage(img("icon-qr-view"))
+            view.opponentView.setContactButtonImage(img("icon-qr"))
         } else {
             opponentType = .address(address: address)
             view.opponentView.setContactButtonImage(img("icon-user-add"))

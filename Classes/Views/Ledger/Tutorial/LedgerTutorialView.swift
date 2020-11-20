@@ -22,7 +22,7 @@ class LedgerTutorialView: BaseView {
             .withFont(UIFont.font(withWeight: .medium(size: 16.0)))
             .withText("ledger-tutorial-title-text".localized)
             .withAlignment(.center)
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.Text.primary)
     }()
     
     private lazy var ledgerTutorialInstructionListView = LedgerTutorialInstructionListView()

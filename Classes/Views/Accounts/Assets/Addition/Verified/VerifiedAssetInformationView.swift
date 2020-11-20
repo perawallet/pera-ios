@@ -22,7 +22,7 @@ class VerifiedAssetInformationView: BaseView {
     private lazy var titleLabel: UILabel = {
         UILabel()
             .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.Text.primary)
             .withAlignment(.left)
             .withText("verified-asset-information-title".localized)
             .withLine(.contained)
@@ -33,7 +33,7 @@ class VerifiedAssetInformationView: BaseView {
     private lazy var informationLabel: UILabel = {
         let label = UILabel()
             .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.Text.primary)
             .withAlignment(.left)
             .withLine(.contained)
         label.isUserInteractionEnabled = true
@@ -45,7 +45,7 @@ class VerifiedAssetInformationView: BaseView {
     }
     
     override func configureAppearance() {
-        backgroundColor = SharedColors.secondaryBackground
+        backgroundColor = Colors.Background.tertiary
         addInformationTextAttributes()
     }
     
@@ -111,10 +111,10 @@ extension VerifiedAssetInformationView {
         let fullAttributedText = NSMutableAttributedString(string: fullText)
         
         let doubleCheckTextRange = (fullText as NSString).range(of: doubleCheckText)
-        fullAttributedText.addAttribute(.foregroundColor, value: SharedColors.verified, range: doubleCheckTextRange)
+        fullAttributedText.addAttribute(.foregroundColor, value: Colors.General.verified, range: doubleCheckTextRange)
         
         let contactTextRange = (fullText as NSString).range(of: contactText)
-        fullAttributedText.addAttribute(.foregroundColor, value: SharedColors.tertiaryText, range: contactTextRange)
+        fullAttributedText.addAttribute(.foregroundColor, value: Colors.ButtonText.actionButton, range: contactTextRange)
         
         informationLabel.attributedText = fullAttributedText
     }

@@ -54,7 +54,7 @@ class OptionsViewController: BaseViewController {
     }
     
     override func configureAppearance() {
-        view.backgroundColor = SharedColors.secondaryBackground
+        view.backgroundColor = Colors.Background.secondary
     }
     
     override func linkInteractors() {

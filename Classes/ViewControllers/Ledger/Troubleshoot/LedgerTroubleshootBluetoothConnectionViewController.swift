@@ -14,7 +14,7 @@ class LedgerTroubleshootBluetoothConnectionViewController: BaseScrollViewControl
     
     private lazy var separatorView: UIView = {
         let view = UIView()
-        view.backgroundColor = SharedColors.gray100
+        view.backgroundColor = Colors.Component.separator
         return view
     }()
     
@@ -31,10 +31,10 @@ class LedgerTroubleshootBluetoothConnectionViewController: BaseScrollViewControl
     override func configureAppearance() {
         super.configureAppearance()
         title = "title-step-4".localized
-        view.backgroundColor = SharedColors.secondaryBackground
-        contentView.backgroundColor = SharedColors.secondaryBackground
-        scrollView.backgroundColor = SharedColors.secondaryBackground
-        setSecondaryBackgroundColor()
+        view.backgroundColor = Colors.Background.tertiary
+        contentView.backgroundColor = Colors.Background.tertiary
+        scrollView.backgroundColor = Colors.Background.tertiary
+        setTertiaryBackgroundColor()
     }
     
     override func prepareLayout() {

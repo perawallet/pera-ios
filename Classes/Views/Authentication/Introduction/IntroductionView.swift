@@ -26,7 +26,7 @@ class IntroductionView: BaseView {
         UILabel()
             .withLine(.contained)
             .withFont(UIFont.font(withWeight: .medium(size: 24.0)))
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.Text.primary)
             .withAlignment(.center)
     }()
     
@@ -34,13 +34,14 @@ class IntroductionView: BaseView {
     
     private lazy var termsAndConditionsTextView: UITextView = {
         let textView = UITextView()
+        textView.backgroundColor = .clear
         textView.isEditable = false
         textView.isScrollEnabled = false
         textView.dataDetectorTypes = .link
         textView.textContainerInset = .zero
         textView.textAlignment = .center
         textView.linkTextAttributes = [
-            .foregroundColor: SharedColors.primary,
+            .foregroundColor: Colors.Text.link,
             .underlineColor: UIColor.clear,
             .font: UIFont.font(withWeight: .regular(size: 14.0))
         ]
@@ -56,7 +57,7 @@ class IntroductionView: BaseView {
     }
     
     override func configureAppearance() {
-        backgroundColor = SharedColors.secondaryBackground
+        backgroundColor = Colors.Background.tertiary
         introductionImageView.contentMode = .scaleAspectFit
         
         let centerParagraphStyle = NSMutableParagraphStyle()
@@ -66,7 +67,7 @@ class IntroductionView: BaseView {
             "introduction-title-terms-and-services".localized,
             with: [
                 .font: UIFont.font(withWeight: .regular(size: 14.0)),
-                .foregroundColor: SharedColors.inputTitle,
+                .foregroundColor: Colors.Text.tertiary,
                 .paragraphStyle: centerParagraphStyle
             ]
         )

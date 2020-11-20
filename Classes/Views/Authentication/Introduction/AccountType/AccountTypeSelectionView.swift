@@ -29,12 +29,13 @@ class AccountTypeSelectionView: BaseView {
     private lazy var termsAndConditionsTextView: UITextView = {
         let textView = UITextView()
         textView.isEditable = false
+        textView.backgroundColor = .clear
         textView.isScrollEnabled = false
         textView.dataDetectorTypes = .link
         textView.textContainerInset = .zero
         textView.textAlignment = .center
         textView.linkTextAttributes = [
-            .foregroundColor: SharedColors.primary,
+            .foregroundColor: Colors.Text.link,
             .underlineColor: UIColor.clear,
             .font: UIFont.font(withWeight: .regular(size: 14.0))
         ]
@@ -46,7 +47,7 @@ class AccountTypeSelectionView: BaseView {
             "introduction-title-terms-and-services".localized,
             with: [
                 .font: UIFont.font(withWeight: .regular(size: 14.0)),
-                .foregroundColor: SharedColors.inputTitle,
+                .foregroundColor: Colors.Text.tertiary,
                 .paragraphStyle: centerParagraphStyle
             ]
         )
@@ -62,7 +63,7 @@ class AccountTypeSelectionView: BaseView {
     private lazy var pairAccountView = AccountTypeView()
 
     override func configureAppearance() {
-        backgroundColor = SharedColors.secondaryBackground
+        backgroundColor = Colors.Background.tertiary
     }
     
     override func linkInteractors() {

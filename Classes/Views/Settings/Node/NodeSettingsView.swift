@@ -23,7 +23,7 @@ class NodeSettingsView: BaseView {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = SharedColors.primaryBackground
+        collectionView.backgroundColor = Colors.Background.primary
         collectionView.contentInset = .zero
         collectionView.register(NodeSelectionCell.self, forCellWithReuseIdentifier: NodeSelectionCell.reusableIdentifier)
         return collectionView

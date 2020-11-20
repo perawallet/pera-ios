@@ -15,14 +15,14 @@ class PassphraseBackUpOrderView: BaseView {
     private(set) lazy var numberLabel: UILabel = {
         UILabel()
             .withFont(UIFont.font(withWeight: .medium(size: 12.0)))
-            .withTextColor(SharedColors.gray400)
+            .withTextColor(Colors.PassphraseBackUpOrder.numberColor)
             .withAlignment(.left)
     }()
     
     private(set) lazy var phraseLabel: UILabel = {
         let label = UILabel()
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.Text.primary)
             .withAlignment(.left)
         
         label.numberOfLines = 1
@@ -32,7 +32,7 @@ class PassphraseBackUpOrderView: BaseView {
     }()
     
     override func configureAppearance() {
-        backgroundColor = SharedColors.secondaryBackground
+        backgroundColor = Colors.Background.secondary
     }
     
     override func prepareLayout() {
@@ -60,6 +60,12 @@ extension PassphraseBackUpOrderView {
             make.leading.equalTo(numberLabel.snp.trailing).offset(layout.current.leadingInset)
             make.trailing.lessThanOrEqualToSuperview()
         }
+    }
+}
+
+extension Colors {
+    fileprivate enum PassphraseBackUpOrder {
+        static let numberColor = color("passphraseBackUpOrderNumberColor")
     }
 }
 

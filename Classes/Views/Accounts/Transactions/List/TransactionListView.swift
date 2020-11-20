@@ -52,7 +52,7 @@ class TransactionListView: BaseView {
     private lazy var contentStateView = ContentStateView()
     
     override func configureAppearance() {
-        backgroundColor = SharedColors.secondaryBackground
+        backgroundColor = Colors.Background.secondary
         internetConnectionErrorView.setImage(img("icon-no-internet-connection"))
         internetConnectionErrorView.setTitle("internet-connection-error-title".localized)
         internetConnectionErrorView.setSubtitle("internet-connection-error-detail".localized)
@@ -63,7 +63,7 @@ class TransactionListView: BaseView {
         otherErrorView.setSubtitle("transaction-filter-error-subtitle".localized)
         otherErrorView.layer.cornerRadius = 20.0
         otherErrorView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        emptyStateView.titleLabel.textColor = SharedColors.gray700
+        emptyStateView.titleLabel.textColor = Colors.Text.tertiary
         emptyStateView.titleLabel.font = UIFont.font(withWeight: .medium(size: 16.0))
         emptyStateView.layer.cornerRadius = 20.0
         emptyStateView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]

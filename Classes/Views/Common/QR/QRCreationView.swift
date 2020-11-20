@@ -16,15 +16,15 @@ class QRCreationView: BaseView {
     
     private lazy var qrView = QRView(qrText: QRText(mode: draft.mode, address: draft.address, mnemonic: draft.mnemonic))
     
-    private lazy var shareButton: UIButton = {
-        UIButton(type: .custom)
-            .withBackgroundImage(img("bg-main-button-small"))
-            .withImage(img("icon-share-white"))
-            .withTitle("title-share-qr".localized)
-            .withTitleColor(SharedColors.primaryButtonTitle)
-            .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
-            .withImageEdgeInsets(UIEdgeInsets(top: 0, left: -10.0, bottom: 0, right: 0))
-            .withTitleEdgeInsets(UIEdgeInsets(top: 0, left: 5.0, bottom: 0, right: 0))
+    private lazy var shareButton: AlignedButton = {
+        let button = AlignedButton(.imageAtLeft(spacing: 8.0))
+        button.setBackgroundImage(img("bg-main-button"), for: .normal)
+        button.setImage(img("icon-share-24"), for: .normal)
+        button.setTitle("title-share-qr".localized, for: .normal)
+        button.setTitleColor(Colors.ButtonText.primary, for: .normal)
+        button.titleLabel?.font = UIFont.font(withWeight: .semiBold(size: 16.0))
+        button.titleLabel?.textAlignment = .center
+        return button
     }()
     
     private lazy var qrSelectableLabel = QRSelectableLabel()
@@ -37,7 +37,7 @@ class QRCreationView: BaseView {
     }
     
     override func configureAppearance() {
-        backgroundColor = SharedColors.secondaryBackground
+        backgroundColor = Colors.Background.tertiary
     }
     
     override func linkInteractors() {
@@ -81,7 +81,7 @@ extension QRCreationView {
         shareButton.snp.makeConstraints { make in
             make.top.equalTo(qrView.snp.bottom).offset(layout.current.buttonTopInset)
             make.centerX.equalToSuperview()
-            make.width.equalTo(layout.current.shareButtonWidth)
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
             
             if draft.isSelectable {
                 make.bottom.lessThanOrEqualToSuperview().inset(layout.current.verticalInset)

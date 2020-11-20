@@ -15,7 +15,7 @@ class RewardAmountContainerView: BaseView {
     private lazy var titleLabel: UILabel = {
         UILabel()
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.Text.primary)
             .withLine(.single)
             .withAlignment(.center)
             .withText("rewards-since-last-text".localized)
@@ -27,13 +27,13 @@ class RewardAmountContainerView: BaseView {
         UILabel()
             .withAlignment(.center)
             .withLine(.single)
-            .withTextColor(SharedColors.primary)
+            .withTextColor(Colors.General.selected)
             .withFont(UIFont.font(withWeight: .semiBold(size: 28.0)))
     }()
     
     override func configureAppearance() {
         super.configureAppearance()
-        algoIconImageView.tintColor = SharedColors.primary
+        algoIconImageView.tintColor = Colors.General.selected
         layer.cornerRadius = 12.0
     }
     

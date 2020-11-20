@@ -16,7 +16,7 @@ class UserInformationView: BaseView {
     
     private lazy var imageBackgroundView: UIView = {
         let view = UIView()
-        view.backgroundColor = .white
+        view.backgroundColor = Colors.Background.secondary
         view.layer.cornerRadius = layout.current.backgroundViewSize / 2
         return view
     }()
@@ -30,7 +30,7 @@ class UserInformationView: BaseView {
     }()
     
     private lazy var addButton: UIButton = {
-        let button = UIButton(type: .custom).withBackgroundColor(SharedColors.primary).withImage(img("icon-add-white"))
+        let button = UIButton(type: .custom).withBackgroundColor(Colors.Main.primary600).withImage(img("icon-add"))
         button.layer.cornerRadius = 16.0
         return button
     }()

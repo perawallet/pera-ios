@@ -19,7 +19,7 @@ class LedgerApprovalView: BaseView {
             .withLine(.single)
             .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
             .withAlignment(.center)
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.Text.primary)
     }()
     
     private(set) lazy var bluetoothImageView = BluetoothLoadingView()
@@ -33,20 +33,20 @@ class LedgerApprovalView: BaseView {
             .withLine(.contained)
             .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
             .withAlignment(.center)
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.Text.primary)
     }()
     
     private lazy var cancelButton: UIButton = {
         UIButton(type: .custom)
             .withBackgroundImage(img("bg-light-gray-button"))
             .withTitle("title-cancel".localized)
-            .withTitleColor(SharedColors.primaryText)
+            .withTitleColor(Colors.ButtonText.secondary)
             .withAlignment(.center)
             .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
     }()
     
     override func configureAppearance() {
-        backgroundColor = SharedColors.secondaryBackground
+        backgroundColor = Colors.Background.secondary
     }
     
     override func setListeners() {

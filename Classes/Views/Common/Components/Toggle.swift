@@ -15,7 +15,7 @@ class Toggle: UISwitch {
         tintColor = rgba(0.47, 0.47, 0.5, 0.16)
         backgroundColor = rgba(0.47, 0.47, 0.5, 0.16)
         layer.cornerRadius = 16
-        onTintColor = SharedColors.primary
+        onTintColor = Colors.General.selected
     }
     
     @available(*, unavailable)

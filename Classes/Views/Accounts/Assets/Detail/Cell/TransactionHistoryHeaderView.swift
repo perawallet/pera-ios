@@ -20,13 +20,13 @@ class TransactionHistoryHeaderView: BaseView {
         UILabel()
             .withAlignment(.left)
             .withFont(UIFont.font(withWeight: .medium(size: 16.0)))
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.Text.primary)
             .withText("contacts-transactions-title".localized)
     }()
     
     private lazy var shareButton: UIButton = {
-        let button = UIButton(type: .custom).withImage(img("icon-share-white", isTemplate: true))
-        button.tintColor = SharedColors.gray600
+        let button = UIButton(type: .custom).withImage(img("icon-share-24", isTemplate: true))
+        button.tintColor = Colors.TransactionHistoryHeader.filterShare
         return button
     }()
     
@@ -37,7 +37,7 @@ class TransactionHistoryHeaderView: BaseView {
     private lazy var separatorView = LineSeparatorView()
     
     override func configureAppearance() {
-        backgroundColor = SharedColors.secondaryBackground
+        backgroundColor = Colors.Background.secondary
         layer.cornerRadius = 20.0
         layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
     }
@@ -126,6 +126,12 @@ extension TransactionHistoryHeaderView {
     
     func setFilterImage(_ image: UIImage?) {
         filterButton.setImage(image, for: .normal)
+    }
+}
+
+extension Colors {
+    fileprivate enum TransactionHistoryHeader {
+        static let filterShare = color("filterShareColor")
     }
 }
 

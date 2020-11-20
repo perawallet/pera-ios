@@ -50,7 +50,7 @@ class UnnamedAssetCell: BaseAssetCell {
     override func configureAppearance() {
         super.configureAppearance()
         contextView.assetNameView.setName("title-unknown".localized)
-        contextView.assetNameView.nameLabel.textColor = SharedColors.secondary700
+        contextView.assetNameView.nameLabel.textColor = Colors.General.unknown
         contextView.assetNameView.removeUnitName()
     }
 }
@@ -82,7 +82,7 @@ class UnverifiedUnnamedAssetCell: BaseAssetCell {
     override func configureAppearance() {
         super.configureAppearance()
         contextView.assetNameView.setName("title-unknown".localized)
-        contextView.assetNameView.nameLabel.textColor = SharedColors.secondary700
+        contextView.assetNameView.nameLabel.textColor = Colors.General.unknown
         contextView.assetNameView.removeUnitName()
         contextView.assetNameView.removeVerified()
     }

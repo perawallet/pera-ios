@@ -3,6 +3,16 @@
     {
       "filename" : "bg-try-again.pdf",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "bg-try-again-1.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {

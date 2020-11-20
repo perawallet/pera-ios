@@ -3,6 +3,16 @@
     {
       "filename" : "icon-account-type-rekeyed.pdf",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "icon-account-type-rekeyed-1.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {

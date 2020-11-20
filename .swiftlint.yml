@@ -3,6 +3,7 @@ disabled_rules:
   - cyclomatic_complexity
   - redundant_string_enum_value
   - orphaned_doc_comment
+  - nesting
 
 opt_in_rules:
   - attributes

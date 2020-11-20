@@ -34,7 +34,7 @@ class FeedbackViewController: BaseScrollViewController {
         didSet {
             if let selectedCategory = selectedCategory {
                 self.feedbackView.categorySelectionView.detailLabel.text = selectedCategory.name
-                self.feedbackView.categorySelectionView.detailLabel.textColor = SharedColors.primaryText
+                self.feedbackView.categorySelectionView.detailLabel.textColor = Colors.Text.primary
             }
         }
     }
@@ -43,7 +43,7 @@ class FeedbackViewController: BaseScrollViewController {
         didSet {
             if let account = selectedAccount {
                 self.feedbackView.accountSelectionView.detailLabel.text = account.name
-                self.feedbackView.accountSelectionView.detailLabel.textColor = SharedColors.primaryText
+                self.feedbackView.accountSelectionView.detailLabel.textColor = Colors.Text.primary
             }
         }
     }
@@ -237,7 +237,7 @@ extension FeedbackViewController {
     private func displaySuccessAlert() {
         let configurator = BottomInformationBundle(
             title: "feedback-success-title".localized,
-            image: img("feedback-success-icon"),
+            image: img("img-green-checkmark"),
             explanation: "feedback-success-detail".localized,
             actionTitle: "title-close".localized,
             actionImage: img("bg-main-button")

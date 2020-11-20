@@ -3,6 +3,16 @@
     {
       "filename" : "img-rekeyed-error.pdf",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "img-rekeyed-error-1.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {

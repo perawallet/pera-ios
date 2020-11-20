@@ -18,20 +18,20 @@ class TransactionFilterOptionView: BaseView {
         UILabel()
             .withAlignment(.left)
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.Text.primary)
     }()
     
     private lazy var dateLabel: UILabel = {
         UILabel()
             .withAlignment(.left)
             .withFont(UIFont.font(withWeight: .regular(size: 12.0)))
-            .withTextColor(SharedColors.gray500)
+            .withTextColor(Colors.Text.secondary)
     }()
     
     private lazy var selectedIconImageView = UIImageView(image: img("icon-check"))
     
     override func configureAppearance() {
-        backgroundColor = SharedColors.secondaryBackground
+        backgroundColor = Colors.Background.secondary
         selectedIconImageView.isHidden = true
     }
     
@@ -110,13 +110,13 @@ extension TransactionFilterOptionView {
     
     func setSelected() {
         selectedIconImageView.isHidden = false
-        titleLabel.textColor = SharedColors.primary
+        titleLabel.textColor = Colors.General.selected
         dateImageView.setSelected()
     }
     
     func setDeselected() {
         selectedIconImageView.isHidden = true
-        titleLabel.textColor = SharedColors.primaryText
+        titleLabel.textColor = Colors.Text.primary
         dateImageView.setDeselected()
     }
     

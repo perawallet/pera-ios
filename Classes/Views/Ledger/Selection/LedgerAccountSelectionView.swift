@@ -25,7 +25,7 @@ class LedgerAccountSelectionView: BaseView {
         collectionView.showsVerticalScrollIndicator = false
         collectionView.allowsMultipleSelection = true
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = SharedColors.primaryBackground
+        collectionView.backgroundColor = Colors.Background.primary
         collectionView.contentInset = .zero
         collectionView.register(AccountSelectionCell.self, forCellWithReuseIdentifier: AccountSelectionCell.reusableIdentifier)
         collectionView.register(

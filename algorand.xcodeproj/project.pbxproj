@@ -148,7 +148,7 @@
 		17BD4E792292F1260003E49A /* UICollectionView+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB021E8224E828E0039D78A /* UICollectionView+Additions.swift */; };
 		17BD4E7A2292F1260003E49A /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1751261C223BEA320095AF4F /* Session.swift */; };
 		17BD4E7C2292F1260003E49A /* Session+Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1761B3CC224A47AF00C6BA47 /* Session+Crypto.swift */; };
-		17BD4E7E2292F1260003E49A /* SharedColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8AD0492244F82600939ECE /* SharedColors.swift */; };
+		17BD4E7E2292F1260003E49A /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8AD0492244F82600939ECE /* Colors.swift */; };
 		17BD4E7F2292F1260003E49A /* QRCreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170AFAF9224C9FF800520EA5 /* QRCreationViewController.swift */; };
 		17BD4E812292F1260003E49A /* Storable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1751261F223BEAE90095AF4F /* Storable.swift */; };
 		17BD4E822292F1260003E49A /* QRScannerOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF5314D22491E7F00A7455F /* QRScannerOverlayView.swift */; };
@@ -563,7 +563,7 @@
 		2B0F624324EC129D00DA22A6 /* UITapGestureRecognizer+LabelRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB64BEF2404890900519981 /* UITapGestureRecognizer+LabelRange.swift */; };
 		2B0F624424EC129D00DA22A6 /* LedgerTroubleshootBluetoothView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 955CD651242B45D000647EDE /* LedgerTroubleshootBluetoothView.swift */; };
 		2B0F624524EC129D00DA22A6 /* Session+Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1761B3CC224A47AF00C6BA47 /* Session+Crypto.swift */; };
-		2B0F624624EC129D00DA22A6 /* SharedColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8AD0492244F82600939ECE /* SharedColors.swift */; };
+		2B0F624624EC129D00DA22A6 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8AD0492244F82600939ECE /* Colors.swift */; };
 		2B0F624724EC129D00DA22A6 /* Data+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB37B112405CF6400F58662 /* Data+Hex.swift */; };
 		2B0F624824EC129D00DA22A6 /* QRCreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170AFAF9224C9FF800520EA5 /* QRCreationViewController.swift */; };
 		2B0F624924EC129D00DA22A6 /* LedgerDeviceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB64BE82402B47B00519981 /* LedgerDeviceCell.swift */; };
@@ -1275,7 +1275,7 @@
 		2B8954C8224420B400D6D068 /* InputViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8954C7224420B400D6D068 /* InputViewDelegate.swift */; };
 		2B8954CB224430DC00D6D068 /* AccountRecoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8954CA224430DC00D6D068 /* AccountRecoverView.swift */; };
 		2B8954CE2244323700D6D068 /* AccountRecoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8954CD2244323700D6D068 /* AccountRecoverViewController.swift */; };
-		2B8AD04A2244F82600939ECE /* SharedColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8AD0492244F82600939ECE /* SharedColors.swift */; };
+		2B8AD04A2244F82600939ECE /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8AD0492244F82600939ECE /* Colors.swift */; };
 		2B8BE4D222391C38005D8565 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8BE4D122391C38005D8565 /* AppDelegate.swift */; };
 		2B8BE4D422391C38005D8565 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8BE4D322391C38005D8565 /* RootViewController.swift */; };
 		2B8BE4D922391C3B005D8565 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2B8BE4D822391C3B005D8565 /* Assets.xcassets */; };
@@ -1986,7 +1986,7 @@
 		2B8954C7224420B400D6D068 /* InputViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputViewDelegate.swift; sourceTree = "<group>"; };
 		2B8954CA224430DC00D6D068 /* AccountRecoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountRecoverView.swift; sourceTree = "<group>"; };
 		2B8954CD2244323700D6D068 /* AccountRecoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountRecoverViewController.swift; sourceTree = "<group>"; };
-		2B8AD0492244F82600939ECE /* SharedColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedColors.swift; sourceTree = "<group>"; };
+		2B8AD0492244F82600939ECE /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		2B8BE4CE22391C38005D8565 /* algorand.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = algorand.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B8BE4D122391C38005D8565 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2B8BE4D322391C38005D8565 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
@@ -4195,7 +4195,7 @@
 		2B8AD0482244F81500939ECE /* Colors */ = {
 			isa = PBXGroup;
 			children = (
-				2B8AD0492244F82600939ECE /* SharedColors.swift */,
+				2B8AD0492244F82600939ECE /* Colors.swift */,
 			);
 			path = Colors;
 			sourceTree = "<group>";
@@ -6499,7 +6499,7 @@
 				17BD4E7C2292F1260003E49A /* Session+Crypto.swift in Sources */,
 				2BB64BEA2402B47B00519981 /* LedgerDeviceCell.swift in Sources */,
 				2BD5476E23184286007179FE /* API+Feedback.swift in Sources */,
-				17BD4E7E2292F1260003E49A /* SharedColors.swift in Sources */,
+				17BD4E7E2292F1260003E49A /* Colors.swift in Sources */,
 				2BC1827823D8DF2400888476 /* AssetRemovalDraft.swift in Sources */,
 				2B3A34ED246EDA9C001C8F22 /* AccountNameView.swift in Sources */,
 				17BD4E7F2292F1260003E49A /* QRCreationViewController.swift in Sources */,
@@ -7030,7 +7030,7 @@
 				2B0F624424EC129D00DA22A6 /* LedgerTroubleshootBluetoothView.swift in Sources */,
 				2BF0FB3F253D15EE00D704D5 /* TransactionViewModelDependencies.swift in Sources */,
 				2B0F624524EC129D00DA22A6 /* Session+Crypto.swift in Sources */,
-				2B0F624624EC129D00DA22A6 /* SharedColors.swift in Sources */,
+				2B0F624624EC129D00DA22A6 /* Colors.swift in Sources */,
 				2B0F624724EC129D00DA22A6 /* Data+Hex.swift in Sources */,
 				2B0F624824EC129D00DA22A6 /* QRCreationViewController.swift in Sources */,
 				2B0F624924EC129D00DA22A6 /* LedgerDeviceCell.swift in Sources */,
@@ -7534,7 +7534,7 @@
 				2BB64BF02404890900519981 /* UITapGestureRecognizer+LabelRange.swift in Sources */,
 				955CD652242B45D000647EDE /* LedgerTroubleshootBluetoothView.swift in Sources */,
 				1761B3CD224A47AF00C6BA47 /* Session+Crypto.swift in Sources */,
-				2B8AD04A2244F82600939ECE /* SharedColors.swift in Sources */,
+				2B8AD04A2244F82600939ECE /* Colors.swift in Sources */,
 				2BB37B122405CF6400F58662 /* Data+Hex.swift in Sources */,
 				170AFAFA224C9FF800520EA5 /* QRCreationViewController.swift in Sources */,
 				2BB64BE92402B47B00519981 /* LedgerDeviceCell.swift in Sources */,

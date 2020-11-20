@@ -26,8 +26,8 @@ class MultiLineInputField: BaseInputView {
     private(set) lazy var inputTextView: UITextView = {
         let textView = UITextView()
         textView.font = UIFont.font(withWeight: .medium(size: 14.0))
-        textView.textColor = SharedColors.primaryText
-        textView.tintColor = SharedColors.primaryText
+        textView.textColor = Colors.Text.primary
+        textView.tintColor = Colors.Text.primary
         textView.backgroundColor = .clear
         textView.isSelectable = true
         textView.isEditable = true
@@ -40,7 +40,7 @@ class MultiLineInputField: BaseInputView {
         UILabel()
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
             .withLine(.contained)
-            .withTextColor(SharedColors.informationText)
+            .withTextColor(Colors.Text.hint)
             .withAlignment(.left)
     }()
     

@@ -112,4 +112,16 @@ extension UIApplication {
         
         UIApplication.shared.open(settingsURL, options: [:])
     }
+    
+    var isDarkModeDisplay: Bool {
+        if #available(iOS 12.0, *) {
+            guard let rootViewController = rootViewController() else {
+                return false
+            }
+            
+            return rootViewController.traitCollection.userInterfaceStyle == .dark
+        }
+        
+        return false
+    }
 }

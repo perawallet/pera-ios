@@ -32,7 +32,7 @@ class TransactionAmountView: BaseView {
         UILabel()
             .withAlignment(.left)
             .withLine(.single)
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.TransactionAmount.normal)
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
     }()
     
@@ -42,7 +42,7 @@ class TransactionAmountView: BaseView {
         UILabel()
             .withAlignment(.right)
             .withLine(.single)
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.TransactionAmount.normal)
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
     }()
     
@@ -79,26 +79,26 @@ extension TransactionAmountView {
             signLabel.isHidden = true
             
             setAmount(amount, with: assetFraction)
-            amountLabel.textColor = SharedColors.primaryText
-            algoIconImageView.tintColor = SharedColors.primaryText
+            amountLabel.textColor = Colors.TransactionAmount.normal
+            algoIconImageView.tintColor = Colors.TransactionAmount.normal
             setAlgoIconHidden(!isAlgos)
         case let .positive(amount, isAlgos, assetFraction):
             signLabel.isHidden = false
             signLabel.text = "+"
-            signLabel.textColor = SharedColors.tertiaryText
+            signLabel.textColor = Colors.TransactionAmount.positive
             
             setAmount(amount, with: assetFraction)
-            amountLabel.textColor = SharedColors.tertiaryText
-            algoIconImageView.tintColor = SharedColors.tertiaryText
+            amountLabel.textColor = Colors.TransactionAmount.positive
+            algoIconImageView.tintColor = Colors.TransactionAmount.positive
             setAlgoIconHidden(!isAlgos)
         case let .negative(amount, isAlgos, assetFraction):
             signLabel.isHidden = false
             signLabel.text = "-"
-            signLabel.textColor = SharedColors.red
+            signLabel.textColor = Colors.TransactionAmount.negative
             
             setAmount(amount, with: assetFraction)
-            amountLabel.textColor = SharedColors.red
-            algoIconImageView.tintColor = SharedColors.red
+            amountLabel.textColor = Colors.TransactionAmount.negative
+            algoIconImageView.tintColor = Colors.TransactionAmount.negative
             setAlgoIconHidden(!isAlgos)
         }
     }
@@ -121,6 +121,14 @@ extension TransactionAmountView {
         case normal(amount: Double, isAlgos: Bool = true, fraction: Int? = nil)
         case positive(amount: Double, isAlgos: Bool = true, fraction: Int? = nil)
         case negative(amount: Double, isAlgos: Bool = true, fraction: Int? = nil)
+    }
+}
+
+extension Colors {
+    fileprivate enum TransactionAmount {
+        static let positive = Colors.Main.primary600
+        static let negative = Colors.Main.red600
+        static let normal = Colors.Text.primary
     }
 }
 

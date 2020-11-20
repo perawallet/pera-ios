@@ -10,8 +10,9 @@ import UIKit
 
 class AssetAdditionViewModel {
     func configure(_ cell: BaseAssetCell, with assetSearchResult: AssetSearchResult) {
+        cell.contextView.backgroundColor = Colors.Background.tertiary
         cell.contextView.assetNameView.setAssetName(for: AssetDetail(searchResult: assetSearchResult))
-        cell.contextView.setActionColor(SharedColors.gray700)
+        cell.contextView.setActionColor(Colors.Text.tertiary)
         cell.contextView.setActionText("\(assetSearchResult.id)")
     }
 }
