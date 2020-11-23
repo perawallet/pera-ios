@@ -1,0 +1,515 @@
+
+/*Localizable.strings
+  algorand
+
+  Created by Göktuğ Berk Ulu on 14.03.2019.
+  Copyright © 2019 hippo. All rights reserved.
+
+ MARK: Common*/
+"title-yes" = "JA";
+"title-no" = "NEIN";
+"title-ok" = "OK";
+"title-next" = "Weiter";
+"title-accept" = "Akzeptieren";
+"title-verify" = "Verifizieren";
+"title-cancel" = "Abbrechen";
+"title-remove" = "Entfernen";
+"title-proceed" = "Fortfahren";
+"title-approve" = "Bestätigen";
+"title-go-home" = "Zu Startseite gehen";
+"title-go-to-settings" = "Zu den Einstellungen gehen";
+"title-error" = "Fehler";
+"title-save" = "Speichern";
+"title-close" = "Schließen";
+"title-send" = "Senden";
+"title-preview" = "Vorschau";
+"title-done" = "Fertig";
+"title-loading" = "Wird geladen";
+"default-error-message" = "Es ist ein Fehler aufgetreten.";
+"title-max" = "MAX";
+"title-internet-connection" = "Die Internetverbindung scheint unterbrochen zu sein.";
+"title-unknown" = "Unbenannt";
+"title-preview-and-sign-with-ledger-title" = "Vorschau und mit Ledger signieren";
+
+/*MARK: Introduction*/
+"introduction-title-text" = "Verwalten Sie alle Assets\nüber eine App";
+
+/*MARK: Password Setting*/
+"choose-password-title" = "Zugangscode wählen";
+"password-set-subtitle" = "Wählen Sie einen sechsstelligen Zugangscode";
+"password-verify-title" = "Zugangscode verifizieren";
+"password-change-subtitle" = "Geben Sie die sechsstellige PIN ein";
+"password-verify-subtitle" = "Geben Sie die gleichen sechs Ziffern ein";
+"password-verify-fail-title" = "Falsches Passwort";
+"password-verify-fail-message" = "Das Passwort stimmt nicht mit dem vorherigen Passwort überein.";
+"password-change-title" = "Passwort ändern";
+
+/*MARK: Local Authentication Preferences*/
+"local-authentication-preference-title" = "Gesichtsprüfung/Touch-ID aktivieren";
+"local-authentication-preference-subtitle" = "Dies wird aus Sicherheitsgründen empfohlen";
+"local-authentication-reason-face-id-title" = "Gesichtsprüfung zum Entsperren verwenden";
+"local-authentication-reason-touch-id-title" = "Touch-ID zum Entsperren verwenden";
+"local-authentication-go-settings-title" = "Biometrische Authentifizierung";
+"local-authentication-go-settings-text" = "Sie haben die biometrische Authentifizierung deaktiviert. Bitte aktivieren Sie diese Funktion in den Einstellungen.";
+"local-authentication-enable" = "Gesichtsprüfung/Touch-ID aktivieren";
+"local-authentication-no" = "Gesichtsprüfung/Touch-ID nicht verwenden";
+
+/*MARK: Passphrase Back Up*/
+"new-account-title" = "Bitte bewahren Sie diese Passphrase gut auf";
+"back-up-phrase-warning" = "Stellen Sie bitte sicher, dass Sie diese Konto-Passphrase gut aufbewahren. Dies ist die einzige Möglichkeit, um Ihr Algorand-Konto wiederherzustellen.";
+"back-up-phrase-button-title" = "Wiederherstellungspassphrase verifizieren";
+"back-up-phrase-qr" = "QR-Code anzeigen";
+
+/*MARK: Passphrase Verify*/
+"pass-phrase-verify-pop-up-title" = "Passphrase verifiziert";
+"pass-phrase-verify-select-title" = "Wählen Sie das %@ Wort Ihrer Passphrase";
+"pass-phrase-verify-question-title" = "Frage %@ von %@";
+"pass-phrase-verify-wrong-selection" = "Falsche Auswahl";
+"pass-phrase-verify-pop-up-explanation" = "Ihre Passphrase wurde verifiziert. Bitte stellen Sie sicher, dass Sie diese gut aufbewahren, da sie für eine mögliche Kontowiederherstellung benötigt wird.";
+"pass-phrase-verify-invalid-passphrase" = "Ihre Passphrase ist ungültig. Bitte stellen Sie sicher, dass Sie sie korrekt eingegeben haben.";
+"pass-phrase-verify-sdk-error" = "Es ist ein Fehler aufgetreten. Bitte versuche es später noch einmal.";
+
+/*MARK: Account Name Setup*/
+"account-details-title" = "Kontodetails";
+"account-name-setup-explanation" = "Kontoname";
+"account-name-setup-placeholder" = "Sparkonto";
+"account-name-setup-empty-error-message" = "Kontoname darf nicht leer sein";
+
+/*MARK: Recover From Seed*/
+"recover-from-seed-title" = "Mit Passphrase wiederherstellen";
+"recover-from-seed-name-title" = "Name";
+"recover-from-seed-name-placeholder" = "Beispielname";
+"recover-from-seed-passphrase-title" = "Passphrase";
+"pass-pharase-enter-placeholder" = "Passphrase eingeben oder QR-Code scannen";
+"recover-from-seed-verify-pop-up-explanation" = "Willkommen bei Algorand!\nIhr Konto kann jetzt verwendet werden.";
+"recover-from-seed-verify-pop-up-title" = "Konto verifiziert";
+"recover-from-seed-verify-exist-error" = "Dieses Konto existiert bereits";
+
+/*MARK: QR Scanning*/
+"qr-scan-title" = "QR-Code scannen";
+"qr-scan-error-title" = "Kamera ist nicht verfügbar";
+"qr-scan-error-message" = "Ihr Gerät unterstützt das Scannen von QR-Codes nicht.";
+"qr-scan-go-settings-title" = "Kamera deaktiviert";
+"qr-scan-go-settings-message" = "Sie haben die Kamera deaktiviert. Bitte aktivieren Sie diese Funktion in den Einstellungen.";
+"qr-scan-should-scan-address-message" = "Sie müssen eine gültige Kontoadresse scannen";
+"qr-scan-should-scan-mnemonics-message" = "Sie müssen eine gültige Passphrase scannen";
+"qr-scan-message-text" = "Hier können Sie lediglich QR-Codes scannen. Um den QR-Code Ihres Kontos anzuzeigen, tippen Sie bitte in Ihrem Konto auf das entsprechende Symbol";
+"qr-scan-should-scan-valid-qr" = "QR-Code ist ungültig.";
+
+/*MARK: QR Creation*/
+"qr-creation-title" = "Passphrase-QR";
+"qr-creation-copied" = "In die Zwischenablage";
+
+/*MARK: Login*/
+"login-title" = "Entsperren";
+"login-subtitle" = "Geben Sie die sechsstellige PIN ein";
+
+/*MARK: Accounts*/
+"accounts-tranaction-empty-text" = "Noch keine Transaktionen";
+"tranaction-empty-text" = "Keine Transaktionen gefunden";
+"accounts-algos-available-title" = "Algos";
+"accounts-dollar-value-title" = "Wert in US-Dollar";
+"accounts-transaction-history-title" = "Transaktionsverlauf";
+"accounts-add-account" = "+ KONTO HINZUFÜGEN";
+
+/*MARK: Asset*/
+"asset-title" = "Asset";
+"asset-algos-title" = "Algos";
+"asset-remove-title" = "Ein Asset entfernen";
+"asset-remove-subtitle" = "Um ein Asset zu entfernen, müssen Sie zuerst das gesamte verbleibende Kontoguthaben dieses Assets auf ein anderes Konto überweisen";
+"asset-search-placeholder" = "Nach Asset-ID oder Asset-Namen suchen";
+"asset-remove-confirmation-title" = "Asset entfernen";
+"asset-transfer-balance" = "Guthaben übertragen";
+"title-remove-assets" = "Assets entfernen";
+"title-add-asset" = "Neues Asset hinzufügen";
+"asset-add-warning" = "Um ein Asset hinzuzufügen, müssen Sie eine Transaktion mit der Mindesttransaktionsgebühr tätigen. Dies wird in Ihrem Transaktionsverlauf angezeigt.";
+"asset-support-error" = "Leider wurde dieses Asset diesem Konto nicht hinzugefügt. Bitte weisen Sie den Kontoinhaber an, das Asset hinzuzufügen, und versuchen Sie es dann erneut.";
+"asset-support-title" = "Das Konto unterstützt dieses Asset nicht";
+"asset-add-confirmation-title" = "Asset hinzufügen";
+"internet-connection-error-title" = "Verbindung mit dem Internet herstellen";
+"internet-connection-error-detail" = "Wir konnten den Server nicht erreichen. Stellen Sie sicher, dass Sie mit dem Internet verbunden sind";
+"asset-remove-warning" = "Um %@ zu entfernen, muss das Kontoguthaben 0 sein. Bitte überweisen Sie den Restbetrag auf ein anderes Konto und versuchen Sie es erneut.";
+"asset-remove-transaction-warning" = "Sie sind dabei, %@ aus %@ zu entfernen. Sie können von diesem Konto keine Transaktionen mit diesem Asset tätigen, es sei denn, Sie fügen das Asset erneut hinzu.";
+"asset-creation-fee-title" = "Asset-Gebühr hinzufügen";
+
+/*Context not clear*/
+"asset-min-transaction-error-title" = "Fehler Mindesttransaktion!";
+"asset-min-transaction-error-message" = "Sie benötigten mindestens %@ Algos, um dieses Asset hinzuzufügen.";
+"asset-you-already-own-message" = "Sie besitzen dieses Asset nicht";
+
+/*Context not clear*/
+"asset-support-not-same-error" = "Das Asset wurde diesem Konto hinzugefügt; dieses ist jedoch nicht das ausgewählte Asset. Bitte wählen Sie das richtige Asset und versuchen Sie es erneut.";
+"asset-support-not-same-title" = "Das Konto unterstützt dieses Asset nicht";
+"asset-support-add-title" = "Sie werden gleich ein Asset empfangen!";
+"asset-support-add-message" = "Sie werden gleich ein Asset auf <b>%1$s</b> empfangen! Möchten Sie diesem Konto dieses Asset hinzufügen, um die Überweisung empfangen zu können?";
+"asset-id-copied-title" = "In die Zwischenablage";
+"asset-verified-title" = "Verifiziert";
+"asset-support-your-add-title" = "Dieses Asset wurde ihrem Konto noch nicht hinzugefügt.";
+"asset-support-your-add-message" = "Bitte fügen Sie dieses Asset hinzu und versuchen Sie es erneut.";
+"asset-all-title" = "Alle";
+
+/*MARK: Algos Send*/
+"send-algos-title" = "Algos senden";
+"send-algos-select" = "Konto wählen";
+"send-sending-algos-select" = "Sendendes Konto wählen";
+"send-receiving-algos-select" = "Empfängerkonto wählen";
+"send-select-asset" = "Asset wählen";
+"send-algos-to" = "An";
+"send-algos-balance-title" = "Guthaben:";
+"send-algos-amount" = "Betrag";
+"send-algos-sent-title" = "Die Algos wurden gesendet!";
+"send-algos-alert-title" = "Falsche Transaktion";
+"send-algos-alert-message" = "Bitte füllen Sie die Felder aus.";
+"send-algos-minimum-amount-error-new-account" = "Sie versuchen, Geld auf ein neues Konto zu senden. Der Betrag muss mindestens 0,1 Algos sein.";
+"send-algos-minimum-amount-error" = "Bei diesem Transaktionsbetrag wird der Mindestkontostand von 0,1 Algos unterschritten.";
+"send-algos-amount-error" = "Der Transaktionsbetrag darf nicht höher sein als Ihr verfügbarer Betrag.";
+"send-asset-amount-error" = "Der Transaktionsbetrag darf nicht höher sein als Ihr verfügbarer Betrag.";
+"send-algos-contact-not-found" = "Der Kontakt wurde nicht gefunden";
+"send-algos-address-not-selected" = "Die Adresse wurde nicht ausgewählt";
+"send-algos-address" = "Adresse";
+"send-algos-contacts" = "Kontakte";
+"send-algos-scan" = "QR-Code scannen";
+"send-algos-account-delete-title" = "Sie sind im Begriff, Ihr Konto zu löschen. Sind Sie sicher, dass Sie fortfahren möchten?";
+"send-algos-account-delete-body" = "Ein Konto muss mindestens ein Guthaben von 0,01 Algos aufweisen. Andernfalls wird es gelöscht. Wenn Sie den maximalen Betrag senden, werden das Konto und Ihre aktiven Teilnahmeschlüssel gelöscht.";
+"send-algos-account-delete-asset-title" = "Ein Konto kann nur gelöscht werden, wenn das Kontoguthaben null ist und alle von Ihnen erstellten Assets entfernt wurden.";
+"send-algos-receiver-address-validation" = "Falscher Schlüssel. Bitte stellen Sie sicher, dass Sie den richtigen Schlüssel verwenden.";
+"send-qr-scan-alert-title" = "QR-Code scannen";
+"send-qr-scan-alert-message" = "Sie haben gerade den QR-Code einer Transaktionsanforderung gescannt. Bitte überprüfen Sie alle Transaktionsfelder, da möglicherweise Änderungen vorgenommen wurden.";
+"send-qr-different-asset-alert" = "Der QR-Code enthält ein anderes Asset als das ausgewählte. Der Betrag wird beim Dekodieren ignoriert.";
+
+/*MARK: Algos Request*/
+"request-algos-title" = "Algos anfordern";
+"request-title" = "Anfordern";
+
+/*MARK: Options*/
+"options-title" = "KONTOEINSTELLUNGEN";
+"options-show-qr" = "QR-Code und Adresse anzeigen";
+"options-remove-assets" = "Assets entfernen";
+"options-view-passphrase" = "Passphrase anzeigen";
+"options-edit-account-name" = "Kontonamen bearbeiten";
+"options-remove-account" = "Konto entfernen";
+"options-remove-alert-explanation" = "Sie sind dabei, ein Konto zu entfernen. Sind Sie sicher, dass Sie fortfahren möchten?";
+"options-view-passphrase-alert-title" = "Biometrische Authentifizierung";
+"options-view-passphrase-alert-message" = "Sie müssen sich biometrisch authentifizieren, um Ihre Passphrase anzuzeigen.";
+"options-view-passphrase-password-alert-message" = "Sie müssen das richtige Passwort eingeben, um Ihre Passphrase anzuzeigen.";
+
+/*MARK: Contacts*/
+"contacts-title" = "Kontakte";
+"contacts-search" = "Kontakte durchsuchen";
+"contacts-add" = "Kontakt hinzufügen";
+"contacts-info" = "Kontaktinformationen";
+"contacts-input-name-explanation" = "Name";
+"contacts-input-name-placeholder" = "Kontaktname";
+"contacts-input-address-explanation" = "Adresse";
+"contacts-input-address-placeholder" = "# einfügen oder QR-Code scannen";
+"contacts-transactions-title" = "Transaktionen";
+"contacts-empty-text" = "Sie haben noch keine Kontakte hinzugefügt";
+"contacts-name-validation-error" = "Das Namensfeld ist leer.";
+"contacts-address-validation-error" = "Die Adresse ist falsch. Bitte stellen Sie sicher, dass Sie sie korrekt eingegeben haben.";
+"contacts-delete-contact" = "Kontakt entfernen";
+"contacts-delete-contact-alert-explanation" = "Sind Sie sicher, dass Sie diesen Kontakt entfernen möchten?";
+"contacts-close-warning-title" = "Sind Sie sicher, dass Sie fortfahren möchten?";
+"contacts-close-warning-subtitle" = "Ihre nicht gespeicherten Eingaben gehen verloren. Sind Sie sicher, dass Sie fortfahren möchten?";
+"accounts-title-assets" = "Assets";
+"contacts-title-assets" = "Vermögenswerte:";
+"title-select-asset" = "Asset wählen";
+
+/*MARK: Settings*/
+"settings-title" = "Einstellungen";
+"settings-server-node-settings" = "Knoteneinstellungen";
+"settings-change-password" = "Passwort festlegen/ändern";
+"settings-local-authentication" = "Gesichtsprüfung/Touch-ID aktivieren";
+"settings-language" = "Sprache";
+"settings-language-english" = "Deutsch";
+"settings-notification-go-settings-title" = "Benachrichtigungen";
+"settings-notification-disabled-go-settings-text" = "Sie haben die Benachrichtigungsfunktion deaktiviert. Bitte aktivieren Sie diese Funktion in den Einstellungen.";
+"settings-notification-enabled-go-settings-text" = "Sie haben die Benachrichtigungsfunktion aktiviert. Bitte deaktivieren Sie diese Funktion in den Einstellungen.";
+
+/*MARK: Node Settings*/
+"node-settings-title" = "Knoteneinstellungen";
+"node-settings-warning-title" = "Warnung";
+"add-node-title" = "Knoten hinzufügen";
+"edit-node-title" = "Knoten bearbeiten";
+
+/*Fuzzy*/
+"node-settings-subtitle" = "Wählen Sie den Knoten, den Sie verwenden möchten";
+"node-settings-enter-node-name" = "Name: ";
+"node-settings-enter-node-address" = "Adresse: ";
+"node-settings-api-key" = "Schlüssel: ";
+"node-settings-placeholder-name" = "Knotenname";
+"node-settings-placeholder-address" = "http://yournode.com:8000";
+"node-settings-placeholder-api-key" = "65ef12c245b47fcf497b1c7d0faea4d82df470671974eeeed3e29ab4df1ed918";
+"node-settings-test-button-title" = "TEST";
+"node-settings-text-validation-empty-error" = "Bitte füllen Sie alle Felder aus.";
+"node-settings-text-validation-health-error" = "Bitte überprüfen Sie die Adresse und den Token und versuchen Sie es erneut.";
+"node-settings-has-same-result" = "Es kann nicht derselbe Knoten zweimal erstellt werden";
+"node-settings-none-active-node-error-description" = "Keiner der aktiven Knoten scheint derzeit aktiv zu sein. Bitte stellen Sie sicher, dass mindestens ein Knoten aktiv ist, bevor Sie fortfahren.";
+"node-settings-db-error-title" = "Systemvorgang fehlgeschlagen";
+"node-settings-test-error-title" = "Verbindung fehlgeschlagen";
+"node-settings-test-success-title" = "Verbindung erfolgreich!";
+"node-settings-database-error-description" = "Es ist ein Systemfehler aufgetreten. ";
+"node-settings-warning-message" = "Durch diesen Vorgang wird der Knoten entfernt. Sind Sie sicher, dass Sie fortfahren möchten?";
+"node-settings-action-delete-title" = "Löschen";
+"node-settings-default-node-name" = "Algorand MainNet-Knoten";
+"node-settings-default-test-node-name" = "TestNet";
+"node-settings-health-problem-message" = "Keiner Ihrer aktiven Knoten ist online. Bitte einen anderen Knoten hinzufügen oder auswählen.";
+
+/*MARK: Transaction Detail*/
+"transaction-detail-title" = "Transaktionsdetails";
+"transaction-detail-status" = "Status";
+"transaction-detail-round" = "Runde";
+"transaction-detail-amount" = "Betrag";
+"transaction-detail-reward" = "Reward";
+
+/*MARK: Feedback*/
+"feedback-title" = "Feedback senden";
+"feedback-title-category" = "Kategorien";
+"feedback-subtitle-category" = "Art des Feedbacks";
+"feedback-title-note" = "Bemerkung";
+"feedback-subtitle-note" = "Welches Anliegen haben Sie?";
+"feedback-title-email" = "E-Mail";
+"feedback-empty-title" = "Fehler";
+"feedback-empty-category-message" = "Bitte wählen Sie eine Kategorie.";
+"feedback-empty-note-message" = "Bitte fügen Sie eine Bemerkung hinzu.";
+"feedback-error-title" = "Fehler";
+"feedback-error-message" = "Ihr Feedback konnte nicht gesendet werden!";
+"feedback-success-title" = "Ihr Feedback wurde gesendet";
+
+/*MARK: Rewards*/
+"rewards-title" = "Rewards";
+"rewards-show-title" = "Rewards anzeigen";
+"rewards-detail-subtitle" = "Sie verdienen automatisch Rewards, wenn Sie Algos besitzen! Hier ist eine Übersicht über Ihre Rewards-Aktivitäten seit Ihrer letzten Transaktion. Diese Rewards werden immer in Ihrem Guthaben ausgewiesen.";
+"total-rewards-faq-title" = "Weitere Informationen zu den Algorand-Rewards finden Sie in unseren FAQ.";
+"total-rewards-faq" = "HÄUFIG GESTELLTE FRAGEN.";
+"reward-list-title" = "Reward";
+
+/*MARK: Notifications*/
+"notifications-title" = "Benachrichtigungen";
+
+/*MARK: Notifications*/
+"notification-sent-success" = "Ihre Transaktion in Höhe von %@ von %@ an %@ wurde erfolgreich ausgeführt.";
+"notification-sent-failed" = "Ihre Transaktion in Höhe von %@ von %@ an %@ ist fehlgeschlagen.";
+"notification-received" = "%@ wurden an %@ von %@ gesendet.";
+
+/*MARK: Verified Asset Information*/
+"verified-assets-title" = "Verifizierte Assets";
+"verified-asset-information-title" = "Was sind verifizierte Assets?";
+"verified-asset-information-text" = "Assets von Emittenten, mit denen Algorand Inc. eine Beziehung unterhält, werden mit einem blauen Häkchen als verifiziert gekennzeichnet.\n\nDamit soll die Wahrscheinlichkeit verringert werden, dass unsere Benutzer aus Versehen falsche Assets transferieren.\n\nSie sollten aber trotzdem immer überprüfen, ob die Asset-ID wirklich stimmt, bevor Sie eine Transaktion ausführen.\n\nBei Fragen zum Verifizierungsprozess oder allgemeinem Feedback zur App zögern Sie bitte nicht, uns zu kontaktieren.";
+"verified-asset-double-check" = "Unbedingt immer überprüfen";
+"verified-asset-information-contact-us" = "Kontakt";
+
+/*MARK: Ledger Tutorial*/
+"ledger-pair-title" = "Ledger-Konto eröffnen";
+"ledger-tutorial-title-text" = "Führen Sie die folgenden Schritte aus, um ein neues Ledger-Konto zu eröffnen";
+"ledger-tutorial-turned-on" = "Stellen Sie sicher, dass Ihr Ledger-Gerät eingeschaltet und Bluetooth aktiviert ist.";
+"ledger-tutorial-install-app" = "Installieren Sie die Algorand-App (Version 1.2.9 oder neuer) auf Ihrem Ledger-Gerät.";
+"ledger-tutorial-open-app" = "Öffnen Sie auf Ihrem Ledger-Gerät die Algorand-App.";
+"ledger-tutorial-bluetooth" = "Stellen Sie sicher, dass bei Ihrem Smartphone Bluetooth aktiviert ist.";
+"ledger-search-button-title" = "Nach Ledger-Gerät suchen";
+
+/*MARK: Ledger Device List*/
+"ledger-device-list-title" = "Ledger-Gerät koppeln";
+"ledger-device-list-looking" = "Es wird nach anderen Ledger-Geräten gesucht";
+"ledger-device-list-connect" = "Verbinden";
+"ledger-device-list-troubleshoot" = "Fehlerbehebung";
+
+/*MARK: Ledger Troubleshooting*/
+"title-step-1" = "Schritt 1";
+"title-step-2" = "Schritt 2";
+"title-step-3" = "Schritt 3";
+"title-step-4" = "Schritt 4";
+"ledger-troubleshooting-title" = "Erweiterte Fehlerbehebung";
+"ledger-troubleshooting-close-others" = "Schließen Sie andere Anwendungen (Ledger-Apps, Kryptowallets und alle Geräte, die versuchen, sich mit dem Ledger-Gerät zu koppeln.)";
+"ledger-troubleshooting-restart" = "Starten Sie die Algorand-Wallet und/oder Ihr Gerät neu.";
+"ledger-troubleshooting-app-support" = "Weitere Informationen zur Installation der Algorand-Ledger-App auf Ihrem Gerät finden Sie unter %@";
+"ledger-troubleshooting-ledger-support" = "Für eine allgemeine Fehlerbehebung für das Ledger-Gerät besuchen Sie bitte ";
+"ledger-troubleshooting-ledger-support-title" = "Ledger-Support.";
+"ledger-troubleshooting-ledger-bluetooth-connection-guide-html" = "Informationen zur Verwendung der Bluetooth-Funktion Ihres Ledger-Geräts finden Sie in der offiziellen <a href=\"https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection\">Anleitung für Bluetooth-Verbindungen</a> von Ledger.";
+"ledger-troubleshooting-ledger-bluetooth-connection-advanced-guide-html" = "Für eine erweiterte Fehlerbehebung verweisen wir auf die offizielle <a href=\"https://support.ledger.com/hc/en-us/articles/360025864773\">Anleitung zur Bluetooth-Fehlerbehebung</a> von Ledger.";
+"ledger-troubleshooting-bluetooth-connection-html" = "Aktivieren oder deaktivieren Sie Bluetooth für ein iOS-Gerät. <br> <br>\n<ul>\n<li>Tippen Sie auf <b>Einstellungen</b>\n</li>\n<li>Wählen Sie <b>„Allgemein“</b>\n</li>\n<li>Tippen Sie auf <b>„Bluetooth“</b>\n</li>\n<li>Tippen Sie auf die <b>Ein-/Aus-Taste</b>, um </li>\n<li>Bluetooth zu <b>aktivieren oder deaktivieren</b>\n</li>\n</ul>";
+"ledger-troubleshooting-install-app-first-html" = "Folgen Sie zunächst dem umfassenden <a href=\"https://www.ledger.com/start\">Anfänger-Tutorial</a> von Ledger.";
+"ledger-troubleshooting-install-app-second-html" = "Wenn Sie in dem Tutorial bei dem Schritt angelangt sind, wo Sie aufgefordert werden, die Anwendungen zu wählen, die Sie auf Ihrem Gerät installieren möchten („Select the application(s) you want to install on your device“), geben Sie <b>Algorand</b> in die Suchleiste ein und installieren Sie die Anwendung.";
+"ledger-troubleshooting-open-app-first-html" = "Folgen Sie zunächst dem umfassenden <a href=\"https://www.ledger.com/start\">Anfänger-Tutorial</a> von Ledger, in dem Sie erfahren, wie Sie Apps auf Ihrem Ledger-Gerät installieren und öffnen.";
+"ledger-troubleshooting-open-app-second-html" = "Wenn Sie die <b>Algorand-</b>App noch nicht installiert haben und Sie in dem Tutorial bei dem Schritt angelangt sind, wo Sie aufgefordert werden, die Anwendungen zu wählen, die Sie auf Ihrem Gerät installieren möchten („Select the application(s) you want to install on your device“), geben Sie <b>Algorand</b> in die Suchleiste ein und installieren Sie die Anwendung.";
+
+/*MARK: BLE Errors*/
+"ble-error-search-title" = "Fehler bei der Suche";
+"ble-error-connection-title" = "Verbindungsfehler";
+"ble-error-bluetooth-title" = "Bluetooth-Fehler";
+"ble-error-ledger-connection-title" = "Ledger-Verbindungsfehler";
+"ble-error-unsupported-device-title" = "Gerät wird nicht unterstützt";
+"ble-error-transaction-cancelled-title" = "Transaktion abgebrochen";
+"ble-error-transmission-title" = "Übertragungsfehler";
+"ble-error-fail-connect-peripheral" = "Es konnte keine Verbindung zum Ledger-Gerät hergestellt werden. Stellen Sie sicher, dass sich das Gerät in der Nähe befindet und entsperrt ist und dass Bluetooth aktiviert ist.";
+"ble-error-disconnected-peripheral" = "Verbindung mit dem Gerät getrennt";
+"ble-error-fail-fetch-account-address" = "Der öffentliche Schlüssel Ihres Ledger-Geräts konnte nicht empfangen werden. Bitte versuchen Sie es erneut.";
+"ble-error-fail-sign-transaction" = "Das gekoppelte Ledger-Gerät hat die Transaktionsanforderung abgebrochen.";
+"ble-error-fail-ble-connection-power" = "Für die Suche nach Ledger-Geräten in der Nähe muss bei Ihrem Gerät Bluetooth aktiviert sein.";
+"ble-error-fail-ble-connection-unsupported" = "Das Gerät, das Sie verbinden möchten, wird von der Algorand-Wallet nicht unterstützt.";
+"ble-error-fail-ble-connection-unauthorized" = "Um nach Ledger-Geräten in Ihrer Nähe zu suchen, müssen Sie eine Bluetooth-Berechtigung erteilen.";
+"ble-error-fail-ble-connection-resetting" = "BLE-Verbindung zum Zurücksetzen fehlgeschlagen";
+
+/*MARK: Ledger Approval*/
+"ledger-approval-title" = "Vorschau und Signieren";
+"ledger-approval-message" = "Bitte überprüfen und signieren Sie die Transaktion auf Ihrem Ledger-Gerät.";
+"ledger-approval-connection-title" = "Verbindung mit dem Ledger-Gerät";
+"ledger-approval-connection-message" = "Warten auf eine Verbindung mit dem Ledger-Gerät.";
+
+/*MARK: Terms and Services*/
+"terms-and-services-title" = "Nutzungsbedingungen";
+"privacy-policy-title" = "Datenschutzbestimmungen";
+
+"title-share-qr" = "QR-Code teilen";
+"title-keep" = "Behalten";
+"title-edit" = "Bearbeiten";
+"title-testnet" = "TESTNET";
+"title-account" = "Konto";
+"title-id" = "ID";
+"qr-creation-sharing-title" = "QR-Code und Adresse teilen";
+"qr-creation-copy-address" = "Adresse kopieren";
+"qr-creation-address" = "Kontoadresse";
+"accounts-tranaction-empty-detail" = "Mit diesem Asset wurden keine Transaktionen durchgeführt";
+"accounts-title" = "Konten";
+"accounts-add-new" = "Neues Asset hinzufügen";
+"accounts-qr-tooltip" = "Hier finden Sie den QR-Code Ihrer Kontoadresse.";
+"asset-not-found-title" = "Kein Asset gefunden";
+"asset-not-found-detail" = "Bitte versuchen Sie es mit einem anderen Asset-Namen oder einer anderen Asset-ID";
+"send-choose-asset" = "Asset wählen";
+"send-algos-minimum-amount-custom-error" = "Bei diesem Transaktionsbetrag wird der Mindestkontostand von %@ Algos unterschritten.";
+"send-enter-note-placeholder" = "Fügen Sie hier eine Bemerkung hinzu";
+"send-enter-note-title" = "Bemerkung hinzufügen";
+"options-rekey" = "Konto-Rekeying";
+
+/*Context not clear*/
+"options-auth-account" = "Adresse des authentifizierten Kontos";
+"contacts-info-edit" = "Kontaktinformationen bearbeiten";
+"contacts-empty-detail-text" = "Fügen Sie neue Kontakte hinzu, damit Sie künftig Assets schneller versenden können.";
+"contact-search-empty-title" = "Kein Kontakt gefunden";
+"contact-search-empty-detail" = "Bitte versuchen Sie es mit einem anderen Kontaktnamen";
+"settings-logout-title" = "Alle Daten löschen";
+"settings-logout-detail" = "Sind Sie sicher, dass Sie alle Daten entfernen möchten?";
+"transaction-detail-from" = "Von";
+"transaction-detail-to" = "An";
+"transaction-detail-fee" = "Gebühr";
+"transaction-detail-id" = "Transaktions-ID";
+"transaction-detail-note" = "Bemerkung";
+"transaction-detail-close-to" = "Schließen und Restbetrag senden an";
+
+/*Context not clear*/
+"transaction-detail-close-amount" = "Kontoschließungsbetrag";
+"transaction-detail-note-copied" = "Transaktionskommentar in die Zwischenablage kopiert";
+"transaction-detail-id-copied" = "Transaktions-ID in Zwischenablage kopiert";
+"transaction-detail-copy-tooltip" = "Bitte drücken und halten, um es in die Zwischenablage zu kopieren";
+"feedback-success-detail" = "Vielen Dank! Wir haben Ihr Feedback empfangen";
+"total-rewards-title" = "%@ Rewards";
+"rewards-since-last-text" = "Seit der letzten Transaktion";
+"notification-support-success" = "%@ hat seinem Konto %@ hinzugefügt. Sie können sie senden.";
+"notification-support-request" = "%@ versucht, Ihnen% %@ senden, jedoch unterstützen Sie dieses Asset nicht. Wenn Sie möchten, können wir das Asset Ihrem Konto hinzufügen.";
+"ble-error-ledger-connection-open-app-error" = "Bitte öffnen Sie in Ihrem Ledger-Gerät die Algorand-App.";
+"notifications-empty-title" = "Keine aktuellen Benachrichtigungen";
+"notifications-empty-subtitle" = "Ihre letzten Transaktionen, Asset-Anforderungen und weiteren Benachrichtigungen werden hier angezeigt.";
+
+/*MARK: Transaction Filter*/
+"transaction-filter-title-sort" = "Nach Datum sortieren";
+"transaction-filter-option-all" = "Gesamter Zeitraum";
+"transaction-filter-option-today" = "Heute";
+"transaction-filter-option-yesterday" = "Gestern";
+"transaction-filter-option-week" = "Letzte Woche";
+
+/*MARK: Transaction Filter*/
+"transaction-filter-option-month" = "Letzter Monat";
+"transaction-filter-option-custom" = "Benutzerdefinierten Zeitraum";
+"transaction-filter-tooltip" = "Sie können den Transaktionsverlauf jetzt filtern";
+"transaction-filter-try-again" = "Erneut versuchen";
+"transaction-filter-error-title" = "Es ist ein Fehler aufgetreten";
+"transaction-filter-error-subtitle" = "Es tut uns Leid, aber es ist ein Fehler aufgetreten.";
+"csv-download-title" = "CSV-Datei wird erstellt";
+"csv-download-error" = "Es konnte keine CSV-Datei mit dem Transaktionsverlauf erstellt werden.";
+"transaction-download-from" = "Von: Adresse";
+"transaction-download-to" = "An: Adresse";
+
+/*Context not clear*/
+"transaction-download-close-to" = "Schließen und Restbetrag senden an: Adresse";
+
+/*MARK: Pin Limit*/
+"pin-limit-title" = "Die Algorand-App ist gesperrt";
+"pin-limit-try-again" = "Erneut versuchen in";
+"pin-limit-too-many" = "Zu viele Versuche";
+"pin-limit-reset-all" = "Alle Daten zurücksetzen";
+
+/*MARK: Rekey Instruction*/
+"rekey-instruction-start" = "Prozess starten";
+"rekey-instruction-title" = "Konto-Rekeying";
+"rekey-instruction-header" = "Was das bedeutet:";
+"rekey-instruction-first" = "Zukünftige Transaktionen werden mit Ihrem neuen Ledger-Gerät signiert.";
+"rekey-instruction-third" = "Der öffentliche Schlüssel, das Kontoguthaben und die Konfiguration Ihres Kontos sind vom Rekeying nicht betroffen.";
+
+/*MARK: Rekey Confirm*/
+"ledger-rekey-confirm-title" = "Rekeying bestätigen";
+"ledger-rekey-transaction-title" = "Rekeying-Transaktion";
+"ledger-rekey-ledger-old" = "Altes Ledger-Gerät";
+"ledger-rekey-ledger-passphrase" = "Passphrase";
+"ledger-rekey-ledger-new" = "Neues Ledger-Gerät";
+"ledger-rekey-finalize" = "Rekeying abschließen";
+"ledger-rekey-total-fee" = "Gesamthafte Rekeying-Gebühr von %@ Algos";
+
+/*Context not clear*/
+"ledger-rekey-more-assets" = "+%@ zusätzliche Assets";
+"ledger-rekey-success-title" = "Konto-Rekeying abgeschlossen";
+"ledger-rekey-success-message" = "Das Rekeying für dieses Konto wurde erfolgreich abgeschlossen";
+
+/*MARK: Ledger Account Selection*/
+"ledger-account-selection-title-singular" = "%d-Konto gefunden";
+"ledger-account-selection-title-plural" = "%d-Konten gefunden";
+"ledger-account-selection-detail" = "Dieses Ledger-Gerät kann für folgendes Konto Transaktionen signieren. Wählen Sie das Konto aus, das Sie Ihrer Algorand-Wallet hinzufügen möchten.";
+"ledger-account-selection-add" = "Konto hinzufügen";
+"ledger-rekey-error-add-auth" = "Das verbundene Ledger-Gerät kann für dieses Konto keine Transaktionen signieren. Verbinden Sie zu diesem Zweck bitte %@.";
+"ledger-rekey-error-not-found" = "Das Rekeying für dieses Konto wurde abgeschlossen. Bitte stellen Sie dieses Konto mit einer Passphrase oder einem Ledger-Gerät wieder her.";
+"send-transaction-max-same-account-error" = "Sie können Ihr maximales Guthaben nicht an sich selbst senden. Bitte wählen Sie einen anderen Betrag oder Empfänger und versuchen Sie es erneut.";
+"title-receive" = "Empfangen";
+"title-copy" = "Kopieren";
+"title-new-uppercased" = "NEU";
+
+/*MARK: Account Type Selection*/
+"account-type-choose-title" = "Kontotyp wählen";
+"account-type-selection-create" = "Neues Konto erstellen";
+"account-type-selection-create-detail" = "Konto mit neuer Adresse und Passphrase erstellen";
+
+/*Context not clear*/
+"account-type-selection-watch-detail" = "Transaktionen eines Kontos unter Verwendung von nur dieser Adresse überwachen";
+"account-type-selection-recover" = "Mit Passphrase wiederherstellen";
+"account-type-selection-recover-detail" = "Ein Konto mit einer aus 25 Wörtern bestehenden Passphrase wiederherstellen";
+"account-type-selection-ledger" = "Ledger-Konto koppeln";
+"account-type-selection-ledger-detail" = "Ein Konto koppeln, das von einem Ledger-Hardware-Wallet unterstützt wird";
+"introduction-title-add-text" = "Neues Konto hinzufügen";
+"introduction-add-account-text" = "Konto hinzufügen";
+"introduction-title-terms-and-services" = "Indem Sie ein Konto erstellen, stimmen Sie den <a href=\"https://www.algorand.com/wallet-disclaimer\">Nutzungsbedingungen</a></a> und den <a href=\"https://www.algorand.com/wallet-privacy-policy\">Datenschutzbestimmungen</a> von Algorand zu";
+"settings-developer" = "Entwicklereinstellungen";
+"settings-currency" = "Währung";
+"settings-developer-dispenser" = "Algorand-Dispenser";
+"settings-currency-usd" = "USD";
+"transaction-detail-date" = "Datum";
+"transaction-id-open-explorer" = "Im Explorer öffnen";
+"feedback-subtitle-account-title" = "Konto (optional)";
+"feedback-subtitle-account-detail" = "Konto auswählen";
+"rekey-instruction-subtitle-ledger" = "Ersetzen Sie Ihr Ledger-Gerät für Ihr Konto durch ein neues Ledger-Gerät";
+"rekey-instruction-subtitle-standard" = "Ersetzen Sie die Passphrase Ihres Kontos durch ein Ledger-Gerät.";
+"rekey-instruction-second-ledger" = "Ihr altes Ledger-Gerät wird für dieses Konto nicht mehr funktionieren.";
+"rekey-instruction-second-standard" = "Die Passphrase dieses Kontos wird für dieses Konto nicht mehr funktionieren.";
+
+/*MARK: Watch Account*/
+"title-watch-account" = "Konto mit Lesezugriff";
+"watch-account-input-explanation" = "Adresse des zu beobachtenden Kontos";
+"watch-account-input-placeholder" = "Adresse einfügen oder QR-Code scannen";
+"watch-account-error-address" = "Bitte geben Sie eine gültige Adresse ein.";
+"passphrase-question-another" = "%@.";
+"passphrase-question-third" = "3.";
+"passphrase-question-second" = "2.";
+"passphrase-question-first" = "1.";
+"passphrase-select-n-word" = "Wählen Sie das %@. Wort Ihrer Ihrer";
+"passphrase-qeustion-counter" = "Frage %@ von %@";
+"asset-detail-id-title" = "ID %@";
+"settings-app-version" = "Version %@";
+
+"settings-language-change-title" = "App-Sprache festlegen";
+"settings-language-change-detail" = "Aufgrund von Updates für Ihr Telefon müssen Sie mehrere Schritte ausführen, um Ihre Sprache zu ändern.\n\n1. Weiter zur nächsten Maske.\n2. Tippen Sie auf „Sprache“, um die gewünschte Sprache auszuwählen.\n\nWenn keine Spracheinstellung vorhanden ist, gehe zu deinen allgemeinen iPhone-Spracheinstellungen, um zuerst eine bevorzugte Sprache zu wählen.";

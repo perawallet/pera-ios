@@ -10,6 +10,10 @@ import UIKit
 
 class TransactionDetailViewController: BaseScrollViewController {
     
+    override var screenKey: String? {
+        return "screen_transaction_detail"
+    }
+    
     private lazy var transactionDetailView = TransactionDetailView(transactionType: transactionType)
     
     private var transaction: Transaction
@@ -144,10 +148,24 @@ extension TransactionDetailViewController: TransactionDetailViewDelegate {
         switch opponentType {
         case let .contact(address):
             let draft = QRCreationDraft(address: address, mode: .address)
-            open(.qrGenerator(title: transaction.contact?.name ?? "qr-creation-sharing-title".localized, draft: draft), by: .present)
+            open(
+                .qrGenerator(
+                    title: transaction.contact?.name ?? "qr-creation-sharing-title".localized,
+                    draft: draft,
+                    isTrackable: true
+                ),
+                by: .present
+            )
         case let .localAccount(address):
             let draft = QRCreationDraft(address: address, mode: .address)
-            open(.qrGenerator(title: "qr-creation-sharing-title".localized, draft: draft), by: .present)
+            open(
+                .qrGenerator(
+                    title: "qr-creation-sharing-title".localized,
+                    draft: draft,
+                    isTrackable: true
+                ),
+                by: .present
+            )
         case let .address(address):
             let viewController = open(.addContact(mode: .new()), by: .push) as? AddContactViewController
             viewController?.addContactView.userInformationView.algorandAddressInputView.value = address

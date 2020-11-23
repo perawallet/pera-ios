@@ -8,56 +8,64 @@
 
 import Magpie
 
-extension API {
+extension AlgorandAPI {
     @discardableResult
     func registerDevice(
         with draft: DeviceRegistrationDraft,
-        then handler: @escaping Endpoint.CompleteResultHandler<Device, AlgorandError>
+        then handler: @escaping (Response.Result<Device, HIPAPIError>) -> Void
     ) -> EndpointOperatable {
-        return Endpoint(path: Path("/api/devices/"))
+        return EndpointBuilder(api: self)
             .base(mobileApiBase)
-            .httpMethod(.post)
-            .httpHeaders(mobileApiHeaders())
-            .httpBody(draft)
-            .resultHandler(handler)
-            .buildAndSend(self)
+            .path("/api/devices/")
+            .method(.post)
+            .headers(mobileApiHeaders())
+            .body(draft)
+            .completionHandler(handler)
+            .build()
+            .send()
     }
     
     @discardableResult
     func updateDevice(
         with draft: DeviceUpdateDraft,
-        then handler: @escaping Endpoint.CompleteResultHandler<Device, AlgorandError>
+        then handler: @escaping (Response.Result<Device, HIPAPIError>) -> Void
     ) -> EndpointOperatable {
-        return Endpoint(path: Path("/api/devices/\(draft.id)"))
+        return EndpointBuilder(api: self)
             .base(mobileApiBase)
-            .httpMethod(.put)
-            .httpHeaders(mobileApiHeaders())
-            .httpBody(draft)
-            .resultHandler(handler)
-            .buildAndSend(self)
+            .path("/api/devices/\(draft.id)")
+            .method(.put)
+            .headers(mobileApiHeaders())
+            .body(draft)
+            .completionHandler(handler)
+            .build()
+            .send()
     }
     
     @discardableResult
     func unregisterDevice(with draft: DeviceDeletionDraft) -> EndpointOperatable {
-        return Endpoint(path: Path("/api/devices/"))
+        return EndpointBuilder(api: self)
             .base(mobileApiBase)
-            .httpHeaders(mobileApiHeaders())
-            .httpMethod(.delete)
-            .httpBody(draft)
-            .buildAndSend(self)
+            .path("/api/devices/")
+            .method(.delete)
+            .headers(mobileApiHeaders())
+            .body(draft)
+            .build()
+            .send()
     }
     
     @discardableResult
     func getNotifications(
         for id: String,
         with cursorQuery: CursorQuery,
-        then handler: @escaping Endpoint.DefaultResultHandler<PaginatedList<NotificationMessage>>
+        then handler: @escaping (Response.ModelResult<PaginatedList<NotificationMessage>>) -> Void
     ) -> EndpointOperatable {
-        return Endpoint(path: Path("/api/devices/\(id)/notifications/"))
+        return EndpointBuilder(api: self)
             .base(mobileApiBase)
-            .httpHeaders(mobileApiHeaders())
+            .path("/api/devices/\(id)/notifications/")
+            .headers(mobileApiHeaders())
             .query(cursorQuery)
-            .resultHandler(handler)
-            .buildAndSend(self)
+            .completionHandler(handler)
+            .build()
+            .send()
     }
 }

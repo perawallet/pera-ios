@@ -11,9 +11,8 @@ import Foundation
 extension Formatter {
     static let separatorForAlgosInput: NumberFormatter = {
         let formatter = NumberFormatter()
-        formatter.groupingSeparator = ","
+        formatter.locale = Locale.preferred()
         formatter.currencySymbol = ""
-        formatter.locale = Locale(identifier: "en_US")
         formatter.numberStyle = .currencyAccounting
         formatter.minimumFractionDigits = 6
         formatter.maximumFractionDigits = 6
@@ -22,9 +21,8 @@ extension Formatter {
     
     static let separatorForAlgosLabel: NumberFormatter = {
         let formatter = NumberFormatter()
-        formatter.groupingSeparator = ","
+        formatter.locale = Locale.preferred()
         formatter.currencySymbol = ""
-        formatter.locale = Locale(identifier: "en_US")
         formatter.numberStyle = .currencyAccounting
         formatter.minimumFractionDigits = 2
         formatter.maximumFractionDigits = 6
@@ -33,9 +31,8 @@ extension Formatter {
     
     static func separatorForInputWith(fraction value: Int) -> NumberFormatter {
         let formatter = NumberFormatter()
-        formatter.groupingSeparator = ","
+        formatter.locale = Locale.preferred()
         formatter.currencySymbol = ""
-        formatter.locale = Locale(identifier: "en_US")
         formatter.numberStyle = .currencyAccounting
         formatter.minimumFractionDigits = value
         formatter.maximumFractionDigits = value
@@ -44,23 +41,21 @@ extension Formatter {
     
     static func separatorWith(fraction value: Int) -> NumberFormatter {
         let formatter = NumberFormatter()
-        formatter.groupingSeparator = ","
+        formatter.locale = Locale.preferred()
         formatter.currencySymbol = ""
-        formatter.locale = Locale(identifier: "en_US")
         formatter.numberStyle = .currencyAccounting
         formatter.minimumFractionDigits = value == 0 ? 0 : 2
         formatter.maximumFractionDigits = value
         return formatter
     }
     
-    static let cryptoCurrencyFormatter: NumberFormatter = {
+    static let currencyFormatter: NumberFormatter = {
         let formatter = NumberFormatter()
-        formatter.groupingSeparator = ","
+        formatter.locale = Locale.preferred()
         formatter.currencySymbol = ""
-        formatter.locale = Locale(identifier: "en_US")
         formatter.numberStyle = .currencyAccounting
         formatter.minimumFractionDigits = 2
-        formatter.maximumFractionDigits = 7
+        formatter.maximumFractionDigits = 2
         return formatter
     }()
 }

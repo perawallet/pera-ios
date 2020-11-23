@@ -11,6 +11,7 @@ import CoreData
 import Firebase
 import SwiftDate
 import UserNotifications
+import FirebaseCrashlytics
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -18,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     private lazy var session = Session()
-    private lazy var api = API(session: session)
+    private lazy var api = AlgorandAPI(session: session, base: "")
     private lazy var appConfiguration = AppConfiguration(api: api, session: session)
     private lazy var pushNotificationController = PushNotificationController(api: api)
     

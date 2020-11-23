@@ -21,7 +21,7 @@ class RewardView: BaseView {
             .withText("reward-list-title".localized)
     }()
     
-    private(set) lazy var transactionAmountView = TransactionAmountView()
+    private lazy var transactionAmountView = TransactionAmountView()
     
     private lazy var dateLabel: UILabel = {
         UILabel()
@@ -91,8 +91,11 @@ extension RewardView {
 }
 
 extension RewardView {
-    func setDate(_ date: String?) {
-        dateLabel.text = date
+    func bind(_ viewModel: RewardViewModel) {
+        if let mode = viewModel.amountMode {
+            transactionAmountView.mode = mode
+        }
+        dateLabel.text = viewModel.date
     }
 }
 

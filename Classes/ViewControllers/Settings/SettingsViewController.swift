@@ -34,7 +34,7 @@ class SettingsViewController: BaseViewController {
     private lazy var settings: [[GeneralSettings]] = [securitySettings, preferenceSettings, appSettings, developerSettings]
     private lazy var securitySettings: [GeneralSettings] = [.password, .localAuthentication]
     private lazy var preferenceSettings: [GeneralSettings] = [.notifications, .rewards, .language, .currency]
-    private lazy var appSettings: [GeneralSettings] = [.feedback, .termsAndServices]
+    private lazy var appSettings: [GeneralSettings] = [.feedback, .termsAndServices, .privacyPolicy]
     private lazy var developerSettings: [GeneralSettings] = [.developer]
     
     private lazy var settingsView = SettingsView()
@@ -119,13 +119,23 @@ extension SettingsViewController: UICollectionViewDataSource {
                 let rewardDisplayPreference = session?.rewardDisplayPreference == .allowed
                 return setSettingsToggleCell(from: setting, isOn: rewardDisplayPreference, in: collectionView, at: indexPath)
             case .language:
-                return setSettingsInfoCell(from: setting, info: "settings-language-english".localized, in: collectionView, at: indexPath)
+                let defaultLanguageText = "settings-language-english".localized
+                guard let preferredLocalization = Bundle.main.preferredLocalizations.first,
+                      let displayName = NSLocale(localeIdentifier: preferredLocalization).displayName(
+                        forKey: .identifier,
+                        value: preferredLocalization
+                      ) else {
+                    return setSettingsInfoCell(from: setting, info: defaultLanguageText, in: collectionView, at: indexPath)
+                }
+                return setSettingsInfoCell(from: setting, info: displayName, in: collectionView, at: indexPath)
             case .currency:
                 let preferredCurrency = api?.session.preferredCurrency ?? "settings-currency-usd".localized
                 return setSettingsInfoCell(from: setting, info: preferredCurrency, in: collectionView, at: indexPath)
             case .feedback:
                 return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
             case .termsAndServices:
+                return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
+            case .privacyPolicy:
                 return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
             case .developer:
                 return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
@@ -241,11 +251,24 @@ extension SettingsViewController: UICollectionViewDelegateFlowLayout {
                 )
             case .feedback:
                 open(.feedback, by: .push)
+            case .language:
+                displayProceedAlertWith(
+                    title: "settings-language-change-title".localized,
+                    message: "settings-language-change-detail".localized
+                ) { _ in
+                    UIApplication.shared.openAppSettings()
+                }
             case .currency:
                 let controller = open(.currencySelection, by: .push) as? CurrencySelectionViewController
                 controller?.delegate = self
             case .termsAndServices:
                 guard let url = URL(string: Environment.current.termsAndServicesUrl) else {
+                    return
+                }
+                
+                open(url)
+            case .privacyPolicy:
+                guard let url = URL(string: Environment.current.privacyPolicyUrl) else {
                     return
                 }
                 

@@ -10,7 +10,7 @@ def main_pods
   pod 'SwiftLint'
   
   #Networking
-  pod 'Magpie', :git => 'https://github.com/Hipo/magpie.git'
+  pod 'Magpie/HIPAPI', '~> 2.0.5'
   
   #Persistance
   pod 'KeychainAccess'
@@ -26,8 +26,7 @@ def main_pods
   
   #Analytics
   pod 'Firebase/Core'
-  pod 'Fabric'
-  pod 'Crashlytics'
+  pod 'Firebase/Crashlytics'
 end
 
 target 'algorand' do

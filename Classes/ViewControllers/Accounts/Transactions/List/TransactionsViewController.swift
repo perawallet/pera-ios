@@ -66,7 +66,7 @@ class TransactionsViewController: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        api?.addDelegate(self)
+        api?.addListener(self)
         startPendingTransactionPolling()
     }
     
@@ -80,8 +80,12 @@ class TransactionsViewController: BaseViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        api?.removeDelegate(self)
+        api?.removeListener(self)
         pendingTransactionPolling?.invalidate()
+    }
+    
+    override func configureAppearance() {
+        view.backgroundColor = SharedColors.secondaryBackground
     }
     
     override func setListeners() {
@@ -189,13 +193,9 @@ extension TransactionsViewController {
             }
             
             if let error = error {
-                switch error {
-                case .cancelled:
-                    break
-                default:
+                if !error.isCancelled {
                     self.transactionListView.setOtherErrorState()
                 }
-                
                 self.transactionListView.reloadData()
                 return
             }
@@ -338,6 +338,12 @@ extension TransactionsViewController {
         transactionListView.reloadData()
         transactionListView.setLoadingState()
         fetchTransactions()
+    }
+    
+    func updateSelectedAsset(_ assetDetail: AssetDetail?) {
+        self.assetDetail = assetDetail
+        transactionHistoryDataSource.updateAssetDetail(assetDetail)
+        updateList()
     }
     
     var isTransactionListEmpty: Bool {
@@ -491,14 +497,14 @@ extension TransactionsViewController: CSVExportable {
         if let assetDetail = assetDetail {
             return amount?.toFractionStringForLabel(fraction: assetDetail.fractionDecimals) ?? " "
         } else {
-            return amount?.toAlgos.toDecimalStringForLabel ?? " "
+            return amount?.toAlgos.toAlgosStringForLabel ?? " "
         }
     }
 }
 
-extension TransactionsViewController: MagpieDelegate {
-    func magpie(
-        _ magpie: Magpie,
+extension TransactionsViewController: APIListener {
+    func api(
+        _ api: API,
         networkMonitor: NetworkMonitor,
         didConnectVia connection: NetworkConnection,
         from oldConnection: NetworkConnection
@@ -508,7 +514,7 @@ extension TransactionsViewController: MagpieDelegate {
         }
     }
     
-    func magpie(_ magpie: Magpie, networkMonitor: NetworkMonitor, didDisconnectFrom oldConnection: NetworkConnection) {
+    func api(_ api: API, networkMonitor: NetworkMonitor, didDisconnectFrom oldConnection: NetworkConnection) {
         if UIApplication.shared.isActive {
             isConnectedToInternet = networkMonitor.isConnected
         }

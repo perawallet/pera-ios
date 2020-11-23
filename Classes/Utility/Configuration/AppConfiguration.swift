@@ -10,10 +10,10 @@ import Foundation
 
 class AppConfiguration {
 
-    let api: API
+    let api: AlgorandAPI
     let session: Session
     
-    init(api: API, session: Session) {
+    init(api: AlgorandAPI, session: Session) {
         self.api = api
         self.session = session
     }

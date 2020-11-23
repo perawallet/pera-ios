@@ -9,7 +9,7 @@
 import UIKit
 
 class NodeSettingsViewModel {
-    func configure(_ cell: NodeSelectionCell, with node: AlgorandNode, activeNetwork: API.BaseNetwork) {
+    func configure(_ cell: NodeSelectionCell, with node: AlgorandNode, activeNetwork: AlgorandAPI.BaseNetwork) {
         cell.contextView.setName(node.name)
         
         if node.network == activeNetwork {

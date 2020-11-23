@@ -85,7 +85,7 @@ class NotificationsViewModel {
     
     private func setTime(notification: NotificationMessage) {
         if let notificationDate = notification.date {
-            time = (Date() - notificationDate).ago.toRelative(style: RelativeFormatter.defaultStyle(), locale: Locales.english)
+            time = (Date() - notificationDate).ago.toRelative(style: RelativeFormatter.defaultStyle(), locale: Locales.autoUpdating)
         }
     }
     
@@ -149,7 +149,7 @@ extension NotificationsViewModel {
             let fraction = asset.fractionDecimals ?? 0
             return amount.toFractionStringForLabel(fraction: fraction)
         }
-        return amount.toAlgos.toDecimalStringForLabel
+        return amount.toAlgos.toAlgosStringForLabel
     }
     
     private func getAssetDisplayName(from notificationDetail: NotificationDetail) -> String? {

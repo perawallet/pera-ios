@@ -9,11 +9,11 @@
 import Foundation
 
 class AccountManager {
-    let api: API
+    let api: AlgorandAPI
     var currentRound: Int64?
     let queue: OperationQueue
     
-    init(api: API) {
+    init(api: AlgorandAPI) {
         self.api = api
         self.queue = OperationQueue()
         self.queue.name = "AccountFetchOperation"

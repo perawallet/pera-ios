@@ -12,14 +12,6 @@ class IntroductionViewController: BaseViewController {
     
     private lazy var introductionView = IntroductionView()
     
-    private lazy var termsServiceModalPresenter = CardModalPresenter(
-        config: ModalConfiguration(
-            animationMode: .normal(duration: 0.25),
-            dismissMode: .none
-        ),
-        initialModalSize: .custom(CGSize(width: view.frame.width, height: 300))
-    )
-    
     private let accountSetupFlow: AccountSetupFlow
     
     init(accountSetupFlow: AccountSetupFlow, configuration: ViewControllerConfiguration) {
@@ -38,11 +30,6 @@ class IntroductionViewController: BaseViewController {
         default:
             break
         }
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        presentTermsAndServicesIfNeeded()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -96,22 +83,6 @@ extension IntroductionViewController {
     @objc
     private func didApplicationEnterForeground() {
         introductionView.animateImages()
-    }
-}
-
-extension IntroductionViewController {
-    private func presentTermsAndServicesIfNeeded() {
-        guard let session = self.session, !session.isTermsAndServicesAccepted() else {
-            return
-        }
-        
-        let transitionStyle = Screen.Transition.Open.customPresent(
-            presentationStyle: .custom,
-            transitionStyle: nil,
-            transitioningDelegate: termsServiceModalPresenter
-        )
-        
-        open(.termsAndServices, by: transitionStyle)
     }
 }
 

@@ -200,7 +200,7 @@ extension SendAlgosTransactionPreviewViewController {
                 let amountInt = Int(sendAmount) {
                 
                 self.amount = amountInt.toAlgos
-                sendTransactionPreviewView.amountInputView.inputTextField.text = self.amount.toDecimalStringForLabel
+                sendTransactionPreviewView.amountInputView.inputTextField.text = self.amount.toAlgosStringForLabel
             }
             
             sendTransactionPreviewView.transactionReceiverView.state = assetReceiverState
@@ -271,8 +271,8 @@ extension SendAlgosTransactionPreviewViewController {
                 }
                 
                 switch accountResponse {
-                case let .failure(_, indexerError):
-                    if indexerError?.containsAccount(receiverAddress) ?? false {
+                case let .failure(error, _):
+                    if error.isHttpNotFound {
                         self.dismissProgressIfNeeded()
                         self.displaySimpleAlertWith(
                             title: "title-error".localized,

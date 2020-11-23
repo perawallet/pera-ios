@@ -20,9 +20,9 @@ class PushNotificationController: NSObject {
         }
     }
     
-    private var api: API
+    private var api: AlgorandAPI
     
-    init(api: API) {
+    init(api: AlgorandAPI) {
         self.api = api
     }
 }
@@ -177,7 +177,7 @@ extension PushNotificationController {
                     } else {
                         message = String(
                             format: isFailed ? "notification-sent-failed".localized : "notification-sent-success".localized,
-                            "\(amount.toAlgos.toDecimalStringForLabel ?? "") Algos",
+                            "\(amount.toAlgos.toAlgosStringForLabel ?? "") Algos",
                             senderAccount.name,
                             results.first?.name ?? receiverName
                         )
@@ -200,7 +200,7 @@ extension PushNotificationController {
                     } else {
                         message = String(
                             format: isFailed ? "notification-sent-failed".localized : "notification-sent-success".localized,
-                            "\(amount.toAlgos.toDecimalStringForLabel ?? "") Algos",
+                            "\(amount.toAlgos.toAlgosStringForLabel ?? "") Algos",
                             senderAccount.name,
                             receiverName
                         )
@@ -246,7 +246,7 @@ extension PushNotificationController {
                     } else {
                         message = String(
                             format: "notification-received".localized,
-                            "\(amount.toAlgos.toDecimalStringForLabel ?? "") Algos",
+                            "\(amount.toAlgos.toAlgosStringForLabel ?? "") Algos",
                             receiverAccount.name,
                             results.first?.name ?? senderName
                         )
@@ -269,7 +269,7 @@ extension PushNotificationController {
                     } else {
                         message = String(
                             format: "notification-received".localized,
-                            "\(amount.toAlgos.toDecimalStringForLabel ?? "") Algos",
+                            "\(amount.toAlgos.toAlgosStringForLabel ?? "") Algos",
                             receiverAccount.name,
                             senderName
                         )

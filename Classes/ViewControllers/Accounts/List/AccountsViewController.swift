@@ -65,6 +65,10 @@ class AccountsViewController: BaseViewController {
     
     private(set) var accountsDataSource: AccountsDataSource
     
+    override var screenKey: String? {
+        return "screen_accounts"
+    }
+    
     private var isConnectedToInternet = true {
         didSet {
             if isConnectedToInternet == oldValue {
@@ -126,8 +130,7 @@ class AccountsViewController: BaseViewController {
         }
         
         displayTestNetBannerIfNeeded()
-        presentTermsAndServicesIfNeeded()
-        api?.addDelegate(self)
+        api?.addListener(self)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -140,7 +143,7 @@ class AccountsViewController: BaseViewController {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        api?.removeDelegate(self)
+        api?.removeListener(self)
     }
     
     override func configureAppearance() {
@@ -204,7 +207,7 @@ extension AccountsViewController: AccountsDataSourceDelegate {
     
     func accountsDataSource(_ accountsDataSource: AccountsDataSource, didTapQRButtonFor account: Account) {
         let draft = QRCreationDraft(address: account.address, mode: .address)
-        open(.qrGenerator(title: "qr-creation-sharing-title".localized, draft: draft), by: .present)
+        open(.qrGenerator(title: "qr-creation-sharing-title".localized, draft: draft, isTrackable: true), by: .present)
     }
 }
 
@@ -216,7 +219,7 @@ extension AccountsViewController: AccountsViewDelegate {
     
     func accountsViewDidTapAddButton(_ accountsView: AccountsView) {
         open(
-            .introduction(flow: .addNewAccount(mode: nil)),
+            .accountTypeSelection(flow: .addNewAccount(mode: nil)),
             by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
         )
     }
@@ -302,20 +305,6 @@ extension AccountsViewController {
     private func setAccountsCollectionViewContentState() {
         accountsView.accountsCollectionView.contentState = accountsDataSource.accounts.isEmpty ? .empty(noConnectionView) : .none
         accountsView.setHeaderButtonsHidden(accountsDataSource.accounts.isEmpty)
-    }
-    
-    private func presentTermsAndServicesIfNeeded() {
-        guard let session = self.session, !session.isTermsAndServicesAccepted() else {
-            return
-        }
-        
-        let transitionStyle = Screen.Transition.Open.customPresent(
-            presentationStyle: .custom,
-            transitionStyle: nil,
-            transitioningDelegate: termsServiceModalPresenter
-        )
-        
-        open(.termsAndServices, by: transitionStyle)
     }
     
     private func displayTestNetBannerIfNeeded() {
@@ -442,18 +431,22 @@ extension AccountsViewController: TooltipPresenter {
     }
 }
 
-extension AccountsViewController: MagpieDelegate {
-    func magpie(
-        _ magpie: Magpie,
+extension AccountsViewController: APIListener {
+    func api(
+        _ api: API,
         networkMonitor: NetworkMonitor,
         didConnectVia connection: NetworkConnection,
         from oldConnection: NetworkConnection
     ) {
-        isConnectedToInternet = networkMonitor.isConnected
+        if UIApplication.shared.isActive {
+            isConnectedToInternet = networkMonitor.isConnected
+        }
     }
     
-    func magpie(_ magpie: Magpie, networkMonitor: NetworkMonitor, didDisconnectFrom oldConnection: NetworkConnection) {
-        isConnectedToInternet = networkMonitor.isConnected
+    func api(_ api: API, networkMonitor: NetworkMonitor, didDisconnectFrom oldConnection: NetworkConnection) {
+        if UIApplication.shared.isActive {
+            isConnectedToInternet = networkMonitor.isConnected
+        }
     }
 }
 

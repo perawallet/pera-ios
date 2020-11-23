@@ -117,27 +117,28 @@ extension RekeyConfirmationViewController: TransactionControllerDelegate {
         openRekeyConfirmationAlert()
     }
     
-    func transactionController(_ transactionController: TransactionController, didFailedComposing error: Error) {
+    func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPError<TransactionError>) {
         ledgerApprovalViewController?.dismissScreen()
         
         switch error {
-        case let .custom(errorType):
-            guard let transactionError = errorType as? TransactionController.TransactionError else {
-                return
-            }
-            
-            displayMinimumTransactionError(from: transactionError)
+        case let .inapp(transactionError):
+            displayTransactionError(from: transactionError)
         default:
-            NotificationBanner.showError("title-error".localized, message: error.localizedDescription)
+            NotificationBanner.showError("title-error".localized, message: error.asAFError?.errorDescription ?? error.localizedDescription)
         }
     }
     
-    func transactionController(_ transactionController: TransactionController, didFailedTransaction error: Error) {
+    func transactionController(_ transactionController: TransactionController, didFailedTransaction error: HIPError<TransactionError>) {
         if account.requiresLedgerConnection() {
             ledgerApprovalViewController?.dismissScreen()
         }
         
-        NotificationBanner.showError("title-error".localized, message: error.localizedDescription)
+        switch error {
+        case let .network(apiError):
+            NotificationBanner.showError("title-error".localized, message: apiError.debugDescription)
+        default:
+            NotificationBanner.showError("title-error".localized, message: error.localizedDescription)
+        }
     }
     
     func transactionControllerDidStartBLEConnection(_ transactionController: TransactionController) {
@@ -217,13 +218,17 @@ extension RekeyConfirmationViewController {
         }
     }
     
-    private func displayMinimumTransactionError(from transactionError: TransactionController.TransactionError) {
+    private func displayTransactionError(from transactionError: TransactionError) {
         switch transactionError {
         case let .minimumAmount(amount):
             NotificationBanner.showError(
                 "asset-min-transaction-error-title".localized,
-                message: "send-algos-minimum-amount-custom-error".localized(params: amount.toAlgos.toDecimalStringForLabel ?? "")
+                message: "send-algos-minimum-amount-custom-error".localized(params: amount.toAlgos.toAlgosStringForLabel ?? "")
             )
+        case .invalidAddress:
+            NotificationBanner.showError("title-error".localized, message: "send-algos-receiver-address-validation".localized)
+        case let .sdkError(error):
+            NotificationBanner.showError("title-error".localized, message: error.debugDescription)
         default:
             break
         }

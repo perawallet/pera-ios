@@ -111,6 +111,10 @@ extension AssetRemovalViewController: UICollectionViewDataSource {
         let cell = layoutBuilder.dequeueAssetCells(in: collectionView, cellForItemAt: indexPath, for: assetDetail)
         cell.delegate = self
         viewModel.configure(cell, with: assetDetail)
+        
+        if indexPath.item == account.assetDetails.count - 1 {
+            cell.contextView.setSeparatorViewHidden(true)
+        }
         return cell
     }
 }
@@ -133,17 +137,8 @@ extension AssetRemovalViewController {
             viewModel.configure(headerView, with: account)
             
             return headerView
-        } else {
-            guard let headerView = collectionView.dequeueReusableSupplementaryView(
-                ofKind: kind,
-                withReuseIdentifier: AssetRemovalFooterSupplementaryView.reusableIdentifier,
-                for: indexPath
-            ) as? AssetRemovalFooterSupplementaryView else {
-                fatalError("Unexpected element kind")
-            }
-            
-            return headerView
         }
+        fatalError("Unexpected element kind")
     }
 }
 
@@ -231,17 +226,6 @@ extension AssetRemovalViewController: UICollectionViewDelegateFlowLayout {
             height: layout.current.itemHeight
         )
     }
-    
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        referenceSizeForFooterInSection section: Int
-    ) -> CGSize {
-        return CGSize(
-            width: UIScreen.main.bounds.width - layout.current.defaultSectionInsets.left - layout.current.defaultSectionInsets.right,
-            height: layout.current.footerHeight
-        )
-    }
 }
 
 extension AssetRemovalViewController: AssetActionConfirmationViewControllerDelegate {
@@ -304,22 +288,49 @@ extension AssetRemovalViewController: TransactionControllerDelegate {
         dismissScreen()
     }
     
-    func transactionController(_ transactionController: TransactionController, didFailedComposing error: Error) {
+    func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPError<TransactionError>) {
         if account.requiresLedgerConnection() {
             ledgerApprovalViewController?.dismissScreen()
         }
         
         SVProgressHUD.dismiss()
-        NotificationBanner.showError("title-error".localized, message: error.localizedDescription)
+        
+        switch error {
+        case let .inapp(transactionError):
+            displayTransactionError(from: transactionError)
+        default:
+            break
+        }
     }
     
-    func transactionController(_ transactionController: TransactionController, didFailedTransaction error: Error) {
+    private func displayTransactionError(from transactionError: TransactionError) {
+        switch transactionError {
+        case let .minimumAmount(amount):
+            NotificationBanner.showError(
+                "asset-min-transaction-error-title".localized,
+                message: "asset-min-transaction-error-message".localized(params: amount.toAlgos.toAlgosStringForLabel ?? "")
+            )
+        case .invalidAddress:
+            NotificationBanner.showError("title-error".localized, message: "send-algos-receiver-address-validation".localized)
+        case let .sdkError(error):
+            NotificationBanner.showError("title-error".localized, message: error.debugDescription)
+        default:
+            break
+        }
+    }
+    
+    func transactionController(_ transactionController: TransactionController, didFailedTransaction error: HIPError<TransactionError>) {
         if account.requiresLedgerConnection() {
             ledgerApprovalViewController?.dismissScreen()
         }
         
         SVProgressHUD.dismiss()
-        NotificationBanner.showError("title-error".localized, message: error.localizedDescription)
+        switch error {
+        case let .network(apiError):
+            NotificationBanner.showError("title-error".localized, message: apiError.debugDescription)
+        default:
+            NotificationBanner.showError("title-error".localized, message: error.localizedDescription)
+        }
     }
     
     private func getRemovedAssetDetail(from draft: AssetTransactionSendDraft?) -> AssetDetail? {

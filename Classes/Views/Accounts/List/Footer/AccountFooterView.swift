@@ -17,8 +17,7 @@ class AccountFooterView: BaseView {
     private lazy var containerView = UIView()
     
     private lazy var addAssetButton: AlignedButton = {
-        let positions: AlignedButton.StylePositionAdjustment = (image: CGPoint(x: 0.0, y: 0.0), title: CGPoint(x: 5.0, y: 0.0))
-        let button = AlignedButton(style: .imageLeftTitleCentered(positions))
+        let button = AlignedButton(.imageAtLeft(spacing: 4.0))
         button.setImage(img("icon-plus-primary"), for: .normal)
         button.setTitle("accounts-add-new".localized, for: .normal)
         button.setTitleColor(SharedColors.tertiaryText, for: .normal)

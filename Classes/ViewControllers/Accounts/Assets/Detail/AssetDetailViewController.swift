@@ -11,44 +11,28 @@ import SnapKit
 
 class AssetDetailViewController: BaseViewController {
     
-    private lazy var rewardsModalPresenter = CardModalPresenter(
-        config: ModalConfiguration(
-            animationMode: .normal(duration: 0.25),
-            dismissMode: .scroll
-        ),
-        initialModalSize: .custom(CGSize(width: view.frame.width, height: 472.0))
-    )
+    override var screenKey: String? {
+        return "screen_asset_detail"
+    }
     
     private var account: Account
     private var assetDetail: AssetDetail?
-    private var isAlgoDisplay: Bool
-    private var currentDollarConversion: Double? {
-        didSet {
-            guard let currentDollarConversion = currentDollarConversion,
-                  let preferredCurrency = session?.preferredCurrency else {
-                return
-            }
-            let dollarAmountForAccount = account.amount.toAlgos * currentDollarConversion
-            viewModel.setDollarValue(in: assetDetailView.headerView, with: dollarAmountForAccount, for: preferredCurrency)
-        }
-    }
-    private let viewModel: AssetDetailViewModel
     var route: Screen?
     
     var transactionsTopConstraint: Constraint?
     
-    var headerHeight: CGFloat {
-        if isAlgoDisplay {
-            return AssetDetailView.LayoutConstants.algosHeaderHeight
-        }
-        return AssetDetailView.LayoutConstants.assetHeaderHeight
-    }
-    
-    private(set) lazy var assetDetailView = AssetDetailView()
-    
     private lazy var transactionActionsView = TransactionActionsView()
     
     private lazy var assetDetailTitleView = AssetDetailTitleView(title: account.name)
+    
+    private lazy var assetCardDisplayViewController: AssetCardDisplayViewController = {
+        var selectedIndex = 0
+        if let assetDetail = assetDetail {
+            selectedIndex = (account.assetDetails.firstIndex(of: assetDetail) ?? 0) + 1
+        }
+        
+        return AssetCardDisplayViewController(account: account, selectedIndex: selectedIndex, configuration: configuration)
+    }()
     
     private lazy var transactionsViewController = TransactionsViewController(
         account: account,
@@ -59,40 +43,23 @@ class AssetDetailViewController: BaseViewController {
     init(account: Account, configuration: ViewControllerConfiguration, assetDetail: AssetDetail? = nil) {
         self.account = account
         self.assetDetail = assetDetail
-        self.isAlgoDisplay = assetDetail == nil
-        viewModel = AssetDetailViewModel(account: account, assetDetail: assetDetail)
         super.init(configuration: configuration)
-    }
-    
-    override func configureNavigationBarAppearance() {
-        let qrBarButton = ALGBarButtonItem(kind: .qr) { [weak self] in
-            guard let strongSelf = self else {
-                return
-            }
-            let draft = QRCreationDraft(address: strongSelf.account.address, mode: .address)
-            strongSelf.open(.qrGenerator(title: "qr-creation-sharing-title".localized, draft: draft), by: .present)
-        }
-
-        rightBarButtonItems = [qrBarButton]
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        fetchDollarConversion()
         handleDeepLinkRoutingIfNeeded()
     }
     
     override func configureAppearance() {
         super.configureAppearance()
-        viewModel.configure(assetDetailView.headerView, with: account, and: assetDetail)
-        
         navigationItem.titleView = assetDetailTitleView
-        viewModel.configure(assetDetailTitleView, with: account, and: assetDetail)
+        assetDetailTitleView.bind(AssetDetailTitleViewModel(account: account, assetDetail: assetDetail))
     }
     
     override func linkInteractors() {
-        assetDetailView.delegate = self
         transactionActionsView.delegate = self
+        assetCardDisplayViewController.delegate = self
     }
     
     override func setListeners() {
@@ -114,7 +81,7 @@ class AssetDetailViewController: BaseViewController {
     }
     
     override func prepareLayout() {
-        setupAssetDetaiViewLayout()
+        setupAssetCardDisplayViewController()
         if !account.isWatchAccount() {
             setupTransactionActionsViewLayout()
         }
@@ -123,33 +90,16 @@ class AssetDetailViewController: BaseViewController {
 }
 
 extension AssetDetailViewController {
-    private func fetchDollarConversion() {
-        guard let preferredCurrency = session?.preferredCurrency else {
-            return
-        }
-        
-        api?.getCurrencyValue(for: preferredCurrency) { response in
-            switch response {
-            case let .success(result):
-                if let price = result.price,
-                    let doubleValue = Double(price) {
-                    self.currentDollarConversion = doubleValue
-                }
-            case .failure:
-                break
-            }
-        }
-    }
-}
+    private func setupAssetCardDisplayViewController() {
+        addChild(assetCardDisplayViewController)
+        view.addSubview(assetCardDisplayViewController.view)
 
-extension AssetDetailViewController {
-    private func setupAssetDetaiViewLayout() {
-        view.addSubview(assetDetailView)
-        
-        assetDetailView.snp.makeConstraints { make in
+        assetCardDisplayViewController.view.snp.makeConstraints { make in
             make.top.leading.trailing.equalToSuperview()
-            make.height.equalTo(headerHeight)
+            make.height.equalTo(AssetCardDisplayView.CardViewConstants.height)
         }
+        
+        assetCardDisplayViewController.didMove(toParent: self)
     }
     
     private func setupTransactionActionsViewLayout() {
@@ -166,7 +116,7 @@ extension AssetDetailViewController {
         view.addSubview(transactionsViewController.view)
 
         transactionsViewController.view.snp.makeConstraints { make in
-            transactionsTopConstraint = make.top.equalTo(assetDetailView.snp.bottom).offset(0.0).constraint
+            transactionsTopConstraint = make.top.equalTo(assetCardDisplayViewController.view.snp.bottom).offset(0.0).constraint
             make.leading.trailing.equalToSuperview()
             
             if account.isWatchAccount() {
@@ -200,7 +150,7 @@ extension AssetDetailViewController {
             return
         }
         
-        viewModel.configure(assetDetailView.headerView, with: account, and: assetDetail)
+        assetCardDisplayViewController.updateAccount(account)
         transactionsViewController.updateList()
     }
 }
@@ -225,6 +175,8 @@ extension AssetDetailViewController: TransactionsViewControllerDelegate {
         if transactionsViewController.isTransactionListEmpty {
             return
         }
+        
+        let headerHeight = AssetCardDisplayView.CardViewConstants.height
         
         let scrollOffset = scrollView.panGestureRecognizer.translation(in: view).y
         let isScrollDirectionUp = scrollOffset < 0
@@ -266,6 +218,8 @@ extension AssetDetailViewController: TransactionsViewControllerDelegate {
             return
         }
         
+        let headerHeight = AssetCardDisplayView.CardViewConstants.height
+        
         let isScrollDirectionUp = scrollView.panGestureRecognizer.translation(in: view).y < 0
         
         if isScrollDirectionUp {
@@ -274,7 +228,7 @@ extension AssetDetailViewController: TransactionsViewControllerDelegate {
             }
             
             assetDetailTitleView.animateUp(with: 1.0)
-            updateScrollOffset(-self.headerHeight)
+            updateScrollOffset(-headerHeight)
             
             if transactionsViewController.view.frame.minY <= 5.0 {
                 return
@@ -302,12 +256,8 @@ extension AssetDetailViewController: TransactionsViewControllerDelegate {
 
 extension AssetDetailViewController: TransactionActionsViewDelegate {
     func transactionActionsViewDidSendTransaction(_ transactionActionsView: TransactionActionsView) {
-        if isAlgoDisplay {
-            open(.sendAlgosTransactionPreview(account: account, receiver: .initial, isSenderEditable: false), by: .push)
-        } else {
-            guard let assetDetail = assetDetail else {
-                return
-            }
+        SendAssetDetailEvent(address: account.address).logEvent()
+        if let assetDetail = assetDetail {
             open(
                 .sendAssetTransactionPreview(
                     account: account,
@@ -318,44 +268,22 @@ extension AssetDetailViewController: TransactionActionsViewDelegate {
                 ),
                 by: .push
             )
+        } else {
+            open(.sendAlgosTransactionPreview(account: account, receiver: .initial, isSenderEditable: false), by: .push)
         }
     }
     
     func transactionActionsViewDidRequestTransaction(_ transactionActionsView: TransactionActionsView) {
-        if isAlgoDisplay {
-            let draft = AlgosTransactionRequestDraft(account: account)
-            open(.requestAlgosTransaction(isPresented: false, algosTransactionRequestDraft: draft), by: .push)
-        } else {
-            guard let assetDetail = assetDetail else {
-                return
-            }
-            open(
-                .requestAssetTransaction(
-                    isPresented: false,
-                    assetTransactionRequestDraft: AssetTransactionRequestDraft(account: account, assetDetail: assetDetail)
-                ),
-                by: .push
-            )
-        }
+        ReceiveAssetDetailEvent(address: account.address).logEvent()
+        let draft = QRCreationDraft(address: account.address, mode: .address)
+        open(.qrGenerator(title: account.name ?? account.address.shortAddressDisplay(), draft: draft, isTrackable: true), by: .present)
     }
 }
 
-extension AssetDetailViewController: AssetDetailViewDelegate {
-    func assetDetailViewDidOpenRewardDetails(_ assetDetailView: AssetDetailView) {
-        open(
-            .rewardDetail(account: account),
-            by: .customPresent(
-                presentationStyle: .custom,
-                transitionStyle: nil,
-                transitioningDelegate: rewardsModalPresenter
-            )
-        )
-    }
-    
-    func assetDetailViewDidCopyAssetId(_ assetDetailView: AssetDetailView) {
-        if let id = assetDetail?.id {
-            displaySimpleAlertWith(title: "asset-id-copied-title".localized, message: "")
-            UIPasteboard.general.string = "\(id)"
-        }
+extension AssetDetailViewController: AssetCardDisplayViewControllerDelegate {
+    func assetCardDisplayViewController(_ assetCardDisplayViewController: AssetCardDisplayViewController, didSelect index: Int) {
+        assetDetail = index == 0 ? nil : account.assetDetails[safe: index - 1]
+        assetDetailTitleView.bind(AssetDetailTitleViewModel(account: account, assetDetail: assetDetail))
+        transactionsViewController.updateSelectedAsset(assetDetail)
     }
 }

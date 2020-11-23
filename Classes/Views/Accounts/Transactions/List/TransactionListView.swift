@@ -21,7 +21,7 @@ class TransactionListView: BaseView {
     private lazy var emptyStateView = EmptyStateView(
         image: img("icon-transactions-empty"),
         title: "accounts-tranaction-empty-text".localized,
-        subtitle: "accounts-tranaction-empty-detail".localized
+        subtitle: ""
     )
     private lazy var otherErrorView = ListErrorView()
     private lazy var internetConnectionErrorView = ListErrorView()
@@ -52,13 +52,21 @@ class TransactionListView: BaseView {
     private lazy var contentStateView = ContentStateView()
     
     override func configureAppearance() {
-        super.configureAppearance()
+        backgroundColor = SharedColors.secondaryBackground
         internetConnectionErrorView.setImage(img("icon-no-internet-connection"))
         internetConnectionErrorView.setTitle("internet-connection-error-title".localized)
         internetConnectionErrorView.setSubtitle("internet-connection-error-detail".localized)
+        internetConnectionErrorView.layer.cornerRadius = 20.0
+        internetConnectionErrorView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         otherErrorView.setImage(img("icon-warning-error"))
         otherErrorView.setTitle("transaction-filter-error-title".localized)
         otherErrorView.setSubtitle("transaction-filter-error-subtitle".localized)
+        otherErrorView.layer.cornerRadius = 20.0
+        otherErrorView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        emptyStateView.titleLabel.textColor = SharedColors.gray700
+        emptyStateView.titleLabel.font = UIFont.font(withWeight: .medium(size: 16.0))
+        emptyStateView.layer.cornerRadius = 20.0
+        emptyStateView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
     }
     
     override func linkInteractors() {

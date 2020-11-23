@@ -1,14 +1,14 @@
 PODS:
-  - Alamofire (5.0.5)
+  - Alamofire (5.3.0)
   - BetterSegmentedControl (1.3.0)
-  - Crashlytics (3.14.0):
-    - Fabric (~> 1.10.2)
-  - Fabric (1.10.2)
   - Firebase/Core (6.24.0):
     - Firebase/CoreOnly
     - FirebaseAnalytics (= 6.5.0)
   - Firebase/CoreOnly (6.24.0):
     - FirebaseCore (= 6.7.0)
+  - Firebase/Crashlytics (6.24.0):
+    - Firebase/CoreOnly
+    - FirebaseCrashlytics (~> 4.1.0)
   - FirebaseAnalytics (6.5.0):
     - FirebaseCore (~> 6.7)
     - FirebaseInstallations (~> 1.2)
@@ -18,6 +18,7 @@ PODS:
     - GoogleUtilities/Network (~> 6.0)
     - "GoogleUtilities/NSData+zlib (~> 6.0)"
     - nanopb (~> 1.30905.0)
+  - FirebaseAnalyticsInterop (1.5.0)
   - FirebaseCore (6.7.0):
     - FirebaseCoreDiagnostics (~> 1.3)
     - FirebaseCoreDiagnosticsInterop (~> 1.2)
@@ -30,6 +31,14 @@ PODS:
     - GoogleUtilities/Logger (~> 6.5)
     - nanopb (~> 1.30905.0)
   - FirebaseCoreDiagnosticsInterop (1.2.0)
+  - FirebaseCrashlytics (4.1.1):
+    - FirebaseAnalyticsInterop (~> 1.2)
+    - FirebaseCore (~> 6.6)
+    - FirebaseInstallations (~> 1.1)
+    - GoogleDataTransport (~> 6.1)
+    - GoogleDataTransportCCTSupport (~> 3.1)
+    - nanopb (~> 1.30905.0)
+    - PromisesObjC (~> 1.2)
   - FirebaseInstallations (1.3.0):
     - FirebaseCore (~> 6.6)
     - GoogleUtilities/Environment (~> 6.6)
@@ -66,10 +75,18 @@ PODS:
     - GoogleUtilities/Logger
   - KeychainAccess (4.2.0)
   - lottie-ios (3.1.8)
-  - Magpie (2.1.0):
-    - Magpie/Package (= 2.1.0)
-  - Magpie/Package (2.1.0):
-    - Alamofire (~> 5.0.0-rc.2)
+  - Magpie/Alamofire (2.0.5):
+    - Alamofire (~> 5.2)
+    - Magpie/Core
+  - Magpie/Core (2.0.5):
+    - Magpie/HIPUtils
+  - Magpie/HIPAPI (2.0.5):
+    - Magpie/Alamofire
+    - Magpie/HIPExceptions
+    - Valet (~> 4.1)
+  - Magpie/HIPExceptions (2.0.5):
+    - Magpie/HIPUtils
+  - Magpie/HIPUtils (2.0.5)
   - MarqueeLabel (4.0.2)
   - nanopb (1.30905.0):
     - nanopb/decode (= 1.30905.0)
@@ -84,15 +101,15 @@ PODS:
   - SVProgressHUD (2.2.5)
   - SwiftDate (6.1.0)
   - SwiftLint (0.39.2)
+  - Valet (4.1.1)
 
 DEPENDENCIES:
   - BetterSegmentedControl (~> 1.3)
-  - Crashlytics
-  - Fabric
   - Firebase/Core
+  - Firebase/Crashlytics
   - KeychainAccess
   - lottie-ios
-  - Magpie (from `https://github.com/Hipo/magpie.git`)
+  - Magpie/HIPAPI (~> 2.0.5)
   - NotificationBannerSwift
   - SnapKit
   - SVProgressHUD
@@ -103,13 +120,13 @@ SPEC REPOS:
   trunk:
     - Alamofire
     - BetterSegmentedControl
-    - Crashlytics
-    - Fabric
     - Firebase
     - FirebaseAnalytics
+    - FirebaseAnalyticsInterop
     - FirebaseCore
     - FirebaseCoreDiagnostics
     - FirebaseCoreDiagnosticsInterop
+    - FirebaseCrashlytics
     - FirebaseInstallations
     - GoogleAppMeasurement
     - GoogleDataTransport
@@ -117,6 +134,7 @@ SPEC REPOS:
     - GoogleUtilities
     - KeychainAccess
     - lottie-ios
+    - Magpie
     - MarqueeLabel
     - nanopb
     - NotificationBannerSwift
@@ -125,26 +143,18 @@ SPEC REPOS:
     - SVProgressHUD
     - SwiftDate
     - SwiftLint
-
-EXTERNAL SOURCES:
-  Magpie:
-    :git: https://github.com/Hipo/magpie.git
-
-CHECKOUT OPTIONS:
-  Magpie:
-    :commit: 54577786122e0921077f879aa20bb958b5729372
-    :git: https://github.com/Hipo/magpie.git
+    - Valet
 
 SPEC CHECKSUMS:
-  Alamofire: df2f8f826963b08b9a870791ad48e07a10090b2e
+  Alamofire: 2c792affbdc2f18016e08fdbcacd60aebe1ba593
   BetterSegmentedControl: 85d1b0343a09603b098884d527f550dfc8e6cdd9
-  Crashlytics: 540b7e5f5da5a042647227a5e3ac51d85eed06df
-  Fabric: 706c8b8098fff96c33c0db69cbf81f9c551d0d74
   Firebase: b28e55c60efd98963cd9011fe2fac5a10c2ba124
   FirebaseAnalytics: 7386fc2176e3f93ad8ef34b5b1f2b33a891e4962
+  FirebaseAnalyticsInterop: 3f86269c38ae41f47afeb43ebf32a001f58fcdae
   FirebaseCore: e610482f64097b0e9f056cd97bc6b33dfabcbb6a
   FirebaseCoreDiagnostics: 4a773a47bd83bbd5a9b1ccf1ce7caa8b2d535e67
   FirebaseCoreDiagnosticsInterop: 296e2c5f5314500a850ad0b83e9e7c10b011a850
+  FirebaseCrashlytics: a87cce5746d3335995bd18b1b60d073cd05a6920
   FirebaseInstallations: 6f5f680e65dc374397a483c32d1799ba822a395b
   GoogleAppMeasurement: 4c644d86835d827bab30ab6aabb9ecaf1f500735
   GoogleDataTransport: f6f8eba931df03ebd2232ff4645aa85f8f47b5ab
@@ -152,7 +162,7 @@ SPEC CHECKSUMS:
   GoogleUtilities: 39530bc0ad980530298e9c4af8549e991fd033b1
   KeychainAccess: 3f760109aa99b05d0f231e28b22642da7153e38a
   lottie-ios: 48fac6be217c76937e36e340e2d09cf7b10b7f5f
-  Magpie: 4691d732c66cc932ce50598c6986a96c68d4958f
+  Magpie: 50a82ab4b27defa9b24f44796c9b2b03f3a43110
   MarqueeLabel: f762aa681ae201f66c1d511858b171f75d83013a
   nanopb: c43f40fadfe79e8b8db116583945847910cbabc9
   NotificationBannerSwift: 713e20f21b6105f4a36a00e5d9fa414a930d3d8e
@@ -161,7 +171,8 @@ SPEC CHECKSUMS:
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   SwiftDate: fa2bb3962056bb44047b4b85a30044e5eae30b03
   SwiftLint: 22ccbbe3b8008684be5955693bab135e0ed6a447
+  Valet: 11ab0e318b7284888a81392e36136563b4af5deb
 
-PODFILE CHECKSUM: dea6473a760f6fb7e4685de02f18c427266f65cd
+PODFILE CHECKSUM: ee0adc39add096d0393bfe805ee61c6a302cde01
 
 COCOAPODS: 1.9.3

@@ -9,11 +9,11 @@
 import Magpie
 import SwiftDate
 
-extension API {
+extension AlgorandAPI {
     @discardableResult
     func fetchTransactions(
         with draft: TransactionFetchDraft,
-        then handler: @escaping Endpoint.DefaultResultHandler<TransactionList>
+        then handler: @escaping (Response.ModelResult<TransactionList>) -> Void
     ) -> EndpointOperatable {
         var from: String?
         var to: String?
@@ -24,66 +24,73 @@ extension API {
             to = "\(toDate.toFormat("yyyy-MM-dd"))T23:59:59.000Z"
         }
         
-        return Endpoint(path: Path("/v2/accounts/\(draft.account.address)/transactions"))
+        return EndpointBuilder(api: self)
             .base(indexerBase)
-            .httpMethod(.get)
-            .httpHeaders(indexerAuthenticatedHeaders())
+            .path("/v2/accounts/\(draft.account.address)/transactions")
+            .headers(indexerAuthenticatedHeaders())
             .query(TransactionsQuery(limit: draft.limit, from: from, to: to, next: draft.nextToken, assetId: draft.assetId))
-            .resultHandler(handler)
-            .buildAndSend(self)
+            .completionHandler(handler)
+            .build()
+            .send()
     }
     
     @discardableResult
     func sendTransaction(
         with transactionData: Data,
-        then handler: @escaping Endpoint.DefaultResultHandler<TransactionID>
+        then handler: @escaping (Response.ModelResult<TransactionID>) -> Void
     ) -> EndpointOperatable {
-        return Endpoint(path: Path("/v2/transactions"))
+        return EndpointBuilder(api: self)
             .base(algodBase)
-            .httpMethod(.post)
-            .httpHeaders(algodBinaryAuthenticatedHeaders())
-            .resultHandler(handler)
-            .context(.upload(.data(transactionData)))
-            .buildAndSend(self)
+            .path("/v2/transactions")
+            .method(.post)
+            .headers(algodBinaryAuthenticatedHeaders())
+            .completionHandler(handler)
+            .type(.upload(.data(transactionData)))
+            .build()
+            .send()
     }
     
     @discardableResult
     func getTransactionParams(
-        then handler: @escaping Endpoint.DefaultResultHandler<TransactionParams>
+        then handler: @escaping (Response.ModelResult<TransactionParams>) -> Void
     ) -> EndpointOperatable {
-        return Endpoint(path: Path("/v2/transactions/params"))
+        return EndpointBuilder(api: self)
             .base(algodBase)
-            .httpMethod(.get)
-            .httpHeaders(algodAuthenticatedHeaders())
-            .resultHandler(handler)
-            .buildAndSend(self)
+            .path("/v2/transactions/params")
+            .headers(algodAuthenticatedHeaders())
+            .completionHandler(handler)
+            .build()
+            .send()
     }
     
     @discardableResult
     func trackTransaction(with draft: TransactionTrackDraft) -> EndpointOperatable {
-        return Endpoint(path: Path("/api/transactions/"))
+        return EndpointBuilder(api: self)
             .base(mobileApiBase)
-            .httpHeaders(mobileApiHeaders())
-            .httpMethod(.post)
-            .httpBody(draft)
-            .buildAndSend(self)
+            .path("/api/transactions/")
+            .method(.post)
+            .headers(mobileApiHeaders())
+            .body(draft)
+            .build()
+            .send()
     }
     
     @discardableResult
     func fetchPendingTransactions(
         for address: String,
-        then handler: @escaping Endpoint.DefaultResultHandler<PendingTransactionList>
+        then handler: @escaping (Response.ModelResult<PendingTransactionList>) -> Void
     ) -> EndpointOperatable {
-        return Endpoint(path: Path("/v2/accounts/\(address)/transactions/pending"))
+        return EndpointBuilder(api: self)
             .base(algodBase)
-            .httpMethod(.get)
-            .httpHeaders(algodAuthenticatedHeaders())
-            .resultHandler(handler)
-            .buildAndSend(self)
+            .path("/v2/accounts/\(address)/transactions/pending")
+            .headers(algodAuthenticatedHeaders())
+            .completionHandler(handler)
+            .build()
+            .send()
     }
 }
 
-extension API {
+extension AlgorandAPI {
     private enum Formatter {
         static let date: DateFormatter = {
             let formatter = DateFormatter()

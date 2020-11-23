@@ -8,14 +8,12 @@
 
 import Magpie
 
-struct DeviceDeletionDraft: JSONKeyedBody {
-    typealias Key = RequestParameter
-    
+struct DeviceDeletionDraft: JSONObjectBody {
     let pushToken: String
     
-    func decoded() -> [Pair]? {
-        return [
-            Pair(key: .pushToken, value: pushToken)
-        ]
+    var bodyParams: [BodyParam] {
+        var params: [BodyParam] = []
+        params.append(.init(.pushToken, pushToken))
+        return params
     }
 }

@@ -8,42 +8,41 @@
 
 import Magpie
 
-struct AssetSearchQuery: Query {
-    typealias Key = RequestParameter
-    
+struct AssetSearchQuery: ObjectQuery {
     let status: AssetSearchFilter
     let query: String?
     let limit: Int
     let offset: Int
     
-    func decoded() -> [Pair]? {
-        var pairs = [Pair(key: .limit, value: .some(limit)), Pair(key: .offset, value: .some(offset))]
+    var queryParams: [QueryParam] {
+        var params: [QueryParam] = []
+        params.append(.init(.limit, limit))
+        params.append(.init(.offset, offset))
+        
         if let query = query {
-            pairs.append(Pair(key: .query, value: .some(query)))
+            params.append(.init(.query, query))
         }
         
         switch status {
         case .all:
-            return pairs
+            return params
         default:
             if let statusValue = status.stringValue {
-                pairs.append(Pair(key: .status, value: .some(statusValue)))
+                params.append(.init(.status, statusValue))
             }
-            return pairs
+            return params
         }
     }
 }
 
-struct TransactionSearchQuery: Query {
-    typealias Key = RequestParameter
-    
+struct TransactionSearchQuery: ObjectQuery {
     let id: String?
     
-    func decoded() -> [Pair]? {
+    var queryParams: [QueryParam] {
+        var params: [QueryParam] = []
         if let id = id {
-            return [Pair(key: .transactionDetailId, value: .some(id))]
+            params.append(.init(.transactionDetailId, id))
         }
-        
-        return nil
+        return params
     }
 }

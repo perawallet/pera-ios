@@ -18,6 +18,10 @@ class ContactInfoViewController: BaseScrollViewController {
         )
     )
     
+    override var screenKey: String? {
+        return "screen_contact_detail"
+    }
+    
     private lazy var contactInfoView = ContactInfoView()
     
     private let viewModel = ContactInfoViewModel()
@@ -139,8 +143,8 @@ extension ContactInfoViewController {
                     SVProgressHUD.showSuccess(withStatus: "title-done".localized)
                     SVProgressHUD.dismiss()
                 }
-            case let .failure(_, indexerError):
-                if indexerError?.containsAccount(address) ?? false {
+            case let .failure(error, _):
+                if error.isHttpNotFound {
                     self?.contactAccount = Account(address: address, type: .standard)
                     SVProgressHUD.showSuccess(withStatus: "title-done".localized)
                     SVProgressHUD.dismiss()
@@ -249,7 +253,7 @@ extension ContactInfoViewController: ContactInfoViewDelegate {
         }
 
         let draft = QRCreationDraft(address: address, mode: .address)
-        open(.qrGenerator(title: contact.name, draft: draft), by: .present)
+        open(.qrGenerator(title: contact.name, draft: draft, isTrackable: true), by: .present)
     }
     
     func contactInfoViewDidTapShareButton(_ contactInfoView: ContactInfoView) {

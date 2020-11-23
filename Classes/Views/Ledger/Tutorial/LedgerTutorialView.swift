@@ -67,6 +67,7 @@ extension LedgerTutorialView {
         addSubview(titleLabel)
         
         titleLabel.snp.makeConstraints { make in
+            make.leading.trailing.lessThanOrEqualToSuperview().inset(layout.current.horizontalInset)
             make.centerX.equalToSuperview()
             make.top.equalTo(ledgerDeviceImageView.snp.bottom).offset(layout.current.titleTopInset)
         }

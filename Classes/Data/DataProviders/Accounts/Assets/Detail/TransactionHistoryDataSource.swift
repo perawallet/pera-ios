@@ -16,8 +16,7 @@ class TransactionHistoryDataSource: NSObject, UICollectionViewDataSource {
     private var assetDetail: AssetDetail?
     private var contacts = [Contact]()
     
-    private let viewModel: AssetDetailViewModel
-    private let api: API?
+    private let api: AlgorandAPI?
     
     private var transactionParams: TransactionParams?
     private var fetchRequest: EndpointOperatable?
@@ -30,11 +29,10 @@ class TransactionHistoryDataSource: NSObject, UICollectionViewDataSource {
     var openFilterOptionsHandler: ((TransactionHistoryDataSource) -> Void)?
     var shareHistoryHandler: ((TransactionHistoryDataSource) -> Void)?
     
-    init(api: API?, account: Account, assetDetail: AssetDetail?) {
+    init(api: AlgorandAPI?, account: Account, assetDetail: AssetDetail?) {
         self.api = api
         self.account = account
         self.assetDetail = assetDetail
-        viewModel = AssetDetailViewModel(account: account, assetDetail: assetDetail)
         super.init()
     }
     
@@ -53,7 +51,7 @@ class TransactionHistoryDataSource: NSObject, UICollectionViewDataSource {
                     withReuseIdentifier: RewardCell.reusableIdentifier,
                     for: indexPath
                 ) as? RewardCell {
-                    viewModel.configure(cell, with: reward)
+                    cell.contextView.bind(RewardViewModel(reward: reward))
                     return cell
                 }
             } else if let transaction = transactions[indexPath.item] as? Transaction {
@@ -102,13 +100,13 @@ extension TransactionHistoryDataSource {
         }
         
         if let assetTransaction = transaction.assetTransfer {
-            if assetTransaction.receiverAddress == viewModel.account.address {
+            if assetTransaction.receiverAddress == account.address {
                 configure(cell, with: transaction, for: transaction.sender)
             } else {
                 configure(cell, with: transaction, for: assetTransaction.receiverAddress)
             }
         } else if let payment = transaction.payment {
-            if payment.receiver == viewModel.account.address {
+            if payment.receiver == account.address {
                 configure(cell, with: transaction, for: transaction.sender)
             } else {
                 configure(cell, with: transaction, for: transaction.payment?.receiver)
@@ -123,9 +121,16 @@ extension TransactionHistoryDataSource {
             contact.address == address
         }) {
             transaction.contact = contact
-            viewModel.configure(cell.contextView, with: transaction, for: contact)
+            let config = TransactionViewModelDependencies(
+                account: account,
+                assetDetail: assetDetail,
+                transaction: transaction,
+                contact: contact
+            )
+            TransactionHistoryViewModel().configure(cell.contextView, with: config)
         } else {
-            viewModel.configure(cell.contextView, with: transaction)
+            let config = TransactionViewModelDependencies(account: account, assetDetail: assetDetail, transaction: transaction)
+            TransactionHistoryViewModel().configure(cell.contextView, with: config)
         }
     }
     
@@ -140,7 +145,7 @@ extension TransactionHistoryDataSource {
                 fatalError("Index path is out of bounds")
         }
         
-        let address = transaction.receiver == viewModel.account.address ? transaction.sender : transaction.receiver
+        let address = transaction.receiver == account.address ? transaction.sender : transaction.receiver
         configure(cell, with: transaction, for: address)
         return cell
     }
@@ -150,9 +155,16 @@ extension TransactionHistoryDataSource {
             contact.address == address
         }) {
             transaction.contact = contact
-            viewModel.configure(cell.contextView, with: transaction, for: contact)
+            let config = TransactionViewModelDependencies(
+                account: account,
+                assetDetail: assetDetail,
+                transaction: transaction,
+                contact: contact
+            )
+            TransactionHistoryViewModel().configurePending(cell.contextView, with: config)
         } else {
-            viewModel.configure(cell.contextView, with: transaction)
+            let config = TransactionViewModelDependencies(account: account, assetDetail: assetDetail, transaction: transaction)
+            TransactionHistoryViewModel().configurePending(cell.contextView, with: config)
         }
     }
 }
@@ -163,15 +175,14 @@ extension TransactionHistoryDataSource {
         withRefresh refresh: Bool,
         between dates: (Date?, Date?),
         isPaginated: Bool,
-        then handler: @escaping ([TransactionItem]?, Error?) -> Void
+        then handler: @escaping ([TransactionItem]?, APIError?) -> Void
     ) {
         api?.getTransactionParams { response in
             switch response {
-            case let .failure(error):
-                handler(nil, error)
+            case let .failure(apiError, _):
+                handler(nil, apiError)
             case let .success(params):
                 self.transactionParams = params
-                self.viewModel.lastRound = params.lastRound
                 self.fetchTransactions(for: account, between: dates, withRefresh: refresh, isPaginated: isPaginated, then: handler)
             }
         }
@@ -185,7 +196,7 @@ extension TransactionHistoryDataSource {
         withRefresh refresh: Bool,
         isPaginated: Bool,
         limit: Int = 15,
-        then handler: @escaping ([TransactionItem]?, Error?) -> Void
+        then handler: @escaping ([TransactionItem]?, APIError?) -> Void
     ) {
         var assetId: String?
         if let id = assetDetail?.id {
@@ -195,8 +206,8 @@ extension TransactionHistoryDataSource {
         let draft = TransactionFetchDraft(account: account, dates: dates, nextToken: nextToken, assetId: assetId, limit: limit)
         fetchRequest = api?.fetchTransactions(with: draft) { response in
             switch response {
-            case let .failure(error):
-                handler(nil, error)
+            case let .failure(apiError, _):
+                handler(nil, apiError)
             case let .success(transactions):
                 if refresh {
                     self.transactions.removeAll()
@@ -278,14 +289,14 @@ extension TransactionHistoryDataSource {
 }
 
 extension TransactionHistoryDataSource {
-    func fetchPendingTransactions(for account: Account, then handler: @escaping ([TransactionItem]?, Error?) -> Void) {
+    func fetchPendingTransactions(for account: Account, then handler: @escaping ([TransactionItem]?, APIError?) -> Void) {
         api?.fetchPendingTransactions(for: account.address) { response in
             switch response {
             case let .success(pendingTransactionList):
                 self.filter(pendingTransactionList.pendingTransactions)
                 handler(pendingTransactionList.pendingTransactions, nil)
-            case let .failure(error):
-                handler(nil, error)
+            case let .failure(apiError, _):
+                handler(nil, apiError)
             }
         }
     }
@@ -365,6 +376,10 @@ extension TransactionHistoryDataSource {
         
         return index == transactionCount() - paginationRequestThreshold && hasNext
     }
+    
+    func updateAssetDetail(_ assetDetail: AssetDetail?) {
+        self.assetDetail = assetDetail
+    }
 }
 
 extension TransactionHistoryDataSource: TransactionHistoryHeaderSupplementaryViewDelegate {
@@ -391,7 +406,7 @@ extension TransactionHistoryDataSource {
     func fetchAllTransactions(
         for account: Account,
         between dates: (Date?, Date?),
-        then handler: @escaping ([Transaction]?, Error?) -> Void
+        then handler: @escaping ([Transaction]?, APIError?) -> Void
     ) {
         var assetId: String?
         if let id = assetDetail?.id {
@@ -401,8 +416,8 @@ extension TransactionHistoryDataSource {
         let draft = TransactionFetchDraft(account: account, dates: dates, nextToken: nil, assetId: assetId, limit: nil)
         api?.fetchTransactions(with: draft) { response in
             switch response {
-            case let .failure(error):
-                handler(nil, error)
+            case let .failure(apiError, _):
+                handler(nil, apiError)
             case let .success(transactions):
                 handler(transactions.transactions, nil)
             }

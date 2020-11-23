@@ -13,12 +13,12 @@ typealias AccountFetchHandler = (Account?, Error?) -> Void
 
 class AccountFetchOperation: AsyncOperation {
     let accountInformation: AccountInformation
-    let api: API
+    let api: AlgorandAPI
     
     var onStarted: EmptyHandler?
     var onCompleted: AccountFetchHandler?
     
-    init(accountInformation: AccountInformation, api: API) {
+    init(accountInformation: AccountInformation, api: AlgorandAPI) {
         self.accountInformation = accountInformation
         self.api = api
         super.init()
@@ -37,8 +37,8 @@ class AccountFetchOperation: AsyncOperation {
                 } else {
                     self.onCompleted?(accountWrapper.account, nil)
                 }
-            case let .failure(error, indexerError):
-                if indexerError?.containsAccount(self.accountInformation.address) ?? false {
+            case let .failure(error, _):
+                if error.isHttpNotFound {
                     self.onCompleted?(Account(accountInformation: self.accountInformation), nil)
                 } else {
                     self.onCompleted?(nil, error)

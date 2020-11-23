@@ -89,9 +89,8 @@ extension FeedbackViewController {
                 
                 self.categories = result
                 self.feedbackView.categoryPickerView.reloadAllComponents()
-            case let .failure(error):
+            case .failure:
                 SVProgressHUD.dismiss()
-                print(error)
             }
         }
     }

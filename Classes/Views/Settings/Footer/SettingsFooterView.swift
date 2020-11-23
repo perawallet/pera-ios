@@ -32,7 +32,7 @@ class SettingsFooterView: BaseView {
             .withTextColor(SharedColors.gray500)
             .withFont(UIFont.font(withWeight: .regular(size: 12.0)))
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
-            label.text = "Version \(version)"
+            label.text = "settings-app-version".localized(params: version)
         }
         return label
     }()

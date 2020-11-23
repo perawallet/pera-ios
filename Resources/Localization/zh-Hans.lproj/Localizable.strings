@@ -1,0 +1,509 @@
+
+/*Localizable.strings
+  algorand
+
+  Created by Göktuğ Berk Ulu on 14.03.2019.
+  Copyright © 2019 hippo. All rights reserved.
+
+ MARK: Common*/
+"title-yes" = "是";
+"title-no" = "否";
+"title-ok" = "好的";
+"title-next" = "下一步";
+"title-accept" = "接受";
+"title-verify" = "验证";
+"title-cancel" = "取消";
+"title-remove" = "移除";
+"title-proceed" = "继续";
+"title-approve" = "同意";
+"title-go-home" = "返回主页面";
+"title-go-to-settings" = "前往设置";
+"title-error" = "错误";
+"title-save" = "保存";
+"title-close" = "关闭";
+"title-send" = "发送";
+"title-preview" = "预览";
+"title-done" = "完成";
+"title-loading" = "加载中";
+"default-error-message" = "出现错误";
+"title-max" = "最大值";
+"title-internet-connection" = "网络离线";
+"title-unknown" = "未命名";
+"title-preview-and-sign-with-ledger-title" = "预览并通过Ledger签署";
+
+/*MARK: Introduction*/
+"introduction-title-text" = "在单个APP上管理全部资产";
+
+/*MARK: Password Setting*/
+"choose-password-title" = "请选择密码";
+"password-set-subtitle" = "请选择6位数的密码";
+"password-verify-title" = "密码验证";
+"password-change-subtitle" = "输入6位数的PIN码";
+"password-verify-subtitle" = "输入相同的六位数码";
+"password-verify-fail-title" = "密码错误";
+"password-verify-fail-message" = "与前面输入的密码不匹配";
+"password-change-title" = "更改密码";
+
+/*MARK: Local Authentication Preferences*/
+"local-authentication-preference-title" = "使用面容ID/触控ID";
+"local-authentication-preference-subtitle" = "我们推荐这种方式提升安全性";
+"local-authentication-reason-face-id-title" = "使用面容ID解锁";
+"local-authentication-reason-touch-id-title" = "使用触控ID解锁";
+"local-authentication-go-settings-title" = "生物特征验证";
+"local-authentication-go-settings-text" = "您已关闭生物特征验证。请到“设置”中启用配置。";
+"local-authentication-enable" = "使用面容ID/触控";
+"local-authentication-no" = "不使用面容ID/触控";
+
+/*MARK: Passphrase Back Up*/
+"new-account-title" = "备份密码短语";
+"back-up-phrase-warning" = "请确认您有备份本账号的密码短语。这是您恢复Algorand账号的唯一途径。";
+"back-up-phrase-button-title" = "验证恢复用途的密码短语";
+"back-up-phrase-qr" = "二维码";
+
+/*MARK: Passphrase Verify*/
+"pass-phrase-verify-pop-up-title" = "密码短语验证";
+"pass-phrase-verify-select-title" = "请选择密码短语 %@ 词。";
+"pass-phrase-verify-question-title" = " %@ 的问题 %@";
+"pass-phrase-verify-wrong-selection" = "选择错误";
+"pass-phrase-verify-pop-up-explanation" = "密码短语已验证。您需要该密码来恢复账户，因此，请确认您有备份密码短语。";
+"pass-phrase-verify-invalid-passphrase" = "密码短语无效。请确认所输入的密码短语是正确的。";
+"pass-phrase-verify-sdk-error" = "出现错误，请稍后再试。";
+
+/*MARK: Account Name Setup*/
+"account-details-title" = "账户详情";
+"account-name-setup-explanation" = "账户名称";
+"account-name-setup-placeholder" = "储蓄账户";
+"account-name-setup-empty-error-message" = "账户名称不能为空";
+
+/*MARK: Recover From Seed*/
+"recover-from-seed-title" = "通过密码短语恢复";
+"recover-from-seed-name-title" = "名称";
+"recover-from-seed-name-placeholder" = "名称例子";
+"recover-from-seed-passphrase-title" = "密码短语";
+"pass-pharase-enter-placeholder" = "输入密码或扫二维码";
+"recover-from-seed-verify-pop-up-explanation" = "欢迎来到Algorand！\n账户已准备就绪，可随时使用。";
+"recover-from-seed-verify-pop-up-title" = "账户验证";
+"recover-from-seed-verify-exist-error" = "该账户已存在";
+
+/*MARK: QR Scanning*/
+"qr-scan-title" = "扫二维码";
+"qr-scan-error-title" = "相机无法使用";
+"qr-scan-error-message" = "您的设备不支持二维码扫码";
+"qr-scan-go-settings-title" = "相机已禁用";
+"qr-scan-go-settings-message" = "您设置了禁用相机，请到“设置”中开启选项。";
+"qr-scan-should-scan-address-message" = "您应该扫一扫有效的账户地址";
+"qr-scan-should-scan-mnemonics-message" = "您应该扫一扫有效的密码短语";
+"qr-scan-message-text" = "您只能在本页扫二维码，\n如需查看二维码，请选择账户上的图标";
+"qr-scan-should-scan-valid-qr" = "二维码无效";
+
+/*MARK: QR Creation*/
+"qr-creation-title" = "二维码密码";
+"qr-creation-copied" = "地址已复制到剪切板";
+
+/*MARK: Login*/
+"login-title" = "解锁";
+"login-subtitle" = "输入六位数的PIN码";
+
+/*MARK: Accounts*/
+"accounts-tranaction-empty-text" = "尚未有交易";
+"tranaction-empty-text" = "无法查找到交易";
+"accounts-algos-available-title" = "ALGO";
+"accounts-dollar-value-title" = "美元价值";
+"accounts-transaction-history-title" = "交易历史";
+"accounts-add-account" = "+ 添加账户";
+
+/*MARK: Asset*/
+"asset-title" = "资产";
+"asset-algos-title" = "ALGO";
+"asset-remove-title" = "移除资产";
+"asset-remove-subtitle" = "您必须先将资产余额转移到另一个账户，才能移除该项资产";
+"asset-search-placeholder" = "搜索资产ID或名称";
+"asset-remove-confirmation-title" = "移除资产";
+"asset-transfer-balance" = "余额转账";
+"title-remove-assets" = "移除资产";
+"title-add-asset" = "添加新的资产";
+"asset-add-warning" = "添加资产前，需要发送一笔有最低交易费用的交易。这笔交易会出现在交易历史中。";
+"asset-support-error" = "很抱歉，本账户尚未添加这项资产。请让账户所有者添加资产，稍后再试。";
+"asset-support-title" = "账户不接受这项资产";
+"asset-add-confirmation-title" = "添加资产";
+"internet-connection-error-title" = "连接网络";
+"internet-connection-error-detail" = "无法连接到服务器，请确认已连接到网络";
+"asset-remove-warning" = "余额为0时，才可移除 %@。请将余额转移至其他账户，再做尝试。";
+"asset-remove-transaction-warning" = "您需要从%@ 移除 %@。 除非重新添加该资产，您无法使用本账号与该资产进行交易。";
+"asset-creation-fee-title" = "添加资产费用";
+"asset-min-transaction-error-title" = "交易错误！";
+"asset-min-transaction-error-message" = "您需要至少%@ALGO才能添加该资产";
+"asset-you-already-own-message" = "您已拥有该资产";
+"asset-support-not-same-error" = "本账户已添加该资产，但这并非所选资产。请选择正确的资产后，再重试一次。";
+"asset-support-not-same-title" = "账户不接受该资产";
+"asset-support-add-title" = "您将要收到一项资产！";
+"asset-support-add-message" = "您将通过 %@接收一项资产。请问您希望在该账户添加和接收这项资产吗？";
+"asset-id-copied-title" = "ID已复制到粘贴板";
+"asset-verified-title" = "已验证";
+"asset-support-your-add-title" = "您的账户不包含此项资产";
+"asset-support-your-add-message" = "请添加该资产，并再次尝试。";
+"asset-all-title" = "全部";
+
+/*MARK: Algos Send*/
+"send-algos-title" = "发送ALGO";
+"send-algos-select" = "选择账户";
+"send-sending-algos-select" = "选择发送账户";
+"send-receiving-algos-select" = "选择接收账户";
+"send-select-asset" = "选择资产";
+"send-algos-to" = "发送至";
+"send-algos-balance-title" = "余额：";
+"send-algos-amount" = "数量：";
+"send-algos-sent-title" = "已发送ALGO";
+"send-algos-alert-title" = "错误交易";
+"send-algos-alert-message" = "请填写此栏。";
+"send-algos-minimum-amount-error-new-account" = "您正尝试向一个新账户发送货币，该账户必须持有至少0.1ALGO。";
+"send-algos-minimum-amount-error" = "交易后余额低于0.1ALGO的最低账户余额。";
+"send-algos-amount-error" = "交易数额不可超出所持有的ALGO数额";
+"send-asset-amount-error" = "交易数额不可超出所持有的数额";
+"send-algos-contact-not-found" = "无法找到联系人";
+"send-algos-address-not-selected" = "未选择地址";
+"send-algos-address" = "地址";
+"send-algos-contacts" = "联系人";
+"send-algos-scan" = "扫二维码";
+"send-algos-account-delete-title" = "账户将被删除，您确定要删除吗？";
+"send-algos-account-delete-body" = "账户至少持有0.1ALGO才能保持开通状态。若发送全部ALGO，账户将被删除，您的活跃参与密钥同样会被删除。";
+"send-algos-account-delete-asset-title" = "您必须清零账户余额，若有创建任何资产，还需销毁所创建的资产后，才能删除账户。";
+"send-algos-receiver-address-validation" = "密钥无效，请确认是否持有正确的密钥。";
+"send-qr-scan-alert-title" = "扫二维码";
+"send-qr-scan-alert-message" = "您刚扫了一个交易请求二维码。由于交易信息栏可能会有变化，请仔细检查交易信息栏。";
+"send-qr-different-asset-alert" = "二维码中除所选资产外，还含有其他资产。解码时，将忽略数额。";
+
+/*MARK: Algos Request*/
+"request-algos-title" = "ALGO请求";
+"request-title" = "请求";
+
+/*MARK: Options*/
+"options-title" = "账户设置";
+"options-show-qr" = "二维码与地址";
+"options-remove-assets" = "移除资产";
+"options-view-passphrase" = "查看密码短语";
+"options-edit-account-name" = "编辑账户名称";
+"options-remove-account" = "移除账户";
+"options-remove-alert-explanation" = "您将移除账户。您确定要这样做吗？";
+"options-view-passphrase-alert-title" = "生物特征验证";
+"options-view-passphrase-alert-message" = "您需要提供生物特征验证信息，才可展示密码短语。";
+"options-view-passphrase-password-alert-message" = "你需要输入正确的密码，才可展示密码短语。";
+
+/*MARK: Contacts*/
+"contacts-title" = "联系人";
+"contacts-search" = "选择联系人";
+"contacts-add" = "添加联系人";
+"contacts-info" = "联系人信息";
+"contacts-input-name-explanation" = "名称";
+"contacts-input-name-placeholder" = "联系人名称";
+"contacts-input-address-explanation" = "地址";
+"contacts-input-address-placeholder" = "复制 # 或扫二维码";
+"contacts-transactions-title" = "交易";
+"contacts-empty-text" = "尚未添加任何联系人";
+"contacts-name-validation-error" = "姓名栏空白。";
+"contacts-address-validation-error" = "地址有误。请确认您填写了正确的地址。";
+"contacts-delete-contact" = "删除联系人";
+"contacts-delete-contact-alert-explanation" = "确定要删除该联系人吗？";
+"contacts-close-warning-title" = "确定吗？";
+"contacts-close-warning-subtitle" = "您会丢失未保存的进度，您确定要这么做吗？";
+"accounts-title-assets" = "资产";
+"contacts-title-assets" = "资产：";
+"title-select-asset" = "选择资产";
+
+/*MARK: Settings*/
+"settings-title" = "设置";
+"settings-server-node-settings" = "节点设置";
+"settings-change-password" = "设置/更改密码";
+"settings-local-authentication" = "启用面容ID/触控ID";
+"settings-language" = "语言";
+"settings-language-english" = "英语";
+"settings-notification-go-settings-title" = "通知";
+"settings-notification-disabled-go-settings-text" = "您关闭了通知提示。请到“设置”中启用通知提示。";
+"settings-notification-enabled-go-settings-text" = "您已开启通知提示。请到“设置”中关闭通知提示。";
+
+/*MARK: Node Settings*/
+"node-settings-title" = "节点设置";
+"node-settings-warning-title" = "警告";
+"add-node-title" = "添加节点";
+"edit-node-title" = "编辑节点";
+
+/*Fuzzy*/
+"node-settings-subtitle" = "点击想要使用的节点图标";
+"node-settings-enter-node-name" = "名称：";
+"node-settings-enter-node-address" = "地址：";
+"node-settings-api-key" = "密钥：";
+"node-settings-placeholder-name" = "节点名称：";
+"node-settings-placeholder-address" = "http://yournode.com:8000";
+"node-settings-placeholder-api-key" = "65ef12c245b47fcf497b1c7d0faea4d82df470671974eeeed3e29ab4df1ed918";
+"node-settings-test-button-title" = "测试";
+"node-settings-text-validation-empty-error" = "请填写所有栏目。";
+"node-settings-text-validation-health-error" = "请验证地址与代币，并再次尝试。";
+"node-settings-has-same-result" = "无法两次创建相同的节点";
+"node-settings-none-active-node-error-description" = "所有的活跃节点似乎都不活跃了。在继续运行前，请确认您至少有一个活跃节点。";
+"node-settings-db-error-title" = "系统操作失败";
+"node-settings-test-error-title" = "连接失败";
+"node-settings-test-success-title" = "连接成功！";
+"node-settings-database-error-description" = "系统出现一个错误。";
+"node-settings-warning-message" = "该操作将会移除节点，您确定要继续吗？";
+"node-settings-action-delete-title" = "删除";
+"node-settings-default-node-name" = "Algorand主网节点";
+"node-settings-default-test-node-name" = "测试网";
+"node-settings-health-problem-message" = "您没有在线的活跃节点。请添加或选择另一个节点";
+
+/*MARK: Transaction Detail*/
+"transaction-detail-title" = "交易细节";
+"transaction-detail-status" = "状态";
+"transaction-detail-round" = "轮数";
+"transaction-detail-amount" = "数量：";
+"transaction-detail-reward" = "奖励";
+
+/*MARK: Feedback*/
+"feedback-title" = "发送反馈";
+"feedback-title-category" = "类别";
+"feedback-subtitle-category" = "反馈类别";
+"feedback-title-note" = "备注";
+"feedback-subtitle-note" = "您的想法";
+
+/*Fuzzy*/
+"feedback-title-email" = "邮箱（可填）";
+"feedback-empty-title" = "错误";
+"feedback-empty-category-message" = "请选择一个类别";
+"feedback-empty-note-message" = "请添加您的备注";
+"feedback-error-title" = "错误";
+"feedback-error-message" = "您的反馈无法送达！";
+"feedback-success-title" = "您的反馈已经送达";
+
+/*MARK: Rewards*/
+"rewards-title" = "奖励";
+"rewards-show-title" = "奖励展示";
+"rewards-detail-subtitle" = "只需持有ALGO，即可获得奖励！自上笔交易后，您的奖励活动总结。这些奖励已包含着您的余额中。";
+"total-rewards-faq-title" = "更多关于Algorand奖励的信息，请访问我们的常见问题解答";
+"total-rewards-faq" = "常见问题解答";
+"reward-list-title" = "奖励";
+
+/*MARK: Notifications*/
+"notifications-title" = "通知";
+
+/*MARK: Notifications*/
+"notification-sent-success" = "您从 %@ 到%@ 的 %@ 交易已经完成。";
+"notification-sent-failed" = "您从 %@ 到%@ 的 %@ 交易失败。";
+"notification-received" = "%@发送 %@ 至%@ 处。";
+
+/*MARK: Verified Asset Information*/
+"verified-assets-title" = "已验证的资产";
+"verified-asset-information-title" = "资产验证是什么意思？";
+"verified-asset-information-text" = "Algorand与一些特定资产的发行者有合作关系，我们将这类资产标注为“已验证”（蓝钩标记）。\n\n这就如同二道防线，避免错误地与计划外的资产进行交易。\n\n也就是说，您应当对资产ID进行检查，确认是您希望交易的资产后，再进行交易操作。\n\n若您对验证过程或关于APP的反馈仍存疑问，欢迎联系我们";
+"verified-asset-double-check" = "请再检查一次";
+"verified-asset-information-contact-us" = "联系我们";
+
+/*MARK: Ledger Tutorial*/
+"ledger-pair-title" = "创建Ledger账户";
+"ledger-tutorial-title-text" = "请按照以下指示，创建新的Ledger账户";
+"ledger-tutorial-turned-on" = "确认您的Ledger设备已开启，并启用了蓝牙功能。";
+"ledger-tutorial-install-app" = "请在您的Ledger上安装Algorand的APP（1.2.9或更新的版本）。";
+"ledger-tutorial-open-app" = "在您的Ledger上打开Algorand的APP";
+"ledger-tutorial-bluetooth" = "确认开启手机上的蓝牙功能";
+"ledger-search-button-title" = "搜索Ledger";
+
+/*MARK: Ledger Device List*/
+"ledger-device-list-title" = "Ledger设备配对";
+"ledger-device-list-looking" = "寻找其他Ledger设备";
+"ledger-device-list-connect" = "连接";
+"ledger-device-list-troubleshoot" = "错误排查";
+
+/*MARK: Ledger Troubleshooting*/
+"title-step-1" = "第一步";
+"title-step-2" = "第二步";
+"title-step-3" = "第三步";
+"title-step-4" = "第四步";
+"ledger-troubleshooting-title" = "高级错误排查";
+"ledger-troubleshooting-close-others" = "关闭其他APP（Ledger、加密钱包或其他尝试与Ledger配对的APP）";
+"ledger-troubleshooting-restart" = "重启Algorand钱包以及/或您的设备";
+"ledger-troubleshooting-app-support" = "在设备上安装Algorand Ledger的APP时，若需要任何帮助，请访问 %@";
+"ledger-troubleshooting-ledger-support" = "更多关于Ledger设备的错误排查，请访问";
+"ledger-troubleshooting-ledger-support-title" = "Ledger支持";
+"ledger-troubleshooting-ledger-bluetooth-connection-guide-html" = "关于Ledger的蓝牙功能，请查阅Ledger的官方 <a href=\"https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection\">蓝牙连接指南</a>.";
+"ledger-troubleshooting-ledger-bluetooth-connection-advanced-guide-html" = "更多有关高级错误排查功能，请查阅Ledger的官方 <a href=\"https://support.ledger.com/hc/en-us/articles/360025864773\">蓝牙错误排查指南</a>.";
+"ledger-troubleshooting-bluetooth-connection-html" = "关闭或开启iOS设备上的蓝牙。 <br /> <br />\n<ul>\n<li>Tap on <b>Settings</b></li>\n<li>Select <b>“General”</b></li>\n<li>Tap on <b>“Bluetooth”</b></li>\n<li>Flip the <b>On/Off button</b> to toggle</li>\n<li>Bluetooth <b>On or Off</b></li>\n</ul>";
+"ledger-troubleshooting-install-app-first-html" = "开始遵循Ledger的完整 <a href=\"https://www.ledger.com/start\">Getting Started</a> 教程。";
+"ledger-troubleshooting-install-app-second-html" = "跟着教程到了“选择您想在设备上安装的APP”时，请在搜索栏上输入<b>Algorand</b> 并进行安装。";
+"ledger-troubleshooting-open-app-first-html" = "Ledger的完整教程<a href=\"https://www.ledger.com/start\">Getting Started</a> 将指导您在账户设备上安装和打开APP。";
+"ledger-troubleshooting-open-app-second-html" = "若您未在Ledger设备上安装 <b>Algorand</b> 的APP，而教程引导您“选择您想在设备上安装的APP”时，请在搜索栏输入<b>Algorand</b> 并进行安装。";
+
+/*MARK: BLE Errors*/
+"ble-error-search-title" = "搜索错误";
+"ble-error-connection-title" = "连接错误";
+"ble-error-bluetooth-title" = "蓝牙错误";
+"ble-error-ledger-connection-title" = "Ledger连接错误";
+"ble-error-unsupported-device-title" = "不支持的设备";
+"ble-error-transaction-cancelled-title" = "交易取消";
+"ble-error-transmission-title" = "传输错误";
+"ble-error-fail-connect-peripheral" = "无法连接Ledger设备。请确认设备已解锁，在附近，且开启了蓝牙。";
+"ble-error-disconnected-peripheral" = "断开与设备的连接";
+"ble-error-fail-fetch-account-address" = "我们无法接收到您Ledger设备的公钥。请再尝试一遍。";
+"ble-error-fail-sign-transaction" = "配对的Ledger设备已取消交易请求。";
+"ble-error-fail-ble-connection-power" = "必须开启设备上的蓝牙功能，才能搜索到附近的Ledger设备。";
+"ble-error-fail-ble-connection-unsupported" = "您尝试连接的设备并不支持Algorand钱包。";
+"ble-error-fail-ble-connection-unauthorized" = "搜索附近的Ledger前，需要获得蓝牙许可。";
+"ble-error-fail-ble-connection-resetting" = "重新设置的BLE连接失败";
+
+/*MARK: Ledger Approval*/
+"ledger-approval-title" = "预览与签署";
+"ledger-approval-message" = "请在Ledger设备上，检查和签署交易。";
+"ledger-approval-connection-title" = "Ledger连接";
+"ledger-approval-connection-message" = "等待账本连接";
+
+/*MARK: Terms and Services*/
+"terms-and-services-title" = "服务条款";
+"privacy-policy-title" = "隐私政策";
+
+"title-share-qr" = "分享二维码";
+"title-keep" = "保留";
+"title-edit" = "编辑";
+"title-testnet" = "测试网";
+"title-account" = "账户";
+"title-id" = "ID";
+"qr-creation-sharing-title" = "分享二维码与地址";
+"qr-creation-copy-address" = "复制地址";
+"qr-creation-address" = "账户地址";
+"accounts-tranaction-empty-detail" = "没有发起与该资产相关的交易";
+"accounts-title" = "账户";
+"accounts-add-new" = "添加新的资产";
+"accounts-qr-tooltip" = "可在此处找到您账户的二维码地址";
+"asset-not-found-title" = "未找到资产";
+"asset-not-found-detail" = "请尝试不同的资产名称或资产ID";
+"send-choose-asset" = "选择资产";
+"send-algos-minimum-amount-custom-error" = "交易后余额低于%@ ALGO的最低账户额度。";
+"send-enter-note-placeholder" = "在此输入节点";
+"send-enter-note-title" = "添加节点";
+"options-rekey" = "密钥更新账户";
+"options-auth-account" = "授权账户地址";
+"contacts-info-edit" = "编辑联系人信息";
+"contacts-empty-detail-text" = "您可以通过添加新联系人，让发送资产的速度变快。";
+"contact-search-empty-title" = "未发现联系人";
+"contact-search-empty-detail" = "请尝试其他联系人名称";
+"settings-logout-title" = "删除全部数据";
+"settings-logout-detail" = "您确定要删除全部数据吗？";
+"transaction-detail-from" = "来自";
+"transaction-detail-to" = "发送至";
+"transaction-detail-fee" = "费用";
+"transaction-detail-id" = "交易ID";
+"transaction-detail-note" = "备注";
+"transaction-detail-close-to" = "接近";
+"transaction-detail-close-amount" = "关闭账户";
+"transaction-detail-note-copied" = "交易备注已复制到粘贴板";
+"transaction-detail-id-copied" = "交易ID已复制到粘贴板";
+"transaction-detail-copy-tooltip" = "长按复制到粘贴板";
+"feedback-success-detail" = "谢谢，我们已收到您的反馈";
+"total-rewards-title" = "%@ 奖励";
+"rewards-since-last-text" = "自从上笔交易后";
+
+/*What does 'them' refer to?*/
+"notification-support-success" = "%@ 已添加 %@ 到他们的账户。 您可以发送。";
+"notification-support-request" = "%@ 正尝试向您发送 %@ ，然而您的账户并不支持。如有需要，我们可以添加到您的账户。";
+"ble-error-ledger-connection-open-app-error" = "请在您的账本设备上打开Algorand的APP";
+"notifications-empty-title" = "暂无通知";
+"notifications-empty-subtitle" = "可在此查看您最近的交易、资产请求与其他通知";
+
+/*MARK: Transaction Filter*/
+"transaction-filter-title-sort" = "按日期分类";
+"transaction-filter-option-all" = "全部时间";
+"transaction-filter-option-today" = "今天";
+"transaction-filter-option-yesterday" = "昨天";
+"transaction-filter-option-week" = "上周";
+
+/*MARK: Transaction Filter*/
+"transaction-filter-option-month" = "上个月";
+"transaction-filter-option-custom" = "定制范围";
+"transaction-filter-tooltip" = "您现在可以筛选交易记录";
+"transaction-filter-try-again" = "再次尝试";
+"transaction-filter-error-title" = "出错了";
+"transaction-filter-error-subtitle" = "抱歉，出错了。";
+"csv-download-title" = "创建CSV文件";
+"csv-download-error" = "无法为交易记录创建";
+"transaction-download-from" = "来自：地址";
+"transaction-download-to" = "发送至：地址";
+"transaction-download-close-to" = "密件抄送至：地址";
+
+/*MARK: Pin Limit*/
+"pin-limit-title" = "Algorand的APP已锁定";
+"pin-limit-try-again" = "再次尝试";
+"pin-limit-too-many" = "PIN码尝试输入次数过多";
+"pin-limit-reset-all" = "重设所有数据";
+
+/*MARK: Rekey Instruction*/
+"rekey-instruction-start" = "开始流程";
+"rekey-instruction-title" = "密钥更新账户";
+"rekey-instruction-header" = "未来将有：";
+"rekey-instruction-first" = "使用新的Ledger设备签署未来的交易。";
+"rekey-instruction-third" = "账户的公钥、余额以及配置不会改变。";
+
+/*MARK: Rekey Confirm*/
+"ledger-rekey-confirm-title" = "确认更改密钥";
+"ledger-rekey-transaction-title" = "密钥更新交易";
+"ledger-rekey-ledger-old" = "旧的账本";
+"ledger-rekey-ledger-passphrase" = "密码短语";
+"ledger-rekey-ledger-new" = "新的账本";
+"ledger-rekey-finalize" = "最终确认密钥更改";
+"ledger-rekey-total-fee" = "%@ ALGO的密钥更改总费用";
+"ledger-rekey-more-assets" = "+%@ 更多的资产";
+"ledger-rekey-success-title" = "账户密钥更改";
+"ledger-rekey-success-message" = "账户 %@ 已成功更改密钥";
+
+/*MARK: Ledger Account Selection*/
+"ledger-account-selection-title-singular" = "找到%d 账户";
+"ledger-account-selection-title-plural" = "找到%d 账户";
+"ledger-account-selection-detail" = "该Ledger设备能够为以下账户签署交易。请选择账户添加至您的Algorand钱包。";
+"ledger-account-selection-add" = "添加账户";
+"ledger-rekey-error-add-auth" = "已连接上的Ledger设备无法为此账号签署交易。如需签署交易，请连接%@。";
+"ledger-rekey-error-not-found" = "账户已完成密钥更改。请使用密码短语或Ledger设备恢复该账户。";
+"send-transaction-max-same-account-error" = "无法向自己发送所有余额。请在选择其他账户或接收人后，再次尝试。";
+
+/*Can I have more context for the Receive here? Like what is the user receiving, tokens or messages?*/
+"title-receive" = "接受";
+"title-copy" = "复制";
+"title-new-uppercased" = "全新";
+
+/*MARK: Account Type Selection*/
+"account-type-choose-title" = "选择账户类型";
+"account-type-selection-create" = "创建新的账户";
+"account-type-selection-create-detail" = "创建账户、新地址与新密码短语";
+"account-type-selection-watch-detail" = "仅适用账户地址监控账户交易";
+"account-type-selection-recover" = "通过密码短语恢复";
+"account-type-selection-recover-detail" = "利用25位的密码短语恢复账户";
+"account-type-selection-ledger" = "配对Ledger账户";
+"account-type-selection-ledger-detail" = "与Ledger硬件钱包支持的账户配对";
+"introduction-title-add-text" = "添加新账户";
+"introduction-add-account-text" = "添加账户";
+"introduction-title-terms-and-services" = "创建账户表面您同意Algorand的 <a href=\"https://www.algorand.com/wallet-disclaimer\">条款</a> 与<a href=\"https://www.algorand.com/wallet-privacy-policy\">隐私政策</a>";
+"settings-developer" = "开发者设置";
+"settings-currency" = "币种";
+"settings-developer-dispenser" = "Algorand Dispenser";
+
+/*Should I translate this or keep it?*/
+"settings-currency-usd" = "美元";
+"transaction-detail-date" = "日期";
+"transaction-id-open-explorer" = "在浏览器中打开";
+"feedback-subtitle-account-title" = "账户（可选）";
+"feedback-subtitle-account-detail" = "选择账户";
+"rekey-instruction-subtitle-ledger" = "用新的Ledger设备替换现有的账户账本";
+"rekey-instruction-subtitle-standard" = "利用Ledger设备替换账户密码短语。";
+"rekey-instruction-second-ledger" = "您的旧Ledger不再适用于此账户。";
+"rekey-instruction-second-standard" = "该账户的密码短语不再适用于此账户。";
+
+/*MARK: Watch Account*/
+"title-watch-account" = "Watch账户";
+"watch-account-input-explanation" = "Watch的账户地址";
+"watch-account-input-placeholder" = "复制地址或扫二维码";
+"watch-account-error-address" = "请输入有效的地址。";
+"passphrase-question-another" = "第%@";
+"passphrase-question-third" = "第3";
+"passphrase-question-second" = "第2";
+"passphrase-question-first" = "第1";
+"passphrase-select-n-word" = "请选择密码短语 %@ 词。";
+"passphrase-qeustion-counter" = " %@ 的问题 %@";
+"asset-detail-id-title" = "ID %@";
+"settings-app-version" = "%@版本";
+
+"settings-language-change-title" = "设置APP语言";
+"settings-language-change-detail" = "手机更新后，您可以通过以下步骤更改语言。\n\n1. 进入下一个页面。\n2. 点击要选择的语言。\n\n若无法使用语言设置，请到iPhone的语言设置处，选择想要使用的语言。";

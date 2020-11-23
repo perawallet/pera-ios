@@ -193,8 +193,8 @@ class Router {
             viewController = AccountRecoverViewController(accountSetupFlow: flow, configuration: configuration)
         case .qrScanner:
             viewController = QRScannerViewController(configuration: configuration)
-        case let .qrGenerator(title, draft):
-            let qrCreationController = QRCreationViewController(draft: draft, configuration: configuration)
+        case let .qrGenerator(title, draft, isTrackable):
+            let qrCreationController = QRCreationViewController(draft: draft, configuration: configuration, isTrackable: isTrackable)
             qrCreationController.title = title
             viewController = qrCreationController
         case .home:
@@ -241,18 +241,6 @@ class Router {
                 assetReceiverState: receiver,
                 transactionController: transactionController,
                 isSenderEditable: isSenderEditable,
-                configuration: configuration
-            )
-        case let .requestAlgosTransaction(isPresented, algosTransactionRequestDraft):
-            viewController = RequestAlgosTransactionViewController(
-                isPresented: isPresented,
-                algosTransactionRequestDraft: algosTransactionRequestDraft,
-                configuration: configuration
-            )
-        case let .requestAssetTransaction(isPresented, assetTransactionRequestDraft):
-            viewController = RequestAssetTransactionViewController(
-                isPresented: isPresented,
-                assetTransactionRequestDraft: assetTransactionRequestDraft,
                 configuration: configuration
             )
         case .nodeSettings:
@@ -307,8 +295,6 @@ class Router {
             viewController = LedgerTroubleshootInstallAppViewController(configuration: configuration)
         case .ledgerTroubleshootOpenApp:
             viewController = LedgerTroubleshootOpenAppViewController(configuration: configuration)
-        case .termsAndServices:
-            viewController = TermsAndServicesViewController(configuration: configuration)
         case let .selectAsset(transactionAction, filterOption):
             viewController = SelectAssetViewController(
                 transactionAction: transactionAction,

@@ -12,19 +12,19 @@ class NodeHealthOperation: AsyncOperation {
     
     let address: String?
     let token: String?
-    let api: API
+    let api: AlgorandAPI
     
     var onStarted: EmptyHandler?
     var onCompleted: BoolHandler?
     
-    init(node: Node, api: API) {
+    init(node: Node, api: AlgorandAPI) {
         self.address = node.address
         self.token = node.token
         self.api = api
         super.init()
     }
     
-    init(address: String?, token: String?, api: API) {
+    init(address: String?, token: String?, api: AlgorandAPI) {
         self.address = address
         self.token = token
         self.api = api

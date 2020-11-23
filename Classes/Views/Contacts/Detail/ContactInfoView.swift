@@ -42,8 +42,7 @@ class ContactInfoView: BaseView {
     }()
     
     private(set) lazy var shareButton: AlignedButton = {
-        let positions: AlignedButton.StylePositionAdjustment = (image: CGPoint(x: 30.0, y: 0.0), title: CGPoint(x: 4.0, y: 0.0))
-        let button = AlignedButton(style: .imageLeftTitleCentered(positions))
+        let button = AlignedButton(.imageAtLeft(spacing: 8.0))
         button.setTitle("title-share-qr".localized, for: .normal)
         button.setTitleColor(SharedColors.primaryText, for: .normal)
         button.titleLabel?.font = UIFont.font(withWeight: .semiBold(size: 16.0))

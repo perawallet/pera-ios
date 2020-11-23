@@ -65,8 +65,7 @@ class TabBarController: UIViewController {
     private(set) lazy var tabBar = TabBar()
 
     private(set) lazy var sendButton: AlignedButton = {
-        let positions: AlignedButton.StylePositionAdjustment = (image: CGPoint(x: 28.0, y: 0.0), title: CGPoint(x: 0.0, y: 0.0))
-        let button = AlignedButton(style: .imageLeftTitleCentered(positions))
+        let button = AlignedButton(.imageAtLeft(spacing: 4.0))
         button.setBackgroundImage(img("img-tabbar-send"), for: .normal)
         button.setImage(img("icon-arrow-up"), for: .normal)
         button.setTitle("title-send".localized, for: .normal)
@@ -77,8 +76,7 @@ class TabBarController: UIViewController {
     }()
     
     private(set) lazy var receiveButton: AlignedButton = {
-        let positions: AlignedButton.StylePositionAdjustment = (image: CGPoint(x: 18.0, y: 0.0), title: CGPoint(x: 0.0, y: 0.0))
-        let button = AlignedButton(style: .imageLeftTitleCentered(positions))
+        let button = AlignedButton(.imageAtLeft(spacing: 4.0))
         button.setBackgroundImage(img("img-tabbar-receive"), for: .normal)
         button.setImage(img("icon-qr", isTemplate: true), for: .normal)
         button.tintColor = SharedColors.white
@@ -273,6 +271,7 @@ extension TabBarController: SelectAssetViewControllerDelegate {
         )
         
         if transactionAction == .send {
+            SendTabEvent().logEvent()
             open(
                 .sendAlgosTransactionPreview(
                     account: account,
@@ -282,8 +281,9 @@ extension TabBarController: SelectAssetViewControllerDelegate {
                 by: fullScreenPresentation
             )
         } else {
-            let draft = AlgosTransactionRequestDraft(account: account)
-            open(.requestAlgosTransaction(isPresented: true, algosTransactionRequestDraft: draft), by: fullScreenPresentation)
+            ReceiveTabEvent().logEvent()
+            let draft = QRCreationDraft(address: account.address, mode: .address)
+            open(.qrGenerator(title: account.name ?? account.address.shortAddressDisplay(), draft: draft, isTrackable: true), by: .present)
         }
     }
     
@@ -302,6 +302,7 @@ extension TabBarController: SelectAssetViewControllerDelegate {
         )
         
         if transactionAction == .send {
+            SendTabEvent().logEvent()
             open(
                 .sendAssetTransactionPreview(
                     account: account,
@@ -313,13 +314,9 @@ extension TabBarController: SelectAssetViewControllerDelegate {
                 by: fullScreenPresentation
             )
         } else {
-            open(
-                .requestAssetTransaction(
-                    isPresented: true,
-                    assetTransactionRequestDraft: AssetTransactionRequestDraft(account: account, assetDetail: assetDetail)
-                ),
-                by: fullScreenPresentation
-            )
+            ReceiveTabEvent().logEvent()
+            let draft = QRCreationDraft(address: account.address, mode: .address)
+            open(.qrGenerator(title: account.name ?? account.address.shortAddressDisplay(), draft: draft, isTrackable: true), by: .present)
         }
     }
 }

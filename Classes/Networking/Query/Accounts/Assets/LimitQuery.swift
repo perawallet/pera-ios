@@ -8,12 +8,12 @@
 
 import Magpie
 
-struct LimitQuery: Query {
-    typealias Key = RequestParameter
-    
+struct LimitQuery: ObjectQuery {
     var limit = "all"
     
-    func decoded() -> [Pair]? {
-        return [Pair(key: .limit, value: .some(limit))]
+    var queryParams: [QueryParam] {
+        var params: [QueryParam] = []
+        params.append(.init(.limit, limit))
+        return params
     }
 }
