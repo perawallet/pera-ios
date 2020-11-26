@@ -461,7 +461,7 @@
 "ledger-rekey-ledger-passphrase" = "Parola";
 "ledger-rekey-ledger-new" = "Yeni Ledger";
 "ledger-rekey-finalize" = "Yeniden Anahtarlamayı Bitir";
-"ledger-rekey-total-fee" = "Toplam Yeniden Anahtarlama Komisyonu @ Algo";
+"ledger-rekey-total-fee" = "Toplam Yeniden Anahtarlama Komisyonu %@ Algo";
 "ledger-rekey-more-assets" = "+%@ varlık daha";
 "ledger-rekey-success-title" = "Hesap Yeniden Anahtarlandı";
 "ledger-rekey-success-message" = "%@ hesabı, başarıyla yeniden anahtarlandı";

@@ -106,7 +106,7 @@ extension QRScannerOverlayView {
         addSubview(titleLabel)
         
         titleLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(layout.current.titleLabelTopInset)
+            make.top.equalToSuperview().inset(safeAreaTop + layout.current.titleLabelTopInset)
             make.centerX.equalToSuperview()
         }
     }
@@ -144,7 +144,7 @@ extension QRScannerOverlayView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let horizontalInset: CGFloat = 20.0
         let buttonVerticalInset: CGFloat = 40.0
-        let titleLabelTopInset: CGFloat = 45.0
+        let titleLabelTopInset: CGFloat = 20.0
         let explanationLabelHorizontalInset: CGFloat = 40.0
     }
 }
