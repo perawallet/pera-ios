@@ -42,11 +42,24 @@ class BaseView: UIView {
     func setListeners() {
     }
     
+    func preferredUserInterfaceStyleDidChange() {
+    }
+    
     override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
         if endsEditingAfterTouches {
             endEditing(true)
         }
         
         return super.hitTest(point, with: event)
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        if #available(iOS 12.0, *) {
+            if traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
+                preferredUserInterfaceStyleDidChange()
+            }
+        }
     }
 }

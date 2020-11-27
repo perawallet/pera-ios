@@ -15,8 +15,16 @@ class RootViewController: UIViewController {
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        if #available(iOS 13.0, *) {
-            return .darkContent
+        if appConfiguration.api.isTestNet {
+            if #available(iOS 13.0, *) {
+                return .darkContent
+            } else {
+                return .default
+            }
+        }
+        
+        if isDarkModeDisplay {
+            return .lightContent
         } else {
             return .default
         }
