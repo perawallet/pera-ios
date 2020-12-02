@@ -144,7 +144,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return
         }
         
-        /// <note> Will update the appearance style if it's set to system since it might be changed from device settings. Needs a minor delay to receive correct value from traitCollection
+        /// <note> Will update the appearance style if it's set to system since it might be changed from device settings.
+        ///  Needs a minor delay to receive correct value from traitCollection
         if appConfiguration.session.userInterfaceStyle == .system {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                 rootViewController.changeUserInterfaceStyle(to: .system)
