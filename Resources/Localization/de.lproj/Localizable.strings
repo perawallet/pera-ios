@@ -513,3 +513,8 @@
 
 "settings-language-change-title" = "App-Sprache festlegen";
 "settings-language-change-detail" = "Aufgrund von Updates für Ihr Telefon müssen Sie mehrere Schritte ausführen, um Ihre Sprache zu ändern.\n\n1. Weiter zur nächsten Maske.\n2. Tippen Sie auf „Sprache“, um die gewünschte Sprache auszuwählen.\n\nWenn keine Spracheinstellung vorhanden ist, gehe zu deinen allgemeinen iPhone-Spracheinstellungen, um zuerst eine bevorzugte Sprache zu wählen.";
+
+"settings-theme-set" = "Thema Setzen";
+"settings-theme-dark" = "Dunkel";
+"settings-theme-light" = "Licht";
+"settings-theme-system" = "Systemfehler";

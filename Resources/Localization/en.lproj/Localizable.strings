@@ -504,3 +504,8 @@
 "watch-account-input-explanation" = "Account Address to Watch";
 "watch-account-input-placeholder" = "Paste Address or Scan QR";
 "watch-account-error-address" = "Please enter a valid address.";
+
+"settings-theme-set" = "Set Theme";
+"settings-theme-dark" = "Dark";
+"settings-theme-light" = "Light";
+"settings-theme-system" = "System Default";

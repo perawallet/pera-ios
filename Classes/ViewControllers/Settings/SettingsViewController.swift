@@ -33,7 +33,13 @@ class SettingsViewController: BaseViewController {
     
     private lazy var settings: [[GeneralSettings]] = [securitySettings, preferenceSettings, appSettings, developerSettings]
     private lazy var securitySettings: [GeneralSettings] = [.password, .localAuthentication]
-    private lazy var preferenceSettings: [GeneralSettings] = [.notifications, .rewards, .language, .currency]
+    private lazy var preferenceSettings: [GeneralSettings] = {
+        var settings: [GeneralSettings] = [.notifications, .rewards, .language, .currency]
+        if #available(iOS 13.0, *) {
+            settings.append(.appearance)
+        }
+        return settings
+    }()
     private lazy var appSettings: [GeneralSettings] = [.feedback, .termsAndServices, .privacyPolicy]
     private lazy var developerSettings: [GeneralSettings] = [.developer]
     
@@ -135,6 +141,9 @@ extension SettingsViewController: UICollectionViewDataSource {
             case .currency:
                 let preferredCurrency = api?.session.preferredCurrency ?? "settings-currency-usd".localized
                 return setSettingsInfoCell(from: setting, info: preferredCurrency, in: collectionView, at: indexPath)
+            case .appearance:
+                let preferredCurrency = api?.session.userInterfaceStyle ?? .system
+                return setSettingsInfoCell(from: setting, info: preferredCurrency.rawValue, in: collectionView, at: indexPath)
             case .feedback:
                 return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
             case .termsAndServices:
@@ -278,6 +287,8 @@ extension SettingsViewController: UICollectionViewDelegateFlowLayout {
             case .currency:
                 let controller = open(.currencySelection, by: .push) as? CurrencySelectionViewController
                 controller?.delegate = self
+            case .appearance:
+                open(.appearanceSelection, by: .push)
             case .termsAndServices:
                 guard let url = URL(string: Environment.current.termsAndServicesUrl) else {
                     return
