@@ -142,8 +142,8 @@ extension SettingsViewController: UICollectionViewDataSource {
                 let preferredCurrency = api?.session.preferredCurrency ?? "settings-currency-usd".localized
                 return setSettingsInfoCell(from: setting, info: preferredCurrency, in: collectionView, at: indexPath)
             case .appearance:
-                let preferredCurrency = api?.session.userInterfaceStyle ?? .system
-                return setSettingsInfoCell(from: setting, info: preferredCurrency.rawValue, in: collectionView, at: indexPath)
+                let preferredAppearance = api?.session.userInterfaceStyle ?? .system
+                return setSettingsInfoCell(from: setting, info: preferredAppearance.representation(), in: collectionView, at: indexPath)
             case .feedback:
                 return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
             case .termsAndServices:

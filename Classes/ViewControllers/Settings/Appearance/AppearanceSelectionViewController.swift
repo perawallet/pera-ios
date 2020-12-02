@@ -51,18 +51,7 @@ extension AppearanceSelectionViewController: UICollectionViewDataSource {
             ) as? SingleSelectionCell {
             
             let isSelected = session?.userInterfaceStyle == appearance
-            let title: String
-            switch appearance {
-            case .system:
-                title = "settings-theme-system".localized
-            case .light:
-                title = "settings-theme-light".localized
-            case .dark:
-                title = "settings-theme-dark".localized
-                
-            }
-            
-            cell.contextView.bind(SingleSelectionViewModel(title: title, isSelected: isSelected))
+            cell.contextView.bind(SingleSelectionViewModel(title: appearance.representation(), isSelected: isSelected))
             return cell
         }
     
@@ -92,4 +81,15 @@ enum UserInterfaceStyle: String, CaseIterable {
     case system = "system"
     case light = "light"
     case dark = "dark"
+    
+    func representation() -> String {
+        switch self {
+        case .system:
+            return "settings-theme-system".localized
+        case .light:
+            return "settings-theme-light".localized
+        case .dark:
+            return "settings-theme-dark".localized
+        }
+    }
 }

@@ -68,6 +68,8 @@ class RootViewController: UIViewController {
         
         view.backgroundColor = Colors.Background.primary
         
+        changeUserInterfaceStyle(to: appConfiguration.api.session.userInterfaceStyle)
+        
         initializeNetwork()
         addTestNetBanner()
         
@@ -257,6 +259,23 @@ extension RootViewController {
     func removeTestNetBanner() {
         if statusbarView.superview != nil {
             statusbarView.removeFromSuperview()
+        }
+    }
+    
+    /// <note> overrideUserInterfaceStyle property is used to override interface style for user preference
+    func changeUserInterfaceStyle(to appearance: UserInterfaceStyle) {
+        guard #available(iOS 13.0, *) else {
+            return
+        }
+        
+        switch appearance {
+        case .system:
+            let systemAppearance: UIUserInterfaceStyle = UIApplication.shared.deviceInterfaceStyle == .light ? .light : .dark
+            UIApplication.shared.windows.first?.overrideUserInterfaceStyle = systemAppearance
+        case .dark:
+            UIApplication.shared.windows.first?.overrideUserInterfaceStyle = .dark
+        case .light:
+            UIApplication.shared.windows.first?.overrideUserInterfaceStyle = .light
         }
     }
 }
