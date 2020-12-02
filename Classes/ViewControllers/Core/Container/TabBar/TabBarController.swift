@@ -136,13 +136,7 @@ class TabBarController: UIViewController {
     
     func customizeAppearance() {
         if !isDarkModeDisplay {
-            sendButton.applyShadow(
-                Shadow(color: ShadowColors.sendShadow, offset: CGSize(width: 0.0, height: 8.0), radius: 20.0, opacity: 1.0)
-            )
-            receiveButton.applyShadow(
-                Shadow(color: ShadowColors.requestShadow, offset: CGSize(width: 0.0, height: 8.0), radius: 20.0, opacity: 1.0)
-            )
-            tabBar.applyShadow(tabBarShadow)
+            applyShadows()
         }
     }
 
@@ -171,6 +165,32 @@ class TabBarController: UIViewController {
             receiveButton.updateShadowLayoutWhenViewDidLayoutSubviews(cornerRadius: 24.0)
             tabBar.updateShadowLayoutWhenViewDidLayoutSubviews()
         }
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        if #available(iOS 12.0, *) {
+            if traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
+                if traitCollection.userInterfaceStyle == .dark {
+                    sendButton.removeShadow()
+                    receiveButton.removeShadow()
+                    tabBar.removeShadow()
+                } else {
+                    applyShadows()
+                }
+            }
+        }
+    }
+    
+    private func applyShadows() {
+        sendButton.applyShadow(
+            Shadow(color: ShadowColors.sendShadow, offset: CGSize(width: 0.0, height: 8.0), radius: 20.0, opacity: 1.0)
+        )
+        receiveButton.applyShadow(
+            Shadow(color: ShadowColors.requestShadow, offset: CGSize(width: 0.0, height: 8.0), radius: 20.0, opacity: 1.0)
+        )
+        tabBar.applyShadow(tabBarShadow)
     }
 }
 

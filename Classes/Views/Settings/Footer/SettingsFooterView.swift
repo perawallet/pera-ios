@@ -53,6 +53,15 @@ class SettingsFooterView: BaseView {
         setupVersionLabelLayout()
     }
     
+    @available(iOS 12.0, *)
+    override func preferredUserInterfaceStyleDidChange(to userInterfaceStyle: UIUserInterfaceStyle) {
+        if userInterfaceStyle == .dark {
+            logoutButton.removeShadows()
+        } else {
+            logoutButton.applySmallShadow()
+        }
+    }
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         if !isDarkModeDisplay {

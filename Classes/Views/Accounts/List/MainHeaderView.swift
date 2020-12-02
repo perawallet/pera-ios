@@ -71,6 +71,17 @@ class MainHeaderView: BaseView {
             qrButton.layer.shadowPath = UIBezierPath(roundedRect: qrButton.bounds, cornerRadius: 20.0).cgPath
         }
     }
+    
+    @available(iOS 12.0, *)
+    override func preferredUserInterfaceStyleDidChange(to userInterfaceStyle: UIUserInterfaceStyle) {
+        if userInterfaceStyle == .dark {
+            qrButton.removeShadow()
+        } else {
+            qrButton.applyShadow(
+                Shadow(color: Colors.MainHeader.shadowColor, offset: CGSize(width: 0.0, height: 4.0), radius: 12.0, opacity: 1.0)
+            )
+        }
+    }
 }
 
 extension MainHeaderView {

@@ -97,6 +97,15 @@ class PassphraseView: BaseView {
             passphraseContainerView.updateShadowLayoutWhenViewDidLayoutSubviews()
         }
     }
+    
+    @available(iOS 12.0, *)
+    override func preferredUserInterfaceStyleDidChange(to userInterfaceStyle: UIUserInterfaceStyle) {
+        if userInterfaceStyle == .dark {
+            passphraseContainerView.removeShadows()
+        } else {
+            passphraseContainerView.applyMediumShadow()
+        }
+    }
 }
 
 extension PassphraseView {

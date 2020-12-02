@@ -104,6 +104,10 @@ class BaseViewController: UIViewController, TabBarConfigurable, TrackableScreen 
     func setListeners() {
     }
     
+    @available(iOS 12.0, *)
+    func preferredUserInterfaceStyleDidChange(to userInterfaceStyle: UIUserInterfaceStyle) {
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setNeedsStatusBarLayoutUpdateWhenAppearing()
@@ -148,6 +152,16 @@ class BaseViewController: UIViewController, TabBarConfigurable, TrackableScreen 
     
     func didTapDismissBarButton() -> Bool {
         return true
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        if #available(iOS 12.0, *) {
+            if traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
+                preferredUserInterfaceStyleDidChange(to: traitCollection.userInterfaceStyle)
+            }
+        }
     }
 }
 
