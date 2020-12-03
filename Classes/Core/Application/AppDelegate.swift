@@ -145,7 +145,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         /// <note> Will update the appearance style if it's set to system since it might be changed from device settings.
-        ///  Needs a minor delay to receive correct value from traitCollection
+        /// Since user interface style is overriden, traitCollectionDidChange is not triggered
+        /// when the user interface is changed from the device settings while app is open.
+        /// Needs a minor delay to receive correct system interface value from traitCollection to override the current one.
         if appConfiguration.session.userInterfaceStyle == .system {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                 rootViewController.changeUserInterfaceStyle(to: .system)
