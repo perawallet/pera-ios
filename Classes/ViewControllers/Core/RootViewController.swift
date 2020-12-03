@@ -271,11 +271,11 @@ extension RootViewController {
         switch appearance {
         case .system:
             let systemAppearance: UIUserInterfaceStyle = UIApplication.shared.deviceInterfaceStyle == .light ? .light : .dark
-            UIApplication.shared.windows.first?.overrideUserInterfaceStyle = systemAppearance
+            UIApplication.shared.appDelegate?.window?.overrideUserInterfaceStyle = systemAppearance
         case .dark:
-            UIApplication.shared.windows.first?.overrideUserInterfaceStyle = .dark
+            UIApplication.shared.appDelegate?.window?.overrideUserInterfaceStyle = .dark
         case .light:
-            UIApplication.shared.windows.first?.overrideUserInterfaceStyle = .light
+            UIApplication.shared.appDelegate?.window?.overrideUserInterfaceStyle = .light
         }
     }
 }
