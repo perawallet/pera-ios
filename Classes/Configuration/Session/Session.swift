@@ -21,6 +21,7 @@ class Session: Storable {
     private let accountsQRTooltipKey = "com.algorand.algorand.accounts.qr.tooltip"
     private let notificationLatestTimestamp = "com.algorand.algorand.notification.latest.timestamp"
     private let currencyPreferenceKey = "com.algorand.algorand.currency.preference"
+    private let userInterfacePrefenceKey = "com.algorand.algorand.interface.preference"
     
     let algorandSDK = AlgorandSDK()
     
@@ -106,6 +107,19 @@ class Session: Storable {
         }
         set {
             self.save(newValue.rawValue, for: rewardsPrefenceKey, to: .defaults)
+        }
+    }
+    
+    var userInterfaceStyle: UserInterfaceStyle {
+        get {
+            guard let appearance = string(with: userInterfacePrefenceKey, to: .defaults),
+                let appearancePreference = UserInterfaceStyle(rawValue: appearance) else {
+                    return .system
+            }
+            return appearancePreference
+        }
+        set {
+            self.save(newValue.rawValue, for: userInterfacePrefenceKey, to: .defaults)
         }
     }
     

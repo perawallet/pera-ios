@@ -49,6 +49,15 @@ class LedgerTutorialInstructionView: BaseView {
             updateShadowLayoutWhenViewDidLayoutSubviews()
         }
     }
+    
+    @available(iOS 12.0, *)
+    override func preferredUserInterfaceStyleDidChange(to userInterfaceStyle: UIUserInterfaceStyle) {
+        if userInterfaceStyle == .dark {
+            removeShadows()
+        } else {
+            applySmallShadow()
+        }
+    }
 }
 
 extension LedgerTutorialInstructionView {

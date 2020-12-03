@@ -86,6 +86,15 @@ class UserInformationView: BaseView {
         setupContactNameInputViewLayout()
         setupAlgorandAddressInputViewLayout()
     }
+    
+    @available(iOS 12.0, *)
+    override func preferredUserInterfaceStyleDidChange(to userInterfaceStyle: UIUserInterfaceStyle) {
+        if userInterfaceStyle == .dark {
+            imageBackgroundView.removeShadows()
+        } else {
+            imageBackgroundView.applySmallShadow()
+        }
+    }
 }
 
 extension UserInformationView {

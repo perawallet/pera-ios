@@ -42,7 +42,8 @@ class BaseView: UIView {
     func setListeners() {
     }
     
-    func preferredUserInterfaceStyleDidChange() {
+    @available(iOS 12.0, *)
+    func preferredUserInterfaceStyleDidChange(to userInterfaceStyle: UIUserInterfaceStyle) {
     }
     
     override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
@@ -58,7 +59,7 @@ class BaseView: UIView {
 
         if #available(iOS 12.0, *) {
             if traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
-                preferredUserInterfaceStyleDidChange()
+                preferredUserInterfaceStyleDidChange(to: traitCollection.userInterfaceStyle)
             }
         }
     }

@@ -521,3 +521,8 @@
 
 "settings-language-change-title" = "Uygulama Dilini Ayarla";
 "settings-language-change-detail" = "Telefonunuzdaki güncellemeler nedeniyle, dilinizi değiştirmeniz için farklı adımlar vardır.\n\n1. Sonraki ekrana ilerleyin.\n2. Dilediğiniz dili seçmek için Dil'e dokunun.\n\nDil ayarı yoksa, tercih ettiğiniz birincil dili ayarlamak için iPhone'unuzun genel dil ayarlarına gidin.";
+
+"settings-theme-set" = "Temayı Ayarla";
+"settings-theme-dark" = "Karanlık";
+"settings-theme-light" = "Aydınlık";
+"settings-theme-system" = "Sistem Varsayılanı";
