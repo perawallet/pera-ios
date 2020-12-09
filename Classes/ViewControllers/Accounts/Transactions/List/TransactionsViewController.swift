@@ -85,7 +85,7 @@ class TransactionsViewController: BaseViewController {
     }
     
     override func configureAppearance() {
-        view.backgroundColor = SharedColors.secondaryBackground
+        view.backgroundColor = Colors.Background.secondary
     }
     
     override func setListeners() {

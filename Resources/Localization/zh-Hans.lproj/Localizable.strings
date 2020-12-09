@@ -507,3 +507,8 @@
 
 "settings-language-change-title" = "设置APP语言";
 "settings-language-change-detail" = "手机更新后，您可以通过以下步骤更改语言。\n\n1. 进入下一个页面。\n2. 点击要选择的语言。\n\n若无法使用语言设置，请到iPhone的语言设置处，选择想要使用的语言。";
+
+"settings-theme-set" = "设定主题";
+"settings-theme-dark" = "黑暗";
+"settings-theme-light" = "光";
+"settings-theme-system" = "系统默认";

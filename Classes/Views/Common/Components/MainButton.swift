@@ -26,7 +26,7 @@ class MainButton: UIButton {
 extension MainButton {
     private func configureButton() {
         titleLabel?.textAlignment = .center
-        setTitleColor(.white, for: .normal)
+        setTitleColor(Colors.ButtonText.primary, for: .normal)
         setTitle(title, for: .normal)
         setBackgroundImage(img("bg-main-button"), for: .normal)
         titleLabel?.font = UIFont.font(withWeight: .semiBold(size: 16.0))

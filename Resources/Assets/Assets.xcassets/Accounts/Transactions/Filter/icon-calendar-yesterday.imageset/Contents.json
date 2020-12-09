@@ -3,6 +3,16 @@
     {
       "filename" : "icon-calendar-yesterday.pdf",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "icon-calendar-yesterday-1.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {

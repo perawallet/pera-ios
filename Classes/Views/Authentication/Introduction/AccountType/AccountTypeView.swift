@@ -18,14 +18,14 @@ class AccountTypeView: BaseControl {
         UILabel()
             .withLine(.contained)
             .withFont(UIFont.font(withWeight: .regular(size: 16.0)))
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.Text.primary)
             .withAlignment(.left)
     }()
     
     private lazy var newLabelContainer: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 6.0
-        view.backgroundColor = SharedColors.primary
+        view.backgroundColor = Colors.AccountTypeView.newLabelBackground
         return view
     }()
     
@@ -34,7 +34,7 @@ class AccountTypeView: BaseControl {
             .withLine(.single)
             .withFont(UIFont.font(withWeight: .bold(size: 10.0)))
             .withText("title-new-uppercased".localized)
-            .withTextColor(SharedColors.white)
+            .withTextColor(Colors.AccountTypeView.newLabelText)
             .withAlignment(.center)
         return label
     }()
@@ -43,7 +43,7 @@ class AccountTypeView: BaseControl {
         UILabel()
             .withLine(.contained)
             .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
-            .withTextColor(SharedColors.gray500)
+            .withTextColor(Colors.Text.secondary)
             .withAlignment(.left)
     }()
     
@@ -52,7 +52,7 @@ class AccountTypeView: BaseControl {
     private lazy var separatorView = LineSeparatorView()
     
     override func configureAppearance() {
-        backgroundColor = SharedColors.secondaryBackground
+        backgroundColor = Colors.Background.tertiary
     }
     
     override func prepareLayout() {
@@ -145,6 +145,13 @@ extension AccountTypeView {
         newLabelContainer.isHidden = !viewModel.isNew
         newLabel.isHidden = !viewModel.isNew
         detailLabel.text = viewModel.detail
+    }
+}
+
+extension Colors {
+    fileprivate enum AccountTypeView {
+        static let newLabelBackground = Colors.Main.primary600
+        static let newLabelText = color("newLabelColor")
     }
 }
 

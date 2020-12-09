@@ -20,7 +20,7 @@ class AccountFooterView: BaseView {
         let button = AlignedButton(.imageAtLeft(spacing: 4.0))
         button.setImage(img("icon-plus-primary"), for: .normal)
         button.setTitle("accounts-add-new".localized, for: .normal)
-        button.setTitleColor(SharedColors.tertiaryText, for: .normal)
+        button.setTitleColor(Colors.ButtonText.actionButton, for: .normal)
         button.titleLabel?.font = UIFont.font(withWeight: .semiBold(size: 14.0))
         button.titleLabel?.textAlignment = .center
         return button
@@ -28,7 +28,7 @@ class AccountFooterView: BaseView {
     
     override func configureAppearance() {
         super.configureAppearance()
-        containerView.backgroundColor = SharedColors.secondaryBackground
+        containerView.backgroundColor = Colors.Background.secondary
         containerView.layer.cornerRadius = 12.0
         containerView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
     }

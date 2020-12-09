@@ -16,7 +16,7 @@ class QRSelectableLabel: BaseView {
     
     private lazy var containerView: UIView = {
         let view = UIView()
-        view.backgroundColor = SharedColors.primaryBackground
+        view.backgroundColor = Colors.QRSelectable.background
         view.layer.cornerRadius = 12.0
         return view
     }()
@@ -25,7 +25,7 @@ class QRSelectableLabel: BaseView {
         UILabel()
             .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
             .withAlignment(.center)
-            .withTextColor(SharedColors.detailText)
+            .withTextColor(Colors.Text.tertiary)
             .withLine(.single)
             .withText("qr-creation-address".localized)
     }()
@@ -34,7 +34,7 @@ class QRSelectableLabel: BaseView {
         UILabel()
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
             .withAlignment(.center)
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.Text.primary)
             .withLine(.contained)
     }()
     
@@ -43,7 +43,7 @@ class QRSelectableLabel: BaseView {
     private lazy var copyLabel: UILabel = {
         UILabel()
             .withFont(UIFont.font(withWeight: .semiBold(size: 14.0)))
-            .withTextColor(SharedColors.tertiaryText)
+            .withTextColor(Colors.ButtonText.actionButton)
             .withText("qr-creation-copy-address".localized)
             .withLine(.single)
             .withAlignment(.left)
@@ -52,11 +52,11 @@ class QRSelectableLabel: BaseView {
     private lazy var copiedFeedbackLabel: UILabel = {
         let label = UILabel()
             .withFont(UIFont.font(withWeight: .semiBold(size: 14.0)))
-            .withTextColor(SharedColors.white)
+            .withTextColor(Colors.QRSelectable.feedbackText)
             .withText("qr-creation-copied".localized)
             .withLine(.single)
             .withAlignment(.center)
-        label.backgroundColor = SharedColors.gray800
+        label.backgroundColor = Colors.QRSelectable.feedbackBackground
         label.layer.cornerRadius = 22.0
         label.layer.masksToBounds = true
         label.isHidden = true
@@ -64,7 +64,7 @@ class QRSelectableLabel: BaseView {
     }()
     
     override func configureAppearance() {
-        backgroundColor = SharedColors.secondaryBackground
+        backgroundColor = Colors.Background.tertiary
     }
     
     override func linkInteractors() {
@@ -160,6 +160,14 @@ extension QRSelectableLabel {
 extension QRSelectableLabel {
     func setAddress(_ address: String) {
         addressLabel.text = address
+    }
+}
+
+extension Colors {
+    fileprivate enum QRSelectable {
+        static let background = color("qrSelectableBackground")
+        static let feedbackBackground = color("qrSelectableFeedbackBackground")
+        static let feedbackText = color("white")
     }
 }
 

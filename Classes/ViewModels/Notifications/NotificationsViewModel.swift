@@ -164,7 +164,7 @@ extension NotificationsViewModel {
     private func getAttributedMessage(_ message: String, for parameters: String...) -> NSAttributedString {
         let attributedText = NSMutableAttributedString(
             string: message,
-            attributes: [ .font: UIFont.font(withWeight: .regular(size: 14.0)), .foregroundColor: SharedColors.primaryText]
+            attributes: [ .font: UIFont.font(withWeight: .regular(size: 14.0)), .foregroundColor: Colors.Text.primary]
         )
         parameters.forEach { parameter in
             let parameterRange = (message as NSString).range(of: parameter)

@@ -53,11 +53,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         window?.backgroundColor = .clear
-        
-        if #available(iOS 13.0, *) {
-            window?.overrideUserInterfaceStyle = .light
-        }
-        
         window?.rootViewController = NavigationController(rootViewController: rootViewController)
         window?.makeKeyAndVisible()
     }
@@ -148,6 +143,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             !appConfiguration.session.accounts.isEmpty else {
             return
         }
+        
+        updateUserInterfaceStyleIfNeeded()
         
         NotificationCenter.default.post(name: .ApplicationWillEnterForeground, object: self, userInfo: nil)
         
@@ -252,6 +249,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func invalidateAccountManagerFetchPolling() {
         shouldInvalidateAccountFetch = true
+    }
+}
+
+extension AppDelegate {
+    private func updateUserInterfaceStyleIfNeeded() {
+        /// <note> Will update the appearance style if it's set to system since it might be changed from device settings.
+        /// Since user interface style is overriden, traitCollectionDidChange is not triggered
+        /// when the user interface is changed from the device settings while app is open.
+        /// Needs a minor delay to receive correct system interface value from traitCollection to override the current one.
+        if appConfiguration.session.userInterfaceStyle == .system {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                self.rootViewController?.changeUserInterfaceStyle(to: .system)
+            }
+        }
     }
 }
 

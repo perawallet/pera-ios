@@ -14,7 +14,7 @@ class AssetRemovalView: BaseView {
     
     private lazy var topContainerView: UIView = {
         let view = UIView()
-        view.backgroundColor = SharedColors.secondaryBackground
+        view.backgroundColor = Colors.Background.secondary
         view.layer.cornerRadius = 12.0
         return view
     }()
@@ -26,14 +26,14 @@ class AssetRemovalView: BaseView {
             .withLine(.single)
             .withAlignment(.left)
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.Text.primary)
             .withText("asset-remove-title".localized)
     }()
     
     private lazy var subtitleLabel: UILabel = {
         UILabel()
             .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
-            .withTextColor(SharedColors.inputTitle)
+            .withTextColor(Colors.Text.tertiary)
             .withLine(.contained)
             .withAlignment(.left)
             .withText("asset-remove-subtitle".localized)
@@ -41,7 +41,7 @@ class AssetRemovalView: BaseView {
     
     private(set) lazy var assetsCollectionView: AssetsCollectionView = {
         let collectionView = AssetsCollectionView(containsPendingAssets: false)
-        collectionView.backgroundColor = SharedColors.primaryBackground
+        collectionView.backgroundColor = Colors.Background.primary
         collectionView.contentInset = .zero
         collectionView.layer.cornerRadius = 12.0
         collectionView.register(
@@ -54,7 +54,9 @@ class AssetRemovalView: BaseView {
     
     override func configureAppearance() {
         super.configureAppearance()
-        topContainerView.applyMediumShadow()
+        if !isDarkModeDisplay {
+            topContainerView.applyMediumShadow()
+        }
     }
     
     override func prepareLayout() {
@@ -67,7 +69,18 @@ class AssetRemovalView: BaseView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        topContainerView.updateShadowLayoutWhenViewDidLayoutSubviews()
+        if !isDarkModeDisplay {
+            topContainerView.updateShadowLayoutWhenViewDidLayoutSubviews()
+        }
+    }
+    
+    @available(iOS 12.0, *)
+    override func preferredUserInterfaceStyleDidChange(to userInterfaceStyle: UIUserInterfaceStyle) {
+        if userInterfaceStyle == .dark {
+            topContainerView.removeShadows()
+        } else {
+            topContainerView.applyMediumShadow()
+        }
     }
 }
 

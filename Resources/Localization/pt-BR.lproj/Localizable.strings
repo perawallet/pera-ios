@@ -501,3 +501,8 @@
 
 "settings-language-change-title" = "Configurar Idioma do Aplicativo";
 "settings-language-change-detail" = "Devido a atualizações em seu telefone, há diferentes etapas para alterar o idioma.\n\n1. Vá à próxima tela.\n2. Toque em Idioma para selecionar o idioma desejado.\n\nCaso não haja a opção para configuração de idioma, vá às configurações gerais para idioma do seu iPhone para configurar um idioma de preferência.";
+
+"settings-theme-set" = "Definir Tema";
+"settings-theme-dark" = "Escuro";
+"settings-theme-light" = "Luz";
+"settings-theme-system" = "Sistema Padrão";

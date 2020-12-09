@@ -16,13 +16,13 @@ class SelectAssetView: BaseView {
     
     private lazy var separatorView: UIView = {
         let view = UIView()
-        view.backgroundColor = SharedColors.primaryBackground
+        view.backgroundColor = Colors.Component.separator
         return view
     }()
     
     private(set) lazy var accountsCollectionView: AssetsCollectionView = {
         let collectionView = AssetsCollectionView(containsPendingAssets: false)
-        collectionView.backgroundColor = SharedColors.secondaryBackground
+        collectionView.backgroundColor = Colors.Background.tertiary
         collectionView.contentInset = .zero
         
         collectionView.register(AlgoAssetCell.self, forCellWithReuseIdentifier: AlgoAssetCell.reusableIdentifier)
@@ -36,7 +36,7 @@ class SelectAssetView: BaseView {
     }()
 
     override func configureAppearance() {
-        backgroundColor = SharedColors.secondaryBackground
+        backgroundColor = Colors.Background.tertiary
     }
     
     override func prepareLayout() {

@@ -19,12 +19,12 @@ class PassphraseMnemonicView: BaseView {
     private(set) lazy var phraseLabel: UILabel = {
         UILabel(frame: .zero)
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.Text.primary)
             .withAlignment(.center)
     }()
     
     override func configureAppearance() {
-        backgroundImageView.tintColor = SharedColors.secondaryBackground
+        backgroundImageView.tintColor = Colors.Background.secondary
         layer.cornerRadius = 24.0
     }
     
@@ -75,15 +75,21 @@ extension PassphraseMnemonicView {
     private func updateModeLayout() {
         switch mode {
         case .idle:
-            phraseLabel.textColor = SharedColors.primaryText
-            backgroundImageView.tintColor = SharedColors.secondaryBackground
+            phraseLabel.textColor = Colors.Text.primary
+            backgroundImageView.tintColor = Colors.Background.secondary
         case .correct:
-            phraseLabel.textColor = SharedColors.white
-            backgroundImageView.tintColor = SharedColors.primary
+            phraseLabel.textColor = Colors.PassphraseMnemonic.selectedText
+            backgroundImageView.tintColor = Colors.General.success
         case .wrong:
-            phraseLabel.textColor = SharedColors.white
-            backgroundImageView.tintColor = SharedColors.red
+            phraseLabel.textColor = Colors.PassphraseMnemonic.selectedText
+            backgroundImageView.tintColor = Colors.General.error
         }
+    }
+}
+
+extension Colors {
+    fileprivate enum PassphraseMnemonic {
+        static let selectedText = color("selectedPassphraseMnemonicText")
     }
 }
 

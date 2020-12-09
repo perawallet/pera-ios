@@ -3,6 +3,16 @@
     {
       "filename" : "modal-top-icon.pdf",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "modal-top-icon-1.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {

@@ -22,7 +22,7 @@ class RewardDetailView: BaseView {
     private lazy var titleLabel: UILabel = {
         UILabel()
             .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.Text.primary)
             .withLine(.single)
             .withAlignment(.center)
             .withText("rewards-title".localized)
@@ -32,7 +32,7 @@ class RewardDetailView: BaseView {
         UILabel()
             .withAttributedText("rewards-detail-subtitle".localized.attributed([.lineSpacing(1.2)]))
             .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.Text.primary)
             .withLine(.contained)
             .withAlignment(.center)
     }()
@@ -42,7 +42,7 @@ class RewardDetailView: BaseView {
     private lazy var faqLabel: UILabel = {
         let label = UILabel()
             .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.Text.primary)
             .withLine(.contained)
             .withAlignment(.center)
         
@@ -50,7 +50,7 @@ class RewardDetailView: BaseView {
         let faqString = "total-rewards-faq".localized
         let range = (totalString as NSString).range(of: faqString)
         let attributedText = NSMutableAttributedString(string: totalString)
-        attributedText.addAttribute(NSAttributedString.Key.foregroundColor, value: SharedColors.tertiaryText, range: range)
+        attributedText.addAttribute(NSAttributedString.Key.foregroundColor, value: Colors.ButtonText.actionButton, range: range)
         label.attributedText = attributedText
         label.isUserInteractionEnabled = true
         return label
@@ -59,7 +59,7 @@ class RewardDetailView: BaseView {
     private lazy var okButton = MainButton(title: "title-ok".localized)
     
     override func configureAppearance() {
-        backgroundColor = SharedColors.secondaryBackground
+        backgroundColor = Colors.Background.secondary
     }
     
     override func setListeners() {

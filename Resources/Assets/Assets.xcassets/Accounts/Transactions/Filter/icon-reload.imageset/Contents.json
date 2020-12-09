@@ -3,6 +3,16 @@
     {
       "filename" : "icon-reload.pdf",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "icon-reload-1.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {

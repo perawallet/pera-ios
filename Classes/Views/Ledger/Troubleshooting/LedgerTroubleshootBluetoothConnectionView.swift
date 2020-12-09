@@ -20,6 +20,7 @@ class LedgerTroubleshootBluetoothConnectionView: BaseView {
     
     private lazy var numberOneTextView: UITextView = {
         let textView = UITextView()
+        textView.backgroundColor = .clear
         textView.isEditable = false
         textView.isScrollEnabled = false
         textView.dataDetectorTypes = .link
@@ -28,7 +29,7 @@ class LedgerTroubleshootBluetoothConnectionView: BaseView {
     }()
     
     override func configureAppearance() {
-        backgroundColor = SharedColors.secondaryBackground
+        backgroundColor = Colors.Background.tertiary
         bindData()
     }
        
@@ -77,7 +78,7 @@ extension LedgerTroubleshootBluetoothConnectionView {
         attributedString.addAttributes(
             [
                 NSAttributedString.Key.font: UIFont.font(withWeight: .regular(size: 14.0)),
-                NSAttributedString.Key.foregroundColor: SharedColors.primaryText
+                NSAttributedString.Key.foregroundColor: Colors.Text.primary
             ],
             range: NSRange(location: 0, length: attributedString.string.count)
         )

@@ -30,7 +30,7 @@ class TransactionCustomRangeSelectionView: BaseView {
     }()
     
     override func configureAppearance() {
-        backgroundColor = SharedColors.secondaryBackground
+        backgroundColor = Colors.Background.secondary
         fromRangeSelectionView.setTitle("transaction-detail-from".localized)
         fromRangeSelectionView.setImage(img("icon-calendar-custom-pick-from"))
         fromRangeSelectionView.setSelected(true)

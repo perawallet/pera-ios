@@ -14,7 +14,7 @@ class AssetDisplayView: BaseView {
     
     private lazy var topContainerView: UIView = {
         let view = UIView()
-        view.backgroundColor = SharedColors.secondaryBackground
+        view.backgroundColor = Colors.Background.secondary
         view.layer.cornerRadius = 8.0
         return view
     }()
@@ -24,7 +24,7 @@ class AssetDisplayView: BaseView {
             .withLine(.single)
             .withAlignment(.center)
             .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.Text.primary)
     }()
     
     private(set) lazy var verifiedImageView: UIImageView = {
@@ -34,7 +34,7 @@ class AssetDisplayView: BaseView {
     }()
     
     private lazy var copyButton: UIButton = {
-        UIButton(type: .custom).withImage(img("icon-copy", isTemplate: true)).withTintColor(SharedColors.gray400)
+        UIButton(type: .custom).withImage(img("icon-copy", isTemplate: true)).withTintColor(Colors.Main.gray300)
     }()
     
     private(set) lazy var assetCodeLabel: UILabel = {
@@ -42,7 +42,7 @@ class AssetDisplayView: BaseView {
             .withLine(.single)
             .withAlignment(.center)
             .withFont(UIFont.font(withWeight: .bold(size: 28.0)))
-            .withTextColor(SharedColors.primary)
+            .withTextColor(Colors.General.selected)
     }()
     
     private(set) lazy var assetNameLabel: UILabel = {
@@ -50,13 +50,15 @@ class AssetDisplayView: BaseView {
             .withLine(.single)
             .withAlignment(.center)
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.Text.primary)
     }()
     
     override func configureAppearance() {
         super.configureAppearance()
         layer.cornerRadius = 12.0
-        topContainerView.applySmallShadow()
+        if !isDarkModeDisplay {
+            topContainerView.applySmallShadow()
+        }
     }
     
     override func setListeners() {
@@ -74,13 +76,25 @@ class AssetDisplayView: BaseView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        topContainerView.updateShadowLayoutWhenViewDidLayoutSubviews()
+        if !isDarkModeDisplay {
+            topContainerView.updateShadowLayoutWhenViewDidLayoutSubviews()
+        }
+    }
+    
+    @available(iOS 12.0, *)
+    override func preferredUserInterfaceStyleDidChange(to userInterfaceStyle: UIUserInterfaceStyle) {
+        if userInterfaceStyle == .dark {
+            topContainerView.removeShadows()
+        } else {
+            topContainerView.applySmallShadow()
+        }
     }
 }
 
 extension AssetDisplayView {
     @objc
     private func didTapCopyButton() {
+        NotificationBanner.showInformation("asset-id-copied-title".localized)
         UIPasteboard.general.string = assetIndexLabel.text
     }
 }
@@ -158,11 +172,5 @@ extension AssetDisplayView {
         let nameTopInset: CGFloat = 4.0
         let verticalInset: CGFloat = 20.0
         let imageSize = CGSize(width: 20.0, height: 20.0)
-    }
-}
-
-extension AssetDisplayView {
-    private enum Colors {
-        static let shadowColor = rgba(0.17, 0.17, 0.23, 0.04)
     }
 }

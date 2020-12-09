@@ -3,6 +3,16 @@
     {
       "filename" : "icon-transactions-empty.pdf",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "icon-transactions-empty-1.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {

@@ -19,6 +19,7 @@ enum GeneralSettings: Settings {
     case feedback
     case termsAndServices
     case privacyPolicy
+    case appearance
     
     var image: UIImage? {
         switch self {
@@ -36,6 +37,8 @@ enum GeneralSettings: Settings {
             return img("icon-settings-language")
         case .currency:
             return img("icon-settings-currency")
+        case .appearance:
+            return img("icon-settings-theme")
         case .feedback:
             return img("icon-feedback")
         case .termsAndServices:
@@ -61,6 +64,8 @@ enum GeneralSettings: Settings {
             return "settings-language".localized
         case .currency:
             return "settings-currency".localized
+        case .appearance:
+            return "settings-theme-set".localized
         case .feedback:
             return "feedback-title".localized
         case .termsAndServices:

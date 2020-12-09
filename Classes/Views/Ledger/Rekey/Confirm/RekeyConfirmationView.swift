@@ -21,7 +21,7 @@ class RekeyConfirmationView: BaseView {
         let collectionView = AssetsCollectionView(containsPendingAssets: false)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = SharedColors.secondaryBackground
+        collectionView.backgroundColor = Colors.Background.secondary
         collectionView.contentInset = .zero
         collectionView.layer.cornerRadius = 12.0
         collectionView.register(AlgoAssetCell.self, forCellWithReuseIdentifier: AlgoAssetCell.reusableIdentifier)
@@ -42,7 +42,7 @@ class RekeyConfirmationView: BaseView {
     private lazy var transitionTitleLabel: UILabel = {
         UILabel()
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.Text.primary)
             .withLine(.single)
             .withAlignment(.left)
             .withText("ledger-rekey-transaction-title".localized)
@@ -53,7 +53,7 @@ class RekeyConfirmationView: BaseView {
     private lazy var feeLabel: UILabel = {
         UILabel()
             .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
-            .withTextColor(SharedColors.detailText)
+            .withTextColor(Colors.Text.tertiary)
             .withLine(.contained)
             .withAlignment(.left)
     }()

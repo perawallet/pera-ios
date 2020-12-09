@@ -17,7 +17,7 @@ class PassphraseView: BaseView {
     private(set) lazy var passphraseContainerView: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 12.0
-        view.backgroundColor = SharedColors.secondaryBackground
+        view.backgroundColor = Colors.Background.secondary
         return view
     }()
     
@@ -32,7 +32,7 @@ class PassphraseView: BaseView {
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.contentInset = .zero
-        collectionView.backgroundColor = .white
+        collectionView.backgroundColor = .clear
         collectionView.register(PassphraseBackUpCell.self, forCellWithReuseIdentifier: PassphraseBackUpCell.reusableIdentifier)
         return collectionView
     }()
@@ -41,7 +41,7 @@ class PassphraseView: BaseView {
         let button = AlignedButton(.imageAtLeft(spacing: 8.0))
         button.setImage(img("icon-share"), for: .normal)
         button.setTitle("title-share-qr".localized, for: .normal)
-        button.setTitleColor(SharedColors.tertiaryText, for: .normal)
+        button.setTitleColor(Colors.ButtonText.actionButton, for: .normal)
         button.titleLabel?.font = UIFont.font(withWeight: .semiBold(size: 14.0))
         return button
     }()
@@ -50,19 +50,19 @@ class PassphraseView: BaseView {
         let button = AlignedButton(.imageAtLeft(spacing: 8.0))
         button.setImage(img("icon-qr-show-green"), for: .normal)
         button.setTitle("back-up-phrase-qr".localized, for: .normal)
-        button.setTitleColor(SharedColors.tertiaryText, for: .normal)
+        button.setTitleColor(Colors.ButtonText.actionButton, for: .normal)
         button.titleLabel?.font = UIFont.font(withWeight: .semiBold(size: 14.0))
         return button
     }()
     
-    private lazy var informationImageView = UIImageView(image: img("icon-info-gray"))
+    private lazy var informationImageView = UIImageView(image: img("icon-info-24"))
     
     private(set) lazy var warningLabel: UILabel = {
         UILabel()
             .withLine(.contained)
             .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
             .withText("back-up-phrase-warning".localized)
-            .withAttributedText("back-up-phrase-warning".localized.attributed([.lineSpacing(1.2), .textColor(SharedColors.primaryText)]))
+            .withAttributedText("back-up-phrase-warning".localized.attributed([.lineSpacing(1.2), .textColor(Colors.Text.primary)]))
             .withAlignment(.left)
     }()
     
@@ -70,7 +70,9 @@ class PassphraseView: BaseView {
     
     override func configureAppearance() {
         super.configureAppearance()
-        passphraseContainerView.applyMediumShadow()
+        if !isDarkModeDisplay {
+            passphraseContainerView.applyMediumShadow()
+        }
     }
     
     override func setListeners() {
@@ -91,7 +93,18 @@ class PassphraseView: BaseView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        passphraseContainerView.updateShadowLayoutWhenViewDidLayoutSubviews()
+        if !isDarkModeDisplay {
+            passphraseContainerView.updateShadowLayoutWhenViewDidLayoutSubviews()
+        }
+    }
+    
+    @available(iOS 12.0, *)
+    override func preferredUserInterfaceStyleDidChange(to userInterfaceStyle: UIUserInterfaceStyle) {
+        if userInterfaceStyle == .dark {
+            passphraseContainerView.removeShadows()
+        } else {
+            passphraseContainerView.applyMediumShadow()
+        }
     }
 }
 

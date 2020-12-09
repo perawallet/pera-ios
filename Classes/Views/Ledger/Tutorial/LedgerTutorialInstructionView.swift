@@ -23,15 +23,18 @@ class LedgerTutorialInstructionView: BaseView {
             .withLine(.contained)
             .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
             .withAlignment(.left)
-            .withTextColor(SharedColors.secondaryText)
+            .withTextColor(Colors.Text.primary)
     }()
     
     private lazy var arrowImageView = UIImageView(image: img("icon-arrow-gray-24"))
     
     override func configureAppearance() {
-        backgroundColor = SharedColors.secondaryBackground
+        backgroundColor = Colors.Background.secondary
         layer.cornerRadius = 12.0
-        applySmallShadow()
+        
+        if !isDarkModeDisplay {
+            applySmallShadow()
+        }
     }
     
     override func prepareLayout() {
@@ -42,7 +45,18 @@ class LedgerTutorialInstructionView: BaseView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        updateShadowLayoutWhenViewDidLayoutSubviews()
+        if !isDarkModeDisplay {
+            updateShadowLayoutWhenViewDidLayoutSubviews()
+        }
+    }
+    
+    @available(iOS 12.0, *)
+    override func preferredUserInterfaceStyleDidChange(to userInterfaceStyle: UIUserInterfaceStyle) {
+        if userInterfaceStyle == .dark {
+            removeShadows()
+        } else {
+            applySmallShadow()
+        }
     }
 }
 
@@ -94,11 +108,5 @@ extension LedgerTutorialInstructionView {
         let iconSize = CGSize(width: 24.0, height: 24.0)
         let numberSize = CGSize(width: 32.0, height: 32.0)
         let titleHorizontalInset: CGFloat = -12.0
-    }
-}
-
-extension LedgerTutorialInstructionView {
-    private enum Colors {
-        static let shadowColor = rgba(0.17, 0.17, 0.23, 0.04)
     }
 }

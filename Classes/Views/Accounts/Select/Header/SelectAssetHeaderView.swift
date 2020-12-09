@@ -15,11 +15,11 @@ class SelectAssetHeaderView: BaseView {
     private lazy var imageView = UIImageView()
     
     private lazy var titleLabel: UILabel = {
-        UILabel().withAlignment(.left).withFont(UIFont.font(withWeight: .medium(size: 14.0))).withTextColor(SharedColors.inputTitle)
+        UILabel().withAlignment(.left).withFont(UIFont.font(withWeight: .medium(size: 14.0))).withTextColor(Colors.Text.primary)
     }()
     
     override func configureAppearance() {
-        backgroundColor = SharedColors.gray50
+        backgroundColor = Colors.Component.assetHeader
     }
     
     override func prepareLayout() {

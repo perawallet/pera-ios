@@ -17,14 +17,14 @@ class AccountHeaderView: BaseView {
     private lazy var containerView: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 8.0
-        view.backgroundColor = SharedColors.gray50
+        view.backgroundColor = Colors.Component.accountHeader
         return view
     }()
     
     private lazy var imageView = UIImageView()
     
     private lazy var titleLabel: UILabel = {
-        UILabel().withAlignment(.left).withFont(UIFont.font(withWeight: .medium(size: 14.0))).withTextColor(SharedColors.inputTitle)
+        UILabel().withAlignment(.left).withFont(UIFont.font(withWeight: .medium(size: 14.0))).withTextColor(Colors.Text.primary)
     }()
     
     private(set) lazy var qrButton: UIButton = {
@@ -36,7 +36,7 @@ class AccountHeaderView: BaseView {
     }()
     
     override func configureAppearance() {
-        backgroundColor = SharedColors.secondaryBackground
+        backgroundColor = Colors.Background.secondary
         layer.cornerRadius = 12.0
         layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
     }

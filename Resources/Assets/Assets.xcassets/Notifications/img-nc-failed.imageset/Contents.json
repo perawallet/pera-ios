@@ -3,6 +3,16 @@
     {
       "filename" : "img-nc-failed.pdf",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "img-nc-failed-1.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {

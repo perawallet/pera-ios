@@ -13,7 +13,7 @@ class AccountHeaderSupplementaryView: BaseSupplementaryView<AccountHeaderView> {
     weak var delegate: AccountHeaderSupplementaryViewDelegate?
     
     override func configureAppearance() {
-        backgroundColor = SharedColors.secondaryBackground
+        backgroundColor = Colors.Background.secondary
         layer.cornerRadius = 12.0
         layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
     }

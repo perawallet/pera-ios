@@ -29,7 +29,7 @@ class SegmentItem: BetterSegmentedControlSegment {
         let label = UILabel()
         label.text = text
         label.font = UIFont.font(withWeight: .medium(size: 14.0))
-        label.textColor = SharedColors.primaryText
+        label.textColor = Colors.Text.primary
         label.lineBreakMode = .byTruncatingTail
         label.textAlignment = .center
         return label

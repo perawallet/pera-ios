@@ -18,9 +18,9 @@ class ContactsEmptyView: EmptyStateView {
         let button = UIButton(type: .custom)
             .withTitle("contacts-add".localized)
             .withAlignment(.center)
-            .withTitleColor(SharedColors.primaryButtonTitle)
+            .withTitleColor(Colors.ButtonText.primary)
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
-            .withBackgroundColor(SharedColors.primary)
+            .withBackgroundColor(Colors.Main.primary600)
         button.layer.cornerRadius = 26.0
         return button
     }()

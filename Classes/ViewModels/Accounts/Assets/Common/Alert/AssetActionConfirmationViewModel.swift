@@ -32,8 +32,8 @@ class AssetActionConfirmationViewModel {
         }
         
         let range = (detailText as NSString).range(of: unitName)
-        attributedDetailText.addAttribute(NSAttributedString.Key.foregroundColor, value: SharedColors.primary, range: range)
-        attributedDetailText.addAttribute(NSAttributedString.Key.foregroundColor, value: SharedColors.primary, range: range)
+        attributedDetailText.addAttribute(NSAttributedString.Key.foregroundColor, value: Colors.General.selected, range: range)
+        attributedDetailText.addAttribute(NSAttributedString.Key.foregroundColor, value: Colors.General.selected, range: range)
         view.detailLabel.attributedText = attributedDetailText
     }
     
@@ -48,7 +48,7 @@ class AssetActionConfirmationViewModel {
         
         if displayNames.0.isUnknown() {
             view.assetCodeLabel.font = UIFont.font(withWeight: .semiBoldItalic(size: 40.0))
-            view.assetCodeLabel.textColor = SharedColors.secondary
+            view.assetCodeLabel.textColor = Colors.General.unknown
             view.assetCodeLabel.text = displayNames.0
         } else {
             view.assetNameLabel.text = displayNames.0

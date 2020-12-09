@@ -15,11 +15,11 @@ class LedgerTutorialNumberView: BaseView {
             .withLine(.single)
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
             .withAlignment(.center)
-            .withTextColor(SharedColors.secondaryText)
+            .withTextColor(Colors.Text.tertiary)
     }()
     
     override func configureAppearance() {
-        backgroundColor = SharedColors.gray100
+        backgroundColor = Colors.LedgerTutorialNumber.background
     }
     
     override func prepareLayout() {
@@ -45,5 +45,11 @@ extension LedgerTutorialNumberView {
     
     func setNumber(_ number: Int) {
         numberLabel.text = "\(number)"
+    }
+}
+
+extension Colors {
+    fileprivate enum LedgerTutorialNumber {
+        static let background = color("ledgerTutorialNumberBackground")
     }
 }

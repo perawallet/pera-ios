@@ -16,7 +16,7 @@ class RangeSelectionView: BaseControl {
         UILabel()
             .withAlignment(.left)
             .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
-            .withTextColor(SharedColors.subtitleText)
+            .withTextColor(Colors.Text.primary)
     }()
     
     private lazy var imageView = UIImageView()
@@ -25,7 +25,7 @@ class RangeSelectionView: BaseControl {
         UILabel()
             .withAlignment(.left)
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.Text.primary)
     }()
     
     private lazy var separatorView = UIImageView(image: img("img-custom-range-separator"))
@@ -96,12 +96,18 @@ extension RangeSelectionView {
     
     func setSelected(_ isSelected: Bool) {
         if isSelected {
-            imageView.tintColor = SharedColors.primary
+            imageView.tintColor = Colors.General.selected
             separatorView.image = img("img-custom-range-separator-selected")
         } else {
-            imageView.tintColor = SharedColors.gray500
+            imageView.tintColor = Colors.RangeSelection.rangeIcon
             separatorView.image = img("img-custom-range-separator")
         }
+    }
+}
+
+extension Colors {
+    fileprivate enum RangeSelection {
+        static let rangeIcon = color("transactionFilterRange")
     }
 }
 

@@ -22,7 +22,7 @@ class OptionsView: BaseView {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = SharedColors.secondaryBackground
+        collectionView.backgroundColor = Colors.Background.secondary
         collectionView.contentInset = .zero
         collectionView.register(OptionsCell.self, forCellWithReuseIdentifier: OptionsCell.reusableIdentifier)
         return collectionView
@@ -32,13 +32,13 @@ class OptionsView: BaseView {
         UIButton(type: .custom)
             .withBackgroundImage(img("bg-light-gray-button"))
             .withTitle("title-cancel".localized)
-            .withTitleColor(SharedColors.gray700)
+            .withTitleColor(Colors.ButtonText.secondary)
             .withAlignment(.center)
             .withFont(UIFont.font(withWeight: .semiBold(size: 14.0)))
     }()
     
     override func configureAppearance() {
-        backgroundColor = SharedColors.secondaryBackground
+        backgroundColor = Colors.Background.secondary
     }
     
     override func setListeners() {

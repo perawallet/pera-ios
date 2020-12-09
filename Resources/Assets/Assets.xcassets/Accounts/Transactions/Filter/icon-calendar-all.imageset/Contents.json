@@ -3,6 +3,16 @@
     {
       "filename" : "icon-calendar-all.pdf",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "icon-calendar-all-1.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {

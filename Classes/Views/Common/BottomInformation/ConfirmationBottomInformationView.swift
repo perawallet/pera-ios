@@ -15,7 +15,7 @@ class ConfirmationBottomInformationView: BottomInformationView {
     private(set) lazy var actionButton: UIButton = {
         UIButton(type: .custom)
             .withFont(UIFont.font(withWeight: .medium(size: 16.0)))
-            .withTitleColor(SharedColors.primaryButtonTitle)
+            .withTitleColor(Colors.ButtonText.primary)
     }()
     
     weak var delegate: ConfirmationBottomInformationViewDelegate?

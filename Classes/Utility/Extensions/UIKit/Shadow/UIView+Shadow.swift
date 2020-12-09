@@ -33,6 +33,25 @@ extension UIView {
         }
     }
     
+    func removeShadows() {
+        layer.sublayers?.forEach { sublayer in
+            if let sublayerName = sublayer.name,
+                sublayerName.hasPrefix("shadow_") {
+                sublayer.shadowOpacity = 0.0
+                sublayer.frame = .zero
+                sublayer.shadowPath = nil
+            }
+        }
+    }
+    
+    func removeShadow() {
+        layer.sublayers?.forEach { sublayer in
+            sublayer.shadowOpacity = 0.0
+            sublayer.frame = .zero
+            sublayer.shadowPath = nil
+        }
+    }
+    
     func applySmallShadow() {
         applyMultipleShadows([smallTopShadow, smallBottomShadow])
     }

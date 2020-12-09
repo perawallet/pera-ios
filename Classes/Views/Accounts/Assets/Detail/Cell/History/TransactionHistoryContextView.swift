@@ -17,7 +17,7 @@ class TransactionHistoryContextView: BaseView {
             .withLine(.single)
             .withAlignment(.left)
             .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.Text.primary)
         label.isHidden = true
         return label
     }()
@@ -27,7 +27,7 @@ class TransactionHistoryContextView: BaseView {
             .withLine(.single)
             .withAlignment(.left)
             .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.Text.primary)
         label.lineBreakMode = .byTruncatingMiddle
         label.isHidden = true
         return label
@@ -40,7 +40,7 @@ class TransactionHistoryContextView: BaseView {
             .withLine(.single)
             .withAlignment(.left)
             .withFont(UIFont.font(withWeight: .regular(size: 12.0)))
-            .withTextColor(SharedColors.detailText)
+            .withTextColor(Colors.Text.secondary)
         label.lineBreakMode = .byTruncatingMiddle
         return label
     }()
@@ -50,13 +50,13 @@ class TransactionHistoryContextView: BaseView {
             .withLine(.single)
             .withAlignment(.right)
             .withFont(UIFont.font(withWeight: .regular(size: 12.0)))
-            .withTextColor(SharedColors.detailText)
+            .withTextColor(Colors.Text.secondary)
     }()
     
     private lazy var separatorView = LineSeparatorView()
     
     override func configureAppearance() {
-        backgroundColor = SharedColors.secondaryBackground
+        backgroundColor = Colors.Background.secondary
     }
     
     override func prepareLayout() {

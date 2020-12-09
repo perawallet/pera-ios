@@ -23,18 +23,18 @@ class AssetView: BaseView {
     private lazy var actionButton: UIButton = {
         UIButton(type: .custom)
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
-            .withTitleColor(SharedColors.primaryText)
+            .withTitleColor(Colors.Text.primary)
             .withAlignment(.right)
     }()
     
     private lazy var separatorView: UIView = {
         let view = UIView()
-        view.backgroundColor = SharedColors.primaryBackground
+        view.backgroundColor = Colors.Component.separator
         return view
     }()
     
     override func configureAppearance() {
-        backgroundColor = SharedColors.secondaryBackground
+        backgroundColor = Colors.Background.secondary
     }
     
     override func setListeners() {
@@ -105,8 +105,7 @@ extension AssetView {
 
 extension AssetView {
     func setEnabled(_ isEnabled: Bool) {
-        backgroundColor = isEnabled ? SharedColors.secondaryBackground : SharedColors.disabledBackground
-        separatorView.backgroundColor = isEnabled ? SharedColors.primaryBackground : SharedColors.gray200
+        backgroundColor = isEnabled ? Colors.Background.secondary : Colors.Background.disabled
     }
     
     func setSeparatorViewHidden(_ isHidden: Bool) {

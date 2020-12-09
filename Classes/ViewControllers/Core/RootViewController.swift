@@ -15,8 +15,16 @@ class RootViewController: UIViewController {
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        if #available(iOS 13.0, *) {
-            return .darkContent
+        if appConfiguration.api.isTestNet {
+            if #available(iOS 13.0, *) {
+                return .darkContent
+            } else {
+                return .default
+            }
+        }
+        
+        if isDarkModeDisplay {
+            return .lightContent
         } else {
             return .default
         }
@@ -30,7 +38,7 @@ class RootViewController: UIViewController {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.zPosition = 1.0
-        view.backgroundColor = SharedColors.testNetBanner
+        view.backgroundColor = Colors.General.testNetBanner
         return view
     }()
 
@@ -58,7 +66,9 @@ class RootViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = SharedColors.primaryBackground
+        view.backgroundColor = Colors.Background.primary
+        
+        changeUserInterfaceStyle(to: appConfiguration.api.session.userInterfaceStyle)
         
         initializeNetwork()
         addTestNetBanner()
@@ -249,6 +259,23 @@ extension RootViewController {
     func removeTestNetBanner() {
         if statusbarView.superview != nil {
             statusbarView.removeFromSuperview()
+        }
+    }
+    
+    /// <note> overrideUserInterfaceStyle property is used to override interface style for user preference
+    func changeUserInterfaceStyle(to appearance: UserInterfaceStyle) {
+        guard #available(iOS 13.0, *) else {
+            return
+        }
+        
+        switch appearance {
+        case .system:
+            let systemAppearance: UIUserInterfaceStyle = UIApplication.shared.deviceInterfaceStyle == .light ? .light : .dark
+            UIApplication.shared.appDelegate?.window?.overrideUserInterfaceStyle = systemAppearance
+        case .dark:
+            UIApplication.shared.appDelegate?.window?.overrideUserInterfaceStyle = .dark
+        case .light:
+            UIApplication.shared.appDelegate?.window?.overrideUserInterfaceStyle = .light
         }
     }
 }

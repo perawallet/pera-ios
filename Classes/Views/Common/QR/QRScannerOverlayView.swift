@@ -17,7 +17,7 @@ class QRScannerOverlayView: BaseView {
     private lazy var titleLabel: UILabel = {
         UILabel()
             .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
-            .withTextColor(SharedColors.white)
+            .withTextColor(Colors.Main.white)
             .withText("qr-scan-title".localized)
             .withLine(.single)
             .withAlignment(.center)
@@ -25,7 +25,7 @@ class QRScannerOverlayView: BaseView {
     
     private lazy var overlayView: UIView = {
         let overlayView = UIView(frame: UIScreen.main.bounds)
-        overlayView.backgroundColor = SharedColors.gray900.withAlphaComponent(0.9)
+        overlayView.backgroundColor = Colors.QRScanner.qrScannerBackground
         let path = CGMutablePath()
         path.addRect(UIScreen.main.bounds)
         path.addRoundedRect(
@@ -50,7 +50,7 @@ class QRScannerOverlayView: BaseView {
     private lazy var explanationLabel: UILabel = {
         UILabel()
             .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
-            .withTextColor(SharedColors.white.withAlphaComponent(0.8))
+            .withTextColor(Colors.QRScanner.detailText)
             .withText("qr-scan-message-text".localized)
             .withLine(.contained)
             .withAlignment(.center)
@@ -60,7 +60,7 @@ class QRScannerOverlayView: BaseView {
         UIButton(type: .custom)
             .withBackgroundImage(img("button-bg-scan-qr"))
             .withTitle("title-cancel".localized)
-            .withTitleColor(SharedColors.primaryButtonTitle)
+            .withTitleColor(Colors.QRScanner.buttonText)
             .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
     }()
     
@@ -106,7 +106,7 @@ extension QRScannerOverlayView {
         addSubview(titleLabel)
         
         titleLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(layout.current.titleLabelTopInset)
+            make.top.equalToSuperview().inset(safeAreaTop + layout.current.titleLabelTopInset)
             make.centerX.equalToSuperview()
         }
     }
@@ -132,11 +132,19 @@ extension QRScannerOverlayView {
     }
 }
 
+extension Colors {
+    fileprivate enum QRScanner {
+        static let qrScannerBackground = color("qrScannerBackground")
+        static let detailText = Colors.Main.white.withAlphaComponent(0.8)
+        static let buttonText = Colors.Main.white
+    }
+}
+
 extension QRScannerOverlayView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let horizontalInset: CGFloat = 20.0
         let buttonVerticalInset: CGFloat = 40.0
-        let titleLabelTopInset: CGFloat = 45.0
+        let titleLabelTopInset: CGFloat = 20.0
         let explanationLabelHorizontalInset: CGFloat = 40.0
     }
 }

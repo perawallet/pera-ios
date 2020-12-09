@@ -22,7 +22,7 @@ class AssetInputView: BaseView {
     
     private lazy var explanationLabel: UILabel = {
         UILabel()
-            .withTextColor(SharedColors.subtitleText)
+            .withTextColor(Colors.Text.primary)
             .withLine(.single)
             .withAlignment(.left)
             .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
@@ -32,7 +32,7 @@ class AssetInputView: BaseView {
     private lazy var containerView: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 12.0
-        view.backgroundColor = SharedColors.secondaryBackground
+        view.backgroundColor = Colors.Background.secondary
         return view
     }()
     
@@ -40,24 +40,24 @@ class AssetInputView: BaseView {
         let button = UIButton(type: .custom)
         button.isHidden = true
         button.titleLabel?.font = UIFont.font(withWeight: .semiBold(size: 12.0))
-        button.setTitleColor(SharedColors.gray500, for: .normal)
+        button.setTitleColor(Colors.Text.secondary, for: .normal)
         button.setTitle("title-max".localized, for: .normal)
-        button.backgroundColor = SharedColors.secondaryBackground
+        button.backgroundColor = Colors.Background.secondary
         button.layer.borderWidth = 2.0
-        button.layer.borderColor = SharedColors.gray200.cgColor
+        button.layer.borderColor = Colors.AssetInput.maxButtonBorder.cgColor
         button.layer.cornerRadius = 8.0
         return button
     }()
     
     private(set) lazy var inputTextField: CursorlessTextField = {
         let textField = CursorlessTextField()
-        textField.textColor = SharedColors.primaryText
-        textField.tintColor = SharedColors.primaryText
+        textField.textColor = Colors.Text.primary
+        textField.tintColor = Colors.Text.primary
         textField.keyboardType = .numberPad
         textField.font = UIFont.font(withWeight: .medium(size: 14.0))
         textField.attributedPlaceholder = NSAttributedString(
             string: "0".currencyInputFormatting(with: inputFieldFraction) ?? "0.000000",
-            attributes: [NSAttributedString.Key.foregroundColor: SharedColors.informationText,
+            attributes: [NSAttributedString.Key.foregroundColor: Colors.Text.hint,
                          NSAttributedString.Key.font: UIFont.font(withWeight: .medium(size: 14.0))]
         )
         textField.textAlignment = .left
@@ -99,6 +99,15 @@ class AssetInputView: BaseView {
     override func layoutSubviews() {
         super.layoutSubviews()
         containerView.updateShadowLayoutWhenViewDidLayoutSubviews()
+    }
+    
+    @available(iOS 12.0, *)
+    override func preferredUserInterfaceStyleDidChange(to userInterfaceStyle: UIUserInterfaceStyle) {
+        if userInterfaceStyle == .dark {
+            containerView.removeShadows()
+        } else {
+            containerView.applySmallShadow()
+        }
     }
 }
 
@@ -183,13 +192,13 @@ extension AssetInputView {
         }
         
         if isMaxButtonSelected {
-            maxButton.backgroundColor = SharedColors.primary
-            maxButton.setTitleColor(SharedColors.primaryButtonTitle, for: .normal)
-            maxButton.layer.borderColor = SharedColors.primary.cgColor
+            maxButton.backgroundColor = Colors.General.selected
+            maxButton.setTitleColor(Colors.ButtonText.primary, for: .normal)
+            maxButton.layer.borderColor = Colors.General.selected.cgColor
         } else {
-            maxButton.backgroundColor = SharedColors.secondaryBackground
-            maxButton.setTitleColor(SharedColors.gray500, for: .normal)
-            maxButton.layer.borderColor = SharedColors.gray200.cgColor
+            maxButton.backgroundColor = Colors.Background.secondary
+            maxButton.setTitleColor(Colors.Text.secondary, for: .normal)
+            maxButton.layer.borderColor = Colors.AssetInput.maxButtonBorder.cgColor
         }
     }
 }
@@ -219,14 +228,20 @@ extension AssetInputView {
         inputTextField.isEnabled = enabled
         
         if enabled {
-            containerView.backgroundColor = SharedColors.secondaryBackground
+            containerView.backgroundColor = Colors.Background.secondary
         } else {
-            containerView.backgroundColor = SharedColors.disabledBackground
+            containerView.backgroundColor = Colors.Background.disabled
         }
     }
     
     func setMaxButtonHidden(_ hidden: Bool) {
         maxButton.isHidden = hidden
+    }
+}
+
+extension Colors {
+    fileprivate enum AssetInput {
+        static let maxButtonBorder = color("maxButtonBorder")
     }
 }
 

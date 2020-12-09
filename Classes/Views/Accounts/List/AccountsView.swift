@@ -26,7 +26,7 @@ class AccountsView: BaseView {
         let collectionView = AssetsCollectionView(containsPendingAssets: true)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = SharedColors.primaryBackground
+        collectionView.backgroundColor = Colors.Background.primary
         collectionView.contentInset = UIEdgeInsets(top: 0.0, left: 20.0, bottom: 20.0, right: 20.0)
         
         collectionView.register(AlgoAssetCell.self, forCellWithReuseIdentifier: AlgoAssetCell.reusableIdentifier)

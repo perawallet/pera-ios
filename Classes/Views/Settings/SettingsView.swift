@@ -29,7 +29,8 @@ class SettingsView: BaseView {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = SharedColors.primaryBackground
+        collectionView.bounces = false
+        collectionView.backgroundColor = Colors.Settings.background
         collectionView.contentInset = .zero
         collectionView.keyboardDismissMode = .onDrag
         
@@ -43,6 +44,10 @@ class SettingsView: BaseView {
         )
         return collectionView
     }()
+    
+    override func configureAppearance() {
+        backgroundColor = Colors.Background.tertiary
+    }
 
     override func prepareLayout() {
         setupSettingsHeaderViewLayout()
@@ -67,5 +72,11 @@ extension SettingsView {
             make.top.equalTo(settingsHeaderView.snp.bottom)
             make.leading.bottom.trailing.equalToSuperview()
         }
+    }
+}
+
+extension Colors {
+    fileprivate enum Settings {
+        static let background = color("settingsBackgroundColor")
     }
 }

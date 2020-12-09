@@ -39,8 +39,8 @@ class IntroductionViewController: BaseViewController {
     
     override func configureAppearance() {
         super.configureAppearance()
-        view.backgroundColor = SharedColors.secondaryBackground
-        setSecondaryBackgroundColor()
+        view.backgroundColor = Colors.Background.tertiary
+        setTertiaryBackgroundColor()
         
         switch accountSetupFlow {
         case .addNewAccount:

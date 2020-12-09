@@ -19,7 +19,7 @@ class RekeyTransitionView: BaseView {
     private lazy var oldTitleLabel: UILabel = {
         UILabel()
             .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
-            .withTextColor(SharedColors.gray500)
+            .withTextColor(Colors.Text.secondary)
             .withLine(.single)
             .withAlignment(.center)
     }()
@@ -27,7 +27,7 @@ class RekeyTransitionView: BaseView {
     private lazy var oldValueLabel: UILabel = {
         UILabel()
             .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.Text.primary)
             .withLine(.single)
             .withAlignment(.center)
     }()
@@ -37,7 +37,7 @@ class RekeyTransitionView: BaseView {
     private lazy var newTitleLabel: UILabel = {
         UILabel()
             .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
-            .withTextColor(SharedColors.gray500)
+            .withTextColor(Colors.Text.secondary)
             .withLine(.single)
             .withAlignment(.center)
     }()
@@ -45,15 +45,17 @@ class RekeyTransitionView: BaseView {
     private lazy var newValueLabel: UILabel = {
         UILabel()
             .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.Text.primary)
             .withLine(.single)
             .withAlignment(.center)
     }()
     
     override func configureAppearance() {
-        backgroundColor = SharedColors.secondaryBackground
+        backgroundColor = Colors.Background.secondary
         layer.cornerRadius = 12.0
-        applySmallShadow()
+        if !isDarkModeDisplay {
+            applySmallShadow()
+        }
     }
     
     override func prepareLayout() {
@@ -66,7 +68,18 @@ class RekeyTransitionView: BaseView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        updateShadowLayoutWhenViewDidLayoutSubviews(cornerRadius: 12.0)
+        if !isDarkModeDisplay {
+            updateShadowLayoutWhenViewDidLayoutSubviews(cornerRadius: 12.0)
+        }
+    }
+    
+    @available(iOS 12.0, *)
+    override func preferredUserInterfaceStyleDidChange(to userInterfaceStyle: UIUserInterfaceStyle) {
+        if userInterfaceStyle == .dark {
+            removeShadows()
+        } else {
+            applySmallShadow()
+        }
     }
 }
 

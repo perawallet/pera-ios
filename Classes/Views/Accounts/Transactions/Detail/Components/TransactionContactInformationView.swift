@@ -18,7 +18,7 @@ class TransactionContactInformationView: BaseView {
     
     private(set) lazy var copyImageView: UIImageView = {
         let imageView = UIImageView(image: img("icon-copy", isTemplate: true))
-        imageView.tintColor = SharedColors.gray400
+        imageView.tintColor = Colors.Component.transactionDetailCopyIcon
         imageView.isHidden = true
         return imageView
     }()
@@ -28,7 +28,7 @@ class TransactionContactInformationView: BaseView {
     private lazy var separatorView = LineSeparatorView()
     
     override func configureAppearance() {
-        backgroundColor = SharedColors.secondaryBackground
+        backgroundColor = Colors.Background.tertiary
     }
     
     override func linkInteractors() {

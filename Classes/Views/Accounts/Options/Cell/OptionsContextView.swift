@@ -19,11 +19,11 @@ class OptionsContextView: BaseView {
             .withLine(.single)
             .withAlignment(.left)
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.Text.primary)
     }()
     
     override func configureAppearance() {
-        backgroundColor = SharedColors.secondaryBackground
+        backgroundColor = Colors.Background.secondary
     }
     
     override func prepareLayout() {

@@ -20,14 +20,14 @@ class ListErrorView: BaseView {
         UILabel()
             .withAlignment(.center)
             .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.Text.primary)
     }()
     
     private lazy var subtitleLabel: UILabel = {
         UILabel()
             .withAlignment(.center)
             .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
-            .withTextColor(SharedColors.secondaryText)
+            .withTextColor(Colors.Text.tertiary)
             .withLine(.contained)
     }()
     
@@ -36,7 +36,7 @@ class ListErrorView: BaseView {
         button.setBackgroundImage(img("bg-try-again"), for: .normal)
         button.setImage(img("icon-reload"), for: .normal)
         button.setTitle("transaction-filter-try-again".localized, for: .normal)
-        button.setTitleColor(SharedColors.primaryText, for: .normal)
+        button.setTitleColor(Colors.ButtonText.secondary, for: .normal)
         button.titleLabel?.font = UIFont.font(withWeight: .semiBold(size: 16.0))
         button.titleLabel?.adjustsFontSizeToFitWidth = true
         button.titleLabel?.minimumScaleFactor = 0.7
@@ -45,7 +45,7 @@ class ListErrorView: BaseView {
     }()
     
     override func configureAppearance() {
-        backgroundColor = SharedColors.secondaryBackground
+        backgroundColor = .clear
     }
     
     override func setListeners() {

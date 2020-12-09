@@ -3,6 +3,16 @@
     {
       "filename" : "icon-transaction-filter-badge.pdf",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "icon-transaction-filter-badge-1.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {

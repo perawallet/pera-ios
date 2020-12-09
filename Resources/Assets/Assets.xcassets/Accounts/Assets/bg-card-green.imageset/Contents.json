@@ -3,6 +3,16 @@
     {
       "filename" : "bg-card-green.pdf",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "bg-card-green-1.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {

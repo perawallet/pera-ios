@@ -3,6 +3,16 @@
     {
       "filename" : "tabbar-icon-transaction-selected.pdf",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "tabbar-icon-transaction-selected-1.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {

@@ -33,7 +33,13 @@ class SettingsViewController: BaseViewController {
     
     private lazy var settings: [[GeneralSettings]] = [securitySettings, preferenceSettings, appSettings, developerSettings]
     private lazy var securitySettings: [GeneralSettings] = [.password, .localAuthentication]
-    private lazy var preferenceSettings: [GeneralSettings] = [.notifications, .rewards, .language, .currency]
+    private lazy var preferenceSettings: [GeneralSettings] = {
+        var settings: [GeneralSettings] = [.notifications, .rewards, .language, .currency]
+        if #available(iOS 13.0, *) {
+            settings.append(.appearance)
+        }
+        return settings
+    }()
     private lazy var appSettings: [GeneralSettings] = [.feedback, .termsAndServices, .privacyPolicy]
     private lazy var developerSettings: [GeneralSettings] = [.developer]
     
@@ -43,6 +49,10 @@ class SettingsViewController: BaseViewController {
     
     override func customizeTabBarAppearence() {
         isTabBarHidden = false
+    }
+    
+    override func configureAppearance() {
+        view.backgroundColor = Colors.Background.tertiary
     }
     
     override func linkInteractors() {
@@ -131,6 +141,9 @@ extension SettingsViewController: UICollectionViewDataSource {
             case .currency:
                 let preferredCurrency = api?.session.preferredCurrency ?? "settings-currency-usd".localized
                 return setSettingsInfoCell(from: setting, info: preferredCurrency, in: collectionView, at: indexPath)
+            case .appearance:
+                let preferredAppearance = api?.session.userInterfaceStyle ?? .system
+                return setSettingsInfoCell(from: setting, info: preferredAppearance.representation(), in: collectionView, at: indexPath)
             case .feedback:
                 return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
             case .termsAndServices:
@@ -154,6 +167,9 @@ extension SettingsViewController: UICollectionViewDataSource {
             withReuseIdentifier: SettingsDetailCell.reusableIdentifier,
             for: indexPath
         ) as? SettingsDetailCell {
+            if shouldHideSeparator(at: indexPath, in: collectionView) {
+                cell.contextView.setSeparatorHidden(true)
+            }
             SettingsDetailViewModel(setting: setting).configure(cell)
             return cell
         }
@@ -171,6 +187,9 @@ extension SettingsViewController: UICollectionViewDataSource {
             withReuseIdentifier: SettingsInfoCell.reusableIdentifier,
             for: indexPath
         ) as? SettingsInfoCell {
+            if shouldHideSeparator(at: indexPath, in: collectionView) {
+                cell.contextView.setSeparatorHidden(true)
+            }
             SettingsInfoViewModel(setting: setting, info: info).configure(cell)
             return cell
         }
@@ -188,12 +207,19 @@ extension SettingsViewController: UICollectionViewDataSource {
             withReuseIdentifier: SettingsToggleCell.reusableIdentifier,
             for: indexPath
         ) as? SettingsToggleCell {
+            if shouldHideSeparator(at: indexPath, in: collectionView) {
+                cell.contextView.setSeparatorHidden(true)
+            }
             cell.delegate = self
             SettingsToggleViewModel(setting: setting, isOn: isOn).configure(cell)
             return cell
         }
         
         fatalError("Index path is out of bounds")
+    }
+    
+    private func shouldHideSeparator(at indexPath: IndexPath, in collectionView: UICollectionView) -> Bool {
+        return isDarkModeDisplay && collectionView.numberOfItems(inSection: indexPath.section) == indexPath.item + 1
     }
     
     func collectionView(
@@ -261,6 +287,8 @@ extension SettingsViewController: UICollectionViewDelegateFlowLayout {
             case .currency:
                 let controller = open(.currencySelection, by: .push) as? CurrencySelectionViewController
                 controller?.delegate = self
+            case .appearance:
+                open(.appearanceSelection, by: .push)
             case .termsAndServices:
                 guard let url = URL(string: Environment.current.termsAndServicesUrl) else {
                     return

@@ -24,14 +24,6 @@ class BaseViewController: UIViewController, TabBarConfigurable, TrackableScreen 
         return isStatusBarHidden
     }
     
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        if #available(iOS 13.0, *) {
-            return .darkContent
-        } else {
-            return .default
-        }
-    }
-    
     override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
         return isStatusBarHidden ? .fade : .none
     }
@@ -95,12 +87,12 @@ class BaseViewController: UIViewController, TabBarConfigurable, TrackableScreen 
         
         navigationController?.navigationBar.titleTextAttributes = [
             NSAttributedString.Key.font: UIFont.font(withWeight: .semiBold(size: 16.0)),
-            NSAttributedString.Key.foregroundColor: SharedColors.primaryText
+            NSAttributedString.Key.foregroundColor: Colors.Text.primary
         ]
     }
     
     func configureAppearance() {
-        view.backgroundColor = SharedColors.primaryBackground
+        view.backgroundColor = Colors.Background.primary
     }
     
     func prepareLayout() {
@@ -110,6 +102,10 @@ class BaseViewController: UIViewController, TabBarConfigurable, TrackableScreen 
     }
     
     func setListeners() {
+    }
+    
+    @available(iOS 12.0, *)
+    func preferredUserInterfaceStyleDidChange(to userInterfaceStyle: UIUserInterfaceStyle) {
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -157,17 +153,32 @@ class BaseViewController: UIViewController, TabBarConfigurable, TrackableScreen 
     func didTapDismissBarButton() -> Bool {
         return true
     }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        if #available(iOS 12.0, *) {
+            if traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
+                preferredUserInterfaceStyleDidChange(to: traitCollection.userInterfaceStyle)
+            }
+        }
+    }
 }
 
 extension BaseViewController {
     func setPrimaryBackgroundColor() {
-        navigationController?.navigationBar.barTintColor = SharedColors.primaryBackground
-        navigationController?.navigationBar.tintColor = SharedColors.primaryBackground
+        navigationController?.navigationBar.barTintColor = Colors.Background.primary
+        navigationController?.navigationBar.tintColor = Colors.Background.primary
     }
     
     func setSecondaryBackgroundColor() {
-        navigationController?.navigationBar.barTintColor = SharedColors.secondaryBackground
-        navigationController?.navigationBar.tintColor = SharedColors.secondaryBackground
+        navigationController?.navigationBar.barTintColor = Colors.Background.secondary
+        navigationController?.navigationBar.tintColor = Colors.Background.secondary
+    }
+    
+    func setTertiaryBackgroundColor() {
+        navigationController?.navigationBar.barTintColor = Colors.Background.tertiary
+        navigationController?.navigationBar.tintColor = Colors.Background.tertiary
     }
 }
 

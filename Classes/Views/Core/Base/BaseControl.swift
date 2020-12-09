@@ -61,6 +61,10 @@ class BaseControl: UIControl {
     }
 
     func prepareForReuse() { }
+    
+    @available(iOS 12.0, *)
+    func preferredUserInterfaceStyleDidChange(to userInterfaceStyle: UIUserInterfaceStyle) {
+    }
 
     override func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
         reconfigureAppearance(for: .began)
@@ -78,6 +82,16 @@ class BaseControl: UIControl {
 
     override func cancelTracking(with event: UIEvent?) {
         reconfigureAppearance(for: .ended)
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        if #available(iOS 12.0, *) {
+            if traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
+                preferredUserInterfaceStyleDidChange(to: traitCollection.userInterfaceStyle)
+            }
+        }
     }
 }
 

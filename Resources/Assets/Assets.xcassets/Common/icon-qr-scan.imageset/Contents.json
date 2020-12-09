@@ -1,13 +1,23 @@
 {
   "images" : [
     {
-      "idiom" : "universal",
-      "filename" : "icon-qr-scan.pdf"
+      "filename" : "icon-qr-scan.pdf",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "icon-qr-scan-1.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {
-    "version" : 1,
-    "author" : "xcode"
+    "author" : "xcode",
+    "version" : 1
   },
   "properties" : {
     "preserves-vector-representation" : true

@@ -17,17 +17,17 @@ class MainHeaderView: BaseView {
     private lazy var titleLabel: UILabel = {
         UILabel()
             .withFont(UIFont.font(withWeight: .bold(size: 28.0 * horizontalScale)))
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.Text.primary)
             .withAlignment(.left)
     }()
     
     private lazy var testNetLabel: UILabel = {
         let label = UILabel()
             .withFont(UIFont.font(withWeight: .bold(size: 10.0)))
-            .withTextColor(SharedColors.primaryButtonTitle)
+            .withTextColor(Colors.ButtonText.primary)
             .withAlignment(.center)
             .withText("title-testnet".localized)
-        label.backgroundColor = SharedColors.testNetBanner
+        label.backgroundColor = Colors.General.testNetBanner
         label.layer.cornerRadius = 12.0
         label.layer.masksToBounds = true
         label.isHidden = true
@@ -46,7 +46,11 @@ class MainHeaderView: BaseView {
     
     override func configureAppearance() {
         super.configureAppearance()
-        qrButton.applyShadow(Shadow(color: Colors.shadowColor, offset: CGSize(width: 0.0, height: 4.0), radius: 12.0, opacity: 1.0))
+        if !isDarkModeDisplay {
+            qrButton.applyShadow(
+                Shadow(color: Colors.MainHeader.shadowColor, offset: CGSize(width: 0.0, height: 4.0), radius: 12.0, opacity: 1.0)
+            )
+        }
     }
     
     override func setListeners() {
@@ -63,7 +67,20 @@ class MainHeaderView: BaseView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        qrButton.layer.shadowPath = UIBezierPath(roundedRect: qrButton.bounds, cornerRadius: 20.0).cgPath
+        if !isDarkModeDisplay {
+            qrButton.layer.shadowPath = UIBezierPath(roundedRect: qrButton.bounds, cornerRadius: 20.0).cgPath
+        }
+    }
+    
+    @available(iOS 12.0, *)
+    override func preferredUserInterfaceStyleDidChange(to userInterfaceStyle: UIUserInterfaceStyle) {
+        if userInterfaceStyle == .dark {
+            qrButton.removeShadow()
+        } else {
+            qrButton.applyShadow(
+                Shadow(color: Colors.MainHeader.shadowColor, offset: CGSize(width: 0.0, height: 4.0), radius: 12.0, opacity: 1.0)
+            )
+        }
     }
 }
 
@@ -149,8 +166,8 @@ extension MainHeaderView {
     }
 }
 
-extension MainHeaderView {
-    private enum Colors {
+extension Colors {
+    fileprivate enum MainHeader {
         static let shadowColor = rgba(0.26, 0.26, 0.31, 0.07)
     }
 }

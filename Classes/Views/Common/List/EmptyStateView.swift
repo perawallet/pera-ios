@@ -18,7 +18,7 @@ class EmptyStateView: BaseView {
         UILabel()
             .withAlignment(.center)
             .withLine(.contained)
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.Text.primary)
             .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
             .withText(title)
     }()
@@ -28,7 +28,7 @@ class EmptyStateView: BaseView {
             .withAttributedText(subtitle.attributed([.lineSpacing(1.2)]))
             .withAlignment(.center)
             .withLine(.contained)
-            .withTextColor(SharedColors.gray800)
+            .withTextColor(Colors.Text.tertiary)
             .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
     }()
     
@@ -48,7 +48,7 @@ class EmptyStateView: BaseView {
     }
     
     override func configureAppearance() {
-        backgroundColor = SharedColors.secondaryBackground
+        backgroundColor = .clear
         imageView.contentMode = .scaleAspectFill
     }
     
@@ -65,7 +65,7 @@ extension EmptyStateView {
         
         imageView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.centerY.equalToSuperview().inset(layout.current.imagecCenterOffset)
+            make.centerY.equalToSuperview().inset(layout.current.imageCenterOffset)
         }
     }
     
@@ -107,7 +107,7 @@ extension EmptyStateView {
 extension EmptyStateView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let horizontalInset: CGFloat = 40.0 * horizontalScale
-        let imagecCenterOffset: CGFloat = 60.0
+        let imageCenterOffset: CGFloat = 60.0
         let titleTopInset: CGFloat = 24.0 * verticalScale
         let subtitleTopInset: CGFloat = 12.0 * verticalScale
     }

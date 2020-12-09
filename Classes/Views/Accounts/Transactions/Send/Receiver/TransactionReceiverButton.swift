@@ -19,7 +19,7 @@ class TransactionReceiverButton: BaseControl {
     private lazy var titleLabel: UILabel = {
         UILabel()
             .withFont(UIFont.font(withWeight: .regular(size: 12.0)))
-            .withTextColor(SharedColors.gray800)
+            .withTextColor(Colors.Text.primary)
             .withLine(.single)
             .withAlignment(.center)
     }()
@@ -31,7 +31,7 @@ class TransactionReceiverButton: BaseControl {
     }
 
     override func configureAppearance() {
-        containerView.backgroundColor = SharedColors.secondaryBackground
+        containerView.backgroundColor = Colors.Background.secondary
         containerView.isUserInteractionEnabled = false
         containerView.layer.cornerRadius = 12.0
         containerView.applySmallShadow()
@@ -46,6 +46,15 @@ class TransactionReceiverButton: BaseControl {
     override func layoutSubviews() {
         super.layoutSubviews()
         containerView.updateShadowLayoutWhenViewDidLayoutSubviews()
+    }
+    
+    @available(iOS 12.0, *)
+    override func preferredUserInterfaceStyleDidChange(to userInterfaceStyle: UIUserInterfaceStyle) {
+        if userInterfaceStyle == .dark {
+            containerView.removeShadows()
+        } else {
+            containerView.applySmallShadow()
+        }
     }
 }
 

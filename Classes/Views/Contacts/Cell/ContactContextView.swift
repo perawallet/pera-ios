@@ -14,7 +14,7 @@ class ContactContextView: BaseView {
     
     private(set) lazy var userImageView: UIImageView = {
         let imageView = UIImageView(image: img("icon-user-placeholder"))
-        imageView.backgroundColor = SharedColors.primaryBackground
+        imageView.backgroundColor = Colors.Background.reversePrimary
         imageView.layer.cornerRadius = layout.current.imageSize / 2
         imageView.clipsToBounds = true
         imageView.contentMode = .center
@@ -23,7 +23,7 @@ class ContactContextView: BaseView {
     
     private(set) lazy var nameLabel: UILabel = {
         UILabel()
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.Text.primary)
             .withLine(.single)
             .withAlignment(.left)
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
@@ -31,16 +31,18 @@ class ContactContextView: BaseView {
     
     private(set) lazy var addressLabel: UILabel = {
         UILabel()
-            .withTextColor(SharedColors.gray500)
+            .withTextColor(Colors.Text.secondary)
             .withAlignment(.left)
             .withLine(.single)
             .withFont(UIFont.font(withWeight: .regular(size: 12.0)))
     }()
     
     private(set) lazy var qrDisplayButton: UIButton = {
-        let button = UIButton(type: .custom).withImage(img("icon-qr", isTemplate: true)).withBackgroundColor(SharedColors.primaryBackground)
+        let button = UIButton(type: .custom)
+            .withImage(img("icon-qr", isTemplate: true))
+            .withBackgroundColor(Colors.Background.reversePrimary)
         button.layer.cornerRadius = 20.0
-        button.tintColor = SharedColors.gray600
+        button.tintColor = Colors.Text.secondary
         return button
     }()
     
@@ -51,7 +53,7 @@ class ContactContextView: BaseView {
     }
     
     override func configureAppearance() {
-        backgroundColor = SharedColors.secondaryBackground
+        backgroundColor = Colors.Background.tertiary
     }
     
     override func prepareLayout() {

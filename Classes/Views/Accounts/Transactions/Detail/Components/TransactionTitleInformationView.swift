@@ -16,7 +16,7 @@ class TransactionTitleInformationView: BaseControl {
     
     private(set) lazy var copyImageView: UIImageView = {
         let imageView = UIImageView(image: img("icon-copy", isTemplate: true))
-        imageView.tintColor = SharedColors.gray400
+        imageView.tintColor = Colors.Component.transactionDetailCopyIcon
         imageView.isHidden = true
         return imageView
     }()
@@ -26,13 +26,13 @@ class TransactionTitleInformationView: BaseControl {
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
             .withLine(.contained)
             .withAlignment(.left)
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.Text.primary)
     }()
     
     private lazy var separatorView = LineSeparatorView()
     
     override func configureAppearance() {
-        backgroundColor = SharedColors.secondaryBackground
+        backgroundColor = Colors.Background.tertiary
     }
     
     override func prepareLayout() {

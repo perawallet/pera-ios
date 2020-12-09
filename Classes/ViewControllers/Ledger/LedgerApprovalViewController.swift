@@ -24,7 +24,7 @@ class LedgerApprovalViewController: BaseViewController {
     }
     
     override func configureAppearance() {
-        view.backgroundColor = SharedColors.secondaryBackground
+        view.backgroundColor = Colors.Background.secondary
         if mode == .connection {
             setConnectionModeTexts()
         } else {

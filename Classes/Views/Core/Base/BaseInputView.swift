@@ -17,13 +17,13 @@ class BaseInputView: BaseView {
     let displaysRightInputAccessoryButton: Bool
     
     private(set) lazy var explanationLabel: UILabel = {
-        UILabel().withFont(UIFont.font(withWeight: .regular(size: 14.0))).withTextColor(SharedColors.inputTitle).withAlignment(.left)
+        UILabel().withFont(UIFont.font(withWeight: .regular(size: 14.0))).withTextColor(Colors.Text.primary).withAlignment(.left)
     }()
     
     private(set) lazy var contentView: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 12.0
-        view.backgroundColor = SharedColors.secondaryBackground
+        view.backgroundColor = Colors.Background.secondary
         return view
     }()
     
@@ -42,7 +42,10 @@ class BaseInputView: BaseView {
     
     override func configureAppearance() {
         super.configureAppearance()
-        contentView.applySmallShadow()
+        
+        if !isDarkModeDisplay {
+            contentView.applySmallShadow()
+        }
     }
     
     override func linkInteractors() {
@@ -58,7 +61,18 @@ class BaseInputView: BaseView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        contentView.updateShadowLayoutWhenViewDidLayoutSubviews()
+        if !isDarkModeDisplay {
+            contentView.updateShadowLayoutWhenViewDidLayoutSubviews()
+        }
+    }
+    
+    @available(iOS 12.0, *)
+    override func preferredUserInterfaceStyleDidChange(to userInterfaceStyle: UIUserInterfaceStyle) {
+        if userInterfaceStyle == .dark {
+            contentView.removeShadows()
+        } else {
+            contentView.applySmallShadow()
+        }
     }
 }
 

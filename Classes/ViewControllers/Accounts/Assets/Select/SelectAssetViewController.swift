@@ -37,10 +37,6 @@ class SelectAssetViewController: BaseViewController {
         accounts = initAccounts(with: filterOption)
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-    
     override func configureNavigationBarAppearance() {
         super.configureNavigationBarAppearance()
         
@@ -52,8 +48,8 @@ class SelectAssetViewController: BaseViewController {
     }
     
     override func configureAppearance() {
-        view.backgroundColor = SharedColors.secondaryBackground
-        setSecondaryBackgroundColor()
+        view.backgroundColor = Colors.Background.tertiary
+        setTertiaryBackgroundColor()
         navigationItem.title = "send-select-asset".localized
     }
     

@@ -42,7 +42,7 @@ class PinLimitViewController: BaseViewController {
     }
     
     override func configureAppearance() {
-        view.backgroundColor = SharedColors.secondaryBackground
+        view.backgroundColor = Colors.Background.tertiary
     }
     
     override func setListeners() {

@@ -58,16 +58,32 @@ extension TransactionStatusView {
         switch status {
         case .completed:
             imageView.image = img("icon-check")
-            statusLabel.textColor = SharedColors.tertiaryText
-            backgroundColor = SharedColors.primary.withAlphaComponent(0.1)
+            statusLabel.textColor = Colors.TransactionStatus.Text.completed
+            backgroundColor = Colors.TransactionStatus.Background.completed
         case .pending:
             imageView.image = img("icon-pending")
-            statusLabel.textColor = SharedColors.yellow700
-            backgroundColor = SharedColors.yellow600.withAlphaComponent(0.1)
+            statusLabel.textColor = Colors.TransactionStatus.Text.pending
+            backgroundColor = Colors.TransactionStatus.Background.pending
         case .failed:
             imageView.image = img("icon-failed-red")
-            statusLabel.textColor = SharedColors.red
-            backgroundColor = SharedColors.red.withAlphaComponent(0.1)
+            statusLabel.textColor = Colors.TransactionStatus.Text.failed
+            backgroundColor = Colors.TransactionStatus.Background.failed
+        }
+    }
+}
+
+extension Colors {
+    fileprivate enum TransactionStatus {
+        fileprivate enum Background {
+            static let pending = Colors.Main.yellow600.withAlphaComponent(0.1)
+            static let completed = Colors.Main.primary600.withAlphaComponent(0.1)
+            static let failed = Colors.Main.red600.withAlphaComponent(0.1)
+        }
+        
+        fileprivate enum Text {
+            static let pending = Colors.Main.yellow700
+            static let completed = Colors.Main.primary700
+            static let failed = Colors.Main.red600
         }
     }
 }

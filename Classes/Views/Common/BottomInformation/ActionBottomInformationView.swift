@@ -15,7 +15,7 @@ class ActionBottomInformationView: BottomInformationView {
     private(set) lazy var actionButton: UIButton = {
         UIButton(type: .custom)
             .withFont(UIFont.font(withWeight: .medium(size: 16.0)))
-            .withTitleColor(SharedColors.primaryButtonTitle)
+            .withTitleColor(Colors.ButtonText.primary)
             .withAlignment(.center)
     }()
     
@@ -24,7 +24,7 @@ class ActionBottomInformationView: BottomInformationView {
             .withTitle("title-cancel".localized)
             .withBackgroundImage(img("bg-light-gray-button"))
             .withFont(UIFont.font(withWeight: .medium(size: 16.0)))
-            .withTitleColor(SharedColors.primaryText)
+            .withTitleColor(Colors.Text.primary)
             .withAlignment(.center)
     }()
     

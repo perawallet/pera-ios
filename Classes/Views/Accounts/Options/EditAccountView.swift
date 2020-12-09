@@ -16,27 +16,27 @@ class EditAccountView: BaseView {
         UILabel()
             .withAlignment(.left)
             .withLine(.single)
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.Text.primary)
             .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
             .withText("account-name-setup-explanation".localized)
     }()
     
     private(set) lazy var accountNameTextField: UITextField = {
         let textField = UITextField()
-        textField.textColor = SharedColors.primaryText
-        textField.tintColor = SharedColors.primaryText
+        textField.textColor = Colors.Text.primary
+        textField.tintColor = Colors.Text.primary
         textField.font = UIFont.font(withWeight: .medium(size: 18.0))
         return textField
     }()
     
     private lazy var separatorView: UIView = {
         let view = UIView()
-        view.backgroundColor = SharedColors.primary
+        view.backgroundColor = Colors.Main.primary600
         return view
     }()
     
     override func configureAppearance() {
-        backgroundColor = SharedColors.secondaryBackground
+        backgroundColor = Colors.Background.secondary
     }
     
     override func prepareLayout() {

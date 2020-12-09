@@ -18,7 +18,7 @@ class DateWithTextImageView: BaseView {
         let label = UILabel()
             .withAlignment(.center)
             .withFont(UIFont.font(withWeight: .extraBold(size: 10.0)))
-            .withTextColor(SharedColors.gray500)
+            .withTextColor(Colors.Text.secondary)
         label.isHidden = true
         return label
     }()
@@ -56,7 +56,7 @@ extension DateWithTextImageView {
 extension DateWithTextImageView {
     func setImage(_ image: UIImage?) {
         imageView.image = image?.withRenderingMode(.alwaysTemplate)
-        imageView.tintColor = SharedColors.gray500
+        imageView.tintColor = Colors.Text.secondary
     }
     
     func setDate(_ date: String) {
@@ -65,13 +65,13 @@ extension DateWithTextImageView {
     }
     
     func setSelected() {
-        dayLabel.textColor = SharedColors.primary
-        imageView.tintColor = SharedColors.primary
+        dayLabel.textColor = Colors.General.selected
+        imageView.tintColor = Colors.General.selected
     }
     
     func setDeselected() {
-        dayLabel.textColor = SharedColors.gray500
-        imageView.tintColor = SharedColors.gray500
+        dayLabel.textColor = Colors.Text.secondary
+        imageView.tintColor = Colors.Text.secondary
     }
     
     func setDayLabelHidden(_ isHidden: Bool) {

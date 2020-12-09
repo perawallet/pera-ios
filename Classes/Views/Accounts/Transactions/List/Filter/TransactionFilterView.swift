@@ -35,13 +35,13 @@ class TransactionFilterView: BaseView {
         UIButton(type: .custom)
             .withBackgroundImage(img("bg-light-gray-button"))
             .withTitle("title-close".localized)
-            .withTitleColor(SharedColors.gray700)
+            .withTitleColor(Colors.Text.primary)
             .withAlignment(.center)
             .withFont(UIFont.font(withWeight: .semiBold(size: 14.0)))
     }()
     
     override func configureAppearance() {
-        backgroundColor = SharedColors.secondaryBackground
+        backgroundColor = Colors.Background.secondary
     }
     
     override func setListeners() {

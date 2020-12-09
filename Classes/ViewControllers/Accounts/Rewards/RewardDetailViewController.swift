@@ -27,7 +27,7 @@ class RewardDetailViewController: BaseViewController {
     }
     
     override func configureAppearance() {
-        view.backgroundColor = SharedColors.secondaryBackground
+        view.backgroundColor = Colors.Background.secondary
         viewModel.configure(rewardDetailView, for: account)
     }
     

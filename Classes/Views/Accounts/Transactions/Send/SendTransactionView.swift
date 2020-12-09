@@ -32,9 +32,15 @@ class SendTransactionView: BaseView {
     
     override func configureAppearance() {
         super.configureAppearance()
-        containerView.backgroundColor = SharedColors.secondaryBackground
+        containerView.backgroundColor = Colors.Background.secondary
         containerView.layer.cornerRadius = 12.0
-        containerView.applySmallShadow()
+        if !isDarkModeDisplay {
+            containerView.applySmallShadow()
+        }
+        amountInformationView.backgroundColor = Colors.Background.secondary
+        receiverInformationView.backgroundColor = Colors.Background.secondary
+        feeInformationView.backgroundColor = Colors.Background.secondary
+        noteInformationView.backgroundColor = Colors.Background.secondary
         amountInformationView.setTitle("transaction-detail-amount".localized)
         receiverInformationView.setTitle("transaction-detail-to".localized)
         receiverInformationView.removeContactAction()
@@ -59,7 +65,18 @@ class SendTransactionView: BaseView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        containerView.updateShadowLayoutWhenViewDidLayoutSubviews()
+        if !isDarkModeDisplay {
+            containerView.updateShadowLayoutWhenViewDidLayoutSubviews()
+        }
+    }
+    
+    @available(iOS 12.0, *)
+    override func preferredUserInterfaceStyleDidChange(to userInterfaceStyle: UIUserInterfaceStyle) {
+        if userInterfaceStyle == .dark {
+            containerView.removeShadows()
+        } else {
+            containerView.applySmallShadow()
+        }
     }
 }
 

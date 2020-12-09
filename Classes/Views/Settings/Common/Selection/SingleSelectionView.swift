@@ -14,7 +14,7 @@ class SingleSelectionView: BaseView {
     
     private lazy var titleLabel: UILabel = {
         UILabel()
-            .withTextColor(SharedColors.primaryText)
+            .withTextColor(Colors.Text.primary)
             .withLine(.single)
             .withAlignment(.left)
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
@@ -25,7 +25,7 @@ class SingleSelectionView: BaseView {
     private lazy var separatorView = LineSeparatorView()
     
     override func configureAppearance() {
-        backgroundColor = SharedColors.secondaryBackground
+        backgroundColor = Colors.Background.tertiary
     }
     
     override func prepareLayout() {
