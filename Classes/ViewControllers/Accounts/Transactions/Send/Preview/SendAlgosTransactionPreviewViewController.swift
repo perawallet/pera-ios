@@ -315,6 +315,10 @@ extension SendAlgosTransactionPreviewViewController {
         
         transactionController.setTransactionDraft(transactionDraft)
         transactionController.getTransactionParamsAndComposeTransactionData(for: .algosTransaction)
-        transactionController.startTimer()
+        
+        if selectedAccount.requiresLedgerConnection() {
+            transactionController.initializeLedgerTransactionAccount()
+            transactionController.startTimer()
+        }
     }
 }

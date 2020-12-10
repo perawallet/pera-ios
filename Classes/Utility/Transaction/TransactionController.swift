@@ -70,7 +70,7 @@ extension TransactionController {
                 self.params = params
                 self.composeTransactionData(for: transactionType)
             case let .failure(error, _):
-                self.ledgerTransactionOperation.reset()
+                self.resetLedgerOperationIfNeeded()
                 self.delegate?.transactionController(self, didFailedComposing: .network(.unexpected(error)))
             }
         }
@@ -88,7 +88,7 @@ extension TransactionController {
                 completion?()
                 self.delegate?.transactionController(self, didCompletedTransaction: transactionId)
             case let .failure(error, _):
-                self.ledgerTransactionOperation.reset()
+                self.resetLedgerOperationIfNeeded()
                 self.logLedgerTransactionError()
                 self.delegate?.transactionController(self, didFailedTransaction: .network(.unexpected(error)))
             }
@@ -125,7 +125,7 @@ extension TransactionController {
         }
         
         if account.requiresLedgerConnection() {
-            ledgerTransactionOperation.setUnsignedTransactionData(unsignedTransactionData, for: fromAccount)
+            ledgerTransactionOperation.setUnsignedTransactionData(unsignedTransactionData)
             ledgerTransactionOperation.startScan()
         } else {
             if transactionType == .algosTransaction {
@@ -165,12 +165,18 @@ extension TransactionController {
                 with: unsignedTransactionData,
                 error: &signedTransactionError
               ) else {
-            ledgerTransactionOperation.reset()
+            resetLedgerOperationIfNeeded()
             delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.sdkError(error: signedTransactionError)))
             return
         }
         
         self.signedTransactionData = signedTransactionData
+    }
+    
+    func initializeLedgerTransactionAccount() {
+        if let account = fromAccount {
+            ledgerTransactionOperation.setTransactionAccount(account)
+        }
     }
     
     func startTimer() {
@@ -189,7 +195,7 @@ extension TransactionController {
               let algosTransactionDraft = algosTransactionDraft,
               let amountDoubleValue = algosTransactionDraft.amount,
               let toAddress = algosTransactionDraft.toAccount else {
-            ledgerTransactionOperation.reset()
+            resetLedgerOperationIfNeeded()
             delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.other))
             return
         }
@@ -209,7 +215,7 @@ extension TransactionController {
         let trimmedToAddress = toAddress.trimmingCharacters(in: .whitespacesAndNewlines)
         
         if !algorandSDK.isValidAddress(trimmedToAddress) {
-            ledgerTransactionOperation.reset()
+            resetLedgerOperationIfNeeded()
             delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.invalidAddress(address: trimmedToAddress)))
             return
         }
@@ -226,7 +232,7 @@ extension TransactionController {
         var transactionError: NSError?
         
         guard let transactionData = algorandSDK.sendAlgos(with: draft, error: &transactionError) else {
-            ledgerTransactionOperation.reset()
+            resetLedgerOperationIfNeeded()
             delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.sdkError(error: transactionError)))
             return
         }
@@ -257,7 +263,7 @@ extension TransactionController {
               let assetIndex = transactionDraft.assetIndex,
               let amountDoubleValue = transactionDraft.amount,
               let toAddress = transactionDraft.toAccount else {
-            ledgerTransactionOperation.reset()
+            resetLedgerOperationIfNeeded()
             delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.other))
             return
         }
@@ -265,7 +271,7 @@ extension TransactionController {
         let trimmedToAddress = toAddress.trimmingCharacters(in: .whitespacesAndNewlines)
         
         if !algorandSDK.isValidAddress(trimmedToAddress) {
-            ledgerTransactionOperation.reset()
+            resetLedgerOperationIfNeeded()
             delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.invalidAddress(address: trimmedToAddress)))
             return
         }
@@ -282,7 +288,7 @@ extension TransactionController {
         var transactionError: NSError?
         
         guard let transactionData = algorandSDK.sendAsset(with: draft, error: &transactionError) else {
-            ledgerTransactionOperation.reset()
+            resetLedgerOperationIfNeeded()
             delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.sdkError(error: transactionError)))
             return
         }
@@ -296,7 +302,7 @@ extension TransactionController {
               let assetIndex = transactionDraft.assetIndex,
               let amountDoubleValue = transactionDraft.amount,
               let toAddress = transactionDraft.toAccount else {
-            ledgerTransactionOperation.reset()
+            resetLedgerOperationIfNeeded()
             delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.other))
             return
         }
@@ -304,7 +310,7 @@ extension TransactionController {
         let trimmedToAddress = toAddress.trimmingCharacters(in: .whitespacesAndNewlines)
         
         if !algorandSDK.isValidAddress(trimmedToAddress) {
-            ledgerTransactionOperation.reset()
+            resetLedgerOperationIfNeeded()
             delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.invalidAddress(address: trimmedToAddress)))
             return
         }
@@ -320,7 +326,7 @@ extension TransactionController {
         var transactionError: NSError?
         
         guard let transactionData = algorandSDK.removeAsset(with: draft, error: &transactionError) else {
-            ledgerTransactionOperation.reset()
+            resetLedgerOperationIfNeeded()
             delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.sdkError(error: transactionError)))
             return
         }
@@ -332,7 +338,7 @@ extension TransactionController {
         guard let params = params,
               let assetTransactionDraft = assetTransactionDraft,
               let assetIndex = assetTransactionDraft.assetIndex else {
-            ledgerTransactionOperation.reset()
+            resetLedgerOperationIfNeeded()
             delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.draft(draft: self.assetTransactionDraft)))
             return
         }
@@ -341,7 +347,7 @@ extension TransactionController {
         let draft = AssetAdditionDraft(from: assetTransactionDraft.from, transactionParams: params, assetIndex: assetIndex)
         
         guard let transactionData = algorandSDK.addAsset(with: draft, error: &transactionError) else {
-            ledgerTransactionOperation.reset()
+            resetLedgerOperationIfNeeded()
             delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.sdkError(error: transactionError)))
             return
         }
@@ -390,7 +396,7 @@ extension TransactionController {
         
         let minimumAmount = Int64(minimumTransactionMicroAlgosLimit * assetCount) + calculatedFee
         if Int64(account.amount) - transactionAmount < minimumAmount {
-            ledgerTransactionOperation.reset()
+            resetLedgerOperationIfNeeded()
             delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.minimumAmount(amount: minimumAmount)))
             return false
         }
@@ -416,7 +422,7 @@ extension TransactionController {
         guard let params = params,
               let draft = rekeyTransactionDraft,
               let rekeyedAccount = draft.toAccount else {
-            ledgerTransactionOperation.reset()
+            resetLedgerOperationIfNeeded()
             delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.draft(draft: self.rekeyTransactionDraft)))
             return
         }
@@ -425,7 +431,7 @@ extension TransactionController {
         let rekeyTransactionDraft = RekeyTransactionDraft(from: draft.from, rekeyedAccount: rekeyedAccount, transactionParams: params)
         
         guard let transactionData = algorandSDK.rekeyAccount(with: rekeyTransactionDraft, error: &transactionError) else {
-            ledgerTransactionOperation.reset()
+            resetLedgerOperationIfNeeded()
             delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.sdkError(error: transactionError)))
             return
         }
@@ -450,7 +456,7 @@ extension TransactionController: LedgerTransactionOperationDelegate {
         var transactionError: NSError?
         
         guard let transactionData = unsignedTransactionData else {
-            ledgerTransactionOperation.reset()
+            resetLedgerOperationIfNeeded()
             delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.sdkError(error: transactionError)))
             return
         }
@@ -462,7 +468,7 @@ extension TransactionController: LedgerTransactionOperationDelegate {
                 from: data,
                 error: &transactionError
             ) else {
-                ledgerTransactionOperation.reset()
+                resetLedgerOperationIfNeeded()
                 delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.sdkError(error: transactionError)))
                 return
             }
@@ -474,7 +480,7 @@ extension TransactionController: LedgerTransactionOperationDelegate {
                 from: data,
                 error: &transactionError
             ) else {
-                ledgerTransactionOperation.reset()
+                resetLedgerOperationIfNeeded()
                 delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.sdkError(error: transactionError)))
                 return
             }
@@ -495,6 +501,14 @@ extension TransactionController: LedgerTransactionOperationDelegate {
     
     func ledgerTransactionOperation(_ ledgerTransactionOperation: LedgerTransactionOperation, didFailed error: LedgerOperationError) {
         
+    }
+}
+
+extension TransactionController {
+    private func resetLedgerOperationIfNeeded() {
+        if fromAccount?.requiresLedgerConnection() ?? false {
+            ledgerTransactionOperation.reset()
+        }
     }
 }
 

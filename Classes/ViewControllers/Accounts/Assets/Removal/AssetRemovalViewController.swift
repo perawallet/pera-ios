@@ -265,7 +265,11 @@ extension AssetRemovalViewController: AssetActionConfirmationViewControllerDeleg
         transactionController.getTransactionParamsAndComposeTransactionData(for: .assetRemoval)
         
         SVProgressHUD.show(withStatus: "title-loading".localized)
-        transactionController.startTimer()
+
+        if account.requiresLedgerConnection() {
+            transactionController.initializeLedgerTransactionAccount()
+            transactionController.startTimer()
+        }
     }
 }
 

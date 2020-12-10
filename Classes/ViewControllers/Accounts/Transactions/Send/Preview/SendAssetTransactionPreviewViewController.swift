@@ -356,7 +356,11 @@ extension SendAssetTransactionPreviewViewController {
                
         transactionController.setTransactionDraft(transaction)
         transactionController.getTransactionParamsAndComposeTransactionData(for: .assetTransaction)
-        transactionController.startTimer()
+        
+        if selectedAccount.requiresLedgerConnection() {
+            transactionController.initializeLedgerTransactionAccount()
+            transactionController.startTimer()
+        }
     }
 }
 

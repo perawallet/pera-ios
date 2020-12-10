@@ -69,7 +69,7 @@ extension LedgerApprovalViewController: LedgerApprovalViewDelegate {
     }
     
     func dismissIfNeeded() {
-        if navigationController?.isBeingPresented ?? true {
+        if isModal {
             dismissScreen()
         }
     }

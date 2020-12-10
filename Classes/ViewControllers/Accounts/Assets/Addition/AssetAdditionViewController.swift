@@ -274,7 +274,11 @@ extension AssetAdditionViewController: AssetActionConfirmationViewControllerDele
         transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
         
         SVProgressHUD.show(withStatus: "title-loading".localized)
-        transactionController.startTimer()
+        
+        if account.requiresLedgerConnection() {
+            transactionController.initializeLedgerTransactionAccount()
+            transactionController.startTimer()
+        }
     }
 }
 
