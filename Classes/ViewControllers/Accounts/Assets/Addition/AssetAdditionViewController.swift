@@ -36,16 +36,6 @@ class AssetAdditionViewController: BaseViewController, TestNetTitleDisplayable {
     private let paginationRequestOffset = 3
     private var assetSearchFilters = AssetSearchFilter.verified
     
-    private lazy var ledgerApprovalPresenter = CardModalPresenter(
-        config: ModalConfiguration(
-            animationMode: .normal(duration: 0.25),
-            dismissMode: .none
-        ),
-        initialModalSize: .custom(CGSize(width: view.frame.width, height: 354.0))
-    )
-    
-    private var ledgerApprovalViewController: LedgerApprovalViewController?
-    
     private lazy var transactionController: TransactionController = {
         guard let api = api else {
             fatalError("API should be set.")
@@ -58,8 +48,6 @@ class AssetAdditionViewController: BaseViewController, TestNetTitleDisplayable {
     private lazy var emptyStateView = SearchEmptyView()
     
     private let viewModel = AssetAdditionViewModel()
-    
-    private var timer: Timer?
     
     init(account: Account, configuration: ViewControllerConfiguration) {
         self.account = account
@@ -83,7 +71,7 @@ class AssetAdditionViewController: BaseViewController, TestNetTitleDisplayable {
         super.viewWillDisappear(animated)
         transactionController.stopBLEScan()
         dismissProgressIfNeeded()
-        invalidateTimer()
+        transactionController.stopTimer()
     }
     
     override func configureAppearance() {
@@ -286,16 +274,12 @@ extension AssetAdditionViewController: AssetActionConfirmationViewControllerDele
         transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
         
         SVProgressHUD.show(withStatus: "title-loading".localized)
-        validateTimer()
+        transactionController.startTimer()
     }
 }
 
 extension AssetAdditionViewController: TransactionControllerDelegate {
     func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPError<TransactionError>) {
-        if account.requiresLedgerConnection() {
-            ledgerApprovalViewController?.dismissScreen()
-        }
-        
         SVProgressHUD.dismiss()
         
         switch error {
@@ -323,10 +307,6 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
     }
     
     func transactionController(_ transactionController: TransactionController, didFailedTransaction error: HIPError<TransactionError>) {
-        if account.requiresLedgerConnection() {
-            ledgerApprovalViewController?.dismissScreen()
-        }
-        
         SVProgressHUD.dismiss()
         switch error {
         case let .network(apiError):
@@ -334,23 +314,6 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
         default:
             NotificationBanner.showError("title-error".localized, message: error.localizedDescription)
         }
-    }
-    
-    func transactionController(_ transactionController: TransactionController, didFailBLEConnectionWith state: CBManagerState) {
-        guard let errorTitle = state.errorDescription.title,
-            let errorSubtitle = state.errorDescription.subtitle else {
-                return
-        }
-        NotificationBanner.showError(errorTitle, message: errorSubtitle)
-        invalidateTimer()
-        dismissProgressIfNeeded()
-    }
-    
-    func transactionController(_ transactionController: TransactionController, didFailToConnect peripheral: CBPeripheral) {
-        NotificationBanner.showError("ble-error-connection-title".localized, message: "ble-error-fail-connect-peripheral".localized)
-    }
-    
-    func transactionController(_ transactionController: TransactionController, didDisconnectFrom peripheral: CBPeripheral) {
     }
     
     func transactionController(_ transactionController: TransactionController, didComposedTransactionDataFor draft: TransactionSendDraft?) {
@@ -364,62 +327,8 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
                 return
         }
         
-        if account.requiresLedgerConnection() {
-            ledgerApprovalViewController?.dismissScreen()
-        }
-        
         delegate?.assetAdditionViewController(self, didAdd: assetSearchResult, to: account)
         popScreen()
-    }
-    
-    func transactionControllerDidStartBLEConnection(_ transactionController: TransactionController) {
-        dismissProgressIfNeeded()
-        invalidateTimer()
-        ledgerApprovalViewController = open(
-            .ledgerApproval(mode: .approve),
-            by: .customPresent(presentationStyle: .custom, transitionStyle: nil, transitioningDelegate: ledgerApprovalPresenter)
-        ) as? LedgerApprovalViewController
-    }
-    
-    func transactionControllerDidFailToSignWithLedger(_ transactionController: TransactionController) {
-        ledgerApprovalViewController?.dismissScreen()
-        NotificationBanner.showError(
-            "ble-error-transaction-cancelled-title".localized,
-            message: "ble-error-fail-sign-transaction".localized
-        )
-    }
-}
-
-// MARK: Ledger Timer
-extension AssetAdditionViewController {
-    func validateTimer() {
-        guard account.requiresLedgerConnection() else {
-            return
-        }
-        
-        timer = Timer.scheduledTimer(withTimeInterval: 15.0, repeats: false) { [weak self] timer in
-            guard let self = self else {
-                timer.invalidate()
-                return
-            }
-            
-            DispatchQueue.main.async {
-                self.transactionController.stopBLEScan()
-                self.dismissProgressIfNeeded()
-                NotificationBanner.showError("ble-error-connection-title".localized, message: "ble-error-fail-connect-peripheral".localized)
-            }
-            
-            self.invalidateTimer()
-        }
-    }
-    
-    func invalidateTimer() {
-        guard account.requiresLedgerConnection() else {
-            return
-        }
-        
-        timer?.invalidate()
-        timer = nil
     }
 }
 

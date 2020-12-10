@@ -128,10 +128,6 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
             return
         }
         
-        if algosTransactionDraft.from.requiresLedgerConnection() {
-            ledgerApprovalViewController?.dismissScreen()
-        }
-        
         open(
             .sendAlgosTransaction(
                 algosTransactionSendDraft: algosTransactionDraft,
@@ -307,8 +303,6 @@ extension SendAlgosTransactionPreviewViewController {
             return
         }
         
-        validateTimer()
-        
         let transactionDraft = AlgosTransactionSendDraft(
             from: selectedAccount,
             toAccount: account.address,
@@ -321,5 +315,6 @@ extension SendAlgosTransactionPreviewViewController {
         
         transactionController.setTransactionDraft(transactionDraft)
         transactionController.getTransactionParamsAndComposeTransactionData(for: .algosTransaction)
+        transactionController.startTimer()
     }
 }

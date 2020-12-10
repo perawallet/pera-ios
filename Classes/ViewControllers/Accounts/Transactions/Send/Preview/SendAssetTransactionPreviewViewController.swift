@@ -107,10 +107,6 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
             return
         }
         
-        if assetTransactionDraft.from.requiresLedgerConnection() {
-            ledgerApprovalViewController?.dismissScreen()
-        }
-        
         let controller = open(
             .sendAssetTransaction(
                 assetTransactionSendDraft: assetTransactionDraft,
@@ -346,7 +342,6 @@ extension SendAssetTransactionPreviewViewController {
         }
 
         SVProgressHUD.show(withStatus: "title-loading".localized)
-        validateTimer()
         
         transactionController.delegate = self
         let transaction = AssetTransactionSendDraft(
@@ -361,6 +356,7 @@ extension SendAssetTransactionPreviewViewController {
                
         transactionController.setTransactionDraft(transaction)
         transactionController.getTransactionParamsAndComposeTransactionData(for: .assetTransaction)
+        transactionController.startTimer()
     }
 }
 

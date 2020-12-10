@@ -21,8 +21,6 @@ class RekeyConfirmationViewController: BaseScrollViewController {
     private var rekeyConfirmationListLayout: RekeyConfirmationListLayout
     private let viewModel: RekeyConfirmationViewModel
     
-    private var ledgerApprovalViewController: LedgerApprovalViewController?
-    
     private lazy var cardModalPresenter = CardModalPresenter(
         config: ModalConfiguration(
             animationMode: .normal(duration: 0.25),
@@ -113,15 +111,12 @@ extension RekeyConfirmationViewController: RekeyConfirmationViewDelegate {
 
 extension RekeyConfirmationViewController: TransactionControllerDelegate {
     func transactionController(_ transactionController: TransactionController, didComposedTransactionDataFor draft: TransactionSendDraft?) {
-        ledgerApprovalViewController?.dismissScreen()
         addAuthAccountIfNeeded()
         RekeyEvent().logEvent()
         openRekeyConfirmationAlert()
     }
     
     func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPError<TransactionError>) {
-        ledgerApprovalViewController?.dismissScreen()
-        
         switch error {
         case let .inapp(transactionError):
             displayTransactionError(from: transactionError)
@@ -131,10 +126,6 @@ extension RekeyConfirmationViewController: TransactionControllerDelegate {
     }
     
     func transactionController(_ transactionController: TransactionController, didFailedTransaction error: HIPError<TransactionError>) {
-        if account.requiresLedgerConnection() {
-            ledgerApprovalViewController?.dismissScreen()
-        }
-        
         switch error {
         case let .network(apiError):
             NotificationBanner.showError("title-error".localized, message: apiError.debugDescription)
@@ -142,49 +133,9 @@ extension RekeyConfirmationViewController: TransactionControllerDelegate {
             NotificationBanner.showError("title-error".localized, message: error.localizedDescription)
         }
     }
-    
-    func transactionControllerDidStartBLEConnection(_ transactionController: TransactionController) {
-        openLedgerApprovalScreen()
-    }
-    
-    func transactionController(_ transactionController: TransactionController, didFailBLEConnectionWith state: CBManagerState) {
-        ledgerApprovalViewController?.dismissScreen()
-        
-        guard let errorTitle = state.errorDescription.title,
-            let errorSubtitle = state.errorDescription.subtitle else {
-                return
-        }
-        
-        NotificationBanner.showError(errorTitle, message: errorSubtitle)
-    }
-    
-    func transactionController(_ transactionController: TransactionController, didFailToConnect peripheral: CBPeripheral) {
-        ledgerApprovalViewController?.dismissScreen()
-        NotificationBanner.showError("ble-error-connection-title".localized, message: "ble-error-fail-connect-peripheral".localized)
-    }
-    
-    func transactionController(_ transactionController: TransactionController, didDisconnectFrom peripheral: CBPeripheral) {
-        ledgerApprovalViewController?.dismissScreen()
-        NotificationBanner.showError("ble-error-connection-title".localized, message: "ble-error-fail-connect-peripheral".localized)
-    }
-    
-    func transactionControllerDidFailToSignWithLedger(_ transactionController: TransactionController) {
-        ledgerApprovalViewController?.dismissScreen()
-        NotificationBanner.showError(
-            "ble-error-transaction-cancelled-title".localized,
-            message: "ble-error-fail-sign-transaction".localized
-        )
-    }
 }
 
 extension RekeyConfirmationViewController {
-    private func openLedgerApprovalScreen() {
-        ledgerApprovalViewController = open(
-            .ledgerApproval(mode: .connection),
-            by: .customPresent(presentationStyle: .custom, transitionStyle: nil, transitioningDelegate: cardModalPresenter)
-        ) as? LedgerApprovalViewController
-    }
-    
     private func openRekeyConfirmationAlert() {
         let accountName = account.name ?? ""
         let configurator = BottomInformationBundle(

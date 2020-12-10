@@ -14,10 +14,6 @@ protocol TransactionControllerDelegate: class {
     func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPError<TransactionError>)
     func transactionController(_ transactionController: TransactionController, didCompletedTransaction id: TransactionID)
     func transactionController(_ transactionController: TransactionController, didFailedTransaction error: HIPError<TransactionError>)
-    func transactionControllerDidStartBLEConnection(_ transactionController: TransactionController)
-    func transactionController(_ transactionController: TransactionController, didFailBLEConnectionWith state: CBManagerState)
-    func transactionController(_ transactionController: TransactionController, didFailToConnect peripheral: CBPeripheral)
-    func transactionController(_ transactionController: TransactionController, didDisconnectFrom peripheral: CBPeripheral)
     func transactionControllerDidFailToSignWithLedger(_ transactionController: TransactionController)
 }
 
@@ -32,14 +28,6 @@ extension TransactionControllerDelegate where Self: BaseViewController {
     func transactionController(_ transactionController: TransactionController, didCompletedTransaction id: TransactionID) { }
     
     func transactionController(_ transactionController: TransactionController, didFailedTransaction error: HIPError<TransactionError>) { }
-    
-    func transactionControllerDidStartBLEConnection(_ transactionController: TransactionController) { }
-    
-    func transactionController(_ transactionController: TransactionController, didFailBLEConnectionWith state: CBManagerState) { }
-    
-    func transactionController(_ transactionController: TransactionController, didFailToConnect peripheral: CBPeripheral) { }
-    
-    func transactionController(_ transactionController: TransactionController, didDisconnectFrom peripheral: CBPeripheral) { }
     
     func transactionControllerDidFailToSignWithLedger(_ transactionController: TransactionController) { }
 }
