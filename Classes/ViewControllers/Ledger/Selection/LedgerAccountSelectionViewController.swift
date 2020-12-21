@@ -11,7 +11,7 @@ import SVProgressHUD
 
 class LedgerAccountSelectionViewController: BaseViewController {
     
-    private lazy var ledgerAccountSelectionView = LedgerAccountSelectionView()
+    private lazy var ledgerAccountSelectionView = LedgerAccountSelectionView(isMultiSelect: isMultiSelect)
     
     private lazy var accountManager: AccountManager? = {
         guard let api = self.api else {
@@ -22,22 +22,36 @@ class LedgerAccountSelectionViewController: BaseViewController {
     }()
     
     private let ledger: LedgerDetail
-    private let ledgerAddress: String
+    private let ledgerAccounts: [Account]
     private let accountSetupFlow: AccountSetupFlow
+    
+    private var isMultiSelect: Bool {
+        switch accountSetupFlow {
+        case .initializeAccount:
+            return true
+        case let .addNewAccount(mode):
+            switch mode {
+            case .rekey:
+                return false
+            default:
+                return true
+            }
+        }
+    }
 
     private lazy var dataSource: LedgerAccountSelectionDataSource = {
         guard let api = api else {
             fatalError("API should be set.")
         }
-        return LedgerAccountSelectionDataSource(api: api, ledger: ledger, ledgerAddress: ledgerAddress)
+        return LedgerAccountSelectionDataSource(api: api, ledger: ledger, accounts: ledgerAccounts, isMultiSelect: isMultiSelect)
     }()
     
-    private lazy var listLayout = LedgerAccountSelectionListLayout(dataSource: dataSource)
+    private lazy var listLayout = LedgerAccountSelectionListLayout(dataSource: dataSource, isMultiSelect: isMultiSelect)
     
-    init(accountSetupFlow: AccountSetupFlow, ledger: LedgerDetail, ledgerAddress: String, configuration: ViewControllerConfiguration) {
+    init(accountSetupFlow: AccountSetupFlow, ledger: LedgerDetail, accounts: [Account], configuration: ViewControllerConfiguration) {
         self.accountSetupFlow = accountSetupFlow
         self.ledger = ledger
-        self.ledgerAddress = ledgerAddress
+        self.ledgerAccounts = accounts
         super.init(configuration: configuration)
     }
     
@@ -59,6 +73,7 @@ class LedgerAccountSelectionViewController: BaseViewController {
         ledgerAccountSelectionView.setDataSource(dataSource)
         ledgerAccountSelectionView.setListDelegate(listLayout)
         dataSource.delegate = self
+        listLayout.delegate = self
     }
     
     override func prepareLayout() {
@@ -95,13 +110,52 @@ extension LedgerAccountSelectionViewController: LedgerAccountSelectionDataSource
         ledgerAccountSelectionView.setErrorState()
         ledgerAccountSelectionView.reloadData()
     }
+    
+    func ledgerAccountSelectionDataSource(
+        _ ledgerAccountSelectionDataSource: LedgerAccountSelectionDataSource,
+        didTapMoreInfoFor cell: LedgerAccountCell
+    ) {
+        guard let indexPath = ledgerAccountSelectionView.indexPath(for: cell),
+              let account = dataSource.account(at: indexPath.item) else {
+            return
+        }
+        
+        open(
+            .ledgerAccountDetail(
+                account: account,
+                ledgerIndex: dataSource.ledgerAccountIndex(for: account.address),
+                rekeyedAccounts: dataSource.rekeyedAccounts(for: account.address)
+            ),
+            by: .present
+        )
+    }
 }
 
 extension LedgerAccountSelectionViewController: LedgerAccountSelectionViewDelegate {
     func ledgerAccountSelectionViewDidAddAccount(_ ledgerAccountSelectionView: LedgerAccountSelectionView) {
-        logRegistrationEvents()
-        dataSource.saveSelectedAccounts(ledgerAccountSelectionView.selectedIndexes)
-        launchHome()
+        if isMultiSelect {
+            logRegistrationEvents()
+            dataSource.saveSelectedAccounts(ledgerAccountSelectionView.selectedIndexes)
+            launchHome()
+            return
+        }
+        
+        guard let selectedIndex = ledgerAccountSelectionView.selectedIndexes.first,
+              let account = dataSource.account(at: selectedIndex.item) else {
+            return
+        }
+        
+        switch accountSetupFlow {
+        case let .addNewAccount(mode):
+            switch mode {
+            case let .rekey(rekeyedAccount):
+                self.open(.rekeyConfirmation(account: rekeyedAccount, ledger: ledger, ledgerAddress: account.address), by: .push)
+            default:
+                break
+            }
+        default:
+            break
+        }
     }
     
     private func logRegistrationEvents() {
@@ -127,5 +181,21 @@ extension LedgerAccountSelectionViewController: LedgerAccountSelectionViewDelega
                 }
             }
         }
+    }
+}
+
+extension LedgerAccountSelectionViewController: LedgerAccountSelectionListLayoutDelegate {
+    func ledgerAccountSelectionListLayout(
+        _ ledgerAccountSelectionListLayout: LedgerAccountSelectionListLayout,
+        didSelectItemAt indexPath: IndexPath
+    ) {
+        ledgerAccountSelectionView.setAddButtonEnabled(!ledgerAccountSelectionView.selectedIndexes.isEmpty)
+    }
+    
+    func ledgerAccountSelectionListLayout(
+        _ ledgerAccountSelectionListLayout: LedgerAccountSelectionListLayout,
+        didDeselectItemAt indexPath: IndexPath
+    ) {
+        ledgerAccountSelectionView.setAddButtonEnabled(!ledgerAccountSelectionView.selectedIndexes.isEmpty)
     }
 }
