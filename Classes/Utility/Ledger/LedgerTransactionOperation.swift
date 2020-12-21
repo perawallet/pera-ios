@@ -27,6 +27,8 @@ class LedgerTransactionOperation: LedgerOperation, BLEConnectionManagerDelegate,
     
     weak var delegate: LedgerTransactionOperationDelegate?
     
+    private var ledgerAccountIndex = 0
+    
     private let api: AlgorandAPI
     
     private var account: Account?
@@ -102,7 +104,7 @@ extension LedgerTransactionOperation {
             return
         }
         
-        ledgerBleController.signTransaction(unsignedTransaction)
+        ledgerBleController.signTransaction(unsignedTransaction, atLedgerAccount: ledgerAccountIndex)
     }
     
     private func parseSignedTransaction(from data: Data) -> Data? {
@@ -125,15 +127,24 @@ extension LedgerTransactionOperation {
 extension LedgerTransactionOperation: LedgerAccountFetchOperationDelegate {
     func ledgerAccountFetchOperation(
         _ ledgerAccountFetchOperation: LedgerAccountFetchOperation,
-        didReceive address: String,
+        didReceive accounts: [Account],
         in ledgerApprovalViewController: LedgerApprovalViewController?
     ) {
-        guard let account = account else {
+        completeLedgerAccountFetchOperationResults(for: accounts)
+        proceedSigningTransactionByLedgerIfPossible()
+    }
+    
+    private func completeLedgerAccountFetchOperationResults(for accounts: [Account]) {
+        guard let transactionAccount = account else {
             return
         }
         
-        isCorrectLedgerAddressFetched = account.authAddress.unwrap(or: account.address) == address
-        proceedSigningTransactionByLedgerIfPossible()
+        if let index = accounts.firstIndex(where: { account -> Bool in
+            transactionAccount.authAddress.unwrap(or: transactionAccount.address) == account.address
+        }) {
+            ledgerAccountIndex = index
+            isCorrectLedgerAddressFetched = true
+        }
     }
     
     private func proceedSigningTransactionByLedgerIfPossible() {
