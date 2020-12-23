@@ -12,6 +12,7 @@ let algosInMicroAlgos = 1000000
 let minimumFee: UInt64 = 1000
 let minimumTransactionMicroAlgosLimit = 100000
 let algosFraction = 6
+let dataSizeForMaxTransaction: Int64 = 270
 
 extension Int {
     var toAlgos: Double {

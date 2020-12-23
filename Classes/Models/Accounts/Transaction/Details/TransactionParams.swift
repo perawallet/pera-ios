@@ -37,6 +37,13 @@ class TransactionParams: Model {
         try container.encodeIfPresent(genesisHashData, forKey: .genesisHash)
         try container.encodeIfPresent(genesisId, forKey: .genesisId)
     }
+    
+    func getProjectedTransactionFee(from dataSize: Int? = nil) -> Int64 {
+        if let dataSize = dataSize {
+            return max(Int64(dataSize) * fee, Transaction.Constant.minimumFee)
+        }
+        return max(dataSizeForMaxTransaction * fee, Transaction.Constant.minimumFee)
+    }
 }
 
 extension TransactionParams {
