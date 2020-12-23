@@ -8,7 +8,7 @@
 
 import UIKit
 
-class BaseViewController: UIViewController, TabBarConfigurable, TrackableScreen {
+class BaseViewController: UIViewController, TabBarConfigurable, AnalyticsScreen {
     var isTabBarHidden = true
     var tabBarSnapshot: UIView?
     
@@ -16,7 +16,11 @@ class BaseViewController: UIViewController, TabBarConfigurable, TrackableScreen 
     var hidesStatusBarWhenAppeared: Bool = false
     var hidesStatusBarWhenPresented: Bool = false
     
-    var screenKey: String? {
+    var name: AnalyticsScreenName? {
+        return nil
+    }
+    
+    var params: AnalyticsParameters? {
         return nil
     }
     
@@ -121,7 +125,7 @@ class BaseViewController: UIViewController, TabBarConfigurable, TrackableScreen 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         setNeedsTabBarAppearanceUpdateOnAppeared()
-        trackScreen()
+        track(self)
         isViewAppearing = false
         isViewAppeared = true
     }

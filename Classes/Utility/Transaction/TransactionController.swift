@@ -638,11 +638,13 @@ extension TransactionController {
             return
         }
         
-        LedgerTransactionErrorLog(
-            account: account,
-            unsignedTransaction: unsignedTransactionData,
-            signedTransaction: signedTransactionData
-        ).record()
+        UIApplication.shared.firebaseAnalytics?.record(
+            LedgerTransactionErrorLog(
+                account: account,
+                unsignedTransaction: unsignedTransactionData,
+                signedTransaction: signedTransactionData
+            )
+        )
     }
 }
 

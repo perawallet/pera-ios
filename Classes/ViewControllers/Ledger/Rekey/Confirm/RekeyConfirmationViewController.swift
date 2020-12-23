@@ -115,7 +115,7 @@ extension RekeyConfirmationViewController: TransactionControllerDelegate {
     func transactionController(_ transactionController: TransactionController, didComposedTransactionDataFor draft: TransactionSendDraft?) {
         ledgerApprovalViewController?.dismissScreen()
         addAuthAccountIfNeeded()
-        RekeyEvent().logEvent()
+        log(RekeyEvent())
         openRekeyConfirmationAlert()
     }
     

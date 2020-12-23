@@ -8,14 +8,12 @@
 
 import Foundation
 
-struct CurrencyChangeEvent: TrackableEvent {
-    let eventKey = "currency_change"
-    
+struct CurrencyChangeEvent: AnalyticsEvent {
     let currencyId: String
     
-    var parameters: [String: Any]? {
-        return [
-            "id": currencyId
-        ]
+    let key: AnalyticsEventKey = .currencyChange
+    
+    var params: AnalyticsParameters? {
+        return [.id: currencyId]
     }
 }

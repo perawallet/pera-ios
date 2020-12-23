@@ -8,10 +8,6 @@
 
 import Foundation
 
-struct RekeyEvent: TrackableEvent {
-    let eventKey = "rekey"
-    
-    var parameters: [String: Any]? {
-        return nil
-    }
+struct RekeyEvent: AnalyticsEvent {
+    let key: AnalyticsEventKey = .rekey
 }

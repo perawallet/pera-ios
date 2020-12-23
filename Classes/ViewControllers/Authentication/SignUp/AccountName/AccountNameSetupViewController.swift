@@ -71,7 +71,7 @@ extension AccountNameSetupViewController {
                 return
         }
         
-        RegistrationEvent(type: .create).logEvent()
+        log(RegistrationEvent(type: .create))
         
         let account = AccountInformation(address: address, name: name, type: .standard)
         session?.savePrivate(tempPrivateKey, for: account.address)

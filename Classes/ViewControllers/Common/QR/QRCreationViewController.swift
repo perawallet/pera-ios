@@ -18,8 +18,8 @@ class QRCreationViewController: BaseScrollViewController {
         return true
     }
     
-    override var screenKey: String? {
-        return isTrackable ? "screen_show_qr" : nil
+    override var name: AnalyticsScreenName? {
+        return isTrackable ? .showQR : nil
     }
     
     private lazy var qrCreationView = QRCreationView(draft: draft)
@@ -88,16 +88,16 @@ extension QRCreationViewController: QRCreationViewDelegate {
                 guard let self = self else {
                     return
                 }
-                ReceiveShareCompleteEvent(address: self.draft.address).logEvent()
+                self.log(ReceiveShareCompleteEvent(address: self.draft.address))
             }
         }
         
-        ReceiveShareEvent(address: draft.address).logEvent()
+        log(ReceiveShareEvent(address: draft.address))
         navigationController?.present(activityViewController, animated: true, completion: nil)
     }
     
     func qrCreationView(_ qrCreationView: QRCreationView, didSelect text: String) {
-        ReceiveCopyEvent(address: draft.address).logEvent()
+        log(ReceiveCopyEvent(address: draft.address))
         UIPasteboard.general.string = text
     }
 }
