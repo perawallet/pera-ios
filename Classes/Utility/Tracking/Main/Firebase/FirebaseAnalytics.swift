@@ -17,14 +17,14 @@ class FirebaseAnalytics: NSObject {
 }
 
 extension FirebaseAnalytics: AnalyticsTracker {
-    func track<Screen: AnalyticsScreen>(_ screen: Screen) {
+    func track(_ screen: AnalyticsScreen) {
         if let name = screen.name,
            isTrackable {
             Analytics.logEvent(name.rawValue, parameters: screen.params?.transformToAnalyticsFormat())
         }
     }
     
-    func log<Event: AnalyticsEvent>(_ event: Event) {
+    func log(_ event: AnalyticsEvent) {
         if !isTrackable {
             return
         }
@@ -32,7 +32,7 @@ extension FirebaseAnalytics: AnalyticsTracker {
         Analytics.logEvent(event.key.rawValue, parameters: event.params?.transformToAnalyticsFormat())
     }
     
-    func record<Log: AnalyticsLog>(_ log: Log) {
+    func record(_ log: AnalyticsLog) {
         let error = NSError(domain: log.name.rawValue, code: log.id, userInfo: log.params.transformToAnalyticsFormat())
         Crashlytics.crashlytics().record(error: error)
     }

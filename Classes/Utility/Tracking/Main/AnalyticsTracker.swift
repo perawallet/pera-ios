@@ -10,9 +10,9 @@ import Foundation
 import UIKit
 
 protocol AnalyticsTracker {
-    func track<Screen: AnalyticsScreen>(_ screen: Screen)
-    func log<Event: AnalyticsEvent>(_ event: Event)
-    func record<Log: AnalyticsLog>(_ log: Log)
+    func track(_ screen: AnalyticsScreen)
+    func log(_ event: AnalyticsEvent)
+    func record(_ log: AnalyticsLog)
 }
 
 extension AnalyticsTracker {

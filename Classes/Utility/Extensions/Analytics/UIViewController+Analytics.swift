@@ -9,15 +9,15 @@
 import UIKit
 
 extension UIViewController {
-    func track<Screen: AnalyticsScreen>(_ screen: Screen) {
+    func track(_ screen: AnalyticsScreen) {
         UIApplication.shared.firebaseAnalytics?.track(screen)
     }
     
-    func log<Event: AnalyticsEvent>(_ event: Event) {
+    func log(_ event: AnalyticsEvent) {
         UIApplication.shared.firebaseAnalytics?.log(event)
     }
     
-    func record<Log: AnalyticsLog>(_ log: Log) {
+    func record(_ log: AnalyticsLog) {
         UIApplication.shared.firebaseAnalytics?.record(log)
     }
 }
