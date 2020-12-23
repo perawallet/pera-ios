@@ -1475,9 +1475,9 @@
 		2BE4D054259371CC005F5764 /* DisplayAssetDetailEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE4D053259371CC005F5764 /* DisplayAssetDetailEvent.swift */; };
 		2BE4D055259371CC005F5764 /* DisplayAssetDetailEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE4D053259371CC005F5764 /* DisplayAssetDetailEvent.swift */; };
 		2BE4D056259371CC005F5764 /* DisplayAssetDetailEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE4D053259371CC005F5764 /* DisplayAssetDetailEvent.swift */; };
-		2BE4D05B259371D8005F5764 /* SwipeAssetDetailEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE4D05A259371D8005F5764 /* SwipeAssetDetailEvent.swift */; };
-		2BE4D05C259371D8005F5764 /* SwipeAssetDetailEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE4D05A259371D8005F5764 /* SwipeAssetDetailEvent.swift */; };
-		2BE4D05D259371D8005F5764 /* SwipeAssetDetailEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE4D05A259371D8005F5764 /* SwipeAssetDetailEvent.swift */; };
+		2BE4D05B259371D8005F5764 /* ChangeAssetDetailEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE4D05A259371D8005F5764 /* ChangeAssetDetailEvent.swift */; };
+		2BE4D05C259371D8005F5764 /* ChangeAssetDetailEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE4D05A259371D8005F5764 /* ChangeAssetDetailEvent.swift */; };
+		2BE4D05D259371D8005F5764 /* ChangeAssetDetailEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE4D05A259371D8005F5764 /* ChangeAssetDetailEvent.swift */; };
 		2BE4D06625938448005F5764 /* AnalyticsTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE4D06525938448005F5764 /* AnalyticsTracker.swift */; };
 		2BE4D06725938448005F5764 /* AnalyticsTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE4D06525938448005F5764 /* AnalyticsTracker.swift */; };
 		2BE4D06825938448005F5764 /* AnalyticsTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE4D06525938448005F5764 /* AnalyticsTracker.swift */; };
@@ -2123,7 +2123,7 @@
 		2BDE9CD9224E2336007EFF30 /* TransactionHistoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryCell.swift; sourceTree = "<group>"; };
 		2BDE9CDB224E2379007EFF30 /* TransactionHistoryContextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryContextView.swift; sourceTree = "<group>"; };
 		2BE4D053259371CC005F5764 /* DisplayAssetDetailEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayAssetDetailEvent.swift; sourceTree = "<group>"; };
-		2BE4D05A259371D8005F5764 /* SwipeAssetDetailEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeAssetDetailEvent.swift; sourceTree = "<group>"; };
+		2BE4D05A259371D8005F5764 /* ChangeAssetDetailEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeAssetDetailEvent.swift; sourceTree = "<group>"; };
 		2BE4D06525938448005F5764 /* AnalyticsTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsTracker.swift; sourceTree = "<group>"; };
 		2BE4D06D2593845F005F5764 /* FirebaseAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseAnalytics.swift; sourceTree = "<group>"; };
 		2BE4D0812593864D005F5764 /* AnalyticsLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsLog.swift; sourceTree = "<group>"; };
@@ -4213,10 +4213,10 @@
 				2B8BE4D022391C38005D8565 /* Classes */,
 				9F18DC6D0E56430348850CDE /* Frameworks */,
 				17512612223BDC2B0095AF4F /* Libraries */,
+				EC59E2CE8B21B82B62B16954 /* Pods */,
 				2B8BE4CF22391C38005D8565 /* Products */,
 				2B8BE4E5223924DB005D8565 /* Resources */,
 				2B8BE4E42239248A005D8565 /* Support */,
-				EC59E2CE8B21B82B62B16954 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -4361,9 +4361,9 @@
 		2B8BE4F1223935C6005D8565 /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				95E3156324335F8B008D79D4 /* Segment */,
 				2B8BE4F2223935CA005D8565 /* Base */,
 				2B59F15F22563F78005203DD /* Container */,
+				95E3156324335F8B008D79D4 /* Segment */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -4385,8 +4385,8 @@
 			isa = PBXGroup;
 			children = (
 				2B0F5F3724E5684E00DA22A6 /* Banner */,
-				2B9F064024B60EAA006880F0 /* CSVExport */,
 				2B62B03B240813A5002DF2A0 /* BLE */,
+				2B9F064024B60EAA006880F0 /* CSVExport */,
 				2BF34C9E2239ACC60052CAD3 /* Configuration */,
 				2B8BE4F62239370F005D8565 /* Extensions */,
 				2BC45DEC2252538D000CDCE2 /* ImagePicker */,
@@ -4553,9 +4553,9 @@
 		2BA4998F24B5E43C00452650 /* Tracking */ = {
 			isa = PBXGroup;
 			children = (
-				2BE4D06425938437005F5764 /* Main */,
-				2B32A2412552EF9B007CC3A6 /* Logs */,
 				2B9F063924B5E481006880F0 /* Events */,
+				2B32A2412552EF9B007CC3A6 /* Logs */,
+				2BE4D06425938437005F5764 /* Main */,
 			);
 			path = Tracking;
 			sourceTree = "<group>";
@@ -5251,7 +5251,7 @@
 			isa = PBXGroup;
 			children = (
 				2BE4D053259371CC005F5764 /* DisplayAssetDetailEvent.swift */,
-				2BE4D05A259371D8005F5764 /* SwipeAssetDetailEvent.swift */,
+				2BE4D05A259371D8005F5764 /* ChangeAssetDetailEvent.swift */,
 			);
 			path = Asset;
 			sourceTree = "<group>";
@@ -6341,7 +6341,7 @@
 				2BEE062223E8572E004EBD6F /* AccountStatus.swift in Sources */,
 				2B79A14E23167CA300766021 /* RewardAmountContainerView.swift in Sources */,
 				17BD4DFD2292F1260003E49A /* UIApplication+Additions.swift in Sources */,
-				2BE4D05D259371D8005F5764 /* SwipeAssetDetailEvent.swift in Sources */,
+				2BE4D05D259371D8005F5764 /* ChangeAssetDetailEvent.swift in Sources */,
 				2B0F5F1124E1A4F900DA22A6 /* LedgerAccountSelectionHeaderView.swift in Sources */,
 				2B298D1224F437360047408A /* LedgerAccountSelectionHeaderSupplementaryViewModel.swift in Sources */,
 				17BD4DFE2292F1260003E49A /* OptionsViewModel.swift in Sources */,
@@ -6866,7 +6866,7 @@
 				2B56B83E2505013600AC7B8D /* AccountSelectionCell.swift in Sources */,
 				2B56B83F2505013600AC7B8D /* AccountSelectionView.swift in Sources */,
 				2B56B8402505013600AC7B8D /* LedgerAccountSelectionTitleView.swift in Sources */,
-				2BE4D05C259371D8005F5764 /* SwipeAssetDetailEvent.swift in Sources */,
+				2BE4D05C259371D8005F5764 /* ChangeAssetDetailEvent.swift in Sources */,
 				2B56B8412505013600AC7B8D /* LedgerAccountSelectionHeaderView.swift in Sources */,
 				2B56B8422505013600AC7B8D /* LedgerAccountSelectionHeaderSupplementaryView.swift in Sources */,
 				2B56B8432505013600AC7B8D /* LedgerAccountSelectionView.swift in Sources */,
@@ -7391,7 +7391,7 @@
 				2B79A14723167BFC00766021 /* RewardDetailView.swift in Sources */,
 				2B8954C8224420B400D6D068 /* InputViewDelegate.swift in Sources */,
 				2B0F5F1024E1A4F900DA22A6 /* LedgerAccountSelectionHeaderView.swift in Sources */,
-				2BE4D05B259371D8005F5764 /* SwipeAssetDetailEvent.swift in Sources */,
+				2BE4D05B259371D8005F5764 /* ChangeAssetDetailEvent.swift in Sources */,
 				2B0D84FA2395D63100F0EAA7 /* SendAlgosTransactionPreviewViewController.swift in Sources */,
 				2B298D1124F437360047408A /* LedgerAccountSelectionHeaderSupplementaryViewModel.swift in Sources */,
 				2B59F15C22550778005203DD /* Codable+CoreData.swift in Sources */,

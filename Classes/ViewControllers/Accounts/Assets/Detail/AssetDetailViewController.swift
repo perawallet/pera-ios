@@ -288,7 +288,7 @@ extension AssetDetailViewController: TransactionActionsViewDelegate {
 extension AssetDetailViewController: AssetCardDisplayViewControllerDelegate {
     func assetCardDisplayViewController(_ assetCardDisplayViewController: AssetCardDisplayViewController, didSelect index: Int) {
         assetDetail = index == 0 ? nil : account.assetDetails[safe: index - 1]
-        log(SwipeAssetDetailEvent(assetId: assetDetail?.id))
+        log(ChangeAssetDetailEvent(assetId: assetDetail?.id))
         assetDetailTitleView.bind(AssetDetailTitleViewModel(account: account, assetDetail: assetDetail))
         transactionsViewController.updateSelectedAsset(assetDetail)
     }

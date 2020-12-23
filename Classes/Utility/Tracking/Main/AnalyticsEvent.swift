@@ -34,7 +34,7 @@ enum AnalyticsEventKey: String {
     case tabReceive = "tap_tab_receive"
     case detailReceive = "tap_asset_detail_receive"
     case assetDetail = "asset_detail_asset"
-    case assetDetailSwipe = "asset_detail_asset_swipe"
+    case assetDetailChange = "asset_detail_asset_change"
 }
 
 enum AnalyticsParameter: String {

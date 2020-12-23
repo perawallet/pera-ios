@@ -1,5 +1,5 @@
 //
-//  SwipeAssetDetailEvent.swift
+//  ChangeAssetDetailEvent.swift
 //  algorand
 //
 //  Created by Göktuğ Berk Ulu on 23.12.2020.
@@ -8,10 +8,10 @@
 
 import Foundation
 
-struct SwipeAssetDetailEvent: AnalyticsEvent {
+struct ChangeAssetDetailEvent: AnalyticsEvent {
     let assetId: Int64?
     
-    let key: AnalyticsEventKey = .assetDetailSwipe
+    let key: AnalyticsEventKey = .assetDetailChange
     
     var params: AnalyticsParameters? {
         if let assetId = assetId {
