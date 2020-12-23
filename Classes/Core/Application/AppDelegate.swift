@@ -23,6 +23,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private lazy var appConfiguration = AppConfiguration(api: api, session: session)
     private lazy var pushNotificationController = PushNotificationController(api: api)
     
+    private(set) lazy var firebaseAnalytics = FirebaseAnalytics()
+    
     private var rootViewController: RootViewController?
     
     private(set) lazy var accountManager: AccountManager = AccountManager(api: api)
@@ -58,8 +60,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     private func setupFirebase() {
-        FirebaseApp.configure()
-        Analytics.setAnalyticsCollectionEnabled(true)
+        firebaseAnalytics.initialize()
     }
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
