@@ -139,6 +139,7 @@ class AccountsViewController: BaseViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.presentQRTooltipIfNeeded()
         }
+        requestAppReview()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -175,6 +176,14 @@ extension AccountsViewController {
         accountsView.snp.makeConstraints { make in
             make.leading.trailing.bottom.equalToSuperview()
             make.top.safeEqualToTop(of: self)
+        }
+    }
+}
+
+extension AccountsViewController {
+    private func requestAppReview() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            AlgorandAppStoreReviewer().requestReviewIfAppropriate()
         }
     }
 }
