@@ -22,7 +22,7 @@ extension AppStoreReviewer {
     func requestReviewIfAppropriate() {
         startAppStoreReviewRequestContidition()
 
-        if canAskForAppStoreReview() && !isCurrentVersionAskedForAppStoreReview() {
+        if !isCurrentVersionAskedForAppStoreReview() && canAskForAppStoreReview() {
             SKStoreReviewController.requestReview()
             updateLatestVersionForAppStoreReview()
         }
