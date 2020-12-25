@@ -19,6 +19,10 @@ class AlgorandAppStoreReviewer: AppStoreReviewer {
     
     func canAskForAppStoreReview() -> Bool {
         let appOpenCount = UserDefaults.standard.integer(forKey: AppStoreReviewKeys.reviewConditionKey.rawValue)
-        return appOpenCount >= appReviewTriggerCount
+        return appOpenCount == appReviewTriggerCount
+    }
+    
+    func updateAppStoreReviewConditionAfterRequest() {
+        UserDefaults.standard.set(0, forKey: AppStoreReviewKeys.reviewConditionKey.rawValue)
     }
 }

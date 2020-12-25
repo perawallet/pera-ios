@@ -16,6 +16,7 @@ protocol AppStoreReviewer: class {
     
     func startAppStoreReviewRequestContidition()
     func canAskForAppStoreReview() -> Bool
+    func updateAppStoreReviewConditionAfterRequest()
 }
 
 extension AppStoreReviewer {
@@ -25,6 +26,7 @@ extension AppStoreReviewer {
         if !isCurrentVersionAskedForAppStoreReview() && canAskForAppStoreReview() {
             SKStoreReviewController.requestReview()
             updateLatestVersionForAppStoreReview()
+            updateAppStoreReviewConditionAfterRequest()
         }
     }
     
