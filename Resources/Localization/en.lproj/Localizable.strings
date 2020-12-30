@@ -509,3 +509,8 @@
 "settings-theme-dark" = "Dark";
 "settings-theme-light" = "Light";
 "settings-theme-system" = "System Default";
+
+"title-plus-asset-count" = "+%@ Assets";
+"ledger-account-details-title" = "Ledger details";
+"ledger-account-detail-can-sign" = "Can sign for these accounts";
+"ledger-account-detail-can-signed" = "Can be signed by";
