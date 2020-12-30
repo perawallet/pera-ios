@@ -17,11 +17,12 @@ import Foundation
 
 /// Bytes and Shorts used in communication with Ledger
 /// Usage of these in Swift are UInt8 and UInt16: https://gorjanshukov.medium.com/working-with-bytes-in-ios-swift-4-de316a389a0c
-private typealias Byte = UInt8
-private typealias Short = UInt16
+typealias Byte = UInt8
+typealias Short = UInt16
 
 class LedgerBLEController: NSObject {
-    private var mtuSize = Constants.defaultMTU
+    
+    private var mtuSize = LedgerMessage.MTU.default
     private var currentSequence: Short = 0
     private var remainingResponseBytes: Short = 0
     private var receivedData = NSMutableData()
@@ -48,18 +49,16 @@ class LedgerBLEController: NSObject {
 
 extension LedgerBLEController {
     /// Sends required address fetch instruction to the ledger device.
-    func fetchAddress() {
-        let addressFetchInstruction = Data(bytes: [Constants.algorandCLA, Constants.publicKeyInstruction])
-        
-        packetizeData(addressFetchInstruction).forEach { packet in
+    func fetchAddress(at index: Int) {
+        packetizeData(LedgerMessage.Instruction.addressFetch(for: index)).forEach { packet in
             delegate?.ledgerBLEController(self, shouldWrite: packet)
         }
     }
     
     /// Sends required sign transaction instruction to the ledger device.
-    func signTransaction(_ unsignedTransactionData: Data) {
+    func signTransaction(_ unsignedTransactionData: Data, atLedgerAccount index: Int) {
         var packets = [Data]()
-        composeSignTransactionPackets(from: unsignedTransactionData).forEach { appPacket in
+        composeSignTransactionPackets(from: unsignedTransactionData, atLedgerAccount: index).forEach { appPacket in
             packetizeData(appPacket).forEach { subpacket in
                 packets.append(subpacket)
             }
@@ -78,23 +77,23 @@ extension LedgerBLEController {
         var offset = 0
 
         /// Handle MTU size
-        if data[offset] == Constants.ledgerCLA {
+        if data[offset] == LedgerMessage.CLA.ledger {
             offset += 1
-            if (dataLength - offset) < Constants.mtuOffset {
+            if (dataLength - offset) < LedgerMessage.MTU.offset {
                 resetState()
                 return nil
             }
             
-            var mtu = Int(data[Constants.mtuOffset])
-            mtu = mtu < Constants.minMTU ? Constants.minMTU : mtu
-            mtu = mtu > Constants.maxMTU ? Constants.maxMTU : mtu
+            var mtu = Int(data[LedgerMessage.MTU.offset])
+            mtu = mtu < LedgerMessage.MTU.min ? LedgerMessage.MTU.min : mtu
+            mtu = mtu > LedgerMessage.MTU.max ? LedgerMessage.MTU.max : mtu
             mtuSize = mtu
             resetState()
             return nil
         }
 
         /// Handle received data
-        if data[offset] == Constants.dataCLA {
+        if data[offset] == LedgerMessage.CLA.data {
             offset += 1
             
             /// Parse sequence number
@@ -173,7 +172,7 @@ extension LedgerBLEController {
             var packet = [Byte]()
             
             /// Add algorand ledger application specifier
-            packet.append(Constants.dataCLA)
+            packet.append(LedgerMessage.CLA.data)
             
             /// Encode sequence number
             packet.append(sequenceIndex.shiftOneByteRight().asByte)
@@ -206,76 +205,50 @@ extension LedgerBLEController {
     
     /// Create app packet for transaction signing data that will contain information with the format:
     /// algorandCLA | sing instruction | initial packets | {transactionData}
-    private func composeSignTransactionPackets(from transactionData: Data) -> [Data] {
+    private func composeSignTransactionPackets(from transactionData: Data, atLedgerAccount index: Int) -> [Data] {
         var output = [Data]()
-        var remainingBytes = transactionData.count
+        var remainingBytes = transactionData.count + Int(LedgerMessage.Size.accountIndex)
         var offset = 0
-        var p1 = Constants.p1First
-        var p2 = Constants.p2More
+        var p1 = LedgerMessage.Paging.p1Transaction
+        var p2 = LedgerMessage.Paging.p2More
         
         while remainingBytes > 0 {
             /// Calculates header size and how many bytes should it send to the ledger
-            let remainingBytesWithHeader = remainingBytes + Int(Constants.headerSize)
-            let packetSize = remainingBytesWithHeader <= Constants.chunkSize ? remainingBytesWithHeader : Int(Constants.chunkSize)
-            
-            var packet = [Byte]()
+            let remainingBytesWithHeader = remainingBytes + Int(LedgerMessage.Size.header)
+            let packetSize = remainingBytesWithHeader <= LedgerMessage.Size.chunk ? remainingBytesWithHeader : Int(LedgerMessage.Size.chunk)
 
             /// Copy some number of bytes into the packet
-            let remainingSpaceInPacket = packetSize - Int(Constants.headerSize)
-            let bytesToCopy = remainingSpaceInPacket < remainingBytes ? remainingSpaceInPacket : remainingBytes
-            remainingBytes -= bytesToCopy
+            let remainingSpaceInPacket = packetSize - Int(LedgerMessage.Size.header)
+            var bytesToCopySize = remainingSpaceInPacket < remainingBytes ? remainingSpaceInPacket : remainingBytes
+            remainingBytes -= bytesToCopySize
             
             /// Check if this is the last packet
             if remainingBytes == 0 {
-                p2 = Constants.p2Last
+                p2 = LedgerMessage.Paging.p2Last
             }
             
+            var packet = [Byte]()
+            
             /// Adds algorand cla key, signg instruction and other related data for transaction
-            packet.append(contentsOf: [Constants.algorandCLA, Constants.signInstruction, p1, p2, Byte(bytesToCopy)])
+            packet.append(contentsOf: [LedgerMessage.CLA.algorand, LedgerMessage.Instruction.sign, p1, p2, Byte(bytesToCopySize)])
+            
+            if p1 == LedgerMessage.Paging.p1Transaction {
+                packet.append(contentsOf: index.toByteArray())
+                bytesToCopySize -= Int(LedgerMessage.Size.accountIndex)
+            }
             
             let transactionDataArray = [Byte](transactionData)
-            for byteIndex in 0..<bytesToCopy {
+            for byteIndex in 0..<bytesToCopySize {
                 packet.append(transactionDataArray[offset + byteIndex])
             }
             
-            p1 = Constants.p1More
-            offset += bytesToCopy
+            p1 = LedgerMessage.Paging.p1More
+            offset += bytesToCopySize
             
             output.append(Data(bytes: packet))
         }
         
         return output
-    }
-}
-
-extension LedgerBLEController {
-    enum Constants {
-        static let addressDataSize = 34
-        static let errorDataSize = 2
-        static let bleLedgerAddressMessage = "8003"
-        static let ledgerErrorResponse = "6e00"
-        static let ledgerTransactionCancelledCode = "6985"
-        
-        fileprivate static let returnCodeCount = 2
-        fileprivate static let defaultMTU = 23
-        fileprivate static let minMTU = 23
-        fileprivate static let maxMTU = 100
-        fileprivate static let mtuOffset = 5
-        
-        fileprivate static let ledgerCLA: Byte = 0x08
-        fileprivate static let dataCLA: Byte = 0x05
-        
-        fileprivate static let algorandCLA: Byte = 0x80
-        fileprivate static let signInstruction: Byte = 0x08
-        fileprivate static let publicKeyInstruction: Byte = 0x03
-        
-        fileprivate static let p1First: Byte = 0x00
-        fileprivate static let p1More: Byte = 0x80
-        fileprivate static let p2Last: Byte = 0x00
-        fileprivate static let p2More: Byte = 0x80
-        
-        fileprivate static let chunkSize: Byte = 0xFF
-        fileprivate static let headerSize: Byte = 0x05
     }
 }
 

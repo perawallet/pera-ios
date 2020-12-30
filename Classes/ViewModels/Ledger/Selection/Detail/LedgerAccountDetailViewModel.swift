@@ -33,7 +33,7 @@ class LedgerAccountDetailViewModel {
     private func setRekeyedAccountViews(from account: Account, and rekeyedAccounts: [Account]?) {
         if account.isRekeyed() {
             let roundedAccountNameView = RoundedAccountNameView()
-            roundedAccountNameView.bind(AccountNameViewModel(account: account))
+            roundedAccountNameView.bind(AuthAccountNameViewModel(account: account))
             rekeyedAccountViews = [roundedAccountNameView]
         } else {
             guard let rekeyedAccounts = rekeyedAccounts,

@@ -56,8 +56,8 @@ extension LedgerAccountSelectionHeaderView {
 }
 
 extension LedgerAccountSelectionHeaderView {
-    func setTitle(_ title: String?) {
-        titleLabel.text = title
+    func bind(_ viewModel: LedgerAccountSelectionHeaderSupplementaryViewModel) {
+        titleLabel.text = viewModel.accountCount
     }
     
     static func calculatePreferredSize(with layout: Layout<LayoutConstants>) -> CGSize {

@@ -10,7 +10,7 @@ import Foundation
 
 class LedgerAccountSelectionHeaderSupplementaryViewModel {
     
-    private var accountCount: String?
+    private(set) var accountCount: String?
     
     init(accounts: [Account]) {
         setAccountCount(from: accounts)
@@ -20,11 +20,5 @@ class LedgerAccountSelectionHeaderSupplementaryViewModel {
         accountCount = accounts.count == 1 ?
             "ledger-account-selection-title-singular".localized(params: accounts.count) :
             "ledger-account-selection-title-plural".localized(params: accounts.count)
-    }
-}
-
-extension LedgerAccountSelectionHeaderSupplementaryViewModel {
-    func configure(_ view: LedgerAccountSelectionHeaderSupplementaryView) {
-        view.contextView.setTitle(accountCount)
     }
 }
