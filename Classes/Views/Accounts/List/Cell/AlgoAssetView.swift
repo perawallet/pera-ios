@@ -113,6 +113,10 @@ extension AlgoAssetView {
     func setEnabled(_ isEnabled: Bool) {
         backgroundColor = isEnabled ? Colors.Background.secondary : Colors.Background.disabled
     }
+    
+    func setSeparatorHidden(_ isHidden: Bool) {
+        separatorView.isHidden = isHidden
+    }
 }
 
 extension AlgoAssetView {

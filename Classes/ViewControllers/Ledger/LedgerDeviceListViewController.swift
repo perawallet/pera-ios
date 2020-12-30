@@ -132,7 +132,7 @@ extension LedgerDeviceListViewController: LedgerDeviceListViewDelegate {
 extension LedgerDeviceListViewController: LedgerAccountFetchOperationDelegate {
     func ledgerAccountFetchOperation(
         _ ledgerAccountFetchOperation: LedgerAccountFetchOperation,
-        didReceive address: String,
+        didReceive accounts: [Account],
         in ledgerApprovalViewController: LedgerApprovalViewController?
     ) {
         if isViewDisappearing {
@@ -141,13 +141,12 @@ extension LedgerDeviceListViewController: LedgerAccountFetchOperationDelegate {
         
         if let connectedDeviceId = ledgerAccountFetchOperation.connectedDevice?.identifier {
             ledgerApprovalViewController?.closeScreen(by: .dismiss, animated: true) {
-                let ledgerDetail = LedgerDetail(id: connectedDeviceId, name: ledgerAccountFetchOperation.connectedDevice?.name)
-                switch self.accountSetupFlow {
-                case let .initializeAccount(mode):
-                    self.openNextFlow(for: mode, with: ledgerDetail, for: address)
-                case let .addNewAccount(mode):
-                    self.openNextFlow(for: mode, with: ledgerDetail, for: address)
-                }
+                let ledgerDetail = LedgerDetail(
+                    id: connectedDeviceId,
+                    name: ledgerAccountFetchOperation.connectedDevice?.name,
+                    indexInLedger: nil
+                )
+                self.open(.ledgerAccountSelection(flow: self.accountSetupFlow, ledger: ledgerDetail, accounts: accounts), by: .push)
             }
         }
     }
@@ -159,18 +158,6 @@ extension LedgerDeviceListViewController: LedgerAccountFetchOperationDelegate {
     }
     
     func ledgerAccountFetchOperation(_ ledgerAccountFetchOperation: LedgerAccountFetchOperation, didFailed error: LedgerOperationError) { }
-    
-    private func openNextFlow(for mode: AccountSetupMode?, with ledgerDetail: LedgerDetail, for address: String) {
-        guard let mode = mode else {
-            return
-        }
-        switch mode {
-        case let .rekey(account):
-            self.open(.rekeyConfirmation(account: account, ledger: ledgerDetail, ledgerAddress: address), by: .push)
-        default:
-            self.open(.ledgerAccountSelection(flow: accountSetupFlow, ledger: ledgerDetail, ledgerAddress: address), by: .push)
-        }
-    }
 }
 
 extension LedgerDeviceListViewController {

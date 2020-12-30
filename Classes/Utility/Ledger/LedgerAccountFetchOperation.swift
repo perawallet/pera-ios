@@ -19,6 +19,11 @@ class LedgerAccountFetchOperation: LedgerOperation, BLEConnectionManagerDelegate
     var timer: Timer?
     var connectedDevice: CBPeripheral?
     
+    private var ledgerAccounts = [Account]()
+    private var accountIndex: Int {
+        return ledgerAccounts.count
+    }
+    
     weak var delegate: LedgerAccountFetchOperationDelegate?
     
     private let api: AlgorandAPI
@@ -32,7 +37,7 @@ class LedgerAccountFetchOperation: LedgerOperation, BLEConnectionManagerDelegate
 
 extension LedgerAccountFetchOperation {
     func startOperation() {
-        ledgerBleController.fetchAddress()
+        ledgerBleController.fetchAddress(at: accountIndex)
     }
     
     func completeOperation(with data: Data) {
@@ -46,7 +51,7 @@ extension LedgerAccountFetchOperation {
             return
         }
         
-        delegate?.ledgerAccountFetchOperation(self, didReceive: address, in: ledgerApprovalViewController)
+        fetchAccount(address)
     }
     
     func handleDiscoveryResults(_ peripherals: [CBPeripheral]) {
@@ -58,6 +63,7 @@ extension LedgerAccountFetchOperation {
         stopScan()
         disconnectFromCurrentDevice()
         ledgerApprovalViewController?.dismissIfNeeded()
+        ledgerAccounts.removeAll()
     }
 }
 
@@ -76,12 +82,37 @@ extension LedgerAccountFetchOperation {
         
         return address
     }
+    
+    private func fetchAccount(_ address: String) {
+        api.fetchAccount(with: AccountFetchDraft(publicKey: address)) { response in
+            switch response {
+            case .success(let accountWrapper):
+                if accountWrapper.account.amount == 0 {
+                    self.ledgerAccounts.append(accountWrapper.account)
+                    self.returnAccounts()
+                    return
+                }
+                
+                self.ledgerAccounts.append(accountWrapper.account)
+                self.startOperation()
+            case let .failure(error, _):
+                if error.isHttpNotFound {
+                    self.ledgerAccounts.append(Account(address: address, type: .ledger))
+                }
+                self.returnAccounts()
+            }
+        }
+    }
+    
+    private func returnAccounts() {
+        delegate?.ledgerAccountFetchOperation(self, didReceive: ledgerAccounts, in: ledgerApprovalViewController)
+    }
 }
 
 protocol LedgerAccountFetchOperationDelegate: class {
     func ledgerAccountFetchOperation(
         _ ledgerAccountFetchOperation: LedgerAccountFetchOperation,
-        didReceive address: String,
+        didReceive accounts: [Account],
         in ledgerApprovalViewController: LedgerApprovalViewController?
     )
     func ledgerAccountFetchOperation(_ ledgerAccountFetchOperation: LedgerAccountFetchOperation, didDiscover peripherals: [CBPeripheral])

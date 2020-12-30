@@ -323,11 +323,11 @@ class Router {
                 ledgerAddress: ledgerAddress,
                 configuration: configuration
             )
-        case let .ledgerAccountSelection(flow, ledger, ledgerAddress):
+        case let .ledgerAccountSelection(flow, ledger, accounts):
             viewController = LedgerAccountSelectionViewController(
                 accountSetupFlow: flow,
                 ledger: ledger,
-                ledgerAddress: ledgerAddress,
+                accounts: accounts,
                 configuration: configuration
             )
         case .developerSettings:
@@ -340,6 +340,13 @@ class Router {
             viewController = WatchAccountAdditionViewController(accountSetupFlow: flow, configuration: configuration)
         case let .accountTypeSelection(flow):
             viewController = AccountTypeSelectionViewController(flow: flow, configuration: configuration)
+        case let .ledgerAccountDetail(account, index, rekeyedAccounts):
+            viewController = LedgerAccountDetailViewController(
+                account: account,
+                ledgerIndex: index,
+                rekeyedAccounts: rekeyedAccounts,
+                configuration: configuration
+            )
         }
         
         return viewController as? T

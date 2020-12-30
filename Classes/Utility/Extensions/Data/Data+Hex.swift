@@ -53,23 +53,23 @@ extension Data {
     }
     
     var isLedgerError: Bool {
-        toHexString() == LedgerBLEController.Constants.ledgerErrorResponse
+        toHexString() == LedgerMessage.Response.ledgerError
     }
     
     var isLedgerTransactionCancelledError: Bool {
-        toHexString() == LedgerBLEController.Constants.ledgerTransactionCancelledCode
+        toHexString() == LedgerMessage.Response.ledgerTransactionCancelled
     }
     
     var isErrorResponseFromLedger: Bool {
-        count == LedgerBLEController.Constants.errorDataSize
+        count == LedgerMessage.Size.error
     }
     
     var isAccountAddressResponseFromLedger: Bool {
-        count == LedgerBLEController.Constants.addressDataSize
+        count == LedgerMessage.Size.address
     }
     
     var isSignedTransactionResponseFromLedger: Bool {
-        count > LedgerBLEController.Constants.addressDataSize
+        count > LedgerMessage.Size.address
     }
 }
 
