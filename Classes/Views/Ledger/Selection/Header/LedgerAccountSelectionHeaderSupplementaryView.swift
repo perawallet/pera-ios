@@ -12,4 +12,8 @@ class LedgerAccountSelectionHeaderSupplementaryView: BaseSupplementaryView<Ledge
     static func calculatePreferredSize() -> CGSize {
         return LedgerAccountSelectionHeaderView.calculatePreferredSize(with: Layout<LedgerAccountSelectionHeaderView.LayoutConstants>())
     }
+    
+    func bind(_ viewModel: LedgerAccountSelectionHeaderSupplementaryViewModel) {
+        contextView.bind(viewModel)
+    }
 }

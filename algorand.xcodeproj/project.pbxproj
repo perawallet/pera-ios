@@ -1520,6 +1520,9 @@
 		2BDE9CD7224E2082007EFF30 /* ContentStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDE9CD6224E2082007EFF30 /* ContentStateView.swift */; };
 		2BDE9CDA224E2336007EFF30 /* TransactionHistoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDE9CD9224E2336007EFF30 /* TransactionHistoryCell.swift */; };
 		2BDE9CDC224E2379007EFF30 /* TransactionHistoryContextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDE9CDB224E2379007EFF30 /* TransactionHistoryContextView.swift */; };
+		2BE4D04925913771005F5764 /* AuthAccountNameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE4D04825913771005F5764 /* AuthAccountNameViewModel.swift */; };
+		2BE4D04A25913771005F5764 /* AuthAccountNameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE4D04825913771005F5764 /* AuthAccountNameViewModel.swift */; };
+		2BE4D04B25913771005F5764 /* AuthAccountNameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE4D04825913771005F5764 /* AuthAccountNameViewModel.swift */; };
 		2BE6DC6424A0C6340028A79F /* AssetsCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE6DC6324A0C6340028A79F /* AssetsCollectionView.swift */; };
 		2BE6DC6524A0C6340028A79F /* AssetsCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE6DC6324A0C6340028A79F /* AssetsCollectionView.swift */; };
 		2BE936FC24534F5600322C1E /* NumpadButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE936FB24534F5600322C1E /* NumpadButton.swift */; };
@@ -2171,6 +2174,7 @@
 		2BDE9CD6224E2082007EFF30 /* ContentStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentStateView.swift; sourceTree = "<group>"; };
 		2BDE9CD9224E2336007EFF30 /* TransactionHistoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryCell.swift; sourceTree = "<group>"; };
 		2BDE9CDB224E2379007EFF30 /* TransactionHistoryContextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryContextView.swift; sourceTree = "<group>"; };
+		2BE4D04825913771005F5764 /* AuthAccountNameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthAccountNameViewModel.swift; sourceTree = "<group>"; };
 		2BE6DC6324A0C6340028A79F /* AssetsCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetsCollectionView.swift; sourceTree = "<group>"; };
 		2BE936FB24534F5600322C1E /* NumpadButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumpadButton.swift; sourceTree = "<group>"; };
 		2BE936FF245A2EE700322C1E /* Shadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shadow.swift; sourceTree = "<group>"; };
@@ -4714,6 +4718,7 @@
 			isa = PBXGroup;
 			children = (
 				2BB350E4258A233800A03BAC /* AccountNameViewModel.swift */,
+				2BE4D04825913771005F5764 /* AuthAccountNameViewModel.swift */,
 			);
 			path = AccountName;
 			sourceTree = "<group>";
@@ -6630,6 +6635,7 @@
 				17BD4E822292F1260003E49A /* QRScannerOverlayView.swift in Sources */,
 				2B4486FB2379590D00C19FDE /* AssetView.swift in Sources */,
 				17BD4E832292F1260003E49A /* NodeHealthOperation.swift in Sources */,
+				2BE4D04B25913771005F5764 /* AuthAccountNameViewModel.swift in Sources */,
 				2B4BD9FB2389F5F900491149 /* AssetRemovalViewModel.swift in Sources */,
 				2BD5477B23192E15007179FE /* AlgorandError.swift in Sources */,
 				2B432A53237C56F0009191BF /* BaseSupplementaryView.swift in Sources */,
@@ -7166,6 +7172,7 @@
 				2B0F624724EC129D00DA22A6 /* Data+Hex.swift in Sources */,
 				2B0F624824EC129D00DA22A6 /* QRCreationViewController.swift in Sources */,
 				2B0F624924EC129D00DA22A6 /* LedgerDeviceCell.swift in Sources */,
+				2BE4D04A25913771005F5764 /* AuthAccountNameViewModel.swift in Sources */,
 				2B0F624A24EC129D00DA22A6 /* VerifiedAsset.swift in Sources */,
 				2B0F624B24EC129D00DA22A6 /* Storable.swift in Sources */,
 				2BF0FAB225387C3300D704D5 /* AssetCardView.swift in Sources */,
@@ -7702,6 +7709,7 @@
 				17B7D8A62240D8F900A6FF9E /* Account.swift in Sources */,
 				2B5C58E123AC364700B907E3 /* URL+Link.swift in Sources */,
 				2B7ABF6E2332DCDB0050B64B /* PendingTransactionCell.swift in Sources */,
+				2BE4D04925913771005F5764 /* AuthAccountNameViewModel.swift in Sources */,
 				17B7D8A82240DFFC00A6FF9E /* API+Account.swift in Sources */,
 				2B4486FA2379590D00C19FDE /* AssetView.swift in Sources */,
 				2B4BD9FA2389F5F900491149 /* AssetRemovalViewModel.swift in Sources */,

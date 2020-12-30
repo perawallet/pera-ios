@@ -36,6 +36,10 @@ extension RoundedAccountNameView {
 }
 
 extension RoundedAccountNameView {
+    func bind(_ viewModel: AuthAccountNameViewModel) {
+        accountNameView.bind(viewModel)
+    }
+    
     func bind(_ viewModel: AccountNameViewModel) {
         accountNameView.bind(viewModel)
     }

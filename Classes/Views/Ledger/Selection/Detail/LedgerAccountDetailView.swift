@@ -111,7 +111,7 @@ extension LedgerAccountDetailView {
 extension LedgerAccountDetailView {
     struct LayoutConstants: AdaptiveLayoutConstants {
         let horizontalInset: CGFloat = 20.0
-        let topInset: CGFloat = 36.0
+        let topInset: CGFloat = 24.0
         let stackTopInset: CGFloat = 12.0
         let subtitleTopInset: CGFloat = 40.0
     }
