@@ -107,7 +107,8 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
             if sameAccount.isRekeyed() {
                 account = AccountInformation(
                     address: address,
-                    name: name, type: .rekeyed,
+                    name: name,
+                    type: .rekeyed,
                     ledgerDetail: sameAccount.ledgerDetail,
                     rekeyDetail: sameAccount.rekeyDetail
                 )

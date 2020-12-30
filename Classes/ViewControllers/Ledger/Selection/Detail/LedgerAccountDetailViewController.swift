@@ -12,7 +12,14 @@ import SVProgressHUD
 class LedgerAccountDetailViewController: BaseScrollViewController {
     
     private lazy var ledgerAccountDetailView = LedgerAccountDetailView()
-    
+
+    private lazy var dataSource: LedgerAccountDetailViewDataSource = {
+        guard let api = api else {
+            fatalError("API should be set.")
+        }
+        return LedgerAccountDetailViewDataSource(api: api)
+    }()
+
     private let account: Account
     private let ledgerIndex: Int?
     private let rekeyedAccounts: [Account]?
@@ -36,7 +43,7 @@ class LedgerAccountDetailViewController: BaseScrollViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        fetchAssets(for: account)
+        dataSource.fetchAssets(for: account)
     }
     
     override func configureAppearance() {
@@ -53,6 +60,11 @@ class LedgerAccountDetailViewController: BaseScrollViewController {
         super.prepareLayout()
         setupLedgerAccountDetailViewLayout()
     }
+
+    override func linkInteractors() {
+        super.linkInteractors()
+        dataSource.delegate = self
+    }
 }
 
 extension LedgerAccountDetailViewController {
@@ -65,62 +77,11 @@ extension LedgerAccountDetailViewController {
     }
 }
 
-extension LedgerAccountDetailViewController {
-    private func fetchAssets(for account: Account) {
-        guard let assets = account.assets,
-              !assets.isEmpty else {
-            bindView(with: account)
-            return
-        }
-        
-        SVProgressHUD.show(withStatus: "title-loading".localized)
-        
-        for (index, asset) in assets.enumerated() {
-            if let assetDetail = api?.session.assetDetails[asset.id] {
-                account.assetDetails.append(assetDetail)
-                
-                if index == assets.count - 1 {
-                    SVProgressHUD.showSuccess(withStatus: "title-done".localized)
-                    SVProgressHUD.dismiss()
-                    bindView(with: account)
-                }
-            } else {
-                
-                self.api?.getAssetDetails(with: AssetFetchDraft(assetId: "\(asset.id)")) { assetResponse in
-                    switch assetResponse {
-                    case .success(let assetDetailResponse):
-                        self.composeAssetDetail(assetDetailResponse.assetDetail, of: account, with: asset.id)
-                    case .failure:
-                        account.removeAsset(asset.id)
-                    }
-                    
-                    if index == assets.count - 1 {
-                        SVProgressHUD.showSuccess(withStatus: "title-done".localized)
-                        SVProgressHUD.dismiss()
-                        self.bindView(with: account)
-                    }
-                }
-            }
-        }
-    }
-    
-    private func bindView(with account: Account) {
+extension LedgerAccountDetailViewController: LedgerAccountDetailViewDataSourceDelegate {
+    func ledgerAccountDetailViewDataSource(
+        _ ledgerAccountDetailViewDataSource: LedgerAccountDetailViewDataSource,
+        didReturn account: Account
+    ) {
         ledgerAccountDetailView.bind(LedgerAccountDetailViewModel(account: account, rekeyedAccounts: rekeyedAccounts))
-    }
-    
-    private func composeAssetDetail(_ assetDetail: AssetDetail, of account: Account, with id: Int64) {
-        var assetDetail = assetDetail
-        setVerifiedIfNeeded(&assetDetail, with: id)
-        account.assetDetails.append(assetDetail)
-        api?.session.assetDetails[id] = assetDetail
-    }
-    
-    private func setVerifiedIfNeeded(_ assetDetail: inout AssetDetail, with id: Int64) {
-        if let verifiedAssets = api?.session.verifiedAssets,
-            verifiedAssets.contains(where: { verifiedAsset -> Bool in
-                verifiedAsset.id == id
-            }) {
-            assetDetail.isVerified = true
-        }
     }
 }
