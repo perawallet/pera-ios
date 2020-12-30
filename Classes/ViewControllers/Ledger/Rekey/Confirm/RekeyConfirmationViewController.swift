@@ -116,8 +116,8 @@ extension RekeyConfirmationViewController: RekeyConfirmationViewDelegate {
 
 extension RekeyConfirmationViewController: TransactionControllerDelegate {
     func transactionController(_ transactionController: TransactionController, didComposedTransactionDataFor draft: TransactionSendDraft?) {
-        addAuthAccountIfNeeded()
         RekeyEvent().logEvent()
+        saveRekeyedAccountDetails()
         openRekeyConfirmationAlert()
     }
     
@@ -141,6 +141,17 @@ extension RekeyConfirmationViewController: TransactionControllerDelegate {
 }
 
 extension RekeyConfirmationViewController {
+    private func saveRekeyedAccountDetails() {
+        if let localAccount = session?.accountInformation(from: account.address) {
+            localAccount.type = .rekeyed
+            account.type = .rekeyed
+            localAccount.addRekeyDetail(ledger, for: ledgerAddress)
+
+            session?.authenticatedUser?.updateAccount(localAccount)
+            session?.updateAccount(account)
+        }
+    }
+
     private func openRekeyConfirmationAlert() {
         let accountName = account.name ?? ""
         let configurator = BottomInformationBundle(
@@ -160,20 +171,6 @@ extension RekeyConfirmationViewController {
                 transitioningDelegate: cardModalPresenter
             )
         )
-    }
-    
-    private func addAuthAccountIfNeeded() {
-        if session?.accountInformation(from: ledgerAddress) == nil {
-            let ledgerAccountInformation = AccountInformation(
-                address: ledgerAddress,
-                name: ledgerAddress.shortAddressDisplay(),
-                type: .ledger,
-                ledgerDetail: ledger
-            )
-            
-            session?.authenticatedUser?.addAccount(ledgerAccountInformation)
-            session?.addAccount(Account(accountInformation: ledgerAccountInformation))
-        }
     }
     
     private func displayTransactionError(from transactionError: TransactionError) {

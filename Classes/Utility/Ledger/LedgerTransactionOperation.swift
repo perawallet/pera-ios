@@ -78,7 +78,7 @@ extension LedgerTransactionOperation {
     }
     
     func handleDiscoveryResults(_ peripherals: [CBPeripheral]) {
-        guard let savedPeripheralId = account?.ledgerDetail?.id,
+        guard let savedPeripheralId = account?.currentLedgerDetail?.id,
               let savedPeripheral = peripherals.first(where: { $0.identifier == savedPeripheralId }) else {
             return
         }

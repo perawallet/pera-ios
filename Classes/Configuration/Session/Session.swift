@@ -283,23 +283,28 @@ extension Session {
         if selectedAccount.isWatchAccount() {
            return false
         }
-        
+
         /// Check whether auth address exists for the selected account.
-        if let authAccountAddress = selectedAccount.authAddress {
-            if let authAccount = accounts.first(where: { account -> Bool in
-                authAccountAddress == account.address
-            }) {
-                selectedAccount.ledgerDetail = authAccount.ledgerDetail
+        if let authAddress = selectedAccount.authAddress {
+            if selectedAccount.rekeyDetail?[authAddress] != nil {
                 return true
+            } else {
+                if let authAccount = accounts.first(where: { account -> Bool in
+                    authAddress == account.address
+                }),
+                let ledgerDetail = authAccount.ledgerDetail {
+                    selectedAccount.addRekeyDetail(ledgerDetail, for: authAddress)
+                    return true
+                }
             }
-            
+
             NotificationBanner.showError(
                 "title-error".localized,
-                message: "ledger-rekey-error-add-auth".localized(params: authAccountAddress.shortAddressDisplay())
+                message: "ledger-rekey-error-add-auth".localized(params: authAddress.shortAddressDisplay())
             )
             return false
         }
-        
+
         /// Check whether ledger details of the selected ledger account exists.
         if selectedAccount.isLedger() {
             if selectedAccount.ledgerDetail == nil {
