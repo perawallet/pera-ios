@@ -19,15 +19,11 @@ class TransactionController {
     private var unsignedTransactionData: Data?
     private var signedTransactionData: Data?
     
-    private lazy var bleConnectionManager = BLEConnectionManager()
-    private lazy var ledgerBLEController = LedgerBLEController()
+    private lazy var ledgerTransactionOperation = LedgerTransactionOperation(api: api)
     
     private let algorandSDK = AlgorandSDK()
     
     private var currentTransactionType: TransactionType?
-    private var connectedDevice: CBPeripheral?
-    
-    private var isCorrectLedgerAddressFetched = false
     
     private var fromAccount: Account? {
         return transactionDraft?.from
@@ -59,17 +55,9 @@ extension TransactionController {
         self.transactionDraft = transactionDraft
     }
     
-    private func setupBLEConnections() {
-        let manager = BLEConnectionManager()
-        manager.delegate = self
-        bleConnectionManager = manager
-        
-        ledgerBLEController.delegate = self
-    }
-    
     func stopBLEScan() {
-        bleConnectionManager.disconnect(from: connectedDevice)
-        bleConnectionManager.stopScan()
+        ledgerTransactionOperation.disconnectFromCurrentDevice()
+        ledgerTransactionOperation.stopScan()
     }
 }
 
@@ -82,7 +70,7 @@ extension TransactionController {
                 self.params = params
                 self.composeTransactionData(for: transactionType)
             case let .failure(error, _):
-                self.connectedDevice = nil
+                self.resetLedgerOperationIfNeeded()
                 self.delegate?.transactionController(self, didFailedComposing: .network(.unexpected(error)))
             }
         }
@@ -100,6 +88,7 @@ extension TransactionController {
                 completion?()
                 self.delegate?.transactionController(self, didCompletedTransaction: transactionId)
             case let .failure(error, _):
+                self.resetLedgerOperationIfNeeded()
                 self.logLedgerTransactionError()
                 self.delegate?.transactionController(self, didFailedTransaction: .network(.unexpected(error)))
             }
@@ -136,12 +125,8 @@ extension TransactionController {
         }
         
         if account.requiresLedgerConnection() {
-            setupBLEConnections()
-            // swiftlint:disable todo
-            // TODO: We need to restart scanning somehow here so that it can be restarted if there is an error in the same screen.
-            // For now, it will not start scanning unless the func centralManagerDidUpdateState(_ central: CBCentralManager) delegate
-            // function of central manager in BLEConnectionManager is not called.
-            // swiftlint:enable todo
+            ledgerTransactionOperation.setUnsignedTransactionData(unsignedTransactionData)
+            ledgerTransactionOperation.startScan()
         } else {
             if transactionType == .algosTransaction {
                 handleAlgosTransactionForStandardAccount()
@@ -173,26 +158,45 @@ extension TransactionController {
         var signedTransactionError: NSError?
         
         guard let unsignedTransactionData = unsignedTransactionData,
-            let accountAddress = fromAccount?.address,
-            let privateData = api.session.privateData(for: accountAddress),
-            let signedTransactionData = algorandSDK.sign(privateData, with: unsignedTransactionData, error: &signedTransactionError) else {
-                connectedDevice = nil
-                delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.sdkError(error: signedTransactionError)))
-                return
+              let accountAddress = fromAccount?.address,
+              let privateData = api.session.privateData(for: accountAddress),
+              let signedTransactionData = algorandSDK.sign(
+                privateData,
+                with: unsignedTransactionData,
+                error: &signedTransactionError
+              ) else {
+            resetLedgerOperationIfNeeded()
+            delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.sdkError(error: signedTransactionError)))
+            return
         }
         
         self.signedTransactionData = signedTransactionData
+    }
+    
+    func initializeLedgerTransactionAccount() {
+        if let account = fromAccount {
+            ledgerTransactionOperation.setTransactionAccount(account)
+        }
+    }
+    
+    func startTimer() {
+        ledgerTransactionOperation.delegate = self
+        ledgerTransactionOperation.startTimer()
+    }
+    
+    func stopTimer() {
+        ledgerTransactionOperation.stopTimer()
     }
 }
 
 extension TransactionController {
     private func composeAlgosTransactionData(initialFee: Int64 = Transaction.Constant.minimumFee) {
         guard let params = params,
-            let algosTransactionDraft = algosTransactionDraft,
-            let amountDoubleValue = algosTransactionDraft.amount,
-            let toAddress = algosTransactionDraft.toAccount else {
-                connectedDevice = nil
-                delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.other))
+              let algosTransactionDraft = algosTransactionDraft,
+              let amountDoubleValue = algosTransactionDraft.amount,
+              let toAddress = algosTransactionDraft.toAccount else {
+            resetLedgerOperationIfNeeded()
+            delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.other))
             return
         }
         
@@ -211,7 +215,7 @@ extension TransactionController {
         let trimmedToAddress = toAddress.trimmingCharacters(in: .whitespacesAndNewlines)
         
         if !algorandSDK.isValidAddress(trimmedToAddress) {
-            connectedDevice = nil
+            resetLedgerOperationIfNeeded()
             delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.invalidAddress(address: trimmedToAddress)))
             return
         }
@@ -228,7 +232,7 @@ extension TransactionController {
         var transactionError: NSError?
         
         guard let transactionData = algorandSDK.sendAlgos(with: draft, error: &transactionError) else {
-            connectedDevice = nil
+            resetLedgerOperationIfNeeded()
             delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.sdkError(error: transactionError)))
             return
         }
@@ -255,19 +259,19 @@ extension TransactionController {
 extension TransactionController {
     private func composeAssetTransactionData() {
         guard let params = params,
-            let transactionDraft = assetTransactionDraft,
-            let assetIndex = transactionDraft.assetIndex,
-            let amountDoubleValue = transactionDraft.amount,
-            let toAddress = transactionDraft.toAccount else {
-                connectedDevice = nil
-                delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.other))
+              let transactionDraft = assetTransactionDraft,
+              let assetIndex = transactionDraft.assetIndex,
+              let amountDoubleValue = transactionDraft.amount,
+              let toAddress = transactionDraft.toAccount else {
+            resetLedgerOperationIfNeeded()
+            delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.other))
             return
         }
         
         let trimmedToAddress = toAddress.trimmingCharacters(in: .whitespacesAndNewlines)
         
         if !algorandSDK.isValidAddress(trimmedToAddress) {
-            connectedDevice = nil
+            resetLedgerOperationIfNeeded()
             delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.invalidAddress(address: trimmedToAddress)))
             return
         }
@@ -284,7 +288,7 @@ extension TransactionController {
         var transactionError: NSError?
         
         guard let transactionData = algorandSDK.sendAsset(with: draft, error: &transactionError) else {
-            connectedDevice = nil
+            resetLedgerOperationIfNeeded()
             delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.sdkError(error: transactionError)))
             return
         }
@@ -294,19 +298,19 @@ extension TransactionController {
     
     private func composeAssetRemovalData() {
         guard let params = params,
-            let transactionDraft = assetTransactionDraft,
-            let assetIndex = transactionDraft.assetIndex,
-            let amountDoubleValue = transactionDraft.amount,
-            let toAddress = transactionDraft.toAccount else {
-                connectedDevice = nil
-                delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.other))
+              let transactionDraft = assetTransactionDraft,
+              let assetIndex = transactionDraft.assetIndex,
+              let amountDoubleValue = transactionDraft.amount,
+              let toAddress = transactionDraft.toAccount else {
+            resetLedgerOperationIfNeeded()
+            delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.other))
             return
         }
         
         let trimmedToAddress = toAddress.trimmingCharacters(in: .whitespacesAndNewlines)
         
         if !algorandSDK.isValidAddress(trimmedToAddress) {
-            connectedDevice = nil
+            resetLedgerOperationIfNeeded()
             delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.invalidAddress(address: trimmedToAddress)))
             return
         }
@@ -322,7 +326,7 @@ extension TransactionController {
         var transactionError: NSError?
         
         guard let transactionData = algorandSDK.removeAsset(with: draft, error: &transactionError) else {
-            connectedDevice = nil
+            resetLedgerOperationIfNeeded()
             delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.sdkError(error: transactionError)))
             return
         }
@@ -332,18 +336,18 @@ extension TransactionController {
 
     private func composeAssetAdditionData() {
         guard let params = params,
-            let assetTransactionDraft = assetTransactionDraft,
-            let assetIndex = assetTransactionDraft.assetIndex else {
-                connectedDevice = nil
-                delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.draft(draft: self.assetTransactionDraft)))
-                return
+              let assetTransactionDraft = assetTransactionDraft,
+              let assetIndex = assetTransactionDraft.assetIndex else {
+            resetLedgerOperationIfNeeded()
+            delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.draft(draft: self.assetTransactionDraft)))
+            return
         }
         
         var transactionError: NSError?
         let draft = AssetAdditionDraft(from: assetTransactionDraft.from, transactionParams: params, assetIndex: assetIndex)
         
         guard let transactionData = algorandSDK.addAsset(with: draft, error: &transactionError) else {
-            connectedDevice = nil
+            resetLedgerOperationIfNeeded()
             delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.sdkError(error: transactionError)))
             return
         }
@@ -392,6 +396,7 @@ extension TransactionController {
         
         let minimumAmount = Int64(minimumTransactionMicroAlgosLimit * assetCount) + calculatedFee
         if Int64(account.amount) - transactionAmount < minimumAmount {
+            resetLedgerOperationIfNeeded()
             delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.minimumAmount(amount: minimumAmount)))
             return false
         }
@@ -409,23 +414,24 @@ extension TransactionController {
             delegate?.transactionController(self, didComposedTransactionDataFor: self.assetTransactionDraft)
         }
     }
+    
 }
 
 extension TransactionController {
     private func composeRekeyTransactionData() {
         guard let params = params,
-            let draft = rekeyTransactionDraft,
-            let rekeyedAccount = draft.toAccount else {
-                connectedDevice = nil
-                delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.draft(draft: self.rekeyTransactionDraft)))
-                return
+              let draft = rekeyTransactionDraft,
+              let rekeyedAccount = draft.toAccount else {
+            resetLedgerOperationIfNeeded()
+            delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.draft(draft: self.rekeyTransactionDraft)))
+            return
         }
         
         var transactionError: NSError?
         let rekeyTransactionDraft = RekeyTransactionDraft(from: draft.from, rekeyedAccount: rekeyedAccount, transactionParams: params)
         
         guard let transactionData = algorandSDK.rekeyAccount(with: rekeyTransactionDraft, error: &transactionError) else {
-            connectedDevice = nil
+            resetLedgerOperationIfNeeded()
             delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.sdkError(error: transactionError)))
             return
         }
@@ -440,107 +446,17 @@ extension TransactionController {
     }
 }
 
-extension TransactionController: BLEConnectionManagerDelegate {
-    func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didDiscover peripherals: [CBPeripheral]) {
-        guard let ledgerDetail = fromAccount?.ledgerDetail,
-            let savedPeripheralId = ledgerDetail.id,
-            let savedPeripheral = peripherals.first(where: { $0.identifier == savedPeripheralId }) else {
-            return
-        }
-        
-        bleConnectionManager.connectToDevice(savedPeripheral)
-    }
-    
-    func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didConnect peripheral: CBPeripheral) {
-        delegate?.transactionControllerDidStartBLEConnection(self)
-        connectedDevice = peripheral
-    }
-    
-    func bleConnectionManagerEnabledToWrite(_ bleConnectionManager: BLEConnectionManager) {
-        if isCorrectLedgerAddressFetched {
-            signTransactionWithLedger()
-        } else {
-            fetchAddressFromLedger()
-        }
-    }
-    
-    func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didRead string: String) {
-        ledgerBLEController.updateIncomingData(with: string)
-    }
-    
-    func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didFailBLEConnectionWith state: CBManagerState) {
-        delegate?.transactionController(self, didFailBLEConnectionWith: state)
-    }
-    
-    func bleConnectionManager(
-        _ bleConnectionManager: BLEConnectionManager,
-        didFailToConnect peripheral: CBPeripheral,
-        with error: BLEError?
-    ) {
-        delegate?.transactionController(self, didFailToConnect: peripheral)
-    }
-    
-    func bleConnectionManager(
-        _ bleConnectionManager: BLEConnectionManager,
-        didDisconnectFrom peripheral: CBPeripheral,
-        with error: BLEError?
-    ) {
-        delegate?.transactionController(self, didDisconnectFrom: peripheral)
-    }
-}
-
-extension TransactionController: LedgerBLEControllerDelegate {
-    func ledgerBLEController(_ ledgerBLEController: LedgerBLEController, shouldWrite data: Data) {
-        bleConnectionManager.write(data)
-    }
-    
-    func ledgerBLEController(_ ledgerBLEController: LedgerBLEController, received data: Data) {
+extension TransactionController: LedgerTransactionOperationDelegate {
+    func ledgerTransactionOperation(_ ledgerTransactionOperation: LedgerTransactionOperation, didReceiveSignature data: Data) {
         guard let transactionType = currentTransactionType,
               let account = fromAccount else {
-            return
-        }
-        
-        if !isCorrectLedgerAddressFetched {
-            if data.isLedgerErrorResponse() {
-                resetLedgerConnectionAndDisplayError("ble-error-ledger-connection-open-app-error".localized)
-                return
-            }
-            
-            guard let address = getValidAddress(from: data) else {
-                resetLedgerConnectionAndDisplayError("ble-error-fail-fetch-account-address".localized)
-                return
-            }
-            
-            isCorrectLedgerAddressFetched = account.authAddress.unwrap(or: account.address) == address
-            proceedSigningTransactionByLedgerIfPossible()
-            return
-        }
-        
-        isCorrectLedgerAddressFetched = false
-        
-        if data.toHexString() == ledgerTransactionCancelledCode {
-            delegate?.transactionControllerDidFailToSignWithLedger(self)
-            return
-        }
-        
-        if data.toHexString() == ledgerErrorResponse {
-            delegate?.transactionControllerDidFailToSignWithLedger(self)
-            return
-        }
-        
-        // Remove last to bytes, which are status codes.
-        var signatureData = data
-        signatureData.removeLast(2)
-      
-        if signatureData.isEmpty {
-            delegate?.transactionControllerDidFailToSignWithLedger(self)
             return
         }
         
         var transactionError: NSError?
         
         guard let transactionData = unsignedTransactionData else {
-            connectedDevice = nil
+            resetLedgerOperationIfNeeded()
             delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.sdkError(error: transactionError)))
             return
         }
@@ -549,10 +465,10 @@ extension TransactionController: LedgerBLEControllerDelegate {
             guard let signedTransaction = algorandSDK.getSignedTransaction(
                 with: account.authAddress,
                 transaction: transactionData,
-                from: signatureData,
+                from: data,
                 error: &transactionError
             ) else {
-                connectedDevice = nil
+                resetLedgerOperationIfNeeded()
                 delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.sdkError(error: transactionError)))
                 return
             }
@@ -561,10 +477,10 @@ extension TransactionController: LedgerBLEControllerDelegate {
         } else {
             guard let signedTransaction = algorandSDK.getSignedTransaction(
                 transactionData,
-                from: signatureData,
+                from: data,
                 error: &transactionError
             ) else {
-                connectedDevice = nil
+                resetLedgerOperationIfNeeded()
                 delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.sdkError(error: transactionError)))
                 return
             }
@@ -583,50 +499,15 @@ extension TransactionController: LedgerBLEControllerDelegate {
         }
     }
     
-    private func fetchAddressFromLedger() {
-        guard let bleData = Data(fromHexEncodedString: bleLedgerAddressMessage) else {
-            return
-        }
+    func ledgerTransactionOperation(_ ledgerTransactionOperation: LedgerTransactionOperation, didFailed error: LedgerOperationError) {
         
-        ledgerBLEController.fetchAddress(bleData)
     }
-    
-    private func signTransactionWithLedger() {
-        guard let hexString = unsignedTransactionData?.toHexString(),
-            let bleData = Data(fromHexEncodedString: hexString) else {
-            return
-        }
-        
-        ledgerBLEController.signTransaction(bleData)
-    }
-    
-    private func resetLedgerConnectionAndDisplayError(_ message: String) {
-        resetLedgerConnection()
-        NotificationBanner.showError("ble-error-ledger-connection-title".localized, message: message)
-    }
-    
-    private func resetLedgerConnection() {
-        connectedDevice = nil
-        isCorrectLedgerAddressFetched = false
-    }
-    
-    private func getValidAddress(from data: Data) -> String? {
-        // Remove last two bytes to fetch data that provides message status, not related to the account address
-        var mutableData = data
-        mutableData.removeLast(2)
+}
 
-        var error: NSError?
-        let address = AlgorandSDK().addressFromPublicKey(mutableData, error: &error)
-        
-        return error == nil && AlgorandSDK().isValidAddress(address) ? address : nil
-    }
-    
-    private func proceedSigningTransactionByLedgerIfPossible() {
-        if isCorrectLedgerAddressFetched {
-            signTransactionWithLedger()
-        } else {
-            resetLedgerConnectionAndDisplayError("ledger-transaction-account-match-error".localized)
-            delegate?.transactionControllerDidFailToSignWithLedger(self)
+extension TransactionController {
+    private func resetLedgerOperationIfNeeded() {
+        if fromAccount?.requiresLedgerConnection() ?? false {
+            ledgerTransactionOperation.reset()
         }
     }
 }

@@ -76,12 +76,13 @@ indirect enum Screen {
     case pinLimit
     case rekeyInstruction(account: Account)
     case rekeyConfirmation(account: Account, ledger: LedgerDetail, ledgerAddress: String)
-    case ledgerAccountSelection(flow: AccountSetupFlow, ledger: LedgerDetail, ledgerAddress: String)
+    case ledgerAccountSelection(flow: AccountSetupFlow, ledger: LedgerDetail, accounts: [Account])
     case developerSettings
     case currencySelection
     case appearanceSelection
     case watchAccountAddition(flow: AccountSetupFlow)
     case accountTypeSelection(flow: AccountSetupFlow)
+    case ledgerAccountDetail(account: Account, ledgerIndex: Int?, rekeyedAccounts: [Account]?)
 }
 
 extension Screen {

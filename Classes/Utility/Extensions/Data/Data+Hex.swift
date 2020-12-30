@@ -52,7 +52,33 @@ extension Data {
         return self.map { String(format: "%02x", $0) }.joined()
     }
     
-    func isLedgerErrorResponse() -> Bool {
-        toHexString() == ledgerErrorResponse
+    var isLedgerError: Bool {
+        toHexString() == LedgerMessage.Response.ledgerError
+    }
+    
+    var isLedgerTransactionCancelledError: Bool {
+        toHexString() == LedgerMessage.Response.ledgerTransactionCancelled
+    }
+    
+    var isErrorResponseFromLedger: Bool {
+        count == LedgerMessage.Size.error
+    }
+    
+    var isAccountAddressResponseFromLedger: Bool {
+        count == LedgerMessage.Size.address
+    }
+    
+    var isSignedTransactionResponseFromLedger: Bool {
+        count > LedgerMessage.Size.address
+    }
+}
+
+extension Data {
+    init(bytes: [UInt8]) {
+        self.init(bytes: bytes, count: bytes.count)
+    }
+
+    func toBytes() -> [UInt8] {
+        return [UInt8](self)
     }
 }

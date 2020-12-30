@@ -30,8 +30,6 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
         initialModalSize: .custom(CGSize(width: view.frame.width, height: 354.0))
     )
     
-    private(set) var ledgerApprovalViewController: LedgerApprovalViewController?
-    
     private(set) lazy var transactionController: TransactionController = {
         guard let api = api else {
             fatalError("API should be set.")
@@ -61,8 +59,6 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
     var isMaxTransaction: Bool {
         return sendTransactionPreviewView.amountInputView.isMaxButtonSelected
     }
-    
-    private var timer: Timer?
     
     init(
         account: Account?,
@@ -99,7 +95,7 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
         super.viewWillDisappear(animated)
         transactionController.stopBLEScan()
         dismissProgressIfNeeded()
-        invalidateTimer()
+        transactionController.stopTimer()
     }
     
     override func setListeners() {
@@ -309,8 +305,6 @@ extension SendTransactionPreviewViewController: SelectAssetViewControllerDelegat
 
 extension SendTransactionPreviewViewController: TransactionControllerDelegate {
     func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPError<TransactionError>) {
-        ledgerApprovalViewController?.dismissScreen()
-        
         SVProgressHUD.dismiss()
         switch error {
         case .network:
@@ -335,76 +329,9 @@ extension SendTransactionPreviewViewController: TransactionControllerDelegate {
             displaySimpleAlertWith(title: "title-error".localized, message: "title-internet-connection".localized)
         }
     }
-    
-    func transactionControllerDidStartBLEConnection(_ transactionController: TransactionController) {
-        dismissProgressIfNeeded()
-        invalidateTimer()
-        
-        ledgerApprovalViewController = open(
-            .ledgerApproval(mode: .approve),
-            by: .customPresent(presentationStyle: .custom, transitionStyle: nil, transitioningDelegate: ledgerApprovalPresenter)
-        ) as? LedgerApprovalViewController
-    }
-    
-    func transactionController(_ transactionController: TransactionController, didFailBLEConnectionWith state: CBManagerState) {
-        guard let errorTitle = state.errorDescription.title,
-            let errorSubtitle = state.errorDescription.subtitle else {
-                return
-        }
-        NotificationBanner.showError(errorTitle, message: errorSubtitle)
-        invalidateTimer()
-        dismissProgressIfNeeded()
-    }
-    
-    func transactionController(_ transactionController: TransactionController, didFailToConnect peripheral: CBPeripheral) {
-        ledgerApprovalViewController?.dismissScreen()
-        NotificationBanner.showError("ble-error-connection-title".localized, message: "ble-error-fail-connect-peripheral".localized)
-    }
-    
-    func transactionController(_ transactionController: TransactionController, didDisconnectFrom peripheral: CBPeripheral) {
-    }
-    
-    func transactionControllerDidFailToSignWithLedger(_ transactionController: TransactionController) {
-        ledgerApprovalViewController?.dismissScreen()
-        NotificationBanner.showError(
-            "ble-error-transaction-cancelled-title".localized,
-            message: "ble-error-fail-sign-transaction".localized
-        )
-    }
 }
 
-// MARK: Ledger Timer
 extension SendTransactionPreviewViewController {
-    func validateTimer() {
-        guard let account = selectedAccount, account.requiresLedgerConnection() else {
-            return
-        }
-        
-        timer = Timer.scheduledTimer(withTimeInterval: 15.0, repeats: false) { [weak self] timer in
-            guard let self = self else {
-                timer.invalidate()
-                return
-            }
-            
-            DispatchQueue.main.async {
-                self.transactionController.stopBLEScan()
-                self.dismissProgressIfNeeded()
-                NotificationBanner.showError("ble-error-connection-title".localized, message: "ble-error-fail-connect-peripheral".localized)
-            }
-            
-            self.invalidateTimer()
-        }
-    }
-    
-    func invalidateTimer() {
-        guard let account = selectedAccount, account.requiresLedgerConnection() else {
-            return
-        }
-        
-        timer?.invalidate()
-        timer = nil
-    }
-    
     private func isClosingToSameAccount() -> Bool {
         guard let account = selectedAccount,
               let receiverAccount = getReceiverAccount() else {

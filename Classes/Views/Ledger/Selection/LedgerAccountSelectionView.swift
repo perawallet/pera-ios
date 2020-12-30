@@ -23,11 +23,11 @@ class LedgerAccountSelectionView: BaseView {
         flowLayout.minimumLineSpacing = 20.0
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
-        collectionView.allowsMultipleSelection = true
+        collectionView.allowsMultipleSelection = isMultiSelect
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = Colors.Background.primary
         collectionView.contentInset = .zero
-        collectionView.register(AccountSelectionCell.self, forCellWithReuseIdentifier: AccountSelectionCell.reusableIdentifier)
+        collectionView.register(LedgerAccountCell.self, forCellWithReuseIdentifier: LedgerAccountCell.reusableIdentifier)
         collectionView.register(
             LedgerAccountSelectionHeaderSupplementaryView.self,
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
@@ -36,13 +36,25 @@ class LedgerAccountSelectionView: BaseView {
         return collectionView
     }()
     
-    private lazy var addButton = MainButton(title: "ledger-account-selection-add".localized)
+    private lazy var addButton: MainButton = {
+        let addButton = MainButton(title: "ledger-account-selection-add".localized)
+        addButton.setBackgroundImage(img("bg-gray-600-button"), for: .disabled)
+        return addButton
+    }()
+    
+    private let isMultiSelect: Bool
+    
+    init(isMultiSelect: Bool) {
+        self.isMultiSelect = isMultiSelect
+        super.init(frame: .zero)
+    }
     
     override func configureAppearance() {
         super.configureAppearance()
         errorView.setImage(img("icon-warning-error"))
         errorView.setTitle("transaction-filter-error-title".localized)
         errorView.setSubtitle("transaction-filter-error-subtitle".localized)
+        setAddButtonEnabled(false)
     }
     
     override func setListeners() {
@@ -100,6 +112,10 @@ extension LedgerAccountSelectionView {
         accountsCollectionView.contentState = .error(errorView)
     }
     
+    func indexPath(for cell: UICollectionViewCell) -> IndexPath? {
+        return accountsCollectionView.indexPath(for: cell)
+    }
+    
     func setNormalState() {
         accountsCollectionView.contentState = .none
     }
@@ -110,6 +126,10 @@ extension LedgerAccountSelectionView {
     
     var selectedIndexes: [IndexPath] {
         return accountsCollectionView.indexPathsForSelectedItems ?? []
+    }
+    
+    func setAddButtonEnabled(_ isEnabled: Bool) {
+        addButton.isEnabled = isEnabled
     }
 }
 

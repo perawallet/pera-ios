@@ -1,5 +1,5 @@
 //
-//  LedgerAccountSelectionTitleView.swift
+//  LedgerAccountNameView.swift
 //  algorand
 //
 //  Created by Göktuğ Berk Ulu on 11.08.2020.
@@ -8,13 +8,19 @@
 
 import UIKit
 
-class LedgerAccountSelectionTitleView: BaseView {
+class LedgerAccountNameView: BaseView {
     
     private let layout = Layout<LayoutConstants>()
+    
+    weak var delegate: LedgerAccountNameViewDelegate?
     
     private lazy var selectionImageView = UIImageView()
     
     private lazy var accountNameView = AccountNameView()
+    
+    private lazy var infoButton: UIButton = {
+        UIButton(type: .custom).withImage(img("icon-info-green"))
+    }()
     
     private lazy var separatorView: UIView = {
         let view = UIView()
@@ -26,14 +32,19 @@ class LedgerAccountSelectionTitleView: BaseView {
         backgroundColor = Colors.Background.secondary
     }
     
+    override func setListeners() {
+        infoButton.addTarget(self, action: #selector(notifyDelegateToOpenMoreInfo), for: .touchUpInside)
+    }
+    
     override func prepareLayout() {
         setupSelectionImageViewLayout()
+        setupInfoButtonLayout()
         setupAccountNameViewLayout()
         setupSeparatorViewLayout()
     }
 }
 
-extension LedgerAccountSelectionTitleView {
+extension LedgerAccountNameView {
     private func setupSelectionImageViewLayout() {
         addSubview(selectionImageView)
         
@@ -44,14 +55,23 @@ extension LedgerAccountSelectionTitleView {
         }
     }
     
+    private func setupInfoButtonLayout() {
+        addSubview(infoButton)
+        
+        infoButton.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().inset(layout.current.trailingInset)
+            make.size.equalTo(layout.current.buttonSize)
+            make.centerY.equalToSuperview()
+        }
+    }
+    
     private func setupAccountNameViewLayout() {
         addSubview(accountNameView)
         
         accountNameView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(layout.current.horizontalInset).priority(.medium)
             make.leading.equalTo(selectionImageView.snp.trailing).offset(layout.current.accountNameInset)
             make.top.bottom.equalToSuperview().inset(layout.current.verticalInset)
-            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.trailing.lessThanOrEqualTo(infoButton.snp.leading).offset(-layout.current.trailingInset)
         }
     }
         
@@ -67,30 +87,32 @@ extension LedgerAccountSelectionTitleView {
     }
 }
 
-extension LedgerAccountSelectionTitleView {
-    func setSelectionImage(_ image: UIImage?) {
-        selectionImageView.image = image
-    }
-    
-    func setAccountImage(_ image: UIImage?) {
-        accountNameView.setAccountImage(image)
-    }
-    
-    func setAccountName(_ name: String?) {
-        accountNameView.setAccountName(name)
-    }
-    
-    func setUnselectable() {
-        selectionImageView.removeFromSuperview()
+extension LedgerAccountNameView {
+    @objc
+    private func notifyDelegateToOpenMoreInfo() {
+        delegate?.ledgerAccountNameViewDidOpenInfo(self)
     }
 }
 
-extension LedgerAccountSelectionTitleView {
+extension LedgerAccountNameView {
+    func bind(_ viewModel: LedgerAccountNameViewModel) {
+        selectionImageView.image = viewModel.selectionImage
+        accountNameView.bind(viewModel.accountNameViewModel)
+    }
+}
+
+extension LedgerAccountNameView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let horizontalInset: CGFloat = 20.0
         let verticalInset: CGFloat = 20.0
-        let accountNameInset: CGFloat = 24.0
+        let trailingInset: CGFloat = 16.0
+        let accountNameInset: CGFloat = 16.0
         let imageSize = CGSize(width: 24.0, height: 24.0)
+        let buttonSize = CGSize(width: 40.0, height: 40.0)
         let separatorHeight: CGFloat = 1.0
     }
+}
+
+protocol LedgerAccountNameViewDelegate: class {
+    func ledgerAccountNameViewDidOpenInfo(_ ledgerAccountNameView: LedgerAccountNameView)
 }
