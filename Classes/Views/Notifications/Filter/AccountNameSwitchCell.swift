@@ -1,0 +1,29 @@
+//
+//  AccountNameSwitchCell.swift
+//  algorand
+//
+//  Created by Göktuğ Berk Ulu on 30.12.2020.
+//  Copyright © 2020 hippo. All rights reserved.
+//
+
+import UIKit
+
+class AccountNameSwitchCell: BaseCollectionViewCell<AccountNameSwitchView> {
+
+    weak var delegate: AccountNameSwitchCellDelegate?
+
+    override func linkInteractors() {
+        super.linkInteractors()
+        contextView.delegate = self
+    }
+}
+
+extension AccountNameSwitchCell: AccountNameSwitchViewDelegate {
+    func accountNameSwitchView(_ accountNameSwitchView: AccountNameSwitchView, didChangeToggleValue value: Bool) {
+        delegate?.accountNameSwitchCell(self, didChangeToggleValue: value)
+    }
+}
+
+protocol AccountNameSwitchCellDelegate: class {
+    func accountNameSwitchCell(_ accountNameSwitchCell: AccountNameSwitchCell, didChangeToggleValue value: Bool)
+}
