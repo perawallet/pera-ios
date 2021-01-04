@@ -8,17 +8,22 @@
 
 import Magpie
 
+typealias PublicKey = String
+typealias RekeyDetail = [PublicKey: LedgerDetail]
+
 class AccountInformation: Model {
     let address: String
     var name: String
     var type: AccountType = .standard
     var ledgerDetail: LedgerDetail?
+    var rekeyDetail: RekeyDetail?
     
-    init(address: String, name: String, type: AccountType, ledgerDetail: LedgerDetail? = nil) {
+    init(address: String, name: String, type: AccountType, ledgerDetail: LedgerDetail? = nil, rekeyDetail: RekeyDetail? = nil) {
         self.address = address
         self.name = name
         self.type = type
         self.ledgerDetail = ledgerDetail
+        self.rekeyDetail = rekeyDetail
     }
     
     required init(from decoder: Decoder) throws {
@@ -27,6 +32,7 @@ class AccountInformation: Model {
         name = try container.decode(String.self, forKey: .name)
         type = try container.decodeIfPresent(AccountType.self, forKey: .type) ?? .standard
         ledgerDetail = try container.decodeIfPresent(LedgerDetail.self, forKey: .ledgerDetail)
+        rekeyDetail = try container.decodeIfPresent(RekeyDetail.self, forKey: .rekeyDetail)
     }
 }
 
@@ -45,6 +51,14 @@ extension AccountInformation {
     func encoded() -> Data? {
         return try? JSONEncoder().encode(self)
     }
+    
+    func addRekeyDetail(_ ledgerDetail: LedgerDetail, for address: String) {
+        if rekeyDetail != nil {
+            self.rekeyDetail?[address] = ledgerDetail
+        } else {
+            self.rekeyDetail = [address: ledgerDetail]
+        }
+    }
 }
 
 extension AccountInformation {
@@ -53,6 +67,7 @@ extension AccountInformation {
         case name = "name"
         case type = "type"
         case ledgerDetail = "ledgerDetail"
+        case rekeyDetail = "rekeyDetail"
     }
 }
 

@@ -15,7 +15,7 @@ class LedgerAccountDetailView: BaseView {
     private lazy var titleLabel: UILabel = {
         UILabel()
             .withAlignment(.left)
-            .withText("Ledger details")
+            .withText("ledger-account-details-title".localized)
             .withTextColor(Colors.Text.tertiary)
             .withLine(.contained)
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))

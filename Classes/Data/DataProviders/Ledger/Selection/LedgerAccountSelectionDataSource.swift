@@ -57,7 +57,9 @@ extension LedgerAccountSelectionDataSource {
                 self.rekeyedAccounts[address] = rekeyedAccountsResponse.accounts
                 rekeyedAccountsResponse.accounts.forEach { account in
                     account.type = .rekeyed
-                    account.ledgerDetail = self.ledger
+                    if let authAddress = account.authAddress {
+                        account.addRekeyDetail(self.ledger, for: authAddress)
+                    }
                     self.accounts.append(account)
                 }
             case .failure:
@@ -141,7 +143,15 @@ extension LedgerAccountSelectionDataSource {
             if let account = accounts[safe: indexPath.item] {
                 if let localAccount = api.session.accountInformation(from: account.address) {
                     localAccount.type = account.type
-                    localAccount.ledgerDetail = account.ledgerDetail
+
+                    if let authAddress = account.authAddress {
+                        RegistrationEvent(type: .rekeyed).logEvent()
+                        localAccount.addRekeyDetail(account.ledgerDetail ?? ledger, for: authAddress)
+                    } else {
+                        RegistrationEvent(type: .ledger).logEvent()
+                        localAccount.ledgerDetail = account.ledgerDetail
+                    }
+
                     api.session.authenticatedUser?.updateAccount(localAccount)
                     
                     api.session.updateAccount(account)
@@ -153,13 +163,14 @@ extension LedgerAccountSelectionDataSource {
     }
     
     private func setupLocalAccount(from account: Account) {
-        let localAccount = AccountInformation(
-            address: account.address,
-            name: account.address.shortAddressDisplay(),
-            type: account.type,
-            ledgerDetail: ledger
-        )
+        let localAccount = AccountInformation(address: account.address, name: account.address.shortAddressDisplay(), type: account.type)
         
+        if let authAddress = account.authAddress {
+            localAccount.addRekeyDetail(account.ledgerDetail ?? ledger, for: authAddress)
+        } else {
+            localAccount.ledgerDetail = account.ledgerDetail
+        }
+
         let user: User
         
         if let authenticatedUser = api.session.authenticatedUser {

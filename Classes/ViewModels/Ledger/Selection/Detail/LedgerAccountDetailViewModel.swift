@@ -27,7 +27,7 @@ class LedgerAccountDetailViewModel {
     }
     
     private func setSubtitle(from account: Account) {
-        subtitle = account.isRekeyed() ? "Can be signed by" : "Can sign for these accounts"
+        subtitle = account.isRekeyed() ? "ledger-account-detail-can-signed".localized : "ledger-account-detail-can-sign".localized
     }
     
     private func setRekeyedAccountViews(from account: Account, and rekeyedAccounts: [Account]?) {

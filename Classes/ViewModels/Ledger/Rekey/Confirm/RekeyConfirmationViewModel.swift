@@ -40,7 +40,7 @@ class RekeyConfirmationViewModel {
     
     private func setOldTransitionValue(for account: Account) {
         if account.requiresLedgerConnection() {
-            if let ledgerName = account.ledgerDetail?.name {
+            if let ledgerName = account.currentLedgerDetail?.name {
                 oldTransitionValue = ledgerName
             } else {
                 oldTransitionValue = account.name
