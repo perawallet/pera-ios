@@ -96,7 +96,7 @@ extension NotificationFilterDataSource {
                 for: indexPath
             ) as? AccountNameSwitchCell {
 
-            cell.bind(AccountNameSwitchViewModel(account: account))
+            cell.bind(AccountNameSwitchViewModel(account: account, isLastIndex: isAtLastIndex(indexPath.item)))
             cell.delegate = self
             return cell
         }
@@ -128,6 +128,10 @@ extension NotificationFilterDataSource {
 
     func index(of account: Account) -> Int? {
         return accounts.firstIndex(of: account)
+    }
+
+    func isAtLastIndex(_ index: Int) -> Bool {
+        return index == accounts.count - 1
     }
 }
 

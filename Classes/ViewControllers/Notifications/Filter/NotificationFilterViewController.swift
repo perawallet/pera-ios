@@ -197,7 +197,7 @@ extension NotificationFilterViewController {
             return
         }
         
-        cell.bind(AccountNameSwitchViewModel(account: account))
+        cell.bind(AccountNameSwitchViewModel(account: account, isLastIndex: dataSource.isAtLastIndex(index)))
     }
 }
 

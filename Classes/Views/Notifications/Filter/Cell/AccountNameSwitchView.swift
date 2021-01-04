@@ -76,6 +76,7 @@ extension AccountNameSwitchView {
     func bind(_ viewModel: AccountNameSwitchViewModel) {
         accountNameView.bind(viewModel.accountNameViewModel)
         toggleView.setOn(viewModel.isSelected, animated: true)
+        separatorView.isHidden = viewModel.isSeparatorHidden
     }
 }
 
