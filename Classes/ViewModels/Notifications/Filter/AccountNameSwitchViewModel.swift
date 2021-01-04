@@ -15,10 +15,10 @@ class AccountNameSwitchViewModel {
 
     init(account: Account) {
         accountNameViewModel = AccountNameViewModel(account: account)
-        setIsSelected()
+        setIsSelected(from: account)
     }
 
-    private func setIsSelected() {
-
+    private func setIsSelected(from account: Account) {
+        isSelected = account.receivesNotification
     }
 }

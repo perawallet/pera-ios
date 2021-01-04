@@ -18,6 +18,12 @@ class AccountNameSwitchCell: BaseCollectionViewCell<AccountNameSwitchView> {
     }
 }
 
+extension AccountNameSwitchCell {
+    func bind(_ viewModel: AccountNameSwitchViewModel) {
+        contextView.bind(viewModel)
+    }
+}
+
 extension AccountNameSwitchCell: AccountNameSwitchViewDelegate {
     func accountNameSwitchView(_ accountNameSwitchView: AccountNameSwitchView, didChangeToggleValue value: Bool) {
         delegate?.accountNameSwitchCell(self, didChangeToggleValue: value)

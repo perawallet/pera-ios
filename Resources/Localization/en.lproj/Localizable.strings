@@ -235,6 +235,8 @@
 "options-view-passphrase-alert-message" = "You should provide biometric authentication to display your passphrase.";
 "options-view-passphrase-password-alert-message" = "You should enter your correct password to display your passphrase.";
 "options-auth-account" = "Auth Account Address";
+"options-mute-notification" = "Mute Notifications";
+"options-unmute-notification" = "Unmute Notifications";
 
 // MARK: Contacts
 "contacts-title" = "Contacts";
@@ -509,3 +511,6 @@
 "settings-theme-dark" = "Dark";
 "settings-theme-light" = "Light";
 "settings-theme-system" = "System Default";
+
+"notification-filter-show-title" = "Show Notifications";
+"notification-filter-show-for" = "Show notification for";
