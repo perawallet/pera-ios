@@ -157,17 +157,8 @@ extension LedgerAccountSelectionViewController: LedgerAccountSelectionViewDelega
     }
 
     private func saveNewAccounts() {
-        logRegistrationEvents()
         dataSource.saveSelectedAccounts(ledgerAccountSelectionView.selectedIndexes)
         launchHome()
-    }
-    
-    private func logRegistrationEvents() {
-        RegistrationEvent(type: .ledger).logEvent()
-        
-        ledgerAccountSelectionView.selectedIndexes.forEach { _ in
-            RegistrationEvent(type: .rekeyed).logEvent()
-        }
     }
     
     private func launchHome() {

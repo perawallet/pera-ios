@@ -145,8 +145,10 @@ extension LedgerAccountSelectionDataSource {
                     localAccount.type = account.type
 
                     if let authAddress = account.authAddress {
+                        RegistrationEvent(type: .rekeyed).logEvent()
                         localAccount.addRekeyDetail(account.ledgerDetail ?? ledger, for: authAddress)
                     } else {
+                        RegistrationEvent(type: .ledger).logEvent()
                         localAccount.ledgerDetail = account.ledgerDetail
                     }
 

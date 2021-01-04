@@ -22,6 +22,6 @@ class LedgerAccountAssetCountViewModel {
             return
         }
         
-        assetCount = "title-plus-asset-count".localized
+        assetCount = "title-plus-asset-count".localized(params: "\(assets.count)")
     }
 }
