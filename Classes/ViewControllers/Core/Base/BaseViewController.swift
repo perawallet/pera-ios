@@ -19,6 +19,22 @@ class BaseViewController: UIViewController, TabBarConfigurable, TrackableScreen 
     var screenKey: String? {
         return nil
     }
+
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        if api?.isTestNet ?? false {
+            if #available(iOS 13.0, *) {
+                return .darkContent
+            } else {
+                return .default
+            }
+        }
+
+        if isDarkModeDisplay {
+            return .lightContent
+        } else {
+            return .default
+        }
+    }
     
     override var prefersStatusBarHidden: Bool {
         return isStatusBarHidden
