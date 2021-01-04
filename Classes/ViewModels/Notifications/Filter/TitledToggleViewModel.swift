@@ -20,7 +20,7 @@ class TitledToggleViewModel {
     }
 
     private func setTitle() {
-        title = "Show Notifications"
+        title = "notification-filter-show-title".localized
     }
 
     private func setIsSelected() {
