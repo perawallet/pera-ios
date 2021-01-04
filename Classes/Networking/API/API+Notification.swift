@@ -68,4 +68,20 @@ extension AlgorandAPI {
             .build()
             .send()
     }
+
+    @discardableResult
+    func updateNotificationFilter(
+        with draft: NotificationFilterDraft,
+        then handler: @escaping (Response.Result<NotificationFilterResponse, HIPAPIError>) -> Void
+    ) -> EndpointOperatable {
+        return EndpointBuilder(api: self)
+            .base(mobileApiBase)
+            .path("/devices/\(draft.deviceId)/accounts/\(draft.accountAddress)/")
+            .headers(mobileApiHeaders())
+            .method(.patch)
+            .body(draft)
+            .completionHandler(handler)
+            .build()
+            .send()
+    }
 }
