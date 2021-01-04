@@ -8,7 +8,6 @@
 
 import UIKit
 import SVProgressHUD
-import UserNotifications
 
 class SettingsViewController: BaseViewController {
     
@@ -112,19 +111,7 @@ extension SettingsViewController: UICollectionViewDataSource {
                 let localAuthenticationStatus = localAuthenticator.localAuthenticationStatus == .allowed
                 return setSettingsToggleCell(from: setting, isOn: localAuthenticationStatus, in: collectionView, at: indexPath)
             case .notifications:
-                guard let cell = collectionView.dequeueReusableCell(
-                    withReuseIdentifier: SettingsToggleCell.reusableIdentifier,
-                    for: indexPath) as? SettingsToggleCell else {
-                        fatalError("Index path is out of bounds")
-                }
-                
-                UNUserNotificationCenter.current().getNotificationSettings { settings in
-                    DispatchQueue.main.async {
-                        SettingsToggleViewModel(setting: setting, isOn: settings.authorizationStatus == .authorized).configure(cell)
-                    }
-                }
-                
-                return cell
+                return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
             case .rewards:
                 let rewardDisplayPreference = session?.rewardDisplayPreference == .allowed
                 return setSettingsToggleCell(from: setting, isOn: rewardDisplayPreference, in: collectionView, at: indexPath)
@@ -277,6 +264,8 @@ extension SettingsViewController: UICollectionViewDelegateFlowLayout {
                 )
             case .feedback:
                 open(.feedback, by: .push)
+            case .notifications:
+                open(.notificationFilter(flow: .settings), by: .push)
             case .language:
                 displayProceedAlertWith(
                     title: "settings-language-change-title".localized,
@@ -344,42 +333,11 @@ extension SettingsViewController: SettingsToggleCellDelegate {
             }
             
             presentDisabledLocalAuthenticationAlert()
-        case .notifications:
-            presentNotificationAlert(isEnabled: value)
         case .rewards:
             session?.rewardDisplayPreference = value ? .allowed : .disabled
         default:
             return
         }
-    }
-    
-    private func presentNotificationAlert(isEnabled: Bool) {
-        let alertMessage: String = isEnabled ?
-            "settings-notification-disabled-go-settings-text".localized :
-            "settings-notification-enabled-go-settings-text".localized
-        
-        let alertController = UIAlertController(
-            title: "settings-notification-go-settings-title".localized,
-            message: alertMessage,
-            preferredStyle: .alert
-        )
-        let settingsAction = UIAlertAction(title: "title-go-to-settings".localized, style: .default) { _ in
-            UIApplication.shared.openAppSettings()
-        }
-        
-        let cancelAction = UIAlertAction(title: "title-cancel".localized, style: .cancel) { _ in
-            let indexPath = IndexPath(item: 0, section: 1)
-            guard let cell = self.settingsView.collectionView.cellForItem(at: indexPath) as? SettingsToggleCell else {
-                return
-            }
-            
-            cell.contextView.setToggleOn(!cell.contextView.isToggleOn, animated: true)
-        }
-        
-        alertController.addAction(settingsAction)
-        alertController.addAction(cancelAction)
-        
-        present(alertController, animated: true, completion: nil)
     }
     
     private func presentDisabledLocalAuthenticationAlert() {

@@ -347,6 +347,8 @@ class Router {
                 rekeyedAccounts: rekeyedAccounts,
                 configuration: configuration
             )
+        case let .notificationFilter(flow):
+            viewController = NotificationFilterViewController(flow: flow, configuration: configuration)
         }
         
         return viewController as? T

@@ -25,7 +25,7 @@ class NotificationsViewController: BaseViewController {
         }
         return NotificationsDataSource(api: api)
     }()
-    
+
     override func customizeTabBarAppearence() {
         isTabBarHidden = false
     }
@@ -163,5 +163,20 @@ extension NotificationsViewController: NotificationsViewDelegate {
         dataSource.clear()
         notificationsView.reloadData()
         getNotifications()
+    }
+
+    func notificationsViewDidOpenNotificationFilters(_ notificationsView: NotificationsView) {
+        openNotificationFilters()
+    }
+
+    private func openNotificationFilters() {
+        open(
+            .notificationFilter(flow: .notifications),
+            by: .customPresent(
+                presentationStyle: .fullScreen,
+                transitionStyle: nil,
+                transitioningDelegate: nil
+            )
+        )
     }
 }
