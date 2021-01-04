@@ -27,6 +27,8 @@ class Account: Model {
     var name: String?
     var type: AccountType = .standard
     var ledgerDetail: LedgerDetail?
+
+    var receivesNotification: Bool
     
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -48,15 +50,17 @@ class Account: Model {
         type = try container.decodeIfPresent(AccountType.self, forKey: .type) ?? .standard
         authAddress = try container.decodeIfPresent(String.self, forKey: .authAddress)
         ledgerDetail = try container.decodeIfPresent(LedgerDetail.self, forKey: .ledgerDetail)
+        receivesNotification = try container.decodeIfPresent(Bool.self, forKey: .receivesNotification) ?? true
     }
     
-    init(address: String, type: AccountType, ledgerDetail: LedgerDetail? = nil, name: String? = nil) {
+    init(address: String, type: AccountType, ledgerDetail: LedgerDetail? = nil, name: String? = nil, receivesNotification: Bool = true) {
         self.address = address
         amount = 0
         status = .offline
         self.name = name
         self.type = type
         self.ledgerDetail = ledgerDetail
+        self.receivesNotification = receivesNotification
     }
     
     init(accountInformation: AccountInformation) {
@@ -66,6 +70,7 @@ class Account: Model {
         self.name = accountInformation.name
         self.type = accountInformation.type
         self.ledgerDetail = accountInformation.ledgerDetail
+        self.receivesNotification = accountInformation.receivesNotification
     }
 }
 
@@ -86,6 +91,7 @@ extension Account {
         round = account.round
         signatureType = account.signatureType
         authAddress = account.authAddress
+        receivesNotification = account.receivesNotification
         
         if let updatedName = account.name {
             name = updatedName
@@ -201,6 +207,7 @@ extension Account {
         case signatureType = "sig-type"
         case round = "round"
         case authAddress = "auth-addr"
+        case receivesNotification = "receivesNotification"
     }
 }
 
