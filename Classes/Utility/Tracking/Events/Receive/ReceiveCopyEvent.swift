@@ -8,13 +8,12 @@
 
 import Foundation
 
-struct ReceiveCopyEvent: TrackableEvent {
-    let eventKey = "tap_show_qr_copy"
+struct ReceiveCopyEvent: AnalyticsEvent {
     let address: String
+
+    let key: AnalyticsEventKey = .showQRCopy
     
-    var parameters: [String: Any]? {
-        return [
-            "address": address
-        ]
+    var params: AnalyticsParameters? {
+        return [.address: address]
     }
 }

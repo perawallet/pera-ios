@@ -40,7 +40,7 @@ class SettingsViewController: BaseViewController {
         }
         return settings
     }()
-    private lazy var appSettings: [GeneralSettings] = [.feedback, .termsAndServices, .privacyPolicy]
+    private lazy var appSettings: [GeneralSettings] = [.feedback, .appReview, .termsAndServices, .privacyPolicy]
     private lazy var developerSettings: [GeneralSettings] = [.developer]
     
     private lazy var settingsView = SettingsView()
@@ -145,6 +145,8 @@ extension SettingsViewController: UICollectionViewDataSource {
                 let preferredAppearance = api?.session.userInterfaceStyle ?? .system
                 return setSettingsInfoCell(from: setting, info: preferredAppearance.representation(), in: collectionView, at: indexPath)
             case .feedback:
+                return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
+            case .appReview:
                 return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
             case .termsAndServices:
                 return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
@@ -277,6 +279,8 @@ extension SettingsViewController: UICollectionViewDelegateFlowLayout {
                 )
             case .feedback:
                 open(.feedback, by: .push)
+            case .appReview:
+                AlgorandAppStoreReviewer().requestManualReview(forAppWith: Environment.current.appID)
             case .language:
                 displayProceedAlertWith(
                     title: "settings-language-change-title".localized,

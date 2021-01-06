@@ -8,13 +8,12 @@
 
 import Foundation
 
-struct ReceiveAssetDetailEvent: TrackableEvent {
-    let eventKey = "tap_asset_detail_receive"
+struct ReceiveAssetDetailEvent: AnalyticsEvent {
     let address: String
     
-    var parameters: [String: Any]? {
-        return [
-            "address": address
-        ]
+    let key: AnalyticsEventKey = .detailReceive
+    
+    var params: AnalyticsParameters? {
+        return [.address: address]
     }
 }
