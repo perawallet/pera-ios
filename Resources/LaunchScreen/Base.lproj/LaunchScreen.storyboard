@@ -21,11 +21,7 @@
                                 <rect key="frame" x="19.5" y="123.5" width="375" height="659"/>
                             </imageView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-logo" translatesAutoresizingMaskIntoConstraints="NO" id="5vn-Id-rnk">
-                                <rect key="frame" x="100.5" y="418.5" width="213" height="59"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="213" id="65b-QD-76M"/>
-                                    <constraint firstAttribute="height" constant="59" id="vQU-wm-4rK"/>
-                                </constraints>
+                                <rect key="frame" x="145" y="437" width="124" height="32"/>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -33,7 +29,7 @@
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Bxw-jQ-P1c" secondAttribute="trailing" constant="19.5" id="F2Y-QE-pN0"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="Bxw-jQ-P1c" secondAttribute="bottom" constant="79.5" id="G7B-kK-XWV"/>
-                            <constraint firstItem="5vn-Id-rnk" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" constant="-5" id="aWz-t9-R0L"/>
+                            <constraint firstItem="5vn-Id-rnk" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="aWz-t9-R0L"/>
                             <constraint firstItem="Bxw-jQ-P1c" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="19.5" id="ixe-yl-0zw"/>
                             <constraint firstItem="Bxw-jQ-P1c" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="79.5" id="jfj-cf-yJe"/>
                             <constraint firstItem="5vn-Id-rnk" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="tnH-87-9tv"/>
@@ -46,7 +42,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="icon-logo" width="125" height="32"/>
+        <image name="icon-logo" width="124" height="32"/>
         <image name="img-splash-bg" width="375" height="659"/>
         <namedColor name="splashColor">
             <color red="0.11372549019607843" green="0.67843137254901964" blue="0.59607843137254901" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

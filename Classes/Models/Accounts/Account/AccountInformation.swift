@@ -16,13 +16,22 @@ class AccountInformation: Model {
     var name: String
     var type: AccountType = .standard
     var ledgerDetail: LedgerDetail?
+    var receivesNotification: Bool
     var rekeyDetail: RekeyDetail?
     
-    init(address: String, name: String, type: AccountType, ledgerDetail: LedgerDetail? = nil, rekeyDetail: RekeyDetail? = nil) {
+    init(
+        address: String,
+        name: String,
+        type: AccountType,
+        ledgerDetail: LedgerDetail? = nil,
+        rekeyDetail: RekeyDetail? = nil,
+        receivesNotification: Bool = true
+    ) {
         self.address = address
         self.name = name
         self.type = type
         self.ledgerDetail = ledgerDetail
+        self.receivesNotification = receivesNotification
         self.rekeyDetail = rekeyDetail
     }
     
@@ -32,6 +41,7 @@ class AccountInformation: Model {
         name = try container.decode(String.self, forKey: .name)
         type = try container.decodeIfPresent(AccountType.self, forKey: .type) ?? .standard
         ledgerDetail = try container.decodeIfPresent(LedgerDetail.self, forKey: .ledgerDetail)
+        receivesNotification = try container.decodeIfPresent(Bool.self, forKey: .receivesNotification) ?? true
         rekeyDetail = try container.decodeIfPresent(RekeyDetail.self, forKey: .rekeyDetail)
     }
 }
@@ -67,6 +77,7 @@ extension AccountInformation {
         case name = "name"
         case type = "type"
         case ledgerDetail = "ledgerDetail"
+        case receivesNotification = "receivesNotification"
         case rekeyDetail = "rekeyDetail"
     }
 }
