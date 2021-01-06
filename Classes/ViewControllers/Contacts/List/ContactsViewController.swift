@@ -14,8 +14,8 @@ class ContactsViewController: BaseViewController {
         return false
     }
     
-    override var screenKey: String? {
-        return "screen_contacts"
+    override var name: AnalyticsScreenName? {
+        return .contacts
     }
     
     private lazy var contactsView = ContactsView()

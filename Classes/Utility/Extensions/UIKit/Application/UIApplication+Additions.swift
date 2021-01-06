@@ -53,6 +53,14 @@ extension UIApplication {
         return appDelegate
     }
     
+    var firebaseAnalytics: FirebaseAnalytics? {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            return nil
+        }
+        
+        return appDelegate.firebaseAnalytics
+    }
+    
     var appConfiguration: AppConfiguration? {
         guard let rootViewController = rootViewController() else {
             return nil

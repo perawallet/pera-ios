@@ -8,13 +8,12 @@
 
 import Foundation
 
-struct ReceiveShareEvent: TrackableEvent {
-    let eventKey = "tap_show_qr_share"
+struct ReceiveShareEvent: AnalyticsEvent {
     let address: String
     
-    var parameters: [String: Any]? {
-        return [
-            "address": address
-        ]
+    let key: AnalyticsEventKey = .showQRShare
+    
+    var params: AnalyticsParameters? {
+        return [.address: address]
     }
 }

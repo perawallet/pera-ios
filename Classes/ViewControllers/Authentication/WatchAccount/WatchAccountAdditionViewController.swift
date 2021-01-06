@@ -104,7 +104,7 @@ extension WatchAccountAdditionViewController: WatchAccountAdditionViewDelegate {
         
         view.endEditing(true)
         let account = createAccount(from: address, with: accountName)
-        RegistrationEvent(type: .watch).logEvent()
+        log(RegistrationEvent(type: .watch))
         openSuccessModal(for: account)
     }
     

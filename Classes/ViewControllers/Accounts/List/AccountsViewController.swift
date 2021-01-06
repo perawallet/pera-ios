@@ -65,8 +65,8 @@ class AccountsViewController: BaseViewController {
     
     private(set) var accountsDataSource: AccountsDataSource
     
-    override var screenKey: String? {
-        return "screen_accounts"
+    override var name: AnalyticsScreenName? {
+        return .accounts
     }
     
     private var isConnectedToInternet = true {

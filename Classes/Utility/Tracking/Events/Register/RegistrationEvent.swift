@@ -8,13 +8,14 @@
 
 import Foundation
 
-struct RegistrationEvent: TrackableEvent {
-    let eventKey = "register"
-    var parameters: [String: Any]? {
-        return ["type": type.rawValue]
-    }
-    
+struct RegistrationEvent: AnalyticsEvent {
     let type: RegistrationType
+    
+    let key: AnalyticsEventKey = .register
+    
+    var params: AnalyticsParameters? {
+        return [.type: type.rawValue]
+    }
 }
 
 extension RegistrationEvent {
