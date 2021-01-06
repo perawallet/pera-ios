@@ -9,27 +9,61 @@
 import UIKit
 
 class OptionsViewModel {
-    func configure(_ cell: OptionsCell, with option: OptionsViewController.Options) {
+
+    private(set) var image: UIImage?
+    private(set) var title: String?
+    private(set) var titleColor: UIColor?
+
+    init(option: OptionsViewController.Options, account: Account) {
+        setImage(for: option, with: account)
+        setTitle(for: option, with: account)
+        setTitleColor(for: option)
+    }
+
+    private func setImage(for option: OptionsViewController.Options, with account: Account) {
         switch option {
         case .rekey:
-            cell.contextView.iconImageView.image = img("icon-options-rekey")
-            cell.contextView.optionLabel.text = "options-rekey".localized
+            image = img("icon-options-rekey")
         case .rekeyInformation:
-            cell.contextView.iconImageView.image = img("icon-qr")
-            cell.contextView.optionLabel.text = "options-auth-account".localized
+            image = img("icon-qr")
         case .removeAsset:
-            cell.contextView.iconImageView.image = img("icon-trash")
-            cell.contextView.optionLabel.text = "options-remove-assets".localized
+            image = img("icon-trash")
         case .passphrase:
-            cell.contextView.iconImageView.image = img("icon-lock")
-            cell.contextView.optionLabel.text = "options-view-passphrase".localized
+            image = img("icon-lock")
+        case .notificationSetting:
+            image = account.receivesNotification ? img("icon-options-mute-notification") : img("icon-options-unmute-notification")
         case .edit:
-            cell.contextView.iconImageView.image = img("icon-edit-account")
-            cell.contextView.optionLabel.text = "options-edit-account-name".localized
+            image = img("icon-edit-account")
         case .removeAccount:
-            cell.contextView.iconImageView.image = img("icon-remove-account")
-            cell.contextView.optionLabel.text = "options-remove-account".localized
-            cell.contextView.optionLabel.textColor = Colors.General.error
+            image = img("icon-remove-account")
+        }
+    }
+
+    private func setTitle(for option: OptionsViewController.Options, with account: Account) {
+        switch option {
+        case .rekey:
+            title = "options-rekey".localized
+        case .rekeyInformation:
+            title = "options-auth-account".localized
+        case .removeAsset:
+            title = "options-remove-assets".localized
+        case .passphrase:
+            title = "options-view-passphrase".localized
+        case .notificationSetting:
+            title = account.receivesNotification ? "options-mute-notification".localized : "options-unmute-notification".localized
+        case .edit:
+            title = "options-edit-account-name".localized
+        case .removeAccount:
+            title = "options-remove-account".localized
+        }
+    }
+
+    private func setTitleColor(for option: OptionsViewController.Options) {
+        switch option {
+        case .removeAccount:
+            titleColor = Colors.General.error
+        default:
+            titleColor = Colors.Text.primary
         }
     }
 }

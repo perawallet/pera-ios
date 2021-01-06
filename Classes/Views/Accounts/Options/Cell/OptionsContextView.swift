@@ -54,6 +54,14 @@ extension OptionsContextView {
 }
 
 extension OptionsContextView {
+    func bind(_ viewModel: OptionsViewModel) {
+        iconImageView.image = viewModel.image
+        optionLabel.text = viewModel.title
+        optionLabel.textColor = viewModel.titleColor
+    }
+}
+
+extension OptionsContextView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let horizontalInset: CGFloat = 20.0
         let labelLefInset: CGFloat = 56.0

@@ -83,6 +83,7 @@ indirect enum Screen {
     case watchAccountAddition(flow: AccountSetupFlow)
     case accountTypeSelection(flow: AccountSetupFlow)
     case ledgerAccountDetail(account: Account, ledgerIndex: Int?, rekeyedAccounts: [Account]?)
+    case notificationFilter(flow: NotificationFilterViewController.Flow)
 }
 
 extension Screen {

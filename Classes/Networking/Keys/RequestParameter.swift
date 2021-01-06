@@ -50,6 +50,7 @@ enum RequestParameter: String, CodingKey {
     case cursor = "cursor"
     case authAddress = "auth-addr"
     case publicKey = "public_key"
+    case receivesNotifications = "receive_notifications"
 }
 
 typealias QueryParam = ObjectQueryKeyedParam<RequestParameter>

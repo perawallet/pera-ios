@@ -58,6 +58,7 @@ extension AccountManager {
                 fetchedAccount.name = account.name
                 fetchedAccount.type = account.type
                 fetchedAccount.ledgerDetail = account.ledgerDetail
+                fetchedAccount.receivesNotification = account.receivesNotification
                 
                 guard let currentAccount = self.api.session.account(from: fetchedAccount.address) else {
                     self.api.session.addAccount(fetchedAccount)
