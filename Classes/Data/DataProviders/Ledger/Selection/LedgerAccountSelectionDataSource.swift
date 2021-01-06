@@ -146,10 +146,10 @@ extension LedgerAccountSelectionDataSource {
                     localAccount.type = account.type
 
                     if let authAddress = account.authAddress {
-                        RegistrationEvent(type: .rekeyed).logEvent()
+                        UIApplication.shared.firebaseAnalytics?.log(RegistrationEvent(type: .rekeyed))
                         localAccount.addRekeyDetail(account.ledgerDetail ?? ledger, for: authAddress)
                     } else {
-                        RegistrationEvent(type: .ledger).logEvent()
+                        UIApplication.shared.firebaseAnalytics?.log(RegistrationEvent(type: .ledger))
                         localAccount.ledgerDetail = account.ledgerDetail
                     }
 
