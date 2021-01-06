@@ -29,9 +29,9 @@
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Bxw-jQ-P1c" secondAttribute="trailing" constant="19.5" id="F2Y-QE-pN0"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="Bxw-jQ-P1c" secondAttribute="bottom" constant="79.5" id="G7B-kK-XWV"/>
+                            <constraint firstItem="5vn-Id-rnk" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="aWz-t9-R0L"/>
                             <constraint firstItem="Bxw-jQ-P1c" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="19.5" id="ixe-yl-0zw"/>
                             <constraint firstItem="Bxw-jQ-P1c" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="79.5" id="jfj-cf-yJe"/>
-                            <constraint firstItem="5vn-Id-rnk" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="oqG-iB-iri"/>
                             <constraint firstItem="5vn-Id-rnk" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="tnH-87-9tv"/>
                         </constraints>
                     </view>
