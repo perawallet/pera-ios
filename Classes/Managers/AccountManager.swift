@@ -59,6 +59,7 @@ extension AccountManager {
                 fetchedAccount.type = account.type
                 fetchedAccount.ledgerDetail = account.ledgerDetail
                 fetchedAccount.receivesNotification = account.receivesNotification
+                fetchedAccount.rekeyDetail = account.rekeyDetail
                 
                 guard let currentAccount = self.api.session.account(from: fetchedAccount.address) else {
                     self.api.session.addAccount(fetchedAccount)
@@ -67,7 +68,7 @@ extension AccountManager {
                 
                 if fetchedAccount.amount == currentAccount.amount &&
                     fetchedAccount.rewards == currentAccount.rewards &&
-                    !fetchedAccount.areAssetsDifferent(than: currentAccount) {
+                    !fetchedAccount.hasDifferentAssets(than: currentAccount) {
                     return
                 }
                 

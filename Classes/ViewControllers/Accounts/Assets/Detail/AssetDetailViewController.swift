@@ -11,8 +11,8 @@ import SnapKit
 
 class AssetDetailViewController: BaseViewController {
     
-    override var screenKey: String? {
-        return "screen_asset_detail"
+    override var name: AnalyticsScreenName? {
+        return .assetDetail
     }
     
     private var account: Account
@@ -49,6 +49,11 @@ class AssetDetailViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         handleDeepLinkRoutingIfNeeded()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        log(DisplayAssetDetailEvent(assetId: assetDetail?.id))
     }
     
     override func configureAppearance() {
@@ -256,7 +261,7 @@ extension AssetDetailViewController: TransactionsViewControllerDelegate {
 
 extension AssetDetailViewController: TransactionActionsViewDelegate {
     func transactionActionsViewDidSendTransaction(_ transactionActionsView: TransactionActionsView) {
-        SendAssetDetailEvent(address: account.address).logEvent()
+        log(SendAssetDetailEvent(address: account.address))
         if let assetDetail = assetDetail {
             open(
                 .sendAssetTransactionPreview(
@@ -274,7 +279,7 @@ extension AssetDetailViewController: TransactionActionsViewDelegate {
     }
     
     func transactionActionsViewDidRequestTransaction(_ transactionActionsView: TransactionActionsView) {
-        ReceiveAssetDetailEvent(address: account.address).logEvent()
+        log(ReceiveAssetDetailEvent(address: account.address))
         let draft = QRCreationDraft(address: account.address, mode: .address)
         open(.qrGenerator(title: account.name ?? account.address.shortAddressDisplay(), draft: draft, isTrackable: true), by: .present)
     }
@@ -283,6 +288,7 @@ extension AssetDetailViewController: TransactionActionsViewDelegate {
 extension AssetDetailViewController: AssetCardDisplayViewControllerDelegate {
     func assetCardDisplayViewController(_ assetCardDisplayViewController: AssetCardDisplayViewController, didSelect index: Int) {
         assetDetail = index == 0 ? nil : account.assetDetails[safe: index - 1]
+        log(ChangeAssetDetailEvent(assetId: assetDetail?.id))
         assetDetailTitleView.bind(AssetDetailTitleViewModel(account: account, assetDetail: assetDetail))
         transactionsViewController.updateSelectedAsset(assetDetail)
     }

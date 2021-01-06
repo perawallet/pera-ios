@@ -105,7 +105,13 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
         
         if let sameAccount = session?.account(from: address) {
             if sameAccount.isRekeyed() {
-                account = AccountInformation(address: address, name: name, type: .rekeyed, ledgerDetail: sameAccount.ledgerDetail)
+                account = AccountInformation(
+                    address: address,
+                    name: name,
+                    type: .rekeyed,
+                    ledgerDetail: sameAccount.ledgerDetail,
+                    rekeyDetail: sameAccount.rekeyDetail
+                )
             } else {
                 displaySimpleAlertWith(title: "title-error".localized, message: "recover-from-seed-verify-exist-error".localized)
                 return
@@ -135,7 +141,7 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
         
         view.endEditing(true)
         
-        RegistrationEvent(type: .recover).logEvent()
+        log(RegistrationEvent(type: .recover))
         
         let configurator = BottomInformationBundle(
             title: "recover-from-seed-verify-pop-up-title".localized,

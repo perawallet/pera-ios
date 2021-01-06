@@ -11,7 +11,7 @@ import Magpie
 class LedgerDetail: Model {
     let id: UUID?
     let name: String?
-    let indexInLedger: Int?
+    var indexInLedger: Int?
     
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)

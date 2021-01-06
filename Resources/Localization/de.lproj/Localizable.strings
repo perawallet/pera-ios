@@ -516,5 +516,5 @@
 
 "settings-theme-set" = "Thema Setzen";
 "settings-theme-dark" = "Dunkel";
-"settings-theme-light" = "Licht";
-"settings-theme-system" = "Systemfehler";
+"settings-theme-light" = "Hell";
+"settings-theme-system" = "System zurücksetzen";

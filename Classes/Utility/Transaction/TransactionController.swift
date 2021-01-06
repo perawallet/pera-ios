@@ -190,7 +190,7 @@ extension TransactionController {
 }
 
 extension TransactionController {
-    private func composeAlgosTransactionData(initialFee: Int64 = Transaction.Constant.minimumFee) {
+    private func composeAlgosTransactionData(initialSize: Int? = nil) {
         guard let params = params,
               let algosTransactionDraft = algosTransactionDraft,
               let amountDoubleValue = algosTransactionDraft.amount,
@@ -209,7 +209,7 @@ extension TransactionController {
                 isMaxTransaction = false
             }
             // Reduce fee from transaction amount
-            transactionAmount -= max(initialFee * params.fee, Transaction.Constant.minimumFee)
+            transactionAmount -= params.getProjectedTransactionFee(from: initialSize)
         }
         
         let trimmedToAddress = toAddress.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -242,14 +242,14 @@ extension TransactionController {
     
     private func completeAlgosTransaction() {
         guard let calculatedFee = transactionDraft?.fee,
-            let algosTransactionDraft = algosTransactionDraft,
-            let signedTransactionData = signedTransactionData else {
+              let params = params,
+              let signedTransactionData = signedTransactionData else {
             return
         }
         
-        // Re-sign transaction if the calculated fee is more than the minimum fee
-        if Transaction.Constant.minimumFee < calculatedFee && algosTransactionDraft.isMaxTransaction {
-            composeAlgosTransactionData(initialFee: Int64(signedTransactionData.count))
+        /// Re-sign transaction if the calculated fee is not matching with the projected fee
+        if params.getProjectedTransactionFee(from: signedTransactionData.count) != calculatedFee {
+            composeAlgosTransactionData(initialSize: signedTransactionData.count)
         } else {
             delegate?.transactionController(self, didComposedTransactionDataFor: self.algosTransactionDraft)
         }
@@ -361,7 +361,7 @@ extension TransactionController {
             return
         }
         
-        let calculatedFee = max((Int64(signedTransactionData.count) * params.fee), Transaction.Constant.minimumFee)
+        let calculatedFee = params.getProjectedTransactionFee(from: signedTransactionData.count)
         
         // Asset transaction fee amount must be asset count * minimum algos limit + minimum fee
         if !isValidTransactionAmount(for: transactionType, calculatedFee: calculatedFee) {
@@ -519,11 +519,13 @@ extension TransactionController {
             return
         }
         
-        LedgerTransactionErrorLog(
-            account: account,
-            unsignedTransaction: unsignedTransactionData,
-            signedTransaction: signedTransactionData
-        ).record()
+        UIApplication.shared.firebaseAnalytics?.record(
+            LedgerTransactionErrorLog(
+                account: account,
+                unsignedTransaction: unsignedTransactionData,
+                signedTransaction: signedTransactionData
+            )
+        )
     }
 }
 

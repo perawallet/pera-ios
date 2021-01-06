@@ -133,37 +133,32 @@ extension LedgerAccountSelectionViewController: LedgerAccountSelectionDataSource
 
 extension LedgerAccountSelectionViewController: LedgerAccountSelectionViewDelegate {
     func ledgerAccountSelectionViewDidAddAccount(_ ledgerAccountSelectionView: LedgerAccountSelectionView) {
-        if isMultiSelect {
-            logRegistrationEvents()
-            dataSource.saveSelectedAccounts(ledgerAccountSelectionView.selectedIndexes)
-            launchHome()
-            return
-        }
-        
-        guard let selectedIndex = ledgerAccountSelectionView.selectedIndexes.first,
-              let account = dataSource.account(at: selectedIndex.item) else {
-            return
-        }
-        
         switch accountSetupFlow {
         case let .addNewAccount(mode):
             switch mode {
             case let .rekey(rekeyedAccount):
-                self.open(.rekeyConfirmation(account: rekeyedAccount, ledger: ledger, ledgerAddress: account.address), by: .push)
+                openRekeyConfirmation(for: rekeyedAccount)
             default:
-                break
+                saveNewAccounts()
             }
-        default:
-            break
+        case .initializeAccount:
+            saveNewAccounts()
         }
     }
-    
-    private func logRegistrationEvents() {
-        RegistrationEvent(type: .ledger).logEvent()
-        
-        ledgerAccountSelectionView.selectedIndexes.forEach { _ in
-            RegistrationEvent(type: .rekeyed).logEvent()
+
+    private func openRekeyConfirmation(for rekeyedAccount: Account) {
+        guard let selectedIndex = ledgerAccountSelectionView.selectedIndexes.first,
+              let account = dataSource.account(at: selectedIndex.item),
+              !isMultiSelect else {
+            return
         }
+
+        self.open(.rekeyConfirmation(account: rekeyedAccount, ledger: ledger, ledgerAddress: account.address), by: .push)
+    }
+
+    private func saveNewAccounts() {
+        dataSource.saveSelectedAccounts(ledgerAccountSelectionView.selectedIndexes)
+        launchHome()
     }
     
     private func launchHome() {

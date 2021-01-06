@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension Dictionary where Key == ErrorLogParamKeys {
+extension Dictionary where Key == AnalyticsParameter {
     func transformToAnalyticsFormat() -> [String: Any] {
         var transformed = [String: Any]()
         
