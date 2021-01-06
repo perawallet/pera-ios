@@ -452,7 +452,7 @@ extension AccountsViewController: APIListener {
 
 extension AccountsViewController {
     struct LayoutConstants: AdaptiveLayoutConstants {
-        let optionsModalHeight: CGFloat = 406.0
+        let optionsModalHeight: CGFloat = 462.0
         let removeAccountModalHeight: CGFloat = 402.0
         let editAccountModalHeight: CGFloat = 158.0
         let passphraseModalHeight: CGFloat = 510.0

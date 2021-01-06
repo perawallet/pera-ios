@@ -149,6 +149,10 @@ extension MainHeaderView {
     func setAddButtonHidden(_ hidden: Bool) {
         addButton.isHidden = hidden
     }
+
+    func setRightActionButtonImage(_ image: UIImage?) {
+        addButton.setImage(image, for: .normal)
+    }
     
     func setTitle(_ title: String) {
         titleLabel.text = title

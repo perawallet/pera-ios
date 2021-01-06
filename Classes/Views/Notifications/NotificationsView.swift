@@ -16,7 +16,7 @@ class NotificationsView: BaseView {
         let view = MainHeaderView()
         view.setTitle("notifications-title".localized)
         view.setQRButtonHidden(true)
-        view.setAddButtonHidden(true)
+        view.setRightActionButtonImage(img("icon-transaction-filter"))
         view.setTestNetLabelHidden(true)
         return view
     }()
@@ -62,6 +62,7 @@ class NotificationsView: BaseView {
     
     override func linkInteractors() {
         errorView.delegate = self
+        notificationsHeaderView.delegate = self
     }
     
     override func prepareLayout() {
@@ -97,6 +98,14 @@ extension NotificationsView {
     @objc
     private func didRefreshList() {
         delegate?.notificationsViewDidRefreshList(self)
+    }
+}
+
+extension NotificationsView: MainHeaderViewDelegate {
+    func mainHeaderViewDidTapQRButton(_ mainHeaderView: MainHeaderView) { }
+
+    func mainHeaderViewDidTapAddButton(_ mainHeaderView: MainHeaderView) {
+        delegate?.notificationsViewDidOpenNotificationFilters(self)
     }
 }
 
@@ -151,4 +160,5 @@ extension NotificationsView: ListErrorViewDelegate {
 protocol NotificationsViewDelegate: class {
     func notificationsViewDidRefreshList(_ notificationsView: NotificationsView)
     func notificationsViewDidTryAgain(_ notificationsView: NotificationsView)
+    func notificationsViewDidOpenNotificationFilters(_ notificationsView: NotificationsView)
 }

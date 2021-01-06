@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import SVProgressHUD
+import Magpie
 
 class OptionsViewController: BaseViewController {
     
@@ -17,8 +19,7 @@ class OptionsViewController: BaseViewController {
     private let layout = Layout<LayoutConstants>()
     
     private lazy var optionsView = OptionsView()
-    
-    private let viewModel = OptionsViewModel()
+
     private var account: Account
     
     weak var delegate: OptionsViewControllerDelegate?
@@ -98,8 +99,7 @@ extension OptionsViewController: UICollectionViewDataSource {
         }
         
         let option = options[indexPath.item]
-        viewModel.configure(cell, with: option)
-        
+        cell.bind(OptionsViewModel(option: option, account: account))
         return cell
     }
 }
@@ -129,6 +129,8 @@ extension OptionsViewController: UICollectionViewDelegateFlowLayout {
         case .rekeyInformation:
             dismissScreen()
             delegate?.optionsViewControllerDidViewRekeyInformation(self)
+        case .notificationSetting:
+            updateNotificationStatus()
         case .edit:
             open(.editAccount(account: account), by: .push)
         case .removeAccount:
@@ -139,28 +141,88 @@ extension OptionsViewController: UICollectionViewDelegateFlowLayout {
 }
 
 extension OptionsViewController {
+    private func updateNotificationStatus() {
+        guard let deviceId = api?.session.authenticatedUser?.deviceId else {
+            return
+        }
+
+        SVProgressHUD.show(withStatus: "title-loading".localized)
+
+        let draft = NotificationFilterDraft(
+            deviceId: deviceId,
+            accountAddress: account.address,
+            receivesNotifications: !account.receivesNotification
+        )
+
+        api?.updateNotificationFilter(with: draft) { response in
+            switch response {
+            case let .success(result):
+                self.updateNotificationFiltering(with: result)
+            case let .failure(_, hipApiError):
+                self.displayNotificationFilterError(hipApiError)
+            }
+        }
+    }
+
+    private func updateNotificationFiltering(with result: NotificationFilterResponse) {
+        self.account.receivesNotification = result.receivesNotification
+        SVProgressHUD.showSuccess(withStatus: "title-done".localized)
+        SVProgressHUD.dismiss()
+        updateAccountForNotificationFilters()
+        updateNotificationFilterCell()
+    }
+
+    private func updateAccountForNotificationFilters() {
+        guard let localAccount = api?.session.accountInformation(from: account.address) else {
+            return
+        }
+
+        localAccount.receivesNotification = account.receivesNotification
+        api?.session.authenticatedUser?.updateAccount(localAccount)
+        api?.session.updateAccount(account)
+    }
+
+    private func updateNotificationFilterCell() {
+        if let index = options.firstIndex(of: .notificationSetting),
+           let cell = optionsView.optionsCollectionView.cellForItem(at: IndexPath(item: index, section: 0)) as? OptionsCell {
+            cell.bind(OptionsViewModel(option: .notificationSetting, account: self.account))
+        }
+    }
+
+    private func displayNotificationFilterError(_ error: HIPAPIError?) {
+        SVProgressHUD.showError(withStatus: nil)
+        SVProgressHUD.dismiss()
+        NotificationBanner.showError(
+            "title-error".localized,
+            message: error?.fallbackMessage ?? "transaction-filter-error-title".localized
+        )
+    }
+}
+
+extension OptionsViewController {
     enum Options: Int, CaseIterable {
         case rekey = 0
         case passphrase = 1
         case rekeyInformation = 2
-        case edit = 3
-        case removeAsset = 4
-        case removeAccount = 5
+        case notificationSetting = 3
+        case edit = 4
+        case removeAsset = 5
+        case removeAccount = 6
         
         static var optionsWithoutRemoveAsset: [Options] {
-            return [.rekey, .rekeyInformation, .passphrase, .edit, .removeAccount]
+            return [.rekey, .rekeyInformation, .passphrase, .notificationSetting, .edit, .removeAccount]
         }
 
         static var optionsWithoutPassphrase: [Options] {
-            return [.rekey, .rekeyInformation, .edit, .removeAsset, .removeAccount]
+            return [.rekey, .rekeyInformation, .notificationSetting, .edit, .removeAsset, .removeAccount]
         }
         
         static var optionsWithoutPassphraseAndRemoveAsset: [Options] {
-            return [.rekey, .rekeyInformation, .edit, .removeAccount]
+            return [.rekey, .rekeyInformation, .notificationSetting, .edit, .removeAccount]
         }
         
         static var allOptions: [Options] {
-            return [.rekey, .passphrase, .rekeyInformation, .edit, .removeAsset, .removeAccount]
+            return [.rekey, .passphrase, .rekeyInformation, .notificationSetting, .edit, .removeAsset, .removeAccount]
         }
         
         static var watchAccountOptions: [Options] {
