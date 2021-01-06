@@ -20,6 +20,8 @@ class Environment {
         return instance
     }
     
+    let appID = "1459898525"
+    
     lazy var isTestNet = target == .staging
     
     lazy var schema = "https"
