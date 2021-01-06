@@ -36,9 +36,10 @@ class LedgerAccountSelectionDataSource: NSObject {
 
 extension LedgerAccountSelectionDataSource {
     func loadData() {
-        ledgerAccounts.forEach { account in
+        for (index, account) in ledgerAccounts.enumerated() {
             account.type = .ledger
             account.ledgerDetail = ledger
+            account.ledgerDetail?.indexInLedger = index
             self.accounts.append(account)
             fetchRekeyedAccounts(of: account.address)
         }

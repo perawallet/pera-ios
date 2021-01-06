@@ -98,6 +98,8 @@ extension LedgerAccountFetchOperation {
             case let .failure(error, _):
                 if error.isHttpNotFound {
                     self.ledgerAccounts.append(Account(address: address, type: .ledger))
+                } else {
+                    NotificationBanner.showError("title-error".localized, message: "ledger-account-fetct-error".localized)
                 }
                 self.returnAccounts()
             }

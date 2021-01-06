@@ -514,3 +514,4 @@
 "ledger-account-details-title" = "Ledger details";
 "ledger-account-detail-can-sign" = "Can sign for these accounts";
 "ledger-account-detail-can-signed" = "Can be signed by";
+"ledger-account-fetct-error" = "A network error occured while fetching account details. Restart the process.";
