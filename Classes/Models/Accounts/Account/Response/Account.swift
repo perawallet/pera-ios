@@ -54,7 +54,14 @@ class Account: Model {
         rekeyDetail = try container.decodeIfPresent(RekeyDetail.self, forKey: .rekeyDetail)
     }
     
-    init(address: String, type: AccountType, ledgerDetail: LedgerDetail? = nil, name: String? = nil, rekeyDetail: RekeyDetail? = nil, receivesNotification: Bool = true) {
+    init(
+        address: String,
+        type: AccountType,
+        ledgerDetail: LedgerDetail? = nil,
+        name: String? = nil,
+        rekeyDetail: RekeyDetail? = nil,
+        receivesNotification: Bool = true
+    ) {
         self.address = address
         amount = 0
         status = .offline

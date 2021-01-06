@@ -19,7 +19,14 @@ class AccountInformation: Model {
     var receivesNotification: Bool
     var rekeyDetail: RekeyDetail?
     
-    init(address: String, name: String, type: AccountType, ledgerDetail: LedgerDetail? = nil, rekeyDetail: RekeyDetail? = nil, receivesNotification: Bool = true) {
+    init(
+        address: String,
+        name: String,
+        type: AccountType,
+        ledgerDetail: LedgerDetail? = nil,
+        rekeyDetail: RekeyDetail? = nil,
+        receivesNotification: Bool = true
+    ) {
         self.address = address
         self.name = name
         self.type = type
