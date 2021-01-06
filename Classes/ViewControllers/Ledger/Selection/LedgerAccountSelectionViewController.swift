@@ -105,10 +105,10 @@ extension LedgerAccountSelectionViewController: LedgerAccountSelectionViewDelega
     }
     
     private func logRegistrationEvents() {
-        RegistrationEvent(type: .ledger).logEvent()
+        log(RegistrationEvent(type: .ledger))
         
         ledgerAccountSelectionView.selectedIndexes.forEach { _ in
-            RegistrationEvent(type: .rekeyed).logEvent()
+            self.log(RegistrationEvent(type: .rekeyed))
         }
     }
     

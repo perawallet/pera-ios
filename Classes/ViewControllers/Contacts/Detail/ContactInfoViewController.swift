@@ -18,8 +18,8 @@ class ContactInfoViewController: BaseScrollViewController {
         )
     )
     
-    override var screenKey: String? {
-        return "screen_contact_detail"
+    override var name: AnalyticsScreenName? {
+        return .contactDetail
     }
     
     private lazy var contactInfoView = ContactInfoView()

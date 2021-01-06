@@ -8,9 +8,9 @@
 
 import Foundation
 
-struct LedgerTransactionErrorLog: ErrorLog {
-    let name: ErrorLogs = .ledgerTransactionError
-    var params: [ErrorLogParamKeys: Any]
+struct LedgerTransactionErrorLog: AnalyticsLog {
+    var name: AnalyticsLogName = .ledgerTransactionError
+    var params: AnalyticsParameters
     
     init(account: Account, unsignedTransaction: Data?, signedTransaction: Data?) {
         params = [

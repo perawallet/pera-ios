@@ -299,7 +299,7 @@ extension TabBarController: SelectAssetViewControllerDelegate {
         )
         
         if transactionAction == .send {
-            SendTabEvent().logEvent()
+            log(SendTabEvent())
             open(
                 .sendAlgosTransactionPreview(
                     account: account,
@@ -309,7 +309,7 @@ extension TabBarController: SelectAssetViewControllerDelegate {
                 by: fullScreenPresentation
             )
         } else {
-            ReceiveTabEvent().logEvent()
+            log(ReceiveTabEvent())
             let draft = QRCreationDraft(address: account.address, mode: .address)
             open(.qrGenerator(title: account.name ?? account.address.shortAddressDisplay(), draft: draft, isTrackable: true), by: .present)
         }
@@ -330,7 +330,7 @@ extension TabBarController: SelectAssetViewControllerDelegate {
         )
         
         if transactionAction == .send {
-            SendTabEvent().logEvent()
+            log(SendTabEvent())
             open(
                 .sendAssetTransactionPreview(
                     account: account,
@@ -342,7 +342,7 @@ extension TabBarController: SelectAssetViewControllerDelegate {
                 by: fullScreenPresentation
             )
         } else {
-            ReceiveTabEvent().logEvent()
+            log(ReceiveTabEvent())
             let draft = QRCreationDraft(address: account.address, mode: .address)
             open(.qrGenerator(title: account.name ?? account.address.shortAddressDisplay(), draft: draft, isTrackable: true), by: .present)
         }

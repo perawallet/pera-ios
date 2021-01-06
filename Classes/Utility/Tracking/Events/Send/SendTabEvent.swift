@@ -8,10 +8,6 @@
 
 import Foundation
 
-struct SendTabEvent: TrackableEvent {
-    let eventKey = "tap_tab_send"
-    
-    var parameters: [String: Any]? {
-        return nil
-    }
+struct SendTabEvent: AnalyticsEvent {
+    let key: AnalyticsEventKey = .tabSend
 }
