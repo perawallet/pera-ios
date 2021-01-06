@@ -513,7 +513,7 @@
 "settings-theme-light" = "Light";
 "settings-theme-system" = "System Default";
 
-"notification-filter-show-title" = "Show Notifications";
+"notification-filter-show-title" = "Push Notifications";
 "notification-filter-show-for" = "Show notification for";
 
 "title-plus-asset-count" = "+%@ Assets";

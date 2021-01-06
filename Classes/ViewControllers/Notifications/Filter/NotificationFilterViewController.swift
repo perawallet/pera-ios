@@ -127,6 +127,7 @@ extension NotificationFilterViewController: NotificationFilterDataSourceDelegate
         SVProgressHUD.showSuccess(withStatus: "title-done".localized)
         SVProgressHUD.dismiss()
         updateAccount(account)
+        log(NotificationFilterChangeEvent(isReceivingNotifications: account.receivesNotification, address: account.address))
     }
 
     func notificationFilterDataSource(
