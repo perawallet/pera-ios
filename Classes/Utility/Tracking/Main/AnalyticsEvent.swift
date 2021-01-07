@@ -35,6 +35,7 @@ enum AnalyticsEventKey: String {
     case detailReceive = "tap_asset_detail_receive"
     case assetDetail = "asset_detail_asset"
     case assetDetailChange = "asset_detail_asset_change"
+    case notificationFilter = "notification_filter_change"
 }
 
 enum AnalyticsParameter: String {
@@ -48,4 +49,5 @@ enum AnalyticsParameter: String {
     case sender = "sender"
     case unsignedTransaction = "unsigned_transaction"
     case signedTransaction = "signed_transaction"
+    case isReceivingNotifications = "is_receiving_notifications"
 }
