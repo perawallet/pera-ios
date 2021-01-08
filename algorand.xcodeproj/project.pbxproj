@@ -1340,6 +1340,24 @@
 		2B8E5F972548318C001D8E30 /* AnalyticsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8E5F942548318C001D8E30 /* AnalyticsScreen.swift */; };
 		2B8E7C93246AD8B800CC5A58 /* ContactsEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8E7C92246AD8B800CC5A58 /* ContactsEmptyView.swift */; };
 		2B8E7C94246AD8B800CC5A58 /* ContactsEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8E7C92246AD8B800CC5A58 /* ContactsEmptyView.swift */; };
+		2B95407A25A75FB20098805B /* DBDecodeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B95407925A75FB20098805B /* DBDecodeTests.swift */; };
+		2B95409225A783340098805B /* AssetDetailCardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B95409125A783340098805B /* AssetDetailCardTests.swift */; };
+		2B95409925A7835A0098805B /* NotificationsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B95409825A7835A0098805B /* NotificationsTests.swift */; };
+		2B9540B425A7A20E0098805B /* User.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B9540B325A7A20E0098805B /* User.json */; };
+		2B9540BE25A7A2390098805B /* AccountA.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B9540BD25A7A2390098805B /* AccountA.json */; };
+		2B9540C525A7A24C0098805B /* AccountB.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B9540C425A7A24C0098805B /* AccountB.json */; };
+		2B9540D125A7AE3D0098805B /* Currency.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B9540D025A7AE3D0098805B /* Currency.json */; };
+		2B9540DC25A855ED0098805B /* HipoCoinAsset.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B9540DB25A855ED0098805B /* HipoCoinAsset.json */; };
+		2B9540E625A855FD0098805B /* TurkishLiraAsset.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B9540E525A855FD0098805B /* TurkishLiraAsset.json */; };
+		2B9540ED25A85CBA0098805B /* Bundle+JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9540EC25A85CBA0098805B /* Bundle+JSON.swift */; };
+		2B9540F625A861770098805B /* AccountA.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B9540BD25A7A2390098805B /* AccountA.json */; };
+		2B9540FB25A8617B0098805B /* AccountB.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B9540C425A7A24C0098805B /* AccountB.json */; };
+		2B95410025A8617E0098805B /* HipoCoinAsset.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B9540DB25A855ED0098805B /* HipoCoinAsset.json */; };
+		2B95410125A861810098805B /* TurkishLiraAsset.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B9540E525A855FD0098805B /* TurkishLiraAsset.json */; };
+		2B95410625A861830098805B /* Currency.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B9540D025A7AE3D0098805B /* Currency.json */; };
+		2B95410B25A861870098805B /* User.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B9540B325A7A20E0098805B /* User.json */; };
+		2B95411625A89C9D0098805B /* NotificationMessage.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B95411525A89C9D0098805B /* NotificationMessage.json */; };
+		2B95411725A89C9D0098805B /* NotificationMessage.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B95411525A89C9D0098805B /* NotificationMessage.json */; };
 		2B982333231D396D009560CD /* Codable+JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B982332231D396D009560CD /* Codable+JSON.swift */; };
 		2B982334231D396D009560CD /* Codable+JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B982332231D396D009560CD /* Codable+JSON.swift */; };
 		2B98233B231EC207009560CD /* TransactionsQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B98233A231EC207009560CD /* TransactionsQuery.swift */; };
@@ -1761,6 +1779,16 @@
 		CB624417B8B29A26FE98B92E /* Pods_algorand_staging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 030F6B1A27825B4720C008C6 /* Pods_algorand_staging.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		2B95407C25A75FB20098805B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2B8BE4C622391C38005D8565 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 17BD4DEE2292F1260003E49A;
+			remoteInfo = "algorand-staging";
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		030F6B1A27825B4720C008C6 /* Pods_algorand_staging.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_algorand_staging.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A0D3580FD8AFA3672317C5F /* Pods-algorand-prod.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand-prod.release.xcconfig"; path = "Target Support Files/Pods-algorand-prod/Pods-algorand-prod.release.xcconfig"; sourceTree = "<group>"; };
@@ -2143,6 +2171,19 @@
 		2B8E5F8D25482FC6001D8E30 /* ReceiveTabEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveTabEvent.swift; sourceTree = "<group>"; };
 		2B8E5F942548318C001D8E30 /* AnalyticsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsScreen.swift; sourceTree = "<group>"; };
 		2B8E7C92246AD8B800CC5A58 /* ContactsEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsEmptyView.swift; sourceTree = "<group>"; };
+		2B95407725A75FB20098805B /* algorand-tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "algorand-tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2B95407925A75FB20098805B /* DBDecodeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBDecodeTests.swift; sourceTree = "<group>"; };
+		2B95407B25A75FB20098805B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2B95409125A783340098805B /* AssetDetailCardTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetDetailCardTests.swift; sourceTree = "<group>"; };
+		2B95409825A7835A0098805B /* NotificationsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsTests.swift; sourceTree = "<group>"; };
+		2B9540B325A7A20E0098805B /* User.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = User.json; sourceTree = "<group>"; };
+		2B9540BD25A7A2390098805B /* AccountA.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = AccountA.json; sourceTree = "<group>"; };
+		2B9540C425A7A24C0098805B /* AccountB.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = AccountB.json; sourceTree = "<group>"; };
+		2B9540D025A7AE3D0098805B /* Currency.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Currency.json; sourceTree = "<group>"; };
+		2B9540DB25A855ED0098805B /* HipoCoinAsset.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = HipoCoinAsset.json; sourceTree = "<group>"; };
+		2B9540E525A855FD0098805B /* TurkishLiraAsset.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = TurkishLiraAsset.json; sourceTree = "<group>"; };
+		2B9540EC25A85CBA0098805B /* Bundle+JSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+JSON.swift"; sourceTree = "<group>"; };
+		2B95411525A89C9D0098805B /* NotificationMessage.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = NotificationMessage.json; sourceTree = "<group>"; };
 		2B982332231D396D009560CD /* Codable+JSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Codable+JSON.swift"; sourceTree = "<group>"; };
 		2B98233A231EC207009560CD /* TransactionsQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsQuery.swift; sourceTree = "<group>"; };
 		2B9F063624B5E469006880F0 /* AnalyticsEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsEvent.swift; sourceTree = "<group>"; };
@@ -2407,6 +2448,13 @@
 				2B0F5F6224EAECD300DA22A6 /* Crypto.framework in Frameworks */,
 				2B0F5F5E24EAECBE00DA22A6 /* Crypto.framework in Frameworks */,
 				34E10EEDAEE4C90E51BCBBB2 /* Pods_algorand.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2B95407425A75FB20098805B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4393,6 +4441,7 @@
 				2B191C892321998600EAB1B8 /* algorand.entitlements */,
 				2B191C882321998100EAB1B8 /* algorand-staging.entitlements */,
 				2B8BE4D022391C38005D8565 /* Classes */,
+				2B95407825A75FB20098805B /* algorand-tests */,
 				9F18DC6D0E56430348850CDE /* Frameworks */,
 				17512612223BDC2B0095AF4F /* Libraries */,
 				EC59E2CE8B21B82B62B16954 /* Pods */,
@@ -4408,6 +4457,7 @@
 				2B8BE4CE22391C38005D8565 /* algorand.app */,
 				17BD4F252292F1260003E49A /* algorand-staging.app */,
 				2B0F634E24EC129D00DA22A6 /* algorand-prod.app */,
+				2B95407725A75FB20098805B /* algorand-tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -4451,6 +4501,7 @@
 				2BF34CCC223AA73B0052CAD3 /* Fonts */,
 				2B8BE4E72239257B005D8565 /* LaunchScreen */,
 				2BF34CC6223A99850052CAD3 /* Localization */,
+				2B9540A925A786C90098805B /* Mocks */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -4590,6 +4641,7 @@
 			isa = PBXGroup;
 			children = (
 				2BE4D0A425939459005F5764 /* Analytics */,
+				2B9540EB25A85C9C0098805B /* Bundle */,
 				95C4C16C242CDFFC005A57BB /* CoreBluetooth */,
 				2BF53166224A48C900A7455F /* CoreGraphics */,
 				170AFB00224D1CD100520EA5 /* CoreImage */,
@@ -4693,6 +4745,159 @@
 				2B57D8EE25587F4F006E6FCE /* ReceiveAssetDetailEvent.swift */,
 			);
 			path = Receive;
+			sourceTree = "<group>";
+		};
+		2B95407825A75FB20098805B /* algorand-tests */ = {
+			isa = PBXGroup;
+			children = (
+				2B95408C25A782D90098805B /* DB */,
+				2B95408A25A782D10098805B /* Models */,
+				2B95408B25A782D40098805B /* ViewModels */,
+				2B95407B25A75FB20098805B /* Info.plist */,
+			);
+			path = "algorand-tests";
+			sourceTree = "<group>";
+		};
+		2B95408A25A782D10098805B /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		2B95408B25A782D40098805B /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				2B95408D25A782F90098805B /* Accounts */,
+				2B95409725A7834D0098805B /* Notifications */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2B95408C25A782D90098805B /* DB */ = {
+			isa = PBXGroup;
+			children = (
+				2B95407925A75FB20098805B /* DBDecodeTests.swift */,
+			);
+			path = DB;
+			sourceTree = "<group>";
+		};
+		2B95408D25A782F90098805B /* Accounts */ = {
+			isa = PBXGroup;
+			children = (
+				2B95408E25A783030098805B /* Assets */,
+			);
+			path = Accounts;
+			sourceTree = "<group>";
+		};
+		2B95408E25A783030098805B /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				2B95408F25A783160098805B /* Detail */,
+			);
+			path = Assets;
+			sourceTree = "<group>";
+		};
+		2B95408F25A783160098805B /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+				2B95409025A7831A0098805B /* Card */,
+			);
+			path = Detail;
+			sourceTree = "<group>";
+		};
+		2B95409025A7831A0098805B /* Card */ = {
+			isa = PBXGroup;
+			children = (
+				2B95409125A783340098805B /* AssetDetailCardTests.swift */,
+			);
+			path = Card;
+			sourceTree = "<group>";
+		};
+		2B95409725A7834D0098805B /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				2B95409825A7835A0098805B /* NotificationsTests.swift */,
+			);
+			path = Notifications;
+			sourceTree = "<group>";
+		};
+		2B9540A925A786C90098805B /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+				2B9540AA25A786E10098805B /* Accounts */,
+				2B9540CE25A7A3590098805B /* Assets */,
+				2B9540CF25A7AE190098805B /* Currency */,
+				2B95411025A8639F0098805B /* Notification */,
+				2B9540B225A7A0210098805B /* User */,
+			);
+			path = Mocks;
+			sourceTree = "<group>";
+		};
+		2B9540AA25A786E10098805B /* Accounts */ = {
+			isa = PBXGroup;
+			children = (
+				2B9540C325A7A23E0098805B /* Main */,
+			);
+			path = Accounts;
+			sourceTree = "<group>";
+		};
+		2B9540B225A7A0210098805B /* User */ = {
+			isa = PBXGroup;
+			children = (
+				2B9540B325A7A20E0098805B /* User.json */,
+			);
+			path = User;
+			sourceTree = "<group>";
+		};
+		2B9540C325A7A23E0098805B /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				2B9540BD25A7A2390098805B /* AccountA.json */,
+				2B9540C425A7A24C0098805B /* AccountB.json */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		2B9540CE25A7A3590098805B /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				2B9540DA25A855D90098805B /* AssetDetail */,
+			);
+			path = Assets;
+			sourceTree = "<group>";
+		};
+		2B9540CF25A7AE190098805B /* Currency */ = {
+			isa = PBXGroup;
+			children = (
+				2B9540D025A7AE3D0098805B /* Currency.json */,
+			);
+			path = Currency;
+			sourceTree = "<group>";
+		};
+		2B9540DA25A855D90098805B /* AssetDetail */ = {
+			isa = PBXGroup;
+			children = (
+				2B9540DB25A855ED0098805B /* HipoCoinAsset.json */,
+				2B9540E525A855FD0098805B /* TurkishLiraAsset.json */,
+			);
+			path = AssetDetail;
+			sourceTree = "<group>";
+		};
+		2B9540EB25A85C9C0098805B /* Bundle */ = {
+			isa = PBXGroup;
+			children = (
+				2B9540EC25A85CBA0098805B /* Bundle+JSON.swift */,
+			);
+			path = Bundle;
+			sourceTree = "<group>";
+		};
+		2B95411025A8639F0098805B /* Notification */ = {
+			isa = PBXGroup;
+			children = (
+				2B95411525A89C9D0098805B /* NotificationMessage.json */,
+			);
+			path = Notification;
 			sourceTree = "<group>";
 		};
 		2B982331231D3958009560CD /* Codable */ = {
@@ -6256,13 +6461,31 @@
 			productReference = 2B8BE4CE22391C38005D8565 /* algorand.app */;
 			productType = "com.apple.product-type.application";
 		};
+		2B95407625A75FB20098805B /* algorand-tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2B95408125A75FB20098805B /* Build configuration list for PBXNativeTarget "algorand-tests" */;
+			buildPhases = (
+				2B95407325A75FB20098805B /* Sources */,
+				2B95407425A75FB20098805B /* Frameworks */,
+				2B95407525A75FB20098805B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2B95407D25A75FB20098805B /* PBXTargetDependency */,
+			);
+			name = "algorand-tests";
+			productName = "algorand-tests";
+			productReference = 2B95407725A75FB20098805B /* algorand-tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		2B8BE4C622391C38005D8565 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1010;
+				LastSwiftUpdateCheck = 1220;
 				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = hippo;
 				TargetAttributes = {
@@ -6281,6 +6504,10 @@
 								enabled = 1;
 							};
 						};
+					};
+					2B95407625A75FB20098805B = {
+						CreatedOnToolsVersion = 12.2;
+						TestTargetID = 17BD4DEE2292F1260003E49A;
 					};
 				};
 			};
@@ -6306,6 +6533,7 @@
 				2B8BE4CD22391C38005D8565 /* algorand */,
 				2B0F615A24EC129D00DA22A6 /* algorand-prod */,
 				17BD4DEE2292F1260003E49A /* algorand-staging */,
+				2B95407625A75FB20098805B /* algorand-tests */,
 			);
 		};
 /* End PBXProject section */
@@ -6315,13 +6543,17 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2B95410625A861830098805B /* Currency.json in Resources */,
 				17BD4F152292F1260003E49A /* LoadingAnimation.json in Resources */,
 				2B516174243F739D006DEA54 /* PublicSans-Regular.ttf in Resources */,
 				17BD4F172292F1260003E49A /* images in Resources */,
+				2B9540FB25A8617B0098805B /* AccountB.json in Resources */,
 				2B516180243F739D006DEA54 /* PublicSans-BoldItalic.ttf in Resources */,
 				2B51617E243F739D006DEA54 /* PublicSans-Light.ttf in Resources */,
 				17BD4F192292F1260003E49A /* GoogleService-Info.plist in Resources */,
+				2B95410125A861810098805B /* TurkishLiraAsset.json in Resources */,
 				2B516188243F739D006DEA54 /* PublicSans-Black.ttf in Resources */,
+				2B95410B25A861870098805B /* User.json in Resources */,
 				2B51618A243F739D006DEA54 /* PublicSans-MediumItalic.ttf in Resources */,
 				2B51616E243F739D006DEA54 /* PublicSans-Medium.ttf in Resources */,
 				95E31530243234A4008D79D4 /* bluetooth_animation.json in Resources */,
@@ -6333,7 +6565,10 @@
 				2B51618E243F739D006DEA54 /* PublicSans-Thin.ttf in Resources */,
 				2B6811E125345B5700D4437F /* InfoPlist.strings in Resources */,
 				2B51617A243F739D006DEA54 /* PublicSans-Bold.ttf in Resources */,
+				2B95411625A89C9D0098805B /* NotificationMessage.json in Resources */,
+				2B95410025A8617E0098805B /* HipoCoinAsset.json in Resources */,
 				2B516182243F739D006DEA54 /* PublicSans-Italic.ttf in Resources */,
+				2B9540F625A861770098805B /* AccountA.json in Resources */,
 				2B516159243CE5DD006DEA54 /* Colors.xcassets in Resources */,
 				2B51617C243F739D006DEA54 /* PublicSans-ExtraBold.ttf in Resources */,
 				2B516172243F739D006DEA54 /* PublicSans-ExtraLight.ttf in Resources */,
@@ -6410,6 +6645,20 @@
 				2B51616F243F739D006DEA54 /* PublicSans-BlackItalic.ttf in Resources */,
 				2B8BE4D922391C3B005D8565 /* Assets.xcassets in Resources */,
 				2B51618B243F739D006DEA54 /* PublicSans-ThinItalic.ttf in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2B95407525A75FB20098805B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2B9540D125A7AE3D0098805B /* Currency.json in Resources */,
+				2B9540E625A855FD0098805B /* TurkishLiraAsset.json in Resources */,
+				2B9540B425A7A20E0098805B /* User.json in Resources */,
+				2B9540BE25A7A2390098805B /* AccountA.json in Resources */,
+				2B9540C525A7A24C0098805B /* AccountB.json in Resources */,
+				2B9540DC25A855ED0098805B /* HipoCoinAsset.json in Resources */,
+				2B95411725A89C9D0098805B /* NotificationMessage.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8325,7 +8574,26 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		2B95407325A75FB20098805B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2B95407A25A75FB20098805B /* DBDecodeTests.swift in Sources */,
+				2B95409225A783340098805B /* AssetDetailCardTests.swift in Sources */,
+				2B95409925A7835A0098805B /* NotificationsTests.swift in Sources */,
+				2B9540ED25A85CBA0098805B /* Bundle+JSON.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		2B95407D25A75FB20098805B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 17BD4DEE2292F1260003E49A /* algorand-staging */;
+			targetProxy = 2B95407C25A75FB20098805B /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		2B6811E325345B5700D4437F /* InfoPlist.strings */ = {
@@ -8732,6 +9000,75 @@
 			};
 			name = Release;
 		};
+		2B95407E25A75FB20098805B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = W9875NV3WF;
+				HEADER_SEARCH_PATHS = "\"${SRCROOT}/Pods/Firebase/CoreOnly/Sources\"";
+				INFOPLIST_FILE = "algorand-tests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.algorandllc.algorand-tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/algorand-staging.app/algorand-staging";
+			};
+			name = Debug;
+		};
+		2B95407F25A75FB20098805B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = W9875NV3WF;
+				HEADER_SEARCH_PATHS = "\"${SRCROOT}/Pods/Firebase/CoreOnly/Sources\"";
+				INFOPLIST_FILE = "algorand-tests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.algorandllc.algorand-tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/algorand-staging.app/algorand-staging";
+			};
+			name = Release;
+		};
+		2B95408025A75FB20098805B /* App Store */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = W9875NV3WF;
+				HEADER_SEARCH_PATHS = "\"${SRCROOT}/Pods/Firebase/CoreOnly/Sources\"";
+				INFOPLIST_FILE = "algorand-tests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.algorandllc.algorand-tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/algorand-staging.app/algorand-staging";
+			};
+			name = "App Store";
+		};
 		EC6B733422541CA8006D146B /* App Store */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -8858,6 +9195,16 @@
 				2B8BE4E122391C3B005D8565 /* Debug */,
 				2B8BE4E222391C3B005D8565 /* Release */,
 				EC6B733522541CA8006D146B /* App Store */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2B95408125A75FB20098805B /* Build configuration list for PBXNativeTarget "algorand-tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2B95407E25A75FB20098805B /* Debug */,
+				2B95407F25A75FB20098805B /* Release */,
+				2B95408025A75FB20098805B /* App Store */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
