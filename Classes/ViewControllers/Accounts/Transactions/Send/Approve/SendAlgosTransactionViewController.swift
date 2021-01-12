@@ -11,7 +11,6 @@ import UIKit
 class SendAlgosTransactionViewController: SendTransactionViewController, TestNetTitleDisplayable {
     
     private var algosTransactionSendDraft: AlgosTransactionSendDraft
-    private let viewModel = SendAlgosTransactionViewModel()
     
     init(
         algosTransactionSendDraft: AlgosTransactionSendDraft,
@@ -34,7 +33,7 @@ class SendAlgosTransactionViewController: SendTransactionViewController, TestNet
     
     override func configureAppearance() {
         super.configureAppearance()
-        viewModel.configure(sendTransactionView, with: algosTransactionSendDraft)
+        sendTransactionView.bind(SendTransactionViewModel(transactionDraft: algosTransactionSendDraft))
         displayTestNetTitleView(with: "send-algos-title".localized)
     }
     

@@ -10,13 +10,6 @@ import UIKit
 import SnapKit
 import SVProgressHUD
 
-protocol SendAssetTransactionPreviewViewControllerDelegate: class {
-    func sendAssetTransactionPreviewViewController(
-        _ viewController: SendAssetTransactionPreviewViewController,
-        didCompleteTransactionFor assetDetail: AssetDetail
-    )
-}
-
 class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewController, TestNetTitleDisplayable {
     
     private lazy var assetSupportPresenter = CardModalPresenter(
@@ -388,4 +381,11 @@ extension SendAssetTransactionPreviewViewController: SendTransactionViewControll
     func sendTransactionViewController(_ viewController: SendTransactionViewController, didCompleteTransactionFor asset: Int64?) {
         delegate?.sendAssetTransactionPreviewViewController(self, didCompleteTransactionFor: assetDetail)
     }
+}
+
+protocol SendAssetTransactionPreviewViewControllerDelegate: class {
+    func sendAssetTransactionPreviewViewController(
+        _ viewController: SendAssetTransactionPreviewViewController,
+        didCompleteTransactionFor assetDetail: AssetDetail
+    )
 }

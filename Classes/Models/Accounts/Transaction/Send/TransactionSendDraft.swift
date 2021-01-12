@@ -15,4 +15,5 @@ protocol TransactionSendDraft {
     var fee: Int64? { get set }
     var isMaxTransaction: Bool { get set }
     var identifier: String? { get set }
+    var note: String? { get set }
 }
