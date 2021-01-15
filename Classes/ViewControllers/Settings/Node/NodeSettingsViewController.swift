@@ -125,7 +125,7 @@ extension NodeSettingsViewController {
         lastActiveNetwork = selectedNode.network
         DispatchQueue.main.async {
             UIApplication.shared.rootViewController()?.setNetwork(to: selectedNode.network)
-            UIApplication.shared.rootViewController()?.addTestNetBanner()
+            UIApplication.shared.rootViewController()?.addBanner()
         }
         
         UIApplication.shared.accountManager?.fetchAllAccounts(isVerifiedAssetsIncluded: true) {
