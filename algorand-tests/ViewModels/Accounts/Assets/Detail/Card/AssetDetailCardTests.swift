@@ -10,11 +10,11 @@ import XCTest
 
 @testable import algorand_staging
 
-let account = Bundle.main.decode(Account.self, from: "AccountA.json")
-let currency = Bundle.main.decode(Currency.self, from: "Currency.json")
-let assetDetail = Bundle.main.decode(AssetDetail.self, from: "HipoCoinAsset.json")
-
 class AssetDetailCardTests: XCTestCase {
+
+    private let account = Bundle.main.decode(Account.self, from: "AccountA.json")
+    private let currency = Bundle.main.decode(Currency.self, from: "Currency.json")
+    private let assetDetail = Bundle.main.decode(AssetDetail.self, from: "HipoCoinAsset.json")
 
     func testAlgosCardAmount() {
         let viewModel = AlgosCardViewModel(account: account, currency: currency)
@@ -38,6 +38,6 @@ class AssetDetailCardTests: XCTestCase {
 
     func testAssetCardAmount() {
         let viewModel = AssetCardViewModel(account: account, assetDetail: assetDetail)
-        XCTAssertEqual(viewModel.amount, "275,949")
+        XCTAssertEqual(viewModel.amount, "2,759.49")
     }
 }
