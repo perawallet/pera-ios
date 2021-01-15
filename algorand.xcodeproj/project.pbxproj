@@ -1358,6 +1358,41 @@
 		2B95410B25A861870098805B /* User.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B9540B325A7A20E0098805B /* User.json */; };
 		2B95411625A89C9D0098805B /* NotificationMessage.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B95411525A89C9D0098805B /* NotificationMessage.json */; };
 		2B95411725A89C9D0098805B /* NotificationMessage.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B95411525A89C9D0098805B /* NotificationMessage.json */; };
+		2B95416A25AE62AD0098805B /* TransactionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B95416925AE62AD0098805B /* TransactionTests.swift */; };
+		2B95417425AE62BE0098805B /* TransactionParamsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B95417325AE62BE0098805B /* TransactionParamsTests.swift */; };
+		2B95417A25AE62D40098805B /* PaymentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B95417925AE62D40098805B /* PaymentTests.swift */; };
+		2B95418025AE62E60098805B /* AccountTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B95417F25AE62E60098805B /* AccountTests.swift */; };
+		2B95418625AE62F80098805B /* AccountInformationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B95418525AE62F80098805B /* AccountInformationTests.swift */; };
+		2B95418C25AE630A0098805B /* AssetDetailTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B95418B25AE630A0098805B /* AssetDetailTests.swift */; };
+		2B95419525AE632B0098805B /* QRTextTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B95419425AE632B0098805B /* QRTextTests.swift */; };
+		2B9541A525AE634E0098805B /* UserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9541A425AE634E0098805B /* UserTests.swift */; };
+		2B9541B525AF161C0098805B /* TransactionParams.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B9541B425AF161C0098805B /* TransactionParams.json */; };
+		2B9541B625AF161C0098805B /* TransactionParams.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B9541B425AF161C0098805B /* TransactionParams.json */; };
+		2B9541C025AF16B20098805B /* AssetTransaction.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B9541BF25AF16B20098805B /* AssetTransaction.json */; };
+		2B9541C125AF16B20098805B /* AssetTransaction.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B9541BF25AF16B20098805B /* AssetTransaction.json */; };
+		2B9541CB25AF16BD0098805B /* AlgoTransaction.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B9541CA25AF16BD0098805B /* AlgoTransaction.json */; };
+		2B9541CC25AF16BD0098805B /* AlgoTransaction.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B9541CA25AF16BD0098805B /* AlgoTransaction.json */; };
+		2B9541D325AF1B8F0098805B /* Payment.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B9541D225AF1B8F0098805B /* Payment.json */; };
+		2B9541D425AF1B8F0098805B /* Payment.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B9541D225AF1B8F0098805B /* Payment.json */; };
+		2B9541DE25AF21730098805B /* AccountInformationA.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B9541DD25AF21730098805B /* AccountInformationA.json */; };
+		2B9541DF25AF21730098805B /* AccountInformationA.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B9541DD25AF21730098805B /* AccountInformationA.json */; };
+		2B9541E525AF217F0098805B /* AccountInformationB.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B9541E425AF217F0098805B /* AccountInformationB.json */; };
+		2B9541E625AF217F0098805B /* AccountInformationB.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B9541E425AF217F0098805B /* AccountInformationB.json */; };
+		2B9541F525AFC2E80098805B /* algorand.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2B59F1372254BABF005203DD /* algorand.xcdatamodeld */; };
+		2B9541FC25B07E160098805B /* LedgerDetail.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B9541FB25B07E160098805B /* LedgerDetail.json */; };
+		2B9541FD25B07E160098805B /* LedgerDetail.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B9541FB25B07E160098805B /* LedgerDetail.json */; };
+		2B95420725B07FCC0098805B /* RekeyedAccountInformation.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B95420625B07FCC0098805B /* RekeyedAccountInformation.json */; };
+		2B95420825B07FCC0098805B /* RekeyedAccountInformation.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B95420625B07FCC0098805B /* RekeyedAccountInformation.json */; };
+		2B95421225B07FD60098805B /* RekeyedAccount.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B95421125B07FD60098805B /* RekeyedAccount.json */; };
+		2B95421325B07FD60098805B /* RekeyedAccount.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B95421125B07FD60098805B /* RekeyedAccount.json */; };
+		2B95421925B07FDF0098805B /* LedgerAccount.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B95421825B07FDF0098805B /* LedgerAccount.json */; };
+		2B95421A25B07FDF0098805B /* LedgerAccount.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B95421825B07FDF0098805B /* LedgerAccount.json */; };
+		2B95422025B07FEA0098805B /* LedgerAccountInformation.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B95421F25B07FEA0098805B /* LedgerAccountInformation.json */; };
+		2B95422125B07FEA0098805B /* LedgerAccountInformation.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B95421F25B07FEA0098805B /* LedgerAccountInformation.json */; };
+		2B95422725B0B3280098805B /* AssetAdditionTransaction.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B95422625B0B3280098805B /* AssetAdditionTransaction.json */; };
+		2B95422825B0B3290098805B /* AssetAdditionTransaction.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B95422625B0B3280098805B /* AssetAdditionTransaction.json */; };
+		2B95422E25B19E3D0098805B /* PreviousUser.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B95422D25B19E3D0098805B /* PreviousUser.json */; };
+		2B95422F25B19E3D0098805B /* PreviousUser.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B95422D25B19E3D0098805B /* PreviousUser.json */; };
 		2B982333231D396D009560CD /* Codable+JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B982332231D396D009560CD /* Codable+JSON.swift */; };
 		2B982334231D396D009560CD /* Codable+JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B982332231D396D009560CD /* Codable+JSON.swift */; };
 		2B98233B231EC207009560CD /* TransactionsQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B98233A231EC207009560CD /* TransactionsQuery.swift */; };
@@ -2184,6 +2219,27 @@
 		2B9540E525A855FD0098805B /* TurkishLiraAsset.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = TurkishLiraAsset.json; sourceTree = "<group>"; };
 		2B9540EC25A85CBA0098805B /* Bundle+JSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+JSON.swift"; sourceTree = "<group>"; };
 		2B95411525A89C9D0098805B /* NotificationMessage.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = NotificationMessage.json; sourceTree = "<group>"; };
+		2B95416925AE62AD0098805B /* TransactionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionTests.swift; sourceTree = "<group>"; };
+		2B95417325AE62BE0098805B /* TransactionParamsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionParamsTests.swift; sourceTree = "<group>"; };
+		2B95417925AE62D40098805B /* PaymentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentTests.swift; sourceTree = "<group>"; };
+		2B95417F25AE62E60098805B /* AccountTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTests.swift; sourceTree = "<group>"; };
+		2B95418525AE62F80098805B /* AccountInformationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountInformationTests.swift; sourceTree = "<group>"; };
+		2B95418B25AE630A0098805B /* AssetDetailTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetDetailTests.swift; sourceTree = "<group>"; };
+		2B95419425AE632B0098805B /* QRTextTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRTextTests.swift; sourceTree = "<group>"; };
+		2B9541A425AE634E0098805B /* UserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserTests.swift; sourceTree = "<group>"; };
+		2B9541B425AF161C0098805B /* TransactionParams.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = TransactionParams.json; sourceTree = "<group>"; };
+		2B9541BF25AF16B20098805B /* AssetTransaction.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = AssetTransaction.json; sourceTree = "<group>"; };
+		2B9541CA25AF16BD0098805B /* AlgoTransaction.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = AlgoTransaction.json; sourceTree = "<group>"; };
+		2B9541D225AF1B8F0098805B /* Payment.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Payment.json; sourceTree = "<group>"; };
+		2B9541DD25AF21730098805B /* AccountInformationA.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = AccountInformationA.json; sourceTree = "<group>"; };
+		2B9541E425AF217F0098805B /* AccountInformationB.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = AccountInformationB.json; sourceTree = "<group>"; };
+		2B9541FB25B07E160098805B /* LedgerDetail.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = LedgerDetail.json; sourceTree = "<group>"; };
+		2B95420625B07FCC0098805B /* RekeyedAccountInformation.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = RekeyedAccountInformation.json; sourceTree = "<group>"; };
+		2B95421125B07FD60098805B /* RekeyedAccount.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = RekeyedAccount.json; sourceTree = "<group>"; };
+		2B95421825B07FDF0098805B /* LedgerAccount.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = LedgerAccount.json; sourceTree = "<group>"; };
+		2B95421F25B07FEA0098805B /* LedgerAccountInformation.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = LedgerAccountInformation.json; sourceTree = "<group>"; };
+		2B95422625B0B3280098805B /* AssetAdditionTransaction.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = AssetAdditionTransaction.json; sourceTree = "<group>"; };
+		2B95422D25B19E3D0098805B /* PreviousUser.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = PreviousUser.json; sourceTree = "<group>"; };
 		2B982332231D396D009560CD /* Codable+JSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Codable+JSON.swift"; sourceTree = "<group>"; };
 		2B98233A231EC207009560CD /* TransactionsQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsQuery.swift; sourceTree = "<group>"; };
 		2B9F063624B5E469006880F0 /* AnalyticsEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsEvent.swift; sourceTree = "<group>"; };
@@ -4761,6 +4817,10 @@
 		2B95408A25A782D10098805B /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				2B95416525AE62650098805B /* Account */,
+				2B95419325AE631C0098805B /* QR */,
+				2B95416725AE628C0098805B /* Transaction */,
+				2B95419125AE630E0098805B /* User */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -4829,6 +4889,7 @@
 				2B9540CE25A7A3590098805B /* Assets */,
 				2B9540CF25A7AE190098805B /* Currency */,
 				2B95411025A8639F0098805B /* Notification */,
+				2B9541B225AF16010098805B /* Transactions */,
 				2B9540B225A7A0210098805B /* User */,
 			);
 			path = Mocks;
@@ -4837,6 +4898,7 @@
 		2B9540AA25A786E10098805B /* Accounts */ = {
 			isa = PBXGroup;
 			children = (
+				2B9541FA25B07DFA0098805B /* LedgerDetail */,
 				2B9540C325A7A23E0098805B /* Main */,
 			);
 			path = Accounts;
@@ -4845,6 +4907,7 @@
 		2B9540B225A7A0210098805B /* User */ = {
 			isa = PBXGroup;
 			children = (
+				2B9541F025AF26D00098805B /* Previous */,
 				2B9540B325A7A20E0098805B /* User.json */,
 			);
 			path = User;
@@ -4853,8 +4916,8 @@
 		2B9540C325A7A23E0098805B /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				2B9540BD25A7A2390098805B /* AccountA.json */,
-				2B9540C425A7A24C0098805B /* AccountB.json */,
+				2B9541EC25AF269F0098805B /* Account */,
+				2B9541ED25AF26A60098805B /* AccountInformation */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -4898,6 +4961,124 @@
 				2B95411525A89C9D0098805B /* NotificationMessage.json */,
 			);
 			path = Notification;
+			sourceTree = "<group>";
+		};
+		2B95416525AE62650098805B /* Account */ = {
+			isa = PBXGroup;
+			children = (
+				2B95416625AE62810098805B /* Assets */,
+				2B95417F25AE62E60098805B /* AccountTests.swift */,
+				2B95418525AE62F80098805B /* AccountInformationTests.swift */,
+			);
+			path = Account;
+			sourceTree = "<group>";
+		};
+		2B95416625AE62810098805B /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				2B95418B25AE630A0098805B /* AssetDetailTests.swift */,
+			);
+			path = Assets;
+			sourceTree = "<group>";
+		};
+		2B95416725AE628C0098805B /* Transaction */ = {
+			isa = PBXGroup;
+			children = (
+				2B95416825AE62930098805B /* Params */,
+				2B95416925AE62AD0098805B /* TransactionTests.swift */,
+				2B95417925AE62D40098805B /* PaymentTests.swift */,
+			);
+			path = Transaction;
+			sourceTree = "<group>";
+		};
+		2B95416825AE62930098805B /* Params */ = {
+			isa = PBXGroup;
+			children = (
+				2B95417325AE62BE0098805B /* TransactionParamsTests.swift */,
+			);
+			path = Params;
+			sourceTree = "<group>";
+		};
+		2B95419125AE630E0098805B /* User */ = {
+			isa = PBXGroup;
+			children = (
+				2B9541A425AE634E0098805B /* UserTests.swift */,
+			);
+			path = User;
+			sourceTree = "<group>";
+		};
+		2B95419325AE631C0098805B /* QR */ = {
+			isa = PBXGroup;
+			children = (
+				2B95419425AE632B0098805B /* QRTextTests.swift */,
+			);
+			path = QR;
+			sourceTree = "<group>";
+		};
+		2B9541B225AF16010098805B /* Transactions */ = {
+			isa = PBXGroup;
+			children = (
+				2B9541B325AF16080098805B /* Params */,
+				2B9541D125AF178A0098805B /* Payment */,
+				2B9541BF25AF16B20098805B /* AssetTransaction.json */,
+				2B9541CA25AF16BD0098805B /* AlgoTransaction.json */,
+				2B95422625B0B3280098805B /* AssetAdditionTransaction.json */,
+			);
+			path = Transactions;
+			sourceTree = "<group>";
+		};
+		2B9541B325AF16080098805B /* Params */ = {
+			isa = PBXGroup;
+			children = (
+				2B9541B425AF161C0098805B /* TransactionParams.json */,
+			);
+			path = Params;
+			sourceTree = "<group>";
+		};
+		2B9541D125AF178A0098805B /* Payment */ = {
+			isa = PBXGroup;
+			children = (
+				2B9541D225AF1B8F0098805B /* Payment.json */,
+			);
+			path = Payment;
+			sourceTree = "<group>";
+		};
+		2B9541EC25AF269F0098805B /* Account */ = {
+			isa = PBXGroup;
+			children = (
+				2B9540BD25A7A2390098805B /* AccountA.json */,
+				2B9540C425A7A24C0098805B /* AccountB.json */,
+				2B95421125B07FD60098805B /* RekeyedAccount.json */,
+				2B95421825B07FDF0098805B /* LedgerAccount.json */,
+			);
+			path = Account;
+			sourceTree = "<group>";
+		};
+		2B9541ED25AF26A60098805B /* AccountInformation */ = {
+			isa = PBXGroup;
+			children = (
+				2B9541DD25AF21730098805B /* AccountInformationA.json */,
+				2B9541E425AF217F0098805B /* AccountInformationB.json */,
+				2B95420625B07FCC0098805B /* RekeyedAccountInformation.json */,
+				2B95421F25B07FEA0098805B /* LedgerAccountInformation.json */,
+			);
+			path = AccountInformation;
+			sourceTree = "<group>";
+		};
+		2B9541F025AF26D00098805B /* Previous */ = {
+			isa = PBXGroup;
+			children = (
+				2B95422D25B19E3D0098805B /* PreviousUser.json */,
+			);
+			path = Previous;
+			sourceTree = "<group>";
+		};
+		2B9541FA25B07DFA0098805B /* LedgerDetail */ = {
+			isa = PBXGroup;
+			children = (
+				2B9541FB25B07E160098805B /* LedgerDetail.json */,
+			);
+			path = LedgerDetail;
 			sourceTree = "<group>";
 		};
 		2B982331231D3958009560CD /* Codable */ = {
@@ -6547,24 +6728,35 @@
 				17BD4F152292F1260003E49A /* LoadingAnimation.json in Resources */,
 				2B516174243F739D006DEA54 /* PublicSans-Regular.ttf in Resources */,
 				17BD4F172292F1260003E49A /* images in Resources */,
+				2B95420725B07FCC0098805B /* RekeyedAccountInformation.json in Resources */,
+				2B9541B525AF161C0098805B /* TransactionParams.json in Resources */,
+				2B9541E525AF217F0098805B /* AccountInformationB.json in Resources */,
 				2B9540FB25A8617B0098805B /* AccountB.json in Resources */,
 				2B516180243F739D006DEA54 /* PublicSans-BoldItalic.ttf in Resources */,
 				2B51617E243F739D006DEA54 /* PublicSans-Light.ttf in Resources */,
+				2B95421925B07FDF0098805B /* LedgerAccount.json in Resources */,
 				17BD4F192292F1260003E49A /* GoogleService-Info.plist in Resources */,
 				2B95410125A861810098805B /* TurkishLiraAsset.json in Resources */,
 				2B516188243F739D006DEA54 /* PublicSans-Black.ttf in Resources */,
+				2B9541C025AF16B20098805B /* AssetTransaction.json in Resources */,
 				2B95410B25A861870098805B /* User.json in Resources */,
 				2B51618A243F739D006DEA54 /* PublicSans-MediumItalic.ttf in Resources */,
 				2B51616E243F739D006DEA54 /* PublicSans-Medium.ttf in Resources */,
 				95E31530243234A4008D79D4 /* bluetooth_animation.json in Resources */,
+				2B9541D325AF1B8F0098805B /* Payment.json in Resources */,
 				2B516176243F739D006DEA54 /* PublicSans-SemiBold.ttf in Resources */,
 				2B516190243F739D006DEA54 /* PublicSans-SemiBoldItalic.ttf in Resources */,
 				2B516184243F739D006DEA54 /* PublicSans-LightItalic.ttf in Resources */,
+				2B9541CB25AF16BD0098805B /* AlgoTransaction.json in Resources */,
 				2B516186243F739D006DEA54 /* PublicSans-ExtraBoldItalic.ttf in Resources */,
+				2B95422725B0B3280098805B /* AssetAdditionTransaction.json in Resources */,
+				2B95422E25B19E3D0098805B /* PreviousUser.json in Resources */,
 				17BD4F1A2292F1260003E49A /* LaunchScreen.storyboard in Resources */,
 				2B51618E243F739D006DEA54 /* PublicSans-Thin.ttf in Resources */,
 				2B6811E125345B5700D4437F /* InfoPlist.strings in Resources */,
+				2B95421225B07FD60098805B /* RekeyedAccount.json in Resources */,
 				2B51617A243F739D006DEA54 /* PublicSans-Bold.ttf in Resources */,
+				2B9541DE25AF21730098805B /* AccountInformationA.json in Resources */,
 				2B95411625A89C9D0098805B /* NotificationMessage.json in Resources */,
 				2B95410025A8617E0098805B /* HipoCoinAsset.json in Resources */,
 				2B516182243F739D006DEA54 /* PublicSans-Italic.ttf in Resources */,
@@ -6572,11 +6764,13 @@
 				2B516159243CE5DD006DEA54 /* Colors.xcassets in Resources */,
 				2B51617C243F739D006DEA54 /* PublicSans-ExtraBold.ttf in Resources */,
 				2B516172243F739D006DEA54 /* PublicSans-ExtraLight.ttf in Resources */,
+				2B95422025B07FEA0098805B /* LedgerAccountInformation.json in Resources */,
 				2B516178243F739D006DEA54 /* PublicSans-ExtraLightItalic.ttf in Resources */,
 				17BD4F1B2292F1260003E49A /* Localizable.strings in Resources */,
 				2B516170243F739D006DEA54 /* PublicSans-BlackItalic.ttf in Resources */,
 				17BD4F1D2292F1260003E49A /* Assets.xcassets in Resources */,
 				2B51618C243F739D006DEA54 /* PublicSans-ThinItalic.ttf in Resources */,
+				2B9541FC25B07E160098805B /* LedgerDetail.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6652,13 +6846,26 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2B9541B625AF161C0098805B /* TransactionParams.json in Resources */,
+				2B95421A25B07FDF0098805B /* LedgerAccount.json in Resources */,
+				2B95421325B07FD60098805B /* RekeyedAccount.json in Resources */,
 				2B9540D125A7AE3D0098805B /* Currency.json in Resources */,
+				2B9541C125AF16B20098805B /* AssetTransaction.json in Resources */,
 				2B9540E625A855FD0098805B /* TurkishLiraAsset.json in Resources */,
 				2B9540B425A7A20E0098805B /* User.json in Resources */,
 				2B9540BE25A7A2390098805B /* AccountA.json in Resources */,
 				2B9540C525A7A24C0098805B /* AccountB.json in Resources */,
+				2B95422F25B19E3D0098805B /* PreviousUser.json in Resources */,
+				2B9541FD25B07E160098805B /* LedgerDetail.json in Resources */,
 				2B9540DC25A855ED0098805B /* HipoCoinAsset.json in Resources */,
+				2B95422125B07FEA0098805B /* LedgerAccountInformation.json in Resources */,
+				2B95422825B0B3290098805B /* AssetAdditionTransaction.json in Resources */,
+				2B9541DF25AF21730098805B /* AccountInformationA.json in Resources */,
 				2B95411725A89C9D0098805B /* NotificationMessage.json in Resources */,
+				2B9541E625AF217F0098805B /* AccountInformationB.json in Resources */,
+				2B9541CC25AF16BD0098805B /* AlgoTransaction.json in Resources */,
+				2B95420825B07FCC0098805B /* RekeyedAccountInformation.json in Resources */,
+				2B9541D425AF1B8F0098805B /* Payment.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8578,10 +8785,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2B95418625AE62F80098805B /* AccountInformationTests.swift in Sources */,
+				2B95419525AE632B0098805B /* QRTextTests.swift in Sources */,
 				2B95407A25A75FB20098805B /* DBDecodeTests.swift in Sources */,
 				2B95409225A783340098805B /* AssetDetailCardTests.swift in Sources */,
+				2B9541F525AFC2E80098805B /* algorand.xcdatamodeld in Sources */,
 				2B95409925A7835A0098805B /* NotificationsTests.swift in Sources */,
 				2B9540ED25A85CBA0098805B /* Bundle+JSON.swift in Sources */,
+				2B95417425AE62BE0098805B /* TransactionParamsTests.swift in Sources */,
+				2B95418025AE62E60098805B /* AccountTests.swift in Sources */,
+				2B95418C25AE630A0098805B /* AssetDetailTests.swift in Sources */,
+				2B95416A25AE62AD0098805B /* TransactionTests.swift in Sources */,
+				2B95417A25AE62D40098805B /* PaymentTests.swift in Sources */,
+				2B9541A525AE634E0098805B /* UserTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
