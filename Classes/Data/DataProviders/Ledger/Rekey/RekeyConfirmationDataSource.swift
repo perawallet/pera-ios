@@ -80,9 +80,7 @@ extension RekeyConfirmationDataSource: UICollectionViewDataSource {
                 withReuseIdentifier: AccountHeaderSupplementaryView.reusableIdentifier,
                 for: indexPath
             ) as? AccountHeaderSupplementaryView {
-                accountsViewModel.configure(headerView, with: account)
-                headerView.contextView.setQRButton(hidden: true)
-                headerView.contextView.setOptionsButton(hidden: true)
+                headerView.bind(AccountHeaderSupplementaryViewModel(account: account, isActionEnabled: false))
                 return headerView
             }
         } else {

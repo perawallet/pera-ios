@@ -29,17 +29,3 @@ class AccountsViewModel {
         cell.contextView.amountLabel.text = account.amount.toAlgos.toAlgosStringForLabel
     }
 }
-
-extension AccountsViewModel {
-    func configure(_ header: AccountHeaderSupplementaryView, with account: Account) {
-        header.contextView.setOptionsButton(hidden: false)
-        header.contextView.setQRButton(hidden: false)
-        header.contextView.setAccountImage(account.accountImage())
-        
-        guard let accountName = account.name else {
-            return
-        }
-        
-        header.contextView.setAccountName(accountName)
-    }
-}

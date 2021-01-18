@@ -165,7 +165,7 @@ extension AccountsDataSource {
             }
             
             let account = accounts[indexPath.section]
-            viewModel.configure(headerView, with: account)
+            headerView.bind(AccountHeaderSupplementaryViewModel(account: account, isActionEnabled: true))
             
             headerView.delegate = self
             headerView.tag = indexPath.section
