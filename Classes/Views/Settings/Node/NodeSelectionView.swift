@@ -63,7 +63,7 @@ extension NodeSelectionView {
 
 extension NodeSelectionView {
     func bind(_ viewModel: NodeSettingsViewModel) {
-        backgroundImageView.image = viewModel.image
+        backgroundImageView.image = viewModel.backgroundImage
         imageView.image = viewModel.image
         nameLabel.text = viewModel.nodeName
     }
