@@ -14,6 +14,14 @@ class BaseAssetCell: BaseCollectionViewCell<AssetView> {
     override func setListeners() {
         contextView.delegate = self
     }
+
+    func bind(_ viewModel: AssetAdditionViewModel) {
+        contextView.bind(viewModel)
+    }
+
+    func bind(_ viewModel: AssetRemovalViewModel) {
+        contextView.bind(viewModel)
+    }
 }
 
 extension BaseAssetCell: AssetViewDelegate {

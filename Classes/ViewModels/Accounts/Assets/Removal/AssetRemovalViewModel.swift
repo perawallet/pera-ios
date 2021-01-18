@@ -8,23 +8,32 @@
 
 import UIKit
 
-class AssetRemovalViewModel {    
-    func configure(_ cell: BaseAssetCell, with asset: AssetDetail) {
-        cell.contextView.assetNameView.setAssetName(for: asset)
-        cell.contextView.setActionText("title-remove".localized)
-        cell.contextView.setActionFont(UIFont.font(withWeight: .semiBold(size: 14.0)))
-        cell.contextView.setActionColor(Colors.General.error)
+class AssetRemovalViewModel {
+    private(set) var assetDetail: AssetDetail?
+    private(set) var actionFont: UIFont?
+    private(set) var actionColor: UIColor?
+    private(set) var actionText: String?
+
+    init(assetDetail: AssetDetail) {
+        setAssetDetail(from: assetDetail)
+        setActionFont()
+        setActionColor()
+        setActionText()
     }
-    
-    func configure(_ header: AccountHeaderSupplementaryView, with account: Account) {
-        header.contextView.setOptionsButton(hidden: true)
-        header.contextView.setQRButton(hidden: true)
-        header.contextView.setAccountImage(account.accountImage())
-        
-        guard let accountName = account.name else {
-            return
-        }
-        
-        header.contextView.setAccountName(accountName)
+
+    private func setAssetDetail(from assetDetail: AssetDetail) {
+        self.assetDetail = assetDetail
+    }
+
+    private func setActionFont() {
+        actionFont = UIFont.font(withWeight: .semiBold(size: 14.0))
+    }
+
+    private func setActionColor() {
+        actionColor = Colors.General.error
+    }
+
+    private func setActionText() {
+        actionText = "title-remove".localized
     }
 }

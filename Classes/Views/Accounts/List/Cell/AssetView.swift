@@ -49,12 +49,22 @@ class AssetView: BaseView {
 }
 
 extension AssetView {
-    func setActionColor(_ color: UIColor?) {
-        actionButton.setTitleColor(color, for: .normal)
+    func bind(_ viewModel: AssetAdditionViewModel) {
+        actionButton.backgroundColor = viewModel.backgroundColor
+        if let assetDetail = viewModel.assetDetail {
+            assetNameView.setAssetName(for: assetDetail)
+        }
+        actionButton.setTitleColor(viewModel.actionColor, for: .normal)
+        actionButton.setTitle(viewModel.id, for: .normal)
     }
-    
-    func setActionFont(_ font: UIFont?) {
-        actionButton.titleLabel?.font = font
+
+    func bind(_ viewModel: AssetRemovalViewModel) {
+        if let assetDetail = viewModel.assetDetail {
+            assetNameView.setAssetName(for: assetDetail)
+        }
+        actionButton.titleLabel?.font = viewModel.actionFont
+        actionButton.setTitleColor(viewModel.actionColor, for: .normal)
+        actionButton.setTitle(viewModel.actionText, for: .normal)
     }
     
     func setActionText(_ text: String?) {
