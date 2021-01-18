@@ -20,6 +20,10 @@ class ContactCell: BaseCollectionViewCell<ContactContextView> {
         super.prepareForReuse()
         contextView.userImageView.image = img("icon-user-placeholder")
     }
+
+    func bind(_ viewModel: ContactsViewModel) {
+        contextView.bind(viewModel)
+    }
 }
 
 extension ContactCell: ContactContextViewDelegate {
