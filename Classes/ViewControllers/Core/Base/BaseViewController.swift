@@ -25,19 +25,7 @@ class BaseViewController: UIViewController, TabBarConfigurable, AnalyticsScreen 
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        if api?.isTestNet ?? false {
-            if #available(iOS 13.0, *) {
-                return .darkContent
-            } else {
-                return .default
-            }
-        }
-
-        if isDarkModeDisplay {
-            return .lightContent
-        } else {
-            return .default
-        }
+        return statusBarStyleForNetwork(isTestNet: api?.isTestNet ?? false )
     }
     
     override var prefersStatusBarHidden: Bool {
