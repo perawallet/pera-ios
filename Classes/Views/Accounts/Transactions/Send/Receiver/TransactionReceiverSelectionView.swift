@@ -23,10 +23,7 @@ class TransactionReceiverSelectionView: BaseView {
         return stackView
     }()
     
-    private lazy var accountsButton = TransactionReceiverButton(
-        title: "accounts-title".localized,
-        image: img("icon-receiver-accounts")
-    )
+    private lazy var accountsButton = TransactionReceiverButton(title: "accounts-title".localized, image: img("icon-receiver-accounts"))
     
     private lazy var contactButton = TransactionReceiverButton(title: "send-algos-contacts".localized, image: img("icon-receiver-contact"))
     

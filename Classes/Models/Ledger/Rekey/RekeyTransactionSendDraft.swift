@@ -15,6 +15,7 @@ struct RekeyTransactionSendDraft: TransactionSendDraft {
     var fee: Int64?
     var isMaxTransaction = false
     var identifier: String?
+    var note: String?
     
     init(account: Account, rekeyedTo: String) {
         self.from = account

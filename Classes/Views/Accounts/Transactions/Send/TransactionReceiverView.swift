@@ -90,7 +90,7 @@ class TransactionReceiverView: BaseView {
             .withText("send-algos-to".localized)
     }()
     
-    private(set) lazy var receiverContainerView = UIView()
+    private lazy var receiverContainerView = UIView()
     
     private lazy var transactionReceiverSelectionView = TransactionReceiverSelectionView()
     
@@ -106,7 +106,7 @@ class TransactionReceiverView: BaseView {
         return addressInputView
     }()
     
-    private(set) lazy var receiverContactView: ContactContextView = {
+    private lazy var receiverContactView: ContactContextView = {
         let view = ContactContextView()
         view.backgroundColor = Colors.Background.secondary
         view.layer.cornerRadius = 12.0
