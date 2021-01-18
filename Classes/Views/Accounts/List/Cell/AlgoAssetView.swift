@@ -25,7 +25,7 @@ class AlgoAssetView: BaseView {
             .withText("asset-algos-title".localized)
     }()
     
-    private(set) lazy var amountLabel: UILabel = {
+    private lazy var amountLabel: UILabel = {
         UILabel()
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
             .withTextColor(Colors.Text.primary)
@@ -110,6 +110,10 @@ extension AlgoAssetView {
 }
 
 extension AlgoAssetView {
+    func bind(_ viewModel: AlgoAssetViewModel) {
+        amountLabel.text = viewModel.amount
+    }
+
     func setEnabled(_ isEnabled: Bool) {
         backgroundColor = isEnabled ? Colors.Background.secondary : Colors.Background.disabled
     }

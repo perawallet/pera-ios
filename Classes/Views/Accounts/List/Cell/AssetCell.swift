@@ -15,6 +15,10 @@ class BaseAssetCell: BaseCollectionViewCell<AssetView> {
         contextView.delegate = self
     }
 
+    func bind(_ viewModel: AssetViewModel) {
+        contextView.bind(viewModel)
+    }
+
     func bind(_ viewModel: AssetAdditionViewModel) {
         contextView.bind(viewModel)
     }

@@ -10,8 +10,6 @@ import UIKit
 
 class AccountsDataSource: NSObject, UICollectionViewDataSource {
     
-    private let viewModel = AccountsViewModel()
-    
     weak var delegate: AccountsDataSourceDelegate?
     
     private let layout = Layout<LayoutConstants>()
@@ -110,7 +108,7 @@ extension AccountsDataSource {
         
         if indexPath.section < accounts.count {
             let account = accounts[indexPath.section]
-            viewModel.configure(cell, with: account)
+            cell.bind(AlgoAssetViewModel(account: account))
         }
         
         return cell
@@ -127,7 +125,7 @@ extension AccountsDataSource {
                     cellForItemAt: indexPath,
                     for: assetDetail
                 )
-                viewModel.configure(cell, with: assetDetail, isRemoving: assetDetail.isRemoved)
+                cell.bind(PendingAssetViewModel(assetDetail: assetDetail, isRemoving: assetDetail.isRemoved))
                 return cell
             } else {
                 guard let assets = accounts[indexPath.section].assets,
@@ -140,7 +138,7 @@ extension AccountsDataSource {
                     cellForItemAt: indexPath,
                     for: assetDetail
                 )
-                viewModel.configure(cell, with: assetDetail, and: asset)
+                cell.bind(AssetViewModel(assetDetail: assetDetail, asset: asset))
                 return cell
             }
         }

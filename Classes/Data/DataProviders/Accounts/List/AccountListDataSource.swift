@@ -9,9 +9,7 @@
 import UIKit
 
 class AccountListDataSource: NSObject, UICollectionViewDataSource {
-    
-    private let viewModel = AccountListViewModel()
-    
+
     private(set) var accounts = [Account]()
     private let mode: AccountListViewController.Mode
     
@@ -61,7 +59,7 @@ class AccountListDataSource: NSObject, UICollectionViewDataSource {
         
         if indexPath.item < accounts.count {
             let account = accounts[indexPath.item]
-            viewModel.configure(cell, with: account, for: mode)
+            cell.bind(AccountListViewModel(account: account, mode: mode))
         }
         
         return cell

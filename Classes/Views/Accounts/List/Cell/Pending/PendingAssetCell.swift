@@ -8,7 +8,12 @@
 
 import UIKit
 
-class BasePendingAssetCell: BaseCollectionViewCell<PendingAssetView> { }
+class BasePendingAssetCell: BaseCollectionViewCell<PendingAssetView> {
+
+    func bind(_ viewModel: PendingAssetViewModel) {
+        contextView.bind(viewModel)
+    }
+}
 
 class PendingAssetCell: BasePendingAssetCell { }
 

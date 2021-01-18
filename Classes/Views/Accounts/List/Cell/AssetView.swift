@@ -49,6 +49,13 @@ class AssetView: BaseView {
 }
 
 extension AssetView {
+    func bind(_ viewModel: AssetViewModel) {
+        if let assetDetail = viewModel.assetDetail {
+            assetNameView.setAssetName(for: assetDetail)
+        }
+        actionButton.setTitle(viewModel.amount, for: .normal)
+    }
+
     func bind(_ viewModel: AssetAdditionViewModel) {
         actionButton.backgroundColor = viewModel.backgroundColor
         if let assetDetail = viewModel.assetDetail {
