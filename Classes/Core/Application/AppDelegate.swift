@@ -41,31 +41,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         setupFirebase()
         SwiftDate.setupDateRegion()
         setupWindow()
-        
         return true
     }
-    
-    private func setupWindow() {
-        window = UIWindow(frame: UIScreen.main.bounds)
-        
-        rootViewController = RootViewController(appConfiguration: appConfiguration)
-        
-        guard let rootViewController = rootViewController else {
-            return
-        }
-        
-        window?.backgroundColor = .clear
-        window?.rootViewController = NavigationController(rootViewController: rootViewController)
-        window?.makeKeyAndVisible()
-    }
-    
-    private func setupFirebase() {
-        firebaseAnalytics.initialize()
-    }
-    
+
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        let pushToken = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
-        pushNotificationController.authorizeDevice(with: pushToken)
+        authorizeNotifications(for: deviceToken)
     }
     
     func application(
@@ -73,128 +53,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         didReceiveRemoteNotification userInfo: [AnyHashable: Any],
         fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void
     ) {
-        guard let userInfo = userInfo as? [String: Any],
-            let userInfoDictionary = userInfo["aps"] as? [String: Any],
-            let remoteNotificationData = try? JSONSerialization.data(withJSONObject: userInfoDictionary, options: .prettyPrinted),
-            let algorandNotification = try? JSONDecoder().decode(AlgorandNotification.self, from: remoteNotificationData) else {
-                return
-        }
-        
-        guard let accountId = parseAccountId(from: algorandNotification) else {
-            if let message = algorandNotification.alert {
-                NotificationBanner.showInformation(message)
-            }
-            return
-        }
-        
-        handleNotificationActions(for: accountId, with: algorandNotification.details)
-    }
-    
-    private func parseAccountId(from algorandNotification: AlgorandNotification) -> String? {
-        guard let notificationDetails = algorandNotification.details,
-            let notificationType = notificationDetails.notificationType else {
-                return nil
-        }
-        
-        switch notificationType {
-        case .transactionReceived,
-             .assetTransactionReceived:
-            return notificationDetails.receiverAddress
-        case .transactionSent,
-             .assetTransactionSent:
-            return notificationDetails.senderAddress
-        case .assetSupportRequest:
-            return notificationDetails.receiverAddress
-        case .assetSupportSuccess:
-            return notificationDetails.receiverAddress
-        default:
-            return nil
-        }
-    }
-    
-    private func handleNotificationActions(for accountId: String, with notificationDetail: NotificationDetail?) {
-        if UIApplication.shared.applicationState == .active,
-            let notificationDetail = notificationDetail {
-            
-            NotificationCenter.default.post(name: .NotificationDidReceived, object: self, userInfo: nil)
-            
-            if let notificationtype = notificationDetail.notificationType {
-                if notificationtype == .assetSupportRequest {
-                    rootViewController?.openAsset(from: notificationDetail, for: accountId)
-                    return
-                }
-            }
-            
-            pushNotificationController.show(with: notificationDetail) {
-                self.rootViewController?.openAsset(from: notificationDetail, for: accountId)
-            }
-        } else {
-            guard let notificationDetail = notificationDetail else {
-                return
-            }
-            rootViewController?.openAsset(from: notificationDetail, for: accountId)
-        }
+        displayInAppPushNotification(from: userInfo)
     }
     
     func applicationWillEnterForeground(_ application: UIApplication) {
-        timer?.invalidate()
-        
-        guard let rootViewController = rootViewController,
-            appConfiguration.session.isValid,
-            !appConfiguration.session.accounts.isEmpty else {
-            return
-        }
-        
-        updateUserInterfaceStyleIfNeeded()
-        
-        NotificationCenter.default.post(name: .ApplicationWillEnterForeground, object: self, userInfo: nil)
-        
-        if shouldInvalidateUserSession {
-            shouldInvalidateUserSession = false
-            appConfiguration.session.isValid = false
-            
-            guard let topViewController = rootViewController.tabBarViewController.topMostController else {
-                return
-            }
-            
-            rootViewController.route(
-                to: .choosePassword(mode: .login, flow: nil, route: nil),
-                from: topViewController,
-                by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
-            )
-            return
-        } else {
-            validateAccountManagerFetchPolling()
-        }
+        updateForegroundActions()
     }
     
     func applicationDidEnterBackground(_ application: UIApplication) {
-        timer = PollingOperation(interval: Constants.sessionInvalidateTime) { [weak self] in
-            self?.shouldInvalidateUserSession = true
-        }
-        
-        timer?.start()
-        
-        self.invalidateAccountManagerFetchPolling()
+        decideToInvalidateSessionInBackground()
     }
-    
+
     func applicationWillTerminate(_ application: UIApplication) {
-        self.saveContext()
+        saveContext()
     }
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
-        let parser = DeepLinkParser(url: url)
-        
-        guard let screen = parser.expectedScreen,
-            let rootViewController = rootViewController else {
-                return false
-        }
-        
-        return rootViewController.handleDeepLinkRouting(for: screen)
+        return shouldHandleDeepLinkRouting(from: url)
     }
-    
-    // MARK: Core Data stack
-    
+
     lazy var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "algorand")
         container.loadPersistentStores { storeDescription, error in
@@ -215,10 +92,151 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         return container
     }()
-    
-    // MARK: Core Data Saving support
-    
-    func saveContext () {
+}
+
+extension AppDelegate {
+    private func setupFirebase() {
+        firebaseAnalytics.initialize()
+    }
+
+    private func setupWindow() {
+        let window = UIWindow(frame: UIScreen.main.bounds)
+
+        rootViewController = RootViewController(appConfiguration: appConfiguration)
+
+        guard let rootViewController = rootViewController else {
+            return
+        }
+
+        window.backgroundColor = .clear
+        window.rootViewController = rootViewController
+        window.makeKeyAndVisible()
+        self.window = window
+    }
+}
+
+extension AppDelegate {
+    private func updateForegroundActions() {
+        timer?.invalidate()
+        updateUserInterfaceStyleIfNeeded()
+        NotificationCenter.default.post(name: .ApplicationWillEnterForeground, object: self, userInfo: nil)
+        validateUserSessionIfNeeded()
+    }
+
+    private func validateUserSessionIfNeeded() {
+        guard appConfiguration.session.isValid,
+            !appConfiguration.session.accounts.isEmpty else {
+            return
+        }
+
+        if shouldInvalidateUserSession {
+            shouldInvalidateUserSession = false
+            appConfiguration.session.isValid = false
+            openPasswordEntryScreen()
+            return
+        } else {
+            validateAccountManagerFetchPolling()
+        }
+    }
+
+    private func openPasswordEntryScreen() {
+        guard let rootViewController = rootViewController,
+              let topViewController = rootViewController.tabBarViewController.topMostController else {
+            return
+        }
+
+        rootViewController.route(
+            to: .choosePassword(mode: .login, flow: nil, route: nil),
+            from: topViewController,
+            by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
+        )
+    }
+
+    private func decideToInvalidateSessionInBackground() {
+        timer = PollingOperation(interval: Constants.sessionInvalidateTime) { [weak self] in
+            self?.shouldInvalidateUserSession = true
+        }
+
+        timer?.start()
+
+        invalidateAccountManagerFetchPolling()
+    }
+}
+
+extension AppDelegate {
+    private func authorizeNotifications(for deviceToken: Data) {
+        let pushToken = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
+        pushNotificationController.authorizeDevice(with: pushToken)
+    }
+
+    private func displayInAppPushNotification(from userInfo: [AnyHashable: Any]) {
+        guard let algorandNotification = parseAlgorandNotification(from: userInfo),
+              let accountId = getNotificationAccountId(from: algorandNotification) else {
+            return
+        }
+
+        handleNotificationActions(for: accountId, with: algorandNotification.details)
+    }
+
+    private func parseAlgorandNotification(from userInfo: [AnyHashable: Any]) -> AlgorandNotification? {
+        guard let userInfo = userInfo as? [String: Any],
+            let userInfoDictionary = userInfo["aps"] as? [String: Any],
+            let remoteNotificationData = try? JSONSerialization.data(withJSONObject: userInfoDictionary, options: .prettyPrinted),
+            let algorandNotification = try? JSONDecoder().decode(AlgorandNotification.self, from: remoteNotificationData) else {
+                return nil
+        }
+
+        return algorandNotification
+    }
+
+    private func getNotificationAccountId(from algorandNotification: AlgorandNotification) -> String? {
+        guard let accountId = algorandNotification.getAccountId() else {
+            if let message = algorandNotification.alert {
+                NotificationBanner.showInformation(message)
+            }
+            return nil
+        }
+
+        return accountId
+    }
+
+    private func handleNotificationActions(for accountId: String, with notificationDetail: NotificationDetail?) {
+        if UIApplication.shared.applicationState == .active,
+           let notificationDetail = notificationDetail {
+
+            NotificationCenter.default.post(name: .NotificationDidReceived, object: self, userInfo: nil)
+
+            if let notificationtype = notificationDetail.notificationType {
+                if notificationtype == .assetSupportRequest {
+                    rootViewController?.openAsset(from: notificationDetail, for: accountId)
+                    return
+                }
+            }
+
+            pushNotificationController.show(with: notificationDetail) {
+                self.rootViewController?.openAsset(from: notificationDetail, for: accountId)
+            }
+        } else {
+            if let notificationDetail = notificationDetail {
+                rootViewController?.openAsset(from: notificationDetail, for: accountId)
+            }
+        }
+    }
+
+    private func shouldHandleDeepLinkRouting(from url: URL) -> Bool {
+        let parser = DeepLinkParser(url: url)
+
+        guard let screen = parser.expectedScreen,
+            let rootViewController = rootViewController else {
+                return false
+        }
+
+        return rootViewController.handleDeepLinkRouting(for: screen)
+    }
+}
+
+extension AppDelegate {
+    func saveContext() {
         let context = persistentContainer.viewContext
         if context.hasChanges {
             do {
@@ -229,27 +247,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
-    
+}
+
+extension AppDelegate {
+    func validateAccountManagerFetchPolling() {
+        shouldInvalidateAccountFetch = false
+        fetchAccounts()
+    }
+
+    func invalidateAccountManagerFetchPolling() {
+        shouldInvalidateAccountFetch = true
+    }
+
     private func fetchAccounts(round: Int64? = nil) {
         guard !shouldInvalidateAccountFetch else {
             return
         }
-        
+
         if session.authenticatedUser != nil {
-            self.accountManager.waitForNextRoundAndFetchAccounts(round: round) { nextRound in
+            accountManager.waitForNextRoundAndFetchAccounts(round: round) { nextRound in
                 self.fetchAccounts(round: nextRound)
             }
         }
-    }
-
-    func validateAccountManagerFetchPolling() {
-        shouldInvalidateAccountFetch = false
-        
-        fetchAccounts()
-    }
-    
-    func invalidateAccountManagerFetchPolling() {
-        shouldInvalidateAccountFetch = true
     }
 }
 

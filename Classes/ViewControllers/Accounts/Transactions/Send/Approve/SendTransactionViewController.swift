@@ -25,8 +25,6 @@ class SendTransactionViewController: BaseViewController {
     private(set) var transactionController: TransactionController
     var fee: Int64?
     
-    private let viewModel = SendTransactionViewModel()
-    
     var transactionData: Data?
     
     init(
@@ -39,11 +37,6 @@ class SendTransactionViewController: BaseViewController {
         self.transactionController = transactionController
         self.isSenderEditable = isSenderEditable
         super.init(configuration: configuration)
-    }
-    
-    override func configureAppearance() {
-        super.configureAppearance()
-        viewModel.configure(sendTransactionView, with: assetReceiverState, and: fee)
     }
     
     override func linkInteractors() {

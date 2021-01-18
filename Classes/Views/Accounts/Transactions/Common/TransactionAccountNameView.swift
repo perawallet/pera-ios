@@ -67,6 +67,12 @@ extension TransactionAccountNameView {
 }
 
 extension TransactionAccountNameView {
+    func bind(_ viewModel: AccountNameViewModel?) {
+        if let viewModel = viewModel {
+            accountNameView.bind(viewModel)
+        }
+    }
+
     func setAccountImage(_ image: UIImage?) {
         accountNameView.setAccountImage(image)
     }
