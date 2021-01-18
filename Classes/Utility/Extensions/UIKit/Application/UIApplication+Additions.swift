@@ -74,11 +74,7 @@ extension UIApplication {
     }
     
     func rootViewController() -> RootViewController? {
-        guard let navigationController = keyWindow?.rootViewController as? NavigationController else {
-            return nil
-        }
-        
-        return navigationController.viewControllers.first as? RootViewController
+        return keyWindow?.rootViewController as? RootViewController
     }
     
     var safeAreaBottom: CGFloat {

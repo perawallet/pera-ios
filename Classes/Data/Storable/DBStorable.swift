@@ -60,7 +60,6 @@ extension DBStorable where Self: NSManagedObject {
             try context.save()
             handler?(.result(object: object))
         } catch {
-            print(error)
             handler?(.error(error: .writeFailed))
         }
     }
@@ -138,7 +137,6 @@ extension DBStorable where Self: NSManagedObject {
         do {
             try context.execute(batchDeleteRequest)
         } catch {
-            print(error)
         }
     }
     
