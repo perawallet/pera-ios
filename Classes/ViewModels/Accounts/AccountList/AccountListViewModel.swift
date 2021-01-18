@@ -9,13 +9,33 @@
 import UIKit
 
 class AccountListViewModel {
-    func configure(_ cell: AccountViewCell, with account: Account, for mode: AccountListViewController.Mode) {
-        cell.contextView.nameLabel.text = account.name
-        cell.contextView.setAccountTypeImage(account.accountImage(), hidden: false)
-        
+    private(set) var name: String?
+    private(set) var accountImage: UIImage?
+    private(set) var detail: String?
+    private(set) var attributedDetail: NSAttributedString?
+    private(set) var detailColor: UIColor?
+    private(set) var isDisplayingImage: Bool = false
+
+    init(account: Account, mode: AccountListViewController.Mode) {
+        setName(from: account)
+        setAccountImage(from: account)
+        setDetail(from: account, for: mode)
+        setDetailColor(from: mode)
+        setIsDisplayingImage(from: mode)
+    }
+
+    private func setName(from account: Account) {
+        name = account.name
+    }
+
+    private func setAccountImage(from account: Account) {
+        accountImage = account.accountImage()
+    }
+
+    private func setDetail(from account: Account, for mode: AccountListViewController.Mode) {
         switch mode {
         case .assetCount:
-            cell.contextView.detailLabel.text = "\(account.assetDetails.count) " + "accounts-title-assets".localized
+            detail = "\(account.assetDetails.count) " + "accounts-title-assets".localized
         case let .transactionSender(assetDetail),
              let .transactionReceiver(assetDetail),
              let .contact(assetDetail):
@@ -23,21 +43,45 @@ class AccountListViewModel {
                 guard let assetAmount = account.amount(for: assetDetail)else {
                     return
                 }
-                
+
                 let amountText = "\(assetAmount.toFractionStringForLabel(fraction: assetDetail.fractionDecimals) ?? "")".attributed([
                     .font(UIFont.font(withWeight: .medium(size: 14.0))),
                     .textColor(Colors.Text.primary)
                 ])
-                
+
                 let codeText = " (\(assetDetail.getAssetCode()))".attributed([
                     .font(UIFont.font(withWeight: .medium(size: 14.0))),
                     .textColor(Colors.Text.tertiary)
                 ])
-                cell.contextView.detailLabel.attributedText = amountText + codeText
+                attributedDetail = amountText + codeText
             } else {
-                cell.contextView.detailLabel.textColor = Colors.Text.primary
-                cell.contextView.imageView.isHidden = false
-                cell.contextView.detailLabel.text = account.amount.toAlgos.toAlgosStringForLabel
+                detail = account.amount.toAlgos.toAlgosStringForLabel
+            }
+        default:
+            break
+        }
+    }
+
+    private func setDetailColor(from mode: AccountListViewController.Mode) {
+        switch mode {
+        case let .transactionSender(assetDetail),
+             let .transactionReceiver(assetDetail),
+             let .contact(assetDetail):
+            if assetDetail == nil {
+                detailColor = Colors.Text.primary
+            }
+        default:
+            break
+        }
+    }
+
+    private func setIsDisplayingImage(from mode: AccountListViewController.Mode) {
+        switch mode {
+        case let .transactionSender(assetDetail),
+             let .transactionReceiver(assetDetail),
+             let .contact(assetDetail):
+            if assetDetail == nil {
+                isDisplayingImage = true
             }
         default:
             break
