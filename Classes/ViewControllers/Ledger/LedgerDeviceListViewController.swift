@@ -22,8 +22,6 @@ class LedgerDeviceListViewController: BaseViewController {
         return LedgerAccountFetchOperation(api: api)
     }()
     
-    private let viewModel = LedgerDeviceListViewModel()
-    
     private lazy var ledgerApprovalPresenter = CardModalPresenter(
         config: ModalConfiguration(
             animationMode: .normal(duration: 0.25),
@@ -93,10 +91,8 @@ extension LedgerDeviceListViewController: UICollectionViewDataSource {
                 fatalError("Index path is out of bounds")
         }
         
-        let devices = ledgerDevices[indexPath.item]
-        if let deviceName = devices.name {
-            viewModel.configure(cell, with: deviceName)
-        }
+        let device = ledgerDevices[indexPath.item]
+        cell.bind(LedgerDeviceListViewModel(peripheral: device))
         cell.delegate = self
         return cell
     }

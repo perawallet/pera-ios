@@ -16,6 +16,10 @@ class LedgerDeviceCell: BaseCollectionViewCell<LedgerDeviceView> {
         super.linkInteractors()
         contextView.delegate = self
     }
+
+    func bind(_ viewModel: LedgerDeviceListViewModel) {
+        contextView.bind(viewModel)
+    }
 }
 
 extension LedgerDeviceCell: LedgerDeviceViewDelegate {
