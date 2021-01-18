@@ -27,7 +27,7 @@ class AssetDisplayView: BaseView {
             .withTextColor(Colors.Text.primary)
     }()
     
-    private(set) lazy var verifiedImageView: UIImageView = {
+    private lazy var verifiedImageView: UIImageView = {
         let imageView = UIImageView(image: img("icon-verified"))
         imageView.isHidden = true
         return imageView
@@ -37,7 +37,7 @@ class AssetDisplayView: BaseView {
         UIButton(type: .custom).withImage(img("icon-copy", isTemplate: true)).withTintColor(Colors.Main.gray300)
     }()
     
-    private(set) lazy var assetCodeLabel: UILabel = {
+    private lazy var assetCodeLabel: UILabel = {
         UILabel()
             .withLine(.single)
             .withAlignment(.center)
@@ -45,7 +45,7 @@ class AssetDisplayView: BaseView {
             .withTextColor(Colors.General.selected)
     }()
     
-    private(set) lazy var assetNameLabel: UILabel = {
+    private lazy var assetNameLabel: UILabel = {
         UILabel()
             .withLine(.single)
             .withAlignment(.center)
@@ -157,6 +157,22 @@ extension AssetDisplayView {
             make.top.equalTo(assetCodeLabel.snp.bottom).offset(layout.current.nameTopInset)
             make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
             make.bottom.equalToSuperview().inset(layout.current.verticalInset)
+        }
+    }
+}
+
+extension AssetDisplayView {
+    func bind(_ viewModel: AssetDisplayViewModel) {
+        verifiedImageView.isHidden = !viewModel.isVerified
+        assetNameLabel.text = viewModel.name
+        assetCodeLabel.text = viewModel.code
+
+        if let codeFont = viewModel.codeFont {
+            assetCodeLabel.font = codeFont
+        }
+
+        if let codeColor = viewModel.codeColor {
+            assetCodeLabel.textColor = codeColor
         }
     }
 }
