@@ -37,8 +37,6 @@ class ContactsViewController: BaseViewController {
     private var contacts = [Contact]()
     private var searchResults = [Contact]()
     
-    private let viewModel = ContactsViewModel()
-    
     weak var delegate: ContactsViewControllerDelegate?
     
     override func customizeTabBarAppearence() {
@@ -181,8 +179,7 @@ extension ContactsViewController: UICollectionViewDataSource {
         
         if indexPath.item < searchResults.count {
             let contact = searchResults[indexPath.item]
-            
-            viewModel.configure(cell, with: contact)
+            cell.bind(ContactsViewModel(contact: contact, imageSize: CGSize(width: 50.0, height: 50.0)))
         }
     }
 }

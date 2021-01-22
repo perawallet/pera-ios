@@ -28,8 +28,6 @@ class TransactionsViewController: BaseViewController {
         }
     }
     
-    private let viewModel = TransactionsViewModel()
-    
     weak var delegate: TransactionsViewControllerDelegate?
     
     private let transactionsTooltipStorage = TransactionsTooltipStorage()
@@ -376,7 +374,7 @@ extension TransactionsViewController: TransactionFilterViewControllerDelegate {
         
         self.filterOption = filterOption
         if let headerView = transactionListView.headerView() {
-            viewModel.configure(headerView, for: filterOption)
+            headerView.bind(TransactionHistoryHeaderViewModel(filterOption: filterOption))
         }
         updateList()
     }

@@ -49,7 +49,7 @@
   "amount": 3313579804,
   "type": "standard",
   "receivesNotification": true,
-  "pending-rewards": 0,
+  "pending-rewards": 10000,
   "address": "T4EWBDWPEXNLEILKLD74RBLO4HFEGY522ELHW6JIGCNRX5TISUHCUU6QRM",
   "assetDetails": [
     {

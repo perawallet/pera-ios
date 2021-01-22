@@ -15,6 +15,10 @@ class TransactionHistoryHeaderSupplementaryView: BaseSupplementaryView<Transacti
     override func linkInteractors() {
         contextView.delegate = self
     }
+
+    func bind(_ viewModel: TransactionHistoryHeaderViewModel) {
+        contextView.bind(viewModel)
+    }
 }
 
 extension TransactionHistoryHeaderSupplementaryView: TransactionHistoryHeaderViewDelegate {

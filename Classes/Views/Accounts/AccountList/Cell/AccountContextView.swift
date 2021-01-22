@@ -18,21 +18,21 @@ class AccountContextView: BaseView {
         return imageView
     }()
     
-    private(set) lazy var nameLabel: UILabel = {
+    private lazy var nameLabel: UILabel = {
         UILabel()
             .withLine(.single)
             .withAlignment(.left)
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
             .withTextColor(Colors.Text.primary)
     }()
-    
-    private(set) lazy var imageView: UIImageView = {
+
+    private lazy var imageView: UIImageView = {
         let imageView = UIImageView(image: img("icon-algo-black"))
         imageView.isHidden = true
         return imageView
     }()
     
-    private(set) lazy var detailLabel: UILabel = {
+    private lazy var detailLabel: UILabel = {
         UILabel()
             .withLine(.single)
             .withAlignment(.right)
@@ -106,13 +106,27 @@ extension AccountContextView {
 }
 
 extension AccountContextView {
-    func setAccountTypeImage(_ image: UIImage?, hidden isHidden: Bool) {
-        if isHidden {
-            accountTypeImageView.removeFromSuperview()
-        } else {
+    func bind(_ viewModel: AccountListViewModel) {
+        nameLabel.text = viewModel.name
+
+        if let accountImage = viewModel.accountImage {
             accountTypeImageView.isHidden = false
-            accountTypeImageView.image = image
+            accountTypeImageView.image = accountImage
+        } else {
+            accountTypeImageView.removeFromSuperview()
         }
+
+        if let detailText = viewModel.detail {
+            detailLabel.text = detailText
+        } else if let detailAttributedText = viewModel.attributedDetail {
+            detailLabel.attributedText = detailAttributedText
+        }
+
+        if let detailColor = viewModel.detailColor {
+            detailLabel.textColor = detailColor
+        }
+
+        imageView.isHidden = !viewModel.isDisplayingImage
     }
 }
 

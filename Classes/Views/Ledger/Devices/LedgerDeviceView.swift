@@ -95,8 +95,8 @@ extension LedgerDeviceView {
 }
 
 extension LedgerDeviceView {
-    func setDeviceName(_ deviceName: String) {
-        deviceNameLabel.text = deviceName
+    func bind(_ viewModel: LedgerDeviceListViewModel) {
+        deviceNameLabel.text = viewModel.ledgerName
     }
 }
 

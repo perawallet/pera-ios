@@ -175,14 +175,7 @@ extension TransactionReceiverView {
     }
     
     private func configureReceiverContactView(with contact: Contact) {
-        if let imageData = contact.image,
-            let image = UIImage(data: imageData) {
-            let resizedImage = image.convert(to: CGSize(width: 44.0, height: 44.0))
-            receiverContactView.userImageView.image = resizedImage
-        }
-        
-        receiverContactView.nameLabel.text = contact.name
-        receiverContactView.addressLabel.text = contact.address?.shortAddressDisplay()
+        receiverContactView.bind(ContactsViewModel(contact: contact, imageSize: CGSize(width: 44.0, height: 44.0)))
     }
 }
 

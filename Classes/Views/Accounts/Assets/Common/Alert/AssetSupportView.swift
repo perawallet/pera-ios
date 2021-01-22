@@ -14,7 +14,7 @@ class AssetSupportView: BaseView {
     
     weak var delegate: AssetSupportViewDelegate?
     
-    private(set) lazy var titleLabel: UILabel = {
+    private lazy var titleLabel: UILabel = {
         UILabel()
             .withLine(.single)
             .withAlignment(.center)
@@ -25,7 +25,7 @@ class AssetSupportView: BaseView {
     
     private(set) lazy var assetDisplayView = AssetDisplayView()
     
-    private(set) lazy var detailLabel: UILabel = {
+    private lazy var detailLabel: UILabel = {
         UILabel()
             .withLine(.contained)
             .withAlignment(.center)
@@ -95,6 +95,17 @@ extension AssetSupportView {
             make.top.equalTo(detailLabel.snp.bottom).offset(layout.current.displayViewTopInset)
             make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
             make.bottom.lessThanOrEqualToSuperview().inset(layout.current.bottomInset)
+        }
+    }
+}
+
+extension AssetSupportView {
+    func bind(_ viewModel: AssetSupportViewModel) {
+        titleLabel.text = viewModel.title
+        assetDisplayView.assetIndexLabel.text = viewModel.id
+        detailLabel.text = viewModel.detail
+        if let assetDisplayViewModel = viewModel.assetDisplayViewModel {
+            assetDisplayView.bind(assetDisplayViewModel)
         }
     }
 }

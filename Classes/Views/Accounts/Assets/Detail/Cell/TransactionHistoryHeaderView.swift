@@ -120,12 +120,9 @@ extension TransactionHistoryHeaderView {
 }
 
 extension TransactionHistoryHeaderView {
-    func setTitle(_ title: String) {
-        titleLabel.text = title
-    }
-    
-    func setFilterImage(_ image: UIImage?) {
-        filterButton.setImage(image, for: .normal)
+    func bind(_ viewModel: TransactionHistoryHeaderViewModel) {
+        titleLabel.text = viewModel.title
+        filterButton.setImage(viewModel.image, for: .normal)
     }
 }
 
