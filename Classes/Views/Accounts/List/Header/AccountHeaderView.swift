@@ -120,20 +120,11 @@ extension AccountHeaderView {
 }
 
 extension AccountHeaderView {
-    func setAccountName(_ name: String) {
-        titleLabel.text = name
-    }
-    
-    func setOptionsButton(hidden: Bool) {
-        optionsButton.isHidden = hidden
-    }
-    
-    func setQRButton(hidden: Bool) {
-        qrButton.isHidden = hidden
-    }
-    
-    func setAccountImage(_ image: UIImage?) {
-        imageView.image = image
+    func bind(_ viewModel: AccountHeaderSupplementaryViewModel) {
+        titleLabel.text = viewModel.accountName
+        imageView.image = viewModel.accountImage
+        optionsButton.isHidden = !viewModel.isActionEnabled
+        qrButton.isHidden = !viewModel.isActionEnabled
     }
 }
 

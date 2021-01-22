@@ -37,7 +37,7 @@ class RewardDetailView: BaseView {
             .withAlignment(.center)
     }()
     
-    private(set) lazy var totalRewardAmountContainerView = RewardAmountContainerView()
+    private lazy var totalRewardAmountContainerView = RewardAmountContainerView()
     
     private lazy var faqLabel: UILabel = {
         let label = UILabel()
@@ -134,6 +134,12 @@ extension RewardDetailView {
             make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
             make.bottom.lessThanOrEqualToSuperview().inset(layout.current.bottomInset + safeAreaBottom)
         }
+    }
+}
+
+extension RewardDetailView {
+    func bind(_ viewModel: RewardDetailViewModel) {
+        totalRewardAmountContainerView.bind(viewModel)
     }
 }
 

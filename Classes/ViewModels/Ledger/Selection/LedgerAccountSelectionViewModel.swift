@@ -54,6 +54,6 @@ class LedgerAccountSelectionViewModel {
     }
     
     private func setAlgoAmount(from account: Account, in view: AlgoAssetView) {
-        view.amountLabel.text = account.amount.toAlgos.toAlgosStringForLabel
+        view.bind(AlgoAssetViewModel(account: account))
     }
 }

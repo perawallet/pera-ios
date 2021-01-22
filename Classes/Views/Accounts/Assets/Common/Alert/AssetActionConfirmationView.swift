@@ -14,7 +14,7 @@ class AssetActionConfirmationView: BaseView {
     
     weak var delegate: AssetActionConfirmationViewDelegate?
     
-    private(set) lazy var titleLabel: UILabel = {
+    private lazy var titleLabel: UILabel = {
         UILabel()
             .withLine(.single)
             .withAlignment(.center)
@@ -24,7 +24,7 @@ class AssetActionConfirmationView: BaseView {
     
     private(set) lazy var assetDisplayView = AssetDisplayView()
     
-    private(set) lazy var detailLabel: UILabel = {
+    private lazy var detailLabel: UILabel = {
         UILabel()
             .withLine(.contained)
             .withAlignment(.center)
@@ -32,7 +32,7 @@ class AssetActionConfirmationView: BaseView {
             .withTextColor(Colors.Text.primary)
     }()
     
-    private(set) lazy var actionButton: UIButton = {
+    private lazy var actionButton: UIButton = {
         UIButton(type: .custom)
             .withBackgroundImage(img("bg-main-button"))
             .withAlignment(.center)
@@ -124,6 +124,18 @@ extension AssetActionConfirmationView {
             make.top.equalTo(actionButton.snp.bottom).offset(layout.current.buttonOffset)
             make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
             make.bottom.lessThanOrEqualToSuperview().inset(layout.current.bottomInset)
+        }
+    }
+}
+
+extension AssetActionConfirmationView {
+    func bind(_ viewModel: AssetActionConfirmationViewModel) {
+        titleLabel.text = viewModel.title
+        assetDisplayView.assetIndexLabel.text = viewModel.id
+        detailLabel.attributedText = viewModel.detail
+        actionButton.setTitle(viewModel.actionTitle, for: .normal)
+        if let assetDisplayViewModel = viewModel.assetDisplayViewModel {
+            assetDisplayView.bind(assetDisplayViewModel)
         }
     }
 }

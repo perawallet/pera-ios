@@ -12,14 +12,14 @@ class ActionBottomInformationView: BottomInformationView {
     
     private let layout = Layout<LayoutConstants>()
     
-    private(set) lazy var actionButton: UIButton = {
+    private lazy var actionButton: UIButton = {
         UIButton(type: .custom)
             .withFont(UIFont.font(withWeight: .medium(size: 16.0)))
             .withTitleColor(Colors.ButtonText.primary)
             .withAlignment(.center)
     }()
     
-    private(set) lazy var cancelButton: UIButton = {
+    private lazy var cancelButton: UIButton = {
         UIButton(type: .custom)
             .withTitle("title-cancel".localized)
             .withBackgroundImage(img("bg-light-gray-button"))
@@ -74,6 +74,30 @@ extension ActionBottomInformationView {
     @objc
     private func notifyDelegateToCancelButtonTapped() {
         delegate?.actionBottomInformationViewDidTapCancelButton(self)
+    }
+}
+
+extension ActionBottomInformationView {
+    func bind(_ viewModel: BottomInformationViewModel) {
+        titleLabel.attributedText = viewModel.attributedTitle
+        titleLabel.textAlignment = viewModel.titleAlignment
+        explanationLabel.attributedText = viewModel.attributedExplanation
+        explanationLabel.textAlignment = viewModel.explanationAlignment
+        imageView.image = viewModel.image
+
+        if let actionTitle = viewModel.actionButtonTitle {
+            actionButton.setTitle(actionTitle, for: .normal)
+        }
+
+        if let actionImage = viewModel.actionImage {
+            actionButton.setBackgroundImage(actionImage, for: .normal)
+        }
+
+        cancelButton.setTitle(viewModel.closeButtonTitle, for: .normal)
+
+        if let closeBackgroundImage = viewModel.closeImage {
+            cancelButton.setBackgroundImage(closeBackgroundImage, for: .normal)
+        }
     }
 }
 

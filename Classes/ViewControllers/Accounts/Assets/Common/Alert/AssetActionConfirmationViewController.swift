@@ -15,8 +15,6 @@ class AssetActionConfirmationViewController: BaseViewController {
     
     private lazy var assetActionConfirmationView = AssetActionConfirmationView()
     
-    private let viewModel = AssetActionConfirmationViewModel()
-    
     private var assetAlertDraft: AssetAlertDraft
     
     init(assetAlertDraft: AssetAlertDraft, configuration: ViewControllerConfiguration) {
@@ -31,7 +29,7 @@ class AssetActionConfirmationViewController: BaseViewController {
     
     override func configureAppearance() {
         view.backgroundColor = Colors.Background.secondary
-        viewModel.configure(assetActionConfirmationView, with: assetAlertDraft)
+        assetActionConfirmationView.bind(AssetActionConfirmationViewModel(draft: assetAlertDraft))
     }
     
     override func setListeners() {
@@ -80,7 +78,7 @@ extension AssetActionConfirmationViewController {
         var assetDetail = asset
         setVerifiedIfNeeded(&assetDetail)
         assetAlertDraft.assetDetail = assetDetail
-        viewModel.configure(self.assetActionConfirmationView.assetDisplayView, with: assetAlertDraft)
+        assetActionConfirmationView.assetDisplayView.bind(AssetDisplayViewModel(assetDetail: assetDetail))
     }
     
     private func setVerifiedIfNeeded(_ assetDetail: inout AssetDetail) {

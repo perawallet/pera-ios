@@ -44,8 +44,6 @@ class AssetRemovalViewController: BaseViewController {
         return TransactionController(api: api)
     }()
     
-    private let viewModel = AssetRemovalViewModel()
-    
     weak var delegate: AssetRemovalViewControllerDelegate?
     
     init(account: Account, configuration: ViewControllerConfiguration) {
@@ -106,7 +104,7 @@ extension AssetRemovalViewController: UICollectionViewDataSource {
         let assetDetail = account.assetDetails[indexPath.item]
         let cell = layoutBuilder.dequeueAssetCells(in: collectionView, cellForItemAt: indexPath, for: assetDetail)
         cell.delegate = self
-        viewModel.configure(cell, with: assetDetail)
+        cell.bind(AssetRemovalViewModel(assetDetail: assetDetail))
         
         if indexPath.item == account.assetDetails.count - 1 {
             cell.contextView.setSeparatorViewHidden(true)
@@ -129,9 +127,8 @@ extension AssetRemovalViewController {
             ) as? AccountHeaderSupplementaryView else {
                 fatalError("Unexpected element kind")
             }
-            
-            viewModel.configure(headerView, with: account)
-            
+
+            headerView.bind(AccountHeaderSupplementaryViewModel(account: account, isActionEnabled: false))
             return headerView
         }
         fatalError("Unexpected element kind")

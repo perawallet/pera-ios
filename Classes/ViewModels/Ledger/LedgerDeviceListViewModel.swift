@@ -6,10 +6,16 @@
 //  Copyright © 2020 hippo. All rights reserved.
 //
 
-import UIKit
+import CoreBluetooth
 
 class LedgerDeviceListViewModel {
-    func configure(_ cell: LedgerDeviceCell, with ledgerName: String) {
-        cell.contextView.setDeviceName(ledgerName)
+    private(set) var ledgerName: String?
+
+    init(peripheral: CBPeripheral) {
+        setLedgerName(from: peripheral)
+    }
+
+    private func setLedgerName(from peripheral: CBPeripheral) {
+        self.ledgerName = peripheral.name
     }
 }

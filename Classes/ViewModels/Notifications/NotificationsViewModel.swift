@@ -13,8 +13,8 @@ class NotificationsViewModel {
     
     private var notificationImage: UIImage?
     private(set) var title: NSAttributedString?
-    private var time: String?
-    private var isRead: Bool = true
+    private(set) var time: String?
+    private(set) var isRead: Bool = true
     
     init(
         notification: NotificationMessage,

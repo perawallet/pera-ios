@@ -9,16 +9,28 @@
 import UIKit
 
 class ContactsViewModel {
-    func configure(_ cell: ContactCell, with contact: Contact) {
+    private(set) var image: UIImage?
+    private(set) var name: String?
+    private(set) var address: String?
+
+    init(contact: Contact, imageSize: CGSize) {
+        setImage(from: contact, with: imageSize)
+        setName(from: contact)
+        setAddress(from: contact)
+    }
+
+    private func setImage(from contact: Contact, with imageSize: CGSize) {
         if let imageData = contact.image,
             let image = UIImage(data: imageData) {
-            
-            let resizedImage = image.convert(to: CGSize(width: 50.0, height: 50.0))
-            
-            cell.contextView.userImageView.image = resizedImage
+            self.image = image.convert(to: imageSize)
         }
-        
-        cell.contextView.nameLabel.text = contact.name
-        cell.contextView.addressLabel.text = contact.address?.shortAddressDisplay()
+    }
+
+    private func setName(from contact: Contact) {
+        name = contact.name
+    }
+
+    private func setAddress(from contact: Contact) {
+        address = contact.address?.shortAddressDisplay()
     }
 }

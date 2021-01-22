@@ -16,7 +16,7 @@ class NodeSelectionView: BaseView {
     
     private lazy var imageView = UIImageView()
     
-    private(set) lazy var nameLabel: UILabel = {
+    private lazy var nameLabel: UILabel = {
         UILabel()
             .withTextColor(Colors.Text.primary)
             .withLine(.single)
@@ -62,16 +62,18 @@ extension NodeSelectionView {
 }
 
 extension NodeSelectionView {
+    func bind(_ viewModel: NodeSettingsViewModel) {
+        backgroundImageView.image = viewModel.backgroundImage
+        imageView.image = viewModel.image
+        nameLabel.text = viewModel.nodeName
+    }
+
     func setBackgroundImage(_ image: UIImage?) {
         backgroundImageView.image = image
     }
-    
+
     func setImage(_ image: UIImage?) {
         imageView.image = image
-    }
-    
-    func setName(_ name: String) {
-        nameLabel.text = name
     }
 }
 
