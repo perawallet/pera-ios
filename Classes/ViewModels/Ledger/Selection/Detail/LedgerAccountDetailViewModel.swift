@@ -61,7 +61,7 @@ extension LedgerAccountDetailViewModel {
     
     private func addAlgoView(for account: Account) {
         let algoView = AlgoAssetView()
-        algoView.amountLabel.text = account.amount.toAlgos.toAlgosStringForLabel
+        algoView.bind(AlgoAssetViewModel(account: account))
         assetViews.append(algoView)
         
         if account.assets.isNilOrEmpty {
@@ -108,8 +108,7 @@ extension LedgerAccountDetailViewModel {
     }
     
     private func addAssetView(_ view: BaseAssetCell, assetDetail: AssetDetail, asset: Asset) {
-        let accountsViewModel = AccountsViewModel()
-        accountsViewModel.configure(view, with: assetDetail, and: asset)
+        view.bind(AssetViewModel(assetDetail: assetDetail, asset: asset))
         assetViews.append(view)
     }
 }

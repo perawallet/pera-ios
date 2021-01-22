@@ -47,8 +47,6 @@ class AssetAdditionViewController: BaseViewController, TestNetTitleDisplayable {
     
     private lazy var emptyStateView = SearchEmptyView()
     
-    private let viewModel = AssetAdditionViewModel()
-    
     init(account: Account, configuration: ViewControllerConfiguration) {
         self.account = account
         super.init(configuration: configuration)
@@ -151,7 +149,7 @@ extension AssetAdditionViewController: UICollectionViewDataSource {
         let assetResult = assetResults[indexPath.item]
         let assetDetail = AssetDetail(searchResult: assetResult)
         let cell = layoutBuilder.dequeueAssetCells(in: collectionView, cellForItemAt: indexPath, for: assetDetail)
-        viewModel.configure(cell, with: assetResult)
+        cell.bind(AssetAdditionViewModel(assetSearchResult: assetResult))
         return cell
     }
 }

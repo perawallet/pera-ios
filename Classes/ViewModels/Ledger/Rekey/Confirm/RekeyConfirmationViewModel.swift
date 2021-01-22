@@ -10,11 +10,11 @@ import Foundation
 
 class RekeyConfirmationViewModel {
     
-    private var assetText: String?
-    private var oldTransitionTitle: String?
-    private var oldTransitionValue: String?
-    private var newTransitionValue: String?
-    private var feeValue: String?
+    private(set) var assetText: String?
+    private(set) var oldTransitionTitle: String?
+    private(set) var oldTransitionValue: String?
+    private(set) var newTransitionValue: String?
+    private(set) var feeValue: String?
     
     init(account: Account, ledgerName: String?) {
         setAssetCount(for: account)

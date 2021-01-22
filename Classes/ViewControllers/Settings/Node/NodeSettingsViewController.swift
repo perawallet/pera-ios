@@ -15,8 +15,6 @@ class NodeSettingsViewController: BaseViewController {
     
     private let nodes = [mainNetNode, testNetNode]
     
-    private let viewModel = NodeSettingsViewModel()
-    
     private var canTapBarButton = true
     
     private lazy var lastActiveNetwork: AlgorandAPI.BaseNetwork = {
@@ -79,7 +77,7 @@ extension NodeSettingsViewController: UICollectionViewDataSource {
         }
         
         let algorandNode = nodes[indexPath.item]
-        viewModel.configure(cell, with: algorandNode, activeNetwork: lastActiveNetwork)
+        cell.bind(NodeSettingsViewModel(node: algorandNode, activeNetwork: lastActiveNetwork))
         return cell
     }
 }
@@ -133,9 +131,34 @@ extension NodeSettingsViewController {
             
             SVProgressHUD.dismiss(withDelay: 1.0) {
                 self.setActionsEnabled(true)
-                self.viewModel.setSelected(at: indexPath, in: self.nodeSettingsView.collectionView)
+                self.setSelected(at: indexPath, in: self.nodeSettingsView.collectionView)
             }
         }
+    }
+
+    private func setSelected(at indexPath: IndexPath, in collectionView: UICollectionView) {
+        guard let cell = collectionView.cellForItem(at: indexPath) as? NodeSelectionCell else {
+            return
+        }
+        setActive(cell)
+
+        let otherCellIndex = indexPath.item == 0 ? 1 : 0
+
+        guard let otherCell = collectionView.cellForItem(at: IndexPath(item: otherCellIndex, section: 0)) as? NodeSelectionCell else {
+            return
+        }
+
+        setInactive(otherCell)
+    }
+
+    private func setActive(_ cell: NodeSelectionCell) {
+        cell.contextView.setBackgroundImage(img("bg-settings-node-selected"))
+        cell.contextView.setImage(img("settings-node-active"))
+    }
+
+    private func setInactive(_ cell: NodeSelectionCell) {
+        cell.contextView.setBackgroundImage(img("bg-settings-node-unselected"))
+        cell.contextView.setImage(img("settings-node-inactive"))
     }
     
     private func setActionsEnabled(_ isEnabled: Bool) {

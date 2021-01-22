@@ -21,6 +21,10 @@ class AccountHeaderSupplementaryView: BaseSupplementaryView<AccountHeaderView> {
     override func setListeners() {
         contextView.delegate = self
     }
+
+    func bind(_ viewModel: AccountHeaderSupplementaryViewModel) {
+        contextView.bind(viewModel)
+    }
 }
 
 extension AccountHeaderSupplementaryView: AccountHeaderViewDelegate {
