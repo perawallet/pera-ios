@@ -13,7 +13,7 @@ import XCTest
 class AccountTests: XCTestCase {
 
     private let account = Bundle.main.decode(Account.self, from: "AccountA.json")
-    private let accountB = Bundle.main.decode(Account.self, from: "AccountA.json")
+    private let accountB = Bundle.main.decode(Account.self, from: "AccountB.json")
     private let assetDetail = Bundle.main.decode(AssetDetail.self, from: "HipoCoinAsset.json")
 
     func testAmount() {
@@ -38,7 +38,7 @@ class AccountTests: XCTestCase {
 
     func testHasDifferentAssets() {
         let hasDifferentAssets = account.hasDifferentAssets(than: accountB)
-        XCTAssertFalse(hasDifferentAssets)
+        XCTAssertTrue(hasDifferentAssets)
     }
 
     func testRemoveAssets() {
