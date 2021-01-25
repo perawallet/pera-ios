@@ -12,11 +12,11 @@ struct LedgerTransactionErrorLog: AnalyticsLog {
     var name: AnalyticsLogName = .ledgerTransactionError
     var params: AnalyticsParameters
     
-    init(account: Account, unsignedTransaction: Data?, signedTransaction: Data?) {
+    init(account: Account, transactionData: TransactionData) {
         params = [
             .sender: account.address,
-            .unsignedTransaction: unsignedTransaction?.base64EncodedString() ?? "",
-            .signedTransaction: signedTransaction?.base64EncodedString() ?? ""
+            .unsignedTransaction: transactionData.unsignedTransaction?.base64EncodedString() ?? "",
+            .signedTransaction: transactionData.signedTransaction?.base64EncodedString() ?? ""
         ]
     }
 }
