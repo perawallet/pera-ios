@@ -38,19 +38,34 @@ class TransactionFeeCalculator: NSObject {
         return calculatedFee
     }
 
-    private func isValidTransactionAmount(for transactionType: TransactionController.TransactionType, calculatedFee: Int64) -> Bool {
+    func isValidTransactionAmount(for transactionType: TransactionController.TransactionType, calculatedFee: Int64) -> Bool {
         guard let account = transactionDraft?.from,
               let isMaxTransaction = transactionDraft?.isMaxTransaction,
               !isMaxTransaction else {
             return true
         }
 
+        let transactionAmount = transactionType == .algosTransaction ? transactionDraft?.amount?.toMicroAlgos ?? 0 : 0
+
+        let minimumAmount = calculateMinimumAmountAfterTransaction(for: account, with: transactionType, calculatedFee: calculatedFee)
+        if Int64(account.amount) - transactionAmount < minimumAmount {
+            delegate?.transactionFeeCalculator(self, didFailedWith: minimumAmount)
+            return false
+        }
+
+        return true
+    }
+
+    func calculateMinimumAmountAfterTransaction(
+        for account: Account,
+        with transactionType: TransactionController.TransactionType,
+        calculatedFee: Int64
+    ) -> Int64 {
         var assetCount = account.assetDetails.count + 1
-        var transactionAmount: Int64 = 0
 
         switch transactionType {
         case .algosTransaction:
-            transactionAmount = transactionDraft?.amount?.toMicroAlgos ?? 0
+            break
         case .assetTransaction:
             break
         case .assetAddition:
@@ -58,16 +73,11 @@ class TransactionFeeCalculator: NSObject {
         case .rekey:
             break
         case .assetRemoval:
-            return true
+            assetCount = account.assetDetails.count
         }
 
         let minimumAmount = Int64(minimumTransactionMicroAlgosLimit * assetCount) + calculatedFee
-        if Int64(account.amount) - transactionAmount < minimumAmount {
-            delegate?.transactionFeeCalculator(self, didFailedWith: minimumAmount)
-            return false
-        }
-
-        return true
+        return minimumAmount
     }
 }
 
