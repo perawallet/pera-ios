@@ -13,73 +13,14 @@ import CoreData
 
 class DBDecodeTests: XCTestCase {
 
-    var applicationConfiguration: ApplicationConfiguration?
-
-    override func tearDown() {
-        super.tearDown()
-        clearData()
-    }
-
     func testApplicationConfiguration() {
-        setupData(isUserUpdated: false)
-        setApplicationConfiguration()
-        XCTAssertNotNil(applicationConfiguration)
+        let user = setupUserData(isUserUpdated: false)
+        XCTAssertNotNil(user)
     }
 
     func testModifiedUser() {
-        setupData(isUserUpdated: true)
-        setApplicationConfiguration()
-        XCTAssertNotNil(applicationConfiguration)
-    }
-
-    private lazy var managedObjectModel: NSManagedObjectModel = {
-        guard let managedObjectModel = NSManagedObjectModel.mergedModel(from: [Bundle(for: type(of: self))]) else {
-            fatalError("Error")
-        }
-        return managedObjectModel
-    }()
-
-    private lazy var mockPersistantContainer: NSPersistentContainer = {
-        let container = NSPersistentContainer(name: "algorand", managedObjectModel: managedObjectModel)
-        let description = NSPersistentStoreDescription()
-        description.type = NSInMemoryStoreType
-        description.shouldAddStoreAsynchronously = false
-
-        container.persistentStoreDescriptions = [description]
-        container.loadPersistentStores { description, error in
-            precondition( description.type == NSInMemoryStoreType )
-            if let error = error {
-                fatalError("Create an in-mem coordinator failed \(error)")
-            }
-        }
-        return container
-    }()
-}
-
-extension DBDecodeTests {
-    private func setApplicationConfiguration() {
-        let entityName = ApplicationConfiguration.entityName
-        guard ApplicationConfiguration.hasResult(entity: entityName, in: mockPersistantContainer) else {
-            return
-        }
-
-        let result = ApplicationConfiguration.fetchAllSyncronous(entity: entityName, in: mockPersistantContainer)
-
-        switch result {
-        case .result(let object):
-            applicationConfiguration = object as? ApplicationConfiguration
-        case .results(let objects):
-            if let configuration = objects.first(where: { appConfig -> Bool in
-                if appConfig is ApplicationConfiguration {
-                    return true
-                }
-                return false
-            }) as? ApplicationConfiguration {
-                applicationConfiguration = configuration
-            }
-        case .error:
-            break
-        }
+        let user = setupUserData(isUserUpdated: true)
+        XCTAssertNotNil(user)
     }
 }
 
@@ -110,19 +51,11 @@ extension DBDecodeTests {
         """
     }
 
-    private func setupData(isUserUpdated: Bool) {
+    private func setupUserData(isUserUpdated: Bool) -> User? {
         guard let userData = Data(base64Encoded: isUserUpdated ? latestUserBase64 : userBase64, options: .ignoreUnknownCharacters) else {
-            return
+            return nil
         }
 
-        ApplicationConfiguration.create(
-            entity: ApplicationConfiguration.entityName,
-            with: [ApplicationConfiguration.DBKeys.userData.rawValue: userData],
-            in: mockPersistantContainer
-        )
-    }
-
-    private func clearData() {
-        applicationConfiguration?.remove(entity: ApplicationConfiguration.entityName, in: mockPersistantContainer)
+        return try? JSONDecoder().decode(User.self, from: userData)
     }
 }
