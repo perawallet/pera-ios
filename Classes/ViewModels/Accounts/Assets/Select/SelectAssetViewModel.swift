@@ -9,26 +9,19 @@
 import UIKit
 
 class SelectAssetViewModel {
-    func configure(_ cell: BaseAssetCell, with assetDetail: AssetDetail, and asset: Asset) {
-        cell.contextView.assetNameView.setAssetName(for: assetDetail)
-        let amountText = asset.amount.assetAmount(fromFraction: assetDetail.fractionDecimals)
-            .toFractionStringForLabel(fraction: assetDetail.fractionDecimals)
-        cell.contextView.setActionText(amountText)
-    }
-    
-    func configure(_ cell: AlgoAssetCell, with account: Account) {
-        cell.contextView.amountLabel.text = account.amount.toAlgos.toAlgosStringForLabel
-    }
-}
+    private(set) var accountName: String?
+    private(set) var accountImage: UIImage?
 
-extension SelectAssetViewModel {
-    func configure(_ header: SelectAssetHeaderSupplementaryView, with account: Account) {
-        header.contextView.setAccountImage(account.accountImage())
-        
-        guard let accountName = account.name else {
-            return
-        }
-        
-        header.contextView.setAccountName(accountName)
+    init(account: Account) {
+        setAccountName(from: account)
+        setAccountImage(from: account)
+    }
+
+    private func setAccountName(from account: Account) {
+        accountName = account.name
+    }
+
+    private func setAccountImage(from account: Account) {
+        accountImage = account.accountImage()
     }
 }

@@ -11,7 +11,6 @@ import UIKit
 class SendAssetTransactionViewController: SendTransactionViewController, TestNetTitleDisplayable {
     
     private var assetTransactionSendDraft: AssetTransactionSendDraft
-    private let viewModel = SendAssetTransactionViewModel()
     
     init(
         assetTransactionSendDraft: AssetTransactionSendDraft,
@@ -35,7 +34,7 @@ class SendAssetTransactionViewController: SendTransactionViewController, TestNet
     override func configureAppearance() {
         super.configureAppearance()
         setTitle()
-        viewModel.configure(sendTransactionView, with: assetTransactionSendDraft)
+        sendTransactionView.bind(SendTransactionViewModel(transactionDraft: assetTransactionSendDraft))
     }
     
     override func completeTransaction(with id: TransactionID) {
@@ -65,6 +64,5 @@ extension SendAssetTransactionViewController {
         
         let assetTitle = "title-send".localized + " \(assetDetail.getDisplayNames().0)"
         displayTestNetTitleView(with: assetTitle)
-        sendTransactionView.setButtonTitle(assetTitle)
     }
 }

@@ -21,9 +21,9 @@ class RewardAmountContainerView: BaseView {
             .withText("rewards-since-last-text".localized)
     }()
     
-    private(set) lazy var algoIconImageView = UIImageView(image: img("icon-algorand-asset-detail", isTemplate: true))
+    private lazy var algoIconImageView = UIImageView(image: img("icon-algorand-asset-detail", isTemplate: true))
     
-    private(set) lazy var amountLabel: UILabel = {
+    private lazy var amountLabel: UILabel = {
         UILabel()
             .withAlignment(.center)
             .withLine(.single)
@@ -73,6 +73,12 @@ extension RewardAmountContainerView {
             make.size.equalTo(layout.current.imageSize)
             make.centerY.equalTo(amountLabel)
         }
+    }
+}
+
+extension RewardAmountContainerView {
+    func bind(_ viewModel: RewardDetailViewModel) {
+        amountLabel.text = viewModel.amount
     }
 }
 

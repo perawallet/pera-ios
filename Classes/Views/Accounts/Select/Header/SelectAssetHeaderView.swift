@@ -53,12 +53,9 @@ extension SelectAssetHeaderView {
 }
 
 extension SelectAssetHeaderView {
-    func setAccountName(_ name: String) {
-        titleLabel.text = name
-    }
-    
-    func setAccountImage(_ image: UIImage?) {
-        imageView.image = image
+    func bind(_ viewModel: SelectAssetViewModel) {
+        titleLabel.text = viewModel.accountName
+        imageView.image = viewModel.accountImage
     }
 }
 

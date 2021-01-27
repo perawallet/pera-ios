@@ -18,8 +18,6 @@ class BottomInformationViewController: BaseViewController {
     private let mode: Mode
     private let bottomInformationBundle: BottomInformationBundle
     
-    private let viewModel = BottomInformationViewModel()
-    
     init(mode: Mode, bottomInformationBundle: BottomInformationBundle, configuration: ViewControllerConfiguration) {
         self.mode = mode
         self.bottomInformationBundle = bottomInformationBundle
@@ -38,7 +36,18 @@ class BottomInformationViewController: BaseViewController {
     
     override func configureAppearance() {
         view.backgroundColor = Colors.Background.secondary
-        viewModel.configure(bottomInformationView, with: bottomInformationBundle)
+
+        if let confirmationBottomInformationView = bottomInformationView as? ConfirmationBottomInformationView {
+            confirmationBottomInformationView.bind(BottomInformationViewModel(configurator: bottomInformationBundle))
+        }
+
+        if let actionBottomInformationView = bottomInformationView as? ActionBottomInformationView {
+            actionBottomInformationView.bind(BottomInformationViewModel(configurator: bottomInformationBundle))
+        }
+
+        if let qrBottomInformationView = bottomInformationView as? QRBottomInformationView {
+            qrBottomInformationView.bind(BottomInformationViewModel(configurator: bottomInformationBundle))
+        }
     }
     
     override func setListeners() {

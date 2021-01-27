@@ -12,7 +12,7 @@ class QRBottomInformationView: BottomInformationView {
     
     private let layout = Layout<LayoutConstants>()
     
-    private(set) lazy var actionButton: UIButton = {
+    private lazy var actionButton: UIButton = {
         UIButton(type: .custom)
             .withBackgroundImage(img("bg-main-button"))
             .withTitle("title-approve".localized)
@@ -21,7 +21,7 @@ class QRBottomInformationView: BottomInformationView {
             .withTitleColor(Colors.ButtonText.primary)
     }()
     
-    private(set) lazy var cancelButton: UIButton = {
+    private lazy var cancelButton: UIButton = {
         UIButton(type: .custom)
             .withBackgroundImage(img("bg-light-gray-button"))
             .withTitle("title-cancel".localized)
@@ -73,6 +73,16 @@ extension QRBottomInformationView {
     @objc
     private func notifyDelegateToActionButtonTapped() {
         delegate?.qrBottomInformationViewDidTapActionButton(self)
+    }
+}
+
+extension QRBottomInformationView {
+    func bind(_ viewModel: BottomInformationViewModel) {
+        titleLabel.attributedText = viewModel.attributedTitle
+        titleLabel.textAlignment = viewModel.titleAlignment
+        explanationLabel.attributedText = viewModel.attributedExplanation
+        explanationLabel.textAlignment = viewModel.explanationAlignment
+        imageView.image = viewModel.image
     }
 }
 

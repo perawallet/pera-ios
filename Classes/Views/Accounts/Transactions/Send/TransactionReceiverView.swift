@@ -90,7 +90,7 @@ class TransactionReceiverView: BaseView {
             .withText("send-algos-to".localized)
     }()
     
-    private(set) lazy var receiverContainerView = UIView()
+    private lazy var receiverContainerView = UIView()
     
     private lazy var transactionReceiverSelectionView = TransactionReceiverSelectionView()
     
@@ -106,7 +106,7 @@ class TransactionReceiverView: BaseView {
         return addressInputView
     }()
     
-    private(set) lazy var receiverContactView: ContactContextView = {
+    private lazy var receiverContactView: ContactContextView = {
         let view = ContactContextView()
         view.backgroundColor = Colors.Background.secondary
         view.layer.cornerRadius = 12.0
@@ -175,14 +175,7 @@ extension TransactionReceiverView {
     }
     
     private func configureReceiverContactView(with contact: Contact) {
-        if let imageData = contact.image,
-            let image = UIImage(data: imageData) {
-            let resizedImage = image.convert(to: CGSize(width: 44.0, height: 44.0))
-            receiverContactView.userImageView.image = resizedImage
-        }
-        
-        receiverContactView.nameLabel.text = contact.name
-        receiverContactView.addressLabel.text = contact.address?.shortAddressDisplay()
+        receiverContactView.bind(ContactsViewModel(contact: contact, imageSize: CGSize(width: 44.0, height: 44.0)))
     }
 }
 

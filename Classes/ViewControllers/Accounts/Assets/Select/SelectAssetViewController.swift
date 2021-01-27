@@ -16,8 +16,6 @@ class SelectAssetViewController: BaseViewController {
     
     private lazy var selectAssetView = SelectAssetView()
     
-    private let viewModel = SelectAssetViewModel()
-    
     private var accounts = [Account]()
     
     private let transactionAction: TransactionAction
@@ -151,7 +149,7 @@ extension SelectAssetViewController {
         
         if indexPath.section < accounts.count {
             let account = accounts[indexPath.section]
-            viewModel.configure(cell, with: account)
+            cell.bind(AlgoAssetViewModel(account: account))
         }
         
         return cell
@@ -175,8 +173,8 @@ extension SelectAssetViewController {
         )
         
         if let assets = account.assets,
-            let asset = assets.first(where: { $0.id == assetDetail.id }) {
-            viewModel.configure(cell, with: assetDetail, and: asset)
+           let asset = assets.first(where: { $0.id == assetDetail.id }) {
+            cell.bind(AssetViewModel(assetDetail: assetDetail, asset: asset))
         }
         
         return cell
@@ -202,7 +200,7 @@ extension SelectAssetViewController {
         }
         
         let account = accounts[indexPath.section]
-        viewModel.configure(headerView, with: account)
+        headerView.bind(SelectAssetViewModel(account: account))
         
         headerView.tag = indexPath.section
         

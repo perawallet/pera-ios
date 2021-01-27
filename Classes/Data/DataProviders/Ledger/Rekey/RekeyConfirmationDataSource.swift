@@ -13,7 +13,6 @@ class RekeyConfirmationDataSource: NSObject {
     weak var delegate: RekeyConfirmationDataSourceDelegate?
     
     private let layoutBuilder = AssetListLayoutBuilder()
-    private let accountsViewModel = AccountsViewModel()
     private let rekeyConfirmationViewModel: RekeyConfirmationViewModel
     private let account: Account
     
@@ -51,7 +50,7 @@ extension RekeyConfirmationDataSource: UICollectionViewDataSource {
         if let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: AlgoAssetCell.reusableIdentifier,
             for: indexPath) as? AlgoAssetCell {
-            accountsViewModel.configure(cell, with: account)
+            cell.bind(AlgoAssetViewModel(account: account))
             return cell
         }
         fatalError("Index path is out of bounds")
@@ -62,7 +61,7 @@ extension RekeyConfirmationDataSource: UICollectionViewDataSource {
             let assets = account.assets,
             let asset = assets.first(where: { $0.id == assetDetail.id }) {
             let cell = layoutBuilder.dequeueAssetCells(in: collectionView, cellForItemAt: indexPath, for: assetDetail)
-            accountsViewModel.configure(cell, with: assetDetail, and: asset)
+            cell.bind(AssetViewModel(assetDetail: assetDetail, asset: asset))
             return cell
         }
             
@@ -80,9 +79,7 @@ extension RekeyConfirmationDataSource: UICollectionViewDataSource {
                 withReuseIdentifier: AccountHeaderSupplementaryView.reusableIdentifier,
                 for: indexPath
             ) as? AccountHeaderSupplementaryView {
-                accountsViewModel.configure(headerView, with: account)
-                headerView.contextView.setQRButton(hidden: true)
-                headerView.contextView.setOptionsButton(hidden: true)
+                headerView.bind(AccountHeaderSupplementaryViewModel(account: account, isActionEnabled: false))
                 return headerView
             }
         } else {

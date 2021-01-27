@@ -13,8 +13,6 @@ class AssetSupportViewController: BaseViewController {
     
     private lazy var assetSupportView = AssetSupportView()
     
-    private let viewModel = AssetSupportViewModel()
-    
     private var assetAlertDraft: AssetAlertDraft
     
     init(assetAlertDraft: AssetAlertDraft, configuration: ViewControllerConfiguration) {
@@ -29,7 +27,7 @@ class AssetSupportViewController: BaseViewController {
     
     override func configureAppearance() {
         view.backgroundColor = Colors.Background.secondary
-        viewModel.configure(assetSupportView, with: assetAlertDraft)
+        assetSupportView.bind(AssetSupportViewModel(draft: assetAlertDraft))
     }
     
     override func setListeners() {
@@ -77,7 +75,7 @@ extension AssetSupportViewController {
         var assetDetail = asset
         setVerifiedIfNeeded(&assetDetail)
         assetAlertDraft.assetDetail = assetDetail
-        viewModel.configure(self.assetSupportView.assetDisplayView, with: assetAlertDraft)
+        assetSupportView.assetDisplayView.bind(AssetDisplayViewModel(assetDetail: assetDetail))
     }
     
     private func setVerifiedIfNeeded(_ assetDetail: inout AssetDetail) {

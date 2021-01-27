@@ -16,6 +16,30 @@ class AlgorandNotification: Model {
 }
 
 extension AlgorandNotification {
+    func getAccountId() -> String? {
+        guard let notificationDetails = details,
+              let notificationType = notificationDetails.notificationType else {
+                return nil
+        }
+
+        switch notificationType {
+        case .transactionReceived,
+             .assetTransactionReceived:
+            return notificationDetails.receiverAddress
+        case .transactionSent,
+             .assetTransactionSent:
+            return notificationDetails.senderAddress
+        case .assetSupportRequest:
+            return notificationDetails.receiverAddress
+        case .assetSupportSuccess:
+            return notificationDetails.receiverAddress
+        default:
+            return nil
+        }
+    }
+}
+
+extension AlgorandNotification {
     enum CodingKeys: String, CodingKey {
         case badge = "badge"
         case alert = "alert"

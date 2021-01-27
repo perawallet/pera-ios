@@ -12,7 +12,7 @@ class ConfirmationBottomInformationView: BottomInformationView {
     
     private let layout = Layout<LayoutConstants>()
     
-    private(set) lazy var actionButton: UIButton = {
+    private lazy var actionButton: UIButton = {
         UIButton(type: .custom)
             .withFont(UIFont.font(withWeight: .medium(size: 16.0)))
             .withTitleColor(Colors.ButtonText.primary)
@@ -46,6 +46,24 @@ extension ConfirmationBottomInformationView {
             make.centerX.equalToSuperview()
             make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
             make.bottom.lessThanOrEqualToSuperview().inset(layout.current.verticalInset)
+        }
+    }
+}
+
+extension ConfirmationBottomInformationView {
+    func bind(_ viewModel: BottomInformationViewModel) {
+        titleLabel.attributedText = viewModel.attributedTitle
+        titleLabel.textAlignment = viewModel.titleAlignment
+        explanationLabel.attributedText = viewModel.attributedExplanation
+        explanationLabel.textAlignment = viewModel.explanationAlignment
+        imageView.image = viewModel.image
+
+        if let actionTitle = viewModel.actionButtonTitle {
+            actionButton.setTitle(actionTitle, for: .normal)
+        }
+
+        if let actionImage = viewModel.actionImage {
+            actionButton.setBackgroundImage(actionImage, for: .normal)
         }
     }
 }

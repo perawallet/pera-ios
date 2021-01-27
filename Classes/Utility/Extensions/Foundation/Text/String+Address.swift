@@ -19,6 +19,10 @@ extension String {
     func shortAddressDisplay() -> String {
         return String(prefix(6)) + "..." + String(suffix(6))
     }
+
+    var trimmed: String {
+        return trimmingCharacters(in: .whitespacesAndNewlines)
+    }
 }
 
 extension Optional where Wrapped == String {

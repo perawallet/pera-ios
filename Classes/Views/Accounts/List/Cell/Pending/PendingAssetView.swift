@@ -22,7 +22,7 @@ class PendingAssetView: BaseView {
         return view
     }()
     
-    private(set) lazy var detailLabel: UILabel = {
+    private lazy var detailLabel: UILabel = {
         UILabel()
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
             .withTextColor(Colors.Text.primary)
@@ -92,6 +92,15 @@ extension PendingAssetView {
             make.height.equalTo(layout.current.separatorHeight)
             make.bottom.equalToSuperview()
         }
+    }
+}
+
+extension PendingAssetView {
+    func bind(_ viewModel: PendingAssetViewModel) {
+        if let assetDetail = viewModel.assetDetail {
+            assetNameView.setAssetName(for: assetDetail)
+        }
+        detailLabel.text = viewModel.detail
     }
 }
 

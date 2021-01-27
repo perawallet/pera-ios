@@ -166,82 +166,49 @@ extension SendTransactionView {
 }
 
 extension SendTransactionView {
-    func setAccountImage(_ image: UIImage?) {
-        accountInformationView.setAccountImage(image)
-    }
-    
-    func setAccountName(_ name: String?) {
-        accountInformationView.setAccountName(name)
-    }
-    
-    func setAssetName(for assetDetail: AssetDetail) {
-        assetInformationView.setAssetName(for: assetDetail)
-    }
-    
-    func removeVerifiedAsset() {
-        assetInformationView.removeVerifiedAsset()
-    }
-    
-    func setAssetName(_ name: String?) {
-        assetInformationView.setAssetName(name)
-    }
-    
-    func setAssetId(_ id: String?) {
-        assetInformationView.setAssetId(id)
-    }
-    
-    func setAssetUnitName(_ unitName: String?) {
-        assetInformationView.setAssetCode(unitName)
-    }
-    
-    func setAmountInformationViewMode(_ mode: TransactionAmountView.Mode) {
-        amountInformationView.setAmountViewMode(mode)
-    }
-    
-    func setReceiverAsContact(_ contact: Contact) {
-        receiverInformationView.setContact(contact)
-    }
-    
-    func setReceiverName(_ name: String) {
-        receiverInformationView.setName(name)
-    }
-    
-    func removeReceiverImage() {
-        receiverInformationView.removeContactImage()
-    }
-    
-    func setFeeInformationViewMode(_ mode: TransactionAmountView.Mode) {
-        feeInformationView.setAmountViewMode(mode)
-    }
-    
-    func setTransactionNote(_ note: String) {
-        noteInformationView.setDetail(note)
-        noteInformationView.setSeparatorView(hidden: true)
-    }
-    
-    func removeTransactionNote() {
-        noteInformationView.removeFromSuperview()
-        feeInformationView.setSeparatorHidden(true)
-    }
-    
-    func setButtonTitle(_ title: String) {
-        sendButton.setTitle(title, for: .normal)
-    }
-    
-    func removeAssetName() {
-        assetInformationView.removeAssetName()
-    }
-    
-    func removeAssetUnitName() {
-        assetInformationView.removeAssetUnitName()
-    }
-    
-    func removeAssetId() {
-        assetInformationView.removeAssetId()
-    }
-    
-    func setAssetNameAlignment(_ alignment: NSTextAlignment) {
-        assetInformationView.setAssetAlignment(alignment)
+    func bind(_ viewModel: SendTransactionViewModel) {
+        sendButton.setTitle(viewModel.buttonTitle, for: .normal)
+        accountInformationView.bind(viewModel.accountNameViewModel)
+
+        if let amount = viewModel.amount {
+            amountInformationView.setAmountViewMode(amount)
+        }
+
+        if let fee = viewModel.fee {
+            feeInformationView.setAmountViewMode(fee)
+        }
+
+        if let note = viewModel.note {
+            noteInformationView.setDetail(note)
+            noteInformationView.setSeparatorView(hidden: true)
+        } else {
+            noteInformationView.removeFromSuperview()
+            feeInformationView.setSeparatorHidden(true)
+        }
+
+        assetInformationView.setAssetName(viewModel.assetName)
+
+        if !viewModel.isDisplayingAssetId {
+            assetInformationView.removeAssetId()
+        }
+
+        if !viewModel.isDisplayingUnitName {
+            assetInformationView.removeAssetUnitName()
+        }
+
+        assetInformationView.setAssetAlignment(viewModel.nameAlignment)
+        assetInformationView.setAssetId(viewModel.assetId)
+
+        if !viewModel.isVerifiedAsset {
+            assetInformationView.removeVerifiedAsset()
+        }
+
+        if let contact = viewModel.receiverContact {
+            receiverInformationView.setContact(contact)
+        } else if let receiver = viewModel.receiverName {
+            receiverInformationView.setName(receiver)
+            receiverInformationView.removeContactImage()
+        }
     }
 }
 

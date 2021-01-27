@@ -14,8 +14,6 @@ class LedgerAccountSelectionDataSource: NSObject {
     
     private let accountsFetchGroup = DispatchGroup()
     
-    private let viewModel = AccountsViewModel()
-    
     private let api: AlgorandAPI
     private var accounts = [Account]()
     

@@ -21,7 +21,7 @@ class ContactContextView: BaseView {
         return imageView
     }()
     
-    private(set) lazy var nameLabel: UILabel = {
+    private lazy var nameLabel: UILabel = {
         UILabel()
             .withTextColor(Colors.Text.primary)
             .withLine(.single)
@@ -29,7 +29,7 @@ class ContactContextView: BaseView {
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
     }()
     
-    private(set) lazy var addressLabel: UILabel = {
+    private lazy var addressLabel: UILabel = {
         UILabel()
             .withTextColor(Colors.Text.secondary)
             .withAlignment(.left)
@@ -109,6 +109,14 @@ extension ContactContextView {
             make.centerY.equalTo(userImageView)
             make.leading.greaterThanOrEqualTo(addressLabel.snp.trailing).offset(layout.current.minimumOffset)
         }
+    }
+}
+
+extension ContactContextView {
+    func bind(_ viewModel: ContactsViewModel) {
+        userImageView.image = viewModel.image
+        nameLabel.text = viewModel.name
+        addressLabel.text = viewModel.address
     }
 }
 
