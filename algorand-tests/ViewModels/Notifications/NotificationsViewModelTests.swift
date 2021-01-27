@@ -25,11 +25,6 @@ class NotificationsViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.title?.string, "Your transaction of 55.555555 Algos from T4EWBD...UU6QRM to MF5KP5...RGQRHI is complete.")
     }
 
-    func testNotificationTime() {
-        let viewModel = NotificationsViewModel(notification: notification, senderAccount: account, latestReadTimestamp: 3000)
-        XCTAssertEqual(viewModel.time, "3 weeks ago")
-    }
-
     func testIsRead() {
         let viewModel = NotificationsViewModel(notification: notification, senderAccount: account, latestReadTimestamp: 3000)
         XCTAssertFalse(viewModel.isRead)
