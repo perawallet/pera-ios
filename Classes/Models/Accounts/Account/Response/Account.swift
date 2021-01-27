@@ -22,6 +22,8 @@ class Account: Model {
     var createdAssets: [AssetDetail]?
     var assets: [Asset]?
     var authAddress: String?
+    var createdRound: Int64?
+    var closedRound: Int64?
     
     var assetDetails: [AssetDetail] = []
     var name: String?
@@ -52,6 +54,8 @@ class Account: Model {
         ledgerDetail = try container.decodeIfPresent(LedgerDetail.self, forKey: .ledgerDetail)
         receivesNotification = try container.decodeIfPresent(Bool.self, forKey: .receivesNotification) ?? true
         rekeyDetail = try container.decodeIfPresent(RekeyDetail.self, forKey: .rekeyDetail)
+        createdRound = try container.decodeIfPresent(Int64.self, forKey: .createdRound)
+        closedRound = try container.decodeIfPresent(Int64.self, forKey: .closedRound)
     }
     
     init(
@@ -105,6 +109,8 @@ extension Account {
         case authAddress = "auth-addr"
         case receivesNotification = "receivesNotification"
         case rekeyDetail = "rekeyDetail"
+        case createdRound = "created-at-round"
+        case closedRound = "closed-at-round"
     }
 }
 

@@ -87,14 +87,12 @@ extension LedgerAccountFetchOperation {
         api.fetchAccount(with: AccountFetchDraft(publicKey: address)) { response in
             switch response {
             case .success(let accountWrapper):
-                if accountWrapper.account.amount == 0 {
+                if accountWrapper.account.isCreated {
                     self.ledgerAccounts.append(accountWrapper.account)
+                    self.startOperation()
+                } else {
                     self.returnAccounts()
-                    return
                 }
-                
-                self.ledgerAccounts.append(accountWrapper.account)
-                self.startOperation()
             case let .failure(error, _):
                 if error.isHttpNotFound {
                     self.ledgerAccounts.append(Account(address: address, type: .ledger))

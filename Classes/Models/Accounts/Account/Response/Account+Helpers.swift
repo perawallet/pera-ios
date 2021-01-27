@@ -54,6 +54,10 @@ extension Account {
 }
 
 extension Account {
+    var isCreated: Bool {
+        return createdRound != nil
+    }
+
     func hasAuthAccount() -> Bool {
         return authAddress != nil
     }

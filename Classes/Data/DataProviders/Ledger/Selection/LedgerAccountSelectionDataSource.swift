@@ -142,19 +142,11 @@ extension LedgerAccountSelectionDataSource {
     func saveSelectedAccounts(_ indexes: [IndexPath]) {
         indexes.forEach { indexPath in
             if let account = accounts[safe: indexPath.item] {
-                if let localAccount = api.session.accountInformation(from: account.address) {
+                if var localAccount = api.session.accountInformation(from: account.address) {
                     localAccount.type = account.type
-
-                    if let authAddress = account.authAddress {
-                        UIApplication.shared.firebaseAnalytics?.log(RegistrationEvent(type: .rekeyed))
-                        localAccount.addRekeyDetail(account.ledgerDetail ?? ledger, for: authAddress)
-                    } else {
-                        UIApplication.shared.firebaseAnalytics?.log(RegistrationEvent(type: .ledger))
-                        localAccount.ledgerDetail = account.ledgerDetail
-                    }
+                    setupLedgerDetails(of: &localAccount, from: account)
 
                     api.session.authenticatedUser?.updateAccount(localAccount)
-                    
                     api.session.updateAccount(account)
                 } else {
                     setupLocalAccount(from: account)
@@ -164,13 +156,8 @@ extension LedgerAccountSelectionDataSource {
     }
     
     private func setupLocalAccount(from account: Account) {
-        let localAccount = AccountInformation(address: account.address, name: account.address.shortAddressDisplay(), type: account.type)
-        
-        if let authAddress = account.authAddress {
-            localAccount.addRekeyDetail(account.ledgerDetail ?? ledger, for: authAddress)
-        } else {
-            localAccount.ledgerDetail = account.ledgerDetail
-        }
+        var localAccount = AccountInformation(address: account.address, name: account.address.shortAddressDisplay(), type: account.type)
+        setupLedgerDetails(of: &localAccount, from: account)
 
         let user: User
         
@@ -183,6 +170,16 @@ extension LedgerAccountSelectionDataSource {
         
         api.session.addAccount(Account(accountInformation: localAccount))
         api.session.authenticatedUser = user
+    }
+
+    private func setupLedgerDetails(of localAccount: inout AccountInformation, from account: Account) {
+        if let authAddress = account.authAddress {
+            UIApplication.shared.firebaseAnalytics?.log(RegistrationEvent(type: .rekeyed))
+            localAccount.addRekeyDetail(account.ledgerDetail ?? ledger, for: authAddress)
+        } else {
+            UIApplication.shared.firebaseAnalytics?.log(RegistrationEvent(type: .ledger))
+            localAccount.ledgerDetail = account.ledgerDetail
+        }
     }
 }
 
