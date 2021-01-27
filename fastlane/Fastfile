@@ -178,18 +178,18 @@ platform :ios do
     clean_build_artifacts
 
     #2
+    sign(
+      type: "adhoc",
+      app_identifier: app_identifier
+    )
+
+    #3
     tryouts_app_id = options[:tryouts_app_id]
     tryouts_api_token = options[:tryouts_api_token]
 
     register_missing_devices(
       tryouts_app_id: tryouts_app_id,
       tryouts_api_token: tryouts_api_token
-    )
-
-    #3
-    sign(
-      type: "adhoc",
-      app_identifier: app_identifier
     )
 
     #4
@@ -349,7 +349,7 @@ platform :ios do
       key_content: ENV["KEY_CONTENT"],
       in_house: ENV["IN_HOUSE"]
     )
-    
+
     match(
       type: options[:type], 
       app_identifier: options[:app_identifier],
