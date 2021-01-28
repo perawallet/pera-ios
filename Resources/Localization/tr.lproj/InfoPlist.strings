@@ -1,13 +1,13 @@
-/* 
-  InfoPlist.strings
-  algorand
+/* Privacy - Bluetooth Always Usage Description */
+"NSBluetoothAlwaysUsageDescription" = "Algorand, Ledger X ile iletişim kurmak için Bluetooth'u kullanacak.";
 
-  Created by Göktuğ Berk Ulu on 12.10.2020.
-  Copyright © 2020 hippo. All rights reserved.
-*/
+/* Privacy - Bluetooth Peripheral Usage Description */
+"NSBluetoothPeripheralUsageDescription" = "Algorand, Ledger X ile iletişim kurmak için Bluetooth'u kullanacak.";
+
+/* Privacy - Camera Usage Description */
+"NSCameraUsageDescription" = "Algorand, QR kodlarını taramak için kameranızı kullanacak.";
+
+/* Privacy - Face ID Usage Description */
+"NSFaceIDUsageDescription" = "Algorand, güvenli bir biçimde giriş yapmanız için Face ID'yi kullanacak.";
 
 "NSPhotoLibraryAddUsageDescription" = "Algorand, QR kodlarını fotoğraf kütüphanenize kaydedecek.";
-"NSFaceIDUsageDescription" = "Algorand, güvenli bir biçimde giriş yapmanız için Face ID'yi kullanacak.";
-"NSCameraUsageDescription" = "Algorand, QR kodlarını taramak için kameranızı kullanacak.";
-"NSBluetoothAlwaysUsageDescription" = "Algorand, Ledger X ile iletişim kurmak için Bluetooth'u kullanacak.";
-"NSBluetoothPeripheralUsageDescription" = "Algorand, Ledger X ile iletişim kurmak için Bluetooth'u kullanacak.";

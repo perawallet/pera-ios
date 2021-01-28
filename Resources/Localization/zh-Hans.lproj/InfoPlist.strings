@@ -1,13 +1,13 @@
-/* 
-  InfoPlist.strings
-  algorand
+/* Privacy - Bluetooth Always Usage Description */
+"NSBluetoothAlwaysUsageDescription" = "Algorand将使用蓝牙与Ledger X通信。";
 
-  Created by Göktuğ Berk Ulu on 12.10.2020.
-  Copyright © 2020 hippo. All rights reserved.
-*/
+/* Privacy - Bluetooth Peripheral Usage Description */
+"NSBluetoothPeripheralUsageDescription" = "Algorand将使用蓝牙与Ledger X通信。";
 
-"NSPhotoLibraryAddUsageDescription" = "Algorand会将二维码保存到你的相册中。";
-"NSFaceIDUsageDescription" = "Algorand将使用面容ID让您安全登录。";
-"NSCameraUsageDescription" = "Algorand将使用您的相机扫描二维码。";
-"NSBluetoothAlwaysUsageDescription" = "Algorand将使用蓝牙与Ledger X交流。";
-"NSBluetoothPeripheralUsageDescription" = "Algorand将使用蓝牙与Ledger X交流。";
+/* Privacy - Camera Usage Description */
+"NSCameraUsageDescription" = "Algorand将使用您的摄像头扫描二维码。";
+
+/* Privacy - Face ID Usage Description */
+"NSFaceIDUsageDescription" = "Algorand将使用人脸识别让您安全登录。";
+
+"NSPhotoLibraryAddUsageDescription" = "Algorand会将二维码保存到您的相册中。";
