@@ -7,7 +7,6 @@
 //
 
 import Magpie
-import CoreBluetooth
 
 protocol TransactionControllerDelegate: class {
     func transactionController(_ transactionController: TransactionController, didComposedTransactionDataFor draft: TransactionSendDraft?)

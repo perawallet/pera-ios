@@ -7,7 +7,6 @@
 //
 
 import Magpie
-import CoreBluetooth
 
 class TransactionController {
     weak var delegate: TransactionControllerDelegate?

@@ -8,7 +8,6 @@
 
 import UIKit
 import Magpie
-import CoreBluetooth
 
 class RekeyConfirmationViewController: BaseScrollViewController {
     
