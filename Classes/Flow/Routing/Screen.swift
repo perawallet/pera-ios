@@ -84,6 +84,7 @@ indirect enum Screen {
     case accountTypeSelection(flow: AccountSetupFlow)
     case ledgerAccountDetail(account: Account, ledgerIndex: Int?, rekeyedAccounts: [Account]?)
     case notificationFilter(flow: NotificationFilterViewController.Flow)
+    case maximumBalanceWarning(account: Account)
 }
 
 extension Screen {

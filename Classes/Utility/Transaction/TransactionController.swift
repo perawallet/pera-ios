@@ -119,6 +119,9 @@ extension TransactionController {
         switch transactionType {
         case .algosTransaction:
             let builder = SendAlgosTransactionDataBuilder(params: params, draft: algosTransactionDraft, initialSize: initialSize)
+            if let calculatedTransactionAmount = builder.calculatedTransactionAmount?.toAlgos {
+                transactionDraft?.amount = calculatedTransactionAmount
+            }
             composeTransactionData(from: builder)
         case .assetAddition:
             composeTransactionData(from: AddAssetTransactionDataBuilder(params: params, draft: assetTransactionDraft))

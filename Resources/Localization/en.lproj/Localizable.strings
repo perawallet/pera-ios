@@ -525,4 +525,4 @@
 "maximum-balance-warning-title" = "Maximum Balance";
 "title-continue" = "Continue";
 "title-dont-show-again" = "Don’t Show This Again";
-"maximum-balance-warning-description" = "Sending your maximum balance on a rekeyed account requires you to maintain a minimum balance of X. This is to ensure that nothing changes with your rekeyed account.\n\nYour transaction amount will be automatically updated to reflect this change. You will be able to preview the transaction in the next step.";
+"maximum-balance-warning-description" = "Sending your maximum balance on a rekeyed account requires you to maintain a minimum balance of %@ Algos. This is to ensure that nothing changes with your rekeyed account.\n\n\nYour transaction amount will be automatically updated to reflect this change. You will be able to preview the transaction in the next step.";

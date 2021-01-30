@@ -11,7 +11,6 @@ import SnapKit
 import SVProgressHUD
 import Magpie
 import Alamofire
-import CoreBluetooth
 
 class SendTransactionPreviewViewController: BaseScrollViewController {
     
@@ -29,7 +28,19 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
         ),
         initialModalSize: .custom(CGSize(width: view.frame.width, height: 354.0))
     )
-    
+
+    private lazy var maxTransactionWarningPresenter: CardModalPresenter = {
+        let screenHeight = UIScreen.main.bounds.height
+        let height = screenHeight <= 586.0 ? screenHeight - 20.0 : 586.0
+        return CardModalPresenter(
+            config: ModalConfiguration(
+                animationMode: .normal(duration: 0.25),
+                dismissMode: .scroll
+            ),
+            initialModalSize: .custom(CGSize(width: view.frame.width, height: height))
+        )
+    }()
+
     private(set) lazy var transactionController: TransactionController = {
         guard let api = api else {
             fatalError("API should be set.")
@@ -197,14 +208,19 @@ extension SendTransactionPreviewViewController: SendTransactionPreviewViewDelega
         if !session.canSignTransaction(for: &account) {
             return
         }
-        
+
         if isClosingToSameAccount() {
             NotificationBanner.showError("title-error".localized, message: "send-transaction-max-same-account-error".localized)
             return
         }
         
         selectedAccount = account
-        displayTransactionPreview()
+
+        if isMaxTransactionFromRekeyedAccount() {
+            displayMaxTransactionWarning()
+        } else {
+            displayTransactionPreview()
+        }
     }
     
     func sendTransactionPreviewViewDidTapCloseButton(_ sendTransactionPreviewView: SendTransactionPreviewView) {
@@ -300,6 +316,40 @@ extension SendTransactionPreviewViewController: SelectAssetViewControllerDelegat
         forAction transactionAction: TransactionAction
     ) {
         configure(forSelected: account, with: assetDetail)
+    }
+}
+
+extension SendTransactionPreviewViewController {
+    private func isMaxTransactionFromRekeyedAccount() -> Bool {
+        guard let account = selectedAccount else {
+            return false
+        }
+
+        let maximumBalanceWarningStorage = MaximumBalanceWarningStorage()
+        return isMaxTransaction && account.isRekeyed() && !maximumBalanceWarningStorage.isMaximumBalanceWarningDisabled()
+    }
+
+    private func displayMaxTransactionWarning() {
+        guard let account = selectedAccount else {
+            return
+        }
+
+        let controller = open(
+            .maximumBalanceWarning(account: account),
+            by: .customPresentWithoutNavigationController(
+                presentationStyle: .custom,
+                transitionStyle: nil,
+                transitioningDelegate: maxTransactionWarningPresenter
+            )
+        ) as? MaximumBalanceWarningViewController
+        controller?.delegate = self
+    }
+}
+
+extension SendTransactionPreviewViewController: MaximumBalanceWarningViewControllerDelegate {
+    func maximumBalanceWarningViewControllerDidConfirmWarning(_ maximumBalanceWarningViewController: MaximumBalanceWarningViewController) {
+        maximumBalanceWarningViewController.dismissScreen()
+        displayTransactionPreview()
     }
 }
 

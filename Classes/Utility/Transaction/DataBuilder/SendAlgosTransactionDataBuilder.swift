@@ -11,6 +11,7 @@ import Foundation
 class SendAlgosTransactionDataBuilder: TransactionDataBuilder {
 
     private let initialSize: Int?
+    private(set) var calculatedTransactionAmount: Int64?
 
     init(params: TransactionParams?, draft: TransactionSendDraft?, initialSize: Int?) {
         self.initialSize = initialSize
@@ -24,23 +25,15 @@ class SendAlgosTransactionDataBuilder: TransactionDataBuilder {
     private func composeAlgosTransactionData() -> Data? {
         guard let params = params,
               let algosTransactionDraft = draft as? AlgosTransactionSendDraft,
-              let amountDoubleValue = algosTransactionDraft.amount,
               let toAddress = algosTransactionDraft.toAccount else {
             delegate?.transactionDataBuilder(self, didFailedComposing: .inapp(TransactionError.other))
             return nil
         }
 
         var isMaxTransaction = algosTransactionDraft.isMaxTransaction
-        var transactionAmount = amountDoubleValue.toMicroAlgos
-
-        if isMaxTransaction {
-            // Check if transaction amount is equal to amount of the sender account when it is max transaction
-            if transactionAmount != algosTransactionDraft.from.amount {
-                isMaxTransaction = false
-            }
-            // Reduce fee from transaction amount
-            transactionAmount -= params.getProjectedTransactionFee(from: initialSize)
-        }
+        updateMaximumTransactionStateIfNeeded(&isMaxTransaction)
+        let transactionAmount = calculateTransactionAmount(isMaxTransaction: isMaxTransaction)
+        self.calculatedTransactionAmount = transactionAmount
 
         if !isValidAddress(toAddress.trimmed) {
             return nil
@@ -63,5 +56,60 @@ class SendAlgosTransactionDataBuilder: TransactionDataBuilder {
         }
 
         return transactionData
+    }
+
+    private func updateMaximumTransactionStateIfNeeded(_ isMaxTransaction: inout Bool) {
+        if isMaxTransaction {
+            // If transaction amount is equal to amount of the sender account when it is max transaction
+            // If an account is rekeyed, it's not allowed to make max transaciton
+            if !hasMaximumAccountAmountForTransaction() || isMaxTransactionFromRekeyedAccount() {
+                isMaxTransaction = false
+            }
+        }
+    }
+
+    private func calculateTransactionAmount(isMaxTransaction: Bool) -> Int64 {
+        guard let params = params,
+              let algosTransactionDraft = draft as? AlgosTransactionSendDraft,
+              var transactionAmount = algosTransactionDraft.amount?.toMicroAlgos else {
+            return 0
+        }
+
+        let feeCalculator = TransactionFeeCalculator(transactionDraft: nil, transactionData: nil, params: params)
+        let minimumAmountForAccount = feeCalculator.calculateMinimumAmount(
+            for: algosTransactionDraft.from,
+            with: .algosTransaction,
+            calculatedFee: params.getProjectedTransactionFee(from: initialSize),
+            isAfterTransaction: true
+        )
+
+        if isMaxTransaction {
+            if isMaxTransactionFromRekeyedAccount() {
+                // Reduce fee and minimum amount possible for the account from transaction amount
+                transactionAmount -= params.getProjectedTransactionFee(from: initialSize) - minimumAmountForAccount
+            } else {
+                // Reduce fee from transaction amount
+                transactionAmount -= params.getProjectedTransactionFee(from: initialSize)
+            }
+        }
+
+        return transactionAmount
+    }
+
+    private func hasMaximumAccountAmountForTransaction() -> Bool {
+        guard let algosTransactionDraft = draft as? AlgosTransactionSendDraft,
+              let transactionAmount = draft?.amount?.toMicroAlgos else {
+            return false
+        }
+
+        return transactionAmount == algosTransactionDraft.from.amount
+    }
+
+    private func isMaxTransactionFromRekeyedAccount() -> Bool {
+        guard let algosTransactionDraft = draft as? AlgosTransactionSendDraft else {
+            return false
+        }
+
+        return algosTransactionDraft.from.isRekeyed() && algosTransactionDraft.isMaxTransaction
     }
 }
