@@ -1,10 +1,5 @@
 //
 //  DBStorable.swift
-//  algorand
-//
-//  Created by Göktuğ Berk Ulu on 3.04.2019.
-//  Copyright © 2019 hippo. All rights reserved.
-//
 
 import CoreData
 import UIKit

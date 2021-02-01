@@ -1,10 +1,5 @@
 //
 //  SendTransactionPreviewViewController+Keyboard.swift
-//  algorand
-//
-//  Created by Göktuğ Berk Ulu on 28.01.2020.
-//  Copyright © 2020 hippo. All rights reserved.
-//
 
 import UIKit
 

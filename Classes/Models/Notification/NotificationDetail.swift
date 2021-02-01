@@ -1,10 +1,5 @@
 //
 //  NotificationDetail.swift
-//  algorand
-//
-//  Created by Göktuğ Berk Ulu on 10.09.2019.
-//  Copyright © 2019 hippo. All rights reserved.
-//
 
 import Magpie
 

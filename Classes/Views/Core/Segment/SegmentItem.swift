@@ -1,10 +1,5 @@
 //
 //  SegmentItem.swift
-//  algorand
-//
-//  Created by Omer Emre Aslan on 31.03.2020.
-//  Copyright © 2020 hippo. All rights reserved.
-//
 
 import BetterSegmentedControl
 
