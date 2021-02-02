@@ -1,10 +1,5 @@
 //
 //  Int16+Byte.swift
-//  algorand
-//
-//  Created by Göktuğ Berk Ulu on 7.12.2020.
-//  Copyright © 2020 hippo. All rights reserved.
-//
 
 import Foundation
 

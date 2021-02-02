@@ -1,10 +1,5 @@
 //
 //  Screen.swift
-//  algorand
-//
-//  Created by Göktuğ Berk Ulu on 14.03.2019.
-//  Copyright © 2019 hippo. All rights reserved.
-//
 
 import UIKit
 
@@ -84,6 +79,7 @@ indirect enum Screen {
     case accountTypeSelection(flow: AccountSetupFlow)
     case ledgerAccountDetail(account: Account, ledgerIndex: Int?, rekeyedAccounts: [Account]?)
     case notificationFilter(flow: NotificationFilterViewController.Flow)
+    case maximumBalanceWarning(account: Account)
 }
 
 extension Screen {

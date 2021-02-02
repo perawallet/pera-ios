@@ -1,16 +1,12 @@
 //
 //  AccountManager.swift
-//  algorand
-//
-//  Created by Omer Emre Aslan on 5.04.2019.
-//  Copyright © 2019 hippo. All rights reserved.
-//
 
 import Foundation
 
 class AccountManager {
     let api: AlgorandAPI
     var currentRound: Int64?
+    var params: TransactionParams?
     let queue: OperationQueue
     
     init(api: AlgorandAPI) {
@@ -105,6 +101,7 @@ extension AccountManager {
             case .failure:
                 self.waitForNextRoundAndFetchAccounts(round: 0, completion: completion)
             case let .success(params):
+                self.params = params
                 self.currentRound = params.lastRound
             }
             

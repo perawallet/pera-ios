@@ -1,10 +1,5 @@
 //
 //  LedgerTroubleshootBluetoothViewController.swift
-//  algorand
-//
-//  Created by Omer Emre Aslan on 24.03.2020.
-//  Copyright © 2020 hippo. All rights reserved.
-//
 
 import UIKit
 import SafariServices

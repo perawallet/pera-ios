@@ -1,13 +1,7 @@
 //
 //  transactionController.swift
-//  algorand
-//
-//  Created by Göktuğ Berk Ulu on 27.08.2019.
-//  Copyright © 2019 hippo. All rights reserved.
-//
 
 import Magpie
-import CoreBluetooth
 
 class TransactionController {
     weak var delegate: TransactionControllerDelegate?
@@ -120,6 +114,9 @@ extension TransactionController {
         switch transactionType {
         case .algosTransaction:
             let builder = SendAlgosTransactionDataBuilder(params: params, draft: algosTransactionDraft, initialSize: initialSize)
+            if let calculatedTransactionAmount = builder.calculatedTransactionAmount?.toAlgos {
+                transactionDraft?.amount = calculatedTransactionAmount
+            }
             composeTransactionData(from: builder)
         case .assetAddition:
             composeTransactionData(from: AddAssetTransactionDataBuilder(params: params, draft: assetTransactionDraft))

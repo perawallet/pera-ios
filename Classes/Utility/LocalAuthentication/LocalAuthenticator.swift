@@ -1,10 +1,5 @@
 //
 //  LocalAuthenticator.swift
-//  algorand
-//
-//  Created by Göktuğ Berk Ulu on 25.03.2019.
-//  Copyright © 2019 hippo. All rights reserved.
-//
 
 import LocalAuthentication
 

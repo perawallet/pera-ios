@@ -1,10 +1,5 @@
 //
 //  TransactionFeeCalculator.swift
-//  algorand
-//
-//  Created by Göktuğ Berk Ulu on 25.01.2021.
-//  Copyright © 2021 hippo. All rights reserved.
-//
 
 import Foundation
 
@@ -13,10 +8,10 @@ class TransactionFeeCalculator: NSObject {
     weak var delegate: TransactionFeeCalculatorDelegate?
 
     private var transactionDraft: TransactionSendDraft?
-    private let transactionData: TransactionData
+    private let transactionData: TransactionData?
     private let params: TransactionParams?
 
-    init(transactionDraft: TransactionSendDraft?, transactionData: TransactionData, params: TransactionParams?) {
+    init(transactionDraft: TransactionSendDraft?, transactionData: TransactionData?, params: TransactionParams?) {
         self.transactionDraft = transactionDraft
         self.transactionData = transactionData
         self.params = params
@@ -24,6 +19,7 @@ class TransactionFeeCalculator: NSObject {
 
     func calculate(for transactionType: TransactionController.TransactionType) -> Int64? {
         guard let params = params,
+              let transactionData = transactionData,
               let signedTransactionData = transactionData.signedTransaction else {
             return nil
         }
@@ -47,7 +43,12 @@ class TransactionFeeCalculator: NSObject {
 
         let transactionAmount = transactionType == .algosTransaction ? transactionDraft?.amount?.toMicroAlgos ?? 0 : 0
 
-        let minimumAmount = calculateMinimumAmountAfterTransaction(for: account, with: transactionType, calculatedFee: calculatedFee)
+        let minimumAmount = calculateMinimumAmount(
+            for: account,
+            with: transactionType,
+            calculatedFee: calculatedFee,
+            isAfterTransaction: true
+        )
         if Int64(account.amount) - transactionAmount < minimumAmount {
             delegate?.transactionFeeCalculator(self, didFailedWith: minimumAmount)
             return false
@@ -56,10 +57,11 @@ class TransactionFeeCalculator: NSObject {
         return true
     }
 
-    func calculateMinimumAmountAfterTransaction(
+    func calculateMinimumAmount(
         for account: Account,
         with transactionType: TransactionController.TransactionType,
-        calculatedFee: Int64
+        calculatedFee: Int64,
+        isAfterTransaction: Bool
     ) -> Int64 {
         var assetCount = account.assetDetails.count + 1
 
@@ -69,11 +71,15 @@ class TransactionFeeCalculator: NSObject {
         case .assetTransaction:
             break
         case .assetAddition:
-            assetCount = account.assetDetails.count + 2
+            if isAfterTransaction {
+                assetCount += 1
+            }
         case .rekey:
             break
         case .assetRemoval:
-            assetCount = account.assetDetails.count
+            if isAfterTransaction {
+                assetCount -= 1
+            }
         }
 
         let minimumAmount = Int64(minimumTransactionMicroAlgosLimit * assetCount) + calculatedFee
