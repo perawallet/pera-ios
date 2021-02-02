@@ -1,10 +1,5 @@
 //
 //  QRView.swift
-//  algorand
-//
-//  Created by Omer Emre Aslan on 28.03.2019.
-//  Copyright © 2019 hippo. All rights reserved.
-//
 
 import UIKit
 
