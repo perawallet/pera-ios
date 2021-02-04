@@ -28,7 +28,7 @@ extension CSVExportable {
         csvString += data.reduce(into: "") { result, dictionary in
             for key in keyValues {
                 if let values = dictionary[key].map({ value -> String in
-                    "\(value),"
+                    "\"\(value)\","
                 }) {
                     result += values
                 }
