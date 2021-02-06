@@ -120,6 +120,8 @@ extension PassphraseBackUpViewController: UIScrollViewDelegate {
     }
 
     private func updateVerifyButtonAfterScroll() {
+        // Enable moving to next screen if the whole screen is displayed by scrolling. 
+
         if isDisplayedAllScreen {
             return
         }
@@ -138,6 +140,7 @@ extension PassphraseBackUpViewController: UIScrollViewDelegate {
 extension PassphraseBackUpViewController {
     @objc
     private func displayScreenshotWarning() {
+        // Display screenshot detection warning if the user takes a screenshot of passphrase
         AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
         
         open(
