@@ -69,14 +69,8 @@ extension PassphraseDisplayViewController: UICollectionViewDataSource {
             for: indexPath) as? PassphraseBackUpCell else {
                 fatalError("Index path is out of bounds")
         }
-        
-        cell.contextView.numberLabel.text = "\(indexPath.item + 1)."
-        
-        guard let mnemonics = mnemonics else {
-            return cell
-        }
-        
-        cell.contextView.phraseLabel.text = mnemonics[indexPath.item]
+
+        cell.bind(PassphraseBackUpOrderViewModel(mnemonics: mnemonics, index: indexPath.item))
         return cell
     }
 }

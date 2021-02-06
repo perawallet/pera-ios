@@ -155,13 +155,7 @@
 "asset-you-already-own-message" = "Sie besitzen dieses Asset nicht";
 
 /* (No Comment) */
-"back-up-phrase-button-title" = "Wiederherstellungspassphrase verifizieren";
-
-/* (No Comment) */
 "back-up-phrase-qr" = "QR-Code anzeigen";
-
-/* (No Comment) */
-"back-up-phrase-warning" = "Stellen Sie bitte sicher, dass Sie diese Konto-Passphrase gut aufbewahren. Dies ist die einzige Möglichkeit, um Ihr Algorand-Konto wiederherzustellen.";
 
 /* (No Comment) */
 "ble-error-bluetooth-title" = "Bluetooth-Fehler";
@@ -528,9 +522,6 @@
 
 /* MARK: Login */
 "login-title" = "Entsperren";
-
-/* MARK: Passphrase Back Up */
-"new-account-title" = "Bitte bewahren Sie diese Passphrase gut auf";
 
 /* (No Comment) */
 "node-settings-action-delete-title" = "Löschen";

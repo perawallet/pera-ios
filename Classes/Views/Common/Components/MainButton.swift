@@ -23,6 +23,7 @@ extension MainButton {
         titleLabel?.textAlignment = .center
         setTitleColor(Colors.ButtonText.primary, for: .normal)
         setTitle(title, for: .normal)
+        setBackgroundImage(img("bg-main-button-disabled"), for: .disabled)
         setBackgroundImage(img("bg-main-button"), for: .normal)
         titleLabel?.font = UIFont.font(withWeight: .semiBold(size: 16.0))
     }

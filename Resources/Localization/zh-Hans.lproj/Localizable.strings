@@ -155,13 +155,7 @@
 "asset-you-already-own-message" = "您已拥有该资产";
 
 /* (No Comment) */
-"back-up-phrase-button-title" = "验证恢复助记词";
-
-/* (No Comment) */
 "back-up-phrase-qr" = "显示二维码";
-
-/* (No Comment) */
-"back-up-phrase-warning" = "请确保您备份本账户助记词。这是您恢复Algorand账户的唯一途径。";
 
 /* (No Comment) */
 "ble-error-bluetooth-title" = "蓝牙错误";
@@ -528,9 +522,6 @@
 
 /* MARK: Login */
 "login-title" = "解锁";
-
-/* MARK: Passphrase Back Up */
-"new-account-title" = "备份助记词";
 
 /* (No Comment) */
 "node-settings-action-delete-title" = "删除";
