@@ -17,27 +17,37 @@ class AccountNameSetupView: BaseView {
         accountNameInputView.inputTextField.autocorrectionType = .no
         return accountNameInputView
     }()
-    
-    private(set) lazy var nextButton = MainButton(title: "title-next".localized)
+
+    private lazy var descriptionLabel: UILabel = {
+        UILabel()
+            .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
+            .withTextColor(Colors.Text.secondary)
+            .withLine(.contained)
+            .withAlignment(.left)
+            .withText("account-name-setup-description".localized)
+    }()
+
+    private(set) lazy var nextButton = MainButton(title: "account-name-setup-finish".localized)
     
     override func linkInteractors() {
         accountNameInputView.delegate = self
     }
     
     override func setListeners() {
-        nextButton.addTarget(self, action: #selector(notifyDelegateToNextButtonTapped), for: .touchUpInside)
+        nextButton.addTarget(self, action: #selector(notifyDelegateToFinishAccountCreation), for: .touchUpInside)
     }
     
     override func prepareLayout() {
         setupAccountNameInputViewLayout()
+        setupDescriptionLabelLayout()
         setupNextButtonLayout()
     }
 }
 
 extension AccountNameSetupView {
     @objc
-    func notifyDelegateToNextButtonTapped() {
-        delegate?.accountNameSetupViewDidTapNextButton(self)
+    func notifyDelegateToFinishAccountCreation() {
+        delegate?.accountNameSetupViewDidFinishAccountCreation(self)
     }
 }
 
@@ -47,7 +57,16 @@ extension AccountNameSetupView {
         
         accountNameInputView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.top.equalToSuperview().inset(layout.current.topInset)
+            make.top.equalToSuperview().inset(layout.current.verticalInset)
+        }
+    }
+
+    private func setupDescriptionLabelLayout() {
+        addSubview(descriptionLabel)
+
+        descriptionLabel.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.top.equalTo(accountNameInputView.snp.bottom).offset(layout.current.verticalInset)
         }
     }
 
@@ -55,8 +74,8 @@ extension AccountNameSetupView {
         addSubview(nextButton)
         
         nextButton.snp.makeConstraints { make in
-            make.top.equalTo(accountNameInputView.snp.bottom).offset(layout.current.buttonTopInset)
-            make.bottom.lessThanOrEqualToSuperview().inset(layout.current.buttonBottomInset)
+            make.top.equalTo(descriptionLabel.snp.bottom).offset(layout.current.buttonVerticalInset)
+            make.bottom.lessThanOrEqualToSuperview().inset(layout.current.verticalInset + safeAreaBottom)
             make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
             make.centerX.equalToSuperview()
         }
@@ -71,9 +90,8 @@ extension AccountNameSetupView {
 
 extension AccountNameSetupView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let topInset: CGFloat = 36.0
-        let buttonBottomInset: CGFloat = 15.0
-        let buttonTopInset: CGFloat = 24.0
+        let verticalInset: CGFloat = 20.0
+        let buttonVerticalInset: CGFloat = 60.0
         let horizontalInset: CGFloat = 20.0
     }
 }
@@ -85,6 +103,6 @@ extension AccountNameSetupView: InputViewDelegate {
 }
 
 protocol AccountNameSetupViewDelegate: class {
-    func accountNameSetupViewDidTapNextButton(_ accountNameSetupView: AccountNameSetupView)
+    func accountNameSetupViewDidFinishAccountCreation(_ accountNameSetupView: AccountNameSetupView)
     func accountNameSetupViewDidChangeValue(_ accountNameSetupView: AccountNameSetupView)
 }
