@@ -428,6 +428,7 @@ extension TransactionsViewController: CSVExportable {
             "transaction-download-from".localized,
             "transaction-detail-fee".localized,
             "transaction-detail-round".localized,
+            "transaction-detail-date".localized,
             "title-id".localized,
             "transaction-detail-note".localized
         ]
@@ -471,13 +472,14 @@ extension TransactionsViewController: CSVExportable {
         for transaction in transactions {
             let transactionData: [String: Any] = [
                 "transaction-detail-amount".localized: getFormattedAmount(transaction.getAmount()),
-                "transaction-detail-reward".localized: transaction.senderRewards ?? " ",
+                "transaction-detail-reward".localized: transaction.senderRewards?.toAlgos ?? " ",
                 "transaction-detail-close-amount".localized: getFormattedAmount(transaction.getCloseAmount()),
                 "transaction-download-close-to".localized: transaction.getCloseAddress() ?? " ",
                 "transaction-download-to".localized: transaction.getReceiver() ?? " ",
                 "transaction-download-from".localized: transaction.sender,
-                "transaction-detail-fee".localized: transaction.fee,
+                "transaction-detail-fee".localized: transaction.fee.toAlgos.toAlgosStringForLabel ?? " ",
                 "transaction-detail-round".localized: transaction.lastRound,
+                "transaction-detail-date".localized: transaction.date?.toFormat("MMMM dd, yyyy - HH:mm") ?? " ",
                 "title-id".localized: transaction.id,
                 "transaction-detail-note".localized: transaction.noteRepresentation() ?? " "
             ]
