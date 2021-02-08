@@ -346,6 +346,8 @@ class Router {
             viewController = NotificationFilterViewController(flow: flow, configuration: configuration)
         case let .maximumBalanceWarning(account):
             viewController = MaximumBalanceWarningViewController(account: account, configuration: configuration)
+        case .screenshotWarning:
+            viewController = ScreenshotWarningViewController(configuration: configuration)
         }
         
         return viewController as? T

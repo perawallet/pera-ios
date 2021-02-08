@@ -155,13 +155,7 @@
 "asset-you-already-own-message" = "Ya posees este activo";
 
 /* (No Comment) */
-"back-up-phrase-button-title" = "Verificar la frase secreta de recuperación";
-
-/* (No Comment) */
 "back-up-phrase-qr" = "Mostrar QR";
-
-/* (No Comment) */
-"back-up-phrase-warning" = "Asegúrate de respaldar la frase secreta de esta cuenta. Es la única manera de recuperar tu cuenta de Algorand.";
 
 /* (No Comment) */
 "ble-error-bluetooth-title" = "Error con Bluetooth";
@@ -528,9 +522,6 @@
 
 /* MARK: Login */
 "login-title" = "Desbloquear";
-
-/* MARK: Passphrase Back Up */
-"new-account-title" = "Respaldar frase secreta";
 
 /* (No Comment) */
 "node-settings-action-delete-title" = "Eliminar";

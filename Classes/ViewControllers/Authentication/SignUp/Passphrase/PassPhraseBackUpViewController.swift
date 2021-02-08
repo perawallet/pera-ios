@@ -2,50 +2,71 @@
 //  PassphraseBackUpViewController.swift
 
 import UIKit
+import AVFoundation
 
 class PassphraseBackUpViewController: BaseScrollViewController {
     
-    var mnemonics: [String]? {
-        guard let session = self.session else {
-            return nil
-        }
-        let mnemonics = session.mnemonics(forAccount: address)
-        return mnemonics
-    }
-    
+    private var mnemonics: [String]?
     private var address: String
     private var maxCellWidth: CGFloat?
+
+    private var isDisplayedAllScreen = false
     
     private lazy var passphraseView = PassphraseView()
+
+    private lazy var bottomModalPresenter = CardModalPresenter(
+        config: ModalConfiguration(
+            animationMode: .normal(duration: 0.25),
+            dismissMode: .backgroundTouch
+        ),
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: 338.0))
+    )
     
     init(address: String, configuration: ViewControllerConfiguration) {
         self.address = address
         super.init(configuration: configuration)
+        mnemonics = session?.mnemonics(forAccount: address)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         generatePrivateKey()
     }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        updateVerifyButtonAfterScroll()
+    }
     
     override func configureAppearance() {
         super.configureAppearance()
-        title = "new-account-title".localized
+        setTertiaryBackgroundColor()
+        view.backgroundColor = Colors.Background.tertiary
+        scrollView.backgroundColor = Colors.Background.tertiary
+        contentView.backgroundColor = Colors.Background.tertiary
+        passphraseView.verifyButton.isEnabled = false
     }
     
     override func prepareLayout() {
         super.prepareLayout()
         setupPassphraseViewLayout()
     }
+
+    override func setListeners() {
+        super.setListeners()
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(displayScreenshotWarning),
+            name: UIApplication.userDidTakeScreenshotNotification,
+            object: nil
+        )
+    }
     
     override func linkInteractors() {
         passphraseView.delegate = self
-        passphraseView.passphraseCollectionView.delegate = self
-        passphraseView.passphraseCollectionView.dataSource = self
-    }
-    
-    func passphraseViewDidTapActionButton(_ passphraseView: PassphraseView) {
-        open(.passphraseVerify, by: .push)
+        passphraseView.setDelegate(self)
+        passphraseView.setDataSource(self)
+        scrollView.delegate = self
     }
 }
 
@@ -61,27 +82,19 @@ extension PassphraseBackUpViewController {
 
 extension PassphraseBackUpViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let mnemonics = mnemonics else {
-            return 0
-        }
-        return mnemonics.count
+        return mnemonics?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(
+        if let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: PassphraseBackUpCell.reusableIdentifier,
-            for: indexPath) as? PassphraseBackUpCell else {
-                fatalError("Index path is out of bounds")
-        }
-        
-        cell.contextView.numberLabel.text = "\(indexPath.item + 1)."
-        
-        guard let mnemonics = mnemonics else {
+            for: indexPath
+        ) as? PassphraseBackUpCell {
+            cell.bind(PassphraseBackUpOrderViewModel(mnemonics: mnemonics, index: indexPath.item))
             return cell
         }
-        
-        cell.contextView.phraseLabel.text = mnemonics[indexPath.item]
-        return cell
+
+        fatalError("Index path is out of bounds")
     }
 }
 
@@ -91,30 +104,53 @@ extension PassphraseBackUpViewController: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        return CGSize(width: collectionView.frame.width / 3.0, height: 22.0)
+        return CGSize(width: collectionView.frame.width / 2.0, height: 24.0)
     }
 }
 
 extension PassphraseBackUpViewController: PassphraseBackUpViewDelegate {
-    func passphraseViewDidTapShareButton(_ passphraseView: PassphraseView) {
-        let mnemonics = self.session?.mnemonics(forAccount: address) ?? []
-        
-        let sharedItem = [mnemonics.joined(separator: " ")]
-        let activityViewController = UIActivityViewController(activityItems: sharedItem, applicationActivities: nil)
-        activityViewController.excludedActivityTypes = [UIActivity.ActivityType.addToReadingList]
-        
-        if let navigationController = navigationController {
-            navigationController.present(activityViewController, animated: true, completion: nil)
-        } else {
-            present(activityViewController, animated: true, completion: nil)
+    func passphraseViewDidTapActionButton(_ passphraseView: PassphraseView) {
+        open(.passphraseVerify, by: .push)
+    }
+}
+
+extension PassphraseBackUpViewController: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        updateVerifyButtonAfterScroll()
+    }
+
+    private func updateVerifyButtonAfterScroll() {
+        // Enable moving to next screen if the whole screen is displayed by scrolling. 
+
+        if isDisplayedAllScreen {
+            return
+        }
+
+        if isVerifyButtonDisplayed() {
+            isDisplayedAllScreen = true
+            passphraseView.verifyButton.isEnabled = true
         }
     }
-    
-    func passphraseViewDidTapQrButton(_ passphraseView: PassphraseView) {
-        let mnemonics = self.session?.mnemonics(forAccount: address) ?? []
-        let mnemonicText = mnemonics.joined(separator: " ")
-        let draft = QRCreationDraft(address: address, mode: .mnemonic, mnemonic: mnemonicText)
-        open(.qrGenerator(title: "qr-creation-title".localized, draft: draft), by: .present)
+
+    private func isVerifyButtonDisplayed() -> Bool {
+        return scrollView.bounds.contains(passphraseView.verifyButton.frame)
+    }
+}
+
+extension PassphraseBackUpViewController {
+    @objc
+    private func displayScreenshotWarning() {
+        // Display screenshot detection warning if the user takes a screenshot of passphrase
+        AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
+        
+        open(
+            .screenshotWarning,
+            by: .customPresentWithoutNavigationController(
+                presentationStyle: .custom,
+                transitionStyle: nil,
+                transitioningDelegate: bottomModalPresenter
+            )
+        )
     }
 }
 

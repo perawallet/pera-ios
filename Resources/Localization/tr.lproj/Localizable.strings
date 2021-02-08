@@ -155,13 +155,7 @@
 "asset-you-already-own-message" = "Zaten bu varlığa sahipsiniz";
 
 /* (No Comment) */
-"back-up-phrase-button-title" = "Kurtarma Parolasını Doğrula";
-
-/* (No Comment) */
 "back-up-phrase-qr" = "QR Kodunu Göster";
-
-/* (No Comment) */
-"back-up-phrase-warning" = "Bu hesap parolasını yedeklediğinizden emin olun. Algorand hesabınızı kurtarmanın tek yolu budur.";
 
 /* (No Comment) */
 "ble-error-bluetooth-title" = "Bluetooth Hatası";
@@ -528,9 +522,6 @@
 
 /* MARK: Login */
 "login-title" = "Kilidi aç";
-
-/* MARK: Passphrase Back Up */
-"new-account-title" = "Parolayı Yedekle";
 
 /* (No Comment) */
 "node-settings-action-delete-title" = "Sil";

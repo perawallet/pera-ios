@@ -155,13 +155,7 @@
 "asset-you-already-own-message" = "이미 보유 중인 자산입니다";
 
 /* (No Comment) */
-"back-up-phrase-button-title" = "복구 비밀문구 확인";
-
-/* (No Comment) */
 "back-up-phrase-qr" = "QR 표시";
-
-/* (No Comment) */
-"back-up-phrase-warning" = "계정 비밀문구를 백업했는지 확인하시기 바랍니다. 알고랜드 계정은 비밀문구로만 복구하실 수 있습니다.";
 
 /* (No Comment) */
 "ble-error-bluetooth-title" = "Bluetooth 오류";
@@ -528,9 +522,6 @@
 
 /* MARK: Login */
 "login-title" = "잠금 해제";
-
-/* MARK: Passphrase Back Up */
-"new-account-title" = "비밀문구 백업";
 
 /* (No Comment) */
 "node-settings-action-delete-title" = "삭제";
