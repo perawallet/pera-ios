@@ -10,7 +10,7 @@ class PassphraseBackUpOrderView: BaseView {
     private lazy var numberLabel: UILabel = {
         UILabel()
             .withFont(UIFont.font(withWeight: .regular(size: 12.0)))
-            .withTextColor(Colors.PassphraseBackUpOrder.numberColor)
+            .withTextColor(Colors.General.success)
             .withAlignment(.left)
     }()
     
@@ -64,12 +64,6 @@ extension PassphraseBackUpOrderView {
     func bind(_ viewModel: PassphraseBackUpOrderViewModel) {
         numberLabel.text = viewModel.number
         phraseLabel.text = viewModel.phrase
-    }
-}
-
-extension Colors {
-    fileprivate enum PassphraseBackUpOrder {
-        static let numberColor = color("passphraseBackUpOrderNumberColor")
     }
 }
 
