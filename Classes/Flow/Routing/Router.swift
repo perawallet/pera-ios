@@ -348,6 +348,8 @@ class Router {
             viewController = MaximumBalanceWarningViewController(account: account, configuration: configuration)
         case .screenshotWarning:
             viewController = ScreenshotWarningViewController(configuration: configuration)
+        case let .animatedTutorial(tutorial, isActionable):
+            viewController = AnimatedTutorialViewController(tutorial: tutorial, isActionable: isActionable, configuration: configuration)
         }
         
         return viewController as? T
