@@ -223,7 +223,7 @@ extension AccountsViewController: AccountsViewDelegate {
     
     func accountsViewDidTapAddButton(_ accountsView: AccountsView) {
         open(
-            .accountTypeSelection(flow: .addNewAccount(mode: nil)),
+            .welcome(flow: .addNewAccount(mode: nil)),
             by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
         )
     }
