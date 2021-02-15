@@ -36,13 +36,16 @@
 
 // MARK: Account Type Selection
 "account-type-choose-title" = "Choose Account Type";
+"account-type-selection-add" = "Add account";
+"account-type-selection-add-detail" = "I want to create a new Algorand Account";
 "account-type-selection-create" = "Create New Account";
-"account-type-selection-create-detail" = "Generate an account with a new address and passphrase";
-"account-type-selection-watch-detail" = "Monitor transactions of an account using just its address";
-"account-type-selection-recover" = "Recover From Passphrase";
-"account-type-selection-recover-detail" = "Recover an account with a 25-word passphrase";
+"account-type-selection-create-detail" = "Create a new Algorand Account";
+"account-type-selection-watch-detail" = "Follow the account transactions";
+"account-type-selection-recover" = "Recover with passphrase";
+"account-type-selection-recover-detail" = "I already have an account";
 "account-type-selection-ledger" = "Pair Ledger Account";
-"account-type-selection-ledger-detail" = "Pair an account that is backed by a Ledger Hardware wallet";
+"account-type-selection-ledger-detail" = "Use your Ledger Account from the Algorand App";
+"account-welcome-wallet-title" = "Welcome to the\nAlgorand Wallet";
 
 // MARK: Introduction
 
