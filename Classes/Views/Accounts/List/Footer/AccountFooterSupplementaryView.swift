@@ -21,3 +21,21 @@ extension AccountFooterSupplementaryView: AccountFooterViewDelegate {
 protocol AccountFooterSupplementaryViewDelegate: class {
     func accountFooterSupplementaryViewDidTapAddAssetButton(_ accountFooterSupplementaryView: AccountFooterSupplementaryView)
 }
+
+class EmptyFooterSupplementaryView: BaseSupplementaryView<EmptyFooterView> {
+
+    override func configureAppearance() {
+        backgroundColor = Colors.Background.secondary
+        layer.cornerRadius = 12.0
+        layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+    }
+}
+
+class EmptyFooterView: BaseView {
+
+    override func configureAppearance() {
+        backgroundColor = Colors.Background.secondary
+        layer.cornerRadius = 12.0
+        layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+    }
+}

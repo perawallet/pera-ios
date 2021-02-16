@@ -165,6 +165,22 @@ extension AccountsDataSource {
             
             return headerView
         } else {
+            guard let account = accounts[safe: indexPath.section] else {
+                fatalError("Unexpected element kind")
+            }
+
+            if account.isWatchAccount() {
+                guard let footerView = collectionView.dequeueReusableSupplementaryView(
+                    ofKind: kind,
+                    withReuseIdentifier: EmptyFooterSupplementaryView.reusableIdentifier,
+                    for: indexPath
+                ) as? EmptyFooterSupplementaryView else {
+                    fatalError("Unexpected element kind")
+                }
+
+                return footerView
+            }
+
             guard let footerView = collectionView.dequeueReusableSupplementaryView(
                 ofKind: kind,
                 withReuseIdentifier: AccountFooterSupplementaryView.reusableIdentifier,
@@ -287,6 +303,14 @@ extension AccountsDataSource: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         referenceSizeForFooterInSection section: Int
     ) -> CGSize {
+        if let account = accounts[safe: section],
+           account.isWatchAccount() {
+            return CGSize(
+                width: UIScreen.main.bounds.width - layout.current.defaultSectionInsets.left - layout.current.defaultSectionInsets.right,
+                height: layout.current.emptyFooterHeight
+            )
+        }
+
         return CGSize(
             width: UIScreen.main.bounds.width - layout.current.defaultSectionInsets.left - layout.current.defaultSectionInsets.right,
             height: layout.current.multiItemHeight
@@ -298,6 +322,7 @@ extension AccountsDataSource {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let defaultSectionInsets = UIEdgeInsets(top: 0.0, left: 20.0, bottom: 0.0, right: 20.0)
         let itemHeight: CGFloat = 52.0
+        let emptyFooterHeight: CGFloat = 24.0
         let multiItemHeight: CGFloat = 72.0
     }
 }

@@ -10,6 +10,8 @@ class SelectAssetViewController: BaseViewController {
     weak var delegate: SelectAssetViewControllerDelegate?
     
     private lazy var selectAssetView = SelectAssetView()
+
+    private lazy var emptyStateView = SearchEmptyView()
     
     private var accounts = [Account]()
     
@@ -44,6 +46,7 @@ class SelectAssetViewController: BaseViewController {
         view.backgroundColor = Colors.Background.tertiary
         setTertiaryBackgroundColor()
         navigationItem.title = "send-select-asset".localized
+        emptyStateView.setTitle("asset-not-found-title".localized)
     }
     
     override func setListeners() {

@@ -35,6 +35,11 @@ class AccountsView: BaseView {
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
             withReuseIdentifier: AccountFooterSupplementaryView.reusableIdentifier
         )
+        collectionView.register(
+            EmptyFooterSupplementaryView.self,
+            forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
+            withReuseIdentifier: EmptyFooterSupplementaryView.reusableIdentifier
+        )
         
         return collectionView
     }()

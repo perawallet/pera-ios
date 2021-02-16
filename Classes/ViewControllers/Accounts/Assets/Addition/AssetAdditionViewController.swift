@@ -36,6 +36,8 @@ class AssetAdditionViewController: BaseViewController, TestNetTitleDisplayable {
         }
         return TransactionController(api: api)
     }()
+
+    private lazy var contentStateView = ContentStateView()
     
     private lazy var assetAdditionView = AssetAdditionView()
     
