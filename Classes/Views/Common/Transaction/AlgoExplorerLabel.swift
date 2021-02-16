@@ -30,7 +30,7 @@ class AlgoExplorerLabel: UILabel {
 extension AlgoExplorerLabel {
     private func setupInteractions() {
         isUserInteractionEnabled = true
-        addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(showMenuController)))
+        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(showMenuController)))
     }
 
     private func setupMenuItems() {
