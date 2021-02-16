@@ -49,8 +49,6 @@ class AccountTypeViewModel {
     
     private func setNewTitle(for accountSetupMode: AccountSetupMode) {
         switch accountSetupMode {
-        case .watch:
-            isNew = true
         default:
             isNew = false
         }
