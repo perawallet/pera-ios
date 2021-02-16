@@ -1281,3 +1281,15 @@
 
 /* (No Comment) */
 "watch-account-input-placeholder" = "Adresse einfügen oder QR-Code scannen";
+
+/* (No Comment) */
+"maximum-balance-warning-title" = "Maximales Guthaben";
+
+/* (No Comment) */
+"title-continue" = "Fortfahren";
+
+/* (No Comment) */
+"title-dont-show-again" = "Diese Meldung nicht erneut anzeigen";
+
+/* (No Comment) */
+"maximum-balance-warning-description" = "Das Senden Ihres maximalen Guthabens auf einem Konto nach dem Rekeying erfordert, dass Sie ein Mindestguthaben von %@ Algos aufrechterhalten. Damit soll sichergestellt werden, dass sich bei Ihrem Konto nach dem Rekeying nichts ändert.\n\n\nIhr Transaktionsbetrag wird automatisch aktualisiert, um diese Änderung widerzuspiegeln. Sie können die Transaktion im nächsten Schritt in der Vorschau anzeigen.";

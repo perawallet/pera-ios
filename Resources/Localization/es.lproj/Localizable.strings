@@ -1281,3 +1281,15 @@
 
 /* (No Comment) */
 "watch-account-input-placeholder" = "Pegar dirección o escanear QR";
+
+/* (No Comment) */
+"maximum-balance-warning-title" = "Saldo máximo";
+
+/* (No Comment) */
+"title-continue" = "Continuar";
+
+/* (No Comment) */
+"title-dont-show-again" = "No volver a mostrar";
+
+/* (No Comment) */
+"maximum-balance-warning-description" = "Para poder enviar el saldo máximo desde una cuenta a la que se le cambió la clave, debes mantener un saldo mínimo de %@ Algos. Esto sirve para asegurarte de que nada cambie en tu cuenta con clave nueva.\n\n\nEl monto de tu transacción se actualizará automáticamente para reflejar este cambio. Obtendrás una vista previa de la transacción en el siguiente paso.";

@@ -1281,3 +1281,15 @@
 
 /* (No Comment) */
 "watch-account-input-placeholder" = "Adresi Yapıştır veya QR Kodunu Tara";
+
+/* (No Comment) */
+"maximum-balance-warning-title" = "Maksimum Bakiye";
+
+/* (No Comment) */
+"title-continue" = "Devam";
+
+/* (No Comment) */
+"title-dont-show-again" = "Bir daha gösterme";
+
+/* (No Comment) */
+"maximum-balance-warning-description" = "Yeniden anahtarlanan bir hesaptan maksimum bakiyenizi göndermeniz, hesapta en az %@ Algo tutmanızı gerektirmektedir. Bu işlem, yeniden anahtarlanan hesabınızda herhangi bir şeyin değişmemesini sağlamak içindir.\n\n\nİşlem tutarınız bu değişikliği yansıtması otomatik olarak güncellenecektir. İşlemin önizlemesini bir sonraki adımda görüntüleyebileceksiniz.";

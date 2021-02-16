@@ -1281,3 +1281,15 @@
 
 /* (No Comment) */
 "watch-account-input-placeholder" = "주소를 붙여넣거나 QR 코드를 스캔하세요";
+
+/* (No Comment) */
+"maximum-balance-warning-title" = "최대 잔액";
+
+/* (No Comment) */
+"title-continue" = "계속 진행";
+
+/* (No Comment) */
+"title-dont-show-again" = "다시 표시하지 않음";
+
+/* (No Comment) */
+"maximum-balance-warning-description" = "키 재지정(rekey) 계정에서 최대 잔액을 보내려면 최소 잔액(%@)을 유지하셔야 합니다. 키를 재지정한 계정에 변동 사항이 없도록 하기 위한 조치이니 양해 부탁드립니다.\n\n\n본 변동 사항을 반영하여 트랜잭션 금액을 자동으로 업데이트합니다. 다음 단계에서 트랜잭션 내용을 미리 볼 수 있습니다.";

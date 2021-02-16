@@ -1281,3 +1281,15 @@
 
 /* (No Comment) */
 "watch-account-input-placeholder" = "Incolla indirizzo o Scansiona QR";
+
+/* (No Comment) */
+"maximum-balance-warning-title" = "Saldo massimo";
+
+/* (No Comment) */
+"title-continue" = "Continua";
+
+/* (No Comment) */
+"title-dont-show-again" = "Non visualizzare più questo messaggio";
+
+/* (No Comment) */
+"maximum-balance-warning-description" = "Per l'invio del tuo saldo massimo su un conto ricodificato occorre che tu disponga di un saldo minimo di %@ Algo. Questo è per garantite che non vi siano variazioni nel tuo conto ricodificato.\n\n\nL'importo della transazione verrà automaticamente aggiornato per riflettere questa variazione. Potrai vedere l'anteprima della transazione nel passo successivo.";
