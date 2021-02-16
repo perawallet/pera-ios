@@ -1,4 +1,9 @@
-// Copyright 2019 Algorand, Inc.
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+<key>FILEHEADER</key>
+<string>// Copyright 2019 Algorand, Inc.
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,15 +18,8 @@
 // limitations under the License.
 
 //
-//  AlgorandNode.swift
+//   ___FILENAME___
+</string>
+</dict>
+</plist>
 
-import Foundation
-
-struct AlgorandNode {
-    let algodAddress: String
-    let indexerAddress: String
-    let algodToken: String
-    let indexerToken: String
-    let name: String
-    let network: AlgorandAPI.BaseNetwork
-}
