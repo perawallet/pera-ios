@@ -25,12 +25,8 @@ class PassphraseBackUpViewController: BaseScrollViewController {
     init(address: String, configuration: ViewControllerConfiguration) {
         self.address = address
         super.init(configuration: configuration)
-        mnemonics = session?.mnemonics(forAccount: address)
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
         generatePrivateKey()
+        mnemonics = session?.mnemonics(forAccount: address)
     }
 
     override func viewDidAppear(_ animated: Bool) {

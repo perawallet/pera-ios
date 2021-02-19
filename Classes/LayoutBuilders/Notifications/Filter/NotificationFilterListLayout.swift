@@ -5,8 +5,6 @@ import UIKit
 
 class NotificationFilterListLayout: NSObject {
 
-    weak var delegate: LedgerAccountSelectionListLayoutDelegate?
-
     private let layout = Layout<LayoutConstants>()
 
     private weak var dataSource: NotificationFilterDataSource?

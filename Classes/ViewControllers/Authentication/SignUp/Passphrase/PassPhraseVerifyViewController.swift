@@ -13,25 +13,33 @@ class PassphraseVerifyViewController: BaseScrollViewController {
         initialModalSize: .custom(CGSize(width: view.frame.width, height: 358.0))
     )
     
-    private lazy var passphraseViewModel: PassphraseViewModel? = {
+    private lazy var layoutBuilder: PassphraseVerifyLayoutBuilder = {
+        return PassphraseVerifyLayoutBuilder(dataSource: dataSource)
+    }()
+
+    private lazy var dataSource: PassphraseVerifyDataSource = {
         if let privateKey = session?.privateData(for: "temp") {
-            return PassphraseViewModel(privateKey: privateKey)
+            return PassphraseVerifyDataSource(privateKey: privateKey)
         }
-        return nil
+        fatalError("Private key should be set.")
     }()
     
-    private(set) lazy var passphraseVerifyView = PassphraseVerifyView()
+    private lazy var passphraseVerifyView = PassphraseVerifyView()
     
     override func configureAppearance() {
         super.configureAppearance()
-        updatePassPhraseLabel()
+        setTertiaryBackgroundColor()
+        view.backgroundColor = Colors.Background.tertiary
+        scrollView.backgroundColor = Colors.Background.tertiary
+        passphraseVerifyView.setVerificationEnabled(false)
     }
     
     override func linkInteractors() {
         super.linkInteractors()
-        passphraseVerifyView.passphraseCollectionView.delegate = self
-        passphraseVerifyView.passphraseCollectionView.dataSource = self
-        (passphraseVerifyView.passphraseCollectionView.collectionViewLayout as? LeftAlignedCollectionViewFlowLayout)?.delegate = self
+        passphraseVerifyView.setDelegate(layoutBuilder)
+        passphraseVerifyView.setDataSource(dataSource)
+        passphraseVerifyView.delegate = self
+        dataSource.delegate = self
     }
     
     override func prepareLayout() {
@@ -43,122 +51,38 @@ class PassphraseVerifyViewController: BaseScrollViewController {
 extension PassphraseVerifyViewController {
     private func setupPassphraseViewLayout() {
         contentView.addSubview(passphraseVerifyView)
-        
-        passphraseVerifyView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.top.equalToSuperview()
-            make.bottom.equalToSuperview()
-        }
+        passphraseVerifyView.pinToSuperview()
     }
 }
 
-extension PassphraseVerifyViewController {
-    private func updatePassPhraseLabel() {
-        let currentIndex = passphraseViewModel?.currentIndex.advanced(by: 1) ?? 1
-        let currentIndexValue = passphraseViewModel?.currentIndexValue().advanced(by: 1) ?? 0
-        
-        let currentIndexString: String
-        
-        switch currentIndexValue {
-        case 1:
-            currentIndexString = "passphrase-question-first".localized
-        case 2:
-            currentIndexString = "passphrase-question-second".localized
-        case 3:
-            currentIndexString = "passphrase-question-third".localized
-        default:
-            currentIndexString = "passphrase-question-another".localized(params: "\(currentIndexValue)")
+extension PassphraseVerifyViewController: PassphraseVerifyDataSourceDelegate {
+    func passphraseVerifyDataSource(_ passphraseVerifyDataSource: PassphraseVerifyDataSource, isValidated: Bool) {
+        passphraseVerifyView.setVerificationEnabled(isValidated)
+    }
+}
+
+extension PassphraseVerifyViewController: PassphraseVerifyViewDelegate {
+    func passphraseVerifyViewDidVerifyPassphrase(_ passphraseVerifyView: PassphraseVerifyView) {
+        openValidatedBottomInformation()
+    }
+
+    private func openValidatedBottomInformation() {
+        let configurator = BottomInformationBundle(
+            title: "pass-phrase-verify-pop-up-title".localized,
+            image: img("img-green-checkmark"),
+            explanation: "pass-phrase-verify-pop-up-explanation".localized,
+            actionTitle: "title-accept".localized,
+            actionImage: img("bg-main-button")) {
+                self.open(.accountNameSetup, by: .push)
         }
-        
-        let titleText = "passphrase-qeustion-counter".localized(
-            params: "\(currentIndex)",
-            "\(passphraseViewModel?.numberOfValidations ?? 0)"
+
+        open(
+            .bottomInformation(mode: .confirmation, configurator: configurator),
+            by: .customPresentWithoutNavigationController(
+                presentationStyle: .custom,
+                transitionStyle: nil,
+                transitioningDelegate: bottomModalPresenter
+            )
         )
-        let subtitleText = "passphrase-select-n-word".localized(params: currentIndexString)
-        
-        title = titleText
-        passphraseVerifyView.questionTitleLabel.text = subtitleText
-    }
-}
-
-extension PassphraseVerifyViewController: UICollectionViewDelegate, UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return passphraseViewModel?.numberOfMnemonic() ?? 0
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let mnemonic = passphraseViewModel?.mnemonic(atIndex: indexPath.item),
-            let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: PassphraseCollectionViewCell.reusableIdentifier,
-            for: indexPath) as? PassphraseCollectionViewCell else {
-                fatalError("Index path is out of bounds")
-        }
-        
-        cell.contextView.phraseLabel.text = mnemonic
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let viewModel = passphraseViewModel,
-            let mnemonic = viewModel.mnemonic(atIndex: indexPath.item),
-            let cell = collectionView.cellForItem(at: indexPath) as? PassphraseCollectionViewCell else {
-                fatalError("Index path is out of bounds")
-        }
-        
-        let isCorrect = viewModel.checkMnemonic(mnemonic)
-        
-        if isCorrect {
-            passphraseVerifyView.setWrongChoiceLabelHidden(true)
-            cell.contextView.setMode(.correct)
-            
-            if viewModel.currentIndex == viewModel.numberOfValidations - 1 {
-                let configurator = BottomInformationBundle(
-                    title: "pass-phrase-verify-pop-up-title".localized,
-                    image: img("img-green-checkmark"),
-                    explanation: "pass-phrase-verify-pop-up-explanation".localized,
-                    actionTitle: "title-accept".localized,
-                    actionImage: img("bg-main-button")) {
-                        self.open(.accountNameSetup, by: .push)
-                }
-                
-                open(
-                    .bottomInformation(mode: .confirmation, configurator: configurator),
-                    by: .customPresentWithoutNavigationController(
-                        presentationStyle: .custom,
-                        transitionStyle: nil,
-                        transitioningDelegate: bottomModalPresenter
-                    )
-                )
-                
-                cell.contextView.setMode(.idle)
-                return
-            } else {
-                viewModel.incrementCurrentIndex()
-                updatePassPhraseLabel()
-            }
-        } else {
-            passphraseVerifyView.setWrongChoiceLabelHidden(false)
-            cell.contextView.setMode(.wrong)
-        }
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-            cell.contextView.setMode(.idle)
-        }
-    }
-}
-
-extension PassphraseVerifyViewController: LeftAlignedCollectionViewFlowLayoutDelegate {
-    func leftAlignedLayout(_ layout: LeftAlignedCollectionViewFlowLayout, sizeFor indexPath: IndexPath) -> CGSize {
-        guard let mnemonic = passphraseViewModel?.mnemonic(atIndex: indexPath.item) else {
-            fatalError("Index path is out of bounds")
-        }
-        
-        return CGSize(width: mnemonic.width(usingFont: UIFont.font(withWeight: .medium(size: 14.0))) + 50.0, height: 48.0)
-    }
-    
-    func leftAlignedLayoutDidCalculateHeight(_ height: CGFloat) {
-        passphraseVerifyView.passphraseCollectionView.snp.updateConstraints { maker in
-            maker.height.greaterThanOrEqualTo(height)
-        }
     }
 }
