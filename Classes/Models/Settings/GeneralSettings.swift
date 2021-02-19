@@ -25,7 +25,7 @@ enum GeneralSettings: Settings {
     case rewards
     case language
     case currency
-    case feedback
+    case support
     case appReview
     case termsAndServices
     case privacyPolicy
@@ -49,7 +49,7 @@ enum GeneralSettings: Settings {
             return img("icon-settings-currency")
         case .appearance:
             return img("icon-settings-theme")
-        case .feedback:
+        case .support:
             return img("icon-feedback")
         case .appReview:
             return img("icon-settings-rate")
@@ -78,8 +78,8 @@ enum GeneralSettings: Settings {
             return "settings-currency".localized
         case .appearance:
             return "settings-theme-set".localized
-        case .feedback:
-            return "feedback-title".localized
+        case .support:
+            return "settings-support-title".localized
         case .appReview:
             return "settings-rate-title".localized
         case .termsAndServices:
