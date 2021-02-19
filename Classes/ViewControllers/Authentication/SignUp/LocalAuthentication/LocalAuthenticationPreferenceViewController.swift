@@ -103,6 +103,10 @@ extension LocalAuthenticationPreferenceViewController: LocalAuthenticationPrefer
                 open(.watchAccountAddition(flow: accountSetupFlow), by: .push)
             case .rekey:
                 break
+            case .add:
+                break
+            case .transfer:
+                break
             }
         case .addNewAccount:
             break

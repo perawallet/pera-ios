@@ -5,6 +5,8 @@ import UIKit
 
 indirect enum Screen {
     case introduction(flow: AccountSetupFlow)
+    case welcome(flow: AccountSetupFlow)
+    case addAccount(flow: AccountSetupFlow)
     case choosePassword(mode: ChoosePasswordViewController.Mode, flow: AccountSetupFlow?, route: Screen?)
     case localAuthenticationPreference(flow: AccountSetupFlow)
     case passphraseView(address: String)
@@ -76,11 +78,11 @@ indirect enum Screen {
     case currencySelection
     case appearanceSelection
     case watchAccountAddition(flow: AccountSetupFlow)
-    case accountTypeSelection(flow: AccountSetupFlow)
     case ledgerAccountDetail(account: Account, ledgerIndex: Int?, rekeyedAccounts: [Account]?)
     case notificationFilter(flow: NotificationFilterViewController.Flow)
     case maximumBalanceWarning(account: Account)
     case screenshotWarning
+    case animatedTutorial(tutorial: AnimatedTutorial, isActionable: Bool)
 }
 
 extension Screen {

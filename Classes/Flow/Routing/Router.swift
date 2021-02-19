@@ -169,6 +169,10 @@ class Router {
         switch screen {
         case let .introduction(flow):
             viewController = IntroductionViewController(accountSetupFlow: flow, configuration: configuration)
+        case let .welcome(flow):
+            viewController = WelcomeViewController(flow: flow, configuration: configuration)
+        case let .addAccount(flow):
+            viewController = AddAccountViewController(flow: flow, configuration: configuration)
         case let .choosePassword(mode, flow, route):
             viewController = ChoosePasswordViewController(
                 mode: mode,
@@ -333,8 +337,6 @@ class Router {
             viewController = AppearanceSelectionViewController(configuration: configuration)
         case let .watchAccountAddition(flow):
             viewController = WatchAccountAdditionViewController(accountSetupFlow: flow, configuration: configuration)
-        case let .accountTypeSelection(flow):
-            viewController = AccountTypeSelectionViewController(flow: flow, configuration: configuration)
         case let .ledgerAccountDetail(account, index, rekeyedAccounts):
             viewController = LedgerAccountDetailViewController(
                 account: account,
@@ -348,6 +350,8 @@ class Router {
             viewController = MaximumBalanceWarningViewController(account: account, configuration: configuration)
         case .screenshotWarning:
             viewController = ScreenshotWarningViewController(configuration: configuration)
+        case let .animatedTutorial(tutorial, isActionable):
+            viewController = AnimatedTutorialViewController(tutorial: tutorial, isActionable: isActionable, configuration: configuration)
         }
         
         return viewController as? T
