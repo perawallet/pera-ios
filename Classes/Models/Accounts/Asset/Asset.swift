@@ -22,6 +22,7 @@ class Asset: Model {
     let amount: UInt64
     let isFrozen: Bool?
     let id: Int64
+    let isDeleted: Bool?
 }
 
 extension Asset {
@@ -30,6 +31,7 @@ extension Asset {
         case amount = "amount"
         case isFrozen = "is-frozen"
         case id = "asset-id"
+        case isDeleted = "deleted"
     }
 }
 

@@ -79,6 +79,10 @@ extension Transaction {
         }
         return confirmedRound == nil || confirmedRound == 0
     }
+
+    func isSelfTransaction() -> Bool {
+        return sender == getReceiver()
+    }
     
     func isAssetAdditionTransaction(for address: String) -> Bool {
         guard let assetTransfer = assetTransfer else {
@@ -90,6 +94,10 @@ extension Transaction {
     
     func getAmount() -> Int64? {
         return payment?.amount ?? assetTransfer?.amount
+    }
+
+    func getRewards() -> Int64? {
+        return (senderRewards.unwrap(or: 0) > 0 ? senderRewards : nil) ?? (receiverRewards.unwrap(or: 0) > 0 ? receiverRewards : nil)
     }
     
     func getReceiver() -> String? {

@@ -33,6 +33,7 @@ class Account: Model {
     var authAddress: String?
     var createdRound: Int64?
     var closedRound: Int64?
+    var isDeleted: Bool?
     
     var assetDetails: [AssetDetail] = []
     var name: String?
@@ -65,6 +66,7 @@ class Account: Model {
         rekeyDetail = try container.decodeIfPresent(RekeyDetail.self, forKey: .rekeyDetail)
         createdRound = try container.decodeIfPresent(Int64.self, forKey: .createdRound)
         closedRound = try container.decodeIfPresent(Int64.self, forKey: .closedRound)
+        isDeleted = try container.decodeIfPresent(Bool.self, forKey: .isDeleted)
     }
     
     init(
@@ -120,6 +122,7 @@ extension Account {
         case rekeyDetail = "rekeyDetail"
         case createdRound = "created-at-round"
         case closedRound = "closed-at-round"
+        case isDeleted = "deleted"
     }
 }
 
