@@ -1,14 +1,23 @@
 //
-//  AccountTypeSelectionView.swift
+//  WelcomeView.swift
 
 import UIKit
 
-class AccountTypeSelectionView: BaseView {
-    
+class WelcomeView: BaseView {
+
     private let layout = Layout<LayoutConstants>()
-    
-    weak var delegate: AccountTypeSelectionViewDelegate?
-    
+
+    weak var delegate: WelcomeViewDelegate?
+
+    private lazy var titleLabel: UILabel = {
+        UILabel()
+            .withFont(UIFont.font(withWeight: .semiBold(size: 28.0)))
+            .withTextColor(Colors.Text.primary)
+            .withLine(.contained)
+            .withAlignment(.center)
+            .withText("account-welcome-wallet-title".localized)
+    }()
+
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -20,7 +29,7 @@ class AccountTypeSelectionView: BaseView {
         stackView.isUserInteractionEnabled = true
         return stackView
     }()
-    
+
     private lazy var termsAndConditionsTextView: UITextView = {
         let textView = UITextView()
         textView.isEditable = false
@@ -32,12 +41,12 @@ class AccountTypeSelectionView: BaseView {
         textView.linkTextAttributes = [
             .foregroundColor: Colors.Text.link,
             .underlineColor: UIColor.clear,
-            .font: UIFont.font(withWeight: .regular(size: 14.0))
+            .font: UIFont.font(withWeight: .semiBold(size: 14.0))
         ]
-        
+
         let centerParagraphStyle = NSMutableParagraphStyle()
         centerParagraphStyle.alignment = .center
-        
+
         textView.bindHtml(
             "introduction-title-terms-and-services".localized,
             with: [
@@ -48,123 +57,109 @@ class AccountTypeSelectionView: BaseView {
         )
         return textView
     }()
-    
-    private lazy var createNewAccountView = AccountTypeView()
-    
-    private lazy var watchAccountView = AccountTypeView()
-    
+
+    private lazy var addAccountView = AccountTypeView()
+
     private lazy var recoverAccountView = AccountTypeView()
-    
-    private lazy var pairAccountView = AccountTypeView()
 
     override func configureAppearance() {
         backgroundColor = Colors.Background.tertiary
     }
-    
+
+    override func setListeners() {
+        addAccountView.addTarget(self, action: #selector(notifyDelegateToAddAccount), for: .touchUpInside)
+        recoverAccountView.addTarget(self, action: #selector(notifyDelegateToRecoverAccount), for: .touchUpInside)
+    }
+
     override func linkInteractors() {
         termsAndConditionsTextView.delegate = self
     }
-    
-    override func setListeners() {
-        createNewAccountView.addTarget(self, action: #selector(notifyDelegateToSelectCreateNewAccount), for: .touchUpInside)
-        watchAccountView.addTarget(self, action: #selector(notifyDelegateToSelectWatchAccount), for: .touchUpInside)
-        recoverAccountView.addTarget(self, action: #selector(notifyDelegateToSelectRecoverAccount), for: .touchUpInside)
-        pairAccountView.addTarget(self, action: #selector(notifyDelegateToSelectPairAccount), for: .touchUpInside)
-    }
-    
+
     override func prepareLayout() {
+        setupTitleLabelLayout()
         setupTermsAndConditionsTextViewLayout()
         setupStackViewLayout()
     }
 }
 
-extension AccountTypeSelectionView {
+extension WelcomeView {
     @objc
-    private func notifyDelegateToSelectCreateNewAccount() {
-        delegate?.accountTypeSelectionView(self, didSelect: .create)
+    private func notifyDelegateToAddAccount() {
+        delegate?.welcomeView(self, didSelect: .add)
     }
-    
+
     @objc
-    private func notifyDelegateToSelectWatchAccount() {
-        delegate?.accountTypeSelectionView(self, didSelect: .watch)
-    }
-    
-    @objc
-    private func notifyDelegateToSelectRecoverAccount() {
-        delegate?.accountTypeSelectionView(self, didSelect: .recover)
-    }
-    
-    @objc
-    private func notifyDelegateToSelectPairAccount() {
-        delegate?.accountTypeSelectionView(self, didSelect: .pair)
+    private func notifyDelegateToRecoverAccount() {
+        delegate?.welcomeView(self, didSelect: .recover)
     }
 }
 
-extension AccountTypeSelectionView {
+extension WelcomeView {
+    private func setupTitleLabelLayout() {
+        addSubview(titleLabel)
+
+        titleLabel.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.top.equalToSuperview().inset(layout.current.topInset)
+        }
+    }
+
     private func setupTermsAndConditionsTextViewLayout() {
         addSubview(termsAndConditionsTextView)
-        
+
         termsAndConditionsTextView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
             make.bottom.equalToSuperview().inset(safeAreaBottom + layout.current.verticalInset)
             make.centerX.equalToSuperview()
         }
     }
-    
+
     private func setupStackViewLayout() {
         addSubview(stackView)
-        
+
         stackView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.top.equalToSuperview()
+            make.top.greaterThanOrEqualTo(titleLabel.snp.bottom).offset(layout.current.verticalInset)
             make.bottom.lessThanOrEqualTo(termsAndConditionsTextView.snp.top).offset(-layout.current.verticalInset)
+            make.centerY.equalToSuperview()
         }
-        
-        stackView.addArrangedSubview(createNewAccountView)
-        stackView.addArrangedSubview(watchAccountView)
+
+        stackView.addArrangedSubview(addAccountView)
         stackView.addArrangedSubview(recoverAccountView)
-        stackView.addArrangedSubview(pairAccountView)
     }
 }
 
-extension AccountTypeSelectionView: UITextViewDelegate {
+extension WelcomeView: UITextViewDelegate {
     func textView(
         _ textView: UITextView,
         shouldInteractWith URL: URL,
         in characterRange: NSRange,
         interaction: UITextItemInteraction
     ) -> Bool {
-        delegate?.accountTypeSelectionView(self, didOpen: URL)
+        delegate?.welcomeView(self, didOpen: URL)
         return false
     }
 }
 
-extension AccountTypeSelectionView {
-    func configureCreateNewAccountView(with viewModel: AccountTypeViewModel) {
-        createNewAccountView.bind(viewModel)
+extension WelcomeView {
+    func configureAddAccountView(with viewModel: AccountTypeViewModel) {
+        addAccountView.bind(viewModel)
     }
-    
-    func configureWatchAccountView(with viewModel: AccountTypeViewModel) {
-        watchAccountView.bind(viewModel)
-    }
-    
+
     func configureRecoverAccountView(with viewModel: AccountTypeViewModel) {
         recoverAccountView.bind(viewModel)
     }
-    
-    func configurePairAccountView(with viewModel: AccountTypeViewModel) {
-        pairAccountView.bind(viewModel)
-    }
 }
 
-extension AccountTypeSelectionView {
+extension WelcomeView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let horizontalInset: CGFloat = 32.0
+        let horizontalInset: CGFloat = 24.0
+        let topInset: CGFloat = 12.0
         let verticalInset: CGFloat = 20.0
     }
 }
 
-protocol AccountTypeSelectionViewDelegate: class {
-    func accountTypeSelectionView(_ accountTypeSelectionView: AccountTypeSelectionView, didSelect mode: AccountSetupMode)
-    func accountTypeSelectionView(_ accountTypeSelectionView: AccountTypeSelectionView, didOpen url: URL)
+protocol WelcomeViewDelegate: class {
+    func welcomeView(_ welcomeView: WelcomeView, didSelect mode: AccountSetupMode)
+    func welcomeView(_ welcomeView: WelcomeView, didOpen url: URL)
 }

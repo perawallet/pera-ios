@@ -7,27 +7,28 @@ class AccountTypeViewModel {
     
     private(set) var typeImage: UIImage?
     private(set) var title: String?
-    private(set) var isNew: Bool = false
     private(set) var detail: String?
     
     init(accountSetupMode: AccountSetupMode) {
         setTypeImage(for: accountSetupMode)
         setTitle(for: accountSetupMode)
-        setNewTitle(for: accountSetupMode)
         setDetail(for: accountSetupMode)
     }
     
     private func setTypeImage(for accountSetupMode: AccountSetupMode) {
         switch accountSetupMode {
         case .create:
-            typeImage = img("icon-introduction-create")
+            typeImage = img("icon-add-account")
         case .watch:
-            typeImage = img("icon-introduction-watch")
+            typeImage = img("icon-add-watch-account")
         case .recover:
-            typeImage = img("icon-introduction-recover")
+            typeImage = img("icon-recover-passphrase")
         case .pair:
-            typeImage = img("icon-introduction-ledger")
-        default:
+            typeImage = img("icon-pair-ledger-account")
+        case .add:
+            typeImage = img("icon-create-new-account")
+        case .transfer,
+             .rekey:
             break
         }
     }
@@ -42,20 +43,14 @@ class AccountTypeViewModel {
             title = "account-type-selection-recover".localized
         case .pair:
             title = "account-type-selection-ledger".localized
-        default:
+        case .add:
+            title = "account-type-selection-add".localized
+        case .transfer,
+             .rekey:
             break
         }
     }
-    
-    private func setNewTitle(for accountSetupMode: AccountSetupMode) {
-        switch accountSetupMode {
-        case .watch:
-            isNew = true
-        default:
-            isNew = false
-        }
-    }
-    
+
     private func setDetail(for accountSetupMode: AccountSetupMode) {
         switch accountSetupMode {
         case .create:
@@ -66,7 +61,10 @@ class AccountTypeViewModel {
             detail = "account-type-selection-recover-detail".localized
         case .pair:
             detail = "account-type-selection-ledger-detail".localized
-        default:
+        case .add:
+            detail = "account-type-selection-add-detail".localized
+        case .transfer,
+             .rekey:
             break
         }
     }

@@ -83,7 +83,7 @@ extension IntroductionViewController {
 
 extension IntroductionViewController: IntroductionViewDelegate {
     func introductionViewDidAddAccount(_ introductionView: IntroductionView) {
-        open(.accountTypeSelection(flow: accountSetupFlow), by: .push)
+        open(.welcome(flow: accountSetupFlow), by: .push)
     }
     
     func introductionView(_ introductionView: IntroductionView, didOpen url: URL) {
@@ -100,6 +100,8 @@ enum AccountSetupMode {
     case create
     case pair
     case recover
+    case add
+    case transfer
     case rekey(account: Account)
     case watch
 }
