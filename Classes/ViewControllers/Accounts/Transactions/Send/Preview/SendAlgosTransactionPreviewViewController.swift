@@ -288,7 +288,7 @@ extension SendAlgosTransactionPreviewViewController {
                         self.displaySimpleAlertWith(title: "title-error".localized, message: "title-internet-connection".localized)
                     }
                 case let .success(accountWrapper):
-                    accountWrapper.account.assets = accountWrapper.account.assets?.filter { !($0.isDeleted ?? true) }
+                    accountWrapper.account.assets = accountWrapper.account.nonDeletedAssets()
                     if accountWrapper.account.amount == 0 {
                         self.dismissProgressIfNeeded()
                         

@@ -109,7 +109,7 @@ extension ContactInfoViewController {
         api?.fetchAccount(with: AccountFetchDraft(publicKey: address)) { [weak self] response in
             switch response {
             case let .success(accountWrapper):
-                accountWrapper.account.assets = accountWrapper.account.assets?.filter { !($0.isDeleted ?? true) }
+                accountWrapper.account.assets = accountWrapper.account.nonDeletedAssets()
                 let account = accountWrapper.account
                 self?.contactAccount = account
                 

@@ -42,7 +42,7 @@ extension Account {
     }
 
     func isThereAnyDifferentAsset() -> Bool {
-        return assets != nil
+        return !assets.isNilOrEmpty
     }
     
     func hasDifferentAssets(than account: Account) -> Bool {
@@ -116,6 +116,10 @@ extension Account {
             return rekeyDetail?[authAddress]
         }
         return ledgerDetail
+    }
+
+    func nonDeletedAssets() -> [Asset]? {
+        return assets?.filter { !($0.isDeleted ?? true) }
     }
 }
 

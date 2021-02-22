@@ -97,7 +97,7 @@ extension LedgerAccountFetchOperation {
             switch response {
             case .success(let accountWrapper):
                 if accountWrapper.account.isCreated {
-                    accountWrapper.account.assets = accountWrapper.account.assets?.filter { !($0.isDeleted ?? true) }
+                    accountWrapper.account.assets = accountWrapper.account.nonDeletedAssets()
                     self.ledgerAccounts.append(accountWrapper.account)
                     self.startOperation()
                 } else {
