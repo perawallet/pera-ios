@@ -41,6 +41,7 @@ class AccountFetchOperation: AsyncOperation {
         api.fetchAccount(with: AccountFetchDraft(publicKey: accountInformation.address)) { response in
             switch response {
             case .success(let accountWrapper):
+                accountWrapper.account.assets = accountWrapper.account.assets?.filter { !($0.isDeleted ?? true) }
                 if accountWrapper.account.isThereAnyDifferentAsset() {
                     self.fetchAssets(for: accountWrapper.account)
                 } else {

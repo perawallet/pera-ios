@@ -39,7 +39,7 @@ protocol AccountFooterSupplementaryViewDelegate: class {
 class EmptyFooterSupplementaryView: BaseSupplementaryView<EmptyFooterView> {
 
     override func configureAppearance() {
-        backgroundColor = Colors.Background.secondary
+        backgroundColor = .clear
         layer.cornerRadius = 12.0
         layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
     }
@@ -47,9 +47,34 @@ class EmptyFooterSupplementaryView: BaseSupplementaryView<EmptyFooterView> {
 
 class EmptyFooterView: BaseView {
 
+    private let layout = Layout<LayoutConstants>()
+
+    private lazy var containerView = UIView()
+
     override func configureAppearance() {
-        backgroundColor = Colors.Background.secondary
-        layer.cornerRadius = 12.0
-        layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+        backgroundColor = .clear
+        containerView.backgroundColor = Colors.Background.secondary
+        containerView.layer.cornerRadius = 12.0
+        containerView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+    }
+
+    override func prepareLayout() {
+        super.prepareLayout()
+        setupContainerViewLayout()
+    }
+
+    private func setupContainerViewLayout() {
+        addSubview(containerView)
+
+        containerView.snp.makeConstraints { make in
+            make.leading.trailing.top.equalToSuperview()
+            make.height.equalTo(layout.current.height)
+        }
+    }
+}
+
+extension EmptyFooterView {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let height: CGFloat = 24.0
     }
 }

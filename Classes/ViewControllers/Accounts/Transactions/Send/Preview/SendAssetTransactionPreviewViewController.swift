@@ -255,6 +255,7 @@ extension SendAssetTransactionPreviewViewController {
         api?.fetchAccount(with: AccountFetchDraft(publicKey: address)) { fetchAccountResponse in
             switch fetchAccountResponse {
             case let .success(receiverAccountWrapper):
+                receiverAccountWrapper.account.assets = receiverAccountWrapper.account.assets?.filter { !($0.isDeleted ?? true) }
                 let receiverAccount = receiverAccountWrapper.account
                 if !selectedAccount.requiresLedgerConnection() {
                     self.dismissProgressIfNeeded()

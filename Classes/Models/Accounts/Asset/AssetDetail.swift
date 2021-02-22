@@ -42,11 +42,12 @@ class AssetDetail: Model {
     let clawBackAddress: String?
     let fractionDecimals: Int
     let id: Int64
+    var isDeleted: Bool?
     
     var isVerified: Bool = false
     var isRemoved: Bool = false
     var isRecentlyAdded: Bool = false
-    
+
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         id = try container.decode(Int64.self, forKey: .id)
@@ -67,6 +68,7 @@ class AssetDetail: Model {
         isVerified = try paramsContainer.decodeIfPresent(Bool.self, forKey: .isVerified) ?? false
         isRemoved = try paramsContainer.decodeIfPresent(Bool.self, forKey: .isRemoved) ?? false
         isRecentlyAdded = try paramsContainer.decodeIfPresent(Bool.self, forKey: .isRecentlyAdded) ?? false
+        isDeleted = try paramsContainer.decodeIfPresent(Bool.self, forKey: .isDeleted)
     }
     
     func encode(to encoder: Encoder) throws {
@@ -88,6 +90,7 @@ class AssetDetail: Model {
         try paramsContainer.encodeIfPresent(isVerified, forKey: .isVerified)
         try paramsContainer.encodeIfPresent(isRemoved, forKey: .isRemoved)
         try paramsContainer.encodeIfPresent(isRecentlyAdded, forKey: .isRecentlyAdded)
+        try paramsContainer.encodeIfPresent(isDeleted, forKey: .isDeleted)
     }
     
     init(searchResult: AssetSearchResult) {
@@ -131,6 +134,7 @@ extension AssetDetail {
         case isRecentlyAdded = "isRecentlyAdded"
         case isVerified = "is_verified"
         case fractionDecimals = "decimals"
+        case isDeleted = "deleted"
     }
 }
 

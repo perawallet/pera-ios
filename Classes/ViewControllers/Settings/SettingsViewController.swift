@@ -48,7 +48,7 @@ class SettingsViewController: BaseViewController {
         }
         return settings
     }()
-    private lazy var appSettings: [GeneralSettings] = [.feedback, .appReview, .termsAndServices, .privacyPolicy]
+    private lazy var appSettings: [GeneralSettings] = [.support, .appReview, .termsAndServices, .privacyPolicy]
     private lazy var developerSettings: [GeneralSettings] = [.developer]
     
     private lazy var settingsView = SettingsView()
@@ -140,7 +140,7 @@ extension SettingsViewController: UICollectionViewDataSource {
             case .appearance:
                 let preferredAppearance = api?.session.userInterfaceStyle ?? .system
                 return setSettingsInfoCell(from: setting, info: preferredAppearance.representation(), in: collectionView, at: indexPath)
-            case .feedback:
+            case .support:
                 return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
             case .appReview:
                 return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
@@ -273,8 +273,10 @@ extension SettingsViewController: UICollectionViewDelegateFlowLayout {
                         mode: ChoosePasswordViewController.Mode.resetPassword, flow: nil, route: nil),
                         by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
                 )
-            case .feedback:
-                open(.feedback, by: .push)
+            case .support:
+                if let url = URL(string: Environment.current.walletSupportUrl) {
+                    open(url)
+                }
             case .notifications:
                 open(.notificationFilter(flow: .settings), by: .push)
             case .appReview:
