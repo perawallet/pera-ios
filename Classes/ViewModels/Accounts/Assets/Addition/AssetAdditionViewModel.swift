@@ -31,7 +31,7 @@ class AssetAdditionViewModel {
     }
 
     private func setBackgroundColor() {
-        backgroundColor = Colors.Background.tertiary
+        backgroundColor = Colors.Background.secondary
     }
 
     private func setAssetDetail(from assetSearchResult: AssetSearchResult) {

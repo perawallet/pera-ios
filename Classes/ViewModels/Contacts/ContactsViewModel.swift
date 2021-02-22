@@ -32,6 +32,8 @@ class ContactsViewModel {
         if let imageData = contact.image,
             let image = UIImage(data: imageData) {
             self.image = image.convert(to: imageSize)
+        } else {
+            self.image = img("icon-user-placeholder")
         }
     }
 

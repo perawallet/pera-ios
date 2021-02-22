@@ -18,6 +18,8 @@
 import UIKit
 
 class AppearanceSelectionViewController: BaseViewController {
+
+    weak var delegate: AppearanceSelectionViewControllerDelegate?
     
     private lazy var appearanceSelectionView = SingleSelectionListView()
     
@@ -74,6 +76,7 @@ extension AppearanceSelectionViewController: UICollectionViewDelegateFlowLayout 
             api?.session.userInterfaceStyle = appearance
             UIApplication.shared.rootViewController()?.changeUserInterfaceStyle(to: appearance)
             appearanceSelectionView.reloadData()
+            delegate?.appearanceSelectionViewControllerDidUpdateUserInterfaceStyle(self)
         }
     }
     
@@ -101,4 +104,10 @@ enum UserInterfaceStyle: String, CaseIterable {
             return "settings-theme-dark".localized
         }
     }
+}
+
+protocol AppearanceSelectionViewControllerDelegate: class {
+    func appearanceSelectionViewControllerDidUpdateUserInterfaceStyle(
+        _ appearanceSelectionViewController: AppearanceSelectionViewController
+    )
 }

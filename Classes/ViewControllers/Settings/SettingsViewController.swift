@@ -292,7 +292,8 @@ extension SettingsViewController: UICollectionViewDelegateFlowLayout {
                 let controller = open(.currencySelection, by: .push) as? CurrencySelectionViewController
                 controller?.delegate = self
             case .appearance:
-                open(.appearanceSelection, by: .push)
+                let appearanceSelectionViewController = open(.appearanceSelection, by: .push) as? AppearanceSelectionViewController
+                appearanceSelectionViewController?.delegate = self
             case .termsAndServices:
                 guard let url = URL(string: Environment.current.termsAndServicesUrl) else {
                     return
@@ -413,5 +414,17 @@ extension SettingsViewController: SettingsToggleCellDelegate {
 extension SettingsViewController: CurrencySelectionViewControllerDelegate {
     func currencySelectionViewControllerDidSelectCurrency(_ currencySelectionViewController: CurrencySelectionViewController) {
         settingsView.collectionView.reloadItems(at: [IndexPath(item: 3, section: 1)])
+    }
+}
+
+extension SettingsViewController: AppearanceSelectionViewControllerDelegate {
+    func appearanceSelectionViewControllerDidUpdateUserInterfaceStyle(
+        _ appearanceSelectionViewController: AppearanceSelectionViewController
+    ) {
+        guard #available(iOS 13.0, *) else {
+            return
+        }
+
+        settingsView.collectionView.reloadItems(at: [IndexPath(item: 4, section: 1)])
     }
 }

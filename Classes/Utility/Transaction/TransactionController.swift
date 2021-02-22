@@ -31,6 +31,10 @@ class TransactionController {
     private lazy var transactionAPIConnector = TransactionAPIConnector(api: api)
     
     private var currentTransactionType: TransactionType?
+
+    private var isLedgerRequiredTransaction: Bool {
+        return transactionDraft?.from.requiresLedgerConnection() ?? false
+    }
     
     init(api: AlgorandAPI) {
         self.api = api
@@ -65,20 +69,36 @@ extension TransactionController {
     }
     
     func stopBLEScan() {
+        if !isLedgerRequiredTransaction {
+            return
+        }
+
         ledgerTransactionOperation.disconnectFromCurrentDevice()
         ledgerTransactionOperation.stopScan()
     }
 
     func startTimer() {
+        if !isLedgerRequiredTransaction {
+            return
+        }
+
         ledgerTransactionOperation.delegate = self
         ledgerTransactionOperation.startTimer()
     }
 
     func stopTimer() {
+        if !isLedgerRequiredTransaction {
+            return
+        }
+
         ledgerTransactionOperation.stopTimer()
     }
 
     func initializeLedgerTransactionAccount() {
+        if !isLedgerRequiredTransaction {
+            return
+        }
+
         if let account = fromAccount {
             ledgerTransactionOperation.setTransactionAccount(account)
         }

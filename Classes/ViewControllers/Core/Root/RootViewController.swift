@@ -62,7 +62,6 @@ class RootViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = Colors.Background.primary
 
-        changeUserInterfaceStyle(to: appConfiguration.api.session.userInterfaceStyle)
         initializeNetwork()
     }
     
@@ -70,6 +69,7 @@ class RootViewController: UIViewController {
         super.viewDidAppear(animated)
 
         onceWhenViewDidAppear.execute {
+            changeUserInterfaceStyle(to: appConfiguration.api.session.userInterfaceStyle)
             addBanner()
             initializeFlow()
         }
