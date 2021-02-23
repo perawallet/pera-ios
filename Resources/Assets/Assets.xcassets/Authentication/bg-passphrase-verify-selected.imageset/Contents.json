@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "bg-passphrase-verify.pdf",
+      "filename" : "bg-passphrase-verify-selected.pdf",
       "idiom" : "universal",
       "resizing" : {
         "cap-insets" : {
@@ -25,7 +25,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "bg-passphrase-verify-1.pdf",
+      "filename" : "bg-passphrase-verify-selected-1.pdf",
       "idiom" : "universal",
       "resizing" : {
         "cap-insets" : {

@@ -93,6 +93,9 @@
 "passphrase-select-n-word" = "Select the %@ word of your passphrase";
 "passphrase-qeustion-counter" = "Question %@ of %@";
 
+"passphrase-verify-title" = "Check your passphrase";
+"passphrase-verify-select-word" = "Select word #%@";
+
 // MARK: Account Name Setup
 "account-details-title" = "Name your account";
 "account-name-setup-explanation" = "Account Name (Optional)";
