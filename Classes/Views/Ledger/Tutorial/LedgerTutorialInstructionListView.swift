@@ -22,32 +22,28 @@ class LedgerTutorialInstructionListView: BaseView {
     
     private lazy var openLedgerInstructionView: LedgerTutorialInstructionView = {
         let view = LedgerTutorialInstructionView()
-        view.setNumber(1)
-        view.setTitle("ledger-tutorial-turned-on".localized)
+        view.bind(LedgerTutorialInstructionViewModel(number: 1, title: "ledger-tutorial-turned-on".localized))
         view.isUserInteractionEnabled = true
         return view
     }()
     
     private lazy var installAppInstructionView: LedgerTutorialInstructionView = {
         let view = LedgerTutorialInstructionView()
-        view.setNumber(2)
-        view.setTitle("ledger-tutorial-install-app".localized)
+        view.bind(LedgerTutorialInstructionViewModel(number: 2, title: "ledger-tutorial-install-app".localized))
         view.isUserInteractionEnabled = true
         return view
     }()
     
     private lazy var openAppInstructionView: LedgerTutorialInstructionView = {
         let view = LedgerTutorialInstructionView()
-        view.setNumber(3)
-        view.setTitle("ledger-tutorial-open-app".localized)
+        view.bind(LedgerTutorialInstructionViewModel(number: 3, title: "ledger-tutorial-open-app".localized))
         view.isUserInteractionEnabled = true
         return view
     }()
     
     private lazy var turnOnBluetoohInstructionView: LedgerTutorialInstructionView = {
         let view = LedgerTutorialInstructionView()
-        view.setNumber(4)
-        view.setTitle("ledger-tutorial-bluetooth".localized)
+        view.bind(LedgerTutorialInstructionViewModel(number: 4, title: "ledger-tutorial-bluetooth".localized))
         view.isUserInteractionEnabled = true
         return view
     }()
