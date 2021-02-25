@@ -99,7 +99,7 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
             return
         }
         
-        guard let mnemonics = accountRecoverView.passPhraseInputView.inputTextView.text,
+        guard let mnemonics = accountRecoverView.passPhraseInputView.inputTextView.text?.lowercased(),
             let privateKey = session?.privateKey(forMnemonics: mnemonics) else {
                 displaySimpleAlertWith(title: "title-error".localized, message: "pass-phrase-verify-invalid-passphrase".localized)
                 return
