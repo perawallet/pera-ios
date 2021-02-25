@@ -1,0 +1,47 @@
+// Copyright 2019 Algorand, Inc.
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+//
+//   TransactionTutorialViewModel.swift
+
+import UIKit
+
+class TransactionTutorialViewModel {
+    private(set) var secondTip: NSAttributedString?
+    private(set) var tapToMoreText: NSAttributedString?
+
+    init() {
+        setSecondTip()
+        setTapToMoreText()
+    }
+
+    private func setSecondTip() {
+        let secondTipString = "transaction-tutorial-tip-second".localized
+        let highlightedString = "transaction-tutorial-tip-second-highlighted".localized
+        let range = (secondTipString as NSString).range(of: highlightedString)
+        let attributedText = NSMutableAttributedString(string: secondTipString)
+        attributedText.addAttribute(.foregroundColor, value: Colors.General.unknown, range: range)
+        secondTip = attributedText
+    }
+
+    private func setTapToMoreText() {
+        let tapToMoreString = "transaction-tutorial-tap-to-more".localized
+        let highlightedString = "transaction-tutorial-tap-to-more-highlighted".localized
+        let range = (tapToMoreString as NSString).range(of: highlightedString)
+        let attributedText = NSMutableAttributedString(string: tapToMoreString)
+        attributedText.addAttribute(.foregroundColor, value: Colors.Text.link, range: range)
+        attributedText.addAttribute(.font, value: UIFont.font(withWeight: .medium(size: 14.0)), range: range)
+        tapToMoreText = attributedText
+    }
+}

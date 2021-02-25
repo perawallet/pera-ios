@@ -22,8 +22,8 @@ struct TransactionTutorialStorage: Storable {
 
     private let transactionTutorialKey = "com.algorand.algorand.transaction.tutorial"
 
-    func setTransactionTutorialDisplayed(_ isDisplayed: Bool) {
-        save(isDisplayed, for: transactionTutorialKey, to: .defaults)
+    func setTransactionTutorialDisplayed() {
+        save(true, for: transactionTutorialKey, to: .defaults)
     }
 
     func isTransactionTutorialDisplayed() -> Bool {
