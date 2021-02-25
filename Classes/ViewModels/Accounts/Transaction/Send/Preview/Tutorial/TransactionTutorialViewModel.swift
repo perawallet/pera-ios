@@ -27,21 +27,19 @@ class TransactionTutorialViewModel {
     }
 
     private func setSecondTip() {
-        let secondTipString = "transaction-tutorial-tip-second".localized
-        let highlightedString = "transaction-tutorial-tip-second-highlighted".localized
-        let range = (secondTipString as NSString).range(of: highlightedString)
-        let attributedText = NSMutableAttributedString(string: secondTipString)
-        attributedText.addAttribute(.foregroundColor, value: Colors.General.unknown, range: range)
-        secondTip = attributedText
+        secondTip = "transaction-tutorial-tip-second".localized.addAttributes(
+            [.foregroundColor: Colors.General.unknown],
+            to: "transaction-tutorial-tip-second-highlighted".localized
+        )
     }
 
     private func setTapToMoreText() {
-        let tapToMoreString = "transaction-tutorial-tap-to-more".localized
-        let highlightedString = "transaction-tutorial-tap-to-more-highlighted".localized
-        let range = (tapToMoreString as NSString).range(of: highlightedString)
-        let attributedText = NSMutableAttributedString(string: tapToMoreString)
-        attributedText.addAttribute(.foregroundColor, value: Colors.Text.link, range: range)
-        attributedText.addAttribute(.font, value: UIFont.font(withWeight: .medium(size: 14.0)), range: range)
-        tapToMoreText = attributedText
+        tapToMoreText = "transaction-tutorial-tap-to-more".localized.addAttributes(
+            [
+                .foregroundColor: Colors.Text.link,
+                .font: UIFont.font(withWeight: .medium(size: 14.0))
+            ],
+            to: "transaction-tutorial-tap-to-more-highlighted".localized
+        )
     }
 }
