@@ -48,12 +48,12 @@ class TransactionTutorialView: BaseView {
     }()
 
     private lazy var walletImageView: AnimationView = {
-        let loadingAnimationView = AnimationView()
-        loadingAnimationView.contentMode = .scaleAspectFit
-        loadingAnimationView.backgroundColor = .clear
+        let walletImageView = AnimationView()
+        walletImageView.contentMode = .scaleAspectFit
+        walletImageView.backgroundColor = .clear
         let animation = Animation.named("account_animation")
-        loadingAnimationView.animation = animation
-        return loadingAnimationView
+        walletImageView.animation = animation
+        return walletImageView
     }()
 
     private lazy var leftDeviceImageView = UIImageView(image: img("img-device-gray"))
@@ -240,7 +240,7 @@ extension TransactionTutorialView {
 
         confirmButton.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.top.equalTo(tapToMoreLabel.snp.bottom).offset(layout.current.buttonTopInset)
+            make.top.greaterThanOrEqualTo(tapToMoreLabel.snp.bottom).offset(layout.current.buttonTopInset)
             make.bottom.equalToSuperview().inset(safeAreaBottom + layout.current.bottomInset)
         }
     }
@@ -250,6 +250,10 @@ extension TransactionTutorialView {
     func bind(_ viewModel: TransactionTutorialViewModel) {
         secondTipLabel.attributedText = viewModel.secondTip
         tapToMoreLabel.attributedText = viewModel.tapToMoreText
+
+        if let animationName = viewModel.animationName {
+            walletImageView.animation = Animation.named(animationName)
+        }
     }
 
     func startAnimating() {

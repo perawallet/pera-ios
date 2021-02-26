@@ -20,10 +20,12 @@ import UIKit
 class TransactionTutorialViewModel {
     private(set) var secondTip: NSAttributedString?
     private(set) var tapToMoreText: NSAttributedString?
+    private(set) var animationName: String?
 
     init() {
         setSecondTip()
         setTapToMoreText()
+        setAnimationName()
     }
 
     private func setSecondTip() {
@@ -41,5 +43,9 @@ class TransactionTutorialViewModel {
             ],
             to: "transaction-tutorial-tap-to-more-highlighted".localized
         )
+    }
+
+    private func setAnimationName() {
+        animationName = UIApplication.shared.isDarkModeDisplay ? "account_animation_dark" : "account_animation"
     }
 }

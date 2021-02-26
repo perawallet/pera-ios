@@ -1672,6 +1672,9 @@
 		2BDDCA482268A3630081CED2 /* DeepLinkParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDDCA472268A3630081CED2 /* DeepLinkParser.swift */; };
 		2BDE31E122799FF0002E8235 /* ContactSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDE31E022799FF0002E8235 /* ContactSelectionViewController.swift */; };
 		2BDE31E32279A319002E8235 /* ContactSelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDE31E22279A319002E8235 /* ContactSelectionCell.swift */; };
+		2BDE961E25E93B6100FAA4FB /* account_animation_dark.json in Resources */ = {isa = PBXBuildFile; fileRef = 2BDE961D25E93B6100FAA4FB /* account_animation_dark.json */; };
+		2BDE961F25E93B6100FAA4FB /* account_animation_dark.json in Resources */ = {isa = PBXBuildFile; fileRef = 2BDE961D25E93B6100FAA4FB /* account_animation_dark.json */; };
+		2BDE962025E93B6100FAA4FB /* account_animation_dark.json in Resources */ = {isa = PBXBuildFile; fileRef = 2BDE961D25E93B6100FAA4FB /* account_animation_dark.json */; };
 		2BDE9CD0224E1A60007EFF30 /* EmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDE9CCF224E1A60007EFF30 /* EmptyStateView.swift */; };
 		2BDE9CD4224E1E91007EFF30 /* LoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDE9CD3224E1E91007EFF30 /* LoadingIndicator.swift */; };
 		2BDE9CD7224E2082007EFF30 /* ContentStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDE9CD6224E2082007EFF30 /* ContentStateView.swift */; };
@@ -2493,6 +2496,7 @@
 		2BDDCA472268A3630081CED2 /* DeepLinkParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkParser.swift; sourceTree = "<group>"; };
 		2BDE31E022799FF0002E8235 /* ContactSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactSelectionViewController.swift; sourceTree = "<group>"; };
 		2BDE31E22279A319002E8235 /* ContactSelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactSelectionCell.swift; sourceTree = "<group>"; };
+		2BDE961D25E93B6100FAA4FB /* account_animation_dark.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = account_animation_dark.json; sourceTree = "<group>"; };
 		2BDE9CCF224E1A60007EFF30 /* EmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateView.swift; sourceTree = "<group>"; };
 		2BDE9CD3224E1E91007EFF30 /* LoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingIndicator.swift; sourceTree = "<group>"; };
 		2BDE9CD6224E2082007EFF30 /* ContentStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentStateView.swift; sourceTree = "<group>"; };
@@ -6973,6 +6977,7 @@
 		2BF811F525E7AD0400D6B406 /* Account */ = {
 			isa = PBXGroup;
 			children = (
+				2BDE961D25E93B6100FAA4FB /* account_animation_dark.json */,
 				2BF811F625E7AD1D00D6B406 /* account_animation.json */,
 			);
 			path = Account;
@@ -7249,6 +7254,7 @@
 				2B9541C025AF16B20098805B /* AssetTransaction.json in Resources */,
 				2B95410B25A861870098805B /* User.json in Resources */,
 				2BF811F925E7AD1E00D6B406 /* account_animation.json in Resources */,
+				2BDE962025E93B6100FAA4FB /* account_animation_dark.json in Resources */,
 				2B51618A243F739D006DEA54 /* PublicSans-MediumItalic.ttf in Resources */,
 				2B51616E243F739D006DEA54 /* PublicSans-Medium.ttf in Resources */,
 				95E31530243234A4008D79D4 /* bluetooth_animation.json in Resources */,
@@ -7316,6 +7322,7 @@
 				2B0F634324EC129D00DA22A6 /* Localizable.strings in Resources */,
 				2B0F634424EC129D00DA22A6 /* PublicSans-BlackItalic.ttf in Resources */,
 				2B0F634524EC129D00DA22A6 /* Assets.xcassets in Resources */,
+				2BDE961F25E93B6100FAA4FB /* account_animation_dark.json in Resources */,
 				2B0F634624EC129D00DA22A6 /* PublicSans-ThinItalic.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -7351,6 +7358,7 @@
 				2BF34CC9223AA63D0052CAD3 /* Localizable.strings in Resources */,
 				2B51616F243F739D006DEA54 /* PublicSans-BlackItalic.ttf in Resources */,
 				2B8BE4D922391C3B005D8565 /* Assets.xcassets in Resources */,
+				2BDE961E25E93B6100FAA4FB /* account_animation_dark.json in Resources */,
 				2B51618B243F739D006DEA54 /* PublicSans-ThinItalic.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
