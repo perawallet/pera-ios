@@ -105,7 +105,9 @@ extension LedgerAccountFetchOperation {
                 }
             case let .failure(error, _):
                 if error.isHttpNotFound {
-                    self.ledgerAccounts.append(Account(address: address, type: .ledger))
+                    if self.isInitialAccount {
+                        self.ledgerAccounts.append(Account(address: address, type: .ledger))
+                    }
                 } else {
                     NotificationBanner.showError("title-error".localized, message: "ledger-account-fetct-error".localized)
                 }
@@ -116,6 +118,10 @@ extension LedgerAccountFetchOperation {
     
     private func returnAccounts() {
         delegate?.ledgerAccountFetchOperation(self, didReceive: ledgerAccounts, in: ledgerApprovalViewController)
+    }
+
+    private var isInitialAccount: Bool {
+        return accountIndex == 0
     }
 }
 

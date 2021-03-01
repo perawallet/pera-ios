@@ -176,7 +176,9 @@ extension PushNotificationController {
                         let name = notificationDetail.asset?.name ?? ""
                         let code = notificationDetail.asset?.code ?? ""
                         let fractionDecimals = notificationDetail.asset?.fractionDecimals ?? 0
-                        let amountText = amount.toFractionStringForLabel(fraction: fractionDecimals) ?? ""
+                        let amountText = amount
+                            .assetAmount(fromFraction: fractionDecimals)
+                            .toFractionStringForLabel(fraction: fractionDecimals) ?? ""
                         message = String(
                             format: isFailed ? "notification-sent-failed".localized : "notification-sent-success".localized,
                             "\(amountText) \(name) (\(code))",
@@ -199,7 +201,9 @@ extension PushNotificationController {
                         let name = notificationDetail.asset?.name ?? ""
                         let code = notificationDetail.asset?.code ?? ""
                         let fractionDecimals = notificationDetail.asset?.fractionDecimals ?? 0
-                        let amountText = amount.toFractionStringForLabel(fraction: fractionDecimals) ?? ""
+                        let amountText = amount
+                            .assetAmount(fromFraction: fractionDecimals)
+                            .toFractionStringForLabel(fraction: fractionDecimals) ?? ""
                         message = String(
                             format: isFailed ? "notification-sent-failed".localized : "notification-sent-success".localized,
                             "\(amountText) \(name) (\(code))",
@@ -245,7 +249,9 @@ extension PushNotificationController {
                         let name = notificationDetail.asset?.name ?? ""
                         let code = notificationDetail.asset?.code ?? ""
                         let fractionDecimals = notificationDetail.asset?.fractionDecimals ?? 0
-                        let amountText = amount.toFractionStringForLabel(fraction: fractionDecimals) ?? ""
+                        let amountText = amount
+                            .assetAmount(fromFraction: fractionDecimals)
+                            .toFractionStringForLabel(fraction: fractionDecimals) ?? ""
                         message = String(
                             format: "notification-received".localized,
                             "\(amountText) \(name) (\(code))",
@@ -268,7 +274,9 @@ extension PushNotificationController {
                         let name = notificationDetail.asset?.name ?? ""
                         let code = notificationDetail.asset?.code ?? ""
                         let fractionDecimals = notificationDetail.asset?.fractionDecimals ?? 0
-                        let amountText = amount.toFractionStringForLabel(fraction: fractionDecimals) ?? ""
+                        let amountText = amount
+                            .assetAmount(fromFraction: fractionDecimals)
+                            .toFractionStringForLabel(fraction: fractionDecimals) ?? ""
                         message = String(
                             format: "notification-received".localized,
                             "\(amountText) \(name) (\(code))",

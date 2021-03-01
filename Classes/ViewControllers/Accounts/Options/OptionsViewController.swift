@@ -235,7 +235,7 @@ extension OptionsViewController {
         }
         
         static var watchAccountOptions: [Options] {
-            return [.edit, .removeAccount]
+            return [.notificationSetting, .edit, .removeAccount]
         }
     }
 }

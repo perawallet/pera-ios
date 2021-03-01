@@ -32,7 +32,7 @@ class MaximumBalanceWarningViewModel {
             with: .algosTransaction,
             calculatedFee: params?.getProjectedTransactionFee() ?? Transaction.Constant.minimumFee,
             isAfterTransaction: true
-        )
+        ).toAlgos
 
         description = "maximum-balance-warning-description".localized(params: "\(minimumAmountForAccount)")
     }
