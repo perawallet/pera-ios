@@ -20,10 +20,9 @@ import UIKit
 class LedgerTroubleshootBluetoothConnectionView: BaseView {
     private let layout = Layout<LayoutConstants>()
     
-    private lazy var numberOneView: LedgerTutorialNumberView = {
-        let numberView = LedgerTutorialNumberView()
-        numberView.setNumber(1)
-        numberView.setCornerRadius(16.0)
+    private lazy var numberOneView: TutorialNumberView = {
+        let numberView = TutorialNumberView()
+        numberView.bind(TutorialNumberViewModel(number: 1))
         return numberView
     }()
     

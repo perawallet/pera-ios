@@ -50,6 +50,18 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
         )
     }()
 
+    private lazy var transactionTutorialPresenter: CardModalPresenter = {
+        let screenHeight = UIScreen.main.bounds.height
+        let height = screenHeight <= 605.0 ? screenHeight - 20.0 : 605.0
+        return CardModalPresenter(
+            config: ModalConfiguration(
+                animationMode: .normal(duration: 0.25),
+                dismissMode: .none
+            ),
+            initialModalSize: .custom(CGSize(width: view.frame.width, height: height))
+        )
+    }()
+
     private(set) lazy var transactionController: TransactionController = {
         guard let api = api else {
             fatalError("API should be set.")
@@ -101,13 +113,20 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
             leftBarButtonItems = [closeBarButtonItem]
         }
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         if selectedAccount == nil {
             sendTransactionPreviewView.setAssetSelectionHidden(false)
             presentAssetSelection()
+        }
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if selectedAccount != nil {
+            displayTransactionTutorialIfNeeded()
         }
     }
     
@@ -315,6 +334,7 @@ extension SendTransactionPreviewViewController: SelectAssetViewControllerDelegat
         didSelectAlgosIn account: Account,
         forAction transactionAction: TransactionAction
     ) {
+        displayTransactionTutorialIfNeeded()
         configure(forSelected: account, with: nil)
     }
     
@@ -324,7 +344,37 @@ extension SendTransactionPreviewViewController: SelectAssetViewControllerDelegat
         in account: Account,
         forAction transactionAction: TransactionAction
     ) {
+        displayTransactionTutorialIfNeeded()
         configure(forSelected: account, with: assetDetail)
+    }
+}
+
+extension SendTransactionPreviewViewController {
+    private func displayTransactionTutorialIfNeeded() {
+        let transactionTutorialStorage = TransactionTutorialStorage()
+        if transactionTutorialStorage.isTransactionTutorialDisplayed() {
+            return
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            let controller = self.open(
+                .transactionTutorial,
+                by: .customPresentWithoutNavigationController(
+                    presentationStyle: .custom,
+                    transitionStyle: nil,
+                    transitioningDelegate: self.transactionTutorialPresenter
+                )
+            ) as? TransactionTutorialViewController
+            controller?.delegate = self
+        }
+    }
+}
+
+extension SendTransactionPreviewViewController: TransactionTutorialViewControllerDelegate {
+    func transactionTutorialViewControllerDidConfirmTutorial(_ transactionTutorialViewController: TransactionTutorialViewController) {
+        let transactionTutorialStorage = TransactionTutorialStorage()
+        transactionTutorialStorage.setTransactionTutorialDisplayed()
+        transactionTutorialViewController.dismissScreen()
     }
 }
 

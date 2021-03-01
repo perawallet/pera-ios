@@ -21,11 +21,7 @@ class LedgerTutorialInstructionView: BaseView {
     
     private let layout = Layout<LayoutConstants>()
     
-    private lazy var tutorialNumberView: LedgerTutorialNumberView = {
-        let numberView = LedgerTutorialNumberView()
-        numberView.setCornerRadius(16.0)
-        return numberView
-    }()
+    private lazy var tutorialNumberView = TutorialNumberView()
     
     private lazy var titleLabel: UILabel = {
         UILabel()
@@ -102,12 +98,11 @@ extension LedgerTutorialInstructionView {
 }
 
 extension LedgerTutorialInstructionView {
-    func setNumber(_ number: Int) {
-        tutorialNumberView.setNumber(number)
-    }
-    
-    func setTitle(_ title: String) {
-        titleLabel.text = title
+    func bind(_ viewModel: LedgerTutorialInstructionViewModel) {
+        if let number = viewModel.number {
+            tutorialNumberView.bind(TutorialNumberViewModel(number: number))
+        }
+        titleLabel.text = viewModel.title
     }
 }
 

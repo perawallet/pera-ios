@@ -22,10 +22,9 @@ class LedgerTroubleshootOpenAppView: BaseView {
     
     weak var delegate: LedgerTroubleshootOpenAppViewDelegate?
     
-    private lazy var numberOneView: LedgerTutorialNumberView = {
-        let numberView = LedgerTutorialNumberView()
-        numberView.setNumber(1)
-        numberView.setCornerRadius(16.0)
+    private lazy var numberOneView: TutorialNumberView = {
+        let numberView = TutorialNumberView()
+        numberView.bind(TutorialNumberViewModel(number: 1))
         return numberView
     }()
     
@@ -44,10 +43,9 @@ class LedgerTroubleshootOpenAppView: BaseView {
         return textView
     }()
     
-    private lazy var numberTwoView: LedgerTutorialNumberView = {
-        let numberView = LedgerTutorialNumberView()
-        numberView.setNumber(2)
-        numberView.setCornerRadius(16.0)
+    private lazy var numberTwoView: TutorialNumberView = {
+        let numberView = TutorialNumberView()
+        numberView.bind(TutorialNumberViewModel(number: 2))
         return numberView
     }()
     

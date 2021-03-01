@@ -78,3 +78,16 @@ extension String {
         return ceil(boundingBox.height)
     }
 }
+
+extension String {
+    typealias StringAttribute = [NSAttributedString.Key: Any]
+
+    func addAttributes(_ attributes: StringAttribute, to targetString: String) -> NSAttributedString {
+        let range = (self as NSString).range(of: targetString)
+        let attributedText = NSMutableAttributedString(string: self)
+        attributes.forEach { key, value in
+            attributedText.addAttribute(key, value: value, range: range)
+        }
+        return attributedText
+    }
+}
