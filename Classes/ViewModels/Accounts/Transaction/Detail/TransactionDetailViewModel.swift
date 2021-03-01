@@ -47,7 +47,7 @@ class TransactionDetailViewModel {
             view.closeToView.removeFromSuperview()
             let amount = assetTransaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals)
 
-            let value: TransactionAmountView.Mode = amount == 0
+            let value: TransactionAmountView.Mode = transaction.isSelfTransaction()
                 ? .normal(amount: amount, isAlgos: false, fraction: assetDetail.fractionDecimals)
                 : .positive(amount: amount, isAlgos: false, fraction: assetDetail.fractionDecimals)
             view.amountView.setAmountViewMode(value)
@@ -56,7 +56,7 @@ class TransactionDetailViewModel {
         } else if let payment = transaction.payment {
             let amount = payment.amountForTransaction(includesCloseAmount: false).toAlgos
 
-            let value: TransactionAmountView.Mode = amount == 0 ? .normal(amount: amount) : .positive(amount: amount)
+            let value: TransactionAmountView.Mode = transaction.isSelfTransaction() ? .normal(amount: amount) : .positive(amount: amount)
             view.amountView.setAmountViewMode(value)
             
             setCloseAmount(for: transaction, in: view)
@@ -98,7 +98,7 @@ class TransactionDetailViewModel {
             
             let amount = assetTransaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals)
             
-            let value: TransactionAmountView.Mode = amount == 0
+            let value: TransactionAmountView.Mode = transaction.isSelfTransaction()
                 ? .normal(amount: amount, isAlgos: false, fraction: assetDetail.fractionDecimals)
                 : .negative(amount: amount, isAlgos: false, fraction: assetDetail.fractionDecimals)
             view.amountView.setAmountViewMode(value)
@@ -108,7 +108,7 @@ class TransactionDetailViewModel {
             
             let amount = payment.amountForTransaction(includesCloseAmount: false).toAlgos
 
-            let value: TransactionAmountView.Mode = amount == 0 ? .normal(amount: amount) : .negative(amount: amount)
+            let value: TransactionAmountView.Mode = transaction.isSelfTransaction() ? .normal(amount: amount) : .negative(amount: amount)
             view.amountView.setAmountViewMode(value)
             
             setCloseAmount(for: transaction, in: view)

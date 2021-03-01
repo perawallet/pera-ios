@@ -196,6 +196,10 @@ extension TransactionController {
         
         if isTransactionSigned {
             calculateTransactionFee(for: transactionType)
+            if transactionDraft?.fee == nil {
+                return
+            }
+            
             if transactionType == .algosTransaction {
                 completeAlgosTransaction()
             } else {
@@ -261,7 +265,11 @@ extension TransactionController {
             transactionData: transactionData,
             params: params
         )
-        self.transactionDraft?.fee = feeCalculator.calculate(for: transactionType)
+        feeCalculator.delegate = self
+        let fee = feeCalculator.calculate(for: transactionType)
+        if fee != nil {
+            self.transactionDraft?.fee = fee
+        }
     }
 }
 
