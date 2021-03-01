@@ -486,7 +486,7 @@ extension TransactionsViewController: CSVExportable {
         for transaction in transactions {
             let transactionData: [String: Any] = [
                 "transaction-detail-amount".localized: getFormattedAmount(transaction.getAmount()),
-                "transaction-detail-reward".localized: transaction.senderRewards?.toAlgos ?? " ",
+                "transaction-detail-reward".localized: transaction.getRewards(for: account.address)?.toAlgos ?? " ",
                 "transaction-detail-close-amount".localized: getFormattedAmount(transaction.getCloseAmount()),
                 "transaction-download-close-to".localized: transaction.getCloseAddress() ?? " ",
                 "transaction-download-to".localized: transaction.getReceiver() ?? " ",

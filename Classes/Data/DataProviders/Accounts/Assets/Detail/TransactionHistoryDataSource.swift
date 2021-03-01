@@ -278,22 +278,10 @@ extension TransactionHistoryDataSource {
         
         for transaction in filteredTransactions {
             self.transactions.append(transaction)
-            if transaction.isSelfTransaction(),
-               let rewards = transaction.getRewards() {
+            if let rewards = transaction.getRewards(for: account.address),
+               rewards > 0 {
                 let reward = Reward(amount: Int64(rewards), date: transaction.date)
                 self.transactions.append(reward)
-            } else if let payment = transaction.payment,
-                payment.receiver == account.address {
-                if let rewards = transaction.receiverRewards, rewards > 0 {
-                    let reward = Reward(amount: Int64(rewards), date: transaction.date)
-                    self.transactions.append(reward)
-                }
-            } else {
-                if let rewards = transaction.senderRewards,
-                    rewards > 0 {
-                    let reward = Reward(amount: Int64(rewards), date: transaction.date)
-                    self.transactions.append(reward)
-                }
             }
         }
     }

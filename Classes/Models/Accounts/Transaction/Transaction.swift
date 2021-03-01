@@ -96,8 +96,8 @@ extension Transaction {
         return payment?.amount ?? assetTransfer?.amount
     }
 
-    func getRewards() -> Int64? {
-        return (senderRewards.unwrap(or: 0) > 0 ? senderRewards : nil) ?? (receiverRewards.unwrap(or: 0) > 0 ? receiverRewards : nil)
+    func getRewards(for account: String) -> Int64? {
+        return account == sender ? senderRewards : (account == getReceiver() ? receiverRewards : nil)
     }
     
     func getReceiver() -> String? {
