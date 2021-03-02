@@ -1293,3 +1293,6 @@
 
 /* (No Comment) */
 "maximum-balance-warning-description" = "Yeniden anahtarlanan bir hesaptan maksimum bakiyenizi göndermeniz, hesapta en az %@ Algo tutmanızı gerektirmektedir. Bu işlem, yeniden anahtarlanan hesabınızda herhangi bir şeyin değişmemesini sağlamak içindir.\n\n\nİşlem tutarınız bu değişikliği yansıtması otomatik olarak güncellenecektir. İşlemin önizlemesini bir sonraki adımda görüntüleyebileceksiniz.";
+
+/* (No Comment) */
+"ledger-account-selection-detail-rekey" = "Bu hesabı imzalamak için kullanmak istediğiniz hesabı seçin.";

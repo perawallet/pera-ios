@@ -140,6 +140,10 @@ extension LedgerAccountSelectionView {
     func setAddButtonEnabled(_ isEnabled: Bool) {
         addButton.isEnabled = isEnabled
     }
+
+    func setAddButtonTitle(_ title: String) {
+        addButton.setTitle(title, for: .normal)
+    }
 }
 
 extension LedgerAccountSelectionView {

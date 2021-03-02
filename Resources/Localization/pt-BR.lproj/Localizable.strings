@@ -1293,3 +1293,6 @@
 
 /* (No Comment) */
 "maximum-balance-warning-description" = "Enviar seu saldo máximo em uma conta rechaveada exige que você mantenha um saldo mínimo de %@ Algos a fim de garantir que nada muda com sua conta rechaveada.\n\n\nO montante de sua transação será automaticamente atualizado a fim de refletir esta mudança. Você poderá visualizar a transação na etapa seguinte.";
+
+/* (No Comment) */
+"ledger-account-selection-detail-rekey" = "Escolha a conta que deseja usar para assinar esta conta.";

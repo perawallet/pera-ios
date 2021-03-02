@@ -1293,3 +1293,6 @@
 
 /* (No Comment) */
 "maximum-balance-warning-description" = "Para poder enviar el saldo máximo desde una cuenta a la que se le cambió la clave, debes mantener un saldo mínimo de %@ Algos. Esto sirve para asegurarte de que nada cambie en tu cuenta con clave nueva.\n\n\nEl monto de tu transacción se actualizará automáticamente para reflejar este cambio. Obtendrás una vista previa de la transacción en el siguiente paso.";
+
+/* (No Comment) */
+"ledger-account-selection-detail-rekey" = "Elige la cuenta que quieres usar para firmar esta cuenta.";

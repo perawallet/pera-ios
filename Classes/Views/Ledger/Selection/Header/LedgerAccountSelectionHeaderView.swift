@@ -35,7 +35,6 @@ class LedgerAccountSelectionHeaderView: BaseView {
             .withTextColor(Colors.Text.secondary)
             .withLine(.contained)
             .withAlignment(.left)
-            .withText("ledger-account-selection-detail".localized)
     }()
     
     override func prepareLayout() {
@@ -67,6 +66,7 @@ extension LedgerAccountSelectionHeaderView {
 extension LedgerAccountSelectionHeaderView {
     func bind(_ viewModel: LedgerAccountSelectionHeaderSupplementaryViewModel) {
         titleLabel.text = viewModel.accountCount
+        detailLabel.text = viewModel.detail
     }
     
     static func calculatePreferredSize(with layout: Layout<LayoutConstants>) -> CGSize {

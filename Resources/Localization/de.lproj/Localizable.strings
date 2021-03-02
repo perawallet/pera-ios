@@ -1293,3 +1293,6 @@
 
 /* (No Comment) */
 "maximum-balance-warning-description" = "Das Senden Ihres maximalen Guthabens auf einem Konto nach dem Rekeying erfordert, dass Sie ein Mindestguthaben von %@ Algos aufrechterhalten. Damit soll sichergestellt werden, dass sich bei Ihrem Konto nach dem Rekeying nichts ändert.\n\n\nIhr Transaktionsbetrag wird automatisch aktualisiert, um diese Änderung widerzuspiegeln. Sie können die Transaktion im nächsten Schritt in der Vorschau anzeigen.";
+
+/* (No Comment) */
+"ledger-account-selection-detail-rekey" = "Wählen Sie das Konto, mit dem Sie dieses Konto signieren möchten.";

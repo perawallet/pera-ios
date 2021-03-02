@@ -47,6 +47,7 @@ extension LedgerAccountSelectionDataSource {
             account.type = .ledger
             account.ledgerDetail = ledger
             account.ledgerDetail?.indexInLedger = index
+            account.assets = account.nonDeletedAssets()
             self.accounts.append(account)
             fetchRekeyedAccounts(of: account.address)
         }
@@ -64,6 +65,7 @@ extension LedgerAccountSelectionDataSource {
             case let .success(rekeyedAccountsResponse):
                 self.rekeyedAccounts[address] = rekeyedAccountsResponse.accounts
                 rekeyedAccountsResponse.accounts.forEach { account in
+                    account.assets = account.nonDeletedAssets()
                     account.type = .rekeyed
                     if let authAddress = account.authAddress {
                         account.addRekeyDetail(self.ledger, for: authAddress)
@@ -109,7 +111,7 @@ extension LedgerAccountSelectionDataSource: UICollectionViewDataSource {
                 withReuseIdentifier: LedgerAccountSelectionHeaderSupplementaryView.reusableIdentifier,
                 for: indexPath
         ) as? LedgerAccountSelectionHeaderSupplementaryView {
-            headerView.bind(LedgerAccountSelectionHeaderSupplementaryViewModel(accounts: accounts))
+            headerView.bind(LedgerAccountSelectionHeaderSupplementaryViewModel(accounts: accounts, isMultiSelect: isMultiSelect))
             return headerView
         }
         

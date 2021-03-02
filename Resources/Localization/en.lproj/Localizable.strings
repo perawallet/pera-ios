@@ -491,6 +491,7 @@
 "ledger-account-selection-title-singular" = "%d Account Found";
 "ledger-account-selection-title-plural" = "%d Accounts Found";
 "ledger-account-selection-detail" = "This ledger device can sign transactions for the following account. Select the account to add to your Algorand Wallet.";
+"ledger-account-selection-detail-rekey" = "Choose the account you want to use for signing this account.";
 "ledger-account-selection-add" = "Add Account";
 "ledger-rekey-error-add-auth" = "The connected Ledger device cannot sign transactions for this account. In order to do so, please connect %@.";
 "ledger-rekey-error-not-found" = "This account has been rekeyed. Please recover this account with a passphrase or Ledger device.";

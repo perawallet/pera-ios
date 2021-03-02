@@ -18,11 +18,16 @@
 import Foundation
 
 class LedgerAccountSelectionHeaderSupplementaryViewModel {
-    
+    private(set) var detail: String?
     private(set) var accountCount: String?
     
-    init(accounts: [Account]) {
+    init(accounts: [Account], isMultiSelect: Bool) {
+        setDetail(from: isMultiSelect)
         setAccountCount(from: accounts)
+    }
+
+    private func setDetail(from isMultiSelect: Bool) {
+        detail = isMultiSelect ? "ledger-account-selection-detail".localized : "ledger-account-selection-detail-rekey".localized
     }
     
     private func setAccountCount(from accounts: [Account]) {

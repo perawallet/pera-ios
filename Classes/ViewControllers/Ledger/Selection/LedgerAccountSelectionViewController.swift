@@ -75,6 +75,8 @@ class LedgerAccountSelectionViewController: BaseViewController {
     override func configureAppearance() {
         super.configureAppearance()
         title = ledger.name
+        let buttonTitle = isMultiSelect ? "ledger-account-selection-add".localized.localized : "send-algos-select".localized
+        ledgerAccountSelectionView.setAddButtonTitle(buttonTitle)
     }
     
     override func linkInteractors() {
