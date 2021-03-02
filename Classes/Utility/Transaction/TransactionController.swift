@@ -242,7 +242,9 @@ extension TransactionController: LedgerTransactionOperationDelegate {
 
         sign(data, with: LedgerTransactionSigner(account: account))
         calculateTransactionFee(for: transactionType)
-        completeLedgerTransaction(for: transactionType)
+        if transactionDraft?.fee != nil {
+            completeLedgerTransaction(for: transactionType)
+        }
     }
 
     private func completeLedgerTransaction(for transactionType: TransactionType) {
