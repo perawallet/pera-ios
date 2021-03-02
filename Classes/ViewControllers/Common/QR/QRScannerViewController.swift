@@ -41,6 +41,14 @@ class QRScannerViewController: BaseViewController {
     weak var delegate: QRScannerViewControllerDelegate?
     
     private(set) lazy var overlayView = QRScannerOverlayView()
+
+    private lazy var cancelButton: UIButton = {
+        UIButton(type: .custom)
+            .withBackgroundImage(img("button-bg-scan-qr"))
+            .withTitle("title-cancel".localized)
+            .withTitleColor(Colors.Main.white)
+            .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
+    }()
     
     private var captureSession: AVCaptureSession?
     private let captureSessionQueue = DispatchQueue(label: AVCaptureSession.self.description(), attributes: [], target: nil)
@@ -73,11 +81,11 @@ class QRScannerViewController: BaseViewController {
             }
         }
     }
-    
-    override func linkInteractors() {
-        overlayView.delegate = self
+
+    override func setListeners() {
+        cancelButton.addTarget(self, action: #selector(closeScreenFromButton), for: .touchUpInside)
     }
-    
+
     override func prepareLayout() {
         super.prepareLayout()
         configureScannerView()
@@ -89,19 +97,39 @@ extension QRScannerViewController {
         if AVCaptureDevice.authorizationStatus(for: .video) ==  .authorized {
             setupCaptureSession()
             setupPreviewLayer()
+            setupCancelButtonLayout()
         } else {
             AVCaptureDevice.requestAccess(for: .video) { granted in
                 if granted {
                     DispatchQueue.main.async {
                         self.setupCaptureSession()
                         self.setupPreviewLayer()
+                        self.setupCancelButtonLayout()
                     }
                 } else {
                     DispatchQueue.main.async {
                         self.presentDisabledCameraAlert()
+                        self.setupCancelButtonLayout()
+                        self.customizeButtonAppearanceInUnauthorizedStateIfNeeded()
                     }
                 }
             }
+        }
+    }
+
+    private func setupCancelButtonLayout() {
+        view.addSubview(cancelButton)
+
+        cancelButton.snp.makeConstraints { make in
+            make.bottom.equalToSuperview().inset(layout.current.buttonVerticalInset + view.safeAreaBottom)
+            make.centerX.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
+        }
+    }
+
+    private func customizeButtonAppearanceInUnauthorizedStateIfNeeded() {
+        if !isDarkModeDisplay {
+            cancelButton.setTitleColor(Colors.ButtonText.secondary, for: .normal)
         }
     }
 }
@@ -192,6 +220,13 @@ extension QRScannerViewController {
     }
 }
 
+extension QRScannerViewController {
+    @objc
+    private func closeScreenFromButton() {
+        closeScreen(by: .pop)
+    }
+}
+
 extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
     func metadataOutput(
         _ output: AVCaptureMetadataOutput,
@@ -240,16 +275,10 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
     }
 }
 
-extension QRScannerViewController: QRScannerOverlayViewDelegate {
-    func qrScannerOverlayViewDidCancel(_ qrScannerOverlayView: QRScannerOverlayView) {
-        closeScreen(by: .pop)
-    }
-}
-
 extension QRScannerViewController {
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let bottomInset: CGFloat = 20.0
         let buttonHorizontalInset: CGFloat = 20.0
+        let buttonVerticalInset: CGFloat = 16.0
     }
 }
 
