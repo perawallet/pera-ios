@@ -282,9 +282,6 @@
 		2B01E2C924EF121000C6E5B7 /* LedgerAccountSelectionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01E2C724EF121000C6E5B7 /* LedgerAccountSelectionDataSource.swift */; };
 		2B02536E23C6101A003D5FDD /* QRBottomInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B02536D23C6101A003D5FDD /* QRBottomInformationView.swift */; };
 		2B02536F23C6101A003D5FDD /* QRBottomInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B02536D23C6101A003D5FDD /* QRBottomInformationView.swift */; };
-		2B03D69025C23BCD0079A973 /* MaximumBalanceWarningStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B03D68F25C23BCD0079A973 /* MaximumBalanceWarningStorage.swift */; };
-		2B03D69125C23BCD0079A973 /* MaximumBalanceWarningStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B03D68F25C23BCD0079A973 /* MaximumBalanceWarningStorage.swift */; };
-		2B03D69225C23BCD0079A973 /* MaximumBalanceWarningStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B03D68F25C23BCD0079A973 /* MaximumBalanceWarningStorage.swift */; };
 		2B03D69925C23BFD0079A973 /* MaximumBalanceWarningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B03D69825C23BFD0079A973 /* MaximumBalanceWarningViewController.swift */; };
 		2B03D69A25C23BFD0079A973 /* MaximumBalanceWarningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B03D69825C23BFD0079A973 /* MaximumBalanceWarningViewController.swift */; };
 		2B03D69B25C23BFD0079A973 /* MaximumBalanceWarningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B03D69825C23BFD0079A973 /* MaximumBalanceWarningViewController.swift */; };
@@ -2010,7 +2007,6 @@
 		2B02536D23C6101A003D5FDD /* QRBottomInformationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRBottomInformationView.swift; sourceTree = "<group>"; };
 		2B03D67B25C2086C0079A973 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		2B03D67C25C2086C0079A973 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
-		2B03D68F25C23BCD0079A973 /* MaximumBalanceWarningStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaximumBalanceWarningStorage.swift; sourceTree = "<group>"; };
 		2B03D69825C23BFD0079A973 /* MaximumBalanceWarningViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaximumBalanceWarningViewController.swift; sourceTree = "<group>"; };
 		2B03D6A525C23C270079A973 /* MaximumBalanceWarningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaximumBalanceWarningView.swift; sourceTree = "<group>"; };
 		2B03D6AE25C2D3F40079A973 /* MaximumBalanceWarningViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaximumBalanceWarningViewModel.swift; sourceTree = "<group>"; };
@@ -2817,14 +2813,6 @@
 				17F9E926225796DA004CDF24 /* AccountManager.swift */,
 			);
 			path = Managers;
-			sourceTree = "<group>";
-		};
-		2B03D68E25C23BBA0079A973 /* MaxTransaction */ = {
-			isa = PBXGroup;
-			children = (
-				2B03D68F25C23BCD0079A973 /* MaximumBalanceWarningStorage.swift */,
-			);
-			path = MaxTransaction;
 			sourceTree = "<group>";
 		};
 		2B03D69725C23BF50079A973 /* Max */ = {
@@ -3751,7 +3739,6 @@
 		2B4DF408236C5F1900FF9551 /* Storable */ = {
 			isa = PBXGroup;
 			children = (
-				2B03D68E25C23BBA0079A973 /* MaxTransaction */,
 				2BCBBADC24A609EE002CD56F /* PinLimit */,
 				2BF811CD25E5B53400D6B406 /* TransactionTutorial */,
 				2B59F15D22552845005203DD /* DBStorable.swift */,
@@ -7977,7 +7964,6 @@
 				2B343D05259D178C001EA8C8 /* AccountNameSwitchCell.swift in Sources */,
 				2BE4D056259371CC005F5764 /* DisplayAssetDetailEvent.swift in Sources */,
 				17BD4E922292F1260003E49A /* MainButton.swift in Sources */,
-				2B03D69225C23BCD0079A973 /* MaximumBalanceWarningStorage.swift in Sources */,
 				17BD4E932292F1260003E49A /* NodeSettingsViewModel.swift in Sources */,
 				2B1ADD7D2511824F008B205E /* DeviceUpdateDraft.swift in Sources */,
 				17BD4E942292F1260003E49A /* TransactionReceiverView.swift in Sources */,
@@ -8569,7 +8555,6 @@
 				2BB350DB2589892300A03BAC /* LedgerAccountDetailViewModel.swift in Sources */,
 				2B343D04259D178C001EA8C8 /* AccountNameSwitchCell.swift in Sources */,
 				2B0F626924EC129D00DA22A6 /* API+Transaction.swift in Sources */,
-				2B03D69125C23BCD0079A973 /* MaximumBalanceWarningStorage.swift in Sources */,
 				2B1ADD7C2511824F008B205E /* DeviceUpdateDraft.swift in Sources */,
 				2B0F626A24EC129D00DA22A6 /* MainButton.swift in Sources */,
 				2B0F626B24EC129D00DA22A6 /* LedgerApprovalView.swift in Sources */,
@@ -9161,7 +9146,6 @@
 				2B343D03259D178C001EA8C8 /* AccountNameSwitchCell.swift in Sources */,
 				2BE4D054259371CC005F5764 /* DisplayAssetDetailEvent.swift in Sources */,
 				2B7572AE225CCB62009E0253 /* TransactionReceiverView.swift in Sources */,
-				2B03D69025C23BCD0079A973 /* MaximumBalanceWarningStorage.swift in Sources */,
 				2B0D84F72395D4F500F0EAA7 /* SendAssetTransactionPreviewViewController.swift in Sources */,
 				2B1ADD7B2511824F008B205E /* DeviceUpdateDraft.swift in Sources */,
 				2BD739FA2240527B00B66EEF /* PasswordInputView.swift in Sources */,

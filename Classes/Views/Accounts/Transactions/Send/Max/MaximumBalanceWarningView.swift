@@ -44,15 +44,6 @@ class MaximumBalanceWarningView: BaseView {
 
     private lazy var continueButton = MainButton(title: "title-continue".localized)
 
-    private lazy var dontShowAgainButton: UIButton = {
-        UIButton(type: .custom)
-            .withBackgroundImage(img("bg-light-gray-button"))
-            .withTitle("title-dont-show-again".localized)
-            .withTitleColor(Colors.ButtonText.secondary)
-            .withAlignment(.center)
-            .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
-    }()
-
     private lazy var cancelButton: UIButton = {
         UIButton(type: .custom)
             .withTitle("title-cancel".localized)
@@ -67,7 +58,6 @@ class MaximumBalanceWarningView: BaseView {
 
     override func setListeners() {
         continueButton.addTarget(self, action: #selector(notifyDelegateToConfirmWarning), for: .touchUpInside)
-        dontShowAgainButton.addTarget(self, action: #selector(notifyDelegateToDisableShowing), for: .touchUpInside)
         cancelButton.addTarget(self, action: #selector(notifyDelegateToCancel), for: .touchUpInside)
     }
 
@@ -76,7 +66,6 @@ class MaximumBalanceWarningView: BaseView {
         setupImageViewLayout()
         setupDescriptionLabelLayout()
         setupContinueButtonLayout()
-        setupDontShowAgainButtonLayout()
         setupCancelButtonLayout()
     }
 }
@@ -120,23 +109,14 @@ extension MaximumBalanceWarningView {
         }
     }
 
-    private func setupDontShowAgainButtonLayout() {
-        addSubview(dontShowAgainButton)
-
-        dontShowAgainButton.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.top.equalTo(continueButton.snp.bottom).offset(layout.current.buttonInset)
-        }
-    }
-
     private func setupCancelButtonLayout() {
         addSubview(cancelButton)
 
         cancelButton.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.top.equalTo(dontShowAgainButton.snp.bottom).offset(layout.current.buttonInset)
+            make.top.equalTo(continueButton.snp.bottom).offset(layout.current.buttonInset)
             make.height.equalTo(layout.current.buttonHeight)
-            make.bottom.equalToSuperview().inset(safeAreaBottom + layout.current.bottomInset)
+            make.bottom.lessThanOrEqualToSuperview().inset(safeAreaBottom + layout.current.bottomInset)
         }
     }
 }
@@ -145,11 +125,6 @@ extension MaximumBalanceWarningView {
     @objc
     private func notifyDelegateToConfirmWarning() {
         delegate?.maximumBalanceWarningViewDidConfirmWarning(self)
-    }
-
-    @objc
-    private func notifyDelegateToDisableShowing() {
-        delegate?.maximumBalanceWarningViewDidDisableShowing(self)
     }
 
     @objc
@@ -179,6 +154,5 @@ extension MaximumBalanceWarningView {
 
 protocol MaximumBalanceWarningViewDelegate: class {
     func maximumBalanceWarningViewDidConfirmWarning(_ maximumBalanceWarningView: MaximumBalanceWarningView)
-    func maximumBalanceWarningViewDidDisableShowing(_ maximumBalanceWarningView: MaximumBalanceWarningView)
     func maximumBalanceWarningViewDidCancel(_ maximumBalanceWarningView: MaximumBalanceWarningView)
 }

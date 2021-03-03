@@ -27,8 +27,6 @@ class MaximumBalanceWarningViewController: BaseScrollViewController {
 
     private lazy var maximumBalanceWarningView = MaximumBalanceWarningView()
 
-    private let maximumBalanceWarningStorage = MaximumBalanceWarningStorage()
-
     private let account: Account
 
     init(account: Account, configuration: ViewControllerConfiguration) {
@@ -65,11 +63,6 @@ extension MaximumBalanceWarningViewController {
 
 extension MaximumBalanceWarningViewController: MaximumBalanceWarningViewDelegate {
     func maximumBalanceWarningViewDidConfirmWarning(_ maximumBalanceWarningView: MaximumBalanceWarningView) {
-        delegate?.maximumBalanceWarningViewControllerDidConfirmWarning(self)
-    }
-
-    func maximumBalanceWarningViewDidDisableShowing(_ maximumBalanceWarningView: MaximumBalanceWarningView) {
-        maximumBalanceWarningStorage.setMaximumBalanceWarningDisabled(true)
         delegate?.maximumBalanceWarningViewControllerDidConfirmWarning(self)
     }
 
