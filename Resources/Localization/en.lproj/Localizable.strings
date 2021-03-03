@@ -524,6 +524,7 @@
 
 "transaction-tutorial-title" = "Transacting Tips";
 "transaction-tutorial-subtitle" = "We notice that this is your first transaction. Before you finalize, keep in mind a couple of tips:";
+"transaction-tutorial-subtitle-other" = "Before you finalize your transaction, keep in mind a couple of tips:";
 "transaction-tutorial-tip-first" = "When sending to an address for the first time, It’s useful to send a small test transaction before sending a large amount.";
 "transaction-tutorial-tip-second" = "Exchanges change their deposit addresses frequently, and saved exchange addresses may no longer be in use. Ensure you're sending to the correct address.";
 "transaction-tutorial-tip-second-highlighted" = "Ensure you're sending to the correct address.";

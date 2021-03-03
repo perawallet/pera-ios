@@ -27,6 +27,13 @@ class TransactionTutorialViewController: BaseScrollViewController {
 
     private lazy var transactionTutorialView = TransactionTutorialView()
 
+    private let isInitialDisplay: Bool
+
+    init(isInitialDisplay: Bool, configuration: ViewControllerConfiguration) {
+        self.isInitialDisplay = isInitialDisplay
+        super.init(configuration: configuration)
+    }
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         transactionTutorialView.startAnimating()
@@ -40,7 +47,7 @@ class TransactionTutorialViewController: BaseScrollViewController {
     override func configureAppearance() {
         super.configureAppearance()
         view.backgroundColor = Colors.Background.secondary
-        transactionTutorialView.bind(TransactionTutorialViewModel())
+        transactionTutorialView.bind(TransactionTutorialViewModel(isInitialDisplay: isInitialDisplay))
     }
 
     override func linkInteractors() {

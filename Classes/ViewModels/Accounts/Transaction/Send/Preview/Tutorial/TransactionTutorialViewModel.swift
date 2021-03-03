@@ -18,14 +18,20 @@
 import UIKit
 
 class TransactionTutorialViewModel {
+    private(set) var subtitle: String?
     private(set) var secondTip: NSAttributedString?
     private(set) var tapToMoreText: NSAttributedString?
     private(set) var animationName: String?
 
-    init() {
+    init(isInitialDisplay: Bool) {
+        setSubtitle(from: isInitialDisplay)
         setSecondTip()
         setTapToMoreText()
         setAnimationName()
+    }
+
+    private func setSubtitle(from isInitialDisplay: Bool) {
+        subtitle = isInitialDisplay ? "transaction-tutorial-subtitle".localized : "transaction-tutorial-subtitle-other".localized
     }
 
     private func setSecondTip() {

@@ -360,8 +360,8 @@ class Router {
             viewController = NotificationFilterViewController(flow: flow, configuration: configuration)
         case let .maximumBalanceWarning(account):
             viewController = MaximumBalanceWarningViewController(account: account, configuration: configuration)
-        case .transactionTutorial:
-            viewController = TransactionTutorialViewController(configuration: configuration)
+        case let .transactionTutorial(isInitialDisplay):
+            viewController = TransactionTutorialViewController(isInitialDisplay: isInitialDisplay, configuration: configuration)
         }
         
         return viewController as? T

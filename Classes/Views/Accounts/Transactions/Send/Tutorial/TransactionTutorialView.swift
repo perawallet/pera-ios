@@ -44,7 +44,6 @@ class TransactionTutorialView: BaseView {
             .withAlignment(.center)
             .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
             .withTextColor(Colors.Text.primary)
-            .withText("transaction-tutorial-subtitle".localized)
     }()
 
     private lazy var walletImageView: AnimationView = {
@@ -248,6 +247,7 @@ extension TransactionTutorialView {
 
 extension TransactionTutorialView {
     func bind(_ viewModel: TransactionTutorialViewModel) {
+        subtitleLabel.text = viewModel.subtitle
         secondTipLabel.attributedText = viewModel.secondTip
         tapToMoreLabel.attributedText = viewModel.tapToMoreText
 

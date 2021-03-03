@@ -40,7 +40,7 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
 
     private lazy var maxTransactionWarningPresenter: CardModalPresenter = {
         let screenHeight = UIScreen.main.bounds.height
-        let height = screenHeight <= 586.0 ? screenHeight - 20.0 : 586.0
+        let height = screenHeight <= 522.0 ? screenHeight - 20.0 : 522.0
         return CardModalPresenter(
             config: ModalConfiguration(
                 animationMode: .normal(duration: 0.25),
@@ -85,6 +85,8 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
     
     var shouldUpdateSenderForSelectedAccount = false
     var shouldUpdateReceiverForSelectedAccount = false
+
+    private let transactionTutorialStorage = TransactionTutorialStorage()
     
     private(set) var isSenderEditable: Bool
     
@@ -108,10 +110,16 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
         let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [weak self] in
             self?.closeScreen(by: .dismiss, animated: true)
         }
+
+        let infoBarButtonItem = ALGBarButtonItem(kind: .info) { [weak self] in
+            self?.displayTransactionTutorial(isInitialDisplay: false)
+        }
         
         if isSenderEditable {
             leftBarButtonItems = [closeBarButtonItem]
         }
+
+        rightBarButtonItems = [infoBarButtonItem]
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -125,8 +133,8 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if selectedAccount != nil {
-            displayTransactionTutorialIfNeeded()
+        if selectedAccount != nil && !transactionTutorialStorage.isTransactionTutorialDisplayed() {
+            displayTransactionTutorial(isInitialDisplay: true)
         }
     }
     
@@ -334,7 +342,9 @@ extension SendTransactionPreviewViewController: SelectAssetViewControllerDelegat
         didSelectAlgosIn account: Account,
         forAction transactionAction: TransactionAction
     ) {
-        displayTransactionTutorialIfNeeded()
+        if !transactionTutorialStorage.isTransactionTutorialDisplayed() {
+            displayTransactionTutorial(isInitialDisplay: true)
+        }
         configure(forSelected: account, with: nil)
     }
     
@@ -344,21 +354,18 @@ extension SendTransactionPreviewViewController: SelectAssetViewControllerDelegat
         in account: Account,
         forAction transactionAction: TransactionAction
     ) {
-        displayTransactionTutorialIfNeeded()
+        if !transactionTutorialStorage.isTransactionTutorialDisplayed() {
+            displayTransactionTutorial(isInitialDisplay: true)
+        }
         configure(forSelected: account, with: assetDetail)
     }
 }
 
 extension SendTransactionPreviewViewController {
-    private func displayTransactionTutorialIfNeeded() {
-        let transactionTutorialStorage = TransactionTutorialStorage()
-        if transactionTutorialStorage.isTransactionTutorialDisplayed() {
-            return
-        }
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+    private func displayTransactionTutorial(isInitialDisplay: Bool) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + (isInitialDisplay ? 1.0 : 0.0)) {
             let controller = self.open(
-                .transactionTutorial,
+                .transactionTutorial(isInitialDisplay: isInitialDisplay),
                 by: .customPresentWithoutNavigationController(
                     presentationStyle: .custom,
                     transitionStyle: nil,
@@ -384,8 +391,7 @@ extension SendTransactionPreviewViewController {
             return false
         }
 
-        let maximumBalanceWarningStorage = MaximumBalanceWarningStorage()
-        return isMaxTransaction && account.isRekeyed() && !maximumBalanceWarningStorage.isMaximumBalanceWarningDisabled()
+        return isMaxTransaction && account.isRekeyed()
     }
 
     private func displayMaxTransactionWarning() {
