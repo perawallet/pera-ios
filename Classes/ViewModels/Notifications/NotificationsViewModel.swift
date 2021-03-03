@@ -156,7 +156,7 @@ extension NotificationsViewModel {
         let amount = notificationDetail.amount ?? 0
         if let asset = notificationDetail.asset {
             let fraction = asset.fractionDecimals ?? 0
-            return amount.toFractionStringForLabel(fraction: fraction)
+            return amount.assetAmount(fromFraction: fraction).toFractionStringForLabel(fraction: fraction)
         }
         return amount.toAlgos.toAlgosStringForLabel
     }
