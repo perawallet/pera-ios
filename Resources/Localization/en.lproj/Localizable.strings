@@ -193,7 +193,7 @@
 "send-algos-alert-message" = "Please fill the fields.";
 "send-algos-minimum-amount-error-new-account" = "You're trying to send money to a new account. The amount must be at least 0.1 algos.";
 "send-algos-minimum-amount-error" = "Transaction amount results in a balance below the minimum account balance of 0.1 algos.";
-"send-algos-minimum-amount-custom-error" = "Transaction amount results in a balance below the minimum account balance of %@ algos.";
+"send-algos-minimum-amount-custom-error" = "The transaction cannot be completed because the amount will put your account below minimum required balance of %@ Algos.";
 "send-algos-amount-error" = "Transaction amount cannot be more than your available algos";
 "send-asset-amount-error" = "Transaction amount cannot be more than your available amount.";
 "send-algos-contact-not-found" = "Contact not found";

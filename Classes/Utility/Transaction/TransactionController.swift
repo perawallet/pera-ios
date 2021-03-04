@@ -148,9 +148,6 @@ extension TransactionController {
         switch transactionType {
         case .algosTransaction:
             let builder = SendAlgosTransactionDataBuilder(params: params, draft: algosTransactionDraft, initialSize: initialSize)
-            if let calculatedTransactionAmount = builder.calculatedTransactionAmount?.toAlgos {
-                transactionDraft?.amount = calculatedTransactionAmount
-            }
             composeTransactionData(from: builder)
         case .assetAddition:
             composeTransactionData(from: AddAssetTransactionDataBuilder(params: params, draft: assetTransactionDraft))
@@ -169,11 +166,27 @@ extension TransactionController {
         builder.delegate = self
 
         guard let data = builder.composeData() else {
+            handleMinimumAmountErrorIfNeeded(from: builder)
             resetLedgerOperationIfNeeded()
             return
         }
 
+        updateTransactionAmount(from: builder)
         transactionData.setUnsignedTransaction(data)
+    }
+
+    private func handleMinimumAmountErrorIfNeeded(from builder: TransactionDataBuilder) {
+        if let builder = builder as? SendAlgosTransactionDataBuilder,
+           let minimumAccountBalance = builder.minimumAccountBalance,
+           builder.calculatedTransactionAmount.unwrap(or: 0).isBelowZero {
+            delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.minimumAmount(amount: minimumAccountBalance)))
+        }
+    }
+
+    private func updateTransactionAmount(from builder: TransactionDataBuilder) {
+        if let builder = builder as? SendAlgosTransactionDataBuilder {
+            transactionDraft?.amount = builder.calculatedTransactionAmount?.toAlgos
+        }
     }
 
     private func startSigningProcess(for transactionType: TransactionType) {

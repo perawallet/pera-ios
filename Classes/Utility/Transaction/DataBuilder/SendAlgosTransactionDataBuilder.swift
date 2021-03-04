@@ -21,6 +21,7 @@ class SendAlgosTransactionDataBuilder: TransactionDataBuilder {
 
     private let initialSize: Int?
     private(set) var calculatedTransactionAmount: Int64?
+    private(set) var minimumAccountBalance: Int64?
 
     init(params: TransactionParams?, draft: TransactionSendDraft?, initialSize: Int?) {
         self.initialSize = initialSize
@@ -40,11 +41,11 @@ class SendAlgosTransactionDataBuilder: TransactionDataBuilder {
         }
 
         var isMaxTransaction = algosTransactionDraft.isMaxTransaction
-        updateMaximumTransactionStateIfNeeded(&isMaxTransaction)
         let transactionAmount = calculateTransactionAmount(isMaxTransaction: isMaxTransaction)
         self.calculatedTransactionAmount = transactionAmount
+        updateMaximumTransactionStateIfNeeded(&isMaxTransaction)
 
-        if !isValidAddress(toAddress.trimmed) {
+        if !isValidAddress(toAddress.trimmed) || transactionAmount.isBelowZero {
             return nil
         }
 
@@ -71,7 +72,9 @@ class SendAlgosTransactionDataBuilder: TransactionDataBuilder {
         if isMaxTransaction {
             // If transaction amount is equal to amount of the sender account when it is max transaction
             // If an account is rekeyed, it's not allowed to make max transaciton
-            if !hasMaximumAccountAmountForTransaction() || isMaxTransactionFromRekeyedAccount() {
+            if isMaxTransactionFromRekeyedAccount() {
+                isMaxTransaction = false
+            } else if !hasMaximumAccountAmountForTransaction() {
                 isMaxTransaction = false
             }
         }
@@ -92,10 +95,12 @@ class SendAlgosTransactionDataBuilder: TransactionDataBuilder {
             isAfterTransaction: true
         )
 
+        self.minimumAccountBalance = minimumAmountForAccount
+
         if isMaxTransaction {
             if isMaxTransactionFromRekeyedAccount() {
                 // Reduce fee and minimum amount possible for the account from transaction amount
-                transactionAmount -= params.getProjectedTransactionFee(from: initialSize) - minimumAmountForAccount
+                transactionAmount -= (params.getProjectedTransactionFee(from: initialSize) + minimumAmountForAccount)
             } else {
                 // Reduce fee from transaction amount
                 transactionAmount -= params.getProjectedTransactionFee(from: initialSize)

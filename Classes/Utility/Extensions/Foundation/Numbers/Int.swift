@@ -58,6 +58,10 @@ extension Int64 {
     func toFractionStringForLabel(fraction: Int) -> String? {
         return Formatter.separatorWith(fraction: fraction).string(from: NSNumber(value: self))
     }
+
+    var isBelowZero: Bool {
+        return self < 0
+    }
 }
 
 extension UInt64 {
