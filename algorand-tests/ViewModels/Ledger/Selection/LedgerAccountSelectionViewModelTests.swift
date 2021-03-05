@@ -13,18 +13,18 @@
 // limitations under the License.
 
 //
-//  LedgerAccountSelectionViewModelTests.swift
+//  LedgerAccountViewModelTests.swift
 
 import XCTest
 
 @testable import algorand_staging
 
-class LedgerAccountSelectionViewModelTests: XCTestCase {
+class LedgerAccountViewModelTests: XCTestCase {
 
     private let account = Bundle.main.decode(Account.self, from: "AccountA.json")
 
     func testSubviews() {
-        let viewModel = LedgerAccountSelectionViewModel(account: account, isMultiSelect: true, isSelected: false)
+        let viewModel = LedgerAccountViewModel(account: account, isMultiSelect: true, isSelected: false)
         XCTAssertEqual(viewModel.subviews.count, 3)
     }
 }

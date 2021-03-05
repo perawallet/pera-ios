@@ -63,8 +63,9 @@ extension LedgerAccountSelectionDataSource {
         api.fetchRekeyedAccounts(of: address) { response in
             switch response {
             case let .success(rekeyedAccountsResponse):
-                self.rekeyedAccounts[address] = rekeyedAccountsResponse.accounts
-                rekeyedAccountsResponse.accounts.forEach { account in
+                let rekeyedAccounts = rekeyedAccountsResponse.accounts.filter { $0.authAddress != $0.address }
+                self.rekeyedAccounts[address] = rekeyedAccounts
+                rekeyedAccounts.forEach { account in
                     account.assets = account.nonDeletedAssets()
                     account.type = .rekeyed
                     if let authAddress = account.authAddress {
@@ -94,7 +95,7 @@ extension LedgerAccountSelectionDataSource: UICollectionViewDataSource {
             ) as? LedgerAccountCell {
             cell.delegate = self
             let isSelected = collectionView.indexPathsForSelectedItems?.contains(indexPath) ?? false
-            cell.bind(LedgerAccountSelectionViewModel(account: account, isMultiSelect: isMultiSelect, isSelected: isSelected))
+            cell.bind(LedgerAccountViewModel(account: account, isMultiSelect: isMultiSelect, isSelected: isSelected))
             return cell
         }
         fatalError("Index path is out of bounds")

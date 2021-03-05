@@ -13,56 +13,30 @@
 // limitations under the License.
 
 //
-//  LedgerAccountSelectionViewModel.swift
+//   LedgerAccountSelectionViewModel.swift
 
-import UIKit
+import Foundation
 
 class LedgerAccountSelectionViewModel {
-    
-    private(set) var subviews: [UIView] = []
-    
-    private let isMultiSelect: Bool
-    let isSelected: Bool
-    
-    init(account: Account, isMultiSelect: Bool, isSelected: Bool) {
-        self.isMultiSelect = isMultiSelect
-        self.isSelected = isSelected
-        setSubviews(from: account)
+    private(set) var buttonText: String?
+    private(set) var isEnabled: Bool = false
+
+    init(isMultiSelect: Bool, selectedCount: Int) {
+        setButtonText(from: isMultiSelect, and: selectedCount)
+        setIsEnabled(from: selectedCount)
     }
-    
-    private func setSubviews(from account: Account) {
-        addLedgerAccountNameView(with: account)
-        addAlgoView(with: account)
-        addLedgerAssetCountViewIfNeeded(with: account)
-    }
-    
-    private func addLedgerAccountNameView(with account: Account) {
-        let ledgerAccountNameView = LedgerAccountNameView()
-        ledgerAccountNameView.bind(LedgerAccountNameViewModel(account: account, isMultiSelect: isMultiSelect, isSelected: isSelected))
-        subviews.append(ledgerAccountNameView)
-    }
-    
-    private func addAlgoView(with account: Account) {
-        let algoView = AlgoAssetView()
-        setAlgoAmount(from: account, in: algoView)
-        
-        if account.assets.isNilOrEmpty {
-            algoView.setSeparatorHidden(true)
-        }
-        
-        subviews.append(algoView)
-    }
-    
-    private func addLedgerAssetCountViewIfNeeded(with account: Account) {
-        if !account.assets.isNilOrEmpty {
-            let ledgerAssetCountView = LedgerAccountAssetCountView()
-            ledgerAssetCountView.bind(LedgerAccountAssetCountViewModel(account: account))
-            subviews.append(ledgerAssetCountView)
-            return
+
+    private func setButtonText(from isMultiSelect: Bool, and selectedCount: Int) {
+        if isMultiSelect {
+            buttonText = selectedCount <= 1
+                ? "ledger-account-selection-add".localized.localized
+                : "ledger-account-selection-add-plural".localized.localized
+        } else {
+            buttonText = "send-algos-select".localized
         }
     }
-    
-    private func setAlgoAmount(from account: Account, in view: AlgoAssetView) {
-        view.bind(AlgoAssetViewModel(account: account))
+
+    private func setIsEnabled(from selectedCount: Int) {
+        isEnabled = selectedCount > 0
     }
 }

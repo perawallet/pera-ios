@@ -45,11 +45,7 @@ class LedgerAccountSelectionView: BaseView {
         return collectionView
     }()
     
-    private lazy var addButton: MainButton = {
-        let addButton = MainButton(title: "ledger-account-selection-add".localized)
-        addButton.setBackgroundImage(img("bg-gray-600-button"), for: .disabled)
-        return addButton
-    }()
+    private lazy var addButton = MainButton(title: "ledger-account-selection-add".localized)
     
     private let isMultiSelect: Bool
     
@@ -63,7 +59,6 @@ class LedgerAccountSelectionView: BaseView {
         errorView.setImage(img("icon-warning-error"))
         errorView.setTitle("transaction-filter-error-title".localized)
         errorView.setSubtitle("transaction-filter-error-subtitle".localized)
-        setAddButtonEnabled(false)
     }
     
     override func setListeners() {
@@ -136,13 +131,10 @@ extension LedgerAccountSelectionView {
     var selectedIndexes: [IndexPath] {
         return accountsCollectionView.indexPathsForSelectedItems ?? []
     }
-    
-    func setAddButtonEnabled(_ isEnabled: Bool) {
-        addButton.isEnabled = isEnabled
-    }
 
-    func setAddButtonTitle(_ title: String) {
-        addButton.setTitle(title, for: .normal)
+    func bind(_ viewModel: LedgerAccountSelectionViewModel) {
+        addButton.isEnabled = viewModel.isEnabled
+        addButton.setTitle(viewModel.buttonText, for: .normal)
     }
 }
 

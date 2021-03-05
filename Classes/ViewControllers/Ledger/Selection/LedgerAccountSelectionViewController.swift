@@ -33,6 +33,10 @@ class LedgerAccountSelectionViewController: BaseViewController {
     private let ledger: LedgerDetail
     private let ledgerAccounts: [Account]
     private let accountSetupFlow: AccountSetupFlow
+
+    private var selectedAccountCount: Int {
+        return ledgerAccountSelectionView.selectedIndexes.count
+    }
     
     private var isMultiSelect: Bool {
         switch accountSetupFlow {
@@ -75,8 +79,7 @@ class LedgerAccountSelectionViewController: BaseViewController {
     override func configureAppearance() {
         super.configureAppearance()
         title = ledger.name
-        let buttonTitle = isMultiSelect ? "ledger-account-selection-add".localized.localized : "send-algos-select".localized
-        ledgerAccountSelectionView.setAddButtonTitle(buttonTitle)
+        ledgerAccountSelectionView.bind(LedgerAccountSelectionViewModel(isMultiSelect: isMultiSelect, selectedCount: selectedAccountCount))
     }
     
     override func linkInteractors() {
@@ -195,13 +198,13 @@ extension LedgerAccountSelectionViewController: LedgerAccountSelectionListLayout
         _ ledgerAccountSelectionListLayout: LedgerAccountSelectionListLayout,
         didSelectItemAt indexPath: IndexPath
     ) {
-        ledgerAccountSelectionView.setAddButtonEnabled(!ledgerAccountSelectionView.selectedIndexes.isEmpty)
+        ledgerAccountSelectionView.bind(LedgerAccountSelectionViewModel(isMultiSelect: isMultiSelect, selectedCount: selectedAccountCount))
     }
     
     func ledgerAccountSelectionListLayout(
         _ ledgerAccountSelectionListLayout: LedgerAccountSelectionListLayout,
         didDeselectItemAt indexPath: IndexPath
     ) {
-        ledgerAccountSelectionView.setAddButtonEnabled(!ledgerAccountSelectionView.selectedIndexes.isEmpty)
+        ledgerAccountSelectionView.bind(LedgerAccountSelectionViewModel(isMultiSelect: isMultiSelect, selectedCount: selectedAccountCount))
     }
 }

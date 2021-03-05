@@ -28,16 +28,8 @@ class LedgerDeviceListViewController: BaseViewController {
         guard let api = api else {
             fatalError("Api must be set before accessing this view controller.")
         }
-        return LedgerAccountFetchOperation(api: api)
+        return LedgerAccountFetchOperation(api: api, ledgerApprovalMode: .connection)
     }()
-    
-    private lazy var ledgerApprovalPresenter = CardModalPresenter(
-        config: ModalConfiguration(
-            animationMode: .normal(duration: 0.25),
-            dismissMode: .none
-        ),
-        initialModalSize: .custom(CGSize(width: view.frame.width, height: 354.0))
-    )
     
     private let accountSetupFlow: AccountSetupFlow
     private var ledgerDevices = [CBPeripheral]()

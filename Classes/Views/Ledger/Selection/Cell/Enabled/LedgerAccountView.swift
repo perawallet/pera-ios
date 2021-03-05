@@ -68,7 +68,7 @@ extension LedgerAccountView {
         }
     }
     
-    func bind(_ viewModel: LedgerAccountSelectionViewModel) {
+    func bind(_ viewModel: LedgerAccountViewModel) {
         state = viewModel.isSelected ? .selected : .unselected
         
         viewModel.subviews.forEach { view in

@@ -33,7 +33,7 @@ class LedgerAccountCell: BaseCollectionViewCell<LedgerAccountView> {
 }
 
 extension LedgerAccountCell {
-    func bind(_ viewModel: LedgerAccountSelectionViewModel) {
+    func bind(_ viewModel: LedgerAccountViewModel) {
         contextView.bind(viewModel)
     }
     

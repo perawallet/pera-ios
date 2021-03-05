@@ -807,6 +807,9 @@
 		2B0F635724ED0CFC00DA22A6 /* RekeyedAccountQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0F635524ED0CFC00DA22A6 /* RekeyedAccountQuery.swift */; };
 		2B0F635824ED21C200DA22A6 /* LedgerAccountSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0F5F0724E19A8700DA22A6 /* LedgerAccountSelectionViewController.swift */; };
 		2B0F635924ED21C200DA22A6 /* LedgerAccountSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0F5F0B24E19ABA00DA22A6 /* LedgerAccountSelectionView.swift */; };
+		2B12633425F254450043CC03 /* LedgerAccountSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B12633325F254450043CC03 /* LedgerAccountSelectionViewModel.swift */; };
+		2B12633525F254450043CC03 /* LedgerAccountSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B12633325F254450043CC03 /* LedgerAccountSelectionViewModel.swift */; };
+		2B12633625F254450043CC03 /* LedgerAccountSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B12633325F254450043CC03 /* LedgerAccountSelectionViewModel.swift */; };
 		2B1336D92576987D00371CFB /* AppearanceSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1336D82576987D00371CFB /* AppearanceSelectionViewController.swift */; };
 		2B1336DA2576987D00371CFB /* AppearanceSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1336D82576987D00371CFB /* AppearanceSelectionViewController.swift */; };
 		2B1336DB2576987D00371CFB /* AppearanceSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1336D82576987D00371CFB /* AppearanceSelectionViewController.swift */; };
@@ -1281,9 +1284,9 @@
 		2B7E586725866DB500731C97 /* LedgerAccountNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7E586625866DB500731C97 /* LedgerAccountNameView.swift */; };
 		2B7E586825866DB500731C97 /* LedgerAccountNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7E586625866DB500731C97 /* LedgerAccountNameView.swift */; };
 		2B7E586925866DB500731C97 /* LedgerAccountNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7E586625866DB500731C97 /* LedgerAccountNameView.swift */; };
-		2B7E58832586702500731C97 /* LedgerAccountSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7E58822586702500731C97 /* LedgerAccountSelectionViewModel.swift */; };
-		2B7E58842586702500731C97 /* LedgerAccountSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7E58822586702500731C97 /* LedgerAccountSelectionViewModel.swift */; };
-		2B7E58852586702500731C97 /* LedgerAccountSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7E58822586702500731C97 /* LedgerAccountSelectionViewModel.swift */; };
+		2B7E58832586702500731C97 /* LedgerAccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7E58822586702500731C97 /* LedgerAccountViewModel.swift */; };
+		2B7E58842586702500731C97 /* LedgerAccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7E58822586702500731C97 /* LedgerAccountViewModel.swift */; };
+		2B7E58852586702500731C97 /* LedgerAccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7E58822586702500731C97 /* LedgerAccountViewModel.swift */; };
 		2B7E588A258788C000731C97 /* LedgerAccountAssetCountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7E5889258788C000731C97 /* LedgerAccountAssetCountView.swift */; };
 		2B7E588B258788C000731C97 /* LedgerAccountAssetCountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7E5889258788C000731C97 /* LedgerAccountAssetCountView.swift */; };
 		2B7E588C258788C000731C97 /* LedgerAccountAssetCountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7E5889258788C000731C97 /* LedgerAccountAssetCountView.swift */; };
@@ -2043,6 +2046,7 @@
 		2B0F634F24EC129D00DA22A6 /* Info-Prod.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-Prod.plist"; sourceTree = "<group>"; };
 		2B0F635124ED0CCF00DA22A6 /* RekeyedAccountsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyedAccountsResponse.swift; sourceTree = "<group>"; };
 		2B0F635524ED0CFC00DA22A6 /* RekeyedAccountQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyedAccountQuery.swift; sourceTree = "<group>"; };
+		2B12633325F254450043CC03 /* LedgerAccountSelectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountSelectionViewModel.swift; sourceTree = "<group>"; };
 		2B1336D82576987D00371CFB /* AppearanceSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceSelectionViewController.swift; sourceTree = "<group>"; };
 		2B13952D24C605E0002F66D3 /* CursorQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CursorQuery.swift; sourceTree = "<group>"; };
 		2B18BAF2247DB2AE00BFDBC6 /* TooltipViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TooltipViewController.swift; sourceTree = "<group>"; };
@@ -2283,7 +2287,7 @@
 		2B7E585B25866DA300731C97 /* LedgerAccountCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LedgerAccountCell.swift; path = Enabled/LedgerAccountCell.swift; sourceTree = "<group>"; };
 		2B7E585C25866DA400731C97 /* LedgerAccountView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LedgerAccountView.swift; path = Enabled/LedgerAccountView.swift; sourceTree = "<group>"; };
 		2B7E586625866DB500731C97 /* LedgerAccountNameView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LedgerAccountNameView.swift; path = Title/LedgerAccountNameView.swift; sourceTree = "<group>"; };
-		2B7E58822586702500731C97 /* LedgerAccountSelectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountSelectionViewModel.swift; sourceTree = "<group>"; };
+		2B7E58822586702500731C97 /* LedgerAccountViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountViewModel.swift; sourceTree = "<group>"; };
 		2B7E5889258788C000731C97 /* LedgerAccountAssetCountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountAssetCountView.swift; sourceTree = "<group>"; };
 		2B7E589025878BCE00731C97 /* LedgerAccountAssetCountViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountAssetCountViewModel.swift; sourceTree = "<group>"; };
 		2B82B1C422535F4300A8909F /* Contact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
@@ -3133,8 +3137,9 @@
 				2BB350D82589891200A03BAC /* Detail */,
 				2B298D1024F437360047408A /* LedgerAccountSelectionHeaderSupplementaryViewModel.swift */,
 				2B298D1624F47FCF0047408A /* LedgerAccountNameViewModel.swift */,
-				2B7E58822586702500731C97 /* LedgerAccountSelectionViewModel.swift */,
+				2B7E58822586702500731C97 /* LedgerAccountViewModel.swift */,
 				2B7E589025878BCE00731C97 /* LedgerAccountAssetCountViewModel.swift */,
+				2B12633325F254450043CC03 /* LedgerAccountSelectionViewModel.swift */,
 			);
 			path = Selection;
 			sourceTree = "<group>";
@@ -8057,7 +8062,7 @@
 				2B4EEEBB24BDFFD500059A16 /* NotificationsView.swift in Sources */,
 				2B79A141231580AC00766021 /* TransactionController.swift in Sources */,
 				17BD4EC32292F1260003E49A /* AccountListDataSource.swift in Sources */,
-				2B7E58852586702500731C97 /* LedgerAccountSelectionViewModel.swift in Sources */,
+				2B7E58852586702500731C97 /* LedgerAccountViewModel.swift in Sources */,
 				2B0F5F3624E4084400DA22A6 /* RekeyTransactionDraft.swift in Sources */,
 				2B3E3A16247C2D1A00E8AEB7 /* TabBarController+Animation.swift in Sources */,
 				17BD4EC52292F1260003E49A /* PasswordInputCircleView.swift in Sources */,
@@ -8101,6 +8106,7 @@
 				2B5671582400751C0037FCFA /* LedgerTutorialViewController.swift in Sources */,
 				17BD4ED72292F1260003E49A /* SettingsDetailContextView.swift in Sources */,
 				2B4486F7237958C400C19FDE /* AccountsViewController.swift in Sources */,
+				2B12633625F254450043CC03 /* LedgerAccountSelectionViewModel.swift in Sources */,
 				17BD4ED92292F1260003E49A /* UIView+SafeArea.swift in Sources */,
 				2B95414425ACDA0D0098805B /* DeepLinkRouter.swift in Sources */,
 				2B5BE148251B72AB00324BEE /* API+Currency.swift in Sources */,
@@ -8648,7 +8654,7 @@
 				2B0F62B224EC129D00DA22A6 /* OptionsView.swift in Sources */,
 				2B0F62B324EC129D00DA22A6 /* PinLimitStore.swift in Sources */,
 				2B0F62B424EC129D00DA22A6 /* PassphraseDisplayView.swift in Sources */,
-				2B7E58842586702500731C97 /* LedgerAccountSelectionViewModel.swift in Sources */,
+				2B7E58842586702500731C97 /* LedgerAccountViewModel.swift in Sources */,
 				2B0F62B524EC129D00DA22A6 /* NodeSelectionView.swift in Sources */,
 				2B0F62B624EC129D00DA22A6 /* WaitRoundDraft.swift in Sources */,
 				2B0F62B724EC129D00DA22A6 /* TransactionStatusView.swift in Sources */,
@@ -8692,6 +8698,7 @@
 				2B0F62D324EC129D00DA22A6 /* TransactionTrackDraft.swift in Sources */,
 				2B0F62D424EC129D00DA22A6 /* NumpadView.swift in Sources */,
 				2B0F62D524EC129D00DA22A6 /* AccountFooterSupplementaryView.swift in Sources */,
+				2B12633525F254450043CC03 /* LedgerAccountSelectionViewModel.swift in Sources */,
 				2B5BE147251B72AB00324BEE /* API+Currency.swift in Sources */,
 				2B95414325ACDA0D0098805B /* DeepLinkRouter.swift in Sources */,
 				2B0F62D624EC129D00DA22A6 /* Toggle.swift in Sources */,
@@ -9239,7 +9246,7 @@
 				2B4EEEBA24BDFFD500059A16 /* NotificationsView.swift in Sources */,
 				2B656EAA224BDCB80064A49B /* AccountListDataSource.swift in Sources */,
 				2B0F5F3524E4084400DA22A6 /* RekeyTransactionDraft.swift in Sources */,
-				2B7E58832586702500731C97 /* LedgerAccountSelectionViewModel.swift in Sources */,
+				2B7E58832586702500731C97 /* LedgerAccountViewModel.swift in Sources */,
 				2BD739FC2241052600B66EEF /* PasswordInputCircleView.swift in Sources */,
 				2BD739EC223FA0DC00B66EEF /* LocalAuthenticationPreferenceViewController.swift in Sources */,
 				2B3E3A15247C2D1A00E8AEB7 /* TabBarController+Animation.swift in Sources */,
@@ -9283,6 +9290,7 @@
 				2B5671572400751C0037FCFA /* LedgerTutorialViewController.swift in Sources */,
 				2B0D84EB239488A500F0EAA7 /* AssetConfigTransactionType.swift in Sources */,
 				2B4486F6237958C400C19FDE /* AccountsViewController.swift in Sources */,
+				2B12633425F254450043CC03 /* LedgerAccountSelectionViewModel.swift in Sources */,
 				2BF34CBA223A880C0052CAD3 /* UIView+SafeArea.swift in Sources */,
 				2B95414225ACDA0D0098805B /* DeepLinkRouter.swift in Sources */,
 				2B5BE146251B72AB00324BEE /* API+Currency.swift in Sources */,
