@@ -97,6 +97,7 @@ extension QRScannerViewController {
         if AVCaptureDevice.authorizationStatus(for: .video) ==  .authorized {
             setupCaptureSession()
             setupPreviewLayer()
+            setupOverlayViewLayout()
             setupCancelButtonLayout()
         } else {
             AVCaptureDevice.requestAccess(for: .video) { granted in
@@ -104,13 +105,14 @@ extension QRScannerViewController {
                     DispatchQueue.main.async {
                         self.setupCaptureSession()
                         self.setupPreviewLayer()
+                        self.setupOverlayViewLayout()
                         self.setupCancelButtonLayout()
                     }
                 } else {
                     DispatchQueue.main.async {
                         self.presentDisabledCameraAlert()
+                        self.setupOverlayViewLayout()
                         self.setupCancelButtonLayout()
-                        self.customizeButtonAppearanceInUnauthorizedStateIfNeeded()
                     }
                 }
             }
@@ -124,12 +126,6 @@ extension QRScannerViewController {
             make.bottom.equalToSuperview().inset(layout.current.buttonVerticalInset + view.safeAreaBottom)
             make.centerX.equalToSuperview()
             make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
-        }
-    }
-
-    private func customizeButtonAppearanceInUnauthorizedStateIfNeeded() {
-        if !isDarkModeDisplay {
-            cancelButton.setTitleColor(Colors.ButtonText.secondary, for: .normal)
         }
     }
 }
@@ -211,12 +207,14 @@ extension QRScannerViewController {
         
         view.layer.addSublayer(previewLayer)
         
-        view.addSubview(overlayView)
-        overlayView.frame = previewLayer.frame
-        
         captureSessionQueue.async {
             captureSession.startRunning()
         }
+    }
+
+    private func setupOverlayViewLayout() {
+        view.addSubview(overlayView)
+        overlayView.frame = view.frame
     }
 }
 
