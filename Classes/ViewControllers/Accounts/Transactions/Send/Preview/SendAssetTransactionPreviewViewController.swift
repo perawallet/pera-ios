@@ -28,6 +28,18 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
         ),
         initialModalSize: .custom(CGSize(width: view.frame.width, height: 422.0))
     )
+
+    private lazy var maxTransactionWarningPresenter: CardModalPresenter = {
+        let screenHeight = UIScreen.main.bounds.height
+        let height = screenHeight <= 522.0 ? screenHeight - 20.0 : 522.0
+        return CardModalPresenter(
+            config: ModalConfiguration(
+                animationMode: .normal(duration: 0.25),
+                dismissMode: .scroll
+            ),
+            initialModalSize: .custom(CGSize(width: view.frame.width, height: height))
+        )
+    }()
     
     private lazy var bottomInformationPresenter = CardModalPresenter(
         config: ModalConfiguration(
@@ -127,7 +139,7 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
     
     override func displayTransactionPreview() {
         if selectedAccount == nil {
-            displaySimpleAlertWith(title: "send-algos-alert-title".localized, message: "send-algos-alert-message".localized)
+            displaySimpleAlertWith(title: "send-algos-alert-incomplete-title".localized, message: "send-algos-alert-message".localized)
             return
         }
         
@@ -145,7 +157,10 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
                 checkIfAddressIsValidForTransaction(address)
                 return
             } else {
-                displaySimpleAlertWith(title: "send-algos-alert-title".localized, message: "send-algos-alert-message".localized)
+                displaySimpleAlertWith(
+                    title: "send-algos-alert-incomplete-title".localized,
+                    message: "send-algos-alert-message-address".localized
+                )
             }
         }
     }
@@ -238,6 +253,29 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
             )
         )
     }
+
+    private func displayMaxTransactionWarning() {
+        guard let account = selectedAccount else {
+            return
+        }
+
+        let controller = open(
+            .maximumBalanceWarning(account: account),
+            by: .customPresentWithoutNavigationController(
+                presentationStyle: .custom,
+                transitionStyle: nil,
+                transitioningDelegate: maxTransactionWarningPresenter
+            )
+        ) as? MaximumBalanceWarningViewController
+        controller?.delegate = self
+    }
+}
+
+extension SendAssetTransactionPreviewViewController: MaximumBalanceWarningViewControllerDelegate {
+    func maximumBalanceWarningViewControllerDidConfirmWarning(_ maximumBalanceWarningViewController: MaximumBalanceWarningViewController) {
+        maximumBalanceWarningViewController.dismissScreen()
+        composeTransactionData()
+    }
 }
 
 extension SendAssetTransactionPreviewViewController {
@@ -322,7 +360,10 @@ extension SendAssetTransactionPreviewViewController {
         }
             
         if !isTransactionValid() {
-            displaySimpleAlertWith(title: "send-algos-alert-title".localized, message: "send-algos-alert-message".localized)
+            displaySimpleAlertWith(
+                title: "send-algos-alert-incomplete-title".localized,
+                message: "send-algos-alert-message-address".localized
+            )
             return
         }
         
@@ -334,8 +375,12 @@ extension SendAssetTransactionPreviewViewController {
             self.displaySimpleAlertWith(title: "title-error".localized, message: "send-asset-amount-error".localized)
             return
         }
-        
-        composeTransactionData()
+
+        if isMaxTransactionFromRekeyedAccount {
+            displayMaxTransactionWarning()
+        } else {
+            composeTransactionData()
+        }
     }
     
     private func composeTransactionData() {

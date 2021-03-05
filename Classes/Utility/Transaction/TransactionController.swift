@@ -159,7 +159,9 @@ extension TransactionController {
             composeTransactionData(from: RekeyTransactionDataBuilder(params: params, draft: rekeyTransactionDraft))
         }
 
-        startSigningProcess(for: transactionType)
+        if transactionData.isUnsignedTransactionComposed {
+            startSigningProcess(for: transactionType)
+        }
     }
 
     private func composeTransactionData(from builder: TransactionDataBuilder) {

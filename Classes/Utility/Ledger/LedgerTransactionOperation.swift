@@ -28,6 +28,10 @@ class LedgerTransactionOperation: LedgerOperation, BLEConnectionManagerDelegate,
     }
     
     var ledgerApprovalViewController: LedgerApprovalViewController?
+
+    var ledgerMode: LedgerApprovalViewController.Mode {
+        return .approve
+    }
     
     var timer: Timer?
     var connectedDevice: CBPeripheral?
@@ -43,7 +47,7 @@ class LedgerTransactionOperation: LedgerOperation, BLEConnectionManagerDelegate,
     private var account: Account?
     private var unsignedTransactionData: Data?
     
-    private lazy var accountFetchOperation = LedgerAccountFetchOperation(api: api)
+    private lazy var accountFetchOperation = LedgerAccountFetchOperation(api: api, ledgerApprovalMode: .approve)
     
     init(api: AlgorandAPI) {
         self.api = api

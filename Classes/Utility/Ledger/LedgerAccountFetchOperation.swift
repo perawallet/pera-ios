@@ -24,6 +24,10 @@ class LedgerAccountFetchOperation: LedgerOperation, BLEConnectionManagerDelegate
     let ledgerBleController = LedgerBLEController()
     
     var ledgerApprovalViewController: LedgerApprovalViewController?
+
+    var ledgerMode: LedgerApprovalViewController.Mode {
+        return ledgerApprovalMode
+    }
     
     var timer: Timer?
     var connectedDevice: CBPeripheral?
@@ -36,9 +40,11 @@ class LedgerAccountFetchOperation: LedgerOperation, BLEConnectionManagerDelegate
     weak var delegate: LedgerAccountFetchOperationDelegate?
     
     private let api: AlgorandAPI
+    private let ledgerApprovalMode: LedgerApprovalViewController.Mode
     
-    init(api: AlgorandAPI) {
+    init(api: AlgorandAPI, ledgerApprovalMode: LedgerApprovalViewController.Mode) {
         self.api = api
+        self.ledgerApprovalMode = ledgerApprovalMode
         bleConnectionManager.delegate = self
         ledgerBleController.delegate = self
     }

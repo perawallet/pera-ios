@@ -27,6 +27,18 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
         ),
         initialModalSize: .custom(CGSize(width: view.frame.width, height: 422.0))
     )
+
+    private lazy var maxTransactionWarningPresenter: CardModalPresenter = {
+        let screenHeight = UIScreen.main.bounds.height
+        let height = screenHeight <= 522.0 ? screenHeight - 20.0 : 522.0
+        return CardModalPresenter(
+            config: ModalConfiguration(
+                animationMode: .normal(duration: 0.25),
+                dismissMode: .scroll
+            ),
+            initialModalSize: .custom(CGSize(width: view.frame.width, height: height))
+        )
+    }()
     
     private let viewModel: SendAlgosTransactionPreviewViewModel
     
@@ -101,7 +113,10 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
         }
             
         if !isTransactionValid() {
-            displaySimpleAlertWith(title: "send-algos-alert-title".localized, message: "send-algos-alert-message".localized)
+            displaySimpleAlertWith(
+                title: "send-algos-alert-incomplete-title".localized,
+                message: "send-algos-alert-message-address".localized
+            )
             return
         }
             
@@ -126,7 +141,8 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
                 return
             }
         }
-        composeTransactionData()
+
+        composeTransactionDataIfNotMaxTransactionFromRekeyedAccount()
     }
     
     override func transactionController(
@@ -192,6 +208,37 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
             )
         )
     }
+
+    private func displayMaxTransactionWarning() {
+        guard let account = selectedAccount else {
+            return
+        }
+
+        let controller = open(
+            .maximumBalanceWarning(account: account),
+            by: .customPresentWithoutNavigationController(
+                presentationStyle: .custom,
+                transitionStyle: nil,
+                transitioningDelegate: maxTransactionWarningPresenter
+            )
+        ) as? MaximumBalanceWarningViewController
+        controller?.delegate = self
+    }
+
+    private func composeTransactionDataIfNotMaxTransactionFromRekeyedAccount() {
+        if isMaxTransactionFromRekeyedAccount {
+            displayMaxTransactionWarning()
+        } else {
+            composeTransactionData()
+        }
+    }
+}
+
+extension SendAlgosTransactionPreviewViewController: MaximumBalanceWarningViewControllerDelegate {
+    func maximumBalanceWarningViewControllerDidConfirmWarning(_ maximumBalanceWarningViewController: MaximumBalanceWarningViewController) {
+        maximumBalanceWarningViewController.dismissScreen()
+        composeTransactionData()
+    }
 }
 
 extension SendAlgosTransactionPreviewViewController {
@@ -226,7 +273,7 @@ extension SendAlgosTransactionPreviewViewController {
         let cancelAction = UIAlertAction(title: "title-cancel".localized, style: .cancel)
         
         let proceedAction = UIAlertAction(title: "title-proceed".localized, style: .destructive) { _ in
-            self.composeTransactionData()
+            self.composeTransactionDataIfNotMaxTransactionFromRekeyedAccount()
         }
         
         alertController.addAction(cancelAction)

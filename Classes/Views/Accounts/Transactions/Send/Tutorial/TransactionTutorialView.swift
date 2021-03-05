@@ -69,8 +69,8 @@ class TransactionTutorialView: BaseView {
         UILabel()
             .withLine(.contained)
             .withAlignment(.left)
-            .withFont(UIFont.font(withWeight: .regular(size: 12.0)))
-            .withTextColor(Colors.Text.secondary)
+            .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
+            .withTextColor(Colors.Text.primary)
             .withText("transaction-tutorial-tip-first".localized)
     }()
 
@@ -84,8 +84,8 @@ class TransactionTutorialView: BaseView {
         UILabel()
             .withLine(.contained)
             .withAlignment(.left)
-            .withFont(UIFont.font(withWeight: .regular(size: 12.0)))
-            .withTextColor(Colors.Text.secondary)
+            .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
+            .withTextColor(Colors.Text.primary)
     }()
 
     private lazy var separatorView = LineSeparatorView()

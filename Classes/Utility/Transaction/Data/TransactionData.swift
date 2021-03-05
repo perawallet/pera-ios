@@ -21,6 +21,14 @@ class TransactionData {
     private(set) var unsignedTransaction: Data?
     private(set) var signedTransaction: Data?
 
+    var isUnsignedTransactionComposed: Bool {
+        return unsignedTransaction != nil
+    }
+
+    var isTransactionSigned: Bool {
+        return signedTransaction != nil
+    }
+
     func setUnsignedTransaction(_ data: Data) {
         unsignedTransaction = data
     }

@@ -25,6 +25,7 @@ protocol LedgerOperation: class {
     func reset()
     
     var ledgerApprovalViewController: LedgerApprovalViewController? { get set }
+    var ledgerMode: LedgerApprovalViewController.Mode { get }
     
     var timer: Timer? { get set }
     func startTimer()
@@ -145,7 +146,7 @@ extension LedgerOperation {
             initialModalSize: .custom(CGSize(width: UIScreen.main.bounds.width, height: 354.0))
         )
         ledgerApprovalViewController = topMostController?.open(
-            .ledgerApproval(mode: .approve),
+            .ledgerApproval(mode: ledgerMode),
             by: .customPresent(presentationStyle: .custom, transitionStyle: nil, transitioningDelegate: ledgerApprovalPresenter)
         ) as? LedgerApprovalViewController
     }
