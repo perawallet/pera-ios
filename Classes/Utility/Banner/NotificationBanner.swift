@@ -28,7 +28,7 @@ enum NotificationBanner {
             colors: CustomBannerColors()
         )
         
-        banner.duration = 3.0
+        banner.duration = 3.8
         
         if UIApplication.shared.isDarkModeDisplay {
             banner.show(edgeInsets: UIEdgeInsets(top: 20.0, left: 20.0, bottom: 0.0, right: 20.0), cornerRadius: 12.0)
@@ -62,7 +62,7 @@ enum NotificationBanner {
             colors: CustomBannerColors()
         )
         
-        banner.duration = 3.0
+        banner.duration = 3.8
         
         if UIApplication.shared.isDarkModeDisplay {
             banner.show(edgeInsets: UIEdgeInsets(top: 20.0, left: 20.0, bottom: 0.0, right: 20.0), cornerRadius: 12.0)
@@ -93,7 +93,7 @@ enum NotificationBanner {
             colors: CustomBannerColors()
         )
         
-        banner.duration = 3.0
+        banner.duration = 3.8
         banner.show(edgeInsets: UIEdgeInsets(top: 20.0, left: 20.0, bottom: 0.0, right: 20.0), cornerRadius: 12.0)
     }
 }
