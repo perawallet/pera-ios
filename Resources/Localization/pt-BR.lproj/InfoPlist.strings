@@ -10,4 +10,5 @@
 /* Privacy - Face ID Usage Description */
 "NSFaceIDUsageDescription" = "A Algorand vai utilizar ID Facial para logar com segurança.";
 
+/* Privacy - Photo Library Additions Usage Description */
 "NSPhotoLibraryAddUsageDescription" = "A Algorand vai salvar códigos QR em sua biblioteca de imagens.";

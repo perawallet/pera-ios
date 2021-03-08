@@ -368,7 +368,13 @@
 "ledger-account-selection-add" = "Adicionar Conta";
 
 /* (No Comment) */
+"ledger-account-selection-add-plural" = "Adicionar Contas";
+
+/* (No Comment) */
 "ledger-account-selection-detail" = "Este dispositivo ledger pode assinar transações para a seguinte conta. Selecione a conta para adicionar à sua Carteira Algorand.";
+
+/* (No Comment) */
+"ledger-account-selection-detail-rekey" = "Escolha a conta que deseja usar para assinar esta conta.";
 
 /* (No Comment) */
 "ledger-account-selection-title-plural" = "%d Contas Encontradas";
@@ -528,6 +534,12 @@
 
 /* MARK: Login */
 "login-title" = "Desbloquear";
+
+/* (No Comment) */
+"maximum-balance-warning-description" = "Enviar seu saldo máximo em uma conta rechaveada exige que você mantenha um saldo mínimo de %@ Algos para garantir que nada será alterado em sua conta rechaveada.\n\n\nO montante de sua transação será automaticamente atualizado para refletir esta mudança. Você será capaz de visualizar a transação na etapa a seguir.";
+
+/* (No Comment) */
+"maximum-balance-warning-title" = "Saldo Máximo";
 
 /* MARK: Passphrase Back Up */
 "new-account-title" = "Frase Senha de Recuperação";
@@ -878,10 +890,13 @@
 "send-algos-address-not-selected" = "Endereço não selecionado";
 
 /* (No Comment) */
+"send-algos-alert-incomplete-title" = "Transação Incompleta";
+
+/* (No Comment) */
 "send-algos-alert-message" = "Preencha os campos.";
 
 /* (No Comment) */
-"send-algos-alert-title" = "Transação Errada";
+"send-algos-alert-message-address" = "Insira um endereço destino.";
 
 /* (No Comment) */
 "send-algos-amount" = "Quantia";
@@ -1013,6 +1028,9 @@
 "settings-server-node-settings" = "Configurações de Node";
 
 /* (No Comment) */
+"settings-support-title" = "Central de Ajuda";
+
+/* (No Comment) */
 "settings-theme-dark" = "Escuro";
 
 /* (No Comment) */
@@ -1049,10 +1067,16 @@
 "title-close" = "Fechar";
 
 /* (No Comment) */
+"title-continue" = "Continuar";
+
+/* (No Comment) */
 "title-copy" = "Copiar";
 
 /* (No Comment) */
 "title-done" = "Feito";
+
+/* (No Comment) */
+"title-dont-show-again" = "Não Exibir Novamente";
 
 /* (No Comment) */
 "title-edit" = "Editar";
@@ -1065,6 +1089,9 @@
 
 /* (No Comment) */
 "title-go-to-settings" = "Ir para Configurações";
+
+/* (No Comment) */
+"title-i-understand" = "Compreendo";
 
 /* (No Comment) */
 "title-id" = "ID";
@@ -1259,6 +1286,30 @@
 "transaction-id-open-explorer" = "Abrir no Explorer";
 
 /* (No Comment) */
+"transaction-tutorial-subtitle" = "Percebemos que esta é sua primeira transação. Antes de finalizar, lembre-se de algumas dicas:";
+
+/* (No Comment) */
+"transaction-tutorial-subtitle-other" = "Antes de finalizar sua transação, lembre-se de algumas dicas:";
+
+/* (No Comment) */
+"transaction-tutorial-tap-to-more" = "Para maiores informações sobre como realizar transações, toque aqui";
+
+/* (No Comment) */
+"transaction-tutorial-tap-to-more-highlighted" = "toque aqui";
+
+/* (No Comment) */
+"transaction-tutorial-tip-first" = "Ao enviar a um endereço pela primeira vez, recomenda-se enviar uma pequena transação como teste antes de enviar uma grande quantia.";
+
+/* (No Comment) */
+"transaction-tutorial-tip-second" = "As corretoras alteram seus endereços de depósito com frequência e os endereços gravados podem não estar mais em uso. Certifique-se de estar enviando ao endereço correto.";
+
+/* (No Comment) */
+"transaction-tutorial-tip-second-highlighted" = "Certifique-se de estar enviando ao endereço correto.";
+
+/* (No Comment) */
+"transaction-tutorial-title" = "Dicas para Transações";
+
+/* (No Comment) */
 "verified-asset-double-check" = "sempre verifique duas vezes";
 
 /* (No Comment) */
@@ -1282,17 +1333,3 @@
 /* (No Comment) */
 "watch-account-input-placeholder" = "Colar Endereço ou Escanear QR";
 
-/* (No Comment) */
-"maximum-balance-warning-title" = "Saldo Mínimo";
-
-/* (No Comment) */
-"title-continue" = "Continuar";
-
-/* (No Comment) */
-"title-dont-show-again" = "Não exibir novamente";
-
-/* (No Comment) */
-"maximum-balance-warning-description" = "Enviar seu saldo máximo em uma conta rechaveada exige que você mantenha um saldo mínimo de %@ Algos a fim de garantir que nada muda com sua conta rechaveada.\n\n\nO montante de sua transação será automaticamente atualizado a fim de refletir esta mudança. Você poderá visualizar a transação na etapa seguinte.";
-
-/* (No Comment) */
-"ledger-account-selection-detail-rekey" = "Escolha a conta que deseja usar para assinar esta conta.";

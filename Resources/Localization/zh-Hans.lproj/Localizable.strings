@@ -368,7 +368,13 @@
 "ledger-account-selection-add" = "添加账户";
 
 /* (No Comment) */
+"ledger-account-selection-add-plural" = "添加账户";
+
+/* (No Comment) */
 "ledger-account-selection-detail" = "该Ledger设备可为下列账户签署交易。请选择要添加到您Algorand钱包的账户。";
+
+/* (No Comment) */
+"ledger-account-selection-detail-rekey" = "选择来签署该账户的账户。";
 
 /* (No Comment) */
 "ledger-account-selection-title-plural" = "找到%d 账户";
@@ -528,6 +534,12 @@
 
 /* MARK: Login */
 "login-title" = "解锁";
+
+/* (No Comment) */
+"maximum-balance-warning-description" = "如果您要将最高余额发送到重置密钥的账户上，请您保持%@ ALGO的最低余额。此举能够确保您重置密钥的账户没有任何变化。\n\n\n您的交易金额将自动更新以反映这一变化。您可以在下一步中预览交易。";
+
+/* (No Comment) */
+"maximum-balance-warning-title" = "最高余额";
 
 /* MARK: Passphrase Back Up */
 "new-account-title" = "备份助记词";
@@ -878,10 +890,13 @@
 "send-algos-address-not-selected" = "未选择地址";
 
 /* (No Comment) */
+"send-algos-alert-incomplete-title" = "交易不完整";
+
+/* (No Comment) */
 "send-algos-alert-message" = "请填写此栏。";
 
 /* (No Comment) */
-"send-algos-alert-title" = "错误交易";
+"send-algos-alert-message-address" = "请输入目标地址。";
 
 /* (No Comment) */
 "send-algos-amount" = "金额";
@@ -1013,6 +1028,9 @@
 "settings-server-node-settings" = "节点设置";
 
 /* (No Comment) */
+"settings-support-title" = "支持中心";
+
+/* (No Comment) */
 "settings-theme-dark" = "深色模式";
 
 /* (No Comment) */
@@ -1049,10 +1067,16 @@
 "title-close" = "关闭";
 
 /* (No Comment) */
+"title-continue" = "继续";
+
+/* (No Comment) */
 "title-copy" = "复制";
 
 /* (No Comment) */
 "title-done" = "完成";
+
+/* (No Comment) */
+"title-dont-show-again" = "不再显示此内容";
 
 /* (No Comment) */
 "title-edit" = "编辑";
@@ -1065,6 +1089,9 @@
 
 /* (No Comment) */
 "title-go-to-settings" = "前往设置";
+
+/* (No Comment) */
+"title-i-understand" = "我明白";
 
 /* (No Comment) */
 "title-id" = "编号";
@@ -1259,6 +1286,30 @@
 "transaction-id-open-explorer" = "在浏览器中打开";
 
 /* (No Comment) */
+"transaction-tutorial-subtitle" = "我们注意到这是您的第一笔交易。在完成交易之前，请记住以下几点提示：";
+
+/* (No Comment) */
+"transaction-tutorial-subtitle-other" = "在完成交易之前，请记住以下几点提示：";
+
+/* (No Comment) */
+"transaction-tutorial-tap-to-more" = "有关交易的更多信息，请点击这里。";
+
+/* (No Comment) */
+"transaction-tutorial-tap-to-more-highlighted" = "点击这里";
+
+/* (No Comment) */
+"transaction-tutorial-tip-first" = "如果是首次向该地址发送交易时，可以尝试在发送大笔交易之前，先发送一笔小额的交易测试。";
+
+/* (No Comment) */
+"transaction-tutorial-tip-second" = "交易所经常改变存款地址，所保存的交易所地址可能失效。请确保您的汇款地址是正确的。";
+
+/* (No Comment) */
+"transaction-tutorial-tip-second-highlighted" = "请确保你所发送的地址是正确的。";
+
+/* (No Comment) */
+"transaction-tutorial-title" = "交易提示";
+
+/* (No Comment) */
 "verified-asset-double-check" = "请再次确认";
 
 /* (No Comment) */
@@ -1282,17 +1333,3 @@
 /* (No Comment) */
 "watch-account-input-placeholder" = "粘贴钱包地址或扫描二维码";
 
-/* (No Comment) */
-"maximum-balance-warning-title" = "最高余额";
-
-/* (No Comment) */
-"title-continue" = "继续";
-
-/* (No Comment) */
-"title-dont-show-again" = "不再显示此内容";
-
-/* (No Comment) */
-"maximum-balance-warning-description" = "如需在重置密钥的账户上发送最高余额，请维持%@ALGO的最低余额。该举措是为了确保重置密钥的账户不会发生改变。\n\n\n您的交易金额将自动更新，显示这一变化。您将可以在下一步中预览交易。";
-
-/* (No Comment) */
-"ledger-account-selection-detail-rekey" = "请选择想要登录的账户。";

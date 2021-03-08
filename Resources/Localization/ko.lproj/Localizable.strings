@@ -368,7 +368,13 @@
 "ledger-account-selection-add" = "계정 추가";
 
 /* (No Comment) */
+"ledger-account-selection-add-plural" = "계정 추가";
+
+/* (No Comment) */
 "ledger-account-selection-detail" = "이 Ledger 기기는 다음 계정의 트랜잭션에 서명 가능합니다. 알고랜드 지갑에 추가할 계정을 선택하세요.";
+
+/* (No Comment) */
+"ledger-account-selection-detail-rekey" = "본 계정에 서명 시 사용할 계정을 선택하십시오.";
 
 /* (No Comment) */
 "ledger-account-selection-title-plural" = "계정 %d개 찾음";
@@ -528,6 +534,12 @@
 
 /* MARK: Login */
 "login-title" = "잠금 해제";
+
+/* (No Comment) */
+"maximum-balance-warning-description" = "키 재지정(rekey) 계정에서 최대 잔액을 보내려면 최소 잔액(%@알고)을 유지하셔야 합니다. 키를 재지정한 계정에 변동 사항이 없도록 하기 위한 조치이니 양해 부탁드립니다.\n\n본 변동 사항을 반영하여 트랜잭션 금액을 자동으로 업데이트합니다. 다음 단계에서 트랜잭션 내용을 미리 볼 수 있습니다.";
+
+/* (No Comment) */
+"maximum-balance-warning-title" = "최대 잔액";
 
 /* MARK: Passphrase Back Up */
 "new-account-title" = "비밀문구 백업";
@@ -878,10 +890,13 @@
 "send-algos-address-not-selected" = "선택된 주소 없음";
 
 /* (No Comment) */
+"send-algos-alert-incomplete-title" = "미완료 트랜잭션";
+
+/* (No Comment) */
 "send-algos-alert-message" = "입력란에 정보를 입력해 주세요.";
 
 /* (No Comment) */
-"send-algos-alert-title" = "잘못된 트랜잭션";
+"send-algos-alert-message-address" = "전송 대상의 주소를 정확하게 입력하세요.";
 
 /* (No Comment) */
 "send-algos-amount" = "총액";
@@ -1013,6 +1028,9 @@
 "settings-server-node-settings" = "노드 설정";
 
 /* (No Comment) */
+"settings-support-title" = "지원 센터";
+
+/* (No Comment) */
 "settings-theme-dark" = "어두운";
 
 /* (No Comment) */
@@ -1049,10 +1067,16 @@
 "title-close" = "닫기";
 
 /* (No Comment) */
+"title-continue" = "계속 진행";
+
+/* (No Comment) */
 "title-copy" = "복사";
 
 /* (No Comment) */
 "title-done" = "완료";
+
+/* (No Comment) */
+"title-dont-show-again" = "다시 표시하지 않음";
 
 /* (No Comment) */
 "title-edit" = "수정";
@@ -1065,6 +1089,9 @@
 
 /* (No Comment) */
 "title-go-to-settings" = "설정으로 이동";
+
+/* (No Comment) */
+"title-i-understand" = "알겠습니다";
 
 /* (No Comment) */
 "title-id" = "ID";
@@ -1259,6 +1286,30 @@
 "transaction-id-open-explorer" = "익스플로러로 열기";
 
 /* (No Comment) */
+"transaction-tutorial-subtitle" = "첫 번째 트랜잭션을 진행하고 계십니다. 거래를 마무리하기 전에 몇 가지 팁을 고려해보세요.";
+
+/* (No Comment) */
+"transaction-tutorial-subtitle-other" = "거래를 마무리하기 전에 몇 가지 팁을 고려해보세요.";
+
+/* (No Comment) */
+"transaction-tutorial-tap-to-more" = "트랜잭션을 자세히 알아보려면 여기를 눌러주세요";
+
+/* (No Comment) */
+"transaction-tutorial-tap-to-more-highlighted" = "여기를 눌러주세요";
+
+/* (No Comment) */
+"transaction-tutorial-tip-first" = "해당 주소로 처음 송금하는 경우, 큰 금액을 보내기 전에 소규모로 테스트 트랜잭션을 보내보시기를 권장합니다.";
+
+/* (No Comment) */
+"transaction-tutorial-tip-second" = "거래소는 입금 주소를 자주 변경하며, 저장된 거래소 주소가 더 이상 사용되지 않을 수 있습니다. 올바른 주소로 송금하고 있는지 확인해주세요.";
+
+/* (No Comment) */
+"transaction-tutorial-tip-second-highlighted" = "올바른 주소로 송금하고 있는지 확인해주세요.";
+
+/* (No Comment) */
+"transaction-tutorial-title" = "트랜잭션 팁";
+
+/* (No Comment) */
 "verified-asset-double-check" = "확인하신 다음";
 
 /* (No Comment) */
@@ -1282,17 +1333,3 @@
 /* (No Comment) */
 "watch-account-input-placeholder" = "주소를 붙여넣거나 QR 코드를 스캔하세요";
 
-/* (No Comment) */
-"maximum-balance-warning-title" = "최대 잔액";
-
-/* (No Comment) */
-"title-continue" = "계속 진행";
-
-/* (No Comment) */
-"title-dont-show-again" = "다시 표시하지 않음";
-
-/* (No Comment) */
-"maximum-balance-warning-description" = "키 재지정(rekey) 계정에서 최대 잔액을 보내려면 최소 잔액(%@)을 유지하셔야 합니다. 키를 재지정한 계정에 변동 사항이 없도록 하기 위한 조치이니 양해 부탁드립니다.\n\n\n본 변동 사항을 반영하여 트랜잭션 금액을 자동으로 업데이트합니다. 다음 단계에서 트랜잭션 내용을 미리 볼 수 있습니다.";
-
-/* (No Comment) */
-"ledger-account-selection-detail-rekey" = "본 계정에 서명 시 사용할 계정을 선택하십시오";
