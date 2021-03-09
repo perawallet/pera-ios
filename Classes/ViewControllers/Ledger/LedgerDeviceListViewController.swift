@@ -46,8 +46,7 @@ class LedgerDeviceListViewController: BaseViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        ledgerAccountFetchOperation.disconnectFromCurrentDevice()
-        ledgerAccountFetchOperation.stopScan()
+        ledgerAccountFetchOperation.reset()
         ledgerDeviceListView.stopSearchSpinner()
     }
     
