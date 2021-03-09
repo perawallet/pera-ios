@@ -88,22 +88,23 @@ class SendAlgosTransactionDataBuilder: TransactionDataBuilder {
         }
 
         let feeCalculator = TransactionFeeCalculator(transactionDraft: nil, transactionData: nil, params: params)
+        let calculatedFee = params.getProjectedTransactionFee(from: initialSize)
         let minimumAmountForAccount = feeCalculator.calculateMinimumAmount(
             for: algosTransactionDraft.from,
             with: .algosTransaction,
-            calculatedFee: params.getProjectedTransactionFee(from: initialSize),
+            calculatedFee: calculatedFee,
             isAfterTransaction: true
         )
 
-        self.minimumAccountBalance = minimumAmountForAccount
+        self.minimumAccountBalance = minimumAmountForAccount - calculatedFee
 
         if isMaxTransaction {
             if isMaxTransactionFromRekeyedAccount() {
                 // Reduce fee and minimum amount possible for the account from transaction amount
-                transactionAmount -= (params.getProjectedTransactionFee(from: initialSize) + minimumAmountForAccount)
+                transactionAmount -= (calculatedFee + (minimumAccountBalance ?? minimumAmountForAccount))
             } else {
                 // Reduce fee from transaction amount
-                transactionAmount -= params.getProjectedTransactionFee(from: initialSize)
+                transactionAmount -= calculatedFee
             }
         }
 

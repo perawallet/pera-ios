@@ -27,13 +27,14 @@ class MaximumBalanceWarningViewModel {
     private func setDescription(from account: Account) {
         let params = UIApplication.shared.accountManager?.params
         let feeCalculator = TransactionFeeCalculator(transactionDraft: nil, transactionData: nil, params: params)
+        let calculatedFee = params?.getProjectedTransactionFee() ?? Transaction.Constant.minimumFee
         let minimumAmountForAccount = feeCalculator.calculateMinimumAmount(
             for: account,
             with: .algosTransaction,
-            calculatedFee: params?.getProjectedTransactionFee() ?? Transaction.Constant.minimumFee,
+            calculatedFee: calculatedFee,
             isAfterTransaction: true
-        ).toAlgos
+        ) - calculatedFee
 
-        description = "maximum-balance-warning-description".localized(params: "\(minimumAmountForAccount)")
+        description = "maximum-balance-warning-description".localized(params: "\(minimumAmountForAccount.toAlgos)")
     }
 }

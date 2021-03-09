@@ -75,6 +75,11 @@ class LedgerAccountSelectionViewController: BaseViewController {
         SVProgressHUD.show(withStatus: "title-loading".localized)
         dataSource.loadData()
     }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        dismissProgressIfNeeded()
+    }
     
     override func configureAppearance() {
         super.configureAppearance()
