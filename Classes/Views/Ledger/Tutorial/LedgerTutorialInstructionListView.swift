@@ -1,10 +1,19 @@
+// Copyright 2019 Algorand, Inc.
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 //
 //  LedgerTutorialInstructionListView.swift
-//  algorand
-//
-//  Created by Göktuğ Berk Ulu on 22.02.2020.
-//  Copyright © 2020 hippo. All rights reserved.
-//
 
 import UIKit
 
@@ -13,32 +22,28 @@ class LedgerTutorialInstructionListView: BaseView {
     
     private lazy var openLedgerInstructionView: LedgerTutorialInstructionView = {
         let view = LedgerTutorialInstructionView()
-        view.setNumber(1)
-        view.setTitle("ledger-tutorial-turned-on".localized)
+        view.bind(LedgerTutorialInstructionViewModel(number: 1, title: "ledger-tutorial-turned-on".localized))
         view.isUserInteractionEnabled = true
         return view
     }()
     
     private lazy var installAppInstructionView: LedgerTutorialInstructionView = {
         let view = LedgerTutorialInstructionView()
-        view.setNumber(2)
-        view.setTitle("ledger-tutorial-install-app".localized)
+        view.bind(LedgerTutorialInstructionViewModel(number: 2, title: "ledger-tutorial-install-app".localized))
         view.isUserInteractionEnabled = true
         return view
     }()
     
     private lazy var openAppInstructionView: LedgerTutorialInstructionView = {
         let view = LedgerTutorialInstructionView()
-        view.setNumber(3)
-        view.setTitle("ledger-tutorial-open-app".localized)
+        view.bind(LedgerTutorialInstructionViewModel(number: 3, title: "ledger-tutorial-open-app".localized))
         view.isUserInteractionEnabled = true
         return view
     }()
     
     private lazy var turnOnBluetoohInstructionView: LedgerTutorialInstructionView = {
         let view = LedgerTutorialInstructionView()
-        view.setNumber(4)
-        view.setTitle("ledger-tutorial-bluetooth".localized)
+        view.bind(LedgerTutorialInstructionViewModel(number: 4, title: "ledger-tutorial-bluetooth".localized))
         view.isUserInteractionEnabled = true
         return view
     }()

@@ -1,10 +1,19 @@
+// Copyright 2019 Algorand, Inc.
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 //
 //  ContactContextView.swift
-//  algorand
-//
-//  Created by Göktuğ Berk Ulu on 2.04.2019.
-//  Copyright © 2019 hippo. All rights reserved.
-//
 
 import UIKit
 
@@ -21,7 +30,7 @@ class ContactContextView: BaseView {
         return imageView
     }()
     
-    private(set) lazy var nameLabel: UILabel = {
+    private lazy var nameLabel: UILabel = {
         UILabel()
             .withTextColor(Colors.Text.primary)
             .withLine(.single)
@@ -29,7 +38,7 @@ class ContactContextView: BaseView {
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
     }()
     
-    private(set) lazy var addressLabel: UILabel = {
+    private lazy var addressLabel: UILabel = {
         UILabel()
             .withTextColor(Colors.Text.secondary)
             .withAlignment(.left)
@@ -109,6 +118,14 @@ extension ContactContextView {
             make.centerY.equalTo(userImageView)
             make.leading.greaterThanOrEqualTo(addressLabel.snp.trailing).offset(layout.current.minimumOffset)
         }
+    }
+}
+
+extension ContactContextView {
+    func bind(_ viewModel: ContactsViewModel) {
+        userImageView.image = viewModel.image
+        nameLabel.text = viewModel.name
+        addressLabel.text = viewModel.address
     }
 }
 

@@ -1,14 +1,22 @@
+// Copyright 2019 Algorand, Inc.
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 //
 //  AssetRemovalViewController.swift
-//  algorand
-//
-//  Created by Göktuğ Berk Ulu on 11.11.2019.
-//  Copyright © 2019 hippo. All rights reserved.
-//
 
 import UIKit
 import Magpie
-import CoreBluetooth
 import SVProgressHUD
 
 class AssetRemovalViewController: BaseViewController {
@@ -37,18 +45,12 @@ class AssetRemovalViewController: BaseViewController {
         initialModalSize: .custom(CGSize(width: view.frame.width, height: 354.0))
     )
     
-    private var ledgerApprovalViewController: LedgerApprovalViewController?
-    
     private lazy var transactionController: TransactionController = {
         guard let api = api else {
             fatalError("API should be set.")
         }
         return TransactionController(api: api)
     }()
-    
-    private let viewModel = AssetRemovalViewModel()
-    
-    private var timer: Timer?
     
     weak var delegate: AssetRemovalViewControllerDelegate?
     
@@ -87,7 +89,7 @@ class AssetRemovalViewController: BaseViewController {
         super.viewWillDisappear(animated)
         transactionController.stopBLEScan()
         dismissProgressIfNeeded()
-        invalidateTimer()
+        transactionController.stopTimer()
     }
 }
 
@@ -110,7 +112,7 @@ extension AssetRemovalViewController: UICollectionViewDataSource {
         let assetDetail = account.assetDetails[indexPath.item]
         let cell = layoutBuilder.dequeueAssetCells(in: collectionView, cellForItemAt: indexPath, for: assetDetail)
         cell.delegate = self
-        viewModel.configure(cell, with: assetDetail)
+        cell.bind(AssetRemovalViewModel(assetDetail: assetDetail))
         
         if indexPath.item == account.assetDetails.count - 1 {
             cell.contextView.setSeparatorViewHidden(true)
@@ -133,9 +135,8 @@ extension AssetRemovalViewController {
             ) as? AccountHeaderSupplementaryView else {
                 fatalError("Unexpected element kind")
             }
-            
-            viewModel.configure(headerView, with: account)
-            
+
+            headerView.bind(AccountHeaderSupplementaryViewModel(account: account, isActionEnabled: false))
             return headerView
         }
         fatalError("Unexpected element kind")
@@ -269,7 +270,11 @@ extension AssetRemovalViewController: AssetActionConfirmationViewControllerDeleg
         transactionController.getTransactionParamsAndComposeTransactionData(for: .assetRemoval)
         
         SVProgressHUD.show(withStatus: "title-loading".localized)
-        validateTimer()
+
+        if account.requiresLedgerConnection() {
+            transactionController.initializeLedgerTransactionAccount()
+            transactionController.startTimer()
+        }
     }
 }
 
@@ -280,19 +285,11 @@ extension AssetRemovalViewController: TransactionControllerDelegate {
             return
         }
         
-        if account.requiresLedgerConnection() {
-            ledgerApprovalViewController?.dismissScreen()
-        }
-        
         delegate?.assetRemovalViewController(self, didRemove: removedAssetDetail, from: account)
         dismissScreen()
     }
     
     func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPError<TransactionError>) {
-        if account.requiresLedgerConnection() {
-            ledgerApprovalViewController?.dismissScreen()
-        }
-        
         SVProgressHUD.dismiss()
         
         switch error {
@@ -320,10 +317,6 @@ extension AssetRemovalViewController: TransactionControllerDelegate {
     }
     
     func transactionController(_ transactionController: TransactionController, didFailedTransaction error: HIPError<TransactionError>) {
-        if account.requiresLedgerConnection() {
-            ledgerApprovalViewController?.dismissScreen()
-        }
-        
         SVProgressHUD.dismiss()
         switch error {
         case let .network(apiError):
@@ -344,73 +337,6 @@ extension AssetRemovalViewController: TransactionControllerDelegate {
         }
         
         return removedAssetDetail
-    }
-    
-    func transactionControllerDidStartBLEConnection(_ transactionController: TransactionController) {
-        dismissProgressIfNeeded()
-        invalidateTimer()
-        ledgerApprovalViewController = open(
-            .ledgerApproval(mode: .approve),
-            by: .customPresent(presentationStyle: .custom, transitionStyle: nil, transitioningDelegate: ledgerApprovalPresenter)
-        ) as? LedgerApprovalViewController
-    }
-    
-    func transactionController(_ transactionController: TransactionController, didFailBLEConnectionWith state: CBManagerState) {
-        guard let errorTitle = state.errorDescription.title,
-            let errorSubtitle = state.errorDescription.subtitle else {
-                return
-        }
-        
-        NotificationBanner.showError(errorTitle, message: errorSubtitle)
-        invalidateTimer()
-        dismissProgressIfNeeded()
-    }
-    
-    func transactionController(_ transactionController: TransactionController, didFailToConnect peripheral: CBPeripheral) {
-        NotificationBanner.showError("ble-error-connection-title".localized, message: "ble-error-fail-connect-peripheral".localized)
-    }
-    
-    func transactionController(_ transactionController: TransactionController, didDisconnectFrom peripheral: CBPeripheral) {
-    }
-    
-    func transactionControllerDidFailToSignWithLedger(_ transactionController: TransactionController) {
-        ledgerApprovalViewController?.dismissScreen()
-        NotificationBanner.showError(
-            "ble-error-transaction-cancelled-title".localized,
-            message: "ble-error-fail-sign-transaction".localized
-        )
-    }
-}
-
-extension AssetRemovalViewController {
-    func validateTimer() {
-        guard account.requiresLedgerConnection() else {
-            return
-        }
-        
-        timer = Timer.scheduledTimer(withTimeInterval: 15.0, repeats: false) { [weak self] timer in
-            guard let self = self else {
-                timer.invalidate()
-                return
-            }
-            
-            DispatchQueue.main.async {
-                self.transactionController.stopBLEScan()
-                self.dismissProgressIfNeeded()
-                NotificationBanner.showError("ble-error-connection-title".localized, message: "ble-error-fail-connect-peripheral".localized)
-            }
-            
-            self.invalidateTimer()
-        }
-    }
-    
-    func invalidateTimer() {
-        guard account.requiresLedgerConnection() else {
-            return
-        }
-        
-        timer?.invalidate()
-        timer = nil
     }
 }
 

@@ -1,58 +1,69 @@
+// Copyright 2019 Algorand, Inc.
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 //
 //  AssetActionConfirmationViewModel.swift
-//  algorand
-//
-//  Created by Göktuğ Berk Ulu on 26.11.2019.
-//  Copyright © 2019 hippo. All rights reserved.
-//
 
 import UIKit
 
 class AssetActionConfirmationViewModel {
-    func configure(_ view: AssetActionConfirmationView, with draft: AssetAlertDraft) {
-        view.titleLabel.text = draft.title
-        view.assetDisplayView.assetIndexLabel.text = "\(draft.assetIndex)"
-        view.actionButton.setTitle(draft.actionTitle, for: .normal)
-        
-        configure(view.assetDisplayView, with: draft)
-        configureAttributedText(in: view, with: draft)
+    private(set) var title: String?
+    private(set) var id: String?
+    private(set) var actionTitle: String?
+    private(set) var detail: NSAttributedString?
+    private(set) var assetDisplayViewModel: AssetDisplayViewModel?
+
+    init(draft: AssetAlertDraft) {
+        setTitle(from: draft)
+        setId(from: draft)
+        setActionTitle(from: draft)
+        setDetail(from: draft)
+        setAssetDisplayViewModel(from: draft)
     }
-    
-    private func configureAttributedText(in view: AssetActionConfirmationView, with draft: AssetAlertDraft) {
+
+    private func setTitle(from draft: AssetAlertDraft) {
+        title = draft.title
+    }
+
+    private func setId(from draft: AssetAlertDraft) {
+        id = "\(draft.assetIndex)"
+    }
+
+    private func setActionTitle(from draft: AssetAlertDraft) {
+        actionTitle = draft.actionTitle
+    }
+
+    private func setDetail(from draft: AssetAlertDraft) {
         guard let detailText = draft.detail else {
             return
         }
-        
+
         let attributedDetailText = NSMutableAttributedString(attributedString: detailText.attributed([.lineSpacing(1.2)]))
-        
+
         guard let assetDetail = draft.assetDetail,
             let unitName = assetDetail.unitName, !unitName.isEmptyOrBlank else {
-            view.detailLabel.attributedText = attributedDetailText
+            detail = attributedDetailText
             return
         }
-        
+
         let range = (detailText as NSString).range(of: unitName)
         attributedDetailText.addAttribute(NSAttributedString.Key.foregroundColor, value: Colors.General.selected, range: range)
         attributedDetailText.addAttribute(NSAttributedString.Key.foregroundColor, value: Colors.General.selected, range: range)
-        view.detailLabel.attributedText = attributedDetailText
+        detail = attributedDetailText
     }
-    
-    func configure(_ view: AssetDisplayView, with draft: AssetAlertDraft) {
-        guard let assetDetail = draft.assetDetail else {
-            return
-        }
-        
-        view.verifiedImageView.isHidden = !assetDetail.isVerified
-        
-        let displayNames = assetDetail.getDisplayNames()
-        
-        if displayNames.0.isUnknown() {
-            view.assetCodeLabel.font = UIFont.font(withWeight: .semiBoldItalic(size: 40.0))
-            view.assetCodeLabel.textColor = Colors.General.unknown
-            view.assetCodeLabel.text = displayNames.0
-        } else {
-            view.assetNameLabel.text = displayNames.0
-            view.assetCodeLabel.text = displayNames.1
-        }
+
+    private func setAssetDisplayViewModel(from draft: AssetAlertDraft) {
+        assetDisplayViewModel = AssetDisplayViewModel(assetDetail: draft.assetDetail)
     }
 }

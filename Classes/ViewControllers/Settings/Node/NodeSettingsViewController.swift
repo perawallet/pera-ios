@@ -1,10 +1,19 @@
+// Copyright 2019 Algorand, Inc.
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 //
 //  NodeSettingsViewController.swift
-//  algorand
-//
-//  Created by Omer Emre Aslan on 10.04.2019.
-//  Copyright © 2019 hippo. All rights reserved.
-//
 
 import UIKit
 import SVProgressHUD
@@ -14,8 +23,6 @@ class NodeSettingsViewController: BaseViewController {
     private lazy var nodeSettingsView = NodeSettingsView()
     
     private let nodes = [mainNetNode, testNetNode]
-    
-    private let viewModel = NodeSettingsViewModel()
     
     private var canTapBarButton = true
     
@@ -79,7 +86,7 @@ extension NodeSettingsViewController: UICollectionViewDataSource {
         }
         
         let algorandNode = nodes[indexPath.item]
-        viewModel.configure(cell, with: algorandNode, activeNetwork: lastActiveNetwork)
+        cell.bind(NodeSettingsViewModel(node: algorandNode, activeNetwork: lastActiveNetwork))
         return cell
     }
 }
@@ -125,7 +132,7 @@ extension NodeSettingsViewController {
         lastActiveNetwork = selectedNode.network
         DispatchQueue.main.async {
             UIApplication.shared.rootViewController()?.setNetwork(to: selectedNode.network)
-            UIApplication.shared.rootViewController()?.addTestNetBanner()
+            UIApplication.shared.rootViewController()?.addBanner()
         }
         
         UIApplication.shared.accountManager?.fetchAllAccounts(isVerifiedAssetsIncluded: true) {
@@ -133,9 +140,34 @@ extension NodeSettingsViewController {
             
             SVProgressHUD.dismiss(withDelay: 1.0) {
                 self.setActionsEnabled(true)
-                self.viewModel.setSelected(at: indexPath, in: self.nodeSettingsView.collectionView)
+                self.setSelected(at: indexPath, in: self.nodeSettingsView.collectionView)
             }
         }
+    }
+
+    private func setSelected(at indexPath: IndexPath, in collectionView: UICollectionView) {
+        guard let cell = collectionView.cellForItem(at: indexPath) as? NodeSelectionCell else {
+            return
+        }
+        setActive(cell)
+
+        let otherCellIndex = indexPath.item == 0 ? 1 : 0
+
+        guard let otherCell = collectionView.cellForItem(at: IndexPath(item: otherCellIndex, section: 0)) as? NodeSelectionCell else {
+            return
+        }
+
+        setInactive(otherCell)
+    }
+
+    private func setActive(_ cell: NodeSelectionCell) {
+        cell.contextView.setBackgroundImage(img("bg-settings-node-selected"))
+        cell.contextView.setImage(img("settings-node-active"))
+    }
+
+    private func setInactive(_ cell: NodeSelectionCell) {
+        cell.contextView.setBackgroundImage(img("bg-settings-node-unselected"))
+        cell.contextView.setImage(img("settings-node-inactive"))
     }
     
     private func setActionsEnabled(_ isEnabled: Bool) {

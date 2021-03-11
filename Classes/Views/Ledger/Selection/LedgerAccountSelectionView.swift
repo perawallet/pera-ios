@@ -1,10 +1,19 @@
+// Copyright 2019 Algorand, Inc.
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 //
 //  LedgerAccountSelectionView.swift
-//  algorand
-//
-//  Created by Göktuğ Berk Ulu on 10.08.2020.
-//  Copyright © 2020 hippo. All rights reserved.
-//
 
 import UIKit
 
@@ -23,11 +32,11 @@ class LedgerAccountSelectionView: BaseView {
         flowLayout.minimumLineSpacing = 20.0
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
-        collectionView.allowsMultipleSelection = true
+        collectionView.allowsMultipleSelection = isMultiSelect
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = Colors.Background.primary
         collectionView.contentInset = .zero
-        collectionView.register(AccountSelectionCell.self, forCellWithReuseIdentifier: AccountSelectionCell.reusableIdentifier)
+        collectionView.register(LedgerAccountCell.self, forCellWithReuseIdentifier: LedgerAccountCell.reusableIdentifier)
         collectionView.register(
             LedgerAccountSelectionHeaderSupplementaryView.self,
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
@@ -37,6 +46,13 @@ class LedgerAccountSelectionView: BaseView {
     }()
     
     private lazy var addButton = MainButton(title: "ledger-account-selection-add".localized)
+    
+    private let isMultiSelect: Bool
+    
+    init(isMultiSelect: Bool) {
+        self.isMultiSelect = isMultiSelect
+        super.init(frame: .zero)
+    }
     
     override func configureAppearance() {
         super.configureAppearance()
@@ -100,6 +116,10 @@ extension LedgerAccountSelectionView {
         accountsCollectionView.contentState = .error(errorView)
     }
     
+    func indexPath(for cell: UICollectionViewCell) -> IndexPath? {
+        return accountsCollectionView.indexPath(for: cell)
+    }
+    
     func setNormalState() {
         accountsCollectionView.contentState = .none
     }
@@ -110,6 +130,11 @@ extension LedgerAccountSelectionView {
     
     var selectedIndexes: [IndexPath] {
         return accountsCollectionView.indexPathsForSelectedItems ?? []
+    }
+
+    func bind(_ viewModel: LedgerAccountSelectionViewModel) {
+        addButton.isEnabled = viewModel.isEnabled
+        addButton.setTitle(viewModel.buttonText, for: .normal)
     }
 }
 

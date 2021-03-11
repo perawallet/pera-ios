@@ -1,10 +1,19 @@
+// Copyright 2019 Algorand, Inc.
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 //
 //  RekeyConfirmationDataSource.swift
-//  algorand
-//
-//  Created by Göktuğ Berk Ulu on 5.08.2020.
-//  Copyright © 2020 hippo. All rights reserved.
-//
 
 import UIKit
 
@@ -13,7 +22,6 @@ class RekeyConfirmationDataSource: NSObject {
     weak var delegate: RekeyConfirmationDataSourceDelegate?
     
     private let layoutBuilder = AssetListLayoutBuilder()
-    private let accountsViewModel = AccountsViewModel()
     private let rekeyConfirmationViewModel: RekeyConfirmationViewModel
     private let account: Account
     
@@ -51,7 +59,7 @@ extension RekeyConfirmationDataSource: UICollectionViewDataSource {
         if let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: AlgoAssetCell.reusableIdentifier,
             for: indexPath) as? AlgoAssetCell {
-            accountsViewModel.configure(cell, with: account)
+            cell.bind(AlgoAssetViewModel(account: account))
             return cell
         }
         fatalError("Index path is out of bounds")
@@ -62,7 +70,7 @@ extension RekeyConfirmationDataSource: UICollectionViewDataSource {
             let assets = account.assets,
             let asset = assets.first(where: { $0.id == assetDetail.id }) {
             let cell = layoutBuilder.dequeueAssetCells(in: collectionView, cellForItemAt: indexPath, for: assetDetail)
-            accountsViewModel.configure(cell, with: assetDetail, and: asset)
+            cell.bind(AssetViewModel(assetDetail: assetDetail, asset: asset))
             return cell
         }
             
@@ -80,9 +88,7 @@ extension RekeyConfirmationDataSource: UICollectionViewDataSource {
                 withReuseIdentifier: AccountHeaderSupplementaryView.reusableIdentifier,
                 for: indexPath
             ) as? AccountHeaderSupplementaryView {
-                accountsViewModel.configure(headerView, with: account)
-                headerView.contextView.setQRButton(hidden: true)
-                headerView.contextView.setOptionsButton(hidden: true)
+                headerView.bind(AccountHeaderSupplementaryViewModel(account: account, isActionEnabled: false))
                 return headerView
             }
         } else {

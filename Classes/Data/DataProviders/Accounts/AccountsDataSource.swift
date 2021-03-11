@@ -1,16 +1,23 @@
+// Copyright 2019 Algorand, Inc.
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 //
 //  AccountsDataSource.swift
-//  algorand
-//
-//  Created by Göktuğ Berk Ulu on 12.11.2019.
-//  Copyright © 2019 hippo. All rights reserved.
-//
 
 import UIKit
 
 class AccountsDataSource: NSObject, UICollectionViewDataSource {
-    
-    private let viewModel = AccountsViewModel()
     
     weak var delegate: AccountsDataSourceDelegate?
     
@@ -110,7 +117,7 @@ extension AccountsDataSource {
         
         if indexPath.section < accounts.count {
             let account = accounts[indexPath.section]
-            viewModel.configure(cell, with: account)
+            cell.bind(AlgoAssetViewModel(account: account))
         }
         
         return cell
@@ -127,7 +134,7 @@ extension AccountsDataSource {
                     cellForItemAt: indexPath,
                     for: assetDetail
                 )
-                viewModel.configure(cell, with: assetDetail, isRemoving: assetDetail.isRemoved)
+                cell.bind(PendingAssetViewModel(assetDetail: assetDetail, isRemoving: assetDetail.isRemoved))
                 return cell
             } else {
                 guard let assets = accounts[indexPath.section].assets,
@@ -140,7 +147,7 @@ extension AccountsDataSource {
                     cellForItemAt: indexPath,
                     for: assetDetail
                 )
-                viewModel.configure(cell, with: assetDetail, and: asset)
+                cell.bind(AssetViewModel(assetDetail: assetDetail, asset: asset))
                 return cell
             }
         }
@@ -165,13 +172,29 @@ extension AccountsDataSource {
             }
             
             let account = accounts[indexPath.section]
-            viewModel.configure(headerView, with: account)
+            headerView.bind(AccountHeaderSupplementaryViewModel(account: account, isActionEnabled: true))
             
             headerView.delegate = self
             headerView.tag = indexPath.section
             
             return headerView
         } else {
+            guard let account = accounts[safe: indexPath.section] else {
+                fatalError("Unexpected element kind")
+            }
+
+            if account.isWatchAccount() {
+                guard let footerView = collectionView.dequeueReusableSupplementaryView(
+                    ofKind: kind,
+                    withReuseIdentifier: EmptyFooterSupplementaryView.reusableIdentifier,
+                    for: indexPath
+                ) as? EmptyFooterSupplementaryView else {
+                    fatalError("Unexpected element kind")
+                }
+
+                return footerView
+            }
+
             guard let footerView = collectionView.dequeueReusableSupplementaryView(
                 ofKind: kind,
                 withReuseIdentifier: AccountFooterSupplementaryView.reusableIdentifier,
@@ -294,6 +317,14 @@ extension AccountsDataSource: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         referenceSizeForFooterInSection section: Int
     ) -> CGSize {
+        if let account = accounts[safe: section],
+           account.isWatchAccount() {
+            return CGSize(
+                width: UIScreen.main.bounds.width - layout.current.defaultSectionInsets.left - layout.current.defaultSectionInsets.right,
+                height: layout.current.emptyFooterHeight
+            )
+        }
+
         return CGSize(
             width: UIScreen.main.bounds.width - layout.current.defaultSectionInsets.left - layout.current.defaultSectionInsets.right,
             height: layout.current.multiItemHeight
@@ -305,6 +336,7 @@ extension AccountsDataSource {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let defaultSectionInsets = UIEdgeInsets(top: 0.0, left: 20.0, bottom: 0.0, right: 20.0)
         let itemHeight: CGFloat = 52.0
+        let emptyFooterHeight: CGFloat = 44.0
         let multiItemHeight: CGFloat = 72.0
     }
 }

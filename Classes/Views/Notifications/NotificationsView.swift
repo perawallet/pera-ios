@@ -1,10 +1,19 @@
+// Copyright 2019 Algorand, Inc.
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 //
 //  NotificationsView.swift
-//  algorand
-//
-//  Created by Göktuğ Berk Ulu on 14.07.2020.
-//  Copyright © 2020 hippo. All rights reserved.
-//
 
 import UIKit
 
@@ -16,7 +25,7 @@ class NotificationsView: BaseView {
         let view = MainHeaderView()
         view.setTitle("notifications-title".localized)
         view.setQRButtonHidden(true)
-        view.setAddButtonHidden(true)
+        view.setRightActionButtonImage(img("icon-transaction-filter"))
         view.setTestNetLabelHidden(true)
         return view
     }()
@@ -62,6 +71,7 @@ class NotificationsView: BaseView {
     
     override func linkInteractors() {
         errorView.delegate = self
+        notificationsHeaderView.delegate = self
     }
     
     override func prepareLayout() {
@@ -97,6 +107,14 @@ extension NotificationsView {
     @objc
     private func didRefreshList() {
         delegate?.notificationsViewDidRefreshList(self)
+    }
+}
+
+extension NotificationsView: MainHeaderViewDelegate {
+    func mainHeaderViewDidTapQRButton(_ mainHeaderView: MainHeaderView) { }
+
+    func mainHeaderViewDidTapAddButton(_ mainHeaderView: MainHeaderView) {
+        delegate?.notificationsViewDidOpenNotificationFilters(self)
     }
 }
 
@@ -151,4 +169,5 @@ extension NotificationsView: ListErrorViewDelegate {
 protocol NotificationsViewDelegate: class {
     func notificationsViewDidRefreshList(_ notificationsView: NotificationsView)
     func notificationsViewDidTryAgain(_ notificationsView: NotificationsView)
+    func notificationsViewDidOpenNotificationFilters(_ notificationsView: NotificationsView)
 }

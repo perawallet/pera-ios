@@ -1,20 +1,29 @@
+// Copyright 2019 Algorand, Inc.
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 //
 //  RekeyConfirmationViewModel.swift
-//  algorand
-//
-//  Created by Göktuğ Berk Ulu on 5.08.2020.
-//  Copyright © 2020 hippo. All rights reserved.
-//
 
 import Foundation
 
 class RekeyConfirmationViewModel {
     
-    private var assetText: String?
-    private var oldTransitionTitle: String?
-    private var oldTransitionValue: String?
-    private var newTransitionValue: String?
-    private var feeValue: String?
+    private(set) var assetText: String?
+    private(set) var oldTransitionTitle: String?
+    private(set) var oldTransitionValue: String?
+    private(set) var newTransitionValue: String?
+    private(set) var feeValue: String?
     
     init(account: Account, ledgerName: String?) {
         setAssetCount(for: account)
@@ -40,7 +49,7 @@ class RekeyConfirmationViewModel {
     
     private func setOldTransitionValue(for account: Account) {
         if account.requiresLedgerConnection() {
-            if let ledgerName = account.ledgerDetail?.name {
+            if let ledgerName = account.currentLedgerDetail?.name {
                 oldTransitionValue = ledgerName
             } else {
                 oldTransitionValue = account.name

@@ -1,10 +1,19 @@
+// Copyright 2019 Algorand, Inc.
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 //
 //  TransactionReceiverView.swift
-//  algorand
-//
-//  Created by Göktuğ Berk Ulu on 9.04.2019.
-//  Copyright © 2019 hippo. All rights reserved.
-//
 
 import UIKit
 
@@ -90,7 +99,7 @@ class TransactionReceiverView: BaseView {
             .withText("send-algos-to".localized)
     }()
     
-    private(set) lazy var receiverContainerView = UIView()
+    private lazy var receiverContainerView = UIView()
     
     private lazy var transactionReceiverSelectionView = TransactionReceiverSelectionView()
     
@@ -106,7 +115,7 @@ class TransactionReceiverView: BaseView {
         return addressInputView
     }()
     
-    private(set) lazy var receiverContactView: ContactContextView = {
+    private lazy var receiverContactView: ContactContextView = {
         let view = ContactContextView()
         view.backgroundColor = Colors.Background.secondary
         view.layer.cornerRadius = 12.0
@@ -175,14 +184,7 @@ extension TransactionReceiverView {
     }
     
     private func configureReceiverContactView(with contact: Contact) {
-        if let imageData = contact.image,
-            let image = UIImage(data: imageData) {
-            let resizedImage = image.convert(to: CGSize(width: 44.0, height: 44.0))
-            receiverContactView.userImageView.image = resizedImage
-        }
-        
-        receiverContactView.nameLabel.text = contact.name
-        receiverContactView.addressLabel.text = contact.address?.shortAddressDisplay()
+        receiverContactView.bind(ContactsViewModel(contact: contact, imageSize: CGSize(width: 44.0, height: 44.0)))
     }
 }
 

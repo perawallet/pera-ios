@@ -1,10 +1,19 @@
+// Copyright 2019 Algorand, Inc.
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 //
 //  ConfirmationBottomInformationView.swift
-//  algorand
-//
-//  Created by Göktuğ Berk Ulu on 21.03.2019.
-//  Copyright © 2019 hippo. All rights reserved.
-//
 
 import UIKit
 
@@ -12,7 +21,7 @@ class ConfirmationBottomInformationView: BottomInformationView {
     
     private let layout = Layout<LayoutConstants>()
     
-    private(set) lazy var actionButton: UIButton = {
+    private lazy var actionButton: UIButton = {
         UIButton(type: .custom)
             .withFont(UIFont.font(withWeight: .medium(size: 16.0)))
             .withTitleColor(Colors.ButtonText.primary)
@@ -46,6 +55,24 @@ extension ConfirmationBottomInformationView {
             make.centerX.equalToSuperview()
             make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
             make.bottom.lessThanOrEqualToSuperview().inset(layout.current.verticalInset)
+        }
+    }
+}
+
+extension ConfirmationBottomInformationView {
+    func bind(_ viewModel: BottomInformationViewModel) {
+        titleLabel.attributedText = viewModel.attributedTitle
+        titleLabel.textAlignment = viewModel.titleAlignment
+        explanationLabel.attributedText = viewModel.attributedExplanation
+        explanationLabel.textAlignment = viewModel.explanationAlignment
+        imageView.image = viewModel.image
+
+        if let actionTitle = viewModel.actionButtonTitle {
+            actionButton.setTitle(actionTitle, for: .normal)
+        }
+
+        if let actionImage = viewModel.actionImage {
+            actionButton.setBackgroundImage(actionImage, for: .normal)
         }
     }
 }

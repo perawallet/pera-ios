@@ -1,61 +1,56 @@
+// Copyright 2019 Algorand, Inc.
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 //
 //  BottomInformationViewModel.swift
-//  algorand
-//
-//  Created by Göktuğ Berk Ulu on 21.03.2019.
-//  Copyright © 2019 hippo. All rights reserved.
-//
 
 import UIKit
 
 class BottomInformationViewModel {
-    func configure(_ bottomInformationView: BottomInformationView, with configurator: BottomInformationBundle) {
-        bottomInformationView.titleLabel.attributedText = configurator.title.attributed([.lineSpacing(1.2)])
-        bottomInformationView.titleLabel.textAlignment = .center
-        bottomInformationView.explanationLabel.attributedText = configurator.explanation.attributed([.lineSpacing(1.2)])
-        bottomInformationView.explanationLabel.textAlignment = .center
-        bottomInformationView.imageView.image = configurator.image
-        
-        if let bottomInformationView = bottomInformationView as? ConfirmationBottomInformationView {
-            configureConfirmationInformationView(bottomInformationView, with: configurator)
-            return
-        }
-        
-        if let bottomInformationView = bottomInformationView as? ActionBottomInformationView {
-            configureActionInformationView(bottomInformationView, with: configurator)
-            return
-        }
+    private(set) var attributedTitle: NSAttributedString?
+    private(set) var titleAlignment: NSTextAlignment = .center
+    private(set) var attributedExplanation: NSAttributedString?
+    private(set) var explanationAlignment: NSTextAlignment = .center
+    private(set) var image: UIImage?
+    private(set) var actionButtonTitle: String?
+    private(set) var actionImage: UIImage?
+    private(set) var closeButtonTitle: String?
+    private(set) var closeImage: UIImage?
+
+    init(configurator: BottomInformationBundle) {
+        setAttributedTitle(from: configurator)
+        setAttributedExplanation(from: configurator)
+        setImage(from: configurator)
+        setButtonDetails(from: configurator)
     }
-    
-    private func configureConfirmationInformationView(
-        _ informationView: ConfirmationBottomInformationView,
-        with configurator: BottomInformationBundle
-    ) {
-        if let actionTitle = configurator.actionTitle {
-            informationView.actionButton.setTitle(actionTitle, for: .normal)
-        }
-        
-        if let actionImage = configurator.actionImage {
-            informationView.actionButton.setBackgroundImage(actionImage, for: .normal)
-        }
+
+    private func setAttributedTitle(from configurator: BottomInformationBundle) {
+        attributedTitle = configurator.title.attributed([.lineSpacing(1.2)])
     }
-    
-    private func configureActionInformationView(
-        _ informationView: ActionBottomInformationView,
-        with configurator: BottomInformationBundle
-    ) {
-        if let actionTitle = configurator.actionTitle {
-            informationView.actionButton.setTitle(actionTitle, for: .normal)
-        }
-        
-        if let actionImage = configurator.actionImage {
-            informationView.actionButton.setBackgroundImage(actionImage, for: .normal)
-        }
-        
-        informationView.cancelButton.setTitle(configurator.closeTitle, for: .normal)
-        
-        if let closeBackgroundImage = configurator.closeBackgroundImage {
-            informationView.cancelButton.setBackgroundImage(closeBackgroundImage, for: .normal)
-        }
+
+    private func setAttributedExplanation(from configurator: BottomInformationBundle) {
+        attributedExplanation = configurator.explanation.attributed([.lineSpacing(1.2)])
+    }
+
+    private func setImage(from configurator: BottomInformationBundle) {
+        image = configurator.image
+    }
+
+    private func setButtonDetails(from configurator: BottomInformationBundle) {
+        actionButtonTitle = configurator.actionTitle
+        actionImage = configurator.actionImage
+        closeButtonTitle = configurator.closeTitle
+        closeImage = configurator.closeBackgroundImage
     }
 }

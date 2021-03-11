@@ -1,16 +1,26 @@
+// Copyright 2019 Algorand, Inc.
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 //
 //  AccountManager.swift
-//  algorand
-//
-//  Created by Omer Emre Aslan on 5.04.2019.
-//  Copyright © 2019 hippo. All rights reserved.
-//
 
 import Foundation
 
 class AccountManager {
     let api: AlgorandAPI
     var currentRound: Int64?
+    var params: TransactionParams?
     let queue: OperationQueue
     
     init(api: AlgorandAPI) {
@@ -58,6 +68,8 @@ extension AccountManager {
                 fetchedAccount.name = account.name
                 fetchedAccount.type = account.type
                 fetchedAccount.ledgerDetail = account.ledgerDetail
+                fetchedAccount.receivesNotification = account.receivesNotification
+                fetchedAccount.rekeyDetail = account.rekeyDetail
                 
                 guard let currentAccount = self.api.session.account(from: fetchedAccount.address) else {
                     self.api.session.addAccount(fetchedAccount)
@@ -66,7 +78,7 @@ extension AccountManager {
                 
                 if fetchedAccount.amount == currentAccount.amount &&
                     fetchedAccount.rewards == currentAccount.rewards &&
-                    !fetchedAccount.areAssetsDifferent(than: currentAccount) {
+                    !fetchedAccount.hasDifferentAssets(than: currentAccount) {
                     return
                 }
                 
@@ -103,6 +115,7 @@ extension AccountManager {
             case .failure:
                 self.waitForNextRoundAndFetchAccounts(round: 0, completion: completion)
             case let .success(params):
+                self.params = params
                 self.currentRound = params.lastRound
             }
             

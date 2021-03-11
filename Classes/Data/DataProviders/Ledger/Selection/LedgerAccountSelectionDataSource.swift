@@ -1,10 +1,19 @@
+// Copyright 2019 Algorand, Inc.
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 //
 //  LedgerAccountSelectionDataSource.swift
-//  algorand
-//
-//  Created by Göktuğ Berk Ulu on 11.08.2020.
-//  Copyright © 2020 hippo. All rights reserved.
-//
 
 import UIKit
 
@@ -13,72 +22,55 @@ class LedgerAccountSelectionDataSource: NSObject {
     weak var delegate: LedgerAccountSelectionDataSourceDelegate?
     
     private let accountsFetchGroup = DispatchGroup()
-    private let assetsFetchGroup = DispatchGroup()
-    
-    private let viewModel = AccountsViewModel()
     
     private let api: AlgorandAPI
     private var accounts = [Account]()
     
     private let ledger: LedgerDetail
-    private let ledgerAddress: String
+    private let ledgerAccounts: [Account]
+    private let isMultiSelect: Bool
     
-    init(api: AlgorandAPI, ledger: LedgerDetail, ledgerAddress: String) {
+    private var rekeyedAccounts: [String: [Account]] = [:]
+    
+    init(api: AlgorandAPI, ledger: LedgerDetail, accounts: [Account], isMultiSelect: Bool) {
         self.api = api
         self.ledger = ledger
-        self.ledgerAddress = ledgerAddress
+        self.ledgerAccounts = accounts
+        self.isMultiSelect = isMultiSelect
         super.init()
     }
 }
 
 extension LedgerAccountSelectionDataSource {
     func loadData() {
-        fetchLedgerAccount(for: ledgerAddress)
-        fetchRekeyedAccounts(ofLedger: ledgerAddress)
-
-        assetsFetchGroup.enter()
-        accountsFetchGroup.notify(queue: .global()) {
-            self.accounts.forEach { account in
-                if account.isThereAnyDifferentAsset() {
-                    self.fetchAssets(for: account)
-                }
-            }
-            self.assetsFetchGroup.leave()
+        for (index, account) in ledgerAccounts.enumerated() {
+            account.type = .ledger
+            account.ledgerDetail = ledger
+            account.ledgerDetail?.indexInLedger = index
+            account.assets = account.nonDeletedAssets()
+            self.accounts.append(account)
+            fetchRekeyedAccounts(of: account.address)
         }
         
-        assetsFetchGroup.notify(queue: .main) {
+        accountsFetchGroup.notify(queue: .main) {
             self.delegate?.ledgerAccountSelectionDataSource(self, didFetch: self.accounts)
         }
     }
     
-    private func fetchLedgerAccount(for address: String) {
-        accountsFetchGroup.enter()
-        
-        api.fetchAccount(with: AccountFetchDraft(publicKey: address)) { response in
-            switch response {
-            case let .success(accountResponse):
-                accountResponse.account.type = .ledger
-                self.accounts.insert(accountResponse.account, at: 0)
-            case let .failure(error, _):
-                if error.isHttpNotFound {
-                    self.accounts.insert(Account(address: address, type: .ledger, name: address.shortAddressDisplay()), at: 0)
-                } else {
-                    self.delegate?.ledgerAccountSelectionDataSourceDidFailToFetch(self)
-                }
-            }
-            
-            self.accountsFetchGroup.leave()
-        }
-    }
-    
-    private func fetchRekeyedAccounts(ofLedger address: String) {
+    private func fetchRekeyedAccounts(of address: String) {
         accountsFetchGroup.enter()
         
         api.fetchRekeyedAccounts(of: address) { response in
             switch response {
             case let .success(rekeyedAccountsResponse):
-                rekeyedAccountsResponse.accounts.forEach { account in
+                let rekeyedAccounts = rekeyedAccountsResponse.accounts.filter { $0.authAddress != $0.address }
+                self.rekeyedAccounts[address] = rekeyedAccounts
+                rekeyedAccounts.forEach { account in
+                    account.assets = account.nonDeletedAssets()
                     account.type = .rekeyed
+                    if let authAddress = account.authAddress {
+                        account.addRekeyDetail(self.ledger, for: authAddress)
+                    }
                     self.accounts.append(account)
                 }
             case .failure:
@@ -86,51 +78,6 @@ extension LedgerAccountSelectionDataSource {
             }
             
             self.accountsFetchGroup.leave()
-        }
-    }
-    
-    private func fetchAssets(for account: Account) {
-        guard let assets = account.assets else {
-            return
-        }
-        
-        for asset in assets {
-            if let assetDetail = api.session.assetDetails[asset.id] {
-                account.assetDetails.append(assetDetail)
-            } else {
-                assetsFetchGroup.enter()
-                
-                self.api.getAssetDetails(with: AssetFetchDraft(assetId: "\(asset.id)")) { assetResponse in
-                    switch assetResponse {
-                    case .success(let assetDetailResponse):
-                        self.composeAssetDetail(
-                            assetDetailResponse.assetDetail,
-                            of: account,
-                            with: asset.id
-                        )
-                    case .failure:
-                        account.removeAsset(asset.id)
-                    }
-                    
-                    self.assetsFetchGroup.leave()
-                }
-            }
-        }
-    }
-    
-    private func composeAssetDetail(_ assetDetail: AssetDetail, of account: Account, with id: Int64) {
-        var assetDetail = assetDetail
-        setVerifiedIfNeeded(&assetDetail, with: id)
-        account.assetDetails.append(assetDetail)
-        api.session.assetDetails[id] = assetDetail
-    }
-    
-    private func setVerifiedIfNeeded(_ assetDetail: inout AssetDetail, with id: Int64) {
-        if let verifiedAssets = api.session.verifiedAssets,
-            verifiedAssets.contains(where: { verifiedAsset -> Bool in
-                verifiedAsset.id == id
-            }) {
-            assetDetail.isVerified = true
         }
     }
 }
@@ -143,18 +90,12 @@ extension LedgerAccountSelectionDataSource: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let account = accounts[safe: indexPath.item],
             let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: AccountSelectionCell.reusableIdentifier,
+                withReuseIdentifier: LedgerAccountCell.reusableIdentifier,
                 for: indexPath
-            ) as? AccountSelectionCell {
-            
-            if isUnselectable(at: indexPath) {
-                cell.contextView.state = .unselectable
-            }
-            
-            addLedgerAccountSelectionTitleView(to: cell, isUnselectable: isUnselectable(at: indexPath), account: account)
-            addAlgoView(to: cell, for: account)
-            addAssetViews(to: cell, for: account)
-            
+            ) as? LedgerAccountCell {
+            cell.delegate = self
+            let isSelected = collectionView.indexPathsForSelectedItems?.contains(indexPath) ?? false
+            cell.bind(LedgerAccountViewModel(account: account, isMultiSelect: isMultiSelect, isSelected: isSelected))
             return cell
         }
         fatalError("Index path is out of bounds")
@@ -171,7 +112,7 @@ extension LedgerAccountSelectionDataSource: UICollectionViewDataSource {
                 withReuseIdentifier: LedgerAccountSelectionHeaderSupplementaryView.reusableIdentifier,
                 for: indexPath
         ) as? LedgerAccountSelectionHeaderSupplementaryView {
-            LedgerAccountSelectionHeaderSupplementaryViewModel(accounts: accounts).configure(headerView)
+            headerView.bind(LedgerAccountSelectionHeaderSupplementaryViewModel(accounts: accounts, isMultiSelect: isMultiSelect))
             return headerView
         }
         
@@ -179,65 +120,9 @@ extension LedgerAccountSelectionDataSource: UICollectionViewDataSource {
     }
 }
 
-extension LedgerAccountSelectionDataSource {
-    private func addLedgerAccountSelectionTitleView(to cell: AccountSelectionCell, isUnselectable: Bool, account: Account) {
-        let ledgerAccountSelectionTitleView = LedgerAccountSelectionTitleView()
-        LedgerAccountSelectionTitleViewModel(account: account, isUnselectable: isUnselectable).configure(ledgerAccountSelectionTitleView)
-        cell.contextView.addView(ledgerAccountSelectionTitleView)
-    }
-    
-    private func addAlgoView(to cell: AccountSelectionCell, for account: Account) {
-        let algoView = AlgoAssetView()
-        algoView.amountLabel.text = account.amount.toAlgos.toAlgosStringForLabel
-        cell.contextView.addView(algoView)
-    }
-    
-    private func addAssetViews(to cell: AccountSelectionCell, for account: Account) {
-        for (index, assetDetail) in account.assetDetails.enumerated() {
-            guard let asset = account.assets?[index] else {
-                continue
-            }
-            
-            if assetDetail.isVerified {
-                addVerifiedAssetViews(to: cell, assetDetail: assetDetail, asset: asset)
-            } else {
-                addUnverifiedAssetViews(to: cell, assetDetail: assetDetail, asset: asset)
-            }
-        }
-    }
-    
-    private func addVerifiedAssetViews(to cell: AccountSelectionCell, assetDetail: AssetDetail, asset: Asset) {
-        if assetDetail.hasBothDisplayName() {
-            addAssetView(AssetCell(), to: cell, assetDetail: assetDetail, asset: asset)
-        } else if assetDetail.hasOnlyAssetName() {
-            addAssetView(OnlyNameAssetCell(), to: cell, assetDetail: assetDetail, asset: asset)
-        } else if assetDetail.hasOnlyUnitName() {
-            addAssetView(OnlyUnitNameAssetCell(), to: cell, assetDetail: assetDetail, asset: asset)
-        } else if assetDetail.hasNoDisplayName() {
-            addAssetView(UnnamedAssetCell(), to: cell, assetDetail: assetDetail, asset: asset)
-        }
-    }
-    
-    private func addUnverifiedAssetViews(to cell: AccountSelectionCell, assetDetail: AssetDetail, asset: Asset) {
-        if assetDetail.hasBothDisplayName() {
-            addAssetView(UnverifiedAssetCell(), to: cell, assetDetail: assetDetail, asset: asset)
-        } else if assetDetail.hasOnlyAssetName() {
-            addAssetView(UnverifiedOnlyNameAssetCell(), to: cell, assetDetail: assetDetail, asset: asset)
-        } else if assetDetail.hasOnlyUnitName() {
-            addAssetView(UnverifiedOnlyUnitNameAssetCell(), to: cell, assetDetail: assetDetail, asset: asset)
-        } else if assetDetail.hasNoDisplayName() {
-            addAssetView(UnverifiedUnnamedAssetCell(), to: cell, assetDetail: assetDetail, asset: asset)
-        }
-    }
-    
-    private func addAssetView(
-        _ view: BaseAssetCell,
-        to cell: AccountSelectionCell,
-        assetDetail: AssetDetail,
-        asset: Asset
-    ) {
-        viewModel.configure(view, with: assetDetail, and: asset)
-        cell.contextView.addView(view)
+extension LedgerAccountSelectionDataSource: LedgerAccountCellDelegate {
+    func ledgerAccountCellDidOpenMoreInfo(_ ledgerAccountCell: LedgerAccountCell) {
+        delegate?.ledgerAccountSelectionDataSource(self, didTapMoreInfoFor: ledgerAccountCell)
     }
 }
 
@@ -250,41 +135,40 @@ extension LedgerAccountSelectionDataSource {
         return accounts[safe: index]
     }
     
+    func rekeyedAccounts(for account: String) -> [Account]? {
+        return rekeyedAccounts[account]
+    }
+    
+    func ledgerAccountIndex(for address: String) -> Int? {
+        return accounts.firstIndex { account -> Bool in
+            account.type == .ledger && account.address == address
+        }
+    }
+    
     func clear() {
         accounts.removeAll()
     }
     
-    func isUnselectable(at indexPath: IndexPath) -> Bool {
-        return indexPath.item == 0
-    }
-    
     func saveSelectedAccounts(_ indexes: [IndexPath]) {
-        /// Add ledger's account to local accounts
-        addLedgerAccountIfNeeded()
-        
         indexes.forEach { indexPath in
             if let account = accounts[safe: indexPath.item] {
-                if let localAccount = api.session.accountInformation(from: account.address) {
-                    localAccount.type = .rekeyed
+                if var localAccount = api.session.accountInformation(from: account.address) {
+                    localAccount.type = account.type
+                    setupLedgerDetails(of: &localAccount, from: account)
+
                     api.session.authenticatedUser?.updateAccount(localAccount)
-                    
-                    account.type = .rekeyed
                     api.session.updateAccount(account)
                 } else {
-                    setupLocalAccount(from: account, isLedgerAccount: false)
+                    setupLocalAccount(from: account)
                 }
             }
         }
     }
     
-    private func setupLocalAccount(from account: Account, isLedgerAccount: Bool) {
-        let localAccount = AccountInformation(
-            address: account.address,
-            name: account.address.shortAddressDisplay(),
-            type: account.type,
-            ledgerDetail: isLedgerAccount ? ledger : nil
-        )
-        
+    private func setupLocalAccount(from account: Account) {
+        var localAccount = AccountInformation(address: account.address, name: account.address.shortAddressDisplay(), type: account.type)
+        setupLedgerDetails(of: &localAccount, from: account)
+
         let user: User
         
         if let authenticatedUser = api.session.authenticatedUser {
@@ -297,18 +181,14 @@ extension LedgerAccountSelectionDataSource {
         api.session.addAccount(Account(accountInformation: localAccount))
         api.session.authenticatedUser = user
     }
-    
-    private func addLedgerAccountIfNeeded() {
-        if let account = account(at: 0) {
-            if let ledgerAccount = api.session.accountInformation(from: account.address) {
-                ledgerAccount.ledgerDetail = ledger
-                api.session.authenticatedUser?.updateAccount(ledgerAccount)
-                
-                account.ledgerDetail = ledger
-                api.session.updateAccount(account)
-            } else {
-                setupLocalAccount(from: account, isLedgerAccount: true)
-            }
+
+    private func setupLedgerDetails(of localAccount: inout AccountInformation, from account: Account) {
+        if let authAddress = account.authAddress {
+            UIApplication.shared.firebaseAnalytics?.log(RegistrationEvent(type: .rekeyed))
+            localAccount.addRekeyDetail(account.ledgerDetail ?? ledger, for: authAddress)
+        } else {
+            UIApplication.shared.firebaseAnalytics?.log(RegistrationEvent(type: .ledger))
+            localAccount.ledgerDetail = account.ledgerDetail
         }
     }
 }
@@ -319,4 +199,8 @@ protocol LedgerAccountSelectionDataSourceDelegate: class {
         didFetch accounts: [Account]
     )
     func ledgerAccountSelectionDataSourceDidFailToFetch(_ ledgerAccountSelectionDataSource: LedgerAccountSelectionDataSource)
+    func ledgerAccountSelectionDataSource(
+        _ ledgerAccountSelectionDataSource: LedgerAccountSelectionDataSource,
+        didTapMoreInfoFor cell: LedgerAccountCell
+    )
 }

@@ -3,16 +3,6 @@
     {
       "filename" : "icon-logo.pdf",
       "idiom" : "universal"
-    },
-    {
-      "appearances" : [
-        {
-          "appearance" : "luminosity",
-          "value" : "dark"
-        }
-      ],
-      "filename" : "icon-logo-1.pdf",
-      "idiom" : "universal"
     }
   ],
   "info" : {

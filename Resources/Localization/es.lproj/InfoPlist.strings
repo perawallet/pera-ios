@@ -1,13 +1,14 @@
-/* 
-  InfoPlist.strings
-  algorand
-
-  Created by Göktuğ Berk Ulu on 12.10.2020.
-  Copyright © 2020 hippo. All rights reserved.
-*/
-
-"NSPhotoLibraryAddUsageDescription" = "Algorand guardará los códigos QR en tu biblioteca de fotos.";
-"NSFaceIDUsageDescription" = "Algorand usará el reconocimiento facial para que inicies sesión de manera segura.";
-"NSCameraUsageDescription" = "Algorand usará la cámara para escanear códigos QR.";
+/* Privacy - Bluetooth Always Usage Description */
 "NSBluetoothAlwaysUsageDescription" = "Algorand usará Bluetooth para comunicarse con Ledger X.";
+
+/* Privacy - Bluetooth Peripheral Usage Description */
 "NSBluetoothPeripheralUsageDescription" = "Algorand usará Bluetooth para comunicarse con Ledger X.";
+
+/* Privacy - Camera Usage Description */
+"NSCameraUsageDescription" = "Algorand usará la cámara para escanear códigos QR.";
+
+/* Privacy - Face ID Usage Description */
+"NSFaceIDUsageDescription" = "Algorand usará el reconocimiento facial para que inicies sesión de manera segura.";
+
+/* Privacy - Photo Library Additions Usage Description */
+"NSPhotoLibraryAddUsageDescription" = "Algorand guardará los códigos QR en tu biblioteca de fotos.";

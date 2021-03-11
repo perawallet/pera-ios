@@ -1,10 +1,19 @@
+// Copyright 2019 Algorand, Inc.
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 //
 //  AssetActionConfirmationView.swift
-//  algorand
-//
-//  Created by Göktuğ Berk Ulu on 11.11.2019.
-//  Copyright © 2019 hippo. All rights reserved.
-//
 
 import UIKit
 
@@ -14,7 +23,7 @@ class AssetActionConfirmationView: BaseView {
     
     weak var delegate: AssetActionConfirmationViewDelegate?
     
-    private(set) lazy var titleLabel: UILabel = {
+    private lazy var titleLabel: UILabel = {
         UILabel()
             .withLine(.single)
             .withAlignment(.center)
@@ -24,7 +33,7 @@ class AssetActionConfirmationView: BaseView {
     
     private(set) lazy var assetDisplayView = AssetDisplayView()
     
-    private(set) lazy var detailLabel: UILabel = {
+    private lazy var detailLabel: UILabel = {
         UILabel()
             .withLine(.contained)
             .withAlignment(.center)
@@ -32,7 +41,7 @@ class AssetActionConfirmationView: BaseView {
             .withTextColor(Colors.Text.primary)
     }()
     
-    private(set) lazy var actionButton: UIButton = {
+    private lazy var actionButton: UIButton = {
         UIButton(type: .custom)
             .withBackgroundImage(img("bg-main-button"))
             .withAlignment(.center)
@@ -124,6 +133,18 @@ extension AssetActionConfirmationView {
             make.top.equalTo(actionButton.snp.bottom).offset(layout.current.buttonOffset)
             make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
             make.bottom.lessThanOrEqualToSuperview().inset(layout.current.bottomInset)
+        }
+    }
+}
+
+extension AssetActionConfirmationView {
+    func bind(_ viewModel: AssetActionConfirmationViewModel) {
+        titleLabel.text = viewModel.title
+        assetDisplayView.assetIndexLabel.text = viewModel.id
+        detailLabel.attributedText = viewModel.detail
+        actionButton.setTitle(viewModel.actionTitle, for: .normal)
+        if let assetDisplayViewModel = viewModel.assetDisplayViewModel {
+            assetDisplayView.bind(assetDisplayViewModel)
         }
     }
 }

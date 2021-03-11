@@ -1,34 +1,36 @@
+// Copyright 2019 Algorand, Inc.
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 //
 //  SelectAssetViewModel.swift
-//  algorand
-//
-//  Created by Göktuğ Berk Ulu on 6.05.2020.
-//  Copyright © 2020 hippo. All rights reserved.
-//
 
 import UIKit
 
 class SelectAssetViewModel {
-    func configure(_ cell: BaseAssetCell, with assetDetail: AssetDetail, and asset: Asset) {
-        cell.contextView.assetNameView.setAssetName(for: assetDetail)
-        let amountText = asset.amount.assetAmount(fromFraction: assetDetail.fractionDecimals)
-            .toFractionStringForLabel(fraction: assetDetail.fractionDecimals)
-        cell.contextView.setActionText(amountText)
-    }
-    
-    func configure(_ cell: AlgoAssetCell, with account: Account) {
-        cell.contextView.amountLabel.text = account.amount.toAlgos.toAlgosStringForLabel
-    }
-}
+    private(set) var accountName: String?
+    private(set) var accountImage: UIImage?
 
-extension SelectAssetViewModel {
-    func configure(_ header: SelectAssetHeaderSupplementaryView, with account: Account) {
-        header.contextView.setAccountImage(account.accountImage())
-        
-        guard let accountName = account.name else {
-            return
-        }
-        
-        header.contextView.setAccountName(accountName)
+    init(account: Account) {
+        setAccountName(from: account)
+        setAccountImage(from: account)
+    }
+
+    private func setAccountName(from account: Account) {
+        accountName = account.name
+    }
+
+    private func setAccountImage(from account: Account) {
+        accountImage = account.accountImage()
     }
 }

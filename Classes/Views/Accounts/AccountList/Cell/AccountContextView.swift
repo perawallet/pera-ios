@@ -1,10 +1,19 @@
+// Copyright 2019 Algorand, Inc.
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 //
 //  AccountView.swift
-//  algorand
-//
-//  Created by Göktuğ Berk Ulu on 27.03.2019.
-//  Copyright © 2019 hippo. All rights reserved.
-//
 
 import UIKit
 
@@ -18,21 +27,21 @@ class AccountContextView: BaseView {
         return imageView
     }()
     
-    private(set) lazy var nameLabel: UILabel = {
+    private lazy var nameLabel: UILabel = {
         UILabel()
             .withLine(.single)
             .withAlignment(.left)
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
             .withTextColor(Colors.Text.primary)
     }()
-    
-    private(set) lazy var imageView: UIImageView = {
+
+    private lazy var imageView: UIImageView = {
         let imageView = UIImageView(image: img("icon-algo-black"))
         imageView.isHidden = true
         return imageView
     }()
     
-    private(set) lazy var detailLabel: UILabel = {
+    private lazy var detailLabel: UILabel = {
         UILabel()
             .withLine(.single)
             .withAlignment(.right)
@@ -106,13 +115,27 @@ extension AccountContextView {
 }
 
 extension AccountContextView {
-    func setAccountTypeImage(_ image: UIImage?, hidden isHidden: Bool) {
-        if isHidden {
-            accountTypeImageView.removeFromSuperview()
-        } else {
+    func bind(_ viewModel: AccountListViewModel) {
+        nameLabel.text = viewModel.name
+
+        if let accountImage = viewModel.accountImage {
             accountTypeImageView.isHidden = false
-            accountTypeImageView.image = image
+            accountTypeImageView.image = accountImage
+        } else {
+            accountTypeImageView.removeFromSuperview()
         }
+
+        if let detailText = viewModel.detail {
+            detailLabel.text = detailText
+        } else if let detailAttributedText = viewModel.attributedDetail {
+            detailLabel.attributedText = detailAttributedText
+        }
+
+        if let detailColor = viewModel.detailColor {
+            detailLabel.textColor = detailColor
+        }
+
+        imageView.isHidden = !viewModel.isDisplayingImage
     }
 }
 

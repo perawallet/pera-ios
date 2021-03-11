@@ -1,46 +1,50 @@
+// Copyright 2019 Algorand, Inc.
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 //
 //  NodeSettingsViewModel.swift
-//  algorand
-//
-//  Created by Omer Emre Aslan on 12.04.2019.
-//  Copyright © 2019 hippo. All rights reserved.
-//
 
 import UIKit
 
 class NodeSettingsViewModel {
-    func configure(_ cell: NodeSelectionCell, with node: AlgorandNode, activeNetwork: AlgorandAPI.BaseNetwork) {
-        cell.contextView.setName(node.name)
-        
+    private(set) var nodeName: String?
+    private(set) var backgroundImage: UIImage?
+    private(set) var image: UIImage?
+
+    init(node: AlgorandNode, activeNetwork: AlgorandAPI.BaseNetwork) {
+        setNodeName(from: node)
+        setBackgroundImage(from: node, activeNetwork: activeNetwork)
+        setImage(from: node, activeNetwork: activeNetwork)
+    }
+
+    private func setNodeName(from node: AlgorandNode) {
+        nodeName = node.name
+    }
+
+    private func setBackgroundImage(from node: AlgorandNode, activeNetwork: AlgorandAPI.BaseNetwork) {
         if node.network == activeNetwork {
-            setActive(cell)
+            backgroundImage = img("bg-settings-node-selected")
         } else {
-            setInactive(cell)
+            backgroundImage = img("bg-settings-node-unselected")
         }
     }
-    
-    func setSelected(at indexPath: IndexPath, in collectionView: UICollectionView) {
-        guard let cell = collectionView.cellForItem(at: indexPath) as? NodeSelectionCell else {
-            return
+
+    private func setImage(from node: AlgorandNode, activeNetwork: AlgorandAPI.BaseNetwork) {
+        if node.network == activeNetwork {
+            image = img("settings-node-active")
+        } else {
+            image = img("settings-node-inactive")
         }
-        setActive(cell)
-        
-        let otherCellIndex = indexPath.item == 0 ? 1 : 0
-        
-        guard let otherCell = collectionView.cellForItem(at: IndexPath(item: otherCellIndex, section: 0)) as? NodeSelectionCell else {
-            return
-        }
-        
-        setInactive(otherCell)
-    }
-    
-    private func setActive(_ cell: NodeSelectionCell) {
-        cell.contextView.setBackgroundImage(img("bg-settings-node-selected"))
-        cell.contextView.setImage(img("settings-node-active"))
-    }
-    
-    private func setInactive(_ cell: NodeSelectionCell) {
-        cell.contextView.setBackgroundImage(img("bg-settings-node-unselected"))
-        cell.contextView.setImage(img("settings-node-inactive"))
     }
 }

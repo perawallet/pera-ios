@@ -1,24 +1,47 @@
+// Copyright 2019 Algorand, Inc.
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 //
 //  AccountInformation.swift
-//  algorand
-//
-//  Created by Göktuğ Berk Ulu on 3.02.2020.
-//  Copyright © 2020 hippo. All rights reserved.
-//
 
 import Magpie
+
+typealias PublicKey = String
+typealias RekeyDetail = [PublicKey: LedgerDetail]
 
 class AccountInformation: Model {
     let address: String
     var name: String
     var type: AccountType = .standard
     var ledgerDetail: LedgerDetail?
+    var receivesNotification: Bool
+    var rekeyDetail: RekeyDetail?
     
-    init(address: String, name: String, type: AccountType, ledgerDetail: LedgerDetail? = nil) {
+    init(
+        address: String,
+        name: String,
+        type: AccountType,
+        ledgerDetail: LedgerDetail? = nil,
+        rekeyDetail: RekeyDetail? = nil,
+        receivesNotification: Bool = true
+    ) {
         self.address = address
         self.name = name
         self.type = type
         self.ledgerDetail = ledgerDetail
+        self.receivesNotification = receivesNotification
+        self.rekeyDetail = rekeyDetail
     }
     
     required init(from decoder: Decoder) throws {
@@ -27,6 +50,8 @@ class AccountInformation: Model {
         name = try container.decode(String.self, forKey: .name)
         type = try container.decodeIfPresent(AccountType.self, forKey: .type) ?? .standard
         ledgerDetail = try container.decodeIfPresent(LedgerDetail.self, forKey: .ledgerDetail)
+        receivesNotification = try container.decodeIfPresent(Bool.self, forKey: .receivesNotification) ?? true
+        rekeyDetail = try container.decodeIfPresent(RekeyDetail.self, forKey: .rekeyDetail)
     }
 }
 
@@ -45,6 +70,14 @@ extension AccountInformation {
     func encoded() -> Data? {
         return try? JSONEncoder().encode(self)
     }
+    
+    func addRekeyDetail(_ ledgerDetail: LedgerDetail, for address: String) {
+        if rekeyDetail != nil {
+            self.rekeyDetail?[address] = ledgerDetail
+        } else {
+            self.rekeyDetail = [address: ledgerDetail]
+        }
+    }
 }
 
 extension AccountInformation {
@@ -53,6 +86,8 @@ extension AccountInformation {
         case name = "name"
         case type = "type"
         case ledgerDetail = "ledgerDetail"
+        case receivesNotification = "receivesNotification"
+        case rekeyDetail = "rekeyDetail"
     }
 }
 

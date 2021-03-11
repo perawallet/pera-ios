@@ -1,17 +1,25 @@
+// Copyright 2019 Algorand, Inc.
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 //
 //  SendTransactionPreviewViewController.swift
-//  algorand
-//
-//  Created by Göktuğ Berk Ulu on 8.04.2019.
-//  Copyright © 2019 hippo. All rights reserved.
-//
 
 import UIKit
 import SnapKit
 import SVProgressHUD
 import Magpie
 import Alamofire
-import CoreBluetooth
 
 class SendTransactionPreviewViewController: BaseScrollViewController {
     
@@ -29,9 +37,19 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
         ),
         initialModalSize: .custom(CGSize(width: view.frame.width, height: 354.0))
     )
-    
-    private(set) var ledgerApprovalViewController: LedgerApprovalViewController?
-    
+
+    private lazy var transactionTutorialPresenter: CardModalPresenter = {
+        let screenHeight = UIScreen.main.bounds.height
+        let height = screenHeight <= 605.0 ? screenHeight - 20.0 : 605.0
+        return CardModalPresenter(
+            config: ModalConfiguration(
+                animationMode: .normal(duration: 0.25),
+                dismissMode: .none
+            ),
+            initialModalSize: .custom(CGSize(width: view.frame.width, height: height))
+        )
+    }()
+
     private(set) lazy var transactionController: TransactionController = {
         guard let api = api else {
             fatalError("API should be set.")
@@ -55,14 +73,14 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
     
     var shouldUpdateSenderForSelectedAccount = false
     var shouldUpdateReceiverForSelectedAccount = false
+
+    private let transactionTutorialStorage = TransactionTutorialStorage()
     
     private(set) var isSenderEditable: Bool
     
     var isMaxTransaction: Bool {
         return sendTransactionPreviewView.amountInputView.isMaxButtonSelected
     }
-    
-    private var timer: Timer?
     
     init(
         account: Account?,
@@ -80,12 +98,18 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
         let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [weak self] in
             self?.closeScreen(by: .dismiss, animated: true)
         }
+
+        let infoBarButtonItem = ALGBarButtonItem(kind: .info) { [weak self] in
+            self?.displayTransactionTutorial(isInitialDisplay: false)
+        }
         
         if isSenderEditable {
             leftBarButtonItems = [closeBarButtonItem]
         }
+
+        rightBarButtonItems = [infoBarButtonItem]
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -94,12 +118,19 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
             presentAssetSelection()
         }
     }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if selectedAccount != nil && !transactionTutorialStorage.isTransactionTutorialDisplayed() {
+            displayTransactionTutorial(isInitialDisplay: true)
+        }
+    }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         transactionController.stopBLEScan()
         dismissProgressIfNeeded()
-        invalidateTimer()
+        transactionController.stopTimer()
     }
     
     override func setListeners() {
@@ -201,7 +232,7 @@ extension SendTransactionPreviewViewController: SendTransactionPreviewViewDelega
         if !session.canSignTransaction(for: &account) {
             return
         }
-        
+
         if isClosingToSameAccount() {
             NotificationBanner.showError("title-error".localized, message: "send-transaction-max-same-account-error".localized)
             return
@@ -294,6 +325,9 @@ extension SendTransactionPreviewViewController: SelectAssetViewControllerDelegat
         didSelectAlgosIn account: Account,
         forAction transactionAction: TransactionAction
     ) {
+        if !transactionTutorialStorage.isTransactionTutorialDisplayed() {
+            displayTransactionTutorial(isInitialDisplay: true)
+        }
         configure(forSelected: account, with: nil)
     }
     
@@ -303,14 +337,49 @@ extension SendTransactionPreviewViewController: SelectAssetViewControllerDelegat
         in account: Account,
         forAction transactionAction: TransactionAction
     ) {
+        if !transactionTutorialStorage.isTransactionTutorialDisplayed() {
+            displayTransactionTutorial(isInitialDisplay: true)
+        }
         configure(forSelected: account, with: assetDetail)
+    }
+}
+
+extension SendTransactionPreviewViewController {
+    private func displayTransactionTutorial(isInitialDisplay: Bool) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + (isInitialDisplay ? 0.1 : 0.0)) {
+            let controller = self.open(
+                .transactionTutorial(isInitialDisplay: isInitialDisplay),
+                by: .customPresentWithoutNavigationController(
+                    presentationStyle: .custom,
+                    transitionStyle: nil,
+                    transitioningDelegate: self.transactionTutorialPresenter
+                )
+            ) as? TransactionTutorialViewController
+            controller?.delegate = self
+        }
+    }
+}
+
+extension SendTransactionPreviewViewController: TransactionTutorialViewControllerDelegate {
+    func transactionTutorialViewControllerDidConfirmTutorial(_ transactionTutorialViewController: TransactionTutorialViewController) {
+        let transactionTutorialStorage = TransactionTutorialStorage()
+        transactionTutorialStorage.setTransactionTutorialDisplayed()
+        transactionTutorialViewController.dismissScreen()
+    }
+}
+
+extension SendTransactionPreviewViewController {
+    var isMaxTransactionFromRekeyedAccount: Bool {
+        guard let account = selectedAccount else {
+            return false
+        }
+
+        return isMaxTransaction && account.isRekeyed()
     }
 }
 
 extension SendTransactionPreviewViewController: TransactionControllerDelegate {
     func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPError<TransactionError>) {
-        ledgerApprovalViewController?.dismissScreen()
-        
         SVProgressHUD.dismiss()
         switch error {
         case .network:
@@ -335,76 +404,9 @@ extension SendTransactionPreviewViewController: TransactionControllerDelegate {
             displaySimpleAlertWith(title: "title-error".localized, message: "title-internet-connection".localized)
         }
     }
-    
-    func transactionControllerDidStartBLEConnection(_ transactionController: TransactionController) {
-        dismissProgressIfNeeded()
-        invalidateTimer()
-        
-        ledgerApprovalViewController = open(
-            .ledgerApproval(mode: .approve),
-            by: .customPresent(presentationStyle: .custom, transitionStyle: nil, transitioningDelegate: ledgerApprovalPresenter)
-        ) as? LedgerApprovalViewController
-    }
-    
-    func transactionController(_ transactionController: TransactionController, didFailBLEConnectionWith state: CBManagerState) {
-        guard let errorTitle = state.errorDescription.title,
-            let errorSubtitle = state.errorDescription.subtitle else {
-                return
-        }
-        NotificationBanner.showError(errorTitle, message: errorSubtitle)
-        invalidateTimer()
-        dismissProgressIfNeeded()
-    }
-    
-    func transactionController(_ transactionController: TransactionController, didFailToConnect peripheral: CBPeripheral) {
-        ledgerApprovalViewController?.dismissScreen()
-        NotificationBanner.showError("ble-error-connection-title".localized, message: "ble-error-fail-connect-peripheral".localized)
-    }
-    
-    func transactionController(_ transactionController: TransactionController, didDisconnectFrom peripheral: CBPeripheral) {
-    }
-    
-    func transactionControllerDidFailToSignWithLedger(_ transactionController: TransactionController) {
-        ledgerApprovalViewController?.dismissScreen()
-        NotificationBanner.showError(
-            "ble-error-transaction-cancelled-title".localized,
-            message: "ble-error-fail-sign-transaction".localized
-        )
-    }
 }
 
-// MARK: Ledger Timer
 extension SendTransactionPreviewViewController {
-    func validateTimer() {
-        guard let account = selectedAccount, account.requiresLedgerConnection() else {
-            return
-        }
-        
-        timer = Timer.scheduledTimer(withTimeInterval: 15.0, repeats: false) { [weak self] timer in
-            guard let self = self else {
-                timer.invalidate()
-                return
-            }
-            
-            DispatchQueue.main.async {
-                self.transactionController.stopBLEScan()
-                self.dismissProgressIfNeeded()
-                NotificationBanner.showError("ble-error-connection-title".localized, message: "ble-error-fail-connect-peripheral".localized)
-            }
-            
-            self.invalidateTimer()
-        }
-    }
-    
-    func invalidateTimer() {
-        guard let account = selectedAccount, account.requiresLedgerConnection() else {
-            return
-        }
-        
-        timer?.invalidate()
-        timer = nil
-    }
-    
     private func isClosingToSameAccount() -> Bool {
         guard let account = selectedAccount,
               let receiverAccount = getReceiverAccount() else {

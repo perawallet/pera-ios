@@ -1,302 +1,267 @@
+// Copyright 2019 Algorand, Inc.
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 //
 //  LedgerBLEController.swift
-//  algorand
-//
-//  Created by Göktuğ Berk Ulu on 26.02.2020.
-//  Copyright © 2020 hippo. All rights reserved.
-//
 
 import Foundation
 
+/// To understand better how ledger app works, this is the Algorand app on the ledger device:
+/// https://github.com/LedgerHQ/app-algorand/blob/master/src/main.c
+/// Basically, the ledger app listens whether it receive an instruction via bluetooth message
+/// It checks the first bytes of the message to decide it's related to algorand app (0x80)
+/// Instructions can be fetch address instruction (0x03) or sign transaction (0x08) instruction
+/// After the instruction process, it returns a response as requested data (signed transaction or address) or an error .
+
+/// Bytes and Shorts used in communication with Ledger
+/// Usage of these in Swift are UInt8 and UInt16: https://gorjanshukov.medium.com/working-with-bytes-in-ios-swift-4-de316a389a0c
+typealias Byte = UInt8
+typealias Short = UInt16
+
 class LedgerBLEController: NSObject {
-    private var mtuSize: UInt16 = 23
-    private var expectedNextSequence: UInt16 = 0
-    private var responseBytesRemaining: UInt16 = 0
-    private var bufferedData = NSMutableData()
-    private let maxResponseSize: UInt16 = 65535
-    private let minMTU: UInt16 = 23
-    private let maxMTU: UInt16 = 100
+    
+    private var mtuSize = LedgerMessage.MTU.default
+    private var currentSequence: Short = 0
+    private var remainingResponseBytes: Short = 0
+    private var receivedData = NSMutableData()
     
     weak var delegate: LedgerBLEControllerDelegate?
     
-    func updateIncomingData(with value: String) {
-        guard let unhexData = Data(fromHexEncodedString: value),
-            let incomingPacket = self.processNextIncomingPacket(unhexData) else {
+    /// Handles response from the ledger device.
+    func readIncomingData(with value: String) {
+        guard let incomingData = Data(fromHexEncodedString: value),
+            let processedIncomingData = processNextIncomingData(incomingData) else {
             return
         }
         
-        print("[Incoming]: \(incomingPacket.toHexString())")
-        delegate?.ledgerBLEController(self, received: incomingPacket)
+        resetState()
+        delegate?.ledgerBLEController(self, didReceive: processedIncomingData)
     }
     
-    private func resetReceiver() {
-        expectedNextSequence = 0
-        responseBytesRemaining = 0
-        bufferedData = NSMutableData()
+    private func resetState() {
+        currentSequence = 0
+        remainingResponseBytes = 0
+        receivedData = NSMutableData()
     }
 }
 
 extension LedgerBLEController {
-    func fetchAddress(_ data: Data) {
-        let packets = packetizeData(data, maxPacketSize: mtuSize)
-        for packet in packets {
-            print("[Outgoing]: \(packet.toHexString())")
+    /// Sends required address fetch instruction to the ledger device.
+    func fetchAddress(at index: Int) {
+        packetizeData(LedgerMessage.Instruction.addressFetch(for: index)).forEach { packet in
             delegate?.ledgerBLEController(self, shouldWrite: packet)
         }
     }
     
-    func signTransaction(_ data: Data) {
+    /// Sends required sign transaction instruction to the ledger device.
+    func signTransaction(_ unsignedTransactionData: Data, atLedgerAccount index: Int) {
         var packets = [Data]()
-        let appPackets = composeSignTransactionPackets(from: data)
-        for appPacket in appPackets {
-            let subpackets = packetizeData(appPacket, maxPacketSize: mtuSize)
-            for subpacket in subpackets {
+        composeSignTransactionPackets(from: unsignedTransactionData, atLedgerAccount: index).forEach { appPacket in
+            packetizeData(appPacket).forEach { subpacket in
                 packets.append(subpacket)
             }
         }
-            
-        for packet in packets {
-            print("[Outgoing]: \(packet.toHexString())")
+        
+        packets.forEach { packet in
             delegate?.ledgerBLEController(self, shouldWrite: packet)
         }
-    }
-        
-    private func fetchMTU() {
-        let commands: [UInt8] = [0x08, 0x00, 0x00, 0x00, 0x00]
-        let data = NSData(bytes: commands, length: commands.count) as Data
-        delegate?.ledgerBLEController(self, shouldWrite: data)
     }
 }
 
 extension LedgerBLEController {
-    private func processNextIncomingPacket(_ packetdata: Data) -> Data? {
-        let messages = [UInt8](packetdata)
-        let lenght = messages.count
-        var nextOutput = Data()
-        var index = 0
-        
-        if lenght > maxResponseSize {
-            resetReceiver()
-            return nil
-        }
-        
-        // First byte should be 0x05 (Data) or 0x08 (MTU)
-        if (lenght - index) < 1 {
-            resetReceiver()
-            return nil
-        }
+    private func processNextIncomingData(_ incomingData: Data) -> Data? {
+        let data = incomingData.toBytes()
+        let dataLength = data.count
+        var offset = 0
 
-        // Handle MTU case
-        if messages[index] == 0x08 {
-            index += 1
-            // Sequence number, length, MTU
-            if (lenght - index) < 5 {
-                resetReceiver()
+        /// Handle MTU size
+        if data[offset] == LedgerMessage.CLA.ledger {
+            offset += 1
+            if (dataLength - offset) < LedgerMessage.MTU.offset {
+                resetState()
                 return nil
             }
-
-            // Sequence number should be zero and length should be one
-            if messages[index] != 0x00 || messages[index + 1] != 0x00 || messages[index + 2] != 0x00 || messages[index + 3] != 0x01 {
-                resetReceiver()
-                return nil
-            }
-
-            // Last byte is MTU. For some reason the reported MTU from the device is actually too big? So cap it artificially.
-            // Might make sense to just always use the protocol minimum of 20 bytes, though that's a little inefficient.
-            var mtu = UInt16(messages[index + 4])
-            mtu = mtu < minMTU ? minMTU : mtu
-            mtu = mtu > maxMTU ? maxMTU : mtu
-            mtuSize = mtu
-            resetReceiver()
-            return nil
-        }
-
-        if messages[index] != 0x05 {
-            resetReceiver()
-            return nil
-        }
-
-        index += 1
-        
-        // Then 2 bytes of sequence number
-        if (lenght - index) < 2 {
-            resetReceiver()
-            return nil
-        }
-        
-        // Parse sequence number
-        var sequenceNumber: UInt16 = 0
-        sequenceNumber += UInt16(messages[index]) << 8
-        sequenceNumber += UInt16(messages[index + 1])
-        index += 2
-
-        // Check sequence number
-        if sequenceNumber != expectedNextSequence {
-            resetReceiver()
-            return nil
-        }
-        
-        // Then 2 bytes of length if this is the first packet
-        if expectedNextSequence == 0 {
-            if (lenght - index) < 2 {
-                self.resetReceiver()
-                return nil
-            }
-
-            // Read off the length and update bytes remaining
-            var packetLength: UInt16 = 0
-            packetLength += UInt16(messages[index]) << 8
-            packetLength += UInt16(messages[index + 1])
-            index += 2
             
-            responseBytesRemaining = packetLength
-        }
-        
-        // Copy the rest of this packet
-        let remainingPacket: UInt16 = UInt16(lenght) - UInt16(index)
-        let bytesToCopy = remainingPacket < responseBytesRemaining ? remainingPacket : responseBytesRemaining
-        var outBuf = [UInt8](repeating: 0, count: Int(bytesToCopy))
-        for i in 0..<bytesToCopy {
-            outBuf[Int(i)] = messages[index]
-            index += 1
-        }
-        
-        // Append to in memory buffer
-        nextOutput = NSData(bytes: outBuf, length: Int(bytesToCopy)) as Data
-        bufferedData.append(nextOutput)
-        
-        // Are there any bytes left?
-        responseBytesRemaining -= UInt16(bytesToCopy)
-        if responseBytesRemaining == 0 {
-            let response = bufferedData as Data
-            resetReceiver()
-            return response
-        }
-        
-        // Bump sequence number, check for overflow
-        expectedNextSequence += 1
-        if expectedNextSequence == 0 {
-            resetReceiver()
+            var mtu = Int(data[LedgerMessage.MTU.offset])
+            mtu = mtu < LedgerMessage.MTU.min ? LedgerMessage.MTU.min : mtu
+            mtu = mtu > LedgerMessage.MTU.max ? LedgerMessage.MTU.max : mtu
+            mtuSize = mtu
+            resetState()
             return nil
         }
 
-        // Not done with packet yet
+        /// Handle received data
+        if data[offset] == LedgerMessage.CLA.data {
+            offset += 1
+            
+            /// Parse sequence number
+            var sequenceNumber: Short = 0
+            sequenceNumber += Short(data[offset]).shiftOneByteLeft()
+            sequenceNumber += Short(data[offset + 1])
+            offset += 2
+
+            /// Check sequence number with the current one
+            if sequenceNumber != currentSequence {
+                resetState()
+                return nil
+            }
+            
+            /// 2 bytes of length if this is the first packet
+            if currentSequence == 0 {
+                if dataLength - offset < 2 {
+                    resetState()
+                    return nil
+                }
+
+                /// Read off the length and update bytes remaining
+                var packetLength: Short = 0
+                packetLength += Short(data[offset]).shiftOneByteLeft()
+                packetLength += Short(data[offset + 1])
+                offset += 2
+                
+                remainingResponseBytes = packetLength
+            }
+            
+            /// Copy the rest of this packet
+            let remainingPacket: Short = Short(dataLength) - Short(offset)
+            let bytesToCopy = remainingPacket < remainingResponseBytes ? remainingPacket : remainingResponseBytes
+            
+            if bytesToCopy == 0 {
+                resetState()
+                return nil
+            }
+            
+            var outputBuffer = [Byte](repeating: 0, count: Int(bytesToCopy))
+            for i in 0..<bytesToCopy {
+                outputBuffer[Int(i)] = data[offset]
+                offset += 1
+            }
+            
+            receivedData.append(Data(bytes: outputBuffer))
+            
+            /// Check remaining bytes
+            remainingResponseBytes -= Short(bytesToCopy)
+            
+            if remainingResponseBytes == 0 {
+                return receivedData as Data
+            }
+            
+            if remainingResponseBytes > 0 {
+                /// Wait for the next message
+                currentSequence += 1
+            }
+        }
+        
+        resetState()
         return nil
     }
     
-    // packetizeData chunks up all of the data we send over BLE.
-    private func packetizeData(_ messageData: Data, maxPacketSize: UInt16) -> [Data] {
-        let messages = [UInt8](messageData)
-        var outputs = [Data]()
-        var sequenceIndex: UInt16 = 0
+    /// Chunks up all of the data we send over BLE.
+    /// Used to send messages related to address fetching and transaction signing.
+    private func packetizeData(_ messageData: Data) -> [Data] {
+        let messages = messageData.toBytes()
+        var output = [Data]()
+        var sequenceIndex: Short = 0
         var offset: UInt64 = 0
         var isFirst = true
-        var bytesRemaining = messageData.count
+        var remainingBytes = messageData.count
         
-        while bytesRemaining > 0 {
-            var index = 0
-            var packet = [UInt8](repeating: 0, count: Int(maxPacketSize))
+        while remainingBytes > 0 {
+            var packet = [Byte]()
             
-            // 0x05 Marks application specific data
-            packet[index] = 0x05
-            index += 1
-
-            // Encode sequence number
-            packet[index] = UInt8(sequenceIndex >> 8)
-            index += 1
-            packet[index] = UInt8(sequenceIndex & 0xFF)
-            index += 1
-
-            // If this is the first packet, also encode the total message length
+            /// Add algorand ledger application specifier
+            packet.append(LedgerMessage.CLA.data)
+            
+            /// Encode sequence number
+            packet.append(sequenceIndex.shiftOneByteRight().asByte)
+            packet.append(sequenceIndex.removeExcessBytes().asByte)
+            
+            /// If this is the first packet, needs to encode the total message length
             if isFirst {
-                packet[index] = UInt8(messages.count >> 8)
-                index += 1
-                packet[index] = UInt8(messages.count & 0xFF)
-                index += 1
+                packet.append(sequenceIndex.shiftOneByteRight().asByte)
+                packet.append(messages.count.removeExcessBytes().asByte)
                 isFirst = false
             }
             
-            // Copy some number of bytes into the packet
-            let remainingSpaceInPacket = packet.count - index
-            let bytesToCopy = remainingSpaceInPacket < bytesRemaining ? remainingSpaceInPacket : bytesRemaining
-            bytesRemaining -= bytesToCopy
+            /// Copy some number of bytes into the packet
+            let remainingSpaceInPacket = mtuSize - packet.count
+            let bytesToCopy = remainingSpaceInPacket < remainingBytes ? remainingSpaceInPacket : remainingBytes
+            remainingBytes -= bytesToCopy
 
             for byteIndex in 0..<bytesToCopy {
-                packet[index] = messages[Int(offset) + byteIndex]
-                index += 1
+                packet.append(messages[Int(offset) + byteIndex])
             }
             
             sequenceIndex += 1
             offset += UInt64(bytesToCopy)
             
-            let data = NSData(bytes: packet, length: index) as Data
-            outputs.append(data)
+            output.append(Data(bytes: packet))
         }
-        return outputs
+        
+        return output
     }
     
-    // composeSignTransactionPackets chunks up transaction data at the application layer.
-    // The packets generated from this layer should each be sent through packetizeData and transmitted one by one.
-    func composeSignTransactionPackets(from transactionData: Data) -> [Data] {
-        let msg = [UInt8](transactionData)
-        let ledgerClass: UInt8 = 0x80
-        let ledgerSignTxn: UInt8 = 0x08
-        let ledgerP1First: UInt8 = 0x00
-        let ledgerP1More: UInt8 = 0x80
-        let ledgerP2Last: UInt8 = 0x00
-        let ledgerP2More: UInt8 = 0x80
-        let chunkSize: UInt8 = 0xFF
-        let headerSize: UInt8 = 0x05
-
-        var outputs = [Data]()
-        var bytesRemaining = transactionData.count
-        var offset: UInt64 = 0
-        var p1 = ledgerP1First
-        var p2 = ledgerP2More
+    /// Create app packet for transaction signing data that will contain information with the format:
+    /// algorandCLA | sing instruction | initial packets | {transactionData}
+    private func composeSignTransactionPackets(from transactionData: Data, atLedgerAccount index: Int) -> [Data] {
+        var output = [Data]()
+        var remainingBytes = transactionData.count + Int(LedgerMessage.Size.accountIndex)
+        var offset = 0
+        var p1 = LedgerMessage.Paging.p1Transaction
+        var p2 = LedgerMessage.Paging.p2More
         
-        while bytesRemaining > 0 {
-            var index = 0
-            let bytesRemainingWithHeader = bytesRemaining + Int(headerSize)
-            let packetSize = bytesRemainingWithHeader < chunkSize ? bytesRemainingWithHeader : Int(chunkSize)
-            var packet = [UInt8](repeating: 0, count: Int(packetSize))
+        while remainingBytes > 0 {
+            /// Calculates header size and how many bytes should it send to the ledger
+            let remainingBytesWithHeader = remainingBytes + Int(LedgerMessage.Size.header)
+            let packetSize = remainingBytesWithHeader <= LedgerMessage.Size.chunk ? remainingBytesWithHeader : Int(LedgerMessage.Size.chunk)
 
-            // Copy some number of bytes into the packet
-            let remainingSpaceInPacket = packet.count - Int(headerSize)
-            let bytesToCopy = remainingSpaceInPacket < bytesRemaining ? remainingSpaceInPacket : bytesRemaining
-            bytesRemaining -= bytesToCopy
+            /// Copy some number of bytes into the packet
+            let remainingSpaceInPacket = packetSize - Int(LedgerMessage.Size.header)
+            var bytesToCopySize = remainingSpaceInPacket < remainingBytes ? remainingSpaceInPacket : remainingBytes
+            remainingBytes -= bytesToCopySize
             
-            // Check if this is the last packet
-            if bytesRemaining == 0 {
-                p2 = ledgerP2Last
-            }
-
-            packet[index] = ledgerClass
-            index += 1
-            packet[index] = ledgerSignTxn
-            index += 1
-            packet[index] = p1
-            index += 1
-            packet[index] = p2
-            index += 1
-            packet[index] = UInt8(bytesToCopy)
-            index += 1
-
-            for byteIndex in 0..<bytesToCopy {
-                packet[index] = msg[Int(offset) + byteIndex]
-                index += 1
+            /// Check if this is the last packet
+            if remainingBytes == 0 {
+                p2 = LedgerMessage.Paging.p2Last
             }
             
-            p1 = ledgerP1More
-            offset += UInt64(bytesToCopy)
+            var packet = [Byte]()
             
-            let data = NSData(bytes: packet, length: packet.count) as Data
-            outputs.append(data)
+            /// Adds algorand cla key, signg instruction and other related data for transaction
+            packet.append(contentsOf: [LedgerMessage.CLA.algorand, LedgerMessage.Instruction.sign, p1, p2, Byte(bytesToCopySize)])
+            
+            if p1 == LedgerMessage.Paging.p1Transaction {
+                packet.append(contentsOf: index.toByteArray())
+                bytesToCopySize -= Int(LedgerMessage.Size.accountIndex)
+            }
+            
+            let transactionDataArray = [Byte](transactionData)
+            for byteIndex in 0..<bytesToCopySize {
+                packet.append(transactionDataArray[offset + byteIndex])
+            }
+            
+            p1 = LedgerMessage.Paging.p1More
+            offset += bytesToCopySize
+            
+            output.append(Data(bytes: packet))
         }
-        return outputs
+        
+        return output
     }
 }
 
 protocol LedgerBLEControllerDelegate: class {
     func ledgerBLEController(_ ledgerBLEController: LedgerBLEController, shouldWrite data: Data)
-    func ledgerBLEController(_ ledgerBLEController: LedgerBLEController, received data: Data)
+    func ledgerBLEController(_ ledgerBLEController: LedgerBLEController, didReceive data: Data)
 }

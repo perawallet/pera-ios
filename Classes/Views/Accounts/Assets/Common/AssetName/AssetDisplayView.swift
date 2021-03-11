@@ -1,10 +1,19 @@
+// Copyright 2019 Algorand, Inc.
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 //
 //  AssetDisplayView.swift
-//  algorand
-//
-//  Created by Göktuğ Berk Ulu on 24.11.2019.
-//  Copyright © 2019 hippo. All rights reserved.
-//
 
 import UIKit
 
@@ -27,7 +36,7 @@ class AssetDisplayView: BaseView {
             .withTextColor(Colors.Text.primary)
     }()
     
-    private(set) lazy var verifiedImageView: UIImageView = {
+    private lazy var verifiedImageView: UIImageView = {
         let imageView = UIImageView(image: img("icon-verified"))
         imageView.isHidden = true
         return imageView
@@ -37,7 +46,7 @@ class AssetDisplayView: BaseView {
         UIButton(type: .custom).withImage(img("icon-copy", isTemplate: true)).withTintColor(Colors.Main.gray300)
     }()
     
-    private(set) lazy var assetCodeLabel: UILabel = {
+    private lazy var assetCodeLabel: UILabel = {
         UILabel()
             .withLine(.single)
             .withAlignment(.center)
@@ -45,7 +54,7 @@ class AssetDisplayView: BaseView {
             .withTextColor(Colors.General.selected)
     }()
     
-    private(set) lazy var assetNameLabel: UILabel = {
+    private lazy var assetNameLabel: UILabel = {
         UILabel()
             .withLine(.single)
             .withAlignment(.center)
@@ -157,6 +166,22 @@ extension AssetDisplayView {
             make.top.equalTo(assetCodeLabel.snp.bottom).offset(layout.current.nameTopInset)
             make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
             make.bottom.equalToSuperview().inset(layout.current.verticalInset)
+        }
+    }
+}
+
+extension AssetDisplayView {
+    func bind(_ viewModel: AssetDisplayViewModel) {
+        verifiedImageView.isHidden = !viewModel.isVerified
+        assetNameLabel.text = viewModel.name
+        assetCodeLabel.text = viewModel.code
+
+        if let codeFont = viewModel.codeFont {
+            assetCodeLabel.font = codeFont
+        }
+
+        if let codeColor = viewModel.codeColor {
+            assetCodeLabel.textColor = codeColor
         }
     }
 }

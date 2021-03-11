@@ -1,10 +1,19 @@
+// Copyright 2019 Algorand, Inc.
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 //
 //  TransactionsViewController.swift
-//  algorand
-//
-//  Created by Göktuğ Berk Ulu on 19.05.2020.
-//  Copyright © 2020 hippo. All rights reserved.
-//
 
 import UIKit
 import Magpie
@@ -27,8 +36,6 @@ class TransactionsViewController: BaseViewController {
             transactionListView.reloadData()
         }
     }
-    
-    private let viewModel = TransactionsViewModel()
     
     weak var delegate: TransactionsViewControllerDelegate?
     
@@ -376,7 +383,7 @@ extension TransactionsViewController: TransactionFilterViewControllerDelegate {
         
         self.filterOption = filterOption
         if let headerView = transactionListView.headerView() {
-            viewModel.configure(headerView, for: filterOption)
+            headerView.bind(TransactionHistoryHeaderViewModel(filterOption: filterOption))
         }
         updateList()
     }
@@ -435,6 +442,7 @@ extension TransactionsViewController: CSVExportable {
             "transaction-download-from".localized,
             "transaction-detail-fee".localized,
             "transaction-detail-round".localized,
+            "transaction-detail-date".localized,
             "title-id".localized,
             "transaction-detail-note".localized
         ]
@@ -478,13 +486,14 @@ extension TransactionsViewController: CSVExportable {
         for transaction in transactions {
             let transactionData: [String: Any] = [
                 "transaction-detail-amount".localized: getFormattedAmount(transaction.getAmount()),
-                "transaction-detail-reward".localized: transaction.senderRewards ?? " ",
+                "transaction-detail-reward".localized: transaction.getRewards(for: account.address)?.toAlgos ?? " ",
                 "transaction-detail-close-amount".localized: getFormattedAmount(transaction.getCloseAmount()),
                 "transaction-download-close-to".localized: transaction.getCloseAddress() ?? " ",
                 "transaction-download-to".localized: transaction.getReceiver() ?? " ",
                 "transaction-download-from".localized: transaction.sender,
-                "transaction-detail-fee".localized: transaction.fee,
+                "transaction-detail-fee".localized: transaction.fee.toAlgos.toAlgosStringForLabel ?? " ",
                 "transaction-detail-round".localized: transaction.lastRound,
+                "transaction-detail-date".localized: transaction.date?.toFormat("MMMM dd, yyyy - HH:mm") ?? " ",
                 "title-id".localized: transaction.id,
                 "transaction-detail-note".localized: transaction.noteRepresentation() ?? " "
             ]

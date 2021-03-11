@@ -1,14 +1,22 @@
+// Copyright 2019 Algorand, Inc.
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 //
 //  SettingsViewController.swift
-//  algorand
-//
-//  Created by Göktuğ Berk Ulu on 26.03.2019.
-//  Copyright © 2019 hippo. All rights reserved.
-//
 
 import UIKit
 import SVProgressHUD
-import UserNotifications
 
 class SettingsViewController: BaseViewController {
     
@@ -40,7 +48,7 @@ class SettingsViewController: BaseViewController {
         }
         return settings
     }()
-    private lazy var appSettings: [GeneralSettings] = [.feedback, .appReview, .termsAndServices, .privacyPolicy]
+    private lazy var appSettings: [GeneralSettings] = [.support, .appReview, .termsAndServices, .privacyPolicy]
     private lazy var developerSettings: [GeneralSettings] = [.developer]
     
     private lazy var settingsView = SettingsView()
@@ -112,19 +120,7 @@ extension SettingsViewController: UICollectionViewDataSource {
                 let localAuthenticationStatus = localAuthenticator.localAuthenticationStatus == .allowed
                 return setSettingsToggleCell(from: setting, isOn: localAuthenticationStatus, in: collectionView, at: indexPath)
             case .notifications:
-                guard let cell = collectionView.dequeueReusableCell(
-                    withReuseIdentifier: SettingsToggleCell.reusableIdentifier,
-                    for: indexPath) as? SettingsToggleCell else {
-                        fatalError("Index path is out of bounds")
-                }
-                
-                UNUserNotificationCenter.current().getNotificationSettings { settings in
-                    DispatchQueue.main.async {
-                        SettingsToggleViewModel(setting: setting, isOn: settings.authorizationStatus == .authorized).configure(cell)
-                    }
-                }
-                
-                return cell
+                return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
             case .rewards:
                 let rewardDisplayPreference = session?.rewardDisplayPreference == .allowed
                 return setSettingsToggleCell(from: setting, isOn: rewardDisplayPreference, in: collectionView, at: indexPath)
@@ -144,7 +140,7 @@ extension SettingsViewController: UICollectionViewDataSource {
             case .appearance:
                 let preferredAppearance = api?.session.userInterfaceStyle ?? .system
                 return setSettingsInfoCell(from: setting, info: preferredAppearance.representation(), in: collectionView, at: indexPath)
-            case .feedback:
+            case .support:
                 return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
             case .appReview:
                 return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
@@ -277,8 +273,12 @@ extension SettingsViewController: UICollectionViewDelegateFlowLayout {
                         mode: ChoosePasswordViewController.Mode.resetPassword, flow: nil, route: nil),
                         by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
                 )
-            case .feedback:
-                open(.feedback, by: .push)
+            case .support:
+                if let url = URL(string: Environment.current.walletSupportUrl) {
+                    open(url)
+                }
+            case .notifications:
+                open(.notificationFilter(flow: .settings), by: .push)
             case .appReview:
                 AlgorandAppStoreReviewer().requestManualReview(forAppWith: Environment.current.appID)
             case .language:
@@ -292,7 +292,8 @@ extension SettingsViewController: UICollectionViewDelegateFlowLayout {
                 let controller = open(.currencySelection, by: .push) as? CurrencySelectionViewController
                 controller?.delegate = self
             case .appearance:
-                open(.appearanceSelection, by: .push)
+                let appearanceSelectionViewController = open(.appearanceSelection, by: .push) as? AppearanceSelectionViewController
+                appearanceSelectionViewController?.delegate = self
             case .termsAndServices:
                 guard let url = URL(string: Environment.current.termsAndServicesUrl) else {
                     return
@@ -348,42 +349,11 @@ extension SettingsViewController: SettingsToggleCellDelegate {
             }
             
             presentDisabledLocalAuthenticationAlert()
-        case .notifications:
-            presentNotificationAlert(isEnabled: value)
         case .rewards:
             session?.rewardDisplayPreference = value ? .allowed : .disabled
         default:
             return
         }
-    }
-    
-    private func presentNotificationAlert(isEnabled: Bool) {
-        let alertMessage: String = isEnabled ?
-            "settings-notification-disabled-go-settings-text".localized :
-            "settings-notification-enabled-go-settings-text".localized
-        
-        let alertController = UIAlertController(
-            title: "settings-notification-go-settings-title".localized,
-            message: alertMessage,
-            preferredStyle: .alert
-        )
-        let settingsAction = UIAlertAction(title: "title-go-to-settings".localized, style: .default) { _ in
-            UIApplication.shared.openAppSettings()
-        }
-        
-        let cancelAction = UIAlertAction(title: "title-cancel".localized, style: .cancel) { _ in
-            let indexPath = IndexPath(item: 0, section: 1)
-            guard let cell = self.settingsView.collectionView.cellForItem(at: indexPath) as? SettingsToggleCell else {
-                return
-            }
-            
-            cell.contextView.setToggleOn(!cell.contextView.isToggleOn, animated: true)
-        }
-        
-        alertController.addAction(settingsAction)
-        alertController.addAction(cancelAction)
-        
-        present(alertController, animated: true, completion: nil)
     }
     
     private func presentDisabledLocalAuthenticationAlert() {
@@ -444,5 +414,17 @@ extension SettingsViewController: SettingsToggleCellDelegate {
 extension SettingsViewController: CurrencySelectionViewControllerDelegate {
     func currencySelectionViewControllerDidSelectCurrency(_ currencySelectionViewController: CurrencySelectionViewController) {
         settingsView.collectionView.reloadItems(at: [IndexPath(item: 3, section: 1)])
+    }
+}
+
+extension SettingsViewController: AppearanceSelectionViewControllerDelegate {
+    func appearanceSelectionViewControllerDidUpdateUserInterfaceStyle(
+        _ appearanceSelectionViewController: AppearanceSelectionViewController
+    ) {
+        guard #available(iOS 13.0, *) else {
+            return
+        }
+
+        settingsView.collectionView.reloadItems(at: [IndexPath(item: 4, section: 1)])
     }
 }
