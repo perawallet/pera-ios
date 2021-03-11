@@ -10,4 +10,5 @@
 /* Privacy - Face ID Usage Description */
 "NSFaceIDUsageDescription" = "Algorand将使用人脸识别让您安全登录。";
 
+/* Privacy - Photo Library Additions Usage Description */
 "NSPhotoLibraryAddUsageDescription" = "Algorand会将二维码保存到您的相册中。";

@@ -1,3 +1,17 @@
+// Copyright 2019 Algorand, Inc.
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 //
 //  SettingsViewController.swift
 
@@ -34,7 +48,7 @@ class SettingsViewController: BaseViewController {
         }
         return settings
     }()
-    private lazy var appSettings: [GeneralSettings] = [.feedback, .appReview, .termsAndServices, .privacyPolicy]
+    private lazy var appSettings: [GeneralSettings] = [.support, .appReview, .termsAndServices, .privacyPolicy]
     private lazy var developerSettings: [GeneralSettings] = [.developer]
     
     private lazy var settingsView = SettingsView()
@@ -126,7 +140,7 @@ extension SettingsViewController: UICollectionViewDataSource {
             case .appearance:
                 let preferredAppearance = api?.session.userInterfaceStyle ?? .system
                 return setSettingsInfoCell(from: setting, info: preferredAppearance.representation(), in: collectionView, at: indexPath)
-            case .feedback:
+            case .support:
                 return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
             case .appReview:
                 return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
@@ -259,8 +273,10 @@ extension SettingsViewController: UICollectionViewDelegateFlowLayout {
                         mode: ChoosePasswordViewController.Mode.resetPassword, flow: nil, route: nil),
                         by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
                 )
-            case .feedback:
-                open(.feedback, by: .push)
+            case .support:
+                if let url = URL(string: Environment.current.walletSupportUrl) {
+                    open(url)
+                }
             case .notifications:
                 open(.notificationFilter(flow: .settings), by: .push)
             case .appReview:
@@ -276,7 +292,8 @@ extension SettingsViewController: UICollectionViewDelegateFlowLayout {
                 let controller = open(.currencySelection, by: .push) as? CurrencySelectionViewController
                 controller?.delegate = self
             case .appearance:
-                open(.appearanceSelection, by: .push)
+                let appearanceSelectionViewController = open(.appearanceSelection, by: .push) as? AppearanceSelectionViewController
+                appearanceSelectionViewController?.delegate = self
             case .termsAndServices:
                 guard let url = URL(string: Environment.current.termsAndServicesUrl) else {
                     return
@@ -397,5 +414,17 @@ extension SettingsViewController: SettingsToggleCellDelegate {
 extension SettingsViewController: CurrencySelectionViewControllerDelegate {
     func currencySelectionViewControllerDidSelectCurrency(_ currencySelectionViewController: CurrencySelectionViewController) {
         settingsView.collectionView.reloadItems(at: [IndexPath(item: 3, section: 1)])
+    }
+}
+
+extension SettingsViewController: AppearanceSelectionViewControllerDelegate {
+    func appearanceSelectionViewControllerDidUpdateUserInterfaceStyle(
+        _ appearanceSelectionViewController: AppearanceSelectionViewController
+    ) {
+        guard #available(iOS 13.0, *) else {
+            return
+        }
+
+        settingsView.collectionView.reloadItems(at: [IndexPath(item: 4, section: 1)])
     }
 }

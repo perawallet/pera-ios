@@ -1,3 +1,17 @@
+// Copyright 2019 Algorand, Inc.
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 //
 //  LedgerAccountSelectionView.swift
 
@@ -31,11 +45,7 @@ class LedgerAccountSelectionView: BaseView {
         return collectionView
     }()
     
-    private lazy var addButton: MainButton = {
-        let addButton = MainButton(title: "ledger-account-selection-add".localized)
-        addButton.setBackgroundImage(img("bg-gray-600-button"), for: .disabled)
-        return addButton
-    }()
+    private lazy var addButton = MainButton(title: "ledger-account-selection-add".localized)
     
     private let isMultiSelect: Bool
     
@@ -49,7 +59,6 @@ class LedgerAccountSelectionView: BaseView {
         errorView.setImage(img("icon-warning-error"))
         errorView.setTitle("transaction-filter-error-title".localized)
         errorView.setSubtitle("transaction-filter-error-subtitle".localized)
-        setAddButtonEnabled(false)
     }
     
     override func setListeners() {
@@ -122,9 +131,10 @@ extension LedgerAccountSelectionView {
     var selectedIndexes: [IndexPath] {
         return accountsCollectionView.indexPathsForSelectedItems ?? []
     }
-    
-    func setAddButtonEnabled(_ isEnabled: Bool) {
-        addButton.isEnabled = isEnabled
+
+    func bind(_ viewModel: LedgerAccountSelectionViewModel) {
+        addButton.isEnabled = viewModel.isEnabled
+        addButton.setTitle(viewModel.buttonText, for: .normal)
     }
 }
 

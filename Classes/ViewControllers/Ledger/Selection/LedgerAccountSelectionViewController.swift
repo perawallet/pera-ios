@@ -1,3 +1,17 @@
+// Copyright 2019 Algorand, Inc.
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 //
 //  LedgerAccountSelectionViewController.swift
 
@@ -19,6 +33,10 @@ class LedgerAccountSelectionViewController: BaseViewController {
     private let ledger: LedgerDetail
     private let ledgerAccounts: [Account]
     private let accountSetupFlow: AccountSetupFlow
+
+    private var selectedAccountCount: Int {
+        return ledgerAccountSelectionView.selectedIndexes.count
+    }
     
     private var isMultiSelect: Bool {
         switch accountSetupFlow {
@@ -57,10 +75,16 @@ class LedgerAccountSelectionViewController: BaseViewController {
         SVProgressHUD.show(withStatus: "title-loading".localized)
         dataSource.loadData()
     }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        dismissProgressIfNeeded()
+    }
     
     override func configureAppearance() {
         super.configureAppearance()
         title = ledger.name
+        ledgerAccountSelectionView.bind(LedgerAccountSelectionViewModel(isMultiSelect: isMultiSelect, selectedCount: selectedAccountCount))
     }
     
     override func linkInteractors() {
@@ -179,13 +203,13 @@ extension LedgerAccountSelectionViewController: LedgerAccountSelectionListLayout
         _ ledgerAccountSelectionListLayout: LedgerAccountSelectionListLayout,
         didSelectItemAt indexPath: IndexPath
     ) {
-        ledgerAccountSelectionView.setAddButtonEnabled(!ledgerAccountSelectionView.selectedIndexes.isEmpty)
+        ledgerAccountSelectionView.bind(LedgerAccountSelectionViewModel(isMultiSelect: isMultiSelect, selectedCount: selectedAccountCount))
     }
     
     func ledgerAccountSelectionListLayout(
         _ ledgerAccountSelectionListLayout: LedgerAccountSelectionListLayout,
         didDeselectItemAt indexPath: IndexPath
     ) {
-        ledgerAccountSelectionView.setAddButtonEnabled(!ledgerAccountSelectionView.selectedIndexes.isEmpty)
+        ledgerAccountSelectionView.bind(LedgerAccountSelectionViewModel(isMultiSelect: isMultiSelect, selectedCount: selectedAccountCount))
     }
 }

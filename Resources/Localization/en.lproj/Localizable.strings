@@ -194,11 +194,12 @@
 "send-algos-balance-title" = "Balance:";
 "send-algos-amount" = "Amount";
 "send-algos-sent-title" = "Algos Sent!";
-"send-algos-alert-title" = "Wrong Transaction";
+"send-algos-alert-incomplete-title" = "Incomplete Transaction";
+"send-algos-alert-message-address" = "Please enter a destination address.";
 "send-algos-alert-message" = "Please fill the fields.";
 "send-algos-minimum-amount-error-new-account" = "You're trying to send money to a new account. The amount must be at least 0.1 algos.";
 "send-algos-minimum-amount-error" = "Transaction amount results in a balance below the minimum account balance of 0.1 algos.";
-"send-algos-minimum-amount-custom-error" = "Transaction amount results in a balance below the minimum account balance of %@ algos.";
+"send-algos-minimum-amount-custom-error" = "The transaction cannot be completed because the amount will put your account below minimum required balance of %@ Algos.";
 "send-algos-amount-error" = "Transaction amount cannot be more than your available algos";
 "send-asset-amount-error" = "Transaction amount cannot be more than your available amount.";
 "send-algos-contact-not-found" = "Contact not found";
@@ -281,6 +282,7 @@
 "settings-app-version" = "Version %@";
 "settings-language-change-title" = "Set App Language";
 "settings-language-change-detail" = "Due to updates to your phone, there are different steps to change your language.\n\n1. Proceed to the next screen.\n2. Tap Language to select the language you want.\n\nIf no language setting is available, go to your general iPhone language settings to first set a preferred language.";
+"settings-support-title" = "Support Center";
 
 // MARK: Node Settings
 "node-settings-title" = "Node Settings";
@@ -495,7 +497,9 @@
 "ledger-account-selection-title-singular" = "%d Account Found";
 "ledger-account-selection-title-plural" = "%d Accounts Found";
 "ledger-account-selection-detail" = "This ledger device can sign transactions for the following account. Select the account to add to your Algorand Wallet.";
+"ledger-account-selection-detail-rekey" = "Choose the account you want to use for signing this account.";
 "ledger-account-selection-add" = "Add Account";
+"ledger-account-selection-add-plural" = "Add Accounts";
 "ledger-rekey-error-add-auth" = "The connected Ledger device cannot sign transactions for this account. In order to do so, please connect %@.";
 "ledger-rekey-error-not-found" = "This account has been rekeyed. Please recover this account with a passphrase or Ledger device.";
 "ledger-transaction-account-match-error" = "It appears this Ledger device has been reset and the account on the device no longer matches this account. Please pair the Ledger again from the homepage.";
@@ -523,7 +527,6 @@
 "maximum-balance-warning-title" = "Maximum Balance";
 "title-continue" = "Continue";
 "title-dont-show-again" = "Don’t Show This Again";
-"maximum-balance-warning-description" = "Sending your maximum balance on a rekeyed account requires you to maintain a minimum balance of %@ Algos. This is to ensure that nothing changes with your rekeyed account.\n\n\nYour transaction amount will be automatically updated to reflect this change. You will be able to preview the transaction in the next step.";
 
 "screenshot-title" = "Screenshot Detected";
 "screenshot-description" = "Please don’t backup your passphrase by taking a screenshot!";
@@ -545,3 +548,15 @@
 "tutorial-main-title-passcode" = "Set Passcode";
 
 "tutorial-action-title-passcode" = "Not now";
+
+"maximum-balance-warning-description" = "Sending your maximum balance on this rekeyed account requires you to maintain a minimum balance of %@ Algos. This is to ensure that nothing changes with your rekeyed account.\n\n\nYour transaction amount will be automatically updated to reflect this change. You will be able to preview the transaction in the next step.";
+
+"transaction-tutorial-title" = "Transacting Tips";
+"transaction-tutorial-subtitle" = "We notice that this is your first transaction. Before you finalize, keep in mind a couple of tips:";
+"transaction-tutorial-subtitle-other" = "Before you finalize your transaction, keep in mind a couple of tips:";
+"transaction-tutorial-tip-first" = "When sending to an address for the first time, It’s useful to send a small test transaction before sending a large amount.";
+"transaction-tutorial-tip-second" = "Exchanges change their deposit addresses frequently, and saved exchange addresses may no longer be in use. Ensure you're sending to the correct address.";
+"transaction-tutorial-tip-second-highlighted" = "Ensure you're sending to the correct address.";
+"transaction-tutorial-tap-to-more" = "For more information on transacting, tap here";
+"transaction-tutorial-tap-to-more-highlighted" = "tap here";
+"title-i-understand" = "I understand";

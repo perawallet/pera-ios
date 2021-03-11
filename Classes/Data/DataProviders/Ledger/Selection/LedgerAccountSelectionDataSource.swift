@@ -1,3 +1,17 @@
+// Copyright 2019 Algorand, Inc.
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 //
 //  LedgerAccountSelectionDataSource.swift
 
@@ -33,6 +47,7 @@ extension LedgerAccountSelectionDataSource {
             account.type = .ledger
             account.ledgerDetail = ledger
             account.ledgerDetail?.indexInLedger = index
+            account.assets = account.nonDeletedAssets()
             self.accounts.append(account)
             fetchRekeyedAccounts(of: account.address)
         }
@@ -48,8 +63,10 @@ extension LedgerAccountSelectionDataSource {
         api.fetchRekeyedAccounts(of: address) { response in
             switch response {
             case let .success(rekeyedAccountsResponse):
-                self.rekeyedAccounts[address] = rekeyedAccountsResponse.accounts
-                rekeyedAccountsResponse.accounts.forEach { account in
+                let rekeyedAccounts = rekeyedAccountsResponse.accounts.filter { $0.authAddress != $0.address }
+                self.rekeyedAccounts[address] = rekeyedAccounts
+                rekeyedAccounts.forEach { account in
+                    account.assets = account.nonDeletedAssets()
                     account.type = .rekeyed
                     if let authAddress = account.authAddress {
                         account.addRekeyDetail(self.ledger, for: authAddress)
@@ -78,7 +95,7 @@ extension LedgerAccountSelectionDataSource: UICollectionViewDataSource {
             ) as? LedgerAccountCell {
             cell.delegate = self
             let isSelected = collectionView.indexPathsForSelectedItems?.contains(indexPath) ?? false
-            cell.bind(LedgerAccountSelectionViewModel(account: account, isMultiSelect: isMultiSelect, isSelected: isSelected))
+            cell.bind(LedgerAccountViewModel(account: account, isMultiSelect: isMultiSelect, isSelected: isSelected))
             return cell
         }
         fatalError("Index path is out of bounds")
@@ -95,7 +112,7 @@ extension LedgerAccountSelectionDataSource: UICollectionViewDataSource {
                 withReuseIdentifier: LedgerAccountSelectionHeaderSupplementaryView.reusableIdentifier,
                 for: indexPath
         ) as? LedgerAccountSelectionHeaderSupplementaryView {
-            headerView.bind(LedgerAccountSelectionHeaderSupplementaryViewModel(accounts: accounts))
+            headerView.bind(LedgerAccountSelectionHeaderSupplementaryViewModel(accounts: accounts, isMultiSelect: isMultiSelect))
             return headerView
         }
         

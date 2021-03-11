@@ -10,4 +10,5 @@
 /* Privacy - Face ID Usage Description */
 "NSFaceIDUsageDescription" = "Algorand, güvenli bir biçimde giriş yapmanız için Face ID'yi kullanacak.";
 
+/* Privacy - Photo Library Additions Usage Description */
 "NSPhotoLibraryAddUsageDescription" = "Algorand, QR kodlarını fotoğraf kütüphanenize kaydedecek.";

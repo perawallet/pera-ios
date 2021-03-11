@@ -362,7 +362,13 @@
 "ledger-account-selection-add" = "Konto hinzufügen";
 
 /* (No Comment) */
+"ledger-account-selection-add-plural" = "Konten hinzufügen";
+
+/* (No Comment) */
 "ledger-account-selection-detail" = "Dieses Ledger-Gerät kann für folgendes Konto Transaktionen signieren. Wählen Sie das Konto aus, das Sie Ihrer Algorand-Wallet hinzufügen möchten.";
+
+/* (No Comment) */
+"ledger-account-selection-detail-rekey" = "Wählen Sie das Konto, mit dem Sie dieses Konto signieren möchten.";
 
 /* (No Comment) */
 "ledger-account-selection-title-plural" = "%d-Konten gefunden";
@@ -524,13 +530,19 @@
 "login-title" = "Entsperren";
 
 /* (No Comment) */
+"maximum-balance-warning-description" = "Um Ihr maximales Guthaben auf einem neu eröffneten Konto zu senden, müssen Sie ein Mindestguthaben von %@ Algos aufrechterhalten. Damit soll sichergestellt werden, dass sich bei Ihrem neu angelegten Konto nichts ändert.\n\n\nIhr Transaktionsbetrag wird automatisch aktualisiert, um diese Änderung widerzuspiegeln. Sie können die Transaktion im nächsten Schritt in der Vorschau anzeigen.";
+
+/* (No Comment) */
+"maximum-balance-warning-title" = "Maximales Guthaben";
+
+/* (No Comment) */
 "node-settings-action-delete-title" = "Löschen";
 
 /* (No Comment) */
 "node-settings-api-key" = "Schlüssel: ";
 
 /* (No Comment) */
-"node-settings-database-error-description" = "Es ist ein Systemfehler aufgetreten. ";
+"node-settings-database-error-description" = "Es ist ein Systemfehler aufgetreten.";
 
 /* (No Comment) */
 "node-settings-db-error-title" = "Systemvorgang fehlgeschlagen";
@@ -869,10 +881,13 @@
 "send-algos-address-not-selected" = "Die Adresse wurde nicht ausgewählt";
 
 /* (No Comment) */
+"send-algos-alert-incomplete-title" = "Unvollständige Transaktion";
+
+/* (No Comment) */
 "send-algos-alert-message" = "Bitte füllen Sie die Felder aus.";
 
 /* (No Comment) */
-"send-algos-alert-title" = "Falsche Transaktion";
+"send-algos-alert-message-address" = "Bitte geben Sie eine Zieladresse ein.";
 
 /* (No Comment) */
 "send-algos-amount" = "Betrag";
@@ -1004,6 +1019,9 @@
 "settings-server-node-settings" = "Knoteneinstellungen";
 
 /* (No Comment) */
+"settings-support-title" = "Support-Center";
+
+/* (No Comment) */
 "settings-theme-dark" = "Dunkel";
 
 /* (No Comment) */
@@ -1040,10 +1058,16 @@
 "title-close" = "Schließen";
 
 /* (No Comment) */
+"title-continue" = "Fortfahren";
+
+/* (No Comment) */
 "title-copy" = "Kopieren";
 
 /* (No Comment) */
 "title-done" = "Fertig";
+
+/* (No Comment) */
+"title-dont-show-again" = "Diese Meldung nicht erneut anzeigen";
 
 /* (No Comment) */
 "title-edit" = "Bearbeiten";
@@ -1056,6 +1080,9 @@
 
 /* (No Comment) */
 "title-go-to-settings" = "Zu den Einstellungen gehen";
+
+/* (No Comment) */
+"title-i-understand" = "Ich verstehe";
 
 /* (No Comment) */
 "title-id" = "ID";
@@ -1250,6 +1277,30 @@
 "transaction-id-open-explorer" = "Im Explorer öffnen";
 
 /* (No Comment) */
+"transaction-tutorial-subtitle" = "Wir haben festgestellt, dass dies Ihre erste Transaktion ist. Bevor Sie sie abschließen, sollten Sie ein paar Tipps beachten:";
+
+/* (No Comment) */
+"transaction-tutorial-subtitle-other" = "Bevor Sie Ihre Transaktion abschließen, sollten Sie ein paar Tipps beachten:";
+
+/* (No Comment) */
+"transaction-tutorial-tap-to-more" = "Weitere Informationen zu Transaktionen finden Sie hier";
+
+/* (No Comment) */
+"transaction-tutorial-tap-to-more-highlighted" = "hier tippen";
+
+/* (No Comment) */
+"transaction-tutorial-tip-first" = "Wenn Sie zum ersten Mal an eine Adresse senden, ist es sinnvoll, eine kleine Testtransaktion zu senden, bevor Sie einen größeren Betrag senden.";
+
+/* (No Comment) */
+"transaction-tutorial-tip-second" = "Börsen ändern häufig ihre Einzahlungsadressen  und gespeicherte Börsenadressen sind ggf. nicht mehr gültig. Stellen Sie sicher, dass Sie an die richtige Adresse senden.";
+
+/* (No Comment) */
+"transaction-tutorial-tip-second-highlighted" = "Stellen Sie sicher, dass Sie an die richtige Adresse senden.";
+
+/* (No Comment) */
+"transaction-tutorial-title" = "Transaktionstipps";
+
+/* (No Comment) */
 "verified-asset-double-check" = "Unbedingt immer überprüfen";
 
 /* (No Comment) */
@@ -1272,3 +1323,4 @@
 
 /* (No Comment) */
 "watch-account-input-placeholder" = "Adresse einfügen oder QR-Code scannen";
+

@@ -1,3 +1,17 @@
+// Copyright 2019 Algorand, Inc.
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 //
 //  SendAlgosTransactionDataBuilder.swift
 
@@ -7,6 +21,7 @@ class SendAlgosTransactionDataBuilder: TransactionDataBuilder {
 
     private let initialSize: Int?
     private(set) var calculatedTransactionAmount: Int64?
+    private(set) var minimumAccountBalance: Int64?
 
     init(params: TransactionParams?, draft: TransactionSendDraft?, initialSize: Int?) {
         self.initialSize = initialSize
@@ -26,11 +41,11 @@ class SendAlgosTransactionDataBuilder: TransactionDataBuilder {
         }
 
         var isMaxTransaction = algosTransactionDraft.isMaxTransaction
-        updateMaximumTransactionStateIfNeeded(&isMaxTransaction)
         let transactionAmount = calculateTransactionAmount(isMaxTransaction: isMaxTransaction)
         self.calculatedTransactionAmount = transactionAmount
+        updateMaximumTransactionStateIfNeeded(&isMaxTransaction)
 
-        if !isValidAddress(toAddress.trimmed) {
+        if !isValidAddress(toAddress.trimmed) || transactionAmount.isBelowZero {
             return nil
         }
 
@@ -57,7 +72,9 @@ class SendAlgosTransactionDataBuilder: TransactionDataBuilder {
         if isMaxTransaction {
             // If transaction amount is equal to amount of the sender account when it is max transaction
             // If an account is rekeyed, it's not allowed to make max transaciton
-            if !hasMaximumAccountAmountForTransaction() || isMaxTransactionFromRekeyedAccount() {
+            if isMaxTransactionFromRekeyedAccount() {
+                isMaxTransaction = false
+            } else if !hasMaximumAccountAmountForTransaction() {
                 isMaxTransaction = false
             }
         }
@@ -71,20 +88,23 @@ class SendAlgosTransactionDataBuilder: TransactionDataBuilder {
         }
 
         let feeCalculator = TransactionFeeCalculator(transactionDraft: nil, transactionData: nil, params: params)
+        let calculatedFee = params.getProjectedTransactionFee(from: initialSize)
         let minimumAmountForAccount = feeCalculator.calculateMinimumAmount(
             for: algosTransactionDraft.from,
             with: .algosTransaction,
-            calculatedFee: params.getProjectedTransactionFee(from: initialSize),
+            calculatedFee: calculatedFee,
             isAfterTransaction: true
         )
+
+        self.minimumAccountBalance = minimumAmountForAccount - calculatedFee
 
         if isMaxTransaction {
             if isMaxTransactionFromRekeyedAccount() {
                 // Reduce fee and minimum amount possible for the account from transaction amount
-                transactionAmount -= params.getProjectedTransactionFee(from: initialSize) - minimumAmountForAccount
+                transactionAmount -= (calculatedFee + (minimumAccountBalance ?? minimumAmountForAccount))
             } else {
                 // Reduce fee from transaction amount
-                transactionAmount -= params.getProjectedTransactionFee(from: initialSize)
+                transactionAmount -= calculatedFee
             }
         }
 

@@ -10,4 +10,5 @@
 /* Privacy - Face ID Usage Description */
 "NSFaceIDUsageDescription" = "Algorand usará el reconocimiento facial para que inicies sesión de manera segura.";
 
+/* Privacy - Photo Library Additions Usage Description */
 "NSPhotoLibraryAddUsageDescription" = "Algorand guardará los códigos QR en tu biblioteca de fotos.";

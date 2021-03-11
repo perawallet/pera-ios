@@ -1,3 +1,17 @@
+// Copyright 2019 Algorand, Inc.
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 //
 //  AssetDetail.swift
 
@@ -28,11 +42,12 @@ class AssetDetail: Model {
     let clawBackAddress: String?
     let fractionDecimals: Int
     let id: Int64
+    var isDeleted: Bool?
     
     var isVerified: Bool = false
     var isRemoved: Bool = false
     var isRecentlyAdded: Bool = false
-    
+
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         id = try container.decode(Int64.self, forKey: .id)
@@ -53,6 +68,7 @@ class AssetDetail: Model {
         isVerified = try paramsContainer.decodeIfPresent(Bool.self, forKey: .isVerified) ?? false
         isRemoved = try paramsContainer.decodeIfPresent(Bool.self, forKey: .isRemoved) ?? false
         isRecentlyAdded = try paramsContainer.decodeIfPresent(Bool.self, forKey: .isRecentlyAdded) ?? false
+        isDeleted = try paramsContainer.decodeIfPresent(Bool.self, forKey: .isDeleted)
     }
     
     func encode(to encoder: Encoder) throws {
@@ -74,6 +90,7 @@ class AssetDetail: Model {
         try paramsContainer.encodeIfPresent(isVerified, forKey: .isVerified)
         try paramsContainer.encodeIfPresent(isRemoved, forKey: .isRemoved)
         try paramsContainer.encodeIfPresent(isRecentlyAdded, forKey: .isRecentlyAdded)
+        try paramsContainer.encodeIfPresent(isDeleted, forKey: .isDeleted)
     }
     
     init(searchResult: AssetSearchResult) {
@@ -117,6 +134,7 @@ extension AssetDetail {
         case isRecentlyAdded = "isRecentlyAdded"
         case isVerified = "is_verified"
         case fractionDecimals = "decimals"
+        case isDeleted = "deleted"
     }
 }
 

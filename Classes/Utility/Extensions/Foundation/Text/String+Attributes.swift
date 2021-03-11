@@ -1,3 +1,17 @@
+// Copyright 2019 Algorand, Inc.
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 //
 //  String+Attributes.swift
 
@@ -62,5 +76,18 @@ extension String {
         )
         
         return ceil(boundingBox.height)
+    }
+}
+
+extension String {
+    typealias StringAttribute = [NSAttributedString.Key: Any]
+
+    func addAttributes(_ attributes: StringAttribute, to targetString: String) -> NSAttributedString {
+        let range = (self as NSString).range(of: targetString)
+        let attributedText = NSMutableAttributedString(string: self)
+        attributes.forEach { key, value in
+            attributedText.addAttribute(key, value: value, range: range)
+        }
+        return attributedText
     }
 }

@@ -362,7 +362,13 @@
 "ledger-account-selection-add" = "Agregar cuenta";
 
 /* (No Comment) */
+"ledger-account-selection-add-plural" = "Agregar cuentas";
+
+/* (No Comment) */
 "ledger-account-selection-detail" = "Este dispositivo Ledger puede firmar transacciones para la siguientes cuenta. Selecciona la cuenta para agregar al monedero Algorand.";
+
+/* (No Comment) */
+"ledger-account-selection-detail-rekey" = "Elige la cuenta que deseas usar para firmar esta cuenta.";
 
 /* (No Comment) */
 "ledger-account-selection-title-plural" = "Se encontraron %d cuentas";
@@ -522,6 +528,12 @@
 
 /* MARK: Login */
 "login-title" = "Desbloquear";
+
+/* (No Comment) */
+"maximum-balance-warning-description" = "Para enviar tu saldo máximo en una cuenta con clave nueva necesitas mantener un saldo mínimo de %@ Algos. Esto es para asegurarnos de que no haya cambios en tu cuenta con clave nueva. \n\n\nEl monto de tu transacción se actualizará automáticamente para reflejar este cambio. Obtendrás una vista previa de la transacción en el siguiente paso.";
+
+/* (No Comment) */
+"maximum-balance-warning-title" = "Saldo máximo";
 
 /* (No Comment) */
 "node-settings-action-delete-title" = "Eliminar";
@@ -869,10 +881,13 @@
 "send-algos-address-not-selected" = "No se seleccionó una dirección";
 
 /* (No Comment) */
+"send-algos-alert-incomplete-title" = "Transacción incompleta";
+
+/* (No Comment) */
 "send-algos-alert-message" = "Completa los campos.";
 
 /* (No Comment) */
-"send-algos-alert-title" = "Transacción incorrecta";
+"send-algos-alert-message-address" = "Ingresa una dirección de destino.";
 
 /* (No Comment) */
 "send-algos-amount" = "Monto";
@@ -1004,6 +1019,9 @@
 "settings-server-node-settings" = "Configuración del nodo";
 
 /* (No Comment) */
+"settings-support-title" = "Centro de asistencia";
+
+/* (No Comment) */
 "settings-theme-dark" = "Oscuro";
 
 /* (No Comment) */
@@ -1040,10 +1058,16 @@
 "title-close" = "Cerrar";
 
 /* (No Comment) */
+"title-continue" = "Continuar";
+
+/* (No Comment) */
 "title-copy" = "Copiar";
 
 /* (No Comment) */
 "title-done" = "Listo";
+
+/* (No Comment) */
+"title-dont-show-again" = "No volver a mostrar";
 
 /* (No Comment) */
 "title-edit" = "Editar";
@@ -1056,6 +1080,9 @@
 
 /* (No Comment) */
 "title-go-to-settings" = "Ir a Configuración";
+
+/* (No Comment) */
+"title-i-understand" = "Entiendo";
 
 /* (No Comment) */
 "title-id" = "ID";
@@ -1250,6 +1277,30 @@
 "transaction-id-open-explorer" = "Abrir en navegador";
 
 /* (No Comment) */
+"transaction-tutorial-subtitle" = "Notamos que esta es su primera transacción. Antes de finalizar, ten en cuenta los siguientes consejos:";
+
+/* (No Comment) */
+"transaction-tutorial-subtitle-other" = "Antes de finalizar tu transacción, ten en cuenta algunos consejos:";
+
+/* (No Comment) */
+"transaction-tutorial-tap-to-more" = "Para obtener más información sobre las transacciones, pulsa aquí";
+
+/* (No Comment) */
+"transaction-tutorial-tap-to-more-highlighted" = "pulsa aquí";
+
+/* (No Comment) */
+"transaction-tutorial-tip-first" = "Al enviar a una dirección por primera vez, resulta útil enviar una pequeña transacción de prueba antes de enviar una suma importante.";
+
+/* (No Comment) */
+"transaction-tutorial-tip-second" = "Las plataformas de intercambio cambian sus direcciones de depósito con frecuencia y es posible que las direcciones de intercambio guardadas ya no estén en uso. Asegúrate de enviar a la dirección correcta.";
+
+/* (No Comment) */
+"transaction-tutorial-tip-second-highlighted" = "Asegúrate de que estás enviando a la dirección correcta.";
+
+/* (No Comment) */
+"transaction-tutorial-title" = "Sugerencias para transacciones";
+
+/* (No Comment) */
 "verified-asset-double-check" = "siempre comprueba dos veces";
 
 /* (No Comment) */
@@ -1272,3 +1323,4 @@
 
 /* (No Comment) */
 "watch-account-input-placeholder" = "Pegar dirección o escanear QR";
+

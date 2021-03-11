@@ -1,3 +1,17 @@
+// Copyright 2019 Algorand, Inc.
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 //
 //  QRScannerViewController.swift
 
@@ -27,6 +41,14 @@ class QRScannerViewController: BaseViewController {
     weak var delegate: QRScannerViewControllerDelegate?
     
     private(set) lazy var overlayView = QRScannerOverlayView()
+
+    private lazy var cancelButton: UIButton = {
+        UIButton(type: .custom)
+            .withBackgroundImage(img("button-bg-scan-qr"))
+            .withTitle("title-cancel".localized)
+            .withTitleColor(Colors.Main.white)
+            .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
+    }()
     
     private var captureSession: AVCaptureSession?
     private let captureSessionQueue = DispatchQueue(label: AVCaptureSession.self.description(), attributes: [], target: nil)
@@ -59,11 +81,11 @@ class QRScannerViewController: BaseViewController {
             }
         }
     }
-    
-    override func linkInteractors() {
-        overlayView.delegate = self
+
+    override func setListeners() {
+        cancelButton.addTarget(self, action: #selector(closeScreenFromButton), for: .touchUpInside)
     }
-    
+
     override func prepareLayout() {
         super.prepareLayout()
         configureScannerView()
@@ -75,19 +97,35 @@ extension QRScannerViewController {
         if AVCaptureDevice.authorizationStatus(for: .video) ==  .authorized {
             setupCaptureSession()
             setupPreviewLayer()
+            setupOverlayViewLayout()
+            setupCancelButtonLayout()
         } else {
             AVCaptureDevice.requestAccess(for: .video) { granted in
                 if granted {
                     DispatchQueue.main.async {
                         self.setupCaptureSession()
                         self.setupPreviewLayer()
+                        self.setupOverlayViewLayout()
+                        self.setupCancelButtonLayout()
                     }
                 } else {
                     DispatchQueue.main.async {
                         self.presentDisabledCameraAlert()
+                        self.setupOverlayViewLayout()
+                        self.setupCancelButtonLayout()
                     }
                 }
             }
+        }
+    }
+
+    private func setupCancelButtonLayout() {
+        view.addSubview(cancelButton)
+
+        cancelButton.snp.makeConstraints { make in
+            make.bottom.equalToSuperview().inset(layout.current.buttonVerticalInset + view.safeAreaBottom)
+            make.centerX.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
         }
     }
 }
@@ -169,12 +207,21 @@ extension QRScannerViewController {
         
         view.layer.addSublayer(previewLayer)
         
-        view.addSubview(overlayView)
-        overlayView.frame = previewLayer.frame
-        
         captureSessionQueue.async {
             captureSession.startRunning()
         }
+    }
+
+    private func setupOverlayViewLayout() {
+        view.addSubview(overlayView)
+        overlayView.frame = view.frame
+    }
+}
+
+extension QRScannerViewController {
+    @objc
+    private func closeScreenFromButton() {
+        closeScreen(by: .pop)
     }
 }
 
@@ -226,16 +273,10 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
     }
 }
 
-extension QRScannerViewController: QRScannerOverlayViewDelegate {
-    func qrScannerOverlayViewDidCancel(_ qrScannerOverlayView: QRScannerOverlayView) {
-        closeScreen(by: .pop)
-    }
-}
-
 extension QRScannerViewController {
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let bottomInset: CGFloat = 20.0
         let buttonHorizontalInset: CGFloat = 20.0
+        let buttonVerticalInset: CGFloat = 16.0
     }
 }
 

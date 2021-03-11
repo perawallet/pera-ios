@@ -1,3 +1,17 @@
+// Copyright 2019 Algorand, Inc.
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 //
 //  GeneralSettings.swift
 
@@ -11,7 +25,7 @@ enum GeneralSettings: Settings {
     case rewards
     case language
     case currency
-    case feedback
+    case support
     case appReview
     case termsAndServices
     case privacyPolicy
@@ -35,7 +49,7 @@ enum GeneralSettings: Settings {
             return img("icon-settings-currency")
         case .appearance:
             return img("icon-settings-theme")
-        case .feedback:
+        case .support:
             return img("icon-feedback")
         case .appReview:
             return img("icon-settings-rate")
@@ -64,8 +78,8 @@ enum GeneralSettings: Settings {
             return "settings-currency".localized
         case .appearance:
             return "settings-theme-set".localized
-        case .feedback:
-            return "feedback-title".localized
+        case .support:
+            return "settings-support-title".localized
         case .appReview:
             return "settings-rate-title".localized
         case .termsAndServices:

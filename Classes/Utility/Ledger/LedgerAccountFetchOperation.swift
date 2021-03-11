@@ -1,3 +1,17 @@
+// Copyright 2019 Algorand, Inc.
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 //
 //  LedgerAccountFetchOperation.swift
 
@@ -10,6 +24,10 @@ class LedgerAccountFetchOperation: LedgerOperation, BLEConnectionManagerDelegate
     let ledgerBleController = LedgerBLEController()
     
     var ledgerApprovalViewController: LedgerApprovalViewController?
+
+    var ledgerMode: LedgerApprovalViewController.Mode {
+        return ledgerApprovalMode
+    }
     
     var timer: Timer?
     var connectedDevice: CBPeripheral?
@@ -22,9 +40,11 @@ class LedgerAccountFetchOperation: LedgerOperation, BLEConnectionManagerDelegate
     weak var delegate: LedgerAccountFetchOperationDelegate?
     
     private let api: AlgorandAPI
+    private let ledgerApprovalMode: LedgerApprovalViewController.Mode
     
-    init(api: AlgorandAPI) {
+    init(api: AlgorandAPI, ledgerApprovalMode: LedgerApprovalViewController.Mode) {
         self.api = api
+        self.ledgerApprovalMode = ledgerApprovalMode
         bleConnectionManager.delegate = self
         ledgerBleController.delegate = self
     }
@@ -83,6 +103,7 @@ extension LedgerAccountFetchOperation {
             switch response {
             case .success(let accountWrapper):
                 if accountWrapper.account.isCreated {
+                    accountWrapper.account.assets = accountWrapper.account.nonDeletedAssets()
                     self.ledgerAccounts.append(accountWrapper.account)
                     self.startOperation()
                 } else {
@@ -90,7 +111,9 @@ extension LedgerAccountFetchOperation {
                 }
             case let .failure(error, _):
                 if error.isHttpNotFound {
-                    self.ledgerAccounts.append(Account(address: address, type: .ledger))
+                    if self.isInitialAccount {
+                        self.ledgerAccounts.append(Account(address: address, type: .ledger))
+                    }
                 } else {
                     NotificationBanner.showError("title-error".localized, message: "ledger-account-fetct-error".localized)
                 }
@@ -101,6 +124,10 @@ extension LedgerAccountFetchOperation {
     
     private func returnAccounts() {
         delegate?.ledgerAccountFetchOperation(self, didReceive: ledgerAccounts, in: ledgerApprovalViewController)
+    }
+
+    private var isInitialAccount: Bool {
+        return accountIndex == 0
     }
 }
 

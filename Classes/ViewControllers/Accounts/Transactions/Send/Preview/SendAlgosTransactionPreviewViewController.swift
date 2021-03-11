@@ -1,3 +1,17 @@
+// Copyright 2019 Algorand, Inc.
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 //
 //  SendAlgosTransactionPreviewViewController.swift
 
@@ -13,6 +27,18 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
         ),
         initialModalSize: .custom(CGSize(width: view.frame.width, height: 422.0))
     )
+
+    private lazy var maxTransactionWarningPresenter: CardModalPresenter = {
+        let screenHeight = UIScreen.main.bounds.height
+        let height = screenHeight <= 522.0 ? screenHeight - 20.0 : 522.0
+        return CardModalPresenter(
+            config: ModalConfiguration(
+                animationMode: .normal(duration: 0.25),
+                dismissMode: .scroll
+            ),
+            initialModalSize: .custom(CGSize(width: view.frame.width, height: height))
+        )
+    }()
     
     private let viewModel: SendAlgosTransactionPreviewViewModel
     
@@ -87,7 +113,10 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
         }
             
         if !isTransactionValid() {
-            displaySimpleAlertWith(title: "send-algos-alert-title".localized, message: "send-algos-alert-message".localized)
+            displaySimpleAlertWith(
+                title: "send-algos-alert-incomplete-title".localized,
+                message: "send-algos-alert-message-address".localized
+            )
             return
         }
             
@@ -112,7 +141,8 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
                 return
             }
         }
-        composeTransactionData()
+
+        composeTransactionDataIfNotMaxTransactionFromRekeyedAccount()
     }
     
     override func transactionController(
@@ -178,6 +208,37 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
             )
         )
     }
+
+    private func displayMaxTransactionWarning() {
+        guard let account = selectedAccount else {
+            return
+        }
+
+        let controller = open(
+            .maximumBalanceWarning(account: account),
+            by: .customPresentWithoutNavigationController(
+                presentationStyle: .custom,
+                transitionStyle: nil,
+                transitioningDelegate: maxTransactionWarningPresenter
+            )
+        ) as? MaximumBalanceWarningViewController
+        controller?.delegate = self
+    }
+
+    private func composeTransactionDataIfNotMaxTransactionFromRekeyedAccount() {
+        if isMaxTransactionFromRekeyedAccount {
+            displayMaxTransactionWarning()
+        } else {
+            composeTransactionData()
+        }
+    }
+}
+
+extension SendAlgosTransactionPreviewViewController: MaximumBalanceWarningViewControllerDelegate {
+    func maximumBalanceWarningViewControllerDidConfirmWarning(_ maximumBalanceWarningViewController: MaximumBalanceWarningViewController) {
+        maximumBalanceWarningViewController.dismissScreen()
+        composeTransactionData()
+    }
 }
 
 extension SendAlgosTransactionPreviewViewController {
@@ -212,7 +273,7 @@ extension SendAlgosTransactionPreviewViewController {
         let cancelAction = UIAlertAction(title: "title-cancel".localized, style: .cancel)
         
         let proceedAction = UIAlertAction(title: "title-proceed".localized, style: .destructive) { _ in
-            self.composeTransactionData()
+            self.composeTransactionDataIfNotMaxTransactionFromRekeyedAccount()
         }
         
         alertController.addAction(cancelAction)
@@ -274,6 +335,7 @@ extension SendAlgosTransactionPreviewViewController {
                         self.displaySimpleAlertWith(title: "title-error".localized, message: "title-internet-connection".localized)
                     }
                 case let .success(accountWrapper):
+                    accountWrapper.account.assets = accountWrapper.account.nonDeletedAssets()
                     if accountWrapper.account.amount == 0 {
                         self.dismissProgressIfNeeded()
                         

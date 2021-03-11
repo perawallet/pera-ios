@@ -1,3 +1,17 @@
+// Copyright 2019 Algorand, Inc.
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 //
 //  transactionController.swift
 
@@ -17,6 +31,10 @@ class TransactionController {
     private lazy var transactionAPIConnector = TransactionAPIConnector(api: api)
     
     private var currentTransactionType: TransactionType?
+
+    private var isLedgerRequiredTransaction: Bool {
+        return transactionDraft?.from.requiresLedgerConnection() ?? false
+    }
     
     init(api: AlgorandAPI) {
         self.api = api
@@ -51,20 +69,36 @@ extension TransactionController {
     }
     
     func stopBLEScan() {
+        if !isLedgerRequiredTransaction {
+            return
+        }
+
         ledgerTransactionOperation.disconnectFromCurrentDevice()
         ledgerTransactionOperation.stopScan()
     }
 
     func startTimer() {
+        if !isLedgerRequiredTransaction {
+            return
+        }
+
         ledgerTransactionOperation.delegate = self
         ledgerTransactionOperation.startTimer()
     }
 
     func stopTimer() {
+        if !isLedgerRequiredTransaction {
+            return
+        }
+
         ledgerTransactionOperation.stopTimer()
     }
 
     func initializeLedgerTransactionAccount() {
+        if !isLedgerRequiredTransaction {
+            return
+        }
+
         if let account = fromAccount {
             ledgerTransactionOperation.setTransactionAccount(account)
         }
@@ -114,9 +148,6 @@ extension TransactionController {
         switch transactionType {
         case .algosTransaction:
             let builder = SendAlgosTransactionDataBuilder(params: params, draft: algosTransactionDraft, initialSize: initialSize)
-            if let calculatedTransactionAmount = builder.calculatedTransactionAmount?.toAlgos {
-                transactionDraft?.amount = calculatedTransactionAmount
-            }
             composeTransactionData(from: builder)
         case .assetAddition:
             composeTransactionData(from: AddAssetTransactionDataBuilder(params: params, draft: assetTransactionDraft))
@@ -128,18 +159,36 @@ extension TransactionController {
             composeTransactionData(from: RekeyTransactionDataBuilder(params: params, draft: rekeyTransactionDraft))
         }
 
-        startSigningProcess(for: transactionType)
+        if transactionData.isUnsignedTransactionComposed {
+            startSigningProcess(for: transactionType)
+        }
     }
 
     private func composeTransactionData(from builder: TransactionDataBuilder) {
         builder.delegate = self
 
         guard let data = builder.composeData() else {
+            handleMinimumAmountErrorIfNeeded(from: builder)
             resetLedgerOperationIfNeeded()
             return
         }
 
+        updateTransactionAmount(from: builder)
         transactionData.setUnsignedTransaction(data)
+    }
+
+    private func handleMinimumAmountErrorIfNeeded(from builder: TransactionDataBuilder) {
+        if let builder = builder as? SendAlgosTransactionDataBuilder,
+           let minimumAccountBalance = builder.minimumAccountBalance,
+           builder.calculatedTransactionAmount.unwrap(or: 0).isBelowZero {
+            delegate?.transactionController(self, didFailedComposing: .inapp(TransactionError.minimumAmount(amount: minimumAccountBalance)))
+        }
+    }
+
+    private func updateTransactionAmount(from builder: TransactionDataBuilder) {
+        if let builder = builder as? SendAlgosTransactionDataBuilder {
+            transactionDraft?.amount = builder.calculatedTransactionAmount?.toAlgos
+        }
     }
 
     private func startSigningProcess(for transactionType: TransactionType) {
@@ -162,6 +211,10 @@ extension TransactionController {
         
         if isTransactionSigned {
             calculateTransactionFee(for: transactionType)
+            if transactionDraft?.fee == nil {
+                return
+            }
+            
             if transactionType == .algosTransaction {
                 completeAlgosTransaction()
             } else {
@@ -204,7 +257,9 @@ extension TransactionController: LedgerTransactionOperationDelegate {
 
         sign(data, with: LedgerTransactionSigner(account: account))
         calculateTransactionFee(for: transactionType)
-        completeLedgerTransaction(for: transactionType)
+        if transactionDraft?.fee != nil {
+            completeLedgerTransaction(for: transactionType)
+        }
     }
 
     private func completeLedgerTransaction(for transactionType: TransactionType) {
@@ -227,7 +282,11 @@ extension TransactionController {
             transactionData: transactionData,
             params: params
         )
-        self.transactionDraft?.fee = feeCalculator.calculate(for: transactionType)
+        feeCalculator.delegate = self
+        let fee = feeCalculator.calculate(for: transactionType)
+        if fee != nil {
+            self.transactionDraft?.fee = fee
+        }
     }
 }
 

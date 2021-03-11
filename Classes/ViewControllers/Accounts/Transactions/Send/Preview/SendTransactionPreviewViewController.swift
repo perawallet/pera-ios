@@ -1,3 +1,17 @@
+// Copyright 2019 Algorand, Inc.
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 //
 //  SendTransactionPreviewViewController.swift
 
@@ -24,13 +38,13 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
         initialModalSize: .custom(CGSize(width: view.frame.width, height: 354.0))
     )
 
-    private lazy var maxTransactionWarningPresenter: CardModalPresenter = {
+    private lazy var transactionTutorialPresenter: CardModalPresenter = {
         let screenHeight = UIScreen.main.bounds.height
-        let height = screenHeight <= 586.0 ? screenHeight - 20.0 : 586.0
+        let height = screenHeight <= 605.0 ? screenHeight - 20.0 : 605.0
         return CardModalPresenter(
             config: ModalConfiguration(
                 animationMode: .normal(duration: 0.25),
-                dismissMode: .scroll
+                dismissMode: .none
             ),
             initialModalSize: .custom(CGSize(width: view.frame.width, height: height))
         )
@@ -59,6 +73,8 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
     
     var shouldUpdateSenderForSelectedAccount = false
     var shouldUpdateReceiverForSelectedAccount = false
+
+    private let transactionTutorialStorage = TransactionTutorialStorage()
     
     private(set) var isSenderEditable: Bool
     
@@ -82,18 +98,31 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
         let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [weak self] in
             self?.closeScreen(by: .dismiss, animated: true)
         }
+
+        let infoBarButtonItem = ALGBarButtonItem(kind: .info) { [weak self] in
+            self?.displayTransactionTutorial(isInitialDisplay: false)
+        }
         
         if isSenderEditable {
             leftBarButtonItems = [closeBarButtonItem]
         }
+
+        rightBarButtonItems = [infoBarButtonItem]
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         if selectedAccount == nil {
             sendTransactionPreviewView.setAssetSelectionHidden(false)
             presentAssetSelection()
+        }
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if selectedAccount != nil && !transactionTutorialStorage.isTransactionTutorialDisplayed() {
+            displayTransactionTutorial(isInitialDisplay: true)
         }
     }
     
@@ -210,12 +239,7 @@ extension SendTransactionPreviewViewController: SendTransactionPreviewViewDelega
         }
         
         selectedAccount = account
-
-        if isMaxTransactionFromRekeyedAccount() {
-            displayMaxTransactionWarning()
-        } else {
-            displayTransactionPreview()
-        }
+        displayTransactionPreview()
     }
     
     func sendTransactionPreviewViewDidTapCloseButton(_ sendTransactionPreviewView: SendTransactionPreviewView) {
@@ -301,6 +325,9 @@ extension SendTransactionPreviewViewController: SelectAssetViewControllerDelegat
         didSelectAlgosIn account: Account,
         forAction transactionAction: TransactionAction
     ) {
+        if !transactionTutorialStorage.isTransactionTutorialDisplayed() {
+            displayTransactionTutorial(isInitialDisplay: true)
+        }
         configure(forSelected: account, with: nil)
     }
     
@@ -310,41 +337,44 @@ extension SendTransactionPreviewViewController: SelectAssetViewControllerDelegat
         in account: Account,
         forAction transactionAction: TransactionAction
     ) {
+        if !transactionTutorialStorage.isTransactionTutorialDisplayed() {
+            displayTransactionTutorial(isInitialDisplay: true)
+        }
         configure(forSelected: account, with: assetDetail)
     }
 }
 
 extension SendTransactionPreviewViewController {
-    private func isMaxTransactionFromRekeyedAccount() -> Bool {
+    private func displayTransactionTutorial(isInitialDisplay: Bool) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + (isInitialDisplay ? 0.1 : 0.0)) {
+            let controller = self.open(
+                .transactionTutorial(isInitialDisplay: isInitialDisplay),
+                by: .customPresentWithoutNavigationController(
+                    presentationStyle: .custom,
+                    transitionStyle: nil,
+                    transitioningDelegate: self.transactionTutorialPresenter
+                )
+            ) as? TransactionTutorialViewController
+            controller?.delegate = self
+        }
+    }
+}
+
+extension SendTransactionPreviewViewController: TransactionTutorialViewControllerDelegate {
+    func transactionTutorialViewControllerDidConfirmTutorial(_ transactionTutorialViewController: TransactionTutorialViewController) {
+        let transactionTutorialStorage = TransactionTutorialStorage()
+        transactionTutorialStorage.setTransactionTutorialDisplayed()
+        transactionTutorialViewController.dismissScreen()
+    }
+}
+
+extension SendTransactionPreviewViewController {
+    var isMaxTransactionFromRekeyedAccount: Bool {
         guard let account = selectedAccount else {
             return false
         }
 
-        let maximumBalanceWarningStorage = MaximumBalanceWarningStorage()
-        return isMaxTransaction && account.isRekeyed() && !maximumBalanceWarningStorage.isMaximumBalanceWarningDisabled()
-    }
-
-    private func displayMaxTransactionWarning() {
-        guard let account = selectedAccount else {
-            return
-        }
-
-        let controller = open(
-            .maximumBalanceWarning(account: account),
-            by: .customPresentWithoutNavigationController(
-                presentationStyle: .custom,
-                transitionStyle: nil,
-                transitioningDelegate: maxTransactionWarningPresenter
-            )
-        ) as? MaximumBalanceWarningViewController
-        controller?.delegate = self
-    }
-}
-
-extension SendTransactionPreviewViewController: MaximumBalanceWarningViewControllerDelegate {
-    func maximumBalanceWarningViewControllerDidConfirmWarning(_ maximumBalanceWarningViewController: MaximumBalanceWarningViewController) {
-        maximumBalanceWarningViewController.dismissScreen()
-        displayTransactionPreview()
+        return isMaxTransaction && account.isRekeyed()
     }
 }
 

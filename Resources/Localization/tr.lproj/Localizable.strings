@@ -362,7 +362,13 @@
 "ledger-account-selection-add" = "Hesap Ekle";
 
 /* (No Comment) */
+"ledger-account-selection-add-plural" = "Hesap Ekle";
+
+/* (No Comment) */
 "ledger-account-selection-detail" = "Bu Ledger cihazı, aşağıdaki hesabın işlemlerini imzalayabilir.\nAlgorand Wallet'ınıza eklemek istediğiniz hesabı seçin.";
+
+/* (No Comment) */
+"ledger-account-selection-detail-rekey" = "Bu hesabı imzalamak için kullanmak istediğiniz hesabı seçin.";
 
 /* (No Comment) */
 "ledger-account-selection-title-plural" = "%d Hesap Bulundu";
@@ -522,6 +528,12 @@
 
 /* MARK: Login */
 "login-title" = "Kilidi aç";
+
+/* (No Comment) */
+"maximum-balance-warning-description" = "Yeniden anahtarlanan bir hesaptan maksimum bakiyenizi göndermeniz, hesapta en az %@ Algo tutmanızı gerektirmektedir. Bu işlem, yeniden anahtarlanan hesabınızda herhangi bir şeyin değişmemesini sağlamak içindir. \n\nİşlem tutarınız bu değişikliği yansıtması için otomatik olarak güncellenecektir. İşlemin önizlemesini bir sonraki adımda görüntüleyebileceksiniz.";
+
+/* (No Comment) */
+"maximum-balance-warning-title" = "Maksimum Bakiye";
 
 /* (No Comment) */
 "node-settings-action-delete-title" = "Sil";
@@ -869,10 +881,13 @@
 "send-algos-address-not-selected" = "Adres seçilmedi";
 
 /* (No Comment) */
+"send-algos-alert-incomplete-title" = "Tamamlanmamış İşlem";
+
+/* (No Comment) */
 "send-algos-alert-message" = "Lütfen tüm alanları doldurun.";
 
 /* (No Comment) */
-"send-algos-alert-title" = "Yanlış İşlem";
+"send-algos-alert-message-address" = "Lütfen gönderilecek hesabı girin.";
 
 /* (No Comment) */
 "send-algos-amount" = "Miktar:";
@@ -1004,6 +1019,9 @@
 "settings-server-node-settings" = "Düğüm Ayarları";
 
 /* (No Comment) */
+"settings-support-title" = "Destek Merkezi";
+
+/* (No Comment) */
 "settings-theme-dark" = "Karanlık";
 
 /* (No Comment) */
@@ -1040,10 +1058,16 @@
 "title-close" = "Kapat";
 
 /* (No Comment) */
+"title-continue" = "Devam Et";
+
+/* (No Comment) */
 "title-copy" = "Kopyala";
 
 /* (No Comment) */
 "title-done" = "Bitti";
+
+/* (No Comment) */
+"title-dont-show-again" = "Bunu Tekrar Gösterme";
 
 /* (No Comment) */
 "title-edit" = "Düzenle";
@@ -1056,6 +1080,9 @@
 
 /* (No Comment) */
 "title-go-to-settings" = "Ayarlara Git";
+
+/* (No Comment) */
+"title-i-understand" = "Anladım";
 
 /* (No Comment) */
 "title-id" = "Kimlik";
@@ -1250,6 +1277,30 @@
 "transaction-id-open-explorer" = "Gezginde Aç";
 
 /* (No Comment) */
+"transaction-tutorial-subtitle" = "Bu işlemin ilk işleminiz olduğunu fark ettik. İşlemi sonuçlandırmadan önce birkaç ipucunu aklınızda bulundurmanızı öneririz:";
+
+/* (No Comment) */
+"transaction-tutorial-subtitle-other" = "İşleminizi sonuçlandırmadan önce birkaç ipucunu aklınızda bulundurmanızı öneririz:";
+
+/* (No Comment) */
+"transaction-tutorial-tap-to-more" = "İşlem yapma hakkında daha fazla bilgi almak için buraya dokunun";
+
+/* (No Comment) */
+"transaction-tutorial-tap-to-more-highlighted" = "buraya dokunun";
+
+/* (No Comment) */
+"transaction-tutorial-tip-first" = "Bir adrese ilk defa gönderim yaparken, büyük miktarda gönderim yapmadan önce test etmek amacıyla küçük miktarda bir gönderim işlemi yapmak iyi bir fikirdir.";
+
+/* (No Comment) */
+"transaction-tutorial-tip-second" = "Borsalar yatırma adreslerini sıklıkla değiştirir ve daha önceden kaydedilen borsa adresleri artık kullanılmıyor olabilir. Doğru adrese gönderim yaptığınızdan emin olun.";
+
+/* (No Comment) */
+"transaction-tutorial-tip-second-highlighted" = "Doğru adrese gönderdiğinizden emin olun.";
+
+/* (No Comment) */
+"transaction-tutorial-title" = "İşlemlere Yönelik İpuçları";
+
+/* (No Comment) */
 "verified-asset-double-check" = "her zaman tekrar kontrol edin";
 
 /* (No Comment) */
@@ -1272,3 +1323,4 @@
 
 /* (No Comment) */
 "watch-account-input-placeholder" = "Adresi Yapıştır veya QR Kodunu Tara";
+
