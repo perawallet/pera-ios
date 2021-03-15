@@ -19,12 +19,14 @@ import UIKit
 
 class AnimatedTutorialViewController: BaseScrollViewController {
 
+    private let flow: AccountSetupFlow
     private let tutorial: AnimatedTutorial
     private let isActionable: Bool
 
     private lazy var animatedTutorialView = AnimatedTutorialView(isActionable: isActionable)
 
-    init(tutorial: AnimatedTutorial, isActionable: Bool, configuration: ViewControllerConfiguration) {
+    init(flow: AccountSetupFlow, tutorial: AnimatedTutorial, isActionable: Bool, configuration: ViewControllerConfiguration) {
+        self.flow = flow
         self.tutorial = tutorial
         self.isActionable = isActionable
         super.init(configuration: configuration)
@@ -69,7 +71,13 @@ extension AnimatedTutorialViewController {
 
 extension AnimatedTutorialViewController: AnimatedTutorialViewDelegate {
     func animatedTutorialViewDidApproveTutorial(_ animatedTutorialView: AnimatedTutorialView) {
-
+        switch tutorial {
+        case .recover:
+            open(.accountRecover(flow: flow), by: .push)
+        default:
+            // Will be updated when the flows are updated.
+            break
+        }
     }
 
     func animatedTutorialViewDidTakeAction(_ animatedTutorialView: AnimatedTutorialView) {
