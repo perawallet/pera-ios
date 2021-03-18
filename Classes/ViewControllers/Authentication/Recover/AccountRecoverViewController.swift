@@ -22,6 +22,12 @@ class AccountRecoverViewController: BaseScrollViewController {
 
     private let layout = Layout<LayoutConstants>()
 
+    private lazy var inputSuggestionsViewController: InputSuggestionViewController = {
+        let inputSuggestionViewController = InputSuggestionViewController(configuration: configuration)
+        inputSuggestionViewController.view.frame = layout.current.inputSuggestionsFrame
+        return inputSuggestionViewController
+    }()
+
     private var keyboardController = KeyboardController()
     
     private lazy var bottomModalPresenter = CardModalPresenter(
@@ -89,6 +95,7 @@ class AccountRecoverViewController: BaseScrollViewController {
         viewModel.delegate = self
         dataController.delegate = self
         keyboardController.dataSource = self
+        inputSuggestionsViewController.delegate = self
     }
 
     override func setListeners() {
@@ -180,16 +187,33 @@ extension AccountRecoverViewController {
 }
 
 extension AccountRecoverViewController: AccountRecoverViewModelDelegate {
-    func accountRecoverViewModel(_ viewModel: AccountRecoverViewModel, didBeginEditing view: RecoverInputView) {
-
-    }
-
     func accountRecoverViewModel(_ viewModel: AccountRecoverViewModel, didChangeInputIn view: RecoverInputView) {
-        recoverButton.isEnabled = viewModel.isRecoverEnabled
+        customizeRecoverInputViewWhenTheInputWasChanged(view)
     }
 
-    func accountRecoverViewModel(_ viewModel: AccountRecoverViewModel, didEndEditing view: RecoverInputView) {
+    private func customizeRecoverInputViewWhenTheInputWasChanged(_ view: RecoverInputView) {
+        recoverButton.isEnabled = viewModel.isRecoverEnabled
+        updateRecoverInputSuggestor(in: view)
+        inputSuggestionsViewController.findTopSuggestions(for: view.input)
+        updateRecoverInputViewStateForSuggestions(view)
+    }
 
+    private func updateRecoverInputSuggestor(in view: RecoverInputView) {
+        if !view.isInputAccessoryViewSet {
+            if !view.input.isNilOrEmpty {
+                view.setInputAccessoryView(inputSuggestionsViewController.view)
+           } else {
+                view.removeInputAccessoryView()
+           }
+        }
+    }
+
+    private func updateRecoverInputViewStateForSuggestions(_ view: RecoverInputView) {
+        if !inputSuggestionsViewController.hasSuggestions && !view.input.isNilOrEmpty {
+            view.bind(RecoverInputViewModel(state: .wrong, index: view.tag))
+        } else {
+            view.bind(RecoverInputViewModel(state: .active, index: view.tag))
+        }
     }
 
     func accountRecoverViewModelDidRecover(_ viewModel: AccountRecoverViewModel) {
@@ -267,6 +291,12 @@ extension AccountRecoverViewController: AccountRecoverDataControllerDelegate {
     }
 }
 
+extension AccountRecoverViewController: InputSuggestionViewControllerDelegate {
+    func inputSuggestionViewController(_ inputSuggestionViewController: InputSuggestionViewController, didSelect mnemonic: String) {
+        viewModel.updateCurrentInputView(with: mnemonic)
+    }
+}
+
 extension AccountRecoverViewController: QRScannerViewControllerDelegate {
     func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, completionHandler: EmptyHandler?) {
         guard qrText.mode == .mnemonic else {
@@ -318,6 +348,7 @@ extension AccountRecoverViewController: KeyboardControllerDataSource {
 extension AccountRecoverViewController {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let defaultInset: CGFloat = 20.0
+        let inputSuggestionsFrame = CGRect(x: 0.0, y: 0.0, width: UIScreen.main.bounds.width, height: 44.0)
         let keyboardInset: CGFloat = 92.0
         let inputViewHeight: CGFloat = 732.0
     }

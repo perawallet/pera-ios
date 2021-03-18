@@ -52,6 +52,15 @@ extension AccountRecoverViewModel {
             inputView.setText(mnemonics[index])
         }
     }
+
+    func updateCurrentInputView(with mnemonic: String) {
+        guard let currentInputView = currentInputView else {
+            return
+        }
+        
+        currentInputView.setText(mnemonic)
+        finishUpdates(for: currentInputView)
+    }
 }
 
 extension AccountRecoverViewModel {
@@ -102,7 +111,6 @@ extension AccountRecoverViewModel: RecoverInputViewDelegate {
     func recoverInputViewDidBeginEditing(_ recoverInputView: RecoverInputView) {
         currentInputView = recoverInputView
         recoverInputView.bind(RecoverInputViewModel(state: .active, index: recoverInputView.tag))
-        delegate?.accountRecoverViewModel(self, didBeginEditing: recoverInputView)
     }
 
     func recoverInputViewDidChange(_ recoverInputView: RecoverInputView) {
@@ -111,20 +119,21 @@ extension AccountRecoverViewModel: RecoverInputViewDelegate {
 
     func recoverInputViewDidEndEditing(_ recoverInputView: RecoverInputView) {
         recoverInputView.bind(RecoverInputViewModel(state: .filled, index: recoverInputView.tag))
-        delegate?.accountRecoverViewModel(self, didEndEditing: recoverInputView)
     }
 
     func recoverInputViewShouldReturn(_ recoverInputView: RecoverInputView) -> Bool {
+        finishUpdates(for: recoverInputView)
+        return true
+    }
+
+    private func finishUpdates(for recoverInputView: RecoverInputView) {
+        recoverInputView.removeInputAccessoryView()
+        
         if isLastInputView(recoverInputView) {
             delegate?.accountRecoverViewModelDidRecover(self)
-            return true
-        }
-
-        if let nextInputView = nextInputView(of: recoverInputView) {
+        } else if let nextInputView = nextInputView(of: recoverInputView) {
             nextInputView.beginEditing()
         }
-
-        return true
     }
 
     func recoverInputView(
@@ -181,8 +190,6 @@ extension AccountRecoverViewModel {
 }
 
 protocol AccountRecoverViewModelDelegate: class {
-    func accountRecoverViewModel(_ viewModel: AccountRecoverViewModel, didBeginEditing view: RecoverInputView)
     func accountRecoverViewModel(_ viewModel: AccountRecoverViewModel, didChangeInputIn view: RecoverInputView)
-    func accountRecoverViewModel(_ viewModel: AccountRecoverViewModel, didEndEditing view: RecoverInputView)
     func accountRecoverViewModelDidRecover(_ viewModel: AccountRecoverViewModel)
 }

@@ -147,6 +147,20 @@ extension RecoverInputView {
     func setText(_ text: String) {
         inputTextField.text = text
     }
+
+    var isInputAccessoryViewSet: Bool {
+        return inputTextField.inputAccessoryView != nil
+    }
+
+    func setInputAccessoryView(_ inputAccessoryView: UIView) {
+        inputTextField.inputAccessoryView = inputAccessoryView
+        inputTextField.reloadInputViews()
+    }
+
+    func removeInputAccessoryView() {
+        inputTextField.inputAccessoryView = nil
+        inputTextField.reloadInputViews()
+    }
 }
 
 extension RecoverInputView {
