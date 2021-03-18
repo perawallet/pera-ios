@@ -114,7 +114,7 @@ extension LocalAuthenticationPreferenceViewController: LocalAuthenticationPrefer
             case .recover:
                 open(.animatedTutorial(flow: accountSetupFlow, tutorial: .recover, isActionable: false), by: .push)
             case .watch:
-                open(.watchAccountAddition(flow: accountSetupFlow), by: .push)
+                open(.animatedTutorial(flow: accountSetupFlow, tutorial: .watchAccount, isActionable: false), by: .push)
             case .rekey:
                 break
             case .add:

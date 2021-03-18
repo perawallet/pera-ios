@@ -74,6 +74,8 @@ extension AnimatedTutorialViewController: AnimatedTutorialViewDelegate {
         switch tutorial {
         case .recover:
             open(.accountRecover(flow: flow), by: .push)
+        case .watchAccount:
+            open(.watchAccountAddition(flow: flow), by: .push)
         default:
             // Will be updated when the flows are updated.
             break

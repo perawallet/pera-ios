@@ -39,13 +39,13 @@ class AnimatedTutorialViewModel {
         case .recover:
             animation = "pen_animation"
         case .watchAccount:
-            animation = ""
+            animation = "watch_animation"
         case .writePassphrase:
             animation = "pen_animation"
         case .passcode:
             animation = "lock_animation"
         case .localAuthentication:
-            animation = ""
+            animation = "local_auth_animation"
         }
     }
 
@@ -56,7 +56,7 @@ class AnimatedTutorialViewModel {
         case .recover:
             title = "tutorial-title-recover".localized
         case .watchAccount:
-            title = ""
+            title = "title-watch-account".localized
         case .writePassphrase:
             title = "tutorial-title-write".localized
         case .passcode:
@@ -73,7 +73,7 @@ class AnimatedTutorialViewModel {
         case .recover:
             description = "tutorial-description-recover".localized.attributed([.lineSpacing(1.2)])
         case .watchAccount:
-            description = "".attributed([.lineSpacing(1.2)])
+            description = "tutorial-description-watch".attributed([.lineSpacing(1.2)])
         case .writePassphrase:
             description = "tutorial-description-write".localized.attributed([.lineSpacing(1.2)])
         case .passcode:
@@ -90,7 +90,7 @@ class AnimatedTutorialViewModel {
         case .recover:
             mainTitle = "tutorial-main-title-recover".localized
         case .watchAccount:
-            mainTitle = ""
+            mainTitle = "tutorial-main-title-watch".localized
         case .writePassphrase:
             mainTitle = "tutorial-main-title-write".localized
         case .passcode:

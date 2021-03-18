@@ -542,12 +542,14 @@
 "tutorial-description-back-up" = "Without your recovery passphrase, if you lose your device, delete the app, or lose your phone, you will permanently lose access to your Algorand account.";
 "tutorial-description-recover" = "In the following steps, you'll enter your 25-word recovery passphrase to recover an Algorand account. Have your recovery phrase handy before you begin.";
 "tutorial-description-write" = "If your device gets lost or stolen, you can restore your wallet using your recovery passphrase.";
+"tutorial-description-watch" =  "A Watch account allows you to monitor activity of an account without needing to have the passphrase. This is useful for monitoring assets that are kept in cold storage.\n\nWarning: If you do not have the corresponding recovery passphrase, do not send assets to this account.";
 "tutorial-description-passcode" = "Passcode will be required to view accounts and personal data.";
 "tutorial-description-local" = "We recommended this for improved security";
 
 "tutorial-main-title-back-up" = "Back up now";
 "tutorial-main-title-recover" = "Recover an Algorand Account";
 "tutorial-main-title-write" = "I’m Ready, Start";
+"tutorial-main-title-watch" = "Create a Watch Account";
 "tutorial-main-title-passcode" = "Set Passcode";
 
 "tutorial-action-title-passcode" = "Not now";

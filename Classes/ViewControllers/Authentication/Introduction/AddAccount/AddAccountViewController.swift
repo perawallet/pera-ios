@@ -55,7 +55,7 @@ extension AddAccountViewController: AddAccountViewDelegate {
             case .create:
                 open(.passphraseView(address: "temp"), by: .push)
             case .watch:
-                open(.watchAccountAddition(flow: flow), by: .push)
+                open(.animatedTutorial(flow: flow, tutorial: .watchAccount, isActionable: false), by: .push)
             case .pair:
                 open(.ledgerTutorial(flow: .addNewAccount(mode: .pair)), by: .push)
             case .recover,
