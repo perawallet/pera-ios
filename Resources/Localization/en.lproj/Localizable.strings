@@ -105,7 +105,7 @@
 "account-name-setup-finish" = "Finish account creation";
 
 // MARK: Recover From Seed
-"recover-from-seed-title" = "Enter Your Recovery Passphrase";
+"recover-from-seed-title" = "Enter Your Passphrase";
 "recover-from-seed-name-title" = "Name";
 "recover-from-seed-name-placeholder" = "Example name";
 "recover-from-seed-passphrase-title" = "Passphrase";
@@ -115,6 +115,7 @@
 "recover-from-seed-verify-exist-error" = "This account already exists";
 "recover-title" = "Recover";
 "recover-fill-all-error" = "Please fill all passphrase";
+"recover-copy-error" = "The last copied text is not valid passphrase with 25 words. Please copy valid passphrase and try again.";
 
 // MARK: QR Scanning
 "qr-scan-title" = "Scan QR Code";
@@ -370,9 +371,9 @@
 // MARK: Verified Asset Information
 "verified-assets-title" = "Verified Assets";
 "verified-asset-information-title" = "What does asset verification mean?";
-"verified-asset-information-text" = "For certain assets in which Algorand Inc. has a relationship with the asset’s issuer, we mark those assets as “Verified” (which is denoted by a blue checkmark symbol).\n\nThis helps to serve as a secondary defense against mistakenly transacting with an unintended asset.\n\nThat being said, you should always double check that the asset’s ID is the one that you intended to choose before transacting with that asset.\n\nIf you have questions about the verification process or general feedback about the app, we encourage you to contact us";
+"verified-asset-information-text" = "For certain assets in which Algorand Inc. has a relationship with the asset’s issuer, we mark those assets as “Verified” (which is denoted by a blue checkmark symbol).\n\nThis helps to serve as a secondary defense against mistakenly transacting with an unintended asset.\n\nThat being said, you should always double check that the asset’s ID is the one that you intended to choose before transacting with that asset.\n\nIf you have questions about the verification process or general feedback about the app, we encourage you to visit www.algorandwallet.com/support";
 "verified-asset-double-check" = "always double check";
-"verified-asset-information-contact-us" = "contact us";
+"verified-asset-information-visit-site" = "visit www.algorandwallet.com/support";
 
 // MARK: Ledger Tutorial
 "ledger-pair-title" = "Create Ledger Account";

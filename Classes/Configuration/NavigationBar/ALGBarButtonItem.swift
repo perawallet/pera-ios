@@ -84,6 +84,11 @@ struct ALGBarButtonItem: BarButtonItem {
             return nil
         case .edit:
             return nil
+        case .paste:
+            if let icon = img("icon-paste") {
+                return ImageContent(normal: icon)
+            }
+            return nil
         }
     }
     
@@ -130,6 +135,8 @@ struct ALGBarButtonItem: BarButtonItem {
                 ),
                 height: .equal(44.0)
             )
+        case .paste:
+            return .explicit(CGSize(width: 44.0, height: 44.0))
         }
     }
     
@@ -158,6 +165,7 @@ extension ALGBarButtonItem {
         case done
         case edit
         case info
+        case paste
     }
 }
 

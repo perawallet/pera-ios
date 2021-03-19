@@ -21,6 +21,14 @@ class AccountRecoverView: BaseView {
 
     private let layout = Layout<LayoutConstants>()
 
+    private lazy var titleLabel: UILabel = {
+        UILabel()
+            .withFont(UIFont.font(withWeight: .semiBold(size: 28.0)))
+            .withTextColor(Colors.Text.primary)
+            .withAlignment(.left)
+            .withText("recover-from-seed-title".localized)
+    }()
+
     private lazy var horizontalStackView: HStackView = {
         let stackView = HStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -60,17 +68,27 @@ class AccountRecoverView: BaseView {
     }()
 
     override func prepareLayout() {
+        setupTitleLabelLayout()
         setupStackViewLayout()
     }
 }
 
 extension AccountRecoverView {
+    private func setupTitleLabelLayout() {
+        addSubview(titleLabel)
+
+        titleLabel.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(layout.current.titleHorizontalInset)
+            make.top.equalToSuperview().inset(layout.current.titleTopInset)
+        }
+    }
+
     private func setupStackViewLayout() {
         addSubview(horizontalStackView)
 
         horizontalStackView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.top.equalToSuperview().inset(layout.current.topInset)
+            make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.stackTopInset)
         }
 
         horizontalStackView.addArrangedSubview(firstColumnStackView)
@@ -90,7 +108,9 @@ extension AccountRecoverView {
 
 extension AccountRecoverView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let topInset: CGFloat = 16.0
+        let titleTopInset: CGFloat = 8.0
+        let titleHorizontalInset: CGFloat = 28.0
+        let stackTopInset: CGFloat = 16.0
         let horizontalInset: CGFloat = 20.0
     }
 }
