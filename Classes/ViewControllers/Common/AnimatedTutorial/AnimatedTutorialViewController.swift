@@ -32,6 +32,10 @@ class AnimatedTutorialViewController: BaseScrollViewController {
         super.init(configuration: configuration)
     }
 
+    override func configureNavigationBarAppearance() {
+        addInfoBarButtonIfNeeeded()
+    }
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         animatedTutorialView.startAnimating(with: LottieConfiguration())
@@ -66,6 +70,42 @@ extension AnimatedTutorialViewController {
     private func setupAnimatedTutorialViewLayout() {
         contentView.addSubview(animatedTutorialView)
         animatedTutorialView.pinToSuperview()
+    }
+}
+
+extension AnimatedTutorialViewController {
+    private func addInfoBarButtonIfNeeeded() {
+        let infoBarButtonItem = ALGBarButtonItem(kind: .info) { [weak self] in
+            self?.openWalletSupport()
+        }
+
+        switch tutorial {
+        case .recover,
+             .backUp,
+             .watchAccount:
+            rightBarButtonItems = [infoBarButtonItem]
+        default:
+            break
+        }
+    }
+
+    private func openWalletSupport() {
+        switch tutorial {
+        case .backUp:
+            if let url = URL(string: "https://algorandwallet.com/support/security/backing-up-your-recovery-passphrase") {
+                open(url)
+            }
+        case .recover:
+            if let url = URL(string: "https://algorandwallet.com/support/getting-started/recover-an-algorand-account") {
+                open(url)
+            }
+        case .watchAccount:
+            if let url = URL(string: "https://algorandwallet.com/support/general/adding-a-watch-account") {
+                open(url)
+            }
+        default:
+            break
+        }
     }
 }
 
