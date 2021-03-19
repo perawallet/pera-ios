@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "icon-qr-bar-button.pdf",
+      "filename" : "icon-paste.pdf",
       "idiom" : "universal"
     },
     {
@@ -11,7 +11,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "icon-qr-bar-button-1.pdf",
+      "filename" : "icon-paste-1.pdf",
       "idiom" : "universal"
     }
   ],
