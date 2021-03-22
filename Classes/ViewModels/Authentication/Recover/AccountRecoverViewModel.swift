@@ -127,6 +127,10 @@ extension AccountRecoverViewModel: RecoverInputViewDelegate {
     }
 
     private func finishUpdates(for recoverInputView: RecoverInputView) {
+        if !hasValidSuggestion(for: recoverInputView) {
+            return
+        }
+
         recoverInputView.removeInputAccessoryView()
         
         if isLastInputView(recoverInputView) {
@@ -141,25 +145,33 @@ extension AccountRecoverViewModel: RecoverInputViewDelegate {
         shouldChangeCharactersIn range: NSRange,
         replacementString string: String
     ) -> Bool {
-        return string != " "
+        return shouldUpdateTextField(with: string)
     }
 }
 
 extension AccountRecoverViewModel {
     private func shouldBeginEditingInputView(_ recoverInputView: RecoverInputView) -> Bool {
-        return isPreviousInputViewFilled(recoverInputView)
+        return isPreviousInputViewFilledCorrectly(recoverInputView)
     }
 
-    private func isPreviousInputViewFilled(_ recoverInputView: RecoverInputView) -> Bool {
+    private func isPreviousInputViewFilledCorrectly(_ recoverInputView: RecoverInputView) -> Bool {
         if isFirstInputView(recoverInputView) {
             return true
         }
 
         if let previousInputView = previousInputView(of: recoverInputView) {
-            return previousInputView.isFilled
+            return previousInputView.isFilled && hasValidSuggestion(for: previousInputView)
         }
 
         return false
+    }
+
+    private func hasValidSuggestion(for view: RecoverInputView) -> Bool {
+        guard let delegate = delegate else {
+            return true
+        }
+
+        return delegate.accountRecoverViewModel(self, hasValidSuggestionFor: view)
     }
 
     private func previousInputView(of recoverInputView: RecoverInputView) -> RecoverInputView? {
@@ -187,9 +199,54 @@ extension AccountRecoverViewModel {
     private func isLastInputView(_ recoverInputView: RecoverInputView) -> Bool {
         return inputViews.last == recoverInputView
     }
+
+    private func shouldUpdateTextField(with string: String) -> Bool {
+        let mnemonics = string.split(separator: " ").map { String($0) }
+
+        if containsOneMnemonic(mnemonics) {
+            return string != " "
+        } else if isValidMnemonicCount(mnemonics) {
+            // If copied text is a valid mnemonc, fill automatically.
+            fillMnemonics(mnemonics)
+            return false
+        } else {
+            // Invalid copy/paste action for mnemonics.
+            delegate?.accountRecoverViewModelDidFailedPastingFromClipboard(self)
+            return false
+        }
+    }
+
+    private func containsOneMnemonic(_ mnemonics: [String]) -> Bool {
+        return mnemonics.count <= 1
+    }
+
+    private func isValidMnemonicCount(_ mnemonics: [String]) -> Bool {
+        return mnemonics.count == totalMnemonicCount
+    }
+}
+
+extension AccountRecoverViewModel {
+    func updateMnemonicsFromPasteboard(_ text: String) {
+        let mnemonics = text.split(separator: " ").map { String($0) }
+
+        if containsOneMnemonic(mnemonics) {
+            if let firstText = mnemonics[safe: 0],
+               !firstText.trimmed.isEmpty {
+                updateCurrentInputView(with: text)
+            }
+        } else if isValidMnemonicCount(mnemonics) {
+            // If copied text is a valid mnemonc, fill automatically.
+            fillMnemonics(mnemonics)
+        } else {
+            // Invalid copy/paste action for mnemonics.
+            delegate?.accountRecoverViewModelDidFailedPastingFromClipboard(self)
+        }
+    }
 }
 
 protocol AccountRecoverViewModelDelegate: class {
     func accountRecoverViewModel(_ viewModel: AccountRecoverViewModel, didChangeInputIn view: RecoverInputView)
     func accountRecoverViewModelDidRecover(_ viewModel: AccountRecoverViewModel)
+    func accountRecoverViewModel(_ viewModel: AccountRecoverViewModel, hasValidSuggestionFor view: RecoverInputView) -> Bool
+    func accountRecoverViewModelDidFailedPastingFromClipboard(_ viewModel: AccountRecoverViewModel)
 }

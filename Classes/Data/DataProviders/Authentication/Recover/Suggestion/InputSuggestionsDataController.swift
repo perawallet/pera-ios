@@ -51,7 +51,7 @@ extension InputSuggestionsDataController {
     }
 
     func findTopSuggestions(for text: String) {
-        let filteredSuggestions = allSuggestions.filter { $0.contains(text) }
+        let filteredSuggestions = allSuggestions.filter { $0.lowercased().contains(text.lowercased()) }
         for i in 0...suggestionCount - 1 {
             currentSuggestions[i] = filteredSuggestions[safe: i] ?? ""
         }
@@ -59,6 +59,10 @@ extension InputSuggestionsDataController {
 
     var currentSuggestionCount: Int {
         return currentSuggestions.filter { !$0.isEmpty }.count
+    }
+
+    func hasMatchingSuggestion(with text: String) -> Bool {
+        return allSuggestions.contains { $0.lowercased() == text.lowercased() }
     }
 }
 

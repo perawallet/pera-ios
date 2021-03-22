@@ -68,14 +68,7 @@ class AccountRecoverViewController: BaseScrollViewController {
     }
 
     override func configureNavigationBarAppearance() {
-        let qrBarButtonItem = ALGBarButtonItem(kind: .qr) { [weak self] in
-            guard let self = self else {
-                return
-            }
-            self.openQRScanner()
-        }
-
-        rightBarButtonItems = [qrBarButtonItem]
+        addBarButtons()
     }
 
     override func viewDidLoad() {
@@ -85,7 +78,6 @@ class AccountRecoverViewController: BaseScrollViewController {
 
     override func configureAppearance() {
         super.configureAppearance()
-        title = "recover-from-seed-title".localized
         viewModel.addInputViews(to: accountRecoverView)
         recoverButton.isEnabled = false
     }
@@ -165,6 +157,34 @@ extension AccountRecoverViewController {
 }
 
 extension AccountRecoverViewController {
+    private func addBarButtons() {
+        rightBarButtonItems = [composeQRBarButton(), composePasteBarButton()]
+    }
+
+    private func composeQRBarButton() -> ALGBarButtonItem {
+        let qrBarButtonItem = ALGBarButtonItem(kind: .qr) { [weak self] in
+            guard let self = self else {
+                return
+            }
+            self.openQRScanner()
+        }
+
+        return qrBarButtonItem
+    }
+
+    private func composePasteBarButton() -> ALGBarButtonItem {
+        let pasteBarButtonItem = ALGBarButtonItem(kind: .paste) { [weak self] in
+            guard let self = self else {
+                return
+            }
+            self.pasteFromClipboardIfPossible()
+        }
+
+        return pasteBarButtonItem
+    }
+}
+
+extension AccountRecoverViewController {
     private func openQRScanner() {
         if !UIImagePickerController.isSourceTypeAvailable(.camera) {
             displaySimpleAlertWith(title: "qr-scan-error-title".localized, message: "qr-scan-error-message".localized)
@@ -183,6 +203,15 @@ extension AccountRecoverViewController {
 
         view.endEditing(true)
         dataController.recoverAccount(from: mnemonics)
+    }
+}
+
+extension AccountRecoverViewController {
+    private func pasteFromClipboardIfPossible() {
+        if let copiedText = UIPasteboard.general.string {
+            viewModel.updateMnemonicsFromPasteboard(copiedText)
+            recoverButton.isEnabled = viewModel.isRecoverEnabled
+        }
     }
 }
 
@@ -218,6 +247,19 @@ extension AccountRecoverViewController: AccountRecoverViewModelDelegate {
 
     func accountRecoverViewModelDidRecover(_ viewModel: AccountRecoverViewModel) {
         recoverAccount()
+    }
+
+    func accountRecoverViewModelDidFailedPastingFromClipboard(_ viewModel: AccountRecoverViewModel) {
+        NotificationBanner.showError("title-error".localized, message: "recover-copy-error".localized)
+    }
+
+    func accountRecoverViewModel(_ viewModel: AccountRecoverViewModel, hasValidSuggestionFor view: RecoverInputView) -> Bool {
+        guard let input = view.input,
+              !input.isEmptyOrBlank else {
+            return false
+        }
+
+        return inputSuggestionsViewController.hasMatchingSuggestion(with: input)
     }
 }
 

@@ -68,7 +68,7 @@ extension InputSuggestionViewController: InputSuggestionsDataControllerDelegate 
         _ inputSuggestionsDataController: InputSuggestionsDataController,
         didFailedWith error: InputSuggestionsDataController.SuggestionError
     ) {
-        
+
     }
 }
 
@@ -80,6 +80,10 @@ extension InputSuggestionViewController {
 
         dataController.findTopSuggestions(for: query)
         suggestionsCollectionView.reloadData()
+    }
+
+    func hasMatchingSuggestion(with input: String) -> Bool {
+        dataController.hasMatchingSuggestion(with: input)
     }
 
     var hasSuggestions: Bool {
