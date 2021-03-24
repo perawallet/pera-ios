@@ -194,8 +194,6 @@ class Router {
                 route: route,
                 configuration: configuration
             )
-        case let .localAuthenticationPreference(flow):
-            viewController = LocalAuthenticationPreferenceViewController(accountSetupFlow: flow, configuration: configuration)
         case let .passphraseView(address):
             viewController = PassphraseBackUpViewController(address: address, configuration: configuration)
         case .passphraseVerify:

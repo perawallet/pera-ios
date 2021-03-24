@@ -17,6 +17,7 @@
 
 import UIKit
 import Magpie
+import SVProgressHUD
 
 class AccountsViewController: BaseViewController {
     
@@ -63,6 +64,13 @@ class AccountsViewController: BaseViewController {
             fatalError("Api must be set before accessing this view controller.")
         }
         return PushNotificationController(api: api)
+    }()
+
+    private lazy var accountManager: AccountManager = {
+        guard let api = self.api else {
+            fatalError("Api must be set before accessing this view controller.")
+        }
+        return AccountManager(api: api)
     }()
     
     private(set) lazy var accountsView = AccountsView()
@@ -120,6 +128,7 @@ class AccountsViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        fetchAccountsIfNeeded()
         
         DispatchQueue.main.async {
             UIApplication.shared.appDelegate?.validateAccountManagerFetchPolling()
@@ -129,6 +138,23 @@ class AccountsViewController: BaseViewController {
         pushNotificationController.sendDeviceDetails()
         
         setAccountsCollectionViewContentState()
+    }
+
+    private func fetchAccountsIfNeeded() {
+        guard let session = session,
+              !session.hasPassword() else {
+            return
+        }
+
+        SVProgressHUD.show(withStatus: "title-loading".localized)
+        accountManager.fetchAllAccounts(isVerifiedAssetsIncluded: true) {
+            SVProgressHUD.showSuccess(withStatus: "title-done".localized)
+            SVProgressHUD.dismiss(withDelay: 1.0) {
+                DispatchQueue.main.async {
+                    self.accountsView.accountsCollectionView.reloadData()
+                }
+            }
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -149,6 +175,7 @@ class AccountsViewController: BaseViewController {
             self.presentQRTooltipIfNeeded()
         }
         requestAppReview()
+        presentPasscodeFlowIfNeeded()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -195,6 +222,23 @@ extension AccountsViewController {
             AlgorandAppStoreReviewer().requestReviewIfAppropriate()
         }
     }
+
+    private func presentPasscodeFlowIfNeeded() {
+        guard let session = session,
+              !session.hasPassword() else {
+            return
+        }
+
+        var passcodeSettingDisplayStore = PasscodeSettingDisplayStore()
+        passcodeSettingDisplayStore.increaseAppOpenCount()
+
+        if passcodeSettingDisplayStore.appOpenCount % 3 == 0 {
+            open(
+                .animatedTutorial(flow: .none, tutorial: .passcode, isActionable: true),
+                by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
+            )
+        }
+    }
 }
 
 extension AccountsViewController: AccountsDataSourceDelegate {
@@ -237,7 +281,7 @@ extension AccountsViewController: AccountsViewDelegate {
     
     func accountsViewDidTapAddButton(_ accountsView: AccountsView) {
         open(
-            .welcome(flow: .addNewAccount(mode: nil)),
+            .welcome(flow: .addNewAccount(mode: .none)),
             by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
         )
     }
@@ -475,5 +519,19 @@ extension AccountsViewController {
         let editAccountModalHeight: CGFloat = 158.0
         let passphraseModalHeight: CGFloat = 510.0
         let termsAndServiceHeight: CGFloat = 300
+    }
+}
+
+struct PasscodeSettingDisplayStore: Storable {
+    typealias Object = Any
+
+    private let appOpenCountKey = "com.algorand.algorand.passcode.app.count.key"
+
+    var appOpenCount: Int {
+        return userDefaults.integer(forKey: appOpenCountKey)
+    }
+
+    mutating func increaseAppOpenCount() {
+        userDefaults.set(appOpenCount + 1, forKey: appOpenCountKey)
     }
 }

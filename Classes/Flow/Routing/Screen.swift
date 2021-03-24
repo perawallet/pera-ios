@@ -22,7 +22,6 @@ indirect enum Screen {
     case welcome(flow: AccountSetupFlow)
     case addAccount(flow: AccountSetupFlow)
     case choosePassword(mode: ChoosePasswordViewController.Mode, flow: AccountSetupFlow?, route: Screen?)
-    case localAuthenticationPreference(flow: AccountSetupFlow)
     case passphraseView(address: String)
     case passphraseVerify
     case accountNameSetup

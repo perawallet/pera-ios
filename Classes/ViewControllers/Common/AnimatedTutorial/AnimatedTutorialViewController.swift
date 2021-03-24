@@ -19,9 +19,23 @@ import UIKit
 
 class AnimatedTutorialViewController: BaseScrollViewController {
 
+    override var hidesCloseBarButtonItem: Bool {
+        return tutorial == .localAuthentication
+    }
+
     private let flow: AccountSetupFlow
     private let tutorial: AnimatedTutorial
     private let isActionable: Bool
+
+    private lazy var bottomModalPresenter = CardModalPresenter(
+        config: ModalConfiguration(
+            animationMode: .normal(duration: 0.25),
+            dismissMode: .none
+        ),
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: 358.0))
+    )
+
+    private let localAuthenticator = LocalAuthenticator()
 
     private lazy var animatedTutorialView = AnimatedTutorialView(isActionable: isActionable)
 
@@ -39,11 +53,13 @@ class AnimatedTutorialViewController: BaseScrollViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         animatedTutorialView.startAnimating(with: LottieConfiguration())
+        setPopGestureEnabledInLocalAuthenticationTutorial(false)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         animatedTutorialView.stopAnimating()
+        setPopGestureEnabledInLocalAuthenticationTutorial(true)
     }
 
     override func configureAppearance() {
@@ -112,18 +128,91 @@ extension AnimatedTutorialViewController {
 extension AnimatedTutorialViewController: AnimatedTutorialViewDelegate {
     func animatedTutorialViewDidApproveTutorial(_ animatedTutorialView: AnimatedTutorialView) {
         switch tutorial {
-        case .recover:
-            open(.accountRecover(flow: flow), by: .push)
+        case .backUp:
+            open(.animatedTutorial(flow: flow, tutorial: .writePassphrase, isActionable: false), by: .push)
+        case .writePassphrase:
+            open(.passphraseView(address: "temp"), by: .push)
         case .watchAccount:
             open(.watchAccountAddition(flow: flow), by: .push)
-        default:
-            // Will be updated when the flows are updated.
-            break
+        case .recover:
+            open(.accountRecover(flow: flow), by: .push)
+        case .passcode:
+            open(.choosePassword(mode: .setup, flow: flow, route: nil), by: .push)
+        case .localAuthentication:
+            askLocalAuthentication()
         }
     }
 
     func animatedTutorialViewDidTakeAction(_ animatedTutorialView: AnimatedTutorialView) {
+        switch tutorial {
+        case .passcode:
+            dismissScreen()
+        case .localAuthentication:
+            dismissScreen()
+        default:
+            break
+        }
+    }
+}
 
+extension AnimatedTutorialViewController {
+    private func setPopGestureEnabledInLocalAuthenticationTutorial(_ isEnabled: Bool) {
+        if tutorial == .localAuthentication {
+            navigationController?.interactivePopGestureRecognizer?.isEnabled = isEnabled
+        }
+    }
+
+    private func askLocalAuthentication() {
+        if localAuthenticator.isLocalAuthenticationAvailable {
+            localAuthenticator.authenticate { error in
+                guard error == nil else {
+                    return
+                }
+                self.localAuthenticator.localAuthenticationStatus = .allowed
+                self.openModalWhenAuthenticationUpdatesCompleted()
+            }
+            return
+        }
+
+        presentDisabledLocalAuthenticationAlert()
+    }
+
+    private func presentDisabledLocalAuthenticationAlert() {
+        let alertController = UIAlertController(
+            title: "local-authentication-go-settings-title".localized,
+            message: "local-authentication-go-settings-text".localized,
+            preferredStyle: .alert
+        )
+
+        let settingsAction = UIAlertAction(title: "title-go-to-settings".localized, style: .default) { _ in
+            UIApplication.shared.openAppSettings()
+        }
+
+        let cancelAction = UIAlertAction(title: "title-cancel".localized, style: .cancel, handler: nil)
+
+        alertController.addAction(settingsAction)
+        alertController.addAction(cancelAction)
+        present(alertController, animated: true, completion: nil)
+    }
+
+    private func openModalWhenAuthenticationUpdatesCompleted() {
+        let configurator = BottomInformationBundle(
+            title: "local-authentication-enabled-title".localized,
+            image: img("img-green-checkmark"),
+            explanation: "local-authentication-enabled-subtitle".localized,
+            actionTitle: "title-go-to-accounts".localized,
+            actionImage: img("bg-main-button")) {
+                self.dismissScreen()
+        }
+
+        open(
+            .bottomInformation(mode: .confirmation, configurator: configurator),
+            by: .customPresentWithoutNavigationController(
+                presentationStyle: .custom,
+                transitionStyle: nil,
+                transitioningDelegate: bottomModalPresenter
+            )
+        )
     }
 }
 
