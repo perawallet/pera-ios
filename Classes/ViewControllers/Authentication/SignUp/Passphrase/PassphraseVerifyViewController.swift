@@ -85,7 +85,7 @@ extension PassphraseVerifyViewController: PassphraseVerifyViewDelegate {
             title: "pass-phrase-verify-pop-up-title".localized,
             image: img("img-green-checkmark"),
             explanation: "pass-phrase-verify-pop-up-explanation".localized,
-            actionTitle: "title-accept".localized,
+            actionTitle: "title-next".localized,
             actionImage: img("bg-main-button")) {
                 self.open(.accountNameSetup, by: .push)
         }

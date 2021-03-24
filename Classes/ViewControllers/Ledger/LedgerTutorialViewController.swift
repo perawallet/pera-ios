@@ -27,10 +27,21 @@ class LedgerTutorialViewController: BaseScrollViewController {
         self.accountSetupFlow = accountSetupFlow
         super.init(configuration: configuration)
     }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        ledgerTutorialView.startAnimating()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        ledgerTutorialView.stopAnimating()
+    }
     
     override func configureAppearance() {
         super.configureAppearance()
-        title = "ledger-pair-title".localized
+        setTertiaryBackgroundColor()
+        view.backgroundColor = Colors.Background.tertiary
     }
     
     override func linkInteractors() {
