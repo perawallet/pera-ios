@@ -92,7 +92,7 @@ extension QRCreationViewController: QRCreationViewDelegate {
         let activityViewController = UIActivityViewController(activityItems: sharedItem, applicationActivities: nil)
         activityViewController.excludedActivityTypes = [UIActivity.ActivityType.addToReadingList]
         
-        activityViewController.completionWithItemsHandler = { [weak self] activity, success, items, error in
+        activityViewController.completionWithItemsHandler = { [weak self] _, success, _, _ in
             if success {
                 guard let self = self else {
                     return

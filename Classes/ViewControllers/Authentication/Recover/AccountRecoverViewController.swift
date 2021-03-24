@@ -131,7 +131,7 @@ extension AccountRecoverViewController {
             self.updateRecoverButtonLayoutWhenKeyboardIsShown(keyboard)
         }
 
-        keyboardController.notificationHandlerWhenKeyboardHidden = { keyboard in
+        keyboardController.notificationHandlerWhenKeyboardHidden = { _ in
             self.updateRecoverButtonLayoutWhenKeyboardIsHidden()
         }
     }
@@ -313,6 +313,8 @@ extension AccountRecoverViewController: AccountRecoverDataControllerDelegate {
                     }
                 case .addNewAccount:
                     self.closeScreen(by: .dismiss, animated: false)
+                case .none:
+                    break
                 }
             }
         }
