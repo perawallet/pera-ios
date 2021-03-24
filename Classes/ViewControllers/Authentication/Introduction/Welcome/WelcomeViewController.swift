@@ -29,22 +29,13 @@ class WelcomeViewController: BaseViewController {
     }
 
     override func configureNavigationBarAppearance() {
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [unowned self] in
-            self.closeScreen(by: .dismiss, animated: true)
-        }
-
-        switch flow {
-        case .addNewAccount:
-            leftBarButtonItems = [closeBarButtonItem]
-        case .initializeAccount:
-            break
-        }
+        addBarButtons()
     }
 
     override func configureAppearance() {
         view.backgroundColor = Colors.Background.tertiary
         setTertiaryBackgroundColor()
-        welcomeView.configureAddAccountView(with: AccountTypeViewModel(accountSetupMode: .add))
+        welcomeView.configureAddAccountView(with: AccountTypeViewModel(accountSetupMode: .add(type: .none)))
         welcomeView.configureRecoverAccountView(with: AccountTypeViewModel(accountSetupMode: .recover))
     }
 
@@ -57,24 +48,44 @@ class WelcomeViewController: BaseViewController {
     }
 }
 
+extension WelcomeViewController {
+    private func addBarButtons() {
+        switch flow {
+        case .addNewAccount:
+            addCloseBarButtonItem()
+        case .initializeAccount:
+            addSkipBarButtonItem()
+        case .none:
+            break
+        }
+    }
+
+    private func addCloseBarButtonItem() {
+        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [unowned self] in
+            self.closeScreen(by: .dismiss, animated: true)
+        }
+
+        leftBarButtonItems = [closeBarButtonItem]
+    }
+
+    private func addSkipBarButtonItem() {
+        let skipBarButtonItem = ALGBarButtonItem(kind: .skip) { [unowned self] in
+            
+        }
+
+        rightBarButtonItems = [skipBarButtonItem]
+    }
+}
+
 extension WelcomeViewController: WelcomeViewDelegate {
     func welcomeView(_ welcomeView: WelcomeView, didSelect mode: AccountSetupMode) {
-        switch flow {
-        case .initializeAccount:
-            open(.choosePassword(mode: .setup, flow: .initializeAccount(mode: mode), route: nil), by: .push)
-        case .addNewAccount:
-            switch mode {
-            case .add:
-                open(.addAccount(flow: flow), by: .push)
-            case .recover:
-                open(.accountRecover(flow: .addNewAccount(mode: .recover)), by: .push)
-            case .create,
-                 .pair,
-                 .transfer,
-                 .rekey,
-                 .watch:
-                    break
-            }
+        switch mode {
+        case .add:
+            open(.addAccount(flow: flow), by: .push)
+        case .recover:
+            open(.animatedTutorial(flow: flow, tutorial: .recover, isActionable: false), by: .push)
+        default:
+            break
         }
     }
 

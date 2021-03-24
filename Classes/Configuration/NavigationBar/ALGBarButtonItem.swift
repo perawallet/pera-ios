@@ -41,6 +41,12 @@ struct ALGBarButtonItem: BarButtonItem {
                 textColor: Colors.Text.primary,
                 font: UIFont.font(withWeight: .semiBold(size: 16.0))
             )
+        case .skip:
+            return BarButtonItemTitleContent(
+                text: "title-skip".localized,
+                textColor: Colors.Main.primary700,
+                font: UIFont.font(withWeight: .semiBold(size: 14.0))
+            )
         default:
             return nil
         }
@@ -88,6 +94,8 @@ struct ALGBarButtonItem: BarButtonItem {
             if let icon = img("icon-paste") {
                 return ImageContent(normal: icon)
             }
+            return nil
+        case .skip:
             return nil
         }
     }
@@ -137,6 +145,14 @@ struct ALGBarButtonItem: BarButtonItem {
             )
         case .paste:
             return .explicit(CGSize(width: 44.0, height: 44.0))
+        case .skip:
+            return .expanded(
+                width: .dynamicWidth(BarButtonExpandedSizeHorizontalInsets(
+                    contentInsets: (left: 0.0, right: 0.0),
+                    titleInsets: (left: 4.0, right: -4.0))
+                ),
+                height: .equal(44.0)
+            )
         }
     }
     
@@ -166,6 +182,7 @@ extension ALGBarButtonItem {
         case edit
         case info
         case paste
+        case skip
     }
 }
 

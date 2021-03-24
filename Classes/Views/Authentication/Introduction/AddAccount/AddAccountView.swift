@@ -132,5 +132,5 @@ extension AddAccountView {
 }
 
 protocol AddAccountViewDelegate: class {
-    func addAccountView(_ addAccountView: AddAccountView, didSelect mode: AccountSetupMode)
+    func addAccountView(_ addAccountView: AddAccountView, didSelect type: AccountAdditionType)
 }
