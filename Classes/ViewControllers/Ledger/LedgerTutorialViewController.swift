@@ -28,6 +28,14 @@ class LedgerTutorialViewController: BaseScrollViewController {
         super.init(configuration: configuration)
     }
 
+    override func configureNavigationBarAppearance() {
+        let infoBarButtonItem = ALGBarButtonItem(kind: .info) { [weak self] in
+            self?.openWalletSupport()
+        }
+
+        rightBarButtonItems = [infoBarButtonItem]
+    }
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         ledgerTutorialView.startAnimating()
@@ -80,6 +88,14 @@ extension LedgerTutorialViewController: LedgerTutorialViewDelegate {
             open(.ledgerTroubleshootOpenApp, by: .present)
         case .bluetoothConnection:
             open(.ledgerTroubleshootBluetooth, by: .present)
+        }
+    }
+}
+
+extension LedgerTutorialViewController {
+    private func openWalletSupport() {
+        if let url = URL(string: "https://algorandwallet.com/support/security/pairing-your-ledger-nano-x") {
+            open(url)
         }
     }
 }
