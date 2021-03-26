@@ -22,6 +22,10 @@ class InputSuggestionLayoutBuilder: NSObject {
     private let layout = Layout<LayoutConstants>()
 
     weak var delegate: InputSuggestionLayoutBuilderDelegate?
+
+    func registerCells(to collectionView: UICollectionView) {
+        collectionView.register(InputSuggestionCell.self, forCellWithReuseIdentifier: InputSuggestionCell.reusableIdentifier)
+    }
 }
 
 extension InputSuggestionLayoutBuilder: UICollectionViewDelegateFlowLayout {
