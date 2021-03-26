@@ -1975,9 +1975,6 @@
 		2BF90F3D25FA3B100033F348 /* RecoverInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF90F3C25FA3B100033F348 /* RecoverInputView.swift */; };
 		2BF90F3E25FA3B100033F348 /* RecoverInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF90F3C25FA3B100033F348 /* RecoverInputView.swift */; };
 		2BF90F3F25FA3B100033F348 /* RecoverInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF90F3C25FA3B100033F348 /* RecoverInputView.swift */; };
-		2BF90F5625FA7CE90033F348 /* AccountRecoverViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF90F5525FA7CE90033F348 /* AccountRecoverViewModel.swift */; };
-		2BF90F5725FA7CE90033F348 /* AccountRecoverViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF90F5525FA7CE90033F348 /* AccountRecoverViewModel.swift */; };
-		2BF90F5825FA7CE90033F348 /* AccountRecoverViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF90F5525FA7CE90033F348 /* AccountRecoverViewModel.swift */; };
 		2BF90F5F25FBAAE70033F348 /* HStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF90F5E25FBAAE70033F348 /* HStackView.swift */; };
 		2BF90F6025FBAAE70033F348 /* HStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF90F5E25FBAAE70033F348 /* HStackView.swift */; };
 		2BF90F6125FBAAE70033F348 /* HStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF90F5E25FBAAE70033F348 /* HStackView.swift */; };
@@ -2741,7 +2738,6 @@
 		2BF8120325E7F73100D6B406 /* TransactionTutorialViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionTutorialViewModel.swift; sourceTree = "<group>"; };
 		2BF90F1F25FA39510033F348 /* RecoverInputViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoverInputViewModel.swift; sourceTree = "<group>"; };
 		2BF90F3C25FA3B100033F348 /* RecoverInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoverInputView.swift; sourceTree = "<group>"; };
-		2BF90F5525FA7CE90033F348 /* AccountRecoverViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountRecoverViewModel.swift; sourceTree = "<group>"; };
 		2BF90F5E25FBAAE70033F348 /* HStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HStackView.swift; sourceTree = "<group>"; };
 		2BF90F6A25FBAAEE0033F348 /* VStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VStackView.swift; sourceTree = "<group>"; };
 		2BF90F7325FC0BC70033F348 /* AccountRecoverDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountRecoverDataController.swift; sourceTree = "<group>"; };
@@ -7337,7 +7333,6 @@
 			children = (
 				2BF90F1E25FA39450033F348 /* Input */,
 				2B77474825FFE9750083EFFA /* Suggestion */,
-				2BF90F5525FA7CE90033F348 /* AccountRecoverViewModel.swift */,
 			);
 			path = Recover;
 			sourceTree = "<group>";
@@ -8666,7 +8661,6 @@
 				2B3E3A0D247BFD6E00E8AEB7 /* UIStackView+Additions.swift in Sources */,
 				2BE9371424602F3500322C1E /* MainHeaderView.swift in Sources */,
 				2B0F5EF224DD4F9400DA22A6 /* RekeyConfirmationFooterView.swift in Sources */,
-				2BF90F5825FA7CE90033F348 /* AccountRecoverViewModel.swift in Sources */,
 				2BDD43EC2513CB5C00C6D3B5 /* CurrencySelectionDataSource.swift in Sources */,
 				17BD4EFD2292F1260003E49A /* BottomInformationViewModel.swift in Sources */,
 				2B7E588C258788C000731C97 /* LedgerAccountAssetCountView.swift in Sources */,
@@ -9284,7 +9278,6 @@
 				2B0F631724EC129D00DA22A6 /* TransactionAmountView.swift in Sources */,
 				2B0F631824EC129D00DA22A6 /* UILabel+Factory.swift in Sources */,
 				2B0F631924EC129D00DA22A6 /* UIStackView+Additions.swift in Sources */,
-				2BF90F5725FA7CE90033F348 /* AccountRecoverViewModel.swift in Sources */,
 				2BDD43EB2513CB5C00C6D3B5 /* CurrencySelectionDataSource.swift in Sources */,
 				2B0F631A24EC129D00DA22A6 /* MainHeaderView.swift in Sources */,
 				2B7E588B258788C000731C97 /* LedgerAccountAssetCountView.swift in Sources */,
@@ -9902,7 +9895,6 @@
 				2B3E3A0C247BFD6E00E8AEB7 /* UIStackView+Additions.swift in Sources */,
 				2BE9371324602F3500322C1E /* MainHeaderView.swift in Sources */,
 				2B0F5EF124DD4F9400DA22A6 /* RekeyConfirmationFooterView.swift in Sources */,
-				2BF90F5625FA7CE90033F348 /* AccountRecoverViewModel.swift in Sources */,
 				2BDD43EA2513CB5C00C6D3B5 /* CurrencySelectionDataSource.swift in Sources */,
 				2B8954B32243D7AD00D6D068 /* BottomInformationViewModel.swift in Sources */,
 				2B7E588A258788C000731C97 /* LedgerAccountAssetCountView.swift in Sources */,
