@@ -25,6 +25,8 @@ class AccountListViewController: BaseViewController {
     
     private lazy var accountListView = AccountListView()
 
+    private lazy var emptyStateView = SearchEmptyView()
+
     weak var delegate: AccountListViewControllerDelegate?
     
     private var accountListLayoutBuilder: AccountListLayoutBuilder
@@ -40,16 +42,9 @@ class AccountListViewController: BaseViewController {
     
     override func configureAppearance() {
         view.backgroundColor = Colors.Background.secondary
-        
-        switch mode {
-        case .contact,
-             .transactionSender:
-            accountListView.titleLabel.text = "send-sending-algos-select".localized
-        case .transactionReceiver:
-            accountListView.titleLabel.text = "send-receiving-algos-select".localized
-        default:
-            accountListView.titleLabel.text = "send-algos-select".localized
-        }
+        emptyStateView.setTitle("asset-not-found-title".localized)
+        setTitle()
+        updateContentStateView()
     }
     
     override func setListeners() {
@@ -70,6 +65,28 @@ extension AccountListViewController {
         
         accountListView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
+        }
+    }
+}
+
+extension AccountListViewController {
+    private func setTitle() {
+        switch mode {
+        case .contact,
+             .transactionSender:
+            accountListView.titleLabel.text = "send-sending-algos-select".localized
+        case .transactionReceiver:
+            accountListView.titleLabel.text = "send-receiving-algos-select".localized
+        default:
+            accountListView.titleLabel.text = "send-algos-select".localized
+        }
+    }
+
+    private func updateContentStateView() {
+        if accountListDataSource.accounts.isEmpty {
+            accountListView.accountsCollectionView.contentState = .empty(emptyStateView)
+        } else {
+            accountListView.accountsCollectionView.contentState = .none
         }
     }
 }

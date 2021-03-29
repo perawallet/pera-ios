@@ -75,6 +75,7 @@ class AccountsViewController: BaseViewController {
     
     private(set) lazy var accountsView = AccountsView()
     private lazy var noConnectionView = NoInternetConnectionView()
+    private lazy var emptyStateView = AccountsEmptyStateView()
     private lazy var refreshControl = UIRefreshControl()
     
     private(set) var selectedAccount: Account?
@@ -138,11 +139,15 @@ class AccountsViewController: BaseViewController {
         pushNotificationController.sendDeviceDetails()
         
         setAccountsCollectionViewContentState()
+        requestAppReview()
+        presentPasscodeFlowIfNeeded()
     }
 
     private func fetchAccountsIfNeeded() {
         guard let session = session,
-              !session.hasPassword() else {
+              let user = session.authenticatedUser,
+              !session.hasPassword(),
+              !user.accounts.isEmpty else {
             return
         }
 
@@ -174,8 +179,6 @@ class AccountsViewController: BaseViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.presentQRTooltipIfNeeded()
         }
-        requestAppReview()
-        presentPasscodeFlowIfNeeded()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -194,6 +197,7 @@ class AccountsViewController: BaseViewController {
         accountsView.delegate = self
         accountsView.accountsCollectionView.delegate = accountsDataSource
         accountsView.accountsCollectionView.dataSource = accountsDataSource
+        emptyStateView.delegate = self
     }
     
     override func linkInteractors() {
@@ -280,10 +284,7 @@ extension AccountsViewController: AccountsViewDelegate {
     }
     
     func accountsViewDidTapAddButton(_ accountsView: AccountsView) {
-        open(
-            .welcome(flow: .addNewAccount(mode: .none)),
-            by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
-        )
+        openWelcomeScreen()
     }
 }
 
@@ -365,8 +366,18 @@ extension AccountsViewController {
     }
     
     private func setAccountsCollectionViewContentState() {
-        accountsView.accountsCollectionView.contentState = accountsDataSource.accounts.isEmpty ? .empty(noConnectionView) : .none
-        accountsView.setHeaderButtonsHidden(accountsDataSource.accounts.isEmpty)
+        guard let user = session?.authenticatedUser else {
+            return
+        }
+
+        if user.accounts.isEmpty {
+            emptyStateView.bind(EmptyStateViewModel(emptyState: .accounts))
+            accountsView.accountsCollectionView.contentState = .empty(emptyStateView)
+            accountsView.setHeaderButtonsHidden(true)
+        } else {
+            accountsView.accountsCollectionView.contentState = accountsDataSource.accounts.isEmpty ? .empty(noConnectionView) : .none
+            accountsView.setHeaderButtonsHidden(accountsDataSource.accounts.isEmpty)
+        }
     }
     
     private func displayTestNetBannerIfNeeded() {
@@ -463,6 +474,19 @@ extension AccountsViewController: QRScannerViewControllerDelegate {
                 handler()
             }
         }
+    }
+}
+
+extension AccountsViewController: AccountsEmptyStateViewDelegate {
+    func accountsEmptyStateViewDidTapActionButton(_ accountsEmptyStateView: AccountsEmptyStateView) {
+        openWelcomeScreen()
+    }
+
+    private func openWelcomeScreen() {
+        open(
+            .welcome(flow: .addNewAccount(mode: .none)),
+            by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
+        )
     }
 }
 

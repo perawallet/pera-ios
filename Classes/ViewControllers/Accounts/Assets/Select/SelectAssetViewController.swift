@@ -83,9 +83,13 @@ extension SelectAssetViewController {
     }
     
     private func initAccounts(with filter: FilterOption) -> [Account] {
-        guard var allAccounts = UIApplication.shared.appConfiguration?.session.accounts else {
+        guard var allAccounts = UIApplication.shared.appConfiguration?.session.accounts,
+              !allAccounts.isEmpty else {
+            selectAssetView.accountsCollectionView.contentState = .empty(emptyStateView)
             return []
         }
+
+        selectAssetView.accountsCollectionView.contentState = .none
         
         allAccounts.removeAll { account -> Bool in
             account.isWatchAccount()
