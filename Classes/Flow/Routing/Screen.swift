@@ -98,6 +98,7 @@ indirect enum Screen {
     case screenshotWarning
     case animatedTutorial(flow: AccountSetupFlow, tutorial: AnimatedTutorial, isActionable: Bool)
     case transactionTutorial(isInitialDisplay: Bool)
+    case recoverOptions
 }
 
 extension Screen {

@@ -22,6 +22,14 @@ class AccountRecoverViewController: BaseScrollViewController {
 
     private let layout = Layout<LayoutConstants>()
 
+    private lazy var optionsModalPresenter = CardModalPresenter(
+        config: ModalConfiguration(
+            animationMode: .normal(duration: 0.25),
+            dismissMode: .scroll
+        ),
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: layout.current.optionsModalHeight))
+    )
+
     private lazy var inputSuggestionsViewController: InputSuggestionViewController = {
         let inputSuggestionViewController = InputSuggestionViewController(configuration: configuration)
         inputSuggestionViewController.view.frame = layout.current.inputSuggestionsFrame
@@ -84,6 +92,7 @@ class AccountRecoverViewController: BaseScrollViewController {
 
     override func configureAppearance() {
         super.configureAppearance()
+        title = "recover-from-seed-title".localized
         recoverButton.isEnabled = false
     }
 
@@ -163,29 +172,35 @@ extension AccountRecoverViewController {
 
 extension AccountRecoverViewController {
     private func addBarButtons() {
-        rightBarButtonItems = [composeQRBarButton(), composePasteBarButton()]
-    }
-
-    private func composeQRBarButton() -> ALGBarButtonItem {
-        let qrBarButtonItem = ALGBarButtonItem(kind: .qr) { [weak self] in
+        let optionsBarButtonItem = ALGBarButtonItem(kind: .options) { [weak self] in
             guard let self = self else {
                 return
             }
-            self.openQRScanner()
+            self.openRecoverOptions()
         }
 
-        return qrBarButtonItem
+        rightBarButtonItems = [optionsBarButtonItem]
     }
 
-    private func composePasteBarButton() -> ALGBarButtonItem {
-        let pasteBarButtonItem = ALGBarButtonItem(kind: .paste) { [weak self] in
-            guard let self = self else {
-                return
-            }
-            self.pasteFromClipboardIfPossible()
-        }
+    private func openRecoverOptions() {
+        let transitionStyle = Screen.Transition.Open.customPresent(
+            presentationStyle: .custom,
+            transitionStyle: nil,
+            transitioningDelegate: optionsModalPresenter
+        )
 
-        return pasteBarButtonItem
+        let optionsViewController = open(.recoverOptions, by: transitionStyle) as? AccountRecoverOptionsViewController
+        optionsViewController?.delegate = self
+    }
+}
+
+extension AccountRecoverViewController: AccountRecoverOptionsViewControllerDelegate {
+    func accountRecoverOptionsViewControllerDidOpenScanQR(_ viewController: AccountRecoverOptionsViewController) {
+        openQRScanner()
+    }
+
+    func accountRecoverOptionsViewControllerDidPasteFromClipboard(_ viewController: AccountRecoverOptionsViewController) {
+        pasteFromClipboardIfPossible()
     }
 }
 
@@ -562,5 +577,6 @@ extension AccountRecoverViewController {
         let inputSuggestionsFrame = CGRect(x: 0.0, y: 0.0, width: UIScreen.main.bounds.width, height: 44.0)
         let keyboardInset: CGFloat = 92.0
         let inputViewHeight: CGFloat = 732.0
+        let optionsModalHeight: CGFloat = 238.0
     }
 }
