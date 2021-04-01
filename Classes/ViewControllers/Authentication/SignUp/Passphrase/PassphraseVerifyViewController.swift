@@ -16,6 +16,7 @@
 //  PassphraseVerifyViewController.swift
 
 import UIKit
+import AVFoundation
 
 class PassphraseVerifyViewController: BaseScrollViewController {
     
@@ -72,6 +73,13 @@ extension PassphraseVerifyViewController {
 extension PassphraseVerifyViewController: PassphraseVerifyDataSourceDelegate {
     func passphraseVerifyDataSource(_ passphraseVerifyDataSource: PassphraseVerifyDataSource, isValidated: Bool) {
         passphraseVerifyView.setVerificationEnabled(isValidated)
+
+        if !isValidated {
+            AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
+            NotificationBanner.showError("title-error".localized, message: "passphrase-verify-wrong-message".localized)
+            dataSource.resetVerificationData()
+            passphraseVerifyView.resetSelectionStatesAndReloadData()
+        }
     }
 }
 
