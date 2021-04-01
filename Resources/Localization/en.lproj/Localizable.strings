@@ -40,11 +40,11 @@
 "account-type-selection-add" = "Add Account";
 "account-type-selection-add-detail" = "I want a new account with a new address and recovery passphrase.";
 "account-type-selection-create" = "Create New Account";
-"account-type-selection-create-detail" = "Create a new Algorand Account";
+"account-type-selection-create-detail" = "I want to create a new Algorand account";
 "account-type-selection-watch-detail" = "I want to monitor an account that's held in cold storage.";
-"account-type-selection-recover" = "Recover with Passphrase";
+"account-type-selection-recover" = "Recover With Passphrase";
 "account-type-selection-recover-detail" = "I already have an account";
-"account-type-selection-ledger" = "Pair Ledger Account";
+"account-type-selection-ledger" = "Pair Ledger Device";
 "account-type-selection-ledger-detail" = "I want to create an account that is backed by my Ledger hardware wallet.";
 "account-welcome-wallet-title" = "Welcome to the\nAlgorand Wallet";
 
@@ -98,6 +98,7 @@
 "passphrase-question-first" = "1st";
 "passphrase-select-n-word" = "Select the %@ word of your passphrase";
 "passphrase-qeustion-counter" = "Question %@ of %@";
+"passphrase-verify-wrong-message" = "Selected words are wrong. Please try again.";
 
 "passphrase-verify-title" = "Verify recovery passphrase backup";
 "passphrase-verify-select-word" = "Select word #%@";
@@ -517,7 +518,7 @@
 "title-watch-account" = "Watch Account";
 "watch-account-create" = "Create a Watch Account";
 "watch-account-input-explanation" = "Account Address to Watch";
-"watch-account-explanation-title" = "Again, you are creating a read-only view of an Algorand Account. If you send assets to this account and you do not have the corresponding recovery passphrase, those assets will be lost.";
+"watch-account-explanation-title" = "You are creating a read-only view of an Algorand Account. If you send assets to this account and you do not have the corresponding recovery passphrase, those assets will be lost.";
 "watch-account-input-placeholder" = "Paste Address or Scan QR";
 "watch-account-error-address" = "Please enter a valid address.";
 

@@ -73,13 +73,9 @@ class AnimatedTutorialViewModel {
         case .recover:
             description = "tutorial-description-recover".localized.attributed([.lineSpacing(1.2)])
         case .watchAccount:
-            let fullText = "tutorial-description-watch".localized
-            let italicText = "tutorial-description-watch-italic".localized
-            description = addItalicFont(to: italicText, in: fullText)
+            description = addAttributesForWatchAccountDescription()
         case .writePassphrase:
-            let fullText = "tutorial-description-write".localized
-            let italicText = "tutorial-description-write-italic".localized
-            description = addItalicFont(to: italicText, in: fullText)
+            description = addAttributesForPassphraseDescription()
         case .passcode:
             description = "tutorial-description-passcode".localized.attributed([.lineSpacing(1.2)])
         case .localAuthentication:
@@ -87,15 +83,22 @@ class AnimatedTutorialViewModel {
         }
     }
 
-    private func addItalicFont(to string: String, in fullString: String) -> NSAttributedString {
+    private func addAttributesForWatchAccountDescription() -> NSAttributedString {
+        let fullString = "tutorial-description-watch".localized
+        let string = "tutorial-description-watch-italic".localized
         let fullAttributedText = NSMutableAttributedString(string: fullString)
-        let italicRange = (fullString as NSString).range(of: string)
-        fullAttributedText.addAttribute(.font, value: UIFont.font(withWeight: .lightItalic(size: 16.0)), range: italicRange)
+        fullAttributedText.addItalicFont(UIFont.font(withWeight: .lightItalic(size: 16.0)), to: string)
+        fullAttributedText.addColor(Colors.Main.red600, to: string)
+        fullAttributedText.addLineHeight(1.2)
+        return fullAttributedText
+    }
 
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineHeightMultiple = 1.2
-        fullAttributedText.addAttribute(.paragraphStyle, value: paragraphStyle, range: NSRange(location: 0, length: fullString.count))
-
+    private func addAttributesForPassphraseDescription() -> NSAttributedString {
+        let fullString = "tutorial-description-write".localized
+        let string = "tutorial-description-write-italic".localized
+        let fullAttributedText = NSMutableAttributedString(string: fullString)
+        fullAttributedText.addItalicFont(UIFont.font(withWeight: .lightItalic(size: 16.0)), to: string)
+        fullAttributedText.addLineHeight(1.2)
         return fullAttributedText
     }
 
