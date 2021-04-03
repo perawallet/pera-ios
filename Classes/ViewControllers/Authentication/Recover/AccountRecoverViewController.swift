@@ -345,6 +345,7 @@ extension AccountRecoverViewController {
         // If copied text is a valid mnemonc, fill automatically.
         if isValidMnemonicCount(mnemonics) {
             fillMnemonics(mnemonics)
+            recoverButton.isEnabled = true
             return false
         }
 
@@ -417,7 +418,7 @@ extension AccountRecoverViewController {
             return
         }
 
-        // If copied text is a valid mnemonc, fill automatically.
+        // If copied text is a valid mnemonic, fill automatically.
         if isValidMnemonicCount(mnemonics) {
             fillMnemonics(mnemonics)
             recoverButton.isEnabled = true

@@ -387,8 +387,8 @@ extension AccountsViewController {
         if user.accounts.isEmpty {
             setEmptyAccountsState()
         } else {
-            accountsView.accountsCollectionView.contentState = accountsDataSource.accounts.isEmpty ? .empty(noConnectionView) : .none
-            accountsView.setHeaderButtonsHidden(accountsDataSource.accounts.isEmpty)
+            accountsView.accountsCollectionView.contentState = isConnectedToInternet ? .none : .empty(noConnectionView)
+            accountsView.setHeaderButtonsHidden(!isConnectedToInternet)
         }
     }
 
