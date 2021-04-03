@@ -93,11 +93,11 @@ extension AccountRecoverView {
 
 extension AccountRecoverView {
     private func addInputViews() {
-        fillTheFirstColumn()
-        fillTheSecondColumn()
+        fillTheFirstColumnOfInputViews()
+        fillTheSecondColumnOfInputViews()
     }
 
-    private func fillTheFirstColumn() {
+    private func fillTheFirstColumnOfInputViews() {
         for index in 0...Constants.firstColumnCount - 1 {
             let inputView = composeInputView()
             if index == 0 {
@@ -107,7 +107,7 @@ extension AccountRecoverView {
         }
     }
 
-    private func fillTheSecondColumn() {
+    private func fillTheSecondColumnOfInputViews() {
         for _ in 0...Constants.secondColumnCount - 1 {
             let inputView = composeInputView()
             secondColumnStackView.addArrangedSubview(inputView)

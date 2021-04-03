@@ -241,7 +241,7 @@ extension AccountsViewController {
 
         passcodeSettingDisplayStore.increaseAppOpenCount()
 
-        if passcodeSettingDisplayStore.appOpenCount % passcodeSettingDisplayStore.appOpenCountToAskPasscode == 0 {
+        if passcodeSettingDisplayStore.shouldAskForPasscode {
             let controller = open(
                 .animatedTutorial(flow: .none, tutorial: .passcode, isActionable: true),
                 by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
@@ -589,5 +589,9 @@ struct PasscodeSettingDisplayStore: Storable {
 
     mutating func disableAskingPasscode() {
         userDefaults.set(true, forKey: dontAskAgainKey)
+    }
+
+    var shouldAskForPasscode: Bool {
+        return appOpenCount % appOpenCountToAskPasscode == 0
     }
 }

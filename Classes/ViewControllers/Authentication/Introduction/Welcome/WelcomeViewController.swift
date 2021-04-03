@@ -70,7 +70,7 @@ extension WelcomeViewController {
 
     private func addSkipBarButtonItem() {
         let skipBarButtonItem = ALGBarButtonItem(kind: .skip) { [unowned self] in
-            session?.authenticatedUser = User(accounts: [])
+            session?.createUser()
 
             DispatchQueue.main.async {
                 self.dismiss(animated: false) {

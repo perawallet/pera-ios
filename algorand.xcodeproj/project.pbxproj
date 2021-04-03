@@ -1361,6 +1361,9 @@
 		2B85F3F8257A723C00C871A5 /* LedgerAccountFetchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B85F3F7257A723B00C871A5 /* LedgerAccountFetchOperation.swift */; };
 		2B85F3F9257A723C00C871A5 /* LedgerAccountFetchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B85F3F7257A723B00C871A5 /* LedgerAccountFetchOperation.swift */; };
 		2B85F3FA257A723C00C871A5 /* LedgerAccountFetchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B85F3F7257A723B00C871A5 /* LedgerAccountFetchOperation.swift */; };
+		2B88CC862618A509000027B4 /* Array+View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B88CC852618A509000027B4 /* Array+View.swift */; };
+		2B88CC872618A509000027B4 /* Array+View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B88CC852618A509000027B4 /* Array+View.swift */; };
+		2B88CC882618A509000027B4 /* Array+View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B88CC852618A509000027B4 /* Array+View.swift */; };
 		2B89549F2242D90000D6D068 /* UIViewController+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B89549E2242D90000D6D068 /* UIViewController+Additions.swift */; };
 		2B8954A22242E79C00D6D068 /* AccountNameSetupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8954A12242E79C00D6D068 /* AccountNameSetupViewController.swift */; };
 		2B8954A52242E7D800D6D068 /* AccountNameSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8954A42242E7D800D6D068 /* AccountNameSetupView.swift */; };
@@ -2431,6 +2434,7 @@
 		2B85F3E9257A71D100C871A5 /* LedgerOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerOperation.swift; sourceTree = "<group>"; };
 		2B85F3F0257A721D00C871A5 /* LedgerTransactionOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerTransactionOperation.swift; sourceTree = "<group>"; };
 		2B85F3F7257A723B00C871A5 /* LedgerAccountFetchOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountFetchOperation.swift; sourceTree = "<group>"; };
+		2B88CC852618A509000027B4 /* Array+View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+View.swift"; sourceTree = "<group>"; };
 		2B89549E2242D90000D6D068 /* UIViewController+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Additions.swift"; sourceTree = "<group>"; };
 		2B8954A12242E79C00D6D068 /* AccountNameSetupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountNameSetupViewController.swift; sourceTree = "<group>"; };
 		2B8954A42242E7D800D6D068 /* AccountNameSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountNameSetupView.swift; sourceTree = "<group>"; };
@@ -6042,6 +6046,7 @@
 			isa = PBXGroup;
 			children = (
 				2BB6EE502392694800CF7874 /* Array+Additions.swift */,
+				2B88CC852618A509000027B4 /* Array+View.swift */,
 			);
 			path = Array;
 			sourceTree = "<group>";
@@ -8431,6 +8436,7 @@
 				17BD4E742292F1260003E49A /* AccountFetchDraft.swift in Sources */,
 				2BF0FAF725387D2D00D704D5 /* AssetCardDisplayViewController.swift in Sources */,
 				2BCBBAF024A66B25002CD56F /* TransactionFilterViewModel.swift in Sources */,
+				2B88CC882618A509000027B4 /* Array+View.swift in Sources */,
 				2B8E5F972548318C001D8E30 /* AnalyticsScreen.swift in Sources */,
 				17BD4E752292F1260003E49A /* EditAccountView.swift in Sources */,
 				2B5BE03E2518E4A900324BEE /* WatchAccountAdditionView.swift in Sources */,
@@ -9053,6 +9059,7 @@
 				2B0F622B24EC129D00DA22A6 /* BaseViewController.swift in Sources */,
 				2B8E5F962548318C001D8E30 /* AnalyticsScreen.swift in Sources */,
 				2B0F622C24EC129D00DA22A6 /* LedgerApprovalViewController.swift in Sources */,
+				2B88CC872618A509000027B4 /* Array+View.swift in Sources */,
 				2B5BE03D2518E4A900324BEE /* WatchAccountAdditionView.swift in Sources */,
 				2B0F622D24EC129D00DA22A6 /* AlgoAssetCell.swift in Sources */,
 				2B0F622E24EC129D00DA22A6 /* AssetAdditionView.swift in Sources */,
@@ -9675,6 +9682,7 @@
 				17512623223BEB9D0095AF4F /* UserDefaults+Additions.swift in Sources */,
 				2BF0FAF525387D2D00D704D5 /* AssetCardDisplayViewController.swift in Sources */,
 				2BCBBAEF24A66B25002CD56F /* TransactionFilterViewModel.swift in Sources */,
+				2B88CC862618A509000027B4 /* Array+View.swift in Sources */,
 				2B8E5F952548318C001D8E30 /* AnalyticsScreen.swift in Sources */,
 				17BEC4602248C81E00AAF370 /* PassphraseVerifyView.swift in Sources */,
 				2B5BE03C2518E4A900324BEE /* WatchAccountAdditionView.swift in Sources */,

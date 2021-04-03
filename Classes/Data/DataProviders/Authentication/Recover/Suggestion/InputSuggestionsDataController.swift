@@ -28,7 +28,7 @@ class InputSuggestionsDataController: NSObject {
     private var currentSuggestions: [String]
     
     var hasSuggestions: Bool {
-        return currentSuggestionCount != 0
+        return currentSuggestionCount > 0
     }
 
     var currentSuggestionCount: Int {
@@ -36,7 +36,7 @@ class InputSuggestionsDataController: NSObject {
     }
 
     func hasMatchingSuggestion(with text: String) -> Bool {
-        return allSuggestions.contains { $0.lowercased() == text.lowercased() }
+        return allSuggestions.contains { $0.caseInsensitiveCompare(text) == .orderedSame }
     }
 
     override init() {
@@ -56,7 +56,9 @@ class InputSuggestionsDataController: NSObject {
                     let contents = try String(contentsOfFile: filepath)
                     self.allSuggestions = contents.components(separatedBy: "\n")
                 } catch {
-                    self.delegate?.inputSuggestionsDataController(self, didFailedWith: .mnemonicReadingFailed)
+                    DispatchQueue.main.async {
+                        self.delegate?.inputSuggestionsDataController(self, didFailedWith: .mnemonicReadingFailed)
+                    }
                 }
             }
         }

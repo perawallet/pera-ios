@@ -229,7 +229,7 @@ extension AccountRecoverViewController {
 extension AccountRecoverViewController {
     private func pasteFromClipboardIfPossible() {
         if let copiedText = UIPasteboard.general.string {
-            updateMnemonicsFromPasteboard(copiedText)
+            updateMnemonics(copiedText)
             recoverButton.isEnabled = isRecoverEnabled
         }
     }
@@ -247,10 +247,10 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
     }
 
     func accountRecoverView(_ view: AccountRecoverView, didChangeInputIn recoverInputView: RecoverInputView) {
-        customizeRecoverInputViewWhenTheInputWasChanged(recoverInputView)
+        customizeRecoverInputViewWhenInputDidChange(recoverInputView)
     }
 
-    private func customizeRecoverInputViewWhenTheInputWasChanged(_ view: RecoverInputView) {
+    private func customizeRecoverInputViewWhenInputDidChange(_ view: RecoverInputView) {
         recoverButton.isEnabled = isRecoverEnabled
         updateRecoverInputSuggestor(in: view)
         inputSuggestionsViewController.findTopSuggestions(for: view.input)
@@ -297,7 +297,7 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
         charactersIn range: NSRange,
         replacementString string: String
     ) -> Bool {
-        return shouldUpdateRecoverInputView(with: string)
+        return isValidMnemonicInput(string)
     }
 }
 
@@ -311,7 +311,7 @@ extension AccountRecoverViewController {
             return true
         }
 
-        if let previousInputView = previousInputView(of: recoverInputView) {
+        if let previousInputView = recoverInputViews.previousView(of: recoverInputView) as? RecoverInputView {
             return previousInputView.isFilled && hasValidSuggestion(for: previousInputView)
         }
 
@@ -327,32 +327,6 @@ extension AccountRecoverViewController {
         return inputSuggestionsViewController.hasMatchingSuggestion(with: input)
     }
 
-    private func previousInputView(of recoverInputView: RecoverInputView) -> RecoverInputView? {
-        if isFirstInputView(recoverInputView) {
-            return nil
-        }
-
-        guard let index = accountRecoverView.index(of: recoverInputView) else {
-            return nil
-        }
-
-        let previousInputIndex = index - 1
-        return recoverInputViews[safe: previousInputIndex]
-    }
-
-    private func nextInputView(of recoverInputView: RecoverInputView) -> RecoverInputView? {
-        if isLastInputView(recoverInputView) {
-            return nil
-        }
-
-        guard let index = accountRecoverView.index(of: recoverInputView) else {
-            return nil
-        }
-
-        let nextInputIndex = index + 1
-        return recoverInputViews[safe: nextInputIndex]
-    }
-
     private func isFirstInputView(_ recoverInputView: RecoverInputView) -> Bool {
         return recoverInputViews.first == recoverInputView
     }
@@ -361,20 +335,22 @@ extension AccountRecoverViewController {
         return recoverInputViews.last == recoverInputView
     }
 
-    private func shouldUpdateRecoverInputView(with string: String) -> Bool {
+    private func isValidMnemonicInput(_ string: String) -> Bool {
         let mnemonics = string.split(separator: " ").map { String($0) }
 
         if containsOneMnemonic(mnemonics) {
             return string != " "
-        } else if isValidMnemonicCount(mnemonics) {
-            // If copied text is a valid mnemonc, fill automatically.
+        }
+
+        // If copied text is a valid mnemonc, fill automatically.
+        if isValidMnemonicCount(mnemonics) {
             fillMnemonics(mnemonics)
             return false
-        } else {
-            // Invalid copy/paste action for mnemonics.
-            NotificationBanner.showError("title-error".localized, message: "recover-copy-error".localized)
-            return false
         }
+
+        // Invalid copy/paste action for mnemonics.
+        NotificationBanner.showError("title-error".localized, message: "recover-copy-error".localized)
+        return false
     }
 
     private func containsOneMnemonic(_ mnemonics: [String]) -> Bool {
@@ -419,14 +395,18 @@ extension AccountRecoverViewController {
 
         if isLastInputView(recoverInputView) {
             recoverAccount()
-        } else if let nextInputView = nextInputView(of: recoverInputView) {
+            return
+        }
+
+        if let nextInputView = recoverInputViews.nextView(of: recoverInputView) as? RecoverInputView {
             nextInputView.beginEditing()
+            return
         }
     }
 }
 
 extension AccountRecoverViewController {
-    private func updateMnemonicsFromPasteboard(_ text: String) {
+    private func updateMnemonics(_ text: String) {
         let mnemonics = text.split(separator: " ").map { String($0) }
 
         if containsOneMnemonic(mnemonics) {
@@ -434,14 +414,18 @@ extension AccountRecoverViewController {
                !firstText.trimmed.isEmpty {
                 updateCurrentInputView(with: text)
             }
-        } else if isValidMnemonicCount(mnemonics) {
-            // If copied text is a valid mnemonc, fill automatically.
+            return
+        }
+
+        // If copied text is a valid mnemonc, fill automatically.
+        if isValidMnemonicCount(mnemonics) {
             fillMnemonics(mnemonics)
             recoverButton.isEnabled = true
-        } else {
-            // Invalid copy/paste action for mnemonics.
-            NotificationBanner.showError("title-error".localized, message: "recover-copy-error".localized)
+            return
         }
+
+        // Invalid copy/paste action for mnemonics.
+        NotificationBanner.showError("title-error".localized, message: "recover-copy-error".localized)
     }
 }
 
