@@ -159,7 +159,7 @@ class TabBarController: UIViewController {
             self.selectedItem = self.items[index]
         }
         
-        tabBar.centerButtonDidTap = { [unowned self] index in
+        tabBar.centerButtonDidTap = { [unowned self] _ in
             self.isDisplayingTransactionButtons = !self.isDisplayingTransactionButtons
         }
         

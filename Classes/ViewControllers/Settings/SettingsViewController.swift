@@ -270,7 +270,7 @@ extension SettingsViewController: UICollectionViewDelegateFlowLayout {
             case .password:
                 open(
                     .choosePassword(
-                        mode: ChoosePasswordViewController.Mode.resetPassword, flow: nil, route: nil),
+                        mode: .resetPassword, flow: nil, route: nil),
                         by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
                 )
             case .support:
@@ -407,7 +407,7 @@ extension SettingsViewController: SettingsToggleCellDelegate {
         session?.reset(isContactIncluded: true)
         NotificationCenter.default.post(name: .ContactDeletion, object: self, userInfo: nil)
         pushNotificationController.revokeDevice()
-        open(.introduction(flow: .initializeAccount(mode: nil)), by: .launch, animated: false)
+        open(.introduction(flow: .initializeAccount(mode: .none)), by: .launch, animated: false)
      }
 }
 

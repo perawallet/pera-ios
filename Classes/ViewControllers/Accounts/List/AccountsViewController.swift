@@ -17,6 +17,7 @@
 
 import UIKit
 import Magpie
+import SVProgressHUD
 
 class AccountsViewController: BaseViewController {
     
@@ -64,9 +65,17 @@ class AccountsViewController: BaseViewController {
         }
         return PushNotificationController(api: api)
     }()
+
+    private lazy var accountManager: AccountManager = {
+        guard let api = self.api else {
+            fatalError("Api must be set before accessing this view controller.")
+        }
+        return AccountManager(api: api)
+    }()
     
     private(set) lazy var accountsView = AccountsView()
     private lazy var noConnectionView = NoInternetConnectionView()
+    private lazy var emptyStateView = AccountsEmptyStateView()
     private lazy var refreshControl = UIRefreshControl()
     
     private(set) var selectedAccount: Account?
@@ -120,6 +129,7 @@ class AccountsViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        fetchAccountsIfNeeded()
         
         DispatchQueue.main.async {
             UIApplication.shared.appDelegate?.validateAccountManagerFetchPolling()
@@ -129,6 +139,27 @@ class AccountsViewController: BaseViewController {
         pushNotificationController.sendDeviceDetails()
         
         setAccountsCollectionViewContentState()
+        requestAppReview()
+        presentPasscodeFlowIfNeeded()
+    }
+
+    private func fetchAccountsIfNeeded() {
+        guard let session = session,
+              let user = session.authenticatedUser,
+              !session.hasPassword(),
+              !user.accounts.isEmpty else {
+            return
+        }
+
+        SVProgressHUD.show(withStatus: "title-loading".localized)
+        accountManager.fetchAllAccounts(isVerifiedAssetsIncluded: true) {
+            SVProgressHUD.showSuccess(withStatus: "title-done".localized)
+            SVProgressHUD.dismiss(withDelay: 1.0) {
+                DispatchQueue.main.async {
+                    self.accountsView.accountsCollectionView.reloadData()
+                }
+            }
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -148,7 +179,6 @@ class AccountsViewController: BaseViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.presentQRTooltipIfNeeded()
         }
-        requestAppReview()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -167,6 +197,7 @@ class AccountsViewController: BaseViewController {
         accountsView.delegate = self
         accountsView.accountsCollectionView.delegate = accountsDataSource
         accountsView.accountsCollectionView.dataSource = accountsDataSource
+        emptyStateView.delegate = self
     }
     
     override func linkInteractors() {
@@ -194,6 +225,37 @@ extension AccountsViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             AlgorandAppStoreReviewer().requestReviewIfAppropriate()
         }
+    }
+
+    private func presentPasscodeFlowIfNeeded() {
+        guard let session = session,
+              !session.hasPassword() else {
+            return
+        }
+
+        var passcodeSettingDisplayStore = PasscodeSettingDisplayStore()
+
+        if !passcodeSettingDisplayStore.hasPermissionToAskAgain {
+            return
+        }
+
+        passcodeSettingDisplayStore.increaseAppOpenCount()
+
+        if passcodeSettingDisplayStore.appOpenCount % passcodeSettingDisplayStore.appOpenCountToAskPasscode == 0 {
+            let controller = open(
+                .animatedTutorial(flow: .none, tutorial: .passcode, isActionable: true),
+                by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
+            ) as? AnimatedTutorialViewController
+            controller?.delegate = self
+        }
+    }
+}
+
+extension AccountsViewController: AnimatedTutorialViewControllerDelegate {
+    func animatedTutorialViewControllerDidTapDontAskAgain(_ animatedTutorialViewController: AnimatedTutorialViewController) {
+        animatedTutorialViewController.dismissScreen()
+        var passcodeSettingDisplayStore = PasscodeSettingDisplayStore()
+        passcodeSettingDisplayStore.disableAskingPasscode()
     }
 }
 
@@ -236,10 +298,7 @@ extension AccountsViewController: AccountsViewDelegate {
     }
     
     func accountsViewDidTapAddButton(_ accountsView: AccountsView) {
-        open(
-            .welcome(flow: .addNewAccount(mode: nil)),
-            by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
-        )
+        openWelcomeScreen()
     }
 }
 
@@ -321,8 +380,22 @@ extension AccountsViewController {
     }
     
     private func setAccountsCollectionViewContentState() {
-        accountsView.accountsCollectionView.contentState = accountsDataSource.accounts.isEmpty ? .empty(noConnectionView) : .none
-        accountsView.setHeaderButtonsHidden(accountsDataSource.accounts.isEmpty)
+        guard let user = session?.authenticatedUser else {
+            return
+        }
+
+        if user.accounts.isEmpty {
+            setEmptyAccountsState()
+        } else {
+            accountsView.accountsCollectionView.contentState = accountsDataSource.accounts.isEmpty ? .empty(noConnectionView) : .none
+            accountsView.setHeaderButtonsHidden(accountsDataSource.accounts.isEmpty)
+        }
+    }
+
+    func setEmptyAccountsState() {
+        emptyStateView.bind(EmptyStateViewModel(emptyState: .accounts))
+        accountsView.accountsCollectionView.contentState = .empty(emptyStateView)
+        accountsView.setHeaderButtonsHidden(true)
     }
     
     private func displayTestNetBannerIfNeeded() {
@@ -344,11 +417,13 @@ extension AccountsViewController: QRScannerViewControllerDelegate {
                 let amount = qrText.amount else {
                 return
             }
+
             open(
                 .sendAlgosTransactionPreview(
                     account: nil,
                     receiver: .address(address: address, amount: "\(amount)"),
-                    isSenderEditable: true
+                    isSenderEditable: true,
+                    note: qrText.note
                 ),
                 by: .customPresent(
                     presentationStyle: .fullScreen,
@@ -404,7 +479,8 @@ extension AccountsViewController: QRScannerViewControllerDelegate {
                     ),
                     assetDetail: assetDetail,
                     isSenderEditable: false,
-                    isMaxTransaction: false
+                    isMaxTransaction: false,
+                    note: qrText.note
                 ),
                 by: .push
             )
@@ -419,6 +495,19 @@ extension AccountsViewController: QRScannerViewControllerDelegate {
                 handler()
             }
         }
+    }
+}
+
+extension AccountsViewController: AccountsEmptyStateViewDelegate {
+    func accountsEmptyStateViewDidTapActionButton(_ accountsEmptyStateView: AccountsEmptyStateView) {
+        openWelcomeScreen()
+    }
+
+    private func openWelcomeScreen() {
+        open(
+            .welcome(flow: .addNewAccount(mode: .none)),
+            by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
+        )
     }
 }
 
@@ -475,5 +564,30 @@ extension AccountsViewController {
         let editAccountModalHeight: CGFloat = 158.0
         let passphraseModalHeight: CGFloat = 510.0
         let termsAndServiceHeight: CGFloat = 300
+    }
+}
+
+struct PasscodeSettingDisplayStore: Storable {
+    typealias Object = Any
+
+    let appOpenCountToAskPasscode = 5
+
+    private let appOpenCountKey = "com.algorand.algorand.passcode.app.count.key"
+    private let dontAskAgainKey = "com.algorand.algorand.passcode.dont.ask.again"
+
+    var appOpenCount: Int {
+        return userDefaults.integer(forKey: appOpenCountKey)
+    }
+
+    mutating func increaseAppOpenCount() {
+        userDefaults.set(appOpenCount + 1, forKey: appOpenCountKey)
+    }
+
+    var hasPermissionToAskAgain: Bool {
+        return !userDefaults.bool(forKey: dontAskAgainKey)
+    }
+
+    mutating func disableAskingPasscode() {
+        userDefaults.set(true, forKey: dontAskAgainKey)
     }
 }

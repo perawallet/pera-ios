@@ -49,6 +49,8 @@ class LedgerAccountSelectionViewController: BaseViewController {
             default:
                 return true
             }
+        case .none:
+            return false
         }
     }
 
@@ -162,6 +164,8 @@ extension LedgerAccountSelectionViewController: LedgerAccountSelectionViewDelega
             }
         case .initializeAccount:
             saveNewAccounts()
+        case .none:
+            break
         }
     }
 
@@ -192,6 +196,8 @@ extension LedgerAccountSelectionViewController: LedgerAccountSelectionViewDelega
                     }
                 case .addNewAccount:
                     self.closeScreen(by: .dismiss, animated: false)
+                case .none:
+                    break
                 }
             }
         }

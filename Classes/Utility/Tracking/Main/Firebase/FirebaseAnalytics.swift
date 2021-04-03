@@ -16,6 +16,7 @@
 //  FirebaseAnalytics.swift
 
 import Firebase
+import FirebaseAnalytics
 
 class FirebaseAnalytics: NSObject {
     

@@ -69,10 +69,10 @@ extension VerifiedAssetInformationView {
     @objc
     private func notifyDelegateToOpenFeedback(_ gestureRecognizer: UITapGestureRecognizer) {
         let fullText = "verified-asset-information-text".localized as NSString
-        let contactTextRange = fullText.range(of: "verified-asset-information-contact-us".localized)
+        let contactTextRange = fullText.range(of: "verified-asset-information-visit-site".localized)
 
         if gestureRecognizer.detectTouchForLabel(informationLabel, in: contactTextRange) {
-            delegate?.verifiedAssetInformationViewDidTapContactText(self)
+            delegate?.verifiedAssetInformationViewDidVisitSite(self)
         }
     }
 }
@@ -115,7 +115,7 @@ extension VerifiedAssetInformationView {
     private func addInformationTextAttributes() {
         let fullText = "verified-asset-information-text".localized
         let doubleCheckText = "verified-asset-double-check".localized
-        let contactText = "verified-asset-information-contact-us".localized
+        let contactText = "verified-asset-information-visit-site".localized
         
         let fullAttributedText = NSMutableAttributedString(string: fullText)
         
@@ -138,5 +138,5 @@ extension VerifiedAssetInformationView {
 }
 
 protocol VerifiedAssetInformationViewDelegate: class {
-    func verifiedAssetInformationViewDidTapContactText(_ verifiedAssetInformationView: VerifiedAssetInformationView)
+    func verifiedAssetInformationViewDidVisitSite(_ verifiedAssetInformationView: VerifiedAssetInformationView)
 }

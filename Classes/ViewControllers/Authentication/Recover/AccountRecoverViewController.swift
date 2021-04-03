@@ -40,9 +40,11 @@ class AccountRecoverViewController: BaseScrollViewController {
     
     private lazy var accountRecoverView = AccountRecoverView()
 
-    private var viewModel = AccountRecoverViewModel()
-
     private lazy var recoverButton = MainButton(title: "recover-title".localized)
+
+    private var isRecoverEnabled: Bool {
+        return getMnemonics() != nil
+    }
     
     private lazy var accountManager: AccountManager? = {
         guard let api = self.api else {
@@ -59,7 +61,11 @@ class AccountRecoverViewController: BaseScrollViewController {
         let dataController = AccountRecoverDataController(session: session)
         return dataController
     }()
-    
+
+    private var recoverInputViews: [RecoverInputView] {
+        return accountRecoverView.recoverInputViews
+    }
+
     private let accountSetupFlow: AccountSetupFlow
     
     init(accountSetupFlow: AccountSetupFlow, configuration: ViewControllerConfiguration) {
@@ -68,31 +74,22 @@ class AccountRecoverViewController: BaseScrollViewController {
     }
 
     override func configureNavigationBarAppearance() {
-        let qrBarButtonItem = ALGBarButtonItem(kind: .qr) { [weak self] in
-            guard let self = self else {
-                return
-            }
-            self.openQRScanner()
-        }
-
-        rightBarButtonItems = [qrBarButtonItem]
+        addBarButtons()
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel.currentInputView?.beginEditing()
+        accountRecoverView.currentInputView?.beginEditing()
     }
 
     override func configureAppearance() {
         super.configureAppearance()
-        title = "recover-from-seed-title".localized
-        viewModel.addInputViews(to: accountRecoverView)
         recoverButton.isEnabled = false
     }
 
     override func linkInteractors() {
         super.linkInteractors()
-        viewModel.delegate = self
+        accountRecoverView.delegate = self
         dataController.delegate = self
         keyboardController.dataSource = self
         inputSuggestionsViewController.delegate = self
@@ -139,7 +136,7 @@ extension AccountRecoverViewController {
             self.updateRecoverButtonLayoutWhenKeyboardIsShown(keyboard)
         }
 
-        keyboardController.notificationHandlerWhenKeyboardHidden = { keyboard in
+        keyboardController.notificationHandlerWhenKeyboardHidden = { _ in
             self.updateRecoverButtonLayoutWhenKeyboardIsHidden()
         }
     }
@@ -165,6 +162,34 @@ extension AccountRecoverViewController {
 }
 
 extension AccountRecoverViewController {
+    private func addBarButtons() {
+        rightBarButtonItems = [composeQRBarButton(), composePasteBarButton()]
+    }
+
+    private func composeQRBarButton() -> ALGBarButtonItem {
+        let qrBarButtonItem = ALGBarButtonItem(kind: .qr) { [weak self] in
+            guard let self = self else {
+                return
+            }
+            self.openQRScanner()
+        }
+
+        return qrBarButtonItem
+    }
+
+    private func composePasteBarButton() -> ALGBarButtonItem {
+        let pasteBarButtonItem = ALGBarButtonItem(kind: .paste) { [weak self] in
+            guard let self = self else {
+                return
+            }
+            self.pasteFromClipboardIfPossible()
+        }
+
+        return pasteBarButtonItem
+    }
+}
+
+extension AccountRecoverViewController {
     private func openQRScanner() {
         if !UIImagePickerController.isSourceTypeAvailable(.camera) {
             displaySimpleAlertWith(title: "qr-scan-error-title".localized, message: "qr-scan-error-message".localized)
@@ -176,7 +201,7 @@ extension AccountRecoverViewController {
     }
 
     private func recoverAccount() {
-        guard let mnemonics = viewModel.getMnemonics() else {
+        guard let mnemonics = getMnemonics() else {
             displaySimpleAlertWith(title: "title-error".localized, message: "recover-fill-all-error".localized)
             return
         }
@@ -186,13 +211,32 @@ extension AccountRecoverViewController {
     }
 }
 
-extension AccountRecoverViewController: AccountRecoverViewModelDelegate {
-    func accountRecoverViewModel(_ viewModel: AccountRecoverViewModel, didChangeInputIn view: RecoverInputView) {
-        customizeRecoverInputViewWhenTheInputWasChanged(view)
+extension AccountRecoverViewController {
+    private func pasteFromClipboardIfPossible() {
+        if let copiedText = UIPasteboard.general.string {
+            updateMnemonicsFromPasteboard(copiedText)
+            recoverButton.isEnabled = isRecoverEnabled
+        }
+    }
+}
+
+extension AccountRecoverViewController: AccountRecoverViewDelegate {
+    func accountRecoverView(_ view: AccountRecoverView, shouldBeginEditing recoverInputView: RecoverInputView) -> Bool {
+        return shouldBeginEditingInputView(recoverInputView)
+    }
+
+    func accountRecoverView(_ view: AccountRecoverView, didBeginEditing recoverInputView: RecoverInputView) {
+        if let index = view.index(of: recoverInputView) {
+            recoverInputView.bind(RecoverInputViewModel(state: .active, index: index))
+        }
+    }
+
+    func accountRecoverView(_ view: AccountRecoverView, didChangeInputIn recoverInputView: RecoverInputView) {
+        customizeRecoverInputViewWhenTheInputWasChanged(recoverInputView)
     }
 
     private func customizeRecoverInputViewWhenTheInputWasChanged(_ view: RecoverInputView) {
-        recoverButton.isEnabled = viewModel.isRecoverEnabled
+        recoverButton.isEnabled = isRecoverEnabled
         updateRecoverInputSuggestor(in: view)
         inputSuggestionsViewController.findTopSuggestions(for: view.input)
         updateRecoverInputViewStateForSuggestions(view)
@@ -209,15 +253,180 @@ extension AccountRecoverViewController: AccountRecoverViewModelDelegate {
     }
 
     private func updateRecoverInputViewStateForSuggestions(_ view: RecoverInputView) {
+        guard let index = accountRecoverView.index(of: view) else {
+            return
+        }
+
         if !inputSuggestionsViewController.hasSuggestions && !view.input.isNilOrEmpty {
-            view.bind(RecoverInputViewModel(state: .wrong, index: view.tag))
+            view.bind(RecoverInputViewModel(state: .wrong, index: index))
         } else {
-            view.bind(RecoverInputViewModel(state: .active, index: view.tag))
+            view.bind(RecoverInputViewModel(state: .active, index: index))
         }
     }
 
-    func accountRecoverViewModelDidRecover(_ viewModel: AccountRecoverViewModel) {
-        recoverAccount()
+    func accountRecoverView(_ view: AccountRecoverView, didEndEditing recoverInputView: RecoverInputView) {
+        guard let index = view.index(of: recoverInputView) else {
+            return
+        }
+        recoverInputView.bind(RecoverInputViewModel(state: .filled, index: index))
+    }
+
+    func accountRecoverView(_ view: AccountRecoverView, shouldReturn recoverInputView: RecoverInputView) -> Bool {
+        finishUpdates(for: recoverInputView)
+        return true
+    }
+
+    func accountRecoverView(
+        _ view: AccountRecoverView,
+        shouldChange recoverInputView: RecoverInputView,
+        charactersIn range: NSRange,
+        replacementString string: String
+    ) -> Bool {
+        return shouldUpdateRecoverInputView(with: string)
+    }
+}
+
+extension AccountRecoverViewController {
+    private func shouldBeginEditingInputView(_ recoverInputView: RecoverInputView) -> Bool {
+        return isPreviousInputViewFilledCorrectly(recoverInputView)
+    }
+
+    private func isPreviousInputViewFilledCorrectly(_ recoverInputView: RecoverInputView) -> Bool {
+        if isFirstInputView(recoverInputView) {
+            return true
+        }
+
+        if let previousInputView = previousInputView(of: recoverInputView) {
+            return previousInputView.isFilled && hasValidSuggestion(for: previousInputView)
+        }
+
+        return false
+    }
+
+    private func hasValidSuggestion(for view: RecoverInputView) -> Bool {
+        guard let input = view.input,
+              !input.isEmptyOrBlank else {
+            return false
+        }
+
+        return inputSuggestionsViewController.hasMatchingSuggestion(with: input)
+    }
+
+    private func previousInputView(of recoverInputView: RecoverInputView) -> RecoverInputView? {
+        if isFirstInputView(recoverInputView) {
+            return nil
+        }
+
+        guard let index = accountRecoverView.index(of: recoverInputView) else {
+            return nil
+        }
+
+        let previousInputIndex = index - 1
+        return recoverInputViews[safe: previousInputIndex]
+    }
+
+    private func nextInputView(of recoverInputView: RecoverInputView) -> RecoverInputView? {
+        if isLastInputView(recoverInputView) {
+            return nil
+        }
+
+        guard let index = accountRecoverView.index(of: recoverInputView) else {
+            return nil
+        }
+
+        let nextInputIndex = index + 1
+        return recoverInputViews[safe: nextInputIndex]
+    }
+
+    private func isFirstInputView(_ recoverInputView: RecoverInputView) -> Bool {
+        return recoverInputViews.first == recoverInputView
+    }
+
+    private func isLastInputView(_ recoverInputView: RecoverInputView) -> Bool {
+        return recoverInputViews.last == recoverInputView
+    }
+
+    private func shouldUpdateRecoverInputView(with string: String) -> Bool {
+        let mnemonics = string.split(separator: " ").map { String($0) }
+
+        if containsOneMnemonic(mnemonics) {
+            return string != " "
+        } else if isValidMnemonicCount(mnemonics) {
+            // If copied text is a valid mnemonc, fill automatically.
+            fillMnemonics(mnemonics)
+            return false
+        } else {
+            // Invalid copy/paste action for mnemonics.
+            NotificationBanner.showError("title-error".localized, message: "recover-copy-error".localized)
+            return false
+        }
+    }
+
+    private func containsOneMnemonic(_ mnemonics: [String]) -> Bool {
+        return mnemonics.count <= 1
+    }
+
+    private func isValidMnemonicCount(_ mnemonics: [String]) -> Bool {
+        return mnemonics.count == AccountRecoverView.Constants.totalMnemonicCount
+    }
+}
+
+extension AccountRecoverViewController {
+    private func getMnemonics() -> String? {
+        let inputs = recoverInputViews.compactMap { $0.input }.filter { !$0.isEmpty }
+        if inputs.count == AccountRecoverView.Constants.totalMnemonicCount {
+            return inputs.joined(separator: " ")
+        }
+        return nil
+    }
+
+    private func fillMnemonics(_ mnemonics: [String]) {
+        for (index, inputView) in recoverInputViews.enumerated() {
+            inputView.setText(mnemonics[index])
+        }
+    }
+
+    private func updateCurrentInputView(with mnemonic: String) {
+        guard let currentInputView = accountRecoverView.currentInputView else {
+            return
+        }
+
+        currentInputView.setText(mnemonic)
+        finishUpdates(for: currentInputView)
+    }
+
+    private func finishUpdates(for recoverInputView: RecoverInputView) {
+        if !hasValidSuggestion(for: recoverInputView) {
+            return
+        }
+
+        recoverInputView.removeInputAccessoryView()
+
+        if isLastInputView(recoverInputView) {
+            recoverAccount()
+        } else if let nextInputView = nextInputView(of: recoverInputView) {
+            nextInputView.beginEditing()
+        }
+    }
+}
+
+extension AccountRecoverViewController {
+    private func updateMnemonicsFromPasteboard(_ text: String) {
+        let mnemonics = text.split(separator: " ").map { String($0) }
+
+        if containsOneMnemonic(mnemonics) {
+            if let firstText = mnemonics[safe: 0],
+               !firstText.trimmed.isEmpty {
+                updateCurrentInputView(with: text)
+            }
+        } else if isValidMnemonicCount(mnemonics) {
+            // If copied text is a valid mnemonc, fill automatically.
+            fillMnemonics(mnemonics)
+            recoverButton.isEnabled = true
+        } else {
+            // Invalid copy/paste action for mnemonics.
+            NotificationBanner.showError("title-error".localized, message: "recover-copy-error".localized)
+        }
     }
 }
 
@@ -271,6 +480,8 @@ extension AccountRecoverViewController: AccountRecoverDataControllerDelegate {
                     }
                 case .addNewAccount:
                     self.closeScreen(by: .dismiss, animated: false)
+                case .none:
+                    break
                 }
             }
         }
@@ -293,7 +504,7 @@ extension AccountRecoverViewController: AccountRecoverDataControllerDelegate {
 
 extension AccountRecoverViewController: InputSuggestionViewControllerDelegate {
     func inputSuggestionViewController(_ inputSuggestionViewController: InputSuggestionViewController, didSelect mnemonic: String) {
-        viewModel.updateCurrentInputView(with: mnemonic)
+        updateCurrentInputView(with: mnemonic)
     }
 }
 
@@ -314,7 +525,7 @@ extension AccountRecoverViewController: QRScannerViewControllerDelegate {
 
     private func updateScreenFromQR(with qrText: QRText) {
         let mnemonics = qrText.qrText().split(separator: " ").map { String($0) }
-        viewModel.fillMnemonics(mnemonics)
+        fillMnemonics(mnemonics)
         recoverButton.isEnabled = true
     }
     
@@ -333,7 +544,7 @@ extension AccountRecoverViewController: KeyboardControllerDataSource {
     }
 
     func firstResponder(for keyboardController: KeyboardController) -> UIView? {
-        return viewModel.currentInputView
+        return accountRecoverView.currentInputView
     }
 
     func containerView(for keyboardController: KeyboardController) -> UIView {

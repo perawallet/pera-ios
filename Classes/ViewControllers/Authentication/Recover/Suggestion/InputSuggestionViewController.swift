@@ -33,13 +33,13 @@ class InputSuggestionViewController: BaseViewController {
         collectionViewLayout.minimumInteritemSpacing = 0.0
         collectionViewLayout.scrollDirection = .horizontal
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout)
-        collectionView.register(InputSuggestionCell.self, forCellWithReuseIdentifier: InputSuggestionCell.reusableIdentifier)
         collectionView.backgroundColor = .clear
         return collectionView
     }()
 
     override func configureAppearance() {
         view.backgroundColor = Colors.Component.inputSuggestionBackground
+        layoutBuilder.registerCells(to: suggestionsCollectionView)
     }
 
     override func linkInteractors() {
@@ -68,7 +68,7 @@ extension InputSuggestionViewController: InputSuggestionsDataControllerDelegate 
         _ inputSuggestionsDataController: InputSuggestionsDataController,
         didFailedWith error: InputSuggestionsDataController.SuggestionError
     ) {
-        
+
     }
 }
 
@@ -82,8 +82,12 @@ extension InputSuggestionViewController {
         suggestionsCollectionView.reloadData()
     }
 
+    func hasMatchingSuggestion(with input: String) -> Bool {
+        dataController.hasMatchingSuggestion(with: input)
+    }
+
     var hasSuggestions: Bool {
-        return dataController.currentSuggestionCount != 0
+        return dataController.hasSuggestions
     }
 }
 

@@ -22,16 +22,7 @@ class WatchAccountAdditionView: BaseView {
     private let layout = Layout<LayoutConstants>()
     
     weak var delegate: WatchAccountAdditionViewDelegate?
-    
-    private(set) lazy var accountNameInputView: SingleLineInputField = {
-        let accountNameInputView = SingleLineInputField()
-        accountNameInputView.explanationLabel.text = "recover-from-seed-name-title".localized
-        accountNameInputView.placeholderText = "recover-from-seed-name-placeholder".localized
-        accountNameInputView.nextButtonMode = .next
-        accountNameInputView.inputTextField.autocorrectionType = .no
-        return accountNameInputView
-    }()
-    
+
     private(set) lazy var addressInputView: MultiLineInputField = {
         let addressInputView = MultiLineInputField(displaysRightInputAccessoryButton: true)
         addressInputView.explanationLabel.text = "watch-account-input-explanation".localized
@@ -44,11 +35,19 @@ class WatchAccountAdditionView: BaseView {
         addressInputView.inputTextView.isScrollEnabled = false
         return addressInputView
     }()
+
+    private lazy var bottomLabel: UILabel = {
+        UILabel()
+            .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
+            .withTextColor(Colors.Text.secondary)
+            .withLine(.contained)
+            .withAlignment(.left)
+            .withText("watch-account-explanation-title".localized)
+    }()
     
-    private(set) lazy var nextButton = MainButton(title: "title-next".localized)
+    private(set) lazy var nextButton = MainButton(title: "title-verify".localized)
     
     override func linkInteractors() {
-        accountNameInputView.delegate = self
         addressInputView.delegate = self
     }
     
@@ -57,8 +56,8 @@ class WatchAccountAdditionView: BaseView {
     }
     
     override func prepareLayout() {
-        setupAccountNameInputViewLayout()
         setupAddressInputViewLayout()
+        setupBottomLabelLayout()
         setupNextButtonLayout()
     }
 }
@@ -71,21 +70,21 @@ extension WatchAccountAdditionView {
 }
 
 extension WatchAccountAdditionView {
-    private func setupAccountNameInputViewLayout() {
-        addSubview(accountNameInputView)
-        
-        accountNameInputView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.top.equalToSuperview().inset(layout.current.topInset)
-        }
-    }
-    
     private func setupAddressInputViewLayout() {
         addSubview(addressInputView)
         
         addressInputView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.top.equalTo(accountNameInputView.snp.bottom).offset(layout.current.fieldTopInset)
+            make.top.equalToSuperview().inset(layout.current.topInset)
+        }
+    }
+
+    private func setupBottomLabelLayout() {
+        addSubview(bottomLabel)
+
+        bottomLabel.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.top.equalTo(addressInputView.snp.bottom).offset(layout.current.bottomLabelTopInset)
         }
     }
 
@@ -93,7 +92,7 @@ extension WatchAccountAdditionView {
         addSubview(nextButton)
         
         nextButton.snp.makeConstraints { make in
-            make.top.equalTo(addressInputView.snp.bottom).offset(layout.current.buttonTopInset)
+            make.top.equalTo(bottomLabel.snp.bottom).offset(layout.current.buttonTopInset)
             make.bottom.lessThanOrEqualToSuperview().inset(layout.current.buttonBottomInset)
             make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
             make.centerX.equalToSuperview()
@@ -113,11 +112,7 @@ extension WatchAccountAdditionView: InputViewDelegate {
     }
     
     func inputViewDidReturn(inputView: BaseInputView) {
-        if inputView == accountNameInputView {
-            addressInputView.beginEditing()
-        } else {
-            delegate?.watchAccountAdditionViewDidAddAccount(self)
-        }
+        delegate?.watchAccountAdditionViewDidAddAccount(self)
     }
 }
 
@@ -125,6 +120,7 @@ extension WatchAccountAdditionView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let topInset: CGFloat = 36.0
         let fieldTopInset: CGFloat = 20.0
+        let bottomLabelTopInset: CGFloat = 16.0
         let buttonBottomInset: CGFloat = 15.0
         let buttonTopInset: CGFloat = 24.0
         let horizontalInset: CGFloat = 20.0
