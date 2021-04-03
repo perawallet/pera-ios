@@ -415,7 +415,11 @@ extension TransactionsViewController: CSVExportable {
     private func fetchAllTransactionsForCSV() {
         SVProgressHUD.show(withStatus: "csv-download-title".localized)
         
-        transactionHistoryDataSource.fetchAllTransactions(for: account, between: getTransactionFilterDates()) { transactions, error in
+        transactionHistoryDataSource.fetchAllTransactions(
+            for: account,
+            between: getTransactionFilterDates(),
+            nextToken: nil
+        ) { transactions, error in
             if error != nil {
                 SVProgressHUD.showError(withStatus: "csv-download-error".localized)
                 SVProgressHUD.dismiss()
