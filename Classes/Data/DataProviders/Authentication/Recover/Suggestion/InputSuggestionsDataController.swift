@@ -26,6 +26,18 @@ class InputSuggestionsDataController: NSObject {
     private var allSuggestions: [String] = []
 
     private var currentSuggestions: [String]
+    
+    var hasSuggestions: Bool {
+        return currentSuggestionCount != 0
+    }
+
+    var currentSuggestionCount: Int {
+        return currentSuggestions.filter { !$0.isEmpty }.count
+    }
+
+    func hasMatchingSuggestion(with text: String) -> Bool {
+        return allSuggestions.contains { $0.lowercased() == text.lowercased() }
+    }
 
     override init() {
         currentSuggestions = [String](repeating: "", count: suggestionCount)
@@ -34,12 +46,18 @@ class InputSuggestionsDataController: NSObject {
     }
 
     private func readSuggestionsFromFile() {
-        if let filepath = Bundle.main.path(forResource: "mnemonics", ofType: "txt") {
-            do {
-                let contents = try String(contentsOfFile: filepath)
-                allSuggestions = contents.components(separatedBy: "\n")
-            } catch {
-                delegate?.inputSuggestionsDataController(self, didFailedWith: .mnemonicReadingFailed)
+        DispatchQueue.global(qos: .userInteractive).async { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            if let filepath = Bundle.main.path(forResource: "mnemonics", ofType: "txt") {
+                do {
+                    let contents = try String(contentsOfFile: filepath)
+                    self.allSuggestions = contents.components(separatedBy: "\n")
+                } catch {
+                    self.delegate?.inputSuggestionsDataController(self, didFailedWith: .mnemonicReadingFailed)
+                }
             }
         }
     }
@@ -55,14 +73,6 @@ extension InputSuggestionsDataController {
         for i in 0...suggestionCount - 1 {
             currentSuggestions[i] = filteredSuggestions[safe: i] ?? ""
         }
-    }
-
-    var currentSuggestionCount: Int {
-        return currentSuggestions.filter { !$0.isEmpty }.count
-    }
-
-    func hasMatchingSuggestion(with text: String) -> Bool {
-        return allSuggestions.contains { $0.lowercased() == text.lowercased() }
     }
 }
 

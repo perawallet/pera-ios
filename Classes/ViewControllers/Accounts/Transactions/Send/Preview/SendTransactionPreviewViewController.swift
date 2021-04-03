@@ -69,6 +69,7 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
     var amount: Double = 0.00
     var selectedAccount: Account?
     var assetReceiverState: AssetReceiverState
+    private var initalNote: String?
     var assetFraction = algosFraction
     
     var shouldUpdateSenderForSelectedAccount = false
@@ -86,11 +87,13 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
         account: Account?,
         assetReceiverState: AssetReceiverState,
         isSenderEditable: Bool,
+        note: String?,
         configuration: ViewControllerConfiguration
     ) {
         self.selectedAccount = account
         self.assetReceiverState = assetReceiverState
         self.isSenderEditable = isSenderEditable
+        self.initalNote = note
         super.init(configuration: configuration)
     }
     
@@ -131,6 +134,11 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
         transactionController.stopBLEScan()
         dismissProgressIfNeeded()
         transactionController.stopTimer()
+    }
+
+    override func configureAppearance() {
+        super.configureAppearance()
+        setInitialNoteIfPresent()
     }
     
     override func setListeners() {
@@ -216,6 +224,12 @@ extension SendTransactionPreviewViewController {
         
     func isTransactionValid() -> Bool {
         return assetReceiverState != .initial
+    }
+
+    private func setInitialNoteIfPresent() {
+        if initalNote != nil {
+            sendTransactionPreviewView.noteInputView.inputTextView.text = initalNote
+        }
     }
 }
 

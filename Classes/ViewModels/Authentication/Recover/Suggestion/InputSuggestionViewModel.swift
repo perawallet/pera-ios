@@ -18,6 +18,8 @@
 import Foundation
 
 class InputSuggestionViewModel {
+    private let lastSuggestionIndex = 2
+
     private(set) var suggestion: String?
     private(set) var isSeparatorHidden = false
 
@@ -31,6 +33,6 @@ class InputSuggestionViewModel {
     }
 
     private func setIsSeparatorHidden(from index: Int) {
-        isSeparatorHidden = index == 2
+        isSeparatorHidden = index == lastSuggestionIndex
     }
 }
