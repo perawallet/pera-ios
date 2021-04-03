@@ -31,9 +31,9 @@ class AddAccountViewController: BaseViewController {
     override func configureAppearance() {
         view.backgroundColor = Colors.Background.tertiary
         setTertiaryBackgroundColor()
-        addAccountView.configureCreateNewAccountView(with: AccountTypeViewModel(accountSetupMode: .create))
-        addAccountView.configureWatchAccountView(with: AccountTypeViewModel(accountSetupMode: .watch))
-        addAccountView.configurePairAccountView(with: AccountTypeViewModel(accountSetupMode: .pair))
+        addAccountView.configureCreateNewAccountView(with: AccountTypeViewModel(accountSetupMode: .add(type: .create)))
+        addAccountView.configureWatchAccountView(with: AccountTypeViewModel(accountSetupMode: .add(type: .watch)))
+        addAccountView.configurePairAccountView(with: AccountTypeViewModel(accountSetupMode: .add(type: .pair)))
     }
     
     override func linkInteractors() {
@@ -46,24 +46,16 @@ class AddAccountViewController: BaseViewController {
 }
 
 extension AddAccountViewController: AddAccountViewDelegate {
-    func addAccountView(_ addAccountView: AddAccountView, didSelect mode: AccountSetupMode) {
-        switch flow {
-        case .initializeAccount:
-            open(.choosePassword(mode: .setup, flow: .initializeAccount(mode: mode), route: nil), by: .push)
-        case .addNewAccount:
-            switch mode {
-            case .create:
-                open(.passphraseView(address: "temp"), by: .push)
-            case .watch:
-                open(.watchAccountAddition(flow: flow), by: .push)
-            case .pair:
-                open(.ledgerTutorial(flow: .addNewAccount(mode: .pair)), by: .push)
-            case .recover,
-                 .rekey,
-                 .add,
-                 .transfer:
-                break
-            }
+    func addAccountView(_ addAccountView: AddAccountView, didSelect type: AccountAdditionType) {
+        switch type {
+        case .create:
+            open(.animatedTutorial(flow: flow, tutorial: .backUp, isActionable: false), by: .push)
+        case .watch:
+            open(.animatedTutorial(flow: flow, tutorial: .watchAccount, isActionable: false), by: .push)
+        case .pair:
+            open(.ledgerTutorial(flow: .addNewAccount(mode: .add(type: .pair))), by: .push)
+        default:
+            break
         }
     }
 }

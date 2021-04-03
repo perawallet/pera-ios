@@ -15,7 +15,7 @@
 //
 //  AnimatedTutorialViewModel.swift
 
-import Foundation
+import UIKit
 
 class AnimatedTutorialViewModel {
     private(set) var animation: String?
@@ -39,13 +39,13 @@ class AnimatedTutorialViewModel {
         case .recover:
             animation = "pen_animation"
         case .watchAccount:
-            animation = ""
+            animation = "watch_animation"
         case .writePassphrase:
             animation = "pen_animation"
         case .passcode:
             animation = "lock_animation"
         case .localAuthentication:
-            animation = ""
+            animation = "local_auth_animation"
         }
     }
 
@@ -56,7 +56,7 @@ class AnimatedTutorialViewModel {
         case .recover:
             title = "tutorial-title-recover".localized
         case .watchAccount:
-            title = ""
+            title = "title-watch-account".localized
         case .writePassphrase:
             title = "tutorial-title-write".localized
         case .passcode:
@@ -73,14 +73,30 @@ class AnimatedTutorialViewModel {
         case .recover:
             description = "tutorial-description-recover".localized.attributed([.lineSpacing(1.2)])
         case .watchAccount:
-            description = "".attributed([.lineSpacing(1.2)])
+            let fullText = "tutorial-description-watch".localized
+            let italicText = "tutorial-description-watch-italic".localized
+            description = addItalicFont(to: italicText, in: fullText)
         case .writePassphrase:
-            description = "tutorial-description-write".localized.attributed([.lineSpacing(1.2)])
+            let fullText = "tutorial-description-write".localized
+            let italicText = "tutorial-description-write-italic".localized
+            description = addItalicFont(to: italicText, in: fullText)
         case .passcode:
             description = "tutorial-description-passcode".localized.attributed([.lineSpacing(1.2)])
         case .localAuthentication:
             description = "tutorial-description-local".localized.attributed([.lineSpacing(1.2)])
         }
+    }
+
+    private func addItalicFont(to string: String, in fullString: String) -> NSAttributedString {
+        let fullAttributedText = NSMutableAttributedString(string: fullString)
+        let italicRange = (fullString as NSString).range(of: string)
+        fullAttributedText.addAttribute(.font, value: UIFont.font(withWeight: .lightItalic(size: 16.0)), range: italicRange)
+
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineHeightMultiple = 1.2
+        fullAttributedText.addAttribute(.paragraphStyle, value: paragraphStyle, range: NSRange(location: 0, length: fullString.count))
+
+        return fullAttributedText
     }
 
     private func setMainTitle(from tutorial: AnimatedTutorial) {
@@ -90,13 +106,13 @@ class AnimatedTutorialViewModel {
         case .recover:
             mainTitle = "tutorial-main-title-recover".localized
         case .watchAccount:
-            mainTitle = ""
+            mainTitle = "watch-account-create".localized
         case .writePassphrase:
             mainTitle = "tutorial-main-title-write".localized
         case .passcode:
             mainTitle = "tutorial-main-title-passcode".localized
         case .localAuthentication:
-            mainTitle = "local-authentication-preference-title".localized
+            mainTitle = "local-authentication-enable".localized
         }
     }
 

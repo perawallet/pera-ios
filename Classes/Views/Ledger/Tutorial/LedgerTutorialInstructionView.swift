@@ -32,36 +32,15 @@ class LedgerTutorialInstructionView: BaseView {
     }()
     
     private lazy var arrowImageView = UIImageView(image: img("icon-arrow-gray-24"))
-    
+
     override func configureAppearance() {
-        backgroundColor = Colors.Background.secondary
-        layer.cornerRadius = 12.0
-        
-        if !isDarkModeDisplay {
-            applySmallShadow()
-        }
+        backgroundColor = .clear
     }
     
     override func prepareLayout() {
         setupTutorialNumberViewLayout()
         setupArrowImageViewLayout()
         setupTitleLabelLayout()
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        if !isDarkModeDisplay {
-            updateShadowLayoutWhenViewDidLayoutSubviews()
-        }
-    }
-    
-    @available(iOS 12.0, *)
-    override func preferredUserInterfaceStyleDidChange(to userInterfaceStyle: UIUserInterfaceStyle) {
-        if userInterfaceStyle == .dark {
-            removeShadows()
-        } else {
-            applySmallShadow()
-        }
     }
 }
 

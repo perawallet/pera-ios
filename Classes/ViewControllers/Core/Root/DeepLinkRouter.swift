@@ -47,10 +47,15 @@ extension DeepLinkRouter {
     }
 
     private func shouldStartDeepLinkRoutingInInvalidSession(for screen: Screen) -> Bool {
-        if appConfiguration.session.hasPassword() && appConfiguration.session.authenticatedUser != nil {
-            return openLoginScreen(with: screen) != nil
+        if appConfiguration.session.authenticatedUser != nil {
+            if appConfiguration.session.hasPassword() {
+                return openLoginScreen(with: screen) != nil
+            } else {
+                rootViewController?.setupTabBarController()
+                return true
+            }
         } else {
-            return rootViewController?.open(.introduction(flow: .initializeAccount(mode: nil)), by: .launch, animated: false) != nil
+            return rootViewController?.open(.introduction(flow: .initializeAccount(mode: .none)), by: .launch, animated: false) != nil
         }
     }
 
@@ -81,16 +86,23 @@ extension DeepLinkRouter {
     }
 
     private func openAssetFromInvalidSesion(from notification: NotificationDetail, for address: String) {
-        if appConfiguration.session.hasPassword() && appConfiguration.session.authenticatedUser != nil {
-            if let notificationtype = notification.notificationType,
-                notificationtype == .assetSupportRequest {
-                openLoginScreen(with: .assetActionConfirmationNotification(address: address, assetId: notification.asset?.id))
-                return
+        if appConfiguration.session.authenticatedUser != nil {
+            if appConfiguration.session.hasPassword() {
+                openLoginScreen(with: getRoute(from: notification, for: address))
             } else {
-                openLoginScreen(with: .assetDetailNotification(address: address, assetId: notification.asset?.id))
+                rootViewController?.setupTabBarController(withInitial: getRoute(from: notification, for: address))
             }
         } else {
-            rootViewController?.open(.introduction(flow: .initializeAccount(mode: nil)), by: .launch, animated: false)
+            rootViewController?.open(.introduction(flow: .initializeAccount(mode: .none)), by: .launch, animated: false)
+        }
+    }
+
+    private func getRoute(from notification: NotificationDetail, for address: String) -> Screen {
+        if let notificationtype = notification.notificationType,
+            notificationtype == .assetSupportRequest {
+            return .assetActionConfirmationNotification(address: address, assetId: notification.asset?.id)
+        } else {
+            return .assetDetailNotification(address: address, assetId: notification.asset?.id)
         }
     }
 

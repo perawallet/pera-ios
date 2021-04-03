@@ -89,8 +89,6 @@ class KeyboardController {
                  animationDuration: keyboard.animationDuration,
                  animationCurve: keyboard.animationCurve)
             )
-            
-            return
         }
         
         updateContentInsetWithKeyboard()
@@ -112,8 +110,6 @@ class KeyboardController {
                  animationDuration: keyboard.animationDuration,
                  animationCurve: keyboard.animationCurve)
             )
-            
-            return
         }
         
         updateContentInsetWithoutKeyboard()

@@ -110,7 +110,7 @@ class TransactionsViewController: BaseViewController {
             object: nil
         )
         
-        transactionHistoryDataSource.openFilterOptionsHandler = { [weak self] dataSource -> Void in
+        transactionHistoryDataSource.openFilterOptionsHandler = { [weak self] _ -> Void in
             guard let filterOption = self?.filterOption else {
                 return
             }
@@ -126,7 +126,7 @@ class TransactionsViewController: BaseViewController {
             controller?.delegate = self
         }
         
-        transactionHistoryDataSource.shareHistoryHandler = { [weak self] dataSource -> Void in
+        transactionHistoryDataSource.shareHistoryHandler = { [weak self] _ -> Void in
             self?.fetchAllTransactionsForCSV()
         }
     }
@@ -453,7 +453,7 @@ extension TransactionsViewController: CSVExportable {
             SVProgressHUD.dismiss()
             
             let activityViewController = UIActivityViewController(activityItems: [fileUrl], applicationActivities: nil)
-            activityViewController.completionWithItemsHandler = { activity, success, items, error in
+            activityViewController.completionWithItemsHandler = { _, _, _, _ in
                 try? FileManager.default.removeItem(at: fileUrl)
             }
             present(activityViewController, animated: true)

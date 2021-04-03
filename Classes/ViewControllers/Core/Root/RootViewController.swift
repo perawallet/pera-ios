@@ -92,14 +92,18 @@ extension RootViewController {
 extension RootViewController {
     private func initializeFlow() {
         if !appConfiguration.session.isValid {
-            if appConfiguration.session.hasPassword() && appConfiguration.session.authenticatedUser != nil {
-                open(
-                   .choosePassword(mode: .login, flow: nil, route: nil),
-                   by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
-               )
+            if appConfiguration.session.authenticatedUser != nil {
+                if appConfiguration.session.hasPassword() {
+                    open(
+                       .choosePassword(mode: .login, flow: nil, route: nil),
+                       by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
+                   )
+                } else {
+                    setupTabBarController()
+                }
             } else {
                 appConfiguration.session.reset(isContactIncluded: false)
-                open(.introduction(flow: .initializeAccount(mode: nil)), by: .launch, animated: false)
+                open(.introduction(flow: .initializeAccount(mode: .none)), by: .launch, animated: false)
             }
         } else {
             setupTabBarController()

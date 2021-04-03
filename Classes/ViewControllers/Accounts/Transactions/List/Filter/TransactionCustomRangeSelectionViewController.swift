@@ -104,7 +104,7 @@ extension TransactionCustomRangeSelectionViewController {
 
 extension TransactionCustomRangeSelectionViewController {
     private func handleFromRangeSelectionActions() {
-        transactionCustomRangeSelectionView.fromRangeSelectionHandler = { [weak self] fromRangeSelectionView -> Void in
+        transactionCustomRangeSelectionView.fromRangeSelectionHandler = { [weak self] _ -> Void in
             guard let strongSelf = self else {
                 return
             }
@@ -117,7 +117,7 @@ extension TransactionCustomRangeSelectionViewController {
     }
     
     private func handleToRangeSelectionActions() {
-        transactionCustomRangeSelectionView.toRangeSelectionHandler = { [weak self] toRangeSelectionView -> Void in
+        transactionCustomRangeSelectionView.toRangeSelectionHandler = { [weak self] _ -> Void in
             guard let strongSelf = self else {
                 return
             }

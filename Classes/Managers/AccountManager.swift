@@ -60,7 +60,7 @@ extension AccountManager {
         
         for account in userAccounts {
             let accountFetchOperation = AccountFetchOperation(accountInformation: account, api: api)
-            accountFetchOperation.onCompleted = { fetchedAccount, fetchError in
+            accountFetchOperation.onCompleted = { fetchedAccount, _ in
                 guard let fetchedAccount = fetchedAccount else {
                     return
                 }

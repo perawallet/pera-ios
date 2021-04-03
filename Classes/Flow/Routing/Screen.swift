@@ -22,7 +22,6 @@ indirect enum Screen {
     case welcome(flow: AccountSetupFlow)
     case addAccount(flow: AccountSetupFlow)
     case choosePassword(mode: ChoosePasswordViewController.Mode, flow: AccountSetupFlow?, route: Screen?)
-    case localAuthenticationPreference(flow: AccountSetupFlow)
     case passphraseView(address: String)
     case passphraseVerify
     case accountNameSetup
@@ -37,13 +36,14 @@ indirect enum Screen {
     case contactSelection
     case addContact(mode: AddContactViewController.Mode)
     case contactDetail(contact: Contact)
-    case sendAlgosTransactionPreview(account: Account?, receiver: AssetReceiverState, isSenderEditable: Bool)
+    case sendAlgosTransactionPreview(account: Account?, receiver: AssetReceiverState, isSenderEditable: Bool, note: String? = nil)
     case sendAssetTransactionPreview(
         account: Account?,
         receiver: AssetReceiverState,
         assetDetail: AssetDetail,
         isSenderEditable: Bool,
-        isMaxTransaction: Bool
+        isMaxTransaction: Bool,
+        note: String? = nil
     )
     case sendAlgosTransaction(
         algosTransactionSendDraft: AlgosTransactionSendDraft,
@@ -96,7 +96,7 @@ indirect enum Screen {
     case notificationFilter(flow: NotificationFilterViewController.Flow)
     case maximumBalanceWarning(account: Account)
     case screenshotWarning
-    case animatedTutorial(tutorial: AnimatedTutorial, isActionable: Bool)
+    case animatedTutorial(flow: AccountSetupFlow, tutorial: AnimatedTutorial, isActionable: Bool)
     case transactionTutorial(isInitialDisplay: Bool)
 }
 

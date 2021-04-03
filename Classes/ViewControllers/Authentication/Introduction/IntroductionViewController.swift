@@ -56,6 +56,8 @@ class IntroductionViewController: BaseViewController {
             introductionView.setTitle("introduction-title-add-text".localized)
         case .initializeAccount:
             introductionView.setTitle("introduction-title-text".localized)
+        case .none:
+            break
         }
     }
     
@@ -106,16 +108,21 @@ extension IntroductionViewController: IntroductionViewDelegate {
 }
 
 enum AccountSetupFlow {
-    case initializeAccount(mode: AccountSetupMode?)
-    case addNewAccount(mode: AccountSetupMode?)
+    case initializeAccount(mode: AccountSetupMode)
+    case addNewAccount(mode: AccountSetupMode)
+    case none
 }
 
 enum AccountSetupMode {
-    case create
-    case pair
+    case add(type: AccountAdditionType)
     case recover
-    case add
-    case transfer
     case rekey(account: Account)
+    case none
+}
+
+enum AccountAdditionType {
+    case create
     case watch
+    case pair
+    case none
 }
