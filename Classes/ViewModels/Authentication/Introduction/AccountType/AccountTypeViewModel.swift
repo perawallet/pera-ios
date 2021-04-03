@@ -31,54 +31,63 @@ class AccountTypeViewModel {
     
     private func setTypeImage(for accountSetupMode: AccountSetupMode) {
         switch accountSetupMode {
-        case .create:
-            typeImage = img("icon-add-account")
-        case .watch:
-            typeImage = img("icon-add-watch-account")
+        case let .add(type):
+            switch type {
+            case .create:
+                typeImage = img("icon-create-new-account")
+            case .watch:
+                typeImage = img("icon-add-watch-account")
+            case .pair:
+                typeImage = img("icon-pair-ledger-account")
+            case .none:
+                typeImage = img("icon-add-account")
+            }
         case .recover:
             typeImage = img("icon-recover-passphrase")
-        case .pair:
-            typeImage = img("icon-pair-ledger-account")
-        case .add:
-            typeImage = img("icon-create-new-account")
-        case .transfer,
-             .rekey:
+        case .rekey,
+             .none:
             break
         }
     }
     
     private func setTitle(for accountSetupMode: AccountSetupMode) {
         switch accountSetupMode {
-        case .create:
-            title = "account-type-selection-create".localized
-        case .watch:
-            title = "title-watch-account".localized
+        case let .add(type):
+            switch type {
+            case .create:
+                title = "account-type-selection-create".localized
+            case .watch:
+                title = "title-watch-account".localized
+            case .pair:
+                title = "account-type-selection-ledger".localized
+            case .none:
+                title = "account-type-selection-add".localized
+            }
         case .recover:
             title = "account-type-selection-recover".localized
-        case .pair:
-            title = "account-type-selection-ledger".localized
-        case .add:
-            title = "account-type-selection-add".localized
-        case .transfer,
-             .rekey:
+        case .rekey,
+             .none:
             break
         }
     }
 
     private func setDetail(for accountSetupMode: AccountSetupMode) {
         switch accountSetupMode {
-        case .create:
-            detail = "account-type-selection-create-detail".localized
-        case .watch:
-            detail = "account-type-selection-watch-detail".localized
+        case let .add(type):
+            switch type {
+            case .create:
+                detail = "account-type-selection-add-detail".localized
+            case .watch:
+                detail = "account-type-selection-watch-detail".localized
+            case .pair:
+                detail = "account-type-selection-ledger-detail".localized
+            case .none:
+                detail = "account-type-selection-create-detail".localized
+            }
         case .recover:
             detail = "account-type-selection-recover-detail".localized
-        case .pair:
-            detail = "account-type-selection-ledger-detail".localized
-        case .add:
-            detail = "account-type-selection-add-detail".localized
-        case .transfer,
-             .rekey:
+        case .rekey,
+             .none:
             break
         }
     }

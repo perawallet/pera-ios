@@ -22,28 +22,40 @@ class LedgerTutorialView: BaseView {
     private let layout = Layout<LayoutConstants>()
     
     weak var delegate: LedgerTutorialViewDelegate?
-    
-    private lazy var ledgerDeviceImageView = UIImageView(image: img("img-ledger-device"))
+
+    private lazy var animatedImageView: LottieImageView = {
+        let animatedImageView = LottieImageView()
+        animatedImageView.setAnimation("ledger_animation")
+        return animatedImageView
+    }()
     
     private lazy var titleLabel: UILabel = {
         UILabel()
-            .withLine(.contained)
-            .withFont(UIFont.font(withWeight: .medium(size: 16.0)))
-            .withText("ledger-tutorial-title-text".localized)
-            .withAlignment(.center)
+            .withFont(UIFont.font(withWeight: .semiBold(size: 28.0)))
             .withTextColor(Colors.Text.primary)
+            .withLine(.contained)
+            .withAlignment(.center)
+            .withText("ledger-tutorial-title-text".localized)
     }()
     
-    private lazy var ledgerTutorialInstructionListView = LedgerTutorialInstructionListView()
+    private lazy var ledgerTutorialInstructionListView: LedgerTutorialInstructionListView = {
+        let ledgerTutorialInstructionListView = LedgerTutorialInstructionListView()
+        ledgerTutorialInstructionListView.backgroundColor = Colors.Background.tertiary
+        return ledgerTutorialInstructionListView
+    }()
     
     private lazy var searchButton = MainButton(title: "ledger-search-button-title".localized)
     
     override func setListeners() {
         searchButton.addTarget(self, action: #selector(notifyDelegateToSearchLedgerDevices), for: .touchUpInside)
     }
-    
+
+    override func configureAppearance() {
+        backgroundColor = Colors.Background.tertiary
+    }
+
     override func prepareLayout() {
-        setupLedgerDeviceImageViewLayout()
+        setupAnimatedImageViewLayout()
         setupTitleLabelLayout()
         setupLedgerTutorialInstructionListViewLayout()
         setupSearchButtonLayout()
@@ -63,10 +75,10 @@ extension LedgerTutorialView {
 }
 
 extension LedgerTutorialView {
-    private func setupLedgerDeviceImageViewLayout() {
-        addSubview(ledgerDeviceImageView)
+    private func setupAnimatedImageViewLayout() {
+        addSubview(animatedImageView)
         
-        ledgerDeviceImageView.snp.makeConstraints { make in
+        animatedImageView.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(layout.current.imageTopInset)
             make.centerX.equalToSuperview()
         }
@@ -78,7 +90,7 @@ extension LedgerTutorialView {
         titleLabel.snp.makeConstraints { make in
             make.leading.trailing.lessThanOrEqualToSuperview().inset(layout.current.horizontalInset)
             make.centerX.equalToSuperview()
-            make.top.equalTo(ledgerDeviceImageView.snp.bottom).offset(layout.current.titleTopInset)
+            make.top.equalTo(animatedImageView.snp.bottom).offset(layout.current.titleTopInset)
         }
     }
     
@@ -122,10 +134,20 @@ extension LedgerTutorialView: LedgerTutorialInstructionListViewDelegate {
 }
 
 extension LedgerTutorialView {
+    func startAnimating() {
+        animatedImageView.show(with: LottieConfiguration())
+    }
+
+    func stopAnimating() {
+        animatedImageView.stop()
+    }
+}
+
+extension LedgerTutorialView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let horizontalInset: CGFloat = 16.0
         let imageTopInset: CGFloat = 40.0
-        let listTopInset: CGFloat = 60.0
+        let listTopInset: CGFloat = 32.0
         let buttonHorizontalInset: CGFloat = 32.0
         let buttonBottomInset: CGFloat = 40.0
         let titleTopInset: CGFloat = 16.0

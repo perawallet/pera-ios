@@ -134,7 +134,8 @@ extension AppDelegate {
 
     private func validateUserSessionIfNeeded() {
         guard appConfiguration.session.isValid,
-            !appConfiguration.session.accounts.isEmpty else {
+            !appConfiguration.session.accounts.isEmpty,
+            appConfiguration.session.hasPassword() else {
             return
         }
 

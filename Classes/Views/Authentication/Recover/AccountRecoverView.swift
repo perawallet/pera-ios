@@ -21,6 +21,12 @@ class AccountRecoverView: BaseView {
 
     private let layout = Layout<LayoutConstants>()
 
+    weak var delegate: AccountRecoverViewDelegate?
+
+    private(set) var recoverInputViews = [RecoverInputView]()
+
+    private(set) var currentInputView: RecoverInputView?
+
     private lazy var titleLabel: UILabel = {
         UILabel()
             .withFont(UIFont.font(withWeight: .semiBold(size: 28.0)))
@@ -70,6 +76,7 @@ class AccountRecoverView: BaseView {
     override func prepareLayout() {
         setupTitleLabelLayout()
         setupStackViewLayout()
+        addInputViews()
     }
 }
 
@@ -97,12 +104,98 @@ extension AccountRecoverView {
 }
 
 extension AccountRecoverView {
-    func addInputViewToFirstColumn(_ view: RecoverInputView) {
-        firstColumnStackView.addArrangedSubview(view)
+    func index(of recoverInputView: RecoverInputView) -> Int? {
+        return recoverInputViews.firstIndex(of: recoverInputView)
+    }
+}
+
+extension AccountRecoverView {
+    private func addInputViews() {
+        fillTheFirstColumn()
+        fillTheSecondColumn()
     }
 
-    func addInputViewToSecondColumn(_ view: RecoverInputView) {
-        secondColumnStackView.addArrangedSubview(view)
+    private func fillTheFirstColumn() {
+        for index in 0...Constants.firstColumnCount - 1 {
+            let inputView = composeInputView()
+            if index == 0 {
+                currentInputView = inputView
+            }
+            firstColumnStackView.addArrangedSubview(inputView)
+        }
+    }
+
+    private func fillTheSecondColumn() {
+        for _ in 0...Constants.secondColumnCount - 1 {
+            let inputView = composeInputView()
+            secondColumnStackView.addArrangedSubview(inputView)
+        }
+    }
+
+    private func composeInputView() -> RecoverInputView {
+        let inputView = RecoverInputView()
+        inputView.delegate = self
+        inputView.bind(RecoverInputViewModel(state: .empty, index: recoverInputViews.count))
+        recoverInputViews.append(inputView)
+
+        if recoverInputViews.count == Constants.totalMnemonicCount {
+            inputView.returnKey = .go
+        } else {
+            inputView.returnKey = .next
+        }
+
+        return inputView
+    }
+}
+
+extension AccountRecoverView: RecoverInputViewDelegate {
+    func recoverInputViewShouldBeginEditing(_ recoverInputView: RecoverInputView) -> Bool {
+        guard let delegate = delegate else {
+            return true
+        }
+
+        return delegate.accountRecoverView(self, shouldBeginEditing: recoverInputView)
+    }
+
+    func recoverInputViewDidBeginEditing(_ recoverInputView: RecoverInputView) {
+        currentInputView = recoverInputView
+        delegate?.accountRecoverView(self, didBeginEditing: recoverInputView)
+    }
+
+    func recoverInputViewDidChange(_ recoverInputView: RecoverInputView) {
+        delegate?.accountRecoverView(self, didChangeInputIn: recoverInputView)
+    }
+
+    func recoverInputViewDidEndEditing(_ recoverInputView: RecoverInputView) {
+        delegate?.accountRecoverView(self, didEndEditing: recoverInputView)
+    }
+
+    func recoverInputViewShouldReturn(_ recoverInputView: RecoverInputView) -> Bool {
+        guard let delegate = delegate else {
+            return true
+        }
+
+        return delegate.accountRecoverView(self, shouldReturn: recoverInputView)
+    }
+
+    func recoverInputView(
+        _ recoverInputView: RecoverInputView,
+        shouldChangeCharactersIn range: NSRange,
+        replacementString string: String
+    ) -> Bool {
+        guard let delegate = delegate else {
+            return true
+        }
+
+        return delegate.accountRecoverView(self, shouldChange: recoverInputView, charactersIn: range, replacementString: string)
+    }
+}
+
+extension AccountRecoverView {
+    enum Constants {
+        static let totalMnemonicCount = 25
+        static let firstColumnCount = 13
+        static let secondColumnCount = 12
     }
 }
 
@@ -113,4 +206,18 @@ extension AccountRecoverView {
         let stackTopInset: CGFloat = 16.0
         let horizontalInset: CGFloat = 20.0
     }
+}
+
+protocol AccountRecoverViewDelegate: class {
+    func accountRecoverView(_ view: AccountRecoverView, shouldBeginEditing recoverInputView: RecoverInputView) -> Bool
+    func accountRecoverView(_ view: AccountRecoverView, didBeginEditing recoverInputView: RecoverInputView)
+    func accountRecoverView(_ view: AccountRecoverView, didChangeInputIn recoverInputView: RecoverInputView)
+    func accountRecoverView(_ view: AccountRecoverView, didEndEditing recoverInputView: RecoverInputView)
+    func accountRecoverView(_ view: AccountRecoverView, shouldReturn recoverInputView: RecoverInputView) -> Bool
+    func accountRecoverView(
+        _ view: AccountRecoverView,
+        shouldChange recoverInputView: RecoverInputView,
+        charactersIn range: NSRange,
+        replacementString string: String
+    ) -> Bool
 }
