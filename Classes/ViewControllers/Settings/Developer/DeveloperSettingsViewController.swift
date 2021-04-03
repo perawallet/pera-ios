@@ -97,7 +97,7 @@ extension DeveloperSettingsViewController: UICollectionViewDelegateFlowLayout {
         case .nodeSettings:
             open(.nodeSettings, by: .push)
         case .dispenser:
-            guard let url = URL(string: "https://bank.testnet.algorand.network") else {
+            guard let url = AlgorandWeb.dispenser.link else {
                 return
             }
             
