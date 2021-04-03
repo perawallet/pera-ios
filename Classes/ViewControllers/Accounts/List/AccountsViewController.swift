@@ -234,14 +234,28 @@ extension AccountsViewController {
         }
 
         var passcodeSettingDisplayStore = PasscodeSettingDisplayStore()
+
+        if !passcodeSettingDisplayStore.hasPermissionToAskAgain {
+            return
+        }
+
         passcodeSettingDisplayStore.increaseAppOpenCount()
 
-        if passcodeSettingDisplayStore.appOpenCount % 3 == 0 {
-            open(
+        if passcodeSettingDisplayStore.appOpenCount % passcodeSettingDisplayStore.appOpenCountToAskPasscode == 0 {
+            let controller = open(
                 .animatedTutorial(flow: .none, tutorial: .passcode, isActionable: true),
                 by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
-            )
+            ) as? AnimatedTutorialViewController
+            controller?.delegate = self
         }
+    }
+}
+
+extension AccountsViewController: AnimatedTutorialViewControllerDelegate {
+    func animatedTutorialViewControllerDidTapDontAskAgain(_ animatedTutorialViewController: AnimatedTutorialViewController) {
+        animatedTutorialViewController.dismissScreen()
+        var passcodeSettingDisplayStore = PasscodeSettingDisplayStore()
+        passcodeSettingDisplayStore.disableAskingPasscode()
     }
 }
 
@@ -371,13 +385,17 @@ extension AccountsViewController {
         }
 
         if user.accounts.isEmpty {
-            emptyStateView.bind(EmptyStateViewModel(emptyState: .accounts))
-            accountsView.accountsCollectionView.contentState = .empty(emptyStateView)
-            accountsView.setHeaderButtonsHidden(true)
+            setEmptyAccountsState()
         } else {
             accountsView.accountsCollectionView.contentState = accountsDataSource.accounts.isEmpty ? .empty(noConnectionView) : .none
             accountsView.setHeaderButtonsHidden(accountsDataSource.accounts.isEmpty)
         }
+    }
+
+    func setEmptyAccountsState() {
+        emptyStateView.bind(EmptyStateViewModel(emptyState: .accounts))
+        accountsView.accountsCollectionView.contentState = .empty(emptyStateView)
+        accountsView.setHeaderButtonsHidden(true)
     }
     
     private func displayTestNetBannerIfNeeded() {
@@ -399,11 +417,13 @@ extension AccountsViewController: QRScannerViewControllerDelegate {
                 let amount = qrText.amount else {
                 return
             }
+
             open(
                 .sendAlgosTransactionPreview(
                     account: nil,
                     receiver: .address(address: address, amount: "\(amount)"),
-                    isSenderEditable: true
+                    isSenderEditable: true,
+                    note: qrText.note
                 ),
                 by: .customPresent(
                     presentationStyle: .fullScreen,
@@ -459,7 +479,8 @@ extension AccountsViewController: QRScannerViewControllerDelegate {
                     ),
                     assetDetail: assetDetail,
                     isSenderEditable: false,
-                    isMaxTransaction: false
+                    isMaxTransaction: false,
+                    note: qrText.note
                 ),
                 by: .push
             )
@@ -549,7 +570,10 @@ extension AccountsViewController {
 struct PasscodeSettingDisplayStore: Storable {
     typealias Object = Any
 
+    let appOpenCountToAskPasscode = 5
+
     private let appOpenCountKey = "com.algorand.algorand.passcode.app.count.key"
+    private let dontAskAgainKey = "com.algorand.algorand.passcode.dont.ask.again"
 
     var appOpenCount: Int {
         return userDefaults.integer(forKey: appOpenCountKey)
@@ -557,5 +581,13 @@ struct PasscodeSettingDisplayStore: Storable {
 
     mutating func increaseAppOpenCount() {
         userDefaults.set(appOpenCount + 1, forKey: appOpenCountKey)
+    }
+
+    var hasPermissionToAskAgain: Bool {
+        return !userDefaults.bool(forKey: dontAskAgainKey)
+    }
+
+    mutating func disableAskingPasscode() {
+        userDefaults.set(true, forKey: dontAskAgainKey)
     }
 }

@@ -25,14 +25,24 @@ class QRText: Codable {
     var amount: Int64?
     var label: String?
     var asset: Int64?
+    var note: String?
     
-    init(mode: QRMode, address: String?, mnemonic: String? = nil, amount: Int64? = nil, label: String? = nil, asset: Int64? = nil) {
+    init(
+        mode: QRMode,
+        address: String?,
+        mnemonic: String? = nil,
+        amount: Int64? = nil,
+        label: String? = nil,
+        asset: Int64? = nil,
+        note: String? = nil
+    ) {
         self.mode = mode
         self.address = address
         self.mnemonic = mnemonic
         self.amount = amount
         self.label = label
         self.asset = asset
+        self.note = note
     }
     
     required init(from decoder: Decoder) throws {
@@ -60,6 +70,8 @@ class QRText: Codable {
         if let assetText = try values.decodeIfPresent(String.self, forKey: .asset) {
             asset = Int64(assetText)
         }
+
+        note = try values.decodeIfPresent(String.self, forKey: .note)
     }
     
     func encode(to encoder: Encoder) throws {
@@ -84,6 +96,9 @@ class QRText: Codable {
             if let amount = amount {
                 try container.encode(amount, forKey: .amount)
             }
+            if let note = note {
+                try container.encode(note, forKey: .note)
+            }
         case .assetRequest:
             if let address = address {
                 try container.encode(address, forKey: .address)
@@ -93,6 +108,9 @@ class QRText: Codable {
             }
             if let asset = asset {
                 try container.encode(asset, forKey: .asset)
+            }
+            if let note = note {
+                try container.encode(note, forKey: .note)
             }
         }
     }
@@ -118,9 +136,16 @@ extension QRText {
             guard let address = address else {
                 return base
             }
+            var query = ""
             if let amount = amount {
-                return "\(base)\(address)?\(CodingKeys.amount.rawValue)=\(amount)"
+                query += "?\(CodingKeys.amount.rawValue)=\(amount)"
             }
+
+            if let note = note {
+                query += "&\(CodingKeys.note.rawValue)=\(note)"
+            }
+
+            return "\(base)\(address)\(query)"
         case .assetRequest:
             guard let address = address else {
                 return base
@@ -133,6 +158,11 @@ extension QRText {
             if let asset = asset, !query.isEmpty {
                 query += "&\(CodingKeys.asset.rawValue)=\(asset)"
             }
+
+            if let note = note {
+                query += "&\(CodingKeys.note.rawValue)=\(note)"
+            }
+
             return "\(base)\(address)\(query)"
         }
         return ""
@@ -148,5 +178,6 @@ extension QRText {
         case amount = "amount"
         case label = "label"
         case asset = "asset"
+        case note = "note"
     }
 }
