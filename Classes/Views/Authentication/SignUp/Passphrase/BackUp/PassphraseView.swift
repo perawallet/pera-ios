@@ -55,6 +55,15 @@ class PassphraseView: BaseView {
         collectionView.register(PassphraseBackUpCell.self, forCellWithReuseIdentifier: PassphraseBackUpCell.reusableIdentifier)
         return collectionView
     }()
+
+    private lazy var bottomLabel: UILabel = {
+        UILabel()
+            .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
+            .withTextColor(Colors.Text.secondary)
+            .withLine(.contained)
+            .withAlignment(.left)
+            .withText("passphrase-bottom-title".localized)
+    }()
     
     private(set) lazy var verifyButton = MainButton(title: "title-next".localized)
     
@@ -70,6 +79,7 @@ class PassphraseView: BaseView {
         setupTitleLabelLayout()
         setupPassphraseContainerViewLayout()
         setupPassphraseCollectionViewLayout()
+        setupBottomLabelLayout()
         setupVerifyButtonLayout()
     }
 }
@@ -110,12 +120,21 @@ extension PassphraseView {
         }
     }
 
+    private func setupBottomLabelLayout() {
+        addSubview(bottomLabel)
+
+        bottomLabel.snp.makeConstraints { make in
+            make.top.equalTo(passphraseContainerView.snp.bottom).offset(layout.current.bottomInset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+        }
+    }
+
     private func setupVerifyButtonLayout() {
         addSubview(verifyButton)
         
         verifyButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.greaterThanOrEqualTo(passphraseContainerView.snp.bottom).offset(layout.current.verticalInset)
+            make.top.greaterThanOrEqualTo(bottomLabel.snp.bottom).offset(layout.current.containerTopInset)
             make.bottom.equalToSuperview().inset(layout.current.bottomInset + safeAreaBottom)
             make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
         }

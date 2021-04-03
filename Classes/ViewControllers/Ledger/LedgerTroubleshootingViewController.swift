@@ -19,7 +19,11 @@ import UIKit
 
 class LedgerTroubleshootingViewController: BaseScrollViewController {
     
-    private lazy var ledgerTutorialInstructionListView = LedgerTutorialInstructionListView()
+    private lazy var ledgerTutorialInstructionListView: LedgerTutorialInstructionListView = {
+        let ledgerTutorialInstructionListView = LedgerTutorialInstructionListView()
+        ledgerTutorialInstructionListView.backgroundColor = Colors.Background.tertiary
+        return ledgerTutorialInstructionListView
+    }()
     
     override func configureNavigationBarAppearance() {
         super.configureNavigationBarAppearance()
@@ -33,6 +37,8 @@ class LedgerTroubleshootingViewController: BaseScrollViewController {
     
     override func configureAppearance() {
         super.configureAppearance()
+        setTertiaryBackgroundColor()
+        view.backgroundColor = Colors.Background.tertiary
         title = "ledger-troubleshooting-title".localized
     }
     

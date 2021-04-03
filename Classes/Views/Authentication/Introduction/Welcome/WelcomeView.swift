@@ -99,7 +99,7 @@ class WelcomeView: BaseView {
 extension WelcomeView {
     @objc
     private func notifyDelegateToAddAccount() {
-        delegate?.welcomeView(self, didSelect: .add)
+        delegate?.welcomeView(self, didSelect: .add(type: .none))
     }
 
     @objc

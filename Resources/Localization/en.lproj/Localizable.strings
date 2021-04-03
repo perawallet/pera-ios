@@ -33,18 +33,19 @@
 "title-id" = "ID";
 "title-copy" = "Copy";
 "title-new-uppercased" = "NEW";
+"title-skip" = "Skip";
 
 // MARK: Account Type Selection
 "account-type-choose-title" = "Choose Account Type";
-"account-type-selection-add" = "Add account";
-"account-type-selection-add-detail" = "I want to create a new Algorand Account";
+"account-type-selection-add" = "Add Account";
+"account-type-selection-add-detail" = "I want a new account with a new address and recovery passphrase.";
 "account-type-selection-create" = "Create New Account";
 "account-type-selection-create-detail" = "Create a new Algorand Account";
-"account-type-selection-watch-detail" = "Follow the account transactions";
-"account-type-selection-recover" = "Recover with passphrase";
+"account-type-selection-watch-detail" = "I want to monitor an account that's held in cold storage.";
+"account-type-selection-recover" = "Recover with Passphrase";
 "account-type-selection-recover-detail" = "I already have an account";
 "account-type-selection-ledger" = "Pair Ledger Account";
-"account-type-selection-ledger-detail" = "Use your Ledger Account from the Algorand App";
+"account-type-selection-ledger-detail" = "I want to create an account that is backed by my Ledger hardware wallet.";
 "account-welcome-wallet-title" = "Welcome to the\nAlgorand Wallet";
 
 // MARK: Introduction
@@ -55,35 +56,39 @@
 "introduction-title-terms-and-services" = "By creating an account, you agree to Algorand’s <a href=\"https://www.algorand.com/wallet-disclaimer\">Terms and Conditions</a> and <a href=\"https://www.algorand.com/wallet-privacy-policy\">Privacy Policy</a>";
 
 // MARK: Password Setting
-"choose-password-title" = "Choose Passcode";
-"password-set-subtitle" = "Choose a six digit passcode";
-"password-verify-title" = "Verify Passcode";
-"password-change-subtitle" = "Enter six digit pin";
-"password-verify-subtitle" = "Enter the same six digits";
-"password-verify-fail-title" = "Wrong Password";
-"password-verify-fail-message" = "Password did not match with previous password.";
-"password-change-title" = "Change Password";
+"choose-password-title" = "Choose PIN";
+"password-set-subtitle" = "Choose your 6-digit PIN";
+"password-verify-title" = "Verify PIN";
+"password-change-subtitle" = "Enter 6-digit PIN";
+"password-verify-subtitle" = "Re-enter your 6-digit PIN";
+"password-verify-fail-title" = "Wrong PIN";
+"password-verify-fail-message" = "PIN did not match with previous PIN.";
+"password-change-title" = "Change PIN";
 
 // MARK: Local Authentication Preferences
-"local-authentication-preference-title" = "Enable Face ID/Touch";
-"local-authentication-preference-subtitle" = "We recommend this for improved security";
+"local-authentication-preference-title" = "Enable Biometric Authentication";
+"local-authentication-preference-subtitle" = "Your FaceID or TouchID will be required to use the app. We recommend enabling biometric authentication to help increase wallet security in the event your phone is stolen.";
 "local-authentication-reason-face-id-title" = "Use Face ID to unlock";
 "local-authentication-reason-touch-id-title" = "Use Touch ID to unlock";
 "local-authentication-go-settings-title" = "Biometric Authentication";
 "local-authentication-go-settings-text" = "You have disabled biometric authentication. Please go to Settings and enable this option.";
-"local-authentication-enable" = "Enable Face ID/Touch";
-"local-authentication-no" = "Do not use Face ID/Touch";
+"local-authentication-enable" = "Enable Face ID/Touch ID";
+"local-authentication-no" = "Do not use Face ID/Touch ID";
+"local-authentication-enabled-title" = "Biometric Authentication Enabled";
+"local-authentication-enabled-subtitle" = "Your passcode has been verified. Your Algorand account is more secure now.";
+"title-go-to-accounts" = "Go to Accounts";
 
 // MARK: Passphrase Back Up
 "recover-passphrase-title" = "Recovery passphrase";
 "back-up-phrase-qr" = "Show QR";
+"passphrase-bottom-title" = "Make sure to record these words in the correct order, using the corresponding numbers.";
 
 // MARK: Passphrase Verify
 "pass-phrase-verify-pop-up-title" = "Passphrase Verified";
 "pass-phrase-verify-select-title" = "Select the %@ word of your passphrase";
 "pass-phrase-verify-question-title" = "Question %@ of %@";
 "pass-phrase-verify-wrong-selection" = "Wrong choice";
-"pass-phrase-verify-pop-up-explanation" = "Your passphrase has been verified. Make sure that you have backed it up as you will need it to recover your account.";
+"pass-phrase-verify-pop-up-explanation" = "Keep this recovery passphrase in a secure location that is accessible only by you. Do not lose this recovery passphrase.";
 "pass-phrase-verify-invalid-passphrase" = "Your passphrase is invalid. Please make sure that you entered correct one.";
 "passphrase-verify-invalid-title" = "Wronge Passphrase";
 "pass-phrase-verify-sdk-error" = "There is something wrong. Please try again later.";
@@ -94,18 +99,18 @@
 "passphrase-select-n-word" = "Select the %@ word of your passphrase";
 "passphrase-qeustion-counter" = "Question %@ of %@";
 
-"passphrase-verify-title" = "Check your passphrase";
+"passphrase-verify-title" = "Verify recovery passphrase backup";
 "passphrase-verify-select-word" = "Select word #%@";
 
 // MARK: Account Name Setup
 "account-details-title" = "Name your account";
 "account-name-setup-explanation" = "Account Name (Optional)";
 "account-name-setup-placeholder" = "Account Name";
-"account-name-setup-description" = "Name your account to easily distinguishes them from one another. This is optional and the account names are stored on your device.";
+"account-name-setup-description" = "Name your account to easily identify it while using the Algorand Wallet. These names are stored locally, and can only be seen by you.";
 "account-name-setup-finish" = "Finish account creation";
 
 // MARK: Recover From Seed
-"recover-from-seed-title" = "Enter Your Recovery Passphrase";
+"recover-from-seed-title" = "Enter Your Passphrase";
 "recover-from-seed-name-title" = "Name";
 "recover-from-seed-name-placeholder" = "Example name";
 "recover-from-seed-passphrase-title" = "Passphrase";
@@ -115,6 +120,7 @@
 "recover-from-seed-verify-exist-error" = "This account already exists";
 "recover-title" = "Recover";
 "recover-fill-all-error" = "Please fill all passphrase";
+"recover-copy-error" = "The last copied text is not valid passphrase with 25 words. Please copy valid passphrase and try again.";
 
 // MARK: QR Scanning
 "qr-scan-title" = "Scan QR Code";
@@ -370,13 +376,13 @@
 // MARK: Verified Asset Information
 "verified-assets-title" = "Verified Assets";
 "verified-asset-information-title" = "What does asset verification mean?";
-"verified-asset-information-text" = "For certain assets in which Algorand Inc. has a relationship with the asset’s issuer, we mark those assets as “Verified” (which is denoted by a blue checkmark symbol).\n\nThis helps to serve as a secondary defense against mistakenly transacting with an unintended asset.\n\nThat being said, you should always double check that the asset’s ID is the one that you intended to choose before transacting with that asset.\n\nIf you have questions about the verification process or general feedback about the app, we encourage you to contact us";
+"verified-asset-information-text" = "For certain assets in which Algorand Inc. has a relationship with the asset’s issuer, we mark those assets as “Verified” (which is denoted by a blue checkmark symbol).\n\nThis helps to serve as a secondary defense against mistakenly transacting with an unintended asset.\n\nThat being said, you should always double check that the asset’s ID is the one that you intended to choose before transacting with that asset.\n\nIf you have questions about the verification process or general feedback about the app, we encourage you to visit www.algorandwallet.com/support";
 "verified-asset-double-check" = "always double check";
-"verified-asset-information-contact-us" = "contact us";
+"verified-asset-information-visit-site" = "visit www.algorandwallet.com/support";
 
 // MARK: Ledger Tutorial
 "ledger-pair-title" = "Create Ledger Account";
-"ledger-tutorial-title-text" = "Follow the steps below to create a new\nledger account";
+"ledger-tutorial-title-text" = "Pair with Ledger";
 "ledger-tutorial-turned-on" = "Make sure that your ledger device is on and has Bluetooth enabled.";
 "ledger-tutorial-install-app" = "Install the Algorand app (version 1.2.9 or later) onto your Ledger.";
 "ledger-tutorial-open-app" = "Open the Algorand app on your Ledger.";
@@ -509,7 +515,9 @@
 
 // MARK: Watch Account
 "title-watch-account" = "Watch Account";
+"watch-account-create" = "Create a Watch Account";
 "watch-account-input-explanation" = "Account Address to Watch";
+"watch-account-explanation-title" = "Again, you are creating a read-only view of an Algorand Account. If you send assets to this account and you do not have the corresponding recovery passphrase, those assets will be lost.";
 "watch-account-input-placeholder" = "Paste Address or Scan QR";
 "watch-account-error-address" = "Please enter a valid address.";
 
@@ -532,22 +540,25 @@
 "title-dont-show-again" = "Don’t Show This Again";
 
 "screenshot-title" = "Screenshot Detected";
-"screenshot-description" = "Please don’t backup your passphrase by taking a screenshot!";
+"screenshot-description" = "Do not backup your recovery passphrase by taking a screenshot. Having an image containing your passphrase is a security risk.";
 
 "tutorial-title-back-up" = "Back up your account using a recovery passphrase";
 "tutorial-title-recover" = "Recover an Algorand Account";
-"tutorial-title-write" = "Prepare to write down recovery passphrase";
-"tutorial-title-passcode" = "Increase your security with passcode";
+"tutorial-title-write" = "Prepare to write down your recovery passphrase";
+"tutorial-title-passcode" = "Increase your security with a PIN";
 
-"tutorial-description-back-up" = "Without your recovery passphrase, if you lose your device, delete the app, or lose your phone, you will permanently lose access to your Algorand account.";
+"tutorial-description-back-up" = "Without your recovery passphrase, if you lose your device or delete the app, you will permanently lose access to your Algorand account.";
 "tutorial-description-recover" = "In the following steps, you'll enter your 25-word recovery passphrase to recover an Algorand account. Have your recovery phrase handy before you begin.";
-"tutorial-description-write" = "If your device gets lost or stolen, you can restore your wallet using your recovery passphrase.";
-"tutorial-description-passcode" = "Passcode will be required to view accounts and personal data.";
-"tutorial-description-local" = "We recommended this for improved security";
+"tutorial-description-write" = "Again, the only way to recover an Algorand account is with this recovery passphrase. Do not share this passphrase with anyone, as it grants full access of your account.\n\nAlgorand employees will never ask you for your passphrase.";
+"tutorial-description-write-italic" = "Algorand employees will never ask you for your passphrase.";
+"tutorial-description-watch" =  "A Watch account allows you to monitor activity of an account without needing to have the passphrase. This is useful for monitoring assets that are kept in cold storage.\n\nWarning: If you do not have the corresponding recovery passphrase, do not send assets to this account.";
+"tutorial-description-watch-italic" = "Warning: If you do not have the corresponding recovery passphrase, do not send assets to this account.";
+"tutorial-description-passcode" = "This 6-digit PIN will be required to use the Algorand Wallet. We highly recommend creating a PIN to help increase wallet security in the event your phone is stolen.";
+"tutorial-description-local" = "Your FaceID or TouchID will be required to use the app. We recommend enabling biometric authentication to help increase wallet security in the event your phone is stolen.";
 
-"tutorial-main-title-back-up" = "Back up now";
+"tutorial-main-title-back-up" = "I understand";
 "tutorial-main-title-recover" = "Recover an Algorand Account";
-"tutorial-main-title-write" = "I’m Ready, Start";
+"tutorial-main-title-write" = "I'm ready to begin";
 "tutorial-main-title-passcode" = "Set Passcode";
 
 "tutorial-action-title-passcode" = "Not now";
@@ -563,3 +574,9 @@
 "transaction-tutorial-tap-to-more" = "For more information on transacting, tap here";
 "transaction-tutorial-tap-to-more-highlighted" = "tap here";
 "title-i-understand" = "I understand";
+
+"empty-accounts-title" = "Create an Account";
+"empty-accounts-detail" = "You need to create an account to start transacting your assets.";
+"empty-accounts-action" = "Create new Account";
+
+"title-dont-ask" = "Don’t ask again";

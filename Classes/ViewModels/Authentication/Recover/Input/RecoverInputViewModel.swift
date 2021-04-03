@@ -33,7 +33,7 @@ class RecoverInputViewModel {
     }
 
     private func setBackgroundImage(from state: RecoverInputView.State) {
-        backgroundImage = state == .active ? img("bg-recover-input") : nil
+        backgroundImage = (state == .active || state == .wrong) ? img("bg-recover-input") : nil
     }
 
     private func setNumber(from index: Int) {

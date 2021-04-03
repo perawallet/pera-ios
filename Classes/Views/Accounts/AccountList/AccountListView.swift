@@ -54,6 +54,8 @@ class AccountListView: BaseView {
             .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
             .withTitleColor(Colors.Text.primary)
     }()
+
+    private lazy var contentStateView = ContentStateView()
     
     override func configureAppearance() {
         backgroundColor = Colors.Background.secondary
@@ -94,6 +96,8 @@ extension AccountListView {
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.verticalInset)
         }
+
+        accountsCollectionView.backgroundView = contentStateView
     }
     
     private func setupCancelButtonLayout() {

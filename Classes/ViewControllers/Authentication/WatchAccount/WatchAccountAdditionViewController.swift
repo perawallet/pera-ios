@@ -49,7 +49,7 @@ class WatchAccountAdditionViewController: BaseScrollViewController {
     
     override func configureAppearance() {
         super.configureAppearance()
-        title = "title-watch-account".localized
+        title = "watch-account-create".localized
     }
     
     override func setListeners() {
@@ -101,18 +101,13 @@ extension WatchAccountAdditionViewController: WatchAccountAdditionViewDelegate {
             return
         }
         
-        guard let accountName = watchAccountAdditionView.accountNameInputView.inputTextField.text, !accountName.isEmpty else {
-            displaySimpleAlertWith(title: "title-error".localized, message: "account-name-setup-empty-error-message".localized)
-            return
-        }
-        
         if session?.account(from: address) != nil {
             displaySimpleAlertWith(title: "title-error".localized, message: "recover-from-seed-verify-exist-error".localized)
             return
         }
         
         view.endEditing(true)
-        let account = createAccount(from: address, with: accountName)
+        let account = createAccount(from: address, with: address.shortAddressDisplay())
         log(RegistrationEvent(type: .watch))
         openSuccessModal(for: account)
     }
@@ -171,6 +166,8 @@ extension WatchAccountAdditionViewController: WatchAccountAdditionViewDelegate {
                     }
                 case .addNewAccount:
                     self.closeScreen(by: .dismiss, animated: false)
+                case .none:
+                    break
                 }
             }
         }

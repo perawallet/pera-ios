@@ -55,13 +55,6 @@ class ChoosePasswordViewController: BaseViewController {
         super.init(configuration: configuration)
     }
     
-    override func didTapBackBarButton() -> Bool {
-        if mode == .setup {
-            session?.reset(isContactIncluded: false)
-        }
-        return true
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setTertiaryBackgroundColor()
@@ -268,7 +261,7 @@ extension ChoosePasswordViewController {
                 return
             }
             configuration.session?.savePassword(password)
-            open(.localAuthenticationPreference(flow: flow), by: .push)
+            open(.animatedTutorial(flow: flow, tutorial: .localAuthentication, isActionable: true), by: .push)
         }
     }
 
@@ -326,7 +319,7 @@ extension ChoosePasswordViewController {
 extension ChoosePasswordViewController: PinLimitViewControllerDelegate {
     func pinLimitViewControllerDidResetAllData(_ pinLimitViewController: PinLimitViewController) {
         UIApplication.shared.rootViewController()?.deleteAllData()
-        open(.introduction(flow: .initializeAccount(mode: nil)), by: .launch, animated: false)
+        open(.introduction(flow: .initializeAccount(mode: .none)), by: .launch, animated: false)
     }
 }
 
