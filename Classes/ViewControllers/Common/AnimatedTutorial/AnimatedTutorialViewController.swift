@@ -23,6 +23,8 @@ class AnimatedTutorialViewController: BaseScrollViewController {
         return tutorial == .localAuthentication
     }
 
+    weak var delegate: AnimatedTutorialViewControllerDelegate?
+
     private let flow: AccountSetupFlow
     private let tutorial: AnimatedTutorial
     private let isActionable: Bool
@@ -47,7 +49,7 @@ class AnimatedTutorialViewController: BaseScrollViewController {
     }
 
     override func configureNavigationBarAppearance() {
-        addInfoBarButtonIfNeeeded()
+        addBarButtons()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -90,19 +92,25 @@ extension AnimatedTutorialViewController {
 }
 
 extension AnimatedTutorialViewController {
-    private func addInfoBarButtonIfNeeeded() {
-        let infoBarButtonItem = ALGBarButtonItem(kind: .info) { [weak self] in
-            self?.openWalletSupport()
-        }
-
+    private func addBarButtons() {
         switch tutorial {
         case .recover,
              .backUp,
              .watchAccount:
-            rightBarButtonItems = [infoBarButtonItem]
+            addInfoBarButton()
+        case .passcode:
+            addDontAskAgainBarButton()
         default:
             break
         }
+    }
+
+    private func addInfoBarButton() {
+        let infoBarButtonItem = ALGBarButtonItem(kind: .info) { [weak self] in
+            self?.openWalletSupport()
+        }
+
+        rightBarButtonItems = [infoBarButtonItem]
     }
 
     private func openWalletSupport() {
@@ -122,6 +130,18 @@ extension AnimatedTutorialViewController {
         default:
             break
         }
+    }
+
+    private func addDontAskAgainBarButton() {
+        let dontAskAgainBarButtonItem = ALGBarButtonItem(kind: .dontAskAgain) { [weak self] in
+            guard let self = self else {
+                return
+            }
+            
+            self.delegate?.animatedTutorialViewControllerDidTapDontAskAgain(self)
+        }
+
+        rightBarButtonItems = [dontAskAgainBarButtonItem]
     }
 }
 
@@ -214,6 +234,10 @@ extension AnimatedTutorialViewController {
             )
         )
     }
+}
+
+protocol AnimatedTutorialViewControllerDelegate: class {
+    func animatedTutorialViewControllerDidTapDontAskAgain(_ animatedTutorialViewController: AnimatedTutorialViewController)
 }
 
 enum AnimatedTutorial {

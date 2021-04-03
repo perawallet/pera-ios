@@ -70,7 +70,13 @@ extension WelcomeViewController {
 
     private func addSkipBarButtonItem() {
         let skipBarButtonItem = ALGBarButtonItem(kind: .skip) { [unowned self] in
-            
+            session?.authenticatedUser = User(accounts: [])
+
+            DispatchQueue.main.async {
+                self.dismiss(animated: false) {
+                    UIApplication.shared.rootViewController()?.setupTabBarController()
+                }
+            }
         }
 
         rightBarButtonItems = [skipBarButtonItem]
