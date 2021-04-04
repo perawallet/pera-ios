@@ -33,6 +33,17 @@ class PaginatedList<T: Model>: Model {
 }
 
 extension PaginatedList {
+    func parsePaginationCursor() -> String? {
+        guard let next = next,
+              let cursor = next.queryParameters?[RequestParameter.cursor.rawValue] else {
+            return nil
+        }
+
+        return cursor
+    }
+}
+
+extension PaginatedList {
     enum CodingKeys: String, CodingKey {
         case count = "count"
         case next = "next"
