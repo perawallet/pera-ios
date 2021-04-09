@@ -202,6 +202,12 @@ extension AccountRecoverViewController: AccountRecoverOptionsViewControllerDeleg
     func accountRecoverOptionsViewControllerDidPasteFromClipboard(_ viewController: AccountRecoverOptionsViewController) {
         pasteFromClipboardIfPossible()
     }
+
+    func accountRecoverOptionsViewControllerDidOpenMoreInfo(_ viewController: AccountRecoverOptionsViewController) {
+        if let url = AlgorandWeb.recoverSupport.link {
+            open(url)
+        }
+    }
 }
 
 extension AccountRecoverViewController {
@@ -562,6 +568,6 @@ extension AccountRecoverViewController {
         let inputSuggestionsFrame = CGRect(x: 0.0, y: 0.0, width: UIScreen.main.bounds.width, height: 44.0)
         let keyboardInset: CGFloat = 92.0
         let inputViewHeight: CGFloat = 732.0
-        let optionsModalHeight: CGFloat = 238.0
+        let optionsModalHeight: CGFloat = 294.0
     }
 }

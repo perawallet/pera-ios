@@ -33,6 +33,8 @@ class AccountRecoverOptionsViewModel {
             image = img("icon-paste")
         case .scanQR:
             image = img("icon-scan-qr-options")
+        case .info:
+            image = img("icon-info-24")
         }
     }
 
@@ -42,6 +44,8 @@ class AccountRecoverOptionsViewModel {
             title = "title-paste-passphrase".localized
         case .scanQR:
             title = "qr-scan-title".localized
+        case .info:
+            title = "title-learn-more".localized
         }
     }
 }
