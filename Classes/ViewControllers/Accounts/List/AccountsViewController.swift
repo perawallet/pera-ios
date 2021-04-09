@@ -423,7 +423,7 @@ extension AccountsViewController: QRScannerViewControllerDelegate {
                     account: nil,
                     receiver: .address(address: address, amount: "\(amount)"),
                     isSenderEditable: true,
-                    note: qrText.note
+                    qrText: qrText
                 ),
                 by: .customPresent(
                     presentationStyle: .fullScreen,
@@ -480,7 +480,7 @@ extension AccountsViewController: QRScannerViewControllerDelegate {
                     assetDetail: assetDetail,
                     isSenderEditable: false,
                     isMaxTransaction: false,
-                    note: qrText.note
+                    qrText: qrText
                 ),
                 by: .push
             )

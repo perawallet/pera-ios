@@ -90,7 +90,7 @@
 "pass-phrase-verify-wrong-selection" = "Wrong choice";
 "pass-phrase-verify-pop-up-explanation" = "Keep this recovery passphrase in a secure location that is accessible only by you. Do not lose this recovery passphrase.";
 "pass-phrase-verify-invalid-passphrase" = "Your passphrase is invalid. Please make sure that you entered correct one.";
-"passphrase-verify-invalid-title" = "Wronge Passphrase";
+"passphrase-verify-invalid-title" = "Wrong Passphrase";
 "pass-phrase-verify-sdk-error" = "There is something wrong. Please try again later.";
 "passphrase-question-another" = "%@th";
 "passphrase-question-third" = "3rd";

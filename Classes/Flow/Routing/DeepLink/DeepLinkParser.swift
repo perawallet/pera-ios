@@ -42,7 +42,7 @@ struct DeepLinkParser {
                     account: nil,
                     receiver: .address(address: accountAddress, amount: "\(amount)"),
                     isSenderEditable: false,
-                    note: qrText.note
+                    qrText: qrText
                 )
             }
         case .assetRequest:
@@ -79,7 +79,7 @@ struct DeepLinkParser {
                     assetDetail: assetDetail,
                     isSenderEditable: false,
                     isMaxTransaction: false,
-                    note: qrText.note
+                    qrText: qrText
                 )
             }
         case .mnemonic:

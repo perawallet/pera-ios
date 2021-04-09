@@ -69,7 +69,7 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
     var amount: Double = 0.00
     var selectedAccount: Account?
     var assetReceiverState: AssetReceiverState
-    private var initalNote: String?
+    private var initialQRText: QRText?
     var assetFraction = algosFraction
     
     var shouldUpdateSenderForSelectedAccount = false
@@ -87,13 +87,13 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
         account: Account?,
         assetReceiverState: AssetReceiverState,
         isSenderEditable: Bool,
-        note: String?,
+        qrText: QRText?,
         configuration: ViewControllerConfiguration
     ) {
         self.selectedAccount = account
         self.assetReceiverState = assetReceiverState
         self.isSenderEditable = isSenderEditable
-        self.initalNote = note
+        self.initialQRText = qrText
         super.init(configuration: configuration)
     }
     
@@ -227,8 +227,19 @@ extension SendTransactionPreviewViewController {
     }
 
     private func setInitialNoteIfPresent() {
-        if initalNote != nil {
-            sendTransactionPreviewView.noteInputView.inputTextView.text = initalNote
+        guard let qrText = initialQRText else {
+            return
+        }
+
+        if let lockedNote = qrText.lockedNote {
+            sendTransactionPreviewView.noteInputView.value = lockedNote
+            sendTransactionPreviewView.noteInputView.setEnabled(false)
+            return
+        }
+
+        if let note = qrText.note {
+            sendTransactionPreviewView.noteInputView.value = note
+            return
         }
     }
 }

@@ -40,20 +40,25 @@ extension URL {
         }
         
         if let amount = queryParameters[QRText.CodingKeys.amount.rawValue],
-            let asset = queryParameters[QRText.CodingKeys.asset.rawValue] {
-            if let note = queryParameters[QRText.CodingKeys.asset.rawValue] {
-                return QRText(mode: .assetRequest, address: address, amount: Int64(amount), asset: Int64(asset), note: note)
-            } else {
-                return QRText(mode: .assetRequest, address: address, amount: Int64(amount), asset: Int64(asset))
-            }
+           let asset = queryParameters[QRText.CodingKeys.asset.rawValue] {
+            return QRText(
+                mode: .assetRequest,
+                address: address,
+                amount: Int64(amount),
+                asset: Int64(asset),
+                note: queryParameters[QRText.CodingKeys.note.rawValue],
+                lockedNote: queryParameters[QRText.CodingKeys.lockedNote.rawValue]
+            )
         }
         
         if let amount = queryParameters[QRText.CodingKeys.amount.rawValue] {
-            if let note = queryParameters[QRText.CodingKeys.asset.rawValue] {
-                return QRText(mode: .algosRequest, address: address, amount: Int64(amount), note: note)
-            } else {
-                return QRText(mode: .algosRequest, address: address, amount: Int64(amount))
-            }
+            return QRText(
+                mode: .algosRequest,
+                address: address,
+                amount: Int64(amount),
+                note: queryParameters[QRText.CodingKeys.note.rawValue],
+                lockedNote: queryParameters[QRText.CodingKeys.lockedNote.rawValue]
+            )
         }
         
         if let label = queryParameters[QRText.CodingKeys.label.rawValue] {
