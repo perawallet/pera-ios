@@ -18,9 +18,9 @@
 import UIKit
 
 extension NSMutableAttributedString {
-    func addItalicFont(_ font: UIFont, to string: String) {
-        let italicRange = (self.string as NSString).range(of: string)
-        addAttribute(.font, value: font, range: italicRange)
+    func addFont(_ font: UIFont, to string: String) {
+        let range = (self.string as NSString).range(of: string)
+        addAttribute(.font, value: font, range: range)
     }
 
     func addColor(_ color: UIColor, to string: String) {

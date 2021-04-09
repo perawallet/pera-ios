@@ -37,7 +37,7 @@ class AnimatedTutorialViewModel {
         case .backUp:
             animation = "shield_animation"
         case .recover:
-            animation = "pen_animation"
+            animation = UIApplication.shared.isDarkModeDisplay ? "recover_animation_dark" : "recover_animation_light"
         case .watchAccount:
             animation = "watch_animation"
         case .writePassphrase:
@@ -85,19 +85,24 @@ class AnimatedTutorialViewModel {
 
     private func addAttributesForWatchAccountDescription() -> NSAttributedString {
         let fullString = "tutorial-description-watch".localized
-        let string = "tutorial-description-watch-italic".localized
+        let italicString = "tutorial-description-watch-italic".localized
+        let warningString = "tutorial-description-warning-title".localized
         let fullAttributedText = NSMutableAttributedString(string: fullString)
-        fullAttributedText.addItalicFont(UIFont.font(withWeight: .lightItalic(size: 16.0)), to: string)
-        fullAttributedText.addColor(Colors.Main.red600, to: string)
+        fullAttributedText.addFont(UIFont.font(withWeight: .lightItalic(size: 16.0)), to: italicString)
+        fullAttributedText.addFont(UIFont.font(withWeight: .semiBoldItalic(size: 16.0)), to: warningString)
+        fullAttributedText.addColor(Colors.Main.red600, to: italicString)
         fullAttributedText.addLineHeight(1.2)
         return fullAttributedText
     }
 
     private func addAttributesForPassphraseDescription() -> NSAttributedString {
         let fullString = "tutorial-description-write".localized
-        let string = "tutorial-description-write-italic".localized
+        let italicString = "tutorial-description-write-italic".localized
+        let warningString = "tutorial-description-warning-title".localized
         let fullAttributedText = NSMutableAttributedString(string: fullString)
-        fullAttributedText.addItalicFont(UIFont.font(withWeight: .lightItalic(size: 16.0)), to: string)
+        fullAttributedText.addFont(UIFont.font(withWeight: .lightItalic(size: 16.0)), to: italicString)
+        fullAttributedText.addFont(UIFont.font(withWeight: .semiBoldItalic(size: 16.0)), to: warningString)
+        fullAttributedText.addColor(Colors.Main.red600, to: italicString)
         fullAttributedText.addLineHeight(1.2)
         return fullAttributedText
     }

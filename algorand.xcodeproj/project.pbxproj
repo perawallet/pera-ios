@@ -1524,6 +1524,12 @@
 		2B9F064624B60ECF006880F0 /* CSVExportable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F064424B60ECF006880F0 /* CSVExportable.swift */; };
 		2BA0C39822677E430037AE13 /* Sequence+AttributedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA0C39722677E430037AE13 /* Sequence+AttributedString.swift */; };
 		2BA242382263C0D800E2841F /* SwiftDate+Region.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA242372263C0D800E2841F /* SwiftDate+Region.swift */; };
+		2BA849092620A2E3007A75CA /* recover_animation_dark.json in Resources */ = {isa = PBXBuildFile; fileRef = 2BA849072620A2E2007A75CA /* recover_animation_dark.json */; };
+		2BA8490A2620A2E3007A75CA /* recover_animation_dark.json in Resources */ = {isa = PBXBuildFile; fileRef = 2BA849072620A2E2007A75CA /* recover_animation_dark.json */; };
+		2BA8490B2620A2E3007A75CA /* recover_animation_dark.json in Resources */ = {isa = PBXBuildFile; fileRef = 2BA849072620A2E2007A75CA /* recover_animation_dark.json */; };
+		2BA8490C2620A2E3007A75CA /* recover_animation_light.json in Resources */ = {isa = PBXBuildFile; fileRef = 2BA849082620A2E3007A75CA /* recover_animation_light.json */; };
+		2BA8490D2620A2E3007A75CA /* recover_animation_light.json in Resources */ = {isa = PBXBuildFile; fileRef = 2BA849082620A2E3007A75CA /* recover_animation_light.json */; };
+		2BA8490E2620A2E3007A75CA /* recover_animation_light.json in Resources */ = {isa = PBXBuildFile; fileRef = 2BA849082620A2E3007A75CA /* recover_animation_light.json */; };
 		2BA8736A2248214800511C7C /* AlignedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA873692248214800511C7C /* AlignedButton.swift */; };
 		2BA8736E2248240A00511C7C /* UIEdgeInsets+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA8736D2248240A00511C7C /* UIEdgeInsets+Additions.swift */; };
 		2BAD558D239FB1A60037079F /* PendingAssetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BAD558C239FB1A60037079F /* PendingAssetView.swift */; };
@@ -2529,6 +2535,8 @@
 		2B9F064424B60ECF006880F0 /* CSVExportable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CSVExportable.swift; sourceTree = "<group>"; };
 		2BA0C39722677E430037AE13 /* Sequence+AttributedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sequence+AttributedString.swift"; sourceTree = "<group>"; };
 		2BA242372263C0D800E2841F /* SwiftDate+Region.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SwiftDate+Region.swift"; sourceTree = "<group>"; };
+		2BA849072620A2E2007A75CA /* recover_animation_dark.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = recover_animation_dark.json; sourceTree = "<group>"; };
+		2BA849082620A2E3007A75CA /* recover_animation_light.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = recover_animation_light.json; sourceTree = "<group>"; };
 		2BA873692248214800511C7C /* AlignedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlignedButton.swift; sourceTree = "<group>"; };
 		2BA8736D2248240A00511C7C /* UIEdgeInsets+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIEdgeInsets+Additions.swift"; sourceTree = "<group>"; };
 		2BAD558C239FB1A60037079F /* PendingAssetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingAssetView.swift; sourceTree = "<group>"; };
@@ -5874,6 +5882,15 @@
 			path = Tracking;
 			sourceTree = "<group>";
 		};
+		2BA848F6262087F8007A75CA /* Recover */ = {
+			isa = PBXGroup;
+			children = (
+				2BA849072620A2E2007A75CA /* recover_animation_dark.json */,
+				2BA849082620A2E3007A75CA /* recover_animation_light.json */,
+			);
+			path = Recover;
+			sourceTree = "<group>";
+		};
 		2BA873682248212F00511C7C /* Button */ = {
 			isa = PBXGroup;
 			children = (
@@ -7451,6 +7468,7 @@
 				2BFBAB76227B35CC008BBB31 /* Loading */,
 				2B03D6DD25CBD4770079A973 /* Lock */,
 				2B03D6DC25CBD4730079A973 /* Pen */,
+				2BA848F6262087F8007A75CA /* Recover */,
 				2B03D6DB25CBD46E0079A973 /* Shield */,
 				2B03D6DE25CBD4870079A973 /* Transfer */,
 				2B7747872600D6970083EFFA /* Watch */,
@@ -7757,6 +7775,7 @@
 				2B516184243F739D006DEA54 /* PublicSans-LightItalic.ttf in Resources */,
 				2B9541CB25AF16BD0098805B /* AlgoTransaction.json in Resources */,
 				2B516186243F739D006DEA54 /* PublicSans-ExtraBoldItalic.ttf in Resources */,
+				2BA8490B2620A2E3007A75CA /* recover_animation_dark.json in Resources */,
 				2B95422725B0B3280098805B /* AssetAdditionTransaction.json in Resources */,
 				2B95422E25B19E3D0098805B /* PreviousUser.json in Resources */,
 				17BD4F1A2292F1260003E49A /* LaunchScreen.storyboard in Resources */,
@@ -7781,6 +7800,7 @@
 				2B516178243F739D006DEA54 /* PublicSans-ExtraLightItalic.ttf in Resources */,
 				17BD4F1B2292F1260003E49A /* Localizable.strings in Resources */,
 				2B77478C2600D6B10083EFFA /* watch_animation.json in Resources */,
+				2BA8490E2620A2E3007A75CA /* recover_animation_light.json in Resources */,
 				2B516170243F739D006DEA54 /* PublicSans-BlackItalic.ttf in Resources */,
 				2B03D6F225CBD4BE0079A973 /* pen_animation.json in Resources */,
 				17BD4F1D2292F1260003E49A /* Assets.xcassets in Resources */,
@@ -7794,6 +7814,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2BA8490D2620A2E3007A75CA /* recover_animation_light.json in Resources */,
 				2B77478B2600D6B10083EFFA /* watch_animation.json in Resources */,
 				2B0F632D24EC129D00DA22A6 /* LoadingAnimation.json in Resources */,
 				2B0F632E24EC129D00DA22A6 /* PublicSans-Regular.ttf in Resources */,
@@ -7813,6 +7834,7 @@
 				2B03D6F925CBD4C50079A973 /* shield_animation.json in Resources */,
 				2B0F633A24EC129D00DA22A6 /* PublicSans-ExtraBoldItalic.ttf in Resources */,
 				2B0F633B24EC129D00DA22A6 /* LaunchScreen.storyboard in Resources */,
+				2BA8490A2620A2E3007A75CA /* recover_animation_dark.json in Resources */,
 				2B03D6E125CBD4B20079A973 /* transfer_animation.json in Resources */,
 				2B77479C26012E670083EFFA /* mnemonics.txt in Resources */,
 				2B0F633C24EC129D00DA22A6 /* PublicSans-Thin.ttf in Resources */,
@@ -7838,6 +7860,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2BA8490C2620A2E3007A75CA /* recover_animation_light.json in Resources */,
 				2B77478A2600D6B10083EFFA /* watch_animation.json in Resources */,
 				2BFBAB72227B349E008BBB31 /* LoadingAnimation.json in Resources */,
 				2B516173243F739D006DEA54 /* PublicSans-Regular.ttf in Resources */,
@@ -7857,6 +7880,7 @@
 				2B03D6F825CBD4C50079A973 /* shield_animation.json in Resources */,
 				2B516185243F739D006DEA54 /* PublicSans-ExtraBoldItalic.ttf in Resources */,
 				2B8BE4DC22391C3B005D8565 /* LaunchScreen.storyboard in Resources */,
+				2BA849092620A2E3007A75CA /* recover_animation_dark.json in Resources */,
 				2B03D6E025CBD4B20079A973 /* transfer_animation.json in Resources */,
 				2B77479B26012E670083EFFA /* mnemonics.txt in Resources */,
 				2B51618D243F739D006DEA54 /* PublicSans-Thin.ttf in Resources */,
