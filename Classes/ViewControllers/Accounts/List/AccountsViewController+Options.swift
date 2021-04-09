@@ -50,24 +50,30 @@ extension AccountsViewController: OptionsViewControllerDelegate {
     }
     
     func optionsViewControllerDidViewPassphrase(_ optionsViewController: OptionsViewController) {
+        guard let session = session else {
+            return
+        }
+
+        if !session.hasPassword() {
+            presentPassphraseView()
+            return
+        }
+
         if localAuthenticator.localAuthenticationStatus != .allowed {
-            let controller = open(.choosePassword(mode: .confirm(""), flow: nil, route: nil), by: .present) as? ChoosePasswordViewController
+            let controller = open(
+                .choosePassword(mode: .confirm("title-enter-pin-for-passphrase".localized), flow: nil, route: nil),
+                by: .present
+            ) as? ChoosePasswordViewController
             controller?.delegate = self
             return
         }
 
-        displaySimpleAlertWith(
-            title: "options-view-passphrase-alert-title".localized,
-            message: "options-view-passphrase-alert-message".localized
-        ) { _ in
-
-            self.localAuthenticator.authenticate { error in
-                guard error == nil else {
-                    return
-                }
-
-                self.presentPassphraseView()
+        self.localAuthenticator.authenticate { error in
+            guard error == nil else {
+                return
             }
+
+            self.presentPassphraseView()
         }
     }
     

@@ -151,7 +151,8 @@ extension AppDelegate {
 
     private func openPasswordEntryScreen() {
         guard let rootViewController = rootViewController,
-              let topViewController = rootViewController.tabBarViewController.topMostController else {
+              let topViewController = rootViewController.tabBarViewController.topMostController,
+              appConfiguration.session.hasPassword() else {
             return
         }
 
