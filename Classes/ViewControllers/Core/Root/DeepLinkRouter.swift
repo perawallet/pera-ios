@@ -17,15 +17,16 @@
 
 import UIKit
 
-class DeepLinkRouter: NSObject {
+class DeepLinkRouter {
 
     private weak var rootViewController: RootViewController?
     private let appConfiguration: AppConfiguration
 
+    private var isInitializedFromDeeplink = false
+
     init(rootViewController: RootViewController?, appConfiguration: AppConfiguration) {
         self.rootViewController = rootViewController
         self.appConfiguration = appConfiguration
-        super.init()
     }
 
     @discardableResult
@@ -38,12 +39,38 @@ class DeepLinkRouter: NSObject {
 }
 
 extension DeepLinkRouter {
+    func initializeFlow() {
+        if isInitializedFromDeeplink {
+            isInitializedFromDeeplink = false
+            return
+        }
+
+        if !appConfiguration.session.isValid {
+            if appConfiguration.session.authenticatedUser != nil {
+                if appConfiguration.session.hasPassword() {
+                    openLoginScreen()
+                } else {
+                    rootViewController?.setupTabBarController()
+                }
+            } else {
+                appConfiguration.session.reset(isContactIncluded: false)
+                rootViewController?.open(.introduction(flow: .initializeAccount(mode: .none)), by: .launch, animated: false)
+            }
+        } else {
+            rootViewController?.setupTabBarController()
+        }
+    }
+}
+
+extension DeepLinkRouter {
     func handleDeepLinkRouting(for screen: Screen) -> Bool {
         if !appConfiguration.session.isValid {
-            return shouldStartDeepLinkRoutingInInvalidSession(for: screen)
+            isInitializedFromDeeplink = shouldStartDeepLinkRoutingInInvalidSession(for: screen)
         } else {
-            return shouldStartDeepLinkRoutingInValidSession(for: screen)
+            isInitializedFromDeeplink = shouldStartDeepLinkRoutingInValidSession(for: screen)
         }
+
+        return isInitializedFromDeeplink
     }
 
     private func shouldStartDeepLinkRoutingInInvalidSession(for screen: Screen) -> Bool {
@@ -51,7 +78,7 @@ extension DeepLinkRouter {
             if appConfiguration.session.hasPassword() {
                 return openLoginScreen(with: screen) != nil
             } else {
-                rootViewController?.setupTabBarController()
+                rootViewController?.setupTabBarController(withInitial: screen)
                 return true
             }
         } else {
@@ -79,6 +106,7 @@ extension DeepLinkRouter {
 extension DeepLinkRouter {
     func openAsset(from notification: NotificationDetail, for account: String) {
         if !appConfiguration.session.isValid {
+            isInitializedFromDeeplink = true
             openAssetFromInvalidSesion(from: notification, for: account)
         } else {
             openAssetFromValidSesion(from: notification, for: account)
