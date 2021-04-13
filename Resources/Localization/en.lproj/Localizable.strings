@@ -34,17 +34,18 @@
 "title-copy" = "Copy";
 "title-new-uppercased" = "NEW";
 "title-skip" = "Skip";
+"title-learn-more" = "Learn More";
 
 // MARK: Account Type Selection
 "account-type-choose-title" = "Choose Account Type";
 "account-type-selection-add" = "Add Account";
 "account-type-selection-add-detail" = "I want a new account with a new address and recovery passphrase.";
 "account-type-selection-create" = "Create New Account";
-"account-type-selection-create-detail" = "Create a new Algorand Account";
+"account-type-selection-create-detail" = "I want to create a new Algorand account";
 "account-type-selection-watch-detail" = "I want to monitor an account that's held in cold storage.";
-"account-type-selection-recover" = "Recover with Passphrase";
+"account-type-selection-recover" = "Recover With Passphrase";
 "account-type-selection-recover-detail" = "I already have an account";
-"account-type-selection-ledger" = "Pair Ledger Account";
+"account-type-selection-ledger" = "Pair Ledger Device";
 "account-type-selection-ledger-detail" = "I want to create an account that is backed by my Ledger hardware wallet.";
 "account-welcome-wallet-title" = "Welcome to the\nAlgorand Wallet";
 
@@ -90,7 +91,7 @@
 "pass-phrase-verify-wrong-selection" = "Wrong choice";
 "pass-phrase-verify-pop-up-explanation" = "Keep this recovery passphrase in a secure location that is accessible only by you. Do not lose this recovery passphrase.";
 "pass-phrase-verify-invalid-passphrase" = "Your passphrase is invalid. Please make sure that you entered correct one.";
-"passphrase-verify-invalid-title" = "Wronge Passphrase";
+"passphrase-verify-invalid-title" = "Wrong Passphrase";
 "pass-phrase-verify-sdk-error" = "There is something wrong. Please try again later.";
 "passphrase-question-another" = "%@th";
 "passphrase-question-third" = "3rd";
@@ -98,6 +99,7 @@
 "passphrase-question-first" = "1st";
 "passphrase-select-n-word" = "Select the %@ word of your passphrase";
 "passphrase-qeustion-counter" = "Question %@ of %@";
+"passphrase-verify-wrong-message" = "Selected words are wrong. Please try again.";
 
 "passphrase-verify-title" = "Verify recovery passphrase backup";
 "passphrase-verify-select-word" = "Select word #%@";
@@ -239,8 +241,6 @@
 "options-edit-account-name" = "Edit Account Name";
 "options-remove-account" = "Remove Account";
 "options-remove-alert-explanation" = "You are about to remove an account. Are you sure you want to proceed with this choice?";
-"options-view-passphrase-alert-title" = "Biometric Authentication";
-"options-view-passphrase-alert-message" = "You should provide biometric authentication to display your passphrase.";
 "options-view-passphrase-password-alert-message" = "You should enter your correct password to display your passphrase.";
 "options-auth-account" = "Auth Account Address";
 "options-mute-notification" = "Mute Notifications";
@@ -517,7 +517,7 @@
 "title-watch-account" = "Watch Account";
 "watch-account-create" = "Create a Watch Account";
 "watch-account-input-explanation" = "Account Address to Watch";
-"watch-account-explanation-title" = "Again, you are creating a read-only view of an Algorand Account. If you send assets to this account and you do not have the corresponding recovery passphrase, those assets will be lost.";
+"watch-account-explanation-title" = "You are creating a read-only view of an Algorand account. If you send assets to this account and you do not have the corresponding recovery passphrase, those assets will be lost.";
 "watch-account-input-placeholder" = "Paste Address or Scan QR";
 "watch-account-error-address" = "Please enter a valid address.";
 
@@ -549,9 +549,10 @@
 
 "tutorial-description-back-up" = "Without your recovery passphrase, if you lose your device or delete the app, you will permanently lose access to your Algorand account.";
 "tutorial-description-recover" = "In the following steps, you'll enter your 25-word recovery passphrase to recover an Algorand account. Have your recovery phrase handy before you begin.";
-"tutorial-description-write" = "Again, the only way to recover an Algorand account is with this recovery passphrase. Do not share this passphrase with anyone, as it grants full access of your account.\n\nAlgorand employees will never ask you for your passphrase.";
-"tutorial-description-write-italic" = "Algorand employees will never ask you for your passphrase.";
-"tutorial-description-watch" =  "A Watch account allows you to monitor activity of an account without needing to have the passphrase. This is useful for monitoring assets that are kept in cold storage.\n\nWarning: If you do not have the corresponding recovery passphrase, do not send assets to this account.";
+"tutorial-description-write" = "The only way to recover an Algorand account is with this recovery passphrase.\n\nWarning: Do not share this passphrase with anyone, as it grants full access to your account.";
+"tutorial-description-write-italic" = "Warning: Do not share this passphrase with anyone, as it grants full access to your account.";
+"tutorial-description-watch" =  "Monitor activity of an account without needing a recovery passphrase. This is useful for monitoring assets that are kept in cold storage.\n\nWarning: If you do not have the corresponding recovery passphrase, do not send assets to this account.";
+"tutorial-description-warning-title" = "Warning:";
 "tutorial-description-watch-italic" = "Warning: If you do not have the corresponding recovery passphrase, do not send assets to this account.";
 "tutorial-description-passcode" = "This 6-digit PIN will be required to use the Algorand Wallet. We highly recommend creating a PIN to help increase wallet security in the event your phone is stolen.";
 "tutorial-description-local" = "Your FaceID or TouchID will be required to use the app. We recommend enabling biometric authentication to help increase wallet security in the event your phone is stolen.";
@@ -581,3 +582,4 @@
 
 "title-dont-ask" = "Don’t ask again";
 "title-paste-passphrase" = "Paste Full Passphrase";
+"title-enter-pin-for-passphrase" = "Please enter your PIN to view passphrase";

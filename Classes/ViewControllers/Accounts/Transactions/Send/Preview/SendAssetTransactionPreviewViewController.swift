@@ -65,7 +65,7 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
         assetDetail: AssetDetail,
         isSenderEditable: Bool,
         isMaxTransaction: Bool,
-        note: String?,
+        qrText: QRText?,
         configuration: ViewControllerConfiguration
     ) {
         self.assetDetail = assetDetail
@@ -79,7 +79,7 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
             account: account,
             assetReceiverState: assetReceiverState,
             isSenderEditable: isSenderEditable,
-            note: note,
+            qrText: qrText,
             configuration: configuration
         )
         self.assetFraction = assetDetail.fractionDecimals

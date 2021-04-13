@@ -94,7 +94,7 @@ extension LedgerTutorialViewController: LedgerTutorialViewDelegate {
 
 extension LedgerTutorialViewController {
     private func openWalletSupport() {
-        if let url = URL(string: "https://algorandwallet.com/support/security/pairing-your-ledger-nano-x") {
+        if let url = AlgorandWeb.ledgerSupport.link {
             open(url)
         }
     }

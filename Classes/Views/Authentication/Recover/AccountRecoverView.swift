@@ -93,11 +93,11 @@ extension AccountRecoverView {
 
 extension AccountRecoverView {
     private func addInputViews() {
-        fillTheFirstColumn()
-        fillTheSecondColumn()
+        fillTheFirstColumnOfInputViews()
+        fillTheSecondColumnOfInputViews()
     }
 
-    private func fillTheFirstColumn() {
+    private func fillTheFirstColumnOfInputViews() {
         for index in 0...Constants.firstColumnCount - 1 {
             let inputView = composeInputView()
             if index == 0 {
@@ -107,7 +107,7 @@ extension AccountRecoverView {
         }
     }
 
-    private func fillTheSecondColumn() {
+    private func fillTheSecondColumnOfInputViews() {
         for _ in 0...Constants.secondColumnCount - 1 {
             let inputView = composeInputView()
             secondColumnStackView.addArrangedSubview(inputView)
@@ -131,14 +131,6 @@ extension AccountRecoverView {
 }
 
 extension AccountRecoverView: RecoverInputViewDelegate {
-    func recoverInputViewShouldBeginEditing(_ recoverInputView: RecoverInputView) -> Bool {
-        guard let delegate = delegate else {
-            return true
-        }
-
-        return delegate.accountRecoverView(self, shouldBeginEditing: recoverInputView)
-    }
-
     func recoverInputViewDidBeginEditing(_ recoverInputView: RecoverInputView) {
         currentInputView = recoverInputView
         delegate?.accountRecoverView(self, didBeginEditing: recoverInputView)
@@ -189,7 +181,6 @@ extension AccountRecoverView {
 }
 
 protocol AccountRecoverViewDelegate: class {
-    func accountRecoverView(_ view: AccountRecoverView, shouldBeginEditing recoverInputView: RecoverInputView) -> Bool
     func accountRecoverView(_ view: AccountRecoverView, didBeginEditing recoverInputView: RecoverInputView)
     func accountRecoverView(_ view: AccountRecoverView, didChangeInputIn recoverInputView: RecoverInputView)
     func accountRecoverView(_ view: AccountRecoverView, didEndEditing recoverInputView: RecoverInputView)

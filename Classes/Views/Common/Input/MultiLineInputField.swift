@@ -116,6 +116,21 @@ extension MultiLineInputField {
     }
 }
 
+extension MultiLineInputField {
+    func setEnabled(_ isEnabled: Bool) {
+        inputTextView.isEditable = isEnabled
+
+        if !isEnabled {
+            contentView.backgroundColor = Colors.Background.disabled
+            inputTextView.textColor = Colors.Text.secondary
+            return
+        }
+
+        contentView.backgroundColor = Colors.Background.secondary
+        inputTextView.textColor = Colors.Text.primary
+    }
+}
+
 extension MultiLineInputField: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
         delegate?.inputViewDidBeginEditing(inputView: self)

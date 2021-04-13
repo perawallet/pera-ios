@@ -56,7 +56,7 @@ extension PassphraseVerifyLayoutBuilder: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         deselectOtherItemsInSection(of: collectionView, for: indexPath)
-        dataSource?.validateSelection(at: indexPath, in: collectionView)
+        dataSource?.validateSelection(in: collectionView)
     }
 }
 

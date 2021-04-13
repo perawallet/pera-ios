@@ -29,7 +29,7 @@ class AccountRecoverOptionsViewController: BaseViewController {
 
     private lazy var optionsView = OptionsView()
 
-    private let options: [Options] = [.paste, .scanQR]
+    private let options: [Option] = [.paste, .scanQR, .info]
 
     override func configureAppearance() {
         view.backgroundColor = Colors.Background.secondary
@@ -104,14 +104,18 @@ extension AccountRecoverOptionsViewController: UICollectionViewDelegateFlowLayou
         case .scanQR:
             dismissScreen()
             delegate?.accountRecoverOptionsViewControllerDidOpenScanQR(self)
+        case .info:
+            dismissScreen()
+            delegate?.accountRecoverOptionsViewControllerDidOpenMoreInfo(self)
         }
     }
 }
 
 extension AccountRecoverOptionsViewController {
-    enum Options: Int, CaseIterable {
+    enum Option: Int, CaseIterable {
         case paste = 0
         case scanQR = 1
+        case info = 2
     }
 }
 
@@ -124,4 +128,5 @@ extension AccountRecoverOptionsViewController {
 protocol AccountRecoverOptionsViewControllerDelegate: class {
     func accountRecoverOptionsViewControllerDidOpenScanQR(_ viewController: AccountRecoverOptionsViewController)
     func accountRecoverOptionsViewControllerDidPasteFromClipboard(_ viewController: AccountRecoverOptionsViewController)
+    func accountRecoverOptionsViewControllerDidOpenMoreInfo(_ viewController: AccountRecoverOptionsViewController)
 }

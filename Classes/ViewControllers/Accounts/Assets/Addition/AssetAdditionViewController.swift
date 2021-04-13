@@ -38,9 +38,11 @@ class AssetAdditionViewController: BaseViewController, TestNetTitleDisplayable {
     private var account: Account
     
     private var assetResults = [AssetSearchResult]()
-    private let searchLimit = 50
-    private var searchOffset = 0
-    private var hasNext = false
+    private var nextCursor: String?
+    private var hasNext: Bool {
+        return nextCursor != nil
+    }
+
     private let paginationRequestOffset = 3
     private var assetSearchFilters = AssetSearchFilter.verified
     
@@ -114,37 +116,36 @@ extension AssetAdditionViewController {
 
 extension AssetAdditionViewController {
     private func fetchAssets(query: String?, isPaginated: Bool) {
-        let searchDraft = AssetSearchQuery(status: assetSearchFilters, query: query, limit: searchLimit, offset: searchOffset)
+        let searchDraft = AssetSearchQuery(status: assetSearchFilters, query: query, cursor: nextCursor)
         api?.searchAssets(with: searchDraft) { [weak self] response in
             switch response {
             case let .success(searchResults):
-                guard let strongSelf = self else {
+                guard let self = self else {
                     return
                 }
                 
                 if isPaginated {
-                    strongSelf.assetResults.append(contentsOf: searchResults.results)
+                    self.assetResults.append(contentsOf: searchResults.results)
                 } else {
-                    strongSelf.assetResults = searchResults.results
+                    self.assetResults = searchResults.results
+                }
+
+                self.nextCursor = searchResults.parsePaginationCursor()
+                
+                if self.assetResults.isEmpty {
+                    self.assetAdditionView.assetsCollectionView.contentState = .empty(self.emptyStateView)
+                } else {
+                    self.assetAdditionView.assetsCollectionView.contentState = .none
                 }
                 
-                strongSelf.searchOffset += searchResults.results.count
-                strongSelf.hasNext = searchResults.next != nil
-                
-                if strongSelf.assetResults.isEmpty {
-                    strongSelf.assetAdditionView.assetsCollectionView.contentState = .empty(strongSelf.emptyStateView)
-                } else {
-                    strongSelf.assetAdditionView.assetsCollectionView.contentState = .none
-                }
-                
-                strongSelf.assetAdditionView.assetsCollectionView.reloadData()
+                self.assetAdditionView.assetsCollectionView.reloadData()
             case .failure:
-                guard let strongSelf = self else {
+                guard let self = self else {
                     return
                 }
                 
-                strongSelf.assetAdditionView.assetsCollectionView.contentState = .empty(strongSelf.emptyStateView)
-                strongSelf.assetAdditionView.assetsCollectionView.reloadData()
+                self.assetAdditionView.assetsCollectionView.contentState = .empty(self.emptyStateView)
+                self.assetAdditionView.assetsCollectionView.reloadData()
             }
         }
     }
@@ -255,8 +256,7 @@ extension AssetAdditionViewController: InputViewDelegate {
     }
     
     private func resetPagination() {
-        hasNext = false
-        searchOffset = 0
+        nextCursor = nil
     }
     
     func inputViewDidTapAccessoryButton(inputView: BaseInputView) {

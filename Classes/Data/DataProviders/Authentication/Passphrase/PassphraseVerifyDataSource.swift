@@ -40,13 +40,17 @@ class PassphraseVerifyDataSource: NSObject {
         super.init()
 
         if error == nil {
-            generateRandomIndexes()
-            generateShownMnemonics()
+            composeDisplayedData()
         }
     }
 }
 
 extension PassphraseVerifyDataSource {
+    private func composeDisplayedData() {
+        generateRandomIndexes()
+        generateShownMnemonics()
+    }
+
     private func generateRandomIndexes() {
         while mnemonicIndexes.count < numberOfValidations {
             let randomIndex = Int.random(in: 0 ..< mnemonics.count)
@@ -158,13 +162,21 @@ extension PassphraseVerifyDataSource: UICollectionViewDataSource {
 }
 
 extension PassphraseVerifyDataSource {
-    func validateSelection(at indexPath: IndexPath, in collectionView: UICollectionView) {
+    func validateSelection(in collectionView: UICollectionView) {
         guard let selectedIndexes = collectionView.indexPathsForSelectedItems,
               selectedIndexes.count == numberOfValidations else {
             return
         }
 
-        let isValidated = selectedMnemonic(at: indexPath) == mnemonicValue(at: indexPath)
+        var isValidated = true
+        for indexPath in selectedIndexes {
+            isValidated = selectedMnemonic(at: indexPath) == mnemonicValue(at: indexPath)
+            if !isValidated {
+                delegate?.passphraseVerifyDataSource(self, isValidated: false)
+                return
+            }
+        }
+
         delegate?.passphraseVerifyDataSource(self, isValidated: isValidated)
     }
 
@@ -176,6 +188,17 @@ extension PassphraseVerifyDataSource {
     private func mnemonicValue(at indexPath: IndexPath) -> String? {
         let mnemonicIndex = mnemonicIndexes[safe: indexPath.section]
         return mnemonics[safe: mnemonicIndex]
+    }
+
+    func resetVerificationData() {
+        clearDisplayedData()
+        composeDisplayedData()
+    }
+
+    private func clearDisplayedData() {
+        mnemonicIndexes.removeAll()
+        shownMnemonics.removeAll()
+        correctSelections.removeAll()
     }
 }
 

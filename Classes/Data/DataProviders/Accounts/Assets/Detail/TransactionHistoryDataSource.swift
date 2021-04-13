@@ -26,7 +26,9 @@ class TransactionHistoryDataSource: NSObject, UICollectionViewDataSource {
     private var contacts = [Contact]()
     
     private let api: AlgorandAPI?
-    
+
+    private var csvTransactions = [Transaction]()
+
     private var transactionParams: TransactionParams?
     private var fetchRequest: EndpointOperatable?
     private var nextToken: String?
@@ -405,20 +407,31 @@ extension TransactionHistoryDataSource {
     func fetchAllTransactions(
         for account: Account,
         between dates: (Date?, Date?),
+        nextToken token: String?,
         then handler: @escaping ([Transaction]?, APIError?) -> Void
     ) {
         var assetId: String?
         if let id = assetDetail?.id {
             assetId = String(id)
         }
-        
-        let draft = TransactionFetchDraft(account: account, dates: dates, nextToken: nil, assetId: assetId, limit: nil)
+
+        let draft = TransactionFetchDraft(account: account, dates: dates, nextToken: token, assetId: assetId, limit: nil)
+
         api?.fetchTransactions(with: draft) { response in
             switch response {
             case let .failure(apiError, _):
                 handler(nil, apiError)
             case let .success(transactions):
-                handler(transactions.transactions, nil)
+                self.csvTransactions.append(contentsOf: transactions.transactions)
+
+                if transactions.nextToken == nil {
+                    let fetchedTransactions = self.csvTransactions
+                    self.csvTransactions.removeAll()
+                    handler(fetchedTransactions, nil)
+                    return
+                }
+
+                self.fetchAllTransactions(for: account, between: dates, nextToken: transactions.nextToken, then: handler)
             }
         }
     }

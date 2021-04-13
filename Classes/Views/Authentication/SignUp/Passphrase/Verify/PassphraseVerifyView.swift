@@ -111,6 +111,11 @@ extension PassphraseVerifyView {
     func setVerificationEnabled(_ isEnabled: Bool) {
         verifyButton.isEnabled = isEnabled
     }
+
+    func resetSelectionStatesAndReloadData() {
+        passphraseCollectionView.indexPathsForSelectedItems?.forEach { passphraseCollectionView.deselectItem(at: $0, animated: false) }
+        passphraseCollectionView.reloadData()
+    }
 }
 
 extension PassphraseVerifyView {

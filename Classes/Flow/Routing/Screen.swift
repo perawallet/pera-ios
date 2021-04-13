@@ -36,14 +36,14 @@ indirect enum Screen {
     case contactSelection
     case addContact(mode: AddContactViewController.Mode)
     case contactDetail(contact: Contact)
-    case sendAlgosTransactionPreview(account: Account?, receiver: AssetReceiverState, isSenderEditable: Bool, note: String? = nil)
+    case sendAlgosTransactionPreview(account: Account?, receiver: AssetReceiverState, isSenderEditable: Bool, qrText: QRText? = nil)
     case sendAssetTransactionPreview(
         account: Account?,
         receiver: AssetReceiverState,
         assetDetail: AssetDetail,
         isSenderEditable: Bool,
         isMaxTransaction: Bool,
-        note: String? = nil
+        qrText: QRText? = nil
     )
     case sendAlgosTransaction(
         algosTransactionSendDraft: AlgosTransactionSendDraft,

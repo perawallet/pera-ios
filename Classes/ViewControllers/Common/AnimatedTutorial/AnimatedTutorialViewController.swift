@@ -116,15 +116,15 @@ extension AnimatedTutorialViewController {
     private func openWalletSupport() {
         switch tutorial {
         case .backUp:
-            if let url = URL(string: "https://algorandwallet.com/support/security/backing-up-your-recovery-passphrase") {
+            if let url = AlgorandWeb.backUpSupport.link {
                 open(url)
             }
         case .recover:
-            if let url = URL(string: "https://algorandwallet.com/support/getting-started/recover-an-algorand-account") {
+            if let url = AlgorandWeb.recoverSupport.link {
                 open(url)
             }
         case .watchAccount:
-            if let url = URL(string: "https://algorandwallet.com/support/general/adding-a-watch-account") {
+            if let url = AlgorandWeb.watchAccountSupport.link {
                 open(url)
             }
         default:

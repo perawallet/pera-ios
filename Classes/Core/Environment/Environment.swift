@@ -78,10 +78,6 @@ class Environment {
     
     lazy var mainNetMobileApi = "https://\(mobileHost)"
     
-    lazy var termsAndServicesUrl = "https://www.algorand.com/wallet-disclaimer"
-    lazy var privacyPolicyUrl = "https://www.algorand.com/wallet-privacy-policy"
-    lazy var walletSupportUrl = "https://algorandwallet.com/support"
-    
     private let target: AppTarget
     
     private init() {
@@ -90,5 +86,24 @@ class Environment {
         #else
         target = .staging
         #endif
+    }
+}
+
+enum AlgorandWeb: String {
+    case termsAndServices = "https://www.algorand.com/wallet-disclaimer"
+    case privacyPolicy = "https://www.algorand.com/wallet-privacy-policy"
+    case support = "https://algorandwallet.com/support"
+    case dispenser = "https://bank.testnet.algorand.network"
+    case backUpSupport = "https://algorandwallet.com/support/security/backing-up-your-recovery-passphrase"
+    case recoverSupport = "https://algorandwallet.com/support/getting-started/recover-an-algorand-account"
+    case watchAccountSupport = "https://algorandwallet.com/support/general/adding-a-watch-account"
+    case ledgerSupport = "https://algorandwallet.com/support/security/pairing-your-ledger-nano-x"
+    case transactionSupport = "https://algorandwallet.com/support/transacting"
+    case rewardsFAQ = "https://algorand.foundation/faq#participation-rewards"
+}
+
+extension AlgorandWeb {
+    var link: URL? {
+        return URL(string: rawValue)
     }
 }

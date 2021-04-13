@@ -22,26 +22,30 @@ class AccountRecoverOptionsViewModel {
     private(set) var image: UIImage?
     private(set) var title: String?
 
-    init(option: AccountRecoverOptionsViewController.Options) {
+    init(option: AccountRecoverOptionsViewController.Option) {
         setImage(for: option)
         setTitle(for: option)
     }
 
-    private func setImage(for option: AccountRecoverOptionsViewController.Options) {
+    private func setImage(for option: AccountRecoverOptionsViewController.Option) {
         switch option {
         case .paste:
             image = img("icon-paste")
         case .scanQR:
             image = img("icon-scan-qr-options")
+        case .info:
+            image = img("icon-info-24")
         }
     }
 
-    private func setTitle(for option: AccountRecoverOptionsViewController.Options) {
+    private func setTitle(for option: AccountRecoverOptionsViewController.Option) {
         switch option {
         case .paste:
             title = "title-paste-passphrase".localized
         case .scanQR:
             title = "qr-scan-title".localized
+        case .info:
+            title = "title-learn-more".localized
         }
     }
 }

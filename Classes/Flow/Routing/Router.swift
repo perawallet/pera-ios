@@ -222,22 +222,22 @@ class Router {
             viewController = AddContactViewController(mode: mode, configuration: configuration)
         case let .contactDetail(contact):
             viewController = ContactInfoViewController(contact: contact, configuration: configuration)
-        case let .sendAlgosTransactionPreview(account, receiver, isSenderEditable, note):
+        case let .sendAlgosTransactionPreview(account, receiver, isSenderEditable, qrText):
             viewController = SendAlgosTransactionPreviewViewController(
                 account: account,
                 assetReceiverState: receiver,
                 isSenderEditable: isSenderEditable,
-                note: note,
+                qrText: qrText,
                 configuration: configuration
             )
-        case let .sendAssetTransactionPreview(account, receiver, assetDetail, isSenderEditable, isMaxTransaction, note):
+        case let .sendAssetTransactionPreview(account, receiver, assetDetail, isSenderEditable, isMaxTransaction, qrText):
             viewController = SendAssetTransactionPreviewViewController(
                 account: account,
                 assetReceiverState: receiver,
                 assetDetail: assetDetail,
                 isSenderEditable: isSenderEditable,
                 isMaxTransaction: isMaxTransaction,
-                note: note,
+                qrText: qrText,
                 configuration: configuration
             )
         case let .sendAlgosTransaction(algosTransactionSendDraft, transactionController, receiver, isSenderEditable):

@@ -2,16 +2,25 @@
 "account-details-title" = "账户详情";
 
 /* (No Comment) */
-"account-name-setup-empty-error-message" = "账户名称不能为空";
+"account-name-setup-description" = "在使用Algorand钱包时，请为账户取一个容易识别的名称。名称储存在本地，仅个人可见。";
 
 /* (No Comment) */
 "account-name-setup-explanation" = "账户名称";
+
+/* (No Comment) */
+"account-name-setup-finish" = "完成帐户创建";
 
 /* (No Comment) */
 "account-name-setup-placeholder" = "储蓄账户";
 
 /* MARK: Account Type Selection */
 "account-type-choose-title" = "选择账户类型";
+
+/* (No Comment) */
+"account-type-selection-add" = "添加账户";
+
+/* (No Comment) */
+"account-type-selection-add-detail" = "我需要有新地址与恢复助记词的新账户。";
 
 /* (No Comment) */
 "account-type-selection-create" = "创建新的账户";
@@ -33,6 +42,9 @@
 
 /* (No Comment) */
 "account-type-selection-watch-detail" = "仅使用账户地址监控账户交易";
+
+/* (No Comment) */
+"account-welcome-wallet-title" = "欢迎使用\nAlgorand钱包";
 
 /* (No Comment) */
 "accounts-add-account" = "+ 添加账户";
@@ -284,6 +296,15 @@
 "edit-node-title" = "编辑备注";
 
 /* (No Comment) */
+"empty-accounts-action" = "创建新的账户";
+
+/* (No Comment) */
+"empty-accounts-detail" = "您需要创建账户进行资产交易。";
+
+/* (No Comment) */
+"empty-accounts-title" = "创建账户";
+
+/* (No Comment) */
 "feedback-empty-category-message" = "请选择一个类别";
 
 /* (No Comment) */
@@ -503,6 +524,12 @@
 "local-authentication-enable" = "使用人脸识别/触控";
 
 /* (No Comment) */
+"local-authentication-enabled-subtitle" = "您的密码验证完成。您的Algorand账户现在更加安全了。";
+
+/* (No Comment) */
+"local-authentication-enabled-title" = "启用生物识别认证";
+
+/* (No Comment) */
 "local-authentication-go-settings-text" = "您已关闭生物特征验证。请到“设置”中开启该配置。";
 
 /* (No Comment) */
@@ -668,12 +695,6 @@
 "options-view-passphrase" = "查看助记词";
 
 /* (No Comment) */
-"options-view-passphrase-alert-message" = "您需要提供生物特征验证信息，才可以查看助记词。";
-
-/* (No Comment) */
-"options-view-passphrase-alert-title" = "生物特征验证";
-
-/* (No Comment) */
 "options-view-passphrase-password-alert-message" = "请输入正确的密码来查看助记词。";
 
 /* (No Comment) */
@@ -701,6 +722,9 @@
 "pass-phrase-verify-wrong-selection" = "选择错误";
 
 /* (No Comment) */
+"passphrase-bottom-title" = "请务必使用相应的数字，以正确的顺序记录这些单词。";
+
+/* (No Comment) */
 "passphrase-qeustion-counter" = "%@ 个问题中的第 %@个";
 
 /* (No Comment) */
@@ -717,6 +741,18 @@
 
 /* (No Comment) */
 "passphrase-select-n-word" = "请选择助记词 %@ 词。";
+
+/* (No Comment) */
+"passphrase-verify-invalid-title" = "助记词错误";
+
+/* (No Comment) */
+"passphrase-verify-select-word" = "选择单词#%@";
+
+/* (No Comment) */
+"passphrase-verify-title" = "验证恢复助记词";
+
+/* (No Comment) */
+"passphrase-verify-wrong-message" = "所选字词有误，请重试。";
 
 /* (No Comment) */
 "password-change-subtitle" = "输入6位数密码";
@@ -750,6 +786,9 @@
 
 /* (No Comment) */
 "pin-limit-try-again" = "请再试一次";
+
+/* No comment provided by engineer. */
+"primaryText" = "primaryText";
 
 /* (No Comment) */
 "privacy-policy-title" = "隐私政策";
@@ -797,6 +836,12 @@
 "qr-scan-title" = "扫描二维码";
 
 /* (No Comment) */
+"recover-copy-error" = "最后复制的文字不是25字节的有效助记词。复制完有效的助记词后，请再试一次。";
+
+/* (No Comment) */
+"recover-fill-all-error" = "请输入全部助记词";
+
+/* (No Comment) */
 "recover-from-seed-name-placeholder" = "名称示例";
 
 /* (No Comment) */
@@ -816,6 +861,12 @@
 
 /* (No Comment) */
 "recover-from-seed-verify-pop-up-title" = "账户验证";
+
+/* MARK: Passphrase Back Up */
+"recover-passphrase-title" = "恢复助记词";
+
+/* (No Comment) */
+"recover-title" = "恢复";
 
 /* (No Comment) */
 "rekey-instruction-first" = "使用新的Ledger设备签署未来的交易。";
@@ -864,6 +915,12 @@
 
 /* MARK: Rewards */
 "rewards-title" = "奖励";
+
+/* (No Comment) */
+"screenshot-description" = "请勿截屏备份恢复助记词。保存含有助记词的图片会带来安全风险。";
+
+/* (No Comment) */
+"screenshot-title" = "检测到屏幕截图";
 
 /* (No Comment) */
 "send-algos-account-delete-asset-title" = "您必须清零账户余额，并销毁所创建的所有资产后，才能删除账户。";
@@ -1067,16 +1124,25 @@
 "title-done" = "完成";
 
 /* (No Comment) */
+"title-dont-ask" = "不再询问";
+
+/* (No Comment) */
 "title-dont-show-again" = "不再显示此内容";
 
 /* (No Comment) */
 "title-edit" = "编辑";
 
 /* (No Comment) */
+"title-enter-pin-for-passphrase" = "";
+
+/* (No Comment) */
 "title-error" = "错误";
 
 /* (No Comment) */
 "title-go-home" = "返回主页";
+
+/* (No Comment) */
+"title-go-to-accounts" = "回到账户";
 
 /* (No Comment) */
 "title-go-to-settings" = "前往设置";
@@ -1092,6 +1158,9 @@
 
 /* (No Comment) */
 "title-keep" = "保留";
+
+/* (No Comment) */
+"title-learn-more" = "";
 
 /* (No Comment) */
 "title-loading" = "加载中";
@@ -1110,6 +1179,9 @@
 
 /* (No Comment) */
 "title-ok" = "好的";
+
+/* (No Comment) */
+"title-paste-passphrase" = "粘贴完整的助记词";
 
 /* (No Comment) */
 "title-plus-asset-count" = "+%@ 资产";
@@ -1143,6 +1215,9 @@
 
 /* (No Comment) */
 "title-share-qr" = "分享二维码";
+
+/* (No Comment) */
+"title-skip" = "跳过";
 
 /* MARK: Ledger Troubleshooting */
 "title-step-1" = "第一步";
@@ -1301,10 +1376,61 @@
 "transaction-tutorial-title" = "交易提示";
 
 /* (No Comment) */
-"verified-asset-double-check" = "请再次确认";
+"tutorial-action-title-passcode" = "暂不需要";
 
 /* (No Comment) */
-"verified-asset-information-contact-us" = "联系我们";
+"tutorial-description-back-up" = "若无恢复用的助记词，设备丢失或删除APP后，您会永久无法访问该Algorand账户。";
+
+/* (No Comment) */
+"tutorial-description-local" = "需要面容ID或指纹ID才能使用该APP。我们推荐开启生物特征认证功能，即便手机丢失，也能保护钱包的安全性。";
+
+/* (No Comment) */
+"tutorial-description-passcode" = "要有6位数的PIN码，才能使用Algorand钱包。我们强烈创建您创建PIN码，即便手机被盗，也能够维护钱包的安全性。";
+
+/* (No Comment) */
+"tutorial-description-recover" = "接下来，您将输入25字节的恢复助记词来恢复Algorand账户。开始之前，请您准备好恢复用的助记词。";
+
+/* (No Comment) */
+"tutorial-description-warning-title" = "";
+
+/* (No Comment) */
+"tutorial-description-watch" = "Watch账户能够让你监控账户活动，且无需输入助记词。该功能有助于监控冷储藏的资产。\n\n警告：若无相应的恢复助记词，请勿将资产发送到该帐户上。";
+
+/* (No Comment) */
+"tutorial-description-watch-italic" = "警告：若无相应的恢复助记词，请勿将资产发送到该帐户上。";
+
+/* (No Comment) */
+"tutorial-description-write" = "恢复Algorand账户的唯一途径是使用恢复助记词。请勿与任何人分享恢复助记词，因为助记词拥有完整的账户访问权限。\n\nAlgorand的工作人员绝对不会询问您的助记词。";
+
+/* (No Comment) */
+"tutorial-description-write-italic" = "Algorand的工作人员绝对不会询问您的助记词。";
+
+/* (No Comment) */
+"tutorial-main-title-back-up" = "我明白";
+
+/* (No Comment) */
+"tutorial-main-title-passcode" = "设置密码";
+
+/* (No Comment) */
+"tutorial-main-title-recover" = "恢复Algorand账户";
+
+/* (No Comment) */
+"tutorial-main-title-write" = "我已经准备好开始了";
+
+/* (No Comment) */
+"tutorial-title-back-up" = "使用恢复助记词来备份您的账户";
+
+/* (No Comment) */
+"tutorial-title-passcode" = "利用PIN码提高安全性";
+
+/* (No Comment) */
+"tutorial-title-recover" = "恢复Algorand账户";
+
+/* (No Comment) */
+"tutorial-title-write" = "请准备写下您的恢复助记词";
+
+/* (No Comment) */
+"verified-asset-double-check" = "请再次确认";
 
 /* (No Comment) */
 "verified-asset-information-text" = "对于与Algorand Inc.有合作关系的资产发行者，我们会将这些资产标注为“已认证”（蓝V标记）。\n\n这有助于防止错误地使用其他资产进行交易。\n\n也就是说，在进行交易资产之前，您应当反复核实该资产账号是否是您想要选择的。\n\n若您对验证过程有疑问，或对本应用有任何反馈，欢迎联系我们。";
@@ -1312,11 +1438,20 @@
 /* (No Comment) */
 "verified-asset-information-title" = "资产验证是什么意思？";
 
+/* (No Comment) */
+"verified-asset-information-visit-site" = "访问：www.algorandwallet.com/support";
+
 /* MARK: Verified Asset Information */
 "verified-assets-title" = "已验证的资产";
 
 /* (No Comment) */
+"watch-account-create" = "创建Watch账户";
+
+/* (No Comment) */
 "watch-account-error-address" = "请输入有效的地址。";
+
+/* (No Comment) */
+"watch-account-explanation-title" = "您正在创建Algorand 账户的只读视图。如果您向该账户发送资产，但没有相应的恢复助记词，所发送的资产将会丢失。";
 
 /* (No Comment) */
 "watch-account-input-explanation" = "Watch的账户地址";

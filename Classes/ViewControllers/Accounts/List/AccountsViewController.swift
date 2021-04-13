@@ -51,13 +51,17 @@ class AccountsViewController: BaseViewController {
         initialModalSize: .custom(CGSize(width: view.frame.width, height: layout.current.termsAndServiceHeight))
     )
     
-    private(set) lazy var passphraseModalPresenter = CardModalPresenter(
-        config: ModalConfiguration(
-            animationMode: .normal(duration: 0.25),
-            dismissMode: .scroll
-        ),
-        initialModalSize: .custom(CGSize(width: view.frame.width, height: layout.current.passphraseModalHeight))
-    )
+    private(set) lazy var passphraseModalPresenter: CardModalPresenter = {
+        let screenHeight = UIScreen.main.bounds.height
+        let height = screenHeight <= 606.0 ? screenHeight - 20.0 : 606.0
+        return CardModalPresenter(
+            config: ModalConfiguration(
+                animationMode: .normal(duration: 0.25),
+                dismissMode: .scroll
+            ),
+            initialModalSize: .custom(CGSize(width: view.frame.width, height: height))
+        )
+    }()
     
     private lazy var pushNotificationController: PushNotificationController = {
         guard let api = api else {
@@ -241,7 +245,7 @@ extension AccountsViewController {
 
         passcodeSettingDisplayStore.increaseAppOpenCount()
 
-        if passcodeSettingDisplayStore.appOpenCount % passcodeSettingDisplayStore.appOpenCountToAskPasscode == 0 {
+        if passcodeSettingDisplayStore.shouldAskForPasscode {
             let controller = open(
                 .animatedTutorial(flow: .none, tutorial: .passcode, isActionable: true),
                 by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
@@ -387,8 +391,8 @@ extension AccountsViewController {
         if user.accounts.isEmpty {
             setEmptyAccountsState()
         } else {
-            accountsView.accountsCollectionView.contentState = accountsDataSource.accounts.isEmpty ? .empty(noConnectionView) : .none
-            accountsView.setHeaderButtonsHidden(accountsDataSource.accounts.isEmpty)
+            accountsView.accountsCollectionView.contentState = isConnectedToInternet ? .none : .empty(noConnectionView)
+            accountsView.setHeaderButtonsHidden(!isConnectedToInternet)
         }
     }
 
@@ -423,7 +427,7 @@ extension AccountsViewController: QRScannerViewControllerDelegate {
                     account: nil,
                     receiver: .address(address: address, amount: "\(amount)"),
                     isSenderEditable: true,
-                    note: qrText.note
+                    qrText: qrText
                 ),
                 by: .customPresent(
                     presentationStyle: .fullScreen,
@@ -480,7 +484,7 @@ extension AccountsViewController: QRScannerViewControllerDelegate {
                     assetDetail: assetDetail,
                     isSenderEditable: false,
                     isMaxTransaction: false,
-                    note: qrText.note
+                    qrText: qrText
                 ),
                 by: .push
             )
@@ -589,5 +593,9 @@ struct PasscodeSettingDisplayStore: Storable {
 
     mutating func disableAskingPasscode() {
         userDefaults.set(true, forKey: dontAskAgainKey)
+    }
+
+    var shouldAskForPasscode: Bool {
+        return appOpenCount % appOpenCountToAskPasscode == 0
     }
 }

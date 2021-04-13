@@ -176,10 +176,6 @@ extension RecoverInputView: UITextFieldDelegate {
         delegate?.recoverInputViewDidEndEditing(self)
     }
 
-    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        delegate?.recoverInputViewShouldBeginEditing(self) ?? true
-    }
-
     func textFieldDidBeginEditing(_ textField: UITextField) {
         delegate?.recoverInputViewDidBeginEditing(self)
     }
@@ -209,6 +205,7 @@ extension RecoverInputView {
         case empty
         case filled
         case wrong
+        case filledWrongly
     }
 }
 
@@ -234,7 +231,6 @@ extension RecoverInputView {
 }
 
 protocol RecoverInputViewDelegate: class {
-    func recoverInputViewShouldBeginEditing(_ recoverInputView: RecoverInputView) -> Bool
     func recoverInputViewDidBeginEditing(_ recoverInputView: RecoverInputView)
     func recoverInputViewDidChange(_ recoverInputView: RecoverInputView)
     func recoverInputViewDidEndEditing(_ recoverInputView: RecoverInputView)

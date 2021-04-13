@@ -50,7 +50,7 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
         account: Account?,
         assetReceiverState: AssetReceiverState,
         isSenderEditable: Bool,
-        note: String?,
+        qrText: QRText?,
         configuration: ViewControllerConfiguration
     ) {
         viewModel = SendAlgosTransactionPreviewViewModel(isAccountSelectionEnabled: isSenderEditable)
@@ -58,7 +58,7 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
             account: account,
             assetReceiverState: assetReceiverState,
             isSenderEditable: isSenderEditable,
-            note: note,
+            qrText: qrText,
             configuration: configuration
         )
     }

@@ -59,7 +59,7 @@ extension RewardDetailViewController {
 
 extension RewardDetailViewController: RewardDetailViewDelegate {
     func rewardDetailViewDidTapFAQLabel(_ rewardDetailView: RewardDetailView) {
-        guard let algorandRewardsWebsite = URL(string: "https://algorand.foundation/faq#participation-rewards") else {
+        guard let algorandRewardsWebsite = AlgorandWeb.rewardsFAQ.link else {
             return
         }
         
