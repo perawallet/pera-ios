@@ -41,11 +41,27 @@ class RecoverInputViewModel {
     }
 
     private func setNumberColor(from state: RecoverInputView.State) {
-        numberColor = state == .wrong ? Colors.General.error : Colors.Text.hint
+        switch state {
+        case .wrong,
+             .filledWrongly:
+            numberColor = Colors.General.error
+        case .active,
+             .empty,
+             .filled:
+            numberColor = Colors.Text.hint
+        }
     }
 
     private func setPassphraseColor(from state: RecoverInputView.State) {
-        passphraseColor = state == .wrong ? Colors.General.error : Colors.Text.primary
+        switch state {
+        case .wrong,
+             .filledWrongly:
+            passphraseColor = Colors.General.error
+        case .active,
+             .empty,
+             .filled:
+            passphraseColor = Colors.Text.primary
+        }
     }
 
     private func setIsHiddenSeparator(from state: RecoverInputView.State) {

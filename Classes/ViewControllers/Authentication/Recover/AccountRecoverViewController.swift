@@ -242,10 +242,6 @@ extension AccountRecoverViewController {
 }
 
 extension AccountRecoverViewController: AccountRecoverViewDelegate {
-    func accountRecoverView(_ view: AccountRecoverView, shouldBeginEditing recoverInputView: RecoverInputView) -> Bool {
-        return shouldBeginEditingInputView(recoverInputView)
-    }
-
     func accountRecoverView(_ view: AccountRecoverView, didBeginEditing recoverInputView: RecoverInputView) {
         if let index = view.index(of: recoverInputView) {
             recoverInputView.bind(RecoverInputViewModel(state: .active, index: index))
@@ -289,7 +285,14 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
         guard let index = view.index(of: recoverInputView) else {
             return
         }
-        recoverInputView.bind(RecoverInputViewModel(state: .filled, index: index))
+
+        if recoverInputView.input.isNilOrEmpty {
+            recoverInputView.bind(RecoverInputViewModel(state: .empty, index: index))
+        } else if !inputSuggestionsViewController.hasSuggestions {
+            recoverInputView.bind(RecoverInputViewModel(state: .filledWrongly, index: index))
+        } else {
+            recoverInputView.bind(RecoverInputViewModel(state: .filled, index: index))
+        }
     }
 
     func accountRecoverView(_ view: AccountRecoverView, shouldReturn recoverInputView: RecoverInputView) -> Bool {
@@ -308,22 +311,6 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
 }
 
 extension AccountRecoverViewController {
-    private func shouldBeginEditingInputView(_ recoverInputView: RecoverInputView) -> Bool {
-        return isPreviousInputViewFilledCorrectly(recoverInputView)
-    }
-
-    private func isPreviousInputViewFilledCorrectly(_ recoverInputView: RecoverInputView) -> Bool {
-        if isFirstInputView(recoverInputView) {
-            return true
-        }
-
-        if let previousInputView = recoverInputViews.previousView(of: recoverInputView) as? RecoverInputView {
-            return previousInputView.isFilled && hasValidSuggestion(for: previousInputView)
-        }
-
-        return false
-    }
-
     private func hasValidSuggestion(for view: RecoverInputView) -> Bool {
         guard let input = view.input,
               !input.isEmptyOrBlank else {
@@ -331,14 +318,6 @@ extension AccountRecoverViewController {
         }
 
         return inputSuggestionsViewController.hasMatchingSuggestion(with: input)
-    }
-
-    private func isFirstInputView(_ recoverInputView: RecoverInputView) -> Bool {
-        return recoverInputViews.first == recoverInputView
-    }
-
-    private func isLastInputView(_ recoverInputView: RecoverInputView) -> Bool {
-        return recoverInputViews.last == recoverInputView
     }
 
     private func isValidMnemonicInput(_ string: String) -> Bool {
@@ -400,15 +379,12 @@ extension AccountRecoverViewController {
 
         recoverInputView.removeInputAccessoryView()
 
-        if isLastInputView(recoverInputView) {
-            recoverAccount()
-            return
-        }
-
         if let nextInputView = recoverInputViews.nextView(of: recoverInputView) as? RecoverInputView {
             nextInputView.beginEditing()
             return
         }
+
+        recoverAccount()
     }
 }
 

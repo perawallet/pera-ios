@@ -131,14 +131,6 @@ extension AccountRecoverView {
 }
 
 extension AccountRecoverView: RecoverInputViewDelegate {
-    func recoverInputViewShouldBeginEditing(_ recoverInputView: RecoverInputView) -> Bool {
-        guard let delegate = delegate else {
-            return true
-        }
-
-        return delegate.accountRecoverView(self, shouldBeginEditing: recoverInputView)
-    }
-
     func recoverInputViewDidBeginEditing(_ recoverInputView: RecoverInputView) {
         currentInputView = recoverInputView
         delegate?.accountRecoverView(self, didBeginEditing: recoverInputView)
@@ -189,7 +181,6 @@ extension AccountRecoverView {
 }
 
 protocol AccountRecoverViewDelegate: class {
-    func accountRecoverView(_ view: AccountRecoverView, shouldBeginEditing recoverInputView: RecoverInputView) -> Bool
     func accountRecoverView(_ view: AccountRecoverView, didBeginEditing recoverInputView: RecoverInputView)
     func accountRecoverView(_ view: AccountRecoverView, didChangeInputIn recoverInputView: RecoverInputView)
     func accountRecoverView(_ view: AccountRecoverView, didEndEditing recoverInputView: RecoverInputView)
