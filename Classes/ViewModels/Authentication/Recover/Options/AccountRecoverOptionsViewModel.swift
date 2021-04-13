@@ -22,12 +22,12 @@ class AccountRecoverOptionsViewModel {
     private(set) var image: UIImage?
     private(set) var title: String?
 
-    init(option: AccountRecoverOptionsViewController.Options) {
+    init(option: AccountRecoverOptionsViewController.Option) {
         setImage(for: option)
         setTitle(for: option)
     }
 
-    private func setImage(for option: AccountRecoverOptionsViewController.Options) {
+    private func setImage(for option: AccountRecoverOptionsViewController.Option) {
         switch option {
         case .paste:
             image = img("icon-paste")
@@ -38,7 +38,7 @@ class AccountRecoverOptionsViewModel {
         }
     }
 
-    private func setTitle(for option: AccountRecoverOptionsViewController.Options) {
+    private func setTitle(for option: AccountRecoverOptionsViewController.Option) {
         switch option {
         case .paste:
             title = "title-paste-passphrase".localized
