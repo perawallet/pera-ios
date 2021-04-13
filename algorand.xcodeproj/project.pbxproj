@@ -274,6 +274,12 @@
 		2B01E2C624EF11FA00C6E5B7 /* LedgerAccountSelectionListLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01E2C424EF11FA00C6E5B7 /* LedgerAccountSelectionListLayout.swift */; };
 		2B01E2C824EF121000C6E5B7 /* LedgerAccountSelectionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01E2C724EF121000C6E5B7 /* LedgerAccountSelectionDataSource.swift */; };
 		2B01E2C924EF121000C6E5B7 /* LedgerAccountSelectionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01E2C724EF121000C6E5B7 /* LedgerAccountSelectionDataSource.swift */; };
+		2B01FE5926147FD7006C3C56 /* AccountRecoverOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01FE5826147FD7006C3C56 /* AccountRecoverOptionsViewController.swift */; };
+		2B01FE5A26147FD7006C3C56 /* AccountRecoverOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01FE5826147FD7006C3C56 /* AccountRecoverOptionsViewController.swift */; };
+		2B01FE5B26147FD7006C3C56 /* AccountRecoverOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01FE5826147FD7006C3C56 /* AccountRecoverOptionsViewController.swift */; };
+		2B01FE6626148482006C3C56 /* AccountRecoverOptionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01FE6526148482006C3C56 /* AccountRecoverOptionsViewModel.swift */; };
+		2B01FE6726148482006C3C56 /* AccountRecoverOptionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01FE6526148482006C3C56 /* AccountRecoverOptionsViewModel.swift */; };
+		2B01FE6826148482006C3C56 /* AccountRecoverOptionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01FE6526148482006C3C56 /* AccountRecoverOptionsViewModel.swift */; };
 		2B02536E23C6101A003D5FDD /* QRBottomInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B02536D23C6101A003D5FDD /* QRBottomInformationView.swift */; };
 		2B02536F23C6101A003D5FDD /* QRBottomInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B02536D23C6101A003D5FDD /* QRBottomInformationView.swift */; };
 		2B03D69925C23BFD0079A973 /* MaximumBalanceWarningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B03D69825C23BFD0079A973 /* MaximumBalanceWarningViewController.swift */; };
@@ -2110,6 +2116,8 @@
 		1FBA4CE73FF1117B608D16D7 /* Pods-algorand-staging.app store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand-staging.app store.xcconfig"; path = "Target Support Files/Pods-algorand-staging/Pods-algorand-staging.app store.xcconfig"; sourceTree = "<group>"; };
 		2B01E2C424EF11FA00C6E5B7 /* LedgerAccountSelectionListLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountSelectionListLayout.swift; sourceTree = "<group>"; };
 		2B01E2C724EF121000C6E5B7 /* LedgerAccountSelectionDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountSelectionDataSource.swift; sourceTree = "<group>"; };
+		2B01FE5826147FD7006C3C56 /* AccountRecoverOptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountRecoverOptionsViewController.swift; sourceTree = "<group>"; };
+		2B01FE6526148482006C3C56 /* AccountRecoverOptionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountRecoverOptionsViewModel.swift; sourceTree = "<group>"; };
 		2B02536D23C6101A003D5FDD /* QRBottomInformationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRBottomInformationView.swift; sourceTree = "<group>"; };
 		2B03D67B25C2086C0079A973 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		2B03D67C25C2086C0079A973 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -2950,6 +2958,22 @@
 				17F9E926225796DA004CDF24 /* AccountManager.swift */,
 			);
 			path = Managers;
+			sourceTree = "<group>";
+		};
+		2B01FE5726147FC8006C3C56 /* Options */ = {
+			isa = PBXGroup;
+			children = (
+				2B01FE5826147FD7006C3C56 /* AccountRecoverOptionsViewController.swift */,
+			);
+			path = Options;
+			sourceTree = "<group>";
+		};
+		2B01FE6426148477006C3C56 /* Options */ = {
+			isa = PBXGroup;
+			children = (
+				2B01FE6526148482006C3C56 /* AccountRecoverOptionsViewModel.swift */,
+			);
+			path = Options;
 			sourceTree = "<group>";
 		};
 		2B03D69725C23BF50079A973 /* Max */ = {
@@ -5062,6 +5086,7 @@
 		2B8954CC2244321E00D6D068 /* Recover */ = {
 			isa = PBXGroup;
 			children = (
+				2B01FE5726147FC8006C3C56 /* Options */,
 				2B77470B25FFDB430083EFFA /* Suggestion */,
 				2B8954CD2244323700D6D068 /* AccountRecoverViewController.swift */,
 			);
@@ -7358,6 +7383,7 @@
 			isa = PBXGroup;
 			children = (
 				2BF90F1E25FA39450033F348 /* Input */,
+				2B01FE6426148477006C3C56 /* Options */,
 				2B77474825FFE9750083EFFA /* Suggestion */,
 			);
 			path = Recover;
@@ -8308,6 +8334,7 @@
 				2BC1826C23D8DED600888476 /* TransactionDraft.swift in Sources */,
 				2B1336DB2576987D00371CFB /* AppearanceSelectionViewController.swift in Sources */,
 				2BBA198A231FEB080080A6F6 /* API+Notification.swift in Sources */,
+				2B01FE6826148482006C3C56 /* AccountRecoverOptionsViewModel.swift in Sources */,
 				2B7ABF722332DCF50050B64B /* PendingTransactionView.swift in Sources */,
 				2BB93C3125BF2475001F1D6C /* LedgerTransactionSigner.swift in Sources */,
 				2B2A9F45232AE20A00450DB0 /* RewardView.swift in Sources */,
@@ -8347,6 +8374,7 @@
 				2B79A12E230EBE2500766021 /* FeedbackView.swift in Sources */,
 				2B64DACD2369B9E400C09582 /* Participation.swift in Sources */,
 				2B982334231D396D009560CD /* Codable+JSON.swift in Sources */,
+				2B01FE5B26147FD7006C3C56 /* AccountRecoverOptionsViewController.swift in Sources */,
 				2BD063EF25CEC8E5008BD15E /* ScreenshotWarningView.swift in Sources */,
 				2BF0FB32253D154C00D704D5 /* RewardViewModel.swift in Sources */,
 				2BECB48C25A0C64B0081870A /* TitledToggleView.swift in Sources */,
@@ -8927,6 +8955,7 @@
 				2B0F61E824EC129D00DA22A6 /* NotificationsViewModel.swift in Sources */,
 				2B0F61E924EC129D00DA22A6 /* AlgorandNode.swift in Sources */,
 				2B0F61EA24EC129D00DA22A6 /* ContactSelectionViewController.swift in Sources */,
+				2B01FE6726148482006C3C56 /* AccountRecoverOptionsViewModel.swift in Sources */,
 				2B0F61EB24EC129D00DA22A6 /* UIViewControllerContextTransitioning+Additions.swift in Sources */,
 				2BB93C3025BF2475001F1D6C /* LedgerTransactionSigner.swift in Sources */,
 				2B0F61EC24EC129D00DA22A6 /* AssetSearchResult.swift in Sources */,
@@ -8966,6 +8995,7 @@
 				2B0F620824EC129D00DA22A6 /* QRView.swift in Sources */,
 				2B0F620924EC129D00DA22A6 /* CardModalPresenter.swift in Sources */,
 				2BF0FB31253D154C00D704D5 /* RewardViewModel.swift in Sources */,
+				2B01FE5A26147FD7006C3C56 /* AccountRecoverOptionsViewController.swift in Sources */,
 				2B0F620A24EC129D00DA22A6 /* BaseScrollViewController.swift in Sources */,
 				2BD063EE25CEC8E5008BD15E /* ScreenshotWarningView.swift in Sources */,
 				2B0F620B24EC129D00DA22A6 /* AssetCell.swift in Sources */,
@@ -9546,6 +9576,7 @@
 				2B1336D92576987D00371CFB /* AppearanceSelectionViewController.swift in Sources */,
 				2BC1826B23D8DED600888476 /* TransactionDraft.swift in Sources */,
 				2B6ED9662261063700787984 /* TransactionList.swift in Sources */,
+				2B01FE6626148482006C3C56 /* AccountRecoverOptionsViewModel.swift in Sources */,
 				2BB93C2F25BF2475001F1D6C /* LedgerTransactionSigner.swift in Sources */,
 				2BDE9CDA224E2336007EFF30 /* TransactionHistoryCell.swift in Sources */,
 				2BB93C2325BF2461001F1D6C /* SDKTransactionSigner.swift in Sources */,
@@ -9585,6 +9616,7 @@
 				2BD739D9223F987E00B66EEF /* Utils.swift in Sources */,
 				2B8954B52243D7C400D6D068 /* BottomInformationBundle.swift in Sources */,
 				175CE59B2295709F003F7C02 /* RoundDetail.swift in Sources */,
+				2B01FE5926147FD7006C3C56 /* AccountRecoverOptionsViewController.swift in Sources */,
 				2BD063ED25CEC8E5008BD15E /* ScreenshotWarningView.swift in Sources */,
 				2BF0FB30253D154C00D704D5 /* RewardViewModel.swift in Sources */,
 				2BECB48A25A0C64B0081870A /* TitledToggleView.swift in Sources */,

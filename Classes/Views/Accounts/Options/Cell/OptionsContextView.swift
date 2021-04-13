@@ -68,6 +68,11 @@ extension OptionsContextView {
         optionLabel.text = viewModel.title
         optionLabel.textColor = viewModel.titleColor
     }
+
+    func bind(_ viewModel: AccountRecoverOptionsViewModel) {
+        iconImageView.image = viewModel.image
+        optionLabel.text = viewModel.title
+    }
 }
 
 extension OptionsContextView {
