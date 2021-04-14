@@ -134,15 +134,16 @@ extension AppDelegate {
 
     private func validateUserSessionIfNeeded() {
         guard appConfiguration.session.isValid,
-            !appConfiguration.session.accounts.isEmpty,
-            appConfiguration.session.hasPassword() else {
+            !appConfiguration.session.accounts.isEmpty else {
             return
         }
 
         if shouldInvalidateUserSession {
             shouldInvalidateUserSession = false
-            appConfiguration.session.isValid = false
-            openPasswordEntryScreen()
+            if appConfiguration.session.hasPassword() {
+                appConfiguration.session.isValid = false
+                openPasswordEntryScreen()
+            }
             return
         } else {
             validateAccountManagerFetchPolling()
