@@ -161,6 +161,7 @@ class AccountsViewController: BaseViewController {
             SVProgressHUD.dismiss(withDelay: 1.0) {
                 DispatchQueue.main.async {
                     self.accountsView.accountsCollectionView.reloadData()
+                    self.setAccountsCollectionViewContentState(isInitialEmptyStateIncluded: true)
                 }
             }
         }
@@ -383,17 +384,25 @@ extension AccountsViewController {
         optionsViewController?.delegate = self
     }
     
-    private func setAccountsCollectionViewContentState() {
+    private func setAccountsCollectionViewContentState(isInitialEmptyStateIncluded: Bool = false) {
         guard let user = session?.authenticatedUser else {
             return
         }
 
         if user.accounts.isEmpty {
             setEmptyAccountsState()
-        } else {
-            accountsView.accountsCollectionView.contentState = isConnectedToInternet ? .none : .empty(noConnectionView)
-            accountsView.setHeaderButtonsHidden(!isConnectedToInternet)
+            return
         }
+
+        if let remoteAccounts = session?.accounts,
+           remoteAccounts.isEmpty,
+           isInitialEmptyStateIncluded {
+            setEmptyAccountsState()
+            return
+        }
+
+        accountsView.accountsCollectionView.contentState = isConnectedToInternet ? .none : .empty(noConnectionView)
+        accountsView.setHeaderButtonsHidden(!isConnectedToInternet)
     }
 
     func setEmptyAccountsState() {
