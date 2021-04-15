@@ -38,12 +38,12 @@ class Environment {
     lazy var indexerToken = "KegWFLYQnBNVeP4oHCX64dObBk8VemzYdNqsnAOIxYQ8aqJLQTYeVDQyZNnx1PZA"
     
     lazy var testNetAlgodHost = "node-testnet.aws.algodev.network"
-    lazy var testNetIndexerHost = "indexer-testnet-blue.aws.algodev.network"
+    lazy var testNetIndexerHost = "indexer-testnet.aws.algodev.network"
     lazy var testNetAlgodApi = "\(schema)://\(testNetAlgodHost)"
     lazy var testNetIndexerApi = "\(schema)://\(testNetIndexerHost)"
     
     lazy var mainNetAlgodHost = "node-mainnet.aws.algodev.network"
-    lazy var mainNetIndexerHost = "indexer-mainnet-green.aws.algodev.network"
+    lazy var mainNetIndexerHost = "indexer-mainnet.aws.algodev.network"
     lazy var mainNetAlgodApi = "\(schema)://\(mainNetAlgodHost)"
     lazy var mainNetIndexerApi = "\(schema)://\(mainNetIndexerHost)"
     
