@@ -103,7 +103,7 @@ extension AnimatedTutorialView {
         addSubview(titleLabel)
 
         titleLabel.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(layout.current.titleHorizontalInset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
             make.top.equalTo(animatedImageView.snp.bottom).offset(layout.current.titleTopInset)
         }
     }
@@ -168,9 +168,8 @@ extension AnimatedTutorialView {
 
 extension AnimatedTutorialView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let titleHorizontalInset: CGFloat = 24.0
         let titleTopInset: CGFloat = 20.0
-        let descriptionHorizontalInset: CGFloat = 36.0
+        let descriptionHorizontalInset: CGFloat = 24.0
         let descriptionTopInset: CGFloat = 16.0
         let buttonInset: CGFloat = 20.0
         let horizontalInset: CGFloat = 20.0
