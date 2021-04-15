@@ -288,7 +288,7 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
 
         if recoverInputView.input.isNilOrEmpty {
             recoverInputView.bind(RecoverInputViewModel(state: .empty, index: index))
-        } else if !inputSuggestionsViewController.hasSuggestions {
+        } else if !hasValidSuggestion(for: recoverInputView) {
             recoverInputView.bind(RecoverInputViewModel(state: .filledWrongly, index: index))
         } else {
             recoverInputView.bind(RecoverInputViewModel(state: .filled, index: index))
