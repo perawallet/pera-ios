@@ -1133,7 +1133,7 @@
 "title-edit" = "Modifica";
 
 /* (No Comment) */
-"title-enter-pin-for-passphrase" = "";
+"title-enter-pin-for-passphrase" = "Inserisci il tuo PIN per visualizzare la passphrase";
 
 /* (No Comment) */
 "title-error" = "Errore";
@@ -1160,7 +1160,7 @@
 "title-keep" = "Mantienilo";
 
 /* (No Comment) */
-"title-learn-more" = "";
+"title-learn-more" = "Per saperne di più";
 
 /* (No Comment) */
 "title-loading" = "Caricamento in corso";
@@ -1391,7 +1391,7 @@
 "tutorial-description-recover" = "Nei passaggi seguenti, inserirai la tua passphrase di ripristino di 25 parole per recuperare un account Algorand. Tieni a portata di mano la frase di ripristino prima di iniziare.";
 
 /* (No Comment) */
-"tutorial-description-warning-title" = "";
+"tutorial-description-warning-title" = "Attenzione:";
 
 /* (No Comment) */
 "tutorial-description-watch" = "Un conto Watch ti consente di monitorare l'attività di un conto senza bisogno di avere la passphrase. Ciò è utile per monitorare le risorse conservate in cold storage. \n\nAvviso: se non disponi della passphrase di ripristino corrispondente, non inviare risorse a questo conto.";

@@ -1133,7 +1133,7 @@
 "title-edit" = "Düzenle";
 
 /* (No Comment) */
-"title-enter-pin-for-passphrase" = "";
+"title-enter-pin-for-passphrase" = "Parolayı görüntülemek için lütfen PIN'inizi girin";
 
 /* (No Comment) */
 "title-error" = "Hata";
@@ -1160,7 +1160,7 @@
 "title-keep" = "Koru";
 
 /* (No Comment) */
-"title-learn-more" = "";
+"title-learn-more" = "Daha Fazla Bilgi";
 
 /* (No Comment) */
 "title-loading" = "Yükleniyor";
@@ -1391,7 +1391,7 @@
 "tutorial-description-recover" = "Aşağıdaki adımlarda, bir Algorand hesabını kurtarmak için 25 kelimelik kurtarma parolanızı gireceksiniz. Başlamadan önce kurtarma parolanızı hazırda bulundurun.";
 
 /* (No Comment) */
-"tutorial-description-warning-title" = "";
+"tutorial-description-warning-title" = "Uyarı:";
 
 /* (No Comment) */
 "tutorial-description-watch" = "İzleme hesabı, parolaya sahip olmanıza gerek kalmadan bir hesabın etkinliğini izlemenize olanak sağlar. Soğuk depolamada tutulan varlıkların izlenmesi için yararlıdır.\n\nUyarı: İlgili hesabın kurtarma parolasına sahip değilseniz, bu hesaba varlık göndermeyin.";

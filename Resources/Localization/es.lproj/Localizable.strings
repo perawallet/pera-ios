@@ -1133,7 +1133,7 @@
 "title-edit" = "Editar";
 
 /* (No Comment) */
-"title-enter-pin-for-passphrase" = "";
+"title-enter-pin-for-passphrase" = "Ingresa tu PIN para ver la frase secreta";
 
 /* (No Comment) */
 "title-error" = "Error";
@@ -1160,7 +1160,7 @@
 "title-keep" = "Conservarlo";
 
 /* (No Comment) */
-"title-learn-more" = "";
+"title-learn-more" = "Más información";
 
 /* (No Comment) */
 "title-loading" = "Cargando";
@@ -1391,7 +1391,7 @@
 "tutorial-description-recover" = "En los siguientes pasos ingresarás tu frase secreta de recuperación de 25 palabras para recuperar una cuenta de Algorand. Ten a mano tu frase de recuperación antes de comenzar.";
 
 /* (No Comment) */
-"tutorial-description-warning-title" = "";
+"tutorial-description-warning-title" = "Advertencia:";
 
 /* (No Comment) */
 "tutorial-description-watch" = "Una cuenta en observación permite monitorear la actividad de una cuenta sin necesidad de tener la frase secreta. Esto es útil para monitorear activos que se mantienen en almacenamiento en frío. \n\nAdvertencia: si no tienes la frase secreta de recuperación correspondiente, no envíes activos a dicha cuenta.";

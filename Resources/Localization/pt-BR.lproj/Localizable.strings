@@ -1133,7 +1133,7 @@
 "title-edit" = "Editar";
 
 /* (No Comment) */
-"title-enter-pin-for-passphrase" = "";
+"title-enter-pin-for-passphrase" = "Insira sua senha para ver sua frase senha";
 
 /* (No Comment) */
 "title-error" = "Erro";
@@ -1160,7 +1160,7 @@
 "title-keep" = "Manter";
 
 /* (No Comment) */
-"title-learn-more" = "";
+"title-learn-more" = "Saiba Mais";
 
 /* (No Comment) */
 "title-loading" = "Carregando";
@@ -1391,7 +1391,7 @@
 "tutorial-description-recover" = "Nas etapas seguintes, insira sua senha de recuperação de 25 palavras para recuperar uma conta Algorand. Tenha sua frase de recuperação em mãos antes de começar.";
 
 /* (No Comment) */
-"tutorial-description-warning-title" = "";
+"tutorial-description-warning-title" = "Atenção:";
 
 /* (No Comment) */
 "tutorial-description-watch" = "Uma conta de Observação permite que você monitore a atividade de uma conta sem precisar de uma frase senha. Isso é útil para monitorar ativos que são mantidos em armazenamento frio. \n\nAtenção: caso não tenha a frase senha de recuperação correspondente, não envie ativos para esta conta.";

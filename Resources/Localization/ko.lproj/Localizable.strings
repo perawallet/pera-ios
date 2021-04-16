@@ -1133,7 +1133,7 @@
 "title-edit" = "수정";
 
 /* (No Comment) */
-"title-enter-pin-for-passphrase" = "";
+"title-enter-pin-for-passphrase" = "비밀문구를 확인하려면 PIN 번호를 입력해 주세요";
 
 /* (No Comment) */
 "title-error" = "오류";
@@ -1160,7 +1160,7 @@
 "title-keep" = "유지";
 
 /* (No Comment) */
-"title-learn-more" = "";
+"title-learn-more" = "더 알아보기";
 
 /* (No Comment) */
 "title-loading" = "불러오는 중";
@@ -1391,7 +1391,7 @@
 "tutorial-description-recover" = "다음 단계에서는 알고랜드 계정을 복원하기 위해 25단어로 구성된 복구 비밀문구를 입력하셔야 합니다. 시작하기 전에 복구 비밀문구를 준비하시기 바랍니다.";
 
 /* (No Comment) */
-"tutorial-description-warning-title" = "";
+"tutorial-description-warning-title" = "주의:";
 
 /* (No Comment) */
 "tutorial-description-watch" = "읽기 전용 계정을 사용하면 비밀문구가 없어도 계정 활동을 모니터링할 수 있습니다. 콜드 스토리지에 보관된 자산을 모니터링하는 데 유용한 기능입니다.\n\n경고: 계정에 설정된 복구 비밀문구를 모르는 경우, 이 계정으로 자산을 보내지 마세요.";

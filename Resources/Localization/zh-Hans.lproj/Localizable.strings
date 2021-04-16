@@ -1160,7 +1160,7 @@
 "title-keep" = "保留";
 
 /* (No Comment) */
-"title-learn-more" = "";
+"title-learn-more" = "了解更多";
 
 /* (No Comment) */
 "title-loading" = "加载中";
@@ -1391,7 +1391,7 @@
 "tutorial-description-recover" = "接下来，您将输入25字节的恢复助记词来恢复Algorand账户。开始之前，请您准备好恢复用的助记词。";
 
 /* (No Comment) */
-"tutorial-description-warning-title" = "";
+"tutorial-description-warning-title" = "警告:";
 
 /* (No Comment) */
 "tutorial-description-watch" = "Watch账户能够让你监控账户活动，且无需输入助记词。该功能有助于监控冷储藏的资产。\n\n警告：若无相应的恢复助记词，请勿将资产发送到该帐户上。";

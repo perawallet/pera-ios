@@ -1133,7 +1133,7 @@
 "title-edit" = "Bearbeiten";
 
 /* (No Comment) */
-"title-enter-pin-for-passphrase" = "";
+"title-enter-pin-for-passphrase" = "Bitte geben Sie Ihre PIN ein, um die Passphrase anzuzeigen";
 
 /* (No Comment) */
 "title-error" = "Fehler";
@@ -1160,7 +1160,7 @@
 "title-keep" = "Behalten";
 
 /* (No Comment) */
-"title-learn-more" = "";
+"title-learn-more" = "Mehr erfahren";
 
 /* (No Comment) */
 "title-loading" = "Wird geladen";
@@ -1391,7 +1391,7 @@
 "tutorial-description-recover" = "In den folgenden Schritten geben Sie Ihre 25 Worte umfassende Wiederherstellungs-Passphrase ein, um ein Algorand-Konto wiederherzustellen. Halten Sie Ihre Wiederherstellungsphrase bereit, bevor Sie beginnen.";
 
 /* (No Comment) */
-"tutorial-description-warning-title" = "";
+"tutorial-description-warning-title" = "Warnung:";
 
 /* (No Comment) */
 "tutorial-description-watch" = "Mit einem Überwachungskonto können Sie die Aktivität eines Kontos überwachen, ohne dass Sie die Passphrase haben müssen. Dies ist nützlich für die Überwachung von Assets, die in einem Cold-Storage aufbewahrt werden.\n\nWarnung: Wenn Sie nicht über die entsprechende Wiederherstellungs-Passphrase verfügen, dürfen Sie keine Assets an dieses Konto senden.";
