@@ -22,4 +22,8 @@ class OptionsCell: BaseCollectionViewCell<OptionsContextView> {
     func bind(_ viewModel: OptionsViewModel) {
         contextView.bind(viewModel)
     }
+
+    func bind(_ viewModel: AccountRecoverOptionsViewModel) {
+        contextView.bind(viewModel)
+    }
 }

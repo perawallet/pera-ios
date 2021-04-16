@@ -20,13 +20,16 @@ import Magpie
 struct AssetSearchQuery: ObjectQuery {
     let status: AssetSearchFilter
     let query: String?
-    let limit: Int
-    let offset: Int
+    let paginator: Paginator = .cursor
+    let cursor: String?
     
     var queryParams: [QueryParam] {
         var params: [QueryParam] = []
-        params.append(.init(.limit, limit))
-        params.append(.init(.offset, offset))
+        params.append(.init(.paginator, paginator.rawValue))
+
+        if let cursor = cursor {
+            params.append(.init(.cursor, cursor))
+        }
         
         if let query = query {
             params.append(.init(.query, query))
@@ -41,6 +44,12 @@ struct AssetSearchQuery: ObjectQuery {
             }
             return params
         }
+    }
+}
+
+extension AssetSearchQuery {
+    enum Paginator: String {
+        case cursor = "cursor"
     }
 }
 

@@ -71,7 +71,7 @@ class RootViewController: UIViewController {
         onceWhenViewDidAppear.execute {
             changeUserInterfaceStyle(to: appConfiguration.api.session.userInterfaceStyle)
             addBanner()
-            initializeFlow()
+            deepLinkRouter.initializeFlow()
         }
     }
 }
@@ -90,22 +90,6 @@ extension RootViewController {
 }
 
 extension RootViewController {
-    private func initializeFlow() {
-        if !appConfiguration.session.isValid {
-            if appConfiguration.session.hasPassword() && appConfiguration.session.authenticatedUser != nil {
-                open(
-                   .choosePassword(mode: .login, flow: nil, route: nil),
-                   by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
-               )
-            } else {
-                appConfiguration.session.reset(isContactIncluded: false)
-                open(.introduction(flow: .initializeAccount(mode: nil)), by: .launch, animated: false)
-            }
-        } else {
-            setupTabBarController()
-        }
-    }
-
     func setupTabBarController(withInitial screen: Screen? = nil) {
         if tabBarViewController.parent != nil {
             return
@@ -119,6 +103,7 @@ extension RootViewController {
         }
 
         tabBarViewController.route = screen
+        tabBarViewController.routeForDeeplink()
         tabBarViewController.didMove(toParent: self)
     }
 }

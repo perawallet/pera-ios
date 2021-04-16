@@ -16,8 +16,17 @@
 //  PassphraseDisplayViewController.swift
 
 import UIKit
+import AVFoundation
 
-class PassphraseDisplayViewController: BaseViewController {
+class PassphraseDisplayViewController: BaseScrollViewController {
+
+    private lazy var bottomModalPresenter = CardModalPresenter(
+        config: ModalConfiguration(
+            animationMode: .normal(duration: 0.25),
+            dismissMode: .backgroundTouch
+        ),
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: 338.0))
+    )
     
     var mnemonics: [String]? {
         guard let session = self.session else {
@@ -45,53 +54,56 @@ class PassphraseDisplayViewController: BaseViewController {
     }
     
     override func configureAppearance() {
+        super.configureAppearance()
         view.backgroundColor = Colors.Background.secondary
         title = "options-view-passphrase".localized
         setSecondaryBackgroundColor()
     }
+
+    override func setListeners() {
+        super.setListeners()
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(displayScreenshotWarning),
+            name: UIApplication.userDidTakeScreenshotNotification,
+            object: nil
+        )
+    }
     
     override func linkInteractors() {
-        passphraseDisplayView.delegate = self
+        super.linkInteractors()
+        passphraseDisplayView.setDelegate(self)
+        passphraseDisplayView.setDataSource(self)
     }
 
     override func prepareLayout() {
+        super.prepareLayout()
         setupPassphraseViewLayout()
     }
 }
 
 extension PassphraseDisplayViewController {
     private func setupPassphraseViewLayout() {
-        view.addSubview(passphraseDisplayView)
-        
-        passphraseDisplayView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
+        contentView.addSubview(passphraseDisplayView)
+        passphraseDisplayView.pinToSuperview()
     }
 }
 
 extension PassphraseDisplayViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let mnemonics = mnemonics else {
-            return 0
-        }
-        return mnemonics.count
+        return mnemonics?.count ?? 0
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(
+        if let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: PassphraseBackUpCell.reusableIdentifier,
-            for: indexPath) as? PassphraseBackUpCell else {
-                fatalError("Index path is out of bounds")
-        }
-        
-        cell.contextView.numberLabel.text = "\(indexPath.item + 1)."
-        
-        guard let mnemonics = mnemonics else {
+            for: indexPath
+        ) as? PassphraseBackUpCell {
+            cell.bind(PassphraseBackUpOrderViewModel(mnemonics: mnemonics, index: indexPath.item))
             return cell
         }
-        
-        cell.contextView.phraseLabel.text = mnemonics[indexPath.item]
-        return cell
+
+        fatalError("Index path is out of bounds")
     }
 }
 
@@ -101,29 +113,23 @@ extension PassphraseDisplayViewController: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        return CGSize(width: collectionView.frame.width / 3.0, height: 22.0)
+        return CGSize(width: collectionView.frame.width / 2.0, height: 22.0)
     }
 }
 
-extension PassphraseDisplayViewController: PassphraseDisplayViewDelegate {
-    func passphraseViewDidOpenQR(_ passphraseDisplayView: PassphraseDisplayView) {
-        let mnemonics = self.session?.mnemonics(forAccount: address) ?? []
-        let mnemonicText = mnemonics.joined(separator: " ")
-        let draft = QRCreationDraft(address: address, mode: .mnemonic, mnemonic: mnemonicText)
-        open(.qrGenerator(title: "qr-creation-title".localized, draft: draft), by: .present)
-    }
-    
-    func passphraseViewDidShare(_ passphraseDisplayView: PassphraseDisplayView) {
-        let mnemonics = self.session?.mnemonics(forAccount: address) ?? []
-        
-        let sharedItem = [mnemonics.joined(separator: " ")]
-        let activityViewController = UIActivityViewController(activityItems: sharedItem, applicationActivities: nil)
-        activityViewController.excludedActivityTypes = [UIActivity.ActivityType.addToReadingList]
-        
-        if let navigationController = navigationController {
-            navigationController.present(activityViewController, animated: true, completion: nil)
-        } else {
-            present(activityViewController, animated: true, completion: nil)
-        }
+extension PassphraseDisplayViewController {
+    @objc
+    private func displayScreenshotWarning() {
+        // Display screenshot detection warning if the user takes a screenshot of passphrase
+        AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
+
+        open(
+            .screenshotWarning,
+            by: .customPresentWithoutNavigationController(
+                presentationStyle: .custom,
+                transitionStyle: nil,
+                transitioningDelegate: bottomModalPresenter
+            )
+        )
     }
 }

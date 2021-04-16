@@ -77,7 +77,7 @@ extension TransactionTutorialViewController: TransactionTutorialViewDelegate {
     }
 
     func transactionTutorialViewDidOpenMoreInfo(_ transactionTutorialView: TransactionTutorialView) {
-        if let url = URL(string: "https://algorandwallet.com/support/transacting") {
+        if let url = AlgorandWeb.transactionSupport.link {
             open(url)
         }
     }

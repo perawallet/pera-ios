@@ -56,6 +56,8 @@ class IntroductionViewController: BaseViewController {
             introductionView.setTitle("introduction-title-add-text".localized)
         case .initializeAccount:
             introductionView.setTitle("introduction-title-text".localized)
+        case .none:
+            break
         }
     }
     
@@ -97,7 +99,7 @@ extension IntroductionViewController {
 
 extension IntroductionViewController: IntroductionViewDelegate {
     func introductionViewDidAddAccount(_ introductionView: IntroductionView) {
-        open(.accountTypeSelection(flow: accountSetupFlow), by: .push)
+        open(.welcome(flow: accountSetupFlow), by: .push)
     }
     
     func introductionView(_ introductionView: IntroductionView, didOpen url: URL) {
@@ -106,14 +108,21 @@ extension IntroductionViewController: IntroductionViewDelegate {
 }
 
 enum AccountSetupFlow {
-    case initializeAccount(mode: AccountSetupMode?)
-    case addNewAccount(mode: AccountSetupMode?)
+    case initializeAccount(mode: AccountSetupMode)
+    case addNewAccount(mode: AccountSetupMode)
+    case none
 }
 
 enum AccountSetupMode {
-    case create
-    case pair
+    case add(type: AccountAdditionType)
     case recover
     case rekey(account: Account)
+    case none
+}
+
+enum AccountAdditionType {
+    case create
     case watch
+    case pair
+    case none
 }

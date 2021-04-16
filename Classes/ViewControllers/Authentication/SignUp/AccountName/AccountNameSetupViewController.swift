@@ -61,12 +61,8 @@ extension AccountNameSetupViewController {
 }
 
 extension AccountNameSetupViewController: AccountNameSetupViewDelegate {
-    func accountNameSetupViewDidTapNextButton(_ accountNameSetupView: AccountNameSetupView) {
-        guard let name = accountNameSetupView.accountNameInputView.inputTextField.text, !name.isEmpty else {
-            self.displaySimpleAlertWith(title: "title-error".localized, message: "account-name-setup-empty-error-message".localized)
-            return
-        }
-        setupAccount(name: name)
+    func accountNameSetupViewDidFinishAccountCreation(_ accountNameSetupView: AccountNameSetupView) {
+        setupAccountName()
     }
     
     func accountNameSetupViewDidChangeValue(_ accountNameSetupView: AccountNameSetupView) {
@@ -74,15 +70,17 @@ extension AccountNameSetupViewController: AccountNameSetupViewDelegate {
 }
 
 extension AccountNameSetupViewController {
-    private func setupAccount(name: String) {
+    private func setupAccountName() {
         guard let tempPrivateKey = session?.privateData(for: "temp"),
             let address = session?.address(for: "temp") else {
                 return
         }
-        
+
         log(RegistrationEvent(type: .create))
-        
-        let account = AccountInformation(address: address, name: name, type: .standard)
+
+        let nameInput = accountNameSetupView.accountNameInputView.inputTextField.text.unwrap(or: "")
+        let accountName = nameInput.isEmptyOrBlank ? address.shortAddressDisplay() : nameInput
+        let account = AccountInformation(address: address, name: accountName, type: .standard)
         session?.savePrivate(tempPrivateKey, for: account.address)
         session?.removePrivateData(for: "temp")
         session?.addAccount(Account(address: account.address, type: account.type, name: account.name))
@@ -103,11 +101,11 @@ extension AccountNameSetupViewController {
 
 extension AccountNameSetupViewController: KeyboardControllerDataSource {
     func bottomInsetWhenKeyboardPresented(for keyboardController: KeyboardController) -> CGFloat {
-        return 15.0
+        return 20.0
     }
     
     func firstResponder(for keyboardController: KeyboardController) -> UIView? {
-        return accountNameSetupView.nextButton
+        return accountNameSetupView.accountNameInputView
     }
     
     func containerView(for keyboardController: KeyboardController) -> UIView {
@@ -115,7 +113,7 @@ extension AccountNameSetupViewController: KeyboardControllerDataSource {
     }
     
     func bottomInsetWhenKeyboardDismissed(for keyboardController: KeyboardController) -> CGFloat {
-        return 15.0
+        return 20.0
     }
 }
 

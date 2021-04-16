@@ -50,24 +50,30 @@ extension AccountsViewController: OptionsViewControllerDelegate {
     }
     
     func optionsViewControllerDidViewPassphrase(_ optionsViewController: OptionsViewController) {
+        guard let session = session else {
+            return
+        }
+
+        if !session.hasPassword() {
+            presentPassphraseView()
+            return
+        }
+
         if localAuthenticator.localAuthenticationStatus != .allowed {
-            let controller = open(.choosePassword(mode: .confirm(""), flow: nil, route: nil), by: .present) as? ChoosePasswordViewController
+            let controller = open(
+                .choosePassword(mode: .confirm("title-enter-pin-for-passphrase".localized), flow: nil, route: nil),
+                by: .present
+            ) as? ChoosePasswordViewController
             controller?.delegate = self
             return
         }
 
-        displaySimpleAlertWith(
-            title: "options-view-passphrase-alert-title".localized,
-            message: "options-view-passphrase-alert-message".localized
-        ) { _ in
-
-            self.localAuthenticator.authenticate { error in
-                guard error == nil else {
-                    return
-                }
-
-                self.presentPassphraseView()
+        self.localAuthenticator.authenticate { error in
+            guard error == nil else {
+                return
             }
+
+            self.presentPassphraseView()
         }
     }
     
@@ -106,23 +112,9 @@ extension AccountsViewController: OptionsViewControllerDelegate {
             explanation: "options-remove-alert-explanation".localized,
             actionTitle: "options-remove-account".localized,
             actionImage: img("bg-button-red"),
-            closeTitle: "title-keep".localized) {
-                guard let user = self.session?.authenticatedUser,
-                    let account = self.selectedAccount,
-                    let accountInformation = self.session?.accountInformation(from: account.address) else {
-                        return
-                }
-                
-                self.session?.removeAccount(account)
-                user.removeAccount(accountInformation)
-                
-                guard !user.accounts.isEmpty else {
-                    self.session?.reset(isContactIncluded: false)
-                    self.tabBarContainer?.open(.introduction(flow: .initializeAccount(mode: nil)), by: .launch, animated: false)
-                    return
-                }
-
-                self.session?.authenticatedUser = user
+            closeTitle: "title-keep".localized
+        ) {
+            self.removeAccount()
         }
         
         open(
@@ -133,6 +125,22 @@ extension AccountsViewController: OptionsViewControllerDelegate {
                 transitioningDelegate: removeAccountModalPresenter
             )
         )
+    }
+
+    private func removeAccount() {
+        guard let user = session?.authenticatedUser,
+              let account = selectedAccount,
+              let accountInformation = session?.accountInformation(from: account.address) else {
+            return
+        }
+
+        session?.removeAccount(account)
+        user.removeAccount(accountInformation)
+        session?.authenticatedUser = user
+
+        if user.accounts.isEmpty {
+            setEmptyAccountsState()
+        }
     }
 }
 

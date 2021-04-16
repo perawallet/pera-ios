@@ -41,7 +41,8 @@ struct DeepLinkParser {
                 return .sendAlgosTransactionPreview(
                     account: nil,
                     receiver: .address(address: accountAddress, amount: "\(amount)"),
-                    isSenderEditable: false
+                    isSenderEditable: false,
+                    qrText: qrText
                 )
             }
         case .assetRequest:
@@ -77,7 +78,8 @@ struct DeepLinkParser {
                     receiver: .address(address: accountAddress, amount: "\(amount)"),
                     assetDetail: assetDetail,
                     isSenderEditable: false,
-                    isMaxTransaction: false
+                    isMaxTransaction: false,
+                    qrText: qrText
                 )
             }
         case .mnemonic:

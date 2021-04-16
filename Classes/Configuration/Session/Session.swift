@@ -331,6 +331,10 @@ extension Session {
         
         return true
     }
+
+    func createUser(with accounts: [AccountInformation] = []) {
+        authenticatedUser = User(accounts: accounts)
+    }
 }
 
 extension Session {

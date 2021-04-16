@@ -19,8 +19,9 @@ import UIKit
 
 indirect enum Screen {
     case introduction(flow: AccountSetupFlow)
+    case welcome(flow: AccountSetupFlow)
+    case addAccount(flow: AccountSetupFlow)
     case choosePassword(mode: ChoosePasswordViewController.Mode, flow: AccountSetupFlow?, route: Screen?)
-    case localAuthenticationPreference(flow: AccountSetupFlow)
     case passphraseView(address: String)
     case passphraseVerify
     case accountNameSetup
@@ -35,13 +36,14 @@ indirect enum Screen {
     case contactSelection
     case addContact(mode: AddContactViewController.Mode)
     case contactDetail(contact: Contact)
-    case sendAlgosTransactionPreview(account: Account?, receiver: AssetReceiverState, isSenderEditable: Bool)
+    case sendAlgosTransactionPreview(account: Account?, receiver: AssetReceiverState, isSenderEditable: Bool, qrText: QRText? = nil)
     case sendAssetTransactionPreview(
         account: Account?,
         receiver: AssetReceiverState,
         assetDetail: AssetDetail,
         isSenderEditable: Bool,
-        isMaxTransaction: Bool
+        isMaxTransaction: Bool,
+        qrText: QRText? = nil
     )
     case sendAlgosTransaction(
         algosTransactionSendDraft: AlgosTransactionSendDraft,
@@ -90,11 +92,13 @@ indirect enum Screen {
     case currencySelection
     case appearanceSelection
     case watchAccountAddition(flow: AccountSetupFlow)
-    case accountTypeSelection(flow: AccountSetupFlow)
     case ledgerAccountDetail(account: Account, ledgerIndex: Int?, rekeyedAccounts: [Account]?)
     case notificationFilter(flow: NotificationFilterViewController.Flow)
     case maximumBalanceWarning(account: Account)
+    case screenshotWarning
+    case animatedTutorial(flow: AccountSetupFlow, tutorial: AnimatedTutorial, isActionable: Bool)
     case transactionTutorial(isInitialDisplay: Bool)
+    case recoverOptions
 }
 
 extension Screen {

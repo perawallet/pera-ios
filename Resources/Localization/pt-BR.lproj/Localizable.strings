@@ -2,16 +2,25 @@
 "account-details-title" = "Detalhes de Conta";
 
 /* (No Comment) */
-"account-name-setup-empty-error-message" = "Nome da conta não pode estar em branco";
+"account-name-setup-description" = "Nomeie sua conta para identificá-la facilmente ao utilizar a Carteira Algorand. Esses nomes são armazenados localmente e só podem ser vistos por você.";
 
 /* (No Comment) */
 "account-name-setup-explanation" = "Nome da Conta";
+
+/* (No Comment) */
+"account-name-setup-finish" = "Concluir criação de conta";
 
 /* (No Comment) */
 "account-name-setup-placeholder" = "Conta Poupança";
 
 /* MARK: Account Type Selection */
 "account-type-choose-title" = "Escolher Tipo de Conta";
+
+/* (No Comment) */
+"account-type-selection-add" = "Adicionar Conta";
+
+/* (No Comment) */
+"account-type-selection-add-detail" = "Quero uma nova conta com um novo endereço e frase senha de recuperação.";
 
 /* (No Comment) */
 "account-type-selection-create" = "Criar Nova Conta";
@@ -33,6 +42,9 @@
 
 /* (No Comment) */
 "account-type-selection-watch-detail" = "Monitorar transações de uma conta utilizando apenas seu endereço";
+
+/* (No Comment) */
+"account-welcome-wallet-title" = "Bem-vindo à\nCarteira Algorand";
 
 /* (No Comment) */
 "accounts-add-account" = "+ ADICIONAR CONTA";
@@ -155,13 +167,7 @@
 "asset-you-already-own-message" = "Você já possui este Ativo";
 
 /* (No Comment) */
-"back-up-phrase-button-title" = "Confirmar Frase Senha de Recuperação";
-
-/* (No Comment) */
 "back-up-phrase-qr" = "Exibir QR";
-
-/* (No Comment) */
-"back-up-phrase-warning" = "Certifique-se de gravar a frase senha de sua conta. Esta é a única maneira de recuperar sua conta Algorand.";
 
 /* (No Comment) */
 "ble-error-bluetooth-title" = "Erro de Bluetooth";
@@ -288,6 +294,15 @@
 
 /* (No Comment) */
 "edit-node-title" = "Editar Node";
+
+/* (No Comment) */
+"empty-accounts-action" = "Criar uma Conta nova";
+
+/* (No Comment) */
+"empty-accounts-detail" = "Para começar a negociar seus ativos, você precisa criar uma conta.";
+
+/* (No Comment) */
+"empty-accounts-title" = "Criar Conta";
 
 /* (No Comment) */
 "feedback-empty-category-message" = "Selecione uma categoria.";
@@ -509,6 +524,12 @@
 "local-authentication-enable" = "Habilitar ID Facial/Toque";
 
 /* (No Comment) */
+"local-authentication-enabled-subtitle" = "Seu código de acesso foi confirmado. Sua conta Algorand agora é mais segura.";
+
+/* (No Comment) */
+"local-authentication-enabled-title" = "Autenticação Biométrica Habilitada";
+
+/* (No Comment) */
 "local-authentication-go-settings-text" = "Você desabilitou a autenticação biométrica. Vá a Configurações e habilite essa opção.";
 
 /* (No Comment) */
@@ -540,9 +561,6 @@
 
 /* (No Comment) */
 "maximum-balance-warning-title" = "Saldo Máximo";
-
-/* MARK: Passphrase Back Up */
-"new-account-title" = "Frase Senha de Recuperação";
 
 /* (No Comment) */
 "node-settings-action-delete-title" = "Apagar";
@@ -677,12 +695,6 @@
 "options-view-passphrase" = "Ver Frase Senha";
 
 /* (No Comment) */
-"options-view-passphrase-alert-message" = "Você precisa da autenticação biométrica para exibir sua frase senha.";
-
-/* (No Comment) */
-"options-view-passphrase-alert-title" = "Autenticação Biométrica";
-
-/* (No Comment) */
 "options-view-passphrase-password-alert-message" = "Você precisa inserir a senha correta para exibir sua frase senha.";
 
 /* (No Comment) */
@@ -710,6 +722,9 @@
 "pass-phrase-verify-wrong-selection" = "Opção Errada";
 
 /* (No Comment) */
+"passphrase-bottom-title" = "Certifique-se de guardar essas palavras na ordem correta, usando os números correspondentes.";
+
+/* (No Comment) */
 "passphrase-qeustion-counter" = "Pergunta %@ of %@";
 
 /* (No Comment) */
@@ -726,6 +741,18 @@
 
 /* (No Comment) */
 "passphrase-select-n-word" = "Selecione a %@ palavra de sua frase senha";
+
+/* (No Comment) */
+"passphrase-verify-invalid-title" = "Frase senha incorreta";
+
+/* (No Comment) */
+"passphrase-verify-select-word" = "Selecionar palavra #%@";
+
+/* (No Comment) */
+"passphrase-verify-title" = "Confirmar gravação de frase senha de recuperação";
+
+/* (No Comment) */
+"passphrase-verify-wrong-message" = "As palavras selecionadas estão erradas. Tente novamente.";
 
 /* (No Comment) */
 "password-change-subtitle" = "Insira senha de 6 dígitos";
@@ -759,6 +786,9 @@
 
 /* (No Comment) */
 "pin-limit-try-again" = "Tente novamente em";
+
+/* No comment provided by engineer. */
+"primaryText" = "primaryText";
 
 /* (No Comment) */
 "privacy-policy-title" = "Política de Privacidade";
@@ -806,6 +836,12 @@
 "qr-scan-title" = "Escanear QR";
 
 /* (No Comment) */
+"recover-copy-error" = "O último texto copiado não é uma frase secreta válida de 25 palavras. Copie a senha longa válida e tente novamente.";
+
+/* (No Comment) */
+"recover-fill-all-error" = "Insira toda a frase senha";
+
+/* (No Comment) */
 "recover-from-seed-name-placeholder" = "Nome exemplo";
 
 /* (No Comment) */
@@ -825,6 +861,12 @@
 
 /* (No Comment) */
 "recover-from-seed-verify-pop-up-title" = "Conta Confirmada";
+
+/* MARK: Passphrase Back Up */
+"recover-passphrase-title" = "Frase Senha de Recuperação";
+
+/* (No Comment) */
+"recover-title" = "Recuperar";
 
 /* (No Comment) */
 "rekey-instruction-first" = "Futuras transações serão assinadas por seu novo Dispositivo Ledger.";
@@ -873,6 +915,12 @@
 
 /* MARK: Rewards */
 "rewards-title" = "Recompensas";
+
+/* (No Comment) */
+"screenshot-description" = "Não grave sua frase senha de recuperação fazendo a captura de tela. Ter uma imagem contendo sua senha é um risco à segurança.";
+
+/* (No Comment) */
+"screenshot-title" = "Captura de Tela Detectada";
 
 /* (No Comment) */
 "send-algos-account-delete-asset-title" = "Para apagar uma conta, você precisa esvaziar todo o saldo de ativos na conta e destruir todo ativo que tenha criado.";
@@ -1076,16 +1124,25 @@
 "title-done" = "Feito";
 
 /* (No Comment) */
+"title-dont-ask" = "Não perguntar de novo";
+
+/* (No Comment) */
 "title-dont-show-again" = "Não Exibir Novamente";
 
 /* (No Comment) */
 "title-edit" = "Editar";
 
 /* (No Comment) */
+"title-enter-pin-for-passphrase" = "Insira sua senha para ver sua frase senha";
+
+/* (No Comment) */
 "title-error" = "Erro";
 
 /* (No Comment) */
 "title-go-home" = "Ir para Início";
+
+/* (No Comment) */
+"title-go-to-accounts" = "Ir para Contas";
 
 /* (No Comment) */
 "title-go-to-settings" = "Ir para Configurações";
@@ -1101,6 +1158,9 @@
 
 /* (No Comment) */
 "title-keep" = "Manter";
+
+/* (No Comment) */
+"title-learn-more" = "Saiba Mais";
 
 /* (No Comment) */
 "title-loading" = "Carregando";
@@ -1119,6 +1179,9 @@
 
 /* (No Comment) */
 "title-ok" = "OK";
+
+/* (No Comment) */
+"title-paste-passphrase" = "Colar Frase de Senha Completa";
 
 /* (No Comment) */
 "title-plus-asset-count" = "+%@ ativos";
@@ -1152,6 +1215,9 @@
 
 /* (No Comment) */
 "title-share-qr" = "Compartilhar QR";
+
+/* (No Comment) */
+"title-skip" = "Pular";
 
 /* MARK: Ledger Troubleshooting */
 "title-step-1" = "Passo 1";
@@ -1310,10 +1376,61 @@
 "transaction-tutorial-title" = "Dicas para Transações";
 
 /* (No Comment) */
-"verified-asset-double-check" = "sempre verifique duas vezes";
+"tutorial-action-title-passcode" = "Agora não";
 
 /* (No Comment) */
-"verified-asset-information-contact-us" = "entre em contato conosco";
+"tutorial-description-back-up" = "Sem sua frase senha de recuperação, caso perca seu dispositivo, exclua o aplicativo ou perca seu telefone, você perderá de forma permanente o acesso à sua conta Algorand.";
+
+/* (No Comment) */
+"tutorial-description-local" = "Para utilizar o aplicativo, será necessária sua FaceID ou TouchID. Recomendamos habilitar a autenticação biométrica para ajudar a aumentar a segurança da carteira no caso de seu telefone ser roubado.";
+
+/* (No Comment) */
+"tutorial-description-passcode" = "Esta senha de 6 dígitos será necessária para a utilização da Carteira Algorand. A criação de uma senha é altamente recomendável para aumentar a segurança da carteira para o caso de seu telefone ser roubado.";
+
+/* (No Comment) */
+"tutorial-description-recover" = "Nas etapas seguintes, insira sua senha de recuperação de 25 palavras para recuperar uma conta Algorand. Tenha sua frase de recuperação em mãos antes de começar.";
+
+/* (No Comment) */
+"tutorial-description-warning-title" = "Atenção:";
+
+/* (No Comment) */
+"tutorial-description-watch" = "Uma conta de Observação permite que você monitore a atividade de uma conta sem precisar de uma frase senha. Isso é útil para monitorar ativos que são mantidos em armazenamento frio. \n\nAtenção: caso não tenha a frase senha de recuperação correspondente, não envie ativos para esta conta.";
+
+/* (No Comment) */
+"tutorial-description-watch-italic" = "Atenção: caso não possua a frase senha de recuperação correspondente, não envie ativos para esta conta.";
+
+/* (No Comment) */
+"tutorial-description-write" = "Novamente, a única maneira de recuperar uma conta Algorand é com esta frase senha de recuperação. Não compartilhe esta senha com outras pessoas, pois ela dá acesso total à sua conta. \n\n Funcionários da Algorand jamais pedirão sua senha.";
+
+/* (No Comment) */
+"tutorial-description-write-italic" = "Funcionários da Algorand jamais pedirão sua frase senha.";
+
+/* (No Comment) */
+"tutorial-main-title-back-up" = "Compreendo";
+
+/* (No Comment) */
+"tutorial-main-title-passcode" = "Definir Código de Acesso";
+
+/* (No Comment) */
+"tutorial-main-title-recover" = "Recuperar uma Conta Algorand";
+
+/* (No Comment) */
+"tutorial-main-title-write" = "Estou pronto para começar";
+
+/* (No Comment) */
+"tutorial-title-back-up" = "Grave sua conta utilizando uma frase senha de recuperação";
+
+/* (No Comment) */
+"tutorial-title-passcode" = "Aumente sua segurança com uma senha";
+
+/* (No Comment) */
+"tutorial-title-recover" = "Recuperar uma Conta Algorand";
+
+/* (No Comment) */
+"tutorial-title-write" = "Prepare-se para anotar sua frase senha de recuperação";
+
+/* (No Comment) */
+"verified-asset-double-check" = "sempre verifique duas vezes";
 
 /* (No Comment) */
 "verified-asset-information-text" = "Certos ativos com os quais a Algorand Inc. tem relação com o emissor, são marcados como \"Confirmados\" (o que é indicado por um símbolo azul).\n\nIsso ajuda sendo mais uma defesa contra transações acidentais com um ativo não desejado.\n\nDito isto, antes de transacionar um ativo, você deve sempre certificar-se de que a ID do ativo é aquela que você escolheu transacionar.\n\nCaso tenha dúvidas sobre o processo de confirmação ou outros comentários sobre o aplicativo, entre em contato conosco.";
@@ -1321,11 +1438,20 @@
 /* (No Comment) */
 "verified-asset-information-title" = "O que significa confirmação de ativos?";
 
+/* (No Comment) */
+"verified-asset-information-visit-site" = "visite www.algorandwallet.com/support";
+
 /* MARK: Verified Asset Information */
 "verified-assets-title" = "Ativos Confirmados";
 
 /* (No Comment) */
+"watch-account-create" = "Criar uma Conta de Observação";
+
+/* (No Comment) */
 "watch-account-error-address" = "Insira um endereço válido.";
+
+/* (No Comment) */
+"watch-account-explanation-title" = "Você está criando uma visualização somente para leitura de uma conta Algorand. Caso envie ativos para esta conta e não possua a senha de recuperação correspondente, esses ativos serão perdidos.";
 
 /* (No Comment) */
 "watch-account-input-explanation" = "Endereço de Conta a ser Observada";

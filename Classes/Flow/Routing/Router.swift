@@ -183,6 +183,10 @@ class Router {
         switch screen {
         case let .introduction(flow):
             viewController = IntroductionViewController(accountSetupFlow: flow, configuration: configuration)
+        case let .welcome(flow):
+            viewController = WelcomeViewController(flow: flow, configuration: configuration)
+        case let .addAccount(flow):
+            viewController = AddAccountViewController(flow: flow, configuration: configuration)
         case let .choosePassword(mode, flow, route):
             viewController = ChoosePasswordViewController(
                 mode: mode,
@@ -190,8 +194,6 @@ class Router {
                 route: route,
                 configuration: configuration
             )
-        case let .localAuthenticationPreference(flow):
-            viewController = LocalAuthenticationPreferenceViewController(accountSetupFlow: flow, configuration: configuration)
         case let .passphraseView(address):
             viewController = PassphraseBackUpViewController(address: address, configuration: configuration)
         case .passphraseVerify:
@@ -220,20 +222,22 @@ class Router {
             viewController = AddContactViewController(mode: mode, configuration: configuration)
         case let .contactDetail(contact):
             viewController = ContactInfoViewController(contact: contact, configuration: configuration)
-        case let .sendAlgosTransactionPreview(account, receiver, isSenderEditable):
+        case let .sendAlgosTransactionPreview(account, receiver, isSenderEditable, qrText):
             viewController = SendAlgosTransactionPreviewViewController(
                 account: account,
                 assetReceiverState: receiver,
                 isSenderEditable: isSenderEditable,
+                qrText: qrText,
                 configuration: configuration
             )
-        case let .sendAssetTransactionPreview(account, receiver, assetDetail, isSenderEditable, isMaxTransaction):
+        case let .sendAssetTransactionPreview(account, receiver, assetDetail, isSenderEditable, isMaxTransaction, qrText):
             viewController = SendAssetTransactionPreviewViewController(
                 account: account,
                 assetReceiverState: receiver,
                 assetDetail: assetDetail,
                 isSenderEditable: isSenderEditable,
                 isMaxTransaction: isMaxTransaction,
+                qrText: qrText,
                 configuration: configuration
             )
         case let .sendAlgosTransaction(algosTransactionSendDraft, transactionController, receiver, isSenderEditable):
@@ -347,8 +351,6 @@ class Router {
             viewController = AppearanceSelectionViewController(configuration: configuration)
         case let .watchAccountAddition(flow):
             viewController = WatchAccountAdditionViewController(accountSetupFlow: flow, configuration: configuration)
-        case let .accountTypeSelection(flow):
-            viewController = AccountTypeSelectionViewController(flow: flow, configuration: configuration)
         case let .ledgerAccountDetail(account, index, rekeyedAccounts):
             viewController = LedgerAccountDetailViewController(
                 account: account,
@@ -360,8 +362,19 @@ class Router {
             viewController = NotificationFilterViewController(flow: flow, configuration: configuration)
         case let .maximumBalanceWarning(account):
             viewController = MaximumBalanceWarningViewController(account: account, configuration: configuration)
+        case .screenshotWarning:
+            viewController = ScreenshotWarningViewController(configuration: configuration)
+        case let .animatedTutorial(flow, tutorial, isActionable):
+            viewController = AnimatedTutorialViewController(
+                flow: flow,
+                tutorial: tutorial,
+                isActionable: isActionable,
+                configuration: configuration
+            )
         case let .transactionTutorial(isInitialDisplay):
             viewController = TransactionTutorialViewController(isInitialDisplay: isInitialDisplay, configuration: configuration)
+        case .recoverOptions:
+            viewController = AccountRecoverOptionsViewController(configuration: configuration)
         }
         
         return viewController as? T

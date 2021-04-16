@@ -270,11 +270,11 @@ extension SettingsViewController: UICollectionViewDelegateFlowLayout {
             case .password:
                 open(
                     .choosePassword(
-                        mode: ChoosePasswordViewController.Mode.resetPassword, flow: nil, route: nil),
+                        mode: .resetPassword, flow: nil, route: nil),
                         by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
                 )
             case .support:
-                if let url = URL(string: Environment.current.walletSupportUrl) {
+                if let url = AlgorandWeb.support.link {
                     open(url)
                 }
             case .notifications:
@@ -295,13 +295,13 @@ extension SettingsViewController: UICollectionViewDelegateFlowLayout {
                 let appearanceSelectionViewController = open(.appearanceSelection, by: .push) as? AppearanceSelectionViewController
                 appearanceSelectionViewController?.delegate = self
             case .termsAndServices:
-                guard let url = URL(string: Environment.current.termsAndServicesUrl) else {
+                guard let url = AlgorandWeb.termsAndServices.link else {
                     return
                 }
                 
                 open(url)
             case .privacyPolicy:
-                guard let url = URL(string: Environment.current.privacyPolicyUrl) else {
+                guard let url = AlgorandWeb.privacyPolicy.link else {
                     return
                 }
                 
@@ -407,7 +407,7 @@ extension SettingsViewController: SettingsToggleCellDelegate {
         session?.reset(isContactIncluded: true)
         NotificationCenter.default.post(name: .ContactDeletion, object: self, userInfo: nil)
         pushNotificationController.revokeDevice()
-        open(.introduction(flow: .initializeAccount(mode: nil)), by: .launch, animated: false)
+        open(.introduction(flow: .initializeAccount(mode: .none)), by: .launch, animated: false)
      }
 }
 

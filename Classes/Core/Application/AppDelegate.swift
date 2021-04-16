@@ -140,8 +140,10 @@ extension AppDelegate {
 
         if shouldInvalidateUserSession {
             shouldInvalidateUserSession = false
-            appConfiguration.session.isValid = false
-            openPasswordEntryScreen()
+            if appConfiguration.session.hasPassword() {
+                appConfiguration.session.isValid = false
+                openPasswordEntryScreen()
+            }
             return
         } else {
             validateAccountManagerFetchPolling()
@@ -150,7 +152,8 @@ extension AppDelegate {
 
     private func openPasswordEntryScreen() {
         guard let rootViewController = rootViewController,
-              let topViewController = rootViewController.tabBarViewController.topMostController else {
+              let topViewController = rootViewController.tabBarViewController.topMostController,
+              appConfiguration.session.hasPassword() else {
             return
         }
 

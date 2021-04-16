@@ -65,6 +65,7 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
         assetDetail: AssetDetail,
         isSenderEditable: Bool,
         isMaxTransaction: Bool,
+        qrText: QRText?,
         configuration: ViewControllerConfiguration
     ) {
         self.assetDetail = assetDetail
@@ -78,6 +79,7 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
             account: account,
             assetReceiverState: assetReceiverState,
             isSenderEditable: isSenderEditable,
+            qrText: qrText,
             configuration: configuration
         )
         self.assetFraction = assetDetail.fractionDecimals
@@ -174,6 +176,11 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
         assetReceiverState = .address(address: qrAddress, amount: nil)
         if let qrAmount = qrText.amount {
             displayQRAlert(for: qrAmount, to: qrAddress, with: qrText.asset)
+        }
+
+        if let note = qrText.note,
+           !note.isEmpty {
+            sendTransactionPreviewView.noteInputView.inputTextView.text = note
         }
         
         if let qrAsset = qrText.asset {

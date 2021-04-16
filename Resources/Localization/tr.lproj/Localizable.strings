@@ -2,16 +2,25 @@
 "account-details-title" = "Hesap Ayrıntıları";
 
 /* (No Comment) */
-"account-name-setup-empty-error-message" = "Hesap adı boş olamaz";
+"account-name-setup-description" = "Algorand Wallet'ı kullanırken kolayca ayırt edebilmek için hesabınızı adlandırın. Bu adlar yerel olarak saklanır ve yalnızca sizin tarafınızdan görülebilir.";
 
 /* (No Comment) */
 "account-name-setup-explanation" = "Hesap Adı";
+
+/* (No Comment) */
+"account-name-setup-finish" = "Hesap oluşturmayı tamamlayın";
 
 /* (No Comment) */
 "account-name-setup-placeholder" = "Birikim Hesabı";
 
 /* MARK: Account Type Selection */
 "account-type-choose-title" = "Hesap Türünü Seçin";
+
+/* (No Comment) */
+"account-type-selection-add" = "Hesap Ekle";
+
+/* (No Comment) */
+"account-type-selection-add-detail" = "Yeni bir adres ile kurtarma parolasına sahip yeni bir hesap istiyorum.";
 
 /* (No Comment) */
 "account-type-selection-create" = "Yeni Hesap Oluştur";
@@ -33,6 +42,9 @@
 
 /* (No Comment) */
 "account-type-selection-watch-detail" = "Bir hesabın yalnızca adresini kullanarak işlemlerini izleyin ";
+
+/* (No Comment) */
+"account-welcome-wallet-title" = "Algorand Wallet'a\nHoş Geldiniz";
 
 /* (No Comment) */
 "accounts-add-account" = "+ HESAP EKLE";
@@ -155,13 +167,7 @@
 "asset-you-already-own-message" = "Zaten bu varlığa sahipsiniz";
 
 /* (No Comment) */
-"back-up-phrase-button-title" = "Kurtarma Parolasını Doğrula";
-
-/* (No Comment) */
 "back-up-phrase-qr" = "QR Kodunu Göster";
-
-/* (No Comment) */
-"back-up-phrase-warning" = "Bu hesap parolasını yedeklediğinizden emin olun. Algorand hesabınızı kurtarmanın tek yolu budur.";
 
 /* (No Comment) */
 "ble-error-bluetooth-title" = "Bluetooth Hatası";
@@ -288,6 +294,15 @@
 
 /* (No Comment) */
 "edit-node-title" = "Düğümü Düzenle";
+
+/* (No Comment) */
+"empty-accounts-action" = "Yeni Hesap Oluştur";
+
+/* (No Comment) */
+"empty-accounts-detail" = "Varlıklarınızla işlem yapmaya başlamak için bir hesap oluşturmanız gerekiyor.";
+
+/* (No Comment) */
+"empty-accounts-title" = "Bir Hesap Oluştur";
 
 /* (No Comment) */
 "feedback-empty-category-message" = "Lütfen bir kategori seçin.";
@@ -509,6 +524,12 @@
 "local-authentication-enable" = "Face ID/Touch ID'yi Etkinleştir";
 
 /* (No Comment) */
+"local-authentication-enabled-subtitle" = "Parolanız doğrulandı. Algorand hesabınız artık daha güvenli.";
+
+/* (No Comment) */
+"local-authentication-enabled-title" = "Biyometrik Kimlik Doğrulaması Etkinleştirildi";
+
+/* (No Comment) */
 "local-authentication-go-settings-text" = "Biyometrik kimlik doğrulamasını devre dışı bıraktınız. Lütfen Ayarlara gidin ve bu seçeneği etkinleştirin.";
 
 /* (No Comment) */
@@ -540,9 +561,6 @@
 
 /* (No Comment) */
 "maximum-balance-warning-title" = "Maksimum Bakiye";
-
-/* MARK: Passphrase Back Up */
-"new-account-title" = "Parolayı Yedekle";
 
 /* (No Comment) */
 "node-settings-action-delete-title" = "Sil";
@@ -677,12 +695,6 @@
 "options-view-passphrase" = "Parolayı Görüntüle";
 
 /* (No Comment) */
-"options-view-passphrase-alert-message" = "Parolanızı görüntülemek için biyometrik kimlik doğrulaması sunmanız gerekir.";
-
-/* (No Comment) */
-"options-view-passphrase-alert-title" = "Biyometrik Kimlik Doğrulaması";
-
-/* (No Comment) */
 "options-view-passphrase-password-alert-message" = "Parolanızı görüntülemek için şifrenizi doğru girmeniz gerekir.";
 
 /* (No Comment) */
@@ -710,6 +722,9 @@
 "pass-phrase-verify-wrong-selection" = "Yanlış seçim";
 
 /* (No Comment) */
+"passphrase-bottom-title" = "Karşılık gelen sayıları kullanarak bu kelimeleri doğru sıralamayla kaydettiğinizden emin olun.";
+
+/* (No Comment) */
 "passphrase-qeustion-counter" = "Soru %@/%@";
 
 /* (No Comment) */
@@ -726,6 +741,18 @@
 
 /* (No Comment) */
 "passphrase-select-n-word" = "Parolanızın %@ kelimesini seçin";
+
+/* (No Comment) */
+"passphrase-verify-invalid-title" = "Yanlış Parola";
+
+/* (No Comment) */
+"passphrase-verify-select-word" = "%@. kelimeyi seçin";
+
+/* (No Comment) */
+"passphrase-verify-title" = "Kurtarma parolası yedeklemesini doğrulayın";
+
+/* (No Comment) */
+"passphrase-verify-wrong-message" = "Seçilen kelimeler yanlış. Lütfen daha sonra tekrar deneyin.";
 
 /* (No Comment) */
 "password-change-subtitle" = "Altı haneli şifrenizi girin";
@@ -759,6 +786,9 @@
 
 /* (No Comment) */
 "pin-limit-try-again" = "Tekrar deneyin:";
+
+/* No comment provided by engineer. */
+"primaryText" = "primaryText";
 
 /* (No Comment) */
 "privacy-policy-title" = "Gizlilik Politikası";
@@ -806,6 +836,12 @@
 "qr-scan-title" = "QR Kodunu Tara";
 
 /* (No Comment) */
+"recover-copy-error" = "Son kopyalanan metin, 25 kelimelik geçerli bir parola değil. Lütfen geçerli parolayı kopyalayın ve tekrar deneyin.";
+
+/* (No Comment) */
+"recover-fill-all-error" = "Lütfen tüm parolayı doldurun";
+
+/* (No Comment) */
 "recover-from-seed-name-placeholder" = "Örnek ad";
 
 /* (No Comment) */
@@ -825,6 +861,12 @@
 
 /* (No Comment) */
 "recover-from-seed-verify-pop-up-title" = "Hesap Doğrulandı";
+
+/* MARK: Passphrase Back Up */
+"recover-passphrase-title" = "Kurtarma parolası";
+
+/* (No Comment) */
+"recover-title" = "Kurtar";
 
 /* (No Comment) */
 "rekey-instruction-first" = "Gelecekte yapacağınız işlemler yeni Ledger Cihazınız ile imzalanacak.";
@@ -873,6 +915,12 @@
 
 /* MARK: Rewards */
 "rewards-title" = "Ödüller";
+
+/* (No Comment) */
+"screenshot-description" = "Kurtarma parolanızı ekran görüntüsü alarak yedeklemeyin. Parolanızı içeren bir görüntünün olması bir güvenlik riskidir.";
+
+/* (No Comment) */
+"screenshot-title" = "Ekran Görüntüsü Algılandı";
 
 /* (No Comment) */
 "send-algos-account-delete-asset-title" = "Hesabı silmek için, hesap bakiyenizdeki tüm varlıkları boşaltmanız ve oluşturduğunuz herhangi bir varlık varsa, bu varlıkları da yok etmeniz gerekir.";
@@ -1076,16 +1124,25 @@
 "title-done" = "Bitti";
 
 /* (No Comment) */
+"title-dont-ask" = "Tekrar sorma";
+
+/* (No Comment) */
 "title-dont-show-again" = "Bunu Tekrar Gösterme";
 
 /* (No Comment) */
 "title-edit" = "Düzenle";
 
 /* (No Comment) */
+"title-enter-pin-for-passphrase" = "Parolayı görüntülemek için lütfen PIN'inizi girin";
+
+/* (No Comment) */
 "title-error" = "Hata";
 
 /* (No Comment) */
 "title-go-home" = "Ana Sayfaya Git";
+
+/* (No Comment) */
+"title-go-to-accounts" = "Hesaplara Git";
 
 /* (No Comment) */
 "title-go-to-settings" = "Ayarlara Git";
@@ -1101,6 +1158,9 @@
 
 /* (No Comment) */
 "title-keep" = "Koru";
+
+/* (No Comment) */
+"title-learn-more" = "Daha Fazla Bilgi";
 
 /* (No Comment) */
 "title-loading" = "Yükleniyor";
@@ -1119,6 +1179,9 @@
 
 /* (No Comment) */
 "title-ok" = "Tamam";
+
+/* (No Comment) */
+"title-paste-passphrase" = "Parolanın Tamamını Yapıştır";
 
 /* (No Comment) */
 "title-plus-asset-count" = "+%@ Varlık";
@@ -1152,6 +1215,9 @@
 
 /* (No Comment) */
 "title-share-qr" = "QR Kodunu Paylaş";
+
+/* (No Comment) */
+"title-skip" = "Atla";
 
 /* MARK: Ledger Troubleshooting */
 "title-step-1" = "1. Adım";
@@ -1310,10 +1376,61 @@
 "transaction-tutorial-title" = "İşlemlere Yönelik İpuçları";
 
 /* (No Comment) */
-"verified-asset-double-check" = "her zaman tekrar kontrol edin";
+"tutorial-action-title-passcode" = "Şimdi değil";
 
 /* (No Comment) */
-"verified-asset-information-contact-us" = "bizimle iletişime geçin";
+"tutorial-description-back-up" = "Kurtarma parolanız olmadan cihazınızı kaybetmeniz veya uygulamayı silmeniz durumunda Algorand hesabınıza erişimi kalıcı olarak kaybedersiniz.";
+
+/* (No Comment) */
+"tutorial-description-local" = "Uygulamayı kullanmak için FaceID veya TouchID gerekli olacak. Telefonunuzun çalınma ihtimaline karşılık cüzdan güvenliğini artırmaya yardımcı olması için biyometrik kimlik doğrulamasının etkinleştirilmesini öneririz.";
+
+/* (No Comment) */
+"tutorial-description-passcode" = "Algorand Wallet'ı kullanmak için 6 haneli bir PIN gerekli olacak. Telefonunuzun çalınma ihtimaline karşılık cüzdan güvenliğini artırmaya yardımcı olması için bir PIN oluşturmanızı özellikle öneririz.";
+
+/* (No Comment) */
+"tutorial-description-recover" = "Aşağıdaki adımlarda, bir Algorand hesabını kurtarmak için 25 kelimelik kurtarma parolanızı gireceksiniz. Başlamadan önce kurtarma parolanızı hazırda bulundurun.";
+
+/* (No Comment) */
+"tutorial-description-warning-title" = "Uyarı:";
+
+/* (No Comment) */
+"tutorial-description-watch" = "İzleme hesabı, parolaya sahip olmanıza gerek kalmadan bir hesabın etkinliğini izlemenize olanak sağlar. Soğuk depolamada tutulan varlıkların izlenmesi için yararlıdır.\n\nUyarı: İlgili hesabın kurtarma parolasına sahip değilseniz, bu hesaba varlık göndermeyin.";
+
+/* (No Comment) */
+"tutorial-description-watch-italic" = "Uyarı: İlgili hesabın kurtarma parolasına sahip değilseniz, bu hesaba varlık göndermeyin.";
+
+/* (No Comment) */
+"tutorial-description-write" = "Algorand hesabını kurtarmanın tek yolunun bu kurtarma parolası olduğunu tekrar hatırlatmak isteriz. Hesabınıza tam erişim sağladığından, bu parolayı kimseyle paylaşmayın. \n\nAlgorand çalışanları parolanızı alsa istemez.";
+
+/* (No Comment) */
+"tutorial-description-write-italic" = "Algorand çalışanları parolanızı alsa istemez.";
+
+/* (No Comment) */
+"tutorial-main-title-back-up" = "Anladım";
+
+/* (No Comment) */
+"tutorial-main-title-passcode" = "Parola Belirle";
+
+/* (No Comment) */
+"tutorial-main-title-recover" = "Bir Algorand Hesabını Kurtar";
+
+/* (No Comment) */
+"tutorial-main-title-write" = "Başlamaya hazırım";
+
+/* (No Comment) */
+"tutorial-title-back-up" = "Bir kurtarma parolası kullanarak hesabınızı yedekleyin";
+
+/* (No Comment) */
+"tutorial-title-passcode" = "PIN ile güvenliğinizi artırın";
+
+/* (No Comment) */
+"tutorial-title-recover" = "Bir Algorand Hesabını Kurtar";
+
+/* (No Comment) */
+"tutorial-title-write" = "Kurtarma parolanızı yazmaya hazırlanın";
+
+/* (No Comment) */
+"verified-asset-double-check" = "her zaman tekrar kontrol edin";
 
 /* (No Comment) */
 "verified-asset-information-text" = "Algorand Inc.'nin varlığın düzenleyicisi ile ilişkisi bulunması durumunda, bazı varlıkları “Doğrulandı” (mavi onay sembolü ile gösterilir) olarak işaretliyoruz.\n\nBu, işlem yapılması istenmeyen varlıkların yanlışlıkla işlem görmemesi için ikinci bir savunma mekanizması görevi görmesine yardımcı oluyor.\n\nBununla birlikte, söz konusu varlıkla işlem yapmadan önce varlık kimliğinin seçmek istediğiniz varlığa ait olduğunu her zaman tekrar kontrol etmeniz gerekir.\n\nDoğrulama süreci ile ilgili herhangi bir sorunuz veya uygulama ile ilgili genel bir geri bildiriminiz varsa, bizimle iletişime geçmenizi öneririz";
@@ -1321,11 +1438,20 @@
 /* (No Comment) */
 "verified-asset-information-title" = "Varlık doğrulama nedir?";
 
+/* (No Comment) */
+"verified-asset-information-visit-site" = "www.algorandwallet.com/support adresini ziyaret edin";
+
 /* MARK: Verified Asset Information */
 "verified-assets-title" = "Doğrulanan Varlıklar";
 
 /* (No Comment) */
+"watch-account-create" = "Bir İzleme Hesabı Oluştur";
+
+/* (No Comment) */
 "watch-account-error-address" = "Lütfen geçerli bir adres girin.";
+
+/* (No Comment) */
+"watch-account-explanation-title" = "Algorand Hesabının salt okunur bir görünümünü oluşturuyorsunuz. Bu hesaba varlık göndermeniz ve ilgili hesabın kurtarma parolasına sahip olmamanız durumunda gönderilen varlıklar kaybolacaktır.";
 
 /* (No Comment) */
 "watch-account-input-explanation" = "İzlenecek Hesap Adresi";

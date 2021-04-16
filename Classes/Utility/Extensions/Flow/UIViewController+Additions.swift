@@ -27,8 +27,8 @@ extension UIViewController {
         if let controller = self as? UISplitViewController {
             return controller.viewControllers.last?.topMostController
         }
-        if let controller = self as? UITabBarController {
-            return controller.selectedViewController?.topMostController
+        if let controller = self as? TabBarController {
+            return controller.selectedItem?.content?.topMostController
         }
         if let controller = presentedViewController {
             return controller.topMostController

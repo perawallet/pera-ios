@@ -59,7 +59,7 @@ extension NotificationsDataSource {
                 }
                 
                 self.api.session.notificationLatestFetchTimestamp = Date().timeIntervalSince1970
-                self.setCursor(from: notifications)
+                self.paginationCursor = notifications.parsePaginationCursor()
                 
                 if isPaginated {
                     self.notifications.append(contentsOf: notifications.results)
@@ -77,15 +77,6 @@ extension NotificationsDataSource {
             case .failure:
                 self.delegate?.notificationsDataSourceDidFailToFetch(self)
             }
-        }
-    }
-    
-    private func setCursor(from notifications: PaginatedList<NotificationMessage>) {
-        if let next = notifications.next,
-            let cursor = next.queryParameters?[RequestParameter.cursor.rawValue] {
-            paginationCursor = cursor
-        } else {
-            paginationCursor = nil
         }
     }
 }

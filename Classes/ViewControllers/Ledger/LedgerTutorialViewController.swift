@@ -27,10 +27,29 @@ class LedgerTutorialViewController: BaseScrollViewController {
         self.accountSetupFlow = accountSetupFlow
         super.init(configuration: configuration)
     }
+
+    override func configureNavigationBarAppearance() {
+        let infoBarButtonItem = ALGBarButtonItem(kind: .info) { [weak self] in
+            self?.openWalletSupport()
+        }
+
+        rightBarButtonItems = [infoBarButtonItem]
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        ledgerTutorialView.startAnimating()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        ledgerTutorialView.stopAnimating()
+    }
     
     override func configureAppearance() {
         super.configureAppearance()
-        title = "ledger-pair-title".localized
+        setTertiaryBackgroundColor()
+        view.backgroundColor = Colors.Background.tertiary
     }
     
     override func linkInteractors() {
@@ -69,6 +88,14 @@ extension LedgerTutorialViewController: LedgerTutorialViewDelegate {
             open(.ledgerTroubleshootOpenApp, by: .present)
         case .bluetoothConnection:
             open(.ledgerTroubleshootBluetooth, by: .present)
+        }
+    }
+}
+
+extension LedgerTutorialViewController {
+    private func openWalletSupport() {
+        if let url = AlgorandWeb.ledgerSupport.link {
+            open(url)
         }
     }
 }

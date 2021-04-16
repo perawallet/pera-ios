@@ -50,6 +50,7 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
         account: Account?,
         assetReceiverState: AssetReceiverState,
         isSenderEditable: Bool,
+        qrText: QRText?,
         configuration: ViewControllerConfiguration
     ) {
         viewModel = SendAlgosTransactionPreviewViewModel(isAccountSelectionEnabled: isSenderEditable)
@@ -57,6 +58,7 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
             account: account,
             assetReceiverState: assetReceiverState,
             isSenderEditable: isSenderEditable,
+            qrText: qrText,
             configuration: configuration
         )
     }
@@ -173,6 +175,11 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
             displayQRAlert(for: amountFromQR, with: qrText.asset)
         }
         assetReceiverState = .address(address: qrAddress, amount: nil)
+
+        if let note = qrText.note,
+           !note.isEmpty {
+            sendTransactionPreviewView.noteInputView.inputTextView.text = note
+        }
         
         if let handler = completionHandler {
             handler()
