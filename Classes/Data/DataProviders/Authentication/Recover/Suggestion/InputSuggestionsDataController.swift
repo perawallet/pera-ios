@@ -71,7 +71,7 @@ extension InputSuggestionsDataController {
     }
 
     func findTopSuggestions(for text: String) {
-        let filteredSuggestions = allSuggestions.filter { $0.lowercased().contains(text.lowercased()) }
+        let filteredSuggestions = allSuggestions.filter { $0.lowercased().hasPrefix(text.lowercased()) }
         for i in 0...suggestionCount - 1 {
             currentSuggestions[i] = filteredSuggestions[safe: i] ?? ""
         }
