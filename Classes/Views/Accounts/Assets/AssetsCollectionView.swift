@@ -65,8 +65,8 @@ class AssetsCollectionView: UICollectionView {
         register(PendingUnnamedAssetCell.self, forCellWithReuseIdentifier: PendingUnnamedAssetCell.reusableIdentifier)
         register(PendingUnverifiedAssetCell.self, forCellWithReuseIdentifier: PendingUnverifiedAssetCell.reusableIdentifier)
         register(
-            UnverifiedOnlyNameAssetCell.self,
-            forCellWithReuseIdentifier: UnverifiedOnlyNameAssetCell.reusableIdentifier
+            PendingUnverifiedOnlyNameAssetCell.self,
+            forCellWithReuseIdentifier: PendingUnverifiedOnlyNameAssetCell.reusableIdentifier
         )
         register(
             PendingUnverifiedOnlyUnitNameAssetCell.self,
