@@ -61,12 +61,13 @@ class TransactionFeeCalculatorTests: XCTestCase {
     }
 
     func testMinimumamountAfterAlgosTransaction() {
-        let minAmunt = transactionFeeCalculator.calculateMinimumAmountAfterTransaction(
+        let minAmount = transactionFeeCalculator.calculateMinimumAmount(
             for: account,
             with: .algosTransaction,
-            calculatedFee: 1000
+            calculatedFee: 1000,
+            isAfterTransaction: true
         )
-        XCTAssertEqual(minAmunt, 701000)
+        XCTAssertEqual(minAmount, 701000)
     }
 
     func testIsValidAlgosTransaction() {
@@ -83,12 +84,13 @@ class TransactionFeeCalculatorTests: XCTestCase {
     }
 
     func testMinimumamountAfterAssetTransaction() {
-        let minAmunt = transactionFeeCalculator.calculateMinimumAmountAfterTransaction(
+        let minAmount = transactionFeeCalculator.calculateMinimumAmount(
             for: account,
             with: .assetTransaction,
-            calculatedFee: 1000
+            calculatedFee: 1000,
+            isAfterTransaction: true
         )
-        XCTAssertEqual(minAmunt, 701000)
+        XCTAssertEqual(minAmount, 701000)
     }
 
     func testIsValidAssetTransaction() {
@@ -105,10 +107,11 @@ class TransactionFeeCalculatorTests: XCTestCase {
     }
 
     func testMinimumamountAfterAddAssetTransaction() {
-        let minAmunt = transactionFeeCalculator.calculateMinimumAmountAfterTransaction(
+        let minAmunt = transactionFeeCalculator.calculateMinimumAmount(
             for: account,
             with: .assetAddition,
-            calculatedFee: 1000
+            calculatedFee: 1000,
+            isAfterTransaction: true
         )
         XCTAssertEqual(minAmunt, 801000)
     }
@@ -127,10 +130,11 @@ class TransactionFeeCalculatorTests: XCTestCase {
     }
 
     func testMinimumamountAfterRemoveAssetTransaction() {
-        let minAmunt = transactionFeeCalculator.calculateMinimumAmountAfterTransaction(
+        let minAmunt = transactionFeeCalculator.calculateMinimumAmount(
             for: account,
             with: .assetRemoval,
-            calculatedFee: 1000
+            calculatedFee: 1000,
+            isAfterTransaction: true
         )
         XCTAssertEqual(minAmunt, 601000)
     }
@@ -144,10 +148,11 @@ class TransactionFeeCalculatorTests: XCTestCase {
     }
 
     func testMinimumamountAfterRekeyTransaction() {
-        let minAmunt = transactionFeeCalculator.calculateMinimumAmountAfterTransaction(
+        let minAmunt = transactionFeeCalculator.calculateMinimumAmount(
             for: account,
             with: .rekey,
-            calculatedFee: 1000
+            calculatedFee: 1000,
+            isAfterTransaction: true
         )
         XCTAssertEqual(minAmunt, 701000)
     }
