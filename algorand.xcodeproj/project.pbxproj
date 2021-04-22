@@ -1732,6 +1732,12 @@
 		2BD5477823184704007179FE /* FeedbackDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD5477623184704007179FE /* FeedbackDraft.swift */; };
 		2BD5477A23192E15007179FE /* AlgorandError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD5477923192E15007179FE /* AlgorandError.swift */; };
 		2BD5477B23192E15007179FE /* AlgorandError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD5477923192E15007179FE /* AlgorandError.swift */; };
+		2BD5A49F26305F530048FA5E /* AlgosCardAnalyticsContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD5A49E26305F530048FA5E /* AlgosCardAnalyticsContainerView.swift */; };
+		2BD5A4A026305F530048FA5E /* AlgosCardAnalyticsContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD5A49E26305F530048FA5E /* AlgosCardAnalyticsContainerView.swift */; };
+		2BD5A4A126305F530048FA5E /* AlgosCardAnalyticsContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD5A49E26305F530048FA5E /* AlgosCardAnalyticsContainerView.swift */; };
+		2BD5A4A926306BF90048FA5E /* AlgosCardAnalyticsContainerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD5A4A826306BF90048FA5E /* AlgosCardAnalyticsContainerViewModel.swift */; };
+		2BD5A4AA26306BF90048FA5E /* AlgosCardAnalyticsContainerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD5A4A826306BF90048FA5E /* AlgosCardAnalyticsContainerViewModel.swift */; };
+		2BD5A4AB26306BF90048FA5E /* AlgosCardAnalyticsContainerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD5A4A826306BF90048FA5E /* AlgosCardAnalyticsContainerViewModel.swift */; };
 		2BD6A06624A50D3E00D2D28D /* PinLimitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD6A06524A50D3E00D2D28D /* PinLimitView.swift */; };
 		2BD6A06724A50D3E00D2D28D /* PinLimitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD6A06524A50D3E00D2D28D /* PinLimitView.swift */; };
 		2BD6A06A24A50D6A00D2D28D /* PinLimitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD6A06924A50D6A00D2D28D /* PinLimitViewController.swift */; };
@@ -2625,6 +2631,8 @@
 		2BD547732318463E007179FE /* Feedback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feedback.swift; sourceTree = "<group>"; };
 		2BD5477623184704007179FE /* FeedbackDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackDraft.swift; sourceTree = "<group>"; };
 		2BD5477923192E15007179FE /* AlgorandError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorandError.swift; sourceTree = "<group>"; };
+		2BD5A49E26305F530048FA5E /* AlgosCardAnalyticsContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgosCardAnalyticsContainerView.swift; sourceTree = "<group>"; };
+		2BD5A4A826306BF90048FA5E /* AlgosCardAnalyticsContainerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgosCardAnalyticsContainerViewModel.swift; sourceTree = "<group>"; };
 		2BD6A06524A50D3E00D2D28D /* PinLimitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinLimitView.swift; sourceTree = "<group>"; };
 		2BD6A06924A50D6A00D2D28D /* PinLimitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinLimitViewController.swift; sourceTree = "<group>"; };
 		2BD739CA223F97B100B66EEF /* IntroductionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroductionViewController.swift; sourceTree = "<group>"; };
@@ -6360,6 +6368,23 @@
 			path = Feedback;
 			sourceTree = "<group>";
 		};
+		2BD5A4A626306BE50048FA5E /* Algos */ = {
+			isa = PBXGroup;
+			children = (
+				2BF0FADE25387C9600D704D5 /* AlgosCardViewModel.swift */,
+				2BD5A4A826306BF90048FA5E /* AlgosCardAnalyticsContainerViewModel.swift */,
+			);
+			path = Algos;
+			sourceTree = "<group>";
+		};
+		2BD5A4A726306BED0048FA5E /* Asset */ = {
+			isa = PBXGroup;
+			children = (
+				2BF0FAE525387CA400D704D5 /* AssetCardViewModel.swift */,
+			);
+			path = Asset;
+			sourceTree = "<group>";
+		};
 		2BD6A06424A50D2800D2D28D /* PinLimit */ = {
 			isa = PBXGroup;
 			children = (
@@ -7042,6 +7067,7 @@
 			children = (
 				2BF0FABA25387C4200D704D5 /* AlgosCardView.swift */,
 				2BF0FAC625387C5E00D704D5 /* AlgosCardCell.swift */,
+				2BD5A49E26305F530048FA5E /* AlgosCardAnalyticsContainerView.swift */,
 			);
 			path = Algos;
 			sourceTree = "<group>";
@@ -7049,8 +7075,8 @@
 		2BF0FADD25387C8E00D704D5 /* Card */ = {
 			isa = PBXGroup;
 			children = (
-				2BF0FADE25387C9600D704D5 /* AlgosCardViewModel.swift */,
-				2BF0FAE525387CA400D704D5 /* AssetCardViewModel.swift */,
+				2BD5A4A626306BE50048FA5E /* Algos */,
+				2BD5A4A726306BED0048FA5E /* Asset */,
 			);
 			path = Card;
 			sourceTree = "<group>";
@@ -8564,6 +8590,7 @@
 				2BB93BCF25BEF364001F1D6C /* RekeyTransactionDataBuilder.swift in Sources */,
 				17BD4E9F2292F1260003E49A /* AccountListViewController.swift in Sources */,
 				17BD4EA02292F1260003E49A /* TypeAliases.swift in Sources */,
+				2BD5A4AB26306BF90048FA5E /* AlgosCardAnalyticsContainerViewModel.swift in Sources */,
 				17BD4EA12292F1260003E49A /* TabBar.swift in Sources */,
 				17BD4EA22292F1260003E49A /* String+Localization.swift in Sources */,
 				2BB93C1C25BF2434001F1D6C /* TransactionSigner.swift in Sources */,
@@ -8580,6 +8607,7 @@
 				2BAD558E239FB1A60037079F /* PendingAssetView.swift in Sources */,
 				17BD4EAC2292F1260003E49A /* PassphraseDisplayViewController.swift in Sources */,
 				2BB64BE72402B47200519981 /* LedgerDeviceView.swift in Sources */,
+				2BD5A4A126305F530048FA5E /* AlgosCardAnalyticsContainerView.swift in Sources */,
 				2B5BE06125190A0500324BEE /* AddAccountViewController.swift in Sources */,
 				2BDD43E32513A87800C6D3B5 /* SingleSelectionCell.swift in Sources */,
 				95C4C16F242CE01B005A57BB /* CBManagerState+Error.swift in Sources */,
@@ -9187,6 +9215,7 @@
 				2BB93BCE25BEF364001F1D6C /* RekeyTransactionDataBuilder.swift in Sources */,
 				2B0F627A24EC129D00DA22A6 /* TransactionFetchDraft.swift in Sources */,
 				2B0F627B24EC129D00DA22A6 /* RegistrationEvent.swift in Sources */,
+				2BD5A4AA26306BF90048FA5E /* AlgosCardAnalyticsContainerViewModel.swift in Sources */,
 				2B0F627C24EC129D00DA22A6 /* TestNetTitleView.swift in Sources */,
 				2B0F627D24EC129D00DA22A6 /* User.swift in Sources */,
 				2BB93C1B25BF2434001F1D6C /* TransactionSigner.swift in Sources */,
@@ -9203,6 +9232,7 @@
 				2B0F628824EC129D00DA22A6 /* CursorlessTextField.swift in Sources */,
 				2B0F628924EC129D00DA22A6 /* LedgerTroubleshootBluetoothConnectionView.swift in Sources */,
 				2B5BE06025190A0500324BEE /* AddAccountViewController.swift in Sources */,
+				2BD5A4A026305F530048FA5E /* AlgosCardAnalyticsContainerView.swift in Sources */,
 				2BDD43E22513A87800C6D3B5 /* SingleSelectionCell.swift in Sources */,
 				2B0F628A24EC129D00DA22A6 /* Node.swift in Sources */,
 				2B0F628B24EC129D00DA22A6 /* TransactionSignature.swift in Sources */,
@@ -9810,6 +9840,7 @@
 				2BB93BCD25BEF364001F1D6C /* RekeyTransactionDataBuilder.swift in Sources */,
 				2B656E90224BAF200064A49B /* AccountListViewController.swift in Sources */,
 				1746715D225B6C0400B78641 /* TypeAliases.swift in Sources */,
+				2BD5A4A926306BF90048FA5E /* AlgosCardAnalyticsContainerViewModel.swift in Sources */,
 				2B59F16122563F89005203DD /* TabBar.swift in Sources */,
 				2BF34CC5223A99670052CAD3 /* String+Localization.swift in Sources */,
 				2BB93C1A25BF2434001F1D6C /* TransactionSigner.swift in Sources */,
@@ -9826,6 +9857,7 @@
 				2B5DA9DA224D2F5C00EE41B4 /* PassphraseDisplayViewController.swift in Sources */,
 				2BF3D838226F43C000716C09 /* TransactionDetailViewModel.swift in Sources */,
 				2BB021E3224E7AD20039D78A /* TransactionHistoryDataSource.swift in Sources */,
+				2BD5A49F26305F530048FA5E /* AlgosCardAnalyticsContainerView.swift in Sources */,
 				2B5BE05F25190A0500324BEE /* AddAccountViewController.swift in Sources */,
 				2BDD43E12513A87800C6D3B5 /* SingleSelectionCell.swift in Sources */,
 				2BB64BE62402B47200519981 /* LedgerDeviceView.swift in Sources */,

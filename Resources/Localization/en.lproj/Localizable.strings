@@ -583,3 +583,6 @@
 "title-dont-ask" = "Don’t ask again";
 "title-paste-passphrase" = "Paste Full Passphrase";
 "title-enter-pin-for-passphrase" = "Please enter your PIN to view passphrase";
+
+"title-analytics" = "Analytics";
+"title-algo-rewards" = "Algo Rewards";

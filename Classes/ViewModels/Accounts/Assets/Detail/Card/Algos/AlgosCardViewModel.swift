@@ -19,23 +19,18 @@ import UIKit
 
 class AlgosCardViewModel {
     
-    private(set) var amount: String?
+    private(set) var totalAmount: String?
+    private(set) var algosAmount: String?
     private(set) var reward: String?
     private(set) var currency: String?
+    private(set) var analyticsContainerViewModel: AlgosCardAnalyticsContainerViewModel?
     
     init(account: Account, currency: Currency?) {
-        setAmount(from: account)
-        setReward(from: account)
+        setTotalAmount(from: account)
         setCurrency(from: account, and: currency)
-    }
-    
-    private func setAmount(from account: Account) {
-        amount = account.amount.toAlgos.toAlgosStringForLabel
-    }
-    
-    private func setReward(from account: Account) {
-        let totalRewards: UInt64 = (account.pendingRewards ?? 0)
-        reward = "total-rewards-title".localized(params: totalRewards.toAlgos.toAlgosStringForLabel ?? "0.00") 
+        setAlgosAmount(from: account)
+        setReward(from: account)
+        setAnalyticsContainerViewModel()
     }
     
     private func setCurrency(from account: Account, and currency: Currency?) {
@@ -50,5 +45,22 @@ class AlgosCardViewModel {
         if let currencyValue = currencyAmountForAccount.toCurrencyStringForLabel {
             self.currency = currencyValue + " " + currentCurrency.id
         }
+    }
+
+    private func setTotalAmount(from account: Account) {
+        totalAmount = account.amount.toAlgos.toAlgosStringForLabel
+    }
+
+    private func setAlgosAmount(from account: Account) {
+        algosAmount = account.amountWithoutRewards?.toAlgos.toAlgosStringForLabel
+    }
+
+    private func setReward(from account: Account) {
+        let totalRewards: UInt64 = (account.pendingRewards ?? 0)
+        reward = totalRewards.toAlgos.toAlgosStringForLabel ?? "0.00"
+    }
+
+    private func setAnalyticsContainerViewModel() {
+        analyticsContainerViewModel = AlgosCardAnalyticsContainerViewModel(currencyValue: "1.50")
     }
 }
