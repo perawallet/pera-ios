@@ -27,7 +27,7 @@ class AssetCardDisplayView: BaseView {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .horizontal
         flowLayout.minimumLineSpacing = CardViewConstants.cardSpacing
-        flowLayout.minimumInteritemSpacing = CardViewConstants.cardSpacing
+        flowLayout.minimumInteritemSpacing = 0.0
         flowLayout.sectionInset = UIEdgeInsets(top: 0, left: CardViewConstants.cardInset, bottom: 0, right: CardViewConstants.cardInset)
 
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
@@ -72,7 +72,7 @@ extension AssetCardDisplayView {
         assetsCollectionView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.top.equalToSuperview().inset(layout.current.topInset)
-            make.height.equalTo(CardViewConstants.algosCardHeight)
+            make.height.equalTo(CardViewConstants.cardHeight)
         }
     }
     
@@ -144,8 +144,7 @@ extension AssetCardDisplayView {
 extension AssetCardDisplayView {
     enum CardViewConstants {
         static let height: CGFloat = 322.0
-        static let algosCardHeight: CGFloat = 250.0
-        static let cardHeight: CGFloat = 208.0
+        static let cardHeight: CGFloat = 250.0
         static let cardWidth: CGFloat = UIScreen.main.bounds.width - CardViewConstants.cardInset * 2.0
         static let cardSpacing: CGFloat = 12.0
         static let cardInset: CGFloat = 24.0

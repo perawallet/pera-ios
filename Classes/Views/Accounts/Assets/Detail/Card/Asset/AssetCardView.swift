@@ -99,12 +99,13 @@ extension AssetCardView {
         addSubview(backgroundImageView)
         
         backgroundImageView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
+            make.top.bottom.equalToSuperview().inset(21.0)
         }
     }
     
     private func setupAssetNameStackViewLayout() {
-        addSubview(assetNameStackView)
+        backgroundImageView.addSubview(assetNameStackView)
         
         assetNameStackView.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(layout.current.defaultInset)
@@ -117,7 +118,7 @@ extension AssetCardView {
     }
     
     private func setupAssetAmountLabelLayout() {
-        addSubview(assetAmountLabel)
+        backgroundImageView.addSubview(assetAmountLabel)
         
         assetAmountLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(layout.current.defaultInset)
@@ -127,7 +128,7 @@ extension AssetCardView {
     }
     
     private func setupAssetIdButtonLayout() {
-        addSubview(assetIDButton)
+        backgroundImageView.addSubview(assetIDButton)
         
         assetIDButton.snp.makeConstraints { make in
             make.trailing.equalToSuperview().inset(layout.current.defaultInset)

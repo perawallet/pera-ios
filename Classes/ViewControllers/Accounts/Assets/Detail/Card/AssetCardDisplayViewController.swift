@@ -128,12 +128,6 @@ extension AssetCardDisplayViewController: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        if indexPath.item == 0 {
-            return CGSize(
-                width: AssetCardDisplayView.CardViewConstants.cardWidth,
-                height: AssetCardDisplayView.CardViewConstants.algosCardHeight
-            )
-        }
         return CGSize(
             width: AssetCardDisplayView.CardViewConstants.cardWidth,
             height: AssetCardDisplayView.CardViewConstants.cardHeight

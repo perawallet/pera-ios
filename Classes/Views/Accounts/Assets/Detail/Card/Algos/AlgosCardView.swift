@@ -179,7 +179,7 @@ extension AlgosCardView {
         addSubview(rewardTitleButton)
         
         rewardTitleButton.snp.makeConstraints { make in
-            make.top.equalTo(algosTitleLabel)
+            make.top.equalTo(algosTitleLabel).offset(layout.current.rewardLabelTopOffset)
             make.trailing.equalToSuperview().inset(layout.current.rewardTitleTrailingInset)
         }
     }
@@ -222,6 +222,7 @@ extension AlgosCardView {
 extension AlgosCardView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let defaultInset: CGFloat = 24.0
+        let rewardLabelTopOffset: CGFloat = -1.0
         let currencyTopInset: CGFloat = 8.0
         let algosTopInset: CGFloat = 64.0
         let amountTrailingInset: CGFloat = 40.0
