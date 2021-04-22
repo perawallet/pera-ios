@@ -23,6 +23,7 @@ def main_pods
   pod 'lottie-ios'
   pod 'NotificationBannerSwift'
   pod 'BetterSegmentedControl', '~> 1.3'
+  pod 'Charts'
   
   #Analytics
   pod 'Firebase/Core'
