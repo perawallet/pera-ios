@@ -55,7 +55,7 @@ class AssetCardView: BaseView {
         let label = UILabel()
             .withAlignment(.left)
             .withTextColor(Colors.Main.white)
-            .withFont(UIFont.font(withWeight: .medium(size: 32.0)))
+            .withFont(UIFont.font(withWeight: .semiBold(size: 28.0)))
         label.minimumScaleFactor = 0.7
         label.adjustsFontSizeToFitWidth = true
         return label
@@ -99,13 +99,12 @@ extension AssetCardView {
         addSubview(backgroundImageView)
         
         backgroundImageView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.top.bottom.equalToSuperview().inset(21.0)
+            make.edges.equalToSuperview()
         }
     }
     
     private func setupAssetNameStackViewLayout() {
-        backgroundImageView.addSubview(assetNameStackView)
+        addSubview(assetNameStackView)
         
         assetNameStackView.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(layout.current.defaultInset)
@@ -118,7 +117,7 @@ extension AssetCardView {
     }
     
     private func setupAssetAmountLabelLayout() {
-        backgroundImageView.addSubview(assetAmountLabel)
+        addSubview(assetAmountLabel)
         
         assetAmountLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(layout.current.defaultInset)
@@ -128,11 +127,11 @@ extension AssetCardView {
     }
     
     private func setupAssetIdButtonLayout() {
-        backgroundImageView.addSubview(assetIDButton)
+        addSubview(assetIDButton)
         
         assetIDButton.snp.makeConstraints { make in
             make.trailing.equalToSuperview().inset(layout.current.defaultInset)
-            make.bottom.equalToSuperview().inset(layout.current.defaultInset)
+            make.bottom.equalToSuperview().inset(layout.current.bottomInset)
         }
     }
 }
@@ -149,13 +148,8 @@ extension AssetCardView {
 extension AssetCardView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let defaultInset: CGFloat = 24.0
-        let imageSize = CGSize(width: 20.0, height: 20.0)
-        let verifiedImageOffset: CGFloat = 8.0
-        let minimumOffset: CGFloat = 4.0
-        let algosImageSize = CGSize(width: 24.0, height: 24.0)
-        let algosImageTopInset: CGFloat = 30.0
-        let amountTrailingInset: CGFloat = 60.0
-        let amountTopInset: CGFloat = 40.0
+        let amountTopInset: CGFloat = 44.0
+        let bottomInset: CGFloat = 16.0
     }
 }
 

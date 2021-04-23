@@ -180,7 +180,7 @@ extension AlgosCardView {
         
         rewardTitleButton.snp.makeConstraints { make in
             make.top.equalTo(algosTitleLabel).offset(layout.current.rewardLabelTopOffset)
-            make.trailing.equalToSuperview().inset(layout.current.rewardTitleTrailingInset)
+            make.leading.equalTo(algosAmountLabel.snp.trailing).offset(layout.current.rewardTitleLeadingInset)
         }
     }
 
@@ -228,7 +228,7 @@ extension AlgosCardView {
         let amountTrailingInset: CGFloat = 40.0
         let minimumOffset: CGFloat = 4.0
         let algosImageSize = CGSize(width: 16.0, height: 16.0)
-        let rewardTitleTrailingInset: CGFloat = 80.0
+        let rewardTitleLeadingInset: CGFloat = 32.0
         let analyticsContainerTopInset: CGFloat = 28.0
         let analyticsContainerHeight: CGFloat = 52.0
     }
