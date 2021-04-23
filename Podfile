@@ -24,6 +24,11 @@ def main_pods
   pod 'NotificationBannerSwift'
   pod 'BetterSegmentedControl', '~> 1.3'
   pod 'Charts'
+
+  pod 'Macaroon/Banner', :git => 'https://github.com/Hipo/macaroon.git', :tag => '2.12.0'
+  pod 'Macaroon/BottomSheet', :git => 'https://github.com/Hipo/macaroon.git', :tag => '2.12.0'
+  pod 'Macaroon/BottomOverlay', :git => 'https://github.com/Hipo/macaroon.git', :tag => '2.12.0'
+  pod 'Macaroon/Core', :git => 'https://github.com/Hipo/macaroon.git', :tag => '2.12.0'
   
   #Analytics
   pod 'Firebase/Core'

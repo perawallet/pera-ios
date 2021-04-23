@@ -72,6 +72,160 @@ PODS:
     - GoogleUtilities/Logger
   - KeychainAccess (4.2.2)
   - lottie-ios (3.2.1)
+  - Macaroon/Banner (0.1.0):
+    - Macaroon/Concurrency
+  - Macaroon/BottomOverlay (0.1.0)
+  - Macaroon/BottomSheet (0.1.0)
+  - Macaroon/Concurrency (0.1.0)
+  - Macaroon/Core (0.1.0):
+    - Macaroon/Core/App (= 0.1.0)
+    - Macaroon/Core/Error (= 0.1.0)
+    - Macaroon/Core/Managers (= 0.1.0)
+    - Macaroon/Core/Screens (= 0.1.0)
+    - Macaroon/Core/Utils (= 0.1.0)
+    - Macaroon/Core/Views (= 0.1.0)
+    - SnapKit (~> 5.0.0)
+  - Macaroon/Core/App (0.1.0):
+    - Macaroon/Core/App/Dependencies (= 0.1.0)
+    - Macaroon/Core/App/Launching (= 0.1.0)
+    - Macaroon/Core/App/Routing (= 0.1.0)
+    - Macaroon/Core/App/Target (= 0.1.0)
+    - SnapKit (~> 5.0.0)
+  - Macaroon/Core/App/Dependencies (0.1.0):
+    - SnapKit (~> 5.0.0)
+  - Macaroon/Core/App/Launching (0.1.0):
+    - SnapKit (~> 5.0.0)
+  - Macaroon/Core/App/Routing (0.1.0):
+    - Macaroon/Core/App/Routing/Deeplink (= 0.1.0)
+    - Macaroon/Core/App/Routing/Transition (= 0.1.0)
+    - SnapKit (~> 5.0.0)
+  - Macaroon/Core/App/Routing/Deeplink (0.1.0):
+    - SnapKit (~> 5.0.0)
+  - Macaroon/Core/App/Routing/Transition (0.1.0):
+    - SnapKit (~> 5.0.0)
+  - Macaroon/Core/App/Target (0.1.0):
+    - SnapKit (~> 5.0.0)
+  - Macaroon/Core/Error (0.1.0):
+    - SnapKit (~> 5.0.0)
+  - Macaroon/Core/Managers (0.1.0):
+    - Macaroon/Core/Managers/Loading (= 0.1.0)
+    - SnapKit (~> 5.0.0)
+  - Macaroon/Core/Managers/Loading (0.1.0):
+    - SnapKit (~> 5.0.0)
+  - Macaroon/Core/Screens (0.1.0):
+    - Macaroon/Core/Screens/Configuration (= 0.1.0)
+    - Macaroon/Core/Screens/Containers (= 0.1.0)
+    - Macaroon/Core/Screens/CustomTransition (= 0.1.0)
+    - Macaroon/Core/Screens/List (= 0.1.0)
+    - Macaroon/Core/Screens/Other (= 0.1.0)
+    - SnapKit (~> 5.0.0)
+  - Macaroon/Core/Screens/Configuration (0.1.0):
+    - Macaroon/Core/Screens/Configuration/NavigationBar (= 0.1.0)
+    - Macaroon/Core/Screens/Configuration/StatusBar (= 0.1.0)
+    - SnapKit (~> 5.0.0)
+  - Macaroon/Core/Screens/Configuration/NavigationBar (0.1.0):
+    - SnapKit (~> 5.0.0)
+  - Macaroon/Core/Screens/Configuration/StatusBar (0.1.0):
+    - SnapKit (~> 5.0.0)
+  - Macaroon/Core/Screens/Containers (0.1.0):
+    - SnapKit (~> 5.0.0)
+  - Macaroon/Core/Screens/CustomTransition (0.1.0):
+    - Macaroon/Core/Screens/CustomTransition/Modal (= 0.1.0)
+    - SnapKit (~> 5.0.0)
+  - Macaroon/Core/Screens/CustomTransition/Modal (0.1.0):
+    - SnapKit (~> 5.0.0)
+  - Macaroon/Core/Screens/List (0.1.0):
+    - Macaroon/Core/Screens/List/Configuration (= 0.1.0)
+    - Macaroon/Core/Screens/List/ListLayouts (= 0.1.0)
+    - SnapKit (~> 5.0.0)
+  - Macaroon/Core/Screens/List/Configuration (0.1.0):
+    - SnapKit (~> 5.0.0)
+  - Macaroon/Core/Screens/List/ListLayouts (0.1.0):
+    - SnapKit (~> 5.0.0)
+  - Macaroon/Core/Screens/Other (0.1.0):
+    - SnapKit (~> 5.0.0)
+  - Macaroon/Core/Utils (0.1.0):
+    - Macaroon/Core/Utils/DataStructures (= 0.1.0)
+    - Macaroon/Core/Utils/Debugging (= 0.1.0)
+    - Macaroon/Core/Utils/Extensions (= 0.1.0)
+    - Macaroon/Core/Utils/Gestures (= 0.1.0)
+    - Macaroon/Core/Utils/Image (= 0.1.0)
+    - Macaroon/Core/Utils/List (= 0.1.0)
+    - Macaroon/Core/Utils/Notification (= 0.1.0)
+    - Macaroon/Core/Utils/Performance (= 0.1.0)
+    - Macaroon/Core/Utils/Text (= 0.1.0)
+    - Macaroon/Core/Utils/Time (= 0.1.0)
+    - SnapKit (~> 5.0.0)
+  - Macaroon/Core/Utils/DataStructures (0.1.0):
+    - SnapKit (~> 5.0.0)
+  - Macaroon/Core/Utils/Debugging (0.1.0):
+    - SnapKit (~> 5.0.0)
+  - Macaroon/Core/Utils/Extensions (0.1.0):
+    - Macaroon/Core/Utils/Extensions/Foundation (= 0.1.0)
+    - Macaroon/Core/Utils/Extensions/UI (= 0.1.0)
+    - SnapKit (~> 5.0.0)
+  - Macaroon/Core/Utils/Extensions/Foundation (0.1.0):
+    - SnapKit (~> 5.0.0)
+  - Macaroon/Core/Utils/Extensions/UI (0.1.0):
+    - SnapKit (~> 5.0.0)
+  - Macaroon/Core/Utils/Gestures (0.1.0):
+    - SnapKit (~> 5.0.0)
+  - Macaroon/Core/Utils/Image (0.1.0):
+    - SnapKit (~> 5.0.0)
+  - Macaroon/Core/Utils/List (0.1.0):
+    - SnapKit (~> 5.0.0)
+  - Macaroon/Core/Utils/Notification (0.1.0):
+    - SnapKit (~> 5.0.0)
+  - Macaroon/Core/Utils/Performance (0.1.0):
+    - SnapKit (~> 5.0.0)
+  - Macaroon/Core/Utils/Text (0.1.0):
+    - Macaroon/Core/Utils/Text/Attributed (= 0.1.0)
+    - SnapKit (~> 5.0.0)
+  - Macaroon/Core/Utils/Text/Attributed (0.1.0):
+    - SnapKit (~> 5.0.0)
+  - Macaroon/Core/Utils/Time (0.1.0):
+    - SnapKit (~> 5.0.0)
+  - Macaroon/Core/Views (0.1.0):
+    - Macaroon/Core/Views/BaseComponents (= 0.1.0)
+    - Macaroon/Core/Views/Components (= 0.1.0)
+    - Macaroon/Core/Views/Configuration (= 0.1.0)
+    - Macaroon/Core/Views/ListComponents (= 0.1.0)
+    - SnapKit (~> 5.0.0)
+  - Macaroon/Core/Views/BaseComponents (0.1.0):
+    - SnapKit (~> 5.0.0)
+  - Macaroon/Core/Views/Components (0.1.0):
+    - Macaroon/Core/Views/Components/EmptyStateView (= 0.1.0)
+    - Macaroon/Core/Views/Components/SegmentedControl (= 0.1.0)
+    - SnapKit (~> 5.0.0)
+  - Macaroon/Core/Views/Components/EmptyStateView (0.1.0):
+    - SnapKit (~> 5.0.0)
+  - Macaroon/Core/Views/Components/SegmentedControl (0.1.0):
+    - SnapKit (~> 5.0.0)
+  - Macaroon/Core/Views/Configuration (0.1.0):
+    - Macaroon/Core/Views/Configuration/Data (= 0.1.0)
+    - Macaroon/Core/Views/Configuration/Layout (= 0.1.0)
+    - Macaroon/Core/Views/Configuration/Styling (= 0.1.0)
+    - SnapKit (~> 5.0.0)
+  - Macaroon/Core/Views/Configuration/Data (0.1.0):
+    - SnapKit (~> 5.0.0)
+  - Macaroon/Core/Views/Configuration/Layout (0.1.0):
+    - SnapKit (~> 5.0.0)
+  - Macaroon/Core/Views/Configuration/Styling (0.1.0):
+    - Macaroon/Core/Views/Configuration/Styling/Customizables (= 0.1.0)
+    - Macaroon/Core/Views/Configuration/Styling/Drawables (= 0.1.0)
+    - Macaroon/Core/Views/Configuration/Styling/StyleElements (= 0.1.0)
+    - Macaroon/Core/Views/Configuration/Styling/Styles (= 0.1.0)
+    - SnapKit (~> 5.0.0)
+  - Macaroon/Core/Views/Configuration/Styling/Customizables (0.1.0):
+    - SnapKit (~> 5.0.0)
+  - Macaroon/Core/Views/Configuration/Styling/Drawables (0.1.0):
+    - SnapKit (~> 5.0.0)
+  - Macaroon/Core/Views/Configuration/Styling/StyleElements (0.1.0):
+    - SnapKit (~> 5.0.0)
+  - Macaroon/Core/Views/Configuration/Styling/Styles (0.1.0):
+    - SnapKit (~> 5.0.0)
+  - Macaroon/Core/Views/ListComponents (0.1.0):
+    - SnapKit (~> 5.0.0)
   - Magpie/Alamofire (2.0.5):
     - Alamofire (~> 5.2)
     - Magpie/Core
@@ -107,6 +261,10 @@ DEPENDENCIES:
   - Firebase/Crashlytics
   - KeychainAccess
   - lottie-ios
+  - Macaroon/Banner (from `https://github.com/Hipo/macaroon.git`, tag `2.12.0`)
+  - Macaroon/BottomOverlay (from `https://github.com/Hipo/macaroon.git`, tag `2.12.0`)
+  - Macaroon/BottomSheet (from `https://github.com/Hipo/macaroon.git`, tag `2.12.0`)
+  - Macaroon/Core (from `https://github.com/Hipo/macaroon.git`, tag `2.12.0`)
   - Magpie/HIPAPI (~> 2.0.5)
   - NotificationBannerSwift
   - SnapKit
@@ -141,6 +299,16 @@ SPEC REPOS:
     - SwiftLint
     - Valet
 
+EXTERNAL SOURCES:
+  Macaroon:
+    :git: https://github.com/Hipo/macaroon.git
+    :tag: 2.12.0
+
+CHECKOUT OPTIONS:
+  Macaroon:
+    :git: https://github.com/Hipo/macaroon.git
+    :tag: 2.12.0
+
 SPEC CHECKSUMS:
   Alamofire: 2291f7d21ca607c491dd17642e5d40fdcda0e65c
   BetterSegmentedControl: 85d1b0343a09603b098884d527f550dfc8e6cdd9
@@ -156,6 +324,7 @@ SPEC CHECKSUMS:
   GoogleUtilities: e1d9ed4e544fc32a93e00e721400cbc3f377200d
   KeychainAccess: c0c4f7f38f6fc7bbe58f5702e25f7bd2f65abf51
   lottie-ios: 106e92eaf11fbed0a76590b4cdb9b5ec26123ff7
+  Macaroon: 22c469775f6bf16bed6fffdd69b03f3a8e9f470b
   Magpie: 50a82ab4b27defa9b24f44796c9b2b03f3a43110
   MarqueeLabel: 00cc0bcd087111dca575878b3531af980559707d
   nanopb: 59221d7f958fb711001e6a449489542d92ae113e
@@ -167,6 +336,6 @@ SPEC CHECKSUMS:
   SwiftLint: 99f82d07b837b942dd563c668de129a03fc3fb52
   Valet: 11ab0e318b7284888a81392e36136563b4af5deb
 
-PODFILE CHECKSUM: cf8b0e9d2f8a360d4dcc97f7b2e30e8004763bc6
+PODFILE CHECKSUM: 003d3a4a82f97566d7ce7b69563fe8a269b68f2e
 
 COCOAPODS: 1.10.1
