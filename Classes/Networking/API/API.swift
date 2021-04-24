@@ -25,6 +25,7 @@ class AlgorandAPI: API {
     var indexerToken: String?
     var network: BaseNetwork = .mainnet
     var mobileApiBase: String = Environment.current.mobileApi
+    let algoExplorerApiBase: String = Environment.current.algoExplorerApi
     let session: Session
     
     var isTestNet: Bool {
