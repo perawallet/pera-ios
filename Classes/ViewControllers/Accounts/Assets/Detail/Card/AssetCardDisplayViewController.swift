@@ -28,7 +28,14 @@ class AssetCardDisplayViewController: BaseViewController {
         ),
         initialModalSize: .custom(CGSize(width: view.frame.width, height: 472.0))
     )
-    
+
+    private lazy var assetCardDisplayDataController: AssetCardDisplayDataController = {
+        guard let api = api else {
+            fatalError("Api must be set before accessing this view controller.")
+        }
+        return AssetCardDisplayDataController(api: api)
+    }()
+
     private var account: Account
     private var selectedIndex: Int
     private var currency: Currency?
@@ -75,18 +82,13 @@ extension AssetCardDisplayViewController {
 
 extension AssetCardDisplayViewController {
     private func fetchCurrency() {
-        guard let preferredCurrency = session?.preferredCurrency else {
-            return
-        }
-        
-        api?.getCurrencyValue(for: preferredCurrency) { response in
-            switch response {
-            case let .success(result):
-                self.currency = result
-                self.assetCardDisplayView.reloadData(at: 0)
-            case .failure:
-                break
+        assetCardDisplayDataController.getCurrency { response in
+            guard let currency = response else {
+                return
             }
+
+            self.currency = currency
+            self.assetCardDisplayView.reloadData(at: 0)
         }
     }
 }
