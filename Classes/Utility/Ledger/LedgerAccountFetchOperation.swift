@@ -83,21 +83,6 @@ extension LedgerAccountFetchOperation {
 }
 
 extension LedgerAccountFetchOperation {
-    private func parseAddress(from data: Data) -> String? {
-        /// Remove last two bytes to fetch data since it declares status codes.
-        var mutableData = data
-        mutableData.removeLast(2)
-        
-        var error: NSError?
-        let address = AlgorandSDK().addressFromPublicKey(mutableData, error: &error)
-        
-        if error != nil || !AlgorandSDK().isValidAddress(address) {
-            return nil
-        }
-        
-        return address
-    }
-    
     private func fetchAccount(_ address: String) {
         api.fetchAccount(with: AccountFetchDraft(publicKey: address)) { response in
             switch response {

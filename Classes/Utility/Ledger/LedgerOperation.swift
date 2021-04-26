@@ -137,6 +137,23 @@ extension LedgerOperation where Self: LedgerBLEControllerDelegate {
 }
 
 extension LedgerOperation {
+    func parseAddress(from data: Data) -> String? {
+        /// Remove last two bytes to fetch data since it declares status codes.
+        var mutableData = data
+        mutableData.removeLast(2)
+
+        var error: NSError?
+        let address = AlgorandSDK().addressFromPublicKey(mutableData, error: &error)
+
+        if error != nil || !AlgorandSDK().isValidAddress(address) {
+            return nil
+        }
+
+        return address
+    }
+}
+
+extension LedgerOperation {
     private func presentLedgerApprovalModal() {
         let ledgerApprovalPresenter = CardModalPresenter(
             config: ModalConfiguration(
