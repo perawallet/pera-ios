@@ -31,11 +31,7 @@ class LedgerApprovalView: BaseView {
             .withTextColor(Colors.Text.primary)
     }()
     
-    private(set) lazy var bluetoothImageView = BluetoothLoadingView()
-    
-    private lazy var ledgerImageView = UIImageView(image: img("img-ledger-small"))
-    
-    private lazy var deviceImageView = UIImageView(image: img("img-pixel-device"))
+    private lazy var ledgerDeviceConnectionView = LedgerDeviceConnectionView()
     
     private lazy var detailLabel: UILabel = {
         UILabel()
@@ -65,9 +61,7 @@ class LedgerApprovalView: BaseView {
     override func prepareLayout() {
         super.prepareLayout()
         setupTitleLabelLayout()
-        setupBluetoothImageViewLayout()
-        setupDeviceImageViewLayout()
-        setupLedgerImageViewLayout()
+        setupLedgerDeviceConnectionViewLayout()
         setupDetailLabelLayout()
         setupCancelButtonLayout()
     }
@@ -91,32 +85,12 @@ extension LedgerApprovalView {
         }
     }
     
-    private func setupBluetoothImageViewLayout() {
-        addSubview(bluetoothImageView)
+    private func setupLedgerDeviceConnectionViewLayout() {
+        addSubview(ledgerDeviceConnectionView)
             
-        bluetoothImageView.snp.makeConstraints { make in
+        ledgerDeviceConnectionView.snp.makeConstraints { make in
             make.centerX.equalTo(titleLabel)
-            make.size.equalTo(layout.current.bluetoothImageSize)
             make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.bluetoothTopInset)
-        }
-    }
-    
-    private func setupDeviceImageViewLayout() {
-        addSubview(deviceImageView)
-            
-        deviceImageView.snp.makeConstraints { make in
-            make.leading.equalTo(bluetoothImageView.snp.trailing).offset(layout.current.deviceImageLeadingInset)
-            make.centerY.equalTo(bluetoothImageView)
-        }
-    }
-
-    private func setupLedgerImageViewLayout() {
-        addSubview(ledgerImageView)
-            
-        ledgerImageView.snp.makeConstraints { make in
-            make.centerY.equalTo(bluetoothImageView)
-            make.trailing.equalTo(bluetoothImageView.snp.leading).offset(layout.current.imageTrailingOffset)
-            make.size.equalTo(layout.current.ledgerImageSize)
         }
     }
         
@@ -124,7 +98,7 @@ extension LedgerApprovalView {
         addSubview(detailLabel)
             
         detailLabel.snp.makeConstraints { make in
-            make.top.equalTo(deviceImageView.snp.bottom).offset(layout.current.detailLabelTopInset)
+            make.top.equalTo(ledgerDeviceConnectionView.snp.bottom).offset(layout.current.detailLabelTopInset)
             make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
         }
     }
@@ -149,21 +123,24 @@ extension LedgerApprovalView {
     func setDetail(_ detail: String) {
         detailLabel.text = detail
     }
+
+    func startConnectionAnimation() {
+        ledgerDeviceConnectionView.startAnimation()
+    }
+
+    func stopConnectionAnimation() {
+        ledgerDeviceConnectionView.stopAnimation()
+    }
 }
 
 extension LedgerApprovalView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let titleVerticalInset: CGFloat = 16.0
         let titleHorizontalInset: CGFloat = 25.0
-        let deviceImageLeadingInset: CGFloat = 5.0
-        let bluetoothTopInset: CGFloat = 25.0
-        let deviceImageTopInset: CGFloat = 35.0
+        let bluetoothTopInset: CGFloat = 36.0
         let buttonVerticalInset: CGFloat = 28.0
-        let imageTrailingOffset: CGFloat = -5.0
         let horizontalInset: CGFloat = 30.0
         let detailLabelTopInset: CGFloat = 20.0
-        let ledgerImageSize = CGSize(width: 27.0, height: 24.0)
-        let bluetoothImageSize = CGSize(width: 100.0, height: 100.0)
     }
 }
 
