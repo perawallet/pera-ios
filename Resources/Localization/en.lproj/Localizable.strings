@@ -507,8 +507,8 @@
 "ledger-account-selection-title-plural" = "%d Accounts Found";
 "ledger-account-selection-detail" = "This ledger device can sign transactions for the following account. Select the account to add to your Algorand Wallet.";
 "ledger-account-selection-detail-rekey" = "Choose the account you want to use for signing this account.";
-"ledger-account-selection-add" = "Add Account";
-"ledger-account-selection-add-plural" = "Add Accounts";
+"ledger-account-selection-verify" = "Verify Selected Account";
+"ledger-account-selection-verify-plural" = "Verify Selected Accounts";
 "ledger-rekey-error-add-auth" = "The connected Ledger device cannot sign transactions for this account. In order to do so, please connect %@.";
 "ledger-rekey-error-not-found" = "This account has been rekeyed. Please recover this account with a passphrase or Ledger device.";
 "ledger-transaction-account-match-error" = "It appears this Ledger device has been reset and the account on the device no longer matches this account. Please pair the Ledger again from the homepage.";
@@ -583,3 +583,9 @@
 "title-dont-ask" = "Don’t ask again";
 "title-paste-passphrase" = "Paste Full Passphrase";
 "title-enter-pin-for-passphrase" = "Please enter your PIN to view passphrase";
+
+"ledger-account-verification-status-awaiting" = "Awaiting Verification";
+"ledger-account-verification-status-pending" = "Pending";
+"ledger-account-verification-status-verified" = "Account Verified";
+"ledger-account-verification-status-not-verified" = "Not Verified";
+"ledger-verified-add" = "Add Verified Accounts";
