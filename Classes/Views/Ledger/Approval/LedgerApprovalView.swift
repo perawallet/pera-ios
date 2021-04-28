@@ -91,6 +91,7 @@ extension LedgerApprovalView {
         ledgerDeviceConnectionView.snp.makeConstraints { make in
             make.centerX.equalTo(titleLabel)
             make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.bluetoothTopInset)
+            make.leading.trailing.equalToSuperview()
         }
     }
         

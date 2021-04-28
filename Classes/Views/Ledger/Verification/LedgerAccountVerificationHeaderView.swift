@@ -29,6 +29,7 @@ class LedgerAccountVerificationHeaderView: BaseView {
             .withTextColor(Colors.Text.primary)
             .withLine(.contained)
             .withAlignment(.center)
+            .withText("ledger-verify-header-title".localized)
     }()
 
     private lazy var subtitleLabel: UILabel = {
@@ -37,6 +38,7 @@ class LedgerAccountVerificationHeaderView: BaseView {
             .withTextColor(Colors.Text.secondary)
             .withLine(.contained)
             .withAlignment(.center)
+            .withText("ledger-verify-header-subtitle".localized)
     }()
 
     override func configureAppearance() {
@@ -57,6 +59,7 @@ extension LedgerAccountVerificationHeaderView {
         ledgerDeviceConnectionView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalToSuperview().inset(layout.current.connectionViewTopInset)
+            make.leading.trailing.equalToSuperview()
         }
     }
     

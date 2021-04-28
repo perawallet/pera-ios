@@ -38,13 +38,13 @@ class LedgerAccountVerificationStatusViewModel {
     private func setBackgroundColor(from status: LedgerVerificationStatus) {
         switch status {
         case .awaiting:
-            backgroundColor = Colors.Main.white
+            backgroundColor = Colors.Background.secondary
         case .pending:
             backgroundColor = .clear
         case .unverified:
             backgroundColor = Colors.General.error
         case .verified:
-            backgroundColor = Colors.Main.white
+            backgroundColor = Colors.Background.secondary
         }
     }
 

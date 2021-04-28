@@ -21,6 +21,10 @@ class LedgerDeviceConnectionView: BaseView {
 
     private let layout = Layout<LayoutConstants>()
 
+    override var intrinsicContentSize: CGSize {
+        return CGSize(width: UIScreen.main.bounds.width, height: 88.0)
+    }
+
     private lazy var bluetoothAnimationView = BluetoothLoadingView()
 
     private lazy var ledgerImageView = UIImageView(image: img("img-ledger-small"))
@@ -44,7 +48,7 @@ extension LedgerDeviceConnectionView {
 
         bluetoothAnimationView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalToSuperview().inset(layout.current.topInset)
+            make.top.bottom.equalToSuperview().inset(layout.current.topInset)
         }
     }
 
@@ -54,7 +58,7 @@ extension LedgerDeviceConnectionView {
         deviceImageView.snp.makeConstraints { make in
             make.leading.equalTo(bluetoothAnimationView.snp.trailing).offset(layout.current.deviceImageLeadingInset)
             make.centerY.equalTo(bluetoothAnimationView)
-            make.top.bottom.equalToSuperview()
+            make.size.equalTo(layout.current.deviceImageSize)
         }
     }
 
@@ -84,6 +88,7 @@ extension LedgerDeviceConnectionView {
         let topInset: CGFloat = 32.0
         let deviceImageLeadingInset: CGFloat = 5.0
         let imageTrailingOffset: CGFloat = -5.0
+        let deviceImageSize = CGSize(width: 44.0, height: 88.0)
         let ledgerImageSize = CGSize(width: 27.0, height: 24.0)
     }
 }

@@ -57,7 +57,7 @@ extension VerificationStatusView {
         addSubview(imageView)
 
         imageView.snp.makeConstraints { make in
-            make.top.leading.equalToSuperview()
+            make.top.bottom.leading.equalToSuperview()
             make.size.equalTo(layout.current.imageSize)
         }
     }
