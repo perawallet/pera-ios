@@ -25,6 +25,10 @@ class LedgerAccountVerifyOperation: LedgerOperation, BLEConnectionManagerDelegat
 
     var ledgerApprovalViewController: LedgerApprovalViewController?
 
+    var shouldDisplayLedgerApprovalModal: Bool {
+        return false
+    }
+
     var ledgerMode: LedgerApprovalViewController.Mode {
         return .connection
     }
@@ -32,30 +36,41 @@ class LedgerAccountVerifyOperation: LedgerOperation, BLEConnectionManagerDelegat
     var timer: Timer?
     var connectedDevice: CBPeripheral?
 
-    private var ledgerAccounts = [Account]()
-    private var accountIndex: Int {
-        return ledgerAccounts.count
-    }
-
     weak var delegate: LedgerAccountVerifyOperationDelegate?
 
-    private let api: AlgorandAPI
-    private let ledgerDetail: LedgerDetail
+    private var ledgerDetail: LedgerDetail?
 
-    init(api: AlgorandAPI, ledgerDetail: LedgerDetail) {
-        self.api = api
-        self.ledgerDetail = ledgerDetail
+    init() {
         bleConnectionManager.delegate = self
         ledgerBleController.delegate = self
+    }
+
+    func setLedgerDetail(_ ledgerDetail: LedgerDetail?) {
+        self.ledgerDetail = ledgerDetail
     }
 }
 
 extension LedgerAccountVerifyOperation {
     func startOperation() {
+        guard let accountIndex = ledgerDetail?.indexInLedger else {
+            return
+        }
+
         ledgerBleController.verifyAddress(at: accountIndex)
     }
 
     func completeOperation(with data: Data) {
+        if data.isErrorResponseFromLedger {
+            if data.isLedgerTransactionCancelledError {
+                delegate?.ledgerAccountVerifyOperation(self, didFailed: .cancelled)
+            } else {
+                delegate?.ledgerAccountVerifyOperation(self, didFailed: .closedApp)
+            }
+
+            reset()
+            return
+        }
+
         guard let address = parseAddress(from: data) else {
             NotificationBanner.showError(
                 "ble-error-transmission-title".localized,
@@ -70,7 +85,7 @@ extension LedgerAccountVerifyOperation {
     }
 
     func handleDiscoveryResults(_ peripherals: [CBPeripheral]) {
-        guard let savedPeripheralId = ledgerDetail.id,
+        guard let savedPeripheralId = ledgerDetail?.id,
               let savedPeripheral = peripherals.first(where: { $0.identifier == savedPeripheralId }) else {
             return
         }
@@ -83,7 +98,6 @@ extension LedgerAccountVerifyOperation {
         stopScan()
         disconnectFromCurrentDevice()
         ledgerApprovalViewController?.dismissIfNeeded()
-        ledgerAccounts.removeAll()
     }
 }
 
