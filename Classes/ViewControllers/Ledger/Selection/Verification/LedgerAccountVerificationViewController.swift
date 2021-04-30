@@ -105,7 +105,7 @@ extension LedgerAccountVerificationViewController {
 
 extension LedgerAccountVerificationViewController {
     private func addVerificationAccountsToStack() {
-        dataController.verificationAccounts.forEach { account in
+        dataController.displayedVerificationAccounts.forEach { account in
             let statusView = LedgerAccountVerificationStatusView()
             let viewModel = LedgerAccountVerificationStatusViewModel(
                 account: account,
@@ -122,7 +122,7 @@ extension LedgerAccountVerificationViewController {
     }
 
     private func startVerification() {
-        guard let account = dataController.verificationAccounts.first else {
+        guard let account = dataController.displayedVerificationAccounts.first else {
             return
         }
 
@@ -197,8 +197,10 @@ extension LedgerAccountVerificationViewController {
             SVProgressHUD.dismiss(withDelay: 1.0) {
                 switch self.accountSetupFlow {
                 case .initializeAccount:
-                    self.dismiss(animated: false) {
-                        UIApplication.shared.rootViewController()?.setupTabBarController()
+                    DispatchQueue.main.async {
+                        self.dismiss(animated: false) {
+                            UIApplication.shared.rootViewController()?.setupTabBarController()
+                        }
                     }
                 case .addNewAccount:
                     self.closeScreen(by: .dismiss, animated: false)
@@ -213,7 +215,7 @@ extension LedgerAccountVerificationViewController {
 extension LedgerAccountVerificationViewController: LedgerAccountVerifyOperationDelegate {
     func ledgerAccountVerifyOperation(_ ledgerAccountVerifyOperation: LedgerAccountVerifyOperation, didVerify account: String) {
         updateCurrentVerificationStatusView(with: .verified)
-        dataController.addVerifiedAccount(account)
+        dataController.addVerifiedAccount(currentVerificationAccount?.address)
 
         if dataController.isLastAccount(currentVerificationAccount) {
             isVerificationCompleted = true
@@ -254,7 +256,7 @@ extension LedgerAccountVerificationViewController: LedgerAccountVerifyOperationD
         guard let currentVerificationAccount = currentVerificationAccount,
               let currentVerificationStatusView = currentVerificationStatusView,
               let nextVerificationIndex = dataController.nextIndexForVerification(from: currentVerificationAccount.address),
-              let nextVerificationAccount = dataController.verificationAccounts[safe: nextVerificationIndex],
+              let nextVerificationAccount = dataController.displayedVerificationAccounts[safe: nextVerificationIndex],
               let nextVerificationStatusView = ledgerAccountVerificationView.statusViews.nextView(
                 of: currentVerificationStatusView
               ) as? LedgerAccountVerificationStatusView else {

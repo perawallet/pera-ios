@@ -20,8 +20,9 @@ import UIKit
 class LedgerAccountVerificationDataController {
 
     private let selectedAccounts: [Account]
-    private(set) var verificationAccounts: [Account] = []
+    private(set) var displayedVerificationAccounts: [Account] = []
     private var verifiedAccounts: [Account] = []
+    private var nondisplayedAccounts: [Account] = []
 
     init(accounts: [Account]) {
         self.selectedAccounts = accounts
@@ -43,40 +44,55 @@ extension LedgerAccountVerificationDataController {
     }
 
     private func addSelectedRekeyedAccountIfNeeded(_ selectedAccount: Account) {
-        if !selectedAccounts.contains(where: { account -> Bool in
+        if shouldDisplaySelectedRekeyedAccount(selectedAccount) {
+            displayedVerificationAccounts.append(selectedAccount)
+        } else {
+            nondisplayedAccounts.append(selectedAccount)
+        }
+    }
+
+    private func shouldDisplaySelectedRekeyedAccount(_ selectedAccount: Account) -> Bool {
+        return !containsSameVerificationAccount(for: selectedAccount) && !containsAuthAccount(for: selectedAccount)
+    }
+
+    private func containsAuthAccount(for selectedAccount: Account) -> Bool {
+        return selectedAccounts.contains { account -> Bool in
             account.address == selectedAccount.authAddress
-        }) {
-            verificationAccounts.append(selectedAccount)
+        }
+    }
+
+    private func containsSameVerificationAccount(for selectedAccount: Account) -> Bool {
+        return displayedVerificationAccounts.contains { account -> Bool in
+            account.address == selectedAccount.address || account.authAddress == selectedAccount.authAddress
         }
     }
 
     private func addSelectedAccountIfNeeded(_ selectedAccount: Account) {
-        if !verificationAccounts.contains(selectedAccount) {
-            verificationAccounts.append(selectedAccount)
+        if !displayedVerificationAccounts.contains(selectedAccount) {
+            displayedVerificationAccounts.append(selectedAccount)
         }
     }
 }
 
 extension LedgerAccountVerificationDataController {
     func isLastAccount(_ account: Account?) -> Bool {
-        return verificationAccounts.last == account
+        return displayedVerificationAccounts.last == account
     }
 
     func nextIndexForVerification(from address: String) -> Int? {
-        guard let addressIndex = verificationAccounts.map({ $0.address }).firstIndex(of: address) else {
+        guard let addressIndex = displayedVerificationAccounts.map({ $0.address }).firstIndex(of: address) else {
             return nil
         }
 
         return addressIndex + 1
     }
 
-    func addVerifiedAccount(_ address: String) {
-        let verificationAccount = verificationAccounts.first { $0.address == address }
-        let rekeyedAccounts = selectedAccounts.filter { $0.authAddress == address }
+    func addVerifiedAccount(_ address: String?) {
+        let verificationAccount = displayedVerificationAccounts.first { $0.address == address }
 
         if let account = verificationAccount {
             verifiedAccounts.append(account)
-            verifiedAccounts.append(contentsOf: rekeyedAccounts)
+            verifiedAccounts.append(contentsOf: nondisplayedAccounts)
         }
     }
 
