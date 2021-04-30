@@ -875,6 +875,9 @@
 		2B2703842638C422006BAF75 /* LedgerDeviceConnectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2703832638C422006BAF75 /* LedgerDeviceConnectionView.swift */; };
 		2B2703852638C422006BAF75 /* LedgerDeviceConnectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2703832638C422006BAF75 /* LedgerDeviceConnectionView.swift */; };
 		2B2703862638C422006BAF75 /* LedgerDeviceConnectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2703832638C422006BAF75 /* LedgerDeviceConnectionView.swift */; };
+		2B270391263A0F4F006BAF75 /* LedgerAccountVerificationDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B270390263A0F4F006BAF75 /* LedgerAccountVerificationDataController.swift */; };
+		2B270392263A0F4F006BAF75 /* LedgerAccountVerificationDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B270390263A0F4F006BAF75 /* LedgerAccountVerificationDataController.swift */; };
+		2B270393263A0F4F006BAF75 /* LedgerAccountVerificationDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B270390263A0F4F006BAF75 /* LedgerAccountVerificationDataController.swift */; };
 		2B298D1124F437360047408A /* LedgerAccountSelectionHeaderSupplementaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B298D1024F437360047408A /* LedgerAccountSelectionHeaderSupplementaryViewModel.swift */; };
 		2B298D1224F437360047408A /* LedgerAccountSelectionHeaderSupplementaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B298D1024F437360047408A /* LedgerAccountSelectionHeaderSupplementaryViewModel.swift */; };
 		2B298D1724F47FCF0047408A /* LedgerAccountNameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B298D1624F47FCF0047408A /* LedgerAccountNameViewModel.swift */; };
@@ -2227,6 +2230,7 @@
 		2B25D52A2615F52200D4592E /* NSMutableAttributedString+Attribute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSMutableAttributedString+Attribute.swift"; sourceTree = "<group>"; };
 		2B27037A2638C097006BAF75 /* LedgerAccountVerificationHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountVerificationHeaderView.swift; sourceTree = "<group>"; };
 		2B2703832638C422006BAF75 /* LedgerDeviceConnectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerDeviceConnectionView.swift; sourceTree = "<group>"; };
+		2B270390263A0F4F006BAF75 /* LedgerAccountVerificationDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountVerificationDataController.swift; sourceTree = "<group>"; };
 		2B298D1024F437360047408A /* LedgerAccountSelectionHeaderSupplementaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountSelectionHeaderSupplementaryViewModel.swift; sourceTree = "<group>"; };
 		2B298D1624F47FCF0047408A /* LedgerAccountNameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountNameViewModel.swift; sourceTree = "<group>"; };
 		2B2A9F40232A403600450DB0 /* TransactionTrackDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionTrackDraft.swift; sourceTree = "<group>"; };
@@ -3268,6 +3272,7 @@
 		2B0F5F1724E2A7DC00DA22A6 /* Selection */ = {
 			isa = PBXGroup;
 			children = (
+				2B27038F263A0F27006BAF75 /* Verification */,
 				2B01E2C724EF121000C6E5B7 /* LedgerAccountSelectionDataSource.swift */,
 			);
 			path = Selection;
@@ -3419,6 +3424,14 @@
 				2B2703832638C422006BAF75 /* LedgerDeviceConnectionView.swift */,
 			);
 			path = Common;
+			sourceTree = "<group>";
+		};
+		2B27038F263A0F27006BAF75 /* Verification */ = {
+			isa = PBXGroup;
+			children = (
+				2B270390263A0F4F006BAF75 /* LedgerAccountVerificationDataController.swift */,
+			);
+			path = Verification;
 			sourceTree = "<group>";
 		};
 		2B298D0F24F4371F0047408A /* Selection */ = {
@@ -8446,6 +8459,7 @@
 				17BD4E482292F1260003E49A /* ContactSelectionViewController.swift in Sources */,
 				17BD4E492292F1260003E49A /* UIViewControllerContextTransitioning+Additions.swift in Sources */,
 				2BE4D1222594E91B005F5764 /* AlgorandAppStoreReviewer.swift in Sources */,
+				2B270393263A0F4F006BAF75 /* LedgerAccountVerificationDataController.swift in Sources */,
 				17BD4E4A2292F1260003E49A /* ChoosePasswordViewModel.swift in Sources */,
 				17BD4E4B2292F1260003E49A /* BaseInputView.swift in Sources */,
 				17BD4E4C2292F1260003E49A /* AssetInputView.swift in Sources */,
@@ -9078,6 +9092,7 @@
 				2BE4D1212594E91B005F5764 /* AlgorandAppStoreReviewer.swift in Sources */,
 				2B0F61E024EC129D00DA22A6 /* TransactionAssetView.swift in Sources */,
 				2B0F61E124EC129D00DA22A6 /* AddContactView.swift in Sources */,
+				2B270392263A0F4F006BAF75 /* LedgerAccountVerificationDataController.swift in Sources */,
 				2B0F61E224EC129D00DA22A6 /* LedgerTroubleshootBluetoothViewController.swift in Sources */,
 				2B0F61E324EC129D00DA22A6 /* UIButton+Factory.swift in Sources */,
 				2B0F61E424EC129D00DA22A6 /* Reward.swift in Sources */,
@@ -9710,6 +9725,7 @@
 				2B4BDA1D238D36CA00491149 /* AssetSearchResult.swift in Sources */,
 				2BD73A192241324700B66EEF /* ChoosePasswordViewModel.swift in Sources */,
 				2BE4D1202594E91B005F5764 /* AlgorandAppStoreReviewer.swift in Sources */,
+				2B270391263A0F4F006BAF75 /* LedgerAccountVerificationDataController.swift in Sources */,
 				2B8954C02244047D00D6D068 /* BaseInputView.swift in Sources */,
 				2B56F7DC225B51C100E58737 /* AssetInputView.swift in Sources */,
 				2B432A4F237C4F5D009191BF /* AssetViewModel.swift in Sources */,
