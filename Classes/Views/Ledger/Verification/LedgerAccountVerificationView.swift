@@ -59,7 +59,7 @@ extension LedgerAccountVerificationView {
         stackView.snp.makeConstraints { make in
             make.top.equalTo(headerView.snp.bottom).offset(layout.current.stackTopInset)
             make.leading.trailing.equalToSuperview().inset(layout.current.stackHorizontalInset)
-            make.bottom.equalToSuperview().inset(layout.current.bottomInset + safeAreaBottom)
+            make.bottom.lessThanOrEqualToSuperview().inset(layout.current.bottomInset + safeAreaBottom)
         }
     }
 }

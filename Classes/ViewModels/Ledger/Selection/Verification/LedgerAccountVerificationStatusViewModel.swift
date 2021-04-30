@@ -32,7 +32,7 @@ class LedgerAccountVerificationStatusViewModel {
     }
 
     private func setAddress(from account: Account) {
-        address = account.address
+        address = getVerificationAddress(of: account)
     }
 
     private func setBackgroundColor(from status: LedgerVerificationStatus) {
@@ -58,5 +58,21 @@ class LedgerAccountVerificationStatusViewModel {
 
     private func setVerificationStatusViewModel(from status: LedgerVerificationStatus) {
         verificationStatusViewModel = VerificationStatusViewModel(status: status)
+    }
+}
+
+extension LedgerAccountVerificationStatusViewModel {
+    private func getVerificationAddress(of account: Account) -> String {
+        if let authAddress = account.authAddress,
+           let rekeyedLedgerDetail = account.rekeyDetail?[authAddress] {
+            if let ledgerDetail = account.ledgerDetail,
+                rekeyedLedgerDetail.id != ledgerDetail.id {
+                return account.address
+            } else {
+                return authAddress
+            }
+        }
+
+        return account.address
     }
 }
