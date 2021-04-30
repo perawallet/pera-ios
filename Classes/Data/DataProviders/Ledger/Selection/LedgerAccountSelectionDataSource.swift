@@ -61,14 +61,14 @@ extension LedgerAccountSelectionDataSource {
             case let .success(rekeyedAccountsResponse):
                 let rekeyedAccounts = rekeyedAccountsResponse.accounts.filter { $0.authAddress != $0.address }
                 self.rekeyedAccounts[account.address] = rekeyedAccounts
-                rekeyedAccounts.forEach { account in
-                    account.assets = account.nonDeletedAssets()
-                    account.type = .rekeyed
-                    if let authAddress = account.authAddress,
+                rekeyedAccounts.forEach { rekeyedAccount in
+                    rekeyedAccount.assets = rekeyedAccount.nonDeletedAssets()
+                    rekeyedAccount.type = .rekeyed
+                    if let authAddress = rekeyedAccount.authAddress,
                        let ledgerDetail = account.ledgerDetail {
-                        account.addRekeyDetail(ledgerDetail, for: authAddress)
+                        rekeyedAccount.addRekeyDetail(ledgerDetail, for: authAddress)
                     }
-                    self.accounts.append(account)
+                    self.accounts.append(rekeyedAccount)
                 }
             case .failure:
                 self.delegate?.ledgerAccountSelectionDataSourceDidFailToFetch(self)
