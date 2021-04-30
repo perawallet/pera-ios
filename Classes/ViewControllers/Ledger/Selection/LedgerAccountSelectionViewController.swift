@@ -21,16 +21,7 @@ import SVProgressHUD
 class LedgerAccountSelectionViewController: BaseViewController {
     
     private lazy var ledgerAccountSelectionView = LedgerAccountSelectionView(isMultiSelect: isMultiSelect)
-    
-    private lazy var accountManager: AccountManager? = {
-        guard let api = self.api else {
-            return nil
-        }
-        let manager = AccountManager(api: api)
-        return manager
-    }()
-    
-    private let ledger: LedgerDetail
+
     private let ledgerAccounts: [Account]
     private let accountSetupFlow: AccountSetupFlow
 
@@ -56,16 +47,15 @@ class LedgerAccountSelectionViewController: BaseViewController {
 
     private lazy var dataSource: LedgerAccountSelectionDataSource = {
         guard let api = api else {
-            fatalError("API should be set.")
+            fatalError("API should be set.") 
         }
-        return LedgerAccountSelectionDataSource(api: api, ledger: ledger, accounts: ledgerAccounts, isMultiSelect: isMultiSelect)
+        return LedgerAccountSelectionDataSource(api: api, accounts: ledgerAccounts, isMultiSelect: isMultiSelect)
     }()
     
     private lazy var listLayout = LedgerAccountSelectionListLayout(dataSource: dataSource, isMultiSelect: isMultiSelect)
     
-    init(accountSetupFlow: AccountSetupFlow, ledger: LedgerDetail, accounts: [Account], configuration: ViewControllerConfiguration) {
+    init(accountSetupFlow: AccountSetupFlow, accounts: [Account], configuration: ViewControllerConfiguration) {
         self.accountSetupFlow = accountSetupFlow
-        self.ledger = ledger
         self.ledgerAccounts = accounts
         super.init(configuration: configuration)
     }
@@ -85,7 +75,7 @@ class LedgerAccountSelectionViewController: BaseViewController {
     
     override func configureAppearance() {
         super.configureAppearance()
-        title = ledger.name
+        title = ledgerAccounts.first?.ledgerDetail?.name
         ledgerAccountSelectionView.bind(LedgerAccountSelectionViewModel(isMultiSelect: isMultiSelect, selectedCount: selectedAccountCount))
     }
     
@@ -160,10 +150,10 @@ extension LedgerAccountSelectionViewController: LedgerAccountSelectionViewDelega
             case let .rekey(rekeyedAccount):
                 openRekeyConfirmation(for: rekeyedAccount)
             default:
-                saveNewAccounts()
+                openAccountVerification()
             }
         case .initializeAccount:
-            saveNewAccounts()
+            openAccountVerification()
         case .none:
             break
         }
@@ -176,31 +166,12 @@ extension LedgerAccountSelectionViewController: LedgerAccountSelectionViewDelega
             return
         }
 
-        self.open(.rekeyConfirmation(account: rekeyedAccount, ledger: ledger, ledgerAddress: account.address), by: .push)
+        open(.rekeyConfirmation(account: rekeyedAccount, ledgerDetail: account.ledgerDetail, ledgerAddress: account.address), by: .push)
     }
 
-    private func saveNewAccounts() {
-        dataSource.saveSelectedAccounts(ledgerAccountSelectionView.selectedIndexes)
-        launchHome()
-    }
-    
-    private func launchHome() {
-        SVProgressHUD.show(withStatus: "title-loading".localized)
-        accountManager?.fetchAllAccounts(isVerifiedAssetsIncluded: true) {
-            SVProgressHUD.showSuccess(withStatus: "title-done".localized)
-            SVProgressHUD.dismiss(withDelay: 1.0) {
-                switch self.accountSetupFlow {
-                case .initializeAccount:
-                    self.dismiss(animated: false) {
-                        UIApplication.shared.rootViewController()?.setupTabBarController()
-                    }
-                case .addNewAccount:
-                    self.closeScreen(by: .dismiss, animated: false)
-                case .none:
-                    break
-                }
-            }
-        }
+    private func openAccountVerification() {
+        let selectedAccounts = dataSource.getSelectedAccounts(ledgerAccountSelectionView.selectedIndexes)
+        open(.ledgerAccountVerification(flow: accountSetupFlow, selectedAccounts: selectedAccounts), by: .push)
     }
 }
 

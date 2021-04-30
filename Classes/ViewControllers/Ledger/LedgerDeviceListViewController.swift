@@ -135,15 +135,8 @@ extension LedgerDeviceListViewController: LedgerAccountFetchOperationDelegate {
             return
         }
         
-        if let connectedDeviceId = ledgerAccountFetchOperation.connectedDevice?.identifier {
-            ledgerApprovalViewController?.closeScreen(by: .dismiss, animated: true) {
-                let ledgerDetail = LedgerDetail(
-                    id: connectedDeviceId,
-                    name: ledgerAccountFetchOperation.connectedDevice?.name,
-                    indexInLedger: nil
-                )
-                self.open(.ledgerAccountSelection(flow: self.accountSetupFlow, ledger: ledgerDetail, accounts: accounts), by: .push)
-            }
+        ledgerApprovalViewController?.closeScreen(by: .dismiss, animated: true) {
+            self.open(.ledgerAccountSelection(flow: self.accountSetupFlow, accounts: accounts), by: .push)
         }
     }
     

@@ -25,16 +25,14 @@ class LedgerAccountSelectionDataSource: NSObject {
     
     private let api: AlgorandAPI
     private var accounts = [Account]()
-    
-    private let ledger: LedgerDetail
+
     private let ledgerAccounts: [Account]
     private let isMultiSelect: Bool
     
     private var rekeyedAccounts: [String: [Account]] = [:]
     
-    init(api: AlgorandAPI, ledger: LedgerDetail, accounts: [Account], isMultiSelect: Bool) {
+    init(api: AlgorandAPI, accounts: [Account], isMultiSelect: Bool) {
         self.api = api
-        self.ledger = ledger
         self.ledgerAccounts = accounts
         self.isMultiSelect = isMultiSelect
         super.init()
@@ -43,13 +41,11 @@ class LedgerAccountSelectionDataSource: NSObject {
 
 extension LedgerAccountSelectionDataSource {
     func loadData() {
-        for (index, account) in ledgerAccounts.enumerated() {
+        for account in ledgerAccounts {
             account.type = .ledger
-            account.ledgerDetail = ledger
-            account.ledgerDetail?.indexInLedger = index
             account.assets = account.nonDeletedAssets()
-            self.accounts.append(account)
-            fetchRekeyedAccounts(of: account.address)
+            accounts.append(account)
+            fetchRekeyedAccounts(of: account)
         }
         
         accountsFetchGroup.notify(queue: .main) {
@@ -57,19 +53,20 @@ extension LedgerAccountSelectionDataSource {
         }
     }
     
-    private func fetchRekeyedAccounts(of address: String) {
+    private func fetchRekeyedAccounts(of account: Account) {
         accountsFetchGroup.enter()
         
-        api.fetchRekeyedAccounts(of: address) { response in
+        api.fetchRekeyedAccounts(of: account.address) { response in
             switch response {
             case let .success(rekeyedAccountsResponse):
                 let rekeyedAccounts = rekeyedAccountsResponse.accounts.filter { $0.authAddress != $0.address }
-                self.rekeyedAccounts[address] = rekeyedAccounts
+                self.rekeyedAccounts[account.address] = rekeyedAccounts
                 rekeyedAccounts.forEach { account in
                     account.assets = account.nonDeletedAssets()
                     account.type = .rekeyed
-                    if let authAddress = account.authAddress {
-                        account.addRekeyDetail(self.ledger, for: authAddress)
+                    if let authAddress = account.authAddress,
+                       let ledgerDetail = account.ledgerDetail {
+                        account.addRekeyDetail(ledgerDetail, for: authAddress)
                     }
                     self.accounts.append(account)
                 }
@@ -148,48 +145,16 @@ extension LedgerAccountSelectionDataSource {
     func clear() {
         accounts.removeAll()
     }
-    
-    func saveSelectedAccounts(_ indexes: [IndexPath]) {
+
+    func getSelectedAccounts(_ indexes: [IndexPath]) -> [Account] {
+        var selectedAccounts: [Account] = []
         indexes.forEach { indexPath in
             if let account = accounts[safe: indexPath.item] {
-                if var localAccount = api.session.accountInformation(from: account.address) {
-                    localAccount.type = account.type
-                    setupLedgerDetails(of: &localAccount, from: account)
-
-                    api.session.authenticatedUser?.updateAccount(localAccount)
-                    api.session.updateAccount(account)
-                } else {
-                    setupLocalAccount(from: account)
-                }
+                selectedAccounts.append(account)
             }
         }
-    }
-    
-    private func setupLocalAccount(from account: Account) {
-        var localAccount = AccountInformation(address: account.address, name: account.address.shortAddressDisplay(), type: account.type)
-        setupLedgerDetails(of: &localAccount, from: account)
 
-        let user: User
-        
-        if let authenticatedUser = api.session.authenticatedUser {
-            user = authenticatedUser
-            user.addAccount(localAccount)
-        } else {
-            user = User(accounts: [localAccount])
-        }
-        
-        api.session.addAccount(Account(accountInformation: localAccount))
-        api.session.authenticatedUser = user
-    }
-
-    private func setupLedgerDetails(of localAccount: inout AccountInformation, from account: Account) {
-        if let authAddress = account.authAddress {
-            UIApplication.shared.firebaseAnalytics?.log(RegistrationEvent(type: .rekeyed))
-            localAccount.addRekeyDetail(account.ledgerDetail ?? ledger, for: authAddress)
-        } else {
-            UIApplication.shared.firebaseAnalytics?.log(RegistrationEvent(type: .ledger))
-            localAccount.ledgerDetail = account.ledgerDetail
-        }
+        return selectedAccounts
     }
 }
 
