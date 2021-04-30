@@ -42,7 +42,7 @@ class LedgerAccountVerificationStatusViewModel {
         case .pending:
             backgroundColor = .clear
         case .unverified:
-            backgroundColor = Colors.General.error
+            backgroundColor = Colors.General.error.withAlphaComponent(0.1)
         case .verified:
             backgroundColor = Colors.Background.secondary
         }

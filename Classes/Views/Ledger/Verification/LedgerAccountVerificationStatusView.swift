@@ -50,21 +50,22 @@ extension LedgerAccountVerificationStatusView {
         addSubview(backgroundView)
 
         backgroundView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.leading.trailing.top.bottom.equalToSuperview()
         }
     }
 
     private func setupVerificationStatusViewLayout() {
-        addSubview(verificationStatusView)
+        backgroundView.addSubview(verificationStatusView)
 
         verificationStatusView.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(layout.current.horizontalInset)
+            make.trailing.lessThanOrEqualToSuperview().inset(layout.current.horizontalInset)
             make.top.equalToSuperview().inset(layout.current.topInset)
         }
     }
 
     private func setupAddressLabelLayout() {
-        addSubview(addressLabel)
+        backgroundView.addSubview(addressLabel)
 
         addressLabel.snp.makeConstraints { make in
             make.top.equalTo(verificationStatusView.snp.bottom).offset(layout.current.addressLabelTopInset)

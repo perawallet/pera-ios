@@ -590,4 +590,4 @@
 "ledger-account-verification-status-not-verified" = "Not Verified";
 "ledger-verified-add" = "Add Verified Accounts";
 "ledger-verify-header-title" = "Verify Account Addresses via Ledger";
-"ledger-verify-header-subtitle" = "The following addresses will show up on your ledger one by one, please compare and approve each one of them";
+"ledger-verify-header-subtitle" = "The following account addresses will display on your Ledger device. Please carefully compare and verify each address in order to finalize device pairing.";
