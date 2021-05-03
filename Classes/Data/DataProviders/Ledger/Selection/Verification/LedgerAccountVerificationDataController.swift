@@ -92,7 +92,11 @@ extension LedgerAccountVerificationDataController {
 
         if let account = verificationAccount {
             verifiedAccounts.append(account)
-            verifiedAccounts.append(contentsOf: nondisplayedAccounts)
+            verifiedAccounts.append(
+                contentsOf: nondisplayedAccounts.filter {
+                    $0.authAddress == account.address || $0.authAddress == account.authAddress
+                }
+            )
         }
     }
 
