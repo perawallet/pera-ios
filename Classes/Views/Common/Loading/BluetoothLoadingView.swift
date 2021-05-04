@@ -20,10 +20,6 @@ import Lottie
 
 class BluetoothLoadingView: BaseView {
     
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let viewSize = CGSize(width: 100.0, height: 100.0)
-    }
-    
     private let layout = Layout<LayoutConstants>()
     
     override var intrinsicContentSize: CGSize {
@@ -62,5 +58,11 @@ extension BluetoothLoadingView {
     
     func stop() {
         loadingAnimationView.stop()
+    }
+}
+
+extension BluetoothLoadingView {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let viewSize = CGSize(width: 100.0, height: 24.0)
     }
 }

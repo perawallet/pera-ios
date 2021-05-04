@@ -56,6 +56,21 @@ class LoadingSpinnerView: BaseView {
 // MARK: API
 
 extension LoadingSpinnerView {
+    func updateColor(to color: UIColor) {
+        guard let rgba = color.rgba else {
+            return
+        }
+
+        let newColor = Color(r: Double(rgba.red), g: Double(rgba.green), b: Double(rgba.blue), a: Double(rgba.alpha))
+        let colorValueProvider = ColorValueProvider(newColor)
+
+        // Set value provider from related animation keypath
+        // Get keypath with function: AnimationView.logHierarchyKeypaths()
+        // https://swiftsenpai.com/development/lottie-value-providers/
+        let keyPath = AnimationKeypath(keypath: "spinner Outlines.Group 1.Stroke 1.Color")
+        loadingAnimationView.setValueProvider(colorValueProvider, keypath: keyPath)
+    }
+
     func show() {
         loadingAnimationView.play(fromProgress: 0, toProgress: 1, loopMode: .loop)
     }

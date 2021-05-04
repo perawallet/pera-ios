@@ -27,6 +27,12 @@ enum LedgerMessage {
             addressFetchInstruction.append(contentsOf: index.toByteArray())
             return addressFetchInstruction
         }
+
+        static func verifyAddress(for index: Int) -> Data {
+            var verifyAddressInstruction = Data(bytes: [LedgerMessage.CLA.algorand, Instruction.publicKey, 0x80, 0x00, Size.accountIndex])
+            verifyAddressInstruction.append(contentsOf: index.toByteArray())
+            return verifyAddressInstruction
+        }
     }
     
     enum Response {

@@ -135,15 +135,8 @@ extension LedgerDeviceListViewController: LedgerAccountFetchOperationDelegate {
             return
         }
         
-        if let connectedDeviceId = ledgerAccountFetchOperation.connectedDevice?.identifier {
-            ledgerApprovalViewController?.closeScreen(by: .dismiss, animated: true) {
-                let ledgerDetail = LedgerDetail(
-                    id: connectedDeviceId,
-                    name: ledgerAccountFetchOperation.connectedDevice?.name,
-                    indexInLedger: nil
-                )
-                self.open(.ledgerAccountSelection(flow: self.accountSetupFlow, ledger: ledgerDetail, accounts: accounts), by: .push)
-            }
+        ledgerApprovalViewController?.closeScreen(by: .dismiss, animated: true) {
+            self.open(.ledgerAccountSelection(flow: self.accountSetupFlow, accounts: accounts), by: .push)
         }
     }
     
@@ -153,7 +146,22 @@ extension LedgerDeviceListViewController: LedgerAccountFetchOperationDelegate {
         ledgerDeviceListView.devicesCollectionView.reloadData()
     }
     
-    func ledgerAccountFetchOperation(_ ledgerAccountFetchOperation: LedgerAccountFetchOperation, didFailed error: LedgerOperationError) { }
+    func ledgerAccountFetchOperation(_ ledgerAccountFetchOperation: LedgerAccountFetchOperation, didFailed error: LedgerOperationError) {
+        switch error {
+        case .cancelled:
+            NotificationBanner.showError(
+                "ble-error-transaction-cancelled-title".localized,
+                message: "ble-error-fail-sign-transaction".localized
+            )
+        case .closedApp:
+            NotificationBanner.showError(
+                "ble-error-ledger-connection-title".localized,
+                message: "ble-error-ledger-connection-open-app-error".localized
+            )
+        default:
+            break
+        }
+    }
 }
 
 extension LedgerDeviceListViewController {

@@ -23,7 +23,8 @@ protocol LedgerOperation: class {
     func completeOperation(with data: Data)
     func handleDiscoveryResults(_ peripherals: [CBPeripheral])
     func reset()
-    
+
+    var shouldDisplayLedgerApprovalModal: Bool { get }
     var ledgerApprovalViewController: LedgerApprovalViewController? { get set }
     var ledgerMode: LedgerApprovalViewController.Mode { get }
     
@@ -127,17 +128,33 @@ extension LedgerOperation where Self: LedgerBLEControllerDelegate {
     }
     
     func ledgerBLEController(_ ledgerBLEController: LedgerBLEController, didReceive data: Data) {
-        if data.isErrorResponseFromLedger {
-            displayLedgerError(for: data)
-            return
-        }
-        
         completeOperation(with: data)
     }
 }
 
 extension LedgerOperation {
+    func parseAddress(from data: Data) -> String? {
+        /// Remove last two bytes to fetch data since it declares status codes.
+        var mutableData = data
+        mutableData.removeLast(2)
+
+        var error: NSError?
+        let address = AlgorandSDK().addressFromPublicKey(mutableData, error: &error)
+
+        if error != nil || !AlgorandSDK().isValidAddress(address) {
+            return nil
+        }
+
+        return address
+    }
+}
+
+extension LedgerOperation {
     private func presentLedgerApprovalModal() {
+        if !shouldDisplayLedgerApprovalModal {
+            return
+        }
+
         let ledgerApprovalPresenter = CardModalPresenter(
             config: ModalConfiguration(
                 animationMode: .normal(duration: 0.25),
@@ -150,27 +167,13 @@ extension LedgerOperation {
             by: .customPresent(presentationStyle: .custom, transitionStyle: nil, transitioningDelegate: ledgerApprovalPresenter)
         ) as? LedgerApprovalViewController
     }
-    
-    private func displayLedgerError(for data: Data) {
-        reset()
-        
-        if data.isLedgerTransactionCancelledError {
-            NotificationBanner.showError(
-                "ble-error-transaction-cancelled-title".localized,
-                message: "ble-error-fail-sign-transaction".localized
-            )
-        } else {
-            NotificationBanner.showError(
-                "ble-error-ledger-connection-title".localized,
-                message: "ble-error-ledger-connection-open-app-error".localized
-            )
-        }
-    }
 }
 
 enum LedgerOperationError: Error {
     case connection
     case failedToFetchAddress
+    case cancelled
+    case closedApp
     case failedToSign
     case unknown
     case unmatchedAddress

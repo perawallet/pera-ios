@@ -45,7 +45,7 @@ class LedgerAccountSelectionView: BaseView {
         return collectionView
     }()
     
-    private lazy var addButton = MainButton(title: "ledger-account-selection-add".localized)
+    private lazy var addButton = MainButton(title: "ledger-account-selection-verify".localized)
     
     private let isMultiSelect: Bool
     
