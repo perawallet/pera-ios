@@ -37,9 +37,9 @@ class LedgerAccountVerificationViewController: BaseScrollViewController {
         }
     }
 
-    private lazy var accountManager: AccountManager = {
+    private lazy var accountManager: AccountManager?  = {
         guard let api = api else {
-            fatalError("API must be set.")
+            return nil
         }
         return AccountManager(api: api)
     }()
@@ -191,6 +191,10 @@ extension LedgerAccountVerificationViewController {
     }
 
     private func launchHome() {
+        guard let accountManager = accountManager else {
+            return
+        }
+        
         SVProgressHUD.show(withStatus: "title-loading".localized)
         accountManager.fetchAllAccounts(isVerifiedAssetsIncluded: true) {
             SVProgressHUD.showSuccess(withStatus: "title-done".localized)
