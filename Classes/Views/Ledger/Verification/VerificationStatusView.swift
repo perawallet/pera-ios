@@ -68,6 +68,7 @@ extension VerificationStatusView {
         statusLabel.snp.makeConstraints { make in
             make.centerY.equalTo(loadingView)
             make.leading.equalTo(loadingView.snp.trailing).offset(layout.current.defaultInset)
+            make.trailing.equalToSuperview().inset(layout.current.defaultInset)
         }
     }
 }
@@ -85,6 +86,13 @@ extension VerificationStatusView {
 extension VerificationStatusView {
     func bind(_ viewModel: VerificationStatusViewModel) {
         loadingView.isHidden = !viewModel.isWaitingForVerification
+
+        if viewModel.isWaitingForVerification {
+            loadingView.show()
+        } else {
+            loadingView.stop()
+        }
+
         imageView.isHidden = viewModel.isStatusImageHidden
         imageView.image = viewModel.statusImage
         statusLabel.text = viewModel.statusText

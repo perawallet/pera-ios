@@ -272,7 +272,22 @@ extension TransactionController: LedgerTransactionOperationDelegate {
         }
     }
 
-    func ledgerTransactionOperation(_ ledgerTransactionOperation: LedgerTransactionOperation, didFailed error: LedgerOperationError) { }
+    func ledgerTransactionOperation(_ ledgerTransactionOperation: LedgerTransactionOperation, didFailed error: LedgerOperationError) {
+        switch error {
+        case .cancelled:
+            NotificationBanner.showError(
+                "ble-error-transaction-cancelled-title".localized,
+                message: "ble-error-fail-sign-transaction".localized
+            )
+        case .closedApp:
+            NotificationBanner.showError(
+                "ble-error-ledger-connection-title".localized,
+                message: "ble-error-ledger-connection-open-app-error".localized
+            )
+        default:
+            break
+        }
+    }
 }
 
 extension TransactionController {
