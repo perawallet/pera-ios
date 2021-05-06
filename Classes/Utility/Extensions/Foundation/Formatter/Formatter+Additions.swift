@@ -37,6 +37,16 @@ extension Formatter {
         formatter.maximumFractionDigits = 6
         return formatter
     }()
+
+    static let separatorForRewardsLabel: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.locale = Locale.preferred()
+        formatter.currencySymbol = ""
+        formatter.numberStyle = .currencyAccounting
+        formatter.minimumFractionDigits = 8
+        formatter.maximumFractionDigits = 8
+        return formatter
+    }()
     
     static func separatorForInputWith(fraction value: Int) -> NumberFormatter {
         let formatter = NumberFormatter()
@@ -67,4 +77,13 @@ extension Formatter {
         formatter.maximumFractionDigits = 2
         return formatter
     }()
+
+    static func currencyFormatter(with symbol: String) -> NumberFormatter {
+        let formatter = NumberFormatter()
+        formatter.locale = Locale.locale(from: symbol)
+        formatter.numberStyle = .currency
+        formatter.minimumFractionDigits = 2
+        formatter.maximumFractionDigits = 2
+        return formatter
+    }
 }

@@ -56,8 +56,6 @@ class Environment {
         }
     }()
     
-    lazy var binanceHost = "api.binance.com"
-    
     lazy var mobileHost = "mobile-api.algorand.com"
 
     lazy var algoExplorerApiHost = "price.algoexplorerapi.io"

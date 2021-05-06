@@ -96,7 +96,7 @@ extension AlgosCardAnalyticsContainerView {
 
 extension AlgosCardAnalyticsContainerView {
     func bind(_ viewModel: AlgosCardAnalyticsContainerViewModel?) {
-        algoCurrencyValueLabel.text = viewModel?.price
+        algoCurrencyValueLabel.text = viewModel?.algosCurrencyValue
     }
 }
 

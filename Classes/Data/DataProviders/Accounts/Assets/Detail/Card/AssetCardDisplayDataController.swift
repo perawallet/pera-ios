@@ -27,14 +27,6 @@ class AssetCardDisplayDataController {
 }
 
 extension AssetCardDisplayDataController {
-    func getCurrentAlgoValue() {
-        api.fetchAlgosUSDValue(with: AlgosUSDValueQuery(valueInterval: .daily)) { _ in
-
-        }
-    }
-}
-
-extension AssetCardDisplayDataController {
     func getCurrency(_ completion: @escaping (Currency?) -> Void) {
         api.getCurrencyValue(for: api.session.preferredCurrency) { response in
             switch response {

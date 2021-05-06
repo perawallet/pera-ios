@@ -30,7 +30,7 @@ class AlgosCardViewModel {
         setCurrency(from: account, and: currency)
         setAlgosAmount(from: account)
         setReward(from: account)
-        setAnalyticsContainerViewModel()
+        setAnalyticsContainerViewModel(from: currency)
     }
     
     private func setCurrency(from account: Account, and currency: Currency?) {
@@ -52,15 +52,15 @@ class AlgosCardViewModel {
     }
 
     private func setAlgosAmount(from account: Account) {
-        algosAmount = account.amountWithoutRewards?.toAlgos.toAlgosStringForLabel
+        algosAmount = account.amountWithoutRewards?.toAlgos.toFractionStringForLabel(fraction: 2)
     }
 
     private func setReward(from account: Account) {
-        let totalRewards: UInt64 = (account.pendingRewards ?? 0)
-        reward = totalRewards.toAlgos.toAlgosStringForLabel ?? "0.00"
+        let pendingRewards: UInt64 = account.pendingRewards ?? 0
+        reward = pendingRewards.toAlgos.toRewardsStringForLabel
     }
 
-    private func setAnalyticsContainerViewModel() {
-        analyticsContainerViewModel = AlgosCardAnalyticsContainerViewModel(currencyValue: "1.50")
+    private func setAnalyticsContainerViewModel(from currency: Currency?) {
+        analyticsContainerViewModel = AlgosCardAnalyticsContainerViewModel(currency: currency)
     }
 }

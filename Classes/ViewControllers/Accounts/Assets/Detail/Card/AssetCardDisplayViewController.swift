@@ -50,11 +50,15 @@ class AssetCardDisplayViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        fetchCurrency()
         assetCardDisplayView.setNumberOfPages(account.assetDetails.count + 1)
         assetCardDisplayView.setCurrentPage(selectedIndex)
     }
-    
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        fetchCurrency()
+    }
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         assetCardDisplayView.scrollTo(selectedIndex, animated: true)
@@ -83,12 +87,10 @@ extension AssetCardDisplayViewController {
 extension AssetCardDisplayViewController {
     private func fetchCurrency() {
         assetCardDisplayDataController.getCurrency { response in
-            guard let currency = response else {
-                return
+            if let currency = response {
+                self.currency = currency
+                self.assetCardDisplayView.reloadData(at: 0)
             }
-
-            self.currency = currency
-            self.assetCardDisplayView.reloadData(at: 0)
         }
     }
 }

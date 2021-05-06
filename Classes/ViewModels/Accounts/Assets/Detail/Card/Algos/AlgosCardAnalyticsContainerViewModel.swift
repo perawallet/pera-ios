@@ -19,18 +19,21 @@ import UIKit
 
 class AlgosCardAnalyticsContainerViewModel {
 
-    private(set) var price: String?
+    private(set) var algosCurrencyValue: String?
 
-    init(currencyValue: String) {
-        setPrice(from: currencyValue)
+    init(currency: Currency?) {
+        setAlgosCurrencyValue(from: currency)
     }
 
-    private func setPrice(from currencyValue: String) {
-        guard let priceDoubleValue = Double(currencyValue) else {
+    private func setAlgosCurrencyValue(from currency: Currency?) {
+        guard let currencyCode = currency?.id,
+              let currencyPrice = currency?.price,
+              let currencyPriceDoubleValue = Double(currencyPrice) else {
             return
         }
 
-        // Will be updated when api connections completed
-        price = "1 ALGO = "
+        if let currencyValue = currencyPriceDoubleValue.toCurrencyStringForLabel(with: currencyCode) {
+            self.algosCurrencyValue = "value-one-algo".localized(params: String(currencyValue))
+        }
     }
 }
