@@ -1,11 +1,11 @@
 /* MARK: Account Name Setup */
-"account-details-title" = "Hesap Ayrıntıları";
+"account-details-title" = "Hesabınızı adlandırın";
 
 /* (No Comment) */
 "account-name-setup-description" = "Algorand Wallet'ı kullanırken kolayca ayırt edebilmek için hesabınızı adlandırın. Bu adlar yerel olarak saklanır ve yalnızca sizin tarafınızdan görülebilir.";
 
 /* (No Comment) */
-"account-name-setup-explanation" = "Hesap Adı";
+"account-name-setup-explanation" = "Hesap Adı (İsteğe Bağlı)";
 
 /* (No Comment) */
 "account-name-setup-finish" = "Hesap oluşturmayı tamamlayın";
@@ -26,7 +26,7 @@
 "account-type-selection-create" = "Yeni Hesap Oluştur";
 
 /* (No Comment) */
-"account-type-selection-create-detail" = "Yeni bir adres ve parola ile hesap oluşturun";
+"account-type-selection-create-detail" = "Yeni bir Algorand hesabı oluşturmak istiyorum";
 
 /* (No Comment) */
 "account-type-selection-ledger" = "Ledger Hesabını Eşleştir";
@@ -380,12 +380,6 @@
 "ledger-account-fetct-error" = "Hesap ayrıntıları alınırken bir ağ hatası oluştu. Lütfen işlemi yeniden başlatın.";
 
 /* (No Comment) */
-"ledger-account-selection-add" = "Hesap Ekle";
-
-/* (No Comment) */
-"ledger-account-selection-add-plural" = "Hesap Ekle";
-
-/* (No Comment) */
 "ledger-account-selection-detail" = "Bu Ledger cihazı, aşağıdaki hesabın işlemlerini imzalayabilir.\nAlgorand Wallet'ınıza eklemek istediğiniz hesabı seçin.";
 
 /* (No Comment) */
@@ -396,6 +390,24 @@
 
 /* MARK: Ledger Account Selection */
 "ledger-account-selection-title-singular" = "%d Hesap Bulundu";
+
+/* (No Comment) */
+"ledger-account-selection-verify" = "Seçili Hesabı Doğrula";
+
+/* (No Comment) */
+"ledger-account-selection-verify-plural" = "Seçili Hesapları Doğrula";
+
+/* (No Comment) */
+"ledger-account-verification-status-awaiting" = "Doğrulama Bekleniyor";
+
+/* (No Comment) */
+"ledger-account-verification-status-not-verified" = "Doğrulanmadı";
+
+/* (No Comment) */
+"ledger-account-verification-status-pending" = "Bekliyor";
+
+/* (No Comment) */
+"ledger-account-verification-status-verified" = "Hesap Doğrulandı";
 
 /* (No Comment) */
 "ledger-approval-connection-message" = "Ledger'ın bağlanması bekleniyor.";
@@ -519,6 +531,15 @@
 
 /* (No Comment) */
 "ledger-tutorial-turned-on" = "Ledger cihazınızın açık ve Bluetooth özelliğinin etkin olduğundan emin olun.";
+
+/* (No Comment) */
+"ledger-verified-add" = "Doğrulanan Hesapları Ekle";
+
+/* (No Comment) */
+"ledger-verify-header-subtitle" = "Aşağıdaki hesap adresi Ledger cihazınızda görüntülenecek. Cihaz eşlemesini tamamlamak için lütfen her adresi dikkatlice karşılaştırın ve doğrulayın.";
+
+/* (No Comment) */
+"ledger-verify-header-title" = "Hesap Adreslerini Ledger ile Doğrula";
 
 /* (No Comment) */
 "local-authentication-enable" = "Face ID/Touch ID'yi Etkinleştir";

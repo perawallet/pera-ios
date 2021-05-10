@@ -380,12 +380,6 @@
 "ledger-account-fetct-error" = "获取账户详细信息时出现网络错误。请稍后重试。";
 
 /* (No Comment) */
-"ledger-account-selection-add" = "添加账户";
-
-/* (No Comment) */
-"ledger-account-selection-add-plural" = "添加账户";
-
-/* (No Comment) */
 "ledger-account-selection-detail" = "该Ledger设备可为下列账户签署交易。请选择要添加到您Algorand钱包的账户。";
 
 /* (No Comment) */
@@ -396,6 +390,24 @@
 
 /* MARK: Ledger Account Selection */
 "ledger-account-selection-title-singular" = "找到%d 账户";
+
+/* (No Comment) */
+"ledger-account-selection-verify" = "验证所选帐户";
+
+/* (No Comment) */
+"ledger-account-selection-verify-plural" = "验证所选帐户";
+
+/* (No Comment) */
+"ledger-account-verification-status-awaiting" = "等待验证中";
+
+/* (No Comment) */
+"ledger-account-verification-status-not-verified" = "未验证的";
+
+/* (No Comment) */
+"ledger-account-verification-status-pending" = "待定";
+
+/* (No Comment) */
+"ledger-account-verification-status-verified" = "帐户已经验证";
 
 /* (No Comment) */
 "ledger-approval-connection-message" = "等待Ledger连接。";
@@ -519,6 +531,15 @@
 
 /* (No Comment) */
 "ledger-tutorial-turned-on" = "确认您的Ledger设备已开启，并启用了蓝牙功能。";
+
+/* (No Comment) */
+"ledger-verified-add" = "添加验证过的账户";
+
+/* (No Comment) */
+"ledger-verify-header-subtitle" = "以下账户地址会显示在您的Ledger设备上。请仔细比较和验证每个地址，完成最终的设备配对。";
+
+/* (No Comment) */
+"ledger-verify-header-title" = "通过Ledger来验证账户地址";
 
 /* (No Comment) */
 "local-authentication-enable" = "使用人脸识别/触控";
@@ -1133,7 +1154,7 @@
 "title-edit" = "编辑";
 
 /* (No Comment) */
-"title-enter-pin-for-passphrase" = "";
+"title-enter-pin-for-passphrase" = "请输入PIN码查看助记词";
 
 /* (No Comment) */
 "title-error" = "错误";
