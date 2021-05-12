@@ -40,24 +40,41 @@ enum AlgosUSDValueInterval {
         case .yearly:
             return (since: TimeIntervalConstants.lastYear, until: currentDate.timeIntervalSince1970)
         case .all:
-            return (since: 0, until: currentDate.timeIntervalSince1970)
+            return (since: TimeIntervalConstants.algorandReleaseDate, until: currentDate.timeIntervalSince1970)
         }
     }
 
     func getIntervalRepresentation() -> String {
         switch self {
         case .hourly:
-            return "1H"
+            return "5m"
         case .daily:
-            return "1D"
+            return "15m"
         case .weekly:
-            return "7D"
+            return "2H"
         case .monthly:
-            return "30D"
+            return "6H"
         case .yearly:
-            return "1Y"
+            return "2D"
         case .all:
-            return "1Y"
+            return "1W"
+        }
+    }
+
+    func toString() -> String {
+        switch self {
+        case .hourly:
+            return "chart-time-last-hour".localized
+        case .daily:
+            return "chart-time-last-day".localized
+        case .weekly:
+            return "chart-time-last-week".localized
+        case .monthly:
+            return "chart-time-last-month".localized
+        case .yearly:
+            return "chart-time-last-year".localized
+        case .all:
+            return "chart-time-all".localized
         }
     }
 }
@@ -66,6 +83,7 @@ private enum TimeIntervalConstants {
     static let lastHour: TimeInterval = Date().timeIntervalSince1970 - (60 * 60)
     static let yesterday: TimeInterval = Date().timeIntervalSince1970 - (60 * 60 * 24)
     static let lastWeek: TimeInterval = Date().timeIntervalSince1970 - (60 * 60 * 24 * 7)
-    static let lastMonth: TimeInterval = Date().timeIntervalSince1970 - (60 * 60 * 24 * 7 * 30)
-    static let lastYear: TimeInterval = Date().timeIntervalSince1970 - (60 * 60 * 24 * 7 * 30 * 12)
+    static let lastMonth: TimeInterval = Date().timeIntervalSince1970 - (60 * 60 * 24 * 30)
+    static let lastYear: TimeInterval = Date().timeIntervalSince1970 - (60 * 60 * 24 * 30 * 12)
+    static let algorandReleaseDate: TimeInterval = 1563562146
 }

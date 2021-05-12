@@ -375,6 +375,8 @@ class Router {
             viewController = TransactionTutorialViewController(isInitialDisplay: isInitialDisplay, configuration: configuration)
         case .recoverOptions:
             viewController = AccountRecoverOptionsViewController(configuration: configuration)
+        case let .algoUSDAnalytics(account):
+            viewController = AlgoUSDAnalyticsViewController(account: account, configuration: configuration)
         }
         
         return viewController as? T

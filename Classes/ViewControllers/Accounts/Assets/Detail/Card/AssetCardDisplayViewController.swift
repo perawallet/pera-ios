@@ -29,6 +29,14 @@ class AssetCardDisplayViewController: BaseViewController {
         initialModalSize: .custom(CGSize(width: view.frame.width, height: 472.0))
     )
 
+    private lazy var analyticsModalPresenter = CardModalPresenter(
+        config: ModalConfiguration(
+            animationMode: .normal(duration: 0.25),
+            dismissMode: .scroll
+        ),
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: UIScreen.main.bounds.height * 0.8))
+    )
+
     private lazy var assetCardDisplayDataController: AssetCardDisplayDataController = {
         guard let api = api else {
             fatalError("Api must be set before accessing this view controller.")
@@ -183,7 +191,14 @@ extension AssetCardDisplayViewController: AlgosCardCellDelegate {
     }
 
     func algosCardCellDidOpenAnalytics(_ algosCardCell: AlgosCardCell) {
-
+        open(
+            .algoUSDAnalytics(account: account),
+            by: .customPresent(
+                presentationStyle: .custom,
+                transitionStyle: nil,
+                transitioningDelegate: analyticsModalPresenter
+            )
+        )
     }
 }
 
