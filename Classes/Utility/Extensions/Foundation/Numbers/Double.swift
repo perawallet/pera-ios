@@ -53,4 +53,8 @@ extension Double {
     func toCurrencyStringForLabel(with symbol: String) -> String? {
         return Formatter.currencyFormatter(with: symbol).string(from: NSNumber(value: self))
     }
+
+    var toPercentage: String? {
+        return Formatter.percentageFormatter.string(from: NSNumber(value: self))
+    }
 }
