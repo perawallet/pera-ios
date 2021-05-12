@@ -44,6 +44,7 @@ enum AlgosUSDValueInterval {
         }
     }
 
+    // Time interval values that gets data from the api.
     func getIntervalRepresentation() -> String {
         switch self {
         case .hourly:
@@ -80,10 +81,10 @@ enum AlgosUSDValueInterval {
 }
 
 private enum TimeIntervalConstants {
-    static let lastHour: TimeInterval = Date().timeIntervalSince1970 - (60 * 60)
-    static let yesterday: TimeInterval = Date().timeIntervalSince1970 - (60 * 60 * 24)
-    static let lastWeek: TimeInterval = Date().timeIntervalSince1970 - (60 * 60 * 24 * 7)
-    static let lastMonth: TimeInterval = Date().timeIntervalSince1970 - (60 * 60 * 24 * 30)
-    static let lastYear: TimeInterval = Date().timeIntervalSince1970 - (60 * 60 * 24 * 30 * 12)
-    static let algorandReleaseDate: TimeInterval = 1563562146
+    static let lastHour: TimeInterval = Date().timeIntervalSince1970 - (60 * 60) // time interval of one hour ago
+    static let yesterday: TimeInterval = Date().timeIntervalSince1970 - (60 * 60 * 24) // time interval of one day ago
+    static let lastWeek: TimeInterval = Date().timeIntervalSince1970 - (60 * 60 * 24 * 7) // time interval of one week ago
+    static let lastMonth: TimeInterval = Date().timeIntervalSince1970 - (60 * 60 * 24 * 30) // time interval of one month ago
+    static let lastYear: TimeInterval = Date().timeIntervalSince1970 - (60 * 60 * 24 * 30 * 12) // time interval of one year ago
+    static let algorandReleaseDate: TimeInterval = 1563562146 // time interval of Algorand release date
 }

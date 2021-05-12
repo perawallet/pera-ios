@@ -50,6 +50,7 @@ struct AlgorandLineChartDataComposer {
 
         let data = LineChartData(dataSet: dataSet)
 
+        // Add another data point for circle if it should be seen at the end of the chart.
         if customizer.isLastElementDrawingCircle {
             if let lastElement = entries.last {
                 let dataSet = LineChartDataSet(entries: [lastElement])

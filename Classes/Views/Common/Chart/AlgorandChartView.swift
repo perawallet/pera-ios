@@ -92,6 +92,7 @@ extension AlgorandChartView {
 
     private func highlightChart(with gesture: UIPanGestureRecognizer) {
         if let dataSet = lineChartView.data?.dataSets.last as? LineChartDataSet {
+            // Add circle point for the highlighted value
             dataSet.drawCirclesEnabled = gesture.isGestureCompleted
             dataSet.drawVerticalHighlightIndicatorEnabled = true
 
