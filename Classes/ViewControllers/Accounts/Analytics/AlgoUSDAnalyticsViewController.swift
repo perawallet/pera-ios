@@ -44,7 +44,7 @@ class AlgoUSDAnalyticsViewController: BaseScrollViewController {
 
     override func configureAppearance() {
         super.configureAppearance()
-        view.backgroundColor = Colors.Background.tertiary
+        view.backgroundColor = Colors.Background.secondary
     }
 
     override func prepareLayout() {
@@ -79,23 +79,26 @@ extension AlgoUSDAnalyticsViewController: AlgoUSDAnalyticsViewDelegate {
     }
 
     func algoUSDAnalyticsView(_ view: AlgoUSDAnalyticsView, didSelectItemAt index: Int) {
-        guard let chartEntries = chartEntries,
-              !chartEntries.isEmpty,
-              let selectedPrice = chartEntries[safe: index] else {
+        guard let values = chartEntries,
+              !values.isEmpty,
+              let selectedPrice = values[safe: index] else {
             return
         }
 
-        let priceChange = AlgoUSDPriceChange(firstPrice: chartEntries.first, lastPrice: chartEntries.last, selectedPrice: selectedPrice)
-        algoUSDAnalyticsView.bind(AlgoAnalyticsHeaderViewModel(priceChange: priceChange, timeInterval: selectedTimeInterval))
+        bindHeaderView(with: values, selectedPrice: selectedPrice)
     }
     
     func algoUSDAnalyticsViewDidDeselect(_ view: AlgoUSDAnalyticsView) {
-        guard let chartEntries = chartEntries,
-              !chartEntries.isEmpty else {
+        guard let values = chartEntries,
+              !values.isEmpty else {
             return
         }
 
-        let priceChange = AlgoUSDPriceChange(firstPrice: chartEntries.first, lastPrice: chartEntries.last, selectedPrice: nil)
+        bindHeaderView(with: values, selectedPrice: nil)
+    }
+
+    private func bindHeaderView(with values: [AlgosUSDValue], selectedPrice: AlgosUSDValue?) {
+        let priceChange = AlgoUSDPriceChange(firstPrice: values.first, lastPrice: values.last, selectedPrice: selectedPrice)
         algoUSDAnalyticsView.bind(AlgoAnalyticsHeaderViewModel(priceChange: priceChange, timeInterval: selectedTimeInterval))
     }
 }
@@ -103,6 +106,14 @@ extension AlgoUSDAnalyticsViewController: AlgoUSDAnalyticsViewDelegate {
 extension AlgoUSDAnalyticsViewController: AlgoUSDAnalyticsDataControllerDelegate {
     func algoUSDAnalyticsDataController(_ dataController: AlgoUSDAnalyticsDataController, didFetch values: [AlgosUSDValue]) {
         chartEntries = values
+        bindView(with: values)
+    }
+
+    func algoUSDAnalyticsDataControllerDidFailToFetch(_ dataController: AlgoUSDAnalyticsDataController) {
+        chartEntries = nil
+    }
+
+    private func bindView(with values: [AlgosUSDValue]) {
         let priceChange = AlgoUSDPriceChange(firstPrice: values.first, lastPrice: values.last, selectedPrice: nil)
         algoUSDAnalyticsView.bind(
             AlgoUSDAnalyticsViewModel(
@@ -112,10 +123,6 @@ extension AlgoUSDAnalyticsViewController: AlgoUSDAnalyticsDataControllerDelegate
                 timeInterval: selectedTimeInterval
             )
         )
-    }
-
-    func algoUSDAnalyticsDataControllerDidFailToFetch(_ dataController: AlgoUSDAnalyticsDataController) {
-        chartEntries = nil
     }
 }
 

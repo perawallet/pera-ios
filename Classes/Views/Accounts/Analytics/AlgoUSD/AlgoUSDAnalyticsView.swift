@@ -122,7 +122,7 @@ extension AlgoUSDAnalyticsView {
         footerView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(separatorView.snp.bottom).offset(layout.current.separatorVerticalInset)
-            make.bottom.equalToSuperview().inset(safeAreaBottom + layout.current.bottomInset)
+            make.bottom.lessThanOrEqualToSuperview().inset(safeAreaBottom + layout.current.bottomInset)
         }
     }
 }
