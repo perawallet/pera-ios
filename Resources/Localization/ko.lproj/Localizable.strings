@@ -380,12 +380,6 @@
 "ledger-account-fetct-error" = "계정 정보를 불러오던 중 네트워크 오류가 발생했습니다. 절차를 다시 시작하십시오.";
 
 /* (No Comment) */
-"ledger-account-selection-add" = "계정 추가";
-
-/* (No Comment) */
-"ledger-account-selection-add-plural" = "계정 추가";
-
-/* (No Comment) */
 "ledger-account-selection-detail" = "이 Ledger 기기는 다음 계정의 트랜잭션에 서명 가능합니다. 알고랜드 지갑에 추가할 계정을 선택하세요.";
 
 /* (No Comment) */
@@ -396,6 +390,24 @@
 
 /* MARK: Ledger Account Selection */
 "ledger-account-selection-title-singular" = "계정 %d개 찾음";
+
+/* (No Comment) */
+"ledger-account-selection-verify" = "선택 계정 인증";
+
+/* (No Comment) */
+"ledger-account-selection-verify-plural" = "선택 계정 인증";
+
+/* (No Comment) */
+"ledger-account-verification-status-awaiting" = "인증 대기 중";
+
+/* (No Comment) */
+"ledger-account-verification-status-not-verified" = "인증되지 않음";
+
+/* (No Comment) */
+"ledger-account-verification-status-pending" = "대기 중";
+
+/* (No Comment) */
+"ledger-account-verification-status-verified" = "계정 인증 완료";
 
 /* (No Comment) */
 "ledger-approval-connection-message" = "Ledger 연결을 기다리고 있습니다.";
@@ -519,6 +531,15 @@
 
 /* (No Comment) */
 "ledger-tutorial-turned-on" = "Ledger 기기 전원을 켜고 Bluetooth를 활성화했는지 확인하세요.";
+
+/* (No Comment) */
+"ledger-verified-add" = "인증된 계정 추가";
+
+/* (No Comment) */
+"ledger-verify-header-subtitle" = "다음의 계정 주소가 Ledger 기기에 표시됩니다. 각 주소를 신중하게 비교하고 확인하신 다음 기기 페어링을 완료해주세요.";
+
+/* (No Comment) */
+"ledger-verify-header-title" = "Ledger를 통해 계정 주소 인증";
 
 /* (No Comment) */
 "local-authentication-enable" = "Face ID/Touch 활성화";

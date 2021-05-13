@@ -60,3 +60,12 @@ extension UIColor {
         return String(format: "#%06x", rgb)
     }
 }
+
+extension UIColor {
+    typealias RGBA = (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat)
+
+    var rgba: RGBA? {
+        var (r, g, b, a): RGBA = (0, 0, 0, 0)
+        return getRed(&r, green: &g, blue: &b, alpha: &a) ? (r, g, b, a) : nil
+    }
+}

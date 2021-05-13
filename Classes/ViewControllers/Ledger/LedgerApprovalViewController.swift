@@ -51,14 +51,12 @@ class LedgerApprovalViewController: BaseViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
-        ledgerApprovalView.bluetoothImageView.show()
+        ledgerApprovalView.startConnectionAnimation()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        
-        ledgerApprovalView.bluetoothImageView.stop()
+        ledgerApprovalView.stopConnectionAnimation()
     }
 }
 

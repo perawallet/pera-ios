@@ -78,6 +78,14 @@ extension AccountInformation {
             self.rekeyDetail = [address: ledgerDetail]
         }
     }
+
+    func addRekeyDetail(_ rekeyDetail: RekeyDetail, for address: String) {
+        if self.rekeyDetail != nil {
+            self.rekeyDetail?[address] = rekeyDetail[address]
+        } else {
+            self.rekeyDetail = rekeyDetail
+        }
+    }
 }
 
 extension AccountInformation {
