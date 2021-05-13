@@ -26,7 +26,7 @@ struct AlgoUSDValueChartDataSetCustomizer: AlgorandLineChartDataSetCustomizable 
     }
     
     var mode: LineChartDataSet.Mode {
-        return .cubicBezier
+        return .linear
     }
 
     var color: UIColor {
