@@ -22,6 +22,8 @@ class AccountManager {
     var currentRound: Int64?
     var params: TransactionParams?
     let queue: OperationQueue
+
+    weak var delegate: AccountManagerDelegate?
     
     init(api: AlgorandAPI) {
         self.api = api
@@ -97,6 +99,7 @@ extension AccountManager {
                 switch roundDetailResponse {
                 case let .success(result):
                     let round = result.lastRound
+                    self.delegate?.accountManager(self, didWaitForNext: round)
                     self.fetchAllAccounts(isVerifiedAssetsIncluded: false) {
                         completion?(round)
                     }
@@ -128,6 +131,7 @@ extension AccountManager {
                 switch roundDetailResponse {
                 case let .success(result):
                     let round = result.lastRound
+                    self.delegate?.accountManager(self, didWaitForNext: round)
                     self.fetchAllAccounts(isVerifiedAssetsIncluded: false) {
                         completion?(round)
                     }
@@ -137,4 +141,8 @@ extension AccountManager {
             }
         }
     }
+}
+
+protocol AccountManagerDelegate: class {
+    func accountManager(_ accountManager: AccountManager, didWaitForNext round: Int64?)
 }

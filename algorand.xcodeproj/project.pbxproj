@@ -1527,6 +1527,9 @@
 		2B9EEADF264E7527007A112D /* RewardCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9EEADE264E7527007A112D /* RewardCalculator.swift */; };
 		2B9EEAE0264E7527007A112D /* RewardCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9EEADE264E7527007A112D /* RewardCalculator.swift */; };
 		2B9EEAE1264E7527007A112D /* RewardCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9EEADE264E7527007A112D /* RewardCalculator.swift */; };
+		2B9EEB67264ED202007A112D /* RewardCalculationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9EEB66264ED202007A112D /* RewardCalculationViewModel.swift */; };
+		2B9EEB68264ED202007A112D /* RewardCalculationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9EEB66264ED202007A112D /* RewardCalculationViewModel.swift */; };
+		2B9EEB69264ED202007A112D /* RewardCalculationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9EEB66264ED202007A112D /* RewardCalculationViewModel.swift */; };
 		2B9EF2BC25D3D144004BCCC4 /* PasshraseMnemonicNumberHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9EF2BB25D3D144004BCCC4 /* PasshraseMnemonicNumberHeaderView.swift */; };
 		2B9EF2BD25D3D144004BCCC4 /* PasshraseMnemonicNumberHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9EF2BB25D3D144004BCCC4 /* PasshraseMnemonicNumberHeaderView.swift */; };
 		2B9EF2BE25D3D144004BCCC4 /* PasshraseMnemonicNumberHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9EF2BB25D3D144004BCCC4 /* PasshraseMnemonicNumberHeaderView.swift */; };
@@ -2677,6 +2680,7 @@
 		2B9EEACD264D3393007A112D /* AlgorandTotalSupply.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorandTotalSupply.swift; sourceTree = "<group>"; };
 		2B9EEAD5264D33B1007A112D /* API+Block.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+Block.swift"; sourceTree = "<group>"; };
 		2B9EEADE264E7527007A112D /* RewardCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardCalculator.swift; sourceTree = "<group>"; };
+		2B9EEB66264ED202007A112D /* RewardCalculationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardCalculationViewModel.swift; sourceTree = "<group>"; };
 		2B9EF2BB25D3D144004BCCC4 /* PasshraseMnemonicNumberHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasshraseMnemonicNumberHeaderView.swift; sourceTree = "<group>"; };
 		2B9EF2C725D3D15F004BCCC4 /* PasshraseMnemonicNumberHeaderSupplementaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasshraseMnemonicNumberHeaderSupplementaryView.swift; sourceTree = "<group>"; };
 		2B9EF2D025D3D185004BCCC4 /* PasshraseMnemonicNumberHeaderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasshraseMnemonicNumberHeaderViewModel.swift; sourceTree = "<group>"; };
@@ -2698,6 +2702,8 @@
 		2BA015A32636FC50009EC914 /* VerificationStatusViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationStatusViewModel.swift; sourceTree = "<group>"; };
 		2BA015D12637154C009EC914 /* LedgerAccountVerifyOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountVerifyOperation.swift; sourceTree = "<group>"; };
 		2BA0C39722677E430037AE13 /* Sequence+AttributedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sequence+AttributedString.swift"; sourceTree = "<group>"; };
+		2BA172212649504400A613C4 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		2BA172222649504400A613C4 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		2BA1728F2649580000A613C4 /* AlgorandLineChartDataComposer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorandLineChartDataComposer.swift; sourceTree = "<group>"; };
 		2BA172982649583F00A613C4 /* AlgoUSDValueChartDataSetCustomizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgoUSDValueChartDataSetCustomizer.swift; sourceTree = "<group>"; };
 		2BA172A726495B9400A613C4 /* AlgoUSDAnalyticsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgoUSDAnalyticsViewController.swift; sourceTree = "<group>"; };
@@ -2718,8 +2724,6 @@
 		2BA1733F264B212600A613C4 /* AlgoUSDAnalyticsDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgoUSDAnalyticsDataController.swift; sourceTree = "<group>"; };
 		2BA1734C264B270100A613C4 /* AlgorandChartViewAxisCustomizable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorandChartViewAxisCustomizable.swift; sourceTree = "<group>"; };
 		2BA17354264B271800A613C4 /* AlgorandLineChartDataSetCustomizable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorandLineChartDataSetCustomizable.swift; sourceTree = "<group>"; };
-		2BA172212649504400A613C4 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		2BA172222649504400A613C4 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		2BA242372263C0D800E2841F /* SwiftDate+Region.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SwiftDate+Region.swift"; sourceTree = "<group>"; };
 		2BA849072620A2E2007A75CA /* recover_animation_dark.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = recover_animation_dark.json; sourceTree = "<group>"; };
 		2BA849082620A2E3007A75CA /* recover_animation_light.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = recover_animation_light.json; sourceTree = "<group>"; };
@@ -6142,6 +6146,34 @@
 			path = CSVExport;
 			sourceTree = "<group>";
 		};
+		2BA0156C2636B809009EC914 /* Verification */ = {
+			isa = PBXGroup;
+			children = (
+				2BA015752636B865009EC914 /* LedgerAccountVerificationViewController.swift */,
+			);
+			path = Verification;
+			sourceTree = "<group>";
+		};
+		2BA0157D2636B877009EC914 /* Verification */ = {
+			isa = PBXGroup;
+			children = (
+				2BA0157E2636B8A7009EC914 /* LedgerAccountVerificationView.swift */,
+				2BA015862636BB2D009EC914 /* LedgerAccountVerificationStatusView.swift */,
+				2BA0159B2636FBC3009EC914 /* VerificationStatusView.swift */,
+				2B27037A2638C097006BAF75 /* LedgerAccountVerificationHeaderView.swift */,
+			);
+			path = Verification;
+			sourceTree = "<group>";
+		};
+		2BA0158E2636BE84009EC914 /* Verification */ = {
+			isa = PBXGroup;
+			children = (
+				2BA015932636F507009EC914 /* LedgerAccountVerificationStatusViewModel.swift */,
+				2BA015A32636FC50009EC914 /* VerificationStatusViewModel.swift */,
+			);
+			path = Verification;
+			sourceTree = "<group>";
+		};
 		2BA172972649582F00A613C4 /* AlgosUSD */ = {
 			isa = PBXGroup;
 			children = (
@@ -6289,34 +6321,6 @@
 				2BA17354264B271800A613C4 /* AlgorandLineChartDataSetCustomizable.swift */,
 			);
 			path = Customization;
-            sourceTree = "<group>";
-        };
-		2BA0156C2636B809009EC914 /* Verification */ = {
-			isa = PBXGroup;
-			children = (
-				2BA015752636B865009EC914 /* LedgerAccountVerificationViewController.swift */,
-			);
-			path = Verification;
-			sourceTree = "<group>";
-		};
-		2BA0157D2636B877009EC914 /* Verification */ = {
-			isa = PBXGroup;
-			children = (
-				2BA0157E2636B8A7009EC914 /* LedgerAccountVerificationView.swift */,
-				2BA015862636BB2D009EC914 /* LedgerAccountVerificationStatusView.swift */,
-				2BA0159B2636FBC3009EC914 /* VerificationStatusView.swift */,
-				2B27037A2638C097006BAF75 /* LedgerAccountVerificationHeaderView.swift */,
-			);
-			path = Verification;
-			sourceTree = "<group>";
-		};
-		2BA0158E2636BE84009EC914 /* Verification */ = {
-			isa = PBXGroup;
-			children = (
-				2BA015932636F507009EC914 /* LedgerAccountVerificationStatusViewModel.swift */,
-				2BA015A32636FC50009EC914 /* VerificationStatusViewModel.swift */,
-			);
-			path = Verification;
 			sourceTree = "<group>";
 		};
 		2BA4998F24B5E43C00452650 /* Tracking */ = {
@@ -6814,6 +6818,7 @@
 			children = (
 				2BF0FADE25387C9600D704D5 /* AlgosCardViewModel.swift */,
 				2BD5A4A826306BF90048FA5E /* AlgosCardAnalyticsContainerViewModel.swift */,
+				2B9EEB66264ED202007A112D /* RewardCalculationViewModel.swift */,
 			);
 			path = Algos;
 			sourceTree = "<group>";
@@ -8955,6 +8960,7 @@
 				2B64DACD2369B9E400C09582 /* Participation.swift in Sources */,
 				2B982334231D396D009560CD /* Codable+JSON.swift in Sources */,
 				2B01FE5B26147FD7006C3C56 /* AccountRecoverOptionsViewController.swift in Sources */,
+				2B9EEB69264ED202007A112D /* RewardCalculationViewModel.swift in Sources */,
 				2BD063EF25CEC8E5008BD15E /* ScreenshotWarningView.swift in Sources */,
 				2BF0FB32253D154C00D704D5 /* RewardViewModel.swift in Sources */,
 				2BECB48C25A0C64B0081870A /* TitledToggleView.swift in Sources */,
@@ -9626,6 +9632,7 @@
 				2B0F620924EC129D00DA22A6 /* CardModalPresenter.swift in Sources */,
 				2BF0FB31253D154C00D704D5 /* RewardViewModel.swift in Sources */,
 				2B01FE5A26147FD7006C3C56 /* AccountRecoverOptionsViewController.swift in Sources */,
+				2B9EEB68264ED202007A112D /* RewardCalculationViewModel.swift in Sources */,
 				2B0F620A24EC129D00DA22A6 /* BaseScrollViewController.swift in Sources */,
 				2BD063EE25CEC8E5008BD15E /* ScreenshotWarningView.swift in Sources */,
 				2B0F620B24EC129D00DA22A6 /* AssetCell.swift in Sources */,
@@ -10297,6 +10304,7 @@
 				2B8954B52243D7C400D6D068 /* BottomInformationBundle.swift in Sources */,
 				175CE59B2295709F003F7C02 /* RoundDetail.swift in Sources */,
 				2B01FE5926147FD7006C3C56 /* AccountRecoverOptionsViewController.swift in Sources */,
+				2B9EEB67264ED202007A112D /* RewardCalculationViewModel.swift in Sources */,
 				2BD063ED25CEC8E5008BD15E /* ScreenshotWarningView.swift in Sources */,
 				2BF0FB30253D154C00D704D5 /* RewardViewModel.swift in Sources */,
 				2BECB48A25A0C64B0081870A /* TitledToggleView.swift in Sources */,
