@@ -56,9 +56,9 @@ class Environment {
         }
     }()
     
-    lazy var binanceHost = "api.binance.com"
-    
     lazy var mobileHost = "mobile-api.algorand.com"
+
+    lazy var algoExplorerApiHost = "price.algoexplorerapi.io"
     
     lazy var serverApi: String = {
         let api = "\(schema)://\(serverHost)"
@@ -77,6 +77,8 @@ class Environment {
     lazy var testNetMobileApi = "https://staging.\(mobileHost)"
     
     lazy var mainNetMobileApi = "https://\(mobileHost)"
+
+    lazy var algoExplorerApi = "https://\(algoExplorerApiHost)"
     
     private let target: AppTarget
     

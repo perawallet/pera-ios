@@ -30,8 +30,13 @@ extension AlgosCardCell: AlgosCardViewDelegate {
     func algosCardViewDidOpenRewardDetails(_ algosCardView: AlgosCardView) {
         delegate?.algosCardCellDidOpenRewardDetails(self)
     }
+
+    func algosCardViewDidOpenAnalytics(_ algosCardView: AlgosCardView) {
+        delegate?.algosCardCellDidOpenAnalytics(self)
+    }
 }
 
 protocol AlgosCardCellDelegate: class {
     func algosCardCellDidOpenRewardDetails(_ algosCardCell: AlgosCardCell)
+    func algosCardCellDidOpenAnalytics(_ algosCardCell: AlgosCardCell)
 }

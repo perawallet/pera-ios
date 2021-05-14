@@ -585,6 +585,30 @@
 "title-paste-passphrase" = "Paste Full Passphrase";
 "title-enter-pin-for-passphrase" = "Please enter your PIN to view passphrase";
 
+"title-analytics" = "Analytics";
+"title-algo-rewards" = "Algo Rewards";
+"value-one-algo" = "1 ALGO = %@";
+
+"title-algorand" = "Algorand";
+"title-account-balance" = "Balance";
+"title-algorand-value" = "Value";
+
+"chart-time-selection-hourly" = "1H";
+"chart-time-selection-daily" = "1D";
+"chart-time-selection-weekly" = "1W";
+"chart-time-selection-monthly" = "1M";
+"chart-time-selection-yearly" = "1Y";
+"chart-time-selection-all" = "ALL";
+
+"chart-no-data-text" = "No chart data available.";
+
+"chart-time-last-hour" = "Last 1 Hour";
+"chart-time-last-day" = "Last 1 Day";
+"chart-time-last-week" = "Last 1 Week";
+"chart-time-last-month" = "Last 1 Month";
+"chart-time-last-year" = "Last 1 Year";
+"chart-time-all" = "All Time";
+
 "ledger-account-verification-status-awaiting" = "Awaiting Verification";
 "ledger-account-verification-status-pending" = "Pending";
 "ledger-account-verification-status-verified" = "Account Verified";
