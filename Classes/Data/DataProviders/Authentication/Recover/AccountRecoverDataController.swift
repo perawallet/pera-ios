@@ -58,11 +58,13 @@ class AccountRecoverDataController: NSObject {
 
     private func composeAccount(with address: String) -> AccountInformation? {
         if let sameAccount = session.account(from: address) {
-            if sameAccount.isRekeyed() {
+            // If the recovered account is rekeyed or watch account in the app, save the passphrase.
+            // Convert the account type to standard account if it's a watch account since the account has the passphrase now.
+            if sameAccount.isRekeyed() || sameAccount.isWatchAccount() {
                 return AccountInformation(
                     address: address,
-                    name: address.shortAddressDisplay(),
-                    type: .rekeyed,
+                    name: sameAccount.name ?? address.shortAddressDisplay(),
+                    type: sameAccount.isWatchAccount() ? .standard : sameAccount.type,
                     ledgerDetail: sameAccount.ledgerDetail,
                     rekeyDetail: sameAccount.rekeyDetail
                 )
