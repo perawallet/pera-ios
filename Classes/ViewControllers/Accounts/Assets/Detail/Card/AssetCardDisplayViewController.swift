@@ -49,6 +49,14 @@ class AssetCardDisplayViewController: BaseViewController {
     private var currency: Currency?
     
     private lazy var assetCardDisplayView = AssetCardDisplayView()
+
+    private lazy var rewardCalculator: RewardCalculator = {
+        guard let api = api else {
+            fatalError("Api must be set before accessing reward calculator.")
+        }
+
+        return RewardCalculator(api: api, account: account)
+    }()
     
     init(account: Account, selectedIndex: Int, configuration: ViewControllerConfiguration) {
         self.account = account
@@ -79,6 +87,7 @@ class AssetCardDisplayViewController: BaseViewController {
     override func linkInteractors() {
         assetCardDisplayView.setDelegate(self)
         assetCardDisplayView.setDataSource(self)
+        rewardCalculator.delegate = self
     }
 }
 
@@ -115,7 +124,7 @@ extension AssetCardDisplayViewController: UICollectionViewDataSource {
                 for: indexPath
             ) as? AlgosCardCell {
                 cell.delegate = self
-                cell.contextView.bind(AlgosCardViewModel(account: account, currency: currency))
+                cell.bind(AlgosCardViewModel(account: account, currency: currency))
                 return cell
             }
         } else {
@@ -125,7 +134,7 @@ extension AssetCardDisplayViewController: UICollectionViewDataSource {
                 for: indexPath
             ) as? AssetCardCell {
                 cell.delegate = self
-                cell.contextView.bind(AssetCardViewModel(account: account, assetDetail: assetDetail))
+                cell.bind(AssetCardViewModel(account: account, assetDetail: assetDetail))
                 return cell
             }
         }
@@ -217,7 +226,18 @@ extension AssetCardDisplayViewController: AssetCardCellDelegate {
 extension AssetCardDisplayViewController {
     func updateAccount(_ updatedAccount: Account) {
         account = updatedAccount
+        rewardCalculator.updateAccount(updatedAccount)
         assetCardDisplayView.reloadData()
+    }
+}
+
+extension AssetCardDisplayViewController: RewardCalculatorDelegate {
+    func rewardCalculator(_ rewardCalculator: RewardCalculator, didCalculate rewards: Double) {
+        guard let algosCardCell = assetCardDisplayView.item(at: 0) as? AlgosCardCell else {
+            return
+        }
+
+        algosCardCell.bind(RewardCalculationViewModel(account: account, calculatedRewards: rewards, currency: currency))
     }
 }
 

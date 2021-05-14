@@ -217,6 +217,12 @@ extension AlgosCardView {
         rewardAmountLabel.text = viewModel.reward
         analyticsContainerView.bind(viewModel.analyticsContainerViewModel)
     }
+
+    func bind(_ viewModel: RewardCalculationViewModel) {
+        totalAmountLabel.text = viewModel.totalAmount
+        currencyAmountLabel.text = viewModel.currency
+        rewardAmountLabel.text = viewModel.rewardAmount
+    }
 }
 
 extension AlgosCardView {

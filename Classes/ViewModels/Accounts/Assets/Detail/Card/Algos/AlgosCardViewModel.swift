@@ -52,12 +52,11 @@ class AlgosCardViewModel {
     }
 
     private func setAlgosAmount(from account: Account) {
-        algosAmount = account.amountWithoutRewards.unwrap(or: 0).toAlgos.toFractionStringForLabel(fraction: 2)
+        algosAmount = account.amountWithoutRewards.toAlgos.toFractionStringForLabel(fraction: 2)
     }
 
     private func setReward(from account: Account) {
-        let pendingRewards: UInt64 = account.pendingRewards ?? 0
-        reward = pendingRewards.toAlgos.toRewardsStringForLabel
+        reward = account.pendingRewards.toAlgos.toRewardsStringForLabel
     }
 
     private func setAnalyticsContainerViewModel(from currency: Currency?) {
