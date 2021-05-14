@@ -1187,9 +1187,9 @@
 		2B57159D2634CA57002C876D /* AlgorandChartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B57159C2634CA57002C876D /* AlgorandChartViewModel.swift */; };
 		2B57159E2634CA57002C876D /* AlgorandChartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B57159C2634CA57002C876D /* AlgorandChartViewModel.swift */; };
 		2B57159F2634CA57002C876D /* AlgorandChartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B57159C2634CA57002C876D /* AlgorandChartViewModel.swift */; };
-		2B5715AE2634CC8F002C876D /* AlgoUSDValueChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5715AD2634CC8F002C876D /* AlgoUSDValueChart.swift */; };
-		2B5715AF2634CC8F002C876D /* AlgoUSDValueChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5715AD2634CC8F002C876D /* AlgoUSDValueChart.swift */; };
-		2B5715B02634CC8F002C876D /* AlgoUSDValueChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5715AD2634CC8F002C876D /* AlgoUSDValueChart.swift */; };
+		2B5715AE2634CC8F002C876D /* AlgoUSDValueChartCustomizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5715AD2634CC8F002C876D /* AlgoUSDValueChartCustomizer.swift */; };
+		2B5715AF2634CC8F002C876D /* AlgoUSDValueChartCustomizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5715AD2634CC8F002C876D /* AlgoUSDValueChartCustomizer.swift */; };
+		2B5715B02634CC8F002C876D /* AlgoUSDValueChartCustomizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5715AD2634CC8F002C876D /* AlgoUSDValueChartCustomizer.swift */; };
 		2B5715B72634F1FF002C876D /* AlgorandChartViewCustomizable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5715B62634F1FF002C876D /* AlgorandChartViewCustomizable.swift */; };
 		2B5715B82634F1FF002C876D /* AlgorandChartViewCustomizable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5715B62634F1FF002C876D /* AlgorandChartViewCustomizable.swift */; };
 		2B5715B92634F1FF002C876D /* AlgorandChartViewCustomizable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5715B62634F1FF002C876D /* AlgorandChartViewCustomizable.swift */; };
@@ -2442,7 +2442,7 @@
 		2B571587263479BE002C876D /* AlgorandChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorandChartView.swift; sourceTree = "<group>"; };
 		2B571593263479DC002C876D /* AlgorandLineChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorandLineChartView.swift; sourceTree = "<group>"; };
 		2B57159C2634CA57002C876D /* AlgorandChartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorandChartViewModel.swift; sourceTree = "<group>"; };
-		2B5715AD2634CC8F002C876D /* AlgoUSDValueChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgoUSDValueChart.swift; sourceTree = "<group>"; };
+		2B5715AD2634CC8F002C876D /* AlgoUSDValueChartCustomizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgoUSDValueChartCustomizer.swift; sourceTree = "<group>"; };
 		2B5715B62634F1FF002C876D /* AlgorandChartViewCustomizable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorandChartViewCustomizable.swift; sourceTree = "<group>"; };
 		2B5715BE2635EB6B002C876D /* AlgorandChartViewModelConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorandChartViewModelConvertible.swift; sourceTree = "<group>"; };
 		2B57D8EE25587F4F006E6FCE /* ReceiveAssetDetailEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveAssetDetailEvent.swift; sourceTree = "<group>"; };
@@ -6046,7 +6046,7 @@
 		2BA172972649582F00A613C4 /* AlgosUSD */ = {
 			isa = PBXGroup;
 			children = (
-				2B5715AD2634CC8F002C876D /* AlgoUSDValueChart.swift */,
+				2B5715AD2634CC8F002C876D /* AlgoUSDValueChartCustomizer.swift */,
 				2BA172982649583F00A613C4 /* AlgoUSDValueChartDataSetCustomizer.swift */,
 			);
 			path = AlgosUSD;
@@ -8675,7 +8675,7 @@
 				2BCBBAF624AA2D2C002CD56F /* DateWithTextImageView.swift in Sources */,
 				2B9EF2FA25D5761E004BCCC4 /* AnimatedTutorialView.swift in Sources */,
 				2B4EEEC924BF453500059A16 /* NotificationMessage.swift in Sources */,
-				2B5715B02634CC8F002C876D /* AlgoUSDValueChart.swift in Sources */,
+				2B5715B02634CC8F002C876D /* AlgoUSDValueChartCustomizer.swift in Sources */,
 				17BD4E1D2292F1260003E49A /* Router.swift in Sources */,
 				95A12864242C8D5800B491A5 /* LedgerTroubleshootInstallAppViewController.swift in Sources */,
 				17BD4E1F2292F1260003E49A /* AccountRecoverViewController.swift in Sources */,
@@ -9332,7 +9332,7 @@
 				2B0F619C24EC129D00DA22A6 /* FeedbackCategory.swift in Sources */,
 				2B0F619D24EC129D00DA22A6 /* TabBarItemConvertible.swift in Sources */,
 				2B9EF2F925D5761E004BCCC4 /* AnimatedTutorialView.swift in Sources */,
-				2B5715AF2634CC8F002C876D /* AlgoUSDValueChart.swift in Sources */,
+				2B5715AF2634CC8F002C876D /* AlgoUSDValueChartCustomizer.swift in Sources */,
 				2B0F619F24EC129D00DA22A6 /* Payment.swift in Sources */,
 				2B0F61A024EC129D00DA22A6 /* SendAssetTransactionPreviewViewModel.swift in Sources */,
 				2B0F61A124EC129D00DA22A6 /* NotificationCell.swift in Sources */,
@@ -9989,7 +9989,7 @@
 				2BCBBAF524AA2D2C002CD56F /* DateWithTextImageView.swift in Sources */,
 				2B9EF2F825D5761E004BCCC4 /* AnimatedTutorialView.swift in Sources */,
 				2B4EEEC824BF453500059A16 /* NotificationMessage.swift in Sources */,
-				2B5715AE2634CC8F002C876D /* AlgoUSDValueChart.swift in Sources */,
+				2B5715AE2634CC8F002C876D /* AlgoUSDValueChartCustomizer.swift in Sources */,
 				2B8954CE2244323700D6D068 /* AccountRecoverViewController.swift in Sources */,
 				95A12863242C8D5800B491A5 /* LedgerTroubleshootInstallAppViewController.swift in Sources */,
 				2B8954A22242E79C00D6D068 /* AccountNameSetupViewController.swift in Sources */,

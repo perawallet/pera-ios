@@ -43,6 +43,7 @@ class AlgoAnalyticsHeaderViewModel {
     }
 
     private func setIsValueChangeDisplayed(from priceChange: AlgoUSDPriceChange) {
+        // Do not show the value change percentage if a value is selected or it's same as comparision.
         isValueChangeDisplayed = priceChange.selectedPrice == nil && priceChange.getValueChangeStatus() != .stable
     }
 
