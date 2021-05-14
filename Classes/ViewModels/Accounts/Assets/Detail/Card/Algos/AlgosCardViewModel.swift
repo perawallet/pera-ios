@@ -52,7 +52,7 @@ class AlgosCardViewModel {
     }
 
     private func setAlgosAmount(from account: Account) {
-        algosAmount = account.amountWithoutRewards?.toAlgos.toFractionStringForLabel(fraction: 2)
+        algosAmount = account.amountWithoutRewards.unwrap(or: 0).toAlgos.toFractionStringForLabel(fraction: 2)
     }
 
     private func setReward(from account: Account) {
