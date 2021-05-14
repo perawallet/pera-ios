@@ -329,17 +329,16 @@ class Router {
             viewController = TransactionCustomRangeSelectionViewController(fromDate: fromDate, toDate: toDate, configuration: configuration)
         case let .rekeyInstruction(account):
             viewController = RekeyInstructionsViewController(account: account, configuration: configuration)
-        case let .rekeyConfirmation(account, ledger, ledgerAddress):
+        case let .rekeyConfirmation(account, ledgerDetail, ledgerAddress):
             viewController = RekeyConfirmationViewController(
                 account: account,
-                ledger: ledger,
+                ledger: ledgerDetail,
                 ledgerAddress: ledgerAddress,
                 configuration: configuration
             )
-        case let .ledgerAccountSelection(flow, ledger, accounts):
+        case let .ledgerAccountSelection(flow, accounts):
             viewController = LedgerAccountSelectionViewController(
                 accountSetupFlow: flow,
-                ledger: ledger,
                 accounts: accounts,
                 configuration: configuration
             )
@@ -377,6 +376,12 @@ class Router {
             viewController = AccountRecoverOptionsViewController(configuration: configuration)
         case let .algoUSDAnalytics(account):
             viewController = AlgoUSDAnalyticsViewController(account: account, configuration: configuration)
+        case let .ledgerAccountVerification(flow, selectedAccounts):
+            viewController = LedgerAccountVerificationViewController(
+                accountSetupFlow: flow,
+                selectedAccounts: selectedAccounts,
+                configuration: configuration
+            )
         }
         
         return viewController as? T

@@ -380,12 +380,6 @@
 "ledger-account-fetct-error" = "Ocorreu um erro na rede ao buscarmos os detalhes da conta. Tente reiniciar o processo.";
 
 /* (No Comment) */
-"ledger-account-selection-add" = "Adicionar Conta";
-
-/* (No Comment) */
-"ledger-account-selection-add-plural" = "Adicionar Contas";
-
-/* (No Comment) */
 "ledger-account-selection-detail" = "Este dispositivo ledger pode assinar transações para a seguinte conta. Selecione a conta para adicionar à sua Carteira Algorand.";
 
 /* (No Comment) */
@@ -396,6 +390,24 @@
 
 /* MARK: Ledger Account Selection */
 "ledger-account-selection-title-singular" = "%d Conta Encontrada";
+
+/* (No Comment) */
+"ledger-account-selection-verify" = "Confirmar Conta Selecionada";
+
+/* (No Comment) */
+"ledger-account-selection-verify-plural" = "Confirmar Contas Selecionadas";
+
+/* (No Comment) */
+"ledger-account-verification-status-awaiting" = "Aguardando Confirmação";
+
+/* (No Comment) */
+"ledger-account-verification-status-not-verified" = "Não Confirmada";
+
+/* (No Comment) */
+"ledger-account-verification-status-pending" = "Pendente";
+
+/* (No Comment) */
+"ledger-account-verification-status-verified" = "Conta Confirmada";
 
 /* (No Comment) */
 "ledger-approval-connection-message" = "Aguardando o ledger conectar-se.";
@@ -519,6 +531,15 @@
 
 /* (No Comment) */
 "ledger-tutorial-turned-on" = "Tenha seu dispositivo ledger ligado e habilitado para Bluetooth.";
+
+/* (No Comment) */
+"ledger-verified-add" = "Adicionar Contas Confirmadas";
+
+/* (No Comment) */
+"ledger-verify-header-subtitle" = "Os seguintes endereços de conta serão exibidos em seu dispositivo Ledger. Compare e confirme cuidadosamente cada endereço para concluir o pareamento de dispositivos.";
+
+/* (No Comment) */
+"ledger-verify-header-title" = "Confirmar Endereços de Conta via Ledger";
 
 /* (No Comment) */
 "local-authentication-enable" = "Habilitar ID Facial/Toque";

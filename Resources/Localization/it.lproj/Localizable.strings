@@ -302,7 +302,7 @@
 "empty-accounts-detail" = "Devi creare un conto per avviare la transazione delle tue risorse.";
 
 /* (No Comment) */
-"empty-accounts-title" = "Crea un  conto";
+"empty-accounts-title" = "Crea un conto";
 
 /* (No Comment) */
 "feedback-empty-category-message" = "Seleziona una categoria.";
@@ -380,12 +380,6 @@
 "ledger-account-fetct-error" = "Si è verificato un errore di rete durante il recupero dei dettagli del conto. Riavvia il processo.";
 
 /* (No Comment) */
-"ledger-account-selection-add" = "Aggiungi un conto";
-
-/* (No Comment) */
-"ledger-account-selection-add-plural" = "Aggiungi account";
-
-/* (No Comment) */
 "ledger-account-selection-detail" = "Questo dispositivo Ledger può firmare transazioni per il seguente conto. Seleziona il conto da aggiungere al tuo Algorand Wallet.";
 
 /* (No Comment) */
@@ -396,6 +390,24 @@
 
 /* MARK: Ledger Account Selection */
 "ledger-account-selection-title-singular" = "%d conto trovato";
+
+/* (No Comment) */
+"ledger-account-selection-verify" = "Verifica conto selezionato";
+
+/* (No Comment) */
+"ledger-account-selection-verify-plural" = "Verifica conti selezionati";
+
+/* (No Comment) */
+"ledger-account-verification-status-awaiting" = "In attesa di verifica";
+
+/* (No Comment) */
+"ledger-account-verification-status-not-verified" = "Non verificato";
+
+/* (No Comment) */
+"ledger-account-verification-status-pending" = "In sospeso";
+
+/* (No Comment) */
+"ledger-account-verification-status-verified" = "Conto verificato";
 
 /* (No Comment) */
 "ledger-approval-connection-message" = "In attesa che il Ledger si connetta.";
@@ -519,6 +531,15 @@
 
 /* (No Comment) */
 "ledger-tutorial-turned-on" = "Assicurati che il tuo dispositivo Ledger sia acceso e abbia il Bluetooth abilitato.";
+
+/* (No Comment) */
+"ledger-verified-add" = "Aggiungi conti verificati";
+
+/* (No Comment) */
+"ledger-verify-header-subtitle" = "I seguenti indirizzi di conto verranno visualizzati sul tuo dispositivo Ledger. Confronta e verifica attentamente ogni indirizzo al fine di completare l'associazione del dispositivo.";
+
+/* (No Comment) */
+"ledger-verify-header-title" = "Verifica gli indirizzi del conto tramite Ledger";
 
 /* (No Comment) */
 "local-authentication-enable" = "Abilita Face ID/Touch";

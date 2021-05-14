@@ -21,9 +21,9 @@ import Magpie
 class RekeyConfirmationViewController: BaseScrollViewController {
     
     private lazy var rekeyConfirmationView = RekeyConfirmationView()
-    
+
     private var account: Account
-    private let ledger: LedgerDetail
+    private let ledger: LedgerDetail?
     private let ledgerAddress: String
     private var rekeyConfirmationDataSource: RekeyConfirmationDataSource
     private var rekeyConfirmationListLayout: RekeyConfirmationListLayout
@@ -44,11 +44,11 @@ class RekeyConfirmationViewController: BaseScrollViewController {
         return TransactionController(api: api)
     }()
     
-    init(account: Account, ledger: LedgerDetail, ledgerAddress: String, configuration: ViewControllerConfiguration) {
+    init(account: Account, ledger: LedgerDetail?, ledgerAddress: String, configuration: ViewControllerConfiguration) {
         self.account = account
         self.ledger = ledger
         self.ledgerAddress = ledgerAddress
-        self.viewModel = RekeyConfirmationViewModel(account: account, ledgerName: ledger.name)
+        self.viewModel = RekeyConfirmationViewModel(account: account, ledgerName: ledger?.name)
         rekeyConfirmationDataSource = RekeyConfirmationDataSource(account: account, rekeyConfirmationViewModel: viewModel)
         rekeyConfirmationListLayout = RekeyConfirmationListLayout(account: account)
         super.init(configuration: configuration)
@@ -150,10 +150,11 @@ extension RekeyConfirmationViewController: TransactionControllerDelegate {
 
 extension RekeyConfirmationViewController {
     private func saveRekeyedAccountDetails() {
-        if let localAccount = session?.accountInformation(from: account.address) {
+        if let localAccount = session?.accountInformation(from: account.address),
+           let ledgerDetail = ledger {
             localAccount.type = .rekeyed
             account.type = .rekeyed
-            localAccount.addRekeyDetail(ledger, for: ledgerAddress)
+            localAccount.addRekeyDetail(ledgerDetail, for: ledgerAddress)
 
             session?.authenticatedUser?.updateAccount(localAccount)
             session?.updateAccount(account)

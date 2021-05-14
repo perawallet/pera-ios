@@ -380,12 +380,6 @@
 "ledger-account-fetct-error" = "Beim Abrufen der Kontodetails ist ein Netzwerkfehler aufgetreten. Bitte starten Sie den Vorgang erneut.";
 
 /* (No Comment) */
-"ledger-account-selection-add" = "Konto hinzufügen";
-
-/* (No Comment) */
-"ledger-account-selection-add-plural" = "Konten hinzufügen";
-
-/* (No Comment) */
 "ledger-account-selection-detail" = "Dieses Ledger-Gerät kann für folgendes Konto Transaktionen signieren. Wählen Sie das Konto aus, das Sie Ihrer Algorand-Wallet hinzufügen möchten.";
 
 /* (No Comment) */
@@ -396,6 +390,24 @@
 
 /* MARK: Ledger Account Selection */
 "ledger-account-selection-title-singular" = "%d-Konto gefunden";
+
+/* (No Comment) */
+"ledger-account-selection-verify" = "Ausgewähltes Konto verifizieren";
+
+/* (No Comment) */
+"ledger-account-selection-verify-plural" = "Ausgewählte Konten verifizieren";
+
+/* (No Comment) */
+"ledger-account-verification-status-awaiting" = "Warten auf Verifizierung";
+
+/* (No Comment) */
+"ledger-account-verification-status-not-verified" = "Nicht verifiziert";
+
+/* (No Comment) */
+"ledger-account-verification-status-pending" = "Ausstehend";
+
+/* (No Comment) */
+"ledger-account-verification-status-verified" = "Konto verifiziert";
 
 /* (No Comment) */
 "ledger-approval-connection-message" = "Warten auf eine Verbindung mit dem Ledger-Gerät.";
@@ -519,6 +531,15 @@
 
 /* (No Comment) */
 "ledger-tutorial-turned-on" = "Stellen Sie sicher, dass Ihr Ledger-Gerät eingeschaltet und Bluetooth aktiviert ist.";
+
+/* (No Comment) */
+"ledger-verified-add" = "Verifizierte Konten hinzufügen";
+
+/* (No Comment) */
+"ledger-verify-header-subtitle" = "Die folgenden Kontoadressen werden auf Ihrem Ledger-Gerät angezeigt. Bitte vergleichen und verifizieren Sie jede Adresse sorgfältig, um die Gerätekopplung abzuschließen.";
+
+/* (No Comment) */
+"ledger-verify-header-title" = "Kontoadressen über Ledger verifizieren";
 
 /* (No Comment) */
 "local-authentication-enable" = "Gesichtsprüfung/Touch-ID aktivieren";
@@ -1367,7 +1388,7 @@
 "transaction-tutorial-tip-first" = "Wenn Sie zum ersten Mal an eine Adresse senden, ist es sinnvoll, eine kleine Testtransaktion zu senden, bevor Sie einen größeren Betrag senden.";
 
 /* (No Comment) */
-"transaction-tutorial-tip-second" = "Börsen ändern häufig ihre Einzahlungsadressen  und gespeicherte Börsenadressen sind ggf. nicht mehr gültig. Stellen Sie sicher, dass Sie an die richtige Adresse senden.";
+"transaction-tutorial-tip-second" = "Börsen ändern häufig ihre Einzahlungsadressen und gespeicherte Börsenadressen sind ggf. nicht mehr gültig. Stellen Sie sicher, dass Sie an die richtige Adresse senden.";
 
 /* (No Comment) */
 "transaction-tutorial-tip-second-highlighted" = "Stellen Sie sicher, dass Sie an die richtige Adresse senden.";

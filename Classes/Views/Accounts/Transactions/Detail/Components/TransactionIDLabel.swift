@@ -112,8 +112,8 @@ extension TransactionIDLabel {
 }
 
 extension TransactionIDLabel: AlgoExplorerLabelDelegate {
-    func algoExplorerLabelDidOpenExplorer(_ algoExplorerLabel: AlgoExplorerLabel) {
-        delegate?.transactionIDLabelDidOpenExplorer(self)
+    func algoExplorerLabel(_ algoExplorerLabel: AlgoExplorerLabel, didOpen explorer: AlgoExplorerType) {
+        delegate?.transactionIDLabel(self, didOpen: explorer)
     }
 }
 
@@ -129,5 +129,5 @@ extension TransactionIDLabel {
 }
 
 protocol TransactionIDLabelDelegate: class {
-    func transactionIDLabelDidOpenExplorer(_ transactionIDLabel: TransactionIDLabel)
+    func transactionIDLabel(_ transactionIDLabel: TransactionIDLabel, didOpen explorer: AlgoExplorerType)
 }

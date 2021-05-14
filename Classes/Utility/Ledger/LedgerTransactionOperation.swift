@@ -29,6 +29,10 @@ class LedgerTransactionOperation: LedgerOperation, BLEConnectionManagerDelegate,
     
     var ledgerApprovalViewController: LedgerApprovalViewController?
 
+    var shouldDisplayLedgerApprovalModal: Bool {
+        return true
+    }
+
     var ledgerMode: LedgerApprovalViewController.Mode {
         return .approve
     }
@@ -75,6 +79,17 @@ extension LedgerTransactionOperation {
     }
     
     func completeOperation(with data: Data) {
+        if data.isErrorResponseFromLedger {
+            if data.isLedgerTransactionCancelledError {
+                delegate?.ledgerTransactionOperation(self, didFailed: .cancelled)
+            } else {
+                delegate?.ledgerTransactionOperation(self, didFailed: .closedApp)
+            }
+
+            reset()
+            return
+        }
+
         if !isCorrectLedgerAddressFetched {
             accountFetchOperation.completeOperation(with: data)
             return
@@ -119,7 +134,7 @@ extension LedgerTransactionOperation {
         
         ledgerBleController.signTransaction(unsignedTransaction, atLedgerAccount: ledgerAccountIndex)
     }
-    
+
     private func parseSignedTransaction(from data: Data) -> Data? {
         if data.isLedgerTransactionCancelledError || data.isLedgerError {
             return nil

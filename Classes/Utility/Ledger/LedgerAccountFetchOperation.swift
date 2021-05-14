@@ -25,6 +25,10 @@ class LedgerAccountFetchOperation: LedgerOperation, BLEConnectionManagerDelegate
     
     var ledgerApprovalViewController: LedgerApprovalViewController?
 
+    var shouldDisplayLedgerApprovalModal: Bool {
+        return true
+    }
+
     var ledgerMode: LedgerApprovalViewController.Mode {
         return ledgerApprovalMode
     }
@@ -56,6 +60,17 @@ extension LedgerAccountFetchOperation {
     }
     
     func completeOperation(with data: Data) {
+        if data.isErrorResponseFromLedger {
+            if data.isLedgerTransactionCancelledError {
+                delegate?.ledgerAccountFetchOperation(self, didFailed: .cancelled)
+            } else {
+                delegate?.ledgerAccountFetchOperation(self, didFailed: .closedApp)
+            }
+
+            reset()
+            return
+        }
+
         guard let address = parseAddress(from: data) else {
             NotificationBanner.showError(
                 "ble-error-transmission-title".localized,
@@ -65,7 +80,7 @@ extension LedgerAccountFetchOperation {
             delegate?.ledgerAccountFetchOperation(self, didFailed: .failedToFetchAddress)
             return
         }
-        
+
         fetchAccount(address)
     }
     
@@ -74,36 +89,22 @@ extension LedgerAccountFetchOperation {
     }
     
     func reset() {
-        connectedDevice = nil
         stopScan()
         disconnectFromCurrentDevice()
+        connectedDevice = nil
         ledgerApprovalViewController?.dismissIfNeeded()
         ledgerAccounts.removeAll()
     }
 }
 
 extension LedgerAccountFetchOperation {
-    private func parseAddress(from data: Data) -> String? {
-        /// Remove last two bytes to fetch data since it declares status codes.
-        var mutableData = data
-        mutableData.removeLast(2)
-        
-        var error: NSError?
-        let address = AlgorandSDK().addressFromPublicKey(mutableData, error: &error)
-        
-        if error != nil || !AlgorandSDK().isValidAddress(address) {
-            return nil
-        }
-        
-        return address
-    }
-    
     private func fetchAccount(_ address: String) {
         api.fetchAccount(with: AccountFetchDraft(publicKey: address)) { response in
             switch response {
             case .success(let accountWrapper):
                 if accountWrapper.account.isCreated {
                     accountWrapper.account.assets = accountWrapper.account.nonDeletedAssets()
+                    accountWrapper.account.ledgerDetail = self.composeLedgerDetail()
                     self.ledgerAccounts.append(accountWrapper.account)
                     self.startOperation()
                 } else {
@@ -112,7 +113,9 @@ extension LedgerAccountFetchOperation {
             case let .failure(error, _):
                 if error.isHttpNotFound {
                     if self.isInitialAccount {
-                        self.ledgerAccounts.append(Account(address: address, type: .ledger))
+                        let account = Account(address: address, type: .ledger)
+                        account.ledgerDetail = self.composeLedgerDetail()
+                        self.ledgerAccounts.append(account)
                     }
                 } else {
                     NotificationBanner.showError("title-error".localized, message: "ledger-account-fetct-error".localized)
@@ -120,6 +123,18 @@ extension LedgerAccountFetchOperation {
                 self.returnAccounts()
             }
         }
+    }
+
+    private func composeLedgerDetail() -> LedgerDetail? {
+        guard let connectedDevice = connectedDevice else {
+            return nil
+        }
+
+        return LedgerDetail(
+            id: connectedDevice.identifier,
+            name: connectedDevice.name,
+            indexInLedger: accountIndex
+        )
     }
     
     private func returnAccounts() {

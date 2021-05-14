@@ -380,12 +380,6 @@
 "ledger-account-fetct-error" = "Ocurrió un error de red al buscar los detalles de la cuenta. Reinicia el proceso.";
 
 /* (No Comment) */
-"ledger-account-selection-add" = "Agregar cuenta";
-
-/* (No Comment) */
-"ledger-account-selection-add-plural" = "Agregar cuentas";
-
-/* (No Comment) */
 "ledger-account-selection-detail" = "Este dispositivo Ledger puede firmar transacciones para la siguientes cuenta. Selecciona la cuenta para agregar al monedero Algorand.";
 
 /* (No Comment) */
@@ -396,6 +390,24 @@
 
 /* MARK: Ledger Account Selection */
 "ledger-account-selection-title-singular" = "Se encontró %d cuenta";
+
+/* (No Comment) */
+"ledger-account-selection-verify" = "Verificar cuenta seleccionada";
+
+/* (No Comment) */
+"ledger-account-selection-verify-plural" = "Verificar cuentas seleccionadas";
+
+/* (No Comment) */
+"ledger-account-verification-status-awaiting" = "Esperando verificación";
+
+/* (No Comment) */
+"ledger-account-verification-status-not-verified" = "No verificada";
+
+/* (No Comment) */
+"ledger-account-verification-status-pending" = "Pendiente";
+
+/* (No Comment) */
+"ledger-account-verification-status-verified" = "Cuenta verificada";
 
 /* (No Comment) */
 "ledger-approval-connection-message" = "Esperando a que Ledger conecte.";
@@ -470,7 +482,7 @@
 "ledger-troubleshooting-app-support" = "Para obtener ayuda para instalar la aplicación de Algorand para Ledger en tu dispositivo, visita %@";
 
 /* (No Comment) */
-"ledger-troubleshooting-bluetooth-connection-html" = "Desactiva o activa Bluetooth para un dispositivo iOS. <br /> <br />\n<ul>\n<li>Pulsa <b>Configuración</b></li>\n<li>Selecciona <b>“General”</b></li>\n<li>Pulsa <b>“Bluetooth”</b></li>\n<li>Usa <b>el botón On/Off</b> para alternar la función</li>\n<li>Bluetooth <b>encendido o apagado</b></li>\n</ul>";
+"ledger-troubleshooting-bluetooth-connection-html" = "Desactiva o activa Bluetooth para un dispositivo iOS. <br /> <br />\n<ul>\n<li>Pulsa <b>Configuración</b></li>\n<li>Selecciona  <b>“General”</b></li>\n<li>Pulsa <b>“Bluetooth”</b></li>\n<li>Usa <b>el botón On/Off</b> para alternar la función</li>\n<li>Bluetooth <b>On or Off</b></li>\n</ul>";
 
 /* (No Comment) */
 "ledger-troubleshooting-close-others" = "Cierra otras aplicaciones (aplicaciones de Ledger, monederos de criptomonedas, o cualquier otra cosa que intente emparejarse con el dispositivo Ledger).";
@@ -494,7 +506,7 @@
 "ledger-troubleshooting-ledger-support-title" = "Soporte de Ledger.";
 
 /* (No Comment) */
-"ledger-troubleshooting-open-app-first-html" = "Comienza siguiendo el tutorial completo de Ledger sobre <a href=\"https://www.ledger.com/start\">Cómo comenzar</a>, que te indicará como instalar e iniciar aplicaciones en tu dispositivo Ledger.";
+"ledger-troubleshooting-open-app-first-html" = "Comienza siguiendo el tutorial completo de Ledger sobre <a href=\"https://www.ledger.com/start\">Getting Started</a>, que te indicará como instalar e iniciar aplicaciones en tu dispositivo Ledger.";
 
 /* (No Comment) */
 "ledger-troubleshooting-open-app-second-html" = "Si aún no instalaste la aplicación de  <b>Algorand</b> en tu dispositivo Ledger, cuando el tutorial llegue al momento en que debes \"seleccionar las aplicaciones que quieres instalar en tu dispositivo\", ingresa <b>Algorand</b> en la barra de búsqueda e instala.";
@@ -519,6 +531,15 @@
 
 /* (No Comment) */
 "ledger-tutorial-turned-on" = "Asegúrate de que el dispositivo Ledger esté encendido y de que tenga Bluetooth activado.";
+
+/* (No Comment) */
+"ledger-verified-add" = "Agregar cuentas verificadas";
+
+/* (No Comment) */
+"ledger-verify-header-subtitle" = "Las siguientes direcciones de cuenta se mostrarán en tu dispositivo Ledger. Compara y verifica cuidadosamente cada dirección para finalizar el emparejamiento del dispositivo.";
+
+/* (No Comment) */
+"ledger-verify-header-title" = "Verificar direcciones de cuenta a través de Ledger";
 
 /* (No Comment) */
 "local-authentication-enable" = "Activar reconocimiento facial o táctil";

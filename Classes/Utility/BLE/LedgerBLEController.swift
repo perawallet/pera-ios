@@ -63,6 +63,13 @@ extension LedgerBLEController {
             delegate?.ledgerBLEController(self, shouldWrite: packet)
         }
     }
+
+    /// Sends verify address instruction to the ledger device.
+    func verifyAddress(at index: Int) {
+        packetizeData(LedgerMessage.Instruction.verifyAddress(for: index)).forEach { packet in
+            delegate?.ledgerBLEController(self, shouldWrite: packet)
+        }
+    }
     
     /// Sends required sign transaction instruction to the ledger device.
     func signTransaction(_ unsignedTransactionData: Data, atLedgerAccount index: Int) {
