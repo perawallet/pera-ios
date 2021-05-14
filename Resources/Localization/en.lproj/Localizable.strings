@@ -337,7 +337,8 @@
 "transaction-detail-note-copied" = "Transaction note copied to clipboard";
 "transaction-detail-id-copied" = "Transaction ID copied to clipboard";
 "transaction-detail-copy-tooltip" = "Press and hold to Copy to Clipboard";
-"transaction-id-open-explorer" = "Open in Explorer";
+"transaction-id-open-algoexplorer" = "Open in AlgoExplorer";
+"transaction-id-open-goalseeker" = "Open in GoalSeeker";
 
 // MARK: Feedback
 "feedback-title" = "Send Feedback";

@@ -320,8 +320,8 @@ extension TransactionDetailView {
 }
 
 extension TransactionDetailView: TransactionIDLabelDelegate {
-    func transactionIDLabelDidOpenExplorer(_ transactionIDLabel: TransactionIDLabel) {
-        delegate?.transactionDetailViewDidOpenExplorer(self)
+    func transactionIDLabel(_ transactionIDLabel: TransactionIDLabel, didOpen explorer: AlgoExplorerType) {
+        delegate?.transactionDetailView(self, didOpen: explorer)
     }
 }
 
@@ -336,6 +336,6 @@ protocol TransactionDetailViewDelegate: class {
     func transactionDetailViewDidTapOpponentActionButton(_ transactionDetailView: TransactionDetailView)
     func transactionDetailViewDidCopyOpponentAddress(_ transactionDetailView: TransactionDetailView)
     func transactionDetailViewDidCopyCloseToAddress(_ transactionDetailView: TransactionDetailView)
-    func transactionDetailViewDidOpenExplorer(_ transactionDetailView: TransactionDetailView)
+    func transactionDetailView(_ transactionDetailView: TransactionDetailView, didOpen explorer: AlgoExplorerType)
     func transactionDetailViewDidCopyTransactionNote(_ transactionDetailView: TransactionDetailView)
 }
