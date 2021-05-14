@@ -13,15 +13,15 @@
 // limitations under the License.
 
 //
-//   AlgosUSDValue.swift
+//   AlgorandLineChartView.swift
 
-import Magpie
+import Charts
 
-class AlgosUSDValue: Model {
-    let timestamp: Double?
-    let open: Double?
-    let low: Double?
-    let high: Double?
-    let close: Double?
-    let volume: Double?
+class AlgorandLineChartView: LineChartView {
+    override func gestureRecognizer(
+        _ gestureRecognizer: NSUIGestureRecognizer,
+        shouldRecognizeSimultaneouslyWith otherGestureRecognizer: NSUIGestureRecognizer
+    ) -> Bool {
+        return true
+    }
 }

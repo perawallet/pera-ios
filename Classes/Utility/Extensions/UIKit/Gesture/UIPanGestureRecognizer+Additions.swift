@@ -13,15 +13,12 @@
 // limitations under the License.
 
 //
-//   AlgosUSDValue.swift
+//   UIPanGestureRecognizer+Additions.swift
 
-import Magpie
+import UIKit
 
-class AlgosUSDValue: Model {
-    let timestamp: Double?
-    let open: Double?
-    let low: Double?
-    let high: Double?
-    let close: Double?
-    let volume: Double?
+extension UIPanGestureRecognizer {
+    var isGestureCompleted: Bool {
+        return state == .ended || state == .cancelled
+    }
 }

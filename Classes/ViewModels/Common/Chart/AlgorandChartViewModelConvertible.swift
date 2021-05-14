@@ -13,15 +13,10 @@
 // limitations under the License.
 
 //
-//   AlgosUSDValue.swift
+//   AlgorandChartViewModelConvertible.swift
 
-import Magpie
+import Charts
 
-class AlgosUSDValue: Model {
-    let timestamp: Double?
-    let open: Double?
-    let low: Double?
-    let high: Double?
-    let close: Double?
-    let volume: Double?
+protocol AlgorandChartViewModelConvertible {
+    func chartData() -> ChartData?
 }

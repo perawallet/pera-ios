@@ -13,15 +13,13 @@
 // limitations under the License.
 
 //
-//   AlgosUSDValue.swift
+//   AlgorandChartViewAxisCustomizable.swift
 
-import Magpie
+import Foundation
 
-class AlgosUSDValue: Model {
-    let timestamp: Double?
-    let open: Double?
-    let low: Double?
-    let high: Double?
-    let close: Double?
-    let volume: Double?
+protocol AlgorandChartViewAxisCustomizable {
+    var isAxisLineEnabled: Bool { get }
+    var isGridLinesEnabled: Bool { get }
+    var isAxisLabelsEnabled: Bool { get }
+    var isGranularityEnabled: Bool { get }
 }

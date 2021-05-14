@@ -23,6 +23,8 @@ class AlgosCardAnalyticsContainerView: BaseView {
 
     private let layout = Layout<LayoutConstants>()
 
+    private lazy var backgroundView = UIView()
+
     private lazy var algoCurrencyValueLabel: UILabel = {
         UILabel()
             .withAlignment(.left)
@@ -43,7 +45,10 @@ class AlgosCardAnalyticsContainerView: BaseView {
     private lazy var rightArrowImageView = UIImageView(image: img("icon-right-arrow-white"))
 
     override func configureAppearance() {
-        backgroundColor = Colors.Main.white.withAlphaComponent(0.1)
+        backgroundColor = .clear
+        backgroundView.backgroundColor = Colors.Main.white.withAlphaComponent(0.1)
+        backgroundView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+        backgroundView.layer.cornerRadius = 24.0
     }
 
     override func setListeners() {
@@ -51,6 +56,7 @@ class AlgosCardAnalyticsContainerView: BaseView {
     }
 
     override func prepareLayout() {
+        setupBackgroundViewLayout()
         setupRightArrowImageViewLayout()
         setupAlgoCurrencyValueLabelLayout()
         setupAnalyticsButtonLayout()
@@ -58,6 +64,10 @@ class AlgosCardAnalyticsContainerView: BaseView {
 }
 
 extension AlgosCardAnalyticsContainerView {
+    private func setupBackgroundViewLayout() {
+        prepareWholeScreenLayoutFor(backgroundView)
+    }
+
     private func setupRightArrowImageViewLayout() {
         addSubview(rightArrowImageView)
 
