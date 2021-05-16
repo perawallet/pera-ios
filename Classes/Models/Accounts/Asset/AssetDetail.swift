@@ -216,3 +216,9 @@ extension AssetDetail: Comparable {
         return lhs.id < rhs.id
     }
 }
+
+extension AssetDetail: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id.hashValue)
+    }
+}

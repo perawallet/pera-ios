@@ -27,8 +27,8 @@ class AccountsDataSource: NSObject, UICollectionViewDataSource {
     
     var accounts: [Account] = UIApplication.shared.appConfiguration?.session.accounts ?? []
     
-    private var addedAssetDetails: [Account: [AssetDetail]] = [:]
-    private var removedAssetDetails: [Account: [AssetDetail]] = [:]
+    private var addedAssetDetails: [Account: Set<AssetDetail>] = [:]
+    private var removedAssetDetails: [Account: Set<AssetDetail>] = [:]
     
     var hasPendingAssetAction: Bool {
         return !addedAssetDetails.isEmpty || !removedAssetDetails.isEmpty
@@ -39,9 +39,9 @@ class AccountsDataSource: NSObject, UICollectionViewDataSource {
             return
         }
         accounts = session.accounts
-        
-        filterAddedAssetDetails()
-        filterRemovedAssetDetails()
+
+        configureAddedAssetDetails()
+        configureRemovedAssetDetails()
     }
     
     func refresh() {
@@ -53,26 +53,28 @@ class AccountsDataSource: NSObject, UICollectionViewDataSource {
         guard let accountIndex = accounts.firstIndex(of: account) else {
             return
         }
-        assetDetail.isRecentlyAdded = true
+
         accounts[accountIndex].assetDetails.append(assetDetail)
         if addedAssetDetails[account] == nil {
             addedAssetDetails[account] = [assetDetail]
         } else {
-            addedAssetDetails[account]?.append(assetDetail)
+            addedAssetDetails[account]?.insert(assetDetail)
         }
     }
     
     func remove(assetDetail: AssetDetail, from account: Account) {
         guard let accountIndex = accounts.firstIndex(of: account),
-            let assetDetailIndex = accounts[accountIndex].assetDetails.firstIndex(of: assetDetail) else {
+              let idx = account.assetDetails.firstIndex(where: { $0.id == assetDetail.id }) else {
             return
         }
-        assetDetail.isRemoved = true
-        accounts[accountIndex].assetDetails[assetDetailIndex] = assetDetail
+
+        account.assetDetails[idx] = assetDetail
+        accounts[accountIndex] = account
+
         if removedAssetDetails[account] == nil {
             removedAssetDetails[account] = [assetDetail]
         } else {
-            removedAssetDetails[account]?.append(assetDetail)
+            removedAssetDetails[account]?.insert(assetDetail)
         }
     }
     
@@ -134,7 +136,7 @@ extension AccountsDataSource {
                     cellForItemAt: indexPath,
                     for: assetDetail
                 )
-                cell.bind(PendingAssetViewModel(assetDetail: assetDetail, isRemoving: assetDetail.isRemoved))
+                cell.bind(PendingAssetViewModel(assetDetail: assetDetail))
                 return cell
             } else {
                 guard let assets = accounts[indexPath.section].assets,
@@ -237,40 +239,35 @@ extension AccountsDataSource: AccountFooterSupplementaryViewDelegate {
 }
 
 extension AccountsDataSource {
-    private func filterAddedAssetDetails() {
-        for (addedAccount, addedAssets) in addedAssetDetails {
-            guard let accountIndex = accounts.firstIndex(of: addedAccount) else {
-                continue
-            }
-            
-            for (index, assetDetail) in addedAssets.enumerated() where assetDetail.isRecentlyAdded {
-                if accounts[accountIndex].assetDetails.contains(assetDetail) {
-                    // Preventing duplication
-                    continue
-                }
-                
-                var filteredAssets = addedAssets
-                filteredAssets.remove(at: index)
-                addedAssetDetails[addedAccount] = filteredAssets
-                accounts[accountIndex].assetDetails.append(assetDetail)
-                break
+    private func configureAddedAssetDetails() {
+        // Check whether the asset is added to account in block.
+        // If it's added, remove from the pending list. If it's not, add to current list again.
+        for (account, addedAssets) in addedAssetDetails {
+            if let index = section(for: account) {
+                filterAddedAssets(at: index, for: account, in: addedAssets)
+                addedAssetDetails.clearValuesIfEmpty(for: account)
             }
         }
     }
-    
-    private func filterRemovedAssetDetails() {
-        for (removedAccount, removedAssets) in removedAssetDetails {
-            guard let accountIndex = accounts.firstIndex(of: removedAccount) else {
-                continue
+
+    private func filterAddedAssets(at index: Int, for account: Account, in addedAssets: Set<AssetDetail>) {
+        addedAssetDetails[account] = addedAssets.filter { assetDetail -> Bool in
+            let containsAssetDetailInUpdatedAccount = accounts[index].assetDetails.contains(assetDetail)
+
+            if !containsAssetDetailInUpdatedAccount {
+                accounts[index].assetDetails.append(assetDetail)
             }
-            
-            for (index, assetDetail) in removedAssets.enumerated() where assetDetail.isRemoved {
-                if !accounts[accountIndex].assetDetails.contains(assetDetail) {
-                    var filteredAssets = removedAssets
-                    filteredAssets.remove(at: index)
-                    removedAssetDetails[removedAccount] = filteredAssets
-                    break
-                }
+
+            return !containsAssetDetailInUpdatedAccount
+        }
+    }
+
+    private func configureRemovedAssetDetails() {
+        // Check whether the asset is removed from account in block. If it's removed, remove from the pending list as well.
+        for (account, removedAssets) in removedAssetDetails {
+            if let index = section(for: account) {
+                removedAssetDetails[account] = removedAssets.filter { !accounts[index].assetDetails.contains($0) }
+                removedAssetDetails.clearValuesIfEmpty(for: account)
             }
         }
     }

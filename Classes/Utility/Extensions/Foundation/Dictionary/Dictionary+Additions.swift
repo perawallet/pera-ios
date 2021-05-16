@@ -13,29 +13,14 @@
 // limitations under the License.
 
 //
-//  PendingAssetViewModel.swift
+//   Dictionary+Additions.swift
 
 import Foundation
 
-class PendingAssetViewModel {
-    private(set) var assetDetail: AssetDetail?
-    private(set) var detail: String?
-
-    init(assetDetail: AssetDetail) {
-        setAssetDetail(from: assetDetail)
-        setDetail(from: assetDetail)
-    }
-
-    private func setAssetDetail(from assetDetail: AssetDetail) {
-        self.assetDetail = assetDetail
-    }
-
-    private func setDetail(from assetDetail: AssetDetail) {
-        if assetDetail.isRecentlyAdded {
-            detail = "asset-add-confirmation-title".localized
-            return
+extension Dictionary where Value: Collection {
+    mutating func clearValuesIfEmpty(for key: Key) {
+        if self[key]?.isEmpty ?? false {
+            self[key] = nil
         }
-
-        detail = "asset-remove-confirmation-title".localized
     }
 }

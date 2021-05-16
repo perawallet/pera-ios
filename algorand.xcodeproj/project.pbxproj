@@ -1530,6 +1530,9 @@
 		2B9EEB67264ED202007A112D /* RewardCalculationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9EEB66264ED202007A112D /* RewardCalculationViewModel.swift */; };
 		2B9EEB68264ED202007A112D /* RewardCalculationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9EEB66264ED202007A112D /* RewardCalculationViewModel.swift */; };
 		2B9EEB69264ED202007A112D /* RewardCalculationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9EEB66264ED202007A112D /* RewardCalculationViewModel.swift */; };
+		2B9EEBAA265185C0007A112D /* Dictionary+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9EEBA9265185C0007A112D /* Dictionary+Additions.swift */; };
+		2B9EEBAB265185C0007A112D /* Dictionary+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9EEBA9265185C0007A112D /* Dictionary+Additions.swift */; };
+		2B9EEBAC265185C1007A112D /* Dictionary+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9EEBA9265185C0007A112D /* Dictionary+Additions.swift */; };
 		2B9EF2BC25D3D144004BCCC4 /* PasshraseMnemonicNumberHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9EF2BB25D3D144004BCCC4 /* PasshraseMnemonicNumberHeaderView.swift */; };
 		2B9EF2BD25D3D144004BCCC4 /* PasshraseMnemonicNumberHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9EF2BB25D3D144004BCCC4 /* PasshraseMnemonicNumberHeaderView.swift */; };
 		2B9EF2BE25D3D144004BCCC4 /* PasshraseMnemonicNumberHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9EF2BB25D3D144004BCCC4 /* PasshraseMnemonicNumberHeaderView.swift */; };
@@ -2681,6 +2684,7 @@
 		2B9EEAD5264D33B1007A112D /* API+Block.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+Block.swift"; sourceTree = "<group>"; };
 		2B9EEADE264E7527007A112D /* RewardCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardCalculator.swift; sourceTree = "<group>"; };
 		2B9EEB66264ED202007A112D /* RewardCalculationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardCalculationViewModel.swift; sourceTree = "<group>"; };
+		2B9EEBA9265185C0007A112D /* Dictionary+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+Additions.swift"; sourceTree = "<group>"; };
 		2B9EF2BB25D3D144004BCCC4 /* PasshraseMnemonicNumberHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasshraseMnemonicNumberHeaderView.swift; sourceTree = "<group>"; };
 		2B9EF2C725D3D15F004BCCC4 /* PasshraseMnemonicNumberHeaderSupplementaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasshraseMnemonicNumberHeaderSupplementaryView.swift; sourceTree = "<group>"; };
 		2B9EF2D025D3D185004BCCC4 /* PasshraseMnemonicNumberHeaderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasshraseMnemonicNumberHeaderViewModel.swift; sourceTree = "<group>"; };
@@ -3565,6 +3569,7 @@
 			isa = PBXGroup;
 			children = (
 				2B1CFA0A2554113300D60B73 /* Dictionary+ErrorLogParamKeys.swift */,
+				2B9EEBA9265185C0007A112D /* Dictionary+Additions.swift */,
 			);
 			path = Dictionary;
 			sourceTree = "<group>";
@@ -8927,6 +8932,7 @@
 				17BD4E522292F1260003E49A /* TransactionList.swift in Sources */,
 				2B1CFA0D2554113300D60B73 /* Dictionary+ErrorLogParamKeys.swift in Sources */,
 				2BE9372E2463272500322C1E /* SelectAssetViewModel.swift in Sources */,
+				2B9EEBAC265185C1007A112D /* Dictionary+Additions.swift in Sources */,
 				17BD4E532292F1260003E49A /* TransactionHistoryCell.swift in Sources */,
 				2B8E7C94246AD8B800CC5A58 /* ContactsEmptyView.swift in Sources */,
 				2BB64BDD240277A500519981 /* LedgerTroubleshootOption.swift in Sources */,
@@ -9599,6 +9605,7 @@
 				2B1CFA0C2554113300D60B73 /* Dictionary+ErrorLogParamKeys.swift in Sources */,
 				2B0F61EE24EC129D00DA22A6 /* BaseInputView.swift in Sources */,
 				2B0F61EF24EC129D00DA22A6 /* AssetInputView.swift in Sources */,
+				2B9EEBAB265185C0007A112D /* Dictionary+Additions.swift in Sources */,
 				2B0F61F024EC129D00DA22A6 /* AssetViewModel.swift in Sources */,
 				2B0F61F124EC129D00DA22A6 /* AlgorandSDK.swift in Sources */,
 				2B57D8F025587F4F006E6FCE /* ReceiveAssetDetailEvent.swift in Sources */,
@@ -10271,6 +10278,7 @@
 				2BF53159224A46C500A7455F /* ModalPresenterInteractable.swift in Sources */,
 				2B1CFA0B2554113300D60B73 /* Dictionary+ErrorLogParamKeys.swift in Sources */,
 				2BBA198C231FF7650080A6F6 /* DeviceRegistrationDraft.swift in Sources */,
+				2B9EEBAA265185C0007A112D /* Dictionary+Additions.swift in Sources */,
 				2BE9372D2463272500322C1E /* SelectAssetViewModel.swift in Sources */,
 				2B8E7C93246AD8B800CC5A58 /* ContactsEmptyView.swift in Sources */,
 				2BB64BDC240277A500519981 /* LedgerTroubleshootOption.swift in Sources */,

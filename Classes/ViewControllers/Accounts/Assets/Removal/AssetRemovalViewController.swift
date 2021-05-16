@@ -284,7 +284,8 @@ extension AssetRemovalViewController: TransactionControllerDelegate {
             let removedAssetDetail = getRemovedAssetDetail(from: assetTransactionDraft) else {
             return
         }
-        
+
+        removedAssetDetail.isRemoved = true
         delegate?.assetRemovalViewController(self, didRemove: removedAssetDetail, from: account)
         dismissScreen()
     }
