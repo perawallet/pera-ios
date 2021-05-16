@@ -227,6 +227,7 @@
 "send-enter-note-placeholder" = "Enter note here";
 "send-enter-note-title" = "Add Note";
 "send-transaction-max-same-account-error" = "You cannot send your max balance to yourself. Please select a different amount or recipient and try again.";
+"send-trasaction-address-placeholder" = "Paste #";
 
 // MARK: Algos Request
 "request-algos-title" = "Request Algos";

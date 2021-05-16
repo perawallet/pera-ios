@@ -72,6 +72,7 @@ class AlgosCardView: BaseView {
         button.titleLabel?.font = UIFont.font(withWeight: .regular(size: 14.0))
         button.contentEdgeInsets = .zero
         button.titleLabel?.textAlignment = .left
+        button.contentEdgeInsets.top = 20.0
         return button
     }()
 
@@ -179,7 +180,7 @@ extension AlgosCardView {
         addSubview(rewardTitleButton)
         
         rewardTitleButton.snp.makeConstraints { make in
-            make.top.equalTo(algosTitleLabel).offset(layout.current.rewardLabelTopOffset)
+            make.top.equalTo(totalAmountLabel.snp.bottom).offset(layout.current.rewardTopInset)
             make.leading.equalTo(algosAmountLabel.snp.trailing).offset(layout.current.rewardTitleLeadingInset)
         }
     }
@@ -230,6 +231,7 @@ extension AlgosCardView {
         let defaultInset: CGFloat = 24.0
         let rewardLabelTopOffset: CGFloat = -1.0
         let currencyTopInset: CGFloat = 8.0
+        let rewardTopInset: CGFloat = 42.0
         let algosTopInset: CGFloat = 64.0
         let amountTrailingInset: CGFloat = 40.0
         let minimumOffset: CGFloat = 4.0
