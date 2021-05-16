@@ -31,7 +31,7 @@ class AlgoUSDAnalyticsFooterViewModel {
     }
 
     private func setValue(from account: Account, and algoUSDValue: AlgosUSDValue) {
-        guard let price = algoUSDValue.close else {
+        guard let price = algoUSDValue.getChartDisplayValue() else {
             return
         }
 

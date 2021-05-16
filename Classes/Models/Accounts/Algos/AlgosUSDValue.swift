@@ -25,3 +25,9 @@ class AlgosUSDValue: Model {
     let close: Double?
     let volume: Double?
 }
+
+extension AlgosUSDValue {
+    func getChartDisplayValue() -> Double? {
+        return high
+    }
+}

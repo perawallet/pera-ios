@@ -52,13 +52,13 @@ enum AlgosUSDValueInterval {
         case .daily:
             return "15m"
         case .weekly:
-            return "2H"
+            return "3H"
         case .monthly:
-            return "6H"
+            return "12H"
         case .yearly:
-            return "2D"
-        case .all:
             return "1W"
+        case .all:
+            return "2W"
         }
     }
 
