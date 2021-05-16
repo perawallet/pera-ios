@@ -46,9 +46,9 @@ extension AlgorandAPI {
     @discardableResult
     func getBlock(_ blockNumber: Int64, then handler: @escaping (Response.ModelResult<AlgorandBlock>) -> Void) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(indexerBase)
+            .base(algodBase)
             .path("/v2/blocks/\(blockNumber)")
-            .headers(indexerAuthenticatedHeaders())
+            .headers(algodAuthenticatedHeaders())
             .completionHandler(handler)
             .build()
             .send()

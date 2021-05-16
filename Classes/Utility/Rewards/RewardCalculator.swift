@@ -129,8 +129,7 @@ extension RewardCalculator: AccountManagerDelegate {
             return
         }
 
-        self.currentRound = currentRound - 1
-
+        self.currentRound = currentRound
         // After each new block, get the required calculation values again and calculate pending rewards
         calculatePendingRewards()
     }

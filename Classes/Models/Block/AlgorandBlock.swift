@@ -23,14 +23,14 @@ class AlgorandBlock: Model {
 
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        let rewardsContainer = try container.nestedContainer(keyedBy: RewardsCodingKeys.self, forKey: .rewards)
+        let rewardsContainer = try container.nestedContainer(keyedBy: RewardsCodingKeys.self, forKey: .block)
         rewardsRate = try rewardsContainer.decode(Int64.self, forKey: .rewardsRate)
         rewardsResidue = try rewardsContainer.decode(Int64.self, forKey: .rewardsResidue)
     }
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        var rewardsContainer = container.nestedContainer(keyedBy: RewardsCodingKeys.self, forKey: .rewards)
+        var rewardsContainer = container.nestedContainer(keyedBy: RewardsCodingKeys.self, forKey: .block)
         try rewardsContainer.encode(rewardsRate, forKey: .rewardsRate)
         try rewardsContainer.encode(rewardsResidue, forKey: .rewardsResidue)
     }
@@ -38,11 +38,11 @@ class AlgorandBlock: Model {
 
 extension AlgorandBlock {
     private enum CodingKeys: String, CodingKey {
-        case rewards = "rewards"
+        case block = "block"
     }
 
     private enum RewardsCodingKeys: String, CodingKey {
-        case rewardsRate = "rewards-rate"
-        case rewardsResidue = "rewards-residue"
+        case rewardsRate = "rate"
+        case rewardsResidue = "frac"
     }
 }
