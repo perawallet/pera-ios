@@ -22,6 +22,7 @@ protocol AlgorandChartViewCustomizable {
     var isDragEnabled: Bool { get }
     var isScaleEnabled: Bool { get }
     var isPinchZoomEnabled: Bool { get }
+    var isDoubleTapToZoomEnabled: Bool { get }
     var isHighlightPerTapEnabled: Bool { get }
     var isLegendEnabled: Bool { get }
     var legendForm: Legend.Form { get }

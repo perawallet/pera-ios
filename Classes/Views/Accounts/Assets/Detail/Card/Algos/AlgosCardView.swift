@@ -66,7 +66,7 @@ class AlgosCardView: BaseView {
     private lazy var rewardTitleButton: AlignedButton = {
         let button = AlignedButton(.imageAtRight(spacing: 4.0))
         button.setImage(img("icon-info-white"), for: .normal)
-        button.setTitle("title-algo-rewards".localized, for: .normal)
+        button.setTitle("rewards-title".localized, for: .normal)
         button.imageView?.contentMode = .scaleAspectFit
         button.setTitleColor(Colors.Main.white.withAlphaComponent(0.8), for: .normal)
         button.titleLabel?.font = UIFont.font(withWeight: .regular(size: 14.0))

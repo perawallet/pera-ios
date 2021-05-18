@@ -587,7 +587,7 @@
 "title-enter-pin-for-passphrase" = "Please enter your PIN to view passphrase";
 
 "title-analytics" = "Analytics";
-"title-algo-rewards" = "Algo Rewards";
+"title-algo-rewards" = "Rewards";
 "value-one-algo" = "1 ALGO = %@";
 
 "title-algorand" = "Algorand";
@@ -601,7 +601,7 @@
 "chart-time-selection-yearly" = "1Y";
 "chart-time-selection-all" = "ALL";
 
-"chart-no-data-text" = "No chart data available.";
+"chart-no-data-text" = "Price API is currently unavailable, please check back soon.";
 
 "chart-time-last-hour" = "Last 1 Hour";
 "chart-time-last-day" = "Last 1 Day";
