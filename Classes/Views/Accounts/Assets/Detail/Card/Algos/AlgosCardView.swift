@@ -194,7 +194,7 @@ extension AlgosCardView {
 
         rewardAmountLabel.snp.makeConstraints { make in
             make.leading.equalTo(rewardTitleButton)
-            make.trailing.equalToSuperview().inset(layout.current.rewardAmountTrailingInset)
+            make.trailing.lessThanOrEqualToSuperview().inset(layout.current.rewardAmountTrailingInset)
             make.top.equalTo(algosAmountLabel)
         }
     }
