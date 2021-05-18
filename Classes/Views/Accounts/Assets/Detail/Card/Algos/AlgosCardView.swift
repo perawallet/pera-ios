@@ -30,7 +30,7 @@ class AlgosCardView: BaseView {
             .withAlignment(.left)
             .withTextColor(Colors.Main.white)
             .withFont(UIFont.font(withWeight: .medium(size: 28.0)))
-        label.minimumScaleFactor = 0.7
+        label.minimumScaleFactor = 0.5
         label.adjustsFontSizeToFitWidth = true
         return label
     }()
@@ -58,7 +58,7 @@ class AlgosCardView: BaseView {
             .withAlignment(.left)
             .withTextColor(Colors.Main.white)
             .withFont(UIFont.font(withWeight: .medium(size: 16.0)))
-        label.minimumScaleFactor = 0.7
+        label.minimumScaleFactor = 0.3
         label.adjustsFontSizeToFitWidth = true
         return label
     }()
@@ -135,6 +135,7 @@ extension AlgosCardView {
         
         totalAmountLabel.snp.makeConstraints { make in
             make.top.leading.equalToSuperview().inset(layout.current.defaultInset)
+            make.trailing.lessThanOrEqualToSuperview().inset(layout.current.defaultInset)
         }
     }
     
@@ -188,8 +189,12 @@ extension AlgosCardView {
     private func setupRewardAmountLabelLayout() {
         addSubview(rewardAmountLabel)
 
+        rewardAmountLabel.setContentHuggingPriority(.required, for: .horizontal)
+        rewardAmountLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+
         rewardAmountLabel.snp.makeConstraints { make in
             make.leading.equalTo(rewardTitleButton)
+            make.trailing.equalToSuperview().inset(layout.current.rewardAmountTrailingInset)
             make.top.equalTo(algosAmountLabel)
         }
     }
@@ -232,6 +237,7 @@ extension AlgosCardView {
         let rewardLabelTopOffset: CGFloat = -1.0
         let currencyTopInset: CGFloat = 8.0
         let rewardTopInset: CGFloat = 42.0
+        let rewardAmountTrailingInset: CGFloat = 8.0
         let algosTopInset: CGFloat = 64.0
         let amountTrailingInset: CGFloat = 40.0
         let minimumOffset: CGFloat = 4.0
