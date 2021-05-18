@@ -32,13 +32,15 @@ class AlgoAnalyticsHeaderViewModel {
     }
 
     private func setAmount(from priceChange: AlgoUSDPriceChange) {
-        if let selectedPrice = priceChange.selectedPrice?.getChartDisplayValue() {
-            amount = selectedPrice.toCurrencyStringForLabel(with: AlgoUSDAnalyticsViewController.Currency.usdCurrencyID)
+        if let selectedPrice = priceChange.selectedPrice?.getChartDisplayValue(),
+           let currencyValue = selectedPrice.toCurrencyStringForLabel {
+            amount = "\(currencyValue) \(AlgoUSDAnalyticsViewController.Currency.usdCurrencyID)"
             return
         }
 
-        if let currentPrice = priceChange.lastPrice?.getChartDisplayValue() {
-            amount = currentPrice.toCurrencyStringForLabel(with: AlgoUSDAnalyticsViewController.Currency.usdCurrencyID)
+        if let currentPrice = priceChange.lastPrice?.getChartDisplayValue(),
+           let currencyValue = currentPrice.toCurrencyStringForLabel {
+            amount = "\(currencyValue) \(AlgoUSDAnalyticsViewController.Currency.usdCurrencyID)"
         }
     }
 

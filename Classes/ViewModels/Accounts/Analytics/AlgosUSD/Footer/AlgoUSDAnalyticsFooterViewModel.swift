@@ -37,10 +37,8 @@ class AlgoUSDAnalyticsFooterViewModel {
 
         let currencyAmountForAccount = account.amount.toAlgos * price
 
-        if let currencyValue = currencyAmountForAccount.toCurrencyStringForLabel(
-            with: AlgoUSDAnalyticsViewController.Currency.usdCurrencyID
-        ) {
-            value = currencyValue
+        if let currencyValue = currencyAmountForAccount.toCurrencyStringForLabel {
+            value = "\(currencyValue) \(AlgoUSDAnalyticsViewController.Currency.usdCurrencyID)"
         }
     }
 }
