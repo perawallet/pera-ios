@@ -17,7 +17,7 @@
 
 import UIKit
 
-extension UIPanGestureRecognizer {
+extension UIGestureRecognizer {
     var isGestureCompleted: Bool {
         return state == .ended || state == .cancelled
     }
