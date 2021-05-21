@@ -39,7 +39,7 @@ class AlgoUSDValueFormatter: IValueFormatter {
 
         if value == minimumPrice && (minimumIndex == entry.x || minimumIndex == nil) {
             minimumIndex = entry.x
-            return getPriceRepresentation(for: minimumPrice)
+            return "\n\n\(getPriceRepresentation(for: minimumPrice))"
         }
 
         return ""

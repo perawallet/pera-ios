@@ -46,6 +46,7 @@ class AlgoUSDAnalyticsViewController: BaseScrollViewController {
 
     override func configureAppearance() {
         super.configureAppearance()
+        scrollView.alwaysBounceVertical = false
         view.backgroundColor = Colors.Background.secondary
     }
 

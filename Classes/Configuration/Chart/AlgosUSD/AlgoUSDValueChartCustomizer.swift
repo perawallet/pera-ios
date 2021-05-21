@@ -39,8 +39,12 @@ struct AlgoUSDValueChartCustomizer: AlgorandChartViewCustomizable {
         return false
     }
 
+    var isHighlightPerDragEnabled: Bool {
+        return false
+    }
+
     var isHighlightPerTapEnabled: Bool {
-        return true
+        return false
     }
 
     var isLegendEnabled: Bool {

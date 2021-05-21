@@ -101,7 +101,7 @@ struct AlgoUSDValueChartDataSetCustomizer: AlgorandLineChartDataSetCustomizable 
     }
 
     var isDrawingVerticalHighlightIndicatorEnabled: Bool {
-        return false
+        return true
     }
 
     var isLastElementDrawingCircle: Bool {

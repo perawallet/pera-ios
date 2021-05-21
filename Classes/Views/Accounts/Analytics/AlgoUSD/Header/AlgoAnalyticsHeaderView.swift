@@ -80,6 +80,7 @@ extension AlgoAnalyticsHeaderView {
         informationStackView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.bottom.equalToSuperview()
+            make.height.equalTo(layout.current.stackHeight)
             make.top.equalTo(amountLabel.snp.bottom).offset(layout.current.stackTopInset)
         }
 
@@ -104,6 +105,7 @@ extension AlgoAnalyticsHeaderView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let stackTopInset: CGFloat = 12.0
         let horizontalInset: CGFloat = 20.0
+        let stackHeight: CGFloat = 22.0
     }
 }
 
