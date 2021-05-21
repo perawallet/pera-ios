@@ -26,6 +26,16 @@ class AlgosCardCell: BaseCollectionViewCell<AlgosCardView> {
     }
 }
 
+extension AlgosCardCell {
+    func bind(_ viewModel: AlgosCardViewModel) {
+        contextView.bind(viewModel)
+    }
+
+    func bind(_ viewModel: RewardCalculationViewModel) {
+        contextView.bind(viewModel)
+    }
+}
+
 extension AlgosCardCell: AlgosCardViewDelegate {
     func algosCardViewDidOpenRewardDetails(_ algosCardView: AlgosCardView) {
         delegate?.algosCardCellDidOpenRewardDetails(self)

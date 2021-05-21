@@ -90,19 +90,21 @@ class TransactionDetailViewModel {
         
         view.opponentView.setTitle("transaction-detail-to".localized)
         
-        if let assetTransaction = transaction.assetTransfer,
-            let assetDetail = assetDetail {
+        if let assetTransaction = transaction.assetTransfer {
             view.closeAmountView.removeFromSuperview()
             view.closeToView.removeFromSuperview()
             setOpponent(for: transaction, with: assetTransaction.receiverAddress ?? "", in: view)
-            
-            let amount = assetTransaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals)
-            
-            let value: TransactionAmountView.Mode = transaction.isSelfTransaction()
-                ? .normal(amount: amount, isAlgos: false, fraction: assetDetail.fractionDecimals)
-                : .negative(amount: amount, isAlgos: false, fraction: assetDetail.fractionDecimals)
-            view.amountView.setAmountViewMode(value)
-            
+
+            if let assetDetail = assetDetail {
+                let amount = assetTransaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals)
+
+                let value: TransactionAmountView.Mode = transaction.isSelfTransaction()
+                    ? .normal(amount: amount, isAlgos: false, fraction: assetDetail.fractionDecimals)
+                    : .negative(amount: amount, isAlgos: false, fraction: assetDetail.fractionDecimals)
+                view.amountView.setAmountViewMode(value)
+            } else if transaction.isAssetAdditionTransaction(for: account.address) {
+                view.amountView.setAmountViewMode(.normal(amount: 0.0))
+            }
         } else if let payment = transaction.payment {
             setOpponent(for: transaction, with: payment.receiver, in: view)
             

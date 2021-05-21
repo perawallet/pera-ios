@@ -26,6 +26,12 @@ class AssetCardCell: BaseCollectionViewCell<AssetCardView> {
     }
 }
 
+extension AssetCardCell {
+    func bind(_ viewModel: AssetCardViewModel) {
+        contextView.bind(viewModel)
+    }
+}
+
 extension AssetCardCell: AssetCardViewDelegate {
     func assetCardViewDidCopyAssetId(_ assetCardView: AssetCardView) {
         delegate?.assetCardCellDidCopyAssetId(self)

@@ -32,8 +32,8 @@ class AlgosCardAnalyticsContainerViewModel {
             return
         }
 
-        if let currencyValue = currencyPriceDoubleValue.toCurrencyStringForLabel(with: currencyCode) {
-            self.algosCurrencyValue = "value-one-algo".localized(params: String(currencyValue))
+        if let currencyValue = currencyPriceDoubleValue.toCurrencyStringForLabel {
+            self.algosCurrencyValue = "value-one-algo".localized(params: "\(currencyValue) \(currencyCode)")
         }
     }
 }

@@ -27,6 +27,8 @@ class AlgoUSDAnalyticsViewController: BaseScrollViewController {
 
     private lazy var dataController = AlgoUSDAnalyticsDataController(api: api)
 
+    private lazy var impactFeedbackGenerator = UIImpactFeedbackGenerator(style: .light)
+
     private let account: Account
 
     private var chartEntries: [AlgosUSDValue]?
@@ -44,6 +46,7 @@ class AlgoUSDAnalyticsViewController: BaseScrollViewController {
 
     override func configureAppearance() {
         super.configureAppearance()
+        scrollView.alwaysBounceVertical = false
         view.backgroundColor = Colors.Background.secondary
     }
 
@@ -85,6 +88,7 @@ extension AlgoUSDAnalyticsViewController: AlgoUSDAnalyticsViewDelegate {
             return
         }
 
+        impactFeedbackGenerator.impactOccurred()
         bindHeaderView(with: values, selectedPrice: selectedPrice)
     }
     

@@ -13,12 +13,20 @@
 // limitations under the License.
 
 //
-//   UIPanGestureRecognizer+Additions.swift
+//   AlgorandTotalSupply.swift
 
-import UIKit
+import Magpie
 
-extension UIGestureRecognizer {
-    var isGestureCompleted: Bool {
-        return state == .ended || state == .cancelled
+class AlgorandTotalSupply: Model {
+    let currentRound: Int64
+    let onlineMoney: Int64
+    let totalMoney: Int64
+}
+
+extension AlgorandTotalSupply {
+    private enum CodingKeys: String, CodingKey {
+        case currentRound = "current_round"
+        case onlineMoney = "online-money"
+        case totalMoney = "total-money"
     }
 }

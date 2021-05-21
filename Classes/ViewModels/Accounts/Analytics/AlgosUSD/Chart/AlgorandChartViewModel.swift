@@ -44,7 +44,7 @@ extension AlgosUSDChartViewModel {
         var index = 0
 
         for historicalPrice in historicalPrices {
-            if let algosPrice = historicalPrice.close {
+            if let algosPrice = historicalPrice.getChartDisplayValue() {
                 entries.append(ChartDataEntry(x: Double(index), y: algosPrice))
                 index = index.advanced(by: 1)
             }

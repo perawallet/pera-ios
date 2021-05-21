@@ -31,16 +31,14 @@ class AlgoUSDAnalyticsFooterViewModel {
     }
 
     private func setValue(from account: Account, and algoUSDValue: AlgosUSDValue) {
-        guard let price = algoUSDValue.close else {
+        guard let price = algoUSDValue.getChartDisplayValue() else {
             return
         }
 
         let currencyAmountForAccount = account.amount.toAlgos * price
 
-        if let currencyValue = currencyAmountForAccount.toCurrencyStringForLabel(
-            with: AlgoUSDAnalyticsViewController.Currency.usdCurrencyID
-        ) {
-            value = currencyValue
+        if let currencyValue = currencyAmountForAccount.toCurrencyStringForLabel {
+            value = "\(currencyValue) \(AlgoUSDAnalyticsViewController.Currency.usdCurrencyID)"
         }
     }
 }

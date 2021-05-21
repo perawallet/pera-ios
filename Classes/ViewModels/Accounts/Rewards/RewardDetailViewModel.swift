@@ -25,7 +25,6 @@ class RewardDetailViewModel {
     }
 
     private func setAmount(from account: Account) {
-        let totalRewards: UInt64 = (account.pendingRewards ?? 0)
-        amount = totalRewards.toAlgos.toAlgosStringForLabel
+        amount = account.pendingRewards.toAlgos.toAlgosStringForLabel
     }
 }

@@ -35,6 +35,14 @@ struct AlgoUSDValueChartCustomizer: AlgorandChartViewCustomizable {
         return false
     }
 
+    var isDoubleTapToZoomEnabled: Bool {
+        return false
+    }
+
+    var isHighlightPerDragEnabled: Bool {
+        return false
+    }
+
     var isHighlightPerTapEnabled: Bool {
         return false
     }
@@ -68,7 +76,7 @@ struct AlgoUSDValueChartCustomizer: AlgorandChartViewCustomizable {
     }
 
     var minimumOffset: CGFloat {
-        return 0.0
+        return 20.0
     }
 }
 

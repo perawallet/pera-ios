@@ -45,11 +45,16 @@ struct AlgoUSDValueChartDataSetCustomizer: AlgorandLineChartDataSetCustomizable 
     }
 
     var isDrawingValuesEnabled: Bool {
-        return false
+        return true
     }
 
     var isDrawingCirclesEnabled: Bool {
         return false
+    }
+
+    func valueFormatter(from entries: [ChartDataEntry]) -> IValueFormatter? {
+        let sortedEntries = entries.sorted(by: \.y)
+        return AlgoUSDValueFormatter(values: sortedEntries)
     }
 
     var highlightColor: UIColor {
@@ -96,7 +101,7 @@ struct AlgoUSDValueChartDataSetCustomizer: AlgorandLineChartDataSetCustomizable 
     }
 
     var isDrawingVerticalHighlightIndicatorEnabled: Bool {
-        return false
+        return true
     }
 
     var isLastElementDrawingCircle: Bool {

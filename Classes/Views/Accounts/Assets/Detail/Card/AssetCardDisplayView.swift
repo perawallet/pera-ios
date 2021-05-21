@@ -95,6 +95,10 @@ extension AssetCardDisplayView {
     func reloadData(at index: Int) {
         assetsCollectionView.reloadItems(at: [IndexPath(item: index, section: 0)])
     }
+
+    func item(at index: Int) -> UICollectionViewCell? {
+        return assetsCollectionView.cellForItem(at: IndexPath(item: index, section: 0))
+    }
     
     func setDelegate(_ delegate: UICollectionViewDelegate?) {
         assetsCollectionView.delegate = delegate

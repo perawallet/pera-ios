@@ -91,6 +91,7 @@ extension AlgosCardAnalyticsContainerView {
 
         analyticsButton.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
+            make.bottom.top.equalToSuperview()
             make.trailing.equalTo(rightArrowImageView.snp.leading).offset(layout.current.analyticsTrailinfInset)
             make.leading.greaterThanOrEqualTo(algoCurrencyValueLabel.snp.trailing).offset(layout.current.minimumOffset)
         }

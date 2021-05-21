@@ -32,6 +32,7 @@ struct AlgorandLineChartDataComposer {
         dataSet.lineWidth = customizer.lineWidth
         dataSet.drawCirclesEnabled = customizer.isDrawingCirclesEnabled
         dataSet.drawValuesEnabled = customizer.isDrawingValuesEnabled
+        dataSet.valueFormatter = customizer.valueFormatter(from: entries)
         dataSet.highlightColor = customizer.highlightColor
         dataSet.highlightLineWidth = customizer.highlightLineWidth
         dataSet.valueTextColor = customizer.valueColor
