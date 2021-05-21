@@ -24,7 +24,7 @@ struct AlgoUSDPriceChange {
 
     func getValueChangeStatus() -> ValueChangeStatus {
         // Use the opening value of the first price and high value of the last price in the interval to calculate change amount.
-        guard let firstPrice = firstPrice?.open,
+        guard let firstPrice = firstPrice?.open?.round(to: 2),
               let lastPrice = lastPrice?.getChartDisplayValue() else {
             return .increased
         }
@@ -40,7 +40,7 @@ struct AlgoUSDPriceChange {
 
     func getValueChangePercentage() -> Double {
         // Use the opening value of the first price and high value of the last price in the interval to calculate change amount.
-        guard let firstPrice = firstPrice?.open,
+        guard let firstPrice = firstPrice?.open?.round(to: 2),
               let lastPrice = lastPrice?.getChartDisplayValue() else {
             return 1
         }

@@ -28,6 +28,6 @@ class AlgosUSDValue: Model {
 
 extension AlgosUSDValue {
     func getChartDisplayValue() -> Double? {
-        return high
+        return high?.round(to: 2)
     }
 }
