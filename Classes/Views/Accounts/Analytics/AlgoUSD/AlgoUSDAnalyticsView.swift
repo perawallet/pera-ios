@@ -92,7 +92,7 @@ extension AlgoUSDAnalyticsView {
         lineChartView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(layout.current.chartHeight)
-            make.top.equalTo(analyticsHeaderView.snp.bottom).offset(layout.current.chartTopInset)
+            make.top.equalTo(analyticsHeaderView.snp.bottom).offset(layout.current.chartVerticalInset)
         }
     }
 
@@ -101,7 +101,7 @@ extension AlgoUSDAnalyticsView {
 
         chartTimeFrameSelectionView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(layout.current.timeSelectionHorizontalInset)
-            make.top.equalTo(lineChartView.snp.bottom).offset(layout.current.separatorVerticalInset)
+            make.top.equalTo(lineChartView.snp.bottom).offset(layout.current.chartVerticalInset)
             make.height.equalTo(layout.current.timeSelectionHeight)
         }
     }
@@ -170,8 +170,8 @@ extension AlgoUSDAnalyticsView {
         let titleHorizontalInset: CGFloat = 8.0
         let headerTopInset: CGFloat = 40.0
         let headerHorizontalInset: CGFloat = 8.0
-        let chartTopInset: CGFloat = 32.0
-        let chartHeight: CGFloat = 168.0
+        let chartVerticalInset: CGFloat = 32.0
+        let chartHeight: CGFloat = 188.0
         let timeSelectionHorizontalInset: CGFloat = 24.0
         let timeSelectionHeight: CGFloat = 28.0
         let separatorHeight: CGFloat = 1.0

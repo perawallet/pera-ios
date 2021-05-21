@@ -21,6 +21,11 @@ class AlgoUSDAnalyticsDataController {
 
     weak var delegate: AlgoUSDAnalyticsDataControllerDelegate?
 
+    private let chartDispatchGroup = DispatchGroup()
+
+    private var values: [AlgosUSDValue] = []
+    private var lastFiveMinutesValues: AlgosUSDValue?
+
     private let api: AlgorandAPI?
 
     init(api: AlgorandAPI?) {
@@ -28,18 +33,69 @@ class AlgoUSDAnalyticsDataController {
     }
 
     func getChartData(for interval: AlgosUSDValueInterval) {
-        api?.fetchAlgosUSDValue(with: AlgosUSDValueQuery(valueInterval: interval)) { [weak self ]response in
+        fetchData(for: interval)
+        fetchDataForLastFiveMinutes()
+
+        chartDispatchGroup.notify(queue: .main) { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.addLastFiveMinutesToValuesIfNeeded()
+            self.returnValues()
+        }
+    }
+
+    private func fetchData(for interval: AlgosUSDValueInterval) {
+        chartDispatchGroup.enter()
+
+        api?.fetchAlgosUSDValue(with: AlgosUSDValueQuery(valueInterval: interval)) { [weak self] response in
             guard let self = self else {
                 return
             }
 
             switch response {
             case let .success(result):
-                self.delegate?.algoUSDAnalyticsDataController(self, didFetch: result.history)
+                self.values = result.history
             case .failure:
                 self.delegate?.algoUSDAnalyticsDataControllerDidFailToFetch(self)
             }
+
+            self.chartDispatchGroup.leave()
         }
+    }
+
+    // Fetch last five minute data to display the latest value on the chart.
+    private func fetchDataForLastFiveMinutes() {
+        chartDispatchGroup.enter()
+
+        api?.fetchAlgosUSDValue(with: AlgosUSDValueQuery(valueInterval: .hourly)) { [weak self] response in
+            guard let self = self else {
+                return
+            }
+
+            switch response {
+            case let .success(result):
+                self.lastFiveMinutesValues = result.history.last
+            case .failure:
+                self.delegate?.algoUSDAnalyticsDataControllerDidFailToFetch(self)
+            }
+
+            self.chartDispatchGroup.leave()
+        }
+    }
+
+    private func addLastFiveMinutesToValuesIfNeeded() {
+        if let lastFiveMinutesValues = lastFiveMinutesValues {
+            let hasSameInterval = values.last?.timestamp == lastFiveMinutesValues.timestamp
+            if !hasSameInterval {
+                values.append(lastFiveMinutesValues)
+            }
+        }
+    }
+
+    private func returnValues() {
+        delegate?.algoUSDAnalyticsDataController(self, didFetch: values)
     }
 }
 

@@ -13,12 +13,14 @@
 // limitations under the License.
 
 //
-//   UIPanGestureRecognizer+Additions.swift
+//   Dictionary+Additions.swift
 
-import UIKit
+import Foundation
 
-extension UIGestureRecognizer {
-    var isGestureCompleted: Bool {
-        return state == .ended || state == .cancelled
+extension Dictionary where Value: Collection {
+    mutating func clearValuesIfEmpty(for key: Key) {
+        if self[key]?.isEmpty ?? false {
+            self[key] = nil
+        }
     }
 }

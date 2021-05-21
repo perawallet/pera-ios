@@ -27,6 +27,8 @@ class AlgorandChartView: BaseView {
         lineChartView.dragEnabled = chartCustomizer.isDragEnabled
         lineChartView.setScaleEnabled(chartCustomizer.isScaleEnabled)
         lineChartView.pinchZoomEnabled = chartCustomizer.isPinchZoomEnabled
+        lineChartView.doubleTapToZoomEnabled = chartCustomizer.isDoubleTapToZoomEnabled
+        lineChartView.highlightPerDragEnabled = chartCustomizer.isHighlightPerDragEnabled
         lineChartView.highlightPerTapEnabled = chartCustomizer.isHighlightPerTapEnabled
         lineChartView.legend.enabled = chartCustomizer.isLegendEnabled
         lineChartView.legend.form = chartCustomizer.legendForm
@@ -62,8 +64,12 @@ class AlgorandChartView: BaseView {
 
     override func linkInteractors() {
         lineChartView.delegate = self
-        let gestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handleHighlightingChart(_:)))
-        lineChartView.addGestureRecognizer(gestureRecognizer)
+        let tapGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleHighlightingChart(_:)))
+        tapGestureRecognizer.minimumPressDuration = 0.0
+        lineChartView.addGestureRecognizer(tapGestureRecognizer)
+
+        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handleHighlightingChart(_:)))
+        lineChartView.addGestureRecognizer(panGestureRecognizer)
     }
 }
 
@@ -75,7 +81,11 @@ extension AlgorandChartView {
             return
         }
 
-        highlightChart(with: gesture)
+        if let highlight = getHighlight(from: gesture) {
+            lineChartView.highlightValue(x: highlight.x, dataSetIndex: highlight.dataSetIndex, dataIndex: highlight.dataIndex)
+        }
+
+        highlightChart()
     }
 
     private func removeChartHighlighting() {
@@ -85,16 +95,17 @@ extension AlgorandChartView {
         if let dataSet = lineChartView.data?.dataSets.last as? LineChartDataSet,
            let currentColor = dataSet.colors.first {
             dataSet.setColor(currentColor.withAlphaComponent(1.0))
+            dataSet.drawValuesEnabled = true
         }
 
+        lineChartView.lastHighlighted = nil
         delegate?.algorandChartViewDidDeselect(self)
     }
 
-    private func highlightChart(with gesture: UIPanGestureRecognizer) {
+    private func highlightChart() {
         if let dataSet = lineChartView.data?.dataSets.last as? LineChartDataSet {
             // Add circle point for the highlighted value
-            dataSet.drawCirclesEnabled = gesture.isGestureCompleted
-            dataSet.drawVerticalHighlightIndicatorEnabled = true
+            dataSet.drawValuesEnabled = false
 
             if let currentColor = dataSet.colors.first {
                 addMarkerForHighlightedValue(with: currentColor)
@@ -108,15 +119,22 @@ extension AlgorandChartView {
         marker.size = CGSize(width: 10, height: 10)
         lineChartView.marker = marker
     }
+
+    private func getHighlight(from gesture: UIPanGestureRecognizer) -> Highlight? {
+        let point = gesture.location(in: lineChartView)
+        guard let highlight = lineChartView.getHighlightByTouchPoint(point),
+              highlight.x != lineChartView.lastHighlighted?.x else {
+            return nil
+        }
+
+        return highlight
+    }
 }
 
 extension AlgorandChartView: ChartViewDelegate {
     func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
+        lineChartView.lastHighlighted = highlight
         delegate?.algorandChartView(self, didSelectItemAt: Int(highlight.x))
-    }
-
-    func chartValueNothingSelected(_ chartView: ChartViewBase) {
-        delegate?.algorandChartViewDidDeselect(self)
     }
 }
 

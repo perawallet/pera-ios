@@ -227,6 +227,7 @@
 "send-enter-note-placeholder" = "Enter note here";
 "send-enter-note-title" = "Add Note";
 "send-transaction-max-same-account-error" = "You cannot send your max balance to yourself. Please select a different amount or recipient and try again.";
+"send-trasaction-address-placeholder" = "Paste #";
 
 // MARK: Algos Request
 "request-algos-title" = "Request Algos";
@@ -586,7 +587,7 @@
 "title-enter-pin-for-passphrase" = "Please enter your PIN to view passphrase";
 
 "title-analytics" = "Analytics";
-"title-algo-rewards" = "Algo Rewards";
+"title-algo-rewards" = "Rewards";
 "value-one-algo" = "1 ALGO = %@";
 
 "title-algorand" = "Algorand";
@@ -600,7 +601,7 @@
 "chart-time-selection-yearly" = "1Y";
 "chart-time-selection-all" = "ALL";
 
-"chart-no-data-text" = "No chart data available.";
+"chart-no-data-text" = "Price API is currently unavailable, please check back soon.";
 
 "chart-time-last-hour" = "Last 1 Hour";
 "chart-time-last-day" = "Last 1 Day";

@@ -105,7 +105,7 @@ class TransactionReceiverView: BaseView {
     
     private lazy var addressInputView: MultiLineInputField = {
         let addressInputView = MultiLineInputField(displaysExplanationText: false, displaysRightInputAccessoryButton: true)
-        addressInputView.placeholderLabel.text = "contacts-input-address-placeholder".localized
+        addressInputView.placeholderLabel.text = "send-trasaction-address-placeholder".localized
         addressInputView.nextButtonMode = .submit
         addressInputView.inputTextView.autocorrectionType = .no
         addressInputView.inputTextView.autocapitalizationType = .none

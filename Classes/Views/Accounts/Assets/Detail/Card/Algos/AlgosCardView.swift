@@ -30,7 +30,7 @@ class AlgosCardView: BaseView {
             .withAlignment(.left)
             .withTextColor(Colors.Main.white)
             .withFont(UIFont.font(withWeight: .medium(size: 28.0)))
-        label.minimumScaleFactor = 0.7
+        label.minimumScaleFactor = 0.5
         label.adjustsFontSizeToFitWidth = true
         return label
     }()
@@ -58,7 +58,7 @@ class AlgosCardView: BaseView {
             .withAlignment(.left)
             .withTextColor(Colors.Main.white)
             .withFont(UIFont.font(withWeight: .medium(size: 16.0)))
-        label.minimumScaleFactor = 0.7
+        label.minimumScaleFactor = 0.3
         label.adjustsFontSizeToFitWidth = true
         return label
     }()
@@ -66,12 +66,13 @@ class AlgosCardView: BaseView {
     private lazy var rewardTitleButton: AlignedButton = {
         let button = AlignedButton(.imageAtRight(spacing: 4.0))
         button.setImage(img("icon-info-white"), for: .normal)
-        button.setTitle("title-algo-rewards".localized, for: .normal)
+        button.setTitle("rewards-title".localized, for: .normal)
         button.imageView?.contentMode = .scaleAspectFit
         button.setTitleColor(Colors.Main.white.withAlphaComponent(0.8), for: .normal)
         button.titleLabel?.font = UIFont.font(withWeight: .regular(size: 14.0))
         button.contentEdgeInsets = .zero
         button.titleLabel?.textAlignment = .left
+        button.contentEdgeInsets.top = 20.0
         return button
     }()
 
@@ -134,6 +135,7 @@ extension AlgosCardView {
         
         totalAmountLabel.snp.makeConstraints { make in
             make.top.leading.equalToSuperview().inset(layout.current.defaultInset)
+            make.trailing.lessThanOrEqualToSuperview().inset(layout.current.defaultInset)
         }
     }
     
@@ -179,7 +181,7 @@ extension AlgosCardView {
         addSubview(rewardTitleButton)
         
         rewardTitleButton.snp.makeConstraints { make in
-            make.top.equalTo(algosTitleLabel).offset(layout.current.rewardLabelTopOffset)
+            make.top.equalTo(totalAmountLabel.snp.bottom).offset(layout.current.rewardTopInset)
             make.leading.equalTo(algosAmountLabel.snp.trailing).offset(layout.current.rewardTitleLeadingInset)
         }
     }
@@ -187,8 +189,12 @@ extension AlgosCardView {
     private func setupRewardAmountLabelLayout() {
         addSubview(rewardAmountLabel)
 
+        rewardAmountLabel.setContentHuggingPriority(.required, for: .horizontal)
+        rewardAmountLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+
         rewardAmountLabel.snp.makeConstraints { make in
             make.leading.equalTo(rewardTitleButton)
+            make.trailing.lessThanOrEqualToSuperview().inset(layout.current.rewardAmountTrailingInset)
             make.top.equalTo(algosAmountLabel)
         }
     }
@@ -230,6 +236,8 @@ extension AlgosCardView {
         let defaultInset: CGFloat = 24.0
         let rewardLabelTopOffset: CGFloat = -1.0
         let currencyTopInset: CGFloat = 8.0
+        let rewardTopInset: CGFloat = 42.0
+        let rewardAmountTrailingInset: CGFloat = 8.0
         let algosTopInset: CGFloat = 64.0
         let amountTrailingInset: CGFloat = 40.0
         let minimumOffset: CGFloat = 4.0
