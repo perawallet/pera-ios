@@ -217,6 +217,45 @@
 /* (No Comment) */
 "ble-error-unsupported-device-title" = "Appareil non pris en charge";
 
+/* (No Comment) */
+"chart-no-data-text" = "Aucune donnée graphique disponible.";
+
+/* (No Comment) */
+"chart-time-all" = "Tout le temps";
+
+/* (No Comment) */
+"chart-time-last-day" = "Dernier jour";
+
+/* (No Comment) */
+"chart-time-last-hour" = "Dernière heure";
+
+/* (No Comment) */
+"chart-time-last-month" = "Dernier mois";
+
+/* (No Comment) */
+"chart-time-last-week" = "Dernière semaine";
+
+/* (No Comment) */
+"chart-time-last-year" = "Dernière année";
+
+/* (No Comment) */
+"chart-time-selection-all" = "TOUT";
+
+/* (No Comment) */
+"chart-time-selection-daily" = "1J";
+
+/* (No Comment) */
+"chart-time-selection-hourly" = "1H";
+
+/* (No Comment) */
+"chart-time-selection-monthly" = "1M";
+
+/* (No Comment) */
+"chart-time-selection-weekly" = "1S";
+
+/* (No Comment) */
+"chart-time-selection-yearly" = "1A";
+
 /* MARK: Password Setting */
 "choose-password-title" = "Choisir le PIN";
 
@@ -1043,6 +1082,9 @@
 "send-transaction-max-same-account-error" = "Vous ne pouvez pas vous envoyer votre solde maximum. Veuillez sélectionner un montant ou un destinataire différent et réessayer.";
 
 /* (No Comment) */
+"send-trasaction-address-placeholder" = "Coller #";
+
+/* (No Comment) */
 "settings-app-version" = "Version %@";
 
 /* (No Comment) */
@@ -1124,7 +1166,19 @@
 "title-account" = "Compte";
 
 /* (No Comment) */
+"title-account-balance" = "Solde";
+
+/* (No Comment) */
 "title-add-asset" = "Ajouter un nouvel actif";
+
+/* (No Comment) */
+"title-algorand" = "Algorand";
+
+/* (No Comment) */
+"title-algorand-value" = "Valeur";
+
+/* (No Comment) */
+"title-analytics" = "Analyse";
 
 /* (No Comment) */
 "title-approve" = "Approuver";
@@ -1370,7 +1424,10 @@
 "transaction-filter-try-again" = "Réessayer";
 
 /* (No Comment) */
-"transaction-id-open-explorer" = "Ouvrir dans l'explorateur";
+"transaction-id-open-algoexplorer" = "Ouvrir dans AlgoExplorer";
+
+/* (No Comment) */
+"transaction-id-open-goalseeker" = "Ouvrir dans GoalSeeker";
 
 /* (No Comment) */
 "transaction-tutorial-subtitle" = "Nous avons remarqué qu'il s'agit de votre première transaction. Avant de la finaliser, gardez à l'esprit quelques conseils:";
@@ -1449,6 +1506,9 @@
 
 /* (No Comment) */
 "tutorial-title-write" = "Préparez-vous à noter votre phrase secrète de récupération";
+
+/* (No Comment) */
+"value-one-algo" = "1 ALGO = %@";
 
 /* (No Comment) */
 "verified-asset-double-check" = "toujours vérifier deux fois";
