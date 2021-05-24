@@ -23,12 +23,6 @@ class AssetCardView: BaseView {
     
     private let layout = Layout<LayoutConstants>()
     
-    private lazy var assetIdCopyValueGestureRecognizer: UILongPressGestureRecognizer = {
-        let recognizer = UILongPressGestureRecognizer(target: self, action: #selector(notifyDelegateToCopyAssetId))
-        recognizer.minimumPressDuration = 1.5
-        return recognizer
-    }()
-    
     private lazy var backgroundImageView = UIImageView(image: img("bg-card-gray"))
     
     private lazy var assetNameStackView: UIStackView = {
@@ -76,7 +70,7 @@ class AssetCardView: BaseView {
     }
     
     override func setListeners() {
-        assetIDButton.addGestureRecognizer(assetIdCopyValueGestureRecognizer)
+        assetIDButton.addTarget(self, action: #selector(notifyDelegateToCopyAssetId), for: .touchUpInside)
     }
     
     override func prepareLayout() {
@@ -130,7 +124,7 @@ extension AssetCardView {
         addSubview(assetIDButton)
         
         assetIDButton.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(layout.current.defaultInset)
+            make.leading.equalToSuperview().inset(layout.current.defaultInset)
             make.bottom.equalToSuperview().inset(layout.current.bottomInset)
         }
     }
