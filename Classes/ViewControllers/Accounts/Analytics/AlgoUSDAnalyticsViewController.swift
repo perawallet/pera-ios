@@ -88,7 +88,6 @@ extension AlgoUSDAnalyticsViewController: AlgoUSDAnalyticsViewDelegate {
             return
         }
 
-        impactFeedbackGenerator.impactOccurred()
         bindHeaderView(with: values, selectedPrice: selectedPrice)
     }
     
@@ -110,6 +109,7 @@ extension AlgoUSDAnalyticsViewController: AlgoUSDAnalyticsViewDelegate {
 extension AlgoUSDAnalyticsViewController: AlgoUSDAnalyticsDataControllerDelegate {
     func algoUSDAnalyticsDataController(_ dataController: AlgoUSDAnalyticsDataController, didFetch values: [AlgosUSDValue]) {
         chartEntries = values
+        impactFeedbackGenerator.impactOccurred()
         bindView(with: values)
     }
 
