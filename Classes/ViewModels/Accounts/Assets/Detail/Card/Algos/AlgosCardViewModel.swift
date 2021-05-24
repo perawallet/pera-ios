@@ -56,7 +56,7 @@ class AlgosCardViewModel {
     }
 
     private func setReward(from account: Account) {
-        reward = account.pendingRewards.toAlgos.toAlgosStringForLabel
+        reward = account.pendingRewards.toAlgos.toExactFractionLabel(fraction: 6)
     }
 
     private func setAnalyticsContainerViewModel(from currency: Currency?) {

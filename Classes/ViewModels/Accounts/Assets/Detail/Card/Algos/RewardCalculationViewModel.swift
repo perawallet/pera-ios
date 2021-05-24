@@ -47,7 +47,7 @@ class RewardCalculationViewModel {
     }
 
     private func setRewardAmount(from account: Account, and calculatedRewards: Double) {
-        rewardAmount = getPendingRewards(from: account, and: calculatedRewards).toAlgosStringForLabel
+        rewardAmount = getPendingRewards(from: account, and: calculatedRewards).toExactFractionLabel(fraction: 6)
     }
 
     private func getTotalAmount(from account: Account, and calculatedRewards: Double) -> Double {

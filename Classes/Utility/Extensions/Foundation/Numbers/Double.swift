@@ -45,7 +45,11 @@ extension Double {
     func toFractionStringForLabel(fraction: Int) -> String? {
         return Formatter.separatorWith(fraction: fraction).string(from: NSNumber(value: self))
     }
-    
+
+    func toExactFractionLabel(fraction: Int) -> String? {
+        return Formatter.separatorForInputWith(fraction: fraction).string(from: NSNumber(value: self))
+    }
+
     var toCurrencyStringForLabel: String? {
         return Formatter.currencyFormatter.string(from: NSNumber(value: self))
     }
