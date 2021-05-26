@@ -27,8 +27,6 @@ class AlgoUSDAnalyticsViewController: BaseScrollViewController {
 
     private lazy var dataController = AlgoUSDAnalyticsDataController(api: api)
 
-    private lazy var impactFeedbackGenerator = UIImpactFeedbackGenerator(style: .light)
-
     private let account: Account
 
     private var chartEntries: [AlgosUSDValue]?
@@ -109,7 +107,6 @@ extension AlgoUSDAnalyticsViewController: AlgoUSDAnalyticsViewDelegate {
 extension AlgoUSDAnalyticsViewController: AlgoUSDAnalyticsDataControllerDelegate {
     func algoUSDAnalyticsDataController(_ dataController: AlgoUSDAnalyticsDataController, didFetch values: [AlgosUSDValue]) {
         chartEntries = values
-        impactFeedbackGenerator.impactOccurred()
         bindView(with: values)
     }
 
