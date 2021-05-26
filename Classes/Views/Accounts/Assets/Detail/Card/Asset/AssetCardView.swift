@@ -57,7 +57,7 @@ class AssetCardView: BaseView {
     
     private lazy var assetIDButton: AlignedButton = {
         let button = AlignedButton(.imageAtLeft(spacing: 8.0))
-        button.setImage(img("icon-info-24", isTemplate: true), for: .normal)
+        button.setImage(img("icon-copy", isTemplate: true), for: .normal)
         button.tintColor = Colors.Main.white
         button.setTitleColor(Colors.Main.white, for: .normal)
         button.titleLabel?.font = UIFont.font(withWeight: .regular(size: 12.0))
