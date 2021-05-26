@@ -218,8 +218,6 @@
 "send-algos-contacts" = "Contacts";
 "send-algos-scan" = "Scan QR";
 "send-algos-account-delete-title" = "Your account is about to be deleted, are you sure you want to proceed?";
-"send-algos-account-delete-body" = "To keep an account open, the account must have at least 0.01 ALGO. If you send the max amount, the account will be deleted and your active participation keys will be deleted as well.";
-"send-algos-account-delete-asset-title" = "In order to delete an account, you must empty any asset account balance and destroy any asset you've created, if any.";
 "send-algos-receiver-address-validation" = "Key not valid, please make sure you have the right key.";
 "send-qr-scan-alert-title" = "QR Scan";
 "send-qr-scan-alert-message" = "You just scanned a QR code of a transaction request. Please review all transaction fields as they may have changed.";
@@ -567,6 +565,7 @@
 "tutorial-action-title-passcode" = "Not now";
 
 "maximum-balance-warning-description" = "Sending your maximum balance on this rekeyed account requires you to maintain a minimum balance of %@ Algos. This is to ensure that nothing changes with your rekeyed account.\n\n\nYour transaction amount will be automatically updated to reflect this change. You will be able to preview the transaction in the next step.";
+"maximum-balance-standard-account-warning-description" = "Because you have %@ other Assets in this account %@, the Algorand Blockchain requires you to maintain a minimum balance of %@ Algos.\n\n\nBy hitting continue, your transaction amount will be automatically updated to reflect this change. You'll be able to preview this change in the next step.";
 
 "transaction-tutorial-title" = "Transacting Tips";
 "transaction-tutorial-subtitle" = "We notice that this is your first transaction. Before you finalize, keep in mind a couple of tips:";

@@ -25,6 +25,20 @@ class MaximumBalanceWarningViewModel {
     }
 
     private func setDescription(from account: Account) {
+        let minimumAmountForAccount = "\(calculateMininmumAmount(for: account).toAlgos)"
+
+        if !account.isRekeyed() {
+            let assetDetailCount = "\(account.assetDetails.count)"
+            description = "maximum-balance-standard-account-warning-description".localized(
+                params: assetDetailCount, account.name ?? account.address.shortAddressDisplay(), minimumAmountForAccount
+            )
+            return
+        }
+
+        description = "maximum-balance-warning-description".localized(params: minimumAmountForAccount)
+    }
+
+    private func calculateMininmumAmount(for account: Account) -> Int64 {
         let params = UIApplication.shared.accountManager?.params
         let feeCalculator = TransactionFeeCalculator(transactionDraft: nil, transactionData: nil, params: params)
         let calculatedFee = params?.getProjectedTransactionFee() ?? Transaction.Constant.minimumFee
@@ -34,7 +48,6 @@ class MaximumBalanceWarningViewModel {
             calculatedFee: calculatedFee,
             isAfterTransaction: true
         ) - calculatedFee
-
-        description = "maximum-balance-warning-description".localized(params: "\(minimumAmountForAccount.toAlgos)")
+        return minimumAmountForAccount
     }
 }
