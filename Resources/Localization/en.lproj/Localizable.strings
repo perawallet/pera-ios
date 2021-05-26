@@ -536,6 +536,7 @@
 "ledger-account-fetct-error" = "A network error occured while fetching account details. Restart the process.";
 
 "maximum-balance-warning-title" = "Maximum Balance";
+"min-balance-title" = "Minimum Balance Required";
 "title-continue" = "Continue";
 "title-dont-show-again" = "Don’t Show This Again";
 
