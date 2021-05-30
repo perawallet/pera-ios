@@ -44,4 +44,5 @@ enum NotificationType: String, Model {
     case assetTransactionFailed = "asset-transaction-failed"
     case assetSupportRequest = "asset-support-request"
     case assetSupportSuccess = "asset-support-success"
+    case broadcast = "broadcast"
 }
