@@ -2640,6 +2640,8 @@
 		2B8E5F8D25482FC6001D8E30 /* ReceiveTabEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveTabEvent.swift; sourceTree = "<group>"; };
 		2B8E5F942548318C001D8E30 /* AnalyticsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsScreen.swift; sourceTree = "<group>"; };
 		2B8E7C92246AD8B800CC5A58 /* ContactsEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsEmptyView.swift; sourceTree = "<group>"; };
+		2B8F52CB265EB32E00A8CD7E /* ja-JP */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ja-JP"; path = "ja-JP.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		2B8F52CC265EB32E00A8CD7E /* ja-JP */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ja-JP"; path = "ja-JP.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		2B95407725A75FB20098805B /* algorand-tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "algorand-tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B95407925A75FB20098805B /* DBDecodeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBDecodeTests.swift; sourceTree = "<group>"; };
 		2B95407B25A75FB20098805B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -8257,6 +8259,7 @@
 				"pt-BR",
 				it,
 				fr,
+				"ja-JP",
 			);
 			mainGroup = 2B8BE4C522391C38005D8565;
 			productRefGroup = 2B8BE4CF22391C38005D8565 /* Products */;
@@ -10766,6 +10769,7 @@
 				2B6811EC25345B6500D4437F /* zh-Hans */,
 				2B03D67B25C2086C0079A973 /* it */,
 				2BA172212649504400A613C4 /* fr */,
+				2B8F52CB265EB32E00A8CD7E /* ja-JP */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -10790,6 +10794,7 @@
 				2B681165252F731F00D4437F /* pt-BR */,
 				2B03D67C25C2086C0079A973 /* it */,
 				2BA172222649504400A613C4 /* fr */,
+				2B8F52CC265EB32E00A8CD7E /* ja-JP */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";

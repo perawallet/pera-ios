@@ -42,6 +42,8 @@ extension AlgorandNotification {
             return notificationDetails.receiverAddress
         case .assetSupportSuccess:
             return notificationDetails.receiverAddress
+        case .broadcast:
+            return nil
         default:
             return nil
         }
