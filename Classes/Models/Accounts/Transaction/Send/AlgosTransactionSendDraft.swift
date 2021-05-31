@@ -26,3 +26,9 @@ struct AlgosTransactionSendDraft: TransactionSendDraft {
     var identifier: String?
     var note: String?
 }
+
+extension AlgosTransactionSendDraft {
+    var isMaxTransactionFromRekeyedAccount: Bool {
+        return from.isRekeyed() && isMaxTransaction
+    }
+}

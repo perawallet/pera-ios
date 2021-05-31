@@ -136,15 +136,15 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
             
         if isMaxTransaction {
             if selectedAccount.doesAccountHasParticipationKey() {
-                presentAccountRemoveWarning()
+                presentParticipationKeyWarningForMaxTransaction()
                 return
-            } else if selectedAccount.isThereAnyDifferentAsset() {
-                displaySimpleAlertWith(title: "send-algos-account-delete-asset-title".localized, message: "")
+            } else if selectedAccount.isThereAnyDifferentAsset() || isMaxTransactionFromRekeyedAccount {
+                displayMaxTransactionWarning()
                 return
             }
         }
 
-        composeTransactionDataIfNotMaxTransactionFromRekeyedAccount()
+        composeTransactionData()
     }
     
     override func transactionController(
@@ -231,14 +231,6 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
         ) as? MaximumBalanceWarningViewController
         controller?.delegate = self
     }
-
-    private func composeTransactionDataIfNotMaxTransactionFromRekeyedAccount() {
-        if isMaxTransactionFromRekeyedAccount {
-            displayMaxTransactionWarning()
-        } else {
-            composeTransactionData()
-        }
-    }
 }
 
 extension SendAlgosTransactionPreviewViewController: MaximumBalanceWarningViewControllerDelegate {
@@ -270,25 +262,25 @@ extension SendAlgosTransactionPreviewViewController {
 }
 
 extension SendAlgosTransactionPreviewViewController {
-    private func presentAccountRemoveWarning() {
+    private func presentParticipationKeyWarningForMaxTransaction() {
         let alertController = UIAlertController(
             title: "send-algos-account-delete-title".localized,
             message: "send-algos-account-delete-body".localized,
             preferredStyle: .alert
         )
-        
+
         let cancelAction = UIAlertAction(title: "title-cancel".localized, style: .cancel)
-        
+
         let proceedAction = UIAlertAction(title: "title-proceed".localized, style: .destructive) { _ in
-            self.composeTransactionDataIfNotMaxTransactionFromRekeyedAccount()
+            self.displayMaxTransactionWarning()
         }
-        
+
         alertController.addAction(cancelAction)
         alertController.addAction(proceedAction)
-        
+
         present(alertController, animated: true, completion: nil)
     }
-    
+
     private func composeTransactionData() {
         transactionController.delegate = self
         guard let selectedAccount = selectedAccount else {

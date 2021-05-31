@@ -29,7 +29,7 @@ class MaximumBalanceWarningView: BaseView {
             .withTextColor(Colors.Text.primary)
             .withLine(.single)
             .withAlignment(.center)
-            .withText("maximum-balance-warning-title".localized)
+            .withText("min-balance-title".localized)
     }()
 
     private lazy var imageView = UIImageView(image: img("img-warning-circle"))
