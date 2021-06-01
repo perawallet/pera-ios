@@ -27,7 +27,25 @@ class AlgosUSDValue: Model {
 }
 
 extension AlgosUSDValue {
-    func getChartDisplayValue() -> Double? {
-        return high?.round(to: 2)
+    // Convert current value of algo to preferred currency value
+    func getChartDisplayValue(with currency: Currency? = nil) -> Double? {
+        guard let currency = currency,
+              let currencyPrice = currency.price,
+              let currencyPriceDoubleValue = Double(currencyPrice),
+              let highValue = high else {
+            return high?.round(to: 2)
+        }
+
+        return (currencyPriceDoubleValue * highValue).round(to: 2)
+    }
+
+    // Scales conversion of current algo-preferredCurrency value with the current algo price to display
+    func getCurrencyScaledChartValue(with current: AlgosUSDValue, for currency: Currency) -> Double? {
+        guard let chartDisplayValue = getChartDisplayValue(with: currency),
+              let currentPrice = current.high else {
+            return nil
+        }
+
+        return (1 / currentPrice) * chartDisplayValue
     }
 }
