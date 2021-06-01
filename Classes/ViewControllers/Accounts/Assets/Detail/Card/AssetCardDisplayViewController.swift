@@ -200,8 +200,12 @@ extension AssetCardDisplayViewController: AlgosCardCellDelegate {
     }
 
     func algosCardCellDidOpenAnalytics(_ algosCardCell: AlgosCardCell) {
+        guard let currency = currency else {
+            return
+        }
+
         open(
-            .algoUSDAnalytics(account: account),
+            .algoUSDAnalytics(account: account, currency: currency),
             by: .customPresent(
                 presentationStyle: .custom,
                 transitionStyle: nil,

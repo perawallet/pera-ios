@@ -28,12 +28,14 @@ class AlgoUSDAnalyticsViewController: BaseScrollViewController {
     private lazy var dataController = AlgoUSDAnalyticsDataController(api: api)
 
     private let account: Account
+    private let currency: Currency
 
     private var chartEntries: [AlgosUSDValue]?
     private var selectedTimeInterval: AlgosUSDValueInterval = .hourly
 
-    init(account: Account, configuration: ViewControllerConfiguration) {
+    init(account: Account, currency: Currency, configuration: ViewControllerConfiguration) {
         self.account = account
+        self.currency = currency
         super.init(configuration: configuration)
     }
 
@@ -100,7 +102,13 @@ extension AlgoUSDAnalyticsViewController: AlgoUSDAnalyticsViewDelegate {
 
     private func bindHeaderView(with values: [AlgosUSDValue], selectedPrice: AlgosUSDValue?) {
         let priceChange = AlgoUSDPriceChange(firstPrice: values.first, lastPrice: values.last, selectedPrice: selectedPrice)
-        algoUSDAnalyticsView.bind(AlgoAnalyticsHeaderViewModel(priceChange: priceChange, timeInterval: selectedTimeInterval))
+        algoUSDAnalyticsView.bind(
+            AlgoAnalyticsHeaderViewModel(
+                priceChange: priceChange,
+                timeInterval: selectedTimeInterval,
+                currency: currency
+            )
+        )
     }
 }
 
@@ -121,14 +129,9 @@ extension AlgoUSDAnalyticsViewController: AlgoUSDAnalyticsDataControllerDelegate
                 account: account,
                 values: values,
                 priceChange: priceChange,
-                timeInterval: selectedTimeInterval
+                timeInterval: selectedTimeInterval,
+                currency: currency
             )
         )
-    }
-}
-
-extension AlgoUSDAnalyticsViewController {
-    enum Currency {
-        static let usdCurrencyID = "USD"
     }
 }
