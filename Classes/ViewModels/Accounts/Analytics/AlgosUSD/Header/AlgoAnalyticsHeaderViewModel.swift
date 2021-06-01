@@ -24,23 +24,27 @@ class AlgoAnalyticsHeaderViewModel {
     private(set) var valueChangeViewModel: AnalyticsValueChangeViewModel?
     private(set) var date: String?
 
-    init(priceChange: AlgoUSDPriceChange, timeInterval: AlgosUSDValueInterval) {
-        setAmount(from: priceChange)
+    init(priceChange: AlgoUSDPriceChange, timeInterval: AlgosUSDValueInterval, currency: Currency) {
+        setAmount(from: priceChange, and: currency)
         setIsValueChangeDisplayed(from: priceChange)
         setValueChangeViewModel(from: priceChange)
         setDate(from: priceChange, and: timeInterval)
     }
 
-    private func setAmount(from priceChange: AlgoUSDPriceChange) {
-        if let selectedPrice = priceChange.selectedPrice?.getChartDisplayValue(),
+    private func setAmount(from priceChange: AlgoUSDPriceChange, and currency: Currency) {
+        guard let currentAlgosUSDValue = priceChange.lastPrice else {
+            return
+        }
+        
+        if let selectedPrice = priceChange.selectedPrice?.getCurrencyScaledChartValue(with: currentAlgosUSDValue, for: currency),
            let currencyValue = selectedPrice.toCurrencyStringForLabel {
-            amount = "\(currencyValue) \(AlgoUSDAnalyticsViewController.Currency.usdCurrencyID)"
+            amount = "\(currencyValue) \(currency.id)"
             return
         }
 
-        if let currentPrice = priceChange.lastPrice?.getChartDisplayValue(),
+        if let currentPrice = priceChange.lastPrice?.getCurrencyScaledChartValue(with: currentAlgosUSDValue, for: currency),
            let currencyValue = currentPrice.toCurrencyStringForLabel {
-            amount = "\(currencyValue) \(AlgoUSDAnalyticsViewController.Currency.usdCurrencyID)"
+            amount = "\(currencyValue) \(currency.id)"
         }
     }
 
