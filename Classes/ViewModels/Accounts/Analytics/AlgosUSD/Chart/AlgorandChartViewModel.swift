@@ -22,9 +22,9 @@ class AlgosUSDChartViewModel: AlgorandChartViewModelConvertible {
     private let valueChangeStatus: ValueChangeStatus
     private var historicalPrices: [AlgosUSDValue] = []
 
-    init(valueChangeStatus: ValueChangeStatus, values: [AlgosUSDValue]) {
+    init(valueChangeStatus: ValueChangeStatus, values: [AlgosUSDValue], currency: Currency) {
         self.valueChangeStatus = valueChangeStatus
-        setChartData(from: values)
+        setChartData(from: values, and: currency)
     }
 
     func chartData() -> ChartData? {
@@ -33,7 +33,7 @@ class AlgosUSDChartViewModel: AlgorandChartViewModelConvertible {
 }
 
 extension AlgosUSDChartViewModel {
-    private func setChartData(from values: [AlgosUSDValue]) {
+    private func setChartData(from values: [AlgosUSDValue], and currency: Currency) {
         historicalPrices = values.sorted(by: \.timestamp).reversed()
 
         if historicalPrices.isEmpty {
@@ -44,8 +44,10 @@ extension AlgosUSDChartViewModel {
         var index = 0
 
         for historicalPrice in historicalPrices {
-            if let algosPrice = historicalPrice.getChartDisplayValue() {
-                entries.append(ChartDataEntry(x: Double(index), y: algosPrice))
+            if let lastPrice = historicalPrices.last?.high,
+               let algosPrice = historicalPrice.getCurrencyScaledChartValue(with: historicalPrice, for: currency) {
+                let value = (1 / lastPrice) * algosPrice
+                entries.append(ChartDataEntry(x: Double(index), y: value))
                 index = index.advanced(by: 1)
             }
         }
