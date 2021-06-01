@@ -46,10 +46,11 @@ class AlgoUSDValueFormatter: IValueFormatter {
     }
 
     private func getPriceRepresentation(for value: Double) -> String {
-        guard let stringValue = value.toFractionStringForLabel(fraction: 2) else {
+        guard let preferredCurrency = UIApplication.shared.appConfiguration?.session.preferredCurrency,
+              let stringValue = value.toCurrencyStringForLabel(with: preferredCurrency) else {
             return ""
         }
 
-        return "$\(stringValue)"
+        return stringValue
     }
 }
