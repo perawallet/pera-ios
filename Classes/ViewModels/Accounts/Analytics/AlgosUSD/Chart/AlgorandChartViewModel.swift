@@ -44,10 +44,9 @@ extension AlgosUSDChartViewModel {
         var index = 0
 
         for historicalPrice in historicalPrices {
-            if let lastPrice = historicalPrices.last?.high,
-               let algosPrice = historicalPrice.getCurrencyScaledChartValue(with: historicalPrice, for: currency) {
-                let value = (1 / lastPrice) * algosPrice
-                entries.append(ChartDataEntry(x: Double(index), y: value))
+            if let lastPrice = historicalPrices.last,
+               let algosPrice = historicalPrice.getCurrencyScaledChartValue(with: lastPrice, for: currency) {
+                entries.append(ChartDataEntry(x: Double(index), y: algosPrice))
                 index = index.advanced(by: 1)
             }
         }
