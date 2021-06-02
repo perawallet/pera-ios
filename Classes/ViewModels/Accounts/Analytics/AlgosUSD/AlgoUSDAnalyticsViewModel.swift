@@ -26,26 +26,23 @@ class AlgoUSDAnalyticsViewModel {
         account: Account,
         values: [AlgosUSDValue],
         priceChange: AlgoUSDPriceChange,
-        timeInterval: AlgosUSDValueInterval
+        timeInterval: AlgosUSDValueInterval,
+        currency: Currency
     ) {
-        setHeaderViewModel(from: priceChange, and: timeInterval)
-        setChartViewModel(from: values, and: priceChange)
-        setFooterViewModel(from: account, and: values)
+        setHeaderViewModel(from: priceChange, and: timeInterval, and: currency)
+        setChartViewModel(from: values, and: priceChange, and: currency)
+        setFooterViewModel(from: account, and: currency)
     }
 
-    private func setHeaderViewModel(from priceChange: AlgoUSDPriceChange, and timeInterval: AlgosUSDValueInterval) {
-        headerViewModel = AlgoAnalyticsHeaderViewModel(priceChange: priceChange, timeInterval: timeInterval)
+    private func setHeaderViewModel(from priceChange: AlgoUSDPriceChange, and timeInterval: AlgosUSDValueInterval, and currency: Currency) {
+        headerViewModel = AlgoAnalyticsHeaderViewModel(priceChange: priceChange, timeInterval: timeInterval, currency: currency)
     }
 
-    private func setChartViewModel(from values: [AlgosUSDValue], and priceChange: AlgoUSDPriceChange) {
-        chartViewModel = AlgosUSDChartViewModel(valueChangeStatus: priceChange.getValueChangeStatus(), values: values)
+    private func setChartViewModel(from values: [AlgosUSDValue], and priceChange: AlgoUSDPriceChange, and currency: Currency) {
+        chartViewModel = AlgosUSDChartViewModel(valueChangeStatus: priceChange.getValueChangeStatus(), values: values, currency: currency)
     }
 
-    private func setFooterViewModel(from account: Account, and values: [AlgosUSDValue]) {
-        guard let lastAlgoUSDValue = values.last else {
-            return
-        }
-
-        footerViewModel = AlgoUSDAnalyticsFooterViewModel(account: account, algoUSDValue: lastAlgoUSDValue)
+    private func setFooterViewModel(from account: Account, and currency: Currency) {
+        footerViewModel = AlgoUSDAnalyticsFooterViewModel(account: account, currency: currency)
     }
 }

@@ -617,10 +617,16 @@
 "login-title" = "Déverrouiller";
 
 /* (No Comment) */
+"maximum-balance-standard-account-warning-description" = "Parce que vous avez %@ autres actifs dans ce compte %@ , la chaîne de blocs Algorand vous oblige à maintenir un solde minimum de %@ ALGO. \n\n\nEn appuyant sur Continuer, le montant de votre transaction sera automatiquement mis à jour pour refléter ce changement. Vous pourrez prévisualiser ce changement à l'étape suivante.";
+
+/* (No Comment) */
 "maximum-balance-warning-description" = "L'envoi de votre solde maximum sur ce compte renouvelé vous oblige à maintenir un solde minimum de %@ ALGO. Cela permet de garantir que rien ne change avec votre compte renouvelé. \n\n\nLe montant de votre transaction sera automatiquement mis à jour pour refléter ce changement. Vous pourrez prévisualiser la transaction à l'étape suivante.";
 
 /* (No Comment) */
 "maximum-balance-warning-title" = "Solde maximum";
+
+/* (No Comment) */
+"min-balance-title" = "Solde minimum requis";
 
 /* (No Comment) */
 "node-settings-action-delete-title" = "Supprimer";
@@ -983,9 +989,6 @@
 "screenshot-title" = "Capture d'écran détectée";
 
 /* (No Comment) */
-"send-algos-account-delete-asset-title" = "Pour supprimer un compte, vous devez vider tout solde d'actif et détruire tout actif que vous avez créé, le cas échéant.";
-
-/* (No Comment) */
 "send-algos-account-delete-body" = "Pour garder un compte ouvert, le compte doit avoir au moins 0,01 ALGO. Si vous envoyez le montant maximum, le compte sera supprimé et vos clés de participation actives seront également supprimées.";
 
 /* (No Comment) */
@@ -1170,6 +1173,9 @@
 
 /* (No Comment) */
 "title-add-asset" = "Ajouter un nouvel actif";
+
+/* (No Comment) */
+"title-algo-rewards" = "Récompenses Algo";
 
 /* (No Comment) */
 "title-algorand" = "Algorand";

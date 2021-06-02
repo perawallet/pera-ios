@@ -21,24 +21,25 @@ class AlgoUSDAnalyticsFooterViewModel {
     private(set) var balance: String?
     private(set) var value: String?
 
-    init(account: Account, algoUSDValue: AlgosUSDValue) {
+    init(account: Account, currency: Currency) {
         setBalance(from: account)
-        setValue(from: account, and: algoUSDValue)
+        setValue(from: account, and: currency)
     }
 
     private func setBalance(from account: Account) {
         balance = account.amount.toAlgos.toAlgosStringForLabel
     }
 
-    private func setValue(from account: Account, and algoUSDValue: AlgosUSDValue) {
-        guard let price = algoUSDValue.getChartDisplayValue() else {
+    private func setValue(from account: Account, and currency: Currency) {
+        guard let currencyPrice = currency.price,
+              let currencyPriceDoubleValue = Double(currencyPrice) else {
             return
         }
 
-        let currencyAmountForAccount = account.amount.toAlgos * price
+        let currencyAmountForAccount = account.amount.toAlgos * currencyPriceDoubleValue
 
         if let currencyValue = currencyAmountForAccount.toCurrencyStringForLabel {
-            value = "\(currencyValue) \(AlgoUSDAnalyticsViewController.Currency.usdCurrencyID)"
+            value = "\(currencyValue) \(currency.id)"
         }
     }
 }
