@@ -36,13 +36,13 @@ class AlgoAnalyticsHeaderViewModel {
             return
         }
         
-        if let selectedPrice = priceChange.selectedPrice?.getCurrencyScaledChartValue(with: currentAlgosUSDValue, for: currency),
+        if let selectedPrice = priceChange.selectedPrice?.getCurrencyScaledChartHighValue(with: currentAlgosUSDValue, for: currency),
            let currencyValue = selectedPrice.toCurrencyStringForLabel {
             amount = "\(currencyValue) \(currency.id)"
             return
         }
 
-        if let currentPrice = priceChange.lastPrice?.getCurrencyScaledChartValue(with: currentAlgosUSDValue, for: currency),
+        if let currentPrice = priceChange.lastPrice?.getCurrencyScaledChartHighValue(with: currentAlgosUSDValue, for: currency),
            let currencyValue = currentPrice.toCurrencyStringForLabel {
             amount = "\(currencyValue) \(currency.id)"
         }

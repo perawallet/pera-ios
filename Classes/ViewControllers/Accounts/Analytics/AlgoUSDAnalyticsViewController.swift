@@ -101,7 +101,12 @@ extension AlgoUSDAnalyticsViewController: AlgoUSDAnalyticsViewDelegate {
     }
 
     private func bindHeaderView(with values: [AlgosUSDValue], selectedPrice: AlgosUSDValue?) {
-        let priceChange = AlgoUSDPriceChange(firstPrice: values.first, lastPrice: values.last, selectedPrice: selectedPrice)
+        let priceChange = AlgoUSDPriceChange(
+            firstPrice: values.first,
+            lastPrice: values.last,
+            selectedPrice: selectedPrice,
+            currency: currency
+        )
         algoUSDAnalyticsView.bind(
             AlgoAnalyticsHeaderViewModel(
                 priceChange: priceChange,
@@ -123,7 +128,7 @@ extension AlgoUSDAnalyticsViewController: AlgoUSDAnalyticsDataControllerDelegate
     }
 
     private func bindView(with values: [AlgosUSDValue]) {
-        let priceChange = AlgoUSDPriceChange(firstPrice: values.first, lastPrice: values.last, selectedPrice: nil)
+        let priceChange = AlgoUSDPriceChange(firstPrice: values.first, lastPrice: values.last, selectedPrice: nil, currency: currency)
         algoUSDAnalyticsView.bind(
             AlgoUSDAnalyticsViewModel(
                 account: account,

@@ -21,17 +21,20 @@ struct AlgoUSDPriceChange {
     let firstPrice: AlgosUSDValue?
     let lastPrice: AlgosUSDValue?
     let selectedPrice: AlgosUSDValue?
+    let currency: Currency
 
     func getValueChangeStatus() -> ValueChangeStatus {
         // Use the opening value of the first price and high value of the last price in the interval to calculate change amount.
-        guard let firstPrice = firstPrice?.open?.round(to: 2),
-              let lastPrice = lastPrice?.getChartDisplayValue() else {
+        guard let firstPrice = firstPrice,
+              let lastPrice = lastPrice,
+              let firstPriceValue = firstPrice.getCurrencyScaledChartOpenValue(with: lastPrice, for: currency),
+              let lastPriceValue = lastPrice.getCurrencyScaledChartHighValue(with: lastPrice, for: currency) else {
             return .increased
         }
 
-        if firstPrice > lastPrice {
+        if firstPriceValue > lastPriceValue {
             return .decreased
-        } else if lastPrice > firstPrice {
+        } else if lastPriceValue > firstPriceValue {
             return .increased
         } else {
             return .stable
@@ -40,11 +43,13 @@ struct AlgoUSDPriceChange {
 
     func getValueChangePercentage() -> Double {
         // Use the opening value of the first price and high value of the last price in the interval to calculate change amount.
-        guard let firstPrice = firstPrice?.open?.round(to: 2),
-              let lastPrice = lastPrice?.getChartDisplayValue() else {
+        guard let firstPrice = firstPrice,
+              let lastPrice = lastPrice,
+              let firstPriceValue = firstPrice.getCurrencyScaledChartOpenValue(with: lastPrice, for: currency),
+              let lastPriceValue = lastPrice.getCurrencyScaledChartHighValue(with: lastPrice, for: currency) else {
             return 1
         }
 
-        return lastPrice / firstPrice
+        return lastPriceValue / firstPriceValue
     }
 }
