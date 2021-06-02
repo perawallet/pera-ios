@@ -617,10 +617,16 @@
 "login-title" = "Sblocca";
 
 /* (No Comment) */
+"maximum-balance-standard-account-warning-description" = "Poiché hai %@ altre Risorse in questo conto %@, la Blockchain di Algorand ti richiede di mantenere un saldo minimo di %@ Algo.\n\nPremendo continua, l'importo della transazione verrà aggiornato automaticamente per riflettere questa modifica. Sarà possibile visualizzare in anteprima questa modifica nel passaggio successivo.";
+
+/* (No Comment) */
 "maximum-balance-warning-description" = "L'invio del tuo saldo massimo su un conto ricodificato richiede che tu mantenga un saldo minimo di %@ Algo. Questo peressere sicuri che nulla cambi nel tuo conto ricodificato.\n\n\nL'importo della transazione verrà automaticamente aggiornato per riflettere questo cambiamento. Sarete in grado di vedere l'anteprima della transazione nella fase successiva.";
 
 /* (No Comment) */
 "maximum-balance-warning-title" = "Saldo massimo";
+
+/* (No Comment) */
+"min-balance-title" = "Saldo minimo richiesto";
 
 /* (No Comment) */
 "node-settings-action-delete-title" = "Elimina";
@@ -983,9 +989,6 @@
 "screenshot-title" = "Screenshot rilevato";
 
 /* (No Comment) */
-"send-algos-account-delete-asset-title" = "Per eliminare un conto, è necessario svuotare il saldo degli attivi e distruggere ogni attivo eventualmente creato.";
-
-/* (No Comment) */
 "send-algos-account-delete-body" = "Per mantenere aperto un conto, questo deve contenere almeno 0,01 ALGO. Se invii l'importo massimo, il conto viene cancellato e vengono cancellate anche le chiavi di partecipazione attive.";
 
 /* (No Comment) */
@@ -1170,6 +1173,9 @@
 
 /* (No Comment) */
 "title-add-asset" = "Aggiungi nuovo attivo";
+
+/* (No Comment) */
+"title-algo-rewards" = "Ricompense Algo";
 
 /* (No Comment) */
 "title-algorand" = "Algorand";
