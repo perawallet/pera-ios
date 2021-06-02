@@ -617,10 +617,16 @@
 "login-title" = "Desbloquear";
 
 /* (No Comment) */
+"maximum-balance-standard-account-warning-description" = "Como você tem %@ outros Ativos nesta conta %@, a Blockchain Algorand exige que você mantenha um saldo mínimo de %@ Algos.\n\n\nAo clicar continuar, o montante de sua transação será automaticamente atualizado para refletir esta mudança. Você poderá visualizar esta mudança na etapa seguinte.";
+
+/* (No Comment) */
 "maximum-balance-warning-description" = "Enviar seu saldo máximo em uma conta rechaveada exige que você mantenha um saldo mínimo de %@ Algos para garantir que nada será alterado em sua conta rechaveada.\n\n\nO montante de sua transação será automaticamente atualizado para refletir esta mudança. Você será capaz de visualizar a transação na etapa a seguir.";
 
 /* (No Comment) */
 "maximum-balance-warning-title" = "Saldo Máximo";
+
+/* (No Comment) */
+"min-balance-title" = "Saldo Mínimo Exigido";
 
 /* (No Comment) */
 "node-settings-action-delete-title" = "Apagar";
@@ -983,9 +989,6 @@
 "screenshot-title" = "Captura de Tela Detectada";
 
 /* (No Comment) */
-"send-algos-account-delete-asset-title" = "Para apagar uma conta, você precisa esvaziar todo o saldo de ativos na conta e destruir todo ativo que tenha criado.";
-
-/* (No Comment) */
 "send-algos-account-delete-body" = "Para permanecer aberta, uma conta precisa ter ao menos 0,01 ALGO. Caso envie a quantia máxima, a conta será apagada junto com suas chaves de participação ativa.";
 
 /* (No Comment) */
@@ -1170,6 +1173,9 @@
 
 /* (No Comment) */
 "title-add-asset" = "Adicionar Novo Ativo";
+
+/* (No Comment) */
+"title-algo-rewards" = "Recompensas Algo";
 
 /* (No Comment) */
 "title-algorand" = "Algorand";

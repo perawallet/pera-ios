@@ -617,10 +617,16 @@
 "login-title" = "Entsperren";
 
 /* (No Comment) */
+"maximum-balance-standard-account-warning-description" = "Da Sie %@ andere Vermögenswerte auf diesem Konto %@ haben, verlangt die Algorand-Blockchain, dass Sie ein Mindestguthaben von %@ Algos halten.\n\n\nWenn Sie auf „Weiter“ klicken, wird Ihr Transaktionsbetrag automatisch aktualisiert, um diese Änderung widerzuspiegeln. Sie können diese Änderung im nächsten Schritt in der Vorschau sehen.";
+
+/* (No Comment) */
 "maximum-balance-warning-description" = "Um Ihr maximales Guthaben auf einem neu eröffneten Konto zu senden, müssen Sie ein Mindestguthaben von %@ Algos aufrechterhalten. Damit soll sichergestellt werden, dass sich bei Ihrem neu angelegten Konto nichts ändert.\n\n\nIhr Transaktionsbetrag wird automatisch aktualisiert, um diese Änderung widerzuspiegeln. Sie können die Transaktion im nächsten Schritt in der Vorschau anzeigen.";
 
 /* (No Comment) */
 "maximum-balance-warning-title" = "Maximales Guthaben";
+
+/* (No Comment) */
+"min-balance-title" = "Mindestguthaben erforderlich";
 
 /* (No Comment) */
 "node-settings-action-delete-title" = "Löschen";
@@ -983,9 +989,6 @@
 "screenshot-title" = "Screenshot erkannt";
 
 /* (No Comment) */
-"send-algos-account-delete-asset-title" = "Ein Konto kann nur gelöscht werden, wenn das Kontoguthaben null ist und alle von Ihnen erstellten Assets entfernt wurden.";
-
-/* (No Comment) */
 "send-algos-account-delete-body" = "Ein Konto muss mindestens ein Guthaben von 0,01 Algos aufweisen. Andernfalls wird es gelöscht. Wenn Sie den maximalen Betrag senden, werden das Konto und Ihre aktiven Teilnahmeschlüssel gelöscht.";
 
 /* (No Comment) */
@@ -1170,6 +1173,9 @@
 
 /* (No Comment) */
 "title-add-asset" = "Neues Asset hinzufügen";
+
+/* (No Comment) */
+"title-algo-rewards" = "Algo-Rewards";
 
 /* (No Comment) */
 "title-algorand" = "Algorand";

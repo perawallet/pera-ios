@@ -617,10 +617,16 @@
 "login-title" = "Kilidi aç";
 
 /* (No Comment) */
+"maximum-balance-standard-account-warning-description" = "%@ diğer Varlığa %@ hesabında sahip olduğunuzdan, Algorand Blok Zinciri en az %@ Algo tutarında bir minimum bakiye tutmanızı gerektirmektedir.\n\n\nDevam etme seçeneğini tıkladığınızda, işlem tutarınız bu değişikliği yansıtmak için otomatik olarak güncellenecektir. Sonraki adımda bu değişikliğin önizlemesini görüntüleyebileceksiniz.";
+
+/* (No Comment) */
 "maximum-balance-warning-description" = "Yeniden anahtarlanan bir hesaptan maksimum bakiyenizi göndermeniz, hesapta en az %@ Algo tutmanızı gerektirmektedir. Bu işlem, yeniden anahtarlanan hesabınızda herhangi bir şeyin değişmemesini sağlamak içindir. \n\nİşlem tutarınız bu değişikliği yansıtması için otomatik olarak güncellenecektir. İşlemin önizlemesini bir sonraki adımda görüntüleyebileceksiniz.";
 
 /* (No Comment) */
 "maximum-balance-warning-title" = "Maksimum Bakiye";
+
+/* (No Comment) */
+"min-balance-title" = "Gereken Minimum Bakiye";
 
 /* (No Comment) */
 "node-settings-action-delete-title" = "Sil";
@@ -983,9 +989,6 @@
 "screenshot-title" = "Ekran Görüntüsü Algılandı";
 
 /* (No Comment) */
-"send-algos-account-delete-asset-title" = "Hesabı silmek için, hesap bakiyenizdeki tüm varlıkları boşaltmanız ve oluşturduğunuz herhangi bir varlık varsa, bu varlıkları da yok etmeniz gerekir.";
-
-/* (No Comment) */
 "send-algos-account-delete-body" = "Hesabınızı açık tutmak için, hesabınızda en az 0,01 ALGO bulunması gerekir. Maksimum tutarda gönderim yaparsanız, hesabınız ile etkin katılım anahtarlarınız silinir.";
 
 /* (No Comment) */
@@ -1170,6 +1173,9 @@
 
 /* (No Comment) */
 "title-add-asset" = "Yeni Varlık Ekle";
+
+/* (No Comment) */
+"title-algo-rewards" = "Algo Ödülleri";
 
 /* (No Comment) */
 "title-algorand" = "Algorand";
