@@ -2,7 +2,21 @@
   "images" : [
     {
       "filename" : "img-tabbar-send.pdf",
-      "idiom" : "universal"
+      "idiom" : "universal",
+      "resizing" : {
+        "cap-insets" : {
+          "bottom" : 24,
+          "left" : 24,
+          "right" : 24,
+          "top" : 23
+        },
+        "center" : {
+          "height" : 1,
+          "mode" : "tile",
+          "width" : 1
+        },
+        "mode" : "9-part"
+      }
     }
   ],
   "info" : {

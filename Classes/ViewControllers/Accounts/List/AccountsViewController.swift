@@ -316,9 +316,12 @@ extension AccountsViewController: AssetAdditionViewControllerDelegate {
         guard let section = accountsDataSource.section(for: account) else {
             return
         }
-        
+
+        let assetDetail = AssetDetail(searchResult: assetSearchResult)
+        assetDetail.isRecentlyAdded = true
+
         let index = accountsView.accountsCollectionView.numberOfItems(inSection: section)
-        accountsDataSource.add(assetDetail: AssetDetail(searchResult: assetSearchResult), to: account)
+        accountsDataSource.add(assetDetail: assetDetail, to: account)
         accountsView.accountsCollectionView.insertItems(at: [IndexPath(item: index, section: section)])
     }
 }

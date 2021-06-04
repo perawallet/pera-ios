@@ -217,6 +217,45 @@
 /* (No Comment) */
 "ble-error-unsupported-device-title" = "Desteklenmeyen Cihaz";
 
+/* (No Comment) */
+"chart-no-data-text" = "Fiyat API'si şu anda kullanılamıyor. Lütfen daha sonra tekrar kontrol edin.";
+
+/* (No Comment) */
+"chart-time-all" = "Tüm Zamanlar";
+
+/* (No Comment) */
+"chart-time-last-day" = "Son 1 Gün";
+
+/* (No Comment) */
+"chart-time-last-hour" = "Son 1 Saat";
+
+/* (No Comment) */
+"chart-time-last-month" = "Son 1 Ay";
+
+/* (No Comment) */
+"chart-time-last-week" = "Son 1 Hafta";
+
+/* (No Comment) */
+"chart-time-last-year" = "Son 1 Yıl";
+
+/* (No Comment) */
+"chart-time-selection-all" = "TÜMÜ";
+
+/* (No Comment) */
+"chart-time-selection-daily" = "1G";
+
+/* (No Comment) */
+"chart-time-selection-hourly" = "1S";
+
+/* (No Comment) */
+"chart-time-selection-monthly" = "1A";
+
+/* (No Comment) */
+"chart-time-selection-weekly" = "1H";
+
+/* (No Comment) */
+"chart-time-selection-yearly" = "1Y";
+
 /* MARK: Password Setting */
 "choose-password-title" = "Giriş Kodu Seç";
 
@@ -578,10 +617,16 @@
 "login-title" = "Kilidi aç";
 
 /* (No Comment) */
+"maximum-balance-standard-account-warning-description" = "%@ diğer Varlığa %@ hesabında sahip olduğunuzdan, Algorand Blok Zinciri en az %@ Algo tutarında bir minimum bakiye tutmanızı gerektirmektedir.\n\n\nDevam etme seçeneğini tıkladığınızda, işlem tutarınız bu değişikliği yansıtmak için otomatik olarak güncellenecektir. Sonraki adımda bu değişikliğin önizlemesini görüntüleyebileceksiniz.";
+
+/* (No Comment) */
 "maximum-balance-warning-description" = "Yeniden anahtarlanan bir hesaptan maksimum bakiyenizi göndermeniz, hesapta en az %@ Algo tutmanızı gerektirmektedir. Bu işlem, yeniden anahtarlanan hesabınızda herhangi bir şeyin değişmemesini sağlamak içindir. \n\nİşlem tutarınız bu değişikliği yansıtması için otomatik olarak güncellenecektir. İşlemin önizlemesini bir sonraki adımda görüntüleyebileceksiniz.";
 
 /* (No Comment) */
 "maximum-balance-warning-title" = "Maksimum Bakiye";
+
+/* (No Comment) */
+"min-balance-title" = "Gereken Minimum Bakiye";
 
 /* (No Comment) */
 "node-settings-action-delete-title" = "Sil";
@@ -944,9 +989,6 @@
 "screenshot-title" = "Ekran Görüntüsü Algılandı";
 
 /* (No Comment) */
-"send-algos-account-delete-asset-title" = "Hesabı silmek için, hesap bakiyenizdeki tüm varlıkları boşaltmanız ve oluşturduğunuz herhangi bir varlık varsa, bu varlıkları da yok etmeniz gerekir.";
-
-/* (No Comment) */
 "send-algos-account-delete-body" = "Hesabınızı açık tutmak için, hesabınızda en az 0,01 ALGO bulunması gerekir. Maksimum tutarda gönderim yaparsanız, hesabınız ile etkin katılım anahtarlarınız silinir.";
 
 /* (No Comment) */
@@ -1043,6 +1085,9 @@
 "send-transaction-max-same-account-error" = "Bakiyenizin tümünü kendinize gönderemezsiniz. Lütfen farklı bir miktar veya alıcı seçerek tekrar deneyin.";
 
 /* (No Comment) */
+"send-trasaction-address-placeholder" = "Yapıştır: #";
+
+/* (No Comment) */
 "settings-app-version" = "Sürüm: %@";
 
 /* (No Comment) */
@@ -1124,7 +1169,22 @@
 "title-account" = "Hesap";
 
 /* (No Comment) */
+"title-account-balance" = "Bakiye";
+
+/* (No Comment) */
 "title-add-asset" = "Yeni Varlık Ekle";
+
+/* (No Comment) */
+"title-algo-rewards" = "Algo Ödülleri";
+
+/* (No Comment) */
+"title-algorand" = "Algorand";
+
+/* (No Comment) */
+"title-algorand-value" = "Değeri";
+
+/* (No Comment) */
+"title-analytics" = "Analizler";
 
 /* (No Comment) */
 "title-approve" = "Onayla";
@@ -1370,7 +1430,10 @@
 "transaction-filter-try-again" = "Tekrar Dene";
 
 /* (No Comment) */
-"transaction-id-open-explorer" = "Gezginde Aç";
+"transaction-id-open-algoexplorer" = "AlgoExplorer'da Aç";
+
+/* (No Comment) */
+"transaction-id-open-goalseeker" = "GoalSeeker'da Aç";
 
 /* (No Comment) */
 "transaction-tutorial-subtitle" = "Bu işlemin ilk işleminiz olduğunu fark ettik. İşlemi sonuçlandırmadan önce birkaç ipucunu aklınızda bulundurmanızı öneririz:";
@@ -1449,6 +1512,9 @@
 
 /* (No Comment) */
 "tutorial-title-write" = "Kurtarma parolanızı yazmaya hazırlanın";
+
+/* (No Comment) */
+"value-one-algo" = "1 ALGO = %@";
 
 /* (No Comment) */
 "verified-asset-double-check" = "her zaman tekrar kontrol edin";

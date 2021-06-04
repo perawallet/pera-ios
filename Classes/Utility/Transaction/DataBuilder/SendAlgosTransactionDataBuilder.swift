@@ -72,11 +72,8 @@ class SendAlgosTransactionDataBuilder: TransactionDataBuilder {
         if isMaxTransaction {
             // If transaction amount is equal to amount of the sender account when it is max transaction
             // If an account is rekeyed, it's not allowed to make max transaciton
-            if isMaxTransactionFromRekeyedAccount() {
-                isMaxTransaction = false
-            } else if !hasMaximumAccountAmountForTransaction() {
-                isMaxTransaction = false
-            }
+            // If account has assets, it cannot complete max transaction
+            isMaxTransaction = canSendMaxTransactions()
         }
     }
 
@@ -99,7 +96,7 @@ class SendAlgosTransactionDataBuilder: TransactionDataBuilder {
         self.minimumAccountBalance = minimumAmountForAccount - calculatedFee
 
         if isMaxTransaction {
-            if isMaxTransactionFromRekeyedAccount() {
+            if isMaxTransactionFromRekeyedAccount() || hasAdditionalAssetsForMaxTransaction() {
                 // Reduce fee and minimum amount possible for the account from transaction amount
                 transactionAmount -= (calculatedFee + (minimumAccountBalance ?? minimumAmountForAccount))
             } else {
@@ -111,13 +108,8 @@ class SendAlgosTransactionDataBuilder: TransactionDataBuilder {
         return transactionAmount
     }
 
-    private func hasMaximumAccountAmountForTransaction() -> Bool {
-        guard let algosTransactionDraft = draft as? AlgosTransactionSendDraft,
-              let transactionAmount = draft?.amount?.toMicroAlgos else {
-            return false
-        }
-
-        return transactionAmount == algosTransactionDraft.from.amount
+    private func canSendMaxTransactions() -> Bool {
+        return !isMaxTransactionFromRekeyedAccount() && !hasAdditionalAssetsForMaxTransaction() && hasMaximumAccountAmountForTransaction()
     }
 
     private func isMaxTransactionFromRekeyedAccount() -> Bool {
@@ -125,6 +117,23 @@ class SendAlgosTransactionDataBuilder: TransactionDataBuilder {
             return false
         }
 
-        return algosTransactionDraft.from.isRekeyed() && algosTransactionDraft.isMaxTransaction
+        return algosTransactionDraft.isMaxTransactionFromRekeyedAccount
+    }
+
+    private func hasAdditionalAssetsForMaxTransaction() -> Bool {
+        guard let algosTransactionDraft = draft as? AlgosTransactionSendDraft else {
+            return false
+        }
+
+        return !algosTransactionDraft.from.assetDetails.isEmpty && algosTransactionDraft.isMaxTransaction
+    }
+
+    private func hasMaximumAccountAmountForTransaction() -> Bool {
+        guard let algosTransactionDraft = draft as? AlgosTransactionSendDraft,
+              let transactionAmount = draft?.amount?.toMicroAlgos else {
+            return false
+        }
+
+        return transactionAmount == algosTransactionDraft.from.amount
     }
 }

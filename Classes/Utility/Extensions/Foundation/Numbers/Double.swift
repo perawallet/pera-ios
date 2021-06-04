@@ -37,12 +37,33 @@ extension Double {
     var toAlgosStringForLabel: String? {
         return Formatter.separatorForAlgosLabel.string(from: NSNumber(value: self))
     }
-    
+
+    var toRewardsStringForLabel: String? {
+        return Formatter.separatorForRewardsLabel.string(from: NSNumber(value: self))
+    }
+
     func toFractionStringForLabel(fraction: Int) -> String? {
         return Formatter.separatorWith(fraction: fraction).string(from: NSNumber(value: self))
     }
-    
+
+    func toExactFractionLabel(fraction: Int) -> String? {
+        return Formatter.separatorForInputWith(fraction: fraction).string(from: NSNumber(value: self))
+    }
+
     var toCurrencyStringForLabel: String? {
         return Formatter.currencyFormatter.string(from: NSNumber(value: self))
+    }
+
+    func toCurrencyStringForLabel(with symbol: String) -> String? {
+        return Formatter.currencyFormatter(with: symbol).string(from: NSNumber(value: self))
+    }
+
+    var toPercentage: String? {
+        return Formatter.percentageFormatter.string(from: NSNumber(value: self))
+    }
+
+    func round(to places: Int) -> Double {
+        let divisor = pow(10.0, Double(places))
+        return (self * divisor).rounded() / divisor
     }
 }

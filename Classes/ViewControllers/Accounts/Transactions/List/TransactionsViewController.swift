@@ -266,8 +266,7 @@ extension TransactionsViewController: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let transaction = transactionHistoryDataSource.transaction(at: indexPath),
-            !transaction.isAssetAdditionTransaction(for: account.address) else {
+        guard let transaction = transactionHistoryDataSource.transaction(at: indexPath) else {
             return
         }
         

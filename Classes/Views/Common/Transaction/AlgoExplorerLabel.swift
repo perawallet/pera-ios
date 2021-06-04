@@ -37,7 +37,9 @@ class AlgoExplorerLabel: UILabel {
     }
     
     override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
-        return action == #selector(copyText) || action == #selector(notifyDelegateToOpenAlgoExplorer)
+        return action == #selector(copyText) ||
+            action == #selector(notifyDelegateToOpenAlgoExplorer) ||
+            action == #selector(notifyDelegateToOpenGoalSeeker)
     }
 }
 
@@ -49,8 +51,15 @@ extension AlgoExplorerLabel {
 
     private func setupMenuItems() {
         let copyItem = UIMenuItem(title: "title-copy".localized, action: #selector(copyText))
-        let explorerItem = UIMenuItem(title: "transaction-id-open-explorer".localized, action: #selector(notifyDelegateToOpenAlgoExplorer))
-        UIMenuController.shared.menuItems = [copyItem, explorerItem]
+        let algoExplorerItem = UIMenuItem(
+            title: "transaction-id-open-algoexplorer".localized,
+            action: #selector(notifyDelegateToOpenAlgoExplorer)
+        )
+        let goalSeekerItem = UIMenuItem(
+            title: "transaction-id-open-goalseeker".localized,
+            action: #selector(notifyDelegateToOpenGoalSeeker)
+        )
+        UIMenuController.shared.menuItems = [copyItem, algoExplorerItem, goalSeekerItem]
     }
 }
 
@@ -69,13 +78,50 @@ extension AlgoExplorerLabel {
     private func copyText() {
         UIPasteboard.general.string = text
     }
-    
+
     @objc
     private func notifyDelegateToOpenAlgoExplorer() {
-        delegate?.algoExplorerLabelDidOpenExplorer(self)
+        delegate?.algoExplorerLabel(self, didOpen: .algoexplorer)
+    }
+
+    @objc
+    private func notifyDelegateToOpenGoalSeeker() {
+        delegate?.algoExplorerLabel(self, didOpen: .goalseeker)
     }
 }
 
 protocol AlgoExplorerLabelDelegate: class {
-    func algoExplorerLabelDidOpenExplorer(_ algoExplorerLabel: AlgoExplorerLabel)
+    func algoExplorerLabel(_ algoExplorerLabel: AlgoExplorerLabel, didOpen explorer: AlgoExplorerType)
+}
+
+enum AlgoExplorerType {
+    case algoexplorer
+    case goalseeker
+
+    func transactionURL(with id: String, in network: AlgorandAPI.BaseNetwork) -> URL? {
+        switch network {
+        case .testnet:
+            return testNetTransactionURL(with: id)
+        case .mainnet:
+            return mainNetTransactionURL(with: id)
+        }
+    }
+
+    private func testNetTransactionURL(with id: String) -> URL? {
+        switch self {
+        case .algoexplorer:
+            return URL(string: "https://testnet.algoexplorer.io/tx/\(id)")
+        case .goalseeker:
+            return URL(string: "https://goalseeker.purestake.io/algorand/testnet/transaction/\(id)")
+        }
+    }
+
+    private func mainNetTransactionURL(with id: String) -> URL? {
+        switch self {
+        case .algoexplorer:
+            return URL(string: "https://algoexplorer.io/tx/\(id)")
+        case .goalseeker:
+            return URL(string: "https://goalseeker.purestake.io/algorand/mainnet/transaction/\(id)")
+        }
+    }
 }

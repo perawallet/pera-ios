@@ -217,6 +217,45 @@
 /* (No Comment) */
 "ble-error-unsupported-device-title" = "지원되지 않는 기기";
 
+/* (No Comment) */
+"chart-no-data-text" = "현재 가격 API를 사용할 수 없습니다. 잠시 후 다시 확인해 주십시오.";
+
+/* (No Comment) */
+"chart-time-all" = "전체 기간";
+
+/* (No Comment) */
+"chart-time-last-day" = "최근 1일";
+
+/* (No Comment) */
+"chart-time-last-hour" = "최근 1시간";
+
+/* (No Comment) */
+"chart-time-last-month" = "최근 1개월";
+
+/* (No Comment) */
+"chart-time-last-week" = "최근 1주일";
+
+/* (No Comment) */
+"chart-time-last-year" = "최근 1년";
+
+/* (No Comment) */
+"chart-time-selection-all" = "전체";
+
+/* (No Comment) */
+"chart-time-selection-daily" = "1일";
+
+/* (No Comment) */
+"chart-time-selection-hourly" = "1시간";
+
+/* (No Comment) */
+"chart-time-selection-monthly" = "1개월";
+
+/* (No Comment) */
+"chart-time-selection-weekly" = "1주일";
+
+/* (No Comment) */
+"chart-time-selection-yearly" = "1년";
+
 /* MARK: Password Setting */
 "choose-password-title" = "비밀번호 선택";
 
@@ -578,10 +617,16 @@
 "login-title" = "잠금 해제";
 
 /* (No Comment) */
+"maximum-balance-standard-account-warning-description" = "%@개의 기타 자산을 계정(%@)에 보유하신 관계로, 알고랜드 블록체인에서 최소 잔액(%@알고)를 유지하셔야 합니다.\n\n계속을 누르시면 본 변동 사항을 반영하여 트랜잭션 금액이 자동으로 업데이트됩니다. 다음 단계에서 변경 내용을 미리 볼 수 있습니다.";
+
+/* (No Comment) */
 "maximum-balance-warning-description" = "키 재지정(rekey) 계정에서 최대 잔액을 보내려면 최소 잔액(%@알고)을 유지하셔야 합니다. 키를 재지정한 계정에 변동 사항이 없도록 하기 위한 조치이니 양해 부탁드립니다.\n\n본 변동 사항을 반영하여 트랜잭션 금액을 자동으로 업데이트합니다. 다음 단계에서 트랜잭션 내용을 미리 볼 수 있습니다.";
 
 /* (No Comment) */
 "maximum-balance-warning-title" = "최대 잔액";
+
+/* (No Comment) */
+"min-balance-title" = "최소 잔액 필요";
 
 /* (No Comment) */
 "node-settings-action-delete-title" = "삭제";
@@ -944,9 +989,6 @@
 "screenshot-title" = "스크린샷 감지됨";
 
 /* (No Comment) */
-"send-algos-account-delete-asset-title" = "계정을 삭제하려면 모든 자산 계정의 잔액을 0으로 만들고, 생성하신 자산이 있는 경우 전부 삭제하셔야 합니다.";
-
-/* (No Comment) */
 "send-algos-account-delete-body" = "계정을 활성 상태로 유지하려면 계정 잔액이 0.01알고 이상이어야 합니다. 최대 금액을 전송하는 경우, 계정이 삭제되며 활성화된 참여 키 역시 삭제됩니다.";
 
 /* (No Comment) */
@@ -1043,6 +1085,9 @@
 "send-transaction-max-same-account-error" = "나 자신에게 최대 잔액을 전송할 수 없습니다. 다른 금액을 선택하거나 받으시는 분을 변경한 다음 다시 시도해 주세요.";
 
 /* (No Comment) */
+"send-trasaction-address-placeholder" = "# 붙여넣기";
+
+/* (No Comment) */
 "settings-app-version" = "버전 %@";
 
 /* (No Comment) */
@@ -1124,7 +1169,22 @@
 "title-account" = "계정";
 
 /* (No Comment) */
+"title-account-balance" = "잔액";
+
+/* (No Comment) */
 "title-add-asset" = "새 자산 추가";
+
+/* (No Comment) */
+"title-algo-rewards" = "알고 보상";
+
+/* (No Comment) */
+"title-algorand" = "알고랜드";
+
+/* (No Comment) */
+"title-algorand-value" = "가치";
+
+/* (No Comment) */
+"title-analytics" = "분석";
 
 /* (No Comment) */
 "title-approve" = "승인";
@@ -1370,7 +1430,10 @@
 "transaction-filter-try-again" = "다시 시도해 주세요";
 
 /* (No Comment) */
-"transaction-id-open-explorer" = "익스플로러로 열기";
+"transaction-id-open-algoexplorer" = "AlgoExplorer에서 열기";
+
+/* (No Comment) */
+"transaction-id-open-goalseeker" = "GoalSeeker에서 열기";
 
 /* (No Comment) */
 "transaction-tutorial-subtitle" = "첫 번째 트랜잭션을 진행하고 계십니다. 거래를 마무리하기 전에 몇 가지 팁을 고려해보세요.";
@@ -1449,6 +1512,9 @@
 
 /* (No Comment) */
 "tutorial-title-write" = "복구 비밀문구를 받아적을 준비를 해주세요";
+
+/* (No Comment) */
+"value-one-algo" = "1 알고 = %@";
 
 /* (No Comment) */
 "verified-asset-double-check" = "확인하신 다음";

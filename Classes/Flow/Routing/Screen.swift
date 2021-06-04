@@ -99,6 +99,7 @@ indirect enum Screen {
     case animatedTutorial(flow: AccountSetupFlow, tutorial: AnimatedTutorial, isActionable: Bool)
     case transactionTutorial(isInitialDisplay: Bool)
     case recoverOptions
+    case algoUSDAnalytics(account: Account, currency: Currency)
     case ledgerAccountVerification(flow: AccountSetupFlow, selectedAccounts: [Account])
 }
 

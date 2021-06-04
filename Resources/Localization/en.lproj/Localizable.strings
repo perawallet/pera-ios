@@ -219,7 +219,6 @@
 "send-algos-scan" = "Scan QR";
 "send-algos-account-delete-title" = "Your account is about to be deleted, are you sure you want to proceed?";
 "send-algos-account-delete-body" = "To keep an account open, the account must have at least 0.01 ALGO. If you send the max amount, the account will be deleted and your active participation keys will be deleted as well.";
-"send-algos-account-delete-asset-title" = "In order to delete an account, you must empty any asset account balance and destroy any asset you've created, if any.";
 "send-algos-receiver-address-validation" = "Key not valid, please make sure you have the right key.";
 "send-qr-scan-alert-title" = "QR Scan";
 "send-qr-scan-alert-message" = "You just scanned a QR code of a transaction request. Please review all transaction fields as they may have changed.";
@@ -227,6 +226,7 @@
 "send-enter-note-placeholder" = "Enter note here";
 "send-enter-note-title" = "Add Note";
 "send-transaction-max-same-account-error" = "You cannot send your max balance to yourself. Please select a different amount or recipient and try again.";
+"send-trasaction-address-placeholder" = "Paste #";
 
 // MARK: Algos Request
 "request-algos-title" = "Request Algos";
@@ -337,7 +337,8 @@
 "transaction-detail-note-copied" = "Transaction note copied to clipboard";
 "transaction-detail-id-copied" = "Transaction ID copied to clipboard";
 "transaction-detail-copy-tooltip" = "Press and hold to Copy to Clipboard";
-"transaction-id-open-explorer" = "Open in Explorer";
+"transaction-id-open-algoexplorer" = "Open in AlgoExplorer";
+"transaction-id-open-goalseeker" = "Open in GoalSeeker";
 
 // MARK: Feedback
 "feedback-title" = "Send Feedback";
@@ -536,6 +537,7 @@
 "ledger-account-fetct-error" = "A network error occured while fetching account details. Restart the process.";
 
 "maximum-balance-warning-title" = "Maximum Balance";
+"min-balance-title" = "Minimum Balance Required";
 "title-continue" = "Continue";
 "title-dont-show-again" = "Don’t Show This Again";
 
@@ -565,6 +567,7 @@
 "tutorial-action-title-passcode" = "Not now";
 
 "maximum-balance-warning-description" = "Sending your maximum balance on this rekeyed account requires you to maintain a minimum balance of %@ Algos. This is to ensure that nothing changes with your rekeyed account.\n\n\nYour transaction amount will be automatically updated to reflect this change. You will be able to preview the transaction in the next step.";
+"maximum-balance-standard-account-warning-description" = "Because you have %@ other Assets in this account %@, the Algorand Blockchain requires you to maintain a minimum balance of %@ Algos.\n\n\nBy hitting continue, your transaction amount will be automatically updated to reflect this change. You'll be able to preview this change in the next step.";
 
 "transaction-tutorial-title" = "Transacting Tips";
 "transaction-tutorial-subtitle" = "We notice that this is your first transaction. Before you finalize, keep in mind a couple of tips:";
@@ -583,6 +586,30 @@
 "title-dont-ask" = "Don’t ask again";
 "title-paste-passphrase" = "Paste Full Passphrase";
 "title-enter-pin-for-passphrase" = "Please enter your PIN to view passphrase";
+
+"title-analytics" = "Analytics";
+"title-algo-rewards" = "Rewards";
+"value-one-algo" = "1 ALGO = %@";
+
+"title-algorand" = "Algorand";
+"title-account-balance" = "Balance";
+"title-algorand-value" = "Value";
+
+"chart-time-selection-hourly" = "1H";
+"chart-time-selection-daily" = "1D";
+"chart-time-selection-weekly" = "1W";
+"chart-time-selection-monthly" = "1M";
+"chart-time-selection-yearly" = "1Y";
+"chart-time-selection-all" = "ALL";
+
+"chart-no-data-text" = "Price API is currently unavailable, please check back soon.";
+
+"chart-time-last-hour" = "Last 1 Hour";
+"chart-time-last-day" = "Last 1 Day";
+"chart-time-last-week" = "Last 1 Week";
+"chart-time-last-month" = "Last 1 Month";
+"chart-time-last-year" = "Last 1 Year";
+"chart-time-all" = "All Time";
 
 "ledger-account-verification-status-awaiting" = "Awaiting Verification";
 "ledger-account-verification-status-pending" = "Pending";

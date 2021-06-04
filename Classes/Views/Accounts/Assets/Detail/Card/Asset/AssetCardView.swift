@@ -23,12 +23,6 @@ class AssetCardView: BaseView {
     
     private let layout = Layout<LayoutConstants>()
     
-    private lazy var assetIdCopyValueGestureRecognizer: UILongPressGestureRecognizer = {
-        let recognizer = UILongPressGestureRecognizer(target: self, action: #selector(notifyDelegateToCopyAssetId))
-        recognizer.minimumPressDuration = 1.5
-        return recognizer
-    }()
-    
     private lazy var backgroundImageView = UIImageView(image: img("bg-card-gray"))
     
     private lazy var assetNameStackView: UIStackView = {
@@ -55,7 +49,7 @@ class AssetCardView: BaseView {
         let label = UILabel()
             .withAlignment(.left)
             .withTextColor(Colors.Main.white)
-            .withFont(UIFont.font(withWeight: .medium(size: 32.0)))
+            .withFont(UIFont.font(withWeight: .semiBold(size: 28.0)))
         label.minimumScaleFactor = 0.7
         label.adjustsFontSizeToFitWidth = true
         return label
@@ -63,7 +57,7 @@ class AssetCardView: BaseView {
     
     private lazy var assetIDButton: AlignedButton = {
         let button = AlignedButton(.imageAtLeft(spacing: 8.0))
-        button.setImage(img("icon-info-24", isTemplate: true), for: .normal)
+        button.setImage(img("icon-copy", isTemplate: true), for: .normal)
         button.tintColor = Colors.Main.white
         button.setTitleColor(Colors.Main.white, for: .normal)
         button.titleLabel?.font = UIFont.font(withWeight: .regular(size: 12.0))
@@ -76,7 +70,7 @@ class AssetCardView: BaseView {
     }
     
     override func setListeners() {
-        assetIDButton.addGestureRecognizer(assetIdCopyValueGestureRecognizer)
+        assetIDButton.addTarget(self, action: #selector(notifyDelegateToCopyAssetId), for: .touchUpInside)
     }
     
     override func prepareLayout() {
@@ -130,8 +124,8 @@ extension AssetCardView {
         addSubview(assetIDButton)
         
         assetIDButton.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(layout.current.defaultInset)
-            make.bottom.equalToSuperview().inset(layout.current.defaultInset)
+            make.leading.equalToSuperview().inset(layout.current.defaultInset)
+            make.bottom.equalToSuperview().inset(layout.current.bottomInset)
         }
     }
 }
@@ -148,13 +142,8 @@ extension AssetCardView {
 extension AssetCardView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let defaultInset: CGFloat = 24.0
-        let imageSize = CGSize(width: 20.0, height: 20.0)
-        let verifiedImageOffset: CGFloat = 8.0
-        let minimumOffset: CGFloat = 4.0
-        let algosImageSize = CGSize(width: 24.0, height: 24.0)
-        let algosImageTopInset: CGFloat = 30.0
-        let amountTrailingInset: CGFloat = 60.0
-        let amountTopInset: CGFloat = 40.0
+        let amountTopInset: CGFloat = 44.0
+        let bottomInset: CGFloat = 16.0
     }
 }
 

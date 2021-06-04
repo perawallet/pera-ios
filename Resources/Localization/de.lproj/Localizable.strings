@@ -217,6 +217,45 @@
 /* (No Comment) */
 "ble-error-unsupported-device-title" = "Gerät wird nicht unterstützt";
 
+/* (No Comment) */
+"chart-no-data-text" = "Die Preis-API ist derzeit nicht verfügbar, bitte schauen Sie bald wieder vorbei.";
+
+/* (No Comment) */
+"chart-time-all" = "Gesamter Zeitraum";
+
+/* (No Comment) */
+"chart-time-last-day" = "Letzter Tag";
+
+/* (No Comment) */
+"chart-time-last-hour" = "Letzte Stunde";
+
+/* (No Comment) */
+"chart-time-last-month" = "Letzter Monat";
+
+/* (No Comment) */
+"chart-time-last-week" = "Letzte Woche";
+
+/* (No Comment) */
+"chart-time-last-year" = "Letztes Jahr";
+
+/* (No Comment) */
+"chart-time-selection-all" = "ALLE";
+
+/* (No Comment) */
+"chart-time-selection-daily" = "1D";
+
+/* (No Comment) */
+"chart-time-selection-hourly" = "1H";
+
+/* (No Comment) */
+"chart-time-selection-monthly" = "1M";
+
+/* (No Comment) */
+"chart-time-selection-weekly" = "1W";
+
+/* (No Comment) */
+"chart-time-selection-yearly" = "1Y";
+
 /* MARK: Password Setting */
 "choose-password-title" = "Zugangscode wählen";
 
@@ -578,10 +617,16 @@
 "login-title" = "Entsperren";
 
 /* (No Comment) */
+"maximum-balance-standard-account-warning-description" = "Da Sie %@ andere Vermögenswerte auf diesem Konto %@ haben, verlangt die Algorand-Blockchain, dass Sie ein Mindestguthaben von %@ Algos halten.\n\n\nWenn Sie auf „Weiter“ klicken, wird Ihr Transaktionsbetrag automatisch aktualisiert, um diese Änderung widerzuspiegeln. Sie können diese Änderung im nächsten Schritt in der Vorschau sehen.";
+
+/* (No Comment) */
 "maximum-balance-warning-description" = "Um Ihr maximales Guthaben auf einem neu eröffneten Konto zu senden, müssen Sie ein Mindestguthaben von %@ Algos aufrechterhalten. Damit soll sichergestellt werden, dass sich bei Ihrem neu angelegten Konto nichts ändert.\n\n\nIhr Transaktionsbetrag wird automatisch aktualisiert, um diese Änderung widerzuspiegeln. Sie können die Transaktion im nächsten Schritt in der Vorschau anzeigen.";
 
 /* (No Comment) */
 "maximum-balance-warning-title" = "Maximales Guthaben";
+
+/* (No Comment) */
+"min-balance-title" = "Mindestguthaben erforderlich";
 
 /* (No Comment) */
 "node-settings-action-delete-title" = "Löschen";
@@ -944,9 +989,6 @@
 "screenshot-title" = "Screenshot erkannt";
 
 /* (No Comment) */
-"send-algos-account-delete-asset-title" = "Ein Konto kann nur gelöscht werden, wenn das Kontoguthaben null ist und alle von Ihnen erstellten Assets entfernt wurden.";
-
-/* (No Comment) */
 "send-algos-account-delete-body" = "Ein Konto muss mindestens ein Guthaben von 0,01 Algos aufweisen. Andernfalls wird es gelöscht. Wenn Sie den maximalen Betrag senden, werden das Konto und Ihre aktiven Teilnahmeschlüssel gelöscht.";
 
 /* (No Comment) */
@@ -1043,6 +1085,9 @@
 "send-transaction-max-same-account-error" = "Sie können Ihr maximales Guthaben nicht an sich selbst senden. Bitte wählen Sie einen anderen Betrag oder Empfänger und versuchen Sie es erneut.";
 
 /* (No Comment) */
+"send-trasaction-address-placeholder" = "Einfügen #";
+
+/* (No Comment) */
 "settings-app-version" = "Version %@";
 
 /* (No Comment) */
@@ -1124,7 +1169,22 @@
 "title-account" = "Konto";
 
 /* (No Comment) */
+"title-account-balance" = "Guthaben";
+
+/* (No Comment) */
 "title-add-asset" = "Neues Asset hinzufügen";
+
+/* (No Comment) */
+"title-algo-rewards" = "Algo-Rewards";
+
+/* (No Comment) */
+"title-algorand" = "Algorand";
+
+/* (No Comment) */
+"title-algorand-value" = "Wert";
+
+/* (No Comment) */
+"title-analytics" = "Analytik";
 
 /* (No Comment) */
 "title-approve" = "Bestätigen";
@@ -1370,7 +1430,10 @@
 "transaction-filter-try-again" = "Erneut versuchen";
 
 /* (No Comment) */
-"transaction-id-open-explorer" = "Im Explorer öffnen";
+"transaction-id-open-algoexplorer" = "Im AlgoExplorer öffnen";
+
+/* (No Comment) */
+"transaction-id-open-goalseeker" = "In GoalSeeker öffnen";
 
 /* (No Comment) */
 "transaction-tutorial-subtitle" = "Wir haben festgestellt, dass dies Ihre erste Transaktion ist. Bevor Sie sie abschließen, sollten Sie ein paar Tipps beachten:";
@@ -1449,6 +1512,9 @@
 
 /* (No Comment) */
 "tutorial-title-write" = "Bereiten Sie sich darauf vor, Ihre Wiederherstellungs-Passphrase aufzuschreiben";
+
+/* (No Comment) */
+"value-one-algo" = "1 ALGO = %@";
 
 /* (No Comment) */
 "verified-asset-double-check" = "Unbedingt immer überprüfen";

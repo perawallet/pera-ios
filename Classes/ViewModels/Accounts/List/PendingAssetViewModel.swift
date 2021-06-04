@@ -21,20 +21,21 @@ class PendingAssetViewModel {
     private(set) var assetDetail: AssetDetail?
     private(set) var detail: String?
 
-    init(assetDetail: AssetDetail, isRemoving: Bool) {
+    init(assetDetail: AssetDetail) {
         setAssetDetail(from: assetDetail)
-        setDetail(from: isRemoving)
+        setDetail(from: assetDetail)
     }
 
     private func setAssetDetail(from assetDetail: AssetDetail) {
         self.assetDetail = assetDetail
     }
 
-    private func setDetail(from isRemoving: Bool) {
-        if isRemoving {
-            detail = "asset-remove-confirmation-title".localized
-        } else {
+    private func setDetail(from assetDetail: AssetDetail) {
+        if assetDetail.isRecentlyAdded {
             detail = "asset-add-confirmation-title".localized
+            return
         }
+
+        detail = "asset-remove-confirmation-title".localized
     }
 }

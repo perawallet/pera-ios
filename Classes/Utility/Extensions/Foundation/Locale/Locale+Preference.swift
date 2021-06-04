@@ -24,4 +24,18 @@ extension Locale {
         }
         return Locale(identifier: preferredLanguageIdentifier)
     }
+
+    static func locale(from currencyCode: String) -> Locale? {
+        if !commonISOCurrencyCodes.contains(currencyCode) {
+            return nil
+        }
+
+        if Locale.current.currencyCode == currencyCode {
+            return Locale.current
+        }
+
+        let localeComponents = [NSLocale.Key.currencyCode.rawValue: currencyCode]
+        let localeIdentifier = Locale.identifier(fromComponents: localeComponents)
+        return Locale(identifier: localeIdentifier)
+    }
 }

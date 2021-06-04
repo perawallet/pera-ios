@@ -217,6 +217,45 @@
 /* (No Comment) */
 "ble-error-unsupported-device-title" = "Dispositivo no compatible";
 
+/* (No Comment) */
+"chart-no-data-text" = "La API de precios no está disponible en este momento. Vuelve a consultar pronto.";
+
+/* (No Comment) */
+"chart-time-all" = "Histórico";
+
+/* (No Comment) */
+"chart-time-last-day" = "Último día";
+
+/* (No Comment) */
+"chart-time-last-hour" = "Última hora";
+
+/* (No Comment) */
+"chart-time-last-month" = "Último mes";
+
+/* (No Comment) */
+"chart-time-last-week" = "Última semana";
+
+/* (No Comment) */
+"chart-time-last-year" = "Último año";
+
+/* (No Comment) */
+"chart-time-selection-all" = "TODOS";
+
+/* (No Comment) */
+"chart-time-selection-daily" = "1D";
+
+/* (No Comment) */
+"chart-time-selection-hourly" = "1H";
+
+/* (No Comment) */
+"chart-time-selection-monthly" = "1M";
+
+/* (No Comment) */
+"chart-time-selection-weekly" = "1S";
+
+/* (No Comment) */
+"chart-time-selection-yearly" = "1A";
+
 /* MARK: Password Setting */
 "choose-password-title" = "Elige una contraseña";
 
@@ -491,7 +530,7 @@
 "ledger-troubleshooting-install-app-first-html" = "Comienza siguiendo el tutorial completo de Ledger sobre <a href=\"https://www.ledger.com/start\">Cómo comenzar</a>.";
 
 /* (No Comment) */
-"ledger-troubleshooting-install-app-second-html" = "Cuando el tutorial llegue al momento en que debes \"seleccionar las aplicaciones que quieres instalar en tu dispositivo\", ingresa <b>Algorand</b> en la barra de búsqueda e instala.";
+"ledger-troubleshooting-install-app-second-html" = "Cuando el tutorial llegue al momento en que debes \"seleccionar las aplicaciones que quieres instalar en tu dispositivo\", ingresa <b>Algorand</b>> en la barra de búsqueda e instala.";
 
 /* (No Comment) */
 "ledger-troubleshooting-ledger-bluetooth-connection-advanced-guide-html" = "Para consultar la resolución de problemas avanzada, revisa la <a href=\"https://support.ledger.com/hc/en-us/articles/360025864773\">guía de resolución de problemas Bluetooth</a> oficial de Ledger.";
@@ -578,10 +617,16 @@
 "login-title" = "Desbloquear";
 
 /* (No Comment) */
+"maximum-balance-standard-account-warning-description" = "Debido a que tienes %@ activo(s) más en esta cuenta %@, la blockchain de Algorand requiere que mantengas un saldo mínimo de %@ Algos. \n\n\nAl presionar continuar, el monto de tu transacción se actualizará automáticamente para reflejar este cambio. Podrás ver una vista previa de este cambio en el siguiente paso.";
+
+/* (No Comment) */
 "maximum-balance-warning-description" = "Para enviar tu saldo máximo en una cuenta con clave nueva necesitas mantener un saldo mínimo de %@ Algos. Esto es para asegurarnos de que no haya cambios en tu cuenta con clave nueva. \n\n\nEl monto de tu transacción se actualizará automáticamente para reflejar este cambio. Obtendrás una vista previa de la transacción en el siguiente paso.";
 
 /* (No Comment) */
 "maximum-balance-warning-title" = "Saldo máximo";
+
+/* (No Comment) */
+"min-balance-title" = "Saldo mínimo requerido";
 
 /* (No Comment) */
 "node-settings-action-delete-title" = "Eliminar";
@@ -944,9 +989,6 @@
 "screenshot-title" = "Captura de pantalla detectada";
 
 /* (No Comment) */
-"send-algos-account-delete-asset-title" = "Para eliminar la cuenta, debes vaciar el saldo de los activos de la cuenta y destruir los activos que hayas creado, si corresponde.";
-
-/* (No Comment) */
 "send-algos-account-delete-body" = "Para mantener una cuenta abierta, la cuenta debe tener al menos 0,01 ALGO. Si envías el monto máximo, la cuenta se eliminará y también se eliminarán tus claves de participación activas.";
 
 /* (No Comment) */
@@ -1043,6 +1085,9 @@
 "send-transaction-max-same-account-error" = "No puedes enviarte el saldo máximo a ti mismo. Selecciona un monto o un destinatario diferente e inténtalo nuevamente.";
 
 /* (No Comment) */
+"send-trasaction-address-placeholder" = "Pegar número";
+
+/* (No Comment) */
 "settings-app-version" = "Versión %@";
 
 /* (No Comment) */
@@ -1124,7 +1169,22 @@
 "title-account" = "Cuenta";
 
 /* (No Comment) */
+"title-account-balance" = "Saldo";
+
+/* (No Comment) */
 "title-add-asset" = "Agregar nuevo activo";
+
+/* (No Comment) */
+"title-algo-rewards" = "Recompensas de Algo";
+
+/* (No Comment) */
+"title-algorand" = "Algorand";
+
+/* (No Comment) */
+"title-algorand-value" = "Valor";
+
+/* (No Comment) */
+"title-analytics" = "Analítica";
 
 /* (No Comment) */
 "title-approve" = "Aprobar";
@@ -1370,7 +1430,10 @@
 "transaction-filter-try-again" = "Inténtalo de nuevo";
 
 /* (No Comment) */
-"transaction-id-open-explorer" = "Abrir en navegador";
+"transaction-id-open-algoexplorer" = "Abrir en AlgoExplorer";
+
+/* (No Comment) */
+"transaction-id-open-goalseeker" = "Abrir en GoalSeeker";
 
 /* (No Comment) */
 "transaction-tutorial-subtitle" = "Notamos que esta es su primera transacción. Antes de finalizar, ten en cuenta los siguientes consejos:";
@@ -1449,6 +1512,9 @@
 
 /* (No Comment) */
 "tutorial-title-write" = "Prepárate para escribir la frase secreta de recuperación";
+
+/* (No Comment) */
+"value-one-algo" = "1 ALGO = %@";
 
 /* (No Comment) */
 "verified-asset-double-check" = "siempre comprueba dos veces";

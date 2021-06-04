@@ -260,29 +260,6 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
             )
         )
     }
-
-    private func displayMaxTransactionWarning() {
-        guard let account = selectedAccount else {
-            return
-        }
-
-        let controller = open(
-            .maximumBalanceWarning(account: account),
-            by: .customPresentWithoutNavigationController(
-                presentationStyle: .custom,
-                transitionStyle: nil,
-                transitioningDelegate: maxTransactionWarningPresenter
-            )
-        ) as? MaximumBalanceWarningViewController
-        controller?.delegate = self
-    }
-}
-
-extension SendAssetTransactionPreviewViewController: MaximumBalanceWarningViewControllerDelegate {
-    func maximumBalanceWarningViewControllerDidConfirmWarning(_ maximumBalanceWarningViewController: MaximumBalanceWarningViewController) {
-        maximumBalanceWarningViewController.dismissScreen()
-        composeTransactionData()
-    }
 }
 
 extension SendAssetTransactionPreviewViewController {
@@ -383,11 +360,7 @@ extension SendAssetTransactionPreviewViewController {
             return
         }
 
-        if isMaxTransactionFromRekeyedAccount {
-            displayMaxTransactionWarning()
-        } else {
-            composeTransactionData()
-        }
+        composeTransactionData()
     }
     
     private func composeTransactionData() {

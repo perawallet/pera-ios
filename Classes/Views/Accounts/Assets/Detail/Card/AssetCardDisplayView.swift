@@ -95,6 +95,10 @@ extension AssetCardDisplayView {
     func reloadData(at index: Int) {
         assetsCollectionView.reloadItems(at: [IndexPath(item: index, section: 0)])
     }
+
+    func item(at index: Int) -> UICollectionViewCell? {
+        return assetsCollectionView.cellForItem(at: IndexPath(item: index, section: 0))
+    }
     
     func setDelegate(_ delegate: UICollectionViewDelegate?) {
         assetsCollectionView.delegate = delegate
@@ -143,8 +147,8 @@ extension AssetCardDisplayView {
 
 extension AssetCardDisplayView {
     enum CardViewConstants {
-        static let height: CGFloat = 280.0
-        static let cardHeight: CGFloat = 208.0
+        static let height: CGFloat = 322.0
+        static let cardHeight: CGFloat = 250.0
         static let cardWidth: CGFloat = UIScreen.main.bounds.width - CardViewConstants.cardInset * 2.0
         static let cardSpacing: CGFloat = 12.0
         static let cardInset: CGFloat = 24.0

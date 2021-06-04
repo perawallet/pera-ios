@@ -217,6 +217,45 @@
 /* (No Comment) */
 "ble-error-unsupported-device-title" = "不支持的设备";
 
+/* (No Comment) */
+"chart-no-data-text" = "无可用的图表数据。";
+
+/* (No Comment) */
+"chart-time-all" = "全部时间";
+
+/* (No Comment) */
+"chart-time-last-day" = "最近1天";
+
+/* (No Comment) */
+"chart-time-last-hour" = "最近1小时";
+
+/* (No Comment) */
+"chart-time-last-month" = "最近1个月";
+
+/* (No Comment) */
+"chart-time-last-week" = "最近1周";
+
+/* (No Comment) */
+"chart-time-last-year" = "最近1年";
+
+/* (No Comment) */
+"chart-time-selection-all" = "全部";
+
+/* (No Comment) */
+"chart-time-selection-daily" = "1天";
+
+/* (No Comment) */
+"chart-time-selection-hourly" = "1小时";
+
+/* (No Comment) */
+"chart-time-selection-monthly" = "1个月";
+
+/* (No Comment) */
+"chart-time-selection-weekly" = "1周";
+
+/* (No Comment) */
+"chart-time-selection-yearly" = "1年";
+
 /* MARK: Password Setting */
 "choose-password-title" = "请选择密码";
 
@@ -578,10 +617,16 @@
 "login-title" = "解锁";
 
 /* (No Comment) */
+"maximum-balance-standard-account-warning-description" = "由于您在此账户%@中还有%@其余资产，Algorand区块链要求您维持%@ALGO的最低余额。\n\n\n\n点击继续，您的交易金额将自动更新以反映此更改。您将可以在下一步中预览此更改。";
+
+/* (No Comment) */
 "maximum-balance-warning-description" = "如果您要将最高余额发送到重置密钥的账户上，请您保持%@ ALGO的最低余额。此举能够确保您重置密钥的账户没有任何变化。\n\n\n您的交易金额将自动更新以反映这一变化。您可以在下一步中预览交易。";
 
 /* (No Comment) */
 "maximum-balance-warning-title" = "最高余额";
+
+/* (No Comment) */
+"min-balance-title" = "最低余额要求";
 
 /* (No Comment) */
 "node-settings-action-delete-title" = "删除";
@@ -944,9 +989,6 @@
 "screenshot-title" = "检测到屏幕截图";
 
 /* (No Comment) */
-"send-algos-account-delete-asset-title" = "您必须清零账户余额，并销毁所创建的所有资产后，才能删除账户。";
-
-/* (No Comment) */
 "send-algos-account-delete-body" = "账户至少需持有0.01个ALGO才能保持开通状态。若您发送全部ALGO，账户将被删除，您的有效参与密钥也同样会被删除。";
 
 /* (No Comment) */
@@ -1043,6 +1085,9 @@
 "send-transaction-max-same-account-error" = "无法向自己发送所有余额。请在选择其他账户或收款人后，再次尝试。";
 
 /* (No Comment) */
+"send-trasaction-address-placeholder" = "粘贴#";
+
+/* (No Comment) */
 "settings-app-version" = "%@版本";
 
 /* (No Comment) */
@@ -1124,7 +1169,22 @@
 "title-account" = "账户";
 
 /* (No Comment) */
+"title-account-balance" = "余额";
+
+/* (No Comment) */
 "title-add-asset" = "添加新的资产";
+
+/* (No Comment) */
+"title-algo-rewards" = "ALGO奖励";
+
+/* (No Comment) */
+"title-algorand" = "Algorand";
+
+/* (No Comment) */
+"title-algorand-value" = "价值";
+
+/* (No Comment) */
+"title-analytics" = "分析工具";
 
 /* (No Comment) */
 "title-approve" = "同意";
@@ -1370,7 +1430,10 @@
 "transaction-filter-try-again" = "再次尝试";
 
 /* (No Comment) */
-"transaction-id-open-explorer" = "在浏览器中打开";
+"transaction-id-open-algoexplorer" = "在AlgoExplorer中打开";
+
+/* (No Comment) */
+"transaction-id-open-goalseeker" = "在GoalSeeker中打开";
 
 /* (No Comment) */
 "transaction-tutorial-subtitle" = "我们注意到这是您的第一笔交易。在完成交易之前，请记住以下几点提示：";
@@ -1449,6 +1512,9 @@
 
 /* (No Comment) */
 "tutorial-title-write" = "请准备写下您的恢复助记词";
+
+/* (No Comment) */
+"value-one-algo" = "1 ALGO = %@";
 
 /* (No Comment) */
 "verified-asset-double-check" = "请再次确认";

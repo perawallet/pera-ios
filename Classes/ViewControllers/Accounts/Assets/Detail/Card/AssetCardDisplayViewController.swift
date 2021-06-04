@@ -28,12 +28,35 @@ class AssetCardDisplayViewController: BaseViewController {
         ),
         initialModalSize: .custom(CGSize(width: view.frame.width, height: 472.0))
     )
-    
+
+    private lazy var analyticsModalPresenter = CardModalPresenter(
+        config: ModalConfiguration(
+            animationMode: .normal(duration: 0.25),
+            dismissMode: .scroll
+        ),
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: UIScreen.main.bounds.height * 0.8))
+    )
+
+    private lazy var assetCardDisplayDataController: AssetCardDisplayDataController = {
+        guard let api = api else {
+            fatalError("Api must be set before accessing this view controller.")
+        }
+        return AssetCardDisplayDataController(api: api)
+    }()
+
     private var account: Account
     private var selectedIndex: Int
     private var currency: Currency?
     
     private lazy var assetCardDisplayView = AssetCardDisplayView()
+
+    private lazy var rewardCalculator: RewardCalculator = {
+        guard let api = api else {
+            fatalError("Api must be set before accessing reward calculator.")
+        }
+
+        return RewardCalculator(api: api, account: account)
+    }()
     
     init(account: Account, selectedIndex: Int, configuration: ViewControllerConfiguration) {
         self.account = account
@@ -43,11 +66,15 @@ class AssetCardDisplayViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        fetchCurrency()
         assetCardDisplayView.setNumberOfPages(account.assetDetails.count + 1)
         assetCardDisplayView.setCurrentPage(selectedIndex)
     }
-    
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        fetchCurrency()
+    }
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         assetCardDisplayView.scrollTo(selectedIndex, animated: true)
@@ -60,6 +87,7 @@ class AssetCardDisplayViewController: BaseViewController {
     override func linkInteractors() {
         assetCardDisplayView.setDelegate(self)
         assetCardDisplayView.setDataSource(self)
+        rewardCalculator.delegate = self
     }
 }
 
@@ -75,17 +103,10 @@ extension AssetCardDisplayViewController {
 
 extension AssetCardDisplayViewController {
     private func fetchCurrency() {
-        guard let preferredCurrency = session?.preferredCurrency else {
-            return
-        }
-        
-        api?.getCurrencyValue(for: preferredCurrency) { response in
-            switch response {
-            case let .success(result):
-                self.currency = result
+        assetCardDisplayDataController.getCurrency { response in
+            if let currency = response {
+                self.currency = currency
                 self.assetCardDisplayView.reloadData(at: 0)
-            case .failure:
-                break
             }
         }
     }
@@ -103,7 +124,7 @@ extension AssetCardDisplayViewController: UICollectionViewDataSource {
                 for: indexPath
             ) as? AlgosCardCell {
                 cell.delegate = self
-                cell.contextView.bind(AlgosCardViewModel(account: account, currency: currency))
+                cell.bind(AlgosCardViewModel(account: account, currency: currency))
                 return cell
             }
         } else {
@@ -113,7 +134,7 @@ extension AssetCardDisplayViewController: UICollectionViewDataSource {
                 for: indexPath
             ) as? AssetCardCell {
                 cell.delegate = self
-                cell.contextView.bind(AssetCardViewModel(account: account, assetDetail: assetDetail))
+                cell.bind(AssetCardViewModel(account: account, assetDetail: assetDetail))
                 return cell
             }
         }
@@ -177,6 +198,21 @@ extension AssetCardDisplayViewController: AlgosCardCellDelegate {
             )
         )
     }
+
+    func algosCardCellDidOpenAnalytics(_ algosCardCell: AlgosCardCell) {
+        guard let currency = currency else {
+            return
+        }
+
+        open(
+            .algoUSDAnalytics(account: account, currency: currency),
+            by: .customPresent(
+                presentationStyle: .custom,
+                transitionStyle: nil,
+                transitioningDelegate: analyticsModalPresenter
+            )
+        )
+    }
 }
 
 extension AssetCardDisplayViewController: AssetCardCellDelegate {
@@ -194,7 +230,18 @@ extension AssetCardDisplayViewController: AssetCardCellDelegate {
 extension AssetCardDisplayViewController {
     func updateAccount(_ updatedAccount: Account) {
         account = updatedAccount
+        rewardCalculator.updateAccount(updatedAccount)
         assetCardDisplayView.reloadData()
+    }
+}
+
+extension AssetCardDisplayViewController: RewardCalculatorDelegate {
+    func rewardCalculator(_ rewardCalculator: RewardCalculator, didCalculate rewards: Double) {
+        guard let algosCardCell = assetCardDisplayView.item(at: 0) as? AlgosCardCell else {
+            return
+        }
+
+        algosCardCell.bind(RewardCalculationViewModel(account: account, calculatedRewards: rewards, currency: currency))
     }
 }
 

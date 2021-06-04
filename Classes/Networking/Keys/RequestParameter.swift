@@ -61,6 +61,9 @@ enum RequestParameter: String, CodingKey {
     case publicKey = "public_key"
     case receivesNotifications = "receive_notifications"
     case paginator = "paginator"
+    case since = "since"
+    case until = "until"
+    case interval = "interval"
 }
 
 typealias QueryParam = ObjectQueryKeyedParam<RequestParameter>

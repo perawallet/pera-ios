@@ -102,3 +102,13 @@ extension Colors {
         static let error = color("errorShadow")
     }
 }
+
+extension Colors {
+    enum Chart {
+        enum Line {
+            static let increasing = color("chartLineIncreasingColor")
+            static let decreasing = color("chartLineDecreasingColor")
+            static let stable = color("chartLineStableColor")
+        }
+    }
+}

@@ -89,6 +89,8 @@ class NotificationsViewModel {
         case .assetSupportSuccess:
             let message = "notification-support-success".localized(params: sender, assetDisplayName)
             title = getAttributedMessage(message, for: sender, assetDisplayName)
+        case .broadcast:
+            title = notification.message?.attributed()
         }
     }
     

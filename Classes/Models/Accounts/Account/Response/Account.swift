@@ -20,13 +20,13 @@ import Magpie
 class Account: Model {
     let address: String
     var amount: UInt64
-    var amountWithoutRewards: UInt64?
+    var amountWithoutRewards: UInt64
     var rewardsBase: UInt64?
     var round: UInt64?
     var signatureType: SignatureType?
     var status: AccountStatus
     var rewards: UInt64?
-    var pendingRewards: UInt64?
+    var pendingRewards: UInt64
     var participation: Participation?
     var createdAssets: [AssetDetail]?
     var assets: [Asset]?
@@ -47,13 +47,13 @@ class Account: Model {
         
         address = try container.decode(String.self, forKey: .address)
         amount = try container.decode(UInt64.self, forKey: .amount)
-        amountWithoutRewards = try container.decodeIfPresent(UInt64.self, forKey: .amountWithoutRewards)
+        amountWithoutRewards = try container.decodeIfPresent(UInt64.self, forKey: .amountWithoutRewards) ?? 0
         rewardsBase = try container.decodeIfPresent(UInt64.self, forKey: .rewardsBase)
         round = try container.decodeIfPresent(UInt64.self, forKey: .round)
         signatureType = try container.decodeIfPresent(SignatureType.self, forKey: .signatureType)
         status = try container.decode(AccountStatus.self, forKey: .status)
         rewards = try container.decodeIfPresent(UInt64.self, forKey: .rewards)
-        pendingRewards = try container.decodeIfPresent(UInt64.self, forKey: .pendingRewards)
+        pendingRewards = try container.decodeIfPresent(UInt64.self, forKey: .pendingRewards) ?? 0
         participation = try container.decodeIfPresent(Participation.self, forKey: .participation)
         name = try container.decodeIfPresent(String.self, forKey: .name)
         createdAssets = try? container.decodeIfPresent([AssetDetail].self, forKey: .createdAssets)
@@ -79,6 +79,8 @@ class Account: Model {
     ) {
         self.address = address
         amount = 0
+        amountWithoutRewards = 0
+        pendingRewards = 0
         status = .offline
         self.name = name
         self.type = type
@@ -90,6 +92,8 @@ class Account: Model {
     init(accountInformation: AccountInformation) {
         self.address = accountInformation.address
         self.amount = 0
+        self.amountWithoutRewards = 0
+        self.pendingRewards = 0
         self.status = .offline
         self.name = accountInformation.name
         self.type = accountInformation.type

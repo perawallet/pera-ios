@@ -374,6 +374,8 @@ class Router {
             viewController = TransactionTutorialViewController(isInitialDisplay: isInitialDisplay, configuration: configuration)
         case .recoverOptions:
             viewController = AccountRecoverOptionsViewController(configuration: configuration)
+        case let .algoUSDAnalytics(account, currency):
+            viewController = AlgoUSDAnalyticsViewController(account: account, currency: currency, configuration: configuration)
         case let .ledgerAccountVerification(flow, selectedAccounts):
             viewController = LedgerAccountVerificationViewController(
                 accountSetupFlow: flow,

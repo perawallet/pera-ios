@@ -46,18 +46,4 @@ extension AlgorandAPI {
             .build()
             .send()
     }
-    
-    @discardableResult
-    func waitRound(
-        with draft: WaitRoundDraft,
-        then handler: @escaping (Response.ModelResult<RoundDetail>) -> Void
-    ) -> EndpointOperatable {
-        return EndpointBuilder(api: self)
-            .base(algodBase)
-            .path("/v2/status/wait-for-block-after/\(draft.round)")
-            .headers(algodAuthenticatedHeaders())
-            .completionHandler(handler)
-            .build()
-            .send()
-    }
 }

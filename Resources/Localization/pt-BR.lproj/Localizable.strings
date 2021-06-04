@@ -217,6 +217,45 @@
 /* (No Comment) */
 "ble-error-unsupported-device-title" = "Dispositivo Não Suportado";
 
+/* (No Comment) */
+"chart-no-data-text" = "API de preços momentaneamente indisponível. Volte mais tarde.";
+
+/* (No Comment) */
+"chart-time-all" = "Todo o Período";
+
+/* (No Comment) */
+"chart-time-last-day" = "Último Dia";
+
+/* (No Comment) */
+"chart-time-last-hour" = "Última Hora";
+
+/* (No Comment) */
+"chart-time-last-month" = "Último Mês";
+
+/* (No Comment) */
+"chart-time-last-week" = "Última Semana";
+
+/* (No Comment) */
+"chart-time-last-year" = "Último Ano";
+
+/* (No Comment) */
+"chart-time-selection-all" = "TODOS";
+
+/* (No Comment) */
+"chart-time-selection-daily" = "1 Dia";
+
+/* (No Comment) */
+"chart-time-selection-hourly" = "1 Hora";
+
+/* (No Comment) */
+"chart-time-selection-monthly" = "1 Mês";
+
+/* (No Comment) */
+"chart-time-selection-weekly" = "1 Semana";
+
+/* (No Comment) */
+"chart-time-selection-yearly" = "1 Ano";
+
 /* MARK: Password Setting */
 "choose-password-title" = "Escolher senha";
 
@@ -578,10 +617,16 @@
 "login-title" = "Desbloquear";
 
 /* (No Comment) */
+"maximum-balance-standard-account-warning-description" = "Como você tem %@ outros Ativos nesta conta %@, a Blockchain Algorand exige que você mantenha um saldo mínimo de %@ Algos.\n\n\nAo clicar continuar, o montante de sua transação será automaticamente atualizado para refletir esta mudança. Você poderá visualizar esta mudança na etapa seguinte.";
+
+/* (No Comment) */
 "maximum-balance-warning-description" = "Enviar seu saldo máximo em uma conta rechaveada exige que você mantenha um saldo mínimo de %@ Algos para garantir que nada será alterado em sua conta rechaveada.\n\n\nO montante de sua transação será automaticamente atualizado para refletir esta mudança. Você será capaz de visualizar a transação na etapa a seguir.";
 
 /* (No Comment) */
 "maximum-balance-warning-title" = "Saldo Máximo";
+
+/* (No Comment) */
+"min-balance-title" = "Saldo Mínimo Exigido";
 
 /* (No Comment) */
 "node-settings-action-delete-title" = "Apagar";
@@ -944,9 +989,6 @@
 "screenshot-title" = "Captura de Tela Detectada";
 
 /* (No Comment) */
-"send-algos-account-delete-asset-title" = "Para apagar uma conta, você precisa esvaziar todo o saldo de ativos na conta e destruir todo ativo que tenha criado.";
-
-/* (No Comment) */
 "send-algos-account-delete-body" = "Para permanecer aberta, uma conta precisa ter ao menos 0,01 ALGO. Caso envie a quantia máxima, a conta será apagada junto com suas chaves de participação ativa.";
 
 /* (No Comment) */
@@ -1043,6 +1085,9 @@
 "send-transaction-max-same-account-error" = "Você não pode enviar o total de seu saldo para você mesmo. Selecione quantia ou destinatário diferentes e tente novamente.";
 
 /* (No Comment) */
+"send-trasaction-address-placeholder" = "Colar #";
+
+/* (No Comment) */
 "settings-app-version" = "Versão %@";
 
 /* (No Comment) */
@@ -1124,7 +1169,22 @@
 "title-account" = "Conta";
 
 /* (No Comment) */
+"title-account-balance" = "Saldo";
+
+/* (No Comment) */
 "title-add-asset" = "Adicionar Novo Ativo";
+
+/* (No Comment) */
+"title-algo-rewards" = "Recompensas Algo";
+
+/* (No Comment) */
+"title-algorand" = "Algorand";
+
+/* (No Comment) */
+"title-algorand-value" = "Valor";
+
+/* (No Comment) */
+"title-analytics" = "Dados Analíticos";
 
 /* (No Comment) */
 "title-approve" = "Aprovar";
@@ -1370,7 +1430,10 @@
 "transaction-filter-try-again" = "Tente novamente";
 
 /* (No Comment) */
-"transaction-id-open-explorer" = "Abrir no Explorer";
+"transaction-id-open-algoexplorer" = "Abrir no AlgoExplorer";
+
+/* (No Comment) */
+"transaction-id-open-goalseeker" = "Abrir no GoalSeeker";
 
 /* (No Comment) */
 "transaction-tutorial-subtitle" = "Percebemos que esta é sua primeira transação. Antes de finalizar, lembre-se de algumas dicas:";
@@ -1449,6 +1512,9 @@
 
 /* (No Comment) */
 "tutorial-title-write" = "Prepare-se para anotar sua frase senha de recuperação";
+
+/* (No Comment) */
+"value-one-algo" = "1 ALGO = %@";
 
 /* (No Comment) */
 "verified-asset-double-check" = "sempre verifique duas vezes";

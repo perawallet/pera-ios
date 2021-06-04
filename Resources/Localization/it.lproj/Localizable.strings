@@ -217,6 +217,45 @@
 /* (No Comment) */
 "ble-error-unsupported-device-title" = "Dispositivo non supportato";
 
+/* (No Comment) */
+"chart-no-data-text" = "L'API del prezzo non è al momento disponibile, ricontrolla a breve.";
+
+/* (No Comment) */
+"chart-time-all" = "Sempre";
+
+/* (No Comment) */
+"chart-time-last-day" = "Ultimo 1 giorno";
+
+/* (No Comment) */
+"chart-time-last-hour" = "Ultima 1 ora";
+
+/* (No Comment) */
+"chart-time-last-month" = "Ultimo 1 mese";
+
+/* (No Comment) */
+"chart-time-last-week" = "Ultima 1 settimana";
+
+/* (No Comment) */
+"chart-time-last-year" = "Ultimo 1 anno";
+
+/* (No Comment) */
+"chart-time-selection-all" = "TUTTI";
+
+/* (No Comment) */
+"chart-time-selection-daily" = "1G";
+
+/* (No Comment) */
+"chart-time-selection-hourly" = "1 ora";
+
+/* (No Comment) */
+"chart-time-selection-monthly" = "1M";
+
+/* (No Comment) */
+"chart-time-selection-weekly" = "1S";
+
+/* (No Comment) */
+"chart-time-selection-yearly" = "1A";
+
 /* MARK: Password Setting */
 "choose-password-title" = "Scegli passcode";
 
@@ -578,10 +617,16 @@
 "login-title" = "Sblocca";
 
 /* (No Comment) */
+"maximum-balance-standard-account-warning-description" = "Poiché hai %@ altre Risorse in questo conto %@, la Blockchain di Algorand ti richiede di mantenere un saldo minimo di %@ Algo.\n\nPremendo continua, l'importo della transazione verrà aggiornato automaticamente per riflettere questa modifica. Sarà possibile visualizzare in anteprima questa modifica nel passaggio successivo.";
+
+/* (No Comment) */
 "maximum-balance-warning-description" = "L'invio del tuo saldo massimo su un conto ricodificato richiede che tu mantenga un saldo minimo di %@ Algo. Questo peressere sicuri che nulla cambi nel tuo conto ricodificato.\n\n\nL'importo della transazione verrà automaticamente aggiornato per riflettere questo cambiamento. Sarete in grado di vedere l'anteprima della transazione nella fase successiva.";
 
 /* (No Comment) */
 "maximum-balance-warning-title" = "Saldo massimo";
+
+/* (No Comment) */
+"min-balance-title" = "Saldo minimo richiesto";
 
 /* (No Comment) */
 "node-settings-action-delete-title" = "Elimina";
@@ -944,9 +989,6 @@
 "screenshot-title" = "Screenshot rilevato";
 
 /* (No Comment) */
-"send-algos-account-delete-asset-title" = "Per eliminare un conto, è necessario svuotare il saldo degli attivi e distruggere ogni attivo eventualmente creato.";
-
-/* (No Comment) */
 "send-algos-account-delete-body" = "Per mantenere aperto un conto, questo deve contenere almeno 0,01 ALGO. Se invii l'importo massimo, il conto viene cancellato e vengono cancellate anche le chiavi di partecipazione attive.";
 
 /* (No Comment) */
@@ -1043,6 +1085,9 @@
 "send-transaction-max-same-account-error" = "Non puoi inviare il saldo massimo a te stesso. Seleziona un importo o un destinatario diverso e riprova.";
 
 /* (No Comment) */
+"send-trasaction-address-placeholder" = "Incolla #";
+
+/* (No Comment) */
 "settings-app-version" = "Versione %@";
 
 /* (No Comment) */
@@ -1124,7 +1169,22 @@
 "title-account" = "Conto";
 
 /* (No Comment) */
+"title-account-balance" = "Saldo";
+
+/* (No Comment) */
 "title-add-asset" = "Aggiungi nuovo attivo";
+
+/* (No Comment) */
+"title-algo-rewards" = "Ricompense Algo";
+
+/* (No Comment) */
+"title-algorand" = "Algorand";
+
+/* (No Comment) */
+"title-algorand-value" = "Valore";
+
+/* (No Comment) */
+"title-analytics" = "Analytics";
 
 /* (No Comment) */
 "title-approve" = "Approva";
@@ -1370,7 +1430,10 @@
 "transaction-filter-try-again" = "Riprova";
 
 /* (No Comment) */
-"transaction-id-open-explorer" = "Aprire in Esplora risorse";
+"transaction-id-open-algoexplorer" = "Apri in AlgoExplorer";
+
+/* (No Comment) */
+"transaction-id-open-goalseeker" = "Apri in GoalSeeker";
 
 /* (No Comment) */
 "transaction-tutorial-subtitle" = "Notiamo che questa è la tua prima transazione. Prima di concluderla, tieni presente un paio di suggerimenti:";
@@ -1449,6 +1512,9 @@
 
 /* (No Comment) */
 "tutorial-title-write" = "Preparati a scrivere la tua passphrase di ripristino";
+
+/* (No Comment) */
+"value-one-algo" = "1 ALGO = %@";
 
 /* (No Comment) */
 "verified-asset-double-check" = "ricontrolla sempre";
