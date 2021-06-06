@@ -33,6 +33,9 @@ def main_pods
   #Analytics
   pod 'Firebase/Core'
   pod 'Firebase/Crashlytics'
+
+  #Dependency
+  pod 'WalletConnectSwift'
 end
 
 target 'algorand' do
