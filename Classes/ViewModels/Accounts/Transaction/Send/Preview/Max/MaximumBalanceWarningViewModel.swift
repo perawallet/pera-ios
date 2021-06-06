@@ -29,9 +29,15 @@ class MaximumBalanceWarningViewModel {
 
         if !account.isRekeyed() {
             let assetDetailCount = "\(account.assetDetails.count)"
-            description = "maximum-balance-standard-account-warning-description".localized(
-                params: assetDetailCount, account.name ?? account.address.shortAddressDisplay(), minimumAmountForAccount
-            )
+            if account.assetDetails.count > 1 {
+                description = "maximum-balance-standard-account-warning-description".localized(
+                    params: assetDetailCount, account.name ?? account.address.shortAddressDisplay(), minimumAmountForAccount
+                )
+            } else {
+                description = "maximum-balance-standard-account-warning-description-singular".localized(
+                    params: assetDetailCount, account.name ?? account.address.shortAddressDisplay(), minimumAmountForAccount
+                )
+            }
             return
         }
 
