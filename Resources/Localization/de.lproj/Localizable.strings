@@ -620,6 +620,9 @@
 "maximum-balance-standard-account-warning-description" = "Da Sie %@ andere Vermögenswerte auf diesem Konto %@ haben, verlangt die Algorand-Blockchain, dass Sie ein Mindestguthaben von %@ Algos halten.\n\n\nWenn Sie auf „Weiter“ klicken, wird Ihr Transaktionsbetrag automatisch aktualisiert, um diese Änderung widerzuspiegeln. Sie können diese Änderung im nächsten Schritt in der Vorschau sehen.";
 
 /* (No Comment) */
+"maximum-balance-standard-account-warning-description-singular" = "Da Sie %@ andere Vermögenswerte auf diesem Konto %@ haben, verlangt die Algorand-Blockchain, dass Sie ein Mindestguthaben von %@ Algos halten.\n\n\nWenn Sie auf „Weiter“ klicken, wird Ihr Transaktionsbetrag automatisch aktualisiert, um diese Änderung widerzuspiegeln. Sie können diese Änderung im nächsten Schritt in der Vorschau sehen.";
+
+/* (No Comment) */
 "maximum-balance-warning-description" = "Um Ihr maximales Guthaben auf einem neu eröffneten Konto zu senden, müssen Sie ein Mindestguthaben von %@ Algos aufrechterhalten. Damit soll sichergestellt werden, dass sich bei Ihrem neu angelegten Konto nichts ändert.\n\n\nIhr Transaktionsbetrag wird automatisch aktualisiert, um diese Änderung widerzuspiegeln. Sie können die Transaktion im nächsten Schritt in der Vorschau anzeigen.";
 
 /* (No Comment) */

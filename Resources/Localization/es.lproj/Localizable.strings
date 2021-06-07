@@ -620,6 +620,9 @@
 "maximum-balance-standard-account-warning-description" = "Debido a que tienes %@ activo(s) más en esta cuenta %@, la blockchain de Algorand requiere que mantengas un saldo mínimo de %@ Algos. \n\n\nAl presionar continuar, el monto de tu transacción se actualizará automáticamente para reflejar este cambio. Podrás ver una vista previa de este cambio en el siguiente paso.";
 
 /* (No Comment) */
+"maximum-balance-standard-account-warning-description-singular" = "Debido a que tienes %@ activo(s) más en esta cuenta %@, la blockchain de Algorand requiere que mantengas un saldo mínimo de %@ Algos. \n\n\nAl seleccionar continuar, el monto de la transacción se actualizará automáticamente para reflejar este cambio. Tendrás una vista previa de este cambio en el siguiente paso.";
+
+/* (No Comment) */
 "maximum-balance-warning-description" = "Para enviar tu saldo máximo en una cuenta con clave nueva necesitas mantener un saldo mínimo de %@ Algos. Esto es para asegurarnos de que no haya cambios en tu cuenta con clave nueva. \n\n\nEl monto de tu transacción se actualizará automáticamente para reflejar este cambio. Obtendrás una vista previa de la transacción en el siguiente paso.";
 
 /* (No Comment) */
