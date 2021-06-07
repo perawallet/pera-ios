@@ -203,7 +203,8 @@ extension TransactionDetailViewController: TransactionDetailViewDelegate {
 
     func transactionDetailView(_ transactionDetailView: TransactionDetailView, didOpen explorer: AlgoExplorerType) {
         if let api = api,
-           let url = explorer.transactionURL(with: transaction.id, in: api.isTestNet ? .testnet : .mainnet) {
+           let transactionId = transaction.id,
+           let url = explorer.transactionURL(with: transactionId, in: api.isTestNet ? .testnet : .mainnet) {
             open(url)
         }
     }

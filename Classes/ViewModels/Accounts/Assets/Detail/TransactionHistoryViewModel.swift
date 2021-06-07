@@ -45,7 +45,9 @@ class TransactionHistoryViewModel {
                 transaction.type == .assetTransfer {
                 view.setContact("asset-creation-fee-title".localized)
                 view.subtitleLabel.isHidden = true
-                view.transactionAmountView.mode = .negative(amount: transaction.fee.toAlgos)
+                if let fee = transaction.fee {
+                    view.transactionAmountView.mode = .negative(amount: fee.toAlgos)
+                }
             } else if assetTransaction.receiverAddress == account.address {
                 configure(view, with: contact, and: assetTransaction.receiverAddress)
                 view.transactionAmountView.mode = .positive(
@@ -69,7 +71,9 @@ class TransactionHistoryViewModel {
                     && transaction.type == .assetTransfer {
                     view.setContact("asset-creation-fee-title".localized)
                     view.subtitleLabel.isHidden = true
-                    view.transactionAmountView.mode = .negative(amount: transaction.fee.toAlgos)
+                    if let fee = transaction.fee {
+                        view.transactionAmountView.mode = .negative(amount: fee.toAlgos)
+                    }
                 }
                 let formattedDate = transaction.date?.toFormat("MMMM dd, yyyy")
                 view.dateLabel.text = formattedDate
