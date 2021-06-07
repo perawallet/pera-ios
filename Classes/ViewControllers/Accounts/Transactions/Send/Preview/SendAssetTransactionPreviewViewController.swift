@@ -178,9 +178,14 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
             displayQRAlert(for: qrAmount, to: qrAddress, with: qrText.asset)
         }
 
-        if let note = qrText.note,
+        if let lockedNote = qrText.lockedNote,
+           !lockedNote.isEmpty {
+            sendTransactionPreviewView.noteInputView.value = lockedNote
+            sendTransactionPreviewView.noteInputView.setEnabled(false)
+        } else if let note = qrText.note,
            !note.isEmpty {
-            sendTransactionPreviewView.noteInputView.inputTextView.text = note
+            sendTransactionPreviewView.noteInputView.value = note
+            sendTransactionPreviewView.noteInputView.setEnabled(true)
         }
         
         if let qrAsset = qrText.asset {
