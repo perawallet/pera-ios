@@ -493,11 +493,11 @@ extension TransactionsViewController: CSVExportable {
                 "transaction-detail-close-amount".localized: getFormattedAmount(transaction.getCloseAmount()),
                 "transaction-download-close-to".localized: transaction.getCloseAddress() ?? " ",
                 "transaction-download-to".localized: transaction.getReceiver() ?? " ",
-                "transaction-download-from".localized: transaction.sender,
-                "transaction-detail-fee".localized: transaction.fee.toAlgos.toAlgosStringForLabel ?? " ",
-                "transaction-detail-round".localized: transaction.lastRound,
+                "transaction-download-from".localized: transaction.sender ?? " ",
+                "transaction-detail-fee".localized: transaction.fee?.toAlgos.toAlgosStringForLabel ?? " ",
+                "transaction-detail-round".localized: transaction.lastRound ?? " ",
                 "transaction-detail-date".localized: transaction.date?.toFormat("MMMM dd, yyyy - HH:mm") ?? " ",
-                "title-id".localized: transaction.id,
+                "title-id".localized: transaction.id ?? " ",
                 "transaction-detail-note".localized: transaction.noteRepresentation() ?? " "
             ]
             csvData.append(transactionData)

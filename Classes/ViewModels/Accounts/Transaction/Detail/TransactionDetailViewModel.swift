@@ -32,14 +32,18 @@ class TransactionDetailViewModel {
         
         view.userView.setTitle("transaction-detail-to".localized)
         view.userView.setDetail(account.name)
-        
-        view.feeView.setAmountViewMode(.normal(amount: transaction.fee.toAlgos))
+
+        if let fee = transaction.fee {
+            view.feeView.setAmountViewMode(.normal(amount: fee.toAlgos))
+        }
 
         setDate(for: transaction, in: view)
         setRound(for: transaction, in: view)
         
         view.opponentView.setTitle("transaction-detail-from".localized)
-        setOpponent(for: transaction, with: transaction.sender, in: view)
+        if let sender = transaction.sender {
+            setOpponent(for: transaction, with: sender, in: view)
+        }
         
         if let assetTransaction = transaction.assetTransfer,
             let assetDetail = assetDetail {
@@ -63,8 +67,11 @@ class TransactionDetailViewModel {
             setCloseTo(for: transaction, in: view)
             setReward(for: transaction, in: view)
         }
-        
-        view.setTransactionID(transaction.id)
+
+        if let id = transaction.id {
+            view.setTransactionID(id)
+        }
+
         setNote(for: transaction, in: view)
     }
     
@@ -82,8 +89,10 @@ class TransactionDetailViewModel {
         
         view.userView.setTitle("transaction-detail-from".localized)
         view.userView.setDetail(account.name)
-        
-        view.feeView.setAmountViewMode(.normal(amount: transaction.fee.toAlgos))
+
+        if let fee = transaction.fee {
+            view.feeView.setAmountViewMode(.normal(amount: fee.toAlgos))
+        }
 
         setDate(for: transaction, in: view)
         setRound(for: transaction, in: view)
@@ -116,8 +125,11 @@ class TransactionDetailViewModel {
             setCloseAmount(for: transaction, in: view)
             setCloseTo(for: transaction, in: view)
         }
-        
-        view.setTransactionID(transaction.id)
+
+        if let transactionId = transaction.id {
+            view.setTransactionID(transactionId)
+        }
+
         setNote(for: transaction, in: view)
     }
     

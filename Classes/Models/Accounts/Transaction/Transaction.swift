@@ -23,16 +23,16 @@ class Transaction: Model, TransactionItem {
     let closeRewards: Int64?
     let closeAmount: Int64?
     let confirmedRound: Int64?
-    let fee: Int64
-    let firstRound: Int64
-    let id: String
-    let lastRound: Int64
+    let fee: Int64?
+    let firstRound: Int64?
+    let id: String?
+    let lastRound: Int64?
     let note: Data?
     let payment: Payment?
     let receiverRewards: Int64?
-    let sender: String
+    let sender: String?
     let senderRewards: Int64?
-    let type: TransferType
+    let type: TransferType?
     let createdAssetId: Int64?
     let assetFreeze: AssetFreezeTransaction?
     let assetConfig: AssetConfigTransaction?
@@ -48,16 +48,16 @@ class Transaction: Model, TransactionItem {
         closeRewards = try container.decodeIfPresent(Int64.self, forKey: .closeRewards)
         closeAmount = try container.decodeIfPresent(Int64.self, forKey: .closeAmount)
         confirmedRound = try container.decodeIfPresent(Int64.self, forKey: .confirmedRound)
-        fee = try container.decode(Int64.self, forKey: .fee)
-        firstRound = try container.decode(Int64.self, forKey: .firstRound)
-        id = try container.decode(String.self, forKey: .id)
-        lastRound = try container.decode(Int64.self, forKey: .lastRound)
+        fee = try container.decodeIfPresent(Int64.self, forKey: .fee)
+        firstRound = try container.decodeIfPresent(Int64.self, forKey: .firstRound)
+        id = try container.decodeIfPresent(String.self, forKey: .id)
+        lastRound = try container.decodeIfPresent(Int64.self, forKey: .lastRound)
         note = try container.decodeIfPresent(Data.self, forKey: .note)
         payment = try container.decodeIfPresent(Payment.self, forKey: .payment)
         receiverRewards = try container.decodeIfPresent(Int64.self, forKey: .receiverRewards)
-        sender = try container.decode(String.self, forKey: .sender)
+        sender = try container.decodeIfPresent(String.self, forKey: .sender)
         senderRewards = try container.decodeIfPresent(Int64.self, forKey: .senderRewards)
-        type = try container.decode(TransferType.self, forKey: .type)
+        type = try container.decodeIfPresent(TransferType.self, forKey: .type)
         createdAssetId = try container.decodeIfPresent(Int64.self, forKey: .createdAssetId)
         assetFreeze = try container.decodeIfPresent(AssetFreezeTransaction.self, forKey: .assetFreeze)
         assetConfig = try container.decodeIfPresent(AssetConfigTransaction.self, forKey: .assetConfig)
@@ -160,6 +160,7 @@ extension Transaction {
         case assetConfig = "acfg"
         case assetTransfer = "axfer"
         case assetFreeze = "afrz"
+        case applicationCall = "appl"
     }
 }
 
