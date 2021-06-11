@@ -246,8 +246,12 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
             }
             
             AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
-            
-            if let qrText = try? JSONDecoder().decode(QRText.self, from: qrStringData) {
+
+            if qrString.isWalletConnectConnection {
+                captureSession = nil
+                closeScreen(by: .pop)
+                delegate?.qrScannerViewController(self, didRead: qrString, completionHandler: nil)
+            } else if let qrText = try? JSONDecoder().decode(QRText.self, from: qrStringData) {
                 captureSession = nil
                 closeScreen(by: .pop)
                 delegate?.qrScannerViewController(self, didRead: qrText, completionHandler: nil)
@@ -281,8 +285,23 @@ extension QRScannerViewController {
 }
 
 protocol QRScannerViewControllerDelegate: class {
+    func qrScannerViewController(
+        _ controller: QRScannerViewController,
+        didRead walletConnectSession: String,
+        completionHandler: EmptyHandler?
+    )
     func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, completionHandler: EmptyHandler?)
     func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError, completionHandler: EmptyHandler?)
+}
+
+extension QRScannerViewControllerDelegate {
+    func qrScannerViewController(
+        _ controller: QRScannerViewController,
+        didRead walletConnectSession: String,
+        completionHandler: EmptyHandler?
+    ) {
+        
+    }
 }
 
 enum QRScannerError: Error {
