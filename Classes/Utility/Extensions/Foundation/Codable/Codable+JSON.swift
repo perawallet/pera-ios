@@ -20,10 +20,10 @@ import Foundation
 
 extension JSONEncoder.DateEncodingStrategy {
     static let shared: JSONEncoder.DateEncodingStrategy = {
-        .custom({ date, encoder in
+        .custom { date, encoder in
             var container = encoder.singleValueContainer()
             try container.encode(date.toISO())
-        })
+        }
     }()
 }
 
@@ -33,7 +33,7 @@ extension JSONDecoder.DateDecodingStrategy {
     }
     
     static let shared: JSONDecoder.DateDecodingStrategy = {
-        .custom({ decoder in
+        .custom { decoder in
             let container = try decoder.singleValueContainer()
             let dateString = try container.decode(String.self)
             
@@ -41,6 +41,6 @@ extension JSONDecoder.DateDecodingStrategy {
                 throw DecodingError.parseFailed
             }
             return date
-        })
+        }
     }()
 }
