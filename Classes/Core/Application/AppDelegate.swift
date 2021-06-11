@@ -29,7 +29,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     private lazy var session = Session()
     private lazy var api = AlgorandAPI(session: session, base: "")
-    private lazy var appConfiguration = AppConfiguration(api: api, session: session)
+    private lazy var walletConnector = WalletConnector()
+    private lazy var appConfiguration = AppConfiguration(api: api, session: session, walletConnector: walletConnector)
     private lazy var pushNotificationController = PushNotificationController(api: api)
     
     private(set) lazy var firebaseAnalytics = FirebaseAnalytics()

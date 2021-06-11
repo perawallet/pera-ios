@@ -210,6 +210,10 @@ extension BaseViewController {
     var api: AlgorandAPI? {
         return configuration.api
     }
+
+    var walletConnector: WalletConnector {
+        return configuration.walletConnector
+    }
 }
 
 extension BaseViewController: NavigationBarConfigurable {
