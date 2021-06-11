@@ -197,7 +197,7 @@ extension LedgerTransactionOperation: LedgerAccountFetchOperationDelegate {
     }
 }
 
-protocol LedgerTransactionOperationDelegate: class {
+protocol LedgerTransactionOperationDelegate: AnyObject {
     func ledgerTransactionOperation(_ ledgerTransactionOperation: LedgerTransactionOperation, didReceiveSignature data: Data)
     func ledgerTransactionOperation(_ ledgerTransactionOperation: LedgerTransactionOperation, didFailed error: LedgerOperationError)
 }

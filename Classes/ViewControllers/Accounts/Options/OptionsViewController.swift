@@ -45,13 +45,13 @@ class OptionsViewController: BaseViewController {
         }
         
         if account.requiresLedgerConnection() {
-            options.removeAll { option -> Bool in
+            options = options.removeAll { option -> Bool in
                 option == .passphrase
             }
         }
         
         if !account.isRekeyed() {
-            options.removeAll { option -> Bool in
+            options = options.removeAll { option -> Bool in
                 option == .rekeyInformation
             }
         }
@@ -246,7 +246,7 @@ extension OptionsViewController {
     }
 }
 
-protocol OptionsViewControllerDelegate: class {
+protocol OptionsViewControllerDelegate: AnyObject {
     func optionsViewControllerDidOpenRekeying(_ optionsViewController: OptionsViewController)
     func optionsViewControllerDidRemoveAsset(_ optionsViewController: OptionsViewController)
     func optionsViewControllerDidViewPassphrase(_ optionsViewController: OptionsViewController)

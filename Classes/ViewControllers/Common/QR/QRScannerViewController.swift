@@ -284,7 +284,7 @@ extension QRScannerViewController {
     }
 }
 
-protocol QRScannerViewControllerDelegate: class {
+protocol QRScannerViewControllerDelegate: AnyObject {
     func qrScannerViewController(
         _ controller: QRScannerViewController,
         didRead walletConnectSession: String,

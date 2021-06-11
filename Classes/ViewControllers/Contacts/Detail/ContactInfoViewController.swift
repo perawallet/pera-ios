@@ -298,6 +298,6 @@ extension ContactInfoViewController: AccountListViewControllerDelegate {
     }
 }
 
-protocol ContactInfoViewControllerDelegate: class {
+protocol ContactInfoViewControllerDelegate: AnyObject {
     func contactInfoViewController(_ contactInfoViewController: ContactInfoViewController, didUpdate contact: Contact)
 }

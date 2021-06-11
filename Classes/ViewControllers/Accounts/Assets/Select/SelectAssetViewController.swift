@@ -91,7 +91,7 @@ extension SelectAssetViewController {
 
         selectAssetView.accountsCollectionView.contentState = .none
         
-        allAccounts.removeAll { account -> Bool in
+        allAccounts = allAccounts.removeAll { account -> Bool in
             account.isWatchAccount()
         }
         
@@ -311,7 +311,7 @@ extension SelectAssetViewController {
     }
 }
 
-protocol SelectAssetViewControllerDelegate: class {
+protocol SelectAssetViewControllerDelegate: AnyObject {
     func selectAssetViewController(
         _ selectAssetViewController: SelectAssetViewController,
         didSelectAlgosIn account: Account,

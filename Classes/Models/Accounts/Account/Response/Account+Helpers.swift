@@ -50,7 +50,7 @@ extension Account {
     }
     
     func removeAsset(_ id: Int64?) {
-        assetDetails.removeAll { assetDetail -> Bool in
+        assetDetails = assetDetails.removeAll { assetDetail -> Bool in
             assetDetail.id == id
         }
     }

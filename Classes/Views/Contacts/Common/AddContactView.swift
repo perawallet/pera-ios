@@ -118,7 +118,7 @@ extension AddContactView {
     }
 }
 
-protocol AddContactViewDelegate: class {
+protocol AddContactViewDelegate: AnyObject {
     func addContactViewDidTapActionButton(_ addContactView: AddContactView)
     func addContactViewDidTapAddImageButton(_ addContactView: AddContactView)
     func addContactViewDidTapQRCodeButton(_ addContactView: AddContactView)
