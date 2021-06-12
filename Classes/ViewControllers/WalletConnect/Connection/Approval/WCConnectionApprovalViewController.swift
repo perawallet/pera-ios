@@ -21,8 +21,28 @@ class WCConnectionApprovalViewController: BaseViewController {
 
     private lazy var connectionApprovalView = WCConnectionApprovalView()
 
+    private let walletConnectSession: WalletConnectSession
+    private let walletConnectSessionConnectionCompletionHandler: WalletConnectSessionConnectionCompletionHandler
+
+    private var selectedAccount: Account?
+
+    init(
+        walletConnectSession: WalletConnectSession,
+        walletConnectSessionConnectionCompletionHandler: @escaping WalletConnectSessionConnectionCompletionHandler,
+        configuration: ViewControllerConfiguration
+    ) {
+        self.walletConnectSession = walletConnectSession
+        self.walletConnectSessionConnectionCompletionHandler = walletConnectSessionConnectionCompletionHandler
+        super.init(configuration: configuration)
+        selectedAccount = session?.accounts.first
+    }
+
     override func configureAppearance() {
-        super.configureAppearance()
+        view.backgroundColor = Colors.Background.secondary
+
+        if let account = selectedAccount {
+            connectionApprovalView.bind(WCConnectionApprovalViewModel(session: walletConnectSession, account: account))
+        }
     }
 
     override func prepareLayout() {
@@ -42,10 +62,28 @@ extension WCConnectionApprovalViewController {
 
 extension WCConnectionApprovalViewController: WCConnectionApprovalViewDelegate {
     func wcConnectionApprovalViewDidApproveConnection(_ wcConnectionApprovalView: WCConnectionApprovalView) {
+        guard let account = selectedAccount else {
+            return
+        }
 
+        walletConnectSessionConnectionCompletionHandler(walletConnectSession.getApprovedWalletConnectionInfo(for: account.address))
+        dismissScreen()
     }
 
     func wcConnectionApprovalViewDidRejectConnection(_ wcConnectionApprovalView: WCConnectionApprovalView) {
+        walletConnectSessionConnectionCompletionHandler(walletConnectSession.getDeclinedWalletConnectionInfo())
+        dismissScreen()
+    }
 
+    func wcConnectionApprovalViewDidSelectAccount(_ wcConnectionApprovalView: WCConnectionApprovalView) {
+        let accountListViewController = open(.accountList(mode: .empty), by: .present) as? AccountListViewController
+        accountListViewController?.delegate = self
+    }
+}
+
+extension WCConnectionApprovalViewController: AccountListViewControllerDelegate {
+    func accountListViewController(_ viewController: AccountListViewController, didSelectAccount account: Account) {
+        selectedAccount = account
+        connectionApprovalView.bind(WCConnectionAccountSelectionViewModel(account: account))
     }
 }
