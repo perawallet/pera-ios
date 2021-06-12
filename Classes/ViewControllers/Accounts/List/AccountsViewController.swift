@@ -587,9 +587,9 @@ extension AccountsViewController: WalletConnectorDelegate {
     func walletConnector(
         _ walletConnector: WalletConnector,
         shouldStart session: WalletConnectSession,
-        then completion: (WalletConnectSessionWalletInfo) -> Void
+        then completion: @escaping WalletConnectSessionConnectionCompletionHandler
     ) {
-        
+        open(.wcConnectionApproval(walletConnectSession: session, completion: completion), by: .present)
     }
 
     func walletConnector(_ walletConnector: WalletConnector, didFailToConnect url: WalletConnectURL) {

@@ -76,7 +76,7 @@ extension WalletConnector: WalletConnectBridgeDelegate {
     func walletConnectBridge(
         _ walletConnectBridge: WalletConnectBridge,
         shouldStart session: WalletConnectSession,
-        then completion: (WalletConnectSessionWalletInfo) -> Void
+        then completion: @escaping WalletConnectSessionConnectionCompletionHandler
     ) {
         // Get user approval or rejection for the session
         delegate?.walletConnector(self, shouldStart: session, then: completion)
@@ -103,7 +103,7 @@ protocol WalletConnectorDelegate: AnyObject {
     func walletConnector(
         _ walletConnector: WalletConnector,
         shouldStart session: WalletConnectSession,
-        then completion: (WalletConnectSessionWalletInfo) -> Void
+        then completion: @escaping WalletConnectSessionConnectionCompletionHandler
     )
     func walletConnector(_ walletConnector: WalletConnector, didFailToConnect url: WalletConnectURL)
     func walletConnector(_ walletConnector: WalletConnector, didConnectTo session: WalletConnectSession)
