@@ -75,7 +75,7 @@ extension WCConnectionApprovalViewController: WCConnectionApprovalViewDelegate {
         dismissScreen()
     }
 
-    func wcConnectionApprovalViewDidSelectAccount(_ wcConnectionApprovalView: WCConnectionApprovalView) {
+    func wcConnectionApprovalViewDidSelectAccountSelection(_ wcConnectionApprovalView: WCConnectionApprovalView) {
         let accountListViewController = open(.accountList(mode: .empty), by: .present) as? AccountListViewController
         accountListViewController?.delegate = self
     }

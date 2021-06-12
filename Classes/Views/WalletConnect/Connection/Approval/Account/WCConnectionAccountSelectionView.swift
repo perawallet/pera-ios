@@ -21,30 +21,90 @@ class WCConnectionAccountSelectionView: BaseView {
 
     private let layout = Layout<LayoutConstants>()
 
+    private lazy var typeImageView = UIImageView()
+
+    private lazy var nameLabel: UILabel = {
+        UILabel()
+            .withAlignment(.left)
+            .withLine(.single)
+            .withTextColor(Colors.Text.primary)
+            .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
+    }()
+
+    private lazy var detailLabel: UILabel = {
+        UILabel()
+            .withAlignment(.left)
+            .withLine(.single)
+            .withTextColor(Colors.Text.secondary)
+            .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
+    }()
+
+    private lazy var arrowImageView = UIImageView(image: img("icon-arrow-gray-24"))
+
     override func configureAppearance() {
-        super.configureAppearance()
+        backgroundColor = .clear
+        layer.cornerRadius = 12.0
+        layer.borderWidth = 1.0
+        layer.borderColor = Colors.WCConnectionAccountSelectionView.borderColor.cgColor
     }
 
     override func prepareLayout() {
-        super.prepareLayout()
-    }
-
-    override func linkInteractors() {
-        super.linkInteractors()
+        setupTypeImageViewLayout()
+        setupArrowImageViewLayout()
+        setupNameLabelLayout()
+        setupDetailLabelLayout()
     }
 }
 
 extension WCConnectionAccountSelectionView {
+    private func setupTypeImageViewLayout() {
+        addSubview(typeImageView)
 
+        typeImageView.snp.makeConstraints { _ in
+
+        }
+    }
+
+    private func setupArrowImageViewLayout() {
+        addSubview(arrowImageView)
+
+        arrowImageView.snp.makeConstraints { _ in
+
+        }
+    }
+
+    private func setupNameLabelLayout() {
+        addSubview(nameLabel)
+
+        nameLabel.snp.makeConstraints { _ in
+
+        }
+    }
+
+    private func setupDetailLabelLayout() {
+        addSubview(detailLabel)
+
+        detailLabel.snp.makeConstraints { _ in
+
+        }
+    }
 }
 
 extension WCConnectionAccountSelectionView {
     func bind(_ viewModel: WCConnectionAccountSelectionViewModel) {
-
+        typeImageView.image = viewModel.image
+        nameLabel.text = viewModel.accountName
+        detailLabel.text = viewModel.detail
     }
 }
 
 extension WCConnectionAccountSelectionView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
+    }
+}
+
+extension Colors {
+    fileprivate enum WCConnectionAccountSelectionView {
+        static let borderColor = color("wcAccountSelectionBorderColor")
     }
 }
