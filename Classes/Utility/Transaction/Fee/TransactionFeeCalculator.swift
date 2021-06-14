@@ -101,6 +101,6 @@ class TransactionFeeCalculator: NSObject {
     }
 }
 
-protocol TransactionFeeCalculatorDelegate: class {
+protocol TransactionFeeCalculatorDelegate: AnyObject {
     func transactionFeeCalculator(_ transactionFeeCalculator: TransactionFeeCalculator, didFailedWith minimumAmount: Int64)
 }
