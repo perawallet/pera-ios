@@ -166,7 +166,7 @@ extension NotificationsView: ListErrorViewDelegate {
     }
 }
 
-protocol NotificationsViewDelegate: class {
+protocol NotificationsViewDelegate: AnyObject {
     func notificationsViewDidRefreshList(_ notificationsView: NotificationsView)
     func notificationsViewDidTryAgain(_ notificationsView: NotificationsView)
     func notificationsViewDidOpenNotificationFilters(_ notificationsView: NotificationsView)

@@ -68,7 +68,7 @@ protocol WalletConnectBridgeDelegate: AnyObject {
     func walletConnectBridge(
         _ walletConnectBridge: WalletConnectBridge,
         shouldStart session: WalletConnectSession,
-        then completion: (WalletConnectSessionWalletInfo) -> Void
+        then completion: @escaping WalletConnectSessionConnectionCompletionHandler
     )
     func walletConnectBridge(_ walletConnectBridge: WalletConnectBridge, didFailToConnect url: WalletConnectURL)
     func walletConnectBridge(_ walletConnectBridge: WalletConnectBridge, didConnectTo session: WalletConnectSession)
@@ -81,3 +81,4 @@ typealias WalletConnectServer = Server
 typealias WalletConnectRequest = WalletConnectSwift.Request
 typealias WalletConnectResponse = WalletConnectSwift.Response
 typealias WalletConnectSessionWalletInfo = WalletConnectSwift.Session.WalletInfo
+typealias WalletConnectSessionConnectionCompletionHandler = (WalletConnectSessionWalletInfo) -> Void
