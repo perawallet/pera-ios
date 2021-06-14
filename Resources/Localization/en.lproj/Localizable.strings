@@ -35,6 +35,7 @@
 "title-new-uppercased" = "NEW";
 "title-skip" = "Skip";
 "title-learn-more" = "Learn More";
+"title-connect" = "Connect";
 
 // MARK: Account Type Selection
 "account-type-choose-title" = "Choose Account Type";
@@ -619,3 +620,6 @@
 "ledger-verified-add" = "Add Verified Accounts";
 "ledger-verify-header-title" = "Verify Account Addresses via Ledger";
 "ledger-verify-header-subtitle" = "The following account addresses will display on your Ledger device. Please carefully compare and verify each address in order to finalize device pairing.";
+
+// MARK: Wallet Connect Session
+"wallet-connect-session-connection-description" = "%@ wants to connect to your account";

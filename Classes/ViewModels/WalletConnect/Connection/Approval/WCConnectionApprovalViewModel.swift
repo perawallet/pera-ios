@@ -16,15 +16,40 @@
 //   WCConnectionApprovalViewModel.swift
 
 import UIKit
+import Macaroon
 
 class WCConnectionApprovalViewModel {
-    private(set) var image: UIImage?
+    private(set) var image: ImageSource?
     private(set) var description: NSAttributedString?
     private(set) var isVerified = false
     private(set) var urlString: String?
     private(set) var connectionAccountSelectionViewModel: WCConnectionAccountSelectionViewModel?
 
-    init() {
+    init(session: WalletConnectSession, account: Account) {
+        setImage(from: session)
+        setDescription(from: session)
+        setIsVerified(from: session)
+        setUrlString(from: session)
+        setConnectionAccountSelectionViewModel(from: account)
+    }
+
+    private func setImage(from session: WalletConnectSession) {
+
+    }
+
+    private func setDescription(from session: WalletConnectSession) {
+
+    }
+
+    private func setIsVerified(from session: WalletConnectSession) {
+
+    }
+
+    private func setUrlString(from session: WalletConnectSession) {
+
+    }
+
+    private func setConnectionAccountSelectionViewModel(from account: Account) {
 
     }
 }

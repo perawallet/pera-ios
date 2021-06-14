@@ -383,6 +383,12 @@ class Router {
                 selectedAccounts: selectedAccounts,
                 configuration: configuration
             )
+        case let .wcConnectionApproval(walletConnectSession, completion):
+            viewController = WCConnectionApprovalViewController(
+                walletConnectSession: walletConnectSession,
+                walletConnectSessionConnectionCompletionHandler: completion,
+                configuration: configuration
+            )
         }
         
         return viewController as? T

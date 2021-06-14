@@ -22,7 +22,21 @@ class WCConnectionAccountSelectionViewModel {
     private(set) var accountName: String?
     private(set) var detail: String?
 
-    init() {
+    init(account: Account) {
+        setImage(from: account)
+        setAccountName(from: account)
+        setDetail(from: account)
+    }
+
+    private func setImage(from account: Account) {
+
+    }
+
+    private func setAccountName(from account: Account) {
+
+    }
+
+    private func setDetail(from account: Account) {
 
     }
 }

@@ -45,13 +45,13 @@ class OptionsViewController: BaseViewController {
         }
         
         if account.requiresLedgerConnection() {
-            options = options.removeAll { option -> Bool in
+            options.removeAll { option -> Bool in
                 option == .passphrase
             }
         }
         
         if !account.isRekeyed() {
-            options = options.removeAll { option -> Bool in
+            options.removeAll { option -> Bool in
                 option == .rekeyInformation
             }
         }
