@@ -17,6 +17,16 @@
         },
         "mode" : "9-part"
       }
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "bg-button-secondary-small-1.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {
