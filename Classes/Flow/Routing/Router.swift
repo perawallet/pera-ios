@@ -271,8 +271,6 @@ class Router {
                 assetDetail: assetDetail,
                 configuration: configuration
             )
-        case .feedback:
-            viewController = FeedbackViewController(configuration: configuration)
         case let .assetDetail(account, assetDetail):
             viewController = AssetDetailViewController(account: account, configuration: configuration, assetDetail: assetDetail)
         case let .addAsset(account):

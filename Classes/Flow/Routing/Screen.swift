@@ -61,7 +61,6 @@ indirect enum Screen {
     case addNode
     case editNode(node: Node)
     case transactionDetail(account: Account, transaction: Transaction, transactionType: TransactionType, assetDetail: AssetDetail?)
-    case feedback
     case addAsset(account: Account)
     case removeAsset(account: Account)
     case assetActionConfirmation(assetAlertDraft: AssetAlertDraft)
