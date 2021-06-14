@@ -62,6 +62,14 @@ class AccountsViewController: BaseViewController {
             initialModalSize: .custom(CGSize(width: view.frame.width, height: height))
         )
     }()
+
+    private lazy var wcConnectionModalPresenter = CardModalPresenter(
+        config: ModalConfiguration(
+            animationMode: .normal(duration: 0.25),
+            dismissMode: .scroll
+        ),
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: 454.0))
+    )
     
     private lazy var pushNotificationController: PushNotificationController = {
         guard let api = api else {
@@ -589,11 +597,14 @@ extension AccountsViewController: WalletConnectorDelegate {
         shouldStart session: WalletConnectSession,
         then completion: @escaping WalletConnectSessionConnectionCompletionHandler
     ) {
-        open(.wcConnectionApproval(walletConnectSession: session, completion: completion), by: .present)
-    }
-
-    func walletConnector(_ walletConnector: WalletConnector, didFailToConnect url: WalletConnectURL) {
-
+        open(
+            .wcConnectionApproval(walletConnectSession: session, completion: completion),
+            by: .customPresent(
+                presentationStyle: .custom,
+                transitionStyle: nil,
+                transitioningDelegate: wcConnectionModalPresenter
+            )
+        )
     }
 
     func walletConnector(_ walletConnector: WalletConnector, didConnectTo session: WalletConnectSession) {
@@ -604,7 +615,7 @@ extension AccountsViewController: WalletConnectorDelegate {
 
     }
 
-    func walletConnector(_ walletConnector: WalletConnector, didFailToDisconnectFrom session: WalletConnectSession) {
+    func walletConnector(_ walletConnector: WalletConnector, didFailWith error: WalletConnector.Error) {
 
     }
 }

@@ -41,13 +41,18 @@ extension WalletConnector {
 
     func connect(to session: String) {
         guard let url = WalletConnectURL(session) else {
+            DispatchQueue.main.async {
+                self.delegate?.walletConnector(self, didFailWith: .failedToCreateSession(qr: session))
+            }
             return
         }
 
         do {
             try walletConnectBridge.connect(to: url)
         } catch {
-            delegate?.walletConnector(self, didFailToConnect: url)
+            DispatchQueue.main.async {
+                self.delegate?.walletConnector(self, didFailWith: .failedToConnect(url: url))
+            }
         }
     }
 
@@ -56,7 +61,9 @@ extension WalletConnector {
             do {
                 try walletConnectBridge.disconnect(from: session)
             } catch {
-                delegate?.walletConnector(self, didFailToDisconnectFrom: session)
+                DispatchQueue.main.async {
+                    self.delegate?.walletConnector(self, didFailWith: .failedToDisconnect(session: session))
+                }
             }
         }
     }
@@ -79,23 +86,39 @@ extension WalletConnector: WalletConnectBridgeDelegate {
         then completion: @escaping WalletConnectSessionConnectionCompletionHandler
     ) {
         // Get user approval or rejection for the session
-        delegate?.walletConnector(self, shouldStart: session, then: completion)
+        DispatchQueue.main.async {
+            self.delegate?.walletConnector(self, shouldStart: session, then: completion)
+        }
     }
 
     func walletConnectBridge(_ walletConnectBridge: WalletConnectBridge, didFailToConnect url: WalletConnectURL) {
-        delegate?.walletConnector(self, didFailToConnect: url)
+        DispatchQueue.main.async {
+            self.delegate?.walletConnector(self, didFailWith: .failedToConnect(url: url))
+        }
     }
 
     func walletConnectBridge(_ walletConnectBridge: WalletConnectBridge, didConnectTo session: WalletConnectSession) {
         self.session = session
         addToSavedSessions(session)
-        delegate?.walletConnector(self, didConnectTo: session)
+        DispatchQueue.main.async {
+            self.delegate?.walletConnector(self, didConnectTo: session)
+        }
     }
 
     func walletConnectBridge(_ walletConnectBridge: WalletConnectBridge, didDisconnectFrom session: WalletConnectSession) {
         self.session = nil
         removeFromSessions(session)
-        delegate?.walletConnector(self, didDisconnectFrom: session)
+        DispatchQueue.main.async {
+            self.delegate?.walletConnector(self, didDisconnectFrom: session)
+        }
+    }
+}
+
+extension WalletConnector {
+    enum Error {
+        case failedToConnect(url: WalletConnectURL)
+        case failedToCreateSession(qr: String)
+        case failedToDisconnect(session: WalletConnectSession)
     }
 }
 
@@ -105,10 +128,9 @@ protocol WalletConnectorDelegate: AnyObject {
         shouldStart session: WalletConnectSession,
         then completion: @escaping WalletConnectSessionConnectionCompletionHandler
     )
-    func walletConnector(_ walletConnector: WalletConnector, didFailToConnect url: WalletConnectURL)
     func walletConnector(_ walletConnector: WalletConnector, didConnectTo session: WalletConnectSession)
     func walletConnector(_ walletConnector: WalletConnector, didDisconnectFrom session: WalletConnectSession)
-    func walletConnector(_ walletConnector: WalletConnector, didFailToDisconnectFrom session: WalletConnectSession)
+    func walletConnector(_ walletConnector: WalletConnector, didFailWith error: WalletConnector.Error)
 }
 
 enum WalletConnectMethod: String {
