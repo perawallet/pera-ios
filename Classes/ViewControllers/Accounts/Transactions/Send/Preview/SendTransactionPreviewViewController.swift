@@ -327,6 +327,9 @@ extension SendTransactionPreviewViewController: AccountListViewControllerDelegat
             selectedAccount = account
         }
     }
+    func accountListViewControllerDidCancelScreen(_ viewController: AccountListViewController) {
+        viewController.dismissScreen()
+    }
 }
 
 extension SendTransactionPreviewViewController: ContactsViewControllerDelegate {

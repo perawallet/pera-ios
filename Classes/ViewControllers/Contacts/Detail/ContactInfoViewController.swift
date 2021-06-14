@@ -296,6 +296,10 @@ extension ContactInfoViewController: AccountListViewControllerDelegate {
             open(.sendAlgosTransactionPreview(account: account, receiver: .contact(contact), isSenderEditable: false), by: .push)
         }
     }
+
+    func accountListViewControllerDidCancelScreen(_ viewController: AccountListViewController) {
+        viewController.dismissScreen()
+    }
 }
 
 protocol ContactInfoViewControllerDelegate: AnyObject {
