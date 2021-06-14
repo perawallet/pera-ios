@@ -24,13 +24,19 @@ class WCConnectionApprovalView: BaseView {
 
     weak var delegate: WCConnectionApprovalViewDelegate?
 
-    private lazy var dappImageView = URLImageView()
+    private lazy var dappImageView: URLImageView = {
+        let imageView = URLImageView()
+        imageView.layer.cornerRadius = 36.0
+        imageView.layer.borderWidth = 1.0
+        imageView.layer.borderColor = Colors.WCConnectionApprovalView.borderColor.cgColor
+        return imageView
+    }()
 
     private lazy var titleLabel: UILabel = {
         UILabel()
             .withAlignment(.center)
             .withLine(.contained)
-            .withTextColor(Colors.Text.secondary)
+            .withTextColor(Colors.Text.primary)
             .withFont(UIFont.font(withWeight: .regular(size: 18.0)))
     }()
 
@@ -72,18 +78,15 @@ class WCConnectionApprovalView: BaseView {
         super.prepareLayout()
         setupDappImageViewLayout()
         setupTitleLabelLayout()
-        setupVerifiedImageViewLayout()
         setupURLLabelLayout()
+        setupVerifiedImageViewLayout()
         setupAccountSelectionViewLayout()
         setupConnectButtonLayout()
         setupCancelButtonLayout()
     }
 
-    override func linkInteractors() {
-
-    }
-
     override func setListeners() {
+        accountSelectionView.addTarget(self, action: #selector(notifyDelegateToOpenAccountSelection), for: .touchUpInside)
         connectButton.addTarget(self, action: #selector(notifyDelegateToApproveConnection), for: .touchUpInside)
         cancelButton.addTarget(self, action: #selector(notifyDelegateToRejectConnection), for: .touchUpInside)
     }
@@ -93,56 +96,68 @@ extension WCConnectionApprovalView {
     private func setupDappImageViewLayout() {
         addSubview(dappImageView)
 
-        dappImageView.snp.makeConstraints { _ in
-
+        dappImageView.snp.makeConstraints { make in
+            make.top.equalToSuperview().inset(layout.current.verticalInset)
+            make.centerX.equalToSuperview()
+            make.size.equalTo(layout.current.dappImageSize)
         }
     }
 
     private func setupTitleLabelLayout() {
         addSubview(titleLabel)
 
-        titleLabel.snp.makeConstraints { _ in
-
-        }
-    }
-
-    private func setupVerifiedImageViewLayout() {
-        addSubview(verifiedImageView)
-
-        verifiedImageView.snp.makeConstraints { _ in
-
+        titleLabel.snp.makeConstraints { make in
+            make.top.equalTo(dappImageView.snp.bottom).offset(layout.current.titleTopInset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
         }
     }
 
     private func setupURLLabelLayout() {
         addSubview(urlLabel)
 
-        urlLabel.snp.makeConstraints { _ in
+        urlLabel.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.urlTopInset)
+            make.centerX.equalToSuperview()
+            make.trailing.lessThanOrEqualToSuperview().inset(layout.current.horizontalInset)
+        }
+    }
 
+    private func setupVerifiedImageViewLayout() {
+        addSubview(verifiedImageView)
+
+        verifiedImageView.snp.makeConstraints { make in
+            make.trailing.equalTo(urlLabel.snp.leading).offset(layout.current.verifiedImageHorizontalInset)
+            make.centerY.equalTo(urlLabel)
+            make.size.equalTo(layout.current.verifiedImageSize)
         }
     }
 
     private func setupAccountSelectionViewLayout() {
         addSubview(accountSelectionView)
 
-        accountSelectionView.snp.makeConstraints { _ in
-
+        accountSelectionView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(layout.current.selectionHorizontalInset)
+            make.top.equalTo(urlLabel.snp.bottom).offset(layout.current.verticalInset)
         }
     }
 
     private func setupConnectButtonLayout() {
         addSubview(connectButton)
 
-        connectButton.snp.makeConstraints { _ in
-
+        connectButton.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
+            make.top.equalTo(accountSelectionView.snp.bottom).offset(layout.current.verticalInset)
         }
     }
 
     private func setupCancelButtonLayout() {
         addSubview(cancelButton)
 
-        cancelButton.snp.makeConstraints { _ in
-
+        cancelButton.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(layout.current.buttonHorizontalInset)
+            make.top.equalTo(connectButton)
+            make.size.equalTo(connectButton)
+            make.trailing.equalTo(connectButton.snp.leading).offset(-layout.current.horizontalInset)
         }
     }
 }
@@ -183,6 +198,15 @@ extension WCConnectionApprovalView {
 
 extension WCConnectionApprovalView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
+        let dappImageSize = CGSize(width: 72.0, height: 72.0)
+        let verifiedImageSize = CGSize(width: 20.0, height: 20.0)
+        let verticalInset: CGFloat = 32.0
+        let horizontalInset: CGFloat = 20.0
+        let titleTopInset: CGFloat = 20.0
+        let buttonHorizontalInset: CGFloat = 24.0
+        let selectionHorizontalInset: CGFloat = 24.0
+        let verifiedImageHorizontalInset: CGFloat = 8.0
+        let urlTopInset: CGFloat = 16.0
     }
 }
 
@@ -190,4 +214,10 @@ protocol WCConnectionApprovalViewDelegate: AnyObject {
     func wcConnectionApprovalViewDidApproveConnection(_ wcConnectionApprovalView: WCConnectionApprovalView)
     func wcConnectionApprovalViewDidRejectConnection(_ wcConnectionApprovalView: WCConnectionApprovalView)
     func wcConnectionApprovalViewDidSelectAccountSelection(_ wcConnectionApprovalView: WCConnectionApprovalView)
+}
+
+extension Colors {
+    fileprivate enum WCConnectionApprovalView {
+        static let borderColor = color("wcAccountSelectionBorderColor")
+    }
 }

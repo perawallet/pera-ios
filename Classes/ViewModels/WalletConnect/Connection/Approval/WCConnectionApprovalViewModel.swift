@@ -34,22 +34,39 @@ class WCConnectionApprovalViewModel {
     }
 
     private func setImage(from session: WalletConnectSession) {
-
+        image = PNGImageSource(
+            url: session.dAppInfo.peerMeta.icons.first,
+            color: nil,
+            size: .resize(CGSize(width: 72.0, height: 72.0), .aspectFit),
+            shape: .circle,
+            placeholder: nil,
+            forceRefresh: false
+        )
     }
 
     private func setDescription(from session: WalletConnectSession) {
+        let dappName = session.dAppInfo.peerMeta.name
+        let fullText = "wallet-connect-session-connection-description".localized(dappName)
+        let attributedText = NSMutableAttributedString(
+            string: fullText,
+            attributes: [.font: UIFont.font(withWeight: .regular(size: 18.0)), .foregroundColor: Colors.Text.primary]
+        )
 
+        let range = (fullText as NSString).range(of: dappName)
+        attributedText.addAttribute(NSAttributedString.Key.font, value: UIFont.font(withWeight: .semiBold(size: 18.0)), range: range)
+        description = attributedText
     }
 
     private func setIsVerified(from session: WalletConnectSession) {
-
+        // This needs to be handled differently. Will be discussed later.
+        isVerified = true
     }
 
     private func setUrlString(from session: WalletConnectSession) {
-
+        urlString = session.dAppInfo.peerMeta.url.absoluteString
     }
 
     private func setConnectionAccountSelectionViewModel(from account: Account) {
-
+        connectionAccountSelectionViewModel = WCConnectionAccountSelectionViewModel(account: account)
     }
 }

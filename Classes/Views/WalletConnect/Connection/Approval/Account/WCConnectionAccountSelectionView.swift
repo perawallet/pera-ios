@@ -17,7 +17,7 @@
 
 import UIKit
 
-class WCConnectionAccountSelectionView: BaseView {
+class WCConnectionAccountSelectionView: BaseControl {
 
     private let layout = Layout<LayoutConstants>()
 
@@ -60,32 +60,40 @@ extension WCConnectionAccountSelectionView {
     private func setupTypeImageViewLayout() {
         addSubview(typeImageView)
 
-        typeImageView.snp.makeConstraints { _ in
-
+        typeImageView.snp.makeConstraints { make in
+            make.size.equalTo(layout.current.iconSize)
+            make.leading.equalToSuperview().inset(layout.current.iconHorizontalInset)
+            make.top.bottom.equalToSuperview().inset(layout.current.iconVerticalInset)
         }
     }
 
     private func setupArrowImageViewLayout() {
         addSubview(arrowImageView)
 
-        arrowImageView.snp.makeConstraints { _ in
-
+        arrowImageView.snp.makeConstraints { make in
+            make.size.equalTo(layout.current.iconSize)
+            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.centerY.equalToSuperview()
         }
     }
 
     private func setupNameLabelLayout() {
         addSubview(nameLabel)
 
-        nameLabel.snp.makeConstraints { _ in
-
+        nameLabel.snp.makeConstraints { make in
+            make.leading.equalTo(typeImageView.snp.trailing).offset(layout.current.horizontalInset)
+            make.top.equalToSuperview().inset(layout.current.verticalInset)
+            make.trailing.equalTo(arrowImageView.snp.leading).offset(-layout.current.horizontalInset)
         }
     }
 
     private func setupDetailLabelLayout() {
         addSubview(detailLabel)
 
-        detailLabel.snp.makeConstraints { _ in
-
+        detailLabel.snp.makeConstraints { make in
+            make.leading.equalTo(nameLabel)
+            make.bottom.equalToSuperview().inset(layout.current.verticalInset)
+            make.trailing.equalTo(arrowImageView.snp.leading).offset(-layout.current.horizontalInset)
         }
     }
 }
@@ -100,6 +108,11 @@ extension WCConnectionAccountSelectionView {
 
 extension WCConnectionAccountSelectionView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
+        let iconSize = CGSize(width: 24.0, height: 24.0)
+        let verticalInset: CGFloat = 16.0
+        let iconHorizontalInset: CGFloat = 20.0
+        let iconVerticalInset: CGFloat = 26.0
+        let horizontalInset: CGFloat = 16.0
     }
 }
 
