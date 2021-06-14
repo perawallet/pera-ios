@@ -60,10 +60,6 @@ class WCConnectionApprovalViewController: BaseViewController {
     }
 }
 
-extension WCConnectionApprovalViewController {
-
-}
-
 extension WCConnectionApprovalViewController: WCConnectionApprovalViewDelegate {
     func wcConnectionApprovalViewDidApproveConnection(_ wcConnectionApprovalView: WCConnectionApprovalView) {
         guard let account = selectedAccount else {

@@ -38,7 +38,7 @@ class WCConnectionAccountSelectionViewModel {
 
     private func setDetail(from account: Account) {
         if let amount = account.amount.toAlgos.toAlgosStringForLabel {
-            detail = "\(amount) (ALGOS)"
+            detail = "\(amount) \("asset-algos-title".localized)"
         }
     }
 }
