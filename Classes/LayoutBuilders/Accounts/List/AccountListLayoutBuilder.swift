@@ -17,7 +17,7 @@
 
 import UIKit
 
-protocol AccountListLayoutBuilderDelegate: class {
+protocol AccountListLayoutBuilderDelegate: AnyObject {
     func accountListLayoutBuilder(_ layoutBuilder: AccountListLayoutBuilder, didSelectAt indexPath: IndexPath)
 }
 
