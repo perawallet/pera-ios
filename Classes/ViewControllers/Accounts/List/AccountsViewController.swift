@@ -141,6 +141,7 @@ class AccountsViewController: BaseViewController {
         
         pushNotificationController.requestAuthorization()
         pushNotificationController.sendDeviceDetails()
+        walletConnector.register(for: .transactionSign)
         
         setAccountsCollectionViewContentState()
         requestAppReview()
@@ -200,6 +201,7 @@ class AccountsViewController: BaseViewController {
     override func setListeners() {
         accountsDataSource.delegate = self
         accountsView.delegate = self
+        walletConnector.delegate = self
         accountsView.accountsCollectionView.delegate = accountsDataSource
         accountsView.accountsCollectionView.dataSource = accountsDataSource
         emptyStateView.delegate = self
@@ -424,6 +426,14 @@ extension AccountsViewController {
 }
 
 extension AccountsViewController: QRScannerViewControllerDelegate {
+    func qrScannerViewController(
+        _ controller: QRScannerViewController,
+        didRead walletConnectSession: String,
+        completionHandler: EmptyHandler?
+    ) {
+        walletConnector.connect(to: walletConnectSession)
+    }
+
     func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, completionHandler: EmptyHandler?) {
         switch qrText.mode {
         case .address:
@@ -570,6 +580,32 @@ extension AccountsViewController: APIListener {
         if UIApplication.shared.isActive {
             isConnectedToInternet = networkMonitor.isConnected
         }
+    }
+}
+
+extension AccountsViewController: WalletConnectorDelegate {
+    func walletConnector(
+        _ walletConnector: WalletConnector,
+        shouldStart session: WalletConnectSession,
+        then completion: @escaping WalletConnectSessionConnectionCompletionHandler
+    ) {
+        open(.wcConnectionApproval(walletConnectSession: session, completion: completion), by: .present)
+    }
+
+    func walletConnector(_ walletConnector: WalletConnector, didFailToConnect url: WalletConnectURL) {
+
+    }
+
+    func walletConnector(_ walletConnector: WalletConnector, didConnectTo session: WalletConnectSession) {
+
+    }
+
+    func walletConnector(_ walletConnector: WalletConnector, didDisconnectFrom session: WalletConnectSession) {
+
+    }
+
+    func walletConnector(_ walletConnector: WalletConnector, didFailToDisconnectFrom session: WalletConnectSession) {
+
     }
 }
 
