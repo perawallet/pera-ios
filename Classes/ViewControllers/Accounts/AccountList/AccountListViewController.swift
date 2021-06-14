@@ -121,6 +121,6 @@ extension AccountListViewController {
     }
 }
 
-protocol AccountListViewControllerDelegate: class {
+protocol AccountListViewControllerDelegate: AnyObject {
     func accountListViewController(_ viewController: AccountListViewController, didSelectAccount account: Account)
 }

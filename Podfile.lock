@@ -72,6 +72,9 @@ PODS:
   - GoogleUtilities/UserDefaults (7.3.1):
     - GoogleUtilities/Logger
   - KeychainAccess (4.2.2)
+  - Kingfisher (5.15.8):
+    - Kingfisher/Core (= 5.15.8)
+  - Kingfisher/Core (5.15.8)
   - lottie-ios (3.2.1)
   - Macaroon/Banner (0.1.0):
     - Macaroon/Concurrency
@@ -227,6 +230,30 @@ PODS:
     - SnapKit (~> 5.0.0)
   - Macaroon/Core/Views/ListComponents (0.1.0):
     - SnapKit (~> 5.0.0)
+  - Macaroon/MediaPicker (0.1.0)
+  - Macaroon/URLImage (0.1.0):
+    - Kingfisher (~> 5.0)
+    - Macaroon/URLImage/Utils (= 0.1.0)
+    - Macaroon/URLImage/ViewModels (= 0.1.0)
+    - Macaroon/URLImage/Views (= 0.1.0)
+  - Macaroon/URLImage/Utils (0.1.0):
+    - Kingfisher (~> 5.0)
+    - Macaroon/URLImage/Utils/Extensions (= 0.1.0)
+    - Macaroon/URLImage/Utils/Properties (= 0.1.0)
+  - Macaroon/URLImage/Utils/Extensions (0.1.0):
+    - Kingfisher (~> 5.0)
+  - Macaroon/URLImage/Utils/Properties (0.1.0):
+    - Kingfisher (~> 5.0)
+  - Macaroon/URLImage/ViewModels (0.1.0):
+    - Kingfisher (~> 5.0)
+  - Macaroon/URLImage/Views (0.1.0):
+    - Kingfisher (~> 5.0)
+    - Macaroon/URLImage/Views/URLImagePlaceholderView (= 0.1.0)
+    - Macaroon/URLImage/Views/URLImageView (= 0.1.0)
+  - Macaroon/URLImage/Views/URLImagePlaceholderView (0.1.0):
+    - Kingfisher (~> 5.0)
+  - Macaroon/URLImage/Views/URLImageView (0.1.0):
+    - Kingfisher (~> 5.0)
   - Magpie/Alamofire (2.0.5):
     - Alamofire (~> 5.2)
     - Magpie/Core
@@ -270,6 +297,8 @@ DEPENDENCIES:
   - Macaroon/BottomOverlay (from `https://github.com/Hipo/macaroon.git`, tag `2.12.0`)
   - Macaroon/BottomSheet (from `https://github.com/Hipo/macaroon.git`, tag `2.12.0`)
   - Macaroon/Core (from `https://github.com/Hipo/macaroon.git`, tag `2.12.0`)
+  - Macaroon/MediaPicker (from `https://github.com/Hipo/macaroon.git`, tag `2.12.0`)
+  - Macaroon/URLImage (from `https://github.com/Hipo/macaroon.git`, tag `2.12.0`)
   - Magpie/HIPAPI (~> 2.0.5)
   - NotificationBannerSwift
   - SnapKit
@@ -294,6 +323,7 @@ SPEC REPOS:
     - GoogleDataTransport
     - GoogleUtilities
     - KeychainAccess
+    - Kingfisher
     - lottie-ios
     - Magpie
     - MarqueeLabel
@@ -333,6 +363,7 @@ SPEC CHECKSUMS:
   GoogleDataTransport: b006084b73915a42c28a3466961a4edda3065da6
   GoogleUtilities: e1d9ed4e544fc32a93e00e721400cbc3f377200d
   KeychainAccess: c0c4f7f38f6fc7bbe58f5702e25f7bd2f65abf51
+  Kingfisher: a3c03d702433fa6cfedabb2bddbe076fb8f2e902
   lottie-ios: 106e92eaf11fbed0a76590b4cdb9b5ec26123ff7
   Macaroon: 22c469775f6bf16bed6fffdd69b03f3a8e9f470b
   Magpie: 50a82ab4b27defa9b24f44796c9b2b03f3a43110
@@ -348,6 +379,6 @@ SPEC CHECKSUMS:
   Valet: 11ab0e318b7284888a81392e36136563b4af5deb
   WalletConnectSwift: cd5e056cec5a2f44e92b8595199e7f2f9f0bd92d
 
-PODFILE CHECKSUM: 422bf5670c92ab74cbe0121f9ed50134b26b6014
+PODFILE CHECKSUM: 7d0c6b5c6aa11f22816aedf35b6d17fe3c8d6500
 
 COCOAPODS: 1.10.1

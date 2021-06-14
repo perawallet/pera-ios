@@ -194,7 +194,7 @@ extension FeedbackView {
     }
 }
 
-protocol FeedbackViewDelegate: class {
+protocol FeedbackViewDelegate: AnyObject {
     func feedbackViewDidSelectCategory(_ feedbackView: FeedbackView)
     func feedbackViewDidSelectAccount(_ feedbackView: FeedbackView)
     func feedbackViewDidTapSendButton(_ feedbackView: FeedbackView)
