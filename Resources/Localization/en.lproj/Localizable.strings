@@ -36,6 +36,7 @@
 "title-skip" = "Skip";
 "title-learn-more" = "Learn More";
 "title-connect" = "Connect";
+"title-disconnect" = "Disconnect";
 
 // MARK: Account Type Selection
 "account-type-choose-title" = "Choose Account Type";
@@ -624,3 +625,5 @@
 
 // MARK: Wallet Connect Session
 "wallet-connect-session-connection-description" = "%@ wants to connect to your account";
+"wallet-connect-session-list-empty" = "You haven't connected any apps yet.";
+"wallet-connect-session-disconnect-message" = "Would you like to disconnect from %@?";
