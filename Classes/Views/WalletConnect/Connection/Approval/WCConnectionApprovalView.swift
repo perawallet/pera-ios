@@ -40,8 +40,6 @@ class WCConnectionApprovalView: BaseView {
             .withFont(UIFont.font(withWeight: .regular(size: 18.0)))
     }()
 
-    private lazy var verifiedImageView = UIImageView(image: img("icon-verified"))
-
     private lazy var urlLabel: UILabel = {
         UILabel()
             .withAlignment(.center)
@@ -79,7 +77,6 @@ class WCConnectionApprovalView: BaseView {
         setupDappImageViewLayout()
         setupTitleLabelLayout()
         setupURLLabelLayout()
-        setupVerifiedImageViewLayout()
         setupAccountSelectionViewLayout()
         setupConnectButtonLayout()
         setupCancelButtonLayout()
@@ -119,16 +116,6 @@ extension WCConnectionApprovalView {
             make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.urlTopInset)
             make.centerX.equalToSuperview()
             make.trailing.lessThanOrEqualToSuperview().inset(layout.current.horizontalInset)
-        }
-    }
-
-    private func setupVerifiedImageViewLayout() {
-        addSubview(verifiedImageView)
-
-        verifiedImageView.snp.makeConstraints { make in
-            make.trailing.equalTo(urlLabel.snp.leading).offset(layout.current.verifiedImageHorizontalInset)
-            make.centerY.equalTo(urlLabel)
-            make.size.equalTo(layout.current.verifiedImageSize)
         }
     }
 
@@ -183,7 +170,6 @@ extension WCConnectionApprovalView {
     func bind(_ viewModel: WCConnectionApprovalViewModel) {
         dappImageView.load(from: viewModel.image)
         titleLabel.attributedText = viewModel.description
-        verifiedImageView.isHidden = !viewModel.isVerified
         urlLabel.text = viewModel.urlString
 
         if let accountSelectionViewModel = viewModel.connectionAccountSelectionViewModel {
