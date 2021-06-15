@@ -189,6 +189,7 @@ class AccountsViewController: BaseViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        walletConnector.reconnectToSavedSessionsIfPossible()
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.presentQRTooltipIfNeeded()
