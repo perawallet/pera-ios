@@ -83,6 +83,8 @@ extension WCConnectionApprovalViewController: WCConnectionApprovalViewDelegate {
 
 extension WCConnectionApprovalViewController: AccountListViewControllerDelegate {
     func accountListViewController(_ viewController: AccountListViewController, didSelectAccount account: Account) {
+        viewController.popScreen()
+
         selectedAccount = account
         connectionApprovalView.bind(WCConnectionAccountSelectionViewModel(account: account))
     }

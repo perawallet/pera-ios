@@ -387,6 +387,8 @@ class Router {
                 walletConnectSessionConnectionCompletionHandler: completion,
                 configuration: configuration
             )
+        case .walletConnectSessions:
+            viewController = WCSessionListViewController(configuration: configuration)
         }
         
         return viewController as? T

@@ -101,6 +101,7 @@ indirect enum Screen {
     case algoUSDAnalytics(account: Account, currency: Currency)
     case ledgerAccountVerification(flow: AccountSetupFlow, selectedAccounts: [Account])
     case wcConnectionApproval(walletConnectSession: WalletConnectSession, completion: WalletConnectSessionConnectionCompletionHandler)
+    case walletConnectSessions
 }
 
 extension Screen {

@@ -106,7 +106,6 @@ extension AccountListViewController: AccountListLayoutBuilderDelegate {
         }
         
         let account = accounts[indexPath.item]
-        dismissScreen()
         delegate?.accountListViewController(self, didSelectAccount: account)
     }
 }
