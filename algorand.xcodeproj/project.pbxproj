@@ -1348,6 +1348,9 @@
 		2B7ABF75233386B60050B64B /* LoadingSpinnerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7ABF73233386B60050B64B /* LoadingSpinnerView.swift */; };
 		2B7ABF77233388570050B64B /* PendingTransactionList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7ABF76233388570050B64B /* PendingTransactionList.swift */; };
 		2B7ABF78233388570050B64B /* PendingTransactionList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7ABF76233388570050B64B /* PendingTransactionList.swift */; };
+		2B7E3016267A253D00E89EE3 /* WCSessionListEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7E3015267A253D00E89EE3 /* WCSessionListEmptyView.swift */; };
+		2B7E3017267A253D00E89EE3 /* WCSessionListEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7E3015267A253D00E89EE3 /* WCSessionListEmptyView.swift */; };
+		2B7E3018267A253D00E89EE3 /* WCSessionListEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7E3015267A253D00E89EE3 /* WCSessionListEmptyView.swift */; };
 		2B7E580C257E56BE00731C97 /* Int+Byte.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7E580B257E56BE00731C97 /* Int+Byte.swift */; };
 		2B7E580D257E56BE00731C97 /* Int+Byte.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7E580B257E56BE00731C97 /* Int+Byte.swift */; };
 		2B7E580E257E56BE00731C97 /* Int+Byte.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7E580B257E56BE00731C97 /* Int+Byte.swift */; };
@@ -2643,6 +2646,7 @@
 		2B7ABF702332DCF50050B64B /* PendingTransactionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingTransactionView.swift; sourceTree = "<group>"; };
 		2B7ABF73233386B60050B64B /* LoadingSpinnerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingSpinnerView.swift; sourceTree = "<group>"; };
 		2B7ABF76233388570050B64B /* PendingTransactionList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingTransactionList.swift; sourceTree = "<group>"; };
+		2B7E3015267A253D00E89EE3 /* WCSessionListEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionListEmptyView.swift; sourceTree = "<group>"; };
 		2B7E580B257E56BE00731C97 /* Int+Byte.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Byte.swift"; sourceTree = "<group>"; };
 		2B7E5815257E56DB00731C97 /* Int16+Byte.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int16+Byte.swift"; sourceTree = "<group>"; };
 		2B7E585B25866DA300731C97 /* LedgerAccountCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LedgerAccountCell.swift; path = Enabled/LedgerAccountCell.swift; sourceTree = "<group>"; };
@@ -5310,6 +5314,14 @@
 			path = Rewards;
 			sourceTree = "<group>";
 		};
+		2B7E3014267A252700E89EE3 /* Empty */ = {
+			isa = PBXGroup;
+			children = (
+				2B7E3015267A253D00E89EE3 /* WCSessionListEmptyView.swift */,
+			);
+			path = Empty;
+			sourceTree = "<group>";
+		};
 		2B7E580A257E56AA00731C97 /* Btye */ = {
 			isa = PBXGroup;
 			children = (
@@ -6525,6 +6537,7 @@
 			isa = PBXGroup;
 			children = (
 				2BA4B3F7267819A00041586B /* Cell */,
+				2B7E3014267A252700E89EE3 /* Empty */,
 				2BA4B3EA267819530041586B /* WCSessionListView.swift */,
 			);
 			path = Sessions;
@@ -9645,6 +9658,7 @@
 				2B3A34E7246EDA6C001C8F22 /* TransactionAccountInformationView.swift in Sources */,
 				2BAD5591239FB1B10037079F /* PendingAssetCell.swift in Sources */,
 				2B56715C24007B3F0037FCFA /* LedgerTutorialView.swift in Sources */,
+				2B7E3018267A253D00E89EE3 /* WCSessionListEmptyView.swift in Sources */,
 				17BD4EFB2292F1260003E49A /* TransactionAmountView.swift in Sources */,
 				17BD4EFC2292F1260003E49A /* UILabel+Factory.swift in Sources */,
 				2B3E3A0D247BFD6E00E8AEB7 /* UIStackView+Additions.swift in Sources */,
@@ -10338,6 +10352,7 @@
 				2B0F631224EC129D00DA22A6 /* TransactionSendDraft.swift in Sources */,
 				2B0F631324EC129D00DA22A6 /* SendAssetTransactionViewController.swift in Sources */,
 				2B0F631424EC129D00DA22A6 /* TransactionAccountInformationView.swift in Sources */,
+				2B7E3017267A253D00E89EE3 /* WCSessionListEmptyView.swift in Sources */,
 				2B0F631524EC129D00DA22A6 /* PendingAssetCell.swift in Sources */,
 				2B0F631624EC129D00DA22A6 /* LedgerTutorialView.swift in Sources */,
 				2B0F631724EC129D00DA22A6 /* TransactionAmountView.swift in Sources */,
@@ -11031,6 +11046,7 @@
 				2B3A34E6246EDA6C001C8F22 /* TransactionAccountInformationView.swift in Sources */,
 				2BAD5590239FB1B10037079F /* PendingAssetCell.swift in Sources */,
 				2B56715B24007B3F0037FCFA /* LedgerTutorialView.swift in Sources */,
+				2B7E3016267A253D00E89EE3 /* WCSessionListEmptyView.swift in Sources */,
 				2BB021D9224E2A7E0039D78A /* TransactionAmountView.swift in Sources */,
 				2BD739EF223FDE8400B66EEF /* UILabel+Factory.swift in Sources */,
 				2B3E3A0C247BFD6E00E8AEB7 /* UIStackView+Additions.swift in Sources */,

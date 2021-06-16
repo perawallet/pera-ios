@@ -33,12 +33,15 @@ class WCSessionListView: BaseView {
         return collectionView
     }()
 
+    private lazy var contentStateView = ContentStateView()
+
     override func configureAppearance() {
         backgroundColor = Colors.Background.tertiary
     }
 
     override func prepareLayout() {
         prepareWholeScreenLayoutFor(collectionView)
+        collectionView.backgroundView = contentStateView
     }
 }
 
