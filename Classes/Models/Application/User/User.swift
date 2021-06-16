@@ -21,7 +21,6 @@ class User: Model {
     private(set) var accounts: [AccountInformation] = []
     private(set) var defaultNode: String?
     private(set) var deviceId: String?
-    private(set) var wcSessions: [WalletConnectURL: WCSession]?
     
     init(accounts: [AccountInformation]) {
         self.accounts = accounts
@@ -119,33 +118,6 @@ extension User {
     
     func account(address: String) -> AccountInformation? {
         return accountFrom(address: address)
-    }
-
-    func addWalletConnectSession(_ session: WCSession) {
-        if wcSessions != nil {
-            self.wcSessions?[session.sessionDetail.url] = session
-        } else {
-            wcSessions = [session.sessionDetail.url: session]
-        }
-
-        syncronize()
-    }
-
-    func allWalletConnectSessions() -> [WCSession] {
-        guard let wcSessions = wcSessions else {
-            return []
-        }
-
-        return Array(wcSessions.values)
-    }
-
-    func findWalletConnectSession(with url: WalletConnectURL) -> WCSession? {
-        return wcSessions?[url]
-    }
-
-    func removeWalletConnectSession(url: WalletConnectURL) {
-        _ = wcSessions?.removeValue(forKey: url)
-        syncronize()
     }
 }
 

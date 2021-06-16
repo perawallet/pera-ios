@@ -1700,6 +1700,12 @@
 		2BA4B4112678D8EF0041586B /* WCSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4B4102678D8EF0041586B /* WCSession.swift */; };
 		2BA4B4122678D8EF0041586B /* WCSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4B4102678D8EF0041586B /* WCSession.swift */; };
 		2BA4B4132678D8EF0041586B /* WCSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4B4102678D8EF0041586B /* WCSession.swift */; };
+		2BA4B419267911010041586B /* WCSessionList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4B418267911010041586B /* WCSessionList.swift */; };
+		2BA4B41A267911010041586B /* WCSessionList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4B418267911010041586B /* WCSessionList.swift */; };
+		2BA4B41B267911010041586B /* WCSessionList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4B418267911010041586B /* WCSessionList.swift */; };
+		2BA4B41E26793A2D0041586B /* WalletConnectSessionSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4B41D26793A2D0041586B /* WalletConnectSessionSource.swift */; };
+		2BA4B41F26793A2D0041586B /* WalletConnectSessionSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4B41D26793A2D0041586B /* WalletConnectSessionSource.swift */; };
+		2BA4B42026793A2D0041586B /* WalletConnectSessionSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4B41D26793A2D0041586B /* WalletConnectSessionSource.swift */; };
 		2BA849092620A2E3007A75CA /* recover_animation_dark.json in Resources */ = {isa = PBXBuildFile; fileRef = 2BA849072620A2E2007A75CA /* recover_animation_dark.json */; };
 		2BA8490A2620A2E3007A75CA /* recover_animation_dark.json in Resources */ = {isa = PBXBuildFile; fileRef = 2BA849072620A2E2007A75CA /* recover_animation_dark.json */; };
 		2BA8490B2620A2E3007A75CA /* recover_animation_dark.json in Resources */ = {isa = PBXBuildFile; fileRef = 2BA849072620A2E2007A75CA /* recover_animation_dark.json */; };
@@ -2802,6 +2808,8 @@
 		2BA4B4042678A9400041586B /* WCSessionListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionListDataSource.swift; sourceTree = "<group>"; };
 		2BA4B40B2678A9C70041586B /* WCSessionListLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionListLayout.swift; sourceTree = "<group>"; };
 		2BA4B4102678D8EF0041586B /* WCSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSession.swift; sourceTree = "<group>"; };
+		2BA4B418267911010041586B /* WCSessionList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionList.swift; sourceTree = "<group>"; };
+		2BA4B41D26793A2D0041586B /* WalletConnectSessionSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletConnectSessionSource.swift; sourceTree = "<group>"; };
 		2BA849072620A2E2007A75CA /* recover_animation_dark.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = recover_animation_dark.json; sourceTree = "<group>"; };
 		2BA849082620A2E3007A75CA /* recover_animation_light.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = recover_animation_light.json; sourceTree = "<group>"; };
 		2BA873692248214800511C7C /* AlignedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlignedButton.swift; sourceTree = "<group>"; };
@@ -3272,6 +3280,7 @@
 		2B02A2EA266CE065002DD8AB /* WalletConnect */ = {
 			isa = PBXGroup;
 			children = (
+				2BA4B41C26793A220041586B /* Data */,
 				2BA4B3BD26735A950041586B /* Extensions */,
 				2BED656D266FA20700EC089B /* Handlers */,
 				2B02A2EB266CE07E002DD8AB /* WalletConnector.swift */,
@@ -6598,8 +6607,17 @@
 			isa = PBXGroup;
 			children = (
 				2BA4B4102678D8EF0041586B /* WCSession.swift */,
+				2BA4B418267911010041586B /* WCSessionList.swift */,
 			);
 			path = WalletConnect;
+			sourceTree = "<group>";
+		};
+		2BA4B41C26793A220041586B /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				2BA4B41D26793A2D0041586B /* WalletConnectSessionSource.swift */,
+			);
+			path = Data;
 			sourceTree = "<group>";
 		};
 		2BA848F6262087F8007A75CA /* Recover */ = {
@@ -9475,6 +9493,7 @@
 				2B3E3A0A24796FCC00E8AEB7 /* TabBarItems.swift in Sources */,
 				2B38C92D24D435FB0059AB02 /* RekeyInstructionsView.swift in Sources */,
 				17BD4EC02292F1260003E49A /* AlignedButton.swift in Sources */,
+				2BA4B41B267911010041586B /* WCSessionList.swift in Sources */,
 				2BA4B4072678A9400041586B /* WCSessionListDataSource.swift in Sources */,
 				2BB93BFF25BF1BF8001F1D6C /* TransactionFeeCalculator.swift in Sources */,
 				17BD4EC12292F1260003E49A /* TransactionID.swift in Sources */,
@@ -9507,6 +9526,7 @@
 				2B3E3A11247BFDA600E8AEB7 /* Bool+Additions.swift in Sources */,
 				17BD4ECD2292F1260003E49A /* AccountFetchOperation.swift in Sources */,
 				2B03D6A825C23C270079A973 /* MaximumBalanceWarningView.swift in Sources */,
+				2BA4B42026793A2D0041586B /* WalletConnectSessionSource.swift in Sources */,
 				2B4BD9F42389F17400491149 /* AssetSupportViewController.swift in Sources */,
 				17BD4ECE2292F1260003E49A /* PassphraseMnemonicCell.swift in Sources */,
 				2B25700523F1D8620005CBA2 /* SendAlgosTransactionPreviewViewModel.swift in Sources */,
@@ -10166,6 +10186,7 @@
 				2B0F62A624EC129D00DA22A6 /* Screen.swift in Sources */,
 				2B0F62A824EC129D00DA22A6 /* QRScannerViewController.swift in Sources */,
 				2B0F62A924EC129D00DA22A6 /* AnalyticsEvent.swift in Sources */,
+				2BA4B41A267911010041586B /* WCSessionList.swift in Sources */,
 				2BA4B4062678A9400041586B /* WCSessionListDataSource.swift in Sources */,
 				2BB93BFE25BF1BF8001F1D6C /* TransactionFeeCalculator.swift in Sources */,
 				2B0F62AA24EC129D00DA22A6 /* ActionBottomInformationView.swift in Sources */,
@@ -10198,6 +10219,7 @@
 				2B0F62C024EC129D00DA22A6 /* ModalConfiguration.swift in Sources */,
 				2B0F62C124EC129D00DA22A6 /* SendAlgosTransactionViewController.swift in Sources */,
 				2B03D6A725C23C270079A973 /* MaximumBalanceWarningView.swift in Sources */,
+				2BA4B41F26793A2D0041586B /* WalletConnectSessionSource.swift in Sources */,
 				2B0F62C224EC129D00DA22A6 /* BottomInformationViewController.swift in Sources */,
 				2B0F62C324EC129D00DA22A6 /* NodeController.swift in Sources */,
 				2BDD43C82513A7F600C6D3B5 /* SingleSelectionViewModel.swift in Sources */,
@@ -10857,6 +10879,7 @@
 				2B3E3A0924796FCC00E8AEB7 /* TabBarItems.swift in Sources */,
 				2B38C92C24D435FB0059AB02 /* RekeyInstructionsView.swift in Sources */,
 				173DA2102256643A00378A82 /* TransactionID.swift in Sources */,
+				2BA4B419267911010041586B /* WCSessionList.swift in Sources */,
 				2BA4B4052678A9400041586B /* WCSessionListDataSource.swift in Sources */,
 				2BB93BFD25BF1BF8001F1D6C /* TransactionFeeCalculator.swift in Sources */,
 				2B4BDA16238D1BD500491149 /* OptionsView.swift in Sources */,
@@ -10889,6 +10912,7 @@
 				2B3E3A10247BFDA600E8AEB7 /* Bool+Additions.swift in Sources */,
 				17BEC4662248D39900AAF370 /* PassphraseMnemonicCell.swift in Sources */,
 				2B03D6A625C23C270079A973 /* MaximumBalanceWarningView.swift in Sources */,
+				2BA4B41E26793A2D0041586B /* WalletConnectSessionSource.swift in Sources */,
 				2B7572A6225CA1E3009E0253 /* SendTransactionView.swift in Sources */,
 				2B4BDA21238D3A6800491149 /* AssetSearchQuery.swift in Sources */,
 				2B25700423F1D8620005CBA2 /* SendAlgosTransactionPreviewViewModel.swift in Sources */,
