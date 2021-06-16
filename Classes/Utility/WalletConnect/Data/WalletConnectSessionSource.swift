@@ -116,7 +116,8 @@ extension WalletConnectSessionSource {
     }
 
     private func syncSessions() {
-        self.sessions = sessions
+        let updatedSessions = sessions
+        self.sessions = updatedSessions
     }
 }
 
