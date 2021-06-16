@@ -82,6 +82,10 @@ class WalletConnectSessionSource {
 extension WalletConnectSessionSource {
     func addWalletConnectSession(_ session: WCSession) {
         if sessions != nil {
+            if sessions?[session.sessionDetail.url] != nil {
+                return
+            }
+
             self.sessions?[session.sessionDetail.url] = session
             syncSessions()
         } else {
