@@ -21,6 +21,8 @@ class WalletConnector {
 
     private let walletConnectBridge = WalletConnectBridge()
 
+    private lazy var sessionSource = WalletConnectSessionSource()
+
     weak var delegate: WalletConnectorDelegate?
 
     init() {
@@ -65,13 +67,11 @@ extension WalletConnector {
     }
 
     func reconnectToSavedSessionsIfPossible() {
-        if let user = UIApplication.shared.appConfiguration?.session.authenticatedUser {
-            for session in user.allWalletConnectSessions() {
-                do {
-                    try walletConnectBridge.reconnect(to: session.sessionDetail)
-                } catch {
-                    removeFromSessions(session.sessionDetail)
-                }
+        for session in allWalletConnectSessions {
+            do {
+                try walletConnectBridge.reconnect(to: session.sessionDetail)
+            } catch {
+                removeFromSessions(session.sessionDetail)
             }
         }
     }
@@ -79,15 +79,19 @@ extension WalletConnector {
 
 extension WalletConnector {
     private func addToSavedSessions(_ session: WalletConnectSession) {
-        if let user = UIApplication.shared.appConfiguration?.session.authenticatedUser {
-            user.addWalletConnectSession(WCSession(sessionDetail: session, date: Date()))
-        }
+        sessionSource.addWalletConnectSession(WCSession(sessionDetail: session, date: Date()))
     }
 
     private func removeFromSessions(_ session: WalletConnectSession) {
-        if let user = UIApplication.shared.appConfiguration?.session.authenticatedUser {
-            user.removeWalletConnectSession(url: session.url)
-        }
+        sessionSource.removeWalletConnectSession(with: session.url)
+    }
+
+    var allWalletConnectSessions: [WCSession] {
+        sessionSource.allWalletConnectSessions
+    }
+    
+    func resetAllSessions() {
+        sessionSource.resetAllSessions()
     }
 }
 
@@ -141,6 +145,28 @@ protocol WalletConnectorDelegate: AnyObject {
     func walletConnector(_ walletConnector: WalletConnector, didConnectTo session: WalletConnectSession)
     func walletConnector(_ walletConnector: WalletConnector, didDisconnectFrom session: WalletConnectSession)
     func walletConnector(_ walletConnector: WalletConnector, didFailWith error: WalletConnector.Error)
+}
+
+extension WalletConnectorDelegate {
+    func walletConnector(
+        _ walletConnector: WalletConnector,
+        shouldStart session: WalletConnectSession,
+        then completion: @escaping WalletConnectSessionConnectionCompletionHandler
+    ) {
+
+    }
+
+    func walletConnector(_ walletConnector: WalletConnector, didConnectTo session: WalletConnectSession) {
+
+    }
+
+    func walletConnector(_ walletConnector: WalletConnector, didDisconnectFrom session: WalletConnectSession) {
+
+    }
+
+    func walletConnector(_ walletConnector: WalletConnector, didFailWith error: WalletConnector.Error) {
+        
+    }
 }
 
 enum WalletConnectMethod: String {
