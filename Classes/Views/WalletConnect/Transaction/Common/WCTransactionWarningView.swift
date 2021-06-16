@@ -13,10 +13,10 @@
 // limitations under the License.
 
 //
-//   WCTransactionErrorView.swift
+//   WCTransactionWarningView.swift
 
 import UIKit
 
-class WCTransactionErrorView: BaseView {
+class WCTransactionWarningView: BaseView {
 
 }
