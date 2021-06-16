@@ -625,5 +625,8 @@
 
 // MARK: Wallet Connect Session
 "wallet-connect-session-connection-description" = "%@ wants to connect to your account";
+"wallet-connect-session-error-no-account" = "You don't have any account that WalletConnect can connect.";
 "wallet-connect-session-list-empty" = "You haven't connected any apps yet.";
 "wallet-connect-session-disconnect-message" = "Would you like to disconnect from %@?";
+"wallet-connect-session-connected" = "Connected";
+"wallet-connect-session-disconnect-fail-message" = "Failed to disconnect from Session %@.";

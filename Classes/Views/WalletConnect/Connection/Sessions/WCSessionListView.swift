@@ -19,7 +19,7 @@ import UIKit
 
 class WCSessionListView: BaseView {
 
-    private lazy var collectionView: UICollectionView = {
+    private(set) lazy var collectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .vertical
         flowLayout.minimumLineSpacing = 8.0
@@ -28,6 +28,7 @@ class WCSessionListView: BaseView {
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.contentInset = .zero
+        collectionView.backgroundColor = Colors.Background.tertiary
         collectionView.register(WCSessionItemCell.self, forCellWithReuseIdentifier: WCSessionItemCell.reusableIdentifier)
         return collectionView
     }()
