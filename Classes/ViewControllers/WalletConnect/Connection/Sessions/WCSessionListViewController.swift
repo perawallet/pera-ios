@@ -19,7 +19,17 @@ import UIKit
 
 class WCSessionListViewController: BaseViewController {
 
+    private lazy var wcConnectionModalPresenter = CardModalPresenter(
+        config: ModalConfiguration(
+            animationMode: .normal(duration: 0.25),
+            dismissMode: .none
+        ),
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: 454.0))
+    )
+
     private lazy var sessionListView = WCSessionListView()
+
+    private lazy var emptyStateView = WCSessionListEmptyView()
 
     private lazy var dataSource = WCSessionListDataSource(walletConnector: walletConnector)
 
@@ -28,6 +38,7 @@ class WCSessionListViewController: BaseViewController {
     override func configureAppearance() {
         view.backgroundColor = Colors.Background.tertiary
         title = "settings-wallet-connect-title".localized
+        setListContentState()
     }
 
     override func linkInteractors() {
@@ -36,6 +47,7 @@ class WCSessionListViewController: BaseViewController {
         sessionListView.setDelegate(layoutBuilder)
         dataSource.delegate = self
         walletConnector.delegate = self
+        emptyStateView.delegate = self
     }
 
     override func prepareLayout() {
@@ -51,12 +63,78 @@ extension WCSessionListViewController: WCSessionListDataSourceDelegate {
 }
 
 extension WCSessionListViewController: WalletConnectorDelegate {
+    func walletConnector(
+        _ walletConnector: WalletConnector,
+        shouldStart session: WalletConnectSession,
+        then completion: @escaping WalletConnectSessionConnectionCompletionHandler
+    ) {
+        openWCSessionApproval(for: session, then: completion)
+    }
+
+    func walletConnector(_ walletConnector: WalletConnector, didConnectTo session: WalletConnectSession) {
+        setListContentState()
+        sessionListView.collectionView.reloadData()
+    }
+
     func walletConnector(_ walletConnector: WalletConnector, didDisconnectFrom session: WalletConnectSession) {
         updateScreenAfterDisconnecting(from: session)
     }
 
     func walletConnector(_ walletConnector: WalletConnector, didFailWith error: WalletConnector.Error) {
         displayDisconnectionError(error)
+    }
+}
+
+extension WCSessionListViewController: WCSessionListEmptyViewDelegate {
+    func wcSessionListEmptyViewDidOpenScanQR(_ wcSessionListEmptyView: WCSessionListEmptyView) {
+        openQRScanner()
+    }
+}
+
+extension WCSessionListViewController: QRScannerViewControllerDelegate {
+    func qrScannerViewController(
+        _ controller: QRScannerViewController,
+        didRead walletConnectSession: String,
+        completionHandler: EmptyHandler?
+    ) {
+        walletConnector.connect(to: walletConnectSession)
+    }
+}
+
+extension WCSessionListViewController {
+    private func setListContentState() {
+        sessionListView.collectionView.contentState = dataSource.isEmpty ? .empty(emptyStateView) : .none
+    }
+
+    private func index(of cell: WCSessionItemCell) -> Int? {
+        return sessionListView.collectionView.indexPath(for: cell)?.item
+    }
+}
+
+extension WCSessionListViewController {
+    private func openQRScanner() {
+        let qrScannerViewController = open(.qrScanner, by: .push) as? QRScannerViewController
+        qrScannerViewController?.delegate = self
+    }
+
+    private func openWCSessionApproval(
+        for session: WalletConnectSession,
+        then completion: @escaping WalletConnectSessionConnectionCompletionHandler
+    ) {
+        guard let accounts = self.session?.accounts,
+              accounts.contains(where: { $0.type != .watch }) else {
+            NotificationBanner.showError("title-error".localized, message: "wallet-connect-session-error-no-account".localized)
+            return
+        }
+
+        open(
+            .wcConnectionApproval(walletConnectSession: session, completion: completion),
+            by: .customPresent(
+                presentationStyle: .custom,
+                transitionStyle: nil,
+                transitioningDelegate: wcConnectionModalPresenter
+            )
+        )
     }
 }
 
@@ -84,17 +162,15 @@ extension WCSessionListViewController {
         present(actionSheet, animated: true, completion: nil)
     }
 
-    private func index(of cell: WCSessionItemCell) -> Int? {
-        return sessionListView.collectionView.indexPath(for: cell)?.item
-    }
-
     private func updateScreenAfterDisconnecting(from session: WalletConnectSession) {
         guard let index = dataSource.index(of: session) else {
             sessionListView.collectionView.reloadData()
+            setListContentState()
             return
         }
 
         sessionListView.collectionView.reloadItems(at: [IndexPath(item: index, section: 0)])
+        setListContentState()
     }
 
     private func displayDisconnectionError(_ error: WalletConnector.Error) {

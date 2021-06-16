@@ -64,6 +64,10 @@ extension WCSessionListDataSource {
     func disconnectFromSession(_ session: WCSession) {
         walletConnector.disconnectFromSession(session.sessionDetail)
     }
+
+    var isEmpty: Bool {
+        return walletConnector.allWalletConnectSessions.isEmpty
+    }
 }
 
 extension WCSessionListDataSource: WCSessionItemCellDelegate {
