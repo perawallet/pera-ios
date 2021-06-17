@@ -19,4 +19,67 @@ import UIKit
 
 class WCTransactionWarningView: BaseView {
 
+    private let layout = Layout<LayoutConstants>()
+
+    private lazy var imageView = UIImageView(image: img("icon-orange-warning"))
+
+    private lazy var warningLabel: UILabel = {
+        UILabel()
+            .withAlignment(.left)
+            .withLine(.single)
+            .withTextColor(Colors.General.unknown)
+            .withFont(UIFont.font(withWeight: .medium(size: 12.0)))
+    }()
+
+    override func configureAppearance() {
+        backgroundColor = Colors.WCTransactionWarningView.background
+        layer.cornerRadius = 12.0
+    }
+
+    override func prepareLayout() {
+        setupImageViewLayout()
+        setupWarningLabelLayout()
+    }
+}
+
+extension WCTransactionWarningView {
+    private func setupImageViewLayout() {
+        addSubview(imageView)
+
+        imageView.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
+            make.size.equalTo(layout.current.imageSize)
+        }
+    }
+
+    private func setupWarningLabelLayout() {
+        addSubview(warningLabel)
+
+        warningLabel.snp.makeConstraints { make in
+            make.leading.equalTo(imageView.snp.trailing).offset(layout.current.warningLabelInset)
+            make.top.bottom.equalToSuperview().inset(layout.current.warningLabelInset)
+            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+        }
+    }
+}
+
+extension WCTransactionWarningView {
+    func bind(_ viewModel: WCTransactionWarningViewModel) {
+        warningLabel.text = viewModel.title
+    }
+}
+
+extension WCTransactionWarningView {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let imageSize = CGSize(width: 24.0, height: 24.0)
+        let horizontalInset: CGFloat = 16.0
+        let warningLabelInset: CGFloat = 12.0
+    }
+}
+
+extension Colors {
+    fileprivate enum WCTransactionWarningView {
+        static let background = color("wcTransactionWarningBackground")
+    }
 }

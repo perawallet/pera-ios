@@ -18,5 +18,26 @@
 import UIKit
 
 class WCTransactionWarningViewModel {
+    private(set) var title: String?
 
+    init(warning: WCTransactionWarning) {
+        setTitle(from: warning)
+    }
+
+    private func setTitle(from warning: WCTransactionWarning) {
+        switch warning {
+        case .rekeyed:
+            title = "wallet-connect-transaction-warning-rekey".localized
+        case .closeAlgos:
+            title = "wallet-connect-transaction-warning-close-algos".localized
+        case .closeAsset:
+            title = "wallet-connect-transaction-warning-close-asset".localized
+        }
+    }
+}
+
+enum WCTransactionWarning {
+    case rekeyed
+    case closeAlgos
+    case closeAsset
 }
