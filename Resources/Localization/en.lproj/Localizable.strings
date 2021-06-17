@@ -630,3 +630,11 @@
 "wallet-connect-session-disconnect-message" = "Would you like to disconnect from %@?";
 "wallet-connect-session-connected" = "Connected";
 "wallet-connect-session-disconnect-fail-message" = "Failed to disconnect from Session %@.";
+
+// MARK: Wallet Connec Transaction Warning
+"wallet-connect-transaction-warning-rekey" = "Enter here Rekey warning message";
+"wallet-connect-transaction-warning-close-algos" = "Enter here Close Algos warning message";
+"wallet-connect-transaction-warning-close-asset" = "Enter here Close Asset warning message";
+
+// MARK: Wallet Connec Transaction Dapp Message
+"wallet-connect-transaction-dapp-show-more" = "Show More Info";
