@@ -102,6 +102,7 @@ indirect enum Screen {
     case ledgerAccountVerification(flow: AccountSetupFlow, selectedAccounts: [Account])
     case wcConnectionApproval(walletConnectSession: WalletConnectSession, completion: WalletConnectSessionConnectionCompletionHandler)
     case walletConnectSessions
+    case wcTransactionFullDappDetail(wcSession: WalletConnectSession)
 }
 
 extension Screen {

@@ -16,7 +16,35 @@
 //   WCTransactionDappMessageViewModel.swift
 
 import UIKit
+import Macaroon
 
 class WCTransactionDappMessageViewModel {
-    
+    private(set) var image: ImageSource?
+    private(set) var name: String?
+    private(set) var message: String?
+
+    init(session: WalletConnectSession, imageSize: CGSize) {
+        setImage(from: session, and: imageSize)
+        setName(from: session)
+        setMessage(from: session)
+    }
+
+    private func setImage(from session: WalletConnectSession, and imageSize: CGSize) {
+        image = PNGImageSource(
+            url: session.dAppInfo.peerMeta.icons.first,
+            color: nil,
+            size: .resize(imageSize, .aspectFit),
+            shape: .circle,
+            placeholder: nil,
+            forceRefresh: false
+        )
+    }
+
+    private func setName(from session: WalletConnectSession) {
+        name = session.dAppInfo.peerMeta.name
+    }
+
+    private func setMessage(from session: WalletConnectSession) {
+        message = session.dAppInfo.peerMeta.description
+    }
 }
