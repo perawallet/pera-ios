@@ -21,7 +21,7 @@ class WCAlgosTransactionViewController: WCTransactionViewController {
 
     private lazy var algosTransactionView = WCAlgosTransactionView()
 
-    override var transactionView: UIView? {
+    override var transactionView: WCSingleTransactionView? {
         return algosTransactionView
     }
 

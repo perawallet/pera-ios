@@ -21,7 +21,7 @@ class WCAssetAdditionTransactionViewController: WCTransactionViewController {
 
     private lazy var assetAdditionTransactionView = WCAssetAdditionTransactionView()
 
-    override var transactionView: UIView? {
+    override var transactionView: WCSingleTransactionView? {
         return assetAdditionTransactionView
     }
 }
