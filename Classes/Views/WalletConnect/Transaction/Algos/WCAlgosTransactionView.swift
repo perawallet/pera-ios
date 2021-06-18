@@ -18,5 +18,30 @@
 import UIKit
 
 class WCAlgosTransactionView: BaseView {
+
+    private let layout = Layout<LayoutConstants>()
+
+    override func configureAppearance() {
+        super.configureAppearance()
+    }
+
+    override func prepareLayout() {
+        super.prepareLayout()
+    }
+}
+
+extension WCAlgosTransactionView {
     
+}
+
+extension WCAlgosTransactionView {
+    func bind(_ viewModel: WCAlgosTransactionViewModel) {
+        
+    }
+}
+
+extension WCAlgosTransactionView {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+
+    }
 }

@@ -18,5 +18,30 @@
 import UIKit
 
 class WCAssetAdditionTransactionView: BaseView {
-    
+
+    private let layout = Layout<LayoutConstants>()
+
+    override func configureAppearance() {
+        super.configureAppearance()
+    }
+
+    override func prepareLayout() {
+        super.prepareLayout()
+    }
+}
+
+extension WCAssetAdditionTransactionView {
+
+}
+
+extension WCAssetAdditionTransactionView {
+    func bind(_ viewModel: WCAssetAdditionTransactionViewModel) {
+
+    }
+}
+
+extension WCAssetAdditionTransactionView {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+
+    }
 }
