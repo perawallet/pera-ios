@@ -13,15 +13,24 @@
 // limitations under the License.
 
 //
-//   WCAssetAdditionTransactionViewController.swift
+//   WCTransactionViewModel.swift
 
 import UIKit
 
-class WCAssetAdditionTransactionViewController: WCTransactionViewController {
+class WCTransactionViewModel {
+    private(set) var confirmTitle: String?
+    private(set) var declineTitle: String?
 
-    private lazy var assetAdditionTransactionView = WCAssetAdditionTransactionView()
+    init() {
+        setConfirmTitle()
+        setDeclineTitle()
+    }
 
-    override var transactionView: UIView? {
-        return assetAdditionTransactionView
+    private func setConfirmTitle() {
+
+    }
+
+    private func setDeclineTitle() {
+
     }
 }

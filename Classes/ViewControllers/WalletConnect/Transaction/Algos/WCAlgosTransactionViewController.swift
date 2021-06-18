@@ -17,6 +17,15 @@
 
 import UIKit
 
-class WCAlgosTransactionViewController: BaseViewController {
+class WCAlgosTransactionViewController: WCTransactionViewController {
 
+    private lazy var algosTransactionView = WCAlgosTransactionView()
+
+    override var transactionView: UIView? {
+        return algosTransactionView
+    }
+
+    override func configureAppearance() {
+        super.configureAppearance()
+    }
 }

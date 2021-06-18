@@ -37,6 +37,10 @@
 "title-learn-more" = "Learn More";
 "title-connect" = "Connect";
 "title-disconnect" = "Disconnect";
+"title-confirm" = "Confirm";
+"title-confirm-all" = "Confirm All Transactions";
+"title-decline" = "Decline";
+"title-decline-all" = "Decline All";
 
 // MARK: Account Type Selection
 "account-type-choose-title" = "Choose Account Type";
@@ -631,10 +635,13 @@
 "wallet-connect-session-connected" = "Connected";
 "wallet-connect-session-disconnect-fail-message" = "Failed to disconnect from Session %@.";
 
-// MARK: Wallet Connec Transaction Warning
+// MARK: Wallet Connect Transaction Warning
 "wallet-connect-transaction-warning-rekey" = "Enter here Rekey warning message";
 "wallet-connect-transaction-warning-close-algos" = "Enter here Close Algos warning message";
 "wallet-connect-transaction-warning-close-asset" = "Enter here Close Asset warning message";
 
-// MARK: Wallet Connec Transaction Dapp Message
+// MARK: Wallet Connect Transaction Dapp Message
 "wallet-connect-transaction-dapp-show-more" = "Show More Info";
+
+// MARK: Wallet Connect Transaction
+"wallet-connect-transaction-count" = "All transactions (%d)";

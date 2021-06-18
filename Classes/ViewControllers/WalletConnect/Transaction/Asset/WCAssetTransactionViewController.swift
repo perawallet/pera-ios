@@ -17,6 +17,12 @@
 
 import UIKit
 
-class WCAssetTransactionViewController: BaseViewController {
+class WCAssetTransactionViewController: WCTransactionViewController {
+
+    private lazy var assetTransactionView = WCAssetTransactionView()
+
+    override var transactionView: UIView? {
+        return assetTransactionView
+    }
     
 }
