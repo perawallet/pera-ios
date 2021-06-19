@@ -18,5 +18,31 @@
 import UIKit
 
 class WCAssetAdditionTransactionViewModel {
-    
+    private(set) var rawTransactionInformationViewModel: WCTransactionActionableInformationViewModel?
+    private(set) var algoExplorerInformationViewModel: WCTransactionActionableInformationViewModel?
+    private(set) var urlInformationViewModel: WCTransactionActionableInformationViewModel?
+    private(set) var metadataInformationViewModel: WCTransactionActionableInformationViewModel?
+
+    init() {
+        setRawTransactionInformationViewModel()
+        setAlgoExplorerInformationViewModel()
+        setUrlInformationViewModel()
+        setMetadataInformationViewModel()
+    }
+
+    private func setRawTransactionInformationViewModel() {
+        rawTransactionInformationViewModel = WCTransactionActionableInformationViewModel(information: .rawTransaction, isLastElement: false)
+    }
+
+    private func setAlgoExplorerInformationViewModel() {
+        algoExplorerInformationViewModel = WCTransactionActionableInformationViewModel(information: .algoExplorer, isLastElement: false)
+    }
+
+    private func setUrlInformationViewModel() {
+        urlInformationViewModel = WCTransactionActionableInformationViewModel(information: .assetUrl, isLastElement: false)
+    }
+
+    private func setMetadataInformationViewModel() {
+        metadataInformationViewModel = WCTransactionActionableInformationViewModel(information: .assetMetadata, isLastElement: true)
+    }
 }

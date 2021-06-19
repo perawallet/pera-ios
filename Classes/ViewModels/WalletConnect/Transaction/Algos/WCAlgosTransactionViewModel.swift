@@ -18,5 +18,13 @@
 import UIKit
 
 class WCAlgosTransactionViewModel {
-    
+    private(set) var rawTransactionInformationViewModel: WCTransactionActionableInformationViewModel?
+
+    init() {
+        setRawTransactionInformationViewModel()
+    }
+
+    private func setRawTransactionInformationViewModel() {
+        rawTransactionInformationViewModel = WCTransactionActionableInformationViewModel(information: .rawTransaction, isLastElement: true)
+    }
 }
