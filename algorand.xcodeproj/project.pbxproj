@@ -1972,6 +1972,12 @@
 		2BD36DBC267CCB8700C57728 /* WCAssetTransactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD36DBB267CCB8700C57728 /* WCAssetTransactionView.swift */; };
 		2BD36DBD267CCB8700C57728 /* WCAssetTransactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD36DBB267CCB8700C57728 /* WCAssetTransactionView.swift */; };
 		2BD36DBE267CCB8700C57728 /* WCAssetTransactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD36DBB267CCB8700C57728 /* WCAssetTransactionView.swift */; };
+		2BD36DC8267E082B00C57728 /* WCTransactionActionableInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD36DC7267E082B00C57728 /* WCTransactionActionableInformationView.swift */; };
+		2BD36DC9267E082C00C57728 /* WCTransactionActionableInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD36DC7267E082B00C57728 /* WCTransactionActionableInformationView.swift */; };
+		2BD36DCA267E082C00C57728 /* WCTransactionActionableInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD36DC7267E082B00C57728 /* WCTransactionActionableInformationView.swift */; };
+		2BD36DCD267E0D6800C57728 /* WCTransactionActionableInformationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD36DCC267E0D6800C57728 /* WCTransactionActionableInformationViewModel.swift */; };
+		2BD36DCE267E0D6800C57728 /* WCTransactionActionableInformationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD36DCC267E0D6800C57728 /* WCTransactionActionableInformationViewModel.swift */; };
+		2BD36DCF267E0D6800C57728 /* WCTransactionActionableInformationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD36DCC267E0D6800C57728 /* WCTransactionActionableInformationViewModel.swift */; };
 		2BD54766231714A9007179FE /* RewardDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD54765231714A9007179FE /* RewardDetailViewController.swift */; };
 		2BD54767231714A9007179FE /* RewardDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD54765231714A9007179FE /* RewardDetailViewController.swift */; };
 		2BD5476A23182636007179FE /* RewardDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD5476923182636007179FE /* RewardDetailViewModel.swift */; };
@@ -2989,6 +2995,8 @@
 		2BD36DAF267CCB4D00C57728 /* WCAlgosTransactionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WCAlgosTransactionView.swift; sourceTree = "<group>"; };
 		2BD36DB7267CCB7100C57728 /* WCAssetAdditionTransactionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WCAssetAdditionTransactionView.swift; sourceTree = "<group>"; };
 		2BD36DBB267CCB8700C57728 /* WCAssetTransactionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WCAssetTransactionView.swift; sourceTree = "<group>"; };
+		2BD36DC7267E082B00C57728 /* WCTransactionActionableInformationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCTransactionActionableInformationView.swift; sourceTree = "<group>"; };
+		2BD36DCC267E0D6800C57728 /* WCTransactionActionableInformationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCTransactionActionableInformationViewModel.swift; sourceTree = "<group>"; };
 		2BD54765231714A9007179FE /* RewardDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardDetailViewController.swift; sourceTree = "<group>"; };
 		2BD5476923182636007179FE /* RewardDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardDetailViewModel.swift; sourceTree = "<group>"; };
 		2BD5477023184310007179FE /* FeedbackCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackCategory.swift; sourceTree = "<group>"; };
@@ -5528,6 +5536,7 @@
 		2B7E303C267A519F00E89EE3 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				2BD36DC6267D15A000C57728 /* Detail */,
 				2BD36DC2267D129E00C57728 /* Message */,
 				2BD36DC3267D12A500C57728 /* Warning */,
 			);
@@ -5553,6 +5562,7 @@
 		2B7E3053267A5D8500E89EE3 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				2BD36DCB267E0D6000C57728 /* Detail */,
 				2BD36DC4267D12B600C57728 /* Message */,
 				2BD36DC5267D12BB00C57728 /* Warning */,
 				2B7E3085267BF8AB00E89EE3 /* WCTransactionViewModel.swift */,
@@ -7393,6 +7403,22 @@
 				2B7E3070267A5E9C00E89EE3 /* WCTransactionWarningViewModel.swift */,
 			);
 			path = Warning;
+			sourceTree = "<group>";
+		};
+		2BD36DC6267D15A000C57728 /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+				2BD36DC7267E082B00C57728 /* WCTransactionActionableInformationView.swift */,
+			);
+			path = Detail;
+			sourceTree = "<group>";
+		};
+		2BD36DCB267E0D6000C57728 /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+				2BD36DCC267E0D6800C57728 /* WCTransactionActionableInformationViewModel.swift */,
+			);
+			path = Detail;
 			sourceTree = "<group>";
 		};
 		2BD5476423171491007179FE /* Rewards */ = {
@@ -9624,6 +9650,7 @@
 				17BD4E6B2292F1260003E49A /* BaseCollectionViewCell.swift in Sources */,
 				2BE4D16C25967F92005F5764 /* Account+Signature.swift in Sources */,
 				2B9F063F24B5E4A7006880F0 /* TransactionEvent.swift in Sources */,
+				2BD36DCF267E0D6800C57728 /* WCTransactionActionableInformationViewModel.swift in Sources */,
 				2B1B536923279CD500D54029 /* AlgorandNotification.swift in Sources */,
 				2B1B536C2328029F00D54029 /* NotificationDetail.swift in Sources */,
 				2B6607E7241147BE002AC00F /* LedgerApprovalViewController.swift in Sources */,
@@ -9796,6 +9823,7 @@
 				17BD4EB12292F1260003E49A /* String+Address.swift in Sources */,
 				2BF811D125E5B55100D6B406 /* TransactionTutorialStorage.swift in Sources */,
 				2B7ABF78233388570050B64B /* PendingTransactionList.swift in Sources */,
+				2BD36DCA267E082C00C57728 /* WCTransactionActionableInformationView.swift in Sources */,
 				2BF90F2225FA39510033F348 /* RecoverInputViewModel.swift in Sources */,
 				2B25D52D2615F52200D4592E /* NSMutableAttributedString+Attribute.swift in Sources */,
 				2B7E3063267A5E2500E89EE3 /* WCAssetAdditionTransactionViewController.swift in Sources */,
@@ -10341,6 +10369,7 @@
 				2BB93BAA25BEE696001F1D6C /* TransactionDataBuilder.swift in Sources */,
 				2B0F621B24EC129D00DA22A6 /* CardModalPresentationController.swift in Sources */,
 				2BE4D16B25967F92005F5764 /* Account+Signature.swift in Sources */,
+				2BD36DCE267E0D6800C57728 /* WCTransactionActionableInformationViewModel.swift in Sources */,
 				2B0F621D24EC129D00DA22A6 /* BaseCollectionViewCell.swift in Sources */,
 				2B0F621E24EC129D00DA22A6 /* Participation.swift in Sources */,
 				2B0F622024EC129D00DA22A6 /* SearchEmptyView.swift in Sources */,
@@ -10513,6 +10542,7 @@
 				2B0F629024EC129D00DA22A6 /* AsyncOperation.swift in Sources */,
 				2BF811D025E5B55100D6B406 /* TransactionTutorialStorage.swift in Sources */,
 				2B0F629124EC129D00DA22A6 /* PassphraseDisplayViewController.swift in Sources */,
+				2BD36DC9267E082C00C57728 /* WCTransactionActionableInformationView.swift in Sources */,
 				2BF90F2125FA39510033F348 /* RecoverInputViewModel.swift in Sources */,
 				2B25D52C2615F52200D4592E /* NSMutableAttributedString+Attribute.swift in Sources */,
 				2B7E3062267A5E2500E89EE3 /* WCAssetAdditionTransactionViewController.swift in Sources */,
@@ -11058,6 +11088,7 @@
 				2BE4D16A25967F92005F5764 /* Account+Signature.swift in Sources */,
 				2B9F063E24B5E4A7006880F0 /* TransactionEvent.swift in Sources */,
 				2B8BE4EE22393577005D8565 /* BaseViewController.swift in Sources */,
+				2BD36DCD267E0D6800C57728 /* WCTransactionActionableInformationViewModel.swift in Sources */,
 				2B6607E6241147BE002AC00F /* LedgerApprovalViewController.swift in Sources */,
 				2B448737237AAD1E00C19FDE /* AlgoAssetCell.swift in Sources */,
 				2B44871A2379645200C19FDE /* AssetAdditionView.swift in Sources */,
@@ -11230,6 +11261,7 @@
 				2BF811CF25E5B55100D6B406 /* TransactionTutorialStorage.swift in Sources */,
 				2BB021DB224E46D60039D78A /* Transaction.swift in Sources */,
 				2BED6571266FA23400EC089B /* TransactionSignRequestHandler.swift in Sources */,
+				2BD36DC8267E082B00C57728 /* WCTransactionActionableInformationView.swift in Sources */,
 				2BF90F2025FA39510033F348 /* RecoverInputViewModel.swift in Sources */,
 				2B25D52B2615F52200D4592E /* NSMutableAttributedString+Attribute.swift in Sources */,
 				2B7E3061267A5E2500E89EE3 /* WCAssetAdditionTransactionViewController.swift in Sources */,

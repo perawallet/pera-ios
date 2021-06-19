@@ -644,4 +644,16 @@
 "wallet-connect-transaction-dapp-show-more" = "Show More Info";
 
 // MARK: Wallet Connect Transaction
+"wallet-connect-transaction-title-transaction" = "Transaction Request";
+"wallet-connect-transaction-title-asset" = "Transfer Asset Request";
+"wallet-connect-transaction-title-opt-in" = "Assets Opt-in Request";
+"wallet-connect-transaction-title-multiple" = "Multiple Transaction Request";
 "wallet-connect-transaction-count" = "All transactions (%d)";
+"wallet-connect-transaction-title-raw" = "Raw Txns";
+"wallet-connect-transaction-detail-raw" = "Show Raw Transaction";
+"wallet-connect-transaction-title-explorer" = "AlgoExplorer";
+"wallet-connect-transaction-detail-explorer" = "Show Explorer";
+"wallet-connect-transaction-title-asset" = "Asset URL";
+"wallet-connect-transaction-detail-asset" = "Show Asset URL";
+"wallet-connect-transaction-title-metadata" = "Asset Metadata";
+"wallet-connect-transaction-detail-metadata" = "Show Asset Metadata";
