@@ -346,6 +346,7 @@
 "transaction-detail-copy-tooltip" = "Press and hold to Copy to Clipboard";
 "transaction-id-open-algoexplorer" = "Open in AlgoExplorer";
 "transaction-id-open-goalseeker" = "Open in GoalSeeker";
+"transaction-detail-balance" = "Account Balance";
 
 // MARK: Feedback
 "feedback-title" = "Send Feedback";
@@ -639,6 +640,9 @@
 "wallet-connect-transaction-warning-rekey" = "Enter here Rekey warning message";
 "wallet-connect-transaction-warning-close-algos" = "Enter here Close Algos warning message";
 "wallet-connect-transaction-warning-close-asset" = "Enter here Close Asset warning message";
+"wallet-connect-transaction-warning-rekey-title" = "Rekeyed To:";
+"wallet-connect-transaction-warning-close-asset-title" = "Close Asset To:";
+"wallet-connect-transaction-warning-close-algos-title" = "Close Remainder To:";
 
 // MARK: Wallet Connect Transaction Dapp Message
 "wallet-connect-transaction-dapp-show-more" = "Show More Info";
