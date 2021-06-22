@@ -96,13 +96,13 @@ extension WCAlgosTransactionView {
         if let rekeyWarningInformationViewModel = viewModel.rekeyWarningInformationViewModel {
             rekeyWarningInformationView.bind(rekeyWarningInformationViewModel)
         } else {
-            hideViewInStack(rekeyWarningInformationView)
+            rekeyWarningInformationView.hideViewInStack()
         }
 
         if let closeWarningInformationViewModel = viewModel.closeWarningInformationViewModel {
             closeWarningInformationView.bind(closeWarningInformationViewModel)
         } else {
-            hideViewInStack(closeWarningInformationView)
+            closeWarningInformationView.hideViewInStack()
         }
 
         balanceInformationView.bind(viewModel.balanceInformationViewModel)
@@ -112,16 +112,12 @@ extension WCAlgosTransactionView {
         if let noteInformationViewModel = viewModel.noteInformationViewModel {
             noteInformationView.bind(noteInformationViewModel)
         } else {
-            hideViewInStack(noteInformationView)
+            noteInformationView.hideViewInStack()
         }
 
         if let rawTransactionInformationViewModel = viewModel.rawTransactionInformationViewModel {
             rawTransactionInformationView.bind(rawTransactionInformationViewModel)
         }
-    }
-
-    private func hideViewInStack(_ view: UIView) {
-        view.isHidden = true
     }
 }
 

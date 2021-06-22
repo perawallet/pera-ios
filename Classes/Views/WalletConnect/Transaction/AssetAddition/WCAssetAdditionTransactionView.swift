@@ -110,13 +110,13 @@ extension WCAssetAdditionTransactionView {
         if let rekeyWarningInformationViewModel = viewModel.rekeyWarningInformationViewModel {
             rekeyWarningInformationView.bind(rekeyWarningInformationViewModel)
         } else {
-            hideViewInStack(rekeyWarningInformationView)
+            rekeyWarningInformationView.hideViewInStack()
         }
 
         if let closeWarningInformationViewModel = viewModel.closeWarningInformationViewModel {
             closeWarningInformationView.bind(closeWarningInformationViewModel)
         } else {
-            hideViewInStack(closeWarningInformationView)
+            closeWarningInformationView.hideViewInStack()
         }
 
         feeInformationView.bind(viewModel.feeInformationViewModel)
@@ -124,36 +124,32 @@ extension WCAssetAdditionTransactionView {
         if let noteInformationViewModel = viewModel.noteInformationViewModel {
             noteInformationView.bind(noteInformationViewModel)
         } else {
-            hideViewInStack(noteInformationView)
+            noteInformationView.hideViewInStack()
         }
 
         if let rawTransactionInformationViewModel = viewModel.rawTransactionInformationViewModel {
             rawTransactionInformationView.bind(rawTransactionInformationViewModel)
         } else {
-            hideViewInStack(rawTransactionInformationView)
+            rawTransactionInformationView.hideViewInStack()
         }
 
         if let algoExplorerInformationViewModel = viewModel.algoExplorerInformationViewModel {
             algoExplorerInformationView.bind(algoExplorerInformationViewModel)
         } else {
-            hideViewInStack(algoExplorerInformationView)
+            algoExplorerInformationView.hideViewInStack()
         }
 
         if let urlInformationViewModel = viewModel.urlInformationViewModel {
             assetURLInformationView.bind(urlInformationViewModel)
         } else {
-            hideViewInStack(assetURLInformationView)
+            assetURLInformationView.hideViewInStack()
         }
 
         if let metadataInformationViewModel = viewModel.metadataInformationViewModel {
             assetMetadataInformationView.bind(metadataInformationViewModel)
         } else {
-            hideViewInStack(assetMetadataInformationView)
+            assetMetadataInformationView.hideViewInStack()
         }
-    }
-
-    private func hideViewInStack(_ view: UIView) {
-        view.isHidden = true
     }
 }
 
